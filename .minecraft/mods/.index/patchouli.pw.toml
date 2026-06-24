@@ -1,17 +1,9 @@
 filename = 'Patchouli-1.20.1-85-FORGE.jar'
 name = 'Patchouli'
-side = ''
-x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
-x-prismlauncher-release-type = 'release'
-x-prismlauncher-version-number = '1.20.1-85-forge'
+side = 'both'
 
 [download]
-hash = '15aedda4efcc553d5e3c83aa867b62554bc2fab298b43f55ed324e10507a3605f0ec2c59c01476e6d80b2a49275ef080142e43a6e663f9463b62f520960fc203'
-hash-format = 'sha512'
+hash = '1e418398159c72c50340726c565c496354ab72697d9139191a66beea731f8c22'
+hash-format = 'sha256'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/nU0bVIaL/versions/94dtOLgZ/Patchouli-1.20.1-85-FORGE.jar'
-
-[update.modrinth]
-mod-id = 'nU0bVIaL'
-version = '94dtOLgZ'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/Patchouli-1.20.1-85-FORGE.jar'

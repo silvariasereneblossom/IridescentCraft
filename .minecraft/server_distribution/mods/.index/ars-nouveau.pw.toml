@@ -1,0 +1,9 @@
+filename = 'ars_nouveau-1.20.1-4.12.7-all.jar'
+name = 'Ars Nouveau'
+side = 'both'
+
+[download]
+hash = '74b3c60a3afb130811e6780c5db9cfc80811578b3df9cf1b14d04b018dabb51a'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/mods/ars_nouveau-1.20.1-4.12.7-all.jar'

@@ -1,21 +1,9 @@
 filename = 'class-artifacts-forge-2.0.5.jar'
 name = 'Epic RPG: Class Artifacts'
 side = 'both'
-x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
-x-prismlauncher-release-type = 'release'
-x-prismlauncher-version-number = '2.0.5'
 
 [download]
-hash = 'a719074a814b19013d2406479a0cc53c488e63376c425275d5759434c7038f0d2d92da2ce681f8265cb7cd2d24c812559b15a901d9fa92a2c7dc392e6cba1493'
-hash-format = 'sha512'
+hash = 'a182eae8398d91bac29872fe5522f6ac093793c2bc9aad598212d8ff55be8de2'
+hash-format = 'sha256'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/EdLDO1qI/versions/cCXFkAzx/class-artifacts-forge-2.0.5.jar'
-
-[update.modrinth]
-mod-id = 'EdLDO1qI'
-version = 'cCXFkAzx'
-
-[[x-prismlauncher-dependencies]]
-addonId = '7tCK5Wtn'
-type = 'REQUIRED'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/class-artifacts-forge-2.0.5.jar'

@@ -11,7 +11,17 @@ packwiz consumer) can now fetch them by URL like any other mod.
 IDEMPOTENT + sha-from-disk: re-run after EVERY custom-jar rebuild so the marker
 hash tracks the new jar content (wire into the custom-jar-release flow alongside
 regen_custom_jars_manifest.ps1). Only touches the jars in JARS below; leaves
-externally-hosted markers (tetra, modrinth mods) alone.
+genuinely-upstream markers (tetra, unpatched modrinth/CF mods) alone.
+
+PATCHED THIRD-PARTY JARS (ars_nouveau, Patchouli, class-artifacts) are ALSO in
+JARS even though an upstream CDN exists: we ship a BYTECODE-PATCHED variant whose
+committed copy diverges from upstream, so the marker MUST point at our raw-GitHub
+copy + carry the patched jar's hash. If it pointed at the upstream Modrinth/CF
+URL, a hash-verifying consumer (packwiz-installer) would re-download the UNPATCHED
+upstream over our patched jar (or fail hash-verify). The bespoke download_mods.ps1
+masked this -- it only fetches jars ABSENT by name and never hash-verifies, and
+install.ps1 pre-copies the committed jars -- so the wrong markers never bit until
+the packwiz-installer cutover. See memory: packwiz-installer-cutover-preconditions.
 
 Usage:  python3 dev/sync_custom_jar_markers.py   (run from the .minecraft dir or anywhere)
 """
@@ -32,7 +42,9 @@ DISTROS = {
 }
 
 # jar filename -> (pw.toml basename, display name, side)
-# ONLY the jars we build/host ourselves with no external CDN source.
+# The jars we build/host ourselves (iridescent_* + forks) OR ship a patched
+# variant of (the PATCHED block at the end). For all of these our raw-GitHub
+# copy is authoritative, so the marker is url-mode raw-GitHub + the on-disk hash.
 JARS = {
     "iridescent_grand_compass-1.0.0.jar":            ("iridescent-grand-compass.pw.toml",   "Iridescent Grand Compass",        "both"),
     "iridescent_origins-1.0.0.jar":                  ("iridescent-origins.pw.toml",         "Iridescent Origins",              "both"),
@@ -47,6 +59,12 @@ JARS = {
     "lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar":("iridescent-lovely-pieces.pw.toml",   "Iridescent Lovely Pieces",        "both"),
     # client-only (absent from server_distribution -- see docket #73)
     "mek_walkable_cables-1.0.1.jar":                 ("mek-walkable-cables.pw.toml",        "Walkable Mekanism Cables",        "client"),
+    # PATCHED third-party jars -- committed (patched) copy is authoritative; the
+    # marker must point at our raw-GitHub copy, NOT the upstream Modrinth/CF URL,
+    # or packwiz-installer would re-fetch the unpatched upstream. (See header.)
+    "ars_nouveau-1.20.1-4.12.7-all.jar":             ("ars-nouveau.pw.toml",                "Ars Nouveau",                     "both"),
+    "Patchouli-1.20.1-85-FORGE.jar":                 ("patchouli.pw.toml",                  "Patchouli",                       "both"),
+    "class-artifacts-forge-2.0.5.jar":               ("rpg-class-artifacts.pw.toml",        "Epic RPG: Class Artifacts",       "both"),
 }
 
 
