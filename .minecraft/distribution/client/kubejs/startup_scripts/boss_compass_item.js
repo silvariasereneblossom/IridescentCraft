@@ -6,8 +6,9 @@
 // logic lives in kubejs/server_scripts/bonfire/boss_compass_handler.js.
 //
 // Design (#46 Part A MVP):
-//   - Single item type, all 106 bosses target-selectable via right-click
-//     menu (tier-gated by AStages -- see handler).
+//   - Single item type, all bosses target-selectable via right-click cycle
+//     (or the /icraft_compass menu clickable list); tier-gated by AStages
+//     -- see handler.
 //   - Vanilla-compass-flavored model + name; visual needle rotation is
 //     deferred to a Phase 2 polish pass (the MVP shows direction + distance
 //     as chat tellraw instead).
@@ -21,8 +22,9 @@ StartupEvents.registry("item", event => {
         .displayName("Boss Compass")
         .texture("minecraft:item/compass")
         .tooltip("Tracks tier-appropriate boss arenas.")
-        .tooltip("Right-click in air: choose a target.")
+        .tooltip("Right-click: cycle to the next target.")
         .tooltip("Shift-right-click: clear target.")
+        .tooltip("/icraft_compass menu: full clickable list.")
         .maxStackSize(1)
         .rarity("uncommon")
         .glow(true)

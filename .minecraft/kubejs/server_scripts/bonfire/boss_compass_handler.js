@@ -19,7 +19,11 @@
 // can't drift. Only structure-locked arenas are targetable; see registry header.
 //
 // Target NBT (on the compass ItemStack):
-//   { boss_id: "twilight_naga", target_pos: { x,y,z }, target_dim: "..." }
+//   { boss_id: "twilight_naga", target_pos: { x,y,z }, target_dim: "...",
+//     cycle_id: "twilight_naga" }
+//   cycle_id = the right-click cycle pointer (last boss cycled to), kept apart
+//   from the LOCKED boss_id so the cycle advances even past summon-only / out-of-
+//   range bosses (which intentionally don't set a locked target).
 //
 // RELOAD-SAFETY (#60 lesson): registers ONLY KubeJS event bindings
 // (ItemEvents.rightClicked, ServerEvents.commandRegistry, and a tick via the
@@ -233,6 +237,27 @@ function clearCompassTarget(stack) {
     tag.remove("boss_id")
     tag.remove("target_pos")
     tag.remove("target_dim")
+    tag.remove("cycle_id")
+    stack.nbt = tag
+}
+
+// Cycle pointer (right-click cycle): the last boss the player cycled to, stored
+// SEPARATELY from the locked target so the cycle keeps advancing even when a
+// boss is summon-only / out of range (those don't set boss_id). Falls back to
+// the locked boss_id so a right-click continues from a menu-picked target.
+function getCycleId(stack) {
+    const tag = stack.nbt
+    if (!tag) return null
+    // String(...) coerces the Java String from getString to a JS primitive so
+    // the caller's Array.indexOf (strict ===) matches the JS-string roster keys.
+    if (tag.contains("cycle_id")) return String(tag.getString("cycle_id"))
+    if (tag.contains("boss_id")) return String(tag.getString("boss_id"))
+    return null
+}
+
+function setCycleId(stack, boss_id) {
+    const tag = stack.nbt || {}
+    tag.cycle_id = boss_id
     stack.nbt = tag
 }
 
@@ -283,13 +308,22 @@ function inTargetDimension(player, target) {
 
 // ---- Menu builder ---------------------------------------------------------
 
-function showTargetMenu(player) {
+// Boss ids the player is tier-eligible for, sorted tier-ascending then by
+// display name. Shared by the chat menu and the right-click cycle so both walk
+// the roster in the same order.
+function eligibleBossIds(player) {
     const tier = getPlayerTier(player)
     const arenas = global.ICRAFT_BOSS_ARENAS || {}
-    const eligible = Object.keys(arenas)
+    return Object.keys(arenas)
         .filter(id => arenas[id].tier <= tier)
         .sort((a, b) => arenas[a].tier - arenas[b].tier
             || arenas[a].display.localeCompare(arenas[b].display))
+}
+
+function showTargetMenu(player) {
+    const tier = getPlayerTier(player)
+    const arenas = global.ICRAFT_BOSS_ARENAS || {}
+    const eligible = eligibleBossIds(player)
 
     if (eligible.length === 0) {
         player.tell(Text.gray("No tier-appropriate boss arenas available."))
@@ -324,12 +358,15 @@ function showTargetMenu(player) {
             .append(Text.darkGray("  " + verb))
         player.tell(line)
     }
-    player.tell(Text.darkGray("Shift-right-click the compass to clear the current target."))
+    player.tell(Text.darkGray("Or right-click the compass to cycle targets · shift-right-click to clear."))
 }
 
 // ---- Apply selected target ------------------------------------------------
 
-function applyTarget(player, boss_id) {
+function applyTarget(player, boss_id, posLabel) {
+    // posLabel (e.g. "3/7") is appended to the result line when called from the
+    // right-click cycle; null/absent for the chat-menu select path (no change).
+    const posTag = posLabel ? " (" + posLabel + ")" : ""
     const arenas = global.ICRAFT_BOSS_ARENAS || {}
     const meta = arenas[boss_id]
     if (!meta) {
@@ -354,7 +391,7 @@ function applyTarget(player, boss_id) {
     if (meta.locator === "summon") {
         player.tell(Text.yellow("⚠ ")
             .append(Text.gold(meta.display).bold(true))
-            .append(Text.yellow("'s arena can't be tracked by compass (no fixed beacon).")))
+            .append(Text.yellow("'s arena can't be tracked by compass (no fixed beacon)." + posTag)))
         if (meta.dimension) {
             player.tell(Text.gray("  Arena generates in ")
                 .append(Text.aqua(meta.dimension))
@@ -380,7 +417,7 @@ function applyTarget(player, boss_id) {
                 .append(Text.gold(anchor))
                 .append(Text.yellow(") generates in "))
                 .append(Text.aqua(meta.dimension))
-                .append(Text.yellow(" — travel there, then re-target.")))
+                .append(Text.yellow(" — travel there, then re-target." + posTag)))
         } else if (meta.locator === "block") {
             // Block scan only sees loaded chunks, so "not found" usually means
             // "not close enough yet" rather than "doesn't exist here".
@@ -388,7 +425,7 @@ function applyTarget(player, boss_id) {
                 .append(Text.gold(meta.display))
                 .append(Text.yellow(" arena in range. Explore "))
                 .append(Text.aqua(meta.dimension || "the area"))
-                .append(Text.yellow(" — the compass locks on once you're near it.")))
+                .append(Text.yellow(" — the compass locks on once you're near it." + posTag)))
             if (meta.summonEntity) {
                 player.tell(Text.darkGray("  (test-spawn: ")
                     .append(Text.darkAqua("/summon " + meta.summonEntity)
@@ -397,7 +434,7 @@ function applyTarget(player, boss_id) {
             }
         } else {
             player.tell(Text.yellow("⚠ Could not locate " + meta.display
-                + "'s arena within range. Explore further and try again."))
+                + "'s arena within range. Explore further and try again." + posTag))
         }
         return
     }
@@ -406,39 +443,48 @@ function applyTarget(player, boss_id) {
     const dir = getCompassDirection(player, spawn)
     player.tell(Text.green("Compass locked on ")
         .append(Text.gold(meta.display).bold(true))
-        .append(Text.green(" — " + dist + " blocks " + dir + ".")))
+        .append(Text.green(" — " + dist + " blocks " + dir + "." + posTag)))
     if (meta.ritual) {
         player.tell(Text.darkAqua("  ⚑ " + meta.ritual))
     }
 }
 
-// ---- Report (re-read current target) --------------------------------------
-
-function reportTarget(player, item, target) {
-    const arenas = global.ICRAFT_BOSS_ARENAS || {}
-    const meta = arenas[target.boss_id]
-    const label = meta ? meta.display : target.boss_id
-    if (!inTargetDimension(player, target)) {
-        player.tell(Text.yellow("Tracking ")
-            .append(Text.gold(label).bold(true))
-            .append(Text.yellow(" — in another dimension ("))
-            .append(Text.aqua(target.dim))
-            .append(Text.yellow("). Travel there to home in.")))
+// ---- Right-click cycle ----------------------------------------------------
+//
+// Right-click advances to the NEXT tier-eligible boss and locks it. Chat-menu
+// clicking needs the chat GUI open (clunky mid-play); cycling needs no chat —
+// the 1 Hz action-bar HUD shows the live heading, and the result line reports
+// the lock + cycle position ("3/7"). The cycle pointer (cycle_id) is persisted
+// independently of the lock so it keeps advancing past summon-only / out-of-
+// range bosses (applyTarget shows that boss's route hint without locking). The
+// full clickable list stays available on demand via `/icraft_compass menu`.
+function cycleTarget(player) {
+    const compass = bcHeldFinder(player)
+    if (!compass) {
+        player.tell(Text.red("Hold the Boss Compass (or a Grand Compass in Boss mode) first."))
         return
     }
-    const dist = getDistance(player, target.pos)
-    const dir = getCompassDirection(player, target.pos)
-    player.tell(Text.aqua("Tracking ")
-        .append(Text.gold(label).bold(true))
-        .append(Text.aqua(": " + dist + " blocks " + dir + "."))
-        .append(Text.darkGray("  (right-click again to refresh / re-locate)")))
-    // Offer a quick re-locate if the player has wandered far (structure search
-    // is cheap thanks to async-locator; block scan is bounded to loaded chunks;
-    // re-snap to the nearest instance). Summon-only arenas never re-locate.
-    if (meta && meta.locator !== "summon") {
-        const fresh = findArenaCenter(player, target.boss_id)
-        if (fresh) setCompassTarget(item, target.boss_id, meta.dimension || null, fresh)
+    const list = eligibleBossIds(player)
+    if (list.length === 0) {
+        player.tell(Text.gray("No tier-appropriate boss arenas available."))
+        return
     }
+    // One-time how-to on a fresh compass (never cycled, no locked target).
+    const tag0 = compass.nbt
+    const firstTouch = !tag0 || (!tag0.contains("cycle_id") && !tag0.contains("boss_id"))
+    if (firstTouch) {
+        player.tell(Text.darkGray("Right-click cycles targets · shift-right-click clears · ")
+            .append(Text.aqua("/icraft_compass menu")
+                .clickRunCommand("/icraft_compass menu")
+                .hover(Text.gray("Show the full clickable list")))
+            .append(Text.darkGray(" for the list")))
+    }
+    const cur = getCycleId(compass)
+    const idx = list.indexOf(cur)
+    const next = (idx < 0) ? 0 : (idx + 1) % list.length
+    const nextId = list[next]
+    setCycleId(compass, nextId)
+    applyTarget(player, nextId, (next + 1) + "/" + list.length)
 }
 
 // ---- Right-click handler --------------------------------------------------
@@ -453,12 +499,9 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
         return
     }
 
-    var target = getCompassTarget(item)
-    if (target && target.pos) {
-        reportTarget(player, item, target)
-        return
-    }
-    showTargetMenu(player)
+    // Right-click cycles to the next tier-eligible boss (no chat needed). The
+    // full clickable list is still available via `/icraft_compass menu`.
+    cycleTarget(player)
 })
 
 // ---- Action-bar HUD pointer (1 Hz) ----------------------------------------
