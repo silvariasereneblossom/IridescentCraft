@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_sawmill" },
+    "title": "T2: The Sawmill",
+    "subtitle": "Logs into planks and rods",
+    "description": [
+      "The §bSawmill§r is Thermal's wood processor - more planks per log, plus",
+      "rods, doors, and other cuts, all on RF.",
+      "",
+      "Build a Sawmill to complete this beat.",
+      "",
+      "§7Sawmills bank §e30§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1120, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_servo"],
+  "tasks": {
+    "have_sawmill": {
+      "type": "heracles:item",
+      "title": "Acquire a Sawmill",
+      "item": "thermal:machine_sawmill",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

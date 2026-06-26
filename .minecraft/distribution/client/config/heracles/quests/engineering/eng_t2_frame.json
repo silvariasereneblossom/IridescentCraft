@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_frame" },
+    "title": "T2: The Machine Frame",
+    "subtitle": "The chassis of every Thermal machine",
+    "description": [
+      "Thermal Series machines all share one chassis: the §bMachine Frame§r. A",
+      "frame plus a function block becomes a Pulverizer, a Smelter, a Furnace, and",
+      "the rest of the roster.",
+      "",
+      "Craft a Machine Frame to complete this beat - even the §bInduction Smelter§r",
+      "you just built is a frame at heart.",
+      "",
+      "§7Frames are the gateway to the entire Thermal Tier 2 roster."
+    ],
+    "groups": { "Engineering": { "position": [480, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_smelter"],
+  "tasks": {
+    "have_machine_frame": {
+      "type": "heracles:item",
+      "title": "Acquire a Machine Frame",
+      "item": "thermal:machine_frame",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

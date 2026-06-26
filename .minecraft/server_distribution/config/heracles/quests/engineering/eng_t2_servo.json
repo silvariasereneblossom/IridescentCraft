@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:redstone_servo" },
+    "title": "T2: The Redstone Servo",
+    "subtitle": "The part that makes it tick",
+    "description": [
+      "The §bRedstone Servo§r is Thermal's workhorse component - redstone fused",
+      "around iron. It drives augments, machine logic, and a dozen Thermal recipes.",
+      "",
+      "Craft a couple of Redstone Servos to complete this beat; you will burn",
+      "through them building out the rest of the tier.",
+      "",
+      "§7Servos are the second half of the Thermal component tree, after the frame."
+    ],
+    "groups": { "Engineering": { "position": [640, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_frame"],
+  "tasks": {
+    "craft_servos": {
+      "type": "heracles:item",
+      "title": "Craft Redstone Servos",
+      "item": "thermal:redstone_servo",
+      "amount": 2,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "electrum": { "type": "heracles:item", "item": { "id": "thermal:electrum_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:chemical_crystallizer" },
+    "title": "T3: The Chemical Crystallizer",
+    "subtitle": "5x ore, the final stage",
+    "description": [
+      "The §bChemical Crystallizer§r closes the §b5x ore§r chain - it crystallizes",
+      "the processed slurry back into clean material, completing Enrichment ->",
+      "Purification -> Injection -> Crystallizer for the full five-ingot yield.",
+      "",
+      "Build a Chemical Crystallizer to complete this beat and finish the chain the",
+      "whole Engineering lane has climbed toward.",
+      "",
+      "§7With all four machines you reach true 5x ore - the apex of T3 processing."
+    ],
+    "groups": { "Engineering": { "position": [2240, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_injection"],
+  "tasks": {
+    "have_crystallizer": {
+      "type": "heracles:item",
+      "title": "Acquire a Chemical Crystallizer",
+      "item": "mekanism:chemical_crystallizer",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 300 }
+  }
+}

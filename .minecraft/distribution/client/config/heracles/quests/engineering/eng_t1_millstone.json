@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:millstone" },
+    "title": "T1: The Millstone",
+    "subtitle": "Hand-cranked ore doubling",
+    "description": [
+      "The §bMillstone§r is the budget ore-doubler: a single block, powered from",
+      "below, that grinds ore into crushed material - no Crushing Wheel pair",
+      "required.",
+      "",
+      "Build a Millstone to complete this beat. It is slower than Crushing Wheels",
+      "but costs almost nothing - the perfect first processing step.",
+      "",
+      "§7Millstones bank §e15§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [480, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_waterwheel"],
+  "tasks": {
+    "have_millstone": {
+      "type": "heracles:item",
+      "title": "Acquire a Millstone",
+      "item": "create:millstone",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

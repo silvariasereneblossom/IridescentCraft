@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_furnace" },
+    "title": "T2: The Redstone Furnace",
+    "subtitle": "Smelting on a power grid",
+    "description": [
+      "The §bRedstone Furnace§r is the RF-powered replacement for a stone furnace -",
+      "faster, augmentable, and never out of fuel as long as your dynamos run.",
+      "",
+      "Build a Redstone Furnace to complete this beat.",
+      "",
+      "§7Redstone Furnaces bank §e30§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [960, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_servo"],
+  "tasks": {
+    "have_redstone_furnace": {
+      "type": "heracles:item",
+      "title": "Acquire a Redstone Furnace",
+      "item": "thermal:machine_furnace",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

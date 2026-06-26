@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:purification_chamber" },
+    "title": "T3: The Purification Chamber",
+    "subtitle": "5x ore, stage two",
+    "description": [
+      "The §bPurification Chamber§r is stage two of the §b5x ore§r chain the",
+      "Enrichment Chamber began - a higher multiplier that needs oxygen piped in",
+      "from an §bElectrolytic Separator§r.",
+      "",
+      "Build a Purification Chamber to complete this beat.",
+      "",
+      "§7Purification Chambers bank §e70§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1920, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_orechain"],
+  "tasks": {
+    "have_purification": {
+      "type": "heracles:item",
+      "title": "Acquire a Purification Chamber",
+      "item": "mekanism:purification_chamber",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 280 }
+  }
+}

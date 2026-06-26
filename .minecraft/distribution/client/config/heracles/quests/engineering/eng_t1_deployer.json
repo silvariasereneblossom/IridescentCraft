@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:deployer" },
+    "title": "T1: The Deployer",
+    "subtitle": "A hand you can automate",
+    "description": [
+      "The §bDeployer§r uses items and tools exactly as a player would - it places",
+      "blocks, applies tools, and is the key ingredient in countless automation",
+      "and in-world crafting recipes.",
+      "",
+      "Build a Deployer to complete this beat. It needs a §bPrecision Mechanism§r,",
+      "so your brass line has to be running first.",
+      "",
+      "§7Deployers bank §e15§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [960, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_drill"],
+  "tasks": {
+    "have_deployer": {
+      "type": "heracles:item",
+      "title": "Acquire a Deployer",
+      "item": "create:deployer",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "brass": { "type": "heracles:item", "item": { "id": "create:brass_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 150 }
+  }
+}

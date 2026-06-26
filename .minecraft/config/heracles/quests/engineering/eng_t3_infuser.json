@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:metallurgic_infuser" },
+    "title": "T3: The Metallurgic Infuser",
+    "subtitle": "The alloy workbench",
+    "description": [
+      "The §bMetallurgic Infuser§r is where Mekanism's material tree begins -",
+      "infuse iron with redstone, diamond, or carbon to produce the §bAlloys§r that",
+      "every advanced machine and circuit demands.",
+      "",
+      "Build a Metallurgic Infuser to complete this beat. It is the cheapest",
+      "Mekanism machine and the prerequisite for everything richer.",
+      "",
+      "§7Metallurgic Infusers bank §e50§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [640, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_unlock"],
+  "tasks": {
+    "have_infuser": {
+      "type": "heracles:item",
+      "title": "Acquire a Metallurgic Infuser",
+      "item": "mekanism:metallurgic_infuser",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:basic_control_circuit" },
+    "title": "T3: Control Circuits",
+    "subtitle": "Basic to Ultimate",
+    "description": [
+      "§bControl Circuits§r are Mekanism's tiered brains - §bBasic§r (osmium +",
+      "redstone), then §bAdvanced§r, §bElite§r, and §bUltimate§r, each built on the",
+      "alloy below it. Higher machines, factories, and upgrades all demand them.",
+      "",
+      "Craft a stock of §bBasic Control Circuits§r to complete this beat, then",
+      "climb the ladder as your alloys allow.",
+      "",
+      "§7Circuits gate every advanced Mekanism craft - make them in bulk."
+    ],
+    "groups": { "Engineering": { "position": [960, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_alloys"],
+  "tasks": {
+    "craft_circuits": {
+      "type": "heracles:item",
+      "title": "Craft Basic Control Circuits",
+      "item": "mekanism:basic_control_circuit",
+      "amount": 4,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}

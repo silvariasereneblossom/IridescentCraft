@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanismgenerators:gas_burning_generator" },
+    "title": "T3: The Gas-Burning Generator",
+    "subtitle": "Burn your ethylene",
+    "description": [
+      "The §bGas-Burning Generator§r turns combustible gases into massive RF - fed",
+      "the §bethylene§r you brewed in the Pressurized Reaction Chamber, it is the",
+      "scalable power answer for the whole Mekanism tier.",
+      "",
+      "Build a Gas-Burning Generator to complete this beat and close your T3 power",
+      "loop.",
+      "",
+      "§7Gas-Burning Generators bank §e100§7 tokens each - the single richest",
+      "§7Engineering submission in the pack."
+    ],
+    "groups": { "Engineering": { "position": [2400, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_ethylene"],
+  "tasks": {
+    "have_gbg": {
+      "type": "heracles:item",
+      "title": "Acquire a Gas-Burning Generator",
+      "item": "mekanismgenerators:gas_burning_generator",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 300 }
+  }
+}

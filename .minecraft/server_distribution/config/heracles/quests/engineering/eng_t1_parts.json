@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:cogwheel" },
+    "title": "T1: Shafts & Cogwheels",
+    "subtitle": "The parts every Create machine needs",
+    "description": [
+      "Before machines come the §bcomponents§r. Andesite Alloy presses into",
+      "§bShafts§r, and shafts cap with planks into §bCogwheels§r and §bLarge",
+      "Cogwheels§r - the gears that carry rotational force across a contraption.",
+      "",
+      "Craft a working stock of cogwheels to complete this beat. Large cogwheels",
+      "gear rotation up or down to hit the speed each machine wants.",
+      "",
+      "§7Shafts and cogwheels are the connective tissue of every Tier 1 build."
+    ],
+    "groups": { "Engineering": { "position": [160, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_intro"],
+  "tasks": {
+    "craft_cogwheels": {
+      "type": "heracles:item",
+      "title": "Craft Cogwheels",
+      "item": "create:cogwheel",
+      "amount": 8,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

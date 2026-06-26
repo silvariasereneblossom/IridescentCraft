@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:energy_cell" },
+    "title": "T2: The Energy Cell",
+    "subtitle": "Bank your flux",
+    "description": [
+      "The §bEnergy Cell§r (Redstone Flux Cell) stores RF and meters it out - the",
+      "buffer that keeps your machines fed when generation and demand do not line",
+      "up.",
+      "",
+      "Build an Energy Cell to complete this beat. Tune its input and output rates",
+      "to protect your grid.",
+      "",
+      "§7Energy Cells bank §e25§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1760, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_magmatic"],
+  "tasks": {
+    "have_energy_cell": {
+      "type": "heracles:item",
+      "title": "Acquire an Energy Cell",
+      "item": "thermal:energy_cell",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "electrum": { "type": "heracles:item", "item": { "id": "thermal:electrum_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

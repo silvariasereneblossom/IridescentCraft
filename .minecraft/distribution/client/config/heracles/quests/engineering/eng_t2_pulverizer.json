@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_pulverizer" },
+    "title": "T2: The Pulverizer",
+    "subtitle": "Thermal ore doubling",
+    "description": [
+      "The §bPulverizer§r is Thermal's grinder - it doubles ore into dust and is",
+      "the front half of the §b3x ore§r chain when it feeds the Induction Smelter.",
+      "",
+      "Build a Pulverizer to complete this beat. Run its dust through the Smelter",
+      "with sand for the full triple yield.",
+      "",
+      "§7Pulverizers bank §e40§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [800, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_frame"],
+  "tasks": {
+    "have_pulverizer": {
+      "type": "heracles:item",
+      "title": "Acquire a Pulverizer",
+      "item": "thermal:machine_pulverizer",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:mechanical_saw" },
+    "title": "T1: The Mechanical Saw",
+    "subtitle": "Logs, trees, and cutting recipes",
+    "description": [
+      "The §bMechanical Saw§r cuts logs into far more planks, fells whole trees",
+      "when laid flat, and handles Create's cutting recipes. A cornerstone of any",
+      "automated wood or stripping line.",
+      "",
+      "Build a Mechanical Saw to complete this beat.",
+      "",
+      "§7Mechanical Saws bank §e15§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [640, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_waterwheel"],
+  "tasks": {
+    "have_mechanical_saw": {
+      "type": "heracles:item",
+      "title": "Acquire a Mechanical Saw",
+      "item": "create:mechanical_saw",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

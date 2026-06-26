@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:basic_energy_cube" },
+    "title": "T3: The Energy Cube",
+    "subtitle": "Mekanism's RF battery",
+    "description": [
+      "The §bEnergy Cube§r stores Mekanism's energy and converts between energy",
+      "types - the buffer that keeps your enrichment chain and factories running",
+      "when the reactors flicker.",
+      "",
+      "Build a Basic Energy Cube to complete this beat.",
+      "",
+      "§7Energy Cubes bank §e40§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1760, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_circuits"],
+  "tasks": {
+    "have_energy_cube": {
+      "type": "heracles:item",
+      "title": "Acquire a Basic Energy Cube",
+      "item": "mekanism:basic_energy_cube",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "steel": { "type": "heracles:item", "item": { "id": "mekanism:ingot_steel", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}

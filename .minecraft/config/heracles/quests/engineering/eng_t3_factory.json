@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:basic_smelting_factory" },
+    "title": "T3: The Smelting Factory",
+    "subtitle": "Parallel processing",
+    "description": [
+      "A §bFactory§r runs several operations in parallel - a Basic §bSmelting",
+      "Factory§r smelts three stacks at once, and Advanced, Elite, and Ultimate",
+      "factories widen from there. The leap from single machines to real",
+      "throughput.",
+      "",
+      "Build a Basic Smelting Factory to complete this beat. Factories need Control",
+      "Circuits, so your circuit line has to be running.",
+      "",
+      "§7Basic Factories bank §e80§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1600, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_circuits"],
+  "tasks": {
+    "have_factory": {
+      "type": "heracles:item",
+      "title": "Acquire a Basic Smelting Factory",
+      "item": "mekanism:basic_smelting_factory",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 300 }
+  }
+}

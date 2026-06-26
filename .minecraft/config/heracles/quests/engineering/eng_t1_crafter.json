@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:mechanical_crafter" },
+    "title": "T1: The Mechanical Crafter",
+    "subtitle": "An automated crafting grid",
+    "description": [
+      "The §bMechanical Crafter§r array assembles a crafting recipe automatically",
+      "- lay the grid, point the arrows inward, and feed components to mass-produce",
+      "anything, including Create's own machines.",
+      "",
+      "Build a Mechanical Crafter to complete this beat. They work in arrays, so",
+      "craft a few; each one needs brass.",
+      "",
+      "§7Mechanical Crafters bank §e10§7 Engineering tokens each (cap 4)."
+    ],
+    "groups": { "Engineering": { "position": [1120, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_deployer"],
+  "tasks": {
+    "have_mechanical_crafter": {
+      "type": "heracles:item",
+      "title": "Acquire a Mechanical Crafter",
+      "item": "create:mechanical_crafter",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "brass": { "type": "heracles:item", "item": { "id": "create:brass_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

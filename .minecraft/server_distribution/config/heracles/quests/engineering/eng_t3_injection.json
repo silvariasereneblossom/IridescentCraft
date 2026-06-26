@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:chemical_injection_chamber" },
+    "title": "T3: The Chemical Injection Chamber",
+    "subtitle": "5x ore, stage three",
+    "description": [
+      "The §bChemical Injection Chamber§r is stage three of the §b5x ore§r chain -",
+      "it injects a reactive gas to push ore yield past what purification alone",
+      "reaches.",
+      "",
+      "Build a Chemical Injection Chamber to complete this beat. The chain is one",
+      "machine from the full 5x now.",
+      "",
+      "§7The third of the four machines in the 5x ore chain."
+    ],
+    "groups": { "Engineering": { "position": [2080, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_purification"],
+  "tasks": {
+    "have_injection": {
+      "type": "heracles:item",
+      "title": "Acquire a Chemical Injection Chamber",
+      "item": "mekanism:chemical_injection_chamber",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "steel": { "type": "heracles:item", "item": { "id": "mekanism:ingot_steel", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 280 }
+  }
+}

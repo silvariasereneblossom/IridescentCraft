@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_crucible" },
+    "title": "T2: The Magma Crucible",
+    "subtitle": "Melt it down",
+    "description": [
+      "The §bMagma Crucible§r melts solids into fluids - cobblestone and netherrack",
+      "into lava, and more. A feeder for both fluid recipes and magmatic power.",
+      "",
+      "Build a Magma Crucible to complete this beat.",
+      "",
+      "§7Magma Crucibles bank §e20§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1440, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_pulverizer"],
+  "tasks": {
+    "have_crucible": {
+      "type": "heracles:item",
+      "title": "Acquire a Magma Crucible",
+      "item": "thermal:machine_crucible",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

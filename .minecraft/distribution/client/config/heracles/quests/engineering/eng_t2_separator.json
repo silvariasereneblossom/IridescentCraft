@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_centrifuge" },
+    "title": "T2: The Centrifugal Separator",
+    "subtitle": "Pull materials apart",
+    "description": [
+      "The §bCentrifugal Separator§r spins mixed inputs into their parts - ores",
+      "into multiple secondary products, drops into components, sand into its",
+      "dusts.",
+      "",
+      "Build a Centrifugal Separator to complete this beat.",
+      "",
+      "§7Centrifugal Separators bank §e40§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1280, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_pulverizer"],
+  "tasks": {
+    "have_separator": {
+      "type": "heracles:item",
+      "title": "Acquire a Centrifugal Separator",
+      "item": "thermal:machine_centrifuge",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "electrum": { "type": "heracles:item", "item": { "id": "thermal:electrum_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

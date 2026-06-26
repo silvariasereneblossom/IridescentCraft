@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:dynamo_magmatic" },
+    "title": "T2: The Magmatic Dynamo",
+    "subtitle": "Burn lava for power",
+    "description": [
+      "The §bMagmatic Dynamo§r turns hot fluids into Redstone Flux - pair it with",
+      "the §bMagma Crucible§r you just built and a stack of cobblestone becomes an",
+      "endless lava-fired generator.",
+      "",
+      "Build a Magmatic Dynamo to complete this beat.",
+      "",
+      "§7Magmatic Dynamos bank §e25§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1600, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_crucible"],
+  "tasks": {
+    "have_magmatic_dynamo": {
+      "type": "heracles:item",
+      "title": "Acquire a Magmatic Dynamo",
+      "item": "thermal:dynamo_magmatic",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "electrum": { "type": "heracles:item", "item": { "id": "thermal:electrum_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

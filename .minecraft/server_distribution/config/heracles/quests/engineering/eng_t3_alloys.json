@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:alloy_atomic" },
+    "title": "T3: The Alloy Ladder",
+    "subtitle": "Infused, Reinforced, Atomic",
+    "description": [
+      "Mekanism alloys climb in three rungs: §bInfused Alloy§r (redstone), then",
+      "§bReinforced Alloy§r (diamond), then §bAtomic Alloy§r (refined obsidian).",
+      "Each rung gates the machines and circuits above it.",
+      "",
+      "Infuse a stock of §bReinforced Alloy§r to complete this beat - proof your",
+      "ladder reaches the mid rung. Atomic Alloy is the apex for the top circuits.",
+      "",
+      "§7Reinforced Alloy banks §e1§7 token per 5 (cap 50)."
+    ],
+    "groups": { "Engineering": { "position": [800, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_infuser"],
+  "tasks": {
+    "infuse_alloy": {
+      "type": "heracles:item",
+      "title": "Infuse Reinforced Alloy",
+      "item": "mekanism:alloy_reinforced",
+      "amount": 4,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "steel": { "type": "heracles:item", "item": { "id": "mekanism:ingot_steel", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}

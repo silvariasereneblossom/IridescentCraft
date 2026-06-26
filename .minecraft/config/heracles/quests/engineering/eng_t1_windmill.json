@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:windmill_bearing" },
+    "title": "T1: The Windmill Bearing",
+    "subtitle": "Sails to the sky",
+    "description": [
+      "The §bWindmill Bearing§r is the other free power source: attach Sail blocks",
+      "into a windmill and the bearing turns wind into rotation. More sail area,",
+      "more stress units.",
+      "",
+      "Build a Windmill Bearing to complete this beat, then assemble sails on it",
+      "and give it a right-click to start it spinning.",
+      "",
+      "§7Windmill Bearings bank §e15§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [480, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_waterwheel"],
+  "tasks": {
+    "have_windmill_bearing": {
+      "type": "heracles:item",
+      "title": "Acquire a Windmill Bearing",
+      "item": "create:windmill_bearing",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

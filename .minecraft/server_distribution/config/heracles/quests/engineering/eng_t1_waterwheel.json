@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:water_wheel" },
+    "title": "T1: The Water Wheel",
+    "subtitle": "Free, renewable rotation",
+    "description": [
+      "Every Create machine runs on §brotational force§r. The §bWater Wheel§r is",
+      "the cleanest early source: drop it in flowing water and it spins forever,",
+      "no fuel required.",
+      "",
+      "Build a Water Wheel to complete this beat. Gang two or more on a shared",
+      "shaft for the stress your first machines demand.",
+      "",
+      "§7Water Wheels bank §e10§7 Engineering tokens each (cap 4)."
+    ],
+    "groups": { "Engineering": { "position": [320, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_parts"],
+  "tasks": {
+    "have_water_wheel": {
+      "type": "heracles:item",
+      "title": "Acquire a Water Wheel",
+      "item": "create:water_wheel",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

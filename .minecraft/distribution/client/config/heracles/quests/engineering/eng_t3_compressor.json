@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:osmium_compressor" },
+    "title": "T3: The Osmium Compressor",
+    "subtitle": "Compress to refine",
+    "description": [
+      "The §bOsmium Compressor§r presses osmium into other materials - §bRefined",
+      "Obsidian§r and §bRefined Glowstone§r ingots, the materials behind Atomic",
+      "Alloy and the apex machines.",
+      "",
+      "Build an Osmium Compressor to complete this beat.",
+      "",
+      "§7Osmium Compressors bank §e70§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1440, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_circuits"],
+  "tasks": {
+    "have_compressor": {
+      "type": "heracles:item",
+      "title": "Acquire an Osmium Compressor",
+      "item": "mekanism:osmium_compressor",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "steel": { "type": "heracles:item", "item": { "id": "mekanism:ingot_steel", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 280 }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:mechanical_drill" },
+    "title": "T1: The Mechanical Drill",
+    "subtitle": "Automated mining",
+    "description": [
+      "The §bMechanical Drill§r breaks the block in front of it on a loop - bolt it",
+      "to a moving contraption and it becomes a tunnel-boring, quarry-digging",
+      "machine.",
+      "",
+      "Build a Mechanical Drill to complete this beat. Pair it with the Saw and a",
+      "contraption for hands-free excavation.",
+      "",
+      "§7Mechanical Drills bank §e15§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [800, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_saw"],
+  "tasks": {
+    "have_mechanical_drill": {
+      "type": "heracles:item",
+      "title": "Acquire a Mechanical Drill",
+      "item": "create:mechanical_drill",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 120 }
+  }
+}

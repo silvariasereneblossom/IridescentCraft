@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_speed_augment" },
+    "title": "T2: Machine Augments",
+    "subtitle": "Tune your machines",
+    "description": [
+      "§bAugments§r slot into Thermal machines and dynamos to retune them - more",
+      "speed, better efficiency, secondary-output boosts, wider tanks. The same",
+      "Pulverizer can be specced a dozen ways.",
+      "",
+      "Craft a §bFlux Linkage Amplifier§r (a speed augment) to complete this beat,",
+      "then drop it into a machine to feel the difference.",
+      "",
+      "§7Augments are how Thermal scales - the late tier is all about the right mix."
+    ],
+    "groups": { "Engineering": { "position": [1920, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_cell"],
+  "tasks": {
+    "craft_augment": {
+      "type": "heracles:item",
+      "title": "Craft a machine augment",
+      "item": "thermal:machine_speed_augment",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 180 }
+  }
+}

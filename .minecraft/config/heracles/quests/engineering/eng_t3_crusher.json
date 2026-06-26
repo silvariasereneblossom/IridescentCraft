@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:crusher" },
+    "title": "T3: The Crusher",
+    "subtitle": "Half the ore-processing duo",
+    "description": [
+      "The §bCrusher§r grinds ingots and ores to dust and renders biomass into",
+      "§bBio Fuel§r. Paired with the Enrichment Chamber it forms Mekanism's basic",
+      "§b2x§r processing - the floor the 5x chain builds on.",
+      "",
+      "Build a Crusher to complete this beat.",
+      "",
+      "§7Crushers bank §e50§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1120, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_infuser"],
+  "tasks": {
+    "have_crusher": {
+      "type": "heracles:item",
+      "title": "Acquire a Crusher",
+      "item": "mekanism:crusher",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}

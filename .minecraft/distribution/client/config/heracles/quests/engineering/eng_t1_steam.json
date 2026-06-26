@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:steam_engine" },
+    "title": "T1: The Steam Engine",
+    "subtitle": "Real horsepower",
+    "description": [
+      "When wheels and windmills run out of stress, go thermal. A §bSteam Engine§r",
+      "on a heated §bBoiler§r (a Blaze Burner under a water tank) is the dense",
+      "power source that runs a serious factory.",
+      "",
+      "Build a Steam Engine to complete this beat. Scale the boiler's heat and",
+      "water to push far more stress than any wheel.",
+      "",
+      "§7Steam Engines bank §e25§7 Engineering tokens each - tied for the richest",
+      "§7Tier 1 machine submission."
+    ],
+    "groups": { "Engineering": { "position": [640, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_windmill"],
+  "tasks": {
+    "have_steam_engine": {
+      "type": "heracles:item",
+      "title": "Acquire a Steam Engine",
+      "item": "create:steam_engine",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "brass": { "type": "heracles:item", "item": { "id": "create:brass_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 150 }
+  }
+}

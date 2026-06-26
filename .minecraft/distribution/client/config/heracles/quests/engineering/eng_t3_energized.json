@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:energized_smelter" },
+    "title": "T3: The Energized Smelter",
+    "subtitle": "RF smelting, Mekanism-style",
+    "description": [
+      "The §bEnergized Smelter§r is Mekanism's electric furnace - it smelts on",
+      "stored energy and slots into a Smelting Factory once you scale up.",
+      "",
+      "Build an Energized Smelter to complete this beat.",
+      "",
+      "§7Energized Smelters bank §e40§7 Engineering tokens each (cap 2)."
+    ],
+    "groups": { "Engineering": { "position": [1280, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_infuser"],
+  "tasks": {
+    "have_energized_smelter": {
+      "type": "heracles:item",
+      "title": "Acquire an Energized Smelter",
+      "item": "mekanism:energized_smelter",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "steel": { "type": "heracles:item", "item": { "id": "mekanism:ingot_steel", "count": 6 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}
