@@ -84,7 +84,13 @@ fn set_sync_status(s: SyncStatus) {
 const HEAD_FETCH_BACKOFF: &[Duration] =
     &[Duration::from_secs(2), Duration::from_secs(4)];
 
-const EXCLUDED_DIRS: &[&str] = &["world", "logs", "crash-reports", "backups", "libraries", ".cache"];
+// TesterLogs is the UP-stream log mirror (servers/clients push their logs here);
+// no consumer needs it synced DOWN, and a diff that includes a "server logs
+// auto-mirror" commit would otherwise pull hundreds of KB of *.log.gz back onto
+// the box each Cycle. Excluding it keeps the diff content-only. (Pairs with the
+// stamp-head-sha.yml `**/TesterLogs/**` ignore fix that stops these commits from
+// advancing .icraft_head_sha and making the Repo HEAD badge read "behind".)
+const EXCLUDED_DIRS: &[&str] = &["world", "logs", "crash-reports", "backups", "libraries", ".cache", "TesterLogs"];
 const SELF_UPDATE_FILES: &[&str] = &[
     "iridescentserver.bat",
     "iridescentserver.sh",

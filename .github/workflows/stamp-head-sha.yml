@@ -12,9 +12,17 @@ on:
   push:
     branches: [main]
     paths-ignore:
+      # NOTE: leading-segment globs anchor to the REPO ROOT. 'TesterLogs/**'
+      # only matched a root-level TesterLogs/, but the real ones are nested at
+      # .minecraft/server_distribution/TesterLogs/ (and distribution/client/).
+      # Result: every "server logs auto-mirror" push slipped past the ignore,
+      # ran this workflow, and advanced .icraft_head_sha onto a log-only commit
+      # the deployed marker can never reach -> the launcher's "Repo HEAD" badge
+      # read "behind" after every Cycle even though zero content changed. Use a
+      # '**/'-prefixed glob so it matches the path at any depth.
       - '.icraft_head_sha'
       - '**/logs/**'
-      - 'TesterLogs/**'
+      - '**/TesterLogs/**'
 
 permissions:
   contents: write
