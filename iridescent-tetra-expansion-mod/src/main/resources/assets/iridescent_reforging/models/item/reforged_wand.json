@@ -4,11 +4,11 @@
     "layer0": "simple_staves:item/wooden_wand"
   },
   "overrides": [
-    { "predicate": { "iridescent_reforging:material_index": 6 }, "model": "iridescent_reforging:item/reforged_wand_aethersteel" },
-    { "predicate": { "iridescent_reforging:material_index": 5 }, "model": "iridescent_reforging:item/reforged_wand_netherite" },
-    { "predicate": { "iridescent_reforging:material_index": 4 }, "model": "iridescent_reforging:item/reforged_wand_diamond" },
-    { "predicate": { "iridescent_reforging:material_index": 3 }, "model": "iridescent_reforging:item/reforged_wand_gold" },
+    { "predicate": { "iridescent_reforging:material_index": 1 }, "model": "iridescent_reforging:item/reforged_wand_stone" },
     { "predicate": { "iridescent_reforging:material_index": 2 }, "model": "iridescent_reforging:item/reforged_wand_iron" },
-    { "predicate": { "iridescent_reforging:material_index": 1 }, "model": "iridescent_reforging:item/reforged_wand_stone" }
+    { "predicate": { "iridescent_reforging:material_index": 3 }, "model": "iridescent_reforging:item/reforged_wand_gold" },
+    { "predicate": { "iridescent_reforging:material_index": 4 }, "model": "iridescent_reforging:item/reforged_wand_diamond" },
+    { "predicate": { "iridescent_reforging:material_index": 5 }, "model": "iridescent_reforging:item/reforged_wand_netherite" },
+    { "predicate": { "iridescent_reforging:material_index": 6 }, "model": "iridescent_reforging:item/reforged_wand_aethersteel" }
   ]
 }
