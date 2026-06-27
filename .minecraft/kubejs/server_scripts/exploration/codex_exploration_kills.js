@@ -233,6 +233,12 @@ function buildTierLookup(byTier) {
 const NAMED_BOSS_TIER = buildTierLookup(NAMED_BOSSES_BY_TIER)
 const MINIBOSS_TIER   = buildTierLookup(MINIBOSSES_BY_TIER)
 
+// Expose the curated "trophy boss" roster (all 4 tiers, deduped) as a global so
+// the single-source-of-truth ×3 boss buff (scaling/zz_boss_global_3x.js) keys off
+// the SAME roster — adding a boss here automatically buffs it, no drift. Plain
+// data assignment, reload-safe (server↔server global; both are server_scripts).
+global.ICRAFT_NAMED_BOSS_IDS = Object.keys(NAMED_BOSS_TIER)
+
 // persistentData flag: this player has claimed the one-time first-kill bonus
 // for this named boss. NBT-safe key from the entity ID.
 function exploreFirstKillKey(entityId) {
