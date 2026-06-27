@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "9446599d",
+    "generated_from":  "82503976",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7000,8 +7000,8 @@
                                                                                "size":  15551
                                                                            },
                   "kubejs/server_scripts/endgame/ascension.js":  {
-                                                                     "sha256":  "636c7d22b8c673122a9cfcf9484c7c7e0541c0641b9b4c02309cd765b0cfc2b1",
-                                                                     "size":  14253
+                                                                     "sha256":  "21fd9a533451cc801a41980a0f2911333df4179aa661f8a38e2aeb44f073eade",
+                                                                     "size":  13725
                                                                  },
                   "kubejs/server_scripts/endgame/mythic_forge.js":  {
                                                                         "sha256":  "a70a3d55dfa76cd2e84d35d0dc76c56c03e1c8f2d0dc08064b55724f20385def",
@@ -7450,6 +7450,10 @@
                   "kubejs/server_scripts/scaling/mob_tier_hp.js.disabled":  {
                                                                                 "sha256":  "9a9a862bceeda9176d1b670a2263c1ef3e3f2e0c3925ae6ccf2eab025632eab8",
                                                                                 "size":  9744
+                                                                            },
+                  "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
+                                                                                "sha256":  "009e337bdeb97fed9283b94b0c917359e009a2aed46410265599feba6fc9114f",
+                                                                                "size":  6444
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
                                                                              "sha256":  "591ac7dfed0afb2f00e29b89d05ada8bca4166e46920c4997853b67df0bcbfcf",
@@ -8416,7 +8420,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "32d438819dad36ef3945b4de5615425ccb63839a5bb8b9559e3a9fb8077ae84c",
+                                                                         "sha256":  "a169fd1ae14b5b9ae5a7c78b94a19ec50d483df6373c02e929d5dc18b283858e",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

@@ -72,71 +72,35 @@ function setAscensionLevel(level, newLevel) {
 }
 
 // =============================================================================
-// 1. MOB SCALING — Applied on spawn, stacks multiplicatively with dim scaling
+// 1. MOB SCALING — handler RELOCATED to scaling/zz_ascension_scaling.js
 // =============================================================================
-// Dimension scaling uses 'icraft_dim_hp' / 'icraft_dim_dmg' with multiply_base.
-// Ascension uses 'icraft_asc_hp' / 'icraft_asc_dmg' with multiply_total, so
-// the result is: (base * (1 + dim_bonus)) * (1 + asc_bonus) = multiplicative.
+// The on-spawn HP/DMG multiplier moved to scaling/zz_ascension_scaling.js so it
+// loads AFTER scaling/boss_hp.js (KubeJS fires EntityEvents.spawned handlers in
+// alphabetical script-LOAD order; endgame/ sorts before scaling/). Running here,
+// ascension's multiply_total was already on the entity when boss_hp read
+// maxHealth to compute its multiply_base ratio, so boss_hp back-computed a ratio
+// that SILENTLY CANCELLED ascension's HP buff for every BOSS_HP-table boss (at
+// ascension level > 0 only). Full write-up + the fix live in that file's header
+// and internal dev/failure-modes.md §2.
 //
-// multiply_total multiplies the FINAL value after all multiply_base modifiers
-// (dimension scaling, boss HP overrides, progressive scaling) have been applied.
-//
-// Example — Nether zombie at Ascension 5:
-//   Base HP: 20
-//   Dimension scaling (4.0x via multiply_base): 20 * 4.0 = 80
-//   Ascension 5 (2.5x via multiply_total): 80 * 2.5 = 200
+// Layering: dimension scaling = 'icraft_dim_*' (multiply_base); ascension =
+// 'icraft_asc_*' (multiply_total), which vanilla applies AFTER all multiply_base
+// → multiplicative: (base * (1 + dim)) * (1 + asc). e.g. Nether zombie @ Asc 5:
+// 20 → x4.0 dim = 80 → x2.5 asc = 200.
 // =============================================================================
 
-EntityEvents.spawned(event => {
-  let entity = event.entity
-  if (!entity || !entity.living) return
-  if (entity.player) return
+// The on-spawn HP/DMG scaling handler that lived here was RELOCATED to
+// scaling/zz_ascension_scaling.js so it loads AFTER scaling/boss_hp.js (see the
+// section header above + that file for the load-order bug it fixes). Only the
+// shared state the relocated handler needs is exposed here:
 
-  // Scale all hostile mobs AND bosses (ascension affects everything)
-  if (!entity.monster && !isHostileModdedAsc(entity.type)) return
-
-  // Skip already ascension-scaled mobs (prevent double-scaling on chunk reload)
-  if (entity.persistentData.contains('icraft_asc_scaled')) return
-
-  let ascension = getAscensionLevel(entity.level)
-  if (ascension <= 0) return
-
-  let hpMult = ASCENSION_HP_MULT[ascension]
-  let dmgMult = ASCENSION_DMG_MULT[ascension]
-
-  // Apply HP multiplier
-  if (hpMult > 1.0) {
-    entity.modifyAttribute(
-      'minecraft:generic.max_health',
-      'icraft_asc_hp',
-      hpMult - 1.0,
-      'multiply_total'
-    )
-    entity.heal(entity.maxHealth)
-  }
-
-  // Apply damage multiplier
-  if (dmgMult > 1.0) {
-    entity.modifyAttribute(
-      'minecraft:generic.attack_damage',
-      'icraft_asc_dmg',
-      dmgMult - 1.0,
-      'multiply_total'
-    )
-  }
-
-  entity.persistentData.putBoolean('icraft_asc_scaled', true)
-})
-
-// Modded hostile mobs that may not extend Monster class
-function isHostileModdedAsc(type) {
-  return type.startsWith('cataclysm:') ||
-         type.startsWith('meetyourfight:') ||
-         type.startsWith('stalwart_dungeons:') ||
-         type.startsWith('irons_spellbooks:') ||
-         type.startsWith('theabyss:') ||
-         type.startsWith('ub:') ||
-         type.startsWith('majestic_menaces:')
+// Shared with scaling/zz_ascension_scaling.js (the relocated mob-scaling spawn
+// handler) AND used locally by the chat/activation displays below. endgame/
+// loads before scaling/, so this global is set before that handler can fire.
+global.ICRAFT_ASCENSION = {
+  getLevel: getAscensionLevel,
+  HP_MULT:  ASCENSION_HP_MULT,
+  DMG_MULT: ASCENSION_DMG_MULT,
 }
 
 // =============================================================================
