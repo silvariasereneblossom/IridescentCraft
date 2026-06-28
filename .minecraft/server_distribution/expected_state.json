@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "82503976",
+    "generated_from":  "d9abbf1d",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7456,8 +7456,8 @@
                                                                                 "size":  6444
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
-                                                                             "sha256":  "591ac7dfed0afb2f00e29b89d05ada8bca4166e46920c4997853b67df0bcbfcf",
-                                                                             "size":  10718
+                                                                             "sha256":  "1d27ad890dfea4a4ec006b5439bcb392bd6824e722c19baa8d770da65456890e",
+                                                                             "size":  13010
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
                                                                               "sha256":  "d6f27e5b1a7c181ad68fe304cd0d24fc71b850222e2bcf391b76bedab0b42e2d",
