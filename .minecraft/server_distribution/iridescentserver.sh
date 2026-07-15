@@ -692,6 +692,13 @@ echo -e "${TF_PINK}  First startup may take 5-15 minutes${NC}"
 echo -e "${TF_BLUE}  ==========================================${NC}"
 echo ""
 
+# Per-launch, non-colliding heap-dump target. A FIXED -XX:HeapDumpPath is one
+# the JVM refuses to overwrite, so a single stale dump (a 14.78 GB
+# crash-heapdump.hprof from 2026-06-13) silently blocked EVERY OOM capture after
+# it. A timestamped path in a dedicated dir means each OOM captures.
+mkdir -p crash-reports/heapdumps
+HPROF_TS="$(date +%Y%m%d_%H%M%S)"
+
 java \
     -Xmx10G \
     -Xms8G \
@@ -716,7 +723,7 @@ java \
     -Dusing.aikars.flags=https://mcflags.emc.gs \
     -Daikars.new.flags=true \
     -XX:+HeapDumpOnOutOfMemoryError \
-    -XX:HeapDumpPath=crash-heapdump.hprof \
+    -XX:HeapDumpPath=crash-reports/heapdumps/heap_${HPROF_TS}.hprof \
     @libraries/net/minecraftforge/forge/1.20.1-47.4.6/unix_args.txt nogui "$@"
 
 # -------------------------------------------------------------------

@@ -356,6 +356,13 @@ powershell -Command ^
   "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine()"
 echo.
 
+REM Per-launch, non-colliding heap-dump target. A FIXED -XX:HeapDumpPath is one
+REM the JVM refuses to overwrite, so a single stale dump (a 14.78 GB
+REM crash-heapdump.hprof from 2026-06-13) silently blocked EVERY OOM capture
+REM after it. A timestamped path in a dedicated dir means each OOM captures.
+if not exist "crash-reports\heapdumps" mkdir "crash-reports\heapdumps"
+for /f %%x in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "HPROF_TS=%%x"
+
 java ^
     -noverify ^
     -Xmx14G ^
@@ -381,7 +388,7 @@ java ^
     -Dusing.aikars.flags=https://mcflags.emc.gs ^
     -Daikars.new.flags=true ^
     -XX:+HeapDumpOnOutOfMemoryError ^
-    -XX:HeapDumpPath=crash-heapdump.hprof ^
+    -XX:HeapDumpPath=crash-reports\heapdumps\heap_%HPROF_TS%.hprof ^
     @libraries/net/minecraftforge/forge/1.20.1-47.4.6/win_args.txt nogui %*
 
 REM -------------------------------------------------------------------
