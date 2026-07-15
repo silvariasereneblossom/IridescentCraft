@@ -102,7 +102,9 @@ function scanShrineMap(player, blockToBoss) {
     for (let dx = -BONFIRE_BLOCK_RANGE; dx <= BONFIRE_BLOCK_RANGE; dx += BONFIRE_BLOCK_STEP) {
         for (let dz = -BONFIRE_BLOCK_RANGE; dz <= BONFIRE_BLOCK_RANGE; dz += BONFIRE_BLOCK_STEP) {
             for (let y = yMin; y <= yMax; y += BONFIRE_BLOCK_STEP) {
-                const id = blockIdAtBF(level, px + dx, y, pz + dz)
+                // RHINO: var (not const) — re-evaluated every loop iteration; a
+                // loop-body const throws "redeclaration of var id" on iteration 2.
+                var id = blockIdAtBF(level, px + dx, y, pz + dz)
                 if (id && blockToBoss[id]) return blockToBoss[id]
             }
         }
@@ -178,7 +180,12 @@ function detectArenaAtPlayer(player, runBlockScan) {
 
     for (const bossId in arenas) {
         if (fired.has(bossId)) continue                  // already lit — skip
-        const meta = arenas[bossId]
+        // RHINO: var (not const) — this loop BODY is re-entered once per arena
+        // (~50). A body const throws "redeclaration of var meta" on the 2nd
+        // iteration; the whole-tick try/catch then reports it EVERY tick. (The
+        // for-in HEAD `const bossId` is safe — Rhino rebinds the loop var per
+        // iteration; only body decls hoist to the activation and collide.)
+        var meta = arenas[bossId]
 
         if (meta.locator === "block") {
             if (runBlockScan && meta.signatureBlock
@@ -192,8 +199,12 @@ function detectArenaAtPlayer(player, runBlockScan) {
 
         // Structure-located (the original #46 path).
         try {
-            const tag = arenaTagFor(bossId)
-            const start = sm.getStructureWithPieceAt(pos, tag)
+            // RHINO: var (not const) — same loop-body re-declaration trap as
+            // `meta` above. Extra teeth here: this const throw is swallowed by the
+            // inner catch below, so a const would SILENTLY skip every structure
+            // arena after the first (broken detection, no log) rather than spam.
+            var tag = arenaTagFor(bossId)
+            var start = sm.getStructureWithPieceAt(pos, tag)
             if (start && start.isValid()) {
                 return { bossId: bossId, meta: meta }
             }
