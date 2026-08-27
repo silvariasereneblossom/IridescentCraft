@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "91ca161c",
+    "generated_from":  "72d26ef8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -2063,6 +2063,14 @@
                                                           "sha256":  "456c664072bff23a9d6a45a571d6a09f4b4be2c0ad0423281894d836a4f679a7",
                                                           "size":  728
                                                       },
+                  "config/defaultoptions/keybindings.txt":  {
+                                                                "sha256":  "031d7f598440090d513d08705d629a2bc394dd8eef36914f6a095c737fc68556",
+                                                                "size":  21569
+                                                            },
+                  "config/defaultoptions/options.txt":  {
+                                                            "sha256":  "8fd2909a4e1cc32baa580d3ba931cc89827cd58ee3a6f1d5d130c4a55e87cf7b",
+                                                            "size":  23746
+                                                        },
                   "config/delightful-common.toml":  {
                                                         "sha256":  "90e0ca8040f8453640995c9b4e68017e9e2b3b1b0dafe257f6ee804006d30cfa",
                                                         "size":  4821
@@ -8115,6 +8123,10 @@
                                                            "sha256":  "ad5bb1595601e71152476edb3ef22a4ded7b3bf35e00009e2fe121118aea0531",
                                                            "size":  559
                                                        },
+                  "mods/.index/default-options.pw.toml":  {
+                                                              "sha256":  "18434c1de07bc785c3694f69a418a996f9a48ae16f4825c510dd79e8f69b0ecd",
+                                                              "size":  565
+                                                          },
                   "mods/.index/deimos-fabric-forge-neoforge.pw.toml":  {
                                                                            "sha256":  "7a6780122c0fbe8315a4e1108ab4afb97f895d90adbf8a9ce7476cc9a3c09aa4",
                                                                            "size":  552
