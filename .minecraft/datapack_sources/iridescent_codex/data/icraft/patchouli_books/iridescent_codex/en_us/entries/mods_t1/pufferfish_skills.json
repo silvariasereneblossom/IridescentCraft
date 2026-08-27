@@ -2,19 +2,19 @@
   "name": "Pufferfish's Skills",
   "icon": "minecraft:experience_bottle",
   "category": "icraft:mods_t1",
-  "sortnum": 5,
+  "sortnum": 7,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The skill tree system. Six trees, 40 levels each, 75 earnable points."
+      "text": "Press $(k:puffish_skills.open) and start planning your tree — six skill trees, 40 levels each, 75 earnable points."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Opening:$() Default key $(bold)K$(). The skill menu shows all six trees and your current point allocation.$(br2)$(bold)Point sources:$() completing Heracles quests. No XP-for-points \u2014 that's blocked by Pufferfish Unofficial Additions. Anti-farming by design."
+      "text": "$(bold)Opening:$() $(k:puffish_skills.open). The skill menu shows all six trees and your current point allocation.$(br2)$(bold)Point sources:$() completing Heracles quests ($(k:heracles.open_quests)). No XP-for-points — anti-farming by design."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Respec:$() 5 XP levels per point refunded. A full respec of 75 points costs 375 levels \u2014 expensive but possible at endgame. Partial respecs (single tree) are more affordable.$(br2)$(bold)Engineering tree note:$() Engineering tree rewards are partially pending KubeJS implementation. See $(l:icraft:skills/tree_engineering)Engineering Tree$(/l) for details."
+      "text": "$(bold)Respec:$() 5 XP levels per point refunded. A full respec of 75 points costs 375 levels — expensive but possible at endgame. Partial respecs (single tree) are more affordable.$(br2)$(bold)Next: browse the six trees in $(l:icraft:skills/skills_overview)Skill Trees — Overview$(/l) before you spend your first point.$()"
     }
   ]
 }

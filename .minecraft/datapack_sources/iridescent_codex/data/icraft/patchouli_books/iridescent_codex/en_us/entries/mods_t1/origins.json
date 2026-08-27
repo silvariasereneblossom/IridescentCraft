@@ -2,19 +2,19 @@
   "name": "Origins (Classes & Races)",
   "icon": "minecraft:egg",
   "category": "icraft:mods_t1",
-  "sortnum": 4,
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Origins is the framework behind IridescentCraft's class and race system."
+      "text": "Press $(k:origins.view_origin) to see your origin — Origins is the framework running IridescentCraft's entire class and race system."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Origins provides the selection UI and the power system. All class and race abilities are implemented as Origins powers in the iridescent_classes and iridescent_races datapacks.$(br2)$(bold)Selection:$() You are prompted to select Race and Class when first joining a world. If you miss it, open the Origins menu (default key: $(bold)O$())."
+      "text": "$(bold)Role in the pack:$() Origins provides the selection UI and the power system. All class and race abilities are implemented as Origins powers in the pack's own datapacks.$(br2)$(bold)Selection:$() You are prompted to select Race and Class when first joining a world. If you miss it, press $(k:origins.view_origin). Your primary origin power fires on $(k:origins.primary_active)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Limitations to know:$() Origins powers are applied on equip/select. If you change server settings or add mods mid-play, Origins may need a reset. Use /origin set command if your class/race appears broken.$(br2)$(bold)Race is permanent.$() Class respec uses the Class Altar."
+      "text": "$(bold)Limitations to know:$() Origins powers are applied on select. If your class or race appears broken after a pack update, the $(bold)/origin set$() command (yours in singleplayer, an admin's on the server) re-applies it.$(br2)$(bold)Race is permanent.$() Class respec uses the Class Altar.$(br2)$(bold)Next: pick with $(l:icraft:welcome/class_guide)Pick Your Origin, Race & Class$(/l).$()"
     }
   ]
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "RFTools Dimensions enables custom dimension creation \u2014 the backbone for Oblivion's Rift."
+      "text": "Craft a Rift Keystone and open your first Rift \u2014 RFTools Dimensions powers Oblivion's Rift, the pack's procedural endgame loop."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(). The Dimension Builder and Dimlet system are the core loop \u2014 craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
+      "text": "$(bold)No book needed.$() RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(). The Dimension Builder and Dimlet system are the core loop \u2014 craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder.$(br2)$(bold)Next: bank Rift Shards \u2014 $(l:icraft:loot/rift_economy)Rift Shards & Endgame Economy$(/l).$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

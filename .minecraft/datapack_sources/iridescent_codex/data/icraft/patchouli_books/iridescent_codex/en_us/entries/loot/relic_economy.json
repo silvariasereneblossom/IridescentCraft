@@ -2,7 +2,7 @@
   "name": "The Relic Economy",
   "icon": "iridescent_relics:relic_essence",
   "category": "icraft:loot",
-  "sortnum": 6,
+  "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Stock & Limits",
-      "text": "The Broker's rotating materials & scrolls $(bold)reroll each day$() — check back for new stock. Purchases are capped at about $(bold)ten per day$(); selling relics back is unlimited.$(br2)There is a Broker at the spawn safe-haven, and once you reach $(t2)Tier 2$() you can craft your own $(bold)Relic Broker Stand$() from a stack of essence — bank, distil, and trade without the trip home."
+      "text": "The Broker's rotating materials & scrolls $(bold)reroll each day$() — check back for new stock. Purchases are capped at about $(bold)ten per day$(); selling relics back is unlimited.$(br2)There is a Broker at the spawn safe-haven, and once you reach $(t2)Tier 2$() you can craft your own $(bold)Relic Broker Stand$() from a stack of essence — bank, distil, and trade without the trip home.$(br2)$(bold)Next: run /icraft relics submit and see what your backpack is worth.$()"
     }
   ]
 }

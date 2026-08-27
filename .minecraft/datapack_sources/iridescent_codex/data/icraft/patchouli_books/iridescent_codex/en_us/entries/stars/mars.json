@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Mars mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Thermal Regulation$() (max level 3). This armor enchantment:$(br)\u2022 Negates cold and heat environmental damage$(br)\u2022 Each level reduces temperature damage by 33%$(br)\u2022 At level 3, fully negates Mars cold and Mercury cold$(br2)Also effective on Glacio's extreme cold."
+      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Mars mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Thermal Regulation$() (max level 3). This armor enchantment:$(br)\u2022 Negates cold and heat environmental damage$(br)\u2022 Each level reduces temperature damage by 33%$(br)\u2022 At level 3, fully negates Mars cold and Mercury cold$(br2)Also effective on Glacio's extreme cold.$(br2)$(bold)Next: crush Mars Stone until you hold the Cryogenic Crystals the Tier 3 Rocket needs.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

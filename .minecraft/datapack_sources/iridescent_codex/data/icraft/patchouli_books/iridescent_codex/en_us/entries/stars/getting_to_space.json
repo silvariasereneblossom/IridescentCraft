@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Space exploration is the final frontier.$()$(br2)The Ad Astra planets are the $(bold)post-game$(): they open only after you defeat the $(t4)Ender Dragon$(), the pack's finale. From there you need three things: a $(bold)Rocket Workbench$(), a $(bold)rocket$(), and $(bold)fuel$() \u2014 none of them cheap, all built on established Tier 4 infrastructure."
+      "text": "Kill the $(t4)Ender Dragon$() first \u2014 the Ad Astra planets are the $(bold)post-game$(), and they open only after the pack's finale.$(br2)Then you need three things: a $(bold)Rocket Workbench$(), a $(bold)rocket$(), and $(bold)fuel$() \u2014 none of them cheap, all built on established Tier 4 infrastructure."
     },
     {
       "type": "patchouli:text",

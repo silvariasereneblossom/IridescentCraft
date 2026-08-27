@@ -6,7 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)No tradeoffs. No standout strengths. The Human is the most flexible race \u2014 every class and playstyle is equally viable.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Versatile$() \u2014 Gain +1 bonus to whichever skill tree you invest in most (evaluated every 30 min). Rewards focused builds.$(br2)$(bold)Quick Learner$() \u2014 +15% XP gained from all sources. Compounds significantly over long play sessions.$(br2)$(bold)Adaptable$() \u2014 Can change secondary race trait every 24 IRL hours via Class Altar (minor toggle only)."
+      "text": "$(italic)No tradeoffs. No standout strengths. The Human is the most flexible race — every class and playstyle is equally viable.$()$(br2)$(bold)Versatile$() — Gain +1 bonus to whichever skill tree you invest in most (evaluated every 30 min). Rewards focused builds."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Quick Learner$() — +15% XP gained from all sources. Compounds significantly over long play sessions.$(br2)$(bold)Adaptable$() — Can change secondary race trait every 24 IRL hours via Class Altar (minor toggle only).$(br2)$(bold)Next: pair it with any class — Wanderer if you're undecided: $(l:icraft:welcome/class_guide)Pick Your Origin, Race & Class$(/l).$()"
     }
   ]
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your race is chosen once at character creation and $(bold)cannot be changed.$() Races modify secondary stats only — they do not touch your HP% or your damage%. That layer belongs to classes.$(br2)The interaction between race and class is where build identity comes from. The same class played by two different races has a meaningfully different feel."
+      "text": "Choose carefully — your race is picked once at character creation and $(bold)cannot be changed.$()$(br2)Races modify secondary stats only; HP% and damage% belong to classes. The interaction between race and class is where build identity comes from — the same class played by two different races feels meaningfully different."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The Eleven Races (2/2)",
-      "text": "$(li)$(bold)Revenant$() — Undead. Sunlight weakness. Night power.$(li)$(bold)Demi-God$() — +40% HP, raw-meat healing, strength & phase abilities. Mild Nether weakness.$(li)$(bold)Ryu$() — Draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$() — +15% all damage, slow fall, dash. Fragile (−20% HP).$(li)$(bold)Kirin$() — Fast; wall-climb, sprint-jump, night vision. Fragile (−20% HP)."
+      "text": "$(li)$(bold)Revenant$() — Undead. Sunlight weakness. Night power.$(li)$(bold)Demi-God$() — +40% HP, raw-meat healing, strength & phase abilities. Mild Nether weakness.$(li)$(bold)Ryu$() — Draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$() — +15% all damage, slow fall, dash. Fragile (−20% HP).$(li)$(bold)Kirin$() — Fast; wall-climb, sprint-jump, night vision. Fragile (−20% HP).$(br2)$(bold)Next: open the full page of every race you shortlisted — then lock one in for good.$()"
     }
   ]
 }

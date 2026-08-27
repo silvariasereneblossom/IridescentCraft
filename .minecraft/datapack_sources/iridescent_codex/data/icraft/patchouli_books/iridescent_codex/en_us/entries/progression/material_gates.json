@@ -2,7 +2,7 @@
   "name": "Material Progression",
   "icon": "minecraft:iron_ingot",
   "category": "icraft:progression",
-  "sortnum": 2,
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",
@@ -10,7 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Materials Are Tokens$()$(br2)The Engineering and Magic lanes turn your production into progression. Submit it to the Codex (see $(l:icraft:progression/tier_gates)How You Advance$(/l)).$(br2)$(li)$(bold)Engineering:$() bulk metals plus milestone machines — Create at T1, Thermal at T2, Mekanism at T3.$(li)$(bold)Magic:$() cultivation reagents plus apparatus — Botania at T1, Ars Nouveau at T2, advanced rituals at T3.$(br2)Each material is $(bold)capped$(), so a pure builder or cultivator reaches the threshold by working the whole tier's list, not by spamming one resource."
+      "text": "$(bold)Materials Are Tokens$()$(br2)The Engineering and Magic lanes turn your production into progression. Submit it to the Codex (see $(l:icraft:progression/tier_gates)How You Advance$(/l)).$(br2)$(li)$(bold)Engineering:$() bulk metals plus milestone machines — Create at T1, Thermal at T2, Mekanism at T3.$(li)$(bold)Magic:$() cultivation reagents plus apparatus — Botania at T1, Ars Nouveau at T2, advanced rituals at T3."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Every Material Is Capped$()$(br2)Each material banks tokens only up to its cap, so a pure builder or cultivator reaches the threshold by working the whole tier's list — not by spamming one resource.$(br2)Run $(bold)/icraft codex balance$() to see which caps you've already filled."
     },
     {
       "type": "patchouli:text",

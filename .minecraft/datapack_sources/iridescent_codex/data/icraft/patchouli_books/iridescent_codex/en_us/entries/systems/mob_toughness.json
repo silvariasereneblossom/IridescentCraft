@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mobs in IridescentCraft are significantly tougher than vanilla. This is not a bug \u2014 it is a core design decision. Mobs should be $(italic)real threats$() that require you to invest in your class, gear, and combat skills.$(br2)$(thing)Base HP multipliers$() apply to all mobs by category before any other scaling."
+      "text": "Expect every fight to cost something — mobs here are deliberately tougher than vanilla. That's a core design decision, not a bug: mobs are $(italic)real threats$() that make your class, gear, and skill investments matter.$(br2)$(thing)Base HP multipliers$() apply to all mobs by category before any other scaling."
     },
     {
       "type": "patchouli:text",
       "title": "HP Multipliers",
-      "text": "$(bold)Basic mobs$() (zombies, skeletons, spiders, etc.) \u2014 $(thing)3\u00d7 HP$()$(br)$(bold)Mid-tier mobs$() (endermen, witches, piglins, etc.) \u2014 $(thing)1.5\u00d7 HP$()$(br)$(bold)Bosses$() (Wither, Dragon, mod bosses) \u2014 $(thing)Unchanged$()$(br2)Basic mobs receive the largest multiplier because they are the most common and should not die in one hit. Mid-tier mobs are already somewhat durable. Bosses are balanced individually and do not need blanket scaling."
+      "text": "$(bold)Basic mobs$() (zombies, skeletons, spiders, etc.) — $(thing)3× HP$()$(br)$(bold)Mid-tier mobs$() (endermen, witches, piglins, etc.) — $(thing)1.5× HP$()$(br)$(bold)Bosses$() (Wither, Dragon, mod bosses) — $(thing)Unchanged$()$(br2)Basic mobs get the largest multiplier because they are the most common and should not die in one hit. Bosses are balanced individually and need no blanket scaling."
     },
     {
       "type": "patchouli:text",
       "title": "Dimension Stacking",
-      "text": "HP multipliers $(bold)stack with dimension scaling$(). Each dimension applies its own multiplier on top of the base toughness tier.$(br2)$(bold)Example:$() A zombie (3\u00d7 base) in the Nether (4\u00d7 dimension) has $(thing)12\u00d7$() its vanilla HP. That same zombie in the End would be even tougher.$(br2)This is intentional. Early-dimension mobs in late-game dimensions are not free kills \u2014 they scale to remain dangerous."
+      "text": "HP multipliers $(bold)stack with dimension scaling$(). Each dimension applies its own multiplier on top of the base toughness tier.$(br2)$(bold)Example:$() A zombie (3× base) in the Nether (4× dimension) has $(thing)12×$() its vanilla HP. The same zombie in the End is tougher still.$(br2)Early-dimension mobs in late-game dimensions are not free kills — they scale to stay dangerous."
     },
     {
       "type": "patchouli:text",
       "title": "What This Means for You",
-      "text": "You cannot brute-force your way through IridescentCraft with a stone sword. Invest in your $(thing)class abilities$(), upgrade your $(thing)gear$(), and use $(thing)buffs and enchantments$() to keep pace with mob scaling.$(br2)If a mob feels too tanky, you are probably undergeared for that dimension. Check the $(l:icraft:systems/dimension_mechanics)Dimension Mechanics$(/l) entry for expected power levels per zone.$(br2)$(italic)The pack rewards preparation. Rushing a dimension without proper gear is a fast way to burn through repair costs.$()"
+      "text": "You cannot brute-force IridescentCraft with a stone sword. Invest in your $(thing)class abilities$(), upgrade your $(thing)gear$(), and use $(thing)buffs and enchantments$() to keep pace.$(br2)If a mob feels too tanky, you are probably undergeared for that dimension — rushing one burns repair costs fast.$(br2)$(bold)Next: check $(l:icraft:systems/dimension_mechanics)Dimension Mechanics$(/l) for the expected power level of the zone you're heading into.$()"
     }
   ]
 }

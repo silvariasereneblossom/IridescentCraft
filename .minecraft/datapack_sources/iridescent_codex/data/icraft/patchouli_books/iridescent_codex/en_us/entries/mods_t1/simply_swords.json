@@ -2,11 +2,11 @@
   "name": "Simply Swords",
   "icon": "minecraft:diamond_sword",
   "category": "icraft:mods_t1",
-  "sortnum": 8,
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Simply Swords adds 42 unique named weapons. In IridescentCraft, all 42 are boss-drop-only."
+      "text": "Hunt bosses for the 42 unique named weapons — in IridescentCraft, every Simply Swords unique is boss-drop-only."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Runic Grimoire$() for the full Simply Swords reference \u2014 all 42 unique weapons, runic socket effects, gem interactions, and weapon-specific mechanics.$(br2)Access: Simply Swords uniques each carry their own tooltip. The mod's reference lives in JEI; there is no dedicated guidebook item."
+      "text": "$(bold)Where the reference lives:$() each unique carries its own tooltip, the standard weapons are all in JEI, and the full boss-to-weapon map is this Codex's $(l:icraft:bosses/unique_weapons)Simply Swords Unique Weapons$(/l) entry.$(br2)$(bold)Next: pick a target boss from that list and go earn your first unique.$()"
     }
   ]
 }

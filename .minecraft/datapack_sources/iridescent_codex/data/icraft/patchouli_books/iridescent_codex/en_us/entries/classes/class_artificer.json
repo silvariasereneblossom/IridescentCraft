@@ -16,7 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "The Builder's Path",
-      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. Average at fighting but excels at everything else. If you want to focus on building, crafting, and automation rather than combat, this is your class.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — +25% mining speed stacks with Crafting Mastery. Fire resistance for Nether resource runs.$(br)$(thing)Halfling$() — Food efficiency + ore bonus = maximum resource gathering.$(br)$(thing)Human$() — +15% XP and Versatile bonus for jack-of-all-trades building."
+      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. Average at fighting but excels at everything else. If you want to focus on building, crafting, and automation rather than combat, this is your class."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Race Pairings",
+      "text": "$(thing)Dwarf$() — +25% mining speed stacks with Crafting Mastery. Fire resistance for Nether resource runs.$(br2)$(thing)Halfling$() — Food efficiency + ore bonus = maximum resource gathering.$(br2)$(thing)Human$() — +15% XP and Versatile bonus for jack-of-all-trades building."
     }
   ]
 }

@@ -1,5 +1,4 @@
 {
-  "loadOrder": [
-    "iridescent_codex_resources.zip"
-  ]
+  "_comment": "Codex book content ships ONLY in iridescent_codex_data.jar (2026-08-27: the stale iridescent_codex_resources.zip shadow copy was removed - never re-add a codex resourcepack here).",
+  "loadOrder": []
 }

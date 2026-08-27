@@ -3,11 +3,10 @@
   "icon": "minecraft:diamond_pickaxe",
   "category": "icraft:skills",
   "sortnum": 5,
-  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Resource investment. Best for Artificer, Halfling builds, or any player focused on automation setup.$()$(br2)Mining speed and luck are attribute-based and apply immediately. Crop yield bonus and fishing luck require KubeJS event hooks (implemented in Phase 1)."
+      "text": "$(italic)Resource investment. Best for Artificer, Halfling builds, or any player focused on automation setup.$()$(br2)Mining speed and luck apply the moment you take the node; crop yield and fishing bonuses trigger on the harvest itself."
     },
     {
       "type": "patchouli:text",
@@ -17,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Nodes (cont.)",
-      "text": "$(bold)Prospector Branch$() \u2014 Vein mining-style bonuses: detecting ore proximity, bonus drops from ore processing.$(br2)$(bold)Naturalist Branch$() \u2014 Fishing speed, bait efficiency, mob loot quantity bonuses.$(br2)$(bold)Gathering Capstone$() \u2014 $(bold)Master Gatherer$() \u2014 All resource gathering has 10% chance to trigger double yield. Stacks with Fortune."
+      "text": "$(bold)Prospector Branch$() \u2014 Vein mining-style bonuses: detecting ore proximity, bonus drops from ore processing.$(br2)$(bold)Naturalist Branch$() \u2014 Fishing speed, bait efficiency, mob loot quantity bonuses.$(br2)$(bold)Gathering Capstone$() \u2014 $(bold)Master Gatherer$() \u2014 All resource gathering has 10% chance to trigger double yield. Stacks with Fortune.$(br2)$(bold)Next: take Mining Speed first \u2014 it pays off on every block you break.$()"
     }
   ]
 }

@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Flux Networks \u2014 Your Best Friend$()$(br)Flux Networks is the $(italic)only$() way to wirelessly transmit RF across dimensions. A player who invested in Flux Networks during T2-T3 has a massive advantage for space exploration.$(br2)Set up a Flux Controller at your Overworld base, then place Flux Points on each planet. Instant cross-dimensional wireless power. This is the intended solution for planetary base power."
+      "text": "$(bold)Flux Networks \u2014 Your Best Friend$()$(br)Flux Networks is the $(italic)only$() way to wirelessly transmit RF across dimensions. A player who invested in Flux Networks during T2-T3 has a massive advantage for space exploration.$(br2)Set up a Flux Controller at your Overworld base, then place Flux Points on each planet. Instant cross-dimensional wireless power. This is the intended solution for planetary base power.$(br2)$(bold)Next: place that Flux Controller at home before your next launch.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

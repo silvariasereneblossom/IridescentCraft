@@ -2,19 +2,19 @@
   "name": "Footwork",
   "icon": "minecraft:writable_book",
   "category": "icraft:mods_t1",
-  "sortnum": 11,
+  "sortnum": 13,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Footwork adds a combat mobility system \u2014 dodging, strafing, and positional combat mechanics that reward active movement in fights."
+      "text": "Move like your life depends on it — Footwork adds dodging, strafing, and positional combat mechanics that reward active movement in every fight."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Footwork is available from T1 and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown \u2014 positioning and timing matter.$(br2)$(bold)Class synergy:$() Ranger and Samurai classes benefit most from Footwork's mobility options. Berserker and Vanguard can use it defensively to close gaps or disengage."
+      "text": "$(bold)Role in the pack:$() Footwork is available from T1 and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown — positioning and timing matter.$(br2)$(bold)Class synergy:$() Ranger and Samurai classes benefit most from Footwork's mobility options. Berserker and Vanguard can use it defensively to close gaps or disengage."
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Combatant's Companion$() for the full Footwork reference \u2014 dodge mechanics, stamina management, keybinds, and advanced movement techniques.$(br2)Access: Footwork mechanics are listed in JEI. Held-item tooltips describe each move."
+      "text": "$(bold)Where the reference lives:$() each Footwork move is described on its item tooltip, and the mechanics are listed in JEI.$(br2)$(bold)Next: practice the dodge roll on a zombie before you need it on a boss.$()"
     }
   ]
 }

@@ -6,7 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Divine Body$() — $(item)+40% max HP$() (8 extra hearts). The tankiest race.$(br2)$(bold)Divine Fury$() — Activate Strength on command. 50s cooldown.$(br2)$(bold)Phase$() — Phase through blocks briefly.$(br2)$(bold)Raw Diet$() — Raw meat gives 2x nourishment. Cooked meat 1.5x.$(br2)$(bold)Cursed$() — $(warn)Fire burns 50% hotter. Nether sickens you.$() But you endure."
+      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Divine Body$() — $(item)+40% max HP$() (8 extra hearts). The tankiest race.$(br2)$(bold)Divine Fury$() — Activate Strength on command. 50s cooldown.$(br2)$(bold)Phase$() — Phase through blocks briefly."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Raw Diet$() — Raw meat gives 2x nourishment. Cooked meat 1.5x.$(br2)$(bold)Cursed$() — $(warn)Fire burns 50% hotter. Nether sickens you.$() But you endure.$(br2)$(bold)Next: pair with a glass-cannon class — the +40% HP buys back what Archmage or Void Summoner gives up.$()"
     }
   ]
 }

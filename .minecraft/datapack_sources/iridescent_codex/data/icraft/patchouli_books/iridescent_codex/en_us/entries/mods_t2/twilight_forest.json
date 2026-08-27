@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Twilight Forest is the primary T2 adventure dimension. Bosses, structures, and the first Simply Swords uniques."
+      "text": "Step through the portal ready for a fight — the Twilight Forest is the primary T2 adventure dimension, and its seven bosses hold the first Simply Swords uniques."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$() Twilight Forest is largely self-guided \u2014 each biome leads naturally to the next boss. The $(bold)Magic Map$() (crafted from a map + 4 diamonds) reveals the full dimension layout and boss locations."
+      "text": "$(bold)No guide book.$() Twilight Forest is largely self-guided \u2014 each biome leads naturally to the next boss. Craft the $(bold)Magic Map$() (recipe in JEI) to reveal the dimension layout and boss locations.$(br2)$(bold)Next: the Naga's courtyard \u2014 the forest's intended first fight: $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l).$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

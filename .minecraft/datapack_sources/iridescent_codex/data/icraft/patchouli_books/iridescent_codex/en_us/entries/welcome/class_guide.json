@@ -1,38 +1,38 @@
 {
-  "name": "Choosing Your Build",
+  "name": "Pick Your Origin, Race & Class",
   "icon": "minecraft:diamond_sword",
   "category": "icraft:welcome",
-  "sortnum": 3,
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
       "title": "The 3-Layer System",
-      "text": "Your character has three layers of identity, chosen in order:$(br2)$(bold)1. Origin$() — What species you are. Flavor powers like flight, wall-climbing, or fire immunity. Chosen from 13 origins (9 reworked vanilla + 4 custom).$(br2)$(bold)2. Race$() — What people you belong to. Stat modifiers and thematic traits. 11 options: Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin. $(bold)Permanent.$()$(br2)$(bold)3. Class$() — What you do in combat. 10 options. Respec-able via Class Altar."
+      "text": "You choose three layers, in order — and the middle one is permanent.$(br2)$(bold)1. Origin$() — your species. Flavor powers like flight, wall-climbing, or fire immunity. 13 options: $(l:icraft:classes/origins_reference)The 13 Origins$(/l).$(br2)$(bold)2. Race$() — your people. Stat modifiers and thematic traits. 11 options. $(warn)Permanent.$()$(br2)$(bold)3. Class$() — your combat role. 10 options, respec-able at a Class Altar."
     },
     {
       "type": "patchouli:text",
       "title": "What to Pick If...",
-      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -15% damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race$(br2)$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast, mobile), $(thing)Elf$() race"
+      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -15% damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race"
     },
     {
       "type": "patchouli:text",
-      "title": "More Builds",
-      "text": "$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Don't know what you want:$()$(br)$(thing)Wanderer$() class + $(thing)Human$() race. No penalties, bonus XP, try everything. Respec your class later at a Class Altar when you know your playstyle.$(br2)$(italic)Remember: Race is permanent. Class can be changed. When in doubt, pick Human race and Wanderer class.$()"
+      "title": "What to Pick If... (2)",
+      "text": "$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast, mobile), $(thing)Elf$() race$(br2)$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Don't know yet:$()$(br)$(thing)Wanderer$() class + $(thing)Human$() race. No penalties, bonus XP. Respec your class later once you know your playstyle."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Proven Combos",
+      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Fire synergy. Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility. Fly, kite, never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport, spell from range, glass nuke.$(br2)$(bold)Witch of Ink + Orc + Berserker$()$(br)Weak early, monster late. Hyperscaling melee.$(br2)$(italic)Remember: Race is permanent. Class can be changed. When in doubt: Human + Wanderer.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Getting Started with Magic",
-      "text": "Magic is available from $(t1)Tier 1$():$(br2)$(bold)Iron's Spells & Spellbooks$() — Craft a $(bold)Copper Spell Book$() early. Find spell scrolls in dungeon chests. Inscribe scrolls into your book to learn spells. Upgrade to better spell books as you progress.$(br2)$(bold)Botania$() — Also $(t1)Tier 1$(). Mana flowers, mana pools, and botanical tools. Excellent for $(thing)Faefolk$() and $(thing)Battlemage$() builds.$(br2)$(bold)Ars Nouveau$() — Available at $(t2)Tier 2$(). Custom spell crafting with glyphs. More complex but extremely powerful."
+      "text": "Magic is available from $(t1)Tier 1$():$(br2)$(bold)Iron's Spells & Spellbooks$() — Craft a Copper Spell Book early (this pack ships $(l:icraft:mods_t1/modular_spells)Modular variants$(/l) that take upgrade pages). Find spell scrolls in dungeon chests and inscribe them to learn spells.$(br2)$(bold)Botania$() — Also $(t1)Tier 1$(). Mana flowers, mana pools, botanical tools.$(br2)$(bold)Ars Nouveau$() — $(t2)Tier 2$(). Custom spell crafting with glyphs."
     },
     {
       "type": "patchouli:text",
       "title": "Getting Your First Gear",
-      "text": "$(bold)Apotheosis Affixes$() — Mob drops can have random affixes (stat bonuses, gem sockets). Kill $(thing)Champions$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$() — Craft a Tetra workbench to customize weapons and tools. Swap out handles, blades, and guards with different materials.$(br2)$(bold)Food Diversity$() — $(thing)Spice of Life: Carrot Edition$() rewards eating different foods with permanent max HP bonuses. Eat a wide variety early for free health."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier Progression Basics",
-      "text": "$(bold)Progression tokens$() come from four lanes — building, magic, exploring, and combat — all feeding one pool. Bank enough to advance a tier.$(br2)$(bold)Two routes:$() reach a tier's token threshold, $(italic)or$() clear its boss-rush share. Either one works.$(br2)$(bold)Explore before you fight.$() Dungeons have loot, spell scrolls, and tokens. You don't need to rush bosses — gear up first.$(br2)See the $(bold)Progression$() chapter for the full token economy."
+      "text": "$(bold)Apotheosis Affixes$() — Mob drops roll random affixes and gem sockets. Kill $(thing)Champions$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$() — Craft one to customize weapons and tools, swapping handles, blades, and guards by material.$(br2)$(bold)Food Diversity$() — Spice of Life pays permanent max-HP bonuses for eating widely. Free health — collect food as you loot.$(br2)$(bold)Next: read $(l:icraft:welcome/three_commands)The Three Commands$(/l).$()"
     }
   ]
 }

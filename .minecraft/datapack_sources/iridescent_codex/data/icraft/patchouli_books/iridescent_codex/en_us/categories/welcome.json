@@ -1,6 +1,6 @@
 {
-  "name": "Getting Started",
-  "description": "An introduction to IridescentCraft: what it is, what to expect, and how to take your first steps.",
+  "name": "Start Here",
+  "description": "New here? Read this chapter in order. Your first hour, your character choice, and the three commands that run your progression.",
   "icon": "minecraft:book",
-  "sortnum": 0
+  "sortnum": -2
 }

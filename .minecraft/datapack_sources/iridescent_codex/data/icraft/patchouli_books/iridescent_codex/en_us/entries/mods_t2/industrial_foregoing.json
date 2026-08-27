@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Industrial Foregoing provides mob farming, fluid automation, and early bio-processing at Tier 2."
+      "text": "Automate your mob and crop farms — Industrial Foregoing brings mob farming, fluid automation, and early bio-processing online at Tier 2."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Industrial Foregoing is fully documented in JEI. Every machine has tooltips explaining its function. The $(bold)IFWiki$() at ftb.fandom.com covers advanced setups like the Mob Duplicator and Infinity Drill."
+      "text": "$(bold)No book needed.$() Industrial Foregoing is fully documented in JEI, and every machine has tooltips explaining its function.$(br2)$(bold)Next: build a Mob Crusher farm — it's the T2 material engine that keeps paying into T3.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

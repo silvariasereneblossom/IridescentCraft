@@ -1,7 +1,6 @@
 {
-  "name": "Bosses & Loot",
-  "description": "Every major boss across all four tiers \u2014 where to find them, what they drop, and which Simply Swords uniques they hold.",
+  "name": "Bosses",
+  "description": "Every major boss across all four tiers — where to find them, what they drop, and which Simply Swords uniques they hold.",
   "icon": "minecraft:wither_skeleton_skull",
-  "sortnum": 4,
-  "advancement": "icraft:stage_tier_2"
+  "sortnum": 5
 }

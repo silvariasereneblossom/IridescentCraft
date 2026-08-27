@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book.$() Both systems are tuned specifically for this pack. See $(l:icraft:systems/champions)Progressive Difficulty$(/l) and $(l:icraft:systems/mob_toughness)Mob Toughness$(/l) in the $(bold)Systems$() chapter for how the scaling actually works."
+      "text": "$(bold)No book.$() Both systems are tuned specifically for this pack.$(br2)$(bold)Next: read $(l:icraft:systems/champions)Progressive Difficulty$(/l) and $(l:icraft:systems/mob_toughness)Mob Toughness$(/l) for the actual multipliers before you push a new dimension.$()"
     }
   ],
   "advancement": "icraft:stage_tier_3"

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Progression tokens are the Iridescent Codex's currency for advancing tiers. There are three: $(bold)Codex Token I, II, and III$() — one for each tier transition.$(br2)You earn them through the four lanes — Engineering, Magic, Exploration, Combat — and bank them toward a threshold. Full details: $(l:icraft:progression/tier_gates)How You Advance$(/l)."
+      "text": "Bank these to climb — progression tokens are the Iridescent Codex's currency for advancing tiers. There are three: $(bold)Codex Token I, II, and III$(), one per tier transition.$(br2)You earn them through the four lanes — Engineering, Magic, Exploration, Combat — and bank them toward a threshold. Full details: $(l:icraft:progression/tier_gates)How You Advance$(/l)."
     },
     {
       "type": "patchouli:text",

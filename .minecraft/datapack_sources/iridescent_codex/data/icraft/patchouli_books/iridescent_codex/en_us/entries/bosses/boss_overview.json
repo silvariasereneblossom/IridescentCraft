@@ -3,23 +3,22 @@
   "icon": "minecraft:wither_skeleton_skull",
   "category": "icraft:bosses",
   "sortnum": 0,
-  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Bosses are the pinnacle of IridescentCraft's combat. They are $(bold)not$() optional \u2014 the best weapons in the pack drop only from them. Each tier has required progression bosses and optional trophy bosses.$(br2)$(bold)Simply Swords unique weapons$() are boss-drop-only. Every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
+      "text": "Fight bosses — the best weapons in the pack drop only from them, and every kill banks Combat-lane tokens.$(br2)Each tier has required progression bosses and optional trophy bosses. $(bold)Simply Swords unique weapons$() are boss-drop-only: every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() \u2014 Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() \u2014 Named T3 superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$() \u2014 Overworld + dimensional mutant variants$(li)$(bold)Cataclysm$() \u2014 T3\u2013T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() \u2014 T4 optional superbosses$(li)$(bold)Stalwart Dungeons$() \u2014 T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$() \u2014 Boss spellcasters in all tiers"
+      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() — Named T3 superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$() — Overworld + dimensional mutant variants$(li)$(bold)Terramity$() — Structure bosses from Tier 1 up$(li)$(bold)Cataclysm$() — T3–T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() — T4 optional superbosses$(li)$(bold)Stalwart Dungeons$() — T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$() — Boss spellcasters in all tiers"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Progressive Bosses$()$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$() do NOT scale progressively \u2014 they are the same difficulty every time. Only intentionally summoned bosses escalate."
+      "text": "$(bold)Progressive Bosses$()$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$() do NOT scale progressively — they are the same difficulty every time. Only intentionally summoned bosses escalate."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy \u2014 every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$()/$(t3)90%$()/$(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting \u2014 not progression currency."
+      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$()/$(t3)90%$()/$(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
     }
   ]
 }

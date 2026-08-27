@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Stellar Shield Enchantment$()$(br)Mercury mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Stellar Shield$() (max level 3). This armor enchantment:$(br)\u2022 Grants solar radiation resistance$(br)\u2022 Reduces fire damage by 33% per level on planets$(br)\u2022 Negates Mercury day-side fire damage at level 3$(br2)Pairs well with Thermal Regulation for full Mercury survival."
+      "text": "$(bold)Stellar Shield Enchantment$()$(br)Mercury mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Stellar Shield$() (max level 3). This armor enchantment:$(br)\u2022 Grants solar radiation resistance$(br)\u2022 Reduces fire damage by 33% per level on planets$(br)\u2022 Negates Mercury day-side fire damage at level 3$(br2)Pairs well with Thermal Regulation for full Mercury survival.$(br2)$(bold)Next: farm both enchantments to level 3 \u2014 you'll want them on Venus too.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

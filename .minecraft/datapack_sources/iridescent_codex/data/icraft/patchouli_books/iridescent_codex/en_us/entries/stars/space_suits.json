@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$()$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration."
+      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$()$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration.$(br2)$(bold)Next: suit up for the Moon first — basic suit, lowest hazard, and its Lunar Stride books make every later planet easier.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

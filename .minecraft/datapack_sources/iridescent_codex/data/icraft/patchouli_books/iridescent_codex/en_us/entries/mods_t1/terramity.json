@@ -1,21 +1,22 @@
 {
   "name": "Terramity",
-  "icon": "terramity:terramity_guidebook_icon",
+  "icon": "terramity:guardian_grimoire",
   "category": "icraft:mods_t1",
-  "sortnum": 10,
+  "sortnum": 12,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Terramity adds atmospheric world generation features \u2014 terrain details, cave enhancements, and environmental variety throughout the Overworld."
+      "text": "Fight Terramity's structure bosses from Tier 1 on — this is a boss and combat content mod, and three of its bosses are on your Tier 1 boss-rush roster.$(br2)It also brings guns (craft them at the Gunsmith Station), armor sets with active abilities, and the structures that hold it all."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Background world enrichment. Terramity works passively \u2014 its additions appear naturally as you explore. No active systems to manage.$(br2)$(bold)Exploration tip:$() Terramity features appear in all biomes but are most visible in caves and cliff faces. Keep an eye out for new stone formations and cave decorations."
+      "title": "The Boss Ladder",
+      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Enchanter Merlin$() (Fairy Fountain), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t2)Tier 2$() — $(bold)Archmage Gundalf$() (Trial Spire).$(br)$(t3)Tier 3$() — $(bold)Gatmancer$() (Infested Laboratory).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond), $(bold)Sorceress Circe$() (Mausoleum)."
     },
     {
-      "type": "patchouli:spotlight",
-      "item": "terramity:terramity_guidebook_icon",
-      "text": "Craft the $(bold)Terramity Guidebook$() for the full reference \u2014 all added features, biome interactions, and configuration notes.$(br2)Given on first join via the Terramity advancement. Right-click in hand to open. If lost, /give yourself the Terramity Guidebook Icon."
+      "type": "patchouli:text",
+      "title": "Gear & Abilities",
+      "text": "$(bold)Armor abilities$() live on the Numpad: $(k:terramity.armor_set_bonus_ability) set bonus, $(k:terramity.dash_ability) dash, $(k:terramity.slam) slam — see $(l:icraft:systems/keybinds)Keybinds$(/l).$(br2)$(bold)Void Mage and Exodium Warlock$() sets are robe-class mage armor under $(l:icraft:systems/armor_weight)Armor Weight$(/l).$(br2)Terramity structures also feed boss-material loot.$(br2)$(bold)Next: find the Court of Gnomes and summon Gob — the canonical first boss fight.$()"
     }
   ]
 }

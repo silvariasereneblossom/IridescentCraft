@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Cataclysm adds massive T3\u2013T4 dungeon structures with ultra-boss encounters and unique materials."
+      "text": "Gear to your ceiling before you knock \u2014 Cataclysm's massive T3\u2013T4 dungeon structures hold the pack's ultra-boss encounters and their unique materials."
     },
     {
       "type": "patchouli:text",
@@ -18,8 +18,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$() Cataclysm is boss-focused \u2014 documentation comes from fighting. Each boss drops a $(bold)Trophy$() that can be placed for display. JEI covers all weapon and armor recipes unlocked by boss materials."
+      "text": "$(bold)No guide book.$() Cataclysm is boss-focused \u2014 documentation comes from fighting. Each boss drops a $(bold)Trophy$() that can be placed for display. JEI covers all weapon and armor recipes unlocked by boss materials.$(br2)$(bold)Next: the Netherite Monstrosity \u2014 the entry ultra-boss: $(l:icraft:bosses/t3_bosses)Tier 3 Bosses$(/l).$()"
     }
   ],
-  "advancement": "icraft:stage_tier_3"
+  "advancement": "icraft:stage_tier_4"
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t4)Tier 4$() is the apex of the Engineering lane. The $(bold)Fission Reactor$() is your first reactor and the start of the polonium road; the $(bold)Fusion Reactor$() is the power capstone - the largest sustained RF source in the pack."
+      "text": "Build the $(bold)Fission Reactor$() first — it starts the polonium road. Then the $(bold)Fusion Reactor$(), the power capstone and the largest sustained RF source in the pack. This is the apex of the Engineering lane."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Spending it",
-      "text": "Antimatter is the hard reagent behind the pack's top-tier crafts - the $(bold)Mythic Catalyst$() line (combat endgame) and the $(bold)MekaSuit Mk2$() upgrade (tech-armor endgame). Engineering's apex output feeds the pack's apex gear.$(br2)$(note)NOTE: the antimatter sinks are tracked in the T4 questline's final beat; see $(l:icraft:mods_t4/mekanism_advanced)Mekanism Advanced$(/l) for the apex-tech overview.$()"
+      "text": "Antimatter is the hard reagent behind the pack's top-tier crafts - the $(bold)Mythic Catalyst$() line (combat endgame) and the $(bold)MekaSuit Mk2$() upgrade (tech-armor endgame). Engineering's apex output feeds the pack's apex gear.$(br2)$(note)The T4 questline tracks the antimatter sinks; see $(l:icraft:mods_t4/mekanism_advanced)Mekanism Advanced$(/l) for the apex-tech overview.$()$(br2)$(bold)Next: finish the SPS and mint your first Antimatter Pellet.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

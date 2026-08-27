@@ -2,11 +2,11 @@
   "name": "Heracles Quests",
   "icon": "minecraft:writable_book",
   "category": "icraft:mods_t1",
-  "sortnum": 7,
+  "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The pack's quest book — your guided tour and bonus-reward track. Heracles lays out worthwhile objectives tier by tier and rewards you for completing them."
+      "text": "Press $(k:heracles.open_quests) — the quest book is your guided tour and bonus-reward track. Heracles lays out worthwhile objectives tier by tier and rewards you for completing them."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Rewards:$() completing quests grants bonus loot and extra rewards beyond the minimum needed to progress. Optional objectives are worth doing for the spoils, but you are never forced down any single path."
+      "text": "$(bold)Rewards:$() completing quests grants bonus loot and extra rewards beyond the minimum needed to progress — including the skill points that feed $(l:icraft:mods_t1/pufferfish_skills)Pufferfish's Skills$(/l).$(br2)The $(bold)Submit$() buttons in the Engineering and Magic Crafting quest groups bank materials into progression tokens, same as $(bold)/icraft codex submit$().$(br2)$(bold)Next: press $(k:heracles.open_quests) and clear your first quest group.$()"
     }
   ]
 }

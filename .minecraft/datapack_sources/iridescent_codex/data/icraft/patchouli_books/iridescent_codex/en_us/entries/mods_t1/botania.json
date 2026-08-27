@@ -6,20 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Botania is the primary Tier 1 magic mod. Mana generation, magical flowers, and the Mana Pool."
+      "text": "Plant a Pure Daisy and start generating mana — Botania is the Tier 1 magic-cultivation mod, and the Magic lane's first token source."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid is datapack-restricted so it cannot tier-skip: Diamond, Osmium, and Ancient Debris are disabled, so it yields only lower-tier ores.$(br2)$(bold)Key IridescentCraft interactions:$() Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). The Lexica Botania is the in-mod documentation \u2014 read it."
+      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid is datapack-restricted so it cannot tier-skip: Diamond, Osmium, and Ancient Debris are disabled, so it yields only lower-tier ores.$(br2)$(bold)Key IridescentCraft interactions:$() Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). Mana reagents and apparatus bank Magic-lane tokens via $(bold)/icraft codex submit$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack \u2014 crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1\u2013T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
+      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack — crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1–T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "botania:lexicon",
-      "text": "Craft the $(bold)Lexica Botania$() for the full in-mod reference \u2014 every flower, every mana structure, every ritual. Essential reading for any Botania build."
+      "type": "patchouli:text",
+      "text": "$(bold)Where the documentation lives:$() this Codex replaces the individual mod guidebooks in this pack. Every Botania recipe is in JEI, and the flower and ritual mechanics you need for progression are covered in the $(l:icraft:progression/tier_gates)Magic lane$(/l) pages.$(br2)$(bold)Next: Pure Daisy → livingwood → your first mana spreader and pool.$()"
     }
   ]
 }

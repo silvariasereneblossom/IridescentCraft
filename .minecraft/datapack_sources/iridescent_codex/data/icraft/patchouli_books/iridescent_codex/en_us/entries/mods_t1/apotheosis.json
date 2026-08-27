@@ -2,11 +2,11 @@
   "name": "Apotheosis",
   "icon": "apotheosis:salvaging_table",
   "category": "icraft:mods_t1",
-  "sortnum": 3,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Apotheosis overhauls enchanting, spawners, potions, and village trades. It is active from Tier 1."
+      "text": "Check every drop for affixes and sockets — Apotheosis runs the pack's loot, enchanting, spawner, and potion overhauls from Tier 1 on."
     },
     {
       "type": "patchouli:text",
@@ -18,11 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Chronicle of Shadows$() for the full Apotheosis reference \u2014 enchantment mechanics, affix system, gem socketing, boss spawners, and the Adventure module.$(br2)Access: there is no in-game guidebook. Apotheosis mechanics live in JEI tooltips and the Adventure module config. See $(thing)Codex > Systems$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "Craft the $(bold)Apoth Chronicle$() for the full Apotheosis reference \u2014 enchantment library, gem socketing, boss spawners, village overhaul, and the adventure module.$(br2)Access: no Chronicle item exists in this version of Apotheosis. Mechanics are surfaced via JEI tooltips and the dedicated Codex pages in $(thing)Systems$()."
+      "text": "$(bold)No in-game guidebook exists$() — Apotheosis mechanics surface through JEI tooltips and this Codex:$(br2)$(li)$(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l)$(li)$(l:icraft:systems/affixes)Apotheosis Affixes$(/l)$(li)$(l:icraft:loot/gems)Apotheosis Gems$(/l)$(br2)$(bold)Next: kill a glowing Champion mob and inspect what it drops.$()"
     }
   ]
 }

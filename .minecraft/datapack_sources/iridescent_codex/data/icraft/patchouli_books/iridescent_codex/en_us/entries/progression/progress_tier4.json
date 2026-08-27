@@ -2,7 +2,7 @@
   "name": "Reached: Tier 4 - Ascension",
   "icon": "deep_aether:stratus_ingot",
   "category": "icraft:progression",
-  "sortnum": 9,
+  "sortnum": 10,
   "advancement": "icraft:stage_tier_4",
   "pages": [
     {

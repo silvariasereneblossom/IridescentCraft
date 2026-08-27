@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Banking T2 tokens",
-      "text": "Thermal machine blocks are the richest T2 submissions: $(bold)Induction Smelter$() $(t2)50$(), $(bold)Pulverizer$() $(t2)40$() tokens each. Invar and Electrum mint per 50.$(br2)Bank $(t2)1000$() total to reach $(t3)Tier 3$(), where Mekanism unlocks. Full writeup: $(l:icraft:mods_t2/thermal)Thermal Series$(/l)."
+      "text": "Thermal machine blocks are the richest T2 submissions: $(bold)Induction Smelter$() $(t2)50$(), $(bold)Pulverizer$() $(t2)40$() tokens each. Invar and Electrum mint per 50.$(br2)Bank $(t2)1000$() total to reach $(t3)Tier 3$(), where Mekanism unlocks. Full writeup: $(l:icraft:mods_t2/thermal)Thermal Series$(/l).$(br2)$(bold)Next: build the Induction Smelter first — 50 tokens, and it smelts your Steel.$()"
     }
   ]
 }

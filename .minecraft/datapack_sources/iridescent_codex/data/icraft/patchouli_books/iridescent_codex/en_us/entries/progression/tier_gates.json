@@ -2,11 +2,11 @@
   "name": "How You Advance",
   "icon": "icraft:progression_token_t1",
   "category": "icraft:progression",
-  "sortnum": 1,
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tiers are unlocked through the $(bold)Iridescent Codex$() token economy. You earn $(bold)progression tokens$(), bank them toward your tier's threshold, and the Codex advances you.$(br2)Four $(bold)lanes$() earn tokens — Engineering, Magic, Exploration, and Combat — and they all feed $(bold)one combined pool$(). No lane is mandatory: any single one, played on its own, can reach the threshold. Hybrids mix freely."
+      "text": "Earn $(bold)progression tokens$(), bank them to your tier's threshold, and the Codex advances you — automatically.$(br2)Four $(bold)lanes$() earn tokens — Engineering, Magic, Exploration, and Combat — and they all feed $(bold)one combined pool$(). No lane is mandatory: any single one, played on its own, can reach the threshold. Hybrids mix freely."
     },
     {
       "type": "patchouli:text",

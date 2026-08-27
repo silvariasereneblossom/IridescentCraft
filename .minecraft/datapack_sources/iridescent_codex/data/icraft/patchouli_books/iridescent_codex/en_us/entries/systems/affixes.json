@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Apotheosis$() affixes are random modifiers that appear on weapons and armor dropped by mobs and bosses. $(thing)IridescentCraft$() adds $(bold)88 custom affix entries$() on top of Apotheosis's built-in pool, including 5 End-themed affixes exclusive to End dimension loot.$(br2)Affixes also provide $(bold)gem sockets$(). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
+      "text": "Chase affixed drops — the random modifiers on weapons and armor from mobs and bosses. $(thing)IridescentCraft$() adds $(bold)88 custom affix entries$() on top of Apotheosis's built-in pool, including 5 End-themed affixes exclusive to End dimension loot.$(br2)Affixes also provide $(bold)gem sockets$(). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "End-Themed Affixes",
-      "text": "The End dimension features $(bold)5 exclusive affixes$() that only appear on End loot drops:$(br2)These affixes interact with the End's unique mechanics — Void Proximity damage scaling, Ender Displacement teleportation, and Void Corruption. End-themed affixes are among the most powerful in the game, rewarding players who tackle the hardest content.$(br2)End affix gear pairs well with the $(bold)Voidward$() and $(bold)Warp Shield$() enchantments for maximum End survivability."
+      "text": "The End rolls $(bold)5 exclusive affixes$() on its loot drops. They interact with the End's unique mechanics — Void Proximity damage scaling, Ender Displacement teleportation, and Void Corruption — and are among the most powerful in the game.$(br2)End affix gear pairs well with the $(bold)Voidward$() and $(bold)Warp Shield$() enchantments for maximum End survivability.$(br2)$(bold)Next: socket your best drop — $(l:icraft:loot/gems)Apotheosis Gems$(/l).$()"
     }
   ]
 }

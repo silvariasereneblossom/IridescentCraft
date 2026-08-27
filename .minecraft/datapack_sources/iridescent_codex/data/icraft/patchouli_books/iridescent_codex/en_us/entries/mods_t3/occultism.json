@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Occultism is the T3 ritual magic mod. Demon summoning, soul extraction, storage dimension, and ritual crafting."
+      "text": "Draw your first pentacle — Occultism is the T3 ritual magic mod: demon summoning, soul extraction, a storage dimension, and ritual crafting."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Dictionary of Spirits$() for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems.$(br2)Access: spawned for new players via the Occultism welcome advancement. If lost, the contents are also available via the in-game JEI integration."
+      "text": "$(bold)Craft the Dictionary of Spirits$() for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems. If lost, the contents are also available via the in-game JEI integration.$(br2)$(bold)Next: the Dictionary's first ritual \u2014 summoning the Foliot Crusher \u2014 is the ideal entry project.$()"
     }
   ],
   "advancement": "icraft:stage_tier_3"

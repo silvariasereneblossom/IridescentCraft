@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Knight Phantom$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Enigma$(/l), tokens.$(br2)$(bold)Snow Queen$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Frostfall$(/l), tokens.$(br2)$(bold)Alpha Yeti$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Icewhisper$(/l), tokens.$(br2)$(bold)Blue Skies Bosses$() \u2014 Summoner, Alchemist, Starlit Crusher, Arachnarch. Each drops a unique.$(br2)$(bold)Aether Bosses$() \u2014 Slider, Valkyrie Queen, Sun Spirit. Each drops a unique."
+      "text": "$(bold)Knight Phantom$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Enigma$(/l), tokens.$(br2)$(bold)Snow Queen$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Frostfall$(/l), tokens.$(br2)$(bold)Alpha Yeti$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Icewhisper$(/l), tokens.$(br2)$(bold)Blue Skies Bosses$() \u2014 Summoner, Alchemist, Starlit Crusher, Arachnarch. Each drops a unique.$(br2)$(bold)Aether Bosses$() \u2014 Slider, Valkyrie Queen, Sun Spirit. Each drops a unique.$(br2)$(bold)Next: start with the Naga, then run /icraft codex bosses to track your 90% clear.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

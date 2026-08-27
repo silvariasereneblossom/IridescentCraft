@@ -11,7 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Supremacy$() — $(item)+50% Spell Power$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau. Surfaced as ISS Spell Power via the magic-damage sync handler.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -28.6% armor, -20% toughness (scales with your final value -- can never zero a robe build); a full robe set nets ~50% armor. Halved equipment HP."
+      "text": "$(bold)Arcane Supremacy$() — $(item)+50% Spell Power$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau alike.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passives (cont.)",
+      "text": "$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -28.6% armor, -20% toughness (scales with your final value — can never zero a robe build); a full robe set nets ~50% armor. Halved equipment HP."
     },
     {
       "type": "patchouli:text",

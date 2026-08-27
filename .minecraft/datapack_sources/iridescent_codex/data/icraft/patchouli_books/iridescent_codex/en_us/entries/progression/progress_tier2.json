@@ -2,7 +2,7 @@
   "name": "Reached: Tier 2 - Expansion",
   "icon": "aether:zanite_gemstone",
   "category": "icraft:progression",
-  "sortnum": 7,
+  "sortnum": 8,
   "advancement": "icraft:stage_tier_2",
   "pages": [
     {

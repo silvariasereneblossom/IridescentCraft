@@ -1,6 +1,6 @@
 {
   "name": "Quick Access",
-  "description": "Direct shortcuts to the progression UIs you'll use most: your full attribute readout (Apothic Attributes) and your aptitude tree (Iridescent Aptitudes). Open the Codex, click here, click the button — no inventory tabs or keybind hunting.",
-  "icon": "minecraft:experience_bottle",
+  "description": "Two one-page shortcuts for returning players: the exact key and button that open your full attribute readout (Apothic Attributes) and your aptitude tree (Iridescent Aptitudes).",
+  "icon": "minecraft:spyglass",
   "sortnum": -1
 }

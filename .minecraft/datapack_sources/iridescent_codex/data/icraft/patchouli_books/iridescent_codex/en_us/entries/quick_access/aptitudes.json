@@ -1,16 +1,14 @@
 {
-  "name": "Aptitudes",
+  "name": "Open Your Aptitudes",
   "icon": "justlevelingfork:leveling_book",
   "category": "icraft:quick_access",
   "sortnum": 1,
   "priority": true,
   "pages": [
     {
-      "type": "icraft:screen_link",
-      "title": "Aptitudes",
-      "icon": "justlevelingfork:leveling_book",
-      "target": "aptitudes",
-      "text": "Opens the aptitude tree. Spend earned points on Strength / Constitution / Agility / Intelligence skill paths, or browse passive perks unlocked at each level. Provided by Iridescent Aptitudes."
+      "type": "patchouli:text",
+      "title": "Open Your Aptitudes",
+      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree.$(br2)Spend earned points on the Strength, Constitution, Agility, and Intelligence paths, or browse the passive perks each level unlocks.$(br2)How points are earned and what each path pays out: $(l:icraft:systems/aptitudes)Aptitudes$(/l).$(br2)$(note)Provided by Iridescent Aptitudes.$()"
     }
   ]
 }

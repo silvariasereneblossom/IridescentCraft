@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Gem Sockets & Enchanting$()$(br2)Apotheosis affixes add gem sockets to items. Gems and enchants are completely separate systems \u2014 they both apply simultaneously. A Legendary sword can have both maximum enchants and 4 perfect gems.$(br2)$(bold)Anvil cap removed:$() Apotheosis removes the vanilla 'Too Expensive' cap. You can combine and repair items as many times as needed. XP costs increase but never become impossible."
+      "text": "$(bold)Gem Sockets & Enchanting$()$(br2)Apotheosis affixes add gem sockets to items. Gems and enchants are completely separate systems \u2014 they both apply simultaneously. A Legendary sword can have both maximum enchants and 4 perfect gems.$(br2)$(bold)Anvil cap removed:$() Apotheosis removes the vanilla 'Too Expensive' cap. You can combine and repair items as many times as needed. XP costs increase but never become impossible.$(br2)$(bold)Next: upgrade your bookshelves — that's what raises your enchant ceiling.$()"
     }
   ]
 }

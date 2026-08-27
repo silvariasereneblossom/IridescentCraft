@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Aether is an aerial T2 dimension. Vertical combat, boss dungeons, and unique Aether materials."
+      "text": "Bring a ranged option and watch your footing — the Aether is the aerial T2 dimension, and vertical combat is its whole challenge."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$() The Aether is exploration-driven \u2014 the Silver Dungeon, Gold Dungeon, and Obsidian Pinnacle each have discoverable lore. The $(bold)Book of Lore$() found in dungeons provides in-world narrative context."
+      "text": "$(bold)No guide book.$() The Aether is exploration-driven \u2014 the Silver Dungeon, Gold Dungeon, and Obsidian Pinnacle each have discoverable lore. The $(bold)Book of Lore$() found in dungeons provides in-world narrative context.$(br2)$(bold)Next: the Slider in the Bronze Dungeon \u2014 the Aether's first boss and your shot at Thunderbrand.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

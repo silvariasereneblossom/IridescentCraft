@@ -2,11 +2,16 @@
   "name": "Revenant",
   "icon": "minecraft:skeleton_skull",
   "category": "icraft:classes",
-  "sortnum": 18,
+  "sortnum": 22,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Formerly living. Undead mechanics apply. The pack's most punishing race in daylight, most powerful at night.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Dark Power$() \u2014 +20% damage dealt between 8pm and 4am (in-game time). Stacks with class bonuses.$(br2)$(bold)Night Vision$() \u2014 Permanent night vision. No visual difference from Human during the day.$(br2)$(bold)Sunlight Weakness$() \u2014 Direct sunlight: burn effect like a zombie. Helmets and shade prevent this. Plan around it.$(br2)$(bold)Healing Penalty$() \u2014 Natural regen and most healing potions 30% less effective. Life Steal and Paladin auras unaffected."
+      "text": "$(italic)Formerly living. Undead mechanics apply. The pack's most punishing race in daylight, most powerful at night.$()$(br2)$(bold)Dark Power$() — +20% damage dealt between 8pm and 4am (in-game time). Stacks with class bonuses.$(br2)$(bold)Night Vision$() — Permanent night vision. No visual difference from Human during the day."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Sunlight Weakness$() — Direct sunlight: burn effect like a zombie. Helmets and shade prevent this. Plan around it.$(br2)$(bold)Healing Penalty$() — Natural regen and most healing potions 30% less effective. Life Steal and Paladin auras unaffected.$(br2)$(bold)Next: keep a helmet equipped from your first day — sunlight is your real enemy.$()"
     }
   ]
 }

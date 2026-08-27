@@ -2,11 +2,11 @@
   "name": "Alex's Mobs",
   "icon": "alexsmobs:animal_dictionary",
   "category": "icraft:mods_t1",
-  "sortnum": 10,
+  "sortnum": 11,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Alex's Mobs adds over 80 real-world and fantastical creatures to the world \u2014 from bald eagles and grizzly bears to void worms and laviathans. Most are passive or neutral, but several are powerful hunters."
+      "text": "Hunt, tame, and harvest your way through 80+ new creatures — from bald eagles and grizzly bears to void worms and laviathans. Most are passive or neutral, but several are powerful hunters."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "alexsmobs:animal_dictionary",
-      "text": "Craft the $(bold)Animal Dictionary$() for a full bestiary \u2014 every creature, its drops, its habitat, and any tameable/rideable behavior."
+      "text": "$(bold)Craft the Animal Dictionary$() for a full bestiary — every creature, its drops, its habitat, and any tameable/rideable behavior."
     }
   ]
 }

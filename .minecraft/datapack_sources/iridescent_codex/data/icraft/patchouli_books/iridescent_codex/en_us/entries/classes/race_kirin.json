@@ -6,7 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Unrivaled Speed$() — $(item)Fastest sprint speed$() of any race. Extreme mobility.$(br2)$(bold)Wall Climbing$() — Scale vertical surfaces like a spider.$(br2)$(bold)Cat Vision$() — See clearly in darkness.$(br2)$(bold)Fall Immunity$() — Always land safely.$(br2)$(bold)Sprint Jump$() — Enhanced jump while sprinting.$(br2)$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Exhaustion$() — $(warn)Constant movement burns food faster.$()"
+      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Unrivaled Speed$() — $(item)Fastest sprint speed$() of any race. Extreme mobility.$(br2)$(bold)Wall Climbing$() — Scale vertical surfaces like a spider.$(br2)$(bold)Cat Vision$() — See clearly in darkness.$(br2)$(bold)Fall Immunity$() — Always land safely."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Sprint Jump$() — Enhanced jump while sprinting.$(br2)$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Exhaustion$() — $(warn)Constant movement burns food faster.$()$(br2)$(bold)Next: pair with Wanderer or Ranger and never stand still — stillness is the only way you die.$()"
     }
   ]
 }

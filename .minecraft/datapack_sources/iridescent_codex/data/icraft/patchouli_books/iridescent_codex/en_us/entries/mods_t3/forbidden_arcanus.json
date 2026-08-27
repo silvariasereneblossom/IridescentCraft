@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Forbidden & Arcanus provides T3 dark magic, new materials, and the Arcane Crystal crafting system."
+      "text": "Mine Arcane Crystals and put dark magic to work — Forbidden & Arcanus is T3's dark-magic mod, built around the Arcane Crystal crafting system."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Tome of Arcana$() for the full Forbidden & Arcanus reference \u2014 Arcana magic, cursed items, and Corruptus lore.$(br2)Access: the Tome of Arcana is granted via Forbidden Arcanus's starter advancement. If lost, /give yourself the Tome of Arcana (forbidden_arcanus mod) -- mechanics are in JEI tooltips."
+      "text": "$(bold)Where the reference lives:$() Forbidden & Arcanus mechanics are covered by JEI tooltips and recipes \u2014 every ritual input and crystal product is listed there.$(br2)$(bold)Next: set up an Arcane Crystal Obelisk and start generating Aureal.$()"
     }
   ],
   "advancement": "icraft:stage_tier_3"

@@ -2,7 +2,7 @@
   "name": "Waystones",
   "icon": "waystones:waystone",
   "category": "icraft:mods_t1",
-  "sortnum": 6,
+  "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",
@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Natural generation:$() Waystones generate naturally in all villages, most structures, and many dimensional spawn points. You don't need to build them \u2014 explore to discover them.$(br2)$(bold)Crafting waystones:$() Intentionally expensive. Requires rare boss materials. Designed for establishing outposts far from natural spawns."
+      "text": "$(bold)Natural generation:$() Waystones generate naturally in all villages, most structures, and many dimensional spawn points. You don't need to build them — explore to discover them.$(br2)$(bold)Crafting waystones:$() Intentionally expensive. Requires rare boss materials. Designed for establishing outposts far from natural spawns."
     },
     {
       "type": "patchouli:text",

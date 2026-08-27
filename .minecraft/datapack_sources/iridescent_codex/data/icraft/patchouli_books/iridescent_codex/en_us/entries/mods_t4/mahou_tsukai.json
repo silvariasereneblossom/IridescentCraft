@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mahou Tsukai is the T4 magic system \u2014 body enhancement magic that integrates deeply with the class system."
+      "text": "Bring a Gaia Spirit Fragment and initiate yourself \u2014 Mahou Tsukai is the T4 magic system: body enhancement magic that integrates deeply with the class system."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Craft the $(bold)Mahou Tsukai Guidebook$() for the full reference \u2014 magic circle construction, spell research, and the Mahou stat system.$(br2)Access: hold a Mahou Tsukai item and check JEI -- the mod's guide is in-mod, no separate book."
+      "text": "$(bold)Craft the Mahou Tsukai Guidebook$() for the full reference \u2014 magic circle construction, spell research, and the Mahou stat system. Recipe in JEI.$(br2)$(bold)Next: kill the Gaia Guardian for your initiation fragment \u2014 $(l:icraft:bosses/t4_bosses)Tier 4 Bosses$(/l).$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

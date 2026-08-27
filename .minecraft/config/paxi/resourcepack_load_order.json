@@ -1,9 +1,8 @@
 {
-  "_comment": "Paxi loadOrder: LAST item in array = TOP of pack stack = WINS conflicts. Verified via Paxi 4.0 source: packs are iterated with Pack.Position.TOP, each addition pushes prior ones down. Order below: passive cosmetic at bottom, brand-aligned theme rises, internal codex on top.",
+  "_comment": "Paxi loadOrder: LAST item in array = TOP of pack stack = WINS conflicts. Verified via Paxi 4.0 source: packs are iterated with Pack.Position.TOP, each addition pushes prior ones down. Order below: passive cosmetic at bottom, brand-aligned theme on top. Codex book content ships ONLY in iridescent_codex_data.jar (2026-08-27: the stale iridescent_codex_resources.zip shadow copy was removed - never re-add a codex resourcepack here, it overrides the jar for every file it contains).",
   "loadOrder": [
     "Melodys Cute Villagers v1.10.0.zip",
     "pridepack8.0.1.zip",
-    "Transcendence_0.7.4.zip",
-    "iridescent_codex_resources.zip"
+    "Transcendence_0.7.4.zip"
   ]
 }

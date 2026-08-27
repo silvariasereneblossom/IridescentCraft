@@ -1,6 +1,6 @@
 {
   "name": "Loot & Economy",
-  "description": "Loot boxes, tier tokens, boss materials, Apotheosis gems, and how the progression economy works.",
+  "description": "Tier tokens, boss materials, Apotheosis gems, the relic economy, and how the progression economy works.",
   "icon": "minecraft:chest",
-  "sortnum": 5
+  "sortnum": 6
 }

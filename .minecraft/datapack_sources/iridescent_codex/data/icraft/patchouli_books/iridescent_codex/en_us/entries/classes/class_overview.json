@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Three Layers of Identity$()$(br2)$(bold)Race$() — What you ARE. Innate traits, mild tradeoffs. Permanent.$(br)$(bold)Class$() — What you DO. Combat role, HP modifier, weapon affinities, active ability. Respec-able.$(br)$(bold)Skills$() — How you INVEST. Cumulative bonuses across six trees. Respec costs 5 levels per point.$(br2)These three layers stack additively. A $(thing)Berserker$()/$(thing)Orc$() with Warfare tree investment is a very different character from a Berserker/$(thing)Elf$()."
+      "text": "$(bold)Three Layers of Identity$()$(br2)$(bold)Race$() — What you ARE. Innate traits, mild tradeoffs. Permanent.$(br)$(bold)Class$() — What you DO. Combat role, HP modifier, weapon affinities, active ability. Respec-able.$(br)$(bold)Skills$() — How you INVEST. Cumulative bonuses across six trees. Respec costs 5 levels per point.$(br2)These three layers stack additively. A $(thing)Berserker$()/$(thing)Orc$() with Warfare tree investment is a very different character from a Berserker/$(thing)Elf$().$(br2)$(bold)Next: undecided? $(l:icraft:welcome/class_guide)Pick Your Origin, Race & Class$(/l) matches classes to playstyles.$()"
     },
     {
       "type": "patchouli:text",

@@ -6,37 +6,42 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Magic is available $(bold)from the first day$(). Two different systems both have a T1 entry path \u2014 Iron's Spellbooks (pre-rolled scrolls + spell books) and Ars Nouveau (glyph-based spell crafting)."
+      "text": "Cast your first spell on day one — two systems both have a Tier 1 entry path: Iron's Spellbooks (pre-rolled scrolls + spell books) and Ars Nouveau (glyph-based spell crafting). This entry walks you from loot to first cast in both."
     },
     {
       "type": "patchouli:text",
-      "title": "Iron's Spellbooks \u2014 scrolls",
-      "text": "$(bold)Scrolls$() are single-spell one-shots with a random pre-rolled spell baked in. Find them in village chests and Overworld loot chests (~2-3% per chest).$(br2)If your class is $(bold)Archmage$(), $(bold)Battlemage$(), or $(bold)Void Summoner$(), your starter kit ships with two scrolls pre-loaded with basic spells (magic missile, firebolt, magic arrow, fang strike, or summon vex \u2014 depending on class)."
+      "title": "Iron's Spellbooks — scrolls",
+      "text": "$(bold)Scrolls$() are single-spell one-shots with a random pre-rolled spell baked in. Find them in village chests and Overworld loot chests (~2-3% per chest).$(br2)If your class is $(bold)Archmage$(), $(bold)Battlemage$(), or $(bold)Void Summoner$(), your starter kit ships with two scrolls pre-loaded with basic spells (magic missile, firebolt, magic arrow, fang strike, or summon vex — depending on class)."
     },
     {
       "type": "patchouli:text",
-      "title": "Iron's Spellbooks \u2014 spell books",
+      "title": "Iron's Spellbooks — spell books",
       "text": "$(bold)Copper spell books$() drop from Overworld chests (~3%) and can be inscribed with spells you've learned by reading scrolls. Once a spell is inscribed, the book is a reusable caster. Iron, Gold, Diamond, and Netherite books appear in later tiers for higher-tier spells.$(br2)$(bold)Common ink$() (~5% Overworld) and blank runes are needed to inscribe spells."
     },
     {
       "type": "patchouli:text",
-      "title": "Ars Nouveau \u2014 entry path",
+      "title": "Ars Nouveau — entry path",
       "text": "Ars's $(bold)novice spell book$() is craftable on the vanilla workbench at T1. You need one $(item)Book$() and four iron tools ($(item)iron shovel$(), $(item)iron pickaxe$(), $(item)iron axe$(), $(item)iron sword$()). The Imbuement Chamber and deep source network come later, but the entry path is open from the start."
     },
     {
       "type": "patchouli:spotlight",
       "item": "ars_nouveau:novice_spell_book",
-      "text": "Shapeless workbench recipe. Combine a book with one of each iron tool.$(br2)Crafted from one Mage Book + lapis. Right-click in main hand to open the spell editor; press the spellbook key to cast."
+      "text": "Shapeless workbench recipe: combine a book with one of each iron tool.$(br2)Right-click in main hand to cast; press $(k:ars_nouveau.open_book) to open the spell editor."
     },
     {
       "type": "patchouli:text",
-      "title": "Ars Nouveau \u2014 glyphs + inscribing",
-      "text": "Ars spell books are blank caster tools \u2014 they need $(bold)glyphs$() inscribed at a $(item)Scribes Table$() to do anything. Glyphs come from chest loot (T1 glyphs are front-loaded into Overworld chests) and from research papers.$(br2)A working T1 spell needs at least one $(bold)form$() (projectile / touch / self / aoe) and one $(bold)effect$() (harm / break / light / etc). Inscribe both at the Scribes Table and the spell book becomes castable."
+      "title": "Ars Nouveau — glyphs + inscribing",
+      "text": "Ars spell books are blank caster tools — they need $(bold)glyphs$() inscribed at a $(item)Scribes Table$() to do anything. Glyphs come from chest loot (T1 glyphs are front-loaded into Overworld chests) and from research papers.$(br2)A working T1 spell needs at least one $(bold)form$() (projectile / touch / self / aoe) and one $(bold)effect$() (harm / break / light / etc). Inscribe both at the Scribes Table and the spell book becomes castable."
     },
     {
       "type": "patchouli:text",
       "title": "Casting",
-      "text": "Iron's Spellbooks: right-click to cast the scroll or spell book. Scrolls are consumed on use; spell books charge mana and can be recast.$(br2)Ars Nouveau: right-click the inscribed spell book. The glyph chain runs in sequence (form applies the effect).$(br2)$(bold)Source vs Mana:$() Iron's uses Mana (blue bar), Ars uses Source (server-side pool). Both regenerate passively; T2 unlocks faster regen + higher caps.$(br2)$(bold)Mana pool baseline:$() Magic classes get a flat $(item)1.5x$() max mana via MULTIPLY_TOTAL +0.5 (Archmage, Battlemage, Void Summoner all identical). Non-mage classes use the base ISS pool. There is no global baseline buff -- speccing into a magic class is the way to expand the pool."
+      "text": "$(bold)Iron's Spellbooks:$() right-click to cast the scroll or spell book — or use $(k:irons_spellbooks.spellbook_cast) / the $(k:irons_spellbooks.spell_wheel) spell wheel. Scrolls are consumed on use; spell books charge mana and can be recast.$(br2)$(bold)Ars Nouveau:$() right-click the inscribed spell book. The glyph chain runs in sequence (form applies the effect)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mana vs Source",
+      "text": "Iron's uses $(bold)Mana$() (blue bar), Ars uses $(bold)Source$() (server-side pool). Both regenerate passively; T2 unlocks faster regen and higher caps.$(br2)$(bold)Mana pool baseline:$() magic classes get a flat $(item)1.5x$() max mana (Archmage, Battlemage, Void Summoner all identical). Non-mage classes use the base ISS pool — speccing into a magic class is the way to expand it.$(br2)$(bold)Next: upgrade your caster with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l).$()"
     }
   ]
 }

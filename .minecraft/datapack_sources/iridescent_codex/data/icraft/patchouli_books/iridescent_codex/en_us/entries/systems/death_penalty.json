@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Wanderer Race Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically."
+      "text": "$(bold)Wanderer Class Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically.$(br2)$(bold)Next: hunt Soulbound in high-tier structures and boss drops — it's the only true immunity.$()"
     }
   ]
 }

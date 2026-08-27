@@ -2,7 +2,7 @@
   "name": "Check Your Standing",
   "icon": "minecraft:compass",
   "category": "icraft:progression",
-  "sortnum": 5,
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",

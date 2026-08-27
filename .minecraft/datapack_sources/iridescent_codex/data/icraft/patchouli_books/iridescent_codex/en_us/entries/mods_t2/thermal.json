@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Thermal is the primary Tier 2 tech mod. Ore processing, machines, and Steel production."
+      "text": "Smelt your first Steel — Thermal is the Tier 2 tech mod, and Steel is the T2 baseline the Engineering lane runs on."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Thermal Series is fully documented in JEI \u2014 every machine recipe, augment slot, and component is listed. The $(bold)Thermal Manual$() item provides in-game tooltips when held."
+      "text": "$(bold)No book needed.$() Thermal Series is fully documented in JEI \u2014 every machine recipe, augment slot, and component is listed.$(br2)$(bold)Next: build a Pulverizer + Redstone Furnace pair and start doubling ore \u2014 $(l:icraft:engineering/t2_infrastructure)T2: Infrastructure$(/l) walks the build order.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

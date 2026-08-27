@@ -3,21 +3,20 @@
   "icon": "minecraft:crafting_table",
   "category": "icraft:skills",
   "sortnum": 6,
-  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Automation/crafting investment. Best for Artificer. Unique in the pack \u2014 0% of effects are attribute-based. 100% are command-driven via KubeJS scoreboard hooks.$()$(br2)$(warn)Engineering tree effects are KubeJS-dependent (Phase 2).$() The skill points are spendable and nodes are visible, but the underlying bonuses activate when the KubeJS bridge is implemented. Your points will not be wasted \u2014 they will activate retroactively."
+      "text": "$(italic)Automation/crafting investment. Best for Artificer. Unique in the pack — 0% of effects are attribute-based. 100% are command-driven via KubeJS scoreboard hooks.$()$(br2)$(warn)Engineering tree effects are KubeJS-dependent (Phase 2).$() The skill points are spendable and nodes are visible, but the underlying bonuses activate when the KubeJS bridge is implemented. Your points will not be wasted — they will activate retroactively."
     },
     {
       "type": "patchouli:text",
       "title": "Nodes",
-      "text": "$(bold)Crafting Speed$() \u2014 Reduces crafting time in automated crafters (Create, RS, IF). Manual crafting is always instant.$(br2)$(bold)Machine Efficiency$() \u2014 +% machine processing speed. Applies to Thermal, IF, Mekanism machines.$(br2)$(bold)RF Generation$() \u2014 +% RF output from all generators. Scales to +25% at max investment."
+      "text": "$(bold)Crafting Speed$() — Reduces crafting time in automated crafters (Create, RS, IF). Manual crafting is always instant.$(br2)$(bold)Machine Efficiency$() — +% machine processing speed. Applies to Thermal, IF, Mekanism machines.$(br2)$(bold)RF Generation$() — +% RF output from all generators. Scales to +25% at max investment."
     },
     {
       "type": "patchouli:text",
       "title": "Nodes (cont.)",
-      "text": "$(bold)Resource Doubling Branch$() \u2014 +% chance for ore processing to yield an extra ingot.$(br2)$(bold)Blueprint Memory Branch$() \u2014 Reduces anvil repair costs, XP enchanting costs, and Patchouli book recipe unlock costs.$(br2)$(bold)Engineering Capstone$() \u2014 $(bold)Master Engineer$() \u2014 All machines in 16-block radius run at +50% speed for 60s every 5 min. Passive pulse."
+      "text": "$(bold)Resource Doubling Branch$() — +% chance for ore processing to yield an extra ingot.$(br2)$(bold)Blueprint Memory Branch$() — Reduces anvil repair costs, XP enchanting costs, and Patchouli book recipe unlock costs.$(br2)$(bold)Engineering Capstone$() — $(bold)Master Engineer$() — All machines in 16-block radius run at +50% speed for 60s every 5 min. Passive pulse."
     }
   ]
 }

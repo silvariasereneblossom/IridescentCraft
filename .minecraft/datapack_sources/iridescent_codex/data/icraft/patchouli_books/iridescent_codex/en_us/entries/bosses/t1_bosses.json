@@ -6,15 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier 1 bosses are found in Overworld structures. They are manageable in iron/copper gear but require active dodging. None drop Simply Swords uniques \u2014 those begin at Tier 2."
+      "text": "Hunt these in Overworld structures — iron or copper gear is enough if you dodge actively.$(br2)None drop Simply Swords uniques (those begin at Tier 2), but every kill counts toward your $(t2)80%$() boss-rush clear and banks Combat tokens.$(br2)The boss compass and bonfire waystones point you at arena structures as you discover them."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mutant Zombie$() (Mutant Monsters)$(br)Overworld surface + structures. Drops: $(item)Hulk Hammer$() (25%, fun T1 melee drop with custom stats: 20 attack damage, 0.5 attack speed, Knockback II, +50% vs undead), Uncommon Ink (20%), Blood Rune (10%).$(br2)$(bold)Mutant Skeleton$() (Mutant Monsters)$(br)Overworld surface. Drops: Uncommon Ink (20%), Ice Rune (10%).$(br2)$(bold)Mutant Creeper$() (Mutant Monsters)$(br)Overworld surface. Drops: Uncommon Ink (20%), Fire Rune (10%).$(br2)$(italic)Note: Mutant Monsters crafting recipes are stripped -- you cannot craft armor/tools from drops. The Hulk Hammer + rune/ink drops are the intended T1 reward path.$()"
+      "title": "Mutant Monsters",
+      "text": "$(bold)Mutant Zombie$() — Overworld surface + structures. Drops: $(item)Hulk Hammer$() (25% — 20 attack damage, 0.5 attack speed, Knockback II, +50% vs undead), Uncommon Ink (20%), Blood Rune (10%).$(br2)$(bold)Mutant Skeleton$() — Overworld surface. Drops: Uncommon Ink (20%), Ice Rune (10%).$(br2)$(bold)Mutant Creeper$() — Overworld surface. Drops: Uncommon Ink (20%), Fire Rune (10%)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Iron's Spellbooks Mini-Bosses$()$(br)Archevoker, Cryomancer, Necromancer, Pyromancer appear in Overworld structures and villages. 25% chance for Tier 2 token peek.$(br2)$(bold)Brutal Bosses (Overworld)$()$(br)Champion-level mobs guarding Overworld dungeons. Variable drops. Tier 1 tokens guaranteed."
+      "title": "Structure Bosses",
+      "text": "$(bold)Terramity$() — $(item)Gob, King of Gnomes$() (Court of Gnomes — summon him with an emerald), $(item)Enchanter Merlin$() (Fairy Fountain), $(item)Super Sniffer$() (Ancient Outcrop).$(br2)$(bold)Mowzie's Mobs$() — Frostmaw (snowy peaks), Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs).$(br2)$(bold)Soulslike Weaponry$() — Draugr (taiga graves), Moonknight (Cathedral of Resurrection), Returning Knight and Night Shade (Old Moon Altar summons). $(warn)Their HP runs hot for T1 — bring backup.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mini-Bosses",
+      "text": "$(bold)Iron's Spellbooks$() — Archevoker, Cryomancer, Necromancer, Pyromancer appear in Overworld structures and villages. 25% chance for a Tier 2 token peek.$(br2)$(bold)Brutal Bosses$() — Champion-level mobs guarding Overworld dungeons. Variable drops, Tier 1 tokens guaranteed.$(br2)$(note)Mutant Monsters crafting recipes are stripped — the Hulk Hammer + rune/ink drops are the intended T1 reward path.$()$(br2)$(bold)Next: run /icraft codex bosses to see your clear count.$()"
     }
   ]
 }

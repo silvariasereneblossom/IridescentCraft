@@ -6,7 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Swift, graceful, and hungry. Elves are the best mobile fighters but require more food management.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Night Vision$() \u2014 Permanent night vision in dim environments. No UI effect \u2014 seamlessly dark to light.$(br2)$(bold)Swift$() \u2014 +10% movement speed permanently. Combines very well with Ranger, Samurai, Archmage.$(br2)$(bold)Fragile$() \u2014 -8% armor effectiveness from all worn armor. The tradeoff for speed.$(br2)$(bold)Hunger Penalty$() \u2014 +20% food drain rate. Fast metabolism is the cost of being an Elf."
+      "text": "$(italic)Swift, graceful, and hungry. Elves are the best mobile fighters but require more food management.$()$(br2)$(bold)Night Vision$() — Permanent night vision in dim environments. No UI effect — seamlessly dark to light.$(br2)$(bold)Swift$() — +10% movement speed permanently. Combines very well with Ranger, Samurai, Archmage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Fragile$() — -8% armor effectiveness from all worn armor. The tradeoff for speed.$(br2)$(bold)Hunger Penalty$() — +20% food drain rate. Fast metabolism is the cost of being an Elf.$(br2)$(bold)Next: pack varied food from day one — your metabolism makes Spice of Life bonuses matter more.$()"
     }
   ]
 }

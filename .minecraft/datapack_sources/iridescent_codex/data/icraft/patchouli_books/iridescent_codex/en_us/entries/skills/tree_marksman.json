@@ -3,11 +3,10 @@
   "icon": "minecraft:bow",
   "category": "icraft:skills",
   "sortnum": 2,
-  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ranged investment. Best for Ranger, Samurai.$()$(br2)Arrow damage, draw speed, and ammo efficiency are attribute-based and apply immediately. Ammo save and AoE splash require KubeJS event hooks (Phase 2 \u2014 partially implemented)."
+      "text": "$(italic)Ranged investment. Best for Ranger, Samurai.$()$(br2)Arrow damage, draw speed, and ammo efficiency apply the moment you take the node; ammo save and splash effects trigger on the shot itself."
     },
     {
       "type": "patchouli:text",
@@ -17,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Nodes (cont.)",
-      "text": "$(bold)Barrage Branch$() \u2014 Increases arrow count per shot (multishot-style) and adds small AoE on impact. KubeJS-dependent.$(br2)$(bold)Marksman Capstone$() \u2014 $(bold)True Shot$() \u2014 Fully charged shots always crit. Crits deal +50% damage instead of +50% vanilla crit."
+      "text": "$(bold)Barrage Branch$() \u2014 Increases arrow count per shot (multishot-style) and adds small AoE on impact.$(br2)$(bold)Marksman Capstone$() \u2014 $(bold)True Shot$() \u2014 Fully charged shots always crit. Crits deal +50% damage instead of +50% vanilla crit.$(br2)$(bold)Next: take Draw Speed early \u2014 it changes how the bow feels in every fight.$()"
     }
   ]
 }

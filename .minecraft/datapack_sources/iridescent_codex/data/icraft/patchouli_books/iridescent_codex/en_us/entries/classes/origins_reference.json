@@ -1,13 +1,13 @@
 {
-  "name": "Origins Guide",
+  "name": "The 13 Origins",
   "icon": "minecraft:nether_star",
-  "category": "icraft:welcome",
-  "sortnum": 4,
+  "category": "icraft:classes",
+  "sortnum": -1,
   "pages": [
     {
       "type": "patchouli:text",
       "title": "Your Origin",
-      "text": "$(thing)IridescentCraft$() features 13 unique origins, each with distinct powers and tradeoffs. Key principles:$(br2)$(item)No origin blocks any food type$() — dietary traits are preferences, not restrictions.$(br2)$(item)Environmental effects cause discomfort$(), not death.$(br2)$(item)Phantoms never truly die$() — they enter Spectral Collapse instead."
+      "text": "Skim the three list pages, pick the power set you want to live in, then lock it in at the Origins screen ($(k:origins.view_origin) shows yours any time).$(br2)Key principles:$(br2)$(item)No origin blocks any food type$() — dietary traits are preferences, not restrictions.$(br2)$(item)Environmental effects cause discomfort$(), not death.$(br2)$(item)Phantoms never truly die$() — they enter Spectral Collapse instead."
     },
     {
       "type": "patchouli:text",
@@ -46,13 +46,8 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Best Combos",
-      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Fire synergy. Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility. Fly, kite, never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport, spell from range, glass nuke.$(br2)$(bold)Phantom + Any + Any$()$(br)Never die. Ever. 5 min penalty instead.$(br2)$(bold)Witch of Ink + Orc + Berserker$()$(br)Weak early, monster late. Hyperscaling melee."
-    },
-    {
-      "type": "patchouli:text",
       "title": "Design Notes",
-      "text": "$(bold)Origins are flavor.$() Your origin gives unique abilities. Your $(thing)Race$() gives stat modifiers. Your $(thing)Class$() gives combat role. All three stack.$(br2)$(bold)No combination is unplayable.$() Some are stronger than others, but the tradeoffs keep everything viable.$(br2)$(bold)Hyperscaling origins$() (Witch of Ink, Artificial Construct) are intentionally weak early. They reward 50-100+ hours of investment."
+      "text": "$(bold)Origins are flavor.$() Your origin gives unique abilities. Your $(thing)Race$() gives stat modifiers. Your $(thing)Class$() gives combat role. All three stack.$(br2)$(bold)No combination is unplayable.$() Some are stronger than others, but the tradeoffs keep everything viable.$(br2)$(bold)Hyperscaling origins$() (Witch of Ink, Artificial Construct) reward 50–100+ hour investment — they are intentionally weak early.$(br2)$(bold)Next: pick your Race — it $(italic)is$() permanent: $(l:icraft:classes/race_overview)The Race System$(/l).$()"
     }
   ]
 }

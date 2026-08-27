@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Exploration Scaling",
-      "text": "With 10+ dimensions, a fully-explored Wanderer gains up to $(item)+55% XP$() and $(item)+27.5% speed$() permanently. $(note)Hyperscaling$() — weak early, dominant late.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Human$() — +10% XP stacks. Fastest leveling.$(br)$(thing)Halfling$() — Luck + food efficiency + exploration.$(br)$(thing)Kirin$() — Speed stacking reaches absurd levels."
+      "text": "With 10+ dimensions, a fully-explored Wanderer gains up to $(item)+55% XP$() and $(item)+27.5% speed$() permanently. $(note)Hyperscaling$() — weak early, dominant late.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Human$() — +10% XP stacks. Fastest leveling.$(br)$(thing)Halfling$() — Luck + food efficiency + exploration.$(br)$(thing)Kirin$() — Speed stacking reaches absurd levels.$(br2)$(bold)Next: visit a dimension you haven't touched — every first visit is a permanent buff.$()"
     }
   ]
 }

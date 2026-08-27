@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Each dimension in IridescentCraft has unique mechanical modifiers beyond simple mob difficulty scaling. Entering a new dimension unprepared is the most reliable way to die here.$(br2)These mechanics are applied by a KubeJS server script and stack with the standard mob scaling configs."
+      "text": "Read this before you step through any portal \u2014 every dimension carries unique mechanical modifiers on top of mob scaling, and entering unprepared is the most reliable way to die here."
     },
     {
       "type": "patchouli:text",
-      "title": "Overworld, Twilight, Aether",
-      "text": "$(bold)Overworld$() \u2014 Baseline. Champions spawn at standard rate.$(br2)$(bold)Twilight Forest$() \u2014 Persistent Darkness debuff underground. Boss-guarded progression \u2014 you cannot reach later zones without defeating previous zone bosses.$(br2)$(bold)The Aether$() \u2014 Falling damage doubled. No natural regen while airborne. Vertical combat is the primary challenge."
+      "title": "Tier 1\u20132 Dimensions",
+      "text": "$(bold)Overworld$() \u2014 Baseline. Champions spawn at standard rate.$(br2)$(bold)Twilight Forest$() \u2014 Persistent Darkness debuff underground. Boss-guarded progression \u2014 you cannot reach later zones without defeating previous zone bosses.$(br2)$(bold)The Aether$() \u2014 Falling damage doubled. No natural regen while airborne. Vertical combat is the primary challenge.$(br2)$(bold)Blue Skies$() \u2014 Elemental damage ignores standard armor. Magic resistance (Sorcery tree) is unusually valuable here."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 Dimensions",
-      "text": "$(bold)Deep Aether$() \u2014 Celestial Events every 20 min: all mobs receive +50% damage and speed for 3 minutes. Watch the sky \u2014 it changes color before an event.$(br2)$(bold)The End$() \u2014 Three escalating zones. Outer Islands: manageable. Deep End: elite mobs, Void environmental damage. Dragon's Domain: the endgame. Ender Dragon scales progressively with each kill.$(br2)$(bold)Blue Skies$() \u2014 Elemental damage ignores standard armor. Magic resistance (Sorcery tree) is unusually valuable here."
+      "text": "$(bold)Deep Aether$() \u2014 Celestial Events every 20 min: all mobs receive +50% damage and speed for 3 minutes. Watch the sky \u2014 it changes color before an event.$(br2)$(bold)The End$() \u2014 Three escalating zones. Outer Islands: manageable. Deep End: elite mobs, Void environmental damage. Dragon's Domain: the endgame. Ender Dragon scales progressively with each kill.$(br2)$(bold)Next: gear for the specific hazard \u2014 $(l:icraft:systems/enchantments)Custom Enchantments$(/l) has a counter for most of these.$()"
     }
   ]
 }

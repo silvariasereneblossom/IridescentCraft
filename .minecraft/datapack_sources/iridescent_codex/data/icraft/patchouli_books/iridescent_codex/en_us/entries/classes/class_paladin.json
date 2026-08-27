@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Group Play",
-      "text": "The $(thing)Paladin$() is the only class specifically designed for multiplayer. Healing Aura makes nearby players significantly more durable, and the tanky stats let the $(thing)Paladin$() stand at the front.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — Fire resistance + heavy armor effectiveness = the ultimate frontliner.$(br)$(thing)Human$() — Versatile bonus adapts to any group role.$(br)$(thing)Orc$() — Attack speed lets you deal respectable damage while tanking."
+      "text": "The $(thing)Paladin$() is the only class specifically designed for multiplayer. Healing Aura makes nearby players significantly more durable, and the tanky stats let the $(thing)Paladin$() stand at the front.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — Fire resistance + heavy armor effectiveness = the ultimate frontliner.$(br)$(thing)Human$() — Versatile bonus adapts to any group role.$(br)$(thing)Orc$() — Attack speed lets you deal respectable damage while tanking.$(br2)$(bold)Next: invest the Fortitude tree ($(k:puffish_skills.open)) — it's built for you.$()"
     }
   ]
 }

@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Summoner Playstyle",
-      "text": "Pairs best with Occultism summoning (T3) and Iron's Spells summon spells. Your personal combat is weak — your minions are your weapon. Soul Tether keeps you alive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — +20% in darkness + Shadow Cloak.$(br)$(thing)Demi-God$() — +40% HP offsets glass cannon.$(br)$(thing)Faefolk$() — Magic bonuses enhance summons."
+      "text": "Pairs best with Occultism summoning (T3) and Iron's Spells summon spells. Your personal combat is weak — your minions are your weapon. Soul Tether keeps you alive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — +20% in darkness + Shadow Cloak.$(br)$(thing)Demi-God$() — +40% HP offsets glass cannon.$(br)$(thing)Faefolk$() — Magic bonuses enhance summons.$(br2)$(bold)Next: learn Summon Vex from your starter scroll — your first servant.$()"
     }
   ]
 }

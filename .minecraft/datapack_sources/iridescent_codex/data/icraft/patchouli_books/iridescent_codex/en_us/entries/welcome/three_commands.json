@@ -1,0 +1,17 @@
+{
+  "name": "The Three Commands",
+  "icon": "minecraft:command_block",
+  "category": "icraft:welcome",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "The Three Commands",
+      "text": "Type these in chat any time — they print your live progression:$(br2)$(li)$(bold)/icraft codex balance$() — your token pool vs the next tier's threshold.$(li)$(bold)/icraft codex bosses$() — your boss-rush clear, per tier.$(li)$(bold)/icraft codex submit$() — bank the eligible materials you're carrying into tokens.$(br2)Full detail: $(l:icraft:progression/check_your_standing)Check Your Standing$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The book can't print live numbers — these commands are how you ask the Codex where you stand.$(br2)Prefer clicking? The $(bold)Submit$() buttons in the Engineering and Magic Crafting quest groups ($(k:heracles.open_quests)) do the same cap-safe banking as $(bold)/icraft codex submit$().$(br2)$(bold)Now run /icraft codex balance.$()"
+    }
+  ]
+}

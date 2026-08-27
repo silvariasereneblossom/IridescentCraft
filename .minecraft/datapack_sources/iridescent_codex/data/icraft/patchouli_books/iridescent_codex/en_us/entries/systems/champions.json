@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Progressive Difficulty$() is the core combat scaling system in IridescentCraft. Rather than a flat difficulty, the world escalates in response to your progression through three distinct stages.$(br2)Each stage introduces new mechanics that make the world deadlier \u2014 but also more rewarding. This is not optional. The world $(italic)will$() become harder as you advance."
+      "text": "Watch for pack leaders, Blood Moons, and treasure bags \u2014 the world escalates through three difficulty stages as you advance, and each stage adds mechanics like these.$(br2)Deadlier, but also more rewarding. This is not optional: the world $(italic)will$() become harder as you progress."
     },
     {
       "type": "patchouli:text",
@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Bleeding Effect",
-      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(italic)Always carry bandages. Bleeding in a mob pack without a cure is how most deaths happen.$()"
+      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(bold)Always carry bandages.$() Bleeding in a mob pack without a cure is how most deaths happen."
     }
   ]
 }

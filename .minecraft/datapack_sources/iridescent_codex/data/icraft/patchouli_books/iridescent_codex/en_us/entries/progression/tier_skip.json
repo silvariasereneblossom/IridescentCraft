@@ -2,7 +2,7 @@
   "name": "Spoils Aren't Currency",
   "icon": "minecraft:totem_of_undying",
   "category": "icraft:progression",
-  "sortnum": 5,
+  "sortnum": 6,
   "pages": [
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Play Hybrid",
-      "text": "Because all four lanes feed one pool, you never have to commit to a single path. Build a few Create machines, loot a dimension, kill a boss or two — every bit banks into the same total.$(br2)The $(bold)pure paths$() exist so a specialist is never blocked from advancing. The $(bold)combined pool$() exists so everyone else can simply play, in any mix, and progress."
+      "text": "Because all four lanes feed one pool, you never have to commit to a single path. Build a few Create machines, loot a dimension, kill a boss or two — every bit banks into the same total.$(br2)The $(bold)pure paths$() exist so a specialist is never blocked from advancing. The $(bold)combined pool$() exists so everyone else can simply play, in any mix, and progress.$(br2)$(bold)Next: run /icraft codex balance and see where your mix already stands.$()"
     }
   ]
 }

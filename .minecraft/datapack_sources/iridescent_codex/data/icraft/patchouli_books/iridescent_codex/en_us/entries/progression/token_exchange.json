@@ -2,11 +2,11 @@
   "name": "The Token Exchange",
   "icon": "icraft:progression_token_t3",
   "category": "icraft:progression",
-  "sortnum": 6,
+  "sortnum": 7,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier 4 is the top of the ladder — there is no token threshold beyond it. So at Tier 4 the Codex opens a new use for your $(bold)progression tokens$(): convert them straight into $(bold)vanilla experience$().$(br2)Every banked token — the overshoot you never spent advancing, and everything Tier 4 content keeps minting — becomes XP you can pour into Aptitudes, the enchanting table, or anvil repairs."
+      "text": "Convert your leftover $(bold)progression tokens$() straight into $(bold)vanilla experience$() once you reach Tier 4 — the top of the ladder has no threshold left to spend them on.$(br2)Every banked token — the overshoot you never spent advancing, and everything Tier 4 content keeps minting — becomes XP you can pour into Aptitudes, the enchanting table, or anvil repairs."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "What the XP Buys",
-      "text": "$(li)$(bold)Aptitudes$() — every Aptitude level-up spends vanilla XP. The exchange is the endgame faucet that funds your final levels.$(li)$(bold)Enchanting$() — fuel the enchanting table.$(li)$(bold)Repairs$() — combine and mend gear on the anvil.$(br2)See $(l:icraft:progression/tier_gates)How You Advance$(/l) for where tokens come from in the first place."
+      "text": "$(li)$(bold)Aptitudes$() — every Aptitude level-up spends vanilla XP. The exchange is the endgame faucet that funds your final levels.$(li)$(bold)Enchanting$() — fuel the enchanting table.$(li)$(bold)Repairs$() — combine and mend gear on the anvil.$(br2)See $(l:icraft:progression/tier_gates)How You Advance$(/l) for where tokens come from in the first place.$(br2)$(bold)Next: at Tier 4, run /icraft codex exchange 3 all.$()"
     }
   ]
 }

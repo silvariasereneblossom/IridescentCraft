@@ -6,7 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Wrath$() — $(item)+15% damage from all sources$(). The highest racial damage bonus.$(br2)$(bold)Tattered Wings$() — Slow fall. Not true flight.$(br2)$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Meat Preference$() — Craves meat to fuel their war.$(br2)$(bold)Fire Vulnerability$() — $(warn)Fire sears deeper than most.$()"
+      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Wrath$() — $(item)+15% damage from all sources$(). The highest racial damage bonus.$(br2)$(bold)Tattered Wings$() — Slow fall. Not true flight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Traits (cont.)",
+      "text": "$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Meat Preference$() — Craves meat to fuel their war.$(br2)$(bold)Fire Vulnerability$() — $(warn)Fire sears deeper than most.$()$(br2)$(bold)Next: eat widely anyway — Spice of Life max-HP bonuses claw back your missing hearts.$()"
     }
   ]
 }

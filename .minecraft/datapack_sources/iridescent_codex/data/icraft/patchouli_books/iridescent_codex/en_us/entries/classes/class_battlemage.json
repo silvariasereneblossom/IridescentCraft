@@ -16,7 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "The Hybrid",
-      "text": "The only class where stacking Spell Power gear makes your sword hit harder AND makes you tankier. Mana Shield scales with total Spell Power - the more arcane power, the more you can take.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() - +40% HP cushion, no melee malus. The new BIS.$(br)$(thing)Orc$() - +10% melee + attack speed = highest raw blade DPS.$(br)$(thing)Elf$() - +5% Spell Power + speed for kiting.$(br2)$(bold)Offmeta:$() $(thing)Faefolk$() - +30% Spell Power and +10% mana regen fuel Arcane Cleave brilliantly, but $(warn)-30% melee$() means raw blade strikes hit weakly. A skill-expression pick - high ceiling, painful floor."
+      "text": "The only class where stacking Spell Power gear makes your sword hit harder AND makes you tankier. Mana Shield scales with total Spell Power - the more arcane power, the more you can take.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() - +40% HP cushion, no melee malus. The strongest pick.$(br)$(thing)Orc$() - +10% melee + attack speed = highest raw blade DPS.$(br)$(thing)Elf$() - +5% Spell Power + speed for kiting."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Offmeta",
+      "text": "$(thing)Faefolk$() - +30% Spell Power and +10% mana regen fuel Arcane Cleave brilliantly, but $(warn)-30% melee$() means raw blade strikes hit weakly. A skill-expression pick - high ceiling, painful floor."
     }
   ]
 }

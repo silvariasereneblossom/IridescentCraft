@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Banking T3 tokens",
-      "text": "Mekanism is the densest token tier: $(bold)Gas-Burning Generator$() $(t3)100$(), Basic Smelting Factory $(t3)80$(), Purification Chamber $(t3)70$(), Enrichment Chamber $(t3)60$() each.$(br2)Bank $(t3)2000$() total to reach $(t4)Tier 4$(). Full writeup: $(l:icraft:mods_t3/mekanism)Mekanism$(/l)."
+      "text": "Mekanism is the densest token tier: $(bold)Gas-Burning Generator$() $(t3)100$(), Basic Smelting Factory $(t3)80$(), Purification Chamber $(t3)70$(), Enrichment Chamber $(t3)60$() each.$(br2)Bank $(t3)2000$() total to reach $(t4)Tier 4$(). Full writeup: $(l:icraft:mods_t3/mekanism)Mekanism$(/l).$(br2)$(bold)Next: get ethylene burning before you scale the chain — power first, then factories.$()"
     }
   ]
 }

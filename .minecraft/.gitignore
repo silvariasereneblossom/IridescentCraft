@@ -85,3 +85,7 @@ kubejs/server_scripts/scaling/boss_progressive.js
 
 # Journeymap cache
 journeymap/data/
+
+# Iridescent Codex: assets/ is BUILD OUTPUT — build_codex.sh deletes and
+# regenerates it from data/ on every build. Edit data/ only.
+datapack_sources/iridescent_codex/assets/

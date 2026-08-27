@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t1)Tier 1$() engineering is built on $(bold)Create$(). The first payoff is $(bold)ore doubling$(): a pair of $(bold)Crushing Wheels$() turns one ore into twice the ingot.$(br2)Set up rotational power (water wheel or hand crank), build a Mechanical Press for plates, and a Crushing Wheel pair for the 2x step."
+      "text": "Build a $(bold)Crushing Wheel$() pair — one ore in, two ingots out. That's $(t1)Tier 1$() engineering's first payoff, and it's all $(bold)Create$().$(br2)Set up rotational power (water wheel or hand crank), build a Mechanical Press for plates, then the Crushing Wheel pair for the 2x step."
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Mekanism is the primary T3\u2013T4 tech mod. Ore processing, gas handling, advanced machines, and the road to MekaSuit."
+      "text": "Start your 5x ore chain \u2014 Mekanism is the T3\u2013T4 tech mod: ore processing, gas handling, advanced machines, and the road to MekaSuit."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Mekanism is documented via JEI and the $(bold)Mekanism wiki$() (mekanismmod.com). In-game, hover any machine in JEI and press $(bold)R$() for recipes, $(bold)U$() for uses."
+      "text": "$(bold)No book needed.$() Mekanism is documented via JEI and the $(bold)Mekanism wiki$() (mekanismmod.com). In-game, hover any machine in JEI and press $(bold)R$() for recipes, $(bold)U$() for uses.$(br2)$(bold)Next: follow $(l:icraft:engineering/t3_five_x_chain)T3: The 5x Chain$(/l) machine by machine.$()"
     }
   ],
   "advancement": "icraft:stage_tier_3"

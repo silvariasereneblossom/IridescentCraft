@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Mekanism Generators and Tools are documented alongside the core mod at $(bold)mekanismmod.com$(). Focus on the Fission Reactor and Fusion Reactor at T4 \u2014 both require significant infrastructure."
+      "text": "$(bold)No book needed.$() Mekanism Generators and Tools are documented alongside the core mod at $(bold)mekanismmod.com$().$(br2)$(bold)Next: start the Fission Reactor \u2014 it's the on-ramp to Fusion, and $(l:icraft:engineering/t4_fusion_antimatter)T4: Fusion & Antimatter$(/l) walks the whole climb.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

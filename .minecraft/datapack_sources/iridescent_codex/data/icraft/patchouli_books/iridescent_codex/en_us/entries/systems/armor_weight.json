@@ -2,16 +2,21 @@
   "name": "Armor Weight",
   "icon": "minecraft:iron_chestplate",
   "category": "icraft:systems",
-  "sortnum": 10,
+  "sortnum": 9,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every piece of armor in IridescentCraft falls into one of four weight classes: $(bold)robe$(), $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(). Effects scale with the count of equipped pieces - so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
+      "text": "Weigh your armor before you build a kit — every piece is $(bold)robe$(), $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(), and the class shifts your mana regen, speed, and armor.$(br2)Effects scale with the count of equipped pieces, so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
     },
     {
       "type": "patchouli:text",
-      "title": "Per-piece effects",
-      "text": "$(5)Robe$() - true mage gear:$(br)$(li2)+0.10$() mana regen$(br)$(li2)+1.5%$() movement speed$(br)$(li2)-7.5%$() base armor$(br)$(li2)-10%$() armor toughness$(br2)$(t1)Light$() - rogue/agile cloth + leather:$(br)$(li2)+0.05$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness$(br2)$(t3)Heavy$() - diamond, netherite, plate:$(br)$(li2)-0.05$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+5%$() base armor"
+      "title": "Robe & Light",
+      "text": "$(5)Robe$() — true mage gear:$(br)$(li2)+0.10$() mana regen$(br)$(li2)+1.5%$() movement speed$(br)$(li2)-7.5%$() base armor$(br)$(li2)-10%$() armor toughness$(br2)$(t1)Light$() — rogue/agile cloth + leather:$(br)$(li2)+0.05$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Heavy",
+      "text": "$(t3)Heavy$() — diamond, netherite, plate:$(br)$(li2)-0.05$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+5%$() base armor$(br2)Medium (everything untagged) carries no modifiers at all — it is the neutral baseline the other classes trade against."
     },
     {
       "type": "patchouli:text",
@@ -25,13 +30,18 @@
     },
     {
       "type": "patchouli:text",
-      "title": "What's tagged what",
-      "text": "$(5)Robe$() - Iron's Spellbooks class robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Wandering Magician, Archevoker, Netherite Battlemage), Botania manaweave, Terramity void_mage + exodium_warlock, our reforged mage majors (vestment_*).$(br2)$(t1)Light$() - cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin), our reforged light/scaled majors.$(br2)$(t3)Heavy$() - vanilla diamond + netherite, Aether obsidian/phoenix/valkyrie/gravitite, Aquaculture neptunium, Botania terrasteel, Cataclysm ignitium, Forbidden Arcanus draco_arcanus + tyr, Twilight Forest fiery + knightmetal, Undergarden froststeel + utherium, more.$(br2)Everything else (vanilla iron + gold, mid-tier modded metals) is medium."
+      "title": "What's tagged Robe & Light",
+      "text": "$(5)Robe$() — Iron's Spellbooks class robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Wandering Magician, Archevoker, Netherite Battlemage), Botania manaweave, Terramity void mage + exodium warlock sets, and Iridescent Reforging mage majors (vestments).$(br2)$(t1)Light$() — cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin), and Iridescent Reforging light/scaled majors."
     },
     {
       "type": "patchouli:text",
-      "title": "How it works",
-      "text": "The system reads four Forge tags every 5 seconds (and immediately when you swap a piece):$(br)$(thing)icraft:armor_robe$()$(br)$(thing)icraft:armor_light$()$(br)$(thing)icraft:armor_medium$()$(br)$(thing)icraft:armor_heavy$()$(br2)Reforged armor uses the dynamic class lookup - the installed major module decides the tier (e.g., vestment_crown major = robe regardless of material).$(br2)Modifiers stack additively per slot. Compatible with all attribute mods (Apothic Attributes, Iron's Spellbooks, etc.) - bonuses apply on top of base armor stats and Apothic affixes.$(br2)Logic lives in $(thing)kubejs/server_scripts/armor_weight.js$()."
+      "title": "What's tagged Heavy",
+      "text": "$(t3)Heavy$() — vanilla diamond + netherite, Aether obsidian/phoenix/valkyrie/gravitite, Aquaculture neptunium, Botania terrasteel, Cataclysm ignitium, Forbidden & Arcanus draco arcanus + tyr, Twilight Forest fiery + knightmetal, Undergarden froststeel + utherium, and more.$(br2)Everything else (vanilla iron + gold, mid-tier modded metals) is medium.$(br2)Reforged armor is classed dynamically — the installed major module decides the tier, so a vestment crown counts as robe regardless of material."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Checking your totals",
+      "text": "Weight modifiers stack additively per slot and re-apply the moment you swap a piece. They sit on top of base armor stats, Apotheosis affixes, and every other attribute source.$(br2)$(bold)Next: open your inventory ($(k:inventory)) and click Show Attributes$() — the armor, toughness, speed, and mana lines show exactly what your current kit adds up to."
     }
   ]
 }

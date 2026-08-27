@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Risk and Reward",
-      "text": "The $(thing)Ranger$() has the highest ranged DPS in the game but dies in 2-3 hits from endgame content. Positioning is everything.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks with Swift for extreme mobility. Night vision for dungeon safety.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency for sustained kiting.$(br)$(thing)Human$() — No weaknesses, +15% XP to reach glass cannon safety thresholds faster."
+      "text": "The $(thing)Ranger$() has the highest ranged DPS in the game but dies in 2-3 hits from endgame content. Positioning is everything.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks with Swift for extreme mobility. Night vision for dungeon safety.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency for sustained kiting.$(br)$(thing)Human$() — No weaknesses, +15% XP to reach glass cannon safety thresholds faster.$(br2)$(bold)Next: spec the Marksman tree ($(k:puffish_skills.open)) — Draw Speed changes everything.$()"
     }
   ]
 }

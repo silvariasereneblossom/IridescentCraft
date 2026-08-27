@@ -2,11 +2,11 @@
   "name": "Tier Targets & the Boss Rush",
   "icon": "icraft:progression_token_t3",
   "category": "icraft:progression",
-  "sortnum": 4,
+  "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every tier offers the same two routes (see $(l:icraft:progression/tier_gates)How You Advance$(/l)): bank the $(bold)token threshold$(), or clear the $(bold)boss-rush share$(). This entry lists the targets tier by tier.$(br2)You only need to hit $(bold)one$() of the two. Check your standing any time with $(bold)/icraft codex balance$()."
+      "text": "Hit $(bold)either$() target and you advance — bank the token threshold, or clear the boss-rush share (see $(l:icraft:progression/tier_gates)How You Advance$(/l)). This entry lists the targets tier by tier.$(br2)Check your standing any time with $(bold)/icraft codex balance$()."
     },
     {
       "type": "patchouli:text",

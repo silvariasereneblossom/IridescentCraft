@@ -2,11 +2,11 @@
   "name": "Aptitudes",
   "icon": "justlevelingfork:leveling_book",
   "category": "icraft:systems",
-  "sortnum": 9,
+  "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Iridescent Aptitudes$() is the pack's RPG-style leveling system, forked from the open-source $(italic)JustLeveling Fork$() mod. Eight $(bold)aptitudes$() (STR, CON, DEX, DEF, MAG, INT, BLD, LCK) gain XP from gameplay actions matching their theme, and unlock skills + passives at threshold levels.$(br2)Open the aptitude UI with the $(bold)Y$() key (or via the inventory tab if installed)."
+      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree — the pack's RPG leveling layer, $(thing)Iridescent Aptitudes$().$(br2)Eight aptitudes (STR, CON, DEX, DEF, MAG, INT, BLD, LCK) gain XP from gameplay actions matching their theme, and unlock skills and passives at threshold levels."
     },
     {
       "type": "patchouli:text",
@@ -16,22 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "Five-tier skills",
-      "text": "Each aptitude has $(bold)5$() skill nodes at levels $(bold)5 / 10 / 15 / 20 / 30$(). Each tier opens a new ability:$(br2)$(bold)5$() — small confidence-builder bonus$(br)$(bold)10$() — clear functional buff$(br)$(bold)15$() — bridge tier, build-defining$(br)$(bold)20$() — high-signature ability$(br)$(bold)30$() — capstone, often triggered$(br2)See the design plan in the internal repo for the full 40-slot map (8 aptitudes × 5 tiers)."
+      "text": "Each aptitude has $(bold)5$() skill nodes at levels $(bold)5 / 10 / 15 / 20 / 30$(). Each tier opens a new ability:$(br2)$(bold)5$() — small confidence-builder bonus$(br)$(bold)10$() — clear functional buff$(br)$(bold)15$() — bridge tier, build-defining$(br)$(bold)20$() — high-signature ability$(br)$(bold)30$() — capstone, often triggered$(br2)Browse each aptitude's five nodes in the aptitude screen itself — hover a node for its exact effect."
     },
     {
       "type": "patchouli:text",
-      "title": "Iridescent fork — passives",
-      "text": "Native per-level passives (always-on, scale with aptitude level) match the redesigned themes:$(br2)$(bold)MAG$() — Spell Power (+16% spell damage at lvl 32) + Mana Regen (+32%)$(br)$(bold)INT$() — Attack Speed + Critical Chance (+25% at lvl 32; applies to melee, ranged, AND magic via the modular spellbook crit hook)$(br)$(bold)LCK$() — Luck + Critical Damage (existing — chance + damage live on different aptitudes for natural pairing)$(br2)Removed: Magic Resist + Beneficial Effect (not in design); Entity Reach on INT (replaced with crit_chance)."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Effects via KubeJS",
-      "text": "Tier-5/15/20/30 skill effects ship as $(thing)kubejs/server_scripts/skills/justleveling_skills.js$() handlers, not native JLFork code. Keeps gameplay logic editable without rebuilds and makes cross-mod attribute manipulation easier."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "NBT compatibility",
-      "text": "The fork keeps the internal modid $(italic)justlevelingfork$() so existing worlds' aptitude levels at $(thing)ForgeData.justlevelingfork.aptitude.*$() keep working through the swap — no migration needed when this jar replaces the upstream.$(br2)Stripped from the fork: gun-mod integrations (TacZ, Crayfish, Scorched Guns), the KubeJS plugin subpackage (we read NBT directly), L2Tabs inventory tab integration, BetterCombat targeting hooks, and the upstream update-check that pinged GitHub on every load."
+      "title": "Always-on passives",
+      "text": "Some aptitudes also carry per-level passives that scale automatically, no node purchase needed:$(br2)$(bold)MAG$() — Spell Power (up to +16% spell damage at level 32) and Mana Regen (up to +32%)$(br)$(bold)INT$() — Attack Speed and Critical Chance (up to +25% at level 32 — applies to melee, ranged, AND magic)$(br)$(bold)LCK$() — Luck and Critical Damage, so crit chance and crit damage live on different aptitudes and pair naturally.$(br2)$(bold)Next: press $(k:justlevelingfork.open_aptitudes) and spend the points you've banked.$()"
     }
   ]
 }

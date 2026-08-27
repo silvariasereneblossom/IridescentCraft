@@ -3,11 +3,10 @@
   "icon": "minecraft:experience_bottle",
   "category": "icraft:skills",
   "sortnum": 0,
-  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The skill system ($(bold)Pufferfish's Skills$()) provides six skill trees with deep investment paths. Skill points are earned by completing quests in the Heracles quest book \u2014 not by grinding combat or XP.$(br2)$(bold)Opening the skill menu:$() Default key $(bold)K$().$(br2)$(bold)Respeccing:$() 5 XP levels per point refunded. Full respec is possible but expensive."
+      "text": "Press $(k:puffish_skills.open) and plan before you spend \u2014 six skill trees, and skill points come from completing Heracles quests ($(k:heracles.open_quests)), not from grinding combat or XP.$(br2)$(bold)Respeccing:$() 5 XP levels per point refunded. Full respec is possible but expensive."
     },
     {
       "type": "patchouli:text",
@@ -19,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tree Structure$()$(br2)Each tree has:$(br2)$(li)$(bold)8-node trunk$() \u2014 always available, foundational bonuses$(li)$(bold)2 branches$() \u2014 unlock after trunk nodes, specialize into substyles$(li)$(bold)1 capstone$() \u2014 requires near-full tree investment, powerful late bonus$(br2)Branching at each fork is exclusive \u2014 you choose one branch or the other. Not both."
+      "text": "$(bold)Tree Structure$()$(br2)Each tree has:$(br2)$(li)$(bold)8-node trunk$() \u2014 always available, foundational bonuses$(li)$(bold)2 branches$() \u2014 unlock after trunk nodes, specialize into substyles$(li)$(bold)1 capstone$() \u2014 requires near-full tree investment, powerful late bonus$(br2)Branching at each fork is exclusive \u2014 you choose one branch or the other. Not both.$(br2)$(bold)Next: open $(k:puffish_skills.open) and pick the tree that matches your class.$()"
     }
   ]
 }

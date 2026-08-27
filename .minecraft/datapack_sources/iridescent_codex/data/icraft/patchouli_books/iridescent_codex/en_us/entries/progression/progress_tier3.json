@@ -2,7 +2,7 @@
   "name": "Reached: Tier 3 - Dominion",
   "icon": "undergarden:froststeel_ingot",
   "category": "icraft:progression",
-  "sortnum": 8,
+  "sortnum": 9,
   "advancement": "icraft:stage_tier_3",
   "pages": [
     {

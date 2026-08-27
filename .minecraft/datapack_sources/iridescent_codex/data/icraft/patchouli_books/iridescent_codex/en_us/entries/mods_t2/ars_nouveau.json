@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Ars Nouveau is the primary Tier 2 magic mod. Customizable spell glyphs, familiars, and magical automation."
+      "text": "Build your own spells, glyph by glyph — Ars Nouveau is the Tier 2 magic mod: custom spell crafting, familiars, and magical automation."
     },
     {
       "type": "patchouli:text",
@@ -17,9 +17,8 @@
       "text": "$(bold)Faefolk synergy:$() +10% spell power from the Nature Magic racial. Ars Nouveau's nature-flavored spells benefit the most.$(br2)$(bold)What unlocks at T2:$() Full spellbook access, Bookwyrm familiar, Drygmy for mob farming, Whirlisprig for crop automation. These become available once you have T2 stage."
     },
     {
-      "type": "patchouli:spotlight",
-      "item": "ars_nouveau:worn_notebook",
-      "text": "Craft the $(bold)Worn Notebook$() for the full Ars Nouveau reference \u2014 every glyph, every augment, familiar guides, and automation setups.$(br2)Granted to all players on first join (Ars Nouveau's starter handout). If lost, craft it: paper + amethyst shard."
+      "type": "patchouli:text",
+      "text": "$(bold)Where the reference lives:$() this Codex replaces the individual mod guidebooks in this pack. Every glyph and apparatus recipe is in JEI; the T1 entry path is walked in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot)/$(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first custom spell at a Scribes Table.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"
