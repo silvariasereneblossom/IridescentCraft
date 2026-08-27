@@ -20,6 +20,7 @@ The canonical design reference for all modpack systems.
 
 ### Systems
 - [Systems Overview](systems/overview.md) — Death penalty, scaling, enchantments, affixes, skills, loot, food
+- [Controls](systems/controls.md) — The pack's default keybind layout: every important function on its own working key
 
 ### KubeJS & Technical
 - [KubeJS Overview](kubejs/overview.md) — Script reference, event compatibility, datapack loading

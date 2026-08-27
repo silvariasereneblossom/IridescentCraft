@@ -37,6 +37,11 @@ saves/
 .minecraft/banned-*.json
 .minecraft/ops.json
 .minecraft/whitelist.json
+# Player-local options (keybinds/graphics). Untracked per Protocol 8 - the
+# Mode-A hard reset must never clobber a player's own settings. Pack defaults
+# ship via the Default Options mod (config/defaultoptions/, gen_keybinds.ps1)
+# + the distribution/client/options.txt install seed (which stays tracked).
+.minecraft/options.txt
 # Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
 # block loose crash-logs that accumulate at distro root
 .minecraft/server_distribution/logs/

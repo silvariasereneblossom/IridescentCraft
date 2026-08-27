@@ -17,6 +17,7 @@
     "(progression/overview.md": "(Progression-Overview",
     "(classes/overview.md": "(Classes-and-Races",
     "(systems/overview.md": "(Systems-Overview",
+    "(systems/controls.md": "(Controls",
     "(systems/tetra-materials.md": "(Tetra-Materials",
     "(systems/icraft-launcher.md": "(Iridescent-Launcher",
     "(kubejs/overview.md": "(KubeJS-Overview",
@@ -35,6 +36,7 @@
     "(iridescent-modular-spells-tetra-migration.md": "(Iridescent-Modular-Spells-Tetra-Migration",
     "(../home.md)": "(Home)",
     "(../home.md#": "(Home#",
+    "(../systems/controls.md": "(Controls",
 
     "_comment_inline_code": "`identifier`-style references in body text.",
     "`design/master-appendix.md`": "`Master-Design-Appendix`",
@@ -63,6 +65,7 @@
     { "src": ".minecraft/wiki/progression/overview.md",                            "dst": "Progression-Overview.md" },
     { "src": ".minecraft/wiki/protocols/8-client-sync.md",                         "dst": "Client-Sync-Protocol.md" },
     { "src": ".minecraft/wiki/systems/overview.md",                                "dst": "Systems-Overview.md" },
+    { "src": ".minecraft/wiki/systems/controls.md",                                "dst": "Controls.md" },
     { "src": ".minecraft/wiki/systems/tetra-materials.md",                         "dst": "Tetra-Materials.md" },
     { "src": ".minecraft/wiki/systems/icraft-launcher.md",                         "dst": "Iridescent-Launcher.md" }
   ],

@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## August 2026 — One curated keybind layout for the whole pack
+
+- **Every important function now has its own working default key.** With ~450 mods, dozens of actions shipped fighting over the same buttons (spell casting vs. armor abilities on V, backpack vs. toolbelt on B, class powers vs. curios vs. voice chat on G, quests vs. death history on U, jetpack vs. Terramity abilities on H, ...) and several gameplay abilities shipped with **no key at all** — including the secondary Origin power for Demi-God, Fallen Angel, Kirin, and Ryu, and the jetpack engine toggle. All resolved: one deconflicted layout, verified to have zero unintended key conflicts, ships as the pack default. See the new **[Controls](../systems/controls.md)** page for the full layout.
+- **Delivered via the new Default Options mod** (client-side): fresh installs get the layout automatically, and for existing players the *Controls → Key Binds → **Reset Keys*** button now resets to the *pack* layout (not raw mod defaults) while keeping your graphics and sound settings untouched. Your own rebinds are never overwritten without you asking.
+- **Your local settings now stay yours** — a leftover from early development meant the dev-instance sync could overwrite `options.txt` (keybinds + graphics) on launch; per the client-sync protocol it no longer touches player settings.
+- The in-game Codex's keybind references render **live bindings**, so the book always matches your actual keys.
+
 ## June 2026 — Three new specialist mage classes: the Trinity casters
 
 - **Elemental, Blessed, and Corrupted** join the class roster as magic *specialists* — the counterpart to the Archmage's generalist. Where the Archmage is decent at every school of magic, each Trinity mage is exceptional at **three** related schools and brings little to the rest (depth over breadth):
