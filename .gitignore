@@ -31,7 +31,7 @@ saves/
 .minecraft/poi/
 .minecraft/moddata/
 .minecraft/immersive_library/
-.minecraft/prettypipesprefs/
+.minecraft/prettypipesprefs
 .minecraft/usercache.json
 .minecraft/usernamecache.json
 .minecraft/banned-*.json
@@ -42,6 +42,24 @@ saves/
 # ship via the Default Options mod (config/defaultoptions/, gen_keybinds.ps1)
 # + the distribution/client/options.txt install seed (which stays tracked).
 .minecraft/options.txt
+# Per-player client state — same Protocol 8 rule as options.txt above: the
+# Mode-A prelaunch reset must never re-impose these on the player. (These were
+# bulk-added 2026-05-21 and untracked 2026-08-27; ignore rules alone do NOT
+# untrack an already-added file.)
+.minecraft/servers.dat
+.minecraft/servers.dat_old
+.minecraft/optionsshaders.txt
+.minecraft/TrashSlotSaveState.json
+.minecraft/heracles_options.json
+.minecraft/patchouli_data.json
+.minecraft/.qmenu_opened.marker
+# Server-side file that must not live at the client root (the live server's
+# copy is server_distribution/eula.txt); regenerates if a local test server
+# is ever run here again. ops/banned/whitelist/caches already have rules above.
+.minecraft/eula.txt
+# JVM crash dumps (any depth) + the Jun-2025 Forge installer log — never commit
+hs_err_pid*.log
+.minecraft/installer.log
 # Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
 # block loose crash-logs that accumulate at distro root
 .minecraft/server_distribution/logs/
