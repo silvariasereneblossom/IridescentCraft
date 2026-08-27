@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8bc25490",
+    "generated_from":  "91ca161c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4388,13 +4388,9 @@
                                                                            "size":  591
                                                                        },
                   "config/paxi/resourcepack_load_order.json":  {
-                                                                   "sha256":  "69672a922c47ceaa303b7b33a575dea60c7cc05d30bb6c2b52fbbd29f27c3e63",
-                                                                   "size":  62
+                                                                   "sha256":  "25d6f5ce0923344d1ae49afd2cac5b676a0a6f035d5c131e6ea7d719df26d5c4",
+                                                                   "size":  219
                                                                },
-                  "config/paxi/resourcepacks/iridescent_codex_resources.zip":  {
-                                                                                   "sha256":  "a46ff5b8c9b0aac7aa757604172afd90b2136e005cf92fd3375f7e14e9fb9188",
-                                                                                   "size":  110091
-                                                                               },
                   "config/pehkui-client.toml":  {
                                                     "sha256":  "b99f791974a57bce18a9c3bde4b416de180f24df878e985336814e6be4615e0d",
                                                     "size":  132
@@ -8392,7 +8388,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "b733284e7125d6ab067b996255741e268c6afaae25b4093092a216d8d10595ed",
+                                                               "sha256":  "b7a3aed188a83d226744c8020bf572d0d67ff10c8740af3f28e0d5527504a05b",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

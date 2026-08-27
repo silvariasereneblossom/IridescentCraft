@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8bc25490",
+    "generated_from":  "91ca161c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4364,8 +4364,8 @@
                                                                            "size":  591
                                                                        },
                   "config/paxi/resourcepack_load_order.json":  {
-                                                                   "sha256":  "8c313e869f0d1980270ae0da46597a7fb6a7cad30c89c385a951fc2e0614066d",
-                                                                   "size":  453
+                                                                   "sha256":  "0454fc04645d2c3fd2e2539533816fc4fd27fe0eba344c1cd6711fa30be52372",
+                                                                   "size":  622
                                                                },
                   "config/paxi/resourcepacks/Melodys Cute Villagers v1.10.0.zip":  {
                                                                                        "sha256":  "20d466a2760f71f70a059eb5ddbf3dc3222785d6d2bf640d1fafeab4d22ef5ea",
@@ -4375,10 +4375,6 @@
                                                                             "sha256":  "11a9e84cd09937fa3fc271d71835552168f49041ff57207b7ba0424be7c77bcc",
                                                                             "size":  237743
                                                                         },
-                  "config/paxi/resourcepacks/iridescent_codex_resources.zip":  {
-                                                                                   "sha256":  "9068ebeb546aa5f4e023e52a53f7125d62159ac3a501573e7b1f88a392ed188e",
-                                                                                   "size":  110241
-                                                                               },
                   "config/paxi/resourcepacks/pridepack8.0.1.zip":  {
                                                                        "sha256":  "dda3f0c18fcd0f6c555298b8d7dbba411d9a76f73cabad4ba6dd4aa3378cd8a1",
                                                                        "size":  11871116
@@ -8392,7 +8388,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "20f4cbece758452ec67d9ea20d509fecf1b02ed5b4d31b15570f4da9c8aaa88f",
+                                                               "sha256":  "3587fa8b1a029a6531826b4b4ace50e65db5deb9af88ea274850e9b00408c5fc",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
