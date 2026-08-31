@@ -53,13 +53,19 @@ saves/
 .minecraft/heracles_options.json
 .minecraft/patchouli_data.json
 .minecraft/.qmenu_opened.marker
-# Server-side file that must not live at the client root (the live server's
-# copy is server_distribution/eula.txt); regenerates if a local test server
-# is ever run here again. ops/banned/whitelist/caches already have rules above.
+# Server-side files that must not live at the client root (the live server's
+# copies are the server_distribution/ ones, which stay tracked); all of these
+# regenerate if a local test server is ever run here again. ops/banned/
+# whitelist/caches already have rules above. server.properties + the Forge
+# launchers removed 2026-08-30 on operator ratification.
 .minecraft/eula.txt
-# JVM crash dumps (any depth) + the Jun-2025 Forge installer log — never commit
+.minecraft/server.properties
+.minecraft/run.bat
+.minecraft/run.sh
+.minecraft/user_jvm_args.txt
+# JVM crash dumps + Forge installer logs (any depth) — never commit
 hs_err_pid*.log
-.minecraft/installer.log
+installer.log
 # Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
 # block loose crash-logs that accumulate at distro root
 .minecraft/server_distribution/logs/
