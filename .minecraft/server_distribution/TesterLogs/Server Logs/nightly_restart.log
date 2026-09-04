@@ -1,0 +1,108 @@
+﻿[2026-08-17 05:00:01] [INFO] ================ nightly restart run start ================
+[2026-08-17 05:00:01] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-17 05:00:01] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-17 05:00:01] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-17 05:00:01] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-17 05:00:01] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-18 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-18 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-18 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-18 05:00:03] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-18 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-18 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-19 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-19 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-19 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-19 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-19 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-19 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-20 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-20 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-20 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-20 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-20 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-20 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-21 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-21 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-21 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-21 05:00:03] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-21 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-21 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-22 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-22 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-22 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-22 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-22 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-22 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-23 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-23 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-23 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-23 05:00:03] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-23 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-23 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-24 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-24 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-24 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-24 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-24 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-24 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-25 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-25 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-25 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-25 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-25 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-25 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-26 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-26 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-26 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-26 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-26 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-26 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-27 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-27 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-27 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-27 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-27 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-27 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-28 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-28 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-28 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-28 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-28 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-28 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-29 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-29 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-29 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-29 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-29 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-29 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-30 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-30 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-30 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-30 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-30 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-30 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-08-31 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-08-31 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-08-31 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-08-31 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-08-31 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-08-31 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-09-01 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-09-01 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-09-01 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-09-01 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-09-01 05:00:03] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-09-01 05:00:03] [INFO] ================ nightly restart run end (success=False) ================
+[2026-09-02 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-09-02 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-09-02 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-09-02 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-09-02 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-09-02 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
+[2026-09-03 05:00:02] [INFO] ================ nightly restart run start ================
+[2026-09-03 05:00:02] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Service=IridescentMC  ScheduledFor=05:00
+[2026-09-03 05:00:02] [WARN] RCON disabled or no password -- skipping in-game warning; the graceful service stop will save the world.
+[2026-09-03 05:00:02] [WARN] nssm.exe not found on PATH or common locations; using Restart-Service.
+[2026-09-03 05:00:02] [ERROR] FAILED to restart service 'IridescentMC': Cannot find any service with service name 'IridescentMC'.
+[2026-09-03 05:00:02] [INFO] ================ nightly restart run end (success=False) ================
