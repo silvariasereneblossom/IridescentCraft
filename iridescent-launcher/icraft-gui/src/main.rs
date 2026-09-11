@@ -538,6 +538,125 @@ fn spawn_listener_probe() {
     });
 }
 
+// =============================================================================
+// Scheduled Cycle -- external request file (the nightly-restart task)
+// =============================================================================
+//
+// The 05:00 "IridescentCraft Nightly Restart" scheduled task used to run `nssm
+// restart IridescentMC`; since the GUI took over there is no such service (it
+// failed every night), and only this process holds the server's console. So
+// nightly_restart.ps1 now drops CYCLE_REQUEST_FILE ("<unix-secs> <reason>") in
+// the server dir, and this watcher runs it like the Cycle button: in-game
+// warnings, a graceful stop with a longer save grace, then the supervisor's
+// Cycle (self-update + sync + start). It answers "<unix-secs> accepted" or
+// "<unix-secs> skipped: <why>" in CYCLE_RESULT_FILE so the task logs what
+// actually happened.
+
+const CYCLE_REQUEST_FILE: &str = ".icraft_cycle_request";
+const CYCLE_RESULT_FILE: &str = ".icraft_cycle_request.result";
+const CYCLE_REQUEST_POLL: Duration = Duration::from_secs(10);
+/// Older requests are dropped, so a launcher started hours later can't bounce
+/// the server on a leftover file.
+const CYCLE_REQUEST_MAX_AGE: Duration = Duration::from_secs(10 * 60);
+const CYCLE_WARN_LEAD: Duration = Duration::from_secs(60);
+const CYCLE_WARN_SECOND: Duration = Duration::from_secs(10);
+/// A ~450-mod world save needs more than the Cycle button's 30 s (the old NSSM
+/// console-stop timeout was 120 s).
+const SCHEDULED_STOP_GRACE_SECS: u64 = 120;
+
+/// The GUI's install dir, published by `refresh_status` for the request watcher.
+static APP_SERVER_DIR: Mutex<Option<PathBuf>> = Mutex::new(None);
+
+fn unix_now() -> u64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs())
+        .unwrap_or(0)
+}
+
+/// Started once in `IcraftApp::new`.
+fn spawn_cycle_request_watcher() {
+    std::thread::spawn(|| loop {
+        std::thread::sleep(CYCLE_REQUEST_POLL);
+        let Some(dir) = APP_SERVER_DIR.lock().unwrap().clone() else { continue };
+        let Ok(body) = std::fs::read_to_string(dir.join(CYCLE_REQUEST_FILE)) else { continue };
+        let _ = std::fs::remove_file(dir.join(CYCLE_REQUEST_FILE));
+        let body = body.trim().to_string();
+        let verdict = cycle_request_precheck(&body);
+        let answer = match &verdict {
+            Ok(()) => "accepted".to_string(),
+            Err(why) => why.clone(),
+        };
+        log::info!("[scheduled] Cycle request '{body}': {answer}");
+        let _ = std::fs::write(dir.join(CYCLE_RESULT_FILE), format!("{} {answer}\n", unix_now()));
+        if verdict.is_ok() {
+            run_scheduled_cycle();
+        }
+    });
+}
+
+/// Err = why the request is not run (reported back to the task).
+fn cycle_request_precheck(body: &str) -> Result<(), String> {
+    use icraft_core::run::{server_state, ServerState};
+    let stamp: u64 = body
+        .split_whitespace()
+        .next()
+        .and_then(|s| s.parse().ok())
+        .ok_or_else(|| "rejected: no timestamp in the request".to_string())?;
+    let age = unix_now().saturating_sub(stamp);
+    if age > CYCLE_REQUEST_MAX_AGE.as_secs() {
+        return Err(format!("skipped: stale request ({age}s old)"));
+    }
+    if !SUPERVISOR.running.load(Ordering::SeqCst) {
+        return Err("skipped: no supervised server (stopped on purpose, or started via Run only / an older launcher)".to_string());
+    }
+    let st = server_state();
+    if !SUPERVISOR.server_live.load(Ordering::SeqCst) || st != ServerState::Started {
+        return Err(format!("skipped: server not up ({st:?}) -- already booting or restarting"));
+    }
+    if SUPERVISOR.cycle_requested.load(Ordering::SeqCst) || SUPERVISOR.operator_stop.load(Ordering::SeqCst) {
+        return Err("skipped: a stop/Cycle is already in progress".to_string());
+    }
+    Ok(())
+}
+
+/// Warn players, then hand off exactly like the Cycle button (the supervisor
+/// restarts it once the JVM exits), but with SCHEDULED_STOP_GRACE_SECS.
+fn run_scheduled_cycle() {
+    let say = |msg: String| {
+        if let Err(e) = icraft_core::run::send_console_line(&format!("say {msg}")) {
+            log::warn!("[scheduled] in-game warning failed: {e}");
+        }
+    };
+    say(format!("[Auto-Restart] Nightly restart in {} seconds -- back in a few minutes.", CYCLE_WARN_LEAD.as_secs()));
+    if !countdown(CYCLE_WARN_LEAD - CYCLE_WARN_SECOND) { return; }
+    say(format!("[Auto-Restart] Restarting in {} seconds.", CYCLE_WARN_SECOND.as_secs()));
+    if !countdown(CYCLE_WARN_SECOND) { return; }
+    log::info!("[scheduled] countdown done -- stopping (save grace {SCHEDULED_STOP_GRACE_SECS}s), then Cycle: self-update + sync + start");
+    SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
+    if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
+        SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+        log::warn!("[scheduled] stop failed: {e} -- nightly Cycle abandoned");
+    }
+}
+
+/// Sleep through one countdown step; false (abandon) if the server goes down,
+/// gets stopped, or starts cycling for another reason meanwhile.
+fn countdown(d: Duration) -> bool {
+    let end = Instant::now() + d;
+    while Instant::now() < end {
+        if !SUPERVISOR.server_live.load(Ordering::SeqCst)
+            || SUPERVISOR.operator_stop.load(Ordering::SeqCst)
+            || SUPERVISOR.cycle_requested.load(Ordering::SeqCst)
+        {
+            log::info!("[scheduled] server went down / was stopped during the countdown -- nightly Cycle abandoned");
+            return false;
+        }
+        std::thread::sleep(Duration::from_millis(500));
+    }
+    true
+}
+
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // Force a dark, near-black background so the trans-flag heading
@@ -556,6 +675,7 @@ impl IcraftApp {
             .unwrap_or_default();
         SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
         spawn_listener_probe();
+        spawn_cycle_request_watcher();
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
             .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
@@ -631,6 +751,9 @@ impl IcraftApp {
     }
 
     fn refresh_status(&mut self) {
+        // Runs on every install-dir change + periodically: keeps the scheduled
+        // Cycle-request watcher pointed at the current install.
+        *APP_SERVER_DIR.lock().unwrap() = Some(self.server_dir.clone());
         let cfg = ServerConfig::from_path(&self.server_dir);
         self.status = InstallStatus {
             forge_present: cfg.forge_dir().exists(),
