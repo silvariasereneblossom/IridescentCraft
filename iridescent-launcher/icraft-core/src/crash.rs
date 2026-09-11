@@ -362,7 +362,7 @@ fn newest_crash_report(cfg: &ServerConfig) -> Option<(std::time::SystemTime, Pat
             _ => {}
         }
     }
-    best.map(|(_, p)| p)
+    best
 }
 
 fn read_tail(path: &std::path::Path, lines: usize) -> std::io::Result<String> {
