@@ -150,6 +150,8 @@ static LOG_RX: Mutex<Option<Receiver<String>>> = Mutex::new(None);
 #[serde(default)]
 struct PersistedState {
     server_dir: Option<String>,
+    /// Heartbeat auto-restart toggle. None (older saved state) = on.
+    auto_restart: Option<bool>,
 }
 
 // =============================================================================
@@ -228,6 +230,314 @@ const REMOTE_POLL_INTERVAL: Duration = Duration::from_secs(180);
 /// deployed SHA can't masquerade as confirmed-current.
 const REMOTE_STALE_AFTER: Duration = Duration::from_secs(300);
 
+// =============================================================================
+// Heartbeat -- auto-Cycle when the server crashes or stops answering
+// =============================================================================
+//
+// 2026-09-10 incident: the server OOM'd on Sept 4, the OutOfMemoryError re-fired
+// inside the shutdown path ("Exception stopping the server"), and the JVM never
+// exited -- a zombie holding ~9 GB with the game port closed. Nothing noticed
+// for a week, because the only restart path was a human clicking Cycle.
+//
+// Two detectors, both independent of the egui frame loop (update() can stall
+// while the window is minimized or the RDP session is disconnected):
+//   1. Exit supervisor -- supervised runs (Serve (full), Cycle, the resume after
+//      a launcher self-update) loop inside their worker thread. A non-zero exit
+//      (every recorded crash has exited 1) or a probe-forced stop that the
+//      operator did NOT ask for runs the Cycle sequence again, with backoff and
+//      a crash-loop cap. Exit 0 (e.g. an in-game /stop) is treated as intentional.
+//   2. Listener probe -- while a supervised server is Started (or wedged in
+//      Stopping), a bare TCP connect to the game port every PROBE_INTERVAL.
+//      PROBE_FAILS_TO_HANG consecutive failures = the JVM is alive but no longer
+//      serving (the Sept 4 zombie) -> stop_with_escalation, then detector 1
+//      restarts it. Bare connect, no handshake, from 127.0.0.1 (Connectivity's
+//      proxywhitelist) so the probe can't trip the malformed-traffic blocker.
+//
+// Not covered: a main-thread tick freeze with the network threads still up (it
+// still accepts TCP). Vanilla's max-tick-time watchdog is the tool for that, and
+// server.properties currently disables it (max-tick-time=-1).
+
+const PROBE_INTERVAL: Duration = Duration::from_secs(30);
+/// x PROBE_INTERVAL = ~5 min with no listener before the probe forces a stop.
+const PROBE_FAILS_TO_HANG: u32 = 10;
+const PROBE_CONNECT_TIMEOUT: Duration = Duration::from_secs(5);
+/// Auto-restarts allowed per CRASH_WINDOW before giving up (crash loop).
+const MAX_AUTO_RESTARTS: usize = 3;
+const CRASH_WINDOW: Duration = Duration::from_secs(30 * 60);
+/// Wait before auto-restart #n is n x this (15 s, 30 s, 45 s).
+const RESTART_BACKOFF_STEP: Duration = Duration::from_secs(15);
+
+struct Supervisor {
+    /// Operator toggle (persisted). Off = a crash is logged, not restarted.
+    auto_restart: AtomicBool,
+    /// A supervise() loop owns the running task (including its backoff waits).
+    running: AtomicBool,
+    /// A supervised serve()/JVM run is in progress -- gates the listener probe.
+    server_live: AtomicBool,
+    /// Stop / Kill / Force kill / console `stop`: the next exit is intentional.
+    operator_stop: AtomicBool,
+    /// Cycle clicked during a supervised run: restart regardless of auto_restart.
+    cycle_requested: AtomicBool,
+    /// The listener probe forced this stop: a crash even if the JVM exits 0.
+    hang_kill: AtomicBool,
+    /// Where the probe connects; refreshed from server.properties per launch.
+    probe_addr: Mutex<Option<std::net::SocketAddr>>,
+    /// Timestamps of recent auto-restarts, for the crash-loop cap.
+    restarts: Mutex<std::collections::VecDeque<Instant>>,
+    /// Heartbeat badge text; empty = the default "armed"/"off".
+    status: Mutex<String>,
+}
+
+static SUPERVISOR: Supervisor = Supervisor {
+    auto_restart: AtomicBool::new(true),
+    running: AtomicBool::new(false),
+    server_live: AtomicBool::new(false),
+    operator_stop: AtomicBool::new(false),
+    cycle_requested: AtomicBool::new(false),
+    hang_kill: AtomicBool::new(false),
+    probe_addr: Mutex::new(None),
+    restarts: Mutex::new(std::collections::VecDeque::new()),
+    status: Mutex::new(String::new()),
+};
+
+fn set_heartbeat_status(s: impl Into<String>) {
+    *SUPERVISOR.status.lock().unwrap() = s.into();
+}
+
+/// The operator asked the server to stop -- the supervisor must not
+/// "helpfully" bring it back.
+fn mark_operator_stop() {
+    SUPERVISOR.operator_stop.store(true, Ordering::SeqCst);
+}
+
+/// Undo [`mark_operator_stop`] when the stop found no JVM to act on. During a
+/// supervised run's sync/launch phase (no JVM yet) a leftover mark would blind
+/// the probe and swallow the next crash for the whole run. With no run live,
+/// keep it: it cancels a pending auto-restart backoff.
+fn clear_stale_operator_stop() {
+    if SUPERVISOR.server_live.load(Ordering::SeqCst) {
+        SUPERVISOR.operator_stop.store(false, Ordering::SeqCst);
+    }
+}
+
+/// Probe target from server.properties: `server-ip` if one is set (the server
+/// then binds only that address), else 127.0.0.1; `server-port`, default 25565.
+/// If server-ip is ever set, add that IP to Connectivity's proxywhitelist too,
+/// or its per-source error counter will see the probe's bare connects.
+fn probe_addr(c: &ServerConfig) -> std::net::SocketAddr {
+    let props = std::fs::read_to_string(c.server_dir.join("server.properties")).unwrap_or_default();
+    let get = |key: &str| props.lines().find_map(|l| l.trim().strip_prefix(key).map(|v| v.trim().to_string()));
+    let port: u16 = get("server-port=").and_then(|v| v.parse().ok()).unwrap_or(25565);
+    let ip: std::net::IpAddr = get("server-ip=")
+        .filter(|v| !v.is_empty() && v != "0.0.0.0")
+        .and_then(|v| v.parse().ok())
+        .unwrap_or(std::net::IpAddr::V4(std::net::Ipv4Addr::LOCALHOST));
+    std::net::SocketAddr::new(ip, port)
+}
+
+/// One plain serve (the "Serve (full)" first launch).
+fn serve_once(c: &ServerConfig) -> anyhow::Result<i32> {
+    let opts = icraft_core::ServeOptions {
+        pipe_output: true,        // -> server log streams into GUI
+        apply_self_update: false, // GUI self-updates out-of-band (Cycle step 2)
+        ..Default::default()
+    };
+    icraft_core::serve(c, opts)
+}
+
+/// Cycle steps 2 + 3: self-update the launcher + FULLY sync content, then
+/// start the server. Step 1 (stop the running server) is the caller's: this
+/// only runs once the previous JVM has fully exited.
+fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
+    // === Cycle step 2: self-update launcher + FULLY sync content ===
+    log::info!("[cycle] step 2: self-update launcher + sync content");
+    // 2a. Content sync. Stages icraft-gui.exe.new if the repo's launcher
+    //     advanced, and brings kubejs/config/mods current. github_diff
+    //     now fails LOUD (visible Sync badge) instead of proceeding
+    //     stale silently, and never blind-trusts the marker for the
+    //     drift verifies that serve() runs below.
+    if let Err(e) = icraft_core::sync::github_diff(c, false) {
+        log::warn!("[cycle] content sync error: {e:#} (continuing -- on-disk verifies still run)");
+    }
+    // 2b. If a newer launcher exe got staged, apply it via the GUI
+    //     rename-dance and relaunch. Arm the resume sentinel FIRST so
+    //     the spawned new instance continues this very Cycle (sync +
+    //     start) rather than coming up idle.
+    if icraft_core::self_update::gui_update_staged(c) {
+        log::info!("[cycle] newer launcher staged -- applying + relaunching; the new instance resumes the Cycle");
+        icraft_core::self_update::set_cycle_resume(c);
+        match icraft_core::self_update::apply_and_relaunch_gui(c) {
+            Ok(true) => {
+                log::info!("[cycle] new GUI spawned -- exiting current process to release the exe lock");
+                std::thread::sleep(std::time::Duration::from_millis(500));
+                std::process::exit(0);
+            }
+            Ok(false) => {
+                // Nothing actually swapped (race / .new vanished).
+                let _ = icraft_core::self_update::take_cycle_resume(c);
+                log::warn!("[cycle] launcher apply found nothing to swap -- continuing without relaunch");
+            }
+            Err(e) => {
+                let _ = icraft_core::self_update::take_cycle_resume(c);
+                log::warn!("[cycle] launcher self-update failed: {e:#} -- continuing with the current binary");
+            }
+        }
+    }
+    // === Cycle step 3: start the server ===
+    // serve() re-runs github_diff (now a fast short-circuit), the
+    // manifest-aware jar hash-verify + the expected-state verify, then
+    // launches the JVM and blocks until it exits.
+    log::info!("[cycle] step 3: starting server");
+    serve_once(c)
+}
+
+/// Worker body of every supervised run: the first launch (Cycle sequence or a
+/// plain serve), then detector 1 of the heartbeat. Returns once the operator
+/// stopped the server, it exited cleanly, auto-restart is off, or the
+/// crash-loop cap tripped.
+fn supervise(c: ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> {
+    SUPERVISOR.running.store(true, Ordering::SeqCst);
+    let r = supervise_loop(&c, first_is_cycle);
+    SUPERVISOR.server_live.store(false, Ordering::SeqCst);
+    SUPERVISOR.running.store(false, Ordering::SeqCst);
+    r
+}
+
+fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> {
+    let mut cycle = first_is_cycle;
+    loop {
+        SUPERVISOR.hang_kill.store(false, Ordering::SeqCst);
+        *SUPERVISOR.probe_addr.lock().unwrap() = Some(probe_addr(c));
+        SUPERVISOR.server_live.store(true, Ordering::SeqCst);
+        let r = if cycle { cycle_once(c) } else { serve_once(c) };
+        SUPERVISOR.server_live.store(false, Ordering::SeqCst);
+        icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+        log::info!("[run] *** all post-exit hooks complete -- ready ***");
+
+        let operator = SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst);
+        let hang = SUPERVISOR.hang_kill.swap(false, Ordering::SeqCst);
+        if SUPERVISOR.cycle_requested.swap(false, Ordering::SeqCst) {
+            log::info!("[cycle] previous run done (JVM exited) -- self-update + sync + restart");
+            cycle = true;
+            continue;
+        }
+        let why = match &r {
+            Ok(0) if !hang => {
+                log::info!("[heartbeat] server stopped cleanly (exit 0) -- not restarting");
+                return Ok(());
+            }
+            Ok(_) if hang => "hang (no listener)".to_string(),
+            Ok(code) => format!("exit code {code}"),
+            Err(e) => format!("launch failed: {e:#}"),
+        };
+        if operator {
+            log::info!("[heartbeat] server exited ({why}) after an operator stop -- not restarting");
+            return r.map(|_| ());
+        }
+        if !SUPERVISOR.auto_restart.load(Ordering::SeqCst) {
+            log::warn!("[heartbeat] server went DOWN ({why}) -- auto-restart is off; click Cycle to bring it back");
+            set_heartbeat_status(format!("DOWN ({why}) -- auto-restart off"));
+            return r.map(|_| ());
+        }
+        let attempt = {
+            let mut q = SUPERVISOR.restarts.lock().unwrap();
+            while q.front().is_some_and(|t| t.elapsed() > CRASH_WINDOW) {
+                q.pop_front();
+            }
+            if q.len() >= MAX_AUTO_RESTARTS {
+                let mins = CRASH_WINDOW.as_secs() / 60;
+                log::error!(
+                    "[heartbeat] server went DOWN ({why}) -- already auto-restarted {} times in {mins} min; \
+                     giving up (crash loop). Fix the cause, then click Cycle.",
+                    q.len()
+                );
+                set_heartbeat_status(format!("GAVE UP -- crash loop ({} in {mins} min); click Cycle", q.len() + 1));
+                return r.map(|_| ());
+            }
+            q.push_back(Instant::now());
+            q.len()
+        };
+        let delay = RESTART_BACKOFF_STEP * attempt as u32;
+        log::warn!(
+            "[heartbeat] server went DOWN ({why}) -- auto-Cycle #{attempt}/{MAX_AUTO_RESTARTS} in {}s (Stop cancels)",
+            delay.as_secs()
+        );
+        set_heartbeat_status(format!("restarting in {}s (#{attempt}/{MAX_AUTO_RESTARTS})", delay.as_secs()));
+        let deadline = Instant::now() + delay;
+        while Instant::now() < deadline {
+            if SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst) {
+                log::info!("[heartbeat] auto-restart cancelled by operator");
+                set_heartbeat_status("");
+                return Ok(());
+            }
+            if SUPERVISOR.cycle_requested.swap(false, Ordering::SeqCst) {
+                break; // Cycle clicked during the wait: go now
+            }
+            std::thread::sleep(Duration::from_millis(250));
+        }
+        set_heartbeat_status(format!("auto-Cycle #{attempt} running"));
+        cycle = true;
+    }
+}
+
+/// Detector 2 of the heartbeat. Long-lived; started once in `IcraftApp::new`.
+fn spawn_listener_probe() {
+    use icraft_core::run::{server_state, ServerState};
+    std::thread::spawn(|| {
+        let mut fails: u32 = 0;
+        loop {
+            std::thread::sleep(PROBE_INTERVAL);
+            let st = server_state();
+            let eligible = SUPERVISOR.server_live.load(Ordering::SeqCst)
+                && matches!(st, ServerState::Started | ServerState::Stopping)
+                && !SUPERVISOR.operator_stop.load(Ordering::SeqCst)
+                && !SUPERVISOR.cycle_requested.load(Ordering::SeqCst);
+            if !eligible {
+                fails = 0;
+                continue;
+            }
+            let Some(addr) = *SUPERVISOR.probe_addr.lock().unwrap() else { continue };
+            match std::net::TcpStream::connect_timeout(&addr, PROBE_CONNECT_TIMEOUT) {
+                Ok(_) => {
+                    if fails > 0 {
+                        log::info!("[heartbeat] listener {addr} answering again after {fails} failed probe(s)");
+                    }
+                    fails = 0;
+                    let mut s = SUPERVISOR.status.lock().unwrap();
+                    if s.starts_with("auto-Cycle") {
+                        *s = s.replacen("auto-Cycle", "recovered by auto-Cycle", 1).replace(" running", "");
+                    }
+                }
+                Err(e) => {
+                    fails += 1;
+                    log::warn!("[heartbeat] listener probe {addr} failed ({fails}/{PROBE_FAILS_TO_HANG}): {e}");
+                }
+            }
+            if fails >= PROBE_FAILS_TO_HANG {
+                log::error!(
+                    "[heartbeat] no listener on {addr} for ~{}s while the server should be up ({st:?}) -- \
+                     JVM alive but not serving; forcing a stop so the supervisor can Cycle",
+                    (PROBE_INTERVAL * fails).as_secs()
+                );
+                SUPERVISOR.hang_kill.store(true, Ordering::SeqCst);
+                if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                    log::warn!("[heartbeat] forced stop failed: {e}");
+                }
+                fails = 0;
+                // Don't re-fire while the escalation runs: wait for this launch
+                // to leave Started/Stopping (capped so a stuck kill re-arms).
+                let wait_until = Instant::now() + Duration::from_secs(300);
+                while Instant::now() < wait_until
+                    && SUPERVISOR.server_live.load(Ordering::SeqCst)
+                    && matches!(server_state(), ServerState::Started | ServerState::Stopping)
+                {
+                    std::thread::sleep(Duration::from_secs(2));
+                }
+            }
+        }
+    });
+}
+
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // Force a dark, near-black background so the trans-flag heading
@@ -244,6 +554,8 @@ impl IcraftApp {
         let persisted: PersistedState = cc.storage
             .and_then(|s| eframe::get_value(s, KEY_SERVER_DIR))
             .unwrap_or_default();
+        SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
+        spawn_listener_probe();
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
             .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
@@ -371,66 +683,30 @@ impl IcraftApp {
         self.running_task = Some(h);
     }
 
-    /// Spawn the Cycle "restart" worker: step (2) self-update the launcher +
-    /// FULLY sync content, then step (3) start the server. Shared by the Cycle
-    /// button's no-server-running branch, the task-finished handler (after a
-    /// stop), and the resume-on-start path (after a self-update relaunch) so all
-    /// three take the identical, reliable sequence.
+    /// Spawn the Cycle "restart" worker (steps 2 + 3, see [`cycle_once`]) as a
+    /// supervised run, so the heartbeat keeps the server up afterwards. Shared
+    /// by the Cycle button's no-server-running branch, the task-finished
+    /// handler (after a non-supervised task was stopped), and the
+    /// resume-on-start path (after a self-update relaunch).
     ///
-    /// Step 1 (stop the running server) is handled by the caller: the
-    /// task-finished path only fires AFTER the prior serve worker returned,
-    /// i.e. the JVM has fully exited.
+    /// Step 1 (stop the running server) is handled by the caller.
     fn spawn_cycle_restart(&mut self) {
-        self.spawn("cycle-restart", move |c| {
-            // === Cycle step 2: self-update launcher + FULLY sync content ===
-            log::info!("[cycle] step 2: self-update launcher + sync content");
-            // 2a. Content sync. Stages icraft-gui.exe.new if the repo's launcher
-            //     advanced, and brings kubejs/config/mods current. github_diff
-            //     now fails LOUD (visible Sync badge) instead of proceeding
-            //     stale silently, and never blind-trusts the marker for the
-            //     drift verifies that serve() runs below.
-            if let Err(e) = icraft_core::sync::github_diff(&c, false) {
-                log::warn!("[cycle] content sync error: {e:#} (continuing -- on-disk verifies still run)");
-            }
-            // 2b. If a newer launcher exe got staged, apply it via the GUI
-            //     rename-dance and relaunch. Arm the resume sentinel FIRST so
-            //     the spawned new instance continues this very Cycle (sync +
-            //     start) rather than coming up idle.
-            if icraft_core::self_update::gui_update_staged(&c) {
-                log::info!("[cycle] newer launcher staged -- applying + relaunching; the new instance resumes the Cycle");
-                icraft_core::self_update::set_cycle_resume(&c);
-                match icraft_core::self_update::apply_and_relaunch_gui(&c) {
-                    Ok(true) => {
-                        log::info!("[cycle] new GUI spawned -- exiting current process to release the exe lock");
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-                        std::process::exit(0);
-                    }
-                    Ok(false) => {
-                        // Nothing actually swapped (race / .new vanished).
-                        let _ = icraft_core::self_update::take_cycle_resume(&c);
-                        log::warn!("[cycle] launcher apply found nothing to swap -- continuing without relaunch");
-                    }
-                    Err(e) => {
-                        let _ = icraft_core::self_update::take_cycle_resume(&c);
-                        log::warn!("[cycle] launcher self-update failed: {e:#} -- continuing with the current binary");
-                    }
-                }
-            }
-            // === Cycle step 3: start the server ===
-            // serve() re-runs github_diff (now a fast short-circuit), the
-            // manifest-aware jar hash-verify + the expected-state verify, then
-            // launches the JVM and blocks until it exits.
-            log::info!("[cycle] step 3: starting server");
-            let opts = icraft_core::ServeOptions {
-                pipe_output: true,
-                apply_self_update: false, // GUI self-updated in step 2 already
-                ..Default::default()
-            };
-            let r = icraft_core::serve(&c, opts).map(|_| ());
-            icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
-            log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
-            r
-        });
+        self.spawn_supervised("cycle-restart", true);
+    }
+
+    /// Start a supervised server run (see [`supervise`]). A fresh operator
+    /// launch re-arms the heartbeat: clears stale stop/cycle flags, the
+    /// crash-loop history, and any "GAVE UP" badge.
+    fn spawn_supervised(&mut self, name: &'static str, first_is_cycle: bool) {
+        if self.task_running() { return; }
+        SUPERVISOR.operator_stop.store(false, Ordering::SeqCst);
+        SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+        SUPERVISOR.restarts.lock().unwrap().clear();
+        set_heartbeat_status("");
+        // Set here (GUI thread), not only inside the worker, so a Cycle click in
+        // the instant after spawn already takes the supervised path.
+        SUPERVISOR.running.store(true, Ordering::SeqCst);
+        self.spawn(name, move |c| supervise(c, first_is_cycle));
     }
 
     fn pick_dir(&mut self) {
@@ -454,7 +730,10 @@ impl IcraftApp {
 
 impl eframe::App for IcraftApp {
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
-        let p = PersistedState { server_dir: Some(self.server_dir.display().to_string()) };
+        let p = PersistedState {
+            server_dir: Some(self.server_dir.display().to_string()),
+            auto_restart: Some(SUPERVISOR.auto_restart.load(Ordering::SeqCst)),
+        };
         eframe::set_value(storage, KEY_SERVER_DIR, &p);
     }
 
@@ -622,6 +901,20 @@ impl IcraftApp {
             };
             badge(ui, "Server", state_ok, state_label);
 
+            // Heartbeat: auto-Cycle on crash / dead listener (see SUPERVISOR).
+            let hb_status = SUPERVISOR.status.lock().unwrap().clone();
+            let (hb_label, hb_ok) = if !hb_status.is_empty() {
+                let ok = hb_status.starts_with("recovered") || hb_status.starts_with("auto-Cycle");
+                (hb_status, ok)
+            } else if !SUPERVISOR.auto_restart.load(Ordering::Relaxed) {
+                ("off".to_string(), false)
+            } else if SUPERVISOR.running.load(Ordering::Relaxed) {
+                ("armed".to_string(), true)
+            } else {
+                ("armed (no server)".to_string(), true)
+            };
+            badge(ui, "Heartbeat", hb_ok, &hb_label);
+
             badge(ui, "Forge",   self.status.forge_present, if self.status.forge_present { "installed" } else { "missing" });
             badge(ui, "EULA",    self.status.eula_present,  if self.status.eula_present  { "accepted"  } else { "missing" });
             badge(ui, "Mods",    self.status.mod_count > 0, &format!("{} jar(s)", self.status.mod_count));
@@ -699,18 +992,10 @@ impl IcraftApp {
         ui.heading("Server lifecycle");
         ui.horizontal_wrapped(|ui| {
             if action_btn(ui, "Serve (full)", busy).clicked() {
-                self.spawn("serve", move |c| {
-                    let opts = icraft_core::ServeOptions {
-                        pipe_output: true, // -> server log streams into GUI
-                        apply_self_update: false, // GUI self-updates out-of-band
-                        ..Default::default()
-                    };
-                    let r = icraft_core::serve(&c, opts).map(|_| ());
-                    icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
-                    log::info!("[run] *** all post-exit hooks complete -- ready ***");
-                    r
-                });
+                // Supervised: the heartbeat auto-Cycles it if it crashes.
+                self.spawn_supervised("serve", false);
             }
+            // Run only = bare JVM launch for debugging: NOT supervised.
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
                     let result = icraft_core::run::launch_server_piped(&c, false).map(|_| ());
@@ -733,8 +1018,12 @@ impl IcraftApp {
                 // after 30s and force kill 10s after that. Aborts on
                 // PID change so a new run isn't killed by a stale
                 // timer.
+                // Operator intent: the heartbeat must not restart it (also
+                // cancels a pending auto-restart backoff).
+                mark_operator_stop();
                 log::info!("[lifecycle] Stop clicked (auto-escalates after 30s)");
                 if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                    clear_stale_operator_stop();
                     log::warn!("[lifecycle] stop failed: {e}");
                 }
             }
@@ -745,8 +1034,10 @@ impl IcraftApp {
                 // then taskkill /F (since plain taskkill /T is a no-op
                 // for headless Java -- no window to receive WM_CLOSE).
                 // Use when Stop's 30s grace is too long to wait.
+                mark_operator_stop();
                 log::info!("[lifecycle] Kill clicked");
                 if let Err(e) = icraft_core::run::kill_active_server(false) {
+                    clear_stale_operator_stop();
                     log::warn!("[lifecycle] kill failed: {e}");
                 }
             }
@@ -755,19 +1046,39 @@ impl IcraftApp {
                 // immediately. World saves NOT flushed -- chunks since
                 // last autosave are lost. Use only when graceful Kill
                 // also stalls.
+                mark_operator_stop();
                 log::warn!("[lifecycle] Force kill clicked -- worlds may not flush");
                 if let Err(e) = icraft_core::run::kill_active_server(true) {
+                    clear_stale_operator_stop();
                     log::warn!("[lifecycle] force kill failed: {e}");
                 }
             }
             // Cycle = full stop -> self-update + sync -> start, single click.
-            // When a server task is running we sequence: stop_with_escalation
-            // (Stop's 30s grace + 10s force-kill watchdog), set pending_restart,
-            // and let update()'s task-finished handler run spawn_cycle_restart
-            // once the JVM has fully exited. When no task is running we run the
-            // same self-update + sync + start sequence immediately.
+            // Supervised run: flag cycle_requested and stop -- the supervise()
+            // loop restarts it once the JVM has exited (or right away, if it is
+            // sitting in an auto-restart backoff). Other task running: the old
+            // path -- stop_with_escalation (Stop's 30s grace + 10s force-kill
+            // watchdog), set pending_restart, and let update()'s task-finished
+            // handler run spawn_cycle_restart. Nothing running: go now.
             if ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                if self.task_running() {
+                if SUPERVISOR.running.load(Ordering::SeqCst) {
+                    // A manual Cycle re-arms a heartbeat that gave up.
+                    SUPERVISOR.restarts.lock().unwrap().clear();
+                    set_heartbeat_status("");
+                    SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
+                    if SUPERVISOR.server_live.load(Ordering::SeqCst) {
+                        log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
+                        if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                            // No JVM yet (still in the sync/launch phase): it is
+                            // already coming up fresh -- don't leave a stale flag
+                            // that would turn a later Stop into a restart.
+                            SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+                            log::warn!("[cycle] {e} -- server is still starting (sync/launch phase); Cycle ignored");
+                        }
+                    } else {
+                        log::info!("[cycle] auto-restart backoff in progress -- restarting now");
+                    }
+                } else if self.task_running() {
                     log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
                     if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
                         log::warn!("[cycle] stop failed: {e}");
@@ -782,6 +1093,17 @@ impl IcraftApp {
                 self.spawn("accept-eula", move |c| icraft_core::eula::accept(&c));
             }
         });
+        // Heartbeat toggle (persisted). Applies to Serve (full) / Cycle runs.
+        let mut auto_restart = SUPERVISOR.auto_restart.load(Ordering::SeqCst);
+        if ui.checkbox(&mut auto_restart, "Auto-restart: run Cycle when the server crashes or stops answering (~5 min)")
+            .on_hover_text("Off: a crash is logged and the Heartbeat badge turns red, but nothing restarts it. \
+                            Stop / Kill / Force kill / a console `stop` / an in-game /stop are never restarted. \
+                            Gives up after 3 auto-restarts in 30 min (crash loop) -- click Cycle to re-arm.")
+            .changed()
+        {
+            SUPERVISOR.auto_restart.store(auto_restart, Ordering::SeqCst);
+            log::info!("[heartbeat] auto-restart {}", if auto_restart { "ON" } else { "OFF" });
+        }
 
         ui.add_space(8.0);
         ui.heading("Sync + install");
@@ -1151,8 +1473,16 @@ fn draw_colored_title(ui: &mut egui::Ui) {
 fn send_console(line: &str) {
     let line = line.trim();
     if line.is_empty() { return; }
+    // A typed `stop` is operator intent -- the heartbeat must not restart it.
+    let is_stop = line.trim_start_matches('/').eq_ignore_ascii_case("stop");
+    if is_stop {
+        mark_operator_stop();
+    }
     log::info!("[console] >> {line}");
     if let Err(e) = icraft_core::run::send_console_line(line) {
+        if is_stop {
+            clear_stale_operator_stop();
+        }
         log::warn!("[console] {e}");
     }
 }

@@ -29,13 +29,28 @@ pub fn capture_crash_log(cfg: &ServerConfig, exit_code: i32) -> Result<PathBuf> 
     body.push_str(&format!("Date: {}\n", now.format("%Y-%m-%d %H:%M:%S")));
     body.push_str(&format!("Exit Code: {exit_code}\n\n"));
 
-    // Latest crash report (newest by mtime under crash-reports/)
-    if let Some(latest) = newest_crash_report(cfg) {
-        body.push_str(&format!("--- Forge Crash Report: {} ---\n", latest.display()));
-        if let Ok(s) = fs::read_to_string(&latest) {
-            body.push_str(&s);
+    // Forge crash report -- only one written for THIS exit. The newest file
+    // under crash-reports/ can be days old (a hang, a kill, or an OOM that
+    // wedged the shutdown writes none), and embedding it pins a stale cause on
+    // this exit (2026-09-10: a Cycle kill of a week-old zombie JVM bundled the
+    // Sept 4 OOM report as if it were new).
+    match newest_crash_report(cfg) {
+        Some((mtime, latest)) if mtime.elapsed().map_or(true, |age| age <= FRESH_CRASH_REPORT) => {
+            body.push_str(&format!("--- Forge Crash Report: {} ---\n", latest.display()));
+            if let Ok(s) = fs::read_to_string(&latest) {
+                body.push_str(&s);
+            }
+            body.push('\n');
         }
-        body.push('\n');
+        Some((mtime, latest)) => {
+            let age = mtime.elapsed().unwrap_or_default().as_secs();
+            body.push_str(&format!(
+                "--- No Forge crash report for this exit (newest on disk is {}, {}h{:02}m old -- not included; \
+                 a hang/kill or a wedged shutdown writes none) ---\n\n",
+                latest.display(), age / 3600, (age % 3600) / 60
+            ));
+        }
+        None => {}
     }
 
     body.push_str("\n--- Last 200 lines of server log ---\n");
@@ -328,7 +343,12 @@ pub fn clear_pat_file() -> Result<bool> {
     }
 }
 
-fn newest_crash_report(cfg: &ServerConfig) -> Option<PathBuf> {
+/// A Forge crash report counts as "this exit's" if written within this window
+/// before the exit is captured (the crash-time save can take a few minutes).
+const FRESH_CRASH_REPORT: std::time::Duration = std::time::Duration::from_secs(30 * 60);
+
+/// Newest `crash-reports/*.txt` by mtime, with that mtime.
+fn newest_crash_report(cfg: &ServerConfig) -> Option<(std::time::SystemTime, PathBuf)> {
     let dir = cfg.crash_reports();
     if !dir.is_dir() { return None; }
     let mut best: Option<(std::time::SystemTime, PathBuf)> = None;
