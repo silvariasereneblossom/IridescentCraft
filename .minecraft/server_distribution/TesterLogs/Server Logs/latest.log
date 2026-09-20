@@ -1,145 +1,124 @@
-[19Sep2026 02:45:37.628] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 3.8271307945251465) to VERY_HIGH (avg. 246.30006408691406)
-[19Sep2026 02:45:43.702] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 246.30006408691406) to VERY_LOW (avg. 3.9507925510406494)
-[19Sep2026 09:59:49.058] [Netty Server IO #4/ERROR] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channels [supplementaries:channel,ponder:main,structure_gel:main,blue_skies:main,l2library:main,corgilib:network,aethersteel:aethersteel,tetracelium:main,terramity:terramity,alexsmobs:main_channel,mowziesmobs:net,elytraslot:main,dataanchor:level_tracked_data,blueprint:net,moonlight:channel,soul_fire_d:ddfires,createoreexcavation:main,aether:main,justlevelingfork:network,dataanchor:chunk_tracked_data,libx:netchannel,polymorph:main,crust:channel,enderchests:main_channel,aether_protect_your_moa:main,waystone_towers:waystone_towers,easyanvils:1,akashictome:main,waystones:network,torchmaster:main,undergarden:channel,cardinal_sins:cardinal_sins,sebastrnlib:sebastrnlib,calio:channel,sophisticatedbackpacks:channel,attributizer:main,nitrogen_internals:main,mahou_tsukai_combat:mahou_tsukai_combat,majruszsdifficulty:main,cherry_samurai_temple:cherry_samurai_temple,biggerstacks:rules,mekanism:mekanism,armorunlocked:network,deep_aether:main,moreartifacts:moreartifacts_channel,crafttweaker:main,mutantmonsters:1,stalwart_dungeons:stalwart_dungeons,l2damagetracker:main,citadel:main_channel,dna:dna,deep_aether:deep_aether,difficult_caves:difficult_caves,ad_astra:main,curios:main,heracles:main,majruszlibrary:main,celestial_core:main,apoli:channel,townstead:main,majestic_menaces:majestic_menaces,sophisticatedcore:channel,kittyconfig:sync,lovely_sparkle_pieces:main,multipiston:net-channel,zeta:main,twilightforest:channel,theabyss:theabyss,cataclysm_ut:cataclysm_ut,rpgseteffects:main,l2itemselector:main,silentlib:network,domum_ornamentum:net-channel,noseenotick:main,cataclysm:main_channel,sleep_hunger:sleep_hunger,chiselsandbits:chiselsandbits,modonomicon:main,cosmeticarmorreworked:main,morphtool:main,creativecore:main,craftslimeforge:craftslimeforge,mahoutsukai:main_channel,sereneseasons:main,decorative_lgbt_wall_flags:decorative_lgbt_wall_flags,lootr:main_network_channel,dataanchor:entity_tracked_data,xp_from_crops:xp_from_crops,geckolib:main,l2tabs:main,occultism:main,botania:main,prettypipes:network,attributecore:main,quark:main,dataanchor:block_entity_tracked_data,minecraft:moreartifacts,toe:toe,keepdurable:keepdurable,quickstack:quickstack,chipped:main,tetra:main,farmingforblockheads:network,simple_staves:simple_staves,lionfishapi:main_channel,forge:tier_sorting,hunger_overhaul:hunger_overhaul,netherskeletons:netherskeletons,estrogen:main,raw_netherite:raw_netherite,caelus:main,sophisticatedstorage:channel,create:main,enemyexpansion:enemyexpansion,createaddition:main,comforts:main,alexs_mobs_extra_music:alexs_mobs_extra_music,cookingforblockheads:network,mekanismgenerators:mekanismgenerators,easymagic:1,adhooks:main,origins:network,jea:netchannel,nether_zombies:nether_zombies,pehkui:main,solcarrot:main,structurize:net-channel,l2screentracker:main,glitchcore:config_sync,mca:main,cabletiers:main_channel,tmtcmoe:tmtcmoe,fluxnetworks:network,txdacompat:txdacompat,brewinandchewin:main,patchouli:main,storagedrawers:main,celestial_artifacts:main,delightful:main,shetiphiancore:main_channel,kittyconfig:sync/configuration,refinedstorage:main_channel] rejected vanilla connections
-[19Sep2026 09:59:49.059] [Netty Server IO #4/INFO] [net.minecraftforge.server.ServerLifecycleHooks/SERVERHOOKS]: [/10.0.0.4:56526] Disconnecting VANILLA connection attempt: This server has mods that require Forge to be installed on the client. Contact your server admin for more details.
-[19Sep2026 12:43:01.033] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3943ms or 78 ticks behind
-[19Sep2026 12:43:03.391] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_HIGH (avg. 72.139145) to VERY_LOW (avg. 1.059324)
-[19Sep2026 13:18:03.795] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2832ms or 56 ticks behind
-[19Sep2026 13:23:07.532] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2273ms or 45 ticks behind
-[19Sep2026 13:28:08.784] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2779ms or 55 ticks behind
-[19Sep2026 13:33:11.785] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3032ms or 60 ticks behind
-[19Sep2026 13:38:19.475] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 7726ms or 154 ticks behind
-[19Sep2026 13:38:43.380] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2332ms or 46 ticks behind
-[19Sep2026 13:39:02.897] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2049ms or 40 ticks behind
-[19Sep2026 13:39:43.365] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2118ms or 42 ticks behind
-[19Sep2026 13:41:18.533] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2188ms or 43 ticks behind
-[19Sep2026 13:42:33.473] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2477ms or 49 ticks behind
-[19Sep2026 13:42:52.172] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2227ms or 44 ticks behind
-[19Sep2026 13:44:08.617] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
-[19Sep2026 13:44:08.684] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 36040ms or 720 ticks behind
-[19Sep2026 13:44:09.795] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.360891819000244) to NORMAL (avg. 44.340293884277344)
-[19Sep2026 13:44:24.794] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 44.340293884277344) to VERY_LOW (avg. 4.428460121154785)
-[19Sep2026 13:44:46.277] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2134ms or 42 ticks behind
-[19Sep2026 13:44:50.873] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:moon_orbit changed from VERY_LOW (avg. 0.046945) to LOW (avg. 23.646771)
-[19Sep2026 13:45:04.872] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2129ms or 42 ticks behind
-[19Sep2026 13:45:09.647] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:moon_orbit changed from LOW (avg. 23.646771) to VERY_LOW (avg. 0.045453)
-[19Sep2026 13:45:22.744] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:glacio changed from VERY_LOW (avg. 0.025586) to LOW (avg. 22.206876)
-[19Sep2026 13:45:26.659] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2317ms or 46 ticks behind
-[19Sep2026 13:45:45.584] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2341ms or 46 ticks behind
-[19Sep2026 13:45:50.954] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.072454) to LOW (avg. 24.62952)
-[19Sep2026 13:46:04.729] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2286ms or 45 ticks behind
-[19Sep2026 13:46:23.996] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2303ms or 46 ticks behind
-[19Sep2026 13:46:43.720] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2228ms or 44 ticks behind
-[19Sep2026 13:46:50.629] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 24.62952) to VERY_LOW (avg. 0.877898)
-[19Sep2026 13:46:50.629] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:glacio changed from LOW (avg. 23.847273) to VERY_LOW (avg. 0.024436)
-[19Sep2026 13:47:02.844] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2553ms or 51 ticks behind
-[19Sep2026 13:47:06.642] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 0.877898) to LOW (avg. 24.293337)
-[19Sep2026 13:47:14.422] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 24.293337) to MEDIUM (avg. 45.737651)
-[19Sep2026 13:47:23.993] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2251ms or 45 ticks behind
-[19Sep2026 13:47:33.114] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from MEDIUM (avg. 45.737651) to LOW (avg. 21.399697)
-[19Sep2026 13:47:41.340] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2349ms or 46 ticks behind
-[19Sep2026 13:47:49.968] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 21.399697) to VERY_LOW (avg. 0.730016)
-[19Sep2026 13:47:49.968] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for mahoutsukai:reality_marble changed from VERY_LOW (avg. 0.026211) to LOW (avg. 22.614821)
-[19Sep2026 13:48:02.103] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2312ms or 46 ticks behind
-[19Sep2026 13:48:07.784] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for mahoutsukai:reality_marble changed from LOW (avg. 22.614821) to VERY_LOW (avg. 0.022296)
-[19Sep2026 13:48:20.493] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2352ms or 47 ticks behind
-[19Sep2026 13:48:39.605] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2165ms or 43 ticks behind
-[19Sep2026 13:48:58.033] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3393ms or 67 ticks behind
-[19Sep2026 13:49:08.223] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.1064505577087402) to LOW (avg. 31.40174102783203)
-[19Sep2026 13:49:14.094] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 31.40174102783203) to VERY_LOW (avg. 2.7183761596679688)
-[19Sep2026 13:49:17.067] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2127ms or 42 ticks behind
-[19Sep2026 13:49:35.297] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3158ms or 63 ticks behind
-[19Sep2026 13:49:45.476] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.19923) to LOW (avg. 22.525374)
-[19Sep2026 13:50:07.225] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
-[19Sep2026 13:51:05.359] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 7.321292877197266) to VERY_HIGH (avg. 562.8681030273438)
-[19Sep2026 13:51:05.549] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 22.525374) to VERY_LOW (avg. 1.501532)
-[19Sep2026 13:51:05.549] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:earth_orbit changed from VERY_LOW (avg. 0.033668) to LOW (avg. 23.159064)
-[19Sep2026 13:51:05.725] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 75437ms or 1508 ticks behind
-[19Sep2026 13:51:18.239] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 562.8681030273438) to VERY_LOW (avg. 4.3878607749938965)
-[19Sep2026 13:55:55.140] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2556ms or 51 ticks behind
-[19Sep2026 13:55:59.535] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:earth_orbit changed from LOW (avg. 23.159064) to VERY_LOW (avg. 0.025457)
-[19Sep2026 13:56:16.940] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 6806ms or 136 ticks behind
-[19Sep2026 13:56:41.669] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2235ms or 44 ticks behind
-[19Sep2026 13:57:13.534] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2400ms or 48 ticks behind
-[19Sep2026 13:57:32.871] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2338ms or 46 ticks behind
-[19Sep2026 13:57:52.688] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2355ms or 47 ticks behind
-[19Sep2026 13:59:15.505] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2073ms or 41 ticks behind
-[19Sep2026 13:59:33.291] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2559ms or 51 ticks behind
-[19Sep2026 14:00:00.924] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2643ms or 52 ticks behind
-[19Sep2026 14:00:29.842] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2460ms or 49 ticks behind
-[19Sep2026 14:00:55.000] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2170ms or 43 ticks behind
-[19Sep2026 14:01:15.218] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2737ms or 54 ticks behind
-[19Sep2026 14:01:33.943] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2263ms or 45 ticks behind
-[19Sep2026 14:02:08.670] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
-[19Sep2026 14:04:55.084] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
-[19Sep2026 14:04:52.643] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Encountered an unexpected exception
+[20Sep2026 04:39:44.936] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3091ms or 61 ticks behind
+[20Sep2026 04:39:47.295] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_HIGH (avg. 68.658321) to VERY_LOW (avg. 1.029481)
+[20Sep2026 05:24:40.842] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2983ms or 59 ticks behind
+[20Sep2026 05:24:41.459] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.292995452880859) to LOW (avg. 36.89082717895508)
+[20Sep2026 05:24:48.959] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 36.89082717895508) to VERY_LOW (avg. 4.297130107879639)
+[20Sep2026 05:29:43.696] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2893ms or 57 ticks behind
+[20Sep2026 05:29:44.304] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.03034782409668) to LOW (avg. 36.025604248046875)
+[20Sep2026 05:29:51.804] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 36.025604248046875) to VERY_LOW (avg. 4.183902263641357)
+[20Sep2026 05:34:46.445] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2796ms or 55 ticks behind
+[20Sep2026 05:34:47.049] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.443575859069824) to LOW (avg. 35.020225524902344)
+[20Sep2026 05:35:02.048] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 35.020225524902344) to VERY_LOW (avg. 4.408208847045898)
+[20Sep2026 05:39:51.563] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 5169ms or 103 ticks behind
+[20Sep2026 05:39:52.195] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.108262062072754) to VERY_HIGH (avg. 62.15370559692383)
+[20Sep2026 05:39:59.695] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 62.15370559692383) to VERY_LOW (avg. 4.743875026702881)
+[20Sep2026 05:44:56.906] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 5365ms or 107 ticks behind
+[20Sep2026 05:44:57.542] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.803271770477295) to LOW (avg. 36.7630500793457)
+[20Sep2026 05:45:05.041] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 36.7630500793457) to VERY_LOW (avg. 5.429516792297363)
+[20Sep2026 05:45:41.794] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2404ms or 48 ticks behind
+[20Sep2026 05:46:18.464] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2174ms or 43 ticks behind
+[20Sep2026 05:46:33.341] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from VERY_LOW (avg. 0.037602) to LOW (avg. 21.476132)
+[20Sep2026 05:46:41.647] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2207ms or 44 ticks behind
+[20Sep2026 05:47:02.796] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2057ms or 41 ticks behind
+[20Sep2026 05:47:07.590] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.12067) to LOW (avg. 21.930968)
+[20Sep2026 05:47:24.148] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2458ms or 49 ticks behind
+[20Sep2026 05:47:43.529] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2390ms or 47 ticks behind
+[20Sep2026 05:47:51.002] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.1112983226776123) to VERY_HIGH (avg. 397.0684509277344)
+[20Sep2026 05:47:51.090] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from LOW (avg. 21.476132) to VERY_LOW (avg. 0.042059)
+[20Sep2026 05:47:56.139] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 397.0684509277344) to VERY_LOW (avg. 4.598830699920654)
+[20Sep2026 05:48:17.884] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2396ms or 47 ticks behind
+[20Sep2026 05:48:40.157] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2319ms or 46 ticks behind
+[20Sep2026 05:49:15.565] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2428ms or 48 ticks behind
+[20Sep2026 05:49:35.781] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2243ms or 44 ticks behind
+[20Sep2026 05:50:06.135] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2398ms or 47 ticks behind
+[20Sep2026 05:50:10.562] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 25.345723) to VERY_LOW (avg. 1.108989)
+[20Sep2026 05:50:52.764] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 30678ms or 613 ticks behind
+[20Sep2026 05:50:53.387] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 5.2691731452941895) to VERY_HIGH (avg. 342.56695556640625)
+[20Sep2026 05:51:08.388] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 342.56695556640625) to VERY_LOW (avg. 4.0314106941223145)
+[20Sep2026 05:56:00.076] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 7343ms or 146 ticks behind
+[20Sep2026 05:56:00.683] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 3.990924119949341) to VERY_HIGH (avg. 60.02606964111328)
+[20Sep2026 05:56:08.184] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 60.02606964111328) to VERY_LOW (avg. 5.137444019317627)
+[20Sep2026 05:57:10.446] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2415ms or 48 ticks behind
+[20Sep2026 05:58:08.284] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2353ms or 47 ticks behind
+[20Sep2026 05:59:11.772] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2492ms or 49 ticks behind
+[20Sep2026 05:59:31.517] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2287ms or 45 ticks behind
+[20Sep2026 05:59:51.385] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2406ms or 48 ticks behind
+[20Sep2026 06:00:24.238] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2258ms or 45 ticks behind
+[20Sep2026 06:00:44.098] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2368ms or 47 ticks behind
+[20Sep2026 06:00:49.374] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.227836) to LOW (avg. 25.085891)
+[20Sep2026 06:01:05.309] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2331ms or 46 ticks behind
+[20Sep2026 06:01:15.130] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from VERY_LOW (avg. 0.091231) to LOW (avg. 22.469977)
+[20Sep2026 06:01:53.412] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.53663969039917) to VERY_HIGH (avg. 359.8031921386719)
+[20Sep2026 06:01:53.467] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 33189ms or 663 ticks behind
+[20Sep2026 06:01:53.830] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 25.085891) to VERY_LOW (avg. 0.960123)
+[20Sep2026 06:01:53.830] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from LOW (avg. 22.469977) to VERY_LOW (avg. 0.042819)
+[20Sep2026 06:02:07.580] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 359.8031921386719) to VERY_LOW (avg. 4.410078048706055)
+[20Sep2026 06:02:23.786] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2258ms or 45 ticks behind
+[20Sep2026 06:02:26.079] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.165666) to LOW (avg. 24.084164)
+[20Sep2026 06:02:49.639] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2461ms or 49 ticks behind
+[20Sep2026 06:02:59.001] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 6.498907089233398) to NORMAL (avg. 42.09181213378906)
+[20Sep2026 06:02:59.062] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for theabyss:the_abyss changed from VERY_LOW (avg. 0.033568) to LOW (avg. 22.240828)
+[20Sep2026 06:03:12.277] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 42.09181213378906) to VERY_LOW (avg. 4.546172142028809)
+[20Sep2026 06:03:30.984] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2257ms or 45 ticks behind
+[20Sep2026 06:03:40.358] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 24.084164) to VERY_LOW (avg. 0.93281)
+[20Sep2026 06:03:40.358] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for theabyss:the_abyss changed from LOW (avg. 22.240828) to VERY_LOW (avg. 0.028142)
+[20Sep2026 06:03:45.779] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 0.93281) to LOW (avg. 24.778194)
+[20Sep2026 06:03:48.815] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2388ms or 47 ticks behind
+[20Sep2026 06:03:56.199] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 4.180867671966553) to NORMAL (avg. 44.13385009765625)
+[20Sep2026 06:03:56.274] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 24.778194) to HIGH (avg. 48.580161)
+[20Sep2026 06:04:08.537] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2311ms or 46 ticks behind
+[20Sep2026 06:04:12.836] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 44.13385009765625) to VERY_LOW (avg. 2.24302339553833)
+[20Sep2026 06:04:21.389] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.24302339553833) to VERY_HIGH (avg. 371.99591064453125)
+[20Sep2026 06:04:26.678] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 371.99591064453125) to VERY_LOW (avg. 4.9732561111450195)
+[20Sep2026 06:04:30.882] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2255ms or 45 ticks behind
+[20Sep2026 06:04:39.567] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from HIGH (avg. 48.580161) to VERY_LOW (avg. 0.867799)
+[20Sep2026 06:04:48.061] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2135ms or 42 ticks behind
+[20Sep2026 06:05:06.541] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3065ms or 61 ticks behind
+[20Sep2026 06:05:27.467] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2242ms or 44 ticks behind
+[20Sep2026 06:05:47.090] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2464ms or 49 ticks behind
+[20Sep2026 06:06:06.438] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2263ms or 45 ticks behind
+[20Sep2026 06:06:14.776] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from VERY_LOW (avg. 0.07148) to LOW (avg. 23.322286)
+[20Sep2026 06:06:23.462] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2038ms or 40 ticks behind
+[20Sep2026 06:06:29.833] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 1.106135) to LOW (avg. 24.700951)
+[20Sep2026 06:06:40.800] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2375ms or 47 ticks behind
+[20Sep2026 06:06:49.043] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for ad_astra:venus changed from LOW (avg. 23.322286) to VERY_LOW (avg. 0.046302)
+[20Sep2026 06:06:59.502] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2327ms or 46 ticks behind
+[20Sep2026 06:07:18.867] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2393ms or 47 ticks behind
+[20Sep2026 06:07:22.393] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 25.039674) to VERY_LOW (avg. 1.063085)
+[20Sep2026 06:08:06.831] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[20Sep2026 06:10:19.257] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Encountered an unexpected exception
 java.lang.OutOfMemoryError: Java heap space
-[19Sep2026 14:04:55.085] [spark-java-sampler-0-2/INFO] [STDERR/]: [me.lucko.spark.common.util.SparkThreadFactory:lambda$static$0:29]: Uncaught exception thrown by thread spark-java-sampler-0-2
-[19Sep2026 14:04:55.085] [spark-java-sampler-0-2/INFO] [STDERR/]: [me.lucko.spark.common.util.SparkThreadFactory:lambda$static$0:30]: java.lang.OutOfMemoryError: Java heap space
-[19Sep2026 14:04:55.316] [Server thread/FATAL] [net.minecraftforge.common.ForgeMod/]: Preparing crash report with UUID a31497ae-9b19-4c12-b94f-051aec7e9d30
-[19Sep2026 14:04:55.317] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: This crash report has been saved to: C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\.\crash-reports\crash-2026-09-19_14.04.55-server.txt
-[19Sep2026 14:04:55.320] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[19Sep2026 14:04:55.321] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[19Sep2026 14:04:55.321] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[19Sep2026 14:04:55.343] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[19Sep2026 14:04:55.400] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon_orbit
-[19Sep2026 14:04:55.402] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/twilightforest:twilight_forest
-[19Sep2026 14:04:55.405] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars_orbit
-[19Sep2026 14:04:55.408] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/deeperdarker:otherside
-[19Sep2026 14:04:55.410] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars
-[19Sep2026 14:04:55.412] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury
-[19Sep2026 14:04:55.421] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everbright
-[19Sep2026 14:04:55.423] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:spectral_world
-[19Sep2026 14:04:55.426] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus
-[19Sep2026 14:04:55.428] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:frost_world
-[19Sep2026 14:04:55.436] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus_orbit
-[19Sep2026 14:04:55.447] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[19Sep2026 14:04:55.455] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/aether:the_aether
-[19Sep2026 14:04:55.484] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury_orbit
-[19Sep2026 14:04:55.510] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mahoutsukai:reality_marble
-[19Sep2026 14:04:55.527] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/undergarden:undergarden
-[19Sep2026 14:04:55.551] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon
-[19Sep2026 14:04:55.575] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio
-[19Sep2026 14:04:55.590] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/irons_spellbooks:pocket_dimension
-[19Sep2026 14:04:55.608] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:earth_orbit
-[19Sep2026 14:04:55.626] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everdawn
-[19Sep2026 14:04:55.633] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:the_abyss
-[19Sep2026 14:04:55.645] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[19Sep2026 14:04:55.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:pocket_dimension
-[19Sep2026 14:04:55.691] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio_orbit
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (world): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (earth_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio_orbit): All chunks are saved
-[19Sep2026 14:05:07.561] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[19Sep2026 14:05:09.974] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.server.dedicated.DedicatedServer@2e447717
-[19Sep2026 14:05:09.976] [Server thread/INFO] [iridescent_durability_clamp/]: [event-guard] session summary: no guarded exceptions this session.
-[19Sep2026 14:05:09.984] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
-[19Sep2026 14:05:09.985] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
-[19Sep2026 14:05:09.985] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopping IO worker...
-[19Sep2026 14:05:09.993] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopped IO worker!
-[19Sep2026 14:05:10.004] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
-[19Sep2026 14:05:10.005] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
-[19Sep2026 14:05:10.067] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
+[20Sep2026 06:10:19.257] [Netty Server IO #0/WARN] [io.netty.util.concurrent.SingleThreadEventExecutor/]: Unexpected exception from an event executor: 
+java.lang.OutOfMemoryError: Java heap space
+[20Sep2026 06:10:19.463] [Server thread/FATAL] [net.minecraftforge.common.ForgeMod/]: Preparing crash report with UUID 09b1b253-2e4e-44ac-9504-a8ac2c27866a
+[20Sep2026 06:10:19.464] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: This crash report has been saved to: C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\.\crash-reports\crash-2026-09-20_06.10.19-server.txt
+[20Sep2026 06:10:19.467] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[20Sep2026 06:10:19.469] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Exception stopping the server
+java.util.concurrent.RejectedExecutionException: event executor terminated
+	at io.netty.util.concurrent.SingleThreadEventExecutor.reject(SingleThreadEventExecutor.java:934) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.offerTask(SingleThreadEventExecutor.java:351) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.addTask(SingleThreadEventExecutor.java:344) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.execute(SingleThreadEventExecutor.java:836) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.execute0(SingleThreadEventExecutor.java:827) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor.execute(SingleThreadEventExecutor.java:817) ~[netty-common-4.1.82.Final.jar%2382!/:4.1.82.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.safeExecute(AbstractChannelHandlerContext.java:989) ~[netty-transport-4.1.82.Final.jar%2385!/:4.1.82.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.close(AbstractChannelHandlerContext.java:608) ~[netty-transport-4.1.82.Final.jar%2385!/:4.1.82.Final]
+	at io.netty.channel.AbstractChannelHandlerContext.close(AbstractChannelHandlerContext.java:472) ~[netty-transport-4.1.82.Final.jar%2385!/:4.1.82.Final]
+	at io.netty.channel.DefaultChannelPipeline.close(DefaultChannelPipeline.java:957) ~[netty-transport-4.1.82.Final.jar%2385!/:4.1.82.Final]
+	at io.netty.channel.AbstractChannel.close(AbstractChannel.java:244) ~[netty-transport-4.1.82.Final.jar%2385!/:4.1.82.Final]
+	at net.minecraft.server.network.ServerConnectionListener.m_9718_(ServerConnectionListener.java:125) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_7041_(MinecraftServer.java:551) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.dedicated.DedicatedServer.m_7041_(DedicatedServer.java:510) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:689) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at java.lang.Thread.run(Thread.java:840) ~[?:?]
+[20Sep2026 06:10:19.471] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.server.dedicated.DedicatedServer@11e1d581
+[20Sep2026 06:10:19.472] [Server thread/INFO] [iridescent_durability_clamp/]: [event-guard] session summary: no guarded exceptions this session.
+[20Sep2026 06:10:19.489] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
+[20Sep2026 06:10:19.489] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
+[20Sep2026 06:10:19.490] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopping IO worker...
+[20Sep2026 06:10:19.492] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopped IO worker!
+[20Sep2026 06:10:19.503] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[20Sep2026 06:10:19.505] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[20Sep2026 06:10:19.574] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
+[20Sep2026 06:10:24.260] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
