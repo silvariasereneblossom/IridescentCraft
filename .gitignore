@@ -66,6 +66,11 @@ saves/
 # JVM crash dumps + Forge installer logs (any depth) — never commit
 hs_err_pid*.log
 installer.log
+# OOM heap dumps (crash-reports/heapdumps/heap_*.hprof) are ~heap-sized
+# (-Xmx10G+) — far past GitHub's blob limit. icraft-core's crash mirror
+# already skips them; this is the second layer so a stray copy can never be
+# staged by the `git add TesterLogs` in push_logs.
+*.hprof
 # Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
 # block loose crash-logs that accumulate at distro root
 .minecraft/server_distribution/logs/

@@ -441,13 +441,33 @@ fn push_cache_dir() -> Result<PathBuf> {
     Ok(dir)
 }
 
+/// Recursive copy, with ONE exclusion: heap dumps.
+///
+/// `crash-reports/heapdumps/` holds `heap_*.hprof` files that are roughly
+/// heap-sized (`-Xmx10G`), and every caller here is feeding a mirror that
+/// [`push_logs`] then `git add`s and pushes. A single dump would blow past
+/// GitHub's 100 MB blob limit and wedge log pushing for good -- on top of
+/// spending minutes copying gigabytes on every crash. Dumps stay local for
+/// the operator to analyse in place (Eclipse MAT et al).
 fn mirror_dir(src: &std::path::Path, dst: &std::path::Path) -> std::io::Result<()> {
     fs::create_dir_all(dst)?;
     for entry in fs::read_dir(src)? {
         let entry = entry?;
         let from = entry.path();
-        let to = dst.join(entry.file_name());
-        if entry.file_type()?.is_dir() {
+        let name = entry.file_name();
+        let is_dir = entry.file_type()?.is_dir();
+        if is_dir && name.to_string_lossy().eq_ignore_ascii_case("heapdumps") {
+            log::info!("[crash] skipping heap-dump dir in mirror: {}", from.display());
+            continue;
+        }
+        if !is_dir
+            && from.extension().map_or(false, |ext| ext.eq_ignore_ascii_case("hprof"))
+        {
+            log::info!("[crash] skipping heap dump in mirror: {}", from.display());
+            continue;
+        }
+        let to = dst.join(name);
+        if is_dir {
             mirror_dir(&from, &to)?;
         } else {
             fs::copy(&from, &to)?;

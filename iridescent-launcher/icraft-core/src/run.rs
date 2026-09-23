@@ -112,6 +112,12 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     let mut cmd = Command::new("java");
     cmd.current_dir(&cfg.server_dir);
     for flag in AIKAR_FLAGS { cmd.arg(flag); }
+    // Timestamped heap-dump target -- see prepare_heap_dump_path. Must come
+    // before the @argfile so it lands in the JVM's own option list.
+    if let Some(hprof) = prepare_heap_dump_path(cfg) {
+        log::info!("[run] OOM heap dump target: {}", hprof.display());
+        cmd.arg(format!("-XX:HeapDumpPath={}", hprof.display()));
+    }
     cmd.arg(format!("@{}", argfile.display()));
     cmd.arg("nogui");
 
@@ -641,6 +647,84 @@ fn kill_pid(pid: u32) -> std::io::Result<()> {
         .args(["/F", "/PID", &pid.to_string(), "/T"])
         .status()?;
     Ok(())
+}
+
+/// Number of previous heap dumps kept at launch. Each is roughly heap-sized
+/// (`-Xmx10G`), so this is a disk-space cap, not a history. The dump this
+/// launch may write is on top of these, so the on-disk worst case is
+/// `HEAP_DUMPS_KEPT + 1`.
+const HEAP_DUMPS_KEPT: usize = 2;
+
+/// Build this launch's `-XX:HeapDumpPath` value, creating
+/// `<server_dir>/crash-reports/heapdumps/` and pruning old dumps first.
+///
+/// Why per-launch: the JVM will NOT overwrite an existing heap-dump file, so
+/// a FIXED path captures exactly one OOM ever and then fails silently. The
+/// old `AIKAR_FLAGS` entry was a fixed `crash-heapdump.hprof`; a 14.78 GB one
+/// written 2026-06-13 sat in the live server root and swallowed every OOM
+/// after it, including the 2026-09-04 OOM that wedged the server for a week.
+/// The bat/sh launchers were fixed the same way on 2026-07-15; this is the
+/// Rust launcher catching up, and it serves BOTH the GUI and the CLI because
+/// every entry point funnels through `launch_server_inner`.
+///
+/// Returns `None` if the directory can't be created -- then we omit the flag
+/// entirely and the JVM falls back to `java_pid<pid>.hprof` in the server
+/// dir, which is at least collision-free. Never fatal: a server must still
+/// boot when we can't set up dump capture.
+fn prepare_heap_dump_path(cfg: &ServerConfig) -> Option<PathBuf> {
+    let dir = cfg.heapdumps_dir();
+    if let Err(e) = std::fs::create_dir_all(&dir) {
+        // Unset flag > bad flag: with no -XX:HeapDumpPath the JVM writes
+        // java_pid<pid>.hprof into the cwd (= server_dir), which is still
+        // per-run unique, so OOM capture degrades rather than breaking.
+        log::warn!(
+            "[run] couldn't create {} ({e}); leaving -XX:HeapDumpPath unset",
+            dir.display()
+        );
+        return None;
+    }
+    prune_heap_dumps(&dir, HEAP_DUMPS_KEPT);
+    let stamp = chrono::Local::now().format("%Y%m%d_%H%M%S");
+    Some(dir.join(format!("heap_{stamp}.hprof")))
+}
+
+/// Delete all but the `keep` newest `*.hprof` files in `dir`, by mtime.
+/// Best-effort and chatty: every deletion is logged with its size, because
+/// silently removing multi-gigabyte forensic evidence is exactly the kind of
+/// thing an operator needs to be able to find in the log afterwards. Only
+/// `.hprof` files are ever considered -- anything else in the directory is
+/// left alone.
+fn prune_heap_dumps(dir: &std::path::Path, keep: usize) {
+    let entries = match std::fs::read_dir(dir) {
+        Ok(e) => e,
+        Err(e) => {
+            log::warn!("[run] couldn't scan {} for old heap dumps: {e}", dir.display());
+            return;
+        }
+    };
+    let mut dumps: Vec<(std::time::SystemTime, u64, PathBuf)> = Vec::new();
+    for entry in entries.flatten() {
+        let path = entry.path();
+        let is_hprof = path
+            .extension()
+            .map_or(false, |ext| ext.eq_ignore_ascii_case("hprof"));
+        if !is_hprof { continue; }
+        let meta = match entry.metadata() {
+            Ok(m) if m.is_file() => m,
+            _ => continue,
+        };
+        let mtime = meta.modified().unwrap_or(std::time::UNIX_EPOCH);
+        dumps.push((mtime, meta.len(), path));
+    }
+    if dumps.len() <= keep { return; }
+    dumps.sort_by(|a, b| b.0.cmp(&a.0)); // newest first
+    for (_, size, path) in dumps.into_iter().skip(keep) {
+        let gib = size as f64 / (1024.0 * 1024.0 * 1024.0);
+        match std::fs::remove_file(&path) {
+            Ok(())  => log::info!("[run] pruned old heap dump {} ({gib:.2} GiB)", path.display()),
+            Err(e)  => log::warn!("[run] couldn't prune old heap dump {}: {e}", path.display()),
+        }
+    }
 }
 
 fn pick_argfile(cfg: &ServerConfig) -> Result<PathBuf> {

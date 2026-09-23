@@ -96,7 +96,13 @@ pub const AIKAR_FLAGS: &[&str] = &[
     "-Dusing.aikars.flags=https://mcflags.emc.gs",
     "-Daikars.new.flags=true",
     "-XX:+HeapDumpOnOutOfMemoryError",
-    "-XX:HeapDumpPath=crash-heapdump.hprof",
+    // NOTE: no `-XX:HeapDumpPath` here on purpose. A FIXED path is one the
+    // JVM refuses to overwrite, so a single stale dump silently blocks every
+    // later OOM capture (a 14.78 GB `crash-heapdump.hprof` from 2026-06-13
+    // ate the 2026-09-04 OOM that wedged the server for a week). The path is
+    // computed per-launch -- timestamped, in `crash-reports/heapdumps/` --
+    // by `run::prepare_heap_dump_path`, which appends the flag after these.
+    // The legacy bat/sh launchers got the same fix on 2026-07-15.
 ];
 
 /// Server install root — the directory containing forge / mods /
@@ -152,6 +158,11 @@ impl ServerConfig {
     }
     pub fn logs_dir(&self) -> PathBuf { self.server_dir.join("logs") }
     pub fn crash_reports(&self) -> PathBuf { self.server_dir.join("crash-reports") }
+    /// Per-launch OOM heap dumps (`heap_<YYYYmmdd_HHMMSS>.hprof`). Same
+    /// location the bat/sh launchers use. Deliberately EXCLUDED from the
+    /// TesterLogs mirror in [`crate::crash::push_logs`] -- each dump is
+    /// heap-sized and would blow past GitHub's blob limit.
+    pub fn heapdumps_dir(&self) -> PathBuf { self.crash_reports().join("heapdumps") }
 
     /// Best-effort guess at whether this directory is already a
     /// configured icraft server install.
