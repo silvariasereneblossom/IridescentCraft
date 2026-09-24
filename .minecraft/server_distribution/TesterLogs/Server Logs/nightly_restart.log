@@ -216,3 +216,8 @@
 [2026-09-22 05:00:04] [INFO] Wrote Cycle request (1790078404); waiting up to 60s for icraft-gui to answer.
 [2026-09-22 05:01:04] [ERROR] icraft-gui did not answer within 60s (a launcher without the request watcher, or hung). Request withdrawn.
 [2026-09-22 05:01:04] [INFO] ================ nightly restart run end (success=False) ================
+[2026-09-23 05:00:03] [INFO] ================ nightly restart run start ================
+[2026-09-23 05:00:03] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  ScheduledFor=05:00  Mode=icraft-gui Cycle request
+[2026-09-23 05:00:03] [INFO] Wrote Cycle request (1790164803); waiting up to 60s for icraft-gui to answer.
+[2026-09-23 05:01:03] [ERROR] icraft-gui did not answer within 60s (a launcher without the request watcher, or hung). Request withdrawn.
+[2026-09-23 05:01:04] [INFO] ================ nightly restart run end (success=False) ================
