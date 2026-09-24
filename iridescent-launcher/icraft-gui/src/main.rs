@@ -723,10 +723,16 @@ impl IcraftApp {
             // forks, switch to reading `git config remote.origin.url`
             // out of the working tree. For now this matches what
             // pull_repo_binary_apply_gui assumes.
-            let r = icraft_core::github::head_sha_cdn(
+            // Display freshness: this reading only paints the badge, so with
+            // no PAT configured it takes the free CDN stamp rather than
+            // spending the 60/hr unauthenticated API bucket that the SYNC
+            // needs (20 polls/hr would be a third of it). With a PAT — the
+            // normal state — it's an exact API read like the sync's.
+            let r = icraft_core::github::resolve_head_sha(
                 "silvariasereneblossom",
                 "IridescentCraft",
                 "main",
+                icraft_core::github::HeadFreshness::Display,
             );
             match r {
                 Ok(sha) => {
@@ -1056,6 +1062,7 @@ impl IcraftApp {
                 icraft_core::sync::SyncStatus::Updated        => ("synced",                     true),
                 icraft_core::sync::SyncStatus::ApiUnreachable => ("API UNREACHABLE -- STALE!",  false),
                 icraft_core::sync::SyncStatus::PartialFailure => ("partial -- will retry",      false),
+                icraft_core::sync::SyncStatus::LauncherStale  => ("LAUNCHER STALE -- restart", false),
             };
             badge(ui, "Sync", sync_ok, sync_label);
 

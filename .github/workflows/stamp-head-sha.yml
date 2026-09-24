@@ -2,10 +2,23 @@
 # so the icraft launcher + clients can read "what's the latest commit?" from
 # the raw.githubusercontent CDN instead of spending an api.github.com request
 # (60/hr-per-IP unauth bucket -> intermittent sync skips behind shared IPs).
-# See icraft-core/src/github.rs::head_sha_cdn.
+# See icraft-core/src/github.rs::resolve_head_sha (this file is now its
+# FALLBACK, not its primary source -- read the blind spot below).
 #
 # Loop guard: paths-ignore the stamp file itself (and log-only pushes) so the
 # stamp commit never re-triggers this workflow, and log mirrors don't churn it.
+#
+# KNOWN BLIND SPOT (documented 2026-09-24, failure-modes #9): this workflow can
+# never stamp a CI-pushed commit. GitHub does not trigger workflows for pushes
+# made with the default GITHUB_TOKEN, which is what build-icraft-gui.yml pushes
+# the rebuilt icraft-gui.exe with -- so the stamp stops at the SOURCE commit and
+# the exe, which always lands one commit later, is invisible to any consumer
+# reading HEAD from this file. That silently shipped a stale launcher twice
+# (09-11, 09-23). Two fixes, both live: the launcher reads HEAD from the API
+# (github.rs::resolve_head_sha) and treats this file as a loud fallback, and
+# build-icraft-gui.yml re-stamps onto its own commit after pushing the exe.
+# If you add another workflow that commits shippable content, it must re-stamp
+# the same way -- do NOT assume this workflow will notice it.
 name: Stamp HEAD SHA
 
 on:

@@ -109,6 +109,15 @@ jobs:
           Copy-Item $src $dst -Force
           $size = (Get-Item $dst).Length
           Write-Host "Staged: $dst ($size bytes)"
+          # Sidecar hash, committed alongside the exe in the SAME commit.
+          # sync.rs::verify_launcher_binary reads this (64 bytes off the raw
+          # CDN, no API quota) to answer "is the launcher on disk the one the
+          # repo carries at this commit?" without downloading 12 MB to find
+          # out. Lowercase hex, ASCII, no trailing newline and NO BOM -- the
+          # Rust side validates 64 hex chars and a BOM would fail that.
+          $hash = (Get-FileHash $dst -Algorithm SHA256).Hash.ToLower()
+          Set-Content -Path "$dst.sha256" -Value $hash -NoNewline -Encoding ascii
+          Write-Host "Staged: $dst.sha256 ($hash)"
 
       - name: Upload artifact (Actions UI download)
         uses: actions/upload-artifact@v4
@@ -123,7 +132,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add ".minecraft/server_distribution/icraft-gui.exe"
+          git add ".minecraft/server_distribution/icraft-gui.exe" ".minecraft/server_distribution/icraft-gui.exe.sha256"
           # `git diff --cached --quiet` exits 1 when there are staged changes,
           # 0 when there are none. PowerShell maps non-zero to a falsy
           # $LASTEXITCODE we can branch on.
@@ -156,6 +165,47 @@ jobs:
               }
               if (-not $pushed) { throw "Failed to push rebuilt binary after 5 attempts." }
               Write-Host "Committed + pushed updated icraft-gui.exe."
+
+              # ---------------------------------------------------------------
+              # Re-stamp .icraft_head_sha onto THIS commit.
+              #
+              # stamp-head-sha.yml cannot do it: GitHub does not trigger
+              # workflows for pushes made with the default GITHUB_TOKEN, and
+              # that is the token this job pushes with. Verified 2026-09-24 --
+              # that Action's entire run history contains no "CI rebuild"
+              # commit, and the stamp sat at the SOURCE commit d45815a1 while
+              # the exe lived one commit later at 319c6ecd.
+              #
+              # Consequence when left unstamped: any consumer reading HEAD from
+              # the stamp syncs to the source commit and installs the PREVIOUS
+              # exe, then matches markers and short-circuits "up to date" on it
+              # forever. That is the stale-launcher defect (failure-modes #9).
+              # The launcher now reads HEAD from the API so it no longer
+              # depends on this, but the stamp is still its fallback -- and a
+              # fallback that is wrong by construction is worse than none.
+              #
+              # Best-effort: the exe is already pushed, so a lost stamp race
+              # must not fail the job (the next human push re-stamps anyway).
+              $head = (git rev-parse HEAD).Trim()
+              Set-Content -Path ".icraft_head_sha" -Value $head -NoNewline -Encoding ascii
+              git add ".icraft_head_sha"
+              git diff --cached --quiet
+              if ($LASTEXITCODE -ne 0) {
+                  git commit -m "stamp HEAD $($head.Substring(0,7)) [skip ci]"
+                  $stamped = $false
+                  for ($i = 1; $i -le 3; $i++) {
+                      git push origin HEAD:$branch
+                      if ($LASTEXITCODE -eq 0) { $stamped = $true; break }
+                      git fetch origin $branch
+                      git rebase "origin/$branch"
+                      if ($LASTEXITCODE -ne 0) { git rebase --abort; break }
+                  }
+                  if ($stamped) {
+                      Write-Host "Stamped .icraft_head_sha -> $head"
+                  } else {
+                      Write-Warning "Could not push the HEAD stamp (exe IS pushed). The stamp stays behind until the next push; API readers are unaffected."
+                  }
+              }
           } else {
               Write-Host "No change to icraft-gui.exe -- binary is byte-identical to repo copy. Nothing to commit."
           }

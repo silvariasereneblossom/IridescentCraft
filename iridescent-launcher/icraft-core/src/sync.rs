@@ -60,6 +60,12 @@ pub enum SyncStatus {
     /// A sync ran but some files failed to write (marker NOT advanced; next run
     /// retries).
     PartialFailure,
+    /// The content synced, but the launcher binary on disk is NOT the one the
+    /// repo carries at the synced commit — i.e. the running exe is stale and
+    /// whatever launcher fix shipped in it is NOT live. See
+    /// [`verify_launcher_binary`]. Clears itself once the staged `.new` has
+    /// been applied and the launcher relaunched.
+    LauncherStale,
 }
 
 static SYNC_STATUS: Mutex<SyncStatus> = Mutex::new(SyncStatus::Idle);
@@ -163,9 +169,9 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
     // inconsistency the operator hit.
     //
     // Don't fail open silently. RETRY with a short backoff first (the
-    // head_sha_cdn helper already does CDN x2 -> API, and the API client
-    // already retries unauthenticated on a revoked-token 401/403; this outer
-    // loop rides out a momentarily-drained 60/hr unauth bucket). Only after the
+    // resolve_head_sha helper already does API -> CDN-stamp fallback, and the
+    // API client already retries unauthenticated on a revoked-token 401/403;
+    // this outer loop rides out a momentarily-drained bucket). Only after the
     // retries are exhausted do we proceed-stale — and then LOUDLY, with a
     // visible ApiUnreachable badge state, not a silent Ok. Setting
     // GITHUB_TOKEN lifts the limit to 5000/hr and is the durable fix.
@@ -195,6 +201,9 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
         // even on the marker short-circuit — repairing in place before launch
         // instead of blind-trusting "up to date".
         verify_custom_jars(cfg, &remote_sha);
+        // Same argument for the launcher binary, and the short-circuit is
+        // exactly where a stale exe used to hide forever.
+        verify_launcher_binary(cfg, &remote_sha);
         return Ok(());
     }
 
@@ -209,6 +218,30 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
             }
         }
     });
+
+    // Refuse a BACKWARDS move. The sync now reads HEAD from the API while the
+    // degraded fallback still reads the (structurally lagging) CDN stamp, so a
+    // rate-limited run can resolve a commit that is an ANCESTOR of the marker
+    // we already deployed. `status: "behind"` is GitHub saying exactly that.
+    // Acting on it would rewind the marker and, because a three-dot compare
+    // reports no files in that direction, do it via a pointless full-zip
+    // download. Hold what we have and verify against it, not against the older
+    // reading -- verifying against the ancestor would "repair" the launcher
+    // binary DOWNWARD to the stale exe, which is the very bug being fixed.
+    if let Some(cmp) = diff_result.as_ref() {
+        if cmp.status == "behind" || cmp.status == "identical" {
+            let held = local_sha.clone().unwrap_or_else(|| remote_sha.clone());
+            log::warn!(
+                "[sync] resolved HEAD {} is BEHIND the deployed marker {} -- NOT rewinding. \
+                 This means the HEAD read degraded to the lagging CDN stamp; content stays at the marker.",
+                short_sha(&remote_sha), short_sha(&held)
+            );
+            set_sync_status(SyncStatus::Current);
+            verify_custom_jars(cfg, &held);
+            verify_launcher_binary(cfg, &held);
+            return Ok(());
+        }
+    }
 
     let use_diff = match &diff_result {
         Some(cmp) if !cmp.files.is_empty() && cmp.files.len() < github::COMPARE_FILES_CAP => true,
@@ -238,6 +271,7 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
     // Item 1a: verify customs against the manifest after the content sync too —
     // catches out-of-band drift the commit-diff wouldn't have re-listed.
     verify_custom_jars(cfg, &remote_sha);
+    verify_launcher_binary(cfg, &remote_sha);
     result
 }
 
@@ -351,14 +385,180 @@ fn verify_custom_jars(cfg: &ServerConfig, remote_sha: &str) {
     }
 }
 
-/// Fetch remote HEAD with a bounded backoff (see [`HEAD_FETCH_BACKOFF`]). The
-/// underlying `head_sha_cdn` already degrades CDN -> API and retries a revoked
-/// token anonymously; this outer loop rides out a transient rate-limit/offline
-/// blip so a single hiccup doesn't drop the whole Cycle to proceed-stale.
+/// The launcher binary CI publishes, and the sidecar carrying its SHA-256.
+/// `build-icraft-gui.yml` writes both in the same commit.
+const LAUNCHER_EXE: &str = "icraft-gui.exe";
+const LAUNCHER_EXE_SHA_FILE: &str = "icraft-gui.exe.sha256";
+
+/// Post-sync assertion: is the launcher binary on disk actually the one the
+/// repo carries at the commit we just synced to?
+///
+/// Why this is separate from "did the sync work". The sync can complete
+/// perfectly and still leave a stale launcher, because the exe is a
+/// SELF_UPDATE_FILE: it is staged as `icraft-gui.exe.new` and only swapped in
+/// on the next launcher restart. Every way that swap can be skipped — a locked
+/// file, a Cycle that never relaunched, a proceed-stale run, or (the 09-11 and
+/// 09-23 occurrences) a HEAD reading that predated the CI rebuild — ends with
+/// the server running on old launcher code and NOTHING saying so. The feature
+/// just quietly isn't there; the nightly-restart watcher was dead for three
+/// nights that way.
+///
+/// So we check it explicitly and fail LOUD: red `Sync: LAUNCHER STALE` badge
+/// plus `!!!` log lines, and we stage the canonical bytes so the next restart
+/// repairs it. Mirrors [`verify_custom_jars`]: manifest-style hash compare,
+/// tmp-then-rename, soft-fail throughout (never aborts a sync).
+///
+/// Comparison is against `remote_sha` — the commit we synced to — so this
+/// catches a failed/skipped swap, not a stale HEAD reading. Stale HEAD is
+/// `github::resolve_head_sha`'s job; when it does have to degrade to the CDN
+/// stamp it says so loudly, and this check is then relative to that same
+/// commit. Both ends of the defect are covered, neither silently.
+fn verify_launcher_binary(cfg: &ServerConfig, remote_sha: &str) {
+    // Bound to locals so the log/format sites read uniformly.
+    let (exe_name, sha_name) = (LAUNCHER_EXE, LAUNCHER_EXE_SHA_FILE);
+    let exe = cfg.server_dir.join(exe_name);
+    if !exe.exists() {
+        return; // CLI-only or non-Windows install: nothing to compare against.
+    }
+    let prefix = REPO_SERVER_PATH.trim_end_matches('/');
+
+    // The sidecar is 64 bytes off the raw CDN at an immutable commit SHA — no
+    // API quota, no 12 MB download just to learn whether we're current.
+    let sidecar = format!("{prefix}/{sha_name}");
+    let expected = match github::fetch_raw(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, remote_sha, &sidecar) {
+        Ok(body) => {
+            // trim_start_matches the BOM explicitly: U+FEFF is not whitespace,
+            // so trim() leaves it and the 64-hex check would reject a
+            // perfectly good sidecar written by a BOM-happy editor.
+            let s = String::from_utf8_lossy(&body)
+                .trim()
+                .trim_start_matches('\u{feff}')
+                .trim()
+                .to_lowercase();
+            if s.len() == 64 && s.chars().all(|c| c.is_ascii_hexdigit()) {
+                s
+            } else {
+                log::warn!("[sync] launcher verify: {sha_name} at {} is malformed -- skipping", short_sha(remote_sha));
+                return;
+            }
+        }
+        Err(e) => {
+            // Absent on any commit older than the sidecar's introduction, and
+            // on a transient CDN failure. Neither is worth alarming about.
+            log::debug!("[sync] launcher verify: no {sha_name} at {} ({e:#}) -- skipping", short_sha(remote_sha));
+            return;
+        }
+    };
+
+    // A staged .new matching the repo means this Cycle already did its job;
+    // self_update applies it on the restart that follows.
+    let staged = cfg.server_dir.join(format!("{exe_name}.new"));
+    if staged.exists() {
+        if matches!(sha256_file(&staged), Ok(h) if h == expected) {
+            log::info!(
+                "[sync] launcher update staged ({exe_name}.new @ {}) -- applies on the next launcher restart",
+                short_sha(remote_sha)
+            );
+            return;
+        }
+    }
+
+    let live = match sha256_file(&exe) {
+        Ok(h) => h,
+        Err(e) => {
+            log::warn!("[sync] launcher verify: can't hash {}: {e} (skipping)", exe.display());
+            return;
+        }
+    };
+    if live == expected {
+        log::debug!("[sync] launcher binary matches origin @ {}", short_sha(remote_sha));
+        return;
+    }
+
+    // Non-standard layout: the GUI can be launched from outside the install
+    // dir (self_update calls these the `here` and `there` copies). If the
+    // binary actually RUNNING is the repo's, nothing is stale — don't paint a
+    // red badge over a spare copy sitting in server_dir.
+    if let Ok(running) = std::env::current_exe() {
+        if running != exe && matches!(sha256_file(&running), Ok(h) if h == expected) {
+            log::debug!(
+                "[sync] launcher verify: running binary {} matches origin @ {} ({} is a stale spare copy)",
+                running.display(), short_sha(remote_sha), exe.display()
+            );
+            return;
+        }
+    }
+
+    set_sync_status(SyncStatus::LauncherStale);
+    let size = fs::metadata(&exe).map(|m| m.len()).unwrap_or(0);
+    log::error!("[sync] !!! LAUNCHER STALE: {exe_name} on disk is NOT the binary origin carries at {}.", short_sha(remote_sha));
+    log::error!("[sync] !!!   on disk: sha256 {}.. ({size} bytes)", &live[..16]);
+    log::error!("[sync] !!!   origin:  sha256 {}..", &expected[..16]);
+    log::error!("[sync] !!! Any launcher-side fix in that commit is NOT running. Staging the correct binary now;");
+    log::error!("[sync] !!! it applies on the next launcher restart (Cycle relaunches automatically).");
+
+    let repo_path = format!("{prefix}/{exe_name}");
+    match github::fetch_raw(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, remote_sha, &repo_path) {
+        Ok(body) => {
+            let got = sha256_bytes(&body);
+            if got != expected {
+                log::error!(
+                    "[sync] !!! staging ABORTED: fetched {exe_name} hashes {}.. , not the expected {}.. -- left as-is",
+                    &got[..16], &expected[..16]
+                );
+                return;
+            }
+            // tmp-then-rename, same reasoning as the custom-jar repair: a
+            // failed write must never leave a truncated .new for
+            // self_update to swap onto the live exe.
+            let tmp = staged.with_file_name(format!("{exe_name}.new.icrafttmp"));
+            let _ = fs::remove_file(&tmp);
+            if let Err(e) = fs::write(&tmp, &body) {
+                log::error!("[sync] !!! staging failed (write): {e}");
+                let _ = fs::remove_file(&tmp);
+                return;
+            }
+            let _ = fs::remove_file(&staged);
+            match fs::rename(&tmp, &staged) {
+                Ok(()) => log::warn!(
+                    "[sync] staged {} ({} bytes) -- RESTART THE LAUNCHER to apply it",
+                    staged.display(), body.len()
+                ),
+                Err(e) => {
+                    let _ = fs::remove_file(&tmp);
+                    log::error!("[sync] !!! staging failed (rename): {e}");
+                }
+            }
+        }
+        Err(e) => log::error!("[sync] !!! staging failed (download): {e:#}"),
+    }
+}
+
+/// Fetch remote HEAD with a bounded backoff (see [`HEAD_FETCH_BACKOFF`]).
+///
+/// AUTHORITATIVE freshness, deliberately: this SHA decides which commit every
+/// file is fetched at and is what lands in `.icraft_last_sha`. Reading it from
+/// the `.icraft_head_sha` CDN stamp (the pre-2026-09-24 behavior) pinned the
+/// sync to a commit that is stale by construction whenever CI has rebuilt
+/// `icraft-gui.exe` — the new plain files arrived with the PREVIOUS launcher
+/// binary, and the marker then matched, so the next Cycle short-circuited
+/// "up to date" on the wrong exe. See `github::resolve_head_sha` for the full
+/// mechanism and the request-budget accounting.
+///
+/// `resolve_head_sha` still degrades to the stamp (loudly) if the API is
+/// unusable, and retries a revoked token anonymously; this outer loop rides out
+/// a transient rate-limit/offline blip so a single hiccup doesn't drop the
+/// whole Cycle to proceed-stale. Cost is 1 API request per Cycle, not per
+/// attempt: a drained bucket resolves on the first attempt's stamp fallback.
 fn head_sha_with_retry() -> Result<String> {
     let mut last_err = None;
     for attempt in 0..=HEAD_FETCH_BACKOFF.len() {
-        match github::head_sha_cdn(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
+        match github::resolve_head_sha(
+            GITHUB_REPO_OWNER,
+            GITHUB_REPO_NAME,
+            GITHUB_REPO_BRANCH,
+            github::HeadFreshness::Authoritative,
+        ) {
             Ok(s) => return Ok(s),
             Err(e) => {
                 if let Some(delay) = HEAD_FETCH_BACKOFF.get(attempt) {
