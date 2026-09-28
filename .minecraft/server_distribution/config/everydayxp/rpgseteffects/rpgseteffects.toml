@@ -1,9 +1,11 @@
 
 [gui]
 	#Show the 'Sets' button in the inventory screen.
-	# Enabled: the button renders at (guiLeft+139, guiTop+67) — below the
-	# crafting grid — and is the ONLY GUI entry point to the Set Equipment
-	# Screen where artifact + relic slots live.
+	# Enabled: class-artifacts builds it at (guiLeft+90, guiTop+60), on top of the
+	# recipe-book button; iridescent_tetra_expansion (SetsButtonAnchor) re-anchors
+	# it every frame to (guiLeft+126, guiTop+64), just right of the recipe-book
+	# button. It is the ONLY GUI entry point to the Set Equipment screen, where
+	# the artifact + relic slots live (keybind: Alt+Y).
 	showInventoryButton = true
 
 [elite_mobs]
