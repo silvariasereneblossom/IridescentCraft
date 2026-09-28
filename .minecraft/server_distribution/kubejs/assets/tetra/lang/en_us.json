@@ -203,5 +203,8 @@
   "tetra.material.vn_dragon.name": "Ender Dragon",
   "tetra.material.vn_dragon.prefix": "Dragon",
   "tetra.material.vn_warden.name": "Sculk Echo",
-  "tetra.material.vn_warden.prefix": "Echo"
+  "tetra.material.vn_warden.prefix": "Echo",
+  "tetra.advancements.upgrades.hammer_6.title": "Netherite Hammer",
+  "tetra.advancements.upgrades.hammer_6.description": "Craft a netherite hammer head — the top forging tier, strong enough to work aethersteel",
+  "item.tetra.pristine_quartz": "Pristine Quartz"
 }

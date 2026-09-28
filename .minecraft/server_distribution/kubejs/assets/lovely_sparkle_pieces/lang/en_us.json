@@ -1,0 +1,10 @@
+{
+  "entity.lovely_sparkle_pieces.butterfly": "Soul Butterfly",
+  "attribute.lsp.magic_damage_modifier": "Magic Damage Modifier",
+  "tooltip.lovely_sparkle_pieces.flame_soul_staff.desc3": "Consumes 2 souls per second while channeling.",
+  "tooltip.lovely_sparkle_pieces.moon_amulet.basic": "Blessed by the moon. At night:",
+  "tooltip.lovely_sparkle_pieces.moon_amulet.basic2": "+8% Attack Damage",
+  "tooltip.lovely_sparkle_pieces.moon_amulet.basic3": "+8% Attack Speed",
+  "tooltip.lovely_sparkle_pieces.moon_amulet.basic4": "+2% Movement Speed",
+  "tooltip.lovely_sparkle_pieces.moon_amulet.basic5": "+2 Armor"
+}

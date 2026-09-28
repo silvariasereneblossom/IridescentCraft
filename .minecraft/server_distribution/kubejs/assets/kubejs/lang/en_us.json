@@ -83,5 +83,9 @@
   "item.kubejs.transmuted_manasteel": "Transmuted Manasteel Ingot",
   "item.kubejs.transmuted_osmium": "Transmuted Osmium Ingot",
   "item.kubejs.transmuted_diamond": "Transmuted Diamond",
-  "item.kubejs.transmuted_ancient_debris": "Transmuted Ancient Debris"
+  "item.kubejs.transmuted_ancient_debris": "Transmuted Ancient Debris",
+
+  "item.kubejs.boss_compass": "Boss Compass",
+  "item.kubejs.icraft_rift_shard": "Iridescent Rift Shard",
+  "item.kubejs.pharaohs_feast": "Pharaoh's Feast"
 }

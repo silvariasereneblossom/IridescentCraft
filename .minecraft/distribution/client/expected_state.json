@@ -5840,16 +5840,20 @@
                                             "size":  1203
                                         },
                   "kubejs/assets/apotheosis/lang/en_us.json":  {
-                                                                   "sha256":  "8612cddff48b608eea1ea2134d049023bf825e963f0ddbe6bf1914b8a1d92db5",
-                                                                   "size":  32245
+                                                                   "sha256":  "09b213f31cf140b770ddb5737e34a9b3d59595fc8be0dc94662f832eb37ef055",
+                                                                   "size":  32277
                                                                },
+                  "kubejs/assets/cataclysm/lang/en_us.json":  {
+                                                                  "sha256":  "d2cf3e34a6860ddbcd86c8a381c5d1bc35843fa60221404fd0b6f633f093bbc3",
+                                                                  "size":  209
+                                                              },
                   "kubejs/assets/dna/lang/en_us.json":  {
                                                             "sha256":  "e3a6a72acfb05359da05e9ea25843eada2c269c3ec0f6c791b9ad4fed6ac5294",
                                                             "size":  51
                                                         },
                   "kubejs/assets/icraft/lang/en_us.json":  {
-                                                               "sha256":  "43fd9296f162585e80900f85e0811cac634ff7535255385a7e8bb42050a21d02",
-                                                               "size":  11428
+                                                               "sha256":  "1a3ca26329764eb29aa82a9ed93e01965332a0a2b2b68f13d16a5dcff6db32b1",
+                                                               "size":  11816
                                                            },
                   "kubejs/assets/iridescent_modular_spells/lang/en_us.json":  {
                                                                                   "sha256":  "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
@@ -5860,8 +5864,8 @@
                                                                              "size":  1230
                                                                          },
                   "kubejs/assets/kubejs/lang/en_us.json":  {
-                                                               "sha256":  "56a58bd77f5f5458a96d90551154b3c13d6d1c8b5d28e156ead4639695fff976",
-                                                               "size":  4096
+                                                               "sha256":  "f36fe503703452935e9ab0e6ecfd511676b3aacaf57e30fbe8a5ca90fffe21a6",
+                                                               "size":  4254
                                                            },
                   "kubejs/assets/kubejs/textures/block/example_block.png":  {
                                                                                 "sha256":  "783d78bd1ee61d3b32273670dff9d82c34cd74c5ae899a10f104f473828d5bbc",
@@ -5875,17 +5879,33 @@
                                                                               "sha256":  "45a5f56eba6066ad05c70988a32b72c50cfeb6e35857739bd582007011ea002b",
                                                                               "size":  372
                                                                           },
+                  "kubejs/assets/lovely_sparkle_pieces/lang/en_us.json":  {
+                                                                              "sha256":  "9503b7bce8c08754ce549d82b57cb6178e3eff5d18fd25b2f9bab18d205780aa",
+                                                                              "size":  616
+                                                                          },
+                  "kubejs/assets/modonomicon/lang/en_us.json":  {
+                                                                    "sha256":  "5a1a72a57501f051468a4756de3faa65c11f35eef2010e40d3633b233c1453b5",
+                                                                    "size":  251
+                                                                },
                   "kubejs/assets/origins/lang/en_us.json":  {
                                                                 "sha256":  "3166f6fcb240048a0ec3e0ba7365618f1fbf55ca3f84e3238388eda512126f80",
                                                                 "size":  8533
                                                             },
+                  "kubejs/assets/pamhc2trees/lang/en_us.json":  {
+                                                                    "sha256":  "9bb0c762f67522f8c70a4d549de06219ff238f5b2f3643cd5705f95da081440b",
+                                                                    "size":  55
+                                                                },
                   "kubejs/assets/simple_staves/lang/en_us.json":  {
                                                                       "sha256":  "c2247a38f2c320e50e0da24f8628035be0a7e0dbcfbfbd937c21487bdae749b1",
                                                                       "size":  367
                                                                   },
+                  "kubejs/assets/supplementaries/lang/en_us.json":  {
+                                                                        "sha256":  "3f3ccf616b2b6cab8a76aede2c3539766dcb2b41a5bb012d9b4c3d4b8f63302d",
+                                                                        "size":  227
+                                                                    },
                   "kubejs/assets/tetra/lang/en_us.json":  {
-                                                              "sha256":  "2a08ae2ae06314a5379962b2b14618e3b94144858299b3bf2b01424df98dc1cb",
-                                                              "size":  10903
+                                                              "sha256":  "d47e1c169f7dc9e1da9bb318692fa5a17b8751c73083bf07d588ed1ce1988c39",
+                                                              "size":  11169
                                                           },
                   "kubejs/client_scripts/armor_weight_tooltip.js":  {
                                                                         "sha256":  "10777cfbd8645b714a7a026b3fe25920996b13b90879d10bfe96c5d7ee241098",
@@ -6584,8 +6604,8 @@
                                                                            "size":  534
                                                                        },
                   "kubejs/data/minecraft/advancements/husbandry/obtain_netherite_hoe.json":  {
-                                                                                                 "sha256":  "3a24c7d8e6fb66b31cde5fbf2ccf6d72e8345890ec9a6f2cb2497a5a0fea0b82",
-                                                                                                 "size":  472
+                                                                                                 "sha256":  "dce148f2d14df02bd0778e1bd9c34cf14c89ce65dcb0db18c53912ac321d06e9",
+                                                                                                 "size":  465
                                                                                              },
                   "kubejs/data/minecraft/advancements/nether/netherite_armor.json":  {
                                                                                          "sha256":  "6650605e7ee68e64bfaa8cfaaa28a72d04757a85756ac85d95f4f2d7840d9f21",

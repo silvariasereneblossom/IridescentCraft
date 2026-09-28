@@ -158,5 +158,15 @@
   "entity.netherscorpion.name": "Nether Scorpion",
   "entity.soulguard.name": "Soul Guard",
   "entity.testhrse.name": "Test Horse",
-  "entity.witherblaze.name": "Wither Blaze"
+  "entity.witherblaze.name": "Wither Blaze",
+
+  "item.icraft.sigil_of_socketing_t1": "Sigil of Socketing I",
+  "item.icraft.sigil_of_socketing_t2": "Sigil of Socketing II",
+  "item.icraft.sigil_of_socketing_t3": "Sigil of Socketing III",
+
+  "break_speed": "Break Speed",
+  "critical_damage": "Critical Damage",
+  "projectile_damage": "Projectile Damage",
+  "beneficial_effect": "Beneficial Effect",
+  "magic_resist": "Magic Resist"
 }

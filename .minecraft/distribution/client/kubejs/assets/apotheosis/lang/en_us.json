@@ -590,5 +590,6 @@
   "text.apotheosis.category.curios:feet.plural": "Feet Curios",
   "text.apotheosis.category.curios:spellbook": "Spellbook",
   "text.apotheosis.category.curios:spellbook.plural": "Spellbooks",
-  "gem_class.curio": "Curios"
+  "gem_class.curio": "Curios",
+  "item.apotheosis.gem": "Gem"
 }
