@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$()/$(t3)90%$()/$(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
+      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$() / $(t3)90%$() / $(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
     }
   ]
 }

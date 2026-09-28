@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the reference lives:$() this Codex replaces the individual mod guidebooks in this pack. Every glyph and apparatus recipe is in JEI; the T1 entry path is walked in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot)/$(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first custom spell at a Scribes Table.$()"
+      "text": "$(bold)Where the reference lives:$() this Codex replaces the individual mod guidebooks in this pack. Every glyph and apparatus recipe is in JEI; the T1 entry path is walked in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot) / $(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first custom spell at a Scribes Table.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"
