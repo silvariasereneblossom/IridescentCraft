@@ -13,7 +13,6 @@
   ],
   "client": [
     "GuiModuleSlotSubheadingMixin",
-    "AttributesGuiToggleBtnMixin",
     "ArsGuiManaHudMixin"
   ],
   "server": [],
