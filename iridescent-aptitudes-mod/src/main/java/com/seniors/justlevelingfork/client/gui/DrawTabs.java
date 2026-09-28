@@ -23,39 +23,29 @@ public class DrawTabs {
     public static ArrayList<Tabs> tabList = new ArrayList<>();
     public static boolean isMouseCheck = false;
     public static boolean checkMouse = false;
-    private static String lastLoggedScreen = null;
 
-    public static void render(GuiGraphics matrixStack, int mouseX, int mouseY, int textureWidth, int textureHeight, int recipe) {
+    /**
+     * Draws the tab strip with its first tab's top-left at (left, top). Callers
+     * pass the live panel anchor (e.g. the inventory's getGuiLeft/getGuiTop) so
+     * the strip follows every panel shift instead of re-deriving it here from
+     * the window size.
+     */
+    public static void render(GuiGraphics matrixStack, int mouseX, int mouseY, int left, int top) {
         Screen screen = client.screen;
-        // Diagnostic: log the screen class once per screen change so we can
-        // see what JLF is rendering tabs on. Remove after diagnosis.
-        String screenName = screen == null ? "null" : screen.getClass().getName();
-        if (!screenName.equals(lastLoggedScreen)) {
-            org.apache.logging.log4j.LogManager.getLogger("JLF-DrawTabs")
-                .info("[JLF] DrawTabs.render fired on screen={} | tabs={} | curiosOffset={}",
-                      screenName, 1, recipe);
-            lastLoggedScreen = screenName;
-        }
         if (client.player != null) {
             isMouseCheck = false;
             tabList = new ArrayList<>();
-            // The JLF "inventory" tab (player_head icon) is removed entirely.
-            // Earlier attempts to skip it conditionally on InventoryScreen
-            // and CreativeModeInventoryScreen didn't fully resolve user-
-            // reported overlap with Apothic Attributes' toggleBtn — likely
-            // because in this pack's Curios + Aether stack, the actual
-            // open screen at JLF render time is sometimes EffectRendering-
-            // InventoryScreen subclasses we don't enumerate. Esc and E
-            // already close the leveling screen back to the inventory,
-            // so the navigation tab serves no purpose. Only the leveling
-            // tab remains.
+            // Only the leveling tab: the JLF "inventory" navigation tab is gone
+            // (Esc and E already return to the inventory). The garbled
+            // "Aptifibutes" / doubled-"Aptitudes" tooltip reports were never
+            // Apothic's toggleBtn: L2Tabs (jar-in-jar in celestial_core) drew
+            // its own tab strip at guiTop-28 with an "Attributes" tab at
+            // guiLeft+26, 1px under this tab. That strip is now disabled in
+            // config/l2_configs/l2tabs-client.toml (showTabs = false).
             tabList.add(new Tabs("leveling", RegistryItems.LEVELING_BOOK.get().getDefaultInstance(), new JustLevelingScreen(), screen instanceof JustLevelingScreen, Component.translatable("screen.aptitude.title")));
         }
         for (int i = 0; i < tabList.size(); i++) {
-            Tabs type = tabList.get(i);
-            int x = (client.getWindow().getGuiScaledWidth() - textureWidth) / 2 + i * 27 + recipe;
-            int y = (client.getWindow().getGuiScaledHeight() - textureHeight) / 2 - 28;
-            renderWidget(matrixStack, type, x, y, mouseX, mouseY);
+            renderWidget(matrixStack, tabList.get(i), left + i * 27, top, mouseX, mouseY);
         }
     }
 
@@ -63,8 +53,8 @@ public class DrawTabs {
         matrixStack.pose().pushPose();
         RenderSystem.enableBlend();
         matrixStack.blit(TEXTURE, x, y, type.getName().equals("inventory") ? 0 : 26, type.isScreen() ? 32 : 0, 26, 32);
-        if (Utils.checkMouse(x, y, mouseX, mouseY, 26, 32))
-            Utils.drawToolTip(matrixStack, type.getComponentName(), mouseX, mouseY);
+        // The tooltip is drawn once, below (after the icon). A second
+        // drawToolTip here used to paint it twice every hovered frame.
         float scale = (type.getItemStack().getItem() instanceof net.minecraft.world.item.StandingAndWallBlockItem) ? 1.125F : 1.0F;
         float newX = (x + 13.0F - 8.0F) / scale;
         float newY = (y + 15.0F - 8.0F + (type.isScreen() ? 0.0F : 2.0F)) / scale;

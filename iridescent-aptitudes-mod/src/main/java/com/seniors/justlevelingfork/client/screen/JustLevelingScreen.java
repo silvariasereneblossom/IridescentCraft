@@ -113,7 +113,7 @@ public class JustLevelingScreen extends Screen {
             drawTitles(matrixStack, x, y, mouseX, mouseY, delta);
         }
 
-        DrawTabs.render(matrixStack, mouseX, mouseY, 176, 166, 0);
+        DrawTabs.render(matrixStack, mouseX, mouseY, x, y - 28);
         matrixStack.pose().popPose();
     }
 
