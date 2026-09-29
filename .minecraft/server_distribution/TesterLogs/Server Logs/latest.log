@@ -1,72 +1,204 @@
-[25Sep2026 00:21:04.538] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2109ms or 42 ticks behind
-[25Sep2026 05:00:06.818] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Server] [Auto-Restart] Nightly restart in 60 seconds -- back in a few minutes.
-[25Sep2026 05:00:56.887] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Server] [Auto-Restart] Restarting in 10 seconds.
-[25Sep2026 05:01:06.887] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping the server
-[25Sep2026 05:01:06.938] [Config file watcher thread/INFO] [portb.configlib.ConfigLib/]: Watcher has shut down
-[25Sep2026 05:01:06.949] [Server thread/INFO] [Async Locator/]: Async Locator -> Shutting down locating executor service
-[25Sep2026 05:01:06.988] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[25Sep2026 05:01:06.989] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[25Sep2026 05:01:06.989] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[25Sep2026 05:01:06.996] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[25Sep2026 05:01:07.038] [Immersive Optimization Worker/INFO] [Immersive Optimization/]: Shutting down Immersive Optimization worker
-[25Sep2026 05:01:07.156] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars
-[25Sep2026 05:01:07.160] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/twilightforest:twilight_forest
-[25Sep2026 05:01:07.162] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everdawn
-[25Sep2026 05:01:07.165] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars_orbit
-[25Sep2026 05:01:07.167] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/undergarden:undergarden
-[25Sep2026 05:01:07.170] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:frost_world
-[25Sep2026 05:01:07.173] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon_orbit
-[25Sep2026 05:01:07.176] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mahoutsukai:reality_marble
-[25Sep2026 05:01:07.178] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/aether:the_aether
-[25Sep2026 05:01:07.181] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/irons_spellbooks:pocket_dimension
-[25Sep2026 05:01:07.184] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio
-[25Sep2026 05:01:07.186] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon
-[25Sep2026 05:01:07.189] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[25Sep2026 05:01:07.192] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[25Sep2026 05:01:07.215] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio_orbit
-[25Sep2026 05:01:07.218] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:the_abyss
-[25Sep2026 05:01:07.220] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:spectral_world
-[25Sep2026 05:01:07.224] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury
-[25Sep2026 05:01:07.227] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:pocket_dimension
-[25Sep2026 05:01:07.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:earth_orbit
-[25Sep2026 05:01:07.232] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/deeperdarker:otherside
-[25Sep2026 05:01:07.234] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus
-[25Sep2026 05:01:07.237] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus_orbit
-[25Sep2026 05:01:07.240] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury_orbit
-[25Sep2026 05:01:07.242] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everbright
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (world): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars_orbit): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon_orbit): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[25Sep2026 05:01:07.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio_orbit): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (earth_orbit): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus_orbit): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury_orbit): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
-[25Sep2026 05:01:07.764] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[25Sep2026 05:01:07.902] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.server.dedicated.DedicatedServer@2d347529
-[25Sep2026 05:01:07.903] [Server thread/INFO] [iridescent_durability_clamp/]: [event-guard] session summary: no guarded exceptions this session.
-[25Sep2026 05:01:07.913] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
-[25Sep2026 05:01:07.913] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
-[25Sep2026 05:01:07.914] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopping IO worker...
-[25Sep2026 05:01:07.922] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopped IO worker!
-[25Sep2026 05:01:07.931] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
-[25Sep2026 05:01:07.932] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
-[25Sep2026 05:01:07.981] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
+[29Sep2026 00:15:13.767] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 3934ms or 78 ticks behind
+[29Sep2026 00:55:16.372] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2675ms or 53 ticks behind
+[29Sep2026 01:00:19.030] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2688ms or 53 ticks behind
+[29Sep2026 01:05:21.618] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2632ms or 52 ticks behind
+[29Sep2026 01:10:24.326] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2744ms or 54 ticks behind
+[29Sep2026 01:15:28.959] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 4680ms or 93 ticks behind
+[29Sep2026 01:15:31.592] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.1390678882598877) to LOW (avg. 22.706212997436523)
+[29Sep2026 01:15:37.279] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 22.706212997436523) to VERY_LOW (avg. 2.1896109580993652)
+[29Sep2026 01:20:35.670] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 6749ms or 134 ticks behind
+[29Sep2026 01:20:36.473] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.240689277648926) to LOW (avg. 22.839374542236328)
+[29Sep2026 01:20:51.473] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 22.839374542236328) to VERY_LOW (avg. 2.077763080596924)
+[29Sep2026 01:22:53.237] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2118ms or 42 ticks behind
+[29Sep2026 01:23:26.744] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2025ms or 40 ticks behind
+[29Sep2026 01:24:13.795] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2077ms or 41 ticks behind
+[29Sep2026 01:24:48.344] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2076ms or 41 ticks behind
+[29Sep2026 01:25:05.479] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2061ms or 41 ticks behind
+[29Sep2026 01:25:31.482] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2114ms or 42 ticks behind
+[29Sep2026 01:26:07.586] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[29Sep2026 01:26:14.374] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 26407ms or 528 ticks behind
+[29Sep2026 01:26:15.217] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 1.2406961917877197) to VERY_HIGH (avg. 111.16067504882812)
+[29Sep2026 01:26:22.718] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 111.16067504882812) to VERY_LOW (avg. 2.282390594482422)
+[29Sep2026 01:26:40.568] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2201ms or 44 ticks behind
+[29Sep2026 01:27:12.685] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2119ms or 42 ticks behind
+[29Sep2026 01:27:33.257] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2092ms or 41 ticks behind
+[29Sep2026 01:27:52.305] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2090ms or 41 ticks behind
+[29Sep2026 01:28:11.382] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2117ms or 42 ticks behind
+[29Sep2026 01:28:28.413] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2048ms or 40 ticks behind
+[29Sep2026 01:28:46.991] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2126ms or 42 ticks behind
+[29Sep2026 01:29:06.142] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2177ms or 43 ticks behind
+[29Sep2026 01:29:23.279] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2164ms or 43 ticks behind
+[29Sep2026 01:29:43.894] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2130ms or 42 ticks behind
+[29Sep2026 01:30:01.493] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2129ms or 42 ticks behind
+[29Sep2026 01:30:20.664] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2200ms or 44 ticks behind
+[29Sep2026 01:30:40.230] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2066ms or 41 ticks behind
+[29Sep2026 01:30:59.025] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2111ms or 42 ticks behind
+[29Sep2026 01:31:18.070] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2257ms or 45 ticks behind
+[29Sep2026 01:31:26.717] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 0.595043) to LOW (avg. 21.078087)
+[29Sep2026 01:31:35.158] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2094ms or 41 ticks behind
+[29Sep2026 01:32:07.150] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[29Sep2026 01:32:20.523] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.559234857559204) to VERY_HIGH (avg. 140.97755432128906)
+[29Sep2026 01:32:20.551] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 30438ms or 608 ticks behind
+[29Sep2026 01:32:20.616] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 21.078087) to VERY_LOW (avg. 0.409167)
+[29Sep2026 01:32:34.364] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 140.97755432128906) to VERY_LOW (avg. 1.9357250928878784)
+[29Sep2026 01:37:21.252] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2746ms or 54 ticks behind
+[29Sep2026 01:39:30.765] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2062ms or 41 ticks behind
+[29Sep2026 01:42:30.321] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 7070ms or 141 ticks behind
+[29Sep2026 01:42:31.152] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 2.2436466217041016) to LOW (avg. 24.076120376586914)
+[29Sep2026 01:42:46.152] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 24.076120376586914) to VERY_LOW (avg. 2.1187338829040527)
+[29Sep2026 01:42:59.409] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2109ms or 42 ticks behind
+[29Sep2026 01:43:41.466] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2066ms or 41 ticks behind
+[29Sep2026 01:44:03.122] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2172ms or 43 ticks behind
+[29Sep2026 01:44:23.252] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2153ms or 43 ticks behind
+[29Sep2026 01:44:57.867] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2117ms or 42 ticks behind
+[29Sep2026 01:45:17.455] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2106ms or 42 ticks behind
+[29Sep2026 01:45:52.703] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2255ms or 45 ticks behind
+[29Sep2026 01:46:12.853] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2155ms or 43 ticks behind
+[29Sep2026 01:46:45.862] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2015ms or 40 ticks behind
+[29Sep2026 01:47:09.438] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2090ms or 41 ticks behind
+[29Sep2026 01:47:29.084] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2186ms or 43 ticks behind
+[29Sep2026 01:47:48.206] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2158ms or 43 ticks behind
+[29Sep2026 01:48:07.484] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[29Sep2026 01:48:46.505] [ForkJoinPool.commonPool-worker-685/ERROR] [io.redspace.ironspatreonlib.IronsPatreonLib/]: Failed to handle Patreon Data response: java.net.http.HttpConnectTimeoutException: HTTP connect timed out
+[29Sep2026 01:49:12.564] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[29Sep2026 01:50:12.537] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Encountered an unexpected exception
+java.lang.OutOfMemoryError: Java heap space
+	at net.minecraft.nbt.IntTag.m_128679_(IntTag.java:70) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.nbt.CompoundTag.m_128405_(CompoundTag.java:184) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraftforge.registries.ForgeRegistry$Snapshot.lambda$write$0(ForgeRegistry.java:861) ~[forge-1.20.1-47.4.6-universal.jar%23970!/:?]
+	at net.minecraftforge.registries.ForgeRegistry$Snapshot$$Lambda$64598/0x0000018e878e8af8.accept(Unknown Source) ~[?:?]
+	at java.lang.Iterable.forEach(Iterable.java:75) ~[?:?]
+	at net.minecraftforge.registries.ForgeRegistry$Snapshot.write(ForgeRegistry.java:858) ~[forge-1.20.1-47.4.6-universal.jar%23970!/:?]
+	at net.minecraftforge.common.ForgeHooks.writeAdditionalLevelSaveData(ForgeHooks.java:1274) ~[forge-1.20.1-47.4.6-universal.jar%23970!/:?]
+	at net.minecraft.world.level.storage.LevelStorageSource$LevelStorageAccess.m_78290_(LevelStorageSource.java:471) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_129885_(MinecraftServer.java:515) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_195514_(MinecraftServer.java:532) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:824) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[server-1.20.1-20230612.114412-srg.jar%23965!/:?]
+	at net.minecraft.server.MinecraftServer$$Lambda$64602/0x0000018e878e9c68.run(Unknown Source) ~[?:?]
+	at java.lang.Thread.run(Thread.java:840) ~[?:?]
+[29Sep2026 01:50:57.725] [spark-java-sampler-0-3/INFO] [STDERR/]: [me.lucko.spark.common.util.SparkThreadFactory:lambda$static$0:29]: Uncaught exception thrown by thread spark-java-sampler-0-3
+[29Sep2026 01:50:57.725] [spark-java-sampler-0-3/INFO] [STDERR/]: [me.lucko.spark.common.util.SparkThreadFactory:lambda$static$0:30]: java.lang.OutOfMemoryError: Java heap space
+[29Sep2026 01:50:58.670] [Server thread/FATAL] [net.minecraftforge.common.ForgeMod/]: Preparing crash report with UUID b5a36478-2116-4e00-b198-9b20fe5baa0f
+[29Sep2026 01:50:58.671] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: This crash report has been saved to: C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\.\crash-reports\crash-2026-09-29_01.50.58-server.txt
+[29Sep2026 01:50:58.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[29Sep2026 01:50:58.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[29Sep2026 01:50:58.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[29Sep2026 01:50:58.692] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[29Sep2026 01:50:58.819] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars
+[29Sep2026 01:50:58.825] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/aether:the_aether
+[29Sep2026 01:50:58.829] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio
+[29Sep2026 01:50:58.832] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars_orbit
+[29Sep2026 01:50:58.837] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:the_abyss
+[29Sep2026 01:50:58.845] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/twilightforest:twilight_forest
+[29Sep2026 01:50:58.848] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio_orbit
+[29Sep2026 01:50:58.852] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/undergarden:undergarden
+[29Sep2026 01:50:58.855] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[29Sep2026 01:50:58.857] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon_orbit
+[29Sep2026 01:50:58.859] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/irons_spellbooks:pocket_dimension
+[29Sep2026 01:50:58.861] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury_orbit
+[29Sep2026 01:50:58.862] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon
+[29Sep2026 01:50:58.864] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mahoutsukai:reality_marble
+[29Sep2026 01:50:58.866] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus_orbit
+[29Sep2026 01:50:58.872] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:spectral_world
+[29Sep2026 01:50:58.874] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:earth_orbit
+[29Sep2026 01:50:58.876] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:pocket_dimension
+[29Sep2026 01:50:58.878] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury
+[29Sep2026 01:50:58.884] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/deeperdarker:otherside
+[29Sep2026 01:50:58.887] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[29Sep2026 01:50:58.930] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everdawn
+[29Sep2026 01:50:58.933] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:frost_world
+[29Sep2026 01:50:58.936] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everbright
+[29Sep2026 01:50:58.938] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus
+[29Sep2026 01:51:01.547] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: java.util.concurrent.RejectedExecutionException: Server already shutting down
+[29Sep2026 01:51:01.547] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.server.MinecraftServer.m_201446_(MinecraftServer.java:1279)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.forge.plugin.ForgeServerSparkPlugin.executeSync(ForgeServerSparkPlugin.java:222)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.asyncSupplyStage(CompletableFuture.java:1782)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.supplyAsync(CompletableFuture.java:2005)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.async(AsyncWorldInfoProvider.java:54)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.pollCounts(AsyncWorldInfoProvider.java:76)
+[29Sep2026 01:51:01.548] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.getCounts(AsyncWorldInfoProvider.java:84)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measure(WindowStatisticsCollector.java:185)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measureNow(WindowStatisticsCollector.java:123)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.java.JavaSampler$InsertDataTask.run(JavaSampler.java:178)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[29Sep2026 01:51:01.549] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+[29Sep2026 01:51:01.550] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+[29Sep2026 01:51:01.550] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+[29Sep2026 01:51:01.550] [spark-java-sampler-0-0/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.lang.Thread.run(Thread.java:840)
+[29Sep2026 01:51:04.000] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: java.util.concurrent.RejectedExecutionException: Server already shutting down
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.server.MinecraftServer.m_201446_(MinecraftServer.java:1279)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.forge.plugin.ForgeServerSparkPlugin.executeSync(ForgeServerSparkPlugin.java:222)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.asyncSupplyStage(CompletableFuture.java:1782)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.supplyAsync(CompletableFuture.java:2005)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.async(AsyncWorldInfoProvider.java:54)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.pollCounts(AsyncWorldInfoProvider.java:76)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.getCounts(AsyncWorldInfoProvider.java:84)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measure(WindowStatisticsCollector.java:185)
+[29Sep2026 01:52:18.303] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measureNow(WindowStatisticsCollector.java:123)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.java.JavaSampler$InsertDataTask.run(JavaSampler.java:178)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+[29Sep2026 01:52:18.304] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.lang.Thread.run(Thread.java:840)
+[29Sep2026 01:53:06.140] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[29Sep2026 01:53:06.140] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (earth_orbit): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus): All chunks are saved
+[29Sep2026 01:53:06.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[29Sep2026 01:53:06.141] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: java.util.concurrent.RejectedExecutionException: Server already shutting down
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.server.MinecraftServer.m_201446_(MinecraftServer.java:1279)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.forge.plugin.ForgeServerSparkPlugin.executeSync(ForgeServerSparkPlugin.java:222)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.asyncSupplyStage(CompletableFuture.java:1782)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.CompletableFuture.supplyAsync(CompletableFuture.java:2005)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.async(AsyncWorldInfoProvider.java:54)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.pollCounts(AsyncWorldInfoProvider.java:76)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.platform.world.AsyncWorldInfoProvider.getCounts(AsyncWorldInfoProvider.java:84)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measure(WindowStatisticsCollector.java:185)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ConcurrentHashMap.computeIfAbsent(ConcurrentHashMap.java:1708)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.window.WindowStatisticsCollector.measureNow(WindowStatisticsCollector.java:123)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at TRANSFORMER/spark@1.10.53/me.lucko.spark.common.sampler.java.JavaSampler$InsertDataTask.run(JavaSampler.java:178)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+[29Sep2026 01:53:06.142] [spark-java-sampler-0-1/INFO] [STDERR/]: [me.lucko.spark.common.sampler.window.WindowStatisticsCollector:measure:193]: 	at java.base/java.lang.Thread.run(Thread.java:840)
+[29Sep2026 01:53:08.478] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.server.dedicated.DedicatedServer@1b474d7e
+[29Sep2026 01:53:08.479] [Server thread/INFO] [iridescent_durability_clamp/]: [event-guard] session summary: no guarded exceptions this session.
+[29Sep2026 01:53:08.498] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
+[29Sep2026 01:53:08.499] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
+[29Sep2026 01:53:08.499] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopping IO worker...
+[29Sep2026 01:53:08.503] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopped IO worker!
+[29Sep2026 01:53:08.556] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[29Sep2026 01:53:08.557] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[29Sep2026 01:53:08.624] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
