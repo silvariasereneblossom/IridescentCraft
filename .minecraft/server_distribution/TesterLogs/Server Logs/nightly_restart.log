@@ -251,3 +251,8 @@
 [2026-10-01 05:00:05] [INFO] Wrote Cycle request (1790856004); waiting up to 60s for icraft-gui to answer.
 [2026-10-01 05:00:07] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
 [2026-10-01 05:00:07] [INFO] ================ nightly restart run end (success=True) ================
+[2026-10-02 05:00:04] [INFO] ================ nightly restart run start ================
+[2026-10-02 05:00:04] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  ScheduledFor=05:00  Mode=icraft-gui Cycle request
+[2026-10-02 05:00:04] [INFO] Wrote Cycle request (1790942404); waiting up to 60s for icraft-gui to answer.
+[2026-10-02 05:00:06] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
+[2026-10-02 05:00:06] [INFO] ================ nightly restart run end (success=True) ================
