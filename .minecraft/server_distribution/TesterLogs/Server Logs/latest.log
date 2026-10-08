@@ -1,71 +1,306 @@
-[07Oct2026 05:00:09.473] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Server] [Auto-Restart] Nightly restart in 60 seconds -- back in a few minutes.
-[07Oct2026 05:00:59.544] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Server] [Auto-Restart] Restarting in 10 seconds.
-[07Oct2026 05:01:09.544] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping the server
-[07Oct2026 05:01:09.613] [Server thread/INFO] [Async Locator/]: Async Locator -> Shutting down locating executor service
-[07Oct2026 05:01:09.618] [Config file watcher thread/INFO] [portb.configlib.ConfigLib/]: Watcher has shut down
-[07Oct2026 05:01:09.626] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[07Oct2026 05:01:09.627] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[07Oct2026 05:01:09.628] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[07Oct2026 05:01:09.660] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[07Oct2026 05:01:09.701] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/aether:the_aether
-[07Oct2026 05:01:09.705] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury
-[07Oct2026 05:01:09.708] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/irons_spellbooks:pocket_dimension
-[07Oct2026 05:01:09.711] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
-[07Oct2026 05:01:09.713] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio
-[07Oct2026 05:01:09.714] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon
-[07Oct2026 05:01:09.717] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars_orbit
-[07Oct2026 05:01:09.719] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:pocket_dimension
-[07Oct2026 05:01:09.721] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:glacio_orbit
-[07Oct2026 05:01:09.722] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/deeperdarker:otherside
-[07Oct2026 05:01:09.724] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mercury_orbit
-[07Oct2026 05:01:09.726] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:frost_world
-[07Oct2026 05:01:09.728] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everdawn
-[07Oct2026 05:01:09.730] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:earth_orbit
-[07Oct2026 05:01:09.732] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/blue_skies:everbright
-[07Oct2026 05:01:09.734] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/undergarden:undergarden
-[07Oct2026 05:01:09.737] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus_orbit
-[07Oct2026 05:01:09.739] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/twilightforest:twilight_forest
-[07Oct2026 05:01:09.740] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/mahoutsukai:reality_marble
-[07Oct2026 05:01:09.742] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:the_abyss
-[07Oct2026 05:01:09.762] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:venus
-[07Oct2026 05:01:09.773] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
-[07Oct2026 05:01:09.797] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:moon_orbit
-[07Oct2026 05:01:09.799] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/ad_astra:mars
-[07Oct2026 05:01:09.802] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[world]'/theabyss:spectral_world
-[07Oct2026 05:01:09.820] [Immersive Optimization Worker/INFO] [Immersive Optimization/]: Shutting down Immersive Optimization worker
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (world): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars_orbit): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio_orbit): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury_orbit): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (earth_orbit): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus_orbit): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus): All chunks are saved
-[07Oct2026 05:01:10.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[07Oct2026 05:01:10.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon_orbit): All chunks are saved
-[07Oct2026 05:01:10.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars): All chunks are saved
-[07Oct2026 05:01:10.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
-[07Oct2026 05:01:10.283] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[07Oct2026 05:01:10.331] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.server.dedicated.DedicatedServer@4e66fe24
-[07Oct2026 05:01:10.332] [Server thread/INFO] [iridescent_durability_clamp/]: [event-guard] session summary: no guarded exceptions this session.
-[07Oct2026 05:01:10.338] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
-[07Oct2026 05:01:10.338] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
-[07Oct2026 05:01:10.338] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopping IO worker...
-[07Oct2026 05:01:10.341] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Stopped IO worker!
-[07Oct2026 05:01:10.347] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
-[07Oct2026 05:01:10.347] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
-[07Oct2026 05:01:10.382] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
+[08Oct2026 00:00:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:01:05.008] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:02:05.002] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:03:05.001] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:04:05.012] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:05:05.002] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:06:05.010] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:07:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:08:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:09:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:10:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:11:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:12:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:13:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:14:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:15:05.003] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:16:05.002] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:17:05.010] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:18:05.012] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:19:05.008] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:20:05.010] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:21:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:22:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:23:05.006] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:24:05.006] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:25:05.007] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:26:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:27:05.002] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:28:05.012] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:29:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:30:05.017] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:31:05.011] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:32:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:33:05.011] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:34:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:35:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:36:05.004] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:37:05.008] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:38:05.001] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:39:05.012] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:40:05.012] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:41:05.014] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:42:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:43:05.009] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:44:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:45:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:46:05.007] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:47:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:48:05.004] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:49:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:50:05.003] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:51:05.012] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:52:05.010] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:53:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:54:05.008] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:55:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:56:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:57:05.006] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:58:05.007] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 00:59:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:00:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:01:05.001] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:02:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:03:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:04:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:05:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:06:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:07:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:08:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:09:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:10:05.007] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:11:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:12:05.003] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:13:05.014] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:14:05.002] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:15:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:16:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:17:05.009] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:18:05.011] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:19:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:20:05.006] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:21:05.005] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:22:05.003] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:23:05.002] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:24:05.011] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:25:05.012] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:26:05.011] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:27:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:28:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:29:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:30:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:31:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:32:05.007] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:33:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:34:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:35:05.003] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:36:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:37:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:38:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:39:05.011] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:40:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:41:05.008] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:42:05.008] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:43:05.006] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:44:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:45:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:46:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:47:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:48:05.002] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:49:05.011] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:50:05.012] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:51:05.016] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:52:05.014] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:53:05.010] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:54:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:55:05.013] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:56:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:57:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:58:05.004] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 01:59:05.004] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:00:05.010] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:01:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:02:05.010] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:03:05.009] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:04:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:05:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:06:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:07:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:08:05.005] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:09:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:10:05.003] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:11:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:12:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:13:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:14:05.013] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:15:05.009] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:16:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:17:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:18:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:19:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:20:05.005] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:21:05.005] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:22:05.002] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:23:05.001] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:24:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:25:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:26:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:27:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:28:05.009] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:29:05.005] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:30:05.006] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:31:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:32:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:33:05.004] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:34:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:35:05.012] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:36:05.008] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:37:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:38:05.011] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:39:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:40:05.004] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:41:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:42:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:43:05.002] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:44:05.014] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:45:05.014] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:46:05.013] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:47:05.011] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:48:05.013] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:49:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:50:05.007] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:51:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:52:05.008] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:53:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:54:05.004] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:55:05.002] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:56:05.002] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:57:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:58:05.012] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 02:59:05.008] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:00:05.009] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:01:05.013] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:02:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:03:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:04:05.005] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:05:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:06:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:07:05.003] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:08:05.013] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:09:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:10:05.010] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:11:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:12:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:13:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:14:05.004] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:15:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:16:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:17:05.008] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:18:05.001] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:19:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:20:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:21:05.012] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:22:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:23:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:24:05.008] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:25:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:26:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:27:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:28:05.003] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:29:05.003] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:30:05.014] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:31:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:32:05.010] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:33:05.010] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:34:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:35:05.007] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:36:05.006] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:37:05.008] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:38:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:39:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:40:05.013] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:41:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:42:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:43:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:44:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:45:05.008] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:46:05.009] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:47:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:48:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:49:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:50:05.006] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:51:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:52:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:53:05.011] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:54:05.002] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:55:05.010] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:56:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:57:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:58:05.007] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 03:59:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:00:05.005] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:01:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:02:05.005] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:03:05.004] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:04:05.002] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:05:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:06:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:07:05.013] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:08:05.008] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:09:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:10:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:11:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:12:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:13:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:14:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:15:05.003] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:16:05.012] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:17:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:18:05.011] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:19:05.009] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:20:05.011] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:21:05.017] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:22:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:23:05.007] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:24:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:25:05.009] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:26:05.005] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:27:05.002] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:28:05.011] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:29:05.010] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:30:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:31:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:32:05.008] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:33:05.007] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:34:05.009] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:35:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:36:05.006] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:37:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:38:05.005] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:39:05.001] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:40:05.004] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:41:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:42:05.011] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:43:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:44:05.010] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:45:05.010] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:46:05.009] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:47:05.007] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:48:05.006] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:49:05.005] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:50:05.006] [spark-java-sampler-0-0/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:51:05.008] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:52:05.011] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:53:05.012] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:54:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:55:05.008] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:56:05.009] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:57:05.008] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:58:05.006] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 04:59:05.006] [spark-java-sampler-0-4/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 05:00:05.004] [spark-java-sampler-0-3/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 05:01:05.002] [spark-java-sampler-0-2/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 05:02:05.001] [spark-java-sampler-0-1/WARN] [spark/]: Timed out waiting for world statistics
+[08Oct2026 05:02:07.802] [Modding Legacy/blue_skies/Supporters thread/INFO] [ModdingLegacy/blue_skies/Supporter/]: Attempting to load the Modding Legacy supporters list from https://moddinglegacy.com/supporters-changelogs/supporters.txt
+[08Oct2026 05:02:08.133] [Modding Legacy/blue_skies/Supporters thread/INFO] [ModdingLegacy/blue_skies/Supporter/]: Successfully loaded the Modding Legacy supporters list.
+[08Oct2026 05:03:05.012] [spark-java-sampler-0-5/WARN] [spark/]: Timed out waiting for world statistics
