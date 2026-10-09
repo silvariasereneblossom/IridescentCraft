@@ -27,6 +27,16 @@
 //   - NOTE: .monster includes BOSSES -- a megatorch placed by a boss arena will
 //     chip/melt that boss. If that's exploitable, add an HP/boss-tag exclusion.
 //
+// LOADED CHUNKS ONLY (2026-10-09, the "server OOMs every evening" leak):
+//   level.getBlock() on an UNLOADED chunk force-loads it to FULL. The registry
+//   lists every torch in the level, so this sweep reloaded the chunk of every
+//   far-away torch 2x/s. In a level with no players, vanilla stops calling
+//   tickBlockEntities() (the only place dead tickers leave
+//   Level.blockEntityTickers), so each reload leaked a whole LevelChunk copy:
+//   the 10-07 OOM dump held 112,787 copies of the one megatorch chunk
+//   (overworld 170,206) = 8.65 GB. A torch whose chunk isn't loaded has no
+//   ticking hostiles around it anyway, so skip it; hasChunkAt never loads.
+//
 // Memory: feedback_rhino_scoping (var X = function(){} in IIFE),
 //   feedback_kubejs_event_scope (ServerEvents = server-side; this is server-
 //   authoritative), feedback_kubejs6_java_ctor (no `new java.X` -- AABB.of +
@@ -45,6 +55,19 @@
   } catch (e) {
     console.warn('[megatorch-damage] Torchmaster ModCaps not found - aura disabled: ' + e)
     return
+  }
+
+  // true only if the torch's chunk is already loaded; never loads it. A
+  // failed binding skips the torch (safe) and warns once instead of every 10t.
+  var guardWarned = false
+  var chunkLoaded = function (level, pos) {
+    try { return level.hasChunkAt(pos) === true } catch (e) {
+      if (!guardWarned) {
+        guardWarned = true
+        console.warn('[megatorch-damage] hasChunkAt unavailable - aura skipped: ' + e)
+      }
+      return false
+    }
   }
 
   var damageAround = function (level, x, y, z) {
@@ -73,6 +96,7 @@
         for (var i = 0; i < entries.length; i++) {
           var pos = entries[i].getPos()
           if (!pos) continue
+          if (!chunkLoaded(level, pos)) continue
           var x = pos.x, y = pos.y, z = pos.z
           // registry holds dreadlamps too -> keep only real megatorches
           if (String(level.getBlock(x, y, z).id) !== 'torchmaster:megatorch') continue
