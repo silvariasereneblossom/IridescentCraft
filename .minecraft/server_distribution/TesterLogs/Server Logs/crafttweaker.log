@@ -1,42 +1,42 @@
-[05:04:27.969][INFO][CraftTweaker-EarlyInit]: CraftTweaker is running on a Minecraft 1.20.1 production server modded with platform Forge
-[05:04:28.004][INFO][CraftTweaker-EarlyInit]: Successfully injected RecipeFS file system
-[05:04:28.087][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin jeitweaker:common
-[05:04:28.124][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin crafttweaker:builtin
-[05:04:28.126][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin crafttweaker:builtin_forge
-[05:04:28.129][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin mekanism:crt_plugin
-[05:04:28.131][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin farmersdelight:crafttweaker_plugin
-[05:04:28.179][INFO][JEITweaker]: Identified JeiTweaker plugin 'jeitweaker:forge': loading scheduled
-[05:04:28.182][INFO][JEITweaker]: Identified JeiTweaker plugin 'jeitweaker:common': loading scheduled
-[05:04:28.184][INFO][JEITweaker]: Identified JeiTweaker plugin 'mekanism:crt_jei': loading scheduled
-[05:04:28.194][INFO][JEITweaker]: JEITweaker Environmental Check: the combination of mods [jei] is fully supported
-[05:04:28.194][INFO][JEITweaker]: Running JeiTweaker plugin initialization
-[05:04:28.446][INFO][JEITweaker]: JeiTweaker plugin initialization completed successfully
-[05:04:30.364][INFO][CraftTweaker]: The following mods have explicit CraftTweaker support through the default plugin:
-[05:04:30.368][INFO][CraftTweaker]: - 'aether' at version '1.20.1-1.5.2-neoforge'
-[05:04:30.368][INFO][CraftTweaker]: - 'aquaculture' at version '2.5.7'
-[05:04:30.368][INFO][CraftTweaker]: - 'crafttweaker' at version '14.0.60'
-[05:04:30.368][INFO][CraftTweaker]: - 'farmersdelight' at version '1.20.1-1.2.11'
-[05:04:30.368][INFO][CraftTweaker]: - 'jeitweaker' at version '8.0.6'
-[05:04:30.368][INFO][CraftTweaker]: - 'mekanism' at version '10.4.16'
-[05:04:54.215][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'mekanismcontent'
-[05:04:54.570][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
-[05:04:55.310][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [mods, crafttweaker, expansions]
-[05:04:55.410][INFO][CraftTweaker-ZenCode]: Execution for loader 'mekanismcontent' completed successfully
-[05:04:55.410][INFO][Mekanism]: Registering 0 custom gases.
-[05:04:55.427][INFO][Mekanism]: Registering 0 custom infuse types.
-[05:04:55.463][INFO][Mekanism]: Registering 0 custom pigments.
-[05:04:55.490][INFO][Mekanism]: Registering 0 custom slurries.
-[05:04:57.017][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'initialize'
-[05:04:57.054][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
-[05:04:57.057][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [crafttweaker, expansions]
-[05:04:57.068][INFO][CraftTweaker-ZenCode]: Execution for loader 'initialize' completed successfully
-[05:05:36.646][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'tags'
-[05:05:36.730][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
-[05:05:36.736][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [crafttweaker, expansions]
-[05:05:36.746][INFO][CraftTweaker-ZenCode]: Execution for loader 'tags' completed successfully
-[05:05:48.022][INFO][CraftTweaker]: crafttweaker.reload.start
-[05:05:48.043][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'crafttweaker'
-[05:05:48.063][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
-[05:05:48.194][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [mods, crafttweaker, expansions]
-[05:05:48.222][INFO][CraftTweaker-ZenCode]: Execution for loader 'crafttweaker' completed successfully
-[05:05:48.224][INFO][CraftTweaker]: crafttweaker.reload.complete
+[21:11:13.982][INFO][CraftTweaker-EarlyInit]: CraftTweaker is running on a Minecraft 1.20.1 production server modded with platform Forge
+[21:11:14.020][INFO][CraftTweaker-EarlyInit]: Successfully injected RecipeFS file system
+[21:11:14.098][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin jeitweaker:common
+[21:11:14.134][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin crafttweaker:builtin
+[21:11:14.137][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin crafttweaker:builtin_forge
+[21:11:14.140][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin mekanism:crt_plugin
+[21:11:14.141][INFO][CraftTweaker-Plugins]: Successfully identified and loaded plugin farmersdelight:crafttweaker_plugin
+[21:11:14.193][INFO][JEITweaker]: Identified JeiTweaker plugin 'jeitweaker:forge': loading scheduled
+[21:11:14.194][INFO][JEITweaker]: Identified JeiTweaker plugin 'jeitweaker:common': loading scheduled
+[21:11:14.196][INFO][JEITweaker]: Identified JeiTweaker plugin 'mekanism:crt_jei': loading scheduled
+[21:11:14.205][INFO][JEITweaker]: JEITweaker Environmental Check: the combination of mods [jei] is fully supported
+[21:11:14.205][INFO][JEITweaker]: Running JeiTweaker plugin initialization
+[21:11:14.453][INFO][JEITweaker]: JeiTweaker plugin initialization completed successfully
+[21:11:16.472][INFO][CraftTweaker]: The following mods have explicit CraftTweaker support through the default plugin:
+[21:11:16.476][INFO][CraftTweaker]: - 'aether' at version '1.20.1-1.5.2-neoforge'
+[21:11:16.476][INFO][CraftTweaker]: - 'aquaculture' at version '2.5.7'
+[21:11:16.476][INFO][CraftTweaker]: - 'crafttweaker' at version '14.0.60'
+[21:11:16.476][INFO][CraftTweaker]: - 'farmersdelight' at version '1.20.1-1.2.11'
+[21:11:16.476][INFO][CraftTweaker]: - 'jeitweaker' at version '8.0.6'
+[21:11:16.476][INFO][CraftTweaker]: - 'mekanism' at version '10.4.16'
+[21:11:41.724][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'mekanismcontent'
+[21:11:42.102][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
+[21:11:42.908][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [mods, crafttweaker, expansions]
+[21:11:43.038][INFO][CraftTweaker-ZenCode]: Execution for loader 'mekanismcontent' completed successfully
+[21:11:43.038][INFO][Mekanism]: Registering 0 custom gases.
+[21:11:43.054][INFO][Mekanism]: Registering 0 custom infuse types.
+[21:11:43.091][INFO][Mekanism]: Registering 0 custom pigments.
+[21:11:43.118][INFO][Mekanism]: Registering 0 custom slurries.
+[21:11:44.639][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'initialize'
+[21:11:44.661][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
+[21:11:44.670][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [crafttweaker, expansions]
+[21:11:44.684][INFO][CraftTweaker-ZenCode]: Execution for loader 'initialize' completed successfully
+[21:12:24.978][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'tags'
+[21:12:25.044][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
+[21:12:25.048][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [crafttweaker, expansions]
+[21:12:25.064][INFO][CraftTweaker-ZenCode]: Execution for loader 'tags' completed successfully
+[21:12:36.756][INFO][CraftTweaker]: crafttweaker.reload.start
+[21:12:36.774][INFO][CraftTweaker-ZenCode]: Started loading scripts for loader 'crafttweaker'
+[21:12:36.794][INFO][CraftTweaker-ZenCode]: Compiling and executing scripts
+[21:12:36.917][INFO][CraftTweaker-ZenCode]: Successfully initialized modules [mods, crafttweaker, expansions]
+[21:12:36.946][INFO][CraftTweaker-ZenCode]: Execution for loader 'crafttweaker' completed successfully
+[21:12:36.948][INFO][CraftTweaker]: crafttweaker.reload.complete
