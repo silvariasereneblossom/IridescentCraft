@@ -19,8 +19,13 @@
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks),
 //         feedback_kubejs_event_scope.md (EntityEvents.hurt is server-scope).
+//
+// Whole file is one IIFE (body left at column 0 to keep the diff readable):
+// `getBonusSpellPower` used to leak into the shared script scope, where this
+// copy replaced the one in battlemage_arcane_cleave.js.
 // =============================================================================
 
+;(function () {
 const SS_UNIQUE_AD_PER_HALF_SP = 1.0  // +0.5 AD per 50% bonus SP == +1 AD per 100%
 
 // Elemental SS uniques only — weapons whose theme is an explicit element
@@ -103,3 +108,4 @@ try {
 } catch (e) {
   console.error('[ss_unique_spellsword_scaling] init failed: ' + e)
 }
+})()

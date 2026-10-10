@@ -11,63 +11,57 @@
 //
 // Negate chance from the description is flavor — the actual mechanic is
 // continuous damage reduction, which is more reliable and less RNG-dependent.
+//
+// Class / race come from global.icraft.origin (0_lib_origins.js). The old
+// `execute if entity <name>[nbt=...]` probes never parsed, so this never ran
+// before 2026-10. Wrapped in an IIFE: `isBattlemage` used to be a top-level
+// name shared (and overwritten) with battlemage_arcane_cleave.js.
 // =============================================================================
 
-// Check if player has Battlemage class
-function isBattlemage(player) {
-  try {
-    let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:battlemage"}}}}]`
-    )
-    return result > 0
-  } catch (e) {
-    return false
+;(function () {
+  var originIs = function (player, layer, id) {
+    try { return global.icraft.origin.is(player, layer, id) } catch (e) { return false }
   }
-}
 
-// Calculate magic bonus from known race sources
-function getMagicBonus(player) {
-  let bonus = 0.15  // Battlemage base (arcane_strikes)
+  var warned = false
 
-  try {
-    let isFaefolk = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:faefolk"}}}}]`
-    )
-    if (isFaefolk > 0) bonus += 0.30
-  } catch (e) {}
+  // Calculate magic bonus from known race sources
+  var getMagicBonus = function (player) {
+    var bonus = 0.15  // Battlemage base (arcane_strikes)
+    if (originIs(player, 'race', 'icraft:faefolk')) bonus += 0.30
+    if (originIs(player, 'race', 'icraft:elf')) bonus += 0.05
+    return bonus
+  }
 
-  try {
-    let isElf = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:elf"}}}}]`
-    )
-    if (isElf > 0) bonus += 0.05
-  } catch (e) {}
+  // Apply Mana Shield as Resistance effect every 5 seconds
+  global.tick_battlemageManaShield = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        if (!originIs(player, 'class', 'icraft:battlemage')) return
 
-  return bonus
-}
+        var magicBonus = getMagicBonus(player)
 
-// Apply Mana Shield as Resistance effect every 5 seconds
-global.tick_battlemageManaShield = (event) => {
-  event.server.players.forEach(player => {
-    if (!isBattlemage(player)) return
+        var resistLevel = 0
+        if (magicBonus >= 0.55) {
+          resistLevel = 2
+        } else if (magicBonus >= 0.35) {
+          resistLevel = 1
+        }
 
-    let magicBonus = getMagicBonus(player)
+        // 7 s, no particles (what `effect give <name> resistance 7 <lvl> true` built)
+        player.potionEffects.add('minecraft:resistance', 140, resistLevel, false, false)
+      } catch (e) {
+        if (!warned) {
+          warned = true
+          console.warn('[battlemage_mana_shield] tick threw (logged once): ' + e)
+        }
+      }
+    })
+  }
+  global.registerServerTick('tick_battlemageManaShield', 100, 0)
 
-    let resistLevel = 0
-    if (magicBonus >= 0.55) {
-      resistLevel = 2
-    } else if (magicBonus >= 0.35) {
-      resistLevel = 1
-    }
-
-    player.server.runCommandSilent(
-      `effect give ${player.username} minecraft:resistance 7 ${resistLevel} true`
-    )
-  })
-}
-global.registerServerTick('tick_battlemageManaShield', 100, 0)
-
-console.log('[IridescentCraft] Battlemage Mana Shield loaded')
-console.log('  - Resistance I base (20% damage reduction)')
-console.log('  - Resistance II with high magic bonus (36% reduction)')
-console.log('  - Resistance III cap with very high magic bonus (48% reduction)')
+  console.log('[IridescentCraft] Battlemage Mana Shield loaded')
+  console.log('  - Resistance I base (20% damage reduction)')
+  console.log('  - Resistance II with high magic bonus (36% reduction)')
+  console.log('  - Resistance III cap with very high magic bonus (48% reduction)')
+})()

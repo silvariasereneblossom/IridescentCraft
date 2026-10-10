@@ -1,742 +1,560 @@
 // =============================================================================
-// IRIDESCENT CODEX — First-Join Delivery & Book Suppression
+// IRIDESCENT CODEX — First-Join Delivery, Magic Starter Kit & Book Suppression
+// =============================================================================
+// 2026-10 cleanup (operator-approved):
+//   * ONE starter-kit grant path: grantStarterKit(). Every trigger (the 5 s
+//     check, /icraftkit, !kit) goes through it, and it looks at the per-class
+//     "already granted" flag before it gives anything. The second copy of the
+//     kit logic (origins/magic_class_starter.js, which re-read player.nbt for
+//     every player every 5 s forever and could not build scroll entries) is
+//     gone; so is the "immediate grant" that used to ride on the origin dump.
+//   * Class detection is global.icraft.origin (0_lib_origins.js) instead of
+//     three private copies of the player.nbt read.
+//   * The origin dump is manual only (/icraftorigindump or !origindump). It no
+//     longer arms itself on every login, and players no longer receive a
+//     "[Debug] Matched ..." chat line.
+//   * /icraftkit <class> exists for every class in MAGIC_CLASSES (it used to
+//     stop at three) and is op-only; plain /icraftkit respects the flag, so it
+//     can no longer be spammed for free kits.
+//   * The chat commands (!codex / !kit / !origindump) are actually swallowed
+//     now. event.cancel() works by throwing; it used to sit inside the
+//     handler's try/catch, which ate the cancel, so the "!" messages were
+//     broadcast to everyone.
+//
+// Flags and kit contents are unchanged (persistentData icraft_magic_starter_<class>),
+// so a player who already received a kit does not get another.
+//
+// Whole file is one IIFE: server scripts share a single Rhino scope.
 // =============================================================================
 
-const CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
-const CODEX_FLAG = 'icraft_codex_given'
+;(function () {
+  var CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
+  var CODEX_FLAG = 'icraft_codex_given'
 
-// Magic class starter kit — piggybacks on codex delivery so it fires from
-// the same proven-reliable PlayerEvents.loggedIn hook. The standalone
-// magic_class_starter.js still provides `!magicstart` as a manual backup.
-//
-// Entries are plain `{item, count}` OR `{scroll: spellId, level}` for
-// pre-NBT'd Iron's Spellbooks scrolls. Scrolls are built via the
-// ISpellContainer.createScrollContainer bridge so they drop usable (with
-// a known spell baked in) rather than empty — that's the one case where
-// plain Item.of() produces an inert NBT-less stack.
-const SpellRegistry_codex = Java.loadClass('io.redspace.ironsspellbooks.api.registry.SpellRegistry')
-const ISpellContainer_codex = Java.loadClass('io.redspace.ironsspellbooks.api.spells.ISpellContainer')
-
-function codex_makeScroll(spellId, level) {
-  try {
-    var spell = SpellRegistry_codex.getSpell(spellId)
-    if (!spell) {
-      console.warn('[codex/starter] makeScroll: unknown spell ' + spellId + ' — falling back to plain scroll')
-      return Item.of('irons_spellbooks:scroll').getInternal()
-    }
-    var stack = Item.of('irons_spellbooks:scroll').getInternal()
-    ISpellContainer_codex.createScrollContainer(spell, level, stack)
-    return stack
-  } catch (e) {
-    console.warn('[codex/starter] makeScroll failed for ' + spellId + ': ' + e)
-    return Item.of('irons_spellbooks:scroll').getInternal()
-  }
-}
-
-const MAGIC_STARTER_KITS = {
-  archmage: [
-    // 2026-04-26 Phase 5: caster classes start with MODULAR variants so
-    // they can immediately install cover/pages materials + the custom
-    // magic enchants (mana_capacity / mana_flow / arcane_edge / arcane_devastation).
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
-    { scroll: 'irons_spellbooks:firebolt',        level: 1 },
-    { item: 'iridescent_modular_spells:modular_novice_spell_book', count: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 5 },
-    { item: 'irons_spellbooks:common_ink',       count: 2 }
-  ],
-  battlemage: [
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:magic_arrow',     level: 1 },
-    { scroll: 'irons_spellbooks:fang_strike',     level: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 3 },
-    { item: 'irons_spellbooks:common_ink',       count: 1 }
-  ],
-  void_summoner: [
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
-    { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
-    { item: 'irons_spellbooks:common_ink',       count: 1 },
-    { item: 'minecraft:ender_pearl',             count: 1 }
-  ],
-  // ── Trinity mages (Phase 1a, 2026-06-14). Each gets two on-triad starter
-  //    scrolls (ids confirmed against the live ISS registry) + catalyst + ink.
-  elemental: [
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:firebolt',        level: 1 },
-    { scroll: 'irons_spellbooks:cone_of_cold',    level: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 5 },
-    { item: 'irons_spellbooks:common_ink',       count: 2 }
-  ],
-  blessed: [
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:heal',            level: 1 },
-    { scroll: 'irons_spellbooks:wisp',            level: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 4 },
-    { item: 'irons_spellbooks:common_ink',       count: 2 }
-  ],
-  corrupted: [
-    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
-    { scroll: 'irons_spellbooks:ray_of_siphoning', level: 1 },
-    { scroll: 'irons_spellbooks:eldritch_blast',   level: 1 },
-    { item: 'minecraft:ender_pearl',             count: 2 },
-    { item: 'irons_spellbooks:common_ink',       count: 2 }
-  ]
-}
-const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner', 'elemental', 'blessed', 'corrupted']
-const MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
-
-function codex_detectMagicClass(player) {
-  // 2026-04-22: switched from `execute if entity [nbt=...]` probe to
-  // direct NBT read via player.nbt. Tester's previous run showed the
-  // origindump Route 2 (same compound-shape probe) returning "<none
-  // matched known origins>" even though Route 0 (direct player.nbt
-  // read) successfully showed Origins populated with icraft:archmage
-  // on the origins:class layer. Something in the execute-if NBT-matcher
-  // is not recursing into the nested compound correctly in this Forge
-  // build. Route 0's direct path is proven-working — use it for
-  // detection too.
-  //
-  // Path: player.nbt.ForgeCaps."origins:origins".Origins."origins:class"
-  // Returns the short class name (without "icraft:" prefix) if it matches
-  // one of the magic classes; null otherwise.
-  try {
-    var nbt = player.nbt
-    if (!nbt) return null
-    var fc = nbt.ForgeCaps
-    if (!fc) return null
-    var oo = fc.get ? fc.get('origins:origins') : null
-    if (!oo) return null
-    var origins = oo.get ? oo.get('Origins') : null
-    if (!origins || !origins.getString) return null
-    var classId = String(origins.getString('origins:class') || '')
-    if (!classId) return null
-    // classId is a full resource id like "icraft:archmage". Strip the
-    // prefix and see if the bare name is in MAGIC_CLASSES.
-    var bare = classId
-    var colon = classId.indexOf(':')
-    if (colon >= 0) bare = classId.substring(colon + 1)
-    for (var i = 0; i < MAGIC_CLASSES.length; i++) {
-      if (MAGIC_CLASSES[i] === bare) return bare
-    }
-    return null
-  } catch (e) {
-    console.warn('[codex/starter] detectMagicClass threw for ' + player.username + ': ' + e)
-    return null
-  }
-}
-
-function codex_giveStarterKit(player, className) {
-  console.log('[codex/starter] giveStarterKit ENTER: player=' + player.username + ' class=' + className)
-  let kit = MAGIC_STARTER_KITS[className]
-  if (!kit) {
-    console.warn('[codex/starter] giveStarterKit: no kit config for class "' + className + '" — bailing')
-    return false
-  }
-  console.log('[codex/starter] giveStarterKit: kit has ' + kit.length + ' entries')
-  let giveAttempts = 0
-  let giveSuccesses = 0
-  kit.forEach(function(entry) {
-    giveAttempts++
-    try {
-      // Build the stack explicitly so we can log its state before the give.
-      // In KubeJS 6, Item.of(id, count) returns an ItemStack. Some mods
-      // (notably curios) intercept player.give and may move the stack into
-      // a non-inventory slot without logging. Capture before + after counts
-      // so we can tell the difference between "give threw" and "give ate the
-      // stack silently."
-      var stack, label
-      if (entry.scroll) {
-        // NBT'd Iron's Spellbooks scroll — bridged through ISpellContainer.
-        stack = codex_makeScroll(entry.scroll, entry.level || 1)
-        label = 'scroll[' + entry.scroll + ' L' + (entry.level || 1) + ']'
-      } else {
-        stack = Item.of(entry.item, entry.count)
-        label = entry.item + ' x' + entry.count
-      }
-      // 2026-04-26 fix: stack.isEmpty is a METHOD on ItemStack, not a
-      // property -- '!stack.isEmpty' was always truthy (method ref),
-      // so the log always falsely reported 'EMPTY/null' regardless of
-      // actual state. Call it as a method.
-      var stackOk = false
-      try { stackOk = stack && !stack.isEmpty() } catch (_) {}
-      console.log('[codex/starter] give: attempting ' + label +
-                  ' (stack resolved: ' + (stackOk ? 'ok' : 'EMPTY/null') + ')')
-      player.give(stack)
-      giveSuccesses++
-      console.log('[codex/starter] give: ' + label + ' — player.give returned without throw')
-    } catch (e) {
-      console.warn('[codex/starter] give FAILED for ' + (entry.scroll || entry.item) + ': ' + e)
-    }
-  })
-  console.log('[codex/starter] giveStarterKit: ' + giveSuccesses + '/' + giveAttempts + ' items delivered without throw')
-  try {
-    let displayName = className.replace('_', ' ').replace(/\b\w/g, function(c) { return c.toUpperCase() })
-    player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName + "'s catalyst has been added to your inventory.")
-    player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
-    console.log('[codex/starter] giveStarterKit: tell messages sent')
-  } catch (e) {
-    console.warn('[codex/starter] giveStarterKit: tell threw: ' + e)
-  }
-  return true
-}
-
-function codex_tryGrantStarter(player) {
-  let className = codex_detectMagicClass(player)
-  if (!className) return false
-  console.log('[codex/starter] tryGrantStarter: detected=' + className + ' for ' + player.username)
-  let flagKey = MAGIC_FLAG_PREFIX + className
-  let flagValue = player.persistentData.getBoolean(flagKey)
-  if (flagValue) {
-    console.log('[codex/starter] tryGrantStarter: flag ' + flagKey + ' already true for ' + player.username + ' — skipping grant')
-    return false
-  }
-  console.log('[codex/starter] tryGrantStarter: flag ' + flagKey + ' is false, calling giveStarterKit')
-  if (codex_giveStarterKit(player, className)) {
-    player.persistentData.putBoolean(flagKey, true)
-    console.log('[codex/starter] tryGrantStarter: flag set true, grant complete for ' + player.username)
-    return true
-  }
-  console.warn('[codex/starter] tryGrantStarter: giveStarterKit returned false for ' + player.username)
-  return false
-}
-
-function codex_giveBook(player) {
-  try {
-    player.give(Item.of('patchouli:guide_book', CODEX_NBT))
-    player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
-    player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
-    return true
-  } catch (e) {
-    console.warn('[codex] Give failed for ' + player.username + ': ' + e)
-    return false
-  }
-}
-
-// Scan inventory for an existing codex (matches the NBT). Used to re-grant
-// if the flag is set but the book was lost (creative purge, /clear, death
-// in keepInventory=false, etc.).
-function codex_playerHasCodex(player) {
-  try {
-    let r = player.server.runCommandSilent(
-      `clear ${player.username} patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"} 0`
-    )
-    // `/clear ... <count=0>` returns the matching-item count without clearing.
-    return r > 0
-  } catch (e) {
-    console.warn('[codex] inventory check failed for ' + player.username + ': ' + e)
-    return false
-  }
-}
-
-// ── First-Join Delivery ───────────────────────────────────────────────────────
-
-PlayerEvents.loggedIn(event => {
-  var player = event.player
-  let flagSet = player.persistentData.getBoolean(CODEX_FLAG)
-  let hasBook = flagSet ? codex_playerHasCodex(player) : false
-
-  if (!flagSet) {
-    // Never given — give now.
-    if (codex_giveBook(player)) {
-      player.persistentData.putBoolean(CODEX_FLAG, true)
-      console.log('[codex] First-join delivery to ' + player.username)
-    }
-  } else if (!hasBook) {
-    // Flag set but book missing — re-grant silently (lost to /clear, death, etc.)
-    if (codex_giveBook(player)) {
-      console.log('[codex] Re-delivered to ' + player.username + ' (flag was set but book missing)')
-    }
-  } else {
-    console.log('[codex] ' + player.username + ' already has the book, skipping delivery')
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    console.warn('[codex] ' + where + ' (logged once): ' + e)
   }
 
-  player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
-  // Arm a 3-minute polling window for the magic-starter check. Origin NBT
-  // isn't reliably populated during loggedIn (origin-picker UI may still be
-  // open), so we poll every ~5s for 3 minutes until a class is detected
-  // and the kit is granted. Stops immediately on success.
-  player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
-  // 2026-04-21: tester reported `!origindump` typed in chat produced no
-  // diagnostic output (chat message showed up in log but the KubeJS handler
-  // either didn't fire or swallowed the flag set). Arm a delayed auto-
-  // origindump on login so we always get diagnostic data without relying
-  // on the chat path. Countdown is 400 ticks (~20s) — long enough for the
-  // Origins picker UI to close, short enough to hit the log before the
-  // tester walks away.
-  player.persistentData.putInt('icraft_auto_origindump_ticks', 400)
-  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter-poll armed (3min), auto-origindump armed (~20s)')
-})
+  // ── Magic class starter kit ────────────────────────────────────────────────
+  // Entries are plain `{item, count}` OR `{scroll: spellId, level}` for
+  // pre-inscribed Iron's Spellbooks scrolls.
+  var MAGIC_STARTER_KITS = {
+    archmage: [
+      // 2026-04-26 Phase 5: caster classes start with MODULAR variants so
+      // they can immediately install cover/pages materials + the custom
+      // magic enchants (mana_capacity / mana_flow / arcane_edge / arcane_devastation).
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
+      { scroll: 'irons_spellbooks:firebolt',        level: 1 },
+      { item: 'iridescent_modular_spells:modular_novice_spell_book', count: 1 },
+      { item: 'ars_nouveau:source_gem',            count: 5 },
+      { item: 'irons_spellbooks:common_ink',       count: 2 }
+    ],
+    battlemage: [
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:magic_arrow',     level: 1 },
+      { scroll: 'irons_spellbooks:fang_strike',     level: 1 },
+      { item: 'ars_nouveau:source_gem',            count: 3 },
+      { item: 'irons_spellbooks:common_ink',       count: 1 }
+    ],
+    void_summoner: [
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
+      { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
+      { item: 'irons_spellbooks:common_ink',       count: 1 },
+      { item: 'minecraft:ender_pearl',             count: 1 }
+    ],
+    // ── Trinity mages (Phase 1a, 2026-06-14). Each gets two on-triad starter
+    //    scrolls (ids confirmed against the live ISS registry) + catalyst + ink.
+    elemental: [
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:firebolt',        level: 1 },
+      { scroll: 'irons_spellbooks:cone_of_cold',    level: 1 },
+      { item: 'ars_nouveau:source_gem',            count: 5 },
+      { item: 'irons_spellbooks:common_ink',       count: 2 }
+    ],
+    blessed: [
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:heal',            level: 1 },
+      { scroll: 'irons_spellbooks:wisp',            level: 1 },
+      { item: 'ars_nouveau:source_gem',            count: 4 },
+      { item: 'irons_spellbooks:common_ink',       count: 2 }
+    ],
+    corrupted: [
+      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      { scroll: 'irons_spellbooks:ray_of_siphoning', level: 1 },
+      { scroll: 'irons_spellbooks:eldritch_blast',   level: 1 },
+      { item: 'minecraft:ender_pearl',             count: 2 },
+      { item: 'irons_spellbooks:common_ink',       count: 2 }
+    ]
+  }
+  var MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner', 'elemental', 'blessed', 'corrupted']
+  var MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
 
-// Auto-origindump: counts down from 400 on each login and sets the
-// `icraft_origindump_pending` flag when it hits 0. The existing
-// `tick_codexOriginDump` picks up that flag and writes the diagnostic.
-// Runs every 20 ticks = 1s, so ~20 ticks of this handler = 20s wallclock.
-global.tick_codexAutoOrigindump = function(event) {
-  event.server.players.forEach(function(player) {
-    let left = player.persistentData.getInt('icraft_auto_origindump_ticks')
-    if (!left || left <= 0) return
-    left -= 20
-    if (left <= 0) {
-      player.persistentData.putInt('icraft_auto_origindump_ticks', 0)
-      player.persistentData.putBoolean('icraft_origindump_pending', true)
-      console.log('[codex/origindump] auto-armed for ' + player.username + ' — dump will run next origindump tick')
-    } else {
-      player.persistentData.putInt('icraft_auto_origindump_ticks', left)
-    }
-  })
-}
-global.registerServerTick('tick_codexAutoOrigindump', 20, 17)
-
-// ── Polled starter-kit check ──
-// 2026-04-20: reworked from a one-shot 3s countdown to a proper poll.
-// Tester logs showed the one-shot firing at T+18s with detected=none, which
-// means the origin-picker UI was still open or had just closed without the
-// NBT settling. With a 3-minute polling window we catch the class as soon
-// as the player confirms their Class layer selection, no matter how long
-// they took reading through the prompts.
-//
-// Storage: `icraft_starter_poll_ticks` counts down from 3600 (3 minutes)
-// and decrements by 100 ticks per call. We re-arm it on every login.
-// Stops as soon as a kit is granted (per-class flag flips to true).
-global.tick_codexStarterCheck = function(event) {
-  event.server.players.forEach(function(player) {
-    let left = player.persistentData.getInt('icraft_starter_poll_ticks')
-    if (!left || left <= 0) return
-    left -= 100
-    player.persistentData.putInt('icraft_starter_poll_ticks', Math.max(0, left))
-    try {
-      let granted = codex_tryGrantStarter(player)
-      if (granted) {
-        // Stop polling after a fresh grant.
-        player.persistentData.putInt('icraft_starter_poll_ticks', 0)
-      } else {
-        // Already granted for the detected class? Nothing left to poll for — stop,
-        // otherwise this re-runs every 5s for the full 3min window and spams
-        // "already true — skipping grant" on every login of an established char.
-        let cls = codex_detectMagicClass(player)
-        if (cls && player.persistentData.getBoolean(MAGIC_FLAG_PREFIX + cls)) {
-          player.persistentData.putInt('icraft_starter_poll_ticks', 0)
-        }
-      }
-      // Log occasional trace — once every 30s so the log isn't spammed.
-      // 2026-04-21: also dump the raw Origins compound so we can see if/when
-      // the capability populates. Tester reported picking a class but the
-      // NBT stayed empty — need per-poll visibility to diagnose whether the
-      // persistence is actually landing server-side.
-      if (left % 600 === 0) {
-        let cls = codex_detectMagicClass(player)
-        var originsStr = '<unavailable>'
-        try {
-          var full = player.nbt
-          var fc = full ? full.ForgeCaps : null
-          var oo = fc ? fc.get('origins:origins') : null
-          if (oo) {
-            var origins = oo.get ? oo.get('Origins') : null
-            originsStr = origins ? String(origins) : '<Origins key missing>'
-          }
-        } catch (e) { originsStr = '<read threw: ' + e + '>' }
-        console.log('[codex/starter] poll for ' + player.username +
-                    ': detected=' + (cls || 'none') +
-                    ' ticks_left=' + left +
-                    ' Origins=' + originsStr)
-      }
-    } catch (e) {
-      console.warn('[codex/starter] poll failed for ' + player.username + ': ' + e)
-    }
-  })
-}
-global.registerServerTick('tick_codexStarterCheck', 100, 5)
-
-// ── Deferred origindump processor (runs on Server thread) ──
-// KubeJS PlayerEvents.chat fires on a worker thread; runCommandSilent from
-// a worker thread inside a chat handler throws `EventExit: result`.
-// Instead, the chat handler sets `icraft_origindump_pending = true` and
-// this tick (on Server thread) performs the actual dump.
-const ORIGIN_PROBE_ICRAFT = [
-  'witch_of_ink','artificial_construct','witherborn','slimebodied',
-  'demigod','ryu','fallen_angel','kirin','elf','dwarf','orc','halfling',
-  'faefolk','revenant',
-  'berserker','samurai','battlemage','wanderer','paladin','vanguard',
-  'ranger','archmage','artificer','void_summoner'
-]
-const ORIGIN_PROBE_VANILLA = ['arachnid','blazeborn','enderian','merling','phantom',
-                              'shulk','elytrian','feline','avian','human']
-
-global.tick_codexOriginDump = function(event) {
-  event.server.players.forEach(function(player) {
-    if (!player.persistentData.getBoolean('icraft_origindump_pending')) return
-    player.persistentData.putBoolean('icraft_origindump_pending', false)
-    try {
-      console.log('[codex/origindump] processing for ' + player.username)
-
-      // Route 0: log raw ForgeCaps subtree from player.nbt directly.
-      // This is the most reliable diagnostic because it doesn't depend on
-      // the tellraw/command pipeline — we're just reading the entity NBT
-      // via the KubeJS API. If this is empty or absent, the fork stores
-      // origin data somewhere entirely different.
+  // ISS classes are resolved lazily so a missing / changed ISS only costs the
+  // scrolls, not the Codex delivery below.
+  var issClasses = null
+  var getIss = function () {
+    if (issClasses === null) {
       try {
-        let full = player.nbt
-        let fc = full ? full.ForgeCaps : null
-        console.log('[codex/origindump] ' + player.username + ' ForgeCaps = ' + (fc ? String(fc) : '<null>'))
-        // Also dump the raw origins:origins subtree if present
-        let oo = fc ? fc.get('origins:origins') : null
-        console.log('[codex/origindump] ' + player.username + ' ForgeCaps[origins:origins] = ' + (oo ? String(oo) : '<null>'))
+        issClasses = {
+          SpellRegistry: Java.loadClass('io.redspace.ironsspellbooks.api.registry.SpellRegistry'),
+          ISpellContainer: Java.loadClass('io.redspace.ironsspellbooks.api.spells.ISpellContainer'),
+          ResourceLocation: Java.loadClass('net.minecraft.resources.ResourceLocation')
+        }
       } catch (e) {
-        console.warn('[codex/origindump] raw NBT read failed for ' + player.username + ': ' + e)
+        issClasses = false
+        warnOnce('Iron\'s Spellbooks classes not loadable -- starter scrolls fall back to NBT', e)
       }
+    }
+    return issClasses || null
+  }
 
-      // Route 1: chat dump of full NBT via tellraw
-      player.server.runCommandSilent(
-        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"ForgeCaps.\\"origins:origins\\".Origins","entity":"' + player.username + '"}]'
+  // A scroll with one spell inscribed. Three attempts, most faithful first:
+  //   1. ISpellContainer.createScrollContainer on a fresh scroll stack. The
+  //      spell is looked up through the Forge registry: SpellRegistry.getSpell
+  //      is overloaded (String / ResourceLocation) and KubeJS can convert a
+  //      script value to either, so Rhino refuses to pick one -- production
+  //      logged "The choice of Java method ...getSpell... is ambiguous" for
+  //      every scroll. (The old code also called .getInternal() on the stack,
+  //      which does not exist here, so no kit ever contained a scroll.)
+  //   2. The same container written as item NBT.
+  //   3. A blank scroll (randomize_blank_scrolls.js binds a random T1 spell).
+  var makeScroll = function (spellId, level) {
+    var iss = getIss()
+    if (iss) {
+      try {
+        var spell = iss.SpellRegistry.REGISTRY.get().getValue(iss.ResourceLocation.tryParse(spellId))
+        if (spell && String(spell.getSpellId()) === spellId) {
+          var stack = Item.of('irons_spellbooks:scroll')
+          iss.ISpellContainer.createScrollContainer(spell, level, stack)
+          return stack
+        }
+        warnOnce('starter scroll: unknown spell ' + spellId + ' -- using the NBT form', 'not in the ISS spell registry')
+      } catch (e) {
+        warnOnce('starter scroll: ISS API path failed -- using the NBT form', e)
+      }
+    }
+    try {
+      return Item.of('irons_spellbooks:scroll',
+        '{"irons_spellbooks:spell_container":{data:[{id:"' + spellId + '",index:0,level:' + level +
+        ',locked:1b}],maxSpells:1,mustEquip:0b,spellWheel:0b}}')
+    } catch (e2) {
+      warnOnce('starter scroll: NBT path failed -- giving a blank scroll', e2)
+    }
+    return Item.of('irons_spellbooks:scroll')
+  }
+
+  // Bare class name ('archmage') of ANY class, or null.
+  var classOf = function (player) {
+    try {
+      var id = global.icraft.origin.get(player, 'class')
+      return id ? id.substring(id.indexOf(':') + 1) : null
+    } catch (e) {
+      return null
+    }
+  }
+
+  var displayName = function (className) {
+    return className.replace('_', ' ').replace(/\b\w/g, function (c) { return c.toUpperCase() })
+  }
+
+  // ── THE starter-kit grant path ─────────────────────────────────────────────
+  // Returns 'granted' | 'already' | 'unknown'.
+  //   regrant = true: operator override (/icraftkit <class>) -- give the kit
+  //   again even though the flag says the player already had one.
+  var grantStarterKit = function (player, className, regrant) {
+    if (!MAGIC_STARTER_KITS.hasOwnProperty(className)) return 'unknown'
+    var data = player.persistentData
+    var flagKey = MAGIC_FLAG_PREFIX + className
+    if (data.getBoolean(flagKey) && !regrant) return 'already'
+
+    var kit = MAGIC_STARTER_KITS[className]
+    var delivered = 0
+    for (var i = 0; i < kit.length; i++) {
+      var entry = kit[i]
+      var label = entry.scroll ? ('scroll ' + entry.scroll) : String(entry.item)
+      try {
+        var stack = entry.scroll
+          ? makeScroll(entry.scroll, entry.level || 1)
+          : Item.of(entry.item, entry.count)
+        // isEmpty is a METHOD on ItemStack. An unknown item id resolves to an
+        // empty stack and player.give() of it silently gives nothing.
+        if (!stack || stack.isEmpty()) {
+          warnOnce('starter kit entry "' + label + '" does not resolve to an item -- skipped', 'empty stack')
+          continue
+        }
+        player.give(stack)
+        delivered++
+      } catch (e) {
+        warnOnce('starter kit entry "' + label + '" could not be given', e)
+      }
+    }
+
+    // Flag first-time grants even when an entry failed: the failure is logged
+    // above, and re-granting the whole kit every 5 s would be worse.
+    data.putBoolean(flagKey, true)
+    console.log('[codex/starter] ' + className + ' kit -> ' + player.username + ': ' +
+      delivered + '/' + kit.length + ' entries delivered' + (regrant ? ' (operator re-grant)' : ''))
+
+    try {
+      player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName(className) + "'s catalyst has been added to your inventory.")
+      player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
+    } catch (e) {
+      warnOnce('starter kit message', e)
+    }
+    return 'granted'
+  }
+
+  // Automatic trigger: the player's CURRENT class, if it is a magic class.
+  // Returns grantStarterKit's result, or 'no-class' / 'not-magic'.
+  var grantStarterForOwnClass = function (player) {
+    var cls = classOf(player)
+    if (!cls) return 'no-class'
+    if (MAGIC_CLASSES.indexOf(cls) < 0) return 'not-magic'
+    return grantStarterKit(player, cls, false)
+  }
+
+  // Shared reply for the two manual triggers (/icraftkit and !kit).
+  var manualKit = function (player) {
+    var result = grantStarterForOwnClass(player)
+    if (result === 'already') {
+      player.tell('\u00a7e[Starter Kit]\u00a7r You have already received the ' + displayName(classOf(player)) + ' starter kit.')
+    } else if (result === 'not-magic') {
+      player.tell('\u00a7e[Starter Kit]\u00a7r Detected class: \u00a7b' + classOf(player) + '\u00a7r (not a magic class — no catalyst starter kit for this class).')
+    } else if (result === 'no-class') {
+      player.tell('\u00a7c[Starter Kit]\u00a7r No class detected yet. Pick a class first; /icraftorigindump shows what Origins has recorded.')
+    }
+    return result
+  }
+
+  // ── Codex book ─────────────────────────────────────────────────────────────
+  var giveBook = function (player) {
+    try {
+      player.give(Item.of('patchouli:guide_book', CODEX_NBT))
+      player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
+      player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
+      return true
+    } catch (e) {
+      console.warn('[codex] Give failed for ' + player.username + ': ' + e)
+      return false
+    }
+  }
+
+  // Scan inventory for an existing codex (matches the NBT). Used to re-grant
+  // if the flag is set but the book was lost (creative purge, /clear, death
+  // in keepInventory=false, etc.).
+  var playerHasCodex = function (player) {
+    try {
+      var r = player.server.runCommandSilent(
+        'clear ' + player.username + ' patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"} 0'
       )
+      // `/clear ... <count=0>` returns the matching-item count without clearing.
+      return r > 0
+    } catch (e) {
+      console.warn('[codex] inventory check failed for ' + player.username + ': ' + e)
+      return false
+    }
+  }
 
-      // Route 2: probe every known origin/race/class id, log matches.
-      // 2026-04-21: rewritten after jar audit — NBT stores Origins as a
-      // CompoundTag of `{layer_id: origin_id_string}`, not a ListTag of
-      // `{origin}` objects. We try all three layers per ID since the probe
-      // list mixes origins, races, and classes.
-      // 2026-04-21 bugfix: was `const LAYER_IDS` inside the try; Rhino
-      // re-enters the block each tick and throws "redeclaration of var
-      // LAYER_IDS". Switched to `var`, which re-assigns cleanly.
-      // 2026-06-04 bugfix: the probe ALWAYS returned 0 ("<none matched>")
-      // and spammed parse errors because it built `execute if entity
-      // <username>[nbt=...]` — selector args `[...]` only attach to
-      // @-selectors (@s/@a/@p/@e/@r), never a bare player name, so the
-      // command never parsed. The NBT matcher was fine all along; the
-      // grammar was wrong. Fixed to `@a[name=<username>,nbt=...]`. Same
-      // class of bug fixed in quests/heracles_reconcile.js (commit b909c2e).
-      // (codex_detectMagicClass's Route-0 player.nbt read is unaffected.)
-      var LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
-      var matched = []
-      // 2026-04-21: was `function probe(fullId) {...}` as a block-scoped
-      // declaration inside this try. Rhino's strict mode treats inner
-      // function declarations in blocks as uninitialized until the statement
-      // executes, and the forEach callback closure captures `probe` but
-      // finds it undefined when invoked. Switched to `var probe = function`
-      // form — the `var` hoists and the assignment lands before the forEach.
-      var probe = function(fullId) {
-        for (var li = 0; li < LAYER_IDS.length; li++) {
-          try {
-            var r = player.server.runCommandSilent(
-              'execute if entity @a[name=' + player.username +
-              ',nbt={ForgeCaps:{"origins:origins":{Origins:{"' + LAYER_IDS[li] + '":"' + fullId + '"}}}}]'
-            )
-            if (r > 0) {
-              matched.push(fullId + ' (' + LAYER_IDS[li] + ')')
-              return
-            }
-          } catch (e) {}
+  // Countdowns the removed auto-dump / poll-window / duplicate-starter code
+  // left in persistentData. Dropped on login so they do not linger forever.
+  var OBSOLETE_KEYS = ['icraft_auto_origindump_ticks', 'icraft_starter_poll_ticks', 'icraft_magic_starter_login_check']
+
+  // ── First-Join Delivery ────────────────────────────────────────────────────
+  PlayerEvents.loggedIn(function (event) {
+    var player = event.player
+    try {
+      var data = player.persistentData
+      var flagSet = data.getBoolean(CODEX_FLAG)
+
+      if (!flagSet) {
+        // Never given — give now.
+        if (giveBook(player)) {
+          data.putBoolean(CODEX_FLAG, true)
+          console.log('[codex] First-join delivery to ' + player.username)
+        }
+      } else if (!playerHasCodex(player)) {
+        // Flag set but book missing — re-grant silently (lost to /clear, death, etc.)
+        if (giveBook(player)) {
+          console.log('[codex] Re-delivered to ' + player.username + ' (flag was set but book missing)')
         }
       }
-      ORIGIN_PROBE_ICRAFT.forEach(function(o) { probe('icraft:' + o) })
-      ORIGIN_PROBE_VANILLA.forEach(function(o) { probe('origins:' + o) })
 
-      var result = matched.length ? matched.join(', ') : '<none matched known origins>'
-      console.log('[codex/origindump] ' + player.username + ' matched = ' + result)
-      player.tell('\u00a76[Debug]\u00a7r Matched: \u00a7e' + result + '\u00a7r')
-
-      // 2026-04-21: piggyback a starter-kit grant attempt right after the
-      // origindump. At this point the probe has confirmed Origins are
-      // populated (matched array is non-empty). This is faster than waiting
-      // for the next tick_codexStarterCheck tick (which runs every 5s and
-      // only actually grants when flag is false + detect succeeds); this
-      // path fires immediately when we KNOW the NBT is good.
-      try {
-        var grantResult = codex_tryGrantStarter(player)
-        console.log('[codex/origindump] immediate-grant attempt result=' + grantResult)
-      } catch (ge) {
-        console.warn('[codex/origindump] immediate-grant threw for ' + player.username + ': ' + ge)
+      data.putInt('icraft_book_sweep_ticks', 1200)
+      for (var i = 0; i < OBSOLETE_KEYS.length; i++) {
+        if (data.contains(OBSOLETE_KEYS[i])) data.remove(OBSOLETE_KEYS[i])
       }
     } catch (e) {
-      console.warn('[codex/origindump] dump failed for ' + player.username + ': ' + e)
+      warnOnce('login delivery', e)
     }
   })
-}
-global.registerServerTick('tick_codexOriginDump', 20, 11)
 
-// ── Admin/tester chat commands ──
-//   !codex       — force-deliver codex + re-arm starter check
-//   !kit         — alias for !magicstart (grant magic starter kit now)
-//   !origindump  — dump player's origin NBT to log + chat (debug)
-//
-// 2026-04-20 (third rewrite): every action now defers to a server-tick
-// handler via persistentData flags. The chat handler itself does the ABSOLUTE
-// MINIMUM: set a flag, return. Previous versions called runCommandSilent,
-// player.give, and persistentData all directly from the chat handler — which
-// fires on a worker thread (Worker-Main-X) where certain KubeJS/Rhino calls
-// throw `JavaException: EventExit: result`. Now the handler never touches
-// the server/player/command APIs; tick_codexChatProcessor picks up the flag
-// next tick (on Server thread) and does the real work.
-PlayerEvents.chat(event => {
-  try {
-    var msg = (event.message || '').trim().toLowerCase()
-    // 2026-04-21 diag: tester typed `!origindump` and got nothing in the log,
-    // nor was the message canceled (it broadcast to chat). Log every IC-command
-    // candidate at entry so we can confirm the handler fires at all.
-    if (msg.startsWith('!')) console.log('[codex/chat] received candidate: ' + msg)
-    if (!msg.startsWith('!')) return
-    var player = event.player
-
-    if (msg === '!codex') {
-      player.persistentData.putBoolean('icraft_chat_pending_codex', true)
-      event.cancel()
-    } else if (msg === '!kit' || msg === '!magicstart') {
-      player.persistentData.putBoolean('icraft_chat_pending_kit', true)
-      event.cancel()
-    } else if (msg === '!origindump') {
-      player.persistentData.putBoolean('icraft_origindump_pending', true)
-      event.cancel()
-    } else {
-      return // not our command, let chat proceed normally
-    }
-    // Minimal feedback — player.tell is generally safe across threads but
-    // we wrap the whole handler in try/catch so any thread-visibility oddity
-    // doesn't prevent the flag from having been set first.
-    try { player.tell('\u00a77[IC] command queued') } catch (e) {}
-  } catch (e) {
-    // Intentionally swallow — we don't want chat-thread exceptions to
-    // cause visible errors. The tick handler will log its own progress.
+  // ── Starter-kit check ──────────────────────────────────────────────────────
+  // Every 5 s for every online player. A class picked late (the Origins picker
+  // can stay open for minutes) or changed at the Class Altar is caught without
+  // a relog. Cost per player: one cached resolver lookup, plus one boolean
+  // read for the six magic classes.
+  global.tick_codexStarterCheck = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        grantStarterForOwnClass(player)
+      } catch (e) {
+        warnOnce('starter check', e)
+      }
+    })
   }
-})
+  global.registerServerTick('tick_codexStarterCheck', 100, 5)
 
-// ── Server-thread processor for all queued chat commands ──
-// Runs every tick (low overhead — all it does is read 3 booleans per
-// player). When a flag is set, it performs the real command work and
-// clears the flag. Everything here runs on Server thread, so calls to
-// runCommandSilent / player.give / persistentData all work normally.
-global.tick_codexChatProcessor = function(event) {
-  event.server.players.forEach(function(player) {
-
-    // --- !codex ---
-    if (player.persistentData.getBoolean('icraft_chat_pending_codex')) {
-      player.persistentData.putBoolean('icraft_chat_pending_codex', false)
-      try {
-        console.log('[codex/chat] processing !codex for ' + player.username)
-        player.persistentData.putBoolean(CODEX_FLAG, false)
-        let ok = codex_giveBook(player)
-        if (ok) {
-          player.persistentData.putBoolean(CODEX_FLAG, true)
-        }
-        player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
-        console.log('[codex] !codex from ' + player.username + ': ' + (ok ? 'granted' : 'grant failed'))
-      } catch (e) {
-        console.warn('[codex/chat] !codex processing threw: ' + e)
-      }
+  // ── Manual origin dump (server thread) ─────────────────────────────────────
+  // Queued by /icraftorigindump or !origindump via `icraft_origindump_pending`.
+  // Prints what the shared resolver answers (what every class/race/origin
+  // system now acts on) next to the raw Origins capability, to the log and to
+  // the player who asked.
+  var dumpOrigins = function (player) {
+    var name = player.username
+    var raw = '<unavailable>'
+    try {
+      var full = player.nbt
+      var fc = full ? full.ForgeCaps : null
+      var oo = fc && fc.get ? fc.get('origins:origins') : null
+      raw = oo ? String(oo) : '<no origins:origins capability>'
+    } catch (e) {
+      raw = '<read threw: ' + e + '>'
     }
 
-    // --- !kit / !magicstart ---
-    if (player.persistentData.getBoolean('icraft_chat_pending_kit')) {
-      player.persistentData.putBoolean('icraft_chat_pending_kit', false)
-      try {
-        console.log('[codex/chat] processing !kit for ' + player.username)
-        MAGIC_CLASSES.forEach(function(c) {
-          player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
-        })
-        // Read whatever is on the origins:class layer directly via NBT —
-        // the execute-if probe path doesn't match reliably in this Forge
-        // build. Report the bare class name regardless of whether it's
-        // in the magic set; this disambiguates "you're not a magic class"
-        // from "the probe is broken."
-        var detectedAnyClass = null
-        try {
-          var _nbt = player.nbt
-          var _fc = _nbt ? _nbt.ForgeCaps : null
-          var _oo = _fc && _fc.get ? _fc.get('origins:origins') : null
-          var _origins = _oo && _oo.get ? _oo.get('Origins') : null
-          var _classId = _origins && _origins.getString ? String(_origins.getString('origins:class') || '') : ''
-          if (_classId) {
-            var _colon = _classId.indexOf(':')
-            detectedAnyClass = _colon >= 0 ? _classId.substring(_colon + 1) : _classId
-          }
-        } catch (e) {}
-        let cls = codex_detectMagicClass(player)
-        if (!cls) {
-          if (detectedAnyClass) {
-            player.tell('\u00a7e[Starter Kit]\u00a7r Detected class: \u00a7b' + detectedAnyClass + '\u00a7r (not a magic class — no catalyst starter kit for this class).')
-            console.log('[codex/starter] !kit from ' + player.username + ': non-magic class detected=' + detectedAnyClass)
-          } else {
-            player.tell('\u00a7c[Starter Kit]\u00a7r No class detected. Use !origindump to see what Origins captured for your layers.')
-            console.log('[codex/starter] !kit from ' + player.username + ': no class on origins:class layer')
-          }
-        } else {
-          codex_giveStarterKit(player, cls)
-          player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
-          console.log('[codex/starter] !kit from ' + player.username + ': granted ' + cls + ' kit')
-        }
-      } catch (e) {
-        console.warn('[codex/chat] !kit processing threw: ' + e)
-      }
+    var seen = []
+    var layers = ['class', 'race', 'origin']
+    for (var i = 0; i < layers.length; i++) {
+      var id = null
+      try { id = global.icraft.origin.get(player, layers[i]) } catch (e) { id = '<resolver unavailable>' }
+      seen.push(layers[i] + '=' + (id || 'none'))
     }
+    var summary = seen.join(', ')
 
-    // --- !origindump (also handled by existing tick_codexOriginDump) ---
-    // intentionally left to the dedicated origindump tick below.
+    console.log('[codex/origindump] ' + name + ' resolver: ' + summary)
+    console.log('[codex/origindump] ' + name + ' ForgeCaps[origins:origins] = ' + raw)
+    player.tell('\u00a76[OriginDump]\u00a7r ' + summary)
+    player.tell('\u00a77[OriginDump] raw: ' + raw)
+  }
+
+  global.tick_codexOriginDump = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        var data = player.persistentData
+        if (!data.getBoolean('icraft_origindump_pending')) return
+        data.putBoolean('icraft_origindump_pending', false)
+        // Fresh answer for a diagnostic: skip the resolver's 5 s cache.
+        try { global.icraft.origin.invalidate(player) } catch (e) {}
+        dumpOrigins(player)
+      } catch (e) {
+        warnOnce('origin dump', e)
+      }
+    })
+  }
+  global.registerServerTick('tick_codexOriginDump', 20, 11)
+
+  // ── Admin/tester chat commands ─────────────────────────────────────────────
+  //   !codex               — force-deliver the codex
+  //   !kit / !magicstart   — starter kit for your class (once per class)
+  //   !origindump          — dump your Origins layers to log + chat
+  //
+  // PlayerEvents.chat runs on a Worker thread (production log: "[Worker-Main-5]
+  // ... [codex/chat] received candidate"), so the handler only sets a flag;
+  // tick_codexChatProcessor does the work on the server thread a moment later.
+  // The cancel happens LAST and outside the try: event.cancel() exits by
+  // throwing, and inside the old try/catch that throw was swallowed -- the
+  // flag got set but the "!" message was still broadcast to chat.
+  PlayerEvents.chat(function (event) {
+    var handled = false
+    try {
+      var msg = String(event.message || '').trim().toLowerCase()
+      if (msg.charAt(0) !== '!') return
+      var flag = null
+      if (msg === '!codex') flag = 'icraft_chat_pending_codex'
+      else if (msg === '!kit' || msg === '!magicstart') flag = 'icraft_chat_pending_kit'
+      else if (msg === '!origindump') flag = 'icraft_origindump_pending'
+      if (flag === null) return  // not our command, let chat proceed normally
+
+      event.player.persistentData.putBoolean(flag, true)
+      handled = true
+    } catch (e) {
+      // Chat-thread exceptions must never surface to the player.
+    }
+    if (handled) event.cancel()
   })
-}
-global.registerServerTick('tick_codexChatProcessor', 20, 13)
 
-// ── Real slash commands (ServerEvents.commandRegistry) ──
-// 2026-04-21: tester typed `!kit` and `!origindump` — the vanilla chat log
-// shows both messages broadcast to chat, but NO `[codex/chat]` diagnostic
-// fired. PlayerEvents.chat is simply not firing in this KubeJS 2001.6.5
-// build for unknown reasons (other handlers in ascension.js /
-// attribute_commands.js are equally silent). Switched to registering real
-// Brigadier slash commands via ServerEvents.commandRegistry, which go
-// through MinecraftServer's CommandDispatcher — a separate codepath that
-// we've confirmed fires (KubeJSCommands routes through it too).
-//
-// Usage in-game (with slash):
-//   /icraftkit            — detect class, grant kit if magic class
-//   /icraftkit <class>    — force-grant for named class (archmage/battlemage/void_summoner)
-//   /icraftorigindump     — dump raw Origins NBT + probed class to log + chat
-ServerEvents.commandRegistry(event => {
-  const { commands: Commands, arguments: Arguments } = event
+  // ── Server-thread processor for the queued chat commands ──
+  // Reads two booleans per player once a second. Everything here runs on the
+  // server thread, so runCommandSilent / player.give / persistentData are safe.
+  global.tick_codexChatProcessor = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        var data = player.persistentData
 
-  event.register(
-    Commands.literal('icraftkit')
-      .requires(src => src.hasPermission(0))
-      .executes(ctx => {
-        let sp
+        // --- !codex ---
+        if (data.getBoolean('icraft_chat_pending_codex')) {
+          data.putBoolean('icraft_chat_pending_codex', false)
+          var ok = giveBook(player)
+          if (ok) data.putBoolean(CODEX_FLAG, true)
+          console.log('[codex] !codex from ' + player.username + ': ' + (ok ? 'granted' : 'grant failed'))
+        }
+
+        // --- !kit / !magicstart ---
+        if (data.getBoolean('icraft_chat_pending_kit')) {
+          data.putBoolean('icraft_chat_pending_kit', false)
+          var result = manualKit(player)
+          console.log('[codex/starter] !kit from ' + player.username + ': ' + result)
+        }
+
+        // --- !origindump is handled by tick_codexOriginDump above ---
+      } catch (e) {
+        warnOnce('chat command processing', e)
+      }
+    })
+  }
+  global.registerServerTick('tick_codexChatProcessor', 20, 13)
+
+  // ── Real slash commands (ServerEvents.commandRegistry) ─────────────────────
+  //   /icraftkit            — starter kit for your own class, once per class
+  //   /icraftkit <class>    — OP ONLY: (re)grant the named class's kit to
+  //                           yourself, ignoring the class check and the flag
+  //   /icraftorigindump     — dump your Origins layers to log + chat
+  ServerEvents.commandRegistry(function (event) {
+    var Commands = event.commands
+
+    var kit = Commands.literal('icraftkit')
+      .requires(function (src) { return src.hasPermission(0) })
+      .executes(function (ctx) {
+        var sp
         try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
-        console.log('[codex/cmd] /icraftkit from ' + sp.username)
-        // Clear all magic-class flags so the kit re-fires even if a prior
-        // grant set one of them.
-        MAGIC_CLASSES.forEach(function(c) {
-          sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
-        })
-        let cls = codex_detectMagicClass(sp)
-        if (cls) {
-          codex_giveStarterKit(sp, cls)
-          sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
-          console.log('[codex/cmd] /icraftkit: granted ' + cls + ' kit to ' + sp.username)
+        var result = manualKit(sp)
+        console.log('[codex/cmd] /icraftkit from ' + sp.username + ': ' + result)
+        return result === 'granted' ? 1 : 0
+      })
+
+    // One literal per magic class, generated from MAGIC_CLASSES so the list
+    // cannot fall behind the kit table again.
+    MAGIC_CLASSES.forEach(function (className) {
+      kit = kit.then(
+        Commands.literal(className)
+          .requires(function (src) { return src.hasPermission(2) })
+          .executes(function (ctx) {
+            var sp
+            try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
+            var result = grantStarterKit(sp, className, true)
+            console.log('[codex/cmd] /icraftkit ' + className + ' (operator re-grant) for ' + sp.username + ': ' + result)
+            return result === 'granted' ? 1 : 0
+          })
+      )
+    })
+    event.register(kit)
+
+    event.register(
+      Commands.literal('icraftorigindump')
+        .requires(function (src) { return src.hasPermission(0) })
+        .executes(function (ctx) {
+          var sp
+          try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
+          sp.persistentData.putBoolean('icraft_origindump_pending', true)
           return 1
-        }
-        // No magic class detected — help the tester diagnose.
-        sp.tell('\u00a7c[Starter Kit]\u00a7r No class detected on origins:class layer. Try `/icraftkit <archmage|battlemage|void_summoner>` to force-grant, or check `/icraftorigindump`.')
-        console.log('[codex/cmd] /icraftkit: no magic class detected for ' + sp.username)
-        return 0
-      })
-      .then(Commands.literal('archmage').executes(ctx => icraftkit_force(ctx, 'archmage')))
-      .then(Commands.literal('battlemage').executes(ctx => icraftkit_force(ctx, 'battlemage')))
-      .then(Commands.literal('void_summoner').executes(ctx => icraftkit_force(ctx, 'void_summoner')))
-  )
-
-  event.register(
-    Commands.literal('icraftorigindump')
-      .requires(src => src.hasPermission(0))
-      .executes(ctx => {
-        let sp
-        try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
-        sp.persistentData.putBoolean('icraft_origindump_pending', true)
-        sp.tell('\u00a76[OriginDump]\u00a7r queued — check server log for full NBT dump.')
-        console.log('[codex/cmd] /icraftorigindump from ' + sp.username + ' queued')
-        return 1
-      })
-  )
-})
-
-// Helper for the forced-class variant of /icraftkit. Defined as a module-scope
-// function so both literal branches above can share it without recreating the
-// grant logic.
-function icraftkit_force(ctx, className) {
-  let sp
-  try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
-  sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + className, false)
-  codex_giveStarterKit(sp, className)
-  sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + className, true)
-  console.log('[codex/cmd] /icraftkit ' + className + ' (forced) granted to ' + sp.username)
-  return 1
-}
-
-// ── Backup Recovery Recipe ────────────────────────────────────────────────────
-
-ServerEvents.recipes(event => {
-  event.shapeless(
-    Item.of('patchouli:guide_book', CODEX_NBT),
-    ['minecraft:book', 'minecraft:lapis_lazuli']
-  ).id('icraft:codex_recovery_recipe')
-})
-
-// ── Book Suppression ────────────────────────────────────────────────────────
-// Uses /clear commands exclusively since inventory slot manipulation is broken.
-// Patchouli books from other mods share the patchouli:guide_book item ID
-// but have different NBT. We clear each known mod book by NBT.
-
-// Known patchouli book NBT values to suppress
-const PATCHOULI_BOOKS_TO_CLEAR = [
-  'terramity:terramity_guidebook',
-  'simplyswords:runic_grimoire',
-  'ars_nouveau:worn_notebook',
-  'irons_spellbooks:irons_spellbooks',
-  'thermal:guidebook',
-  'create:book',
-  'footwork:combat_manual',
-  'theabyss:the_abyss'
-]
-
-// Non-patchouli book item IDs to suppress
-const OTHER_BOOKS_TO_CLEAR = [
-  'terramity:guidebook',
-  'terramity:terramity_guidebook',
-  'terramity:guide_book',
-  'simplyswords:runic_grimoire',
-  'simplyswords:runic_tablet',
-  'epicfight:skill_book',
-  'epicfight:combat_book',
-  'epicfight:combatants_companion',
-  'primalmagick:grimoire',
-  'primalmagick:grimoire_creative',
-  'ars_nouveau:worn_notebook',
-  'theabyss:the_abyss_guidebook',
-  'botania:lexicon'
-]
-
-// Run all clear commands for a player
-function clearModBooks(player, doLog) {
-  let name = player.username
-  let cleared = 0
-
-  // Clear known patchouli guide books by NBT
-  PATCHOULI_BOOKS_TO_CLEAR.forEach(bookId => {
-    let cmd = 'clear ' + name + ' patchouli:guide_book{"patchouli:book":"' + bookId + '"} 64'
-    let result = player.server.runCommandSilent(cmd)
-    if (result > 0) {
-      console.log('[IridescentCraft] Cleared patchouli book: ' + bookId + ' (' + result + ' items)')
-      cleared += result
-    }
+        })
+    )
   })
 
-  // Clear non-patchouli mod books by item ID
-  OTHER_BOOKS_TO_CLEAR.forEach(bookId => {
-    let result = player.server.runCommandSilent('clear ' + name + ' ' + bookId + ' 64')
-    if (result > 0) {
-      console.log('[IridescentCraft] Cleared mod book: ' + bookId + ' (' + result + ' items)')
-      cleared += result
-    }
+  // ── Backup Recovery Recipe ─────────────────────────────────────────────────
+
+  ServerEvents.recipes(function (event) {
+    event.shapeless(
+      Item.of('patchouli:guide_book', CODEX_NBT),
+      ['minecraft:book', 'minecraft:lapis_lazuli']
+    ).id('icraft:codex_recovery_recipe')
   })
 
-  if (doLog && cleared === 0) {
-    console.log('[IridescentCraft] Sweep ran for ' + name + ' — no books found')
+  // ── Book Suppression ───────────────────────────────────────────────────────
+  // Uses /clear commands exclusively since inventory slot manipulation is broken.
+  // Patchouli books from other mods share the patchouli:guide_book item ID
+  // but have different NBT. We clear each known mod book by NBT.
+
+  // Known patchouli book NBT values to suppress
+  var PATCHOULI_BOOKS_TO_CLEAR = [
+    'terramity:terramity_guidebook',
+    'simplyswords:runic_grimoire',
+    'ars_nouveau:worn_notebook',
+    'irons_spellbooks:irons_spellbooks',
+    'thermal:guidebook',
+    'create:book',
+    'footwork:combat_manual',
+    'theabyss:the_abyss'
+  ]
+
+  // Non-patchouli book item IDs to suppress
+  var OTHER_BOOKS_TO_CLEAR = [
+    'terramity:guidebook',
+    'terramity:terramity_guidebook',
+    'terramity:guide_book',
+    'simplyswords:runic_grimoire',
+    'simplyswords:runic_tablet',
+    'epicfight:skill_book',
+    'epicfight:combat_book',
+    'epicfight:combatants_companion',
+    'primalmagick:grimoire',
+    'primalmagick:grimoire_creative',
+    'ars_nouveau:worn_notebook',
+    'theabyss:the_abyss_guidebook',
+    'botania:lexicon'
+  ]
+
+  // Run all clear commands for a player
+  var clearModBooks = function (player, doLog) {
+    var name = player.username
+    var cleared = 0
+
+    // Clear known patchouli guide books by NBT
+    PATCHOULI_BOOKS_TO_CLEAR.forEach(function (bookId) {
+      var cmd = 'clear ' + name + ' patchouli:guide_book{"patchouli:book":"' + bookId + '"} 64'
+      var result = player.server.runCommandSilent(cmd)
+      if (result > 0) {
+        console.log('[IridescentCraft] Cleared patchouli book: ' + bookId + ' (' + result + ' items)')
+        cleared += result
+      }
+    })
+
+    // Clear non-patchouli mod books by item ID
+    OTHER_BOOKS_TO_CLEAR.forEach(function (bookId) {
+      var result = player.server.runCommandSilent('clear ' + name + ' ' + bookId + ' 64')
+      if (result > 0) {
+        console.log('[IridescentCraft] Cleared mod book: ' + bookId + ' (' + result + ' items)')
+        cleared += result
+      }
+    })
+
+    if (doLog && cleared === 0) {
+      console.log('[IridescentCraft] Sweep ran for ' + name + ' — no books found')
+    }
   }
-}
 
-// Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
-global.tick_codexBookSweep = (event) => {
-  let tick = event.server.tickCount
+  // Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
+  global.tick_codexBookSweep = function (event) {
+    var tick = event.server.tickCount
 
-  event.server.players.forEach(player => {
-    let sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')
-    if (sweepTicks <= 0) return
+    event.server.players.forEach(function (player) {
+      var sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')
+      if (sweepTicks <= 0) return
 
-    // First 10 seconds (200 ticks): clear every second
-    // After that: clear every 10 seconds
-    let aggressive = sweepTicks > 1000 // 1200 - 200 = first 10s
-    let interval = aggressive ? 20 : 200
+      // First 10 seconds (200 ticks): clear every second
+      // After that: clear every 10 seconds
+      var aggressive = sweepTicks > 1000 // 1200 - 200 = first 10s
+      var interval = aggressive ? 20 : 200
 
-    if (tick % interval !== 0) return
+      if (tick % interval !== 0) return
 
-    player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
-    clearModBooks(player, aggressive)
-  })
-}
-global.registerServerTick('tick_codexBookSweep', 20, 0)
+      player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
+      clearModBooks(player, aggressive)
+    })
+  }
+  global.registerServerTick('tick_codexBookSweep', 20, 0)
+})()

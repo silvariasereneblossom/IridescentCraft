@@ -10,177 +10,173 @@
 // Applied to `irons_spellbooks:max_mana` only (the unified pool's canonical
 // attribute; Ars perk attributes are decorative since 2026-05-15).
 //
-// Persistence: addTransientModifier this time. The 2026-04-25 version used
+// Persistence: TRANSIENT modifier (player.modifyAttribute -- remove + add
+// transient, keyed by the id string). The 2026-04-25 version used
 // addPermanentModifier and produced two cleanup-pass requirements when
 // reverted. Transient modifiers stay attached for the session but don't
-// write to NBT -- on logout they vanish, on login the per-tick / login
-// handlers re-apply. Reverting becomes 'delete the script'.
+// write to NBT -- on logout they vanish, on login / the 5 s tick they are
+// re-applied. Reverting becomes 'delete the script'.
 //
-// CLEANUP: continues scrubbing the 8 legacy UUIDs from earlier
-// mana_pool_bonuses + mana_bridge generations until all online players
-// have been ticked at least once post-revert. Safe to remove the cleanup
-// arrays once the alpha-tester roster has cycled through.
+// CLASS DETECTION (2026-10): global.icraft.origin (0_lib_origins.js). The
+// inline `execute if entity <name>[nbt=...]` probe this file used never parsed
+// (selector brackets need an @-selector) -- production logged
+// "[mana_pool] <player> has no mage class" for an Archmage. The buff has
+// therefore never been applied before this fix.
+//
+// CLEANUP: the 8 legacy permanent-modifier UUIDs from the earlier
+// mana_pool_bonuses + mana_bridge generations are scrubbed ONCE per player
+// (persistentData flag) instead of on every tick for every player forever.
 //
 // Memory: feedback_permanent_modifier_trap.md.
 // =============================================================================
 
-try {
-  var UUID_mp = Java.loadClass('java.util.UUID')
-  var ResourceLocation_mp = Java.loadClass('net.minecraft.resources.ResourceLocation')
-  var ForgeRegistries_mp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
-  var AttributeModifier_mp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
-  var Operation_mp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
+;(function () {
+  try {
+    var UUID_mp = Java.loadClass('java.util.UUID')
+    var ResourceLocation_mp = Java.loadClass('net.minecraft.resources.ResourceLocation')
+    var ForgeRegistries_mp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
-  // ── Active buff: 1.5x ISS max_mana for magic classes (transient) ────────
-  // Fresh UUID family (2026-05-15 v2 prefix) so the cleanup pass below
-  // can scrub the legacy 2026-04-25 UUIDs without touching these.
-  var MAGE_CLASS_UUIDS = {
-    'archmage':      'd0e1f2a3-b4c5-4d6e-8f70-202505150011',
-    'battlemage':    'd0e1f2a3-b4c5-4d6e-8f70-202505150021',
-    'void_summoner': 'd0e1f2a3-b4c5-4d6e-8f70-202505150031',
-  }
-  var MAGE_MULT = 0.5  // MULTIPLY_TOTAL 0.5 -> 1.5x effective
+    // ── Active buff: 1.5x ISS max_mana for magic classes (transient) ────────
+    var MANA_ATTR_ID = 'irons_spellbooks:max_mana'
+    var MAGE_CLASSES = ['archmage', 'battlemage', 'void_summoner']
+    var MAGE_MULT = 0.5  // MULTIPLY_TOTAL 0.5 -> 1.5x effective
+    var modifierId = function (cls) { return 'icraft.mana_pool.' + cls }
 
-  var manaAttrRl = ResourceLocation_mp.tryParse('irons_spellbooks:max_mana')
-  var manaAttr = manaAttrRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(manaAttrRl) : null
+    var manaAttrRl = ResourceLocation_mp.tryParse(MANA_ATTR_ID)
+    var manaAttr = manaAttrRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(manaAttrRl) : null
 
-  // 2026-05-15: bypass the class_passives cache + inline the class probe
-  // here so we don't depend on cross-script function visibility (Rhino's
-  // shared-script-scope is unreliable in practice). class_passives's own
-  // loggedIn handler DELETES the cache entry without re-populating, and
-  // refreshClassCache only runs every 600 ticks. Our login handler was
-  // firing before the next refresh, so getClass() returned null and the
-  // mage buff never applied until 30s post-login.
-  var probeClass = function(player, className) {
-    try {
-      var r = player.server.runCommandSilent(
-        'execute if entity ' + player.username +
-        '[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:' +
-        className + '"}}}}]'
-      )
-      return r > 0
-    } catch (e) { return false }
-  }
-
-  // Track whether we've ever successfully applied for diagnostics. One-shot
-  // log so we get proof-of-life in the server log without per-tick spam.
-  var _firstApplySeen = {}
-
-  var applyMageBuff = function(player) {
-    if (!manaAttr) return
-    var inst = null
-    try { inst = player.getAttribute(manaAttr) } catch (e) { return }
-    if (!inst) return
-
-    var playerClass = null
-    var mageList = ['archmage', 'battlemage', 'void_summoner']
-    for (var ci = 0; ci < mageList.length; ci++) {
-      if (probeClass(player, mageList[ci])) { playerClass = mageList[ci]; break }
+    var warned = {}
+    var warnOnce = function (where, e) {
+      if (warned[where]) return
+      warned[where] = true
+      console.warn('[mana_pool] ' + where + ' threw (logged once): ' + e)
     }
 
-    // Walk all mage-class UUIDs. For the active class, apply (idempotent
-    // upsert). For inactive classes, remove (returns silently if absent).
-    var classes = Object.keys(MAGE_CLASS_UUIDS)
-    var applied = false
-    for (var i = 0; i < classes.length; i++) {
-      var k = classes[i]
-      var uuid
-      try { uuid = UUID_mp.fromString(MAGE_CLASS_UUIDS[k]) } catch (e) { continue }
-      try { inst.removeModifier(uuid) } catch (e) {}
-      if (k === playerClass) {
+    // 'archmage' | 'battlemage' | 'void_summoner' | null
+    var mageClassOf = function (player) {
+      var id = null
+      try { id = global.icraft.origin.get(player, 'class') } catch (e) { return null }
+      if (!id) return null
+      var bare = id.substring(id.indexOf(':') + 1)
+      return MAGE_CLASSES.indexOf(bare) >= 0 ? bare : null
+    }
+
+    // Which class modifier this script put on each player this session
+    // (uuid -> class). Only used to take the old one off after a respec.
+    var appliedClass = {}
+    // One-shot proof-of-apply log per (player, class).
+    var firstApplySeen = {}
+
+    var applyMageBuff = function (player) {
+      if (!manaAttr) return
+      var key = String(player.uuid.toString())
+      var cls = mageClassOf(player)
+      var prev = appliedClass.hasOwnProperty(key) ? appliedClass[key] : null
+
+      if (prev && prev !== cls) {
+        // Class changed (or was dropped): take the old class's modifier off.
         try {
-          var m = new AttributeModifier_mp(uuid, 'icraft.mana_pool.' + k, MAGE_MULT, Operation_mp.MULTIPLY_TOTAL)
-          inst.addTransientModifier(m)
-          applied = true
+          player.removeAttribute(MANA_ATTR_ID, modifierId(prev))
         } catch (e) {
-          console.warn('[mana_pool] addTransientModifier failed for ' + k + ': ' + e)
+          player.modifyAttribute(MANA_ATTR_ID, modifierId(prev), 0, 'multiply_total')
+        }
+        delete appliedClass[key]
+      }
+      if (!cls) return
+
+      // Idempotent upsert; also restores the modifier after a respawn rebuilt
+      // the player entity.
+      player.modifyAttribute(MANA_ATTR_ID, modifierId(cls), MAGE_MULT, 'multiply_total')
+      appliedClass[key] = cls
+
+      var diagKey = key + ':' + cls
+      if (!firstApplySeen[diagKey]) {
+        firstApplySeen[diagKey] = true
+        var preview = '?'
+        try {
+          var inst = player.getAttribute(manaAttr)
+          if (inst) preview = inst.getValue()
+        } catch (e) {}
+        console.log('[mana_pool] applied 1.5x ' + cls + ' buff to ' + player.username +
+          '; aggregated max_mana=' + preview)
+      }
+    }
+
+    // ── Cleanup pass: legacy UUIDs from prior generations ──────────────────
+    // Two generations of mana scripts wrote permanent attribute modifiers
+    // that survived their script deletion:
+    //   mana_pool_bonuses (2026-04-25): 4 UUIDs, MULTIPLY_BASE / MULTIPLY_TOTAL
+    //   mana_bridge       (2026-05-14): 4 UUIDs across 4 attributes
+    var STALE_UUID_STRINGS = [
+      '9c1e0c01-2e1d-4f0a-9d1f-202000000001',  // legacy global +25%
+      '9c1e0c01-2e1d-4f0a-9d1f-202000000011',  // legacy archmage x2
+      '9c1e0c01-2e1d-4f0a-9d1f-202000000021',  // legacy battlemage x1.5
+      '9c1e0c01-2e1d-4f0a-9d1f-202000000031',  // legacy void_summoner x1.5
+      'b1d9e201-0000-0000-0000-100000000001',  // mana_bridge
+      'b1d9e201-0000-0000-0000-100000000002',
+      'b1d9e201-0000-0000-0000-100000000003',
+      'b1d9e201-0000-0000-0000-100000000004'
+    ]
+    var STALE_TARGET_ATTRS = [
+      'irons_spellbooks:max_mana',
+      'irons_spellbooks:mana_regen',
+      'ars_nouveau:ars_nouveau.perk.max_mana',
+      'ars_nouveau:ars_nouveau.perk.mana_regen'
+    ]
+    // Parsed / resolved ONCE at load (was 32 UUID parses per player per tick).
+    var STALE_UUIDS = []
+    STALE_UUID_STRINGS.forEach(function (s) {
+      try { STALE_UUIDS.push(UUID_mp.fromString(s)) } catch (e) {}
+    })
+    var STALE_ATTRS = []
+    STALE_TARGET_ATTRS.forEach(function (id) {
+      try {
+        var staleRl = ResourceLocation_mp.tryParse(id)
+        var staleAttr = staleRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(staleRl) : null
+        if (staleAttr) STALE_ATTRS.push(staleAttr)
+      } catch (e) {}
+    })
+
+    var SCRUB_FLAG = 'icraft_mana_legacy_scrubbed'
+
+    // Runs the 8x4 removeModifier sweep once per player, ever. The modifiers
+    // being removed are PERMANENT (saved in the player's NBT), so once they
+    // are gone they stay gone -- there is nothing to re-check.
+    var scrubStaleOnce = function (player) {
+      var data = player.persistentData
+      if (data.getBoolean(SCRUB_FLAG)) return
+      for (var ai = 0; ai < STALE_ATTRS.length; ai++) {
+        var inst = null
+        try { inst = player.getAttribute(STALE_ATTRS[ai]) } catch (e) { continue }
+        if (!inst) continue
+        for (var ui = 0; ui < STALE_UUIDS.length; ui++) {
+          try { inst.removeModifier(STALE_UUIDS[ui]) } catch (e) {}
         }
       }
+      data.putBoolean(SCRUB_FLAG, true)
     }
 
-    // One-shot proof-of-apply log per (player, class) pair, so the server
-    // log records that the buff is actually landing without flooding the
-    // log on every 5s tick.
-    var diagKey = String(player.username) + ':' + (playerClass || '<none>') + ':' + (applied ? 'ok' : 'noop')
-    if (!_firstApplySeen[diagKey]) {
-      _firstApplySeen[diagKey] = true
-      if (applied) {
-        try {
-          var preview = inst.getValue()
-          console.log('[mana_pool] applied 1.5x ' + playerClass + ' buff to '
-                    + player.username + '; aggregated max_mana=' + preview)
-        } catch (e) {}
-      } else if (!playerClass) {
-        console.log('[mana_pool] ' + player.username + ' has no mage class; skipping (one-shot log)')
-      }
+    var update = function (player) {
+      try { scrubStaleOnce(player) } catch (e) { warnOnce('legacy scrub', e) }
+      try { applyMageBuff(player) } catch (e) { warnOnce('applyMageBuff', e) }
     }
-  }
 
-  // ── Cleanup pass: legacy UUIDs from prior generations ──────────────────
-  // Two generations of mana scripts wrote permanent attribute modifiers
-  // that survived their script deletion:
-  //   mana_pool_bonuses (2026-04-25): 4 UUIDs, MULTIPLY_BASE / MULTIPLY_TOTAL
-  //   mana_bridge       (2026-05-14): 4 UUIDs across 4 attributes
-  // Cleanup continues until alpha-tester roster has cycled through.
-  var STALE_POOL_UUIDS = [
-    '9c1e0c01-2e1d-4f0a-9d1f-202000000001',  // legacy global +25%
-    '9c1e0c01-2e1d-4f0a-9d1f-202000000011',  // legacy archmage x2
-    '9c1e0c01-2e1d-4f0a-9d1f-202000000021',  // legacy battlemage x1.5
-    '9c1e0c01-2e1d-4f0a-9d1f-202000000031',  // legacy void_summoner x1.5
-  ]
-  var STALE_BRIDGE_UUIDS = [
-    'b1d9e201-0000-0000-0000-100000000001',
-    'b1d9e201-0000-0000-0000-100000000002',
-    'b1d9e201-0000-0000-0000-100000000003',
-    'b1d9e201-0000-0000-0000-100000000004',
-  ]
-  var STALE_TARGET_ATTRS = [
-    'irons_spellbooks:max_mana',
-    'irons_spellbooks:mana_regen',
-    'ars_nouveau:ars_nouveau.perk.max_mana',
-    'ars_nouveau:ars_nouveau.perk.mana_regen',
-  ]
-  var STALE_RESOLVED = []
-  for (var ai = 0; ai < STALE_TARGET_ATTRS.length; ai++) {
-    var rl = ResourceLocation_mp.tryParse(STALE_TARGET_ATTRS[ai])
-    var attr = rl ? ForgeRegistries_mp.ATTRIBUTES.getValue(rl) : null
-    if (attr) STALE_RESOLVED.push(attr)
-  }
-  var ALL_STALE = STALE_POOL_UUIDS.concat(STALE_BRIDGE_UUIDS)
-
-  var scrubStale = function(player) {
-    for (var ai = 0; ai < STALE_RESOLVED.length; ai++) {
-      var inst = null
-      try { inst = player.getAttribute(STALE_RESOLVED[ai]) } catch (e) { continue }
-      if (!inst) continue
-      for (var ui = 0; ui < ALL_STALE.length; ui++) {
-        try {
-          var uuid = UUID_mp.fromString(ALL_STALE[ui])
-          try { inst.removeModifier(uuid) } catch (e) {}
-        } catch (e) {}
-      }
+    // ── Tick + login wiring ────────────────────────────────────────────────
+    global.tick_manaPoolBonuses = function (event) {
+      event.server.players.forEach(update)
     }
-  }
+    global.registerServerTick('tick_manaPoolBonuses', 100, 60)
 
-  // ── Tick + login wiring ────────────────────────────────────────────────
-  global.tick_manaPoolBonuses = function(event) {
-    event.server.players.forEach(function(player) {
-      try { scrubStale(player) } catch (e) {}
-      try { applyMageBuff(player) } catch (e) {
-        console.warn('[mana_pool] applyMageBuff threw: ' + e)
-      }
+    PlayerEvents.loggedIn(function (event) { update(event.player) })
+    PlayerEvents.respawned(function (event) { update(event.player) })
+    PlayerEvents.loggedOut(function (event) {
+      try { delete appliedClass[String(event.player.uuid.toString())] } catch (e) {}
     })
+
+    console.log('[IridescentCraft] mana_pool_bonuses v2 loaded')
+    console.log('  Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)')
+    console.log('  Cleanup: 8 legacy UUIDs across 4 attributes (once per player)')
+  } catch (e) {
+    console.warn('[IridescentCraft] mana_pool_bonuses bootstrap FAILED: ' + e)
   }
-  global.registerServerTick('tick_manaPoolBonuses', 100, 60)
-
-  PlayerEvents.loggedIn(function(event) {
-    try { scrubStale(event.player) } catch (e) {}
-    try { applyMageBuff(event.player) } catch (e) {}
-  })
-
-  console.log('[IridescentCraft] mana_pool_bonuses v2 loaded')
-  console.log('  Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)')
-  console.log('  Cleanup: 8 legacy UUIDs across 4 attributes (per tick + login)')
-} catch (e) {
-  console.warn('[IridescentCraft] mana_pool_bonuses bootstrap FAILED: ' + e)
-}
+})()

@@ -9,90 +9,109 @@
 //   - Visual: Wither particle effect (darkness closing in)
 // After 5 minutes the debuffs expire and they recover naturally.
 // Cannot trigger again while debuffs are active (no infinite immortality loop).
+//
+// Origin detection: global.icraft.origin (0_lib_origins.js). The old
+// `execute if entity <name>[nbt=...]` probe never parsed, so this never ran
+// before 2026-10.
+//
+// ORDER MATTERS in the death handler. event.cancel() works by THROWING, so
+// nothing written after it runs and a try/catch around it swallows the cancel.
+// The original called cancel() first: had the origin check ever passed, the
+// death would have been cancelled with the player still at 0 HP and none of
+// the revive below applied. Revive first, decide, cancel last and outside the
+// try -- and once health is back at 1 the death MUST be cancelled.
 // =============================================================================
 
-function isPhantom(player) {
-  try {
-    let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:origin":"origins:phantom"}}}}]`
-    )
-    return result > 0
-  } catch (e) {
-    return false
-  }
-}
-
-// Intercept death for Phantom players
-EntityEvents.death(event => {
-  let entity = event.entity
-  if (!entity.player) return
-
-  let player = entity
-  if (!isPhantom(player)) return
-
-  // Check if already in spectral collapse (don't trigger again)
-  let data = player.persistentData
-  if (data.getBoolean('icraft_phantom_collapsed')) return
-
-  // Cancel death
-  event.cancel()
-
-  // Set to half a heart
-  player.setHealth(1)
-
-  // Mark as collapsed
-  data.putBoolean('icraft_phantom_collapsed', true)
-
-  let name = player.username
-
-  // Apply 5-minute debuffs
-  // Weakness II = 50% less melee damage
-  player.server.runCommandSilent(
-    `effect give ${name} minecraft:weakness 300 1 false`
-  )
-  // Slowness II
-  player.server.runCommandSilent(
-    `effect give ${name} minecraft:slowness 300 1 false`
-  )
-  // Mining Fatigue I
-  player.server.runCommandSilent(
-    `effect give ${name} minecraft:mining_fatigue 300 0 false`
-  )
-  // Resistance II — 36% damage reduction to help survive the collapse state
-  player.server.runCommandSilent(
-    `effect give ${name} minecraft:resistance 300 1 false`
-  )
-
-  // Notify player
-  player.tell('\u00a78\u00a7l[Spectral Collapse]\u00a7r')
-  player.tell('\u00a77Your phantom form wavers at the edge of death.')
-  player.tell('\u00a77You are severely weakened for 5 minutes.')
-  player.server.runCommandSilent(
-    `title ${name} title {"text":"Spectral Collapse","color":"gray","bold":true}`
-  )
-  player.server.runCommandSilent(
-    `title ${name} subtitle {"text":"Your form holds... barely.","color":"dark_gray"}`
-  )
-})
-
-// Clear the collapse flag when debuffs expire (check every 10 seconds)
-global.tick_phantomUndeath = (event) => {
-  event.server.players.forEach(player => {
-    if (!isPhantom(player)) return
-
-    let data = player.persistentData
-    if (!data.getBoolean('icraft_phantom_collapsed')) return
-
-    let hasWeakness = player.potionEffects.isActive('minecraft:weakness')
-    if (!hasWeakness) {
-      data.putBoolean('icraft_phantom_collapsed', false)
-      player.tell('\u00a77Your spectral form stabilizes. You feel whole again.')
+;(function () {
+  var isPhantom = function (player) {
+    try {
+      return global.icraft.origin.is(player, 'origin', 'origins:phantom')
+    } catch (e) {
+      return false
     }
-  })
-}
-global.registerServerTick('tick_phantomUndeath', 200, 0)
+  }
 
-console.log('[IridescentCraft] Phantom Undeath loaded')
-console.log('  - Phantoms cannot die — health locks to 0.5 hearts')
-console.log('  - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min')
-console.log('  - Resistance II during collapse to prevent instant re-collapse')
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    console.warn('[phantom_undeath] ' + where + ' threw (logged once): ' + e)
+  }
+
+  var COLLAPSE_TICKS = 6000  // 5 minutes
+
+  // Intercept death for Phantom players
+  EntityEvents.death(function (event) {
+    var revived = false
+    try {
+      var player = event.entity
+      if (!player || !player.player) return
+      if (!isPhantom(player)) return
+
+      // Already in spectral collapse: this death is real.
+      var data = player.persistentData
+      if (data.getBoolean('icraft_phantom_collapsed')) return
+
+      // Set to half a heart. From here on the death has to be cancelled.
+      player.setHealth(1)
+      revived = true
+
+      // Mark as collapsed
+      data.putBoolean('icraft_phantom_collapsed', true)
+
+      try {
+        // 5-minute debuffs (same instances `effect give <name> <id> 300 <amp> false` built)
+        // Weakness II = 50% less melee damage
+        player.potionEffects.add('minecraft:weakness', COLLAPSE_TICKS, 1, false, true)
+        // Slowness II
+        player.potionEffects.add('minecraft:slowness', COLLAPSE_TICKS, 1, false, true)
+        // Mining Fatigue I
+        player.potionEffects.add('minecraft:mining_fatigue', COLLAPSE_TICKS, 0, false, true)
+        // Resistance II — 36% damage reduction to help survive the collapse state
+        player.potionEffects.add('minecraft:resistance', COLLAPSE_TICKS, 1, false, true)
+
+        // Notify player
+        var name = player.username
+        player.tell('\u00a78\u00a7l[Spectral Collapse]\u00a7r')
+        player.tell('\u00a77Your phantom form wavers at the edge of death.')
+        player.tell('\u00a77You are severely weakened for 5 minutes.')
+        player.server.runCommandSilent(
+          'title ' + name + ' title {"text":"Spectral Collapse","color":"gray","bold":true}'
+        )
+        player.server.runCommandSilent(
+          'title ' + name + ' subtitle {"text":"Your form holds... barely.","color":"dark_gray"}'
+        )
+      } catch (e) {
+        warnOnce('collapse effects', e)
+      }
+    } catch (e) {
+      warnOnce('death handler', e)
+    }
+    if (revived) event.cancel()
+  })
+
+  // Clear the collapse flag when debuffs expire (check every 10 seconds)
+  global.tick_phantomUndeath = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        // Cheap flag first: only a collapsed player needs the origin lookup.
+        var data = player.persistentData
+        if (!data.getBoolean('icraft_phantom_collapsed')) return
+        if (!isPhantom(player)) return
+
+        if (!player.potionEffects.isActive('minecraft:weakness')) {
+          data.putBoolean('icraft_phantom_collapsed', false)
+          player.tell('\u00a77Your spectral form stabilizes. You feel whole again.')
+        }
+      } catch (e) {
+        warnOnce('collapse tick', e)
+      }
+    })
+  }
+  global.registerServerTick('tick_phantomUndeath', 200, 0)
+
+  console.log('[IridescentCraft] Phantom Undeath loaded')
+  console.log('  - Phantoms cannot die — health locks to 0.5 hearts')
+  console.log('  - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min')
+  console.log('  - Resistance II during collapse to prevent instant re-collapse')
+})()

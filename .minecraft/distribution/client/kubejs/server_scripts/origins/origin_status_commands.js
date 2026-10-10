@@ -16,23 +16,30 @@
 //   - Next threshold + iron remaining
 //   - Per-level cumulative bonus
 //   - Iron Apotheosis capstone state
+//
+// 2026-10: neither command ever produced a readout. (1) The three helpers were
+// `function` DECLARATIONS inside this file's top-level try block; Rhino leaves
+// a block-level function declaration undefined for closures, so the command
+// callbacks died with "dumpWitchStatus is not a function". They are
+// `var x = function` now. (2) The origin check was an `execute if entity
+// <name>[nbt=...]` probe that never parsed; it is global.icraft.origin now.
+// Whole file is one IIFE (body left at column 0 to keep the diff readable).
 // =============================================================================
 
+;(function () {
 try {
   var ResourceLocation_osc = Java.loadClass('net.minecraft.resources.ResourceLocation')
   var ForgeRegistries_osc = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
-  function isOriginType(player, originId) {
+  // Shared cached resolver (0_lib_origins.js).
+  var isOriginType = function(player, originId) {
     try {
-      let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:origin":"icraft:${originId}"}}}}]`
-      )
-      return r > 0
+      return global.icraft.origin.is(player, 'origin', 'icraft:' + originId)
     } catch (e) { return false }
   }
 
   // ── Witch status ───────────────────────────────────────────────────────
-  function dumpWitchStatus(sp) {
+  var dumpWitchStatus = function(sp) {
     if (!isOriginType(sp, 'witch_of_ink')) {
       sp.tell('§7You are not a Witch of Ink. Progression tracker has no data to display.')
       return
@@ -73,7 +80,7 @@ try {
   }
 
   // ── Construct status ───────────────────────────────────────────────────
-  function dumpConstructStatus(sp) {
+  var dumpConstructStatus = function(sp) {
     if (!isOriginType(sp, 'artificial_construct')) {
       sp.tell('§7You are not an Artificial Construct. Progression tracker has no data to display.')
       return
@@ -148,3 +155,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] origin_status_commands bootstrap FAILED: ' + e)
 }
+})()

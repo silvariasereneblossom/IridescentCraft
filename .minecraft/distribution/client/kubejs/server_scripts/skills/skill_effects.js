@@ -301,7 +301,10 @@ PlayerEvents.inventoryChanged(event => {
       try {
         let lastSave = player.persistentData.getInt('icraft_mat_save_cd') || 0
         let now = srv.tickCount
-        if (now - lastSave > 40) { // 2-second cooldown between triggers
+        // `now < lastSave`: tickCount restarts at 0 every boot, so a stamp from
+        // an earlier session is "in the future" and would otherwise keep this
+        // locked until uptime passes it.
+        if (now - lastSave > 40 || now < lastSave) { // 2-second cooldown between triggers
           if (Math.random() * 100 < materialSave) {
             // Return a contextual material based on what was crafted
             let returnMaterials
@@ -369,7 +372,8 @@ PlayerEvents.inventoryChanged(event => {
       try {
         let lastBonus = player.persistentData.getInt('icraft_craft_bonus_cd') || 0
         let now = srv.tickCount
-        if (now - lastBonus > 40) { // 2-second cooldown
+        // (`now < lastBonus`: same restart guard as icraft_mat_save_cd above)
+        if (now - lastBonus > 40 || now < lastBonus) { // 2-second cooldown
           if (Math.random() * 100 < craftBonus) {
             // Give a copy of the item itself (double output)
             let bonus = item.copy()
@@ -482,36 +486,30 @@ global.tick_skillEffects = (event) => {
         let magicScore = getScore(event.server, name, 'icraft_magic_damage')
         if (magicScore > 0) magicBonus += magicScore / 100
 
-        // Detect origin/race magic bonuses
+        // Detect origin/race magic bonuses through the shared cached resolver
+        // (0_lib_origins.js). These four checks used to be `execute if entity
+        // <name>[nbt=...]` commands, which never parsed (selector brackets need
+        // an @-selector) -- so until 2026-10 the class/race part of this sync
+        // was always 0.
         try {
+          let origin = global.icraft.origin
+          let playerClass = origin.get(player, 'class')
+          let playerRace = origin.get(player, 'race')
           // Archmage class: +50%
-          let r1 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:archmage"}}}}]`
-          )
-          if (r1 > 0) magicBonus += 0.50
+          if (playerClass === 'icraft:archmage') magicBonus += 0.50
           // Battlemage class: +15%
-          let r2 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:battlemage"}}}}]`
-          )
-          if (r2 > 0) magicBonus += 0.15
+          if (playerClass === 'icraft:battlemage') magicBonus += 0.15
           // Faefolk race: +30%
-          let r3 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:faefolk"}}}}]`
-          )
-          if (r3 > 0) magicBonus += 0.30
+          if (playerRace === 'icraft:faefolk') magicBonus += 0.30
           // Elf race: +5%
-          let r4 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:elf"}}}}]`
-          )
-          if (r4 > 0) magicBonus += 0.05
+          if (playerRace === 'icraft:elf') magicBonus += 0.05
         } catch(e) {}
 
-        if (magicBonus > 0) {
-          player.modifyAttribute('irons_spellbooks:spell_power',
-            'icraft_magic_damage_sync', magicBonus, 'multiply_base')
-          player.modifyAttribute('irons_spellbooks:spell_power',
-            'icraft_magic_damage_sync', magicBonus, 'multiply_base')
-        }
+        // Always written, including 0: a respec away from a magic class/race
+        // must take the bonus off again (the modifier is keyed by id, so this
+        // replaces in place).
+        player.modifyAttribute('irons_spellbooks:spell_power',
+          'icraft_magic_damage_sync', magicBonus, 'multiply_base')
       } catch(e) {} // Silent fail if mod attributes don't exist
     })
   }

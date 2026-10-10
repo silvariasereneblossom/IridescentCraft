@@ -45,17 +45,26 @@ global.tick_originEffectsAvianMerling = (event) => {
       // Check if player is in water or rain
       let inWater = player.isInWater() || player.isInWaterRainOrBubble()
 
+      // Dry timer is a GAME-TIME stamp (player.level.gameTime, like the affix /
+      // enchant cooldowns). It used to store server.tickCount, which restarts
+      // at 0 every boot: a stamp from yesterday's session was "in the future",
+      // so the debuff could not come back until uptime passed the old value.
+      // New key on purpose -- a stale tickCount under the old key
+      // (ic_merling_dry_since) would read as "dry for months" on this clock.
+      let now = player.level.gameTime
+
       if (inWater) {
         // Reset dry timer when in water
-        data.putLong('ic_merling_dry_since', 0)
+        if (data.getLong('ic_merling_dry_gt') != 0) data.putLong('ic_merling_dry_gt', 0)
       } else {
         // Track when player left water
-        let drySince = data.getLong('ic_merling_dry_since')
-        if (drySince == 0) {
-          data.putLong('ic_merling_dry_since', server.tickCount)
+        let drySince = data.getLong('ic_merling_dry_gt')
+        if (drySince == 0 || drySince > now) {
+          drySince = now
+          data.putLong('ic_merling_dry_gt', now)
         }
 
-        let ticksDry = server.tickCount - data.getLong('ic_merling_dry_since')
+        let ticksDry = now - drySince
 
         if (ticksDry >= MERLING_DRY_THRESHOLD) {
           // 5+ minutes on land: apply Slowness I + Mining Fatigue I
@@ -104,8 +113,12 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   // Dealing damage in/after Nether: +10% (in Nether) or +20% (after awakening, anywhere)
+  // `source.actual`: KubeJS exposes DamageSource.getEntity() to scripts as
+  // getActual() (@RemapForJS), so `source.entity` is undefined and this handler
+  // used to return on its first line for every hit.
   DR.register('icraft.origin.blazeborn.deal', function(event) {
-    var attacker = event.source.entity
+    var source = event.source
+    var attacker = source ? (source.actual !== undefined ? source.actual : source.entity) : null
     if (!attacker || !(attacker instanceof PlayerClass)) return
     if (!attacker.tags.contains('icraft_blazeborn')) return
     var inNether = attacker.level.dimension.toString() === 'minecraft:the_nether'
@@ -139,12 +152,17 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
   var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
   DR.register('icraft.origin.enderian.shift', function(event) {
-    var attacker = event.source.entity
+    // (source.actual, not source.entity -- see the Blazeborn handler above)
+    var source = event.source
+    var attacker = source ? (source.actual !== undefined ? source.actual : source.entity) : null
     if (!attacker || !(attacker instanceof PlayerClass)) return
     if (!attacker.tags.contains('icraft_enderian')) return
     var data = attacker.persistentData
     var buffExpiry = data.getLong('icraft_ender_shift_expires')
-    if (attacker.level.server.tickCount < buffExpiry) {
+    // Game-time stamp (see tick_enderianShift). The window is 200 ticks, so
+    // anything further ahead than that is not a live buff.
+    var now = attacker.level.gameTime
+    if (now < buffExpiry && buffExpiry - now <= 200) {
       event.amount = event.amount * 1.15
     }
   })
@@ -163,9 +181,12 @@ global.tick_enderianShift = (event) => {
   let distSq = dx * dx + dz * dz
 
   if (distSq > 64 && lastX !== 0) {
-    let tick = player.level.server.tickCount
+    // World game time, not server.tickCount: tickCount restarts at 0 on every
+    // boot, so an expiry stamped late in one session kept the buff locked in
+    // the next until uptime caught up. A stale small stamp reads as "ready".
+    let tick = player.level.gameTime
     let lastBuff = data.getLong('icraft_ender_shift_expires')
-    if (tick > lastBuff) {
+    if (tick > lastBuff || lastBuff - tick > 200) {
       data.putLong('icraft_ender_shift_expires', tick + 200)
       player.potionEffects.add('minecraft:strength', 200, 0, false, true)
       player.tell(Text.darkPurple('  ◆ Ender Shift: +15% damage for 10 seconds'))

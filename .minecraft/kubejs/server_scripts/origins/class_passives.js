@@ -1,316 +1,330 @@
 // =============================================================================
 // CLASS PASSIVES — KubeJS implementations for origin-described mechanics
 // =============================================================================
+// Class / race detection goes through the shared resolver in 0_lib_origins.js
+// (global.icraft.origin): one cached NBT read per player per 5 s. The old
+// per-file `execute if entity <name>[nbt=...]` probe never parsed (selector
+// brackets need an @-selector), so nothing below ever ran before 2026-10.
+//
+// Everything lives in one IIFE: server scripts share a single Rhino scope, and
+// the old top-level `getPlayerTier` here silently replaced the unrelated
+// AStages-based `getPlayerTier` in bonfire/boss_compass_handler.js.
+//
+// Clocks: `server.tickCount` only PHASES the work (which sub-block runs this
+// tick). Anything written to persistentData uses `player.level.gameTime` — the
+// world clock survives restarts, tickCount restarts at 0 every boot.
+// =============================================================================
 
-// ── Helper: check class origin ──
-function hasClass(player, className) {
-  try {
-    let r = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:${className}"}}}}]`
-    )
-    return r > 0
-  } catch (e) {
-    return false
-  }
-}
+;(function () {
 
-// Cache class lookups per player (refreshed every 30s)
-let classCache = {}
-
-function getClass(player) {
-  return classCache[player.username] || null
-}
-
-function refreshClassCache(server) {
-  let classes = ['berserker', 'samurai', 'battlemage', 'wanderer', 'paladin',
-    'vanguard', 'ranger', 'archmage', 'artificer', 'void_summoner',
-    'elemental', 'blessed', 'corrupted']
-  server.players.forEach(p => {
-    classCache[p.username] = null
-    for (let c of classes) {
-      if (hasClass(p, c)) {
-        classCache[p.username] = c
-        break
-      }
+  // ── Helper: bare class name ('samurai') or null ──
+  var getClass = function (player) {
+    try {
+      var id = global.icraft.origin.get(player, 'class')
+      return id ? id.substring(id.indexOf(':') + 1) : null
+    } catch (e) {
+      return null
     }
-  })
-}
-
-// ── Helper: detect progression tier from visited dimensions ──
-function getPlayerTier(player) {
-  let data = player.persistentData
-  let tier = data.getInt('icraft_detected_tier') || 1
-  let dim = player.level.dimension.toString()
-
-  // Update tier based on current dimension (only goes up)
-  if (dim.includes('the_end') || dim.includes('otherside') || dim.includes('the_abyss')) {
-    tier = Math.max(tier, 4)
-  } else if (dim.includes('the_nether') || dim.includes('undergarden')) {
-    tier = Math.max(tier, 3)
-  } else if (dim.includes('twilight') || dim.includes('aether') || dim.includes('blue_skies') ||
-             dim.includes('everbright') || dim.includes('everdawn')) {
-    tier = Math.max(tier, 2)
   }
 
-  data.putInt('icraft_detected_tier', tier)
-  return tier
-}
+  var isRace = function (player, raceId) {
+    try { return global.icraft.origin.is(player, 'race', raceId) } catch (e) { return false }
+  }
 
+  // Coordinates alone are not proximity: two players (or a player and a mob)
+  // can share x/y/z in different dimensions.
+  var sameDimension = function (a, b) {
+    try { return String(a.level.dimension) === String(b.level.dimension) } catch (e) { return false }
+  }
 
-// =============================================================================
-// SAMURAI — Focus (Movement Shield + Vorpal Scaling)
-// =============================================================================
-// Movement builds a shield tracked in persistentData (NOT absorption).
-// Shield displayed as absorption but managed carefully to avoid conflicts.
-// If shield HP depletes, 10s cooldown before it can rebuild.
-// Vorpal I-V via Strength effect, scaling with progression tier.
-// =============================================================================
+  // One line per failing block per script load -- console.warn lines are held
+  // in memory until /reload, so a tick path must never log repeatedly.
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    console.warn('[class_passives] ' + where + ' threw (logged once): ' + e)
+  }
 
-global.tick_classPassives = (event) => {
-  let tick = event.server.tickCount
-
-  // Refresh class cache every 30 seconds
-  if (tick % 600 === 0) refreshClassCache(event.server)
-
-  // ── SAMURAI FOCUS: every 1 second ──
-  if (tick % 20 === 0) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'samurai') return
-
-      let name = player.username
-      let data = player.persistentData
-
-      // -- Vorpal: Strength based on progression tier --
-      let tier = getPlayerTier(player)
-      // T1 = Strength I (amp 0), T2 = II, T3 = III, T4 = IV, beyond = V
-      let vorpalAmp = Math.min(tier - 1, 4)
-      player.server.runCommandSilent(
-        `effect give ${name} minecraft:strength 3 ${vorpalAmp} true`
-      )
-
-      // -- Movement Shield --
-      let lastX = data.getDouble('icraft_focus_x') || player.x
-      let lastZ = data.getDouble('icraft_focus_z') || player.z
-      let dx = player.x - lastX
-      let dz = player.z - lastZ
-      let dist = Math.sqrt(dx * dx + dz * dz)
-
-      data.putDouble('icraft_focus_x', player.x)
-      data.putDouble('icraft_focus_z', player.z)
-
-      // Check cooldown
-      let cdExpires = data.getLong('icraft_focus_cd') || 0
-      if (tick < cdExpires) return  // Shield on cooldown, don't touch anything
-
-      let shieldHP = data.getDouble('icraft_focus_shield') || 0
-      let maxShield = player.maxHealth * 0.10
-
-      // Detect shield damage: if current absorption < our shield, damage was taken
-      let currentAbsorption = player.absorptionAmount || 0
-      if (shieldHP > 0 && currentAbsorption < shieldHP) {
-        // Shield took damage (or golden apple wore off — but if our shield was
-        // lower than a golden apple's absorption, this won't trigger)
-        shieldHP = Math.max(0, currentAbsorption)
-        data.putDouble('icraft_focus_shield', shieldHP)
-
-        if (shieldHP <= 0) {
-          // Shield broke — start 10s cooldown
-          data.putLong('icraft_focus_cd', tick + 200)
-          data.putDouble('icraft_focus_shield', 0)
-          player.tell('\u00a7e[Focus]\u00a77 Shield shattered. Recharging...')
-          return
-        }
-      }
-
-      // Build shield from movement
-      if (dist > 0.1 && shieldHP < maxShield) {
-        let gain = Math.min(dist * 0.5, maxShield - shieldHP)
-        shieldHP = Math.min(shieldHP + gain, maxShield)
-        data.putDouble('icraft_focus_shield', shieldHP)
-
-        // Only set absorption if our shield > current absorption
-        // This prevents overwriting golden apple / totem absorption
-        if (shieldHP > currentAbsorption) {
-          player.absorptionAmount = shieldHP
-        }
-      }
+  // Per-player fault isolation: one broken player/block must not take the
+  // rest of the tick down (or reach TickMaster, which logs every time).
+  var eachPlayer = function (server, where, fn) {
+    server.players.forEach(function (player) {
+      try { fn(player) } catch (e) { warnOnce(where, e) }
     })
   }
 
-  // ── WANDERER — Seasoned Traveler: every 5 seconds ──
-  if (tick % 100 === 5) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'wanderer') return
+  // ── Helper: progression tier from visited dimensions (only goes up) ──
+  // (was the top-level `getPlayerTier`; renamed + scoped, see header)
+  var detectDimensionTier = function (player) {
+    var data = player.persistentData
+    var tier = data.getInt('icraft_detected_tier') || 1
+    var dim = String(player.level.dimension)
 
-      let name = player.username
-      let data = player.persistentData
-      let currentDim = player.level.dimension.toString()
+    if (dim.includes('the_end') || dim.includes('otherside') || dim.includes('the_abyss')) {
+      tier = Math.max(tier, 4)
+    } else if (dim.includes('the_nether') || dim.includes('undergarden')) {
+      tier = Math.max(tier, 3)
+    } else if (dim.includes('twilight') || dim.includes('aether') || dim.includes('blue_skies') ||
+               dim.includes('everbright') || dim.includes('everdawn')) {
+      tier = Math.max(tier, 2)
+    }
 
-      // Track visited dimensions
-      let visited = data.getString('icraft_wanderer_dims') || ''
-      let dimList = visited ? visited.split(',') : []
-
-      if (!dimList.includes(currentDim)) {
-        dimList.push(currentDim)
-        data.putString('icraft_wanderer_dims', dimList.join(','))
-        let count = dimList.length
-        player.tell('\u00a7a[Seasoned Traveler]\u00a77 New dimension discovered! (' + count + ' total)')
-        player.tell('\u00a77  +' + (count * 5) + '% XP, +' + (count * 2.5).toFixed(1) + '% speed')
-      }
-
-      // Apply bonuses based on dimension count
-      let count = dimList.length
-      if (count > 0) {
-        let speedBonus = count * 0.025
-        let xpBonus = count * 0.05
-
-        // modifyAttribute, not /attribute (1.21 syntax never parsed on 1.20.1)
-        player.modifyAttribute('minecraft:generic.movement_speed',
-          'icraft_wanderer_travel_speed', speedBonus, 'multiply_base')
-
-        try {
-          player.modifyAttribute('puffish_attributes:experience',
-            'icraft_wanderer_travel_xp', xpBonus, 'multiply_base')
-        } catch (e) {}
-      }
-    })
+    data.putInt('icraft_detected_tier', tier)
+    return tier
   }
 
-  // ── PALADIN — Healing Aura: every 5 seconds ──
-  if (tick % 100 === 10) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'paladin') return
 
-      // Self-heal: 1 HP/5s when above 50% HP
-      if (player.health > player.maxHealth * 0.5 && player.health < player.maxHealth) {
-        player.heal(1)
-      }
+  // ===========================================================================
+  // SAMURAI — Focus (Movement Shield + Vorpal Scaling)
+  // ===========================================================================
+  // Movement builds a shield tracked in persistentData (NOT absorption).
+  // Shield displayed as absorption but managed carefully to avoid conflicts.
+  // If shield HP depletes, 10s cooldown before it can rebuild.
+  // Vorpal I-V via Strength effect, scaling with progression tier.
+  // ===========================================================================
 
-      // Heal nearby allies: 0.5 HP/5s within 8 blocks
-      let px = player.x, py = player.y, pz = player.z
-      event.server.players.forEach(ally => {
-        if (ally.username === player.username) return
-        let dx = ally.x - px, dy = ally.y - py, dz = ally.z - pz
-        let distSq = dx * dx + dy * dy + dz * dz
-        if (distSq <= 64 && ally.health < ally.maxHealth) {
-          ally.heal(0.5)
+  global.tick_classPassives = function (event) {
+    var server = event.server
+    var tick = server.tickCount
+
+    // ── SAMURAI FOCUS: every 1 second ──
+    if (tick % 20 === 0) {
+      eachPlayer(server, 'samurai focus', function (player) {
+        if (getClass(player) !== 'samurai') return
+
+        var data = player.persistentData
+        var now = player.level.gameTime
+
+        // -- Vorpal: Strength based on progression tier --
+        // T1 = Strength I (amp 0), T2 = II, T3 = III, T4 = IV, beyond = V
+        var tier = detectDimensionTier(player)
+        var vorpalAmp = Math.min(tier - 1, 4)
+        // 3 s, no particles (same instance `effect give ... 3 <amp> true` built)
+        player.potionEffects.add('minecraft:strength', 60, vorpalAmp, false, false)
+
+        // -- Movement Shield --
+        // contains(), not `getDouble() || player.x`: a sample taken at exactly
+        // x = 0 / z = 0 is a real position, not "no sample yet".
+        var lastX = data.contains('icraft_focus_x') ? data.getDouble('icraft_focus_x') : player.x
+        var lastZ = data.contains('icraft_focus_z') ? data.getDouble('icraft_focus_z') : player.z
+        var dx = player.x - lastX
+        var dz = player.z - lastZ
+        var dist = Math.sqrt(dx * dx + dz * dz)
+
+        data.putDouble('icraft_focus_x', player.x)
+        data.putDouble('icraft_focus_z', player.z)
+
+        // Check cooldown (game-time stamp; a stale small value reads as ready)
+        var cdExpires = data.getLong('icraft_focus_cd') || 0
+        if (now < cdExpires) return  // Shield on cooldown, don't touch anything
+
+        var shieldHP = data.getDouble('icraft_focus_shield') || 0
+        var maxShield = player.maxHealth * 0.10
+
+        // Detect shield damage: if current absorption < our shield, damage was taken
+        var currentAbsorption = player.absorptionAmount || 0
+        if (shieldHP > 0 && currentAbsorption < shieldHP) {
+          // Shield took damage (or golden apple wore off — but if our shield was
+          // lower than a golden apple's absorption, this won't trigger)
+          shieldHP = Math.max(0, currentAbsorption)
+          data.putDouble('icraft_focus_shield', shieldHP)
+
+          if (shieldHP <= 0) {
+            // Shield broke — start 10s cooldown
+            data.putLong('icraft_focus_cd', now + 200)
+            data.putDouble('icraft_focus_shield', 0)
+            player.tell('\u00a7e[Focus]\u00a77 Shield shattered. Recharging...')
+            return
+          }
+        }
+
+        // Build shield from movement
+        if (dist > 0.1 && shieldHP < maxShield) {
+          var gain = Math.min(dist * 0.5, maxShield - shieldHP)
+          shieldHP = Math.min(shieldHP + gain, maxShield)
+          data.putDouble('icraft_focus_shield', shieldHP)
+
+          // Only set absorption if our shield > current absorption
+          // This prevents overwriting golden apple / totem absorption
+          if (shieldHP > currentAbsorption) {
+            player.absorptionAmount = shieldHP
+          }
         }
       })
-    })
-  }
+    }
 
-  // ── ARCHMAGE — Mana Attunement: tier-scaling magic bonus, every 10 seconds ──
-  // Amplifies magic equipment: T1 +0%, T2 +5%, T3 +10%, T4 +15%
-  // Weak early (glass cannon with no payoff), devastating late (glass nuke)
-  if (tick % 200 === 25) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'archmage') return
+    // ── WANDERER — Seasoned Traveler: every 5 seconds ──
+    if (tick % 100 === 5) {
+      eachPlayer(server, 'wanderer seasoned traveler', function (player) {
+        if (getClass(player) !== 'wanderer') return
 
-      let name = player.username
-      let tier = getPlayerTier(player)
+        var data = player.persistentData
+        var currentDim = String(player.level.dimension)
 
-      // T1=0%, T2=5%, T3=10%, T4=15%
-      let magicBonus = Math.max(0, (tier - 1) * 0.05)
+        // Track visited dimensions. String(): getString hands back a Java
+        // String, whose .split() is the Java one (a fixed Java array — .push
+        // throws on it).
+        var visited = String(data.getString('icraft_wanderer_dims') || '')
+        var dimList = visited !== '' ? visited.split(',') : []
 
-      // (legacy attack_damage cleanup removed -- the old /attribute command
-      // never parsed on 1.20.1, so no such modifier ever existed)
+        if (dimList.indexOf(currentDim) < 0) {
+          dimList.push(currentDim)
+          data.putString('icraft_wanderer_dims', dimList.join(','))
+          var found = dimList.length
+          player.tell('\u00a7a[Seasoned Traveler]\u00a77 New dimension discovered! (' + found + ' total)')
+          player.tell('\u00a77  +' + (found * 5) + '% XP, +' + (found * 2.5).toFixed(1) + '% speed')
+        }
 
-      if (magicBonus > 0) {
-        // Apply to all magic damage channels
-        try {
-          player.modifyAttribute('puffish_attributes:magic_damage',
-            'icraft_archmage_attunement', magicBonus, 'multiply_base')
-          player.modifyAttribute('irons_spellbooks:spell_power',
-            'icraft_archmage_attunement', magicBonus, 'multiply_base')
-          player.modifyAttribute('irons_spellbooks:spell_power',
-            'icraft_archmage_attunement', magicBonus, 'multiply_base')
-        } catch (e) {}
-      }
-    })
-  }
+        // Apply bonuses based on dimension count
+        var count = dimList.length
+        if (count > 0) {
+          var speedBonus = count * 0.025
+          var xpBonus = count * 0.05
 
-  // ── ORC — Bloodlust: hunger-scaling damage bonus, every 5 seconds ──
-  // Up to +20% bonus damage as food level drops (20 = full, 0 = starving)
-  // Linear scale: 0% at full, +20% at 0 food
-  if (tick % 100 === 30) {
-    event.server.players.forEach(player => {
-      try {
-        let isOrc = player.server.runCommandSilent(
-          `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:orc"}}}}]`
-        )
-        if (isOrc <= 0) return
+          // modifyAttribute, not /attribute (1.21 syntax never parsed on 1.20.1)
+          player.modifyAttribute('minecraft:generic.movement_speed',
+            'icraft_wanderer_travel_speed', speedBonus, 'multiply_base')
 
-        let name = player.username
-        let foodLevel = player.foodLevel  // 0-20
+          try {
+            player.modifyAttribute('puffish_attributes:experience',
+              'icraft_wanderer_travel_xp', xpBonus, 'multiply_base')
+          } catch (e) {}
+        }
+      })
+    }
+
+    // ── PALADIN — Healing Aura: every 5 seconds ──
+    if (tick % 100 === 10) {
+      eachPlayer(server, 'paladin healing aura', function (player) {
+        if (getClass(player) !== 'paladin') return
+
+        // Self-heal: 1 HP/5s when above 50% HP
+        if (player.health > player.maxHealth * 0.5 && player.health < player.maxHealth) {
+          player.heal(1)
+        }
+
+        // Heal nearby allies: 0.5 HP/5s within 8 blocks
+        var px = player.x, py = player.y, pz = player.z
+        server.players.forEach(function (ally) {
+          if (ally === player) return
+          var dx = ally.x - px, dy = ally.y - py, dz = ally.z - pz
+          var distSq = dx * dx + dy * dy + dz * dz
+          if (distSq > 64 || !sameDimension(ally, player)) return
+          // (heal() is a no-op on a dead entity, so no alive check is needed)
+          if (ally.health < ally.maxHealth) {
+            ally.heal(0.5)
+          }
+        })
+      })
+    }
+
+    // ── ARCHMAGE — Mana Attunement: tier-scaling magic bonus, every 10 seconds ──
+    // Amplifies magic equipment: T1 +0%, T2 +5%, T3 +10%, T4 +15%
+    // Weak early (glass cannon with no payoff), devastating late (glass nuke)
+    if (tick % 200 === 25) {
+      eachPlayer(server, 'archmage mana attunement', function (player) {
+        if (getClass(player) !== 'archmage') return
+
+        var tier = detectDimensionTier(player)
+
+        // T1=0%, T2=5%, T3=10%, T4=15%
+        var magicBonus = Math.max(0, (tier - 1) * 0.05)
+
+        // (legacy attack_damage cleanup removed -- the old /attribute command
+        // never parsed on 1.20.1, so no such modifier ever existed)
+
+        if (magicBonus > 0) {
+          // Apply to all magic damage channels
+          try {
+            player.modifyAttribute('puffish_attributes:magic_damage',
+              'icraft_archmage_attunement', magicBonus, 'multiply_base')
+            player.modifyAttribute('irons_spellbooks:spell_power',
+              'icraft_archmage_attunement', magicBonus, 'multiply_base')
+          } catch (e) {}
+        }
+      })
+    }
+
+    // ── ORC — Bloodlust: hunger-scaling damage bonus, every 5 seconds ──
+    // Up to +20% bonus damage as food level drops (20 = full, 0 = starving)
+    // Linear scale: 0% at full, +20% at 0 food
+    if (tick % 100 === 30) {
+      eachPlayer(server, 'orc bloodlust', function (player) {
+        if (!isRace(player, 'icraft:orc')) return
+
+        var foodLevel = player.foodLevel  // 0-20
         // Scale: 0% at food 20, +20% at food 0
-        let hungerBonus = Math.max(0, (20 - foodLevel) / 20) * 0.20
+        var hungerBonus = Math.max(0, (20 - foodLevel) / 20) * 0.20
 
         player.modifyAttribute('minecraft:generic.attack_damage',
           'icraft_orc_bloodlust', hungerBonus > 0.01 ? hungerBonus : 0, 'multiply_base')
-      } catch (e) {}
-    })
+      })
+    }
+
+    // ── VANGUARD — Guardian's Presence: every 3 seconds ──
+    // Weakness only affects melee attack damage, so applying it to passive
+    // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
+    // living entities within range.
+    if (tick % 60 === 15) {
+      eachPlayer(server, 'vanguard guardian', function (player) {
+        if (getClass(player) !== 'vanguard') return
+
+        player.server.runCommandSilent(
+          'execute at ' + player.username + ' run effect give @e[distance=..5,type=!player,type=!item,type=!experience_orb,type=!arrow,type=!area_effect_cloud] minecraft:weakness 5 0 true'
+        )
+      })
+    }
   }
+  global.registerServerTick('tick_classPassives', 5, 0)
 
-  // ── VANGUARD — Guardian's Presence: every 3 seconds ──
-  // Weakness only affects melee attack damage, so applying it to passive
-  // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
-  // living entities within range.
-  if (tick % 60 === 15) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'vanguard') return
+  // ===========================================================================
+  // VOID SUMMONER — Soul Tether (lifesteal + bonus XP from nearby deaths)
+  // ===========================================================================
+  // Fires for every living death in the world, so the body is cache lookups
+  // only until a Void Summoner is actually in range.
 
-      player.server.runCommandSilent(
-        `execute at ${player.username} run effect give @e[distance=..5,type=!player,type=!item,type=!experience_orb,type=!arrow,type=!area_effect_cloud] minecraft:weakness 5 0 true`
-      )
-    })
-  }
-}
-global.registerServerTick('tick_classPassives', 5, 0)
+  EntityEvents.death(function (event) {
+    try {
+      var entity = event.entity
+      if (!entity || entity.player) return
 
-// =============================================================================
-// VOID SUMMONER — Soul Tether (lifesteal + bonus XP from nearby deaths)
-// =============================================================================
+      var server = entity.server
+      if (!server) return
 
-EntityEvents.death(event => {
-  let entity = event.entity
-  if (entity.player) return
+      server.players.forEach(function (player) {
+        if (getClass(player) !== 'void_summoner') return
 
-  let server = entity.server
-  if (!server) return
+        var dx = player.x - entity.x
+        var dy = player.y - entity.y
+        var dz = player.z - entity.z
+        var distSq = dx * dx + dy * dy + dz * dz
 
-  server.players.forEach(player => {
-    if (getClass(player) !== 'void_summoner') return
+        if (distSq > 256) return  // 16 blocks
+        if (!sameDimension(player, entity)) return
 
-    let dx = player.x - entity.x
-    let dy = player.y - entity.y
-    let dz = player.z - entity.z
-    let distSq = dx * dx + dy * dy + dz * dz
+        // 10% bonus XP
+        var bonus = Math.max(1, Math.floor(3 * 0.10))
+        player.giveExperiencePoints(bonus)
 
-    if (distSq <= 256) {  // 16 blocks
-      // 10% bonus XP
-      let bonus = Math.max(1, Math.floor(3 * 0.10))
-      player.giveExperiencePoints(bonus)
-
-      // 5% lifesteal from mob max HP, capped at 2 HP
-      try {
-        let mobMaxHP = entity.maxHealth || 20
-        let heal = Math.min(mobMaxHP * 0.05, 2)
+        // 5% lifesteal from mob max HP, capped at 2 HP
+        var mobMaxHP = entity.maxHealth || 20
+        var heal = Math.min(mobMaxHP * 0.05, 2)
         if (heal > 0 && player.health < player.maxHealth) {
           player.heal(heal)
         }
-      } catch (e) {}
+      })
+    } catch (e) {
+      warnOnce('void summoner soul tether', e)
     }
   })
-})
 
-// Refresh cache on login
-PlayerEvents.loggedIn(event => {
-  delete classCache[event.player.username]
-})
-
-console.log('[IridescentCraft] Class passives loaded')
-console.log('  - Samurai: Focus (movement shield + Vorpal by tier)')
-console.log('  - Wanderer: Seasoned Traveler (dimension stacking)')
-console.log('  - Paladin: Healing Aura (AoE regen)')
-console.log('  - Vanguard: Guardian\'s Presence (Weakness to nearby entities)')
-console.log('  - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)')
+  console.log('[IridescentCraft] Class passives loaded')
+  console.log('  - Samurai: Focus (movement shield + Vorpal by tier)')
+  console.log('  - Wanderer: Seasoned Traveler (dimension stacking)')
+  console.log('  - Paladin: Healing Aura (AoE regen)')
+  console.log('  - Archmage: Mana Attunement (magic bonus by tier)')
+  console.log('  - Orc: Bloodlust (hunger-scaling damage)')
+  console.log('  - Vanguard: Guardian\'s Presence (Weakness to nearby entities)')
+  console.log('  - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)')
+})()

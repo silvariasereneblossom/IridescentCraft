@@ -6,9 +6,21 @@
 //
 // Uses getAttr() from attribute_sync.js (loaded alphabetically before this).
 // Uses getAttrCore() from attribute_sync.js for attributecore values.
-// Uses getClass() from origins/class_passives.js.
+// Class comes from global.icraft.origin (0_lib_origins.js).
+//
+// 2026-10: neither command ever printed anything. (1) The chat handler called
+// event.cancel() BEFORE showStats()/showClass(); cancel() works by throwing, so
+// the message was swallowed and the handler ended there. (2) getClass() in
+// class_passives.js was built on an `execute if entity <name>[nbt=...]` probe
+// that never parsed, so the class was always "None".
+// PlayerEvents.chat runs on a Worker thread: the resolver only answers from
+// its cache there (it never serialises the player off-thread).
+//
+// Whole file is one IIFE (body left at column 0 to keep the diff readable);
+// nothing here is used by another script.
 // =============================================================================
 
+;(function () {
 // Attribute display names for the stats readout
 var STAT_DISPLAY = {
   magic: [
@@ -41,7 +53,10 @@ var CLASS_NAMES = {
   'vanguard':       'Vanguard',
   'wanderer':       'Wanderer',
   'artificer':      'Artificer',
-  'void_summoner':  'Void Summoner'
+  'void_summoner':  'Void Summoner',
+  'elemental':      'Elemental',
+  'blessed':        'Blessed',
+  'corrupted':      'Corrupted'
 }
 
 // Class bonus descriptions
@@ -55,7 +70,20 @@ var CLASS_BONUS_DESC = {
   'vanguard':       ['+8% Dodge Chance'],
   'wanderer':       ['+15% XP Multiplier'],
   'artificer':      ['+10% Cooldown Reduction'],
-  'void_summoner':  ['+8% Lifesteal', '+10% Spell Power']
+  'void_summoner':  ['+8% Lifesteal', '+10% Spell Power'],
+  'elemental':      ['+40% Spell Power', '+7% Crit Chance', '+0.2x Crit Damage', '+10% Mana Regen'],
+  'blessed':        ['+40% Spell Power', '+18% Magic Resistance', '+30% Healing Received', '+20% Mana Regen'],
+  'corrupted':      ['+40% Spell Power', '+10% Magic Resistance', '+15% Lifesteal', '+8% Cooldown Reduction', '+10% Armor Penetration']
+}
+
+// Bare class name ('archmage') from the shared resolver, or null.
+function statsClassOf(player) {
+  try {
+    var classId = global.icraft.origin.get(player, 'class')
+    return classId ? classId.substring(classId.indexOf(':') + 1) : null
+  } catch (e) {
+    return null
+  }
 }
 
 function formatStatLine(player, statDef) {
@@ -90,10 +118,7 @@ function formatStatLine(player, statDef) {
 }
 
 function showStats(player) {
-  var playerClass = null
-  try {
-    playerClass = getClass(player)
-  } catch (e) {}
+  var playerClass = statsClassOf(player)
 
   var className = playerClass ? (CLASS_NAMES[playerClass] || playerClass) : 'None'
 
@@ -128,10 +153,7 @@ function showStats(player) {
 }
 
 function showClass(player) {
-  var playerClass = null
-  try {
-    playerClass = getClass(player)
-  } catch (e) {}
+  var playerClass = statsClassOf(player)
 
   if (!playerClass) {
     player.tell(Text.of('\u00a76\u2550\u2550\u2550 Class Info \u2550\u2550\u2550'))
@@ -161,22 +183,31 @@ function showClass(player) {
 }
 
 // --- Chat Command Listener ---
+// Do the work first, cancel last and OUTSIDE the try: event.cancel() exits the
+// handler by throwing, and a try/catch around it swallows the cancel.
+var statsChatWarned = false
 PlayerEvents.chat(function(event) {
-  var msg = event.message.trim()
+  var handled = false
+  try {
+    var msg = String(event.message || '').trim()
 
-  if (msg === '!stats' || msg === '!attributes') {
-    event.cancel()
-    showStats(event.player)
-    return
+    if (msg === '!stats' || msg === '!attributes') {
+      handled = true
+      showStats(event.player)
+    } else if (msg === '!class') {
+      handled = true
+      showClass(event.player)
+    }
+  } catch (e) {
+    if (!statsChatWarned) {
+      statsChatWarned = true
+      console.warn('[attribute_commands] chat command threw (logged once): ' + e)
+    }
   }
-
-  if (msg === '!class') {
-    event.cancel()
-    showClass(event.player)
-    return
-  }
+  if (handled) event.cancel()
 })
 
 console.log('[IridescentCraft] Attribute chat commands loaded (v0.4)')
 console.log('  !stats / !attributes -- Show attribute values')
 console.log('  !class -- Show class info and bonuses')
+})()

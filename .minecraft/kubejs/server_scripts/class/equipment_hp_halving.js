@@ -27,24 +27,11 @@ const GLASS_CANNON_CLASSES = new Set([
   'icraft:elemental'
 ])
 
-// Read the player's Origins class id ("icraft:archmage" etc, or '') via
-// direct player.nbt read. The execute-if NBT-matcher does NOT recurse the
-// origins compound correctly in this Forge build (see codex_delivery.js
-// Route 0 forensics) -- the direct path is the proven-working one.
-// Prefixed eqhh_ because KubeJS server scripts share one global scope.
-function eqhh_getOriginClass(player) {
-  try {
-    var nbt = player.nbt
-    if (!nbt) return ''
-    var fc = nbt.ForgeCaps
-    if (!fc) return ''
-    var oo = fc.get ? fc.get('origins:origins') : null
-    if (!oo) return ''
-    var origins = oo.get ? oo.get('Origins') : null
-    if (!origins || !origins.getString) return ''
-    return String(origins.getString('origins:class') || '')
-  } catch (e) { return '' }
-}
+// The player's Origins class id ("icraft:archmage" etc.) comes from the shared
+// cached resolver, global.icraft.origin (0_lib_origins.js). This file used to
+// carry its own copy of the player.nbt read, which serialised the whole player
+// (inventory, recipe book, every capability) for each glass-cannon player on
+// every pass.
 
 global.tick_equipmentHpHalving = (event) => {
   event.server.players.forEach(player => {
@@ -84,7 +71,9 @@ global.tick_equipmentHpHalving = (event) => {
 
     // Class base HP after the Origins class power's HP modifier:
     // Ranger/Archmage -20% -> 16, Void Summoner -10% -> 18.
-    let baseHP = (eqhh_getOriginClass(player) === 'icraft:void_summoner') ? 18 : 16
+    let classId = null
+    try { classId = global.icraft.origin.get(player, 'class') } catch (e) {}
+    let baseHP = (classId === 'icraft:void_summoner') ? 18 : 16
 
     // Penalty-free read now that our modifier is zeroed (the attribute
     // recomputes lazily on read).

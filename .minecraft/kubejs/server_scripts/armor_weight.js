@@ -26,8 +26,27 @@
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try
 // blocks; closures fail with function declarations).
+//
+// 2026-10 -- three silent failures fixed here. Until this change the script
+// applied NOTHING but zero-valued modifiers:
+//   * classifyArmor() called `armorClass.isInstance(item)` on a Java.loadClass
+//     wrapper. The wrapper only exposes the class's STATIC members, so that
+//     call threw for every stack, the catch-all swallowed it, and every piece
+//     (tagged or reforged) classified as 'medium'. Now `item instanceof`.
+//   * `stack.getInternal()` does not exist in this KubeJS (ItemStack is the
+//     raw stack; production log: "Cannot find function getInternal in object
+//     1 scroll"), so the reforged-armor weight and the Protection flat-armor
+//     level read both threw. Now the stack is passed as-is.
+//   * isFaefolk() ran `execute if entity <name>[nbt=...]`, which never parsed.
+//     Now global.icraft.origin (0_lib_origins.js), a cached lookup -- this
+//     also removes one failed command parse per inventory change per player.
+//
+// Whole file is one IIFE (body left at column 0 to keep the diff readable):
+// its top-level ARMOR_SLOTS / EnchantmentHelper_mc were shared-scope names that
+// death_penalty.js / magic_crit_hook.js also declare.
 // =============================================================================
 
+;(function () {
 const TAG_ROBE   = 'icraft:armor_robe'
 const TAG_LIGHT  = 'icraft:armor_light'
 const TAG_HEAVY  = 'icraft:armor_heavy'
@@ -69,9 +88,8 @@ const COEF_PROTECTION_ARMOR = 0.75
 // Wearing full robes bypasses the penalty entirely (caster identity payoff).
 const FAEFOLK_TOUGHNESS_PENALTY = -0.5
 
-// var (not const) so death_penalty.js can also declare the same name in
-// the shared KubeJS Rhino scope without throwing "redeclaration of const
-// ARMOR_SLOTS". See the matching note in death_penalty.js.
+// Local to this file's IIFE now (it used to be a shared-scope `var` that
+// death_penalty.js also declared).
 var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
 // Reforged armor (iridescent_reforging:reforged_*) doesn't have a static
@@ -130,8 +148,11 @@ function classifyArmor(stack) {
     var armorClass = _getItemModularArmorClass()
     if (armorClass !== null) {
       var item = stack.getItem()
-      if (armorClass.isInstance(item)) {
-        var weight = item.getArmorWeight(stack.getInternal())
+      // `instanceof`, not armorClass.isInstance(): a Java.loadClass wrapper has
+      // no isInstance member (it throws). The stack is already the raw
+      // ItemStack -- there is no getInternal().
+      if (item instanceof armorClass) {
+        var weight = item.getArmorWeight(stack)
         if (weight !== null) {
           var name = weight.name()
           if (name === 'ROBE')   return 'robe'
@@ -163,7 +184,7 @@ function aggregateArmor(player) {
     // Sum minecraft:protection levels across worn pieces (reworked -> flat armor).
     if (protEnch && EnchantmentHelper_mc && item && !item.isEmpty()) {
       try {
-        var lvl = EnchantmentHelper_mc.getItemEnchantmentLevel(protEnch, item.getInternal())
+        var lvl = EnchantmentHelper_mc.getItemEnchantmentLevel(protEnch, item)
         if (lvl > 0) protLevels += lvl
       } catch (e) {}
     }
@@ -179,16 +200,14 @@ function aggregateArmor(player) {
   }
 }
 
-// Check whether a player has the Faefolk race assigned via Origins NBT.
-// Mirrors the same NBT-probe pattern used in battlemage_arcane_cleave.js.
+// Check whether a player has the Faefolk race (shared cached resolver).
 function isFaefolk(player) {
   try {
-    var result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:faefolk"}}}}]`
-    )
-    return result > 0
+    return global.icraft.origin.is(player, 'race', 'icraft:faefolk')
   } catch (e) { return false }
 }
+
+var tickWarned = false
 
 function applyArmorMods(player, agg) {
   player.modifyAttribute('irons_spellbooks:mana_regen',
@@ -238,7 +257,11 @@ global.tick_armorWeight = function(event) {
       player.modifyAttribute('minecraft:generic.armor_toughness',
         UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
     } catch (e) {
-      console.warn('[armor_weight] tick failed for ' + player.username + ': ' + e)
+      // once per script load: a tick path must not log on every pass
+      if (!tickWarned) {
+        tickWarned = true
+        console.warn('[armor_weight] tick failed for ' + player.username + ' (logged once): ' + e)
+      }
     }
   })
 }
@@ -267,3 +290,4 @@ console.log('  light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (p
 console.log('  medium no effect (default for untagged armor)')
 console.log('  heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)')
 console.log('  + minecraft:protection -> +0.75 flat armor/level (addition; vanilla % EPF zeroed by ProtectionFlatArmorMixin)')
+})()
