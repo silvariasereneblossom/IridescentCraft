@@ -23,13 +23,22 @@
 // Spell selection mirrors RandomizeSpellFunction:
 //   - Weighted by SpellRarity: COMMON=40, UNCOMMON=30, RARE=15, EPIC=8, LEGENDARY=4
 //   - T1 quality range (0.0 - 0.2): spellLevel = 1 + round(q * (maxLevel - 1))
-//   - Skips disabled spells and the sentinel "none" spell
+//   - Skips disabled spells, the sentinel "none" spell, and spells flagged
+//     allowLooting=false (ISS's own loot filter, SpellFilter, applies the same
+//     three checks -- so a blank scroll can never roll a learn-only spell)
+//
+// 2026-10-10: this whole script was DEAD from the day it shipped: it declared a
+// top-level `var scanPlayer`, and strip_infinity_ham.js (loads later, same
+// shared Rhino scope) declared its own top-level `var scanPlayer`, so both
+// handlers below called the ham scanner. Everything is now local to an IIFE.
 //
 // Pairs with:
 //   datapack_sources/icraft_loot_overrides/data/**/*.json -- 489 scroll
 //   entries with randomize_spell function (forward fix for new loot rolls)
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 const SpellRegistry_rbs = Java.loadClass('io.redspace.ironsspellbooks.api.registry.SpellRegistry')
 const ISpellContainer_rbs = Java.loadClass('io.redspace.ironsspellbooks.api.spells.ISpellContainer')
 
@@ -48,6 +57,7 @@ var pickRandomSpell = function() {
     while (iter.hasNext()) {
       var s = iter.next()
       if (s.equals(noneSpell)) continue
+      if (!s.allowLooting()) continue
       var rarityIdx = s.getMinRarity()
       var w = (rarityIdx >= 0 && rarityIdx < RARITY_WEIGHTS.length) ? RARITY_WEIGHTS[rarityIdx] : 1
       totalWeight += w
@@ -121,3 +131,4 @@ PlayerEvents.inventoryChanged(event => {
 PlayerEvents.loggedIn(event => {
   scanPlayer(event.player)
 })
+})()

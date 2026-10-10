@@ -462,61 +462,80 @@ let isNearBlock = function(player, ids, radius) {
   return false
 }
 
+// 2026-10-10: this tick NEVER ran before today -- it was registered with
+// offset 21 on a 5-tick interval, and `tick % 5` is never 21. Changes made
+// while reviving it:
+//   * offset 21 -> 3 (valid; shares no slot with the other 5-tick functions).
+//   * Death is not a purchase: the respawned player entity starts at
+//     totalExperience 0, which the old code would have read as "spent
+//     everything" and refunded 25% of it for free whenever the respawn point
+//     is near an enchanting table / anvil. A freshly created player entity
+//     (login, respawn) and a dead one now only re-sync the baseline.
+//   * Aptitudes are looked up only when XP actually dropped, and the baseline
+//     is written only when it changed (was an NBT write per player per run).
+// Known limits of polling player.xp (= vanilla totalExperience): spends paid in
+// LEVELS (vanilla anvil / vanilla enchanting table: giveExperienceLevels) do not
+// move totalExperience at all, and after a death it restarts from 0 while the
+// LinearXP capability keeps the real XP -- a spend larger than the regrown
+// counter is clamped at 0 and goes unseen. Apotheosis enchanting (charged in
+// points) is the case that is reliably detected.
 global.tick_aptitudeXpRefund = function(event) {
-  let server = event.server
+  var server = event.server
   server.players.forEach(function(player) {
     try {
       if (player.creative || player.spectator) return
-      let apt = getCachedAptitudes(server, player)
-      let curr = player.xp
-      let hasLast = player.persistentData.contains('icraft_apt_xp_last')
-      if (!hasLast) {
-        player.persistentData.putInt('icraft_apt_xp_last', curr)
+      var pd = player.persistentData
+      var curr = player.xp
+      if (!pd.contains('icraft_apt_xp_last')) {
+        pd.putInt('icraft_apt_xp_last', curr)
         return
       }
-      let last = player.persistentData.getInt('icraft_apt_xp_last')
-      let diff = curr - last
-      if (diff < 0) {
-        let spent = -diff
-        let refundMult = 0
-        // Arcane Efficiency (INT >= 10): refund 25% near enchant table
-        if (apt.int >= 10) {
-          if (isNearBlock(player, ['minecraft:enchanting_table'], 4)) {
-            refundMult += 0.25
-          }
-        }
-        // Materials Science (INT >= 20): refund 25% near anvil
-        if (apt.int >= 20) {
-          let anvils = [
-            'minecraft:anvil',
-            'minecraft:chipped_anvil',
-            'minecraft:damaged_anvil'
-          ]
-          if (isNearBlock(player, anvils, 4)) {
-            refundMult += 0.25
-          }
-        }
-        if (refundMult > 0) {
-          let refund = Math.floor(spent * refundMult)
-          if (refund > 0) {
-            try { player.addXP(refund) } catch (e) {}
-            try {
-              let labelTag = (refundMult >= 0.50)
-                ? '§b[Arcane Efficiency + Materials Science]'
-                : (apt.int >= 20 && isNearBlock(player, ['minecraft:anvil', 'minecraft:chipped_anvil', 'minecraft:damaged_anvil'], 4))
-                  ? '§b[Materials Science]'
-                  : '§b[Arcane Efficiency]'
-              player.tell(labelTag + ' §fXP refunded: ' + refund)
-            } catch (e) {}
-          }
+      var last = pd.getInt('icraft_apt_xp_last')
+      if (curr === last) return
+      // New entity (login / respawn: age restarts at 0) or dead: re-sync only.
+      if (curr > last || player.age < 40 || !player.isAlive()) {
+        pd.putInt('icraft_apt_xp_last', curr)
+        return
+      }
+      var spent = last - curr
+      var apt = getCachedAptitudes(server, player)
+      var refundMult = 0
+      var nearAnvil = false
+      // Arcane Efficiency (INT >= 10): refund 25% near enchant table
+      if (apt.int >= 10) {
+        if (isNearBlock(player, ['minecraft:enchanting_table'], 4)) {
+          refundMult += 0.25
         }
       }
-      // Update cache after any work (refund or no)
-      player.persistentData.putInt('icraft_apt_xp_last', player.xp)
+      // Materials Science (INT >= 20): refund 25% near anvil
+      if (apt.int >= 20) {
+        nearAnvil = isNearBlock(player, [
+          'minecraft:anvil',
+          'minecraft:chipped_anvil',
+          'minecraft:damaged_anvil'
+        ], 4)
+        if (nearAnvil) refundMult += 0.25
+      }
+      if (refundMult > 0) {
+        var refund = Math.floor(spent * refundMult)
+        if (refund > 0) {
+          try { player.addXP(refund) } catch (e2) {}
+          try {
+            var labelTag = (refundMult >= 0.50)
+              ? '§b[Arcane Efficiency + Materials Science]'
+              : nearAnvil
+                ? '§b[Materials Science]'
+                : '§b[Arcane Efficiency]'
+            player.tell(labelTag + ' §fXP refunded: ' + refund)
+          } catch (e3) {}
+        }
+      }
+      // Update the baseline after any work (re-read: addXP moved it)
+      pd.putInt('icraft_apt_xp_last', player.xp)
     } catch (e) {}
   })
 }
-global.registerServerTick('tick_aptitudeXpRefund', 5, 21)
+global.registerServerTick('tick_aptitudeXpRefund', 5, 3)
 
 
 // ═══════════════════════════════════════════════════════════════════════════════

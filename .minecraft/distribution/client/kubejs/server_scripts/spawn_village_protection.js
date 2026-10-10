@@ -21,6 +21,11 @@
 // Uses the KubeJS .monster semantics (MobCategory not friendly) - the same
 // gate as mob_equipment.js - so MONSTER-category projectile-mobs are covered.
 // RADIUS is the one tuning knob.
+//
+// This is the ONLY hostile handling around spawn since 2026-10-10:
+// spawn_protection.js (r=32 square, entirely inside this circle) used to carry
+// a duplicate spawn-cancel plus a `kill` sweep that never matched anything;
+// both were removed there. That file now only protects blocks.
 // =============================================================================
 
 ;(function () {
@@ -48,25 +53,25 @@
   })
 
   // Sweep walk-ins. discard() = silent deletion (no drops/XP/death event).
-  ServerEvents.tick(function (event) {
-    var server = event.server
-    if (server.tickCount % SWEEP_TICKS !== 0) return
-    var level = server.overworld()
+  // Dispatched by the master tick (0_tick_master.js) every SWEEP_TICKS instead
+  // of a private ServerEvents.tick handler that ran its own modulo every tick.
+  // Same cadence as before (server tick % 60 === 0). Errors are left to the
+  // master's rate-limited reporter (this used to console.error on every
+  // failed sweep, i.e. every 3 s, and those lines are kept in memory).
+  // The entity query never loads chunks (unloaded sections are just absent).
+  global.registerServerTick('tick_spawnVillageSweep', SWEEP_TICKS, 0, function (event) {
+    var level = event.server.overworld()
     var sp = level.getSharedSpawnPos()
-    try {
-      var entities = level.getEntitiesWithin(AABB.of(
-        sp.x - RADIUS, -64, sp.z - RADIUS,
-        sp.x + RADIUS, 320, sp.z + RADIUS))
-      entities.forEach(function (e) {
-        if (!e || !e.living || !e.monster) return
-        var dx = e.x - sp.x, dz = e.z - sp.z
-        if ((dx * dx + dz * dz) <= RADIUS_SQ) {
-          e.discard()
-        }
-      })
-    } catch (err) {
-      console.error('[spawn-protection] sweep error: ' + err)
-    }
+    var entities = level.getEntitiesWithin(AABB.of(
+      sp.x - RADIUS, -64, sp.z - RADIUS,
+      sp.x + RADIUS, 320, sp.z + RADIUS))
+    entities.forEach(function (e) {
+      if (!e || !e.living || !e.monster) return
+      var dx = e.x - sp.x, dz = e.z - sp.z
+      if ((dx * dx + dz * dz) <= RADIUS_SQ) {
+        e.discard()
+      }
+    })
   })
 
   console.log('[spawn-protection] hostile deletion zone active: r=' + RADIUS + ' around world spawn')

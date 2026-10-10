@@ -5,6 +5,14 @@
 // Tracks player activity. If a player is AFK for 20 minutes (24000 ticks),
 // applies Saturation I to freeze hunger drain. Removed when they act again.
 // Also applies Saturation I while sleeping to prevent drain during sleep.
+//
+// 2026-10-10: `ic_lastActivity` is persisted on the player, so it is stamped
+// with WORLD GAME TIME now. It used to be server.tickCount, which restarts at 0
+// on every boot: a stamp from an earlier (longer) boot was "in the future", so
+// the AFK check went negative and could not trigger until the new boot had run
+// longer than the old stamp. The stamp is also reset the first time a freshly
+// created player entity is seen (login / respawn), so time spent OFFLINE — and
+// any stale pre-migration tickCount stamp — is never counted as AFK time.
 // =============================================================================
 
 // AFK threshold in ticks (20 minutes = 24000 ticks)
@@ -18,6 +26,8 @@ global.tick_hungerManagement = (event) => {
 
   server.players.forEach(player => {
     let data = player.persistentData
+    // Persisted clock: world game time (survives restarts; same in every dimension).
+    let now = player.level.gameTime
 
     // --- Track current position and state ---
     let currentX = Math.floor(player.x * 10)
@@ -31,9 +41,12 @@ global.tick_hungerManagement = (event) => {
     let lastHealth = data.getInt('ic_lastHealth')
     let lastActivity = data.getLong('ic_lastActivity')
 
-    // Initialize on first tick
-    if (lastActivity == 0) {
-      lastActivity = server.tickCount
+    // First check for this player entity (never stamped, just logged in or
+    // respawned — player.age restarts at 0 — or a stamp ahead of the clock):
+    // start the AFK window now instead of trusting an old stamp.
+    if (lastActivity == 0 || lastActivity > now || player.age < CHECK_INTERVAL) {
+      lastActivity = now
+      data.putLong('ic_lastActivity', now)
     }
 
     // --- Detect activity: position changed, health changed (damage/combat) ---
@@ -42,7 +55,7 @@ global.tick_hungerManagement = (event) => {
 
     if (hasMoved || tookDamage) {
       // Player is active — update last activity time
-      data.putLong('ic_lastActivity', server.tickCount)
+      data.putLong('ic_lastActivity', now)
 
       // Remove AFK saturation if it was applied
       if (data.getBoolean('ic_afkSaturation')) {
@@ -62,7 +75,7 @@ global.tick_hungerManagement = (event) => {
         player.potionEffects.add('minecraft:saturation', CHECK_INTERVAL + 40, 0, false, false)
       }
       // Reset AFK timer while sleeping — sleeping is not AFK
-      data.putLong('ic_lastActivity', server.tickCount)
+      data.putLong('ic_lastActivity', now)
     } else {
       // Player woke up — remove sleep saturation flag
       if (data.getBoolean('ic_sleepSaturation')) {
@@ -73,7 +86,7 @@ global.tick_hungerManagement = (event) => {
     }
 
     // --- Check AFK threshold ---
-    let ticksSinceActivity = server.tickCount - data.getLong('ic_lastActivity')
+    let ticksSinceActivity = now - data.getLong('ic_lastActivity')
     if (ticksSinceActivity >= AFK_THRESHOLD && !data.getBoolean('ic_afkSaturation')) {
       // Player has been AFK for 20+ minutes — apply Saturation I
       player.potionEffects.add('minecraft:saturation', CHECK_INTERVAL + 40, 0, false, false)

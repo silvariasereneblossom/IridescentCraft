@@ -299,7 +299,6 @@ function broadcastBonfire(server, player, meta) {
 // drift can't tight-loop the log.
 
 let bonfire_warn_throttle = 0
-let bonfire_block_phase = 0   // advances once per tick; gates the lattice to 1-in-N
 global.tick_bossBonfire = function (event) {
     // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked tick.
     var player = event.player
@@ -308,7 +307,12 @@ global.tick_bossBonfire = function (event) {
     // only every 3rd tick (~3 s). A player can't enter AND leave a boss arena
     // inside 3 s, so detection stays responsive while the per-tick cost in
     // Nether/Undergarden (until those arenas are lit) stays low.
-    var runBlockScan = (bonfire_block_phase++ % 3) === 0
+    // The 1-in-3 phase comes from the player's OWN age: this tick runs once per
+    // 20 ticks of player.age, so floor(age / 20) is that player's own run
+    // counter. (It used to be one `bonfire_block_phase++` shared by every
+    // player; with 3 players online — or any multiple of 3 — the lattice
+    // always landed on the same player and the others never got a shrine scan.)
+    var runBlockScan = (Math.floor(player.age / 20) % 3) === 0
     try {
         var hit = detectArenaAtPlayer(player, runBlockScan)
         if (!hit) return

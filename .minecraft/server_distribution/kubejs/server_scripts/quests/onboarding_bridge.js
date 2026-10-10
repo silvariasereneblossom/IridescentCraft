@@ -106,19 +106,21 @@ function fireDummyIfNew(player, dummyValue) {
 // or similar -- verify the exact NBT path during integration testing.
 // We poll once per second per online player and fire dummies when thresholds
 // are crossed. Cheap (only inspects already-loaded persistent NBT).
+//
+// 2026-10-10: both polls used to share ONE counter (`jlf_tick_counter++ % 20`)
+// that every player's tick advanced. With N players online it moves N per
+// server tick, so the `% 20 === 0` hit always lands on the same player(s) and
+// the others were never polled (with 2 online: only the second one). They now
+// run from a single master-dispatched player tick gated on the player's OWN
+// age (player.age % 20 === 17), so every online player is polled once a second.
 
-let jlf_tick_counter = 0
-PlayerEvents.tick(event => {
-    jlf_tick_counter++
-    if (jlf_tick_counter % 20 !== 0) return  // 20 ticks = 1 second
-    var player = event.player
-    if (player.level.isClientSide()) return
-
+function onboardingCheckJlfLevel(player) {
     // JLF level is exposed via the JustLevelingFork data tag. Read defensively:
     // if the field is missing (player hasn't installed JLF yet, edge case)
     // we silently skip rather than crash.
-    // RHINO-SAFETY: var (not const/let) for closure-locals in this per-tick handler.
-    let jlfLevel = 0
+    // RHINO-SAFETY: declared at function level -- a `var` declared inside the
+    // try block below would be scoped to that block in this Rhino build.
+    var jlfLevel = 0
     try {
         var pd = player.persistentData
         if (pd.contains("PlayerPersisted")) {
@@ -137,7 +139,7 @@ PlayerEvents.tick(event => {
             fireDummyIfNew(player, dummyValue)
         }
     }
-})
+}
 
 // ---- Capstone auto-trigger ------------------------------------------------
 //
@@ -151,15 +153,11 @@ PlayerEvents.tick(event => {
 // (individual_progress = true on every onboarding quest, so each player has
 // their own progress NBT).
 
-PlayerEvents.tick(event => {
-    if (jlf_tick_counter % 20 !== 0) return  // ride the JLF tick rhythm
-    var player = event.player
-    if (player.level.isClientSide()) return
-
+function onboardingCheckCapstone(player) {
     var fired = getFiredSet(player)
     if (fired.has(CAPSTONE_DUMMY)) return  // already done
 
-    let allComplete = true
+    var allComplete = true
     try {
         var pd = player.persistentData
         if (!pd.contains("heracles")) return
@@ -182,6 +180,15 @@ PlayerEvents.tick(event => {
     if (allComplete) {
         fireDummyIfNew(player, CAPSTONE_DUMMY)
     }
+}
+
+// One master-dispatched player tick (0_tick_master.js): 1 Hz per player, on the
+// player's own age. Offset 17 keeps it off the compass HUD (7) / bonfire (13).
+global.registerPlayerTick('tick_onboardingBridge', 20, 17, function (event) {
+    var player = event.player
+    if (!player) return
+    onboardingCheckJlfLevel(player)
+    onboardingCheckCapstone(player)
 })
 
 console.log("[iridescent/onboarding_bridge] loaded; bridging " +

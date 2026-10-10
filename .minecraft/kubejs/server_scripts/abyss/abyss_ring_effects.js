@@ -74,8 +74,14 @@ global.tick_abyssRingEffects = (event) => {
       if (player.crouching) {
         let lastUse = 0
         try { lastUse = player.persistentData.getLong('icraft_shadow_cd') } catch(e) {}
-        let now = event.server.tickCount
-        if (now - lastUse >= 600) { // 600 ticks = 30 seconds
+        // World game time, NOT server.tickCount: the stamp is persisted on the
+        // player, and tickCount restarts at 0 on every boot — a stamp from a
+        // long session then sat "in the future" and locked the ring out until
+        // the new boot had run longer than the old one. (elapsed < 0 covers a
+        // stamp that is somehow ahead of the clock: treat it as expired.)
+        let now = player.level.gameTime
+        let elapsed = now - lastUse
+        if (elapsed >= 600 || elapsed < 0) { // 600 ticks = 30 seconds
           player.potionEffects.add('minecraft:invisibility', 100, 0, false, true)
           player.persistentData.putLong('icraft_shadow_cd', now)
         }

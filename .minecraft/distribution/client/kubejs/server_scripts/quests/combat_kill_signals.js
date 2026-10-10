@@ -17,6 +17,13 @@
 // contains) return ""/false on a missing key — they don't throw — so no nested
 // try/catch is needed (multiple catch(e) in one function was the redeclaration
 // trigger). RELOAD-SAFE: one EntityEvents.death listener; no item reg / Forge bus.
+//
+// 2026-10-10 (cost): the killer's two persistent flags are checked FIRST. Each
+// signal is one-shot per character (the flag is what heracles_reconcile.js
+// reads), so once a flag is set its `heracles dummy` command is not re-run on
+// every later boss/champion kill, and once BOTH are set the handler returns
+// before serialising the victim: `victim.nbt` writes the entity's ENTIRE NBT,
+// which used to happen on every single player kill.
 // =============================================================================
 
 EntityEvents.death(event => {
@@ -24,25 +31,34 @@ EntityEvents.death(event => {
     var src = event.source
     if (!src || !src.player) return
     var killer = src.player
+    var pd = killer.persistentData
+    // Already-recorded signals need no work (see the 2026-10-10 header note).
+    var needBoss = !pd.getBoolean('icraft_killed_apoth_boss')
+    var needChampion = !pd.getBoolean('icraft_killed_champion')
+    if (!needBoss && !needChampion) return
+
     var victim = event.entity
     if (!victim) return
     var nbt = victim.nbt
     if (!nbt) return
-    var pd = killer.persistentData
 
     // --- Apotheosis boss (apoth.boss == "true") ---
-    if (nbt.getString('apoth.boss') === 'true') {
+    if (needBoss && nbt.getString('apoth.boss') === 'true') {
       pd.putBoolean('icraft_killed_apoth_boss', true)
       killer.server.runCommandSilent('heracles dummy killed_apoth_boss ' + killer.username)
     }
 
     // --- Apotheosis champion (affixed elite; carries a `champion` tag) ---
-    if (nbt.contains('champion')) {
+    if (needChampion && nbt.contains('champion')) {
       pd.putBoolean('icraft_killed_champion', true)
       killer.server.runCommandSilent('heracles dummy killed_champion ' + killer.username)
     }
   } catch (err) {
-    console.warn('[combat_kill_signals] death handler threw: ' + err)
+    // This fires on every kill: log a failure once, not once per kill.
+    if (!global._combat_kill_signals_warned) {
+      global._combat_kill_signals_warned = true
+      console.warn('[combat_kill_signals] death handler threw (logging once): ' + err)
+    }
   }
 })
 

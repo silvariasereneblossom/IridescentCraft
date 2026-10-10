@@ -5,82 +5,134 @@
 // Each file registers its tick function via:
 //   global.registerServerTick('name', intervalTicks, offsetTicks)
 //   global.registerPlayerTick('name', intervalTicks, offsetTicks)
+// (the function is looked up as global['name']), or — without creating a
+// global — by passing the function itself as an optional 4th argument:
+//   global.registerServerTick('name', intervalTicks, offsetTicks, function (event) { ... })
 //
-// The master handler calls (tick + offset) % interval === 0 for each,
-// wrapped in try-catch for fault isolation.
+// The master handler runs an entry when  tick % interval === offset  (server
+// tickCount for server ticks, player.age for player ticks), wrapped in
+// try-catch for fault isolation.
+//
+// offset MUST be < interval: `tick % interval` only yields 0..interval-1, so an
+// entry registered with offset >= interval can never fire. Such a registration
+// is kept exactly as given (it stays dead — nothing is silently "fixed") but a
+// warning naming the function is logged once at registration.
+//
+// Failure logging is rate-limited: console.warn/error lines are retained in
+// memory until /reload, and a function that throws on every run used to log
+// every time, forever (7,612 lines in three days, May 2026). Now: the first
+// failure of each function is logged in full, then at most one summary line
+// (with a count) per function every ~1200 ticks.
 // =============================================================================
 
 // ─── Registration Arrays ───
 global.serverTickFunctions = []
 global.playerTickFunctions = []
 
-/**
- * Register a server tick function.
- * @param {string} name - Descriptive name for logging
- * @param {number} interval - How often to run (in ticks). 0 = every tick.
- * @param {number} offset - Offset within the interval cycle
- */
-global.registerServerTick = function(name, interval, offset) {
-  if (!global[name]) {
-    console.warn('[TickMaster] WARNING: global.' + name + ' is not defined at registration time')
-    return
-  }
-  global.serverTickFunctions.push({
-    name: name,
-    interval: interval || 1,
-    offset: offset || 0,
-    fn: global[name]
-  })
-}
+// (IIFE — every server script shares one Rhino scope; keep the helpers local.)
+;(function () {
+  // Ticks between repeat-failure summaries for one function (~60 s).
+  var ERROR_SUMMARY_TICKS = 1200
 
-/**
- * Register a player tick function.
- * @param {string} name - Descriptive name for logging
- * @param {number} interval - How often to run (in ticks, based on player.age)
- * @param {number} offset - Offset within the interval cycle
- */
-global.registerPlayerTick = function(name, interval, offset) {
-  if (!global[name]) {
-    console.warn('[TickMaster] WARNING: global.' + name + ' is not defined at registration time')
-    return
-  }
-  global.playerTickFunctions.push({
-    name: name,
-    interval: interval || 1,
-    offset: offset || 0,
-    fn: global[name]
-  })
-}
+  // Server tick counter mirror, so player-tick failures share the same clock
+  // for the summary cadence (player.age differs per player).
+  var currentTick = 0
 
-// ─── Master ServerEvents.tick ───
-ServerEvents.tick(event => {
-  let tick = event.server.tickCount
-  let fns = global.serverTickFunctions
-  for (let i = 0; i < fns.length; i++) {
-    let entry = fns[i]
-    if (tick % entry.interval !== entry.offset) continue
-    try {
-      entry.fn(event)
-    } catch (e) {
-      console.error('[TickMaster] Error in server tick function "' + entry.name + '": ' + e)
+  var register = function (list, kind, name, interval, offset, fn) {
+    var f = (typeof fn === 'function') ? fn : global[name]
+    if (!f) {
+      console.warn('[TickMaster] WARNING: global.' + name + ' is not defined at registration time')
+      return
     }
-  }
-})
-
-// ─── Master PlayerEvents.tick ───
-PlayerEvents.tick(event => {
-  let age = event.player.age
-  let fns = global.playerTickFunctions
-  for (let i = 0; i < fns.length; i++) {
-    let entry = fns[i]
-    if (age % entry.interval !== entry.offset) continue
-    try {
-      entry.fn(event)
-    } catch (e) {
-      console.error('[TickMaster] Error in player tick function "' + entry.name + '": ' + e)
+    var iv = interval || 1
+    var off = offset || 0
+    if (off >= iv || off < 0) {
+      console.warn('[TickMaster] WARNING: ' + kind + ' tick function "' + name +
+        '" is registered with offset ' + off + ' and interval ' + iv +
+        ' -- (tick % interval) is never ' + off + ', so it will NEVER run. ' +
+        'Fix the registration (offset must be 0..' + (iv - 1) + ').')
     }
+    list.push({
+      name: name,
+      interval: iv,
+      offset: off,
+      fn: f,
+      errors: 0,          // total failures since load
+      pending: 0,         // failures since the last log line
+      lastLogTick: 0
+    })
   }
-})
+
+  /**
+   * Register a server tick function.
+   * @param {string} name - Descriptive name for logging (and the global to call when fn is omitted)
+   * @param {number} interval - How often to run (in ticks). 0 = every tick.
+   * @param {number} offset - Offset within the interval cycle (0..interval-1)
+   * @param {function} [fn] - Optional: the function itself (no global[name] needed)
+   */
+  global.registerServerTick = function (name, interval, offset, fn) {
+    register(global.serverTickFunctions, 'server', name, interval, offset, fn)
+  }
+
+  /**
+   * Register a player tick function.
+   * @param {string} name - Descriptive name for logging (and the global to call when fn is omitted)
+   * @param {number} interval - How often to run (in ticks, based on player.age)
+   * @param {number} offset - Offset within the interval cycle (0..interval-1)
+   * @param {function} [fn] - Optional: the function itself (no global[name] needed)
+   */
+  global.registerPlayerTick = function (name, interval, offset, fn) {
+    register(global.playerTickFunctions, 'player', name, interval, offset, fn)
+  }
+
+  // First failure: full line. Afterwards: one summary per ERROR_SUMMARY_TICKS.
+  var reportError = function (kind, entry, e) {
+    entry.errors++
+    if (entry.errors === 1) {
+      entry.lastLogTick = currentTick
+      console.error('[TickMaster] Error in ' + kind + ' tick function "' + entry.name + '": ' + e +
+        ' (first failure; repeats are summarised at most once per ' + ERROR_SUMMARY_TICKS + ' ticks)')
+      return
+    }
+    entry.pending++
+    if (currentTick - entry.lastLogTick < ERROR_SUMMARY_TICKS) return
+    console.error('[TickMaster] ' + kind + ' tick function "' + entry.name + '" is still failing: ' +
+      entry.pending + ' more failure(s) since the last report (' + entry.errors + ' total); latest: ' + e)
+    entry.pending = 0
+    entry.lastLogTick = currentTick
+  }
+
+  // ─── Master ServerEvents.tick ───
+  ServerEvents.tick(event => {
+    var tick = event.server.tickCount
+    currentTick = tick
+    var fns = global.serverTickFunctions
+    for (var i = 0; i < fns.length; i++) {
+      var entry = fns[i]
+      if (tick % entry.interval !== entry.offset) continue
+      try {
+        entry.fn(event)
+      } catch (e) {
+        reportError('server', entry, e)
+      }
+    }
+  })
+
+  // ─── Master PlayerEvents.tick ───
+  PlayerEvents.tick(event => {
+    var age = event.player.age
+    var fns = global.playerTickFunctions
+    for (var i = 0; i < fns.length; i++) {
+      var entry = fns[i]
+      if (age % entry.interval !== entry.offset) continue
+      try {
+        entry.fn(event)
+      } catch (e) {
+        reportError('player', entry, e)
+      }
+    }
+  })
+})()
 
 // Log summary after all scripts load
 ServerEvents.loaded(event => {

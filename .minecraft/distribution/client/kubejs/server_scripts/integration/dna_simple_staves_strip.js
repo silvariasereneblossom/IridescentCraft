@@ -12,6 +12,25 @@
 // (separate, see Paxi datapack source).
 //
 // Memory: feedback_kubejs_event_scope.md (PlayerEvents.* server-only).
+//
+// 2026-10-10 -- the strip never took effect before this date, for three
+// independent reasons (all jar-verified against KubeJS 2001.6.5-build.16):
+//   1. It listened on ItemEvents.firstRightClicked. Server-side that event is
+//      only posted when the CLIENT sends KubeJS's FirstClickMessage, and the
+//      client only sends it when its own JVM has a firstRightClicked listener
+//      -- on a dedicated server (server script only) it essentially never fires.
+//   2. firstRightClicked is declared WITHOUT hasResult(): it cannot be
+//      cancelled (FirstClickMessage discards the result; a cancel that reaches
+//      the dispatcher is reported as "Event returned result when it's not
+//      cancellable").
+//   3. event.cancel() works by THROWING EventExit, and it was called inside the
+//      try, so the catch swallowed it (and logged a warning per click).
+// Now: ItemEvents.rightClicked (fires server-side from Forge's
+// PlayerInteractEvent.RightClickItem BEFORE Item.use(), and is cancellable --
+// same event death_penalty.js already cancels), decide inside the try, cancel
+// after it. All 20 items fire from use()/releaseUsing(), so cancelling the use
+// is sufficient. The server never starts the "using" state, so no projectile
+// can be released; the client may still play its local draw animation.
 // =============================================================================
 
 const STRIPPED_ITEMS = new Set([
@@ -53,17 +72,23 @@ const STRIPPED_ITEMS = new Set([
 // attacks via vanilla sword swing (it's a SwordItem subclass per Dan's
 // Magic source); only the right-click is cancelled.
 
-ItemEvents.firstRightClicked(event => {
+ItemEvents.rightClicked(event => {
+  // RHINO: declared OUTSIDE the try -- this Rhino build scopes a `var` declared
+  // inside a block to that block, so it would be undefined after the catch.
+  var shouldCancel = false
   try {
     var stack = event.item
-    if (!stack || stack.isEmpty()) return
-    var id = String(stack.id || '')
-    if (STRIPPED_ITEMS.has(id)) {
-      event.cancel()
+    if (stack && !stack.isEmpty() && STRIPPED_ITEMS.has(String(stack.id || ''))) {
+      shouldCancel = true
     }
   } catch (e) {
-    console.warn('[dna_simple_staves_strip] right-click cancel failed: ' + e)
+    if (!global._dna_staves_strip_warned) {
+      global._dna_staves_strip_warned = true
+      console.warn('[dna_simple_staves_strip] right-click check failed (logging once): ' + e)
+    }
   }
+  // cancel() unwinds by throwing KubeJS' EventExit -- it must stay outside the try.
+  if (shouldCancel) event.cancel()
 })
 
 console.log('[dna_simple_staves_strip] loaded — ' + STRIPPED_ITEMS.size +

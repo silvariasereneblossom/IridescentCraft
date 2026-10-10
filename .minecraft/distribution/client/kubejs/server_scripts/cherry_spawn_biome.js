@@ -27,6 +27,28 @@
 // guessing. One-shot per world (persistent NBT flag) so subsequent
 // server restarts don't re-search.
 //
+// 2026-10-10 -- the one-shot never worked; the search ran on EVERY boot:
+//   * `pdata` was declared with `var` INSIDE the guard's try block. This Rhino
+//     build scopes a `var` declared inside a block to that block, so every
+//     later `if (pdata)` threw a ReferenceError that the surrounding
+//     `catch (_)` swallowed: no flag and no village coordinates were ever
+//     stored (119 consecutive "SUCCESS" boots on the May world; the
+//     first-join teleport below never fired once). `pdata` is now declared at
+//     the function's top level.
+//   * A search that ends with nothing (no cherry biome / every set-spawn path
+//     failed) stored nothing either. It now records
+//     `icraft_cherry_spawn_exhausted`, which the guard honours.
+//   * On the live world the search can't even start: an earlier SUCCESS stored
+//     the spawn at Y=-64 (the heightmap of the then-unloaded village chunk),
+//     and findClosestBiome3d samples no Y level at all when the origin Y is
+//     outside (minBuildHeight, maxBuildHeight]. That case is now recognised,
+//     logged once, and marked exhausted -- the world spawn is left alone.
+//   * Because flags now persist, the first-join teleport becomes reachable for
+//     the first time. It is only armed when the spawn is set on a NEW world
+//     (so no existing character is ever pulled back to the village), and it
+//     resolves the landing height at login instead of trusting the stored Y
+//     (which is -64 whenever the village chunk was unloaded at search time).
+//
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks).
 // =============================================================================
 
@@ -47,6 +69,11 @@ try {
   var XZ_STEP = 64
   var VILLAGE_SEARCH_CHUNKS = 100  // ~1600 blocks from the cherry biome center
   var MAX_ATTEMPTS = 15  // v2.4: bumped from 5 -- river_valley villages are rare
+  // The first-join teleport is only armed when the spawn is chosen this early
+  // in a world's life (ServerEvents.loaded of a brand-new world is game time 0).
+  var NEW_WORLD_MAX_GAMETIME = 12000  // 10 minutes
+  var FLAG_SET = 'icraft_cherry_spawn_set'
+  var FLAG_EXHAUSTED = 'icraft_cherry_spawn_exhausted'
 
   var VILLAGE_TAG = TagKey_cs.create(
     Registries_cs.STRUCTURE,
@@ -98,16 +125,40 @@ try {
         return
       }
 
-      // One-shot guard
-      try {
-        var pdata = ow.getPersistentData ? ow.getPersistentData() : null
-        if (pdata && pdata.contains('icraft_cherry_spawn_set')) {
-          console.log('[icraft_spawn] already set this world; skipping')
-          return
-        }
-      } catch (_) {}
+      // One-shot guard. RHINO: `pdata` MUST be declared here, not inside the
+      // try -- a `var` declared in a block is invisible outside it in this
+      // Rhino build (see the 2026-10-10 header note).
+      var pdata = null
+      try { pdata = ow.getPersistentData ? ow.getPersistentData() : null } catch (_) {}
+      if (pdata && pdata.contains(FLAG_SET)) {
+        console.log('[icraft_spawn] already set this world; skipping')
+        return
+      }
+      if (pdata && pdata.contains(FLAG_EXHAUSTED)) {
+        console.log('[icraft_spawn] search already ran to a dead end on this world; skipping')
+        return
+      }
+      // Records "the search has run and has nothing more to try" so it never
+      // repeats on later boots. No-op if persistent data is unavailable.
+      var markExhausted = function() {
+        try { if (pdata) pdata.putBoolean(FLAG_EXHAUSTED, true) } catch (_) {}
+      }
 
       var origin = ow.getSharedSpawnPos()
+
+      // findClosestBiome3d walks Y outward from the origin's Y within
+      // (minBuildHeight, maxBuildHeight]; an origin Y outside that range yields
+      // no samples and the call returns null immediately. Say so instead of
+      // reporting "no cherry biome within 12000 blocks".
+      var originY = origin.getY()
+      if (originY <= ow.getMinBuildHeight() || originY > ow.getMaxBuildHeight()) {
+        console.log('[icraft_spawn] world spawn Y=' + originY + ' (' + origin.getX() + ',' + originY + ',' +
+                    origin.getZ() + ') is outside the vertical range the biome search samples, so it cannot run. ' +
+                    'World spawn left unchanged; not searching again on this world.')
+        markExhausted()
+        return
+      }
+
       console.log('[icraft_spawn] starting search; origin=' +
                   origin.getX() + ',' + origin.getY() + ',' + origin.getZ())
 
@@ -179,21 +230,31 @@ try {
             //    player's actual first-join landing depends on player.dat
             //    state, server spawn-radius scatter, etc.)
             if (applySpawnPos(ow, safePos)) {
+              // Arm the first-join teleport only on a brand-new world: on a world
+              // that already has characters, storing the coordinates would yank
+              // every one of them (none carries the first-spawn marker) back to
+              // the village on their next login.
+              var armTeleport = false
+              try { armTeleport = ow.gameTime <= NEW_WORLD_MAX_GAMETIME } catch (_) {}
               try {
                 if (pdata) {
-                  pdata.putBoolean('icraft_cherry_spawn_set', true)
-                  pdata.putInt('icraft_cherry_village_x', safePos.getX())
-                  pdata.putInt('icraft_cherry_village_y', safePos.getY())
-                  pdata.putInt('icraft_cherry_village_z', safePos.getZ())
+                  pdata.putBoolean(FLAG_SET, true)
+                  if (armTeleport) {
+                    pdata.putInt('icraft_cherry_village_x', safePos.getX())
+                    pdata.putInt('icraft_cherry_village_y', safePos.getY())
+                    pdata.putInt('icraft_cherry_village_z', safePos.getZ())
+                  }
                 }
               } catch (_) {}
               console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
                           safePos.getX() + ',' + safePos.getY() + ',' + safePos.getZ() +
-                          ' (player first-join teleport armed)')
+                          (armTeleport ? ' (player first-join teleport armed)'
+                                       : ' (existing world: first-join teleport NOT armed)'))
               return
             } else {
               console.warn('[icraft_spawn] all setSpawnPos paths failed for village at ' +
                            safePos.getX() + ',' + safePos.getY() + ',' + safePos.getZ())
+              markExhausted()
               return
             }
           }
@@ -216,16 +277,19 @@ try {
                       bestCherryFallback.getZ() + ' (no village found in any cherry biome ' +
                       'within ' + MAX_ATTEMPTS + ' attempts)')
           try {
-            if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
+            if (pdata) pdata.putBoolean(FLAG_SET, true)
           } catch (_) {}
         } else {
           console.warn('[icraft_spawn] all setSpawnPos paths failed for cherry fallback at ' +
                        bestCherryFallback.getX() + ',' + bestCherryFallback.getY() + ',' +
                        bestCherryFallback.getZ())
+          markExhausted()
         }
       } else {
         console.warn('[icraft_spawn] FAILED: no cherry biome found at all; ' +
-                     'spawn unchanged. Increase BIOME_SEARCH_RADIUS or generate more terrain.')
+                     'spawn unchanged. Increase BIOME_SEARCH_RADIUS or generate more terrain. ' +
+                     '(Recorded; the search will not repeat on this world.)')
+        markExhausted()
       }
     } catch (e) {
       console.warn('[icraft_spawn] setSpawnToCherryRiverValley threw: ' + e)
@@ -252,8 +316,30 @@ try {
       if (!pdata || !pdata.contains('icraft_cherry_village_x')) return
 
       var x = pdata.getInt('icraft_cherry_village_x')
-      var y = pdata.getInt('icraft_cherry_village_y')
       var z = pdata.getInt('icraft_cherry_village_z')
+
+      // This login IS the first join, whatever happens below: mark it now so a
+      // later login can never be mistaken for one.
+      player.persistentData.putBoolean('icraft_cherry_first_spawned', true)
+
+      // Landing height is resolved NOW from the heightmap, never from the stored
+      // Y: that value is the heightmap of a chunk that was usually still unloaded
+      // when the spawn was chosen (= the world's min build height, e.g. -64), and
+      // teleporting there would bury the player in bedrock. If the village column
+      // still isn't loaded, skip the teleport: vanilla has already put a new
+      // player at the world spawn, which is this same village.
+      var minY = ow.getMinBuildHeight()
+      var y = minY
+      try {
+        y = ow.getHeight(
+          Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types').MOTION_BLOCKING_NO_LEAVES,
+          x, z)
+      } catch (eh) {}
+      if (!(y > minY)) {
+        console.log('[icraft_spawn] first-join teleport skipped for ' + player.username +
+                    ': village column ' + x + ',' + z + ' has no surface loaded yet (player stays at world spawn)')
+        return
+      }
 
       // Center the player on the block + +1 to land on top of the surface
       try { player.teleportTo(x + 0.5, y + 1, z + 0.5) } catch (e) {
@@ -264,7 +350,6 @@ try {
           return
         }
       }
-      player.persistentData.putBoolean('icraft_cherry_first_spawned', true)
       console.log('[icraft_spawn] first-join teleport: ' + player.username +
                   ' -> ' + x + ',' + y + ',' + z + ' (cherry village)')
     } catch (e) {
