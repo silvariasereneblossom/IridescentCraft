@@ -1,7 +1,7 @@
 package com.iridescentcraft.reforging.recipe;
 
 import com.iridescentcraft.reforging.IridescentReforging;
-import com.iridescentcraft.reforging.item.ItemModularArmorClient;
+import com.iridescentcraft.reforging.item.SkinNbt;
 import com.iridescentcraft.reforging.registry.ModItems;
 import com.iridescentcraft.reforging.registry.ModRecipeTypes;
 import net.minecraft.core.NonNullList;
@@ -88,7 +88,7 @@ public class ConversionRecipe implements Recipe<CraftingContainer> {
 
         ItemStack out = new ItemStack(resultItem());
         CompoundTag tag = out.getOrCreateTag();
-        tag.putString(ItemModularArmorClient.SKIN_NBT_KEY, skinId);
+        tag.putString(SkinNbt.SKIN_NBT_KEY, skinId);
 
         // Copy Apotheosis affix data so affixes survive the conversion.
         // AFFIX_CACHED_OBJECT is intentionally not copied — Apotheosis
@@ -136,7 +136,7 @@ public class ConversionRecipe implements Recipe<CraftingContainer> {
         // Display result for JEI / inventory preview. The actual crafted
         // result is built per-craft by assemble() with NBT copied through.
         ItemStack preview = new ItemStack(resultItem());
-        preview.getOrCreateTag().putString(ItemModularArmorClient.SKIN_NBT_KEY, skinId);
+        preview.getOrCreateTag().putString(SkinNbt.SKIN_NBT_KEY, skinId);
         return preview;
     }
 

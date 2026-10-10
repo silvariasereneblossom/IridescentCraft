@@ -352,7 +352,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
 
         // (2) Skin base attributes — read tag.Skin, look up the
         // SkinDefinition, and merge in its baseAttributes.
-        String skinId = ItemModularArmorClient.readSkinId(stack);
+        String skinId = SkinNbt.readSkinId(stack);
         if (skinId != null) {
             Optional<SkinDefinition> skin = SkinRegistry.get().getDefinition(skinId);
             skin.ifPresent(def -> combined.putAll(def.baseAttributes()));
@@ -613,7 +613,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     @Override
     public net.minecraft.network.chat.Component getName(ItemStack stack) {
         try {
-            String skinId = ItemModularArmorClient.readSkinId(stack);
+            String skinId = SkinNbt.readSkinId(stack);
             if (skinId != null) {
                 SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
                 if (def != null && def.displayName() != null && !def.displayName().isEmpty()) {
@@ -694,7 +694,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
                                   net.minecraft.world.entity.Entity entity,
                                   net.minecraft.world.entity.EquipmentSlot slot,
                                   String type) {
-        String skinId = ItemModularArmorClient.readSkinId(stack);
+        String skinId = SkinNbt.readSkinId(stack);
         if (skinId == null) {
             // No skin (vanilla-armor-replacement path) — derive from the
             // equipped major-slot module's material.

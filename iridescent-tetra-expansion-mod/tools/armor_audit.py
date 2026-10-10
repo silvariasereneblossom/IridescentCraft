@@ -23,10 +23,13 @@ import re
 import sys
 from collections import defaultdict
 
-MOD_ROOT = "/root/IridescentCraft/iridescent-tetra-expansion-mod/src/main/resources"
-JAVA_ITEMS = "/root/IridescentCraft/iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/registry/ModItems.java"
-DATAPACK_MAT_DIR = "/root/IridescentCraft/.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials"
-TETRA_JAR = "/root/IridescentCraft/iridescent-modular-spells-mod/libs/tetra-1.20.1-6.12.0.jar"
+# Roots derive from this file's location (tools/ inside the mod), never a hardcoded
+# checkout path: a wrong absolute path scans 0 files and reports a false "clean".
+_MOD_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_REPO_ROOT = os.path.dirname(_MOD_DIR)
+MOD_ROOT = os.path.join(_MOD_DIR, "src", "main", "resources")
+JAVA_ITEMS = os.path.join(_MOD_DIR, "src", "main", "java", "com", "iridescentcraft", "reforging", "registry", "ModItems.java")
+DATAPACK_MAT_DIR = os.path.join(_REPO_ROOT, ".minecraft", "datapack_sources", "icraft_tetra_materials", "data", "tetra", "materials")
 
 ARMOR_SLOTS = ("helmet", "chestplate", "leggings", "boots")
 

@@ -2,6 +2,7 @@ package com.iridescentcraft.reforging.setbonus;
 
 import com.iridescentcraft.reforging.IridescentReforging;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,5 +34,10 @@ public final class SetBonusRegistry {
 
     public Optional<SetBonusDefinition> getDefinition(String setId) {
         return Optional.ofNullable(definitions.get(setId));
+    }
+
+    /** Live view of every loaded definition (weakly consistent; safe to iterate). */
+    public Collection<SetBonusDefinition> allDefinitions() {
+        return definitions.values();
     }
 }

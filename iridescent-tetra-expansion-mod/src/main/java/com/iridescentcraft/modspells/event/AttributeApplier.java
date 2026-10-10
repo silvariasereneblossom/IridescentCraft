@@ -25,6 +25,7 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Server-tick scanner that applies module bonuses from any equipped
@@ -33,8 +34,10 @@ import java.util.UUID;
  * <p>Approach: every 20 ticks (1s), find each modular spell book in
  * the player's mainhand / offhand / curios inventory, sum the slot
  * bonuses by attribute, and apply via a permanent attribute modifier
- * with a deterministic UUID per attribute. Each tick we replace the
- * modifier value, so a slot swap takes effect within 1s.
+ * with a deterministic UUID per attribute. Each pass we replace the
+ * modifier only if its value changed (an unchanged one is left alone, so
+ * the attribute isn't re-synced every second), so a slot swap takes
+ * effect within 1s.
  *
  * <p>Why permanent modifiers (not transient): transient modifiers vanish
  * on player relog, then re-apply, then vanish again -- causes flicker.
@@ -232,25 +235,49 @@ public class AttributeApplier {
         }
     }
 
+    /**
+     * Attribute id string -> resolved registry object, so the 1 Hz pass does
+     * not re-parse a ResourceLocation and re-query the registry per key per
+     * player. Only HITS are cached: a missing attribute (ISS absent / not yet
+     * registered) is simply looked up again next pass.
+     */
+    private static final Map<String, Attribute> ATTRIBUTE_CACHE = new ConcurrentHashMap<>();
+
+    private static Attribute resolveAttribute(String attributeId) {
+        Attribute cached = ATTRIBUTE_CACHE.get(attributeId);
+        if (cached != null) return cached;
+        ResourceLocation id = ResourceLocation.tryParse(attributeId);
+        if (id == null) return null;
+        Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(id);
+        if (attr != null) ATTRIBUTE_CACHE.put(attributeId, attr);
+        return attr;
+    }
+
     private static void applyOrRemove(ServerPlayer player,
                                       ModularSpellBookItem.AttributeKey key,
                                       double total) {
-        Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(
-                ResourceLocation.tryParse(key.attributeId));
+        Attribute attr = resolveAttribute(key.attributeId);
         if (attr == null) return;        // ISS absent or attribute not yet registered
         AttributeInstance inst = player.getAttribute(attr);
         if (inst == null) return;
         UUID uuid = MOD_UUIDS.get(key);
         if (uuid == null) return;
 
-        // Remove existing modifier (idempotent upsert)
         AttributeModifier existing = inst.getModifier(uuid);
-        if (existing != null) inst.removeModifier(uuid);
-
-        if (total != 0.0) {
-            AttributeModifier m = new AttributeModifier(
-                    uuid, MODIFIER_NAME, total, AttributeModifier.Operation.MULTIPLY_BASE);
-            inst.addPermanentModifier(m);
+        if (total == 0.0) {
+            if (existing != null) inst.removeModifier(uuid);
+            return;
         }
+
+        // Idempotent upsert. An unchanged bonus is left alone: remove + re-add
+        // marks the attribute dirty, which re-syncs it to the client every
+        // second for every book / wand holder for no change in value.
+        if (existing != null) {
+            if (existing.getOperation() == AttributeModifier.Operation.MULTIPLY_BASE
+                    && Double.compare(existing.getAmount(), total) == 0) return;
+            inst.removeModifier(uuid);
+        }
+        inst.addPermanentModifier(new AttributeModifier(
+                uuid, MODIFIER_NAME, total, AttributeModifier.Operation.MULTIPLY_BASE));
     }
 }

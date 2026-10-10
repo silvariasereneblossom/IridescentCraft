@@ -54,8 +54,8 @@ import org.apache.logging.log4j.Logger;
  * Owned by Forge via {@code @Mod.EventBusSubscriber} (not the KubeJS-driven
  * {@link ForgeEventRegistry}) because these are mod-native enchant effects,
  * not script policy. Per-player transient state is keyed by UUID and cleared
- * on logout. All ISS API verified against the pinned irons_spellbooks
- * 3.15.5.1 jar.
+ * on logout and on respawn (Clone). All ISS API verified against the pinned
+ * irons_spellbooks 3.15.5.1 jar.
  */
 @Mod.EventBusSubscriber(modid = IridescentReforging.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class ProcEnchantHandler {
@@ -66,7 +66,7 @@ public final class ProcEnchantHandler {
     private static final ThreadLocal<Boolean> RESONANCE_GUARD =
             ThreadLocal.withInitial(() -> Boolean.FALSE);
 
-    // Spell Echo: last proc tick per player (player.tickCount domain).
+    // Spell Echo: last proc tick per player (level game-time domain).
     private static final Map<UUID, Long> ECHO_LAST = new ConcurrentHashMap<>();
 
     // Mana Siphon: per-second accumulation window per player.
@@ -156,7 +156,11 @@ public final class ProcEnchantHandler {
         if (lvl <= 0) return;
 
         int cooldown = 40 - 10 * lvl;                                // 30/20/10 ticks
-        long now = player.tickCount;
+        // Level game time, NOT player.tickCount: tickCount restarts at 0 on the
+        // fresh player entity after a respawn, which left (now - last) negative
+        // against the pre-death stamp and locked Echo out until the new entity
+        // had outlived the old one (or the player relogged).
+        long now = player.level().getGameTime();
         Long last = ECHO_LAST.get(player.getUUID());
         if (last != null && (now - last) < cooldown) return;
 
@@ -170,6 +174,15 @@ public final class ProcEnchantHandler {
     // ── Cleanup ──────────────────────────────────────────────────────────────
     @SubscribeEvent
     public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        UUID id = event.getEntity().getUUID();
+        ECHO_LAST.remove(id);
+        SIPHON.remove(id);
+    }
+
+    @SubscribeEvent
+    public static void onClone(PlayerEvent.Clone event) {
+        // Respawn / End return swaps in a fresh player entity under the same
+        // UUID: start it with clean proc state rather than the old entity's.
         UUID id = event.getEntity().getUUID();
         ECHO_LAST.remove(id);
         SIPHON.remove(id);

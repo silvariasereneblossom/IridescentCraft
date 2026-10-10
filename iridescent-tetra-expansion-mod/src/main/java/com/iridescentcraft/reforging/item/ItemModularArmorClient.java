@@ -22,10 +22,11 @@ import java.util.Optional;
  * renderer factory (e.g. ISS not loaded but a player still has a Cultist
  * skin tag from a prior session), return the original vanilla model.
  * Player sees generic iron-look armor instead of crashing.
+ *
+ * CLIENT-ONLY class (imports net.minecraft.client.*). Nothing common may
+ * live here: the skin-tag key + reader that used to are in {@link SkinNbt}.
  */
 public class ItemModularArmorClient implements IClientItemExtensions {
-
-    public static final String SKIN_NBT_KEY = "Skin";
 
     public static final ItemModularArmorClient INSTANCE = new ItemModularArmorClient();
 
@@ -36,7 +37,7 @@ public class ItemModularArmorClient implements IClientItemExtensions {
                                                   ItemStack stack,
                                                   EquipmentSlot slot,
                                                   HumanoidModel<?> original) {
-        String skinId = readSkinId(stack);
+        String skinId = SkinNbt.readSkinId(stack);
         if (skinId == null) {
             return original;
         }
@@ -47,15 +48,5 @@ public class ItemModularArmorClient implements IClientItemExtensions {
         GeoArmorRenderer<?> renderer = rendererOpt.get();
         renderer.prepForRender(living, stack, slot, original);
         return renderer;
-    }
-
-    /** Read the Skin tag from a stack's NBT. Returns null if absent. */
-    public static String readSkinId(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return null;
-        if (!stack.hasTag()) return null;
-        var tag = stack.getTag();
-        if (tag == null || !tag.contains(SKIN_NBT_KEY)) return null;
-        String value = tag.getString(SKIN_NBT_KEY);
-        return value.isEmpty() ? null : value;
     }
 }

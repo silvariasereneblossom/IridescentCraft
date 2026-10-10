@@ -109,9 +109,11 @@ public final class IssRebalanceHandler {
     private static final double ANGEL_MANA_REGEN_BONUS  = 2.0;  // +200% MANA_REGEN (MULTIPLY_TOTAL)
     private static final UUID ANGEL_SPELL_POWER_UUID = UUID.fromString("a7c3e1f0-1b2c-4d3e-8f90-0a1b2c3d4e5f");
     private static final UUID ANGEL_MANA_REGEN_UUID  = UUID.fromString("b8d4f2a1-2c3d-4e5f-9a01-1b2c3d4e5f60");
-    // player UUID -> server-tick expiry for the two transient attribute modifiers
-    // (the vanilla mob effects above auto-expire on their own; only the ISS
-    // attribute modifiers need manual removal).
+    // player UUID -> level game-time expiry for the two transient attribute
+    // modifiers (the vanilla mob effects above auto-expire on their own; only
+    // the ISS attribute modifiers need manual removal). Game time rather than
+    // player.tickCount, which restarts at 0 on the fresh player entity after a
+    // respawn / End return and so can never be compared across one.
     private static final Map<UUID, Long> ANGEL_BUFF_EXPIRY = new ConcurrentHashMap<>();
 
     // ── Change 3: priest-kill holy curse ─────────────────────────────────────
@@ -160,7 +162,7 @@ public final class IssRebalanceHandler {
         addTransient(player, AttributeRegistry.MANA_REGEN.get(), ANGEL_MANA_REGEN_UUID,
                 "icraft_angel_mana_regen", ANGEL_MANA_REGEN_BONUS, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
-        ANGEL_BUFF_EXPIRY.put(player.getUUID(), (long) player.tickCount + ANGEL_BUFF_TICKS);
+        ANGEL_BUFF_EXPIRY.put(player.getUUID(), player.level().getGameTime() + ANGEL_BUFF_TICKS);
     }
 
     private static void addTransient(Player player, Attribute attr, UUID id, String name,
@@ -186,7 +188,7 @@ public final class IssRebalanceHandler {
         Player player = event.player;
         if (player.level().isClientSide) return;
         Long expiry = ANGEL_BUFF_EXPIRY.get(player.getUUID());
-        if (expiry == null || player.tickCount < expiry) return;
+        if (expiry == null || player.level().getGameTime() < expiry) return;
         removeTransient(player, AttributeRegistry.SPELL_POWER.get(), ANGEL_SPELL_POWER_UUID);
         removeTransient(player, AttributeRegistry.MANA_REGEN.get(), ANGEL_MANA_REGEN_UUID);
         ANGEL_BUFF_EXPIRY.remove(player.getUUID());

@@ -213,7 +213,7 @@ public final class StackNbtMigrator {
         if (!(stack.getItem() instanceof ItemModularArmor armor)) return false;
 
         tag.putBoolean("icraft_source_armor_checked", true);  // attempt once regardless of outcome
-        String skinId = ItemModularArmorClient.readSkinId(stack);
+        String skinId = SkinNbt.readSkinId(stack);
         if (skinId == null) return true;  // crafted-from-scratch modular armor has no source — leave it
 
         EquipmentSlot slot = armor.getEquipmentSlot();

@@ -2,7 +2,7 @@ package com.iridescentcraft.reforging.replacement;
 
 import com.iridescentcraft.reforging.IridescentReforging;
 import com.iridescentcraft.reforging.item.ItemModularArmor;
-import com.iridescentcraft.reforging.item.ItemModularArmorClient;
+import com.iridescentcraft.reforging.item.SkinNbt;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -60,25 +60,25 @@ public final class SpecializedReplacementHook {
         // Look up specialized replacement enrichment for the original's item.
         var sourceId = ForgeRegistries.ITEMS.getKey(original.getItem());
         if (sourceId == null) {
-            IridescentReforging.LOGGER.info(
+            IridescentReforging.LOGGER.debug(
                     "[SpecializedReplacementHook] DIAG fired but original item has no registry key");
             return replaced;
         }
         var defOpt = SpecializedReplacementRegistry.get().getForSourceItem(sourceId);
         if (defOpt.isEmpty()) {
-            IridescentReforging.LOGGER.info(
+            IridescentReforging.LOGGER.debug(
                     "[SpecializedReplacementHook] DIAG fired for {} -> no specialized_replacements entry; returning unenriched",
                     sourceId);
             return replaced;
         }
         var def = defOpt.get();
-        IridescentReforging.LOGGER.info(
+        IridescentReforging.LOGGER.debug(
                 "[SpecializedReplacementHook] DIAG enriching {} -> skin {}", sourceId, def.skinId());
 
         // Set skin tag — drives attribute aggregation, renderer dispatch,
         // set bonuses, display name.
         CompoundTag tag = replaced.getOrCreateTag();
-        tag.putString(ItemModularArmorClient.SKIN_NBT_KEY, def.skinId());
+        tag.putString(SkinNbt.SKIN_NBT_KEY, def.skinId());
 
         // Copy identity-preserving NBT from original.
         //
@@ -121,7 +121,7 @@ public final class SpecializedReplacementHook {
             for (String key : srcTag.getAllKeys()) {
                 if (tag.contains(key)) continue;                // already written by Tetra or explicit copy above
                 if ("Damage".equals(key)) continue;             // start at full durability post-upgrade
-                if (ItemModularArmorClient.SKIN_NBT_KEY.equals(key)) continue;
+                if (SkinNbt.SKIN_NBT_KEY.equals(key)) continue;
                 Tag value = srcTag.get(key);
                 if (value != null) {
                     tag.put(key, value.copy());
@@ -188,7 +188,7 @@ public final class SpecializedReplacementHook {
             }
             if (!inheritedList.isEmpty()) {
                 tag.put("icraft_inherited_modifiers", inheritedList);
-                IridescentReforging.LOGGER.info(
+                IridescentReforging.LOGGER.debug(
                         "[SpecializedReplacementHook] inherited {} mod-specific attribute modifier(s) from {}",
                         inheritedList.size(), sourceId);
             }
@@ -221,7 +221,7 @@ public final class SpecializedReplacementHook {
             if (vanillaToughnessAddition > 0) {
                 tag.putDouble("icraft_source_toughness", vanillaToughnessAddition);
             }
-            IridescentReforging.LOGGER.info(
+            IridescentReforging.LOGGER.debug(
                     "[SpecializedReplacementHook] baselines from {}: dura={} srcArmor={} srcToughness={}",
                     sourceId, sourceMaxDamage / 2, vanillaArmorAddition, vanillaToughnessAddition);
         }

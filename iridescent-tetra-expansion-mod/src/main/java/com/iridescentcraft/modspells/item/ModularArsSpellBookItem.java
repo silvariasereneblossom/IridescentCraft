@@ -192,7 +192,7 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
      */
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-        IridescentModularSpells.LOGGER.info(
+        IridescentModularSpells.LOGGER.debug(
                 "[ModularArsSpellBookItem] initializeClient firing -- registering SpellBookRenderer for {}",
                 this);
         consumer.accept(new IClientItemExtensions() {
@@ -202,7 +202,7 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
                     renderer = new IcraftArsSpellBookRenderer();
-                    IridescentModularSpells.LOGGER.info(
+                    IridescentModularSpells.LOGGER.debug(
                             "[ModularArsSpellBookItem] lazily instantiated IcraftArsSpellBookRenderer (per-stack tier)");
                 }
                 return renderer;

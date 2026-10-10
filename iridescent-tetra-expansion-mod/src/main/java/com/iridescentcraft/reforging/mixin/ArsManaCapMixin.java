@@ -48,11 +48,14 @@ public abstract class ArsManaCapMixin implements IManaCap {
      * cap via `new ManaCap(null)`, so the shadow `livingEntity` field is
      * always null in practice. We fall back to the
      * {@link ArsManaCapOwnerTracker} side-channel map populated by
-     * AttachCapabilities / Clone / Respawn / DimensionChange events.
+     * AttachCapabilities / Clone / Respawn / DimensionChange events. The
+     * tracker holds owners weakly, so this returns null once the owner has
+     * logged out / been replaced / been collected (callers already treat a
+     * null owner as "no pool").
      */
     private LivingEntity icraft_resolveOwner() {
         if (this.livingEntity != null) return this.livingEntity;
-        return ArsManaCapOwnerTracker.OWNERS.get(this);
+        return ArsManaCapOwnerTracker.getOwner(this);
     }
 
     /**

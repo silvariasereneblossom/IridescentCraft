@@ -2,7 +2,7 @@ package com.iridescentcraft.reforging.skin;
 
 import com.iridescentcraft.reforging.IridescentReforging;
 import com.iridescentcraft.reforging.item.ItemModularArmor;
-import com.iridescentcraft.reforging.item.ItemModularArmorClient;
+import com.iridescentcraft.reforging.item.SkinNbt;
 import com.iridescentcraft.reforging.registry.ModItems;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
@@ -69,7 +69,7 @@ public final class ClientSkinIcon {
         };
         for (Item item : armorItems) {
             ItemProperties.register(item, PROPERTY_ID, (stack, level, entity, seed) -> {
-                String skinId = ItemModularArmorClient.readSkinId(stack);
+                String skinId = SkinNbt.readSkinId(stack);
                 if (skinId == null || skinId.isEmpty()) return 0f;
                 return (float) lookupIndex(skinId);
             });
