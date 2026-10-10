@@ -18,7 +18,6 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class RegistryTitles {
     public static final ResourceKey<Registry<Title>> TITLES_KEY = ResourceKey.createRegistryKey(new ResourceLocation(JustLevelingFork.MOD_ID, "titles"));
@@ -45,7 +44,18 @@ public class RegistryTitles {
     }
 
     public static Title getTitle(String titleName) {
-        return TITLES_REGISTRY.get().getValues().stream().collect(Collectors.toMap(Title::getName, Title::get)).get(titleName);
+        // Iridescent fork: keyed registry lookup (was: a fresh name->title map of the whole registry per call,
+        // hit per player per title sync). Falls back to the old by-name match for entries whose registry name
+        // differs from their own key (e.g. registered under another namespace).
+        if (titleName == null) return null;
+        IForgeRegistry<Title> registry = TITLES_REGISTRY.get();
+        ResourceLocation key = ResourceLocation.tryBuild(JustLevelingFork.MOD_ID, titleName);
+        Title title = key != null ? registry.getValue(key) : null;
+        if (title != null && title.getName().equals(titleName)) return title;
+        for (Title other : registry.getValues()) {
+            if (other.getName().equals(titleName)) return other;
+        }
+        return null;
     }
 
     public static void syncTitles(ServerPlayer serverPlayer) {

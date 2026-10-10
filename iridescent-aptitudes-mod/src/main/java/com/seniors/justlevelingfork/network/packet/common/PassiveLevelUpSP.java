@@ -36,6 +36,12 @@ public class PassiveLevelUpSP {
                 AptitudeCapability capability = AptitudeCapability.get(player);
 
                 Passive passive = RegistryPassives.getPassive(this.passive);
+                // Iridescent fork (security): mirror the screen's button gating (JustLevelingScreen.createList) --
+                // a hand-crafted packet must not level an unknown/maxed passive or skip the aptitude requirement.
+                if (capability == null || passive == null) return;
+                int level = capability.getPassiveLevel(passive);
+                if (level < 0 || level >= passive.levelsRequired.length) return;
+                if (capability.getAptitudeLevel(passive.aptitude) < passive.levelsRequired[level]) return;
                 capability.addPassiveLevel(passive, 1);
                 SyncAptitudeCapabilityCP.send(player);
             }

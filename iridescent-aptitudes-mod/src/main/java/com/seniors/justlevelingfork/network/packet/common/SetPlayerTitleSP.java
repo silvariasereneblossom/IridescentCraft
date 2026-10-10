@@ -36,6 +36,10 @@ public class SetPlayerTitleSP {
             if (player != null) {
                 AptitudeCapability capability = AptitudeCapability.get(player);
                 Title title = RegistryTitles.getTitle(this.title);
+                // Iridescent fork (security): the screen only sends titles it shows as unlocked
+                // (title.getRequirement()); enforce that here so a hand-crafted packet can't equip a locked
+                // title (e.g. administrator). Also drops unknown names instead of NPE-ing.
+                if (capability == null || title == null || !capability.getLockTitle(title)) return;
                 capability.setPlayerTitle(title);
                 player.setCustomName(Component.translatable(title.getKey()));
                 player.refreshDisplayName();

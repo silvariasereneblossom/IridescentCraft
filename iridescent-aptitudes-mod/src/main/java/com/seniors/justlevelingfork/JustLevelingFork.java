@@ -53,7 +53,9 @@ public class JustLevelingFork {
     public static MutablePair<Boolean, String> UpdatesAvailable = new MutablePair<>(false, "");
 
     // Required for the titles prefix
-    public static MinecraftServer server;
+    // Iridescent fork: volatile + cleared on ServerStoppedEvent (RegistryCommonEvents) -- written on the server
+    // thread, read on the client thread in singleplayer. Readers must copy to a local and null-check.
+    public static volatile MinecraftServer server;
 
     public JustLevelingFork() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();

@@ -13,7 +13,6 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 public class RegistryAptitudes {
 
@@ -40,7 +39,17 @@ public class RegistryAptitudes {
     }
 
     public static Aptitude getAptitude(String aptitudeName) {
-        return APTITUDES_REGISTRY.get().getValues().stream().collect(Collectors.toMap(Aptitude::getName, Aptitude::get)).get(aptitudeName.toLowerCase());
+        // Iridescent fork: keyed registry lookup (was: a fresh name->aptitude map per call, hit per title
+        // condition per player). Falls back to the old by-name match if the registry name ever differs.
+        String name = aptitudeName.toLowerCase();
+        IForgeRegistry<Aptitude> registry = APTITUDES_REGISTRY.get();
+        ResourceLocation key = ResourceLocation.tryBuild(JustLevelingFork.MOD_ID, name);
+        Aptitude aptitude = key != null ? registry.getValue(key) : null;
+        if (aptitude != null && aptitude.getName().equals(name)) return aptitude;
+        for (Aptitude other : registry.getValues()) {
+            if (other.getName().equals(name)) return other;
+        }
+        return null;
     }
 }
 

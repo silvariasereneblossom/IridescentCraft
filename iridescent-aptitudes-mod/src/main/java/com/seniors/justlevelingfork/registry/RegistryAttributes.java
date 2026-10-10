@@ -31,8 +31,9 @@ public class RegistryAttributes {
 
     public static void modifierAttributes(ServerPlayer serverPlayer) {
         serverPlayer.getCapability(RegistryCapabilities.APTITUDE).ifPresent(aptitudeCapability -> {
-            for (int i = 0; i < RegistryPassives.PASSIVES_REGISTRY.get().getValues().stream().toList().size(); i++) {
-                Passive passive = RegistryPassives.PASSIVES_REGISTRY.get().getValues().stream().toList().get(i);
+            // Iridescent fork: iterate the registry view directly (was: two fresh stream().toList() copies of the
+            // whole registry PER passive, per call, per player tick). Same iteration order.
+            for (Passive passive : RegistryPassives.PASSIVES_REGISTRY.get().getValues()) {
                 (new registerAttribute(serverPlayer, passive.attribute, passive.getValue() / passive.levelsRequired.length * passive.getLevel(serverPlayer), UUID.fromString(passive.attributeUuid))).amplifyAttribute(true);
             }
         });
@@ -56,6 +57,17 @@ public class RegistryAttributes {
             if (instance == null)
                 return;
             AttributeModifier oldModifier = instance.getModifier(this.uuid);
+            // Iridescent fork: no-op when the attribute is already in the wanted state. The unconditional
+            // remove + re-add below marks the (client-synced) attribute dirty on EVERY call, and this runs per
+            // passive per player tick -> an attribute packet to the player + everyone tracking them, every tick.
+            if (isEnabled) {
+                if (oldModifier != null
+                        && oldModifier.getOperation() == AttributeModifier.Operation.ADDITION
+                        && Double.compare(oldModifier.getAmount(), this.modifier) == 0)
+                    return;
+            } else if (oldModifier == null) {
+                return;
+            }
             if (oldModifier != null) instance.removeModifier(oldModifier);
 
             AttributeModifier newModifier = new AttributeModifier(this.uuid, JustLevelingFork.MOD_ID, this.modifier, AttributeModifier.Operation.ADDITION);

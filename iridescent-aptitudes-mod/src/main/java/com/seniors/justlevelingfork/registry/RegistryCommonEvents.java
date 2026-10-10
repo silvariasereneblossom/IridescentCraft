@@ -47,6 +47,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.event.server.ServerStoppedEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -67,8 +68,11 @@ public class RegistryCommonEvents {
 
     @SubscribeEvent
     public void onPlayerNameFormat(PlayerEvent.NameFormat event) {
-        if (JustLevelingFork.server != null && HandlerCommonConfig.HANDLER.instance().displayTitlesAsPrefix) {
-            ServerPlayer serverPlayer = JustLevelingFork.server.getPlayerList().getPlayer(event.getEntity().getUUID());
+        // Iridescent fork: read the static once -- it is nulled on ServerStoppedEvent (server thread) while this
+        // event also fires on the client thread in singleplayer.
+        MinecraftServer server = JustLevelingFork.server;
+        if (server != null && HandlerCommonConfig.HANDLER.instance().displayTitlesAsPrefix) {
+            ServerPlayer serverPlayer = server.getPlayerList().getPlayer(event.getEntity().getUUID());
             if(serverPlayer == null) return;
             AptitudeCapability capability = AptitudeCapability.get(serverPlayer);
             if(capability == null) return;
@@ -105,6 +109,15 @@ public class RegistryCommonEvents {
         } else if (!HandlerCommonConfig.HANDLER.instance().usingNewConfig && !oldConfigFile.exists()) {
             HandlerCommonConfig.HANDLER.instance().usingNewConfig = true;
             HandlerCommonConfig.HANDLER.save();
+        }
+    }
+
+    // Iridescent fork: the static was set on start and never cleared -> it pinned a stopped (integrated) server
+    // and its levels for the rest of the client session, and name formatting kept querying the dead server.
+    @SubscribeEvent
+    public void onServerStopped(final ServerStoppedEvent event) {
+        if (JustLevelingFork.server == event.getServer()) {
+            JustLevelingFork.server = null;
         }
     }
 
@@ -166,6 +179,9 @@ public class RegistryCommonEvents {
             if (entity instanceof ServerPlayer serverPlayer) {
                 SyncAptitudeCapabilityCP.send(serverPlayer);
                 RegistryAttributes.modifierAttributes(serverPlayer);
+                // Iridescent fork: Counter Attack is retired -- sweep any flag/attack-damage modifier left behind by
+                // the old client-trusting CounterAttackSP handler (no-op for a clean player).
+                if (RegistrySkills.COUNTER_ATTACK == null) CounterAttackSP.resetServerSide(serverPlayer);
                 RegistryTitles.syncTitles(serverPlayer);
 
                 // If there's any update notify OP players about this.
@@ -316,6 +332,9 @@ public class RegistryCommonEvents {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        // Iridescent fork: PlayerTickEvent fires for START and END; everything below is once-per-tick work
+        // (the only both-phase dependency was the counter-attack timer's x40, rescaled to x20 below).
+        if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
         if (!player.isCreative()) {
             if (HandlerCommonConfig.HANDLER.instance().dropLockedItems) {
@@ -347,8 +366,10 @@ public class RegistryCommonEvents {
 
                 if (provider.getCounterAttack()) {
                     provider.setCounterAttackTimer(provider.getCounterAttackTimer() + 1);
-                    if (RegistrySkills.COUNTER_ATTACK != null && provider.getCounterAttackTimer() >= RegistrySkills.COUNTER_ATTACK.get().getValue()[0] * 40.0D) {
-                        CounterAttackSP.send(false, 0.0F);
+                    // Iridescent fork: x20 (END phase only now; was x40 over START+END). Reset server-side:
+                    // CounterAttackSP.send is a CLIENT send and must never run on the server thread.
+                    if (RegistrySkills.COUNTER_ATTACK != null && provider.getCounterAttackTimer() >= RegistrySkills.COUNTER_ATTACK.get().getValue()[0] * 20.0D) {
+                        CounterAttackSP.resetServerSide(serverPlayer);
                     }
                 }
             });
@@ -377,9 +398,11 @@ public class RegistryCommonEvents {
 
     @SubscribeEvent
     public void onPlayerTickLow(TickEvent.PlayerTickEvent event) {
-        if (event.side == LogicalSide.SERVER) {
+        // Iridescent fork: END phase only + once a second. This evaluated every title's conditions (string
+        // re-parse + stat lookups) twice per tick per player; unlocks now land within 1s instead of 1 tick.
+        if (event.side == LogicalSide.SERVER && event.phase == TickEvent.Phase.END) {
             Player player = event.player;
-            if (player instanceof ServerPlayer serverPlayer) {
+            if (player instanceof ServerPlayer serverPlayer && serverPlayer.tickCount % 20 == 0) {
                 RegistryTitles.syncTitles(serverPlayer);
             }
 
@@ -430,8 +453,11 @@ public class RegistryCommonEvents {
                 }
             }
 
-            if (provider != null && provider.getCounterAttack()) {
-                CounterAttackSP.send(false, 0.0F);
+            // Iridescent fork: this event fires on BOTH sides. The server-side pass used to call the client send
+            // (sendToServer -> Minecraft.getInstance()): NoClassDefFoundError = dedicated-server crash. The server
+            // now resets its own state; the client-side pass has nothing to send.
+            if (provider != null && provider.getCounterAttack() && player instanceof ServerPlayer serverPlayer) {
+                CounterAttackSP.resetServerSide(serverPlayer);
             }
         }
     }
