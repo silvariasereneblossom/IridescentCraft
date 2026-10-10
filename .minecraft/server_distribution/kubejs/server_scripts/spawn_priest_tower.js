@@ -21,6 +21,15 @@
 // Memory/house rules honored: var-assigned functions (Rhino), no java.*
 // ctors (Java.loadClass for Heightmap$Types), runCommandSilent placement,
 // deferred start pattern (auto_chunky.js precedent).
+//
+// CHUNK LOADING IS INTENTIONAL HERE (2026-10-10 getBlock/OOM sweep): Ksyxis
+// means spawn chunks are NOT kept loaded, so getChunkAt / getHeight / getBlock
+// below force-load the ~13x13 chunks around spawn on an empty server. That's
+// fine: it's one pass per boot (not a timer), at ~tick 200, before the level's
+// 300-tick empty cutoff stops tickBlockEntities, so the reloaded chunks' tickers
+// are still pruned. Do NOT add a hasChunkAt guard: the scan would see nothing,
+// and `place template` (refuses unloaded positions) relies on these reads
+// having just loaded the site in the same tick.
 // =============================================================================
 
 ;(function () {

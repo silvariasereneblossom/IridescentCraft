@@ -6920,12 +6920,12 @@
                                                                                "size":  21302
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_bonfire_system.js":  {
-                                                                               "sha256":  "926a6298f6f31ac7f7512183066434fb5f3b31ac49b6c488f7bde82eb30ac138",
-                                                                               "size":  15873
+                                                                               "sha256":  "5143f2bb463b2806b1be8983e1c5edbb02a801a9b45ac5db75ec797722e8e797",
+                                                                               "size":  16365
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_compass_handler.js":  {
-                                                                                "sha256":  "91666acbb3842e93d0df3fabf02cd88fc962554f21b3a38b17deffaa4b591f36",
-                                                                                "size":  26847
+                                                                                "sha256":  "42dd23d058c34351293d4eba99e315495112a4d7d07b992b8d92dd1c978978e2",
+                                                                                "size":  28085
                                                                             },
                   "kubejs/server_scripts/bonfire/gob_t1_rebalance.js":  {
                                                                             "sha256":  "bb401b7ee6fd0b843b376126e1082fc9b9ba893dfe57c73a11b0430846607f3c",
@@ -7260,8 +7260,8 @@
                                                                    "size":  5380
                                                                },
                   "kubejs/server_scripts/megatorch_damage.js":  {
-                                                                    "sha256":  "13d1ae9bfed15578122b6a1f05164a9e0c634a68a1f3d8c18c8c84175c2af5e4",
-                                                                    "size":  4192
+                                                                    "sha256":  "6da70634611db9bf66f322466f12a2f929053c138cdbfeca73dde0ba556f60ee",
+                                                                    "size":  5378
                                                                 },
                   "kubejs/server_scripts/mobgriefing_default.js":  {
                                                                        "sha256":  "9656bf072eae6bd37ecf9401ab0f4e9d7c875d965d8ebb5de8e0733f19a2d926",
@@ -7488,8 +7488,8 @@
                                                                         "size":  36134
                                                                     },
                   "kubejs/server_scripts/spawn_priest_tower.js":  {
-                                                                      "sha256":  "be5b1079afbbd9ecda8803b6c9de65f35ca8d4268b881d47b312242144d52ebf",
-                                                                      "size":  5915
+                                                                      "sha256":  "a042509a6bee7f738581594033396c2177357730d71c9cd871c6bb670d8dbc13",
+                                                                      "size":  6519
                                                                   },
                   "kubejs/server_scripts/spawn_protection.js":  {
                                                                     "sha256":  "a61a1ac7ae82885231d6fb6ee9f0fa412129dc80017f6d41212525b2b25646bb",

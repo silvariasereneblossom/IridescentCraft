@@ -146,10 +146,16 @@ function findStructureCenter(player, bossId) {
 // PERF: we sample on a COARSE lattice (every BLOCK_SCAN_STEP blocks in all three
 // axes) across a BLOCK_SCAN_RADIUS box. The shrine is a multi-block decorative
 // structure (never a lone 1×1), so a step of 4 cannot tunnel through it. Block
-// reads use the pack's proven `level.getBlock(x,y,z).id` idiom (matches
-// skill_effects.js hasNearbyBlock) wrapped in try/catch — KubeJS returns air for
-// unloaded positions rather than force-loading, so the scan is naturally bounded
-// to what's already loaded around the player.
+// reads use the pack's `level.getBlock(x,y,z).id` idiom (matches skill_effects.js
+// hasNearbyBlock) wrapped in try/catch.
+//
+// LOADED CHUNKS ONLY: getBlock on an UNLOADED chunk does NOT return air — it
+// force-loads the chunk to FULL (generating it if it never existed). That is
+// what made the server OOM nightly (2026-10-09, megatorch_damage.js). Only
+// view-distance + 2 chunks around a player are guaranteed FULL, so at low view
+// distances (2 -> ~64 blocks) this ±96 box pokes past the loaded area. Each
+// (x,z) column is therefore gated by hasChunkAt, which never loads, so the scan
+// stays bounded to what's already loaded around the player.
 const BLOCK_SCAN_RADIUS = 96   // blocks horizontally from the player (±)
 const BLOCK_SCAN_VRANGE = 64   // blocks vertically from the player (±)
 const BLOCK_SCAN_STEP   = 4    // lattice spacing (shrine > 4 blocks wide)
@@ -160,6 +166,21 @@ function blockIdAt(level, x, y, z) {
         if (b && b.id) return String(b.id)
     } catch (e) {}
     return null
+}
+
+// true if the chunk holding block column (x, z) is already loaded; never loads
+// it. A failed binding warns once and falls back to the old unguarded read:
+// this scan only runs on a player's right-click, so the worst case is a sync
+// chunk load next to a present player, not the empty-level leak.
+let bcGuardWarned = false
+function bcChunkLoaded(level, x, z) {
+    try { return level.hasChunkAt(x, z) === true } catch (e) {
+        if (!bcGuardWarned) {
+            bcGuardWarned = true
+            console.warn("[boss_compass] hasChunkAt unavailable - block scan unguarded: " + e)
+        }
+        return true
+    }
 }
 
 function findBlockCenter(player, bossId) {
@@ -179,12 +200,15 @@ function findBlockCenter(player, bossId) {
 
         let best = null, bestD2 = Infinity
         for (let dx = -BLOCK_SCAN_RADIUS; dx <= BLOCK_SCAN_RADIUS; dx += BLOCK_SCAN_STEP) {
-            const x = px + dx
+            // RHINO: var (not const) in loop bodies — a re-entered body const
+            // throws "redeclaration of var" on iteration 2 (see bonfire system).
+            var x = px + dx
             for (let dz = -BLOCK_SCAN_RADIUS; dz <= BLOCK_SCAN_RADIUS; dz += BLOCK_SCAN_STEP) {
-                const z = pz + dz
+                var z = pz + dz
+                if (!bcChunkLoaded(level, x, z)) continue  // never load a chunk
                 for (let y = yMin; y <= yMax; y += BLOCK_SCAN_STEP) {
                     if (blockIdAt(level, x, y, z) === target) {
-                        const d2 = dx * dx + (y - py) * (y - py) + dz * dz
+                        var d2 = dx * dx + (y - py) * (y - py) + dz * dz
                         if (d2 < bestD2) { bestD2 = d2; best = { x: x, y: y, z: z } }
                     }
                 }

@@ -72,9 +72,15 @@ function arenaTagFor(bossId) {
 // the player is standing close to the arena's unique shrine block. The threshold
 // is a small box around the player (the player is necessarily INSIDE the arena
 // by the time they're within BONFIRE_BLOCK_RANGE of its shrine), checked on a
-// coarse lattice so it's cheap to run at 1 Hz. Uses the pack's proven
-// `level.getBlock(x,y,z).id` idiom; the local chunks are loaded by definition
-// (the player is standing here).
+// coarse lattice so it's cheap to run at 1 Hz. Uses the pack's
+// `level.getBlock(x,y,z).id` idiom with NO load guard, on purpose: getBlock on
+// an unloaded chunk force-loads it (the 2026-10-09 megatorch OOM), but ±24 sits
+// well inside the player's own loaded area (view-distance + 2 chunks, so >= 64
+// blocks even at view-distance 2). Right after a teleport/login a read can
+// sync-load a chunk the player ticket is about to load anyway; that's harmless
+// because a level with a player in it keeps pruning block-entity tickers. If
+// this box ever grows past ~64 or runs off a stored position, gate it with
+// hasChunkAt like boss_compass_handler.js findBlockCenter.
 const BONFIRE_BLOCK_RANGE = 24   // blocks (±) around the player to look for the shrine
 const BONFIRE_BLOCK_VR    = 24   // vertical (±)
 const BONFIRE_BLOCK_STEP  = 3    // lattice spacing (shrine is multi-block)
