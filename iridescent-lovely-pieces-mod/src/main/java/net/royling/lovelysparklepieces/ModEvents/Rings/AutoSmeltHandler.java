@@ -28,8 +28,6 @@ import java.util.*;
 
 @Mod.EventBusSubscriber(modid = LovelySparklePieces.MODID)
 public class AutoSmeltHandler {
-    private static final Map<Item, Item> SMELTING_CACHE = new HashMap<>();
-
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
         if (!event.getPlayer().level().isClientSide() && !event.isCanceled()) {
@@ -41,6 +39,12 @@ public class AutoSmeltHandler {
                 if (event.getPlayer() != null) {
                     boolean hasRing = ModCurios.hasCurio(event.getPlayer(), ModCurios.INFERNO_RING.get());
                     if (hasRing) {
+                        // IRIDESCENT: keep vanilla tool-tier rules. Block.getDrops() ignores the held tool,
+                        // so without this the ring smelted drops out of blocks the player cannot harvest
+                        // (ancient debris -> netherite scrap with a wooden pickaxe, or by hand). Blocks that
+                        // need no tool (logs, sand) still pass. Leaving the event alone lets vanilla break
+                        // the block with no drops, exactly as without the ring.
+                        if (!player.hasCorrectToolForDrops(state)) return;
                         List<ItemStack> drops = Block.getDrops(state, (ServerLevel) level, pos, null
                                 , event.getPlayer(), event.getPlayer().getMainHandItem());
                         List<ItemStack> smeltedDrops = new ArrayList<>();
@@ -68,19 +72,24 @@ public class AutoSmeltHandler {
                             if (heldItem.isDamageableItem()) {
                                 // 消耗1点耐久，并处理工具损坏
                                 heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(EquipmentSlot.MAINHAND));
-                                level.removeBlock(pos, false);
-                                for (ItemStack smeltedDrop : smeltedDrops) {
-                                    ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, smeltedDrop);
-                                    itemEntity.setDefaultPickUpDelay(); // 设置默认拾取延迟
-                                    level.addFreshEntity(itemEntity);
-                                    ItemStack curioStack = CuriosApi.getCuriosInventory(player).resolve().flatMap(
-                                            curiosInventory -> curiosInventory.findFirstCurio(ModCurios.INFERNO_RING.get())).map(curio -> curio.stack()).orElse(ItemStack.EMPTY);
-                                    curioStack.hurtAndBreak(smeltCount, player, (p) -> {});
-                                }
-                                if (totalExp > 0) {
-                                    ExperienceOrb experienceOrb = new ExperienceOrb(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, (int) totalExp);
-                                    level.addFreshEntity(experienceOrb);
-                                }
+                            }
+                            // IRIDESCENT: the removal + drops used to sit inside the isDamageableItem() branch, so
+                            // with a non-damageable main hand (bare hand, unbreakable tool) the break was cancelled
+                            // above and nothing else happened - the block could not be broken at all.
+                            level.removeBlock(pos, false);
+                            for (ItemStack smeltedDrop : smeltedDrops) {
+                                ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, smeltedDrop);
+                                itemEntity.setDefaultPickUpDelay(); // 设置默认拾取延迟
+                                level.addFreshEntity(itemEntity);
+                            }
+                            // IRIDESCENT: ring wear is charged ONCE per broken block (was once per drop entry,
+                            // inside the loop above, so multi-entry drop lists multiplied it).
+                            ItemStack curioStack = CuriosApi.getCuriosInventory(player).resolve().flatMap(
+                                    curiosInventory -> curiosInventory.findFirstCurio(ModCurios.INFERNO_RING.get())).map(curio -> curio.stack()).orElse(ItemStack.EMPTY);
+                            curioStack.hurtAndBreak(smeltCount, player, (p) -> {});
+                            if (totalExp > 0) {
+                                ExperienceOrb experienceOrb = new ExperienceOrb(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, (int) totalExp);
+                                level.addFreshEntity(experienceOrb);
                             }
                         }
                     }

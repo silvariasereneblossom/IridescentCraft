@@ -27,6 +27,11 @@ public class JellyfishHelmet extends UniversalCurio {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if(slotContext.entity() instanceof Player player){
+            // IRIDESCENT: server side only. LAST_OXYGEN_LEVELS is a static, unsynchronized WeakHashMap;
+            // curioTick runs on the client thread AND the (integrated) server thread, so singleplayer
+            // raced on it. Air supply is server-authoritative synced entity data, so the client pass
+            // only ever produced a prediction the server overwrote.
+            if(player.level().isClientSide) return;
             int currentOxygen = player.getAirSupply();
             int lastOxygen = LAST_OXYGEN_LEVELS.getOrDefault(player, currentOxygen);
             if (currentOxygen < lastOxygen) {

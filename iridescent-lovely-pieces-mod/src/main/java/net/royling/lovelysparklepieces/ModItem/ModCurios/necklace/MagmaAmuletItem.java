@@ -1,6 +1,7 @@
 package net.royling.lovelysparklepieces.ModItem.ModCurios.necklace;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -34,19 +35,30 @@ public class MagmaAmuletItem extends UniversalCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if(slotContext.entity().level().isClientSide)return;
         if(slotContext.entity() instanceof Player player){
-            if(player.getPersistentData().get("lsp_lava_def")==null){
-                player.getPersistentData().putInt("lsp_lava_def",0);
-                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(player.getPersistentData().getInt("lsp_lava_def")), (ServerPlayer) player);
+            // IRIDESCENT: compute the new value first, then write NBT + send ONLY when it changed (was: an
+            // NBT write + a packet every tick in every branch, even parked at the 140 cap).
+            CompoundTag data = player.getPersistentData();
+            if(data.get("lsp_lava_def")==null){
+                data.putInt("lsp_lava_def",0);
+                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(0), (ServerPlayer) player);
+                return;
             }
-            else if(player.isInLava()||player.isOnFire()){
-                player.getPersistentData().putInt("lsp_lava_def",player.getPersistentData().getInt("lsp_lava_def")-1);
-                if(player.getPersistentData().getInt("lsp_lava_def")>0){
-                    player.setRemainingFireTicks(0);
-                }
-                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(player.getPersistentData().getInt("lsp_lava_def")), (ServerPlayer) player);
-            }else {
-                player.getPersistentData().putInt("lsp_lava_def",Math.min(140,player.getPersistentData().getInt("lsp_lava_def")+1));
-                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(player.getPersistentData().getInt("lsp_lava_def")), (ServerPlayer) player);
+            int stored = data.getInt("lsp_lava_def");
+            boolean burning = player.isInLava()||player.isOnFire();
+            // Clamped to 0..140: the lava branch used to decrement without a floor, and PlayerLavadefPacket's
+            // constructor THROWS on a negative value - so the tick after the charge ran out (stored 0, still
+            // in lava / on fire) wrote -1 and threw out of the player tick.
+            int updated = Math.max(0, Math.min(140, burning ? stored-1 : stored+1));
+            if(burning && updated>0){
+                player.setRemainingFireTicks(0);
+            }
+            if(updated!=stored){
+                data.putInt("lsp_lava_def",updated);
+                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(updated), (ServerPlayer) player);
+            }else if(player.tickCount % 20 == 0){
+                // Unchanged: no NBT write. 1/s resend only, because the client copy of this value lives on
+                // the LocalPlayer, which is recreated (value lost, HUD bar hidden) on every dimension change.
+                NetworkHandler.sendToPlayer(new PlayerLavadefPacket(updated), (ServerPlayer) player);
             }
         }
     }

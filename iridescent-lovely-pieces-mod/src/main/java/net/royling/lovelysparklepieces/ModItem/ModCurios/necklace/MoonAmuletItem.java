@@ -47,23 +47,11 @@ public class MoonAmuletItem extends UniversalCurio {
             AttributeInstance speedAttr = player.getAttribute(Attributes.MOVEMENT_SPEED);
             AttributeInstance armorAttr = player.getAttribute(Attributes.ARMOR);
             
-            // Remove existing modifiers first, then add new ones
-            if (attackAttr != null) {
-                attackAttr.removeModifier(ATTACK_UUID);
-                attackAttr.addPermanentModifier(new AttributeModifier(ATTACK_UUID, "moon_amulet_attack", 0.08, AttributeModifier.Operation.MULTIPLY_BASE));
-            }
-            if (attackSpeedAttr != null) {
-                attackSpeedAttr.removeModifier(ATTACK_SPEED_UUID);
-                attackSpeedAttr.addPermanentModifier(new AttributeModifier(ATTACK_SPEED_UUID, "moon_amulet_attack_speed", 0.08, AttributeModifier.Operation.MULTIPLY_BASE));
-            }
-            if (speedAttr != null) {
-                speedAttr.removeModifier(SPEED_UUID);
-                speedAttr.addPermanentModifier(new AttributeModifier(SPEED_UUID, "moon_amulet_speed", 0.02, AttributeModifier.Operation.MULTIPLY_BASE));
-            }
-            if (armorAttr != null) {
-                armorAttr.removeModifier(ARMOR_UUID);
-                armorAttr.addPermanentModifier(new AttributeModifier(ARMOR_UUID, "moon_amulet_armor", 2, AttributeModifier.Operation.ADDITION));
-            }
+            // IRIDESCENT: was remove + re-add every tick (attributes re-dirtied + re-synced 20x/s).
+            applyModifier(attackAttr, ATTACK_UUID, "moon_amulet_attack", 0.08, AttributeModifier.Operation.MULTIPLY_BASE);
+            applyModifier(attackSpeedAttr, ATTACK_SPEED_UUID, "moon_amulet_attack_speed", 0.08, AttributeModifier.Operation.MULTIPLY_BASE);
+            applyModifier(speedAttr, SPEED_UUID, "moon_amulet_speed", 0.02, AttributeModifier.Operation.MULTIPLY_BASE);
+            applyModifier(armorAttr, ARMOR_UUID, "moon_amulet_armor", 2, AttributeModifier.Operation.ADDITION);
         } else {
             // Remove modifiers during day
             AttributeInstance attackAttr = player.getAttribute(Attributes.ATTACK_DAMAGE);
@@ -76,6 +64,18 @@ public class MoonAmuletItem extends UniversalCurio {
             if (speedAttr != null) speedAttr.removeModifier(SPEED_UUID);
             if (armorAttr != null) armorAttr.removeModifier(ARMOR_UUID);
         }
+    }
+
+    // IRIDESCENT: leave an existing modifier alone when it already has this amount + operation;
+    // otherwise replace it (remove first - re-adding the same UUID throws).
+    private static void applyModifier(@Nullable AttributeInstance attr, UUID id, String name, double amount, AttributeModifier.Operation operation) {
+        if (attr == null) return;
+        AttributeModifier existing = attr.getModifier(id);
+        if (existing != null) {
+            if (existing.getAmount() == amount && existing.getOperation() == operation) return;
+            attr.removeModifier(id);
+        }
+        attr.addPermanentModifier(new AttributeModifier(id, name, amount, operation));
     }
 
     @Override

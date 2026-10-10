@@ -3,7 +3,7 @@ name = 'Iridescent Lovely Pieces'
 side = 'both'
 
 [download]
-hash = '49aaf98b6e855115dfb4db1e1ba89617d50ab5c1cca8c9fdf7bbbdec44ded7f4'
+hash = '5e25bb37546124b1a755b6da6118e08ecb9d3f594d2f3cec3e36010c32f839ca'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/mods/lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar'

@@ -23,15 +23,21 @@ import net.royling.lovelysparklepieces.ModItem.ModCurios.UniversalCurio;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.ArrayDeque;
 import java.util.List;
-import java.util.Queue;
 import org.jetbrains.annotations.Nullable;
 import java.util.UUID;
 
 public class RollerSkatesItem extends UniversalCurio {
     private static final int RADIUS = 3;
-    private final Queue<BlockPos> workQueue = new ArrayDeque<>();
+    // IRIDESCENT: the item-level work queue is gone. One Item instance serves EVERY wearer, so cells
+    // queued around player A were drained against player B's level (another dimension = getBlockState
+    // force-loading chunks on the server thread + ice edits at A's coordinates in B's world). Same
+    // cadence, no shared state: 10 cells of the 7x7 per tick (full sweep every 5 ticks), always computed
+    // from THIS wearer and processed at once in THIS wearer's level; unloaded positions are skipped.
+    private static final int SIDE = RADIUS * 2 + 1;
+    private static final int CELLS = SIDE * SIDE;
+    private static final int CELLS_PER_TICK = 10;
+    private static final int SWEEP_TICKS = (CELLS + CELLS_PER_TICK - 1) / CELLS_PER_TICK;
 
     public RollerSkatesItem(Properties properties) {
         super(properties.stacksTo(1));
@@ -42,15 +48,11 @@ public class RollerSkatesItem extends UniversalCurio {
         if(slotContext.entity() instanceof Player player && !player.level().isClientSide) {
             Level level = player.level();
             BlockPos below = player.blockPosition().below();
-            if (workQueue.isEmpty()) {
-                for (int x = -RADIUS; x <= RADIUS; x++) {
-                    for (int z = -RADIUS; z <= RADIUS; z++) {
-                        workQueue.offer(below.offset(x, 0, z));
-                    }
-                }
-            }
-            for (int i = 0; i < 10 && !workQueue.isEmpty(); i++) {
-                BlockPos pos = workQueue.poll();
+            int start = (player.tickCount % SWEEP_TICKS) * CELLS_PER_TICK;
+            int end = Math.min(start + CELLS_PER_TICK, CELLS);
+            for (int i = start; i < end; i++) {
+                BlockPos pos = below.offset(i / SIDE - RADIUS, 0, i % SIDE - RADIUS);
+                if (!level.hasChunkAt(pos)) continue;
                 if (level.getBlockState(pos).is(Blocks.ICE)) {
                     level.setBlock(pos, ModBlocks.SOLID_ICE.get().defaultBlockState(), 3);
                     level.scheduleTick(pos, ModBlocks.SOLID_ICE.get(), 100); // 5秒恢复

@@ -29,11 +29,18 @@ public class FlowerBootItem extends UniversalCurio {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if(slotContext.entity().tickCount % 10 != 0) return;
         if(slotContext.entity() instanceof Player player){
+            // IRIDESCENT: world edits are server-side only (the client pass placed ghost blocks).
+            if(player.level().isClientSide)return;
             BlockPos block = player.blockPosition().offset(0,-1,0);
             if(player.level().getBlockState(block).is(Blocks.DIRT))player.level().setBlockAndUpdate(block,Blocks.GRASS_BLOCK.defaultBlockState());
             if(player.level().getBlockState(block).is(Blocks.COARSE_DIRT))player.level().setBlockAndUpdate(block,Blocks.DIRT.defaultBlockState());
             if(player.level().getBlockState(block).is(Blocks.GRASS_BLOCK)){
-                player.level().setBlockAndUpdate(player.blockPosition(),Blocks.GRASS.defaultBlockState());
+                // IRIDESCENT: only grow grass into AIR. The unconditional set replaced whatever stood at the
+                // player's feet (torch, rail, carpet, crop, snow layer...) without dropping it.
+                BlockPos feet = player.blockPosition();
+                if(player.level().getBlockState(feet).isAir()){
+                    player.level().setBlockAndUpdate(feet,Blocks.GRASS.defaultBlockState());
+                }
             }
 
         }

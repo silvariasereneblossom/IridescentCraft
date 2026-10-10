@@ -64,6 +64,11 @@ public class MemoryRingItem extends UniversalCurio {
             AttributeModifier newModifier = new AttributeModifier(ATTID, "Memory Ring Attack Bonus", getMemory(player), AttributeModifier.Operation.MULTIPLY_TOTAL);
             AttributeInstance attr = player.getAttribute(Attributes.ATTACK_DAMAGE);
             if (attr != null) {
+                // IRIDESCENT: was remove + re-add every tick (attribute re-dirtied + re-synced 20x/s).
+                // Leave an identical modifier alone; replace it only when amount/operation differ.
+                AttributeModifier existing = attr.getModifier(ATTID);
+                if (existing != null && existing.getAmount() == newModifier.getAmount()
+                        && existing.getOperation() == newModifier.getOperation()) return;
                 attr.removeModifier(ATTID);
                 attr.addPermanentModifier(newModifier);
             }
