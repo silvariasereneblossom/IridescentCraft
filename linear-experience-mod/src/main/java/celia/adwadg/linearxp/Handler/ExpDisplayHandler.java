@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 public class ExpDisplayHandler {
 
     private static final long CHECK_INTERVAL = 10; // 每10tick检查一次
-    private static long tickCounter = 0;
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -21,8 +20,10 @@ public class ExpDisplayHandler {
         Player player = event.player;
         if (player.level().isClientSide()) return;
 
-        tickCounter++;
-        if (tickCounter % CHECK_INTERVAL != 0) return;
+        // IridescentCraft patch: per-player cadence. Upstream used ONE static counter
+        // bumped on every player's tick, so with N players online only the player whose
+        // turn landed on a multiple of 10 was ever checked (with 2 online: always the same one).
+        if (player.tickCount % CHECK_INTERVAL != 0) return;
 
         // 获取玩家的精确经验值
         long accuratedExp = ExpUtils.getAccuratedExpValue(player);
