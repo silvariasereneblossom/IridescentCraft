@@ -1,6 +1,6 @@
 {
-    "generated_at":  "2026-09-28T22:13:35Z",
-    "generated_by":  "regen_custom_jars_manifest.ps1-equivalent (Linux cloud session, no pwsh)",
+    "generated_at":  "2026-10-10T03:07:32Z",
+    "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
                  "ars_nouveau-1.20.1-4.12.7-all.jar":  {
@@ -40,20 +40,20 @@
                                                      "size":  52079
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "c0b46e7ecfc9239a2903e0b1920fd31365b03e13d8be72ffbfe1a8c2a3beccee",
-                                                              "size":  1589170
+                                                              "sha256":  "9beedc2a4db2891bf7e1538a351bdc61d5e8d6fe4fbacd21dfbe3ebbca5d7fc8",
+                                                              "size":  1591391
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
-                                                                 "sha256":  "7bf4c5121e6290f2b3071d518e11ee568d485837357ba7fc93691ba9b58243c1",
-                                                                 "size":  485588
+                                                                 "sha256":  "e35199309df3090615dc7d30a95b82d4df41b4bbbdfa2d72cce154e37752d179",
+                                                                 "size":  486486
                                                              },
                  "linearxp-1.0.0-iridescent.1.jar":  {
-                                                         "sha256":  "3b8f3bd74c378ec42cdafe6e7b50144999dde8ff0019a0e04ce56567b9c0a487",
-                                                         "size":  186369
+                                                         "sha256":  "6bdb5ecf4974b1699ad8e7a4c062b5853a5d0b276b28bd51fce080546b6765d8",
+                                                         "size":  186322
                                                      },
                  "lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar":  {
-                                                                        "sha256":  "49aaf98b6e855115dfb4db1e1ba89617d50ab5c1cca8c9fdf7bbbdec44ded7f4",
-                                                                        "size":  618662
+                                                                        "sha256":  "5e25bb37546124b1a755b6da6118e08ecb9d3f594d2f3cec3e36010c32f839ca",
+                                                                        "size":  619127
                                                                     },
                  "mek_walkable_cables-1.0.1.jar":  {
                                                        "sha256":  "e90d65edd5a3cdfeec4a551147f034b36841a58101369f1fb8a4a29b8b3c495c",
