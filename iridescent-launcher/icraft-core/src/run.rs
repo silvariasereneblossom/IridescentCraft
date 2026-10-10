@@ -340,6 +340,61 @@ pub fn set_server_state(s: ServerState) {
     if *g != s {
         log::info!("[run] *** server state: {:?} -> {:?} ***", *g, s);
         *g = s;
+        // The uptime clock runs only while Started, so every launch -- an
+        // operator Cycle, a policy restart, a heartbeat crash recovery --
+        // starts it from zero.
+        *STARTED_AT.lock().unwrap() = if s == ServerState::Started {
+            Some((Instant::now(), chrono::Local::now()))
+        } else {
+            None
+        };
+    }
+}
+
+/// When the running server reached `Started` (its "Done" line): the monotonic
+/// instant uptime is measured from, plus the wall-clock time for logs. `None`
+/// whenever the server is not fully up.
+static STARTED_AT: Mutex<Option<(Instant, chrono::DateTime<chrono::Local>)>> = Mutex::new(None);
+
+pub fn started_at() -> Option<(Instant, chrono::DateTime<chrono::Local>)> {
+    *STARTED_AT.lock().unwrap()
+}
+
+/// Newest `list` reply seen in the server's output: (when, players online).
+static LAST_LIST_REPLY: Mutex<Option<(Instant, u32)>> = Mutex::new(None);
+
+/// Players online, from a vanilla `list` reply:
+/// `[..] [Server thread/INFO] [..]: There are 2 of a max of 20 players online: a, b`.
+/// Anchored on the logger prefix's `]: ` so a chat line quoting the phrase
+/// (`]: <name> There are ...`) can't pass for one.
+fn parse_list_reply(line: &str) -> Option<u32> {
+    const LEAD: &str = "]: There are ";
+    let rest = &line[line.find(LEAD)? + LEAD.len()..];
+    let (count, tail) = rest.split_once(' ')?;
+    if !tail.starts_with("of a max of ") {
+        return None;
+    }
+    count.parse().ok()
+}
+
+/// Ask the running server how many players are online: sends `list` and waits
+/// for the reply to come back through the log pump (so piped launches only --
+/// the GUI). `None` = no server, or no reply within `timeout` (a stalled tick
+/// loop, a reworded reply). Callers must read `None` as "unknown", never as
+/// "empty".
+pub fn query_player_count(timeout: Duration) -> Option<u32> {
+    let asked = Instant::now();
+    send_console_line("list").ok()?;
+    loop {
+        if let Some((at, players)) = *LAST_LIST_REPLY.lock().unwrap() {
+            if at >= asked {
+                return Some(players);
+            }
+        }
+        if asked.elapsed() >= timeout {
+            return None;
+        }
+        thread::sleep(Duration::from_millis(200));
     }
 }
 
@@ -531,6 +586,8 @@ fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
                 set_server_state(ServerState::Started);
             } else if line.contains("Stopping the server") {
                 set_server_state(ServerState::Stopping);
+            } else if let Some(players) = parse_list_reply(&line) {
+                *LAST_LIST_REPLY.lock().unwrap() = Some((Instant::now(), players));
             }
 
             // Operational event highlights -- player session + lag
