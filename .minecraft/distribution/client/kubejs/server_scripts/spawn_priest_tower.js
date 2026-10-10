@@ -23,13 +23,14 @@
 // deferred start pattern (auto_chunky.js precedent).
 //
 // CHUNK LOADING IS INTENTIONAL HERE (2026-10-10 getBlock/OOM sweep): Ksyxis
-// means spawn chunks are NOT kept loaded, so getChunkAt / getHeight / getBlock
-// below force-load the ~13x13 chunks around spawn on an empty server. That's
+// means spawn chunks are NOT kept loaded, so the getChunkAt / getBlock scan
+// below force-loads the ~13x13 chunks around spawn on an empty server. That's
 // fine: it's one pass per boot (not a timer), at ~tick 200, before the level's
 // 300-tick empty cutoff stops tickBlockEntities, so the reloaded chunks' tickers
 // are still pruned. Do NOT add a hasChunkAt guard: the scan would see nothing,
-// and `place template` (refuses unloaded positions) relies on these reads
-// having just loaded the site in the same tick.
+// and both getHeight (returns the min build height for an unloaded chunk) and
+// `place template` (refuses unloaded positions) rely on the scan having just
+// loaded the site (spawn ±30..39 blocks) in the same tick.
 // =============================================================================
 
 ;(function () {
