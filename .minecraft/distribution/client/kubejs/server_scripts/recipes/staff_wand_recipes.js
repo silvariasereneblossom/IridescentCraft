@@ -156,16 +156,21 @@ ServerEvents.recipes(event => {
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_veil_wand_t3')
 
+  // 2026-10-10: the Eye of Ender ITEM id is minecraft:ender_eye
+  // (minecraft:eye_of_ender is only the thrown-eye entity). With the wrong id
+  // KubeJS dropped the key silently, so void_wand crafted from just
+  // woodenwand + amethyst_powder and tenebrium_wand from woodenwand +
+  // nether_star.
   event.shaped('simple_staves:void_wand', ['RRR', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'minecraft:eye_of_ender',
+    R: 'minecraft:ender_eye',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_void_wand_t3')
 
   // T4 endgame: tenebrium — nether_star centerpiece (Wither kill = T4 gate)
   event.shaped('simple_staves:tenebrium_wand', ['EEE', 'EWE', 'EAE'], {
     W: 'simple_staves:woodenwand',
-    E: 'minecraft:eye_of_ender',
+    E: 'minecraft:ender_eye',
     A: 'minecraft:nether_star'
   }).id('icraft:ss_tenebrium_wand_t4')
 

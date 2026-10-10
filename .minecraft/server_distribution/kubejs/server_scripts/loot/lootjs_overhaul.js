@@ -1674,33 +1674,57 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:cracked_stone_bricks')
     .removeLoot('minecraft:mossy_stone_bricks')
 
-  // --- Gunpowder: 50% reduction ---
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .removeLoot('minecraft:gunpowder')
-    .addLoot(LootEntry.of('minecraft:gunpowder').when(c => c.randomChance(0.50)))
+  // --- Partial-reduction helper (2026-10-10 fix) ---
+  // The "reduce X%" rules below (and the food rule in Section 5B) used to be
+  // `removeLoot(id)` + `addLoot(LootEntry.of(id).when(randomChance(keep)))`.
+  // LootJS addLoot adds whether or not the table ever rolled the item
+  // (AddLootAction just appends), so instead of REDUCING, every Overworld
+  // chest GAINED 1 gunpowder/string/bone at 50%, a name tag at 40% and each
+  // listed food at 20%. This helper is a true reduction: a one-shot
+  // removeLoot whose predicate removes each EXISTING matching stack with
+  // probability (1 - keepChance) — one independent roll per stack
+  // (RemoveLootAction = loot.removeIf(filter)); nothing is ever added, and a
+  // surviving stack keeps its rolled count. Same shape as the other
+  // ItemFilter.custom(...) strips in this file. Position/registration order
+  // of each modifier is unchanged, so it still only sees loot added by
+  // modifiers registered BEFORE it.
+  var keepLootChanceFilter = function(ids, keepChance) {
+    var idSet = {}
+    ids.forEach(function(id) { idSet[id] = true })
+    return ItemFilter.custom(function(stack) {
+      try {
+        if (!stack || stack.isEmpty()) return false
+        var id = String(stack.id || '')
+        if (!id) { try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {} }
+        if (idSet[id] !== true) return false
+        return Math.random() >= keepChance   // true = strip this stack
+      } catch (e) { return false }
+    })
+  }
 
-  // --- String: 50% reduction ---
+  // --- Gunpowder: 50% reduction (each stack kept at 50%) ---
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .removeLoot('minecraft:string')
-    .addLoot(LootEntry.of('minecraft:string').when(c => c.randomChance(0.50)))
+    .removeLoot(keepLootChanceFilter(['minecraft:gunpowder'], 0.50))
 
-  // --- Bones: 50% reduction ---
+  // --- String: 50% reduction (each stack kept at 50%) ---
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .removeLoot('minecraft:bone')
-    .addLoot(LootEntry.of('minecraft:bone').when(c => c.randomChance(0.50)))
+    .removeLoot(keepLootChanceFilter(['minecraft:string'], 0.50))
 
-  // --- Name tags: 60% reduction (keep 40%) ---
+  // --- Bones: 50% reduction (each stack kept at 50%) ---
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .removeLoot('minecraft:name_tag')
-    .addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.40)))
+    .removeLoot(keepLootChanceFilter(['minecraft:bone'], 0.50))
+
+  // --- Name tags: 60% reduction (each stack kept at 40%) ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot(keepLootChanceFilter(['minecraft:name_tag'], 0.40))
 
   // =========================================================================
   // SECTION 5A1.5: PRE-T3 DIAMOND HARD STRIP
@@ -1855,9 +1879,13 @@ LootJS.modifiers(event => {
   // Only applies to Overworld dimension.
   // =========================================================================
 
-  // --- Non-meat food items to reduce by 90% (keep 10% chance) ---
-  // Uses removeLoot + addLoot with 10% random chance per food.
-  // This effectively removes ~90% of these foods from Overworld structure chests.
+  // --- Non-meat food items to reduce (each existing stack kept at 20%) ---
+  // [2026-10-10 fix] True reduction via keepLootChanceFilter (Section 5A):
+  // a listed food survives only if the table actually rolled it, at 20% per
+  // stack. The old removeLoot + addLoot(20%) pair instead ADDED each listed
+  // food to every Overworld chest at 20% (~2.6 foods/chest, incl. a 20%
+  // golden apple). The keep rate is the 0.20 the code used; the older notes
+  // here said "90% / keep 10%" and "25% capped to 1" — neither matched.
   var reducedFoods = [
     'minecraft:bread',
     'minecraft:apple',
@@ -1879,24 +1907,25 @@ LootJS.modifiers(event => {
   ]
 
   // Apply food reduction in Overworld chest loot.
-  // Uses a single modifier that removes all listed foods, then adds back
-  // each at 25% chance capped to 1. removeLoot with string item ID is
-  // the most basic LootJS API and should work reliably.
+  // Single modifier, single one-shot strip: every stack of a listed food is
+  // removed with 80% probability (kept at 20%), nothing is added back.
+  // ORDERING NOTE (pre-existing, not changed here): this strip is registered
+  // AFTER the VILLAGE_FOOD_BOOST adds (village block above) and the
+  // overhauledstructures ovdb bread add, so it thins those too — their
+  // listed foods now survive at 20% (before this fix they were stripped 100%
+  // and the blanket 20% add masked it). If the village boost is meant to sit
+  // "on top of" the reduction, it has to register after this modifier or its
+  // tables have to be exempted — left for a design call.
   let foodMod = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
 
-  reducedFoods.forEach(food => {
-    foodMod.removeLoot(food)
-  })
-
-  reducedFoods.forEach(food => {
-    foodMod.addLoot(
-      LootEntry.of(food).limitCount([1, 1]).when(c => c.randomChance(0.20))
-    )
-  })
+  foodMod.removeLoot(keepLootChanceFilter(reducedFoods, 0.20))
 
   // --- Remove unstackable food entirely (space cloggy in early chests) ---
+  // Runs after the 20% roll above, so the four listed in BOTH arrays
+  // (beetroot_soup, mushroom_stew, suspicious_stew, cake) always end up
+  // removed; rabbit_stew is removed here only.
   var unstackableFoods = [
     'minecraft:beetroot_soup',
     'minecraft:mushroom_stew',

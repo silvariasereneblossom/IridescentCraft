@@ -436,40 +436,36 @@ ServerEvents.recipes(event => {
   event.remove({ output: /theabyss:ring_/ })
 
   // K.3: Individual ring removal belt-and-suspenders (in case regex misses any)
+  // 2026-10-10: 3 stale ids corrected against the item registry —
+  // ring_of_enderchest -> ring_of_ender_chest, ring_of_pocket ->
+  // ring_of_pocket_box, ring_of_regen -> ring_of_reg.
   ;[
     'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
     'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghosts',
     'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
     'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
-    'theabyss:ring_of_electro', 'theabyss:ring_of_enderchest', 'theabyss:ring_of_fangs',
+    'theabyss:ring_of_electro', 'theabyss:ring_of_ender_chest', 'theabyss:ring_of_fangs',
     'theabyss:ring_of_firestorm', 'theabyss:ring_of_firestrike', 'theabyss:ring_of_firework',
     'theabyss:ring_of_home', 'theabyss:ring_of_invisibility', 'theabyss:ring_of_jugger',
     'theabyss:ring_of_nature', 'theabyss:ring_of_nightblade', 'theabyss:ring_of_ocean',
-    'theabyss:ring_of_pocket', 'theabyss:ring_of_regen', 'theabyss:ring_of_seeker',
+    'theabyss:ring_of_pocket_box', 'theabyss:ring_of_reg', 'theabyss:ring_of_seeker',
     'theabyss:ring_of_telekinetic', 'theabyss:ring_of_fart',
   ].forEach(id => event.remove({ output: id }))
 
   // K.4: Remove Arcane Workbench recipe (ring crafting station — no longer needed)
   event.remove({ output: 'theabyss:arcane_workbench' })
 
-  // K.5: Remove crafting recipes for boss-drop-only armor sets
-  // Knight, Unorithe, Ragnarok, Dragon, Death armor — boss drops only
+  // K.5: Remove crafting recipes for the boss-drop-only armor set
+  // Unorithe armor — boss drops only (loot/abyss_boss_loot.js Section 4).
+  // 2026-10-10: ids corrected to the real `theabyss:<set>_armor_<slot>` form
+  // (the old `theabyss:unorithe_helmet` etc. matched nothing, so the armor
+  // stayed craftable). The Knight / Ragnarok / Dragon / Death entries that
+  // used to be listed here were dropped: the installed The Abyss registers
+  // no such armor items, so there is nothing to remove.
   ;[
-    // Knight set
-    'theabyss:knight_helmet', 'theabyss:knight_chestplate',
-    'theabyss:knight_leggings', 'theabyss:knight_boots',
     // Unorithe set
-    'theabyss:unorithe_helmet', 'theabyss:unorithe_chestplate',
-    'theabyss:unorithe_leggings', 'theabyss:unorithe_boots',
-    // Ragnarok set
-    'theabyss:ragnarok_helmet', 'theabyss:ragnarok_chestplate',
-    'theabyss:ragnarok_leggings', 'theabyss:ragnarok_boots',
-    // Dragon set
-    'theabyss:dragon_helmet', 'theabyss:dragon_chestplate',
-    'theabyss:dragon_leggings', 'theabyss:dragon_boots',
-    // Death set
-    'theabyss:death_helmet', 'theabyss:death_chestplate',
-    'theabyss:death_leggings', 'theabyss:death_boots',
+    'theabyss:unorithe_armor_helmet', 'theabyss:unorithe_armor_chestplate',
+    'theabyss:unorithe_armor_leggings', 'theabyss:unorithe_armor_boots',
   ].forEach(id => event.remove({ output: id }))
 
 

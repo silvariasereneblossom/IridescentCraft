@@ -29,89 +29,115 @@ LootJS.modifiers(function (event) {
 
   // RHINO-SAFETY: var throughout; functions as var-assigned expressions.
 
-  // -- weighted pick-one pools (house pattern: villageQoLPool — air entry
-  //    controls the "nothing" share; single addWeightedLoot = one roll).
+  // -- weighted pick-one pools. Each tier is ONE gated roll:
+  //      <modifier>.randomChance(LSP_Tn_SHARE).addWeightedLoot(LSP_Tn)
+  //    LSP_Tn_SHARE = chance a matching chest yields an LSP item at all; the
+  //    pool then picks exactly one item by weight (weights are relative,
+  //    item-vs-item only).
+  //
+  //    [2026-10-10 load fix] This file never ran: the pools were built with
+  //    `Item.of(id).withWeight(n)`, but a KubeJS ItemStack has no withWeight
+  //    ("TypeError: Cannot find function withWeight in object 0 air" at the
+  //    first pool line) so the whole callback aborted and NO LSP item had a
+  //    source. Entries are now real LootJS entries — LootEntry.of(id)
+  //    .withWeight(n) (LootJS 2.13.1 core/LootEntry.java).
+  //
+  //    The old `minecraft:air` filler entry is deliberately NOT carried over;
+  //    the "nothing" share is the randomChance gate instead (same
+  //    distribution, verified against the decompiled 2.13.1 sources):
+  //      - an air LootEntry resolves to ItemStack.EMPTY and
+  //        WeightedAddLootAction adds that EMPTY stack to the shared loot
+  //        list (it only skips null) — every later-registered modifier's
+  //        filter/callback would then see an empty stack;
+  //      - the villageQoLPool shape `Item.of('minecraft:air').withChance(n)`
+  //        silently loses its weight (KubeJS OutputItem.of(EMPTY, n) returns
+  //        the shared EMPTY with chance NaN -> LootEntryWrapper weight 1).
+  //    Shares below are the stated design shares (~8% / ~10% / ~10%). For
+  //    reference, the retired air weights (184 / 252 / 180) against the
+  //    current item weights (25 / 31 / 23) would have come out at
+  //    12.0% / 11.0% / 11.3% — retune here if that was the intent.
+
+  var LSP_T1_SHARE = 0.08   // ~8% of T1 chests yield one LSP item
+  var LSP_T2_SHARE = 0.10   // ~10%
+  var LSP_T3_SHARE = 0.10   // ~10%
 
   var LSP_T1 = [
-    Item.of('minecraft:air').withWeight(184),          // ~8% any-item share
-    Item.of('lovely_sparkle_pieces:magnetic_ring').withWeight(2),
-    Item.of('lovely_sparkle_pieces:eye_mask').withWeight(2),
-    Item.of('lovely_sparkle_pieces:night_vision').withWeight(2),
-    Item.of('lovely_sparkle_pieces:straw_sandals').withWeight(2),
-    Item.of('lovely_sparkle_pieces:cat_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:rabbit_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fox_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:goat_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:flower_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:golden_hook').withWeight(1),
-    Item.of('lovely_sparkle_pieces:high_quality_fishing_line').withWeight(1),
-    Item.of('lovely_sparkle_pieces:pocket_watch').withWeight(1),
-    Item.of('lovely_sparkle_pieces:speedometer').withWeight(1),
-    Item.of('lovely_sparkle_pieces:position_tracker').withWeight(1),
-    Item.of('lovely_sparkle_pieces:binoculars').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fish_pickaxe').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fish_axe').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fish_shovel').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fish_hoe').withWeight(1),
-    Item.of('lovely_sparkle_pieces:moja_cola').withWeight(2)
+    LootEntry.of('lovely_sparkle_pieces:magnetic_ring').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:eye_mask').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:night_vision').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:straw_sandals').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:cat_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:rabbit_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fox_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:goat_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:flower_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:golden_hook').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:high_quality_fishing_line').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:pocket_watch').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:speedometer').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:position_tracker').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:binoculars').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fish_pickaxe').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fish_axe').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fish_shovel').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fish_hoe').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:moja_cola').withWeight(2)
   ]
 
   var LSP_T2 = [
-    Item.of('minecraft:air').withWeight(252),          // ~10% any-item share
-    Item.of('lovely_sparkle_pieces:crit_ring').withWeight(2),
-    Item.of('lovely_sparkle_pieces:memory_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:night_owl_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:crush_stone_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:eco_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:marksman_goggles').withWeight(2),
-    Item.of('lovely_sparkle_pieces:witch_hat').withWeight(2),
-    Item.of('lovely_sparkle_pieces:yellow_headscarf').withWeight(1),
-    Item.of('lovely_sparkle_pieces:jellyfish_helmet').withWeight(1),
-    Item.of('lovely_sparkle_pieces:poseidon_respirator').withWeight(1),
-    Item.of('lovely_sparkle_pieces:moon_amulet').withWeight(1),
-    Item.of('lovely_sparkle_pieces:magma_amulet').withWeight(1),
-    Item.of('lovely_sparkle_pieces:leather_quiver').withWeight(2),
-    Item.of('lovely_sparkle_pieces:resuscitator').withWeight(1),
-    Item.of('lovely_sparkle_pieces:guard_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:warrior_greaves').withWeight(1),
-    Item.of('lovely_sparkle_pieces:blade_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:crystal_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:roller_skates').withWeight(1),
-    Item.of('lovely_sparkle_pieces:waterwalk_boot').withWeight(1),
-    Item.of('lovely_sparkle_pieces:heavy_bigrock').withWeight(1),
-    Item.of('lovely_sparkle_pieces:adventurer_belt').withWeight(1),
-    Item.of('lovely_sparkle_pieces:double_night_vision').withWeight(1),
-    Item.of('lovely_sparkle_pieces:pda').withWeight(1),
-    Item.of('lovely_sparkle_pieces:global_positioning_system').withWeight(1),
-    Item.of('lovely_sparkle_pieces:pirate_scimitar').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fireball_staff').withWeight(1)
+    LootEntry.of('lovely_sparkle_pieces:crit_ring').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:memory_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:night_owl_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:crush_stone_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:eco_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:marksman_goggles').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:witch_hat').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:yellow_headscarf').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:jellyfish_helmet').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:poseidon_respirator').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:moon_amulet').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:magma_amulet').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:leather_quiver').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:resuscitator').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:guard_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:warrior_greaves').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:blade_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:crystal_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:roller_skates').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:waterwalk_boot').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:heavy_bigrock').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:adventurer_belt').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:double_night_vision').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:pda').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:global_positioning_system').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:pirate_scimitar').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fireball_staff').withWeight(1)
   ]
 
   var LSP_T3 = [
-    Item.of('minecraft:air').withWeight(180),          // ~10% any-item share
-    Item.of('lovely_sparkle_pieces:super_magnetic_ring').withWeight(2),
-    Item.of('lovely_sparkle_pieces:ender_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:inferno_ring').withWeight(1),
-    Item.of('lovely_sparkle_pieces:blackstone_heart').withWeight(1),
-    Item.of('lovely_sparkle_pieces:blaze_core').withWeight(1),
-    Item.of('lovely_sparkle_pieces:capitalist_heat').withWeight(1),
-    Item.of('lovely_sparkle_pieces:wood_grain_quiver').withWeight(1),
-    Item.of('lovely_sparkle_pieces:mermaid_tail').withWeight(1),
-    Item.of('lovely_sparkle_pieces:jumping_footwear').withWeight(1),
-    Item.of('lovely_sparkle_pieces:wind_leap_boots').withWeight(1),
-    Item.of('lovely_sparkle_pieces:quarter_night_vision').withWeight(1),
-    Item.of('lovely_sparkle_pieces:flame_soul_staff').withWeight(1),
-    Item.of('lovely_sparkle_pieces:fishing_treasure').withWeight(2),
-    Item.of('lovely_sparkle_pieces:necropsyche_papillon').withWeight(1),
-    Item.of('lovely_sparkle_pieces:domain_stone').withWeight(1),
-    Item.of('lovely_sparkle_pieces:soul_torch').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:super_magnetic_ring').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:ender_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:inferno_ring').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:blackstone_heart').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:blaze_core').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:capitalist_heat').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:wood_grain_quiver').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:mermaid_tail').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:jumping_footwear').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:wind_leap_boots').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:quarter_night_vision').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:flame_soul_staff').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:fishing_treasure').withWeight(2),
+    LootEntry.of('lovely_sparkle_pieces:necropsyche_papillon').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:domain_stone').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:soul_torch').withWeight(1),
     // Gambler set — all 5 pieces share the T3 pool so assembling the set is
     // a deliberate hunt (the set has its own dedicated slot row, 3/5 + 5/5).
-    Item.of('lovely_sparkle_pieces:gamblers_corsage').withWeight(1),
-    Item.of('lovely_sparkle_pieces:gamblers_earrings').withWeight(1),
-    Item.of('lovely_sparkle_pieces:gamblers_gold_coin').withWeight(1),
-    Item.of('lovely_sparkle_pieces:gamblers_dice').withWeight(1),
-    Item.of('lovely_sparkle_pieces:gamblers_poker').withWeight(1)
+    LootEntry.of('lovely_sparkle_pieces:gamblers_corsage').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:gamblers_earrings').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:gamblers_gold_coin').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:gamblers_dice').withWeight(1),
+    LootEntry.of('lovely_sparkle_pieces:gamblers_poker').withWeight(1)
   ]
 
   // ---------------------------------------------------------------------------
@@ -145,6 +171,7 @@ LootJS.modifiers(function (event) {
       /betterstrongholds:.*/,
       /bettermineshafts:.*/
     )
+    .randomChance(LSP_T1_SHARE)
     .addWeightedLoot(LSP_T1)
 
   // ---------------------------------------------------------------------------
@@ -153,6 +180,7 @@ LootJS.modifiers(function (event) {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+    .randomChance(LSP_T2_SHARE)
     .addWeightedLoot(LSP_T2)
 
   // ---------------------------------------------------------------------------
@@ -161,8 +189,12 @@ LootJS.modifiers(function (event) {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside')
+    .randomChance(LSP_T3_SHARE)
     .addWeightedLoot(LSP_T3)
 
+  // NOTE: the bastion_* tables are Nether chests, so they ALSO take the
+  // dimension-wide T3 roll above (two independent T3 rolls per bastion
+  // chest); ancient_city* is Overworld and takes only this one.
   event
     .addLootTableModifier(
       'minecraft:chests/ancient_city',
@@ -172,6 +204,7 @@ LootJS.modifiers(function (event) {
       'minecraft:chests/bastion_bridge',
       'minecraft:chests/bastion_hoglin_stable'
     )
+    .randomChance(LSP_T3_SHARE)
     .addWeightedLoot(LSP_T3)
 
   // ---------------------------------------------------------------------------
@@ -197,7 +230,7 @@ LootJS.modifiers(function (event) {
     }
   }
 
-  console.log('[lovely-pieces-loot] tier pools wired: T1=' + (LSP_T1.length - 1)
-    + ' T2=' + (LSP_T2.length - 1) + ' T3=' + (LSP_T3.length - 1)
+  console.log('[lovely-pieces-loot] tier pools wired: T1=' + LSP_T1.length
+    + ' T2=' + LSP_T2.length + ' T3=' + LSP_T3.length
     + ' legendaries=' + Object.keys(LSP_LEGENDARY_BOSSES).length + ' (boss-only)')
 })
