@@ -37,6 +37,8 @@
 // Speed values from native: waraxe -3.4, axe -3.0. Kept unchanged.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_tw = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_tw = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
@@ -98,3 +100,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] terramity_weapon_attributes bootstrap FAILED: ' + e)
 }
+})()

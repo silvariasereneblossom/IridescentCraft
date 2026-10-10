@@ -36,6 +36,8 @@
 // (Java.loadClass pattern); `.isEmpty()` WITH parens.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_mk2 = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_mk2 = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
@@ -129,3 +131,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] mekasuit_mk2_stats bootstrap FAILED: ' + e)
 }
+})()

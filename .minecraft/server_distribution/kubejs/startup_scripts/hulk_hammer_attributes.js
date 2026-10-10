@@ -53,6 +53,8 @@
 //     targets by (1 + attr_value). Hulk Hammer benefits from this.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_hh = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_hh = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
@@ -116,3 +118,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] hulk_hammer_attributes bootstrap FAILED: ' + e)
 }
+})()

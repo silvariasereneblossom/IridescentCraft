@@ -50,6 +50,8 @@
 //   (toughness 0 across all armor; iron has none)
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_vg = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_vg = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
@@ -158,3 +160,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] virtual_gold_clamp bootstrap FAILED: ' + e)
 }
+})()

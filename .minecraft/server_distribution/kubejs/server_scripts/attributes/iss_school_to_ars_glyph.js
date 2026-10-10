@@ -40,6 +40,8 @@
 //     LivingHurtEvent path for direct Ars elemental damage types.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_aspg = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var ResourceLocation_aspg = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -149,3 +151,4 @@ try {
 } catch (e) {
   console.warn('[iss_school_to_ars_glyph] bootstrap FAILED: ' + e)
 }
+})()

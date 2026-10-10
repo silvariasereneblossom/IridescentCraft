@@ -29,6 +29,8 @@
 // scopes), feedback_jar_audit.md (decompile when in doubt about API).
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_kb = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
@@ -160,3 +162,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] cap_player_knockback bootstrap FAILED: ' + e)
 }
+})()

@@ -36,6 +36,8 @@
 // Memory: feedback_rhino_scoping.md (var X = function(){} inside try)
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_rbd = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var ItemEntity_rbd = Java.loadClass('net.minecraft.world.entity.item.ItemEntity')
@@ -136,3 +138,4 @@ EntityEvents.death(function (event) {
     console.warn('[relic_boss_drops] dragon death handler error: ' + e)
   }
 })
+})()

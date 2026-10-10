@@ -50,6 +50,8 @@
 // the whole #icraft:magic_weapon roster.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_ime = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var DamageModifierRegistry_ime = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
@@ -104,6 +106,15 @@ try {
 
   // Deterministic UUIDs so vanilla de-dups across queries.
   // Pattern: a1c9e206-XX (enchant index)-YY (level)
+  // DO NOT change this pattern (2026-10-10 audit): these are the UUIDs live in
+  // production. They are transient item modifiers (recomputed from the stack
+  // on every query, never saved), so nothing persistent would orphan -- but a
+  // box that still carries the pre-2026-05-31 raw-listener copy of this script
+  // in kubejs/server_scripts runs BOTH handlers, and the two only collapse
+  // into one bonus because they emit identical UUIDs. A different pattern here
+  // would double every bonus there. (virtual_gold_clamp.js has its own mkUuid,
+  // a1c9e203-...; the two never collided: each lives in its file's try block,
+  // and this Rhino build scopes a `var` declared inside a block to that block.)
   var mkUuid = function(enchIdx, level) {
     var ei = (enchIdx < 16 ? '0' : '') + Number(enchIdx).toString(16)
     var lv = (level < 16 ? '0' : '') + Number(level).toString(16)
@@ -282,3 +293,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] icraft_magic_enchants bootstrap FAILED: ' + e)
 }
+})()

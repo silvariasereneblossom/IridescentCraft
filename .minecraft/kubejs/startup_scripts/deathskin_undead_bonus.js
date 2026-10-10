@@ -23,6 +23,8 @@
 // "damage vs mob-type" attribute system. The attribute stores the
 // bonus value (visible in tooltip), the LivingHurtEvent applies it.
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var DamageModifierRegistry_ds = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var LivingEntity_ds = Java.loadClass('net.minecraft.world.entity.LivingEntity')
@@ -78,3 +80,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] deathskin_undead_bonus bootstrap FAILED: ' + e)
 }
+})()

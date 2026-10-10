@@ -29,6 +29,8 @@
 // feedback_kubejs_event_scope.md (server_scripts only for Forge events).
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_lev = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var Player_lev = Java.loadClass('net.minecraft.world.entity.player.Player')
@@ -95,3 +97,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] cap_player_levitation bootstrap FAILED: ' + e)
 }
+})()

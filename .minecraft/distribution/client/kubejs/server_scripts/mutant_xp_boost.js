@@ -17,6 +17,8 @@
 // future mutantmonsters entity).
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_xp = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
 
@@ -49,3 +51,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] mutant_xp_boost bootstrap FAILED: ' + e)
 }
+})()

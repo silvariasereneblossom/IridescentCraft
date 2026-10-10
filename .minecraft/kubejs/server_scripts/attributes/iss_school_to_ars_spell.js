@@ -41,6 +41,8 @@
 //     ISS<->Ars mana_regen / max_mana bridge
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var DamageModifierRegistry_aspb = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var LivingEntity_aspb = Java.loadClass('net.minecraft.world.entity.LivingEntity')
@@ -117,3 +119,4 @@ try {
 } catch (e) {
   console.warn('[iss_school_to_ars] bootstrap FAILED: ' + e)
 }
+})()

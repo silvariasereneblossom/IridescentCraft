@@ -21,8 +21,14 @@
 // magic crit roll by the same amount). Cross-system synergy.
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks).
+//
+// 2026-10-10: the (stack, ench) level helper is named getBookEnchLevel_mc, not
+// getEnchLevel -- enchantments/enchant_effects.js owns the global
+// getEnchLevel(entity, enchId) and the two signatures are incompatible.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var EnchantmentHelper_mc = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
   var ResourceLocation_mc = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -44,7 +50,7 @@ try {
   if (!resolvedCritChance || !resolvedCritDamage) {
     console.log('[magic_crit] enchant ids not yet registered; handler is a no-op')
   } else {
-    var getEnchLevel = function(stack, ench) {
+    var getBookEnchLevel_mc = function(stack, ench) {
       try { return EnchantmentHelper_mc.getItemEnchantmentLevel(ench, stack) } catch (_) { return 0 }
     }
 
@@ -80,8 +86,8 @@ try {
 
         var stack = attacker.getMainHandItem()
         if (!stack || stack.isEmpty()) return
-        var critChanceLvl = getEnchLevel(stack, resolvedCritChance)
-        var critDamageLvl = getEnchLevel(stack, resolvedCritDamage)
+        var critChanceLvl = getBookEnchLevel_mc(stack, resolvedCritChance)
+        var critDamageLvl = getBookEnchLevel_mc(stack, resolvedCritDamage)
         if (critChanceLvl <= 0) return
 
         var enchChance = critChanceLvl * 0.05
@@ -114,3 +120,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] magic_crit_hook bootstrap FAILED: ' + e)
 }
+})()

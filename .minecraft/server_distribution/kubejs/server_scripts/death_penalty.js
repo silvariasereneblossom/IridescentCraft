@@ -22,6 +22,8 @@
 
 // ---- CONSTANTS ----
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 const DIMENSION_DURABILITY_LOSS = {
   'minecraft:overworld':                0.10,
   'twilightforest:twilight_forest':     0.12,
@@ -648,3 +650,4 @@ ServerEvents.loaded(event => {
   event.server.gameRules.get('keepInventory').set(true, event.server)
   console.log('[IridescentCraft] keepInventory enabled — death penalty handles consequences')
 })
+})()

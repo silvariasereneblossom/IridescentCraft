@@ -49,6 +49,8 @@
 // linked bonuses are the new primary mechanic.
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ItemAttributeRegistry_vrp = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var DamageModifierRegistry_vrp = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
@@ -209,3 +211,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] vorpal_rework bootstrap FAILED: ' + e)
 }
+})()

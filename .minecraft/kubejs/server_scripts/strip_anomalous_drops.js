@@ -42,6 +42,8 @@
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try)
 // =============================================================================
 
+// (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
+;(function () {
 try {
   var ForgeEventRegistry_sad = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var ForgeRegistries_sad = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
@@ -129,3 +131,4 @@ try {
 } catch (e) {
   console.warn('[IridescentCraft] strip_anomalous_drops bootstrap FAILED: ' + e)
 }
+})()
