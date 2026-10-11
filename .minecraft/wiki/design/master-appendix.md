@@ -1932,16 +1932,16 @@ Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStru
 | T1 | Apotheosis tome_tower | Magic | `apotheosis:chests/tome_tower` |
 | T1 | TotW Reworked tower | Magic | `totw_reworked:tower_chest` |
 | T1 | TotW Reworked ocean tower | Magic | `totw_reworked:ocean_tower_chest` |
-| T1 | Structory towers | Generic exploration | `structory_towers:.*chests.*` (regex) |
+| T1 | Structory towers | Generic exploration | `structory_towers:top/*` — the chest at the top of each tower, Overworld towers only |
 | T1 | Aquatic ruins | Aquatic | `minecraft:chests/buried_treasure`, `minecraft:chests/underwater_ruin_big`, `minecraft:chests/underwater_ruin_small` |
 | T1 | Woodland Mansion | Illager / dark | `minecraft:chests/woodland_mansion` |
 | T1 | Stronghold | Ancient / eldritch | `minecraft:chests/stronghold_corridor`, `minecraft:chests/stronghold_crossing`, `minecraft:chests/stronghold_library` |
-| T2 | Twilight Lich Tower | Eldritch | `twilightforest:structures/lichtower/*` (TBD exact IDs) |
+| T2 | Twilight Lich Tower | Eldritch | `twilightforest:chests/tower_room`, `twilightforest:chests/tower_library` |
 | T2 | Aether dungeons | Sky / cloud | aether boss-dungeon tables (TBD exact IDs) |
 | T2 | Blue Skies dungeons | Elemental | blue_skies dungeon tables (TBD exact IDs) |
 | T3 | Nether Fortress | Fire / blaze | `minecraft:chests/nether_bridge` |
 | T3 | Bastion Remnant | Piglin / gold | `minecraft:chests/bastion_treasure`, `minecraft:chests/bastion_hoglin_stable`, `minecraft:chests/bastion_bridge`, `minecraft:chests/bastion_other` |
-| T3 | Undergarden ruins | Underdark | undergarden ruin tables (TBD exact IDs) |
+| T3 | Undergarden catacombs | Underdark | `undergarden:chests/catacombs` |
 | T4 | End City | End / levitation | `minecraft:chests/end_city_treasure` |
 | T4 | Ancient City | Sculk / echo | `minecraft:chests/ancient_city`, `minecraft:chests/ancient_city_ice_box` |
 
@@ -2100,7 +2100,7 @@ moreartifacts:ruby_ring                moreartifacts:lucky_emerald_ring
 ars_nouveau:archmage_spell_book        irons_spellbooks:rare_ink
 ```
 
-**T3 Underdark** — Undergarden ruin tables (13 items):
+**T3 Underdark** — Undergarden catacombs (13 items):
 
 ```
 moreartifacts:enderian_scarf           moreartifacts:shadow_dust
@@ -2140,7 +2140,7 @@ relics:wool_mitten                     relics:shadow_glaive
 artifacts:scarf_of_invisibility
 ```
 
-**T4 Abyssal — orphaned item pool** *(originally targeted at an aspirational **T4** "Abyss marquee" structure that is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods. NB: this is **not** the in-pack T3 theabyss/TATOS dimension — TATOS loot is wired separately via `theabyss:chests/*` + Abyss bosses in `abyss_boss_loot.js`)*:
+**T4 Abyssal — orphaned item pool** *(originally targeted at an aspirational **T4** "Abyss marquee" structure that is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods. NB: this is **not** the in-pack T3 theabyss/TATOS dimension — TATOS has no chest that rolls a loot table, so its loot is wired through the Abyss bosses in `abyss_boss_loot.js`. The marquee rule that pointed this pool at `theabyss:chests/*` could never apply and was removed on 2026-10-11; every item of the pool also sits in a T3/T4 dimension pool)*:
 
 ```
 celestial_artifacts:abyss_core         celestial_artifacts:abyss_will_badge
@@ -2157,5 +2157,5 @@ relics:shadow_glaive                   relics:space_dissector
 - **ISS spellbook cap (2%).** `irons_spellbooks:copper_spell_book` (T1), `apprentice_spell_book` (T2), `archmage_spell_book` (T3) appear in themed pools where lore-fitting, capped at 2% per chest. Per the rationale in master.md Part XIII, the starter kit handles "hard to start magic" onboarding so higher legacy rates aren't justified.
 - **ISS scrolls are uncapped** and remain a primary mage-progression vector. They appear in T1 Magic and T1 Ancient / Eldritch pools per their tier.
 - **Cataclysm structures** are *intentionally not* in this roster. Cataclysm boss drops handle Cataclysm flavor; per-structure marquee pools on top would be double-coverage.
-- **Tables marked TBD** require packwiz/jar verification before final code wiring: T2 Lich Tower exact loot table IDs, T2 Aether dungeon tables, T2 Blue Skies dungeon tables, T3 Undergarden ruin tables, T4 Abyss marquee tables. Initial implementation may use partial coverage on TBD entries.
+- **Tables marked TBD** require packwiz/jar verification before final code wiring: T2 Aether dungeon tables, T2 Blue Skies dungeon tables. Initial implementation may use partial coverage on TBD entries. (Jar-verified 2026-10-11: the Lich Tower, Structory tower-top and Undergarden catacombs ids in the N.1 table.)
 - **`celestial_artifacts:ender_jump_scepter`** is flagged from the celestial_artifacts audit as ungated. Including in T4 End / levitation pool but mark for in-playtest verification — pull to boss-drop only if rate proves too generous.

@@ -6,6 +6,14 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Loot check: empty chests filled, luck skills pay out properly
+
+- **Chests that were always empty now hold loot.** A handful of structures pointed some of their chests at loot that did not exist: the underground floors of the sandstone Battle Tower (48 chests), and a few chests in abandoned houses, pillager fortresses, the labyrinth, bandit towers and three village workshops. They now roll the loot their structure was meant to give. Chests you have already opened stay as they are.
+- **Themed treasure reaches the places it was written for.** The chest at the top of a Structory tower, the Twilight Forest Lich Tower and the Undergarden catacombs now carry their themed artifact pool and enchanted book, and the Overworld villages added by Repurposed Structures follow the same village loot rules as every other village.
+- **The Dragon's Eye goes straight to whoever kills the Ender Dragon** instead of dropping where the dragon dies (often over the void). If the final blow has no owner — a bed or an End Crystal — the nearest player in the End receives it.
+- **Treasure Sense, Motherlode and Fortune's Favor are true extra rolls.** A Treasure Sense proc is a real second kill (Looting counts, player-only drops included); Motherlode and Fortune's Favor are real extra breaks with the tool in your hand (Fortune and Silk Touch count). Blocks that hold items, such as shulker boxes, never trigger them.
+- **The Infested Laboratory no longer hands out Tier 3 progression tokens** — it stands in the Overworld.
+
 ## October 2026 — Mapping what a world refresh would keep
 
 - **The server launcher can now work out which parts of the world are "somebody's".** Before any terrain is ever regenerated (for example to bring in new world generation), the launcher maps what must be kept: every player's bed chunk and the chunks around it, chunks claimed in Open Parties and Claims, the area around world spawn, waystones a player has activated or placed, and chunks players have spent real time in. The launcher window has a new **Customizer** tab for it: the rules are set on screen and the result is shown as totals, warnings and a map, with anything questionable flagged, such as a lived-in chunk that no rule protects.
