@@ -113,7 +113,7 @@
       try {
         var levels = server.getAllLevels().iterator()
         while (levels.hasNext()) {
-          var found = levels.next().getEntities(q.itemType, q.isMarker)
+          var found = levels.next().getEntities(q.itemType, q.isMarker) // CI-ignore: q.isMarker is the Predicate field of the plain JS `query` object built above, passed as a value
           var count = found ? found.size() : 0
           for (var i = 0; i < count; i++) found.get(i).kill()
         }

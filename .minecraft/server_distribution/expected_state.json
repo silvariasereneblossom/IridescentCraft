@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "de4830c4",
+    "generated_from":  "efa5e538",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6968,8 +6968,8 @@
                                                                                "size":  244
                                                                            },
                   "kubejs/server_scripts/compat/terramity_cave_gnome_cave_only.js":  {
-                                                                                         "sha256":  "b6eb4c301467718b069d21736fdec5b6d35e111de0263e872cf98d3f59c26500",
-                                                                                         "size":  1832
+                                                                                         "sha256":  "f0739b84b778ea99b901422b3404955ce093b76b0c56247a350a9781b5200068",
+                                                                                         "size":  1954
                                                                                      },
                   "kubejs/server_scripts/death_penalty.js":  {
                                                                  "sha256":  "e6327b2feef8be0e55b8d8591eba2a529299b0a755c4fc20b24b2d52b271fb38",
@@ -7476,8 +7476,8 @@
                                                                          "size":  6903
                                                                      },
                   "kubejs/server_scripts/ultris_randomizer_janitor.js":  {
-                                                                             "sha256":  "ad056272b50619d320a5db53d8b9a74605d14f4506c2826ea73f8f2ef93b2836",
-                                                                             "size":  6107
+                                                                             "sha256":  "5b8c57885f44db83974da607c838f49b3a12f71ce74cd59dd5faf2e392fe4620",
+                                                                             "size":  6217
                                                                          },
                   "kubejs/startup_scripts/boss_compass_item.js":  {
                                                                       "sha256":  "bf5df3917ff9be89e291a922acf9609d5707af319387d04c3638c4567583f603",

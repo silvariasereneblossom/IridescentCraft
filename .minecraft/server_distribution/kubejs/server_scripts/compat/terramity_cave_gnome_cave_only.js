@@ -26,7 +26,7 @@ EntityEvents.checkSpawn(event => {
   // Only the wild runtime mob-spawn loop; never eggs / structures / commands.
   if (String(event.type) !== 'NATURAL') return
   // Surface (direct sky access) -> deny; cave (sky-occluded) -> allow.
-  if (event.block.canSeeSky) event.cancel()
+  if (event.block.canSeeSky) event.cancel() // CI-ignore: bean getter BlockContainerJS.getCanSeeSky(), reads as a real boolean (javap + production Rhino, 2026-10-11)
 })
 
 console.log('[iridescent/cave_gnome] cave-only spawn gate active (wild surface spawns denied)')
