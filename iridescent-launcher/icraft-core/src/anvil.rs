@@ -87,11 +87,12 @@ pub struct Observed {
     pub len: u64,
     /// Its size or modified time moved between the first byte and the last:
     /// somebody wrote to it meanwhile. Both readings come from the handle the
-    /// bytes were read through. (Asked by path over a share, the answer can be
-    /// a cached one, and a file the server holds open then looks "changed" the
-    /// first time it is opened: seen on the live box 2026-10-11.) A write that
-    /// moves neither goes unnoticed, which is why a chunk that fails to parse
-    /// is read again whatever this says.
+    /// bytes were read through. (Asked by path instead, over the share, this
+    /// once reported a region file of the live world as written during a scan
+    /// in which no file's size, timestamp or SHA-256 had moved: 2026-10-11,
+    /// cause not pinned down.) A write that moves neither goes unnoticed,
+    /// which is why a chunk that fails to parse is read again whatever this
+    /// says.
     pub changed: bool,
 }
 
