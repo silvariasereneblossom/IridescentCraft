@@ -1,12 +1,14 @@
 package com.iridescentcraft.grandcompass;
 
 import com.iridescentcraft.grandcompass.item.GrandCompassItem;
+import com.iridescentcraft.grandcompass.search.GrandCompassSearch;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -50,5 +52,10 @@ public class GrandCompass {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modBus);
         TABS.register(modBus);
+
+        // Per-player search throttle state (cooldown + replay cache) must not
+        // outlive the player's session or the server it belongs to.
+        MinecraftForge.EVENT_BUS.addListener(GrandCompassSearch::onPlayerLoggedOut);
+        MinecraftForge.EVENT_BUS.addListener(GrandCompassSearch::onServerStopped);
     }
 }
