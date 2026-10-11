@@ -25,7 +25,11 @@ public class CapabilityRegistry {
     @SubscribeEvent
     public static void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         if (event.getObject() instanceof Player) {
-            event.addCapability(ACCURATED_EXP_LOCATION, new AccuratedExpProvider());
+            AccuratedExpProvider provider = new AccuratedExpProvider();
+            event.addCapability(ACCURATED_EXP_LOCATION, provider);
+            // IridescentCraft patch: release the provider's LazyOptional when the
+            // player's capabilities are invalidated (see AccuratedExpProvider).
+            event.addListener(provider::invalidate);
         }
     }
 }

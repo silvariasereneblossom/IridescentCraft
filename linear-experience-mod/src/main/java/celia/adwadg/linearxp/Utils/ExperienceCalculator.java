@@ -1,11 +1,8 @@
 package celia.adwadg.linearxp.Utils;
 
 import celia.adwadg.linearxp.ExperienceManager;
+import celia.adwadg.linearxp.ExperienceType;
 import celia.adwadg.linearxp.LinearXp;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 public class ExperienceCalculator {
 
@@ -110,20 +107,26 @@ public class ExperienceCalculator {
     public static double MultiplyXpDouble(int original, int level) {
         double handled;
 
-        LinearXp.LOGGER.debug("计算参数 - 原始经验: {}, 等级: {}, 模式: {}",
-                original, level, ExperienceManager.XPMODE);
+        // IridescentCraft patch: settings are read live from the config spec (see
+        // ExperienceManager) so linear-xp.toml edits apply without a restart. Each
+        // value is read once per call so one XP event sees one consistent set.
+        ExperienceType mode = ExperienceManager.xpMode();
 
-        handled = switch (ExperienceManager.XPMODE) {
+        LinearXp.LOGGER.debug("计算参数 - 原始经验: {}, 等级: {}, 模式: {}",
+                original, level, mode);
+
+        handled = switch (mode) {
             case STATIC -> {
                 int levelNeed = calculateExperience(level);
+                int staticXp = ExperienceManager.staticXp();
                 LinearXp.LOGGER.debug("STATIC模式 - 等级需求: {}, 静态经验: {}",
-                        levelNeed, ExperienceManager.STATICXP);
+                        levelNeed, staticXp);
 
                 if (levelNeed == 0) {
                     yield original; // 避免除零
                 }
 
-                double ratio = (double) levelNeed/ExperienceManager.STATICXP;
+                double ratio = (double) levelNeed/staticXp;
                 handled = original * ratio;
                 LinearXp.LOGGER.debug("STATIC计算结果 - 比率: {}, 结果: {}", ratio, handled);
                 yield handled;
@@ -131,9 +134,11 @@ public class ExperienceCalculator {
             case LINEAR -> {
                 int levelNeed = calculateExperience(level);
                 // 线性升级难度：基础 + 等级 × 加成
-                double linearNeed = ExperienceManager.LINEARBASE + ExperienceManager.LINEARADDITION * level;
+                int linearBase = ExperienceManager.linearBase();
+                int linearAddition = ExperienceManager.linearAddition();
+                double linearNeed = linearBase + linearAddition * level;
                 LinearXp.LOGGER.debug("LINEAR模式 - 原版需求: {}, 线性需求: {} (基础: {}, 加成: {})",
-                        levelNeed, linearNeed, ExperienceManager.LINEARBASE, ExperienceManager.LINEARADDITION);
+                        levelNeed, linearNeed, linearBase, linearAddition);
 
                 if (linearNeed == 0) {
                     yield original; // 避免除零
@@ -147,9 +152,10 @@ public class ExperienceCalculator {
             }
             case FORMULA -> {
                 int levelNeed = calculateExperience(level);
-                double formulaneed = calculateFormula(ExperienceManager.FORMULA,ExperienceManager.FORMULABASE,level);
+                int formulaBase = ExperienceManager.formulaBase();
+                double formulaneed = calculateFormula(ExperienceManager.formula(),formulaBase,level);
                 LinearXp.LOGGER.debug("FORMULA模式 - 原版需求: {}, 公式需求: {} (基础: {}, 公式结果: {})",
-                        levelNeed, formulaneed, ExperienceManager.FORMULABASE, calculateFormula(ExperienceManager.FORMULA,ExperienceManager.FORMULABASE,level));
+                        levelNeed, formulaneed, formulaBase, formulaneed);
 
                 if(formulaneed ==0){
                     yield original;

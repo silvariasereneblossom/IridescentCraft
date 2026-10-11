@@ -3,7 +3,7 @@ name = 'Linear Experience (Iridescent)'
 side = 'both'
 
 [download]
-hash = '6bdb5ecf4974b1699ad8e7a4c062b5853a5d0b276b28bd51fce080546b6765d8'
+hash = 'f76fbe006f4c3fdf9ae3aa6eebc48a05b671430eaf8cee33cd9dd9acf1131196'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/linearxp-1.0.0-iridescent.1.jar'
