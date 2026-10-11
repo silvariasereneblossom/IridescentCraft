@@ -272,7 +272,7 @@ LootJS.modifiers(event => {
   // Space Dissector — rare T4 dimension drop
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
     .addLoot(LootEntry.of('relics:space_dissector').when(c => c.randomChance(0.01)))
 
   // ── TERRAMITY GUN + AMMO + GUN-ARMOR STRIP ──
@@ -315,6 +315,50 @@ LootJS.modifiers(event => {
   let terramityEntityStrip = event.addLootTypeModifier(LootType.ENTITY)
   terramityGunStrip.forEach(id => terramityEntityStrip.removeLoot(id))
 
+  // ── TERRAMITY ARMOR-SET STRIP ──
+  // [2026-10-11, operator decision] The header above has always said "armor
+  // sets", but only guns and ammo were ever listed: the armor recipes were
+  // removed (recipes/recipe_audit.js I.2) while the pieces still dropped
+  // (conjuror set from terramity:entities/conjurling, evil_king set from
+  // entities/super_sniffer, dimlite boots in chests/infested_lab_loot, ...).
+  // Same ids as recipe_audit.js I.2, minus terramity:gundalfs_hat_helmet, which
+  // that list keeps as a boss drop. One predicate per roll instead of one
+  // removeLoot per id (64 ids).
+  let terramityArmorStrip = [
+    'terramity:conductite_armor_boots', 'terramity:conductite_armor_chestplate', 'terramity:conductite_armor_leggings',
+    'terramity:conductite_scouter_helmet', 'terramity:conjuror_boots', 'terramity:conjuror_chestplate',
+    'terramity:conjuror_helmet', 'terramity:conjuror_leggings', 'terramity:cosmilite_armor_boots',
+    'terramity:cosmilite_armor_chestplate', 'terramity:cosmilite_armor_helmet', 'terramity:cosmilite_armor_leggings',
+    'terramity:dimlite_boots', 'terramity:dimlite_chestplate', 'terramity:dimlite_helmet',
+    'terramity:dimlite_leggings', 'terramity:evil_king_armor_boots', 'terramity:evil_king_armor_chestplate',
+    'terramity:evil_king_armor_helmet', 'terramity:evil_king_armor_leggings', 'terramity:exodium_warlock_boots',
+    'terramity:exodium_warlock_chestplate', 'terramity:exodium_warlock_helmet', 'terramity:exodium_warlock_leggings',
+    'terramity:hellspec_boots', 'terramity:hellspec_chestplate', 'terramity:hellspec_helmet',
+    'terramity:hellspec_leggings', 'terramity:iridium_armor_boots', 'terramity:iridium_armor_chestplate',
+    'terramity:iridium_armor_helmet', 'terramity:iridium_armor_leggings', 'terramity:nyxium_knight_boots',
+    'terramity:nyxium_knight_chestplate', 'terramity:nyxium_knight_helmet', 'terramity:nyxium_knight_leggings',
+    'terramity:onyx_armor_boots', 'terramity:onyx_armor_chestplate', 'terramity:onyx_armor_helmet',
+    'terramity:onyx_armor_leggings', 'terramity:reverium_paladin_boots', 'terramity:reverium_paladin_chestplate',
+    'terramity:reverium_paladin_helmet', 'terramity:reverium_paladin_leggings', 'terramity:ruby_armor_boots',
+    'terramity:ruby_armor_chestplate', 'terramity:ruby_armor_helmet', 'terramity:ruby_armor_leggings',
+    'terramity:sapphire_armor_boots', 'terramity:sapphire_armor_chestplate', 'terramity:sapphire_armor_helmet',
+    'terramity:sapphire_armor_leggings', 'terramity:topaz_armor_boots', 'terramity:topaz_armor_chestplate',
+    'terramity:topaz_armor_helmet', 'terramity:topaz_armor_leggings', 'terramity:virentium_armor_boots',
+    'terramity:virentium_armor_chestplate', 'terramity:virentium_armor_helmet', 'terramity:virentium_armor_leggings',
+    'terramity:void_mage_boots', 'terramity:void_mage_chestplate', 'terramity:void_mage_helmet',
+    'terramity:void_mage_leggings',
+  ]
+  let terramityArmorSet = {}
+  terramityArmorStrip.forEach(id => { terramityArmorSet[id] = true })
+  let isTerramityArmor = function(stack) {
+    try {
+      if (!stack || stack.isEmpty()) return false
+      return terramityArmorSet[String(stack.id || '')] === true
+    } catch (e) { return false }
+  }
+  event.addLootTypeModifier(LootType.CHEST).removeLoot(ItemFilter.custom(isTerramityArmor))
+  event.addLootTypeModifier(LootType.ENTITY).removeLoot(ItemFilter.custom(isTerramityArmor))
+
   // ── TERRAMITY NON-GUN EPIC CURIO/MELEE STRIP ──
   // (audit Phase 4.1, 2026-04-27 — companion to the I.3 recipe removal in
   // recipes/recipe_audit.js. Strips the same items from chest+entity loot
@@ -350,7 +394,8 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn', 'minecraft:the_nether', 'undergarden:undergarden')
+      'blue_skies:everbright', 'blue_skies:everdawn', 'minecraft:the_nether', 'undergarden:undergarden',
+      'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(LootEntry.of('relics:shadow_glaive').when(c => c.randomChance(0.01)))
 
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
@@ -506,9 +551,10 @@ LootJS.modifiers(event => {
     .removeLoot('@ars_nouveau')
     .removeLoot(ItemFilter.custom(stripISSExceptScroll))  // was '@irons_spellbooks' — scrolls now exempt (see note above)
     .removeLoot('@moreartifacts')
-    // Saplings are useless clutter in chests — trees are everywhere. Uses
-    // the Forge common tag which aggregates vanilla + BoP + Aether + BlueSkies.
-    .removeLoot('#forge:saplings')
+    // Saplings are useless clutter in chests — trees are everywhere.
+    // (A second line stripped '#forge:saplings': no installed mod defines that
+    //  tag, so it matched nothing and LootJS does not warn about an empty tag.
+    //  Removed 2026-10-11; #minecraft:saplings has 75 members incl. modded.)
     .removeLoot('#minecraft:saplings')
 
   // ─── ISS CHEST RE-ADDS (registered AFTER the global ISS strip above) ───
@@ -582,18 +628,18 @@ LootJS.modifiers(event => {
       LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
     )
 
-  // T3 (Nether, Undergarden): Archmage spell book (3%)
+  // T3 (Nether, Undergarden, Deeper Darker, Abyss): Archmage spell book (3%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
     )
 
-  // T4 (End, Deeper Darker, Abyss): Archmage spell book (5%)
+  // T4 (End): Archmage spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
     )
@@ -675,20 +721,20 @@ LootJS.modifiers(event => {
   var glyphT3PerItem = 0.15 / glyphT3.length  // ~15% combined
   var glyphModT3 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
   glyphT3.forEach(g => {
     glyphModT3.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT3PerItem)))
   })
 
-  // AN has 3 tiers — no T4. End/DD/Abyss chests still get glyph drops,
+  // AN has 3 tiers — no T4. End chests still get glyph drops,
   // but they pull from AN T3 (the highest tier AN defines). Kept the
   // glyphT4 variable as an alias of glyphT3 so downstream `.concat(glyphT4)`
   // calls continue to work unchanged.
   var glyphT4 = glyphT3
-  var glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (now for AN T3 glyphs at End/DD/Abyss rate)
+  var glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (AN T3 glyphs at the End rate)
   var glyphModT4 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
   glyphT4.forEach(g => {
     glyphModT4.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT4PerItem)))
   })
@@ -854,12 +900,12 @@ LootJS.modifiers(event => {
   var artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
   artifactT3Pool.forEach(function(item) {
     modT3.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT3PerItem)))
   })
 
-  // --- T4 Pool (~16% combined) — End, Deeper Darker, Abyss ---
+  // --- T4 Pool (~16% combined) — End ---
   // Endgame artifacts + powerful relics.
   // (relics:enders_hand / space_dissector / elytra_booster / magic_mirror are on
   //  RELIC_DENY and are dropped by relicAllowed(): Ender's Hand stays Dragon-
@@ -899,7 +945,7 @@ LootJS.modifiers(event => {
   var artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
   artifactT4Pool.forEach(function(item) {
     modT4.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
   })
@@ -910,7 +956,7 @@ LootJS.modifiers(event => {
   // legendary find, not a tier-rate-shared chance.
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
     .addLoot(LootEntry.of('celestial_artifacts:flight_ring')
       .when(function(c) { return c.randomChance(0.005) }))
 
@@ -1298,6 +1344,17 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/blue_skies:chests\/.*/)
     .addLoot(LootEntry.of('blue_skies:runic_arc').when(c => c.randomChance(0.005)))
+
+  // --- Blue Skies: Dusk Arc is removed from the pack (recipe_audit.js L.1) ---
+  // [2026-10-11] "Dusk Arc removed entirely (too strong for T2)" had only removed
+  // a recipe; the arc is not crafted, it comes out of the Alchemist's boss loot
+  // bag (blue_skies:loot_bags/alchemist/common|uncommon|rare), so it was still
+  // obtainable. A loot bag is rolled by the item with the EMPTY parameter set
+  // (read from LootBagItem's bytecode), so LootType.CHEST rules never see it:
+  // the strip has to be keyed on the table id.
+  event
+    .addLootTableModifier(/blue_skies:loot_bags\/alchemist\/.*/)
+    .removeLoot('blue_skies:dusk_arc')
 
   // --- Aether (191 tables, targeting chests only) ---
   // T2-T3: Aether dimension dungeons (bronze/silver/gold)
@@ -1910,18 +1967,18 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.075)))
 
-  // T3 (Nether, Undergarden): Scrolls, gold/diamond spell books, rare ink
+  // T3 (Nether, Undergarden, Deeper Darker, Abyss): Scrolls, gold/diamond spell books, rare ink
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
 
-  // T4 (End, Deeper Darker, Abyss): Scrolls, diamond/netherite spell books, epic ink
+  // T4 (End): Scrolls, diamond/netherite spell books, epic ink
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_end')
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.045)))
@@ -2820,6 +2877,17 @@ LootJS.modifiers(event => {
   // opts.spellbook   — ISS spellbook ID to add at 2% cap, or null
   // opts.book        — true to add an enchanted book (10%, tier-scaled levels)
   // opts.strip       — array of item IDs to remove first
+  // opts.dimension   — only where the chest is in this dimension
+  // opts.structure   — only where the chest stands inside this worldgen structure
+  //
+  // WHY dimension / structure (2026-10-11): a loot TABLE is not a place. Other
+  // mods reuse vanilla tables in their own structures, and a rule keyed on the
+  // table id follows the table: minecraft:chests/end_city_treasure is also rolled
+  // by four Cataclysm Frosted Prison pieces (Overworld), and
+  // minecraft:chests/ancient_city by one Explorify tavern room (Overworld
+  // surface). Both got the T4 marquee. The condition is added BEFORE the
+  // actions (a LootJS condition only gates what comes after it) and is passed
+  // on to the queued enchanted book.
   function applyMarquee(tableRefs, opts) {
     var tables = (tableRefs instanceof Array) ? tableRefs : [tableRefs]
     var theme = relicAllowed(opts.theme)       // RELIC_DENY ids never enter a pool
@@ -2833,13 +2901,23 @@ LootJS.modifiers(event => {
       // loot/zz_pack_enchanted_books.js registers one modifier per queued table.
       if (opts.book) {
         global.ICRAFT_MARQUEE_BOOKS.push({
-          table: table, minLevel: bookLevels[0], maxLevel: bookLevels[1], chance: 0.10
+          table: table, minLevel: bookLevels[0], maxLevel: bookLevels[1], chance: 0.10,
+          dimension: opts.dimension || null, structure: opts.structure || null
         })
       }
       // A LootJS modifier with zero actions throws and takes every later
       // modifier down with it — only open one if something goes into it.
       if (!hasStrip && !theme.length && !opts.scroll && !opts.spellbook) return
       var mod = event.addLootTableModifier(table)
+      // In a try: a throw here would end the whole LootJS event (every later loot
+      // script would register nothing). If a condition cannot be built the
+      // marquee stays unconfined, which is what it was before.
+      try {
+        if (opts.dimension) mod.anyDimension(opts.dimension)
+        if (opts.structure) mod.anyStructure([opts.structure], false)   // false = anywhere inside the structure's bounding box
+      } catch (e) {
+        console.error('[icraft-loot] marquee condition not applied for ' + table + ': ' + e)
+      }
       if (hasStrip) {
         opts.strip.forEach(function(item) { mod.removeLoot(item) })
       }
@@ -2915,11 +2993,16 @@ LootJS.modifiers(event => {
     { theme: T3_UNDERDARK, tier: 3, book: true })
 
   // === T4 marquees ===
+  // End only: Cataclysm's Frosted Prison (Overworld, a T3 arena) also rolls
+  // end_city_treasure in four of its pieces. Its Ruined Citadel and the other
+  // End structures that reuse the table are in the End and keep the marquee.
   applyMarquee('minecraft:chests/end_city_treasure',
-    { theme: T4_END, tier: 4, book: true })
+    { theme: T4_END, tier: 4, book: true, dimension: 'minecraft:the_end' })
+  // Inside a real Ancient City only (operator decision 2026-10-11): Explorify's
+  // tavern room 14 rolls minecraft:chests/ancient_city on the Overworld surface.
   applyMarquee(['minecraft:chests/ancient_city',
                 'minecraft:chests/ancient_city_ice_box'],
-    { theme: T4_SCULK, tier: 4, book: true })
+    { theme: T4_SCULK, tier: 4, book: true, structure: 'minecraft:ancient_city' })
   // The Abyss marquees.
   // NOTE (2026-10-11): matches NO table and never will with the installed The
   // Abyss -- see the note on the theabyss:chests strip above (no Abyss chest
@@ -3041,7 +3124,7 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.006)))
   })
 
-  // T3 Nether/Undergarden relics (fire, decay, advanced utility)
+  // T3 Nether/Undergarden/Deeper Darker/Abyss relics (fire, decay, advanced utility)
   var t3Relics = [
     'rpgseteffects:builders_flight_charm', // [2026-06-08] moved from T1 (operator: creative-flight basebuilding utility reads as a T3 effect, not starter loot)
     'rpgseteffects:fire_immunity_relic',
@@ -3055,11 +3138,11 @@ LootJS.modifiers(event => {
   t3Relics.forEach(relic => {
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+      .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.008)))
   })
 
-  // T4 End/Deeper Darker/Abyss relics (endgame — strongest passives)
+  // T4 End relics (endgame — strongest passives)
   var t4Relics = [
     'rpgseteffects:wither_immunity_relic',
     'rpgseteffects:beastheart_relic',
@@ -3069,7 +3152,7 @@ LootJS.modifiers(event => {
   t4Relics.forEach(relic => {
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+      .anyDimension('minecraft:the_end')
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.010)))
   })
 
@@ -3247,7 +3330,7 @@ LootJS.modifiers(event => {
   //  @artifacts/@relics strip, per-tower "rebuilt" pools, village spell books.)
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
   console.log('  - Global chest strip: @ars_nouveau, irons_spellbooks (scrolls exempt), @moreartifacts, saplings, the denied relics')
-  console.log('  - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG, T4(16%) End/DD/Abyss (RELIC_DENY filtered)')
+  console.log('  - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG/DD/Abyss, T4(16%) End (RELIC_DENY filtered)')
   console.log('  - Tiered by dimension: Ars glyphs + spell books, Iron\'s Spellbooks books + inks, class-artifact relics')
   console.log('  - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)')
   console.log('  - Diamonds + diamond gear stripped from every chest in the Overworld and the T2 dimensions')

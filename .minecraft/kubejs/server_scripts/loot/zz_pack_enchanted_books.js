@@ -72,20 +72,20 @@
           .when(function (c) { return c.randomChance(0.10) })
       )
 
-    console.log('[icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden, 12.5%, levels 20-30)')
+    console.log('[icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden/DD/Abyss, 12.5%, levels 20-30)')
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+      .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
       .addLoot(
         LootEntry.of('minecraft:book')
           .enchantWithLevels(UniformGenerator.between(20, 30), true)
           .when(function (c) { return c.randomChance(0.125) })
       )
 
-    console.log('[icraft-loot] Registering T4 enchanted_book re-add (End/DD/Abyss, 15%, level 30)')
+    console.log('[icraft-loot] Registering T4 enchanted_book re-add (End, 15%, level 30)')
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+      .anyDimension('minecraft:the_end')
       .addLoot(
         LootEntry.of('minecraft:book')
           .enchantWithLevels(ConstantValue.exactly(30), true)
@@ -106,7 +106,20 @@
       var entry = LootEntry.of('minecraft:book')
         .enchantWithLevels(UniformGenerator.between(q.minLevel, q.maxLevel), true)
         .when(function (c) { return c.randomChance(chance) })
-      event.addLootTableModifier(q.table).addLoot(entry)
+      // q.dimension / q.structure: the marquee is confined to a dimension or to
+      // one worldgen structure (see applyMarquee in lootjs_overhaul.js). The
+      // condition goes BEFORE the add: a LootJS condition gates what follows it.
+      // A failed condition must not leave the modifier without its action (an
+      // action-less modifier throws in LootJS and drops every modifier after it),
+      // so the add always runs; the book is then unconfined, as before.
+      var mod = event.addLootTableModifier(q.table)
+      try {
+        if (q.dimension) mod.anyDimension(q.dimension)
+        if (q.structure) mod.anyStructure([q.structure], false)
+      } catch (e) {
+        console.error('[icraft-loot] marquee book condition not applied for ' + q.table + ': ' + e)
+      }
+      mod.addLoot(entry)
     }
     var done = 0
     for (var i = 0; i < queued.length; i++) {

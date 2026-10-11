@@ -188,17 +188,32 @@ LootJS.modifiers(function (event) {
   // ---------------------------------------------------------------------------
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .randomChance(LSP_T3_SHARE)
     .addWeightedLoot(LSP_T3)
 
   // NOTE: the bastion_* tables are Nether chests, so they ALSO take the
   // dimension-wide T3 roll above (two independent T3 rolls per bastion
   // chest); ancient_city* is Overworld and takes only this one.
+  // [2026-10-11] Two modifiers instead of one, same share and pool. The Ancient
+  // City pair is confined to the real structure (operator decision): Explorify's
+  // tavern room 14 rolls minecraft:chests/ancient_city on the Overworld surface
+  // and was getting this T3 roll. The condition comes first (it gates what
+  // follows) and is in a try: a failure must leave the old unconfined rule, not
+  // throw out of this handler (that would end the whole LootJS event).
+  var lspCity = event.addLootTableModifier(
+    'minecraft:chests/ancient_city',
+    'minecraft:chests/ancient_city_ice_box'
+  )
+  try { lspCity.anyStructure(['minecraft:ancient_city'], false) } catch (e) {
+    console.error('[lovely-pieces-loot] Ancient City gate not applied: ' + e)
+  }
+  lspCity
+    .randomChance(LSP_T3_SHARE)
+    .addWeightedLoot(LSP_T3)
+
   event
     .addLootTableModifier(
-      'minecraft:chests/ancient_city',
-      'minecraft:chests/ancient_city_ice_box',
       'minecraft:chests/bastion_treasure',
       'minecraft:chests/bastion_other',
       'minecraft:chests/bastion_bridge',

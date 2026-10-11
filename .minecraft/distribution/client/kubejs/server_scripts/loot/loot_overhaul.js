@@ -441,14 +441,32 @@ LootJS.modifiers(event => {
     // =====================================================================
 
     // End structures — Ultimate Reforging Token (preserved; not legacy currency)
-    event.addLootTableModifier(
-        "minecraft:chests/end_city_treasure",
-        "minecraft:chests/ancient_city"        // Ancient City = T3/T4 bridge
+    // [2026-10-11] Split in two and confined, same rate. A table is not a place:
+    // end_city_treasure is also rolled by four Cataclysm Frosted Prison pieces
+    // (Overworld), and ancient_city by one Explorify tavern room (Overworld
+    // surface), so both of those handed out this endgame token. The condition is
+    // registered before the add (a LootJS condition gates what follows it); it is
+    // in a try so that a failure leaves the old, unconfined rule, not a throw
+    // that would end the whole LootJS event.
+    var urtEnd = event.addLootTableModifier("minecraft:chests/end_city_treasure")
+    try { urtEnd.anyDimension('minecraft:the_end') } catch (e) {
+        console.error('[icraft-loot] reforging-token End gate not applied: ' + e)
+    }
+    urtEnd.addLoot(
+        LootEntry.of("kubejs:ultimate_reforging_token")
+            .when(c => c.randomChance(0.08))
     )
-        .addLoot(
-            LootEntry.of("kubejs:ultimate_reforging_token")
-                .when(c => c.randomChance(0.08))
-        )
+
+    // Ancient City = T3/T4 bridge. Inside a real Ancient City only (operator
+    // decision 2026-10-11). `false` = anywhere inside the structure's bounds.
+    var urtCity = event.addLootTableModifier("minecraft:chests/ancient_city")
+    try { urtCity.anyStructure(['minecraft:ancient_city'], false) } catch (e) {
+        console.error('[icraft-loot] reforging-token Ancient City gate not applied: ' + e)
+    }
+    urtCity.addLoot(
+        LootEntry.of("kubejs:ultimate_reforging_token")
+            .when(c => c.randomChance(0.08))
+    )
 
 
     // =====================================================================
@@ -634,13 +652,22 @@ LootJS.modifiers(event => {
     // fishing loot tables that would break progression.
     // =====================================================================
 
+    // [2026-10-11] This rule was keyed on "minecraft:gameplay/fishing/treasure" and
+    // had NEVER fired. Fishing rolls minecraft:gameplay/fishing; `treasure` is a
+    // `loot_table` entry inside it, and Forge runs loot modifiers (LootJS
+    // included) for the ROOT table only (read from the 47.4.6 bytecode: the nested
+    // roll goes through the raw method, which has no modifier hook). Keyed on the
+    // root table the strip is the same thing: in vanilla these three items come
+    // out of fishing only through the treasure sub-table.
+    // Saddles and name tags: operator decision 2026-10-11, strip them (the code
+    // always said strip; an old comment said "keep").
+    // Second root: Aquaculture's Neptunium rod rolls its own table, which nests
+    // the same vanilla treasure table.
     event.addLootTableModifier(
-        "minecraft:gameplay/fishing/treasure"
+        "minecraft:gameplay/fishing",
+        "aquaculture:gameplay/fishing/neptunium"
     )
         .removeLoot("minecraft:enchanted_book")     // Apotheosis handles enchanting
-        // The two lines below REMOVE saddles and name tags from fishing treasure.
-        // Their old trailing comments said "Keep — utility", the opposite of what
-        // the code does; the code is unchanged (2026-10-10, comment fix only).
         .removeLoot("minecraft:saddle")
         .removeLoot("minecraft:name_tag")
 

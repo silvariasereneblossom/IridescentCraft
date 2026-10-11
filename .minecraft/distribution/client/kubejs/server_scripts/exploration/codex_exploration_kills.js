@@ -332,7 +332,7 @@ const EXPLORE_DIMENSIONS = {
   // --- T4 dimensions ---
   'deep_aether:the_aether':         { tier: 4, key: 'deep_aether' },
   'minecraft:the_end':              { tier: 4, key: 'the_end' },
-  'theabyss:the_abyss':             { tier: 4, key: 'the_abyss' },
+  'theabyss:the_abyss':             { tier: 3, key: 'the_abyss' },   // tier 3 like the stage gate (2026-10-11); same t3 token either way
 }
 
 global.tick_codexDimEntryBonus = (event) => {

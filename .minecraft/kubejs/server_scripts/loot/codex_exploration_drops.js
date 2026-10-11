@@ -101,7 +101,9 @@ LootJS.modifiers(event => {
     )
 
   // ===========================================================================
-  // T3 — NETHER / UNDERGARDEN / DEEPER DARKER — every chest in the dimension.
+  // T3 — NETHER / UNDERGARDEN / DEEPER DARKER / THE ABYSS — every chest in the
+  // dimension. (The Abyss moved here from the T4 rule below on 2026-10-11:
+  // operator decision, the stage gate is right, the Abyss is tier 3.)
   // Higher density: ~45% for a 2-5 stack.
   // ===========================================================================
   event
@@ -109,14 +111,15 @@ LootJS.modifiers(event => {
     .anyDimension(
       'minecraft:the_nether',
       'undergarden:undergarden',
-      'deeperdarker:otherside'
+      'deeperdarker:otherside',
+      'theabyss:the_abyss'
     )
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([2, 5]).when(c => c.randomChance(0.45))
     )
 
   // ===========================================================================
-  // T4 — END / THE ABYSS — every chest in the dimension.
+  // T4 — END — every chest in the dimension.
   // Highest density: ~50% for a 3-6 stack. T4 has no token of its own, so the
   // endgame dimensions seed the t3 accumulation token (terminal-tier — these
   // tokens are spendable engineering/exploration currency, not a T4 gate).
@@ -130,8 +133,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
-      'minecraft:the_end',
-      'theabyss:the_abyss'
+      'minecraft:the_end'
     )
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([3, 6]).when(c => c.randomChance(0.50))
@@ -179,7 +181,7 @@ LootJS.modifiers(event => {
     ['twilightforest:twilight_forest', 'aether:the_aether',
      'blue_skies:everbright', 'blue_skies:everdawn'])
 
-  // T3 dimensions — Nether / Undergarden / Deeper Darker common hostiles.
+  // T3 dimensions — Nether / Undergarden / Deeper Darker / Abyss common hostiles.
   seedMobDrops(
     ['minecraft:zombified_piglin', 'minecraft:piglin', 'minecraft:blaze',
      'minecraft:wither_skeleton', 'minecraft:hoglin', 'minecraft:magma_cube',
@@ -187,9 +189,9 @@ LootJS.modifiers(event => {
      'deeperdarker:sculk_centipede', 'deeperdarker:sculk_leech'],
     TOK_T3, 0.04,
     ['minecraft:the_nether', 'undergarden:undergarden',
-     'deeperdarker:otherside'])
+     'deeperdarker:otherside', 'theabyss:the_abyss'])
 
-  // T4 dimensions (t3 token — terminal tier) — End / Abyss.
+  // T4 dimensions (t3 token — terminal tier) — End.
   // ('deep_aether:the_aether' dropped from the dimension list 2026-10-10: not a
   //  dimension. deep_aether:venomite spawns in a Deep Aether biome of
   //  aether:the_aether (yagroot_swamp), so its entry here only fires for one
@@ -199,7 +201,7 @@ LootJS.modifiers(event => {
     ['minecraft:enderman', 'minecraft:shulker', 'minecraft:endermite',
      'deep_aether:venomite'],  // were tempest/skyhunter (no such entities -> pig) 2026-06-06
     TOK_T3, 0.05,
-    ['minecraft:the_end', 'theabyss:the_abyss'])
+    ['minecraft:the_end'])
 
   console.log('[codex_exploration_drops] Codex progression tokens injected into ' +
     'chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + ' +
