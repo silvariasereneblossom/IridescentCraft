@@ -1299,6 +1299,7 @@ dependencies = [
  "anyhow",
  "base64 0.22.1",
  "chrono",
+ "flate2",
  "log",
  "serde",
  "serde_json",

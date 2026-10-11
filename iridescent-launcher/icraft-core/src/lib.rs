@@ -17,9 +17,19 @@
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
 //!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
 //!
+//! Server Customizer, Phase B (on demand only -- nothing below is called from
+//! [`serve`] or a Cycle, and none of it writes inside the world folder):
+//!
+//!   - [`nbt`], [`anvil`], [`worlddata`] — read a world: NBT, region files,
+//!     dimensions, player and mod data
+//!   - [`protection`] — the chunks a regeneration must keep (beds, claims,
+//!     spawn, waystones, lived-in, manual)
+//!   - [`regen`]     — the protection report and regeneration DRY-RUN
+//!
 //! [`config`] holds path constants, Forge version, allowlists. [`log`]
 //! provides the trans-flag-colored banner used at startup.
 
+pub mod anvil;
 pub mod backup;
 pub mod banner;
 pub mod config;
@@ -33,12 +43,17 @@ pub mod github;
 pub mod http;
 pub mod install;
 pub mod mods;
+pub mod nbt;
 pub mod packwiz;
+pub mod png;
+pub mod protection;
+pub mod regen;
 pub mod restart_policy;
 pub mod run;
 pub mod self_update;
 pub mod sync;
 pub mod tools;
+pub mod worlddata;
 
 use anyhow::Result;
 

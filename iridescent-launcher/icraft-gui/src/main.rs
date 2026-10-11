@@ -217,6 +217,16 @@ struct IcraftApp {
     /// When "Back up now" was last clicked: keeps the GUI repainting until the
     /// request watcher (10 s poll) has picked the request up.
     backup_requested_at: Option<Instant>,
+    /// Regeneration dry-run inputs: 0 = protection report only, 1 = ring
+    /// around each bed, 2 = everything unprotected, 3 = an explicit box.
+    regen_scope: usize,
+    regen_ring: String,
+    regen_box: String,
+    regen_dims: String,
+    /// The newest answer in the dry-run's result file (unix seconds, text).
+    regen_answer: Option<(u64, String)>,
+    last_regen_refresh: Option<Instant>,
+    regen_requested_at: Option<Instant>,
 }
 
 #[derive(Default, Clone)]
@@ -738,6 +748,28 @@ fn spawn_backup_request_watcher() {
 }
 
 // =============================================================================
+// Protection report / regeneration dry-run -- request file
+// =============================================================================
+//
+// icraft_core::regen reads the world and writes a report; it deletes nothing
+// and never writes inside the world folder, so unlike a backup it does not
+// wait for the JVM to be down. This thread serves the request file (the
+// "Protection report / Regen dry-run" button, request_regen_report.ps1, or a
+// file dropped over the share). It is not part of serve() or a Cycle, and
+// nothing here ever runs on its own.
+
+const REGEN_REQUEST_POLL: Duration = Duration::from_secs(10);
+
+/// Started once in `IcraftApp::new`.
+fn spawn_regen_request_watcher() {
+    std::thread::spawn(|| loop {
+        std::thread::sleep(REGEN_REQUEST_POLL);
+        let Some(dir) = APP_SERVER_DIR.lock().unwrap().clone() else { continue };
+        icraft_core::regen::poll_request(&ServerConfig::from_path(dir));
+    });
+}
+
+// =============================================================================
 // Uptime restart policy -- Cycle at 4 h empty / 12 h with players
 // =============================================================================
 //
@@ -904,6 +936,7 @@ impl IcraftApp {
         spawn_listener_probe();
         spawn_cycle_request_watcher();
         spawn_backup_request_watcher();
+        spawn_regen_request_watcher();
         spawn_restart_policy();
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
@@ -932,6 +965,13 @@ impl IcraftApp {
             backup: icraft_core::backup::Status::default(),
             last_backup_refresh: None,
             backup_requested_at: None,
+            regen_scope: 0,
+            regen_ring: "8".to_string(),
+            regen_box: String::new(),
+            regen_dims: "minecraft:overworld".to_string(),
+            regen_answer: None,
+            last_regen_refresh: None,
+            regen_requested_at: None,
         };
         app.refresh_status();
         app.kick_remote_refresh();
@@ -1168,6 +1208,18 @@ impl eframe::App for IcraftApp {
             ctx.request_repaint_after(Duration::from_millis(2000));
         }
 
+        // Dry-run answer: same slow clock as the backup badge. Keep painting
+        // while a report is being computed or was just asked for.
+        if self.last_regen_refresh.map_or(true, |t| t.elapsed() >= Duration::from_secs(5)) {
+            self.regen_answer = icraft_core::regen::last_answer(&self.server_dir);
+            self.last_regen_refresh = Some(Instant::now());
+        }
+        if icraft_core::regen::in_progress()
+            || self.regen_requested_at.is_some_and(|t| t.elapsed() < Duration::from_secs(30))
+        {
+            ctx.request_repaint_after(Duration::from_millis(2000));
+        }
+
         // Resume-after-self-update: the previous instance relaunched mid-Cycle
         // to apply a newer launcher binary and left the resume sentinel (taken
         // in new()). Now that we're up and idle, continue the Cycle so the
@@ -1222,8 +1274,15 @@ impl eframe::App for IcraftApp {
             self.draw_log_pane(ui);
         });
 
+        // The sections no longer fit the window at its default size, so the
+        // panel scrolls (a no-op when everything fits).
         egui::CentralPanel::default().show(ctx, |ui| {
-            self.draw_action_buttons(ui);
+            egui::ScrollArea::vertical()
+                .id_source("actions")
+                .auto_shrink([false, false])
+                .show(ui, |ui| {
+                    self.draw_action_buttons(ui);
+                });
         });
     }
 }
@@ -1528,6 +1587,64 @@ impl IcraftApp {
                 self.backup_requested_at = Some(Instant::now());
             }
         });
+
+        ui.add_space(8.0);
+        ui.heading("World regeneration (dry-run only)");
+        ui.label(egui::RichText::new(
+            "Works out which chunks a regeneration would KEEP (beds, claims, world spawn, waystones, lived-in chunks, the manual lists in .icraft_regen_policy) and which it would reset, and writes it to regen-reports\\<time>-<scope>\\ (report.txt, chunks.csv, warnings.csv, plan.json, a PNG map). It only READS the world: nothing is deleted or changed, and it is safe while the server is running. Executing a plan is not built yet."
+        ).small().weak());
+        ui.add_space(2.0);
+        ui.horizontal_wrapped(|ui| {
+            ui.label("Would regenerate:");
+            ui.radio_value(&mut self.regen_scope, 0, "nothing (protection report)");
+            ui.radio_value(&mut self.regen_scope, 1, "a ring around each bed, chunks:");
+            ui.add(egui::TextEdit::singleline(&mut self.regen_ring).desired_width(36.0));
+            ui.radio_value(&mut self.regen_scope, 2, "everything unprotected");
+            ui.radio_value(&mut self.regen_scope, 3, "a box of chunks x1,z1,x2,z2:");
+            ui.add(egui::TextEdit::singleline(&mut self.regen_box).desired_width(150.0));
+        });
+        ui.horizontal_wrapped(|ui| {
+            ui.label("Dimensions:");
+            ui.add(
+                egui::TextEdit::singleline(&mut self.regen_dims)
+                    .desired_width(260.0)
+                    .hint_text("minecraft:overworld (comma-separated, or all)"),
+            );
+            // Not gated on `busy`: it reads only, and has to work while a
+            // server task is running.
+            if ui.add(egui::Button::new("Protection report / Regen dry-run").min_size(egui::vec2(250.0, 28.0))).clicked() {
+                let scope = match self.regen_scope {
+                    1 => format!("ring:{}", self.regen_ring.trim()),
+                    2 => "all".to_string(),
+                    3 => format!("box:{}", self.regen_box.trim().replace(' ', "")),
+                    _ => "report".to_string(),
+                };
+                let dims = self.regen_dims.trim().replace(' ', "");
+                let dims = if dims.is_empty() { "minecraft:overworld".to_string() } else { dims };
+                let options = format!("scope={scope} dims={dims}");
+                // Checked here so a typo is reported at once, not 10 s later.
+                match icraft_core::regen::RunSpec::parse_tokens(options.split_whitespace()) {
+                    Err(why) => log::warn!("[regen] not requested: {why}"),
+                    Ok(_) => match icraft_core::regen::write_request(&self.server_dir, "gui", &options) {
+                        Ok(()) => log::info!(
+                            "[regen] dry-run requested ({options}) -- starts within ~10 s; it only reads the world"
+                        ),
+                        Err(e) => log::warn!("[regen] could not write the request file: {e}"),
+                    },
+                }
+                self.regen_requested_at = Some(Instant::now());
+                self.last_regen_refresh = None;
+            }
+        });
+        let regen_status = if icraft_core::regen::in_progress() {
+            "running -- reading the world (nothing is modified)".to_string()
+        } else {
+            match &self.regen_answer {
+                Some((_, answer)) => answer.clone(),
+                None => "no report has been requested yet".to_string(),
+            }
+        };
+        ui.label(egui::RichText::new(format!("Last dry-run: {regen_status}")).small());
 
         ui.add_space(8.0);
         ui.heading("Sync + install");

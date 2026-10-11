@@ -22,6 +22,10 @@ base64 = "0.22"
 # diffs and CANNOT verify against the manifest's hex digests. sha2 is the
 # de-facto RustCrypto SHA-256; pure-Rust, no C deps.
 sha2 = "0.10"
+# Server Customizer (nbt.rs / anvil.rs / png.rs): world files are gzip- or
+# zlib-compressed NBT. flate2 is already in the build through `zip`, with the
+# same pure-Rust backend (miniz_oxide); naming it here adds no new crate.
+flate2 = "1"
 
 # Win32 console mode (disable QuickEdit at startup) + watchdog soft-kick
 # (write \r\n to child stdin before the hard kill). Pulled in only on

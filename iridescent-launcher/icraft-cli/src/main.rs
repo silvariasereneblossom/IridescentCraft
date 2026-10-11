@@ -120,6 +120,35 @@ enum Cmd {
     /// Show the world-backup policy, health and verified backups.
     BackupStatus,
 
+    /// Protection map + chunk-regeneration DRY-RUN. Reads the world and
+    /// writes a report; deletes nothing and never writes inside the world
+    /// folder. Safe while the server runs, and --server-dir may be a share.
+    RegenDryrun {
+        /// What a regeneration would select: `report` (nothing: the
+        /// protection map only), `ring:N` (every chunk within N chunks of a
+        /// bed), `all`, or `box:x1,z1,x2,z2` (chunk coordinates).
+        #[arg(long, default_value = "report")]
+        scope: String,
+        /// Dimensions to analyse: comma-separated ids, or `all`.
+        #[arg(long, default_value = "minecraft:overworld")]
+        dims: String,
+        /// Override a protection setting for this run (repeatable), e.g.
+        /// `--set inhabited_min_ticks=72000 --set waystones=activated`.
+        /// The keys are those of the .icraft_regen_policy file.
+        #[arg(long = "set", value_name = "KEY=VALUE")]
+        set: Vec<String>,
+        /// Write the report folder under this directory instead of
+        /// <server-dir>/regen-reports.
+        #[arg(long)]
+        out: Option<PathBuf>,
+        /// Skip the PNG overview maps.
+        #[arg(long)]
+        no_png: bool,
+        /// Print only the one-line summary, not the whole report.
+        #[arg(long)]
+        quiet: bool,
+    },
+
     /// Print a system / install diagnostic report.
     Diagnose,
 
@@ -218,6 +247,25 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
         Cmd::BackupStatus => {
             print!("{}", backup::report(cfg));
             Ok(0)
+        }
+        Cmd::RegenDryrun { scope, dims, set, out, no_png, quiet } => {
+            let mut tokens = vec![format!("scope={scope}"), format!("dims={dims}")];
+            tokens.extend(set.iter().cloned());
+            let spec = regen::RunSpec::parse_tokens(tokens.iter().map(String::as_str))
+                .map(|spec| regen::RunSpec { out_root: out.clone(), png: !*no_png, ..spec });
+            match spec.and_then(|spec| regen::run(cfg, &spec)) {
+                Ok(summary) => {
+                    if !*quiet {
+                        println!("{}", summary.report);
+                    }
+                    println!("{}", summary.line);
+                    Ok(0)
+                }
+                Err(why) => {
+                    eprintln!("regen-dryrun FAILED: {why}");
+                    Ok(1)
+                }
+            }
         }
         Cmd::Diagnose => {
             print!("{}", diagnose::report(cfg)?);
