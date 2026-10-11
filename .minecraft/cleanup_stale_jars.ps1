@@ -77,7 +77,8 @@ $denyList = @(
     'rechiseled',        # removed - SuperMartijn642 dep removed
     'supermartijn642',   # removed - dep chain incompat
     'connectedglass',    # removed - SuperMartijn642 dep
-    'trashcans'          # removed - SuperMartijn642 dep
+    'trashcans',         # removed - SuperMartijn642 dep
+    'fastback'           # removed 2026-10-11 - git-based backups; never ran on the server (no git there). The server launcher backs the world up now
 )
 
 # --- ALLOWLIST FALLBACK: custom jars not declared in packwiz mods/.index/.

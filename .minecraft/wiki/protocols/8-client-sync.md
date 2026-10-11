@@ -119,7 +119,7 @@ These are preserved from the instance regardless of mode. In Mode B the overlay 
 
 - `world/` — save data
 - `logs/`, `crash-reports/` — runtime output
-- `backups/` — FastBack history
+- `backups/` — world backups
 - `libraries/` — Forge/Minecraft libraries
 - `mods/*.jar` — handled separately by `download_mods.ps1` (diff-aware)
 - `options.txt` — player keybinds and graphics preferences

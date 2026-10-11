@@ -85,8 +85,6 @@ QoL: JourneyMap, Jade, Jade Addons, AppleSkin, Mouse Tweaks, LiteMiner (veinmini
 
 Multiplayer: Open Parties and Claims (chunk claiming), Simple Voice Chat
 
-Utilities: FastBack (git-based backups)
-
 Libraries/Dependencies: Majrusz Library, Amber
 
 Performance: ImmediatelyFast, Oculus, LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis
@@ -145,7 +143,8 @@ Mods that were in earlier builds but have since been dropped. Where a mod was re
 | Gods & Heroes RPG Classes | Removed — conflicted with the class system |
 | Tetra Attribute Rebalancing | Removed — incompatibility |
 | Champions Unofficial | Removed — replaced by Majrusz's Progressive Difficulty |
-| FTB Backups | Removed — replaced by FastBack |
+| FTB Backups | Removed — replaced by FastBack (itself removed later) |
+| FastBack | Removed — it needs git on the host and never ran on the dedicated server; the server launcher backs the world up instead |
 | FTB Chunks | Removed — replaced by Open Parties and Claims |
 | FTB Essentials / Library / Ranks / Teams | Removed — FTB suite cleanup |
 | FTB Quests | Removed — replaced by Heracles |

@@ -211,7 +211,7 @@ REM .pw.toml that origin removed cannot survive as an untracked leftover and
 REM fool cleanup_stale_jars into KEEPING the removed jar (cleanup builds its
 REM "expected" set from mods\.index\*.pw.toml). `reset --hard` already fixed
 REM the TRACKED index; this purges UNTRACKED stale tomls while preserving the
-REM client-only overlay (fancymenu/konkrete/melody/fastback -- present only in
+REM client-only overlay (fancymenu/konkrete/melody -- present only in
 REM distribution\client\mods\.index, never in origin's main index).
 echo [prism_prelaunch] reconcile mods\.index ^(origin main + client-only overlay^)...
 if exist "!MC_DIR!\distribution\client\reconcile_client_index.ps1" (

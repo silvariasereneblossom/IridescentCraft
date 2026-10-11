@@ -8,7 +8,7 @@
 #   - TRACKED main index   -- the packwiz tomls committed at .minecraft/mods/
 #     .index/. `git reset --hard origin/main` (Phase 1) already forces these
 #     to match origin exactly, INCLUDING deleting any toml origin removed.
-#   - UNTRACKED client-only overlay -- fancymenu / konkrete / melody / fastback
+#   - UNTRACKED client-only overlay -- fancymenu / konkrete / melody
 #     live ONLY in distribution\client\mods\.index\ (they are NOT in origin's
 #     main index). They are dropped into mods\.index\ as untracked files so the
 #     client downloads + keeps them. `reset --hard` never touches untracked
@@ -37,7 +37,7 @@
 #      correctness is already guaranteed by `reset --hard origin/main`.
 #
 #   2. Re-apply the overlay: copy any distribution\client\mods\.index\*.pw.toml
-#      missing from mods\.index\ back in. Guarantees the 4 client-only mods are
+#      missing from mods\.index\ back in. Guarantees the 3 client-only mods are
 #      present even on a brand-new checkout (where reset placed only the main
 #      index) or if one was deleted out-of-band.
 #
