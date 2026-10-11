@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "2034047f",
+    "generated_from":  "1cbf063b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7080,8 +7080,8 @@
                                                                                        "size":  4515
                                                                                    },
                   "kubejs/server_scripts/items/compass_of_return.js":  {
-                                                                           "sha256":  "8b2f9bca74c5f164efa5d770ff2e47a6e7601f51cc2c26a468b69be3f585de8d",
-                                                                           "size":  3969
+                                                                           "sha256":  "2927e8ac3901a3956d367d79e7fe25a7c8b028819469bdb80427abdab887b095",
+                                                                           "size":  5165
                                                                        },
                   "kubejs/server_scripts/liteminer_hunger_gate.js":  {
                                                                          "sha256":  "b6b911002bd387df202d2eb08c6a4aab537235c247ad703b82ecd8c38fcc37ca",
@@ -7200,8 +7200,8 @@
                                                                                   "size":  11993
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
-                                                                              "sha256":  "9fe56481ff9c54e9d072fec1b833182cd55451b92444382df6f8956b9df7f7c2",
-                                                                              "size":  4069
+                                                                              "sha256":  "39027678bb229549828c001998e68b40fa83f1745c4d8f832481c5a784bd5d9e",
+                                                                              "size":  4418
                                                                           },
                   "kubejs/server_scripts/loot/twilight_boss_drops.js":  {
                                                                             "sha256":  "84f9bd5bff8478eb292d4ac2193183fb2eb1284485356c884c7d07964a087937",
@@ -7212,8 +7212,8 @@
                                                                                 "size":  13729
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
-                                                                         "sha256":  "0a0633ff39b5c27f1181b44f76ef2034d89b2d44aad7fc6e9b832fe2a5374f1b",
-                                                                         "size":  4503
+                                                                         "sha256":  "75aa9dfe538c1a363c8e20d2e9867bebe4a0d40f0098b01d292946727f818827",
+                                                                         "size":  4876
                                                                      },
                   "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
                                                                                 "sha256":  "58f187b01ecfeb3c1f1259d2ffa3a3ab80ed280c9f688cc1797fbf9e60d3268b",
