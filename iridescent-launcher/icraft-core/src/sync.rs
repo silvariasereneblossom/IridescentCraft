@@ -114,6 +114,29 @@ const SELF_UPDATE_FILES: &[&str] = &[
     "icraft-gui",
 ];
 
+// Per-server identity files, at the server root: who may join, who is an
+// operator, who is banned, and the name cache. They belong to the server they
+// sit on, never to the pack, so no sync path may write or delete them:
+//   - diff sync: an entry for one of them is skipped whatever its status. The
+//     commit that takes them OUT of the repo arrives as `removed`, and without
+//     this the launcher would delete the live whitelist on its way through.
+//   - full-zip overlay: never copied from the zip (a zip of a commit that still
+//     tracks them would put `[]` over the live list).
+//   - expected-state pass: never listed for deletion or repair.
+// Until 2026-10-11 the pack tracked all five as `[]` next to a development
+// `server.properties` (`white-list=false`), so a full-zip sync emptied the
+// whitelist and switched it off in one step: the public server failed OPEN.
+// A fresh server needs none of them; the game writes its own defaults.
+// Root files only: `config/aether/sun_altar_whitelist.json` is pack content.
+const SERVER_OWNED_FILES: &[&str] =
+    &["whitelist.json", "ops.json", "banned-ips.json", "banned-players.json", "usercache.json"];
+
+/// True if `rel` (relative to the server dir) is one of [`SERVER_OWNED_FILES`].
+/// Case-insensitive: the box's file system is.
+fn is_server_owned(rel: &str) -> bool {
+    SERVER_OWNED_FILES.iter().any(|f| rel.eq_ignore_ascii_case(f))
+}
+
 // =============================================================================
 // Phase -1 — formerly Z: mirror / dev PC source. Now a thin wrapper
 // around github_diff so the launcher pulls everything from the
@@ -604,17 +627,24 @@ fn diff_sync(
             skipped += 1; continue;
         };
         if is_excluded(rel) { skipped += 1; continue; }
+        if is_server_owned(rel) {
+            log::info!("[sync]   [kept] {} is this server's own: the pack's change to it ({}) is not applied", rel, f.status);
+            skipped += 1;
+            continue;
+        }
 
         let target = cfg.server_dir.join(rel);
 
         if f.status == "removed" {
-            if target.exists() {
-                if let Err(e) = fs::remove_file(&target) {
-                    log::warn!("[sync]   [FAIL] remove {}: {}", rel, e);
-                    errors += 1;
-                } else {
+            match remove_synced_file(&cfg.server_dir, rel) {
+                Ok(true) => {
                     removed += 1;
                     log::debug!("[sync]   [removed] {}", rel);
+                }
+                Ok(false) => {}
+                Err(e) => {
+                    log::warn!("[sync]   [FAIL] remove {}: {}", rel, e);
+                    errors += 1;
                 }
             }
             continue;
@@ -674,6 +704,23 @@ fn diff_sync(
         synced, removed, staged, skipped, errors
     );
     Ok(())
+}
+
+/// Delete `rel` under `server_dir` because the pack dropped it: `Ok(true)` if a
+/// file went, `Ok(false)` if there was none. The one place the diff sync
+/// deletes, so it refuses [`SERVER_OWNED_FILES`] whatever the caller checked.
+fn remove_synced_file(server_dir: &Path, rel: &str) -> std::io::Result<bool> {
+    if is_server_owned(rel) {
+        return Err(std::io::Error::new(
+            std::io::ErrorKind::PermissionDenied,
+            "this server's own file: a sync never deletes it",
+        ));
+    }
+    match fs::remove_file(server_dir.join(rel)) {
+        Ok(()) => Ok(true),
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(e),
+    }
 }
 
 // =============================================================================
@@ -1088,8 +1135,8 @@ fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix:
             continue;
         }
         for rel in on_disk {
-            if is_volatile_dir(&rel) {
-                continue; // never delete runtime dirs
+            if is_volatile_dir(&rel) || is_server_owned(&rel) {
+                continue; // never delete runtime dirs, or the server's own files
             }
             if !files.contains_key(&rel) {
                 to_delete.push(rel);
@@ -1106,6 +1153,9 @@ fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix:
     let mut to_repair: Vec<String> = Vec::new();
     let mut kept_volatile = 0usize;
     for (rel, entry) in &files {
+        if is_server_owned(rel) {
+            continue; // a manifest that lists one is wrong; the file is the server's
+        }
         let target = join_rel(dest_root, rel);
         if !target.exists() {
             to_repair.push(rel.clone());
@@ -1292,6 +1342,11 @@ fn mirror_distro(src: &Path, dest: &Path) -> Result<()> {
             continue;
         }
 
+        if ft.is_file() && is_server_owned(&name_str) {
+            log::info!("[sync]   [kept] {} is this server's own: not copied from the pack", name_str);
+            continue;
+        }
+
         if name_str == "mods" && ft.is_dir() {
             mirror_mods(&from, &dest.join("mods"))?;
             continue;
@@ -1470,4 +1525,78 @@ fn extract_zip(zip_path: &Path, into: &Path) -> Result<()> {
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn scratch(name: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!("icraft-sync-{name}-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        dir
+    }
+
+    #[test]
+    fn server_owned_files_are_root_files_only() {
+        for name in SERVER_OWNED_FILES {
+            assert!(is_server_owned(name), "{name}");
+        }
+        assert!(is_server_owned("Whitelist.JSON"));
+        for other in [
+            "server.properties",
+            "config/aether/sun_altar_whitelist.json",
+            "config/whitelist.json",
+            "world/ops.json",
+            "kubejs/data/usercache.json",
+            "whitelist.json.bak",
+            "",
+        ] {
+            assert!(!is_server_owned(other), "{other}");
+        }
+    }
+
+    #[test]
+    fn a_removed_entry_never_deletes_a_server_owned_file() {
+        let dir = scratch("removed");
+        fs::create_dir_all(dir.join("kubejs")).unwrap();
+        fs::write(dir.join("kubejs").join("old.js"), "x").unwrap();
+        for name in SERVER_OWNED_FILES {
+            fs::write(dir.join(name), "LIVE").unwrap();
+            assert!(remove_synced_file(&dir, name).is_err(), "{name}");
+            assert_eq!(fs::read_to_string(dir.join(name)).unwrap(), "LIVE");
+        }
+        // Pack content the pack dropped still goes.
+        assert!(remove_synced_file(&dir, "kubejs/old.js").unwrap());
+        assert!(!dir.join("kubejs").join("old.js").exists());
+        assert!(!remove_synced_file(&dir, "kubejs/old.js").unwrap(), "already gone is not an error");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn the_full_zip_overlay_leaves_server_owned_files_alone() {
+        let root = scratch("overlay");
+        let (src, dest) = (root.join("zip"), root.join("server"));
+        fs::create_dir_all(src.join("config")).unwrap();
+        fs::create_dir_all(&dest).unwrap();
+        // The zip of a commit that still tracks them, as empty lists.
+        for name in SERVER_OWNED_FILES {
+            fs::write(src.join(name), "[]").unwrap();
+        }
+        fs::write(src.join("server.properties"), "white-list=false\n").unwrap();
+        fs::write(src.join("config").join("a.toml"), "a = 1\n").unwrap();
+        // The server has a real whitelist, and no ops file yet.
+        fs::write(dest.join("whitelist.json"), "LIVE").unwrap();
+        fs::write(dest.join("server.properties"), "white-list=true\n").unwrap();
+
+        mirror_distro(&src, &dest).unwrap();
+
+        assert_eq!(fs::read_to_string(dest.join("whitelist.json")).unwrap(), "LIVE");
+        assert!(!dest.join("ops.json").exists(), "left for the game to create");
+        // Everything else is still the pack's.
+        assert_eq!(fs::read_to_string(dest.join("server.properties")).unwrap(), "white-list=false\n");
+        assert_eq!(fs::read_to_string(dest.join("config").join("a.toml")).unwrap(), "a = 1\n");
+        let _ = fs::remove_dir_all(&root);
+    }
 }

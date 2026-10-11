@@ -285,6 +285,44 @@ pub fn reset(cfg: &ServerConfig, file: &str, key: &str) -> Result<bool, String> 
     Ok(true)
 }
 
+/// Adopt a value the file ALREADY holds as this server's own, without writing
+/// the file: for a value edited in place before it was put on the list (or one
+/// the game wrote itself, as `whitelist on` does to `server.properties`).
+/// [`stage`] cannot do this. It takes the pack's value from the file, and there
+/// the two are equal, so it records nothing, and the next sync that rewrites
+/// the file takes the value away without a word. `pack` is the pack's value
+/// for the key, as a person types it. Returns the value now pinned.
+pub fn pin(cfg: &ServerConfig, file: &str, key: &str, pack: &str, by: &str) -> Result<String, String> {
+    let file = normalize(file);
+    let doc = read_document(cfg, &file)?;
+    let entry = doc.get(key).ok_or_else(|| format!("{file} has no key `{key}`"))?;
+    let base = entry.encode(pack)?;
+    let held = entry.raw.clone();
+    if same_value(&held, &base) {
+        return Err(format!("{file} :: {key} holds {held}, the pack's own value: there is nothing to pin (`set` gives it a new one)"));
+    }
+    let mut store = Store::load(&cfg.server_dir)?;
+    if store.get(&file, key).is_some() {
+        return Err(format!("{file} :: {key} is already on the list (see `status`)"));
+    }
+    store.overrides.push(Override {
+        file: file.clone(),
+        key: key.to_string(),
+        value: held.clone(),
+        base: Some(base.clone()),
+        written: Some(held.clone()),
+        revert: false,
+        set_at: now_text(),
+        by: by.to_string(),
+    });
+    store.save(&cfg.server_dir)?;
+    let line = format!("{} | {by} | PINNED (the file already held it) | {file} | {key} | {base} -> {held}\n", now_text());
+    if let Err(e) = append_to_history(cfg, &line) {
+        log::warn!("[overrides] {DIR}/{HISTORY_FILE} could not be appended to: {e}");
+    }
+    Ok(held)
+}
+
 // =============================================================================
 // Where each override stands
 // =============================================================================
@@ -626,13 +664,16 @@ fn append_history(cfg: &ServerConfig, by: &str, report: &mut Report) {
     if lines.is_empty() {
         return;
     }
-    let dir = cfg.server_dir.join(DIR);
-    let appended = fs::create_dir_all(&dir)
-        .and_then(|()| fs::OpenOptions::new().create(true).append(true).open(dir.join(HISTORY_FILE)))
-        .and_then(|mut f| f.write_all(lines.as_bytes()));
-    if let Err(e) = appended {
+    if let Err(e) = append_to_history(cfg, &lines) {
         report.notes.push(format!("{DIR}/{HISTORY_FILE} could not be appended to: {e}"));
     }
+}
+
+fn append_to_history(cfg: &ServerConfig, lines: &str) -> std::io::Result<()> {
+    let dir = cfg.server_dir.join(DIR);
+    fs::create_dir_all(&dir)
+        .and_then(|()| fs::OpenOptions::new().create(true).append(true).open(dir.join(HISTORY_FILE)))
+        .and_then(|mut f| f.write_all(lines.as_bytes()))
 }
 
 /// Changes of value, into `<world>/.icraft_world.json` -> `config_changes`.
@@ -960,6 +1001,47 @@ mod tests {
         fx.write("server.properties", "level-name=alpha\n");
         assert!(resolve(&fx.cfg, "world/serverconfig/x-server.toml").is_err());
         assert!(resolve(&fx.cfg, "alpha/serverconfig/x-server.toml").is_ok());
+    }
+
+    #[test]
+    fn a_value_already_in_the_file_can_be_pinned() {
+        const HAND_EDITED: &str = "level-name=world\nwhite-list=true\nmax-tick-time=60000\n";
+        const AS_SHIPPED: &str = "level-name=world\nwhite-list=false\nmax-tick-time=60000\n";
+        let fx = Fx::new("pin");
+        fx.write("server.properties", HAND_EDITED);
+        // `stage` reads the pack's value from the file, sees no change and
+        // records nothing: the next sync would take the value away.
+        assert_eq!(stage(&fx.cfg, "server.properties", "white-list", "true", "t").unwrap(), Staged::Unchanged);
+        assert!(!fx.exists(FILE));
+
+        assert!(pin(&fx.cfg, "server.properties", "white-list", "true", "t").is_err(), "the file holds the pack's value");
+        assert!(pin(&fx.cfg, "server.properties", "no-such-key", "false", "t").is_err());
+        assert!(pin(&fx.cfg, "server.properties", "white-list", "maybe", "t").is_err(), "not a value the key takes");
+        assert!(!fx.exists(FILE));
+        assert_eq!(pin(&fx.cfg, "server.properties", "white-list", "false", "t").unwrap(), "true");
+        assert!(pin(&fx.cfg, "server.properties", "white-list", "false", "t").is_err(), "already on the list");
+
+        // Nothing was written to the file, and the override counts as in it.
+        assert_eq!(fx.read("server.properties"), HAND_EDITED);
+        assert_eq!(fx.states(), [State::InFile]);
+        assert_eq!(fx.outcomes("server start"), [change("white-list", Outcome::InPlace, "true", "true")]);
+        assert_eq!(fx.read("server.properties"), HAND_EDITED);
+        assert!(fx.history().iter().any(|l| l.contains("PINNED") && l.contains("white-list | false -> true")), "{:?}", fx.history());
+
+        // A sync puts the pack's file back: the next start restores the value.
+        fx.write("server.properties", AS_SHIPPED);
+        assert_eq!(fx.states(), [State::Waiting]);
+        assert_eq!(fx.outcomes("server start"), [change("white-list", Outcome::Reapplied, "false", "true")]);
+        assert_eq!(fx.read("server.properties"), HAND_EDITED);
+        // Asking for the same value again is not "back to the pack's".
+        assert_eq!(stage(&fx.cfg, "server.properties", "white-list", "true", "t").unwrap(), Staged::Unchanged);
+        assert_eq!(fx.states(), [State::InFile]);
+
+        // Reset knows the pack's value without ever having seen the pack's file.
+        assert!(reset(&fx.cfg, "server.properties", "white-list").unwrap());
+        assert_eq!(fx.outcomes("t"), [change("white-list", Outcome::Reset, "true", "false")]);
+        assert_eq!(fx.read("server.properties"), AS_SHIPPED);
+        assert!(!fx.exists(FILE));
     }
 
     #[test]

@@ -193,6 +193,18 @@ enum SettingsCmd {
         #[arg(allow_hyphen_values = true)]
         value: String,
     },
+    /// Keep the value a file ALREADY holds (one edited in place, or one the
+    /// game wrote, as `whitelist on` does). `set` records nothing for such a
+    /// value, and the next sync that rewrites the file would take it away.
+    /// Writes the list only, never the config file, so it works while the
+    /// server runs.
+    Pin {
+        file: String,
+        key: String,
+        /// The pack's value for the key (what a sync would put back).
+        #[arg(long, allow_hyphen_values = true)]
+        pack_value: String,
+    },
     /// Give a setting back the pack's value.
     Reset { file: String, key: String },
     /// Your overrides, and whether each is in its file or waiting.
@@ -381,6 +393,23 @@ fn settings(action: &SettingsCmd, cfg: &ServerConfig) -> u8 {
                 Ok(overrides::Staged::BackToPack) => {
                     println!("{} :: {key}: {value} is the pack's own value, so the override is dropped.", target.rel);
                     write_now(cfg)
+                }
+                Err(why) => failed(why),
+            }
+        }
+        SettingsCmd::Pin { file, key, pack_value } => {
+            let target = worldgen::target(cfg, file);
+            if let Some(why) = target.source.and_then(|s| s.locked(key)) {
+                return failed(format!("`{key}` is not changed from here. {why}"));
+            }
+            match overrides::pin(cfg, &target.rel, key, pack_value, "command line") {
+                Ok(held) => {
+                    println!(
+                        "{} :: {key} = {held}   pinned in {} (the pack's: {pack_value}). The file was not touched; the value is put back before every server start.",
+                        target.rel,
+                        overrides::FILE
+                    );
+                    0
                 }
                 Err(why) => failed(why),
             }
