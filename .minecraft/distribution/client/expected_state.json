@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "1cbf063b",
+    "generated_from":  "3208ff03",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6884,12 +6884,12 @@
                                                                               "size":  4527
                                                                           },
                   "kubejs/server_scripts/affixes/affix_effects.js":  {
-                                                                         "sha256":  "f8116dda4a75605658fec159415571bef5358d819f99a3d2d784333ee166032c",
-                                                                         "size":  47733
+                                                                         "sha256":  "cbb99d28ccf9c5ca69b47e6022eb31b4488cf890d899fc60e736096934293ac9",
+                                                                         "size":  47886
                                                                      },
                   "kubejs/server_scripts/apotheosis_gem_repair.js":  {
-                                                                         "sha256":  "a1164cdcabe1ad93a9c466449afd3d5e8d5ca4ec7fb15b602a273cb932f29ad6",
-                                                                         "size":  19744
+                                                                         "sha256":  "6faa498662e09a4a006e155f2552aeb177320fed5ea9ef5bac697b4c64810274",
+                                                                         "size":  20890
                                                                      },
                   "kubejs/server_scripts/aptitude_cost_backport.js":  {
                                                                           "sha256":  "06ed0dece5bebf4cabed8e2b1532066dc694d3722dd04b4634104a1e7f0b45af",
@@ -7020,8 +7020,8 @@
                                                            "size":  126
                                                        },
                   "kubejs/server_scripts/exploration/codex_exploration_kills.js":  {
-                                                                                       "sha256":  "b30bdfdeec1a42cb812fc3b3086d18a7985f21d7e3972d66aa9979a0a8fb8ac9",
-                                                                                       "size":  16489
+                                                                                       "sha256":  "50b5aada69c094704258eddd132bfa427514d98dc943ab45cdb2ef05e9716078",
+                                                                                       "size":  16560
                                                                                    },
                   "kubejs/server_scripts/fix_empty_display_name.js":  {
                                                                           "sha256":  "ca83c3afefa33a053e965fcc63c204ee02fbbed532826f19ef9660687904cc37",
@@ -7128,8 +7128,8 @@
                                                                              "size":  6060
                                                                          },
                   "kubejs/server_scripts/loot/codex_exploration_drops.js":  {
-                                                                                "sha256":  "7b45e929431173acef954f8799e5fb6e76d0d0a99ca5cc4c9e850df7079c0ca3",
-                                                                                "size":  10178
+                                                                                "sha256":  "14dc4d0ebb104c4bd96021f110bc74c9250ac7fcb8ce95b5fef4e57b4a78ca33",
+                                                                                "size":  10314
                                                                             },
                   "kubejs/server_scripts/loot/crop_seed_reduction.js":  {
                                                                             "sha256":  "350765681780c35e333171abc5ad7f25aab7eb944697220c9f37b9fe21c550ab",
@@ -7140,8 +7140,8 @@
                                                                                "size":  4695
                                                                            },
                   "kubejs/server_scripts/loot/fragment_core_drops.js":  {
-                                                                            "sha256":  "aed6d702d64dd9237dfe29455ceba71074c1a71cf2683744148d6c799007626a",
-                                                                            "size":  4052
+                                                                            "sha256":  "03cc42f1ff598e32fde67ce3f9ea3ae2468fa31947e3302bee742b682ce0a214",
+                                                                            "size":  4589
                                                                         },
                   "kubejs/server_scripts/loot/grass_pam_seeds.js":  {
                                                                         "sha256":  "5c1e68e6e5e894edaaac7f01e5ffd210ceb416350f9b156b30f550f1edde554a",
@@ -7152,28 +7152,28 @@
                                                                        "size":  4469
                                                                    },
                   "kubejs/server_scripts/loot/iss_boss_first_kill.js":  {
-                                                                            "sha256":  "fe6abe8f3b9210bb9a527d443a4d8440f613000f2dfe3915d9702e0cb83cac81",
-                                                                            "size":  2861
+                                                                            "sha256":  "1171463f0e819e1275c74c6fcf2a56f14afdd599d5c51291a2495886d9b63bf3",
+                                                                            "size":  3467
                                                                         },
                   "kubejs/server_scripts/loot/loot_overhaul.js":  {
-                                                                      "sha256":  "6a29464a987678dce4ff0931664c38e7c6b93f20cbccda833ffbee58b20f4d5a",
-                                                                      "size":  37536
+                                                                      "sha256":  "637596ef59c3851e0f3291c34b0a69f33fca06377b938e93eca9738da52c1777",
+                                                                      "size":  39268
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "105766c69d50774e1f29a93bdea42edc760580be5fb2f528d846b1f66a80b104",
-                                                                        "size":  173043
+                                                                        "sha256":  "e0c328f485118b642cd324f3d97401111cb3644515e189ff2374f26e8fcfc8b2",
+                                                                        "size":  178968
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
-                                                                           "sha256":  "395df05336a0f74194780e7d5788b0db6ab1e1415c74f01229db9b75c52d109f",
-                                                                           "size":  13163
+                                                                           "sha256":  "45d5a896dd8703c95e3a25abc71272238e005538ba3bf2d4ee30febe8447ddab",
+                                                                           "size":  13933
                                                                        },
                   "kubejs/server_scripts/loot/mahou_synergy_drops.js":  {
                                                                             "sha256":  "41a23bafdeb1aac648b7076bb1bb19de3c6530a21f84d8e43c83a31b1594b627",
                                                                             "size":  4847
                                                                         },
                   "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js":  {
-                                                                                     "sha256":  "30e3e7bc5dac6f7703fd02b06c7ede6b8c737e52be73a2d10ee5d1793679f635",
-                                                                                     "size":  4085
+                                                                                     "sha256":  "4267845fc7a1de35c7dc0ec173caeebb8be9e7b1778590e48716d97eb4ba74a9",
+                                                                                     "size":  4216
                                                                                  },
                   "kubejs/server_scripts/loot/meat_drop_doubling.js":  {
                                                                            "sha256":  "70734143c88c1949a1ea88a7229d75d5f75cdf77b166fbf760e7d8270876e1b2",
@@ -7200,8 +7200,8 @@
                                                                                   "size":  11993
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
-                                                                              "sha256":  "39027678bb229549828c001998e68b40fa83f1745c4d8f832481c5a784bd5d9e",
-                                                                              "size":  4418
+                                                                              "sha256":  "ba63efa6c3dbfd9de8378788a54f047300301f1eb9bd1a5b6a9faeb1de224393",
+                                                                              "size":  4630
                                                                           },
                   "kubejs/server_scripts/loot/twilight_boss_drops.js":  {
                                                                             "sha256":  "84f9bd5bff8478eb292d4ac2193183fb2eb1284485356c884c7d07964a087937",
@@ -7220,16 +7220,16 @@
                                                                                 "size":  6256
                                                                             },
                   "kubejs/server_scripts/loot/zz_pack_enchanted_books.js":  {
-                                                                                "sha256":  "5dbe25392a56d124927bc6b114b3e7ca7fb5f7cb0b03b075834eef76386df4c2",
-                                                                                "size":  6251
+                                                                                "sha256":  "cb301cca46893118af102bb473a94c3678e4829e3ddd2bd58f56c157e99ca09c",
+                                                                                "size":  7006
                                                                             },
                   "kubejs/server_scripts/loot/zz_unique_chest_strip.js":  {
                                                                               "sha256":  "b327c50b3ef2f77b8c644fb0043245a32f64acf45800a820592c7047d0674f84",
                                                                               "size":  1780
                                                                           },
                   "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js":  {
-                                                                                  "sha256":  "3a0b8f28f98a07bc5e208b67ee295bee9ebd3115cd4d6536aa85e18605eec344",
-                                                                                  "size":  6238
+                                                                                  "sha256":  "234cadd4013126a85b6c1a4cac757bc480622fe69d670a11e7f244103ad69e08",
+                                                                                  "size":  6501
                                                                               },
                   "kubejs/server_scripts/magic_crit_hook.js":  {
                                                                    "sha256":  "8dc2cf832907b745adf3b9c1334bcb1f82c28bca7cdb2c85dd0bc8bb07dfd6bf",
@@ -7320,8 +7320,8 @@
                                                                            "size":  5554
                                                                        },
                   "kubejs/server_scripts/recipes/ad_astra_gating.js":  {
-                                                                           "sha256":  "1050dbc74068610c754b0da8b0adfe8e526dee0fdec94d74cbd31309a0151a52",
-                                                                           "size":  11406
+                                                                           "sha256":  "87d3823fcfb51942590f13aab448f4e7ad5dffa484edeec622c558aac1e0195a",
+                                                                           "size":  11817
                                                                        },
                   "kubejs/server_scripts/recipes/boss_material_processing.js":  {
                                                                                     "sha256":  "20b81bc1ed94f77ef60ed121059b5245632da67674d54f300dd27d1e25e90f20",
@@ -7392,8 +7392,8 @@
                                                                  "size":  2804
                                                              },
                   "kubejs/server_scripts/relic_boss_drops.js":  {
-                                                                    "sha256":  "40297a998a87d2393cc91acb672e75704ad04f761e6ab92e8374bc6e4beaf4bb",
-                                                                    "size":  7780
+                                                                    "sha256":  "5f411c10ef8dfada947df9652327d365072d95919141918e5f9b4a47ab6e5196",
+                                                                    "size":  8292
                                                                 },
                   "kubejs/server_scripts/respawn_hunger.js":  {
                                                                   "sha256":  "fa7cbc6108264e749f5423b08c0794297cee0c58a0413b89de1244e7c2dd8999",
@@ -7412,8 +7412,8 @@
                                                                             "size":  5972
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
-                                                                               "sha256":  "d65c6b916a19edb0a8c54183fda79bb9e155bc41d1f9af181f241a39b96ddbfa",
-                                                                               "size":  27622
+                                                                               "sha256":  "a97f559f2bc4e5d0f4321d4a65236b910b06241f8717b25f6f6145b25b4bce62",
+                                                                               "size":  27830
                                                                            },
                   "kubejs/server_scripts/scaling/mob_equipment.js":  {
                                                                          "sha256":  "a96c363682406fa5e3482ac93638c98f02e6b47a74bbb00de143f1267e1f0f47",
@@ -7432,8 +7432,8 @@
                                                                              "size":  13010
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "4eabfd9e2849662bb68025f480be0188759a3fd7371d462d429152acfdd19a34",
-                                                                              "size":  52659
+                                                                              "sha256":  "1014f077b91c286e7c2b8abca42bb3ab68f1da40162dac847caaa0a8d1558363",
+                                                                              "size":  53957
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "e3cf9075223e1e87584e33b83e99fc67c5802e743699a9b5e7bddb5ba1e2ac37",
@@ -7456,8 +7456,8 @@
                                                                             "size":  3774
                                                                         },
                   "kubejs/server_scripts/strip_anomalous_drops.js":  {
-                                                                         "sha256":  "2bf9a6c3e1112aa4d7d65304c28e481f9bba79d3def98c417accc38f8d116316",
-                                                                         "size":  6803
+                                                                         "sha256":  "67814af2477487c5216afdbff47a50eb3ba5bc3deec86abebd5cf43254be5ab0",
+                                                                         "size":  7102
                                                                      },
                   "kubejs/server_scripts/strip_infinity_ham.js":  {
                                                                       "sha256":  "08eadcb49c21a9748b34138642238115a5b4d509a6a6357f393dd32c2bb7b523",
