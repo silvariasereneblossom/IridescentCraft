@@ -31,12 +31,23 @@
 #     the bare ref IS immediately guarded + called (it's a real null/existence
 #     check, NOT a boolean misuse), so it's exempt. Only a bare ref that ISN'T
 #     immediately `&&`'d with its own call stays flagged.
+#   - The capability probe `typeof obj.method` (e.g.
+#     `typeof core.isBoss === 'function' && core.isBoss(id)`) -- `typeof` reads
+#     the member's TYPE, which is exactly what a bare ref is for. Only the
+#     probe itself is dropped; any other bare ref on the same line still flags.
+#
+# What still needs `// CI-ignore: <reason>` on the line (verify first -- javap
+# the live jar, don't guess):
+#   - a KubeJS BEAN GETTER read as a property: `block.canSeeSky` is
+#     BlockContainerJS.getCanSeeSky() and reads as a real boolean, while its
+#     neighbour `canSeeSkyFromBelowWater` is a plain method and IS the trap.
+#   - a field of a plain JS object (`q.isMarker`, `statDef.isPercent`).
 #
 # Usage:
 #   ./check_kubejs_method_refs.sh          # scan default kubejs paths
 #   ./check_kubejs_method_refs.sh <path>   # scan a specific path
 #
-# Exits 0 if clean, 1 if any traps are detected.
+# Exits 0 if clean, 1 if any traps are detected, 2 if the scan could not run.
 # =============================================================================
 
 set -eu
@@ -62,21 +73,40 @@ if [ "${#EXISTING_DIRS[@]}" -eq 0 ]; then
   exit 0
 fi
 
-# Step 1: grep candidate lines.
-# Step 2: strip lines that are themselves comments (begin with optional
-#         whitespace then `//` or `*`).
-# Step 3: strip lines explicitly opted out via `// CI-ignore`.
-# Step 4: strip in-string occurrences (matched .isXxx inside a `"..."` block)
-#         by removing the substring between matched double-quotes BEFORE
-#         re-applying the regex. This is a coarse filter; if it produces
-#         false positives, add `// CI-ignore` on the line.
+# Step 1: grep candidate lines (grep exits 0 = hits, 1 = none, 2+ = it failed).
+# Step 2: one perl pass drops the legitimate shapes:
+#           - lines that are themselves comments (optional whitespace, then
+#             `//` or `*`)
+#           - lines explicitly opted out via `// CI-ignore`
+#           - the feature-detect idiom `obj.method && obj.method(`
+#           - `typeof obj.method` probes (the probe only, then the line is
+#             re-tested for any bare ref left over)
+#         A hit inside a string literal is NOT filtered; add `// CI-ignore`.
+#
+# perl, not `grep -P`: under a non-UTF-8 locale (Git Bash with LANG unset)
+# `grep -P` dies with "supports only unibyte and UTF-8 locales", and behind
+# the old pipeline's `|| true` that read as a CLEAN run -- the local check
+# printed OK on a tree CI was failing. A step that cannot run now exits 2.
+command -v perl >/dev/null 2>&1 || { echo "ERROR: perl is required by $0"; exit 2; }
+
+candidates=$(grep -rnE "$PATTERN" "${EXISTING_DIRS[@]}") || {
+  rc=$?
+  if [ "$rc" -ne 1 ]; then
+    echo "ERROR: candidate scan failed (grep exit $rc) -- nothing was validated."
+    exit 2
+  fi
+  candidates=""
+}
+
 found=$(
-  grep -rnE "$PATTERN" "${EXISTING_DIRS[@]}" 2>/dev/null \
-  | grep -vE '^[^:]+:[0-9]+:[[:space:]]*//' \
-  | grep -vE '^[^:]+:[0-9]+:[[:space:]]*\*' \
-  | grep -vE 'CI-ignore' \
-  | grep -vP '(\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+)\s*&&\s*\1\s*\(' \
-  || true
+  printf '%s\n' "$candidates" | perl -ne '
+    next unless /\S/;
+    next if m{^[^:]+:[0-9]+:\s*(?://|\*)};
+    next if /CI-ignore/;
+    next if /(\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+)\s*&&\s*\1\s*\(/;
+    (my $rest = $_) =~ s/\btypeof\s*\(?\s*[A-Za-z_\$][\w\$.]*//g;
+    print if $rest =~ /\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+[^a-zA-Z_(\n]/;
+  '
 )
 
 # ── Check 2: command-applied attribute modifiers ─────────────────────────
