@@ -22,6 +22,9 @@ import java.util.function.Supplier;
  * Must only be sent on player join.
  */
 public class ConfigSyncCP {
+    // Iridescent fork (CLIENT): true once a remote server's locked-item table replaced the local one.
+    private static boolean remoteApplied;
+
     private final byte[] stringListBytes;
 
     public ConfigSyncCP(byte[] array) {
@@ -55,9 +58,23 @@ public class ConfigSyncCP {
                 lockItemsStrings.forEach(c -> lockItemList.add(LockItem.getLockItemFromString(c, new LockItem())));
 
                 HandlerAptitude.UpdateLockItems(lockItemList);
+                // Iridescent fork: remember a REMOTE table so restoreLocal() swaps the local one back on logout
+                // (the integrated-server host just re-applied its own table -- nothing to undo).
+                if (!Minecraft.getInstance().hasSingleplayerServer()) remoteApplied = true;
             }
         });
         context.setPacketHandled(true);
+    }
+
+    /**
+     * Iridescent fork (CLIENT, on logout -- JustLevelingClient.onLoggingOut): swap the player's own locked-item
+     * table back in. The server's table used to stay active for the rest of the client session, including in a
+     * singleplayer world opened afterwards.
+     */
+    public static void restoreLocal() {
+        if (!remoteApplied) return;
+        remoteApplied = false;
+        HandlerAptitude.UpdateLockItems(HandlerLockItemsConfig.HANDLER.instance().lockItemList);
     }
 
     public static void sendToPlayer(Player player) {

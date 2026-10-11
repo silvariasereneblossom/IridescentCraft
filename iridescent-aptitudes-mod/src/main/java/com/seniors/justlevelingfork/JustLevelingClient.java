@@ -6,6 +6,10 @@ import com.seniors.justlevelingfork.client.gui.OverlayTitleGui;
 // import com.seniors.justlevelingfork.client.gui.TabJustLeveling;  // stripped (L2Tabs)
 import com.seniors.justlevelingfork.client.screen.JustLevelingScreen;
 import com.seniors.justlevelingfork.handler.HandlerCommonConfig;
+import com.seniors.justlevelingfork.integration.KubeJSIntegration;
+import com.seniors.justlevelingfork.network.packet.client.CommonConfigSyncCP;
+import com.seniors.justlevelingfork.network.packet.client.ConfigSyncCP;
+import com.seniors.justlevelingfork.network.packet.client.DynamicConfigSyncCP;
 // import com.seniors.justlevelingfork.integration.L2TabsIntegration;  // stripped
 import com.seniors.justlevelingfork.registry.RegistryClientEvents;
 import com.seniors.justlevelingfork.registry.RegistryItems;
@@ -15,6 +19,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -28,6 +33,15 @@ public class JustLevelingClient {
     public static Minecraft client = Minecraft.getInstance();
     public static KeyMapping OPEN_JUSTLEVELING_SCREEN = new KeyMapping("key.justlevelingfork.open_aptitudes", InputConstants.Type.KEYSYM, 89, "key.justlevelingfork.title");
 
+    /**
+     * Iridescent fork: true while this client hosts the integrated server (singleplayer / LAN host). Client and
+     * "server" then share one JVM -- the same config instance and the same registered passives/skills -- so the
+     * config-sync packets have nothing to apply. CLIENT ONLY (the sync packets call it from their client handler).
+     */
+    public static boolean hostsIntegratedServer() {
+        return Minecraft.getInstance().hasSingleplayerServer();
+    }
+
     @EventBusSubscriber(modid = JustLevelingFork.MOD_ID, value = {Dist.CLIENT})
     public static class ClientForgeEvents {
         @SubscribeEvent
@@ -35,6 +49,17 @@ public class JustLevelingClient {
             if (JustLevelingClient.client.player != null && JustLevelingClient.client.level != null &&
                     JustLevelingClient.OPEN_JUSTLEVELING_SCREEN.consumeClick())
                 JustLevelingClient.client.setScreen(new JustLevelingScreen());
+        }
+
+        // Iridescent fork: a server's config is applied IN MEMORY for the session only (it used to be saved over
+        // the player's own config file on every login). Put the local values back when the session ends, so they
+        // do not leak into the next world -- e.g. a singleplayer world opened after leaving the server. Also fired
+        // (harmlessly: the restores are no-ops) when a world is cleared without a prior remote session.
+        @SubscribeEvent
+        public static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+            CommonConfigSyncCP.restoreLocal();
+            DynamicConfigSyncCP.restoreLocal();
+            ConfigSyncCP.restoreLocal();
         }
     }
 
@@ -53,6 +78,9 @@ public class JustLevelingClient {
             MinecraftForge.EVENT_BUS.register(new RegistryClientEvents());
             MinecraftForge.EVENT_BUS.register(new OverlayAptitudeGui());
             MinecraftForge.EVENT_BUS.register(new OverlayTitleGui());
+
+            // Iridescent fork: resolve the (absent) KubeJS level-up bridge once, here, instead of on every click.
+            KubeJSIntegration.init();
 
             // L2Tabs integration stripped — players access aptitudes via the
             // Y keybind (justlevelingfork.open_aptitudes) instead of the inventory tab.

@@ -36,6 +36,10 @@ public class PassiveLevelDownSP {
                 AptitudeCapability capability = AptitudeCapability.get(player);
 
                 Passive passive = RegistryPassives.getPassive(this.passive);
+                // Iridescent fork (security): mirror the screen's button gating (JustLevelingScreen.createList only
+                // offers "-" above level 0) -- drop unknown passive names instead of NPE-ing the handler, and do
+                // not resync for a no-op.
+                if (capability == null || passive == null || capability.getPassiveLevel(passive) <= 0) return;
                 capability.subPassiveLevel(passive, 1);
                 SyncAptitudeCapabilityCP.send(player);
             }

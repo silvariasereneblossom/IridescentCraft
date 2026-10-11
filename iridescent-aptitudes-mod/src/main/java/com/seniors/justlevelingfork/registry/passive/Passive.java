@@ -26,8 +26,11 @@ public class Passive {
     public final ResourceLocation texture;
     public final Attribute attribute;
     public final String attributeUuid;
-    public final Object attributeValue;
-    public final int[] levelsRequired;
+    // Iridescent fork: these two are no longer final -- on a remote client the config-sync packets
+    // (CommonConfigSyncCP / DynamicConfigSyncCP) re-point them at the SERVER's values for the session, in memory,
+    // and put the local ones back on logout. Nothing else may reassign them.
+    public Object attributeValue;
+    public int[] levelsRequired;
 
     public Passive(ResourceLocation passiveKey, Aptitude aptitude, ResourceLocation passiveTexture, Attribute attribute, String attributeUuid, Object attributeValue, int... levelsRequired) {
         this.key = passiveKey;

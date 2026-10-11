@@ -17,7 +17,6 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 
 public class RegistrySkills {
@@ -132,6 +131,16 @@ public class RegistrySkills {
     }
 
     public static Skill getSkill(String skillName) {
-        return SKILLS_REGISTRY.get().getValues().stream().collect(Collectors.toMap(Skill::getName, Skill::get)).get(skillName);
+        // Iridescent fork: keyed registry lookup (was: a fresh name->skill map of the whole registry per call).
+        // Falls back to the old by-name match for entries whose registry name differs from their own key.
+        if (skillName == null) return null;
+        IForgeRegistry<Skill> registry = SKILLS_REGISTRY.get();
+        ResourceLocation key = ResourceLocation.tryBuild(JustLevelingFork.MOD_ID, skillName);
+        Skill skill = key != null ? registry.getValue(key) : null;
+        if (skill != null && skill.getName().equals(skillName)) return skill;
+        for (Skill other : registry.getValues()) {
+            if (other.getName().equals(skillName)) return other;
+        }
+        return null;
     }
 }

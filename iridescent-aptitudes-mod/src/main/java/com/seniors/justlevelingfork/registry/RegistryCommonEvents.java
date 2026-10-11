@@ -183,15 +183,6 @@ public class RegistryCommonEvents {
                 // the old client-trusting CounterAttackSP handler (no-op for a clean player).
                 if (RegistrySkills.COUNTER_ATTACK == null) CounterAttackSP.resetServerSide(serverPlayer);
                 RegistryTitles.syncTitles(serverPlayer);
-
-                // If there's any update notify OP players about this.
-                if (HandlerCommonConfig.HANDLER.instance().checkForUpdates
-                        && JustLevelingFork.UpdatesAvailable.left) {
-                    if (serverPlayer.hasPermissions(2)) {
-                        Component component = Component.literal(String.format("[JustLevelingFork] Version %s is available, it's recommended to update!", JustLevelingFork.UpdatesAvailable.right));
-                        serverPlayer.sendSystemMessage(component);
-                    }
-                }
             }
         }
     }

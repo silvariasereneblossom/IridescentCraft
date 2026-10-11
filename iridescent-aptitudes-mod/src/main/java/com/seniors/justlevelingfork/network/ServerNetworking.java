@@ -15,7 +15,9 @@ import java.util.Optional;
 
 public class ServerNetworking {
     private static int packetId = 0;
-    private static final String PROTOCOL_VERSION = "1";
+    // Iridescent fork: "2" = the rewritten CommonConfigSyncCP / DynamicConfigSyncCP payloads. Bumped so a client and
+    // a server on different jars are refused with a clear channel mismatch instead of mis-decoding each other.
+    private static final String PROTOCOL_VERSION = "2";
     public static SimpleChannel instance;
 
     public static void init() {

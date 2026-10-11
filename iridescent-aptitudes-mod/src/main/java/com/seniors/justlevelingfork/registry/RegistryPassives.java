@@ -19,7 +19,6 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 
 public class RegistryPassives {
@@ -133,7 +132,17 @@ public class RegistryPassives {
     }
 
     public static Passive getPassive(String passiveName) {
-        return PASSIVES_REGISTRY.get().getValues().stream().collect(Collectors.toMap(Passive::getName, Passive::get)).get(passiveName);
+        // Iridescent fork: keyed registry lookup (was: a fresh name->passive map of the whole registry per call).
+        // Falls back to the old by-name match for entries whose registry name differs from their own key.
+        if (passiveName == null) return null;
+        IForgeRegistry<Passive> registry = PASSIVES_REGISTRY.get();
+        ResourceLocation key = ResourceLocation.tryBuild(JustLevelingFork.MOD_ID, passiveName);
+        Passive passive = key != null ? registry.getValue(key) : null;
+        if (passive != null && passive.getName().equals(passiveName)) return passive;
+        for (Passive other : registry.getValues()) {
+            if (other.getName().equals(passiveName)) return other;
+        }
+        return null;
     }
 }
 

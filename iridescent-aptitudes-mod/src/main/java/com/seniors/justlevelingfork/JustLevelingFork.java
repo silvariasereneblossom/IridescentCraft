@@ -24,15 +24,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import net.minecraftforge.forgespi.language.IModInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.MutablePair;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.List;
@@ -49,8 +42,6 @@ public class JustLevelingFork {
     public static Logger getLOGGER() {
         return LOGGER;
     }
-
-    public static MutablePair<Boolean, String> UpdatesAvailable = new MutablePair<>(false, "");
 
     // Required for the titles prefix
     // Iridescent fork: volatile + cleared on ServerStoppedEvent (RegistryCommonEvents) -- written on the server
@@ -82,24 +73,10 @@ public class JustLevelingFork {
 
         ServerNetworking.init();
 
-        // Update-check disabled in the Iridescent fork — we don't want the
-        // game phoning home to upstream's VERSION file. The constructor closes
-        // here; getLatestVersion() lives at class scope below.
-    }
-
-    @NotNull
-    private static String getLatestVersion() throws IOException {
-        URL u = new URL("https://raw.githubusercontent.com/Senior-S/JustLeveling-Fork/master/VERSION");
-        URLConnection conn = u.openConnection();
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(
-                        conn.getInputStream()));
-        StringBuilder buffer = new StringBuilder();
-        String inputLine;
-        while ((inputLine = in.readLine()) != null)
-            buffer.append(inputLine);
-        in.close();
-        return buffer.toString();
+        // Update-check removed in the Iridescent fork — we don't want the
+        // game phoning home to upstream's VERSION file. The fetch helper, the
+        // UpdatesAvailable flag, the op notification and the `checkForUpdates`
+        // config switch that only fed them are all gone.
     }
 
     private void attributeSetup(EntityAttributeModificationEvent event) {

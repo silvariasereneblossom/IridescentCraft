@@ -59,12 +59,43 @@ public class TitleModel {
         // If the title should be given by default then lets ignore conditions.
         if (Default) return true;
 
-        byte passedConditions = 0;
-        for (String condition : Conditions) {
+        // Iridescent fork: the condition strings are parsed ONCE and cached (see parsedConditions). This used to
+        // split every string, resolve its comparator and stream-search the condition registry on every
+        // evaluation -- per title, per player, every title check -- and re-log a malformed condition each time.
+        List<ParsedCondition> parsed = parsedConditions();
+        if (parsed == null) return false; // a malformed condition can never pass (same result as before)
+
+        for (ParsedCondition condition : parsed) {
+            condition.impl.ProcessVariable(condition.variable, serverPlayer);
+            if (!condition.impl.MeetCondition(condition.value, condition.comparator)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Iridescent fork: parse cache for CheckRequirements. Transient = invisible to the Gson config (de)serialiser.
+    private record ParsedCondition(ConditionImpl<?> impl, String variable, EComparator comparator, String value) {
+    }
+
+    private transient List<String> _parsedFrom;          // copy of the Conditions the cache was built from
+    private transient List<ParsedCondition> _parsed;     // null = at least one condition is malformed
+
+    private List<ParsedCondition> parsedConditions() {
+        List<String> conditions = Conditions;
+        if (conditions == null) return null; // no list at all: nothing to parse, can never pass
+        // Re-parse only if the list was replaced or edited since (element compare is an identity hit normally).
+        if (_parsedFrom != null && _parsedFrom.equals(conditions)) return _parsed;
+
+        List<ParsedCondition> parsed = new ArrayList<>(conditions.size());
+        boolean malformed = false;
+        for (String condition : conditions) {
             String[] split = condition.split("/");
 
             if (split.length != 4) {
                 JustLevelingFork.getLOGGER().error(">> Error! Title {} have a wrong formatted condition. (General)", TitleId);
+                malformed = true;
                 continue;
             }
             EComparator comparator;
@@ -73,22 +104,23 @@ public class TitleModel {
                 comparator = EComparator.valueOf(split[2].toUpperCase());
             } catch (IllegalArgumentException e) {
                 JustLevelingFork.getLOGGER().error(">> Error! Title {} have a wrong formatted condition. (Comparator)", TitleId);
+                malformed = true;
                 continue;
             }
 
             Optional<ConditionImpl<?>> conditionImpl = HandlerConditions.getConditionByName(split[0]);
             if(conditionImpl.isEmpty()){
                 JustLevelingFork.getLOGGER().error(">> Error! Title {} have a wrong formatted condition. (Condition type or Comparator)", TitleId);
+                malformed = true;
                 continue;
             }
 
-            conditionImpl.get().ProcessVariable(split[1], serverPlayer);
-            if(conditionImpl.get().MeetCondition(split[3], comparator)){
-                passedConditions++;
-            }
+            parsed.add(new ParsedCondition(conditionImpl.get(), split[1], comparator, split[3]));
         }
 
-        return passedConditions == Conditions.size();
+        _parsed = malformed ? null : parsed;
+        _parsedFrom = new ArrayList<>(conditions);
+        return _parsed;
     }
 
     public RegistryObject<Title> registry(DeferredRegister<Title> TITLES) {

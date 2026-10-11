@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+// Iridescent fork: NOT LISTED in justlevelingfork.mixins.json (source kept only). Haggler is retired
+// (RegistrySkills.HAGGLER == null) -> the inject never did anything.
 @Mixin({Villager.class})
 public abstract class MixVillager {
     @Unique

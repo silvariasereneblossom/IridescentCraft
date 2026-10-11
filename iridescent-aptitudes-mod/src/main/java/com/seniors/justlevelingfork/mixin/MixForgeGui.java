@@ -16,6 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Objects;
 
+// Iridescent fork: NOT LISTED in justlevelingfork.mixins.json (source kept only). It replaced Forge's air bar so
+// Athletics' larger max air would scale; Athletics is retired and players are back on the vanilla 300. The
+// replacement also SET rightHeight to 10 (Forge adds 10), misplacing right-side HUD rows drawn after the air
+// bar, and its HEAD-cancel skipped other mods' renderAir hooks (Apoli status-bar textures, ImmediatelyFast
+// HUD batching). If max air above 300 is ever wanted again, fix `rightHeight += 10` before re-listing.
 @Mixin({ForgeGui.class})
 public abstract class MixForgeGui extends Gui {
     @Unique

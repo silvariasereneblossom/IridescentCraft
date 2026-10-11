@@ -9,6 +9,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+// Iridescent fork: NOT LISTED in justlevelingfork.mixins.json (source kept only). Snow Walker is retired
+// (RegistrySkills.SNOW_WALKER == null) -> the inject never did anything.
 @Mixin({PowderSnowBlock.class})
 public abstract class MixPowderSnowBlock {
     @Inject(method = {"canEntityWalkOnPowderSnow"}, at = {@At("HEAD")}, cancellable = true)

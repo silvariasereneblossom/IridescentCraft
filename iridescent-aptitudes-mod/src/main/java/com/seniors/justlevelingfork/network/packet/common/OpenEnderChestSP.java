@@ -26,7 +26,10 @@ public class OpenEnderChestSP {
             // IridescentCraft #76: WORMHOLE_STORAGE is retired (RegistrySkills.WORMHOLE_STORAGE = null). The menu
             // title deref'd .get() under only a player!=null guard -> server NPE if this packet ever arrives while
             // the skill is disabled (the ender-chest-from-inventory feature is gone). No-op when the skill is null.
-            if (player != null && RegistrySkills.WORMHOLE_STORAGE != null) {
+            // Iridescent fork (security): even with the skill registered, never trust the client -- the inventory
+            // button that sends this only exists for players who HAVE the skill enabled, so enforce that here
+            // (the old handler opened the ender chest for anyone who sent the packet).
+            if (player != null && RegistrySkills.WORMHOLE_STORAGE != null && RegistrySkills.WORMHOLE_STORAGE.get().isEnabled(player)) {
                 PlayerEnderChestContainer enderChest = player.getEnderChestInventory();
                 SimpleMenuProvider enderChestContainer = new SimpleMenuProvider((id, pl, b) -> ChestMenu.threeRows(id, pl, enderChest), Component.translatable(RegistrySkills.WORMHOLE_STORAGE.get().getKey()));
                 player.openMenu(enderChestContainer);

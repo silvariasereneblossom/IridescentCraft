@@ -15,6 +15,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+// Iridescent fork: NOT LISTED in justlevelingfork.mixins.json (source kept only). Turtle Shield is retired
+// (RegistrySkills.TURTLE_SHIELD == null); with the skill gone this was a cancel + verbatim copy of vanilla
+// ShulkerBullet#onHitEntity, which bypassed other mods' hooks in that method (e.g. Progressive Bosses'
+// dragon-minion levitation duration).
 @Mixin({ShulkerBullet.class})
 public abstract class MixShulkerBullet {
 

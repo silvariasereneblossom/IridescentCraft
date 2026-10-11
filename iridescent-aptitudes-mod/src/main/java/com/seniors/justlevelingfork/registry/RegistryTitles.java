@@ -72,7 +72,11 @@ public class RegistryTitles {
         if (!serverPlayer.isDeadOrDying())
             serverPlayer.getCapability(RegistryCapabilities.APTITUDE).ifPresent(capability -> {
                 for (TitleModel titleModel : HandlerTitlesConfig.HANDLER.instance().titleList) {
-                    titleModel.getTitle().setRequirement(serverPlayer, titleModel.CheckRequirements(serverPlayer));
+                    Title title = titleModel.getTitle();
+                    // Iridescent fork: setRequirement only ever UNLOCKS, so do not evaluate the conditions (stat /
+                    // advancement lookups) of a title this player already holds.
+                    if (title.getRequirement(serverPlayer)) continue;
+                    title.setRequirement(serverPlayer, titleModel.CheckRequirements(serverPlayer));
                 }
                 ADMIN.get().setRequirement(serverPlayer, serverPlayer.hasPermissions(2));
             });

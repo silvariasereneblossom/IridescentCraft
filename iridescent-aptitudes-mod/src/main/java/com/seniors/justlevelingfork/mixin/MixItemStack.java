@@ -15,6 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
+// Iridescent fork: NOT LISTED in justlevelingfork.mixins.json (source kept only). Scholar is retired
+// (RegistrySkills.SCHOLAR == null); with the skill gone this was a HEAD-cancel + copy of vanilla
+// ItemStack#appendEnchantmentNames, which only bypassed anything else hooked into that method.
 @Mixin({ItemStack.class})
 public abstract class MixItemStack {
     @Inject(method = {"appendEnchantmentNames"}, at = {@At("HEAD")}, cancellable = true)

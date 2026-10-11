@@ -40,6 +40,10 @@ public class ToggleSkillSP {
                 AptitudeCapability capability = AptitudeCapability.get(player);
 
                 Skill skill = RegistrySkills.getSkill(this.skill);
+                // Iridescent fork (security): mirror the screen's gating (JustLevelingScreen.createList only sends
+                // this for skill.getToggle()) -- a hand-crafted packet must not arm a skill the player has not
+                // unlocked, and an unknown skill name must be dropped instead of NPE-ing the handler.
+                if (capability == null || skill == null || !skill.getToggle(player)) return;
                 boolean setToggleSkills = capability.getToggleSkill(skill);
                 capability.setToggleSkill(skill, !setToggleSkills);
                 SyncAptitudeCapabilityCP.send(player);

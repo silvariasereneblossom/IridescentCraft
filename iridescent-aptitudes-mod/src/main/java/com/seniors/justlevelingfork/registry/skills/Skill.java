@@ -26,7 +26,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Skill {
     public final ResourceLocation key;
     public final Aptitude aptitude;
-    public final int requiredLevel;
+    // Iridescent fork: no longer final -- on a remote client DynamicConfigSyncCP sets the SERVER's level for the
+    // session (in memory; -1 = not registered there) and puts the local one back on logout. Nothing else may
+    // reassign it.
+    public int requiredLevel;
     public final ResourceLocation texture;
     private final Value[] configValues;
 

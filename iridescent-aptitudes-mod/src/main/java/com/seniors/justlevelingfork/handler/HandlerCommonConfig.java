@@ -28,9 +28,9 @@ public class HandlerCommonConfig {
     @Boolean(formatter = Boolean.Formatter.TRUE_FALSE)
     public boolean usingNewConfig = false;
 
-    @SerialEntry(comment = "Should the mod automatically check for updates on load?")
-    @Boolean(formatter = Boolean.Formatter.ON_OFF)
-    public boolean checkForUpdates = true;
+    // Iridescent fork: the `checkForUpdates` option was REMOVED -- the fork never phones upstream for updates
+    // (the checker is gone), so the switch did nothing. An existing config file that still has the key loads
+    // fine: YACL logs one "Found unknown config field" warning, skips it, and drops it on the next save.
 
     // General options
     @SerialEntry(comment = "Aptitudes Max Level")
