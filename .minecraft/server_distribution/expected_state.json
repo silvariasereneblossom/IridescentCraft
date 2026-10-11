@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "2284bcd9",
+    "generated_from":  "2446907c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5971,6 +5971,10 @@
                                                      "sha256":  "eb0bfaed60482e4e159ff4e2452cc098de57689f7cc82b4c9d9f112548173da6",
                                                      "size":  1005
                                                  },
+                  "kubejs/data/ad_astra_more_structures/loot_tables/entities/mercury_boss.json":  {
+                                                                                                      "sha256":  "402aaac363c82fec7aec2cc54259b41d739b4a0cb913c47636936ea507c2a6cd",
+                                                                                                      "size":  1962
+                                                                                                  },
                   "kubejs/data/ars_nouveau/loot_modifiers/dungeon_loot.json":  {
                                                                                    "sha256":  "c4505fb4069cb94672578b4a22a47abbab628e3ff9679ba4d1885ebec18124e4",
                                                                                    "size":  319
@@ -6939,6 +6943,14 @@
                                                                                "sha256":  "ee75886ac6e2ebc7439be20f43567429578fc6a186f0a9b41e8f5df2ab6daf7b",
                                                                                "size":  1206
                                                                            },
+                  "kubejs/data/theabyss/loot_tables/entities/end_spider.json":  {
+                                                                                    "sha256":  "1955c3dd6ae6262eafdbacdf825567a247dc2709ac60da2e5e2e8d9f667e83b1",
+                                                                                    "size":  634
+                                                                                },
+                  "kubejs/data/theabyss/loot_tables/entities/slime_spider.json":  {
+                                                                                      "sha256":  "d2088399cbf1035c886437e239bda21b52511d7f55c2a1e8ed9349338671f448",
+                                                                                      "size":  634
+                                                                                  },
                   "kubejs/data/twilightforest/tags/items/portal/activator.json":  {
                                                                                       "sha256":  "97fc796d73298362903987975a6ec105245536f9d126991cef2d33045f3d8e20",
                                                                                       "size":  84
