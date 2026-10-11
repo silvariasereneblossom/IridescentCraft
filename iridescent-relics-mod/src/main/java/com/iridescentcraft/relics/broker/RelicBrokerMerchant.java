@@ -77,13 +77,15 @@ public class RelicBrokerMerchant implements Merchant {
         // what makes maxUses / out-of-stock work. Mirror that.
         offer.increaseUses();
 
-        // B2 ~10/day cap: count this trade in persistentData; at the cap, lock the whole
+        // B2 ~10/day cap: count this trade in the player's persisted data; at the cap, lock the whole
         // catalog (so the player can't trade more today) and tell them once. Selling relics
         // BACK to the Broker (result = essence) is an uncapped sink, so it does NOT count.
         boolean isBuyback = offer.getResult().is(IridescentRelics.RELIC_ESSENCE.get());
         if (this.dailyCap > 0 && this.tradingPlayer != null && !isBuyback) {
-            int count = this.tradingPlayer.getPersistentData().getInt(RelicBroker.TRADES_KEY) + 1;
-            this.tradingPlayer.getPersistentData().putInt(RelicBroker.TRADES_KEY, count);
+            // RelicBroker.data = PlayerPersisted: the count must survive death (see there).
+            var data = RelicBroker.data(this.tradingPlayer);
+            int count = data.getInt(RelicBroker.TRADES_KEY) + 1;
+            data.putInt(RelicBroker.TRADES_KEY, count);
             if (count >= this.dailyCap) {
                 lockAllOffers();
                 this.tradingPlayer.displayClientMessage(Component.literal(
