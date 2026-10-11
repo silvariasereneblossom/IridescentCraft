@@ -29,6 +29,14 @@
 #      commits-behind, classified NOISE (only .icraft_head_sha / .icraft_last_sha
 #      / TesterLogs/** / "stamp HEAD [skip ci]" auto-mirror commits) vs real
 #      content drift (anything else).
+#   3. World-backup health - the newest verified scheduled backup listed in the
+#      server's backups\backups.json (written by icraft-gui; see section 11 of
+#      the deployment guide) must exist with its recorded size and be recent:
+#      GREEN under 13 h, YELLOW under 24 h, RED beyond that, with none, or when
+#      the launcher's last attempt failed. Backups died silently for six months
+#      once (the backup mod needed git; the box has none; nothing alarmed), so
+#      every run of this tool now looks. Pinned (manual-*) backups are counted
+#      and sized: nothing deletes those but the operator.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -37,7 +45,8 @@
 #   pwsh .minecraft\dev\verify-server.ps1 -NoPull              # skip the step-0 working-tree pull (still fetches origin)
 #   pwsh .minecraft\dev\verify-server.ps1 -Fix                 # STOP THE SERVER FIRST: copy correct jar(s) onto live
 #
-# Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error.
+# Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
+#             3 = parity, but the world backups are RED (stale / none / failed).
 # Read-only by default. -Fix is the only mutating mode and only ever WRITES to
 # the live server root (never the repo). It surfaces drift; it does NOT fix the
 # underlying launcher cause (manifest-blind GUI cleanup / marker short-circuit /
@@ -256,6 +265,101 @@ if ([string]::IsNullOrWhiteSpace($marker)) {
 }
 
 # =============================================================================
+# 3. WORLD-BACKUP HEALTH  (backups\backups.json, written by icraft-gui)
+# =============================================================================
+# Reads only the manifest and file sizes - never the zips themselves (1+ GB each
+# over the share). The launcher verified each zip (CRC + size + entry set) before
+# listing it; this check answers "is there a recent one, and is it still there?".
+function Format-Span {
+    param([double]$Seconds)
+    if ($Seconds -lt 0) { $Seconds = 0 }
+    $h = [int][math]::Floor($Seconds / 3600)
+    $m = [int][math]::Floor(($Seconds % 3600) / 60)
+    if ($h -gt 0) { return ('{0}h{1:00}m' -f $h, $m) }
+    return ('{0}m' -f $m)
+}
+function Format-Bytes {
+    param([double]$Bytes)
+    if ($Bytes -ge 1GB) { return ('{0:n2} GiB' -f ($Bytes / 1GB)) }
+    return ('{0:n1} MiB' -f ($Bytes / 1MB))
+}
+# created_utc is an ISO-8601 string in Windows PowerShell 5.1, but pwsh 7's
+# ConvertFrom-Json hands the same value back as a [datetime]. Take either.
+function ConvertTo-UtcDate {
+    param($Value)
+    if ($Value -is [datetime]) { return $Value.ToUniversalTime() }
+    try {
+        return [DateTimeOffset]::Parse([string]$Value, [Globalization.CultureInfo]::InvariantCulture).UtcDateTime
+    } catch { return $null }
+}
+
+$backupDir    = Join-Path $ServerRoot 'backups'
+$backupState  = 'RED'      # GREEN | YELLOW | RED
+$backupLine   = $null
+$backupNotes  = New-Object System.Collections.Generic.List[string]
+$backupHours  = 12         # launcher default; .icraft_backup_policy may override
+$backupPolicy = Join-Path $ServerRoot '.icraft_backup_policy'
+if (Test-Path -LiteralPath $backupPolicy) {
+    foreach ($pl in (Get-Content -LiteralPath $backupPolicy)) {
+        $t = ($pl -replace '#.*$', '').Trim()
+        if ($t -match '^interval_hours\s*=\s*(\d+)$') { $backupHours = [int]$matches[1] }
+        if ($t -match '^mode\s*=\s*off$') { $backupNotes.Add('scheduled backups are switched OFF in .icraft_backup_policy') | Out-Null }
+    }
+}
+$greenBelow  = ($backupHours + 1) * 3600
+$yellowBelow = [math]::Max($backupHours * 2 * 3600, $greenBelow)
+
+$backupManifestPath = Join-Path $backupDir 'backups.json'
+if (-not (Test-Path -LiteralPath $backupManifestPath)) {
+    $backupLine = "no backups\backups.json on the server - no managed world backup has been taken yet (the launcher takes the first one on its next Cycle)"
+} else {
+    $bm = $null
+    try {
+        $bmRaw = (Get-Content -LiteralPath $backupManifestPath -Raw) -replace "^﻿", ''
+        $bm = $bmRaw | ConvertFrom-Json
+    } catch {
+        $backupLine = "backups\backups.json does not parse: $($_.Exception.Message)"
+    }
+    if ($null -ne $bm) {
+        $scheduled = New-Object System.Collections.Generic.List[object]
+        $pinnedCount = 0; $pinnedBytes = [double]0
+        foreach ($b in @($bm.backups)) {
+            if ($null -eq $b) { continue }
+            $bPath = Join-Path $backupDir ([string]$b.file)
+            $onDisk = Get-Item -LiteralPath $bPath -ErrorAction SilentlyContinue
+            if ($null -eq $onDisk -or $onDisk.Length -ne [int64]$b.size) {
+                $backupNotes.Add("listed but missing or resized on disk: $($b.file)") | Out-Null
+                continue
+            }
+            if ([string]$b.file -like 'manual-*') {
+                $pinnedCount++; $pinnedBytes += [double]$b.size
+                continue
+            }
+            $when = ConvertTo-UtcDate $b.created_utc
+            if ($null -eq $when) { $backupNotes.Add("unreadable created_utc on $($b.file)") | Out-Null; continue }
+            $scheduled.Add([pscustomobject]@{ File = [string]$b.file; When = $when; Size = [double]$b.size; Files = $b.world_files }) | Out-Null
+        }
+        if ($pinnedCount -gt 0) {
+            $backupNotes.Add(("{0} pinned (manual) backup(s), {1} - never pruned; delete them when they have served their purpose" -f $pinnedCount, (Format-Bytes $pinnedBytes))) | Out-Null
+        }
+        if ($scheduled.Count -eq 0) {
+            $backupLine = "backups.json lists no scheduled backup that is still on disk"
+        } else {
+            $newest = $scheduled | Sort-Object When -Descending | Select-Object -First 1
+            $ageSec = ((Get-Date).ToUniversalTime() - $newest.When).TotalSeconds
+            $desc = ("newest scheduled backup {0} is {1} old ({2} files, {3}; {4} kept)" -f $newest.File, (Format-Span $ageSec), $newest.Files, (Format-Bytes $newest.Size), $scheduled.Count)
+            if ($ageSec -lt $greenBelow)      { $backupState = 'GREEN' }
+            elseif ($ageSec -lt $yellowBelow) { $backupState = 'YELLOW' }
+            $backupLine = $desc
+        }
+        if ($null -ne $bm.last_attempt -and $bm.last_attempt.ok -eq $false) {
+            $backupState = 'RED'
+            $backupNotes.Add("the launcher's LAST ATTEMPT FAILED ($($bm.last_attempt.at_utc)): $($bm.last_attempt.note)") | Out-Null
+        }
+    }
+}
+
+# =============================================================================
 # REPORT
 # =============================================================================
 Write-Host ""
@@ -303,6 +407,17 @@ if ($markerProblem) {
     foreach ($f in ($realChanged | Select-Object -First 40)) { Write-Host ("    + {0}" -f $f) }
     if ($realChanged.Count -gt 40) { Write-Host ("    ... and {0} more changed path(s)" -f ($realChanged.Count - 40)) }
     if ($IsVerbose) { Write-Host "    cause: content commits behind => the server's sync short-circuited - ICRAFT_SERVICE_MODE skips phase0 sync, or the GUI blind-trusts .icraft_last_sha and never pulled (phase0 also fails OPEN on the 60/hr GitHub API limit)." -ForegroundColor DarkYellow }
+}
+
+Write-Host ""
+Write-Host ("-- world-backup health (backups\backups.json; green < {0}, red >= {1}) --" -f (Format-Span $greenBelow), (Format-Span $yellowBelow)) -ForegroundColor Cyan
+$backupColor = 'Red'
+if ($backupState -eq 'GREEN')  { $backupColor = 'Green' }
+if ($backupState -eq 'YELLOW') { $backupColor = 'Yellow' }
+Write-Host ("  {0}: {1}" -f $backupState, $backupLine) -ForegroundColor $backupColor
+foreach ($n in $backupNotes) { Write-Host ("    - {0}" -f $n) -ForegroundColor DarkYellow }
+if ($IsVerbose -and $backupState -ne 'GREEN') {
+    Write-Host "    cause: read logs\backup.log on the server (every decision and failure is there). A backup is taken in a Cycle's stopped window once the newest one is older than the interval; 'none yet' right after the launcher shipped just means no Cycle has happened since." -ForegroundColor DarkYellow
 }
 
 # =============================================================================
@@ -382,7 +497,20 @@ if (-not $realDrift) {
     Write-Host "=== PARITY OK ===" -ForegroundColor Green
     $mk = if ($totalBehind -eq 0) { 'current' } elseif ($noiseOnly) { "$totalBehind noise-only commit(s) behind" } else { 'current' }
     Write-Host ("    {0}/{1} server jars match origin/main; marker {2}." -f $ok.Count, $serverJars.Count, $mk) -ForegroundColor Green
+    if ($backupState -eq 'RED') {
+        Write-Host "=== BACKUPS RED ===" -ForegroundColor Red
+        Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
+        Write-Host "    -> the deploy is fine, the world backups are not: see logs\backup.log on the server." -ForegroundColor Yellow
+        exit 3
+    }
+    if ($backupState -eq 'YELLOW') {
+        Write-Host ("    backups YELLOW: {0}" -f $backupLine) -ForegroundColor Yellow
+    }
     exit 0
+}
+if ($backupState -eq 'RED') {
+    Write-Host "=== BACKUPS RED (as well as the drift below) ===" -ForegroundColor Red
+    Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
 }
 
 if ($jarDrift -eq 0 -and $contentCommits -eq 0 -and $markerProblem) {

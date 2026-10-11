@@ -6,6 +6,11 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The server backs its world up again
+
+- **World backups are back, twice a day.** The dedicated server's backup mod (FastBack) quietly never worked there — it needs a tool the server machine doesn't have — so the world had gone without backups since April. The server launcher now takes them itself: every 12 hours, during a restart it was already making, it zips the whole world, checks the zip by reading it back, and keeps the newest two. No extra restarts, and no backups while anyone could be mid-save.
+- **FastBack is removed** from the pack on both sides. It did nothing on the server and was never part of singleplayer saves unless you set it up yourself; your worlds are untouched.
+
 ## October 2026 — The Abyss now hits like a Tier 3 dimension
 
 - **Abyss mobs were scaling like Overworld mobs — fixed.** A wrong dimension name in the difficulty settings meant The Abyss silently fell back to the Tier 1 curve. It now runs the intended Tier 3 curve (mobs start at 300% and ramp to 450%, instead of 150% → 300%), and its **Frost World** side-dimension joins it. Only newly spawned mobs are affected.

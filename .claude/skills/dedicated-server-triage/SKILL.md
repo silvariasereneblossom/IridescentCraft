@@ -43,6 +43,7 @@ The dev repo's `.minecraft\server_distribution\` is the **source**. The live ser
 - Launcher (production): `icraft-gui.exe` in the runtime root (Mesa OpenGL DLLs alongside on GPU-less VMs). It self-updates during a **Cycle** (and via its **Sync** / **Update Launcher** buttons) from the canonical `server_distribution\icraft-gui.exe`, checked against the `icraft-gui.exe.sha256` sidecar. Source: `<repo>\iridescent-launcher\`; CI (`build-icraft-gui.yml`) is the only compiler and commits the exe one commit after the source.
 - Launcher (legacy): `iridescentserver.bat` / `iridescentserver.sh`; bare Forge launch `run.bat` / `run.sh`; env flag `ICRAFT_SERVICE_MODE=1`; force flag `iridescentserver.bat /force`. The NSSM service `IridescentMC` no longer exists.
 - Restart machinery: `request_cycle.ps1` (ask the GUI for a Cycle; logs to `logs\cycle_requests.log`), `.icraft_cycle_request` / `.icraft_cycle_request.result` (the request file it writes and the GUI's answer), `.icraft_restart_policy` (optional policy override), `logs\restart_policy.log` (policy audit trail).
+- World backups (launcher, since 2026-10-11 — there is no backup mod): `backups\world-YYYYmmdd-HHMM.zip` (scheduled: taken in a Cycle's stopped window once the newest is 12 h old, newest 2 kept), `backups\manual-YYYYmmdd-HHMM.zip` (pinned: asked for, never pruned), `backups\backups.json` (the verified backups of both kinds), `logs\backup.log` (every decision and failure), `.icraft_backup_policy` (optional override), `request_backup.ps1` + `.icraft_backup_request` / `.icraft_backup_request.result` (ask for a pinned backup). `verify-server.ps1` reports backup age and exits 3 when it is red.
 - Logs: `logs\latest.log`, `logs\debug.log`. Crashes: `crash-reports\crash-*.txt` (Forge). Post-exit snapshot: `crash-<date>_<time>.log`, pushed by `push_crash_logs.bat` to `<repo>\.minecraft\TesterLogs\Server Logs\`.
 - Mod hygiene: `strip_client_mods.bat`/`.sh`, `cleanup_stale_jars.ps1`, `update_mods.ps1`, `client_only_mods.txt`, `custom_jars_manifest.json`.
 - Sync: `sync_from_repo.bat`/`.sh`, `phase0_sync.ps1`, marker `.icraft_last_sha`.
@@ -74,6 +75,21 @@ Set-Content 'Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\
 ```
 
 `.icraft_restart_policy` keys: `mode=live|dry-run|off`, `empty_after_min`, `busy_after_min`, `empty_debounce_min`, `busy_warn_sec`. A line that doesn't parse **suspends** the policy (it never falls back to live) and says so in `restart_policy.log`. The policy never acts in the first 10 min after boot. Leftover test thresholds in this file are a restart loop waiting to happen — remove the file when done.
+
+**World backups** ride on those same Cycles: the launcher zips the world just before it starts the JVM, when the newest scheduled backup is 12 h old. Nothing to run by hand for the routine ones.
+
+```powershell
+# Are backups healthy? (newest scheduled backup's age; also part of verify-server.ps1)
+Get-Content 'Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\logs\backup.log' -Tail 15
+Get-Content 'Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\backups\backups.json'
+
+# A pinned backup before a risky change. Exit 0 done / 3 queued (server is up: taken at the next Cycle) / 2 failed / 1 no answer.
+Invoke-Command -ComputerName Sereneblossomns -ScriptBlock {
+    & 'C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\request_backup.ps1' -Reason pre-update
+}
+```
+
+`.icraft_backup_policy` keys: `mode=live|off` (off stops the scheduled ones only), `interval_hours`, `keep`, `max_minutes`. A line that doesn't parse does **not** stop backups: the launcher backs up on the defaults, **prunes nothing**, and turns the Backup badge red until the file is fixed or removed. Retention only ever deletes `world-YYYYmmdd-HHMM.zip`; a `manual-*.zip` stays until someone deletes it (each is the size of the world). A backup failure never keeps the server down — it is in `backup.log` and on the badge. Restoring one: deployment guide §11.
 
 ## Triage flow
 

@@ -52,8 +52,15 @@ Rust workspace with three crates:
 - PAT auth via `ICRAFT_GH_TOKEN` env var or `.icraft_token` file
 - Hang-detection watchdog: polls `logs/latest.log` mtime; kills on `boot_timeout` (default 15 min) or `idle_timeout` (default 15 min, post-boot) with graceful SIGTERM-equivalent so worlds flush. Configurable per-launch via `--boot-timeout` / `--idle-timeout`.
 
+**World backups (since 2026-10):**
+- Every restart the launcher makes has a moment where the server is stopped and the world files are closed. If the newest scheduled backup is 12 hours old, the launcher uses that moment to zip the whole world folder into `backups/`. Restarts already happen every 4 to 12 hours, so this gives two backups a day with no restarts of its own.
+- Each new zip is reopened and read back in full (every file's checksum and size) before it counts. Only then is the oldest one removed; the newest two scheduled backups are kept. A backup that fails its check is thrown away and the older ones stay.
+- A backup problem never keeps the server down: it is logged, shown in red on the launcher's **Backup** badge, and the server starts anyway.
+- **Back up now** (button, or a request file for remote use) takes an extra *pinned* backup that is never removed automatically, for use before a risky change. If the server is running it waits for the next restart.
+- `icraft backup` and `icraft backup-status` do the same from the command line.
+
 **GUI extras:**
-- Status badges row: Forge present, EULA, mod count, last sync SHA
+- Status badges row: Forge present, EULA, mod count, last sync SHA, backup age
 - Color-coded log lines per level (red ERROR / orange WARN / blue INFO / gray DEBUG)
 - "Update Launcher" button — pulls a fresh `icraft-gui.exe` from the repo, applies via the existing self-update flow, spawns the new instance, exits cleanly. Path A flow (binary committed to repo); GitHub Releases / CI-built artifacts (Path B) is a future polish.
 
