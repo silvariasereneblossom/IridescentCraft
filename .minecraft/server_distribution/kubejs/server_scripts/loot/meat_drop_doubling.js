@@ -35,7 +35,7 @@ LootJS.modifiers(function (event) {
   for (var entityId in MEAT_ANIMALS) {
     var meats = MEAT_ANIMALS[entityId]
     for (var i = 0; i < meats.length; i++) {
-      event.addEntityLootModifier(entityId).modifyLoot(meats[i], doubleStack)
+      global.icraftEntityMod(event, entityId).modifyLoot(meats[i], doubleStack)
     }
     count++
   }

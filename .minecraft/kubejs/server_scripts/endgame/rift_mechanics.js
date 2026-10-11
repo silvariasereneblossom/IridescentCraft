@@ -24,71 +24,76 @@
 // =========================================================================
 
 LootJS.modifiers(event => {
+    // Entity ids go through the registry-checked helper from
+    // loot/0_entity_id_validator.js: LootJS resolves an UNKNOWN entity id to the
+    // registry default (minecraft:pig) and would hang the pool on every pig.
+    // Falls back to the raw call if the helper is not loaded.
+    let riftEntityMod = (ev, id) => global.icraftEntityMod ? global.icraftEntityMod(ev, id) : ev.addEntityLootModifier(id)
 
     // --- Ender Dragon: 3-5 Rift Shards + 2-3 Void Fragments guaranteed ---
-    event.addEntityLootModifier('minecraft:ender_dragon')
+    riftEntityMod(event, 'minecraft:ender_dragon')
         .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 4))
         .addLoot(LootEntry.of('kubejs:void_fragment', 2))
         .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.10)))
 
     // --- Wither: 2-4 Rift Shards + 1-2 Void Fragments ---
-    event.addEntityLootModifier('minecraft:wither')
+    riftEntityMod(event, 'minecraft:wither')
         .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 3))
         .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
     // --- Warden: rare Rift material drop (T3-T4 miniboss) ---
-    event.addEntityLootModifier('minecraft:warden')
+    riftEntityMod(event, 'minecraft:warden')
         .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.40)))
 
     // --- Modded boss drops: only register if the mod is loaded ---
     // LootJS may apply modifiers to wrong entities if the entity type doesn't exist
     if (Platform.isLoaded('botania')) {
-        event.addEntityLootModifier('botania:doppleganger')
+        riftEntityMod(event, 'botania:doppleganger')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 4))
             .addLoot(LootEntry.of('kubejs:void_fragment', 2))
             .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
     }
 
     if (Platform.isLoaded('cataclysm')) {
-        event.addEntityLootModifier('cataclysm:ancient_remnant')
+        riftEntityMod(event, 'cataclysm:ancient_remnant')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 5))
             .addLoot(LootEntry.of('kubejs:void_fragment', 4))
             .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.20)))
             .addLoot(LootEntry.of('kubejs:rift_core').when(c => c.randomChance(0.05)))
 
-        event.addEntityLootModifier('cataclysm:ender_guardian')
+        riftEntityMod(event, 'cataclysm:ender_guardian')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 4))
             .addLoot(LootEntry.of('kubejs:void_fragment', 3))
             .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
 
-        event.addEntityLootModifier('cataclysm:ignis')
+        riftEntityMod(event, 'cataclysm:ignis')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
-        event.addEntityLootModifier('cataclysm:the_harbinger')
+        riftEntityMod(event, 'cataclysm:the_harbinger')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
-        event.addEntityLootModifier('cataclysm:the_leviathan')
+        riftEntityMod(event, 'cataclysm:the_leviathan')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
-        event.addEntityLootModifier('cataclysm:maledictus')
+        riftEntityMod(event, 'cataclysm:maledictus')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
-        event.addEntityLootModifier('cataclysm:netherite_monstrosity')
+        riftEntityMod(event, 'cataclysm:netherite_monstrosity')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 1))
             .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.50)))
 
-        event.addEntityLootModifier('cataclysm:ignited_revenant')
+        riftEntityMod(event, 'cataclysm:ignited_revenant')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard').when(c => c.randomChance(0.30)))
             .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.20)))
     }
 
     if (Platform.isLoaded('deep_aether')) {
-        event.addEntityLootModifier('deep_aether:eots_controller')
+        riftEntityMod(event, 'deep_aether:eots_controller')
             .addLoot(LootEntry.of('kubejs:icraft_rift_shard', 2))
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
     }
@@ -101,18 +106,18 @@ LootJS.modifiers(event => {
     // =========================================================================
 
     // --- Endermen (End dimension ONLY — not overworld endermen) ---
-    event.addEntityLootModifier('minecraft:enderman')
+    riftEntityMod(event, 'minecraft:enderman')
         .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:icraft_rift_shard').when(c => c.randomChance(0.01)))
 
     // --- Shulkers: End-exclusive mob, higher Void Fragment rate ---
-    event.addEntityLootModifier('minecraft:shulker')
+    riftEntityMod(event, 'minecraft:shulker')
         .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.08)))
         .addLoot(LootEntry.of('kubejs:icraft_rift_shard').when(c => c.randomChance(0.03)))
 
     // --- Phantom: End dimension only (not overworld night phantoms) ---
-    event.addEntityLootModifier('minecraft:phantom')
+    riftEntityMod(event, 'minecraft:phantom')
         .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.05)))
 

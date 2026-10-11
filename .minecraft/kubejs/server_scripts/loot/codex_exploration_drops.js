@@ -67,7 +67,7 @@ LootJS.modifiers(event => {
       'minecraft:chests/pillager_outpost',
       'minecraft:chests/woodland_mansion',
       /dungeoncrawl:.*chests.*/,
-      /explorify:.*chests.*/,
+      /explorify:.*chest.*/,   // [2026-10-10] was .*chests.* — Explorify's tables are explorify:chest/… (matched nothing)
       /^structory:.+/,
       /dungeons_plus:.*/,
       /dungeons_arise:.*/,
@@ -116,15 +116,20 @@ LootJS.modifiers(event => {
     )
 
   // ===========================================================================
-  // T4 — DEEP AETHER / END / THE ABYSS — every chest in the dimension.
+  // T4 — END / THE ABYSS — every chest in the dimension.
   // Highest density: ~50% for a 3-6 stack. T4 has no token of its own, so the
   // endgame dimensions seed the t3 accumulation token (terminal-tier — these
   // tokens are spendable engineering/exploration currency, not a T4 gate).
+  //
+  // [2026-10-10] This list used to start with 'deep_aether:the_aether'. No such
+  // dimension exists: Deep Aether adds its biomes and structures to
+  // aether:the_aether, so its chests have always taken the T2 rule above (and
+  // still do). Whether Deep Aether content should count as T4 is an open design
+  // question — it cannot be expressed by dimension.
   // ===========================================================================
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
-      'deep_aether:the_aether',
       'minecraft:the_end',
       'theabyss:the_abyss'
     )
@@ -147,7 +152,7 @@ LootJS.modifiers(event => {
   // ===========================================================================
   function seedMobDrops(mobIds, tokenId, chance, dims) {
     mobIds.forEach(function (mobId) {
-      var mod = event.addEntityLootModifier(mobId)
+      var mod = global.icraftEntityMod(event, mobId)
       if (dims && dims.length) mod = mod.anyDimension.apply(mod, dims)
       mod.addLoot(LootEntry.of(tokenId).when(c => c.randomChance(chance)))
     })
@@ -184,12 +189,17 @@ LootJS.modifiers(event => {
     ['minecraft:the_nether', 'undergarden:undergarden',
      'deeperdarker:otherside'])
 
-  // T4 dimensions (t3 token — terminal tier) — End / Deep Aether / Abyss.
+  // T4 dimensions (t3 token — terminal tier) — End / Abyss.
+  // ('deep_aether:the_aether' dropped from the dimension list 2026-10-10: not a
+  //  dimension. deep_aether:venomite spawns in a Deep Aether biome of
+  //  aether:the_aether (yagroot_swamp), so its entry here only fires for one
+  //  killed in the End / Abyss — in practice never, before and after this
+  //  change. Same open question as the chest note above.)
   seedMobDrops(
     ['minecraft:enderman', 'minecraft:shulker', 'minecraft:endermite',
      'deep_aether:venomite'],  // were tempest/skyhunter (no such entities -> pig) 2026-06-06
     TOK_T3, 0.05,
-    ['deep_aether:the_aether', 'minecraft:the_end', 'theabyss:the_abyss'])
+    ['minecraft:the_end', 'theabyss:the_abyss'])
 
   console.log('[codex_exploration_drops] Codex progression tokens injected into ' +
     'chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + ' +

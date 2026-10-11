@@ -30,11 +30,22 @@
 // SAFE vs the ISS getItemBySlot AbstractMethodError (0_iss_guard.js): we never
 // touch the killed entity -- only the killer player and the dropped ItemStacks.
 //
-// LOADS LAST (zzz_ prefix): runs after every other loot modifier so it sees the
-// final generated scroll even if a future script adds scrolls to an ISS entity
-// table. (Today the entity-table scroll comes from the vanilla/datapack table's
-// randomize_spell, which always rolls before any LootJS modifier, so order is
-// not strictly required -- the prefix just future-proofs it.)
+// LOAD ORDER (corrected 2026-10-10): this file does NOT load last. Script
+// names compare case-insensitively, so 'Z' sorts before '_' and zzz_* loads
+// BEFORE every zz_* file (boot log: zzz_iss_scroll_tier_clamp, then
+// zz_iss_arena_enrichment, zz_pack_enchanted_books, zz_unique_chest_strip). It
+// does load after every a-z loot file. That is enough today: the entity-table
+// scroll comes from the vanilla/datapack table's randomize_spell, which always
+// rolls before any LootJS modifier, and none of the zz_* files touches an ISS
+// entity table. A future script that ADDS scrolls to an ISS entity table from
+// a zz_* file would escape this clamp.
+//
+// TABLE FILTER (fixed 2026-10-10): it was /^irons_spellbooks:entities\//.
+// LootJS table regexes are FULL-MATCH (ResourceLocationFilter.ByPattern.test ==
+// Pattern.matcher(id).matches(), decompiled 2.13.1), so that pattern matched no
+// table and this clamp had never run since it shipped (it logged "armed" at
+// every boot). With the trailing .* it matches the 17 irons_spellbooks:entities/
+// tables.
 //
 // Pairs with: randomize_blank_scrolls.js (retro-binds blank scrolls, T1 formula)
 // and the priest holy-scroll rate-down (icraft_loot_overrides entities/priest).
@@ -82,7 +93,7 @@ function issClampScrollLevels(stack, cap) {
 LootJS.modifiers(event => {
   // Every ISS entity table: priest / apothecarist / necromancer / cryomancer /
   // pyromancer / cultist / archevoker / dead_king / ... -- matched by id regex.
-  event.addLootTableModifier(/^irons_spellbooks:entities\//).apply(ctx => {
+  event.addLootTableModifier(/^irons_spellbooks:entities\/.*/).apply(ctx => {
     try {
       var loot = ctx.getLoot()
       if (!loot || loot.size() === 0) return

@@ -26,58 +26,58 @@ LootJS.modifiers(event => {
 
   // ---- T1 ----
   // bm_gob: Gob's gilded gear is a 1-of-3 pool pick -> floor the gilded hat.
-  event.addEntityLootModifier('terramity:gob')
+  global.icraftEntityMod(event, 'terramity:gob')
     .addLoot(LootEntry.of('terramity:gobs_gilded_hat_helmet'))
   // bm_sculptor: Tongbi drops 1-of-5 gear -> floor the geomancy staff.
-  event.addEntityLootModifier('mowziesmobs:sculptor')
+  global.icraftEntityMod(event, 'mowziesmobs:sculptor')
     .addLoot(LootEntry.of('mowziesmobs:sculptor_staff'))
   // bm_mnaga: Mowzie's Naga fang is a 0-1 drop -> floor for refight reliability.
-  event.addEntityLootModifier('mowziesmobs:naga')
+  global.icraftEntityMod(event, 'mowziesmobs:naga')
     .addLoot(LootEntry.of('mowziesmobs:naga_fang'))
 
   // ---- T2 ----
   // tf_knightphantom: Knight Phantom's data loot table is empty (code-driven) ->
   // floor the knightmetal ring (its signature spectral-knightmetal trinket).
-  event.addEntityLootModifier('twilightforest:knight_phantom')
+  global.icraftEntityMod(event, 'twilightforest:knight_phantom')
     .addLoot(LootEntry.of('twilightforest:knightmetal_ring'))
   // ae_valkyrie: the Queen drops only a key+sword; victory_medal comes from lesser
   // valkyries -> floor it on the Queen so her material has a refight source.
-  event.addEntityLootModifier('aether:valkyrie_queen')
+  global.icraftEntityMod(event, 'aether:valkyrie_queen')
     .addLoot(LootEntry.of('aether:victory_medal'))
 
   // ---- T3 ----
   // iss_deadking: blood_staff is a ~50% drop -> floor to guarantee one per kill.
-  event.addEntityLootModifier('irons_spellbooks:dead_king')
+  global.icraftEntityMod(event, 'irons_spellbooks:dead_king')
     .addLoot(LootEntry.of('irons_spellbooks:blood_staff'))
   // iss_citadel: keeper_flamberge is a ~40% drop -> floor it.
-  event.addEntityLootModifier('irons_spellbooks:citadel_keeper')
+  global.icraftEntityMod(event, 'irons_spellbooks:citadel_keeper')
     .addLoot(LootEntry.of('irons_spellbooks:keeper_flamberge'))
   // iss_magehunter: 'irons_spellbooks:magehunter' is an ITEM id, not an entity -
   // an unresolvable id in addEntityLootModifier silently DEFAULTS TO minecraft:pig
   // (ENTITY_TYPE is a DefaultedRegistry). Re-homed 2026-06-06 onto the weapon's
   // actual dropper (valkyrie_queen, iss_boss_drops @30%) to guarantee repair.
-  event.addEntityLootModifier('aether:valkyrie_queen')
+  global.icraftEntityMod(event, 'aether:valkyrie_queen')
     .addLoot(LootEntry.of('irons_spellbooks:magehunter'))
 
   // ---- T4 ----
   // cm_ancient_metal: Ancient Remnant natively drops ancient_metal_BLOCK x1.
   // Add a few ingots directly so the repair material is usable without uncrafting
   // (identical to the witherite_ingot floor in cataclysm_boss_drops.js).
-  event.addEntityLootModifier('cataclysm:ancient_remnant')
+  global.icraftEntityMod(event, 'cataclysm:ancient_remnant')
     .addLoot(LootEntry.of('cataclysm:ancient_metal_ingot').limitCount([2, 3]))
   // da_eots: squall_plate (stormforged ingredient) is not in any loot table ->
   // inject it as the Eye of the Storm refight drop (stratus_ingot is already
   // claimed by the `stratus` material, so squall_plate keeps da_eots distinct).
-  event.addEntityLootModifier('deep_aether:eots_controller')
+  global.icraftEntityMod(event, 'deep_aether:eots_controller')
     .addLoot(LootEntry.of('deep_aether:squall_plate'))
   // tm_circe: code-driven (no confirmed Circe drop); malediction_bracelets is her
   // catalog signature (also a Gundalf drop) -> floor it on Circe. FLAGGED: if the
   // operator prefers a Circe-unique item, swap here + in gen_boss_materials.py.
-  event.addEntityLootModifier('terramity:sorceress_circe')
+  global.icraftEntityMod(event, 'terramity:sorceress_circe')
     .addLoot(LootEntry.of('terramity:malediction_bracelets'))
   // vn_warden: the Warden natively drops only sculk_catalyst; echo_shard is the
   // material-grade sculk-echo item -> floor it on warden kills.
-  event.addEntityLootModifier('minecraft:warden')
+  global.icraftEntityMod(event, 'minecraft:warden')
     .addLoot(LootEntry.of('minecraft:echo_shard'))
 
   console.log('[boss_refight_repair_floors] registered 12 refight-to-repair drop floors (icraft #58)')

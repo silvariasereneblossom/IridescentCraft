@@ -11,31 +11,27 @@
 LootJS.modifiers(event => {
 
   // ---- Summoner (T2 — Everdawn dungeon, magic boss) ----
-  event
-    .addEntityLootModifier('blue_skies:summoner')
+  global.icraftEntityMod(event, 'blue_skies:summoner')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:evocation_rune').when(c => c.randomChance(0.35)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([4, 8]).when(c => c.randomChance(0.40)))
 
   // ---- Alchemist (T2 — Everbright, alchemy theme) ----
-  event
-    .addEntityLootModifier('blue_skies:alchemist')
+  global.icraftEntityMod(event, 'blue_skies:alchemist')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('irons_spellbooks:evasion_elixir').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('irons_spellbooks:oakskin_elixir').when(c => c.randomChance(0.20)))
 
   // ---- Starlit Crusher (T2 — Everbright crystal boss) ----
-  event
-    .addEntityLootModifier('blue_skies:starlit_crusher')
+  global.icraftEntityMod(event, 'blue_skies:starlit_crusher')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:lightning_rune').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:lightning_upgrade_orb').when(c => c.randomChance(0.15)))
 
   // ---- Arachnarch (T2 — Everdawn spider queen) ----
-  event
-    .addEntityLootModifier('blue_skies:arachnarch')
+  global.icraftEntityMod(event, 'blue_skies:arachnarch')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').limitCount([1, 2]).when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.20)))

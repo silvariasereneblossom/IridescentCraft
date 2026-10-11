@@ -21,15 +21,13 @@
 LootJS.modifiers(event => {
 
   // ---- Netherite Monstrosity (T3 — nether) ----
-  event
-    .addEntityLootModifier('cataclysm:netherite_monstrosity')
+  global.icraftEntityMod(event, 'cataclysm:netherite_monstrosity')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([2, 3]).when(c => c.randomChance(0.70)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.30)))
 
   // ---- Ignis (T3 — fire boss, ISS fire synergy) ----
-  event
-    .addEntityLootModifier('cataclysm:ignis')
+  global.icraftEntityMod(event, 'cataclysm:ignis')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([2, 3]).when(c => c.randomChance(0.70)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_upgrade_orb').when(c => c.randomChance(0.30)))
@@ -39,8 +37,7 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('cataclysm:ignitium_ingot'))
 
   // ---- The Harbinger (T3-T4 — ender boss, summons) ----
-  event
-    .addEntityLootModifier('cataclysm:the_harbinger')
+  global.icraftEntityMod(event, 'cataclysm:the_harbinger')
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').limitCount([1, 2]).when(c => c.randomChance(0.60)))
     .addLoot(LootEntry.of('irons_spellbooks:ender_rune').when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:ender_upgrade_orb').when(c => c.randomChance(0.25)))
@@ -54,8 +51,7 @@ LootJS.modifiers(event => {
   // Native Ender Guardian table drops the gauntlet x1 = exactly one repair per kill (by design,
   // the harshest/purest refight loop). NOT duplicated here on purpose. FLAG for review: if this
   // is too punishing, switch the binding to a dedicated ender_guard_plating drop item instead.
-  event
-    .addEntityLootModifier('cataclysm:ender_guardian')
+  global.icraftEntityMod(event, 'cataclysm:ender_guardian')
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').limitCount([2, 3]).when(c => c.randomChance(0.70)))
     .addLoot(LootEntry.of('irons_spellbooks:legendary_ink').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('irons_spellbooks:ender_rune').when(c => c.randomChance(0.50)))
@@ -63,8 +59,7 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.10)))
 
   // ---- Maledictus (T3 — ender knight) ----
-  event
-    .addEntityLootModifier('cataclysm:maledictus')
+  global.icraftEntityMod(event, 'cataclysm:maledictus')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:ender_rune').when(c => c.randomChance(0.25)))
     // refight-to-repair: cursium_ingot = repair item for cm_cursium Tetra material.
@@ -72,21 +67,18 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('cataclysm:cursium_ingot'))
 
   // ---- Ancient Remnant (T3 — undead remnant) ----
-  event
-    .addEntityLootModifier('cataclysm:ancient_remnant')
+  global.icraftEntityMod(event, 'cataclysm:ancient_remnant')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:blood_rune').when(c => c.randomChance(0.30)))
 
   // ---- The Leviathan (T3-T4 — ocean) ----
-  event
-    .addEntityLootModifier('cataclysm:the_leviathan')
+  global.icraftEntityMod(event, 'cataclysm:the_leviathan')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.60)))
     .addLoot(LootEntry.of('irons_spellbooks:ice_rune').when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.10)))
 
   // ---- Coralssus (T3 — coral boss) ----
-  event
-    .addEntityLootModifier('cataclysm:coralssus')
+  global.icraftEntityMod(event, 'cataclysm:coralssus')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.20)))
 

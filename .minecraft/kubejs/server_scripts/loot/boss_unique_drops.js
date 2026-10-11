@@ -25,7 +25,7 @@ LootJS.modifiers(event => {
   for (var id in items) {
     var meta = items[id]
     if (!meta || !meta.addDrop || !meta.boss) continue
-    event.addEntityLootModifier(meta.boss)
+    global.icraftEntityMod(event, meta.boss)
       .addLoot(LootEntry.of(id).when(c => c.randomChance(chance)))
     n++
   }

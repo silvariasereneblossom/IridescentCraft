@@ -131,9 +131,8 @@ ServerEvents.recipes(event => {
     'farmersdelight:onion', 'minecraft:bowl'
   ]).id('icraft:fd_fried_rice')
 
-  safeShapeless('farmersdelight:rice_with_chicken', [
-    'farmersdelight:rice', 'minecraft:cooked_chicken', 'minecraft:bowl'
-  ]).id('icraft:fd_rice_with_chicken')
+  // ('farmersdelight:rice_with_chicken' entry removed 2026-10-10 — Farmer's
+  //  Delight has no such item, so safeShapeless always skipped it.)
 
   safeShapeless('farmersdelight:bone_broth', [
     'minecraft:bone', 'minecraft:bowl'
@@ -244,7 +243,9 @@ ServerEvents.recipes(event => {
 
   // ═══ NETHER'S DELIGHT — Nether-themed Cooking Pot Meals ═══
 
-  safeShapeless('nethersdelight:strider_stew', [
+  // [2026-10-10] result was 'nethersdelight:strider_stew' — no such item, so the
+  // recipe was always skipped. Nether's Delight 4.0 calls it strider_moss_stew.
+  safeShapeless('nethersdelight:strider_moss_stew', [
     'minecraft:cooked_porkchop', 'minecraft:warped_fungus', 'minecraft:crimson_fungus', 'minecraft:bowl'
   ]).id('icraft:nd_strider_stew')
 
@@ -259,15 +260,16 @@ ServerEvents.recipes(event => {
 
   // ═══ CULTURAL DELIGHTS — Cultural food recipes ═══
 
-  safeShapeless('culturaldelights:kimchi', [
-    'farmersdelight:cabbage', 'minecraft:carrot', 'farmersdelight:onion', 'minecraft:bowl'
-  ]).id('icraft:cd_kimchi')
+  // ('culturaldelights:kimchi' entry removed 2026-10-10 — Cultural Delights has
+  //  no kimchi; the pack's only kimchi is brewinandchewin:kimchi, a keg ferment.)
 
   safeShapeless('culturaldelights:tortilla', [
     'minecraft:wheat', 'minecraft:egg'
   ]).id('icraft:cd_tortilla')
 
-  safeShapeless('culturaldelights:burrito', [
+  // [2026-10-10] result was 'culturaldelights:burrito' — no such item, so the
+  // recipe was always skipped. The cooked-beef burrito is beef_burrito.
+  safeShapeless('culturaldelights:beef_burrito', [
     'minecraft:cooked_beef', 'farmersdelight:rice', 'farmersdelight:tomato', 'minecraft:bread'
   ]).id('icraft:cd_burrito')
 
@@ -275,20 +277,13 @@ ServerEvents.recipes(event => {
     'culturaldelights:corn_cob', 'minecraft:sugar', 'minecraft:stick'
   ]).id('icraft:cd_elote')
 
-  safeShapeless('culturaldelights:gyoza', [
-    'minecraft:cooked_porkchop', 'farmersdelight:cabbage', 'farmersdelight:raw_pasta'
-  ]).id('icraft:cd_gyoza')
-
-  safeShapeless('culturaldelights:potsticker', [
-    'minecraft:cooked_porkchop', 'farmersdelight:onion', 'farmersdelight:raw_pasta'
-  ]).id('icraft:cd_potsticker')
+  // ('culturaldelights:gyoza' and 'culturaldelights:potsticker' entries removed
+  //  2026-10-10 — neither item exists in Cultural Delights 0.16.5.)
 
 
   // ═══ DELIGHTFUL — Extra food variety ═══
 
-  safeShapeless('delightful:nut_mix', [
-    'minecraft:sweet_berries', 'delightful:acorn', 'minecraft:bowl'
-  ]).id('icraft:df_nut_mix')
+  // ('delightful:nut_mix' entry removed 2026-10-10 — no such item in Delightful 3.7.8.)
 
   safeShapeless('delightful:marshmallow_stick', [
     'minecraft:sugar', 'minecraft:sugar', 'minecraft:stick'
@@ -303,8 +298,12 @@ ServerEvents.recipes(event => {
     'minecraft:milk_bucket', 'minecraft:bread'
   ]).id('icraft:df_deluxe_cheeseburger')
 
+  // [2026-10-10] ingredient was 'delightful:salmonberry' — no such item (the
+  // berry is `salmonberries`), which left an empty ingredient and a parse error
+  // for icraft:df_salmonberry_pie at every boot. safeShapeless only guards the
+  // RESULT id.
   safeShapeless('delightful:salmonberry_pie', [
-    'delightful:salmonberry', 'minecraft:sugar', 'minecraft:wheat', 'minecraft:egg'
+    'delightful:salmonberries', 'minecraft:sugar', 'minecraft:wheat', 'minecraft:egg'
   ]).id('icraft:df_salmonberry_pie')
 
 
@@ -327,17 +326,15 @@ ServerEvents.recipes(event => {
     'minecraft:honey_bottle', 'minecraft:sugar', 'minecraft:glass_bottle'
   ]).id('icraft:bc_mead')
 
-  safeShapeless('brewinandchewin:apple_cider', [
-    'minecraft:apple', 'minecraft:apple', 'minecraft:sugar', 'minecraft:glass_bottle'
-  ]).id('icraft:bc_apple_cider')
+  // ('brewinandchewin:apple_cider' entry removed 2026-10-10 — not an item in
+  //  Brewin' and Chewin' 3.2.1.)
 
   safeShapeless('brewinandchewin:pale_jane', [
     'minecraft:wheat', 'minecraft:honey_bottle', 'minecraft:glass_bottle'
   ]).id('icraft:bc_pale_jane')
 
-  safeShapeless('brewinandchewin:crimson_ale', [
-    'minecraft:crimson_fungus', 'minecraft:nether_wart', 'minecraft:sugar', 'minecraft:glass_bottle'
-  ]).id('icraft:bc_crimson_ale')
+  // ('brewinandchewin:crimson_ale' entry removed 2026-10-10 — not an item in
+  //  Brewin' and Chewin' 3.2.1.)
 
   safeShapeless('brewinandchewin:dread_nog', [
     'minecraft:egg', 'minecraft:sugar', 'minecraft:milk_bucket', 'minecraft:glass_bottle'
@@ -374,17 +371,13 @@ ServerEvents.recipes(event => {
 
   // ═══ ALEX'S DELIGHT — Alex's Mobs food integration ═══
 
-  safeShapeless('alexsdelight:bison_stew', [
-    'alexsmobs:cooked_moose_ribs', 'minecraft:potato', 'minecraft:carrot', 'minecraft:bowl'
-  ]).id('icraft:ad_bison_stew')
+  // ('alexsdelight:bison_stew' entry removed 2026-10-10 — no such item.)
 
   safeShapeless('alexsdelight:kangaroo_stew', [
     'alexsmobs:cooked_kangaroo_meat', 'minecraft:carrot', 'minecraft:bowl'
   ]).id('icraft:ad_kangaroo_stew')
 
-  safeShapeless('alexsdelight:lobster_roll', [
-    'alexsmobs:cooked_lobster_tail', 'farmersdelight:cabbage', 'minecraft:bread'
-  ]).id('icraft:ad_lobster_roll')
+  // ('alexsdelight:lobster_roll' entry removed 2026-10-10 — no such item.)
 
 
   console.log('[IridescentCraft] cooking_conversion.js loaded — crafting table alternatives for cooking pot recipes')

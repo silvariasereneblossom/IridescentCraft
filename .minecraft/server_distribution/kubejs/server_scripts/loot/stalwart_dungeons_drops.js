@@ -13,47 +13,40 @@
 LootJS.modifiers(event => {
 
   // ---- Awful Ghast (T3 nether mini-boss, gun/crystal drops vanilla) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:awful_ghast')
+  global.icraftEntityMod(event, 'stalwart_dungeons:awful_ghast')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.40)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_upgrade_orb').when(c => c.randomChance(0.10)))
 
   // ---- Nether Keeper (T3 nether boss) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:nether_keeper')
+  global.icraftEntityMod(event, 'stalwart_dungeons:nether_keeper')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.20)))
 
   // ---- Incomplete Wither (T3 nether boss, wither variant) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:incomplete_wither')
+  global.icraftEntityMod(event, 'stalwart_dungeons:incomplete_wither')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([2, 3]).when(c => c.randomChance(0.60)))
     .addLoot(LootEntry.of('irons_spellbooks:blood_rune').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:cooldown_rune').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.10)))
 
   // ---- Giddy Blaze (T3 blaze variant) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:giddy_blaze')
+  global.icraftEntityMod(event, 'stalwart_dungeons:giddy_blaze')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.15)))
 
   // ---- Reinforced Blaze (T3 buffed blaze) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:reinforced_blaze')
+  global.icraftEntityMod(event, 'stalwart_dungeons:reinforced_blaze')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.15)))
 
   // ---- Shelterer (T3 mini-boss, armored variant has higher drops) ----
-  event
-    .addEntityLootModifier('stalwart_dungeons:shelterer')
+  global.icraftEntityMod(event, 'stalwart_dungeons:shelterer')
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.20)))
 
-  event
-    .addEntityLootModifier('stalwart_dungeons:shelterer_without_armor')
+  global.icraftEntityMod(event, 'stalwart_dungeons:shelterer_without_armor')
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.20)))
 
   console.log('[stalwart_dungeons_drops] registered 7 Stalwart nether mini-boss synergy modifiers')

@@ -158,7 +158,7 @@ LootJS.modifiers(function (event) {
       'minecraft:chests/pillager_outpost',
       'minecraft:chests/woodland_mansion',
       /dungeoncrawl:.*chests.*/,
-      /explorify:.*chests.*/,
+      /explorify:.*chest.*/,   // [2026-10-10] was .*chests.* — Explorify's tables are explorify:chest/… (matched nothing)
       /^structory:.+/,
       /dungeons_plus:.*/,
       /dungeons_arise:.*/,
@@ -225,7 +225,7 @@ LootJS.modifiers(function (event) {
   for (var legendary in LSP_LEGENDARY_BOSSES) {
     var hosts = LSP_LEGENDARY_BOSSES[legendary]
     for (var i = 0; i < hosts.length; i++) {
-      event.addEntityLootModifier(hosts[i])
+      global.icraftEntityMod(event, hosts[i])
         .addLoot(LootEntry.of(legendary).when(function (c) { return c.randomChance(0.10) }))
     }
   }

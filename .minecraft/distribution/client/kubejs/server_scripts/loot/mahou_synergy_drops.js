@@ -22,78 +22,65 @@ LootJS.modifiers(event => {
   // ===== T2 REAGENTS (attuned_emerald, fae_essence) =====
 
   // ---- Twilight Lich (T2 magic boss) — magical reagent + fae essence ----
-  event
-    .addEntityLootModifier('twilightforest:lich')
+  global.icraftEntityMod(event, 'twilightforest:lich')
     .addLoot(LootEntry.of('mahoutsukai:attuned_emerald').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('mahoutsukai:fae_essence').when(c => c.randomChance(0.15)))
 
   // ---- Twilight Hydra (T2 elemental) — fae essence (fae/nature theme) ----
-  event
-    .addEntityLootModifier('twilightforest:hydra')
+  global.icraftEntityMod(event, 'twilightforest:hydra')
     .addLoot(LootEntry.of('mahoutsukai:fae_essence').when(c => c.randomChance(0.15)))
 
   // ---- Aether Sun Spirit (T2 holy boss) — attuned_emerald ----
-  event
-    .addEntityLootModifier('aether:sun_spirit')
+  global.icraftEntityMod(event, 'aether:sun_spirit')
     .addLoot(LootEntry.of('mahoutsukai:attuned_emerald').when(c => c.randomChance(0.15)))
 
   // ---- Blue Skies Summoner (T2 magic boss) — attuned_emerald ----
-  event
-    .addEntityLootModifier('blue_skies:summoner')
+  global.icraftEntityMod(event, 'blue_skies:summoner')
     .addLoot(LootEntry.of('mahoutsukai:attuned_emerald').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('mahoutsukai:fae_essence').when(c => c.randomChance(0.10)))
 
   // ---- Vanilla Evoker (T2 illager magic) — small attuned_emerald drop ----
-  event
-    .addEntityLootModifier('minecraft:evoker')
+  global.icraftEntityMod(event, 'minecraft:evoker')
     .addLoot(LootEntry.of('mahoutsukai:attuned_emerald').when(c => c.randomChance(0.10)))
 
   // ===== T3 REAGENTS (attuned_diamond, kodoku) =====
 
   // ---- Cataclysm Ignis (T3 fire boss) — attuned_diamond ----
-  event
-    .addEntityLootModifier('cataclysm:ignis')
+  global.icraftEntityMod(event, 'cataclysm:ignis')
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').when(c => c.randomChance(0.15)))
 
   // ---- Cataclysm Harbinger (T3-T4 ender) — attuned_diamond + kodoku ----
-  event
-    .addEntityLootModifier('cataclysm:the_harbinger')
+  global.icraftEntityMod(event, 'cataclysm:the_harbinger')
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('mahoutsukai:kodoku').when(c => c.randomChance(0.10)))
 
   // ---- Cataclysm Maledictus (T3 cursed knight) — kodoku is on-theme ----
-  event
-    .addEntityLootModifier('cataclysm:maledictus')
+  global.icraftEntityMod(event, 'cataclysm:maledictus')
     .addLoot(LootEntry.of('mahoutsukai:kodoku').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').when(c => c.randomChance(0.10)))
 
   // ---- Cataclysm Ancient Remnant (T3 undead) — kodoku (curse theme) ----
-  event
-    .addEntityLootModifier('cataclysm:ancient_remnant')
+  global.icraftEntityMod(event, 'cataclysm:ancient_remnant')
     .addLoot(LootEntry.of('mahoutsukai:kodoku').when(c => c.randomChance(0.15)))
 
   // ---- ISS Dead King (T4 undead boss) — kodoku + attuned_diamond ----
-  event
-    .addEntityLootModifier('irons_spellbooks:dead_king')
+  global.icraftEntityMod(event, 'irons_spellbooks:dead_king')
     .addLoot(LootEntry.of('mahoutsukai:kodoku').when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').when(c => c.randomChance(0.20)))
 
   // ===== T4 REAGENTS (attuned_diamond at higher rate, end-tier) =====
 
   // ---- Cataclysm Ender Guardian (T4) — guaranteed-ish attuned_diamond ----
-  event
-    .addEntityLootModifier('cataclysm:ender_guardian')
+  global.icraftEntityMod(event, 'cataclysm:ender_guardian')
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').limitCount([1, 2]).when(c => c.randomChance(0.40)))
 
   // ---- Vanilla Warden (T4 sculk) — kodoku (eldritch curse) ----
-  event
-    .addEntityLootModifier('minecraft:warden')
+  global.icraftEntityMod(event, 'minecraft:warden')
     .addLoot(LootEntry.of('mahoutsukai:kodoku').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').when(c => c.randomChance(0.25)))
 
   // ---- Ender Dragon (T4) — attuned_diamond (already T4 progression hub) ----
-  event
-    .addEntityLootModifier('minecraft:ender_dragon')
+  global.icraftEntityMod(event, 'minecraft:ender_dragon')
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').limitCount([2, 4]).when(c => c.randomChance(0.50)))
 
   console.log('[mahou_synergy_drops] registered 14 Mahou Tsukai reagent injection modifiers')

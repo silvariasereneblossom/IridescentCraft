@@ -1,30 +1,41 @@
 // =============================================================================
 // LOOTJS LOOT TABLE OVERHAUL — Priority 4 + 5
 // Boss material drops, structure loot tier enforcement,
-// Simply Swords unique weapon → boss mapping, token fragment seeding
+// Simply Swords unique weapon → boss mapping
 // Server script (reloadable with /reload)
 // =============================================================================
-// REQUIRES: LootJS (lootjs-forge-1.20.1-2.13.x via lootintegrations mod)
+// REQUIRES: LootJS (lootjs-forge-1.20.1-2.13.1, its own mod)
 //
 // Design principles from design doc (Sections 19, 26, 28):
 // - Dungeon/structure loot must respect tier boundaries
 // - Boss kills are THE primary source of custom materials
-// - Simply Swords uniques are boss-exclusive drops (42 verified uniques)
-// - Token fragments seed into structure chests as alt progression path
+// - Simply Swords uniques are boss-exclusive drops
 // - Curios/artifacts are NEVER gated (if they drop, player keeps them)
-// - Enchanted books removed from structure chests (Apotheosis = enchanting)
+// - A structure table's OWN enchanted books are removed (Apotheosis =
+//   enchanting). The pack's tier-scaled books are added back on top by
+//   loot/zz_pack_enchanted_books.js, which loads after this file.
 // - Diamond gear removed from Tier 1, netherite from Tier 3
+// (The legacy token-fragment chest seeding is retired — Section 2.)
 //
-// All entity IDs and loot table paths verified via loot_discovery.js
-// against live mod registry (Feb 2026 build)
+// LOAD ORDER: lootjs_overhaul.js loads BEFORE this file (letters sort before
+// '_'). Every strip below therefore also removes matching items that
+// lootjs_overhaul.js ADDED to the same tables; an add that must survive has to
+// be registered from a file that loads after this one.
+//
+// Entity ids are checked at registration by global.icraftEntityMod
+// (loot/0_entity_id_validator.js); an unknown id is skipped and logged.
 // =============================================================================
 
 LootJS.modifiers(event => {
 
     // =====================================================================
     // SECTION 1: BOSS MATERIAL DROPS + SIMPLY SWORDS UNIQUES
-    // Each boss drops its custom kubejs material + has a chance at a
-    // Simply Swords unique weapon (boss-exclusive, never from chests)
+    // Every boss below has a chance at a Simply Swords unique weapon (boss-
+    // exclusive, never from chests). Only SOME also drop a custom kubejs
+    // material (naga_scale, lich_soul, hydra_fang, ur_ghast_tear,
+    // harbinger_eye, ignis_core, wither_bone, dragon_heart/_scale,
+    // gaia_spirit_fragment, void_essence), a reforging token and/or a
+    // waystone_core — read the modifier, not this header.
     //
     // Unique weapon assignments follow design doc Section 26:
     // - Tier 2: Agility/magic/fire/spectral/elemental/wind themes
@@ -34,12 +45,13 @@ LootJS.modifiers(event => {
 
     // -----------------------------------------------------------------
     // TIER 2 BOSSES — Twilight Forest
-    // Entity IDs verified: naga, lich, hydra, ur_ghast,
-    //   knight_phantom, snow_queen, minoshroom, alpha_yeti
+    // Modifiers here: naga, lich, hydra, ur_ghast, knight_phantom,
+    //   snow_queen, alpha_yeti. (minoshroom has none in this file — its
+    //   legacy token-fragment drop was removed.)
     // -----------------------------------------------------------------
 
     // Twilight Naga — Agility/speed theme
-    event.addEntityLootModifier("twilightforest:naga")
+    global.icraftEntityMod(event, "twilightforest:naga")
         .addLoot(
             LootEntry.of("kubejs:naga_scale").limitCount([2, 4])
         )
@@ -51,19 +63,23 @@ LootJS.modifiers(event => {
         )
 
     // Twilight Lich — Soul/magic theme
-    event.addEntityLootModifier("twilightforest:lich")
+    global.icraftEntityMod(event, "twilightforest:lich")
         .addLoot(
             LootEntry.of("kubejs:lich_soul").limitCount([1, 3])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:basic_reforging_token").withChance(10)
-        ])
+        // [2026-10-10] was `.addWeightedLoot([Item.of(token).withChance(10)])`.
+        // A weighted pool picks ONE entry by weight, so a ONE-entry pool always
+        // drops it (withChance only sets the weight): the token dropped on every
+        // kill. Now the 10% the line reads as. Same fix on the five other
+        // single-entry pools in this file (Ur-Ghast, Netherite Monstrosity,
+        // Harbinger, Wither, Gaia Guardian).
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.10)))
         .addLoot(
             LootEntry.of("simplyswords:soulrender").when(c => c.randomChance(0.15))
         )
 
     // Twilight Hydra — Fire/power theme
-    event.addEntityLootModifier("twilightforest:hydra")
+    global.icraftEntityMod(event, "twilightforest:hydra")
         .addLoot(
             LootEntry.of("kubejs:hydra_fang").limitCount([2, 5])
         )
@@ -75,25 +91,24 @@ LootJS.modifiers(event => {
         )
 
     // Ur-Ghast — Void/spectral theme (bridge boss, seeds T3)
-    event.addEntityLootModifier("twilightforest:ur_ghast")
+    global.icraftEntityMod(event, "twilightforest:ur_ghast")
         .addLoot(
             LootEntry.of("kubejs:ur_ghast_tear").limitCount([1, 2])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:basic_reforging_token").withChance(15)
-        ])
+        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 15%
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.15)))
         .addLoot(
             LootEntry.of("simplyswords:whisperwind").when(c => c.randomChance(0.20))
         )
 
     // Knight Phantom — Spectral theme
-    event.addEntityLootModifier("twilightforest:knight_phantom")
+    global.icraftEntityMod(event, "twilightforest:knight_phantom")
         .addLoot(
             LootEntry.of("simplyswords:enigma").when(c => c.randomChance(0.12))
         )
 
     // Snow Queen — Ice theme
-    event.addEntityLootModifier("twilightforest:snow_queen")
+    global.icraftEntityMod(event, "twilightforest:snow_queen")
         .addLoot(
             LootEntry.of("simplyswords:frostfall").when(c => c.randomChance(0.15))
         )
@@ -102,7 +117,7 @@ LootJS.modifiers(event => {
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // Alpha Yeti — Frost theme (mini-boss tier)
-    event.addEntityLootModifier("twilightforest:alpha_yeti")
+    global.icraftEntityMod(event, "twilightforest:alpha_yeti")
         .addLoot(
             LootEntry.of("simplyswords:icewhisper").when(c => c.randomChance(0.10))
         )
@@ -114,7 +129,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Blue Skies: Summoner — Elemental/summoning theme
-    event.addEntityLootModifier("blue_skies:summoner")
+    global.icraftEntityMod(event, "blue_skies:summoner")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.67)))
@@ -124,19 +139,19 @@ LootJS.modifiers(event => {
         )
 
     // Blue Skies: Alchemist — Poison/alchemy theme
-    event.addEntityLootModifier("blue_skies:alchemist")
+    global.icraftEntityMod(event, "blue_skies:alchemist")
         .addLoot(
             LootEntry.of("simplyswords:toxic_longsword").when(c => c.randomChance(0.15))
         )
 
     // Blue Skies: Starlit Crusher — Star/celestial theme
-    event.addEntityLootModifier("blue_skies:starlit_crusher")
+    global.icraftEntityMod(event, "blue_skies:starlit_crusher")
         .addLoot(
             LootEntry.of("simplyswords:stars_edge").when(c => c.randomChance(0.15))
         )
 
     // Blue Skies: Arachnarch — Spider/web theme
-    event.addEntityLootModifier("blue_skies:arachnarch")
+    global.icraftEntityMod(event, "blue_skies:arachnarch")
         .addLoot(
             LootEntry.of("simplyswords:waxweaver").when(c => c.randomChance(0.12))
         )
@@ -147,7 +162,7 @@ LootJS.modifiers(event => {
     ;["blue_skies:summoner", "blue_skies:alchemist",
       "blue_skies:starlit_crusher", "blue_skies:arachnarch"
     ].forEach(boss => {
-        event.addEntityLootModifier(boss)
+        global.icraftEntityMod(event, boss)
             .addLoot(
                 LootEntry.of("blue_skies:runic_arc")
                     .when(c => c.randomChance(0.05))
@@ -160,7 +175,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Aether: Slider — Impact/thunder theme
-    event.addEntityLootModifier("aether:slider")
+    global.icraftEntityMod(event, "aether:slider")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.67)))
@@ -170,13 +185,13 @@ LootJS.modifiers(event => {
         )
 
     // Aether: Valkyrie Queen — Wind/ascension theme
-    event.addEntityLootModifier("aether:valkyrie_queen")
+    global.icraftEntityMod(event, "aether:valkyrie_queen")
         .addLoot(
             LootEntry.of("simplyswords:caelestis").when(c => c.randomChance(0.15))
         )
 
     // Aether: Sun Spirit — Fire/radiance theme
-    event.addEntityLootModifier("aether:sun_spirit")
+    global.icraftEntityMod(event, "aether:sun_spirit")
         .addLoot(
             LootEntry.of("simplyswords:sunfire").when(c => c.randomChance(0.15))
         )
@@ -187,7 +202,7 @@ LootJS.modifiers(event => {
     // eots, boss, aether_boss DO NOT exist as entity IDs
     // -----------------------------------------------------------------
 
-    event.addEntityLootModifier("deep_aether:eots_controller")
+    global.icraftEntityMod(event, "deep_aether:eots_controller")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [advanced_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.6)))
@@ -203,19 +218,18 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Cataclysm: Netherite Monstrosity — Heavy/brute theme
-    event.addEntityLootModifier("cataclysm:netherite_monstrosity")
+    global.icraftEntityMod(event, "cataclysm:netherite_monstrosity")
         .addLoot(
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 3])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(10)
-        ])
+        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.10)))
         .addLoot(
             LootEntry.of("simplyswords:brimstone_claymore").when(c => c.randomChance(0.15))
         )
 
     // Cataclysm: Ignis — Ultimate fire theme
-    event.addEntityLootModifier("cataclysm:ignis")
+    global.icraftEntityMod(event, "cataclysm:ignis")
         .addLoot(
             LootEntry.of("kubejs:ignis_core").limitCount([1, 2])
         )
@@ -228,31 +242,30 @@ LootJS.modifiers(event => {
         )
 
     // Cataclysm: The Harbinger — Dark/shadow theme
-    event.addEntityLootModifier("cataclysm:the_harbinger")
+    global.icraftEntityMod(event, "cataclysm:the_harbinger")
         .addLoot(
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 2])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(10)
-        ])
+        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.10)))
         .addLoot(
             LootEntry.of("simplyswords:shadowsting").when(c => c.randomChance(0.18))
         )
 
     // Cataclysm: The Leviathan — Deep sea/abyss theme
-    event.addEntityLootModifier("cataclysm:the_leviathan")
+    global.icraftEntityMod(event, "cataclysm:the_leviathan")
         .addLoot(
             LootEntry.of("simplyswords:livyatan").when(c => c.randomChance(0.18))
         )
 
     // Cataclysm: Maledictus — Cursed/dark theme
-    event.addEntityLootModifier("cataclysm:maledictus")
+    global.icraftEntityMod(event, "cataclysm:maledictus")
         .addLoot(
             LootEntry.of("simplyswords:twisted_blade").when(c => c.randomChance(0.15))
         )
 
     // Cataclysm: Ignited Revenant — Fire/undead theme (1000 HP = T4 tier)
-    event.addEntityLootModifier("cataclysm:ignited_revenant")
+    global.icraftEntityMod(event, "cataclysm:ignited_revenant")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [ultimate_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.6)))
@@ -271,7 +284,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Undergarden: Forgotten Guardian — Corruption/ancient theme
-    event.addEntityLootModifier("undergarden:forgotten_guardian")
+    global.icraftEntityMod(event, "undergarden:forgotten_guardian")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [advanced_reforging_token@10, waystone_core@8] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.56)))
@@ -289,13 +302,13 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Deeper Darker: Stalker — Stealth/shadow theme
-    event.addEntityLootModifier("deeperdarker:stalker")
+    global.icraftEntityMod(event, "deeperdarker:stalker")
         .addLoot(
             LootEntry.of("simplyswords:soulstealer").when(c => c.randomChance(0.15))
         )
 
     // Deeper Darker: Shattered — Void/broken theme
-    event.addEntityLootModifier("deeperdarker:shattered")
+    global.icraftEntityMod(event, "deeperdarker:shattered")
         .addLoot(
             LootEntry.of("simplyswords:soulpyre").when(c => c.randomChance(0.15))
         )
@@ -311,25 +324,24 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Wither — Necrotic theme
-    event.addEntityLootModifier("minecraft:wither")
+    global.icraftEntityMod(event, "minecraft:wither")
         .addLoot(
             LootEntry.of("kubejs:wither_bone").limitCount([3, 6])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(15)
-        ])
+        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 15%
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.15)))
         .addLoot(
             LootEntry.of("simplyswords:soulkeeper").when(c => c.randomChance(0.15))
         )
 
     // Accumulation materials: Blaze essence, Wither Skeleton soul fragment
-    event.addEntityLootModifier("minecraft:blaze")
+    global.icraftEntityMod(event, "minecraft:blaze")
         .addLoot(
             LootEntry.of("kubejs:condensed_blaze_essence")
                 .when(c => c.randomChance(0.08))
         )
 
-    event.addEntityLootModifier("minecraft:wither_skeleton")
+    global.icraftEntityMod(event, "minecraft:wither_skeleton")
         .addLoot(
             LootEntry.of("kubejs:nether_soul_fragment")
                 .when(c => c.randomChance(0.10))
@@ -340,7 +352,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Ender Dragon — Draconic ultimate theme
-    event.addEntityLootModifier("minecraft:ender_dragon")
+    global.icraftEntityMod(event, "minecraft:ender_dragon")
         .addLoot(
             LootEntry.of("kubejs:dragon_heart").limitCount([1, 1])
         )
@@ -358,19 +370,18 @@ LootJS.modifiers(event => {
     // Gaia Guardian (Botania) — Nature/reality theme
     // Verified: entity is "botania:doppleganger" (single 'p', not doppelganger)
     // All three table variants exist: doppleganger, doppelganger, gaia_guardian
-    event.addEntityLootModifier("botania:doppleganger")
+    global.icraftEntityMod(event, "botania:doppleganger")
         .addLoot(
             LootEntry.of("kubejs:gaia_spirit_fragment").limitCount([2, 4])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(10)
-        ])
+        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.10)))
         .addLoot(
             LootEntry.of("simplyswords:magiblade").when(c => c.randomChance(0.20))
         )
 
     // Cataclysm: Ender Guardian — Ender theme (Tier 4)
-    event.addEntityLootModifier("cataclysm:ender_guardian")
+    global.icraftEntityMod(event, "cataclysm:ender_guardian")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [ultimate_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.6)))
@@ -386,7 +397,7 @@ LootJS.modifiers(event => {
     // real T4 boss if these drops are wanted (operator call).
 
     // Cataclysm: Ancient Remnant — Ultimate Cataclysm boss
-    event.addEntityLootModifier("cataclysm:ancient_remnant")
+    global.icraftEntityMod(event, "cataclysm:ancient_remnant")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [ultimate_reforging_token@20, waystone_core@15] - paired token rates preserved (tabled).
         .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.57)))
@@ -396,7 +407,7 @@ LootJS.modifiers(event => {
         )
 
     // Warden — Void/sculk theme (Tier 4 equivalent encounter)
-    event.addEntityLootModifier("minecraft:warden")
+    global.icraftEntityMod(event, "minecraft:warden")
         .addLoot(
             LootEntry.of("kubejs:void_essence").limitCount([1, 3])
         )
@@ -411,7 +422,7 @@ LootJS.modifiers(event => {
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // Enderman — rare void essence accumulation (END DIMENSION ONLY)
-    event.addEntityLootModifier("minecraft:enderman")
+    global.icraftEntityMod(event, "minecraft:enderman")
         .anyDimension('minecraft:the_end')
         .addLoot(
             LootEntry.of("kubejs:void_essence")
@@ -478,6 +489,10 @@ LootJS.modifiers(event => {
     // Remove enchanted books from Tier 1 structures
     // (Apotheosis is the enchanting system — enchanted books in chests
     //  bypass the Apotheosis bookshelf progression)
+    // This and every other `removeLoot("minecraft:enchanted_book")` in this file
+    // is meant for the books a table rolls BY ITSELF. The pack's own tier-scaled
+    // and marquee books are registered later, from zz_pack_enchanted_books.js,
+    // so these strips no longer delete them (they did until 2026-10-10).
     event.addLootTableModifier(
         "minecraft:chests/simple_dungeon",
         "minecraft:chests/abandoned_mineshaft",
@@ -581,14 +596,16 @@ LootJS.modifiers(event => {
     event.addLootTableModifier(/^ctov:.*/)
         .removeLoot("minecraft:diamond")
 
-    // NOTE: The following mods were NOT found in the loaded mod list:
-    // - betterendisland (NOT present)
-    // - repurposed_structures (NOT present)
-    // - integrated_stronghold (NOT present)
-    // - integrated_dungeons (NOT present)
-    // - dungeon_crawl (NOT present)
-    // - explorations / explorify (NOT present)
-    // If these mods are added later, uncomment and verify their namespaces.
+    // NOTE (corrected 2026-10-10 — this note used to list the mods below as
+    // "NOT present"; every one of them is installed):
+    // - betterendisland — installed, ships no loot tables
+    // - repurposed_structures — installed (173 tables)
+    // - integrated_stronghold — installed (20 tables)
+    // - idas (Integrated Dungeons and Structures) — installed
+    // - dungeoncrawl — installed
+    // - explorations, explorify — installed
+    // None of them has a modifier in THIS file; their chests are covered by the
+    // dimension-wide strips and the table lists in lootjs_overhaul.js.
 
 
     // =====================================================================
@@ -621,8 +638,11 @@ LootJS.modifiers(event => {
         "minecraft:gameplay/fishing/treasure"
     )
         .removeLoot("minecraft:enchanted_book")     // Apotheosis handles enchanting
-        .removeLoot("minecraft:saddle")             // Keep — utility, not progression
-        .removeLoot("minecraft:name_tag")           // Keep — utility
+        // The two lines below REMOVE saddles and name tags from fishing treasure.
+        // Their old trailing comments said "Keep — utility", the opposite of what
+        // the code does; the code is unchanged (2026-10-10, comment fix only).
+        .removeLoot("minecraft:saddle")
+        .removeLoot("minecraft:name_tag")
 
 
     // =====================================================================
@@ -633,8 +653,9 @@ LootJS.modifiers(event => {
     // Two concerns here:
     //   1. Top-tier gear drops (design-doc level gripe) — covered by the
     //      diamond/netherite tool+armor strip below.
-    //   2. 2026-04-24: raw tier-gated materials (diamond, emerald_block,
-    //      ender_eye, ender_pearl, nether_star, netherite_*) appearing on
+    //   2. 2026-04-24: raw tier-gated materials (diamond, diamond_block,
+    //      emerald_block, ender_eye, netherite_ingot/_scrap/_block,
+    //      ancient_debris, elytra) appearing on
     //      ordinary mobs. Tester killed a vanilla spider that dropped
     //      minecraft:diamond + minecraft:ender_eye. Source could not be
     //      identified via JSON grep — no mod's loot_tables/entities/spider
@@ -642,9 +663,11 @@ LootJS.modifiers(event => {
     //      adds them. It must be an in-code (Java mixin) injector we
     //      haven't pinned down. Defensive fix: unconditionally strip these
     //      items from every entity loot pool so the source doesn't matter.
-    //      If a future boss needs to drop one of these (e.g., wither drops
-    //      nether_star), that boss's own loot table will need to re-add
-    //      via a more specific modifier scoped to that entity.
+    //      NOT stripped (see the list above the second modifier): ender_pearl,
+    //      nether_star, totem_of_undying, dragon_egg, emerald.
+    //      If a boss should ever drop one of the STRIPPED items, the add has
+    //      to be registered after this file (LootJS strips are one-shot in
+    //      registration order) — an add in an earlier-loading file is removed.
     // =====================================================================
 
     // Tier-gated gear strip (unchanged — still blocks diamond/netherite
@@ -695,11 +718,11 @@ LootJS.modifiers(event => {
 
     // =====================================================================
     // SECTION 8: SIMPLY SWORDS UNIQUE ALLOCATION SUMMARY
-    // Tracking which of the 42 verified uniques are assigned to bosses.
-    // Unassigned weapons remain in the pool for future boss mods
-    // (NovaBosses, Ultimate Bosses, Ultris, Brutal Bosses, etc.)
+    // (Comment only. The single source of truth for every unique's tier and
+    // boss is loot/unique_itemset_registry.js; the T1 uniques are dropped by
+    // loot/boss_unique_drops.js, not here.)
     //
-    // ASSIGNED (28/42):
+    // ASSIGNED IN THIS FILE (30):
     //   T2: tempest(Naga), soulrender(Lich), emberblade(Hydra),
     //       whisperwind(UrGhast), enigma(KnightPhantom),
     //       frostfall(SnowQueen), icewhisper(AlphaYeti),
@@ -715,13 +738,15 @@ LootJS.modifiers(event => {
     //       soulkeeper(Wither)
     //   T4: waking_lichblade(EnderDragon), magiblade(GaiaGuardian),
     //       arcanethyst(EnderGuardian), awakened_lichblade(AncientRemnant),
-    //       stormbringer(Warden), watching_warglaive(VoidBlossom),
-    //       emberlash(IgnitedRevenant — promoted to T4)
+    //       stormbringer(Warden)
+    //   (emberlash is listed once, under T3, though Ignited Revenant drops T4-
+    //    tier tokens. watching_warglaive is NOT assigned: its Void Blossom
+    //    modifier was removed 2026-06-06 — no such entity is installed.)
     //
-    // UNASSIGNED (11/42) — reserved for future bosses:
-    //   harbinger, hearthflame, magiscythe, magispear, mjolnir,
-    //   ribboncleaver, slumbering_lichblade, sword_on_a_stick,
-    //   storms_edge, watcher_claymore, wickpiercer
+    // NOT ASSIGNED HERE: harbinger, magiscythe, magispear, mjolnir,
+    //   slumbering_lichblade, storms_edge, wickpiercer, watching_warglaive,
+    //   dreadtide (no boss yet); sword_on_a_stick, magic_estoc, hearthflame,
+    //   watcher_claymore, ribboncleaver, twilight (T1 — boss_unique_drops.js)
     // =====================================================================
 
 })

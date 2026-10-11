@@ -6,38 +6,40 @@
 // Design doc Part I, Section 19: Loot Table Overhaul
 // "Every dungeon/structure mod's loot tables must respect the tier system."
 //
-// STRUCTURE CHEST MODIFIERS ONLY. Boss entity drops are in loot_overhaul.js.
+// SCOPE (header corrected 2026-10-10 — it used to say "structure chest
+// modifiers only"). Mostly chest / structure loot, but this file ALSO registers
+//   - entity modifiers: arcane essence + T1 robe pieces on vanilla magic mobs
+//     and undead, the @kubejs safety strip on pig/cow/sheep/chicken, the
+//     Terramity gun + curio strips on ALL entity loot (LootType.ENTITY), and
+//     Ender's Hand on the Ender Dragon;
+//   - boss loot-TABLE modifiers: class-artifact pouches + awakenings (8.5);
+//   - block loot-table modifiers: Farmer's Delight seeds from grass.
+// Boss material + Simply Swords unique drops are in loot_overhaul.js. The
+// tier-scaled enchanted books are registered from zz_pack_enchanted_books.js
+// (see Section 1).
 //
 // WHAT THIS DOES:
-// 1. Removes tier-breaking items (diamonds, enchanted books, netherite)
-//    from structure chests based on tier appropriateness
-// 2. Injects tier-appropriate progression tokens into structure chests
-// 3. Removes enchanted books from ALL structure loot (Apotheosis handles enchanting)
-// 4. Reduces Overworld food and removes modded food from structure chests
-// 5. Village chest loot restrictions (iron/leather only, no powerful modded items)
-// 6. Curio drops for tower structures
+// 1. Strips tier-breaking / uncurated items from chests by tier (diamonds and
+//    diamond gear before T3, off-tier glyphs, loose artifact-mod items)
+// 2. Re-injects curated, tier-gated pools by dimension / table (artifacts,
+//    relics, glyphs, spell books, inks, marquee-structure themes)
+// 3. Thins Overworld chest clutter and food (each listed stack survives at a
+//    fixed chance) and removes modded food from Overworld chests
+// 4. Village chest sanitisation + the dedicated village pools
+// 5. Ocean / tower / Keebsz / Epic Dungeons themed loot
 //
-// STRUCTURE MOD COVERAGE (35+ mods):
-//   YUNG's Better series (Dungeons, Strongholds, Fortresses, Mineshafts,
-//     Ocean Monuments, Desert Temples, End Island),
-//   Dungeon Crawl, IDAS, Explorify, Dungeons Plus, Moog's End Structures,
-//   Structory, Structory Towers, Keebsz Battle Towers, Iron's Spellbooks,
-//   Villages & Pillages, Overhauled Structures, Loot Integrations,
-//   Celestial Artifacts, Unwrecked Ships, Ultris, When Dungeons Arise,
-//   Valhelsia Structures, Repurposed Structures, Integrated Stronghold,
-//   ChoiceTheorem's Overhauled Village, Explorations+,
-//   Cataclysm (structures), Twilight Forest (structures),
-//   Blue Skies, Aether, Deep Aether, Undergarden, Deeper and Darker,
-//   The Abyss (structures)
+// ORDER MATTERS (removal-mechanic note, Section 1B): a strip only removes
+// what is already in the loot list when it runs, so an ADD that a strip must
+// not touch is registered AFTER that strip.
 //
-// BOSS MOD COVERAGE (8 mods):
-//   Meet Your Fight, Mutant Monsters, Majestic Menaces, Stalwart Dungeons,
-//   Keebsz (loot table), Iron's Spellbooks, The Abyss,
-//   Ultimate Bosses (loot table), Cataclysm, Twilight Forest
+// Coverage = the table ids and regexes in the sections below (no hand-kept
+// mod list: the old one named mods that are not installed). A LootJS table
+// regex must match the WHOLE table id — see Section 1B.
 // =============================================================================
 
 var UniformGenerator = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.UniformGenerator')
-var ConstantValue = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.ConstantValue')
+// (ConstantValue was only used by the T4 enchanted-book add, which now lives in
+//  loot/zz_pack_enchanted_books.js and loads the class itself.)
 // 2026-04-21: LootJS 2.13.1 `removeLoot(js_function)` doesn't auto-wrap a JS
 // predicate — the TypeWrapper first tries `IngredientJS.of(fn)`, gets an empty
 // ingredient, logs "Invalid ingredient for filter: Unknown", and installs
@@ -48,23 +50,37 @@ var ItemFilter = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')
 
 LootJS.modifiers(event => {
 
+  // Marquee-structure enchanted books are QUEUED here by applyMarquee (Section
+  // 7) and registered by loot/zz_pack_enchanted_books.js, which loads after
+  // both overhaul files. Reset on every loot build so reloads do not pile up.
+  global.ICRAFT_MARQUEE_BOOKS = []
+
   // =========================================================================
-  // SECTION 1: ENCHANTED BOOK REBALANCE
+  // SECTION 1: ENCHANTED BOOK REBALANCE  ->  loot/zz_pack_enchanted_books.js
   // =========================================================================
-  // Layer tier-scaled enchanted books on top of vanilla loot-table generation.
-  // We do NOT strip vanilla books first and re-add — we just layer on top. (The
-  // 2026-04-18 "blank/unenchanted book" symptom was real but was NOT a "persistent
-  // filter"; see the LootJS removal-mechanic note in Section 1B — removal is
-  // one-shot in-place in registration order. Layering on top sidesteps any
-  // strip/re-add ordering issue entirely.)
-  //
-  // Tier re-add rates (layered on top of vanilla's ~5-10%):
+  // Tier-scaled enchanted books are layered on top of whatever the loot table
+  // itself generated:
   //   Overworld: 7.5%
   //   Twilight Forest/Aether/Blue Skies: 10%
   //   Nether/Undergarden: 12.5%
   //   End/Deeper and Darker/The Abyss: 15%
   //
-  // Also adds Ars Nouveau spell books at tier-appropriate rates.
+  // [2026-10-10] Those four adds used to be registered right here. They moved,
+  // unchanged, to loot/zz_pack_enchanted_books.js: this file loads BEFORE
+  // loot_overhaul.js (the real load order sorts letters before '_'), and
+  // loot_overhaul.js strips minecraft:enchanted_book from the vanilla dungeon /
+  // stronghold / mansion / temple tables and from the dungeons_arise, YUNG's,
+  // Valhelsia, Twilight Forest, Blue Skies and Aether chest tables. LootJS
+  // removal is one-shot in registration order (Section 1B), so that strip ate
+  // the books added here in exactly those chests. Registered from a file that
+  // loads after BOTH overhaul files (whatever order those two load in), the
+  // strip only removes a table's own (vanilla / mod-default) books and the
+  // pack's books always survive.
+  //
+  // (History: the 2026-04-18 "blank/unenchanted book" symptom was real but was
+  // NOT a "persistent filter"; see the removal-mechanic note in Section 1B.)
+  //
+  // The Ars Nouveau spell books are added in Section 1B, after the global strip.
   // =========================================================================
 
   // --- Blank-enchanted-book chest-wide filter REMOVED 2026-05-17 ---
@@ -102,17 +118,16 @@ LootJS.modifiers(event => {
   // Net target: a player who's killed ~30-50 magic mobs over their first
   // overworld session has enough essence for at least a Wizard helmet or
   // boots, with full chestplate within reach by the time they unlock T2.
-  event
-    .addLootTableModifier(/^irons_spellbooks:chests\/.*/)
-    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
-      .limitCount([2, 4])
-      .when(c => c.randomChance(0.45)))
+  //
+  // [2026-10-10] (a) is registered in Section 1B, right AFTER the global ISS
+  // chest strip (search "ISS CHEST RE-ADDS"). Registered here it sat before
+  // that strip, which removed every irons_spellbooks:* item except scrolls —
+  // the essence never reached an ISS chest.
 
   // Vanilla magic mobs — small flat chance per kill
   ;['minecraft:witch', 'minecraft:evoker', 'minecraft:vex',
     'minecraft:illusioner'].forEach(function(mobId) {
-    event
-      .addEntityLootModifier(mobId)
+    global.icraftEntityMod(event, mobId)
       .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
         .limitCount([1, 2])
         .when(c => c.randomChance(0.35)))
@@ -123,8 +138,7 @@ LootJS.modifiers(event => {
   ;['minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:husk',
     'minecraft:drowned', 'minecraft:skeleton', 'minecraft:wither_skeleton',
     'minecraft:stray', 'minecraft:phantom'].forEach(function(mobId) {
-    event
-      .addEntityLootModifier(mobId)
+    global.icraftEntityMod(event, mobId)
       .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
         .when(c => c.randomChance(0.10)))
   })
@@ -180,37 +194,31 @@ LootJS.modifiers(event => {
     })
   }
 
-  // ISS chests — 10% combined per chest
-  injectRobeDrops(
-    event.addLootTableModifier(/^irons_spellbooks:chests\/.*/),
-    0.10
-  )
+  // ISS chests — 10% combined per chest: registered in Section 1B, AFTER the
+  // global ISS chest strip (search "ISS CHEST RE-ADDS"). [2026-10-10: here it
+  // sat before that strip and every robe piece was removed again.]
 
   // Magic mobs — 5% per kill
   ;['minecraft:witch', 'minecraft:evoker', 'minecraft:vex',
     'minecraft:illusioner'].forEach(function(mobId) {
-    injectRobeDrops(event.addEntityLootModifier(mobId), 0.05)
+    injectRobeDrops(global.icraftEntityMod(event, mobId), 0.05)
   })
 
   // Vanilla undead — 2.5% per kill
   ;['minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:husk',
     'minecraft:drowned', 'minecraft:skeleton', 'minecraft:wither_skeleton',
     'minecraft:stray', 'minecraft:phantom'].forEach(function(mobId) {
-    injectRobeDrops(event.addEntityLootModifier(mobId), 0.025)
+    injectRobeDrops(global.icraftEntityMod(event, mobId), 0.025)
   })
 
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
-  event
-    .addEntityLootModifier('minecraft:pig')
+  global.icraftEntityMod(event, 'minecraft:pig')
     .removeLoot('@kubejs')
-  event
-    .addEntityLootModifier('minecraft:cow')
+  global.icraftEntityMod(event, 'minecraft:cow')
     .removeLoot('@kubejs')
-  event
-    .addEntityLootModifier('minecraft:sheep')
+  global.icraftEntityMod(event, 'minecraft:sheep')
     .removeLoot('@kubejs')
-  event
-    .addEntityLootModifier('minecraft:chicken')
+  global.icraftEntityMod(event, 'minecraft:chicken')
     .removeLoot('@kubejs')
 
   // ── RELICS CURATION ──
@@ -232,11 +240,33 @@ LootJS.modifiers(event => {
     'relics:enders_hand',
     'relics:space_dissector'
   ]
+  // "User dislike" blacklist (its own chest strip is a few blocks further down).
+  var relicUserBlacklist = [
+    'relics:horse_flute'
+  ]
+
+  // ── RELIC_DENY: the ONE deny set for every relic pool in this file ──
+  // [2026-10-10] The two strips (relicRemover just below + the horse_flute
+  // blacklist) are one-shot and run HERE, before any pool is registered, so
+  // they only ever cleared relics that came from base tables / the Relics
+  // mod's own injection. The curated pools registered later re-added 12 of
+  // the 15 denied relics (T3 / T4 dimension pools, the marquee themes, the
+  // Keebsz high-floor pool). Every pool is now built through relicAllowed(),
+  // which drops RELIC_DENY ids before the per-item chance is computed — the
+  // pool's combined rate is unchanged and is shared by the remaining items.
+  // The two deliberate exceptions stay as their own modifiers right below:
+  // Ender's Hand (Ender Dragon only) and Space Dissector (1% in T4 dims).
+  var RELIC_DENY = {}
+  removedRelics.concat(relicUserBlacklist).forEach(function (id) { RELIC_DENY[id] = true })
+  var relicAllowed = function (pool) {
+    return pool.filter(function (id) { return RELIC_DENY[id] !== true })
+  }
+
   let relicRemover = event.addLootTypeModifier(LootType.CHEST)
   removedRelics.forEach(r => relicRemover.removeLoot(r))
 
   // Ender's Hand — exclusive Dragon drop (free ender pearl teleport)
-  event.addEntityLootModifier('minecraft:ender_dragon')
+  global.icraftEntityMod(event, 'minecraft:ender_dragon')
     .addLoot(LootEntry.of('relics:enders_hand'))
 
   // Space Dissector — rare T4 dimension drop
@@ -264,7 +294,9 @@ LootJS.modifiers(event => {
     'terramity:meteor_cannon', 'terramity:moondrill_cannon', 'terramity:railgun',
     'terramity:rocket_launcher', 'terramity:pump_action_shotgun',
     'terramity:sawed_off_shotgun', 'terramity:flare_gun',
-    'terramity:hellspec_super_shotgun',
+    // ('terramity:hellspec_super_shotgun' removed 2026-10-10: Terramity 0.9.8
+    //  registers no such item — only its hellspec_shotshells ammo, listed
+    //  below — so the entry was an "Invalid ingredient for filter" boot warning.)
     // Projectiles + ammo
     'terramity:gunkshot_projectile', 'terramity:flare_gun_projectile',
     'terramity:enderswap_projectile', 'terramity:shadowflame_bullet',
@@ -296,9 +328,11 @@ LootJS.modifiers(event => {
     'terramity:davy_jones', 'terramity:olympus',
     'terramity:divine_intervention', 'terramity:planet_buster',
     'terramity:kamehameha',
-    // Curios (no boss allocation — pack-internal balance: not appropriate
-    // at any tier, even endgame; mod-internal +stat curios that conflict
-    // with our class/origin/Tetra/curios system)
+    // Curios: stripped from every DEFAULT chest/entity table here, then
+    // re-added on purpose by loot/terramity_structure_drops.js (which loads
+    // after this file, so this strip does not eat those adds): 3 in the two
+    // Terramity Nether dungeons (T3), 5 on T4 bosses. Operator decision
+    // 2026-10-10: droppable, late-tier only -- never in the Overworld.
     'terramity:antimatter_pacemaker', 'terramity:nyxs_necklace',
     'terramity:antiprism', 'terramity:null_scarf',
     'terramity:dragon_band', 'terramity:sacred_speed_bracelets',
@@ -310,9 +344,12 @@ LootJS.modifiers(event => {
   terramityCurioStrip.forEach(id => terramityCurioEntityStrip.removeLoot(id))
 
   // Shadow Glaive — rare T2/T3 drop
+  // (Dimension lists in this file no longer name 'deep_aether:the_aether':
+  //  Deep Aether adds biomes/structures to aether:the_aether and registers no
+  //  dimension of its own, so that id never matched anything. 2026-10-10.)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether', 'deep_aether:the_aether',
+    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn', 'minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(LootEntry.of('relics:shadow_glaive').when(c => c.randomChance(0.01)))
 
@@ -323,10 +360,10 @@ LootJS.modifiers(event => {
     .removeLoot('@mahoutsukai')
 
   // Blacklist Relics horse_flute globally — user dislike (summons a temporary
-  // horse, doesn't really fit our progression design)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .removeLoot('relics:horse_flute')
+  // horse, doesn't really fit our progression design). The list lives next to
+  // removedRelics (relicUserBlacklist) because it also feeds RELIC_DENY.
+  let relicBlacklistStrip = event.addLootTypeModifier(LootType.CHEST)
+  relicUserBlacklist.forEach(r => relicBlacklistStrip.removeLoot(r))
 
   // Strip too_many_bows:rift_shard from chest pools globally.
   // Audit Phase 2.2 (2026-04-27): the namespace collision with our
@@ -340,57 +377,8 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .removeLoot('too_many_bows:rift_shard')
 
-  // Re-add enchanted books at 7.5% — T1 (Overworld)
-  // NOTE: LootEntry.of must be 'minecraft:book' (not enchanted_book).
-  // EnchantmentHelper.enchantItem() checks `stack.is(Items.BOOK)` and only
-  // writes to StoredEnchantments NBT for plain books — converting the stack
-  // to enchanted_book as part of the function. Starting from enchanted_book
-  // drops to the else branch which writes to the wrong NBT tag, so the
-  // book appears blank to the player. Vanilla loot tables mirror this.
-  console.log('[icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)')
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .addLoot(
-      LootEntry.of('minecraft:book')
-        .enchantWithLevels(UniformGenerator.between(10, 25), true)
-        .when(c => c.randomChance(0.075))
-    )
-
-  // Re-add enchanted books at 10% — T2 (TF, Aether, Blue Skies)
-  console.log('[icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)')
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
-    .addLoot(
-      LootEntry.of('minecraft:book')
-        .enchantWithLevels(UniformGenerator.between(15, 30), true)
-        .when(c => c.randomChance(0.10))
-    )
-
-  // Re-add enchanted books at 12.5% — T3 (Nether, Undergarden)
-  console.log('[icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden, 12.5%, levels 20-30)')
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-    .addLoot(
-      LootEntry.of('minecraft:book')
-        .enchantWithLevels(UniformGenerator.between(20, 30), true)
-        .when(c => c.randomChance(0.125))
-    )
-
-  // Re-add enchanted books at 15% — T4 (End, Deeper Darker, Abyss)
-  console.log('[icraft-loot] Registering T4 enchanted_book re-add (End/DD/Abyss, 15%, level 30)')
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
-    .addLoot(
-      LootEntry.of('minecraft:book')
-        .enchantWithLevels(ConstantValue.exactly(30), true)
-        .when(c => c.randomChance(0.15))
-    )
+  // --- Tier-scaled enchanted books (7.5 / 10 / 12.5 / 15%) — MOVED 2026-10-10
+  //     to loot/zz_pack_enchanted_books.js (see Section 1 above) ---
 
   // --- Ars Nouveau spell books — MOVED to after global strip (Section 1B) ---
 
@@ -410,7 +398,7 @@ LootJS.modifiers(event => {
       'minecraft:chests/underwater_ruin_big',
       'minecraft:chests/underwater_ruin_small',
       /dungeoncrawl:.*chests.*/,
-      /explorify:.*chests.*/,
+      /explorify:.*chest.*/,   // [2026-10-10] was .*chests.* — Explorify's tables are explorify:chest/… (singular), so it matched nothing
       /^structory:.+/,
       /dungeons_plus:.*/,
       /dungeons_arise:.*/,
@@ -423,46 +411,25 @@ LootJS.modifiers(event => {
   // Aether + Blue Skies: all chests are structures, so dimension filter is fine
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('aether:the_aether', 'deep_aether:the_aether',
+    .anyDimension('aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
     )
 
-  // --- ISS Mana Ring — 2% in overworld structure chests (T2 lucky find) ---
-  // Mana Ring is craftable at T2 (recipe re-tiered in tier_gated_recipes.js
-  // I.9 — diamond -> mana_diamond), but it's also a reasonable lucky find
-  // for casters exploring before they unlock Botania transmutation. Same
-  // chest pool as the compass of return — dungeons, mineshafts, temples,
-  // mod structures — skips village houses so it's not free power in a
-  // starter village.
-  event
-    .addLootTableModifier(
-      'minecraft:chests/simple_dungeon',
-      'minecraft:chests/abandoned_mineshaft',
-      'minecraft:chests/desert_pyramid',
-      'minecraft:chests/jungle_temple',
-      'minecraft:chests/stronghold_corridor',
-      'minecraft:chests/stronghold_crossing',
-      'minecraft:chests/stronghold_library',
-      /dungeoncrawl:.*chests.*/,
-      /explorify:.*chests.*/,
-      /^structory:.+/,
-      /dungeons_plus:.*/,
-      /dungeons_arise:.*/,
-      /valhelsia_structures:.*chests.*/,
-      /repurposed_structures:.*chests.*/
-    )
-    .addLoot(
-      LootEntry.of('irons_spellbooks:mana_ring').when(c => c.randomChance(0.02))
-    )
+  // --- ISS Mana Ring — 2% in overworld structure chests: registered in
+  //     Section 1B, AFTER the global ISS chest strip (search "ISS CHEST
+  //     RE-ADDS"). [2026-10-10: here it sat before that strip and was removed.]
 
   // =========================================================================
-  // SECTION 1B: GLOBAL ARTIFACT/CURIO STRIP
+  // SECTION 1B: GLOBAL MAGIC-ITEM STRIP (Ars Nouveau / ISS / moreartifacts)
   // =========================================================================
-  // Remove ALL artifact mod items from ALL chest loot globally. This runs
+  // Removes every @ars_nouveau item, every irons_spellbooks item EXCEPT scrolls,
+  // every @moreartifacts item and all saplings from ALL chest loot. This runs
   // BEFORE any tier-specific re-injection so we start from a clean slate.
   // Individual sections below re-add curated items at controlled rates.
+  // (It does NOT strip @artifacts / @celestial_artifacts / @relics — see the
+  // note on the modifier itself; relics have their own id list, removedRelics.)
   // Village sanitization (Section 6) has its own strip but this catches
   // everything else — dimension chests, structure chests, etc.
   // =========================================================================
@@ -486,8 +453,18 @@ LootJS.modifiers(event => {
   //      blaming a "persistent filter" were misdiagnoses — the real variables are
   //      registration order and (under Lootr) which tables a modifier matches.
   //      Live proof in this same file: the gatekeeper-house `@artifacts` strip
-  //      (~line 1965) is registered AFTER the T2 artifact pool (~line 735), so it
+  //      (Section 5B) is registered AFTER the T1 artifact pool (Section 1C), so it
   //      DOES strip those artifacts there — intended, and pure registration order.
+  //
+  //   LOAD ORDER (boot log, 2026-10-10): file names compare case-insensitively,
+  //   so letters sort BEFORE '_': lootjs_overhaul.js loads before loot_overhaul.js,
+  //   and zzz_* before zz_*. Do not rely on '_' to order two files.
+  //
+  //   TABLE REGEXES ARE FULL-MATCH (same decompile, verified 2026-10-10):
+  //   ResourceLocationFilter.ByPattern.test == pattern.matcher(id).matches(). A
+  //   regex passed to addLootTableModifier has to cover the WHOLE "namespace:path"
+  //   id — /chests\// matches nothing, /.*chests\/.*/ matches every chests/ table.
+  //   A modifier whose regex matches no table is silent: no error, no warning.
   // ───────────────────────────────────────────────────────────────────────
   // 2026-06-14 SCROLL-ECONOMY FIX (#45/ISS), re-explained per the mechanic above.
   // This `.removeLoot('@irons_spellbooks')` runs BEFORE every ISS re-add, so it
@@ -534,8 +511,60 @@ LootJS.modifiers(event => {
     .removeLoot('#forge:saplings')
     .removeLoot('#minecraft:saplings')
 
+  // ─── ISS CHEST RE-ADDS (registered AFTER the global ISS strip above) ───
+  // [2026-10-10] These three adds used to be registered further up, BEFORE the
+  // strip, so `stripISSExceptScroll` removed every one of them again (the same
+  // bug class fixed 2026-06-14 for the boss arenas — see
+  // loot/zz_iss_arena_enrichment.js). Tables / items / chances are unchanged;
+  // only the registration point moved. No later strip touches these items in
+  // these tables (the only later ISS strips are the village-table spell-book
+  // strips in Section 6).
+
+  // (a) Arcane essence in ISS structure chests — 45%, 2-4 (see the ARCANE
+  //     ESSENCE INJECTION note near the top of the file)
+  event
+    .addLootTableModifier(/^irons_spellbooks:chests\/.*/)
+    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
+      .limitCount([2, 4])
+      .when(c => c.randomChance(0.45)))
+
+  // (b) T1 robe pieces in ISS chests — 10% combined per chest (FULL ROBE PIECE
+  //     DROPS note near the top of the file)
+  injectRobeDrops(
+    event.addLootTableModifier(/^irons_spellbooks:chests\/.*/),
+    0.10
+  )
+
+  // (c) ISS Mana Ring — 2% in overworld structure chests (T2 lucky find).
+  // Mana Ring is craftable at T2 (recipe re-tiered in tier_gated_recipes.js
+  // I.9 — diamond -> mana_diamond), but it's also a reasonable lucky find
+  // for casters exploring before they unlock Botania transmutation. Same
+  // chest pool as the compass of return — dungeons, mineshafts, temples,
+  // mod structures — skips village houses so it's not free power in a
+  // starter village.
+  event
+    .addLootTableModifier(
+      'minecraft:chests/simple_dungeon',
+      'minecraft:chests/abandoned_mineshaft',
+      'minecraft:chests/desert_pyramid',
+      'minecraft:chests/jungle_temple',
+      'minecraft:chests/stronghold_corridor',
+      'minecraft:chests/stronghold_crossing',
+      'minecraft:chests/stronghold_library',
+      /dungeoncrawl:.*chests.*/,
+      /explorify:.*chest.*/,   // [2026-10-10] was .*chests.* (matched nothing: explorify:chest/…)
+      /^structory:.+/,
+      /dungeons_plus:.*/,
+      /dungeons_arise:.*/,
+      /valhelsia_structures:.*chests.*/,
+      /repurposed_structures:.*chests.*/
+    )
+    .addLoot(
+      LootEntry.of('irons_spellbooks:mana_ring').when(c => c.randomChance(0.02))
+    )
+
   // --- Ars Nouveau spell books (re-add AFTER global strip) ---
-  // T1 (Overworld): Novice spell book (5%)
+  // T1 (Overworld): Novice spell book (2.5%)
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -547,7 +576,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
+      'aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
@@ -631,7 +660,7 @@ LootJS.modifiers(event => {
   var glyphModT2 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+      'blue_skies:everbright', 'blue_skies:everdawn')
   glyphT2.forEach(g => {
     glyphModT2.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT2PerItem)))
   })
@@ -676,12 +705,15 @@ LootJS.modifiers(event => {
 
   var _glyphStripT2 = event.addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+      'blue_skies:everbright', 'blue_skies:everdawn')
   glyphT3.concat(glyphT4).forEach(g => { _glyphStripT2.removeLoot(g) })
 
-  var _glyphStripT3 = event.addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-  glyphT4.forEach(g => { _glyphStripT3.removeLoot(g) })
+  // [2026-10-10] There is NO off-tier strip for the Nether / Undergarden any
+  // more. The old one removed `glyphT4` there — but glyphT4 is an ALIAS of
+  // glyphT3 (AN has no 4th tier), so it stripped all 14 T3 glyphs out of the
+  // very dimensions whose T3 pool (glyphModT3, ~15% combined) had just added
+  // them: no glyph ever dropped in the Nether or the Undergarden. Nothing is
+  // "above tier" in a T3 dimension, so there is nothing to strip.
 
   // =========================================================================
   // SECTION 1C: TIERED ARTIFACT RE-INJECTION BY DIMENSION
@@ -693,7 +725,7 @@ LootJS.modifiers(event => {
 
   // --- T1 Pool (~10% combined) — Overworld ---
   // Utility/movement artifacts + starter magic items. Safe, non-combat.
-  var artifactT1Pool = [
+  var artifactT1Pool = relicAllowed([
     'artifacts:snorkel', 'artifacts:anglers_hat', 'artifacts:superstitious_hat',
     'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle',     'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
@@ -710,7 +742,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:yellow_duck', 'celestial_artifacts:sakura_hairpin',
     'celestial_artifacts:bearing_stamen',
     'celestial_artifacts:desire_etching', 'celestial_artifacts:origin_etching'
-  ]
+  ])
   // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
   // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
   // unlucky chests — tester reported a Waystone Towers chest (backed by
@@ -734,7 +766,7 @@ LootJS.modifiers(event => {
 
   // --- T2 Pool (~12% combined) — Twilight Forest, Aether, Blue Skies ---
   // Combat + defensive artifacts + mid-tier magic.
-  var artifactT2Pool = [
+  var artifactT2Pool = relicAllowed([
     'artifacts:power_glove', 'artifacts:feral_claws', 'artifacts:pickaxe_heater',
     'artifacts:cross_necklace', 'artifacts:panic_necklace', 'artifacts:antidote_vessel',
     'artifacts:crystal_heart', 'artifacts:obsidian_skull',
@@ -762,20 +794,24 @@ LootJS.modifiers(event => {
     'celestial_artifacts:red_ruby_bracelet', 'celestial_artifacts:scarlet_bracelet',
     // etchings T2: truth (raiders), life (high-HP mobs)
     'celestial_artifacts:truth_etching', 'celestial_artifacts:life_etching'
-  ]
+  ])
   var artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+      'blue_skies:everbright', 'blue_skies:everdawn')
   artifactT2Pool.forEach(item => {
     modT2.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
   })
 
   // --- T3 Pool (~14% combined) — Nether, Undergarden ---
   // Strong artifacts + some relics + advanced magic.
-  var artifactT3Pool = [
-    'artifacts:night_vision_goggles', 'artifacts:drama_mask',
+  // (relics:ice_skates / roller_skates / midnight_robe are on RELIC_DENY and are
+  //  dropped by relicAllowed(). 'artifacts:drama_mask' removed 2026-10-10: the
+  //  installed Artifacts 9.5.16 has no such item — the entry produced an empty
+  //  stack and wasted its share of the pool.)
+  var artifactT3Pool = relicAllowed([
+    'artifacts:night_vision_goggles',
     'artifacts:universal_attractor', 'artifacts:charm_of_sinking',
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
     'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe',
@@ -814,7 +850,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:end_etching'
     // flight_ring deliberately NOT in T3 -- per 2026-05-13 design call,
     // it lives only in End+ as an extremely-rare standalone entry.
-  ]
+  ])
   var artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
     .addLootTypeModifier(LootType.CHEST)
@@ -825,7 +861,10 @@ LootJS.modifiers(event => {
 
   // --- T4 Pool (~16% combined) — End, Deeper Darker, Abyss ---
   // Endgame artifacts + powerful relics.
-  var artifactT4Pool = [
+  // (relics:enders_hand / space_dissector / elytra_booster / magic_mirror are on
+  //  RELIC_DENY and are dropped by relicAllowed(): Ender's Hand stays Dragon-
+  //  exclusive and Space Dissector keeps only its own 1% T4 modifier.)
+  var artifactT4Pool = relicAllowed([
     'relics:enders_hand', 'relics:space_dissector', 'relics:shadow_glaive',
     'relics:elytra_booster', 'relics:magic_mirror', 'relics:holy_locket',
     'relics:arrow_quiver', 'relics:wool_mitten',
@@ -856,7 +895,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:heart_of_revenge',
     // etchings T4: nihility (abyss-damage), chaotic (explosion-damage)
     'celestial_artifacts:nihility_etching', 'celestial_artifacts:chaotic_etching'
-  ]
+  ])
   var artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
     .addLootTypeModifier(LootType.CHEST)
@@ -877,22 +916,24 @@ LootJS.modifiers(event => {
 
   // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)
-  // Remove diamonds, add T1 token chance
+  // Remove diamonds
   // =========================================================================
   // Overworld structures should NOT contain diamonds or netherite.
-  // They get iron-tier tokens instead.
+  // (The legacy tier-token seeding that used to live here is retired; Codex
+  // tokens are seeded by loot/codex_exploration_drops.js.)
   //
-  // Matched mods: Dungeon Crawl (stages 1-3), Explorify, Dungeons Plus,
-  // Structory, Villages & Pillages, Better Desert Temples (storage tier),
-  // Loot Integrations (easy/village/water), Unwrecked Ships,
-  // Overhauled Structures (chest_1/2), YUNG's series (OW structures)
+  // In this section: Explorify, Villages & Pillages, Unwrecked Ships, Better
+  // Desert Temples, Celestial Artifacts. The other Overworld structure mods are
+  // in Sections 4B / 4C; the blanket pre-T3 diamond strip is Section 5A1.5.
   // =========================================================================
 
   // --- Dungeon Crawl: MOVED to Section 4B (more granular coverage) ---
 
   // --- Explorify (all chests — Overworld structures) ---
+  // [2026-10-10] regex was /explorify:.*chests.*/ — Explorify's three tables are
+  // explorify:chest/… (singular), so it matched nothing.
   event
-    .addLootTableModifier(/explorify:.*chests.*/)
+    .addLootTableModifier(/explorify:.*chest.*/)
     .removeLoot('minecraft:diamond')
 
   // --- Dungeons Plus: MOVED to Section 4B (common/rare split) ---
@@ -930,15 +971,17 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
 
   // --- Better Desert Temples: pharaoh tier (tomb_pharaoh, pharaoh_hidden) ---
+  // [2026-10-10] regex was /betterdeserttemples:.*pharaoh/ — table regexes are
+  // full-match, so it covered chests/tomb_pharaoh but NOT chests/pharaoh_hidden.
   event
-    .addLootTableModifier(/betterdeserttemples:.*pharaoh/)
+    .addLootTableModifier(/betterdeserttemples:.*pharaoh.*/)
     .removeLoot('minecraft:diamond')
     .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').limitCount([2, 4]).when(c => c.randomChance(0.50)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.15)))
 
-  // [Removed 2026-04-19] Overhauled Structures — mod not installed.
-  // [Removed 2026-04-19] Loot Integrations — mod not installed. If either
-  // mod is re-added later, restore from git history.
+  // Overhauled Structures ("Epic Dungeons", namespace `overhauledstructures`) IS
+  // installed — it is handled in Section 4B. Loot Integrations is not installed
+  // (its block was removed 2026-04-19; restore from git history if it returns).
 
   // --- Celestial Artifacts ---
   event
@@ -963,8 +1006,10 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/keebsz:.*\/floor[35]and[46]/)
     .removeLoot('minecraft:diamond')
 
+  // [2026-10-10] was /keebsz:.*\/floor[79]and[810]/, which (full-match, and
+  // "[810]" being a single character) never matched floor9and10.
   event
-    .addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
+    .addLootTableModifier(/keebsz:.*\/floor(?:7and8|9and10)/)
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Iron's Spellbooks structures ---
@@ -972,7 +1017,7 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/irons_spellbooks:.*chests.*/)
     .removeLoot('minecraft:diamond_horse_armor')
 
-  // --- Moog's End Structures (T4 content — allow everything, add T4 tokens + thematic loot) ---
+  // --- Moog's End Structures (T4 content — allow everything, add thematic loot) ---
   // MES loot tables live at data/mes/loot_tables/*.json (no /chests/ subfolder)
   // e.g. mes:cathedral_rare, mes:mega_ship_treasure, mes:houses_common.
   // Old regex /mes:.*chests.*/ matched zero tables (audit 2026-04-19).
@@ -984,10 +1029,11 @@ LootJS.modifiers(event => {
 
   // =========================================================================
   // SECTIONS 4–4H: BOSS ENTITY LOOT MODIFIERS
-  // REMOVED — All boss entity drops (tokens, Simply Swords uniques,
-  // mini-boss materials, next-tier peeks) are now handled exclusively
-  // by loot_overhaul.js to avoid duplicate drops.
-  // This file only handles STRUCTURE CHEST modifiers.
+  // REMOVED — boss material + Simply Swords unique drops are handled by
+  // loot_overhaul.js (and the per-mod *_boss_drops.js files) to avoid
+  // duplicate drops. What this file still registers outside chest loot is
+  // listed in the header (mob essence/robe drops, safety strips, the class-
+  // artifact pouch tables in Section 8.5, grass seeds).
   // =========================================================================
 
   // =========================================================================
@@ -996,6 +1042,12 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // --- When Dungeons Arise (131 tables) ---
+  // NOTE (2026-10-10): the two group regexes below end in "\/" with nothing
+  // after it, and table regexes are full-match — so they match NO table (and
+  // the heavenly_ placeholder matches none either). They are left as written
+  // because they are redundant: loot_overhaul.js strips diamonds from every
+  // dungeons_arise:chests/ table and Section 5A1.5 strips them from every
+  // pre-T3 chest.
   // T1-T2 structures: villages, pubs, fishing huts, farms
   event
     .addLootTableModifier(
@@ -1023,7 +1075,10 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Repurposed Structures ---
-  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
+  // Installed (173 loot tables; the old "NOT PRESENT" note here was wrong).
+  // No dedicated tier strip: its Overworld chests are covered by the blanket
+  // pre-T3 diamond strip (Section 5A1.5); its chests/ tables also take the
+  // compass-of-return / mana-ring / Codex-token adds.
 
   // --- Valhelsia Structures (11 chest tables) ---
   // T1-T2: common structures
@@ -1047,6 +1102,10 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- IDAS: Integrated Dungeons and Structures (144 tables) ---
+  // NOTE (2026-10-10): /idas:chests\/(?!.*treasure)/ matches NO table (full-
+  // match: it would need a trailing .*). Left as written — in the Overworld
+  // the blanket pre-T3 strip (Section 5A1.5) already removes these diamonds,
+  // and completing the regex would also strip IDAS's Nether structure chest.
   // General overworld structures (T1)
   event
     .addLootTableModifier(/idas:chests\/(?!.*treasure)/)
@@ -1058,7 +1117,8 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Integrated Stronghold ---
-  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
+  // Installed (20 loot tables; the old "NOT PRESENT" note here was wrong).
+  // No dedicated modifier: Overworld chests are covered by Section 5A1.5.
 
   // --- Dungeons Plus (31 tables) ---
   // Common chests (T1)
@@ -1103,6 +1163,9 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond')
 
   // --- Structory Towers (49 tables) — T1-T2 overworld ---
+  // NOTE (2026-10-10): matches NO table — Structory Towers' tables are
+  // structory_towers:basic/…, top/…, potions/… (no "chests" in the path).
+  // Redundant for diamonds (Section 5A1.5); see the same pattern in Section 7.
   event
     .addLootTableModifier(/structory_towers:.*chests.*/)
     .removeLoot('minecraft:diamond')
@@ -1157,30 +1220,14 @@ LootJS.modifiers(event => {
       .when(c => c.randomChance(0.08))
   )
 
-  // --- Family ovdb (basic): dungeoneering supplies ---
-  var ovdbMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdb_loot_tables\/.*/)
-  ovdbMod.addLoot(LootEntry.of('minecraft:torch').limitCount([2, 6]).when(c => c.randomChance(0.60)))
-  ovdbMod.addLoot(LootEntry.of('minecraft:bread').limitCount([2, 4]).when(c => c.randomChance(0.35)))
-  ovdbMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.25)))
-  ovdbMod.addLoot(LootEntry.of('minecraft:map').when(c => c.randomChance(0.15)))
-  ovdbMod.addLoot(LootEntry.of('minecraft:compass').when(c => c.randomChance(0.05)))
-
-  // --- Family ovdp (prison): decrepit theme ---
-  var ovdpMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdp_loot_tables\/.*/)
-  ovdpMod.addLoot(LootEntry.of('minecraft:chain').limitCount([2, 6]).when(c => c.randomChance(0.50)))
-  ovdpMod.addLoot(LootEntry.of('minecraft:rotten_flesh').limitCount([3, 8]).when(c => c.randomChance(0.40)))
-  ovdpMod.addLoot(LootEntry.of('minecraft:bone').limitCount([2, 5]).when(c => c.randomChance(0.40)))
-  ovdpMod.addLoot(LootEntry.of('minecraft:soul_lantern').when(c => c.randomChance(0.15)))
-  ovdpMod.addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.06)))
-  ovdpMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.15)))
-
-  // --- Family ovds (spiders): web/venom theme ---
-  var ovdsMod = event.addLootTableModifier(/overhauledstructures:chests\/ovds_loot_tables\/.*/)
-  ovdsMod.addLoot(LootEntry.of('minecraft:string').limitCount([4, 12]).when(c => c.randomChance(0.70)))
-  ovdsMod.addLoot(LootEntry.of('minecraft:cobweb').limitCount([2, 6]).when(c => c.randomChance(0.45)))
-  ovdsMod.addLoot(LootEntry.of('minecraft:spider_eye').limitCount([1, 4]).when(c => c.randomChance(0.40)))
-  ovdsMod.addLoot(LootEntry.of('minecraft:fermented_spider_eye').when(c => c.randomChance(0.15)))
-  ovdsMod.addLoot(LootEntry.of('minecraft:poisonous_potato').when(c => c.randomChance(0.08)))
+  // --- Family theme adds (ovdb supplies / ovdp prison / ovds spiders) ---
+  // [2026-10-10] Registered in Section 5B, AFTER the Overworld clutter + food
+  // strips (search "EPIC DUNGEONS THEME ADDS"). These dungeons are in the
+  // Overworld, so registered here the Section 5A strips removed the spider
+  // family's spider eyes / fermented eyes / poisonous potatoes and the prison
+  // family's rotten flesh outright, halved its bones and the spiders' string,
+  // cut its name tags to 40%, and the Section 5B food strip left 1 in 5 of the
+  // basic family's bread.
 
   // --- Tier 3 + Master chests: bonus magic drops (each family's chest_3 + chest_m) ---
   // chest_3 = final room; chest_m = master reward. Higher magic-item chances
@@ -1229,11 +1276,10 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- YUNG's Better End Island ---
-  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
-  // Kept commented out for future reference:
-  // event.addLootTableModifier(/betterendisland:.*/)
+  // Installed, but it ships no loot tables of its own (the old "NOT PRESENT"
+  // note here was wrong) — nothing to target.
 
-  // Note: Better Desert Temples already covered in Section 3 above
+  // Note: Better Desert Temples already covered in Section 2 above
 
   // =========================================================================
   // SECTION 4D: DIMENSION-SPECIFIC STRUCTURE LOOT
@@ -1479,16 +1525,23 @@ LootJS.modifiers(event => {
   })
 
   // --- Village food + seed boost (added 2026-05-17) ---
-  // Walks back the 2026-04-20 design call that reduced structure food loot
-  // by 90% across all overworld chests (Section 7B further down). The
-  // original rationale ("food shouldn't bypass the hunger system") was
-  // overblown given how onerous the 2.5x hunger drain actually feels in
-  // play. The global strip still applies to non-village chests; villages
-  // get a flat food/seed boost on top, which is thematically correct
-  // (villagers farm) and addresses the early-game food friction.
+  // Walks back the 2026-04-20 design call that thinned structure food loot
+  // across all overworld chests (Section 5B further down: each listed food
+  // stack survives at 20%). The original rationale ("food shouldn't bypass
+  // the hunger system") was overblown given how onerous the 2.5x hunger drain
+  // actually feels in play. The global strip still applies to non-village
+  // chests; villages get a flat food/seed boost on top, which is thematically
+  // correct (villagers farm) and addresses the early-game food friction.
   //
   // Targets the 5 biome houses + CTOV + Villages and Pillages tables.
-  // Expected items per chest: ~1.4 food + ~0.6 seeds (independent rolls).
+  // Expected items per chest: ~1.25 food + ~1.0 seeds (independent rolls;
+  // the sums of the chances below).
+  //
+  // [2026-10-10] Only the two lists and the helper are DEFINED here. The boost
+  // is REGISTERED in Section 5B, right after the food strip (search "VILLAGE
+  // FOOD + SEED BOOST — registration"): registered here it sat BEFORE that
+  // strip, which then thinned 10 of the 11 boost foods to 1 in 5 — the
+  // opposite of "on top of" the reduction.
   var VILLAGE_FOOD_BOOST = [
     ['minecraft:bread',         0.18],
     ['minecraft:wheat',         0.20],
@@ -1527,15 +1580,7 @@ LootJS.modifiers(event => {
       mod.addLoot(LootEntry.of(entry[0]).limitCount([1, 3]).when(c => c.randomChance(entry[1])))
     })
   }
-  // 5 vanilla biome houses
-  villageHouseChests.forEach(addVillageFoodSeedBoost)
-  // CTOV (Choice Theorem's Overhauled Village) — broad regex; village-only
-  // tables. The ctov: namespace ships dozens of structure-specific chest
-  // tables and the food/seed boost is universally appropriate for any
-  // "this is someone's home" chest in a CTOV village.
-  addVillageFoodSeedBoost(/ctov:.*chests.*/)
-  // Villages and Pillages — similar coverage.
-  addVillageFoodSeedBoost(/villagesandpillages:.*chests.*/)
+  // (the three addVillageFoodSeedBoost(...) registrations are in Section 5B)
 
   // --- Butcher chest: guaranteed meat (added 2026-05-17) ---
   // Vanilla butcher table has all meat at random low-weight rolls so a
@@ -1545,8 +1590,8 @@ LootJS.modifiers(event => {
   // chicken, beef when looting a butcher chest. (Vanilla raw_porkchop /
   // raw_chicken / raw_rabbit entries on the table remain intact.)
   //
-  // Meat is in the food strip allowlist (line 1411-1412) so this isn't
-  // affected by the 90% Overworld food reduction.
+  // Meat is not in the Section 5B `reducedFoods` list, so this isn't
+  // affected by the Overworld food reduction.
   var butcherMod = event.addLootTableModifier('minecraft:chests/village/village_butcher')
   butcherMod.addLoot(LootEntry.of('minecraft:porkchop').limitCount([1, 3]))
   butcherMod.addLoot(LootEntry.of('minecraft:chicken').limitCount([1, 3]))
@@ -1626,9 +1671,10 @@ LootJS.modifiers(event => {
   // SECTION 5A: OVERWORLD CHEST CLUTTER CLEANUP
   // =========================================================================
   // Remove low-value filler items from ALL Overworld structure chests.
-  // Full removals for horse armor, spider eyes, poisonous potatoes.
-  // Partial reductions for rotten flesh (80%), gunpowder (50%),
-  // string (50%), bones (50%), name tags (60%).
+  // Full removals: horse armor, spider eyes, poisonous potatoes, rotten flesh,
+  // Terramity fairy dust, bulk wood + stone.
+  // Partial reductions (each existing stack survives at the stated chance):
+  // gunpowder 50%, string 50%, bones 50%, name tags 40%.
   // =========================================================================
 
   // --- Full removals: horse armor, spider eyes, poisonous potatoes,
@@ -1733,8 +1779,9 @@ LootJS.modifiers(event => {
   // covered by the per-structure strips (Section 4 has ~66 individual
   // removeLoot('minecraft:diamond') calls — but new structures keep slipping
   // through). This is a blanket strip across ALL chest tables in pre-T3
-  // dimensions (Overworld + 5 modded T2 dims). T3+ (Nether, Undergarden,
-  // End, Deeper Darker, The Abyss) keep diamonds.
+  // dimensions (Overworld + the 4 modded T2 dims; Deep Aether content lives in
+  // aether:the_aether). T3+ (Nether, Undergarden, End, Deeper Darker, The
+  // Abyss) keep diamonds.
   //
   // Why so aggressive: a T1 player finding 8 diamonds in a structure chest
   // skips iron->diamond progression entirely. Per design (master.md
@@ -1751,7 +1798,7 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld',
       'twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
+      'aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
   preT3DiamondStrip.removeLoot('minecraft:diamond')
   preT3DiamondStrip.removeLoot('minecraft:diamond_sword')
@@ -1796,11 +1843,15 @@ LootJS.modifiers(event => {
   // any namespace. The dim filter restricts to OW + T2 dims so T3+ chests
   // still legitimately roll diamonds. This catches future modded structures
   // we haven't audited yet without requiring per-table maintenance.
+  // [2026-10-10] regex was /^[a-z0-9_]+:.*chests?\// — table regexes are full-
+  // match, so it only matched an id that ENDS in "chests/" (none does) and this
+  // whole catch-all never ran. The trailing .* makes it match what the comment
+  // above describes.
   var regexDiamondStrip = event
-    .addLootTableModifier(/^[a-z0-9_]+:.*chests?\//)
+    .addLootTableModifier(/^[a-z0-9_]+:.*chests?\/.*/)
     .anyDimension('minecraft:overworld',
       'twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
+      'aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
   regexDiamondStrip.removeLoot('minecraft:diamond')
   regexDiamondStrip.removeLoot('minecraft:diamond_sword')
@@ -1847,7 +1898,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
+      'aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
@@ -1872,7 +1923,8 @@ LootJS.modifiers(event => {
   // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
   // =========================================================================
-  // Reduce non-meat food in Overworld structure chests by 90%.
+  // Reduce non-meat food in Overworld structure chests by 80% (each listed
+  // food stack the table rolled survives at 20%).
   // Meat (raw/cooked) is kept as-is since there's no infinite source.
   // Modded foods (Pam's HarvestCraft, Farmer's Delight) removed entirely
   // from structure loot — those should be player-crafted.
@@ -1909,13 +1961,10 @@ LootJS.modifiers(event => {
   // Apply food reduction in Overworld chest loot.
   // Single modifier, single one-shot strip: every stack of a listed food is
   // removed with 80% probability (kept at 20%), nothing is added back.
-  // ORDERING NOTE (pre-existing, not changed here): this strip is registered
-  // AFTER the VILLAGE_FOOD_BOOST adds (village block above) and the
-  // overhauledstructures ovdb bread add, so it thins those too — their
-  // listed foods now survive at 20% (before this fix they were stripped 100%
-  // and the blanket 20% add masked it). If the village boost is meant to sit
-  // "on top of" the reduction, it has to register after this modifier or its
-  // tables have to be exempted — left for a design call.
+  // ORDERING (2026-10-10): the VILLAGE_FOOD_BOOST adds and the Epic Dungeons
+  // theme adds used to be registered BEFORE this strip, so it thinned them too.
+  // Both are now registered right AFTER it (next two blocks), so this strip
+  // only ever sees food that a table itself rolled.
   let foodMod = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -1937,6 +1986,58 @@ LootJS.modifiers(event => {
     foodMod.removeLoot(food)
   })
 
+  // ─── VILLAGE FOOD + SEED BOOST — registration (moved here 2026-10-10) ───
+  // The two lists and addVillageFoodSeedBoost() are defined in the village
+  // block further up. Registered AFTER the food strip so the boost really sits
+  // "on top of" the reduction: the strip has already run when these foods are
+  // added, so each drops at its listed chance. (The modded-food strip below
+  // still runs after this point; it exempts the four Farmer's Delight village
+  // seeds — stripFDExceptVillageSeeds.)
+  // 5 vanilla biome houses
+  villageHouseChests.forEach(addVillageFoodSeedBoost)
+  // CTOV (Choice Theorem's Overhauled Village) — broad regex; village-only
+  // tables. The ctov: namespace ships dozens of structure-specific chest
+  // tables and the food/seed boost is universally appropriate for any
+  // "this is someone's home" chest in a CTOV village.
+  addVillageFoodSeedBoost(/ctov:.*chests.*/)
+  // Villages and Pillages — similar coverage. [2026-10-10] the regex was
+  // /villagesandpillages:.*chests.*/, which matched nothing: the mod's three
+  // tables are villagesandpillages:village_witch/house/{attic_chest,barrel,
+  // personal_chest}. Now the same /^villagesandpillages:.+/ the rest of this
+  // file uses for it.
+  addVillageFoodSeedBoost(/^villagesandpillages:.+/)
+
+  // ─── EPIC DUNGEONS THEME ADDS (moved here 2026-10-10 from Section 4B) ───
+  // overhauledstructures family flavor (strip + universal kit + master bonus
+  // stay in Section 4B). Registered AFTER the Section 5A clutter strips and the
+  // food strip above, which are meant for what a table rolls by itself, not
+  // for these deliberate adds. Tables / items / counts / chances unchanged.
+
+  // --- Family ovdb (basic): dungeoneering supplies ---
+  var ovdbMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdb_loot_tables\/.*/)
+  ovdbMod.addLoot(LootEntry.of('minecraft:torch').limitCount([2, 6]).when(c => c.randomChance(0.60)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:bread').limitCount([2, 4]).when(c => c.randomChance(0.35)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.25)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:map').when(c => c.randomChance(0.15)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:compass').when(c => c.randomChance(0.05)))
+
+  // --- Family ovdp (prison): decrepit theme ---
+  var ovdpMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdp_loot_tables\/.*/)
+  ovdpMod.addLoot(LootEntry.of('minecraft:chain').limitCount([2, 6]).when(c => c.randomChance(0.50)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:rotten_flesh').limitCount([3, 8]).when(c => c.randomChance(0.40)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:bone').limitCount([2, 5]).when(c => c.randomChance(0.40)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:soul_lantern').when(c => c.randomChance(0.15)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.06)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.15)))
+
+  // --- Family ovds (spiders): web/venom theme ---
+  var ovdsMod = event.addLootTableModifier(/overhauledstructures:chests\/ovds_loot_tables\/.*/)
+  ovdsMod.addLoot(LootEntry.of('minecraft:string').limitCount([4, 12]).when(c => c.randomChance(0.70)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:cobweb').limitCount([2, 6]).when(c => c.randomChance(0.45)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:spider_eye').limitCount([1, 4]).when(c => c.randomChance(0.40)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:fermented_spider_eye').when(c => c.randomChance(0.15)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:poisonous_potato').when(c => c.randomChance(0.08)))
+
   // --- Add small chance of a bed in Overworld chests (early QoL) ---
   event
     .addLootTypeModifier(LootType.CHEST)
@@ -1949,7 +2050,7 @@ LootJS.modifiers(event => {
   // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
   // Uses KubeJS @mod filter to match all items from these namespaces.
   // 2026-06-14: this @farmersdelight strip is registered AFTER VILLAGE_SEED_BOOST
-  // (~L1511), which adds the 4 FD village-farming seeds to village chests. LootJS
+  // (registered just above), which adds the 4 FD village-farming seeds to village chests. LootJS
   // removeLoot is a one-shot removeIf in registration order, so this (later) strip
   // was EATING those earlier-added seeds — villages lost their intended FD-dominant
   // seed economy. Strip FD FOODS (player-crafted by design) but EXEMPT the 4 village
@@ -1968,15 +2069,19 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .removeLoot('@pamhc')
+    // [2026-10-10] was '@pamhc' — no mod has that id, so Pam's items were never
+    // stripped. The installed Pam's HarvestCraft 2 mods are these four.
+    .removeLoot('@pamhc2crops')
+    .removeLoot('@pamhc2foodcore')
+    .removeLoot('@pamhc2foodextended')
+    .removeLoot('@pamhc2trees')
     .removeLoot(ItemFilter.custom(stripFDExceptVillageSeeds))  // was '@farmersdelight' — exempt the 4 FD village seeds (see note)
-    .removeLoot('@farmersrespite')
     .removeLoot('@brewinandchewin')
-    .removeLoot('@collectorsreap')
-    .removeLoot('@croptopia')
     .removeLoot('@culturaldelights')
     .removeLoot('@delightful')
     .removeLoot('@nethersdelight')
+    // ('@farmersrespite', '@collectorsreap' and '@croptopia' removed 2026-10-10:
+    //  none of the three mods is installed.)
 
   // --- Remove tier-gated mod items from Overworld chests ---
   // These mods inject items into vanilla loot tables but are AStages-gated,
@@ -2048,15 +2153,14 @@ LootJS.modifiers(event => {
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
   // =========================================================================
-  // Ocean structures (Monuments, Ruins, Shipwrecks, Buried Treasure) get
-  // T1-appropriate loot with token fragments (15-20% chance).
-  // Ocean Monuments get slightly better loot since they require underwater
-  // combat (Elder Guardians). Water-themed curio drops at ~10% chance.
-  // YUNG's Better Ocean Monuments handled in Section 4C above (T2 tokens).
+  // Ocean structures (Ruins, Shipwrecks, Buried Treasure) get T1-appropriate
+  // nautical loot and fishing gear. (The legacy token-fragment seeding is
+  // retired.) YUNG's Better Ocean Monuments gets the premium water curios at
+  // the end of this section; its diamond-horse-armor strip is in Section 4C.
   // =========================================================================
 
   // --- Vanilla Ocean Structures: Shipwrecks, Ocean Ruins, Buried Treasure ---
-  // T1 ocean loot: nautical supplies + token fragments (15% chance)
+  // T1 ocean loot: nautical supplies
   event
     .addLootTableModifier(
       'minecraft:chests/shipwreck_treasure',
@@ -2069,16 +2173,12 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([1, 2]).when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('minecraft:nautilus_shell').when(c => c.randomChance(0.08)))
 
-  // --- Vanilla Ocean Monument ---
-  // T1-T2 ocean loot: slightly better rewards for underwater combat challenge
-  // Note: diamonds already removed by Section 5 vanillaOverworldChests
-  // Note: YUNG's Better Ocean Monuments already handled in Section 4C (T2 tokens)
-  event
-    .addLootTableModifier('minecraft:chests/ocean_monument')
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('minecraft:prismarine_shard').limitCount([2, 5]).when(c => c.randomChance(0.25)))
-    .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([2, 4]).when(c => c.randomChance(0.20)))
-    .addLoot(LootEntry.of('minecraft:sponge').when(c => c.randomChance(0.10)))
+  // --- Vanilla Ocean Monument --- REMOVED 2026-10-10
+  // The modifier here targeted 'minecraft:chests/ocean_monument' (prismarine
+  // 25% / crystals 20% / sponge 10%). No such loot table exists: vanilla 1.20.1
+  // monuments have no chests, and neither a mod nor a pack datapack ships that
+  // id — it never ran. The real monument chest is YUNG's
+  // betteroceanmonuments:chests/upper_side_chamber (handled below + Section 4C).
 
   // --- Ocean structure curio drops: HEAVILY oceanic/fishing themed ---
   // Ocean structures should feel rewarding for aquatic exploration.
@@ -2090,8 +2190,8 @@ LootJS.modifiers(event => {
       'minecraft:chests/shipwreck_supply',
       'minecraft:chests/underwater_ruin_big',
       'minecraft:chests/underwater_ruin_small',
-      'minecraft:chests/buried_treasure',
-      'minecraft:chests/ocean_monument')
+      'minecraft:chests/buried_treasure')
+    // ('minecraft:chests/ocean_monument' removed 2026-10-10 — no such table)
     // Artifacts handled by Artifacts mod native GLM injection into these tables
     // Aquaculture fishing loot
     .addLoot(
@@ -2105,7 +2205,7 @@ LootJS.modifiers(event => {
     )
 
   // --- YUNG's Better Ocean Monuments: premium ocean loot ---
-  // Already has T2 tokens from Section 4C; heavily water-themed curios
+  // Heavily water-themed curios
   event
     .addLootTableModifier(/betteroceanmonuments:.*/)
     .addLoot(
@@ -2231,7 +2331,7 @@ LootJS.modifiers(event => {
   // observed double-accessory stacking. Cloud still spawns everywhere else
   // in the Overworld via the T1 broadcast; villages now get only these 11
   // items that are unique to the village pool.
-  var villageArtifactPool = [
+  var villageArtifactPool = relicAllowed([
     'artifacts:power_glove',
     'artifacts:feral_claws',
     'artifacts:cross_necklace',
@@ -2240,7 +2340,7 @@ LootJS.modifiers(event => {
     'artifacts:crystal_heart',
     'artifacts:obsidian_skull',
     'artifacts:night_vision_goggles',
-    'artifacts:drama_mask',
+    // ('artifacts:drama_mask' removed 2026-10-10 — not an item in Artifacts 9.5.16)
     'artifacts:universal_attractor',
     'artifacts:pickaxe_heater',
     // [2026-06-06] mage slate (operator directive): the pool skewed martial/utility.
@@ -2254,14 +2354,28 @@ LootJS.modifiers(event => {
     'irons_spellbooks:concentration_amulet',
     'ars_nouveau:amulet_of_mana_regen',
     'ars_nouveau:ring_of_lesser_discount'
-  ]
+  ])
   var villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
 
   // Modded village chest patterns — CTOV, VillagesAndPillages, etc. generate
   // their own custom villages whose loot tables aren't in the vanilla list.
   // Regex match catches any chest path containing "village" under these mods.
+  //
+  // [2026-10-10] Table regexes are FULL-MATCH (Section 1B). /^ctov:chests\//
+  // only matched an id that ends right after "chests/", i.e. none of CTOV's 12
+  // tables (ctov:chests/village/village_*): the sanitisation, the village
+  // artifact pool, the rotten-flesh strip, the QoL roll and the compass /
+  // backpack adds below never ran for CTOV villages. Completed with .* .
+  //
+  // The repurposed_structures and townstead patterns have the same defect and
+  // are deliberately LEFT AS WRITTEN (they still match nothing): Repurposed
+  // Structures' chests/villages/ tables include its Nether villages (crimson_*,
+  // warped_*), where the T2+ glyph / spell-book strips and the artifact filter
+  // below would remove the Nether's own T3 loot — whether those villages get
+  // the Overworld village treatment is a design call. Townstead ships no loot
+  // tables at all.
   var moddedVillagePatterns = [
-    /^ctov:chests\//,
+    /^ctov:chests\/.*/,
     /^villagesandpillages:.+/,
     /^repurposed_structures:chests\/villages\//,
     /^townstead:.*chests?\//,
@@ -2418,43 +2532,40 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
-  // SECTION 6B: VILLAGE QOL POOL — bed + magic, all 15 tables (addWeightedLoot)
+  // SECTION 6B: VILLAGE QOL ROLL — magic material, all 16 tables + modded
   // =========================================================================
-  // 2026-04-20 rewrite: previously used per-item
-  //   .addLoot(LootEntry.of(X).when(c => c.randomChance(P)))
-  // which tester confirmed silently no-ops (30 /loot give rolls, 0 beds
-  // against an expected ~6). `addWeightedLoot` is the proven-working pattern.
+  // Every village chest (the 16 vanilla tables + the modded patterns) gets ONE
+  // gated roll: 45/97 (~46.4%) of chests get one magic material, picked by
+  // weight — common ink 30 : source gem 15. Per chest that is
+  //     common ink  30/97 = 30.9%
+  //     source gem  15/97 = 15.5%
+  //     nothing     52/97 = 53.6%
+  // the rates the 2026-06-07 note below was holding.
   //
-  // Every village chest (all 15 + modded patterns) gets ONE weighted roll.
-  // 30% of rolls yield a bed, 25% yield magic material, 15% yield a copper
-  // spell book, 10% a novice spell book, 20% air (= nothing). villageHouseChests
-  // (5 tables) get three additional weighted pools from the earlier block
-  // (QoL flavor, starter tools, magic) so houses are richer by design.
-
-  // 2026-04-21: removed bed from this pool. House tables already include
-  // bed in their dedicated QoL flavor pool (villageHouseChests block
-  // earlier), so leaving bed here caused tester to see two beds in one
-  // house chest occasionally. This pool is now magic-materials-only and
-  // applies to all 15 tables — houses already get bed + other flavor
-  // from their richer 3-pool setup, non-houses (smith/butcher/tannery/etc.)
-  // get magic materials from here. Air slot gives ~40% of chests NO
-  // magic material (most chests have some magic material ~60%).
-  // [2026-06-07] spellbooks REMOVED from the pool (operator directive):
-  // copper (10/97 ~ 10.3%/chest) + novice (2/97) made spellbooks near-certain
-  // per village, and the class starter kits already cover mage entry. Air
-  // weight 40->52 holds ink/source-gem at their previous effective rates
-  // (30.9% / 15.5%) instead of silently inflating them (pick-one weights).
+  // History: 2026-04-20 this was a weighted pool with a bed, magic material,
+  // a copper and a novice spell book and an "air = nothing" slot; 2026-04-21
+  // the bed left (house tables have their own bed roll); 2026-06-07 the spell
+  // books left (operator directive — starter kits cover mage entry) and the
+  // air weight went 40 -> 52 to hold ink / source gem at 30.9% / 15.5%.
+  //
+  // [2026-10-10] The air slot never worked: `Item.of('minecraft:air')
+  // .withChance(52)` resolves to KubeJS's shared EMPTY OutputItem, whose chance
+  // is NaN, and LootJS turns a NaN chance into weight 1. The pool was really
+  // air 1 : ink 30 : gem 15, i.e. ~65% ink / ~33% source gem / ~2% nothing per
+  // village chest. The "nothing" share is now a randomChance gate in front of
+  // the pick (the same shape loot/lovely_pieces_loot.js uses), which also
+  // stops an EMPTY stack being pushed into the shared loot list.
+  var VILLAGE_QOL_SHARE = 45 / 97
   var villageQoLPool = [
-    Item.of('minecraft:air').withChance(52),
-    Item.of('irons_spellbooks:common_ink').withChance(30),
-    Item.of('ars_nouveau:source_gem').withChance(15)
+    LootEntry.of('irons_spellbooks:common_ink').withWeight(30),
+    LootEntry.of('ars_nouveau:source_gem').withWeight(15)
   ]
 
   villageChests.forEach(function(table) {
-    event.addLootTableModifier(table).addWeightedLoot(villageQoLPool)
+    event.addLootTableModifier(table).randomChance(VILLAGE_QOL_SHARE).addWeightedLoot(villageQoLPool)
   })
   moddedVillagePatterns.forEach(function(pattern) {
-    event.addLootTableModifier(pattern).addWeightedLoot(villageQoLPool)
+    event.addLootTableModifier(pattern).randomChance(VILLAGE_QOL_SHARE).addWeightedLoot(villageQoLPool)
   })
 
   // --- Nature's Compass + base Sophisticated Backpack — village chest adds ---
@@ -2529,8 +2640,15 @@ LootJS.modifiers(event => {
   var ISS_SPELLBOOK_CAP = 0.02
   // Per-tier scroll rate (uncapped, but tier-scaled).
   var TIER_SCROLL_RATE = { 1: 0.10, 2: 0.08, 3: 0.06, 4: 0.04 }
-  // Per-tier enchanted book rate (still uses minecraft:book + enchantWithLevels).
+  // Per-tier enchanted book LEVELS (minecraft:book + enchantWithLevels, 10% per
+  // marquee chest — registered by loot/zz_pack_enchanted_books.js, see applyMarquee).
   var TIER_BOOK_LEVELS = { 1: [5, 15], 2: [10, 20], 3: [15, 25], 4: [20, 30] }
+
+  // NOTE on the theme lists below: an id that is on RELIC_DENY (relics:
+  // magic_mirror, roller_skates, horse_flute, amphibian_boot, aqua_walker,
+  // midnight_robe, magma_walker, enders_hand, elytra_booster, space_dissector,
+  // chorus_inhibitor) is dropped by applyMarquee -> relicAllowed() before the
+  // per-item chance is computed; the theme's combined rate is unchanged.
 
   // T1 Magic theme (used by tome_tower, TotW tower, TotW ocean tower).
   var T1_MAGIC = [
@@ -2691,19 +2809,32 @@ LootJS.modifiers(event => {
   // opts.tier        — 1-4 (drives rate)
   // opts.scroll      — true to add tier-scaled ISS scroll (mage progression)
   // opts.spellbook   — ISS spellbook ID to add at 2% cap, or null
-  // opts.book        — true to add enchanted book at tier rate (10% default)
+  // opts.book        — true to add an enchanted book (10%, tier-scaled levels)
   // opts.strip       — array of item IDs to remove first
   function applyMarquee(tableRefs, opts) {
     var tables = (tableRefs instanceof Array) ? tableRefs : [tableRefs]
-    var perItem = TIER_THEMED_RATE[opts.tier] / opts.theme.length
+    var theme = relicAllowed(opts.theme)       // RELIC_DENY ids never enter a pool
+    var perItem = theme.length ? TIER_THEMED_RATE[opts.tier] / theme.length : 0
     var scrollHelper = (opts.tier <= 2) ? t1Scroll : t2Scroll
     var bookLevels = TIER_BOOK_LEVELS[opts.tier]
+    var hasStrip = !!(opts.strip && opts.strip.length)
     tables.forEach(function(table) {
+      // [2026-10-10] The enchanted book is QUEUED, not added here: it has to be
+      // registered after loot_overhaul.js's enchanted_book strips (Section 1).
+      // loot/zz_pack_enchanted_books.js registers one modifier per queued table.
+      if (opts.book) {
+        global.ICRAFT_MARQUEE_BOOKS.push({
+          table: table, minLevel: bookLevels[0], maxLevel: bookLevels[1], chance: 0.10
+        })
+      }
+      // A LootJS modifier with zero actions throws and takes every later
+      // modifier down with it — only open one if something goes into it.
+      if (!hasStrip && !theme.length && !opts.scroll && !opts.spellbook) return
       var mod = event.addLootTableModifier(table)
-      if (opts.strip) {
+      if (hasStrip) {
         opts.strip.forEach(function(item) { mod.removeLoot(item) })
       }
-      opts.theme.forEach(function(item) {
+      theme.forEach(function(item) {
         mod.addLoot(LootEntry.of(item).when(c => c.randomChance(perItem)))
       })
       if (opts.scroll) {
@@ -2711,13 +2842,6 @@ LootJS.modifiers(event => {
       }
       if (opts.spellbook) {
         mod.addLoot(LootEntry.of(opts.spellbook).when(c => c.randomChance(ISS_SPELLBOOK_CAP)))
-      }
-      if (opts.book) {
-        mod.addLoot(
-          LootEntry.of('minecraft:book')
-            .enchantWithLevels(UniformGenerator.between(bookLevels[0], bookLevels[1]), true)
-            .when(c => c.randomChance(0.10))
-        )
       }
     })
   }
@@ -2729,9 +2853,15 @@ LootJS.modifiers(event => {
   // === T1 marquees ===
   applyMarquee('apotheosis:chests/tome_tower',
     { theme: T1_MAGIC, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book', book: true })
+  // (totw_reworked is not a mod: Towers of the Wild: Reworked ships as the Paxi
+  //  datapacks Towers_Of_The_Wild_Reworked*.zip, which provide both tables.)
   applyMarquee(['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest'],
     { theme: T1_MAGIC, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book',
       book: true, strip: BOTANIA_T1_STRIP })
+  // NOTE (2026-10-10): this pattern matches NO table — Structory Towers' 49
+  // tables are structory_towers:basic/…, top/…, potions/…, horse_equipment, …
+  // (no "chests" in the path), so this marquee has never applied. Left as
+  // written: which of those tables are "the tower chest" is a design call.
   applyMarquee(/structory_towers:.*chests.*/,
     { theme: T1_GENERIC_EXPLORATION, tier: 1, book: true })
   applyMarquee(['minecraft:chests/buried_treasure',
@@ -2749,6 +2879,9 @@ LootJS.modifiers(event => {
   // === T2 marquees ===
   // Twilight Lich Tower (TBD exact table IDs — likely twilightforest:structures/lichtower/*).
   // Initial coverage is broad-pattern; verify in playtest.
+  // NOTE (2026-10-10): matches NO table — Twilight Forest has no structures/
+  // tables; its chest tables are twilightforest:chests/… (e.g. tower_room,
+  // tower_library). Still TBD.
   applyMarquee(/twilightforest:structures\/lichtower\/.*/,
     { theme: T2_ELDRITCH, tier: 2, book: true })
   // Aether dungeons (TBD exact table IDs — common pattern aether:chests/*).
@@ -2767,6 +2900,8 @@ LootJS.modifiers(event => {
                 'minecraft:chests/bastion_other'],
     { theme: T3_PIGLIN, tier: 3, book: true })
   // Undergarden ruins (TBD exact table IDs).
+  // NOTE (2026-10-10): matches NO table — the only Undergarden chest table is
+  // undergarden:chests/catacombs. Still TBD.
   applyMarquee(/undergarden:chests\/.*ruin.*/,
     { theme: T3_UNDERDARK, tier: 3, book: true })
 
@@ -2777,6 +2912,8 @@ LootJS.modifiers(event => {
                 'minecraft:chests/ancient_city_ice_box'],
     { theme: T4_SCULK, tier: 4, book: true })
   // The Abyss marquees (TBD exact table IDs).
+  // NOTE (2026-10-10): matches NO table — the installed The Abyss ships entity
+  // loot tables only (no theabyss:chests/…). Still TBD.
   applyMarquee(/theabyss:chests\/.*/,
     { theme: T4_ABYSSAL, tier: 4, book: true })
 
@@ -2887,7 +3024,7 @@ LootJS.modifiers(event => {
     event
       .addLootTypeModifier(LootType.CHEST)
       .anyDimension('blue_skies:everbright', 'blue_skies:everdawn',
-        'aether:the_aether', 'deep_aether:the_aether')
+        'aether:the_aether')
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.006)))
   })
 
@@ -2937,8 +3074,8 @@ LootJS.modifiers(event => {
     'twilightforest:entities/hydra',
     'cataclysm:entities/ignis',
     'aether:entities/slider',
-    'blue_skies:entities/summoner',
-    'alexscaves:entities/atlatitan'
+    'blue_skies:entities/summoner'
+    // ('alexscaves:entities/atlatitan' removed 2026-10-10 — Alex's Caves is not installed)
   ]
   t2BossPouchDrops.forEach(table => {
     event
@@ -2953,9 +3090,9 @@ LootJS.modifiers(event => {
   var t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
-    'cataclysm:entities/harbinger',
-    'deeperdarker:entities/shattered',
-    'alexscaves:entities/watcher'
+    'cataclysm:entities/the_harbinger',   // [2026-10-10] was cataclysm:entities/harbinger — no such table; the entity is cataclysm:the_harbinger
+    'deeperdarker:entities/shattered'
+    // ('alexscaves:entities/watcher' removed 2026-10-10 — Alex's Caves is not installed)
   ]
   var awakeningPool = [
     'rpgseteffects:altharion_awakening_artifact',
@@ -2985,8 +3122,9 @@ LootJS.modifiers(event => {
   // SECTION 8D: KEEBSZ BATTLE TOWER — 3-TIER FLOOR SYSTEM (REBUILT)
   // =========================================================================
   // Battle towers are combat gauntlets with escalating rewards.
-  // Floor 1-3: T1 starter loot (XP, common magic, source gems)
-  // Floor 4-6: T2 mid-tier (better XP, uncommon materials, potions)
+  // The real tables are keebsz:<biome>/floor1and2, 3and4, 5and6, 7and8, 9and10:
+  // Floor 1-2:  T1 starter loot (XP, common magic, source gems)
+  // Floor 3-6:  T2 mid-tier (better XP, uncommon materials, potions)
   // Floor 7-10: T3 endgame (rare materials, diamonds allowed, rare inks)
   // =========================================================================
 
@@ -3037,8 +3175,11 @@ LootJS.modifiers(event => {
       .when(c => c.randomChance(0.10))
   )
 
-  // --- Floor 7-10 (keebsz:*/floor[79]and[810]) ---
-  var keebszHigh = event.addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
+  // --- Floor 7-10 (keebsz:*/floor7and8 + floor9and10) ---
+  // [2026-10-10] regex was /keebsz:.*\/floor[79]and[810]/ — "[810]" is ONE
+  // character, and table regexes are full-match, so "floor9and10" never matched
+  // and the top two floors got none of this loot.
+  var keebszHigh = event.addLootTableModifier(/keebsz:.*\/floor(?:7and8|9and10)/)
   keebszHigh.addLoot(
     LootEntry.of('minecraft:experience_bottle').limitCount([3, 8])
       .when(c => c.randomChance(0.20))
@@ -3079,27 +3220,29 @@ LootJS.modifiers(event => {
   // entries in loot_overhaul.js (Naga -> Tempest, Lich -> Soulrender, etc.).
   // Entity loot tables (entities/<mob>) are unaffected — boss allocations
   // keep working.
+  // [2026-10-10] regex was /chests\// — table regexes are full-match, so it
+  // matched nothing and this strip never ran. /.*chests\/.*/ is "any table
+  // whose id contains chests/".
   event
-    .addLootTableModifier(/chests\//)
+    .addLootTableModifier(/.*chests\/.*/)
     .removeLoot('@simplyswords')
 
   // event.enableLogging()
 
+  // (Banner rewritten 2026-10-10: the old one advertised features that were
+  //  removed long ago — token injection, a global enchanted-book removal, an
+  //  @artifacts/@relics strip, per-tower "rebuilt" pools, village spell books.)
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
-  console.log('  - Global artifact strip: @artifacts, @celestial_artifacts, @relics removed from ALL chests')
-  console.log('  - Tiered artifact re-injection: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG, T4(16%) End/DD/Abyss')
-  console.log('  - Tiered pools now include: Ars Nouveau books + source gems, Iron\'s Spellbooks inks')
-  console.log('  - Global enchanted book removal + tier-scaled re-add')
-  console.log('  - Structure token injection: 22+ mods covered')
-  console.log('  - Vanilla diamond removal: 16 OW chest tables')
-  console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
-  console.log('  - Village magic access: common_ink (20%), copper_spell_book (5%), novice_spell_book (8%), source_gem (15%)')
-  console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
-  console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
-  console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
-  console.log('  - TotW rebuilt: guaranteed source_gem + ink, 15% novice book, 10% copper book, 8% curios')
-  console.log('  - Waystone Towers rebuilt: 20% novice book, 15% copper book, 12% source gems')
-  console.log('  - Structory Towers rebuilt: 10% source_gem, 10% ink, 8% novice book, 8% curios')
-  console.log('  - Keebsz 3-tier floors: F1-3 T1 starter, F4-6 T2 mid, F7-10 T3 endgame')
-  console.log('  - Boosted magic materials: inks, source gems in structure chests')
+  console.log('  - Global chest strip: @ars_nouveau, irons_spellbooks (scrolls exempt), @moreartifacts, saplings, the denied relics')
+  console.log('  - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG, T4(16%) End/DD/Abyss (RELIC_DENY filtered)')
+  console.log('  - Tiered by dimension: Ars glyphs + spell books, Iron\'s Spellbooks books + inks, class-artifact relics')
+  console.log('  - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)')
+  console.log('  - Diamonds + diamond gear stripped from every chest in the Overworld and the T2 dimensions')
+  console.log('  - Overworld clutter: horse armor / spider eyes / rotten flesh / wood / stone removed; gunpowder, string, bone kept 50%, name tags 40%')
+  console.log('  - Overworld food: listed non-meat foods kept 20% per stack, modded foods removed; village food + seed boost on top')
+  console.log('  - Village chests: sanitised, curated artifact pool (1% per item), QoL roll (ink 30.9% / source gem 15.5%), compass 5%, backpack 4%')
+  console.log('  - Ocean chests: prismarine, nautilus shell, fishing gear, heart of the sea')
+  console.log('  - Marquee structures: themed pool per tier (7 / 8.4 / 9.8 / 11.2%) + scrolls + capped spell books')
+  console.log('  - Epic Dungeons: tier-breaker strip, T1 magic kit, family theme loot')
+  console.log('  - Keebsz floors: F1-2 starter, F3-6 mid, F7-10 endgame')
 })

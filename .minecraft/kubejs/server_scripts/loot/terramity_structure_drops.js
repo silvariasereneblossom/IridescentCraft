@@ -19,8 +19,9 @@
 //   Nyxium (knight + cosmic-purple) -> T4 infested lab / ancient outcrop
 //
 // 8 EPIC curios (audit Phase 4.1 closure) — recipes were stripped 2026-04-27
-// but no drop allocation existed; they were creative-only. Now placed in
-// thematically-matched Terramity structures at T3 (3 curios) or T4 (5 curios).
+// but no drop allocation existed; they were creative-only. Now: 3 curios in
+// the two Terramity Nether dungeons (T3), 5 on T4 bosses. None is obtainable
+// in the Overworld (see the 2026-10-10 note in the EPIC curios section).
 //
 // Drop rates kept modest (5-15%) so structure runs feel rewarding without
 // flooding the inventory. Stacks well with chest re-roll mechanics from
@@ -68,25 +69,31 @@ LootJS.modifiers(event => {
   // Cataclysm Netherite Monstrosity — the metallic-knight T4 endgame boss
   // closest in theme to "nyxium knight greatsword." Drop rate matched to
   // planet_buster's ender_dragon allocation (0.15 in terramity_boss_drops.js).
-  event
-    .addEntityLootModifier('cataclysm:netherite_monstrosity')
+  global.icraftEntityMod(event, 'cataclysm:netherite_monstrosity')
     .addLoot(LootEntry.of('terramity:nyxium_greatsword').when(c => c.randomChance(0.15)))
 
   // =========================================================================
   // EPIC curios from audit Phase 4.1 — themed by aesthetic
   // =========================================================================
-  // T3 holy/luck curios -> Reverium + facility tables
+  // T3 holy/luck curios -> the two Terramity NETHER dungeons.
+  //
+  // 2026-10-10 (operator decision: "droppable, late-tier only"): these three
+  // sat in subterranean_shrine / catacombs / overgrown_facility. All three are
+  // OVERWORLD structures (terramity's has_structure tags: #minecraft:is_overworld,
+  // #minecraft:is_taiga, forest/taiga/mountain/plains), so a T1 player could
+  // loot an EPIC curio by walking. The only Terramity structures that generate
+  // in a T3+ dimension are chthonic_dungeon and chthonian_breach
+  // (#minecraft:is_nether; the Nether is tier_3-staged), so that is where they
+  // go. Same per-table chances as before; the holy theme no longer matches the
+  // dungeon, the tier does.
   event
-    .addLootTableModifier('terramity:chests/subterranean_shrine_loot')
+    .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:sacred_speed_bracelets').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('terramity:angel_feather').when(c => c.randomChance(0.10)))
-
-  event
-    .addLootTableModifier('terramity:chests/catacombs_loot')
     .addLoot(LootEntry.of('terramity:angel_feather').when(c => c.randomChance(0.08)))
 
   event
-    .addLootTableModifier('terramity:chests/overgrown_facility_loot')
+    .addLootTableModifier('terramity:chests/chthonian_breach_loot')
+    .addLoot(LootEntry.of('terramity:angel_feather').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:fortunes_favor').when(c => c.randomChance(0.10)))
 
   // T4 cosmic/void/dragon curios -> T4 boss drops (same rationale as the
@@ -94,17 +101,14 @@ LootJS.modifiers(event => {
   // ancient_outcrop which are Overworld despite their late-game loot
   // content, so T1 players could reach them by dimension alone. Each
   // mapped to a T4 boss with thematic fit.)
-  event
-    .addEntityLootModifier('cataclysm:ender_guardian')
+  global.icraftEntityMod(event, 'cataclysm:ender_guardian')
     .addLoot(LootEntry.of('terramity:antimatter_pacemaker').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:null_scarf').when(c => c.randomChance(0.12)))
 
-  event
-    .addEntityLootModifier('cataclysm:netherite_monstrosity')
+  global.icraftEntityMod(event, 'cataclysm:netherite_monstrosity')
     .addLoot(LootEntry.of('terramity:nyxs_necklace').when(c => c.randomChance(0.10)))
 
-  event
-    .addEntityLootModifier('minecraft:ender_dragon')
+  global.icraftEntityMod(event, 'minecraft:ender_dragon')
     .addLoot(LootEntry.of('terramity:antiprism').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:dragon_band').when(c => c.randomChance(0.12)))
 

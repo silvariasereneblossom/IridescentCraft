@@ -2,9 +2,12 @@
 // TMB PLAIN-BOW THEME EFFECTS — wire effects onto the bare ModBowItem bows
 // =============================================================================
 // Audit (tmb-ss-unique-effect-audit.md): ~30 TMB bows ship a dedicated *Bow/*Arrow
-// class with a mod-native theme effect; SIX fall back to the generic ModBowItem
+// class with a mod-native theme effect; a few fall back to the generic ModBowItem
 // with NO behavior. Operator (2026-06-03): "buff/wire effects that match the
-// item's theme." These six get a modest, theme-matched on-hit effect.
+// item's theme." These five get a modest, theme-matched on-hit effect.
+// (Was six: `arcforge` — Glowing 6s + Weakness 4s — was dropped 2026-10-10
+// because Too Many Bows 4.0.1 never registers that item; see
+// unique_itemset_registry.js.)
 //
 // Keyed off the `icraft_uniq_bow` arrow tag set in unique_tier_buff.js (the same
 // spawn tag the buff uses), read off the LivingHurtEvent's direct entity (arrow).
@@ -15,7 +18,6 @@
 //   cyroheart_bow   (cryo)    -> Slowness II 5s + freeze ramp (+120 frozen ticks)
 //   necro_flame_bow (necro)   -> Wither 4s + ignite 4s
 //   aethers_call    (sky/holy)-> Levitation 2s on target + heal shooter 1 heart
-//   arcforge        (arc)     -> Glowing 6s + Weakness 4s (arc disrupt)
 //   demons_grasp    (demon)   -> Weakness 5s + yank the target toward the shooter
 // =============================================================================
 
@@ -56,9 +58,6 @@ try {
         eff(victim, MobEffects.LEVITATION, 2, 0)
         try { if (attacker && (attacker instanceof LivingEntityClass)) attacker.heal(2.0) } catch (e) {}
 
-      } else if (bow === 'too_many_bows:arcforge') {
-        eff(victim, MobEffects.GLOWING, 6, 0); eff(victim, MobEffects.WEAKNESS, 4, 0)
-
       } else if (bow === 'too_many_bows:demons_grasp') {
         eff(victim, MobEffects.WEAKNESS, 5, 0)
         try {
@@ -77,7 +76,7 @@ try {
       console.warn('[tmb_plain_bow_effects] handler threw: ' + e)
     }
   })
-  console.log('[tmb_plain_bow_effects] wired theme effects for 6 plain TMB bows')
+  console.log('[tmb_plain_bow_effects] wired theme effects for 5 plain TMB bows')
 } catch (e) {
   console.error('[tmb_plain_bow_effects] init failed: ' + e)
 }

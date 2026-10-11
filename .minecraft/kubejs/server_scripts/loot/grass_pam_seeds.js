@@ -86,11 +86,23 @@ const GRASS_BLOCKS = ['minecraft:grass', 'minecraft:tall_grass',
 const PER_SEED_CHANCE = 0.00072
 
 LootJS.modifiers(event => {
+  // [2026-10-10] ONE gated roll + ONE uniform pick per grass break.
+  // This used to be 97 independent addLoot entries per block — 97 random rolls
+  // (and 97 condition objects walked) on every grass / fern break, the most
+  // common block break in the game. Same result with two rolls:
+  //   gate  = 97 * 0.00072 = 6.984%  -> the break yields a Pam seed at all
+  //   pick  = uniform over the 97 seeds (LootEntry weight defaults to 1)
+  // Per-seed rate is unchanged (0.06984 / 97 = 0.00072) and so is the expected
+  // number of seeds per break (0.06984). The only difference: a single break
+  // can no longer drop two different Pam seeds at once (it did in ~0.23% of
+  // breaks), which is why "any seed" moves from 6.75% to 6.98%.
+  // RHINO-SAFETY: var (closure-local in a LootJS.modifiers callback).
+  var totalChance = PAM_SEEDS.length * PER_SEED_CHANCE
+  var seedPool = PAM_SEEDS.map(seedId => LootEntry.of(seedId))
   GRASS_BLOCKS.forEach(blockId => {
-    var mod = event.addBlockLootModifier(blockId)
-    PAM_SEEDS.forEach(seedId => {
-      mod.addLoot(LootEntry.of(seedId).when(c => c.randomChance(PER_SEED_CHANCE)))
-    })
+    event.addBlockLootModifier(blockId)
+      .randomChance(totalChance)
+      .addWeightedLoot(seedPool)
   })
   console.log('[grass_pam_seeds] Pam HC2 seeds added to ' + GRASS_BLOCKS.length +
               ' grass blocks (' + PAM_SEEDS.length + ' seeds, ~7% total per break)')

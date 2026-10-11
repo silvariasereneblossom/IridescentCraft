@@ -45,7 +45,8 @@ ServerEvents.recipes(event => {
   // A.3: Create mechanical crafting — same items, different recipe type
   event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:diamond' })
   event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:netherite_ingot' })
-  event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:elytra' })
+  // (elytra: tier_gated_recipes.js Section G removes EVERY recipe that outputs
+  //  minecraft:elytra, whatever its type — see F.3)
 
   // A.4: Create sequenced assembly leaks
   event.remove({ type: 'create:sequenced_assembly', output: 'minecraft:diamond' })
@@ -86,19 +87,17 @@ ServerEvents.recipes(event => {
   // C.1: Mekanism enriching — prevent enriching gated ores into ingots
   // (Mek machines need osmium = T3, but if someone transmutes 1 osmium early...)
   event.remove({ type: 'mekanism:enriching', output: 'minecraft:diamond' })
-  event.remove({ type: 'mekanism:enriching', output: 'minecraft:diamond' })
-  event.remove({ type: 'mekanism:enriching', output: 'minecraft:emerald' })
   event.remove({ type: 'mekanism:enriching', output: 'minecraft:emerald' })
 
   // C.2: Mekanism combining — additional ore fabrication blocks
   event.remove({ type: 'mekanism:combining', output: 'minecraft:emerald_ore' })
   event.remove({ type: 'mekanism:combining', output: 'minecraft:deepslate_emerald_ore' })
 
-  // C.3: Mekanism injecting/purifying — 3x/5x ore processing for gated ores
-  // These don't produce the ore directly but could multiply drops.
-  // The machine tier gate (osmium) handles this mostly, but belt-and-suspenders:
-  event.remove({ type: 'mekanism:purifying', output: 'mekanism:clump_diamond' })
-  event.remove({ type: 'mekanism:injecting', output: 'mekanism:shard_diamond' })
+  // C.3: Mekanism injecting/purifying — nothing to remove. The two lines that
+  // were here targeted `mekanism:clump_diamond` / `mekanism:shard_diamond`;
+  // Mekanism has no diamond clump or shard (diamond is not part of its ore-
+  // processing chain: only dust_diamond and enriched_diamond exist), so they
+  // matched no recipe. Removed 2026-10-10.
 
 
   // ═══ SECTION D: INDUSTRIAL FOREGOING LEAKS ═══
@@ -160,10 +159,13 @@ ServerEvents.recipes(event => {
   // Vanilla smelting should already be gate-safe, but catch modded furnace variants
   event.remove({ type: 'minecraft:blasting', output: 'minecraft:netherite_scrap', id: /^(?!icraft:)/ })
 
-  // F.3: Elytra from any source (already in tier_gated_recipes.js G, but ensure
-  // no cross-mod recipe sneaks one in via a different recipe type)
-  event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:elytra' })
-  event.remove({ type: 'create:sequenced_assembly', output: 'minecraft:elytra' })
+  // F.3: Elytra from any source — handled in tier_gated_recipes.js Section G:
+  //   event.remove({ output: 'minecraft:elytra' })
+  // That filter has no type restriction, so it already covers every recipe type
+  // (KubeJS removals only flag datapack recipes and do not depend on script
+  // order). The three type-specific elytra removals that were in this file
+  // (create:mechanical_crafting twice, create:sequenced_assembly once) were
+  // strict subsets of it and were removed 2026-10-10.
 
   // F.4: Nether Star fabrication (supplementing tier_gated_recipes.js G)
   event.remove({ type: 'create:sequenced_assembly', output: 'minecraft:nether_star' })
@@ -401,18 +403,16 @@ ServerEvents.recipes(event => {
 
   // ═══ SECTION J: MEKANISM TOOL & ARMOR REMOVAL ═══
   // Remove Atomic Disassembler and Meka-Tool (overpowered multi-tools).
-  // Remove Refined Obsidian armor set (trivializes progression).
   // MekaSuit recipes are KEPT — they feed into MekaSuit Mk2 progression.
 
   // J.1: Multi-tools
   event.remove({ id: 'mekanism:atomic_disassembler' })
   event.remove({ id: 'mekanism:meka_tool' })
 
-  // J.2: Refined Obsidian Armor
-  event.remove({ id: 'mekanism:refined_obsidian_helmet' })
-  event.remove({ id: 'mekanism:refined_obsidian_chestplate' })
-  event.remove({ id: 'mekanism:refined_obsidian_leggings' })
-  event.remove({ id: 'mekanism:refined_obsidian_boots' })
+  // J.2: Refined Obsidian Armor — nothing to remove. That armor belongs to
+  // Mekanism: Tools (recipe ids mekanismtools:…), which is not installed; the
+  // four `mekanism:refined_obsidian_*` recipe ids that were removed here do not
+  // exist. Lines removed 2026-10-10.
 
   // J.3: Cataclysm Mechanical Fusion Anvil — design decision (locked-in #2,
   // 2026-04-27): merge with our existing void_forge/infernal_forge crafting
@@ -429,28 +429,17 @@ ServerEvents.recipes(event => {
   // Custom rings replace them as boss/structure drops.
   // Also removes the Arcane Workbench recipe (ring crafting station).
 
-  // K.1: Bulk remove all shaped ring recipes from the mod
-  event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })
-
-  // K.2: Catch any remaining ring recipes (shapeless, special, etc.)
+  // K.1 – K.3: remove EVERY recipe that outputs an Abyss ring.
+  // One filter does it: a regex output filter matches any output item whose id
+  // CONTAINS the pattern (KubeJS RegExIngredient.test uses find()), with no
+  // restriction on mod or recipe type.
+  //   - the old K.1 (same regex, restricted to mod 'theabyss' + shaped crafting)
+  //     and
+  //   - the old K.3 (29 literal `theabyss:ring_of_*` ids, each of which the regex
+  //     matches)
+  // were strict subsets of it and were removed 2026-10-10; behaviour is
+  // identical.
   event.remove({ output: /theabyss:ring_/ })
-
-  // K.3: Individual ring removal belt-and-suspenders (in case regex misses any)
-  // 2026-10-10: 3 stale ids corrected against the item registry —
-  // ring_of_enderchest -> ring_of_ender_chest, ring_of_pocket ->
-  // ring_of_pocket_box, ring_of_regen -> ring_of_reg.
-  ;[
-    'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
-    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghosts',
-    'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
-    'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
-    'theabyss:ring_of_electro', 'theabyss:ring_of_ender_chest', 'theabyss:ring_of_fangs',
-    'theabyss:ring_of_firestorm', 'theabyss:ring_of_firestrike', 'theabyss:ring_of_firework',
-    'theabyss:ring_of_home', 'theabyss:ring_of_invisibility', 'theabyss:ring_of_jugger',
-    'theabyss:ring_of_nature', 'theabyss:ring_of_nightblade', 'theabyss:ring_of_ocean',
-    'theabyss:ring_of_pocket_box', 'theabyss:ring_of_reg', 'theabyss:ring_of_seeker',
-    'theabyss:ring_of_telekinetic', 'theabyss:ring_of_fart',
-  ].forEach(id => event.remove({ output: id }))
 
   // K.4: Remove Arcane Workbench recipe (ring crafting station — no longer needed)
   event.remove({ output: 'theabyss:arcane_workbench' })

@@ -34,6 +34,14 @@ LootJS.modifiers(event => {
   // =========================================================================
   // Rings of Shadows, Phantom, Embers, and Frost drop from general
   // Abyss structure chests at 15% each.
+  //
+  // NOTE (2026-10-10): neither modifier in this section matches any table, so
+  // these five rings currently have NO source. (1) The installed The Abyss
+  // (TATOS 1.0.5_beta) ships entity loot tables only — there is no
+  // theabyss:chests/… table. (2) Even if there were, LootJS table regexes are
+  // full-match, so both patterns would need a trailing .* . Left as written:
+  // which real tables its structure chests roll is unknown, so where the
+  // rings should come from is an open question.
 
   event
     .addLootTableModifier(/theabyss:chests\//)
@@ -54,19 +62,16 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // Ring of the Knight — drops from ice_knight boss (25%)
-  event
-    .addEntityLootModifier('theabyss:ice_knight')
+  global.icraftEntityMod(event, 'theabyss:ice_knight')
     .addLoot(LootEntry.of('kubejs:ring_of_the_knight').when(c => c.randomChance(0.25)))
 
   // Ring of Dark Pact — drops from nightblade/shadow-type boss (20%)
   // Uses soul_guard as the nightblade-type boss
-  event
-    .addEntityLootModifier('theabyss:soul_guard')
+  global.icraftEntityMod(event, 'theabyss:soul_guard')
     .addLoot(LootEntry.of('kubejs:ring_of_dark_pact').when(c => c.randomChance(0.20)))
 
   // Ring of Unorithe — drops from final/hardest Abyss boss (15%)
-  event
-    .addEntityLootModifier('theabyss:guard')
+  global.icraftEntityMod(event, 'theabyss:guard')
     .addLoot(LootEntry.of('kubejs:ring_of_unorithe').when(c => c.randomChance(0.15)))
 
 
@@ -85,15 +90,13 @@ LootJS.modifiers(event => {
   // SECTION 4: UNORITHE ARMOR SET — Higher-tier Abyss bosses
   // =========================================================================
 
-  event
-    .addEntityLootModifier('theabyss:soul_guard')
+  global.icraftEntityMod(event, 'theabyss:soul_guard')
     .addLoot(LootEntry.of('theabyss:unorithe_armor_helmet').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_chestplate').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_leggings').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_boots').when(c => c.randomChance(0.15)))
 
-  event
-    .addEntityLootModifier('theabyss:guard')
+  global.icraftEntityMod(event, 'theabyss:guard')
     .addLoot(LootEntry.of('theabyss:unorithe_armor_helmet').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_chestplate').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_leggings').when(c => c.randomChance(0.12)))

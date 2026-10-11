@@ -15,7 +15,7 @@
 // TIER SOURCE: each item's tier = the tier of the boss it drops from (operator:
 // "tier them across all 4 tiers"). SS uniques T2-T4 keep their EXISTING boss homes
 // (loot_overhaul.js §1 still drops those — addDrop:false here, tier recorded only
-// for the buff); SS T1 is NEW (addDrop:true). All 35 TMB bows are NEW boss drops.
+// for the buff); SS T1 is NEW (addDrop:true). All 34 TMB bows are NEW boss drops.
 //
 // BUFF LADDER (operator: "Steeper T1+10 / T2+20 / T3+30 / T4+40%").
 //
@@ -23,6 +23,11 @@
 // models). TMB classes with NO registered item (icicle_javelin / cursed_flame_bow
 // / sonic_boom_bow / beacon_beam_bow) are EXCLUDED — they are not obtainable items.
 // cursed_stone is a thrown special item (no pulling frames) → not a bow, excluded.
+// [2026-10-10] `too_many_bows:arcforge` removed: Too Many Bows 4.0.1 ships a model
+// and a lang key for it but never REGISTERS the item (its ItemRegistry has 34
+// bows, no arcforge) — a model in the jar is not proof of an item. The entry was
+// the "Invalid ingredient for filter: too_many_bows:arcforge" boot warning and
+// an empty drop on Enchanter Merlin.
 // =============================================================================
 
 global.ICRAFT_TIER_DMG_MULT = { 1: 1.10, 2: 1.20, 3: 1.30, 4: 1.40 }
@@ -95,7 +100,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
 
   // ===========================================================================
   // TOO MANY BOWS (ranged) — buff applies to the fired arrow (tagged at spawn).
-  // ALL boss-exclusive NEW drops (addDrop:true). 35 jar-verified bows.
+  // ALL boss-exclusive NEW drops (addDrop:true). 34 registered bows.
   // ===========================================================================
 
   // ---- T1 ----
@@ -105,7 +110,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:flame_bow':       { tier: 1, kind: 'bow', boss: 'mowziesmobs:umvuthi',             addDrop: true },
   'too_many_bows:cyroheart_bow':   { tier: 1, kind: 'bow', boss: 'mowziesmobs:frostmaw',            addDrop: true },
   'too_many_bows:emerald_sage_bow':{ tier: 1, kind: 'bow', boss: 'mowziesmobs:sculptor',            addDrop: true },
-  'too_many_bows:arcforge':        { tier: 1, kind: 'bow', boss: 'terramity:enchanter_merlin',      addDrop: true },
+  // ('too_many_bows:arcforge' on terramity:enchanter_merlin removed — not a registered item, see header)
   'too_many_bows:verdant_viper':   { tier: 1, kind: 'bow', boss: 'mowziesmobs:naga',                addDrop: true },
 
   // ---- T2 ----

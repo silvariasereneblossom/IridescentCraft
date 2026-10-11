@@ -11,12 +11,18 @@
 // Named zz_ so it loads LAST — its removeLoot is registered after every other
 // script's addLoot, so it applies last per table. Reads global.ICRAFT_TMB_BOWS
 // (unique_itemset_registry.js) lazily inside the LootJS modifier callback.
+//
+// [2026-10-10] The table filter was /chests\//. LootJS table regexes are
+// FULL-MATCH (ResourceLocationFilter.ByPattern.test == Pattern.matcher(id)
+// .matches(), decompiled 2.13.1), so that pattern matched no table at all and
+// this insurance strip had never run. /.*chests\/.*/ is "any table whose id
+// contains chests/".
 // =============================================================================
 
 LootJS.modifiers(event => {
   var bows = global.ICRAFT_TMB_BOWS || []
   if (!bows.length) { console.warn('[zz_unique_chest_strip] no bow list — nothing stripped'); return }
-  var m = event.addLootTableModifier(/chests\//)
+  var m = event.addLootTableModifier(/.*chests\/.*/)
   bows.forEach(b => m.removeLoot(b))
   console.log('[zz_unique_chest_strip] insurance strip armed for ' + bows.length
     + ' TMB bows across all chests/ tables (boss-exclusive)')
