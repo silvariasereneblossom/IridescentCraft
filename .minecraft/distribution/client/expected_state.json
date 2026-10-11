@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "bacf843c",
+    "generated_from":  "15c254ff",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5843,6 +5843,10 @@
                                                                    "sha256":  "09b213f31cf140b770ddb5737e34a9b3d59595fc8be0dc94662f832eb37ef055",
                                                                    "size":  32277
                                                                },
+                  "kubejs/assets/ars_nouveau/lang/en_us.json":  {
+                                                                    "sha256":  "56dabd8df93ec7a8ef69fd0fa81dfc8f648bbbd05381585f8018dd462ab89a07",
+                                                                    "size":  58
+                                                                },
                   "kubejs/assets/cataclysm/lang/en_us.json":  {
                                                                   "sha256":  "d2cf3e34a6860ddbcd86c8a381c5d1bc35843fa60221404fd0b6f633f093bbc3",
                                                                   "size":  209
@@ -7092,8 +7096,8 @@
                                                                                   "size":  397
                                                                               },
                   "kubejs/server_scripts/loot/abyss_boss_loot.js":  {
-                                                                        "sha256":  "8ec7c9e7bee95a5cd8375fd8bed294701198a6586b330207966f558275213221",
-                                                                        "size":  6261
+                                                                        "sha256":  "253982fda6c695335746b69610c0fbf704d571f6886f041ee16521f92c872055",
+                                                                        "size":  6790
                                                                     },
                   "kubejs/server_scripts/loot/alexsmobs_drops.js":  {
                                                                         "sha256":  "0d24345b2b74590093203de3279dc66dde9c6439de780bfeb07bc06810b7318f",
@@ -7156,8 +7160,8 @@
                                                                       "size":  37536
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "f3025a234ae5f6cd6ef3fc2e768cdea0d7490a5d9e22b1ea19f747fdc9b2251d",
-                                                                        "size":  172028
+                                                                        "sha256":  "7334b7a5791c3919bc04667610f6e9c8d4cba373996ee5bfa119f4eae9203a9c",
+                                                                        "size":  172775
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "395df05336a0f74194780e7d5788b0db6ab1e1415c74f01229db9b75c52d109f",
@@ -7192,8 +7196,8 @@
                                                                              "size":  3677
                                                                          },
                   "kubejs/server_scripts/loot/terramity_structure_drops.js":  {
-                                                                                  "sha256":  "448b703cbb39810c317ccd0f81b5145f8e832fc4fa3a6688d0bfcbb2bd718c87",
-                                                                                  "size":  9648
+                                                                                  "sha256":  "2d7c5e0a1840d692f75c77d74be0046a184e852506c49c0fd68b60191b1fdfb4",
+                                                                                  "size":  11609
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
                                                                               "sha256":  "9fe56481ff9c54e9d072fec1b833182cd55451b92444382df6f8956b9df7f7c2",
@@ -8396,7 +8400,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "a07729776325de60a40cd194806eebc5bb34a7f1e3ececca5598a774528281d5",
+                                                                         "sha256":  "47482d8162e8e4e1f79a5440a745a70e63be8e9dcec233c7e455b9d79082750d",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {
@@ -8564,7 +8568,7 @@
                                                             "size":  400
                                                         },
                   "mods/.index/linear-experience.pw.toml":  {
-                                                                "sha256":  "70950679a3e23ea0f459a652a1a7f08b8c855be5c4c66c4dd9dfebe29f845de0",
+                                                                "sha256":  "ea82dbbe2ba7c2bd00d9098d6a5c0a35cfdfe5d8fd0a309259a043df01f4c343",
                                                                 "size":  374
                                                             },
                   "mods/.index/lionfish-api.pw.toml":  {
