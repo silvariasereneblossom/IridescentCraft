@@ -51,57 +51,79 @@ ItemEvents.rightClicked(event => {
 
   if (item.id !== 'kubejs:compass_of_return') return
 
+  let use = () => {
+    let data = player.persistentData
+
+    // Check cooldown. The clock is the world game time (icraft.core.now -> level.time):
+    // it keeps counting across restarts, while server.tickCount restarts at 0 on every
+    // boot and would leave a saved timestamp in the future.
+    let core = global.icraft && global.icraft.core
+    let now = core ? core.now(player) : 0
+    let lastUse = data.getLong('icraft_compass_last_use') || 0
+    let elapsed = now - lastUse
+
+    // A saved time ahead of the clock (elapsed < 0) counts as expired.
+    if (lastUse > 0 && elapsed >= 0 && elapsed < COMPASS_COOLDOWN_TICKS) {
+      let remaining = Math.ceil((COMPASS_COOLDOWN_TICKS - elapsed) / 20)
+      let minutes = Math.floor(remaining / 60)
+      let seconds = remaining % 60
+      player.tell('\u00a7c[Compass of Return]\u00a77 Recharging... ' + minutes + 'm ' + seconds + 's remaining')
+      return
+    }
+
+    // Check for stored bed position
+    let bedX = data.getInt('icraft_bed_x')
+    let bedY = data.getInt('icraft_bed_y')
+    let bedZ = data.getInt('icraft_bed_z')
+    let bedDim = data.getString('icraft_bed_dim')
+
+    if (!bedDim || bedDim === '') {
+      player.tell('\u00a7e[Compass of Return]\u00a77 You have no bed to return to. Sleep in a bed first.')
+      return
+    }
+
+    // Play departure effects
+    let name = player.username
+    player.server.runCommandSilent(
+      `playsound minecraft:entity.enderman.teleport player ${name} ~ ~ ~ 1 0.8`
+    )
+
+    // Teleport (handles cross-dimension). runCommandSilent returns 0 instead of throwing
+    // when the command fails, so check it before charging the cooldown.
+    let moved = player.server.runCommandSilent(
+      `execute in ${bedDim} run tp ${name} ${bedX} ${bedY + 1} ${bedZ}`
+    )
+    if (!(moved > 0)) {
+      console.warn('[Compass of Return] teleport command failed for ' + name + ' -> ' + bedDim + ' ' + bedX + ' ' + (bedY + 1) + ' ' + bedZ)
+      player.tell('\u00a7c[Compass of Return]\u00a77 The needle spins and settles on nothing. Sleep in a bed again.')
+      return
+    }
+
+    player.server.runCommandSilent(
+      `effect give ${name} minecraft:blindness 2 0 true`
+    )
+
+    // Play arrival sound at destination
+    player.server.runCommandSilent(
+      `execute in ${bedDim} run playsound minecraft:block.respawn_anchor.set_spawn player ${name} ${bedX} ${bedY} ${bedZ} 1 1.2`
+    )
+
+    // Set cooldown
+    data.putLong('icraft_compass_last_use', now)
+
+    player.tell('\u00a79[Compass of Return]\u00a77 The needle guides you home.')
+  }
+
+  try {
+    use()
+  } catch (e) {
+    console.error('[Compass of Return] use failed: ' + e)
+  }
+
+  // LAST, and outside the try: event.cancel() works by throwing (EventExit). Until
+  // 2026-10-11 it was the first statement after the item check, so nothing below it
+  // ever ran and the compass never teleported anyone.
   event.cancel()
-
-  let data = player.persistentData
-
-  // Check cooldown
-  let lastUse = data.getLong('icraft_compass_last_use') || 0
-  let currentTick = player.server.tickCount
-  let elapsed = currentTick - lastUse
-
-  if (elapsed < COMPASS_COOLDOWN_TICKS && lastUse > 0) {
-    let remaining = Math.ceil((COMPASS_COOLDOWN_TICKS - elapsed) / 20)
-    let minutes = Math.floor(remaining / 60)
-    let seconds = remaining % 60
-    player.tell('\u00a7c[Compass of Return]\u00a77 Recharging... ' + minutes + 'm ' + seconds + 's remaining')
-    return
-  }
-
-  // Check for stored bed position
-  let bedX = data.getInt('icraft_bed_x')
-  let bedY = data.getInt('icraft_bed_y')
-  let bedZ = data.getInt('icraft_bed_z')
-  let bedDim = data.getString('icraft_bed_dim')
-
-  if (!bedDim || bedDim === '') {
-    player.tell('\u00a7e[Compass of Return]\u00a77 You have no bed to return to. Sleep in a bed first.')
-    return
-  }
-
-  // Play departure effects
-  let name = player.username
-  player.server.runCommandSilent(
-    `playsound minecraft:entity.enderman.teleport player ${name} ~ ~ ~ 1 0.8`
-  )
-  player.server.runCommandSilent(
-    `effect give ${name} minecraft:blindness 2 0 true`
-  )
-
-  // Teleport (handles cross-dimension)
-  player.server.runCommandSilent(
-    `execute in ${bedDim} run tp ${name} ${bedX} ${bedY + 1} ${bedZ}`
-  )
-
-  // Play arrival sound at destination
-  player.server.runCommandSilent(
-    `execute in ${bedDim} run playsound minecraft:block.respawn_anchor.set_spawn player ${name} ${bedX} ${bedY} ${bedZ} 1 1.2`
-  )
-
-  // Set cooldown
-  data.putLong('icraft_compass_last_use', currentTick)
-
-  player.tell('\u00a79[Compass of Return]\u00a77 The needle guides you home.')
 })
 
 console.log('[IridescentCraft] Compass of Return loaded')

@@ -58,8 +58,12 @@ try {
       if (!items || !mult) return
       var src = event.source
       if (!src) return
-      var attacker = src.entity        // shooter (ranged) / attacker (melee)
-      var direct = src.directEntity    // arrow (ranged) / attacker (melee)
+      // KubeJS renames DamageSource.getEntity() -> getActual() and getDirectEntity() ->
+      // getImmediate() for scripts (@RemapForJS; javap on kubejs 2001.6.5): `src.entity` and
+      // `src.directEntity` are undefined, which kept this handler inert until 2026-10-11.
+      var core = global.icraft && global.icraft.core
+      var attacker = core ? core.attacker(src) : src.actual   // shooter (ranged) / attacker (melee)
+      var direct = core ? core.direct(src) : src.immediate    // arrow (ranged) / attacker (melee)
       var tier = 0
 
       // RANGED: the direct entity is a tagged projectile (and not the attacker)

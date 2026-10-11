@@ -34,14 +34,18 @@ try {
   DR_eff.registerLate('icraft.tmb_plain_bow_effects', function (event) {
     try {
       var src = event.source; if (!src) return
-      var direct = src.directEntity; if (!direct) return
+      // In scripts DamageSource.getDirectEntity() is `immediate` and getEntity() is `actual`
+      // (KubeJS @RemapForJS); `src.directEntity` was undefined, so this returned on every hit
+      // and no bow effect ever fired until 2026-10-11.
+      var core = global.icraft && global.icraft.core
+      var direct = core ? core.direct(src) : src.immediate; if (!direct) return
       var pd
       try { pd = direct.persistentData } catch (e) { return }
       if (!pd || !pd.contains('icraft_uniq_bow')) return
       var bow = String(pd.getString('icraft_uniq_bow'))
       var victim = event.entity
       if (!victim || !(victim instanceof LivingEntityClass)) return
-      var attacker = src.entity
+      var attacker = core ? core.attacker(src) : src.actual
 
       if (bow === 'too_many_bows:dark_bow') {
         eff(victim, MobEffects.BLINDNESS, 4, 0); eff(victim, MobEffects.WEAKNESS, 5, 0)
