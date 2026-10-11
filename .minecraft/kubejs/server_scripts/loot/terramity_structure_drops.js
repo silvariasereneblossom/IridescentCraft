@@ -15,8 +15,23 @@
 // sourcing entirely; the WEAPONS and CURIOS that previously needed them
 // reappear as T3/T4 structure-chest drops, themed by family:
 //   Exodium (warlock theme)  -> T3 chthonic dungeon / chthonian breach
-//   Reverium (paladin theme) -> T3 catacombs / subterranean shrine
-//   Nyxium (knight + cosmic-purple) -> T4 infested lab / ancient outcrop
+//   Reverium (paladin theme) -> T3 chthonic dungeon / chthonian breach
+//                               (was "T3 catacombs / subterranean shrine";
+//                               both are Overworld -- see the 2026-10-11 note)
+//   Nyxium (knight + cosmic-purple) -> T4 boss (was infested lab / ancient
+//                               outcrop; both Overworld)
+//
+// WHICH TERRAMITY STRUCTURES ARE REALLY T3 (read from the 0.9.8 jar's
+// has_structure tags and structure files, 2026-10-11):
+//   Nether (tier_3 dimension): chthonic_dungeon, chthonian_breach
+//   Overworld: everything else. In particular
+//     chests/catacombs_loot           = mausoleum (taiga) + church
+//     chests/subterranean_shrine_loot = subterranean_shrine (any overworld
+//                                       biome) AND the Ancient Outcrop, the T1
+//                                       entry-boss structure
+//     chests/overgrown_facility_loot  = overgrown_facility (forest/plains/...)
+// None of these items is stage-locked, so anything in an Overworld table is
+// T1 loot whatever its comment says.
 //
 // 8 EPIC curios (audit Phase 4.1 closure) — recipes were stripped 2026-04-27
 // but no drop allocation existed; they were creative-only. Now: 3 curios in
@@ -47,15 +62,21 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:exodium_twin_bracelets').when(c => c.randomChance(0.10)))
 
   // =========================================================================
-  // T3 REVERIUM (paladin / anti-undead) — catacombs + subterranean_shrine
+  // T3 REVERIUM (paladin / anti-undead) — the two Nether dungeons
   // =========================================================================
+  // 2026-10-11: these sat in catacombs_loot + subterranean_shrine_loot, which
+  // are Overworld tables (the shrine table is even rolled inside the T1
+  // Ancient Outcrop), so a T3 weapon was a walk away for a new character.
+  // Same rule the operator set for the EPIC curios on 2026-10-10 ("late-tier
+  // only") and for Nyxium before that: T3 gear comes from a T3 source. Rates
+  // unchanged, table for table (catacombs -> dungeon, shrine -> breach).
   event
-    .addLootTableModifier('terramity:chests/catacombs_loot')
+    .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:reverium_sword').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:reverium_axe').when(c => c.randomChance(0.08)))
 
   event
-    .addLootTableModifier('terramity:chests/subterranean_shrine_loot')
+    .addLootTableModifier('terramity:chests/chthonian_breach_loot')
     .addLoot(LootEntry.of('terramity:reverium_sword').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:reverium_axe').when(c => c.randomChance(0.10)))
 
@@ -115,7 +136,10 @@ LootJS.modifiers(event => {
   // =========================================================================
   // RARE tomes + bracelets — audit Phase 5 closure
   // =========================================================================
-  // T2 tomes — fire_lookout_tower (T2), suspicious_shrine (T2), mudhut (T1-T2)
+  // T2 tomes — fire_lookout_tower, suspicious_shrine, mudhut. All three are
+  // OVERWORLD structures (Terramity has none in a T2 dimension), so these RARE
+  // utility tomes are in practice T1 loot. Left where they are: not part of
+  // the T3 move above, and there is no T2 Terramity structure to move them to.
   event
     .addLootTableModifier('terramity:chests/fire_lookout_tower_loot')
     .addLoot(LootEntry.of('terramity:tome_of_commotion').when(c => c.randomChance(0.10)))
@@ -144,23 +168,26 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:gaias_tempest').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:tome_of_ascension').when(c => c.randomChance(0.08)))
 
+  // (2026-10-11) The third guardian_grimoire roll, the T3 bracelets and one
+  // electron_bracelets roll were in catacombs / subterranean_shrine /
+  // overgrown_facility -- Overworld tables, see the header. Moved to the two
+  // Nether dungeons with the same rates: what was in catacombs or the facility
+  // goes to the dungeon, what was in the shrine goes to the breach (the
+  // grimoire goes to the breach because the dungeon already rolls it above).
   event
-    .addLootTableModifier('terramity:chests/catacombs_loot')
+    .addLootTableModifier('terramity:chests/chthonian_breach_loot')
     .addLoot(LootEntry.of('terramity:guardian_grimoire').when(c => c.randomChance(0.10)))
 
-  // T3 bracelets -> reverium-tier tables (paladin theme matches anti-undead)
+  // T3 bracelets
   event
-    .addLootTableModifier('terramity:chests/catacombs_loot')
+    .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:malediction_bracelets').when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('terramity:electron_bracelets').when(c => c.randomChance(0.08)))
 
   event
-    .addLootTableModifier('terramity:chests/subterranean_shrine_loot')
+    .addLootTableModifier('terramity:chests/chthonian_breach_loot')
     .addLoot(LootEntry.of('terramity:electron_bracelets').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:malediction_bracelets').when(c => c.randomChance(0.08)))
-
-  event
-    .addLootTableModifier('terramity:chests/overgrown_facility_loot')
-    .addLoot(LootEntry.of('terramity:electron_bracelets').when(c => c.randomChance(0.08)))
 
   console.log('[terramity_structure_drops] T3/T4 ingot-family weapons + 8 EPIC curios + 9 RARE tomes/bracelets allocated to Terramity structures')
 })

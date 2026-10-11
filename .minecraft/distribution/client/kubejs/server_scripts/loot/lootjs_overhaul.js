@@ -1323,8 +1323,14 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/deeperdarker:chests\/.*/)
     .removeLoot('minecraft:diamond_horse_armor')
 
-  // --- The Abyss structures (13 tables) ---
-  // T3: Abyss dimension structures
+  // --- The Abyss structures ---
+  // T3: Abyss dimension structures.
+  // NOTE (2026-10-11): matches NOTHING, and cannot. The installed The Abyss
+  // (TATOS 1.0.5_beta) has no chest that rolls a loot table: its only generated
+  // structure with chests (the Abylager hut) holds fixed items, and the
+  // theabyss:chests/underground_dungeon* tables are named only by structure
+  // pieces nothing generates (and are not shipped). The "13 tables" this
+  // comment used to claim do not exist. Kept as a harmless placeholder.
   event
     .addLootTableModifier(/theabyss:chests\/.*/)
     .removeLoot('minecraft:diamond_horse_armor')
@@ -2911,9 +2917,13 @@ LootJS.modifiers(event => {
   applyMarquee(['minecraft:chests/ancient_city',
                 'minecraft:chests/ancient_city_ice_box'],
     { theme: T4_SCULK, tier: 4, book: true })
-  // The Abyss marquees (TBD exact table IDs).
-  // NOTE (2026-10-10): matches NO table — the installed The Abyss ships entity
-  // loot tables only (no theabyss:chests/…). Still TBD.
+  // The Abyss marquees.
+  // NOTE (2026-10-11): matches NO table and never will with the installed The
+  // Abyss -- see the note on the theabyss:chests strip above (no Abyss chest
+  // rolls a loot table). So the T4_ABYSSAL themed pool and its enchanted book
+  // have NO outlet. OPEN (operator): give the pool another carrier (the Abyss
+  // rings went to Abyss bosses on 2026-10-11, loot/abyss_boss_loot.js) or
+  // retire it. Several of its items also sit in the T3/T4 dimension pools.
   applyMarquee(/theabyss:chests\/.*/,
     { theme: T4_ABYSSAL, tier: 4, book: true })
 

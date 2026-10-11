@@ -16,12 +16,14 @@
 // Death entries are removed because no such armor items exist (Knight exists
 // only as tools/ingot/shard). The recipe side is recipes/recipe_audit.js K.5.
 //
-// Ring drop locations:
-//   Shadows, Phantom, Embers, Frost — Abyss structure chests (15% each)
-//   Knight — Knight boss drop (25%)
-//   Void Sight — Deep Abyss structure chests (10%)
-//   Dark Pact — Nightblade boss drop (20%)
-//   Unorithe — Final Abyss boss drop (15%)
+// Ring drop locations (all boss drops since 2026-10-11 -- see Section 1):
+//   Shadows, Phantom — Nightblade (15% each)
+//   Embers — The Roka (15%)
+//   Frost — Ice Knight (15%)
+//   Void Sight — Elder (10%)
+//   Knight — Ice Knight (25%)
+//   Dark Pact — Soul Guard (20%)
+//   Unorithe — Guard (15%)
 //
 // Armor drop locations:
 //   Unorithe set — Higher-tier Abyss bosses (soul_guard 15%/piece, guard 12%/piece)
@@ -30,30 +32,37 @@
 LootJS.modifiers(event => {
 
   // =========================================================================
-  // SECTION 1: CUSTOM RING DROPS — ABYSS STRUCTURE CHESTS
+  // SECTION 1: THE FIVE "STRUCTURE CHEST" RINGS — NOW ABYSS BOSS DROPS
   // =========================================================================
-  // Rings of Shadows, Phantom, Embers, and Frost drop from general
-  // Abyss structure chests at 15% each.
-  //
-  // NOTE (2026-10-10): neither modifier in this section matches any table, so
-  // these five rings currently have NO source. (1) The installed The Abyss
-  // (TATOS 1.0.5_beta) ships entity loot tables only — there is no
-  // theabyss:chests/… table. (2) Even if there were, LootJS table regexes are
-  // full-match, so both patterns would need a trailing .* . Left as written:
-  // which real tables its structure chests roll is unknown, so where the
-  // rings should come from is an open question.
+  // Designed as: Shadows / Phantom / Embers / Frost from Abyss structure chests
+  // (15% each), Void Sight from "deep" Abyss chests (10%). They never dropped:
+  // the installed The Abyss (TATOS 1.0.5_beta) has NO chest that rolls a loot
+  // table. Read from the jar's structure files (2026-10-11):
+  //   - the only generated structure with chests is the Abylager hut, and its
+  //     chests hold fixed items (no LootTable tag);
+  //   - `theabyss:chests/underground_dungeon` / `..._room` are named by two
+  //     structure pieces (cross, room_2) that nothing generates, and the jar
+  //     ships no such table anyway (entity tables only).
+  // So no table regex can ever match. Operator decision 2026-10-11: drop them
+  // from Abyss bosses that do not already carry a ring, at the designed rates.
+  // Nightblade, The Roka and Elder are the three BOSS_HP bosses
+  // (scaling/boss_hp.js); the Ice Knight keeps its Knight ring in Section 2.
 
-  event
-    .addLootTableModifier(/theabyss:chests\//)
+  // Nightblade (shadow assassin): Shadows + Phantom
+  global.icraftEntityMod(event, 'theabyss:nightblade_boss')
     .addLoot(LootEntry.of('kubejs:ring_of_shadows').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('kubejs:ring_of_the_phantom').when(c => c.randomChance(0.15)))
+
+  // The Roka: Embers
+  global.icraftEntityMod(event, 'theabyss:the_roka')
     .addLoot(LootEntry.of('kubejs:ring_of_embers').when(c => c.randomChance(0.15)))
+
+  // Ice Knight: Frost (its Knight ring is in Section 2)
+  global.icraftEntityMod(event, 'theabyss:ice_knight')
     .addLoot(LootEntry.of('kubejs:ring_of_frost').when(c => c.randomChance(0.15)))
 
-  // Ring of Void Sight — Deep Abyss structure chests (10%)
-  // Matches deeper/rarer structure chest tables
-  event
-    .addLootTableModifier(/theabyss:chests\/(deep|dungeon|temple|boss)/)
+  // Elder (the deepest of the three): Void Sight
+  global.icraftEntityMod(event, 'theabyss:elder')
     .addLoot(LootEntry.of('kubejs:ring_of_void_sight').when(c => c.randomChance(0.10)))
 
 
