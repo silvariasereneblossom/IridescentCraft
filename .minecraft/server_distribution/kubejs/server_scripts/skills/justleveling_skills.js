@@ -809,39 +809,33 @@
       }
 
       // ── Treasure Sense (LCK >= 20): 5% chance to double-roll mob loot ──
-      // Re-rolls the entity's loot table once at the death position. A kill
-      // command is fine here: it runs on one kill in twenty.
+      // A TRUE second kill roll (operator ruling 2026-10-11):
+      //   execute in <dim> positioned <x y z> as <killer> run loot spawn <x y z> kill <mob>
+      // `loot ... kill` (LootCommand, bytecode-checked) rolls the mob's own loot
+      // table with the ENTITY parameter set and, because the command runs AS
+      // the player, with that player as killer: killed-by-player drops, Looting
+      // and every rule that applies to a real kill (Forge loot modifiers, the
+      // pack's LootJS entity rules) apply to the bonus roll too. The mob is named
+      // by UUID: it is still in the world while this death event runs.
+      //   - `execute in`: a server-source command runs in the OVERWORLD.
+      //   - `positioned`: the roll's origin is the command position, not the
+      //     spawn position; rules that look at biome or structure need it.
+      //   - What does NOT repeat: equipment the mob was wearing, and drops other
+      //     mods add from the drops EVENT instead of a loot table (the relic and
+      //     first-kill boss drops). strip_anomalous_drops.js also works on that
+      //     event, so it does not filter this bonus roll.
+      // History: until 2026-10-11 this was `loot spawn … loot <table>` (CHEST
+      // parameter set: no killer, plus half a stack of chest-pool loot per roll,
+      // and in the Overworld whatever the dimension), then `fish` for one day.
       if (apt.luck >= 20 && Math.random() < 0.05) {
-        var lootTable = ''
-        try { lootTable = String(target.getLootTable()) } catch (e3) { lootTable = '' }
-        if (lootTable.indexOf(':') <= 0) {
-          // fallback: the conventional <modid>:entities/<path>
-          var typeId = typeIdOf(target)
-          var colon = typeId.indexOf(':')
-          lootTable = colon > 0 ? (typeId.substring(0, colon) + ':entities/' + typeId.substring(colon + 1)) : ''
-        }
-        if (lootTable) {
-          var x = Math.floor(Number(target.x))
-          var y = Math.floor(Number(target.y))
-          var z = Math.floor(Number(target.z))
-          // [2026-10-11] Two fixes in this one command (the same two apply to the
-          // mining bonus below):
-          //  1. `execute in <dimension>`: a server-source command runs in the
-          //     OVERWORLD, so outside the Overworld the bonus loot used to appear
-          //     there, at these coordinates, and the player got nothing.
-          //  2. `fish <table> <pos>` instead of `loot <table>`: `/loot ... loot`
-          //     rolls with the CHEST parameter set, so every bonus roll also got
-          //     the pack's chest-wide LootJS rules (tiered artifact pools, spell
-          //     books, codex tokens: about half a stack per roll). `fish` rolls
-          //     the SAME table with the FISHING parameter set, which no pack rule
-          //     is keyed on: the table's own drops, nothing else. (It is not a
-          //     kill/mine roll: no killer and no tool, exactly as before.)
-          var tsDim = String(target.level.dimension)
-          player.server.runCommandSilent('execute in ' + tsDim + ' run loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z +
-            ' fish ' + lootTable + ' ' + x + ' ' + y + ' ' + z)
-          puff(target.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.4, 12, 0.1)
-          player.tell('§6[Treasure Sense] §fDouble drops!')
-        }
+        var x = Math.floor(Number(target.x))
+        var y = Math.floor(Number(target.y))
+        var z = Math.floor(Number(target.z))
+        var at = x + ' ' + (y + 0.5) + ' ' + z
+        player.server.runCommandSilent('execute in ' + String(target.level.dimension) + ' positioned ' + at +
+          ' as ' + String(player.uuid) + ' run loot spawn ' + at + ' kill ' + String(target.uuid))
+        puff(target.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.4, 12, 0.1)
+        player.tell('§6[Treasure Sense] §fDouble drops!')
       }
     } catch (e) { warnOnce('death handler', e) }
   })
@@ -871,10 +865,24 @@
 
   // ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
   // ── Fortune's Favor (LCK >= 15): ~30% chance to re-roll an ore's drops ──
-  // Both re-roll the block's loot table (<modid>:blocks/<path>) at the block:
-  // 4 extra rolls for Motherlode, 1 for Fortune's Favor; a missing table is a
-  // silent no-op. Ore = id contains "ore", or ancient_debris (heuristic).
-  // Independent of each other. These are rare, so the loot command stays.
+  // Both are TRUE extra mining rolls (operator ruling 2026-10-11): 4 for
+  // Motherlode, 1 for Fortune's Favor.
+  //   execute in <dim> as <player> run loot spawn <x y z> mine <x y z> mainhand
+  // `loot ... mine <pos> mainhand` (LootCommand, bytecode-checked) rolls the
+  // drops of the block that stands at <pos> — it is still there while this
+  // break event runs — with the BLOCK parameter set and the player's main-hand
+  // tool: Fortune and Silk Touch count, and so does every rule that applies to
+  // a real break. Two guards keep it a double of what the player really got:
+  //   - no bonus when the player's tool cannot harvest the block (the real
+  //     break drops nothing then);
+  //   - no bonus for a block that has a block entity. `mine` hands the block
+  //     entity to the loot table, and a shulker box (or any block whose table
+  //     copies its contents) would come out as five full copies.
+  // Ore = id contains "ore", or ancient_debris (heuristic). Independent of each
+  // other. These are rare, so the loot command stays.
+  // History: until 2026-10-11 this was `loot spawn … loot <table>` (no tool,
+  // CHEST parameter set — half a stack of chest-pool loot per roll — and in the
+  // Overworld whatever the dimension), then `fish` for one day.
   BlockEvents.broken(function (event) {
     try {
       var player = event.player
@@ -883,16 +891,16 @@
       if (apt.luck < 15) return
       var block = event.block
       var blockId = String(block.id || '')
-      var colon = blockId.indexOf(':')
-      if (colon <= 0) return
-      var lootTable = blockId.substring(0, colon) + ':blocks/' + blockId.substring(colon + 1)
+      if (blockId.indexOf(':') <= 0) return
+      if (block.entity) return                             // container contents would be duplicated
+      var canHarvest = true
+      try { canHarvest = !!player.hasCorrectToolForDrops(block.blockState) } catch (e4) { canHarvest = true }
+      if (!canHarvest) return
       var x = Number(block.x)
       var y = Number(block.y)
       var z = Number(block.z)
-      // `execute in` + `fish`: see the Treasure Sense note above (the roll must
-      // happen in the player's dimension and must not pick up chest-wide rules).
-      var spawnAt = 'execute in ' + String(player.level.dimension) + ' run loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z +
-        ' fish ' + lootTable + ' ' + x + ' ' + y + ' ' + z
+      var spawnAt = 'execute in ' + String(player.level.dimension) + ' as ' + String(player.uuid) +
+        ' run loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z + ' mine ' + x + ' ' + y + ' ' + z + ' mainhand'
       var server = player.server
 
       if (apt.luck >= 30 && Math.random() < 0.005) {
