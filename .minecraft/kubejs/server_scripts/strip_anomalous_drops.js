@@ -107,10 +107,13 @@ try {
 
         if (removed.length > 0) {
           var entId = entityResId_sad(entity)
-          var pos = entity.position()
-          var posStr = '[' + Math.floor(pos.x) + ',' + Math.floor(pos.y) + ',' + Math.floor(pos.z) + ']'
+          // [2026-10-11] Was `entity.position()` + `pos.x` (a Vec3 `.x` read throws
+          // an uncatchable NullPointerException) and `entity.level()` (hidden from
+          // scripts). The strip above already ran, but this log line never printed
+          // and the handler was reported as "threw NullPointerException".
+          var posStr = '[' + Math.floor(entity.getX()) + ',' + Math.floor(entity.getY()) + ',' + Math.floor(entity.getZ()) + ']'
           var dim = ''
-          try { dim = String(entity.level().dimension().location()) } catch (e) {}
+          try { dim = String(entity.level.dimension) } catch (e) {}
           for (var j = 0; j < removed.length; j++) {
             console.warn('[STRIP-DROP] ' + entId + ' @ ' + dim + ' ' + posStr +
                          ' would have dropped ' + removed[j].count + 'x ' + removed[j].id + ' -- removed')

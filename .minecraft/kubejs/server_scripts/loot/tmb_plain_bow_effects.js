@@ -71,7 +71,10 @@ try {
             var dz = attacker.getZ() - victim.getZ()
             var len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1
             var s = 0.55
-            victim.setDeltaMovement(dx / len * s, dy / len * s + 0.1, dz / len * s)
+            // setMotion: Entity.setDeltaMovement(x, y, z) is renamed for scripts (KubeJS
+            // @RemapForJS), so the old call threw into the empty catch and the pull
+            // never happened (2026-10-11).
+            victim.setMotion(dx / len * s, dy / len * s + 0.1, dz / len * s)
             victim.hurtMarked = true
           }
         } catch (e) {}

@@ -91,10 +91,13 @@ try {
         return
       }
 
-      var level = entity.level()
-      var pos = entity.position()
+      // [2026-10-11] Was `entity.level()` + `entity.position().x`: KubeJS hides the
+      // vanilla level() method from scripts (use the `level` property), and a Vec3
+      // `.x` read throws an uncatchable NullPointerException (see
+      // loot/fragment_core_drops.js). None of the six relics could drop.
+      var level = entity.level
       var stack = new ItemStack_rbd(item)
-      var drop = new ItemEntity_rbd(level, pos.x, pos.y, pos.z, stack)
+      var drop = new ItemEntity_rbd(level, entity.getX(), entity.getY(), entity.getZ(), stack)
       drop.setDefaultPickUpDelay()
       event.getDrops().add(drop)
 
@@ -127,12 +130,14 @@ EntityEvents.death(function (event) {
     if (!entity || String(entity.type) !== 'minecraft:ender_dragon') return
     var level = entity.level
     if (level && level.isClientSide && level.isClientSide()) return
-    var server = event.server
-    if (!server && level && level.getServer) server = level.getServer()
-    if (!server) { console.warn('[relic_boss_drops] dragon: no server handle; skipped'); return }
-    var pos = entity.position()
-    server.runCommandSilent('summon minecraft:item ' + pos.x + ' ' + (pos.y + 1.0) + ' ' + pos.z +
-      ' {Item:{id:"iridescent_relics:dragons_eye",Count:1b},PickupDelay:10}')
+    // [2026-10-11] Was `server.runCommandSilent('summon minecraft:item ' + pos.x ...)`:
+    // the Vec3 `.x` read threw an uncatchable NullPointerException (and cut off the
+    // death handlers that load after this file), and a server-source `summon` runs
+    // in the OVERWORLD, not in the End. Entity.spawnAtLocation(ItemStack) drops the
+    // item at the dragon, in the dragon's level.
+    var eye = Item.of('iridescent_relics:dragons_eye')
+    if (!eye || eye.isEmpty()) { console.warn('[relic_boss_drops] dragon: iridescent_relics:dragons_eye is not registered; skipped'); return }
+    entity.spawnAtLocation(eye)
     console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye (guaranteed finale)')
   } catch (e) {
     console.warn('[relic_boss_drops] dragon death handler error: ' + e)

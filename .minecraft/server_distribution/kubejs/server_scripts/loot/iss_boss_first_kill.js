@@ -38,13 +38,23 @@ try {
       for (var i = 0; i < FIRST_KILL_DROPS.length; i++) {
         var entry = FIRST_KILL_DROPS[i]
         if (entityType !== entry.entity) continue
-        var flagKey = 'icraft_first_kill_' + entry.flag
+        // [2026-10-11] The flag key is `icraft_fk2_...`, not the old
+        // `icraft_first_kill_...`: until today this handler set the flag and then
+        // threw (`Item.of(id).itemStack` is undefined and Level has no `dropItem`),
+        // so every old flag was set WITHOUT a reward. A new key gives each player
+        // the guarantee once; the old keys are ignored.
+        var flagKey = 'icraft_fk2_' + entry.flag
         var pdata = killer.persistentData
         if (pdata.contains(flagKey) && pdata.getBoolean(flagKey)) return  // already got it
+        // Drop at the boss (vanilla Entity.spawnAtLocation(ItemStack)); the flag
+        // is set only after the drop call returned.
+        var dropStack = Item.of(entry.item)
+        if (!dropStack || dropStack.isEmpty()) {
+          console.warn('[iss_first_kill] unknown item ' + entry.item + ' -- no drop, flag not set')
+          return
+        }
+        ent.spawnAtLocation(dropStack)
         pdata.putBoolean(flagKey, true)
-        // Spawn the drop at the entity's position
-        var dropStack = Item.of(entry.item).itemStack
-        ent.level.dropItem(ent.position(), dropStack)
         killer.tell('§dThe §5' + entry.entity.split(':')[1].replace(/_/g, ' ') + '§d falls. A first-kill reward materializes.')
         console.log('[iss_first_kill] ' + killer.username + ' first-killed ' + entry.entity + ' -> ' + entry.item)
         return

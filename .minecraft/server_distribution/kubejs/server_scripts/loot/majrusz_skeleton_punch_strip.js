@@ -56,7 +56,9 @@ LootJS.modifiers(event => {
 
   var stripPunch = function(stack) {
     try {
-      var tag = stack.getTag ? stack.getTag() : null
+      // [2026-10-11] `stack.nbt` (KubeJS renames ItemStack.getTag -> getNbt, so
+      // `stack.getTag` was undefined and this returned here for every bow).
+      var tag = stack.nbt
       if (!tag) return stack
       // Enchantments tag is a TAG_LIST (id=9) of TAG_COMPOUND (id=10) entries.
       if (!tag.contains('Enchantments', 9)) return stack

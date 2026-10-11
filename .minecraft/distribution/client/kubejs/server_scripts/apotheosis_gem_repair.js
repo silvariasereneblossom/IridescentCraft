@@ -159,7 +159,9 @@
     try {
       var pd = player.persistentData
       if (!pd.contains('_lastChestPos') || !pd.contains('_lastChestTick')) return ''
-      var dt = player.tickCount - pd.getLong('_lastChestTick')
+      // `age` is the script name of Entity.tickCount (KubeJS @RemapForJS); the old
+      // `player.tickCount` was undefined, so the stamp below was never written.
+      var dt = player.age - pd.getLong('_lastChestTick')
       if (dt < 0 || dt > 200) return ''  // only correlate within ~10s
       return ' (recent chest at ' + pd.getString('_lastChestPos')
            + ' opened ' + dt + 't ago)'
@@ -226,7 +228,7 @@
       var pos = event.block.pos
       var pd = event.player.persistentData
       pd.putString('_lastChestPos', pos.x + ',' + pos.y + ',' + pos.z + ' ' + blockId)
-      pd.putLong('_lastChestTick', event.player.tickCount)
+      pd.putLong('_lastChestTick', event.player.age)
     } catch (_) {}
   })
 
@@ -240,10 +242,13 @@
     // Inventory size = 41 (hotbar 0-8, main 9-35, armor 36-39, offhand 40).
     // Scan everything; bare gems can land anywhere via /give, NBT-stripping
     // mods, or whatever generator path is producing these.
-    var size
-    try { size = inv.size } catch (_) {
-      try { size = inv.containerSize } catch (_) { size = 41 }
-    }
+    // [2026-10-11] Was `try { size = inv.size } catch ...`: the vanilla Inventory
+    // has no `size` member, the read is `undefined` WITHOUT throwing, and
+    // `i < undefined` is false -- the sweep had never looked at a single slot.
+    // `containerSize` is Container.getContainerSize().
+    var size = 0
+    try { size = inv.containerSize } catch (_) {}
+    if (!(size > 0)) size = 41
     for (var i = 0; i < size; i++) {
       var stack
       try { stack = inv.getItem(i) } catch (_) { continue }
@@ -366,55 +371,69 @@
   // Logs once per (tableId, dim) pair per session via _gem_loot_seen.
   global._gem_loot_seen = global._gem_loot_seen || {}
 
-  var ItemFilter_gr = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')
-  var bareGemFilter = ItemFilter_gr.custom(function(stack) {
+  var isBareChestGem = function (stack) {
     if (!stack || stack.isEmpty()) return false
     try {
-      if (String(stack.item.id) !== 'apotheosis:gem') return false
+      if (String(stack.id) !== 'apotheosis:gem') return false
+      return isBareGem(stack)
     } catch (_) { return false }
-    return isBareGem(stack)
-  })
+  }
+
+  // [2026-10-11] This was `.modifyLoot(bareGemFilter, function (context, stack) {...})`.
+  // A LootJS modifyLoot callback gets ONE argument, the stack
+  // (ModifyLootAction.Callback.modify(ItemStack)), so `context` was the stack and
+  // `stack` was undefined: the repair threw, the function returned undefined, and
+  // LootJS replaced the bare gem with an EMPTY stack (the gem was deleted, not
+  // repaired). `.apply(ctx => ...)` is the hook that has both the loot list and
+  // the context (table id, level), which is what the trace needs. The repair
+  // edits the stack's NBT in place.
+  var repairChestGem = function (stack) {
+    var nbt = stack.nbt
+    if (!nbt) {
+      nbt = new CompoundTag_gr()
+      stack.nbt = nbt
+    }
+    var pickIdx = Math.floor(Math.random() * KNOWN_GEMS.length)
+    nbt.putString('gem', KNOWN_GEMS[pickIdx])
+    var affixData = nbt.contains('affix_data')
+      ? nbt.getCompound('affix_data')
+      : new CompoundTag_gr()
+    affixData.putString('rarity', 'apotheosis:common')
+    nbt.put('affix_data', affixData)
+  }
 
   LootJS.modifiers(event => {
-    event.addLootTypeModifier(LootType.CHEST).modifyLoot(
-      bareGemFilter,
-      // callback: log + replace
-      function(context, stack) {
-        try {
-          var tableId = 'unknown'
-          try { tableId = String(context.queriedLootTableId) } catch (_) {}
-          var dim = 'unknown'
-          try { dim = String(context.level.dimension().location()) } catch (_) {}
-          var key = tableId + '|' + dim
-          if (!global._gem_loot_seen[key]) {
-            global._gem_loot_seen[key] = true
-            console.warn('[gem-loot-trace] bare apotheosis:gem from table='
-                       + tableId + ' dim=' + dim + ' (logging once per pair)')
+    event.addLootTypeModifier(LootType.CHEST).apply(ctx => {
+      try {
+        var loot = ctx.getLoot()
+        if (!loot || loot.size() === 0) return
+        for (var i = 0; i < loot.size(); i++) {
+          var stack = loot.get(i)
+          if (!isBareChestGem(stack)) continue
+          try {
+            var tableId = 'unknown'
+            try { tableId = String(ctx.getLootTableId()) } catch (_) {}
+            var dim = 'unknown'
+            try { dim = String(ctx.getLevel().dimension) } catch (_) {}
+            var key = tableId + '|' + dim
+            if (!global._gem_loot_seen[key]) {
+              global._gem_loot_seen[key] = true
+              console.warn('[gem-loot-trace] bare apotheosis:gem from table='
+                         + tableId + ' dim=' + dim + ' (logging once per pair)')
+            }
+          } catch (e) {
+            try { console.warn('[gem-loot-trace] handler threw: ' + e) } catch (_) {}
           }
-        } catch (e) {
-          try { console.warn('[gem-loot-trace] handler threw: ' + e) } catch (_) {}
-        }
-        // Repair in place: write fallback variant + common rarity into NBT.
-        // Mirrors the inventory-tick repair so the chest tooltip is correct.
-        try {
-          var nbt = stack.nbt
-          if (!nbt) {
-            nbt = new CompoundTag_gr()
-            stack.nbt = nbt
+          // Repair in place: write fallback variant + common rarity into NBT.
+          // Mirrors the inventory-tick repair so the chest tooltip is correct.
+          try { repairChestGem(stack) } catch (e) {
+            try { console.warn('[gem-loot-trace] repair threw: ' + e) } catch (_) {}
           }
-          var pickIdx = Math.floor(Math.random() * KNOWN_GEMS.length)
-          nbt.putString('gem', KNOWN_GEMS[pickIdx])
-          var affixData = nbt.contains('affix_data')
-            ? nbt.getCompound('affix_data')
-            : new CompoundTag_gr()
-          affixData.putString('rarity', 'apotheosis:common')
-          nbt.put('affix_data', affixData)
-        } catch (e) {
-          try { console.warn('[gem-loot-trace] repair threw: ' + e) } catch (_) {}
         }
-        return stack
+      } catch (e) {
+        try { console.warn('[gem-loot-trace] apply threw: ' + e) } catch (_) {}
       }
-    )
+    })
   })
 
   console.log('[IridescentCraft] apotheosis_gem_repair loaded v2026-05-18b ('

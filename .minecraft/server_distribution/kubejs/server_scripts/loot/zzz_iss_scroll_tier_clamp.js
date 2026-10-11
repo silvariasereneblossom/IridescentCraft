@@ -74,7 +74,11 @@ function issScrollStackId(stack) {
 // Returns the number of slots actually lowered. Defensive: never throws.
 function issClampScrollLevels(stack, cap) {
   try {
-    var tag = (stack.getTag ? stack.getTag() : null)
+    // [2026-10-11] `stack.nbt`, not `stack.getTag()`: KubeJS renames
+    // ItemStack.getTag -> getNbt for scripts, so `stack.getTag` was undefined, the
+    // old line always produced null and no scroll was ever clamped. `nbt` is the
+    // live tag (not a copy), so the edit below sticks.
+    var tag = stack.nbt
     if (!tag) return 0
     if (!tag.contains('irons_spellbooks:spell_container', 10)) return 0   // 10 = TAG_COMPOUND
     var cont = tag.getCompound('irons_spellbooks:spell_container')

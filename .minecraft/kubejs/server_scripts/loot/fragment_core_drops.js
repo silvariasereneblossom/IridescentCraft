@@ -64,9 +64,15 @@ try {
         return
       }
 
-      var pos = entity.position()
+      // [2026-10-11] This used `var pos = entity.position()` + `pos.x`. A Vec3 has
+      // both a public FIELD x and a public METHOD x(); Rhino merges them and a
+      // value read of `pos.x` calls Field.get(null) -> a raw NullPointerException
+      // that a script `catch` does NOT catch. So Fragment Core never dropped, and
+      // every roll that got here ended EntityEvents.death for every handler that
+      // loads after this file (173 such errors in the June/July server logs).
+      // entity.getX()/getY()/getZ() are plain methods.
       var stack = new ItemStack_fcd(item)
-      var drop = new ItemEntity_fcd(level, pos.x, pos.y, pos.z, stack)
+      var drop = new ItemEntity_fcd(level, entity.getX(), entity.getY(), entity.getZ(), stack)
       drop.setDefaultPickUpDelay()
       level.addFreshEntity(drop)
     } catch (e) {
