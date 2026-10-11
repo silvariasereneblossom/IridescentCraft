@@ -13,6 +13,14 @@
 //
 // Does NOT duplicate: tier_skip.js, refined_storage_dualpath.js,
 //   villager_trades.js, astages_restrictions.js
+//
+// 2026-10-10 -- "progression token" ingredients are gone from this file. Six
+// recipes here named token ids that were never registered; KubeJS silently
+// blanks an unknown item out of a shaped pattern, so those recipes were
+// craftable by anyone with the token slot empty. Operator decision: gate by
+// tier stage. Each of those recipes keeps the shape it really had (slot blank)
+// and is locked to its tier in gates/astages_restrictions.js (STAGE-GATED
+// RECIPES) -- the crafting grid gives no result without the stage.
 // =============================================================================
 
 ServerEvents.recipes(event => {
@@ -73,10 +81,9 @@ ServerEvents.recipes(event => {
     'minecraft:netherite_boots_smithing'
   ].forEach(id => event.remove({ id: id }))
 
-  // A.6: T4-gated netherite ingot recipe
-  event.shaped('minecraft:netherite_ingot', ['AAA','AGA','TTT'], {
-    A:'minecraft:ancient_debris', G:'minecraft:gold_ingot',
-    T:'icraft:reality_progression_token_t4'
+  // A.6: T4-gated netherite ingot recipe (stage-locked to tier_4 by recipe id)
+  event.shaped('minecraft:netherite_ingot', ['AAA','AGA'], {
+    A:'minecraft:ancient_debris', G:'minecraft:gold_ingot'
   }).id('icraft:netherite_ingot_t4')
 
   // A.7: Diamond block — gated by material access
@@ -100,13 +107,20 @@ ServerEvents.recipes(event => {
     I:'thermal:steel_ingot', S:'minecraft:iron_ingot', R:'minecraft:redstone'
   }).id('icraft:if_machine_frame_pity_t2')
 
-  event.remove({ id: 'industrialforegoing:machine_frame_advanced' })
+  // [2026-10-10] The two removals below used the ITEM ids as recipe ids
+  // ('industrialforegoing:machine_frame_advanced' / '..._supreme'). No recipe
+  // has those ids: IF makes both frames in the Dissolution Chamber, and the
+  // stock recipes are industrialforegoing:dissolution_chamber/advanced_machine_frame
+  // and .../supreme_machine_frame (ids read from the 3.5.21 jar). So the stock
+  // recipes were never removed and sat next to the tier-gated ones. (The pity
+  // frame above is a crafting recipe whose id really is the item id.)
+  event.remove({ id: 'industrialforegoing:dissolution_chamber/advanced_machine_frame' })
   event.shaped('industrialforegoing:machine_frame_advanced', ['DGD','GFG','DGD'], {
     D:'minecraft:diamond', G:'minecraft:gold_ingot',
     F:'industrialforegoing:machine_frame_simple'
   }).id('icraft:if_machine_frame_advanced_t3')
 
-  event.remove({ id: 'industrialforegoing:machine_frame_supreme' })
+  event.remove({ id: 'industrialforegoing:dissolution_chamber/supreme_machine_frame' })
   event.shaped('industrialforegoing:machine_frame_supreme', ['NEN','EFE','NEN'], {
     N:'minecraft:netherite_ingot', E:'minecraft:emerald',
     F:'industrialforegoing:machine_frame_advanced'
@@ -114,10 +128,11 @@ ServerEvents.recipes(event => {
 
   // B.3: Mekanism T4 endgame machines (base Mek already gated by osmium = T3)
   event.remove({ id: 'mekanism:digital_miner' })
-  event.shaped('mekanism:digital_miner', ['ATA','CFC','GLG'], {
+  // (stage-locked to tier_4 by recipe id)
+  event.shaped('mekanism:digital_miner', ['ATA','CFC','G G'], {
     A:'mekanism:alloy_atomic', T:'mekanism:teleportation_core',
     C:'mekanism:ultimate_control_circuit', F:'mekanism:steel_casing',
-    G:'minecraft:ghast_tear', L:'kubejs:reality_progression_token_t3'
+    G:'minecraft:ghast_tear'
   }).id('icraft:digital_miner_t4')
 
   // B.3b: Teleportation Core — netherite block replaces lapis lazuli
@@ -159,9 +174,10 @@ ServerEvents.recipes(event => {
 
   // B.6: Forbidden & Arcanus Hephaestus Forge → T3
   event.remove({ id: 'forbidden_arcanus:hephaestus_forge' })
-  event.shaped('forbidden_arcanus:hephaestus_forge', ['DOD','OEO','DND'], {
+  // (stage-locked to tier_3 by recipe id)
+  event.shaped('forbidden_arcanus:hephaestus_forge', ['DOD','OEO','D D'], {
     D:'forbidden_arcanus:deorum_ingot', O:'minecraft:obsidian',
-    E:'minecraft:diamond', N:'icraft:dimensional_progression_token_t3'
+    E:'minecraft:diamond'
   }).id('icraft:hephaestus_forge_t3')
 
   // B.8: RFTools Dimensions → T4
@@ -204,14 +220,17 @@ ServerEvents.recipes(event => {
   }).id('icraft:brewing_stand_t1')
 
   event.remove({ id: 'minecraft:ender_chest' })    // EnderStorage handles this
-  event.remove({ id: 'minecraft:end_crystal' })     // T4 item
+  // minecraft:end_crystal keeps its VANILLA recipe (it was removed here with
+  // no replacement, which made the Dragon Summoning Crystal -- 2x End Crystal,
+  // the only way to start the dragon fight -- uncraftable). T4 gate: the item
+  // is tier_4-staged and the recipe is stage-locked to tier_4 by recipe id.
   event.remove({ id: 'minecraft:respawn_anchor' })  // Crying obsidian = Nether T3
 
   // Eye of Ender → T4 "stabilized Eyes of Ender"
   event.remove({ id: 'minecraft:ender_eye' })
-  event.shaped('minecraft:ender_eye', ['BEB','EPE','BEB'], {
-    B:'minecraft:blaze_powder', E:'minecraft:ender_pearl',
-    P:'icraft:reality_progression_token_t4'
+  // (stage-locked to tier_4 by recipe id)
+  event.shaped('minecraft:ender_eye', ['BEB','E E','BEB'], {
+    B:'minecraft:blaze_powder', E:'minecraft:ender_pearl'
   }).id('icraft:stabilized_eye_of_ender')
 
   // Lodestone → T4 (requires netherite)
@@ -334,8 +353,9 @@ ServerEvents.recipes(event => {
 
   // Reforging Table → T3
   event.remove({ id: 'apotheosis:reforging_table' })
-  event.shaped('apotheosis:reforging_table', ['DTD','DAD','OOO'], {
-    D:'minecraft:diamond', T:'icraft:dimensional_progression_token_t3',
+  // (stage-locked to tier_3 by recipe id; the TABLE itself stays ungated)
+  event.shaped('apotheosis:reforging_table', ['D D','DAD','OOO'], {
+    D:'minecraft:diamond',
     A:'minecraft:anvil', O:'minecraft:obsidian'
   }).id('icraft:reforging_table_t3')
 
@@ -372,8 +392,9 @@ ServerEvents.recipes(event => {
 
   // Augmenting Table → T4
   event.remove({ id: 'apotheosis:augmenting_table' })
-  event.shaped('apotheosis:augmenting_table', ['NTN','NAN','OOO'], {
-    N:'minecraft:netherite_ingot', T:'icraft:reality_progression_token_t4',
+  // (stage-locked to tier_4 by recipe id; the TABLE itself stays ungated)
+  event.shaped('apotheosis:augmenting_table', ['N N','NAN','OOO'], {
+    N:'minecraft:netherite_ingot',
     A:'minecraft:anvil', O:'minecraft:crying_obsidian'
   }).id('icraft:augmenting_table_t4')
 

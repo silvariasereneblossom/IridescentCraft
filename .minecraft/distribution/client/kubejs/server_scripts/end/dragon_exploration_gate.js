@@ -35,9 +35,51 @@ const DRAGON_SUMMON_RADIUS = 10   // Max distance from 0,0 to use crystal
 // Dragon Summoning Crystal) are allowed.
 // =============================================================================
 
+// Registry id of an entity. Through 0_lib_core.js when it loaded (the `type`
+// property is shadowed on some mod entity classes); getType() is KubeJS's
+// id-string accessor either way.
+function endGateEntityId(entity) {
+  try {
+    if (global.icraft && global.icraft.core) return global.icraft.core.entityId(entity)
+    return String(entity.getType())
+  } catch (e) {
+    return ''
+  }
+}
+
+// One "why is there no dragon" notice per player, ever. Never throws: it runs
+// right before the cancel below and must not be able to stop it.
+function endGateNotify(endPlayers) {
+  try {
+    endPlayers.forEach(p => {
+      if (!p.persistentData.getBoolean('icraft_end_notified')) {
+        p.tell(Text.darkPurple('═══════════════════════════════════════'))
+        p.tell(Text.darkPurple('  ◆ THE END — EXPLORATION REQUIRED ◆'))
+        p.tell(Text.gray('  The Dragon senses your presence but will not'))
+        p.tell(Text.gray('  manifest until you have proven yourself.'))
+        p.tell(Text.white(''))
+        p.tell(Text.white('  Explore The End to unlock the Dragon fight:'))
+        p.tell(Text.gray('  ○ Reach the outer End islands (500+ blocks out)'))
+        p.tell(Text.gray('  ○ Find an End City (1000+ blocks out)'))
+        p.tell(Text.gray(`  ○ Slay ${END_SHULKER_KILLS} Shulkers`))
+        p.tell(Text.gray(`  ○ Defeat ${END_ENDERMAN_KILLS} Endermen in The End`))
+        p.tell(Text.white(''))
+        p.tell(Text.gray('  Then craft a §5Dragon Summoning Crystal§7 and'))
+        p.tell(Text.gray('  use it at the End Portal fountain.'))
+        p.tell(Text.darkPurple('═══════════════════════════════════════'))
+        p.persistentData.putBoolean('icraft_end_notified', true)
+      }
+    })
+  } catch (e) {}
+}
+
+// The dragon fight retries the spawn about once a minute for as long as a
+// player stands in the arena, so the "blocked" line is logged once per load.
+var endGateBlockLogged = false
+
 EntityEvents.spawned(event => {
   let entity = event.entity
-  if (entity.type.toString() !== 'minecraft:ender_dragon') return
+  if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
   // Check if ANY player in The End has the exploration flag set
   let server = entity.level.server
@@ -62,30 +104,16 @@ EntityEvents.spawned(event => {
   }
 
   if (!anyReady) {
-    // Remove the dragon — exploration not complete
+    // Remove the dragon — exploration not complete.
+    // Notice and log FIRST: cancel() leaves the handler by throwing, so the
+    // code that used to follow it (this notice) never ran -- until 2026-10-10
+    // the dragon was silently missing and nobody was told why.
+    endGateNotify(endPlayers)
+    if (!endGateBlockLogged) {
+      endGateBlockLogged = true
+      console.log('[IridescentCraft] Dragon spawn blocked — no player in The End has summoned it yet (logged once per load)')
+    }
     event.cancel()
-    console.log('[IridescentCraft] Dragon spawn blocked — no player has completed End exploration')
-
-    // Notify players in The End
-    endPlayers.forEach(p => {
-      if (!p.persistentData.getBoolean('icraft_end_notified')) {
-        p.tell(Text.darkPurple('═══════════════════════════════════════'))
-        p.tell(Text.darkPurple('  ◆ THE END — EXPLORATION REQUIRED ◆'))
-        p.tell(Text.gray('  The Dragon senses your presence but will not'))
-        p.tell(Text.gray('  manifest until you have proven yourself.'))
-        p.tell(Text.white(''))
-        p.tell(Text.white('  Explore The End to unlock the Dragon fight:'))
-        p.tell(Text.gray('  ○ Reach the outer End islands (500+ blocks out)'))
-        p.tell(Text.gray('  ○ Find an End City (1000+ blocks out)'))
-        p.tell(Text.gray('  ○ Slay 5 Shulkers'))
-        p.tell(Text.gray('  ○ Defeat 50 Endermen in The End'))
-        p.tell(Text.white(''))
-        p.tell(Text.gray('  Then craft a §5Dragon Summoning Crystal§7 and'))
-        p.tell(Text.gray('  use it at the End Portal fountain.'))
-        p.tell(Text.darkPurple('═══════════════════════════════════════'))
-        p.persistentData.putBoolean('icraft_end_notified', true)
-      }
-    })
   }
 })
 
@@ -152,7 +180,7 @@ EntityEvents.death(event => {
   let pdata = player.persistentData
   if (pdata.getBoolean('icraft_end_explored')) return
 
-  let entityId = entity.type.toString()
+  let entityId = endGateEntityId(entity)
 
   // Shulker kills (need 5)
   if (entityId === 'minecraft:shulker') {
@@ -177,7 +205,7 @@ EntityEvents.death(event => {
     pdata.putInt('icraft_end_enderman_kills', kills)
 
     if (kills === END_ENDERMAN_KILLS) {
-      player.tell(Text.lightPurple('  ◆ End Exploration: 20 Endermen defeated!'))
+      player.tell(Text.lightPurple(`  ◆ End Exploration: ${END_ENDERMAN_KILLS} Endermen defeated!`))
       player.server.runCommandSilent(
         `playsound minecraft:block.end_portal.spawn player ${player.username} ~ ~ ~ 0.5`
       )
@@ -261,18 +289,13 @@ global.tick_dragonSummonCrystal = (event) => {
       Text.yellow(`★ ${player.username} has summoned the Ender Dragon!`)
     )
 
-    player.server.runCommandSilent(
-      `summon minecraft:end_crystal 0 64 -3 {ShowBottom:1b}`
-    )
-    player.server.runCommandSilent(
-      `summon minecraft:end_crystal 0 64 3 {ShowBottom:1b}`
-    )
-    player.server.runCommandSilent(
-      `summon minecraft:end_crystal 3 64 0 {ShowBottom:1b}`
-    )
-    player.server.runCommandSilent(
-      `summon minecraft:end_crystal -3 64 0 {ShowBottom:1b}`
-    )
+    // `execute in minecraft:the_end`: a bare server command runs in the
+    // OVERWORLD, so these four crystals used to be summoned at 0 64 +-3 there.
+    ;[[0, -3], [0, 3], [3, 0], [-3, 0]].forEach(xz => {
+      player.server.runCommandSilent(
+        `execute in minecraft:the_end run summon minecraft:end_crystal ${xz[0]} 64 ${xz[1]} {ShowBottom:1b}`
+      )
+    })
 
     player.server.runCommandSilent(
       `playsound minecraft:entity.ender_dragon.growl player ${player.username} 0 64 0 2 0.5`
@@ -292,9 +315,8 @@ global.registerServerTick('tick_dragonSummonCrystal', 40, 10)
 
 EntityEvents.death(event => {
   let entity = event.entity
-  if (entity.type.toString() !== 'minecraft:ender_dragon') return
+  if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
-  let source = event.source
   // Mark ALL players in The End as having killed the dragon at least once
   entity.level.server.players.forEach(p => {
     if (p.level.dimension.toString() === 'minecraft:the_end') {
@@ -310,15 +332,23 @@ EntityEvents.death(event => {
 // =============================================================================
 
 ServerEvents.recipes(event => {
-  // Dragon Summoning Crystal: 4x Ender Pearl + 2x End Crystal + 2x T4 Token + 1x Nether Star
+  // Dragon Summoning Crystal: 4x Ender Pearl + 2x End Crystal + 1x Nether Star.
+  //
+  // 2026-10-10: this used to need 2x kubejs:reality_progression_token_t4 as
+  // well. That legacy token has had no source since the token currency was
+  // retired (2026-06-01), and the End Crystal recipe was removed outright in
+  // recipes/tier_gated_recipes.js, so the crystal -- the ONLY way to start the
+  // dragon fight (see the spawn block above) -- could not be crafted at all.
+  // The tier gate is now the player's stage: this recipe and the restored
+  // vanilla End Crystal recipe are both locked to tier_4 in
+  // gates/astages_restrictions.js (STAGE-GATED RECIPES).
   event.shaped('kubejs:dragon_summoning_crystal', [
     'PCP',
-    'TNT',
+    ' N ',
     'PCP'
   ], {
     P: 'minecraft:ender_pearl',
     C: 'minecraft:end_crystal',
-    T: 'kubejs:reality_progression_token_t4',
     N: 'minecraft:nether_star'
   }).id('icraft:dragon_summoning_crystal')
 })

@@ -5,7 +5,8 @@
 // Design Doc: Ad Astra Integration — Recipe Modifications
 //
 // Gates Ad Astra content behind T4 materials:
-//   - Rocket Workbench: Netherite + Mekanism Steel Casing + T4 token
+//   - Rocket Workbench: Netherite + Mekanism Steel Casing, recipe stage-locked
+//     to tier_4 (gates/astages_restrictions.js, STAGE-GATED RECIPES)
 //   - Jet Suit: Removed entirely (MekaSuit fills this niche)
 //   - Tier 1-4 Rockets: Gated behind progressive planet materials
 // =============================================================================
@@ -13,16 +14,20 @@
 ServerEvents.recipes(event => {
 
   // ═══ SECTION A: ROCKET WORKBENCH — Gateway Item ═══
-  // Remove default recipe, replace with T4-gated version
+  // Remove default recipe, replace with T4-gated version.
+  // 2026-10-10: this needed 2x kubejs:reality_progression_token_t4, a legacy
+  // token with no source since the token currency was retired (2026-06-01) --
+  // so the workbench, and with it every rocket, could not be crafted at all.
+  // Operator decision: gate by tier stage. The token slots are gone; the
+  // recipe is locked to tier_4 by its id in gates/astages_restrictions.js.
   event.remove({ output: 'ad_astra:nasa_workbench' })
 
   event.shaped('ad_astra:nasa_workbench', [
-    'NTN',
+    'N N',
     'CSC',
-    'NTN'
+    'N N'
   ], {
     N: 'minecraft:netherite_ingot',
-    T: 'kubejs:reality_progression_token_t4',
     C: 'mekanism:steel_casing',
     S: 'ad_astra:steel_block'
   }).id('icraft:nasa_workbench_t4')
@@ -30,9 +35,12 @@ ServerEvents.recipes(event => {
 
   // ═══ SECTION B: JET SUIT — Remove Entirely ═══
   // MekaSuit fills the Jet Suit niche (flight + space survival)
+  // [2026-10-10] the chest and leg pieces were listed as jet_suit_chestplate /
+  // jet_suit_leggings; Ad Astra 1.15 calls them `jet_suit` and `jet_suit_pants`,
+  // so those two stayed craftable.
   event.remove({ output: 'ad_astra:jet_suit_helmet' })
-  event.remove({ output: 'ad_astra:jet_suit_chestplate' })
-  event.remove({ output: 'ad_astra:jet_suit_leggings' })
+  event.remove({ output: 'ad_astra:jet_suit' })
+  event.remove({ output: 'ad_astra:jet_suit_pants' })
   event.remove({ output: 'ad_astra:jet_suit_boots' })
 
 

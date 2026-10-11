@@ -24,6 +24,15 @@
 //   AStages.addRestrictionForMod(id, stage, modId)       — string mod ID
 //   AStages.addRestrictionForDimension(id, stage, RL)    — ResourceLocation
 //   AStages.addRestrictionForOre(id, stage, blockState, replacementBlockState)
+//   AStages.addRestrictionForRecipe(id, stage, RecipeType, RL...)  — blocks the
+//       crafting-grid RESULT for players without the stage (CraftingMenu mixin)
+//
+// RELOAD: AStages clears every script-added restriction right before server
+// scripts (re)load, and ServerEvents.loaded fires only once, at server start.
+// Registering only there meant a single /reload switched ALL tier gating off
+// until the next restart. So registration is a function, run from
+// ServerEvents.loaded on boot and again at script load when the server is
+// already up (= a /reload). See the bottom of this file.
 // =============================================================================
 
 // Load Java class for ResourceLocation construction
@@ -74,12 +83,31 @@ function stageDimension(tier, dimId, restrictionId) {
   AStages.addRestrictionForDimension(restrictionId, tier, new ResourceLocation(dimId))
 }
 
+/**
+ * Stage-lock crafting-table recipes by recipe id: the result slot stays empty
+ * for a player who lacks the stage, and JEI hides the recipe from them.
+ * The recipe type comes from the Forge registry (no obfuscated field lookup).
+ */
+function stageCraftingRecipes(tier, recipeIds, idPrefix) {
+  let ForgeRegistries = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
+  let crafting = ForgeRegistries.RECIPE_TYPES.getValue(new ResourceLocation('minecraft', 'crafting'))
+  if (!crafting) throw new Error('minecraft:crafting recipe type not found')
+  recipeIds.forEach(recipeId => {
+    AStages.addRestrictionForRecipe(
+      idPrefix + '/' + recipeId.replace(':', '_'),
+      tier,
+      crafting,
+      new ResourceLocation(recipeId)
+    )
+  })
+}
+
 
 // =============================================================================
-// REGISTRATION — register restrictions at server load
+// REGISTRATION — runs on server start AND on every /reload (see RELOAD above)
 // =============================================================================
 
-ServerEvents.loaded(event => {
+function registerStageRestrictions() {
 
   // =========================================================================
   // TIER 2 — Thermal, IF basic, Ars Nouveau, T2 dimension materials
@@ -495,8 +523,61 @@ ServerEvents.loaded(event => {
   stageItems('tier_3', ['icraft:sigil_of_socketing_t3'], 'icraft/sigil_t3')
   stageItems('tier_4', ['apotheosis:sigil_of_socketing'], 'apotheosis/sigil_socketing_t4')
 
+  // =========================================================================
+  // STAGE-GATED RECIPES (2026-10-10)
+  // =========================================================================
+  // These recipes used to carry a "progression token" ingredient as their tier
+  // gate, and none of the gates worked:
+  //   - Six named token ids that were never registered
+  //     (icraft:*_progression_token_*, kubejs:reality_progression_token_t3).
+  //     KubeJS drops an unknown item from a shaped recipe's key and blanks its
+  //     slot (ShapedRecipeJS.afterLoaded), without logging -- so those six
+  //     were craftable by anyone, with no gate at all.
+  //   - Two used the real legacy kubejs:reality_progression_token_t4, which has
+  //     had no source since the token currency was retired (2026-06-01), so
+  //     they could not be crafted by anyone: the Ad Astra rocket workbench and
+  //     the Dragon Summoning Crystal, the only way to start the dragon fight.
+  //
+  // The token slot is gone from each recipe (operator decision 2026-10-10:
+  // gate by tier stage); the gate is the player's stage instead. Last on
+  // purpose and in its own try: if this API ever changes, the item/ore/
+  // dimension gates above are already registered.
+  try {
+    stageCraftingRecipes('tier_3', [
+      'icraft:hephaestus_forge_t3',       // recipes/tier_gated_recipes.js B.6
+      'icraft:reforging_table_t3'         // recipes/tier_gated_recipes.js F
+    ], 'modpack/recipe')
+    stageCraftingRecipes('tier_4', [
+      'icraft:netherite_ingot_t4',        // recipes/tier_gated_recipes.js A.6
+      'icraft:digital_miner_t4',          // recipes/tier_gated_recipes.js B.3
+      'icraft:stabilized_eye_of_ender',   // recipes/tier_gated_recipes.js D
+      'icraft:augmenting_table_t4',       // recipes/tier_gated_recipes.js F
+      'minecraft:end_crystal',            // vanilla recipe, no longer removed (D)
+      'icraft:dragon_summoning_crystal',  // end/dragon_exploration_gate.js
+      'icraft:nasa_workbench_t4'          // recipes/ad_astra_gating.js A
+    ], 'modpack/recipe')
+  } catch (e) {
+    console.error('[IridescentCraft] stage-gated recipes NOT registered: ' + e)
+  }
+
   console.log('[IridescentCraft] AStages native restrictions registered')
   console.log('  Tier 2: 6 mods + 17 items + 4 dimensions')
   console.log('  Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions')
   console.log('  Tier 4: 5 mods + 133 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts + Mekanism fusion/SPS/antimatter/ultimate-facility pins, locked decision C 2026-06-06)')
-})
+}
+
+// Once per script load: the flag is re-created whenever this file is
+// re-evaluated, which is exactly when AStages has just cleared everything.
+let stageRestrictionsRegistered = false
+function registerStageRestrictionsOnce() {
+  if (stageRestrictionsRegistered) return
+  stageRestrictionsRegistered = true
+  registerStageRestrictions()
+}
+
+// Boot: scripts load before the server exists, so register when it has loaded.
+ServerEvents.loaded(event => registerStageRestrictionsOnce())
+
+// /reload: the server is already running and ServerEvents.loaded will not fire
+// again -- register now, while the file is being re-evaluated.
+if (Utils.server) registerStageRestrictionsOnce()
