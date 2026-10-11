@@ -13,7 +13,9 @@ There is no test server, so this checks the pack against the real jars in two ha
      from the decompiled jar (full-match table regexes, removeLoot = one-shot removeIf in
      registration order, a condition gates only what comes AFTER it, ...).
 
-and then joins the two. Run from anywhere (PowerShell or Git Bash):
+and then joins the two. It also lists every loaded loot table the game's own parser rejects
+(TABLE_REJECTED: an item or an entry / function / condition type name that is not registered), from
+the jars and from the last mirrored server boot log. Run from anywhere (PowerShell or Git Bash):
 
     python -I .minecraft/dev/audit_loot.py                 # full report on stdout
     python -I .minecraft/dev/audit_loot.py --summary       # counts only (before/after numbers)
@@ -412,6 +414,99 @@ def server_log_order(repo):
     except OSError:
         return None
     return order
+
+
+def boot_log_rejects(repo):
+    """Loot tables the dedicated server itself dropped at its last mirrored boot: ForgeHooks logs
+    `Couldn't parse element loot_tables:<id>` and the exception on the next line.
+    -> (boot stamp, {table id: reason}); (None, {}) when no log is mirrored."""
+    log = os.path.join(repo, "server_distribution", "TesterLogs", "Server Logs", "latest.log")
+    out, stamp, pending = collections.OrderedDict(), None, None
+    try:
+        with open(log, encoding="utf-8", errors="replace") as f:
+            for line in f:
+                if stamp is None:
+                    m = re.match(r"\[(\w+ \d+:\d+)", line)
+                    stamp = m.group(1) if m else "?"
+                if pending:
+                    out[pending] = re.sub(r"^[\w.$]+(?:Exception|Error): ", "", line.strip())
+                    pending = None
+                    continue
+                m = re.search(r"Couldn't parse element loot_tables:(\S+)", line)
+                if m:
+                    pending = m.group(1)
+    except OSError:
+        return None, {}
+    return stamp, out
+
+
+def type_literals(truth, names):
+    """{`ns:path`: jar name or None} for loot entry / function / condition type names of INSTALLED mods:
+    the jar family of mod `ns` in which `path` (or `ns:path`) is a string constant, i.e. where the
+    type can be registered from. None = no class of that mod names it. Cached per jar."""
+    packs = {p["id"]: p for p in truth.d.get("packs", [])}
+    cache_file = os.path.join(CACHE, "type_literals.json")
+    try:
+        cache = json.load(open(cache_file, encoding="utf-8"))
+    except (OSError, ValueError):
+        cache = {}
+    out, by_jar = {}, collections.defaultdict(set)
+    for name in names:
+        m = truth.mods.get(name.split(":", 1)[0])
+        if not m:
+            continue
+        out[name] = None
+        for pid in [m.get("jar")] + [a.get("jar") for a in m.get("also_in", [])]:
+            top = ((packs.get(pid) or {}).get("path") or "").split("!", 1)[0]
+            if top and os.path.isfile(top):
+                by_jar[top].add(name)
+
+    def needles(name):
+        # a CONSTANT_Utf8 entry is tag 1, u2 length, bytes: this matches a whole constant, not a substring
+        for s in (name.split(":", 1)[1], name):
+            b = s.encode("utf-8")
+            yield b"\x01" + len(b).to_bytes(2, "big") + b
+
+    def scan(zf, want, found, depth=0):
+        for n in zf.namelist():
+            if n.endswith(".class"):
+                b = zf.read(n)
+                for name in want - found:
+                    if any(x in b for x in needles(name)):
+                        found.add(name)
+            elif n.endswith(".jar") and n.startswith("META-INF/") and depth < 3:
+                import io
+                try:
+                    with zipfile.ZipFile(io.BytesIO(zf.read(n))) as inner:
+                        scan(inner, want, found, depth + 1)
+                except zipfile.BadZipFile:
+                    pass
+            if len(found) == len(want):
+                return
+
+    dirty = False
+    for jar, want in sorted(by_jar.items()):
+        st = os.stat(jar)
+        key = "%s:%d:%d" % (os.path.basename(jar), st.st_size, int(st.st_mtime))
+        known = cache.setdefault(key, {})
+        todo = set(n for n in want if n not in known)
+        if todo:
+            found = set()
+            try:
+                with zipfile.ZipFile(jar) as zf:
+                    scan(zf, todo, found)
+            except (zipfile.BadZipFile, OSError):
+                continue
+            for n in todo:
+                known[n] = n in found
+            dirty = True
+        for n in want:
+            if known.get(n):
+                out[n] = os.path.basename(jar)
+    if dirty:
+        os.makedirs(CACHE, exist_ok=True)
+        json.dump(cache, open(cache_file, "w", encoding="utf-8"))
+    return out
 
 
 def external_globals(repo, root, loaded):
@@ -1346,11 +1441,7 @@ def build(truth, h, repo, extra, accepted):
                 F.add(7, "JSON_DUPLICATE", tid, str(win), "%s is shipped %d times by the pack with identical content; only `%s` is "
                       "loaded, the other copy is dead weight that will drift" % (tid, len(ours), win), [order], severity="info")
         if pk(win) in ("paxi", "kubejs_data"):
-            bad_items = sorted(i for i in (t.get("items") or []) if i not in T.items)
-            if bad_items:
-                F.add(7, "JSON_UNKNOWN_ITEM", "%s %s" % (tid, ",".join(bad_items)[:60]), str(win),
-                      "%s (from %s) names item(s) no installed mod registers: %s -- vanilla logs one line and drops the whole table"
-                      % (tid, win, ", ".join(bad_items[:6])), severity="error")
+            # (an item no installed mod has is TABLE_REJECTED below, for every pack)
             bad_refs = sorted(r for r in (t.get("table_refs") or []) if r not in T.tables)
             if bad_refs:
                 F.add(7, "JSON_UNKNOWN_TABLE_REF", "%s %s" % (tid, ",".join(bad_refs)[:60]), str(win),
@@ -1441,6 +1532,88 @@ def build(truth, h, repo, extra, accepted):
                   "the rule at %s names %s but not its alias %s: chests that roll the alias do not get this rule"
                   % (where, tg, alias))
 
+    # ---------------- [7c] loaded tables the game's parser rejects ----------------
+    # Gson throws on the first name it does not know, Forge logs "Couldn't parse element loot_tables:<id>"
+    # and the table is then ABSENT in game: whatever rolls it gets nothing. Checked for the loaded copy
+    # of every table, whoever ships it. Two sources:
+    #   jars      an `item` entry no installed mod has; an entry / function / condition type that is
+    #             neither in the vanilla 1.20.1 registry nor named in a class of the installed mod it
+    #             belongs to
+    #   boot log  what the dedicated server said at its last mirrored boot. The only proof for an item
+    #             that has a model or lang key yet is never registered (leftover assets), and for what
+    #             is not modelled here (enchantment / block / potion ids, NBT strings, number providers).
+    #             A logged reason the loaded copy no longer contains is stale (fixed since) and skipped.
+    want_types = set()
+    for t in T.tables.values():
+        for names in (t.get("nonvanilla_types") or {}).values():
+            want_types.update(n for n in names if n and not n.startswith("minecraft:"))
+    literal = type_literals(T, want_types)
+
+    def type_problem(name):
+        if not name:
+            return "has no type name"
+        ns = name.split(":", 1)[0]
+        if ns == "minecraft":
+            return "`%s` is not a vanilla 1.20.1 name (renamed, or from a later version)" % name
+        if ns not in T.mods:
+            return "`%s`: the mod `%s` is not installed" % (name, ns)
+        if not literal.get(name):
+            return "`%s`: no class of the installed mod `%s` names it" % (name, ns)
+        return None
+
+    boot_stamp, boot_rejects = boot_log_rejects(repo)
+    boot_notes = {}
+    rejected = collections.OrderedDict()        # table -> [reason]
+    for tid, t in sorted(T.tables.items()):
+        if t.get("valid") is False:
+            # the pack's own unparseable files are JSON_INVALID above
+            if pk(t.get("winner")) not in ("paxi", "kubejs_data"):
+                rejected[tid] = ["the file is not valid JSON: %s" % t.get("error")]
+            continue
+        why = ["item `%s` is in no installed mod" % i for i in (t.get("items") or []) if i not in T.items]
+        for kind, names in sorted((t.get("nonvanilla_types") or {}).items()):
+            why += ["%s type %s" % (kind, p) for p in map(type_problem, names) if p]
+        if why:
+            rejected[tid] = why
+    for tid, reason in boot_rejects.items():
+        t = T.tables.get(tid)
+        if t is None or t.get("valid") is False:
+            continue
+        used = set(n for names in (t.get("nonvanilla_types") or {}).values() for n in names)
+        m_item = re.search(r"Expected name to be an item, was unknown string '([^']*)'", reason)
+        m_type = re.search(r"Unknown type '([^']*)'", reason)
+        if m_item:
+            still = m_item.group(1) in (t.get("items") or [])
+        elif m_type:
+            still = m_type.group(1) in used
+        else:
+            still = None            # a reason the audit cannot re-check against the loaded copy
+        if still is False:
+            continue
+        note = "server boot of %s said: %s" % (boot_stamp, reason)
+        if still is None and pk(t.get("winner")) in ("paxi", "kubejs_data"):
+            if tid not in rejected:
+                F.add(7, "TABLE_REJECTED_AT_BOOT", tid, str(t.get("winner")), "%s was rejected at the server boot of %s "
+                      "(%s). The audit cannot re-check that reason and the pack ships the loaded copy, so it may be fixed "
+                      "since: look at the next boot log" % (tid, boot_stamp, reason), severity="info")
+            continue
+        boot_notes[tid] = note
+        rejected.setdefault(tid, [note])
+    for tid, why in rejected.items():
+        t = T.tables[tid]
+        detail = ["rolled by: " + T.why(tid)]
+        if tid in boot_notes and why[0] != boot_notes[tid]:
+            detail.append(boot_notes[tid])
+        detail += why[1:6]
+        if len(why) > 6:
+            detail.append("+%d more" % (len(why) - 6))
+        if t.get("condition_key"):
+            detail.append("has %s: if they fail the table is skipped before it is parsed" % t["condition_key"])
+        F.add(7, "TABLE_REJECTED", tid, str(t.get("winner")), "%s is rejected by the game's loot parser (%s), so the table "
+              "does not exist in game and whatever rolls it gets nothing" % (tid, why[0]), detail, severity="error")
+    stats["tables the game rejects (jars + boot log)"] = "%d (boot log: %s)" % (
+        len(rejected), "%s, %d rejected" % (boot_stamp, len(boot_rejects)) if boot_stamp else "none mirrored")
+
     # ---------------- [8] mock coverage ----------------
     for name, s in sorted(h["_stubs"].items()):
         F.add(8, "STUBBED_GLOBAL", name, s["used_at"][0], "global.%s is defined in a script the audit does not load (%s): stubbed"
@@ -1489,7 +1662,7 @@ SECTION_TITLES = {
     4: "ORDER AND SHAPE: adds eaten by later strips, misplaced conditions, one-entry pools",
     5: "TIER: the rule's label vs the tier of the dimension its table is rolled in (heuristic; review)",
     6: "DROP-ONLY ITEMS (every recipe removed) WITHOUT A LIVE LOOT SOURCE",
-    7: "LOOT TABLE / LOOT MODIFIER JSON THE PACK SHIPS",
+    7: "LOOT TABLE / LOOT MODIFIER JSON THE PACK SHIPS; EVERY LOADED TABLE THE GAME REJECTS",
     8: "AUDIT COVERAGE (where the mock, not the game, decided)",
 }
 

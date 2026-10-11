@@ -29,7 +29,9 @@ Top-level keys of the output
     loot_tables                   {id: {type, sources[{pack, sha1}], winner, valid, error, items, tags,
                                    table_refs, empty, forge_conditions, + optional: lenient_only,
                                    raw_control_chars_in_strings, condition_key, conditions, other_entry_types,
-                                   other_entry_items, set_loot_table, multi_mod, mod_content_differs, winner_note}}
+                                   other_entry_items, set_loot_table, multi_mod, mod_content_differs, winner_note,
+                                   nonvanilla_types{entry|function|condition: [names outside the vanilla 1.20.1
+                                   registries, '' = no type key]}}}
     structures                    {template id: {pack, size, containers[{block, loot_table, fixed_items, pos,
                                    loot_table_seed?, be_id?}], entity_loot[], data_markers[], jigsaws[{pool,
                                    name, target, n}]}}      loot_table: null = no LootTable tag, "" = empty string
@@ -37,7 +39,9 @@ Top-level keys of the output
                                    missing_templates?, reached_by?}}
     processor_loot                [{processor_list | inline_in, loot_table, processor_type, templates, ...}]
     worldgen_structures           {id: {pack, type, start_pool, size, biomes_raw, biomes, dimensions,
-                                   in_structure_sets, step, referenced_templates, referenced_pools, ...}}
+                                   in_structure_sets, step, referenced_templates, referenced_pools, ...
+                                   + Integrated API: mod_gate, never_generates (reason; the structure counts
+                                   as unplaced), pool_not_used (the start pool the installed mods rule out)}}
     structure_sets                {id: {pack, structures[{structure, weight, added_by?}], placement}}
     dimensions                    {dimension id: {pack, dimension_type, generator, biome_source, biomes}}
     biome_tags / biome_tags_missing
@@ -105,7 +109,7 @@ import zipfile
 import zlib
 from collections import Counter, defaultdict, deque
 
-SCANNER_VERSION = 9
+SCANNER_VERSION = 10
 
 NESTED_DIRS = ('META-INF/jarjar', 'META-INF/jars')
 END_BIOMES = ['minecraft:the_end', 'minecraft:end_highlands', 'minecraft:end_midlands',
@@ -493,6 +497,25 @@ def class_strings(b):
 _COMPOSITE = ('minecraft:alternatives', 'minecraft:group', 'minecraft:sequence')
 _COND_KEYS = ('forge:conditions', 'fabric:load_conditions', 'neoforge:conditions', 'porting_lib:conditions',
               'conditions')
+# Every name the three vanilla 1.20.1 loot registries hold (the string constants of LootPoolEntries,
+# LootItemFunctions and LootItemConditions in client-1.20.1-*-srg.jar, read 2026-10-11).  Hard-coded
+# vanilla knowledge, NOT derived from files.  A `minecraft:` name outside these sets does not exist in this
+# version: the parser throws "Unknown type" and the whole table is dropped (the condition `alternative`
+# became `any_of` in 1.20; the function `set_written_book_pages` is 1.20.5+).
+VANILLA_LOOT_TYPES = {
+    'entry': frozenset(('alternatives', 'dynamic', 'empty', 'group', 'item', 'loot_table', 'sequence', 'tag')),
+    'function': frozenset((
+        'apply_bonus', 'copy_name', 'copy_nbt', 'copy_state', 'enchant_randomly', 'enchant_with_levels',
+        'exploration_map', 'explosion_decay', 'fill_player_head', 'furnace_smelt', 'limit_count',
+        'looting_enchant', 'reference', 'set_attributes', 'set_banner_pattern', 'set_contents', 'set_count',
+        'set_damage', 'set_enchantments', 'set_instrument', 'set_loot_table', 'set_lore', 'set_name', 'set_nbt',
+        'set_potion', 'set_stew_effect')),
+    'condition': frozenset((
+        'all_of', 'any_of', 'block_state_property', 'damage_source_properties', 'entity_properties',
+        'entity_scores', 'inverted', 'killed_by_player', 'location_check', 'match_tool', 'random_chance',
+        'random_chance_with_looting', 'reference', 'survives_explosion', 'table_bonus', 'time_check',
+        'value_check', 'weather_check')),
+}
 
 
 def analyse_loot(obj):
@@ -500,6 +523,25 @@ def analyse_loot(obj):
         raise ValueError('root is not a JSON object')
     items, tags, refs, setlt, other_items = set(), set(), set(), set(), set()
     other = Counter()
+    odd = {'entry': set(), 'function': set(), 'condition': set()}
+
+    def note_type(kind, name):
+        """Type names outside the vanilla registry ('' = no type key: the game reads "Unknown type ''")."""
+        if name is None:
+            odd[kind].add('')
+        elif not (name.startswith('minecraft:') and name[10:] in VANILLA_LOOT_TYPES[kind]):
+            odd[kind].add(name)
+
+    def conds(cs, depth=0):
+        if not isinstance(cs, list) or depth > 16:
+            return
+        for c in cs:
+            if not isinstance(c, dict):
+                continue
+            note_type('condition', nid(c.get('condition')))
+            if isinstance(c.get('term'), dict):          # inverted
+                conds([c['term']], depth + 1)
+            conds(c.get('terms'), depth + 1)             # any_of / all_of
 
     def funcs(fs):
         if not isinstance(fs, list):
@@ -508,6 +550,8 @@ def analyse_loot(obj):
             if not isinstance(f, dict):
                 continue
             fn = nid(f.get('function'))
+            note_type('function', fn)
+            conds(f.get('conditions'))
             if fn == 'minecraft:set_loot_table':
                 x = nid(f.get('name'))
                 if x:
@@ -519,6 +563,8 @@ def analyse_loot(obj):
     def entry(e):
         if not isinstance(e, dict):
             return 0
+        note_type('entry', nid(e.get('type')))
+        conds(e.get('conditions'))
         t = nid(e.get('type')) or '<missing type>'
         name = nid(e.get('name'))
         n = 0
@@ -566,6 +612,7 @@ def analyse_loot(obj):
             real += entry(e)
         if real:
             nonempty += 1
+        conds(p.get('conditions'))
         funcs(p.get('functions'))
     funcs(obj.get('functions'))
     cond = None
@@ -587,6 +634,8 @@ def analyse_loot(obj):
         rec['other_entry_items'] = sorted(other_items)
     if setlt:
         rec['set_loot_table'] = sorted(setlt)
+    if any(odd.values()):
+        rec['nonvanilla_types'] = dict((k, sorted(v)) for k, v in odd.items() if v)
     return rec
 
 
@@ -1055,6 +1104,15 @@ def scan_unit_data(u, src):
                                 rec['biomes'] = norm_ref_list(obj.get('biomes'))
                             if isinstance(obj.get('step'), str):
                                 rec['step'] = obj['step']
+                            # Integrated API mod gates (comma-separated mod ids, split without trimming)
+                            gate = {}
+                            for k in ('required_mods', 'illegal_mods', 'change_pool_mods'):
+                                if isinstance(obj.get(k), str) and obj[k]:
+                                    gate[k] = obj[k].split(',')
+                            if isinstance(obj.get('new_pool'), str):
+                                gate['new_pool'] = nid(obj['new_pool'])
+                            if gate:
+                                rec['mod_gate'] = gate
                             pl = proc_loot(obj)
                             if pl:
                                 rec['loot'] = pl
@@ -1921,7 +1979,7 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
                'empty': rec.get('empty', True) if rec.get('valid') else None,
                'forge_conditions': bool(rec.get('forge_conditions'))}
         for k in ('lenient_only', 'raw_control_chars_in_strings', 'condition_key', 'conditions',
-                  'other_entry_types', 'other_entry_items', 'set_loot_table', 'pools'):
+                  'other_entry_types', 'other_entry_items', 'set_loot_table', 'pools', 'nonvanilla_types'):
             if k in rec:
                 out[k] = rec[k]
         if wnote:
@@ -2271,6 +2329,28 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
                'in_structure_sets': sorted(in_sets.get(sid, ())), 'step': rec.get('step'),
                'referenced_templates': sorted(s for s in strings if s in templates and s not in pools),
                'referenced_pools': sorted(s for s in strings if s in pools and s != sp)}
+        # Integrated API 1.7.2 (bytecode-read 2026-10-11).  OptionalDependencyStructure.extraSpawningChecks
+        # is false unless EVERY required_mods entry is loaded and NO illegal_mods entry is.
+        # ModAdaptiveStructure.findGenerationPoint starts from new_pool when EVERY change_pool_mods entry
+        # is loaded, else from start_pool: the other pool is never a start.
+        gate = rec.get('mod_gate') or {}
+        if rec.get('type') == 'integrated_api:optional_dependency_structure':
+            need = [m for m in gate.get('required_mods', []) if m not in modids]
+            bad = [m for m in gate.get('illegal_mods', []) if m in modids]
+            if need:
+                out['never_generates'] = 'requires mod(s) that are not installed: ' + ', '.join(need)
+            elif bad:
+                out['never_generates'] = 'switched off by installed mod(s): ' + ', '.join(bad)
+        elif rec.get('type') == 'integrated_api:mod_adaptive_structure' and gate.get('new_pool'):
+            cpm = gate.get('change_pool_mods') or []
+            if cpm and all(m in modids for m in cpm):
+                out['pool_not_used'], sp = sp, gate['new_pool']
+                out['start_pool'] = sp
+            else:
+                out['pool_not_used'] = gate['new_pool']
+            out['referenced_pools'] = [p for p in out['referenced_pools'] if p not in (sp, out['pool_not_used'])]
+        if gate:
+            out['mod_gate'] = gate
         if unk:
             out['biomes_without_dimension'] = unk
         if miss:
@@ -2388,7 +2468,7 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
     pool_reach = defaultdict(set)       # pool -> structures reaching it
     for sid, s in wg.items():
         sp = s.get('start_pool')
-        placed = bool(s['in_structure_sets'])
+        placed = bool(s['in_structure_sets']) and not s.get('never_generates')
         dims = set(s['dimensions'])
         if sp and sp in pools:
             best, seenp = bfs([sp], s.get('size') if isinstance(s.get('size'), int) else None)
@@ -2701,7 +2781,7 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
         if e.get('inline_in', '').startswith('worldgen/structure '):
             sid = e['inline_in'].split(' ', 1)[1]
             dims.update(wg[sid]['dimensions'])
-            rch = bool(wg[sid]['in_structure_sets'])
+            rch = bool(wg[sid]['in_structure_sets']) and not wg[sid].get('never_generates')
         e['template_count'] = len(e['templates'])
         e['templates'] = e['templates'][:40]
         e['any_template_reachable'] = rch

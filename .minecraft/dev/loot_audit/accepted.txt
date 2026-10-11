@@ -55,5 +55,24 @@ RECIPE_REMOVED_NO_LOOT_SOURCE recipes/strip_mutant_monsters.js mutantmonsters:cr
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:watching_warglaive  # 8 "unassigned reserve" uniques are creative-only by decision; dormant_relic is OPEN (loot-audit-2026-10.md)
 RECIPE_REMOVED_NO_LOOT_SOURCE compat/class_artifacts_recipes.js rpgseteffects:magic_leather  # documented orphan ("no longer craftable, no use")
 
+# --- loot tables the game rejects at load (TABLE_REJECTED) ----------------------------------------
+# Dead data: nothing in this pack can roll these, so the rejection changes nothing in game. Their
+# "Couldn't parse element" lines stay in the boot log on purpose: a pack override would silently replace
+# the mod's real table if the missing mod were ever installed.
+TABLE_REJECTED idas:chests/dread_citadel/dread_citadel  # Ice and Fire compat. idas:iceandfire/dread_citadel is an integrated_api optional_dependency_structure with required_mods=iceandfire: extraSpawningChecks is false while the mod is absent (bytecode-read 2026-10-11), so the citadel never generates
+TABLE_REJECTED idas:chests/dread_citadel/dread_citadel_throne  # same structure (the Brutal Bosses files that name it only list chest tables a boss may spawn at)
+TABLE_REJECTED idas:chests/dread_citadel/dread_citadel_library  # same structure
+TABLE_REJECTED idas:chests/haunted_manor/if_haunted_manor  # Ice and Fire compat. idas:haunted_manor is a mod_adaptive_structure: the if_ pool is the start only when iceandfire is loaded, and only if_ pieces jigsaw into if_ pools
+TABLE_REJECTED idas:chests/labyrinth/if_labyrinth_tomb  # same, idas:labyrinth
+TABLE_REJECTED culturaldelights:blocks/avocado_bundle  # no such block: no class of Cultural Delights 0.16.5 names avocado_bundle (ModBlocks registers 8 avocado / roll blocks, not this one); leftover data, model and lang
+TABLE_REJECTED culturaldelights:blocks/avocado_leaf_carpet  # same: no avocado_leaf_carpet block
+TABLE_REJECTED culturaldelights:blocks/exotic_roll_medley_block  # misnamed by the mod: the block is culturaldelights:exotic_roll_medley and rolls blocks/exotic_roll_medley, which the pack ships with the ids corrected (kubejs/data, 2026-10-11)
+TABLE_REJECTED bettercopper:blocks/old_copper_block  # no such block in BetterCopper 1.3 (no class names it, no blockstate); leftover data file
+TABLE_REJECTED blahaj:blocks/blahaj_backpack  # Traveler's Backpack compat: Blahaj 0.6.2 registers no blahaj_backpack block (no class names it) and Traveler's Backpack is not installed
+# Decision owed by the operator (loot-audit-2026-10.md section 14): the mob's own table stays absent until then
+TABLE_REJECTED theabyss:entities/end_spider  # names theabyss:nether_nugget, which The Abyss does not register (it has anima / icora / thunder / vitae nuggets); what it should drop is a gameplay call
+TABLE_REJECTED theabyss:entities/slime_spider  # names theabyss:slime_stage_1, of which only a texture exists; same call
+TABLE_REJECTED ad_astra_more_structures:entities/mercury_boss  # names minecraft:magma_cube, which is not an item; the Mercury arena boss (ad_astra:zombified_mogler with this DeathLootTable) drops nothing of its own until a replacement is chosen
+
 # --- loot table JSON shipped by more than one pack source with different content ------------------
 ~JSON_SHADOWED totw_reworked:*tower_chest  # intended: the pack's icraft_loot_overrides copy overrides the two Towers of the Wild zips (Paxi puts listed zips above unlisted ones)
