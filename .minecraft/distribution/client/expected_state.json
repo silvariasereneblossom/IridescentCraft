@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e64b1936",
+    "generated_from":  "2034047f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3732,8 +3732,8 @@
                                                           "size":  5297
                                                       },
                   "config/iridescent_difficulty-common.toml":  {
-                                                                   "sha256":  "f1de6d2bb18bb63e6efef5e4ac5e6566d21fd72f226f190fa7b5300cf9580cfe",
-                                                                   "size":  6409
+                                                                   "sha256":  "ef10b11699fe794afb036e97f5f2a40eeb93f5a882bb1edf4fa41f04b4554df2",
+                                                                   "size":  6705
                                                                },
                   "config/ironfurnaces-client.toml":  {
                                                           "sha256":  "da5307a9495f5fda0f4d73fe57f099dea993a3687d4182c28fea8663ada36fe8",
@@ -6928,8 +6928,8 @@
                                                                                 "size":  8313
                                                                             },
                   "kubejs/server_scripts/bonfire/boss_arena_registry.js":  {
-                                                                               "sha256":  "7a8ec4d78fc3d52295e91f863f18a67a51dec18ccc154221da7a77ccd72f0d52",
-                                                                               "size":  21737
+                                                                               "sha256":  "2064953f84c722e93b2bd583c85f8897bc13ae807c224943dbb191c935d7c25b",
+                                                                               "size":  22032
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_bonfire_system.js":  {
                                                                                "sha256":  "2d1ffac014ed6bf63bd6418da3667921517602d346fe6f6cdd37b4c5e5faec9a",
@@ -8376,7 +8376,7 @@
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
-                                                                    "sha256":  "16714d218b12a978107438ff93134fc4d1b514b4b97cf05587e859cf6c4e3e39",
+                                                                    "sha256":  "5fa27353ac67dd09d26acd8c045c5052183ae998f596212b548dcdf50ef4f7e1",
                                                                     "size":  365
                                                                 },
                   "mods/.index/iridescent-durability-clamp.pw.toml":  {
