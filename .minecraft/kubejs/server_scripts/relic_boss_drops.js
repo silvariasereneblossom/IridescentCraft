@@ -121,9 +121,38 @@ try {
 // LivingDropsEvent, so it is bound here via KubeJS EntityEvents.death (a
 // reload-safe KubeJS EventGroup handler; the pack already uses this event in
 // scaling/dimension_mechanics.js). Guaranteed drop -- the finale relic, and the
-// Dragon is a deliberate, resummonable endgame kill, so no RNG. Spawned via
-// /summon item at the death position.
+// Dragon is a deliberate, resummonable endgame kill, so no RNG.
+//
+// GIVEN TO THE KILLER (operator ruling 2026-10-11), not dropped: the death
+// event fires where the dragon is when its health reaches zero, usually in
+// mid-air and often past the island's edge, so a dropped item can fall into the
+// void. Who gets it:
+//   1. the player the killing damage is credited to (event.source.player);
+//   2. no such player (a bed or End Crystal explosion carries none): the
+//      player nearest to the dragon in the dragon's dimension;
+//   3. nobody in the dimension: dropped at the dragon, as before.
+// player.give() puts the eye in the inventory, or at the player's feet when
+// the inventory is full.
 // =============================================================================
+function nearestPlayerTo(server, entity) {
+  var best = null
+  var bestDist = -1
+  try {
+    var dim = String(entity.level.dimension)
+    var x = entity.getX(), y = entity.getY(), z = entity.getZ()
+    server.players.forEach(function (p) {
+      try {
+        if (String(p.level.dimension) !== dim) return
+        var d = p.getDistance(x, y, z)
+        if (best === null || d < bestDist) { best = p; bestDist = d }
+      } catch (e1) { /* skip this player */ }
+    })
+  } catch (e) {
+    console.warn('[relic_boss_drops] dragon: nearest-player lookup failed: ' + e)
+  }
+  return best
+}
+
 EntityEvents.death(function (event) {
   try {
     var entity = event.entity
@@ -133,12 +162,21 @@ EntityEvents.death(function (event) {
     // [2026-10-11] Was `server.runCommandSilent('summon minecraft:item ' + pos.x ...)`:
     // the Vec3 `.x` read threw an uncatchable NullPointerException (and cut off the
     // death handlers that load after this file), and a server-source `summon` runs
-    // in the OVERWORLD, not in the End. Entity.spawnAtLocation(ItemStack) drops the
-    // item at the dragon, in the dragon's level.
+    // in the OVERWORLD, not in the End.
     var eye = Item.of('iridescent_relics:dragons_eye')
     if (!eye || eye.isEmpty()) { console.warn('[relic_boss_drops] dragon: iridescent_relics:dragons_eye is not registered; skipped'); return }
-    entity.spawnAtLocation(eye)
-    console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye (guaranteed finale)')
+    var killer = null
+    var how = 'killer'
+    try { killer = event.source ? event.source.player : null } catch (e0) { killer = null }
+    if (!killer) { killer = nearestPlayerTo(event.server, entity); how = 'nearest player' }
+    if (killer) {
+      killer.give(eye)
+      console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye given to ' + killer.username + ' (' + how + ')')
+    } else {
+      // Entity.spawnAtLocation(ItemStack): at the dragon, in the dragon's level.
+      entity.spawnAtLocation(eye)
+      console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye dropped at the dragon (no player in the dimension)')
+    }
   } catch (e) {
     console.warn('[relic_boss_drops] dragon death handler error: ' + e)
   }
