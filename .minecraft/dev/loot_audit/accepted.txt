@@ -69,10 +69,6 @@ TABLE_REJECTED culturaldelights:blocks/avocado_leaf_carpet  # same: no avocado_l
 TABLE_REJECTED culturaldelights:blocks/exotic_roll_medley_block  # misnamed by the mod: the block is culturaldelights:exotic_roll_medley and rolls blocks/exotic_roll_medley, which the pack ships with the ids corrected (kubejs/data, 2026-10-11)
 TABLE_REJECTED bettercopper:blocks/old_copper_block  # no such block in BetterCopper 1.3 (no class names it, no blockstate); leftover data file
 TABLE_REJECTED blahaj:blocks/blahaj_backpack  # Traveler's Backpack compat: Blahaj 0.6.2 registers no blahaj_backpack block (no class names it) and Traveler's Backpack is not installed
-# Decision owed by the operator (loot-audit-2026-10.md section 14): the mob's own table stays absent until then
-TABLE_REJECTED theabyss:entities/end_spider  # names theabyss:nether_nugget, which The Abyss does not register (it has anima / icora / thunder / vitae nuggets); what it should drop is a gameplay call
-TABLE_REJECTED theabyss:entities/slime_spider  # names theabyss:slime_stage_1, of which only a texture exists; same call
-TABLE_REJECTED ad_astra_more_structures:entities/mercury_boss  # names minecraft:magma_cube, which is not an item; the Mercury arena boss (ad_astra:zombified_mogler with this DeathLootTable) drops nothing of its own until a replacement is chosen
 
 # --- loot table JSON shipped by more than one pack source with different content ------------------
 ~JSON_SHADOWED totw_reworked:*tower_chest  # intended: the pack's icraft_loot_overrides copy overrides the two Towers of the Wild zips (Paxi puts listed zips above unlisted ones)

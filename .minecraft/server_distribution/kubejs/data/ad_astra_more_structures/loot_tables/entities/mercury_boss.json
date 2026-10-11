@@ -1,0 +1,64 @@
+{
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:raw_iron",
+                    "functions": [
+                        {
+                            "count": {
+                                "type": "minecraft:uniform",
+                                "max": 36,
+                                "min": 20
+                            },
+                            "add": false,
+                            "function": "minecraft:set_count"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:magma_cream",
+                    "functions": [
+                        {
+                            "count": {
+                                "type": "minecraft:uniform",
+                                "max": 32,
+                                "min": 16
+                            },
+                            "add": false,
+                            "function": "minecraft:set_count"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:blaze_rod",
+                    "functions": [
+                        {
+                            "count": {
+                                "type": "minecraft:uniform",
+                                "max": 16,
+                                "min": 8
+                            },
+                            "add": false,
+                            "function": "minecraft:set_count"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
