@@ -69,6 +69,18 @@
 #      (launcher closed, hung, or the box off) is YELLOW: from the share alone
 #      this tool cannot tell what the JVM is doing then. A launcher older than
 #      this check writes no file; that is reported and not judged.
+#   7. Access posture - who can join. Reads server.properties (online-mode,
+#      white-list, enforce-whitelist), counts whitelist.json and ops.json (a
+#      player name is never printed) and looks for the switch on the
+#      launcher's override list. RED when the whitelist is OFF on a public
+#      server: until 2026-10-11 the live server ran for months with
+#      online-mode=false and white-list=false, because the tracked
+#      server.properties carries development values and every tool that
+#      looked at the box looked at something else. YELLOW when the switch is
+#      only an edit in the file (the next sync that rewrites the file would
+#      switch it off), when the list is on and empty (nobody can join), or
+#      when an entry carries a UUID the server will never match. Every run
+#      says whether names are authenticated (online-mode).
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -76,6 +88,7 @@
 #   pwsh .minecraft\dev\verify-server.ps1 -ServerRoot "<path>" # non-default live server root
 #   pwsh .minecraft\dev\verify-server.ps1 -NoPull              # skip the step-0 working-tree pull (still fetches origin)
 #   pwsh .minecraft\dev\verify-server.ps1 -Fix                 # STOP THE SERVER FIRST: copy correct jar(s) onto live
+#   pwsh .minecraft\dev\verify-server.ps1 -NotPublic           # a server the internet cannot reach: whitelist off is YELLOW, not RED
 #
 # Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
 #             3 = parity, but the world backups are RED (stale / none / failed);
@@ -84,6 +97,9 @@
 #             5 = parity, but the SERVER IS DOWN or a restart is stuck: the
 #                 launcher is up and no JVM has existed for 10 minutes or more.
 #                 Reported ahead of 3 and 4 (a down server usually trips 4 too).
+#             6 = parity and the server is up, but ACCESS IS RED: the whitelist
+#                 is off on a public server (or server.properties is unreadable).
+#                 Reported ahead of 3 and 4, behind 5.
 # Read-only by default. -Fix is the only mutating mode and only ever WRITES to
 # the live server root (never the repo). It surfaces drift; it does NOT fix the
 # underlying launcher cause (manifest-blind GUI cleanup / marker short-circuit /
@@ -94,7 +110,8 @@
 param(
     [string]$ServerRoot = "Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server",
     [switch]$Fix,
-    [switch]$NoPull
+    [switch]$NoPull,
+    [switch]$NotPublic
 )
 
 # Continue (not Stop): this script makes many native `git` calls, several with
@@ -518,6 +535,135 @@ function Get-LauncherLiveness {
 $live = Get-LauncherLiveness -Root $ServerRoot -NowUnix ([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())
 
 # =============================================================================
+# 7. ACCESS POSTURE  (server.properties, whitelist.json, the override list)
+# =============================================================================
+# >>> access
+# The UUID an offline-mode server gives a player of this exact name (the same
+# arithmetic as server_distribution\manage_whitelist.ps1, which has the why).
+function Get-OfflineUuid {
+    param([string]$Name)
+    $md5 = [System.Security.Cryptography.MD5]::Create()
+    try { $h = $md5.ComputeHash([System.Text.Encoding]::UTF8.GetBytes("OfflinePlayer:$Name")) } finally { $md5.Dispose() }
+    $h[6] = ($h[6] -band 0x0f) -bor 0x30
+    $h[8] = ($h[8] -band 0x3f) -bor 0x80
+    $hex = -join ($h | ForEach-Object { $_.ToString('x2') })
+    return ('{0}-{1}-{2}-{3}-{4}' -f $hex.Substring(0, 8), $hex.Substring(8, 4), $hex.Substring(12, 4), $hex.Substring(16, 4), $hex.Substring(20, 12))
+}
+# Counts only: a player name never appears in this tool's output, which gets
+# pasted into reports and into a public repository's issues.
+function Get-AccessPosture {
+    param([string]$Root, [bool]$Public)
+    $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]) }
+    $p = @{}
+    try {
+        foreach ($l in (Get-Content -LiteralPath (Join-Path $Root 'server.properties') -ErrorAction Stop)) {
+            if ($l -match '^\s*#' -or $l -notmatch '=') { continue }
+            $kv = $l -split '=', 2
+            $p[$kv[0].Trim()] = $kv[1].Trim()
+        }
+    } catch {
+        $r.State = 'RED'
+        $r.Line = "server.properties could not be read ($($_.Exception.Message)): who can join this server is unknown"
+        return $r
+    }
+    $online = ($p['online-mode'] -eq 'true')
+    $wlOn   = ($p['white-list'] -eq 'true')
+    $enf    = ($p['enforce-whitelist'] -eq 'true')
+
+    $readList = {
+        param([string]$file)
+        $res = [pscustomobject]@{ Present = $false; Items = @(); Error = $null }
+        $fp = Join-Path $Root $file
+        if (-not (Test-Path -LiteralPath $fp -PathType Leaf)) { return $res }
+        $res.Present = $true
+        try {
+            $raw = ([System.IO.File]::ReadAllText($fp, [System.Text.Encoding]::UTF8)).TrimStart([char]0xFEFF)
+            if ($raw.Trim()) {
+                # two steps: Windows PowerShell 5.1 hands a JSON array down the pipeline as ONE object
+                $parsed = $raw | ConvertFrom-Json
+                $res.Items = @($parsed | Where-Object { $null -ne $_ })
+            }
+        } catch { $res.Error = $_.Exception.Message }
+        return $res
+    }
+    $wl  = & $readList 'whitelist.json'
+    $ops = & $readList 'ops.json'
+    $entries = @($wl.Items).Count
+    $wrong = 0
+    if (-not $online) {
+        foreach ($e in @($wl.Items)) {
+            if ([string]$e.uuid -ne (Get-OfflineUuid ([string]$e.name))) { $wrong++ }
+        }
+    }
+
+    # Is the switch on the launcher's override list, i.e. put back before every
+    # server start whatever a sync did to the file?
+    $pin = @{}
+    $ovError = $null
+    $ovPath = Join-Path $Root '.icraft_config_overrides.json'
+    if (Test-Path -LiteralPath $ovPath) {
+        try {
+            foreach ($o in @((Get-Content -LiteralPath $ovPath -Raw -Encoding UTF8 | ConvertFrom-Json).overrides)) {
+                if ($null -eq $o) { continue }
+                if (([string]$o.file).ToLower() -eq 'server.properties' -and -not $o.revert) { $pin[[string]$o.key] = [string]$o.value }
+            }
+        } catch { $ovError = $_.Exception.Message }
+    }
+    $pinnedOn = ($pin['white-list'] -eq 'true')
+
+    $summary = ('online-mode={0}, white-list={1}, enforce-whitelist={2}; {3} whitelist entr{4}, {5} operator(s)' -f `
+        $online.ToString().ToLower(), $wlOn.ToString().ToLower(), $enf.ToString().ToLower(), `
+        $entries, $(if ($entries -eq 1) { 'y' } else { 'ies' }), @($ops.Items).Count)
+
+    if (-not $wlOn) {
+        if ($pinnedOn) {
+            $r.State = 'YELLOW'
+            $r.Line = "$summary. The file says white-list=false and the override list puts true back before the next server start (a sync has rewritten the file, or the override was set while the server ran). The RUNNING server keeps what it started with."
+        } elseif ($Public) {
+            $r.State = 'RED'
+            $anyName = ''
+            if (-not $online) { $anyName = ', under any name they choose' }
+            $r.Line = "$summary. THE WHITELIST IS OFF on a public server: anyone who installs the pack can join$anyName."
+        } else {
+            $r.State = 'YELLOW'
+            $r.Line = "$summary. The whitelist is off; accepted because -NotPublic says this server cannot be reached from the internet."
+        }
+    } elseif ($entries -eq 0) {
+        $r.State = 'YELLOW'
+        $r.Line = "$summary. The whitelist is on and empty: NOBODY can join (operators excepted). Add players with manage_whitelist.ps1."
+    } elseif (-not $pinnedOn) {
+        $r.State = 'YELLOW'
+        $r.Line = "$summary. white-list=true is only an edit in the file, not on the override list: the next sync that rewrites server.properties switches the whitelist OFF. Pin it:  icraft settings pin server.properties white-list --pack-value false"
+    } else {
+        $r.Line = "$summary. The switch is on the override list: the launcher puts it back before every server start."
+    }
+
+    if ($wl.Error) {
+        if ($r.State -eq 'GREEN') { $r.State = 'YELLOW' }
+        $r.Notes.Add("whitelist.json does not parse ($($wl.Error)): the server may start with an empty list") | Out-Null
+    }
+    if ($wrong -gt 0) {
+        if ($r.State -eq 'GREEN') { $r.State = 'YELLOW' }
+        $r.Notes.Add("$wrong whitelist entr$(if ($wrong -eq 1) { 'y has' } else { 'ies have' }) a UUID that is not the offline UUID of the name (made by the console's 'whitelist add'?): refused at login. manage_whitelist.ps1 -Check names them.") | Out-Null
+    }
+    if ($ovError) {
+        $r.Notes.Add("the override list is unreadable ($ovError): the launcher applies NO override until it is repaired") | Out-Null
+    }
+    if ($enf -and $pin['enforce-whitelist'] -ne 'true') {
+        $r.Notes.Add('enforce-whitelist=true is not on the override list: a sync that rewrites the file resets it') | Out-Null
+    }
+    if ($wlOn -and -not $enf) {
+        $r.Notes.Add('enforce-whitelist=false: a player taken off the list stays online until they leave') | Out-Null
+    }
+    if (-not $online) {
+        $r.Notes.Add('online-mode=false: names are NOT authenticated. The whitelist keeps strangers out; it does not stop someone who signs in under a listed player''s name. Only online mode closes that.') | Out-Null
+    }
+    return $r
+}
+# <<< access
+$access = Get-AccessPosture -Root $ServerRoot -Public (-not $NotPublic)
+
+# =============================================================================
 # REPORT
 # =============================================================================
 Write-Host ""
@@ -536,6 +682,17 @@ Write-Host ("  {0}: {1}" -f $(if ($live.State -eq 'NONE') { 'NOT JUDGED' } else 
 foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -match 'FAILED|continuously') { 'Yellow' } else { 'DarkGray' }) }
 if ($IsVerbose -and $live.State -eq 'RED') {
     Write-Host "    cause: the launcher is alive and the server is not. List the launcher's CHILD processes on the box (name, pid, start time, CPU - never command lines) twice, a minute apart: a child with an old start time and no CPU is what it is waiting on. logs\restart_policy.log has the stop time and any WATCHDOG line. See deployment guide section 14." -ForegroundColor DarkYellow
+}
+Write-Host ""
+
+Write-Host "-- access (server.properties, whitelist.json, the override list) --" -ForegroundColor Cyan
+$accessColor = 'Green'
+if ($access.State -eq 'YELLOW') { $accessColor = 'Yellow' }
+if ($access.State -eq 'RED')    { $accessColor = 'Red' }
+Write-Host ("  {0}: {1}" -f $access.State, $access.Line) -ForegroundColor $accessColor
+foreach ($n in $access.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor DarkYellow }
+if ($IsVerbose -and $access.State -eq 'RED') {
+    Write-Host "    cause: server.properties in the repo carries the pack's development values (white-list=false). A full-zip sync, or any pack change to that file, puts them back unless the switch is on the launcher's override list. See deployment guide section 15." -ForegroundColor DarkYellow
 }
 Write-Host ""
 
@@ -726,6 +883,10 @@ if (-not $realDrift) {
         Write-Host "=== SERVER DOWN ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
         Write-Host "    -> the deploy is where it should be and nobody can play: find what the launcher is waiting on (deployment guide section 14) before anything else." -ForegroundColor Yellow
+        if ($access.State -eq 'RED') {
+            Write-Host "=== ACCESS RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
+        }
         if ($backupState -eq 'RED') {
             Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
@@ -738,6 +899,23 @@ if (-not $realDrift) {
     }
     if ($live.State -eq 'YELLOW') {
         Write-Host ("    liveness YELLOW: {0}" -f $live.Line) -ForegroundColor Yellow
+    }
+    if ($access.State -eq 'RED') {
+        Write-Host "=== ACCESS RED ===" -ForegroundColor Red
+        Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
+        Write-Host "    -> the deploy is fine and the door is open. On the server: white-list=true in server.properties, pin it (icraft settings pin server.properties white-list --pack-value false), restart. Deployment guide section 15." -ForegroundColor Yellow
+        if ($backupState -eq 'RED') {
+            Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
+        }
+        if ($loudState -ne 'GREEN') {
+            Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
+        }
+        exit 6
+    }
+    if ($access.State -eq 'YELLOW') {
+        Write-Host ("    access YELLOW: {0}" -f $access.Line) -ForegroundColor Yellow
     }
     if ($backupState -eq 'RED') {
         Write-Host "=== BACKUPS RED ===" -ForegroundColor Red
@@ -763,6 +941,10 @@ if (-not $realDrift) {
 if ($live.State -eq 'RED') {
     Write-Host "=== SERVER DOWN (as well as the drift below) ===" -ForegroundColor Red
     Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
+}
+if ($access.State -eq 'RED') {
+    Write-Host "=== ACCESS RED (as well as the drift below) ===" -ForegroundColor Red
+    Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
 }
 if ($backupState -eq 'RED') {
     Write-Host "=== BACKUPS RED (as well as the drift below) ===" -ForegroundColor Red

@@ -32,6 +32,11 @@ $headers = @{ 'User-Agent' = 'IridescentCraft-Server' }
 $shaFile = Join-Path $ServerDir '.icraft_last_sha'
 $exclude = @('world', 'logs', 'crash-reports', 'backups', 'libraries', '.cache')
 $selfUpdateFiles = @('iridescentserver.bat', 'iridescentserver.sh', 'phase0_sync.ps1')
+# This server's own identity files (who may join, who is an operator, who is
+# banned, the name cache). They are not the pack's: a sync never writes or
+# deletes them, whatever the repo says about them. Root files only. Keep in
+# step with SERVER_OWNED_FILES in iridescent-launcher/icraft-core/src/sync.rs.
+$serverOwned = @('whitelist.json', 'ops.json', 'banned-ips.json', 'banned-players.json', 'usercache.json')
 
 # -- Step 1: Get remote SHA --
 $localSha = ''
@@ -101,6 +106,10 @@ if ($useDiff) {
             if ($relPath.StartsWith("$ex/") -or $relPath -eq $ex) { $skip = $true; break }
         }
         if ($skip) { $skipped++; continue }
+        if ($serverOwned -contains $relPath) {
+            Write-Host "    [kept] $relPath is this server's own: the pack's change to it is not applied" -ForegroundColor DarkGray
+            $skipped++; continue
+        }
 
         $target = Join-Path $ServerDir $relPath
 
@@ -178,6 +187,10 @@ try {
     Write-Host "  Syncing configs, scripts, datapacks..."
     foreach ($item in Get-ChildItem $src) {
         if ($item.PSIsContainer -and $exclude -contains $item.Name) { continue }
+        if (-not $item.PSIsContainer -and $serverOwned -contains $item.Name) {
+            Write-Host "    [kept] $($item.Name) is this server's own: not copied from the pack" -ForegroundColor DarkGray
+            continue
+        }
         if ($item.Name -eq 'mods') {
             if (-not (Test-Path "$dest\mods\.index")) { New-Item -ItemType Directory -Path "$dest\mods\.index" -Force | Out-Null }
             # Mirror .index: copy new/changed, DELETE stale pw.toml files

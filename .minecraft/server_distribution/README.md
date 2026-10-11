@@ -62,24 +62,51 @@ The install script will:
 | `global_packs/` | Paxi datapacks (required for progression) |
 | `forge-*-installer.jar` | Forge server installer |
 | `eula.txt` | Minecraft EULA (pre-accepted) |
-| `server.properties` | Pre-configured server settings |
+| `server.properties` | Pack-default server settings (see Server Configuration) |
+| `manage_whitelist.ps1` | Whitelist tool for an offline-mode server |
 | `start.bat` / `start.sh` | Server launch scripts |
 
 ---
 
 ## Server Configuration
 
-The included `server.properties` is pre-configured for IridescentCraft:
+The included `server.properties` holds the **pack defaults**. They suit a new or private server:
 
-| Setting | Value | Why |
-|---------|-------|-----|
-| max-tick-time | 120000 | Prevents watchdog kills with 420+ mods |
-| view-distance | 8 | Reduced for performance |
-| simulation-distance | 6 | Reduced for performance |
+| Setting | Pack default | Why |
+|---------|--------------|-----|
+| max-tick-time | -1 | Vanilla tick watchdog off: a 420+ mod tick can run long. The launcher restarts a server that stops answering |
+| view-distance | 6 | Reduced for performance |
+| simulation-distance | 4 | Reduced for performance |
+| entity-broadcast-range-percentage | 65 | Reduced for performance |
 | allow-flight | true | Required for Icarus wings, jetpacks, MekaSuit |
 | spawn-protection | 0 | Handled by KubeJS instead |
 | difficulty | hard | Intended modpack difficulty |
 | enable-command-block | true | Used for modpack features |
+| online-mode | false | Development default: accounts are not checked |
+| white-list | false | Development default: anyone may join |
+
+**Before your server can be reached from the internet, switch its whitelist on (or `online-mode`).** With the two development defaults above, anyone who installs the pack can join, under any name.
+
+### Settings that belong to your server
+
+A sync from the repository overwrites `server.properties`, so a value you edit in the file does not last. A value that should differ on your server goes on the launcher's override list, and the launcher writes it back before every server start:
+
+```
+icraft settings set server.properties <key> <value>                    a new value
+icraft settings pin server.properties <key> --pack-value <default>     keep a value you already edited in the file
+icraft settings status                                                 what this server overrides
+```
+
+Settings usually chosen per server:
+
+| Setting | Options |
+|---------|---------|
+| `white-list`, `enforce-whitelist` | `true` on any server strangers can reach |
+| `online-mode` | `true` when every player has a paid account. Switching it on a world people have played gives every player a new identity (inventory, claims and quests are stored under the old one), so plan it |
+| `view-distance` / `simulation-distance` | 8 / 6 if the machine has headroom |
+| `max-tick-time` | a number of milliseconds (for example 120000) switches the vanilla watchdog back on |
+
+(`server.properties.production`, an older template for such values, was removed in October 2026: nothing ever read it.)
 
 ### Adjusting RAM
 
