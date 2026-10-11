@@ -720,6 +720,13 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     log::info!("[sync] mirroring {} -> {}", src.display(), cfg.server_dir.display());
     mirror_distro(&src, &cfg.server_dir)?;
 
+    // The overlay above never deletes. For the trees that exist ONLY as authored
+    // in the repo, drop what the repo no longer has (LIVE; see
+    // `prune_to_repo_tree`). Runs while the extract is still on disk.
+    for root in PRUNE_TO_REPO_TREE.iter().copied() {
+        prune_to_repo_tree(&src, &cfg.server_dir, root);
+    }
+
     // Expected-state deletion/repair pass: runs AFTER the non-deleting overlay
     // and BEFORE the extract dir is removed (repairs source from `src`). Closes
     // the strand-on-delete gap (repo deletions left orphaned files on disk after
@@ -740,6 +747,126 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     let _ = fs::remove_dir_all(&extract_dir);
     log::info!("[sync] full sync to {}", short_sha(remote_sha));
     Ok(())
+}
+
+// =============================================================================
+// Phase 0 — prune repo-authored trees after a full-zip overlay (LIVE)
+// =============================================================================
+//
+// Why this exists (2026-10-10): the full-zip overlay is non-deleting, and a
+// batch that touches >= COMPARE_FILES_CAP files always takes the full-zip path,
+// so exactly the big cleanups never propagated. The live box was still running
+// 11 server scripts the repo had dropped or moved months earlier (hooks
+// registered twice, `recipes/tier_skip.js` still adding recipes) and an 83-file
+// `kubejs/data/apotheosis/affixes` tree that kept OVERRIDING the fixed Paxi
+// affix pack. The manifest-based `expected_state_pass` below could not be
+// switched live to fix that: its would-delete list on the same box was 159
+// files, ~47 of them runtime-generated mod configs under `config/` that the repo
+// never authored.
+//
+// So deletions go live only where they are unambiguous, and against the one
+// source that cannot be stale: the tree just extracted from the zip. A file on
+// disk under one of PRUNE_TO_REPO_TREE that the extracted repo tree does not
+// contain is a repo deletion, by definition -- these trees are authored in the
+// repo and nothing writes into them at runtime (KubeJS's own runtime output
+// lives in kubejs/exported, kubejs/logs, kubejs/.cache and kubejs/config, none
+// of which is listed). This is the same rule `mirror_mods` has always applied
+// to stale `mods/.index/*.pw.toml`. It does not depend on `expected_state.json`
+// at all, so a manifest that lags HEAD can neither delete a newly added script
+// nor keep a deleted one alive.
+//
+// Safety:
+//   * FAIL-KEEP: missing repo tree, walk error, or an implausibly large delete
+//     set (more than PRUNE_MAX_PCT of the tree, e.g. a truncated extract) ->
+//     delete nothing, warn loudly.
+//   * `ICRAFT_EXPECTED_STATE_DRY=1` turns this into report-only too (one kill
+//     switch for every delete pass).
+//   * `config/` is deliberately NOT here; it stays report-only via
+//     `expected_state_pass`.
+
+/// Trees pruned to the extracted repo tree after a full-zip overlay.
+const PRUNE_TO_REPO_TREE: &[&str] = &[
+    "kubejs/server_scripts",
+    "kubejs/startup_scripts",
+    "kubejs/client_scripts",
+    "kubejs/data",
+    "kubejs/assets",
+];
+
+/// Refuse to prune a tree when more than this percentage of its files would be
+/// deleted (a broken/truncated extract looks exactly like "the repo dropped
+/// everything").
+const PRUNE_MAX_PCT: usize = 25;
+
+/// ...but always allow at least this many deletions, so a small tree can still
+/// lose most of its files legitimately.
+const PRUNE_MIN_ALLOWED: usize = 25;
+
+/// Delete every file under `<dest_root>/<root>` that `<src>/<root>` (the freshly
+/// extracted repo tree) does not contain. Soft-fails; never aborts the sync.
+fn prune_to_repo_tree(src: &Path, dest_root: &Path, root: &str) {
+    let dest_tree = join_rel(dest_root, root);
+    if !dest_tree.is_dir() {
+        return; // nothing on disk to prune
+    }
+    let src_tree = join_rel(src, root);
+    if !src_tree.is_dir() {
+        // The repo has no such tree at all: far more likely a bad extract than
+        // a deliberate removal of the whole tree. FAIL-KEEP.
+        log::warn!("[sync] [prune] {} is not in the extracted repo tree - keeping everything", root);
+        return;
+    }
+
+    let mut on_disk: Vec<String> = Vec::new();
+    if let Err(e) = collect_rel_files(&dest_tree, dest_root, &mut on_disk) {
+        log::warn!("[sync] [prune] walk failed under {} ({}) - keeping everything", root, e);
+        return;
+    }
+
+    let mut considered = 0usize;
+    let mut stale: Vec<String> = Vec::new();
+    for rel in on_disk {
+        if is_volatile_dir(&rel) {
+            continue; // runtime dirs are never repo-authored
+        }
+        considered += 1;
+        if !join_rel(src, &rel).exists() {
+            stale.push(rel);
+        }
+    }
+    if stale.is_empty() {
+        return;
+    }
+
+    let allowed = std::cmp::max(PRUNE_MIN_ALLOWED, considered * PRUNE_MAX_PCT / 100);
+    if stale.len() > allowed {
+        log::warn!(
+            "[sync] [prune] {}: {} of {} files are not in the extracted repo tree (limit {}) - REFUSING to delete any; check the extract",
+            root, stale.len(), considered, allowed
+        );
+        return;
+    }
+
+    let report_only = std::env::var("ICRAFT_EXPECTED_STATE_DRY").ok().as_deref() == Some("1");
+    let mut deleted = 0usize;
+    for rel in &stale {
+        if report_only {
+            log::info!("[sync] [prune]   would-delete {}", rel);
+            continue;
+        }
+        match fs::remove_file(join_rel(dest_root, rel)) {
+            Ok(()) => {
+                deleted += 1;
+                log::info!("[sync] [prune]   deleted {} (no longer in the repo)", rel);
+            }
+            Err(e) => log::warn!("[sync] [prune]   [FAIL] delete {}: {}", rel, e),
+        }
+    }
+    if report_only {
+        log::info!("[sync] [prune] {}: would-delete {} (ICRAFT_EXPECTED_STATE_DRY=1)", root, stale.len());
+    } else {
+        log::info!("[sync] [prune] {}: deleted {} of {} stale file(s)", root, deleted, stale.len());
+    }
 }
 
 // =============================================================================
@@ -798,6 +925,13 @@ pub fn verify_expected_state(cfg: &ServerConfig) {
 // (or flip the const) to go live. REPAIRS are already safe on the serve() path:
 // extract_src=None there, so a hash-mismatch becomes "fetch-needed" (logged, NOT
 // applied), which is why a stale manifest can't revert the drifted `.pw.toml`.
+//
+// 2026-10-10: the review happened (159 would-delete on the live box) and the
+// answer was NO for this pass as a whole -- ~47 of them were runtime-generated
+// `config/` files. The unambiguous subset (repo-authored kubejs trees) now goes
+// live through `prune_to_repo_tree` on the full-zip path instead, keyed on the
+// extracted tree rather than this manifest. This pass stays the report for
+// `config/` and for the every-launch verify.
 
 /// Dry-run default. Deletions are report-only until an operator confirms the
 /// `would-delete` report (see the block comment above for why this is NOT yet
