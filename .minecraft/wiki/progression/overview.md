@@ -8,7 +8,7 @@ IridescentCraft uses a 4-tier progression system gated by AStages. Tiers advance
 |------|-------|------------|-----------|------------|-------------|
 | 1 | Bronze Age Explorer | Overworld only | Create, Pretty Pipes | Botania, Iron's Spells | Learning basics |
 | 2 | Enchanted Adventurer | Twilight Forest, Blue Skies, The Aether | Thermal, IF (basic) | Ars Nouveau | Specialization |
-| 3 | Empowered Slayer | Undergarden, Deeper Darker, Nether | IF (advanced), Mekanism (basic), RS | Occultism, Forbidden & Arcanus | Major power spike |
+| 3 | Empowered Slayer | Undergarden, Deeper Darker, Nether, The Abyss | IF (advanced), Mekanism (basic), RS | Occultism, Forbidden & Arcanus | Major power spike |
 | 4 | God-Killer | Deep Aether, The End | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power |
 
 ## The Token Economy (advance via threshold OR boss-rush)
@@ -44,11 +44,13 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 | Tier | Dimensions | Start % | Cap % | Cap Hours | Elite Spawn % |
 |------|------------|---------|-------|-----------|------------------|
 | 1 | Overworld | 150% | 300% | 100h | 5% |
-| 2 | Twilight Forest, Blue Skies (Everbright/Everdawn), The Aether | 200% | 350% | 100h | 7-8% |
-| 3 | The Undergarden, Deeper and Darker (Otherside), The Nether | 300% | 450% | 100h | 10-12% |
-| 4 | Deep Aether, The End | 600% | 1000% | 200h | 13-15% |
+| 2 | Twilight Forest, Blue Skies (Everbright/Everdawn), The Aether (Deep Aether's biomes included) | 200% | 350% | 100h | 7-8% |
+| 3 | The Undergarden, Deeper and Darker (Otherside), The Nether, The Abyss (and its Frost World) | 300% | 450% | 100h | 10-12% |
+| 4 | The End | 600% | 1000% | 200h | 13-15% |
 
-After Ender Dragon is killed in-world: **The End uncaps** — multiplier extrapolates past 1000% indefinitely. Deep Aether stays capped at 1000%.
+After Ender Dragon is killed in-world: **The End uncaps** — multiplier extrapolates past 1000% indefinitely.
+
+**Deep Aether scales with the Aether.** Deep Aether is not a separate dimension — its biomes generate inside the Aether — so its ordinary mobs follow the Aether's Tier 2 curve and share its timer. Its bosses, materials and loot are still Tier 4 content. Any dimension not named in the table uses the Tier 1 curve.
 
 All values configurable via `config/iridescent_difficulty-common.toml` (per-tier `startPct`/`capPct`/`capHours`, per-dimension tier mapping, per-dimension `uncapAfterEnderDragon` flag).
 

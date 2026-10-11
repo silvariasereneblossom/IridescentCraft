@@ -34,9 +34,10 @@ import org.apache.logging.log4j.Logger;
  * <p>Tier mapping (from {@code wiki/progression/overview.md}):
  * <ul>
  *   <li>T1 — Overworld</li>
- *   <li>T2 — Twilight Forest, Blue Skies, The Aether</li>
- *   <li>T3 — Undergarden, Deeper Darker, Nether, The Abyss</li>
- *   <li>T4 — Deep Aether, The End (End uncaps after ED kill)</li>
+ *   <li>T2 — Twilight Forest, Blue Skies, The Aether (Deep Aether's biomes
+ *       are part of the Aether dimension, so they are T2 here)</li>
+ *   <li>T3 — Undergarden, Deeper Darker, Nether, The Abyss + its Frost World</li>
+ *   <li>T4 — The End (uncaps after ED kill)</li>
  * </ul>
  *
  * <p>Multiplier scope: applied to {@code generic.max_health},
@@ -46,7 +47,8 @@ import org.apache.logging.log4j.Logger;
  *
  * <p>Boss scaling stacks ON TOP via the existing ProgressiveBosses mod (vanilla
  * bosses) + {@code kubejs/server_scripts/scaling/boss_progressive.js}
- * (modded bosses). Bosses are explicitly skipped in this mod's spawn handler.
+ * (modded bosses). Bosses are skipped in this mod's spawn handler ONLY when
+ * their id is in the config's {@code excludes.entities} list.
  */
 @Mod(IridescentDifficulty.MODID)
 public class IridescentDifficulty {

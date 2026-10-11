@@ -118,13 +118,15 @@ Offline skin support — required for LAN play without Mojang auth.
 | Tier | Dimensions | Start % | Cap % | Cap Hours |
 |------|------------|---------|-------|-----------|
 | T1 | Overworld | 150% | 300% | 100 |
-| T2 | Twilight Forest, Blue Skies, Aether | 200% | 350% | 100 |
-| T3 | Undergarden, Deeper Darker, Nether, Abyss | 300% | 450% | 100 |
-| T4 | Deep Aether, The End | 600% | 1000% | 200 |
+| T2 | Twilight Forest, Blue Skies, Aether (Deep Aether's biomes included) | 200% | 350% | 100 |
+| T3 | Undergarden, Deeper Darker, Nether, Abyss + its Frost World | 300% | 450% | 100 |
+| T4 | The End | 600% | 1000% | 200 |
 
-**Multiplier scope:** linear on `max_health` / `attack_damage` / `armor`; `sqrt` on `movement_speed` (so a 6× HP mob isn't also 6× speed). Bosses + tamed mobs + non-MONSTER category mobs skipped. Configurable excluded-entities list.
+Dimensions are matched by exact id, and any dimension not listed uses the T1 curve. Deep Aether has no dimension of its own (its biomes are part of the Aether), so it follows T2. `/icraftdiff status all` shows the tier each dimension resolved to.
 
-**End uncap:** killing the Ender Dragon in-world removes the cap for any dimension in the `uncapAfterEnderDragon` list (default: just `minecraft:the_end`). Deep Aether stays capped at T4. Multiplier extrapolates past the cap proportionally past `capHours`.
+**Multiplier scope:** linear on `max_health` / `attack_damage` / `armor`; `sqrt` on `movement_speed` (so a 6× HP mob isn't also 6× speed). Tamed mobs + non-MONSTER category mobs skipped. Bosses are skipped only when they are on the configurable excluded-entities list — there is no automatic boss detection.
+
+**End uncap:** killing the Ender Dragon in-world removes the cap for any dimension in the `uncapAfterEnderDragon` list (default: just `minecraft:the_end`). Multiplier extrapolates past the cap proportionally past `capHours`.
 
 **Idle gating:** the per-dim timer ticks at `active / total` ratio of players in that dim. A player counts as idle if any of:
 - No movement (>0.1 blocks delta) or damage taken/dealt for `idleThresholdMinutes` (default 5)

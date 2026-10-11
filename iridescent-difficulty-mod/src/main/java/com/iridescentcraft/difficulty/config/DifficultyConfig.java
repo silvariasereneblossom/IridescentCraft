@@ -17,14 +17,26 @@ import java.util.List;
  * ───── ─────────────────────────────────────────────  ────────  ──────  ─────────
  * T1    Overworld                                      150       300     100
  * T2    Twilight Forest, Blue Skies, Aether            200       350     100
- * T3    Undergarden, Deeper Darker, Nether, Abyss      300       450     100
- * T4    Deep Aether, The End                           600       1000    200
+ * T3    Undergarden, Deeper Darker, Nether,            300       450     100
+ *       Abyss + its Frost World
+ * T4    The End                                        600       1000    200
  * </pre>
+ *
+ * <p>Deep Aether is NOT in the table: it registers no dimension of its own.
+ * Its biomes generate inside {@code aether:the_aether}, so its mobs run the
+ * Aether's T2 curve and share the Aether's timer (operator decision
+ * 2026-10-11). {@code deep_aether:deep_aether} is a TerraBlender region name,
+ * not a dimension id; it sat in the T4 list until then and matched nothing.
+ *
+ * <p>Ids are matched EXACTLY against {@code level.dimension().location()}
+ * and an unknown id is accepted silently, so a typo drops the dimension to
+ * T1 without any error ({@code theabyss:abyss} did this to the Abyss, whose
+ * id is {@code theabyss:the_abyss}). {@code /icraftdiff status all} prints
+ * the tier every dimension actually resolved to.
  *
  * <p>Plus a per-dimension {@code uncapAfterEnderDragon} flag that defaults
  * {@code true} only on {@code minecraft:the_end}. When set, killing the
- * Ender Dragon in-world removes the cap for that dimension entirely
- * (Deep Aether stays capped).
+ * Ender Dragon in-world removes the cap for that dimension entirely.
  *
  * <h2>How scaling is applied</h2>
  * For each non-boss, non-passive mob spawn:
@@ -115,15 +127,15 @@ public final class DifficultyConfig {
             t1 = new TierCurve(b, 150.0, 300.0, 100.0);
             b.pop();
 
-            b.comment("T2 — Twilight Forest, Blue Skies, The Aether.").push("t2");
+            b.comment("T2 — Twilight Forest, Blue Skies, The Aether (Deep Aether's biomes included).").push("t2");
             t2 = new TierCurve(b, 200.0, 350.0, 100.0);
             b.pop();
 
-            b.comment("T3 — Undergarden, Deeper Darker, Nether, The Abyss.").push("t3");
+            b.comment("T3 — Undergarden, Deeper Darker, Nether, The Abyss (and its Frost World).").push("t3");
             t3 = new TierCurve(b, 300.0, 450.0, 100.0);
             b.pop();
 
-            b.comment("T4 — Deep Aether, The End. Hard regardless. End uncaps after Ender Dragon kill.").push("t4");
+            b.comment("T4 — The End. Hard regardless. Uncaps after the Ender Dragon is killed.").push("t4");
             t4 = new TierCurve(b, 600.0, 1000.0, 200.0);
             b.pop();
 
@@ -132,7 +144,9 @@ public final class DifficultyConfig {
             // ── Dimension → tier mapping ──────────────────────────────────
             b.comment(
                 "Dimension → tier mapping. Anything not listed defaults to t1.",
-                "Resource locations (mod:dimension_id). Source: wiki/progression/overview.md."
+                "Resource locations (mod:dimension_id). Source: wiki/progression/overview.md.",
+                "Ids are matched exactly and an unknown id is accepted silently, so a",
+                "typo leaves that dimension on t1. Check with: /icraftdiff status all"
             ).push("dimensions");
 
             t1Dimensions = b.comment("T1 dimensions (Overworld).")
@@ -140,7 +154,10 @@ public final class DifficultyConfig {
                     List.of("minecraft:overworld"),
                     o -> o instanceof String);
 
-            t2Dimensions = b.comment("T2 dimensions (Twilight Forest, Blue Skies, Aether).")
+            t2Dimensions = b.comment(
+                    "T2 dimensions (Twilight Forest, Blue Skies, Aether).",
+                    "Deep Aether has no dimension of its own: its biomes are part of",
+                    "aether:the_aether, so they follow this tier.")
                 .defineList("t2",
                     List.of(
                         "twilightforest:twilight_forest",
@@ -150,27 +167,27 @@ public final class DifficultyConfig {
                     ),
                     o -> o instanceof String);
 
-            t3Dimensions = b.comment("T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss).")
+            t3Dimensions = b.comment("T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss + its Frost World).")
                 .defineList("t3",
                     List.of(
                         "undergarden:undergarden",
                         "deeperdarker:otherside",
                         "minecraft:the_nether",
-                        "theabyss:abyss"
+                        "theabyss:the_abyss",
+                        "theabyss:frost_world"
                     ),
                     o -> o instanceof String);
 
-            t4Dimensions = b.comment("T4 dimensions (Deep Aether, The End).")
+            t4Dimensions = b.comment("T4 dimensions (The End).")
                 .defineList("t4",
                     List.of(
-                        "deep_aether:deep_aether",
                         "minecraft:the_end"
                     ),
                     o -> o instanceof String);
 
             uncapAfterEnderDragonDimensions = b.comment(
                 "Dimensions whose cap is removed once the Ender Dragon is killed",
-                "in-world. By default only the End (Deep Aether stays capped at T4).")
+                "in-world. By default only the End.")
                 .defineList("uncapAfterEnderDragon",
                     List.of("minecraft:the_end"),
                     o -> o instanceof String);
@@ -180,8 +197,9 @@ public final class DifficultyConfig {
             // ── Skip list ─────────────────────────────────────────────────
             b.comment(
                 "Entities to skip (boss IDs, special mobs, mod-broken entities).",
-                "Bosses are also detected automatically via persistent boss tag,",
-                "so this is mainly for non-boss mobs you want exempt."
+                "This list is the ONLY exemption: there is no automatic boss",
+                "detection. A boss that is not listed here is scaled like any",
+                "other hostile mob."
             ).push("excludes");
 
             excludedEntities = b.comment("Resource IDs of entities to skip entirely.")

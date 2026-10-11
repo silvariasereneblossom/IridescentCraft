@@ -287,11 +287,11 @@ Dragon Exploration Gate: players must explore End islands and complete objective
 | Tier | Start % | Cap % | Cap Hours |
 |------|---------|-------|-----------|
 | T1 (Overworld) | 150% | 300% | 100 |
-| T2 (Twilight / Blue Skies / Aether) | 200% | 350% | 100 |
-| T3 (Undergarden / Deeper Darker / Nether) | 300% | 450% | 100 |
-| T4 (Deep Aether / End) | 600% | 1000% | 200 |
+| T2 (Twilight / Blue Skies / Aether, incl. Deep Aether's biomes) | 200% | 350% | 100 |
+| T3 (Undergarden / Deeper Darker / Nether / Abyss + Frost World) | 300% | 450% | 100 |
+| T4 (End) | 600% | 1000% | 200 |
 
-- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; bosses + tamed + non-MONSTER mobs skipped (configurable exclusion list).
+- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped, and bosses on the configurable exclusion list (a boss that is not listed is scaled like any other hostile mob).
 - **Idle gating:** the per-dimension timer ticks at the `active / total` player ratio in that dimension (idle = no movement/combat for N minutes, or within the spawn radius).
 - **Stacks on top of (not replaced):** ProgressiveBosses + `boss_progressive.js` (boss scaling), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
 

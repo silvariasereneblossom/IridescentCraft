@@ -37,7 +37,7 @@
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
-	#T2 — Twilight Forest, Blue Skies, The Aether.
+	#T2 — Twilight Forest, Blue Skies, The Aether (Deep Aether's biomes included).
 	[tiers.t2]
 		#Starting multiplier % (100 = 1.0x vanilla)
 		#Range: 50.0 ~ 10000.0
@@ -53,7 +53,7 @@
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
-	#T3 — Undergarden, Deeper Darker, Nether, The Abyss.
+	#T3 — Undergarden, Deeper Darker, Nether, The Abyss (and its Frost World).
 	[tiers.t3]
 		#Starting multiplier % (100 = 1.0x vanilla)
 		#Range: 50.0 ~ 10000.0
@@ -69,7 +69,7 @@
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
-	#T4 — Deep Aether, The End. Hard regardless. End uncaps after Ender Dragon kill.
+	#T4 — The End. Hard regardless. Uncaps after the Ender Dragon is killed.
 	[tiers.t4]
 		#Starting multiplier % (100 = 1.0x vanilla)
 		#Range: 50.0 ~ 10000.0
@@ -87,22 +87,27 @@
 
 #Dimension → tier mapping. Anything not listed defaults to t1.
 #Resource locations (mod:dimension_id). Source: wiki/progression/overview.md.
+#Ids are matched exactly and an unknown id is accepted silently, so a
+#typo leaves that dimension on t1. Check with: /icraftdiff status all
 [dimensions]
 	#T1 dimensions (Overworld).
 	t1 = ["minecraft:overworld"]
 	#T2 dimensions (Twilight Forest, Blue Skies, Aether).
+	#Deep Aether has no dimension of its own: its biomes are part of
+	#aether:the_aether, so they follow this tier.
 	t2 = ["twilightforest:twilight_forest", "blue_skies:everbright", "blue_skies:everdawn", "aether:the_aether"]
-	#T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss).
-	t3 = ["undergarden:undergarden", "deeperdarker:otherside", "minecraft:the_nether", "theabyss:abyss"]
-	#T4 dimensions (Deep Aether, The End).
-	t4 = ["deep_aether:deep_aether", "minecraft:the_end"]
+	#T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss + its Frost World).
+	t3 = ["undergarden:undergarden", "deeperdarker:otherside", "minecraft:the_nether", "theabyss:the_abyss", "theabyss:frost_world"]
+	#T4 dimensions (The End).
+	t4 = ["minecraft:the_end"]
 	#Dimensions whose cap is removed once the Ender Dragon is killed
-	#in-world. By default only the End (Deep Aether stays capped at T4).
+	#in-world. By default only the End.
 	uncapAfterEnderDragon = ["minecraft:the_end"]
 
 #Entities to skip (boss IDs, special mobs, mod-broken entities).
-#Bosses are also detected automatically via persistent boss tag,
-#so this is mainly for non-boss mobs you want exempt.
+#This list is the ONLY exemption: there is no automatic boss
+#detection. A boss that is not listed here is scaled like any
+#other hostile mob.
 [excludes]
 	#Resource IDs of entities to skip entirely.
 	entities = ["minecraft:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss"]

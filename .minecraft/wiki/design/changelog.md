@@ -6,6 +6,11 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Abyss now hits like a Tier 3 dimension
+
+- **Abyss mobs were scaling like Overworld mobs — fixed.** A wrong dimension name in the difficulty settings meant The Abyss silently fell back to the Tier 1 curve. It now runs the intended Tier 3 curve (mobs start at 300% and ramp to 450%, instead of 150% → 300%), and its **Frost World** side-dimension joins it. Only newly spawned mobs are affected.
+- **Deep Aether scales with the Aether.** Deep Aether is not a separate dimension (its biomes generate inside the Aether), so its ordinary mobs follow the Aether's Tier 2 curve. The difficulty tables used to list it under Tier 4, which never took effect; the documentation now matches the game. Its bosses and materials remain Tier 4 content.
+
 ## August 2026 — One curated keybind layout for the whole pack
 
 - **Every important function now has its own working default key.** With ~450 mods, dozens of actions shipped fighting over the same buttons (spell casting vs. armor abilities on V, backpack vs. toolbelt on B, class powers vs. curios vs. voice chat on G, quests vs. death history on U, jetpack vs. Terramity abilities on H, ...) and several gameplay abilities shipped with **no key at all** — including the secondary Origin power for Demi-God, Fallen Angel, Kirin, and Ryu, and the jetpack engine toggle. All resolved: one deconflicted layout, verified to have zero unintended key conflicts, ships as the pack default. See the new **[Controls](../systems/controls.md)** page for the full layout.

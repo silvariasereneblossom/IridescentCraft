@@ -3,7 +3,7 @@ name = 'Iridescent Difficulty'
 side = 'both'
 
 [download]
-hash = 'd179b34a56b5ebfea49d6e7e1ee0ed235d2b760fa88152d551168ee743b88919'
+hash = '13a8ab38dbff5b57b07d841fac9958cf7affb755cc83cf6988190afe17e3d9fa'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_difficulty-0.1.0.jar'
