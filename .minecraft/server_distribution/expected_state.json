@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5450352f",
+    "generated_from":  "2284bcd9",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6299,6 +6299,18 @@
                                                                                         "sha256":  "1684ebce5feafe0e5f991b2146a1b9febcdc379a7808ce1edf50159cd70955c6",
                                                                                         "size":  253
                                                                                     },
+                  "kubejs/data/culturaldelights/loot_tables/blocks/avocado_leaves.json":  {
+                                                                                              "sha256":  "a57edfb7a9bd78f11cc2edc74e2a9c6c775777f37ad662eee7dc6203964fb6ef",
+                                                                                              "size":  4990
+                                                                                          },
+                  "kubejs/data/culturaldelights/loot_tables/blocks/exotic_roll_medley.json":  {
+                                                                                                  "sha256":  "96b864d485c48edd6a6d27e40de0725674bd507039a0761914cb2a55eb38ca49",
+                                                                                                  "size":  965
+                                                                                              },
+                  "kubejs/data/culturaldelights/loot_tables/blocks/fruiting_avocado_leaves.json":  {
+                                                                                                       "sha256":  "c48b4e40eb0ea81ff671761c4f10357b5f2d32477759ff7fc9ecaf82c01c47be",
+                                                                                                       "size":  4999
+                                                                                                   },
                   "kubejs/data/dna/advancements/amethyst_powder_unlock.json":  {
                                                                                    "sha256":  "9fd5a5fe7c121c881b99f648e1f5f87e846863defacae8a71ada5921e296045e",
                                                                                    "size":  54
@@ -6635,6 +6647,10 @@
                                                                           "sha256":  "54a8fc140287b662a7dba5b6b4d149f3adc4284207440cb2f4925e096f3c06e2",
                                                                           "size":  245
                                                                       },
+                  "kubejs/data/irons_spellbooks/loot_tables/chests/citadel/citadel_tomes.json":  {
+                                                                                                     "sha256":  "24a93210428e54a404aac575826883734140be45fea7b96af0386bd0ff060870",
+                                                                                                     "size":  6904
+                                                                                                 },
                   "kubejs/data/keebsz/loot_tables/floor3and4.json":  {
                                                                          "sha256":  "40f2e1f5e481ae820ed5d366f9a1bdfd6025b806d8c177de7b9440e7487e08d3",
                                                                          "size":  237
