@@ -61,10 +61,10 @@ Rust workspace with three crates:
 - **A second copy is kept on another machine.** Every two hours a separate computer fetches the newest two backups from the server. Each copy is read back and compared with the checksum the launcher recorded for it, and only after that does the oldest copy there get removed. A copy that does not match is thrown away and reported, and the older ones stay. A failed disk on the server no longer takes the backups with it.
 
 **World regeneration dry-run (since 2026-10):**
-- The launcher can work out, without changing anything, which parts of the world a future terrain regeneration would keep and which it would reset. Kept: every player's bed chunk and the chunks around it, claimed chunks (Open Parties and Claims), the area around world spawn, chunks holding a waystone, and chunks players have spent real time in. The server operator can add or remove areas by hand.
+- The launcher can work out, without changing anything, which parts of the world a future terrain regeneration would keep and which it would reset. Kept: every player's bed chunk and the chunks around it, claimed chunks (Open Parties and Claims), the area around world spawn, chunks holding a waystone a player has activated or placed, and chunks players have spent real time in. The server operator can add or remove areas by hand.
 - It writes a report (what is kept and why, per player; what would be reset; warnings such as a lived-in chunk that would be lost), a per-chunk spreadsheet, an overview map, and a plan file. It only reads the world, so it can be run while the server is up.
 - Nothing is deleted. Carrying a plan out is a separate, later step: it will need a fresh verified backup, the server stopped, and the operator's sign-off on that exact plan.
-- **Protection report / Regen dry-run** in the GUI, or `icraft regen-dryrun` from the command line.
+- It has its own **Customizer** tab in the launcher window, next to the world backups: what would be regenerated, which dimensions and every protection rule are set on screen, a run is one click, and the result is shown as totals, per-player lines, warnings and a map. Earlier runs can be picked from a list. `icraft regen-dryrun` does the same from the command line.
 
 **GUI extras:**
 - Status badges row: Forge present, EULA, mod count, last sync SHA, backup age

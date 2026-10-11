@@ -133,7 +133,7 @@ enum Cmd {
         #[arg(long, default_value = "minecraft:overworld")]
         dims: String,
         /// Override a protection setting for this run (repeatable), e.g.
-        /// `--set inhabited_min_ticks=72000 --set waystones=activated`.
+        /// `--set inhabited_min_ticks=72000 --set waystones=all`.
         /// The keys are those of the .icraft_regen_policy file.
         #[arg(long = "set", value_name = "KEY=VALUE")]
         set: Vec<String>,

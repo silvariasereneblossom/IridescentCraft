@@ -10,9 +10,9 @@
 
     icraft-gui works out which chunks a regeneration would KEEP -- beds (the
     bed chunk and its 8 neighbours), Open Parties and Claims claims, the area
-    around world spawn, waystones, lived-in chunks (InhabitedTime), and the
-    manual lists in .icraft_regen_policy -- and which chunks the chosen scope
-    would reset. It writes:
+    around world spawn, waystones a player has activated or placed, lived-in
+    chunks (InhabitedTime), and the manual lists in .icraft_regen_policy -- and
+    which chunks the chosen scope would reset. It writes:
 
         regen-reports\<YYYYmmdd-HHMMSS>-<scope>\
             report.txt     the whole story (per dimension, per player, warnings)
@@ -20,7 +20,12 @@
             warnings.csv   every warning
             plan.json      the chunks to regenerate, with the hash an execution
                            will have to match
+            summary.json   the report as data (the launcher's Customizer tab shows it)
             map-<dim>.png  overview map
+
+    The same thing, with every setting on screen and the result drawn as
+    tables and a map, is the Customizer tab of icraft-gui. This script is for
+    when nobody is at the box: a run it asks for shows up in that tab too.
 
     This script drops a request file (.icraft_regen_request) next to
     server.properties; icraft-gui picks it up within ~10 s and answers in
@@ -53,7 +58,7 @@
 .PARAMETER Set
     Protection settings for this run only, as key=value (the keys of the
     .icraft_regen_policy file), e.g.
-      -Set inhabited_min_ticks=72000, waystones=activated
+      -Set inhabited_min_ticks=72000, waystones=all
 
 .PARAMETER Reason
     One word recorded with the request.
