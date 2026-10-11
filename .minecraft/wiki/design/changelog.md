@@ -13,6 +13,8 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **The Dragon's Eye goes straight to whoever kills the Ender Dragon** instead of dropping where the dragon dies (often over the void). If the final blow has no owner — a bed or an End Crystal — the nearest player in the End receives it.
 - **Treasure Sense, Motherlode and Fortune's Favor are true extra rolls.** A Treasure Sense proc is a real second kill (Looting counts, player-only drops included); Motherlode and Fortune's Favor are real extra breaks with the tool in your hand (Fortune and Silk Touch count). Blocks that hold items, such as shulker boxes, never trigger them.
 - **The Infested Laboratory no longer hands out Tier 3 progression tokens** — it stands in the Overworld.
+- **Avocado trees give something again.** Their leaves dropped nothing at all. They now drop saplings, the odd avocado and sticks, and shears or Silk Touch collect the leaves themselves.
+- **Two more drops that never happened.** Bookshelves in the Citadel can hold its lore tomes, and a placed Exotic Roll Medley gives itself back when broken untouched (a bowl once it has been eaten from).
 
 ## October 2026 — Server owners can tune world generation from the launcher
 

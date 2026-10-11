@@ -34,6 +34,9 @@ A small number of vanilla spiders can appear with a permanent Regeneration effec
 ### Spider–skeleton jockeys spawn more often than vanilla — **Open (design decision pending)**
 A difficulty-mod setting makes spider-with-skeleton-rider jockeys more common than vanilla's ~1%. Whether to dial this back toward "rare encounter" is a pending design call.
 
+### Three mobs drop nothing of their own — **Open (design decision pending)**
+The Abyss's End Spider and Slime Spider, and the boss of the Mercury arena, lose their own drops: each mod's drop list names an item that does not exist, so the game discards the whole list. They still give experience. What each should drop instead is a design call that has not been made yet.
+
 ### Entities launched skyward by a high-amplitude Levitation effect — **Investigating**
 The "skyward launch" (seen on players and now on mobs too, e.g. a direwolf) is a **Levitation effect at amplifier ~50** applied for a fraction of a second — not a knockback and not a tipped arrow. In-game capture confirmed it is a *direct/area* effect, not a projectile. A full decompile sweep ruled out the obvious suspects: it is **not** EnemyExpansion (its launches are velocity-based, no Levitation effect), **not** Majrusz (its Levitation is amplifier-capped at 10), and there is **no** amplifier-50 Levitation defined in any config, datapack, or mod jar. So the amplitude is being built up at runtime (most likely an un-capped effect that re-applies and climbs). A stack-trace diagnostic is armed to name the exact source on the next occurrence.
 
@@ -71,7 +74,7 @@ About 72 custom items (progression tokens, boss materials, rings, end-game items
 - **Fast Leaf Decay** occasionally logs a harmless error while clearing leaves. Non-fatal, intermittent.
 
 ### Some log lines at boot are expected noise — **Known limitation**
-A cluster of harmless log messages appears at server start and is safe to ignore: cross-mod compatibility shims (MCA, the Connector/Architectury registrar), benign mixin "conflict — skipping" lines from a few mods that optimize the same code path (Saturn, ModernFix + BadOptimizations, Citadel), and client-only mixin messages that have no effect on a dedicated server. The server boots clean to "Done" with these present.
+A cluster of harmless log messages appears at server start and is safe to ignore: cross-mod compatibility shims (MCA, the Connector/Architectury registrar), benign mixin "conflict — skipping" lines from a few mods that optimize the same code path (Saturn, ModernFix + BadOptimizations, Citadel), and client-only mixin messages that have no effect on a dedicated server. The same goes for ten "Couldn't parse element loot_tables" errors: they belong to loot for blocks and structures that do not exist in this pack (Ice and Fire and Traveler's Backpack compatibility content, and a few leftover files), so nothing in the game uses them. The server boots clean to "Done" with these present.
 
 ### A small set of mods aren't statically mixin-scanned — **Known limitation**
 About 95 of the pack's mods are pulled in by CurseForge metadata (no direct download URL in the index), so the offline compatibility scanner can't read them and they're excluded from the static mixin-conflict audit. They still load and run normally in-game; they're simply not covered by the automated conflict check.
