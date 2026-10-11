@@ -11,7 +11,10 @@
 //!   - [`mods`]      — strip_client_mods, update_mods, cleanup_stale_jars
 //!   - [`eula`]      — Phase 3
 //!   - [`run`]       — Phase 4 (java exec with Aikar flags)
-//!   - [`crash`]     — Phase 5 (crash capture + push)
+//!   - [`crash`]     — Phase 5 (crash capture; the GitHub token)
+//!   - [`logpush`]   — the log mirror: staged at exit, pushed in the background
+//!     through the GitHub API, never between a stop and a start
+//!   - [`subprocess`] — child processes with no console, no stdin and a time limit
 //!   - [`diagnose`]  — diagnostic dump
 //!   - [`firewall`]  — Windows firewall audit
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
@@ -54,11 +57,13 @@ pub mod git;
 pub mod github;
 pub mod http;
 pub mod install;
+pub mod logpush;
 pub mod mods;
 pub mod nbt;
 pub mod overrides;
 pub mod packwiz;
 pub mod png;
+pub mod subprocess;
 pub mod protection;
 pub mod regen;
 pub mod restart_policy;
@@ -93,6 +98,12 @@ pub struct ServeOptions {
     /// "Update Launcher" button / Cycle step 2 via `apply_and_relaunch_gui`),
     /// so it sets this `false`. Defaults to `true` (CLI behavior).
     pub apply_self_update: bool,
+    /// After the JVM exits, only stage the logs and leave the push to
+    /// `logpush`'s background worker, so a restart never waits on it. The GUI
+    /// sets this: its process lives on and brings the server back up. `false`
+    /// (the default, the CLI) pushes before returning, because the process
+    /// ends with `serve`.
+    pub defer_log_push: bool,
 }
 
 impl Default for ServeOptions {
@@ -103,6 +114,7 @@ impl Default for ServeOptions {
             watchdog: run::WatchdogOptions::default(),
             pipe_output: false,
             apply_self_update: true,
+            defer_log_push: false,
         }
     }
 }
@@ -175,13 +187,23 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
         run::launch_server_watched(cfg, opts.watchdog)?
     };
 
-    // Phase 5: post-exit handling
+    // Phase 5: post-exit handling. Nothing here may hold up the next start:
+    // the logs are copied aside (local files) and the push itself happens off
+    // this thread, after the server is back up (see logpush.rs). Only a
+    // caller whose process ends with this call (the CLI) pushes inline, and
+    // that push is bounded.
     if exit_code != 0 {
-        crash::capture_crash_log(cfg, exit_code)?;
+        if let Err(e) = crash::capture_crash_log(cfg, exit_code) {
+            log::warn!("[crash] could not write the crash log: {e}");
+        }
     } else {
         log::info!("Server stopped normally.");
     }
-    crash::push_logs(cfg)?;
+    if opts.defer_log_push {
+        logpush::stage_and_defer(cfg);
+    } else {
+        let _ = logpush::push_now(cfg);
+    }
 
     Ok(exit_code)
 }

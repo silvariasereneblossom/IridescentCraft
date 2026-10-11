@@ -19,7 +19,11 @@ use crate::packwiz::{self, Side};
 const USER_AGENT: &str = "Mozilla/5.0 IridescentCraft-Installer";
 
 pub fn check_java() -> Result<()> {
-    let out = Command::new("java").arg("-version").output();
+    // Every start runs this, so it is on the restart path: no console window,
+    // nothing to read, and never an open-ended wait.
+    let mut probe = Command::new("java");
+    probe.arg("-version");
+    let out = crate::subprocess::run_bounded(probe, "java -version", std::time::Duration::from_secs(60));
     match out {
         Ok(o) if o.status.success() || !o.stderr.is_empty() => {
             // `java -version` writes to stderr and returns 0.
@@ -46,12 +50,15 @@ pub fn ensure_forge(cfg: &ServerConfig) -> Result<()> {
         log::info!("[install] forge installer: {} bytes", bytes);
     }
 
-    let st = Command::new("java")
+    let mut installer = Command::new("java");
+    installer
         .arg("-jar").arg(cfg.forge_installer())
         .arg("--installServer")
         .current_dir(&cfg.server_dir)
-        .stdin(Stdio::null())
-        .status()?;
+        .stdin(Stdio::null());
+    // Third-party code: it does not get the launcher's GitHub token.
+    crate::subprocess::scrub_token_env(&mut installer);
+    let st = installer.status()?;
     if !st.success() {
         return Err(anyhow!("forge installer exit {}", st.code().unwrap_or(-1)));
     }

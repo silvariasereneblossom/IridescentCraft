@@ -331,3 +331,213 @@ pub fn fetch_zip<W: std::io::Write>(owner: &str, repo: &str, branch: &str, sink:
         .context("streaming zip body")?;
     Ok(())
 }
+
+// =============================================================================
+// Git Data API -- commit files to a branch without a clone (the log push)
+// =============================================================================
+//
+// blob -> tree -> commit -> fast-forward the branch: what `git add / commit /
+// push` do, as five kinds of HTTPS request. There is no local repository to
+// rot, no child process to hang, and the branch update is refused (not
+// forced) when someone pushed in between, so the caller rebuilds on the new
+// tip. See `logpush`.
+
+/// Per-request limit for the calls below when the client has no deadline of
+/// its own (see [`GitData::deadline`]). A blob upload is the long one.
+const GIT_DATA_REQUEST_TIMEOUT: Duration = Duration::from_secs(120);
+const COMMIT_AUTHOR_NAME: &str = "icraft-launcher";
+const COMMIT_AUTHOR_EMAIL: &str = "icraft-launcher@local";
+
+/// One entry of a git tree as the API lists it; `path` is relative to the
+/// tree that was asked for.
+#[derive(Debug, Clone, Deserialize)]
+pub struct TreeEntry {
+    pub path: String,
+    /// "blob" or "tree".
+    #[serde(rename = "type")]
+    pub kind: String,
+    pub sha: String,
+}
+
+#[derive(Deserialize)]
+struct TreeListing {
+    tree: Vec<TreeEntry>,
+    #[serde(default)]
+    truncated: bool,
+}
+
+/// What a Git Data call failed with. Never contains the token: the message is
+/// built from the method, the path and GitHub's own answer.
+#[derive(Debug)]
+pub struct ApiError {
+    /// HTTP status, when GitHub answered at all.
+    pub code: Option<u16>,
+    pub message: String,
+}
+
+impl std::fmt::Display for ApiError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self.code {
+            Some(code) => write!(f, "HTTP {code}: {}", self.message),
+            None => write!(f, "{}", self.message),
+        }
+    }
+}
+
+impl std::error::Error for ApiError {}
+
+type ApiResult<T> = std::result::Result<T, ApiError>;
+
+/// Authenticated Git Data API client for one repository.
+pub struct GitData {
+    agent: ureq::Agent,
+    token: String,
+    base: String,
+    /// When set, no request may run past this instant.
+    deadline: Option<std::time::Instant>,
+}
+
+impl GitData {
+    pub fn new(owner: &str, repo: &str, token: &str) -> Self {
+        Self::at("https://api.github.com", owner, repo, token)
+    }
+
+    /// The same client against another API root (a test server).
+    pub fn at(api_root: &str, owner: &str, repo: &str, token: &str) -> Self {
+        let agent = ureq::AgentBuilder::new()
+            .timeout_connect(Duration::from_secs(15))
+            .timeout_read(Duration::from_secs(60))
+            .timeout_write(Duration::from_secs(60))
+            .timeout(GIT_DATA_REQUEST_TIMEOUT)
+            .user_agent(USER_AGENT)
+            .build();
+        Self {
+            agent,
+            token: token.to_string(),
+            base: format!("{}/repos/{owner}/{repo}", api_root.trim_end_matches('/')),
+            deadline: None,
+        }
+    }
+
+    /// Bound everything this client does: each request gets what is left
+    /// until `at` (so one slow upload may use it all), and none starts after.
+    pub fn deadline(mut self, at: std::time::Instant) -> Self {
+        self.deadline = Some(at);
+        self
+    }
+
+    fn call(&self, method: &str, path: &str, body: Option<serde_json::Value>) -> ApiResult<serde_json::Value> {
+        let url = format!("{}{path}", self.base);
+        let mut req = self
+            .agent
+            .request(method, &url)
+            .set("Authorization", &format!("Bearer {}", self.token))
+            .set("Accept", "application/vnd.github+json")
+            .set("X-GitHub-Api-Version", "2022-11-28");
+        if let Some(at) = self.deadline {
+            let left = at.saturating_duration_since(std::time::Instant::now());
+            if left.is_zero() {
+                return Err(ApiError { code: None, message: format!("{method} {path}: not started, the time limit for this push is up") });
+            }
+            req = req.timeout(left);
+        }
+        let answer = match body {
+            Some(body) => req.send_json(body),
+            None => req.call(),
+        };
+        match answer {
+            Ok(resp) => resp.into_json::<serde_json::Value>().map_err(|e| ApiError {
+                code: None,
+                message: format!("{method} {path}: unreadable answer ({e})"),
+            }),
+            Err(ureq::Error::Status(code, resp)) => {
+                let text = resp.into_string().unwrap_or_default();
+                let said = serde_json::from_str::<serde_json::Value>(&text)
+                    .ok()
+                    .and_then(|v| v.get("message").and_then(|m| m.as_str()).map(str::to_owned))
+                    .unwrap_or_else(|| text.chars().take(200).collect());
+                Err(ApiError { code: Some(code), message: format!("{method} {path}: {said}") })
+            }
+            Err(e) => Err(ApiError { code: None, message: format!("{method} {path}: {e}") }),
+        }
+    }
+
+    /// (commit, root tree of that commit) at the tip of `branch`.
+    pub fn branch_head(&self, branch: &str) -> ApiResult<(String, String)> {
+        let reference = self.call("GET", &format!("/git/ref/heads/{branch}"), None)?;
+        let commit = str_at(&reference, &["object", "sha"])?;
+        let detail = self.call("GET", &format!("/git/commits/{commit}"), None)?;
+        let tree = str_at(&detail, &["tree", "sha"])?;
+        Ok((commit, tree))
+    }
+
+    /// The entries of tree `sha`; with `recursive`, of everything below it too.
+    pub fn tree(&self, sha: &str, recursive: bool) -> ApiResult<Vec<TreeEntry>> {
+        let path = if recursive { format!("/git/trees/{sha}?recursive=1") } else { format!("/git/trees/{sha}") };
+        let value = self.call("GET", &path, None)?;
+        let listing: TreeListing = serde_json::from_value(value).map_err(|e| ApiError {
+            code: None,
+            message: format!("GET {path}: unexpected answer ({e})"),
+        })?;
+        if listing.truncated {
+            return Err(ApiError { code: None, message: format!("GET {path}: GitHub truncated the listing (too many entries)") });
+        }
+        Ok(listing.tree)
+    }
+
+    /// Upload one file's content; returns its git blob id.
+    pub fn create_blob(&self, content: &[u8]) -> ApiResult<String> {
+        use base64::Engine;
+        let body = serde_json::json!({
+            "content": base64::engine::general_purpose::STANDARD.encode(content),
+            "encoding": "base64",
+        });
+        str_at(&self.call("POST", "/git/blobs", Some(body))?, &["sha"])
+    }
+
+    /// A tree that is `base_tree` with `files` (repo path, blob id) added or
+    /// replaced. Nothing is removed.
+    pub fn create_tree(&self, base_tree: &str, files: &[(String, String)]) -> ApiResult<String> {
+        let entries: Vec<serde_json::Value> = files
+            .iter()
+            .map(|(path, sha)| serde_json::json!({ "path": path, "mode": "100644", "type": "blob", "sha": sha }))
+            .collect();
+        let body = serde_json::json!({ "base_tree": base_tree, "tree": entries });
+        str_at(&self.call("POST", "/git/trees", Some(body))?, &["sha"])
+    }
+
+    pub fn create_commit(&self, message: &str, tree: &str, parent: &str) -> ApiResult<String> {
+        let body = serde_json::json!({
+            "message": message,
+            "tree": tree,
+            "parents": [parent],
+            "author": { "name": COMMIT_AUTHOR_NAME, "email": COMMIT_AUTHOR_EMAIL },
+        });
+        str_at(&self.call("POST", "/git/commits", Some(body))?, &["sha"])
+    }
+
+    /// Move `branch` to `commit`, never forcing. `Ok(false)`: the branch moved
+    /// in the meantime, so `commit` is no longer a fast-forward.
+    pub fn fast_forward(&self, branch: &str, commit: &str) -> ApiResult<bool> {
+        let body = serde_json::json!({ "sha": commit, "force": false });
+        match self.call("PATCH", &format!("/git/refs/heads/{branch}"), Some(body)) {
+            Ok(_) => Ok(true),
+            Err(e) if e.code == Some(422) && e.message.to_lowercase().contains("fast forward") => Ok(false),
+            Err(e) => Err(e),
+        }
+    }
+}
+
+fn str_at(value: &serde_json::Value, path: &[&str]) -> ApiResult<String> {
+    let mut at = value;
+    for key in path {
+        at = at.get(key).ok_or_else(|| ApiError {
+            code: None,
+            message: format!("GitHub's answer has no '{}'", path.join(".")),
+        })?;
+    }
+    at.as_str().map(str::to_owned).ok_or_else(|| ApiError {
+        code: None,
+        message: format!("GitHub's answer has no text at '{}'", path.join(".")),
+    })
+}

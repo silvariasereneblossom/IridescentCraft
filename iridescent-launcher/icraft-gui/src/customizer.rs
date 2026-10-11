@@ -578,7 +578,8 @@ impl Customizer {
             let button = egui::Button::new(RichText::new("Run the dry-run").strong()).min_size(egui::vec2(180.0, 30.0));
             run = ui.add_enabled(!busy && current.is_ok(), button).clicked();
             if let Some(since) = self.running_since {
-                ui.spinner();
+                // No spinner: an animated widget repaints every frame, and a
+                // frame costs ~0.2 s of CPU on the server's software renderer.
                 ui.label(format!("reading the world... {} s (nothing is modified)", since.elapsed().as_secs()));
             } else if let Some(why) = &self.error {
                 ui.colored_label(BAD, format!("Not done: {why}"));

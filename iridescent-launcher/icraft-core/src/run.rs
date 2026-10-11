@@ -111,6 +111,9 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
 
     let mut cmd = Command::new("java");
     cmd.current_dir(&cfg.server_dir);
+    // A GitHub token set in the launcher's own environment is the launcher's:
+    // the JVM (every mod, every server script) must not inherit it.
+    crate::subprocess::scrub_token_env(&mut cmd);
     for flag in AIKAR_FLAGS { cmd.arg(flag); }
     // Timestamped heap-dump target -- see prepare_heap_dump_path. Must come
     // before the @argfile so it lands in the JVM's own option list.
@@ -210,8 +213,10 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     // Drop the globals -- subsequent send_console_line / kill_active_server
     // calls will see "no server running" until the next launch. State
     // stays at PostExit so the GUI badge reflects "post-exit hooks
-    // still running"; the caller resets to Idle when push_logs etc.
-    // have finished.
+    // still running"; the caller resets to Idle once they are done.
+    // They are short and local: the crash capture and the log staging.
+    // The log PUSH is not one of them (logpush.rs) -- it has its own
+    // badge and never holds this state.
     *ACTIVE_HANDLE.lock().unwrap() = None;
     *ACTIVE_CHILD_PID.lock().unwrap() = None;
 

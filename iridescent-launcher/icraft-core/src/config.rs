@@ -161,7 +161,7 @@ impl ServerConfig {
     pub fn crash_reports(&self) -> PathBuf { self.server_dir.join("crash-reports") }
     /// Per-launch OOM heap dumps (`heap_<YYYYmmdd_HHMMSS>.hprof`). Same
     /// location the bat/sh launchers use. Deliberately EXCLUDED from the
-    /// TesterLogs mirror in [`crate::crash::push_logs`] -- each dump is
+    /// TesterLogs mirror in [`crate::logpush`] -- each dump is
     /// heap-sized and would blow past GitHub's blob limit.
     pub fn heapdumps_dir(&self) -> PathBuf { self.crash_reports().join("heapdumps") }
 

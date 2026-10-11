@@ -37,7 +37,12 @@ pub fn find_tool(name: &str, extra_candidates: &[&str]) -> Option<PathBuf> {
     let lookup = "where";
     #[cfg(not(windows))]
     let lookup = "which";
-    if let Ok(out) = std::process::Command::new(lookup).arg(name).output() {
+    // No console window for the lookup (it used to flash one per git call when
+    // the GUI ran it), and nothing for it to read.
+    let mut probe = std::process::Command::new(lookup);
+    probe.arg(name);
+    crate::subprocess::harden(&mut probe);
+    if let Ok(out) = probe.output() {
         if out.status.success() {
             if let Ok(s) = std::str::from_utf8(&out.stdout) {
                 if let Some(line) = s.lines().next() {

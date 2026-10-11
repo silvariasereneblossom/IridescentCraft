@@ -105,7 +105,8 @@ enum Cmd {
         idle_timeout: u64,
     },
 
-    /// Capture latest crash report + tail of latest.log + push to git.
+    /// Mirror logs/ and crash-reports/ to the repo now (GitHub API; needs the
+    /// saved token). Exit 1 if the push failed.
     PushCrashLogs,
 
     /// Zip the world into backups/ now, as a pinned `manual-*.zip` (never
@@ -240,6 +241,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 watchdog: build_watchdog(*boot_timeout, *idle_timeout),
                 pipe_output: false, // CLI inherits stdio for plain Forge output
                 apply_self_update: true, // CLI re-execs `icraft serve` cleanly
+                defer_log_push: false,   // this process ends with serve: push before returning
             })?;
             // Truncate i32 -> u8 for ExitCode. Common server exit codes
             // (0, 1, 130, 137, 143) all fit; anything larger gets clamped.
@@ -283,7 +285,9 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             let code = run::launch_server_watched(cfg, build_watchdog(*boot_timeout, *idle_timeout))?;
             Ok(code.try_into().unwrap_or(1))
         }
-        Cmd::PushCrashLogs => { crash::push_logs(cfg)?; Ok(0) }
+        // Staged, then pushed through the GitHub API on this thread, bounded
+        // (logpush.rs). Exit 1 when the push failed; the reason is logged.
+        Cmd::PushCrashLogs => Ok(if logpush::push_now(cfg).is_ok() { 0 } else { 1 }),
         Cmd::Backup { if_due } => {
             let outcome = backup::run_now(cfg, *if_due);
             println!("{}", outcome.answer());

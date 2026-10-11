@@ -14,7 +14,7 @@
 
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{channel, Receiver, Sender};
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
 use std::time::{Duration, Instant};
@@ -29,6 +29,8 @@ const APP_TITLE: &str = "IridescentCraft Server Launcher";
 const KEY_SERVER_DIR: &str = "icraft.server_dir";
 /// Where a preview keeps its window state, apart from the real launcher's.
 const PREVIEW_APP_NAME: &str = "IridescentCraft Server Launcher Preview";
+/// Where a sandbox run keeps its state (see ICRAFT_GUI_SANDBOX in `main`).
+const SANDBOX_APP_NAME: &str = "IridescentCraft Server Launcher Sandbox";
 
 /// The two halves of the window: running the server, and the Customizer
 /// (world backups, protection map, regeneration dry-run).
@@ -75,7 +77,22 @@ fn main() -> Result<(), eframe::Error> {
         // Shown without taking the keyboard from whoever is at the machine.
         viewport = viewport.with_inner_size(p.size).with_title(format!("{APP_TITLE} [preview]")).with_active(false);
     }
-    let app_name = if preview.is_some() { PREVIEW_APP_NAME } else { APP_TITLE };
+    // ICRAFT_GUI_SANDBOX: the whole launcher, every background thread
+    // included, on settings of its own. Nothing is read from or saved to the
+    // real launcher's state, so it opens on the current directory. For trying
+    // a build against a scratch folder on a machine that also has a real
+    // install (a preview starts no thread; this does).
+    let sandbox = preview.is_none() && std::env::var_os("ICRAFT_GUI_SANDBOX").is_some();
+    if sandbox {
+        viewport = viewport.with_title(format!("{APP_TITLE} [sandbox]")).with_active(false);
+    }
+    let app_name = if preview.is_some() {
+        PREVIEW_APP_NAME
+    } else if sandbox {
+        SANDBOX_APP_NAME
+    } else {
+        APP_TITLE
+    };
     let opts = eframe::NativeOptions {
         viewport,
         persist_window: preview.is_none(),
@@ -224,6 +241,8 @@ impl log::Log for ChannelLogger {
         if let Some(bus) = LOG_BUS.get() {
             let _ = bus.sender.lock().unwrap().send(line.clone());
         }
+        // Something new to show: the repaint pump paints it (see "Repaints").
+        LOG_DIRTY.store(true, Ordering::Release);
         // Also write to stderr for parity with CLI / launcher logs.
         eprintln!("{line}");
     }
@@ -240,6 +259,47 @@ fn install_log_router() {
 }
 
 static LOG_RX: Mutex<Option<Receiver<String>>> = Mutex::new(None);
+
+// =============================================================================
+// Repaints -- paint when there is something new, not on a timer
+// =============================================================================
+//
+// On the server box the window is drawn by Mesa's software renderer, one
+// thread: a frame of the 1916x1115 window costs about 0.2 s of CPU. Until
+// 2026-10-11 the launcher used a full core there at all times (10.0 s of CPU
+// per 10 s, measured with the server healthy; 94 % of it on the rasterizer
+// thread, 5 % on the UI thread). The cause was the "Task running..." spinner:
+// an animated widget asks for a repaint on every frame it is visible, a task is
+// running whenever the server is, and at that window size the spinner is on
+// screen. With nothing else limiting it, the window repainted as fast as the
+// rasterizer could go.
+//
+// So: no animated widgets, and repaints come from what changes --
+//   - a new log line: the pump below asks for ONE frame, at most every
+//     LOG_REPAINT_EVERY (state changes always log, so badges follow);
+//   - a slow tick while a task runs (IDLE_REPAINT_EVERY), for the badges that
+//     count time;
+//   - input, and the few places that ask for a repaint while they work.
+// FRAMES counts what was actually painted; the status file reports the rate, so
+// a regression shows up as a number instead of a hot core.
+
+/// A log line arrived since the last frame the pump asked for.
+static LOG_DIRTY: AtomicBool = AtomicBool::new(false);
+/// Frames painted since the launcher started.
+static FRAMES: AtomicU64 = AtomicU64::new(0);
+const LOG_REPAINT_EVERY: Duration = Duration::from_millis(2000);
+const IDLE_REPAINT_EVERY: Duration = Duration::from_secs(30);
+
+/// Started once in `IcraftApp::new`.
+fn spawn_repaint_pump(ctx: egui::Context) {
+    std::thread::spawn(move || loop {
+        std::thread::sleep(LOG_REPAINT_EVERY);
+        if LOG_DIRTY.swap(false, Ordering::AcqRel) {
+            // A delay asks for exactly one frame; request_repaint() asks for two.
+            ctx.request_repaint_after(Duration::from_millis(50));
+        }
+    });
+}
 
 // =============================================================================
 // Persistent app state
@@ -455,8 +515,10 @@ fn serve_once(c: &ServerConfig) -> anyhow::Result<i32> {
     let opts = icraft_core::ServeOptions {
         pipe_output: true,        // -> server log streams into GUI
         apply_self_update: false, // GUI self-updates out-of-band (Cycle step 2)
+        defer_log_push: true,     // staged at exit, pushed once the server is back up
         ..Default::default()
     };
+    set_cycle_step("pre-launch: sync check, mod verify, backup");
     icraft_core::serve(c, opts)
 }
 
@@ -466,6 +528,7 @@ fn serve_once(c: &ServerConfig) -> anyhow::Result<i32> {
 fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
     // === Cycle step 2: self-update launcher + FULLY sync content ===
     log::info!("[cycle] step 2: self-update launcher + sync content");
+    set_cycle_step("cycle: content sync from GitHub");
     // 2a. Content sync. Stages icraft-gui.exe.new if the repo's launcher
     //     advanced, and brings kubejs/config/mods current. github_diff
     //     now fails LOUD (visible Sync badge) instead of proceeding
@@ -479,6 +542,7 @@ fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
     //     the spawned new instance continues this very Cycle (sync +
     //     start) rather than coming up idle.
     if icraft_core::self_update::gui_update_staged(c) {
+        set_cycle_step("cycle: launcher self-update");
         log::info!("[cycle] newer launcher staged -- applying + relaunching; the new instance resumes the Cycle");
         icraft_core::self_update::set_cycle_resume(c);
         match icraft_core::self_update::apply_and_relaunch_gui(c) {
@@ -515,6 +579,9 @@ fn supervise(c: ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> {
     let r = supervise_loop(&c, first_is_cycle);
     SUPERVISOR.server_live.store(false, Ordering::SeqCst);
     SUPERVISOR.running.store(false, Ordering::SeqCst);
+    set_cycle_step("");
+    // No restart is coming, so staged logs need not wait for one.
+    icraft_core::logpush::release();
     r
 }
 
@@ -578,6 +645,7 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
             delay.as_secs()
         );
         set_heartbeat_status(format!("restarting in {}s (#{attempt}/{MAX_AUTO_RESTARTS})", delay.as_secs()));
+        set_cycle_step("auto-restart backoff");
         let deadline = Instant::now() + delay;
         while Instant::now() < deadline {
             if SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst) {
@@ -1013,6 +1081,153 @@ fn spawn_restart_policy() {
     });
 }
 
+// =============================================================================
+// Cycle watchdog + status file
+// =============================================================================
+//
+// 2026-10-11: a restart sat between "JVM stopped" and "JVM started" for 39
+// minutes. Nothing timed the stages of a Cycle, and nothing outside the
+// launcher could tell "up" from "the launcher is alive and the server is not":
+// the window is not visible over remoting, and its log pane is not on disk.
+//
+// This thread does two small things every STATUS_TICK:
+//   - it times the phase a supervised run is in. A phase that is not "up" and
+//     has lasted CYCLE_STAGE_LIMIT is reported: an error in the log pane, a
+//     line in logs\restart_policy.log, a red Cycle badge. It does NOT act --
+//     killing or relaunching on a timer is the watcher's job, not built here.
+//   - it rewrites STATUS_FILE next to server.properties: state, phase and
+//     since when, whether a JVM exists and since when not, the log push, and
+//     how many frames a minute the window paints. verify-server.ps1 reads it
+//     and reports "launcher up, JVM down for N min" in red.
+
+const CYCLE_STAGE_LIMIT: Duration = Duration::from_secs(10 * 60);
+const STATUS_TICK: Duration = Duration::from_secs(15);
+const STATUS_FILE: &str = ".icraft_launcher_status";
+
+/// What a supervised run is doing while no JVM exists.
+static CYCLE_STEP: Mutex<&'static str> = Mutex::new("");
+/// The watchdog's finding for the Cycle badge; empty = nothing is stuck.
+static CYCLE_STUCK: Mutex<String> = Mutex::new(String::new());
+
+fn set_cycle_step(step: &'static str) {
+    *CYCLE_STEP.lock().unwrap() = step;
+}
+
+/// The phase a supervised run is in, and whether it is one the server is down
+/// (or not yet up) in.
+fn current_phase() -> (String, bool) {
+    use icraft_core::run::{server_state, ServerState};
+    if !SUPERVISOR.running.load(Ordering::SeqCst) {
+        return ("no supervised server".to_string(), false);
+    }
+    match server_state() {
+        ServerState::Started => ("up".to_string(), false),
+        ServerState::Starting => ("starting: JVM booting".to_string(), true),
+        ServerState::Stopping => ("stopping: JVM saving and exiting".to_string(), true),
+        ServerState::PostExit => ("post-exit: crash capture, log staging".to_string(), true),
+        ServerState::Idle => {
+            let step = *CYCLE_STEP.lock().unwrap();
+            (if step.is_empty() { "between stop and start" } else { step }.to_string(), true)
+        }
+    }
+}
+
+/// One line, for a `key=value` file.
+fn one_line(text: &str) -> String {
+    text.replace(['\r', '\n'], " ")
+}
+
+/// Started once in `IcraftApp::new`.
+fn spawn_cycle_watchdog() {
+    std::thread::spawn(|| {
+        let launched = unix_now();
+        let mut phase = (String::new(), false);
+        let mut phase_since = Instant::now();
+        let mut phase_since_unix = launched;
+        let mut reported: Option<Instant> = None;
+        // The launcher starts with no JVM.
+        let mut jvm_was_up = false;
+        let mut jvm_down_since_unix = launched;
+        let mut frames_before = FRAMES.load(Ordering::Relaxed);
+        let mut counted_at = Instant::now();
+        loop {
+            std::thread::sleep(STATUS_TICK);
+            let now = current_phase();
+            if now != phase {
+                phase = now;
+                phase_since = Instant::now();
+                phase_since_unix = unix_now();
+                reported = None;
+                CYCLE_STUCK.lock().unwrap().clear();
+            }
+            let jvm_up = icraft_core::run::jvm_active();
+            if jvm_was_up && !jvm_up {
+                jvm_down_since_unix = unix_now();
+            }
+            jvm_was_up = jvm_up;
+            let dir = APP_SERVER_DIR.lock().unwrap().clone();
+
+            let lasted = phase_since.elapsed();
+            if phase.1 && lasted >= CYCLE_STAGE_LIMIT && reported.map_or(true, |t| t.elapsed() >= CYCLE_STAGE_LIMIT) {
+                reported = Some(Instant::now());
+                let limit = CYCLE_STAGE_LIMIT.as_secs() / 60;
+                let finding = format!("STUCK in '{}' for {} min (limit {limit} min)", phase.0, lasted.as_secs() / 60);
+                log::error!(
+                    "[watchdog] !!! the server is not up: this run has been in '{}' for {} min (a stage should take under {limit}). \
+                     Nothing is done about it automatically. Look at what the launcher is waiting on (its child processes), \
+                     then Stop and Cycle.",
+                    phase.0,
+                    lasted.as_secs() / 60
+                );
+                if let Some(dir) = &dir {
+                    icraft_core::restart_policy::audit(dir, &format!("WATCHDOG: {finding}"));
+                }
+                *CYCLE_STUCK.lock().unwrap() = finding;
+            }
+
+            let frames = FRAMES.load(Ordering::Relaxed);
+            let frames_per_min = (frames - frames_before) as f64 * 60.0 / counted_at.elapsed().as_secs_f64().max(1.0);
+            frames_before = frames;
+            counted_at = Instant::now();
+
+            let Some(dir) = dir else { continue };
+            let status = format!(
+                "# icraft-gui status, rewritten every {tick} s. Read by .minecraft/dev/verify-server.ps1.\n\
+                 written_unix={written}\n\
+                 written={written_local}\n\
+                 launcher_pid={pid}\n\
+                 launcher_started_unix={launched}\n\
+                 supervised={supervised}\n\
+                 server_state={state:?}\n\
+                 phase={phase_name}\n\
+                 phase_since_unix={phase_since_unix}\n\
+                 jvm_running={jvm_up}\n\
+                 jvm_down_since_unix={down_since}\n\
+                 stuck={stuck}\n\
+                 heartbeat={heartbeat}\n\
+                 log_push={push}\n\
+                 frames_per_min={frames_per_min:.0}\n",
+                tick = STATUS_TICK.as_secs(),
+                written = unix_now(),
+                written_local = icraft_core::logpush::local_timestamp(),
+                pid = std::process::id(),
+                supervised = SUPERVISOR.running.load(Ordering::SeqCst),
+                state = icraft_core::run::server_state(),
+                phase_name = one_line(&phase.0),
+                down_since = if jvm_up { 0 } else { jvm_down_since_unix },
+                stuck = one_line(&CYCLE_STUCK.lock().unwrap()),
+                heartbeat = one_line(&SUPERVISOR.status.lock().unwrap()),
+                push = one_line(&icraft_core::logpush::state().label()),
+            );
+            // Whole or not at all: the reader must never see half a file.
+            let tmp = dir.join(format!("{STATUS_FILE}.tmp"));
+            if std::fs::write(&tmp, status).is_ok() {
+                let _ = std::fs::rename(&tmp, dir.join(STATUS_FILE));
+            }
+        }
+    });
+}
+
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>, preview: Option<Preview>) -> Self {
         // Force a dark, near-black background so the trans-flag heading
@@ -1040,6 +1255,8 @@ impl IcraftApp {
             spawn_backup_request_watcher();
             spawn_regen_request_watcher();
             spawn_restart_policy();
+            spawn_cycle_watchdog();
+            spawn_repaint_pump(cc.egui_ctx.clone());
         }
         let server_dir = match &preview {
             Some(p) => p.dir.clone(),
@@ -1081,6 +1298,9 @@ impl IcraftApp {
         app.refresh_status();
         if app.preview.is_none() {
             app.kick_remote_refresh();
+            // Logs a previous instance staged but never pushed (it was replaced
+            // mid-Cycle by a launcher self-update, or closed): queue them.
+            icraft_core::logpush::resume_pending(&app.server_cfg());
         }
         app
     }
@@ -1249,6 +1469,7 @@ impl eframe::App for IcraftApp {
     }
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        FRAMES.fetch_add(1, Ordering::Relaxed);
         self.preview_tick(ctx);
         // Drain log buffer + check task completion every frame.
         self.drain_log();
@@ -1291,17 +1512,15 @@ impl eframe::App for IcraftApp {
                     self.refresh_status();
                     self.last_status_refresh = Some(now);
                 }
-                // Heartbeat repaint while a task is running. 2 s is a
-                // compromise between "log pane updates feel live" and
-                // "Mesa software rasterizer doesn't burn the CPU MC
-                // needs". On dev (real GPU) 200 ms was free; on the
-                // server VM (Mesa llvmpipe) every redraw was 5 fps of
-                // pure-CPU rasterization, which combined with default
-                // multi-threaded llvmpipe ate ~half the cores Minecraft
-                // wanted -> server TPS tanked while heap stayed at 8/14 GB.
-                // 2 s is still fast enough to see status badges flip;
-                // drain_log piggybacks on whatever wake happens.
-                ctx.request_repaint_after(Duration::from_millis(2000));
+                // Slow tick while a task is running, for the badges that
+                // count time. New log lines (and with them every state
+                // change) are painted by the repaint pump within
+                // LOG_REPAINT_EVERY, so this is no longer what keeps the
+                // window live. It used to be a fixed 2 s repaint: on the
+                // server VM (Mesa llvmpipe, ~0.2 s of CPU per frame) that
+                // alone was a tenth of a core, around the clock. See
+                // "Repaints".
+                ctx.request_repaint_after(IDLE_REPAINT_EVERY);
             }
         }
 
@@ -1576,6 +1795,30 @@ impl IcraftApp {
             };
             badge(ui, "Heartbeat", hb_ok, &hb_label);
 
+            // Cycle watchdog: only shown when a stage of a restart has
+            // outlasted CYCLE_STAGE_LIMIT (see spawn_cycle_watchdog).
+            let stuck = CYCLE_STUCK.lock().unwrap().clone();
+            if !stuck.is_empty() {
+                badge(ui, "Cycle", false, &stuck);
+            }
+
+            // Log push (icraft_core::logpush): staged at exit, pushed in the
+            // background. Its own badge, so "pushing logs" is never mistaken
+            // for the server being busy -- and never holds the Server state.
+            {
+                use icraft_core::logpush::{Health, PushState};
+                let push = icraft_core::logpush::state();
+                if push != PushState::Idle {
+                    let color = match push.health() {
+                        Health::Good => BADGE_GREEN,
+                        Health::Busy => BADGE_AMBER,
+                        Health::Bad => BADGE_RED,
+                    };
+                    let label: String = push.label().chars().take(110).collect();
+                    badge_colored(ui, "Logs", color, &label);
+                }
+            }
+
             // Uptime restart policy (see spawn_restart_policy); empty until
             // its first evaluation, a minute after launch.
             let (rp_ok, rp_label) = POLICY_BADGE.lock().unwrap().clone();
@@ -1689,9 +1932,10 @@ impl IcraftApp {
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
                     let result = icraft_core::run::launch_server_piped(&c, false).map(|_| ());
-                    if let Err(e) = icraft_core::crash::push_logs(&c) {
-                        log::warn!("[run] post-exit log push failed: {e}");
-                    }
+                    // Nothing restarts a run-only server: stage, and push now
+                    // (in the background -- this task does not wait for it).
+                    icraft_core::logpush::stage_and_defer(&c);
+                    icraft_core::logpush::release();
                     icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
                     log::info!("[run] *** all post-exit hooks complete -- ready ***");
                     result
@@ -1938,8 +2182,16 @@ impl IcraftApp {
                     Ok(())
                 });
             }
-            if action_btn(ui, "Push crash logs", busy).clicked() {
-                self.spawn("push-crash-logs", move |c| icraft_core::crash::push_logs(&c));
+            // Not gated on `busy`: the push runs on logpush's own worker, so it
+            // can be asked for while the server is up (it then mirrors the
+            // logs as they are right now).
+            if ui.add(egui::Button::new("Push crash logs").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                log::info!("[logs] Push crash logs clicked -- staging, then pushing in the background (see the Logs badge)");
+                let c = cfg.clone();
+                std::thread::spawn(move || {
+                    icraft_core::logpush::stage_and_defer(&c);
+                    icraft_core::logpush::release();
+                });
             }
         });
 
@@ -2056,14 +2308,12 @@ impl IcraftApp {
 
         if busy {
             ui.add_space(8.0);
-            ui.horizontal(|ui| {
-                ui.spinner();
-                ui.label("Task running...");
-            });
+            // Plain text, not a spinner: an animated widget repaints on every
+            // frame it is visible, and a task is running whenever the server
+            // is. That kept one core busy around the clock on the server's
+            // software renderer (see "Repaints").
+            ui.label(egui::RichText::new("Task running...").weak());
         }
-
-        // suppress unused warning
-        let _ = cfg;
     }
 
     fn draw_log_pane(&self, ui: &mut egui::Ui) {

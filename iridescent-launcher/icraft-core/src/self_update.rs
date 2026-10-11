@@ -419,19 +419,12 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     ))?;
     log::info!("[self-update] git: {}", git_exe.display());
     log::info!("[self-update] git pull --ff-only in {}", repo_root.display());
-    let pull = crate::git::authed_command(&repo_root, pat.as_deref())
+    let pull = crate::git::git(&repo_root, pat.as_deref())
         .args(["pull", "--ff-only"])
         .output()
         .map_err(|e| anyhow::anyhow!("running git pull failed: {e}"))?;
     if !pull.status.success() {
-        let stderr = String::from_utf8_lossy(&pull.stderr).trim().to_string();
-        let stdout = String::from_utf8_lossy(&pull.stdout).trim().to_string();
-        let detail = match (stderr.is_empty(), stdout.is_empty()) {
-            (false, false) => format!("{stderr} | {stdout}"),
-            (false, true)  => stderr,
-            (true,  false) => stdout,
-            (true,  true)  => "(no output)".to_string(),
-        };
+        let detail = crate::git::failure_detail(&pull);
         // Surface common diagnoses inline -- saves one round trip
         // per support request.
         let hint = if detail.contains("Not possible to fast-forward") || detail.contains("non-fast-forward") {
@@ -536,7 +529,6 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
 /// Requires git on PATH (or ICRAFT_GIT). Does NOT require cargo.
 pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     use std::fs::File;
-    use std::process::Stdio;
 
     let git = find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
         "git not found. Install Git for Windows (https://git-scm.com/download/win) \
@@ -587,23 +579,13 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     };
 
     log::info!("[self-update] git fetch origin --depth=1");
-    let fetch_out = crate::git::authed_command(&repo_root, pat.as_deref())
+    crate::git::git(&repo_root, pat.as_deref())
         .args(["fetch", "origin", "--depth=1"])
-        .output()
-        .map_err(|e| anyhow::anyhow!("running git fetch: {e}"))?;
-    let fetch = fetch_out.status;
-    if !fetch.success() {
-        let stderr = String::from_utf8_lossy(&fetch_out.stderr).trim().to_string();
-        let stdout = String::from_utf8_lossy(&fetch_out.stdout).trim().to_string();
-        anyhow::bail!("git fetch failed (exit {}): {}",
-            fetch.code().unwrap_or(-1),
-            if !stderr.is_empty() { stderr } else if !stdout.is_empty() { stdout } else { "(no output)".to_string() });
-    }
-    let _ = fetch;
+        .run()?;
 
     // Resolve the remote ref to read the binary from. Track HEAD's
     // upstream branch so weird branches (release/*, etc.) just work.
-    let upstream = crate::git::authed_command(&repo_root, pat.as_deref())
+    let upstream = crate::git::git(&repo_root, pat.as_deref())
         .args(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
         .output()?;
     let remote_ref = if upstream.status.success() {
@@ -621,12 +603,11 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     log::info!("[self-update] git show {remote_ref}:{rel} > {}", staged.display());
     let staged_file = File::create(&staged)
         .map_err(|e| anyhow::anyhow!("create {}: {e}", staged.display()))?;
-    let show = crate::git::authed_command(&repo_root, pat.as_deref())
-        .args(["show", &format!("{remote_ref}:{rel}")])
-        .stdout(Stdio::from(staged_file))
-        .status()?;
+    let show = crate::git::git(&repo_root, pat.as_deref())
+        .args(["show".to_string(), format!("{remote_ref}:{rel}")])
+        .output_to(staged_file)?;
     let bytes = fs::metadata(&staged).map(|m| m.len()).unwrap_or(0);
-    if !show.success() || bytes == 0 {
+    if !show.status.success() || bytes == 0 {
         let _ = fs::remove_file(&staged);
         // Common case: dev hasn't pushed a binary to the repo yet.
         // If cargo is installed, fall through to the source-build
@@ -782,19 +763,14 @@ fn ensure_binary_pull_cache(pat: Option<&str>) -> Result<PathBuf> {
     let repo = std::env::var("ICRAFT_LAUNCHER_REPO")
         .unwrap_or_else(|_| DEFAULT_LAUNCHER_REPO.to_string());
     log::info!("[self-update] cloning binary-pull cache into {} ({})", cache.display(), repo);
-    let status = crate::git::authed_command(&cache, pat)
-        .args(["clone", "--filter=blob:none", "--sparse", "--depth=1", &repo, "."])
-        .status()
-        .map_err(|e| anyhow::anyhow!("git clone for binary cache: {e}"))?;
-    if !status.success() {
-        anyhow::bail!("git clone failed for binary-pull cache");
-    }
-    let status = crate::git::authed_command(&cache, pat)
+    crate::git::git(&cache, pat)
+        .args(["clone", "--filter=blob:none", "--sparse", "--depth=1", repo.as_str(), "."])
+        .run()
+        .map_err(|e| anyhow::anyhow!("binary-pull cache: {e}"))?;
+    crate::git::git(&cache, pat)
         .args(["sparse-checkout", "set", ".minecraft/server_distribution"])
-        .status()?;
-    if !status.success() {
-        anyhow::bail!("git sparse-checkout failed for binary-pull cache");
-    }
+        .run()
+        .map_err(|e| anyhow::anyhow!("binary-pull cache: {e}"))?;
     Ok(cache)
 }
 
@@ -847,21 +823,15 @@ fn sparse_clone_launcher(dest: &Path, pat: Option<&str>) -> Result<()> {
     }
 
     log::info!("[self-update] git clone --filter=blob:none --sparse {repo}");
-    let status = crate::git::authed_command(dest, pat)
-        .args(["clone", "--filter=blob:none", "--sparse", &repo, "."])
-        .status()
-        .map_err(|e| anyhow::anyhow!("running git clone: {e}"))?;
-    if !status.success() {
-        anyhow::bail!("git clone failed (network/auth/repo URL?)");
-    }
+    crate::git::git(dest, pat)
+        .args(["clone", "--filter=blob:none", "--sparse", repo.as_str(), "."])
+        .run()
+        .map_err(|e| anyhow::anyhow!("{e} (network/auth/repo URL?)"))?;
 
     log::info!("[self-update] git sparse-checkout set iridescent-launcher");
-    let status = crate::git::authed_command(dest, pat)
+    crate::git::git(dest, pat)
         .args(["sparse-checkout", "set", "iridescent-launcher"])
-        .status()?;
-    if !status.success() {
-        anyhow::bail!("git sparse-checkout failed");
-    }
+        .run()?;
     Ok(())
 }
 
