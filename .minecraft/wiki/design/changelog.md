@@ -6,6 +6,11 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Mapping what a world refresh would keep
+
+- **The server launcher can now work out which parts of the world are "somebody's".** Before any terrain is ever regenerated (for example to bring in new world generation), the launcher maps what must be kept: every player's bed chunk and the chunks around it, chunks claimed in Open Parties and Claims, the area around world spawn, chunks holding a waystone, and chunks players have spent real time in. It writes a report, a per-chunk list and an overview map, and flags anything questionable, such as a lived-in chunk that no rule protects.
+- **This step changes nothing.** It only reads the world, and it can run while the server is up. Actually regenerating chunks is a separate, later step that will only run from an approved plan, after a fresh backup.
+
 ## October 2026 — The server backs its world up again
 
 - **World backups are back, twice a day.** The dedicated server's backup mod (FastBack) quietly never worked there — it needs a tool the server machine doesn't have — so the world had gone without backups since April. The server launcher now takes them itself: every 12 hours, during a restart it was already making, it zips the whole world, checks the zip by reading it back, and keeps the newest two. No extra restarts, and no backups while anyone could be mid-save.
