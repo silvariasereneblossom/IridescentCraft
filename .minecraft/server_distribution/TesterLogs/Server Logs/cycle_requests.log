@@ -48,3 +48,8 @@
 [2026-10-11 16:03:00] [INFO] Wrote Cycle request (1791759780); waiting up to 60s for icraft-gui to answer.
 [2026-10-11 16:03:06] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
 [2026-10-11 16:03:06] [INFO] ================ cycle request end (success=True) ================
+[2026-10-11 16:33:07] [INFO] ================ cycle request start ================
+[2026-10-11 16:33:07] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Reason=whitelist-phase1  RequestedBy=SERENEBLOSSOM\silvariazemaitis
+[2026-10-11 16:33:07] [INFO] Wrote Cycle request (1791761587); waiting up to 60s for icraft-gui to answer.
+[2026-10-11 16:33:17] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
+[2026-10-11 16:33:17] [INFO] ================ cycle request end (success=True) ================
