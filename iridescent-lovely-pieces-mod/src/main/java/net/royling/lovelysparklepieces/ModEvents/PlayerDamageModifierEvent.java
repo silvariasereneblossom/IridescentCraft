@@ -94,8 +94,11 @@ public class PlayerDamageModifierEvent {
             // 获取初始伤害值
             double baseDamage = event.getAmount();
             double multiple = 0;
+            // IRIDESCENT: one snapshot of the worn curios for the whole event (was up to 9 full curio scans
+            // per damage instance).
+            Set<Item> worn = ModCurios.wornThisTick(player);
             //熔火核心
-            if (ModCurios.hasCurio(player, ModCurios.BLAZE_CORE.get())) {
+            if (worn.contains(ModCurios.BLAZE_CORE.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_FIRE)) {
                     if (TemperatureData.gettemperatures(player) < 50) {
                         multiple += 0.15;
@@ -111,35 +114,35 @@ public class PlayerDamageModifierEvent {
                 }
             }
             //皮革箭袋
-            if (ModCurios.hasCurio(player, ModCurios.LEATHER_QUIVER.get())) {
+            if (worn.contains(ModCurios.LEATHER_QUIVER.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_PROJECTILE)) {
                     multiple += 0.08;
                 }
             }
-            if (ModCurios.hasCurio(player, ModCurios.WOOD_GRAIN_QUIVER.get())) {
+            if (worn.contains(ModCurios.WOOD_GRAIN_QUIVER.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_PROJECTILE)) {
                     multiple += 0.1;
                 }
             }
-            if (ModCurios.hasCurio(player, ModCurios.SOUL_QUIVER.get())) {
+            if (worn.contains(ModCurios.SOUL_QUIVER.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_PROJECTILE)) {
                     multiple += 0.2;
                 }
             }
             //神射手护目镜
-            if (ModCurios.hasCurio(player, ModCurios.MARKSMAN_GOGGLES.get())) {
+            if (worn.contains(ModCurios.MARKSMAN_GOGGLES.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_PROJECTILE)) {
                     multiple += 0.1;
                 }
             }
             //女巫帽子
-            if (ModCurios.hasCurio(player, ModCurios.WITCH_HAT.get())) {
+            if (worn.contains(ModCurios.WITCH_HAT.get())) {
                 if (event.getSource().is(DamageTypeTags.WITCH_RESISTANT_TO)) {
                     multiple += 0.1;
                 }
             }
             //黄巾
-            if (ModCurios.hasCurio(player, ModCurios.YELLOW_HEADSCARF.get())) {
+            if (worn.contains(ModCurios.YELLOW_HEADSCARF.get())) {
                 if (event.getSource().is(DamageTypeTags.IS_LIGHTNING)) {
                     multiple += 0.1;
                 }
@@ -156,10 +159,10 @@ public class PlayerDamageModifierEvent {
             boolean isCrit = critAttr != null && player.level().random.nextDouble() < critAttr.getValue();
             if (isCrit) {
                 // 暴击成功：计算暴击倍率
-                double critMultiplier = ModCurios.hasCurio(player, ModCurios.BLASPHEMOUS_CONTRACT.get()) ? 1.5 : 1.75;
+                double critMultiplier = worn.contains(ModCurios.BLASPHEMOUS_CONTRACT.get()) ? 1.5 : 1.75;
 
                 // 如果装备了“赌徒的胸花”，进行暴击加成浮动判定
-                if (ModCurios.hasCurio(player, ModCurios.GAMBLERS_CORSAGE.get())) {
+                if (worn.contains(ModCurios.GAMBLERS_CORSAGE.get())) {
                     int chips = ChipsData.getChips(player);
                     double chance = chips < 2 ? 0.5 : 0.75;
                     // 消耗筹码前先检查是否处于某特殊状态（防止多次扣除）
@@ -183,19 +186,31 @@ public class PlayerDamageModifierEvent {
         }
     }
 
+    // IRIDESCENT: the pattern depends only on the translated attribute name, so it is compiled once per
+    // language instead of once per tooltip line per frame (the old code also re-translated the name for
+    // every line).
+    private static String tooltipPatternKey;
+    private static Pattern tooltipPattern;
+
+    private static Pattern damageModifierPattern(String damageKey) {
+        if (tooltipPattern == null || !damageKey.equals(tooltipPatternKey)) {
+            tooltipPattern = Pattern.compile(
+                    "([+-])(\\d+\\.?\\d*)\\s*" + Pattern.quote(damageKey)
+            );
+            tooltipPatternKey = damageKey;
+        }
+        return tooltipPattern;
+    }
+
     @SubscribeEvent
     public static void onTooltip(ItemTooltipEvent event) {
+        // 获取当前语言的属性名称（自动适配中英文）
+        String damageKey = Component.translatable("attribute.lsp.damage_modifier").getString();
+        Pattern pattern = damageModifierPattern(damageKey);
         for (int i = 0; i < event.getToolTip().size(); i++) {
             Component component = event.getToolTip().get(i);
             String rawText = component.getString(); // 获取原始文本
-
-            // 获取当前语言的属性名称（自动适配中英文）
-            String damageKey = Component.translatable("attribute.lsp.damage_modifier").getString();
-
-            // 构建动态正则表达式
-            Pattern pattern = Pattern.compile(
-                    "([+-])(\\d+\\.?\\d*)\\s*" + Pattern.quote(damageKey)
-            );
+            if (!rawText.contains(damageKey)) continue; // nearly every line: no regex work at all
 
             Matcher matcher = pattern.matcher(rawText);
             if (matcher.find()) {
@@ -217,8 +232,9 @@ public class PlayerDamageModifierEvent {
         if(event.phase != TickEvent.Phase.START) return;
         if(event.player.level().isClientSide) return;
         Player player = event.player;
-        List<ItemStack> equipped = getAllCurioItems(player);
-        SetBonusManager.tick(player, SetBonusRegistry.ALL, equipped);
+        // IRIDESCENT: the manager reads the shared per-tick curio snapshot itself, and only every few
+        // ticks (was: a fresh list of every equipped stack, built for every player every tick).
+        SetBonusManager.tick(player, SetBonusRegistry.ALL);
     }
     public static List<ItemStack> getAllCurioItems(Player player) {
         return CuriosApi.getCuriosInventory(player)

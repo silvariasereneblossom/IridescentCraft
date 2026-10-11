@@ -1,5 +1,6 @@
 package net.royling.lovelysparklepieces.ModEvents.Legendarys;
 
+import com.google.common.collect.MapMaker;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -12,7 +13,18 @@ import net.royling.lovelysparklepieces.ModItem.ModCurios.ModCurios;
 import net.royling.lovelysparklepieces.PlayerData.SoulData;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import java.util.Map;
+
 public class BCEvents {
+    // IRIDESCENT: tick of the last "healing is quartered" action-bar line per player (weak, identity keys).
+    private static final Map<ServerPlayer, Integer> LAST_HEAL_NOTICE = new MapMaker().weakKeys().makeMap();
+    private static final int HEAL_NOTICE_INTERVAL = 40;
+
+    /** Hot-path check: reads the shared per-tick curio snapshot instead of scanning the curio inventory. */
+    private static boolean wearsContract(Player player) {
+        return ModCurios.wornThisTick(player).contains(ModCurios.BLASPHEMOUS_CONTRACT.get());
+    }
+
     public static boolean hasBlasphemousContract(Player player) {
         return CuriosApi.getCuriosInventory(player).resolve()
                 .flatMap(inventory -> inventory.findFirstCurio(ModCurios.BLASPHEMOUS_CONTRACT.get()))
@@ -21,6 +33,9 @@ public class BCEvents {
     @SubscribeEvent
     public static void onLivingDrops(LivingDropsEvent event) {
         if (event.getEntity().level().isClientSide) return;
+        // IRIDESCENT: a killed PLAYER's "drops" are their inventory. Doubling those turned every PvP kill by
+        // a contract holder into an item duplicator (and doubled what the Newbie Umbrella then saved).
+        if (event.getEntity() instanceof Player) return;
 
         if (event.getSource().getEntity() instanceof Player player && hasBlasphemousContract(player)) {
             for (ItemEntity drop : event.getDrops()) {
@@ -39,7 +54,7 @@ public class BCEvents {
     }
     @SubscribeEvent
     public static void onPostDamage(LivingDamageEvent event) {
-        if (event.getSource().getEntity() instanceof Player player && hasBlasphemousContract(player)) {
+        if (event.getSource().getEntity() instanceof Player player && wearsContract(player)) {
             if (player.level().random.nextFloat() < 0.25f) {
                 player.heal(4);
             }
@@ -47,10 +62,18 @@ public class BCEvents {
     }
     @SubscribeEvent
     public static void onHeal(LivingHealEvent event) {
-        if (event.getEntity() instanceof Player player && hasBlasphemousContract(player)) {
+        // IRIDESCENT: heals arrive constantly (natural regeneration, Regeneration ticks, lifesteal). Each
+        // one used to cost a full curio scan and an action-bar packet. The snapshot answers the first; the
+        // notice is sent at most once every 2 s per player.
+        if (event.getEntity() instanceof Player player && wearsContract(player)) {
             event.setAmount(event.getAmount() * 0.25f);
             if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.displayClientMessage(Component.translatable("msg.lsp.heal_deal").withStyle(ChatFormatting.DARK_RED), true);
+                int now = serverPlayer.tickCount;
+                Integer last = LAST_HEAL_NOTICE.get(serverPlayer);
+                if (last == null || now < last || now - last >= HEAL_NOTICE_INTERVAL) {
+                    LAST_HEAL_NOTICE.put(serverPlayer, now);
+                    serverPlayer.displayClientMessage(Component.translatable("msg.lsp.heal_deal").withStyle(ChatFormatting.DARK_RED), true);
+                }
             }
         }
     }

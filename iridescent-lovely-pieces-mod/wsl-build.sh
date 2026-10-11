@@ -18,10 +18,19 @@
 #     wrapper jar in this repo is the same file); the copy stays git-ignored.
 #     The wrapper then fetches the Gradle named in gradle-wrapper.properties.
 #
-# The jar is a plain ForgeGradle build (`jar` finalizedBy `reobfJar`): SRG-named
-# classes, NO Mixin gradle plugin, no refmap, no MixinConfigs manifest entry.
-# Keep it that way -- the output filename must stay exactly
-# lovely_sparkle_pieces-<mod_version>.jar (base.archivesName = mod_id).
+# The jar is a ForgeGradle build (`jar` finalizedBy `reobfJar`, SRG-named classes)
+# WITH the Mixin gradle plugin (build.gradle: buildscript mixingradle + `mixin {}`
+# + the mixin annotation processor). That plugin is what puts
+#   * lovely_sparkle_pieces.refmap.json in the jar, and
+#   * `MixinConfigs: lovely_sparkle_pieces.mixins.json` in META-INF/MANIFEST.MF.
+# Forge 47.x finds a mixin config ONLY through that manifest line (the [[mixins]]
+# block in mods.toml is ignored), so a jar without it loads no mixins and says
+# nothing -- which is how this fork shipped until 2026-10-10. The build therefore
+# FAILS below if either is missing. mixingradle and the processor come from the
+# SpongePowered / Forge mavens (network on a cold Gradle cache).
+#
+# The output filename must stay exactly lovely_sparkle_pieces-<mod_version>.jar
+# (base.archivesName = mod_id).
 #
 # Deploys ONLY to the three repo distro mods/ dirs -- never to the live server.
 #
@@ -79,6 +88,20 @@ echo "[wsl-build] ./gradlew build"
 OUT="build/libs/$JAR_NAME"
 [ -f "$OUT" ] || { echo "[wsl-build] ERROR: $OUT not found"; ls -la build/libs/ 2>/dev/null || true; exit 1; }
 echo "[wsl-build] Built: $OUT"
+
+# --- the jar must carry its mixin wiring (see header) -------------------------
+CHECK_DIR="$(mktemp -d)"
+( cd "$CHECK_DIR" && jar xf "$MOD_ROOT/$OUT" META-INF/MANIFEST.MF lovely_sparkle_pieces.refmap.json lovely_sparkle_pieces.mixins.json ) || true
+MIXIN_OK=1
+grep -q '^MixinConfigs: lovely_sparkle_pieces.mixins.json' "$CHECK_DIR/META-INF/MANIFEST.MF" 2>/dev/null \
+  || { echo "[wsl-build] ERROR: MANIFEST.MF has no 'MixinConfigs: lovely_sparkle_pieces.mixins.json'"; MIXIN_OK=0; }
+[ -s "$CHECK_DIR/lovely_sparkle_pieces.refmap.json" ] \
+  || { echo "[wsl-build] ERROR: lovely_sparkle_pieces.refmap.json missing from the jar"; MIXIN_OK=0; }
+grep -q '"refmap"' "$CHECK_DIR/lovely_sparkle_pieces.mixins.json" 2>/dev/null \
+  || { echo "[wsl-build] ERROR: lovely_sparkle_pieces.mixins.json has no \"refmap\" entry"; MIXIN_OK=0; }
+rm -rf "$CHECK_DIR"
+[ "$MIXIN_OK" = 1 ] || { echo "[wsl-build] ERROR: mixins would not load -- NOT deploying"; exit 1; }
+echo "[wsl-build] Mixin wiring OK (MixinConfigs manifest entry + refmap)"
 
 if [ "$DEPLOY" = 1 ]; then
   for d in "$MC/mods" "$MC/server_distribution/mods" "$MC/distribution/client/mods"; do

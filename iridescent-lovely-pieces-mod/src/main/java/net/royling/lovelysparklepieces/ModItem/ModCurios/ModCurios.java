@@ -1,9 +1,11 @@
 package net.royling.lovelysparklepieces.ModItem.ModCurios;
 
+import com.google.common.collect.MapMaker;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.DeferredRegister;
 import net.royling.lovelysparklepieces.LovelySparklePieces;
 import net.royling.lovelysparklepieces.ModItem.ModCurios.Group.Gamblers.*;
@@ -22,6 +24,13 @@ import net.royling.lovelysparklepieces.ModItem.ModCurios.necklace.BlazeCoreItem;
 import net.royling.lovelysparklepieces.ModItem.ModCurios.necklace.MagmaAmuletItem;
 import net.royling.lovelysparklepieces.ModItem.ModCurios.necklace.MoonAmuletItem;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
+
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 
 public class ModCurios {
@@ -168,7 +177,49 @@ public class ModCurios {
     public static final RegistryObject<Item> GAMBLERS_POKER = ITEMS.register("gamblers_poker",
             () -> new GamblersPokerItem(new Item.Properties()));
 
+    /** Live scan of the curio inventory. Use this where the answer must be exact right now (canEquip, one-off logic). */
     public static boolean  hasCurio(Player player,Item item){
         return CuriosApi.getCuriosInventory(player).map(inv->inv.findFirstCurio(item).isPresent()).orElse(false);
+    }
+
+    // IRIDESCENT: one curio scan per player per tick for the hot read paths. hasCurio walks every curio
+    // slot; the HUD asked ~15 times per FRAME, a damage event up to 9 times, the double-jump tick 3 times.
+    // Those callers now share one snapshot of the worn items, rebuilt as soon as the level's game time or
+    // the player's own tick counter moves on.
+    // Keys are weak and compared by IDENTITY (MapMaker): Entity.equals() compares entity ids, and in
+    // singleplayer the client and server copies of a player share an id.
+    private static final Map<Player, WornSnapshot> WORN_CACHE = new MapMaker().weakKeys().makeMap();
+
+    private record WornSnapshot(long gameTime, int tickCount, Set<Item> items) {}
+
+    /**
+     * The items in the player's (non-cosmetic) curio slots, scanned at most once per tick per player.
+     * Up to one tick stale by design - fine for HUD / damage / tick handlers, NOT for canEquip.
+     */
+    public static Set<Item> wornThisTick(Player player){
+        long now = player.level().getGameTime();
+        int tick = player.tickCount;
+        WornSnapshot snapshot = WORN_CACHE.get(player);
+        if(snapshot == null || snapshot.gameTime() != now || snapshot.tickCount() != tick){
+            snapshot = new WornSnapshot(now, tick, scanWorn(player));
+            WORN_CACHE.put(player, snapshot);
+        }
+        return snapshot.items();
+    }
+
+    private static Set<Item> scanWorn(Player player){
+        return CuriosApi.getCuriosInventory(player).resolve().map(inv->{
+            Set<Item> items = new HashSet<>();
+            for(ICurioStacksHandler handler : inv.getCurios().values()){
+                IDynamicStackHandler stacks = handler.getStacks();
+                for(int i = 0; i < stacks.getSlots(); i++){
+                    ItemStack stack = stacks.getStackInSlot(i);
+                    if(!stack.isEmpty()){
+                        items.add(stack.getItem());
+                    }
+                }
+            }
+            return Collections.unmodifiableSet(items);
+        }).orElse(Collections.emptySet());
     }
 }

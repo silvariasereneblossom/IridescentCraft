@@ -15,6 +15,7 @@ import net.royling.lovelysparklepieces.network.NetworkHandler;
 import net.royling.lovelysparklepieces.network.DoubleJumpPacket;
 import net.royling.lovelysparklepieces.network.OpenChestPacket;
 import net.royling.lovelysparklepieces.LovelySparklePieces;
+import net.royling.lovelysparklepieces.ModEvents.boot.DoubleJumpEvent;
 import net.royling.lovelysparklepieces.ModItem.ModUsingItem.Binoculars;
 import net.royling.lovelysparklepieces.ModItem.ModUsingItem.ModItems;
 import org.lwjgl.glfw.GLFW;
@@ -68,9 +69,26 @@ public class ModClientEvents {
             if (OPEN_ENDER_CHEST.consumeClick()) {
                 NetworkHandler.sendToServer(new OpenChestPacket());
             }
-            if (!mc.player.onGround() && mc.options.keyJump.isDown()) {
-                NetworkHandler.sendToServer(new DoubleJumpPacket());
+            if (event.getAction() == GLFW.GLFW_PRESS && mc.options.keyJump.matches(event.getKey(), event.getScanCode())) {
+                requestDoubleJump(mc);
             }
+        }
+        // jump bound to a mouse button
+        @SubscribeEvent
+        public static void onMouseButton(InputEvent.MouseButton.Post event) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player == null) return;
+            if (event.getAction() == GLFW.GLFW_PRESS && mc.options.keyJump.matchesMouse(event.getButton())) {
+                requestDoubleJump(mc);
+            }
+        }
+        // IRIDESCENT: was "any key event while airborne with jump held", for every player, boots or not -
+        // key repeat and every other key pressed mid-air each sent a packet. Now only the press of the jump
+        // key itself, in the air, outside a screen, and only when double-jump boots are worn.
+        private static void requestDoubleJump(Minecraft mc) {
+            if (mc.screen != null || mc.player.onGround()) return;
+            if (!DoubleJumpEvent.hasDoubleJumpBoots(mc.player)) return;
+            NetworkHandler.sendToServer(new DoubleJumpPacket());
         }
     }
     // GUI overlays are handled in HUBRender.java for 1.20.1

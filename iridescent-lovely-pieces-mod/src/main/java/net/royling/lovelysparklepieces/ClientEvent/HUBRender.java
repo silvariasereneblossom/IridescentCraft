@@ -25,6 +25,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.phys.Vec3;
@@ -45,7 +46,7 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import top.theillusivec4.curios.api.CuriosApi;
 
-import javax.swing.*;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class HUBRender {
@@ -63,6 +64,9 @@ public class HUBRender {
         Player player = minecraft.player;
         if(player == null)return;
         GuiGraphics guiGraphics = event.getGuiGraphics();
+        // IRIDESCENT: this overlay asked Curios "is X equipped" ~15 times per FRAME, each a walk over every
+        // curio slot. One shared snapshot of the worn items, rebuilt once per client tick, answers them all.
+        Set<Item> worn = ModCurios.wornThisTick(player);
         int soulCount = player.getPersistentData().getInt("lsp_soul_count");
         float progress = Math.min((float) soulCount / 200f, 1f);
         Window window = Minecraft.getInstance().getWindow();
@@ -75,7 +79,7 @@ public class HUBRender {
         int y = offhandSlotY + 4;
         int lava_y = offhandSlotY - 9;
         RenderSystem._setShaderTexture(0,SOUL_BAR_TEXTURE);
-        if(BCEvents.hasBlasphemousContract(player)) {
+        if(worn.contains(ModCurios.BLASPHEMOUS_CONTRACT.get())) {
             guiGraphics.blit(SOUL_BAR_TEXTURE, x, y, 0, 0, 58, 13);
             int progress_width = (int) (40 * progress);
             if (progress_width > 0) {
@@ -96,7 +100,7 @@ public class HUBRender {
                     true
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.MAGMA_AMULET.get())) {
+        if(worn.contains(ModCurios.MAGMA_AMULET.get())) {
             if (player.getPersistentData().get("lsp_lava_def") != null) {
                 guiGraphics.blit(SOUL_BAR_TEXTURE, x, lava_y, 0, 18, 58, 13);
                 float progress2 = Math.min((float) player.getPersistentData().getInt("lsp_lava_def") / 140, 1f);
@@ -107,7 +111,7 @@ public class HUBRender {
                 }
             }
         }
-        if(ModCurios.hasCurio(player,ModCurios.GAMBLERS_DICE.get())){
+        if(worn.contains(ModCurios.GAMBLERS_DICE.get())){
             guiGraphics.blit(SOUL_BAR_TEXTURE,x-58,lava_y+13,0,36,58,13);
             float progress3 = Math.min((float) player.getPersistentData().getInt("lsp_chip_count")/1000,1f);
             int progress_width3 = (int)(40*progress3);
@@ -120,9 +124,10 @@ public class HUBRender {
                             getPersistentData().getInt("lsp_chip_count")+"/1000",
                     x-58+15+8,lava_y+13+2,ColorUtil.getRainbow(),true);
         }
-        if(ModCurios.hasCurio(player,ModCurios.BLAZE_CORE.get())){
+        if(worn.contains(ModCurios.BLAZE_CORE.get())){
             guiGraphics.blit(SOUL_BAR_TEXTURE,x-58,lava_y,0,54,58,13);
-            float progress4 = Math.min(player.getPersistentData().getInt("lsp_lsp_temperature_count")/150,1);
+            // IRIDESCENT: read "lsp_lsp_temperature_count" (no such key) and divided ints - the bar never filled
+            float progress4 = Math.min(player.getPersistentData().getInt("lsp_temperature_count")/150f,1f);
             int progress_width4 = (int)(40*progress4);
             if(progress_width4>0){
                 guiGraphics.blit(SOUL_BAR_TEXTURE,x-58+15,lava_y+4,
@@ -144,7 +149,7 @@ public class HUBRender {
             }
         }
 
-        if(ModCurios.hasCurio(player,ModCurios.POCKET_WATCH.get())||ModCurios.hasCurio(player,ModCurios.GPS.get())||ModCurios.hasCurio(player,ModCurios.PDA.get())){
+        if(worn.contains(ModCurios.POCKET_WATCH.get())||worn.contains(ModCurios.GPS.get())||worn.contains(ModCurios.PDA.get())){
                 int time_y = window.getGuiScaledHeight()/2;
                 currentTime = calculateGameTime(minecraft.level);
                 lastUpdate = System.currentTimeMillis();
@@ -155,7 +160,7 @@ public class HUBRender {
                 );
         }
         // IRIDESCENT: PDA heartrate line removed with HeartSystem (gimmick strip)
-        if(ModCurios.hasCurio(player,ModCurios.SPEEDOMETER.get())||ModCurios.hasCurio(player,ModCurios.GPS.get())||ModCurios.hasCurio(player,ModCurios.PDA.get())){
+        if(worn.contains(ModCurios.SPEEDOMETER.get())||worn.contains(ModCurios.GPS.get())||worn.contains(ModCurios.PDA.get())){
             int time_y = window.getGuiScaledHeight()/2 + 10;
             lastSpeed = calculateHorizontalSpeed(player);
             lastUpdateTick = minecraft.player.tickCount;
@@ -169,7 +174,7 @@ public class HUBRender {
                     10,time_y,0xFFFFFF,true
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.POSITION_TRACKER.get())||ModCurios.hasCurio(player,ModCurios.GPS.get())||ModCurios.hasCurio(player,ModCurios.PDA.get())){
+        if(worn.contains(ModCurios.POSITION_TRACKER.get())||worn.contains(ModCurios.GPS.get())||worn.contains(ModCurios.PDA.get())){
             int time_y = window.getGuiScaledHeight()/2 + 20;
             double px = Math.round(player.getX() * 10.0) / 10.0;
             double py = Math.round(player.getY() * 10.0) / 10.0;
@@ -183,7 +188,7 @@ public class HUBRender {
                     10,time_y,0xFFFFFF,true
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.PDA.get())){
+        if(worn.contains(ModCurios.PDA.get())){
             int phase = getMoonPhase(player);
             String  moonSymbol;
             if(phase<1||phase>8){
@@ -214,7 +219,7 @@ public class HUBRender {
                     0x0080AA,true
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.PDA.get())){
+        if(worn.contains(ModCurios.PDA.get())){
             String symbol = getWeatherSymbol(player.level(),player);
             String weather = getWeatherString(player);
             guiGraphics.drawString(
@@ -223,7 +228,7 @@ public class HUBRender {
                     10,window.getGuiScaledHeight()/2-10,0xFFFFFF,true
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.EYE_MASK.get())){
+        if(worn.contains(ModCurios.EYE_MASK.get())){
             guiGraphics.fill(
                     RenderType.guiOverlay(),
                     0,0,window.getGuiScaledWidth()/2,window.getGuiScaledHeight(),
@@ -238,22 +243,23 @@ public class HUBRender {
         if(player == null)return;
         GuiGraphics guiGraphics = event.getGuiGraphics();
         Window window = Minecraft.getInstance().getWindow();
+        Set<Item> worn = ModCurios.wornThisTick(player); // IRIDESCENT: per-tick snapshot, see onRenderHUD
 
-        if(ModCurios.hasCurio(player,ModCurios.NIGHT_VISION.get())){
+        if(worn.contains(ModCurios.NIGHT_VISION.get())){
             guiGraphics.fill(
                     RenderType.guiOverlay(),
                     0,0,window.getGuiScaledWidth(),window.getGuiScaledHeight(),
                     0x80009020
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.DOUBLE_NIGHT_VISION.get())){
+        if(worn.contains(ModCurios.DOUBLE_NIGHT_VISION.get())){
             guiGraphics.fill(
                     RenderType.guiOverlay(),
                     0,0,window.getGuiScaledWidth(),window.getGuiScaledHeight(),
                     0x70006090
             );
         }
-        if(ModCurios.hasCurio(player,ModCurios.QUARTER_NIGHT_VISION.get())){
+        if(worn.contains(ModCurios.QUARTER_NIGHT_VISION.get())){
             guiGraphics.fill(
                     RenderType.guiOverlay(),
                     0,0,window.getGuiScaledWidth(),window.getGuiScaledHeight(),

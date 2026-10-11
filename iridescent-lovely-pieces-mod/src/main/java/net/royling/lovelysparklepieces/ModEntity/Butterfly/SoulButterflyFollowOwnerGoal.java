@@ -10,6 +10,8 @@ public class SoulButterflyFollowOwnerGoal extends Goal {
     private final SoulButterflyEntity butterfly;
     private final double speed;
     private float currentAngle;
+    /** IRIDESCENT: goal ticks until the next path computation. */
+    private int repathCooldown;
 
     public SoulButterflyFollowOwnerGoal(SoulButterflyEntity butterfly, double speed) {
         this.butterfly = butterfly;
@@ -53,12 +55,18 @@ public class SoulButterflyFollowOwnerGoal extends Goal {
         );
 
         // === 混合导航和直接运动 ===
-        butterfly.getNavigation().moveTo(
-                targetPos.x,
-                targetPos.y,
-                targetPos.z,
-                speed * 2 // 导航系统用更高速度
-        );
+        // IRIDESCENT: was a fresh A* path every goal tick towards a target that moves every tick. The
+        // direct steering below does the fine work; the navigation only needs a new path about twice a
+        // second.
+        if (--repathCooldown <= 0) {
+            repathCooldown = this.adjustedTickDelay(10);
+            butterfly.getNavigation().moveTo(
+                    targetPos.x,
+                    targetPos.y,
+                    targetPos.z,
+                    speed * 2 // 导航系统用更高速度
+            );
+        }
 
         // === 直接施加运动力 ===
         Vec3 toTarget = targetPos.subtract(butterfly.position()).normalize();
@@ -76,6 +84,11 @@ public class SoulButterflyFollowOwnerGoal extends Goal {
         }
         // === 面向目标 ===
         butterfly.lookAt(EntityAnchorArgument.Anchor.EYES, targetPos);
+    }
+
+    @Override
+    public void start() {
+        repathCooldown = 0;
     }
 
     @Override
