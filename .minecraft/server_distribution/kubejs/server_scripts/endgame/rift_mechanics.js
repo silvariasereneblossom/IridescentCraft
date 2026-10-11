@@ -154,20 +154,34 @@ PlayerEvents.loggedIn(event => {
 })
 
 // =========================================================================
-// SECTION 4: RIFT SHARD INVENTORY TRACKING
-// Track total Rift Shards earned (for Compendium milestones)
-// Uses PlayerEvents.inventoryChanged to detect new shard pickups
+// SECTION 4: RIFT SHARD & MYTHIC CATALYST TRACKING
+// Track total Rift Shards earned and Mythic Catalysts crafted (for
+// Compendium milestones).
+//
+// 2026-10-11: both counters used to sit in the PlayerEvents.inventoryChanged
+// handler further down. That event fires for EVERY non-empty slot change in
+// the player's inventory (a stack moved, a tool losing durability), and for
+// the whole inventory at login and each time a container opens, so the shard
+// counter re-added the full stack and the catalyst counter gained 1 on every
+// firing. Shards only enter the game as mob drops, so they are counted where
+// they are picked up: ItemEvents.pickedUp, whose stack carries the amount
+// actually taken. Catalysts are counted on the real craft (ItemEvents.crafted,
+// as in skills/justleveling_skills.js). Totals stored before this date are
+// inflated and were left as they are.
 // =========================================================================
 
-PlayerEvents.inventoryChanged(event => {
-    let player = event.player
-    let item = event.item
+ItemEvents.pickedUp(event => {
+    try {
+        let player = event.player
+        let item = event.item
+        if (!player || !item) return
+        if (String(item.id) !== 'kubejs:icraft_rift_shard') return
+        let gained = item.count
+        if (!(gained > 0)) return
 
-    // Track Rift Shard acquisition for Compendium
-    if (item.id === 'kubejs:icraft_rift_shard') {
         let data = player.persistentData
         let current = data.getInt('rift_shards_earned')
-        let newTotal = current + item.count
+        let newTotal = current + gained
         data.putInt('rift_shards_earned', newTotal)
 
         // Compendium milestones — grant advancements at thresholds
@@ -186,25 +200,45 @@ PlayerEvents.inventoryChanged(event => {
                 `advancement grant ${player.username} only icraft:rift/shards_250`)
             player.tell('§d[Compendium] §5Rift Master — Earned 250 Rift Shards')
         }
+    } catch (e) {
+        console.warn('[rift_mechanics] shard pickup tracking threw: ' + e)
     }
+})
 
-    // Track Mythic Catalyst crafting for Compendium
-    if (item.id.startsWith('kubejs:mythic_catalyst_')) {
+// Track Mythic Catalyst crafting for Compendium
+ItemEvents.crafted(event => {
+    try {
+        let player = event.player
+        let item = event.item
+        if (!player || !item) return
+        if (String(item.id).indexOf('kubejs:mythic_catalyst_') !== 0) return
+        let made = item.count > 0 ? item.count : 1
+
         let data = player.persistentData
-        let crafted = data.getInt('mythic_items_crafted') + 1
+        let before = data.getInt('mythic_items_crafted')
+        let crafted = before + made
         data.putInt('mythic_items_crafted', crafted)
 
-        if (crafted === 1) {
+        if (crafted >= 1 && before < 1) {
             player.server.runCommandSilent(
                 `advancement grant ${player.username} only icraft:mythic/first_catalyst`)
             player.tell('§d[Compendium] §7Mythic Initiate — Crafted your first Mythic Catalyst')
         }
-        if (crafted >= 5 && (crafted - 1) < 5) {
+        if (crafted >= 5 && before < 5) {
             player.server.runCommandSilent(
                 `advancement grant ${player.username} only icraft:mythic/five_catalysts`)
             player.tell('§d[Compendium] §5Mythic Artisan — Crafted 5 Mythic Catalysts')
         }
+    } catch (e) {
+        console.warn('[rift_mechanics] catalyst craft tracking threw: ' + e)
     }
+})
+
+// One-time "first obtained" flags. These can stay on inventoryChanged: seeing
+// the item in any slot change is enough, and the flag makes a repeat harmless.
+PlayerEvents.inventoryChanged(event => {
+    let player = event.player
+    let item = event.item
 
     // Track Rift Keystone crafting
     if (item.id === 'kubejs:rift_keystone') {
