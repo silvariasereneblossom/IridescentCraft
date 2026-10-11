@@ -9,6 +9,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 ## October 2026 — The server backs its world up again
 
 - **World backups are back, twice a day.** The dedicated server's backup mod (FastBack) quietly never worked there — it needs a tool the server machine doesn't have — so the world had gone without backups since April. The server launcher now takes them itself: every 12 hours, during a restart it was already making, it zips the whole world, checks the zip by reading it back, and keeps the newest two. No extra restarts, and no backups while anyone could be mid-save.
+- **A second copy now lives off the server.** The backups used to sit on the same disk as the world they protect. A separate computer now fetches the newest two every two hours and checks each copy against the launcher's checksum before keeping it, so losing the server's disk no longer means losing the backups too.
 - **FastBack is removed** from the pack on both sides. It did nothing on the server and was never part of singleplayer saves unless you set it up yourself; your worlds are untouched.
 
 ## October 2026 — The Abyss now hits like a Tier 3 dimension

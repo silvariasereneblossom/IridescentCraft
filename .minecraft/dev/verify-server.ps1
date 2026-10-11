@@ -36,7 +36,9 @@
 #      the launcher's last attempt failed. Backups died silently for six months
 #      once (the backup mod needed git; the box has none; nothing alarmed), so
 #      every run of this tool now looks. Pinned (manual-*) backups are counted
-#      and sized: nothing deletes those but the operator.
+#      and sized: nothing deletes those but the operator. The same section ends
+#      with one line from pull-server-backups.ps1 -Status: the off-box copy on
+#      this PC (newest local copy, last pull, task). Informational only.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -418,6 +420,13 @@ Write-Host ("  {0}: {1}" -f $backupState, $backupLine) -ForegroundColor $backupC
 foreach ($n in $backupNotes) { Write-Host ("    - {0}" -f $n) -ForegroundColor DarkYellow }
 if ($IsVerbose -and $backupState -ne 'GREEN') {
     Write-Host "    cause: read logs\backup.log on the server (every decision and failure is there). A backup is taken in a Cycle's stopped window once the newest one is older than the interval; 'none yet' right after the launcher shipped just means no Cycle has happened since." -ForegroundColor DarkYellow
+}
+# The off-box copy: pull-server-backups.ps1 (a Scheduled Task on this PC) reports
+# in one line. Printed on every run so a dead pull job cannot go unseen the way
+# the backups themselves once did. Informational: it never changes the exit code.
+$pullTool = Join-Path $ScriptDir 'pull-server-backups.ps1'
+if (Test-Path -LiteralPath $pullTool) {
+    try { & $pullTool -Status } catch { Write-Host ("  off-box copy: status unavailable ({0})" -f $_.Exception.Message) -ForegroundColor Yellow }
 }
 
 # =============================================================================
