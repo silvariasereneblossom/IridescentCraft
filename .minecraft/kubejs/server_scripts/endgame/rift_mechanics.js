@@ -9,8 +9,12 @@
 // This script handles:
 // 1. T4 boss drops: Rift Shards + Void Fragments added to endgame bosses
 // 2. End dimension mob drops: Void Fragments from End mobs
-// 3. Rift Keystone consumption tracking (advancement-based)
-// 4. Compendium tracking via advancements for Rift milestones
+// 3. Rift Keystone / Core / Essence first-obtained flags
+// 4. Compendium milestones for Rift Shards and Mythic Catalysts: a chat line
+//    plus a counter or flag in the player's persistent data. Nothing else.
+//    (Operator ruling 2026-10-11: the eight `advancement grant` commands that
+//    used to sit beside the chat lines were removed. They named advancements
+//    that were never authored, so every grant had failed silently.)
 //
 // NOTE: Actual procedural dungeon generation requires RFTools Dimensions +
 // structure datapacks. This script handles the KubeJS-scriptable portions.
@@ -184,20 +188,14 @@ ItemEvents.pickedUp(event => {
         let newTotal = current + gained
         data.putInt('rift_shards_earned', newTotal)
 
-        // Compendium milestones — grant advancements at thresholds
+        // Compendium milestones — one chat line as each threshold is crossed
         if (newTotal >= 10 && current < 10) {
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/shards_10`)
             player.tell('§d[Compendium] §7Rift Collector — Earned 10 Rift Shards')
         }
         if (newTotal >= 50 && current < 50) {
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/shards_50`)
             player.tell('§d[Compendium] §7Rift Hoarder — Earned 50 Rift Shards')
         }
         if (newTotal >= 250 && current < 250) {
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/shards_250`)
             player.tell('§d[Compendium] §5Rift Master — Earned 250 Rift Shards')
         }
     } catch (e) {
@@ -220,13 +218,9 @@ ItemEvents.crafted(event => {
         data.putInt('mythic_items_crafted', crafted)
 
         if (crafted >= 1 && before < 1) {
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:mythic/first_catalyst`)
             player.tell('§d[Compendium] §7Mythic Initiate — Crafted your first Mythic Catalyst')
         }
         if (crafted >= 5 && before < 5) {
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:mythic/five_catalysts`)
             player.tell('§d[Compendium] §5Mythic Artisan — Crafted 5 Mythic Catalysts')
         }
     } catch (e) {
@@ -245,8 +239,6 @@ PlayerEvents.inventoryChanged(event => {
         let data = player.persistentData
         if (!data.getBoolean('rift_keystone_crafted')) {
             data.putBoolean('rift_keystone_crafted', true)
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/keystone_crafted`)
             player.tell('§d[Compendium] §7Rift Pioneer — Crafted your first Rift Keystone')
         }
     }
@@ -256,8 +248,6 @@ PlayerEvents.inventoryChanged(event => {
         let data = player.persistentData
         if (!data.getBoolean('rift_core_obtained')) {
             data.putBoolean('rift_core_obtained', true)
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/core_obtained`)
             player.tell('§d[Compendium] §5Core of the Rift — Obtained a Rift Core')
         }
     }
@@ -267,8 +257,6 @@ PlayerEvents.inventoryChanged(event => {
         let data = player.persistentData
         if (!data.getBoolean('primordial_obtained')) {
             data.putBoolean('primordial_obtained', true)
-            player.server.runCommandSilent(
-                `advancement grant ${player.username} only icraft:rift/primordial_obtained`)
             player.tell('§d[Compendium] §7Primordial Touch — Obtained Primordial Essence')
         }
     }
