@@ -39,16 +39,6 @@ StartupEvents.registry('item', event => {
         .textureJson({ layer0: 'minecraft:item/blaze_powder' })
         .color(0, 0x220033)
 
-    event.create('kubejs:rift_gem')
-        .displayName('Rift Gem')
-        .tooltip('§dA gem crystallized from pure Rift energy')
-        .tooltip('§7Dropped by Floor 10+ guardians (30% chance)')
-        .tooltip('§8Best-in-slot Apotheosis socket gem')
-        .maxStackSize(16)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0xDD55FF)
-
     event.create('kubejs:rift_blueprint')
         .displayName('Rift Blueprint')
         .tooltip('§dAncient schematics from the deepest Rift floors')

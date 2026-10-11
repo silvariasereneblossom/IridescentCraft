@@ -2,16 +2,7 @@
   "item.kubejs.twilight_progression_token_t2": "Twilight Progression Token",
   "item.kubejs.dimensional_progression_token_t3": "Dimensional Progression Token",
   "item.kubejs.reality_progression_token_t4": "Reality Progression Token",
-  "item.kubejs.t2_token_fragment": "Tier 2 Token Fragment",
-  "item.kubejs.t3_token_fragment": "Tier 3 Token Fragment",
-  "item.kubejs.t4_token_fragment": "Tier 4 Token Fragment",
-  "item.kubejs.tier1_token": "Tier 1 Token",
   "item.kubejs.tier2_token": "Tier 2 Token",
-  "item.kubejs.tier3_token": "Tier 3 Token",
-  "item.kubejs.tier4_token": "Tier 4 Token",
-  "item.kubejs.tier2_token_fragment": "Tier 2 Token Fragment",
-  "item.kubejs.tier3_token_fragment": "Tier 3 Token Fragment",
-  "item.kubejs.tier4_token_fragment": "Tier 4 Token Fragment",
 
   "item.kubejs.lich_soul": "Lich Soul",
   "item.kubejs.naga_scale": "Naga Scale",
@@ -27,9 +18,6 @@
   "item.kubejs.gaia_spirit_fragment": "Gaia Spirit Fragment",
   "item.kubejs.void_essence": "Void Essence",
 
-  "item.kubejs.brass_reinforced_iron_ingot": "Brass-Reinforced Iron Ingot",
-  "item.kubejs.mana_infused_steel_ingot": "Mana-Infused Steel Ingot",
-  "item.kubejs.ender_forged_diamond": "Ender-Forged Diamond",
 
   "item.kubejs.waystone_core": "Waystone Core",
   "item.kubejs.basic_reforging_token": "Basic Reforging Token",
@@ -53,7 +41,6 @@
 
   "item.kubejs.rift_core": "Rift Core",
   "item.kubejs.primordial_essence": "Primordial Essence",
-  "item.kubejs.rift_gem": "Rift Gem",
   "item.kubejs.rift_blueprint": "Rift Blueprint",
   "item.kubejs.mythic_forge": "Mythic Forge",
   "item.kubejs.mythic_catalyst_1": "Mythic Catalyst I",
@@ -79,11 +66,6 @@
 
   "item.kubejs.compass_of_return": "Compass of Return",
 
-  "item.kubejs.transmuted_steel": "Transmuted Steel Ingot",
-  "item.kubejs.transmuted_manasteel": "Transmuted Manasteel Ingot",
-  "item.kubejs.transmuted_osmium": "Transmuted Osmium Ingot",
-  "item.kubejs.transmuted_diamond": "Transmuted Diamond",
-  "item.kubejs.transmuted_ancient_debris": "Transmuted Ancient Debris",
 
   "item.kubejs.boss_compass": "Boss Compass",
   "item.kubejs.icraft_rift_shard": "Iridescent Rift Shard",

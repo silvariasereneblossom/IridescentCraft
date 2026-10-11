@@ -1,18 +1,12 @@
 // =============================================================================
-// JEI ITEM HIDING — Transmuted Materials
+// JEI ITEM HIDING
 // =============================================================================
-// Hide transmuted tier-skip items from JEI item panel.
-// They still work in recipes via forge tags — players discover them
-// through the Codex or by looking up input material uses.
+// (2026-10-11: this file began as the hide list for the five
+//  kubejs:transmuted_* tier-skip items. Those items were removed -- nothing
+//  ever produced or consumed them -- so only the lists below remain.)
 // =============================================================================
 
 JEIEvents.hideItems(event => {
-  event.hide('kubejs:transmuted_steel')
-  event.hide('kubejs:transmuted_manasteel')
-  event.hide('kubejs:transmuted_osmium')
-  event.hide('kubejs:transmuted_diamond')
-  event.hide('kubejs:transmuted_ancient_debris')
-
   // Terramity guns + ammo + gunsmith — design keeps Terramity bosses and
   // structures, removes firearms. Recipe removal in recipe_audit.js, loot
   // strip in lootjs_overhaul.js; this hides the items from the JEI browser

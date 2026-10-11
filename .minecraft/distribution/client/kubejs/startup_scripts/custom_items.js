@@ -37,30 +37,8 @@ StartupEvents.registry('item', event => {
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0x4AEDD9)
 
-    // Tier token fragments (collected from structures/exploration for alternative unlock)
-    event.create('kubejs:t2_token_fragment')
-        .displayName('Tier 2 Token Fragment')
-        .tooltip('§7Collect enough to forge a full progression token')
-        .maxStackSize(64)
-        .rarity('common')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0xC0C0C0)
-
-    event.create('kubejs:t3_token_fragment')
-        .displayName('Tier 3 Token Fragment')
-        .tooltip('§7Collect enough to forge a full progression token')
-        .maxStackSize(64)
-        .rarity('uncommon')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0xFFD700)
-
-    event.create('kubejs:t4_token_fragment')
-        .displayName('Tier 4 Token Fragment')
-        .tooltip('§7Collect enough to forge a full progression token')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0x4AEDD9)
+    // (2026-10-11: the t2/t3/t4_token_fragment items that followed were removed --
+    //  registered since the legacy token currency, referenced by nothing.)
 
     // =========================================================================
     // BOSS MATERIALS
@@ -173,33 +151,9 @@ StartupEvents.registry('item', event => {
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
         .color(0, 0x110022)
 
-    // =========================================================================
-    // INTERMEDIATE ALLOYS
-    // =========================================================================
-
-    event.create('kubejs:brass_reinforced_iron_ingot')
-        .displayName('Brass-Reinforced Iron Ingot')
-        .tooltip('§7Tier 1.5 — A stronger alloy bridging bronze and steel')
-        .maxStackSize(64)
-        .rarity('common')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0xB5A642)
-
-    event.create('kubejs:mana_infused_steel_ingot')
-        .displayName('Mana-Infused Steel Ingot')
-        .tooltip('§bTier 2.5 — Steel imbued with raw mana')
-        .maxStackSize(64)
-        .rarity('uncommon')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0x44BBFF)
-
-    event.create('kubejs:ender_forged_diamond')
-        .displayName('Ender-Forged Diamond')
-        .tooltip('§dTier 3.5 — A diamond hardened in dimensional flux')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/diamond' })
-        .color(0, 0xBB44FF)
+    // (2026-10-11: the INTERMEDIATE ALLOYS section -- brass_reinforced_iron_ingot,
+    //  mana_infused_steel_ingot, ender_forged_diamond -- was removed: no recipe,
+    //  loot table, script or quest ever referenced them.)
 
     // =========================================================================
     // WAYSTONE CRAFTING MATERIAL (expensive boss-drop-gated waystone recipe)
@@ -247,18 +201,11 @@ StartupEvents.registry('item', event => {
 
     // =========================================================================
     // SHORT-NAME TOKEN ALIASES
-    // lootjs_overhaul.js uses tier2_token/tier3_token/tier4_token for brevity.
-    // These are the same concept as the long-name tokens above.
-    // Register both so scripts work regardless of which name they use.
+    // Only tier2_token is left: a Majrusz treasure-bag loot table in the
+    // icraft_progdiff_overrides Paxi pack still drops it.
+    // (2026-10-11: tier1_token, tier3_token, tier4_token and the three
+    //  tierN_token_fragment items were removed -- referenced by nothing.)
     // =========================================================================
-
-    event.create('kubejs:tier1_token')
-        .displayName('Foundations Token')
-        .tooltip('§7A mark of overworld mastery')
-        .maxStackSize(64)
-        .rarity('common')
-        .textureJson({ layer0: 'minecraft:item/ender_pearl' })
-        .color(0, 0xCD7F32)
 
     event.create('kubejs:tier2_token')
         .displayName('Expansion Token')
@@ -267,46 +214,6 @@ StartupEvents.registry('item', event => {
         .rarity('uncommon')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0xC0C0C0)
-
-    event.create('kubejs:tier3_token')
-        .displayName('Dominion Token')
-        .tooltip('§7A mark of advanced power')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/ender_pearl' })
-        .color(0, 0xFFD700)
-
-    event.create('kubejs:tier4_token')
-        .displayName('Ascension Token')
-        .tooltip('§7A mark of ultimate mastery')
-        .maxStackSize(64)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/ender_pearl' })
-        .color(0, 0x4AEDD9)
-
-    event.create('kubejs:tier2_token_fragment')
-        .displayName('Expansion Token Fragment')
-        .tooltip('§78 fragments → 1 full Expansion Token')
-        .maxStackSize(64)
-        .rarity('common')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0xC0C0C0)
-
-    event.create('kubejs:tier3_token_fragment')
-        .displayName('Dominion Token Fragment')
-        .tooltip('§78 fragments → 1 full Dominion Token')
-        .maxStackSize(64)
-        .rarity('uncommon')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0xFFD700)
-
-    event.create('kubejs:tier4_token_fragment')
-        .displayName('Ascension Token Fragment')
-        .tooltip('§78 fragments → 1 full Ascension Token')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
-        .color(0, 0x4AEDD9)
 
     // =========================================================================
     // COMPASS OF RETURN (Magic Mirror — teleport to bed on 10 min CD)
@@ -456,56 +363,9 @@ StartupEvents.registry('item', event => {
 })
 
 
-// ═══ TRANSMUTED MATERIALS (Tier-Skip Outputs) ═══
-// These bypass AStages item gates. Tagged identically to their real
-// counterparts so they work in all tag-based recipes.
-// Hidden from JEI — discovered via transmutation recipes or Codex.
-StartupEvents.registry('item', event => {
-    event.create('kubejs:transmuted_steel')
-        .displayName('Transmuted Steel Ingot')
-        .tooltip('§7An impure steel ingot, forged from raw iron through sheer determination')
-        .tooltip('§8Functions identically to steel in all recipes')
-        .maxStackSize(64)
-        .rarity('uncommon')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0x888888)
-
-    event.create('kubejs:transmuted_manasteel')
-        .displayName('Transmuted Manasteel Ingot')
-        .tooltip('§7Iron infused with raw mana through brute-force alchemy')
-        .tooltip('§8Functions identically to manasteel in all recipes')
-        .maxStackSize(64)
-        .rarity('uncommon')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0x4488CC)
-
-    event.create('kubejs:transmuted_osmium')
-        .displayName('Transmuted Osmium Ingot')
-        .tooltip('§7Steel transmuted into osmium through dimensional resonance')
-        .tooltip('§8Functions identically to osmium in all recipes')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0xAABBDD)
-
-    event.create('kubejs:transmuted_diamond')
-        .displayName('Transmuted Diamond')
-        .tooltip('§7A diamond crystallized from concentrated magical pressure')
-        .tooltip('§8Functions identically to diamond in all recipes')
-        .maxStackSize(64)
-        .rarity('rare')
-        .textureJson({ layer0: 'minecraft:item/diamond' })
-        .color(0, 0x88DDFF)
-
-    event.create('kubejs:transmuted_ancient_debris')
-        .displayName('Transmuted Ancient Debris')
-        .tooltip('§7Dimensional flux compressed into proto-netherite')
-        .tooltip('§8Functions identically to ancient debris in all recipes')
-        .maxStackSize(64)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
-        .color(0, 0x654321)
-})
+// (2026-10-11: the five kubejs:transmuted_* "tier-skip" items were removed. The
+//  feature existed only as these items -- no transmutation recipe, tag or Codex
+//  entry was ever written -- so they were unobtainable and hidden from JEI.)
 
 // ═══ CLASS RESPEC STATION ═══
 // Design Doc Part III: "Class Altar" — tier-appropriate boss material + 30 levels
