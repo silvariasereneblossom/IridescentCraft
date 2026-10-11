@@ -108,6 +108,28 @@ Settings usually chosen per server:
 
 (`server.properties.production`, an older template for such values, was removed in October 2026: nothing ever read it.)
 
+### Whitelist, operators and bans
+
+`whitelist.json`, `ops.json`, `banned-ips.json`, `banned-players.json` and `usercache.json` are **your server's own files**. They are not in the repository, the game creates them on the first start, and no sync writes or deletes them. Never commit one: they hold player names.
+
+Switch the whitelist on through the override list (see above), then add players:
+
+- **`online-mode=true`:** type `whitelist add <name>` in the launcher's console box.
+- **`online-mode=false` (the pack default):** do **not** use `whitelist add`. On an offline-mode server that command stores the wrong ID for the player (it looks the name up with Mojang first), and the player is still refused. Use the script in this folder, which writes the ID the player will really have:
+
+  ```
+  .\manage_whitelist.ps1 -Add ExactName        the in-game name, capitals included
+  .\manage_whitelist.ps1 -Remove ExactName
+  .\manage_whitelist.ps1 -List
+  .\manage_whitelist.ps1 -Check                finds entries a player can never match
+  ```
+
+  Then type `whitelist reload` in the launcher's console box, or wait for the next restart. From another computer, add `-ServerRoot "<path to the server folder>"`.
+
+A player who is not on the list sees **"You are not white-listed on this server!"**. Names are case-sensitive in offline mode: `Alex` and `alex` are different players.
+
+On an offline-mode server the whitelist checks the name a player types, not an account. It keeps strangers out; it cannot tell a listed player from someone using that player's name. Only `online-mode=true` does that.
+
 ### Adjusting RAM
 
 Edit `start.sh` or `start.bat` and change the `-Xmx` and `-Xms` values:

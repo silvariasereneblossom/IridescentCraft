@@ -6,6 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The test server has a whitelist
+
+- **Only listed players can join the test server.** To be added, send the server operator your exact in-game name, capitals included. If you see *"You are not white-listed on this server!"*, your name is not on the list yet or was entered with different capitals. Nothing changes for players who are already listed: characters, claims and quests are untouched.
+
 ## October 2026 — Loot check: empty chests filled, luck skills pay out properly
 
 - **Chests that were always empty now hold loot.** A handful of structures pointed some of their chests at loot that did not exist: the underground floors of the sandstone Battle Tower (48 chests), and a few chests in abandoned houses, pillager fortresses, the labyrinth, bandit towers and three village workshops. They now roll the loot their structure was meant to give. Chests you have already opened stay as they are.

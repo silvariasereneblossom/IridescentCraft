@@ -16,6 +16,13 @@ A 420-mod progression-focused Forge 1.20.1 modpack. Currently in **alpha** — b
 
 If you ran the installer before today's bat update, **re-running it once** will pick up the new auto-sync wiring.
 
+### Joining the test server
+
+The test server has a whitelist. Before your first join, send the server operator your **exact in-game name**, capitals included, and wait for them to confirm you were added.
+
+- **"You are not white-listed on this server!"** means your name is not on the list yet, or it was entered with different capitals. Send the operator the name exactly as the game shows it.
+- If you change your in-game name, you have to be added again under the new one.
+
 ## Install (manual / advanced)
 
 1. Install Forge 1.20.1-47.4.6 + Java 17.

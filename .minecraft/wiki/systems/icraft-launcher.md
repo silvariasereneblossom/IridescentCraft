@@ -74,6 +74,13 @@ Rust workspace with three crates:
 - A few settings are shown but locked, because they are not server-only: the world's build height, and one snow setting that every player's game reads from its own copy. Not covered yet: the ore amounts the pack sets through its datapacks, and how often the pack's own cherry biomes appear.
 - Every change that reaches a config file is logged, and each file is kept as it was before the first change to it. `icraft settings` does the same from the command line.
 
+**Who may join (since 2026-10):**
+- A server's whitelist, operator list, ban lists and name cache are that server's own. They are not part of the pack, and the launcher's sync never writes or deletes them, whatever the pack repository holds.
+- Whether the whitelist is on is a setting of the server too. It is kept on the same list as the worldgen settings above, so the launcher writes it back before every server start and a pack update cannot switch it off. A value that was already edited into the file can be adopted as it stands (`icraft settings pin`).
+- On a server that does not check accounts (`online-mode=false`), the game's own `whitelist add` command stores an ID the player never has, so the player stays locked out. The server folder carries a small script, `manage_whitelist.ps1`, that adds, removes, lists and checks entries correctly; `whitelist reload` in the launcher's console box, or the next restart, makes a change take effect.
+- A player who is not on the list sees *"You are not white-listed on this server!"*. Names are case-sensitive there.
+- The operator's server check reports on every run whether accounts are checked, whether the whitelist is on and how many players are listed, and turns red when a public server has its whitelist off.
+
 **GUI extras:**
 - Status badges row: Forge present, EULA, mod count, last sync SHA, backup age
 - Color-coded log lines per level (red ERROR / orange WARN / blue INFO / gray DEBUG)
