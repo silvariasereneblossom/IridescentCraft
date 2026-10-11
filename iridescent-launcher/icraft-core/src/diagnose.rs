@@ -38,6 +38,9 @@ pub fn report(cfg: &ServerConfig) -> Result<String> {
         Err(_) => out.push_str("(none)\n"),
     }
 
+    out.push_str("\n--- world backups ---\n");
+    out.push_str(&crate::backup::report(cfg));
+
     out.push_str("\n--- crash-reports (newest 5) ---\n");
     if let Ok(rd) = std::fs::read_dir(cfg.crash_reports()) {
         let mut entries: Vec<_> = rd

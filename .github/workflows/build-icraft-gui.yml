@@ -80,9 +80,27 @@ jobs:
           restore-keys: |
             cargo-${{ runner.os }}-
 
+      # Gate: this job is the only Rust compiler the project has (no toolchain
+      # on the dev PC or the server), so before 2026-10-11 the unit tests in
+      # icraft-core had never run anywhere. A failure here stops the job before
+      # the exe is built, so a launcher that fails its own tests cannot reach
+      # the server. Covers the default workspace members, icraft-core and
+      # icraft-cli -- which is also the only place the CLI gets compiled.
+      # --release shares the dependency build with the exe below.
+      - name: Test icraft-core + icraft-cli
+        working-directory: iridescent-launcher
+        run: cargo test --release
+
       - name: Build icraft-gui (release)
         working-directory: iridescent-launcher
         run: cargo build -p icraft-gui --release
+
+      # Not committed to the repo and not deployed: an Actions-UI download for
+      # running the launcher's phases by hand (`icraft backup --server-dir ...`
+      # is how the world backup was exercised before it shipped).
+      - name: Build icraft CLI (release)
+        working-directory: iridescent-launcher
+        run: cargo build -p icraft-cli --release
 
       - name: Locate built binary via cargo metadata
         id: locate
@@ -100,6 +118,11 @@ jobs:
           $size = (Get-Item $exe).Length
           Write-Host "Built binary: $exe ($size bytes)"
           "exe=$exe" >> $env:GITHUB_OUTPUT
+          $cli = Join-Path $meta.target_directory "release\icraft.exe"
+          if (-not (Test-Path $cli)) {
+              throw "icraft.exe not found at $cli after build."
+          }
+          "cli=$cli" >> $env:GITHUB_OUTPUT
 
       - name: Stage binary into server_distribution
         shell: pwsh
@@ -124,6 +147,14 @@ jobs:
         with:
           name: icraft-gui-exe
           path: .minecraft/server_distribution/icraft-gui.exe
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Upload CLI artifact (Actions UI download)
+        uses: actions/upload-artifact@v4
+        with:
+          name: icraft-cli-exe
+          path: ${{ steps.locate.outputs.cli }}
           retention-days: 30
           if-no-files-found: error
 

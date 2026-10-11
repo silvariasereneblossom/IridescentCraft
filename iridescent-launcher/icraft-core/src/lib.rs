@@ -15,10 +15,12 @@
 //!   - [`diagnose`]  — diagnostic dump
 //!   - [`firewall`]  — Windows firewall audit
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
+//!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
 //!
 //! [`config`] holds path constants, Forge version, allowlists. [`log`]
 //! provides the trans-flag-colored banner used at startup.
 
+pub mod backup;
 pub mod banner;
 pub mod config;
 pub mod console;
@@ -129,6 +131,13 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
 
     // Phase 3: EULA
     eula::accept(cfg)?;
+
+    // Phase 3.5: world backup, if one is due or was requested. Every path that
+    // reaches here has the JVM down (GUI Cycle, restart-policy and
+    // crash-recovery Cycles, CLI serve), and restarts come ~6x a day, so this
+    // is usually a no-op. Never fatal: a failed backup is logged and the
+    // server starts anyway.
+    backup::stopped_window(cfg);
 
     // Phase 4: launch the server (with watchdog)
     let exit_code = if opts.pipe_output {

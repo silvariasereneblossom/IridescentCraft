@@ -209,6 +209,14 @@ struct IcraftApp {
     /// idle poll so the remote side re-checks on its own cadence instead
     /// of only on task start/finish + manual Refresh.
     last_remote_poll: Option<Instant>,
+    /// World-backup status for the Backup badge. Refreshed on its own slow
+    /// clock (see update()), because `refresh_status` only runs on task events
+    /// and a requested backup can run with no task at all.
+    backup: icraft_core::backup::Status,
+    last_backup_refresh: Option<Instant>,
+    /// When "Back up now" was last clicked: keeps the GUI repainting until the
+    /// request watcher (10 s poll) has picked the request up.
+    backup_requested_at: Option<Instant>,
 }
 
 #[derive(Default, Clone)]
@@ -708,6 +716,28 @@ fn countdown(tag: &str, d: Duration) -> bool {
 }
 
 // =============================================================================
+// World backups -- request file
+// =============================================================================
+//
+// The backups themselves are icraft_core::backup: serve() takes the scheduled
+// one in a Cycle's stopped window, so every supervised restart is covered with
+// nothing to do here. This thread only serves the request file (the "Back up
+// now" button, request_backup.ps1, or a file dropped over the share): with the
+// JVM down it takes the pinned backup at once; with the server up it answers
+// "queued" and leaves the file for the next stopped window to pick up.
+
+const BACKUP_REQUEST_POLL: Duration = Duration::from_secs(10);
+
+/// Started once in `IcraftApp::new`.
+fn spawn_backup_request_watcher() {
+    std::thread::spawn(|| loop {
+        std::thread::sleep(BACKUP_REQUEST_POLL);
+        let Some(dir) = APP_SERVER_DIR.lock().unwrap().clone() else { continue };
+        icraft_core::backup::poll_request(&ServerConfig::from_path(dir));
+    });
+}
+
+// =============================================================================
 // Uptime restart policy -- Cycle at 4 h empty / 12 h with players
 // =============================================================================
 //
@@ -873,6 +903,7 @@ impl IcraftApp {
         SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
         spawn_listener_probe();
         spawn_cycle_request_watcher();
+        spawn_backup_request_watcher();
         spawn_restart_policy();
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
@@ -898,6 +929,9 @@ impl IcraftApp {
             resume_cycle_pending,
             remote_fetched_at: Arc::new(Mutex::new(None)),
             last_remote_poll: None,
+            backup: icraft_core::backup::Status::default(),
+            last_backup_refresh: None,
+            backup_requested_at: None,
         };
         app.refresh_status();
         app.kick_remote_refresh();
@@ -1120,6 +1154,20 @@ impl eframe::App for IcraftApp {
             }
         }
 
+        // Backup badge: read the manifest every few seconds, whether or not a
+        // task is running. And keep painting while a requested backup is
+        // pending or under way, so its log lines and the badge move even when
+        // the GUI would otherwise sleep (no server task).
+        if self.last_backup_refresh.map_or(true, |t| t.elapsed() >= Duration::from_secs(5)) {
+            self.backup = icraft_core::backup::status(&self.server_dir);
+            self.last_backup_refresh = Some(Instant::now());
+        }
+        if icraft_core::backup::in_progress()
+            || self.backup_requested_at.is_some_and(|t| t.elapsed() < Duration::from_secs(30))
+        {
+            ctx.request_repaint_after(Duration::from_millis(2000));
+        }
+
         // Resume-after-self-update: the previous instance relaunched mid-Cycle
         // to apply a newer launcher binary and left the resume sentinel (taken
         // in new()). Now that we're up and idle, continue the Cycle so the
@@ -1247,6 +1295,27 @@ impl IcraftApp {
             let (rp_ok, rp_label) = POLICY_BADGE.lock().unwrap().clone();
             if !rp_label.is_empty() {
                 badge(ui, "Restarts", rp_ok, &rp_label);
+            }
+
+            // World backups (icraft_core::backup): age of the newest verified
+            // scheduled backup -- green under 13 h, amber under 24 h, red
+            // beyond that, with none, or when the last attempt failed. Pinned
+            // (manual) backups are counted in the label: nothing but the
+            // operator ever deletes those.
+            {
+                use icraft_core::backup::Health;
+                let now = unix_now() as i64;
+                let (color, label) = if icraft_core::backup::in_progress() {
+                    (BADGE_AMBER, "running...".to_string())
+                } else {
+                    let color = match self.backup.health(now) {
+                        Health::Good => BADGE_GREEN,
+                        Health::Stale => BADGE_AMBER,
+                        Health::Bad => BADGE_RED,
+                    };
+                    (color, self.backup.label(now))
+                };
+                badge_colored(ui, "Backup", color, &label);
             }
 
             badge(ui, "Forge",   self.status.forge_present, if self.status.forge_present { "installed" } else { "missing" });
@@ -1439,6 +1508,26 @@ impl IcraftApp {
             SUPERVISOR.auto_restart.store(auto_restart, Ordering::SeqCst);
             log::info!("[heartbeat] auto-restart {}", if auto_restart { "ON" } else { "OFF" });
         }
+
+        ui.add_space(8.0);
+        ui.heading("World backups");
+        ui.label(egui::RichText::new(
+            "Scheduled: the world is zipped to backups\\world-YYYYmmdd-HHMM.zip in a Cycle's stopped window once the newest one is 12 h old, and the newest 2 are kept. 'Back up now' takes a PINNED backups\\manual-YYYYmmdd-HHMM.zip that is never pruned (delete it yourself once it has served its purpose): at once if the server is stopped, otherwise in the next Cycle's stopped window -- click Cycle to take it right away."
+        ).small().weak());
+        ui.add_space(2.0);
+        ui.horizontal_wrapped(|ui| {
+            // Not gated on `busy`: it has to work while a server task is running.
+            if ui.add(egui::Button::new("Back up now").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                match icraft_core::backup::write_request(&self.server_dir, "gui") {
+                    Ok(()) if icraft_core::run::jvm_active() => log::info!(
+                        "[backup] requested -- the server is running, so it waits for the next Cycle's stopped window (click Cycle to take it now)"
+                    ),
+                    Ok(()) => log::info!("[backup] requested -- starting within ~10 s"),
+                    Err(e) => log::warn!("[backup] could not write the request file: {e}"),
+                }
+                self.backup_requested_at = Some(Instant::now());
+            }
+        });
 
         ui.add_space(8.0);
         ui.heading("Sync + install");
@@ -1742,8 +1831,16 @@ impl IcraftApp {
 // helpers
 // =============================================================================
 
+const BADGE_GREEN: egui::Color32 = egui::Color32::from_rgb(120, 200, 140);
+/// "Probably fine, unconfirmed" -- the Repo HEAD badge's stale colour.
+const BADGE_AMBER: egui::Color32 = egui::Color32::from_rgb(220, 170, 60);
+const BADGE_RED: egui::Color32 = egui::Color32::from_rgb(220, 140, 140);
+
 fn badge(ui: &mut egui::Ui, label: &str, ok: bool, value: &str) {
-    let color = if ok { egui::Color32::from_rgb(120, 200, 140) } else { egui::Color32::from_rgb(220, 140, 140) };
+    badge_colored(ui, label, if ok { BADGE_GREEN } else { BADGE_RED }, value);
+}
+
+fn badge_colored(ui: &mut egui::Ui, label: &str, color: egui::Color32, value: &str) {
     ui.label(egui::RichText::new(format!("{label}:")).strong());
     ui.label(egui::RichText::new(value).color(color));
     ui.separator();

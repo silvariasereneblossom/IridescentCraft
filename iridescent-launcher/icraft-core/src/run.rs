@@ -144,8 +144,13 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     }
 
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
+    // A requested world backup may be zipping the world right now: wait for
+    // it, and keep backups out until the PID is published so none can start in
+    // the gap (see backup.rs).
+    let backup_guard = crate::backup::launch_guard();
     let mut child = cmd.spawn().context("spawning java")?;
     *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
+    drop(backup_guard);
     set_server_state(ServerState::Starting);
 
     if pipe_output {
@@ -308,6 +313,11 @@ static ACTIVE_HANDLE: Mutex<Option<Arc<Mutex<Option<ChildStdin>>>>> =
 /// without holding a Child reference (Child is owned exclusively by
 /// the worker thread blocked on child.wait()).
 static ACTIVE_CHILD_PID: Mutex<Option<u32>> = Mutex::new(None);
+
+/// A JVM launched by this process is alive (from spawn until it has exited).
+pub fn jvm_active() -> bool {
+    ACTIVE_CHILD_PID.lock().unwrap().is_some()
+}
 
 /// Coarse-grained server lifecycle state, derived from key markers in
 /// the JVM's piped log output. The GUI badge reads this to show

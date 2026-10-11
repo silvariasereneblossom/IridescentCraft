@@ -60,6 +60,7 @@ pub const DENY_LIST_PATTERNS: &[&str] = &[
     "supermartijn642", // removed — dep chain incompat
     "connectedglass",  // removed — SuperMartijn642 dep
     "trashcans",       // removed — SuperMartijn642 dep
+    "fastback",        // removed 2026-10-11 — needs git on the host, never ran on the server; see backup.rs
 ];
 
 /// Custom-jar hash manifest filename, sat at the distro root (sibling of
@@ -164,6 +165,19 @@ impl ServerConfig {
     /// heap-sized and would blow past GitHub's blob limit.
     pub fn heapdumps_dir(&self) -> PathBuf { self.crash_reports().join("heapdumps") }
 
+    /// `level-name` from server.properties: the world folder, relative to the
+    /// server dir. `world` (Minecraft's own default) when the file or the key
+    /// is missing, or the value is not a plain relative path.
+    pub fn level_name(&self) -> String {
+        std::fs::read_to_string(self.server_dir.join("server.properties"))
+            .ok()
+            .and_then(|props| parse_level_name(&props))
+            .unwrap_or_else(|| "world".to_string())
+    }
+    pub fn world_dir(&self) -> PathBuf { self.server_dir.join(self.level_name()) }
+    /// World backups (see [`crate::backup`]). Excluded from every sync.
+    pub fn backups_dir(&self) -> PathBuf { self.server_dir.join("backups") }
+
     /// Best-effort guess at whether this directory is already a
     /// configured icraft server install.
     pub fn is_installed(&self) -> bool {
@@ -181,8 +195,74 @@ impl ServerConfig {
     }
 }
 
+/// The `level-name` value of a server.properties body. `\x` escapes are
+/// reduced to `x` (enough for the `\ `, `\:`, `\=` Java writes; `\uXXXX` is
+/// not decoded). `None` unless it is a plain relative path: a `..` or an
+/// absolute path here would point the backup at something that is not a world.
+fn parse_level_name(props: &str) -> Option<String> {
+    for raw in props.lines() {
+        let line = raw.trim_start_matches('\u{feff}').trim_start();
+        if line.starts_with('#') || line.starts_with('!') {
+            continue;
+        }
+        let Some((key, value)) = line.split_once(|c: char| c == '=' || c == ':') else { continue };
+        if key.trim() != "level-name" {
+            continue;
+        }
+        let mut name = String::new();
+        let mut chars = value.trim().chars();
+        while let Some(c) = chars.next() {
+            if c == '\\' {
+                if let Some(escaped) = chars.next() {
+                    name.push(escaped);
+                }
+            } else {
+                name.push(c);
+            }
+        }
+        let plain = !name.is_empty()
+            && Path::new(&name).components().all(|c| matches!(c, std::path::Component::Normal(_)));
+        return plain.then_some(name);
+    }
+    None
+}
+
 /// Helper for path-relative resolution from inside the launcher.
 pub fn join_existing(base: &Path, sub: &str) -> Option<PathBuf> {
     let p = base.join(sub);
     if p.exists() { Some(p) } else { None }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn level_name_comes_from_server_properties() {
+        let name = |props: &str| parse_level_name(props);
+        assert_eq!(name("#Minecraft server properties\nlevel-name=world\n").as_deref(), Some("world"));
+        assert_eq!(name("motd=x\r\nlevel-name = My\\ World \r\nlevel-seed=1").as_deref(), Some("My World"));
+        assert_eq!(name("\u{feff}level-name=worlds/main").as_deref(), Some("worlds/main"));
+        // Absent, commented out or empty: the caller falls back to `world`.
+        assert_eq!(name("level-type=default"), None);
+        assert_eq!(name("#level-name=old\nlevel-type=default"), None);
+        assert_eq!(name("level-name="), None);
+        // Never a path that leaves the server dir.
+        assert_eq!(name("level-name=.."), None);
+        assert_eq!(name("level-name=../elsewhere"), None);
+        assert_eq!(name("level-name=/abs"), None);
+    }
+
+    #[test]
+    fn world_dir_follows_level_name() {
+        let dir = std::env::temp_dir().join(format!("icraft-config-test-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let cfg = ServerConfig::from_path(&dir);
+        assert_eq!(cfg.level_name(), "world"); // no server.properties yet
+        std::fs::write(dir.join("server.properties"), "level-name=alpha\n").unwrap();
+        assert_eq!(cfg.world_dir(), dir.join("alpha"));
+        assert_eq!(cfg.backups_dir(), dir.join("backups"));
+        let _ = std::fs::remove_dir_all(&dir);
+    }
 }

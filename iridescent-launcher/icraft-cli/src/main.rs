@@ -108,6 +108,18 @@ enum Cmd {
     /// Capture latest crash report + tail of latest.log + push to git.
     PushCrashLogs,
 
+    /// Zip the world into backups/ now, as a pinned `manual-*.zip` (never
+    /// pruned). The server must be stopped.
+    Backup {
+        /// Take the scheduled `world-*.zip` instead, and only if one is due
+        /// (what `serve` does before every launch).
+        #[arg(long)]
+        if_due: bool,
+    },
+
+    /// Show the world-backup policy, health and verified backups.
+    BackupStatus,
+
     /// Print a system / install diagnostic report.
     Diagnose,
 
@@ -198,6 +210,15 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             Ok(code.try_into().unwrap_or(1))
         }
         Cmd::PushCrashLogs => { crash::push_logs(cfg)?; Ok(0) }
+        Cmd::Backup { if_due } => {
+            let outcome = backup::run_now(cfg, *if_due);
+            println!("{}", outcome.answer());
+            Ok(if outcome.is_failure() { 1 } else { 0 })
+        }
+        Cmd::BackupStatus => {
+            print!("{}", backup::report(cfg));
+            Ok(0)
+        }
         Cmd::Diagnose => {
             print!("{}", diagnose::report(cfg)?);
             Ok(0)
