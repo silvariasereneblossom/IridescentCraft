@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-10-10T22:57:14Z",
+    "generated_at":  "2026-10-11T04:08:21Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -40,16 +40,16 @@
                                                      "size":  52554
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "75c847dbef612fbb8d363c07d23c52b43d4b1d93584cd12482269a9a44d3358e",
-                                                              "size":  1590481
+                                                              "sha256":  "2ae19bce5d282372641ceb022927e565fa58593295622a7d6697e9c4fa93e6d0",
+                                                              "size":  1592119
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
                                                                  "sha256":  "d2e98783792e7f06c2cf8a3ac40ce14e4ff4372bc3aec769928c1c8eb3acc4bf",
                                                                  "size":  483875
                                                              },
                  "linearxp-1.0.0-iridescent.1.jar":  {
-                                                         "sha256":  "f76fbe006f4c3fdf9ae3aa6eebc48a05b671430eaf8cee33cd9dd9acf1131196",
-                                                         "size":  186713
+                                                         "sha256":  "132944333b0d2fd02f061d41c928a754f46a92d41985f1e9047817e1837c1777",
+                                                         "size":  186793
                                                      },
                  "lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar":  {
                                                                         "sha256":  "694d1f3446cf68e54ecf9d037ee8b023a6d78417915749f8c07837ce9f24ec49",
