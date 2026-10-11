@@ -56,6 +56,18 @@
 #      diffs one against the repo will see them, so every run names them: they
 #      are not drift, and "repairing" such a file undoes nothing (the launcher
 #      puts the value back at the next start). Change them on the tab instead.
+#   6. Launcher / server liveness - the launcher (icraft-gui) rewrites
+#      .icraft_launcher_status next to server.properties every 15 s: its state,
+#      the phase of a restart and since when, whether a JVM exists and since
+#      when not, the log push, and how many frames a minute the window paints.
+#      "Launcher up, JVM down for N min" is RED from 10 minutes: on 2026-10-11
+#      a routine restart left the server down for 39 minutes behind a stalled
+#      log push, the launcher looked alive, and no tool said "the server is
+#      down". The launcher's own finding (a restart stage past its 10 minute
+#      limit) is RED as well. A status file that has stopped being rewritten
+#      (launcher closed, hung, or the box off) is YELLOW: from the share alone
+#      this tool cannot tell what the JVM is doing then. A launcher older than
+#      this check writes no file; that is reported and not judged.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -67,7 +79,10 @@
 # Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
 #             3 = parity, but the world backups are RED (stale / none / failed);
 #             4 = parity and backups fine, but the boot-log check found failures
-#                 or could not run (server still starting, logs unreadable).
+#                 or could not run (server still starting, logs unreadable);
+#             5 = parity, but the SERVER IS DOWN or a restart is stuck: the
+#                 launcher is up and no JVM has existed for 10 minutes or more.
+#                 Reported ahead of 3 and 4 (a down server usually trips 4 too).
 # Read-only by default. -Fix is the only mutating mode and only ever WRITES to
 # the live server root (never the repo). It surfaces drift; it does NOT fix the
 # underlying launcher cause (manifest-blind GUI cleanup / marker short-circuit /
@@ -411,6 +426,97 @@ if (-not (Test-Path -LiteralPath $loudScript -PathType Leaf)) {
 }
 
 # =============================================================================
+# 6. LAUNCHER / SERVER LIVENESS  (.icraft_launcher_status, written by icraft-gui)
+# =============================================================================
+# >>> liveness
+function Get-LauncherLiveness {
+    param([string]$Root, [int64]$NowUnix)
+    $downRedMin = 10      # launcher up + no JVM for this long = RED
+    $staleMin   = 3       # a status older than this is not being rewritten any more
+    $r = [pscustomobject]@{ State = 'NONE'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]) }
+    $statusPath = Join-Path $Root '.icraft_launcher_status'
+    if (-not (Test-Path -LiteralPath $statusPath)) {
+        $r.Line = 'no .icraft_launcher_status on the server: the launcher there predates this check (or has never run). Liveness is not judged.'
+        return $r
+    }
+    $st = @{}
+    try {
+        foreach ($sl in (Get-Content -LiteralPath $statusPath -ErrorAction Stop)) {
+            if ($sl -match '^\s*#' -or $sl -notmatch '=') { continue }
+            $kv = $sl -split '=', 2
+            $st[$kv[0].Trim()] = $kv[1].Trim()
+        }
+    } catch {
+        $r.State = 'YELLOW'
+        $r.Line = "the launcher status file is unreadable: $($_.Exception.Message)"
+        return $r
+    }
+    $num = {
+        param($key)
+        $n = [int64]0
+        if ([int64]::TryParse([string]$st[$key], [ref]$n)) { return $n }
+        return [int64]0
+    }
+    $written = & $num 'written_unix'
+    $span = {
+        param([int64]$from)
+        if ($from -le 0) { return '?' }
+        $s = [math]::Max([int64]0, $NowUnix - $from)
+        if ($s -ge 3600) { return ('{0}h{1:00}m' -f [int][math]::Floor($s / 3600), [int][math]::Floor(($s % 3600) / 60)) }
+        return ('{0} min' -f [int][math]::Floor($s / 60))
+    }
+    $push = [string]$st['log_push']
+    if ($push) {
+        $r.Notes.Add("log push: $push") | Out-Null
+    }
+    $fpm = & $num 'frames_per_min'
+    if ($fpm -gt 120) {
+        $r.Notes.Add("the launcher window paints $fpm frames a minute: it is repainting continuously (a full core on the server's software renderer)") | Out-Null
+    }
+    if ($written -le 0) {
+        $r.State = 'YELLOW'
+        $r.Line = 'the launcher status file carries no timestamp'
+        return $r
+    }
+    $ageSec = $NowUnix - $written
+    if ($ageSec -gt ($staleMin * 60)) {
+        $r.State = 'YELLOW'
+        $r.Line = ("the launcher has not rewritten its status for {0} (last: {1}, server {2}). It is closed or hung, or the box is off; this tool cannot tell from the share whether the server is up." -f (& $span $written), $st['written'], $st['server_state'])
+        return $r
+    }
+    $phase = [string]$st['phase']
+    $why = "phase: $phase"
+    if ($st['heartbeat']) { $why += "; heartbeat: $($st['heartbeat'])" }
+    if ($st['stuck']) {
+        $r.State = 'RED'
+        $r.Line = "launcher up, restart $($st['stuck'])"
+        return $r
+    }
+    if ($st['jvm_running'] -ne 'true') {
+        $downSince = & $num 'jvm_down_since_unix'
+        $downMin = if ($downSince -gt 0) { [int][math]::Floor([math]::Max([int64]0, $NowUnix - $downSince) / 60) } else { 0 }
+        if ($downMin -ge $downRedMin) {
+            $r.State = 'RED'
+            $r.Line = "launcher up, JVM down for $downMin min ($why)"
+        } else {
+            $r.State = 'YELLOW'
+            $r.Line = "launcher up, JVM down for $downMin min ($why). A restart takes a few minutes: run this again; it turns RED at $downRedMin."
+        }
+        return $r
+    }
+    if ($st['server_state'] -eq 'Started') {
+        $r.State = 'GREEN'
+        $r.Line = "launcher up, server up (Started for $(& $span (& $num 'phase_since_unix')))"
+    } else {
+        $r.State = 'YELLOW'
+        $r.Line = "launcher up, JVM running, server $($st['server_state']) for $(& $span (& $num 'phase_since_unix')) ($why)"
+    }
+    return $r
+}
+# <<< liveness
+$live = Get-LauncherLiveness -Root $ServerRoot -NowUnix ([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())
+
+# =============================================================================
 # REPORT
 # =============================================================================
 Write-Host ""
@@ -418,6 +524,18 @@ Write-Host "===================== verify-server: LIVE vs origin/main ===========
 Write-Host ("  origin/main : {0}" -f $originHead)
 Write-Host ("  server root : {0}" -f $ServerRoot)
 Write-Host ("  live marker : {0}" -f $(if ($marker) { $marker } else { '(absent)' }))
+Write-Host ""
+
+Write-Host "-- launcher / server liveness (.icraft_launcher_status) --" -ForegroundColor Cyan
+$liveColor = 'DarkGray'
+if ($live.State -eq 'GREEN')  { $liveColor = 'Green' }
+if ($live.State -eq 'YELLOW') { $liveColor = 'Yellow' }
+if ($live.State -eq 'RED')    { $liveColor = 'Red' }
+Write-Host ("  {0}: {1}" -f $(if ($live.State -eq 'NONE') { 'NOT JUDGED' } else { $live.State }), $live.Line) -ForegroundColor $liveColor
+foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -match 'FAILED|continuously') { 'Yellow' } else { 'DarkGray' }) }
+if ($IsVerbose -and $live.State -eq 'RED') {
+    Write-Host "    cause: the launcher is alive and the server is not. List the launcher's CHILD processes on the box (name, pid, start time, CPU - never command lines) twice, a minute apart: a child with an old start time and no CPU is what it is waiting on. logs\restart_policy.log has the stop time and any WATCHDOG line. See deployment guide section 14." -ForegroundColor DarkYellow
+}
 Write-Host ""
 
 Write-Host "-- custom-jar parity (origin manifest -> live SHA-256) --" -ForegroundColor Cyan
@@ -603,6 +721,23 @@ if (-not $realDrift) {
     Write-Host "=== PARITY OK ===" -ForegroundColor Green
     $mk = if ($totalBehind -eq 0) { 'current' } elseif ($noiseOnly) { "$totalBehind noise-only commit(s) behind" } else { 'current' }
     Write-Host ("    {0}/{1} server jars match origin/main; marker {2}." -f $ok.Count, $serverJars.Count, $mk) -ForegroundColor Green
+    if ($live.State -eq 'RED') {
+        Write-Host "=== SERVER DOWN ===" -ForegroundColor Red
+        Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
+        Write-Host "    -> the deploy is where it should be and nobody can play: find what the launcher is waiting on (deployment guide section 14) before anything else." -ForegroundColor Yellow
+        if ($backupState -eq 'RED') {
+            Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
+        }
+        if ($loudState -ne 'GREEN') {
+            Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
+        }
+        exit 5
+    }
+    if ($live.State -eq 'YELLOW') {
+        Write-Host ("    liveness YELLOW: {0}" -f $live.Line) -ForegroundColor Yellow
+    }
     if ($backupState -eq 'RED') {
         Write-Host "=== BACKUPS RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
@@ -623,6 +758,10 @@ if (-not $realDrift) {
         exit 4
     }
     exit 0
+}
+if ($live.State -eq 'RED') {
+    Write-Host "=== SERVER DOWN (as well as the drift below) ===" -ForegroundColor Red
+    Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
 }
 if ($backupState -eq 'RED') {
     Write-Host "=== BACKUPS RED (as well as the drift below) ===" -ForegroundColor Red
