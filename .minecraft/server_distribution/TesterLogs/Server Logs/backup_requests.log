@@ -1,0 +1,6 @@
+﻿[2026-10-11 07:31:28] [INFO] ================ backup request start ================
+[2026-10-11 07:31:28] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Reason=rollout-check  RequestedBy=SERENEBLOSSOM\silvariazemaitis
+[2026-10-11 07:31:28] [INFO] Wrote backup request (1791729088); waiting up to 60s for icraft-gui to answer.
+[2026-10-11 07:31:32] [INFO] icraft-gui queued it: queued: the server is running; the backup is taken in the next Cycle's stopped window
+[2026-10-11 07:31:32] [INFO] The request file stays in place until the next Cycle takes it. To take it now: request_cycle.ps1 (not while players are online).
+[2026-10-11 07:31:32] [INFO] ================ backup request end (success=True) ================
