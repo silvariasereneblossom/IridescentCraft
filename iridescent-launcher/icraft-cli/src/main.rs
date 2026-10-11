@@ -149,11 +149,56 @@ enum Cmd {
         quiet: bool,
     },
 
+    /// This server's own config values (worldgen and others): list, change,
+    /// reset. They are kept in .icraft_config_overrides.json and written back
+    /// into the config files before every server start, so a pack update
+    /// cannot undo them. Config files are only written while the server is
+    /// stopped; a change made while it runs waits for the next start.
+    Settings {
+        #[command(subcommand)]
+        action: SettingsCmd,
+    },
+
     /// Print a system / install diagnostic report.
     Diagnose,
 
     /// Audit Windows firewall rule for the icraft port. No-op on Linux.
     FirewallAudit,
+}
+
+#[derive(Subcommand, Debug)]
+enum SettingsCmd {
+    /// The worldgen config files of this install, with their short names.
+    Files,
+    /// Every setting of one file: value, allowed range, yours against the
+    /// pack's. FILE is a short name from `settings files` (`mekanism`,
+    /// `adlods-deposits/osmium`) or a path (`config/tectonic.json`,
+    /// `server.properties`).
+    Show {
+        file: String,
+        /// Also the keys of the file that are not worldgen.
+        #[arg(long)]
+        all: bool,
+        /// One JSON object per setting instead of text.
+        #[arg(long)]
+        json: bool,
+    },
+    /// Give a setting your own value. KEY is the [section] and the name joined
+    /// by a dot, as `settings show` prints them.
+    Set {
+        file: String,
+        key: String,
+        /// The new value (a negative number is fine: `-0.35`).
+        #[arg(allow_hyphen_values = true)]
+        value: String,
+    },
+    /// Give a setting back the pack's value.
+    Reset { file: String, key: String },
+    /// Your overrides, and whether each is in its file or waiting.
+    Status,
+    /// Write the waiting overrides into the config files now. Refused while a
+    /// server has the world open (they are written before its next start).
+    Apply,
 }
 
 fn main() -> ExitCode {
@@ -267,6 +312,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 }
             }
         }
+        Cmd::Settings { action } => Ok(settings(action, cfg)),
         Cmd::Diagnose => {
             print!("{}", diagnose::report(cfg)?);
             Ok(0)
@@ -275,6 +321,91 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             print!("{}", firewall::audit()?);
             Ok(0)
         }
+    }
+}
+
+/// `icraft settings ...`. Exit code 0, or 1 when something was refused or failed.
+fn settings(action: &SettingsCmd, cfg: &ServerConfig) -> u8 {
+    use icraft_core::{overrides, worldgen};
+
+    // After a change to the list: write it into the files if no server has the
+    // world, otherwise say when it will be.
+    let write_now = |cfg: &ServerConfig| -> u8 {
+        match overrides::apply_when_stopped(cfg, "command line") {
+            Ok(report) => {
+                println!("{}", report.line());
+                u8::from(report.failed() > 0)
+            }
+            Err(why) => {
+                println!("Not written yet: {why}. It is written into the config file before the next server start.");
+                0
+            }
+        }
+    };
+    let failed = |why: String| -> u8 {
+        eprintln!("settings: {why}");
+        1
+    };
+
+    match action {
+        SettingsCmd::Files => {
+            print!("{}", worldgen::files_text(cfg));
+            0
+        }
+        SettingsCmd::Show { file, all, json } => {
+            let target = worldgen::target(cfg, file);
+            let shown = if *json { worldgen::show_json(cfg, &target, *all) } else { worldgen::show_text(cfg, &target, *all) };
+            match shown {
+                Ok(text) => {
+                    println!("{}", text.trim_end());
+                    0
+                }
+                Err(why) => failed(why),
+            }
+        }
+        SettingsCmd::Set { file, key, value } => {
+            let target = worldgen::target(cfg, file);
+            match worldgen::stage(cfg, &target, key, value, "command line") {
+                Ok(overrides::Staged::Unchanged) => {
+                    println!("{} :: {key} is already {value}.", target.rel);
+                    0
+                }
+                Ok(overrides::Staged::Saved) => {
+                    println!("{} :: {key} = {value}   saved to {}", target.rel, overrides::FILE);
+                    write_now(cfg)
+                }
+                Ok(overrides::Staged::BackToPack) => {
+                    println!("{} :: {key}: {value} is the pack's own value, so the override is dropped.", target.rel);
+                    write_now(cfg)
+                }
+                Err(why) => failed(why),
+            }
+        }
+        SettingsCmd::Reset { file, key } => {
+            let target = worldgen::target(cfg, file);
+            match overrides::reset(cfg, &target.rel, key) {
+                Ok(true) => {
+                    println!("{} :: {key}: back to the pack's value.", target.rel);
+                    write_now(cfg)
+                }
+                Ok(false) => {
+                    println!("{} :: {key} has no override.", target.rel);
+                    0
+                }
+                Err(why) => failed(why),
+            }
+        }
+        SettingsCmd::Status => {
+            print!("{}", worldgen::status_text(cfg));
+            0
+        }
+        SettingsCmd::Apply => match overrides::apply_when_stopped(cfg, "command line") {
+            Ok(report) => {
+                println!("{}", report.line());
+                u8::from(report.failed() > 0)
+            }
+            Err(why) => failed(format!("not written: {why}. The overrides are written before the next server start.")),
+        },
     }
 }
 

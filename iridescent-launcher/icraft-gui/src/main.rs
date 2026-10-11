@@ -23,6 +23,7 @@ use eframe::egui;
 use icraft_core::config::ServerConfig;
 
 mod customizer;
+mod worldgen_page;
 
 const APP_TITLE: &str = "IridescentCraft Server Launcher";
 const KEY_SERVER_DIR: &str = "icraft.server_dir";
@@ -104,6 +105,9 @@ fn main() -> Result<(), eframe::Error> {
 //
 //   ICRAFT_GUI_PREVIEW_TAB=server|customizer   the tab to show (customizer)
 //   ICRAFT_GUI_PREVIEW_RUN=ring:8              start a dry-run with that scope first
+//   ICRAFT_GUI_PREVIEW_PAGE=worldgen           the Customizer's worldgen page instead
+//   ICRAFT_GUI_PREVIEW_FILE=mekanism           ...with this file open (a name from `icraft settings files`)
+//   ICRAFT_GUI_PREVIEW_EDIT=key=value;k2=v2    ...and these values typed in, not saved
 //   ICRAFT_GUI_PREVIEW_SCROLL=0,700,1400       one PNG per scroll offset
 //   ICRAFT_GUI_PREVIEW_EXPAND=1                every collapsible section open
 //   ICRAFT_GUI_PREVIEW_SIZE=1000x900           window size
@@ -122,6 +126,8 @@ struct Preview {
     shots: Option<PathBuf>,
     tab: Tab,
     run: Option<String>,
+    /// `Some` for the worldgen page: (file to open, values to type).
+    worldgen: Option<(Option<String>, Option<String>)>,
     scrolls: Vec<f32>,
     expand: bool,
     phase: PreviewPhase,
@@ -150,6 +156,8 @@ impl Preview {
             shots: var("ICRAFT_GUI_PREVIEW_SHOTS").map(PathBuf::from),
             tab: if var("ICRAFT_GUI_PREVIEW_TAB").as_deref() == Some("server") { Tab::Server } else { Tab::Customizer },
             run: var("ICRAFT_GUI_PREVIEW_RUN"),
+            worldgen: (var("ICRAFT_GUI_PREVIEW_PAGE").as_deref() == Some("worldgen"))
+                .then(|| (var("ICRAFT_GUI_PREVIEW_FILE"), var("ICRAFT_GUI_PREVIEW_EDIT"))),
             scrolls,
             expand: var("ICRAFT_GUI_PREVIEW_EXPAND").is_some(),
             phase: PreviewPhase::Start,
@@ -1389,7 +1397,7 @@ impl eframe::App for IcraftApp {
             let mut area = egui::ScrollArea::vertical()
                 .id_source(match self.tab {
                     Tab::Server => "tab-server",
-                    Tab::Customizer => "tab-customizer",
+                    Tab::Customizer => self.customizer.page_name(),
                 })
                 .auto_shrink([false, false]);
             if let Some(offset) = self.forced_scroll.take() {
@@ -1439,6 +1447,7 @@ impl IcraftApp {
             let rgb: Vec<u8> = image.pixels.iter().flat_map(|c| [c.r(), c.g(), c.b()]).collect();
             let tab = match p.tab {
                 Tab::Server => "server",
+                Tab::Customizer if p.worldgen.is_some() => "worldgen",
                 Tab::Customizer => "customizer",
             };
             let name = format!("{tab}-{:02}.png", p.shot);
@@ -1461,6 +1470,9 @@ impl IcraftApp {
                 self.tab = p.tab;
                 // A few frames first, so the tab has loaded the folder.
                 if p.frames >= 4 {
+                    if let Some((file, edits)) = &p.worldgen {
+                        self.customizer.show_worldgen(file.as_deref(), edits.as_deref());
+                    }
                     if let Some(scope) = p.run.clone() {
                         match self.customizer.set_scope(&scope) {
                             Ok(()) => self.customizer.start_run(&self.server_dir),

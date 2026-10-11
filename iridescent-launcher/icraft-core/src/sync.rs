@@ -1098,6 +1098,11 @@ fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix:
     }
 
     // -- Pass 2: walk the manifest; find missing-on-disk + hash-mismatch --
+    // A file the operator has overridden values in (Server Customizer,
+    // overrides.rs) differs from the repo on purpose: it is reported as a local
+    // override, never as something to repair.
+    let overridden = crate::overrides::overridden_files(dest_root);
+    let mut kept_override: Vec<String> = Vec::new();
     let mut to_repair: Vec<String> = Vec::new();
     let mut kept_volatile = 0usize;
     for (rel, entry) in &files {
@@ -1121,10 +1126,18 @@ fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix:
                 // Mod rewrites this config in place at runtime - the divergence is
                 // expected. KEEP the local copy; do NOT overwrite from the zip.
                 kept_volatile += 1;
+            } else if overridden.contains(&rel.to_ascii_lowercase()) {
+                kept_override.push(rel.clone());
             } else {
                 to_repair.push(rel.clone());
             }
         }
+    }
+    for rel in &kept_override {
+        log::info!(
+            "{}[expected-state]   local-override {} (differs from the repo on purpose; see {})",
+            log_prefix, rel, crate::overrides::FILE
+        );
     }
 
     // -- Apply deletions --
@@ -1174,6 +1187,12 @@ fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix:
     );
     if kept_volatile > 0 {
         summary.push_str(&format!(", kept-volatile {kept_volatile}"));
+    }
+    if !kept_override.is_empty() {
+        summary.push_str(&format!(", local-override {}", kept_override.len()));
+    }
+    if let Some(headline) = crate::overrides::headline(dest_root) {
+        log::info!("{}[expected-state] intentional: {} (re-applied before every server start)", log_prefix, headline);
     }
     if fetch_needed > 0 {
         summary.push_str(&format!(", fetch-needed {fetch_needed}"));

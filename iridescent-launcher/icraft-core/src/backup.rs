@@ -593,6 +593,12 @@ fn world_open_elsewhere(world_dir: &Path) -> bool {
     true
 }
 
+/// The same question for the other writer that must stay out while a server
+/// runs: the config override layer ([`crate::overrides`]).
+pub fn world_in_use(cfg: &ServerConfig) -> bool {
+    world_open_elsewhere(&cfg.world_dir())
+}
+
 #[cfg(windows)]
 fn session_lock_held(world_dir: &Path) -> bool {
     use std::os::windows::fs::OpenOptionsExt;

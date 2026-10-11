@@ -148,6 +148,13 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     // it, and keep backups out until the PID is published so none can start in
     // the gap (see backup.rs).
     let backup_guard = crate::backup::launch_guard();
+    // This server's own config values (Server Customizer): put them back into
+    // the files a sync may just have rewritten, before the JVM reads them. Every
+    // entry point comes through here, so "Run only" is covered too. Nothing
+    // happens without `.icraft_config_overrides.json`, and it never fails the
+    // launch (see overrides.rs). Inside the gate, so the tab cannot be writing
+    // the same files at the same moment.
+    crate::overrides::apply_at_start(cfg);
     let mut child = cmd.spawn().context("spawning java")?;
     *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
     drop(backup_guard);

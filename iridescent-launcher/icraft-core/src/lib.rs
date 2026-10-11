@@ -17,8 +17,8 @@
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
 //!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
 //!
-//! Server Customizer, Phase B (on demand only -- nothing below is called from
-//! [`serve`] or a Cycle, and none of it writes inside the world folder):
+//! Server Customizer, Phase B (on demand only -- none of these three is called
+//! from [`serve`] or a Cycle, and none of them writes inside the world folder):
 //!
 //!   - [`nbt`], [`anvil`], [`worlddata`] — read a world: NBT, region files,
 //!     dimensions, player and mod data
@@ -26,12 +26,24 @@
 //!     spawn, waystones, lived-in, manual)
 //!   - [`regen`]     — the protection report and regeneration DRY-RUN
 //!
+//! Server Customizer, local settings (the one part that runs on every launch):
+//!
+//!   - [`cfgedit`]   — config files read with positions, so one value can be
+//!     changed in place (TOML, legacy `.cfg`, JSON, `.properties`)
+//!   - [`overrides`] — this server's own config values, kept apart from the
+//!     pack's files and put back before every JVM start
+//!     ([`overrides::apply_at_start`], called from `run::launch_server_inner`;
+//!     a no-op without `.icraft_config_overrides.json`)
+//!   - [`worldgen`]  — which config files shape new terrain (the catalog the
+//!     Customizer's worldgen page and `icraft settings` show)
+//!
 //! [`config`] holds path constants, Forge version, allowlists. [`log`]
 //! provides the trans-flag-colored banner used at startup.
 
 pub mod anvil;
 pub mod backup;
 pub mod banner;
+pub mod cfgedit;
 pub mod config;
 pub mod console;
 pub mod crash;
@@ -44,6 +56,7 @@ pub mod http;
 pub mod install;
 pub mod mods;
 pub mod nbt;
+pub mod overrides;
 pub mod packwiz;
 pub mod png;
 pub mod protection;
@@ -54,6 +67,7 @@ pub mod self_update;
 pub mod sync;
 pub mod tools;
 pub mod worlddata;
+pub mod worldgen;
 
 use anyhow::Result;
 

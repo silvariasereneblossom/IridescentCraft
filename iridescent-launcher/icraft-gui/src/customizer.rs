@@ -14,6 +14,11 @@
 //! operator's own policy file, and only when "Save as the standing policy" is
 //! clicked.
 //!
+//! The tab has two pages. This file is the first, "Backups and world
+//! refresh"; the second, "Worldgen settings", is `worldgen_page.rs` and is
+//! hosted from [`Customizer::ui`]. A further page is a struct with a
+//! `ui(&mut self, ui, server_dir)` of its own and one more entry in [`Page`].
+//!
 //! The tab draws itself from a server folder path and nothing else of the
 //! launcher's, so it can be hosted in a window of its own later.
 //!
@@ -31,11 +36,20 @@ use icraft_core::config::ServerConfig;
 use icraft_core::protection::{self, Settings, WaystoneMode};
 use icraft_core::regen::{self, DimView, MapInfo, RunEntry, RunSpec, RunView, Scope};
 
-const GOOD: Color32 = Color32::from_rgb(120, 200, 140);
-const WARN: Color32 = Color32::from_rgb(220, 170, 60);
-const BAD: Color32 = Color32::from_rgb(220, 140, 140);
+pub(crate) const GOOD: Color32 = Color32::from_rgb(120, 200, 140);
+pub(crate) const WARN: Color32 = Color32::from_rgb(220, 170, 60);
+pub(crate) const BAD: Color32 = Color32::from_rgb(220, 140, 140);
 /// The map's colour for "would be regenerated".
 const REGEN: Color32 = Color32::from_rgb(230, 110, 40);
+
+/// The pages of the tab.
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Page {
+    /// World backups, the protection map and the regeneration dry-run.
+    Refresh,
+    /// The pack's worldgen config files (`worldgen_page.rs`).
+    Worldgen,
+}
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum ScopeKind {
@@ -76,6 +90,9 @@ struct Shown {
 }
 
 pub struct Customizer {
+    page: Page,
+    worldgen: crate::worldgen_page::WorldgenPage,
+
     /// The install dir the fields below were loaded for.
     loaded_for: Option<PathBuf>,
 
@@ -122,6 +139,8 @@ pub struct Customizer {
 impl Customizer {
     pub fn new() -> Self {
         let mut tab = Customizer {
+            page: Page::Refresh,
+            worldgen: crate::worldgen_page::WorldgenPage::new(),
             loaded_for: None,
             scope: ScopeKind::Report,
             ring: 8,
@@ -163,6 +182,22 @@ impl Customizer {
 
     pub fn failed(&self) -> bool {
         self.error.is_some()
+    }
+
+    /// A name for the page on screen, for the window to keep a scroll position
+    /// per page (they differ a lot in length).
+    pub fn page_name(&self) -> &'static str {
+        match self.page {
+            Page::Refresh => "tab-customizer",
+            Page::Worldgen => "tab-customizer-worldgen",
+        }
+    }
+
+    /// For a preview: show the worldgen page, open `file` there and type
+    /// `key=value;key=value` into it (nothing is saved).
+    pub fn show_worldgen(&mut self, file: Option<&str>, edits: Option<&str>) {
+        self.page = Page::Worldgen;
+        self.worldgen.preview(file, edits);
     }
 
     /// Choose what would be regenerated from a scope token (`ring:8`, `all`,
@@ -351,6 +386,17 @@ impl Customizer {
         // Runs made elsewhere (a request file, the command line) turn up in the list.
         if self.last_scan.map_or(true, |t| t.elapsed() >= Duration::from_secs(5)) {
             self.rescan_runs(server_dir);
+        }
+
+        ui.horizontal(|ui| {
+            ui.selectable_value(&mut self.page, Page::Refresh, "  Backups and world refresh  ");
+            ui.selectable_value(&mut self.page, Page::Worldgen, "  Worldgen settings  ");
+        });
+        ui.add_space(6.0);
+        if self.page == Page::Worldgen {
+            self.worldgen.expand_all = self.expand_all;
+            self.worldgen.ui(ui, server_dir);
+            return false;
         }
 
         let backup_now = self.backups_ui(ui, server_dir, backup_status);
@@ -619,7 +665,7 @@ impl Customizer {
 // =============================================================================
 
 /// A collapsible section. `expand_all` forces it open.
-fn section(ui: &mut egui::Ui, expand_all: bool, id: &str, title: impl Into<egui::WidgetText>, open: bool, body: impl FnOnce(&mut egui::Ui)) {
+pub(crate) fn section(ui: &mut egui::Ui, expand_all: bool, id: &str, title: impl Into<egui::WidgetText>, open: bool, body: impl FnOnce(&mut egui::Ui)) {
     egui::CollapsingHeader::new(title)
         .id_source(id)
         .default_open(open)
@@ -628,7 +674,7 @@ fn section(ui: &mut egui::Ui, expand_all: bool, id: &str, title: impl Into<egui:
 }
 
 /// One line of fixed-width text, never wrapped.
-fn mono_line(ui: &mut egui::Ui, line: &str) {
+pub(crate) fn mono_line(ui: &mut egui::Ui, line: &str) {
     ui.add(egui::Label::new(RichText::new(line).monospace()).wrap(false));
 }
 
@@ -641,7 +687,7 @@ fn card(ui: &mut egui::Ui, label: &str, value: &str, colour: Color32) {
     });
 }
 
-fn open_path(path: &Path) {
+pub(crate) fn open_path(path: &Path) {
     #[cfg(windows)]
     let opened = std::process::Command::new("explorer").arg(path).spawn();
     #[cfg(not(windows))]

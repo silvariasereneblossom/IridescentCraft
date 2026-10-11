@@ -48,6 +48,14 @@
 #      scripts dead) while this tool said PARITY OK. The manifest is taken from
 #      the commit the server is ON (it is versioned with the scripts), or from
 #      origin/main when that commit predates it. Nothing is written to the box.
+#   5. Local config overrides - informational, never changes the exit code. The
+#      server's .icraft_config_overrides.json (launcher Customizer tab, or
+#      `icraft settings`) lists config values the operator set ON THE SERVER on
+#      purpose; the launcher writes them back into the config files before every
+#      server start. This tool does not compare config files, but anyone who
+#      diffs one against the repo will see them, so every run names them: they
+#      are not drift, and "repairing" such a file undoes nothing (the launcher
+#      puts the value back at the next start). Change them on the tab instead.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -468,6 +476,28 @@ if ($IsVerbose -and $backupState -ne 'GREEN') {
 $pullTool = Join-Path $ScriptDir 'pull-server-backups.ps1'
 if (Test-Path -LiteralPath $pullTool) {
     try { & $pullTool -Status } catch { Write-Host ("  off-box copy: status unavailable ({0})" -f $_.Exception.Message) -ForegroundColor Yellow }
+}
+
+Write-Host ""
+Write-Host "-- local config overrides (.icraft_config_overrides.json; informational) --" -ForegroundColor Cyan
+$ovPath = Join-Path $ServerRoot '.icraft_config_overrides.json'
+if (-not (Test-Path -LiteralPath $ovPath)) {
+    Write-Host "  none: no config value on the server was set apart from the pack's." -ForegroundColor Green
+} else {
+    try {
+        $ovList  = @((Get-Content -LiteralPath $ovPath -Raw -Encoding UTF8 | ConvertFrom-Json).overrides)
+        $ovFiles = @($ovList | ForEach-Object { $_.file } | Sort-Object -Unique)
+        Write-Host ("  INTENTIONAL: {0} value(s) in {1} config file(s) are the operator's own (launcher Customizer tab). NOT drift: the launcher writes them back before every server start, so do not 'repair' these files." -f $ovList.Count, $ovFiles.Count) -ForegroundColor Yellow
+        foreach ($o in $ovList) {
+            $ovState = 'in the file as of the last server start'
+            if ($o.revert) { $ovState = 'being reset to the pack value at the next server start' }
+            elseif ([string]$o.written -ne [string]$o.value) { $ovState = 'waiting for the next server start' }
+            Write-Host ("    {0} :: {1} = {2}   (the pack's: {3})   {4}" -f $o.file, $o.key, $o.value, $o.base, $ovState)
+        }
+    } catch {
+        Write-Host ("  UNREADABLE: {0}" -f $_.Exception.Message) -ForegroundColor Red
+        Write-Host "    The launcher applies no override until that file is repaired or removed." -ForegroundColor Red
+    }
 }
 
 Write-Host ""
