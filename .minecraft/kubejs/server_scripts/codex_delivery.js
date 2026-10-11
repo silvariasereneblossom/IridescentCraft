@@ -24,6 +24,25 @@
 // Flags and kit contents are unchanged (persistentData icraft_magic_starter_<class>),
 // so a player who already received a kit does not get another.
 //
+// 2026-10-10 -- the starter kits never contained a spell book:
+//   * The kit table named `iridescent_modular_spells:modular_copper_spell_book`
+//     and `...:modular_novice_spell_book`. Those per-tier items were merged
+//     (Phase 6G) into ONE item per side -- `modular_spell_book` (Iron's
+//     Spellbooks) and `modular_ars_spell_book` (Ars Nouveau) -- whose tier is
+//     the material in its `core` slot. The old ids resolve to an empty stack.
+//     The kit now gives the merged item with the exact module NBT the Tetra
+//     replacement for the vanilla starter book produces
+//     (iridescent-tetra-expansion-mod data/tetra/replacements/
+//     iridescent_modular_spells/{copper,novice}_spell_book.json; NBT layout =
+//     IModularItem.putModuleInSlot: "<slot>" = module key,
+//     "<module key>_material" = variant key).
+//   * ONE-TIME TOP-UP for characters flagged before this fix. They received
+//     gems and ink only (the book id was dead and, until the 2026-10 cleanup,
+//     no scroll could be built either), so the missing book(s) and scrolls are
+//     granted once, behind icraft_magic_starter_full_<class>. Every kit granted
+//     from now on sets that flag itself, so it is never topped up, and the
+//     top-up gives nothing unless every book resolves (it retries instead).
+//
 // Whole file is one IIFE: server scripts share a single Rhino scope.
 // =============================================================================
 
@@ -39,29 +58,54 @@
   }
 
   // ── Magic class starter kit ────────────────────────────────────────────────
-  // Entries are plain `{item, count}` OR `{scroll: spellId, level}` for
-  // pre-inscribed Iron's Spellbooks scrolls.
+  // Entries are plain `{item, count}` (optionally with `nbt` and `book: true`)
+  // OR `{scroll: spellId, level}` for pre-inscribed Iron's Spellbooks scrolls.
+  //
+  // The two starter books (see the 2026-10-10 header note). 2026-04-26 Phase 5:
+  // caster classes start with MODULAR books so they can immediately install
+  // cover/pages materials + the custom magic enchants (mana_capacity /
+  // mana_flow / arcane_edge / arcane_devastation). Module NBT = what converting
+  // irons_spellbooks:copper_spell_book / ars_nouveau:novice_spell_book at a
+  // Tetra workbench yields.
+  var ISS_STARTER_BOOK = {
+    book: true,
+    item: 'iridescent_modular_spells:modular_spell_book',
+    count: 1,
+    nbt: '{"iss_book/core":"iss_book/core","iss_book/core_material":"iss_core/copper_spell_book",' +
+      '"iss_book/front_cover":"iss_book/front_cover","iss_book/front_cover_material":"front_cover/copper",' +
+      '"iss_book/back_cover":"iss_book/back_cover","iss_book/back_cover_material":"back_cover/copper",' +
+      '"iss_book/spine":"iss_book/spine","iss_book/spine_material":"spine/copper",' +
+      '"iss_book/pages":"iss_book/pages","iss_book/pages_material":"pages/paper"}'
+  }
+  var ARS_STARTER_BOOK = {
+    book: true,
+    item: 'iridescent_modular_spells:modular_ars_spell_book',
+    count: 1,
+    nbt: '{"ars_book/core":"ars_book/core","ars_book/core_material":"ars_core/novice_spell_book",' +
+      '"ars_book/front_cover":"ars_book/front_cover","ars_book/front_cover_material":"front_cover/leather",' +
+      '"ars_book/back_cover":"ars_book/back_cover","ars_book/back_cover_material":"back_cover/leather",' +
+      '"ars_book/spine":"ars_book/spine","ars_book/spine_material":"spine/iron",' +
+      '"ars_book/dye":"ars_book/dye","ars_book/dye_material":"dye/string"}'
+  }
+
   var MAGIC_STARTER_KITS = {
     archmage: [
-      // 2026-04-26 Phase 5: caster classes start with MODULAR variants so
-      // they can immediately install cover/pages materials + the custom
-      // magic enchants (mana_capacity / mana_flow / arcane_edge / arcane_devastation).
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
       { scroll: 'irons_spellbooks:firebolt',        level: 1 },
-      { item: 'iridescent_modular_spells:modular_novice_spell_book', count: 1 },
+      ARS_STARTER_BOOK,
       { item: 'ars_nouveau:source_gem',            count: 5 },
       { item: 'irons_spellbooks:common_ink',       count: 2 }
     ],
     battlemage: [
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:magic_arrow',     level: 1 },
       { scroll: 'irons_spellbooks:fang_strike',     level: 1 },
       { item: 'ars_nouveau:source_gem',            count: 3 },
       { item: 'irons_spellbooks:common_ink',       count: 1 }
     ],
     void_summoner: [
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
       { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
       { item: 'irons_spellbooks:common_ink',       count: 1 },
@@ -70,21 +114,21 @@
     // ── Trinity mages (Phase 1a, 2026-06-14). Each gets two on-triad starter
     //    scrolls (ids confirmed against the live ISS registry) + catalyst + ink.
     elemental: [
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:firebolt',        level: 1 },
       { scroll: 'irons_spellbooks:cone_of_cold',    level: 1 },
       { item: 'ars_nouveau:source_gem',            count: 5 },
       { item: 'irons_spellbooks:common_ink',       count: 2 }
     ],
     blessed: [
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:heal',            level: 1 },
       { scroll: 'irons_spellbooks:wisp',            level: 1 },
       { item: 'ars_nouveau:source_gem',            count: 4 },
       { item: 'irons_spellbooks:common_ink',       count: 2 }
     ],
     corrupted: [
-      { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+      ISS_STARTER_BOOK,
       { scroll: 'irons_spellbooks:ray_of_siphoning', level: 1 },
       { scroll: 'irons_spellbooks:eldritch_blast',   level: 1 },
       { item: 'minecraft:ender_pearl',             count: 2 },
@@ -93,6 +137,13 @@
   }
   var MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner', 'elemental', 'blessed', 'corrupted']
   var MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
+  // Set once a class's book(s) AND scrolls have been delivered (see the
+  // 2026-10-10 header note). Kit flag set + this one missing = a character
+  // that got the bookless kit and is owed the one-time top-up.
+  var MAGIC_FULL_PREFIX = 'icraft_magic_starter_full_'
+  // Set when the scrolls were delivered but a book was not (so a later top-up
+  // adds the book without repeating the scrolls).
+  var MAGIC_SCROLLS_PREFIX = 'icraft_magic_starter_scrolls_'
 
   // ISS classes are resolved lazily so a missing / changed ISS only costs the
   // scrolls, not the Codex delivery below.
@@ -162,6 +213,16 @@
     return className.replace('_', ' ').replace(/\b\w/g, function (c) { return c.toUpperCase() })
   }
 
+  // One kit entry -> ItemStack (may be empty when the id is unknown).
+  var entryLabel = function (entry) {
+    return entry.scroll ? ('scroll ' + entry.scroll) : String(entry.item)
+  }
+  var entryStack = function (entry) {
+    if (entry.scroll) return makeScroll(entry.scroll, entry.level || 1)
+    if (entry.nbt) return Item.of(entry.item, entry.nbt)
+    return Item.of(entry.item, entry.count)
+  }
+
   // ── THE starter-kit grant path ─────────────────────────────────────────────
   // Returns 'granted' | 'already' | 'unknown'.
   //   regrant = true: operator override (/icraftkit <class>) -- give the kit
@@ -174,29 +235,37 @@
 
     var kit = MAGIC_STARTER_KITS[className]
     var delivered = 0
+    var booksMissing = 0
+    var scrollsMissing = 0
     for (var i = 0; i < kit.length; i++) {
       var entry = kit[i]
-      var label = entry.scroll ? ('scroll ' + entry.scroll) : String(entry.item)
+      var label = entryLabel(entry)
+      var given = false
       try {
-        var stack = entry.scroll
-          ? makeScroll(entry.scroll, entry.level || 1)
-          : Item.of(entry.item, entry.count)
+        var stack = entryStack(entry)
         // isEmpty is a METHOD on ItemStack. An unknown item id resolves to an
         // empty stack and player.give() of it silently gives nothing.
         if (!stack || stack.isEmpty()) {
           warnOnce('starter kit entry "' + label + '" does not resolve to an item -- skipped', 'empty stack')
-          continue
+        } else {
+          player.give(stack)
+          delivered++
+          given = true
         }
-        player.give(stack)
-        delivered++
       } catch (e) {
         warnOnce('starter kit entry "' + label + '" could not be given', e)
       }
+      if (!given && entry.book) booksMissing++
+      if (!given && entry.scroll) scrollsMissing++
     }
 
     // Flag first-time grants even when an entry failed: the failure is logged
-    // above, and re-granting the whole kit every 5 s would be worse.
+    // above, and re-granting the whole kit every 5 s would be worse. A missing
+    // BOOK is the one thing that is retried (topUpStarterKit), so the "full"
+    // flag is only set when every book went out.
     data.putBoolean(flagKey, true)
+    if (scrollsMissing === 0) data.putBoolean(MAGIC_SCROLLS_PREFIX + className, true)
+    if (booksMissing === 0 && scrollsMissing === 0) data.putBoolean(MAGIC_FULL_PREFIX + className, true)
     console.log('[codex/starter] ' + className + ' kit -> ' + player.username + ': ' +
       delivered + '/' + kit.length + ' entries delivered' + (regrant ? ' (operator re-grant)' : ''))
 
@@ -209,13 +278,66 @@
     return 'granted'
   }
 
+  // ── One-time top-up (see the 2026-10-10 header note) ──────────────────────
+  // For a class whose kit flag is set but whose "full" flag is not: give the
+  // book(s), and the scrolls unless they are already recorded as delivered.
+  // Returns 'topped-up' | 'not-needed' | 'failed'.
+  //   * never runs for a kit granted by the current code (it set the flag)
+  //   * all-or-nothing: every stack is built and checked BEFORE anything is
+  //     given, and the flag is set in the same pass, so it cannot pay out twice
+  var topUpStarterKit = function (player, className) {
+    if (!MAGIC_STARTER_KITS.hasOwnProperty(className)) return 'not-needed'
+    var data = player.persistentData
+    if (!data.getBoolean(MAGIC_FLAG_PREFIX + className)) return 'not-needed'   // no kit yet: the grant path owns it
+    var fullKey = MAGIC_FULL_PREFIX + className
+    if (data.getBoolean(fullKey)) return 'not-needed'
+
+    var scrollsOwed = !data.getBoolean(MAGIC_SCROLLS_PREFIX + className)
+    var kit = MAGIC_STARTER_KITS[className]
+    var stacks = []
+    var books = 0
+    for (var i = 0; i < kit.length; i++) {
+      var entry = kit[i]
+      if (!entry.book && !(entry.scroll && scrollsOwed)) continue
+      var stack = null
+      try { stack = entryStack(entry) } catch (e) { stack = null }
+      if (!stack || stack.isEmpty()) {
+        warnOnce('starter kit top-up: "' + entryLabel(entry) + '" does not resolve to an item -- top-up postponed', 'empty stack')
+        return 'failed'
+      }
+      stacks.push(stack)
+      if (entry.book) books++
+    }
+
+    // Flag FIRST: whatever happens while handing the items over, this can
+    // never pay out a second time.
+    data.putBoolean(fullKey, true)
+    data.putBoolean(MAGIC_SCROLLS_PREFIX + className, true)
+    for (var j = 0; j < stacks.length; j++) {
+      try { player.give(stacks[j]) } catch (e3) { warnOnce('starter kit top-up: an item could not be given', e3) }
+    }
+    console.log('[codex/starter] ' + className + ' kit top-up -> ' + player.username + ': ' + books +
+      ' book(s) + ' + (stacks.length - books) + ' scroll(s) the original kit never contained')
+    try {
+      player.tell('\u00a76[Starter Kit]\u00a7r Your ' + displayName(className) +
+        ' starter kit was missing its spell book' + (books > 1 ? 's' : '') +
+        (stacks.length > books ? ' and scrolls' : '') + ' \u2014 they have been added to your inventory.')
+    } catch (e2) {
+      warnOnce('starter kit top-up message', e2)
+    }
+    return 'topped-up'
+  }
+
   // Automatic trigger: the player's CURRENT class, if it is a magic class.
-  // Returns grantStarterKit's result, or 'no-class' / 'not-magic'.
+  // Returns grantStarterKit's result ('topped-up' when an old bookless kit was
+  // just completed), or 'no-class' / 'not-magic'.
   var grantStarterForOwnClass = function (player) {
     var cls = classOf(player)
     if (!cls) return 'no-class'
     if (MAGIC_CLASSES.indexOf(cls) < 0) return 'not-magic'
-    return grantStarterKit(player, cls, false)
+    var result = grantStarterKit(player, cls, false)
+    if (result === 'already' && topUpStarterKit(player, cls) === 'topped-up') return 'topped-up'
+    return result
   }
 
   // Shared reply for the two manual triggers (/icraftkit and !kit).
@@ -296,8 +418,8 @@
   // ── Starter-kit check ──────────────────────────────────────────────────────
   // Every 5 s for every online player. A class picked late (the Origins picker
   // can stay open for minutes) or changed at the Class Altar is caught without
-  // a relog. Cost per player: one cached resolver lookup, plus one boolean
-  // read for the six magic classes.
+  // a relog. Cost per player: one cached resolver lookup, plus (magic classes
+  // only) two or three boolean reads -- the kit flag and the top-up flags.
   global.tick_codexStarterCheck = function (event) {
     event.server.players.forEach(function (player) {
       try {
@@ -433,7 +555,7 @@
         try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
         var result = manualKit(sp)
         console.log('[codex/cmd] /icraftkit from ' + sp.username + ': ' + result)
-        return result === 'granted' ? 1 : 0
+        return (result === 'granted' || result === 'topped-up') ? 1 : 0
       })
 
     // One literal per magic class, generated from MAGIC_CLASSES so the list

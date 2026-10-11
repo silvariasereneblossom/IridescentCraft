@@ -1,196 +1,189 @@
 // =============================================================================
 // kubejs/server_scripts/quests/onboarding_bridge.js
 //
-// Bridges Heracles chapter 0 (Onboarding) tasks of type `heracles:dummy` to
-// real in-world events. Without this script, 2 of the chapter-0 quests
-// (1 JLF level milestone, 1 capstone) would never auto-fire.
+// Bridges the two Heracles chapter-0 (Onboarding) quests whose only task is a
+// `heracles:dummy` to the real game state. Without this script they can never
+// complete, and the capstone gates the whole Combat chapter.
 //
-// 2026-06-03 (#45 read-fix B): the 3 "read a codex page" quests were removed —
-// Patchouli is client-side and the server can't see which page you opened, so
-// those reads were never detectable. The codex beat is now onboarding_first_codex_open
-// ("hold the Iridescent Codex"), which is plain item-detection.
+//   quest                         dummy value                          fires when
+//   onboarding_first_level        jlf_level_5_reached                  an aptitude reaches level 5
+//   onboarding_survivor_capstone  onboarding_survivor_capstone_check   its 11 dependencies are complete
 //
-// Heracles' `heracles:dummy` task type completes via the operator command
-// `/heracles dummy <value>`. This script runs that command server-side on
-// behalf of the player when the corresponding game event happens.
+// (The three "read a codex page" quests were removed 2026-06-03, #45 read-fix B:
+// Patchouli is client-side and the server cannot see which page was opened.)
 //
-// Quests bridged here (see .minecraft/config/heracles/quests/onboarding/):
-//   - onboarding_first_level        dummy value: jlf_level_5_reached
-//   - onboarding_survivor_capstone  dummy value: onboarding_survivor_capstone_check
+// HOW A DUMMY TASK IS COMPLETED
+//   `/heracles dummy <id>` (op level 2) progresses every `heracles:dummy` task
+//   with that id FOR THE COMMAND SOURCE -- it takes no player argument, so it is
+//   run as `execute as <player> run heracles dummy <id>`. Heracles only looks at
+//   COMPLETABLE quests (all dependencies complete, not yet complete itself): a
+//   dummy fired while the quest is still locked is dropped without a trace.
 //
-// Idempotent: each per-player tuple (player, dummy_value) is one-shot. We
-// guard via persistent player NBT flags so re-fire on relog is suppressed.
+// 2026-10-10 -- why neither quest ever completed, and what changed:
+//   * The level was read from player.persistentData.PlayerPersisted.PlayerLevel.
+//     JustLevelingFork has no such field. It keeps eight aptitude levels (each
+//     starts at 1) in the player capability "justlevelingfork:aptitudes"; the
+//     read here is the mod's own static accessor, AptitudeCapability.get(player)
+//     (no NBT serialisation).
+//       "JLF level 5" = the player's HIGHEST aptitude is 5 or more. That is the
+//       pack's first aptitude milestone (skills unlock at 5/10/15/20/30). The
+//       sum of all eight (JLF's "global level") starts at 8, so it cannot be
+//       what the quest means: it would be complete before the player did
+//       anything.
+//   * Quest completion was read from player.persistentData.heracles.quests.
+//     Heracles keeps progress in its own SavedData; that compound never
+//     existed. Completion and dependencies are now asked of Heracles
+//     (global.icraft.heracles, exported by quests/heracles_reconcile.js).
+//   * The command was `heracles dummy <id> <player>`, which does not parse.
+//   * The "already fired" list made each dummy a one-shot. A dummy that arrived
+//     before the quest unlocked was lost AND never retried. There is no
+//     one-shot and no flag of our own any more: a bridge is done when Heracles
+//     says the quest is complete (so an admin `/heracles reset` re-arms it by
+//     itself), and until then the dummy is fired on every pass in which the
+//     quest is completable and the condition holds.
+//
+// COST: one pass per player per POLL_TICKS (5 s) on the player's own age, via
+// the master tick dispatcher. Per bridge: one Heracles map lookup; for an
+// unfinished onboarding_first_level also one capability lookup. A dummy command
+// is only run when it can land (quest completable + condition met).
 //
 // Cross-refs:
-//   - .minecraft/wiki/design/heracles-quest-tree.md §4 (template + bridge note)
-//   - .minecraft/wiki/design/heracles-json-shape.md §2.8 (dummy task semantics)
 //   - .minecraft/config/heracles/quests/onboarding/onboarding_*.json (consumers)
+//   - .minecraft/wiki/design/heracles-json-shape.md §2.8 (dummy task semantics)
+//
+// Whole file is one IIFE: server scripts share a single Rhino scope.
 // =============================================================================
 
-// ---- Tunables --------------------------------------------------------------
+;(function () {
+  var POLL_TICKS = 100
+  // Without the Heracles API completion cannot be read; then a met condition
+  // re-fires its dummy at most this often (ticks) instead of every pass.
+  var BLIND_REFIRE_TICKS = 1200
 
-// JLF level threshold quests. Keyed by required level, value is dummy.
-const JLF_LEVEL_TO_DUMMY = {
-    5: "jlf_level_5_reached",
-}
+  // JLF aptitude level that completes onboarding_first_level (see header).
+  var JLF_LEVEL = 5
 
-// Capstone trigger: when these 14 quest IDs all show completed for a player,
-// fire the capstone dummy.
-const CAPSTONE_DUMMY = "onboarding_survivor_capstone_check"
-const CAPSTONE_PREREQS = [
-    "onboarding_first_log",
-    "onboarding_first_tool",
-    "onboarding_first_stone",
-    "onboarding_first_food",
-    "onboarding_first_shelter",
-    "onboarding_first_codex_open",
-    "onboarding_first_kill",
-    "onboarding_first_iron",
-    "onboarding_first_iron_pick",
-    "onboarding_first_level",
-    "onboarding_first_villager_trade",
-]
+  var warned = {}
+  var warnOnce = function (key, message) {
+    if (warned[key]) return
+    warned[key] = true
+    try { console.warn('[onboarding_bridge] ' + message + ' (logged once)') } catch (ignored) {}
+  }
 
-// ---- Per-player NBT guard --------------------------------------------------
-//
-// Track which dummy values each player has already fired so reload / relog
-// doesn't re-fire the reward. Stored under
-// player.persistentData.iridescent.onboarding_bridge_fired = [<dummy>, ...]
-
-function getFiredSet(player) {
-    const pd = player.persistentData
-    if (!pd.contains("iridescent")) pd.put("iridescent", {})
-    const block = pd.getCompound("iridescent")
-    if (!block.contains("onboarding_bridge_fired")) {
-        block.put("onboarding_bridge_fired", [])
+  // ---- JustLevelingFork ------------------------------------------------------
+  var aptitudeClass = null
+  var aptitudeTried = false
+  var getAptitudeClass = function () {
+    if (!aptitudeTried) {
+      aptitudeTried = true
+      try {
+        aptitudeClass = Java.loadClass('com.seniors.justlevelingfork.common.capability.AptitudeCapability')
+      } catch (e) {
+        aptitudeClass = null
+        warnOnce('jlf', 'JustLevelingFork AptitudeCapability not loadable -- onboarding_first_level cannot complete: ' + e)
+      }
     }
-    pd.put("iridescent", block)
-    // Return as a Set view on the underlying list (stringified).
-    const list = block.getList("onboarding_bridge_fired", 8)  // 8 = TAG_STRING
-    const set = new Set()
-    for (let i = 0; i < list.size(); i++) {
-        set.add(list.getString(i))
-    }
-    return set
-}
+    return aptitudeClass
+  }
 
-function markFired(player, dummyValue) {
-    const pd = player.persistentData
-    if (!pd.contains("iridescent")) pd.put("iridescent", {})
-    const block = pd.getCompound("iridescent")
-    if (!block.contains("onboarding_bridge_fired")) {
-        block.put("onboarding_bridge_fired", [])
-    }
-    const list = block.getList("onboarding_bridge_fired", 8)
-    // Avoid duplicates.
-    for (let i = 0; i < list.size(); i++) {
-        if (list.getString(i) === dummyValue) return
-    }
-    list.add(net.minecraft.nbt.StringTag.valueOf(dummyValue))
-    block.put("onboarding_bridge_fired", list)
-    pd.put("iridescent", block)
-}
-
-function fireDummyIfNew(player, dummyValue) {
-    const fired = getFiredSet(player)
-    if (fired.has(dummyValue)) return false
-    markFired(player, dummyValue)
-    player.server.runCommandSilent(`heracles dummy ${dummyValue} ${player.username}`)
-    return true
-}
-
-// ---- JLF level milestone hook ---------------------------------------------
-//
-// JustLevelingFork stores per-player level in player.persistentData.
-// Per the JLF wiki this is under `puffish_attributes.skill_points.level`
-// or similar -- verify the exact NBT path during integration testing.
-// We poll once per second per online player and fire dummies when thresholds
-// are crossed. Cheap (only inspects already-loaded persistent NBT).
-//
-// 2026-10-10: both polls used to share ONE counter (`jlf_tick_counter++ % 20`)
-// that every player's tick advanced. With N players online it moves N per
-// server tick, so the `% 20 === 0` hit always lands on the same player(s) and
-// the others were never polled (with 2 online: only the second one). They now
-// run from a single master-dispatched player tick gated on the player's OWN
-// age (player.age % 20 === 17), so every online player is polled once a second.
-
-function onboardingCheckJlfLevel(player) {
-    // JLF level is exposed via the JustLevelingFork data tag. Read defensively:
-    // if the field is missing (player hasn't installed JLF yet, edge case)
-    // we silently skip rather than crash.
-    // RHINO-SAFETY: declared at function level -- a `var` declared inside the
-    // try block below would be scoped to that block in this Rhino build.
-    var jlfLevel = 0
+  // Highest of the player's aptitude levels, or 0 when it cannot be read (the
+  // capability is not attached yet, JLF missing).
+  var topAptitude = function (player) {
+    var cls = getAptitudeClass()
+    if (!cls) return 0
+    var top = 0
     try {
-        var pd = player.persistentData
-        if (pd.contains("PlayerPersisted")) {
-            var persisted = pd.getCompound("PlayerPersisted")
-            if (persisted.contains("PlayerLevel")) {
-                jlfLevel = persisted.getInt("PlayerLevel")
-            }
-        }
+      var cap = cls.get(player)
+      if (!cap) return 0
+      var it = cap.aptitudeLevel.values().iterator()
+      while (it.hasNext()) {
+        var level = Number(it.next())
+        if (level > top) top = level
+      }
     } catch (e) {
-        // Tolerate JLF data format changes.
-        return
+      warnOnce('jlfread', 'reading the aptitude capability failed: ' + e)
+      return 0
     }
+    return top
+  }
 
-    for (var [threshold, dummyValue] of Object.entries(JLF_LEVEL_TO_DUMMY)) {
-        if (jlfLevel >= parseInt(threshold)) {
-            fireDummyIfNew(player, dummyValue)
-        }
+  // ---- the bridges ----------------------------------------------------------
+  // ready(player): the game-side condition. The Heracles-side condition
+  // ("every dependency complete") is checked for all of them.
+  var BRIDGES = [
+    {
+      quest: 'onboarding_first_level',
+      dummy: 'jlf_level_5_reached',
+      ready: function (player) { return topAptitude(player) >= JLF_LEVEL }
+    },
+    {
+      quest: 'onboarding_survivor_capstone',
+      dummy: 'onboarding_survivor_capstone_check',
+      ready: function (player) { return true }
     }
-}
+  ]
 
-// ---- Capstone auto-trigger ------------------------------------------------
-//
-// Heracles' own quest-complete event isn't exposed to KubeJS directly in
-// 1.20.1. We poll: once per second, for each online player, check whether
-// all 14 onboarding prereq quest IDs show completed in the player's
-// Heracles save data. When all are done, fire the capstone dummy.
-//
-// Heracles' quest progress is at player.persistentData.heracles.quests
-// per the heracles-json-shape.md §6 multiplayer semantics
-// (individual_progress = true on every onboarding quest, so each player has
-// their own progress NBT).
-
-function onboardingCheckCapstone(player) {
-    var fired = getFiredSet(player)
-    if (fired.has(CAPSTONE_DUMMY)) return  // already done
-
-    var allComplete = true
+  var heracles = function () {
     try {
-        var pd = player.persistentData
-        if (!pd.contains("heracles")) return
-        var heracles = pd.getCompound("heracles")
-        if (!heracles.contains("quests")) return
-        var quests = heracles.getCompound("quests")
-        for (var prereq of CAPSTONE_PREREQS) {
-            if (!quests.contains(prereq)) { allComplete = false; break }
-            var q = quests.getCompound(prereq)
-            // QuestProgress.complete is a boolean tag.
-            if (!q.contains("complete") || !q.getBoolean("complete")) {
-                allComplete = false
-                break
-            }
-        }
-    } catch (e) {
-        return
+      var api = global.icraft ? global.icraft.heracles : null
+      if (api && api.available()) return api
+    } catch (e) {}
+    warnOnce('heracles', 'global.icraft.heracles unavailable -- firing dummies blind (no completion check)')
+    return null
+  }
+
+  // uuid|quest -> player.age of the last blind fire (Heracles API unavailable)
+  var blindLast = {}
+
+  var runBridge = function (player, bridge, api) {
+    if (!api) {
+      // Degraded: no completion / dependency information.
+      if (!bridge.ready(player)) return
+      var key = String(player.uuid) + '|' + bridge.quest
+      var age = Number(player.age)
+      if (blindLast.hasOwnProperty(key) && age >= blindLast[key] && (age - blindLast[key]) < BLIND_REFIRE_TICKS) return
+      blindLast[key] = age
+      player.server.runCommandSilent('execute as ' + player.username + ' run heracles dummy ' + bridge.dummy)
+      return
     }
 
-    if (allComplete) {
-        fireDummyIfNew(player, CAPSTONE_DUMMY)
-    }
-}
+    // true = done, null = unreadable this pass (try again next pass)
+    if (api.isComplete(player, bridge.quest) !== false) return
+    if (!bridge.ready(player)) return
+    // Locked quests ignore the dummy; wait until every dependency is complete.
+    if (api.depsComplete(player, bridge.quest) !== true) return
 
-// One master-dispatched player tick (0_tick_master.js): 1 Hz per player, on the
-// player's own age. Offset 17 keeps it off the compass HUD (7) / bonfire (13).
-global.registerPlayerTick('tick_onboardingBridge', 20, 17, function (event) {
+    api.fireDummy(player, bridge.dummy)
+    if (api.isComplete(player, bridge.quest) === true) {
+      console.log('[onboarding_bridge] ' + player.username + ' completed ' + bridge.quest +
+        ' (dummy ' + bridge.dummy + ')')
+    } else {
+      warnOnce('nofire:' + bridge.quest, '`heracles dummy ' + bridge.dummy + '` ran for ' + player.username +
+        ' but ' + bridge.quest + ' is still incomplete -- is the dummy value still in the quest JSON? Retrying every pass')
+    }
+  }
+
+  // Offset 37 keeps it off the other 100-tick jobs' slots.
+  global.registerPlayerTick('tick_onboardingBridge', POLL_TICKS, 37, function (event) {
     var player = event.player
     if (!player) return
-    onboardingCheckJlfLevel(player)
-    onboardingCheckCapstone(player)
-})
+    var api = heracles()
+    for (var i = 0; i < BRIDGES.length; i++) {
+      try {
+        runBridge(player, BRIDGES[i], api)
+      } catch (e) {
+        warnOnce('bridge:' + BRIDGES[i].quest, BRIDGES[i].quest + ' bridge failed: ' + e)
+      }
+    }
+  })
 
-console.log("[iridescent/onboarding_bridge] loaded; bridging " +
-    Object.keys(JLF_LEVEL_TO_DUMMY).length + " JLF level(s) + 1 capstone " +
-    "(codex page-reads removed 2026-06-03, #45 read-fix B)")
+  PlayerEvents.loggedOut(function (event) {
+    try {
+      var prefix = String(event.player.uuid) + '|'
+      for (var i = 0; i < BRIDGES.length; i++) delete blindLast[prefix + BRIDGES[i].quest]
+    } catch (e) {}
+  })
+
+  console.log('[iridescent/onboarding_bridge] loaded; bridging ' + BRIDGES.length +
+    ' dummy quests (JLF aptitude level ' + JLF_LEVEL + ' + onboarding capstone), ' + POLL_TICKS + '-tick pass per player')
+})()

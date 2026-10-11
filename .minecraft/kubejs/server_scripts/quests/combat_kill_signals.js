@@ -1,65 +1,88 @@
 // =============================================================================
 // kubejs/server_scripts/quests/combat_kill_signals.js
 //
-// Bridges Apotheosis boss + champion kills to the Combat Heracles quests.
-// Heracles has no "kill an affixed boss" task type (the boss is an affixed
-// vanilla mob, not a distinct entity), so we detect it on death and fire a
-// `heracles:dummy` task + set a persistent flag (so heracles_reconcile.js can
-// back-fill it for existing characters).
+// Bridges Apotheosis boss + champion kills to the Combat Heracles quests
+// (com_apotheosis_boss / com_champion). Heracles has no "kill an affixed mob"
+// task type (the mob is an ordinary entity carrying Apotheosis data, not a
+// distinct entity type), so the kill is detected here and turned into a
+// `heracles:dummy` task plus a persistent flag. heracles_reconcile.js reads
+// the flag and force-completes the quest if the dummy arrived while the quest
+// was still locked (Heracles drops a dummy for a quest whose dependencies are
+// not complete yet).
 //
-// The detection NBT signals are the SAME ones witch_of_ink_progression.js
-// already uses (proven): an Apotheosis boss carries `apoth.boss == "true"`, and
-// an Apotheosis champion (affixed elite) carries a `champion` tag.
+// WHAT IS DETECTED (both read from the victim's FORGE persistent data, where
+// Apotheosis writes them -- `victim.forgePersistentData`; no NBT serialisation):
+//   * Apotheosis boss      `apoth.boss` = 1b          (ApothBoss.initBoss)
+//   * Apotheosis champion  `apoth.miniboss` present   (BossEvents.minibosses writes the
+//                          miniboss id, ApothMiniboss then replaces it with 1b)
+//     "Champion" is the quest's name for Apotheosis' elite tier, which the mod
+//     itself calls a miniboss (Undead Knight, Honeyed Archer, Withering
+//     Archer, ...): tougher versions of common mobs, one step below a boss.
+//     The Champions mod the old `champion` tag came from is not installed.
 //
-// RHINO-SAFETY: the death handler fires every kill, so it uses `var` (NOT
-// const/let — KubeJS's Rhino throws "redeclaration of var" on a const/let in a
-// repeatedly-invoked closure) and a SINGLE catch var. NBT getters (getString /
-// contains) return ""/false on a missing key — they don't throw — so no nested
-// try/catch is needed (multiple catch(e) in one function was the redeclaration
-// trigger). RELOAD-SAFE: one EntityEvents.death listener; no item reg / Forge bus.
+// 2026-10-10 -- why neither quest ever completed:
+//   * the check was `victim.nbt.getString('apoth.boss') === 'true'`: a root-level
+//     string. Apotheosis writes a BOOLEAN into the Forge persistent data (saved
+//     under ForgeData), so it never matched.
+//   * nothing in the pack writes a `champion` tag.
+//   * the command was `heracles dummy <id> <player>`. The dummy command takes
+//     no player argument (it acts on the command source), so it did not parse.
+//     It is now `execute as <player> run heracles dummy <id>`.
 //
-// 2026-10-10 (cost): the killer's two persistent flags are checked FIRST. Each
-// signal is one-shot per character (the flag is what heracles_reconcile.js
-// reads), so once a flag is set its `heracles dummy` command is not re-run on
-// every later boss/champion kill, and once BOTH are set the handler returns
-// before serialising the victim: `victim.nbt` writes the entity's ENTIRE NBT,
-// which used to happen on every single player kill.
+// COST: the killer's two flags are checked FIRST. Each signal is one-shot per
+// character, so once both are set the handler returns after two boolean reads,
+// before it touches the victim.
+//
+// RELOAD-SAFE: one EntityEvents.death listener; no item reg / Forge bus.
+// Whole file is one IIFE: server scripts share a single Rhino scope.
 // =============================================================================
 
-EntityEvents.death(event => {
-  try {
-    var src = event.source
-    if (!src || !src.player) return
-    var killer = src.player
-    var pd = killer.persistentData
-    // Already-recorded signals need no work (see the 2026-10-10 header note).
-    var needBoss = !pd.getBoolean('icraft_killed_apoth_boss')
-    var needChampion = !pd.getBoolean('icraft_killed_champion')
-    if (!needBoss && !needChampion) return
+;(function () {
+  var FLAG_BOSS = 'icraft_killed_apoth_boss'
+  var FLAG_CHAMPION = 'icraft_killed_champion'
 
-    var victim = event.entity
-    if (!victim) return
-    var nbt = victim.nbt
-    if (!nbt) return
+  var warned = false
 
-    // --- Apotheosis boss (apoth.boss == "true") ---
-    if (needBoss && nbt.getString('apoth.boss') === 'true') {
-      pd.putBoolean('icraft_killed_apoth_boss', true)
-      killer.server.runCommandSilent('heracles dummy killed_apoth_boss ' + killer.username)
-    }
-
-    // --- Apotheosis champion (affixed elite; carries a `champion` tag) ---
-    if (needChampion && nbt.contains('champion')) {
-      pd.putBoolean('icraft_killed_champion', true)
-      killer.server.runCommandSilent('heracles dummy killed_champion ' + killer.username)
-    }
-  } catch (err) {
-    // This fires on every kill: log a failure once, not once per kill.
-    if (!global._combat_kill_signals_warned) {
-      global._combat_kill_signals_warned = true
-      console.warn('[combat_kill_signals] death handler threw (logging once): ' + err)
-    }
+  var fireDummy = function (killer, dummyId) {
+    killer.server.runCommandSilent('execute as ' + killer.username + ' run heracles dummy ' + dummyId)
   }
-})
 
-console.log('[combat_kill_signals] loaded — Apotheosis boss + champion kill -> Heracles dummy bridges')
+  EntityEvents.death(function (event) {
+    try {
+      var src = event.source
+      if (!src) return
+      var killer = src.player
+      if (!killer) return
+      var pd = killer.persistentData
+      // Already-recorded signals need no work (see COST in the header).
+      var needBoss = !pd.getBoolean(FLAG_BOSS)
+      var needChampion = !pd.getBoolean(FLAG_CHAMPION)
+      if (!needBoss && !needChampion) return
+
+      var victim = event.entity
+      if (!victim) return
+      var forgeData = victim.forgePersistentData
+      if (!forgeData) return
+
+      // --- Apotheosis boss ---
+      if (needBoss && forgeData.getBoolean('apoth.boss')) {
+        pd.putBoolean(FLAG_BOSS, true)
+        fireDummy(killer, 'killed_apoth_boss')
+      }
+
+      // --- Apotheosis champion (= miniboss, see header) ---
+      if (needChampion && forgeData.contains('apoth.miniboss')) {
+        pd.putBoolean(FLAG_CHAMPION, true)
+        fireDummy(killer, 'killed_champion')
+      }
+    } catch (err) {
+      // This fires on every kill: log a failure once, not once per kill.
+      if (!warned) {
+        warned = true
+        console.warn('[combat_kill_signals] death handler threw (logging once): ' + err)
+      }
+    }
+  })
+
+  console.log('[combat_kill_signals] loaded — Apotheosis boss (apoth.boss) + champion (apoth.miniboss) kill -> Heracles dummy bridges')
+})()

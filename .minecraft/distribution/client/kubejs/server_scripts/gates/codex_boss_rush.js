@@ -51,11 +51,26 @@
 // `mowziesmobs-1.8.2.jar` + `soulslike-weaponry-1.4.6-1.20.1-forge.jar`
 // data/forge/tags/entity_type(s)/bosses.json + worldgen/structure dimension targets.
 // Build-report notes the boss-catalog reconciliation + the balance flags.
+//
+// 2026-10-10 -- two Rhino faults fixed (verified on the production rhino jar):
+//   * brReadKilled(): `const arr = JSON.parse(raw)` sat inside a `try`. This
+//     engine throws "redeclaration of var arr" for that on every call, so the
+//     catch reported a "corrupt kill set" and returned []. Every kill after a
+//     character's first therefore started from an empty list: the stored set
+//     was overwritten with just the newest boss and no tier could ever count
+//     past 1. (Kill sets written while this was live hold at most one id per
+//     tier; earlier kills cannot be recovered.)
+//   * brReport(): its per-tier values were loop-body `const`s, which keep the
+//     FIRST iteration's value here -- `/icraft codex bosses` printed the T1 line
+//     three times.
+// Whole file is one IIFE (body left at column 0): server scripts share a single
+// Rhino scope.
 // =============================================================================
 
+;(function () {
 // ---- Advance thresholds per transition (framework §1 boss-rush column) ------
 // pct = fraction of the FULL tier roster that must be cleared to auto-advance.
-const BOSS_RUSH_TIERS = {
+var BOSS_RUSH_TIERS = {
   1: { pct: 0.80, grantsStage: 'tier_2', label: 'T1→T2' },
   2: { pct: 0.90, grantsStage: 'tier_3', label: 'T2→T3' },
   3: { pct: 1.00, grantsStage: 'tier_4', label: 'T3→T4' },
@@ -87,7 +102,7 @@ const BOSS_RUSH_TIERS = {
 // 80% required, T1 boss-rush is the hardest pure route by design; the other
 // (non-combat / cumulative / token) routes remain open. Flagged in the report.
 
-const BOSS_RUSH_ROSTERS = {
+var BOSS_RUSH_ROSTERS = {
 
   // ===== T1 — Overworld (entry tier) — 80% to advance =====
   1: [
@@ -256,7 +271,7 @@ const BOSS_RUSH_ROSTERS = {
 // Killing one of these intermediate-phase or variant entity IDs credits the
 // canonical roster entity (the value). Keeps multi-phase bosses = ONE slot.
 // =============================================================================
-const BOSS_PHASE_ALIASES = {
+var BOSS_PHASE_ALIASES = {
   // Cardinal Sins multi-phase finales (jar-verified phase_1 → True/final entity).
   'cardinal_sins:luciferphase_1':   'cardinal_sins:lucifer',
   'cardinal_sins:sinofenvyphase_1': 'cardinal_sins:sinofenvy',
@@ -280,15 +295,24 @@ function brCanonical(entityId) {
 function brKey(tier) { return 'icraft_boss_rush_t' + tier }
 
 function brReadKilled(player, tier) {
-  const raw = player.persistentData.getString(brKey(tier))
-  if (!raw) return []
+  // String(...): getString hands back a java.lang.String (truthiness and
+  // JSON.parse both work on it, but a JS string is the safe currency).
+  var raw = String(player.persistentData.getString(brKey(tier)) || '')
+  if (raw === '') return []
+  // RHINO: `arr` is declared OUT here. As a `const` inside the try it threw on
+  // every call and every read looked "corrupt" (see the 2026-10-10 header note).
+  var arr = null
   try {
-    const arr = JSON.parse(raw)
-    return Array.isArray(arr) ? arr : []
+    arr = JSON.parse(raw)
   } catch (e) {
     console.warn('[Codex][BossRush] corrupt kill set for ' + player.username + ' T' + tier + '; resetting. (' + e + ')')
     return []
   }
+  if (!Array.isArray(arr)) return []
+  // plain JS strings only (indexOf / roster matching use ===)
+  var out = []
+  for (var i = 0; i < arr.length; i++) out.push(String(arr[i]))
+  return out
 }
 
 function brWriteKilled(player, tier, arr) {
@@ -299,10 +323,10 @@ function brWriteKilled(player, tier, arr) {
 // was a first-time (newly-added) kill of a roster boss, or -1 if it was a
 // duplicate / not on the roster.
 function brRecordKill(player, tier, canonId) {
-  const roster = BOSS_RUSH_ROSTERS[tier]
+  var roster = BOSS_RUSH_ROSTERS[tier]
   if (!roster || roster.indexOf(canonId) < 0) return -1   // not a roster boss for this tier
 
-  const killed = brReadKilled(player, tier)
+  var killed = brReadKilled(player, tier)
   if (killed.indexOf(canonId) >= 0) return -1             // already counted (dedupe)
 
   killed.push(canonId)
@@ -314,11 +338,11 @@ function brRecordKill(player, tier, canonId) {
 // of the stored kill set with the current roster — self-heals if the roster
 // shrinks between versions).
 function brClearedCount(player, tier) {
-  const roster = BOSS_RUSH_ROSTERS[tier]
+  var roster = BOSS_RUSH_ROSTERS[tier]
   if (!roster) return 0
-  const killed = brReadKilled(player, tier)
-  let n = 0
-  for (let i = 0; i < killed.length; i++) {
+  var killed = brReadKilled(player, tier)
+  var n = 0
+  for (var i = 0; i < killed.length; i++) {
     if (roster.indexOf(killed[i]) >= 0) n++
   }
   return n
@@ -326,8 +350,8 @@ function brClearedCount(player, tier) {
 
 // Bosses needed to hit the tier's threshold (ceil of pct * roster size).
 function brNeeded(tier) {
-  const cfg = BOSS_RUSH_TIERS[tier]
-  const roster = BOSS_RUSH_ROSTERS[tier]
+  var cfg = BOSS_RUSH_TIERS[tier]
+  var roster = BOSS_RUSH_ROSTERS[tier]
   if (!cfg || !roster) return 0
   return Math.ceil(cfg.pct * roster.length)
 }
@@ -337,16 +361,16 @@ function brNeeded(tier) {
 // granted yet, auto-advance (grant the stage via brGrantTier).
 // =============================================================================
 function brCheckAdvance(player, tier) {
-  const cfg = BOSS_RUSH_TIERS[tier]
+  var cfg = BOSS_RUSH_TIERS[tier]
   if (!cfg) return
   if (AStages.playerHasStage(cfg.grantsStage, player)) return
 
-  const cleared = brClearedCount(player, tier)
-  const need = brNeeded(tier)
+  var cleared = brClearedCount(player, tier)
+  var need = brNeeded(tier)
   if (cleared < need) return
 
-  const total = BOSS_RUSH_ROSTERS[tier].length
-  const pctTxt = Math.round(cfg.pct * 100)
+  var total = BOSS_RUSH_ROSTERS[tier].length
+  var pctTxt = Math.round(cfg.pct * 100)
   brGrantTier(player, cfg.grantsStage,
     'Boss Rush: cleared ' + cleared + '/' + total + ' Tier ' + tier + ' bosses (' + pctTxt + '%)')
 }
@@ -363,19 +387,19 @@ function brGrantTier(player, tier, triggerName) {
   AStages.addStageToPlayer(tier, player)
 
   // Safety-net: grant all lower tiers too (mirrors milestone_detection.js).
-  const tiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
-  const targetIdx = tiers.indexOf(tier)
-  for (let i = 0; i <= targetIdx; i++) {
+  var tiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
+  var targetIdx = tiers.indexOf(tier)
+  for (var i = 0; i <= targetIdx; i++) {
     if (!AStages.playerHasStage(tiers[i], player)) AStages.addStageToPlayer(tiers[i], player)
   }
 
   // Patchouli codex advancements up to + including this tier (tier_1 has no gate).
-  const advTiers = ['tier_2', 'tier_3', 'tier_4']
+  var advTiers = ['tier_2', 'tier_3', 'tier_4']
   advTiers.slice(0, advTiers.indexOf(tier) + 1).forEach(adv => {
     player.server.runCommandSilent('advancement grant ' + player.username + ' only icraft:stage_' + adv)
   })
 
-  const tierNum = tier.replace('tier_', '')
+  var tierNum = tier.replace('tier_', '')
 
   player.tell(Text.gold('═══════════════════════════════════════'))
   player.tell(Text.gold('  ★ TIER ' + tierNum + ' UNLOCKED ★'))
@@ -396,17 +420,22 @@ function brGrantTier(player, tier, triggerName) {
 // we loop all tiers defensively (cheap; indexOf on small arrays).
 // =============================================================================
 EntityEvents.death(event => {
-  // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death
-  // handler; the in-loop consts below also re-declare per tier iteration.
+  // RHINO-SAFETY: `var` only. A loop-body `const` keeps its first iteration's
+  // value on this engine, and a `var` is scoped to the block that declares it,
+  // so everything read across the loop is declared up here.
   var source = event.source
   if (!source || !source.player) return   // only player kills
   var player = source.player
 
-  let entityId
-  try { entityId = event.entity.type.toString() } catch (e) { return }
+  // The registry id through the METHOD: getType() is KubeJS's id string, while
+  // the `type` property is shadowed on entity classes that have a public
+  // `type` field of their own.
+  var entityId = ''
+  try { entityId = String(event.entity.getType()) } catch (e) { return }
+  if (entityId === '') return
   var canonId = brCanonical(entityId)
 
-  for (let tier = 1; tier <= 3; tier++) {
+  for (var tier = 1; tier <= 3; tier++) {
     // Skip tiers the player has already advanced past (cleared-count is moot once
     // the stage is owned — but still record kills below the cap for /bosses display
     // only if not yet granted, to avoid pointless NBT writes after advancement).
@@ -423,8 +452,8 @@ EntityEvents.death(event => {
       brCheckAdvance(player, tier)
     } else {
       // Progress nudge (mirrors milestone_detection.js's per-kill tell style).
-      let bossName = entityId
-      try { bossName = event.entity.name.string } catch (e) {}
+      var bossName = entityId
+      try { bossName = String(event.entity.name.string) } catch (e2) { bossName = entityId }
       player.tell(Text.gold('[Boss Rush] ')
         .append(Text.white(bossName))
         .append(Text.gray(' defeated — Tier ' + tier + ': '))
@@ -441,18 +470,20 @@ EntityEvents.death(event => {
 // =============================================================================
 function brReport(player) {
   player.tell(Text.gold('═══ Codex Boss Rush ═══'))
-  for (let tier = 1; tier <= 3; tier++) {
-    const cfg = BOSS_RUSH_TIERS[tier]
-    const roster = BOSS_RUSH_ROSTERS[tier]
-    const total = roster.length
-    const cleared = brClearedCount(player, tier)
-    const need = brNeeded(tier)
-    const pctHave = total > 0 ? Math.floor((cleared / total) * 100) : 0
-    const pctNeed = Math.round(cfg.pct * 100)
-    const has = AStages.playerHasStage(cfg.grantsStage, player)
+  // RHINO: `var`s. As loop-body `const`s every value below kept the Tier 1
+  // reading and the report printed the T1 line three times.
+  for (var tier = 1; tier <= 3; tier++) {
+    var cfg = BOSS_RUSH_TIERS[tier]
+    var roster = BOSS_RUSH_ROSTERS[tier]
+    var total = roster.length
+    var cleared = brClearedCount(player, tier)
+    var need = brNeeded(tier)
+    var pctHave = total > 0 ? Math.floor((cleared / total) * 100) : 0
+    var pctNeed = Math.round(cfg.pct * 100)
+    var has = AStages.playerHasStage(cfg.grantsStage, player)
 
-    const colour = has ? Text.green : (cleared >= need ? Text.aqua : Text.white)
-    let line = Text.gray('  ' + cfg.label + ' (need ' + pctNeed + '%): ')
+    var colour = has ? Text.green : (cleared >= need ? Text.aqua : Text.white)
+    var line = Text.gray('  ' + cfg.label + ' (need ' + pctNeed + '%): ')
       .append(colour(cleared + ' / ' + total))
       .append(Text.gray('  ' + pctHave + '%'))
     if (has) line = line.append(Text.green('  ✔ ' + cfg.grantsStage + ' unlocked'))
@@ -465,12 +496,12 @@ function brReport(player) {
 
   // A pure-display call may reveal the player already qualifies (e.g. roster
   // shrank, or kills predate this file) — opportunistically advance.
-  for (let tier = 1; tier <= 3; tier++) brCheckAdvance(player, tier)
+  for (var t = 1; t <= 3; t++) brCheckAdvance(player, t)
   return 1
 }
 
 ServerEvents.commandRegistry(event => {
-  const { commands: Commands } = event
+  var Commands = event.commands
 
   event.register(
     Commands.literal('icraft')
@@ -478,14 +509,14 @@ ServerEvents.commandRegistry(event => {
         .then(Commands.literal('bosses')
           .requires(src => src.hasPermission(0))
           .executes(ctx => {
-            let sp
+            var sp = null
             try { sp = ctx.source.getPlayerOrException() } catch (e) {
               ctx.source.sendFailure(Text.of('Must be run as a player'))
               return 0
             }
-            try { return brReport(sp) } catch (e) {
-              console.warn('[Codex][BossRush] bosses threw for ' + sp.username + ': ' + e)
-              sp.tell(Text.red('[Codex] bosses failed: ' + e))
+            try { return brReport(sp) } catch (e2) {
+              console.warn('[Codex][BossRush] bosses threw for ' + sp.username + ': ' + e2)
+              sp.tell(Text.red('[Codex] bosses failed: ' + e2))
               return 0
             }
           })
@@ -499,3 +530,4 @@ console.log('  T1→T2 ' + Math.round(BOSS_RUSH_TIERS[1].pct * 100) + '% of ' + 
             ' | T2→T3 ' + Math.round(BOSS_RUSH_TIERS[2].pct * 100) + '% of ' + BOSS_RUSH_ROSTERS[2].length +
             ' | T3→T4 ' + Math.round(BOSS_RUSH_TIERS[3].pct * 100) + '% of ' + BOSS_RUSH_ROSTERS[3].length +
             ' (incl. Lucifer)')
+})()

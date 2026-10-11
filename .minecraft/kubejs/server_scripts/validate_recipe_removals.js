@@ -66,28 +66,27 @@ ServerEvents.recipes(event => {
         'simplyswords:storms_edge', 'simplyswords:sword_on_a_stick', 'simplyswords:watcher_claymore',
         'simplyswords:dormant_relic',
 
-        // theabyss Section K.3 — fixed plural in Phase 3.2
+        // theabyss Section K.3-K.5 — kept identical to recipes/recipe_audit.js.
+        // 2026-10-10: brought back in line after recipe_audit.js was corrected
+        // against the item registry: three ring ids renamed
+        // (ring_of_enderchest -> ring_of_ender_chest, ring_of_pocket ->
+        // ring_of_pocket_box, ring_of_regen -> ring_of_reg), the Unorithe armor
+        // uses the real `unorithe_armor_<slot>` form, and the Knight / Ragnarok /
+        // Dragon / Death armor rows are gone (the installed The Abyss registers
+        // no such items, and recipe_audit.js no longer removes them).
         'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
         'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghosts',
         'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
         'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
-        'theabyss:ring_of_electro', 'theabyss:ring_of_enderchest', 'theabyss:ring_of_fangs',
+        'theabyss:ring_of_electro', 'theabyss:ring_of_ender_chest', 'theabyss:ring_of_fangs',
         'theabyss:ring_of_firestorm', 'theabyss:ring_of_firestrike', 'theabyss:ring_of_firework',
         'theabyss:ring_of_home', 'theabyss:ring_of_invisibility', 'theabyss:ring_of_jugger',
         'theabyss:ring_of_nature', 'theabyss:ring_of_nightblade', 'theabyss:ring_of_ocean',
-        'theabyss:ring_of_pocket', 'theabyss:ring_of_regen', 'theabyss:ring_of_seeker',
+        'theabyss:ring_of_pocket_box', 'theabyss:ring_of_reg', 'theabyss:ring_of_seeker',
         'theabyss:ring_of_telekinetic', 'theabyss:ring_of_fart',
         'theabyss:arcane_workbench',
-        'theabyss:knight_helmet', 'theabyss:knight_chestplate', 'theabyss:knight_leggings',
-        'theabyss:knight_boots',
-        'theabyss:unorithe_helmet', 'theabyss:unorithe_chestplate', 'theabyss:unorithe_leggings',
-        'theabyss:unorithe_boots',
-        'theabyss:ragnarok_helmet', 'theabyss:ragnarok_chestplate', 'theabyss:ragnarok_leggings',
-        'theabyss:ragnarok_boots',
-        'theabyss:dragon_helmet', 'theabyss:dragon_chestplate', 'theabyss:dragon_leggings',
-        'theabyss:dragon_boots',
-        'theabyss:death_helmet', 'theabyss:death_chestplate', 'theabyss:death_leggings',
-        'theabyss:death_boots',
+        'theabyss:unorithe_armor_helmet', 'theabyss:unorithe_armor_chestplate',
+        'theabyss:unorithe_armor_leggings', 'theabyss:unorithe_armor_boots',
 
         // blue_skies Section L
         'blue_skies:shadow_helmet', 'blue_skies:shadow_chestplate',
@@ -96,8 +95,6 @@ ServerEvents.recipes(event => {
 
         // mekanism Section J
         'mekanism:atomic_disassembler', 'mekanism:meka_tool',
-        'mekanism:refined_obsidian_helmet', 'mekanism:refined_obsidian_chestplate',
-        'mekanism:refined_obsidian_leggings', 'mekanism:refined_obsidian_boots',
 
         // botania
         'minecraft:lodestone',
@@ -110,8 +107,8 @@ ServerEvents.recipes(event => {
         'ad_astra:nasa_workbench',
         'ad_astra:tier_1_rocket', 'ad_astra:tier_2_rocket',
         'ad_astra:tier_3_rocket', 'ad_astra:tier_4_rocket',
-        'ad_astra:jet_suit_helmet', 'ad_astra:jet_suit_chestplate',
-        'ad_astra:jet_suit_leggings', 'ad_astra:jet_suit_boots'
+        'ad_astra:jet_suit_helmet', 'ad_astra:jet_suit',
+        'ad_astra:jet_suit_pants', 'ad_astra:jet_suit_boots'
     ]
 
     // Item.exists() is the KubeJS 6 idiomatic check — returns true iff the

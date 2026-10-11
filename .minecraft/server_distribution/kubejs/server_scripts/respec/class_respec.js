@@ -8,139 +8,330 @@
 //          Can only respec at a specific crafted station (Class Altar).
 //   Skills: Respec individual points. 5 levels per point. (Handled by Pufferfish)
 //
-// Class Altar is a placed block (item form). On right-click:
-//   1. Check player has a boss trophy in hand
-//   2. Check player has 30+ XP levels
-//   3. Consume trophy + levels
-//   4. Run /origin set command to re-open class selection
+// HOW THE ALTAR WORKS (icraft:class_altar, an item; hold it in the main hand
+// and a boss trophy in the offhand, then right-click):
+//   1. Validate -- nothing is consumed yet:
+//        a. offhand holds one of TROPHIES
+//        b. the player has XP_COST levels
+//        c. the player currently HAS a class (nothing to respec otherwise)
+//   2. Run `origin gui <player> origins:class`. That one Origins command sets
+//      the class layer to origins:empty AND opens the class picker
+//      (OriginCommand.openLayerScreen, origins-forge 1.10.0.9).
+//   3. Confirm the layer really is empty now (fresh read through
+//      global.icraft.origin). If it is not, tell the player and stop: nothing
+//      has been consumed.
+//   4. Only now take 1 trophy + XP_COST levels.
+//   5. Watch the player once a second (fresh read each time) until the new
+//      class shows up, so every class system sees it the moment it is picked
+//      instead of one resolver TTL (5 s) later.
+//
+// 2026-10-10 -- what was wrong before (the altar ate the trophy and 30 levels
+// and did nothing):
+//   * the Origins layer was written `icraft:class` and the empty origin
+//     `icraft:empty`. Neither exists: the layer is `origins:class`
+//     (iridescent-origins-mod data/origins/origin_layers/class.json) and the
+//     empty origin is Origins' own `origins:empty`. Both commands failed to
+//     parse, runCommandSilent returned 0, and the cost was taken BEFORE either
+//     command ran.
+//   * every trophy / recipe ingredient used an `icraft:` namespace. The boss
+//     materials are KubeJS items (`kubejs:lich_soul`, ...; see
+//     startup_scripts/custom_items.js), so no trophy ever matched and the
+//     three altar recipes had an empty ingredient. Only the altar itself is
+//     `icraft:class_altar`.
+//
+// SKILL-POINT TRIGGER (`/trigger icraft_respec_skill`) -- NOT WIRED, on purpose.
+//   The old handler took 5 levels and ran `puffish_skills points add <player> 1`.
+//   That command needs a category (`points add <players> <category> <count>`;
+//   the pack has six trees), so it never parsed: 5 levels for nothing. And had
+//   it parsed it would have SOLD a skill point for 5 levels, which the Codex
+//   rules out ("No XP-for-points"). Which tree a refund touches, and whether a
+//   refund removes a spent point, is a design call nobody has made. Until it is
+//   made the trigger answers "not available" and takes nothing. (It was never
+//   reachable in play anyway: nothing enables the trigger objective.)
+//
+// Whole file is one IIFE: server scripts share a single Rhino scope.
 // =============================================================================
 
-// ── Class Altar Recipe: T2+ accessible ──
-ServerEvents.recipes(event => {
-  // Anvil + boss material + gold = Class Altar
-  // Uses generic boss material tag — any tier boss drop works.
-  // T2 path uses deepslate instead of obsidian (obsidian needs T3 diamond
-  // pickaxe; T2 players can't mine it). T3+ paths below keep obsidian.
-  event.shaped('icraft:class_altar', [
-    'GBG',
-    'GAG',
-    'DDD'
-  ], {
-    G: 'minecraft:gold_ingot',
-    B: 'icraft:lich_soul',  // T2 boss material (cheapest boss drop)
-    A: 'minecraft:anvil',
-    D: 'minecraft:deepslate'
-  }).id('icraft:class_altar_recipe')
+;(function () {
+  var ALTAR = 'icraft:class_altar'
+  // Origins layer + origin ids (see header). The picker lists the 13 classes of
+  // the layer; `origins:empty` is what a layer holds while nothing is chosen.
+  var CLASS_LAYER = 'origins:class'
+  var XP_COST = 30
+  // How long (in 1 s polls) the new-class watch keeps doing fresh reads.
+  var WATCH_POLLS = 600
 
-  // Alternative recipes using other tier boss materials
-  event.shaped('icraft:class_altar', [
-    'GBG',
-    'GAG',
-    'OOO'
-  ], {
-    G: 'minecraft:gold_ingot',
-    B: 'icraft:harbinger_eye',  // T3 boss material
-    A: 'minecraft:anvil',
-    O: 'minecraft:obsidian'
-  }).id('icraft:class_altar_recipe_t3')
-
-  event.shaped('icraft:class_altar', [
-    'GBG',
-    'GAG',
-    'OOO'
-  ], {
-    G: 'minecraft:gold_ingot',
-    B: 'icraft:dragon_heart',  // T4 boss material
-    A: 'minecraft:anvil',
-    O: 'minecraft:obsidian'
-  }).id('icraft:class_altar_recipe_t4')
-})
-
-
-// ── Class Altar Right-Click Handler ──
-// When player right-clicks while holding a boss trophy item + has 30 levels:
-// Consume the item + levels, then trigger Origins class re-selection.
-ItemEvents.rightClicked(event => {
-  let player = event.player
-  let item = event.item
-  if (!player || !item) return
-  if (item.id !== 'icraft:class_altar') return
-
-  // Check for boss trophy in offhand
-  let offhand = player.offHandItem
-  let validTrophies = [
-    'icraft:lich_soul', 'icraft:harbinger_eye', 'icraft:dragon_heart',
-    'icraft:dragon_scale', 'icraft:nether_soul_fragment',
-    'icraft:condensed_blaze_essence',
-    'icraft:twilight_progression_token_t2',
-    'icraft:dimensional_progression_token_t3',
-    'icraft:reality_progression_token_t4'
+  // Boss materials + the three legacy progression tokens. All `kubejs:` items
+  // (startup_scripts/custom_items.js).
+  var TROPHIES = [
+    'kubejs:lich_soul', 'kubejs:harbinger_eye', 'kubejs:dragon_heart',
+    'kubejs:dragon_scale', 'kubejs:nether_soul_fragment',
+    'kubejs:condensed_blaze_essence',
+    'kubejs:twilight_progression_token_t2',
+    'kubejs:dimensional_progression_token_t3',
+    'kubejs:reality_progression_token_t4'
   ]
+  var IS_TROPHY = {}
+  TROPHIES.forEach(function (id) { IS_TROPHY[id] = true })
 
-  let hasTrophy = offhand && validTrophies.includes(offhand.id)
-
-  if (!hasTrophy) {
-    player.tell('§c§lClass Altar: §r§7Hold a boss trophy in your offhand to respec.')
-    player.tell('§7(Any boss material or progression token works)')
-    return
+  var warned = {}
+  var warnOnce = function (key, message) {
+    if (warned[key]) return
+    warned[key] = true
+    try { console.warn('[class_respec] ' + message + ' (logged once)') } catch (ignored) {}
   }
 
-  // Check XP levels
-  if (player.experienceLevel < 30) {
-    player.tell(`§c§lClass Altar: §r§7Requires 30 XP levels. You have ${player.experienceLevel}.`)
-    return
+  var tell = function (player, message) {
+    try { player.tell(message) } catch (e) {}
   }
 
-  // Consume materials
-  offhand.shrink(1)
-  player.giveExperienceLevels(-30)
+  var TAG = '§6§lClass Altar: §r'
 
-  // Trigger Origins class re-selection
-  // Origins mod command: /origin set <player> <layer> <origin>
-  // Setting to empty origin forces the selection screen to reopen
-  player.server.runCommandSilent(
-    `origin set ${player.username} icraft:class icraft:empty`
-  )
+  // ── Class Altar recipes ─────────────────────────────────────────────────────
+  // Anvil + boss material + gold. One recipe per boss-material tier. The T2
+  // path uses deepslate instead of obsidian (obsidian needs a T3 diamond
+  // pickaxe; T2 players can't mine it).
+  ServerEvents.recipes(function (event) {
+    event.shaped(ALTAR, [
+      'GBG',
+      'GAG',
+      'DDD'
+    ], {
+      G: 'minecraft:gold_ingot',
+      B: 'kubejs:lich_soul',       // T2 boss material (Twilight Lich)
+      A: 'minecraft:anvil',
+      D: 'minecraft:deepslate'
+    }).id('icraft:class_altar_recipe')
 
-  // Fallback: if the above doesn't work, try the Origins GUI command
-  player.server.runCommandSilent(
-    `origin gui ${player.username} icraft:class`
-  )
+    event.shaped(ALTAR, [
+      'GBG',
+      'GAG',
+      'OOO'
+    ], {
+      G: 'minecraft:gold_ingot',
+      B: 'kubejs:harbinger_eye',   // T3 boss material (Cataclysm)
+      A: 'minecraft:anvil',
+      O: 'minecraft:obsidian'
+    }).id('icraft:class_altar_recipe_t3')
 
-  player.tell('§6§lClass Altar activated! §r§aChoose your new class.')
-  player.tell('§7(Cost: 1 boss trophy + 30 XP levels)')
-})
-
-
-// ── Skill Point Respec (Pufferfish's Skills) ──
-// Design doc: 5 levels per point refunded
-// Pufferfish's Skills has its own respec mechanic.
-// If it doesn't support per-point cost, we add a command-based workaround:
-// /trigger icraft_respec_skill — costs 5 levels, refunds 1 skill point
-
-ServerEvents.loaded(event => {
-  event.server.runCommandSilent('scoreboard objectives add icraft_respec_skill trigger')
-})
-
-global.tick_skillRespec = (event) => {
-  event.server.players.forEach(player => {
-    try {
-      let obj = event.server.scoreboard.getObjective('icraft_respec_skill')
-      if (!obj) return
-      let score = event.server.scoreboard.getOrCreatePlayerScore(player.username, obj)
-      if (score.score > 0) {
-        if (player.experienceLevel >= 5) {
-          player.giveExperienceLevels(-5)
-          player.server.runCommandSilent(
-            `puffish_skills points add ${player.username} 1`
-          )
-          player.tell('§a§lSkill point refunded! §r§7(-5 XP levels)')
-        } else {
-          player.tell('§c§lNot enough XP! §r§7Need 5 levels to refund 1 skill point.')
-        }
-        score.score = 0
-      }
-    } catch(e) {}
+    event.shaped(ALTAR, [
+      'GBG',
+      'GAG',
+      'OOO'
+    ], {
+      G: 'minecraft:gold_ingot',
+      B: 'kubejs:dragon_heart',    // T4 boss material (Ender Dragon)
+      A: 'minecraft:anvil',
+      O: 'minecraft:obsidian'
+    }).id('icraft:class_altar_recipe_t4')
   })
-}
-global.registerServerTick('tick_skillRespec', 40, 0)
+
+  // ── Class lookup ────────────────────────────────────────────────────────────
+  // -> { known: <resolver available>, id: 'icraft:archmage' | null }
+  // fresh = true drops the resolver's cached answer first (one player.nbt read).
+  var readClass = function (player, fresh) {
+    var out = { known: false, id: null }
+    try {
+      var api = global.icraft ? global.icraft.origin : null
+      if (!api) return out
+      if (fresh) api.invalidate(player)
+      var id = api.get(player, 'class')
+      out.known = true
+      out.id = id ? String(id) : null
+    } catch (e) {
+      warnOnce('resolver', 'class lookup failed: ' + e)
+    }
+    return out
+  }
+
+  var invalidateClass = function (player) {
+    try {
+      if (global.icraft && global.icraft.origin) global.icraft.origin.invalidate(player)
+    } catch (e) {}
+  }
+
+  // 'icraft:void_summoner' -> 'Void Summoner'
+  var prettyClass = function (id) {
+    var s = String(id)
+    s = s.substring(s.indexOf(':') + 1)
+    return s.replace(/_/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase() })
+  }
+
+  // Reset the class layer and open the picker. true only when the reset is
+  // confirmed (see header, steps 2-3).
+  var resetClassLayer = function (player) {
+    var ran = 0
+    try {
+      ran = Number(player.server.runCommandSilent('origin gui ' + player.username + ' ' + CLASS_LAYER))
+    } catch (e) {
+      warnOnce('command', '`origin gui` threw: ' + e)
+      return false
+    }
+    if (!(ran > 0)) {
+      warnOnce('command0', '`origin gui <player> ' + CLASS_LAYER + '` returned 0 (command missing or layer unknown)')
+      return false
+    }
+    var after = readClass(player, true)
+    if (after.known && after.id !== null) {
+      warnOnce('noreset', '`origin gui` ran but the class layer still holds ' + after.id)
+      return false
+    }
+    return true
+  }
+
+  var takeLevels = function (player, cost, before) {
+    try { player.addXPLevels(-cost) } catch (e) { warnOnce('xp', 'addXPLevels failed: ' + e) }
+    var after = before
+    try { after = Number(player.xpLevel) } catch (e2) {}
+    if (!(after <= before - cost)) {
+      // Something vetoed the level change (it is a cancellable Forge event).
+      // The respec already happened, so set the level directly.
+      try { player.setXpLevel(Math.max(0, before - cost)) } catch (e3) {
+        warnOnce('xpset', 'could not take ' + cost + ' levels: ' + e3)
+      }
+    }
+  }
+
+  // ── Players who are choosing a new class right now ─────────────────────────
+  // uuid -> { left: <polls remaining>, from: <old class id or null> }
+  var pending = {}
+  var pendingCount = 0
+  var uuidKey = function (player) { return String(player.uuid) }
+  var clearPending = function (key) {
+    if (pending.hasOwnProperty(key)) { delete pending[key]; pendingCount-- }
+  }
+
+  var useAltar = function (player) {
+    var key = uuidKey(player)
+
+    // Already paid and still choosing: just bring the picker back, free.
+    if (pending.hasOwnProperty(key)) {
+      var again = readClass(player, true)
+      if (again.known && again.id === null) {
+        try { player.server.runCommandSilent('origin gui ' + player.username + ' ' + CLASS_LAYER) } catch (e) {}
+        tell(player, TAG + '§7You are already choosing a class — pick one in the class screen. (No extra cost.)')
+        return
+      }
+      clearPending(key)   // the class arrived between two polls
+    }
+
+    // 1a. trophy in the offhand
+    var trophy = null
+    var trophyId = ''
+    try {
+      trophy = player.offHandItem
+      if (trophy && !trophy.isEmpty()) trophyId = String(trophy.id)
+    } catch (e2) { trophyId = '' }
+    if (!IS_TROPHY.hasOwnProperty(trophyId)) {
+      tell(player, TAG + '§7Hold the altar in your main hand and a boss trophy in your offhand to respec.')
+      tell(player, '§7(Any boss material or progression token works)')
+      return
+    }
+
+    // 1b. XP levels
+    var levels = 0
+    try { levels = Number(player.xpLevel) } catch (e3) { levels = 0 }
+    if (!(levels >= XP_COST)) {
+      tell(player, TAG + '§7Requires ' + XP_COST + ' XP levels. You have ' + levels + '.')
+      return
+    }
+
+    // 1c. a class to change
+    var current = readClass(player, true)
+    if (current.known && current.id === null) {
+      tell(player, TAG + '§7You have not chosen a class yet, so there is nothing to respec. Nothing was consumed.')
+      return
+    }
+
+    // 2-3. reset + confirm. Nothing has been consumed up to here.
+    if (!resetClassLayer(player)) {
+      tell(player, TAG + '§cThe altar could not reset your class. Nothing was consumed — please tell an admin.')
+      return
+    }
+
+    // 4. the respec happened: take the cost.
+    try { trophy.shrink(1) } catch (e4) { warnOnce('trophy', 'could not consume the trophy: ' + e4) }
+    takeLevels(player, XP_COST, levels)
+
+    // 5. watch for the new class.
+    pending[key] = { left: WATCH_POLLS, from: current.id }
+    pendingCount++
+
+    tell(player, '§6§lClass Altar activated! §r§aChoose your new class.')
+    tell(player, '§7(Cost: 1 boss trophy + ' + XP_COST + ' XP levels)')
+    console.log('[class_respec] ' + player.username + ' respec started (was ' +
+      (current.id || 'unknown') + ', paid ' + trophyId + ' + ' + XP_COST + ' levels)')
+  }
+
+  // The id filter makes this fire for the altar only (either hand).
+  ItemEvents.rightClicked(ALTAR, function (event) {
+    var player = event.player
+    if (!player) return
+    try {
+      useAltar(player)
+    } catch (e) {
+      warnOnce('use', 'altar use failed: ' + e)
+    }
+  })
+
+  // 1 Hz per player, but a no-op unless somebody is choosing a class.
+  global.registerPlayerTick('tick_classRespecWatch', 20, 3, function (event) {
+    if (pendingCount <= 0) return
+    var player = event.player
+    if (!player) return
+    var key = uuidKey(player)
+    if (!pending.hasOwnProperty(key)) return
+    var entry = pending[key]
+    var now = readClass(player, true)   // leaves the resolver cache fresh
+    if (now.known && now.id !== null) {
+      clearPending(key)
+      tell(player, TAG + '§aYou are now ' + (/^[aeiou]/i.test(prettyClass(now.id)) ? 'an ' : 'a ') +
+        prettyClass(now.id) + '.')
+      console.log('[class_respec] ' + player.username + ' respec done: ' +
+        (entry.from || 'unknown') + ' -> ' + now.id)
+      return
+    }
+    entry.left--
+    // Still choosing after WATCH_POLLS: stop the per-second fresh reads. The
+    // resolver's own TTL (5 s) picks the new class up from here on.
+    if (entry.left <= 0) clearPending(key)
+  })
+
+  PlayerEvents.loggedOut(function (event) {
+    try {
+      clearPending(uuidKey(event.player))
+      invalidateClass(event.player)
+    } catch (e) {}
+  })
+
+  // ── Skill-point trigger: not wired (see header) ────────────────────────────
+  ServerEvents.loaded(function (event) {
+    event.server.runCommandSilent('scoreboard objectives add icraft_respec_skill trigger')
+  })
+
+  global.tick_skillRespec = function (event) {
+    var server = event.server
+    var board = null
+    var objective = null
+    try {
+      board = server.scoreboard
+      objective = board.getObjective('icraft_respec_skill')
+    } catch (e) { return }
+    if (!objective) return
+    server.players.forEach(function (player) {
+      try {
+        var name = String(player.username)
+        if (!board.hasPlayerScore(name, objective)) return
+        var score = board.getOrCreatePlayerScore(name, objective)
+        if (!(score.score > 0)) return
+        score.score = 0
+        // No cost is taken: there is no refund to give yet.
+        tell(player, '§e§lSkill respec: §r§7not available yet. No XP levels were taken.')
+      } catch (e2) {}
+    })
+  }
+  global.registerServerTick('tick_skillRespec', 40, 0)
+
+  console.log('[class_respec] loaded — ' + ALTAR + ': 1 trophy (' + TROPHIES.length +
+    ' accepted) + ' + XP_COST + ' levels -> `origin gui <player> ' + CLASS_LAYER + '`')
+})()

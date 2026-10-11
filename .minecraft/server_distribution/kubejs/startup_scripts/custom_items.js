@@ -512,7 +512,7 @@ StartupEvents.registry('item', event => {
 StartupEvents.registry('item', event => {
   event.create('icraft:class_altar')
     .displayName('§6Class Altar')
-    .tooltip('§7Place and right-click to change your class')
+    .tooltip('§7Hold it, with a boss trophy in your other hand, and right-click to change your class')
     .tooltip('§7Requires: 1 boss trophy + 30 XP levels')
     .maxStackSize(1)
     .rarity('EPIC')

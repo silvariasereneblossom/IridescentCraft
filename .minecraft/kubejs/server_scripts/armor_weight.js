@@ -41,6 +41,24 @@
 //     Now global.icraft.origin (0_lib_origins.js), a cached lookup -- this
 //     also removes one failed command parse per inventory change per player.
 //
+// 2026-10-10 -- COST ONLY, same numbers. The seven modifiers used to be
+// recomputed AND rewritten on every PlayerEvents.inventoryChanged (which fires
+// for every slot that changes: each item picked up, each point of durability
+// lost, each stack moved) and again every 100 ticks. A modifyAttribute() call
+// removes and re-adds the modifier and re-syncs the attribute to the client
+// even when the value is identical. Now:
+//   * the last state written is remembered per player (one string of the seven
+//     amounts); the modifiers are written only when that string changes;
+//   * inventoryChanged only looks at the armor when the stack that changed is
+//     something that goes in an armor slot (LivingEntity.getEquipmentSlotForItem
+//     -> head / chest / legs / feet). The event never fires for a slot that
+//     becomes EMPTY, and its slot number is a menu index, so the item is the
+//     only reliable filter; whatever it misses is picked up by the 100-tick
+//     pass, as before. (The offhand is not part of armor weight: only the four
+//     armor slots are read.)
+// The modifiers are TRANSIENT (they die with the player entity), so the memory
+// is dropped on login, logout and respawn.
+//
 // Whole file is one IIFE (body left at column 0 to keep the diff readable):
 // its top-level ARMOR_SLOTS / EnchantmentHelper_mc were shared-scope names that
 // death_penalty.js / magic_crit_hook.js also declare.
@@ -209,6 +227,29 @@ function isFaefolk(player) {
 
 var tickWarned = false
 
+// uuid -> signature of the modifier state last written to this player entity
+// ('off' = the creative/spectator strip). No entry = nothing written yet.
+var appliedState = {}
+
+// Is this stack something that is worn in an armor slot? true when unsure.
+var LivingEntity_mc = null
+var livingResolveTried = false
+function isArmorSlotItem(stack) {
+  if (!livingResolveTried) {
+    livingResolveTried = true
+    try {
+      LivingEntity_mc = Java.loadClass('net.minecraft.world.entity.LivingEntity')
+    } catch (e) { LivingEntity_mc = null }
+  }
+  if (!LivingEntity_mc) return true
+  try {
+    var slotName = String(LivingEntity_mc.getEquipmentSlotForItem(stack).getName())
+    return slotName === 'head' || slotName === 'chest' || slotName === 'legs' || slotName === 'feet'
+  } catch (e2) {
+    return true
+  }
+}
+
 function applyArmorMods(player, agg) {
   player.modifyAttribute('irons_spellbooks:mana_regen',
     UUID_MANA_REGEN, agg.mana, 'addition')
@@ -228,34 +269,54 @@ function applyArmorMods(player, agg) {
     UUID_PROTECTION_ARMOR, agg.protectionArmor, 'addition')
 }
 
+// Bring one player's modifiers in line with what they wear. Writes nothing when
+// the state is the one already applied (see the 2026-10-10 header note).
+//   stripIfExempt: creative / spectator players get the modifiers zeroed (the
+//   100-tick pass does this; the inventory event just leaves them alone, as it
+//   always did).
+function syncArmorWeight(player, stripIfExempt) {
+  var key = String(player.uuid)
+
+  if (player.spectator || player.creative) {
+    if (!stripIfExempt) return
+    if (appliedState[key] === 'off') return
+    // Strip any stale modifier in case the player toggled mode
+    try {
+      player.modifyAttribute('irons_spellbooks:mana_regen', UUID_MANA_REGEN, 0, 'addition')
+      player.modifyAttribute('irons_spellbooks:mana_regen', UUID_ROBE_SET_BONUS, 0, 'addition')
+      player.modifyAttribute('minecraft:generic.movement_speed', UUID_MOVE_SPEED, 0, 'multiply_base')
+      player.modifyAttribute('minecraft:generic.armor', UUID_ARMOR, 0, 'multiply_base')
+      player.modifyAttribute('minecraft:generic.armor', UUID_PROTECTION_ARMOR, 0, 'addition')
+      player.modifyAttribute('minecraft:generic.armor_toughness', UUID_LIGHT_TOUGHNESS, 0, 'multiply_base')
+      appliedState[key] = 'off'
+    } catch (e) {}
+    return
+  }
+
+  var agg = aggregateArmor(player)
+
+  // Faefolk Ethereal Form (conditional). Bypass when wearing 4/4 robe
+  // OR 4/4 light (full caster/rogue commitment).
+  var faefolkPenalty = 0
+  if (isFaefolk(player) && agg.counts.robe < 4 && agg.counts.light < 4) {
+    faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
+  }
+
+  var state = [agg.mana, agg.speed, agg.armor, agg.toughness, agg.robeSetBonus,
+    agg.protectionArmor, faefolkPenalty].join('|')
+  if (appliedState[key] === state) return
+
+  applyArmorMods(player, agg)
+  player.modifyAttribute('minecraft:generic.armor_toughness',
+    UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
+  appliedState[key] = state
+}
+
 global.tick_armorWeight = function(event) {
-  let server = event.server
+  var server = event.server
   server.players.forEach(function(player) {
     try {
-      if (player.spectator || player.creative) {
-        // Strip any stale modifier in case the player toggled mode
-        try {
-          player.modifyAttribute('irons_spellbooks:mana_regen', UUID_MANA_REGEN, 0, 'addition')
-          player.modifyAttribute('irons_spellbooks:mana_regen', UUID_ROBE_SET_BONUS, 0, 'addition')
-          player.modifyAttribute('minecraft:generic.movement_speed', UUID_MOVE_SPEED, 0, 'multiply_base')
-          player.modifyAttribute('minecraft:generic.armor', UUID_ARMOR, 0, 'multiply_base')
-          player.modifyAttribute('minecraft:generic.armor', UUID_PROTECTION_ARMOR, 0, 'addition')
-          player.modifyAttribute('minecraft:generic.armor_toughness', UUID_LIGHT_TOUGHNESS, 0, 'multiply_base')
-        } catch (e) {}
-        return
-      }
-
-      var agg = aggregateArmor(player)
-      applyArmorMods(player, agg)
-
-      // Faefolk Ethereal Form (conditional). Bypass when wearing 4/4 robe
-      // OR 4/4 light (full caster/rogue commitment).
-      let faefolkPenalty = 0
-      if (isFaefolk(player) && agg.counts.robe < 4 && agg.counts.light < 4) {
-        faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
-      }
-      player.modifyAttribute('minecraft:generic.armor_toughness',
-        UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
+      syncArmorWeight(player, true)
     } catch (e) {
       // once per script load: a tick path must not log on every pass
       if (!tickWarned) {
@@ -270,19 +331,21 @@ global.registerServerTick('tick_armorWeight', 100, 17)
 // Snappy refresh on equip swap.
 PlayerEvents.inventoryChanged(function(event) {
   try {
-    let player = event.player
-    if (!player || player.spectator || player.creative) return
-    var agg = aggregateArmor(player)
-    applyArmorMods(player, agg)
-
-    let faefolkPenalty = 0
-    if (isFaefolk(player) && agg.counts.robe < 4 && agg.counts.light < 4) {
-      faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
-    }
-    player.modifyAttribute('minecraft:generic.armor_toughness',
-      UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
+    var player = event.player
+    if (!player) return
+    if (!isArmorSlotItem(event.item)) return
+    syncArmorWeight(player, false)
   } catch (e) {}
 })
+
+// The modifiers die with the player entity: forget what was applied whenever
+// the entity is replaced, so the next pass writes them again.
+function forgetArmorWeight(event) {
+  try { delete appliedState[String(event.player.uuid)] } catch (e) {}
+}
+PlayerEvents.loggedIn(forgetArmorWeight)
+PlayerEvents.loggedOut(forgetArmorWeight)
+PlayerEvents.respawned(forgetArmorWeight)
 
 console.log('[IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling')
 console.log('  robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)')

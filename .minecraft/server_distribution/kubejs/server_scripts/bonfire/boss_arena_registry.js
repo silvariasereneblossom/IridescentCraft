@@ -489,9 +489,16 @@ global.ICRAFT_BOSS_ARENAS = {
 // Normalize: any arena WITHOUT an explicit `locator` is structure-located (the
 // original #46 default). Done once here so the consumers can switch on
 // meta.locator unconditionally.
+//
+// RHINO (2026-10-10): the three loops below declared their per-arena value as a
+// loop-body `const`. On this engine a loop-body const keeps the value of the
+// FIRST iteration, so only the first arena was ever normalized, the reverse
+// index held one entry, and the boot line counted every arena as
+// "structure-located" (production log: "47 structure-located, 0 block-located,
+// 0 summon-only"). `var` in a loop body is per-iteration here.
 ;(function () {
-    for (const id in global.ICRAFT_BOSS_ARENAS) {
-        const meta = global.ICRAFT_BOSS_ARENAS[id]
+    for (var id in global.ICRAFT_BOSS_ARENAS) {
+        var meta = global.ICRAFT_BOSS_ARENAS[id]
         if (!meta.locator) meta.locator = meta.structure ? "structure" : "summon"
     }
 })()
@@ -501,18 +508,18 @@ global.ICRAFT_BOSS_ARENAS = {
 // structure-located arenas have a `structure`, so block/summon arenas are
 // naturally absent here.
 global.ICRAFT_BOSS_ARENAS_BY_STRUCTURE = (function () {
-    const out = {}
-    for (const id in global.ICRAFT_BOSS_ARENAS) {
-        const meta = global.ICRAFT_BOSS_ARENAS[id]
+    var out = {}
+    for (var id in global.ICRAFT_BOSS_ARENAS) {
+        var meta = global.ICRAFT_BOSS_ARENAS[id]
         if (meta.structure) out[meta.structure] = id
     }
     return out
 })()
 
 ;(function () {
-    let nStruct = 0, nBlock = 0, nSummon = 0
-    for (const id in global.ICRAFT_BOSS_ARENAS) {
-        const l = global.ICRAFT_BOSS_ARENAS[id].locator
+    var nStruct = 0, nBlock = 0, nSummon = 0
+    for (var id in global.ICRAFT_BOSS_ARENAS) {
+        var l = global.ICRAFT_BOSS_ARENAS[id].locator
         if (l === "block") nBlock++
         else if (l === "summon") nSummon++
         else nStruct++

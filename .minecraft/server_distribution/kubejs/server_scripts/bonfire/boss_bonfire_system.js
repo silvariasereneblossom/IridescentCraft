@@ -44,22 +44,42 @@
 // tick registration that would leak across /reload.
 //
 // Cross-refs:
-//   startup_scripts/boss_arena_registry.js  -- the shared roster + tags source
+//   server_scripts/bonfire/boss_arena_registry.js -- the shared roster + tags source
 //   wiki/design/boss-bonfire-design.md       -- FromSoftware semantics
 //   wiki/design/waystones-api-audit.md        -- the three-call API path
 //   wiki/design/waystone-rename-blocking-options.md -- setGlobal(true) lock
+//
+// 2026-10-10 -- three Rhino faults fixed (all verified on the production
+// rhino jar; none of them is visible to `node --check`):
+//   * placeBonfire(): `const opt = WS_API.placeWaystone(...)` sat inside a
+//     `try`. This engine evaluates the initializer and THEN throws
+//     "redeclaration of var opt". So the waystone WAS placed, the catch
+//     reported "placeWaystone failed", nothing was named / made global /
+//     recorded as lit -- and one second later the next tick placed another
+//     waystone at the player's feet, for as long as they stood in the arena.
+//   * readFiredSet(): the lit list is read back as java.lang.String values, and
+//     a JS Set keyed by Java strings never matches a JS string. `fired.has(id)`
+//     was false for every arena, so even a correctly recorded bonfire would
+//     have been "lit" again on every tick. The set is now a plain object keyed
+//     by String()-coerced ids.
+//   * blockIdAtBF(): `const b` inside a `try` threw on every call, the catch
+//     swallowed it, and every block read answered null -- the shrine scan for
+//     the block-located arenas could never match.
+// Whole file is one IIFE (body left at column 0): server scripts share a single
+// Rhino scope.
 // =============================================================================
 
+;(function () {
 // ---- Waystones API classes (loaded once) ----------------------------------
-const WS_API = Java.loadClass("net.blay09.mods.waystones.api.WaystonesAPI")
-const WS_STYLES = Java.loadClass("net.blay09.mods.waystones.api.WaystoneStyles")
-const WS_PWM = Java.loadClass("net.blay09.mods.waystones.core.PlayerWaystoneManager")
+var WS_API = Java.loadClass("net.blay09.mods.waystones.api.WaystonesAPI")
+var WS_STYLES = Java.loadClass("net.blay09.mods.waystones.api.WaystoneStyles")
+var WS_PWM = Java.loadClass("net.blay09.mods.waystones.core.PlayerWaystoneManager")
 
 // ---- Structure-detection Java classes (match the compass tag path) ---------
-const BF_Registries  = Java.loadClass("net.minecraft.core.registries.Registries")
-const BF_TagKey      = Java.loadClass("net.minecraft.tags.TagKey")
-const BF_ResourceLoc = Java.loadClass("net.minecraft.resources.ResourceLocation")
-const BF_StringTag   = Java.loadClass("net.minecraft.nbt.StringTag")
+var BF_Registries  = Java.loadClass("net.minecraft.core.registries.Registries")
+var BF_TagKey      = Java.loadClass("net.minecraft.tags.TagKey")
+var BF_ResourceLoc = Java.loadClass("net.minecraft.resources.ResourceLocation")
+var BF_StringTag   = Java.loadClass("net.minecraft.nbt.StringTag")
 
 function arenaTagFor(bossId) {
     return BF_TagKey.create(BF_Registries.STRUCTURE, new BF_ResourceLoc("icraft", bossId))
@@ -81,13 +101,14 @@ function arenaTagFor(bossId) {
 // because a level with a player in it keeps pruning block-entity tickers. If
 // this box ever grows past ~64 or runs off a stored position, gate it with
 // hasChunkAt like boss_compass_handler.js findBlockCenter.
-const BONFIRE_BLOCK_RANGE = 24   // blocks (±) around the player to look for the shrine
-const BONFIRE_BLOCK_VR    = 24   // vertical (±)
-const BONFIRE_BLOCK_STEP  = 3    // lattice spacing (shrine is multi-block)
+var BONFIRE_BLOCK_RANGE = 24   // blocks (±) around the player to look for the shrine
+var BONFIRE_BLOCK_VR    = 24   // vertical (±)
+var BONFIRE_BLOCK_STEP  = 3    // lattice spacing (shrine is multi-block)
 
 function blockIdAtBF(level, x, y, z) {
     try {
-        const b = level.getBlock(x, y, z)
+        // RHINO: var, never const, inside a try (see the 2026-10-10 header note).
+        var b = level.getBlock(x, y, z)
         if (b && b.id) return String(b.id)
     } catch (e) {}
     return null
@@ -99,17 +120,17 @@ function blockIdAtBF(level, x, y, z) {
 // four Nether arenas (lust/pride/wrath/lucifer) are all checked together — no
 // dependency on iteration order or on others being lit first.
 function scanShrineMap(player, blockToBoss) {
-    const level = player.level
-    const px = player.blockX, py = player.blockY, pz = player.blockZ
-    const yMin = Math.max(level.getMinBuildHeight ? level.getMinBuildHeight() : -64,
+    var level = player.level
+    var px = player.blockX, py = player.blockY, pz = player.blockZ
+    var yMin = Math.max(level.getMinBuildHeight ? level.getMinBuildHeight() : -64,
         py - BONFIRE_BLOCK_VR)
-    const yMax = Math.min(level.getMaxBuildHeight ? level.getMaxBuildHeight() : 320,
+    var yMax = Math.min(level.getMaxBuildHeight ? level.getMaxBuildHeight() : 320,
         py + BONFIRE_BLOCK_VR)
-    for (let dx = -BONFIRE_BLOCK_RANGE; dx <= BONFIRE_BLOCK_RANGE; dx += BONFIRE_BLOCK_STEP) {
-        for (let dz = -BONFIRE_BLOCK_RANGE; dz <= BONFIRE_BLOCK_RANGE; dz += BONFIRE_BLOCK_STEP) {
-            for (let y = yMin; y <= yMax; y += BONFIRE_BLOCK_STEP) {
-                // RHINO: var (not const) — re-evaluated every loop iteration; a
-                // loop-body const throws "redeclaration of var id" on iteration 2.
+    for (var dx = -BONFIRE_BLOCK_RANGE; dx <= BONFIRE_BLOCK_RANGE; dx += BONFIRE_BLOCK_STEP) {
+        for (var dz = -BONFIRE_BLOCK_RANGE; dz <= BONFIRE_BLOCK_RANGE; dz += BONFIRE_BLOCK_STEP) {
+            for (var y = yMin; y <= yMax; y += BONFIRE_BLOCK_STEP) {
+                // RHINO: var (not const) — a loop-body const keeps the value of
+                // the first iteration (every sample would read the first block).
                 var id = blockIdAtBF(level, px + dx, y, pz + dz)
                 if (id && blockToBoss[id]) return blockToBoss[id]
             }
@@ -130,31 +151,51 @@ function bonfireName(meta) {
 // via the global flag, so one set per save suffices.
 
 // READ path — pure, no NBT writes (called up to once per tick per player). If
-// the block / list doesn't exist yet, returns an empty Set rather than creating
+// the block / list doesn't exist yet, returns an empty map rather than creating
 // it (creation happens lazily on the first write in markBonfireFired).
+// Returns a plain object { <boss_id>: true }. NOT a Set: the ids come back as
+// java.lang.String, and a JS Set keyed by Java strings never matches a JS
+// string (see the 2026-10-10 header note). Test with firedHas().
 function readFiredSet(server) {
-    const set = new Set()
-    const pd = server.overworld().persistentData
-    if (!pd.contains("iridescent")) return set
-    const block = pd.getCompound("iridescent")
-    if (!block.contains("fired_bonfires")) return set
-    const list = block.getList("fired_bonfires", 8)  // 8 = TAG_STRING
-    for (let i = 0; i < list.size(); i++) set.add(list.getString(i))
-    return set
+    var fired = {}
+    var pd = server.overworld().persistentData
+    if (!pd.contains("iridescent")) return fired
+    var block = pd.getCompound("iridescent")
+    if (!block.contains("fired_bonfires")) return fired
+    var list = block.getList("fired_bonfires", 8)  // 8 = TAG_STRING
+    for (var i = 0; i < list.size(); i++) fired[String(list.getString(i))] = true
+    return fired
+}
+function firedHas(fired, bossId) {
+    return fired.hasOwnProperty(String(bossId))
+}
+
+// Boss ids whose waystone was placed since this script loaded. Belt and braces
+// for the persisted list: a waystone is placed BEFORE it can be recorded, so if
+// recording ever fails the arena must still not be lit again one second later
+// (that is the waystone-per-second failure this file used to have). With this
+// guard the worst case is one waystone per arena per script load, and a
+// warning.
+var litThisSession = {}
+var bonfireWarned = {}
+function bonfireWarnOnce(key, message) {
+    if (bonfireWarned[key]) return
+    bonfireWarned[key] = true
+    console.warn("[bonfire] " + message + " (logged once)")
 }
 
 // WRITE path — appends bossId to the persisted list (idempotent). Only runs on
 // the rare first-ignition event, so the put-back cost is irrelevant here.
 function markBonfireFired(server, bossId) {
-    const pd = server.overworld().persistentData
+    var pd = server.overworld().persistentData
     if (!pd.contains("iridescent")) pd.put("iridescent", {})
-    const block = pd.getCompound("iridescent")
+    var block = pd.getCompound("iridescent")
     if (!block.contains("fired_bonfires")) block.put("fired_bonfires", [])
-    const list = block.getList("fired_bonfires", 8)
-    for (let i = 0; i < list.size(); i++) {
-        if (list.getString(i) === bossId) return  // dedupe
+    var list = block.getList("fired_bonfires", 8)
+    for (var i = 0; i < list.size(); i++) {
+        if (String(list.getString(i)) === String(bossId)) return  // dedupe
     }
-    list.add(BF_StringTag.valueOf(bossId))
+    list.add(BF_StringTag.valueOf(String(bossId)))
     block.put("fired_bonfires", list)
     pd.put("iridescent", block)
 }
@@ -169,28 +210,27 @@ function markBonfireFired(server, bossId) {
 // query runs every call, the lattice only on the throttled ticks (see the tick
 // wrapper). When false, block-arenas are simply not checked this call.
 function detectArenaAtPlayer(player, runBlockScan) {
-    const level = player.level
+    var level = player.level
     if (level.isClientSide()) return null
-    const arenas = global.ICRAFT_BOSS_ARENAS || {}
-    const server = player.server
-    const fired = readFiredSet(server)
-    const sm = level.structureManager()
-    const pos = player.blockPosition()
-    const hereDim = String(level.dimension)
+    var arenas = global.ICRAFT_BOSS_ARENAS || {}
+    var server = player.server
+    var fired = readFiredSet(server)
+    var sm = level.structureManager()
+    var pos = player.blockPosition()
+    var hereDim = String(level.dimension)
 
     // Build a {signatureBlock -> bossId} map of every not-yet-lit BLOCK-located
     // arena in the player's CURRENT dimension. Done alongside the structure pass
     // so we touch the registry once; the (single) lattice scan runs only after
     // no structure arena matched AND only on a throttled tick.
-    let blockToBoss = null
+    var blockToBoss = null
 
-    for (const bossId in arenas) {
-        if (fired.has(bossId)) continue                  // already lit — skip
+    for (var bossId in arenas) {
+        if (firedHas(fired, bossId) || litThisSession.hasOwnProperty(bossId)) continue  // already lit — skip
         // RHINO: var (not const) — this loop BODY is re-entered once per arena
-        // (~50). A body const throws "redeclaration of var meta" on the 2nd
-        // iteration; the whole-tick try/catch then reports it EVERY tick. (The
-        // for-in HEAD `const bossId` is safe — Rhino rebinds the loop var per
-        // iteration; only body decls hoist to the activation and collide.)
+        // (~50). A body const keeps the FIRST arena's value for every iteration
+        // (or, next to a const-in-try in the same function, throws
+        // "redeclaration of var"). `var` in a loop body is per-iteration.
         var meta = arenas[bossId]
 
         if (meta.locator === "block") {
@@ -205,10 +245,9 @@ function detectArenaAtPlayer(player, runBlockScan) {
 
         // Structure-located (the original #46 path).
         try {
-            // RHINO: var (not const) — same loop-body re-declaration trap as
-            // `meta` above. Extra teeth here: this const throw is swallowed by the
-            // inner catch below, so a const would SILENTLY skip every structure
-            // arena after the first (broken detection, no log) rather than spam.
+            // RHINO: var (not const). A const inside a try throws on EVERY
+            // execution, and this catch would swallow it: detection would be
+            // silently dead for every structure arena, with no log line.
             var tag = arenaTagFor(bossId)
             var start = sm.getStructureWithPieceAt(pos, tag)
             if (start && start.isValid()) {
@@ -224,7 +263,7 @@ function detectArenaAtPlayer(player, runBlockScan) {
     // No structure arena matched — one lattice pass checks ALL candidate shrines
     // at once (order-independent; the four Nether arenas are covered together).
     if (blockToBoss) {
-        const hit = scanShrineMap(player, blockToBoss)
+        var hit = scanShrineMap(player, blockToBoss)
         if (hit) return { bossId: hit, meta: arenas[hit] }
     }
     return null
@@ -236,25 +275,33 @@ function detectArenaAtPlayer(player, runBlockScan) {
 // is acceptable for the MVP; a precise per-arena offset is future polish.
 
 function placeBonfire(player, bossId, meta) {
-    const server = player.server
-    if (readFiredSet(server).has(bossId)) return false  // re-check (race-safe)
+    var server = player.server
+    if (litThisSession.hasOwnProperty(bossId)) return false
+    if (firedHas(readFiredSet(server), bossId)) return false  // re-check (race-safe)
 
-    const level = player.level
-    const pos = player.blockPosition()
+    var level = player.level
+    var pos = player.blockPosition()
 
     // 1) Place the block (Optional<IWaystone>).
-    let waystone
+    // RHINO: `opt` is declared out here. As a `const` inside the try it placed
+    // the waystone and then threw (see the 2026-10-10 header note).
+    var waystone = null
+    var opt = null
     try {
-        const opt = WS_API.placeWaystone(level, pos, WS_STYLES.DEFAULT)
+        opt = WS_API.placeWaystone(level, pos, WS_STYLES.DEFAULT)
         waystone = opt ? opt.orElse(null) : null
     } catch (e) {
-        console.warn("[bonfire] placeWaystone failed for " + bossId + ": " + e)
+        // retried on the next tick (the player has usually moved); logged once per arena
+        bonfireWarnOnce("place:" + bossId, "placeWaystone failed for " + bossId + ": " + e)
         return false
     }
     if (!waystone) {
-        console.warn("[bonfire] placeWaystone returned empty for " + bossId)
+        bonfireWarnOnce("empty:" + bossId, "placeWaystone returned empty for " + bossId)
         return false
     }
+    // The block exists from here on: never place this arena's waystone again in
+    // this session, whatever happens below.
+    litThisSession[bossId] = true
 
     // 2) Fixed name + global (setGlobal(true) is the rename-lock per the audit:
     //    globalWaystoneSetupRequiresCreativeMode=true means survival players
@@ -262,21 +309,32 @@ function placeBonfire(player, bossId, meta) {
     try {
         waystone.setName(bonfireName(meta))
         waystone.setGlobal(true)
-    } catch (e) {
-        console.warn("[bonfire] setName/setGlobal failed for " + bossId + ": " + e)
+    } catch (e2) {
+        bonfireWarnOnce("name:" + bossId, "setName/setGlobal failed for " + bossId + ": " + e2)
         // Continue — the waystone exists even if naming failed.
     }
 
     // 3) Pre-activate for everyone (current + future players see it in their list).
     try {
         WS_PWM.activeWaystoneForEveryone(server, waystone)
-    } catch (e) {
-        console.warn("[bonfire] activeWaystoneForEveryone failed for " + bossId + ": " + e)
+    } catch (e3) {
+        bonfireWarnOnce("activate:" + bossId, "activeWaystoneForEveryone failed for " + bossId + ": " + e3)
         // Acceptable degradation — players can still activate it on contact.
     }
 
-    markBonfireFired(server, bossId)
-    broadcastBonfire(server, player, meta)
+    // Record it. A failure here must not undo the ignition (the waystone is
+    // standing); litThisSession keeps it from being placed again until the
+    // next script load, and the warning says the record is missing.
+    try {
+        markBonfireFired(server, bossId)
+    } catch (e4) {
+        bonfireWarnOnce("record:" + bossId, "could not record " + bossId + " as lit -- it will be lit again after a restart / reload: " + e4)
+    }
+    try {
+        broadcastBonfire(server, player, meta)
+    } catch (e5) {
+        bonfireWarnOnce("broadcast", "ignition broadcast failed: " + e5)
+    }
     console.log("[bonfire] lit '" + bonfireName(meta) + "' at "
         + pos.getX() + "," + pos.getY() + "," + pos.getZ()
         + " (" + bossId + ") by " + player.username)
@@ -286,7 +344,7 @@ function placeBonfire(player, bossId, meta) {
 // ---- Chat broadcast (first ignition only) ---------------------------------
 
 function broadcastBonfire(server, player, meta) {
-    const msg = Text.aqua("[Iridescent] ")
+    var msg = Text.aqua("[Iridescent] ")
         .append(Text.gold(player.username))
         .append(Text.white(" has lit the "))
         .append(Text.lightPurple(meta.display).bold(true))
@@ -298,7 +356,7 @@ function broadcastBonfire(server, player, meta) {
 // Wrapped in defensive try/catch with a per-minute warn throttle so an API
 // drift can't tight-loop the log.
 
-let bonfire_warn_throttle = 0
+var bonfire_warn_throttle = 0
 global.tick_bossBonfire = function (event) {
     // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked tick.
     var player = event.player
@@ -331,3 +389,4 @@ global.registerPlayerTick("tick_bossBonfire", 20, 13)
 console.log("[iridescent/bonfire] loaded; "
     + Object.keys(global.ICRAFT_BOSS_ARENAS || {}).length
     + " boss arena(s) eligible for auto-bonfires")
+})()

@@ -38,7 +38,106 @@
 //
 // RELOAD-SAFETY: PlayerEvents.loggedIn + one master-dispatched server tick +
 // ServerEvents.commandRegistry. No item creation, no Forge bus listener.
+//
+// 2026-10-10 -- "is this quest already complete?" now asks Heracles itself.
+//   reconHeraclesComplete() used to read player.persistentData.heracles.quests.
+//   Heracles never writes there: progress lives in its own SavedData
+//   (QuestProgressHandler), so the read answered "no" for every quest. It could
+//   not even get that far: its `const` declarations sat inside a `try`, which
+//   this Rhino rejects with "redeclaration of var" on every call. The check is
+//   now QuestProgressHandler.getProgress(server, uuid).isComplete(questId), and
+//   the same small API is exported for the other quest bridges:
+//
+//     global.icraft.heracles.available()                 -> true | false
+//     global.icraft.heracles.isComplete(player, quest)   -> true | false | null (unknown)
+//     global.icraft.heracles.depsComplete(player, quest) -> true | false | null (unknown)
+//     global.icraft.heracles.fireDummy(player, dummyId)  -> true if the command ran
+//
+//   fireDummy runs `execute as <player> run heracles dummy <id>`: the dummy
+//   command takes NO player argument (it acts on the command source), so the
+//   old `heracles dummy <id> <player>` form never parsed. And Heracles only
+//   progresses a task while its quest is COMPLETABLE (every dependency done):
+//   a dummy fired earlier is dropped, which is why depsComplete() exists.
+//
+// Whole file is one IIFE (body left at column 0): server scripts share a single
+// Rhino scope.
 // =============================================================================
+
+;(function () {
+var reconWarned = {}
+function reconWarnOnce(key, message) {
+  if (reconWarned[key]) return
+  reconWarned[key] = true
+  try { console.warn('[heracles_reconcile] ' + message + ' (logged once)') } catch (ignored) {}
+}
+
+// ---- Heracles API (lazy; a missing / changed Heracles only costs detection) --
+var reconHx = { tried: false, progress: null, quests: null }
+function reconHeraclesApi() {
+  if (!reconHx.tried) {
+    reconHx.tried = true
+    try {
+      reconHx.progress = Java.loadClass('earth.terrarium.heracles.common.handlers.progress.QuestProgressHandler')
+      reconHx.quests = Java.loadClass('earth.terrarium.heracles.common.handlers.quests.QuestHandler')
+    } catch (e) {
+      reconHx.progress = null
+      reconHx.quests = null
+      reconWarnOnce('api', 'Heracles classes not loadable -- completion cannot be read: ' + e)
+    }
+  }
+  return reconHx.progress ? reconHx : null
+}
+
+// -> true / false, or null when it cannot be read
+function reconQuestComplete(player, quest) {
+  var api = reconHeraclesApi()
+  if (!api) return null
+  try {
+    return api.progress.getProgress(player.server, player.uuid).isComplete(String(quest)) === true
+  } catch (e) {
+    reconWarnOnce('isComplete', 'reading Heracles progress failed: ' + e)
+    return null
+  }
+}
+
+// -> true when every dependency of the quest is complete (Heracles lets its
+// tasks progress only then), false when one is not, null when unknown.
+function reconDepsComplete(player, quest) {
+  var api = reconHeraclesApi()
+  if (!api || !api.quests) return null
+  try {
+    var def = api.quests.get(String(quest))
+    if (!def) return null
+    var progress = api.progress.getProgress(player.server, player.uuid)
+    var it = def.dependencies().iterator()
+    while (it.hasNext()) {
+      if (progress.isComplete(String(it.next())) !== true) return false
+    }
+    return true
+  } catch (e) {
+    reconWarnOnce('deps', 'reading Heracles dependencies failed: ' + e)
+    return null
+  }
+}
+
+// `/heracles dummy <id>` acts on the command SOURCE (see header).
+function reconFireDummy(player, dummyId) {
+  try {
+    return player.server.runCommandSilent(
+      'execute as ' + player.username + ' run heracles dummy ' + dummyId) > 0
+  } catch (e) {
+    reconWarnOnce('dummy', 'heracles dummy threw: ' + e)
+    return false
+  }
+}
+
+global.icraft = global.icraft || {}
+global.icraft.heracles = {
+  available: function () { return reconHeraclesApi() !== null },
+  isComplete: reconQuestComplete,
+  depsComplete: reconDepsComplete,
+  fireDummy: reconFireDummy
+}
 
 // ---- condition probes (all defensive) -------------------------------------
 function reconHasAdv(player, advId) {
@@ -90,7 +189,7 @@ function reconComplete(player, quest) {
 // q = quest ID; met(player) = "already satisfied?"; adv = advancement(s) to
 // re-fire through Heracles when force-complete doesn't take (advancement-gated
 // quests only). Item/flag-gated quests omit adv (force-complete only).
-const RECONCILE = [
+var RECONCILE = [
   // === Onboarding ===
   { q: 'onboarding_first_log',            adv: ['minecraft:story/mine_stone'],     met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
   { q: 'onboarding_first_tool',           adv: ['minecraft:story/mine_stone'],     met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
@@ -277,29 +376,29 @@ function reconGuardKey(quest) { return 'icraft_recon_' + quest }
 function reconIsGuarded(player, quest) { try { return player.persistentData.getBoolean(reconGuardKey(quest)) } catch (e) { return false } }
 function reconMarkGuarded(player, quest) { try { player.persistentData.putBoolean(reconGuardKey(quest), true) } catch (e) {} }
 function reconClearGuards(player) {
-  try { for (const e of RECONCILE) player.persistentData.putBoolean(reconGuardKey(e.q), false) } catch (err) {}
+  try {
+    for (var i = 0; i < RECONCILE.length; i++) {
+      player.persistentData.putBoolean(reconGuardKey(RECONCILE[i].q), false)
+    }
+  } catch (err) {}
 }
 
+// "Already complete the normal way?" -- asks Heracles (see header). Unknown
+// (API unavailable) counts as "not complete", which is what this always
+// answered before; the icraft_recon_<quest> guard still makes each quest a
+// one-shot.
 function reconHeraclesComplete(player, quest) {
-  try {
-    const pd = player.persistentData
-    if (!pd.contains('heracles')) return false
-    const h = pd.getCompound('heracles')
-    if (!h.contains('quests')) return false
-    const qs = h.getCompound('quests')
-    if (!qs.contains(quest)) return false
-    const q = qs.getCompound(quest)
-    return q.contains('complete') && q.getBoolean('complete')
-  } catch (e) { return false }
+  return reconQuestComplete(player, quest) === true
 }
 
 // ---- one reconciliation pass; returns [[quest, outcome], ...] --------------
 function reconcileAll(player, verbose) {
-  // NOTE: var-only, no let/const. Rhino (KubeJS' JS engine) throws
-  // "redeclaration of var e" at the loop-scoped const on RE-INVOCATION of a
-  // function — and reconcileAll runs on a 30s periodic pass. var is
-  // function-scoped/hoisted so it sidesteps the buggy block-scope path; the
-  // loop var is also renamed e->entry to avoid clashing with catch(e) params.
+  // NOTE: var-only, no let/const. On this Rhino a `const` in a loop body keeps
+  // its FIRST iteration's value (every row would read as RECONCILE[0]) and a
+  // `const` inside a `try` throws "redeclaration of var". `var` is safe as long
+  // as it is used in the block that declares it: it is block-scoped here, so
+  // the loop-body vars below are per-iteration and `report` / `did` live at
+  // function level because they are read after the loop.
   var report = []
   if (!player || player.level.isClientSide()) return report
   var did = 0
@@ -324,7 +423,10 @@ function reconcileAll(player, verbose) {
     }
     reconMarkGuarded(player, entry.q)
     did++
-    report.push([entry.q, outcome + (ret >= 1 ? '' : '?')])
+    // Heracles' own answer beats the command's return value when it is readable.
+    var confirmed = reconQuestComplete(player, entry.q)
+    var sure = (confirmed === null) ? (ret >= 1) : confirmed
+    report.push([entry.q, outcome + (sure ? '' : '?')])
   }
   if (did > 0) {
     player.tell(Text.gold('[Quests] ').append(Text.gray(
@@ -343,7 +445,7 @@ PlayerEvents.loggedIn(event => {
 
 global.tick_heraclesReconcileRecheck = function(event) {
   event.server.players.forEach(function(player) {
-    let left = 0
+    var left = 0
     try { left = player.persistentData.getInt('icraft_recon_recheck_ticks') } catch (e) { return }
     if (!left || left <= 0) return
     left -= 20
@@ -372,19 +474,19 @@ global.registerServerTick('tick_heraclesReconcilePeriodic', 600, 13)
 
 // ---- on-demand command: /icraft_reconcile [reset] --------------------------
 ServerEvents.commandRegistry(event => {
-  const { commands } = event
-  function run(ctx, doReset) {
-    let sp
+  var commands = event.commands
+  var run = function (ctx, doReset) {
+    var sp = null
     try { sp = ctx.source.getPlayerOrException() } catch (e) { ctx.source.sendFailure(Text.of('Must be run as a player')); return 0 }
     if (doReset) reconClearGuards(sp)
-    let report
-    try { report = reconcileAll(sp, true) } catch (e) { sp.tell(Text.red('[Reconcile] threw: ' + e)); return 0 }
+    var report = null
+    try { report = reconcileAll(sp, true) } catch (e2) { sp.tell(Text.red('[Reconcile] threw: ' + e2)); return 0 }
     sp.tell(Text.gold('═══ Reconcile' + (doReset ? ' (reset)' : '') + ' — ' + report.length + ' quests ═══'))
-    let acted = 0
+    var acted = 0
     report.forEach(function(r) {
-      const done = /completed|re-fired|already-done|already-synced/.test(r[1])
+      var done = /completed|re-fired|already-done|already-synced/.test(r[1])
       if (/completed|re-fired/.test(r[1])) acted++
-      const colour = /completed|re-fired/.test(r[1]) ? Text.green : (done ? Text.gray : Text.darkGray)
+      var colour = /completed|re-fired/.test(r[1]) ? Text.green : (done ? Text.gray : Text.darkGray)
       sp.tell(colour('  ' + r[0] + ' → ' + r[1]))
     })
     sp.tell(Text.gold('═══ acted on ' + acted + ' this run ═══'))
@@ -400,3 +502,4 @@ ServerEvents.commandRegistry(event => {
 
 console.log('[heracles_reconcile] loaded — ' + RECONCILE.length +
   ' quests auto-reconcile from existing advancements / tiers / flags (login + 30s periodic + /icraft_reconcile)')
+})()

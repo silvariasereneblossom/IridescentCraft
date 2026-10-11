@@ -18,32 +18,53 @@
 //
 // ALL PRICES / STOCK / CATALOG PROVISIONAL -> operator feel pass.
 // RELOAD-SAFETY: only BlockEvents + ServerEvents (no Forge bus, no item creation).
+//
+// 2026-10-10 -- the Stand never opened a GUI. Three faults, all fixed here:
+//   * `event.cancel()` was the first thing the right-click handler did. On this
+//     KubeJS cancel() works by THROWING (EventJS.cancel() throws EventExit), so
+//     nothing after it ever ran. The handler now does its work first and
+//     cancels as its very last statement, outside the try.
+//   * the handler's locals were `const`s inside a `try`, which this Rhino
+//     rejects with "redeclaration of var" on every call (same for the restock
+//     tick, whose catch swallowed it: the dawn broadcast never fired).
+//   * the daily counter lived in two different compounds. The jar's merchant
+//     counts trades in the player's FORGE persistent data
+//     (ServerPlayer.getPersistentData(), key RelicBroker.TRADES_KEY) and locks
+//     the catalog from it; this file reset and displayed
+//     `player.persistentData`, which is KubeJS's own compound. So the reset
+//     never reached the jar's counter: after 10 purchases the Broker stayed
+//     locked for good, and "Purchases left today" always read 10/10. The jar
+//     now owns both keys (RelicBroker.beginDay) and keeps them in the
+//     player's PlayerPersisted data, so the cap also survives death.
+// Whole file is one IIFE (body left at column 0): server scripts share a single
+// Rhino scope.
 // =============================================================================
 
+;(function () {
 // ---- Java plumbing (jar opener + vanilla trade types) ----
-const $RelicBroker = Java.loadClass('com.iridescentcraft.relics.broker.RelicBroker')
-const $MerchantOffers = Java.loadClass('net.minecraft.world.item.trading.MerchantOffers')
-const $MerchantOffer = Java.loadClass('net.minecraft.world.item.trading.MerchantOffer')
+var $RelicBroker = Java.loadClass('com.iridescentcraft.relics.broker.RelicBroker')
+var $MerchantOffers = Java.loadClass('net.minecraft.world.item.trading.MerchantOffers')
+var $MerchantOffer = Java.loadClass('net.minecraft.world.item.trading.MerchantOffer')
 
-const BROKER_BLOCK = 'iridescent_relics:relic_broker_stand'
-const ESSENCE = 'iridescent_relics:relic_essence'
+var BROKER_BLOCK = 'iridescent_relics:relic_broker_stand'
+var ESSENCE = 'iridescent_relics:relic_essence'
 
 // ---- B2: daily cap + rotation -------------------------------------------------
 // ~10 purchases/day (operator decision 5). Enforced jar-side in the Merchant's
 // notifyTrade (the only place individual Broker trades are observable); THIS file
 // resets the counter on a new world day (at open) + shows the player their budget.
 // Selling relics back to the Broker is an UNCAPPED sink (does not count).
-const BROKER_DAILY_CAP = 10
+var BROKER_DAILY_CAP = 10
 // Rotating goods (materials + scrolls) show in daily groups: an item with rot:g
 // shows on days where (worldDay % BROKER_ROT_GROUPS) === g. Enchant books,
 // convenience, and buy-relics always show. PROVISIONAL.
-const BROKER_ROT_GROUPS = 2
+var BROKER_ROT_GROUPS = 2
 
 // ---- Catalog: tier-gated enchant BOOKS (cost in Relic Essence) ---------------
 // astages tier unlocks which rows show (T1 utility -> T3 chase -> T4 exclusives
 // that are normally untradeable). Levels kept vanilla-valid for v1; Apotheosis
 // over-max books can be added in the feel pass. {tier, ench, lvl, cost, stock}.
-const BROKER_ENCHANTS = [
+var BROKER_ENCHANTS = [
   // T1 -- utility
   { tier: 1, ench: 'minecraft:unbreaking',             lvl: 3, cost: 40, stock: 3 },
   { tier: 1, ench: 'minecraft:efficiency',             lvl: 3, cost: 45, stock: 3 },
@@ -77,7 +98,7 @@ const BROKER_ENCHANTS = [
 // {tier, id, count, cost, stock}. Tetra incl. a boss-ish mat (dragon_sinew) +
 // a Warden boss material (kubejs:void_essence) at steep prices; gem dust; arcane
 // essence; ISS scrolls are a separate family below.
-const BROKER_MATERIALS = [
+var BROKER_MATERIALS = [
   { tier: 1, id: 'apotheosis:gem_dust',             count: 4, cost: 25,  stock: 8, rot: 0 },
   { tier: 1, id: 'irons_spellbooks:arcane_essence', count: 8, cost: 30,  stock: 8, rot: 1 },
   { tier: 2, id: 'tetra:geode',                     count: 2, cost: 60,  stock: 4, rot: 0 },
@@ -90,14 +111,14 @@ const BROKER_MATERIALS = [
 // A blank irons_spellbooks:scroll is auto-bound to a random T1 spell the instant
 // it enters the player's inventory (server_scripts/randomize_blank_scrolls.js), so
 // selling the blank scroll == selling a random spell scroll. {tier,count,cost,stock}.
-const BROKER_SCROLLS = [
+var BROKER_SCROLLS = [
   { tier: 1, count: 1, cost: 70,  stock: 4, rot: 0 },
   { tier: 2, count: 2, cost: 120, stock: 3, rot: 1 },
 ]
 
 // ---- Catalog: convenience goods (cost in EMERALDS, S18 doctrine) -------------
 // Emeralds are the convenience currency, never progression. {tier, emerald, id, count, stock}.
-const BROKER_CONVENIENCE = [
+var BROKER_CONVENIENCE = [
   { tier: 1, emerald: 1, id: 'minecraft:torch',              count: 16, stock: 16 },
   { tier: 1, emerald: 1, id: 'minecraft:bread',              count: 6,  stock: 16 },
   { tier: 1, emerald: 6, id: 'minecraft:experience_bottle',  count: 4,  stock: 8 },
@@ -106,7 +127,7 @@ const BROKER_CONVENIENCE = [
 // ---- Catalog: the Broker BUYS the boss-signature relics (relic -> essence) ----
 // Prices come from the SAME Phase-A table (global.icraftRelicEssenceValue), so the
 // Broker and the submit-sweep never diverge. Common artifacts go via the sweep.
-const BROKER_BUYS = [
+var BROKER_BUYS = [
   'iridescent_relics:frostmaw_heart',
   'iridescent_relics:ironheart_cog',
   'iridescent_relics:remnant_relic',
@@ -155,8 +176,8 @@ function brokerShows(entry, tier, day) {
 
 // Build the player's tier-filtered, daily-rotated MerchantOffers.
 function brokerBuildOffers(player, day) {
-  const tier = brokerPlayerTier(player)
-  const offers = new $MerchantOffers()
+  var tier = brokerPlayerTier(player)
+  var offers = new $MerchantOffers()
 
   BROKER_ENCHANTS.forEach(e => {
     if (brokerShows(e, tier, day)) offers.add(brokerOffer(brokerEssence(e.cost), brokerEnchBook(e.ench, e.lvl), e.stock))
@@ -173,11 +194,11 @@ function brokerBuildOffers(player, day) {
 
   // Buy-relics: relic -> essence, priced by the shared Phase-A table. Always shown,
   // UNCAPPED (a sink) -- the jar's notifyTrade does not count buy-backs.
-  const valueOf = global.icraftRelicEssenceValue
+  var valueOf = global.icraftRelicEssenceValue
   if (typeof valueOf === 'function') {
     BROKER_BUYS.forEach(id => {
-      let v = 0
-      try { v = valueOf(id) } catch (_) {}
+      var v = 0
+      try { v = Number(valueOf(id)) } catch (_) { v = 0 }
       if (v > 0) offers.add(brokerOffer(Item.of(id, 1), brokerEssence(v), 8))
     })
   }
@@ -186,35 +207,62 @@ function brokerBuildOffers(player, day) {
 }
 
 // ---- Open the Broker GUI on right-click of the Stand --------------------------
-// event.cancel() suppresses the off-hand re-fire (so the menu opens exactly once)
-// and any default block/item interaction.
-BlockEvents.rightClicked(event => {
-  const block = event.block
-  if (!block || block.id !== BROKER_BLOCK) return
-  const player = event.player
-  if (!player) return
-  event.cancel()
+// A right-click arrives once per hand. The menu is opened for the MAIN hand
+// only, and BOTH hands' events are cancelled (the Stand has no interaction of
+// its own, and the held item must not be used / placed against it).
+//
+// event.cancel() exits the handler by throwing: it is the LAST statement, and
+// it is outside the try (inside, the catch would swallow the cancel).
+var brokerOpenWarned = false
+function brokerOpen(player) {
+  // RHINO: plain `var`s -- a `const` inside the try below throws on every call.
   try {
-    const day = brokerDay(player.server)
-    const pd = player.persistentData
-    // Daily reset of the purchase counter (the jar's notifyTrade increments the same key).
-    // Number() the Java long -- Rhino won't coerce `long !== number`, which would (wrongly)
-    // make the reset fire on EVERY open.
-    if (Number(pd.getLong('icraft_broker_day')) !== day) {
-      pd.putLong('icraft_broker_day', day)
-      pd.putInt('icraft_broker_trades', 0)
+    var day = brokerDay(player.server)
+    // Daily reset of the purchase counter. The jar owns both the counter and
+    // its day stamp (RelicBroker.beginDay; they live in the player's
+    // PlayerPersisted data so that dying does not hand out a fresh cap) and
+    // returns the trades already used today.
+    var used
+    if ($RelicBroker.beginDay) {
+      used = Number($RelicBroker.beginDay(player, day))
+    } else {
+      // Jar older than 2026-10-10: counters at the root of the Forge data.
+      var pd = player.forgePersistentData
+      // Number() the Java long so the comparison is number-to-number.
+      if (Number(pd.getLong('icraft_broker_day')) !== day) {
+        pd.putLong('icraft_broker_day', day)
+        pd.putInt('icraft_broker_trades', 0)
+      }
+      used = Number(pd.getInt('icraft_broker_trades'))
     }
-    const remaining = Math.max(0, BROKER_DAILY_CAP - pd.getInt('icraft_broker_trades'))
+    var remaining = Math.max(0, BROKER_DAILY_CAP - used)
     player.tell(Text.gold('[Relic Broker] ').append(Text.gray('Purchases left today: '))
       .append(remaining > 0
         ? Text.aqua(remaining + '/' + BROKER_DAILY_CAP)
         : Text.red('0/' + BROKER_DAILY_CAP + ' — restocks at dawn')))
-    const offers = brokerBuildOffers(player, day)
+    var offers = brokerBuildOffers(player, day)
     $RelicBroker.open(player, offers, null, BROKER_DAILY_CAP) // null title -> jar default "Relic Broker"
   } catch (e) {
-    console.warn('[RelicBroker] open failed for ' + player.username + ': ' + e)
-    player.tell(Text.red('[Relic Broker] failed to open: ' + e))
+    if (!brokerOpenWarned) {
+      brokerOpenWarned = true
+      console.warn('[RelicBroker] open failed for ' + player.username + ' (logged once): ' + e)
+    }
+    try { player.tell(Text.red('[Relic Broker] failed to open: ' + e)) } catch (e2) {}
   }
+}
+
+// Registered WITH the block id, so the handler only runs for the Stand instead
+// of for every block right-click on the server (the id test below stays as a
+// belt-and-braces check).
+BlockEvents.rightClicked(BROKER_BLOCK, event => {
+  var block = event.block
+  if (!block || String(block.id) !== BROKER_BLOCK) return
+  var player = event.player
+  if (!player) return
+  var mainHand = true
+  try { mainHand = String(event.hand) !== 'OFF_HAND' } catch (e) { mainHand = true }
+  if (mainHand) brokerOpen(player)
+  event.cancel()
 })
 
 // ---- B2: daily restock broadcast (via the 0_tick_master registry) -------------
@@ -222,16 +270,23 @@ BlockEvents.rightClicked(event => {
 // + everyone's daily purchase budget refreshed). global.* persists across /reload,
 // so a restart re-seeds the day silently (no spurious broadcast).
 global.icraftBrokerRestockTick = function (event) {
+  // RHINO: `var`s (the old `const`s inside this try threw on every run and the
+  // empty catch hid it, so the broadcast never fired).
   try {
-    const server = event.server
+    var server = event.server
     if (!server) return
-    const day = brokerDay(server)
+    var day = brokerDay(server)
     if (global.icraftBrokerLastDay === undefined) { global.icraftBrokerLastDay = day; return }
     if (day !== global.icraftBrokerLastDay) {
       global.icraftBrokerLastDay = day
       server.tell(Text.gold('☼ The Relic Broker has restocked — new rotating stock, and your daily trades are refreshed.'))
     }
-  } catch (e) {}
+  } catch (e) {
+    if (!global.icraftBrokerRestockWarned) {
+      global.icraftBrokerRestockWarned = true
+      console.warn('[RelicBroker] restock tick failed (logged once): ' + e)
+    }
+  }
 }
 global.registerServerTick('icraftBrokerRestockTick', 200, 13)
 
@@ -259,3 +314,4 @@ console.log('[IridescentCraft] Relic Broker loaded (block ' + BROKER_BLOCK + ' -
 console.log('  catalog: ' + BROKER_ENCHANTS.length + ' enchant books, ' + BROKER_MATERIALS.length
   + ' materials, ' + BROKER_SCROLLS.length + ' scroll tiers, ' + BROKER_CONVENIENCE.length
   + ' convenience, buys ' + BROKER_BUYS.length + ' boss relics. ALL PROVISIONAL.')
+})()

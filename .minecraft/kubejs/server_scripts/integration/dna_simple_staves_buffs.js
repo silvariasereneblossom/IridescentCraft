@@ -22,9 +22,26 @@
 //
 // Memory: feedback_kubejs_event_scope.md (PlayerEvents.* server-only),
 //   feedback_kubejs_tooltip_api.md, feedback_distro_jar_deploy.md.
+//
+// 2026-10-10 -- COST ONLY, same buffs. The tick used to rewrite all 17
+// modifier slots for every player every 10 ticks, held item or not. Each
+// player.modifyAttribute() removes and re-adds the modifier, which marks the
+// attribute dirty and re-syncs it to the client: 34 attribute updates a second
+// per player for a value that had not changed. Now the last main-hand id that
+// was applied is remembered per player and modifiers are only written when it
+// changes -- and then only the slots of the item that was put away and the item
+// that was drawn. A player seen for the first time (login, respawn, /reload)
+// gets one full write of all slots, exactly what every tick used to do.
+//
+// The modifiers are TRANSIENT (KubeJS modifyAttribute -> addTransientModifier):
+// they live on the player entity and vanish with it. So the memory is dropped
+// on login, logout and respawn -- the three moments the entity is replaced.
+// Whole file is one IIFE (body left at column 0): server scripts share a single
+// Rhino scope.
 // =============================================================================
 
-const HANDHELD_BUFFS = {
+;(function () {
+var HANDHELD_BUFFS = {
   // Dan's Magic — 5 staves (T1 element buffs)
   'dna:ice_staff':            { 'irons_spellbooks:ice_spell_power':       ['addition',  0.20] },
   'dna:lightning_staff':      { 'irons_spellbooks:lightning_spell_power': ['addition',  0.20] },
@@ -65,44 +82,86 @@ const HANDHELD_BUFFS = {
 // tick so stale modifiers always get cleared (amount=0) when the player
 // isn't holding the matching item. Deterministic name -> idempotent
 // modifyAttribute, no leaks across swaps.
-const MOD_SLOTS = []
+var MOD_SLOTS = []
+// itemId -> the entries of MOD_SLOTS that belong to it
+var SLOTS_BY_ITEM = {}
 for (var __itemId in HANDHELD_BUFFS) {
   var __buffs = HANDHELD_BUFFS[__itemId]
+  SLOTS_BY_ITEM[__itemId] = []
   for (var __attr in __buffs) {
     var __safe = (__itemId + '_' + __attr).replace(/[^a-zA-Z0-9]/g, '_')
-    MOD_SLOTS.push({
+    var __slot = {
       itemId: __itemId,
       attr:   __attr,
       op:     __buffs[__attr][0],
       amount: __buffs[__attr][1],
       name:   'icraft_hh_' + __safe,
-    })
+    }
+    MOD_SLOTS.push(__slot)
+    SLOTS_BY_ITEM[__itemId].push(__slot)
   }
+}
+
+// uuid -> the main-hand id whose modifiers are currently applied ('' = none).
+// No entry = this player entity has not been written yet (full write needed).
+var appliedHeld = {}
+
+function writeSlot(player, slot, active) {
+  try {
+    player.modifyAttribute(slot.attr, slot.name, active ? slot.amount : 0, slot.op)
+  } catch (e) {
+    // Attribute unregistered (mod missing) or transient state — skip
+    // this slot rather than crashing the whole tick.
+  }
+}
+
+function syncHeldBuffs(player) {
+  var held = ''
+  try {
+    held = String(player.mainHandItem.id || '')
+  } catch (e) {
+    held = ''
+  }
+  var key = String(player.uuid)
+
+  if (!appliedHeld.hasOwnProperty(key)) {
+    // First sight of this player entity: write every slot once (clears
+    // anything stale, applies the held item's buffs).
+    for (var i = 0; i < MOD_SLOTS.length; i++) writeSlot(player, MOD_SLOTS[i], held === MOD_SLOTS[i].itemId)
+    appliedHeld[key] = held
+    return
+  }
+
+  var was = appliedHeld[key]
+  if (was === held) return               // nothing changed: no writes at all
+
+  // Main-hand item changed: clear the old item's slots, apply the new item's.
+  var off = SLOTS_BY_ITEM.hasOwnProperty(was) ? SLOTS_BY_ITEM[was] : null
+  var on = SLOTS_BY_ITEM.hasOwnProperty(held) ? SLOTS_BY_ITEM[held] : null
+  if (off) { for (var a = 0; a < off.length; a++) writeSlot(player, off[a], false) }
+  if (on) { for (var b = 0; b < on.length; b++) writeSlot(player, on[b], true) }
+  appliedHeld[key] = held
 }
 
 global.tick_dna_simple_staves_buffs = function (event) {
   var server = event.server
   server.players.forEach(function (player) {
     if (player.spectator) return
-    let held = ''
-    try {
-      held = String(player.mainHandItem.id || '')
-    } catch (e) {
-      held = ''
-    }
-    MOD_SLOTS.forEach(function (slot) {
-      try {
-        var active = (held === slot.itemId)
-        player.modifyAttribute(slot.attr, slot.name, active ? slot.amount : 0, slot.op)
-      } catch (e) {
-        // Attribute unregistered (mod missing) or transient state — skip
-        // this slot rather than crashing the whole tick.
-      }
-    })
+    syncHeldBuffs(player)
   })
 }
+
+// The modifiers die with the player entity (see header): forget what was
+// applied whenever the entity is replaced.
+function forgetHeldBuffs(event) {
+  try { delete appliedHeld[String(event.player.uuid)] } catch (e) {}
+}
+PlayerEvents.loggedIn(forgetHeldBuffs)
+PlayerEvents.loggedOut(forgetHeldBuffs)
+PlayerEvents.respawned(forgetHeldBuffs)
 
 // 10-tick interval (2 Hz); offset 4 to space against other registered
 // per-second ticks. Swap latency from drawing/sheathing a buffed item is
 // up to 0.5s; imperceptible in normal play.
 global.registerServerTick('tick_dna_simple_staves_buffs', 10, 4)
+})()
