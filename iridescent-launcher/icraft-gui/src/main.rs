@@ -539,18 +539,17 @@ fn spawn_listener_probe() {
 }
 
 // =============================================================================
-// Scheduled Cycle -- external request file (the nightly-restart task)
+// Cycle requests -- external request file
 // =============================================================================
 //
-// The 05:00 "IridescentCraft Nightly Restart" scheduled task used to run `nssm
-// restart IridescentMC`; since the GUI took over there is no such service (it
-// failed every night), and only this process holds the server's console. So
-// nightly_restart.ps1 now drops CYCLE_REQUEST_FILE ("<unix-secs> <reason>") in
-// the server dir, and this watcher runs it like the Cycle button: in-game
-// warnings, a graceful stop with a longer save grace, then the supervisor's
-// Cycle (self-update + sync + start). It answers "<unix-secs> accepted" or
-// "<unix-secs> skipped: <why>" in CYCLE_RESULT_FILE so the task logs what
-// actually happened.
+// Only this process holds the server's console, so anything else that wants a
+// restart asks for one: request_cycle.ps1 (run on the box or over remoting)
+// drops CYCLE_REQUEST_FILE ("<unix-secs> <reason>") in the server dir, and this
+// watcher runs it like the Cycle button: in-game warnings, a graceful stop with
+// a longer save grace, then the supervisor's Cycle (self-update + sync +
+// start). It answers "<unix-secs> accepted" or "<unix-secs> skipped: <why>" in
+// CYCLE_RESULT_FILE so the caller logs what actually happened. (Built for the
+// 05:00 nightly-restart task, which the uptime restart policy below replaced.)
 
 const CYCLE_REQUEST_FILE: &str = ".icraft_cycle_request";
 const CYCLE_RESULT_FILE: &str = ".icraft_cycle_request.result";
@@ -559,12 +558,15 @@ const CYCLE_REQUEST_POLL: Duration = Duration::from_secs(10);
 /// the server on a leftover file.
 const CYCLE_REQUEST_MAX_AGE: Duration = Duration::from_secs(10 * 60);
 const CYCLE_WARN_LEAD: Duration = Duration::from_secs(60);
-const CYCLE_WARN_SECOND: Duration = Duration::from_secs(10);
 /// A ~450-mod world save needs more than the Cycle button's 30 s (the old NSSM
 /// console-stop timeout was 120 s).
 const SCHEDULED_STOP_GRACE_SECS: u64 = 120;
+/// A warned restart countdown is running (request file or restart policy): one
+/// at a time.
+static RESTART_COUNTDOWN: AtomicBool = AtomicBool::new(false);
 
-/// The GUI's install dir, published by `refresh_status` for the request watcher.
+/// The GUI's install dir, published by `refresh_status` for the request watcher
+/// and the restart policy.
 static APP_SERVER_DIR: Mutex<Option<PathBuf>> = Mutex::new(None);
 
 fn unix_now() -> u64 {
@@ -590,14 +592,13 @@ fn spawn_cycle_request_watcher() {
         log::info!("[scheduled] Cycle request '{body}': {answer}");
         let _ = std::fs::write(dir.join(CYCLE_RESULT_FILE), format!("{} {answer}\n", unix_now()));
         if verdict.is_ok() {
-            run_scheduled_cycle();
+            warned_cycle("scheduled", "Server restart", CYCLE_WARN_LEAD);
         }
     });
 }
 
-/// Err = why the request is not run (reported back to the task).
+/// Err = why the request is not run (reported back to the caller).
 fn cycle_request_precheck(body: &str) -> Result<(), String> {
-    use icraft_core::run::{server_state, ServerState};
     let stamp: u64 = body
         .split_whitespace()
         .next()
@@ -607,54 +608,250 @@ fn cycle_request_precheck(body: &str) -> Result<(), String> {
     if age > CYCLE_REQUEST_MAX_AGE.as_secs() {
         return Err(format!("skipped: stale request ({age}s old)"));
     }
+    match cycle_blocker() {
+        Some(why) => Err(format!("skipped: {why}")),
+        None => Ok(()),
+    }
+}
+
+/// Why an automatic Cycle can't start right now, if anything: it needs a
+/// supervised server that is fully up, with no stop, Cycle or restart countdown
+/// already under way.
+fn cycle_blocker() -> Option<String> {
+    use icraft_core::run::{server_state, ServerState};
     if !SUPERVISOR.running.load(Ordering::SeqCst) {
-        return Err("skipped: no supervised server (stopped on purpose, or started via Run only / an older launcher)".to_string());
+        return Some("no supervised server (stopped on purpose, or started via Run only / an older launcher)".to_string());
     }
     let st = server_state();
     if !SUPERVISOR.server_live.load(Ordering::SeqCst) || st != ServerState::Started {
-        return Err(format!("skipped: server not up ({st:?}) -- already booting or restarting"));
+        return Some(format!("server not up ({st:?}) -- already booting or restarting"));
     }
-    if SUPERVISOR.cycle_requested.load(Ordering::SeqCst) || SUPERVISOR.operator_stop.load(Ordering::SeqCst) {
-        return Err("skipped: a stop/Cycle is already in progress".to_string());
+    if SUPERVISOR.cycle_requested.load(Ordering::SeqCst)
+        || SUPERVISOR.operator_stop.load(Ordering::SeqCst)
+        || RESTART_COUNTDOWN.load(Ordering::SeqCst)
+    {
+        return Some("a stop/Cycle is already in progress".to_string());
     }
-    Ok(())
+    None
 }
 
-/// Warn players, then hand off exactly like the Cycle button (the supervisor
-/// restarts it once the JVM exits), but with SCHEDULED_STOP_GRACE_SECS.
-fn run_scheduled_cycle() {
+/// Warn players, then hand off exactly like the Cycle button (see
+/// [`stop_for_cycle`]). Announces at `lead`, then again at the 60 s and 10 s
+/// marks inside it. False = abandoned, nothing was stopped.
+fn warned_cycle(tag: &str, what: &str, lead: Duration) -> bool {
+    if RESTART_COUNTDOWN.swap(true, Ordering::SeqCst) {
+        log::info!("[{tag}] another restart countdown is already running -- skipped");
+        return false;
+    }
     let say = |msg: String| {
         if let Err(e) = icraft_core::run::send_console_line(&format!("say {msg}")) {
-            log::warn!("[scheduled] in-game warning failed: {e}");
+            log::warn!("[{tag}] in-game warning failed: {e}");
         }
     };
-    say(format!("[Auto-Restart] Nightly restart in {} seconds -- back in a few minutes.", CYCLE_WARN_LEAD.as_secs()));
-    if !countdown(CYCLE_WARN_LEAD - CYCLE_WARN_SECOND) { return; }
-    say(format!("[Auto-Restart] Restarting in {} seconds.", CYCLE_WARN_SECOND.as_secs()));
-    if !countdown(CYCLE_WARN_SECOND) { return; }
-    log::info!("[scheduled] countdown done -- stopping (save grace {SCHEDULED_STOP_GRACE_SECS}s), then Cycle: self-update + sync + start");
+    let mut marks: Vec<u64> = vec![lead.as_secs()];
+    marks.extend([60u64, 10].into_iter().filter(|m| *m < lead.as_secs()));
+    let mut counted_down = true;
+    for (i, &left) in marks.iter().enumerate() {
+        if i == 0 {
+            say(format!("[Auto-Restart] {what} in {} -- back in a few minutes.", say_secs(left)));
+        } else {
+            say(format!("[Auto-Restart] Restarting in {}.", say_secs(left)));
+        }
+        let next = marks.get(i + 1).copied().unwrap_or(0);
+        if !countdown(tag, Duration::from_secs(left - next)) {
+            counted_down = false;
+            break;
+        }
+    }
+    let stopping = counted_down && stop_for_cycle(tag);
+    RESTART_COUNTDOWN.store(false, Ordering::SeqCst);
+    stopping
+}
+
+/// "5 minutes" / "60 seconds", for the in-game countdown.
+fn say_secs(s: u64) -> String {
+    if s >= 120 && s % 60 == 0 {
+        format!("{} minutes", s / 60)
+    } else {
+        format!("{s} seconds")
+    }
+}
+
+/// Flag a Cycle and stop the server with SCHEDULED_STOP_GRACE_SECS; the
+/// supervisor brings it back (self-update + sync + start) once the JVM exits.
+fn stop_for_cycle(tag: &str) -> bool {
+    log::info!("[{tag}] stopping (save grace {SCHEDULED_STOP_GRACE_SECS}s), then Cycle: self-update + sync + start");
     SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
     if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
         SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
-        log::warn!("[scheduled] stop failed: {e} -- nightly Cycle abandoned");
+        log::warn!("[{tag}] stop failed: {e} -- Cycle abandoned");
+        return false;
     }
+    true
 }
 
 /// Sleep through one countdown step; false (abandon) if the server goes down,
 /// gets stopped, or starts cycling for another reason meanwhile.
-fn countdown(d: Duration) -> bool {
+fn countdown(tag: &str, d: Duration) -> bool {
     let end = Instant::now() + d;
     while Instant::now() < end {
         if !SUPERVISOR.server_live.load(Ordering::SeqCst)
             || SUPERVISOR.operator_stop.load(Ordering::SeqCst)
             || SUPERVISOR.cycle_requested.load(Ordering::SeqCst)
         {
-            log::info!("[scheduled] server went down / was stopped during the countdown -- nightly Cycle abandoned");
+            log::info!("[{tag}] server went down / was stopped during the countdown -- Cycle abandoned");
             return false;
         }
         std::thread::sleep(Duration::from_millis(500));
     }
     true
+}
+
+// =============================================================================
+// Uptime restart policy -- Cycle at 4 h empty / 12 h with players
+// =============================================================================
+//
+// The rules, the override file (dry-run / off / test thresholds) and the audit
+// log live in icraft_core::restart_policy. This thread feeds them the two
+// signals only this process has first-hand:
+//   - uptime: since this launch's "Done" line (run::started_at), so every
+//     restart resets it -- heartbeat crash recoveries included;
+//   - players online: a console `list`, read back through the log pump. No
+//     reply = unknown = counted as "players online".
+// `list` is only sent once a restart could come due (from one debounce window
+// before the empty threshold), so a young server's log stays free of it.
+// Supervised runs only, like the heartbeat: "Run only" is left alone.
+
+const POLICY_TICK: Duration = Duration::from_secs(60);
+const LIST_REPLY_TIMEOUT: Duration = Duration::from_secs(15);
+/// With nothing changing, still log one status line this often (proof of life).
+const POLICY_STATUS_EVERY: Duration = Duration::from_secs(3600);
+/// Restart-policy badge: (healthy, text).
+static POLICY_BADGE: Mutex<(bool, String)> = Mutex::new((true, String::new()));
+
+fn set_policy_badge(ok: bool, text: String) {
+    *POLICY_BADGE.lock().unwrap() = (ok, text);
+}
+
+/// Started once in `IcraftApp::new`.
+fn spawn_restart_policy() {
+    use icraft_core::restart_policy::{self as rp, Decision, Mode};
+    std::thread::spawn(|| {
+        // "The last thing logged", so only changes reach the audit log.
+        let mut last_policy: Option<Result<rp::Policy, String>> = None;
+        let mut last_state = String::new();
+        let mut last_line = Instant::now();
+        // The launch being tracked, and since when every reading has been empty.
+        let mut boot: Option<Instant> = None;
+        let mut empty_since: Option<Instant> = None;
+        loop {
+            std::thread::sleep(POLICY_TICK);
+            let Some(dir) = APP_SERVER_DIR.lock().unwrap().clone() else { continue };
+
+            let loaded = rp::Policy::load(&dir);
+            if last_policy.as_ref() != Some(&loaded) {
+                match &loaded {
+                    Ok(p) => rp::audit(&dir, &format!("policy: {}", p.describe())),
+                    Err(e) => rp::audit(&dir, &format!("policy SUSPENDED until the override file is fixed or removed -- {e}")),
+                }
+                last_policy = Some(loaded.clone());
+                last_state.clear(); // re-log where things stand under the new settings
+            }
+
+            // The uptime clock runs only while a supervised server is fully up.
+            let supervised = SUPERVISOR.running.load(Ordering::SeqCst) && SUPERVISOR.server_live.load(Ordering::SeqCst);
+            let Some((since, wall)) = icraft_core::run::started_at().filter(|_| supervised) else {
+                if boot.take().is_some() {
+                    rp::audit(&dir, "server down or restarting -- uptime clock stopped");
+                }
+                empty_since = None;
+                last_state.clear();
+                set_policy_badge(true, "idle (no server up)".to_string());
+                continue;
+            };
+            if boot != Some(since) {
+                boot = Some(since);
+                empty_since = None;
+                last_state.clear();
+                rp::audit(&dir, &format!("server up since {} -- uptime clock started", wall.format("%Y-%m-%d %H:%M:%S")));
+            }
+
+            let policy = match loaded {
+                Ok(p) if p.mode != Mode::Off => p,
+                Ok(_) => {
+                    empty_since = None;
+                    set_policy_badge(false, "off (override file)".to_string());
+                    continue;
+                }
+                Err(_) => {
+                    empty_since = None;
+                    set_policy_badge(false, "SUSPENDED (bad override file)".to_string());
+                    continue;
+                }
+            };
+            let uptime = since.elapsed();
+
+            // Ask who is online only once a restart could come due.
+            let asking = uptime >= policy.empty_after.saturating_sub(policy.empty_debounce);
+            let players = if asking { icraft_core::run::query_player_count(LIST_REPLY_TIMEOUT) } else { None };
+            if players == Some(0) {
+                if empty_since.is_none() {
+                    empty_since = Some(Instant::now());
+                }
+            } else {
+                empty_since = None;
+            }
+            let empty_for = empty_since.map_or(Duration::ZERO, |t| t.elapsed());
+            let decision = rp::decide(&policy, uptime, players, empty_for);
+
+            let seen = match players {
+                Some(n) => n.to_string(),
+                None if asking => "unknown (no reply to `list`; counted as online)".to_string(),
+                None => "not asked yet".to_string(),
+            };
+            let dry_run = policy.mode == Mode::DryRun;
+            set_policy_badge(true, format!(
+                "{}up {}, next: {} empty / {} with players",
+                if dry_run { "DRY-RUN, " } else { "" },
+                rp::fmt_span(uptime), rp::fmt_span(policy.empty_after), rp::fmt_span(policy.busy_after),
+            ));
+            let state = format!("{seen}|{decision:?}");
+            if state != last_state || last_line.elapsed() >= POLICY_STATUS_EVERY {
+                rp::audit(&dir, &format!(
+                    "uptime {} | players {seen} | empty for {} | {}{}",
+                    rp::fmt_span(uptime), rp::fmt_span(empty_for), decision.describe(),
+                    if dry_run && decision.is_restart() { " -- DRY-RUN, not acting" } else { "" },
+                ));
+                last_state = state;
+                last_line = Instant::now();
+            }
+
+            if !decision.is_restart() || dry_run {
+                continue;
+            }
+            if let Some(why) = cycle_blocker() {
+                rp::audit(&dir, &format!("restart due, but held this round: {why}"));
+                continue;
+            }
+            let stopping = if decision == Decision::RestartBusy {
+                rp::audit(&dir, &format!(
+                    "ACTION: Cycle after a {} in-game countdown (up {}, players {seen})",
+                    rp::fmt_span(policy.busy_warn_lead), rp::fmt_span(uptime),
+                ));
+                warned_cycle("restart-policy", "Scheduled restart", policy.busy_warn_lead)
+            } else {
+                rp::audit(&dir, &format!(
+                    "ACTION: Cycle now, no warnings (up {}, empty for {})",
+                    rp::fmt_span(uptime), rp::fmt_span(empty_for),
+                ));
+                stop_for_cycle("restart-policy")
+            };
+            if !stopping {
+                rp::audit(&dir, "restart abandoned (server went down, was stopped, or the stop failed) -- re-evaluating");
+            }
+            last_state.clear();
+        }
+    });
 }
 
 impl IcraftApp {
@@ -676,6 +873,7 @@ impl IcraftApp {
         SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
         spawn_listener_probe();
         spawn_cycle_request_watcher();
+        spawn_restart_policy();
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
             .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
@@ -1043,6 +1241,13 @@ impl IcraftApp {
                 ("armed (no server)".to_string(), true)
             };
             badge(ui, "Heartbeat", hb_ok, &hb_label);
+
+            // Uptime restart policy (see spawn_restart_policy); empty until
+            // its first evaluation, a minute after launch.
+            let (rp_ok, rp_label) = POLICY_BADGE.lock().unwrap().clone();
+            if !rp_label.is_empty() {
+                badge(ui, "Restarts", rp_ok, &rp_label);
+            }
 
             badge(ui, "Forge",   self.status.forge_present, if self.status.forge_present { "installed" } else { "missing" });
             badge(ui, "EULA",    self.status.eula_present,  if self.status.eula_present  { "accepted"  } else { "missing" });

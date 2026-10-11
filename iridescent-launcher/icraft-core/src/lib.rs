@@ -14,6 +14,7 @@
 //!   - [`crash`]     — Phase 5 (crash capture + push)
 //!   - [`diagnose`]  — diagnostic dump
 //!   - [`firewall`]  — Windows firewall audit
+//!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
 //!
 //! [`config`] holds path constants, Forge version, allowlists. [`log`]
 //! provides the trans-flag-colored banner used at startup.
@@ -31,6 +32,7 @@ pub mod http;
 pub mod install;
 pub mod mods;
 pub mod packwiz;
+pub mod restart_policy;
 pub mod run;
 pub mod self_update;
 pub mod sync;
