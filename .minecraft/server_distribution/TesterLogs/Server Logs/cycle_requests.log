@@ -1,0 +1,5 @@
+﻿[2026-10-10 20:24:08] [INFO] ================ cycle request start ================
+[2026-10-10 20:24:08] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Reason=deploy  RequestedBy=SERENEBLOSSOM\silvariazemaitis
+[2026-10-10 20:24:08] [INFO] Wrote Cycle request (1791689048); waiting up to 60s for icraft-gui to answer.
+[2026-10-10 20:24:14] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
+[2026-10-10 20:24:14] [INFO] ================ cycle request end (success=True) ================

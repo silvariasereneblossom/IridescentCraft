@@ -6,3 +6,8 @@
 [2026-10-10 18:25:44] policy: mode LIVE; Cycle when empty for 2m and up 12m, or up 30m with players on (1m warning) [override file in effect]
 [2026-10-10 18:25:44] uptime 13m | players 0 | empty for 3m | CYCLE: empty and past the empty threshold
 [2026-10-10 18:25:44] ACTION: Cycle now, no warnings (up 13m, empty for 3m)
+[2026-10-10 18:26:44] policy: mode LIVE; Cycle when empty for 5m and up 4h00m, or up 12h00m with players on (1m warning)
+[2026-10-10 18:26:44] server down or restarting -- uptime clock stopped
+[2026-10-10 18:28:44] server up since 2026-10-10 18:28:24 -- uptime clock started
+[2026-10-10 18:28:44] uptime 20s | players not asked yet | empty for 0s | wait: nothing due yet
+[2026-10-10 19:28:44] uptime 1h00m | players not asked yet | empty for 0s | wait: nothing due yet
