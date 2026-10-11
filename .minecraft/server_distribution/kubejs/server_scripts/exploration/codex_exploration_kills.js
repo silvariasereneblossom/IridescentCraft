@@ -285,7 +285,10 @@ EntityEvents.death(event => {
         pdata.putBoolean(fkKey, true)
         amt = EXPLORE_BOSS_FIRST_TOKENS[namedTier]
         exploreGiveTokens(player, namedTier, amt, bossName + ' (first kill!)')
-        player.server.runCommandSilent('playsound minecraft:ui.toast.challenge_complete player ' + player.username + ' ~ ~ ~ 0.5')
+        // `execute at`: a server-source command runs at world spawn in the
+        // Overworld, so a bare `~ ~ ~` put the sound out of the player's earshot.
+        player.server.runCommandSilent('execute at ' + player.username +
+          ' run playsound minecraft:ui.toast.challenge_complete player ' + player.username + ' ~ ~ ~ 0.5')
       } else {
         amt = EXPLORE_BOSS_REPEAT_TOKENS[namedTier]
         exploreGiveTokens(player, namedTier, amt, bossName)
@@ -352,8 +355,9 @@ global.tick_codexDimEntryBonus = (event) => {
 
     exploreGiveTokens(player, entry.tier, EXPLORE_DIM_ENTRY_BONUS,
       'First arrival in a new dimension')
-    player.server.runCommandSilent(
-      'playsound minecraft:item.trident.thunder player ' + player.username + ' ~ ~ ~ 0.4')
+    // `execute at`: see the first-kill jingle above.
+    player.server.runCommandSilent('execute at ' + player.username +
+      ' run playsound minecraft:item.trident.thunder player ' + player.username + ' ~ ~ ~ 0.4')
   } catch (e) {
     console.warn('[codex_exploration_kills] dim-entry tick threw: ' + e)
   }

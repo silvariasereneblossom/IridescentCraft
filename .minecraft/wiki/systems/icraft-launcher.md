@@ -58,6 +58,7 @@ Rust workspace with three crates:
 - A backup problem never keeps the server down: it is logged, shown in red on the launcher's **Backup** badge, and the server starts anyway.
 - **Back up now** (button, or a request file for remote use) takes an extra *pinned* backup that is never removed automatically, for use before a risky change. If the server is running it waits for the next restart.
 - `icraft backup` and `icraft backup-status` do the same from the command line.
+- **A second copy is kept on another machine.** Every two hours a separate computer fetches the newest two backups from the server. Each copy is read back and compared with the checksum the launcher recorded for it, and only after that does the oldest copy there get removed. A copy that does not match is thrown away and reported, and the older ones stay. A failed disk on the server no longer takes the backups with it.
 
 **GUI extras:**
 - Status badges row: Forge present, EULA, mod count, last sync SHA, backup age

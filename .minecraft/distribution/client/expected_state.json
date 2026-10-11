@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "863c1085",
+    "generated_from":  "b0d644e4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7004,8 +7004,8 @@
                                                                         "size":  10802
                                                                     },
                   "kubejs/server_scripts/endgame/rift_mechanics.js":  {
-                                                                          "sha256":  "044518b73d7d512c556ab03ae3a68e373774bf9d725ff3c421f00ebac96267fc",
-                                                                          "size":  13338
+                                                                          "sha256":  "8179a037e80ed7a0c06f84a1cc3523e8df530967fd8dae09dde61e53e14db8d4",
+                                                                          "size":  14822
                                                                       },
                   "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js":  {
                                                                                            "sha256":  "cfbda2daba6a76eceecae8f818ce1f7aa4e0a0a272a0a40488d51dfdb707a320",
@@ -7016,8 +7016,8 @@
                                                            "size":  126
                                                        },
                   "kubejs/server_scripts/exploration/codex_exploration_kills.js":  {
-                                                                                       "sha256":  "50b5aada69c094704258eddd132bfa427514d98dc943ab45cdb2ef05e9716078",
-                                                                                       "size":  16560
+                                                                                       "sha256":  "4f4786497358f15f147569f7d1b520fc8d8e4589c832ef291bccd3a75fec7291",
+                                                                                       "size":  16860
                                                                                    },
                   "kubejs/server_scripts/fix_empty_display_name.js":  {
                                                                           "sha256":  "ca83c3afefa33a053e965fcc63c204ee02fbbed532826f19ef9660687904cc37",
@@ -7244,8 +7244,8 @@
                                                                          "size":  6630
                                                                      },
                   "kubejs/server_scripts/mutant_xp_boost.js":  {
-                                                                   "sha256":  "3d153341297f4f9224cade5b7e42b498dabfaf77a9a50dce167fee244d3bfbee",
-                                                                   "size":  2456
+                                                                   "sha256":  "2e976c2e8eb05938267186aa35b408e58994ff011fdb6ef7815b42921d8836a2",
+                                                                   "size":  2967
                                                                },
                   "kubejs/server_scripts/origins/artificial_construct_progression.js":  {
                                                                                             "sha256":  "bc44ab6bf005b35b2fe1b9e57e88f74e5364c9e949550a0be6fa4d21fd0f11fe",
