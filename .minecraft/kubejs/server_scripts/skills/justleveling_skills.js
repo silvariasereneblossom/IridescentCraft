@@ -3,1012 +3,929 @@
 // File: kubejs/server_scripts/skills/justleveling_skills.js
 //
 // Passive and triggered skills that unlock at aptitude milestones (5/10/15/20/30).
-// JustLeveling Fork stores aptitude levels in player NBT at:
-//   ForgeData.justlevelingfork.aptitude.<name>
-// Default aptitude level is 1 (not 0).
+// Aptitude levels come from global.icraft.aptitude (0_lib_aptitudes.js): the
+// fork keeps them in its capability ("justlevelingfork:aptitudes"), NOT under
+// ForgeData.justlevelingfork.* where this file used to look -- every read
+// returned 0, so nothing below ever fired before 2026-10-10.
 //
 // Design plan: design/aptitude_skill_plan.md (IridescentCraft-internal repo)
 //
 // ┌────────────────┬─────┬──────────────────────────────────────────────────────┐
-// │ Skill          │ Req │ Effect                                              │
+// │ Skill          │ Req │ Effect                                               │
 // ├────────────────┼─────┼──────────────────────────────────────────────────────┤
-// │ Might          │STR 5│ +1.5 attack damage, +5% max HP                      │
-// │ Tough Hide     │CON 5│ +2 max HP flat                                      │
-// │ Light Step     │DEX 5│ +5% movement speed                                  │
-// │ Padded Frame   │DEF 5│ +1 armor, +1 armor toughness                        │
-// │ Mana Spark     │MAG 5│ +20 max mana, +5% spell power                       │
-// │ Curious        │INT 5│ +10% XP gain                                        │
-// │ Steady Hand    │BLD 5│ +0.5 block reach                                    │
-// │ Lucky Charm    │LCK 5│ +1 luck attribute                                   │
-// │ Brutal Slash   │STR10│ +10% melee dmg + ~10% armor pen approximation [B2]  │
-// │ Conservation  │MAG10│ +15% mana regen (approximation of cost reduction) [B3]│
-// │ Arcane Effic. │INT10│ 25% XP refund near enchanting table [B3]            │
-// │ Quarryman      │BLD10│ +5% block break speed                               │
-// │ Fleet of Foot  │DEX10│ +15% movement speed                                 │
-// │ Hearty Meals   │CON10│ Regen I when food >= 18 (well-fed)                  │
-// │ Second Wind    │DEF10│ Regen III for 5s when HP < 30% (60s CD)             │
-// │ Cleave         │STR15│ +20% on first swing of combat (5s reset) [B2]       │
-// │ Steady Breath  │CON15│ Water Breathing + Saturation while underwater [B2]  │
-// │ Deadeye        │DEX15│ +10% arrow damage                                   │
-// │ Bulwark        │DEF15│ +25% knockback resistance                           │
-// │ Mana Blaze     │MAG15│ +15% spell power                                    │
-// │ Insight        │INT15│ +20% XP gain                                        │
-// │ Thrifty Hands  │BLD15│ 5% chance to refund placed blocks [B2]              │
-// │ Hemorrhage     │STR20│ Wither I for 4s on melee hit                        │
-// │ Overflow       │CON20│ Absorption I when at full HP                        │
-// │ Mystic Ward    │MAG20│ Dynamic DR: 5%+1%/20% bonus spell power, cap 20% [B2]│
-// │ Mat. Science  │INT20│ 25% XP refund near anvil [B3]                       │
-// │ Turtle Shield  │DEF20│ +4 armor toughness when not blocking                │
-// │ Rapid Fire     │DEX20│ +15% bow draw speed [B3]                            │
-// │ Resourceful    │BLD20│ 8% chance to refund crafting material [B3]          │
-// │ Treasure Sense │LCK20│ 5% chance to double-roll entity loot on kill [B2]   │
-// │ True Strength  │STR30│ Execute non-boss mobs at <= 5% HP on melee hit      │
-// │ Iron Stomach   │CON30│ Saturation effect every 5s                          │
-// │ Lion Heart     │DEF30│ DR scales with missing HP (up to 30%)               │
-// │ Excitement     │DEX30│ Speed III + Haste II for 10s on kill                │
-// │ Mana Inferno   │MAG30│ +30% spell power (capstone)                         │
-// │ Enlightenment  │INT30│ +30% XP gain                                        │
-// │ Master Craft   │BLD30│ +12% craft refund (stacks to 20% with Resourceful)[B3]│
-// │ Motherlode     │LCK30│ 0.5% chance for 5x mining drops [B2]                │
+// │ Might          │STR 5│ +1.5 attack damage, +5% max HP                       │
+// │ Tough Hide     │CON 5│ +2 max HP flat                                       │
+// │ Light Step     │DEX 5│ +5% movement speed                                   │
+// │ Padded Frame   │DEF 5│ +1 armor, +1 armor toughness                         │
+// │ Mana Spark     │MAG 5│ +20 max mana, +5% spell power                        │
+// │ Curious        │INT 5│ +10% XP gain                                         │
+// │ Steady Hand    │BLD 5│ +0.5 block reach                                     │
+// │ Lucky Charm    │LCK 5│ +1 luck attribute                                    │
+// │ Brutal Slash   │STR10│ +10% melee dmg + ~10% armor pen approximation        │
+// │ Conservation   │MAG10│ +15% mana regen (approximation of cost reduction)    │
+// │ Arcane Effic.  │INT10│ 25% of the levels spent at an enchanting table back  │
+// │ Quarryman      │BLD10│ +5% block break speed                                │
+// │ Fleet of Foot  │DEX10│ +15% movement speed                                  │
+// │ Hearty Meals   │CON10│ Regen I when food >= 18 (well-fed)                   │
+// │ Second Wind    │DEF10│ Regen III for 5s when HP < 30% (60s CD)              │
+// │ Lucky Strike   │LCK10│ 20% chance for +20% on a melee hit                   │
+// │ Cleave         │STR15│ +20% on first swing of combat (5s reset)             │
+// │ Steady Breath  │CON15│ Water Breathing pulses underwater; hunger drains 15% │
+// │                │     │ slower                                               │
+// │ Deadeye        │DEX15│ +10% arrow damage                                    │
+// │ Bulwark        │DEF15│ +25% knockback resistance                            │
+// │ Mana Blaze     │MAG15│ +15% spell power                                     │
+// │ Insight        │INT15│ +20% XP gain                                         │
+// │ Thrifty Hands  │BLD15│ 5% chance to get a placed block's item back          │
+// │ Fortune's Favor│LCK15│ +1 luck; ~30% chance to re-roll an ore's drops       │
+// │ Hemorrhage     │STR20│ Wither I for 4s on melee hit                         │
+// │ Overflow       │CON20│ Absorption I when at full HP                         │
+// │ Mystic Ward    │MAG20│ DR: 5% + 1% per 20% bonus spell power, cap 20%       │
+// │ Mat. Science   │INT20│ 25% of the levels spent at an anvil back             │
+// │ Turtle Shield  │DEF20│ +4 armor toughness when not blocking                 │
+// │ Rapid Fire     │DEX20│ +15% bow draw speed                                  │
+// │ Resourceful    │BLD20│ 8% chance to refund a crafting material              │
+// │ Treasure Sense │LCK20│ 5% chance to double-roll entity loot on kill         │
+// │ True Strength  │STR30│ Execute non-boss mobs at <= 5% HP on melee hit       │
+// │ Iron Stomach   │CON30│ Saturation I, refreshed every 5s                     │
+// │ Lion Heart     │DEF30│ DR scales with missing HP (up to 30%)                │
+// │ Excitement     │DEX30│ Speed III + Haste II for 10s on kill                 │
+// │ Mana Inferno   │MAG30│ +30% spell power (capstone)                          │
+// │ Enlightenment  │INT30│ +30% XP gain                                         │
+// │ Master Craft   │BLD30│ +12% craft refund (stacks to ~20% with Resourceful)  │
+// │ Motherlode     │LCK30│ 0.5% chance for 5x mining drops                      │
 // └────────────────┴─────┴──────────────────────────────────────────────────────┘
+//
+// 2026-10-10 FIRST-RUN PASS (none of this had ever executed; fixed while turning it on):
+//   * Attribute passives are written only when they change. KubeJS
+//     modifyAttribute = removeModifier + addTransientModifier, i.e. an attribute
+//     re-sync to the client every time; the old tick re-wrote ~35 of them per
+//     player per pass, including a zero-amount modifier for every skill the
+//     player did not have. Now: read the live modifier, touch it only if it is
+//     missing / different, REMOVE it when the player does not qualify.
+//   * Mana Spark / Conservation / Mana Blaze / Mana Inferno each had a second
+//     "_ars_" modifier that pointed at the SAME Iron's attribute (left over from
+//     when Ars had its own mana pool; the pool was unified 2026-05-15). It
+//     doubled every MAG number in this table (+40 mana, +100% spell power at
+//     MAG 30). Dropped: one modifier per attribute, the documented amount.
+//   * Mystic Ward read puffish_attributes:magic_damage, a dynamic attribute
+//     whose base value is NaN -> the DR was always "NaN > 0" = nothing. It reads
+//     irons_spellbooks:spell_power (base 1.0) now.
+//   * The attacker-side hurt handler returned on its first line
+//     (event.source.entity is not a script-visible member; KubeJS names it
+//     getActual()), and compared the damage-type id against source.type, which
+//     is vanilla's type() method. Uses source.actual / source.getType().
+//   * True Strength called target.kill() from inside the hurt event: a nested
+//     hurt, and a death whose damage source is /kill's -- no killer, so the kill
+//     handlers (Excitement, Treasure Sense, quest kill signals) never saw the
+//     player, and on a first hit there was no player loot or XP either. It now
+//     raises THIS hit to a lethal amount, so the kill is the player's. Bosses:
+//     the name hints below, the pack roster (0_lib_core.js) and #forge:bosses.
+//   * Both hurt handlers skip "secondary" damage (dealt from inside another
+//     hurt handler: splash, chain, thorns) and cancelled events, per 0_lib_core.
+//   * Excitement was also granted from the hurt handler on a guess that the hit
+//     would kill (pre-armor damage): buffs without a kill, two particle bursts
+//     with one. The death handler is the single source now.
+//   * Resourceful / Master Craftsman hung on PlayerEvents.inventoryChanged,
+//     which also fires whenever a tool or armor piece loses durability: mining
+//     with a netherite pickaxe paid out netherite scrap. Now ItemEvents.crafted.
+//   * Thrifty Hands ran `give <player> <BLOCK id>`: fails for wall torches,
+//     gives wheat for a planted seed. It hands back the block's own item, by
+//     direct call, without NBT (a placed shulker box must not copy its contents).
+//   * Steady Breath applied Saturation for 1.5s out of every 5s "to slow hunger
+//     by ~25%". Saturation restores a food point per TICK: that was a full
+//     hunger bar forever at CON 15. It is a 15% exhaustion rebate now (the
+//     design figure). Iron Stomach (CON 30) is documented as periodic Saturation
+//     and is left as written -- which does pin the hunger bar full.
+//   * Second Wind fired on a dead player waiting to respawn (0 HP < 30%).
+//   * XP refunds: see the section header further down (LinearXP).
+//   * Per-hit / per-tick `particle` and `effect` commands are direct calls.
+//   * All per-player maps are dropped on logout.
 // =============================================================================
 
-const APTITUDE_LIST = [
-  'strength', 'constitution', 'dexterity', 'defense',
-  'intelligence', 'building', 'magic', 'luck'
-]
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════════════════════
-
-/**
- * Read a single aptitude level from player NBT.
- * runCommandSilent returns the integer value for `data get entity`.
- * Falls back to 1 (default starting level).
- */
-function getAptitude(server, player, aptitudeName) {
-  try {
-    return server.runCommandSilent(
-      `data get entity ${player.username} ForgeData.justlevelingfork.aptitude.${aptitudeName}`
-    )
-  } catch (e) { return 1 }
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// APTITUDE CACHE — reads all 8 aptitudes every 100 ticks per player
-// ═══════════════════════════════════════════════════════════════════════════════
-// Key: player UUID string -> { str, con, dex, def, int, bld, mag, lck, tick }
-let aptitudeCache = {}
-
-function getCachedAptitudes(server, player) {
-  let uuid = player.uuid.toString()
-  let cached = aptitudeCache[uuid]
-  let now = server.tickCount
-  if (cached && (now - cached.tick) < 100) return cached
-  let data = {
-    str: getAptitude(server, player, 'strength'),
-    con: getAptitude(server, player, 'constitution'),
-    dex: getAptitude(server, player, 'dexterity'),
-    def: getAptitude(server, player, 'defense'),
-    int: getAptitude(server, player, 'intelligence'),
-    bld: getAptitude(server, player, 'building'),
-    mag: getAptitude(server, player, 'magic'),
-    lck: getAptitude(server, player, 'luck'),
-    tick: now
+;(function () {
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    try { console.warn('[justleveling_skills] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) {}
   }
-  aptitudeCache[uuid] = data
-  return data
-}
 
-// Per-player cooldown tracking for Second Wind
-// Key: UUID -> tick when cooldown expires
-let secondWindCooldowns = {}
-
-// Per-player tracking for Excitement kill detection
-// Key: UUID -> tick when buff was last applied
-let excitementTimers = {}
-
-// Per-player combat tracker for Cleave (STR 15)
-// Key: UUID -> tick of last hit dealt or taken; if (now - lastCombatTick) > 100,
-// the next melee swing is a "first swing" and gets +20%
-let lastCombatTick = {}
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// CACHE CLEANUP — remove stale entries on login/logout
-// ═══════════════════════════════════════════════════════════════════════════════
-PlayerEvents.loggedIn(event => {
-  let uuid = event.player.uuid.toString()
-  delete aptitudeCache[uuid]
-  delete secondWindCooldowns[uuid]
-  delete excitementTimers[uuid]
-  delete lastCombatTick[uuid]
-  // Batch 3
-  if (typeof craftRefundCooldown !== 'undefined') delete craftRefundCooldown[uuid]
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// TICK-BASED PASSIVES — check every 100 ticks (5 seconds)
-// Offset by 37 ticks to avoid stacking with other tick scripts
-// ═══════════════════════════════════════════════════════════════════════════════
-global.tick_justlevelingSkills = (event) => {
-  let server = event.server
-  let tick = server.tickCount
-
-  server.players.forEach(player => {
-    if (player.spectator || player.creative) return
-    let apt = getCachedAptitudes(server, player)
-    let uuid = player.uuid.toString()
-    let name = player.username
-
-    // ── Might (STR >= 5): +1.5 attack damage, +5% max HP ──
+  // ═══════════════════════════════════════════════════════════════════════════
+  // APTITUDES — cached resolver, no NBT / commands here
+  // ═══════════════════════════════════════════════════════════════════════════
+  var NO_APTITUDES = Object.freeze({
+    strength: 0, constitution: 0, dexterity: 0, defense: 0,
+    intelligence: 0, building: 0, magic: 0, luck: 0, total: 0
+  })
+  // -> { strength, ..., luck, total }; all zero when the levels cannot be read
+  var aptOf = function (player) {
+    var a = null
+    try { a = global.icraft.aptitude.all(player) } catch (e) { warnOnce('aptitude lookup', e) }
+    return a || NO_APTITUDES
+  }
+  var keyOf = function (player) { return String(player.uuid.toString()) }
+  // Session clock for the cooldowns below: the server tick counter (nothing here
+  // is persisted). `level.gameTime` is NOT usable -- KubeJS exposes
+  // Level.getGameTime() as getTime(), the old name reads undefined -> NaN.
+  // Can still be NaN if both accessors fail: every user treats NaN as "cannot
+  // tell" and does nothing.
+  var clockOf = function (player) {
+    var t = Number(player.server.tickCount)
+    if (t !== t) t = Number(player.level.time)
+    return t
+  }
+  // Entity type id through the getType() METHOD (KubeJS: the registry id
+  // string), not the `type` property, which a public `type` field on some mod
+  // entities shadows.
+  var typeIdOf = function (entity) {
+    try { return String(entity.getType()) } catch (e) { return '' }
+  }
+  // The shared hit-handler rule of 0_lib_core.js, without depending on it:
+  // damage dealt from inside another hurt handler (splash, chain, thorns) is
+  // "secondary" and procs nothing.
+  var isSecondaryHit = function () {
     try {
-      let mightDmg = (apt.str >= 5) ? 1.5 : 0
-      let mightHp  = (apt.str >= 5) ? 0.05 : 0
-      player.modifyAttribute('minecraft:generic.attack_damage',
-        'icraft_might_dmg', mightDmg, 'addition')
-      player.modifyAttribute('minecraft:generic.max_health',
-        'icraft_might_hp', mightHp, 'multiply_base')
-    } catch (e) {}
+      var core = global.icraft.core
+      return !!(core && core.secondary && core.secondary())
+    } catch (e) { return false }
+  }
 
-    // ── Brutal Slash (STR >= 10): +10% attack damage ──
-    // Armor-ignore half of the design ships in EntityEvents.hurt below.
-    try {
-      let bsDmg = (apt.str >= 10) ? 0.10 : 0
-      player.modifyAttribute('minecraft:generic.attack_damage',
-        'icraft_brutal_slash', bsDmg, 'multiply_base')
-    } catch (e) {}
+  // ═══════════════════════════════════════════════════════════════════════════
+  // JAVA HANDLES
+  // ═══════════════════════════════════════════════════════════════════════════
+  var ResourceLocation_jl = null
+  var ForgeRegistries_jl = null
+  var UUID_jl = null
+  var PlayerClass_jl = null
+  try {
+    ResourceLocation_jl = Java.loadClass('net.minecraft.resources.ResourceLocation')
+    ForgeRegistries_jl = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
+    UUID_jl = Java.loadClass('java.util.UUID')
+    PlayerClass_jl = Java.loadClass('net.minecraft.world.entity.player.Player')
+  } catch (e) {
+    warnOnce('loading the Java handles', e)
+  }
 
-    // ── Steady Breath (CON >= 15): +30% breath underwater + ~15% slower hunger drain ──
-    // Implementation: when underwater, apply Water Breathing for 30 ticks (1.5s)
-    // out of every 100-tick window → 30% of the window has no air drain →
-    // approximates +30% breath duration. Also apply Saturation 0 for 30 ticks
-    // to slow hunger accumulation by ~25% (matches design "15% slower" loosely).
+  // Attribute objects, resolved once each. null = not registered (mod absent).
+  var attrCache = {}
+  var attrOf = function (id) {
+    if (attrCache.hasOwnProperty(id)) return attrCache[id]
+    var attr = null
     try {
-      if (apt.con >= 15) {
-        // isUnderWater() returns true when the player's eyes are submerged
-        let underwater = false
-        try { underwater = player.isUnderWater() } catch (e) {}
-        if (underwater) {
-          // No icon, no particles — passive effect
-          player.potionEffects.add('minecraft:water_breathing', 30, 0, false, false)
+      var rl = ResourceLocation_jl.tryParse(id)
+      attr = rl ? ForgeRegistries_jl.ATTRIBUTES.getValue(rl) : null
+    } catch (e) {
+      attr = null
+    }
+    if (!attr) warnOnce('looking up attribute ' + id, 'it is not in the attribute registry -- skills on it are skipped')
+    attrCache[id] = attr || null
+    return attrCache[id]
+  }
+
+  // The UUID KubeJS gives a modifier id: new UUID(id.hashCode(), id.hashCode())
+  // (javap -c LivingEntityKJS.kjs$modifyAttribute). codePointAt, not charCodeAt:
+  // charCodeAt hands back a raw java.lang.Character in this Rhino build.
+  var kjsModifierUuid = function (id) {
+    try {
+      var h = 0
+      for (var i = 0; i < id.length; i++) h = ((h << 5) - h + id.codePointAt(i)) | 0
+      var lo = (h >>> 0).toString(16)
+      while (lo.length < 8) lo = '0' + lo
+      var half = (h < 0 ? 'ffffffff' : '00000000') + lo      // int sign-extended to a long
+      return UUID_jl.fromString(half.substring(0, 8) + '-' + half.substring(8, 12) + '-' + half.substring(12, 16) +
+        '-' + half.substring(0, 4) + '-' + half.substring(4, 16))
+    } catch (e) {
+      warnOnce('modifier uuid for ' + id, e)
+      return null
+    }
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ATTRIBUTE PASSIVES
+  // ═══════════════════════════════════════════════════════════════════════════
+  // [ modifier id, attribute, operation, aptitude, required level, amount ]
+  // One modifier id = one owner (a second writer under the same id silently
+  // replaces the first). Amounts are the design numbers; do not put a second
+  // modifier on the same attribute for the same skill (see the _ars_ note above).
+  var MOD_ROWS = [
+    // STR
+    ['icraft_might_dmg',           'minecraft:generic.attack_damage',        'addition',      'strength',      5, 1.5],
+    ['icraft_might_hp',            'minecraft:generic.max_health',           'multiply_base', 'strength',      5, 0.05],
+    ['icraft_brutal_slash',        'minecraft:generic.attack_damage',        'multiply_base', 'strength',     10, 0.10],
+    // CON
+    ['icraft_tough_hide',          'minecraft:generic.max_health',           'addition',      'constitution',  5, 2],
+    // DEX
+    ['icraft_light_step',          'minecraft:generic.movement_speed',       'multiply_base', 'dexterity',     5, 0.05],
+    ['icraft_fleet_of_foot',       'minecraft:generic.movement_speed',       'multiply_base', 'dexterity',    10, 0.15],
+    // Apothic Attributes' namespace is `attributeslib:`; arrow_damage exists, projectile_damage does not.
+    ['icraft_deadeye',             'attributeslib:arrow_damage',             'multiply_base', 'dexterity',    15, 0.10],
+    ['icraft_rapid_fire',          'attributeslib:draw_speed',               'multiply_base', 'dexterity',    20, 0.15],
+    // DEF
+    ['icraft_padded_frame_a',      'minecraft:generic.armor',                'addition',      'defense',       5, 1],
+    ['icraft_padded_frame_t',      'minecraft:generic.armor_toughness',      'addition',      'defense',       5, 1],
+    ['icraft_bulwark',             'minecraft:generic.knockback_resistance', 'addition',      'defense',      15, 0.25],
+    // MAG — the unified mana pool / spell power live on the Iron's attributes;
+    // puffish magic_damage is the PuffishSkills damage channel.
+    ['icraft_mana_spark_iss_mp',   'irons_spellbooks:max_mana',              'addition',      'magic',         5, 20],
+    ['icraft_mana_spark_dmg',      'puffish_attributes:magic_damage',        'multiply_base', 'magic',         5, 0.05],
+    ['icraft_mana_spark_iss_dmg',  'irons_spellbooks:spell_power',           'multiply_base', 'magic',         5, 0.05],
+    // Conservation of Magic: +15% mana regen stands in for "15% reduced mana cost"
+    // (there is no spell-cost attribute).
+    ['icraft_conservation_iss',    'irons_spellbooks:mana_regen',            'multiply_base', 'magic',        10, 0.15],
+    ['icraft_mana_blaze',          'puffish_attributes:magic_damage',        'multiply_base', 'magic',        15, 0.15],
+    ['icraft_mana_blaze_iss',      'irons_spellbooks:spell_power',           'multiply_base', 'magic',        15, 0.15],
+    ['icraft_mana_inferno',        'puffish_attributes:magic_damage',        'multiply_base', 'magic',        30, 0.30],
+    ['icraft_mana_inferno_iss',    'irons_spellbooks:spell_power',           'multiply_base', 'magic',        30, 0.30],
+    // INT — XP gain stacks additively: +10% / +30% / +60%
+    ['icraft_curious',             'puffish_attributes:experience',          'multiply_base', 'intelligence',  5, 0.10],
+    ['icraft_insight',             'puffish_attributes:experience',          'multiply_base', 'intelligence', 15, 0.20],
+    ['icraft_enlightenment',       'puffish_attributes:experience',          'multiply_base', 'intelligence', 30, 0.30],
+    // BLD — minecraft:player.block_break_speed is a 1.21 attribute; puffish mining_speed is the 1.20.1 one.
+    ['icraft_steady_hand',         'forge:block_reach',                      'addition',      'building',      5, 0.5],
+    ['icraft_quarryman',           'puffish_attributes:mining_speed',        'multiply_base', 'building',     10, 0.05],
+    // LCK — Fortune's Favor stacks with Lucky Charm (+2 luck at LCK 15)
+    ['icraft_lucky_charm',         'minecraft:generic.luck',                 'addition',      'luck',          5, 1],
+    ['icraft_fortunes_favor_luck', 'minecraft:generic.luck',                 'addition',      'luck',         15, 1]
+  ]
+  var makeMod = function (row) {
+    return { key: row[0], attr: row[1], op: row[2], apt: row[3], req: row[4], amount: row[5], uuid: kjsModifierUuid(row[0]) }
+  }
+  var MODS = []
+  MOD_ROWS.forEach(function (row) { MODS.push(makeMod(row)) })
+  // Turtle Shield (DEF >= 20): +4 armor toughness while NOT blocking
+  var TURTLE_SHIELD = makeMod(['icraft_turtle_shield', 'minecraft:generic.armor_toughness', 'addition', 'defense', 20, 4])
+
+  // false once the look-before-write path has failed: plain writes from then on
+  var checkedWrites = true
+
+  // Put modifier `m` at `amount` on the player (0 = take it off). Touches the
+  // attribute only when the live modifier is not already in that state.
+  var setModifier = function (player, m, amount) {
+    var attr = attrOf(m.attr)
+    if (!attr) return
+    if (checkedWrites && m.uuid) {
+      try {
+        var inst = player.getAttribute(attr)
+        if (!inst) return                               // this entity does not carry the attribute
+        var cur = inst.getModifier(m.uuid)
+        if (!(amount > 0)) {
+          if (cur) inst.removeModifier(m.uuid)
+          return
         }
-        // Hunger-drain mitigation runs always while CON >= 15 (passive)
-        player.potionEffects.add('minecraft:saturation', 30, 0, false, false)
+        if (cur && Number(cur.getAmount()) === amount) return
+        player.modifyAttribute(attr, m.key, amount, m.op)
+        return
+      } catch (e) {
+        checkedWrites = false
+        warnOnce('reading live attribute modifiers', e + ' -- falling back to unconditional writes')
       }
-    } catch (e) {}
+    }
+    if (amount > 0) player.modifyAttribute(attr, m.key, amount, m.op)
+    else player.removeAttribute(attr, m.key)
+  }
 
-    // ── Tough Hide (CON >= 5): +2 max HP flat ──
-    try {
-      let toughHp = (apt.con >= 5) ? 2 : 0
-      player.modifyAttribute('minecraft:generic.max_health',
-        'icraft_tough_hide', toughHp, 'addition')
-    } catch (e) {}
+  // ═══════════════════════════════════════════════════════════════════════════
+  // PER-PLAYER STATE (session memory; every map is dropped on logout)
+  // ═══════════════════════════════════════════════════════════════════════════
+  var secondWindReady = {}     // uuid -> server tick the 60s cooldown ends
+  var lastCombat = {}          // uuid -> server tick of the last hit dealt or taken (Cleave)
+  var craftRefundAt = {}       // uuid -> server tick of the last craft-refund roll
+  var hungerBudget = {}        // uuid -> 4 * (food + saturation) at the last pass (Steady Breath)
 
-    // ── Light Step (DEX >= 5): +5% movement speed ──
-    // Note: jump-fall damage immunity will be handled in EntityEvents.hurt (Batch 2)
+  // Cosmetic only. Direct particle send (no command parse); switched off for
+  // the session the first time it fails.
+  var particlesOk = true
+  var puff = function (level, particle, x, y, z, spread, count, speed) {
+    if (!particlesOk) return
     try {
-      let lsSpeed = (apt.dex >= 5) ? 0.05 : 0
-      player.modifyAttribute('minecraft:generic.movement_speed',
-        'icraft_light_step', lsSpeed, 'multiply_base')
-    } catch (e) {}
+      level.spawnParticles(particle, true, x, y, z, spread, spread, spread, count, speed)
+    } catch (e) {
+      particlesOk = false
+      warnOnce('particles', e)
+    }
+  }
 
-    // ── Padded Frame (DEF >= 5): +1 armor, +1 armor toughness ──
-    try {
-      let padArmor = (apt.def >= 5) ? 1 : 0
-      let padTough = (apt.def >= 5) ? 1 : 0
-      player.modifyAttribute('minecraft:generic.armor',
-        'icraft_padded_frame_a', padArmor, 'addition')
-      player.modifyAttribute('minecraft:generic.armor_toughness',
-        'icraft_padded_frame_t', padTough, 'addition')
-    } catch (e) {}
+  // ── Steady Breath, hunger half: 15% slower drain ──
+  // Budget = everything the hunger bar holds, in exhaustion units (4 per point
+  // of food or saturation). Whatever drained since the last pass, 15% of it is
+  // handed back as negative exhaustion, so the next points take longer to go.
+  var HUNGER_REBATE = 0.15
+  var hungerRebate = function (player, key) {
+    var budget = 4 * (Number(player.foodLevel) + Number(player.saturation))
+    if (!(budget >= 0) || budget === Infinity) return
+    var prev = hungerBudget.hasOwnProperty(key) ? hungerBudget[key] : null
+    hungerBudget[key] = budget
+    if (prev === null || budget >= prev) return         // first pass, ate, or nothing drained
+    var rebate = (prev - budget) * HUNGER_REBATE
+    if (rebate > 0 && rebate <= 40) player.addExhaustion(-rebate)
+  }
 
-    // ── Mana Spark (MAG >= 5): +20 max mana, +5% spell power ──
-    // Apply to both ISS and Ars max-mana attributes; spell power across all 3
-    // damage channels (puffish/ISS/Ars) per existing convention.
-    try {
-      let mpFlat = (apt.mag >= 5) ? 20 : 0
-      let mpDmg  = (apt.mag >= 5) ? 0.05 : 0
-      player.modifyAttribute('irons_spellbooks:max_mana',
-        'icraft_mana_spark_iss_mp', mpFlat, 'addition')
-      player.modifyAttribute('irons_spellbooks:max_mana',
-        'icraft_mana_spark_ars_mp', mpFlat, 'addition')
-      player.modifyAttribute('puffish_attributes:magic_damage',
-        'icraft_mana_spark_dmg', mpDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_spark_iss_dmg', mpDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_spark_ars_dmg', mpDmg, 'multiply_base')
-    } catch (e) {}
+  // ═══════════════════════════════════════════════════════════════════════════
+  // TICK-BASED PASSIVES — every 100 ticks (5 seconds), offset 37
+  // ═══════════════════════════════════════════════════════════════════════════
+  var tickPlayer = function (player, apt, key, now) {
+    var i
 
-    // ── Curious (INT >= 5): +10% XP gain ──
+    // ── attribute passives (written only on change) ──
     try {
-      let curiousXp = (apt.int >= 5) ? 0.10 : 0
-      player.modifyAttribute('puffish_attributes:experience',
-        'icraft_curious', curiousXp, 'multiply_base')
-    } catch (e) {}
-
-    // ── Steady Hand (BLD >= 5): +0.5 block reach ──
-    try {
-      let reach = (apt.bld >= 5) ? 0.5 : 0
-      player.modifyAttribute('forge:block_reach',
-        'icraft_steady_hand', reach, 'addition')
-    } catch (e) {}
-
-    // ── Lucky Charm (LCK >= 5): +1 luck ──
-    try {
-      let luck = (apt.lck >= 5) ? 1 : 0
-      player.modifyAttribute('minecraft:generic.luck',
-        'icraft_lucky_charm', luck, 'addition')
-    } catch (e) {}
-
-    // ── Fortune's Favor (LCK >= 15): +1 luck (stacks with Lucky Charm) ──
-    // The ore-mining bonus half ships in the BlockEvents.broken handler below.
-    try {
-      let ffLuck = (apt.lck >= 15) ? 1 : 0
-      player.modifyAttribute('minecraft:generic.luck',
-        'icraft_fortunes_favor_luck', ffLuck, 'addition')
-    } catch (e) {}
-
-    // ── Quarryman (BLD >= 10): +5% block break speed ──
-    // 2026-05-10: was minecraft:player.block_break_speed (1.21 attribute, doesn't exist
-    // on 1.20.1 — silent NPE swallowed by catch but spammed debug.log every tick).
-    // PuffishSkills' puffish_attributes:mining_speed is the correct ID and is
-    // already used by the gathering skill category JSONs.
-    try {
-      let qmSpeed = (apt.bld >= 10) ? 0.05 : 0
-      player.modifyAttribute('puffish_attributes:mining_speed',
-        'icraft_quarryman', qmSpeed, 'multiply_base')
-    } catch (e) {}
-
-    // ── Deadeye (DEX >= 15): +10% projectile damage ──
-    // Apothic Attributes' ID namespace is `attributeslib:` (modId =
-    // attributeslib; display name "Apothic Attributes"). Confirmed jar
-    // registry: arrow_damage exists, projectile_damage does not.
-    try {
-      let ddDmg = (apt.dex >= 15) ? 0.10 : 0
-      player.modifyAttribute('attributeslib:arrow_damage',
-        'icraft_deadeye', ddDmg, 'multiply_base')
-    } catch (e) {}
-
-    // ── Bulwark (DEF >= 15): +25% knockback resistance ──
-    try {
-      let bwKb = (apt.def >= 15) ? 0.25 : 0
-      player.modifyAttribute('minecraft:generic.knockback_resistance',
-        'icraft_bulwark', bwKb, 'addition')
-    } catch (e) {}
-
-    // ── Conservation of Magic (MAG >= 10): +15% mana regeneration ──
-    // Approximation of "15% reduced mana cost". Standard Forge attributes
-    // don't expose a "spell cost" axis; ISS/Ars compute cost internally.
-    // Boosting regen is the cleanest hands-off approximation that matches
-    // the design intent (more usable mana over a session).
-    try {
-      let cmRegen = (apt.mag >= 10) ? 0.15 : 0
-      player.modifyAttribute('irons_spellbooks:mana_regen',
-        'icraft_conservation_iss', cmRegen, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:mana_regen',
-        'icraft_conservation_ars', cmRegen, 'multiply_base')
-    } catch (e) {}
-
-    // ── Rapid Fire (DEX >= 20): +15% bow draw speed ──
-    // Apothic Attributes provides the draw_speed attribute (mod ID is
-    // `attributeslib`, not `apothic_attributes`).
-    try {
-      let rfDraw = (apt.dex >= 20) ? 0.15 : 0
-      player.modifyAttribute('attributeslib:draw_speed',
-        'icraft_rapid_fire', rfDraw, 'multiply_base')
-    } catch (e) {}
-
-    // ── Mana Blaze (MAG >= 15): +15% spell power ──
-    try {
-      let mbDmg = (apt.mag >= 15) ? 0.15 : 0
-      player.modifyAttribute('puffish_attributes:magic_damage',
-        'icraft_mana_blaze', mbDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_blaze_iss', mbDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_blaze_ars', mbDmg, 'multiply_base')
-    } catch (e) {}
-
-    // ── Insight (INT >= 15): +20% XP gain (stacks additively with Curious/Enlightenment) ──
-    try {
-      let insightXp = (apt.int >= 15) ? 0.20 : 0
-      player.modifyAttribute('puffish_attributes:experience',
-        'icraft_insight', insightXp, 'multiply_base')
-    } catch (e) {}
-
-    // ── Mana Inferno (MAG >= 30): +30% spell power capstone ──
-    try {
-      let miDmg = (apt.mag >= 30) ? 0.30 : 0
-      player.modifyAttribute('puffish_attributes:magic_damage',
-        'icraft_mana_inferno', miDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_inferno_iss', miDmg, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_mana_inferno_ars', miDmg, 'multiply_base')
-    } catch (e) {}
-
-    // ── Fleet of Foot (DEX >= 10): +15% movement speed ──
-    try {
-      if (apt.dex >= 10) {
-        player.modifyAttribute('minecraft:generic.movement_speed',
-          'icraft_fleet_of_foot', 0.15, 'multiply_base')
-      } else {
-        // Remove modifier if player doesn't qualify (respec scenario)
-        player.modifyAttribute('minecraft:generic.movement_speed',
-          'icraft_fleet_of_foot', 0, 'multiply_base')
+      for (i = 0; i < MODS.length; i++) {
+        setModifier(player, MODS[i], apt[MODS[i].apt] >= MODS[i].req ? MODS[i].amount : 0)
       }
-    } catch (e) {}
+      setModifier(player, TURTLE_SHIELD,
+        (apt.defense >= TURTLE_SHIELD.req && !player.isBlocking()) ? TURTLE_SHIELD.amount : 0)
+    } catch (e) { warnOnce('attribute passives', e) }
+
+    // ── Steady Breath (CON >= 15) ──
+    // Underwater: Water Breathing for 30 of every 100 ticks (no icon, no
+    // particles) = roughly +40% breath. Always: 15% slower hunger drain.
+    try {
+      if (apt.constitution >= 15) {
+        if (player.isUnderWater()) player.potionEffects.add('minecraft:water_breathing', 30, 0, false, false)
+        hungerRebate(player, key)
+      } else if (hungerBudget.hasOwnProperty(key)) {
+        delete hungerBudget[key]
+      }
+    } catch (e) { warnOnce('Steady Breath', e) }
 
     // ── Hearty Meals (CON >= 10): Regen I when food >= 18 ──
     try {
-      if (apt.con >= 10 && player.foodData.foodLevel >= 18) {
+      if (apt.constitution >= 10 && Number(player.foodLevel) >= 18) {
         player.potionEffects.add('minecraft:regeneration', 120, 0, false, false)
       }
-    } catch (e) {}
+    } catch (e) { warnOnce('Hearty Meals', e) }
 
-    // ── Second Wind (DEF >= 10): Regen III when HP < 30%, 60s cooldown ──
+    // ── Second Wind (DEF >= 10): Regen III for 5s when HP < 30%, 60s cooldown ──
     try {
-      if (apt.def >= 10) {
-        let hpPercent = player.health / player.maxHealth
-        let cooldownExpires = secondWindCooldowns[uuid] || 0
-        if (hpPercent < 0.30 && tick >= cooldownExpires) {
-          // Grant Regeneration III for 5 seconds (100 ticks)
+      if (apt.defense >= 10) {
+        var ready = secondWindReady.hasOwnProperty(key) ? secondWindReady[key] : 0
+        var maxHp = Number(player.maxHealth)
+        // `now < ready - 1200`: the clock stepped back; do not stay locked out
+        if (maxHp > 0 && (Number(player.health) / maxHp) < 0.30 && (now >= ready || now < ready - 1200)) {
           player.potionEffects.add('minecraft:regeneration', 100, 2, false, true)
-          // Set 60-second cooldown (1200 ticks)
-          secondWindCooldowns[uuid] = tick + 1200
-          // Notify player
-          player.tell('\u00a77[\u00a7cSecond Wind\u00a77] \u00a7fRegeneration III activated!')
+          secondWindReady[key] = now + 1200
+          player.tell('§7[§cSecond Wind§7] §fRegeneration III activated!')
         }
       }
-    } catch (e) {}
+    } catch (e) { warnOnce('Second Wind', e) }
 
-    // ── Turtle Shield (DEF >= 20): +4 armor toughness when not blocking ──
+    // ── Overflow (CON >= 20): Absorption I (4 HP) while at full HP ──
     try {
-      if (apt.def >= 20) {
-        if (!player.isBlocking()) {
-          player.modifyAttribute('minecraft:generic.armor_toughness',
-            'icraft_turtle_shield', 4, 'addition')
-        } else {
-          player.modifyAttribute('minecraft:generic.armor_toughness',
-            'icraft_turtle_shield', 0, 'addition')
-        }
-      } else {
-        player.modifyAttribute('minecraft:generic.armor_toughness',
-          'icraft_turtle_shield', 0, 'addition')
-      }
-    } catch (e) {}
-
-    // ── MAG 20 (reserved): replaced by dynamic Mystic Ward in Batch 2 ──
-    // Old Spell Attune (+25% spell power) is superseded by the
-    // Mana Spark/Blaze/Inferno line (5+15+30 = 50% at full investment).
-    // Strip any leftover modifier from previous installs.
-    try {
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_spell_attunement', 0, 'multiply_base')
-      player.modifyAttribute('irons_spellbooks:spell_power',
-        'icraft_spell_attunement', 0, 'multiply_base')
-    } catch (e) {}
-
-    // ── Overflow (CON >= 20): Absorption I when at full HP ──
-    try {
-      if (apt.con >= 20 && player.health >= player.maxHealth) {
-        // Absorption I gives 4 HP (2 hearts) of overshield, refreshed every 5s
+      if (apt.constitution >= 20 && Number(player.health) >= Number(player.maxHealth)) {
         player.potionEffects.add('minecraft:absorption', 120, 0, false, false)
       }
-    } catch (e) {}
+    } catch (e) { warnOnce('Overflow', e) }
 
-    // ── Iron Stomach (CON >= 30): Saturation to slow hunger drain ──
+    // ── Iron Stomach (CON >= 30): Saturation I for 6s, every 5s ──
+    // (was `effect give <name> minecraft:saturation 6 0 true`: same effect, no command)
     try {
-      if (apt.con >= 30) {
-        server.runCommandSilent(
-          `effect give ${name} minecraft:saturation 6 0 true`
-        )
+      if (apt.constitution >= 30) {
+        player.potionEffects.add('minecraft:saturation', 120, 0, false, false)
       }
-    } catch (e) {}
+    } catch (e) { warnOnce('Iron Stomach', e) }
+  }
 
-    // ── Enlightenment (INT >= 30): +30% XP gain ──
-    // Stacks additively with Curious (+10%) and Insight (+20%) → +60% at full INT
-    try {
-      let entXp = (apt.int >= 30) ? 0.30 : 0
-      player.modifyAttribute('puffish_attributes:experience',
-        'icraft_enlightenment', entXp, 'multiply_base')
-    } catch (e) {}
-
-    // ── MAG 30 capstone is now Mana Inferno (handled above) ──
-    // Old flat 15% Mystic Ward DR is removed; the dynamic Mystic Ward
-    // formula moves down to MAG 20 and ships in Batch 2.
-  })
-}
-global.registerServerTick('tick_justlevelingSkills', 100, 37)
+  var onSkillsTick = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        if (player.spectator || player.creative) return
+        if (!(Number(player.health) > 0)) return          // dead, waiting to respawn
+        tickPlayer(player, aptOf(player), keyOf(player), clockOf(player))
+      } catch (e) { warnOnce('skills tick', e) }
+    })
+  }
+  global.registerServerTick('tick_justlevelingSkills', 100, 37, onSkillsTick)
 
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// XP REFUND TRACKER — Arcane Efficiency (INT 10), Materials Science (INT 20)
-// ═══════════════════════════════════════════════════════════════════════════════
-// Polls player.xp every 5 ticks and detects negative diffs (XP spent).
-// If the player is within 4 blocks of an enchanting table, refund 25%
-// (Arcane Efficiency, INT >= 10). If within 4 blocks of an anvil, also
-// refund 25% (Materials Science, INT >= 20). Both can stack on a single
-// spend if both blocks happen to be in range (rare in practice).
-//
-// Pattern mirrors the existing `tick_xpMultiplier` in attribute_sync.js
-// — KubeJS 6.x doesn't expose PlayerEvents.xpChange, so polling is the
-// only path. Uses a separate persistentData key (`icraft_apt_xp_last`)
-// to avoid coupling with the existing xp-mult tracker.
-//
-// Caveat: any XP spend within proximity is refunded — if the player
-// stands by an enchant table while another script consumes XP, that's
-// also refunded. Acceptable false-positive rate; the player rarely sits
-// next to enchant tables outside the act of enchanting.
-
-let isNearBlock = function(player, ids, radius) {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // XP REFUND — Arcane Efficiency (INT 10), Materials Science (INT 20)
+  // ═══════════════════════════════════════════════════════════════════════════
+  // "Enchanting / anvil work costs 25% less XP": when the player's level DROPS
+  // while an enchanting-table menu (INT >= 10) or an anvil menu (INT >= 20) is
+  // open, a quarter of the levels lost is handed back.
+  //
+  // Why levels, and why the open menu:
+  //   * The old tick polled player.xp (vanilla totalExperience). Under LinearXP
+  //     that field is a counter of raw XP earned, and the real wallet is
+  //     experienceLevel + a capability. No station moves totalExperience here:
+  //     Tax Free Levels turns the anvil / enchanting / Apotheosis level costs
+  //     into a direct subtraction from the vanilla progress bar, vanilla rolls
+  //     a negative bar over into lost levels, and LinearXP rewrites the bar
+  //     from its capability within 10 ticks. What is left of any spend is the
+  //     whole levels it knocked off -- so a level drop IS the spend, and a
+  //     refund measured this way can never exceed what was really paid.
+  //     Details and the wallet maths: 0_lib_aptitudes.js.
+  //   * The old test was "an enchanting table / anvil within 4 blocks". Measured
+  //     in levels that would also hand back 25-50% of every aptitude level-up
+  //     (hundreds of levels each) bought while standing next to one. The open
+  //     menu is the station actually being used: EnchantmentMenu covers vanilla,
+  //     Apotheosis and Easy Magic; AnvilMenu covers vanilla and Easy Anvils;
+  //     Quark's matrix enchanting is matched by its menu type id.
+  //   * Drops caused by this pack's own XP calls (mastery tax) go through the
+  //     library and are not seen as spends. Death / respawn / login re-sync the
+  //     baseline there too.
+  // The refund is in levels (fractions included), so the two skills no longer
+  // stack on one purchase -- one menu, one skill.
+  var EnchantMenuClass = null
+  var AnvilMenuClass = null
   try {
-    let pos = player.blockPosition()
-    let level = player.level
-    for (let dx = -radius; dx <= radius; dx++) {
-      for (let dy = -2; dy <= 2; dy++) {
-        for (let dz = -radius; dz <= radius; dz++) {
-          let block = level.getBlock(pos.x + dx, pos.y + dy, pos.z + dz)
-          let bid = block ? String(block.id || '') : ''
-          if (bid && ids.indexOf(bid) >= 0) return true
-        }
-      }
-    }
-  } catch (e) {}
-  return false
-}
-
-// 2026-10-10: this tick NEVER ran before today -- it was registered with
-// offset 21 on a 5-tick interval, and `tick % 5` is never 21. Changes made
-// while reviving it:
-//   * offset 21 -> 3 (valid; shares no slot with the other 5-tick functions).
-//   * Death is not a purchase: the respawned player entity starts at
-//     totalExperience 0, which the old code would have read as "spent
-//     everything" and refunded 25% of it for free whenever the respawn point
-//     is near an enchanting table / anvil. A freshly created player entity
-//     (login, respawn) and a dead one now only re-sync the baseline.
-//   * Aptitudes are looked up only when XP actually dropped, and the baseline
-//     is written only when it changed (was an NBT write per player per run).
-// Known limits of polling player.xp (= vanilla totalExperience): spends paid in
-// LEVELS (vanilla anvil / vanilla enchanting table: giveExperienceLevels) do not
-// move totalExperience at all, and after a death it restarts from 0 while the
-// LinearXP capability keeps the real XP -- a spend larger than the regrown
-// counter is clamped at 0 and goes unseen. Apotheosis enchanting (charged in
-// points) is the case that is reliably detected.
-global.tick_aptitudeXpRefund = function(event) {
-  var server = event.server
-  server.players.forEach(function(player) {
+    EnchantMenuClass = Java.loadClass('net.minecraft.world.inventory.EnchantmentMenu')
+    AnvilMenuClass = Java.loadClass('net.minecraft.world.inventory.AnvilMenu')
+  } catch (e) {
+    warnOnce('loading the menu classes', e + ' -- XP refunds fall back to menu type ids')
+  }
+  // Second way to recognise a station: the open menu's registered type id.
+  // Covers Quark's matrix enchanting (not an EnchantmentMenu) without loading a
+  // Quark class here -- Java.loadClass initialises the class, and a linkage
+  // Error from another mod's class cannot be caught in a script.
+  var STATION_BY_MENU_ID = {
+    'minecraft:enchantment': 'enchant',
+    'apotheosis:enchanting_table': 'enchant',
+    'easymagic:enchanting': 'enchant',
+    'quark:matrix_enchanting': 'enchant',
+    'minecraft:anvil': 'anvil',
+    'easyanvils:repair': 'anvil'
+  }
+  var menuTypeIdOf = function (menu) {
     try {
-      if (player.creative || player.spectator) return
-      var pd = player.persistentData
-      var curr = player.xp
-      if (!pd.contains('icraft_apt_xp_last')) {
-        pd.putInt('icraft_apt_xp_last', curr)
-        return
-      }
-      var last = pd.getInt('icraft_apt_xp_last')
-      if (curr === last) return
-      // New entity (login / respawn: age restarts at 0) or dead: re-sync only.
-      if (curr > last || player.age < 40 || !player.isAlive()) {
-        pd.putInt('icraft_apt_xp_last', curr)
-        return
-      }
-      var spent = last - curr
-      var apt = getCachedAptitudes(server, player)
-      var refundMult = 0
-      var nearAnvil = false
-      // Arcane Efficiency (INT >= 10): refund 25% near enchant table
-      if (apt.int >= 10) {
-        if (isNearBlock(player, ['minecraft:enchanting_table'], 4)) {
-          refundMult += 0.25
+      // getType() throws for a menu without a type (the player's own inventory)
+      var typeKey = ForgeRegistries_jl.MENU_TYPES.getKey(menu.getType())
+      return typeKey ? String(typeKey) : ''
+    } catch (e) { return '' }
+  }
+
+  // -> 'enchant' | 'anvil' | null
+  var stationOf = function (player) {
+    var menu = null
+    try { menu = player.openInventory } catch (e) { return null }
+    if (!menu) return null
+    if (EnchantMenuClass && menu instanceof EnchantMenuClass) return 'enchant'
+    if (AnvilMenuClass && menu instanceof AnvilMenuClass) return 'anvil'
+    var id = menuTypeIdOf(menu)
+    return STATION_BY_MENU_ID.hasOwnProperty(id) ? STATION_BY_MENU_ID[id] : null
+  }
+
+  var REFUND_SHARE = 0.25
+  var onXpRefundTick = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        // Poll everyone, always: this is what keeps the baseline current.
+        var spent = global.icraft.aptitude.xp.pollSpend(player)
+        if (!(spent > 0)) return
+        if (player.creative || player.spectator) return
+        if (!(Number(player.health) > 0)) return
+        var station = stationOf(player)
+        if (!station) return
+        var apt = aptOf(player)
+        var label = null
+        if (station === 'enchant' && apt.intelligence >= 10) label = 'Arcane Efficiency'
+        if (station === 'anvil' && apt.intelligence >= 20) label = 'Materials Science'
+        if (!label) return
+        var back = global.icraft.aptitude.xp.give(player, spent * REFUND_SHARE)
+        if (back > 0) {
+          player.tell('§b[' + label + '] §f' + back.toFixed(2) + ' of ' + spent +
+            (spent === 1 ? ' level' : ' levels') + ' refunded')
         }
-      }
-      // Materials Science (INT >= 20): refund 25% near anvil
-      if (apt.int >= 20) {
-        nearAnvil = isNearBlock(player, [
-          'minecraft:anvil',
-          'minecraft:chipped_anvil',
-          'minecraft:damaged_anvil'
-        ], 4)
-        if (nearAnvil) refundMult += 0.25
-      }
-      if (refundMult > 0) {
-        var refund = Math.floor(spent * refundMult)
-        if (refund > 0) {
-          try { player.addXP(refund) } catch (e2) {}
-          try {
-            var labelTag = (refundMult >= 0.50)
-              ? '§b[Arcane Efficiency + Materials Science]'
-              : nearAnvil
-                ? '§b[Materials Science]'
-                : '§b[Arcane Efficiency]'
-            player.tell(labelTag + ' §fXP refunded: ' + refund)
-          } catch (e3) {}
-        }
-      }
-      // Update the baseline after any work (re-read: addXP moved it)
-      pd.putInt('icraft_apt_xp_last', player.xp)
-    } catch (e) {}
-  })
-}
-global.registerServerTick('tick_aptitudeXpRefund', 5, 3)
+      } catch (e) { warnOnce('XP refund tick', e) }
+    })
+  }
+  global.registerServerTick('tick_aptitudeXpRefund', 5, 3, onXpRefundTick)
 
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// CRAFT REFUND — Resourceful (BLD 20), Master Craftsman (BLD 30)
-// ═══════════════════════════════════════════════════════════════════════════════
-// Hooks PlayerEvents.inventoryChanged on any "crafted-looking" item pickup.
-// Per-player 40-tick (2s) cooldown to avoid spamming on inventory churn
-// during a multi-craft session. Two independent rolls when BLD >= 30 so
-// Master Craftsman's bonus is additive on top of Resourceful (max 20%).
-//
-// Uses the same crafted-pattern whitelist as skill_effects.js's
-// material_save handler (different system — that one keys off Pufferfish
-// scores; this one keys off JLFork aptitudes). Rolls a contextually
-// matching ingredient based on the crafted item's id.
-//
-// Caveat: detection is heuristic, not a real crafting event. Items that
-// look like crafted goods but came from loot/trade also trigger rolls
-// (acceptable noise — the refund quantities are small).
-
-let craftRefundCooldown = {}  // uuid -> tick
-
-let craftedPatterns = [
-  '_sword', '_pickaxe', '_axe', '_shovel', '_hoe',
-  '_helmet', '_chestplate', '_leggings', '_boots',
-  '_ingot', '_nugget', 'planks', 'stick', 'torch',
-  'rail', 'piston', 'hopper', 'dropper', 'dispenser',
-  'comparator', 'repeater', 'observer', 'ladder', 'fence',
-  'door', 'trapdoor', 'button', 'pressure_plate', 'lever',
-  'bucket', 'shears', 'compass', 'clock', 'spyglass',
-  'shield', 'bow', 'crossbow', 'fishing_rod',
-  'minecart', 'boat', 'lead', 'name_tag'
-]
-
-let pickRefundMaterial = function(itemId) {
-  let id = String(itemId || '')
-  if (id.indexOf('iron') >= 0 || id.indexOf('chain') >= 0)
-    return ['minecraft:iron_ingot', 'minecraft:iron_nugget']
-  if (id.indexOf('gold') >= 0)
-    return ['minecraft:gold_ingot', 'minecraft:gold_nugget']
-  if (id.indexOf('diamond') >= 0) return ['minecraft:diamond']
-  if (id.indexOf('netherite') >= 0) return ['minecraft:netherite_scrap']
-  if (id.indexOf('copper') >= 0) return ['minecraft:copper_ingot']
-  if (id.indexOf('wood') >= 0 || id.indexOf('planks') >= 0 ||
-      id.indexOf('oak') >= 0 || id.indexOf('birch') >= 0 ||
-      id.indexOf('spruce') >= 0 || id.indexOf('jungle') >= 0 ||
-      id.indexOf('acacia') >= 0 || id.indexOf('mangrove') >= 0 ||
-      id.indexOf('cherry') >= 0 || id.indexOf('bamboo') >= 0)
-    return ['minecraft:stick', 'minecraft:oak_planks']
-  if (id.indexOf('stone') >= 0 || id.indexOf('cobble') >= 0)
-    return ['minecraft:cobblestone']
-  if (id.indexOf('redstone') >= 0 || id.indexOf('comparator') >= 0 ||
-      id.indexOf('repeater') >= 0 || id.indexOf('piston') >= 0)
-    return ['minecraft:redstone']
-  return [
-    'minecraft:iron_nugget', 'minecraft:string', 'minecraft:flint',
-    'minecraft:gold_nugget', 'minecraft:redstone', 'minecraft:stick'
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CRAFT REFUND — Resourceful (BLD 20), Master Craftsman (BLD 30)
+  // ═══════════════════════════════════════════════════════════════════════════
+  // On a real craft (ItemEvents.crafted = Forge ItemCraftedEvent), for crafted
+  // items on the list below: 8% to hand back one material, plus an independent
+  // 12% at BLD 30 (~19% combined, at most 2 items per craft). One roll per
+  // player per 2 seconds, so a shift-click batch is one roll.
+  // The refunded material is guessed from the crafted item's id (the list and
+  // the picker are unchanged from the original).
+  var craftedPatterns = [
+    '_sword', '_pickaxe', '_axe', '_shovel', '_hoe',
+    '_helmet', '_chestplate', '_leggings', '_boots',
+    '_ingot', '_nugget', 'planks', 'stick', 'torch',
+    'rail', 'piston', 'hopper', 'dropper', 'dispenser',
+    'comparator', 'repeater', 'observer', 'ladder', 'fence',
+    'door', 'trapdoor', 'button', 'pressure_plate', 'lever',
+    'bucket', 'shears', 'compass', 'clock', 'spyglass',
+    'shield', 'bow', 'crossbow', 'fishing_rod',
+    'minecart', 'boat', 'lead', 'name_tag'
   ]
-}
 
-PlayerEvents.inventoryChanged(event => {
+  var pickRefundMaterial = function (itemId) {
+    var id = String(itemId || '')
+    if (id.indexOf('iron') >= 0 || id.indexOf('chain') >= 0)
+      return ['minecraft:iron_ingot', 'minecraft:iron_nugget']
+    if (id.indexOf('gold') >= 0)
+      return ['minecraft:gold_ingot', 'minecraft:gold_nugget']
+    if (id.indexOf('diamond') >= 0) return ['minecraft:diamond']
+    if (id.indexOf('netherite') >= 0) return ['minecraft:netherite_scrap']
+    if (id.indexOf('copper') >= 0) return ['minecraft:copper_ingot']
+    if (id.indexOf('wood') >= 0 || id.indexOf('planks') >= 0 ||
+        id.indexOf('oak') >= 0 || id.indexOf('birch') >= 0 ||
+        id.indexOf('spruce') >= 0 || id.indexOf('jungle') >= 0 ||
+        id.indexOf('acacia') >= 0 || id.indexOf('mangrove') >= 0 ||
+        id.indexOf('cherry') >= 0 || id.indexOf('bamboo') >= 0)
+      return ['minecraft:stick', 'minecraft:oak_planks']
+    if (id.indexOf('stone') >= 0 || id.indexOf('cobble') >= 0)
+      return ['minecraft:cobblestone']
+    if (id.indexOf('redstone') >= 0 || id.indexOf('comparator') >= 0 ||
+        id.indexOf('repeater') >= 0 || id.indexOf('piston') >= 0)
+      return ['minecraft:redstone']
+    return [
+      'minecraft:iron_nugget', 'minecraft:string', 'minecraft:flint',
+      'minecraft:gold_nugget', 'minecraft:redstone', 'minecraft:stick'
+    ]
+  }
+
+  var giveRefundMaterial = function (player, itemId) {
+    var pool = pickRefundMaterial(itemId)
+    var pick = pool[Math.floor(Math.random() * pool.length)]
+    player.give(Item.of(pick))
+  }
+
+  ItemEvents.crafted(function (event) {
+    try {
+      var player = event.player
+      if (!player || player.creative || player.spectator) return
+      var item = event.item
+      if (!item || item.isEmpty()) return
+      var itemId = String(item.id || '')
+      if (!itemId) return
+      var isCrafted = false
+      for (var i = 0; i < craftedPatterns.length; i++) {
+        if (itemId.indexOf(craftedPatterns[i]) >= 0) { isCrafted = true; break }
+      }
+      if (!isCrafted) return
+
+      var apt = aptOf(player)
+      if (apt.building < 20) return
+
+      var key = keyOf(player)
+      var now = clockOf(player)
+      if (now !== now) return                              // no clock: the cooldown cannot be enforced
+      if (craftRefundAt.hasOwnProperty(key)) {
+        var since = now - craftRefundAt[key]
+        if (since >= 0 && since < 40) return               // 2s cooldown
+      }
+      craftRefundAt[key] = now
+
+      var triggered = false
+      // Resourceful (BLD >= 20): 8% roll
+      if (Math.random() < 0.08) {
+        giveRefundMaterial(player, itemId)
+        triggered = true
+      }
+      // Master Craftsman (BLD >= 30): an independent 12% roll on top
+      if (apt.building >= 30 && Math.random() < 0.12) {
+        giveRefundMaterial(player, itemId)
+        triggered = true
+      }
+      if (triggered) {
+        puff(player.level, 'minecraft:happy_villager', player.x, player.y + 1, player.z, 0.3, 6, 0)
+      }
+    } catch (e) { warnOnce('craft refund', e) }
+  })
+
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // COMBAT
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Raw LivingHurtEvent through the pack's DamageModifierRegistry (2026-05-15).
+  // DamageSource accessors under their KubeJS script names:
+  //   getEntity() -> getActual()   (`source.entity` is undefined)
+  //   getMsgId()  -> getType()     (`source.type` is vanilla's type() method)
+  var attackerOf = function (source) {
+    if (!source) return null
+    var a = source.actual
+    if (a === undefined) a = source.entity
+    return a || null
+  }
+  var msgIdOf = function (source) {
+    try { return String(source.getType()) } catch (e) { return '' }
+  }
+  // 'player' = a player's own swing (incl. sweep). Projectiles and spells carry other ids.
+  var isMeleeId = function (id) {
+    if (id.indexOf('arrow') >= 0 || id.indexOf('trident') >= 0 ||
+        id.indexOf('fireball') >= 0 || id.indexOf('thrown') >= 0) return false
+    return id === 'player' || id === 'mob' || id === 'generic'
+  }
+
+  // True Strength spares bosses: these name hints (the original list), the
+  // pack's own boss roster (global.icraft.core.isBoss, when that library is
+  // loaded) and every entity type in #forge:bosses (read once per script load,
+  // after the datapack tags exist).
+  var BOSS_HINTS = ['dragon', 'wither', 'warden', 'elder_guardian', 'evoker', 'ravager', 'champion']
+  var bossTagIds = null
+  var bossIdsFromTag = function () {
+    if (bossTagIds) return bossTagIds
+    bossTagIds = {}
+    try {
+      var tags = ForgeRegistries_jl.ENTITY_TYPES.tags()
+      var it = tags.getTag(tags.createTagKey(ResourceLocation_jl.tryParse('forge:bosses'))).iterator()
+      while (it.hasNext()) {
+        var typeKey = ForgeRegistries_jl.ENTITY_TYPES.getKey(it.next())
+        if (typeKey) bossTagIds[String(typeKey)] = true
+      }
+    } catch (e) {
+      warnOnce('reading #forge:bosses', e + ' -- True Strength uses the name hints only')
+    }
+    return bossTagIds
+  }
+  var isBoss = function (target) {
+    var type = typeIdOf(target)
+    if (!type) return true                               // cannot identify it: do not execute it
+    for (var i = 0; i < BOSS_HINTS.length; i++) {
+      if (type.indexOf(BOSS_HINTS[i]) >= 0) return true
+    }
+    try {
+      var core = global.icraft.core
+      if (core && core.isBoss && core.isBoss(type) === true) return true
+    } catch (e) {}
+    return bossIdsFromTag()[type] === true
+  }
+
+  // A damage figure this file is willing to write back.
+  var usable = function (n) { return n >= 0 && n !== Infinity }
+
+  var DR_jl = null
   try {
-    let player = event.player
-    if (!player || player.creative || player.spectator) return
-    let item = event.item
-    if (!item || item.isEmpty()) return
-    let itemId = String(item.id || '')
-    if (!itemId) return
-    let isCrafted = false
-    for (let i = 0; i < craftedPatterns.length; i++) {
-      if (itemId.indexOf(craftedPatterns[i]) >= 0) { isCrafted = true; break }
-    }
-    if (!isCrafted) return
+    DR_jl = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  } catch (e) {
+    warnOnce('loading DamageModifierRegistry', e + ' -- the combat skills are off')
+  }
 
-    let server = player.server
-    let apt = getCachedAptitudes(server, player)
-    if (apt.bld < 20) return
-
-    let uuid = player.uuid.toString()
-    let now = server.tickCount
-    let last = craftRefundCooldown[uuid] || 0
-    if ((now - last) < 40) return  // 2s cooldown
-    craftRefundCooldown[uuid] = now
-
-    let triggered = false
-    // Resourceful (BLD >= 20): 8% roll
-    if (Math.random() < 0.08) {
-      let pool = pickRefundMaterial(itemId)
-      let pick = pool[Math.floor(Math.random() * pool.length)]
-      try { player.give(Item.of(pick)) } catch (e) {}
-      triggered = true
-    }
-    // Master Craftsman (BLD >= 30): additional 12% roll on top of Resourceful
-    // (independent rolls — combined trigger probability ≈ 19.04%, max
-    // refund 2 items per craft event)
-    if (apt.bld >= 30 && Math.random() < 0.12) {
-      let pool = pickRefundMaterial(itemId)
-      let pick = pool[Math.floor(Math.random() * pool.length)]
-      try { player.give(Item.of(pick)) } catch (e) {}
-      triggered = true
-    }
-    if (triggered) {
-      let pos = player.blockPosition()
+  if (DR_jl && PlayerClass_jl) {
+    // ─────────────────────────────────────────────────────────────────────────
+    // DEALING DAMAGE (melee): Cleave (STR 15), Brutal Slash (STR 10),
+    // Hemorrhage (STR 20), True Strength (STR 30), Lucky Strike (LCK 10)
+    // Nothing here deals damage or kills by itself: it only changes the amount
+    // of the hit being processed, so the handler cannot re-enter.
+    // ─────────────────────────────────────────────────────────────────────────
+    DR_jl.register('icraft.justleveling.1', function (event) {
       try {
-        server.runCommandSilent(
-          `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.5 0.3 0 6 force ${player.username}`
-        )
-      } catch (e) {}
-    }
-  } catch (e) {}
-})
+        if (isSecondaryHit() || event.isCanceled()) return
+        var source = event.source
+        var player = attackerOf(source)
+        if (!(player instanceof PlayerClass_jl)) return
+        var target = event.entity
+        if (!target || target === player) return
+        if (target instanceof PlayerClass_jl) return        // no bleed / execute in PvP
+        if (!isMeleeId(msgIdOf(source))) return
 
+        var original = Number(event.amount)
+        if (!usable(original)) return
+        var amount = original
+        var apt = aptOf(player)
+        var key = keyOf(player)
+        var now = clockOf(player)
+        var executed = false
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// COMBAT: DEALING DAMAGE
-// Hemorrhage (STR 20), True Strength (STR 30), Excitement kill tracking (DEX 30)
-// ═══════════════════════════════════════════════════════════════════════════════
-// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
-;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR.register('icraft.justleveling.1', function(event) {
-  var player = event.source.entity
-    if (!(player instanceof PlayerClass)) return
-  let target = event.entity
-  if (!target || !target.living) return
-  // Don't trigger on players (PvP protection for bleed/execute)
-  if (target.player) return
-
-  let server = player.server
-  let apt = getCachedAptitudes(server, player)
-
-  // Check melee: source type should be 'player' or 'mob' (not arrow/trident/etc.)
-  let srcType = ''
-  try { srcType = event.source.type.toString() } catch (e) {}
-  let isMelee = (srcType === 'player' || srcType === 'mob' || srcType === 'generic')
-  // Also exclude indirect damage types
-  let isProjectile = srcType.includes('arrow') || srcType.includes('trident') ||
-                     srcType.includes('fireball') || srcType.includes('thrown')
-
-  if (isMelee && !isProjectile) {
-    let uuid = player.uuid.toString()
-    let now = server.tickCount
-
-    // ── Cleave (STR >= 15): first swing of combat does +20% ──
-    // "First swing" = no hit dealt or taken in the last 100 ticks (5s)
-    if (apt.str >= 15) {
-      try {
-        let last = lastCombatTick[uuid] || 0
-        if ((now - last) > 100) {
-          event.amount *= 1.20
-          try {
-            let pos = target.blockPosition()
-            server.runCommandSilent(
-              `particle minecraft:crit ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.3 6 force`
-            )
-          } catch (e2) {}
-        }
-      } catch (e) {}
-    }
-    // Update combat tracker on every melee hit dealt (regardless of STR level —
-    // the tracker is shared with take-damage in the other hurt handler)
-    lastCombatTick[uuid] = now
-
-    // ── Brutal Slash (STR >= 10): ignore ~10% of target armor ──
-    // Approximation: armor reduces damage ~4% per point in vanilla.
-    // To "ignore 10% of armor" we boost outgoing damage by 0.4% × armor points,
-    // capped at +5% so heavily-armored targets (>12 armor) don't get over-buffed.
-    if (apt.str >= 10) {
-      try {
-        let targetArmor = target.getAttributeValue('minecraft:generic.armor')
-        if (targetArmor > 0) {
-          let bonus = Math.min(0.05, targetArmor * 0.004)
-          event.amount *= (1 + bonus)
-        }
-      } catch (e) {}
-    }
-
-    // ── Hemorrhage (STR >= 20): Wither I for 4 seconds on melee hit ──
-    if (apt.str >= 20) {
-      try {
-        target.potionEffects.add('minecraft:wither', 80, 0, false, false)
-      } catch (e) {}
-    }
-
-    // ── True Strength (STR >= 30): Execute at <= 5% HP ──
-    if (apt.str >= 30) {
-      try {
-        let remainingHp = target.health - event.amount
-        let threshold = target.maxHealth * 0.05
-        if (remainingHp > 0 && remainingHp <= threshold) {
-          // Don't execute boss-type entities
-          let type = target.type.toString()
-          let isBoss = type.includes('dragon') || type.includes('wither') ||
-                       type.includes('warden') || type.includes('elder_guardian') ||
-                       type.includes('evoker') || type.includes('ravager') ||
-                       type.includes('champion')
-          if (!isBoss) {
-            target.kill()
-            // Visual feedback
-            let pos = target.blockPosition()
-            server.runCommandSilent(
-              `particle minecraft:sweep_attack ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0 3 force`
-            )
+        // ── Cleave (STR >= 15): first swing of combat does +20% ──
+        // "First swing" = no hit dealt or taken in the last 100 ticks (5s).
+        if (apt.strength >= 15) {
+          var idle = lastCombat.hasOwnProperty(key) ? (now - lastCombat[key]) : 101
+          if (idle > 100 || idle < 0) {
+            amount *= 1.20
+            puff(target.level, 'minecraft:crit', target.x, target.y + 1, target.z, 0.3, 6, 0.3)
           }
         }
-      } catch (e) {}
-    }
+        // Stamped on every melee hit dealt, whatever the STR level (shared with
+        // the taking-damage handler below).
+        lastCombat[key] = now
 
-    // ── Lucky Strike (LCK >= 10): 20% chance to deal 120% damage on a melee hit ──
-    if (apt.lck >= 10) {
-      try {
-        if (Math.random() < 0.20) {
-          event.amount *= 1.20
-          let pos = target.blockPosition()
-          server.runCommandSilent(
-            `particle minecraft:crit ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.4 8 force`
-          )
+        // ── Brutal Slash (STR >= 10): ignore ~10% of target armor ──
+        // Approximation: +0.4% damage per armor point, capped at +5%.
+        if (apt.strength >= 10) {
+          var armorAttr = attrOf('minecraft:generic.armor')
+          var armor = armorAttr ? Number(target.getAttributeTotalValue(armorAttr)) : 0
+          if (armor > 0) amount *= (1 + Math.min(0.05, armor * 0.004))
         }
-      } catch (e) {}
-    }
+
+        // ── Hemorrhage (STR >= 20): Wither I for 4 seconds ──
+        if (apt.strength >= 20) {
+          try {
+            target.potionEffects.add('minecraft:wither', 80, 0, false, false)
+          } catch (e2) { warnOnce('Hemorrhage', e2) }
+        }
+
+        // ── True Strength (STR >= 30): execute at <= 5% HP ──
+        // If this hit would leave a non-boss at 5% of its max health or less
+        // (estimated before armor, as before), the hit itself becomes lethal.
+        if (apt.strength >= 30) {
+          var hp = Number(target.health)
+          var maxHp = Number(target.maxHealth)
+          if (hp > 0 && maxHp > 0 && usable(hp) && usable(maxHp)) {
+            var remaining = hp - amount
+            if (remaining > 0 && remaining <= maxHp * 0.05 && !isBoss(target)) {
+              var shield = Number(target.absorptionAmount)
+              if (!(shield > 0) || shield === Infinity) shield = 0
+              // far past any armor / protection reduction, still a sane float
+              var lethal = (hp + shield) * 100 + 100
+              if (usable(lethal) && lethal > amount) amount = lethal
+              executed = true
+              puff(target.level, 'minecraft:sweep_attack', target.x, target.y + 1, target.z, 0.5, 3, 0)
+            }
+          }
+        }
+
+        // ── Lucky Strike (LCK >= 10): 20% chance to deal 120% ──
+        if (!executed && apt.luck >= 10 && Math.random() < 0.20) {
+          amount *= 1.20
+          puff(target.level, 'minecraft:crit', target.x, target.y + 1, target.z, 0.3, 8, 0.4)
+        }
+
+        if (amount !== original && usable(amount)) event.amount = amount
+      } catch (e) { warnOnce('hurt handler (dealing)', e) }
+    })
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // TAKING DAMAGE: Lion Heart (DEF 30), Mystic Ward (MAG 20), Cleave stamp
+    // ─────────────────────────────────────────────────────────────────────────
+    DR_jl.register('icraft.justleveling.2', function (event) {
+      try {
+        if (isSecondaryHit() || event.isCanceled()) return
+        var player = event.entity
+        if (!(player instanceof PlayerClass_jl)) return
+
+        // Taking a hit also resets Cleave's "first swing" window.
+        lastCombat[keyOf(player)] = clockOf(player)
+
+        var apt = aptOf(player)
+        if (apt.defense < 30 && apt.magic < 20) return
+        var original = Number(event.amount)
+        if (!usable(original)) return
+        var amount = original
+
+        // ── Lion Heart (DEF >= 30): 0% DR at full HP, up to 30% near 0 HP ──
+        if (apt.defense >= 30) {
+          var maxHp = Number(player.maxHealth)
+          if (maxHp > 0) {
+            var missing = 1 - Number(player.health) / maxHp
+            if (!(missing > 0)) missing = 0
+            if (missing > 1) missing = 1
+            var lion = missing * 0.30
+            if (lion > 0.01) amount *= (1 - lion)
+          }
+        }
+
+        // ── Mystic Ward (MAG >= 20): min(20%, 5% + 1% per 20% bonus spell power) ──
+        // Bonus spell power = irons_spellbooks:spell_power above its base 1.0.
+        if (apt.magic >= 20) {
+          var spAttr = attrOf('irons_spellbooks:spell_power')
+          var sp = spAttr ? Number(player.getAttributeTotalValue(spAttr)) : 1
+          var bonus = (sp > 1 && sp !== Infinity) ? (sp - 1) : 0
+          // + 1e-6: a bonus of exactly 20% is 1.2 - 1 = 0.19999999999999996 in floating point
+          var ward = Math.min(0.20, 0.05 + 0.01 * Math.floor(bonus / 0.20 + 1e-6))
+          amount *= (1 - ward)
+        }
+
+        if (amount !== original && usable(amount)) event.amount = amount
+      } catch (e) { warnOnce('hurt handler (taking)', e) }
+    })
   }
 
-  // ── Excitement kill tracking (DEX >= 30): buff on kill ──
-  // Check if this hit would kill the target
-  if (apt.dex >= 30) {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // KILLS — Excitement (DEX 30), Treasure Sense (LCK 20)
+  // ═══════════════════════════════════════════════════════════════════════════
+  EntityEvents.death(function (event) {
     try {
-      let remainingHp = target.health - event.amount
-      if (remainingHp <= 0 && !target.player) {
-        // Target will die from this hit — grant speed + attack speed buff
-        player.potionEffects.add('minecraft:speed', 200, 2, false, true)      // Speed III, 10s
-        player.potionEffects.add('minecraft:haste', 200, 1, false, true)      // Haste II, 10s
-        // Visual feedback
-        let pos = player.blockPosition()
-        server.runCommandSilent(
-          `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0 8 force`
-        )
+      var target = event.entity
+      if (!target || target.player) return
+      var source = event.source
+      if (!source) return
+      var player = source.player                           // the killer, also for arrows / thrown
+      if (!player) return
+      var apt = aptOf(player)
+
+      // ── Excitement (DEX >= 30): Speed III + Haste II for 10s on kill ──
+      if (apt.dexterity >= 30) {
+        try {
+          player.potionEffects.add('minecraft:speed', 200, 2, false, true)
+          player.potionEffects.add('minecraft:haste', 200, 1, false, true)
+          puff(player.level, 'minecraft:happy_villager', player.x, player.y + 1, player.z, 0.5, 8, 0)
+        } catch (e2) { warnOnce('Excitement', e2) }
       }
-    } catch (e) {}
-  }
+
+      // ── Treasure Sense (LCK >= 20): 5% chance to double-roll mob loot ──
+      // Re-rolls the entity's loot table once at the death position. A kill
+      // command is fine here: it runs on one kill in twenty.
+      if (apt.luck >= 20 && Math.random() < 0.05) {
+        var lootTable = ''
+        try { lootTable = String(target.getLootTable()) } catch (e3) { lootTable = '' }
+        if (lootTable.indexOf(':') <= 0) {
+          // fallback: the conventional <modid>:entities/<path>
+          var typeId = typeIdOf(target)
+          var colon = typeId.indexOf(':')
+          lootTable = colon > 0 ? (typeId.substring(0, colon) + ':entities/' + typeId.substring(colon + 1)) : ''
+        }
+        if (lootTable) {
+          var x = Math.floor(Number(target.x))
+          var y = Math.floor(Number(target.y))
+          var z = Math.floor(Number(target.z))
+          player.server.runCommandSilent('loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z + ' loot ' + lootTable)
+          puff(target.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.4, 12, 0.1)
+          player.tell('§6[Treasure Sense] §fDouble drops!')
+        }
+      }
+    } catch (e) { warnOnce('death handler', e) }
   })
-})()// ═══════════════════════════════════════════════════════════════════════════════
-// COMBAT: TAKING DAMAGE
-// Lion Heart (DEF 30), Mystic Ward (MAG 20 dynamic), Cleave combat-tracker stamp
-// ═══════════════════════════════════════════════════════════════════════════════
-// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
-;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR.register('icraft.justleveling.2', function(event) {
-  var player = event.entity
-    if (!(player instanceof PlayerClass)) return
-  let server = player.server
-  let apt = getCachedAptitudes(server, player)
-  let uuid = player.uuid.toString()
 
-  // Stamp combat-tracker so Cleave's "first-swing" window resets when the
-  // player takes a hit too (matches design "reset 5s after combat ends").
-  lastCombatTick[uuid] = server.tickCount
 
-  // ── Lion Heart (DEF >= 30): DR scales with missing HP (up to 30%) ──
-  if (apt.def >= 30) {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // BLOCKS — Thrifty Hands (BLD 15), Fortune's Favor (LCK 15), Motherlode (LCK 30)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── Thrifty Hands (BLD >= 15): 5% chance to get the placed block's item back ──
+  // The block stays placed. block.item is the block's pick-block stack (wall
+  // torch -> torch, wheat crop -> seeds, fire -> nothing); only its ID is used,
+  // so a container's contents are never copied.
+  BlockEvents.placed(function (event) {
     try {
-      // Linear: 0% DR at full HP, 30% DR at 1 HP
-      let missingPercent = 1 - (player.health / player.maxHealth)
-      let dr = missingPercent * 0.30
-      if (dr > 0.01) {
-        event.amount *= (1 - dr)
-      }
-    } catch (e) {}
-  }
-
-  // ── Mystic Ward (MAG >= 20): dynamic DR scaled by bonus spell power ──
-  // Formula: min(0.20, 0.05 + 0.01 * floor(bonusSpellPower / 0.20))
-  //   * 5% flat at zero bonus
-  //   * +1% per 20% bonus spell power
-  //   * cap 20% (requires +300% bonus spell power)
-  // bonusSpellPower is read from puffish_attributes:magic_damage (base 1.0).
-  if (apt.mag >= 20) {
-    try {
-      let total = player.getAttributeValue('puffish_attributes:magic_damage')
-      // puffish base for magic_damage is 1.0; bonus is anything above
-      let bonus = Math.max(0, total - 1.0)
-      let dr = Math.min(0.20, 0.05 + 0.01 * Math.floor(bonus / 0.20))
-      if (dr > 0) {
-        event.amount *= (1 - dr)
-      }
-    } catch (e) {}
-  }
+      var player = event.player
+      if (!player || player.creative || player.spectator) return
+      if (aptOf(player).building < 15) return
+      if (Math.random() >= 0.05) return
+      var stack = event.block.item
+      if (!stack || stack.isEmpty()) return
+      var itemId = String(stack.id || '')
+      if (!itemId || itemId === 'minecraft:air') return
+      player.give(Item.of(itemId))
+    } catch (e) { warnOnce('Thrifty Hands', e) }
   })
-})()// ═══════════════════════════════════════════════════════════════════════════════
-// COMBAT: KILL TRACKING via EntityEvents.death
-// Excitement (DEX 30): additional kill detection for cases where damage
-// doesn't immediately register as lethal in the hurt event
-// ═══════════════════════════════════════════════════════════════════════════════
-EntityEvents.death(event => {
-  if (!event.entity || event.entity.player) return
-  let source = event.source
-  if (!source || !source.player) return
-  let player = source.player
-  let server = player.server
 
-  let apt = getCachedAptitudes(server, player)
-
-  // ── Excitement (DEX >= 30): Speed III + Haste II for 10s on kill ──
-  if (apt.dex >= 30) {
+  // ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
+  // ── Fortune's Favor (LCK >= 15): ~30% chance to re-roll an ore's drops ──
+  // Both re-roll the block's loot table (<modid>:blocks/<path>) at the block:
+  // 4 extra rolls for Motherlode, 1 for Fortune's Favor; a missing table is a
+  // silent no-op. Ore = id contains "ore", or ancient_debris (heuristic).
+  // Independent of each other. These are rare, so the loot command stays.
+  BlockEvents.broken(function (event) {
     try {
-      player.potionEffects.add('minecraft:speed', 200, 2, false, true)
-      player.potionEffects.add('minecraft:haste', 200, 1, false, true)
-      let pos = player.blockPosition()
-      server.runCommandSilent(
-        `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0 8 force`
-      )
-    } catch (e) {}
-  }
+      var player = event.player
+      if (!player || player.creative || player.spectator) return
+      var apt = aptOf(player)
+      if (apt.luck < 15) return
+      var block = event.block
+      var blockId = String(block.id || '')
+      var colon = blockId.indexOf(':')
+      if (colon <= 0) return
+      var lootTable = blockId.substring(0, colon) + ':blocks/' + blockId.substring(colon + 1)
+      var x = Number(block.x)
+      var y = Number(block.y)
+      var z = Number(block.z)
+      var spawnAt = 'loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z + ' loot ' + lootTable
+      var server = player.server
 
-  // ── Treasure Sense (LCK >= 20): 5% chance to double-roll mob loot ──
-  // Re-rolls the entity's standard loot table once at the death position.
-  // For most modded entities the table id is `<modid>:entities/<entity_path>`.
-  // If the table doesn't exist the loot command silently no-ops — acceptable.
-  if (apt.lck >= 20 && Math.random() < 0.05) {
-    try {
-      let target = event.entity
-      let typeId = String(target.type || '')   // e.g. 'minecraft:zombie'
-      if (typeId && typeId.indexOf(':') > 0) {
-        let parts = typeId.split(':')
-        let lootTable = parts[0] + ':entities/' + parts[1]
-        let pos = target.blockPosition()
-        server.runCommandSilent(
-          `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
-        )
-        // Visual feedback
-        server.runCommandSilent(
-          `particle minecraft:totem_of_undying ${pos.x} ${pos.y + 1} ${pos.z} 0.4 0.4 0.4 0.1 12 force`
-        )
-        try { player.tell('§6[Treasure Sense] §fDouble drops!') } catch (e2) {}
+      if (apt.luck >= 30 && Math.random() < 0.005) {
+        for (var i = 0; i < 4; i++) server.runCommandSilent(spawnAt)
+        puff(player.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.5, 24, 0.2)
+        player.tell('§6[Motherlode] §lJACKPOT! §r§6×5 drops!')
       }
+
+      var isOre = (blockId.indexOf('ore') >= 0) || (blockId.indexOf('ancient_debris') >= 0)
+      if (isOre && Math.random() < 0.30) {
+        server.runCommandSilent(spawnAt)
+        puff(player.level, 'minecraft:happy_villager', x + 0.5, y + 1, z + 0.5, 0.3, 6, 0.1)
+      }
+    } catch (e) { warnOnce('mining bonus', e) }
+  })
+
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HOUSEKEEPING
+  // ═══════════════════════════════════════════════════════════════════════════
+  var forget = function (player) {
+    try {
+      var key = keyOf(player)
+      delete secondWindReady[key]
+      delete lastCombat[key]
+      delete craftRefundAt[key]
+      delete hungerBudget[key]
     } catch (e) {}
   }
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// BLOCK EVENTS
-// Thrifty Hands (BLD 15): refund placed blocks; Motherlode (LCK 30): jackpot
-// ═══════════════════════════════════════════════════════════════════════════════
-
-// ── Thrifty Hands (BLD >= 15): 5% chance to refund placed blocks ──
-// The block stays placed; only the consumed item is refunded to inventory.
-BlockEvents.placed(event => {
-  try {
-    let player = event.player
-    if (!player || player.creative || player.spectator) return
-    let server = player.server
-    let apt = getCachedAptitudes(server, player)
-    if (apt.bld < 15) return
-    if (Math.random() >= 0.05) return
-    let blockId = String(event.block.id || '')
-    if (!blockId) return
-    server.runCommandSilent(`give ${player.username} ${blockId} 1`)
-  } catch (e) {}
-})
-
-// ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
-// Vanilla rolls drops once normally; we re-roll the block's loot table 4 more
-// times at the broken-block position. Loot table id pattern: <modid>:blocks/<path>.
-// If the table doesn't exist or the block has no loot (e.g. instant-break grass
-// drops via vanilla logic) the command silently no-ops — acceptable.
-BlockEvents.broken(event => {
-  try {
-    let player = event.player
-    if (!player || player.creative || player.spectator) return
-    let server = player.server
-    let apt = getCachedAptitudes(server, player)
-    if (apt.lck < 30) return
-    if (Math.random() >= 0.005) return
-    let blockId = String(event.block.id || '')
-    if (!blockId || blockId.indexOf(':') < 0) return
-    let parts = blockId.split(':')
-    let lootTable = parts[0] + ':blocks/' + parts[1]
-    let pos = event.block.pos
-    let mainhand = ''
-    try { mainhand = String(player.mainHandItem.id || '') } catch (e2) {}
-    for (let i = 0; i < 4; i++) {
-      server.runCommandSilent(
-        `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
-      )
-    }
-    server.runCommandSilent(
-      `particle minecraft:totem_of_undying ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0.2 24 force`
-    )
-    try { player.tell('§6[Motherlode] §lJACKPOT! §r§6×5 drops!') } catch (e3) {}
-  } catch (e) {}
-})
-
-// ── Fortune's Favor (LCK >= 15): bonus drops when mining ore ──
-// Re-rolls an ore block's loot table once at ~30% chance — a Fortune-I-like
-// average bonus. Ore detection is a heuristic: the block id contains "ore" or is
-// ancient_debris. Loot table id pattern: <modid>:blocks/<path>; if it doesn't
-// exist the command silently no-ops. Independent of Motherlode (LCK 30).
-// FLAG: ore heuristic + 30% rate are a first pass — tune per playtest.
-BlockEvents.broken(event => {
-  try {
-    let player = event.player
-    if (!player || player.creative || player.spectator) return
-    let server = player.server
-    let apt = getCachedAptitudes(server, player)
-    if (apt.lck < 15) return
-    let blockId = String(event.block.id || '')
-    if (!blockId || blockId.indexOf(':') < 0) return
-    let isOre = (blockId.indexOf('ore') >= 0) || (blockId.indexOf('ancient_debris') >= 0)
-    if (!isOre) return
-    if (Math.random() >= 0.30) return
-    let parts = blockId.split(':')
-    let lootTable = parts[0] + ':blocks/' + parts[1]
-    let pos = event.block.pos
-    server.runCommandSilent(
-      `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
-    )
+  PlayerEvents.loggedOut(function (event) { forget(event.player) })
+  // New entity after a death: the hunger bar was reset, not drained.
+  PlayerEvents.respawned(function (event) {
+    try { delete hungerBudget[keyOf(event.player)] } catch (e) {}
+  })
+  // The XP-refund tick used to keep its baseline in persistentData; unused now.
+  PlayerEvents.loggedIn(function (event) {
     try {
-      server.runCommandSilent(
-        `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.1 6 force`
-      )
-    } catch (e2) {}
-  } catch (e) {}
-})
+      var pd = event.player.persistentData
+      if (pd && pd.contains('icraft_apt_xp_last')) pd.remove('icraft_apt_xp_last')
+    } catch (e) {}
+  })
 
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// STARTUP LOG
-// ═══════════════════════════════════════════════════════════════════════════════
-ServerEvents.loaded(event => {
-  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1+2+3 — all 28 slots filled)')
-  console.log('  Tier 5 (Batch 1):')
-  console.log('    STR 5: Might (+1.5 dmg, +5% HP)')
-  console.log('    CON 5: Tough Hide (+2 max HP)')
-  console.log('    DEX 5: Light Step (+5% speed; jump-fall in Batch 2)')
-  console.log('    DEF 5: Padded Frame (+1 armor, +1 toughness)')
-  console.log('    MAG 5: Mana Spark (+20 mana, +5% spell power)')
-  console.log('    INT 5: Curious (+10% XP)')
-  console.log('    BLD 5: Steady Hand (+0.5 reach)')
-  console.log('    LCK 5: Lucky Charm (+1 luck)')
-  console.log('  Tier 10:')
-  console.log('    STR 10: Brutal Slash (+10% dmg, ~armor pen) [Batch 2]')
-  console.log('    DEX 10: Fleet of Foot (+15% speed)')
-  console.log('    CON 10: Hearty Meals (Regen I when well-fed)')
-  console.log('    DEF 10: Second Wind (Regen III at low HP, 60s CD)')
-  console.log('    MAG 10: Conservation of Magic (+15% mana regen) [Batch 3]')
-  console.log('    INT 10: Arcane Efficiency (25% XP refund near enchant table) [Batch 3]')
-  console.log('    BLD 10: Quarryman (+5% block break speed)')
-  console.log('  Tier 15:')
-  console.log('    STR 15: Cleave (+20% first swing, 5s reset) [Batch 2]')
-  console.log('    CON 15: Steady Breath (water breathing + sat while underwater) [Batch 2]')
-  console.log('    DEX 15: Deadeye (+10% projectile damage)')
-  console.log('    DEF 15: Bulwark (+25% knockback resistance)')
-  console.log('    MAG 15: Mana Blaze (+15% spell power)')
-  console.log('    INT 15: Insight (+20% XP)')
-  console.log('    BLD 15: Thrifty Hands (5% refund placed blocks) [Batch 2]')
-  console.log('  Tier 20:')
-  console.log('    STR 20: Hemorrhage (Wither I on melee hit)')
-  console.log('    CON 20: Overflow (Absorption at full HP)')
-  console.log('    MAG 20: Mystic Ward (dynamic DR scaled by spell power) [Batch 2]')
-  console.log('    INT 20: Materials Science (25% XP refund near anvil) [Batch 3]')
-  console.log('    DEX 20: Rapid Fire (+15% bow draw speed) [Batch 3]')
-  console.log('    DEF 20: Turtle Shield (+4 toughness when not blocking)')
-  console.log('    BLD 20: Resourceful (8% craft material refund) [Batch 3]')
-  console.log('    LCK 20: Treasure Sense (5% double-roll on entity kill) [Batch 2]')
-  console.log('  Tier 30:')
-  console.log('    STR 30: True Strength (execute at <= 5% HP)')
-  console.log('    DEX 30: Excitement (Speed III + Haste II on kill)')
-  console.log('    CON 30: Iron Stomach (Saturation, slows hunger)')
-  console.log('    DEF 30: Lion Heart (DR scales with missing HP, up to 30%)')
-  console.log('    MAG 30: Mana Inferno (+30% spell power)')
-  console.log('    INT 30: Enlightenment (+30% XP) [rebalanced from +50%]')
-  console.log('    BLD 30: Master Craftsman (+12% craft refund, stacks to 20%) [Batch 3]')
-  console.log('    LCK 30: Motherlode (0.5% chance for 5x mining drops) [Batch 2]')
-})
+  ServerEvents.loaded(function (event) {
+    console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded -- ' + (MODS.length + 1) +
+      ' attribute modifiers, 5 timed effects, 5 melee + 2 defensive hooks, kill / craft / block / XP-refund hooks' +
+      ' (aptitudes via global.icraft.aptitude)')
+    console.log('  Tier 5 : Might, Tough Hide, Light Step, Padded Frame, Mana Spark, Curious, Steady Hand, Lucky Charm')
+    console.log('  Tier 10: Brutal Slash, Hearty Meals, Fleet of Foot, Second Wind, Conservation of Magic, Arcane Efficiency, Quarryman, Lucky Strike')
+    console.log('  Tier 15: Cleave, Steady Breath, Deadeye, Bulwark, Mana Blaze, Insight, Thrifty Hands, Fortune\'s Favor')
+    console.log('  Tier 20: Hemorrhage, Overflow, Rapid Fire, Turtle Shield, Mystic Ward, Materials Science, Resourceful, Treasure Sense')
+    console.log('  Tier 30: True Strength, Iron Stomach, Excitement, Lion Heart, Mana Inferno, Enlightenment, Master Craftsman, Motherlode')
+  })
+})()

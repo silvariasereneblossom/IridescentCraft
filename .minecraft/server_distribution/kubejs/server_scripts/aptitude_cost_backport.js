@@ -2,103 +2,184 @@
 // IridescentCraft #76 — one-time aptitude level-cost BACKPORT
 // File: kubejs/server_scripts/aptitude_cost_backport.js
 //
-// Existing characters leveled their aptitudes CHEAPLY under the old ~linear
-// per-aptitude cost. #76 swapped to the cumulative-level tree-doubling curve,
-// which makes the *next* level much more expensive — so a long-time character
-// can be stranded (can't afford the next aptitude level under the new curve).
+// THE RULE (operator decision, 2026-06-04: credit aptitude investment as XP)
+//   Characters that existed BEFORE #76 bought their aptitude levels under the old
+//   ~linear per-aptitude cost. #76 swapped in the cumulative tree-doubling curve,
+//   which makes their NEXT level far more expensive. Each such character is
+//   granted, ONCE, the vanilla levels its aptitude total AT THE CUTOVER would
+//   cost under the new curve:
 //
-// Operator decision (credit aptitude investment as XP): grant each existing
-// character, ONCE, the vanilla XP-LEVELS their current aptitude total would
-// cost under the NEW curve, so their XP wallet reflects their investment.
+//     C0      = cumulative aptitude level (sum of the 8, each starts at 1) on 2026-06-04
+//     credit  = BACKPORT_MULT * Σ_{L=8}^{C0-1} requiredExperienceLevels(L)   [levels]
 //
-//   C       = cumulative aptitude level = getGlobalLevel() = raw sum of the 8
-//             aptitudes (each defaults to 1, so a brand-new char = 8).
-//   credit  = Σ_{L=8}^{C-1} requiredExperienceLevels(L)   [vanilla levels]
+//   A character created after the cutover has C0 = 8 -> credit 0: every level it
+//   holds was bought at the new price. The real fork formula is called through
+//   Java.loadClass, so the curve cannot drift from the live config. Granted with
+//   giveExperienceLevels (no PlayerXpEvent.XpChange, so LinearXP #77 does not
+//   rescale it; 1 level = 75 XP).
 //
-// A fresh character (C=8) gets credit 0. The real JLF formula is called via
-// Java.loadClass so the curve can't drift from the live config. Granted as
-// vanilla LEVELS via `/xp add … levels` (giveExperienceLevels does NOT fire
-// PlayerXpEvent.XpChange, so linearxp #77 does NOT rescale it; 1 level = 75 XP).
+// WHY IT NEEDS A TABLE NOW (2026-10-10)
+//   This script never credited anyone: it read the aptitudes from
+//   ForgeData.justlevelingfork.aptitude.<name>, which the fork never writes, so
+//   "8 clean reads" never happened and no character was ever flagged. As
+//   written it used the character's CURRENT total as C0 -- correct only on the
+//   day #76 shipped. Four months on, the current total includes every level
+//   bought since at the NEW price; crediting those would hand the whole payment
+//   back (cumulative 30 -> ~417 levels, 60 -> ~1,417, 90 -> ~3,417, 120 -> ~7,417).
+//   And per the docket (#86-#88, "worldgen reset" / "fresh world") the server
+//   world was reset on 2026-06-06, two days after the cutover: if that reset
+//   took the player data with it, no character on it predates #76 at all.
+//   The script cannot see the past, so C0 comes from CUTOVER_TOTALS below
+//   (uuid -> cumulative level on 2026-06-04, e.g. from a pre-cutover playerdata
+//   backup). A character that is not listed is a post-cutover character:
+//   credit 0. The table ships EMPTY -- today nobody is owed anything -- and the
+//   log line each character gets shows what the 2026-06-04 rule would have paid
+//   on its current total, for the operator's eyes.
 //
-// Idempotent per character via persistentData flag. Tick-driven (not loggedIn)
-// so the aptitude NBT is guaranteed loaded; a character is only flagged once its
-// 8 aptitudes read cleanly, so a wrong/early read can never mis-credit.
+// IDEMPOTENT, AND CANNOT PAY TWICE
+//   * per-character flag in persistentData (survives death: KubeJS copies it to
+//     the respawned player); set only after a clean read of all 8 aptitudes;
+//   * a per-character LEDGER of levels already granted: a re-run (flag suffix
+//     bumped, table or multiplier edited) pays only what is still missing and
+//     never claws back;
+//   * a grant is booked in the ledger BEFORE it is made and measured after
+//     (level before / after): a failure in between can only under-pay; a
+//     vetoed level change is un-booked and retried (3 tries a session), not
+//     flagged;
+//   * levels the character holds beyond C0, or no longer holds, are never
+//     credited (C0 is capped at the current total).
 //
-// ⚠ MAGNITUDE (BACKPORT_MULT = 1.0): cumulative 30 → ~417 levels, 60 → ~1,417,
-//   90 → ~3,417, 120 → ~7,417, 256 (all maxed) → ~179,000 levels. If that reads
-//   too generous, lower BACKPORT_MULT (e.g. 0.5 / 0.25) and bump BACKPORT_FLAG
-//   to re-run, or just delete this file.
-//
-// SAFE TO DELETE once every existing character has logged in at least once.
+// Runs from the tick master every 2s; a flagged character costs one map lookup.
+// SAFE TO DELETE once CUTOVER_TOTALS is known to be final (it is, while empty).
 // =============================================================================
 
-// Credit multiplier — 1.0 = the full new-curve cost of the character's aptitude
-// total. Lower it if the full credit is too generous.
-const BACKPORT_MULT = 1.0
-// Bump the suffix (…_v2) to force a re-run after changing BACKPORT_MULT.
-const BACKPORT_FLAG = 'icraft_apt_cost_backport_v1'
+;(function () {
+  // Credit multiplier — 1.0 = the full new-curve cost of the cutover total.
+  var BACKPORT_MULT = 1.0
+  // Bump the suffix (…_v2) to re-evaluate everyone after editing the table or the
+  // multiplier; the ledger makes that pay differences only.
+  var BACKPORT_FLAG = 'icraft_apt_cost_backport_v1'
+  var BACKPORT_LEDGER = 'icraft_apt_cost_backport_levels'
 
-const BACKPORT_APTITUDES = [
-  'strength', 'constitution', 'dexterity', 'defense',
-  'intelligence', 'building', 'magic', 'luck'
-]
+  // '<player uuid>': <cumulative aptitude level on 2026-06-04>
+  // (the uuid as `/data get entity <player> UUID` / the playerdata file name shows it)
+  var CUTOVER_TOTALS = {
+  }
 
-// Real JLF cost formula (cumulative-level tree-doubling, config-driven). Loaded
-// once; if JLF is absent the migration is inert.
-let BackportCostClass = null
-try {
-  BackportCostClass = Java.loadClass('com.seniors.justlevelingfork.network.packet.common.AptitudeLevelUpSP')
-} catch (e) {
-  console.log('[IridescentCraft] #76 backport: AptitudeLevelUpSP not found — migration inert')
-}
+  var BASELINE = 8                 // 8 aptitudes at level 1
+  var MAX_CREDIT = 2000000000      // experienceLevel is an int
+  var MAX_ATTEMPTS = 3             // per session, when a level grant does not stick
 
-ServerEvents.tick(event => {
-  if (!BackportCostClass) return
-  let server = event.server
-  // ~every 2s, offset to avoid stacking with other tick scripts.
-  if ((server.tickCount % 40) !== 17) return
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    try { console.warn('[IridescentCraft] #76 backport: ' + where + ' (logged once per script load): ' + e) } catch (ignored) {}
+  }
 
-  server.players.forEach(function (player) {
-    try {
-      if (player.persistentData.getBoolean(BACKPORT_FLAG)) return
+  // Real fork cost formula (cumulative-level tree-doubling, config-driven). If
+  // the fork is absent the migration is inert.
+  var CostClass = null
+  try {
+    CostClass = Java.loadClass('com.seniors.justlevelingfork.network.packet.common.AptitudeLevelUpSP')
+  } catch (e) {
+    CostClass = null
+    console.log('[IridescentCraft] #76 backport: AptitudeLevelUpSP not found — migration inert')
+  }
 
-      // Cumulative aptitude level = raw sum of the 8 aptitudes (getGlobalLevel).
-      // If any aptitude isn't readable yet (NBT not loaded), bail WITHOUT
-      // flagging so we retry next pass — never credit off a partial read.
-      let cumulative = 0
-      let readOk = true
-      for (let i = 0; i < BACKPORT_APTITUDES.length; i++) {
-        let v = server.runCommandSilent(
-          'data get entity ' + player.username +
-          ' ForgeData.justlevelingfork.aptitude.' + BACKPORT_APTITUDES[i]
-        )
-        if (v && v > 0) { cumulative += v } else { readOk = false; break }
-      }
-      if (!readOk) return
-
-      // credit = Σ_{L=8}^{C-1} requiredExperienceLevels(L)
-      let credit = 0
-      for (let L = 8; L < cumulative; L++) {
-        credit += BackportCostClass.requiredExperienceLevels(L)
-      }
-      credit = Math.round(credit * BACKPORT_MULT)
-
-      if (credit > 0) {
-        server.runCommandSilent('xp add ' + player.username + ' ' + credit + ' levels')
-        try {
-          player.tell(
-            '§b[Aptitudes] §fLevel-cost rework: credited §a' + credit +
-            ' levels§f (≈' + (credit * 75) + ' XP) for your existing aptitude ' +
-            'investment (cumulative ' + cumulative + ').'
-          )
-        } catch (e2) {}
-        console.log('[IridescentCraft] #76 backport: ' + player.username +
-          ' cumulative=' + cumulative + ' -> credited ' + credit + ' levels')
-      }
-
-      player.persistentData.putBoolean(BACKPORT_FLAG, true)
-    } catch (e) {
-      console.log('[IridescentCraft] #76 backport error for a player: ' + e)
+  // Σ_{L=8}^{cumulative-1} requiredExperienceLevels(L), times the multiplier
+  var creditFor = function (cumulative) {
+    var sum = 0
+    for (var level = BASELINE; level < cumulative; level++) {
+      var cost = Number(CostClass.requiredExperienceLevels(level))
+      if (cost > 0 && cost !== Infinity) sum += cost
     }
+    var credit = Math.round(sum * BACKPORT_MULT)
+    if (!(credit > 0)) return 0
+    return credit > MAX_CREDIT ? MAX_CREDIT : credit
+  }
+
+  var keyOf = function (player) { return String(player.uuid.toString()) }
+  var done = {}        // uuid -> true: settled (or given up on) for this session
+  var attempts = {}    // uuid -> grant attempts this session
+
+  var settle = function (player) {
+    var key = keyOf(player)
+    if (done[key] === true) return
+    var pd = player.persistentData
+    if (pd.getBoolean(BACKPORT_FLAG)) { done[key] = true; return }
+
+    // All 8 aptitudes must read cleanly (>= 1); otherwise retry next pass and
+    // flag nothing -- never settle off a partial read.
+    var all = global.icraft.aptitude.all(player)
+    if (!all) return
+    var names = global.icraft.aptitude.names
+    for (var i = 0; i < names.length; i++) {
+      if (!(all[names[i]] >= 1)) return
+    }
+    var current = Number(all.total)
+
+    var listed = CUTOVER_TOTALS.hasOwnProperty(key) ? Number(CUTOVER_TOTALS[key]) : BASELINE
+    if (!(listed >= BASELINE)) listed = BASELINE
+    var cutover = Math.min(Math.floor(listed), current)
+    var target = creditFor(cutover)
+
+    var already = Number(pd.getInt(BACKPORT_LEDGER))
+    if (!(already > 0)) already = 0
+    var owed = target - already
+
+    if (owed > 0) {
+      var tries = (attempts[key] || 0) + 1
+      attempts[key] = tries
+      if (tries > MAX_ATTEMPTS) {
+        done[key] = true
+        warnOnce('a level grant did not stick', player.username + ' is still owed ' + owed +
+          ' levels after ' + MAX_ATTEMPTS + ' attempts -- will retry on the next login')
+        return
+      }
+      var before = Math.floor(Number(player.xpLevel))
+      if (!(before >= 0)) return                       // cannot measure a grant: do not make one
+      // Book FIRST, then grant: whatever fails after this line can only leave
+      // the character under-paid (and retried), never paid twice.
+      pd.putInt(BACKPORT_LEDGER, already + owed)
+      player.addXPLevels(owed)
+      var granted = Math.floor(Number(player.xpLevel)) - before
+      if (!(granted > 0)) granted = 0
+      if (granted < owed) {
+        // Something cancelled / cut the level change. Not flagged: the ledger
+        // is corrected to what arrived, the rest is retried on a later pass.
+        pd.putInt(BACKPORT_LEDGER, already + granted)
+        return
+      }
+      try {
+        player.tell('§b[Aptitudes] §fLevel-cost rework: credited §a' + granted +
+          ' levels§f for the aptitude levels you held before the change (cumulative ' + cutover + ').')
+      } catch (e2) {}
+    }
+
+    pd.putBoolean(BACKPORT_FLAG, true)
+    done[key] = true
+    console.log('[IridescentCraft] #76 backport: ' + player.username + ' settled -- cumulative now ' + current +
+      ', cutover total ' + cutover + (CUTOVER_TOTALS.hasOwnProperty(key) ? ' (listed)' : ' (not listed: post-cutover character)') +
+      ', credited ' + (owed > 0 ? owed : 0) + ' levels (ledger ' + (owed > 0 ? already + owed : already) + ')' +
+      (cutover < current ? '; the 2026-06-04 rule on the current total would have been ' + creditFor(current) + ' levels' : ''))
+  }
+
+  if (CostClass) {
+    global.registerServerTick('tick_aptitudeCostBackport', 40, 17, function (event) {
+      event.server.players.forEach(function (player) {
+        try {
+          settle(player)
+        } catch (e) { warnOnce('settling a player failed', e) }
+      })
+    })
+  }
+
+  PlayerEvents.loggedOut(function (event) {
+    try {
+      var key = keyOf(event.player)
+      delete done[key]
+      delete attempts[key]
+    } catch (e) {}
   })
-})
+})()

@@ -1,127 +1,129 @@
 // =============================================================================
 // MASTERY TAX — Escalating XP cost for JustLeveling aptitude breadth
 // =============================================================================
-// JustLeveling's base cost formula is linear (level + firstCost - 1).
-// This script adds a quadratic "mastery tax" that drains bonus XP when a
-// player's total aptitude levels exceed thresholds, making it:
-//   - 1st aptitude (levels 8-32): Free, natural T1-T2 progression
-//   - 2nd aptitude (levels 33-64): Moderate tax, mid-late T3
-//   - 3rd aptitude (levels 65-96): Heavy tax, early-mid T4
-//   - 4th+ aptitude (levels 97+): Brutal, deep T4 / RF Dimensions
+// On top of the fork's own level-up cost, a player whose TOTAL invested
+// aptitude levels pass a threshold is drained bonus XP for every further level:
+//   - 1st aptitude's worth (invested  1-32): free
+//   - 2nd                  (invested 33-64): moderate
+//   - 3rd                  (invested 65-96): heavy
+//   - 4th+                 (invested 97+)  : brutal
+// "Invested" = sum of the 8 aptitudes minus the 8 they start at (1 each).
 //
-// Checks every 2 seconds. When total aptitude levels increase, drains
-// bonus XP based on the new total. Base aptitude levels start at 1 each
-// (8 aptitudes × 1 = 8 baseline), so effective investment = total - 8.
+// Checked every 2 seconds against the cached aptitude resolver
+// (global.icraft.aptitude, 0_lib_aptitudes.js). When the total has gone UP
+// since the last look, the tax for each new level is drained.
+//
+// 2026-10-10 — this script had never taxed anyone, and would have mis-taxed:
+//   * It read `data get entity <p> ForgeData.justlevelingfork.aptitude.<name>`
+//     (8 commands per player per pass, each serialising the whole player). The
+//     fork stores levels in its capability, so every read was 0.
+//   * runCommandSilent returns 0 on failure, it does not throw: the "assume 1"
+//     catch never ran, a failed pass summed to 0, and the next good pass would
+//     have looked like a level-up of the player's whole total.
+//   Now: an unreadable pass changes nothing. A player's FIRST readable pass
+//   after login / respawn / server start / script reload only records the
+//   baseline -- it can never tax. A total that went down (respec, admin
+//   subtract) just lowers the baseline.
+//   * The drain was `xp add <p> -N points`. Under LinearXP (#77) vanilla applies
+//     that to the progress bar, which LinearXP rewrites from its own capability
+//     within 10 ticks: only whole levels knocked off survive, priced on the
+//     vanilla curve (at level 1000 a 1600-point tax was usually nothing). The
+//     tax is N raw XP -- the XP a player earns, 75 to the level here -- and is
+//     taken as levels + fraction through the library's wallet.
+//   * Creative / spectator players are not taxed (the fork charges them nothing
+//     for the level-up either); their baseline still follows.
+// NOTE: this tax predates the #76 cumulative cost curve (which already makes
+// breadth expensive) and stacks on top of it.
 // =============================================================================
 
-const APTITUDE_NAMES = [
-  'strength', 'constitution', 'dexterity', 'defense',
-  'intelligence', 'building', 'magic', 'luck'
-]
+;(function () {
+  // Baseline: all aptitudes start at level 1 = 8 total
+  var BASELINE = 8
+  // 8 aptitudes x aptitudeMaxLevel 32, for the "level N/248" readout
+  var MAX_TOTAL = 256
 
-// Baseline: all aptitudes start at level 1 = 8 total
-const BASELINE = 8
-
-// Tax curve: XP points drained PER LEVEL based on total invested levels
-// Uses a piecewise function:
-//   0-32 invested (1st aptitude): no tax
-//   33-64 invested (2nd aptitude): 50 * (invested - 32) XP points per level
-//   65-96 invested (3rd aptitude): 200 * (invested - 64) + 1600 XP points per level
-//   97+ invested (4th+ aptitude): 800 * (invested - 96) + 8000 XP points per level
-function getMasteryTax(investedLevels) {
-  if (investedLevels <= 32) return 0
-  if (investedLevels <= 64) {
-    // Ramps from 0 to 1,600 XP across the 2nd aptitude
-    return Math.floor(50 * (investedLevels - 32))
+  // Tax curve: XP points drained PER LEVEL, by total invested levels
+  //   0-32  (1st aptitude): no tax
+  //   33-64 (2nd aptitude): 50 * (invested - 32)            ->    50 ..  1,600
+  //   65-96 (3rd aptitude): 200 * (invested - 64) + 1600    -> 1,800 ..  8,000
+  //   97+   (4th+ aptitude): 800 * (invested - 96) + 8000   -> 8,800 ..
+  var getMasteryTax = function (investedLevels) {
+    if (!(investedLevels > 32)) return 0
+    if (investedLevels <= 64) return Math.floor(50 * (investedLevels - 32))
+    if (investedLevels <= 96) return Math.floor(200 * (investedLevels - 64) + 1600)
+    return Math.floor(800 * (investedLevels - 96) + 8000)
   }
-  if (investedLevels <= 96) {
-    // Ramps from 1,600 to 8,000 XP across the 3rd aptitude
-    return Math.floor(200 * (investedLevels - 64) + 1600)
+
+  var warned = {}
+  var warnOnce = function (where, e) {
+    if (warned[where]) return
+    warned[where] = true
+    try { console.warn('[mastery_tax] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) {}
   }
-  // 97+: Ramps from 8,000+ XP per level — brutal
-  return Math.floor(800 * (investedLevels - 96) + 8000)
-}
 
-// Track previous total per player to detect level-ups
-let playerPrevTotals = {}
+  // uuid -> cumulative aptitude total at the last readable pass (session memory)
+  var prevTotals = {}
+  var keyOf = function (player) { return String(player.uuid.toString()) }
+  var forget = function (player) {
+    try { delete prevTotals[keyOf(player)] } catch (e) {}
+  }
 
-global.tick_masteryTax = (event) => {
-  let server = event.server
+  var checkPlayer = function (player) {
+    var all = global.icraft.aptitude.all(player)
+    if (!all) return                                  // not readable: leave the baseline alone
+    var total = Number(all.total)
+    if (!(total >= BASELINE) || total > 100000) return // not a clean read (an aptitude below 1)
 
-  server.players.forEach(player => {
-    let uuid = player.uuid.toString()
-
-    // Read total aptitude levels via command
-    let total = 0
-    APTITUDE_NAMES.forEach(apt => {
-      try {
-        // JustLeveling stores aptitude levels in player capability NBT
-        // We can read them via the data command
-        let result = server.runCommandSilent(
-          `data get entity ${player.username} ForgeData.justlevelingfork.aptitude.${apt}`
-        )
-        // runCommandSilent returns the value for data get
-        total += result
-      } catch (e) {
-        // If command fails, assume level 1 (default)
-        total += 1
-      }
-    })
-
-    let prevTotal = playerPrevTotals[uuid] || total
-
-    if (total > prevTotal) {
-      // Player leveled up! Calculate tax for each new level gained
-      let levelsGained = total - prevTotal
-      let invested = total - BASELINE
-
-      // Calculate cumulative tax for the levels gained
-      let totalTax = 0
-      for (let i = 0; i < levelsGained; i++) {
-        let levelAt = invested - levelsGained + i + 1
-        totalTax += getMasteryTax(levelAt)
-      }
-
-      if (totalTax > 0) {
-        // Drain the tax XP from the player
-        // Use negative levels via xp command (drains XP points)
-        server.runCommandSilent(`xp add ${player.username} -${totalTax} points`)
-
-        // Notify the player
-        let investedNow = total - BASELINE
-        let tierLabel = investedNow <= 32 ? '' :
-                        investedNow <= 64 ? ' §e(Mastery Tax: moderate)' :
-                        investedNow <= 96 ? ' §6(Mastery Tax: heavy)' :
-                        ' §c(Mastery Tax: extreme)'
-        player.tell(`§7[Mastery] §fAptitude level ${investedNow}/${256 - BASELINE}${tierLabel} §7— §f${totalTax} bonus XP drained`)
-      }
+    var key = keyOf(player)
+    if (!prevTotals.hasOwnProperty(key)) {            // first readable pass: baseline only
+      prevTotals[key] = total
+      return
     }
+    var prev = prevTotals[key]
+    if (total === prev) return
+    prevTotals[key] = total
+    if (total < prev) return                          // respec / admin subtract: no refund, new baseline
+    if (player.creative || player.spectator) return
 
-    playerPrevTotals[uuid] = total
+    // Tax for each level gained, at the invested count that level brought the player to
+    var gained = total - prev
+    var invested = total - BASELINE
+    var totalTax = 0
+    for (var i = 0; i < gained; i++) {
+      totalTax += getMasteryTax(invested - gained + i + 1)
+    }
+    if (!(totalTax > 0)) return
+
+    var drained = Math.round(global.icraft.aptitude.xp.takePoints(player, totalTax))
+    var tierLabel = invested <= 64 ? ' §e(Mastery Tax: moderate)'
+                  : invested <= 96 ? ' §6(Mastery Tax: heavy)'
+                  : ' §c(Mastery Tax: extreme)'
+    player.tell('§7[Mastery] §fAptitude level ' + invested + '/' + (MAX_TOTAL - BASELINE) + tierLabel +
+      ' §7— §f' + drained + ' bonus XP drained' +
+      (drained < totalTax ? ' §7(of ' + totalTax + ' — that was all you had)' : ''))
+  }
+
+  var onTick = function (event) {
+    event.server.players.forEach(function (player) {
+      try {
+        checkPlayer(player)
+      } catch (e) { warnOnce('tax pass', e) }
+    })
+  }
+  global.registerServerTick('tick_masteryTax', 40, 0, onTick)
+
+  // A new session or a new player entity starts from a fresh baseline: the first
+  // readable pass afterwards records, never taxes.
+  PlayerEvents.loggedIn(function (event) { forget(event.player) })
+  PlayerEvents.respawned(function (event) { forget(event.player) })
+  PlayerEvents.loggedOut(function (event) { forget(event.player) })
+
+  // Log the tax curve on load
+  ServerEvents.loaded(function (event) {
+    console.log('[IridescentCraft] Mastery Tax loaded (aptitudes via global.icraft.aptitude; drained through the XP wallet)')
+    console.log('  Tax curve (raw XP per level-up, by invested levels): 1-32 = 0 | 33 = ' + getMasteryTax(33) +
+      ' | 48 = ' + getMasteryTax(48) + ' | 64 = ' + getMasteryTax(64) + ' | 65 = ' + getMasteryTax(65) +
+      ' | 80 = ' + getMasteryTax(80) + ' | 96 = ' + getMasteryTax(96) + ' | 97 = ' + getMasteryTax(97) +
+      ' | 128 = ' + getMasteryTax(128) + ' | 200 = ' + getMasteryTax(200) + ' | 248 = ' + getMasteryTax(248))
   })
-}
-global.registerServerTick('tick_masteryTax', 40, 0)
-
-// Reset tracking on player login
-PlayerEvents.loggedIn(event => {
-  let uuid = event.player.uuid.toString()
-  delete playerPrevTotals[uuid]
-})
-
-// Log the tax curve on load
-ServerEvents.loaded(event => {
-  console.log('[IridescentCraft] Mastery Tax loaded')
-  console.log('  Tax curve (XP per level-up):')
-  console.log('    Levels 1-32 (1st aptitude): 0 tax')
-  console.log('    Level 33: ' + getMasteryTax(33) + ' XP')
-  console.log('    Level 48: ' + getMasteryTax(48) + ' XP')
-  console.log('    Level 64: ' + getMasteryTax(64) + ' XP')
-  console.log('    Level 65: ' + getMasteryTax(65) + ' XP')
-  console.log('    Level 80: ' + getMasteryTax(80) + ' XP')
-  console.log('    Level 96: ' + getMasteryTax(96) + ' XP')
-  console.log('    Level 97: ' + getMasteryTax(97) + ' XP')
-  console.log('    Level 112: ' + getMasteryTax(112) + ' XP')
-  console.log('    Level 128: ' + getMasteryTax(128) + ' XP')
-  console.log('    Level 200: ' + getMasteryTax(200) + ' XP')
-  console.log('    Level 248: ' + getMasteryTax(248) + ' XP')
-})
+})()
