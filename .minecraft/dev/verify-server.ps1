@@ -37,6 +37,15 @@
 #      once (the backup mod needed git; the box has none; nothing alarmed), so
 #      every run of this tool now looks. Pinned (manual-*) backups are counted
 #      and sized: nothing deletes those but the operator.
+#   4. Boot-log check - loud\loud-check.ps1 over the server's logs\: KubeJS
+#      handler aborts / load errors / ERROR lines, every deployed script loaded
+#      and none stale, every "loaded / registered / armed" line of the liveness
+#      manifest present, mixin / dependency / tick-loop / OOM / crash patterns.
+#      A deploy can land byte-for-byte and still boot broken: `Error in
+#      'LootJS.modifiers'` sat in every boot log for four months (twelve loot
+#      scripts dead) while this tool said PARITY OK. The manifest is taken from
+#      the commit the server is ON (it is versioned with the scripts), or from
+#      origin/main when that commit predates it. Nothing is written to the box.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -46,7 +55,9 @@
 #   pwsh .minecraft\dev\verify-server.ps1 -Fix                 # STOP THE SERVER FIRST: copy correct jar(s) onto live
 #
 # Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
-#             3 = parity, but the world backups are RED (stale / none / failed).
+#             3 = parity, but the world backups are RED (stale / none / failed);
+#             4 = parity and backups fine, but the boot-log check found failures
+#                 or could not run (server still starting, logs unreadable).
 # Read-only by default. -Fix is the only mutating mode and only ever WRITES to
 # the live server root (never the repo). It surfaces drift; it does NOT fix the
 # underlying launcher cause (manifest-blind GUI cleanup / marker short-circuit /
@@ -360,6 +371,36 @@ if (-not (Test-Path -LiteralPath $backupManifestPath)) {
 }
 
 # =============================================================================
+# 4. BOOT-LOG CHECK  (loud\loud-check.ps1 over the live logs; run in the report)
+# =============================================================================
+# The checker runs as its own process (its `exit` and error settings stay its
+# own) and prints straight to the console. Its exit code: 0 clean, 1 findings,
+# 2 could not check.
+$loudScript   = Join-Path (Join-Path $ScriptDir 'loud') 'loud-check.ps1'
+$loudLogs     = Join-Path $ServerRoot 'logs'
+$loudExit     = $null      # stays $null when the checker could not even be started
+$loudNote     = $null
+$loudManifest = $null      # temp copy of the manifest the server's commit carries
+$loudFrom     = 'the working tree'
+if (-not (Test-Path -LiteralPath $loudScript -PathType Leaf)) {
+    $loudNote = "loud-check.ps1 not found at $loudScript"
+} else {
+    $loudRel = '.minecraft/dev/loud/liveness_manifest.json'
+    $revs = @()
+    if (-not [string]::IsNullOrWhiteSpace($marker) -and -not $markerProblem) { $revs += $marker }
+    $revs += 'origin/main'
+    foreach ($rev in $revs) {
+        $txt = (& git -C $RepoRoot show "${rev}:$loudRel" 2>$null) -join "`n"
+        if ($LASTEXITCODE -eq 0 -and -not [string]::IsNullOrWhiteSpace($txt)) {
+            $loudManifest = Join-Path ([System.IO.Path]::GetTempPath()) ('icraft-liveness-' + [Guid]::NewGuid().ToString('N').Substring(0, 8) + '.json')
+            [System.IO.File]::WriteAllText($loudManifest, $txt, (New-Object System.Text.UTF8Encoding $false))
+            $loudFrom = if ($rev -eq 'origin/main') { 'origin/main (the commit the server is on has none)' } else { "the server's commit $(Short12 $rev)" }
+            break
+        }
+    }
+}
+
+# =============================================================================
 # REPORT
 # =============================================================================
 Write-Host ""
@@ -419,6 +460,32 @@ foreach ($n in $backupNotes) { Write-Host ("    - {0}" -f $n) -ForegroundColor D
 if ($IsVerbose -and $backupState -ne 'GREEN') {
     Write-Host "    cause: read logs\backup.log on the server (every decision and failure is there). A backup is taken in a Cycle's stopped window once the newest one is older than the interval; 'none yet' right after the launcher shipped just means no Cycle has happened since." -ForegroundColor DarkYellow
 }
+
+Write-Host ""
+Write-Host ("-- boot-log check (loud-check.ps1 over logs\; liveness manifest from {0}) --" -f $loudFrom) -ForegroundColor Cyan
+if ($loudNote) {
+    Write-Host ("  COULD NOT CHECK: {0}" -f $loudNote) -ForegroundColor Red
+} else {
+    $loudArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $loudScript, '-LogsDir', $loudLogs)
+    if ($loudManifest) { $loudArgs += @('-Manifest', $loudManifest) }
+    try {
+        & (Get-Process -Id $PID).Path @loudArgs
+        $loudExit = $LASTEXITCODE
+    } catch {
+        $loudNote = "loud-check.ps1 could not be started: $($_.Exception.Message)"
+        Write-Host ("  COULD NOT CHECK: {0}" -f $loudNote) -ForegroundColor Red
+    }
+    if ($loudManifest) { Remove-Item -LiteralPath $loudManifest -Force -ErrorAction SilentlyContinue }
+    if ($IsVerbose -and $loudExit -eq 2) {
+        Write-Host "    cause: exit 2 = a check could not run. Right after a Cycle the server is still starting (no 'Done' line yet): wait for the banner and run this again." -ForegroundColor DarkYellow
+    }
+}
+# 'GREEN' only on a clean exit: an unknown exit code is not a pass
+$loudState = 'RED'
+if ($loudExit -eq 0) { $loudState = 'GREEN' }
+$loudLine = "the boot-log check found failures (exit $loudExit): see the findings above"
+if ($null -eq $loudExit) { $loudLine = "the boot-log check could not run: $loudNote" }
+elseif ($loudExit -eq 2) { $loudLine = 'the boot-log check could not judge the boot (exit 2): see the CHECK-FAILED line(s) above' }
 
 # =============================================================================
 # -Fix (opt-in): copy the correct repo jar onto live for STALE / MISSING jars
@@ -501,16 +568,30 @@ if (-not $realDrift) {
         Write-Host "=== BACKUPS RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
         Write-Host "    -> the deploy is fine, the world backups are not: see logs\backup.log on the server." -ForegroundColor Yellow
+        if ($loudState -ne 'GREEN') {
+            Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
+        }
         exit 3
     }
     if ($backupState -eq 'YELLOW') {
         Write-Host ("    backups YELLOW: {0}" -f $backupLine) -ForegroundColor Yellow
+    }
+    if ($loudState -ne 'GREEN') {
+        Write-Host "=== BOOT LOG RED ===" -ForegroundColor Red
+        Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
+        Write-Host "    -> the deploy landed, and the server is not healthy on it. Fix at the repo source, push, Cycle; a server that is still starting needs a few minutes and a second run." -ForegroundColor Yellow
+        exit 4
     }
     exit 0
 }
 if ($backupState -eq 'RED') {
     Write-Host "=== BACKUPS RED (as well as the drift below) ===" -ForegroundColor Red
     Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
+}
+if ($loudState -ne 'GREEN') {
+    Write-Host "=== BOOT LOG RED (as well as the drift below) ===" -ForegroundColor Red
+    Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
 }
 
 if ($jarDrift -eq 0 -and $contentCommits -eq 0 -and $markerProblem) {
