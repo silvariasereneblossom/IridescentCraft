@@ -312,7 +312,7 @@ function codexSubmit(player, lane) {
   // Iterate each conversion entry; sum the matching item across all slots,
   // then consume whole conversion units up to the remaining cap.
   for (const itemId in CODEX_CONVERSIONS) {
-    const conv = CODEX_CONVERSIONS[itemId]
+    let conv = CODEX_CONVERSIONS[itemId]
 
     // Lane filter — the Heracles per-lane Submit buttons fire `submit <lane>`,
     // so only that lane's materials convert. Bare `submit` (lane undefined)
@@ -320,7 +320,7 @@ function codexSubmit(player, lane) {
     if (lane && codexLaneOf(itemId) !== lane) continue
 
     // Resolve the target tier, cap, and per-tier cap key for this entry.
-    let targetTier, cap, capKey
+    let targetTier = null, cap = null, capKey = null
     if (conv.contextual) {
       if (curTier === 0) continue            // terminal — contextual metals inert
       targetTier = curTier
@@ -335,30 +335,30 @@ function codexSubmit(player, lane) {
     // Count this item across the whole inventory.
     let available = 0
     for (let i = 0; i < size; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === itemId) available += stack.count
     }
     if (available <= 0) continue
     anyEligible = true
 
     // Remaining cap for this resource (at this tier, for contextual entries).
-    const already = pdata.getInt(capKey)
-    const remainingCap = cap - already
+    let already = pdata.getInt(capKey)
+    let remainingCap = cap - already
     if (remainingCap <= 0) { anyCapped = true; continue }
 
     // Submittable = min(available, remainingCap). Convert only whole units
     // (tokens * per) so partial leftovers are never destroyed.
-    const submittable = Math.min(available, remainingCap)
-    const tokens = Math.floor(submittable / conv.per) * conv.value
+    let submittable = Math.min(available, remainingCap)
+    let tokens = Math.floor(submittable / conv.per) * conv.value
     if (tokens <= 0) continue
-    const consumed = (tokens / conv.value) * conv.per
+    let consumed = (tokens / conv.value) * conv.per
 
     // Consume `consumed` items from the inventory.
     let toRemove = consumed
     for (let i = 0; i < size && toRemove > 0; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === itemId) {
-        const take = Math.min(stack.count, toRemove)
+        let take = Math.min(stack.count, toRemove)
         stack.count = stack.count - take
         toRemove -= take
         if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
@@ -421,19 +421,19 @@ function codexBalance(player) {
   // Count held tokens per tier.
   const held = { 1: 0, 2: 0, 3: 0 }
   for (let t = 1; t <= 3; t++) {
-    const id = CODEX_TOKENS[t].item
+    let id = CODEX_TOKENS[t].item
     for (let i = 0; i < size; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === id) held[t] += stack.count
     }
   }
 
   player.tell(Text.gold('═══ Codex Balance ═══'))
   for (let t = 1; t <= 3; t++) {
-    const c = CODEX_TOKENS[t]
-    const has = AStages.playerHasStage(c.grantsStage, player)
-    const meets = held[t] >= c.threshold
-    const colour = has ? Text.green : (meets ? Text.aqua : Text.white)
+    let c = CODEX_TOKENS[t]
+    let has = AStages.playerHasStage(c.grantsStage, player)
+    let meets = held[t] >= c.threshold
+    let colour = has ? Text.green : (meets ? Text.aqua : Text.white)
     let line = Text.gray('  Tier ' + t + '→' + (t + 1) + ': ')
       .append(colour(held[t] + ' / ' + c.threshold))
     if (has) line = line.append(Text.green('  ✔ ' + c.grantsStage + ' already unlocked'))
@@ -462,13 +462,13 @@ function codexCheckAdvance(player) {
   const size = inv.size
 
   for (let t = 1; t <= 3; t++) {
-    const c = CODEX_TOKENS[t]
+    let c = CODEX_TOKENS[t]
     if (AStages.playerHasStage(c.grantsStage, player)) continue
 
     // Count held tokens of this tier.
     let held = 0
     for (let i = 0; i < size; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === c.item) held += stack.count
     }
     if (held < c.threshold) continue
@@ -476,9 +476,9 @@ function codexCheckAdvance(player) {
     // Consume exactly the threshold (the tokens are spent to buy the tier).
     let toRemove = c.threshold
     for (let i = 0; i < size && toRemove > 0; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === c.item) {
-        const take = Math.min(stack.count, toRemove)
+        let take = Math.min(stack.count, toRemove)
         stack.count = stack.count - take
         toRemove -= take
         if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
@@ -555,7 +555,7 @@ function codexExchange(player, tier, amountArg) {
   // Count held tokens of this tier.
   let held = 0
   for (let i = 0; i < size; i++) {
-    const stack = inv.getStackInSlot(i)
+    let stack = inv.getStackInSlot(i)
     if (!stack.isEmpty() && stack.id === tokenId) held += stack.count
   }
   if (held <= 0) {
@@ -572,9 +572,9 @@ function codexExchange(player, tier, amountArg) {
   // Consume `convert` tokens from the inventory.
   let toRemove = convert
   for (let i = 0; i < size && toRemove > 0; i++) {
-    const stack = inv.getStackInSlot(i)
+    let stack = inv.getStackInSlot(i)
     if (!stack.isEmpty() && stack.id === tokenId) {
-      const take = Math.min(stack.count, toRemove)
+      let take = Math.min(stack.count, toRemove)
       stack.count = stack.count - take
       toRemove -= take
       if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)

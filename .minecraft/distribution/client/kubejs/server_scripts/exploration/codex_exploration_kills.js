@@ -221,7 +221,7 @@ const MINIBOSSES_BY_TIER = {
 function buildTierLookup(byTier) {
   const map = {}
   for (let t = 1; t <= 4; t++) {
-    const list = byTier[t]
+    let list = byTier[t]
     for (let i = 0; i < list.length; i++) {
       // First-write-wins: lower tiers listed first stay authoritative for dupes
       // (e.g. ancient_remnant T3 vs T4) — matches its primary milestone tier.

@@ -176,15 +176,15 @@ function relicScan(player) {
 
   const found = {}   // itemId -> aggregate
   for (let i = 0; i < size; i++) {
-    const stack = inv.getStackInSlot(i)
+    let stack = inv.getStackInSlot(i)
     if (stack.isEmpty()) continue
-    const id = stack.id
+    let id = stack.id
     if (id === RELIC_ESSENCE_ITEM) continue            // never sink the currency
-    const value = relicEssenceValue(id)
+    let value = relicEssenceValue(id)
     if (value <= 0) continue
     if (!found[id]) {
-      const cap = relicSinkCap(id)
-      const already = pdata.getInt(relicCapKey(id))
+      let cap = relicSinkCap(id)
+      let already = pdata.getInt(relicCapKey(id))
       found[id] = { available: 0, value: value, cap: cap, already: already,
                     remainingCap: Math.max(0, cap - already) }
     }
@@ -192,7 +192,7 @@ function relicScan(player) {
   }
   // sinkableNow = min(available, remainingCap)
   for (const id in found) {
-    const f = found[id]
+    let f = found[id]
     f.sinkableNow = Math.min(f.available, f.remainingCap)
   }
   return found
@@ -260,9 +260,9 @@ function relicSubmit(player, confirm) {
   lines.forEach(l => {
     let toRemove = l.n
     for (let i = 0; i < size && toRemove > 0; i++) {
-      const stack = inv.getStackInSlot(i)
+      let stack = inv.getStackInSlot(i)
       if (!stack.isEmpty() && stack.id === l.id) {
-        const take = Math.min(stack.count, toRemove)
+        let take = Math.min(stack.count, toRemove)
         stack.count = stack.count - take
         toRemove -= take
         if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
@@ -295,7 +295,7 @@ function relicBalance(player) {
   const size = inv.size
   let held = 0
   for (let i = 0; i < size; i++) {
-    const stack = inv.getStackInSlot(i)
+    let stack = inv.getStackInSlot(i)
     if (!stack.isEmpty() && stack.id === RELIC_ESSENCE_ITEM) held += stack.count
   }
 
