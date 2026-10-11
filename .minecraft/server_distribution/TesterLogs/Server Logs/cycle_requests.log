@@ -33,3 +33,13 @@
 [2026-10-11 07:31:43] [INFO] Wrote Cycle request (1791729103); waiting up to 60s for icraft-gui to answer.
 [2026-10-11 07:31:51] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
 [2026-10-11 07:31:51] [INFO] ================ cycle request end (success=True) ================
+[2026-10-11 12:06:29] [INFO] ================ cycle request start ================
+[2026-10-11 12:06:29] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Reason=lootaudit3  RequestedBy=SERENEBLOSSOM\silvariazemaitis
+[2026-10-11 12:06:29] [INFO] Wrote Cycle request (1791745589); waiting up to 60s for icraft-gui to answer.
+[2026-10-11 12:06:33] [WARN] icraft-gui declined the Cycle: skipped: server not up (PostExit) -- already booting or restarting
+[2026-10-11 12:06:33] [INFO] ================ cycle request end (success=False) ================
+[2026-10-11 15:55:07] [INFO] ================ cycle request start ================
+[2026-10-11 15:55:07] [INFO] ServerRoot=C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server  Reason=operator-deploy-whitelist  RequestedBy=SERENEBLOSSOM\silvariazemaitis
+[2026-10-11 15:55:07] [INFO] Wrote Cycle request (1791759307); waiting up to 60s for icraft-gui to answer.
+[2026-10-11 15:55:13] [INFO] icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).
+[2026-10-11 15:55:13] [INFO] ================ cycle request end (success=True) ================
