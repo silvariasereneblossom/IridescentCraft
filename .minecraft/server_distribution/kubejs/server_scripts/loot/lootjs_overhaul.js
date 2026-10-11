@@ -1044,18 +1044,26 @@ LootJS.modifiers(event => {
   // --- Keebsz Battle Towers ---
   // Loot tables confirmed: keebsz:{biome}/floor{N}and{N+1} (6 biomes × 5 tiers)
   // Lower floors (1-4) = T1, mid floors (5-6) = T1-T2, upper floors (7-10) = T2
+  //
+  // ALIAS TABLES (2026-10-11): the sandstone tower's underground floor pieces
+  // name keebsz:floor3and4 / floor5and6 / floor7and8 — no biome folder, and no
+  // such table was shipped, so those 48 chests were empty. kubejs/data now
+  // gives each of those ids a table that forwards to keebsz:desert/floorNandM
+  // (dev/loot_audit/alias_tables.json). LootJS sees only the ROOT id — the
+  // alias — so every keebsz regex in this pack makes the biome folder optional:
+  // (?:.*\/)? .
   event
-    .addLootTableModifier(/keebsz:.*\/floor[12]and[23]/)
+    .addLootTableModifier(/keebsz:(?:.*\/)?floor[12]and[23]/)
     .removeLoot('minecraft:diamond')
 
   event
-    .addLootTableModifier(/keebsz:.*\/floor[35]and[46]/)
+    .addLootTableModifier(/keebsz:(?:.*\/)?floor[35]and[46]/)
     .removeLoot('minecraft:diamond')
 
   // [2026-10-10] was /keebsz:.*\/floor[79]and[810]/, which (full-match, and
   // "[810]" being a single character) never matched floor9and10.
   event
-    .addLootTableModifier(/keebsz:.*\/floor(?:7and8|9and10)/)
+    .addLootTableModifier(/keebsz:(?:.*\/)?floor(?:7and8|9and10)/)
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Iron's Spellbooks structures ---
@@ -1088,36 +1096,35 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // --- When Dungeons Arise (131 tables) ---
-  // NOTE (2026-10-10): the two group regexes below end in "\/" with nothing
-  // after it, and table regexes are full-match — so they match NO table (and
-  // the heavenly_ placeholder matches none either). They are left as written
-  // because they are redundant: loot_overhaul.js strips diamonds from every
-  // dungeons_arise:chests/ table and Section 5A1.5 strips them from every
-  // pre-T3 chest.
+  // [2026-10-11] The two group regexes below ended in "\/" with nothing after
+  // it; table regexes are full-match, so they matched NO table. Completed with
+  // .* (operator ruling: the structures generate, so the rules must reach
+  // them). No change in what drops: loot_overhaul.js already strips diamonds
+  // from every dungeons_arise:chests/ table.
   // T1-T2 structures: villages, pubs, fishing huts, farms
   event
     .addLootTableModifier(
-      /dungeons_arise:chests\/(fishing_hut|bandit_village|greenwood_pub|giant_mushroom|bathhouse|aviary)\//)
+      /dungeons_arise:chests\/(fishing_hut|bandit_village|greenwood_pub|giant_mushroom|bathhouse|aviary)\/.*/)
     .removeLoot('minecraft:diamond')
 
   // T2 structures: temples, towers, foundry
+  // (desert_city_*: alias tables for three bandit-tower chests,
+  //  dev/loot_audit/alias_tables.json)
   event
     .addLootTableModifier(
-      /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\//)
+      /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\/.*/,
+      /dungeons_arise:chests\/desert_city_(?:big|medium|small)/)
     .removeLoot('minecraft:diamond')
 
   // T2-T3 structures: heavenly series (challenger, conqueror, rider).
-  // No strip needed at this tier — heavenly chests are allowed to be rich.
-  // LootJS requires an action per modifier; register a no-op diamond strip
-  // so the modifier validates (it's fine if heavenly chests never have
-  // raw diamond drops — the token/gem rewards are on scripts, not here).
-  event
-    .addLootTableModifier(/dungeons_arise:chests\/heavenly_/)
-    .removeLoot('minecraft:diamond_horse_armor') // harmless placeholder action
+  // No rule here on purpose. The modifier that used to sit here was a
+  // placeholder (a strip of an item these tables do not hold, on a regex that
+  // matched nothing); removed 2026-10-11.
 
   // Catch-all treasure tables (T2+). Same action-required constraint.
   event
-    .addLootTableModifier(/dungeons_arise:chests\/.*treasure/)
+    .addLootTableModifier(/dungeons_arise:chests\/.*treasure/,
+      'dungeons_arise:chests/desert_city_big')   // alias table -> bandit_towers_treasure
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Repurposed Structures ---
@@ -1148,13 +1155,16 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond_horse_armor')
 
   // --- IDAS: Integrated Dungeons and Structures (144 tables) ---
-  // NOTE (2026-10-10): /idas:chests\/(?!.*treasure)/ matches NO table (full-
-  // match: it would need a trailing .*). Left as written — in the Overworld
-  // the blanket pre-T3 strip (Section 5A1.5) already removes these diamonds,
-  // and completing the regex would also strip IDAS's Nether structure chest.
+  // [2026-10-11] /idas:chests\/(?!.*treasure)/ matched NO table (full-match:
+  // it needed a trailing .*). Completed, and kept to the Overworld: IDAS also
+  // has Nether structure chests (T3, diamonds allowed). No change in what
+  // drops there — the blanket pre-T3 strip (Section 5A1.5) already removes
+  // these diamonds.
   // General overworld structures (T1)
   event
-    .addLootTableModifier(/idas:chests\/(?!.*treasure)/)
+    .addLootTableModifier(/idas:chests\/(?!.*treasure).*/,
+      'minecraft:house_1')   // alias table -> idas:chests/abandonedhouse/abandonedhouse
+    .anyDimension('minecraft:overworld')
     .removeLoot('minecraft:diamond')
 
   // Treasure tables within IDAS (T2)
@@ -1209,11 +1219,16 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond')
 
   // --- Structory Towers (49 tables) — T1-T2 overworld ---
-  // NOTE (2026-10-10): matches NO table — Structory Towers' tables are
-  // structory_towers:basic/…, top/…, potions/… (no "chests" in the path).
-  // Redundant for diamonds (Section 5A1.5); see the same pattern in Section 7.
+  // [2026-10-11] The old pattern (/structory_towers:.*chests.*/) matched NO
+  // table: Structory Towers' tables are structory_towers:basic/…, top/…,
+  // end_tower, … (no "chests" in the path). Retargeted to every table of the
+  // mod and kept to the Overworld — it also has Nether towers (warped,
+  // strange, fortress) and an End tower. No change in what drops (Section
+  // 5A1.5 already strips these diamonds); see the tower-top marquee in
+  // Section 7.
   event
-    .addLootTableModifier(/structory_towers:.*chests.*/)
+    .addLootTableModifier(/^structory_towers:.+/)
+    .anyDimension('minecraft:overworld')
     .removeLoot('minecraft:diamond')
 
   // --- Epic Dungeons / "overhauledstructures" (12 tables, Overworld) ---
@@ -1309,11 +1324,10 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/betterfortresses:.*/)
     .removeLoot('minecraft:diamond_horse_armor')
 
-  // --- YUNG's Better Mineshafts ---
-  // T1: overworld mineshafts
-  event
-    .addLootTableModifier(/bettermineshafts:.*/)
-    .removeLoot('minecraft:diamond')
+  // (YUNG's Better Mineshafts ships no loot table of its own — its chest
+  //  minecarts roll minecraft:chests/abandoned_mineshaft — so the
+  //  /bettermineshafts:.*/ strip that stood here matched nothing; removed
+  //  2026-10-11.)
 
   // --- YUNG's Better Ocean Monuments (1 table) ---
   // T2: challenging overworld
@@ -1380,17 +1394,12 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/deeperdarker:chests\/.*/)
     .removeLoot('minecraft:diamond_horse_armor')
 
-  // --- The Abyss structures ---
-  // T3: Abyss dimension structures.
-  // NOTE (2026-10-11): matches NOTHING, and cannot. The installed The Abyss
-  // (TATOS 1.0.5_beta) has no chest that rolls a loot table: its only generated
-  // structure with chests (the Abylager hut) holds fixed items, and the
-  // theabyss:chests/underground_dungeon* tables are named only by structure
-  // pieces nothing generates (and are not shipped). The "13 tables" this
-  // comment used to claim do not exist. Kept as a harmless placeholder.
-  event
-    .addLootTableModifier(/theabyss:chests\/.*/)
-    .removeLoot('minecraft:diamond_horse_armor')
+  // (The Abyss: no rule. The installed The Abyss (TATOS 1.0.5_beta) has no
+  //  chest that rolls a loot table — its only generated structure with chests
+  //  (the Abylager hut) holds fixed items, and the
+  //  theabyss:chests/underground_dungeon* tables are named only by structure
+  //  pieces nothing generates (and are not shipped). The placeholder strip on
+  //  /theabyss:chests\/.*/ was removed 2026-10-11.)
 
   // --- Cataclysm structures (164 tables, targeting chests only) ---
   // T3-T4: high-tier dungeon structures (soul forge, burning arena, sunken city, etc.)
@@ -1440,6 +1449,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/desert_pyramid',
     'minecraft:chests/jungle_temple',
     'minecraft:chests/pillager_outpost',
+    'ctov:pillager_outpost/halloween/tower',   // alias table -> pillager_outpost (dev/loot_audit/alias_tables.json)
     'minecraft:chests/shipwreck_treasure',
     'minecraft:chests/stronghold_corridor',
     'minecraft:chests/stronghold_crossing',
@@ -1513,6 +1523,7 @@ LootJS.modifiers(event => {
   var villageHouseChests = [
     'minecraft:chests/village/village_plains_house',
     'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village_desert_house',   // alias table -> village/village_desert_house (dev/loot_audit/alias_tables.json)
     'minecraft:chests/village/village_savanna_house',
     'minecraft:chests/village/village_snowy_house',
     'minecraft:chests/village/village_taiga_house'
@@ -1703,6 +1714,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/shipwreck_map',
     'minecraft:chests/shipwreck_treasure',
     'minecraft:chests/pillager_outpost',
+    'ctov:pillager_outpost/halloween/tower',   // alias table -> pillager_outpost (dev/loot_audit/alias_tables.json)
     'minecraft:chests/underwater_ruin_big',
     'minecraft:chests/underwater_ruin_small',
     'minecraft:chests/spawn_bonus_chest',
@@ -1710,6 +1722,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/stronghold_crossing',
     'minecraft:chests/village/village_plains_house',
     'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village_desert_house',   // alias table -> village/village_desert_house (dev/loot_audit/alias_tables.json)
     'minecraft:chests/village/village_savanna_house',
     'minecraft:chests/village/village_snowy_house',
     'minecraft:chests/village/village_taiga_house',
@@ -1720,6 +1733,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_mason',
     'minecraft:chests/village/village_shepherd',
     'minecraft:chests/village/village_tannery',
+    'ctov:village/swamp/leatherworker',        // alias table -> village_tannery (dev/loot_audit/alias_tables.json)
     'minecraft:chests/village/village_temple'
   ]
 
@@ -1910,8 +1924,11 @@ LootJS.modifiers(event => {
   // match, so it only matched an id that ENDS in "chests/" (none does) and this
   // whole catch-all never ran. The trailing .* makes it match what the comment
   // above describes.
+  // [2026-10-11] plus the alias tables whose id has no chests/ in it
+  // (dev/loot_audit/alias_tables.json) — they forward to chest tables.
   var regexDiamondStrip = event
-    .addLootTableModifier(/^[a-z0-9_]+:.*chests?\/.*/)
+    .addLootTableModifier(/^[a-z0-9_]+:.*chests?\/.*/,
+      'minecraft:house_1', /^ctov:(?:village|pillager_outpost)\/.*/)
     .anyDimension('minecraft:overworld',
       'twilightforest:twilight_forest',
       'aether:the_aether',
@@ -2063,6 +2080,10 @@ LootJS.modifiers(event => {
   // tables and the food/seed boost is universally appropriate for any
   // "this is someone's home" chest in a CTOV village.
   addVillageFoodSeedBoost(/ctov:.*chests.*/)
+  // CTOV alias tables that forward to a ctov:chests/ table (see
+  // moddedVillagePatterns; the leatherworker alias forwards to the vanilla
+  // tannery table, which gets no boost).
+  addVillageFoodSeedBoost(/^ctov:village\/(?!swamp\/leatherworker).*/)
   // Villages and Pillages — similar coverage. [2026-10-10] the regex was
   // /villagesandpillages:.*chests.*/, which matched nothing: the mod's three
   // tables are villagesandpillages:village_witch/house/{attic_chest,barrel,
@@ -2302,6 +2323,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_armorer',
     'minecraft:chests/village/village_plains_house',
     'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village_desert_house',   // alias table -> village/village_desert_house (dev/loot_audit/alias_tables.json)
     'minecraft:chests/village/village_savanna_house',
     'minecraft:chests/village/village_snowy_house',
     'minecraft:chests/village/village_taiga_house',
@@ -2309,6 +2331,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_fisher',
     'minecraft:chests/village/village_fletcher',
     'minecraft:chests/village/village_tannery',
+    'ctov:village/swamp/leatherworker',        // alias table -> village_tannery (dev/loot_audit/alias_tables.json)
     'minecraft:chests/village/village_shepherd',
     'minecraft:chests/village/village_butcher',
     'minecraft:chests/village/village_cartographer',
@@ -2433,18 +2456,30 @@ LootJS.modifiers(event => {
   // artifact pool, the rotten-flesh strip, the QoL roll and the compass /
   // backpack adds below never ran for CTOV villages. Completed with .* .
   //
-  // The repurposed_structures and townstead patterns have the same defect and
-  // are deliberately LEFT AS WRITTEN (they still match nothing): Repurposed
-  // Structures' chests/villages/ tables include its Nether villages (crimson_*,
-  // warped_*), where the T2+ glyph / spell-book strips and the artifact filter
-  // below would remove the Nether's own T3 loot — whether those villages get
-  // the Overworld village treatment is a design call. Townstead ships no loot
-  // tables at all.
+  // [2026-10-11] The repurposed_structures pattern had the same defect
+  // (/^repurposed_structures:chests\/villages\// matched nothing). Completed
+  // for its OVERWORLD villages only (operator ruling: the structures generate,
+  // so the rules must reach them): badlands, bamboo, birch, cherry, dark_forest,
+  // giant_taiga, jungle, mountains, mushroom, oak, ocean and swamp. Its Nether
+  // villages (crimson_*, warped_*) are excluded — the T2+ glyph / spell-book
+  // strips and the artifact filter below would remove the Nether's own T3
+  // loot; they stay under the Nether dimension rules. The townstead pattern
+  // was removed: Townstead ships no loot table.
+  //
+  // /^ctov:village\/.*/ (2026-10-11) is for the CTOV ALIAS tables: three CTOV
+  // jobsite pieces name a structure path as their chest's loot table
+  // (ctov:village/desert_fortified/bakery, ctov:village/swamp/leatherworker,
+  // ctov:village/desert/); kubejs/data now forwards those ids to the tables
+  // the chests were meant to roll (dev/loot_audit/alias_tables.json). LootJS
+  // sees only the alias id, so the village rules have to name it. The
+  // leatherworker alias forwards to the VANILLA tannery table, so it sits in
+  // villageChests next to it instead (same rules as its target) and is
+  // excluded here — in both lists it would get the village adds twice.
   var moddedVillagePatterns = [
     /^ctov:chests\/.*/,
+    /^ctov:village\/(?!swamp\/leatherworker).*/,
     /^villagesandpillages:.+/,
-    /^repurposed_structures:chests\/villages\//,
-    /^townstead:.*chests?\//,
+    /^repurposed_structures:chests\/villages\/(?!crimson_|warped_).*/,
   ]
 
   // --- Village chest sanitization (runs FIRST) ---
@@ -2945,12 +2980,15 @@ LootJS.modifiers(event => {
   applyMarquee(['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest'],
     { theme: T1_MAGIC, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book',
       book: true, strip: BOTANIA_T1_STRIP })
-  // NOTE (2026-10-10): this pattern matches NO table — Structory Towers' 49
-  // tables are structory_towers:basic/…, top/…, potions/…, horse_equipment, …
-  // (no "chests" in the path), so this marquee has never applied. Left as
-  // written: which of those tables are "the tower chest" is a design call.
-  applyMarquee(/structory_towers:.*chests.*/,
-    { theme: T1_GENERIC_EXPLORATION, tier: 1, book: true })
+  // [2026-10-11] The old pattern (/structory_towers:.*chests.*/) matched NO
+  // table, so this marquee had never applied. Retargeted (operator ruling: the
+  // towers generate) to the tower-TOP chest, structory_towers:top/<tower>_top —
+  // one or two chests per tower, the reward at the end of the climb; the 4–16
+  // structory_towers:basic/… chests on the way up are not marquee chests.
+  // Overworld only: the Nether towers' tops (warped, strange, fortress) keep
+  // the Nether rules.
+  applyMarquee(/^structory_towers:top\/.*/,
+    { theme: T1_GENERIC_EXPLORATION, tier: 1, book: true, dimension: 'minecraft:overworld' })
   applyMarquee(['minecraft:chests/buried_treasure',
                 'minecraft:chests/underwater_ruin_big',
                 'minecraft:chests/underwater_ruin_small'],
@@ -2964,12 +3002,15 @@ LootJS.modifiers(event => {
       book: true, strip: BOTANIA_T1_STRIP })
 
   // === T2 marquees ===
-  // Twilight Lich Tower (TBD exact table IDs — likely twilightforest:structures/lichtower/*).
-  // Initial coverage is broad-pattern; verify in playtest.
-  // NOTE (2026-10-10): matches NO table — Twilight Forest has no structures/
-  // tables; its chest tables are twilightforest:chests/… (e.g. tower_room,
-  // tower_library). Still TBD.
-  applyMarquee(/twilightforest:structures\/lichtower\/.*/,
+  // Twilight Lich Tower.
+  // [2026-10-11] The old pattern (/twilightforest:structures\/lichtower\/.*/)
+  // matched NO table — Twilight Forest has no structures/ tables. The Lich
+  // Tower's chests are assigned from code: TFLootTables.TOWER_ROOM and
+  // TOWER_LIBRARY are referenced only by the Lich Tower pieces
+  // (lichtower.TowerWingComponent, lichtowerrevamp.SideTowerRoom); the Dark
+  // Tower has its own darktower_* tables.
+  applyMarquee(['twilightforest:chests/tower_room',
+                'twilightforest:chests/tower_library'],
     { theme: T2_ELDRITCH, tier: 2, book: true })
   // Aether dungeons (TBD exact table IDs — common pattern aether:chests/*).
   applyMarquee(/aether:chests\/.*dungeon.*/,
@@ -2986,10 +3027,11 @@ LootJS.modifiers(event => {
                 'minecraft:chests/bastion_bridge',
                 'minecraft:chests/bastion_other'],
     { theme: T3_PIGLIN, tier: 3, book: true })
-  // Undergarden ruins (TBD exact table IDs).
-  // NOTE (2026-10-10): matches NO table — the only Undergarden chest table is
-  // undergarden:chests/catacombs. Still TBD.
-  applyMarquee(/undergarden:chests\/.*ruin.*/,
+  // Undergarden catacombs.
+  // [2026-10-11] The old pattern (/undergarden:chests\/.*ruin.*/) matched NO
+  // table: the Undergarden's only chest table is undergarden:chests/catacombs
+  // (4 chests in the catacombs structure).
+  applyMarquee('undergarden:chests/catacombs',
     { theme: T3_UNDERDARK, tier: 3, book: true })
 
   // === T4 marquees ===
@@ -3003,15 +3045,10 @@ LootJS.modifiers(event => {
   applyMarquee(['minecraft:chests/ancient_city',
                 'minecraft:chests/ancient_city_ice_box'],
     { theme: T4_SCULK, tier: 4, book: true, structure: 'minecraft:ancient_city' })
-  // The Abyss marquees.
-  // NOTE (2026-10-11): matches NO table and never will with the installed The
-  // Abyss -- see the note on the theabyss:chests strip above (no Abyss chest
-  // rolls a loot table). So the T4_ABYSSAL themed pool and its enchanted book
-  // have NO outlet. OPEN (operator): give the pool another carrier (the Abyss
-  // rings went to Abyss bosses on 2026-10-11, loot/abyss_boss_loot.js) or
-  // retire it. Several of its items also sit in the T3/T4 dimension pools.
-  applyMarquee(/theabyss:chests\/.*/,
-    { theme: T4_ABYSSAL, tier: 4, book: true })
+  // (The Abyss marquee was removed 2026-10-11, operator ruling: no Abyss chest
+  //  rolls a loot table with the installed The Abyss, so the rule could never
+  //  apply — see the note in Section 4B. The T4_ABYSSAL list above is now
+  //  unused; every item on it is also added by another rule of this pack.)
 
   // =========================================================================
   // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY
@@ -3225,7 +3262,7 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // --- Floor 1-3 (keebsz:*/floor[12]and[23]) ---
-  var keebszLow = event.addLootTableModifier(/keebsz:.*\/floor[12]and[23]/)
+  var keebszLow = event.addLootTableModifier(/keebsz:(?:.*\/)?floor[12]and[23]/)
   keebszLow.removeLoot('minecraft:diamond')
   keebszLow.addLoot(
     LootEntry.of('minecraft:experience_bottle').limitCount([1, 3])
@@ -3242,7 +3279,7 @@ LootJS.modifiers(event => {
   })
 
   // --- Floor 4-6 (keebsz:*/floor[35]and[46]) ---
-  var keebszMid = event.addLootTableModifier(/keebsz:.*\/floor[35]and[46]/)
+  var keebszMid = event.addLootTableModifier(/keebsz:(?:.*\/)?floor[35]and[46]/)
   keebszMid.removeLoot('minecraft:diamond')
   keebszMid.addLoot(
     LootEntry.of('minecraft:experience_bottle').limitCount([2, 5])
@@ -3275,7 +3312,7 @@ LootJS.modifiers(event => {
   // [2026-10-10] regex was /keebsz:.*\/floor[79]and[810]/ — "[810]" is ONE
   // character, and table regexes are full-match, so "floor9and10" never matched
   // and the top two floors got none of this loot.
-  var keebszHigh = event.addLootTableModifier(/keebsz:.*\/floor(?:7and8|9and10)/)
+  var keebszHigh = event.addLootTableModifier(/keebsz:(?:.*\/)?floor(?:7and8|9and10)/)
   keebszHigh.addLoot(
     LootEntry.of('minecraft:experience_bottle').limitCount([3, 8])
       .when(c => c.randomChance(0.20))
@@ -3319,8 +3356,12 @@ LootJS.modifiers(event => {
   // [2026-10-10] regex was /chests\// — table regexes are full-match, so it
   // matched nothing and this strip never ran. /.*chests\/.*/ is "any table
   // whose id contains chests/".
+  // [2026-10-11] plus the alias tables whose id has no chests/ in it
+  // (dev/loot_audit/alias_tables.json): they forward to chests/ tables, and
+  // this rule sees only the alias id.
   event
-    .addLootTableModifier(/.*chests\/.*/)
+    .addLootTableModifier(/.*chests\/.*/,
+      'minecraft:house_1', /^ctov:(?:village|pillager_outpost)\/.*/)
     .removeLoot('@simplyswords')
 
   // event.enableLogging()

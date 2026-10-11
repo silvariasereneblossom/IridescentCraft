@@ -17,12 +17,18 @@
 // .matches(), decompiled 2.13.1), so that pattern matched no table at all and
 // this insurance strip had never run. /.*chests\/.*/ is "any table whose id
 // contains chests/".
+//
+// [2026-10-11] Plus the alias tables whose id has no chests/ in it (minecraft:
+// house_1, ctov:village/…, ctov:pillager_outpost/… — dev/loot_audit/
+// alias_tables.json). They forward to chests/ tables, and a LootJS rule sees
+// only the root id, i.e. the alias.
 // =============================================================================
 
 LootJS.modifiers(event => {
   var bows = global.ICRAFT_TMB_BOWS || []
   if (!bows.length) { console.warn('[zz_unique_chest_strip] no bow list — nothing stripped'); return }
-  var m = event.addLootTableModifier(/.*chests\/.*/)
+  var m = event.addLootTableModifier(/.*chests\/.*/,
+    'minecraft:house_1', /^ctov:(?:village|pillager_outpost)\/.*/)
   bows.forEach(b => m.removeLoot(b))
   console.log('[zz_unique_chest_strip] insurance strip armed for ' + bows.length
     + ' TMB bows across all chests/ tables (boss-exclusive)')

@@ -1,0 +1,98 @@
+{
+  "_about": [
+    "Loot table ids that a GENERATED structure's chest rolls but that no mod or datapack ships (the chest is empty in game).",
+    "Each key gets a small table under kubejs/data that forwards to the table(s) on the right (one pool, one roll, a minecraft:loot_table entry per target, equal weight).",
+    "Source of truth for gen_alias_tables.py (writes the JSON) and for audit_loot.py (checks the targets exist and that pack rules keyed on a target also reach the alias).",
+    "LootJS rules and Forge global loot modifiers see only the ROOT table id, i.e. the alias: a rule keyed on the target does not fire for the alias unless it names the alias too."
+  ],
+  "aliases": {
+    "keebsz:floor3and4": {
+      "targets": ["keebsz:desert/floor3and4"],
+      "why": "sandstone battletower, underground variants of floors 3-4 (16 chests); every other sandstone floor piece rolls keebsz:desert/floorNandM"
+    },
+    "keebsz:floor5and6": {
+      "targets": ["keebsz:desert/floor5and6"],
+      "why": "sandstone battletower, underground variants of floors 5-6 (16 chests)"
+    },
+    "keebsz:floor7and8": {
+      "targets": ["keebsz:desert/floor7and8"],
+      "why": "sandstone battletower, underground variants of floors 7-8 (16 chests)"
+    },
+    "idas:chests/brickhouse_windmill": {
+      "targets": ["idas:chests/brickhouse/brickhouse_windmill"],
+      "why": "idas:brickhouse/brickhouse_windmill (1 chest); the id is missing its folder"
+    },
+    "idas:chests/labyrinth": {
+      "targets": ["idas:chests/labyrinth/labyrinth"],
+      "why": "idas:labyrinth/floor1 and if_floor1 (6 chests); the id is missing its folder"
+    },
+    "idas:chests/minescreate": {
+      "targets": ["idas:chests/ancient_mines/minescreate"],
+      "why": "idas:abandonedhouse/abandonedhouse2 (2 chests); the id is missing its folder"
+    },
+    "idas:chests/pillagerjail": {
+      "targets": ["idas:chests/pillager_fortress/pillager_jail"],
+      "why": "idas:pillager_fortress/pillager_fortress3 (1 chest); the same piece's other jail chests roll pillager_jail"
+    },
+    "idas:chests/throne": {
+      "targets": ["idas:chests/castle/castle_throne"],
+      "why": "idas:labyrinth/floor2 (1 chest); the only throne table IDAS ships. Medium confidence."
+    },
+    "idas:chests/idaslibrary": {
+      "targets": ["idas:chests/abandonedhouse/abandonedhouse_library", "idas:chests/hunters_cabin/hunters_cabin_library"],
+      "why": "idas:abandonedhouse/abandonedhouse2 (2 chests) and idas:hunters_cabin/hunters_cabin (2 chests); one of the two structures' library tables per roll. Medium confidence."
+    },
+    "idas:chests/idasbasic": {
+      "targets": ["idas:chests/abandonedhouse/abandonedhouse", "idas:chests/pillager_fortress/pillager_basic"],
+      "why": "idas:abandonedhouse/abandonedhouse2 (1 chest) and idas:pillager_fortress/pillager_fortress1 (1 chest); one of the two structures' basic tables per roll. Medium confidence."
+    },
+    "minecraft:house_1": {
+      "targets": ["idas:chests/abandonedhouse/abandonedhouse"],
+      "why": "idas:abandonedhouse/abandonedhouse (1 barrel); the abandoned house's own basic table. Medium confidence."
+    },
+    "minecraft:chests/village_desert_house": {
+      "targets": ["minecraft:chests/village/village_desert_house"],
+      "why": "cataclysm:desert_occupied_village (2 chests); 7 other chests of the same structure roll the vanilla id, this one is missing its folder"
+    },
+    "dungeons_arise:chests/desert_city_big": {
+      "targets": ["dungeons_arise:chests/bandit_towers/bandit_towers_treasure"],
+      "why": "dungeons_arise:bandit_towers/bandit_towers_part_0 (2 chests); legacy size-tier id, mapped big -> treasure. Medium confidence."
+    },
+    "dungeons_arise:chests/desert_city_medium": {
+      "targets": ["dungeons_arise:chests/bandit_towers/bandit_towers_normal"],
+      "why": "bandit_towers_part_0 and bandit_towers_crossing_1 (2 chests); mapped medium -> normal. Medium confidence."
+    },
+    "dungeons_arise:chests/desert_city_small": {
+      "targets": ["dungeons_arise:chests/bandit_towers/bandit_towers_supply"],
+      "why": "bandit_towers_crossing_0 (1 chest); mapped small -> supply. Medium confidence."
+    },
+    "dungeons_arise:chests/illager_fortress_small": {
+      "targets": ["dungeons_arise:chests/illager_fort/illager_fort_normal"],
+      "why": "illager_fort_part_0 and illager_fort_part_1 (2 chests); the fort's non-treasure chest table"
+    },
+    "dungeons_arise:chests/mushroom_house/mushroom_house_barrel": {
+      "targets": ["dungeons_arise:chests/mushroom_house/mushroom_house_barrels"],
+      "why": "mushroom_house_bottom_3 (1 barrel); typo of mushroom_house_barrels"
+    },
+    "dungeons_arise:chests/mushroom_village/mushroom_village_weaponry": {
+      "targets": ["dungeons_arise:chests/mushroom_house/mushroom_house_normal"],
+      "why": "mushroom_house_bottom_3 (1 chest); no weaponry table is shipped, mapped to the same structure's normal chest table. Medium confidence."
+    },
+    "ctov:pillager_outpost/halloween/tower": {
+      "targets": ["minecraft:chests/pillager_outpost"],
+      "why": "ctov:pillager_outpost/dark_forest/tower (2 chests) carries its own structure path as the table id; every other CTOV outpost tower rolls the vanilla outpost table"
+    },
+    "ctov:village/desert_fortified/bakery": {
+      "targets": ["ctov:chests/village/village_bakery"],
+      "why": "ctov:village/desert_oasis/jobsite/bakery (2 chests) carries a structure path as the table id"
+    },
+    "ctov:village/swamp/leatherworker": {
+      "targets": ["minecraft:chests/village/village_tannery"],
+      "why": "ctov:village/swamp/jobsite/leatherworker (2 chests) carries its structure path as the table id; CTOV's other leatherworker jobsites roll the vanilla tannery table"
+    },
+    "ctov:village/desert/": {
+      "targets": ["ctov:chests/village/village_library"],
+      "why": "ctov:village/mesa_fortified/jobsite/library (2 chests) carries a truncated structure path, with a trailing slash, as the table id; 29 other CTOV library jobsites roll village_library. The file is therefore named '.json' (kubejs/data/ctov/loot_tables/village/desert/.json)."
+    }
+  }
+}

@@ -483,6 +483,7 @@ LootJS.modifiers(event => {
         "minecraft:chests/buried_treasure",
         "minecraft:chests/shipwreck_treasure",
         "minecraft:chests/pillager_outpost",
+        "ctov:pillager_outpost/halloween/tower",   // alias table -> pillager_outpost (dev/loot_audit/alias_tables.json)
         "minecraft:chests/woodland_mansion",
         "minecraft:chests/desert_pyramid",
         "minecraft:chests/jungle_temple",
@@ -521,6 +522,7 @@ LootJS.modifiers(event => {
         "minecraft:chests/desert_pyramid",
         "minecraft:chests/jungle_temple",
         "minecraft:chests/pillager_outpost",
+        "ctov:pillager_outpost/halloween/tower",   // alias table -> pillager_outpost (dev/loot_audit/alias_tables.json)
         "minecraft:chests/ancient_city"
     )
         .removeLoot("minecraft:enchanted_book")
@@ -586,12 +588,11 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:enchanted_book")
 
     // -----------------------------------------------------------------
-    // YUNG's Better Mineshafts — verified present
-    // Tier: T1 (overworld)
+    // YUNG's Better Mineshafts — no rule. The mod is installed but ships no
+    // loot table: its chest minecarts roll minecraft:chests/abandoned_mineshaft
+    // (Section 1). The /^bettermineshafts:.*/ strip that stood here matched
+    // nothing; removed 2026-10-11.
     // -----------------------------------------------------------------
-    event.addLootTableModifier(/^bettermineshafts:.*/)
-        .removeLoot("minecraft:diamond")
-        .removeLoot("minecraft:enchanted_book")
 
     // -----------------------------------------------------------------
     // YUNG's Better Ocean Monuments — verified present

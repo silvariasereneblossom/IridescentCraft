@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "dungeons_arise:chests/bandit_towers/bandit_towers_supply",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

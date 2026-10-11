@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "idas:chests/abandonedhouse/abandonedhouse_library",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "idas:chests/hunters_cabin/hunters_cabin_library",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}

@@ -110,6 +110,12 @@ yungs_*/
 !.minecraft/datapack_sources/icraft_loot_overrides/data/explorify/
 !.minecraft/datapack_sources/icraft_loot_overrides/data/structory/
 !.minecraft/datapack_sources/icraft_loot_overrides/data/structory_towers/
+# Same trap, kubejs/data (2026-10-11): the IDAS alias loot tables written by
+# dev/loot_audit/gen_alias_tables.py live in a dir named after the mod id.
+# gen_alias_tables.py --check fails if any alias table is git-ignored.
+!.minecraft/kubejs/data/idas/
+!.minecraft/server_distribution/kubejs/data/idas/
+!.minecraft/distribution/client/kubejs/data/idas/
 
 *.jar
 !iridescent-tetra-expansion-mod/gradle/wrapper/gradle-wrapper.jar

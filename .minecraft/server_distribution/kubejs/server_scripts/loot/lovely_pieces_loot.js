@@ -156,6 +156,7 @@ LootJS.modifiers(function (event) {
       'minecraft:chests/underwater_ruin_big',
       'minecraft:chests/underwater_ruin_small',
       'minecraft:chests/pillager_outpost',
+      'ctov:pillager_outpost/halloween/tower',   // alias table -> pillager_outpost (dev/loot_audit/alias_tables.json)
       'minecraft:chests/woodland_mansion',
       /dungeoncrawl:.*chests.*/,
       /explorify:.*chest.*/,   // [2026-10-10] was .*chests.* — Explorify's tables are explorify:chest/… (matched nothing)
@@ -164,12 +165,11 @@ LootJS.modifiers(function (event) {
       /dungeons_arise:.*/,
       /valhelsia_structures:.*chests.*/,
       /repurposed_structures:.*chests.*/,
-      /keebsz:.*\/floor.*/,
+      /keebsz:(?:.*\/)?floor.*/,   // biome folder optional: the keebsz:floorNandM alias tables
       /betterdeserttemples:.*/,
-      /yungsapi:.*/,
       /betterdungeons:.*/,
-      /betterstrongholds:.*/,
-      /bettermineshafts:.*/
+      /betterstrongholds:.*/
+      // (yungsapi and bettermineshafts ship no loot table; their patterns were removed 2026-10-11)
     )
     .randomChance(LSP_T1_SHARE)
     .addWeightedLoot(LSP_T1)

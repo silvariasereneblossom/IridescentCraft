@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "idas:chests/abandonedhouse/abandonedhouse",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "idas:chests/pillager_fortress/pillager_basic",
+          "weight": 1
+        }
+      ]
+    }
+  ]
+}
