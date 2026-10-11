@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "45a50423",
+    "generated_from":  "e64b1936",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5844,8 +5844,8 @@
                                                                    "size":  32277
                                                                },
                   "kubejs/assets/ars_nouveau/lang/en_us.json":  {
-                                                                    "sha256":  "56dabd8df93ec7a8ef69fd0fa81dfc8f648bbbd05381585f8018dd462ab89a07",
-                                                                    "size":  58
+                                                                    "sha256":  "401c666f721ae3b953258aecd4ad49592586a3be056d57453d720eadcdc104fa",
+                                                                    "size":  4069
                                                                 },
                   "kubejs/assets/cataclysm/lang/en_us.json":  {
                                                                   "sha256":  "d2cf3e34a6860ddbcd86c8a381c5d1bc35843fa60221404fd0b6f633f093bbc3",
@@ -5868,8 +5868,8 @@
                                                                              "size":  1230
                                                                          },
                   "kubejs/assets/kubejs/lang/en_us.json":  {
-                                                               "sha256":  "f36fe503703452935e9ab0e6ecfd511676b3aacaf57e30fbe8a5ca90fffe21a6",
-                                                               "size":  4254
+                                                               "sha256":  "54e0eebf3a0a6c796ad4433cc5aab5f989fc1fe2e3955fe869f94788df982632",
+                                                               "size":  3184
                                                            },
                   "kubejs/assets/kubejs/textures/block/example_block.png":  {
                                                                                 "sha256":  "783d78bd1ee61d3b32273670dff9d82c34cd74c5ae899a10f104f473828d5bbc",
@@ -5940,8 +5940,8 @@
                                                                        "size":  4166
                                                                    },
                   "kubejs/client_scripts/jei_hiding.js":  {
-                                                              "sha256":  "3b8f582b2b9c586a57e5a4a50849e1aaefdba05ee5d4e1df8eeb678abf23ea95",
-                                                              "size":  4130
+                                                              "sha256":  "0547044fe384070b6f40d7aa500045179894afad55f7c15f700cc6ead830bcb1",
+                                                              "size":  3912
                                                           },
                   "kubejs/client_scripts/mekasuit_mk2_tooltip.js":  {
                                                                         "sha256":  "d2f5c714c3814334f0661e2ac33efa378bfe9bf0cd0626724857b9ba42d90964",
@@ -7072,8 +7072,8 @@
                                                                      "size":  4597
                                                                  },
                   "kubejs/server_scripts/integration/dna_simple_staves_buffs.js":  {
-                                                                                       "sha256":  "f16193df7bd24311e9ecd4c1c158349407cab4af7504d8f1d3ceb7958d5fbe77",
-                                                                                       "size":  7989
+                                                                                       "sha256":  "8d049a43651494011503c804adf26990b64d133f880457a10ade33bfae073ee5",
+                                                                                       "size":  8213
                                                                                    },
                   "kubejs/server_scripts/integration/dna_simple_staves_strip.js":  {
                                                                                        "sha256":  "eeac489281b807202711cbca367e33d6bab11b086db9b58a37b1016febe2f144",
@@ -7160,8 +7160,8 @@
                                                                       "size":  37536
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "7334b7a5791c3919bc04667610f6e9c8d4cba373996ee5bfa119f4eae9203a9c",
-                                                                        "size":  172775
+                                                                        "sha256":  "105766c69d50774e1f29a93bdea42edc760580be5fb2f528d846b1f66a80b104",
+                                                                        "size":  173043
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "395df05336a0f74194780e7d5788b0db6ab1e1415c74f01229db9b75c52d109f",
@@ -7196,8 +7196,8 @@
                                                                              "size":  3677
                                                                          },
                   "kubejs/server_scripts/loot/terramity_structure_drops.js":  {
-                                                                                  "sha256":  "2d7c5e0a1840d692f75c77d74be0046a184e852506c49c0fd68b60191b1fdfb4",
-                                                                                  "size":  11609
+                                                                                  "sha256":  "bb0a8bcd7733820cad88888e171a0e9ac4b7b590f52d3b0052e05d002349a880",
+                                                                                  "size":  11993
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
                                                                               "sha256":  "9fe56481ff9c54e9d072fec1b833182cd55451b92444382df6f8956b9df7f7c2",
@@ -7504,24 +7504,24 @@
                                                                         "size":  5478
                                                                     },
                   "kubejs/startup_scripts/custom_items.js":  {
-                                                                 "sha256":  "9d45f7b9bc0943d8c54f768311b9121cc865ada6d6748bc02de66509ef5ab4a3",
-                                                                 "size":  21648
+                                                                 "sha256":  "2af516352fcb7823899c0311032975a1f9c20895738bb68c218c1098bb74e1c9",
+                                                                 "size":  16196
                                                              },
                   "kubejs/startup_scripts/deathskin_undead_bonus.js":  {
                                                                            "sha256":  "a844a039fdebeef3007195a46120d263c6f13b31b0a1f3c604af6a03b882f38e",
                                                                            "size":  4291
                                                                        },
                   "kubejs/startup_scripts/enchants/icraft_magic_enchants.js":  {
-                                                                                   "sha256":  "20df39e5bf583414bc7d1f3a28e3ddf6349a0c265d4e44dde2d28c12894ef684",
-                                                                                   "size":  18052
+                                                                                   "sha256":  "0a73e6c2d75ad9b12b5e27d975b112ae90d8dfee225cb1f4bdba7f1ac12f9828",
+                                                                                   "size":  18891
                                                                                },
                   "kubejs/startup_scripts/enchants/vorpal_rework.js":  {
-                                                                           "sha256":  "40d96df97f1a73de29faa993591eb30e161b6f6cf15011997439a4c40b2029ed",
-                                                                           "size":  15055
+                                                                           "sha256":  "990f697caef8fc6390eddfa26f5743429c5e898fee4766fe0f1df7cf2e88fd53",
+                                                                           "size":  15886
                                                                        },
                   "kubejs/startup_scripts/endgame_items.js":  {
-                                                                  "sha256":  "e40f589aba9f7d94a426701990dc929f4d30b75526078682dc4ffa0c17c86ec8",
-                                                                  "size":  12767
+                                                                  "sha256":  "bb206fcf545285440a73a8e8495b0e5e4480eb88d411e4cfa87068d6de4c9ba8",
+                                                                  "size":  12364
                                                               },
                   "kubejs/startup_scripts/example.js":  {
                                                             "sha256":  "395c96d3ddd178821db851f387e91560e606ea752177f66d2016f12bd0542b8f",
@@ -8400,7 +8400,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "47482d8162e8e4e1f79a5440a745a70e63be8e9dcec233c7e455b9d79082750d",
+                                                                         "sha256":  "409cf1b60e411a5ea9d3ec1e2c68c29baae11e6119cb3f0ac412a0463594dda8",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {
