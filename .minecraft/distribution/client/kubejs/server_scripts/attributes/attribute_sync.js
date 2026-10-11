@@ -239,6 +239,21 @@ core.onHurt('icraft.attribute_sync.hurt', function (event, ctx) {
     try {
       attacker.persistentData.putLong('icraft_last_crit_tick', attacker.server.tickCount)
     } catch (e) {}
+  } else {
+    // 2026-10-11: the stamp has to mean "THIS hit was a crit". It is keyed by
+    // tick, so after one crit every other hit the same player landed in that
+    // tick (a sweep, a multi-target spell) also read as a crit to the Vorpal /
+    // Arcane Vorpal decapitation handlers, which went live today. A hit whose
+    // roll FAILS takes the stamp back down. Hits are handled one after
+    // another (this roll, then the LATE-phase readers, per hit), so the
+    // readers of the hit that did crit have already run. Written only when a
+    // same-tick stamp is actually there.
+    try {
+      var critData = attacker.persistentData
+      if (Number(critData.getLong('icraft_last_crit_tick')) === Number(attacker.server.tickCount)) {
+        critData.putLong('icraft_last_crit_tick', -1)
+      }
+    } catch (e) {}
   }
 
   // -- Spell Power scaling --

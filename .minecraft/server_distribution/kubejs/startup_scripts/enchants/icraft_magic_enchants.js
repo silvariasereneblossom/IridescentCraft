@@ -135,15 +135,16 @@ try {
   // weapons typically have higher base damage / spell scaling already.
   // PLUS decapitation roll on custom crit -- matches melee Vorpal's
   // kill-confirm signature. Scaled per level (L1=5% L5=25%). Triggered
-  // via the custom KubeJS crit roll in attribute_sync.js (spells never
-  // set vanilla DamageSource.isCritical, so we rely on the icraft_last_
+  // via the custom KubeJS crit roll in attribute_sync.js (a DamageSource
+  // carries no crit flag at all, so we rely on the icraft_last_
   // crit_tick stamp left by attribute_sync.js on the custom crit fire).
   var VORPAL_ARCANE_CHANCE_PER_LEVEL = 0.03
   var VORPAL_ARCANE_DAMAGE_PER_LEVEL = 0.05
   var VORPAL_ARCANE_DECAP_PER_LEVEL  = 0.05
 
-  // Boss blocklist (same as melee Vorpal's decap handler). Decap on
-  // these entity types is unfair to the boss-fight pacing.
+  // Boss blocklist (melee Vorpal's list in vorpal_rework.js plus five more).
+  // Decap on these entity types is unfair to the boss-fight pacing. The
+  // pack's own boss roster is checked as well -- see isBossVictim below.
   var VORPAL_BOSS_BLOCKLIST = {
     'minecraft:wither': 1,
     'minecraft:ender_dragon': 1,
@@ -245,18 +246,64 @@ try {
   // ---------------------------------------------------------------------
   // Arcane Vorpal decap hook
   // ---------------------------------------------------------------------
-  // Spells don't set DamageSource.isCritical (vanilla only sets that
-  // for Player.attack melee swings). Spell damage flows through
-  // LivingHurtEvent same as melee, but the only crit signal is the
-  // custom KubeJS roll in attribute_sync.js (which stamps
-  // icraft_last_crit_tick when it fires). This listener runs at LOW
-  // priority -- after attribute_sync's NORMAL-priority crit roll --
-  // so the stamp is fresh by the time we read it.
+  // A DamageSource has no crit flag (vanilla 1.20.1 has no
+  // DamageSource.isCritical(), and no installed mod adds one). Spell
+  // damage flows through LivingHurtEvent same as melee, and the only
+  // crit signal is the custom KubeJS roll in attribute_sync.js (which
+  // stamps icraft_last_crit_tick when it fires). This listener runs in
+  // the registry's LATE phase -- after attribute_sync's NORMAL-phase
+  // crit roll -- so the stamp is fresh by the time we read it.
+  //
+  // [2026-10-11] This handler had never run: it threw at `source.getEntity()`
+  // on every hit, inside its own catch. What scripts see on this KubeJS
+  // build (javap of kubejs-forge-2001.6.5, @RemapForJS on its mixins):
+  //   DamageSource.getEntity()  -> getActual()      (getEntity is undefined)
+  //   Entity.level()            -> hidden; `entity.level` is the property
+  //   Entity.getType()          -> getEntityType(); getType() is KubeJS's
+  //                                own registry-id STRING
+  // The last one also broke the boss blocklist: ENTITY_TYPES.getKey(<string>)
+  // answers the registry's DEFAULT key (minecraft:pig) for every victim.
+
+  // Registry id of an entity ('minecraft:zombie'), '' when unknown.
+  var entityIdOf = function(entity) {
+    var s = ''
+    try { s = String(entity.getType()) } catch (e) { s = '' }
+    if (s.indexOf(':') > 0) return s
+    try {
+      var key = ForgeRegistries_ime.ENTITY_TYPES.getKey(entity.getEntityType())
+      if (key != null) s = String(key.toString())
+    } catch (e2) {}
+    return s
+  }
+
+  // "Don't behead bosses": the list above, plus every id the pack itself
+  // treats as a boss (global.icraft.core.isBoss, server_scripts/0_lib_core.js
+  // -- `global` is shared by all script types and the server scripts are
+  // loaded whenever a world is running). If that library is not there the
+  // list above still applies.
+  var isBossVictim = function(victimId) {
+    if (VORPAL_BOSS_BLOCKLIST[victimId] === 1) return true
+    try {
+      var core = global.icraft ? global.icraft.core : null
+      if (core && typeof core.isBoss === 'function' && core.isBoss(victimId) === true) return true
+    } catch (e) {}
+    return false
+  }
+
+  var decapWarned = false
   var decapHandler = function(event) {
       try {
         var source = event.getSource()
         if (source == null) return
-        var attacker = source.getEntity()
+        // Secondary damage (splash / chain / reflect dealt through
+        // icraft.core.dealDamage) is not a swing or a cast of its own: the crit
+        // roll does not run for it, so a same-tick stamp would be someone
+        // else's crit. Same rule as every onHurt handler (0_lib_core.js).
+        try {
+          var coreLib = global.icraft ? global.icraft.core : null
+          if (coreLib && typeof coreLib.secondary === 'function' && coreLib.secondary(event.getEntity())) return
+        } catch (eSecondary) {}
+        var attacker = source.getActual()
         if (!(attacker instanceof PlayerClass_ime)) return
         var weapon = attacker.getMainHandItem()
         if (weapon == null || weapon.isEmpty()) return
@@ -266,23 +313,31 @@ try {
         if (level <= 0) return
 
         // Did the custom crit roll fire on THIS tick? If not, no decap.
-        var lastCrit = attacker.persistentData.getLong('icraft_last_crit_tick')
-        var curTick = attacker.level().getServer().getTickCount()
+        // Same clock, read the same way as the writer (attribute_sync.js:
+        // putLong('icraft_last_crit_tick', attacker.server.tickCount)).
+        var lastCrit = Number(attacker.persistentData.getLong('icraft_last_crit_tick'))
+        var curTick = Number(attacker.server.tickCount)
         if (lastCrit !== curTick) return
 
         var victim = event.getEntity()
         if (victim instanceof PlayerClass_ime) return
-        var vKey = ForgeRegistries_ime.ENTITY_TYPES.getKey(victim.getType())
-        if (vKey == null) return
-        if (VORPAL_BOSS_BLOCKLIST[String(vKey.toString())] === 1) return
+        var victimId = entityIdOf(victim)
+        if (victimId.indexOf(':') < 0) return
+        if (isBossVictim(victimId)) return
 
         var chance = VORPAL_ARCANE_DECAP_PER_LEVEL * level
         if (Math.random() >= chance) return
 
-        // Set damage to victim's health + 1 to guarantee lethal.
-        event.setAmount(victim.getHealth() + 1.0)
+        // Raise the damage to the victim's health + 1. Never LOWER it: a hit
+        // that is already bigger stays as it is.
+        var lethal = victim.getHealth() + 1.0
+        if (lethal > event.getAmount()) event.setAmount(lethal)
       } catch (e) {
-        // Fail-soft
+        // Fail-soft, but not silent: say so once per load.
+        if (!decapWarned) {
+          decapWarned = true
+          console.warn('[IridescentCraft] arcane_vorpal decap handler threw (logged once): ' + e)
+        }
       }
   }
   // LATE phase: runs after attribute_sync's NORMAL crit roll stamps

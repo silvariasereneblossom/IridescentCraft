@@ -1,6 +1,6 @@
 // =============================================================================
 // DAMAGE_VS_UNDEAD ATTRIBUTE BONUS
-// Place in: kubejs/server_scripts/deathskin_undead_bonus.js
+// Place in: kubejs/startup_scripts/deathskin_undead_bonus.js
 // =============================================================================
 //
 // Multiplies outgoing damage to undead targets by (1 + attacker's
@@ -44,14 +44,19 @@ try {
     return damageVsUndeadAttr
   }
 
+  var handlerWarned = false
   var handler = function(event) {
       try {
         var target = event.getEntity()
         if (!target || !(target instanceof LivingEntity_ds)) return
         if (target.getMobType() !== MobType_ds.UNDEAD) return
 
+        // [2026-10-11] KubeJS exposes DamageSource.getEntity() to scripts as
+        // getActual() (@RemapForJS on its DamageSourceMixin). `source.getEntity()`
+        // does not exist here: it threw on every hit against an undead target,
+        // inside the catch below, so the bonus had never been applied.
         var source = event.getSource()
-        var attacker = source ? source.getEntity() : null
+        var attacker = source ? source.getActual() : null
         if (!attacker || !(attacker instanceof LivingEntity_ds)) return
 
         var attr = resolveAttr()
@@ -71,7 +76,11 @@ try {
                       ' -> ' + (amount * (1.0 + bonus)).toFixed(2) + ')')
         }
       } catch (e) {
-        // Fail-soft
+        // Fail-soft, but not silent: say so once per load.
+        if (!handlerWarned) {
+          handlerWarned = true
+          console.warn('[deathskin] damage_vs_undead handler threw (logged once): ' + e)
+        }
       }
   }
 

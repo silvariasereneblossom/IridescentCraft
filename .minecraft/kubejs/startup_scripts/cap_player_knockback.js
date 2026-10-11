@@ -67,6 +67,36 @@ try {
   // renormalizing. Kept at 1.5 -- not part of the emergency tightening.)
   var RATIO_CAP = 1.5
 
+  // [2026-10-11] WHO did it. Forge's LivingKnockBackEvent carries no damage
+  // source (javap, forge-1.20.1-47.4.6: get/setStrength, get/setRatioX,
+  // get/setRatioZ and the three getOriginal*; nothing else), so the old
+  // `event.getSource()` was never there, and `src.getEntity()` would not
+  // have existed for scripts either (KubeJS names it getActual()). Every
+  // line this script ever logged reads "attacker=unknown source=no-src", and
+  // since the log-once-per-attacker-type sets were keyed by that one word,
+  // only the FIRST capped event of a boot was reported at all.
+  //
+  // The attacker is on the victim: vanilla LivingEntity.hurt() calls
+  // setLastHurtByMob(<causing living entity>) just before it calls
+  // knockback() (and mob-melee / Knockback-enchant pushes follow hurt() in
+  // the same tick). For an arrow that is the SHOOTER -- the jockey skeleton,
+  // not the arrow. `label` says so when the knockback did not come with a
+  // hit in the same tick (the entry is then merely the last attacker).
+  // The cap itself never depended on any of this.
+  var attackerOf = function(victim) {
+    var who = { key: 'unknown', label: 'unknown' }
+    try {
+      var by = victim.getLastHurtByMob()
+      if (!by) return who
+      var id = String(by.getType())                 // KubeJS: the registry id string
+      who.key = id
+      who.label = id
+      var age = Number(victim.age) - Number(victim.getLastHurtByMobTimestamp())   // `age` = Entity.tickCount
+      if (age !== 0) who.label = id + ' (stale ' + age + 't)'
+    } catch (e) {}
+    return who
+  }
+
   var handler = function(event) {
       try {
         var victim = event.getEntity()
@@ -90,32 +120,21 @@ try {
         if (!global._kb_seen_count) global._kb_seen_count = 0
         if (global._kb_seen_count < 10) {
           global._kb_seen_count++
-          var src1 = null
-          try { src1 = event.getSource ? event.getSource() : null } catch (e) {}
-          var atk1 = null
-          try { atk1 = src1 ? src1.getEntity() : null } catch (e) {}
-          var atkName = atk1 ? String(atk1.getType().toString()) : 'unknown'
-          var srcName = src1 ? String(src1.type ? src1.type : src1) : 'no-src'
           console.log('[knockback_cap] event #' + global._kb_seen_count +
                       ' strength=' + strength.toFixed(3) +
                       ' ratioX=' + ratioX.toFixed(3) +
                       ' ratioZ=' + ratioZ.toFixed(3) +
-                      ' attacker=' + atkName +
-                      ' source=' + srcName)
+                      ' attacker=' + attackerOf(victim).label)
         }
 
         if (strength > KNOCKBACK_CAP) {
           event.setStrength(KNOCKBACK_CAP)
           if (!global._kb_cap_seen) global._kb_cap_seen = {}
-          var src = null
-          try { src = event.getSource ? event.getSource() : null } catch (e) {}
-          var attacker = null
-          try { attacker = src ? src.getEntity() : null } catch (e) {}
-          var key = attacker ? String(attacker.getType().toString()) : 'unknown'
-          if (!global._kb_cap_seen[key]) {
-            global._kb_cap_seen[key] = true
+          var who = attackerOf(victim)
+          if (!global._kb_cap_seen[who.key]) {
+            global._kb_cap_seen[who.key] = true
             console.log('[knockback_cap] CAPPED strength ' + strength.toFixed(2) +
-                        ' -> ' + KNOCKBACK_CAP + ' from ' + key)
+                        ' -> ' + KNOCKBACK_CAP + ' from ' + who.label)
           }
         }
 
@@ -136,15 +155,11 @@ try {
           event.setRatioX(ratioX * scale)
           event.setRatioZ(ratioZ * scale)
           if (!global._kb_ratio_seen) global._kb_ratio_seen = {}
-          var src2 = null
-          try { src2 = event.getSource ? event.getSource() : null } catch (e) {}
-          var atk2 = null
-          try { atk2 = src2 ? src2.getEntity() : null } catch (e) {}
-          var k2 = atk2 ? String(atk2.getType().toString()) : 'unknown'
-          if (!global._kb_ratio_seen[k2]) {
-            global._kb_ratio_seen[k2] = true
+          var who2 = attackerOf(victim)
+          if (!global._kb_ratio_seen[who2.key]) {
+            global._kb_ratio_seen[who2.key] = true
             console.log('[knockback_cap] CAPPED ratio mag=' + rMag.toFixed(2) +
-                        ' -> 1.0 from ' + k2)
+                        ' -> 1.0 from ' + who2.label)
           }
         }
       } catch (e) {

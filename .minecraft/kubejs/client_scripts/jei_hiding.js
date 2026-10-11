@@ -27,7 +27,9 @@ JEIEvents.hideItems(event => {
     'terramity:meteor_cannon', 'terramity:moondrill_cannon', 'terramity:railgun',
     'terramity:rocket_launcher', 'terramity:pump_action_shotgun',
     'terramity:sawed_off_shotgun', 'terramity:flare_gun',
-    'terramity:hellspec_super_shotgun',
+    // ('terramity:hellspec_super_shotgun' removed 2026-10-11: Terramity 0.9.8
+    //  registers no such item -- only its hellspec_shotshells ammo, listed
+    //  below. An unknown id hides nothing here, so this was a dead entry.)
     'terramity:gunkshot_projectile', 'terramity:flare_gun_projectile',
     'terramity:enderswap_projectile', 'terramity:shadowflame_bullet',
     'terramity:steel_shell', 'terramity:chthonic_shell_casing',
