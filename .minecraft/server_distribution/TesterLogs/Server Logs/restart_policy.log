@@ -1,0 +1,8 @@
+[2026-10-10 18:10:44] policy: mode DRY-RUN (logging only); Cycle when empty for 2m and up 12m, or up 30m with players on (1m warning) [override file in effect]
+[2026-10-10 18:12:44] server up since 2026-10-10 18:12:15 -- uptime clock started
+[2026-10-10 18:12:44] uptime 28s | players not asked yet | empty for 0s | wait: nothing due yet
+[2026-10-10 18:22:44] uptime 10m | players 0 | empty for 0s | wait: nothing due yet
+[2026-10-10 18:24:44] uptime 12m | players 0 | empty for 2m | CYCLE: empty and past the empty threshold -- DRY-RUN, not acting
+[2026-10-10 18:25:44] policy: mode LIVE; Cycle when empty for 2m and up 12m, or up 30m with players on (1m warning) [override file in effect]
+[2026-10-10 18:25:44] uptime 13m | players 0 | empty for 3m | CYCLE: empty and past the empty threshold
+[2026-10-10 18:25:44] ACTION: Cycle now, no warnings (up 13m, empty for 3m)
