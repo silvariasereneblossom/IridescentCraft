@@ -14,12 +14,11 @@ import com.mojang.logging.LogUtils;
 /**
  * Iridescent Modular Spells -- @Mod entrypoint.
  *
- * Phase 1 scope: one modular ISS Copper Spell Book with two NBT-based
- * module slots (cover, pages), three materials (leather, iron, diamond),
- * smithing-table upgrade recipe, server-tick attribute application.
- *
- * Tetra integration deferred to Phase 2 -- Phase 1 uses plain NBT for
- * module storage to validate the player experience cheaply.
+ * Modular spell books for Iron's Spellbooks + Ars Nouveau. Both books
+ * implement Tetra's IModularItem: modules are installed at the Tetra
+ * workbench and their stats arrive as ordinary item attribute modifiers.
+ * (The Phase 1 prototype -- plain-NBT cover / pages slots filled at an
+ * anvil -- was retired in 6D and its code has been removed.)
  *
  * License: MIT.
  */

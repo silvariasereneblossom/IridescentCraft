@@ -8,13 +8,12 @@ import com.hollingsworth.arsnouveau.api.spell.SpellTier;
 import com.hollingsworth.arsnouveau.common.items.SpellBook;
 import com.iridescentcraft.modspells.IridescentModularSpells;
 import com.iridescentcraft.modspells.client.IcraftArsSpellBookRenderer;
+import com.iridescentcraft.reforging.item.ModuleVariants;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -33,7 +32,6 @@ import se.mickelus.tetra.module.data.SynergyData;
 import se.mickelus.tetra.module.data.ToolData;
 import se.mickelus.tetra.module.schematic.RepairSchematic;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,9 +43,9 @@ import java.util.concurrent.TimeUnit;
  * implements Tetra's {@link IModularItem} so the book is recognized by
  * the Tetra workbench.
  *
- * <p>Phase 6B: skeleton only. {@code getMajorModuleKeys} reports a
- * 4-slot layout. Stat bonuses still come from the legacy
- * {@code imodspells_slots} NBT system via
+ * <p>Stats come from the installed Tetra modules (material / lining /
+ * improvement attributes, surfaced through {@code getAttributeModifiers}
+ * while the book is held) plus the enchant-driven bonuses summed by
  * {@link com.iridescentcraft.modspells.event.AttributeApplier}.
  *
  * <p>Tetra slot layout (5 majors, no minors): {@code core}, {@code front_cover},
@@ -89,39 +87,9 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
     private final SynergyData[] synergies = new SynergyData[0];
 
-    // ===== Legacy Phase 1-5 imodspells_slots NBT system (retired in 6D) =====
-
-    public static final String SLOTS_NBT_KEY = ModularSpellBookItem.SLOTS_NBT_KEY;
-    public static final String SLOT_COVER = ModularSpellBookItem.SLOT_COVER;
-    public static final String SLOT_PAGES = ModularSpellBookItem.SLOT_PAGES;
-
-    public static final Map<String, Map<ModularSpellBookItem.AttributeKey, Double>> COVER_BONUSES = new HashMap<>();
-    public static final Map<String, Map<ModularSpellBookItem.AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
-
-    static {
-        COVER_BONUSES.put("white_wool",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.05));
-        COVER_BONUSES.put("manaweave_cloth",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.10,
-                       ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.05));
-        COVER_BONUSES.put("sorcerer_robes",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.15,
-                       ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.10));
-        COVER_BONUSES.put("spell_cloth",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.20,
-                       ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.15));
-
-        PAGES_BONUSES.put("white_wool",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.02));
-        PAGES_BONUSES.put("manaweave_cloth",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.05));
-        PAGES_BONUSES.put("sorcerer_robes",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.10,
-                       ModularSpellBookItem.AttributeKey.SPELL_POWER, 0.05));
-        PAGES_BONUSES.put("spell_cloth",
-                Map.of(ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.15,
-                       ModularSpellBookItem.AttributeKey.SPELL_POWER, 0.10));
-    }
+    // The Phase 1-5 "imodspells_slots" cover / pages NBT system was retired in
+    // 6D and its code removed 2026-10 -- see the note in ModularSpellBookItem.
+    // A stack still carrying that tag is harmless; nothing reads it.
 
     public ModularArsSpellBookItem(Properties properties, SpellTier tier) {
         super(properties, tier);
@@ -130,28 +98,21 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     }
 
     /**
-     * Inlined IModularItem.damageItemImpl with a local try/catch around
-     * the ModularItemDamageEvent post(). See ItemModularArmor.damageItem
-     * for the rationale: ASMEventHandler is in the MC-BOOTSTRAP layer
-     * so iridescent_durability_clamp's EventBusInvokeMixin can never
-     * apply, and Aetheric Tetranomicon's listener crashes on our
-     * subclass. Inline guard preserves BloodboundEffect + the
-     * maxDamage-1 clamp at the cost of any later listener's
+     * IModularItem.damageItemImpl with a guard around the
+     * ModularItemDamageEvent post() -- the body is shared with the armor,
+     * the wand and the ISS book in ModularDamageBus.damageItem. See
+     * ItemModularArmor.damageItem for the rationale: ASMEventHandler is in
+     * the MC-BOOTSTRAP layer so iridescent_durability_clamp's
+     * EventBusInvokeMixin can never apply, and Aetheric Tetranomicon's
+     * listener crashes on our subclass. The guard preserves BloodboundEffect
+     * + the maxDamage-1 clamp at the cost of any later listener's
      * contribution on impacted stacks.
      */
     @Override
     public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
             ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
-        se.mickelus.tetra.event.ModularItemDamageEvent event =
-                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
-        com.iridescentcraft.reforging.event.ModularDamageBus.safePost(event, "spellbook_ars", "iridescent_modular_spells");
-        int actualAmount = event.getAmount();
-        try {
-            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
-        } catch (Throwable t) {
-            // best-effort
-        }
-        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
+        return com.iridescentcraft.reforging.event.ModularDamageBus.damageItem(
+                stack, amount, entity, "spellbook_ars", "iridescent_modular_spells");
     }
 
     /**
@@ -278,42 +239,6 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         return propertyCache;
     }
 
-    // ===== Legacy NBT slot accessors (used by AttributeApplier through 6C) =====
-
-    public static String getSlotMaterial(ItemStack stack, String slotName) {
-        if (stack.isEmpty() || stack.getTag() == null) return null;
-        CompoundTag slots = stack.getTag().getCompound(SLOTS_NBT_KEY);
-        if (slots.isEmpty()) return null;
-        if (!slots.contains(slotName)) return null;
-        String material = slots.getString(slotName);
-        return material.isEmpty() ? null : material;
-    }
-
-    public static void setSlotMaterial(ItemStack stack, String slotName, String material) {
-        CompoundTag tag = stack.getOrCreateTag();
-        CompoundTag slots = tag.getCompound(SLOTS_NBT_KEY);
-        if (material == null || material.isEmpty()) {
-            slots.remove(slotName);
-        } else {
-            slots.putString(slotName, material);
-        }
-        tag.put(SLOTS_NBT_KEY, slots);
-    }
-
-    public static double getTotalBonus(ItemStack stack, ModularSpellBookItem.AttributeKey key) {
-        if (!(stack.getItem() instanceof ModularArsSpellBookItem)) return 0.0;
-        double total = 0.0;
-        String cover = getSlotMaterial(stack, SLOT_COVER);
-        if (cover != null && COVER_BONUSES.containsKey(cover)) {
-            total += COVER_BONUSES.get(cover).getOrDefault(key, 0.0);
-        }
-        String pages = getSlotMaterial(stack, SLOT_PAGES);
-        if (pages != null && PAGES_BONUSES.containsKey(pages)) {
-            total += PAGES_BONUSES.get(pages).getOrDefault(key, 0.0);
-        }
-        return total;
-    }
-
     @Override
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
@@ -392,21 +317,7 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
     /** Read the variant-key suffix of the ars_book/core slot's installed module. */
     private static String readArsCoreMaterialSuffix(ItemStack stack) {
-        if (!(stack.getItem() instanceof IModularItem item)) return null;
-        try {
-            se.mickelus.tetra.module.ItemModuleMajor[] majors = item.getMajorModules(stack);
-            if (majors == null) return null;
-            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
-                if (m == null) continue;
-                if (!"ars_book/core".equals(m.getSlot())) continue;
-                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
-                if (v == null || v.key == null) continue;
-                int slash = v.key.lastIndexOf('/');
-                if (slash < 0 || slash == v.key.length() - 1) continue;
-                return v.key.substring(slash + 1);
-            }
-        } catch (Throwable t) { /* fall through */ }
-        return null;
+        return ModuleVariants.majorVariantSuffix(stack, TETRA_SLOT_CORE);
     }
 
     // 2026-05-15: unified mana pool migration collapsed Ars perk attrs into
@@ -453,17 +364,5 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
                     : String.format("%+.1f%%", v * 100.0);
             tooltip.add(Component.literal("  " + formatted + " " + entry.getValue()).withStyle(ChatFormatting.AQUA));
         }
-    }
-
-    private static void appendSlotLine(List<Component> tooltip, ItemStack stack,
-                                       String slotKey, String displayName) {
-        String material = getSlotMaterial(stack, slotKey);
-        MutableComponent line = Component.literal("  " + displayName + ": ");
-        if (material == null) {
-            line.append(Component.literal("(empty)").withStyle(ChatFormatting.DARK_GRAY));
-        } else {
-            line.append(Component.literal(material).withStyle(ChatFormatting.YELLOW));
-        }
-        tooltip.add(line.withStyle(ChatFormatting.GRAY));
     }
 }

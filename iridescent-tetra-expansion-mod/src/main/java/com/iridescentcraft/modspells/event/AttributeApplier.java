@@ -6,14 +6,15 @@ import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
 import com.iridescentcraft.reforging.enchant.MagicWeaponCategory;
 import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.event.TickEvent;
@@ -28,16 +29,29 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Server-tick scanner that applies module bonuses from any equipped
- * {@link ModularSpellBookItem} to the holding player's attributes.
+ * Server-tick scanner over the magic gear a player has equipped: main hand,
+ * off hand and every Curios slot. Once a second it does two things.
  *
- * <p>Approach: every 20 ticks (1s), find each modular spell book in
- * the player's mainhand / offhand / curios inventory, sum the slot
- * bonuses by attribute, and apply via a permanent attribute modifier
- * with a deterministic UUID per attribute. Each pass we replace the
- * modifier only if its value changed (an unchanged one is left alone, so
- * the attribute isn't re-synced every second), so a slot swap takes
- * effect within 1s.
+ * <ol>
+ *   <li><b>Enchant bonuses.</b> {@code mana_capacity} (+5% max mana per level)
+ *       and {@code mana_flow} (+5% mana regen per level) on any equipped
+ *       modular spell book or magic weapon (wand / staff) are summed and
+ *       applied as ONE attribute modifier per attribute, with a stable UUID
+ *       (see {@link Bonus}). The modifier is replaced only when its value
+ *       changed (an unchanged one is left alone, so the attribute isn't
+ *       re-synced every second), so swapping gear takes effect within 1s.</li>
+ *   <li><b>The icraft mirror.</b> Tetra module attributes of equipped modular
+ *       books are mirrored into {@code icraft_book_<stat>} player NBT for the
+ *       KubeJS damage / sync layer (see below).</li>
+ * </ol>
+ *
+ * <p>Module and material stats themselves do NOT go through here: they are
+ * ordinary item attribute modifiers, surfaced by each book's
+ * {@code getAttributeModifiers}. The Phase 1-5 cover / pages NBT system
+ * ("imodspells_slots") this class was originally written to apply was
+ * retired in 6D and its code removed 2026-10; the two modifiers only that
+ * system could write are stripped once at login (see
+ * {@link #RETIRED_MODIFIERS}).
  *
  * <p>Why permanent modifiers (not transient): transient modifiers vanish
  * on player relog, then re-apply, then vanish again -- causes flicker.
@@ -52,20 +66,72 @@ import java.util.concurrent.ConcurrentHashMap;
         bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AttributeApplier {
 
-    /** Stable UUIDs per attribute key so modifiers are upsert-able. */
-    private static final Map<ModularSpellBookItem.AttributeKey, UUID> MOD_UUIDS = new HashMap<>();
-    static {
-        MOD_UUIDS.put(ModularSpellBookItem.AttributeKey.SPELL_POWER,
-                UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000001"));
-        MOD_UUIDS.put(ModularSpellBookItem.AttributeKey.MAX_MANA,
-                UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000002"));
-        MOD_UUIDS.put(ModularSpellBookItem.AttributeKey.MANA_REGEN,
-                UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000003"));
-        MOD_UUIDS.put(ModularSpellBookItem.AttributeKey.COOLDOWN_REDUCTION,
-                UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000004"));
+    /** Bonus per enchant level, as a MULTIPLY_BASE fraction (0.05 = +5%). */
+    private static final double BONUS_PER_ENCHANT_LEVEL = 0.05;
+
+    /**
+     * What the enchant scan can grant: the attribute each bonus lands on and
+     * the stable UUID that makes its modifier upsert-able.
+     *
+     * <p>There is deliberately no Ars-side entry. The unified mana pool
+     * ({@code ArsManaCapMixin}) makes Ars read its mana cap straight from
+     * {@code irons_spellbooks:max_mana} and turns Ars's own
+     * {@code setMaxMana} into a no-op, so {@link #MAX_MANA} already IS the
+     * Ars max-mana bonus -- a second "Ars max mana" modifier could only land
+     * on the same attribute and double the enchant. Ars spell damage is not
+     * an enchant bonus at all; the one thing that ever fed it here was the
+     * retired cover system.
+     */
+    private enum Bonus {
+        MAX_MANA("irons_spellbooks:max_mana", "8a1e0c01-2e1d-4f0a-9d1f-101000000002"),
+        MANA_REGEN("irons_spellbooks:mana_regen", "8a1e0c01-2e1d-4f0a-9d1f-101000000003");
+
+        final String attributeId;
+        final UUID uuid;
+
+        Bonus(String attributeId, String uuid) {
+            this.attributeId = attributeId;
+            this.uuid = UUID.fromString(uuid);
+        }
     }
 
+    private static final Bonus[] BONUSES = Bonus.values();
+
+    /**
+     * {attribute id, modifier UUID} of the bonuses only the retired cover /
+     * pages system could produce (spell power, cooldown reduction). Nothing
+     * writes them any more, but they were PERMANENT modifiers, so a player
+     * who last logged out holding an old covered book still carries one in
+     * their saved data. Stripped once per login.
+     */
+    private static final RetiredModifier[] RETIRED_MODIFIERS = {
+            new RetiredModifier("irons_spellbooks:spell_power",
+                    UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000001")),
+            new RetiredModifier("irons_spellbooks:cooldown_reduction",
+                    UUID.fromString("8a1e0c01-2e1d-4f0a-9d1f-101000000004")),
+    };
+
+    private record RetiredModifier(String attributeId, UUID uuid) {}
+
     private static final String MODIFIER_NAME = "iridescent_modular_spells_bonus";
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        try {
+            for (RetiredModifier retired : RETIRED_MODIFIERS) {
+                Attribute attr = resolveAttribute(retired.attributeId());
+                if (attr == null) continue;
+                AttributeInstance inst = player.getAttribute(attr);
+                if (inst == null) continue;
+                if (inst.getModifier(retired.uuid()) != null) inst.removeModifier(retired.uuid());
+            }
+        } catch (Throwable t) {
+            IridescentModularSpells.LOGGER.warn(
+                    "[modspells/attr] retired-modifier cleanup threw for {}: {}",
+                    player.getGameProfile().getName(), t.toString());
+        }
+    }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
@@ -99,9 +165,10 @@ public class AttributeApplier {
     // without us having to disturb the existing class-bonus pipeline.
     //
     // We intentionally cover only the three pack-wide stats: spell_power,
-    // mana_regen, cooldown_reduction. max_mana stays ecosystem-specific
-    // because mana_pool_bonuses.js already cross-applies a global +25%
-    // against both ISS and Ars max_mana attributes.
+    // mana_regen, cooldown_reduction. max_mana has no icraft_<stat> layer to
+    // mirror into: a book's max_mana modifier lands on irons_spellbooks:max_mana
+    // directly, and that attribute is the cap of the one pool both ecosystems
+    // share (ArsManaCapMixin).
 
     /** Source attribute id -> destination unified stat name.
      *  Post-2026-05-15 unified mana pool: the Ars perk attribute entries
@@ -165,8 +232,8 @@ public class AttributeApplier {
     }
 
     private static void applyBonuses(ServerPlayer player) {
-        // Collate per-attribute total across every modular book the player has
-        Map<ModularSpellBookItem.AttributeKey, Double> totals = new HashMap<>();
+        // Per-bonus total across everything equipped, indexed by Bonus.ordinal().
+        double[] totals = new double[BONUSES.length];
 
         scanStack(player.getMainHandItem(), totals);
         scanStack(player.getOffhandItem(), totals);
@@ -178,56 +245,41 @@ public class AttributeApplier {
         } catch (Throwable t) { /* curios absent or stack mismatch -- skip */ }
 
         // Apply (or remove) each attribute modifier
-        for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
-            double total = totals.getOrDefault(key, 0.0);
-            applyOrRemove(player, key, total);
+        for (Bonus bonus : BONUSES) {
+            applyOrRemove(player, bonus, totals[bonus.ordinal()]);
         }
     }
 
-    private static void scanStack(ItemStack stack,
-                                  Map<ModularSpellBookItem.AttributeKey, Double> totals) {
-        if (stack.getItem() instanceof ModularSpellBookItem) {
-            for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
-                double v = ModularSpellBookItem.getTotalBonus(stack, key);
-                if (v != 0.0) totals.merge(key, v, Double::sum);
-            }
-        } else if (stack.getItem() instanceof ModularArsSpellBookItem) {
-            // Phase 3: Ars cloth-cover modular books -- same key set, different bonus map
-            for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
-                double v = ModularArsSpellBookItem.getTotalBonus(stack, key);
-                if (v != 0.0) totals.merge(key, v, Double::sum);
-            }
-        } else if (!MagicWeaponCategory.isMagicWeapon(stack)) {
-            return; // not a modular book NOR a magic weapon (wand/staff) -> skip
-        }
-        // Magic weapons (wands/staves) fall through here: no book-slot bonuses,
-        // but they DO get the enchant-driven bonuses below, so mana_capacity /
-        // mana_flow on a wand actually do something -- "anything that goes on a
-        // book goes on a wand" (operator, 2026-06-22). Otherwise the enchant
-        // would apply at the bench but be inert (the classic silent no-op).
+    /**
+     * Add the enchant-driven bonuses of one equipped stack. Modular books AND
+     * magic weapons (wands / staves) count: "anything that goes on a book
+     * goes on a wand" (operator, 2026-06-22) -- otherwise mana_capacity /
+     * mana_flow would apply at the bench but be inert on a wand (the classic
+     * silent no-op).
+     *
+     * <p>Crit-chance / crit-damage enchants are NOT applied to the attribute
+     * system here -- they're read directly at LivingHurtEvent time by the
+     * magic-crit hook (which already reads the held main-hand item, wand or
+     * book).
+     */
+    private static void scanStack(ItemStack stack, double[] totals) {
+        if (stack == null || stack.isEmpty()) return;
+        Item item = stack.getItem();
+        boolean isBook = item instanceof ModularSpellBookItem || item instanceof ModularArsSpellBookItem;
+        if (!isBook && !MagicWeaponCategory.isMagicWeapon(stack)) return;
 
-        // Phase 4: enchant-driven bonuses (in addition to any slot-material
-        // bonuses above). Each level adds 5% to the relevant attribute.
-        // Crit-chance/damage enchants are NOT applied to the attribute system
-        // here -- they're read directly at LivingHurtEvent time by the magic-crit
-        // hook (which already reads the held main-hand item, wand or book).
         int manaCap = ModEnchantmentRegistry.getLevel(stack, ModEnchantmentRegistry.MANA_CAPACITY);
         if (manaCap > 0) {
-            totals.merge(ModularSpellBookItem.AttributeKey.MAX_MANA,
-                         manaCap * 0.05, Double::sum);
-            // ISS Ars synergy: Ars books with mana_capacity also boost Ars mana
-            totals.merge(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA,
-                         manaCap * 0.05, Double::sum);
+            // One pool for both ecosystems, so this is the Ars bonus too.
+            totals[Bonus.MAX_MANA.ordinal()] += manaCap * BONUS_PER_ENCHANT_LEVEL;
         }
         int manaFlow = ModEnchantmentRegistry.getLevel(stack, ModEnchantmentRegistry.MANA_FLOW);
         if (manaFlow > 0) {
-            totals.merge(ModularSpellBookItem.AttributeKey.MANA_REGEN,
-                         manaFlow * 0.05, Double::sum);
+            totals[Bonus.MANA_REGEN.ordinal()] += manaFlow * BONUS_PER_ENCHANT_LEVEL;
         }
     }
 
-    private static void scanCurios(ICuriosItemHandler handler,
-                                   Map<ModularSpellBookItem.AttributeKey, Double> totals) {
+    private static void scanCurios(ICuriosItemHandler handler, double[] totals) {
         var equipped = handler.getEquippedCurios();
         if (equipped == null) return;
         for (int i = 0; i < equipped.getSlots(); i++) {
@@ -253,15 +305,12 @@ public class AttributeApplier {
         return attr;
     }
 
-    private static void applyOrRemove(ServerPlayer player,
-                                      ModularSpellBookItem.AttributeKey key,
-                                      double total) {
-        Attribute attr = resolveAttribute(key.attributeId);
+    private static void applyOrRemove(ServerPlayer player, Bonus bonus, double total) {
+        Attribute attr = resolveAttribute(bonus.attributeId);
         if (attr == null) return;        // ISS absent or attribute not yet registered
         AttributeInstance inst = player.getAttribute(attr);
         if (inst == null) return;
-        UUID uuid = MOD_UUIDS.get(key);
-        if (uuid == null) return;
+        UUID uuid = bonus.uuid;
 
         AttributeModifier existing = inst.getModifier(uuid);
         if (total == 0.0) {

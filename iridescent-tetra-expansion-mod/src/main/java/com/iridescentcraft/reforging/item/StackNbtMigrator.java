@@ -38,19 +38,35 @@ import java.util.Map;
  *   tag.<slotPath>            = moduleKey (e.g. "chestplate/chest_plate")
  *   tag.<slotPath>_material   = variantKey (e.g. "chestplate/chest_plate/ironiron")
  *
- * Idempotent. Always scans every armor stack on inventoryTick. The work
- * is a HashMap iteration over the stack's tag keys plus a string-split
- * check on values ending in `_material` — sub-microsecond per call. Cost
- * is dominated by the no-op short-circuit on stacks whose tags are
- * already clean (most ticks, post first cleanup).
+ * Idempotent, and run-once per stack. The full pass copies the stack's
+ * tag keys and does string work over each one, and it is called from
+ * inventoryTick -- every tick, for every reforged piece in every player
+ * inventory -- so a stack that has been through the CURRENT pass is
+ * skipped on a few tag lookups (see {@link #isSettled}). The
+ * `iridescent_nbt_migration_v1` marker (an int: the version of the last
+ * pass the stack completed) is what gates that; a stack with an older
+ * marker, or none, always gets the full pass first.
  *
- * The `iridescent_nbt_migration_v1` sentinel still gets written for
- * telemetry / future migration ordering, but does NOT gate re-runs.
+ * Adding a migration step: add it to {@link #migrate} and bump
+ * {@link #CURRENT_VERSION}, or already-migrated stacks will never see it.
  */
 public final class StackNbtMigrator {
 
     private static final String MIGRATION_TAG = "iridescent_nbt_migration_v1";
     private static final String MATERIAL_SUFFIX = "_material";
+
+    /**
+     * Version of the migration pass below. History: v1-v3 doubled-suffix /
+     * slot-keyed fixes, v4 the Mage archetype rename (robe / circlet ->
+     * vestment_*), v5 the first version whose marker GATES re-runs -- the
+     * bump makes every stack marked by an older (never-gating) build take
+     * one more full pass under this code before it is skipped.
+     */
+    private static final int CURRENT_VERSION = 5;
+
+    private static final String SOURCE_ARMOR = "icraft_source_armor";
+    private static final String LEGACY_BASELINE_ARMOR = "icraft_baseline_armor";
+    private static final String SOURCE_ARMOR_CHECKED = "icraft_source_armor_checked";
 
     /**
      * Map from old slot-keyed module identity to the new (moduleKey,
@@ -123,11 +139,31 @@ public final class StackNbtMigrator {
 
     private StackNbtMigrator() {}
 
+    /**
+     * True once nothing below has anything left to do for this stack: it
+     * completed the current pass AND its source-armor carryover is resolved
+     * (checked, or present outright). The second half is normally implied by
+     * the first -- the pass resolves it before stamping the marker -- but it
+     * is what lets the backfill re-run if something later strips those keys.
+     * Cheap on purpose: this is the per-tick path.
+     */
+    private static boolean isSettled(CompoundTag tag) {
+        return tag.getInt(MIGRATION_TAG) >= CURRENT_VERSION && sourceArmorResolved(tag);
+    }
+
+    /** The source-armor backfill has nothing (more) to do for this tag. */
+    private static boolean sourceArmorResolved(CompoundTag tag) {
+        return tag.getBoolean(SOURCE_ARMOR_CHECKED)
+                || tag.contains(SOURCE_ARMOR)
+                || tag.contains(LEGACY_BASELINE_ARMOR);
+    }
+
     /** @return true if the stack's NBT was modified. */
     public static boolean migrate(ItemStack stack) {
         if (stack.isEmpty()) return false;
         CompoundTag tag = stack.getTag();
         if (tag == null) return false;
+        if (isSettled(tag)) return false;
 
         boolean changed = false;
         // Snapshot keys to avoid CME during iteration.
@@ -179,11 +215,12 @@ public final class StackNbtMigrator {
         // carryover never fires. Re-derive it from the skin.
         changed |= backfillSourceArmor(stack, tag);
 
-        // Sentinel bumped to v4 with the Mage archetype rename
-        // (robe/circlet -> vestment_*). Existing stacks marked v1/v2/v3 still
-        // get scanned at next tick.
-        if (tag.getInt(MIGRATION_TAG) < 4) {
-            tag.putInt(MIGRATION_TAG, 4);
+        // Stamp the marker LAST, once every step above has run: from here on
+        // isSettled() short-circuits this stack. A stack carrying an older
+        // marker (v1-v4, none of which gated anything) reaches this line
+        // exactly once more.
+        if (tag.getInt(MIGRATION_TAG) < CURRENT_VERSION) {
+            tag.putInt(MIGRATION_TAG, CURRENT_VERSION);
         }
         return changed;
     }
@@ -204,15 +241,16 @@ public final class StackNbtMigrator {
      * the weight-class fraction (ROBE 50% / LIGHT 65% / ...).
      *
      * <p>One-shot: guarded by {@code icraft_source_armor_checked} so it doesn't
-     * re-resolve every tick (and is a no-op once {@code icraft_source_armor}
-     * exists, incl. on freshly-converted or back-compat {@code icraft_baseline_armor} stacks).
+     * re-resolve (and is a no-op once {@code icraft_source_armor} exists, incl.
+     * on freshly-converted or back-compat {@code icraft_baseline_armor} stacks).
+     * Every path through here leaves {@link #sourceArmorResolved} true for an
+     * armor stack, which is what {@link #isSettled} relies on.
      */
     private static boolean backfillSourceArmor(ItemStack stack, CompoundTag tag) {
-        if (tag.contains("icraft_source_armor") || tag.contains("icraft_baseline_armor")) return false;
-        if (tag.getBoolean("icraft_source_armor_checked")) return false;
+        if (sourceArmorResolved(tag)) return false;
         if (!(stack.getItem() instanceof ItemModularArmor armor)) return false;
 
-        tag.putBoolean("icraft_source_armor_checked", true);  // attempt once regardless of outcome
+        tag.putBoolean(SOURCE_ARMOR_CHECKED, true);  // attempt once regardless of outcome
         String skinId = SkinNbt.readSkinId(stack);
         if (skinId == null) return true;  // crafted-from-scratch modular armor has no source — leave it
 
@@ -242,7 +280,7 @@ public final class StackNbtMigrator {
         } catch (Exception e) {
             return true;
         }
-        if (armorAdd > 0) tag.putDouble("icraft_source_armor", armorAdd);
+        if (armorAdd > 0) tag.putDouble(SOURCE_ARMOR, armorAdd);
         if (toughAdd > 0) tag.putDouble("icraft_source_toughness", toughAdd);
         return true;
     }

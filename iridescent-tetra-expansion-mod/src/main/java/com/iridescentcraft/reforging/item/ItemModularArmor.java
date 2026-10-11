@@ -26,10 +26,12 @@ import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 
+import java.util.Map;
 import java.util.Optional;
-import java.util.function.Consumer;
-
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 /**
  * Base class for modular armor items. Extends vanilla ArmorItem so the engine's
@@ -165,19 +167,14 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
      * If/when we move to a transformation-service-level mixin or
      * Sinytra-Connector pre-launch hook, this can revert to a plain
      * damageItemImpl(...) call.
+     *
+     * The body itself is shared with the wand and both spell books:
+     * {@link com.iridescentcraft.reforging.event.ModularDamageBus#damageItem}.
      */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        se.mickelus.tetra.event.ModularItemDamageEvent event =
-                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
-        com.iridescentcraft.reforging.event.ModularDamageBus.safePost(event, "armor", "iridescent_reforging");
-        int actualAmount = event.getAmount();
-        try {
-            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
-        } catch (Throwable t) {
-            // BloodboundEffect failures must not crash item damage.
-        }
-        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
+        return com.iridescentcraft.reforging.event.ModularDamageBus.damageItem(
+                stack, amount, entity, "armor", "iridescent_reforging");
     }
 
     /**
@@ -380,17 +377,67 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     private static Multimap<Attribute, AttributeModifier> slotScopeIdentifiers(
             EquipmentSlot slot, Multimap<Attribute, AttributeModifier> modifiers) {
         Multimap<Attribute, AttributeModifier> scoped = HashMultimap.create();
-        modifiers.forEach((attribute, modifier) -> {
-            String key = "icraft_slot_scope:" + slot.getName()
-                    + ":" + net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getKey(attribute)
-                    + ":" + modifier.getOperation().ordinal()
-                    + ":" + modifier.getId();
-            java.util.UUID scopedId = java.util.UUID.nameUUIDFromBytes(
-                    key.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-            scoped.put(attribute, new AttributeModifier(
-                    scopedId, modifier.getName(), modifier.getAmount(), modifier.getOperation()));
-        });
+        modifiers.forEach((attribute, modifier) -> scoped.put(attribute, new AttributeModifier(
+                slotScopedId(slot, attribute, modifier.getOperation(), modifier.getId()),
+                modifier.getName(), modifier.getAmount(), modifier.getOperation())));
         return scoped;
+    }
+
+    // Memo of the slot-scoped UUIDs. getAttributeModifiers runs on every
+    // equip / durability change and for every tooltip frame, and deriving
+    // the id is a string build + an MD5 per modifier while the inputs repeat
+    // endlessly. The key space is finite -- Tetra hands out ONE id per
+    // (attribute, operation) for the whole session, and skin ids are derived
+    // from the skin JSON -- so each id is derived once and afterwards looked
+    // up without allocating. SLOT_SCOPE_MAX_IDS is only a backstop against an
+    // unexpected source of ever-new ids: past it an id is still derived (same
+    // value), just not remembered.
+    private static final int SLOT_SCOPE_MAX_IDS = 1024;
+
+    /** original id -> scoped id per attribute, for ONE (slot, operation). */
+    private static final class ScopedIds {
+        final Map<Attribute, Map<UUID, UUID>> byAttribute = new ConcurrentHashMap<>();
+    }
+
+    /** Indexed [EquipmentSlot.ordinal()][Operation.ordinal()]. */
+    private static final ScopedIds[][] SLOT_SCOPED_IDS = newSlotScopeTable();
+
+    private static ScopedIds[][] newSlotScopeTable() {
+        ScopedIds[][] table =
+                new ScopedIds[EquipmentSlot.values().length][AttributeModifier.Operation.values().length];
+        for (ScopedIds[] row : table) {
+            for (int i = 0; i < row.length; i++) row[i] = new ScopedIds();
+        }
+        return table;
+    }
+
+    private static UUID slotScopedId(EquipmentSlot slot, Attribute attribute,
+                                     AttributeModifier.Operation operation, UUID originalId) {
+        Map<Attribute, Map<UUID, UUID>> byAttribute =
+                SLOT_SCOPED_IDS[slot.ordinal()][operation.ordinal()].byAttribute;
+        Map<UUID, UUID> byOriginalId = byAttribute.get(attribute);
+        if (byOriginalId == null) {
+            byOriginalId = byAttribute.computeIfAbsent(attribute, a -> new ConcurrentHashMap<>());
+        }
+        UUID scopedId = byOriginalId.get(originalId);
+        if (scopedId == null) {
+            scopedId = deriveSlotScopedId(slot, attribute, operation, originalId);
+            if (byOriginalId.size() < SLOT_SCOPE_MAX_IDS) byOriginalId.put(originalId, scopedId);
+        }
+        return scopedId;
+    }
+
+    /** The id itself. The inputs and their exact spelling are load-bearing:
+     *  the same (slot, attribute, operation, original id) must always yield
+     *  the same value, because vanilla pairs an unequip with its equip by
+     *  this id. Change the cache above freely; do not change this. */
+    private static UUID deriveSlotScopedId(EquipmentSlot slot, Attribute attribute,
+                                           AttributeModifier.Operation operation, UUID originalId) {
+        String key = "icraft_slot_scope:" + slot.getName()
+                + ":" + net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getKey(attribute)
+                + ":" + operation.ordinal()
+                + ":" + originalId;
+        return UUID.nameUUIDFromBytes(key.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 
     // ── Client-side renderer dispatch (phase 6) ────────────────────────
@@ -408,8 +455,11 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     // ── Stack NBT migration (one-time) ─────────────────────────────────
     //
     // Fixup for stacks whose NBT was written before the schematic
-    // doubling fix (commit 9db85e12). Runs once per stack via
-    // inventoryTick; subsequent ticks short-circuit on the migration tag.
+    // doubling fix (commit 9db85e12) and the later module renames. Runs
+    // once per stack via inventoryTick; every later tick short-circuits on
+    // the migration marker inside StackNbtMigrator.migrate (a few tag lookups,
+    // no allocation) -- this is called every tick for every reforged piece
+    // in every player inventory, so that fast path is the common case.
     // Server-side only — NBT changes need to sync to the client via
     // existing slot-update packets, which they do automatically when
     // ItemStack#setTag is called from inventoryTick.
@@ -659,23 +709,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         // Bug fix 2026-05-06: pre-fix converted breastplates with emerald
         // pauldrons would display as "Emerald Plate" even after the chest_plate
         // was changed to leather, because the loop returned the pauldron variant.
-        String mainSlotName = mainSlotKey(armor);
-        if (mainSlotName == null) return null;
-        try {
-            se.mickelus.tetra.module.ItemModuleMajor[] majors = armor.getMajorModules(stack);
-            if (majors == null) return null;
-            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
-                if (m == null) continue;
-                String slot = m.getSlot();
-                if (slot == null || !slot.equals(mainSlotName)) continue;
-                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
-                if (v == null || v.key == null) continue;
-                int slash = v.key.lastIndexOf('/');
-                if (slash < 0 || slash == v.key.length() - 1) continue;
-                return v.key.substring(slash + 1);
-            }
-        } catch (Throwable t) { /* fall through */ }
-        return null;
+        return ModuleVariants.majorVariantSuffix(stack, mainSlotKey(armor));
     }
 
     // ── Vanilla armor texture dispatch (v0.2 phase B) ──────────────────

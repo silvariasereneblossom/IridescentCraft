@@ -7,7 +7,6 @@ import com.iridescentcraft.reforging.skin.SkinRegistry;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +37,26 @@ import java.util.UUID;
  * re-applies them every 4s while a set is still active so they appear
  * permanent. Stripping = stop refreshing; effects expire naturally.
  *
+ * The bonuses are a pure function of what is WORN, so they are kept in
+ * step with the entity rather than with this class's memory of it:
+ *   - Set attribute modifiers are TRANSIENT, like vanilla's own equipment
+ *     modifiers. They are never written to the entity's save data, so a
+ *     set definition that is edited or deleted while a player is offline
+ *     cannot strand a modifier nobody can find again. (Consequence, same
+ *     as vanilla armor: a max_health-style bonus is re-granted after a
+ *     relog rather than restored with the saved health.)
+ *   - Every recompute re-asserts the modifiers of every worn set, not just
+ *     newly completed ones, and the player tick does the same every 4s.
+ *     Both are idempotent (an identical modifier is left alone), so this
+ *     costs a few map lookups and heals anything that removed a modifier
+ *     behind our back.
+ *   - A player is recomputed on login and on respawn, and the cached entry
+ *     is dropped when the player entity is replaced (death, End return).
+ *     The replacement is a NEW entity under the SAME UUID with a fresh
+ *     attribute map: trusting the old entity's entry is what used to leave
+ *     a keepInventory respawn without its set attributes, and kept
+ *     refreshing set effects on a player whose armor had dropped.
+ *
  * Tracking state: per-entity last known active set list, keyed by entity
  * UUID (no entity reference is held), used so we know which sets need
  * their attribute modifiers cleaned up when a set is broken and which
@@ -45,15 +64,21 @@ import java.util.UUID;
  * least one ACTIVE set have an entry: an empty result removes the key,
  * and entries are dropped when a player logs out or a non-player entity
  * leaves its level, so the map stays bounded by "online players + loaded
- * mobs currently wearing a full set". The set attribute modifiers
- * themselves are permanent (saved with the entity) and so can outlive
- * the entry -- recompute() rebuilds the missing state from the modifiers
- * actually present, see there. Server thread only.
+ * mobs currently wearing a full set". Server thread only.
+ *
+ * Legacy: builds before 2026-10 applied these as PERMANENT modifiers. An
+ * entity saved by such a build may still carry one; recompute() finds
+ * them by the definitions' modifier ids when it has no cached entry for
+ * the entity -- stripping the ones whose set is no longer worn and
+ * replacing the ones that are with a transient modifier.
  */
 @Mod.EventBusSubscriber(modid = "iridescent_reforging")
 public class SetBonusManager {
 
     private static final Map<UUID, Set<String>> activeSetsByEntity = new HashMap<>();
+
+    private static final EquipmentSlot[] ARMOR_SLOTS = {
+            EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 
     @SubscribeEvent
     public static void onEquipmentChange(LivingEquipmentChangeEvent event) {
@@ -68,35 +93,34 @@ public class SetBonusManager {
         if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
         if (player.level().isClientSide) return;
-        // Refresh potion effects every 80 ticks (~4s) for active sets so
-        // they don't run out while still equipped. Avoids a per-tick
-        // rescan: just looks at the cached active set list.
+        // Refresh every 80 ticks (~4s) for active sets: potion effects so
+        // they don't run out while still equipped, attribute modifiers so
+        // one that went missing comes back. Avoids a per-tick rescan: just
+        // looks at the cached active set list.
         if (player.tickCount % 80 != 0) return;
         Set<String> active = activeSetsByEntity.get(player.getUUID());
         if (active == null || active.isEmpty()) return;
         for (String setId : active) {
             SetBonusRegistry.get().getDefinition(setId).ifPresent(def -> {
-                for (SetBonusDefinition.EffectBonusEntry e : def.effectBonuses()) {
-                    player.addEffect(new MobEffectInstance(
-                            e.effect(), e.durationTicks(), e.amplifier(),
-                            true, false, true));
-                }
+                applyAttributeModifiers(player, def, false);
+                applyEffects(player, def);
             });
         }
     }
 
     /**
-     * Recompute active sets for an entity. Called on equipment change.
-     * Diffs the new active set list against the previous, applying or
-     * stripping attribute modifiers as needed. Potion effects are
+     * Recompute active sets for an entity. Called on equipment change, and
+     * for players on login and respawn. Diffs the new active set list
+     * against the previous: strips the modifiers of sets no longer worn,
+     * (re-)asserts the modifiers of every set that is. Potion effects are
      * applied here on first activation; the tick refresh keeps them
      * fresh thereafter.
      */
     public static void recompute(LivingEntity entity) {
+        if (entity.level().isClientSide) return;
+
         Map<String, Integer> setCounts = new HashMap<>();
-        for (EquipmentSlot s : new EquipmentSlot[]{
-                EquipmentSlot.HEAD, EquipmentSlot.CHEST,
-                EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+        for (EquipmentSlot s : ARMOR_SLOTS) {
             ItemStack stack = entity.getItemBySlot(s);
             if (!(stack.getItem() instanceof ItemModularArmor)) continue;
             String skinId = SkinNbt.readSkinId(stack);
@@ -116,20 +140,26 @@ public class SetBonusManager {
         }
 
         UUID entityId = entity.getUUID();
-        Set<String> previouslyActive = activeSetsByEntity.get(entityId);
-        if (previouslyActive == null) {
-            // No cached entry: either nothing was active at the last check,
-            // or the entry is gone (logout / level leave / server restart)
-            // while the entity kept its PERMANENT set modifiers. Rebuild the
-            // "needs stripping" half from the modifiers actually present, so
-            // a set that is no longer worn still loses its bonus. Sets that
-            // ARE worn are left out on purpose: they take the apply path
-            // below, which is idempotent and refreshes a stale amount.
+        Set<String> cached = activeSetsByEntity.get(entityId);
+        // No cached entry: either nothing was active at the last check, or
+        // this is the first look at this entity instance (login, respawn,
+        // level join, server restart). In the second case it may still
+        // carry set modifiers we did not put there this session -- the
+        // PERMANENT ones older builds saved with the entity.
+        boolean firstLook = cached == null;
+        Set<String> previouslyActive;
+        if (firstLook) {
+            // Rebuild the "needs stripping" half from the modifiers actually
+            // present, so a set that is no longer worn still loses its bonus.
+            // Sets that ARE worn are left out on purpose: they take the apply
+            // path below, which replaces whatever is there.
             previouslyActive = new HashSet<>();
             for (SetBonusDefinition def : SetBonusRegistry.get().allDefinitions()) {
                 if (nowActive.contains(def.setId())) continue;
                 if (hasAnyAttributeModifier(entity, def)) previouslyActive.add(def.setId());
             }
+        } else {
+            previouslyActive = cached;
         }
 
         // Strip modifiers from sets no longer active
@@ -141,18 +171,16 @@ public class SetBonusManager {
             });
         }
 
-        // Apply modifiers to newly active sets
+        // (Re-)assert the modifiers of EVERY active set, not only the newly
+        // active ones: the cached list says what was worn, not what the
+        // entity still has. Idempotent, so an intact set costs nothing. On a
+        // first look an existing modifier is replaced outright, which is
+        // what turns a legacy permanent one into a transient one.
         for (String setId : nowActive) {
-            if (previouslyActive.contains(setId)) continue;
+            boolean newlyActive = !previouslyActive.contains(setId);
             SetBonusRegistry.get().getDefinition(setId).ifPresent(def -> {
-                applyAttributeModifiers(entity, def);
-                if (entity instanceof Player p && !p.level().isClientSide) {
-                    for (SetBonusDefinition.EffectBonusEntry e : def.effectBonuses()) {
-                        p.addEffect(new MobEffectInstance(
-                                e.effect(), e.durationTicks(), e.amplifier(),
-                                true, false, true));
-                    }
-                }
+                applyAttributeModifiers(entity, def, firstLook);
+                if (newlyActive) applyEffects(entity, def);
             });
         }
 
@@ -163,6 +191,30 @@ public class SetBonusManager {
         } else {
             activeSetsByEntity.put(entityId, nowActive);
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        // Don't lean on the first-tick equipment events alone: they only
+        // fire for slots that hold something, so a player who logs in with
+        // bare armor slots would keep a stale saved set modifier.
+        recompute(event.getEntity());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerClone(PlayerEvent.Clone event) {
+        // Death respawn and End return both hand the player a NEW entity
+        // (same UUID, fresh attribute map, effects gone). The entry
+        // describes the entity being replaced, so forget it; the respawn
+        // handler below rebuilds it from what the new entity wears.
+        activeSetsByEntity.remove(event.getEntity().getUUID());
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        // The new entity is in the world and has its inventory back (or
+        // not: armor that dropped on death simply leaves no set active).
+        recompute(event.getEntity());
     }
 
     @SubscribeEvent
@@ -192,23 +244,42 @@ public class SetBonusManager {
         return false;
     }
 
-    private static void applyAttributeModifiers(LivingEntity entity, SetBonusDefinition def) {
+    /**
+     * Put the set's attribute modifiers on the entity as transient modifiers.
+     *
+     * @param replaceExisting false: idempotent -- an identical modifier is
+     *                        left alone (adding a duplicate UUID throws, and
+     *                        remove + add would only dirty the attribute and
+     *                        re-sync it), one whose amount / operation went
+     *                        stale is replaced. true: whatever carries the
+     *                        modifier's id is removed first, so a permanent
+     *                        modifier left by an older build cannot survive
+     *                        as-is.
+     */
+    private static void applyAttributeModifiers(LivingEntity entity, SetBonusDefinition def,
+                                                boolean replaceExisting) {
         for (SetBonusDefinition.AttributeBonusEntry e : def.attributeBonuses()) {
             AttributeInstance inst = entity.getAttribute(e.attribute());
             if (inst == null) continue;
-            // Idempotent. The modifier is permanent, so it is usually already
-            // there when the cached entry was dropped (relog, level change):
-            // leave an identical one alone (addPermanentModifier throws on a
-            // duplicate UUID, and remove+add would only dirty the attribute);
-            // replace one whose amount / operation went stale.
             AttributeModifier wanted = e.modifier();
             AttributeModifier existing = inst.getModifier(wanted.getId());
             if (existing != null) {
-                if (existing.getOperation() == wanted.getOperation()
+                if (!replaceExisting
+                        && existing.getOperation() == wanted.getOperation()
                         && Double.compare(existing.getAmount(), wanted.getAmount()) == 0) continue;
                 inst.removeModifier(wanted.getId());
             }
-            inst.addPermanentModifier(wanted);
+            inst.addTransientModifier(wanted);
+        }
+    }
+
+    /** (Re-)apply the set's potion effects. Players only, as before. */
+    private static void applyEffects(LivingEntity entity, SetBonusDefinition def) {
+        if (!(entity instanceof Player p) || p.level().isClientSide) return;
+        for (SetBonusDefinition.EffectBonusEntry e : def.effectBonuses()) {
+            p.addEffect(new MobEffectInstance(
+                    e.effect(), e.durationTicks(), e.amplifier(),
+                    true, false, true));
         }
     }
 

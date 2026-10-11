@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iridescentcraft.reforging.IridescentReforging;
+import com.iridescentcraft.reforging.attribute.AttributeOperations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -94,7 +95,7 @@ public class SetBonusDataLoader extends SimpleJsonResourceReloadListener {
                     idx++;
                     continue;
                 }
-                AttributeModifier.Operation op = parseOp(opStr);
+                AttributeModifier.Operation op = AttributeOperations.parse(opStr);
                 UUID uuid = UUID.nameUUIDFromBytes(
                         ("iridescent_reforging:set_bonus/" + setId + "/" + attrId + "/" + idx)
                                 .getBytes(java.nio.charset.StandardCharsets.UTF_8));
@@ -127,13 +128,5 @@ public class SetBonusDataLoader extends SimpleJsonResourceReloadListener {
 
         return new SetBonusDefinition(setId, required,
                 ImmutableList.copyOf(attrs), ImmutableList.copyOf(effects));
-    }
-
-    private static AttributeModifier.Operation parseOp(String s) {
-        return switch (s) {
-            case "multiply_base"  -> AttributeModifier.Operation.MULTIPLY_BASE;
-            case "multiply_total" -> AttributeModifier.Operation.MULTIPLY_TOTAL;
-            default                -> AttributeModifier.Operation.ADDITION;
-        };
     }
 }

@@ -23,8 +23,9 @@ import net.minecraftforge.registries.RegistryObject;
  * item ({@code magic_crit_hook.js}); the mana pair (mana_capacity/mana_flow) is
  * summed by {@code AttributeApplier}, which scans held magic weapons too.
  *
- * <p>Bonuses are applied at attribute-aggregation time by
- * {@code AttributeApplier} (sum: slot materials + enchant levels).
+ * <p>The mana pair's bonuses are applied once a second by
+ * {@code AttributeApplier} (sum of enchant levels across equipped books /
+ * magic weapons).
  *
  * <p>Phase 4.5 will add armor-slot enchants (arcane warding, spell focus,
  * etc.) once these foundational ones validate.
@@ -33,12 +34,6 @@ public class ModEnchantmentRegistry {
 
     public static final DeferredRegister<Enchantment> ENCHANTMENTS =
             DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, IridescentModularSpells.MODID);
-
-    /** Custom category that gates enchant application to our modular books only. */
-    private static final EnchantmentCategory MODULAR_BOOK_CATEGORY =
-            EnchantmentCategory.create("modular_spell_book", item ->
-                    item instanceof ModularSpellBookItem ||
-                    item instanceof ModularArsSpellBookItem);
 
     public static final RegistryObject<Enchantment> MANA_CAPACITY =
             ENCHANTMENTS.register("mana_capacity",
@@ -74,8 +69,7 @@ public class ModEnchantmentRegistry {
 
     /**
      * Read the enchantment level from a stack's NBT. Used by
-     * AttributeApplier to sum enchant-driven bonuses alongside slot
-     * material bonuses.
+     * AttributeApplier to sum the enchant-driven bonuses.
      */
     public static int getLevel(ItemStack stack, RegistryObject<Enchantment> ench) {
         if (stack == null || stack.isEmpty() || ench == null) return 0;
@@ -96,15 +90,13 @@ public class ModEnchantmentRegistry {
         private final int costStep;
         private final boolean magicWeapon;
 
-        protected ModularBookEnchantment(Rarity rarity, int maxLevel, int costStep) {
-            this(rarity, maxLevel, costStep, MODULAR_BOOK_CATEGORY, false);
-        }
-
-        /** Overload: choose the category + whether magic weapons (wands/staves)
-         *  may also receive it. Used by "Arcane Edge" (magic_crit_chance): its
-         *  category is MagicWeaponCategory so the Tetra workbench aspect path
-         *  accepts it on the modular wand + mage gear, while it still lands on
-         *  books (canEnchant below keeps the book branch). */
+        /** @param category    the enchant's category. All four use
+         *                     MagicWeaponCategory so the Tetra workbench aspect
+         *                     path accepts them on the modular wand + mage gear;
+         *                     they still land on books (canEnchant below keeps
+         *                     the book branch).
+         *  @param magicWeapon whether magic weapons (wands/staves) may also
+         *                     receive it at the anvil / table. */
         protected ModularBookEnchantment(Rarity rarity, int maxLevel, int costStep,
                                          EnchantmentCategory category, boolean magicWeapon) {
             // EquipmentSlot[] is for ITEM-stack-on-equip behavior; book/wand is

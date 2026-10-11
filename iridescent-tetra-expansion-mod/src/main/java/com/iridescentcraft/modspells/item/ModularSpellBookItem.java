@@ -4,12 +4,10 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.iridescentcraft.reforging.item.ModuleVariants;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,7 +27,6 @@ import se.mickelus.tetra.module.data.ToolData;
 import se.mickelus.tetra.module.schematic.RepairSchematic;
 import top.theillusivec4.curios.api.SlotContext;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,30 +98,12 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     private final SynergyData[] synergies = new SynergyData[0];
     private final BookKind kind;
 
-    // ===== Legacy Phase 1-5 imodspells_slots NBT system (retired in 6D) =====
-
-    public static final String SLOTS_NBT_KEY = "imodspells_slots";
-    public static final String SLOT_COVER = "cover";
-    public static final String SLOT_PAGES = "pages";
-
-    public static final Map<String, Map<AttributeKey, Double>> COVER_BONUSES = new HashMap<>();
-    public static final Map<String, Map<AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
-
-    static {
-        COVER_BONUSES.put("leather",   Map.of(AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("copper",    Map.of(AttributeKey.MAX_MANA, 0.05, AttributeKey.MANA_REGEN, 0.03));
-        COVER_BONUSES.put("iron",      Map.of(AttributeKey.SPELL_POWER, 0.05, AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("gold",      Map.of(AttributeKey.MANA_REGEN, 0.10, AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("diamond",   Map.of(AttributeKey.SPELL_POWER, 0.15));
-        COVER_BONUSES.put("netherite", Map.of(AttributeKey.SPELL_POWER, 0.20, AttributeKey.MAX_MANA, 0.10));
-
-        PAGES_BONUSES.put("leather",   Map.of(AttributeKey.SPELL_POWER, 0.02));
-        PAGES_BONUSES.put("copper",    Map.of(AttributeKey.MANA_REGEN, 0.03));
-        PAGES_BONUSES.put("iron",      Map.of(AttributeKey.MANA_REGEN, 0.05));
-        PAGES_BONUSES.put("gold",      Map.of(AttributeKey.MANA_REGEN, 0.10, AttributeKey.COOLDOWN_REDUCTION, 0.05));
-        PAGES_BONUSES.put("diamond",   Map.of(AttributeKey.SPELL_POWER, 0.10, AttributeKey.COOLDOWN_REDUCTION, 0.05));
-        PAGES_BONUSES.put("netherite", Map.of(AttributeKey.SPELL_POWER, 0.15, AttributeKey.COOLDOWN_REDUCTION, 0.10));
-    }
+    // The Phase 1-5 "imodspells_slots" cover / pages NBT system (anvil-installed
+    // leather / iron / diamond covers granting flat % bonuses through
+    // AttributeApplier) was retired in 6D when the Tetra modules below took
+    // over, and its code -- bonus tables, slot accessors, the anvil installer --
+    // was removed 2026-10. A stack that still carries the old "imodspells_slots"
+    // tag is harmless: nothing reads it any more, so it grants nothing.
 
     public ModularSpellBookItem(BookKind kind, int maxSpellSlots, Properties properties) {
         super(maxSpellSlots, properties);
@@ -190,28 +169,21 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
 
     /**
-     * Inlined IModularItem.damageItemImpl with a local try/catch around
-     * the ModularItemDamageEvent post(). See ItemModularArmor.damageItem
-     * for the rationale: ASMEventHandler is in the MC-BOOTSTRAP layer
-     * so iridescent_durability_clamp's EventBusInvokeMixin can never
-     * apply, and Aetheric Tetranomicon's listener crashes on our
-     * subclass. Inline guard preserves BloodboundEffect + the
-     * maxDamage-1 clamp at the cost of any later listener's
+     * IModularItem.damageItemImpl with a guard around the
+     * ModularItemDamageEvent post() -- the body is shared with the armor,
+     * the wand and the Ars book in ModularDamageBus.damageItem. See
+     * ItemModularArmor.damageItem for the rationale: ASMEventHandler is in
+     * the MC-BOOTSTRAP layer so iridescent_durability_clamp's
+     * EventBusInvokeMixin can never apply, and Aetheric Tetranomicon's
+     * listener crashes on our subclass. The guard preserves BloodboundEffect
+     * + the maxDamage-1 clamp at the cost of any later listener's
      * contribution on impacted stacks.
      */
     @Override
     public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
             ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
-        se.mickelus.tetra.event.ModularItemDamageEvent event =
-                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
-        com.iridescentcraft.reforging.event.ModularDamageBus.safePost(event, "spellbook_iss", "iridescent_modular_spells");
-        int actualAmount = event.getAmount();
-        try {
-            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
-        } catch (Throwable t) {
-            // best-effort
-        }
-        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
+        return com.iridescentcraft.reforging.event.ModularDamageBus.damageItem(
+                stack, amount, entity, "spellbook_iss", "iridescent_modular_spells");
     }
 
     // ===== Held/offhand attribute pipeline (vanilla slot path) =====
@@ -256,34 +228,6 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
             }
         }
         return result;
-    }
-
-    // ===== Legacy NBT slot accessors (used by AttributeApplier through 6C) =====
-
-    public static String getSlotMaterial(ItemStack stack, String slotName) {
-        if (stack.isEmpty() || stack.getTag() == null) return null;
-        CompoundTag slots = stack.getTag().getCompound(SLOTS_NBT_KEY);
-        if (slots.isEmpty() || !slots.contains(slotName)) return null;
-        String material = slots.getString(slotName);
-        return material.isEmpty() ? null : material;
-    }
-
-    public static void setSlotMaterial(ItemStack stack, String slotName, String material) {
-        CompoundTag tag = stack.getOrCreateTag();
-        CompoundTag slots = tag.getCompound(SLOTS_NBT_KEY);
-        if (material == null || material.isEmpty()) slots.remove(slotName);
-        else slots.putString(slotName, material);
-        tag.put(SLOTS_NBT_KEY, slots);
-    }
-
-    public static double getTotalBonus(ItemStack stack, AttributeKey key) {
-        if (!(stack.getItem() instanceof ModularSpellBookItem)) return 0.0;
-        double total = 0.0;
-        String cover = getSlotMaterial(stack, SLOT_COVER);
-        if (cover != null && COVER_BONUSES.containsKey(cover)) total += COVER_BONUSES.get(cover).getOrDefault(key, 0.0);
-        String pages = getSlotMaterial(stack, SLOT_PAGES);
-        if (pages != null && PAGES_BONUSES.containsKey(pages)) total += PAGES_BONUSES.get(pages).getOrDefault(key, 0.0);
-        return total;
     }
 
     @Override
@@ -345,21 +289,7 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
     /** Read the variant-key suffix of the iss_book/core slot's installed module. */
     private static String readCoreMaterialSuffix(ItemStack stack) {
-        if (!(stack.getItem() instanceof IModularItem item)) return null;
-        try {
-            se.mickelus.tetra.module.ItemModuleMajor[] majors = item.getMajorModules(stack);
-            if (majors == null) return null;
-            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
-                if (m == null) continue;
-                if (!"iss_book/core".equals(m.getSlot())) continue;
-                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
-                if (v == null || v.key == null) continue;
-                int slash = v.key.lastIndexOf('/');
-                if (slash < 0 || slash == v.key.length() - 1) continue;
-                return v.key.substring(slash + 1);
-            }
-        } catch (Throwable t) { /* fall through */ }
-        return null;
+        return ModuleVariants.majorVariantSuffix(stack, TETRA_SLOT_CORE);
     }
 
     /** Magic-stat lines we render in the tooltip, in display order. */
@@ -419,31 +349,6 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
                     ? String.format("%+.0f", v)
                     : String.format("%+.1f%%", v * 100.0);
             tooltip.add(Component.literal("  " + formatted + " " + entry.getValue()).withStyle(ChatFormatting.AQUA));
-        }
-    }
-
-    private static void appendSlotLine(List<Component> tooltip, ItemStack stack, String slotKey, String displayName) {
-        String material = getSlotMaterial(stack, slotKey);
-        MutableComponent line = Component.literal("  " + displayName + ": ");
-        if (material == null) line.append(Component.literal("(empty)").withStyle(ChatFormatting.DARK_GRAY));
-        else line.append(Component.literal(material).withStyle(ChatFormatting.YELLOW));
-        tooltip.add(line.withStyle(ChatFormatting.GRAY));
-    }
-
-    public enum AttributeKey {
-        SPELL_POWER("Spell Power", "irons_spellbooks:spell_power"),
-        MAX_MANA("Max Mana", "irons_spellbooks:max_mana"),
-        MANA_REGEN("Mana Regen", "irons_spellbooks:mana_regen"),
-        COOLDOWN_REDUCTION("Cooldown Reduction", "irons_spellbooks:cooldown_reduction"),
-        ARS_MAX_MANA("Max Mana (Ars)", "irons_spellbooks:max_mana"),
-        ARS_SPELL_DAMAGE("Spell Damage (Ars)", "irons_spellbooks:spell_power");
-
-        public final String displayName;
-        public final String attributeId;
-
-        AttributeKey(String displayName, String attributeId) {
-            this.displayName = displayName;
-            this.attributeId = attributeId;
         }
     }
 

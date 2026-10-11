@@ -65,22 +65,15 @@ public class ItemModularWand extends Item implements IModularItem {
         DataManager.instance.moduleData.onReload(this::clearCaches);
     }
 
-    // Mirror ItemModularArmor.damageItem — wraps ModularItemDamageEvent.post()
-    // in a try/catch so a third-party listener throwing CCE doesn't crash
-    // every wand swing. The Aetheric Tetranomicon failure mode we documented
-    // for armor applies to weapon damage too (same event, same dispatcher).
+    // Same guarded damage path as ItemModularArmor.damageItem (shared body in
+    // ModularDamageBus.damageItem): ModularItemDamageEvent.post() is wrapped
+    // so a third-party listener throwing CCE doesn't crash every wand swing.
+    // The Aetheric Tetranomicon failure mode we documented for armor applies
+    // to weapon damage too (same event, same dispatcher).
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        se.mickelus.tetra.event.ModularItemDamageEvent event =
-                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
-        com.iridescentcraft.reforging.event.ModularDamageBus.safePost(event, "wand", "iridescent_reforging");
-        int actualAmount = event.getAmount();
-        try {
-            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
-        } catch (Throwable t) {
-            // BloodboundEffect failures must not crash item damage.
-        }
-        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
+        return com.iridescentcraft.reforging.event.ModularDamageBus.damageItem(
+                stack, amount, entity, "wand", "iridescent_reforging");
     }
 
     @Override public Item getItem() { return this; }
@@ -213,23 +206,6 @@ public class ItemModularWand extends Item implements IModularItem {
     // "basic_handle/iron" -> "iron". Used by display name + anvil repair.
     private static String readMajorMaterial(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemModularWand)) return null;
-        try {
-            se.mickelus.tetra.module.ItemModuleMajor[] majors =
-                    ((IModularItem) stack.getItem()).getMajorModules(stack);
-            if (majors == null) return null;
-            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
-                if (m == null) continue;
-                String slot = m.getSlot();
-                if (slot == null || !slot.equals("wand/handle")) continue;
-                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
-                if (v == null || v.key == null) continue;
-                int slash = v.key.lastIndexOf('/');
-                if (slash < 0 || slash == v.key.length() - 1) continue;
-                return v.key.substring(slash + 1);
-            }
-        } catch (Throwable t) {
-            // fall through to null
-        }
-        return null;
+        return ModuleVariants.majorVariantSuffix(stack, "wand/handle");
     }
 }

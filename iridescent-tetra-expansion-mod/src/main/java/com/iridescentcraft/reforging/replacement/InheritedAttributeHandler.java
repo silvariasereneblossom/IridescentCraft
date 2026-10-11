@@ -16,7 +16,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Runtime layer for SpecializedReplacementHook's identity capture. The
@@ -63,13 +65,50 @@ public final class InheritedAttributeHandler {
      *  carryover silently REPLACED the first instead of stacking (same
      *  collision family as the Tetra fixIdentifiers issue fixed in
      *  ItemModularArmor.slotScopeIdentifiers). Indexed by
-     *  EquipmentSlot.ordinal(): FEET=2, LEGS=3, CHEST=4, HEAD=5. */
+     *  EquipmentSlot.ordinal(): FEET=2, LEGS=3, CHEST=4, HEAD=5.
+     *
+     *  Built once: this handler runs for every attribute query of every
+     *  reforged piece (equip, durability change, each tooltip frame), and a
+     *  String.format + UUID parse per call allocated every time. The VALUES are
+     *  the same ones the per-call version produced -- do not change the
+     *  format strings, vanilla matches equip/unequip by these ids. */
+    private static final UUID[] BASELINE_ARMOR_UUIDS = slotUuids("a1c9e204-0000-0000-%04x-000000000001");
+    private static final UUID[] BASELINE_TOUGH_UUIDS = slotUuids("a1c9e204-0000-0000-%04x-000000000002");
+
+    private static UUID[] slotUuids(String format) {
+        EquipmentSlot[] slots = EquipmentSlot.values();
+        UUID[] out = new UUID[slots.length];
+        for (EquipmentSlot slot : slots) {
+            out[slot.ordinal()] = UUID.fromString(String.format(format, slot.ordinal() + 1));
+        }
+        return out;
+    }
+
     private static UUID baselineArmorUuid(EquipmentSlot slot) {
-        return UUID.fromString(String.format("a1c9e204-0000-0000-%04x-000000000001", slot.ordinal() + 1));
+        return BASELINE_ARMOR_UUIDS[slot.ordinal()];
     }
 
     private static UUID baselineToughUuid(EquipmentSlot slot) {
-        return UUID.fromString(String.format("a1c9e204-0000-0000-%04x-000000000002", slot.ordinal() + 1));
+        return BASELINE_TOUGH_UUIDS[slot.ordinal()];
+    }
+
+    /**
+     * Attribute id string (as stored in {@code icraft_inherited_modifiers})
+     * -> registry object, so pass 1 does not parse a ResourceLocation and
+     * query the registry per entry per call. Only hits are cached; an id
+     * that does not resolve (source mod removed) is looked up again and
+     * skipped again, exactly as before.
+     */
+    private static final Map<String, Attribute> INHERITED_ATTRIBUTES = new ConcurrentHashMap<>();
+
+    private static Attribute resolveInheritedAttribute(String id) {
+        Attribute cached = INHERITED_ATTRIBUTES.get(id);
+        if (cached != null) return cached;
+        ResourceLocation attrId = ResourceLocation.tryParse(id);
+        if (attrId == null) return null;
+        Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(attrId);
+        if (attr != null) INHERITED_ATTRIBUTES.put(id, attr);
+        return attr;
     }
 
     @SubscribeEvent
@@ -89,21 +128,10 @@ public final class InheritedAttributeHandler {
             ListTag list = tag.getList("icraft_inherited_modifiers", Tag.TAG_COMPOUND);
             for (int i = 0; i < list.size(); i++) {
                 CompoundTag entry = list.getCompound(i);
-                String slotName = entry.getString("slot");
-                EquipmentSlot entrySlot;
-                try {
-                    entrySlot = EquipmentSlot.byName(slotName);
-                } catch (Exception e) {
-                    continue;
-                }
-                if (entrySlot != eventSlot) continue;
-                ResourceLocation attrId;
-                try {
-                    attrId = new ResourceLocation(entry.getString("attribute"));
-                } catch (Exception e) {
-                    continue;
-                }
-                Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(attrId);
+                // Slot names are unique, so comparing the name is the same
+                // test as resolving it (an unknown name matches no slot).
+                if (!eventSlot.getName().equals(entry.getString("slot"))) continue;
+                Attribute attr = resolveInheritedAttribute(entry.getString("attribute"));
                 if (attr == null) continue;
                 UUID uuid = entry.getUUID("uuid");
                 double amount = entry.getDouble("amount");

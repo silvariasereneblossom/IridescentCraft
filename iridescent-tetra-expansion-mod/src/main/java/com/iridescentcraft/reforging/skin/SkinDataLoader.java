@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.iridescentcraft.reforging.IridescentReforging;
+import com.iridescentcraft.reforging.attribute.AttributeOperations;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -114,7 +115,7 @@ public class SkinDataLoader extends SimpleJsonResourceReloadListener {
                     idx++;
                     continue;
                 }
-                AttributeModifier.Operation op = parseOperation(opStr);
+                AttributeModifier.Operation op = AttributeOperations.parse(opStr);
                 UUID uuid = UUID.nameUUIDFromBytes(
                         ("iridescent_reforging:skin/" + skinId + "/" + attrId + "/" + idx)
                                 .getBytes(java.nio.charset.StandardCharsets.UTF_8));
@@ -130,13 +131,5 @@ public class SkinDataLoader extends SimpleJsonResourceReloadListener {
         String tex2    = obj.has("texture_layer_2") ? obj.get("texture_layer_2").getAsString() : "";
 
         return new SkinDefinition(skinId, slot, sourceItem, displayName, attrs, tier, setId, armNs, armName, tex1, tex2);
-    }
-
-    private static AttributeModifier.Operation parseOperation(String s) {
-        return switch (s) {
-            case "multiply_base"  -> AttributeModifier.Operation.MULTIPLY_BASE;
-            case "multiply_total" -> AttributeModifier.Operation.MULTIPLY_TOTAL;
-            default                -> AttributeModifier.Operation.ADDITION;
-        };
     }
 }
