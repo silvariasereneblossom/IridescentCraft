@@ -41,7 +41,7 @@ function spawnProtectionNotice(event) {
     let lastMsg = data.getLong('ic_spawnMsgTime')
     // World game time, not server.tickCount: the stamp is persisted on the
     // player and tickCount restarts at 0 on every boot.
-    let now = event.level.gameTime
+    let now = event.level.time
     if (now - lastMsg > 100 || now < lastMsg) {
       event.player.tell('The starting village is protected. Venture out and build your own base!')
       data.putLong('ic_spawnMsgTime', now)

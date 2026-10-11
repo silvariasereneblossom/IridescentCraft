@@ -84,12 +84,14 @@
     return { 'class': null, 'race': null, 'origin': null }
   }
 
-  // Same accessors the rest of the pack already runs in production:
-  // player.uuid.toString() (skills/justleveling_skills.js) and
-  // player.level.gameTime (affixes/affix_effects.js). Game time is the world
-  // clock: monotonic across restarts, shared by every dimension.
+  // Cache clock = world game time: monotonic across restarts, shared by every
+  // dimension. To scripts that is `level.time` -- KubeJS renames
+  // Level.getGameTime() to getTime() (@RemapForJS on LevelMixin), so the
+  // obvious `level.gameTime` is undefined. This line read it until
+  // 2026-10-10: the clock was NaN, the TTL test was never true, and every
+  // get()/is() call did a full player-NBT read.
   var keyOf = function (player) { return String(player.uuid.toString()) }
-  var clockOf = function (player) { return Number(player.level.gameTime) }
+  var clockOf = function (player) { return Number(player.level.time) }
 
   var onServerThread = function (player) {
     try { return player.server.isSameThread() !== false } catch (e) { return true }

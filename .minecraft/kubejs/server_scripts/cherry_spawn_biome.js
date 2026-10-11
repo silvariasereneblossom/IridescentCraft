@@ -235,7 +235,7 @@ try {
               // every one of them (none carries the first-spawn marker) back to
               // the village on their next login.
               var armTeleport = false
-              try { armTeleport = ow.gameTime <= NEW_WORLD_MAX_GAMETIME } catch (_) {}
+              try { armTeleport = ow.time <= NEW_WORLD_MAX_GAMETIME } catch (_) {}
               try {
                 if (pdata) {
                   pdata.putBoolean(FLAG_SET, true)

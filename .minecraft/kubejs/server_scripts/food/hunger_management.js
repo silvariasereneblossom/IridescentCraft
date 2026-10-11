@@ -27,7 +27,7 @@ global.tick_hungerManagement = (event) => {
   server.players.forEach(player => {
     let data = player.persistentData
     // Persisted clock: world game time (survives restarts; same in every dimension).
-    let now = player.level.gameTime
+    let now = player.level.time
 
     // --- Track current position and state ---
     let currentX = Math.floor(player.x * 10)

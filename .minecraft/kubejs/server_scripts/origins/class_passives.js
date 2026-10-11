@@ -11,7 +11,7 @@
 // AStages-based `getPlayerTier` in bonfire/boss_compass_handler.js.
 //
 // Clocks: `server.tickCount` only PHASES the work (which sub-block runs this
-// tick). Anything written to persistentData uses `player.level.gameTime` — the
+// tick). Anything written to persistentData uses `player.level.time` — the
 // world clock survives restarts, tickCount restarts at 0 every boot.
 // =============================================================================
 
@@ -94,7 +94,7 @@
         if (getClass(player) !== 'samurai') return
 
         var data = player.persistentData
-        var now = player.level.gameTime
+        var now = player.level.time
 
         // -- Vorpal: Strength based on progression tier --
         // T1 = Strength I (amp 0), T2 = II, T3 = III, T4 = IV, beyond = V

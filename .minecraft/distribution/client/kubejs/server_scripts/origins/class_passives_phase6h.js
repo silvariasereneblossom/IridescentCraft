@@ -18,7 +18,7 @@
 // per-hit handler costs a map lookup. The old `execute if entity <name>[nbt=]`
 // probe never parsed; none of this ran before 2026-10.
 //
-// Clocks: every stamp written to persistentData is `player.level.gameTime`
+// Clocks: every stamp written to persistentData is `player.level.time`
 // (world clock, survives restarts). `server.tickCount` only phases the tick.
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks),
@@ -70,7 +70,7 @@
         eachPlayer(server, 'berserker battle trance', function (player) {
           if (classOf(player) !== 'berserker') return
           var data = player.persistentData
-          var now = player.level.gameTime
+          var now = player.level.time
           var lastHit = data.getLong('icraft_berserker_lastHitTick') || 0
           var combatStart = data.getLong('icraft_berserker_combatStartTick') || 0
           var tranceActive = data.getInt('icraft_berserker_tranceActive') === 1
@@ -115,7 +115,7 @@
           if (data.getInt('icraft_wanderer_adaptActive') !== 1) return
           var bonusUntil = data.getLong('icraft_wanderer_adaptUntil') || 0
 
-          if (player.level.gameTime >= bonusUntil) {
+          if (player.level.time >= bonusUntil) {
             player.modifyAttribute('minecraft:generic.attack_damage', 'icraft_wanderer_adapt', 0, 'multiply_base')
             data.putInt('icraft_wanderer_adaptActive', 0)
           }
@@ -174,6 +174,10 @@
     var sourceShapeLogged = false
     DR_h6.register('icraft.class_passives_h6', function (event) {
       try {
+        // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
+        // lands as-is: it must not proc or be multiplied a second time. Same rule the
+        // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
+        if (global.icraft && global.icraft.core && global.icraft.core.secondary && global.icraft.core.secondary(event.entity)) return
         // One line per boot, on the first damage event: how a DamageSource looks
         // to a script on this server. Expected: type=function entity=undefined
         // actual=object. (Several other scripts still read source.entity /
@@ -196,7 +200,7 @@
         if (cls !== 'berserker' && cls !== 'samurai' && cls !== 'wanderer') return
 
         var data = attacker.persistentData
-        var now = attacker.level.gameTime
+        var now = attacker.level.time
 
         if (cls === 'berserker') {
           data.putLong('icraft_berserker_lastHitTick', now)
@@ -257,7 +261,7 @@
         var data = killer.persistentData
         var firstStrike = data.getLong('icraft_samurai_firstStrikeTick') || 0
         if (firstStrike === 0) return
-        var now = killer.level.gameTime
+        var now = killer.level.time
         if (firstStrike <= now && (now - firstStrike) <= 60) {  // 3s
           // Speed II for 3s
           killer.potionEffects.add('minecraft:speed', 60, 1, false, false)

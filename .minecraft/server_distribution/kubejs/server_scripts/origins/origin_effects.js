@@ -45,13 +45,13 @@ global.tick_originEffectsAvianMerling = (event) => {
       // Check if player is in water or rain
       let inWater = player.isInWater() || player.isInWaterRainOrBubble()
 
-      // Dry timer is a GAME-TIME stamp (player.level.gameTime, like the affix /
+      // Dry timer is a GAME-TIME stamp (player.level.time, like the affix /
       // enchant cooldowns). It used to store server.tickCount, which restarts
       // at 0 every boot: a stamp from yesterday's session was "in the future",
       // so the debuff could not come back until uptime passed the old value.
       // New key on purpose -- a stale tickCount under the old key
       // (ic_merling_dry_since) would read as "dry for months" on this clock.
-      let now = player.level.gameTime
+      let now = player.level.time
 
       if (inWater) {
         // Reset dry timer when in water
@@ -117,6 +117,10 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
   // getActual() (@RemapForJS), so `source.entity` is undefined and this handler
   // used to return on its first line for every hit.
   DR.register('icraft.origin.blazeborn.deal', function(event) {
+    // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
+    // lands as-is: it must not proc or be multiplied a second time. Same rule the
+    // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
+    if (global.icraft && global.icraft.core && global.icraft.core.secondary && global.icraft.core.secondary(event.entity)) return
     var source = event.source
     var attacker = source ? (source.actual !== undefined ? source.actual : source.entity) : null
     if (!attacker || !(attacker instanceof PlayerClass)) return
@@ -152,6 +156,10 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
   var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
   DR.register('icraft.origin.enderian.shift', function(event) {
+    // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
+    // lands as-is: it must not proc or be multiplied a second time. Same rule the
+    // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
+    if (global.icraft && global.icraft.core && global.icraft.core.secondary && global.icraft.core.secondary(event.entity)) return
     // (source.actual, not source.entity -- see the Blazeborn handler above)
     var source = event.source
     var attacker = source ? (source.actual !== undefined ? source.actual : source.entity) : null
@@ -161,7 +169,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     var buffExpiry = data.getLong('icraft_ender_shift_expires')
     // Game-time stamp (see tick_enderianShift). The window is 200 ticks, so
     // anything further ahead than that is not a live buff.
-    var now = attacker.level.gameTime
+    var now = attacker.level.time
     if (now < buffExpiry && buffExpiry - now <= 200) {
       event.amount = event.amount * 1.15
     }
@@ -184,7 +192,7 @@ global.tick_enderianShift = (event) => {
     // World game time, not server.tickCount: tickCount restarts at 0 on every
     // boot, so an expiry stamped late in one session kept the buff locked in
     // the next until uptime caught up. A stale small stamp reads as "ready".
-    let tick = player.level.gameTime
+    let tick = player.level.time
     let lastBuff = data.getLong('icraft_ender_shift_expires')
     if (tick > lastBuff || lastBuff - tick > 200) {
       data.putLong('icraft_ender_shift_expires', tick + 200)
