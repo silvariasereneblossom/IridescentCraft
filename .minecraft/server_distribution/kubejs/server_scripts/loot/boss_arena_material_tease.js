@@ -74,11 +74,14 @@ LootJS.modifiers(event => {
   // dd_stalker (Stalker) -> soul_crystal
   tease('deeperdarker:chests/ancient_temple_storage', 'deeperdarker:soul_crystal', 0.10, T3, 0.05)
   // tm_gatmancer (Gatmancer) -> occult_fabric
-  tease('terramity:chests/infested_lab_loot', 'terramity:occult_fabric', 0.12, T3, 0.05)
+  // No tier token here (operator ruling 2026-10-11): the Infested Laboratory
+  // generates in the Overworld, so its chest handed a T3 progression token to a
+  // T1 player. The material tease stays.
+  tease('terramity:chests/infested_lab_loot', 'terramity:occult_fabric', 0.12, null, 0)
 
   // ---- T4 ---- (no T4 token; T3 is the top progression token)
   // da_eots (Eye of the Storm) -> squall_plate
   tease('deep_aether:chests/dungeon/brass/brass_dungeon_loot', 'deep_aether:squall_plate', 0.08, T3, 0.04)
 
-  console.log('[boss_arena_material_tease] registered 13 arena material teases + tier tokens (icraft #58 Piece B)')
+  console.log('[boss_arena_material_tease] registered 13 arena material teases, 12 with a tier token (icraft #58 Piece B)')
 })
