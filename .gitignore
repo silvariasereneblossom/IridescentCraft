@@ -63,6 +63,25 @@ saves/
 .minecraft/run.bat
 .minecraft/run.sh
 .minecraft/user_jvm_args.txt
+# A server's own identity files: who may join, who is an operator, who is
+# banned, and the name cache. They belong to the server they sit on and hold
+# player names; this repository is public. Tracked as `[]` until 2026-10-11,
+# which let a full sync empty the live whitelist (next to a tracked
+# server.properties with white-list=false: the public server failed open).
+# The launcher leaves them alone on the server whatever the repo holds
+# (SERVER_OWNED_FILES, iridescent-launcher/icraft-core/src/sync.rs), and the
+# game creates its own on a new server. Never `git add -f` one.
+.minecraft/server_distribution/whitelist.json
+.minecraft/server_distribution/whitelist.json.bak
+.minecraft/server_distribution/ops.json
+.minecraft/server_distribution/banned-ips.json
+.minecraft/server_distribution/banned-players.json
+.minecraft/server_distribution/usercache.json
+.minecraft/server_distribution/usernamecache.json
+# The server's local config overrides and their history (launcher override
+# layer): per server, never part of the pack.
+.minecraft/server_distribution/.icraft_config_overrides.json
+.minecraft/server_distribution/config-overrides/
 # JVM crash dumps + Forge installer logs (any depth) — never commit
 hs_err_pid*.log
 installer.log
