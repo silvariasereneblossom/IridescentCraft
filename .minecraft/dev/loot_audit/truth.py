@@ -16,7 +16,10 @@ Default output: <repo>/dev/loot_audit/.cache/truth.json.
 
 Pack priority (low -> high, "last wins"):
     vanilla(0) < forge universal jar(1) < every mod jar(2, NO relative order between mods)
-    < paxi zips (3.., datapack_load_order.json order, then unlisted zips alphabetically) < kubejs_data
+    < paxi zips (3.., UNLISTED zips first, then datapack_load_order.json order) < kubejs_data
+Paxi 4.0 (PaxiRepositorySource.loadPacksFromFiles + MixinPackRepositoryForge.rebuildSelected, decompiled
+2026-10-11): the zips named in loadOrder are pulled out of the enabled list and re-appended on top, in
+that order; a zip the file does not name stays below every listed one.
 A jar whose filename also exists in <repo>/mods is read from the repo (pack.repo_copy = true).
 
 Top-level keys of the output
@@ -3014,7 +3017,7 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
         'meta': {'scanner_version': SCANNER_VERSION, 'generated': time.strftime('%Y-%m-%dT%H:%M:%S'),
                  'mods_dir': args.mods, 'repo': repo, 'vanilla_jar': args.vanilla, 'forge_jar': args.forge,
                  'pack_order': 'vanilla(0) < forge(1) < all mod jars(2, no relative order) < paxi zips '
-                               '(3.., datapack_load_order.json then unlisted alphabetical) < kubejs_data'},
+                               '(3.., unlisted zips first, then datapack_load_order.json order) < kubejs_data'},
         'stats': stats,
         'packs': packs,
         'mods': mods,
@@ -3126,7 +3129,13 @@ def main():
                 notes.add('paxi', 'datapack_load_order.json lists %s but the zip does not exist' % z)
     except (OSError, ValueError) as e:
         notes.add('paxi', 'datapack_load_order.json not readable: %s' % e)
-    order += sorted((z for z in zips if z not in order), key=lambda z: z.lower())
+    # Unlisted zips load BELOW the listed ones (see the module docstring). Their order among
+    # themselves is the world's saved pack order; pack-id order is the best offline guess.
+    unlisted = sorted(z for z in zips if z not in order)
+    if len(unlisted) > 1:
+        notes.add('paxi', 'unlisted zips (below every listed zip; order among themselves assumed by id): %s'
+                  % ', '.join(unlisted))
+    order = unlisted + order
     if os.path.isdir(pdir):
         for d in sorted(os.listdir(pdir)):
             if os.path.isdir(os.path.join(pdir, d)):

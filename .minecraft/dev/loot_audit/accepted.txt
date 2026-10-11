@@ -8,29 +8,14 @@
 # of everything not accepted yet. Do not add a line to make the gate green: add it when you have
 # checked the finding and can write the reason.
 
-# --- rules whose regex matches no table; fixing each is a design call (what it would switch on is
-# --- in internal planning/loot-audit-2026-10.md section 3) -------------------------------------
-DEAD_REGEX loot/lootjs_overhaul.js /dungeons_arise:chests\/(fishing_hut|bandit_village|greenwood_pub|giant_mushroom|bathhouse|aviary)\//  # left dead 2026-10-10: would strip in 15 Overworld tables
-DEAD_REGEX loot/lootjs_overhaul.js /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\//  # left dead 2026-10-10: 20 tables
-DEAD_REGEX loot/lootjs_overhaul.js /dungeons_arise:chests\/heavenly_/  # left dead 2026-10-10: 10 tables
-DEAD_REGEX loot/lootjs_overhaul.js /idas:chests\/(?!.*treasure)/  # left dead 2026-10-10: 145 IDAS tables
-DEAD_REGEX loot/lootjs_overhaul.js /^repurposed_structures:chests\/villages\//  # left dead 2026-10-10: 23 RS village tables (sanitising + curated pool)
-DEAD_REGEX loot/lootjs_overhaul.js /^townstead:.*chests?\//  # townstead ships no loot table; sits in the same six lists as the RS village regex
-DEAD_REGEX loot/lootjs_overhaul.js /structory_towers:.*chests.*/  # no table under that name; which Structory Towers tables are "the tower chest" is a design call
-DEAD_REGEX loot/zz_pack_enchanted_books.js /structory_towers:.*chests.*/  # queued book of the same marquee
-DEAD_REGEX loot/lootjs_overhaul.js /twilightforest:structures\/lichtower\/.*/  # TF has no structures/ tables; which chests/ tables are the Lich Tower is a design call
-DEAD_REGEX loot/zz_pack_enchanted_books.js /twilightforest:structures\/lichtower\/.*/  # queued book of the same marquee
-DEAD_REGEX loot/lootjs_overhaul.js /undergarden:chests\/.*ruin.*/  # only undergarden:chests/catacombs exists; design call
-DEAD_REGEX loot/zz_pack_enchanted_books.js /undergarden:chests\/.*ruin.*/  # queued book of the same marquee
-DEAD_REGEX loot/lootjs_overhaul.js /theabyss:chests\/.*/  # no Abyss chest rolls a table (2026-10-11); the T4_ABYSSAL pool has no outlet, operator call
-DEAD_REGEX loot/zz_pack_enchanted_books.js /theabyss:chests\/.*/  # queued book of the same marquee
-DEAD_REGEX loot/lootjs_overhaul.js /bettermineshafts:.*/  # YUNG's Better Mineshafts ships no table: its chests roll minecraft:chests/abandoned_mineshaft, which other rules cover
-DEAD_REGEX loot/loot_overhaul.js /^bettermineshafts:.*/  # same
-
 # --- tables no chest NBT / entity / vanilla code is seen rolling --------------------------------
 NO_ROLLER_FOUND loot/boss_arena_material_tease.js twilightforest:chests/darktower_cache  # Twilight Forest builds its structures and its table ids in code (twilightforest/loot/TFLootTables); not provable from the jar
 NO_ROLLER_FOUND loot/lootjs_overhaul.js /twilightforest:chests\/.*/  # same
 NO_ROLLER_FOUND loot/loot_overhaul.js /^twilightforest:chests\/.*/  # same
+NO_ROLLER_FOUND loot/lootjs_overhaul.js twilightforest:chests/tower_room  # the Lich Tower tables (marquee retargeted 2026-10-11): assigned in code by lichtower.TowerWingComponent / lichtowerrevamp.SideTowerRoom (javap), not provable from structure NBT
+NO_ROLLER_FOUND loot/lootjs_overhaul.js twilightforest:chests/tower_library  # the Lich Tower tables (marquee retargeted 2026-10-11): assigned in code by lichtower.TowerWingComponent / lichtowerrevamp.SideTowerRoom (javap), not provable from structure NBT
+NO_ROLLER_FOUND loot/zz_pack_enchanted_books.js twilightforest:chests/tower_room  # queued book of the same marquee
+NO_ROLLER_FOUND loot/zz_pack_enchanted_books.js twilightforest:chests/tower_library  # queued book of the same marquee
 NO_ROLLER_FOUND loot/lootjs_overhaul.js /dungeons_plus:chests\/.*\/rare/  # Dungeons Plus assembles the id from parts in code
 NO_ROLLER_FOUND loot/lootjs_overhaul.js /celestial_artifacts:.*/  # only Celestial Artifacts' own loot modifiers name these tables and the pack's Paxi overrides neutralise those; the strip is moot
 
@@ -42,8 +27,6 @@ NO_ROLLER_FOUND loot/lootjs_overhaul.js /celestial_artifacts:.*/  # only Celesti
 ~TIER_MISMATCH loot/boss_arena_material_tease.js T3->minecraft:overworld cataclysm:chests/*  # boss arenas are tiered by their boss, not by dimension
 ~TIER_MISMATCH loot/boss_arena_material_tease.js T3->minecraft:overworld irons_spellbooks:chests/*  # same (ISS arenas)
 ~TIER_MISMATCH loot/zz_iss_arena_enrichment.js T3->minecraft:overworld irons_spellbooks:chests/*  # same
-TIER_MISMATCH loot/boss_arena_material_tease.js T3->minecraft:overworld terramity:chests/infested_lab_loot  # OPEN (operator): a T3 token + occult fabric in an Overworld lab; listed in loot-audit-2026-10.md
-TIER_MISMATCH loot/terramity_structure_drops.js T3->minecraft:overworld terramity:chests/fire_lookout_tower_loot  # the T2 tomes stay in Overworld tables (decided 2026-10-11: Terramity has no T2 structure)
 ~TIER_MISMATCH loot/lootjs_overhaul.js T2 dims deeperdarker:otherside,minecraft:the_nether,theabyss:the_abyss,undergarden:undergarden relics:shadow_glaive  # the rule is "T2/T3": the label parser reads the first number
 TIER_MISMATCH loot/lootjs_overhaul.js T1->minecraft:the_nether irons_spellbooks:chests/battleground/burial_loot  # T1 robe pieces also in Nether ISS tables: lower-tier loot in a higher tier is harmless
 TIER_MISMATCH loot/lootjs_overhaul.js T3 dims minecraft:the_end ars_nouveau:glyph_blink  # Ars has no T4 glyphs; the End takes the T3 list on purpose
@@ -72,7 +55,5 @@ RECIPE_REMOVED_NO_LOOT_SOURCE recipes/strip_mutant_monsters.js mutantmonsters:cr
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:watching_warglaive  # 8 "unassigned reserve" uniques are creative-only by decision; dormant_relic is OPEN (loot-audit-2026-10.md)
 RECIPE_REMOVED_NO_LOOT_SOURCE compat/class_artifacts_recipes.js rpgseteffects:magic_leather  # documented orphan ("no longer craftable, no use")
 
-# --- loot table JSON shipped twice by the pack with different content (kubejs/data wins) --------
-~JSON_SHADOWED artifacts:inject/chests/*  # OPEN: the Paxi copies are dead weight; which copy is the intended one is listed in loot-audit-2026-10.md
-~JSON_SHADOWED minecraft:chests/village/village_*_house  # same pair of sources (Paxi icraft_loot_overrides vs kubejs/data)
-~JSON_SHADOWED totw_reworked:*tower_chest  # the two Towers of the Wild zips both ship it; the later zip wins
+# --- loot table JSON shipped by more than one pack source with different content ------------------
+~JSON_SHADOWED totw_reworked:*tower_chest  # intended: the pack's icraft_loot_overrides copy overrides the two Towers of the Wild zips (Paxi puts listed zips above unlisted ones)

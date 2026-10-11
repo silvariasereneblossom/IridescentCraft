@@ -226,8 +226,17 @@ class Truth:
             return "ENTITY"
         if path.startswith("blocks/"):
             return "BLOCK"
-        if path.startswith("archaeology/"):
-            return "UNKNOWN"
+        # The context is the CALLER's parameter set, not the table's path or declared type. A container
+        # placed by a structure template (RandomizableContainerBlockEntity) and a suspicious block
+        # (BrushableBlockEntity, also when a structure processor assigns its table) both unpack with
+        # LootContextParamSets.CHEST (f_81411_, bytecode-checked 2026-10-11) -- so archaeology IS in
+        # the CHEST context and the pack's LootType.CHEST rules do reach it.
+        if path.startswith("archaeology/") or path.startswith("archeology/"):
+            return "CHEST"
+        ev = (self.roots.get(tid) or {}).get("rolled_by", [])
+        if any(e.get("kind") == "processor" or (e.get("kind") == "structure_nbt" and e.get("template_reachable"))
+               for e in ev):
+            return "CHEST"
         return TYPE_BY_DECLARED.get(t.get("type") or "", "UNKNOWN")
 
     def why(self, tid, limit=3):
@@ -1391,6 +1400,47 @@ def build(truth, h, repo, extra, accepted):
             F.add(7, "GLM_LIST_REPLACE", pack, pack, "global_loot_modifiers.json has replace:true: it discards every mod's loot modifier list",
                   severity="error")
 
+    # ---------------- [7b] alias (forwarding) tables: dev/loot_audit/alias_tables.json ----------------
+    # A chest that names a table id nothing ships gets a kubejs/data table forwarding to the intended
+    # one. LootJS (and Forge loot modifiers) key on the ROOT id -- the alias -- so a rule that names
+    # only the target silently skips those chests.
+    try:
+        with open(os.path.join(repo, "dev", "loot_audit", "alias_tables.json"), encoding="utf-8") as f:
+            aliases = json.load(f).get("aliases", {})
+    except (OSError, ValueError) as e:
+        aliases = {}
+        F.add(7, "ALIAS_MAP_UNREADABLE", "alias_tables.json", "dev/loot_audit/alias_tables.json",
+              "alias map not readable: %s" % e, severity="error")
+    # A rule site is a file:line; a forEach over a list registers one modifier per table there, so
+    # "does this rule reach the alias" is asked of the site, not of each modifier.
+    site_tables = collections.OrderedDict()
+    for m in mods:
+        if m["kind"] == "table":
+            site_tables.setdefault("%s:%s" % (m["file"], m["line"]), set()).update(scope[m["idx"]]["tables"])
+    for alias, spec in sorted(aliases.items()):
+        targets = spec.get("targets") or []
+        a_ns, a_path = alias.split(":", 1)
+        a_file = os.path.join(repo, "kubejs", "data", a_ns, "loot_tables", *(a_path + ".json").split("/"))
+        if not os.path.isfile(a_file):
+            F.add(7, "ALIAS_TABLE_MISSING", alias, "kubejs/data", "alias table %s is in alias_tables.json but its file does not "
+                  "exist -- run dev/loot_audit/gen_alias_tables.py" % alias, severity="error")
+        for tg in targets:
+            if tg not in T.tables or tg in aliases:
+                F.add(7, "ALIAS_TARGET_MISSING", "%s -> %s" % (alias, tg), "dev/loot_audit/alias_tables.json",
+                      "alias %s forwards to %s, which %s" % (alias, tg, "is itself an alias" if tg in aliases
+                                                             else "no pack ships: the chest stays empty"), severity="error")
+        if alias not in T.tables:
+            continue        # truth cache predates the alias file; the rule check needs it scanned
+        miss = collections.OrderedDict()
+        for site, st in site_tables.items():
+            hit = [tg for tg in targets if tg in st]
+            if hit and alias not in st:
+                miss[site] = hit[0]
+        for where, tg in miss.items():
+            F.add(7, "ALIAS_RULE_MISS", "%s <- %s" % (alias, where.rsplit(":", 1)[0] + " " + tg), where,
+                  "the rule at %s names %s but not its alias %s: chests that roll the alias do not get this rule"
+                  % (where, tg, alias))
+
     # ---------------- [8] mock coverage ----------------
     for name, s in sorted(h["_stubs"].items()):
         F.add(8, "STUBBED_GLOBAL", name, s["used_at"][0], "global.%s is defined in a script the audit does not load (%s): stubbed"
@@ -1583,6 +1633,16 @@ def main():
                 print(r["key"])
     engine = [r for r in F.rows if r["section"] == 0 and r["severity"] == "error"]
     fresh = [r for r in F.rows if not r["accepted"] and r["severity"] in ("error", "warn") and r["section"] != 8]
+    # accepted.txt lines that no finding uses any more: the finding was fixed, delete the line
+    keys_now = set(r["key"] for r in F.rows)
+    stale = sorted(a for a in accepted
+                   if (a.startswith("~") and not any(fnmatch.fnmatchcase(k, a[1:].strip()) for k in keys_now))
+                   or (not a.startswith("~") and a not in keys_now))
+    if stale:
+        print()
+        print("accepted.txt lines that match no finding (stale -- delete them):")
+        for a in stale:
+            print("  " + a)
     print()
     print("[loot-audit] engine=%d findings=%d not_accepted=%d" % (len(engine), len(F.rows), len(fresh)))
     sys.exit(1 if engine or fresh else 0)
