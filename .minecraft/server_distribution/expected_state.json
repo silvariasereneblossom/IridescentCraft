@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "efa5e538",
+    "generated_from":  "5450352f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4340,8 +4340,8 @@
                                                                          "size":  1271
                                                                      },
                   "config/paxi/datapacks/icraft_loot_overrides.zip":  {
-                                                                          "sha256":  "3c64a546566602107462518d7f6430f3ace6fd7b1b9c5d6db8072ad8dd0326c4",
-                                                                          "size":  667302
+                                                                          "sha256":  "8dc97ca947e3c45ac42246d6408c92bbeb8b8eeb6a15ce89483f96d96150ab8b",
+                                                                          "size":  570736
                                                                       },
                   "config/paxi/datapacks/icraft_mm_overrides.zip":  {
                                                                         "sha256":  "565f1641f1d3f67d7e90a1c86701300904a80eddffcdeb19249b47f79c67cc25",
@@ -6283,6 +6283,22 @@
                                                                                                                  "sha256":  "307b3057b535918eea30b6f79e17dfe751d34179519d48f99200190cef6f8888",
                                                                                                                  "size":  864
                                                                                                              },
+                  "kubejs/data/ctov/loot_tables/pillager_outpost/halloween/tower.json":  {
+                                                                                             "sha256":  "58c0896574ac0deb7869aad02ce166f02dfd7cade75f751e25b63c684789d303",
+                                                                                             "size":  246
+                                                                                         },
+                  "kubejs/data/ctov/loot_tables/village/desert/.json":  {
+                                                                            "sha256":  "bab7049e7bae8e69c021ba7685414ee02cb6ee86c9edf93edbccbc539aa38808",
+                                                                            "size":  248
+                                                                        },
+                  "kubejs/data/ctov/loot_tables/village/desert_fortified/bakery.json":  {
+                                                                                            "sha256":  "dc429f1d5f12c67275deb64d3f4f4ed700f757142e430a3460f6294e1a3bfaf3",
+                                                                                            "size":  247
+                                                                                        },
+                  "kubejs/data/ctov/loot_tables/village/swamp/leatherworker.json":  {
+                                                                                        "sha256":  "1684ebce5feafe0e5f991b2146a1b9febcdc379a7808ce1edf50159cd70955c6",
+                                                                                        "size":  253
+                                                                                    },
                   "kubejs/data/dna/advancements/amethyst_powder_unlock.json":  {
                                                                                    "sha256":  "9fd5a5fe7c121c881b99f648e1f5f87e846863defacae8a71ada5921e296045e",
                                                                                    "size":  54
@@ -6323,6 +6339,30 @@
                                                                                     "sha256":  "9fd5a5fe7c121c881b99f648e1f5f87e846863defacae8a71ada5921e296045e",
                                                                                     "size":  54
                                                                                 },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/desert_city_big.json":  {
+                                                                                             "sha256":  "5def0e2adab8f2bb9b0f61400344ca2bddd8881a87678fbf67410209c58b9cea",
+                                                                                             "size":  271
+                                                                                         },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/desert_city_medium.json":  {
+                                                                                                "sha256":  "8a38c1bbeedf0e5db11e3fa3fd6851747dad084ceaafe40d56a5e39b9543596f",
+                                                                                                "size":  269
+                                                                                            },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/desert_city_small.json":  {
+                                                                                               "sha256":  "c6dab575ebed5fd2c74973cd048014dc92028b0873d6c77e5fd85fe901b46886",
+                                                                                               "size":  269
+                                                                                           },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/illager_fortress_small.json":  {
+                                                                                                    "sha256":  "4c04f918a161ba90f3bbd5ae5a5b984740fa3af30b2bfbdceaaa797bfb6d721d",
+                                                                                                    "size":  267
+                                                                                                },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/mushroom_house/mushroom_house_barrel.json":  {
+                                                                                                                  "sha256":  "d74993e6869bcf702884758d3d98a35630d1c8b382da6de5f17ac238a10fd65f",
+                                                                                                                  "size":  272
+                                                                                                              },
+                  "kubejs/data/dungeons_arise/loot_tables/chests/mushroom_village/mushroom_village_weaponry.json":  {
+                                                                                                                        "sha256":  "2ed3da619c454964b6258c3b6132b245ec12d43536996d4aa68d7a9e90073c51",
+                                                                                                                        "size":  271
+                                                                                                                    },
                   "kubejs/data/forge/loot_modifiers/global_loot_modifiers.json":  {
                                                                                       "sha256":  "26bfe32a9cfd700841860980530ca1b01d3f02966be36d273398cb49d5f64df0",
                                                                                       "size":  40
@@ -6567,6 +6607,46 @@
                                                                                                          "sha256":  "d6b8959281c5b24e2dbea1c46a8bc4950ae7e83775cae298989aceda700fd8a6",
                                                                                                          "size":  107
                                                                                                      },
+                  "kubejs/data/idas/loot_tables/chests/brickhouse_windmill.json":  {
+                                                                                       "sha256":  "4cdd65812a0824407a7fbd3609a2f0fe81273066b532ddcf76fb9031734e60e7",
+                                                                                       "size":  255
+                                                                                   },
+                  "kubejs/data/idas/loot_tables/chests/idasbasic.json":  {
+                                                                             "sha256":  "5ef741a763d64962d46fc5fa3a58cc73d5e6f621eab49950923dd13982a853d3",
+                                                                             "size":  405
+                                                                         },
+                  "kubejs/data/idas/loot_tables/chests/idaslibrary.json":  {
+                                                                               "sha256":  "4c928f138e2e754aab7d00de0f591bcbf1874677ae5c721f0454b201af573389",
+                                                                               "size":  416
+                                                                           },
+                  "kubejs/data/idas/loot_tables/chests/labyrinth.json":  {
+                                                                             "sha256":  "727177419e7da0ed4ba4a2af1b2c8e2bdfe40edc4093c822e2e4e151a440c948",
+                                                                             "size":  244
+                                                                         },
+                  "kubejs/data/idas/loot_tables/chests/minescreate.json":  {
+                                                                               "sha256":  "3bc7e377e2c52fb3a61c6d4c8fb0d0f5438ddf07eaadcc05305f3fc9a723b381",
+                                                                               "size":  250
+                                                                           },
+                  "kubejs/data/idas/loot_tables/chests/pillagerjail.json":  {
+                                                                                "sha256":  "f129fddf0d7d67e06c18a16a944410d956ea39ec979b1aa8f1b75da12b37ded4",
+                                                                                "size":  256
+                                                                            },
+                  "kubejs/data/idas/loot_tables/chests/throne.json":  {
+                                                                          "sha256":  "54a8fc140287b662a7dba5b6b4d149f3adc4284207440cb2f4925e096f3c06e2",
+                                                                          "size":  245
+                                                                      },
+                  "kubejs/data/keebsz/loot_tables/floor3and4.json":  {
+                                                                         "sha256":  "40f2e1f5e481ae820ed5d366f9a1bdfd6025b806d8c177de7b9440e7487e08d3",
+                                                                         "size":  237
+                                                                     },
+                  "kubejs/data/keebsz/loot_tables/floor5and6.json":  {
+                                                                         "sha256":  "52a0c08a72ad318e8717e60cbcf2f249766936ea9d7a356c114400dfa772e6ef",
+                                                                         "size":  237
+                                                                     },
+                  "kubejs/data/keebsz/loot_tables/floor7and8.json":  {
+                                                                         "sha256":  "6408c720a88bdbb2ceeea4cec2c5e6d8d14f19feed7f7bf8e146220a01b3dceb",
+                                                                         "size":  237
+                                                                     },
                   "kubejs/data/minecraft/advancements/end/dragon_breath.json":  {
                                                                                     "sha256":  "093f3ae6b187be093be9e962a256c30cd65b1d1f76427922b29b946d5f8ba74b",
                                                                                     "size":  428
@@ -6647,6 +6727,14 @@
                                                                                                     "sha256":  "e845e92c1a90705f8f3c41a72b87a07e2ce3a7a48fdd12781836fca2f25d181b",
                                                                                                     "size":  4578
                                                                                                 },
+                  "kubejs/data/minecraft/loot_tables/chests/village_desert_house.json":  {
+                                                                                             "sha256":  "b3df8c02f20c759e45b055eab37bbdfcab42de37220c6c9337cb98056df65a7a",
+                                                                                             "size":  258
+                                                                                         },
+                  "kubejs/data/minecraft/loot_tables/house_1.json":  {
+                                                                         "sha256":  "a1432cfebcc395c1c135b171f7c436dbc3671ebec91a52b0214b305dac6f6fc4",
+                                                                         "size":  254
+                                                                     },
                   "kubejs/data/minecraft/tags/entity_types/undead.json":  {
                                                                               "sha256":  "85183419e2dcbee5466cc7151ad47dd6a863ee98a7b062670ce84addb4515023",
                                                                               "size":  2022
@@ -7108,8 +7196,8 @@
                                                                          "size":  2568
                                                                      },
                   "kubejs/server_scripts/loot/boss_arena_material_tease.js":  {
-                                                                                  "sha256":  "ba4d01fdfe8fb1cf51f92024e16d0bbf7f56937a3e84b9eea7b635707b109baf",
-                                                                                  "size":  5139
+                                                                                  "sha256":  "e0bbf214b6d13020933af04c7339bd31e28ad4593187f30be4b0e7bc7c2bac8b",
+                                                                                  "size":  5347
                                                                               },
                   "kubejs/server_scripts/loot/boss_arena_themed_loot.js":  {
                                                                                "sha256":  "8b91778872cb7ff103761a8d0a07d3693c8ea51e7419355aa19a726d64ced4e6",
@@ -7128,8 +7216,8 @@
                                                                              "size":  6060
                                                                          },
                   "kubejs/server_scripts/loot/codex_exploration_drops.js":  {
-                                                                                "sha256":  "14dc4d0ebb104c4bd96021f110bc74c9250ac7fcb8ce95b5fef4e57b4a78ca33",
-                                                                                "size":  10314
+                                                                                "sha256":  "301115329a8a1ea0977446ccefccd445360472a8c2f476a651f46bccdc62b8fd",
+                                                                                "size":  10551
                                                                             },
                   "kubejs/server_scripts/loot/crop_seed_reduction.js":  {
                                                                             "sha256":  "350765681780c35e333171abc5ad7f25aab7eb944697220c9f37b9fe21c550ab",
@@ -7156,16 +7244,16 @@
                                                                             "size":  3467
                                                                         },
                   "kubejs/server_scripts/loot/loot_overhaul.js":  {
-                                                                      "sha256":  "637596ef59c3851e0f3291c34b0a69f33fca06377b938e93eca9738da52c1777",
-                                                                      "size":  39268
+                                                                      "sha256":  "75e57d6f29f17b35e83e6ff7c8d25c2c42a312b5e052cd40f3f5f4a8cf245231",
+                                                                      "size":  39558
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "e0c328f485118b642cd324f3d97401111cb3644515e189ff2374f26e8fcfc8b2",
-                                                                        "size":  178968
+                                                                        "sha256":  "257d9e0d94d638d694c4f583a2ff9ef46c18f74ec5389b3e3481718d7880a756",
+                                                                        "size":  182360
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
-                                                                           "sha256":  "45d5a896dd8703c95e3a25abc71272238e005538ba3bf2d4ee30febe8447ddab",
-                                                                           "size":  13933
+                                                                           "sha256":  "343221f83f285660a058d608482cebd63d7cb043521c79dae00a9159ca13b53b",
+                                                                           "size":  14170
                                                                        },
                   "kubejs/server_scripts/loot/mahou_synergy_drops.js":  {
                                                                             "sha256":  "41a23bafdeb1aac648b7076bb1bb19de3c6530a21f84d8e43c83a31b1594b627",
@@ -7224,8 +7312,8 @@
                                                                                 "size":  7006
                                                                             },
                   "kubejs/server_scripts/loot/zz_unique_chest_strip.js":  {
-                                                                              "sha256":  "b327c50b3ef2f77b8c644fb0043245a32f64acf45800a820592c7047d0674f84",
-                                                                              "size":  1780
+                                                                              "sha256":  "3f63d92b2bcfac99ffa4889ed539c2014367c3183baad3e4c8eabd1e5438cfc5",
+                                                                              "size":  2121
                                                                           },
                   "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js":  {
                                                                                   "sha256":  "234cadd4013126a85b6c1a4cac757bc480622fe69d670a11e7f244103ad69e08",
@@ -7392,8 +7480,8 @@
                                                                  "size":  2804
                                                              },
                   "kubejs/server_scripts/relic_boss_drops.js":  {
-                                                                    "sha256":  "5f411c10ef8dfada947df9652327d365072d95919141918e5f9b4a47ab6e5196",
-                                                                    "size":  8292
+                                                                    "sha256":  "4744a878c7bc3c002167f585161d4623b1e854a6a02cf6f502c6712b9413ef36",
+                                                                    "size":  9915
                                                                 },
                   "kubejs/server_scripts/respawn_hunger.js":  {
                                                                   "sha256":  "fa7cbc6108264e749f5423b08c0794297cee0c58a0413b89de1244e7c2dd8999",
@@ -7432,8 +7520,8 @@
                                                                              "size":  13010
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "1014f077b91c286e7c2b8abca42bb3ab68f1da40162dac847caaa0a8d1558363",
-                                                                              "size":  53957
+                                                                              "sha256":  "0daa22fc220aa06a8f76138d2e8dd7bad6c99dd651b6084296afae9164597479",
+                                                                              "size":  54853
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "e3cf9075223e1e87584e33b83e99fc67c5802e743699a9b5e7bddb5ba1e2ac37",
