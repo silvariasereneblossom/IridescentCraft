@@ -29,12 +29,18 @@ import java.util.UUID;
  *   <li>Server-side only ({@code level.isClientSide})</li>
  *   <li>Master enabled toggle</li>
  *   <li>Mob (subclass of Mob — players/items/projectiles excluded)</li>
- *   <li>Not already scaled (NBT flag check — respawned/loaded mobs already carry their modifiers via persistent attribute storage)</li>
  *   <li>Not a Player, not OwnableEntity (tamed/summoned)</li>
- *   <li>Category is MONSTER (hostile)</li>
+ *   <li>Category is MONSTER (hostile), or force-included</li>
  *   <li>Resource id not in excluded list (bosses + special mobs)</li>
+ *   <li>Not already scaled (NBT flag check — respawned/loaded mobs already carry their modifiers via persistent attribute storage)</li>
  *   <li>Multiplier > 1.0 (skip if dim has 100% scaling)</li>
  * </ol>
+ *
+ * <p>The NBT flag check MUST stay after the category + exclusion filters:
+ * Forge's {@code Entity.getPersistentData()} lazily CREATES the tag, and any
+ * non-null persistent tag is written to disk as {@code ForgeData} on save.
+ * Reading the flag before the filters stamped an empty {@code ForgeData}
+ * compound onto every animal / villager / golem that ever joined a level.
  *
  * <p>Modifiers use stable per-attribute UUIDs so reloading a saved mob
  * doesn't apply twice. The NBT flag is belt-and-suspenders against entity
@@ -63,10 +69,6 @@ public class MobScalingHandler {
         if (!(entity instanceof Mob mob)) return;
         if (mob instanceof OwnableEntity own && own.getOwner() != null) return;
 
-        // Don't double-apply if the mob was already scaled (loaded from save
-        // or entered a portal already-scaled).
-        if (mob.getPersistentData().getBoolean(NBT_FLAG)) return;
-
         ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
         String idStr = id != null ? id.toString() : null;
 
@@ -85,10 +87,18 @@ public class MobScalingHandler {
 
         if (!(e.getLevel() instanceof ServerLevel sl)) return;
 
-        double mult = DifficultyScaling.getCurrentMultiplier(sl);
+        // Don't double-apply if the mob was already scaled (loaded from save
+        // or entered a portal already-scaled). Deliberately AFTER the category
+        // + exclusion filters above: getPersistentData() creates the tag on
+        // first access, so only mobs we could actually scale may touch it.
+        if (mob.getPersistentData().getBoolean(NBT_FLAG)) return;
+
+        // One pass for both multipliers (tier lookup + curve evaluated once).
+        DifficultyScaling.Multipliers mults = DifficultyScaling.getMultipliers(sl);
+        double mult = mults.base();
         // Damage gets its own multiplier (curve × per-tier damageMultiplierPct).
         // At the default 100% it equals `mult`; at 130% it's +30% over the curve.
-        double dmgMult = DifficultyScaling.getDamageMultiplier(sl);
+        double dmgMult = mults.damage();
         // No-op only when EVERY stat would be at/under vanilla. Damage can be
         // the sole reason to scale (e.g. a tier tuned to 100% curve but 130%
         // damage), so gate on the max of the two.

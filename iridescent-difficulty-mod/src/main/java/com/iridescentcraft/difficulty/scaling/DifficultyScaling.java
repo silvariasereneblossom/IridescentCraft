@@ -50,10 +50,14 @@ public final class DifficultyScaling {
     public static double getCurrentMultiplier(ServerLevel level) {
         if (!DifficultyConfig.COMMON.enabled.get()) return 1.0;
 
-        DimensionDifficultyData data = DimensionDifficultyData.get(level);
         ResourceLocation dimId = level.dimension().location();
-        Tier tier = getTier(dimId);
-        DifficultyConfig.TierCurve curve = getCurve(tier);
+        return curveMultiplier(level, dimId, getCurve(getTier(dimId)));
+    }
+
+    /** Curve evaluation shared by the single- and paired-multiplier entry points. */
+    private static double curveMultiplier(ServerLevel level, ResourceLocation dimId,
+                                          DifficultyConfig.TierCurve curve) {
+        DimensionDifficultyData data = DimensionDifficultyData.get(level);
 
         double start = curve.start.get() / 100.0;
         double cap = curve.cap.get() / 100.0;
@@ -81,10 +85,28 @@ public final class DifficultyScaling {
      * on the time curve.
      */
     public static double getDamageMultiplier(ServerLevel level) {
-        double base = getCurrentMultiplier(level);
-        if (!DifficultyConfig.COMMON.enabled.get()) return base; // already 1.0
-        Tier tier = getTier(level.dimension().location());
-        double dmgFactor = getCurve(tier).damageMultiplierPct.get() / 100.0;
-        return base * dmgFactor;
+        return getMultipliers(level).damage();
+    }
+
+    /** Base curve multiplier + the damage-specific multiplier derived from it. */
+    public record Multipliers(double base, double damage) {
+        static final Multipliers VANILLA = new Multipliers(1.0, 1.0);
+    }
+
+    /**
+     * Both multipliers in ONE pass: the tier lookup, the SavedData fetch and
+     * the curve are evaluated once and the damage multiplier is derived from
+     * that same base value. The spawn handler needs both for every mob it
+     * scales; calling {@link #getCurrentMultiplier} then
+     * {@link #getDamageMultiplier} separately evaluated the whole curve twice.
+     */
+    public static Multipliers getMultipliers(ServerLevel level) {
+        if (!DifficultyConfig.COMMON.enabled.get()) return Multipliers.VANILLA;
+
+        ResourceLocation dimId = level.dimension().location();
+        DifficultyConfig.TierCurve curve = getCurve(getTier(dimId));
+        double base = curveMultiplier(level, dimId, curve);
+        double dmgFactor = curve.damageMultiplierPct.get() / 100.0;
+        return new Multipliers(base, base * dmgFactor);
     }
 }
