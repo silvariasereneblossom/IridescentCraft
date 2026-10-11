@@ -16,6 +16,12 @@
 //   VAR-SHADOW          `var x` in a block while an enclosing scope of the same function also has `var x`
 //                                                                             -> the inner one does NOT assign the outer
 //   SYNTAX              spread / default param / rest / shorthand prop / computed key / catch{} / ?? / ?.
+//
+// Name traps (2026-10-11; KubeJS renames / hides vanilla members, and a missing property is silent):
+//   VEC3-FIELD          `.x/.y/.z` read on entity.position() / deltaMovement  -> NPE that no script catch catches
+//   JS-NAME             stack.getTag(), source.entity / directEntity, entity.level(), entity.tickCount,
+//                       setDeltaMovement(x,y,z)                               -> undefined / "not a function"
+//   LOOTJS-MODIFY-ARITY modifyLoot(filter, function (a, b) {...})             -> the stack becomes air
 const acorn = require('internal/deps/acorn/acorn/dist/acorn');
 const fs = require('fs');
 
@@ -204,6 +210,83 @@ function lint(file) {
     }
   }
   p2(ast, top);
+
+  // ---- pass 3: member names that do not exist (or blow up) for scripts in KubeJS 2001.6.5 ----
+  // Each was a dead feature in this pack (internal dev/failure-modes.md, 2026-10-11). The engine
+  // gives no error for a missing PROPERTY (it reads as undefined), so these never show in a log.
+  const VEC3_CALLS = new Set(['position', 'getDeltaMovement', 'getLookAngle', 'getEyePosition', 'getViewVector']);
+  const VEC3_PROPS = new Set(['deltaMovement', 'lookAngle', 'eyePosition']);
+  const isVec3Source = (n) => !!n && (
+    (n.type === 'CallExpression' && n.callee.type === 'MemberExpression' && !n.callee.computed && VEC3_CALLS.has(n.callee.property.name)) ||
+    (n.type === 'MemberExpression' && !n.computed && VEC3_PROPS.has(n.property.name)));
+  // Names are tracked per FUNCTION: `var pos = entity.position()` in one handler must not taint a
+  // `pos` that is a BlockPos in another. Same for the `x.actual` fallback idiom below.
+  const isFn = (n) => n.type === 'FunctionDeclaration' || n.type === 'FunctionExpression' || n.type === 'ArrowFunctionExpression';
+  const vec3Names = new Map();   // function node (or null) -> Set of names bound to a Vec3
+  const actualRead = new Map();  // function node (or null) -> Set of object names whose `.actual` is read
+  const bag = (map, fn) => { if (!map.has(fn)) map.set(fn, new Set()); return map.get(fn); };
+  const collect = (node, fn) => {
+    if (!node || typeof node.type !== 'string') return;
+    if (isFn(node)) fn = node;
+    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier' && isVec3Source(node.init)) bag(vec3Names, fn).add(node.id.name);
+    if (node.type === 'AssignmentExpression' && node.left.type === 'Identifier' && isVec3Source(node.right)) bag(vec3Names, fn).add(node.left.name);
+    if (node.type === 'MemberExpression' && !node.computed && node.property.name === 'actual' && node.object.type === 'Identifier') bag(actualRead, fn).add(node.object.name);
+    for (const k of Object.keys(node)) {
+      if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+      const v = node[k];
+      if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') collect(c, fn); }
+      else if (v && typeof v.type === 'string') collect(v, fn);
+    }
+  };
+  collect(ast, null);
+  const lastName = (n) => n.type === 'Identifier' ? n.name : (n.type === 'MemberExpression' && !n.computed ? n.property.name : '');
+  const p3 = (node, parent, fn) => {
+    if (!node || typeof node.type !== 'string') return;
+    if (isFn(node)) fn = node;
+    if (node.type === 'MemberExpression' && !node.computed) {
+      const name = node.property.name;
+      const called = parent && parent.type === 'CallExpression' && parent.callee === node;
+      const written = parent && parent.type === 'AssignmentExpression' && parent.left === node;
+      if ((name === 'x' || name === 'y' || name === 'z') && !called && !written &&
+          (isVec3Source(node.object) || (node.object.type === 'Identifier' && bag(vec3Names, fn).has(node.object.name)))) {
+        flag(node, 'VEC3-FIELD', '.' + name + ' read on a Vec3: throws an NPE no script catch can catch; use entity.x / entity.motionX, or call .' + name + '()');
+      }
+      if (name === 'getTag' && (!called || parent.arguments.length === 0)) {
+        flag(node, 'JS-NAME', 'getTag() does not exist on an ItemStack for scripts (KubeJS renames it): use stack.nbt');
+      }
+      if (name === 'directEntity' || (called && name === 'getDirectEntity')) {
+        flag(node, 'JS-NAME', 'DamageSource.' + name + ' does not exist for scripts: use source.immediate');
+      }
+      // (not flagged when the same function also reads `<name>.actual`: that is the fallback idiom
+      //  `source.actual !== undefined ? source.actual : source.entity`, which is harmless)
+      if (name === 'entity' && !called && /^(source|src|damageSource|dmgSource)$/.test(lastName(node.object)) &&
+          !(node.object.type === 'Identifier' && bag(actualRead, fn).has(node.object.name))) {
+        flag(node, 'JS-NAME', 'DamageSource.entity does not exist for scripts: use source.actual (attacker) / source.immediate (projectile)');
+      }
+      if (name === 'level' && called && parent.arguments.length === 0) {
+        flag(node, 'JS-NAME', 'level() is hidden from scripts on an Entity: use the .level property');
+      }
+      if (name === 'tickCount' && !called && !/server/i.test(lastName(node.object))) {
+        flag(node, 'JS-NAME', 'Entity.tickCount is `age` for scripts (tickCount reads as undefined)');
+      }
+      if (name === 'setDeltaMovement' && called && parent.arguments.length === 3) {
+        flag(node, 'JS-NAME', 'setDeltaMovement(x, y, z) is setMotion(x, y, z) for scripts');
+      }
+      if (name === 'modifyLoot' && called && parent.arguments.length === 2) {
+        const cb = parent.arguments[1];
+        if ((cb.type === 'FunctionExpression' || cb.type === 'ArrowFunctionExpression') && cb.params.length !== 1) {
+          flag(cb, 'LOOTJS-MODIFY-ARITY', 'a LootJS modifyLoot callback gets ONE argument (the stack) and must return it; with ' + cb.params.length + ' it replaces the stack with air');
+        }
+      }
+    }
+    for (const k of Object.keys(node)) {
+      if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+      const v = node[k];
+      if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') p3(c, node, fn); }
+      else if (v && typeof v.type === 'string') p3(v, node, fn);
+    }
+  };
+  p3(ast, null, null);
   return out;
 }
 

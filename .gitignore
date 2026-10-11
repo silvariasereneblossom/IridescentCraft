@@ -176,3 +176,7 @@ yungs_*/
 .minecraft/dev/.lessons-state.json
 .minecraft/dev/.lessons-scan.log
 .minecraft/dev/.lessons-qa.log
+
+# loot audit build products / jar-scan cache (dev/audit_loot.py)
+.minecraft/dev/loot_audit/.cache/
+.minecraft/dev/rhino_parse/out/
