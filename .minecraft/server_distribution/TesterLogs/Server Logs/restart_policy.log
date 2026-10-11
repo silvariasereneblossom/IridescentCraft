@@ -71,3 +71,6 @@
 [2026-10-11 16:04:45] server down or restarting -- uptime clock stopped
 [2026-10-11 16:06:45] server up since 2026-10-11 16:06:22 -- uptime clock started
 [2026-10-11 16:06:45] uptime 23s | players not asked yet | empty for 0s | wait: nothing due yet
+[2026-10-11 16:35:36] policy: mode LIVE; Cycle when empty for 5m and up 4h00m, or up 12h00m with players on (1m warning)
+[2026-10-11 16:37:36] server up since 2026-10-11 16:36:47 -- uptime clock started
+[2026-10-11 16:37:36] uptime 49s | players not asked yet | empty for 0s | wait: nothing due yet
