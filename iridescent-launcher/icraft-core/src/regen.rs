@@ -11,6 +11,7 @@
 //!     chunks.csv     one row per chunk on disk: kept or regenerated, and why
 //!     warnings.csv   every warning, one row each
 //!     plan.json      the chunks to regenerate, per dimension, and their hash
+//!     summary.json   what report.txt says, as data: the launcher window reads it
 //!     map-<dim>.png  an overview, one pixel block per chunk
 //! ```
 //!
@@ -30,11 +31,12 @@
 //! server runs is therefore safe to take and to read, but it is the stopped
 //! recomputation that counts.
 //!
-//! Triggers: the GUI button and [`REQUEST_FILE`] (same shape as the Cycle and
-//! backup requests, so it can be driven over WinRM), both served by
-//! [`poll_request`]; and `icraft regen-dryrun`, which also takes any server
-//! folder path, a share included. Nothing here is called from `serve()` or a
-//! Cycle.
+//! Triggers: the launcher's Customizer tab, which sets everything on screen and
+//! shows the result ([`run_logged`], [`list_runs`], [`load_view`]);
+//! [`REQUEST_FILE`], same shape as the Cycle and backup requests so it can be
+//! driven over WinRM ([`poll_request`]); and `icraft regen-dryrun`, which also
+//! takes any server folder path, a share included. Nothing here is called from
+//! `serve()` or a Cycle.
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
@@ -43,6 +45,8 @@ use std::path::{Path, PathBuf};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Mutex;
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
+
+use serde::{Deserialize, Serialize};
 
 use crate::anvil::{self, ChunkPos, Dimension, DimensionScan, Store, OVERWORLD};
 use crate::config::ServerConfig;
@@ -178,6 +182,10 @@ pub struct RunSpec {
     pub all_dims: bool,
     /// Protection settings for this run only, on top of the policy file.
     pub overrides: Vec<(String, String)>,
+    /// The whole of the protection settings, as the launcher window shows
+    /// them. With this the policy file is not read: what is on screen is what
+    /// is used, and it is recorded in the plan.
+    pub settings: Option<Settings>,
     /// Where the run's folder goes. `None` = `<server dir>/regen-reports`.
     pub out_root: Option<PathBuf>,
     pub png: bool,
@@ -190,6 +198,7 @@ impl Default for RunSpec {
             dims: vec![OVERWORLD.to_string()],
             all_dims: false,
             overrides: Vec::new(),
+            settings: None,
             out_root: None,
             png: true,
         }
@@ -248,6 +257,9 @@ impl RunSpec {
         out.push(format!("dims={}", if self.all_dims { "all".to_string() } else { self.dims.join(",") }));
         for (k, v) in &self.overrides {
             out.push(format!("{k}={v}"));
+        }
+        if self.settings.is_some() {
+            out.push("settings=window".to_string());
         }
         if !self.png {
             out.push("png=off".to_string());
@@ -379,6 +391,8 @@ struct Analysis {
     spec: RunSpec,
     settings: Settings,
     policy_text: Option<String>,
+    /// The settings came with the request; the policy file was not read.
+    settings_from_caller: bool,
     level: LevelInfo,
     players: Vec<Player>,
     claims: Option<Vec<ClaimOwner>>,
@@ -453,7 +467,10 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
         .ok()
         .and_then(|t| SystemTime::now().duration_since(t).ok());
 
-    let (mut settings, policy_text) = Settings::load(&server_dir)?;
+    let (mut settings, policy_text) = match &spec.settings {
+        Some(given) => (given.clone(), None),
+        None => Settings::load(&server_dir)?,
+    };
     for (key, value) in &spec.overrides {
         settings.set(key, value)?;
     }
@@ -514,6 +531,7 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
         spec: spec.clone(),
         settings,
         policy_text,
+        settings_from_caller: spec.settings.is_some(),
         level,
         players,
         claims,
@@ -804,6 +822,7 @@ fn plan_json(a: &Analysis, hash: &str, created_utc: &str) -> String {
     wl!(out, "  \"scope\": {},", json_str(&a.spec.scope.token()));
     let settings: Vec<String> = a.settings.to_pairs().iter().map(|(k, v)| format!("[{}, {}]", json_str(k), json_str(v))).collect();
     wl!(out, "  \"settings\": [{}],", settings.join(", "));
+    wl!(out, "  \"settings_source\": {},", json_str(if a.settings_from_caller { "the launcher window (the policy file was not read)" } else { "defaults, then the policy file, then this run's overrides" }));
     wl!(out, "  \"policy_file\": {},", a.policy_text.as_deref().map_or("null".to_string(), json_str));
     wl!(out, "  \"plan_hash\": {},", json_str(hash));
     wl!(out, "  \"hash_recipe\": \"sha256 of the UTF-8 text: 'icraft-regen-plan v{PLAN_VERSION}' LF, 'level=<level_name>' LF, then per dimension (sorted by id) 'dim=<id>' LF followed by '<x>,<z>' LF for each chunk (sorted by x, then z)\",");
@@ -841,11 +860,189 @@ fn plan_json(a: &Analysis, hash: &str, created_utc: &str) -> String {
 }
 
 // =============================================================================
-// Report
+// The run, as data
 // =============================================================================
+//
+// Everything a person is shown about a run -- report.txt, the launcher's
+// Customizer tab -- is drawn from one [`RunView`], which is also written into
+// the run's folder as summary.json. The text report and the window therefore
+// cannot disagree, and the window can show a run it did not make (one asked
+// for over WinRM, or last week's).
+
+/// In a run's folder: the [`RunView`], for the launcher window.
+pub const SUMMARY_FILE: &str = "summary.json";
+const VIEW_FORMAT: &str = "icraft-regen-summary";
+const VIEW_VERSION: u32 = 1;
+
+/// One protection setting as it was for the run.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct SettingRow {
+    pub name: String,
+    pub value: String,
+    pub is_default: bool,
+}
+
+/// A dimension that has chunks on disk: files and size per chunk folder.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct FoundDimension {
+    pub id: String,
+    pub folder: String,
+    pub region: String,
+    pub entities: String,
+    pub poi: String,
+    pub in_run: bool,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct LayerRow {
+    pub name: String,
+    /// Chunks on disk the layer keeps.
+    pub kept: usize,
+    /// Of those, the ones no other layer keeps.
+    pub alone: usize,
+}
+
+/// A count of region files, per chunk folder.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct FileRow {
+    pub label: String,
+    pub region: usize,
+    pub entities: usize,
+    pub poi: usize,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct CountRow {
+    pub label: String,
+    pub count: usize,
+}
+
+/// What the lived-in layer would keep at one threshold.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct ThresholdRow {
+    pub ticks: i64,
+    pub time: String,
+    pub count: usize,
+    pub this_run: bool,
+}
+
+/// Where a dimension's overview map is and how its pixels map to chunks:
+/// pixel (px, py) shows chunk (`origin_x + px / pixels_per_chunk`,
+/// `origin_z + py / pixels_per_chunk`).
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct MapInfo {
+    pub file: String,
+    pub origin_x: i64,
+    pub origin_z: i64,
+    pub pixels_per_chunk: u32,
+    pub width: u32,
+    pub height: u32,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct DimView {
+    pub id: String,
+    pub folder: String,
+    pub on_disk: usize,
+    pub terrain: usize,
+    pub entities: usize,
+    pub poi: usize,
+    pub protected: usize,
+    pub protected_not_on_disk: usize,
+    pub layers: Vec<LayerRow>,
+    pub selected: usize,
+    pub kept_in_scope: usize,
+    pub targets: usize,
+    /// On disk, not protected, not selected.
+    pub untouched: usize,
+    pub files: Vec<FileRow>,
+    /// Size of the region files that would be removed entirely.
+    pub freed_bytes: u64,
+    pub without_inhabited_time: usize,
+    pub inhabited: Vec<CountRow>,
+    pub thresholds: Vec<ThresholdRow>,
+    pub longest_ticks: i64,
+    pub map: Option<MapInfo>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct PlayerView {
+    pub name: String,
+    pub uuid: String,
+    /// `offline UUID`, `Mojang UUID` or `UUID`.
+    pub uuid_kind: String,
+    pub from_old: bool,
+    /// Bed, bed area, neighbourhood, logout position, claims, waystones.
+    pub lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct WarningGroup {
+    pub kind: String,
+    pub title: String,
+    pub count: usize,
+    /// The first of them; all are in warnings.csv.
+    pub lines: Vec<String>,
+    /// How many are not in `lines`.
+    pub more: usize,
+}
+
+/// A finished run, as the facts a person is shown.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct RunView {
+    pub format: String,
+    pub version: u32,
+    pub created_local: String,
+    pub created_utc: String,
+    pub elapsed_secs: f64,
+    pub server_dir: String,
+    pub level_name: String,
+    /// `Minecraft 1.20.1, data version 3465, seed ...`
+    pub world: String,
+    pub spawn: String,
+    pub server: String,
+    pub server_probably_running: bool,
+    /// `ring:8`
+    pub scope: String,
+    pub scope_text: String,
+    pub plan_hash: String,
+    /// Over all analysed dimensions.
+    pub on_disk: usize,
+    pub protected: usize,
+    pub selected: usize,
+    pub targets: usize,
+    pub warnings: usize,
+    pub policy_file: String,
+    /// `key=value` settings given for this run only.
+    pub overrides: Vec<String>,
+    pub settings: Vec<SettingRow>,
+    pub found: Vec<FoundDimension>,
+    /// Dimension folders that hold no chunks.
+    pub bare_dimensions: Vec<String>,
+    pub dimensions: Vec<DimView>,
+    pub players: Vec<PlayerView>,
+    pub claims: String,
+    /// Empty when the world has no waystones.dat.
+    pub waystones_title: String,
+    pub waystones: Vec<String>,
+    pub warning_groups: Vec<WarningGroup>,
+    pub notes: Vec<String>,
+    pub files: Vec<String>,
+}
 
 /// `71,791`
-fn num(n: usize) -> String {
+pub fn num(n: usize) -> String {
     let digits = n.to_string();
     let mut out = String::new();
     for (i, c) in digits.chars().enumerate() {
@@ -865,197 +1062,150 @@ fn csv(field: &str) -> String {
     }
 }
 
-/// One row of the region-file table: a count per chunk folder.
-fn file_row(label: &str, files: &[FileStats; 3], count: fn(&FileStats) -> usize) -> String {
-    format!("    {label:<21} {:>12} {:>12} {:>12}", num(count(&files[0])), num(count(&files[1])), num(count(&files[2])))
-}
-
 fn heading(out: &mut String, title: &str) {
     wl!(out);
     wl!(out, "{title}");
     wl!(out, "{}", "-".repeat(title.chars().count()));
 }
 
-fn report_text(a: &Analysis, hash: &str, when_local: &str, when_utc: &str, elapsed: Duration, files: &[String]) -> String {
-    let mut out = String::new();
-    wl!(out, "IridescentCraft Server Customizer -- protection map + regeneration DRY-RUN");
-    wl!(out, "Nothing was deleted or modified. This run only read files.");
-    wl!(out);
-    wl!(out, "when         {when_local} local ({when_utc}), took {:.1} s", elapsed.as_secs_f64());
-    wl!(out, "server dir   {}", a.server_dir.display());
-    wl!(
-        out,
-        "world        {}  (Minecraft {}, data version {}, seed {})",
-        a.level_name,
-        a.level.version_name.as_deref().unwrap_or("?"),
-        a.level.data_version.map_or("?".to_string(), |v| v.to_string()),
-        a.level.seed.map_or("?".to_string(), |v| v.to_string())
-    );
-    wl!(out, "world spawn  block {} = chunk {:?}", a.level.spawn, a.level.spawn.chunk());
-    match a.last_save {
-        Some(age) if a.server_probably_running() => wl!(out, "server       level.dat saved {} ago: probably RUNNING (see the first warning)", fmt_span(age)),
-        Some(age) => wl!(out, "server       level.dat saved {} ago: probably stopped", fmt_span(age)),
-        None => wl!(out, "server       unknown (level.dat has no readable timestamp)"),
-    }
-    wl!(out, "scope        {} -- {}", a.spec.scope.token(), a.spec.scope.describe());
-    let ids: Vec<&str> = a.dims.iter().map(|d| d.dim.id.as_str()).collect();
-    wl!(out, "dimensions   {}", if ids.is_empty() { "none".to_string() } else { ids.join(", ") });
-    wl!(out, "plan         {PLAN_FILE}: {} chunk(s) to regenerate, sha256 {hash}", num(a.total_targets()));
-    wl!(out, "warnings     {}", a.warnings.len());
+fn file_row(label: &str, files: &[FileStats; 3], count: fn(&FileStats) -> usize) -> FileRow {
+    FileRow { label: label.to_string(), region: count(&files[0]), entities: count(&files[1]), poi: count(&files[2]) }
+}
 
-    heading(&mut out, "SETTINGS");
-    match &a.policy_text {
-        Some(_) => wl!(out, "policy file  {} is in effect", protection::POLICY_FILE),
-        None => wl!(out, "policy file  none ({} next to server.properties would be read)", protection::POLICY_FILE),
-    }
-    if !a.spec.overrides.is_empty() {
-        let o: Vec<String> = a.spec.overrides.iter().map(|(k, v)| format!("{k}={v}")).collect();
-        wl!(out, "this run     {}", o.join(" "));
-    }
-    for (name, value, is_default) in a.settings.describe() {
-        wl!(out, "  {name:<22} {value}{}", if is_default { "" } else { "   [not the default]" });
-    }
-    wl!(out, "  Decided by the operator (2026-10-11): the layers, and bed_radius 1. PROPOSED, to be confirmed:");
-    wl!(out, "  spawn_radius_blocks {} (the pack's 96-block village zone plus two chunks), inhabited_min_ticks {}", protection::SPAWN_RADIUS_BLOCKS, protection::INHABITED_MIN_TICKS);
-    wl!(out, "  (ten minutes with a player within 128 blocks), and waystones=all rather than activated.");
+const INHABITED_BUCKETS: [(&str, i64, i64); 8] = [
+    ("never", 0, 0),
+    ("under 1 min", 1, 1_199),
+    ("1 to 5 min", 1_200, 5_999),
+    ("5 to 10 min", 6_000, 11_999),
+    ("10 to 30 min", 12_000, 35_999),
+    ("30 to 60 min", 36_000, 71_999),
+    ("1 to 10 h", 72_000, 719_999),
+    ("10 h and more", 720_000, i64::MAX),
+];
+const INHABITED_THRESHOLDS: [i64; 7] = [1_200, 6_000, 12_000, 24_000, 36_000, 72_000, 720_000];
 
-    heading(&mut out, "DIMENSIONS FOUND");
-    wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}", "id", "folder", "region", "entities", "poi");
-    let mut bare: Vec<&str> = Vec::new();
-    for dim in &a.all_dims {
-        if !dim.has_chunk_storage() {
-            bare.push(&dim.id);
-            continue;
-        }
-        let cell = |store: Store| {
-            let (files, bytes) = anvil::store_summary(&dim.store_dir(store));
-            if files == 0 { "-".to_string() } else { format!("{files} / {}", crate::backup::fmt_bytes(bytes)) }
-        };
-        let folder = if dim.rel.is_empty() { "(world root)" } else { dim.rel.as_str() };
-        let mark = if a.dim(&dim.id).is_some() { "" } else { "   (not part of this run)" };
-        wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}{mark}", dim.id, folder, cell(Store::Region), cell(Store::Entities), cell(Store::Poi));
+fn dim_view(a: &Analysis, d: &DimResult, map: Option<MapInfo>) -> DimView {
+    let s = d.stats();
+    let times: Vec<i64> = d.scan.chunks.values().filter(|c| c.in_store(Store::Region)).map(|c| c.inhabited.unwrap_or(0)).collect();
+    DimView {
+        id: d.dim.id.clone(),
+        folder: d.dim.rel.clone(),
+        on_disk: s.on_disk,
+        terrain: s.per_store[0],
+        entities: s.per_store[1],
+        poi: s.per_store[2],
+        protected: s.protected_on_disk,
+        protected_not_on_disk: s.protected_not_on_disk,
+        layers: Layer::ALL
+            .iter()
+            .enumerate()
+            .map(|(i, l)| LayerRow { name: l.name().to_string(), kept: s.layer[i], alone: s.layer_alone[i] })
+            .collect(),
+        selected: s.selected,
+        kept_in_scope: s.kept_in_scope,
+        targets: s.targets,
+        untouched: s.on_disk - s.protected_on_disk - s.targets,
+        files: vec![
+            file_row("holding chunks", &s.files, |f| f.with_chunks),
+            file_row("REMOVED ENTIRELY", &s.files, |f| f.whole.len()),
+            file_row("partly cleared", &s.files, |f| f.partial),
+            file_row("untouched", &s.files, |f| f.untouched),
+            file_row("empty placeholders", &s.files, |f| f.empty),
+        ],
+        freed_bytes: s.files.iter().map(|f| f.whole_bytes).sum(),
+        without_inhabited_time: d.scan.without_inhabited_time,
+        inhabited: INHABITED_BUCKETS
+            .iter()
+            .map(|(label, lo, hi)| CountRow { label: label.to_string(), count: times.iter().filter(|t| (*lo..=*hi).contains(*t)).count() })
+            .collect(),
+        thresholds: INHABITED_THRESHOLDS
+            .iter()
+            .map(|at| ThresholdRow {
+                ticks: *at,
+                time: fmt_ticks(*at),
+                count: times.iter().filter(|t| **t >= *at).count(),
+                this_run: a.settings.inhabited_min_ticks == Some(*at as u64),
+            })
+            .collect(),
+        longest_ticks: times.iter().copied().max().unwrap_or(0),
+        map,
     }
-    wl!(out, "  (files / size per folder)");
-    if !bare.is_empty() {
-        wl!(out, "  {} more dimension folder(s) hold no chunks (nobody has been there): {}", bare.len(), bare.join(", "));
-    }
+}
 
-    for d in &a.dims {
-        let s = d.stats();
-        heading(&mut out, &format!("RESULT: {}", d.dim.id));
-        wl!(out, "  chunks on disk          {:>9}   (terrain {} | entities {} | poi {})", num(s.on_disk), num(s.per_store[0]), num(s.per_store[1]), num(s.per_store[2]));
-        wl!(out, "  protected               {:>9}   kept whatever the scope{}", num(s.protected_on_disk),
-            if s.protected_not_on_disk > 0 { format!(" (+{} protected position(s) not generated yet)", num(s.protected_not_on_disk)) } else { String::new() });
-        for (i, l) in Layer::ALL.iter().enumerate() {
-            wl!(out, "    {:<10}            {:>9}   only this layer: {}", l.name(), num(s.layer[i]), num(s.layer_alone[i]));
-        }
-        wl!(out, "  selected by the scope   {:>9}", num(s.selected));
-        wl!(out, "    kept (protected)      {:>9}", num(s.kept_in_scope));
-        wl!(out, "    TO REGENERATE         {:>9}", num(s.targets));
-        wl!(out, "  not selected, unprotected {:>7}   untouched by this run", num(s.on_disk - s.protected_on_disk - s.targets));
-        wl!(out, "  region files            {:>12} {:>12} {:>12}", "region", "entities", "poi");
-        wl!(out, "{}", file_row("holding chunks", &s.files, |f| f.with_chunks));
-        wl!(out, "{}", file_row("REMOVED ENTIRELY", &s.files, |f| f.whole.len()));
-        wl!(out, "{}", file_row("partly cleared", &s.files, |f| f.partial));
-        wl!(out, "{}", file_row("untouched", &s.files, |f| f.untouched));
-        wl!(out, "{}", file_row("empty placeholders", &s.files, |f| f.empty));
-        let freed: u64 = s.files.iter().map(|f| f.whole_bytes).sum();
-        if freed > 0 {
-            wl!(out, "    files removed entirely add up to {}", crate::backup::fmt_bytes(freed));
-        }
-        if d.scan.without_inhabited_time > 0 {
-            wl!(out, "  {} terrain chunk(s) carry no InhabitedTime tag and count as 0", num(d.scan.without_inhabited_time));
-        }
-    }
-
-    heading(&mut out, &format!("PLAYERS ({})", a.players.len()));
-    let around = match a.spec.scope {
-        Scope::Ring(n) => n,
-        _ => NEIGHBOURHOOD,
-    };
-    for p in &a.players {
-        let kind = match worlddata::uuid_version(&p.uuid) {
-            Some(3) => "offline UUID",
-            Some(4) => "Mojang UUID",
-            _ => "UUID",
-        };
-        wl!(out, "  {}  ({kind} {}){}", p.label(), p.uuid, if p.from_old { "  [read from .dat_old]" } else { "" });
-        match &p.bed {
-            None => wl!(out, "    bed          none"),
-            Some(bed) => {
-                let c = bed.pos.chunk();
-                wl!(out, "    bed          block {} in {} = chunk {:?}{}", bed.pos, bed.dim, c, if bed.forced { "  (set by command)" } else { "" });
-                match a.dim(&bed.dim) {
-                    None => wl!(out, "    bed area     {} is not part of this run", bed.dim),
-                    Some(d) => {
-                        if let Some(r) = a.settings.bed_radius {
-                            let tally = tally_square(d, c, r);
-                            wl!(out, "    bed area     {0}x{0} chunks: {1}", 2 * r + 1, tally.sentence());
-                        } else {
-                            wl!(out, "    bed area     the bed layer is off: {}", a.fate_text(&bed.dim, c));
-                        }
-                        let tally = tally_square(d, c, around);
-                        wl!(out, "    within {around:<2}    {0}x{0} chunks: {1}", 2 * around + 1, tally.sentence());
+fn player_view(a: &Analysis, p: &Player, around: u32) -> PlayerView {
+    let mut lines = Vec::new();
+    match &p.bed {
+        None => lines.push("bed          none".to_string()),
+        Some(bed) => {
+            let c = bed.pos.chunk();
+            lines.push(format!("bed          block {} in {} = chunk {:?}{}", bed.pos, bed.dim, c, if bed.forced { "  (set by command)" } else { "" }));
+            match a.dim(&bed.dim) {
+                None => lines.push(format!("bed area     {} is not part of this run", bed.dim)),
+                Some(d) => {
+                    match a.settings.bed_radius {
+                        Some(r) => lines.push(format!("bed area     {0}x{0} chunks: {1}", 2 * r + 1, tally_square(d, c, r).sentence())),
+                        None => lines.push(format!("bed area     the bed layer is off: {}", a.fate_text(&bed.dim, c))),
                     }
+                    lines.push(format!("within {around:<2}    {0}x{0} chunks: {1}", 2 * around + 1, tally_square(d, c, around).sentence()));
                 }
             }
         }
-        match &p.last_pos {
-            Some((dim, pos)) => wl!(out, "    logged out   block {} in {} = chunk {:?}: {}", pos, dim, pos.chunk(), a.fate_text(dim, pos.chunk())),
-            None => wl!(out, "    logged out   unknown"),
-        }
-        let claimed: Vec<&worlddata::Claim> = a.claims.iter().flatten().filter(|o| o.uuid == p.uuid).flat_map(|o| o.claims.iter()).collect();
-        if claimed.is_empty() {
-            wl!(out, "    claims       none");
-        } else {
-            let lost = claimed.iter().filter(|c| matches!(a.fate(&c.dim, c.chunk), Fate::Regenerate)).count();
-            wl!(out, "    claims       {} chunk(s), {} would be regenerated", claimed.len(), lost);
-        }
-        if let Some(all) = &a.waystones {
-            let mine: Vec<&Waystone> = all.iter().filter(|w| p.waystones.contains(&w.uid)).collect();
-            let lost = mine.iter().filter(|w| matches!(a.fate(&w.dim, w.pos.chunk()), Fate::Regenerate)).count();
-            wl!(out, "    waystones    {} activated ({} of them still in waystones.dat), {} would be regenerated", p.waystones.len(), mine.len(), lost);
-        }
     }
-    let reserved: Vec<String> = a
-        .claims
-        .iter()
-        .flatten()
-        .filter(|o| o.uuid == worlddata::OPAC_SERVER_UUID || o.uuid == worlddata::OPAC_EXPIRED_UUID)
-        .map(|o| format!("{}: {} chunk(s)", o.label(), o.claims.len()))
-        .collect();
-    match &a.claims {
-        None => wl!(out, "  Open Parties and Claims: no player-claims folder in this world"),
-        Some(owners) => wl!(
-            out,
-            "  Open Parties and Claims: {} owner file(s), {} claimed chunk(s) in all{}",
-            owners.len(),
-            owners.iter().map(|o| o.claims.len()).sum::<usize>(),
-            if reserved.is_empty() { String::new() } else { format!(" ({})", reserved.join("; ")) }
-        ),
+    match &p.last_pos {
+        Some((dim, pos)) => lines.push(format!("logged out   block {} in {} = chunk {:?}: {}", pos, dim, pos.chunk(), a.fate_text(dim, pos.chunk()))),
+        None => lines.push("logged out   unknown".to_string()),
     }
-
+    let claimed: Vec<&worlddata::Claim> = a.claims.iter().flatten().filter(|o| o.uuid == p.uuid).flat_map(|o| o.claims.iter()).collect();
+    if claimed.is_empty() {
+        lines.push("claims       none".to_string());
+    } else {
+        let lost = claimed.iter().filter(|c| matches!(a.fate(&c.dim, c.chunk), Fate::Regenerate)).count();
+        lines.push(format!("claims       {} chunk(s), {} would be regenerated", claimed.len(), lost));
+    }
     if let Some(all) = &a.waystones {
-        heading(&mut out, &format!("WAYSTONES ({})", all.len()));
-        let activated = a.sources().activated_waystones();
-        let mut by_origin: BTreeMap<&str, usize> = BTreeMap::new();
-        for w in all {
-            *by_origin.entry(w.origin.as_str()).or_default() += 1;
-        }
-        let origins: Vec<String> = by_origin.iter().map(|(o, n)| format!("{o} {n}")).collect();
-        let chunks: BTreeSet<(&str, ChunkPos)> = all.iter().map(|w| (w.dim.as_str(), w.pos.chunk())).collect();
-        wl!(out, "  in {} chunk(s); by origin: {}", chunks.len(), origins.join(", "));
-        wl!(out, "  activated by at least one player: {}; never activated: {}", all.iter().filter(|w| activated.contains(w.uid.as_str())).count(), all.iter().filter(|w| !activated.contains(w.uid.as_str())).count());
-        let lost = all.iter().filter(|w| matches!(a.fate(&w.dim, w.pos.chunk()), Fate::Regenerate)).count();
-        wl!(out, "  in chunks that would be regenerated: {lost}");
-        wl!(out, "  DECISION FOR THE OPERATOR: 'waystones=all' keeps every one of these chunks as a single-chunk island;");
-        wl!(out, "  'waystones=activated' keeps only the activated ones. Run both and compare.");
+        let mine: Vec<&Waystone> = all.iter().filter(|w| p.waystones.contains(&w.uid)).collect();
+        let lost = mine.iter().filter(|w| matches!(a.fate(&w.dim, w.pos.chunk()), Fate::Regenerate)).count();
+        lines.push(format!(
+            "waystones    {} activated ({} of them still in waystones.dat), {} would be regenerated",
+            p.waystones.len(),
+            mine.len(),
+            lost
+        ));
     }
+    let uuid_kind = match worlddata::uuid_version(&p.uuid) {
+        Some(3) => "offline UUID",
+        Some(4) => "Mojang UUID",
+        _ => "UUID",
+    };
+    PlayerView { name: p.label().to_string(), uuid: p.uuid.clone(), uuid_kind: uuid_kind.to_string(), from_old: p.from_old, lines }
+}
 
-    heading(&mut out, &format!("WARNINGS ({})", a.warnings.len()));
-    if a.warnings.is_empty() {
-        wl!(out, "  none");
+fn waystone_lines(a: &Analysis, all: &[Waystone]) -> Vec<String> {
+    let activated = a.sources().activated_waystones();
+    let mut by_origin: BTreeMap<&str, usize> = BTreeMap::new();
+    for w in all {
+        *by_origin.entry(w.origin.as_str()).or_default() += 1;
     }
+    let origins: Vec<String> = by_origin.iter().map(|(o, n)| format!("{o} {n}")).collect();
+    let chunks: BTreeSet<(&str, ChunkPos)> = all.iter().map(|w| (w.dim.as_str(), w.pos.chunk())).collect();
+    let used = all.iter().filter(|w| w.is_used(&activated)).count();
+    let lost = all.iter().filter(|w| matches!(a.fate(&w.dim, w.pos.chunk()), Fate::Regenerate)).count();
+    vec![
+        format!("in {} chunk(s); by origin: {}", chunks.len(), origins.join(", ")),
+        format!(
+            "used by players: {used} (activated by somebody: {}; placed by a player: {}); generated and never used: {}",
+            all.iter().filter(|w| activated.contains(w.uid.as_str())).count(),
+            all.iter().filter(|w| w.placed_by_player()).count(),
+            all.len() - used
+        ),
+        format!("the waystone layer is set to '{}' for this run", a.settings.waystones.keyword()),
+        format!("in chunks that would be regenerated: {lost}"),
+        "A regenerated waystone is a new one: its old entry in waystones.dat has to be pruned when a plan is carried out.".to_string(),
+    ]
+}
+
+fn warning_groups(a: &Analysis) -> Vec<WarningGroup> {
+    let mut out = Vec::new();
     for (kind, title, show) in WARNING_KINDS {
         let mut of_kind: Vec<&Warning> = a.warnings.iter().filter(|w| w.kind == kind).collect();
         if of_kind.is_empty() {
@@ -1065,56 +1215,239 @@ fn report_text(a: &Analysis, hash: &str, when_local: &str, when_utc: &str, elaps
             // Longest-inhabited first: those are the ones to look at.
             of_kind.sort_by_key(|w| std::cmp::Reverse(a.dim(&w.dim).and_then(|d| w.chunk.and_then(|c| d.scan.chunks.get(&c))).and_then(|c| c.inhabited).unwrap_or(0)));
         }
-        wl!(out, "  [{}] {title}", of_kind.len());
-        for w in of_kind.iter().take(show) {
-            let place = match (w.chunk, w.dim.is_empty()) {
-                (Some(c), false) => format!("chunk {c:?} in {}: ", w.dim),
-                (None, false) => format!("{}: ", w.dim),
-                _ => String::new(),
-            };
-            wl!(out, "      {place}{}", w.detail);
+        let lines: Vec<String> = of_kind
+            .iter()
+            .take(show)
+            .map(|w| {
+                let place = match (w.chunk, w.dim.is_empty()) {
+                    (Some(c), false) => format!("chunk {c:?} in {}: ", w.dim),
+                    (None, false) => format!("{}: ", w.dim),
+                    _ => String::new(),
+                };
+                format!("{place}{}", w.detail)
+            })
+            .collect();
+        out.push(WarningGroup { kind: kind.to_string(), title: title.to_string(), count: of_kind.len(), more: of_kind.len().saturating_sub(show), lines });
+    }
+    out
+}
+
+fn build_view(a: &Analysis, hash: &str, when_local: &str, when_utc: &str, elapsed: Duration, files: Vec<String>, maps: &BTreeMap<String, MapInfo>) -> RunView {
+    let around = match a.spec.scope {
+        Scope::Ring(n) => n,
+        _ => NEIGHBOURHOOD,
+    };
+    let server = match a.last_save {
+        Some(age) if a.server_probably_running() => format!("level.dat saved {} ago: probably RUNNING (see the first warning)", fmt_span(age)),
+        Some(age) => format!("level.dat saved {} ago: probably stopped", fmt_span(age)),
+        None => "unknown (level.dat has no readable timestamp)".to_string(),
+    };
+    let policy_file = if a.settings_from_caller {
+        format!("not consulted: the settings below came with the request (the launcher window), {} was not read", protection::POLICY_FILE)
+    } else if a.policy_text.is_some() {
+        format!("{} is in effect", protection::POLICY_FILE)
+    } else {
+        format!("none ({} next to server.properties would be read)", protection::POLICY_FILE)
+    };
+    let mut found = Vec::new();
+    let mut bare_dimensions = Vec::new();
+    for dim in &a.all_dims {
+        if !dim.has_chunk_storage() {
+            bare_dimensions.push(dim.id.clone());
+            continue;
         }
-        if of_kind.len() > show {
-            wl!(out, "      ... and {} more: all of them are in warnings.csv", of_kind.len() - show);
+        let cell = |store: Store| {
+            let (files, bytes) = anvil::store_summary(&dim.store_dir(store));
+            if files == 0 { "-".to_string() } else { format!("{files} / {}", crate::backup::fmt_bytes(bytes)) }
+        };
+        found.push(FoundDimension {
+            id: dim.id.clone(),
+            folder: if dim.rel.is_empty() { "(world root)".to_string() } else { dim.rel.clone() },
+            region: cell(Store::Region),
+            entities: cell(Store::Entities),
+            poi: cell(Store::Poi),
+            in_run: a.dim(&dim.id).is_some(),
+        });
+    }
+    let dimensions: Vec<DimView> = a.dims.iter().map(|d| dim_view(a, d, maps.get(&d.dim.id).cloned())).collect();
+    let reserved: Vec<String> = a
+        .claims
+        .iter()
+        .flatten()
+        .filter(|o| o.uuid == worlddata::OPAC_SERVER_UUID || o.uuid == worlddata::OPAC_EXPIRED_UUID)
+        .map(|o| format!("{}: {} chunk(s)", o.label(), o.claims.len()))
+        .collect();
+    let claims = match &a.claims {
+        None => "Open Parties and Claims: no player-claims folder in this world".to_string(),
+        Some(owners) => format!(
+            "Open Parties and Claims: {} owner file(s), {} claimed chunk(s) in all{}",
+            owners.len(),
+            owners.iter().map(|o| o.claims.len()).sum::<usize>(),
+            if reserved.is_empty() { String::new() } else { format!(" ({})", reserved.join("; ")) }
+        ),
+    };
+    RunView {
+        format: VIEW_FORMAT.to_string(),
+        version: VIEW_VERSION,
+        created_local: when_local.to_string(),
+        created_utc: when_utc.to_string(),
+        elapsed_secs: (elapsed.as_secs_f64() * 10.0).round() / 10.0,
+        server_dir: a.server_dir.display().to_string(),
+        level_name: a.level_name.clone(),
+        world: format!(
+            "Minecraft {}, data version {}, seed {}",
+            a.level.version_name.as_deref().unwrap_or("?"),
+            a.level.data_version.map_or("?".to_string(), |v| v.to_string()),
+            a.level.seed.map_or("?".to_string(), |v| v.to_string())
+        ),
+        spawn: format!("block {} = chunk {:?}", a.level.spawn, a.level.spawn.chunk()),
+        server,
+        server_probably_running: a.server_probably_running(),
+        scope: a.spec.scope.token(),
+        scope_text: a.spec.scope.describe(),
+        plan_hash: hash.to_string(),
+        on_disk: dimensions.iter().map(|d| d.on_disk).sum(),
+        protected: dimensions.iter().map(|d| d.protected).sum(),
+        selected: dimensions.iter().map(|d| d.selected).sum(),
+        targets: dimensions.iter().map(|d| d.targets).sum(),
+        warnings: a.warnings.len(),
+        policy_file,
+        overrides: a.spec.overrides.iter().map(|(k, v)| format!("{k}={v}")).collect(),
+        settings: a.settings.describe().into_iter().map(|(name, value, is_default)| SettingRow { name: name.to_string(), value, is_default }).collect(),
+        found,
+        bare_dimensions,
+        dimensions,
+        players: a.players.iter().map(|p| player_view(a, p, around)).collect(),
+        claims,
+        waystones_title: a.waystones.as_ref().map_or(String::new(), |all| format!("WAYSTONES ({})", all.len())),
+        waystones: a.waystones.as_deref().map_or(Vec::new(), |all| waystone_lines(a, all)),
+        warning_groups: warning_groups(a),
+        notes: a.notes.clone(),
+        files,
+    }
+}
+
+/// `report.txt`: the view, as text.
+fn report_text(v: &RunView) -> String {
+    let mut out = String::new();
+    wl!(out, "IridescentCraft Server Customizer -- protection map + regeneration DRY-RUN");
+    wl!(out, "Nothing was deleted or modified. This run only read files.");
+    wl!(out);
+    wl!(out, "when         {} local ({}), took {:.1} s", v.created_local, v.created_utc, v.elapsed_secs);
+    wl!(out, "server dir   {}", v.server_dir);
+    wl!(out, "world        {}  ({})", v.level_name, v.world);
+    wl!(out, "world spawn  {}", v.spawn);
+    wl!(out, "server       {}", v.server);
+    wl!(out, "scope        {} -- {}", v.scope, v.scope_text);
+    let ids: Vec<&str> = v.dimensions.iter().map(|d| d.id.as_str()).collect();
+    wl!(out, "dimensions   {}", if ids.is_empty() { "none".to_string() } else { ids.join(", ") });
+    wl!(out, "plan         {PLAN_FILE}: {} chunk(s) to regenerate, sha256 {}", num(v.targets), v.plan_hash);
+    wl!(out, "warnings     {}", v.warnings);
+
+    heading(&mut out, "SETTINGS");
+    wl!(out, "policy file  {}", v.policy_file);
+    if !v.overrides.is_empty() {
+        wl!(out, "this run     {}", v.overrides.join(" "));
+    }
+    for row in &v.settings {
+        wl!(out, "  {:<22} {}{}", row.name, row.value, if row.is_default { "" } else { "   [not the default]" });
+    }
+    wl!(out, "  The defaults are the operator's decisions of 2026-10-11: beds 3x3, claims, {} blocks around world", protection::SPAWN_RADIUS_BLOCKS);
+    wl!(out, "  spawn, waystones a player has activated or placed, and lived-in from {} ticks (ten minutes", num(protection::INHABITED_MIN_TICKS as usize));
+    wl!(out, "  with a player within 128 blocks).");
+
+    heading(&mut out, "DIMENSIONS FOUND");
+    wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}", "id", "folder", "region", "entities", "poi");
+    for dim in &v.found {
+        let mark = if dim.in_run { "" } else { "   (not part of this run)" };
+        wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}{mark}", dim.id, dim.folder, dim.region, dim.entities, dim.poi);
+    }
+    wl!(out, "  (files / size per folder)");
+    if !v.bare_dimensions.is_empty() {
+        wl!(out, "  {} more dimension folder(s) hold no chunks (nobody has been there): {}", v.bare_dimensions.len(), v.bare_dimensions.join(", "));
+    }
+
+    for d in &v.dimensions {
+        heading(&mut out, &format!("RESULT: {}", d.id));
+        wl!(out, "  chunks on disk          {:>9}   (terrain {} | entities {} | poi {})", num(d.on_disk), num(d.terrain), num(d.entities), num(d.poi));
+        let not_generated = if d.protected_not_on_disk > 0 {
+            format!(" (+{} protected position(s) not generated yet)", num(d.protected_not_on_disk))
+        } else {
+            String::new()
+        };
+        wl!(out, "  protected               {:>9}   kept whatever the scope{not_generated}", num(d.protected));
+        for l in &d.layers {
+            wl!(out, "    {:<10}            {:>9}   only this layer: {}", l.name, num(l.kept), num(l.alone));
+        }
+        wl!(out, "  selected by the scope   {:>9}", num(d.selected));
+        wl!(out, "    kept (protected)      {:>9}", num(d.kept_in_scope));
+        wl!(out, "    TO REGENERATE         {:>9}", num(d.targets));
+        wl!(out, "  not selected, unprotected {:>7}   untouched by this run", num(d.untouched));
+        wl!(out, "  region files            {:>12} {:>12} {:>12}", "region", "entities", "poi");
+        for f in &d.files {
+            wl!(out, "    {:<21} {:>12} {:>12} {:>12}", f.label, num(f.region), num(f.entities), num(f.poi));
+        }
+        if d.freed_bytes > 0 {
+            wl!(out, "    files removed entirely add up to {}", crate::backup::fmt_bytes(d.freed_bytes));
+        }
+        if d.without_inhabited_time > 0 {
+            wl!(out, "  {} terrain chunk(s) carry no InhabitedTime tag and count as 0", num(d.without_inhabited_time));
         }
     }
 
-    for d in &a.dims {
-        heading(&mut out, &format!("INHABITED TIME: {}", d.dim.id));
+    heading(&mut out, &format!("PLAYERS ({})", v.players.len()));
+    for p in &v.players {
+        wl!(out, "  {}  ({} {}){}", p.name, p.uuid_kind, p.uuid, if p.from_old { "  [read from .dat_old]" } else { "" });
+        for line in &p.lines {
+            wl!(out, "    {line}");
+        }
+    }
+    wl!(out, "  {}", v.claims);
+
+    if !v.waystones_title.is_empty() {
+        heading(&mut out, &v.waystones_title);
+        for line in &v.waystones {
+            wl!(out, "  {line}");
+        }
+    }
+
+    heading(&mut out, &format!("WARNINGS ({})", v.warnings));
+    if v.warning_groups.is_empty() {
+        wl!(out, "  none");
+    }
+    for group in &v.warning_groups {
+        wl!(out, "  [{}] {}", group.count, group.title);
+        for line in &group.lines {
+            wl!(out, "      {line}");
+        }
+        if group.more > 0 {
+            wl!(out, "      ... and {} more: all of them are in warnings.csv", group.more);
+        }
+    }
+
+    for d in &v.dimensions {
+        heading(&mut out, &format!("INHABITED TIME: {}", d.id));
         wl!(out, "  A chunk's InhabitedTime counts the ticks it was loaded with a player within 128 blocks of it.");
-        let times: Vec<i64> = d.scan.chunks.values().filter(|c| c.in_store(Store::Region)).map(|c| c.inhabited.unwrap_or(0)).collect();
-        let buckets: [(&str, i64, i64); 8] = [
-            ("never", 0, 0),
-            ("under 1 min", 1, 1_199),
-            ("1 to 5 min", 1_200, 5_999),
-            ("5 to 10 min", 6_000, 11_999),
-            ("10 to 30 min", 12_000, 35_999),
-            ("30 to 60 min", 36_000, 71_999),
-            ("1 to 10 h", 72_000, 719_999),
-            ("10 h and more", 720_000, i64::MAX),
-        ];
-        for (label, lo, hi) in buckets {
-            wl!(out, "    {label:<14} {:>9}", num(times.iter().filter(|t| (lo..=hi).contains(*t)).count()));
+        for row in &d.inhabited {
+            wl!(out, "    {:<14} {:>9}", row.label, num(row.count));
         }
         wl!(out, "  What the lived-in layer would keep at other thresholds (inhabited_min_ticks):");
-        for threshold in [1_200i64, 6_000, 12_000, 24_000, 36_000, 72_000, 720_000] {
-            let mark = if a.settings.inhabited_min_ticks == Some(threshold as u64) { "   <- this run" } else { "" };
-            wl!(out, "    {:>7} ticks {:<10} {:>9} chunk(s){mark}", threshold, format!("({})", fmt_ticks(threshold)), num(times.iter().filter(|t| **t >= threshold).count()));
+        for row in &d.thresholds {
+            let mark = if row.this_run { "   <- this run" } else { "" };
+            wl!(out, "    {:>7} ticks {:<10} {:>9} chunk(s){mark}", row.ticks, format!("({})", row.time), num(row.count));
         }
-        if let Some(max) = times.iter().max() {
-            wl!(out, "  longest: {} ticks ({})", max, fmt_ticks(*max));
-        }
+        wl!(out, "  longest: {} ticks ({})", d.longest_ticks, fmt_ticks(d.longest_ticks));
     }
 
-    if !a.notes.is_empty() {
+    if !v.notes.is_empty() {
         heading(&mut out, "NOTES");
-        for note in &a.notes {
+        for note in &v.notes {
             wl!(out, "  {note}");
         }
     }
 
     heading(&mut out, "FILES");
-    for f in files {
+    for f in &v.files {
         wl!(out, "  {f}");
     }
     wl!(out, "  Map colours: white bed, purple claim, blue manual, yellow spawn, cyan waystone, green lived-in,");
@@ -1242,7 +1575,7 @@ fn warnings_csv(a: &Analysis) -> String {
     out
 }
 
-/// Palette index per chunk state, see `MAP_PALETTE`.
+/// The map's colours. A pixel holds an index into this.
 const MAP_PALETTE: [[u8; 3]; 11] = [
     [16, 16, 20],    // 0 nothing on disk
     [28, 28, 38],    // 1 region-file grid line
@@ -1255,6 +1588,20 @@ const MAP_PALETTE: [[u8; 3]; 11] = [
     [185, 95, 215],  // 8 claim
     [255, 255, 255], // 9 bed
     [255, 0, 255],   // 10 unreadable
+];
+
+/// What the map's colours mean, for a legend. A chunk kept by several layers
+/// is drawn in the colour of the first of them in this order.
+pub const MAP_LEGEND: [(&str, [u8; 3]); 9] = [
+    ("bed", MAP_PALETTE[9]),
+    ("claim", MAP_PALETTE[8]),
+    ("manual", MAP_PALETTE[7]),
+    ("spawn", MAP_PALETTE[6]),
+    ("waystone", MAP_PALETTE[5]),
+    ("lived-in", MAP_PALETTE[4]),
+    ("unreadable", MAP_PALETTE[10]),
+    ("WOULD BE REGENERATED", MAP_PALETTE[3]),
+    ("on disk, untouched", MAP_PALETTE[2]),
 ];
 
 fn map_colour(d: &DimResult, pos: ChunkPos) -> u8 {
@@ -1284,8 +1631,9 @@ fn map_colour(d: &DimResult, pos: ChunkPos) -> u8 {
     }
 }
 
-/// The dimension's overview map. `None`: nothing on disk, or too far-flung.
-fn map_png(d: &DimResult) -> Option<Vec<u8>> {
+/// The dimension's overview map, to be saved as `file`. `None`: nothing on
+/// disk, or too far-flung.
+fn map_png(d: &DimResult, file: &str) -> Option<(Vec<u8>, MapInfo)> {
     let (mut x0, mut x1, mut z0, mut z1) = (i32::MAX, i32::MIN, i32::MAX, i32::MIN);
     for pos in d.scan.chunks.keys() {
         x0 = x0.min(pos.0);
@@ -1316,7 +1664,9 @@ fn map_png(d: &DimResult) -> Option<Vec<u8>> {
             }
         }
     }
-    crate::png::encode_indexed(pw as u32, ph as u32, &MAP_PALETTE, &pixels)
+    let png = crate::png::encode_indexed(pw as u32, ph as u32, &MAP_PALETTE, &pixels)?;
+    let info = MapInfo { file: file.to_string(), origin_x: x0, origin_z: z0, pixels_per_chunk: scale as u32, width: pw as u32, height: ph as u32 };
+    Some((png, info))
 }
 
 // =============================================================================
@@ -1338,6 +1688,8 @@ pub struct Summary {
     pub line: String,
     /// The full text of `report.txt`.
     pub report: String,
+    /// The same facts as data (what `summary.json` holds).
+    pub view: RunView,
 }
 
 static LOCK: Mutex<()> = Mutex::new(());
@@ -1413,17 +1765,20 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
         "chunks.csv     one row per chunk on disk: kept, regenerated or untouched, and why".to_string(),
         "warnings.csv   every warning, one row each".to_string(),
         format!("{PLAN_FILE}      the chunks to regenerate per dimension, with their hash"),
+        format!("{SUMMARY_FILE}   what this report says, as data (the launcher window reads it)"),
     ];
     put(&out_dir, "chunks.csv", chunks_csv(&a).as_bytes())?;
     put(&out_dir, "warnings.csv", warnings_csv(&a).as_bytes())?;
     put(&out_dir, PLAN_FILE, plan_json(&a, &hash, &when_utc).as_bytes())?;
+    let mut maps: BTreeMap<String, MapInfo> = BTreeMap::new();
     if spec.png {
         for d in &a.dims {
             let name = format!("map-{}.png", d.dim.id.replace(|c: char| !c.is_ascii_alphanumeric(), "_"));
-            match map_png(d) {
-                Some(png) => {
+            match map_png(d, &name) {
+                Some((png, info)) => {
                     put(&out_dir, &name, &png)?;
                     files.push(format!("{name}   overview of {}, one block of pixels per chunk", d.dim.id));
+                    maps.insert(d.dim.id.clone(), info);
                 }
                 None => files.push(format!("(no map for {}: nothing on disk, or its chunks are too far apart to draw)", d.dim.id)),
             }
@@ -1431,24 +1786,101 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
     }
 
     let elapsed = started.elapsed();
-    let report = report_text(&a, &hash, &now_local.format("%Y-%m-%d %H:%M:%S").to_string(), &when_utc, elapsed, &files);
+    let view = build_view(&a, &hash, &now_local.format("%Y-%m-%d %H:%M:%S").to_string(), &when_utc, elapsed, files, &maps);
+    let report = report_text(&view);
     put(&out_dir, "report.txt", report.as_bytes())?;
+    let summary = serde_json::to_vec_pretty(&view).map_err(|e| format!("cannot encode {SUMMARY_FILE}: {e}"))?;
+    put(&out_dir, SUMMARY_FILE, &summary)?;
 
-    let on_disk: usize = a.dims.iter().map(|d| d.scan.chunks.len()).sum();
-    let protected: usize = a.dims.iter().map(|d| d.scan.chunks.keys().filter(|p| d.protection.is_protected(**p)).count()).sum();
-    let targets = a.total_targets();
     let line = format!(
         "scope {}: {} of {} chunk(s) on disk would be regenerated, {} protected, {} warning(s); plan sha256 {}; report in {} ({:.1} s; nothing was modified)",
-        a.spec.scope.token(),
-        num(targets),
-        num(on_disk),
-        num(protected),
-        a.warnings.len(),
+        view.scope,
+        num(view.targets),
+        num(view.on_disk),
+        num(view.protected),
+        view.warnings,
         &hash[..16],
         out_dir.display(),
         elapsed.as_secs_f64()
     );
-    Ok(Summary { out_dir, plan_hash: hash, targets, protected, on_disk, warnings: a.warnings.len(), elapsed, line, report })
+    Ok(Summary {
+        out_dir,
+        plan_hash: hash,
+        targets: view.targets,
+        protected: view.protected,
+        on_disk: view.on_disk,
+        warnings: view.warnings,
+        elapsed,
+        line,
+        report,
+        view,
+    })
+}
+
+/// [`run`], on the record: the start and the outcome go to
+/// `logs/regen_dryrun.log` and to [`RESULT_FILE`]. What the request file and
+/// the launcher window both call; `who` names the asker.
+pub fn run_logged(cfg: &ServerConfig, spec: &RunSpec, who: &str) -> Result<Summary, String> {
+    let dir = &cfg.server_dir;
+    audit(dir, log::Level::Info, &format!("request '{who}': {} -- reading the world (read-only)", spec.tokens()));
+    write_result(dir, "started: reading the world (nothing is modified)");
+    let outcome = run(cfg, spec);
+    match &outcome {
+        Ok(summary) => {
+            audit(dir, log::Level::Info, &summary.line);
+            write_result(dir, &format!("done: {}", summary.line));
+        }
+        Err(why) => {
+            audit(dir, log::Level::Error, &format!("dry-run FAILED: {why}"));
+            write_result(dir, &format!("FAILED: {why}"));
+        }
+    }
+    outcome
+}
+
+/// A run's folder under `regen-reports`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RunEntry {
+    /// `20261011-121049-ring8`
+    pub name: String,
+    pub dir: PathBuf,
+}
+
+/// The runs kept under `<server dir>/regen-reports`, newest first.
+pub fn list_runs(server_dir: &Path) -> Vec<RunEntry> {
+    let mut runs: Vec<RunEntry> = fs::read_dir(server_dir.join(REPORTS_DIR))
+        .into_iter()
+        .flatten()
+        .filter_map(|e| e.ok())
+        .filter(|e| e.path().join("report.txt").is_file())
+        .filter_map(|e| e.file_name().into_string().ok().map(|name| RunEntry { name, dir: e.path() }))
+        .collect();
+    runs.sort_by(|a, b| b.name.cmp(&a.name));
+    runs
+}
+
+/// The [`RunView`] a run left in its folder. A run made before the launcher
+/// wrote one has only its `report.txt`.
+pub fn load_view(run_dir: &Path) -> Result<RunView, String> {
+    let raw = fs::read(run_dir.join(SUMMARY_FILE)).map_err(|e| format!("{SUMMARY_FILE}: {e}"))?;
+    let view: RunView = serde_json::from_slice(&raw).map_err(|e| format!("{SUMMARY_FILE}: {e}"))?;
+    if view.format != VIEW_FORMAT || view.version > VIEW_VERSION {
+        return Err(format!("{SUMMARY_FILE}: written by a newer launcher (format '{}' v{})", view.format, view.version));
+    }
+    Ok(view)
+}
+
+/// The dimensions that hold chunks, for a picker: id, and what is there.
+pub fn dimension_choices(cfg: &ServerConfig) -> Vec<(String, String)> {
+    anvil::discover_dimensions(&cfg.world_dir())
+        .into_iter()
+        .filter(|d| d.has_chunk_storage())
+        .map(|d| {
+            let (region, _) = anvil::store_summary(&d.store_dir(Store::Region));
+            let hint = if region > 0 { format!("{region} region files") } else { "no terrain, entities or POI only".to_string() };
+            (d.id, hint)
+        })
+        .collect()
 }
 
 // =============================================================================
@@ -1536,18 +1968,7 @@ fn handle_request(cfg: &ServerConfig, body: &str) {
             return;
         }
     };
-    audit(dir, log::Level::Info, &format!("request '{reason}': {} -- reading the world (read-only)", spec.tokens()));
-    write_result(dir, "started: reading the world (nothing is modified)");
-    match run(cfg, &spec) {
-        Ok(summary) => {
-            audit(dir, log::Level::Info, &summary.line);
-            write_result(dir, &format!("done: {}", summary.line));
-        }
-        Err(why) => {
-            audit(dir, log::Level::Error, &format!("dry-run FAILED: {why}"));
-            write_result(dir, &format!("FAILED: {why}"));
-        }
-    }
+    let _ = run_logged(cfg, &spec, &reason);
 }
 
 #[cfg(test)]
@@ -1574,7 +1995,8 @@ mod tests {
     ///   - an entity chunk with no terrain at (25,25); a zero-byte r.5.5.mca
     ///   - Aria: bed in chunk (12,12), logged out in chunk (5,5)
     ///   - Falendria: no bed. Silvie: bed in the Nether (which has no chunks)
-    ///   - a waystone nobody activated at chunk (18,18); a claim at (19,19)
+    ///   - a waystone a player placed (and nobody activated) at chunk (18,18);
+    ///     a claim at (19,19)
     struct Fixture {
         root: PathBuf,
         cfg: ServerConfig,
@@ -1621,7 +2043,7 @@ mod tests {
             write_player(&world, ARIA, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[]));
             write_player(&world, FALENDRIA, &player_nbt(None, (OVERWORLD, (0.5, 64.0, 0.5)), &[]));
             write_player(&world, SILVIE, &player_nbt(Some((NETHER, (8, 64, 8))), (NETHER, (8.0, 64.0, 8.0)), &[]));
-            write_waystones(&world, &[([1, 2, 3, 4], "", OVERWORLD, (18 * 16 + 3, 70, 18 * 16 + 4), "VILLAGE")]);
+            write_waystones(&world, &[([1, 2, 3, 4], "", OVERWORLD, (18 * 16 + 3, 70, 18 * 16 + 4), "PLAYER")]);
             write_claims(&world, ARIA, "Aria_Steele", &[(OVERWORLD, false, &[(19, 19)])]);
             Fixture { cfg: ServerConfig::from_path(&root), root }
         }
@@ -1821,6 +2243,49 @@ mod tests {
         assert_eq!(of("waystone-in-target") + of("claim-in-target"), 0);
         assert_eq!(s.warnings, warnings.lines().count() - 1);
 
+        // summary.json holds what the report says, and reads back as the same view.
+        let view = load_view(&s.out_dir).unwrap();
+        assert_eq!(view, s.view);
+        assert_eq!((view.on_disk, view.protected, view.selected, view.targets, view.warnings), (445, 17, 445, 428, s.warnings));
+        assert_eq!(view.plan_hash, s.plan_hash);
+        assert_eq!(view.scope, "all");
+        let over = &view.dimensions[0];
+        assert_eq!((over.id.as_str(), over.terrain, over.entities, over.poi), (OVERWORLD, 444, 2, 1));
+        let layer = |name: &str| over.layers.iter().find(|l| l.name == name).map(|l| (l.kept, l.alone)).unwrap();
+        assert_eq!(layer("bed"), (9, 8));
+        assert_eq!(layer("spawn"), (5, 5));
+        assert_eq!(layer("waystone"), (1, 1));
+        assert_eq!(layer("claim"), (1, 1));
+        assert_eq!(layer("lived-in"), (2, 1));
+        let removed = over.files.iter().find(|f| f.label == "REMOVED ENTIRELY").unwrap();
+        assert_eq!((removed.region, removed.entities, removed.poi), (1, 0, 0));
+        assert_eq!(view.players.len(), 3);
+        assert_eq!(view.players[0].name, "Aria_Steele");
+        assert!(view.players[0].lines.iter().any(|l| l.starts_with("bed area     3x3 chunks: 9 on disk, 9 kept")), "{:?}", view.players[0].lines);
+        assert!(view.warning_groups.iter().any(|g| g.kind == "lived-in-not-protected" && g.count == 1 && g.more == 0));
+        assert_eq!(view.warning_groups.iter().map(|g| g.count).sum::<usize>(), view.warnings);
+        assert!(view.waystones.iter().any(|l| l.starts_with("used by players: 1 (activated by somebody: 0; placed by a player: 1)")), "{:?}", view.waystones);
+        // The map is where the view says, is ours to read back, and paints a target orange and the bed white.
+        let map = over.map.clone().unwrap();
+        assert_eq!((map.file.as_str(), map.pixels_per_chunk, map.origin_x, map.origin_z), ("map-minecraft_overworld.png", 2, -22, -22));
+        let image = crate::png::decode_indexed(&fs::read(s.out_dir.join(&map.file)).unwrap()).unwrap();
+        assert_eq!((image.width, image.height), (map.width, map.height));
+        let colour_at = |chunk: ChunkPos| {
+            let (px, py) = ((i64::from(chunk.0) - map.origin_x) * 2, (i64::from(chunk.1) - map.origin_z) * 2);
+            image.palette[usize::from(image.pixels[(py * i64::from(map.width) + px) as usize])]
+        };
+        assert_eq!(colour_at((5, 5)), MAP_LEGEND[7].1, "a target is orange");
+        assert_eq!(colour_at((12, 12)), MAP_LEGEND[0].1, "the bed chunk is white");
+        assert_eq!(colour_at((18, 18)), MAP_LEGEND[4].1, "the waystone is cyan");
+        assert_eq!(colour_at((50, 50)), [16, 16, 20], "nothing on disk there");
+        assert_eq!(MAP_LEGEND[7].0, "WOULD BE REGENERATED");
+
+        // The run is listed, newest first.
+        let runs = list_runs(&fx.root);
+        assert_eq!(runs.len(), 1);
+        assert_eq!(runs[0].dir, s.out_dir);
+        assert!(runs[0].name.ends_with("-all"));
+
         // And the world is exactly as it was: every file, every byte, every timestamp.
         assert_eq!(fx.world_state(), before);
         assert!(!fx.root.join("testworld").join("regen-reports").exists());
@@ -1862,8 +2327,16 @@ mod tests {
         // Same question, same answer: the hash does not depend on when it is asked.
         assert_eq!(fx.run("scope=ring:3").plan_hash, ring.plan_hash);
 
-        // Four runs, four folders, and still nothing changed in the world.
+        // Four runs, four folders (newest first in the listing), and still nothing changed in the world.
         assert_eq!(fs::read_dir(fx.root.join(REPORTS_DIR)).unwrap().count(), 4);
+        let runs = list_runs(&fx.root);
+        assert_eq!(runs.len(), 4);
+        assert!(runs.windows(2).all(|pair| pair[0].name > pair[1].name));
+        assert!(runs.iter().all(|r| load_view(&r.dir).is_ok()));
+        // A folder without a summary (a run by an older launcher) is listed, and says why it has no view.
+        fs::remove_file(runs[3].dir.join(SUMMARY_FILE)).unwrap();
+        assert_eq!(list_runs(&fx.root).len(), 4);
+        assert!(load_view(&runs[3].dir).unwrap_err().contains(SUMMARY_FILE));
         assert_eq!(fx.world_state(), before);
     }
 
@@ -1898,6 +2371,54 @@ mod tests {
         fs::write(fx.root.join(protection::POLICY_FILE), "inhabited_min_ticks=ten minutes\n").unwrap();
         let err = run(&fx.cfg, &fx.spec("scope=all")).unwrap_err();
         assert!(err.contains(protection::POLICY_FILE), "{err}");
+
+        // Settings handed over whole (the launcher window) are used as they are: the
+        // policy file is not read, and the plan says where its settings came from.
+        let mut on_screen = Settings::default();
+        on_screen.spawn_radius_blocks = Some(16);
+        on_screen.set("waystones", "off").unwrap();
+        let spec = RunSpec { scope: Scope::All, settings: Some(on_screen.clone()), ..RunSpec::default() };
+        assert_eq!(spec.tokens(), "scope=all dims=minecraft:overworld settings=window");
+        let s = run(&fx.cfg, &spec).unwrap();
+        assert_eq!((s.protected, s.targets), (16, 429)); // the waystone chunk is no longer kept
+        assert!(s.view.policy_file.starts_with("not consulted"), "{}", s.view.policy_file);
+        let plan = fx.plan(&s);
+        assert!(plan["settings_source"].as_str().unwrap().starts_with("the launcher window"));
+        assert_eq!(plan["policy_file"], serde_json::Value::Null);
+        let mut again = Settings::default();
+        for pair in plan["settings"].as_array().unwrap() {
+            again.set(pair[0].as_str().unwrap(), pair[1].as_str().unwrap()).unwrap();
+        }
+        assert_eq!(again, on_screen);
+    }
+
+    #[test]
+    fn only_waystones_players_use_are_kept_by_default() {
+        let fx = Fixture::new();
+        let world = fx.root.join("testworld");
+        let aria_way = "00000005-0000-0006-0000-000700000008";
+        write_waystones(&world, &[
+            ([1, 2, 3, 4], "", OVERWORLD, (18 * 16 + 3, 70, 18 * 16 + 4), "PLAYER"),       // placed by a player
+            ([5, 6, 7, 8], "Hearthome", OVERWORLD, (3 * 16, 70, 10 * 16), "VILLAGE"),      // generated, activated by Aria
+            ([9, 9, 9, 9], "", OVERWORLD, (7 * 16, 70, 7 * 16), "WILDERNESS"),             // generated, used by nobody
+        ]);
+        write_player(&world, ARIA, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[aria_way]));
+
+        let s = fx.run("scope=all");
+        // 17 as before, plus the activated one at (3,10); the unused one at (7,7) goes.
+        assert_eq!((s.protected, s.targets), (18, 427));
+        let chunks = plan_chunks(&fx.plan(&s), OVERWORLD);
+        assert!(!chunks.contains(&(18, 18)) && !chunks.contains(&(3, 10)) && chunks.contains(&(7, 7)));
+        let warnings = fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap();
+        assert_eq!(warnings.lines().filter(|l| l.starts_with("waystone-in-target,")).count(), 1);
+        assert!(warnings.contains("waystone-in-target,minecraft:overworld,7,7,112,70,112,"), "{warnings}");
+        assert!(s.view.waystones.iter().any(|l| l.starts_with("used by players: 2 (activated by somebody: 1; placed by a player: 1); generated and never used: 1")), "{:?}", s.view.waystones);
+        assert!(s.view.players[0].lines.iter().any(|l| l.starts_with("waystones    1 activated (1 of them still in waystones.dat), 0 would be regenerated")));
+
+        // waystones=all keeps every one of them.
+        let s = fx.run("scope=all waystones=all");
+        assert_eq!((s.protected, s.targets), (19, 426));
+        assert!(!fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap().contains("waystone-in-target"));
     }
 
     #[test]

@@ -6,15 +6,17 @@
 //!
 //! | Layer | What it keeps | Default |
 //! |---|---|---|
-//! | bed | each player's respawn chunk and the chunks around it | radius 1 = 3x3 (decided) |
-//! | claim | every chunk claimed in Open Parties and Claims, server and expired claims included | on (decided) |
-//! | spawn | the square of chunks within N blocks of world spawn (overworld) | 128 blocks (**proposed**) |
-//! | waystone | chunks holding a waystone | every waystone the server knows (as briefed; see below) |
-//! | lived-in | chunks whose `InhabitedTime` is at least N ticks | 12,000 = 10 min (**proposed**) |
+//! | bed | each player's respawn chunk and the chunks around it | radius 1 = 3x3 |
+//! | claim | every chunk claimed in Open Parties and Claims, server and expired claims included | on |
+//! | spawn | the square of chunks within N blocks of world spawn (overworld) | 128 blocks |
+//! | waystone | chunks holding a waystone a player has activated or placed | `used` |
+//! | lived-in | chunks whose `InhabitedTime` is at least N ticks | 12,000 = 10 min |
 //! | manual | boxes listed in the policy file | none |
 //! | unreadable | chunks whose data could not be read | always: unknown is kept |
 //!
-//! The two proposed defaults, and why:
+//! Every default is the operator's (rulings of 2026-10-11, the last three
+//! relayed through the planning session the same day), and each can be changed
+//! per run or in the policy file. Why they are what they are:
 //!
 //!   - **Spawn 128 blocks.** The pack treats 96 blocks around world spawn as
 //!     "the village" (`spawn_village_protection.js`), blocks are protected
@@ -26,12 +28,11 @@
 //!     stood in it. Walking past adds about a minute, so ten minutes means
 //!     someone stayed. On the live world that is 964 chunks; one hour would be
 //!     303, one minute 5,082. The report prints this table for every run.
-//!
-//! One more thing to decide, flagged in the report: the live world's
-//! `waystones.dat` lists 345 waystones in 210 chunks, 342 of them generated
-//! with villages and towers. Keeping all of them (the default, as briefed)
-//! leaves 210 single-chunk islands; `waystones=activated` keeps only the ones
-//! a player has activated.
+//!   - **Waystones a player has activated or placed.** `waystones.dat` lists
+//!     every waystone the server ever generated: 345 in 210 chunks on the live
+//!     world, 3 of them placed by a player and 12 activated by anyone. Keeping
+//!     all of them (`waystones=all`, still available) leaves 200 single-chunk
+//!     islands of old terrain; keeping the ones players use does not.
 //!
 //! Settings come from the defaults, then [`POLICY_FILE`] next to
 //! server.properties (untracked, like `.icraft_restart_policy`), then the
@@ -51,7 +52,7 @@ use crate::worlddata::{ClaimOwner, LevelInfo, Player, Waystone};
 /// bed_radius=1              # chunks around each bed chunk (1 = 3x3) | off
 /// claims=on                 # on | off
 /// spawn_radius_blocks=128   # blocks around world spawn | off
-/// waystones=all             # all | activated | off
+/// waystones=used            # used (activated or placed by a player) | all | off
 /// waystone_radius=0         # chunks around each kept waystone
 /// inhabited_min_ticks=12000 # lived-in threshold | off
 /// inhabited_warn_ticks=1200 # report unprotected chunks at or above this
@@ -65,9 +66,9 @@ pub const POLICY_FILE: &str = ".icraft_regen_policy";
 
 /// Bed chunk + its 8 neighbours (operator decision 2026-10-11).
 pub const BED_RADIUS: u32 = 1;
-/// Proposed, flagged for the operator: see the module docs.
+/// Operator decision 2026-10-11: see the module docs.
 pub const SPAWN_RADIUS_BLOCKS: u32 = 128;
-/// Proposed, flagged for the operator: see the module docs.
+/// Operator decision 2026-10-11: see the module docs.
 pub const INHABITED_MIN_TICKS: u64 = 12_000;
 /// Unprotected chunks with at least this much `InhabitedTime` are listed as
 /// warnings (one minute: more than walking past).
@@ -125,11 +126,23 @@ pub fn layer_names(bits: u8) -> String {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WaystoneMode {
-    /// Every waystone in `waystones.dat`.
+    /// Waystones a player has activated or placed, and global ones. The
+    /// default (operator decision 2026-10-11).
+    Used,
+    /// Every waystone in `waystones.dat`, generated ones included.
     All,
-    /// Only waystones at least one player has activated, and global ones.
-    Activated,
     Off,
+}
+
+impl WaystoneMode {
+    /// The word the policy file uses.
+    pub fn keyword(self) -> &'static str {
+        match self {
+            WaystoneMode::Used => "used",
+            WaystoneMode::All => "all",
+            WaystoneMode::Off => "off",
+        }
+    }
 }
 
 /// An inclusive box of chunks in one dimension.
@@ -209,7 +222,7 @@ impl Default for Settings {
             bed_radius: Some(BED_RADIUS),
             claims: true,
             spawn_radius_blocks: Some(SPAWN_RADIUS_BLOCKS),
-            waystones: WaystoneMode::All,
+            waystones: WaystoneMode::Used,
             waystone_radius: WAYSTONE_RADIUS,
             inhabited_min_ticks: Some(INHABITED_MIN_TICKS),
             inhabited_warn_ticks: INHABITED_WARN_TICKS,
@@ -217,6 +230,19 @@ impl Default for Settings {
             unprotect: Vec::new(),
         }
     }
+}
+
+/// A list of boxes, one per line (`x,z` or `x1,z1..x2,z2`, optionally
+/// `@<dimension>`). Blank lines and `#` comments are skipped.
+pub fn parse_boxes(text: &str) -> Result<Vec<ChunkBox>, String> {
+    let mut out = Vec::new();
+    for raw in text.lines() {
+        let line = raw.split('#').next().unwrap_or("").trim();
+        if !line.is_empty() {
+            out.push(ChunkBox::parse(line, false)?);
+        }
+    }
+    Ok(out)
 }
 
 fn number(key: &str, value: &str, max: u64) -> Result<u64, String> {
@@ -257,10 +283,11 @@ impl Settings {
             }
             "waystones" => {
                 self.waystones = match lower.as_str() {
+                    // "activated" is what the first build called this mode.
+                    "used" | "activated" => WaystoneMode::Used,
                     "all" => WaystoneMode::All,
-                    "activated" => WaystoneMode::Activated,
                     "off" => WaystoneMode::Off,
-                    _ => return Err(format!("{key}={value}: all, activated or off")),
+                    _ => return Err(format!("{key}={value}: used, all or off")),
                 }
             }
             "waystone_radius" => self.waystone_radius = number(&key, &lower, u64::from(MAX_RADIUS_CHUNKS))? as u32,
@@ -305,6 +332,25 @@ impl Settings {
         }
     }
 
+    /// These settings as the text of a policy file.
+    pub fn to_policy_text(&self) -> String {
+        let mut out = String::from(
+            "# IridescentCraft regeneration policy: what a world regeneration must keep.\n\
+             # Read by the launcher's protection report / regeneration dry-run at every run.\n\
+             # A line that does not parse makes the run fail; delete the file to return to the defaults.\n",
+        );
+        for (key, value) in self.to_pairs() {
+            out.push_str(&format!("{key}={value}\n"));
+        }
+        out
+    }
+
+    /// Write [`POLICY_FILE`] next to server.properties. (The server folder,
+    /// never the world: this is the operator's own settings file.)
+    pub fn save(&self, server_dir: &Path) -> std::io::Result<()> {
+        std::fs::write(server_dir.join(POLICY_FILE), self.to_policy_text())
+    }
+
     /// A chunk cannot be on both manual lists: which one was meant?
     pub fn validate(&self) -> Result<(), String> {
         for keep in &self.protect {
@@ -319,17 +365,12 @@ impl Settings {
     /// a plan can record exactly what it was computed with.
     pub fn to_pairs(&self) -> Vec<(String, String)> {
         let or_off = |v: Option<u64>| v.map_or("off".to_string(), |n| n.to_string());
-        let waystones = match self.waystones {
-            WaystoneMode::All => "all",
-            WaystoneMode::Activated => "activated",
-            WaystoneMode::Off => "off",
-        };
         let claims = if self.claims { "on" } else { "off" };
         let mut out = vec![
             ("bed_radius".to_string(), or_off(self.bed_radius.map(u64::from))),
             ("claims".to_string(), claims.to_string()),
             ("spawn_radius_blocks".to_string(), or_off(self.spawn_radius_blocks.map(u64::from))),
-            ("waystones".to_string(), waystones.to_string()),
+            ("waystones".to_string(), self.waystones.keyword().to_string()),
             ("waystone_radius".to_string(), self.waystone_radius.to_string()),
             ("inhabited_min_ticks".to_string(), or_off(self.inhabited_min_ticks)),
             ("inhabited_warn_ticks".to_string(), self.inhabited_warn_ticks.to_string()),
@@ -365,8 +406,8 @@ impl Settings {
             (
                 "waystones",
                 match self.waystones {
-                    WaystoneMode::All => "all (every waystone the server knows)",
-                    WaystoneMode::Activated => "activated (only waystones a player has activated, and global ones)",
+                    WaystoneMode::Used => "used (waystones a player has activated or placed, and global ones)",
+                    WaystoneMode::All => "all (every waystone the server knows, generated ones included)",
                     WaystoneMode::Off => "off",
                 }
                 .to_string(),
@@ -512,7 +553,7 @@ pub fn build(dim: &str, sources: &Sources, settings: &Settings, scan: &Dimension
     if settings.waystones != WaystoneMode::Off {
         let activated = sources.activated_waystones();
         for w in sources.waystones.iter().filter(|w| w.dim == dim) {
-            if settings.waystones == WaystoneMode::All || w.global || activated.contains(w.uid.as_str()) {
+            if settings.waystones == WaystoneMode::All || w.is_used(&activated) {
                 add_square(&mut chunks, w.pos.chunk(), settings.waystone_radius, Layer::Waystone, Some(&format!("waystone {}", w.label())));
             }
         }
@@ -575,13 +616,13 @@ mod tests {
         }
     }
 
-    fn waystone(uid: &str, dim: &str, at: (i32, i32)) -> Waystone {
+    fn waystone(uid: &str, dim: &str, at: (i32, i32), origin: &str) -> Waystone {
         Waystone {
             uid: uid.to_string(),
             name: String::new(),
             dim: dim.to_string(),
             pos: BlockPos { x: at.0, y: 64, z: at.1 },
-            origin: "VILLAGE".to_string(),
+            origin: origin.to_string(),
             global: false,
         }
     }
@@ -599,7 +640,7 @@ mod tests {
             Layer::Bed => s.bed_radius = Some(1),
             Layer::Claim => s.claims = true,
             Layer::Spawn => s.spawn_radius_blocks = Some(128),
-            Layer::Waystone => s.waystones = WaystoneMode::All,
+            Layer::Waystone => s.waystones = WaystoneMode::Used,
             Layer::LivedIn => s.inhabited_min_ticks = Some(12_000),
             Layer::Manual | Layer::Unreadable => {}
         }
@@ -612,7 +653,7 @@ mod tests {
         assert_eq!(s.bed_radius, Some(1));
         assert!(s.claims);
         assert_eq!(s.spawn_radius_blocks, Some(128));
-        assert_eq!(s.waystones, WaystoneMode::All);
+        assert_eq!(s.waystones, WaystoneMode::Used);
         assert_eq!(s.inhabited_min_ticks, Some(12_000));
         assert!(s.protect.is_empty() && s.unprotect.is_empty());
         assert!(s.describe().iter().all(|(_, _, is_default)| *is_default));
@@ -645,7 +686,7 @@ mod tests {
         assert_eq!(s.bed_radius, Some(2));
         assert!(!s.claims);
         assert_eq!(s.spawn_radius_blocks, None);
-        assert_eq!(s.waystones, WaystoneMode::Activated);
+        assert_eq!(s.waystones, WaystoneMode::Used, "the first build's name for the mode still reads");
         assert_eq!(s.waystone_radius, 1);
         assert_eq!(s.inhabited_min_ticks, Some(72_000));
         assert_eq!(s.inhabited_warn_ticks, 6_000);
@@ -657,7 +698,7 @@ mod tests {
         assert!(s.protect[1].contains(OVERWORLD, (160, 230)) && !s.protect[1].contains(OVERWORLD, (159, 230)));
         assert!(!s.protect[1].contains(NETHER, (170, 210)));
         assert!(s.protect[2].contains(NETHER, (10, 12)));
-        assert!(s.describe().iter().filter(|(_, _, is_default)| !*is_default).count() >= 8);
+        assert!(s.describe().iter().filter(|(_, _, is_default)| !*is_default).count() >= 7);
 
         // What a plan records reproduces the settings exactly.
         let mut again = Settings::default();
@@ -697,6 +738,13 @@ mod tests {
         ] {
             assert!(Settings::default().apply_policy(bad).is_err(), "{bad}");
         }
+        // Box lists, as the launcher window takes them: one per line.
+        let boxes = parse_boxes("170,227\n\n  160,200..180,230   # the base\n# a comment\n10,12@minecraft:the_nether\n").unwrap();
+        let shown: Vec<String> = boxes.iter().map(ChunkBox::to_string).collect();
+        assert_eq!(shown, vec!["170,227", "160,200..180,230", "10,12@minecraft:the_nether"]);
+        assert_eq!(parse_boxes(""), Ok(vec![]));
+        assert!(parse_boxes("170,227\nnonsense").is_err());
+
         // A chunk on both manual lists.
         let mut s = Settings::default();
         s.apply_policy("protect=0,0..10,10\nunprotect=10,10..20,20").unwrap();
@@ -719,6 +767,17 @@ mod tests {
         std::fs::write(dir.join(POLICY_FILE), "inhabited_min_ticks=lots\n").unwrap();
         let err = Settings::load(&dir).unwrap_err();
         assert!(err.contains(POLICY_FILE) && err.contains("lots"), "{err}");
+
+        // What the launcher window saves is what the next run loads.
+        let mut wanted = Settings::default();
+        wanted.apply_policy("bed_radius=2\nwaystones=all\nspawn_radius_blocks=off\nprotect=1,2..3,4\nunprotect=9,9@minecraft:the_nether").unwrap();
+        wanted.save(&dir).unwrap();
+        let (loaded, body) = Settings::load(&dir).unwrap();
+        assert_eq!(loaded, wanted);
+        let body = body.unwrap();
+        assert!(body.starts_with("# IridescentCraft regeneration policy") && body.contains("\nwaystones=all\n"), "{body}");
+        Settings::default().save(&dir).unwrap();
+        assert_eq!(Settings::load(&dir).unwrap().0, Settings::default());
         let _ = std::fs::remove_dir_all(&dir);
     }
 
@@ -779,7 +838,17 @@ mod tests {
             },
         ];
         let players = [player("Aria_Steele", None, &["way-b"])];
-        let waystones = [waystone("way-a", OVERWORLD, (-783, -1838)), waystone("way-b", OVERWORLD, (40, 40)), waystone("way-c", NETHER, (0, 0))];
+        // way-a: generated, nobody has used it. way-b: generated, activated by Aria.
+        // way-d: placed by a player, activated by nobody. way-e: generated, made global.
+        let mut global = waystone("way-e", OVERWORLD, (160, 160), "WILDERNESS");
+        global.global = true;
+        let waystones = [
+            waystone("way-a", OVERWORLD, (-783, -1838), "VILLAGE"),
+            waystone("way-b", OVERWORLD, (40, 40), "VILLAGE"),
+            waystone("way-c", NETHER, (0, 0), "VILLAGE"),
+            waystone("way-d", OVERWORLD, (80, 80), "PLAYER"),
+            global,
+        ];
         let sources = Sources { level: &lv, players: &players, claims: &owners, waystones: &waystones };
         let scan = DimensionScan::default();
 
@@ -798,14 +867,18 @@ mod tests {
         assert_eq!(block_square_chunks(0, 0, 32), ((-2, -2), (2, 2)));
         assert_eq!(block_square_chunks(-1, 15, 0), ((-1, 0), (-1, 0)));
 
-        let all = build(OVERWORLD, &sources, &only(Layer::Waystone), &scan);
-        assert_eq!(all.chunks.keys().copied().collect::<Vec<_>>(), vec![(-49, -115), (2, 2)]);
+        // The default: what a player has activated or placed, and global ones.
+        let used = build(OVERWORLD, &sources, &only(Layer::Waystone), &scan);
+        assert_eq!(used.chunks.keys().copied().collect::<Vec<_>>(), vec![(2, 2), (5, 5), (10, 10)]);
+        assert_eq!(build(NETHER, &sources, &only(Layer::Waystone), &scan).chunks.len(), 0, "nobody uses the Nether one");
         let mut s = only(Layer::Waystone);
-        s.waystones = WaystoneMode::Activated;
-        let activated = build(OVERWORLD, &sources, &s, &scan);
-        assert_eq!(activated.chunks.keys().copied().collect::<Vec<_>>(), vec![(2, 2)]);
+        s.waystones = WaystoneMode::All;
+        let all = build(OVERWORLD, &sources, &s, &scan);
+        assert_eq!(all.chunks.keys().copied().collect::<Vec<_>>(), vec![(-49, -115), (2, 2), (5, 5), (10, 10)]);
+        assert_eq!(build(NETHER, &sources, &s, &scan).chunks.len(), 1);
+        s.waystones = WaystoneMode::Used;
         s.waystone_radius = 1;
-        assert_eq!(build(OVERWORLD, &sources, &s, &scan).chunks.len(), 9);
+        assert_eq!(build(OVERWORLD, &sources, &s, &scan).chunks.len(), 27);
         s.waystones = WaystoneMode::Off;
         assert!(build(OVERWORLD, &sources, &s, &scan).chunks.is_empty());
     }

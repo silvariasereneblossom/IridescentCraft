@@ -421,6 +421,17 @@ pub struct Waystone {
 }
 
 impl Waystone {
+    /// Placed by a player rather than generated with a village or a tower.
+    pub fn placed_by_player(&self) -> bool {
+        self.origin.eq_ignore_ascii_case("PLAYER")
+    }
+
+    /// Does a player use it: activated by somebody (`activated` holds the
+    /// UUIDs players have in their data), placed by a player, or made global?
+    pub fn is_used(&self, activated: &std::collections::BTreeSet<&str>) -> bool {
+        self.global || self.placed_by_player() || activated.contains(self.uid.as_str())
+    }
+
     /// Its name, or `unnamed <first 8 of the uid>`: most generated waystones
     /// have no name until somebody activates them.
     pub fn label(&self) -> String {

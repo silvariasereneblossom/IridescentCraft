@@ -22,8 +22,20 @@ use std::time::{Duration, Instant};
 use eframe::egui;
 use icraft_core::config::ServerConfig;
 
+mod customizer;
+
 const APP_TITLE: &str = "IridescentCraft Server Launcher";
 const KEY_SERVER_DIR: &str = "icraft.server_dir";
+/// Where a preview keeps its window state, apart from the real launcher's.
+const PREVIEW_APP_NAME: &str = "IridescentCraft Server Launcher Preview";
+
+/// The two halves of the window: running the server, and the Customizer
+/// (world backups, protection map, regeneration dry-run).
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum Tab {
+    Server,
+    Customizer,
+}
 
 fn main() -> Result<(), eframe::Error> {
     install_log_router();
@@ -53,11 +65,19 @@ fn main() -> Result<(), eframe::Error> {
     std::env::set_var("GALLIUM_DRIVER", "llvmpipe");
     std::env::set_var("MESA_GL_VERSION_OVERRIDE", "4.6");
     std::env::set_var("LP_NUM_THREADS", "1");
+    let preview = Preview::from_env();
+    let mut viewport = egui::ViewportBuilder::default()
+        .with_inner_size([720.0, 600.0])
+        .with_min_inner_size([520.0, 420.0])
+        .with_title(APP_TITLE);
+    if let Some(p) = &preview {
+        // Shown without taking the keyboard from whoever is at the machine.
+        viewport = viewport.with_inner_size(p.size).with_title(format!("{APP_TITLE} [preview]")).with_active(false);
+    }
+    let app_name = if preview.is_some() { PREVIEW_APP_NAME } else { APP_TITLE };
     let opts = eframe::NativeOptions {
-        viewport: egui::ViewportBuilder::default()
-            .with_inner_size([720.0, 600.0])
-            .with_min_inner_size([520.0, 420.0])
-            .with_title(APP_TITLE),
+        viewport,
+        persist_window: preview.is_none(),
         // Glow (OpenGL) backend. On dev boxes with a real GPU, the
         // system ICD handles us. On the server VM with no GPU access,
         // Mesa3D's drop-in `opengl32.dll` + `libgallium_wgl.dll`
@@ -67,7 +87,78 @@ fn main() -> Result<(), eframe::Error> {
         renderer: eframe::Renderer::Glow,
         ..Default::default()
     };
-    eframe::run_native(APP_TITLE, opts, Box::new(|cc| Box::new(IcraftApp::new(cc))))
+    eframe::run_native(app_name, opts, Box::new(move |cc| Box::new(IcraftApp::new(cc, preview))))
+}
+
+// =============================================================================
+// Preview mode -- look at the window without touching a real install
+// =============================================================================
+//
+// Nobody can see this window where it matters: on the server box it is behind
+// remoting, and on a dev PC the saved state points the launcher, and the
+// threads it starts, at a real server folder. `ICRAFT_GUI_PREVIEW=<folder>`
+// starts it on that folder instead: nothing is loaded from or saved to the
+// launcher's state, no background thread is started, and the network is not
+// touched. With `ICRAFT_GUI_PREVIEW_SHOTS=<dir>` it also photographs itself and
+// closes:
+//
+//   ICRAFT_GUI_PREVIEW_TAB=server|customizer   the tab to show (customizer)
+//   ICRAFT_GUI_PREVIEW_RUN=ring:8              start a dry-run with that scope first
+//   ICRAFT_GUI_PREVIEW_SCROLL=0,700,1400       one PNG per scroll offset
+//   ICRAFT_GUI_PREVIEW_EXPAND=1                every collapsible section open
+//   ICRAFT_GUI_PREVIEW_SIZE=1000x900           window size
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum PreviewPhase {
+    Start,
+    Running,
+    Shooting,
+    Done,
+}
+
+struct Preview {
+    dir: PathBuf,
+    size: [f32; 2],
+    shots: Option<PathBuf>,
+    tab: Tab,
+    run: Option<String>,
+    scrolls: Vec<f32>,
+    expand: bool,
+    phase: PreviewPhase,
+    frames: u32,
+    shot: usize,
+    waiting_for_image: bool,
+    started: Instant,
+}
+
+impl Preview {
+    fn from_env() -> Option<Self> {
+        let dir = PathBuf::from(std::env::var_os("ICRAFT_GUI_PREVIEW")?);
+        let var = |name: &str| std::env::var(name).ok().map(|v| v.trim().to_string()).filter(|v| !v.is_empty());
+        let size = var("ICRAFT_GUI_PREVIEW_SIZE")
+            .and_then(|v| {
+                let (w, h) = v.split_once('x')?;
+                Some([w.trim().parse::<f32>().ok()?, h.trim().parse::<f32>().ok()?])
+            })
+            .unwrap_or([1000.0, 900.0]);
+        let scrolls: Vec<f32> = var("ICRAFT_GUI_PREVIEW_SCROLL")
+            .map(|v| v.split(',').filter_map(|n| n.trim().parse().ok()).collect())
+            .unwrap_or_else(|| vec![0.0]);
+        Some(Preview {
+            dir,
+            size,
+            shots: var("ICRAFT_GUI_PREVIEW_SHOTS").map(PathBuf::from),
+            tab: if var("ICRAFT_GUI_PREVIEW_TAB").as_deref() == Some("server") { Tab::Server } else { Tab::Customizer },
+            run: var("ICRAFT_GUI_PREVIEW_RUN"),
+            scrolls,
+            expand: var("ICRAFT_GUI_PREVIEW_EXPAND").is_some(),
+            phase: PreviewPhase::Start,
+            frames: 0,
+            shot: 0,
+            waiting_for_image: false,
+            started: Instant::now(),
+        })
+    }
 }
 
 // =============================================================================
@@ -217,16 +308,14 @@ struct IcraftApp {
     /// When "Back up now" was last clicked: keeps the GUI repainting until the
     /// request watcher (10 s poll) has picked the request up.
     backup_requested_at: Option<Instant>,
-    /// Regeneration dry-run inputs: 0 = protection report only, 1 = ring
-    /// around each bed, 2 = everything unprotected, 3 = an explicit box.
-    regen_scope: usize,
-    regen_ring: String,
-    regen_box: String,
-    regen_dims: String,
-    /// The newest answer in the dry-run's result file (unix seconds, text).
-    regen_answer: Option<(u64, String)>,
-    last_regen_refresh: Option<Instant>,
-    regen_requested_at: Option<Instant>,
+    /// Which half of the window is showing.
+    tab: Tab,
+    /// The Customizer tab: world backups, protection map, regeneration dry-run.
+    customizer: customizer::Customizer,
+    /// Set by a preview: where the action panel should be scrolled to.
+    forced_scroll: Option<f32>,
+    /// `Some` when started with ICRAFT_GUI_PREVIEW (see "Preview mode").
+    preview: Option<Preview>,
 }
 
 #[derive(Default, Clone)]
@@ -917,7 +1006,7 @@ fn spawn_restart_policy() {
 }
 
 impl IcraftApp {
-    fn new(cc: &eframe::CreationContext<'_>) -> Self {
+    fn new(cc: &eframe::CreationContext<'_>, preview: Option<Preview>) -> Self {
         // Force a dark, near-black background so the trans-flag heading
         // and per-letter rainbow on "Server Launcher" stay legible. The
         // eframe default leans toward a medium grey on some Windows
@@ -929,23 +1018,34 @@ impl IcraftApp {
         visuals.extreme_bg_color = egui::Color32::from_gray(8);
         cc.egui_ctx.set_visuals(visuals);
 
-        let persisted: PersistedState = cc.storage
-            .and_then(|s| eframe::get_value(s, KEY_SERVER_DIR))
-            .unwrap_or_default();
+        // A preview reads no saved state, starts no background thread and
+        // consumes nothing in the folder it is shown.
+        let persisted: PersistedState = if preview.is_some() {
+            PersistedState::default()
+        } else {
+            cc.storage.and_then(|s| eframe::get_value(s, KEY_SERVER_DIR)).unwrap_or_default()
+        };
         SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
-        spawn_listener_probe();
-        spawn_cycle_request_watcher();
-        spawn_backup_request_watcher();
-        spawn_regen_request_watcher();
-        spawn_restart_policy();
-        let server_dir = persisted.server_dir
-            .map(PathBuf::from)
-            .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
+        if preview.is_none() {
+            spawn_listener_probe();
+            spawn_cycle_request_watcher();
+            spawn_backup_request_watcher();
+            spawn_regen_request_watcher();
+            spawn_restart_policy();
+        }
+        let server_dir = match &preview {
+            Some(p) => p.dir.clone(),
+            None => persisted.server_dir
+                .map(PathBuf::from)
+                .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."))),
+        };
         // If the previous instance relaunched itself mid-Cycle to apply a newer
         // launcher binary, it left the resume sentinel next to the install.
         // Consume it now so the first update() tick continues the Cycle.
-        let resume_cycle_pending =
-            icraft_core::self_update::take_cycle_resume(&ServerConfig::from_path(&server_dir));
+        let resume_cycle_pending = preview.is_none()
+            && icraft_core::self_update::take_cycle_resume(&ServerConfig::from_path(&server_dir));
+        let mut customizer = customizer::Customizer::new();
+        customizer.expand_all = preview.as_ref().map_or(false, |p| p.expand);
         let mut app = Self {
             server_dir_text: server_dir.display().to_string(),
             server_dir,
@@ -965,16 +1065,15 @@ impl IcraftApp {
             backup: icraft_core::backup::Status::default(),
             last_backup_refresh: None,
             backup_requested_at: None,
-            regen_scope: 0,
-            regen_ring: "8".to_string(),
-            regen_box: String::new(),
-            regen_dims: "minecraft:overworld".to_string(),
-            regen_answer: None,
-            last_regen_refresh: None,
-            regen_requested_at: None,
+            tab: preview.as_ref().map_or(Tab::Server, |p| p.tab),
+            customizer,
+            forced_scroll: None,
+            preview,
         };
         app.refresh_status();
-        app.kick_remote_refresh();
+        if app.preview.is_none() {
+            app.kick_remote_refresh();
+        }
         app
     }
 
@@ -1131,6 +1230,9 @@ impl IcraftApp {
 
 impl eframe::App for IcraftApp {
     fn save(&mut self, storage: &mut dyn eframe::Storage) {
+        if self.preview.is_some() {
+            return;
+        }
         let p = PersistedState {
             server_dir: Some(self.server_dir.display().to_string()),
             auto_restart: Some(SUPERVISOR.auto_restart.load(Ordering::SeqCst)),
@@ -1139,6 +1241,7 @@ impl eframe::App for IcraftApp {
     }
 
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+        self.preview_tick(ctx);
         // Drain log buffer + check task completion every frame.
         self.drain_log();
         if let Some(h) = &self.running_task {
@@ -1208,16 +1311,10 @@ impl eframe::App for IcraftApp {
             ctx.request_repaint_after(Duration::from_millis(2000));
         }
 
-        // Dry-run answer: same slow clock as the backup badge. Keep painting
-        // while a report is being computed or was just asked for.
-        if self.last_regen_refresh.map_or(true, |t| t.elapsed() >= Duration::from_secs(5)) {
-            self.regen_answer = icraft_core::regen::last_answer(&self.server_dir);
-            self.last_regen_refresh = Some(Instant::now());
-        }
-        if icraft_core::regen::in_progress()
-            || self.regen_requested_at.is_some_and(|t| t.elapsed() < Duration::from_secs(30))
-        {
-            ctx.request_repaint_after(Duration::from_millis(2000));
+        // Keep painting while a dry-run is reading the world (one started on
+        // the Customizer tab, or one asked for through the request file).
+        if self.customizer.busy() || icraft_core::regen::in_progress() {
+            ctx.request_repaint_after(Duration::from_millis(1000));
         }
 
         // Resume-after-self-update: the previous instance relaunched mid-Cycle
@@ -1245,7 +1342,7 @@ impl eframe::App for IcraftApp {
         let poll_now = Instant::now();
         let poll_due = self.last_remote_poll
             .map_or(true, |t| poll_now.duration_since(t) >= REMOTE_POLL_INTERVAL);
-        if poll_due && !self.remote_fetching.load(Ordering::Relaxed) {
+        if poll_due && !self.remote_fetching.load(Ordering::Relaxed) && self.preview.is_none() {
             self.kick_remote_refresh();
         }
         ctx.request_repaint_after(REMOTE_POLL_INTERVAL);
@@ -1264,8 +1361,15 @@ impl eframe::App for IcraftApp {
             ui.add_space(4.0);
         });
 
-        egui::TopBottomPanel::bottom("log").resizable(true)
-            .min_height(180.0).default_height(280.0).show(ctx, |ui| {
+        // The Customizer tab needs the height more than the log does: there
+        // the log is a few lines (it can still be dragged taller). A panel
+        // remembers its size by id, so each tab keeps its own.
+        let (log_id, log_min, log_default) = match self.tab {
+            Tab::Server => ("log", 180.0, 280.0),
+            Tab::Customizer => ("log-customizer", 64.0, 110.0),
+        };
+        egui::TopBottomPanel::bottom(log_id).resizable(true)
+            .min_height(log_min).default_height(log_default).show(ctx, |ui| {
             ui.add_space(2.0);
             ui.horizontal(|ui| {
                 ui.label(egui::RichText::new("Log").strong());
@@ -1274,16 +1378,127 @@ impl eframe::App for IcraftApp {
             self.draw_log_pane(ui);
         });
 
-        // The sections no longer fit the window at its default size, so the
-        // panel scrolls (a no-op when everything fits).
+        // Two tabs. Either one is taller than the window at its default size,
+        // so each scrolls (and keeps its own scroll position).
         egui::CentralPanel::default().show(ctx, |ui| {
-            egui::ScrollArea::vertical()
-                .id_source("actions")
-                .auto_shrink([false, false])
-                .show(ui, |ui| {
-                    self.draw_action_buttons(ui);
-                });
+            ui.horizontal(|ui| {
+                ui.selectable_value(&mut self.tab, Tab::Server, "   Server   ");
+                ui.selectable_value(&mut self.tab, Tab::Customizer, "   Customizer   ");
+            });
+            ui.separator();
+            let mut area = egui::ScrollArea::vertical()
+                .id_source(match self.tab {
+                    Tab::Server => "tab-server",
+                    Tab::Customizer => "tab-customizer",
+                })
+                .auto_shrink([false, false]);
+            if let Some(offset) = self.forced_scroll.take() {
+                area = area.vertical_scroll_offset(offset);
+            }
+            area.show(ui, |ui| match self.tab {
+                Tab::Server => self.draw_action_buttons(ui),
+                Tab::Customizer => {
+                    if self.customizer.ui(ui, &self.server_dir, &self.backup) {
+                        self.request_backup_now();
+                    }
+                }
+            });
         });
+    }
+}
+
+impl IcraftApp {
+    /// "Back up now": ask for a pinned backup through the request file, the
+    /// same way request_backup.ps1 does.
+    fn request_backup_now(&mut self) {
+        match icraft_core::backup::write_request(&self.server_dir, "gui") {
+            Ok(()) if icraft_core::run::jvm_active() => log::info!(
+                "[backup] requested -- the server is running, so it waits for the next Cycle's stopped window (click Cycle to take it now)"
+            ),
+            Ok(()) => log::info!("[backup] requested -- starting within ~10 s"),
+            Err(e) => log::warn!("[backup] could not write the request file: {e}"),
+        }
+        self.backup_requested_at = Some(Instant::now());
+    }
+
+    /// Drive a preview (see "Preview mode"): show the tab, start the dry-run
+    /// it was asked for, photograph the window at each scroll offset, close.
+    fn preview_tick(&mut self, ctx: &egui::Context) {
+        let Some(p) = self.preview.as_mut() else { return };
+        ctx.request_repaint();
+        p.frames += 1;
+
+        // A screenshot asked for on an earlier frame arrives as an input event.
+        let image = ctx.input(|i| {
+            i.raw.events.iter().find_map(|e| match e {
+                egui::Event::Screenshot { image, .. } => Some(image.clone()),
+                _ => None,
+            })
+        });
+        if let (Some(image), Some(dir)) = (image, p.shots.as_ref()) {
+            let rgb: Vec<u8> = image.pixels.iter().flat_map(|c| [c.r(), c.g(), c.b()]).collect();
+            let tab = match p.tab {
+                Tab::Server => "server",
+                Tab::Customizer => "customizer",
+            };
+            let name = format!("{tab}-{:02}.png", p.shot);
+            let saved = icraft_core::png::encode_rgb(image.size[0] as u32, image.size[1] as u32, &rgb)
+                .ok_or_else(|| "could not encode it".to_string())
+                .and_then(|png| {
+                    std::fs::create_dir_all(dir).and_then(|()| std::fs::write(dir.join(&name), png)).map_err(|e| e.to_string())
+                });
+            match saved {
+                Ok(()) => log::info!("[preview] saved {name} ({}x{})", image.size[0], image.size[1]),
+                Err(e) => log::warn!("[preview] {name}: {e}"),
+            }
+            p.shot += 1;
+            p.waiting_for_image = false;
+            p.frames = 0;
+        }
+
+        match p.phase {
+            PreviewPhase::Start => {
+                self.tab = p.tab;
+                // A few frames first, so the tab has loaded the folder.
+                if p.frames >= 4 {
+                    if let Some(scope) = p.run.clone() {
+                        match self.customizer.set_scope(&scope) {
+                            Ok(()) => self.customizer.start_run(&self.server_dir),
+                            Err(e) => log::warn!("[preview] {e}"),
+                        }
+                    }
+                    p.phase = PreviewPhase::Running;
+                    p.frames = 0;
+                }
+            }
+            PreviewPhase::Running => {
+                if !self.customizer.busy() && p.frames >= 6 {
+                    if self.customizer.failed() {
+                        log::warn!("[preview] the dry-run failed; photographing the tab as it is");
+                    }
+                    p.phase = if p.shots.is_some() { PreviewPhase::Shooting } else { PreviewPhase::Done };
+                    p.frames = 0;
+                }
+            }
+            PreviewPhase::Shooting => match p.scrolls.get(p.shot).copied() {
+                None => {
+                    p.phase = PreviewPhase::Done;
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                }
+                Some(offset) => {
+                    self.forced_scroll = Some(offset);
+                    if p.frames >= 5 && !p.waiting_for_image {
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Screenshot);
+                        p.waiting_for_image = true;
+                    }
+                }
+            },
+            PreviewPhase::Done => {}
+        }
+        // A photographing preview never outstays its welcome.
+        if p.shots.is_some() && p.started.elapsed() > Duration::from_secs(240) {
+            ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+        }
     }
 }
 
@@ -1568,83 +1783,10 @@ impl IcraftApp {
             log::info!("[heartbeat] auto-restart {}", if auto_restart { "ON" } else { "OFF" });
         }
 
-        ui.add_space(8.0);
-        ui.heading("World backups");
+        ui.add_space(6.0);
         ui.label(egui::RichText::new(
-            "Scheduled: the world is zipped to backups\\world-YYYYmmdd-HHMM.zip in a Cycle's stopped window once the newest one is 12 h old, and the newest 2 are kept. 'Back up now' takes a PINNED backups\\manual-YYYYmmdd-HHMM.zip that is never pruned (delete it yourself once it has served its purpose): at once if the server is stopped, otherwise in the next Cycle's stopped window -- click Cycle to take it right away."
+            "World backups and the world-regeneration dry-run are on the Customizer tab."
         ).small().weak());
-        ui.add_space(2.0);
-        ui.horizontal_wrapped(|ui| {
-            // Not gated on `busy`: it has to work while a server task is running.
-            if ui.add(egui::Button::new("Back up now").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                match icraft_core::backup::write_request(&self.server_dir, "gui") {
-                    Ok(()) if icraft_core::run::jvm_active() => log::info!(
-                        "[backup] requested -- the server is running, so it waits for the next Cycle's stopped window (click Cycle to take it now)"
-                    ),
-                    Ok(()) => log::info!("[backup] requested -- starting within ~10 s"),
-                    Err(e) => log::warn!("[backup] could not write the request file: {e}"),
-                }
-                self.backup_requested_at = Some(Instant::now());
-            }
-        });
-
-        ui.add_space(8.0);
-        ui.heading("World regeneration (dry-run only)");
-        ui.label(egui::RichText::new(
-            "Works out which chunks a regeneration would KEEP (beds, claims, world spawn, waystones, lived-in chunks, the manual lists in .icraft_regen_policy) and which it would reset, and writes it to regen-reports\\<time>-<scope>\\ (report.txt, chunks.csv, warnings.csv, plan.json, a PNG map). It only READS the world: nothing is deleted or changed, and it is safe while the server is running. Executing a plan is not built yet."
-        ).small().weak());
-        ui.add_space(2.0);
-        ui.horizontal_wrapped(|ui| {
-            ui.label("Would regenerate:");
-            ui.radio_value(&mut self.regen_scope, 0, "nothing (protection report)");
-            ui.radio_value(&mut self.regen_scope, 1, "a ring around each bed, chunks:");
-            ui.add(egui::TextEdit::singleline(&mut self.regen_ring).desired_width(36.0));
-            ui.radio_value(&mut self.regen_scope, 2, "everything unprotected");
-            ui.radio_value(&mut self.regen_scope, 3, "a box of chunks x1,z1,x2,z2:");
-            ui.add(egui::TextEdit::singleline(&mut self.regen_box).desired_width(150.0));
-        });
-        ui.horizontal_wrapped(|ui| {
-            ui.label("Dimensions:");
-            ui.add(
-                egui::TextEdit::singleline(&mut self.regen_dims)
-                    .desired_width(260.0)
-                    .hint_text("minecraft:overworld (comma-separated, or all)"),
-            );
-            // Not gated on `busy`: it reads only, and has to work while a
-            // server task is running.
-            if ui.add(egui::Button::new("Protection report / Regen dry-run").min_size(egui::vec2(250.0, 28.0))).clicked() {
-                let scope = match self.regen_scope {
-                    1 => format!("ring:{}", self.regen_ring.trim()),
-                    2 => "all".to_string(),
-                    3 => format!("box:{}", self.regen_box.trim().replace(' ', "")),
-                    _ => "report".to_string(),
-                };
-                let dims = self.regen_dims.trim().replace(' ', "");
-                let dims = if dims.is_empty() { "minecraft:overworld".to_string() } else { dims };
-                let options = format!("scope={scope} dims={dims}");
-                // Checked here so a typo is reported at once, not 10 s later.
-                match icraft_core::regen::RunSpec::parse_tokens(options.split_whitespace()) {
-                    Err(why) => log::warn!("[regen] not requested: {why}"),
-                    Ok(_) => match icraft_core::regen::write_request(&self.server_dir, "gui", &options) {
-                        Ok(()) => log::info!(
-                            "[regen] dry-run requested ({options}) -- starts within ~10 s; it only reads the world"
-                        ),
-                        Err(e) => log::warn!("[regen] could not write the request file: {e}"),
-                    },
-                }
-                self.regen_requested_at = Some(Instant::now());
-                self.last_regen_refresh = None;
-            }
-        });
-        let regen_status = if icraft_core::regen::in_progress() {
-            "running -- reading the world (nothing is modified)".to_string()
-        } else {
-            match &self.regen_answer {
-                Some((_, answer)) => answer.clone(),
-                None => "no report has been requested yet".to_string(),
-            }
-        };
-        ui.label(egui::RichText::new(format!("Last dry-run: {regen_status}")).small());
 
         ui.add_space(8.0);
         ui.heading("Sync + install");
