@@ -2,7 +2,12 @@
 
 Minecraft **1.20.1 Forge** modpack. **This repo is the source of truth:** the live client (PrismLauncher instance) and the dedicated server re-sync to **pushed `main` HEAD**, so a change isn't testable until it's committed **and pushed**.
 
-**Planning/execution split:** if you were spawned for one scoped task, you're an **execution session** — planning happens in a separate session. Do the task, ship it, update `current-state.md`, report back. If a **design decision** surfaces (gameplay / tiering / dropping a mod / anything non-obvious), **stop and report** rather than deciding it yourself.
+**Planning/execution split:** if you were spawned for one scoped task, you're an **execution session** — planning happens in a separate session. Do the task, ship it, update `current-state.md`, report back (rule below). If a **design decision** surfaces (gameplay / tiering / dropping a mod / anything non-obvious), **stop and report** rather than deciding it yourself.
+
+**Report back when done (standing rule, operator 2026-10-11):** every execution session ends by sending its close-out to the planning session with `SendMessage`. Find it with `ListAgents`; it is named **"IridescentCraft Dev"**.
+- **The report covers:** what shipped (commit hashes) · what was verified and what was NOT · whether it is live on the server · decisions owed by the operator · where the in-game checks are.
+- **Fallback:** if the planning session isn't listed, or the send is held or expires (sessions in different permission modes), put the same report at the top of `planning\current-state.md` (you update it anyway) and say so in your final message.
+- **Stopping early** (usage limit, blocker)? Report that the same way. An unfinished chip that goes quiet is the failure this rule exists to prevent (2026-10-11: the backups chip sat half-built for five hours unnoticed).
 
 ## Standing rules (non-negotiable)
 - **Push to `main` automatically right after committing** — solo, direct-to-main, no PR, no review workflow, no asking. Safety = atomic, well-described, revertable commits. Your commits must reach **`origin/main`** (the only ref the live client/server pull); if you're on a spawned worktree branch, push it straight to main. Never `--no-verify`.
