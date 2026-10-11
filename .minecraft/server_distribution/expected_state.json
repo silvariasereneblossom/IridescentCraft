@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b0d644e4",
+    "generated_from":  "de4830c4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7008,8 +7008,8 @@
                                                                         "size":  10802
                                                                     },
                   "kubejs/server_scripts/endgame/rift_mechanics.js":  {
-                                                                          "sha256":  "8179a037e80ed7a0c06f84a1cc3523e8df530967fd8dae09dde61e53e14db8d4",
-                                                                          "size":  14822
+                                                                          "sha256":  "4c7f9452ae54fbb32668b0e411a4f33aff5640a4dcd6baa09805404a960bf893",
+                                                                          "size":  14094
                                                                       },
                   "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js":  {
                                                                                            "sha256":  "cfbda2daba6a76eceecae8f818ce1f7aa4e0a0a272a0a40488d51dfdb707a320",
