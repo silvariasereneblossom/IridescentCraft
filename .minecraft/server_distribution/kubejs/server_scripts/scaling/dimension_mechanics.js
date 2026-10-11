@@ -248,8 +248,10 @@ EntityEvents.hurt(event => {
   if (dim === 'ad_astra:moon') {
     // Double the knockback by applying extra velocity
     try {
-      let motion = target.deltaMovement
-      target.setMotion(motion.x * 2.0, motion.y * 1.5, motion.z * 2.0)
+      // motionX/Y/Z (KubeJS kjs$getMotionX ...): `target.deltaMovement.x` is a Vec3
+      // field read, which throws an uncatchable NullPointerException, so this
+      // knockback had never applied (failure-modes, 2026-10-11).
+      target.setMotion(target.motionX * 2.0, target.motionY * 1.5, target.motionZ * 2.0)
     } catch(e) {}
   }
 

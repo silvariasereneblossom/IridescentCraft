@@ -1175,7 +1175,9 @@ var tickPlayer = function (player) {
 
   // ── Featherweight + Acrobatic: Fall damage reduction ──
   if (airborne && (anyHas(gear, 'Featherweight') || anyHas(gear, 'Acrobatic'))) {
-    if (player.deltaMovement.y < -0.5) {
+    // `motionY` (KubeJS kjs$getMotionY), not `deltaMovement.y`: a Vec3 `.y` read
+    // throws an uncatchable NullPointerException (failure-modes, 2026-10-11).
+    if (player.motionY < -0.5) {
       player.potionEffects.add('minecraft:slow_falling', 20, 0, false, false)
     }
   }

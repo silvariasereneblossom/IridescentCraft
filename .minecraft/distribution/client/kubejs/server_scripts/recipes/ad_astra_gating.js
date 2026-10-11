@@ -181,7 +181,13 @@ ServerEvents.recipes(event => {
   var buildMk2 = function (input, result, label) {
     try {
       // Start from a copy of the input's tag so NOTHING native is dropped.
-      var src = (input && input.hasTag && input.hasTag()) ? input.getTag() : null
+      // [2026-10-11] `input.nbt` / `result.nbt = ...`: KubeJS renames
+      // ItemStack.getTag / setTag / hasTag() to getNbt / setNbt / hasNBT for
+      // scripts. The old `input.hasTag()` (zero arguments) and `input.getTag()`
+      // both threw, so this function always fell into its catch: the craft ate
+      // the MekaSuit piece WITH its modules, energy and enchants and returned a
+      // plain piece with no Mk2 marker.
+      var src = (input && !input.isEmpty()) ? input.nbt : null
       var outTag = src ? src.copy() : new CompoundTag_mk2()
 
       // Mk2 marker (flat top-level boolean, repo convention).
@@ -200,7 +206,7 @@ ServerEvents.recipes(event => {
       display.put('Lore', lore)
       outTag.put('display', display)
 
-      result.setTag(outTag)
+      result.nbt = outTag
     } catch (e) {
       // Fail-soft: never let a craft crash. Worst case the player gets a
       // plain (un-marked) MekaSuit piece back; re-craft will retry.

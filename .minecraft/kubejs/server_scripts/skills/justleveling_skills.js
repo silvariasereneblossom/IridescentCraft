@@ -824,7 +824,21 @@
           var x = Math.floor(Number(target.x))
           var y = Math.floor(Number(target.y))
           var z = Math.floor(Number(target.z))
-          player.server.runCommandSilent('loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z + ' loot ' + lootTable)
+          // [2026-10-11] Two fixes in this one command (the same two apply to the
+          // mining bonus below):
+          //  1. `execute in <dimension>`: a server-source command runs in the
+          //     OVERWORLD, so outside the Overworld the bonus loot used to appear
+          //     there, at these coordinates, and the player got nothing.
+          //  2. `fish <table> <pos>` instead of `loot <table>`: `/loot ... loot`
+          //     rolls with the CHEST parameter set, so every bonus roll also got
+          //     the pack's chest-wide LootJS rules (tiered artifact pools, spell
+          //     books, codex tokens: about half a stack per roll). `fish` rolls
+          //     the SAME table with the FISHING parameter set, which no pack rule
+          //     is keyed on: the table's own drops, nothing else. (It is not a
+          //     kill/mine roll: no killer and no tool, exactly as before.)
+          var tsDim = String(target.level.dimension)
+          player.server.runCommandSilent('execute in ' + tsDim + ' run loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z +
+            ' fish ' + lootTable + ' ' + x + ' ' + y + ' ' + z)
           puff(target.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.4, 12, 0.1)
           player.tell('§6[Treasure Sense] §fDouble drops!')
         }
@@ -875,7 +889,10 @@
       var x = Number(block.x)
       var y = Number(block.y)
       var z = Number(block.z)
-      var spawnAt = 'loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z + ' loot ' + lootTable
+      // `execute in` + `fish`: see the Treasure Sense note above (the roll must
+      // happen in the player's dimension and must not pick up chest-wide rules).
+      var spawnAt = 'execute in ' + String(player.level.dimension) + ' run loot spawn ' + x + ' ' + (y + 0.5) + ' ' + z +
+        ' fish ' + lootTable + ' ' + x + ' ' + y + ' ' + z
       var server = player.server
 
       if (apt.luck >= 30 && Math.random() < 0.005) {
