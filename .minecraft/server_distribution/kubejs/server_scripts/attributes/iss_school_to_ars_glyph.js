@@ -38,6 +38,14 @@
 // Pairs with:
 //   kubejs/server_scripts/attributes/iss_school_to_ars_spell.js -- the
 //     LivingHurtEvent path for direct Ars elemental damage types.
+//
+// 2026-10-10 review: every member this handler touches exists under the name
+// used here (SpellDamageEvent's public damageSource / context / caster /
+// damage fields, SpellContext.getSpell(), Spell.recipe,
+// AbstractSpellPart.spellSchools, SpellSchool.getId(); typeHolder() is not
+// renamed for scripts), so this half was working. Its sibling was not: see
+// the note in iss_school_to_ars_spell.js -- the four damage types skipped
+// below got no bonus from either script until that was fixed.
 // =============================================================================
 
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
@@ -124,10 +132,12 @@ try {
 
         var caster = event.caster
         if (!caster) return
-        var multiplier = caster.getAttributeValue(attr)
-        if (multiplier <= 1.0) return  // no boost above baseline
+        var multiplier = Number(caster.getAttributeValue(attr))
+        // no boost above baseline; `!(x > 1)` also stops NaN / a missing value
+        if (!(multiplier > 1.0) || multiplier === Infinity) return
 
-        var amount = event.damage
+        var amount = Number(event.damage)
+        if (!(amount > 0)) return
         event.damage = amount * multiplier
 
         if (!global._iss_glyph_seen) {

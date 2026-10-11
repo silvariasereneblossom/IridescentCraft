@@ -22,7 +22,60 @@
 //
 // Complex mechanics like "noise tracking" or "coordinated aggro" are
 // noted as Phase 2/KubeJS limitations and documented here.
+//
+// 2026-10-10 (accessors as scripts really see them: 0_lib_core.js header):
+//   * Dragon's Influence scanned a 400x256x400 box of entities per End player;
+//     it asks the level for its dragons instead (one cached read per 5 s).
+//   * Blue Skies elemental damage never applied: it sat in EntityEvents.hurt
+//     and read/wrote `event.amount`, which that wrapper does not have. It is a
+//     damage-registry handler now.
+//   * Planet cold / acid damage never landed: `player.attack('freeze', n)` has
+//     no string -> DamageSource conversion and threw, which also skipped the
+//     rest of that planet's block (Mars hunger, Venus slowness, Glacio mining
+//     fatigue).
+//   * Mercury was always on its night side: `level.dayTime` is the dayTime()
+//     method object, so `dayTime % 24000` was NaN.
+//   * Aether Acclimation / Thermal Regulation / Stellar Shield / Pressure
+//     Shell / Void Adaptation / Warp Shield were all read as level 0
+//     (`entity.getItemSlot` does not exist): the hazards could not be negated.
+//   * The Abyss darkness check called getBrightness(pos) (no such overload).
+//   * Entity ids are read through core.entityId() (the `type` property is
+//     shadowed on some mod classes).
+// NOT revived: the Full Moon notice at the bottom (still reads `level.dayTime`
+// as a number). It announces "more numerous and aggressive" mobs, and nothing
+// in the pack implements that -- reported for a design call instead.
+//
+// Whole file is one IIFE (body left at column 0); nothing here is used by
+// another script.
 // =============================================================================
+
+;(function () {
+var core = global.icraft && global.icraft.core
+if (!core) {
+  console.error('[IridescentCraft] dimension_mechanics.js: 0_lib_core.js did not load -- dimension mechanics are OFF')
+  return
+}
+
+var ABYSS_BOSSES = {
+  'theabyss:elder': true, 'theabyss:ice_knight': true, 'theabyss:nightblade_boss': true,
+  'theabyss:soul_guard': true, 'theabyss:the_roka': true
+}
+
+// Total level of one enchantment across the four armour pieces
+var getArmorEnchTotalLocal = function (entity, enchId) {
+  return core.armorEnchTotal(entity, enchId)
+}
+
+// An environmental hit that goes through every normal damage handler.
+var hazardDamage = function (player, kind, amount) {
+  if (!(amount > 0)) return
+  try {
+    var source = core.damageSource(player, kind, null)
+    if (source) player.attack(source, amount)
+  } catch (e) {
+    core.warnOnce('dim.hazard:' + kind, '[dimension_mechanics] ' + kind + ' hazard damage threw: ' + e)
+  }
+}
 
 // ─── Mob Spawn Enhancements (Dimension-Specific Buffs at Spawn) ───
 EntityEvents.spawned(event => {
@@ -32,7 +85,7 @@ EntityEvents.spawned(event => {
   if (entity.persistentData.contains('icraft_dim_mech')) return
 
   let dim = entity.level.dimension
-  let type = entity.type
+  let type = core.entityId(entity)
 
   // ── Twilight Forest: Canopy Ambush ──
   // 15% chance to spawn invisible for 5 seconds
@@ -108,8 +161,7 @@ EntityEvents.spawned(event => {
   // All Abyss mobs get Resistance I (adapted to corrupted environment)
   // Boss entities are excluded (already handled by boss_hp.js)
   if (dim === 'theabyss:the_abyss') {
-    let abyssBosses = ['theabyss:elder', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:soul_guard', 'theabyss:the_roka']
-    if (abyssBosses.indexOf(type) === -1) {
+    if (!ABYSS_BOSSES[type]) {
       entity.potionEffects.add('minecraft:resistance', 999999, 0, false, false)
     }
   }
@@ -189,24 +241,8 @@ EntityEvents.hurt(event => {
     }
   }
 
-  // ── Blue Skies: Elemental Damage (30% armor bypass) ──
-  // Design doc: 30% of mob damage is converted to elemental, bypasses armor
-  // Implementation: apply extra magic damage as fire/frost on hit
-  if (dim === 'blue_skies:everdawn' || dim === 'blue_skies:everbright') {
-    let baseDmg = event.amount
-    let elementalDmg = baseDmg * 0.30
-    if (elementalDmg > 0) {
-      // Reduce the physical hit by 30%
-      event.amount = baseDmg * 0.70
-      // Apply elemental as fire/freeze effect (simulates bypass)
-      if (dim === 'blue_skies:everdawn') {
-        target.setSecondsOnFire(2)
-      } else {
-        target.potionEffects.add('minecraft:slowness', 60, 0, false, true)
-        // Deal raw damage via attack to simulate frost bypass
-      }
-    }
-  }
+  // ── Blue Skies: Elemental Damage ──
+  // (needs a settable amount: see the damage-registry handler below)
 
   // ── Moon: Doubled Knockback (low gravity combat) ──
   if (dim === 'ad_astra:moon') {
@@ -221,17 +257,8 @@ EntityEvents.hurt(event => {
   // Design doc: 15% chance to teleport player 2-4 blocks randomly on hit
   // Warp Shield enchant: -5% chance per level (level 3 = immune)
   if (dim === 'minecraft:the_end') {
-    let warpChance = 0.15
     // Check for Warp Shield enchantment on armor
-    try {
-      ;['head','chest','legs','feet'].forEach(slot => {
-        let armor = target.getItemSlot(slot)
-        if (armor && !armor.isEmpty() && armor.enchantments) {
-          let ws = armor.enchantments.getLevel('icraft:warp_shield')
-          if (ws > 0) warpChance -= ws * 0.05
-        }
-      })
-    } catch(e) {}
+    let warpChance = 0.15 - getArmorEnchTotalLocal(target, 'icraft:warp_shield') * 0.05
 
     if (warpChance > 0 && Math.random() < warpChance) {
       let dx = (Math.random() - 0.5) * 6  // -3 to +3 blocks
@@ -243,6 +270,30 @@ EntityEvents.hurt(event => {
     }
   }
 })
+
+
+// ─── Blue Skies: Elemental Damage (30% armor bypass) ───
+// Design doc: 30% of mob damage is converted to elemental, bypasses armor.
+// Implementation: the physical hit is reduced by 30% and the elemental share
+// lands as fire (Everdawn) / a slow (Everbright).
+core.onHurt('icraft.dimension_mechanics.blue_skies', function (event, ctx) {
+  var target = ctx.victim
+  var attacker = ctx.attacker
+  if (!attacker || attacker === target) return
+  var dim = String(target.level.dimension)
+  if (dim !== 'blue_skies:everdawn' && dim !== 'blue_skies:everbright') return
+  if (!attacker.living) return
+  if (!(event.amount > 0)) return
+
+  // Reduce the physical hit by 30%
+  event.amount = event.amount * 0.70
+  // Apply elemental as fire/freeze effect (simulates bypass)
+  if (dim === 'blue_skies:everdawn') {
+    target.setSecondsOnFire(2)
+  } else {
+    target.potionEffects.add('minecraft:slowness', 60, 0, false, true)
+  }
+}, 'victimPlayer')
 
 
 // ─── Player Tick: Environmental Hazards ───
@@ -352,7 +403,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
 
     if (!holdingLight) {
       try {
-        let lightLevel = player.level.getBrightness(player.blockPosition())
+        let lightLevel = core.light(player)
         if (lightLevel < 4) {
           player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, true)
           player.potionEffects.add('minecraft:slowness', 200, 0, false, true)
@@ -371,13 +422,12 @@ global.tick_dimEnvironmentalHazards = (event) => {
 
     // ── Fear Aura: Within 16 blocks of Abyss bosses, Darkness for 3s ──
     try {
-      let abyssBosses = ['theabyss:elder', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:soul_guard', 'theabyss:the_roka']
       let nearBoss = false
       let entities = player.level.getEntitiesWithin(
         AABB.of(player.x - 16, player.y - 16, player.z - 16, player.x + 16, player.y + 16, player.z + 16)
       )
       for (let e of entities) {
-        if (abyssBosses.indexOf(e.type) !== -1) {
+        if (e.living && ABYSS_BOSSES[core.entityId(e)]) {
           nearBoss = true
           break
         }
@@ -394,20 +444,8 @@ global.tick_dimEnvironmentalHazards = (event) => {
   }
 
   // ═══ AD ASTRA PLANET HAZARDS ═══
-  // Planetary enchantments can negate these hazards.
-  // Helper: check total enchant level across armor (same as enchant_effects.js)
-  function getArmorEnchTotalLocal(entity, enchId) {
-    let total = 0
-    ;['head','chest','legs','feet'].forEach(slot => {
-      try {
-        let item = entity.getItemSlot(slot)
-        if (item && !item.isEmpty() && item.enchantments) {
-          total += item.enchantments.getLevel(enchId)
-        }
-      } catch(e) {}
-    })
-    return total
-  }
+  // Planetary enchantments can negate these hazards (getArmorEnchTotalLocal,
+  // top of file).
 
   // ── Moon: Knockback doubled, fall damage halved ──
   // Low gravity — handled via knockback in hurt event below
@@ -424,7 +462,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
     let coldReduction = Math.min(thermalReg * 0.33, 1.0)
     if (coldReduction < 1.0) {
       // Cold damage: 1 HP every 5 seconds, reduced by Thermal Regulation
-      player.attack('freeze', 1.0 * (1.0 - coldReduction))
+      hazardDamage(player, 'freeze', 1.0 * (1.0 - coldReduction))
     }
     // Faster hunger: apply hunger effect (not affected by enchant)
     player.potionEffects.add('minecraft:hunger', 200, 0, false, false)
@@ -433,7 +471,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
   // ── Mercury: Fire damage on sun side, cold on dark side ──
   // Stellar Shield negates fire; Thermal Regulation negates cold
   if (dim === 'ad_astra:mercury') {
-    let dayTime = player.level.dayTime % 24000
+    let dayTime = Number(player.level.getDayTime()) % 24000
     if (dayTime >= 0 && dayTime < 12000) {
       // Day (sun side): fire damage — Stellar Shield negates
       let stellarShield = getArmorEnchTotalLocal(player, 'icraft:stellar_shield')
@@ -446,7 +484,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
       let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
       let coldReduction = Math.min(thermalReg * 0.33, 1.0)
       if (coldReduction < 1.0) {
-        player.attack('freeze', 1.5 * (1.0 - coldReduction))
+        hazardDamage(player, 'freeze', 1.5 * (1.0 - coldReduction))
       }
     }
   }
@@ -458,7 +496,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
     let pressureReduction = Math.min(pressureShell * 0.50, 1.0)
     if (pressureReduction < 1.0) {
       // Acid rain: continuous damage (1.5 HP per tick cycle)
-      player.attack('magic', 1.5 * (1.0 - pressureReduction))
+      hazardDamage(player, 'magic', 1.5 * (1.0 - pressureReduction))
     }
     // Pressure: movement speed reduction — negated at level 2
     if (pressureShell < 2) {
@@ -473,7 +511,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
     let coldReduction = Math.min(thermalReg * 0.33, 1.0)
     if (coldReduction < 1.0) {
       // Extreme cold: 2 HP per tick cycle
-      player.attack('freeze', 2.0 * (1.0 - coldReduction))
+      hazardDamage(player, 'freeze', 2.0 * (1.0 - coldReduction))
     }
     // Mining fatigue from extreme environment — Void Adaptation negates
     let voidAdapt = getArmorEnchTotalLocal(player, 'icraft:void_adaptation')
@@ -487,6 +525,14 @@ global.registerPlayerTick('tick_dimEnvironmentalHazards', 100, 0)
 
 // ─── Overworld: Full Moon Detection ───
 // Notifies players of full moon danger
+//
+// NOT LIVE, and deliberately left that way on 2026-10-10 (see the file header):
+// `level.dayTime` is vanilla's dayTime() METHOD object for scripts, so
+// lunarPhase is NaN and the notice has never been sent. Making it work is one
+// call (level.getDayTime()), but the line would then promise "more numerous
+// and aggressive" mobs that nothing implements, at a moment set by the
+// player's own age rather than by dusk (interval 24000 / offset 13000 on
+// player.age). That is a design call, not a repair.
 global.tick_fullMoonDetection = (event) => {
   let player = event.player
   if (!player || player.level.dimension !== 'minecraft:overworld') return
@@ -507,8 +553,7 @@ EntityEvents.death(event => {
   if (!entity || !entity.living) return
   if (entity.level.dimension !== 'minecraft:the_nether') return
 
-  let type = entity.type
-  if (type !== 'minecraft:blaze') return
+  if (core.entityId(entity) !== 'minecraft:blaze') return
 
   if (Math.random() < 0.20) {
     let pos = entity.blockPosition()
@@ -530,16 +575,36 @@ EntityEvents.death(event => {
 
 
 // ─── End: Dragon's Influence ───
+// "A living Ender Dragon within 200 blocks (X/Z) of the player."
+// ServerLevel.getDragons() is the level's own typed lookup (every loaded,
+// living ender dragon); the answer is shared by all End players for 5 s. This
+// replaces a getEntitiesWithin() over a 400 x 256 x 400 box per player.
+var dragonCache = { t: -1, spots: [] }
+var endDragonSpots = function (level) {
+  var now = core.now(level)
+  if (dragonCache.t >= 0 && now >= dragonCache.t && (now - dragonCache.t) < 100) return dragonCache.spots
+  var spots = []
+  try {
+    level.getDragons().forEach(function (dragon) {
+      if (dragon && dragon.isAlive()) spots.push([dragon.x, dragon.y, dragon.z])
+    })
+  } catch (e) {
+    core.warnOnce('dim.dragons', '[dimension_mechanics] level.getDragons() threw: ' + e)
+  }
+  dragonCache = { t: now, spots: spots }
+  return spots
+}
+
 global.tick_dragonsInfluence = (event) => {
   let player = event.player
-  if (!player || player.level.dimension !== 'minecraft:the_end') return
+  if (!player) return
+  if (String(player.level.dimension) !== 'minecraft:the_end') return
 
   let dragonAlive = false
-  let entities = player.level.getEntitiesWithin(
-    AABB.of(player.x - 200, 0, player.z - 200, player.x + 200, 256, player.z + 200)
-  )
-  for (let e of entities) {
-    if (e.type === 'minecraft:ender_dragon') {
+  let spots = endDragonSpots(player.level)
+  for (let i = 0; i < spots.length; i++) {
+    if (Math.abs(spots[i][0] - player.x) <= 200 && Math.abs(spots[i][2] - player.z) <= 200 &&
+        spots[i][1] >= 0 && spots[i][1] <= 256) {
       dragonAlive = true
       break
     }
@@ -620,3 +685,4 @@ global.tick_voidCorruptionCleanse = (event) => {
   })
 }
 global.registerServerTick('tick_voidCorruptionCleanse', 20, 0)
+})()

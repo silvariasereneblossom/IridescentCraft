@@ -25,6 +25,14 @@
 // 2026-10-10: the (stack, ench) level helper is named getBookEnchLevel_mc, not
 // getEnchLevel -- enchantments/enchant_effects.js owns the global
 // getEnchLevel(entity, enchId) and the two signatures are incompatible.
+//
+// 2026-10-10 (2): the hook had never fired. It read `src.entity` (undefined
+// for scripts) and decided "magic?" from `String(src.type)`, the text of a
+// function object (0_lib_core.js header). The attacker and the damage type
+// now come from global.icraft.core: magic = a damage type whose registry id
+// or msg id contains "magic" (minecraft:magic / indirect_magic and the nine
+// irons_spellbooks:<school>_magic types), or any other irons_spellbooks: /
+// ars_nouveau: damage type; arrows and plain mob attacks are excluded.
 // =============================================================================
 
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
@@ -54,66 +62,67 @@ try {
       try { return EnchantmentHelper_mc.getItemEnchantmentLevel(ench, stack) } catch (_) { return 0 }
     }
 
+    var core = global.icraft && global.icraft.core
+    if (!core) throw new Error('0_lib_core.js did not load')
+
     var isMagicDamage = function(src) {
-      try {
-        var srcId = String(src.type ? src.type : src.msgId || '')
-        if (srcId.indexOf('magic') >= 0) return true       // minecraft:magic, minecraft:indirect_magic
-        if (srcId.indexOf('arrow') >= 0) return false      // exclude arrow
-        if (srcId.indexOf('mob') >= 0) return false        // exclude mob attack
-        // ISS schools (fire, ice, lightning, blood, evocation, etc.)
-        if (srcId.indexOf('irons_spellbooks') >= 0) return true
-        // Ars glyph damage
-        if (srcId.indexOf('ars_nouveau') >= 0) return true
-      } catch (_) {}
+      // the registry id ('minecraft:indirect_magic'); the msg id only if there is none
+      var srcId = core.dmgId(src)
+      if (srcId === '') srcId = core.dmgMsg(src)
+      srcId = srcId.toLowerCase()
+      if (srcId.indexOf('magic') >= 0) return true       // minecraft:magic, minecraft:indirect_magic, ISS <school>_magic
+      if (srcId.indexOf('arrow') >= 0) return false      // exclude arrow
+      if (srcId.indexOf('mob') >= 0) return false        // exclude mob attack
+      // other ISS damage types (fire_field, poison_cloud, ...)
+      if (srcId.indexOf('irons_spellbooks') >= 0) return true
+      // Ars glyph damage
+      if (srcId.indexOf('ars_nouveau') >= 0) return true
       return false
     }
 
     // 2026-05-15: migrated to DamageModifierRegistry (raw Forge LivingHurtEvent).
-    var DR_mc = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-    var PlayerClass_mc = Java.loadClass('net.minecraft.world.entity.player.Player')
-    DR_mc.register('icraft.magic_crit', function(event) {
+    core.onHurt('icraft.magic_crit', function(event, ctx) {
+      var src = ctx.source
+      if (!src) return
+
+      // DamageSource.getEntity() (the cause: the caster), not the projectile.
+      var attacker = ctx.attacker
+      if (attacker === ctx.victim) return
+
+      // Cheapest test first: almost every hit is made without an enchanted book in hand.
+      var stack = attacker.mainHandItem
+      if (!stack || stack.isEmpty() || !stack.isEnchanted()) return
+      var critChanceLvl = getBookEnchLevel_mc(stack, resolvedCritChance)
+      if (critChanceLvl <= 0) return
+
+      if (!isMagicDamage(src)) return
+      var critDamageLvl = getBookEnchLevel_mc(stack, resolvedCritDamage)
+
+      var enchChance = critChanceLvl * 0.05
+      var attrChance = 0.0
       try {
-        var src = event.source
-        if (!src) return
-
-        // Resolve attacker. Forge DamageSource.getEntity() returns the cause
-        // (player), while getDirectEntity() returns the projectile. Either
-        // could be the player here.
-        var attacker = src.entity
-        if (!(attacker instanceof PlayerClass_mc)) return
-
-        if (!isMagicDamage(src)) return
-
-        var stack = attacker.getMainHandItem()
-        if (!stack || stack.isEmpty()) return
-        var critChanceLvl = getBookEnchLevel_mc(stack, resolvedCritChance)
-        var critDamageLvl = getBookEnchLevel_mc(stack, resolvedCritDamage)
-        if (critChanceLvl <= 0) return
-
-        var enchChance = critChanceLvl * 0.05
-        var attrChance = 0.0
-        try { attrChance = attacker.persistentData.getDouble('icraft_crit_chance') } catch (_) {}
-        var totalChance = enchChance + attrChance
-        if (totalChance <= 0) return
-        if (Math.random() >= totalChance) return
-
-        var critDamageBonus = 0.5 + (critDamageLvl * 0.25)
-        if (critDamageLvl <= 0) critDamageBonus = 0.5
-
-        var origDamage = event.amount
-        event.amount = origDamage * (1.0 + critDamageBonus)
-
-        if (!global._magic_crit_seen) global._magic_crit_seen = {}
-        var name = String(attacker.username)
-        if (!global._magic_crit_seen[name]) {
-          global._magic_crit_seen[name] = true
-          console.log('[magic_crit] ' + name + ' MAGIC CRIT! ' +
-                      origDamage.toFixed(2) + ' -> ' + event.amount.toFixed(2) +
-                      ' (chance=' + (totalChance * 100).toFixed(1) + '% damage=+' +
-                      (critDamageBonus * 100).toFixed(0) + '%)')
-        }
+        var pdata = attacker.persistentData
+        if (pdata.contains('icraft_crit_chance')) attrChance = core.finite(pdata.getDouble('icraft_crit_chance'), 0)
       } catch (_) {}
-    })
+      var totalChance = enchChance + attrChance
+      if (totalChance <= 0) return
+      if (Math.random() >= totalChance) return
+
+      var critDamageBonus = 0.5 + (critDamageLvl > 0 ? critDamageLvl * 0.25 : 0)
+
+      var origDamage = core.finite(event.amount, 0)
+      event.amount = origDamage * (1.0 + critDamageBonus)
+
+      if (!global._magic_crit_seen) global._magic_crit_seen = {}
+      var name = String(attacker.username)
+      if (!global._magic_crit_seen[name]) {
+        global._magic_crit_seen[name] = true
+        console.log('[magic_crit] ' + name + ' MAGIC CRIT! ' +
+                    origDamage.toFixed(2) + ' -> ' + (origDamage * (1.0 + critDamageBonus)).toFixed(2) +
+                    ' (chance=' + (totalChance * 100).toFixed(1) + '% damage=+' +
+                    (critDamageBonus * 100).toFixed(0) + '%)')
+      }
+    }, 'attackerPlayer')
 
     console.log('[IridescentCraft] magic_crit_hook loaded -- magic damage can crit via book enchants')
   }

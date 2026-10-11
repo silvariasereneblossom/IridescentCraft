@@ -2,311 +2,368 @@
 // IridescentCraft — Custom Enchantment Effects
 // File: kubejs/server_scripts/enchantments/enchant_effects.js
 //
-// Design Doc Part VI: 24 Custom Enchantments
+// Design Doc Part VI: 24 Custom Enchantments (+5 planetary)
 // Registration in startup_scripts/custom_enchantments.js
 //
-// Helper: getEnchLevel checks equipped items for a specific enchantment level.
-// Effects are applied via EntityEvents.hurt, PlayerEvents.tick, and BlockEvents.
+// Effects are applied via the DamageModifierRegistry (hurt), the tick master
+// and BlockEvents.
+//
+// 2026-10-10 revival. NONE of the 29 enchantments had ever done anything:
+//   * every level lookup returned 0 -- `entity.getItemSlot(slot)` does not
+//     exist (LivingEntity has getItemBySlot) and `item.enchantments` is a
+//     java.util.Map with no getLevel(); both threw inside a catch-all. Levels
+//     now come from EnchantmentHelper via global.icraft.core.
+//   * the weapon handler also returned on its first line
+//     (`event.source.entity`), Boss Ward read `source.entity`, Adaptive keyed
+//     on `source.type` (a function object).
+// First-run defects fixed while reviving (none of this could be seen before):
+//   * Lumberjack passed a plain {x,y,z} object to destroyBlock(): KubeJS turns
+//     that into BlockPos.ZERO, so it would have broken the block at 0,0,0 once
+//     per log while duplicating the logs it left standing. It now destroys the
+//     real positions and lets the blocks drop themselves.
+//   * Prospector popped the ORE BLOCK (place it, mine it again, repeat). It
+//     now repeats the block's real drops and never the block itself.
+//   * Magnetism called setDeltaMovement(x, y, z); scripts have setMotion().
+//   * Vitality / Steadfast / Quick Draw / Convergence / Momentum added an
+//     attribute modifier and never took it off again (unequip = kept bonus).
+//   * Adaptive's decay removed keys from the set it was iterating.
+//   * RF Capacitance looped to `inventory.size` (undefined) and read
+//     `inventory.get(i)` (no such method).
+//   * isBoss() matched substrings ('golem', 'guardian', 'ghast', 'storm', ...)
+//     and so counted iron golems, guardians and ghasts; it is the pack's boss
+//     id list now (global.icraft.core.isBoss).
+//
+// Whole file is one IIFE (body left at column 0); nothing here is used by
+// another script.
 // =============================================================================
+
+;(function () {
+var core = global.icraft && global.icraft.core
+if (!core) {
+  console.error('[IridescentCraft] enchant_effects.js: 0_lib_core.js did not load -- custom enchantments are OFF')
+  return
+}
 
 // ─── Helpers ───
 
-function getEnchLevel(entity, enchId) {
-  // Check all armor slots + mainhand + offhand for the enchantment
-  let maxLevel = 0
-  let slots = ['head', 'chest', 'legs', 'feet', 'mainhand', 'offhand']
-  slots.forEach(slot => {
-    try {
-      let item = entity.getItemSlot(slot)
-      if (item && !item.isEmpty()) {
-        let enchants = item.enchantments
-        if (enchants) {
-          let lvl = enchants.getLevel(enchId)
-          if (lvl > maxLevel) maxLevel = lvl
-        }
-      }
-    } catch(e) {}
-  })
-  return maxLevel
+// Highest level across armor + both hands
+var getEnchLevel = function (entity, enchId) { return core.gearEnchMax(entity, enchId) }
+// Level on the main-hand item
+var getWeaponEnchLevel = function (entity, enchId) { return core.heldEnchLevel(entity, enchId) }
+// Sum of the levels across all armor pieces
+var getArmorEnchTotal = function (entity, enchId) { return core.armorEnchTotal(entity, enchId) }
+// entity or registry id
+var isBoss = function (entityOrId) { return core.isBoss(entityOrId) }
+
+var PLANETS = {
+  'ad_astra:moon': true, 'ad_astra:mars': true, 'ad_astra:mercury': true,
+  'ad_astra:venus': true, 'ad_astra:glacio': true
+}
+var dimOf = function (entity) {
+  try { return String(entity.level.dimension) } catch (e) { return '' }
 }
 
-function getWeaponEnchLevel(entity, enchId) {
+// Set (value != 0) or remove (value == 0) one keyed attribute modifier.
+var setMod = function (player, attribute, key, value, operation) {
   try {
-    let item = entity.mainHandItem
-    if (item && !item.isEmpty() && item.enchantments) {
-      return item.enchantments.getLevel(enchId)
-    }
-  } catch(e) {}
-  return 0
+    if (value) player.modifyAttribute(attribute, key, value, operation)
+    else player.removeAttribute(attribute, key)
+  } catch (e) {
+    core.warnOnce('ench.mod:' + key, '[enchant_effects] attribute modifier ' + key + ' on ' + attribute + ' failed: ' + e)
+  }
 }
 
-function getArmorEnchTotal(entity, enchId) {
-  // Sum enchantment levels across all armor pieces
-  let total = 0
-  ;['head','chest','legs','feet'].forEach(slot => {
-    try {
-      let item = entity.getItemSlot(slot)
-      if (item && !item.isEmpty() && item.enchantments) {
-        total += item.enchantments.getLevel(enchId)
-      }
-    } catch(e) {}
-  })
-  return total
+var countHostilesNear = function (player, r) {
+  var count = 0
+  try {
+    player.level.getEntitiesWithin(
+      AABB.of(player.x - r, player.y - r, player.z - r, player.x + r, player.y + r, player.z + r)
+    ).forEach(function (e) {
+      if (e !== player && e.living && e.monster) count++
+    })
+  } catch (e) {}
+  return count
 }
 
-function isBoss(type) {
-  return type.includes('boss') || type.includes('dragon') || type.includes('wither') ||
-    type.includes('guardian') || type.includes('naga') || type.includes('lich') ||
-    type.includes('hydra') || type.includes('ghast') || type.includes('doppleganger') ||
-    type.includes('ignis') || type.includes('harbinger') || type.includes('leviathan') ||
-    type.includes('remnant') || type.includes('blossom') || type.includes('golem') ||
-    type.includes('fortuna') || type.includes('rosalyne') || type.includes('swampjaw') ||
-    type.includes('bellringer') || type.includes('sorcerer') || type.includes('storm') ||
-    type.includes('senshi') || type.includes('slider') || type.includes('valkyrie') ||
-    type.includes('sun_spirit') || type.includes('eots') || type.includes('forgotten') ||
-    type.includes('stalker') || type.includes('shattered')
+var bossNear = function (player, r) {
+  var found = false
+  try {
+    player.level.getEntitiesWithin(
+      AABB.of(player.x - r, player.y - r, player.z - r, player.x + r, player.y + r, player.z + r)
+    ).forEach(function (e) {
+      if (!found && e.living && isBoss(e)) found = true
+    })
+  } catch (e) {}
+  return found
 }
 
 
 // ==========================================================================
 // ███ DAMAGE DEALT BY PLAYER (weapon enchants) — DamageModifierRegistry ███
 // ==========================================================================
-;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+core.onHurt('icraft.enchants.weapon', function (event, ctx) {
+  var player = ctx.attacker
+  var target = ctx.victim
+  if (!target) return
+  // Every enchant below sits on the main-hand item: no enchanted weapon, no work.
+  var weapon = player.mainHandItem
+  if (!weapon || weapon.isEmpty() || !weapon.isEnchanted()) return
+  var data = player.persistentData
+  var targetMax = core.finite(target.maxHealth, 0)
 
-  DR.register('icraft.enchants.weapon', function(event) {
-    var player = event.source.entity
-    if (!(player instanceof PlayerClass)) return
-    var target = event.entity
-    if (!target) return
+  // ── Titan Slayer: +4%/level per 100 max HP of the target (cap +20%/level) ──
+  var titan = core.enchLevel(weapon, 'icraft:titan_slayer')
+  if (titan > 0 && targetMax > 100) {
+    var bonus = 1 + (titan * 0.04) * (targetMax / 100)
+    event.amount = event.amount * Math.min(bonus, 1 + titan * 0.20)
+  }
 
-    var titan = getWeaponEnchLevel(player, 'icraft:titan_slayer')
-    if (titan > 0 && target.maxHealth > 100) {
-      var bonus = 1 + (titan * 0.04) * (target.maxHealth / 100)
-      event.amount *= Math.min(bonus, 1 + titan * 0.20)
+  // ── Adrenaline: +6%/level below 30% HP ──
+  var adren = core.enchLevel(weapon, 'icraft:adrenaline')
+  if (adren > 0 && player.maxHealth > 0 && player.health / player.maxHealth < 0.30) {
+    event.amount = event.amount * (1 + adren * 0.06)
+  }
+
+  // ── Crowd Control: +5%/level per extra hostile within 3 blocks (max 5) ──
+  var crowd = core.enchLevel(weapon, 'icraft:crowd_control')
+  if (crowd > 0) {
+    var nearbyCount = countHostilesNear(player, 3.0)
+    if (nearbyCount > 1) {
+      event.amount = event.amount * (1 + Math.min(nearbyCount - 1, 5) * crowd * 0.05)
     }
+  }
 
-    var adren = getWeaponEnchLevel(player, 'icraft:adrenaline')
-    if (adren > 0 && player.health / player.maxHealth < 0.30) {
-      event.amount *= (1 + adren * 0.06)
-    }
+  // ── Nemesis: stacking +3% per hit against the same boss type ──
+  var nemesis = core.enchLevel(weapon, 'icraft:nemesis')
+  if (nemesis > 0 && isBoss(target)) {
+    var nemesisKey = 'icraft_nemesis_' + core.entityId(target).replace(':', '_')
+    var stacks = data.contains(nemesisKey) ? data.getInt(nemesisKey) : 0
+    stacks = Math.min(stacks + 1, 10 * nemesis)
+    data.putInt(nemesisKey, stacks)
+    event.amount = event.amount * (1 + stacks * 0.03)
+  }
 
-    var crowd = getWeaponEnchLevel(player, 'icraft:crowd_control')
-    if (crowd > 0) {
-      var r = 3.0
-      var nearbyCount = 0
-      try {
-        var nearby = player.level.getEntitiesWithin(
-          AABB.of(player.x-r, player.y-r, player.z-r, player.x+r, player.y+r, player.z+r)
-        )
-        nearby.forEach(function(e) {
-          if (e !== player && e.living && e.monster) nearbyCount++
-        })
-      } catch(e) {}
-      if (nearbyCount > 1) {
-        var bonus2 = Math.min(nearbyCount - 1, 5) * crowd * 0.05
-        event.amount *= (1 + bonus2)
+  // ── Momentum: +2% attack speed per stack (5 stacks/level, decays after 5 s) ──
+  var momentum = core.enchLevel(weapon, 'icraft:momentum')
+  if (momentum > 0) {
+    var momStacks = data.contains('icraft_momentum') ? data.getInt('icraft_momentum') : 0
+    momStacks = Math.min(momStacks + 1, 5 * momentum)
+    data.putInt('icraft_momentum', momStacks)
+    data.putLong('icraft_momentum_time', core.now(player))
+    setMod(player, 'minecraft:generic.attack_speed', 'icraft_momentum_bonus', momStacks * 0.02, 'multiply_base')
+  }
+
+  // ── Primal Force: +3%/level per 5 saturation (cap +15%/level) ──
+  var primal = core.enchLevel(weapon, 'icraft:primal_force')
+  if (primal > 0) {
+    var saturation = 0
+    try { saturation = core.finite(player.foodData.saturationLevel, 0) } catch (e) {}
+    var pbonus = primal * 0.03 * (saturation / 5.0)
+    event.amount = event.amount * (1 + Math.min(pbonus, primal * 0.15))
+  }
+
+  // ── Mana Temper: +8%/level with a magic item in the off hand ──
+  var manaTemp = core.enchLevel(weapon, 'icraft:mana_temper')
+  if (manaTemp > 0) {
+    var offhand = player.offHandItem
+    if (offhand && !offhand.isEmpty()) {
+      var offId = String(offhand.id)
+      if (offId.indexOf('spell') >= 0 || offId.indexOf('staff') >= 0 || offId.indexOf('wand') >= 0 ||
+          offId.indexOf('source') >= 0 || offId.indexOf('mana') >= 0) {
+        event.amount = event.amount * (1 + manaTemp * 0.08)
       }
     }
-
-    var nemesis = getWeaponEnchLevel(player, 'icraft:nemesis')
-    if (nemesis > 0 && isBoss(target.type)) {
-      var key = 'icraft_nemesis_' + target.type.replace(':', '_')
-      var stacks = player.persistentData.contains(key)
-        ? player.persistentData.getInt(key) : 0
-      stacks = Math.min(stacks + 1, 10 * nemesis)
-      player.persistentData.putInt(key, stacks)
-      event.amount *= (1 + stacks * 0.03)
-    }
-
-    var momentum = getWeaponEnchLevel(player, 'icraft:momentum')
-    if (momentum > 0) {
-      var momStacks = player.persistentData.contains('icraft_momentum')
-        ? player.persistentData.getInt('icraft_momentum') : 0
-      momStacks = Math.min(momStacks + 1, 5 * momentum)
-      player.persistentData.putInt('icraft_momentum', momStacks)
-      player.persistentData.putLong('icraft_momentum_time', player.level.gameTime)
-      try {
-        player.modifyAttribute('minecraft:generic.attack_speed',
-          'icraft_momentum_bonus', momStacks * 0.02, 'multiply_base')
-      } catch(e) {}
-    }
-
-    var primal = getWeaponEnchLevel(player, 'icraft:primal_force')
-    if (primal > 0) {
-      var saturation = player.foodData ? player.foodData.saturationLevel : 0
-      var pbonus = primal * 0.03 * (saturation / 5.0)
-      event.amount *= (1 + Math.min(pbonus, primal * 0.15))
-    }
-
-    var manaTemp = getWeaponEnchLevel(player, 'icraft:mana_temper')
-    if (manaTemp > 0) {
-      var offhand = player.offHandItem
-      var hasMagic = offhand && (offhand.id.includes('spell') || offhand.id.includes('staff') ||
-        offhand.id.includes('wand') || offhand.id.includes('source') || offhand.id.includes('mana'))
-      if (hasMagic) {
-        event.amount *= (1 + manaTemp * 0.08)
-      }
-    }
-  })
-})()
+  }
+}, 'attackerPlayer')
 
 
 // ==========================================================================
 // ███ DAMAGE TAKEN BY PLAYER (armor enchants) — DamageModifierRegistry ███
 // ==========================================================================
-;(function(){
-  var DR_at = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_at = Java.loadClass('net.minecraft.world.entity.player.Player')
+var ENERGY_WORDS = ['energy_cube', 'flux', 'capacitor', 'battery', 'cell']
+var carriesEnergyItem = function (player) {
+  try {
+    var inv = player.inventory
+    var size = inv.containerSize
+    for (var i = 0; i < size; i++) {
+      var item = inv.getStackInSlot(i)
+      if (!item || item.isEmpty()) continue
+      var id = String(item.id)
+      for (var w = 0; w < ENERGY_WORDS.length; w++) {
+        if (id.indexOf(ENERGY_WORDS[w]) >= 0) return true
+      }
+    }
+  } catch (e) {}
+  return false
+}
 
-  DR_at.register('icraft.enchants.armor', function(event) {
-  var player = event.entity
-  if (!(player instanceof PlayerClass_at)) return
-  var source = event.source
+var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
+// the ENCHANTED armour pieces of an entity (unenchanted ones cannot matter here)
+var enchantedArmor = function (entity) {
+  var out = []
+  for (var i = 0; i < ARMOR_SLOTS.length; i++) {
+    try {
+      var stack = entity.getEquipment(ARMOR_SLOTS[i])
+      if (stack && !stack.isEmpty() && stack.isEnchanted()) out.push(stack)
+    } catch (e) {}
+  }
+  return out
+}
+var totalOn = function (stacks, enchId) {
+  var total = 0
+  for (var i = 0; i < stacks.length; i++) total += core.enchLevel(stacks[i], enchId)
+  return total
+}
 
-  var srcType = source && source.type ? String(source.type) : ""
+core.onHurt('icraft.enchants.armor', function (event, ctx) {
+  var player = ctx.victim
+  var source = ctx.source
+  // The armour is read once per hit; with no enchanted piece and no block in
+  // progress (Phalanx may sit on a held shield) there is nothing to do.
+  var armor = enchantedArmor(player)
+  var blocking = player.isBlocking()
+  if (armor.length === 0 && !blocking) return
+  var data = player.persistentData
+
   // ── Heatward: -8% fire damage per level ──
-  if (source && (srcType.includes('fire') || srcType.includes('lava') ||
-      srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire')) {
-    var heat = getArmorEnchTotal(player, 'icraft:heatward')
-    if (heat > 0) {
-      event.amount *= Math.max(0.1, 1 - heat * 0.08)
-    }
+  if (core.isFire(source)) {
+    var heat = totalOn(armor, 'icraft:heatward')
+    if (heat > 0) event.amount = event.amount * Math.max(0.1, 1 - heat * 0.08)
   }
 
-  if (source && (srcType.includes('void') || srcType.includes('wither') ||
-      srcType === 'minecraft:out_of_world')) {
-    var voidw = getArmorEnchTotal(player, 'icraft:voidward')
-    if (voidw > 0) {
-      event.amount *= Math.max(0.1, 1 - voidw * 0.08)
-    }
+  // ── Voidward: -8% void / wither damage per level ──
+  if (core.isVoid(source) || core.isWither(source)) {
+    var voidw = totalOn(armor, 'icraft:voidward')
+    if (voidw > 0) event.amount = event.amount * Math.max(0.1, 1 - voidw * 0.08)
   }
 
+  // ── Depth Strider (custom): -10% damage per level below Y=0 ──
   if (player.y < 0) {
-    var depth = getArmorEnchTotal(player, 'icraft:depthstrider_custom')
-    if (depth > 0) {
-      event.amount *= Math.max(0.2, 1 - depth * 0.10)
-    }
+    var depth = totalOn(armor, 'icraft:depthstrider_custom')
+    if (depth > 0) event.amount = event.amount * Math.max(0.2, 1 - depth * 0.10)
   }
 
-  if (source && source.entity && isBoss(source.entity.type)) {
-    var ward = getArmorEnchTotal(player, 'icraft:boss_ward')
-    if (ward > 0) {
-      event.amount *= Math.max(0.2, 1 - ward * 0.05)
-    }
+  // ── Boss Ward: -5% boss damage per level ──
+  var attacker = ctx.attacker
+  if (attacker && isBoss(attacker)) {
+    var ward = totalOn(armor, 'icraft:boss_ward')
+    if (ward > 0) event.amount = event.amount * Math.max(0.2, 1 - ward * 0.05)
   }
 
-  var adaptive = getArmorEnchTotal(player, 'icraft:adaptive')
+  // ── Adaptive: from the 3rd hit of one damage type, -3%/level per hit (cap 30%) ──
+  var adaptive = totalOn(armor, 'icraft:adaptive')
   if (adaptive > 0 && source) {
-    var dmgType = source.type || 'generic'
-    var key = 'icraft_adapt_' + dmgType
-    var hits = player.persistentData.contains(key) ? player.persistentData.getInt(key) : 0
+    var dmgType = core.dmgId(source) || 'generic'
+    var adaptKey = 'icraft_adapt_' + dmgType.replace(':', '_')
+    var hits = data.contains(adaptKey) ? data.getInt(adaptKey) : 0
     hits++
-    player.persistentData.putInt(key, Math.min(hits, 10))
+    data.putInt(adaptKey, Math.min(hits, 10))
     if (hits >= 3) {
-      var reduction = Math.min((hits - 2) * adaptive * 0.03, 0.30)
-      event.amount *= (1 - reduction)
+      event.amount = event.amount * (1 - Math.min((hits - 2) * adaptive * 0.03, 0.30))
     }
   }
 
-  var phalanx = getEnchLevel(player, 'icraft:phalanx')
-  if (phalanx > 0 && player.isBlocking()) {
-    event.amount *= Math.max(0.1, 1 - phalanx * 0.06)
+  // ── Phalanx: -6% per level while blocking ──
+  if (blocking) {
+    var phalanx = getEnchLevel(player, 'icraft:phalanx')
+    if (phalanx > 0) event.amount = event.amount * Math.max(0.1, 1 - phalanx * 0.06)
   }
 
-  var lastStand = getArmorEnchTotal(player, 'icraft:last_stand')
-  if (lastStand > 0 && event.amount >= player.health) {
-    var lastUsed = player.persistentData.contains('icraft_last_stand_time')
-      ? player.persistentData.getLong('icraft_last_stand_time') : 0
-    var now = player.level.gameTime
-    if (now - lastUsed > 6000) {
-      event.amount = player.health - 1.0
-      player.persistentData.putLong('icraft_last_stand_time', now)
-      player.potionEffects.add('minecraft:absorption', 100, 1, false, true)
-      player.potionEffects.add('minecraft:resistance', 40, 2, false, true)
-      player.tell('§6§lLast Stand activated! §r§7(5 min cooldown)')
+  // ── Last Stand: survive a lethal hit at 1 HP (5 min cooldown) ──
+  if (event.amount >= player.health) {
+    var lastStand = totalOn(armor, 'icraft:last_stand')
+    if (lastStand > 0) {
+      var now = core.now(player)
+      var lastUsed = data.contains('icraft_last_stand_time') ? Number(data.getLong('icraft_last_stand_time')) : -1
+      if (lastUsed < 0 || now - lastUsed > 6000 || now < lastUsed) {
+        event.amount = Math.max(0, player.health - 1.0)
+        data.putLong('icraft_last_stand_time', now)
+        player.potionEffects.add('minecraft:absorption', 100, 1, false, true)
+        player.potionEffects.add('minecraft:resistance', 40, 2, false, true)
+        player.tell('§6§lLast Stand activated! §r§7(5 min cooldown)')
+      }
     }
   }
 
-  var rfCap = getArmorEnchTotal(player, 'icraft:rf_capacitance')
-  if (rfCap > 0) {
-    var hasEnergy = false
-    for (var i = 0; i < player.inventory.size; i++) {
-      try {
-        var item = player.inventory.get(i)
-        if (item && (item.id.includes('energy_cube') || item.id.includes('flux') ||
-            item.id.includes('capacitor') || item.id.includes('battery') ||
-            item.id.includes('cell'))) {
-          hasEnergy = true
-          break
-        }
-      } catch(e) {}
-    }
-    if (hasEnergy) {
-      event.amount *= Math.max(0.3, 1 - rfCap * 0.04)
-    }
+  // ── RF Capacitance: -4% per level while carrying an energy item ──
+  var rfCap = totalOn(armor, 'icraft:rf_capacitance')
+  if (rfCap > 0 && carriesEnergyItem(player)) {
+    event.amount = event.amount * Math.max(0.3, 1 - rfCap * 0.04)
   }
-  })  // close DR_at.register callback
-})()  // close IIFE
+}, 'victimPlayer')
 
 
 // ==========================================================================
 // ███ BLOCK BREAK EFFECTS (tool enchants) ███
 // ==========================================================================
-BlockEvents.broken(event => {
-  if (!event.player) return
-  let player = event.player
-  let blockId = event.block.id
+var isLogId = function (id) { return id.indexOf('log') >= 0 || id.indexOf('stem') >= 0 }
+// 6 directions minus straight down, plus the 4 diagonals up
+var FELL_OFFSETS = [
+  [0, 1, 0], [1, 0, 0], [-1, 0, 0], [0, 0, 1], [0, 0, -1],
+  [1, 1, 0], [-1, 1, 0], [0, 1, 1], [0, 1, -1]
+]
+
+BlockEvents.broken(function (event) {
+  var player = event.player
+  if (!player) return
+  var held = player.mainHandItem
+  if (!held || held.isEmpty() || !held.isEnchanted()) return
+  var block = event.block
+  var blockId = String(block.id)
 
   // ── Prospector: Bonus ore drops (stacks with Fortune) ──
-  if (blockId.includes('_ore')) {
-    let prosp = getWeaponEnchLevel(player, 'icraft:prospector')
+  if (blockId.indexOf('_ore') >= 0) {
+    var prosp = core.enchLevel(held, 'icraft:prospector')
     if (prosp > 0 && Math.random() < prosp * 0.10) { // 10% per level
-      // Double the normal drop
-      event.block.popItem(event.block.item)
+      // Double the normal drop: the block's own loot for this tool, once more.
+      // Never the ore block itself (a Silk Touch drop would be a re-minable dupe).
+      try {
+        var drops = block.getDrops(player, held)
+        if (drops) {
+          drops.forEach(function (drop) {
+            if (drop && !drop.isEmpty() && String(drop.id) !== blockId) block.popItem(drop)
+          })
+        }
+      } catch (e) {
+        core.warnOnce('ench.prospector', '[enchant_effects] Prospector bonus drop threw: ' + e)
+      }
     }
   }
 
   // ── Lumberjack: Fell connected logs (up to level * 16 blocks) ──
-  if (blockId.includes('log') || blockId.includes('stem')) {
-    let lj = getWeaponEnchLevel(player, 'icraft:lumberjack')
+  if (isLogId(blockId)) {
+    var lj = core.enchLevel(held, 'icraft:lumberjack')
     if (lj > 0) {
-      let maxBlocks = lj * 16
-      let pos = event.block.pos
-      let level = player.level
-      let toBreak = []
-      let checked = new Set()
-      let queue = [pos]
-
-      while (queue.length > 0 && toBreak.length < maxBlocks) {
-        let current = queue.shift()
-        let key = `${current.x},${current.y},${current.z}`
-        if (checked.has(key)) continue
-        checked.add(key)
-
-        let block = level.getBlock(current.x, current.y, current.z)
-        if (block && (block.id.includes('log') || block.id.includes('stem'))) {
-          if (current !== pos) toBreak.push(current)
-          // Check adjacent blocks (6 directions + 2 diagonals up)
-          ;[
-            {x:0,y:1,z:0}, {x:1,y:0,z:0}, {x:-1,y:0,z:0},
-            {x:0,y:0,z:1}, {x:0,y:0,z:-1},
-            {x:1,y:1,z:0}, {x:-1,y:1,z:0}, {x:0,y:1,z:1}, {x:0,y:1,z:-1}
-          ].forEach(d => {
-            queue.push({x: current.x+d.x, y: current.y+d.y, z: current.z+d.z})
-          })
+      try {
+        var maxBlocks = lj * 16
+        var level = player.level
+        var origin = block.pos
+        var ox = origin.x, oy = origin.y, oz = origin.z
+        var toBreak = []          // BlockContainerJS of every connected log but the origin
+        var checked = {}
+        var queue = [[ox, oy, oz]]
+        var head = 0
+        while (head < queue.length && toBreak.length < maxBlocks) {
+          var cur = queue[head++]
+          var key = cur[0] + ',' + cur[1] + ',' + cur[2]
+          if (checked[key]) continue
+          checked[key] = true
+          var isOrigin = (cur[0] === ox && cur[1] === oy && cur[2] === oz)
+          var here = isOrigin ? block : level.getBlock(cur[0], cur[1], cur[2])
+          if (!here || !isLogId(String(here.id))) continue
+          if (!isOrigin) toBreak.push(here)
+          for (var d = 0; d < FELL_OFFSETS.length; d++) {
+            queue.push([cur[0] + FELL_OFFSETS[d][0], cur[1] + FELL_OFFSETS[d][1], cur[2] + FELL_OFFSETS[d][2]])
+          }
         }
+        // Break them for real (each drops its own loot once). destroyBlock does
+        // not post a block-break event, so this cannot re-enter this handler.
+        for (var b = 0; b < toBreak.length; b++) {
+          level.destroyBlock(toBreak[b].pos, true, player)
+        }
+      } catch (e) {
+        core.warnOnce('ench.lumberjack', '[enchant_effects] Lumberjack threw: ' + e)
       }
-
-      // Break all connected logs
-      toBreak.forEach(p => {
-        let block = level.getBlock(p.x, p.y, p.z)
-        if (block) {
-          block.popItem(block.item)
-          level.destroyBlock(p, false)
-        }
-      })
     }
   }
 })
@@ -315,100 +372,79 @@ BlockEvents.broken(event => {
 // ==========================================================================
 // ███ PERIODIC TICK EFFECTS ███
 // ==========================================================================
-global.tick_enchantPeriodicEffects = (event) => {
-  let tick = event.server.tickCount
+var eachPlayer = function (event, label, fn) {
+  event.server.players.forEach(function (player) {
+    try { fn(player) } catch (e) {
+      core.warnOnce('ench.tick:' + label, '[enchant_effects] ' + label + ' tick threw: ' + e)
+    }
+  })
+}
 
-  // ── Every 2 seconds: Vitality HP bonus ──
+global.tick_enchantPeriodicEffects = function (event) {
+  var tick = event.server.tickCount
+
+  // ── Every 2 seconds: Vitality HP bonus (+2 HP per total level across armor) ──
   if (tick % 40 === 0) {
-    event.server.players.forEach(player => {
-      let vit = getArmorEnchTotal(player, 'icraft:vitality')
-      if (vit > 0) {
-        // +2 HP per total Vitality level across armor
-        try {
-          player.modifyAttribute('minecraft:generic.max_health',
-            'icraft_vitality_bonus', vit * 2, 'addition')
-        } catch(e) {}
-      }
+    eachPlayer(event, 'vitality', function (player) {
+      var vit = getArmorEnchTotal(player, 'icraft:vitality')
+      setMod(player, 'minecraft:generic.max_health', 'icraft_vitality_bonus', vit * 2, 'addition')
     })
   }
 
   // ── Every 2 seconds: Magnetism pickup range ──
   if (tick % 40 === 10) {
-    event.server.players.forEach(player => {
-      let mag = getArmorEnchTotal(player, 'icraft:magnetism')
+    eachPlayer(event, 'magnetism', function (player) {
+      var mag = getArmorEnchTotal(player, 'icraft:magnetism')
       if (mag <= 0) return
 
-      let range = 2.0 + mag * 1.5 // Base 2 + 1.5 per level
-      let items = player.level.getEntitiesWithin(
-        AABB.of(player.x-range, player.y-range, player.z-range,
-                player.x+range, player.y+range, player.z+range)
-      )
-      items.forEach(e => {
-        if (e.type === 'minecraft:item' && e.age > 10) {
-          // Pull item toward player
-          let dx = player.x - e.x
-          let dy = player.y - e.y
-          let dz = player.z - e.z
-          let dist = Math.sqrt(dx*dx + dy*dy + dz*dz)
-          if (dist > 0.5 && dist < range) {
-            e.setDeltaMovement(dx/dist * 0.3, dy/dist * 0.3 + 0.05, dz/dist * 0.3)
-          }
+      var range = 2.0 + mag * 1.5 // Base 2 + 1.5 per level
+      player.level.getEntitiesWithin(
+        AABB.of(player.x - range, player.y - range, player.z - range,
+                player.x + range, player.y + range, player.z + range)
+      ).forEach(function (e) {
+        if (core.entityId(e) !== 'minecraft:item' || !(e.age > 10)) return
+        // Pull item toward player
+        var dx = player.x - e.x
+        var dy = player.y - e.y
+        var dz = player.z - e.z
+        var dist = Math.sqrt(dx * dx + dy * dy + dz * dz)
+        if (dist > 0.5 && dist < range) {
+          e.setMotion(dx / dist * 0.3, dy / dist * 0.3 + 0.05, dz / dist * 0.3)
         }
       })
     })
   }
 
-  // ── Every 5 seconds: Momentum decay ──
+  // ── Every 5 seconds: Momentum decay (5 s without a hit) ──
   if (tick % 100 === 0) {
-    event.server.players.forEach(player => {
-      let lastHit = player.persistentData.contains('icraft_momentum_time')
-        ? player.persistentData.getLong('icraft_momentum_time') : 0
-      let now = player.level.gameTime
-      if (now - lastHit > 100) { // 5 seconds without hitting
-        player.persistentData.putInt('icraft_momentum', 0)
-        try {
-          player.modifyAttribute('minecraft:generic.attack_speed',
-            'icraft_momentum_bonus', 0, 'multiply_base')
-        } catch(e) {}
+    eachPlayer(event, 'momentum', function (player) {
+      var data = player.persistentData
+      if (!data.contains('icraft_momentum') || data.getInt('icraft_momentum') <= 0) return
+      var lastHit = data.contains('icraft_momentum_time') ? Number(data.getLong('icraft_momentum_time')) : 0
+      var now = core.now(player)
+      if (now - lastHit > 100 || now < lastHit) {
+        data.putInt('icraft_momentum', 0)
+        setMod(player, 'minecraft:generic.attack_speed', 'icraft_momentum_bonus', 0, 'multiply_base')
       }
     })
   }
 
-  // ── Every 5 seconds: Steadfast knockback resistance near bosses ──
+  // ── Every 5 seconds: Steadfast knockback resistance near bosses (32 blocks) ──
   if (tick % 100 === 20) {
-    event.server.players.forEach(player => {
-      let stead = getArmorEnchTotal(player, 'icraft:steadfast')
-      if (stead <= 0) return
-
-      // Check if any boss entities within 32 blocks
-      let r = 32
-      let nearBoss = false
-      try {
-        let nearby = player.level.getEntitiesWithin(
-          AABB.of(player.x-r, player.y-r, player.z-r, player.x+r, player.y+r, player.z+r)
-        )
-        nearby.forEach(e => {
-          if (e.living && isBoss(e.type)) nearBoss = true
-        })
-      } catch(e) {}
-
-      if (nearBoss) {
-        player.modifyAttribute('minecraft:generic.knockback_resistance',
-          'icraft_steadfast_bonus', stead * 0.15, 'addition')
-      } else {
-        player.modifyAttribute('minecraft:generic.knockback_resistance',
-          'icraft_steadfast_bonus', 0, 'addition')
-      }
+    eachPlayer(event, 'steadfast', function (player) {
+      var stead = getArmorEnchTotal(player, 'icraft:steadfast')
+      var value = (stead > 0 && bossNear(player, 32)) ? stead * 0.15 : 0
+      setMod(player, 'minecraft:generic.knockback_resistance', 'icraft_steadfast_bonus', value, 'addition')
     })
   }
 
   // ── Every 2 seconds: Aether Acclimation (remove thin air debuffs) ──
   if (tick % 40 === 30) {
-    event.server.players.forEach(player => {
-      let aether = getArmorEnchTotal(player, 'icraft:aether_acclimation')
+    eachPlayer(event, 'aether_acclimation', function (player) {
+      var aether = getArmorEnchTotal(player, 'icraft:aether_acclimation')
       if (aether <= 0) return
 
-      let dim = player.level.dimension
+      var dim = dimOf(player)
       if (dim === 'aether:the_aether' || dim === 'deep_aether:the_aether') {
         // Remove Slowness and Mining Fatigue from thin air
         if (player.y > 192 + (aether * 32)) return // Still too high even for enchant
@@ -420,37 +456,33 @@ global.tick_enchantPeriodicEffects = (event) => {
 
   // ── Every 2 seconds: Quick Draw (bow draw speed) ──
   if (tick % 40 === 35) {
-    event.server.players.forEach(player => {
-      let qd = getWeaponEnchLevel(player, 'icraft:quick_draw')
-      if (qd <= 0) return
-      let held = player.mainHandItem
-      if (held && (held.id.includes('bow') || held.id.includes('crossbow'))) {
-        // Grant attack speed bonus as proxy for draw speed
-        try {
-          player.modifyAttribute('minecraft:generic.attack_speed',
-            'icraft_quick_draw', qd * 0.15, 'multiply_base')
-        } catch(e) {}
+    eachPlayer(event, 'quick_draw', function (player) {
+      // Attack speed bonus as proxy for draw speed, only while a bow is held
+      var value = 0
+      var held = player.mainHandItem
+      if (held && !held.isEmpty() && String(held.id).indexOf('bow') >= 0) {
+        value = core.enchLevel(held, 'icraft:quick_draw') * 0.15
       }
+      setMod(player, 'minecraft:generic.attack_speed', 'icraft_quick_draw', value, 'multiply_base')
     })
   }
 
   // ── Every 10 seconds: Adaptive decay (reduce tracked damage type stacks) ──
   if (tick % 200 === 0) {
-    event.server.players.forEach(player => {
-      // Decay all adaptive stacks by 1
-      let data = player.persistentData
-      try {
-        let keys = data.allKeys
-        if (keys) {
-          keys.forEach(key => {
-            if (key.startsWith('icraft_adapt_')) {
-              let val = data.getInt(key)
-              if (val > 0) data.putInt(key, val - 1)
-              if (val <= 1) data.remove(key)
-            }
-          })
-        }
-      } catch(e) {}
+    eachPlayer(event, 'adaptive_decay', function (player) {
+      var data = player.persistentData
+      // Copy the keys first: removing from the tag while walking its live key
+      // set throws ConcurrentModificationException.
+      var keys = []
+      data.getAllKeys().forEach(function (k) {
+        var name = String(k)
+        if (name.indexOf('icraft_adapt_') === 0 && name !== 'icraft_adapt_type') keys.push(name)
+      })
+      for (var i = 0; i < keys.length; i++) {
+        var val = data.getInt(keys[i])
+        if (val <= 1) data.remove(keys[i])
+        else data.putInt(keys[i], val - 1)
+      }
     })
   }
 }
@@ -461,27 +493,23 @@ global.registerServerTick('tick_enchantPeriodicEffects', 5, 0)
 // ███ CONVERGENCE: Spell power scales with weapon tier ███
 // Applied via attribute sync — checks mainhand weapon material tier
 // ==========================================================================
-global.tick_enchantConvergence = (event) => {
-  event.server.players.forEach(player => {
-    let conv = getWeaponEnchLevel(player, 'icraft:convergence')
-    if (conv <= 0) return
-
-    let weapon = player.mainHandItem
-    if (!weapon || weapon.isEmpty()) return
-
-    let id = weapon.id
-    let tierBonus = 0
-    if (id.includes('netherite')) tierBonus = 0.20
-    else if (id.includes('diamond') || id.includes('terrasteel')) tierBonus = 0.15
-    else if (id.includes('steel') || id.includes('manasteel')) tierBonus = 0.10
-    else if (id.includes('iron')) tierBonus = 0.05
-
-    if (tierBonus > 0) {
-      try {
-        player.modifyAttribute('irons_spellbooks:spell_power',
-          'icraft_convergence_sync', conv * tierBonus, 'multiply_base')
-      } catch(e) {}
+global.tick_enchantConvergence = function (event) {
+  eachPlayer(event, 'convergence', function (player) {
+    var value = 0
+    var weapon = player.mainHandItem
+    if (weapon && !weapon.isEmpty()) {
+      var conv = core.enchLevel(weapon, 'icraft:convergence')
+      if (conv > 0) {
+        var id = String(weapon.id)
+        var tierBonus = 0
+        if (id.indexOf('netherite') >= 0) tierBonus = 0.20
+        else if (id.indexOf('diamond') >= 0 || id.indexOf('terrasteel') >= 0) tierBonus = 0.15
+        else if (id.indexOf('steel') >= 0 || id.indexOf('manasteel') >= 0) tierBonus = 0.10
+        else if (id.indexOf('iron') >= 0) tierBonus = 0.05
+        value = conv * tierBonus
+      }
     }
+    setMod(player, 'irons_spellbooks:spell_power', 'icraft_convergence_sync', value, 'multiply_base')
   })
 }
 global.registerServerTick('tick_enchantConvergence', 200, 75)
@@ -495,65 +523,35 @@ global.registerServerTick('tick_enchantConvergence', 200, 75)
 // ==========================================================================
 
 // ── Lunar Stride: Jump Boost + fall damage reduction on Ad Astra planets ──
-global.tick_enchantLunarStride = (event) => {
-  event.server.players.forEach(player => {
-    let lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
+global.tick_enchantLunarStride = function (event) {
+  eachPlayer(event, 'lunar_stride', function (player) {
+    if (!PLANETS[dimOf(player)]) return
+    var lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
     if (lunar <= 0) return
-
-    let dim = player.level.dimension
-    if (dim === 'ad_astra:moon' || dim === 'ad_astra:mars' ||
-        dim === 'ad_astra:mercury' || dim === 'ad_astra:venus' ||
-        dim === 'ad_astra:glacio') {
-      let jumpLevel = Math.min(lunar - 1, 2)
-      player.potionEffects.add('minecraft:jump_boost', 100, jumpLevel, false, false)
-    }
+    player.potionEffects.add('minecraft:jump_boost', 100, Math.min(lunar - 1, 2), false, false)
   })
 }
 global.registerServerTick('tick_enchantLunarStride', 40, 15)
 
 // ── Lunar Stride + Stellar Shield (DamageModifierRegistry) ─────────────
-;(function(){
-  var DR_planet = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_planet = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // Lunar Stride: Fall damage reduction (33% per level)
-  DR_planet.register('icraft.enchants.lunar_stride', function(event) {
-    var player = event.entity
-    if (!(player instanceof PlayerClass_planet)) return
-    var source = event.source
-    if (!source || String(source.type || '') !== 'minecraft:fall') return
-    var dim = player.level.dimension
-    if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
-        dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
-        dim !== 'ad_astra:glacio') return
-    var lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
-    if (lunar > 0) {
-      var reduction = Math.min(lunar * 0.33, 1.0)
-      event.amount *= (1.0 - reduction)
-    }
-  })
+// Lunar Stride: Fall damage reduction (33% per level)
+core.onHurt('icraft.enchants.lunar_stride', function (event, ctx) {
+  var player = ctx.victim
+  if (!core.isFall(ctx.source)) return
+  if (!PLANETS[dimOf(player)]) return
+  var lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
+  if (lunar > 0) event.amount = event.amount * (1.0 - Math.min(lunar * 0.33, 1.0))
+}, 'victimPlayer')
 
-  // Stellar Shield: Fire resistance on planets
-  DR_planet.register('icraft.enchants.stellar_shield', function(event) {
-    var player = event.entity
-    if (!(player instanceof PlayerClass_planet)) return
-    var source = event.source
-    if (!source) return
-    var dim = player.level.dimension
-    if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
-        dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
-        dim !== 'ad_astra:glacio') return
-    var srcType = String(source.type || '')
-    var isFireDmg = srcType.includes('fire') || srcType.includes('lava') ||
-      srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire'
-    if (!isFireDmg) return
-    var stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
-    if (stellar > 0) {
-      var reduction = Math.min(stellar * 0.33, 1.0)
-      event.amount *= (1.0 - reduction)
-    }
-  })
-})()
-
+// Stellar Shield: Fire resistance on planets (33% per level)
+core.onHurt('icraft.enchants.stellar_shield', function (event, ctx) {
+  var player = ctx.victim
+  if (!PLANETS[dimOf(player)]) return
+  if (!core.isFire(ctx.source)) return
+  var stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
+  if (stellar > 0) event.amount = event.amount * (1.0 - Math.min(stellar * 0.33, 1.0))
+}, 'victimPlayer')
 
 console.log('[IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects')
+})()

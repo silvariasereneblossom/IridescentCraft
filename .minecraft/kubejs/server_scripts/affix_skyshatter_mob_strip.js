@@ -91,7 +91,7 @@ EntityEvents.spawned(event => {
 
   let scrubbed = false
   for (let slot of SKYSHATTER_SLOTS) {
-    let item
+    let item = null
     try { item = entity.getItemBySlot(slot) } catch (e) { continue }
     if (_scrubSkyshatterFromStack(item)) {
       try { entity.setItemSlot(slot, item) } catch (e) {}

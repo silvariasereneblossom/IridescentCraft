@@ -16,49 +16,78 @@
 // - healing_received  -> heal bonus via tick handler workaround
 // - mana_regen        -> synced to ISB mana regen attribute
 // - cooldown_reduction -> synced to ISB cooldown attribute
+//
+// 2026-10-10:
+//   * the attacker half of the hurt handler (crit chance / crit damage /
+//     lifesteal / armor penetration / spell power) never ran: it read
+//     `source.entity`, which scripts do not have (0_lib_core.js header);
+//   * magic resistance and spell-power scaling compared `String(source.type)`
+//     (a function object) to 'magic';
+//   * getAttr() looked for the modular-spell-book values (icraft_book_*) in
+//     KubeJS's persistentData. The jar writes them to FORGE persistent data
+//     (AttributeApplier.mirrorBookContributionsToIcraftNbt), a different
+//     compound, so book spell power / mana regen / cooldown reduction never
+//     reached the unified stat.
+// Whole file is one IIFE (body left at column 0). attribute_commands.js reads
+// the stats through global.icraft.attr.
 // =============================================================================
+
+;(function () {
+var core = global.icraft && global.icraft.core
+if (!core) {
+  console.error('[IridescentCraft] attribute_sync.js: 0_lib_core.js did not load -- attribute sync is OFF')
+  return
+}
 
 // --- Helper: read an icraft attribute from persistentData ---
 // For unified stats (spell_power / mana_regen / cooldown_reduction) we
 // also fold in book contributions written by the Java AttributeApplier
-// under icraft_book_<name>. This is the Option-A unification pathway:
-// modular spell books push their Tetra material/improvement attrs into
-// the unified icraft layer in addition to the ecosystem-specific Forge
-// attribute they already buff. Class bonuses still own icraft_<name> as
-// the baseline; book contribution is purely additive on top.
-function getAttr(player, name, fallback) {
-  var base = player.persistentData.contains('icraft_' + name)
-    ? player.persistentData.getDouble('icraft_' + name)
-    : fallback
-  var bookKey = 'icraft_book_' + name
-  if (player.persistentData.contains(bookKey)) {
-    base += player.persistentData.getDouble(bookKey)
+// under icraft_book_<name> in FORGE persistent data. This is the Option-A
+// unification pathway: modular spell books push their Tetra
+// material/improvement attrs into the unified icraft layer in addition to
+// the ecosystem-specific Forge attribute they already buff. Class bonuses
+// still own icraft_<name> as the baseline; book contribution is purely
+// additive on top.
+var BOOK_STATS = { 'spell_power': true, 'mana_regen': true, 'cooldown_reduction': true }
+var getAttr = function (player, name, fallback) {
+  var data = player.persistentData
+  var key = 'icraft_' + name
+  var base = data.contains(key) ? data.getDouble(key) : fallback
+  if (BOOK_STATS[name] === true) {
+    var forge = core.forgeData(player)
+    if (forge) {
+      var bookKey = 'icraft_book_' + name
+      if (forge.contains(bookKey)) base += forge.getDouble(bookKey)
+    }
   }
   return base
 }
 
 // --- Helper: write an icraft attribute to persistentData ---
-function setAttr(player, name, value) {
+var setAttr = function (player, name, value) {
   player.persistentData.putDouble('icraft_' + name, value)
 }
 
 // --- Helper: read attributecore value (still uses Forge attributes) ---
-function getAttrCore(player, attr, fallback) {
-  try {
-    var val = player.getAttributeBaseValue(attr)
-    if (val === null || val === undefined) return fallback
-    return val
-  } catch (e) {
-    return fallback
-  }
+// (core.attrBase / core.attrValue resolve the attribute id once instead of on
+// every call; an unknown attribute or an entity without it gives the fallback.)
+var getAttrCore = function (player, attr, fallback) {
+  return core.attrBase(player, attr, fallback)
 }
+
+// A Forge attribute's total (base + modifiers); 0 when the entity lacks it.
+var attrTotal = function (entity, attr) {
+  return core.attrValue(entity, attr, 0)
+}
+
+global.icraft.attr = { get: getAttr, set: setAttr, core: getAttrCore }
 
 // --- Helper: read the icraft_mana_regen scoreboard (Puffish skill investment) ---
 // This file now OWNS the consolidated mana_regen -> ISS attribute mapping, so it
 // reads the skill scoreboard directly (skill_effects.js no longer writes it -- the
 // two used to clobber each other on the same modifier key). Server access via
 // player.server mirrors equipment_hp_halving.js / boss_bonfire_system.js.
-function readManaRegenScore(player) {
+var readManaRegenScore = function (player) {
   try {
     var sb = player.server.scoreboard
     var obj = sb.getObjective('icraft_mana_regen')
@@ -112,131 +141,119 @@ PlayerEvents.loggedIn(function(event) {
 // with mutable amount). KubeJS's EntityEvents.hurt wrapper has no settable
 // damage field; the prior `event.damage = X` lines threw EvaluatorException
 // on every hit and silently dropped crit/spell-power/armor-pen/magic-res.
-;(function(){
-  var DR_as = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_as = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_as.register('icraft.attribute_sync.hurt', function(event) {
-    var entity = event.entity
-    var source = event.source
+core.onHurt('icraft.attribute_sync.hurt', function (event, ctx) {
+  var entity = ctx.victim
+  var source = ctx.source
+  if (!entity || !source) return
+  var victimIsPlayer = ctx.victimIsPlayer
+  var attacker = ctx.attacker
+  // (a player hurting themself is not an attack: no crit / lifesteal on it)
+  var attackerIsPlayer = ctx.attackerIsPlayer && attacker !== entity
 
-    // -- Dodge (defender is player) --
-    if (entity instanceof PlayerClass_as) {
-      var dodgeChance = getAttr(entity, 'dodge_chance', 0)
-      dodgeChance += getAttrCore(entity, 'attributecore:dodge_chance', 0)
-      // 2026-06-05: bridge the real icraft:dodge_chance Forge attribute (gear/
-      // affix source, e.g. the icraft_evasive armor affix). getAttributeValue
-      // includes affix MODIFIERS; base is 0 so unmodified players add nothing
-      // (no double-count with the persistentData layer above).
-      try { dodgeChance += entity.getAttributeValue('icraft:dodge_chance') } catch (e) {}
-      if (dodgeChance > 0 && Math.random() < dodgeChance) {
-        event.setCanceled(true)
-        entity.tell(Text.gray('[Dodge] Attack evaded!'))
-        return
-      }
-      // -- Magic Resistance --
-      var sourceType = String(source.type || '')
-      if (sourceType.includes('magic') || sourceType.includes('indirect_magic')) {
-        var magicRes = getAttr(entity, 'magic_resistance', 0)
-        if (magicRes > 0) {
-          event.amount = event.amount * (1.0 - magicRes)
-        }
-      }
+  // -- Dodge (defender is player) --
+  if (victimIsPlayer) {
+    var dodgeChance = getAttr(entity, 'dodge_chance', 0)
+    dodgeChance += getAttrCore(entity, 'attributecore:dodge_chance', 0)
+    // 2026-06-05: bridge the real icraft:dodge_chance Forge attribute (gear/
+    // affix source, e.g. the icraft_evasive armor affix). getAttributeValue
+    // includes affix MODIFIERS; base is 0 so unmodified players add nothing
+    // (no double-count with the persistentData layer above).
+    dodgeChance += attrTotal(entity, 'icraft:dodge_chance')
+    if (dodgeChance > 0 && Math.random() < dodgeChance) {
+      event.setCanceled(true)
+      entity.tell(Text.gray('[Dodge] Attack evaded!'))
+      return
     }
-
-    // -- Attacker-side stats --
-    var attacker = source ? source.entity : null
-    if (attacker instanceof PlayerClass_as) {
-      var critChance = getAttr(attacker, 'crit_chance', 0.05)
-      var critDamage = getAttr(attacker, 'crit_damage', 1.5)
-      var lifesteal  = getAttr(attacker, 'lifesteal', 0)
-      var spellPower = getAttr(attacker, 'spell_power', 1.0)
-      var armorPen   = getAttr(attacker, 'armor_penetration', 0)
-
-      critChance += getAttrCore(attacker, 'attributecore:crit_chance', 0)
-      critDamage += getAttrCore(attacker, 'attributecore:critical_damage', 0)
-      lifesteal  += getAttrCore(attacker, 'attributecore:life_steal', 0)
-
-      // 2026-05-21: bridge attributeslib (Apothic Attributes) crit too.
-      // Apoth affixes (precise / lethal / vorpal / keen / keen_edge /
-      // assassins / icraft_butcher / icraft_calculated / icraft_precise)
-      // all target attributeslib:crit_chance + attributeslib:crit_damage.
-      // Without this bridge, the custom crit roll above only sees
-      // attributecore values, so Apoth-affixed weapons appear to do
-      // nothing in the custom crit system. Both attribute namespaces
-      // are ADDITIVE post the same-day MULTIPLY_BASE -> ADDITION
-      // conversion -- linear stacking, no compounding.
-      // attributeslib:crit_damage baseline is 1.5; getAttributeValue
-      // returns (1.5 + sum of ADDITION mods + ...). We subtract 1.5
-      // to get just the bonus portion and add it on top of our crit
-      // damage value, avoiding double-counting the 1.5 base.
-      try {
-        var alibCritChance = attacker.getAttributeValue('attributeslib:crit_chance')
-        if (alibCritChance && alibCritChance > 0) critChance += alibCritChance
-        var alibCritDamage = attacker.getAttributeValue('attributeslib:crit_damage')
-        if (alibCritDamage && alibCritDamage > 1.5) critDamage += (alibCritDamage - 1.5)
-      } catch (e) {
-        // attribute may not be registered on this player; fail soft
-      }
-
-      // 2026-06-05: bridge the real icraft:spell_power / icraft:lifesteal Forge
-      // attributes (gear/affix source: icraft_arcane + icraft_vampiric_weapon
-      // weapon affixes). getAttributeValue includes affix MODIFIERS; both bases
-      // are 0 so unmodified players add nothing -- spellPower stays at its 1.0
-      // persistentData baseline (a multiplier) and lifesteal at 0, no
-      // double-count with the persistentData (class/book/skill) layer.
-      try {
-        spellPower += attacker.getAttributeValue('icraft:spell_power')
-        lifesteal  += attacker.getAttributeValue('icraft:lifesteal')
-      } catch (e) {}
-
-      // -- Armor Penetration --
-      if (armorPen > 0 && entity.isLiving()) {
-        try {
-          var targetArmor = entity.getAttributeBaseValue('minecraft:generic.armor') || 0
-          if (targetArmor > 0) {
-            var penMultiplier = 1.0 + (armorPen * targetArmor / 30.0)
-            event.amount = event.amount * penMultiplier
-          }
-        } catch (e) {}
-      }
-
-      // -- Crit Roll --
-      if (Math.random() < critChance) {
-        event.amount = event.amount * critDamage
-        try {
-          attacker.server.runCommandSilent(
-            'effect give ' + attacker.username + ' minecraft:glowing 1 0 true'
-          )
-        } catch (e) {}
-        // 2026-05-21: Stamp the current tick so post-priority listeners
-        // (e.g. icraft_magic_enchants.js Arcane Vorpal decap) can detect
-        // "the custom crit fired for THIS attack" by comparing
-        // icraft_last_crit_tick to the current server tick. Spell crits
-        // never set DamageSource.isCritical (vanilla only sets that for
-        // Player.attack melee swings), so the flag stamp is the only
-        // post-hoc signal for downstream listeners.
-        try {
-          attacker.persistentData.putLong('icraft_last_crit_tick',
-            attacker.level.server.tickCount)
-        } catch (e) {}
-      }
-
-      // -- Spell Power scaling --
-      var atkSourceType = String(source.type || '')
-      if (atkSourceType.includes('magic') || atkSourceType.includes('indirect')) {
-        event.amount = event.amount * spellPower
-      }
-
-      // -- Lifesteal --
-      if (lifesteal > 0) {
-        var healAmount = event.amount * lifesteal
-        if (healAmount > 0 && attacker.health < attacker.maxHealth) {
-          attacker.heal(healAmount)
-        }
-      }
+    // -- Magic Resistance --
+    var magicRes = core.finite(getAttr(entity, 'magic_resistance', 0), 0)
+    if (magicRes > 0 && core.isMagic(source)) {
+      event.amount = event.amount * (1.0 - Math.min(magicRes, 1.0))
     }
-  })
-})()
+  }
+
+  // -- Attacker-side stats --
+  if (!attackerIsPlayer) return
+
+  var critChance = getAttr(attacker, 'crit_chance', 0.05)
+  var critDamage = getAttr(attacker, 'crit_damage', 1.5)
+  var lifesteal  = getAttr(attacker, 'lifesteal', 0)
+  var spellPower = getAttr(attacker, 'spell_power', 1.0)
+  var armorPen   = getAttr(attacker, 'armor_penetration', 0)
+
+  critChance += getAttrCore(attacker, 'attributecore:crit_chance', 0)
+  critDamage += getAttrCore(attacker, 'attributecore:critical_damage', 0)
+  lifesteal  += getAttrCore(attacker, 'attributecore:life_steal', 0)
+
+  // 2026-05-21: bridge attributeslib (Apothic Attributes) crit too.
+  // Apoth affixes (precise / lethal / vorpal / keen / keen_edge /
+  // assassins / icraft_butcher / icraft_calculated / icraft_precise)
+  // all target attributeslib:crit_chance + attributeslib:crit_damage.
+  // Without this bridge, the custom crit roll above only sees
+  // attributecore values, so Apoth-affixed weapons appear to do
+  // nothing in the custom crit system. Both attribute namespaces
+  // are ADDITIVE post the same-day MULTIPLY_BASE -> ADDITION
+  // conversion -- linear stacking, no compounding.
+  // attributeslib:crit_damage baseline is 1.5; getAttributeValue
+  // returns (1.5 + sum of ADDITION mods + ...). We subtract 1.5
+  // to get just the bonus portion and add it on top of our crit
+  // damage value, avoiding double-counting the 1.5 base.
+  var alibCritChance = attrTotal(attacker, 'attributeslib:crit_chance')
+  if (alibCritChance > 0) critChance += alibCritChance
+  var alibCritDamage = attrTotal(attacker, 'attributeslib:crit_damage')
+  if (alibCritDamage > 1.5) critDamage += (alibCritDamage - 1.5)
+
+  // 2026-06-05: bridge the real icraft:spell_power / icraft:lifesteal Forge
+  // attributes (gear/affix source: icraft_arcane + icraft_vampiric_weapon
+  // weapon affixes). getAttributeValue includes affix MODIFIERS; both bases
+  // are 0 so unmodified players add nothing -- spellPower stays at its 1.0
+  // persistentData baseline (a multiplier) and lifesteal at 0, no
+  // double-count with the persistentData (class/book/skill) layer.
+  spellPower += attrTotal(attacker, 'icraft:spell_power')
+  lifesteal  += attrTotal(attacker, 'icraft:lifesteal')
+
+  // -- Armor Penetration --
+  if (armorPen > 0 && entity.living) {
+    var targetArmor = 0
+    targetArmor = core.attrBase(entity, 'minecraft:generic.armor', 0)
+    if (targetArmor > 0) {
+      event.amount = event.amount * (1.0 + (armorPen * targetArmor / 30.0))
+    }
+  }
+
+  // -- Crit Roll --
+  if (Math.random() < critChance) {
+    event.amount = event.amount * core.finite(critDamage, 1.5)
+    // 1 s of Glowing as the crit cue (direct call; was an `effect give`
+    // command parsed on every crit).
+    try { attacker.potionEffects.add('minecraft:glowing', 20, 0, false, false) } catch (e) {}
+    // 2026-05-21: Stamp the current tick so post-priority listeners
+    // (e.g. icraft_magic_enchants.js Arcane Vorpal decap) can detect
+    // "the custom crit fired for THIS attack" by comparing
+    // icraft_last_crit_tick to the current server tick. Spell crits
+    // never set DamageSource.isCritical (vanilla only sets that for
+    // Player.attack melee swings), so the flag stamp is the only
+    // post-hoc signal for downstream listeners.
+    // (server.tickCount on purpose: the reader compares it with the server
+    // tick of the SAME hit; it is not a cooldown and does not need to
+    // survive a restart.)
+    try {
+      attacker.persistentData.putLong('icraft_last_crit_tick', attacker.server.tickCount)
+    } catch (e) {}
+  }
+
+  // -- Spell Power scaling --
+  if (spellPower !== 1.0 && core.isMagic(source)) {
+    event.amount = event.amount * Math.max(0, core.finite(spellPower, 1.0))
+  }
+
+  // -- Lifesteal --
+  if (lifesteal > 0) {
+    var healAmount = core.finite(event.amount * lifesteal, 0)
+    if (healAmount > 0 && attacker.health < attacker.maxHealth) {
+      attacker.heal(healAmount)
+    }
+  }
+}, 'player')
 
 // --- XP MULTIPLIER (tick-diff) ---
 // 2026-04-22: KubeJS 2001.6.5-build.16 doesn't expose PlayerEvents.xpChange,
@@ -375,8 +392,9 @@ PlayerEvents.loggedOut(function(event) {
 })
 
 console.log('[IridescentCraft] Attribute sync handlers loaded (v0.4 persistent NBT)')
-console.log('  Combat: crit/dodge/lifesteal/armor_pen/magic_res via EntityEvents.hurt')
+console.log('  Combat: crit/dodge/lifesteal/armor_pen/magic_res/spell_power via the damage registry')
 console.log('  Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)')
 console.log('  Magic: mana_regen + CDR sync to ISB every 5s')
 console.log('  Utility: xp_multiplier via tick_xpMultiplier (1s totalExperience diff)')
 console.log('  Utility: healing_received via tick health tracking')
+})()

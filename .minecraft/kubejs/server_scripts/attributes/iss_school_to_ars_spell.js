@@ -39,6 +39,15 @@
 //     now feed Ars damage too
 //   kubejs/server_scripts/attributes/mana_bridge.js  -- the matching
 //     ISS<->Ars mana_regen / max_mana bridge
+//
+// 2026-10-10: this bridge had never applied. The handler called
+// `source.getEntity()`; KubeJS exposes that method to scripts as getActual()
+// (0_lib_core.js header), so the call threw "getEntity is not a function"
+// inside the fail-soft catch on every Ars elemental hit. And because the
+// sibling glyph bridge deliberately SKIPS these four damage types (they are
+// "handled here"), flare / frost / windshear / crush damage got no ISS school
+// bonus from either script. The attacker is read through
+// global.icraft.core.attacker() now.
 // =============================================================================
 
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
@@ -75,6 +84,13 @@ try {
     console.warn('[iss_school_to_ars] no ISS attributes resolved; ISS likely absent')
   }
 
+  // DamageSource.getEntity() as scripts see it (`source.actual`).
+  var attackerOf = function(source) {
+    var core = global.icraft && global.icraft.core
+    if (core) return core.attacker(source)
+    try { var a = source.actual; return a ? a : null } catch (e) { return null }
+  }
+
   var handler = function(event) {
       try {
         var source = event.getSource()
@@ -89,17 +105,19 @@ try {
         var matchedAttr = resolvedAttrs[typeId]
         if (!matchedAttr) return
 
-        var attacker = source.getEntity()
+        var attacker = attackerOf(source)
         if (!attacker || !(attacker instanceof LivingEntity_aspb)) return
 
         // ISS school SP attributes have base value 1.0 (multiplicative
         // baseline) and modifiers ADD on top. So getAttributeValue() returns
         // 1.0 for no gear, 1.45 for +45% boost. Use it directly as the
         // damage multiplier; bail if no boost above baseline.
-        var multiplier = attacker.getAttributeValue(matchedAttr)
-        if (multiplier <= 1.0) return
+        var multiplier = Number(attacker.getAttributeValue(matchedAttr))
+        // `!(x > 1)` rather than `x <= 1`: also stops NaN / a missing value.
+        if (!(multiplier > 1.0) || multiplier === Infinity) return
 
         var amount = event.getAmount()
+        if (!(amount > 0)) return
         event.setAmount(amount * multiplier)
 
         if (!global._iss_to_ars_seen) {
@@ -114,7 +132,13 @@ try {
       }
   }
 
-  DamageModifierRegistry_aspb.register('icraft.iss_school_to_ars_spell', handler)
+  // Through the shared dispatcher when it is there: the mechanism above is
+  // "the attacker is a player", so only those hits are offered to the handler
+  // (it used to read the damage type of every hurt event on the server).
+  // Straight on the Java registry otherwise.
+  var core_aspb = global.icraft && global.icraft.core
+  if (core_aspb) core_aspb.onHurt('icraft.iss_school_to_ars_spell', handler, 'attackerPlayer')
+  else DamageModifierRegistry_aspb.register('icraft.iss_school_to_ars_spell', handler)
   console.log('[iss_school_to_ars] loaded (' + resolvedCount + ' damage-type mappings)')
 } catch (e) {
   console.warn('[iss_school_to_ars] bootstrap FAILED: ' + e)

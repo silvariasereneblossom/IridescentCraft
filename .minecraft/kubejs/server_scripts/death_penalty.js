@@ -76,15 +76,16 @@ EntityEvents.death(event => {
   // means either this handler doesn't fire for player deaths, or the
   // `event.entity.player` filter below rejects the player. Top trace
   // distinguishes the two cases.
+  // 2026-10-10: the question above is answered (the handler fires for players:
+  // [death-pen] lines are in the production log), so the trace is now written
+  // for PLAYER deaths only. It used to print one line per mob death.
   try {
     var deathEntity = event.entity
-    var entityType = deathEntity ? String(deathEntity.type) : 'null'
-    var isPlayerCheck = deathEntity ? String(deathEntity.player) : 'no-entity'
-    var hasEventPlayer = false
-    try { hasEventPlayer = !!event.player } catch (_) {}
-    console.log('[death-event] fired entity.type=' + entityType
-              + ' entity.player=' + isPlayerCheck
-              + ' event.player=' + hasEventPlayer)
+    if (deathEntity && deathEntity.player) {
+      var hasEventPlayer = false
+      try { hasEventPlayer = !!event.player } catch (_) {}
+      console.log('[death-event] fired for a player; event.player=' + hasEventPlayer)
+    }
   } catch (e) {
     try { console.log('[death-event] entry-log threw: ' + e) } catch (_) {}
   }
@@ -97,10 +98,7 @@ EntityEvents.death(event => {
     if (event.player) player = event.player
     else if (event.entity && event.entity.player) player = event.entity
   } catch (_) {}
-  if (!player) {
-    console.log('[death-event] no player resolved -- skipping')
-    return
-  }
+  if (!player) return
 
   var dimId = (function () {
     try { return String(player.level.dimension().location()) } catch (_) {}
@@ -536,43 +534,66 @@ function isGenuinelyInert(stack) {
   return false
 }
 
-// Prevent broken tools from mining
+// One chat line per player per 5 s, whichever of the three "it is broken"
+// handlers below fires (mining / hitting / using all repeat every few ticks).
+// In-memory on purpose: nothing here needs to survive a restart.
+var brokenNoticeAt = {}   // uuid -> game time of the last notice
+var brokenNotice = function (player, message) {
+  try {
+    var core = global.icraft && global.icraft.core
+    var now = core ? core.now(player) : 0
+    var key = String(player.uuid)
+    var last = brokenNoticeAt[key]
+    if (last !== undefined && now >= last && (now - last) < 100) return
+    brokenNoticeAt[key] = now
+    player.tell(Text.gray(message))
+  } catch (e) {}
+}
+PlayerEvents.loggedOut(event => {
+  try { delete brokenNoticeAt[String(event.player.uuid)] } catch (e) {}
+})
+
+// Prevent broken tools from mining.
+// The notice goes out BEFORE cancel(): cancel() leaves the handler by
+// throwing, so the tell() that used to follow it was never reached.
 BlockEvents.broken(event => {
+  if (!event.player) return
   var heldItem = event.player.mainHandItem
   if (isGenuinelyInert(heldItem)) {
+    brokenNotice(event.player, 'Your tool is broken and cannot mine. Repair it at an anvil.')
     event.cancel()
-    event.player.tell(Text.gray('Your tool is broken and cannot mine. Repair it at an anvil.'))
   }
 })
 
 // Prevent broken weapons from dealing damage. Via DamageModifierRegistry.
+// 2026-10-10: this never ran -- it read `event.source.entity`, which scripts
+// do not have (0_lib_core.js header), so a broken sword hit for full damage.
+// It also set the hit to 1.0 rather than to nothing. Now: a direct (melee)
+// hit from a player whose main-hand item is genuinely inert deals 0 and the
+// hurt event is cancelled. Projectiles and spells already in flight are left
+// alone (a broken bow / staff cannot be used: see rightClicked below).
 ;(function(){
-  var DR_dpw = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_dpw = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_dpw.register('icraft.death_penalty.broken_weapon', function(event) {
-    var player = event.source.entity
-    if (!(player instanceof PlayerClass_dpw)) return
-    var weapon = player.mainHandItem
-    // Inline copy of isGenuinelyInert (different scope -- Java-side
-    // registration is outside the KubeJS handler closure that defines it).
-    if (weapon == null || weapon.isEmpty() || !weapon.nbt || !weapon.isDamageableItem()) return
-    if (!weapon.nbt.getBoolean(BROKEN_TAG)) return
-    var inertPin = weapon.maxDamage - INERT_THRESHOLD
-    if (weapon.damageValue < inertPin) {
-      // Stale tag from older threshold -- clear and let damage stand.
-      weapon.nbt.remove(BROKEN_TAG)
-      return
-    }
-    event.amount = 1.0
-  })
+  var core = global.icraft && global.icraft.core
+  if (!core) {
+    console.error('[death_penalty] 0_lib_core.js did not load -- broken weapons still deal damage')
+    return
+  }
+  core.onHurt('icraft.death_penalty.broken_weapon', function(event, ctx) {
+    var player = ctx.attacker
+    if (core.direct(ctx.source) !== player) return
+    if (!isGenuinelyInert(player.mainHandItem)) return
+    event.amount = 0
+    event.setCanceled(true)
+    brokenNotice(player, 'Your weapon is broken and deals no damage. Repair it at an anvil.')
+  }, 'attackerPlayer')
 })()
 
 // Prevent broken items from being used (right-click actions)
 ItemEvents.rightClicked(event => {
   var stack = event.item
   if (isGenuinelyInert(stack)) {
+    if (event.player) brokenNotice(event.player, 'This item is broken. Repair it at an anvil.')
     event.cancel()
-    event.player.tell(Text.gray('This item is broken. Repair it at an anvil.'))
   }
 })
 

@@ -4,8 +4,10 @@
 // !stats / !attributes -- Show current attribute values
 // !class              -- Show current class info and bonuses
 //
-// Uses getAttr() from attribute_sync.js (loaded alphabetically before this).
-// Uses getAttrCore() from attribute_sync.js for attributecore values.
+// Stats come from global.icraft.attr (attribute_sync.js, loaded alphabetically
+// before this): attr.get() for the icraft stats, attr.core() for attributecore
+// values. Until 2026-10-10 these were the top-level getAttr()/getAttrCore() of
+// that file, reached through the shared script scope.
 // Class comes from global.icraft.origin (0_lib_origins.js).
 //
 // 2026-10: neither command ever printed anything. (1) The chat handler called
@@ -87,7 +89,8 @@ function statsClassOf(player) {
 }
 
 function formatStatLine(player, statDef) {
-  var val = getAttr(player, statDef.attr, statDef.baseline)
+  var attr = global.icraft.attr
+  var val = attr.get(player, statDef.attr, statDef.baseline)
 
   // Also read attributecore equivalent if present
   var acMap = {
@@ -97,7 +100,7 @@ function formatStatLine(player, statDef) {
     'dodge_chance': 'attributecore:dodge_chance'
   }
   if (acMap[statDef.attr]) {
-    var acVal = getAttrCore(player, acMap[statDef.attr], 0)
+    var acVal = attr.core(player, acMap[statDef.attr], 0)
     if (acVal > 0) val += acVal
   }
 

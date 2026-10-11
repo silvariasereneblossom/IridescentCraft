@@ -23,6 +23,10 @@
 // Whole file is one IIFE (body left at column 0 to keep the diff readable):
 // `getBonusSpellPower` used to leak into the shared script scope, where this
 // copy replaced the one in battlemage_arcane_cleave.js.
+//
+// 2026-10-10: the bonus had never applied -- the handler read
+// `event.source.entity`, which scripts do not have (0_lib_core.js header), and
+// its projectile test stringified `source.type` (a function object).
 // =============================================================================
 
 ;(function () {
@@ -72,36 +76,26 @@ try {
   }
 
   // 2026-05-15: migrated to DamageModifierRegistry.
-  var DR_ss = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_ss = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_ss.register('icraft.ss_unique_spellsword', function(event) {
-    try {
-      var player = event.source.entity
-      if (!(player instanceof PlayerClass_ss)) return
+  var core = global.icraft && global.icraft.core
+  if (!core) throw new Error('0_lib_core.js did not load')
+  core.onHurt('icraft.ss_unique_spellsword', function(event, ctx) {
+    var source = ctx.source
+    var player = ctx.attacker
 
-      var stack = player.mainHandItem
-      if (!stack || stack.isEmpty()) return
-      var id = String(stack.id || '')
-      if (!SS_UNIQUES.has(id)) return
+    var stack = player.mainHandItem
+    if (!stack || stack.isEmpty()) return
+    if (!SS_UNIQUES.has(String(stack.id))) return
 
-      // Melee-only (skip projectile sources)
-      var srcType = ''
-      try { srcType = String(event.source.type || '') } catch (e) {}
-      var isProjectile = srcType.indexOf('arrow') >= 0 ||
-                         srcType.indexOf('trident') >= 0 ||
-                         srcType.indexOf('thrown') >= 0 ||
-                         srcType.indexOf('fireball') >= 0
-      if (isProjectile) return
+    // Melee-only (skip projectile sources)
+    var srcType = core.dmgKey(source)
+    if (srcType.indexOf('arrow') >= 0 || srcType.indexOf('trident') >= 0 ||
+        srcType.indexOf('thrown') >= 0 || srcType.indexOf('fireball') >= 0) return
 
-      var bonusSP = getBonusSpellPower(player)
-      var bonusAD = bonusSP * SS_UNIQUE_AD_PER_HALF_SP
-      if (bonusAD <= 0) return
+    var bonusAD = core.finite(getBonusSpellPower(player) * SS_UNIQUE_AD_PER_HALF_SP, 0)
+    if (bonusAD <= 0) return
 
-      event.amount = event.amount + bonusAD
-    } catch (e) {
-      console.warn('[ss_unique_spellsword_scaling] hurt handler threw: ' + e)
-    }
-  })
+    event.amount = event.amount + bonusAD
+  }, 'attackerPlayer')
 
   console.log('[ss_unique_spellsword_scaling] loaded — ' + SS_UNIQUES.size +
               ' uniques scale with spell power')

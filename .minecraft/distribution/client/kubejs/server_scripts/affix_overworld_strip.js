@@ -61,9 +61,19 @@ EntityEvents.spawned(event => {
   // BROKEN_ENTITIES + _affixStripIsIssMob below remain as fallback.
   if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_overworld_strip')) return
 
+  // Apotheosis stamps its bosses in FORGE persistent data
+  // (Entity.getPersistentData() -> `forgePersistentData` for scripts). Until
+  // 2026-10-10 these two keys were looked up in KubeJS's own persistentData,
+  // where they never are, so overworld Apotheosis bosses and minibosses were
+  // stripped of their affix kit like any other mob.
+  let forgeData = null
+  try { forgeData = entity.forgePersistentData } catch (e) {}
+  if (forgeData) {
+    if (forgeData.contains('apoth.boss')) return
+    if (forgeData.contains('apoth.miniboss')) return
+  }
+
   let data = entity.persistentData
-  if (data.contains('apoth.boss')) return
-  if (data.contains('apoth.miniboss')) return
 
   let resId = _affixStripEntityResId(entity)
   if (AFFIX_STRIP_BROKEN_ENTITIES.has(resId)) return
@@ -75,7 +85,7 @@ EntityEvents.spawned(event => {
   data.putBoolean('icraft_affix_stripped', true)
 
   for (let slot of AFFIX_STRIP_SLOTS) {
-    let item
+    let item = null
     try { item = entity.getItemBySlot(slot) } catch (e) { continue }
     if (!item || item.isEmpty()) continue
     if (!item.nbt) continue

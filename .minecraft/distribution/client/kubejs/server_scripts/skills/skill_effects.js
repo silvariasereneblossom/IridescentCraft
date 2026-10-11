@@ -103,68 +103,76 @@ let FURNACE_KEYS = [
 // COMBAT: Player Dealing Damage
 // ═══════════════════════════════════════════════════════════════════════════
 // 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+// 2026-10-10: this handler never ran (`event.source.entity` is not a
+// script-visible member: 0_lib_core.js header), so Execute Damage, AoE Splash
+// and Ammo Save did nothing. Revived through global.icraft.core:
+//   * the projectile test reads the real damage type (it compared
+//     `String(src.type)`, a function object) -- arrow / trident / fireball;
+//   * the splash goes through core.dealDamageFrom(), which holds every
+//     core.onHurt handler off while it lands. Before, each splash hit would
+//     have re-entered this handler and splashed again from its own target.
 ;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR.register('icraft.skill_effects.1', function(event) {
-  var player = event.source.entity
-    if (!(player instanceof PlayerClass)) return
-  let target = event.entity
-  if (!target || !target.living) return
-  let srv = player.server
-  let name = player.username
-
-  // Execute Damage: +X% to targets below 30% HP
-  let exec = getScore(srv, name, 'icraft_execute_damage')
-  if (exec > 0 && target.health / target.maxHealth < 0.30) {
-    event.amount *= (1 + exec / 100)
+  var core = global.icraft && global.icraft.core
+  if (!core) {
+    console.error('[IridescentCraft] skill_effects.js: 0_lib_core.js did not load -- execute / splash / ammo-save / all-resistance are OFF')
+    return
   }
 
-  // AoE Splash: projectile hits deal splash to nearby enemies
-  let src = event.source
-  let srcType = src && src.type ? String(src.type) : ''
-  let isProjectile = srcType && (srcType.includes('arrow') ||
-    srcType.includes('trident') || srcType.includes('fireball'))
-  if (isProjectile) {
-    let splash = getScore(srv, name, 'icraft_aoe_splash')
+  core.onHurt('icraft.skill_effects.1', function(event, ctx) {
+    var source = ctx.source
+    var player = ctx.attacker
+    var target = ctx.victim
+    if (!target || !target.living || target === player) return
+    var srv = player.server
+    var name = player.username
+
+    // Execute Damage: +X% to targets below 30% HP
+    var exec = getScore(srv, name, 'icraft_execute_damage')
+    if (exec > 0 && target.maxHealth > 0 && target.health / target.maxHealth < 0.30) {
+      event.amount = event.amount * (1 + exec / 100)
+    }
+
+    // Projectile = an arrow / trident / fireball damage type (registry id or
+    // msg id), the same three words the original test looked for.
+    var dmgKey = core.dmgKey(source)
+    if (dmgKey.indexOf('arrow') < 0 && dmgKey.indexOf('trident') < 0 && dmgKey.indexOf('fireball') < 0) return
+
+    // AoE Splash: projectile hits deal splash to nearby enemies
+    var splash = getScore(srv, name, 'icraft_aoe_splash')
     if (splash > 0) {
-      let splashDmg = event.amount * (splash / 100)
+      var splashDmg = core.finite(event.amount * (splash / 100), 0)
       if (splashDmg >= 0.5) {
-        let r = 3.0
-        let nearby = target.level.getEntitiesWithin(
-          AABB.of(target.x-r, target.y-r, target.z-r, target.x+r, target.y+r, target.z+r)
-        )
-        nearby.forEach(e => {
+        var r = 3.0
+        target.level.getEntitiesWithin(
+          AABB.of(target.x - r, target.y - r, target.z - r, target.x + r, target.y + r, target.z + r)
+        ).forEach(function(e) {
           if (e !== target && e !== player && e.living && e.monster) {
-            e.hurt(event.source, splashDmg)
+            core.dealDamageFrom(e, source, splashDmg)
           }
         })
       }
     }
 
     // Ammo Save: chance to refund arrow
-    let ammo = getScore(srv, name, 'icraft_ammo_save')
+    var ammo = getScore(srv, name, 'icraft_ammo_save')
     if (ammo > 0 && Math.random() * 100 < ammo) {
       player.give('minecraft:arrow')
     }
-  }
-  })
-})()// ═══════════════════════════════════════════════════════════════════════════
-// DEFENSE: Player Taking Damage
+  }, 'attackerPlayer')
+
+  // ═════════════════════════════════════════════════════════════════════════
+  // DEFENSE: Player Taking Damage
+  // ═════════════════════════════════════════════════════════════════════════
+  core.onHurt('icraft.skill_effects.2', function(event, ctx) {
+    var player = ctx.victim
+    var resist = getScore(player.server, player.username, 'icraft_all_resistance')
+    if (resist > 0) {
+      event.amount = event.amount * Math.max(0.1, 1 - resist / 100)
+    }
+  }, 'victimPlayer')
+})()
+
 // ═══════════════════════════════════════════════════════════════════════════
-// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
-;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR.register('icraft.skill_effects.2', function(event) {
-  var player = event.entity
-    if (!(player instanceof PlayerClass)) return
-  let resist = getScore(player.server, player.username, 'icraft_all_resistance')
-  if (resist > 0) {
-    event.amount *= Math.max(0.1, 1 - resist / 100)
-  }
-  })
-})()// ═══════════════════════════════════════════════════════════════════════════
 // GATHERING: Block Break Effects
 // ═══════════════════════════════════════════════════════════════════════════
 BlockEvents.broken(event => {
@@ -299,11 +307,12 @@ PlayerEvents.inventoryChanged(event => {
     if (craftedPatterns.some(p => id.includes(p))) {
       // Use a cooldown via persistent data to avoid spamming on inventory shifts
       try {
-        let lastSave = player.persistentData.getInt('icraft_mat_save_cd') || 0
-        let now = srv.tickCount
-        // `now < lastSave`: tickCount restarts at 0 every boot, so a stamp from
-        // an earlier session is "in the future" and would otherwise keep this
-        // locked until uptime passes it.
+        // World game time (Level.getGameTime(), `level.time` to scripts), not
+        // server.tickCount: the stamp is persisted on the player and tickCount
+        // restarts at 0 on every boot. getLong/putLong: game time outgrows an int.
+        // (`now < lastSave` covers a stamp that is ahead of the clock.)
+        let lastSave = Number(player.persistentData.getLong('icraft_mat_save_cd')) || 0
+        let now = global.icraft.core.now(player)
         if (now - lastSave > 40 || now < lastSave) { // 2-second cooldown between triggers
           if (Math.random() * 100 < materialSave) {
             // Return a contextual material based on what was crafted
@@ -342,10 +351,10 @@ PlayerEvents.inventoryChanged(event => {
             srv.runCommandSilent(
               `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.5 0.3 0 6 force ${name}`
             )
-            player.persistentData.putInt('icraft_mat_save_cd', now)
+            player.persistentData.putLong('icraft_mat_save_cd', now)
           }
           // Update cooldown even on miss to avoid re-rolling same item
-          player.persistentData.putInt('icraft_mat_save_cd', now)
+          player.persistentData.putLong('icraft_mat_save_cd', now)
         }
       } catch(e) {}
     }
@@ -370,9 +379,9 @@ PlayerEvents.inventoryChanged(event => {
     ]
     if (craftResults.some(p => id.includes(p))) {
       try {
-        let lastBonus = player.persistentData.getInt('icraft_craft_bonus_cd') || 0
-        let now = srv.tickCount
-        // (`now < lastBonus`: same restart guard as icraft_mat_save_cd above)
+        // (world game time, same as icraft_mat_save_cd above)
+        let lastBonus = Number(player.persistentData.getLong('icraft_craft_bonus_cd')) || 0
+        let now = global.icraft.core.now(player)
         if (now - lastBonus > 40 || now < lastBonus) { // 2-second cooldown
           if (Math.random() * 100 < craftBonus) {
             // Give a copy of the item itself (double output)
@@ -388,7 +397,7 @@ PlayerEvents.inventoryChanged(event => {
               `playsound minecraft:entity.experience_orb.pickup player ${name} ${pos.x} ${pos.y} ${pos.z} 0.5 1.5`
             )
           }
-          player.persistentData.putInt('icraft_craft_bonus_cd', now)
+          player.persistentData.putLong('icraft_craft_bonus_cd', now)
         }
       } catch(e) {}
     }

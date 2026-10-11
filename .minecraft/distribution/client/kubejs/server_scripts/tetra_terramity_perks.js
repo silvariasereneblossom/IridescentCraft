@@ -14,145 +14,153 @@
 //   ruby     -> +50% damage when dealing fire-typed damage
 //   onyx     -> +15% damage from owned/tamed entities (minions) of holder
 //   dimlite  -> Night Vision passive (effective self-light source)
-//   iridium  -> Increased knockback on melee hit (+50% impulse)
+//   iridium  -> Increased knockback on melee hit
 //
-// Material detection: Tetra stores per-module material as NBT keys ending
-// in '_material' on the item stack. We scan getAllKeys() for those and
-// read the string values. Cheap; no Tetra API dependency.
+// Material detection: Tetra stores, per module, the VARIANT key under an NBT
+// key ending in '_material' -- e.g.  "sword/basic_blade_material":
+// "basic_blade/sapphire". The material is the last path segment.
+//
+// 2026-10-10: none of the six perks had ever applied, for three independent
+// reasons (0_lib_core.js header has the accessor list):
+//   * the item tag was read with stack.getTag(), which scripts do not have
+//     (it is exposed as getNbt() / `stack.nbt`): every scan returned "no
+//     materials" -- that also switched off the two passive perks;
+//   * the scan compared the whole variant key ("basic_blade/sapphire") to the
+//     bare material name ("sapphire");
+//   * the hurt handler read `src.entity` (undefined) and stringified
+//     `src.type` (a function object) for the ruby fire test.
+// Also fixed: iridium pushed the target TOWARD the attacker (knockback(s, x, z)
+// pushes against the given direction; vanilla passes attacker - target).
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks).
+// Whole file is one IIFE; nothing here is used by another script.
 // =============================================================================
 
+;(function () {
 try {
-  var TERRAMITY_MATS = ['sapphire', 'topaz', 'ruby', 'onyx', 'dimlite', 'iridium']
+  var core = global.icraft && global.icraft.core
+  if (!core) throw new Error('0_lib_core.js did not load')
 
-  // Read all material values from a stack's NBT. Returns array of strings
-  // (e.g. ['sapphire', 'iron']) or empty array.
-  var getTetraMaterials = function(stack) {
-    if (!stack) return []
-    try { if (stack.isEmpty()) return [] } catch (_) {}
-    var tag = null
-    try { tag = stack.getTag() } catch (_) { return [] }
-    if (!tag) return []
-    var keys = null
-    try { keys = tag.getAllKeys() } catch (_) { return [] }
-    if (!keys) return []
-    var found = []
-    var iter = keys.iterator()
-    while (iter.hasNext()) {
-      var k = String(iter.next())
-      if (k.endsWith('_material') || k === 'material') {
-        try {
-          var v = String(tag.getString(k))
-          if (v && v.length > 0) found.push(v)
-        } catch (_) {}
-      }
-    }
-    return found
-  }
+  var TERRAMITY_MATS = { sapphire: true, topaz: true, ruby: true, onyx: true, dimlite: true, iridium: true }
+  var NO_MATS = { any: false }
+  var SUFFIX = '_material'
 
-  var hasMat = function(mats, name) {
-    if (!mats || mats.length === 0) return false
-    for (var i = 0; i < mats.length; i++) {
-      if (mats[i] === name) return true
+  // Terramity materials on one stack -> { any: bool, sapphire: true, ... }
+  var materialsOf = function (stack) {
+    if (!stack) return NO_MATS
+    var found = null
+    try {
+      if (stack.isEmpty()) return NO_MATS
+      var tag = stack.nbt
+      if (!tag) return NO_MATS
+      tag.getAllKeys().forEach(function (k) {
+        var key = String(k)
+        var at = key.lastIndexOf(SUFFIX)
+        if (key !== 'material' && (at < 0 || at !== key.length - SUFFIX.length)) return
+        var value = String(tag.getString(key))
+        var name = value.substring(value.lastIndexOf('/') + 1)
+        if (TERRAMITY_MATS[name] === true) {
+          if (!found) found = { any: true }
+          found[name] = true
+        }
+      })
+    } catch (e) {
+      core.warnOnce('tetra_terramity.scan', '[tetra_terramity_perks] reading an item\'s materials threw: ' + e)
     }
-    return false
+    return found ? found : NO_MATS
   }
 
   // -- Tick handler: passive perks (sapphire fire-res, dimlite night-vision)
-  global.tick_terramityTetraPerks = function(event) {
-    event.server.players.forEach(function(player) {
+  global.tick_terramityTetraPerks = function (event) {
+    event.server.players.forEach(function (player) {
       try {
-        var stack = player.getMainHandItem()
-        var mats = getTetraMaterials(stack)
-        if (mats.length === 0) return
+        var mats = materialsOf(player.mainHandItem)
+        if (!mats.any) return
 
-        if (hasMat(mats, 'sapphire')) {
+        if (mats.sapphire) {
           // Fire Resistance, 5s refresh, ambient=false visible=false (hidden HUD)
-          try { player.potionEffects.add('minecraft:fire_resistance', 100, 0, false, false) } catch (_) {}
+          player.potionEffects.add('minecraft:fire_resistance', 100, 0, false, false)
         }
-        if (hasMat(mats, 'dimlite')) {
+        if (mats.dimlite) {
           // Night Vision, ~11s refresh (avoids the flashing-end-of-effect screen)
-          try { player.potionEffects.add('minecraft:night_vision', 220, 0, false, false) } catch (_) {}
+          player.potionEffects.add('minecraft:night_vision', 220, 0, false, false)
         }
-      } catch (_) {}
+      } catch (e) {
+        core.warnOnce('tetra_terramity.tick', '[tetra_terramity_perks] tick threw: ' + e)
+      }
     })
   }
   // Register at 2s cadence -- light enough to not affect tps
   global.registerServerTick('tick_terramityTetraPerks', 40, 30)
 
-  // -- Hurt handler via DamageModifierRegistry (raw LivingHurtEvent).
-  var DR_tp = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  var PlayerClass_tp = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_tp.register('icraft.tetra_terramity_perks', function(event) {
+  // The online player who owns this (tamed / owned) entity, or null.
+  var ownerOf = function (entity) {
     try {
-      var target = event.entity
-      if (!target) return
+      if (typeof entity.getOwnerUUID !== 'function') return null
+      var ownerUuid = entity.getOwnerUUID()
+      if (!ownerUuid) return null
+      var owner = entity.server.playerList.getPlayer(ownerUuid)
+      return owner ? owner : null
+    } catch (e) { return null }
+  }
 
-      var src = event.source
-      if (!src) return
+  // -- Hurt handler via DamageModifierRegistry (raw LivingHurtEvent).
+  core.onHurt('icraft.tetra_terramity_perks', function (event, ctx) {
+    var target = ctx.victim
+    var src = ctx.source
+    var attacker = ctx.attacker
+    if (!target || !src || attacker === target) return
 
-      var attacker = src.entity
+    if (!ctx.attackerIsPlayer) {
+      // 1. Owned-minion Onyx bonus: the attacker has an owner -> the owner's mainhand
+      var owner = ownerOf(attacker)
+      if (owner && materialsOf(owner.mainHandItem).onyx) {
+        event.amount = event.amount * 1.15
+      }
+      return
+    }
 
-      // 1. Owned-minion Onyx bonus: attacker has owner UUID -> check owner's mainhand
+    // Player-direct perks
+    var mats = materialsOf(attacker.mainHandItem)
+    if (!mats.any) return
+
+    // 2. Topaz -- set the target on fire for 2 s (never shortens a longer burn)
+    if (mats.topaz) {
       try {
-        if (attacker && attacker.getOwnerUUID && attacker.getOwnerUUID()) {
-          var ownerUuid = attacker.getOwnerUUID()
-          // Cross-level player lookup; server is global
-          var server = target.level.server
-          var owner = server ? server.getPlayer(ownerUuid) : null
-          if (owner) {
-            var ownerMats = getTetraMaterials(owner.getMainHandItem())
-            if (hasMat(ownerMats, 'onyx')) {
-              event.amount = event.amount * 1.15
-            }
+        if (target.remainingFireTicks < 40) target.setRemainingFireTicks(40)
+      } catch (e) {}
+    }
+
+    // 3. Ruby -- +50% when the hit itself is fire-typed
+    if (mats.ruby && core.isFire(src)) {
+      event.amount = event.amount * 1.5
+    }
+
+    // 4. Iridium -- stronger knockback on melee hit.
+    // Skip projectile hits (those have ratios from arrow physics)
+    if (mats.iridium) {
+      var isMelee = false
+      try { isMelee = (src.isIndirect() === false) } catch (e) {}
+      if (isMelee) {
+        try {
+          // knockback(strength, x, z) pushes the entity AWAY from (x, z):
+          // pass attacker - target, as vanilla does.
+          var dx = attacker.x - target.x
+          var dz = attacker.z - target.z
+          if (Math.sqrt(dx * dx + dz * dz) > 0.01) {
+            // Strength 1.5 = strong push but not skyward.
+            target.knockback(1.5, dx, dz)
           }
-        }
-      } catch (_) {}
-
-      // Player-direct perks require a player attacker
-      if (!(attacker instanceof PlayerClass_tp)) return
-      var aMats = getTetraMaterials(attacker.getMainHandItem())
-      if (aMats.length === 0) return
-
-      if (hasMat(aMats, 'topaz')) {
-        try { target.setRemainingFireTicks(40) } catch (_) {}
+        } catch (e) {}
       }
-
-      if (hasMat(aMats, 'ruby')) {
-        var srcId = ''
-        try { srcId = String(src.type ? src.type : src.msgId || '') } catch (_) {}
-        if (srcId.indexOf('fire') >= 0 || srcId.indexOf('lava') >= 0 ||
-            srcId.indexOf('hot_floor') >= 0 || srcId.indexOf('on_fire') >= 0) {
-          event.amount = event.amount * 1.5
-        }
-      }
-
-      // 4. Iridium -- stronger knockback on melee hit (+50% impulse)
-      // Skip projectile hits (those have ratios from arrow physics)
-      if (hasMat(aMats, 'iridium')) {
-        var isMelee = false
-        try { isMelee = !src.indirect } catch (_) {}
-        if (isMelee) {
-          try {
-            var dx = target.getX() - attacker.getX()
-            var dz = target.getZ() - attacker.getZ()
-            var dist = Math.sqrt(dx*dx + dz*dz)
-            if (dist > 0.01) {
-              // Apply additional knockback (vanilla normalizes, so unit dir).
-              // Strength 1.5 = strong push but not skyward.
-              target.knockback(1.5, dx/dist, dz/dist)
-            }
-          } catch (_) {}
-        }
-      }
-    } catch (_) {}
-  })
+    }
+  }, 'attacker')
 
   console.log('[IridescentCraft] tetra_terramity_perks loaded')
   console.log('  sapphire->fire_res passive | topaz->fire on hit')
   console.log('  ruby->+50% fire damage | onyx->+15% minion damage')
-  console.log('  dimlite->night vision passive | iridium->+50% melee knockback')
+  console.log('  dimlite->night vision passive | iridium->stronger melee knockback')
 } catch (e) {
   console.warn('[IridescentCraft] tetra_terramity_perks bootstrap FAILED: ' + e)
 }
+})()

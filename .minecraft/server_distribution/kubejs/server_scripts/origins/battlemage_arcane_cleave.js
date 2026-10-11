@@ -122,6 +122,10 @@ try {
   var PlayerClass_bc = Java.loadClass('net.minecraft.world.entity.player.Player')
   DR_bc.register('icraft.battlemage_arcane_cleave', function(event) {
     try {
+      // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
+      // lands as-is: it must not proc or be multiplied a second time. Same rule the
+      // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
+      if (global.icraft && global.icraft.core && global.icraft.core.secondary && global.icraft.core.secondary(event.entity)) return
       var source = event.source
       var player = attackerOf(source)
       if (!(player instanceof PlayerClass_bc)) return

@@ -49,6 +49,10 @@ try {
 
   DR_uniq.register('icraft.unique_tier_buff', function (event) {
     try {
+      // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
+      // lands as-is: it must not proc or be multiplied a second time. Same rule the
+      // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
+      if (global.icraft && global.icraft.core && global.icraft.core.secondary && global.icraft.core.secondary(event.entity)) return
       var items = global.ICRAFT_UNIQUE_ITEMS
       var mult = global.ICRAFT_TIER_DMG_MULT
       if (!items || !mult) return
