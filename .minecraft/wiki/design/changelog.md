@@ -15,6 +15,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **The Infested Laboratory no longer hands out Tier 3 progression tokens** — it stands in the Overworld.
 - **Avocado trees give something again.** Their leaves dropped nothing at all. They now drop saplings, the odd avocado and sticks, and shears or Silk Touch collect the leaves themselves.
 - **Two more drops that never happened.** Bookshelves in the Citadel can hold its lore tomes, and a placed Exotic Roll Medley gives itself back when broken untouched (a bowl once it has been eaten from).
+- **Three mobs have their drops back.** The Abyss's End Spider drops an Icora Nugget and its Slime Spider slime balls (both only when killed with a Looting weapon, like the Abyss's other spiders), and the boss of the Mercury arena drops raw iron, magma cream and blaze rods.
 
 ## October 2026 — Server owners can tune world generation from the launcher
 
