@@ -33,7 +33,8 @@
 // This script uses a1c9e207 (free, collision-checked 2026-06-06).
 //
 // Rhino: `var X = function(){}` inside the try block; no `new java.X.Y()`
-// (Java.loadClass pattern); `.isEmpty()` WITH parens.
+// (Java.loadClass pattern); `.isEmpty()` WITH parens; stack NBT is
+// `stack.getNbt()` (see hasMk2Marker).
 // =============================================================================
 
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
@@ -76,12 +77,26 @@ try {
     return UUID_mk2.fromString('a1c9e207-0000-0000-00' + pp + '-0000000000' + aa)
   }
 
+  // [2026-10-11] This layer had never applied. KubeJS renames the two NBT
+  // accessors on ItemStack for scripts (@RemapForJS on its ItemStackMixin):
+  //   ItemStack.getTag() -> getNbt()      ItemStack.hasTag() -> hasNBT()
+  // and `hasTag` is KubeJS's own hasTag(ResourceLocation) -- an ITEM-TAG test.
+  // So `stack.hasTag()` threw "Can't find method ... hasTag()" on every
+  // query, the catch below answered "no marker", and a Mk2 piece got its
+  // tooltip line (client script, which reads `stack.nbt`) but none of the
+  // +armor / +toughness / +knockback resistance.
+  var markerWarned = false
   var hasMk2Marker = function (stack) {
     try {
-      if (!stack.hasTag()) return false
-      var tag = stack.getTag()
+      var tag = stack.getNbt()
+      if (tag == null) return false
       return tag.contains('icraft_mekasuit_mk2') && tag.getBoolean('icraft_mekasuit_mk2')
     } catch (e) {
+      // Fail-soft (never crash an attribute query), but not silent.
+      if (!markerWarned) {
+        markerWarned = true
+        console.warn('[IridescentCraft] mekasuit_mk2_stats could not read the Mk2 marker (logged once): ' + e)
+      }
       return false
     }
   }

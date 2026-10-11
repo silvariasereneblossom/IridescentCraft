@@ -1,18 +1,12 @@
 // =============================================================================
-// JEI ITEM HIDING — Transmuted Materials
+// JEI ITEM HIDING
 // =============================================================================
-// Hide transmuted tier-skip items from JEI item panel.
-// They still work in recipes via forge tags — players discover them
-// through the Codex or by looking up input material uses.
+// (2026-10-11: this file began as the hide list for the five
+//  kubejs:transmuted_* tier-skip items. Those items were removed -- nothing
+//  ever produced or consumed them -- so only the lists below remain.)
 // =============================================================================
 
 JEIEvents.hideItems(event => {
-  event.hide('kubejs:transmuted_steel')
-  event.hide('kubejs:transmuted_manasteel')
-  event.hide('kubejs:transmuted_osmium')
-  event.hide('kubejs:transmuted_diamond')
-  event.hide('kubejs:transmuted_ancient_debris')
-
   // Terramity guns + ammo + gunsmith — design keeps Terramity bosses and
   // structures, removes firearms. Recipe removal in recipe_audit.js, loot
   // strip in lootjs_overhaul.js; this hides the items from the JEI browser
@@ -27,7 +21,9 @@ JEIEvents.hideItems(event => {
     'terramity:meteor_cannon', 'terramity:moondrill_cannon', 'terramity:railgun',
     'terramity:rocket_launcher', 'terramity:pump_action_shotgun',
     'terramity:sawed_off_shotgun', 'terramity:flare_gun',
-    'terramity:hellspec_super_shotgun',
+    // ('terramity:hellspec_super_shotgun' removed 2026-10-11: Terramity 0.9.8
+    //  registers no such item -- only its hellspec_shotshells ammo, listed
+    //  below. An unknown id hides nothing here, so this was a dead entry.)
     'terramity:gunkshot_projectile', 'terramity:flare_gun_projectile',
     'terramity:enderswap_projectile', 'terramity:shadowflame_bullet',
     'terramity:steel_shell', 'terramity:chthonic_shell_casing',

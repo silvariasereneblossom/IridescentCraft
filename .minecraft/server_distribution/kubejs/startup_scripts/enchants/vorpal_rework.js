@@ -33,9 +33,10 @@
 //   At L8 max: +24% crit chance + +40% crit damage + 40% behead-on-crit.
 //
 //   Decapitation roll: unchanged, fires ONLY on critical hits, 5% per
-//   level. Signature melee-Vorpal mechanic stays here -- the magic-
-//   weapon counterpart (icraft:vorpal_arcane) deliberately omits decap
-//   (different identity: stacks crit stats but doesn't behead).
+//   level. Signature melee-Vorpal mechanic stays here. (The magic-weapon
+//   counterpart, iridescent_reforging:vorpal_arcane, got its own decap
+//   back the same day -- 7bd470d7, icraft_magic_enchants.js -- on the
+//   same crit signal; an earlier note here said it omits decap.)
 //
 // We do NOT modify Ensorcellation's VorpalEnchantment Java class --
 // instead we layer behavior on top via:
@@ -61,6 +62,19 @@ try {
   var UUID_vrp = Java.loadClass('java.util.UUID')
   var EnchantmentHelper_vrp = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
   var Player_vrp = Java.loadClass('net.minecraft.world.entity.player.Player')
+
+  // Lethal THROUGH armor (operator ruling 2026-10-11). This handler runs on
+  // LivingHurtEvent, i.e. BEFORE armor / protection / resistance: "health + 1"
+  // set here left an armored mob alive. LethalBlow (tetra-expansion jar) raises
+  // the FINAL damage of a marked victim to its remaining health + 1. Loaded in
+  // a try: with a jar that predates it, the pre-armor amount below is all
+  // there is (the old behaviour).
+  var LethalBlow_vrp = null
+  try {
+    LethalBlow_vrp = Java.loadClass('com.iridescentcraft.reforging.event.LethalBlow')
+  } catch (eLethal) {
+    console.warn('[IridescentCraft] vorpal_rework: LethalBlow not in the jar -- decapitation will not pierce armor')
+  }
 
   var VORPAL_ENCHANT_ID = new ResourceLocation_vrp('ensorcellation', 'vorpal')
   var CRIT_CHANCE_ATTR_ID = new ResourceLocation_vrp('attributeslib', 'crit_chance')
@@ -109,7 +123,8 @@ try {
 
   // Decapitation chance per crit, per level. L1=5%, L2=10%, ..., L8=40%.
   // Scaled so a max-vorpal weapon decapitates on ~40% of crits. Combined
-  // with vanilla crit rate (only on the player-attack crit path) this
+  // with the crit rate (the attribute crit roll on the player's own swing
+  // -- see Hook 2; the vanilla jump-crit is switched off in this pack) this
   // works out to ~5-15% kills-per-swing depending on crit gear.
   var decapChancePerLevel = function(level) {
     return 0.05 * level
@@ -152,18 +167,97 @@ try {
   // -----------------------------------------------------------------------
   // Hook 2: LivingHurtEvent -- decapitate on crit.
   // -----------------------------------------------------------------------
-  // Vanilla Player.attack() sets DamageSource.isCritical via flag set in
-  // the source's properties. We detect by reading DamageSource.isCritical()
-  // (via reflection -- it's a boolean field in DamageSource for 1.20.1).
-  // If the source is a player crit AND the player's mainhand has vorpal,
-  // roll behead.
+  // [2026-10-11] This handler had never run. It began with
+  // `source.isCritical()` -- there is no such method: vanilla 1.20.1
+  // DamageSource has none (javap) and no installed mod mixes one in (all 459
+  // jars scanned) -- so it threw on every hit, inside its own catch. The
+  // next line, `source.getEntity()`, does not exist for scripts either
+  // (KubeJS exposes it as getActual()), and `victim.getType()` is KubeJS's
+  // id STRING, which ForgeRegistries.ENTITY_TYPES.getKey() answers with the
+  // registry default (minecraft:pig) -- the boss blocklist matched nothing.
+  //
+  // WHAT A "CRIT" IS HERE. The vanilla jump-crit is switched off in this
+  // pack: attributecore's CriticalHitHandler sets every player
+  // CriticalHitEvent to DENY (priority HIGHEST). What other mods re-allow
+  // on that event (L2DamageTracker's crit_rate roll, Tetra's crit effect,
+  // ...) is not visible to a script either -- the mod's registries have no
+  // CriticalHitEvent family. Crits are ATTRIBUTE rolls, and the one a
+  // script can observe is the pack's own roll in server_scripts/attributes/
+  // attribute_sync.js: it reads attributeslib:crit_chance (the attribute
+  // Hook 1 raises -- "land more crits ... then sometimes behead") and, when
+  // it fires, stamps the attacker with icraft_last_crit_tick = the server
+  // tick. That stamp is the crit signal, exactly as for Arcane Vorpal
+  // (icraft_magic_enchants.js). It also fits the estimate above: 40% of
+  // crits at L8 is "~5-15% kills-per-swing depending on crit gear" at a
+  // 12-37% crit rate -- an attribute-roll rate that gear moves (a
+  // jump-crit could be forced on every swing, whatever the gear).
+  //
+  // The roll is written in the registry's NORMAL phase, so this handler is
+  // registered LATE (it used to sit in NORMAL, where the order against the
+  // crit roll is unspecified). The stamp is per attacker per TICK, not per
+  // hit: every hit the same player lands in the tick of a crit counts.
+  //
+  // Melee only: the player must also be the DIRECT source of the damage (a
+  // swing), so an arrow or a spell cast while holding the sword does not
+  // behead -- that is Arcane Vorpal's job.
+
+  // Boss blocklist; extend as needed
+  var VORPAL_BOSS_BLOCKLIST = {
+    'minecraft:wither': 1,
+    'minecraft:ender_dragon': 1,
+    'cataclysm:netherite_monstrosity': 1,
+    'cataclysm:ender_guardian': 1,
+    'cataclysm:ignis': 1,
+    'cataclysm:the_leviathan': 1,
+    'twilightforest:naga': 1,
+    'twilightforest:lich': 1,
+    'twilightforest:hydra': 1,
+    'twilightforest:ur_ghast': 1
+  }
+
+  // Registry id of an entity ('minecraft:zombie'), '' when unknown.
+  // getType() = KubeJS's id string; getEntityType() = the vanilla EntityType.
+  var entityIdOf = function(entity) {
+    var s = ''
+    try { s = String(entity.getType()) } catch (e) { s = '' }
+    if (s.indexOf(':') > 0) return s
+    try {
+      var key = ForgeRegistries_vrp.ENTITY_TYPES.getKey(entity.getEntityType())
+      if (key != null) s = String(key.toString())
+    } catch (e2) {}
+    return s
+  }
+
+  // "Don't behead bosses": the list above, plus every id the pack itself
+  // treats as a boss (global.icraft.core.isBoss, server_scripts/0_lib_core.js
+  // -- `global` is shared by all script types and the server scripts are
+  // loaded whenever a world is running). If that library is not there the
+  // list above still applies.
+  var isBossVictim = function(victimId) {
+    if (VORPAL_BOSS_BLOCKLIST[victimId] === 1) return true
+    try {
+      var core = global.icraft ? global.icraft.core : null
+      if (core && typeof core.isBoss === 'function' && core.isBoss(victimId) === true) return true
+    } catch (e) {}
+    return false
+  }
+
+  var decapWarned = false
   var decapHandler = function(event) {
       try {
         var source = event.getSource()
         if (source == null) return
-        if (!source.isCritical()) return  // only crits
-        var attacker = source.getEntity()
+        // Secondary damage (splash / chain / reflect dealt through
+        // icraft.core.dealDamage) is not a swing or a cast of its own: the crit
+        // roll does not run for it, so a same-tick stamp would be someone
+        // else's crit. Same rule as every onHurt handler (0_lib_core.js).
+        try {
+          var coreLib = global.icraft ? global.icraft.core : null
+          if (coreLib && typeof coreLib.secondary === 'function' && coreLib.secondary(event.getEntity())) return
+        } catch (eSecondary) {}
+        var attacker = source.getActual()
         if (!(attacker instanceof Player_vrp)) return
+        if (source.getImmediate() !== attacker) return  // the swing itself, not a projectile / spell
         var weapon = attacker.getMainHandItem()
         if (weapon == null || weapon.isEmpty()) return
         var ench = ForgeRegistries_vrp.ENCHANTMENTS.getValue(VORPAL_ENCHANT_ID)
@@ -171,41 +265,42 @@ try {
         var level = EnchantmentHelper_vrp.getItemEnchantmentLevel(ench, weapon)
         if (level <= 0) return
 
-        // Don't behead bosses / players. Use !attackable check would be
-        // too broad; instead check for the "boss" tag-key in entity NBT
-        // or the type's "minecraft:wither" / "ender_dragon" id.
+        // only crits: did the custom crit roll fire for this attacker on THIS
+        // tick? Same clock, read the same way as the writer (attribute_sync.js:
+        // putLong('icraft_last_crit_tick', attacker.server.tickCount)).
+        var lastCrit = Number(attacker.persistentData.getLong('icraft_last_crit_tick'))
+        var curTick = Number(attacker.server.tickCount)
+        if (lastCrit !== curTick) return
+
+        // Don't behead bosses / players.
         var victim = event.getEntity()
         if (victim instanceof Player_vrp) return
-        var victimType = victim.getType()
-        var victimKey = ForgeRegistries_vrp.ENTITY_TYPES.getKey(victimType)
-        if (victimKey == null) return
-        var victimId = String(victimKey.toString())
-        // Boss blocklist; extend as needed
-        if (victimId === 'minecraft:wither' ||
-            victimId === 'minecraft:ender_dragon' ||
-            victimId === 'cataclysm:netherite_monstrosity' ||
-            victimId === 'cataclysm:ender_guardian' ||
-            victimId === 'cataclysm:ignis' ||
-            victimId === 'cataclysm:the_leviathan' ||
-            victimId === 'twilightforest:naga' ||
-            victimId === 'twilightforest:lich' ||
-            victimId === 'twilightforest:hydra' ||
-            victimId === 'twilightforest:ur_ghast') return
+        var victimId = entityIdOf(victim)
+        if (victimId.indexOf(':') < 0) return
+        if (isBossVictim(victimId)) return
 
         var chance = decapChancePerLevel(level)
         if (Math.random() >= chance) return
 
-        // Decapitate: set damage to victim's current health + 1, ensures kill.
-        // Don't multiply -- just floor at lethal. We add a tiny epsilon to
-        // ensure the damage source isn't rounded to "exactly health" which
-        // some mods treat as non-lethal.
+        // Decapitate: raise the damage to the victim's current health + 1.
+        // Don't multiply -- just floor at lethal: a hit that is already
+        // bigger is left alone (it must never be LOWERED to health + 1).
         var newDmg = victim.getHealth() + 1.0
-        event.setAmount(newDmg)
+        if (newDmg > event.getAmount()) event.setAmount(newDmg)
+        // ...and make it stick after mitigation (see LethalBlow above).
+        if (LethalBlow_vrp != null) LethalBlow_vrp.mark(victim)
       } catch (e) {
-        // Fail-soft
+        // Fail-soft, but not silent: say so once per load.
+        if (!decapWarned) {
+          decapWarned = true
+          console.warn('[IridescentCraft] vorpal_rework decap handler threw (logged once): ' + e)
+        }
       }
   }
-  DamageModifierRegistry_vrp.register('icraft.vorpal_rework_decap', decapHandler)
+  // LATE phase: after attribute_sync's NORMAL-phase crit roll has stamped
+  // icraft_last_crit_tick (registerLate also drops any NORMAL-phase entry
+  // an older copy of this script left under the same key).
+  DamageModifierRegistry_vrp.registerLate('icraft.vorpal_rework_decap', decapHandler)
 
   console.log('[IridescentCraft] vorpal_rework loaded (crit_damage scaling + decap-on-crit)')
 } catch (e) {

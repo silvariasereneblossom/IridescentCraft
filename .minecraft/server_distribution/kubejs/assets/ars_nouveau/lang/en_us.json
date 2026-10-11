@@ -1,3 +1,27 @@
 {
-  "ars_nouveau.perk.spell_damage": "Ars Spell Damage"
+  "ars_nouveau.perk.spell_damage": "Ars Spell Damage",
+
+  "ars_nouveau.perk.max_mana": "Ars Max Mana (no effect here)",
+  "ars_nouveau.perk.max_mana.desc": "No effect in IridescentCraft: Ars spells use the Iron's Spellbooks mana pool.",
+  "ars_nouveau.perk.percent_max_mana": "Ars Max Mana (no effect here)",
+  "ars_nouveau.perk.mana_regen": "Ars Mana Regen (no effect here)",
+  "ars_nouveau.perk.mana_regen.desc": "No effect in IridescentCraft: Ars spells use the Iron's Spellbooks mana pool.",
+  "ars_nouveau.perk_desc.thread_magic_capacity": "No effect in IridescentCraft: Ars spells use the Iron's Spellbooks mana pool, which this thread does not raise.",
+  "attribute.name.ars_nouveau.max_mana": "Ars Max Mana (no effect here)",
+  "attribute.name.ars_nouveau.mana_regen": "Ars Mana Regen (no effect here)",
+
+  "effect.ars_nouveau.mana_regen": "Ars Mana Regeneration (no effect here)",
+  "effect.ars_nouveau.mana_regen.desc": "No effect in IridescentCraft: Ars spells use the Iron's Spellbooks mana pool.",
+  "tooltip.ars_nouveau.source_food": "Grants Ars Mana Regeneration when consumed (no effect here).",
+
+  "ars_nouveau.page.amulet_of_mana_boost": "No effect in IridescentCraft. Ars spells draw from your Iron's Spellbooks mana pool; this amulet raises Ars's own pool, which is not used.",
+  "ars_nouveau.page.amulet_of_mana_regen": "No effect in IridescentCraft. Ars spells draw from your Iron's Spellbooks mana pool; this amulet speeds up Ars's own pool, which is not used.",
+  "ars_nouveau.page.ring_of_lesser_discount": "Rings of Discount reduce the total cost to cast a spell. (Their small bonus to Ars max mana and mana regen has no effect in IridescentCraft.)",
+  "ars_nouveau.page.enchanters_shield": "Upon blocking damage, the user will gain a short duration of Spell Damage (the Mana Regeneration it also grants has no effect in IridescentCraft). Additionally, this shield will repair over time using the wearers mana.",
+  "ars_nouveau.page1.spell_mana": "In IridescentCraft there is one mana pool: Ars spells cast with a $(thing)Spellbook$() draw from your Iron's Spellbooks mana, at half their listed cost. Raise it with Iron's $(item)Max Mana$() and $(item)Mana Regen$() bonuses. Ars's own mana bonuses ($(item)Mage Armor$(), mana amulets, mana potions, glyph count and book tier) have no effect.",
+  "ars_nouveau.page2.spell_mana": "Unlocking glyphs and upgrading your spell book still gates which spells you can cast, but the bonus mana and regeneration they would grant has no effect in IridescentCraft.",
+  "ars_nouveau.page1.armor": "Magical robes can be upgraded with special abilities using Threads (the mana regen they list has no effect in IridescentCraft). The Sorceror's set provides the lowest defence, but provides the most powerful set of slots for Threads. The Arcanist's and Battlemage's sets provide increasingly more defence, but fewer and less powerful Thread Slots. For more information on Threads, see the section on Armor and Perks.",
+  "ars_nouveau.page2.armor_upgrading": "Armor also has three tiers, and these tiers may be increased using the Enchanting Apparatus and the upgrade recipes found in this section. Each tier increases the number and size of the slots of the armor (the mana regen it also lists has no effect in IridescentCraft).",
+  "ars_nouveau.page1.trinkets": "Items and curios can expand your casting and can provide unique buffs. For more casting, you may want to craft a Ring of Discount (the Amulets of Mana Boost and Mana Regen have no effect in IridescentCraft). For travel, see the Belt of Levitation, or improve your mining efficiency with the Jar of Voiding.",
+  "ars_nouveau.page1.source_berry": "A Sourceberry Bush can be found in Taiga and Archwood Forest biomes, and produces Sourceberries. A Sourceberry can be consumed as food. Starbuncles will automatically harvest fully grown Source Berry Bushes, making them useful for early automation of the Agronomic Sourcelink. (The Potion of Mana Regeneration and the Mana Regeneration from Sourceberry foods have no effect in IridescentCraft.)"
 }

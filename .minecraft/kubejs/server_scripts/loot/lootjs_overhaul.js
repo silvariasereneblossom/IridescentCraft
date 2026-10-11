@@ -2358,7 +2358,10 @@ LootJS.modifiers(event => {
     'irons_spellbooks:cooldown_ring',
     'irons_spellbooks:cast_time_ring',
     'irons_spellbooks:concentration_amulet',
-    'ars_nouveau:amulet_of_mana_regen',
+    // ('ars_nouveau:amulet_of_mana_regen' removed 2026-10-11: Ars mana is
+    //  deprecated -- Ars spells use the Iron's pool (ArsManaCapMixin) -- so the
+    //  amulet does nothing; a reward with no effect. The discount ring below
+    //  still works: its spell-cost discount applies to the shared pool.)
     'ars_nouveau:ring_of_lesser_discount'
   ])
   var villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
