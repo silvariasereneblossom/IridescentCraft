@@ -63,6 +63,19 @@ try {
   var EnchantmentHelper_ime = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
   var PlayerClass_ime = Java.loadClass('net.minecraft.world.entity.player.Player')
 
+  // Lethal THROUGH armor (operator ruling 2026-10-11). This handler runs on
+  // LivingHurtEvent, i.e. BEFORE armor / protection / resistance: "health + 1"
+  // set here left an armored mob alive. LethalBlow (tetra-expansion jar) raises
+  // the FINAL damage of a marked victim to its remaining health + 1. Loaded in
+  // a try: with a jar that predates it, the pre-armor amount below is all
+  // there is (the old behaviour).
+  var LethalBlow_ime = null
+  try {
+    LethalBlow_ime = Java.loadClass('com.iridescentcraft.reforging.event.LethalBlow')
+  } catch (eLethal) {
+    console.warn('[IridescentCraft] icraft_magic_enchants: LethalBlow not in the jar -- decapitation will not pierce armor')
+  }
+
   // Enchant + attribute resource locations
   var MANA_BOOST_ENCHANT_ID    = new ResourceLocation_ime('iridescent_reforging', 'mana_boost')
   var MANA_REGEN_ENCHANT_ID    = new ResourceLocation_ime('iridescent_reforging', 'mana_regen')
@@ -332,6 +345,8 @@ try {
         // that is already bigger stays as it is.
         var lethal = victim.getHealth() + 1.0
         if (lethal > event.getAmount()) event.setAmount(lethal)
+        // ...and make it stick after mitigation (see LethalBlow above).
+        if (LethalBlow_ime != null) LethalBlow_ime.mark(victim)
       } catch (e) {
         // Fail-soft, but not silent: say so once per load.
         if (!decapWarned) {

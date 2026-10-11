@@ -30,6 +30,8 @@
 //                                       biome) AND the Ancient Outcrop, the T1
 //                                       entry-boss structure
 //     chests/overgrown_facility_loot  = overgrown_facility (forest/plains/...)
+//     chests/fire_lookout_tower_loot, mudhut_loot, suspicious_shrine_loot too
+// Since 2026-10-11 this file adds NOTHING to an Overworld table.
 // None of these items is stage-locked, so anything in an Overworld table is
 // T1 loot whatever its comment says.
 //
@@ -136,24 +138,26 @@ LootJS.modifiers(event => {
   // =========================================================================
   // RARE tomes + bracelets — audit Phase 5 closure
   // =========================================================================
-  // T2 tomes — fire_lookout_tower, suspicious_shrine, mudhut. All three are
-  // OVERWORLD structures (Terramity has none in a T2 dimension), so these RARE
-  // utility tomes are in practice T1 loot. Left where they are: not part of
-  // the T3 move above, and there is no T2 Terramity structure to move them to.
+  // "T2" tomes (tome_of_commotion, galebounce_tome, velocity_flip,
+  // dimensional_poof) -- now in the two Nether dungeons as well.
+  // They sat in fire_lookout_tower / suspicious_shrine / mudhut, which are all
+  // OVERWORLD structures (suspicious_shrine_loot is even rolled inside the T1
+  // Ancient Outcrop), so they were T1 loot. Terramity has no structure in a T2
+  // dimension; operator ruling 2026-10-11: move them to the Nether with the
+  // rest. That makes them T3 in practice -- later than their label, never
+  // earlier. Each tome had two rolls (one at 10%, one at 8%) and keeps both,
+  // one per dungeon.
   event
-    .addLootTableModifier('terramity:chests/fire_lookout_tower_loot')
+    .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:tome_of_commotion').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:galebounce_tome').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:velocity_flip').when(c => c.randomChance(0.08)))
-
-  event
-    .addLootTableModifier('terramity:chests/suspicious_shrine_loot')
-    .addLoot(LootEntry.of('terramity:tome_of_commotion').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:dimensional_poof').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('terramity:galebounce_tome').when(c => c.randomChance(0.08)))
 
   event
-    .addLootTableModifier('terramity:chests/mudhut_loot')
+    .addLootTableModifier('terramity:chests/chthonian_breach_loot')
+    .addLoot(LootEntry.of('terramity:tome_of_commotion').when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('terramity:galebounce_tome').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:velocity_flip').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:dimensional_poof').when(c => c.randomChance(0.10)))
 

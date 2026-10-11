@@ -61,7 +61,10 @@ var HANDHELD_BUFFS = {
   'simple_staves:flame_wand':         { 'irons_spellbooks:fire_spell_power':      ['addition', 0.35] },
   'simple_staves:wind_essence_wand':  {
     'irons_spellbooks:lightning_spell_power': ['addition', 0.20],
-    'minecraft:generic.movement_speed':       ['addition', 0.05],
+    // +5% movement speed, as the tooltip says (operator ruling 2026-10-11).
+    // This was ['addition', 0.05]: movement_speed has a base of 0.1, so a flat
+    // +0.05 was +50%. multiply_base 0.05 is +5% of the base.
+    'minecraft:generic.movement_speed':       ['multiply_base', 0.05],
   },
   'simple_staves:thunder_wand':       { 'irons_spellbooks:lightning_spell_power': ['addition', 0.35] },
   'simple_staves:venomite_wand':      { 'irons_spellbooks:nature_spell_power':    ['addition', 0.35] },

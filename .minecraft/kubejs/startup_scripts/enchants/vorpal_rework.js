@@ -63,6 +63,19 @@ try {
   var EnchantmentHelper_vrp = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
   var Player_vrp = Java.loadClass('net.minecraft.world.entity.player.Player')
 
+  // Lethal THROUGH armor (operator ruling 2026-10-11). This handler runs on
+  // LivingHurtEvent, i.e. BEFORE armor / protection / resistance: "health + 1"
+  // set here left an armored mob alive. LethalBlow (tetra-expansion jar) raises
+  // the FINAL damage of a marked victim to its remaining health + 1. Loaded in
+  // a try: with a jar that predates it, the pre-armor amount below is all
+  // there is (the old behaviour).
+  var LethalBlow_vrp = null
+  try {
+    LethalBlow_vrp = Java.loadClass('com.iridescentcraft.reforging.event.LethalBlow')
+  } catch (eLethal) {
+    console.warn('[IridescentCraft] vorpal_rework: LethalBlow not in the jar -- decapitation will not pierce armor')
+  }
+
   var VORPAL_ENCHANT_ID = new ResourceLocation_vrp('ensorcellation', 'vorpal')
   var CRIT_CHANCE_ATTR_ID = new ResourceLocation_vrp('attributeslib', 'crit_chance')
   var CRIT_DAMAGE_ATTR_ID = new ResourceLocation_vrp('attributeslib', 'crit_damage')
@@ -274,6 +287,8 @@ try {
         // bigger is left alone (it must never be LOWERED to health + 1).
         var newDmg = victim.getHealth() + 1.0
         if (newDmg > event.getAmount()) event.setAmount(newDmg)
+        // ...and make it stick after mitigation (see LethalBlow above).
+        if (LethalBlow_vrp != null) LethalBlow_vrp.mark(victim)
       } catch (e) {
         // Fail-soft, but not silent: say so once per load.
         if (!decapWarned) {
