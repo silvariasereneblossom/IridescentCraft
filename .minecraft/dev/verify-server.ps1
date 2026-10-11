@@ -34,7 +34,8 @@
 #      the deployment guide) must exist with its recorded size and be recent:
 #      GREEN under 13 h, YELLOW under 24 h, RED beyond that, with none, or when
 #      the launcher's last attempt failed. Backups died silently for six months
-#      once (the backup mod needed git; the box has none; nothing alarmed), so
+#      once (the backup mod needed git on the PATH; the box's git is on none;
+#      nothing alarmed), so
 #      every run of this tool now looks. Pinned (manual-*) backups are counted
 #      and sized: nothing deletes those but the operator. The same section ends
 #      with one line from pull-server-backups.ps1 -Status: the off-box copy on

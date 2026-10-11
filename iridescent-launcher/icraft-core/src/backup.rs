@@ -2,8 +2,8 @@
 //! 2026-10-11: one every 12 hours, newest 2 kept).
 //!
 //! Why this lives in the launcher: the pack's backup mod (FastBack, git-based)
-//! never ran on the box -- there is no git there -- and nothing noticed for six
-//! months. The launcher already owns the one moment a world can be copied
+//! never ran on the box -- the JVM there finds no git (one is installed, but on
+//! no PATH) -- and nothing noticed for six months. The launcher already owns the one moment a world can be copied
 //! safely: the stopped window inside every Cycle (JVM down, world files
 //! closed). The uptime restart policy opens that window at least every 12 h,
 //! so backups need no restarts of their own.

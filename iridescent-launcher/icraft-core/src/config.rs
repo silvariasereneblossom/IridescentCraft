@@ -60,7 +60,7 @@ pub const DENY_LIST_PATTERNS: &[&str] = &[
     "supermartijn642", // removed — dep chain incompat
     "connectedglass",  // removed — SuperMartijn642 dep
     "trashcans",       // removed — SuperMartijn642 dep
-    "fastback",        // removed 2026-10-11 — needs git on the host, never ran on the server; see backup.rs
+    "fastback",        // removed 2026-10-11 — needs git on the JVM's PATH, never ran on the server; see backup.rs
 ];
 
 /// Custom-jar hash manifest filename, sat at the distro root (sibling of
