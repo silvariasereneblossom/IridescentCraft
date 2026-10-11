@@ -14,6 +14,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **Treasure Sense, Motherlode and Fortune's Favor are true extra rolls.** A Treasure Sense proc is a real second kill (Looting counts, player-only drops included); Motherlode and Fortune's Favor are real extra breaks with the tool in your hand (Fortune and Silk Touch count). Blocks that hold items, such as shulker boxes, never trigger them.
 - **The Infested Laboratory no longer hands out Tier 3 progression tokens** — it stands in the Overworld.
 
+## October 2026 — Server owners can tune world generation from the launcher
+
+- **The server launcher's Customizer tab has a Worldgen settings page.** Biome layout, terrain shape and ore generation (TerraBlender, Biomes O' Plenty, Tectonic, Mekanism, Large Ore Deposits, Thermal, Create and more) are listed setting by setting, each with the mod's own description and allowed range, instead of being spread over dozens of config files.
+- **A server's changes are its own and survive pack updates.** They are kept apart from the pack's files and put back before every server start. Any setting can be returned to the pack's value with one click. Nothing changes for players or for other servers unless a server's owner changes something.
+- **New terrain only.** These settings shape chunks as they are generated; land that already exists stays as it is until it is regenerated.
+
 ## October 2026 — Mapping what a world refresh would keep
 
 - **The server launcher can now work out which parts of the world are "somebody's".** Before any terrain is ever regenerated (for example to bring in new world generation), the launcher maps what must be kept: every player's bed chunk and the chunks around it, chunks claimed in Open Parties and Claims, the area around world spawn, waystones a player has activated or placed, and chunks players have spent real time in. The launcher window has a new **Customizer** tab for it: the rules are set on screen and the result is shown as totals, warnings and a map, with anything questionable flagged, such as a lived-in chunk that no rule protects.

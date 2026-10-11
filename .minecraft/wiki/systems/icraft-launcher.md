@@ -66,6 +66,14 @@ Rust workspace with three crates:
 - Nothing is deleted. Carrying a plan out is a separate, later step: it will need a fresh verified backup, the server stopped, and the operator's sign-off on that exact plan.
 - It has its own **Customizer** tab in the launcher window, next to the world backups: what would be regenerated, which dimensions and every protection rule are set on screen, a run is one click, and the result is shown as totals, per-player lines, warnings and a map. Earlier runs can be picked from a list. `icraft regen-dryrun` does the same from the command line.
 
+**Server-side worldgen settings (since 2026-10):**
+- The Customizer tab has a second page, **Worldgen settings**. It lists the pack's world-generation settings file by file: biome layout (TerraBlender, Biomes O' Plenty, the Aether), terrain shape (Tectonic) and ore generation (Mekanism, Large Ore Deposits, Thermal, Create, Create Ore Excavation). Every setting shows the mod's own description and allowed range next to it.
+- A change made there belongs to that server only. The launcher keeps it in a list of its own and writes it back into the mod's config file before every server start, so a pack update cannot undo it. One click gives a setting back the pack's value, and all of a server's own values are shown together in one table.
+- Config files are only written while the server is stopped. A change saved while it is running waits for the next restart.
+- These settings shape terrain as it is generated. Chunks that already exist keep what they were generated with until they are regenerated, and changing the biome layout or the terrain shape of a world in use leaves a visible seam where new chunks meet old ones.
+- A few settings are shown but locked, because they are not server-only: the world's build height, and one snow setting that every player's game reads from its own copy. Not covered yet: the ore amounts the pack sets through its datapacks, and how often the pack's own cherry biomes appear.
+- Every change that reaches a config file is logged, and each file is kept as it was before the first change to it. `icraft settings` does the same from the command line.
+
 **GUI extras:**
 - Status badges row: Forge present, EULA, mod count, last sync SHA, backup age
 - Color-coded log lines per level (red ERROR / orange WARN / blue INFO / gray DEBUG)
