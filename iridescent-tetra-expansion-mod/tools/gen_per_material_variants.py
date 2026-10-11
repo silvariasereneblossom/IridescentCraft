@@ -200,8 +200,13 @@ def generate_spine_variant(book_kind, mat):
     cdr = round(magic_cap / 10000, 4)
     sp_magic = max(2, round(magic_cap / 30))
 
+    # Ars mana is DEPRECATED in this pack (ArsManaCapMixin routes every Ars mana
+    # call through the Iron's pool; Ars's own regen is a no-op), so the Ars
+    # book's "mana regen" spine grants the IRON'S attribute. It granted
+    # **ars_nouveau.perk.mana_regen until 2026-10-11 -- 69 variants that did
+    # nothing.
     attr_key = ("**irons_spellbooks:cooldown_reduction" if book_kind == "iss_book"
-                else "**ars_nouveau:ars_nouveau.perk.mana_regen")
+                else "**irons_spellbooks:mana_regen")
 
     return {
         "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
@@ -220,6 +225,10 @@ def generate_front_cover_variant(book_kind, mat):
     sp = round(magic_cap / 20000, 4)
     extra_magic = max(2, round(magic_cap / 25))
 
+    # The Ars key is a PERCENT modifier on a flat, base-0 attribute: by itself it
+    # multiplies zero. It is made real in Java -- ArsSpellDamagePercent applies
+    # the caster's percent modifiers on this attribute to Ars spell damage
+    # (operator decision 2026-10-11). Do not "fix" it to a flat value here.
     attr_key = ("**irons_spellbooks:spell_power" if book_kind == "iss_book"
                 else "**ars_nouveau:ars_nouveau.perk.spell_damage")
 
@@ -276,8 +285,11 @@ def generate_back_cover_variant(book_kind, mat):
 
     mana = max(3, round(magic_cap / 20))
 
-    attr_key = ("irons_spellbooks:max_mana" if book_kind == "iss_book"
-                else "ars_nouveau:ars_nouveau.perk.max_mana")
+    # Both books grant the Iron's attribute: Ars mana is deprecated (see the
+    # spine note above) and Ars max mana IS irons_spellbooks:max_mana here. The
+    # Ars book granted ars_nouveau.perk.max_mana until 2026-10-11 (68 dead
+    # variants).
+    attr_key = "irons_spellbooks:max_mana"
 
     extract = _book_extract({attr_key: mana}, max(2, round(magic_cap / 40)), integrity=1)
 

@@ -21,14 +21,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 import dev.shadowsoffire.attributeslib.api.client.GatherSkippedAttributeTooltipsEvent;
 
 /**
- * Suppresses the duplicate Ars-perk lines on modular spell book tooltips.
+ * Suppresses the deprecated Ars MANA perk lines on modular spell book tooltips.
  *
- * The mana bridge (kubejs/server_scripts/attributes/mana_bridge.js) mirrors
- * ISS max_mana / mana_regen onto the equivalent Ars Nouveau perk attributes
- * so the two ecosystems stay in lockstep. When both modifier rows show up
- * in the tooltip the player sees the same effective stat twice with
- * confusingly different numbers (Ars base = 0 vs ISS base = 100, and the
- * perk attribute is multiplicative on a 0-base).
+ * Ars mana is deprecated in this pack: every Ars mana operation is routed
+ * through the Iron's Spellbooks pool ({@code ArsManaCapMixin}), so a modifier
+ * on Ars's own max-mana / mana-regen perk attributes does nothing. The modular
+ * books no longer grant those (the Ars book's back cover and spine grant the
+ * Iron's attributes since 2026-10-11); this stays as a guard so a stray
+ * modifier never advertises a stat that has no effect.
+ *
+ * NOT hidden any more: {@code ars_nouveau.perk.spell_damage}. Its percent
+ * modifiers are real now ({@code ArsSpellDamagePercent}) and the Ars book's
+ * front cover line should be visible. Until 2026-10-11 it was hidden here
+ * together with the mana lines -- which also hid the fact that it did nothing.
+ *
+ * (History: this class was written for kubejs/.../mana_bridge.js, which
+ * mirrored ISS max_mana / mana_regen onto the Ars perk attributes and made
+ * each stat show twice. That script was replaced by the mixin on 2026-05-15.)
  *
  * Apotheosis' ALConfig "Hidden Attributes" entries only hide attributes
  * from the Attributes GUI -- the item tooltip is rendered by Apothic
@@ -47,8 +56,6 @@ public final class HidePerkTooltips {
             new ResourceLocation("ars_nouveau", "ars_nouveau.perk.max_mana");
     private static final ResourceLocation ARS_MANA_REGEN =
             new ResourceLocation("ars_nouveau", "ars_nouveau.perk.mana_regen");
-    private static final ResourceLocation ARS_SPELL_DAMAGE =
-            new ResourceLocation("ars_nouveau", "ars_nouveau.perk.spell_damage");
 
     @SubscribeEvent
     public static void gather(GatherSkippedAttributeTooltipsEvent event) {
@@ -63,7 +70,7 @@ public final class HidePerkTooltips {
             for (Attribute attr : map.keySet()) {
                 ResourceLocation id = ForgeRegistries.ATTRIBUTES.getKey(attr);
                 if (id == null) continue;
-                if (id.equals(ARS_MAX_MANA) || id.equals(ARS_MANA_REGEN) || id.equals(ARS_SPELL_DAMAGE)) {
+                if (id.equals(ARS_MAX_MANA) || id.equals(ARS_MANA_REGEN)) {
                     for (AttributeModifier mod : map.get(attr)) {
                         event.skipUUID(mod.getId());
                     }
