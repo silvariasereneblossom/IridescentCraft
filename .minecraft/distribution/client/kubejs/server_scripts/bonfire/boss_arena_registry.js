@@ -456,10 +456,14 @@ global.ICRAFT_BOSS_ARENAS = {
         structure: "cataclysm:ruined_citadel",
         waystone: "Ruined Citadel",
     },
+    // Deep Aether registers no dimension: its biomes (and both arenas below)
+    // generate inside aether:the_aether. 'deep_aether:deep_aether' is the mod's
+    // TerraBlender region name; as a dimension it never matched, so the HUD
+    // pointer read "in deep_aether:deep_aether" forever. (2026-10-11)
     deep_aether_eots: {
         display: "Eye of the Storm",
         tier: 4,
-        dimension: "deep_aether:deep_aether",
+        dimension: "aether:the_aether",
         structure: "deep_aether:brass_dungeon",
         waystone: "Brass Dungeon",
     },
@@ -473,7 +477,7 @@ global.ICRAFT_BOSS_ARENAS = {
     terramity_virtue: {
         display: "Virtue",
         tier: 4,
-        dimension: "deep_aether:deep_aether",
+        dimension: "aether:the_aether",
         structure: "terramity:prismatic_pond",
         waystone: "Prismatic Pond",
     },
