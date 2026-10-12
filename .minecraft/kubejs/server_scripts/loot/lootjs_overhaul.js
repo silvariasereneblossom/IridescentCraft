@@ -1100,11 +1100,15 @@ LootJS.modifiers(event => {
   // it; table regexes are full-match, so they matched NO table. Completed with
   // .* (operator ruling: the structures generate, so the rules must reach
   // them). No change in what drops: loot_overhaul.js already strips diamonds
-  // from every dungeons_arise:chests/ table.
+  // from every dungeons_arise:chests/ table in the Overworld.
+  // OVERWORLD ONLY, like that strip (operator ruling 2026-10-11, decision
+  // sheet D3): the aviary generates only in the End in this pack, and a T1-T2
+  // diamond strip has no business in a T4 chest.
   // T1-T2 structures: villages, pubs, fishing huts, farms
   event
     .addLootTableModifier(
       /dungeons_arise:chests\/(fishing_hut|bandit_village|greenwood_pub|giant_mushroom|bathhouse|aviary)\/.*/)
+    .anyDimension('minecraft:overworld')
     .removeLoot('minecraft:diamond')
 
   // T2 structures: temples, towers, foundry
@@ -1114,6 +1118,7 @@ LootJS.modifiers(event => {
     .addLootTableModifier(
       /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\/.*/,
       /dungeons_arise:chests\/desert_city_(?:big|medium|small)/)
+    .anyDimension('minecraft:overworld')
     .removeLoot('minecraft:diamond')
 
   // T2-T3 structures: heavenly series (challenger, conqueror, rider).
@@ -1944,6 +1949,46 @@ LootJS.modifiers(event => {
   regexDiamondStrip.removeLoot('minecraft:diamond_leggings')
   regexDiamondStrip.removeLoot('minecraft:diamond_boots')
   regexDiamondStrip.removeLoot('minecraft:diamond_horse_armor')
+
+  // ─── Pre-T3 diamonds OUTSIDE the chest context (operator ruling 2026-10-11, decision sheet D2) ───
+  // LootType.CHEST is the CALLER's parameter set, so the blanket strip above
+  // never sees a table that is rolled another way. Three such tables handed
+  // out diamonds before T3 (jar-checked, loot audit 2026-10-11):
+  //   - aquaculture:box/treasure_chest — a fished-up Treasure Chest opened in
+  //     hand (LootBoxItem, EMPTY parameter set): 15% a diamond. It is a
+  //     one-item roll, so the diamond becomes an EMERALD instead of nothing.
+  //   - aether:selectors/whirlwind_junk, evil_whirlwind_junk — what an Aether
+  //     whirlwind throws out (SELECTOR set): 1 in 100 / 1 in 160. Removed.
+  //   - tetra:actions/geode — a geode cracked on a workbench: 6% a diamond and
+  //     9% a pristine diamond (which Tetra's own recipe turns into a diamond).
+  //     Both become their emerald counterpart, so a geode is never worse than
+  //     before, just not a diamond.
+  // Same dimension list as the blanket strip: opened / cracked in a T3+
+  // dimension they keep the diamond, exactly as a chest there does.
+  // (The dimension list is written out each time: every anyDimension call in
+  //  this pack passes separate arguments, never an array.)
+  event
+    .addLootTableModifier('aquaculture:box/treasure_chest')
+    .anyDimension('minecraft:overworld',
+      'twilightforest:twilight_forest',
+      'aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .replaceLoot('minecraft:diamond', LootEntry.of('minecraft:emerald'), true)
+  event
+    .addLootTableModifier('aether:selectors/whirlwind_junk', 'aether:selectors/evil_whirlwind_junk')
+    .anyDimension('minecraft:overworld',
+      'twilightforest:twilight_forest',
+      'aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .removeLoot('minecraft:diamond')
+  event
+    .addLootTableModifier('tetra:actions/geode')
+    .anyDimension('minecraft:overworld',
+      'twilightforest:twilight_forest',
+      'aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .replaceLoot('minecraft:diamond', LootEntry.of('minecraft:emerald'), true)
+    .replaceLoot('tetra:pristine_diamond', LootEntry.of('tetra:pristine_emerald'), true)
 
   // =========================================================================
   // SECTION 5A2: OVERWORLD CURIO DROPS

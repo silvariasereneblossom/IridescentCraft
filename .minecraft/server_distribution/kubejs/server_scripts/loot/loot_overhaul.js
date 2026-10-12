@@ -70,10 +70,13 @@ LootJS.modifiers(event => {
         // [2026-10-10] was `.addWeightedLoot([Item.of(token).withChance(10)])`.
         // A weighted pool picks ONE entry by weight, so a ONE-entry pool always
         // drops it (withChance only sets the weight): the token dropped on every
-        // kill. Now the 10% the line reads as. Same fix on the five other
-        // single-entry pools in this file (Ur-Ghast, Netherite Monstrosity,
-        // Harbinger, Wither, Gaia Guardian).
-        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.10)))
+        // kill. That day it became the 10% the line read as. Same on the five
+        // other single-entry pools in this file (Ur-Ghast, Netherite
+        // Monstrosity, Harbinger, Wither, Gaia Guardian), at 10-15%.
+        // [2026-10-11] 60% on all six (operator ruling, decision sheet C1): the
+        // sibling bosses, whose token shared a pool with a waystone core, sit at
+        // 56-67%, and players had been getting these six on every kill.
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:soulrender").when(c => c.randomChance(0.15))
         )
@@ -95,8 +98,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:ur_ghast_tear").limitCount([1, 2])
         )
-        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 15%
-        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.15)))
+        // [2026-10-10] was a one-entry weighted pool (always dropped), then 15%;
+        // [2026-10-11] 60%, see the Lich above (decision sheet C1)
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:whisperwind").when(c => c.randomChance(0.20))
         )
@@ -222,8 +226,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 3])
         )
-        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
-        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.10)))
+        // [2026-10-10] was a one-entry weighted pool (always dropped), then 10%;
+        // [2026-10-11] 60%, see the Lich above (decision sheet C1)
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:brimstone_claymore").when(c => c.randomChance(0.15))
         )
@@ -246,8 +251,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 2])
         )
-        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
-        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.10)))
+        // [2026-10-10] was a one-entry weighted pool (always dropped), then 10%;
+        // [2026-10-11] 60%, see the Lich above (decision sheet C1)
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:shadowsting").when(c => c.randomChance(0.18))
         )
@@ -328,11 +334,15 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:wither_bone").limitCount([3, 6])
         )
-        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 15%
-        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.15)))
+        // [2026-10-10] was a one-entry weighted pool (always dropped), then 15%;
+        // [2026-10-11] 60%, see the Lich above (decision sheet C1)
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:soulkeeper").when(c => c.randomChance(0.15))
         )
+        // (The Wither is also the source of simplyswords:dormant_relic: guaranteed
+        //  on a player's first kill, 15% afterwards. That is not a loot-table
+        //  drop: loot/iss_boss_first_kill.js.)
 
     // Accumulation materials: Blaze essence, Wither Skeleton soul fragment
     global.icraftEntityMod(event, "minecraft:blaze")
@@ -374,8 +384,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:gaia_spirit_fragment").limitCount([2, 4])
         )
-        // [2026-10-10] was a one-entry weighted pool (always dropped) — now 10%
-        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.10)))
+        // [2026-10-10] was a one-entry weighted pool (always dropped), then 10%;
+        // [2026-10-11] 60%, see the Lich above (decision sheet C1)
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.60)))
         .addLoot(
             LootEntry.of("simplyswords:magiblade").when(c => c.randomChance(0.20))
         )
@@ -553,8 +564,14 @@ LootJS.modifiers(event => {
     // mushroom variants, plague_asylum, small_blimp, thornborn_towers,
     // trading_outpost, wishing_well
     // Tier: Mixed T1-T2 (overworld structures)
+    //
+    // OVERWORLD ONLY (operator ruling 2026-10-11, decision sheet D3). In this
+    // pack Dungeons Arise also generates in the End: the aviary only there, the
+    // three heavenly_* structures in both. Without the gate this T1-T2 strip
+    // took diamonds, diamond armor and enchanted books out of T4 End chests.
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^dungeons_arise:chests\/.*/)
+        .anyDimension("minecraft:overworld")
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:diamond_sword")
         .removeLoot("minecraft:diamond_chestplate")
