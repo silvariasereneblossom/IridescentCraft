@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5649efdf",
+    "generated_from":  "ba256896",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6464,8 +6464,8 @@
                                                                           "size":  3252
                                                                       },
                   "kubejs/data/icraft/tags/items/armor_robe.json":  {
-                                                                        "sha256":  "cd040ff453431a603d472182a111167a07d7c84086aa4e828bbacc855fb80a6d",
-                                                                        "size":  3583
+                                                                        "sha256":  "8cbc0c91159141fa9a241c505b82b62cd6c7310b5597bc43b0483e8e3fd54e0c",
+                                                                        "size":  3580
                                                                     },
                   "kubejs/data/icraft/tags/items/magic_weapon.json":  {
                                                                           "sha256":  "4593581bfb2dfb5e9b5afbe820284e864b56f528b854bf3fb71322935ca0b7a3",
