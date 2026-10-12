@@ -51,6 +51,24 @@ Each dimension has unique combat mechanics beyond stat scaling:
 - **The Abyss (TATOS):** Oppressive Darkness (no held light + low light → mining-fatigue + slowness), Corruption (periodic hunger ticks), Fear Aura (Darkness within 16 blocks of Abyss bosses), Void Whispers (Weakness below Y=20). These fire in `theabyss:the_abyss` via `dimension_mechanics.js`. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 - **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached via the Deep-Aether End Compass → End Bastion (replaces the Eye of Ender). 9 advancement overrides, 5 End Apotheosis affixes.
 
+### Armor damage reduction
+
+Armor has diminishing returns, for players and mobs alike. Each point is worth less than the one before it, and the share blocked is the same for a small hit and a big one. Armor toughness does not enter this step.
+
+| Armor | Blocked | Damage taken |
+|---|---|---|
+| 0 | 0% | 100% |
+| 10 | 24% | 76% |
+| 20 | 35% | 65% |
+| 30 | 42% | 58% |
+| 50 | 51% | 49% |
+| 100 | 63% | 37% |
+| 200 | 77% | 23% |
+| 400 | 90% | 10% |
+| about 520 and up | 95% (cap) | 5% |
+
+In force since October 2026 (see the [changelog](../design/changelog.md)). General Protection adds flat armor (+0.75 per level) and so goes through the same table.
+
 ## Champions System (REMOVED 2026-04-07)
 
 Champions Unofficial has been removed from the modpack. The mod had a broken rank config system, was unmaintained, and generated error spam on every mob spawn event causing server lag. Elite mob encounters are now handled by Majrusz's Progressive Difficulty (see below).

@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Armor follows its designed curve
+
+- **Armor now has the diminishing returns it was designed with in June.** That curve never took effect: a mistake in the setting made the game fall back to the armor mod's default. From the next server restart armor blocks about 24% of a hit at 10 armor, 35% at 20, 51% at 50, 63% at 100 and 77% at 200, up to a cap of 95%.
+- **Ordinary mobs hurt more.** Until now armor blocked most of a small hit (67% at 20 armor, 91% at 100) and much less of a big one. Now it blocks the same share of every hit, so a small hit gets through about twice as hard at 20 armor and four times as hard at 100.
+- **The biggest boss hits are blocked a little better than before**, because the old default let large hits punch through armor. Mid-sized hits change little.
+- **Your gear is unchanged.** Armor points from equipment, enchantments, classes and races are what they were; only how many points block how much has changed.
+
 ## October 2026 — The server launcher can carry a world refresh out
 
 - **The launcher can now reset the parts of the world a refresh plan marks, and nothing else.** The plan is the map made earlier: beds, claims, the spawn area, used waystones and lived-in chunks are kept exactly as they are; the rest is taken out so Minecraft generates it again when somebody goes there. **Nothing has been regenerated on the test server**: this is the tool, not a run of it.
