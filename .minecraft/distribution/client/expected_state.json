@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8cc833fa",
+    "generated_from":  "36dd71dd",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3420,8 +3420,8 @@
                                                                                        "size":  946
                                                                                    },
                   "config/heracles/quests/onboarding/onboarding_first_level.json":  {
-                                                                                        "sha256":  "c321d4092741d36c0db072e95bab9aac322f1020b2a2d81e0656d3fb295f3839",
-                                                                                        "size":  1067
+                                                                                        "sha256":  "2662f0b8ed658eda62b2054700d64b8e0208bc5a67c0676e2a5d2a51c4d66a65",
+                                                                                        "size":  1122
                                                                                     },
                   "config/heracles/quests/onboarding/onboarding_first_log.json":  {
                                                                                       "sha256":  "071ceeafc9f55edf48782096bbb63e01c2f9a918435d049148ffed86c64fce31",
@@ -5880,8 +5880,8 @@
                                                                               "size":  372
                                                                           },
                   "kubejs/assets/lovely_sparkle_pieces/lang/en_us.json":  {
-                                                                              "sha256":  "9503b7bce8c08754ce549d82b57cb6178e3eff5d18fd25b2f9bab18d205780aa",
-                                                                              "size":  616
+                                                                              "sha256":  "68e56ff46e66d7b0ba74d89d6a66a0d54eadcfb0b8d3c17a74d0f0d01e20aad8",
+                                                                              "size":  714
                                                                           },
                   "kubejs/assets/modonomicon/lang/en_us.json":  {
                                                                     "sha256":  "5a1a72a57501f051468a4756de3faa65c11f35eef2010e40d3633b233c1453b5",
@@ -6960,8 +6960,8 @@
                                                                "size":  4099
                                                            },
                   "kubejs/server_scripts/0_lib_aptitudes.js":  {
-                                                                   "sha256":  "cc99cb7b96f51a22a52124d34a56c588ed313215e3678997a538dd8b3451304d",
-                                                                   "size":  21745
+                                                                   "sha256":  "1e570d6ec9b5ea8c6724911d1eda78ea71c957301d212f8b7844bcc7f0eab444",
+                                                                   "size":  21766
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
                                                               "sha256":  "cbdb5e518b540e4350144716dcebf5b8ef9a2bf13087ffa8add86173863ad516",
@@ -7003,10 +7003,6 @@
                                                                          "sha256":  "6faa498662e09a4a006e155f2552aeb177320fed5ea9ef5bac697b4c64810274",
                                                                          "size":  20890
                                                                      },
-                  "kubejs/server_scripts/aptitude_cost_backport.js":  {
-                                                                          "sha256":  "06ed0dece5bebf4cabed8e2b1532066dc694d3722dd04b4634104a1e7f0b45af",
-                                                                          "size":  8814
-                                                                      },
                   "kubejs/server_scripts/armor_weight.js":  {
                                                                 "sha256":  "0b0331a40ddf6dbbed7c1fdfe90b619694b26cc5e44136b35b890eb23bc99ef4",
                                                                 "size":  17036
@@ -7424,8 +7420,8 @@
                                                                              "size":  31716
                                                                          },
                   "kubejs/server_scripts/quests/onboarding_bridge.js":  {
-                                                                            "sha256":  "d53f5bba1a0bfaeb230eab358e6d853ebe53086aac5338ced4f6115bdfc47caa",
-                                                                            "size":  8360
+                                                                            "sha256":  "9d51caab4a92164a6a60757dcf99e3c13e8cbc6a080018004ae69b55af538750",
+                                                                            "size":  9055
                                                                         },
                   "kubejs/server_scripts/randomize_blank_scrolls.js":  {
                                                                            "sha256":  "27abb252b84ac13159ba1c5b372e1e0030729677bb5c3392b42e1aac1262f137",
