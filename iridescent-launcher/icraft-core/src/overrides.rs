@@ -1504,6 +1504,46 @@ mod tests {
         assert!(resolve(&fx.cfg, PACK).is_err());
     }
 
+    /// A value inside a datapack zip is on the world's record like a value in
+    /// a config file (a regeneration reads `config_changes`), and it is no
+    /// part of the start guard: not held against a start, not in its way.
+    #[test]
+    fn a_datapack_value_is_on_the_worlds_record_and_no_part_of_the_start_guard() {
+        let fx = Fx::new("zip-record");
+        pack_zip(&fx, IRON_JSON);
+        fx.write("world/level.dat", "x");
+        let key = "placement[0].count";
+        stage(&fx.cfg, IRON, key, "90", "window").unwrap();
+        apply(&fx.cfg, "window");
+        pack_zip(&fx, IRON_JSON); // a sync
+        assert_eq!(fx.outcomes("server start"), [change(key, Outcome::Reapplied, "113", "90")]); // not a change of value
+
+        let manifest: serde_json::Value = serde_json::from_str(&fx.read("world/.icraft_world.json")).unwrap();
+        let changes = manifest["config_changes"].as_array().unwrap();
+        assert_eq!(changes.len(), 1, "{manifest}");
+        assert_eq!((changes[0]["file"].as_str(), changes[0]["key"].as_str()), (Some(IRON), Some(key)));
+        assert_eq!((changes[0]["what"].as_str(), changes[0]["from"].as_str(), changes[0]["to"].as_str()), (Some("set"), Some("113"), Some("90")));
+
+        // Alone on the list it guards nothing.
+        assert!(guarded_keys(&fx.cfg).is_empty());
+        assert!(start_guard(&fx.cfg).is_ok());
+        assert!(!fx.exists(REFUSED_FILE));
+        // Beside a pinned whitelist the guard still holds the server to that.
+        fx.write("server.properties", "level-name=world\nwhite-list=true\n");
+        pin(&fx.cfg, "server.properties", "white-list", "false", "t").unwrap();
+        assert_eq!(guarded_keys(&fx.cfg), ["white-list"]);
+        fx.write("server.properties", "level-name=world\nwhite-list=false\n"); // a sync
+        pack_zip(&fx, IRON_JSON);
+        assert!(start_guard(&fx.cfg).unwrap_err().contains("white-list=false"));
+        assert!(fx.exists(REFUSED_FILE));
+        // The normal start: both are put back, then the guard passes.
+        assert_eq!(apply(&fx.cfg, "server start").count(|o| *o == Outcome::Reapplied), 2);
+        assert!(start_guard(&fx.cfg).is_ok());
+        assert!(!fx.exists(REFUSED_FILE));
+        assert_eq!(fx.states(), [State::InFile, State::InFile]);
+        assert!(zip_entries(&fx)[1].1.contains("\"count\": 90"));
+    }
+
     #[test]
     fn the_list_round_trips_and_tolerates_a_bom() {
         let fx = Fx::new("store");
