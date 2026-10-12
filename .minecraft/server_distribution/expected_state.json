@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e2d7cb3c",
+    "generated_from":  "f4add34d",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7272,8 +7272,8 @@
                                                                             "size":  4651
                                                                         },
                   "kubejs/server_scripts/loot/loot_overhaul.js":  {
-                                                                      "sha256":  "70707df5b1a19b58618aa7330bdca85cbecd6bd1dac151d319ae23eb681a8eab",
-                                                                      "size":  41175
+                                                                      "sha256":  "6fb540cbc8ffb21297440476ce6e5d3cbc4bc7942081ab1fd4a605e47d8b42a4",
+                                                                      "size":  41246
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
                                                                         "sha256":  "d64a978fb50e8b391f8fc152747996711c5a8b3f5d477dd071afacd11c011c62",
@@ -7496,8 +7496,8 @@
                                                                                  "size":  1477
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "7980915e3692c692a35ae3194985d16e90ca3675d4cd50fdc889a8ca12bea4a4",
-                                                                              "size":  32206
+                                                                              "sha256":  "bb504b8a79628d30f0f35a9b67dbfc8d936ef3efa2b6ab00ee68e908b0a25d5a",
+                                                                              "size":  32293
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "519ce4892061f9c4848855d812112543ef9d3793a77b2ac9e6690d8872f84f81",
