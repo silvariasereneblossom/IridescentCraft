@@ -37,6 +37,26 @@
 #      reason and date empty, and such a file is refused. -NoBaseline switches
 #      the tier off (for old boots); it is then reported NOT RUN, never "0 new".
 #      The file is public: no entry may carry a player name, chat or an address.
+#   6. STALE baseline entries: an entry of either list whose line the server no
+#      longer prints. A fixed defect left on the list reads as an open one, so it
+#      is reported (STALE DEFECT / STALE ACCEPTED) for someone to delete. It is a
+#      report line, NOT a finding: no verdict, no exit code and no `open` count
+#      depends on it, and it is not written to the findings log.
+#        - Stale = absent from -StaleBoots boots in a row (default 2): the boot
+#          checked and the complete boot before it, which is read from the
+#          rotated logs (<date>-<n>.log.gz) next to latest.log. Two, because one
+#          boot without the line is a fix that may not hold: on 2026-10-12 the
+#          repaired Crust config loaded cleanly once and failed again on the next
+#          boot. A wrongly deleted entry is not lost; its line comes back as NEW.
+#        - Judged only on one whole boot: latest.log starts at the JVM start (not
+#          rolled at midnight, not a part of a log) and has its Done line. A
+#          short or partial log gives one note with a count, never a list.
+#        - An entry with "runtime": true is never stale: a line that depends on a
+#          player, the world or the network is not printed in every boot.
+#          -ProposeBaseline marks the signatures first printed after Done.
+#        - The KubeJS logs have no rotated copies, so their entries are counted
+#          in a note and not called stale (-StaleBoots 1 judges every entry on
+#          the boot checked alone).
 #
 # USAGE (Windows PowerShell 5.1 or PowerShell 7)
 #   loud-check.ps1 -LogsDir "Z:\...\IridescentCraft Dedicated Server\logs"
@@ -56,6 +76,8 @@
 #   -Sources        subset of: kubejs/server.log kubejs/startup.log latest.log debug.log
 #                   (default: the first three, and debug.log when it exists)
 #   -Sha / -Boot    override what is read from .icraft_last_sha / the first latest.log line.
+#   -StaleBoots     boots in a row without its line before a baseline entry is called
+#                   stale (check 6). Default 2; 1 = the boot checked alone.
 #
 # OUTPUT
 #   The report goes to the console. Nothing is written unless -Write is given
@@ -79,6 +101,8 @@
 # Finding kinds: ERROR (failure line / pattern), MISSING (liveness), STALE (script
 # on the box, not in the tree), NEW (signature not in the baseline, or a known
 # defect that is not fixed; severity AMBER), CHECK-FAILED.
+# Not a finding: `STALE DEFECT` / `STALE ACCEPTED` (check 6), printed after the
+# findings; the last line of the report carries their count.
 # The launcher will own the on-box watcher; this script is its reference and the
 # post-deploy check (verify-server.ps1). ASCII only: Windows PowerShell 5.1 reads a
 # BOM-less script as ANSI.
@@ -95,6 +119,7 @@ param(
     [string[]]$Sources,
     [string]$Sha,
     [string]$Boot,
+    [int]$StaleBoots = 2,
     [switch]$Write,
     [string]$FindingsPath,
     [string]$StatusPath,
@@ -123,6 +148,8 @@ $findingIds = New-Object 'System.Collections.Generic.HashSet[string]'
 $evaluated  = New-Object 'System.Collections.Generic.HashSet[string]'   # "<family>|<src>" judged in this pass
 $notRun     = New-Object System.Collections.Generic.List[string]
 $info       = New-Object System.Collections.Generic.List[string]
+$staleEntries = New-Object System.Collections.Generic.List[object]   # check 6: reported, never a finding
+if ($StaleBoots -lt 1) { $StaleBoots = 1 }
 
 function Add-Finding {
     param([string]$Kind, [string]$Sev, [string]$Id, [string]$Src, [string]$Detail)
@@ -148,21 +175,51 @@ function Get-Family {
         default            { return 'check' }
     }
 }
-# Shared read: the running server holds these files open for writing.
+# Shared read: the running server holds these files open for writing. A rotated
+# log (.gz) is read through gzip; -Max stops after that many lines (a file's head).
 function Read-LogLines {
-    param([string]$Path)
+    param([string]$Path, [int]$Max = 0)
     $share = [System.IO.FileShare]::ReadWrite -bor [System.IO.FileShare]::Delete
     $fs = New-Object System.IO.FileStream($Path, [System.IO.FileMode]::Open, [System.IO.FileAccess]::Read, $share)
     try {
-        $sr = New-Object System.IO.StreamReader($fs, [System.Text.Encoding]::UTF8)
+        $stream = $fs
+        if ($Path.EndsWith('.gz', [System.StringComparison]::OrdinalIgnoreCase)) {
+            $stream = New-Object System.IO.Compression.GZipStream($fs, [System.IO.Compression.CompressionMode]::Decompress)
+        }
+        $sr = New-Object System.IO.StreamReader($stream, [System.Text.Encoding]::UTF8)
         $list = New-Object System.Collections.Generic.List[string]
         while ($true) {
             $line = $sr.ReadLine()
             if ($null -eq $line) { break }
             $list.Add($line)
+            if ($Max -gt 0 -and $list.Count -ge $Max) { break }
         }
         return , $list
     } finally { $fs.Dispose() }
+}
+# "[12Oct2026 03:24:10.123] ..." -> "2026-10-12T03:24:10": the log's own clock (the
+# box's local time, so no zone designator), sortable as text. $null for a line without one.
+$Months  = @{ Jan = 1; Feb = 2; Mar = 3; Apr = 4; May = 5; Jun = 6; Jul = 7; Aug = 8; Sep = 9; Oct = 10; Nov = 11; Dec = 12 }
+$rxClock = New-Object regex '^\[(\d{2})([A-Za-z]{3})(\d{4}) (\d{2}:\d{2}:\d{2})'
+function Get-LogClock {
+    param([string]$Line)
+    $m = $rxClock.Match($Line)
+    if (-not $m.Success -or -not $Months.ContainsKey($m.Groups[2].Value)) { return $null }
+    return ('{0}-{1:00}-{2}T{3}' -f $m.Groups[3].Value, $Months[$m.Groups[2].Value], $m.Groups[1].Value, $m.Groups[4].Value)
+}
+# One whole boot starts with the launcher's first line. A latest.log that was rolled
+# at midnight, or a part of a log, does not: what it lacks was printed elsewhere.
+$rxBootStart = New-Object regex 'ModLauncher running: args'
+$rxRolled    = New-Object regex '^(\d{4}-\d{2}-\d{2})-\d+\.log\.gz$'
+function Test-BootStart {
+    param($LineList)
+    $n = 0
+    foreach ($l in $LineList) {
+        if ($rxBootStart.IsMatch($l)) { return $true }
+        $n++
+        if ($n -ge 10) { break }
+    }
+    return $false
 }
 function Get-Hash8 {
     param([string]$Text)
@@ -186,6 +243,30 @@ function Get-Signature {
     if ($s.Length -gt 200) { $s = $s.Substring(0, 200) }
     return $s
 }
+# The signatures of one log: how often each is printed, in first-seen order, and the
+# (1-based) line of the first one. $Rx captures the level and the text.
+function Get-Observed {
+    param($LineList, [regex]$Rx)
+    $obs   = New-Object 'System.Collections.Generic.Dictionary[string,int]'
+    $first = New-Object 'System.Collections.Generic.Dictionary[string,int]'
+    $order = New-Object System.Collections.Generic.List[string]
+    $i = 0
+    foreach ($l in $LineList) {
+        $i++
+        $m = $Rx.Match($l)
+        if (-not $m.Success) { continue }
+        $sig = $m.Groups[1].Value + ' ' + (Get-Signature $m.Groups[2].Value)
+        if ($obs.ContainsKey($sig)) { $obs[$sig] = $obs[$sig] + 1 } else { $obs[$sig] = 1; $first[$sig] = $i; $order.Add($sig) }
+    }
+    return @{ counts = $obs; order = $order; first = $first }
+}
+function Format-IdList {
+    param($Items)
+    $ids = @($Items | ForEach-Object { $_.id } | Sort-Object)
+    if ($ids.Count -gt 6) { return (($ids[0..5] -join ', ') + ', ...') }
+    return ($ids -join ', ')
+}
+function Format-Entries { param([int]$N) if ($N -eq 1) { return '1 baseline entry' }; return "$N baseline entries" }
 function ConvertTo-JsonString {
     param([string]$Text)
     $sb = New-Object System.Text.StringBuilder
@@ -285,19 +366,14 @@ function Invoke-Check {
         }
     }
     if ($script:shaAt.Length -gt 8 -and $script:shaAt -match '^[0-9a-fA-F]+$') { $script:shaAt = $script:shaAt.Substring(0, 8) }
+    # the first clock of latest.log (whatever -Boot says), and whether the log is one whole boot from its start
+    if ($lines.ContainsKey('latest.log')) {
+        foreach ($l in $lines['latest.log']) { $c = Get-LogClock $l; if ($c) { $script:bootClock = $c; break } }
+        $script:bootStartSeen = Test-BootStart $lines['latest.log']
+    }
     $script:bootAt = 'unknown'
     if ($Boot) { $script:bootAt = $Boot }
-    elseif ($lines.ContainsKey('latest.log')) {
-        $months = @{ Jan = 1; Feb = 2; Mar = 3; Apr = 4; May = 5; Jun = 6; Jul = 7; Aug = 8; Sep = 9; Oct = 10; Nov = 11; Dec = 12 }
-        foreach ($l in $lines['latest.log']) {
-            $m = [regex]::Match($l, '^\[(\d{2})([A-Za-z]{3})(\d{4}) (\d{2}:\d{2}:\d{2})')
-            if ($m.Success -and $months.ContainsKey($m.Groups[2].Value)) {
-                # the log's own clock (the box's local time), so no zone designator
-                $script:bootAt = '{0}-{1:00}-{2}T{3}' -f $m.Groups[3].Value, $months[$m.Groups[2].Value], $m.Groups[1].Value, $m.Groups[4].Value
-                break
-            }
-        }
-    }
+    elseif ($script:bootClock) { $script:bootAt = $script:bootClock }
 
     # ---- 1. KubeJS failure lines + what loaded -------------------------------
     $rxHandler = New-Object regex "Error in '([^']+)'"
@@ -436,7 +512,13 @@ function Invoke-Check {
         if ($null -ne $bc -and $lines.ContainsKey([string]$bc.log)) {
             $rx = New-Object regex ([string]$bc.pattern)
             $bootDone = $false
-            foreach ($l in $lines[[string]$bc.log]) { if ($rx.IsMatch($l)) { $bootDone = $true; break } }
+            $i = 0
+            foreach ($l in $lines[[string]$bc.log]) { $i++; if ($rx.IsMatch($l)) { $bootDone = $true; break } }
+            if ([string]$bc.log -eq 'latest.log') {
+                # check 6 reads earlier boots with the same line, and needs to know where loading ended in this one
+                $script:doneRx = $rx
+                if ($bootDone) { $script:doneLine = $i }
+            }
             if (-not $bootDone) {
                 Add-Finding 'CHECK-FAILED' 'RED' 'check:boot-incomplete' ([string]$bc.log) ("no '" + [string]$bc.pattern + "' line: the server is still starting, or it died before it finished. Liveness (ARMED) was not judged")
             }
@@ -540,27 +622,24 @@ function Invoke-Check {
         foreach ($src in $newSources) {
             $rx = $rxKjs
             if ($src -eq 'latest.log') { $rx = $rxLatest }
-            $obs = New-Object 'System.Collections.Generic.Dictionary[string,int]'
-            $order = New-Object System.Collections.Generic.List[string]
-            foreach ($l in $lines[$src]) {
-                $m = $rx.Match($l)
-                if (-not $m.Success) { continue }
-                $sig = $m.Groups[1].Value + ' ' + (Get-Signature $m.Groups[2].Value)
-                if ($obs.ContainsKey($sig)) { $obs[$sig] = $obs[$sig] + 1 } else { $obs[$sig] = 1; $order.Add($sig) }
-            }
-            $observed[$src] = @{ counts = $obs; order = $order }
+            $observed[$src] = Get-Observed $lines[$src] $rx
         }
     }
     if ($ProposeBaseline) {
-        # the list for a triage: every signature of this boot, reason and date left empty on purpose
+        # the list for a triage: every signature of this boot, reason and date left empty on purpose. A latest.log
+        # signature first printed after Done is a run-time line, not printed in every boot: marked, so that check 6
+        # never calls it stale. (The KubeJS logs carry no Done line; a run-time line of theirs is marked by hand.)
         $rowsOut = New-Object System.Collections.Generic.List[string]
+        $marked = 0
         foreach ($src in $newSources) {
             foreach ($sig in $observed[$src].order) {
-                $rowsOut.Add('    {"log":' + (ConvertTo-JsonString $src) + ',"sig":' + (ConvertTo-JsonString $sig) + ',"count":' + $observed[$src].counts[$sig] + ',"reason":"","accepted":""}')
+                $rt = ''
+                if ($src -eq 'latest.log' -and $script:doneLine -gt 0 -and $observed[$src].first[$sig] -gt $script:doneLine) { $rt = ',"runtime":true'; $marked++ }
+                $rowsOut.Add('    {"log":' + (ConvertTo-JsonString $src) + ',"sig":' + (ConvertTo-JsonString $sig) + ',"count":' + $observed[$src].counts[$sig] + $rt + ',"reason":"","accepted":""}')
             }
         }
         [System.IO.File]::WriteAllText($ProposeBaseline, "{`n  `"version`": 1,`n  `"signatures`": [`n" + ($rowsOut -join ",`n") + "`n  ]`n}`n", $Utf8NoBom)
-        $info.Add("$($rowsOut.Count) signatures of this boot (latest.log ERROR, KubeJS WARN) written to $ProposeBaseline (give each a reason and a date, or leave it out; read it for names before committing)")
+        $info.Add("$($rowsOut.Count) signatures of this boot (latest.log ERROR, KubeJS WARN) written to $ProposeBaseline (give each a reason and a date, or leave it out; read it for names before committing); $marked first printed after Done are marked `"runtime`": true")
     }
     if ($NoBaseline -and -not $Baseline) {
         if ($newSources.Count -gt 0) { $notRun.Add('NEW-signature check (switched off with -NoBaseline)') }
@@ -625,6 +704,105 @@ function Invoke-Check {
                 if ($grownRest -gt 0) { Add-Finding 'NEW' 'AMBER' ("grew:more:$src") $src ("$grownRest more baselined signatures at 3x their accepted count, not listed one by one") }
             }
             $script:baselineText = "$($known.Count) signatures accepted, $($defects.Count) listed as defects"
+
+            # ---- 6. STALE baseline entries: listed, and the line is no longer printed ----
+            # Reported, never a finding: it says the LIST is out of date, not that the boot is broken.
+            $absent = New-Object System.Collections.Generic.List[object]
+            foreach ($pair in @(@('defect', $defects), @('accepted', $known))) {
+                foreach ($key in $pair[1].Keys) {
+                    $b = $pair[1][$key]
+                    $src = [string]$b.log
+                    if (-not $observed.ContainsKey($src)) { continue }                               # that log was not read in this pass
+                    if ($observed[$src].counts.ContainsKey([string]$b.sig)) { continue }             # printed: not stale
+                    if ($b.PSObject.Properties['runtime'] -and $b.runtime -eq $true) { continue }    # not printed in every boot, by nature
+                    $absent.Add([pscustomobject]@{ list = $pair[0]; id = ($pair[0] + ':' + (Get-Hash8 $key)); src = $src; sig = [string]$b.sig; n = 0; state = 'short' })
+                }
+            }
+            if ($absent.Count -gt 0) {
+                # one whole boot, or nothing is said: what a short or partial log lacks was printed elsewhere, or not yet
+                $why = $null
+                if (-not $lines.ContainsKey('latest.log')) { $why = 'latest.log was not read, so it is not known that this boot finished loading' }
+                elseif (-not $script:bootStartSeen -or -not $script:bootClock) { $why = 'latest.log does not start at a JVM start (rolled at midnight, or a part of a log), so this is not one whole boot' }
+                elseif ($null -eq $script:doneRx)          { $why = 'the Done line is not known (the liveness manifest was not usable)' }
+                elseif ($script:doneLine -le 0)            { $why = 'this boot has no Done line (still starting, or it died on the way)' }
+                if ($why) {
+                    $info.Add((Format-Entries $absent.Count) + " not seen in this log; none is called stale: $why")
+                } else {
+                    $need = $StaleBoots - 1                  # earlier complete boots that must lack the line too
+                    $pending = New-Object System.Collections.Generic.List[object]
+                    foreach ($a in $absent) {
+                        if ($need -eq 0) { $a.state = 'stale' }
+                        elseif ($a.src -ne 'latest.log') { $a.state = 'nocopy' }      # only latest.log is kept from earlier boots
+                        else { $pending.Add($a) }
+                    }
+                    $earlier = New-Object System.Collections.Generic.List[string]     # start clocks of the complete earlier boots read
+                    $unreadable = $null
+                    if ($pending.Count -gt 0) {
+                        # Rotated logs, newest first. The date in a rolled file's name is never earlier than its content and
+                        # files are rolled in order, so (name date, then first clock) descending is newest first. Only the
+                        # days needed are opened: this runs when an entry is absent, and stops at the boot that settles it.
+                        $bootDate = $script:bootClock.Substring(0, 10)
+                        $byDate = @{}
+                        foreach ($f in @(Get-ChildItem -LiteralPath $logsRoot -File -Filter '*.log.gz')) {
+                            $m = $rxRolled.Match($f.Name)
+                            if (-not $m.Success) { continue }
+                            $d = $m.Groups[1].Value
+                            if ([string]::CompareOrdinal($d, $bootDate) -gt 0) { continue }                  # rolled after the boot checked
+                            if (-not $byDate.ContainsKey($d)) { $byDate[$d] = New-Object System.Collections.Generic.List[string] }
+                            $byDate[$d].Add($f.FullName)
+                        }
+                        foreach ($d in @($byDate.Keys | Sort-Object -Descending)) {
+                            if ($pending.Count -eq 0 -or $unreadable) { break }
+                            $day = New-Object System.Collections.Generic.List[object]
+                            foreach ($p in $byDate[$d]) {
+                                try { $head = Read-LogLines $p 10 } catch { $unreadable = Split-Path -Leaf $p; break }
+                                $clock = $null
+                                foreach ($l in $head) { $clock = Get-LogClock $l; if ($clock) { break } }
+                                if (-not $clock -or [string]::CompareOrdinal($clock, $script:bootClock) -ge 0) { continue }   # not earlier than the boot checked
+                                $day.Add([pscustomobject]@{ path = $p; clock = $clock; start = (Test-BootStart $head) })
+                            }
+                            if ($unreadable) { break }
+                            foreach ($r in @($day | Sort-Object -Property clock -Descending)) {
+                                if ($pending.Count -eq 0) { break }
+                                try { $rl = Read-LogLines $r.path } catch { $unreadable = Split-Path -Leaf $r.path; break }
+                                $sigs = (Get-Observed $rl $rxLatest).counts
+                                # a complete boot: from its JVM start to its Done line. Anything else is a part of a log:
+                                # it can show that a line WAS printed, it cannot show that a boot went without it.
+                                $whole = $false
+                                if ($r.start) { foreach ($l in $rl) { if ($script:doneRx.IsMatch($l)) { $whole = $true; break } } }
+                                if ($whole) { $earlier.Add($r.clock) }
+                                foreach ($a in $pending.ToArray()) {      # (a copy: entries leave the list; @() on a List[object] of PSObjects throws on 5.1)
+                                    if ($sigs.ContainsKey($a.sig)) { $a.state = 'seen'; [void]$pending.Remove($a) }
+                                    elseif ($whole) { $a.n++; if ($a.n -ge $need) { $a.state = 'stale'; [void]$pending.Remove($a) } }
+                                }
+                            }
+                        }
+                    }
+                    $stale  = @($absent | Where-Object { $_.state -eq 'stale' })
+                    $seen   = @($absent | Where-Object { $_.state -eq 'seen' })
+                    $short  = @($absent | Where-Object { $_.state -eq 'short' })
+                    $nocopy = @($absent | Where-Object { $_.state -eq 'nocopy' })
+                    foreach ($a in $stale) { $staleEntries.Add($a) }
+                    if ($stale.Count -gt 0) {
+                        $script:staleText = (Format-Entries $stale.Count) + " for lines this server no longer prints: not in this boot ($($script:bootClock))"
+                        $before = (($earlier | Select-Object -First $need) -join ', ')
+                        if ($need -eq 1) { $script:staleText += ", not in the complete boot before it ($before)" }
+                        elseif ($need -gt 1) { $script:staleText += ", not in the $need complete boots before it ($before)" }
+                        $script:staleText += '. Delete them from baseline.json (a line that is only printed now and then gets "runtime": true instead)'
+                    }
+                    if ($seen.Count -gt 0) {
+                        $info.Add((Format-Entries $seen.Count) + " not seen in this boot, printed in an earlier log within the last $StaleBoots boots (" + (Format-IdList $seen) + '): not stale. One boot without the line is a fix that may not hold')
+                    }
+                    if ($short.Count -gt 0) {
+                        $t = (Format-Entries $short.Count) + ' not seen in this boot (' + (Format-IdList $short) + "): not called stale yet, $($earlier.Count) of the $need earlier complete boot(s) needed are among the rotated logs here"
+                        if ($unreadable) { $t += " ($unreadable could not be read)" }
+                        $info.Add($t)
+                    }
+                    if ($nocopy.Count -gt 0) {
+                        $info.Add((Format-Entries $nocopy.Count) + ' of the KubeJS logs not seen in this boot (' + (Format-IdList $nocopy) + '): not called stale, there is no earlier KubeJS log to confirm with (-StaleBoots 1 judges on this boot alone)')
+                    }
+                }
+            }
         }
     }
 }
@@ -633,6 +811,7 @@ function Invoke-Check {
 $script:srcList = @(); $script:shaAt = 'unknown'; $script:bootAt = 'unknown'
 $script:loadedText = @(); $script:armedText = $null; $script:expectedFrom = ''
 $script:kjsErrors = 0; $script:kjsAborts = 0; $script:patternHits = 0; $script:baselineText = $null
+$script:bootClock = $null; $script:bootStartSeen = $false; $script:doneRx = $null; $script:doneLine = 0; $script:staleText = $null
 try {
     Invoke-Check
 } catch {
@@ -714,6 +893,7 @@ function Get-Verdict {
     if ($script:armedText) { $s += '; armed ' + $script:armedText }
     $s += '; sources ' + ($script:srcList -join ',')
     if ($notRun.Count) { $s += '; not run: ' + (($notRun | ForEach-Object { $_.Split('(')[0].Trim() }) -join ', ') }
+    if ($staleEntries.Count) { $s += '; stale baseline entries: ' + $staleEntries.Count }      # not findings: not in `worst`, not in `open`
     return [pscustomobject]@{ worst = $w; kinds = $kinds; summary = ($s -replace '[\r\n]+', ' ') }
 }
 
@@ -767,6 +947,18 @@ if (-not $Quiet) {
         Write-Host ("  {0,-5} {1,-12} {2}" -f $f.sev, $f.kind, $f.id) -ForegroundColor $color
         Write-Host ("        {0}{1}" -f $where, $d) -ForegroundColor DarkGray
     }
+    if ($staleEntries.Count -gt 0) {
+        # check 6: the list is out of date. Same shape as a finding line, with STALE where the severity stands.
+        Write-Host ("[loud-check] STALE   : {0}:" -f $script:staleText) -ForegroundColor Cyan
+        $shown = 0
+        $sortedStale = @($staleEntries | Sort-Object @{ Expression = { if ($_.list -eq 'defect') { 0 } else { 1 } } }, id)
+        foreach ($e in $sortedStale) {
+            if ($shown -ge $MaxShow) { Write-Host ("  ... and {0} more (raise -MaxShow)" -f ($sortedStale.Count - $shown)) -ForegroundColor DarkCyan; break }
+            $shown++
+            Write-Host ("  {0,-5} {1,-12} {2}" -f 'STALE', $e.list.ToUpperInvariant(), $e.id) -ForegroundColor Cyan
+            Write-Host ("        [{0}] {1}" -f $e.src, $e.sig) -ForegroundColor DarkGray
+        }
+    }
     if ($recordNote) { Write-Host ("[loud-check] {0}" -f $recordNote) -ForegroundColor DarkGray }
 }
 $verdictColor = 'Green'
@@ -775,6 +967,8 @@ if ($v.worst -eq 'RED')   { $verdictColor = 'Red' }
 $tail = 'nothing found'
 if ($open.Count -gt 0) { $tail = $v.kinds }
 if ($failed.Count -gt 0 -and $real.Count -eq 0) { $tail = 'COULD NOT CHECK: ' + $v.kinds }
+if ($staleEntries.Count -eq 1) { $tail += '; 1 stale baseline entry to prune' }
+elseif ($staleEntries.Count -gt 1) { $tail += "; $($staleEntries.Count) stale baseline entries to prune" }
 if ($notRun.Count -gt 0) { $tail += " ($($notRun.Count) check not run, see above)" }
 Write-Host ("[loud-check] {0} - {1}  (exit {2})" -f $v.worst, $tail, $exitCode) -ForegroundColor $verdictColor
 exit $exitCode

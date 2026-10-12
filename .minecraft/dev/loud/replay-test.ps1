@@ -19,6 +19,10 @@
 #            a signature missing from a baseline). Each must produce exactly its
 #            finding. The replay alone would not prove these: the bad boots are RED
 #            for their ERROR lines whatever the liveness tiers do.
+#            Then STALE baseline entries (check 6): entries whose line is gone, with
+#            earlier boots written next to the log as rotated files. Stale only after
+#            two complete boots without the line; never on a short or partial log;
+#            never a finding, so no exit code and no `open` count moves.
 #   RECORD   Nothing is written without -Write; the findings log rolls above 1 MiB
 #            and carries what is open; every line of it is valid JSON.
 #
@@ -287,7 +291,7 @@ Assert-That ($asIs.Exit -eq 2 -and (@(Get-Ids $asIs) -join '|') -eq 'CHECK-FAILE
 function Write-Baseline {
     param([string]$Path, [string[]]$Rows, [string[]]$Defects)
     $filled = @($Rows | ForEach-Object { $_.TrimEnd(',').Replace('"reason":"","accepted":""', '"reason":"test fixture","accepted":"2026-10-11"') })
-    $def = @($Defects | Where-Object { $_ } | ForEach-Object { ($_.TrimEnd(',') -replace ',"count":\d+,"reason":"","accepted":""', ',"what":"planted defect","listed":"2026-10-11"') })
+    $def = @($Defects | Where-Object { $_ } | ForEach-Object { ($_.TrimEnd(',') -replace ',"count":\d+((?:,"runtime":true)?),"reason":"","accepted":""', '$1,"what":"planted defect","listed":"2026-10-11"') })
     [System.IO.File]::WriteAllText($Path, '{"version":1,"signatures":[' + "`n" + ($filled -join ",`n") + "`n" + '],"defects":[' + "`n" + ($def -join ",`n") + "`n]}", $Utf8)
     return $Path
 }
@@ -323,6 +327,118 @@ $once = [System.IO.File]::ReadAllText($kjs)
 [System.IO.File]::WriteAllText($kjs, $once + $once + $once, $Utf8)
 $rl = Invoke-Checker @('-LogsDir', $caseReload, '-Sources', 'kubejs/server.log', '-Baseline', (Join-Path $WorkDir 'full-baseline.json'))
 Assert-That ($rl.Exit -eq 0 -and @(Get-Ids $rl).Count -eq 0 -and @($rl.Out | Where-Object { $_ -match '3 script load passes' }).Count -eq 1) 'the KubeJS log of a server reloaded twice (every line three times) -> nothing grew, the report says 3 load passes'
+
+# STALE baseline entries (check 6). The baseline is the healthy boot's own list plus four entries for lines it does not
+# print: a defect, an accepted latest.log line, an accepted line marked "runtime", an accepted KubeJS line. Earlier boots
+# are the healthy boot again with its clock moved back by whole days, written next to latest.log as rotated logs.
+function Get-StaleIds {   # entries reported stale by a report run: "  STALE DEFECT   defect:<id>"
+    param($Run)
+    return @($Run.Out | ForEach-Object { $m = [regex]::Match($_, '^\s+STALE\s+(DEFECT|ACCEPTED)\s+(\S+)\s*$'); if ($m.Success) { $m.Groups[1].Value + ' ' + $m.Groups[2].Value } })
+}
+function Get-Id8 {        # the id the checker gives "<log>|<sig>", computed here and not asked of the checker
+    param([string]$Text)
+    $sha1 = [System.Security.Cryptography.SHA1]::Create()
+    try { $b = $sha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Text)) } finally { $sha1.Dispose() }
+    return ('{0:x2}{1:x2}{2:x2}{3:x2}' -f $b[0], $b[1], $b[2], $b[3])
+}
+function Test-Stale {
+    param([string]$Name, [string]$Logs, [string[]]$Extra, [int]$Exit, [string[]]$Expect, [string[]]$Stale, [string[]]$Say)
+    $r = Invoke-Checker (@('-LogsDir', $Logs) + $Extra)
+    $ids = (@(Get-Ids $r | Sort-Object) -join ' | ');           $wantIds = (@($Expect | Sort-Object) -join ' | ')
+    $st  = (@(Get-StaleIds $r | Sort-Object) -join ' | ');      $wantSt  = (@($Stale | Sort-Object) -join ' | ')
+    $unsaid = @($Say | Where-Object { $rx = $_; @($r.Out | Where-Object { $_ -match $rx }).Count -eq 0 })
+    $ok = ($r.Exit -eq $Exit) -and ($ids -eq $wantIds) -and ($st -eq $wantSt) -and ($unsaid.Count -eq 0)
+    $text = "$Name -> exit $Exit, findings: " + $(if ($wantIds) { $wantIds } else { '(none)' }) + '; stale: ' + $(if ($wantSt) { $wantSt } else { '(none)' })
+    if (-not $ok) { $text += "   GOT exit $($r.Exit), findings: $ids; stale: $st" + $(if ($unsaid.Count) { '; the report does not say: ' + ($unsaid -join ' ;; ') } else { '' }) }
+    Assert-That $ok $text
+}
+$inv = [System.Globalization.CultureInfo]::InvariantCulture
+$healthyLatest = [System.IO.File]::ReadAllLines((Join-Path $baseLogs 'latest.log'), [System.Text.Encoding]::UTF8)
+$day0 = [regex]::Match($healthyLatest[0], '^\[(\d{2}[A-Za-z]{3}\d{4}) ').Groups[1].Value
+if (-not $day0) { Stop-CannotRun "the healthy boot's latest.log at $Anchor does not start with a clock" }
+$date0 = [datetime]::ParseExact($day0, 'ddMMMyyyy', $inv)
+function Get-RolledName { param([int]$Days) return ($date0.AddDays($Days).ToString('yyyy-MM-dd', $inv) + '-1.log.gz') }
+function Get-RolledClock { param([int]$Days) return [regex]::Escape($date0.AddDays($Days).ToString('yyyy-MM-dd', $inv) + 'T') }
+# the healthy boot as a rotated log of another day ($Days back or forward), with its lines rewritten by $Edit
+function New-RolledLog {
+    param([string]$Logs, [int]$Days, [scriptblock]$Edit)
+    $stamp = '[' + $date0.AddDays($Days).ToString('ddMMMyyyy', $inv) + ' '
+    $outLines = New-Object System.Collections.Generic.List[string]
+    foreach ($l in $healthyLatest) {
+        $x = $l
+        if ($x.StartsWith('[' + $day0 + ' ')) { $x = $stamp + $x.Substring($day0.Length + 2) }
+        if ($Edit) { foreach ($y in @(& $Edit $x)) { if ($null -ne $y) { $outLines.Add([string]$y) } } } else { $outLines.Add($x) }
+    }
+    $bytes = $Utf8.GetBytes(($outLines -join "`n") + "`n")
+    $fs = [System.IO.File]::Create((Join-Path $Logs (Get-RolledName $Days)))
+    try {
+        $gz = New-Object System.IO.Compression.GZipStream($fs, [System.IO.Compression.CompressionMode]::Compress)
+        $gz.Write($bytes, 0, $bytes.Length)
+        $gz.Dispose()
+    } finally { $fs.Dispose() }
+}
+function Clear-Rolled { param([string]$Logs) Get-ChildItem -LiteralPath $Logs -Filter '*.log.gz' | Remove-Item -Force }
+$rxDone = 'Done \(\d+\.\d+s\)!'
+$sigDef = 'ERROR [planted/]: a defect that was fixed'
+$sigAcc = 'ERROR [planted/]: an accepted line that is gone'
+$sigRun = 'ERROR [planted/]: a line printed only now and then'
+$sigKjs = 'WARN planted: a recipe line that is gone'
+$idDef  = 'DEFECT defect:' + (Get-Id8 "latest.log|$sigDef")
+$idAcc  = 'ACCEPTED accepted:' + (Get-Id8 "latest.log|$sigAcc")
+$idKjs  = 'ACCEPTED accepted:' + (Get-Id8 "kubejs/server.log|$sigKjs")
+$newDef = 'NEW defect:' + (Get-Id8 "latest.log|$sigDef")
+function New-Row { param([string]$Log, [string]$Sig, [string]$More) return ('    {"log":"' + $Log + '","sig":"' + $Sig + '","count":1' + $More + ',"reason":"","accepted":""}') }
+# a line of the given signature, with the clock of the line it is put next to
+function New-PlantedLine { param([string]$Line, [string]$Sig) return ($Line.Substring(0, $Line.IndexOf(']') + 1) + ' [main/' + $Sig.Substring(0, $Sig.IndexOf(' ')) + '] ' + $Sig.Substring($Sig.IndexOf(' ') + 1)) }
+$withDefectLine = { param($l) if ($l -match $rxDone) { New-PlantedLine $l $sigDef }; $l }
+$noDone         = { param($l) if ($l -notmatch $rxDone) { $l } }
+$noStart        = { param($l) if ($l -notmatch 'ModLauncher running: args') { $l } }
+$sb = Write-Baseline (Join-Path $WorkDir 'stale-baseline.json') (@($propRows) + @((New-Row 'latest.log' $sigAcc ''), (New-Row 'latest.log' $sigRun ',"runtime":true'), (New-Row 'kubejs/server.log' $sigKjs ''))) @((New-Row 'latest.log' $sigDef ''))
+$logsE = New-Case 'entries' $null $null
+$kjsNote = '1 baseline entry of the KubeJS logs not seen in this boot \(' + [regex]::Escape($idKjs.Split(' ')[1]) + '\): not called stale'
+
+Test-Stale 'entries whose line is gone, no earlier boot next to the log' $logsE @('-Baseline', $sb) 0 @() @() @('2 baseline entries not seen in this boot .*not called stale yet, 0 of the 1 earlier complete boot', $kjsNote)
+Test-Stale '   -StaleBoots 1: this boot alone decides (the "runtime" entry is still not stale)' $logsE @('-Baseline', $sb, '-StaleBoots', '1') 0 @() @($idDef, $idAcc, $idKjs) @('GREEN - nothing found; 3 stale baseline entries to prune')
+New-RolledLog $logsE -1 $null
+Test-Stale 'gone from this boot and from the complete boot before it -> STALE, and still GREEN, exit 0' $logsE @('-Baseline', $sb) 0 @() @($idDef, $idAcc) @(('not in the complete boot before it \(' + (Get-RolledClock -1)), 'GREEN - nothing found; 2 stale baseline entries to prune', $kjsNote)
+$quiet = Invoke-Checker @('-LogsDir', $logsE, '-Baseline', $sb, '-Quiet')
+Assert-That ($quiet.Exit -eq 0 -and $quiet.Out.Count -eq 1 -and $quiet.Out[0] -match 'GREEN - nothing found; 2 stale baseline entries to prune') '   -Quiet: the one line it prints carries the count'
+$stFind = Join-Path $WorkDir 'stale-findings.jsonl'; $stStat = Join-Path $WorkDir 'stale-status'
+$wr = Invoke-Checker @('-LogsDir', $logsE, '-Baseline', $sb, '-Write', '-FindingsPath', $stFind, '-StatusPath', $stStat, '-Quiet')
+$st = Read-Status $stStat
+Assert-That ($wr.Exit -eq 0 -and $st['worst'] -eq 'GREEN' -and $st['open'] -eq '0' -and $st['summary'] -match 'stale baseline entries: 2' -and -not (Test-Path -LiteralPath $stFind)) '   -Write: not a finding (worst=GREEN, open=0, nothing in the findings log); the status summary carries the count'
+New-RolledLog $logsE -1 $withDefectLine
+Test-Stale 'the boot before printed the defect line (a fix one boot old) -> that entry is NOT stale' $logsE @('-Baseline', $sb) 0 @() @($idAcc) @(('1 baseline entry not seen in this boot, printed in an earlier log within the last 2 boots \(' + [regex]::Escape($idDef.Split(' ')[1]) + '\): not stale'))
+$logsBack = New-Case 'entries-back' 'latest.log' $withDefectLine
+New-RolledLog $logsBack -1 $null
+Test-Stale 'this boot prints it again after a boot without it (a fix that held one boot) -> a defect finding, not stale' $logsBack @('-Baseline', $sb) 1 @($newDef) @($idAcc) @()
+Clear-Rolled $logsE; New-RolledLog $logsE -1 $noDone; New-RolledLog $logsE -2 $null
+Test-Stale 'a rotated log without Done in between is skipped; the complete boot behind it decides' $logsE @('-Baseline', $sb) 0 @() @($idDef, $idAcc) @(('not in the complete boot before it \(' + (Get-RolledClock -2)))
+New-RolledLog $logsE -1 { param($l) if ($l -match $rxDone) { New-PlantedLine $l $sigDef } else { $l } }
+Test-Stale '   but a line printed in that partial log is a line still printed -> not stale' $logsE @('-Baseline', $sb) 0 @() @($idAcc) @()
+Clear-Rolled $logsE; New-RolledLog $logsE -1 $noStart
+Test-Stale 'the only earlier log starts mid-boot (rolled at midnight): no complete boot before -> nothing stale' $logsE @('-Baseline', $sb) 0 @() @() @('not called stale yet, 0 of the 1 earlier complete boot')
+Clear-Rolled $logsE; New-RolledLog $logsE 1 $null
+Test-Stale 'a rotated log NEWER than the boot checked is not "the boot before" -> nothing stale' $logsE @('-Baseline', $sb) 0 @() @() @('not called stale yet, 0 of the 1 earlier complete boot')
+Clear-Rolled $logsE; New-RolledLog $logsE -1 $null
+Test-Stale '-StaleBoots 3 with one earlier complete boot -> not yet' $logsE @('-Baseline', $sb, '-StaleBoots', '3') 0 @() @() @('not called stale yet, 1 of the 2 earlier complete boot')
+New-RolledLog $logsE -2 $null
+Test-Stale '-StaleBoots 3 with two -> STALE' $logsE @('-Baseline', $sb, '-StaleBoots', '3') 0 @() @($idDef, $idAcc) @('not in the 2 complete boots before it')
+$logsNoDone = New-Case 'entries-nodone' 'latest.log' $noDone
+New-RolledLog $logsNoDone -1 $null
+Test-Stale 'the boot checked did not reach Done -> no stale line at all, one note with the count' $logsNoDone @('-Baseline', $sb) 2 @('CHECK-FAILED check:boot-incomplete') @() @('3 baseline entries not seen in this log; none is called stale: this boot has no Done line')
+$logsMid = New-Case 'entries-midboot' 'latest.log' $noStart
+New-RolledLog $logsMid -1 $null
+Test-Stale 'the log checked starts mid-boot -> no stale line at all' $logsMid @('-Baseline', $sb) 0 @() @() @('3 baseline entries not seen in this log; none is called stale: latest.log does not start at a JVM start')
+Test-Stale 'only the KubeJS log is read -> nothing is known about the boot, nothing stale' $logsE @('-Baseline', $sb, '-Sources', 'kubejs/server.log') 0 @() @() @('1 baseline entry not seen in this log; none is called stale: latest.log was not read')
+# the proposal marks what is first printed after Done, and a baseline made from it is accepted
+$logsRun = New-Case 'entries-runtime' 'latest.log' { param($l) $l; if ($l -match $rxDone) { New-PlantedLine $l $sigRun } }
+$propRun = Join-Path $WorkDir 'proposed-runtime.json'
+[void](Invoke-Checker @('-LogsDir', $logsRun, '-ProposeBaseline', $propRun))
+$runRows = @([System.IO.File]::ReadAllLines($propRun) | Where-Object { $_ -match '^\s+\{"log":' })
+$planted = @($runRows | Where-Object { $_.Contains('"sig":"' + $sigRun + '"') })
+Assert-That ($planted.Count -eq 1 -and $planted[0].Contains('"count":1,"runtime":true,"reason":""') -and -not $runRows[0].Contains('"runtime"')) '-ProposeBaseline marks a latest.log signature first printed after Done as "runtime": true (and not a load-time one)'
+Test-Case '   and that proposal, filled in, is a baseline the checker takes' $logsRun @('-Baseline', (Write-Baseline (Join-Path $WorkDir 'runtime-baseline.json') $runRows @())) 0 @()
 
 # =============================================================================
 # PART 3 - RECORD (findings log + status file)
