@@ -445,7 +445,8 @@ global.tick_enchantPeriodicEffects = function (event) {
       if (aether <= 0) return
 
       var dim = dimOf(player)
-      if (dim === 'aether:the_aether' || dim === 'deep_aether:the_aether') {
+      // (Deep Aether's biomes are inside aether:the_aether; it has no dimension)
+      if (dim === 'aether:the_aether') {
         // Remove Slowness and Mining Fatigue from thin air
         if (player.y > 192 + (aether * 32)) return // Still too high even for enchant
         player.removeEffect('minecraft:slowness')

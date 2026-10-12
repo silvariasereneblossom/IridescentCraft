@@ -486,7 +486,11 @@ function registerStageRestrictions() {
   stageOre('tier_4', 'aethersteel:aetherslate', 'aether:holystone', 'modpack/ore_aetherslate')
 
   // -- Dimension restrictions --
-  stageDimension('tier_4', 'deep_aether:the_aether', 'modpack/dim_deep_aether')
+  // (A tier_4 gate on 'deep_aether:the_aether' stood here until 2026-10-12. It
+  //  gated nothing: Deep Aether registers no dimension, its biomes generate
+  //  inside aether:the_aether, which is gated at tier_2 above. Ruling
+  //  2026-10-11: Deep Aether goes with the Aether. Its tier-4 materials are
+  //  gated by the Aethersteel ore and item restrictions in this file.)
   stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
 
   // -- Ad Astra Planets (Post-T4 Endgame) --

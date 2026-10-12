@@ -229,17 +229,11 @@ function getEquipConfig(dim) {
       fullSetChance: 0.4
     },
 
-    // Tier 4: 60-80% chance, diamond/netherite tier
-    'deep_aether:the_aether': {
-      chance: 0.60,
-      weapons: ['minecraft:diamond_sword', 'minecraft:netherite_sword', 'minecraft:netherite_axe'],
-      helmets: ['minecraft:diamond_helmet', 'minecraft:netherite_helmet'],
-      chests:  ['minecraft:netherite_chestplate', 'minecraft:diamond_chestplate'],
-      legs:    ['minecraft:netherite_leggings', 'minecraft:diamond_leggings'],
-      boots:   ['minecraft:netherite_boots', 'minecraft:diamond_boots'],
-      enchantLevel: 4,
-      fullSetChance: 0.6
-    },
+    // Tier 4: 75% chance, diamond/netherite tier
+    // (A 60% netherite config for 'deep_aether:the_aether' stood here until
+    //  2026-10-12. No such dimension exists: Deep Aether's biomes generate
+    //  inside aether:the_aether, so its mobs use the Aether config above, as
+    //  they always have. Ruling 2026-10-11: Deep Aether scales with the Aether.)
     'minecraft:the_end': {
       chance: 0.75,
       weapons: ['minecraft:netherite_sword', 'minecraft:netherite_axe', 'minecraft:diamond_sword'],

@@ -333,7 +333,12 @@ const EXPLORE_DIMENSIONS = {
   'undergarden:undergarden':        { tier: 3, key: 'undergarden' },
   'deeperdarker:otherside':         { tier: 3, key: 'deeperdarker' },
   // --- T4 dimensions ---
-  'deep_aether:the_aether':         { tier: 4, key: 'deep_aether' },
+  // ('deep_aether:the_aether' { tier: 4, key: 'deep_aether' } stood here until
+  //  2026-10-12. No such dimension exists: Deep Aether's biomes generate inside
+  //  aether:the_aether, so that bonus was never paid and the flag
+  //  icraft_codex_dimentry_deep_aether was never set. Two quests still wait for
+  //  that flag (quests/heracles_reconcile.js); how "reached the Deep Aether"
+  //  should be detected is an operator decision.)
   'minecraft:the_end':              { tier: 4, key: 'the_end' },
   'theabyss:the_abyss':             { tier: 3, key: 'the_abyss' },   // tier 3 like the stage gate (2026-10-11); same t3 token either way
 }
