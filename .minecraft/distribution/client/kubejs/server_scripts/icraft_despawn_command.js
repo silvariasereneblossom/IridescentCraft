@@ -135,7 +135,7 @@ try {
     return killed
   }
 
-  ServerEvents.commandRegistry(event => {
+  ServerEvents.commandRegistry(icraft.guard('icraft_despawn_command', 'ServerEvents.commandRegistry', event => {
     const { commands: Commands } = event
 
     event.register(
@@ -159,7 +159,7 @@ try {
           )
         )
     )
-  })
+  }))
 
   console.log('[IridescentCraft] /icraft despawn <radius> command registered')
 } catch (e) {

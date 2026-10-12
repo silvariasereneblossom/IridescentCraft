@@ -10,7 +10,7 @@
 // now drops iridescent_relics:remnant_relic. This file keeps only Pharaoh's Feast.
 // =============================================================================
 
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('cursed_pyramid_items', 'StartupEvents.registry', event => {
     // "Pharaoh's Feast" -- the massive god-apple boss + reward-chest drop.
     // Fills the entire hunger bar in one bite + a burst of buffs.
     event.create('pharaohs_feast')
@@ -28,4 +28,4 @@ StartupEvents.registry('item', event => {
                 .effect('minecraft:absorption', 2400, 3, 1.0)  // Absorption IV, 2min
                 .effect('minecraft:resistance', 1200, 0, 1.0)  // Resistance I, 1min
         })
-})
+}))

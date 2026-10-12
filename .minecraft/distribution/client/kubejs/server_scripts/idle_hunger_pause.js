@@ -104,9 +104,9 @@ try {
   }
   global.registerServerTick('tick_idleHungerPause', POLL_INTERVAL_TICKS, 13)
 
-  PlayerEvents.loggedOut(function(event) {
+  PlayerEvents.loggedOut(icraft.guard('idle_hunger_pause', 'PlayerEvents.loggedOut', function(event) {
     try { delete idleState[event.player.username] } catch (e) {}
-  })
+  }))
 
   console.log('[IridescentCraft] idle_hunger_pause loaded — hunger drain pauses after ' +
     (IDLE_THRESHOLD_TICKS / 20) + 's of inaction')

@@ -11,7 +11,7 @@
 // Items here mirror food_dedup_jei_hide.js. Failure to find a recipe is
 // soft -- the e.remove call no-ops if the output doesn't have a recipe.
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('food_dedup_recipes', 'ServerEvents.recipes', event => {
   const dupeOutputs = [
     // -- Thermal Cultivation (canonical: Pam HC2) --
     'thermal:amaranth',
@@ -106,4 +106,4 @@ ServerEvents.recipes(event => {
     } catch (e) { /* recipe may not exist */ }
   })
   console.log(`[icraft food_dedup] Removed recipes for ${removed} duplicate outputs`)
-})
+}))

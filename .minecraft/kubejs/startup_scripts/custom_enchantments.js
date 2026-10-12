@@ -9,10 +9,11 @@
 // These enchantments use max_level for the BASE max; Apotheosis can exceed it.
 // =============================================================================
 
-StartupEvents.registry('enchantment', event => {
+StartupEvents.registry('enchantment', icraft.guard('custom_enchantments', 'StartupEvents.registry', event => {
 
   // ═══ CATEGORY 1: Dimensional Survival ═══
 
+  icraft.section('custom_enchantments/category-1-dimensional-survival', function () {
   event.create('icraft:heatward')
     .maxLevel(5)
     .rarity('UNCOMMON')
@@ -42,10 +43,12 @@ StartupEvents.registry('enchantment', event => {
     .rarity('VERY_RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+  })
 
 
   // ═══ CATEGORY 2: Resource Enhancement ═══
 
+  icraft.section('custom_enchantments/category-2-resource-enhancement', function () {
   event.create('icraft:prospector')
     .maxLevel(5)
     .rarity('UNCOMMON')
@@ -57,10 +60,12 @@ StartupEvents.registry('enchantment', event => {
     .rarity('UNCOMMON')
     .slots(['MAINHAND'])
     .category('DIGGER')
+  })
 
 
   // ═══ CATEGORY 3: Scaling Combat ═══
 
+  icraft.section('custom_enchantments/category-3-scaling-combat', function () {
   event.create('icraft:momentum')
     .maxLevel(3)
     .rarity('UNCOMMON')
@@ -90,10 +95,12 @@ StartupEvents.registry('enchantment', event => {
     .rarity('RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+  })
 
 
   // ═══ CATEGORY 4: Anti-Boss ═══
 
+  icraft.section('custom_enchantments/category-4-anti-boss', function () {
   event.create('icraft:boss_ward')
     .maxLevel(5)
     .rarity('RARE')
@@ -111,10 +118,12 @@ StartupEvents.registry('enchantment', event => {
     .rarity('VERY_RARE')
     .slots(['MAINHAND'])
     .category('WEAPON')
+  })
 
 
   // ═══ CATEGORY 5: Path Synergy ═══
 
+  icraft.section('custom_enchantments/category-5-path-synergy', function () {
   event.create('icraft:mana_temper')
     .maxLevel(5)
     .rarity('VERY_RARE')
@@ -138,10 +147,12 @@ StartupEvents.registry('enchantment', event => {
     .rarity('RARE')
     .slots(['MAINHAND'])
     .category('WEAPON')
+  })
 
 
   // ═══ CATEGORY 6: Utility & Survival ═══
 
+  icraft.section('custom_enchantments/category-6-utility-survival', function () {
   event.create('icraft:magnetism')
     .maxLevel(3)
     .rarity('UNCOMMON')
@@ -171,6 +182,7 @@ StartupEvents.registry('enchantment', event => {
     .rarity('UNCOMMON')
     .slots(['MAINHAND'])
     .category('BOW')
+  })
 
 
   // ═══ CATEGORY 7: Planetary Hazard Protection ═══
@@ -179,6 +191,7 @@ StartupEvents.registry('enchantment', event => {
   // gear. Planetary loot scripts (server_scripts/loot/planetary_loot.js) still
   // inject them as treasure drops in their respective dim chests.
 
+  icraft.section('custom_enchantments/category-7-planetary-hazard-protection', function () {
   event.create('icraft:lunar_stride')
     .maxLevel(3)
     .rarity('RARE')
@@ -213,4 +226,5 @@ StartupEvents.registry('enchantment', event => {
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
     .treasureOnly()
-})
+  })
+}))

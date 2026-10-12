@@ -303,7 +303,7 @@ var FELL_OFFSETS = [
   [1, 1, 0], [-1, 1, 0], [0, 1, 1], [0, 1, -1]
 ]
 
-BlockEvents.broken(function (event) {
+BlockEvents.broken(icraft.guard('enchantments/enchant_effects', 'BlockEvents.broken', function (event) {
   var player = event.player
   if (!player) return
   var held = player.mainHandItem
@@ -366,7 +366,7 @@ BlockEvents.broken(function (event) {
       }
     }
   }
-})
+}))
 
 
 // ==========================================================================

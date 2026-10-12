@@ -35,7 +35,7 @@ try {
     { entity: 'minecraft:wither',                 item: 'simplyswords:dormant_relic',               flag: 'wither_dormant_relic', repeatChance: 0.15 }
   ]
 
-  EntityEvents.death(function(event) {
+  EntityEvents.death(icraft.guard('loot/iss_boss_first_kill', 'EntityEvents.death', function(event) {
     try {
       var ent = event.entity
       if (!ent) return
@@ -78,7 +78,7 @@ try {
     } catch (e) {
       console.warn('[iss_first_kill] handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] iss_boss_first_kill loaded -- ' + FIRST_KILL_DROPS.length + ' first-kill guarantees armed (4 ISS books, the Wither\'s Dormant Relic)')
 } catch (e) {

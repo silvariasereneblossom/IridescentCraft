@@ -50,7 +50,7 @@ function spawnProtectionNotice(event) {
 }
 
 // --- Block breaking protection ---
-BlockEvents.broken(event => {
+BlockEvents.broken(icraft.guard('spawn_protection', 'BlockEvents.broken', event => {
   if (!event.player) return
   if (event.player.creative) return
   if (isInSpawnZone(event)) {
@@ -58,10 +58,10 @@ BlockEvents.broken(event => {
     // cancel() unwinds by throwing, so it has to be the LAST statement.
     event.cancel()
   }
-})
+}))
 
 // --- Block placing protection ---
-BlockEvents.placed(event => {
+BlockEvents.placed(icraft.guard('spawn_protection', 'BlockEvents.placed', event => {
   if (!event.player) return
   if (event.player.creative) return
   if (isInSpawnZone(event)) {
@@ -69,6 +69,6 @@ BlockEvents.placed(event => {
     // cancel() unwinds by throwing, so it has to be the LAST statement.
     event.cancel()
   }
-})
+}))
 
 console.log('[IridescentCraft] Spawn protection loaded (radius: ' + SPAWN_PROTECTION_RADIUS + ')')

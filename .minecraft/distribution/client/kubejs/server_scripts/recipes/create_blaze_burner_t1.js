@@ -12,7 +12,7 @@
 // no netherrack, no blaze, no Nether trip. The empty-burner recipe stays intact as the
 // Nether alternative. Mirrors the pack's existing brewing-stand re-tier.
 // (Operator: "make the burner without the Blaze -- prefilled.")
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/create_blaze_burner_t1', 'ServerEvents.recipes', event => {
   event.shaped('create:blaze_burner', [
     ' I ',
     'ICI',
@@ -21,4 +21,4 @@ ServerEvents.recipes(event => {
     I: '#forge:plates/iron',
     C: 'minecraft:campfire'
   }).id('icraft:create/blaze_burner_t1')
-})
+}))

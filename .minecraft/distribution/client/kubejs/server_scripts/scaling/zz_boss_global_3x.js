@@ -198,7 +198,7 @@ function bg3_resId(entity) {
   }
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spawned', event => {
   // RHINO-SAFETY: var (not const/let) — this closure fires on every entity spawn.
   var entity = event.entity
   if (!entity || !entity.living || entity.player) return
@@ -244,6 +244,6 @@ EntityEvents.spawned(event => {
   }
 
   buff.done()
-})
+}))
 
 console.log('[iridescent/boss_3x] global boss buff loaded (hp ×3 + melee dmg ×3 + ISS spell ×2; see header for boundary + coverage)')

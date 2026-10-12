@@ -44,7 +44,7 @@ try {
   var FRAGMENT_CORE_ID = 'rpgseteffects:fragment_core'
   var FRAGMENT_CORE_CHANCE = 0.04
 
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('loot/fragment_core_drops', 'EntityEvents.death', function (event) {
     try {
       var entity = event.entity
       if (!entity || !entity.living || entity.player) return
@@ -79,7 +79,7 @@ try {
       // Fail-soft: never let a fragment-core roll crash a mob death.
       console.warn('[fragment_core_drops] handler error: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] fragment_core_drops loaded (' +
               Math.round(FRAGMENT_CORE_CHANCE * 100) +

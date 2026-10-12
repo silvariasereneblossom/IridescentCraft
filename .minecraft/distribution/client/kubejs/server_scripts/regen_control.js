@@ -26,9 +26,9 @@ var REGEN_EXHAUST   = 0.6   // food exhaustion per heal (~6/HP, vanilla-like); s
 //    The Crust default_game_rules default only applies to NEW worlds, so set it
 //    here for the existing one too. (Established pattern: death_penalty.js sets
 //    keepInventory the same way.)
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('regen_control', 'ServerEvents.loaded', event => {
   try { event.server.runCommandSilent('gamerule naturalRegeneration false') } catch (e) {}
-})
+}))
 
 // 2) Controlled slow regen via the pack's per-player tick dispatcher
 //    (0_tick_master.js -> global.registerPlayerTick). `var` (Rhino redeclaration-safe).

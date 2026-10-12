@@ -23,13 +23,14 @@
 // RECIPES) -- the crafting grid gives no result without the stage.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.recipes', event => {
 
   // ═══ SECTION A: DIAMOND & NETHERITE GATE ═══
   // Diamonds removed from T1 worldgen. Not craftable until T3.
   // Netherite not processable until T4.
 
   // A.1: Remove ALL vanilla diamond tool/armor recipes
+  icraft.section('recipes/tier_gated_recipes/section-a-diamond-netherite-gate', function () {
   ;['minecraft:diamond_sword','minecraft:diamond_pickaxe','minecraft:diamond_axe',
     'minecraft:diamond_shovel','minecraft:diamond_hoe','minecraft:diamond_helmet',
     'minecraft:diamond_chestplate','minecraft:diamond_leggings','minecraft:diamond_boots'
@@ -91,11 +92,13 @@ ServerEvents.recipes(event => {
   event.shaped('minecraft:diamond_block', ['DDD','DDD','DDD'], {
     D:'minecraft:diamond'
   }).id('icraft:diamond_block_t3')
+  })
 
 
   // ═══ SECTION B: MOD MACHINE TIER GATES ═══
 
   // B.1: Thermal machine_frame → steel (T2, gates all Thermal machines)
+  icraft.section('recipes/tier_gated_recipes/section-b-mod-machine-tier-gates', function () {
   event.remove({ id: 'thermal:machine_frame' })
   event.shaped('thermal:machine_frame', ['IGI','GSG','IGI'], {
     I:'thermal:steel_ingot', G:'minecraft:glass', S:'thermal:tin_gear'
@@ -192,10 +195,12 @@ ServerEvents.recipes(event => {
     N:'minecraft:netherite_ingot', R:'minecraft:redstone_block',
     F:'rftoolsbase:machine_frame'
   }).id('icraft:dimension_editor_t4')
+  })
 
 
   // ═══ SECTION C: CROSS-MOD MATERIAL LEAKS ═══
 
+  icraft.section('recipes/tier_gated_recipes/section-c-cross-mod-material-leaks', function () {
   event.remove({ type: 'create:mixing', output: 'minecraft:diamond' })
   event.remove({ type: 'create:mixing', output: 'minecraft:diamond_block' })
   event.remove({ type: 'create:crushing', output: 'minecraft:diamond' })
@@ -206,6 +211,7 @@ ServerEvents.recipes(event => {
   event.remove({ type: 'mekanism:combining', output: 'minecraft:diamond' })
   event.remove({ type: 'mekanism:combining', output: 'minecraft:diamond_ore' })
   event.remove({ type: 'mekanism:combining', output: 'minecraft:deepslate_diamond_ore' })
+  })
   // Botania Orechid → handled via datapack (icraft_botania_overrides)
   // IF Laser Drill, Occultism spirits, Thermal Insolator → config-based, manual audit
   // KEEP: Create mixing steel from iron+coal (Section 28: "bend")
@@ -214,6 +220,7 @@ ServerEvents.recipes(event => {
   // ═══ SECTION D: VANILLA RECIPE CLEANUP ═══
 
   // Brewing Stand → T1 accessible (no blaze rod)
+  icraft.section('recipes/tier_gated_recipes/section-d-vanilla-recipe-cleanup', function () {
   event.remove({ id: 'minecraft:brewing_stand' })
   event.shaped('minecraft:brewing_stand', [' I ','ICI','SSS'], {
     I:'minecraft:iron_ingot', C:'minecraft:copper_ingot', S:'minecraft:cobblestone'
@@ -238,6 +245,7 @@ ServerEvents.recipes(event => {
   event.shaped('minecraft:lodestone', ['SSS','SCS','SSS'], {
     S:'minecraft:chiseled_stone_bricks', C:'minecraft:netherite_ingot'
   }).id('icraft:lodestone_t4')
+  })
 
   // Beacon — naturally gated by nether star (Wither T3). LEAVE.
 
@@ -253,6 +261,7 @@ ServerEvents.recipes(event => {
   // loot_overhaul.js Section 8 allocation map). Added 6 "unassigned"
   // weapons per locked-in decision 4 — creative-only until allocated to
   // a future boss. Final list: 44 entries.
+  icraft.section('recipes/tier_gated_recipes/section-e-simply-swords-unique-removal', function () {
   ;[
     // === T2 boss-allocated (loot_overhaul.js Section 8) ===
     'simplyswords:emberblade',         // Hydra
@@ -304,6 +313,7 @@ ServerEvents.recipes(event => {
     // === Relic entry (boss-gated; recipe removal is belt-and-suspenders) ===
     'simplyswords:dormant_relic'
   ].forEach(id => event.remove({ output: id }))
+  })
 
   // === Runic crafting OFF (operator ruling 2026-10-11 22:18 EDT: "Wither ===
   // === drops 2, no runic crafting")                                      ===
@@ -324,6 +334,7 @@ ServerEvents.recipes(event => {
   // Already gone, removed by output in the list above: sunfire, harbinger,
   // waking_lichblade, awakened_lichblade. Never loaded (their own mod-loaded
   // conditions name mods that are not installed): the two Dreadtide recipes.
+  icraft.section('recipes/tier_gated_recipes/drops-2-no-runic-crafting', function () {
   ;[
     'simplyswords:runic_chakram',     'simplyswords:runic_claymore',
     'simplyswords:runic_cutlass',     'simplyswords:runic_glaive',
@@ -336,6 +347,7 @@ ServerEvents.recipes(event => {
     'simplyswords:runefused_gem',     'simplyswords:netherfused_gem'
   ].forEach(id => event.remove({ output: id }))
   event.remove({ id: 'simplyswords:runic_grimoire_recipe_shapeless' })
+  })
 
 
   // ═══ SECTION K: STAFF / WAND DROP-ONLY ENFORCEMENT ═══
@@ -345,6 +357,7 @@ ServerEvents.recipes(event => {
   // are exclusively boss-drops, mirroring the Simply Swords pattern.
   // The other 4 (hither_thither_wand, staff_of_the_nines, cloud_staff,
   // perish_staff) ship without recipes already.
+  icraft.section('recipes/tier_gated_recipes/section-k-staff-wand-drop-only-enforcement', function () {
   ;[
     // ISS — graybeard, pyrium (also pyrium has armor route)
     'irons_spellbooks:graybeard_staff',
@@ -364,6 +377,7 @@ ServerEvents.recipes(event => {
     // DeeperDarker — sonorous_staff
     'deeperdarker:sonorous_staff'
   ].forEach(id => event.remove({ output: id }))
+  })
 
 
   // ═══ SECTION F: APOTHEOSIS WORKSTATION RECIPES ═══
@@ -373,6 +387,7 @@ ServerEvents.recipes(event => {
   // Simple Reforging + Gem Cutting -- T1 craftable (2026-05-14 design call:
   // workstations ungated, rarity ladder + boss-drop tokens are the gate;
   // see master-appendix D.2). Iron recipe instead of steel.
+  icraft.section('recipes/tier_gated_recipes/section-f-apotheosis-workstation-recipes', function () {
   event.remove({ id: 'apotheosis:simple_reforging_table' })
   event.shaped('apotheosis:simple_reforging_table', ['IGI','IAI','IGI'], {
     I:'minecraft:iron_ingot', G:'apotheosis:gem_dust', A:'minecraft:anvil'
@@ -429,13 +444,16 @@ ServerEvents.recipes(event => {
     N:'minecraft:netherite_ingot',
     A:'minecraft:anvil', O:'minecraft:crying_obsidian'
   }).id('icraft:augmenting_table_t4')
+  })
 
 
   // ═══ SECTION G: EXPLOIT CLOSURES ═══
 
+  icraft.section('recipes/tier_gated_recipes/section-g-exploit-closures', function () {
   event.remove({ type: 'create:mixing', output: 'minecraft:nether_star' })
   event.remove({ type: 'thermal:smelter', output: 'minecraft:nether_star' })
   event.remove({ output: 'minecraft:elytra' })
+  })
 
 
   // ═══ SECTION H: ENCHANT UTILITY WORKSTATIONS → T2 (Steel) ═══
@@ -451,10 +469,12 @@ ServerEvents.recipes(event => {
   // Lets players convert items to XP and vice versa. Gate behind steel.
   // 2026-05-10: item id is `toe:table_of_expieriance` (sic — the mod ships
   // the misspelled form, confirmed against item audit registry).
+  icraft.section('recipes/tier_gated_recipes/section-h-enchant-utility-workstations-t2', function () {
   event.remove({ output: 'toe:table_of_expieriance' })
   event.shaped('toe:table_of_expieriance', ['SBS','IEI','SIS'], {
     S:'thermal:steel_ingot', B:'minecraft:book', I:'minecraft:iron_ingot', E:'minecraft:experience_bottle'
   }).id('icraft:table_of_experience_t2')
+  })
 
   // H.3: Enchantment Transfer — adds NO blocks/items (uses vanilla anvil).
   // Gating is handled via enchantmenttransfer-common.toml config (XP cost).
@@ -468,6 +488,7 @@ ServerEvents.recipes(event => {
   // Only gate the base wing types; color variants are just dye+base wing (harmless).
 
   // Remove all Icarus wing recipes
+  icraft.section('recipes/tier_gated_recipes/section-i-icarus-wings-t3', function () {
   event.remove({ mod: 'icarus' })
 
   // I.1: Feathered Wings → T3 (diamond + phantom membranes)
@@ -502,6 +523,7 @@ ServerEvents.recipes(event => {
     H:'minecraft:honeycomb', D:'minecraft:diamond', G:'minecraft:glowstone_dust',
     P:'minecraft:phantom_membrane'
   }).id('icraft:light_wings_t3')
+  })
 
   // I.6: Unique wings — remove entirely (boss drop or quest reward only)
   // flandres_wings, discords_wings, zanzas_wings already removed by mod: 'icarus' above
@@ -517,6 +539,7 @@ ServerEvents.recipes(event => {
   //   blaze_rod → source_gem_block   (Ars-themed T2 storage block = 9 source)
   //   quartz    → source_gem         (Ars-themed T2)
   //   obsidian  → deepslate          (T1 minable; obsidian needs T3 pickaxe)
+  icraft.section('recipes/tier_gated_recipes/section-i.7-ars-apprentice-spell-book-t2', function () {
   event.remove({ id: 'ars_nouveau:apprentice_spell_book_upgrade' })
   event.custom({
     type: 'ars_nouveau:book_upgrade',
@@ -535,6 +558,7 @@ ServerEvents.recipes(event => {
     ],
     result: { item: 'ars_nouveau:apprentice_spell_book' }
   }).id('icraft:apprentice_spell_book_upgrade_t2')
+  })
 
 
   // ═══ SECTION I.8: ISS ARCANE ANVIL → T2 ═══
@@ -544,6 +568,7 @@ ServerEvents.recipes(event => {
   // Re-tier: replace forge:gems/diamond with botania:mana_diamond (Botania
   // T2 transmutation product, same approach as the apprentice spell book
   // fix). Other ingredients unchanged.
+  icraft.section('recipes/tier_gated_recipes/section-i.8-iss-arcane-anvil-t2', function () {
   event.remove({ id: 'irons_spellbooks:arcane_anvil' })
   event.shaped('irons_spellbooks:arcane_anvil', ['AAA',' D ','SVS'], {
     A: 'minecraft:amethyst_block',
@@ -551,15 +576,18 @@ ServerEvents.recipes(event => {
     V: 'minecraft:anvil',
     S: 'minecraft:polished_deepslate'
   }).id('icraft:arcane_anvil_t2')
+  })
 
   // ═══ SECTION I.9: ISS MANA RING → T2 ═══
   // Vanilla irons_spellbooks:mana_ring requires 1× diamond + 5× arcane_ingot.
   // Same fix: forge:gems/diamond → botania:mana_diamond.
+  icraft.section('recipes/tier_gated_recipes/section-i.9-iss-mana-ring-t2', function () {
   event.remove({ id: 'irons_spellbooks:mana_ring' })
   event.shaped('irons_spellbooks:mana_ring', ['DA ','A A',' A '], {
     A: 'irons_spellbooks:arcane_ingot',
     D: 'botania:mana_diamond'
   }).id('icraft:mana_ring_t2')
+  })
 
   // ═══ SECTION I.10: DISENCHANTING DISENCHANTER → T1 ═══
   // Disenchanting mod's disenchanter requires 1× anvil + 2× gold_ingot +
@@ -572,6 +600,7 @@ ServerEvents.recipes(event => {
   // 2026-05-16: pattern matches the new enchanting table exactly.
   // Same `apotheosis:gem` ingredient type so JEI cycles through all gem
   // variants like a wood recipe cycles through plank types.
+  icraft.section('recipes/tier_gated_recipes/section-i.10-disenchanting-disenchanter-t1', function () {
   event.remove({ id: 'disenchanting:disenchanter' })
   event.custom({
     type: 'minecraft:crafting_shaped',
@@ -584,6 +613,7 @@ ServerEvents.recipes(event => {
     },
     result: { item: 'disenchanting:disenchanter', count: 1 }
   }).id('icraft:disenchanter_apoth_gem')
+  })
 
 
   // ═══ SECTION I.11: TORCHMASTER MEGATORCH → T1 ═══
@@ -597,6 +627,7 @@ ServerEvents.recipes(event => {
   // mob-detection-radius theme). Net cost: 18 iron + 8 gold + 18 redstone
   // dust = clearly T1-craftable but still meaningful investment for a
   // permanent base defense item.
+  icraft.section('recipes/tier_gated_recipes/section-i.11-torchmaster-megatorch-t1', function () {
   event.remove({ id: 'torchmaster:megatorch' })
   event.shaped('torchmaster:megatorch', ['TTT','IRI','GRG'], {
     T: 'minecraft:torch',
@@ -604,15 +635,18 @@ ServerEvents.recipes(event => {
     R: 'minecraft:redstone_block',
     G: 'minecraft:gold_block'
   }).id('icraft:megatorch_t1')
+  })
 
 
   // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
   // Found as 5% loot in surface dimension chests (T1 rare find).
   // Craftable at T2: compass + ender pearls + gold (spatial magic theme).
+  icraft.section('recipes/tier_gated_recipes/section-j-compass-of-return', function () {
   event.shaped('kubejs:compass_of_return', [' G ','ECE',' G '], {
     G:'minecraft:gold_ingot', E:'minecraft:ender_pearl', C:'minecraft:compass'
   }).id('icraft:compass_of_return_t2')
 
 
   console.log('[IridescentCraft] P3 tier_gated_recipes.js loaded')
-})
+  })
+}))

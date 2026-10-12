@@ -15,7 +15,7 @@
 // REVERSIBLE: delete this file to restore craftable TMB bows.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/strip_tmb_bow_recipes', 'ServerEvents.recipes', event => {
   const bows = global.ICRAFT_TMB_BOWS || []
   if (!bows.length) { console.warn('[strip_tmb_bow_recipes] no bow list — nothing removed'); return }
   let n = 0
@@ -23,4 +23,4 @@ ServerEvents.recipes(event => {
     try { event.remove({ output: b }); n++ } catch (e) {}
   })
   console.log('[strip_tmb_bow_recipes] removed craft recipes for ' + n + ' boss-exclusive TMB bows')
-})
+}))

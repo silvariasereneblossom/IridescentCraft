@@ -77,7 +77,7 @@ var hazardDamage = function (player, kind, amount) {
 }
 
 // ─── Mob Spawn Enhancements (Dimension-Specific Buffs at Spawn) ───
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/dimension_mechanics', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
@@ -197,11 +197,11 @@ EntityEvents.spawned(event => {
   }
 
   entity.persistentData.putBoolean('icraft_dim_mech', true)
-})
+}))
 
 
 // ─── Player Hurt: Dimension-Specific On-Hit Effects ───
-EntityEvents.hurt(event => {
+EntityEvents.hurt(icraft.guard('scaling/dimension_mechanics', 'EntityEvents.hurt', event => {
   let target = event.entity
   if (!target || !target.player) return
 
@@ -267,7 +267,7 @@ EntityEvents.hurt(event => {
       target.teleportTo(newX, newY, newZ)
     }
   }
-})
+}))
 
 
 // ─── Blue Skies: Elemental Damage (30% armor bypass) ───
@@ -546,7 +546,7 @@ global.registerPlayerTick('tick_fullMoonDetection', 24000, 13000)
 
 // ─── Nether: Blaze Swarm (on kill) ───
 // Design doc: Killing a Blaze has 20% chance to spawn 2 smaller ember mobs
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('scaling/dimension_mechanics', 'EntityEvents.death', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
   if (entity.level.dimension !== 'minecraft:the_nether') return
@@ -569,7 +569,7 @@ EntityEvents.death(event => {
       }
     }
   }
-})
+}))
 
 
 // ─── End: Dragon's Influence ───

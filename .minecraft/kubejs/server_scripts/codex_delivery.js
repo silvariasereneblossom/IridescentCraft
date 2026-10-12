@@ -387,7 +387,7 @@
   var OBSOLETE_KEYS = ['icraft_auto_origindump_ticks', 'icraft_starter_poll_ticks', 'icraft_magic_starter_login_check']
 
   // ── First-Join Delivery ────────────────────────────────────────────────────
-  PlayerEvents.loggedIn(function (event) {
+  PlayerEvents.loggedIn(icraft.guard('codex_delivery', 'PlayerEvents.loggedIn', function (event) {
     var player = event.player
     try {
       var data = player.persistentData
@@ -413,7 +413,7 @@
     } catch (e) {
       warnOnce('login delivery', e)
     }
-  })
+  }))
 
   // ── Starter-kit check ──────────────────────────────────────────────────────
   // Every 5 s for every online player. A class picked late (the Origins picker
@@ -490,7 +490,7 @@
   // The cancel happens LAST and outside the try: event.cancel() exits by
   // throwing, and inside the old try/catch that throw was swallowed -- the
   // flag got set but the "!" message was still broadcast to chat.
-  PlayerEvents.chat(function (event) {
+  PlayerEvents.chat(icraft.guard('codex_delivery', 'PlayerEvents.chat', function (event) {
     var handled = false
     try {
       var msg = String(event.message || '').trim().toLowerCase()
@@ -507,7 +507,7 @@
       // Chat-thread exceptions must never surface to the player.
     }
     if (handled) event.cancel()
-  })
+  }))
 
   // ── Server-thread processor for the queued chat commands ──
   // Reads two booleans per player once a second. Everything here runs on the
@@ -545,7 +545,7 @@
   //   /icraftkit <class>    — OP ONLY: (re)grant the named class's kit to
   //                           yourself, ignoring the class check and the flag
   //   /icraftorigindump     — dump your Origins layers to log + chat
-  ServerEvents.commandRegistry(function (event) {
+  ServerEvents.commandRegistry(icraft.guard('codex_delivery', 'ServerEvents.commandRegistry', function (event) {
     var Commands = event.commands
 
     var kit = Commands.literal('icraftkit')
@@ -585,16 +585,16 @@
           return 1
         })
     )
-  })
+  }))
 
   // ── Backup Recovery Recipe ─────────────────────────────────────────────────
 
-  ServerEvents.recipes(function (event) {
+  ServerEvents.recipes(icraft.guard('codex_delivery', 'ServerEvents.recipes', function (event) {
     event.shapeless(
       Item.of('patchouli:guide_book', CODEX_NBT),
       ['minecraft:book', 'minecraft:lapis_lazuli']
     ).id('icraft:codex_recovery_recipe')
-  })
+  }))
 
   // ── Book Suppression ───────────────────────────────────────────────────────
   // Uses /clear commands exclusively since inventory slot manipulation is broken.

@@ -22,7 +22,7 @@
 // the full boss->material->item table.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/boss_refight_repair_floors', 'LootJS.modifiers', event => {
 
   // ---- T1 ----
   // bm_gob: Gob's gilded gear is a 1-of-3 pool pick -> floor the gilded hat.
@@ -81,4 +81,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:echo_shard'))
 
   console.log('[boss_refight_repair_floors] registered 12 refight-to-repair drop floors (icraft #58)')
-})
+}))

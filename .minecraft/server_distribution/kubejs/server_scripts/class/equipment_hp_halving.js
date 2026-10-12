@@ -100,9 +100,9 @@ global.registerServerTick('tick_equipmentHpHalving', 100, 60)
 // Players set this to 1 when they pick Ranger/Archmage/Void Summoner.
 // Automatic: the milestone_detection.js can check class after tier advance.
 
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('class/equipment_hp_halving', 'ServerEvents.loaded', event => {
   event.server.runCommandSilent('scoreboard objectives add icraft_glass_cannon trigger')
-})
+}))
 
 global.tick_glassCannonTagCheck = (event) => {
   event.server.players.forEach(player => {

@@ -121,7 +121,7 @@ try {
     }
   }
 
-  ServerEvents.commandRegistry(function(event) {
+  ServerEvents.commandRegistry(icraft.guard('origins/origin_status_commands', 'ServerEvents.commandRegistry', function(event) {
     var Commands = event.commands
 
     event.register(
@@ -149,7 +149,7 @@ try {
           })
         )
     )
-  })
+  }))
 
   console.log('[IridescentCraft] /icraft witch_status + /icraft construct_status registered')
 } catch (e) {

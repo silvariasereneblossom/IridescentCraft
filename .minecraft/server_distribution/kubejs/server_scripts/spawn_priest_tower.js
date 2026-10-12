@@ -295,7 +295,7 @@
     }
   }
 
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('spawn_priest_tower', 'ServerEvents.loaded', function (event) {
     var server = event.server
     server.scheduleInTicks(START_DELAY_TICKS, function () {
       try {
@@ -304,7 +304,7 @@
         console.error('[PRIEST-TOWER] guarantee pass threw: ' + e)
       }
     })
-  })
+  }))
 
   console.log('[PRIEST-TOWER] spawn-village guarantee armed (signature: ' + SIGNATURE + ')')
 })()

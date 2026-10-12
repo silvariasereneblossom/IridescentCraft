@@ -18,7 +18,7 @@
 // Boss-kill counter handled by gates/milestone_detection.js (icraft_t3_boss_kills).
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/cataclysm_boss_drops', 'LootJS.modifiers', event => {
 
   // ---- Netherite Monstrosity (T3 — nether) ----
   global.icraftEntityMod(event, 'cataclysm:netherite_monstrosity')
@@ -83,4 +83,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.20)))
 
   console.log('[cataclysm_boss_drops] registered 8 Cataclysm boss synergy modifiers + 3 refight-to-repair material floors (ignitium/cursium/witherite); ender_guardian gauntlet is native')
-})
+}))

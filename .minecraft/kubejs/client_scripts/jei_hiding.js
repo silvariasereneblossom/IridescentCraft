@@ -6,7 +6,7 @@
 //  ever produced or consumed them -- so only the lists below remain.)
 // =============================================================================
 
-JEIEvents.hideItems(event => {
+JEIEvents.hideItems(icraft.guard('jei_hiding', 'JEIEvents.hideItems', event => {
   // Terramity guns + ammo + gunsmith — design keeps Terramity bosses and
   // structures, removes firearms. Recipe removal in recipe_audit.js, loot
   // strip in lootjs_overhaul.js; this hides the items from the JEI browser
@@ -84,4 +84,4 @@ JEIEvents.hideItems(event => {
     'simplyswords:runic_warglaive',
     'simplyswords:runefused_gem', 'simplyswords:netherfused_gem',
   ].forEach(id => event.hide(id))
-})
+}))

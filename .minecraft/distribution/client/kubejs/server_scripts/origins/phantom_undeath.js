@@ -41,7 +41,7 @@
   var COLLAPSE_TICKS = 6000  // 5 minutes
 
   // Intercept death for Phantom players
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('origins/phantom_undeath', 'EntityEvents.death', function (event) {
     var revived = false
     try {
       var player = event.entity
@@ -88,7 +88,7 @@
       warnOnce('death handler', e)
     }
     if (revived) event.cancel()
-  })
+  }))
 
   // Clear the collapse flag when debuffs expire (check every 10 seconds)
   global.tick_phantomUndeath = function (event) {

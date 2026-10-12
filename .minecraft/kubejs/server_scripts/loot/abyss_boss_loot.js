@@ -47,7 +47,7 @@ var ABYSSAL_ROKA_CHANCE       = 0.50   // The Roka: one of the T3 five
 var ABYSSAL_NIGHTBLADE_CHANCE = 1.00   // Nightblade: one of the T4 seven
 var ABYSSAL_BOOK_CHANCE       = 0.10   // each of the three: enchanted book, levels 20-30
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/abyss_boss_loot', 'LootJS.modifiers', event => {
 
   // =========================================================================
   // SECTION 1: THE FIVE "STRUCTURE CHEST" RINGS — NOW ABYSS BOSS DROPS
@@ -67,6 +67,7 @@ LootJS.modifiers(event => {
   // (scaling/boss_hp.js); the Ice Knight keeps its Knight ring in Section 2.
 
   // Nightblade (shadow assassin): Shadows + Phantom
+  icraft.section('loot/abyss_boss_loot/section-1-the-five-structure-chest-rings', function () {
   global.icraftEntityMod(event, 'theabyss:nightblade_boss')
     .addLoot(LootEntry.of('kubejs:ring_of_shadows').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('kubejs:ring_of_the_phantom').when(c => c.randomChance(0.15)))
@@ -82,6 +83,7 @@ LootJS.modifiers(event => {
   // Elder (the deepest of the three): Void Sight
   global.icraftEntityMod(event, 'theabyss:elder')
     .addLoot(LootEntry.of('kubejs:ring_of_void_sight').when(c => c.randomChance(0.10)))
+  })
 
 
   // =========================================================================
@@ -89,6 +91,7 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // Ring of the Knight — drops from ice_knight boss (25%)
+  icraft.section('loot/abyss_boss_loot/section-2-custom-ring-drops-boss-kills', function () {
   global.icraftEntityMod(event, 'theabyss:ice_knight')
     .addLoot(LootEntry.of('kubejs:ring_of_the_knight').when(c => c.randomChance(0.25)))
 
@@ -100,6 +103,7 @@ LootJS.modifiers(event => {
   // Ring of Unorithe — drops from final/hardest Abyss boss (15%)
   global.icraftEntityMod(event, 'theabyss:guard')
     .addLoot(LootEntry.of('kubejs:ring_of_unorithe').when(c => c.randomChance(0.15)))
+  })
 
 
   // =========================================================================
@@ -117,6 +121,7 @@ LootJS.modifiers(event => {
   // SECTION 4: UNORITHE ARMOR SET — Higher-tier Abyss bosses
   // =========================================================================
 
+  icraft.section('loot/abyss_boss_loot/section-4-unorithe-armor-set-higher-tier', function () {
   global.icraftEntityMod(event, 'theabyss:soul_guard')
     .addLoot(LootEntry.of('theabyss:unorithe_armor_helmet').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_chestplate').when(c => c.randomChance(0.15)))
@@ -128,6 +133,7 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('theabyss:unorithe_armor_chestplate').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_leggings').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('theabyss:unorithe_armor_boots').when(c => c.randomChance(0.12)))
+  })
 
 
   // =========================================================================
@@ -161,6 +167,7 @@ LootJS.modifiers(event => {
   // Section 1: a kill can drop a ring, an artifact and a book.
   // The chest pools in lootjs_overhaul.js are unchanged.
 
+  icraft.section('loot/abyss_boss_loot/section-6-abyssal-celestial-artifacts-the', function () {
   var abyssalT3Five = [
     'celestial_artifacts:demon_curse',
     'celestial_artifacts:twisted_scabbard',
@@ -209,4 +216,5 @@ LootJS.modifiers(event => {
   console.log('[IridescentCraft] abyss_boss_loot.js loaded — Abyss boss drop gating active'
     + ' (Abyssal artifacts: Elder ' + ABYSSAL_ELDER_CHANCE + ', Roka ' + ABYSSAL_ROKA_CHANCE
     + ', Nightblade ' + ABYSSAL_NIGHTBLADE_CHANCE + ', book ' + ABYSSAL_BOOK_CHANCE + ' — provisional)')
-})
+  })
+}))

@@ -47,7 +47,7 @@
   var UniformGenerator = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.UniformGenerator')
   var ConstantValue = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.ConstantValue')
 
-  LootJS.modifiers(function (event) {
+  LootJS.modifiers(icraft.guard('loot/zz_pack_enchanted_books', 'LootJS.modifiers', function (event) {
 
     // --- Tier-scaled books: every chest of the dimension ---
     console.log('[icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)')
@@ -131,5 +131,5 @@
       }
     }
     console.log('[icraft-loot] ' + done + ' marquee enchanted-book modifiers registered (10% each, tier-scaled levels)')
-  })
+  }))
 })()

@@ -13,7 +13,7 @@
 // extractor setup while rewarding cross-mod infrastructure investment.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/if_latex_rework', 'ServerEvents.recipes', event => {
 
   // =========================================================================
   // SECTION A: LOGS → LATEX (Create + Thermal alternatives)
@@ -27,6 +27,7 @@ ServerEvents.recipes(event => {
   // fluent builder no longer matches a constructor. Ported to event.custom
   // JSON (version-stable) — schema verified against create's own
   // data/create/recipes/*.json.
+  icraft.section('recipes/if_latex_rework/section-a-logs-latex', function () {
   event.custom({
     type: 'create:mixing',
     heatRequirement: 'heated',
@@ -57,6 +58,7 @@ ServerEvents.recipes(event => {
   } catch (e) {
     console.warn('[latex-rework] Thermal crucible recipe registration failed: ' + e)
   }
+  })
 
   // =========================================================================
   // SECTION B: MEKANISM HDPE → LATEX ITEMS (1:9 ratio)
@@ -66,6 +68,7 @@ ServerEvents.recipes(event => {
   // the IF rubber pipeline efficiently.
 
   // HDPE Sheet → 9 Dry Rubber (shapeless)
+  icraft.section('recipes/if_latex_rework/section-b-mekanism-hdpe-latex-items', function () {
   event.shapeless(
     Item.of('industrialforegoing:dryrubber', 9),
     ['mekanism:hdpe_sheet']
@@ -82,6 +85,7 @@ ServerEvents.recipes(event => {
     Item.of('industrialforegoing:dryrubber', 6),
     ['mekanism:hdpe_rod']
   ).id('icraft:hdpe_rod_to_dry_rubber')
+  })
 
   // =========================================================================
   // SECTION C: DIRECT LATEX FLUID → DRY RUBBER (alternative to machine)
@@ -89,6 +93,7 @@ ServerEvents.recipes(event => {
   // Allow smelting a latex bucket into dry rubber as a low-tech option
   // (the Latex Processing Unit is still faster and more efficient)
 
+  icraft.section('recipes/if_latex_rework/section-c-direct-latex-fluid-dry-rubber', function () {
   event.smelting(
     Item.of('industrialforegoing:dryrubber', 4),
     'industrialforegoing:latex_bucket'
@@ -100,6 +105,7 @@ ServerEvents.recipes(event => {
     ingredients: [{ amount: 250, fluid: 'industrialforegoing:latex' }],
     results: [{ item: 'industrialforegoing:dryrubber', count: 3 }]
   }).id('icraft:compact_latex_to_rubber')
+  })
 
 
   // =========================================================================
@@ -111,6 +117,7 @@ ServerEvents.recipes(event => {
   // circuit boards → more machines → more processing capacity.
 
   // Register the circuit board recipe
+  icraft.section('recipes/if_latex_rework/section-d-hdpe-circuit-board-industrial', function () {
   event.shaped('kubejs:hdpe_circuit_board', [
     'GRG',
     'RHR',
@@ -120,6 +127,7 @@ ServerEvents.recipes(event => {
     R: 'minecraft:redstone',
     G: 'minecraft:gold_nugget'
   }).id('icraft:hdpe_circuit_board')
+  })
 
   // =========================================================================
   // SECTION E: HDPE CIRCUIT AS ALTERNATIVE INGREDIENT
@@ -128,6 +136,7 @@ ServerEvents.recipes(event => {
   // instead of standard control circuits. Not replacing — adding alternatives.
 
   // Alternative Fission Reactor Casing: HDPE circuit replaces control circuit
+  icraft.section('recipes/if_latex_rework/section-e-hdpe-circuit-as-alternative', function () {
   event.shaped('mekanismgenerators:fission_reactor_casing', [
     'SCS',
     'CLC',
@@ -201,4 +210,5 @@ ServerEvents.recipes(event => {
   console.log('  - HDPE sheet/pellet/rod → dry rubber (1:9 / 1:3 / 1:6)')
   console.log('  - Latex fluid → dry rubber via smelting + Create compacting')
   console.log('  - HDPE Circuit Board: alternative for fission/fusion/machine recipes')
-})
+  })
+}))

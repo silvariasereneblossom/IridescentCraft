@@ -23,7 +23,7 @@
 // DRAGON END-ADVANCEMENTS — Dragon kill un-gates the vanilla End advancements
 // (NOT a tier grant; the framework handles the Dragon as the T4 finale).
 // -----------------------------------------------------------------------------
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('gates/milestone_detection', 'EntityEvents.death', event => {
   // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death handler.
   var source = event.source
   if (!source || !source.player) return
@@ -33,18 +33,18 @@ EntityEvents.death(event => {
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_egg`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/respawn_dragon`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_breath`)
-})
+}))
 
 // -----------------------------------------------------------------------------
 // FIRST JOIN: grant tier_1 by default (survival players)
 // -----------------------------------------------------------------------------
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('gates/milestone_detection', 'PlayerEvents.loggedIn', event => {
   let player = event.player
   if (!player.creative && !AStages.playerHasStage('tier_1', player)) {
     AStages.addStageToPlayer('tier_1', player)
     console.log(`[IridescentCraft] Granted tier_1 to new player: ${player.username}`)
   }
-})
+}))
 
 // -----------------------------------------------------------------------------
 // PERIODIC: ensure tier_1 always present; creative mode bypasses all tiers
@@ -76,7 +76,7 @@ global.registerServerTick('tick_milestoneTierEnsure', 100, 50)
 // -----------------------------------------------------------------------------
 const SYNC_TIERS = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
 
-AStageEvents.added(event => {
+AStageEvents.added(icraft.guard('gates/milestone_detection', 'AStageEvents.added', event => {
   let stageName = event.getStage ? event.getStage() : (event.stage || '')
   let player = event.getPlayer ? event.getPlayer() : event.player
   if (!player || !stageName) return
@@ -119,6 +119,6 @@ AStageEvents.added(event => {
     player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/elytra`)
     player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/levitate`)
   }
-})
+}))
 
 console.log('[IridescentCraft] Tier infrastructure loaded (milestone auto-advance retired -> Codex token economy)')

@@ -8,7 +8,7 @@
 // Boss-kill counter handled by gates/milestone_detection.js.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/dimensional_boss_drops', 'LootJS.modifiers', event => {
 
   // ---- Aether: Slider (T2 mini-boss, Bronze Dungeon) ----
   global.icraftEntityMod(event, 'aether:slider')
@@ -72,4 +72,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:ender_rune').when(c => c.randomChance(0.25)))
 
   console.log('[dimensional_boss_drops] registered 11 dimension/mutant boss synergy modifiers')
-})
+}))

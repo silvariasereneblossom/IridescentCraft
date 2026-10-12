@@ -8,7 +8,7 @@
 // the Fusion Fuel Converter crafting recipe, and fuel conversion recipe.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/planetary_extraction', 'ServerEvents.recipes', event => {
 
   // =========================================================================
   // SECTION A: CREATE CRUSHING WHEEL RECIPES
@@ -36,39 +36,49 @@ ServerEvents.recipes(event => {
   }
 
   // ── Moon Stone → Helium-3 (25%), Titanium Dust (15%), Iron Nugget (50%) ──
+  icraft.section('recipes/planetary_extraction/moon-stone-helium-3-titanium-dust-iron', function () {
   planetCrushing('ad_astra:moon_stone', [
     { item: 'kubejs:helium_3', chance: 0.25 },
     { item: 'kubejs:titanium_dust', chance: 0.15 },
     { item: 'minecraft:iron_nugget', chance: 0.50 }
   ], 'icraft:crush_moon_stone')
+  })
 
   // ── Mars Stone → Ferric Oxide (30%), Cryogenic Crystal (15%), Redstone (40%) ──
+  icraft.section('recipes/planetary_extraction/mars-stone-ferric-oxide-cryogenic-crystal', function () {
   planetCrushing('ad_astra:mars_stone', [
     { item: 'kubejs:ferric_oxide', chance: 0.30 },
     { item: 'kubejs:cryogenic_crystal', chance: 0.15 },
     { item: 'minecraft:redstone', chance: 0.40 }
   ], 'icraft:crush_mars_stone')
+  })
 
   // ── Mercury Stone → Solar Crystal (20%), Rare Earth Dust (20%), Gold Nugget (35%) ──
+  icraft.section('recipes/planetary_extraction/mercury-stone-solar-crystal-rare-earth-dust', function () {
   planetCrushing('ad_astra:mercury_stone', [
     { item: 'kubejs:solar_crystal', chance: 0.20 },
     { item: 'kubejs:rare_earth_dust', chance: 0.20 },
     { item: 'minecraft:gold_nugget', chance: 0.35 }
   ], 'icraft:crush_mercury_stone')
+  })
 
   // ── Venus Stone → Sulfuric Compound (25%), Pressure Crystal (15%), Quartz (40%) ──
+  icraft.section('recipes/planetary_extraction/venus-stone-sulfuric-compound-pressure', function () {
   planetCrushing('ad_astra:venus_stone', [
     { item: 'kubejs:sulfuric_compound', chance: 0.25 },
     { item: 'kubejs:pressure_crystal', chance: 0.15 },
     { item: 'minecraft:quartz', chance: 0.40 }
   ], 'icraft:crush_venus_stone')
+  })
 
   // ── Glacio Stone → Alien Isotope (20%), Cryogenic Element (20%), Ice Shard (30%) ──
+  icraft.section('recipes/planetary_extraction/glacio-stone-alien-isotope-cryogenic', function () {
   planetCrushing('ad_astra:glacio_stone', [
     { item: 'kubejs:alien_isotope', chance: 0.20 },
     { item: 'kubejs:cryogenic_element', chance: 0.20 },
     { item: 'ad_astra:ice_shard', chance: 0.30 }
   ], 'icraft:crush_glacio_stone')
+  })
 
 
   // =========================================================================
@@ -76,6 +86,7 @@ ServerEvents.recipes(event => {
   // =========================================================================
 
   // ── Moon Stone (Pulverizer) ──
+  icraft.section('recipes/planetary_extraction/moon-stone', function () {
   event.recipes.thermal.pulverizer(
     [
       Item.of('kubejs:helium_3').withChance(0.30),
@@ -84,8 +95,10 @@ ServerEvents.recipes(event => {
     ],
     'ad_astra:moon_stone'
   ).energy(4000).id('icraft:pulverize_moon_stone')
+  })
 
   // ── Mars Stone (Pulverizer) ──
+  icraft.section('recipes/planetary_extraction/mars-stone', function () {
   event.recipes.thermal.pulverizer(
     [
       Item.of('kubejs:ferric_oxide').withChance(0.35),
@@ -94,8 +107,10 @@ ServerEvents.recipes(event => {
     ],
     'ad_astra:mars_stone'
   ).energy(4000).id('icraft:pulverize_mars_stone')
+  })
 
   // ── Mercury Stone (Pulverizer) ──
+  icraft.section('recipes/planetary_extraction/mercury-stone', function () {
   event.recipes.thermal.pulverizer(
     [
       Item.of('kubejs:solar_crystal').withChance(0.25),
@@ -104,8 +119,10 @@ ServerEvents.recipes(event => {
     ],
     'ad_astra:mercury_stone'
   ).energy(5000).id('icraft:pulverize_mercury_stone')
+  })
 
   // ── Venus Stone (Pulverizer) ──
+  icraft.section('recipes/planetary_extraction/venus-stone', function () {
   event.recipes.thermal.pulverizer(
     [
       Item.of('kubejs:sulfuric_compound').withChance(0.30),
@@ -114,8 +131,10 @@ ServerEvents.recipes(event => {
     ],
     'ad_astra:venus_stone'
   ).energy(5000).id('icraft:pulverize_venus_stone')
+  })
 
   // ── Glacio Stone (Pulverizer) ──
+  icraft.section('recipes/planetary_extraction/glacio-stone', function () {
   event.recipes.thermal.pulverizer(
     [
       Item.of('kubejs:alien_isotope').withChance(0.25),
@@ -124,6 +143,7 @@ ServerEvents.recipes(event => {
     ],
     'ad_astra:glacio_stone'
   ).energy(6000).id('icraft:pulverize_glacio_stone')
+  })
 
 
   // =========================================================================
@@ -163,6 +183,7 @@ ServerEvents.recipes(event => {
   // only use is as Ad Astra zip-gun propellant; oxygen still works for that.)
   // Set HYDROGEN_CONDENSES_TO_FUEL to false to keep stock Mekanism behaviour
   // and drop the fuel recipe.
+  icraft.section('recipes/planetary_extraction/section-c-water-fusion-fuel', function () {
   var HYDROGEN_CONDENSES_TO_FUEL = true
   if (HYDROGEN_CONDENSES_TO_FUEL) {
     event.remove({ id: 'mekanism:rotary/hydrogen' })
@@ -182,4 +203,5 @@ ServerEvents.recipes(event => {
 
 
   console.log('[IridescentCraft] planetary_extraction.js loaded — planet crushing + hydrogen-to-fuel chain')
-})
+  })
+}))

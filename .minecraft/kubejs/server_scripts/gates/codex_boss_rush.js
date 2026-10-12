@@ -399,7 +399,7 @@ function brGrantTier(player, tier, triggerName) {
 // A single entity can legitimately belong to only one tier's roster here, but
 // we loop all tiers defensively (cheap; indexOf on small arrays).
 // =============================================================================
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', event => {
   // RHINO-SAFETY: `var` only. A loop-body `const` keeps its first iteration's
   // value on this engine, and a `var` is scoped to the block that declares it,
   // so everything read across the loop is declared up here.
@@ -441,7 +441,7 @@ EntityEvents.death(event => {
         .append(Text.gray(' (need ' + need + ' = ' + pctTxt + '%)')))
     }
   }
-})
+}))
 
 // =============================================================================
 // /icraft codex bosses — per-tier boss-rush progress (killed / total, %).
@@ -480,7 +480,7 @@ function brReport(player) {
   return 1
 }
 
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('gates/codex_boss_rush', 'ServerEvents.commandRegistry', event => {
   var Commands = event.commands
 
   event.register(
@@ -503,7 +503,7 @@ ServerEvents.commandRegistry(event => {
         )
       )
   )
-})
+}))
 
 console.log('[IridescentCraft] Codex boss-rush tracker loaded (/icraft codex bosses)')
 console.log('  T1→T2 ' + Math.round(BOSS_RUSH_TIERS[1].pct * 100) + '% of ' + BOSS_RUSH_ROSTERS[1].length +

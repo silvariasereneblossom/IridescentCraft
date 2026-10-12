@@ -659,7 +659,7 @@ function codexCmdSubmit(ctx, lane) {
   }
 }
 
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('gates/codex_progression_engine', 'ServerEvents.commandRegistry', event => {
   const { commands: Commands } = event
 
   event.register(
@@ -699,14 +699,14 @@ ServerEvents.commandRegistry(event => {
         )
       )
   )
-})
+}))
 
 // ---- Lane item tags (for the Heracles per-lane "Submit" buttons) -----------
 // #icraft:codex_engineering / #icraft:codex_magic = every submittable material
 // in that lane, derived from CODEX_CONVERSIONS so the tag can't drift from the
 // conversion table. A Heracles MANUAL "Submit" task gates on these tags so the
 // button lights up whenever the player carries ANY of that lane's materials.
-ServerEvents.tags('item', event => {
+ServerEvents.tags('item', icraft.guard('gates/codex_progression_engine', 'ServerEvents.tags', event => {
   // RHINO-SAFETY: `var` (NOT const/let) — ServerEvents.tags re-fires on every tag
   // rebuild; a closure-local const/let throws "redeclaration of var" on the 2nd
   // invocation (boot-level, not just /reload), which silently broke the per-lane
@@ -717,7 +717,7 @@ ServerEvents.tags('item', event => {
       try { event.add('icraft:codex_' + lane, itemId) } catch (e) {}
     }
   }
-})
+}))
 
 console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance | exchange)')
 console.log('  Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)')

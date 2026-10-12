@@ -155,7 +155,7 @@
   }
 
   // ── Counter increment on boss kill ───────────────────────────────────────
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('origins/witch_of_ink_progression', 'EntityEvents.death', function (event) {
     try {
       var source = event.source
       if (!source || !source.player) return
@@ -201,7 +201,7 @@
     } catch (e) {
       warnOnce('boss-kill counter', e)
     }
-  })
+  }))
 
   // ── Damage in + out are applied in Java (iridescent_tetra_expansion mod) ──
   // KubeJS's EntityEvents.hurt wrapper exposes getDamage() but no settable
@@ -243,8 +243,8 @@
       warnOnce('login/respawn restore', e)
     }
   }
-  PlayerEvents.loggedIn(restore)
-  PlayerEvents.respawned(restore)
+  PlayerEvents.loggedIn(icraft.guard('origins/witch_of_ink_progression', 'PlayerEvents.loggedIn', restore))
+  PlayerEvents.respawned(icraft.guard('origins/witch_of_ink_progression', 'PlayerEvents.respawned', restore))
 
   console.log('[IridescentCraft] Witch of Ink progression loaded')
   console.log('  - Boss kill counter (Apotheosis/Champions +1, dimensional +10, cap 200)')

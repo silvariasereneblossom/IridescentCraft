@@ -341,23 +341,23 @@ global.tick_armorWeight = function(event) {
 global.registerServerTick('tick_armorWeight', 100, 17)
 
 // Snappy refresh on equip swap.
-PlayerEvents.inventoryChanged(function(event) {
+PlayerEvents.inventoryChanged(icraft.guard('armor_weight', 'PlayerEvents.inventoryChanged', function(event) {
   try {
     var player = event.player
     if (!player) return
     if (!isArmorSlotItem(event.item)) return
     syncArmorWeight(player, false)
   } catch (e) {}
-})
+}))
 
 // The modifiers die with the player entity: forget what was applied whenever
 // the entity is replaced, so the next pass writes them again.
 function forgetArmorWeight(event) {
   try { delete appliedState[String(event.player.uuid)] } catch (e) {}
 }
-PlayerEvents.loggedIn(forgetArmorWeight)
-PlayerEvents.loggedOut(forgetArmorWeight)
-PlayerEvents.respawned(forgetArmorWeight)
+PlayerEvents.loggedIn(icraft.guard('armor_weight', 'PlayerEvents.loggedIn', forgetArmorWeight))
+PlayerEvents.loggedOut(icraft.guard('armor_weight', 'PlayerEvents.loggedOut', forgetArmorWeight))
+PlayerEvents.respawned(icraft.guard('armor_weight', 'PlayerEvents.respawned', forgetArmorWeight))
 
 console.log('[IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling')
 console.log('  robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)')

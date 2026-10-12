@@ -74,7 +74,7 @@ function _scrubSkyshatterFromStack(stack) {
   return true
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('affix_skyshatter_mob_strip', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
@@ -104,6 +104,6 @@ EntityEvents.spawned(event => {
     console.log('[skyshatter-strip] scrubbed from ' + resId + ' at ' +
                 entity.x.toFixed(0) + ',' + entity.y.toFixed(0) + ',' + entity.z.toFixed(0))
   }
-})
+}))
 
 console.log('[IridescentCraft] Skyshatter mob-strip loaded (any dim, any boss tag)')

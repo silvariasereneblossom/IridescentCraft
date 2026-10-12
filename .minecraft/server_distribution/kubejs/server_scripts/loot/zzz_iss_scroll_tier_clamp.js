@@ -94,7 +94,7 @@ function issClampScrollLevels(stack, cap) {
   } catch (e) { return 0 }
 }
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/zzz_iss_scroll_tier_clamp', 'LootJS.modifiers', event => {
   // Every ISS entity table: priest / apothecarist / necromancer / cryomancer /
   // pyromancer / cultist / archevoker / dead_king / ... -- matched by id regex.
   event.addLootTableModifier(/^irons_spellbooks:entities\/.*/).apply(ctx => {
@@ -125,4 +125,4 @@ LootJS.modifiers(event => {
   })
   console.log('[iss_scroll_tier_clamp] armed -- dropped ISS scroll levels clamp to killer tier ' +
               '(T1<=4 T2<=6 T3<=8 T4<=10; non-player/un-tiered -> T1)')
-})
+}))

@@ -25,7 +25,7 @@
 // All chances PROVISIONAL pending feel pass.
 // =============================================================================
 
-LootJS.modifiers(function (event) {
+LootJS.modifiers(icraft.guard('loot/lovely_pieces_loot', 'LootJS.modifiers', function (event) {
 
   // RHINO-SAFETY: var throughout; functions as var-assigned expressions.
 
@@ -143,6 +143,7 @@ LootJS.modifiers(function (event) {
   // ---------------------------------------------------------------------------
   // T1 — curated Overworld dungeon/structure tables (mirrors codex T1 list).
   // ---------------------------------------------------------------------------
+  icraft.section('loot/lovely_pieces_loot/t1-curated-overworld-dungeon-structure', function () {
   event
     .addLootTableModifier(
       'minecraft:chests/simple_dungeon',
@@ -173,19 +174,23 @@ LootJS.modifiers(function (event) {
     )
     .randomChance(LSP_T1_SHARE)
     .addWeightedLoot(LSP_T1)
+  })
 
   // ---------------------------------------------------------------------------
   // T2 — progression dimensions, every chest (mirrors codex T2 gating).
   // ---------------------------------------------------------------------------
+  icraft.section('loot/lovely_pieces_loot/t2-progression-dimensions-every-chest', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
     .randomChance(LSP_T2_SHARE)
     .addWeightedLoot(LSP_T2)
+  })
 
   // ---------------------------------------------------------------------------
   // T3 — nether-tier dimensions + endgame Overworld structures.
   // ---------------------------------------------------------------------------
+  icraft.section('loot/lovely_pieces_loot/t3-nether-tier-dimensions-endgame-overworld', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
@@ -221,12 +226,14 @@ LootJS.modifiers(function (event) {
     )
     .randomChance(LSP_T3_SHARE)
     .addWeightedLoot(LSP_T3)
+  })
 
   // ---------------------------------------------------------------------------
   // T4 — LEGENDARIES: boss drops only (operator call). 10% per matching boss,
   // thematically homed, two hosts each so no single boss is the sole gate.
   // Boss ids verbatim from loot_overhaul.js (validated set).
   // ---------------------------------------------------------------------------
+  icraft.section('loot/lovely_pieces_loot/t4-legendaries-boss-drops-only-.-10-per', function () {
   var LSP_LEGENDARY_BOSSES = {
     'lovely_sparkle_pieces:newbie_umbrella':      ['twilightforest:naga', 'blue_skies:summoner'],
     'lovely_sparkle_pieces:blasphemous_contract': ['twilightforest:lich', 'aether:sun_spirit'],
@@ -248,4 +255,5 @@ LootJS.modifiers(function (event) {
   console.log('[lovely-pieces-loot] tier pools wired: T1=' + LSP_T1.length
     + ' T2=' + LSP_T2.length + ' T3=' + LSP_T3.length
     + ' legendaries=' + Object.keys(LSP_LEGENDARY_BOSSES).length + ' (boss-only)')
-})
+  })
+}))

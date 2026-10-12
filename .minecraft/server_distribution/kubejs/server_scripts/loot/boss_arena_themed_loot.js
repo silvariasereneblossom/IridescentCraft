@@ -17,7 +17,7 @@
 // irrelevant for them.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/boss_arena_themed_loot', 'LootJS.modifiers', event => {
 
   // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
   var DIAMONDS = [
@@ -45,4 +45,4 @@ LootJS.modifiers(event => {
   scrubDiamonds('cataclysm:chests/frosted_prison_treasure')
 
   console.log('[boss_arena_themed_loot] scrubbed overworld diamonds/gunpowder from ISS catacombs/evoker_fort/pyromancer + cataclysm frosted_prison (ISS enrichment moved to zz_iss_arena_enrichment.js)')
-})
+}))

@@ -27,7 +27,7 @@
 // This supplements lootjs_overhaul.js (which handles tokens/weapons)
 // =========================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('endgame/rift_mechanics', 'LootJS.modifiers', event => {
     // Entity ids go through the registry-checked helper from
     // loot/0_entity_id_validator.js: LootJS resolves an UNKNOWN entity id to the
     // registry default (minecraft:pig) and would hang the pool on every pig.
@@ -128,7 +128,7 @@ LootJS.modifiers(event => {
     console.log('[IridescentCraft] Rift loot mechanics loaded (LootJS)')
     console.log('  - T4 boss Rift Shard/Void Fragment drops: 12 bosses')
     console.log('  - End mob Rift material drops: 3 mob types')
-})
+}))
 
 // =========================================================================
 // SECTION 3: RIFT KEYSTONE TRACKING & COMPENDIUM
@@ -138,7 +138,7 @@ LootJS.modifiers(event => {
 // =========================================================================
 
 // --- Initialize Rift tracking data on player login ---
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('endgame/rift_mechanics', 'PlayerEvents.loggedIn', event => {
     let player = event.player
     let data = player.persistentData
 
@@ -155,7 +155,7 @@ PlayerEvents.loggedIn(event => {
     if (!data.contains('mythic_items_crafted')) {
         data.putInt('mythic_items_crafted', 0)
     }
-})
+}))
 
 // =========================================================================
 // SECTION 4: RIFT SHARD & MYTHIC CATALYST TRACKING
@@ -174,7 +174,7 @@ PlayerEvents.loggedIn(event => {
 // inflated and were left as they are.
 // =========================================================================
 
-ItemEvents.pickedUp(event => {
+ItemEvents.pickedUp(icraft.guard('endgame/rift_mechanics', 'ItemEvents.pickedUp', event => {
     try {
         let player = event.player
         let item = event.item
@@ -201,10 +201,10 @@ ItemEvents.pickedUp(event => {
     } catch (e) {
         console.warn('[rift_mechanics] shard pickup tracking threw: ' + e)
     }
-})
+}))
 
 // Track Mythic Catalyst crafting for Compendium
-ItemEvents.crafted(event => {
+ItemEvents.crafted(icraft.guard('endgame/rift_mechanics', 'ItemEvents.crafted', event => {
     try {
         let player = event.player
         let item = event.item
@@ -226,11 +226,11 @@ ItemEvents.crafted(event => {
     } catch (e) {
         console.warn('[rift_mechanics] catalyst craft tracking threw: ' + e)
     }
-})
+}))
 
 // One-time "first obtained" flags. These can stay on inventoryChanged: seeing
 // the item in any slot change is enough, and the flag makes a repeat harmless.
-PlayerEvents.inventoryChanged(event => {
+PlayerEvents.inventoryChanged(icraft.guard('endgame/rift_mechanics', 'PlayerEvents.inventoryChanged', event => {
     let player = event.player
     let item = event.item
 
@@ -260,7 +260,7 @@ PlayerEvents.inventoryChanged(event => {
             player.tell('§d[Compendium] §7Primordial Touch — Obtained Primordial Essence')
         }
     }
-})
+}))
 
 // =========================================================================
 // SECTION 5: MYTHIC FORGE USAGE ANNOUNCEMENTS
@@ -268,7 +268,7 @@ PlayerEvents.inventoryChanged(event => {
 // Uses inventoryChanged to detect the unique named items
 // =========================================================================
 
-PlayerEvents.inventoryChanged(event => {
+PlayerEvents.inventoryChanged(icraft.guard('endgame/rift_mechanics#2', 'PlayerEvents.inventoryChanged', event => {
     let player = event.player
     let item = event.item
 
@@ -304,7 +304,7 @@ PlayerEvents.inventoryChanged(event => {
             }
         }
     }
-})
+}))
 
 console.log('[IridescentCraft] Rift mechanics loaded')
 console.log('  - Rift tracking data initialization')

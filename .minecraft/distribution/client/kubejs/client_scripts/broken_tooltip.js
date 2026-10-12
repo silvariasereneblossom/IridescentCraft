@@ -26,8 +26,8 @@ function brokenTooltipHandler(stack, advanced, text) {
   text.add(2, Text.gray('Repair at an anvil to restore functionality'))
 }
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('broken_tooltip', 'ItemEvents.tooltip', event => {
   BROKEN_TAGS.forEach(tag => {
     event.addAdvanced(tag, brokenTooltipHandler)
   })
-})
+}))

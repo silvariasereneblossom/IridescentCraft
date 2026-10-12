@@ -221,7 +221,7 @@ global.registerPlayerTick('tick_enderianShift', 20, 7)
 // Tag set by icraft:race/dwarf/miner_appetite power via action_on_callback.
 // =============================================================================
 
-BlockEvents.broken(event => {
+BlockEvents.broken(icraft.guard('origins/origin_effects', 'BlockEvents.broken', event => {
   let player = event.entity
   if (!player || !player.player) return
   if (!player.tags.contains('icraft_dwarf')) return
@@ -229,7 +229,7 @@ BlockEvents.broken(event => {
   // Apply Saturation I for 3 seconds (60 ticks) to offset mining exhaustion
   // This effectively halves the hunger cost of mining by restoring saturation
   player.potionEffects.add('minecraft:saturation', 3, 0, false, false)
-})
+}))
 
 // =============================================================================
 // REVENANT — Shadow Strike damage reduction

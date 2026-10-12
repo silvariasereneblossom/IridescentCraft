@@ -37,7 +37,7 @@
 // creation.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers', event => {
 
   // Token item per tier (T4 dims fold to the t3 token).
   // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
@@ -52,6 +52,7 @@ LootJS.modifiers(event => {
   // tokens track "I explored a dungeon", not "I opened a village barrel".
   // Lower density: ~25% for a small 1-3 stack.
   // ===========================================================================
+  icraft.section('loot/codex_exploration_drops/t1-overworld-dungeon-structure-chests-only', function () {
   event
     .addLootTableModifier(
       'minecraft:chests/simple_dungeon',
@@ -83,11 +84,13 @@ LootJS.modifiers(event => {
     .addLoot(
       LootEntry.of(TOK_T1).limitCount([1, 3]).when(c => c.randomChance(0.25))
     )
+  })
 
   // ===========================================================================
   // T2 — TWILIGHT FOREST / AETHER / BLUE SKIES — every chest in the dimension.
   // Higher density: ~45% for a 2-4 stack (you came to the dimension to progress).
   // ===========================================================================
+  icraft.section('loot/codex_exploration_drops/t2-twilight-forest-aether-blue-skies-every', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
@@ -99,6 +102,7 @@ LootJS.modifiers(event => {
     .addLoot(
       LootEntry.of(TOK_T2).limitCount([2, 4]).when(c => c.randomChance(0.45))
     )
+  })
 
   // ===========================================================================
   // T3 — NETHER / UNDERGARDEN / DEEPER DARKER / THE ABYSS — every chest in the
@@ -106,6 +110,7 @@ LootJS.modifiers(event => {
   // operator decision, the stage gate is right, the Abyss is tier 3.)
   // Higher density: ~45% for a 2-5 stack.
   // ===========================================================================
+  icraft.section('loot/codex_exploration_drops/t3-nether-undergarden-deeper-darker-the', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
@@ -117,6 +122,7 @@ LootJS.modifiers(event => {
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([2, 5]).when(c => c.randomChance(0.45))
     )
+  })
 
   // ===========================================================================
   // T4 — END — every chest in the dimension.
@@ -130,6 +136,7 @@ LootJS.modifiers(event => {
   // still do). Whether Deep Aether content should count as T4 is an open design
   // question — it cannot be expressed by dimension.
   // ===========================================================================
+  icraft.section('loot/codex_exploration_drops/t4-end-every-chest-in-the-dimension', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
@@ -138,6 +145,7 @@ LootJS.modifiers(event => {
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([3, 6]).when(c => c.randomChance(0.50))
     )
+  })
 
   // ===========================================================================
   // OCCASIONAL ENEMY DROPS — §3: "occasionally dropped by enemies … higher
@@ -162,6 +170,7 @@ LootJS.modifiers(event => {
 
   // Overworld common hostiles — very low (Overworld is the engineering tier;
   // exploration tokens here are a light bonus).
+  icraft.section('loot/codex_exploration_drops/occasional-enemy-drops-3-occasionally', function () {
   seedMobDrops(
     ['minecraft:zombie', 'minecraft:skeleton', 'minecraft:spider',
      'minecraft:creeper', 'minecraft:husk', 'minecraft:stray',
@@ -206,4 +215,5 @@ LootJS.modifiers(event => {
   console.log('[codex_exploration_drops] Codex progression tokens injected into ' +
     'chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + ' +
     'low-rate enemy drops by dimension tier')
-})
+  })
+}))

@@ -29,7 +29,7 @@
   // command per hit, which withered whatever happened to be nearest the
   // PLAYER -- a dropped item, an arrow, a pet -- not the target.)
 
-  EntityEvents.hurt(function (event) {
+  EntityEvents.hurt(icraft.guard('origins/witherborn_slimebodied', 'EntityEvents.hurt', function (event) {
     try {
       var source = event.source
       if (!source) return
@@ -45,7 +45,7 @@
     } catch (e) {
       warnOnce('wither-on-hit', e)
     }
-  })
+  }))
 
   // ===========================================================================
   // TICK-BASED MECHANICS
@@ -125,16 +125,16 @@
   var slimeFoodCooldown = {}
   var slimeLastNotice = {}
 
-  PlayerEvents.loggedOut(function (event) {
+  PlayerEvents.loggedOut(icraft.guard('origins/witherborn_slimebodied', 'PlayerEvents.loggedOut', function (event) {
     try {
       var name = String(event.player.username)
       delete slimeFoodCooldown[name]
       delete slimeLastNotice[name]
     } catch (e) {}
-  })
+  }))
 
   // Intercept food eating for Slimebodied
-  ItemEvents.rightClicked(function (event) {
+  ItemEvents.rightClicked(icraft.guard('origins/witherborn_slimebodied', 'ItemEvents.rightClicked', function (event) {
     var blocked = false
     try {
       var player = event.player
@@ -165,10 +165,10 @@
     }
     // cancel() works by throwing -- it must stay outside the try above
     if (blocked) event.cancel()
-  })
+  }))
 
   // Track when food is actually consumed
-  PlayerEvents.inventoryChanged(function (event) {
+  PlayerEvents.inventoryChanged(icraft.guard('origins/witherborn_slimebodied', 'PlayerEvents.inventoryChanged', function (event) {
     try {
       var player = event.player
       if (!player || originOf(player) !== 'icraft:slimebodied') return
@@ -186,7 +186,7 @@
     } catch (e) {
       warnOnce('food tracker', e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] Witherborn & Slimebodied origins loaded')
   console.log('  Witherborn: Wither on hit, hunger damage penalty')

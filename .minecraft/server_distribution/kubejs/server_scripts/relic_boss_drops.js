@@ -153,7 +153,7 @@ function nearestPlayerTo(server, entity) {
   return best
 }
 
-EntityEvents.death(function (event) {
+EntityEvents.death(icraft.guard('relic_boss_drops', 'EntityEvents.death', function (event) {
   try {
     var entity = event.entity
     if (!entity || String(entity.type) !== 'minecraft:ender_dragon') return
@@ -180,5 +180,5 @@ EntityEvents.death(function (event) {
   } catch (e) {
     console.warn('[relic_boss_drops] dragon death handler error: ' + e)
   }
-})
+}))
 })()

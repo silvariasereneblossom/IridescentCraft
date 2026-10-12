@@ -15,7 +15,7 @@
 //  Keystone recipe — so this conversion is a secondary path, not its only use.)
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/boss_material_processing', 'ServerEvents.recipes', event => {
 
     // Condensed Blaze Essence (blaze drop) -> Blaze Powder (3x, more efficient)
     event.shapeless('3x minecraft:blaze_powder', [
@@ -41,4 +41,4 @@ ServerEvents.recipes(event => {
     }).id('kubejs:soul_fragments_to_sand')
 
     console.log('[IridescentCraft] Boss material processing recipes loaded')
-})
+}))

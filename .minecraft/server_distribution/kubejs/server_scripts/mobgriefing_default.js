@@ -26,7 +26,7 @@
 try {
   var GameRules_mg = Java.loadClass('net.minecraft.world.level.GameRules')
 
-  ServerEvents.loaded(function(event) {
+  ServerEvents.loaded(icraft.guard('mobgriefing_default', 'ServerEvents.loaded', function(event) {
     try {
       var server = event.server
       var ow = server.overworld()
@@ -56,7 +56,7 @@ try {
     } catch (e) {
       console.warn('[mobgriefing_default] handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] mobgriefing_default loaded -- one-shot mobGriefing=false on world init')
 } catch (e) {

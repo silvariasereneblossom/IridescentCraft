@@ -18,13 +18,14 @@
 // These recipes just ensure the MATERIALS required are tier-appropriate.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/refined_storage_dualpath', 'ServerEvents.recipes', event => {
 
   // =========================================================================
   // STEP 1: REMOVE DEFAULT RS RECIPES
   // We replace these with dual-path versions below.
   // =========================================================================
 
+  icraft.section('recipes/refined_storage_dualpath/step-1-remove-default-rs-recipes', function () {
   const rsItemsToReplace = [
     'refinedstorage:controller',
     'refinedstorage:grid',
@@ -46,6 +47,7 @@ ServerEvents.recipes(event => {
   rsItemsToReplace.forEach(item => {
     event.remove({ output: item })
   })
+  })
 
   // =========================================================================
   // STEP 2: SHARED COMPONENT — Machine Casing (required by both paths)
@@ -53,6 +55,7 @@ ServerEvents.recipes(event => {
   // =========================================================================
 
   // Tech casing: steel + osmium
+  icraft.section('recipes/refined_storage_dualpath/step-2-shared-component-machine-casing', function () {
   event.shaped('refinedstorage:machine_casing', [
     'SOS',
     'O O',
@@ -71,6 +74,7 @@ ServerEvents.recipes(event => {
     M: 'botania:manasteel_ingot',
     E: 'botania:mana_diamond'
   }).id('kubejs:rs_casing_magic')
+  })
 
   // =========================================================================
   // STEP 3: QUARTZ ENRICHED IRON — Base crafting material
@@ -78,6 +82,7 @@ ServerEvents.recipes(event => {
   // =========================================================================
 
   // Tech path: iron + quartz + osmium nugget → 2x yield
+  icraft.section('recipes/refined_storage_dualpath/step-3-quartz-enriched-iron-base-crafting', function () {
   event.shaped(Item.of('refinedstorage:quartz_enriched_iron', 2), [
     ' Q ',
     'IOI',
@@ -98,6 +103,7 @@ ServerEvents.recipes(event => {
     I: 'minecraft:iron_ingot',
     P: 'botania:mana_pearl'
   }).id('kubejs:rs_enriched_iron_magic')
+  })
 
   // =========================================================================
   // STEP 4: PROCESSORS — Three tiers, dual-path each
@@ -105,6 +111,7 @@ ServerEvents.recipes(event => {
 
   // --- Basic Processor ---
   // Tech: silicon + steel + redstone
+  icraft.section('recipes/refined_storage_dualpath/basic-processor', function () {
   event.shaped('refinedstorage:basic_processor', [
     'RSR',
     'SCS',
@@ -125,9 +132,11 @@ ServerEvents.recipes(event => {
     S: 'refinedstorage:silicon',
     M: 'botania:manasteel_ingot'
   }).id('kubejs:rs_basic_processor_magic')
+  })
 
   // --- Improved Processor ---
   // Tech: basic processor + osmium + signalum
+  icraft.section('recipes/refined_storage_dualpath/improved-processor', function () {
   event.shaped('refinedstorage:improved_processor', [
     'GOG',
     'OPO',
@@ -148,9 +157,11 @@ ServerEvents.recipes(event => {
     M: 'botania:mana_diamond',
     P: 'refinedstorage:basic_processor'
   }).id('kubejs:rs_improved_processor_magic')
+  })
 
   // --- Advanced Processor ---
   // Tech: improved processor + enderium + diamond
+  icraft.section('recipes/refined_storage_dualpath/advanced-processor', function () {
   event.shaped('refinedstorage:advanced_processor', [
     'DED',
     'EPE',
@@ -171,12 +182,14 @@ ServerEvents.recipes(event => {
     T: 'botania:terrasteel_ingot',
     P: 'refinedstorage:improved_processor'
   }).id('kubejs:rs_advanced_processor_magic')
+  })
 
   // =========================================================================
   // STEP 5: CONTROLLER — Core of the RS network
   // =========================================================================
 
   // Tech: machine casing + advanced processor + osmium + diamond
+  icraft.section('recipes/refined_storage_dualpath/step-5-controller-core-of-the-rs-network', function () {
   event.shaped('refinedstorage:controller', [
     'OAO',
     'DCD',
@@ -212,12 +225,14 @@ ServerEvents.recipes(event => {
     C: 'refinedstorage:machine_casing',
     M: 'refinedstorage:improved_processor'  // only needs improved, not advanced
   }).id('kubejs:rs_controller_hybrid')
+  })
 
   // =========================================================================
   // STEP 6: GRID & CRAFTING GRID
   // =========================================================================
 
   // Grid — Tech
+  icraft.section('recipes/refined_storage_dualpath/step-6-grid-crafting-grid', function () {
   event.shaped('refinedstorage:grid', [
     'EPE',
     'GCG',
@@ -252,12 +267,14 @@ ServerEvents.recipes(event => {
     W: 'minecraft:crafting_table',
     G: 'refinedstorage:grid'
   }).id('kubejs:rs_crafting_grid')
+  })
 
   // =========================================================================
   // STEP 7: DISK DRIVE
   // =========================================================================
 
   // Tech
+  icraft.section('recipes/refined_storage_dualpath/step-7-disk-drive', function () {
   event.shaped('refinedstorage:disk_drive', [
     'OPO',
     'OCO',
@@ -280,12 +297,14 @@ ServerEvents.recipes(event => {
     C: 'refinedstorage:machine_casing',
     M: 'botania:mana_diamond'
   }).id('kubejs:rs_disk_drive_magic')
+  })
 
   // =========================================================================
   // STEP 8: CRAFTER
   // =========================================================================
 
   // Tech
+  icraft.section('recipes/refined_storage_dualpath/step-8-crafter', function () {
   event.shaped('refinedstorage:crafter', [
     'EPE',
     'WCW',
@@ -310,11 +329,13 @@ ServerEvents.recipes(event => {
     C: 'refinedstorage:machine_casing',
     M: 'botania:terrasteel_ingot'
   }).id('kubejs:rs_crafter_magic')
+  })
 
   // =========================================================================
   // STEP 9: CABLE (cheap, just needs enriched iron)
   // =========================================================================
 
+  icraft.section('recipes/refined_storage_dualpath/step-9-cable', function () {
   event.shaped(Item.of('refinedstorage:cable', 12), [
     'EEE',
     'RGR',
@@ -324,12 +345,14 @@ ServerEvents.recipes(event => {
     R: 'minecraft:redstone',
     G: '#forge:glass'
   }).id('kubejs:rs_cable')
+  })
 
   // =========================================================================
   // STEP 10: STORAGE PARTS — Dual-path with hybrid bonuses
   // =========================================================================
 
   // 1K — Tech
+  icraft.section('recipes/refined_storage_dualpath/step-10-storage-parts-dual-path-with-hybrid', function () {
   event.shaped('refinedstorage:1k_storage_part', [
     'RSR',
     'SPS',
@@ -429,6 +452,7 @@ ServerEvents.recipes(event => {
     D: 'minecraft:diamond_block',
     G: 'botania:gaia_ingot'
   }).id('kubejs:rs_64k_part_hybrid')
+  })
 
   // =========================================================================
   // STEP 11: TIER 4 ADVANCED — RSInfinityBooster + ExtraStorage/ExtraDisks
@@ -437,6 +461,7 @@ ServerEvents.recipes(event => {
 
   // RSInfinityBooster — infinite wireless range
   // Requires nether star + ender pearls + advanced processors + netherite
+  icraft.section('recipes/refined_storage_dualpath/step-11-tier-4-advanced-rsinfinitybooster', function () {
   event.remove({ output: 'rsinfinitybooster:infinity_card' })
   event.shaped('rsinfinitybooster:infinity_card', [
     'NAN',
@@ -483,6 +508,7 @@ ServerEvents.recipes(event => {
     S: 'extrastorage:storagepart_1024k',
     A: 'refinedstorage:advanced_processor'
   }).id('kubejs:rs_4096k_part')
+  })
 
   // =========================================================================
   // STEP 12: PERIPHERAL RS ITEMS (importer, exporter, etc.)
@@ -499,4 +525,4 @@ ServerEvents.recipes(event => {
   //
   // These all use processors as ingredients, which are already dual-pathed.
   // The tier gate propagates through the processor dependency chain.
-})
+}))

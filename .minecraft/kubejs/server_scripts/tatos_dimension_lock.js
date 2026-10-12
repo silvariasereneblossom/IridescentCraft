@@ -37,7 +37,7 @@ try {
     'theabyss:pocket_dimension': true
   }
 
-  EntityEvents.spawned(event => {
+  EntityEvents.spawned(icraft.guard('tatos_dimension_lock', 'EntityEvents.spawned', event => {
     try {
       var entity = event.entity
       if (!entity) return
@@ -92,7 +92,7 @@ try {
     } catch (e) {
       console.warn('[tatos_lock] spawned-handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] tatos_dimension_lock loaded (theabyss:* mobs confined to 4 TATOS dims)')
 } catch (e) {

@@ -35,7 +35,7 @@ try {
     }
   }
 
-  ServerEvents.commandRegistry(function(event) {
+  ServerEvents.commandRegistry(icraft.guard('diag_armor_modifiers', 'ServerEvents.commandRegistry', function(event) {
     var Commands = event.commands
 
     event.register(
@@ -53,7 +53,7 @@ try {
           })
         )
     )
-  })
+  }))
 
   console.log('[IridescentCraft] /icraft armormods command registered')
 } catch (e) {

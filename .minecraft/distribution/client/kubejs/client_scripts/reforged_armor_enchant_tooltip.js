@@ -27,7 +27,7 @@ var REFORGED_ARMOR_IDS = [
 // "script never fires" from "script fires but regex fails".
 var REFORGED_TT_DIAG = false
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('reforged_armor_enchant_tooltip', 'ItemEvents.tooltip', event => {
   REFORGED_ARMOR_IDS.forEach(itemId => {
     event.addAdvanced(itemId, (stack, advanced, text) => {
       try {
@@ -82,4 +82,4 @@ ItemEvents.tooltip(event => {
       }
     })
   })
-})
+}))

@@ -17,7 +17,7 @@
 //     selection time, not crafting time).
 // =============================================================================
 
-StartupEvents.registry("item", event => {
+StartupEvents.registry("item", icraft.guard('boss_compass_item', 'StartupEvents.registry', event => {
     event.create("kubejs:boss_compass")
         .displayName("Boss Compass")
         .texture("minecraft:item/compass")
@@ -28,7 +28,7 @@ StartupEvents.registry("item", event => {
         .maxStackSize(1)
         .rarity("uncommon")
         .glow(true)
-})
+}))
 
 // Recipe registration moved to server_scripts/bonfire/boss_compass_handler.js
 // per KubeJS script-type rules -- ServerEvents.* only fires from server_scripts/,

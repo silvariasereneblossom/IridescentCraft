@@ -6,7 +6,7 @@
 // access on Day 1-2 to participate in the village-chest scroll economy.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/magic_recipes', 'ServerEvents.recipes', event => {
 
   // -----------------------------------------------------------------
   // ISS Scroll Forge — Crying Obsidian -> Gold Block
@@ -27,4 +27,4 @@ ServerEvents.recipes(event => {
     G: 'minecraft:gold_block'
   }).id('icraft:scroll_forge_t1')
 
-})
+}))

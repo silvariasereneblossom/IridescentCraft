@@ -212,9 +212,9 @@
 
   // Registered first (this file loads before every consumer), so the cache is
   // already fresh when the consumers' own loggedIn / respawned handlers run.
-  PlayerEvents.loggedIn(function (event) { forceRefresh(event.player) })
-  PlayerEvents.respawned(function (event) { forceRefresh(event.player) })
-  PlayerEvents.loggedOut(function (event) { invalidate(event.player) })
+  PlayerEvents.loggedIn(icraft.guard('0_lib_origins', 'PlayerEvents.loggedIn', function (event) { forceRefresh(event.player) }))
+  PlayerEvents.respawned(icraft.guard('0_lib_origins', 'PlayerEvents.respawned', function (event) { forceRefresh(event.player) }))
+  PlayerEvents.loggedOut(icraft.guard('0_lib_origins', 'PlayerEvents.loggedOut', function (event) { invalidate(event.player) }))
 
   console.log('[IridescentCraft] 0_lib_origins loaded -- global.icraft.origin {get,is,invalidate}, ' +
     TTL_TICKS + '-tick per-player cache over ForgeCaps."origins:origins".Origins')

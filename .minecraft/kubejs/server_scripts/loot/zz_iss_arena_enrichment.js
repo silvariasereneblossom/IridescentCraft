@@ -27,7 +27,7 @@
 // the icraft progression tokens (not ISS-namespaced, never stripped) are kept.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/zz_iss_arena_enrichment', 'LootJS.modifiers', event => {
 
   // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
   var T3 = 'icraft:progression_token_t3'
@@ -86,4 +86,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.12)))
 
   console.log('[zz_iss_arena_enrichment] re-homed ISS arena enrichment AFTER lootjs_overhaul ISS strip (extracted from boss_arena_themed_loot + _material_tease; survives the registration-order removeIf)')
-})
+}))

@@ -602,7 +602,7 @@ function registerStageRestrictionsOnce() {
 }
 
 // Boot: scripts load before the server exists, so register when it has loaded.
-ServerEvents.loaded(event => registerStageRestrictionsOnce())
+ServerEvents.loaded(icraft.guard('gates/astages_restrictions', 'ServerEvents.loaded', event => registerStageRestrictionsOnce()))
 
 // /reload: the server is already running and ServerEvents.loaded will not fire
 // again -- register now, while the file is being re-evaluated.

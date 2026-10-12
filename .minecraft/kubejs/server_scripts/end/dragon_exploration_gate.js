@@ -77,7 +77,7 @@ function endGateNotify(endPlayers) {
 // player stands in the arena, so the "blocked" line is logged once per load.
 var endGateBlockLogged = false
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('end/dragon_exploration_gate', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
@@ -115,7 +115,7 @@ EntityEvents.spawned(event => {
     }
     event.cancel()
   }
-})
+}))
 
 // =============================================================================
 // END EXPLORATION TRACKING
@@ -169,7 +169,7 @@ global.registerPlayerTick('tick_endExplorationTracking', 200, 100)
 // KILL TRACKING IN THE END
 // =============================================================================
 
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('end/dragon_exploration_gate', 'EntityEvents.death', event => {
   let entity = event.entity
   let source = event.source
   if (!source || !source.player) return
@@ -214,7 +214,7 @@ EntityEvents.death(event => {
       player.tell(Text.gray(`  End Endermen: ${kills}/${END_ENDERMAN_KILLS}`))
     }
   }
-})
+}))
 
 // =============================================================================
 // CHECK IF ALL EXPLORATION MILESTONES MET
@@ -313,7 +313,7 @@ global.registerServerTick('tick_dragonSummonCrystal', 40, 10)
 // POST-DRAGON: Mark dragon as killed for future spawns
 // =============================================================================
 
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('end/dragon_exploration_gate#2', 'EntityEvents.death', event => {
   let entity = event.entity
   if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
@@ -325,13 +325,13 @@ EntityEvents.death(event => {
       // Future dragon respawns (via End Crystals) won't be blocked
     }
   })
-})
+}))
 
 // =============================================================================
 // RECIPE: Dragon Summoning Crystal
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('end/dragon_exploration_gate', 'ServerEvents.recipes', event => {
   // Dragon Summoning Crystal: 4x Ender Pearl + 2x End Crystal + 1x Nether Star.
   //
   // 2026-10-10: this used to need 2x kubejs:reality_progression_token_t4 as
@@ -351,7 +351,7 @@ ServerEvents.recipes(event => {
     C: 'minecraft:end_crystal',
     N: 'minecraft:nether_star'
   }).id('icraft:dragon_summoning_crystal')
-})
+}))
 
 // =============================================================================
 // EXPLORATION PROGRESS COMMAND (check via /trigger or chat)
@@ -360,7 +360,7 @@ ServerEvents.recipes(event => {
 
 // Use a simple tick check — when a player holds a compass in The End,
 // show exploration progress
-PlayerEvents.inventoryChanged(event => {
+PlayerEvents.inventoryChanged(icraft.guard('end/dragon_exploration_gate', 'PlayerEvents.inventoryChanged', event => {
   if (event.item.id !== 'minecraft:compass') return
   let player = event.player
   if (player.level.dimension.toString() !== 'minecraft:the_end') return
@@ -383,7 +383,7 @@ PlayerEvents.inventoryChanged(event => {
   let shulkerKills = pdata.getInt('icraft_end_shulker_kills')
   player.tell(Text.gray(`    ${shulker ? '§a✓' : '§c○'} §7Slay Shulkers (${Math.min(shulkerKills, END_SHULKER_KILLS)}/${END_SHULKER_KILLS})`))
   player.tell(Text.gray(`    ${endermen ? '§a✓' : '§c○'} §7Defeat Endermen (${Math.min(kills, END_ENDERMAN_KILLS)}/${END_ENDERMAN_KILLS})`))
-})
+}))
 
 console.log('[IridescentCraft] Dragon exploration gate loaded')
 console.log('  - Dragon blocked until End exploration complete')

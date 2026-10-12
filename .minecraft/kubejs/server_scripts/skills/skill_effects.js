@@ -11,7 +11,7 @@
 // ALL 22 scoreboard objectives now have functional gameplay effects.
 // =============================================================================
 
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('skills/skill_effects', 'ServerEvents.loaded', event => {
   ;['icraft_mana_regen','icraft_cast_speed','icraft_mana_cost_reduction',
     'icraft_buff_duration','icraft_accuracy','icraft_execute_damage',
     'icraft_ammo_save','icraft_aoe_splash','icraft_crop_yield',
@@ -22,7 +22,7 @@ ServerEvents.loaded(event => {
     'icraft_hp_regen'
   ].forEach(obj => event.server.runCommandSilent(`scoreboard objectives add ${obj} dummy`))
   console.log('[IridescentCraft] Scoreboard objectives created (22)')
-})
+}))
 
 function getScore(server, playerName, objective) {
   try {
@@ -175,7 +175,7 @@ let FURNACE_KEYS = [
 // ═══════════════════════════════════════════════════════════════════════════
 // GATHERING: Block Break Effects
 // ═══════════════════════════════════════════════════════════════════════════
-BlockEvents.broken(event => {
+BlockEvents.broken(icraft.guard('skills/skill_effects', 'BlockEvents.broken', event => {
   if (!event.player || !event.player.server) return
   let blockId = event.block.id
   let srv = event.player.server
@@ -213,13 +213,13 @@ BlockEvents.broken(event => {
       }
     }
   }
-})
+}))
 
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GATHERING: Bonemeal Efficiency
 // ═══════════════════════════════════════════════════════════════════════════
-BlockEvents.rightClicked(event => {
+BlockEvents.rightClicked(icraft.guard('skills/skill_effects', 'BlockEvents.rightClicked', event => {
   if (!event.player) return
   let held = event.player.mainHandItem
   if (!held || held.id !== 'minecraft:bone_meal') return
@@ -241,13 +241,13 @@ BlockEvents.rightClicked(event => {
       }
     } catch(e) {}
   }
-})
+}))
 
 
 // ═══════════════════════════════════════════════════════════════════════════
 // GATHERING: Breeding Speed (Entity Interaction)
 // ═══════════════════════════════════════════════════════════════════════════
-ItemEvents.entityInteracted(event => {
+ItemEvents.entityInteracted(icraft.guard('skills/skill_effects', 'ItemEvents.entityInteracted', event => {
   let player = event.player
   let target = event.entity
   if (!player || !target || !target.living) return
@@ -266,7 +266,7 @@ ItemEvents.entityInteracted(event => {
   if (target.baby) {
     target.age += breedSpeed * 5
   }
-})
+}))
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -289,7 +289,7 @@ ItemEvents.entityInteracted(event => {
 // Unchanged: the item patterns, the percentages (the two scoreboard scores),
 // the 2-second cooldown per effect and its saved keys, what is handed out.
 // ═══════════════════════════════════════════════════════════════════════════
-ItemEvents.crafted(event => {
+ItemEvents.crafted(icraft.guard('skills/skill_effects', 'ItemEvents.crafted', event => {
   if (!event.player || !event.player.server) return
   if (event.player.spectator || event.player.creative) return
 
@@ -418,7 +418,7 @@ ItemEvents.crafted(event => {
       } catch(e) {}
     }
   }
-})
+}))
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -716,7 +716,7 @@ global.registerServerTick('tick_skillEffects', 25, 0)
 // Note: LootJS modifiers apply globally, not per-player. We handle the
 // per-player crafting effects via ItemEvents.crafted above.
 // This section adds bonus drops from blocks for engineering-skilled players.
-BlockEvents.broken(event => {
+BlockEvents.broken(icraft.guard('skills/skill_effects#2', 'BlockEvents.broken', event => {
   if (!event.player || !event.player.server) return
   let player = event.player
   let srv = player.server
@@ -744,7 +744,7 @@ BlockEvents.broken(event => {
       }
     }
   }
-})
+}))
 
 
 // ═══════════════════════════════════════════════════════════════════════════

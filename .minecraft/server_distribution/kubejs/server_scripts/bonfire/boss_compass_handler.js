@@ -618,7 +618,7 @@ function cycleTarget(player) {
 
 // ---- Right-click handler --------------------------------------------------
 
-ItemEvents.rightClicked("kubejs:boss_compass", event => {
+ItemEvents.rightClicked("kubejs:boss_compass", icraft.guard('bonfire/boss_compass_handler', 'ItemEvents.rightClicked', event => {
     var player = event.player
     var item = event.item
     if (!player || player.level.isClientSide()) return
@@ -632,7 +632,7 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
     // Right-click cycles to the next tier-eligible boss (no chat needed). The
     // full clickable list is still available via `/icraft_compass menu`.
     cycleTarget(player)
-})
+}))
 
 // ---- Action-bar HUD pointer (1 Hz) ----------------------------------------
 //
@@ -687,7 +687,7 @@ global.registerPlayerTick("tick_bossCompassHud", 20, 7)
 
 var BrigString = Java.loadClass("com.mojang.brigadier.arguments.StringArgumentType")
 
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('bonfire/boss_compass_handler', 'ServerEvents.commandRegistry', event => {
     var commands = event.commands
 
     event.register(
@@ -725,7 +725,7 @@ ServerEvents.commandRegistry(event => {
                     })
             )
     )
-})
+}))
 
 // ---- Crafting recipe -----------------------------------------------------
 //
@@ -734,17 +734,17 @@ ServerEvents.commandRegistry(event => {
 // at target-selection by AStages tier, not at craft time): vanilla compass +
 // an Ars Nouveau source gem (entry-tier accessible).
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('bonfire/boss_compass_handler', 'ServerEvents.recipes', event => {
     event.shapeless("kubejs:boss_compass", [
         "minecraft:compass",
         "ars_nouveau:source_gem",
     ]).id("kubejs:boss_compass")
-})
+}))
 
 // Locate cache: one map per online player (see LOCATE CACHE above).
-PlayerEvents.loggedOut(event => {
+PlayerEvents.loggedOut(icraft.guard('bonfire/boss_compass_handler', 'PlayerEvents.loggedOut', event => {
     try { delete locateCache[String(event.player.uuid)] } catch (e) {}
-})
+}))
 
 console.log("[iridescent/boss_compass] handler loaded; "
     + Object.keys(global.ICRAFT_BOSS_ARENAS || {}).length + " arena(s) selectable")

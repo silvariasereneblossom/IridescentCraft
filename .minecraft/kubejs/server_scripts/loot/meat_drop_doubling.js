@@ -13,7 +13,7 @@
 // etc.) deliberately excluded this pass - extend the map after a meat audit.
 // =============================================================================
 
-LootJS.modifiers(function (event) {
+LootJS.modifiers(icraft.guard('loot/meat_drop_doubling', 'LootJS.modifiers', function (event) {
   var MEAT_ANIMALS = {
     'minecraft:pig':       ['minecraft:porkchop', 'minecraft:cooked_porkchop'],
     'minecraft:cow':       ['minecraft:beef', 'minecraft:cooked_beef'],
@@ -40,4 +40,4 @@ LootJS.modifiers(function (event) {
     count++
   }
   console.log('[meat-doubling] base meat drops doubled for ' + count + ' animals')
-})
+}))

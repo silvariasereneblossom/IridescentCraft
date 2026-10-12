@@ -72,7 +72,7 @@ const ASC_BROKEN_ISS = {
   'irons_spellbooks:priest':      true,
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
   if (entity.player) return
@@ -128,7 +128,7 @@ EntityEvents.spawned(event => {
   }
 
   buff.done()
-})
+}))
 
 // Modded hostile mobs that may not extend Monster class. Moved VERBATIM from
 // endgame/ascension.js — preserves the original ascension scaling set (the 5

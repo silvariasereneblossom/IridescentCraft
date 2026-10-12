@@ -14,7 +14,7 @@
 //   4. FD-addon raw crops/seeds that duplicate Pam HC2 (Cultural / Delightful)
 //   5. Blue Skies items duplicating Pam HC2
 
-JEIEvents.hideItems(event => {
+JEIEvents.hideItems(icraft.guard('food_dedup_jei_hide', 'JEIEvents.hideItems', event => {
   const hides = [
     // -- Thermal Cultivation (canonical: Pam HC2) --
     'thermal:amaranth', 'thermal:amaranth_block',
@@ -105,4 +105,4 @@ JEIEvents.hideItems(event => {
     try { event.hide(id) } catch (e) { /* item may not exist if its mod is absent */ }
   })
   console.log(`[icraft food_dedup] Hid ${hides.length} duplicate food items from JEI`)
-})
+}))

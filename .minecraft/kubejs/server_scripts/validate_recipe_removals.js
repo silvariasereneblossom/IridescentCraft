@@ -29,7 +29,7 @@
 // 442, and named a recipe file (tier_skip.js) that does not exist.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('validate_recipe_removals', 'ServerEvents.recipes', event => {
     // We use ServerEvents.recipes because it's the same event-context that
     // the removal calls run in, so we can check the same registry view.
     // Actual scanning runs once via a flag in global state.
@@ -238,4 +238,4 @@ ServerEvents.recipes(event => {
     } else {
         console.log('[icraft-validate] All ' + targets.length + ' recipe-removal IDs validated against item registry.')
     }
-})
+}))

@@ -24,7 +24,7 @@
 // only the root id, i.e. the alias.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/zz_unique_chest_strip', 'LootJS.modifiers', event => {
   var bows = global.ICRAFT_TMB_BOWS || []
   if (!bows.length) { console.warn('[zz_unique_chest_strip] no bow list — nothing stripped'); return }
   var m = event.addLootTableModifier(/.*chests\/.*/,
@@ -32,4 +32,4 @@ LootJS.modifiers(event => {
   bows.forEach(b => m.removeLoot(b))
   console.log('[zz_unique_chest_strip] insurance strip armed for ' + bows.length
     + ' TMB bows across all chests/ tables (boss-exclusive)')
-})
+}))

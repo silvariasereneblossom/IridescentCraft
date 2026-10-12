@@ -27,6 +27,20 @@
 //   SILENT-CATCH    a NEW catch that logs nothing, does not use the error and does not rethrow
 //                                                    -> whatever its try block gets wrong is invisible for good
 //                   (ratchet, see below; the catches that existed on 2026-10-11 are grandfathered)
+//   UNGUARDED-EVENT an event registration (ServerEvents.x(..), LootJS.modifiers(..), any *Events group) whose
+//                   handler is not wrapped in icraft.guard -> if it throws, KubeJS leaves the event's handler
+//                   chain: every script that loads AFTER this one loses that event (one loot script silenced
+//                   twelve for four months). Write
+//                     ServerEvents.recipes(icraft.guard('<script>', 'ServerEvents.recipes', event => { ... }))
+//                   (kubejs/*_scripts/00_icraft_guard.js). Strict: zero sites since 2026-10-12; a deliberate
+//                   bare registration goes in the exceptions file with its reason.
+//   GUARD-SHAPE     an icraft.guard / icraft.section call the log line cannot be trusted for:
+//                     guard(name, event, handler)  name  = this script's path below *_scripts, without .js,
+//                                                          plus '#2', '#3' for a second handler of the SAME
+//                                                          event in the file (name + event is unique per file)
+//                                                  event = the registration it is passed to, as written
+//                     section(name, function)      name  = '<this script>/<part>', unique in the file
+//                   -> "[icraft.guard] FAILED <name> in <event>" would point at the wrong script or event
 //
 // The silent-catch ratchet (operator ruling 2026-10-11). Most of the dead features of the audit sat behind a
 // `catch (e) {}`: the code threw on every call and nothing ever said so. The pack had several hundred of those
@@ -73,6 +87,11 @@ const NO_SUCH_METHOD = new Set(['getInternal', 'getItemSlot', 'isInstance']);
 const EXIT_CALLS = new Set(['cancel', 'success', 'exit']);
 const TICK_REG = new Set(['registerServerTick', 'registerPlayerTick']);
 const NAME_SELECTOR = /\b(?:if|unless) entity (?!@)[^\s\[]*\[/;
+// the bindings scripts register handlers on: every `<Something>Events` group, and LootJS (LootJS.modifiers)
+const EVENT_GROUP = /^(?:[A-Z]\w*Events|LootJS)$/;
+const isIcraftCall = (n, prop) => !!n && n.type === 'CallExpression' && n.callee.type === 'MemberExpression' && !n.callee.computed &&
+  n.callee.object.type === 'Identifier' && n.callee.object.name === 'icraft' && n.callee.property.name === prop;
+const strLit = (n) => (n && n.type === 'Literal' && typeof n.value === 'string') ? n.value : null;
 
 const isFn = (n) => n.type === 'FunctionDeclaration' || n.type === 'FunctionExpression' || n.type === 'ArrowFunctionExpression';
 
@@ -140,6 +159,32 @@ function lint(file) {
       onComment: (block, text, start, end, startLoc) => comments.push({ text, start, end, line: startLoc.line }) });
   } catch (e) { return { sites: [{ rule: 'PARSE-FAIL', line: 0, msg: e.message + ' (a file that does not parse cannot be checked)' }], idiom, silent, marked }; }
   const site = (rule, node, msg) => sites.push({ rule, line: node.loc.start.line, msg });
+
+  // ---- event isolation: every registration goes through icraft.guard, and its labels are true ----
+  const scriptName = relKey(file).replace(/^[^/]*_scripts\//, '').replace(/\.js$/, '');
+  const guardKeys = new Set();     // '<name> in <event>' seen in this file
+  const sectionNames = new Set();
+  const escRx = (s) => s.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&');
+  const guardName = new RegExp('^' + escRx(scriptName) + '(#[\\w-]+)?$');
+  function checkGuard(call, ev) {
+    const a = call.arguments;
+    if (a.length !== 3) { site('GUARD-SHAPE', call, 'icraft.guard takes (name, event, handler): ' + a.length + ' argument(s) here'); return; }
+    const name = strLit(a[0]), event = strLit(a[1]);
+    if (name === null || event === null) { site('GUARD-SHAPE', call, 'icraft.guard: name and event must be string literals (the lint and the boot-log checker read them)'); return; }
+    if (!guardName.test(name)) site('GUARD-SHAPE', call, "icraft.guard('" + name + "', ..): the name must be this script's own path, '" + scriptName + "' (or '" + scriptName + "#2' for a second handler of the same event)");
+    if (event !== ev) site('GUARD-SHAPE', call, "icraft.guard(.., '" + event + "', ..) is passed to " + ev + ': the log line would name the wrong event');
+    const k = name + ' in ' + event;
+    if (guardKeys.has(k)) site('GUARD-SHAPE', call, "icraft.guard('" + name + "', '" + event + "', ..) is used twice in this file: add '#2' to the second name");
+    guardKeys.add(k);
+  }
+  function checkSection(call) {
+    const a = call.arguments;
+    const name = strLit(a[0]);
+    if (a.length !== 2 || name === null) { site('GUARD-SHAPE', call, "icraft.section takes ('<script>/<part>', function)"); return; }
+    if (name.indexOf(scriptName + '/') !== 0 || name.length === scriptName.length + 1) site('GUARD-SHAPE', call, "icraft.section('" + name + "', ..): the name must start with this script's own path, '" + scriptName + "/'");
+    if (sectionNames.has(name)) site('GUARD-SHAPE', call, "icraft.section('" + name + "', ..) is used twice in this file");
+    sectionNames.add(name);
+  }
 
   // a catch is silent when its body, comments aside, neither logs, nor names the caught error, nor rethrows
   function silentCatch(tryNode) {
@@ -238,6 +283,14 @@ function lint(file) {
           site('CANCEL-IN-TRY', node, dotted(cal) + '() works by throwing; inside a try the catch swallows it and nothing is cancelled. Set a flag in the try, cancel after it');
         if (cal.type === 'MemberExpression' && NO_SUCH_METHOD.has(name))
           site('NO-SUCH-METHOD', node, '.' + name + '() does not exist for scripts on this KubeJS ("not a function")');
+        if (cal.type === 'MemberExpression' && !cal.computed && cal.object.type === 'Identifier' && EVENT_GROUP.test(cal.object.name) && node.arguments.length > 0) {
+          const ev = cal.object.name + '.' + name;
+          const last = node.arguments[node.arguments.length - 1];
+          if (isIcraftCall(last, 'guard')) checkGuard(last, ev);
+          else site('UNGUARDED-EVENT', node, ev + '(..) registers a bare handler: if it throws, the event ends for every script that loads after this one. ' +
+            "Wrap it: " + ev + "(icraft.guard('" + scriptName + "', '" + ev + "', handler))");
+        }
+        if (isIcraftCall(node, 'section')) checkSection(node);
         if (name && TICK_REG.has(name)) {
           const a = node.arguments;
           const iv = a[1] && a[1].type === 'Literal' && typeof a[1].value === 'number' ? a[1].value : null;

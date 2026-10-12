@@ -186,12 +186,12 @@
     }
   })
 
-  PlayerEvents.loggedOut(function (event) {
+  PlayerEvents.loggedOut(icraft.guard('quests/onboarding_bridge', 'PlayerEvents.loggedOut', function (event) {
     try {
       var prefix = String(event.player.uuid) + '|'
       for (var i = 0; i < BRIDGES.length; i++) delete blindLast[prefix + BRIDGES[i].quest]
     } catch (e) {}
-  })
+  }))
 
   console.log('[iridescent/onboarding_bridge] loaded; bridging ' + BRIDGES.length +
     ' dummy quests (any aptitude at level ' + APTITUDE_LEVEL + '+, onboarding capstone), ' + POLL_TICKS + '-tick pass per player')

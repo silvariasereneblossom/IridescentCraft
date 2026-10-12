@@ -296,16 +296,16 @@ try {
     }
   }
 
-  ServerEvents.loaded(event => {
+  ServerEvents.loaded(icraft.guard('cherry_spawn_biome', 'ServerEvents.loaded', event => {
     setSpawnToCherryRiverValley(event.server)
-  })
+  }))
 
   // Player first-join teleport. setSharedSpawnPos sets WORLD spawn but the
   // first-time player's actual landing position is influenced by player.dat
   // (existing players keep their saved spawn) and server-property
   // spawn-radius scatter. This handler explicitly teleports first-time
   // players to the cherry village position stashed in level NBT.
-  PlayerEvents.loggedIn(function(event) {
+  PlayerEvents.loggedIn(icraft.guard('cherry_spawn_biome', 'PlayerEvents.loggedIn', function(event) {
     try {
       var player = event.player
       if (!player) return
@@ -355,7 +355,7 @@ try {
     } catch (e) {
       console.warn('[icraft_spawn] PlayerEvents.loggedIn handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] cherry_spawn_biome v2 loaded -- search for ' +
               TARGET_BIOME + ' + village; max ' + MAX_ATTEMPTS +

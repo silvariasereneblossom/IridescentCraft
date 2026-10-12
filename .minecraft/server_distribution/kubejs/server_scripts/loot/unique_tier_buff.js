@@ -22,7 +22,7 @@
 try {
   var ProjectileClass = Java.loadClass('net.minecraft.world.entity.projectile.Projectile')
 
-  EntityEvents.spawned(function (event) {
+  EntityEvents.spawned(icraft.guard('loot/unique_tier_buff', 'EntityEvents.spawned', function (event) {
     try {
       var proj = event.entity
       if (!proj || !(proj instanceof ProjectileClass)) return
@@ -37,7 +37,7 @@ try {
         proj.persistentData.putString('icraft_uniq_bow', heldId)
       }
     } catch (e) {}
-  })
+  }))
   console.log('[unique_tier_buff] arrow tagger armed (Projectile spawn -> bow-id tag)')
 } catch (e) {
   console.error('[unique_tier_buff] arrow tagger init failed: ' + e)

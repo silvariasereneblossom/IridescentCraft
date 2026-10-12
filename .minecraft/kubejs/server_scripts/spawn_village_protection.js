@@ -44,13 +44,13 @@
   }
 
   // Block hostile spawns inside the zone outright.
-  EntityEvents.spawned(function (event) {
+  EntityEvents.spawned(icraft.guard('spawn_village_protection', 'EntityEvents.spawned', function (event) {
     var entity = event.entity
     if (!entity || !entity.living || !entity.monster) return
     if (nearSpawn(event.server, entity)) {
       event.cancel()
     }
-  })
+  }))
 
   // Sweep walk-ins. discard() = silent deletion (no drops/XP/death event).
   // Dispatched by the master tick (0_tick_master.js) every SWEEP_TICKS instead

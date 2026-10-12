@@ -15,7 +15,7 @@
 // our origins/classes; we want these as occasional rewards, not staples.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/terramity_boss_drops', 'LootJS.modifiers', event => {
 
   // ---- unholy_lance — undead/lance theme ----
   // Allocated to the Dead King (irons_spellbooks:dead_king, T3 ISS undead
@@ -64,4 +64,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:kamehameha').when(c => c.randomChance(0.05)))
 
   console.log('[terramity_boss_drops] registered 7 non-gun EPIC weapon allocations')
-})
+}))

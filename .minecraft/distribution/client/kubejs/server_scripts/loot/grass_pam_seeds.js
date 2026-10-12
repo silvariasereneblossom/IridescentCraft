@@ -85,7 +85,7 @@ const GRASS_BLOCKS = ['minecraft:grass', 'minecraft:tall_grass',
 // 97 seeds * 0.00072 = ~0.07 cumulative.
 const PER_SEED_CHANCE = 0.00072
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/grass_pam_seeds', 'LootJS.modifiers', event => {
   // [2026-10-10] ONE gated roll + ONE uniform pick per grass break.
   // This used to be 97 independent addLoot entries per block — 97 random rolls
   // (and 97 condition objects walked) on every grass / fern break, the most
@@ -106,4 +106,4 @@ LootJS.modifiers(event => {
   })
   console.log('[grass_pam_seeds] Pam HC2 seeds added to ' + GRASS_BLOCKS.length +
               ' grass blocks (' + PAM_SEEDS.length + ' seeds, ~7% total per break)')
-})
+}))

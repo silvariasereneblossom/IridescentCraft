@@ -29,7 +29,7 @@
 // =============================================================================
 
 // ─── Spawn: Apply scaling based on current kill count ───
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/boss_progressive', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
 
@@ -60,10 +60,10 @@ EntityEvents.spawned(event => {
   }
 
   buff.done()
-})
+}))
 
 // ─── Kill: Increment kill counter ───
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('scaling/boss_progressive', 'EntityEvents.death', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
 
@@ -71,7 +71,7 @@ EntityEvents.death(event => {
   if (!isScalableBoss(type)) return
 
   incrementKillCount(event.level, type)
-})
+}))
 
 // ─── Progressive Scale Lookup ───
 function getProgressiveScale(kills) {

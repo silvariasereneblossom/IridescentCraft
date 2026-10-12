@@ -81,7 +81,7 @@
     })
   }
 
-  ServerEvents.tick(function (event) {
+  ServerEvents.tick(icraft.guard('megatorch_damage', 'ServerEvents.tick', function (event) {
     var server = event.server
     if (server.tickCount % SWEEP_TICKS !== 0) return
     try {
@@ -106,7 +106,7 @@
     } catch (err) {
       console.error('[megatorch-damage] sweep error: ' + err)
     }
-  })
+  }))
 
   console.log('[megatorch-damage] aura active: ' + DAMAGE + ' dmg / ' +
               SWEEP_TICKS + 't to hostiles within r=' + RADIUS + ' of a megatorch')

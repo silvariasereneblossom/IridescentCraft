@@ -41,7 +41,7 @@
 
 var ItemFilter_pn = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/majrusz_skeleton_punch_strip', 'LootJS.modifiers', event => {
 
   var bowFilter = ItemFilter_pn.custom(function(stack) {
     try {
@@ -93,4 +93,4 @@ LootJS.modifiers(event => {
 
   console.log('[icraft-loot] Majrusz skeleton Punch-strip registered (' +
               tables.length + ' table patterns)')
-})
+}))

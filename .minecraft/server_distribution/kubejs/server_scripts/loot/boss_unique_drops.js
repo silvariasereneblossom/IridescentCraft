@@ -13,7 +13,7 @@
 // Read lazily inside the LootJS callback, so the registry need not load first.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/boss_unique_drops', 'LootJS.modifiers', event => {
   // RHINO-SAFETY: `var` (NOT const/let) — this LootJS callback re-fires on every
   // loot rebuild; a closure-local const/let throws "redeclaration of var" on the
   // 2nd invocation (boot-level, not just /reload). See dev/lessons-learned.md.
@@ -31,4 +31,4 @@ LootJS.modifiers(event => {
   }
   console.log('[boss_unique_drops] ' + n + ' boss-exclusive unique drops registered (SS T1 + TMB bows @ '
     + Math.round(chance * 100) + '%)')
-})
+}))

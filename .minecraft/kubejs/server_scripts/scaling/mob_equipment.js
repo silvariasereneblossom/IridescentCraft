@@ -94,7 +94,7 @@ function isMobEquipBlacklisted(entity) {
   }
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
@@ -129,7 +129,7 @@ EntityEvents.spawned(event => {
   // Equip the mob
   equipMob(entity, config)
   entity.persistentData.putBoolean('icraft_equipped', true)
-})
+}))
 
 function getEquipConfig(dim) {
   const CONFIGS = {

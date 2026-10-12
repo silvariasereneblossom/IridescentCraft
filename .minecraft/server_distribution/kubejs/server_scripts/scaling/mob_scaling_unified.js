@@ -50,7 +50,7 @@ function isMobScaleBlacklisted(entity) {
   }
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.spawned', event => {
   try {
     let entity = event.entity
     if (!entity || !entity.living) return
@@ -147,7 +147,7 @@ EntityEvents.spawned(event => {
   } catch (e) {
     // Some modded entities have abstract methods that crash when accessed
   }
-})
+}))
 
 // ── Dimension Scale Tables: REMOVED 2026-05-03 ──
 // Replaced by iridescent_difficulty mod (Java) which provides time-based

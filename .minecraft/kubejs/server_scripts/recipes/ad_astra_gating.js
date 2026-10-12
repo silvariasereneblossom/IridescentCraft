@@ -11,7 +11,7 @@
 //   - Tier 1-4 Rockets: Gated behind progressive planet materials
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/ad_astra_gating', 'ServerEvents.recipes', event => {
 
   // ═══ SECTION A: ROCKET WORKBENCH — Gateway Item ═══
   // Remove default recipe, replace with T4-gated version.
@@ -20,6 +20,7 @@ ServerEvents.recipes(event => {
   // so the workbench, and with it every rocket, could not be crafted at all.
   // Operator decision: gate by tier stage. The token slots are gone; the
   // recipe is locked to tier_4 by its id in gates/astages_restrictions.js.
+  icraft.section('recipes/ad_astra_gating/section-a-rocket-workbench-gateway-item', function () {
   event.remove({ output: 'ad_astra:nasa_workbench' })
 
   event.shaped('ad_astra:nasa_workbench', [
@@ -31,6 +32,7 @@ ServerEvents.recipes(event => {
     C: 'mekanism:steel_casing',
     S: 'ad_astra:steel_block'
   }).id('icraft:nasa_workbench_t4')
+  })
 
 
   // ═══ SECTION B: JET SUIT — Remove Entirely ═══
@@ -38,15 +40,18 @@ ServerEvents.recipes(event => {
   // [2026-10-10] the chest and leg pieces were listed as jet_suit_chestplate /
   // jet_suit_leggings; Ad Astra 1.15 calls them `jet_suit` and `jet_suit_pants`,
   // so those two stayed craftable.
+  icraft.section('recipes/ad_astra_gating/section-b-jet-suit-remove-entirely', function () {
   event.remove({ output: 'ad_astra:jet_suit_helmet' })
   event.remove({ output: 'ad_astra:jet_suit' })
   event.remove({ output: 'ad_astra:jet_suit_pants' })
   event.remove({ output: 'ad_astra:jet_suit_boots' })
+  })
 
 
   // ═══ SECTION C: TIER 1 ROCKET (Moon) ═══
   // Replace iron/steel components with Netherite + Enderium
   // Requires significant material investment even for T4 players
+  icraft.section('recipes/ad_astra_gating/section-c-tier-1-rocket', function () {
   event.remove({ output: 'ad_astra:tier_1_rocket' })
 
   event.shaped('ad_astra:tier_1_rocket', [
@@ -59,10 +64,12 @@ ServerEvents.recipes(event => {
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
   }).id('icraft:tier_1_rocket')
+  })
 
 
   // ═══ SECTION D: TIER 2 ROCKET (Mars) ═══
   // Requires Moon-specific materials + Aethersteel
+  icraft.section('recipes/ad_astra_gating/section-d-tier-2-rocket', function () {
   event.remove({ output: 'ad_astra:tier_2_rocket' })
 
   event.shaped('ad_astra:tier_2_rocket', [
@@ -76,10 +83,12 @@ ServerEvents.recipes(event => {
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
   }).id('icraft:tier_2_rocket')
+  })
 
 
   // ═══ SECTION E: TIER 3 ROCKET (Venus/Mercury) ═══
   // Requires Mars-specific materials + Aethersteel
+  icraft.section('recipes/ad_astra_gating/section-e-tier-3-rocket', function () {
   event.remove({ output: 'ad_astra:tier_3_rocket' })
 
   event.shaped('ad_astra:tier_3_rocket', [
@@ -92,11 +101,13 @@ ServerEvents.recipes(event => {
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
   }).id('icraft:tier_3_rocket')
+  })
 
 
   // ═══ SECTION F: TIER 4 ROCKET (Glacio) ═══
   // Most expensive single craft in the pack
   // Requires materials from all inner planets + Primordial Essence
+  icraft.section('recipes/ad_astra_gating/section-f-tier-4-rocket', function () {
   event.remove({ output: 'ad_astra:tier_4_rocket' })
 
   event.shaped('ad_astra:tier_4_rocket', [
@@ -110,6 +121,7 @@ ServerEvents.recipes(event => {
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
   }).id('icraft:tier_4_rocket')
+  })
 
 
   // ═══ SECTION G: MekaSuit Mk2 — Ultimate Armor (IN-PLACE UPGRADE) ═══
@@ -154,6 +166,7 @@ ServerEvents.recipes(event => {
   // - stamp the Mk2 marker
   // - set pinnacle display Name + Lore (Mythic Forge identity)
   // Defined with `var ... = function` per Rhino reentrant-scope rule.
+  icraft.section('recipes/ad_astra_gating/section-g-mekasuit-mk2-ultimate-armor', function () {
   var CompoundTag_mk2 = Java.loadClass('net.minecraft.nbt.CompoundTag')
   var StringTag_mk2 = Java.loadClass('net.minecraft.nbt.StringTag')
   var ListTag_mk2 = Java.loadClass('net.minecraft.nbt.ListTag')
@@ -275,4 +288,5 @@ ServerEvents.recipes(event => {
 
 
   console.log('[IridescentCraft] ad_astra_gating.js loaded — Ad Astra recipes gated to T4+')
-})
+  })
+}))

@@ -15,7 +15,7 @@
 // Memory: feedback_kubejs_tooltip_api.md, feedback_distro_jar_deploy.md.
 // =============================================================================
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('dna_simple_staves_tooltip', 'ItemEvents.tooltip', event => {
 
   // ─── Dan's Magic — T1 element staves (+20%) ───────────────────────────
 
@@ -85,4 +85,4 @@ ItemEvents.tooltip(event => {
   // Vanilla auto-renders those as "When in Main Hand: +X% ..." lines, so we
   // don't add tooltip entries for them here.
 
-})
+}))

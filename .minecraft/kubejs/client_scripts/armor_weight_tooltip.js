@@ -21,7 +21,7 @@
 // EMPTY stacks anyway, so the check is unnecessary.
 // =============================================================================
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('armor_weight_tooltip', 'ItemEvents.tooltip', event => {
   event.addAdvanced('#icraft:armor_robe', (stack, advanced, text) => {
     text.add(Text.of('Robe Armor').color('light_purple'))
   })
@@ -37,4 +37,4 @@ ItemEvents.tooltip(event => {
   event.addAdvanced('#icraft:armor_heavy', (stack, advanced, text) => {
     text.add(Text.of('Heavy Armor').color('gold'))
   })
-})
+}))

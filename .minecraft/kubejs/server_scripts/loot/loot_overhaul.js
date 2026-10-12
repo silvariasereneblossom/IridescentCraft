@@ -26,7 +26,7 @@
 // (loot/0_entity_id_validator.js); an unknown id is skipped and logged.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event => {
 
     // =====================================================================
     // SECTION 1: BOSS MATERIAL DROPS + SIMPLY SWORDS UNIQUES
@@ -51,6 +51,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Twilight Naga — Agility/speed theme
+    icraft.section('loot/loot_overhaul/tier-2-bosses-twilight-forest', function () {
     global.icraftEntityMod(event, "twilightforest:naga")
         .addLoot(
             LootEntry.of("kubejs:naga_scale").limitCount([2, 4])
@@ -125,6 +126,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:icewhisper").when(c => c.randomChance(0.10))
         )
+    })
 
     // -----------------------------------------------------------------
     // TIER 2 BOSSES — Blue Skies
@@ -133,6 +135,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Blue Skies: Summoner — Elemental/summoning theme
+    icraft.section('loot/loot_overhaul/tier-2-bosses-blue-skies', function () {
     global.icraftEntityMod(event, "blue_skies:summoner")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
@@ -172,6 +175,7 @@ LootJS.modifiers(event => {
                     .when(c => c.randomChance(0.05))
             )
     })
+    })
 
     // -----------------------------------------------------------------
     // TIER 2 BOSSES — Aether
@@ -179,6 +183,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Aether: Slider — Impact/thunder theme
+    icraft.section('loot/loot_overhaul/tier-2-bosses-aether', function () {
     global.icraftEntityMod(event, "aether:slider")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
@@ -199,6 +204,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:sunfire").when(c => c.randomChance(0.15))
         )
+    })
 
     // -----------------------------------------------------------------
     // TIER 2-3 BRIDGE — Deep Aether
@@ -206,6 +212,7 @@ LootJS.modifiers(event => {
     // eots, boss, aether_boss DO NOT exist as entity IDs
     // -----------------------------------------------------------------
 
+    icraft.section('loot/loot_overhaul/tier-2-3-bridge-deep-aether', function () {
     global.icraftEntityMod(event, "deep_aether:eots_controller")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [advanced_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
@@ -214,6 +221,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:flamewind").when(c => c.randomChance(0.18))
         )
+    })
 
     // -----------------------------------------------------------------
     // TIER 3 BOSSES — Cataclysm
@@ -222,6 +230,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Cataclysm: Netherite Monstrosity — Heavy/brute theme
+    icraft.section('loot/loot_overhaul/tier-3-bosses-cataclysm', function () {
     global.icraftEntityMod(event, "cataclysm:netherite_monstrosity")
         .addLoot(
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 3])
@@ -279,6 +288,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:emberlash").when(c => c.randomChance(0.15))
         )
+    })
 
     // Cataclysm: Ender Golem — Ender/construct theme (mini-boss tier)
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
@@ -290,6 +300,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Undergarden: Forgotten Guardian — Corruption/ancient theme
+    icraft.section('loot/loot_overhaul/tier-3-bosses-undergarden', function () {
     global.icraftEntityMod(event, "undergarden:forgotten_guardian")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [advanced_reforging_token@10, waystone_core@8] - paired token rates preserved (tabled).
@@ -298,6 +309,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:bramblethorn").when(c => c.randomChance(0.18))
         )
+    })
 
     // Undergarden: Forgotten — Lesser variant
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
@@ -308,6 +320,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Deeper Darker: Stalker — Stealth/shadow theme
+    icraft.section('loot/loot_overhaul/tier-3-bosses-deeper-darker', function () {
     global.icraftEntityMod(event, "deeperdarker:stalker")
         .addLoot(
             LootEntry.of("simplyswords:soulstealer").when(c => c.randomChance(0.15))
@@ -318,6 +331,7 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:soulpyre").when(c => c.randomChance(0.15))
         )
+    })
 
     // Deeper Darker: Shriek Worm — Horror/sonic theme
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
@@ -330,6 +344,7 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     // Wither — Necrotic theme
+    icraft.section('loot/loot_overhaul/tier-3-bosses-vanilla', function () {
     global.icraftEntityMod(event, "minecraft:wither")
         .addLoot(
             LootEntry.of("kubejs:wither_bone").limitCount([3, 6])
@@ -363,12 +378,14 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:nether_soul_fragment")
                 .when(c => c.randomChance(0.10))
         )
+    })
 
     // -----------------------------------------------------------------
     // TIER 4 BOSSES — Ender Dragon, Gaia Guardian, Cataclysm endgame
     // -----------------------------------------------------------------
 
     // Ender Dragon — Draconic ultimate theme
+    icraft.section('loot/loot_overhaul/tier-4-bosses-ender-dragon-gaia-guardian', function () {
     global.icraftEntityMod(event, "minecraft:ender_dragon")
         .addLoot(
             LootEntry.of("kubejs:dragon_heart").limitCount([1, 1])
@@ -446,6 +463,7 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:void_essence")
                 .when(c => c.randomChance(0.02))
         )
+    })
 
 
     // =====================================================================
@@ -466,6 +484,7 @@ LootJS.modifiers(event => {
     // registered before the add (a LootJS condition gates what follows it); it is
     // in a try so that a failure leaves the old, unconfined rule, not a throw
     // that would end the whole LootJS event.
+    icraft.section('loot/loot_overhaul/section-2-structure-chest-loot-token', function () {
     var urtEnd = event.addLootTableModifier("minecraft:chests/end_city_treasure")
     try { urtEnd.anyDimension('minecraft:the_end') } catch (e) {
         console.error('[icraft-loot] reforging-token End gate not applied: ' + e)
@@ -485,6 +504,7 @@ LootJS.modifiers(event => {
         LootEntry.of("kubejs:ultimate_reforging_token")
             .when(c => c.randomChance(0.08))
     )
+    })
 
 
     // =====================================================================
@@ -495,6 +515,7 @@ LootJS.modifiers(event => {
     // =====================================================================
 
     // Remove diamonds + diamond gear from Tier 1 overworld structures
+    icraft.section('loot/loot_overhaul/section-3-remove-tier-breaking-loot', function () {
     event.addLootTableModifier(
         "minecraft:chests/simple_dungeon",
         "minecraft:chests/abandoned_mineshaft",
@@ -555,6 +576,7 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:netherite_ingot")
         .removeLoot("minecraft:netherite_scrap")
         .removeLoot("minecraft:ancient_debris")
+    })
 
 
     // =====================================================================
@@ -577,6 +599,7 @@ LootJS.modifiers(event => {
     // three heavenly_* structures in both. Without the gate this T1-T2 strip
     // took diamonds, diamond armor and enchanted books out of T4 End chests.
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/dungeons-arise-verified-namespace-dungeons', function () {
     event.addLootTableModifier(/^dungeons_arise:chests\/.*/)
         .anyDimension("minecraft:overworld")
         .removeLoot("minecraft:diamond")
@@ -586,30 +609,37 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:diamond_boots")
         .removeLoot("minecraft:diamond_helmet")
         .removeLoot("minecraft:enchanted_book")
+    })
 
     // -----------------------------------------------------------------
     // YUNG's Better Dungeons — verified: common, special,
     //   zombie_dungeon, skeleton_dungeon, spider_dungeon
     // Tier: T1-T2 (overworld dungeons)
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/yungs-better-dungeons-verified-common', function () {
     event.addLootTableModifier(/^betterdungeons:.*/)
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:enchanted_book")
+    })
 
     // -----------------------------------------------------------------
     // YUNG's Better Strongholds — verified: library, corridor,
     //   crossing, portal_room, grand_library
     // Tier: T2-T3 (late overworld)
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/yungs-better-strongholds-verified-library', function () {
     event.addLootTableModifier(/^betterstrongholds:.*/)
         .removeLoot("minecraft:enchanted_book")
+    })
 
     // -----------------------------------------------------------------
     // YUNG's Better Fortresses — verified: common, special, blaze_spawner
     // Tier: T3 (Nether)
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/yungs-better-fortresses-verified-common', function () {
     event.addLootTableModifier(/^betterfortresses:.*/)
         .removeLoot("minecraft:enchanted_book")
+    })
 
     // -----------------------------------------------------------------
     // YUNG's Better Mineshafts — no rule. The mod is installed but ships no
@@ -628,16 +658,20 @@ LootJS.modifiers(event => {
     // Valhelsia Structures — verified present
     // Tier: T1-T2 (overworld structures)
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/valhelsia-structures-verified-present', function () {
     event.addLootTableModifier(/^valhelsia_structures:.*/)
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:enchanted_book")
+    })
 
     // -----------------------------------------------------------------
     // ChoiceTheorem's Overhauled Village — verified: "ctov"
     // Tier: T1 (villages)
     // -----------------------------------------------------------------
+    icraft.section('loot/loot_overhaul/choicetheorems-overhauled-village-verified', function () {
     event.addLootTableModifier(/^ctov:.*/)
         .removeLoot("minecraft:diamond")
+    })
 
     // NOTE (corrected 2026-10-10 — this note used to list the mods below as
     // "NOT present"; every one of them is installed):
@@ -661,6 +695,7 @@ LootJS.modifiers(event => {
 
     // Broad enchanted book removal from modded T1-T2 structure chests
     // (T3+ structures can keep books as the player has earned them)
+    icraft.section('loot/loot_overhaul/section-5-enchanted-book-removal-from', function () {
     event.addLootTableModifier(/^twilightforest:chests\/.*/)
         .removeLoot("minecraft:enchanted_book")
 
@@ -669,6 +704,7 @@ LootJS.modifiers(event => {
 
     event.addLootTableModifier(/^aether:chests\/.*/)
         .removeLoot("minecraft:enchanted_book")
+    })
 
 
     // =====================================================================
@@ -688,6 +724,7 @@ LootJS.modifiers(event => {
     // always said strip; an old comment said "keep").
     // Second root: Aquaculture's Neptunium rod rolls its own table, which nests
     // the same vanilla treasure table.
+    icraft.section('loot/loot_overhaul/section-6-fishing-loot-tier-gating', function () {
     event.addLootTableModifier(
         "minecraft:gameplay/fishing",
         "aquaculture:gameplay/fishing/neptunium"
@@ -695,6 +732,7 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:enchanted_book")     // Apotheosis handles enchanting
         .removeLoot("minecraft:saddle")
         .removeLoot("minecraft:name_tag")
+    })
 
 
     // =====================================================================
@@ -724,6 +762,7 @@ LootJS.modifiers(event => {
 
     // Tier-gated gear strip (unchanged — still blocks diamond/netherite
     // equipment flooding from mob-farm loops).
+    icraft.section('loot/loot_overhaul/section-7-mob-drop-stripping-gear-tier', function () {
     event.addLootTypeModifier(LootType.ENTITY)
         .removeLoot("minecraft:diamond_sword")
         .removeLoot("minecraft:diamond_helmet")
@@ -766,6 +805,7 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:netherite_block")
         .removeLoot("minecraft:ancient_debris")
         .removeLoot("minecraft:elytra")
+    })
 
 
     // =====================================================================
@@ -801,4 +841,4 @@ LootJS.modifiers(event => {
     //   watcher_claymore, ribboncleaver, twilight (T1 — boss_unique_drops.js)
     // =====================================================================
 
-})
+}))

@@ -85,7 +85,7 @@
     }
   }
 
-  PlayerEvents.inventoryChanged(event => {
+  PlayerEvents.inventoryChanged(icraft.guard('strip_infinity_ham', 'PlayerEvents.inventoryChanged', event => {
     // Fast path: only walk the inventory if the changed stack is an infinity ham.
     try {
       var changed = event.item
@@ -95,9 +95,9 @@
       // If we can't read the changed item, fall through to the full scan
     }
     scanPlayer(event.player)
-  })
+  }))
 
-  PlayerEvents.loggedIn(event => {
+  PlayerEvents.loggedIn(icraft.guard('strip_infinity_ham', 'PlayerEvents.loggedIn', event => {
     scanPlayer(event.player)
-  })
+  }))
 })()

@@ -12,7 +12,7 @@
 // try/catch-hedged. Durable fallback: iridescent_durability_clamp coremod mixin.
 // =============================================================================
 
-ItemEvents.modification(event => {
+ItemEvents.modification(icraft.guard('terramity_weapon_durability', 'ItemEvents.modification', event => {
   const TARGET_DURABILITY = 2500
   const WEAPONS = [
     'nyxium_greatsword',
@@ -34,4 +34,4 @@ ItemEvents.modification(event => {
       catch (e) { console.warn('[terramity_weapon_durability] ' + id + ': ' + e) }
     })
   })
-})
+}))

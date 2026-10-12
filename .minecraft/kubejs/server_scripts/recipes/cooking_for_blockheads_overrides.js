@@ -15,7 +15,7 @@
 // crafting_book becomes available right when the kitchen does.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/cooking_for_blockheads_overrides', 'ServerEvents.recipes', event => {
     // Remove the stock recipe so our shaped override is the only one
     // producing the crafting book.
     event.remove({ output: 'cookingforblockheads:crafting_book' })
@@ -40,4 +40,4 @@ ServerEvents.recipes(event => {
             B: 'cookingforblockheads:recipe_book',
         }
     ).id('iridescent_reforging:cookingforblockheads_crafting_book_redstone')
-})
+}))

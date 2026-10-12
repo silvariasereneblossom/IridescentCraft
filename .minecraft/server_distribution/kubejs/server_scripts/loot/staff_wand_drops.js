@@ -18,7 +18,7 @@
 // Memory: project_mage_loadout.md, feedback_kubejs_event_scope.md.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/staff_wand_drops', 'LootJS.modifiers', event => {
 
   // ════════════════════════════════════════════════════════════════════
   // T2 STAVES — boss-allocated drops (~30-40% rate)
@@ -114,4 +114,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:lightning_staff').when(c => c.randomChance(0.10)))
 
   console.log('[staff_wand_drops] loaded — 17 staves seeded across T2/T3/T4 bosses')
-})
+}))

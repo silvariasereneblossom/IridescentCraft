@@ -52,7 +52,7 @@ function _affixStripEntityResId(entity) {
   } catch (e) { return '' }
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
@@ -95,6 +95,6 @@ EntityEvents.spawned(event => {
       try { entity.setItemSlot(slot, item) } catch (e) {}
     }
   }
-})
+}))
 
 console.log('[IridescentCraft] Apotheosis overworld affix-strip loaded')

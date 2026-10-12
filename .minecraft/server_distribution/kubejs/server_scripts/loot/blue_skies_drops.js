@@ -8,7 +8,7 @@
 // Boss-kill counter handled by gates/milestone_detection.js (icraft_t2_boss_kills).
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/blue_skies_drops', 'LootJS.modifiers', event => {
 
   // ---- Summoner (T2 — Everdawn dungeon, magic boss) ----
   global.icraftEntityMod(event, 'blue_skies:summoner')
@@ -37,4 +37,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.20)))
 
   console.log('[blue_skies_drops] registered 4 Blue Skies boss synergy modifiers')
-})
+}))

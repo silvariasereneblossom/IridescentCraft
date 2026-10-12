@@ -18,7 +18,7 @@
 //   - mutantmonsters:mutant_skeleton_rib_cage
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/strip_mutant_monsters', 'ServerEvents.recipes', event => {
   ;[
     'mutantmonsters:creeper_minion_tracker',
     'mutantmonsters:mutant_skeleton_arms',
@@ -29,4 +29,4 @@ ServerEvents.recipes(event => {
   ].forEach(id => {
     try { event.remove({ id: id }) } catch (e) {}
   })
-})
+}))

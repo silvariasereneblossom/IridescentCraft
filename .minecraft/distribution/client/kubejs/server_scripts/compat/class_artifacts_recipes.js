@@ -8,7 +8,7 @@
 // - Magic leather is orphaned (no longer craftable, no use)
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('compat/class_artifacts_recipes', 'ServerEvents.recipes', event => {
   const removed = [
     // Awakening artifact upgrade recipes (normal + nether_star -> awakening)
     'rpgseteffects:altharion_awakening_artifact',
@@ -37,4 +37,4 @@ ServerEvents.recipes(event => {
   })
 
   console.log('[IridescentCraft] Stripped ' + removed.length + ' rpgseteffects crafting/smelting recipes (drops-only design)')
-})
+}))

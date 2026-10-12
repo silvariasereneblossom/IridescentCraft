@@ -72,7 +72,7 @@ const STRIPPED_ITEMS = new Set([
 // attacks via vanilla sword swing (it's a SwordItem subclass per Dan's
 // Magic source); only the right-click is cancelled.
 
-ItemEvents.rightClicked(event => {
+ItemEvents.rightClicked(icraft.guard('integration/dna_simple_staves_strip', 'ItemEvents.rightClicked', event => {
   // RHINO: declared OUTSIDE the try -- this Rhino build scopes a `var` declared
   // inside a block to that block, so it would be undefined after the catch.
   var shouldCancel = false
@@ -89,7 +89,7 @@ ItemEvents.rightClicked(event => {
   }
   // cancel() unwinds by throwing KubeJS' EventExit -- it must stay outside the try.
   if (shouldCancel) event.cancel()
-})
+}))
 
 console.log('[dna_simple_staves_strip] loaded — ' + STRIPPED_ITEMS.size +
             ' items stripped of right-click projectile use')

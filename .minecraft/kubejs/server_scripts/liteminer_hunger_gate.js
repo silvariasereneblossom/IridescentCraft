@@ -63,7 +63,7 @@ try {
   // username -> { lastBreakTick, lastNotifyTick }
   var liteminerState = {}
 
-  BlockEvents.broken(function(event) {
+  BlockEvents.broken(icraft.guard('liteminer_hunger_gate', 'BlockEvents.broken', function(event) {
     var shouldCancel = false
     try {
       var player = event.player
@@ -112,12 +112,12 @@ try {
     // catch swallow EventExit — logging a spurious "handler threw" on every
     // gated break (53x/session) AND eating the cancel. Cancel outside the try.
     if (shouldCancel) event.cancel()
-  })
+  }))
 
   // Cleanup state on disconnect
-  PlayerEvents.loggedOut(function(event) {
+  PlayerEvents.loggedOut(icraft.guard('liteminer_hunger_gate', 'PlayerEvents.loggedOut', function(event) {
     try { delete liteminerState[event.player.username] } catch (e) {}
-  })
+  }))
 
   console.log('[IridescentCraft] liteminer_hunger_gate loaded — chain breaks cancel below ' + HUNGER_THRESHOLD + '/20 hunger')
 } catch (e) {

@@ -23,7 +23,7 @@ var MK2_MEKASUIT_IDS = [
   'mekanism:mekasuit_boots'
 ]
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('mekasuit_mk2_tooltip', 'ItemEvents.tooltip', event => {
   MK2_MEKASUIT_IDS.forEach(itemId => {
     event.addAdvanced(itemId, (stack, advanced, text) => {
       try {
@@ -38,4 +38,4 @@ ItemEvents.tooltip(event => {
       }
     })
   })
-})
+}))

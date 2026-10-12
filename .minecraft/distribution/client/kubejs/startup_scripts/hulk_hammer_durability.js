@@ -15,9 +15,9 @@
 // take, the durable fix is a mixin in the iridescent_durability_clamp coremod.
 // =============================================================================
 
-ItemEvents.modification(event => {
+ItemEvents.modification(icraft.guard('hulk_hammer_durability', 'ItemEvents.modification', event => {
   event.modify('mutantmonsters:hulk_hammer', item => {
     try { item.maxDamage = 640 }
     catch (e) { console.warn('[hulk_hammer] maxDamage override failed: ' + e) }
   })
-})
+}))

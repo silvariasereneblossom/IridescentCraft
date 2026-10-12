@@ -159,9 +159,9 @@ global.tick_dna_simple_staves_buffs = function (event) {
 function forgetHeldBuffs(event) {
   try { delete appliedHeld[String(event.player.uuid)] } catch (e) {}
 }
-PlayerEvents.loggedIn(forgetHeldBuffs)
-PlayerEvents.loggedOut(forgetHeldBuffs)
-PlayerEvents.respawned(forgetHeldBuffs)
+PlayerEvents.loggedIn(icraft.guard('integration/dna_simple_staves_buffs', 'PlayerEvents.loggedIn', forgetHeldBuffs))
+PlayerEvents.loggedOut(icraft.guard('integration/dna_simple_staves_buffs', 'PlayerEvents.loggedOut', forgetHeldBuffs))
+PlayerEvents.respawned(icraft.guard('integration/dna_simple_staves_buffs', 'PlayerEvents.respawned', forgetHeldBuffs))
 
 // 10-tick interval (2 Hz); offset 4 to space against other registered
 // per-second ticks. Swap latency from drawing/sheathing a buffed item is

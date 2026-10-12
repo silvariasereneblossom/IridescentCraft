@@ -27,7 +27,7 @@
 // duplicated here.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/boss_arena_material_tease', 'LootJS.modifiers', event => {
 
   // tease(chestTable, materialItem, itemChance, tierToken, tokenChance)
   // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
@@ -84,4 +84,4 @@ LootJS.modifiers(event => {
   tease('deep_aether:chests/dungeon/brass/brass_dungeon_loot', 'deep_aether:squall_plate', 0.08, T3, 0.04)
 
   console.log('[boss_arena_material_tease] registered 13 arena material teases, 12 with a tier token (icraft #58 Piece B)')
-})
+}))

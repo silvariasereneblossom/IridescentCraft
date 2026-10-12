@@ -11,7 +11,7 @@
 // try/catch-hedged. Durable fallback: iridescent_durability_clamp coremod mixin.
 // =============================================================================
 
-ItemEvents.modification(event => {
+ItemEvents.modification(icraft.guard('virtual_gold_durability', 'ItemEvents.modification', event => {
   const TARGETS = {
     'virtual_gold_sword':      250,
     'virtual_gold_axe':        250,
@@ -29,4 +29,4 @@ ItemEvents.modification(event => {
       catch (e) { console.warn('[virtual_gold_durability] ' + name + ': ' + e) }
     })
   })
-})
+}))

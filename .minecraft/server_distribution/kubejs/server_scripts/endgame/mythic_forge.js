@@ -13,7 +13,7 @@
 // Pattern: Place Mythic Forge + materials in crafting grid → output
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes', event => {
 
     // =========================================================================
     // SECTION 1: MYTHIC FORGE CRAFTING RECIPE
@@ -21,6 +21,7 @@ ServerEvents.recipes(event => {
     // Rift Key: Dragon Heart + Void Essence + Gaia Ingot + Nether Star
     // =========================================================================
 
+    icraft.section('endgame/mythic_forge/section-1-mythic-forge-crafting-recipe', function () {
     event.shaped('kubejs:mythic_forge', [
         'RMR',
         'OCO',
@@ -32,6 +33,7 @@ ServerEvents.recipes(event => {
         C: 'mekanism:steel_casing',
         N: 'minecraft:netherite_ingot'
     }).id('icraft:mythic_forge')
+    })
 
     // =========================================================================
     // SECTION 2: RIFT KEYSTONE RECIPE
@@ -39,6 +41,7 @@ ServerEvents.recipes(event => {
     // Dragon Heart + Void Essence + Gaia Ingot + Nether Star
     // =========================================================================
 
+    icraft.section('endgame/mythic_forge/section-2-rift-keystone-recipe', function () {
     event.shaped('kubejs:rift_keystone', [
         ' V ',
         'DGN',
@@ -50,12 +53,14 @@ ServerEvents.recipes(event => {
         N: 'minecraft:nether_star',
         S: 'kubejs:icraft_rift_shard'
     }).id('icraft:rift_keystone')
+    })
 
     // =========================================================================
     // SECTION 3: VOID COFFER RECIPE
     // Banking item for Rift runs
     // =========================================================================
 
+    icraft.section('endgame/mythic_forge/section-3-void-coffer-recipe', function () {
     event.shaped('kubejs:void_coffer', [
         'OEO',
         'VCV',
@@ -66,6 +71,7 @@ ServerEvents.recipes(event => {
         V: 'kubejs:void_fragment',
         C: 'minecraft:chest'
     }).id('icraft:void_coffer')
+    })
 
     // =========================================================================
     // SECTION 4: MYTHIC CATALYST RECIPES (Mythic I through V)
@@ -83,6 +89,7 @@ ServerEvents.recipes(event => {
     // =========================================================================
 
     // --- Mythic Catalyst I: 5 Shards + 2 Void Fragments ---
+    icraft.section('endgame/mythic_forge/mythic-catalyst-i-5-shards-2-void-fragments', function () {
     event.shaped('kubejs:mythic_catalyst_1', [
         'SFS',
         'SMS',
@@ -92,9 +99,11 @@ ServerEvents.recipes(event => {
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
     }).id('icraft:mythic_catalyst_1')
+    })
 
     // --- Mythic Catalyst II: 5 Shards (grid) + 4 Void Fragments ---
     // (Represents 10 shards + 5 fragments — scaled for 3x3 grid)
+    icraft.section('endgame/mythic_forge/mythic-catalyst-ii-5-shards-4-void-fragments', function () {
     event.shaped('kubejs:mythic_catalyst_2', [
         'FSF',
         'SMS',
@@ -104,8 +113,10 @@ ServerEvents.recipes(event => {
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
     }).id('icraft:mythic_catalyst_2')
+    })
 
     // --- Mythic Catalyst III: Shards + Fragments + 1 Primordial Essence ---
+    icraft.section('endgame/mythic_forge/mythic-catalyst-iii-shards-fragments-1', function () {
     event.shaped('kubejs:mythic_catalyst_3', [
         'SFS',
         'FMF',
@@ -116,12 +127,14 @@ ServerEvents.recipes(event => {
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence'
     }).id('icraft:mythic_catalyst_3')
+    })
 
     // --- Mythic Catalyst IV: Shards + Fragments + 2 Essences + 1 Antimatter ---
     // [S85-S1 2026-06-06] Antimatter wired in as the apex reagent (closes the
     // Codex doc gap: mods_t4/mekanism_advanced.json promises antimatter is
     // "required for several Mythic infusion recipes"). 1 pellet per IV craft.
     // (mekanism:pellet_antimatter confirmed present in all_items.tsv.)
+    icraft.section('endgame/mythic_forge/mythic-catalyst-iv-shards-fragments-2', function () {
     event.shaped('kubejs:mythic_catalyst_4', [
         'SAS',
         'FMF',
@@ -133,6 +146,7 @@ ServerEvents.recipes(event => {
         E: 'kubejs:primordial_essence',
         A: 'mekanism:pellet_antimatter'
     }).id('icraft:mythic_catalyst_4')
+    })
 
     // --- Mythic Catalyst V: Shards + Fragments + Essences + Rift Core + Antimatter ---
     // [S85-S1 2026-06-06] Antimatter wired in as the apex reagent per the draft's
@@ -140,6 +154,7 @@ ServerEvents.recipes(event => {
     // engineering apex (antimatter / SPS run) a hard gate on the combat/mythic
     // apex catalyst. 1 pellet per V craft.
     // (mekanism:pellet_antimatter confirmed present in all_items.tsv.)
+    icraft.section('endgame/mythic_forge/mythic-catalyst-v-shards-fragments-essences', function () {
     event.shaped('kubejs:mythic_catalyst_5', [
         'SAS',
         'FMF',
@@ -152,6 +167,7 @@ ServerEvents.recipes(event => {
         E: 'kubejs:primordial_essence',
         C: 'kubejs:rift_core'
     }).id('icraft:mythic_catalyst_5')
+    })
 
     // =========================================================================
     // SECTION 5: MYTHIC REFORGE TOKEN
@@ -159,12 +175,14 @@ ServerEvents.recipes(event => {
     // (Levels cost handled via command/advancement, not recipe)
     // =========================================================================
 
+    icraft.section('endgame/mythic_forge/section-5-mythic-reforge-token', function () {
     event.shapeless('kubejs:mythic_reforge_token', [
         'kubejs:mythic_forge',
         'kubejs:primordial_essence',
         'kubejs:primordial_essence',
         'kubejs:primordial_essence'
     ]).id('icraft:mythic_reforge_token')
+    })
 
     // =========================================================================
     // SECTION 6: RIFT-TOUCHED ENCHANTMENT APPLICATION
@@ -192,6 +210,7 @@ ServerEvents.recipes(event => {
 
     // --- Voidheart Blade: On-kill damage stacking sword ---
     // Base: Simply Swords awakened_lichblade (thematic fit)
+    icraft.section('endgame/mythic_forge/voidheart-blade-on-kill-damage-stacking', function () {
     event.shaped(
         Item.of('simplyswords:awakened_lichblade')
             .withName('§5Voidheart Blade')
@@ -206,9 +225,11 @@ ServerEvents.recipes(event => {
         M: 'kubejs:mythic_forge',
         R: 'kubejs:rift_core'
     }).id('icraft:mythic_voidheart_blade')
+    })
 
     // --- Oblivion Aegis: Death-delay chestplate ---
     // Base: netherite chestplate with high protection
+    icraft.section('endgame/mythic_forge/oblivion-aegis-death-delay-chestplate', function () {
     event.shaped(
         Item.of('minecraft:netherite_chestplate')
             .withName('§5Oblivion Aegis')
@@ -225,9 +246,11 @@ ServerEvents.recipes(event => {
         S: 'kubejs:void_fragment',
         C: 'kubejs:rift_core'
     }).id('icraft:mythic_oblivion_aegis')
+    })
 
     // --- Riftwalker Boots: Teleport + speed boots ---
     // Base: netherite boots
+    icraft.section('endgame/mythic_forge/riftwalker-boots-teleport-speed-boots', function () {
     event.shaped(
         Item.of('minecraft:netherite_boots')
             .withName('§5Riftwalker Boots')
@@ -244,9 +267,11 @@ ServerEvents.recipes(event => {
         M: 'kubejs:mythic_forge',
         S: 'kubejs:void_fragment'
     }).id('icraft:mythic_riftwalker_boots')
+    })
 
     // --- Oblivion Crown: Wallhack vision + first-strike helmet ---
     // Base: netherite helmet
+    icraft.section('endgame/mythic_forge/oblivion-crown-wallhack-vision-first-strike', function () {
     event.shaped(
         Item.of('minecraft:netherite_helmet')
             .withName('§5Oblivion Crown')
@@ -270,4 +295,5 @@ ServerEvents.recipes(event => {
     console.log('  - Mythic Catalysts I-V')
     console.log('  - Mythic Reforge Token')
     console.log('  - 4 Mythic Unique item recipes (Blueprint)')
-})
+    })
+}))

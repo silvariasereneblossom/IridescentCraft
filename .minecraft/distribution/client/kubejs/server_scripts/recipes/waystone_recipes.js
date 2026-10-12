@@ -14,11 +14,12 @@
 // Sharestones and utility items (scrolls, warp stones) have their own costs.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/waystone_recipes', 'ServerEvents.recipes', event => {
 
   // ═══ REMOVE ALL DEFAULT WAYSTONE RECIPES ═══
   // We replace every craftable waystone variant with boss-gated versions.
 
+  icraft.section('recipes/waystone_recipes/remove-all-default-waystone-recipes', function () {
   ;[
     'waystones:waystone',
     'waystones:mossy_waystone',
@@ -44,6 +45,7 @@ ServerEvents.recipes(event => {
   ].forEach(color => {
     event.remove({ output: `waystones:${color}_sharestone` })
   })
+  })
 
 
   // ═══ WAYSTONE CORE — The universal gating component ═══
@@ -51,6 +53,7 @@ ServerEvents.recipes(event => {
   // Boss materials: any T2+ boss drop works (Lich Soul, Naga Scale, etc.)
   // This makes waystone crafting a mid-to-late game milestone.
 
+  icraft.section('recipes/waystone_recipes/waystone-core-the-universal-gating-component', function () {
   event.remove({ output: 'kubejs:waystone_core' })
   event.shaped('kubejs:waystone_core', [
     'GBG',
@@ -75,11 +78,13 @@ ServerEvents.recipes(event => {
     B: 'kubejs:harbinger_eye',     // T3 boss drop
     E: 'minecraft:ender_pearl'
   }).id('icraft:waystone_core_alt')
+  })
 
 
   // ═══ WAYSTONE BLOCKS — All require core + themed stone ═══
 
   // Standard Waystone
+  icraft.section('recipes/waystone_recipes/waystone-blocks-all-require-core-themed', function () {
   event.shaped('waystones:waystone', [
     'SSS',
     'SCS',
@@ -138,10 +143,12 @@ ServerEvents.recipes(event => {
     S: 'minecraft:end_stone_bricks',
     C: 'kubejs:waystone_core'
   }).id('icraft:end_stone_waystone')
+  })
 
 
   // ═══ SHARESTONE — Same core cost, dye for color ═══
   // Base sharestone (white by default)
+  icraft.section('recipes/waystone_recipes/sharestone-same-core-cost-dye-for-color', function () {
   event.shaped('waystones:sharestone', [
     'DSD',
     'SCS',
@@ -175,9 +182,11 @@ ServerEvents.recipes(event => {
       'waystones:sharestone', dye
     ]).id(`icraft:${color}_sharestone`)
   })
+  })
 
 
   // ═══ WARP PLATE — Expensive utility block ═══
+  icraft.section('recipes/waystone_recipes/warp-plate-expensive-utility-block', function () {
   event.shaped('waystones:warp_plate', [
     'GEG',
     'ECE',
@@ -187,8 +196,10 @@ ServerEvents.recipes(event => {
     E: 'minecraft:ender_pearl',
     C: 'kubejs:waystone_core'
   }).id('icraft:warp_plate')
+  })
 
   // ═══ PORTSTONE — Public waystone, even more expensive ═══
+  icraft.section('recipes/waystone_recipes/portstone-public-waystone-even-more', function () {
   event.shaped('waystones:portstone', [
     'SDS',
     'SCS',
@@ -198,12 +209,14 @@ ServerEvents.recipes(event => {
     D: 'minecraft:diamond_block',
     C: 'kubejs:waystone_core'
   }).id('icraft:portstone')
+  })
 
 
   // ═══ UTILITY ITEMS — Moderate cost, no core required ═══
   // These are consumable/limited, so they don't need full boss-gate.
 
   // Warp Stone (reusable, cooldown) — expensive but no boss drop
+  icraft.section('recipes/waystone_recipes/utility-items-moderate-cost-no-core-required', function () {
   event.shaped('waystones:warp_stone', [
     'EPE',
     'PDP',
@@ -268,4 +281,5 @@ ServerEvents.recipes(event => {
 
 
   console.log('[IridescentCraft] waystone_recipes.js loaded')
-})
+  })
+}))

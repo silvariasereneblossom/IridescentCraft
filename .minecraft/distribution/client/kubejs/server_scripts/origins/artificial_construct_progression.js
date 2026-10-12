@@ -138,7 +138,7 @@
 
   // Iron eating via custom food mechanic — iron isn't food, so we hook item use.
   // Item id is checked FIRST: this fires for every right-click by every player.
-  ItemEvents.rightClicked(function (event) {
+  ItemEvents.rightClicked(icraft.guard('origins/artificial_construct_progression', 'ItemEvents.rightClicked', function (event) {
     var handled = false
     try {
       var item = event.item
@@ -163,7 +163,7 @@
     }
     // cancel() works by throwing -- it must stay outside the try above
     if (handled) event.cancel()
-  })
+  }))
 
   // modifyAttribute modifiers are transient: they vanish with the player
   // entity, so re-apply on login AND on respawn (death used to strip every
@@ -175,8 +175,8 @@
       warnOnce('bonus re-apply', e)
     }
   }
-  PlayerEvents.loggedIn(reapply)
-  PlayerEvents.respawned(reapply)
+  PlayerEvents.loggedIn(icraft.guard('origins/artificial_construct_progression', 'PlayerEvents.loggedIn', reapply))
+  PlayerEvents.respawned(icraft.guard('origins/artificial_construct_progression', 'PlayerEvents.respawned', reapply))
 
   console.log('[IridescentCraft] Artificial Construct progression loaded')
   console.log('  - 25% food efficiency from normal food')

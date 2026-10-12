@@ -134,7 +134,7 @@
   }
 
   // Boot summary (one line, after the first loot build).
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('loot/0_entity_id_validator', 'ServerEvents.loaded', function (event) {
     try {
       if (regState === 0) registryUsable()
       if (regState !== 1) {
@@ -147,5 +147,5 @@
     } catch (e) {
       console.error(TAG + 'summary failed: ' + e)
     }
-  })
+  }))
 })()

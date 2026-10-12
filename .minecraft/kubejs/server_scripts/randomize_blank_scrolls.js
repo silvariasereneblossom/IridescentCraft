@@ -115,7 +115,7 @@ var scanPlayer = function(player) {
   } catch (e) {}
 }
 
-PlayerEvents.inventoryChanged(event => {
+PlayerEvents.inventoryChanged(icraft.guard('randomize_blank_scrolls', 'PlayerEvents.inventoryChanged', event => {
   // Fast path: only scan if the changed item is actually a scroll.
   try {
     var changed = event.item
@@ -126,9 +126,9 @@ PlayerEvents.inventoryChanged(event => {
     // If we can't read the changed item, fall through to full scan
   }
   scanPlayer(event.player)
-})
+}))
 
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('randomize_blank_scrolls', 'PlayerEvents.loggedIn', event => {
   scanPlayer(event.player)
-})
+}))
 })()

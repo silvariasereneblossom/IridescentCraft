@@ -21,7 +21,7 @@
 
 var SetEquipmentHelper = Java.loadClass('com.everydayxp.rpgseteffects.system.slot.SetEquipmentHelper')
 
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('icraftsets_command', 'ServerEvents.commandRegistry', event => {
   const { commands: Commands } = event
 
   event.register(
@@ -40,6 +40,6 @@ ServerEvents.commandRegistry(event => {
         }
       })
   )
-})
+}))
 
 console.log('[IridescentCraft] /icraftsets command registered')

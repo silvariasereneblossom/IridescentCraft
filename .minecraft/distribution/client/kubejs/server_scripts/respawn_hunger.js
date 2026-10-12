@@ -23,7 +23,7 @@ const RESPAWN_HUNGER     = 6   // 3 drumsticks
 const RESPAWN_SATURATION = 0   // empty saturation buffer
 
 try {
-  PlayerEvents.respawned(function(event) {
+  PlayerEvents.respawned(icraft.guard('respawn_hunger', 'PlayerEvents.respawned', function(event) {
     try {
       var player = event.player
       if (!player) return
@@ -35,7 +35,7 @@ try {
     } catch (e) {
       console.warn('[respawn_hunger] handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] respawn_hunger loaded — respawn sets food=' + RESPAWN_HUNGER + ', saturation=' + RESPAWN_SATURATION)
 } catch (e) {

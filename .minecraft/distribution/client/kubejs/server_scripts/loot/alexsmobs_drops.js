@@ -20,7 +20,7 @@
 // ink, T3+ runes) on T3-T4 mobs are intentional.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/alexsmobs_drops', 'LootJS.modifiers', event => {
 
   // ===== T4 — End-tier =====
 
@@ -129,4 +129,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.15)))
 
   console.log('[alexsmobs_drops] registered 21 entity loot modifiers (1 strip, 20 synergy adds)')
-})
+}))

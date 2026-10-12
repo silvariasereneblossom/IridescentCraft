@@ -30,7 +30,7 @@
 // canonical mechanism per AddSocketsRecipe in Apotheosis-1.20.1-7.4.8.jar.
 // =============================================================================
 
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('sigil_registry', 'StartupEvents.registry', event => {
 
     event.create('icraft:sigil_of_socketing_t1')
         .displayName('Sigil of Socketing I')
@@ -62,4 +62,4 @@ StartupEvents.registry('item', event => {
         .textureJson({ layer0: 'apotheosis:items/sigils/socketing' })
         .color(0, 0x50C878)  // emerald green
 
-})
+}))

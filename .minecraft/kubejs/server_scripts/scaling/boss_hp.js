@@ -21,7 +21,7 @@
 //   keeps its share of health; flag 2 = saved with the boss, nothing to do.
 // =============================================================================
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('scaling/boss_hp', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
 
@@ -57,7 +57,7 @@ EntityEvents.spawned(event => {
   }
 
   buff.done()
-})
+}))
 
 function getBossHP(type) {
   const BOSS_HP = {

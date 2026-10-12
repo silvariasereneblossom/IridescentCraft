@@ -301,7 +301,7 @@
   // Fires for every living death in the world, so the body is cache lookups
   // only until a Void Summoner is actually in range.
 
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('origins/class_passives', 'EntityEvents.death', function (event) {
     try {
       var entity = event.entity
       if (!entity || entity.player) return
@@ -334,7 +334,7 @@
     } catch (e) {
       warnOnce('void summoner soul tether', e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] Class passives loaded')
   console.log('  - Samurai: Focus (movement shield + Vorpal by tier)')

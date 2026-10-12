@@ -505,21 +505,21 @@
 
   // Registered first (this file loads before every consumer), so consumers'
   // own loggedIn / respawned handlers already see a fresh / dropped entry.
-  PlayerEvents.loggedIn(function (event) {
+  PlayerEvents.loggedIn(icraft.guard('0_lib_aptitudes', 'PlayerEvents.loggedIn', function (event) {
     dropBaseline(event.player)
     forceRefresh(event.player)
-  })
+  }))
   // New player entity: its level restarts (death) or carries over; either way
   // the old baseline says nothing about spending. See the header for why this
   // drops instead of reading.
-  PlayerEvents.respawned(function (event) {
+  PlayerEvents.respawned(icraft.guard('0_lib_aptitudes', 'PlayerEvents.respawned', function (event) {
     dropBaseline(event.player)
     invalidate(event.player)
-  })
-  PlayerEvents.loggedOut(function (event) {
+  }))
+  PlayerEvents.loggedOut(icraft.guard('0_lib_aptitudes', 'PlayerEvents.loggedOut', function (event) {
     dropBaseline(event.player)
     invalidate(event.player)
-  })
+  }))
 
   console.log('[IridescentCraft] 0_lib_aptitudes loaded -- global.icraft.aptitude {get,all,invalidate,xp}: ' +
     (direct ? 'direct AptitudeCapability read, ' + TTL_DIRECT + '-tick' : 'NBT read (ForgeCaps."' + CAP_ID + '"), ' + TTL_NBT + '-tick') +

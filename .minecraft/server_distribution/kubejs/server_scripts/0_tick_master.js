@@ -103,7 +103,7 @@ global.playerTickFunctions = []
   }
 
   // ─── Master ServerEvents.tick ───
-  ServerEvents.tick(event => {
+  ServerEvents.tick(icraft.guard('0_tick_master', 'ServerEvents.tick', event => {
     var tick = event.server.tickCount
     currentTick = tick
     var fns = global.serverTickFunctions
@@ -116,10 +116,10 @@ global.playerTickFunctions = []
         reportError('server', entry, e)
       }
     }
-  })
+  }))
 
   // ─── Master PlayerEvents.tick ───
-  PlayerEvents.tick(event => {
+  PlayerEvents.tick(icraft.guard('0_tick_master', 'PlayerEvents.tick', event => {
     var age = event.player.age
     var fns = global.playerTickFunctions
     for (var i = 0; i < fns.length; i++) {
@@ -131,11 +131,11 @@ global.playerTickFunctions = []
         reportError('player', entry, e)
       }
     }
-  })
+  }))
 })()
 
 // Log summary after all scripts load
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('0_tick_master', 'ServerEvents.loaded', event => {
   console.log('[TickMaster] Registered ' + global.serverTickFunctions.length + ' server tick functions')
   console.log('[TickMaster] Registered ' + global.playerTickFunctions.length + ' player tick functions')
-})
+}))

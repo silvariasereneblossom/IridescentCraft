@@ -142,7 +142,7 @@ const BIOFUEL_CRUSH = [
   ['minecraft:wither_rose', 5]
 ]
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/mek_biofuel_squeeze', 'ServerEvents.recipes', event => {
 
   // Helper as a var fn-expr (Rhino closure-in-scope safety; matches pack style).
   var squeeze = function (n) {
@@ -176,4 +176,4 @@ ServerEvents.recipes(event => {
 
   console.log('[IridescentCraft] mek_biofuel_squeeze.js loaded -- factor ' +
     BIOFUEL_SQUEEZE_FACTOR + ', re-added ' + added + ' squeezed crushing->bio_fuel recipes')
-})
+}))

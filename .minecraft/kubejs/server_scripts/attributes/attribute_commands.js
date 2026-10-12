@@ -189,7 +189,7 @@ function showClass(player) {
 // Do the work first, cancel last and OUTSIDE the try: event.cancel() exits the
 // handler by throwing, and a try/catch around it swallows the cancel.
 var statsChatWarned = false
-PlayerEvents.chat(function(event) {
+PlayerEvents.chat(icraft.guard('attributes/attribute_commands', 'PlayerEvents.chat', function(event) {
   var handled = false
   try {
     var msg = String(event.message || '').trim()
@@ -208,7 +208,7 @@ PlayerEvents.chat(function(event) {
     }
   }
   if (handled) event.cancel()
-})
+}))
 
 console.log('[IridescentCraft] Attribute chat commands loaded (v0.4)')
 console.log('  !stats / !attributes -- Show attribute values')

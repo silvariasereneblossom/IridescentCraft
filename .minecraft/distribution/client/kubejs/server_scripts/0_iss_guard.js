@@ -80,7 +80,7 @@ global.icraftSkipIssMob = function(entity, scriptName) {
   return true
 }
 
-EntityEvents.spawned(event => {
+EntityEvents.spawned(icraft.guard('0_iss_guard', 'EntityEvents.spawned', event => {
   try {
     var entity = event.entity
     if (!entity || !entity.living || entity.player) return
@@ -91,6 +91,6 @@ EntityEvents.spawned(event => {
   } catch (e) {
     // Defensive: never let the guard listener itself crash the server.
   }
-})
+}))
 
 console.log('[iss-guard] loaded -- irons_spellbooks: mobs will be flagged with persistentData.icraft_iss_skip=true at spawn')

@@ -262,7 +262,8 @@ Read the numbers with the noise in mind (see "What two boots of the same tree di
 ## Script load order (why the run folder is in memory)
 
 KubeJS loads the scripts of a folder in the order the directory listing gives them (`Files.walk`), then sorts by the
-`// priority` header, which no script of the pack sets. The live server and every client sit on NTFS, which lists
+`// priority` header, which one script of the pack sets (`00_icraft_guard.js`, 1000: the event guard, first on any
+file system; by name it is first on NTFS as well). The live server and every client sit on NTFS, which lists
 names sorted (upper-cased, so `affixes\` comes before `affix_overworld_strip.js`). ext4 lists them by a hash.
 
 A full-pack server whose `kubejs` folder is on ext4 loads `0_lib_core.js` and `0_tick_master.js` about fiftieth. Six

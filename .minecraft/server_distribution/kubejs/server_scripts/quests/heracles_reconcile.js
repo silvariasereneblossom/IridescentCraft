@@ -438,10 +438,10 @@ function reconcileAll(player, verbose) {
 }
 
 // ---- triggers --------------------------------------------------------------
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('quests/heracles_reconcile', 'PlayerEvents.loggedIn', event => {
   try { reconcileAll(event.player, false) } catch (e) { console.warn('[heracles_reconcile] login pass threw: ' + e) }
   try { event.player.persistentData.putInt('icraft_recon_recheck_ticks', 100) } catch (e) {}
-})
+}))
 
 global.tick_heraclesReconcileRecheck = function(event) {
   event.server.players.forEach(function(player) {
@@ -473,7 +473,7 @@ global.tick_heraclesReconcilePeriodic = function(event) {
 global.registerServerTick('tick_heraclesReconcilePeriodic', 600, 13)
 
 // ---- on-demand command: /icraft_reconcile [reset] --------------------------
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('quests/heracles_reconcile', 'ServerEvents.commandRegistry', event => {
   var commands = event.commands
   var run = function (ctx, doReset) {
     var sp = null
@@ -498,7 +498,7 @@ ServerEvents.commandRegistry(event => {
       .executes(ctx => run(ctx, false))
       .then(commands.literal('reset').executes(ctx => run(ctx, true)))
   )
-})
+}))
 
 console.log('[heracles_reconcile] loaded — ' + RECONCILE.length +
   ' quests auto-reconcile from existing advancements / tiers / flags (login + 30s periodic + /icraft_reconcile)')

@@ -44,7 +44,8 @@ client instance both re-sync from there.
 
 KubeJS loads the files of a script type in the order the folder lists them, which on the Windows
 server is by name, case-insensitively, with folders and files interleaved. A `// priority: N`
-header sorts a file ahead of that order. Two consequences that have bitten:
+header sorts a file ahead of that order (one file uses it: `00_icraft_guard.js`, which every other
+script needs while it loads). Two consequences that have bitten:
 
 - `0_` files load first, `zz_` files load late. Upper-cased, `Z` sorts before `_`, so `zzz_x.js`
   loads BEFORE `zz_x.js`.
@@ -54,10 +55,36 @@ header sorts a file ahead of that order. Two consequences that have bitten:
 All files of one script type share a single scope. A top-level name declared in two files is one
 name; wrap a file in `;(function () { ... })()` and publish through `global.icraft.*`.
 
+## Registering an event handler
+
+Every registration goes through the event guard:
+
+```js
+ServerEvents.recipes(icraft.guard('recipes/my_script', 'ServerEvents.recipes', event => {
+  ...
+}))
+```
+
+- first argument: this script's path below its `*_scripts` folder, without `.js` (`#2` for a second handler of the
+  same event in the file); second: the registration it is passed to, as written. The lint
+  (`dev/lint_kubejs_traps.js`, rules UNGUARDED-EVENT and GUARD-SHAPE) checks both and refuses a bare handler.
+- Why: KubeJS runs the handlers of an event as one chain and leaves it at the first handler that throws, so one
+  script's error used to end the event for every script loaded after it. A guarded handler that throws prints one
+  line, `[icraft.guard] FAILED <name> in <event>: <message>`, and the rest of the event runs. That line is a red
+  finding of the boot-log checker.
+- `event.cancel()`, `success()` and `exit()` still work behind the guard. Do not wrap them in your own `try`: they
+  work by throwing, and a catch swallows them.
+- A long handler that registers many rules is cut into blocks, so one bad rule costs its block and not the file:
+  `icraft.section('loot/my_script/village-strips', function () { ... })`. A name that a later block uses is declared
+  outside the blocks.
+- The guard is `00_icraft_guard.js`: one file, the same in `server_scripts`, `startup_scripts` and
+  `client_scripts`. It loads first because of its `// priority: 1000` line. Its header says what it cannot catch.
+
 ## Shared libraries (server scripts)
 
 | File | Publishes | For |
 |---|---|---|
+| `00_icraft_guard.js` (also in `startup_scripts`, `client_scripts`) | `icraft.guard`, `icraft.section` | event isolation (see above); bare `icraft` is each script type's own view of `global.icraft` |
 | `0_lib_core.js` | `global.icraft.core` | entity ids, damage-source accessors, the world clock, the guarded hurt dispatcher (`onHurt`), saved spawn buffs, enchantment levels, `mainSlotCount()` |
 | `0_lib_origins.js` | `global.icraft.origin` | a player's class, race and origin |
 | `0_lib_aptitudes.js` | `global.icraft.aptitude` | aptitude levels and XP |

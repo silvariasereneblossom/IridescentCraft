@@ -114,16 +114,16 @@
 
   // A new session or a new player entity starts from a fresh baseline: the first
   // readable pass afterwards records, never taxes.
-  PlayerEvents.loggedIn(function (event) { forget(event.player) })
-  PlayerEvents.respawned(function (event) { forget(event.player) })
-  PlayerEvents.loggedOut(function (event) { forget(event.player) })
+  PlayerEvents.loggedIn(icraft.guard('skills/mastery_tax', 'PlayerEvents.loggedIn', function (event) { forget(event.player) }))
+  PlayerEvents.respawned(icraft.guard('skills/mastery_tax', 'PlayerEvents.respawned', function (event) { forget(event.player) }))
+  PlayerEvents.loggedOut(icraft.guard('skills/mastery_tax', 'PlayerEvents.loggedOut', function (event) { forget(event.player) }))
 
   // Log the tax curve on load
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('skills/mastery_tax', 'ServerEvents.loaded', function (event) {
     console.log('[IridescentCraft] Mastery Tax loaded (aptitudes via global.icraft.aptitude; drained through the XP wallet)')
     console.log('  Tax curve (raw XP per level-up, by invested levels): 1-32 = 0 | 33 = ' + getMasteryTax(33) +
       ' | 48 = ' + getMasteryTax(48) + ' | 64 = ' + getMasteryTax(64) + ' | 65 = ' + getMasteryTax(65) +
       ' | 80 = ' + getMasteryTax(80) + ' | 96 = ' + getMasteryTax(96) + ' | 97 = ' + getMasteryTax(97) +
       ' | 128 = ' + getMasteryTax(128) + ' | 200 = ' + getMasteryTax(200) + ' | 248 = ' + getMasteryTax(248))
-  })
+  }))
 })()

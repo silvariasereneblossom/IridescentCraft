@@ -338,7 +338,7 @@ function relicCmd(ctx, fn, arg) {
   }
 }
 
-ServerEvents.commandRegistry(event => {
+ServerEvents.commandRegistry(icraft.guard('economy/relic_sink', 'ServerEvents.commandRegistry', event => {
   const { commands: Commands } = event
   event.register(
     Commands.literal('icraft')
@@ -354,13 +354,13 @@ ServerEvents.commandRegistry(event => {
             .executes(ctx => relicCmd(ctx, relicSubmit, true))))      // execute
       )
   )
-})
+}))
 
 // ---- #icraft:relic_sinkable item tag (for the Broker / Heracles UI) ----------
 // Broad namespaces via @modid, plus the explicit overrides + Apothic allow-list,
 // minus the non-curio deny-list. The SWEEP above does NOT depend on this tag
 // (it classifies by namespace at runtime) -- the tag is a UI convenience.
-ServerEvents.tags('item', event => {
+ServerEvents.tags('item', icraft.guard('economy/relic_sink', 'ServerEvents.tags', event => {
   // RHINO-SAFETY: var (not const/let) -- tags re-fires on every rebuild; a
   // closure-local const/let throws "redeclaration of var" on the 2nd firing.
   var TAG = 'icraft:relic_sinkable'
@@ -378,7 +378,7 @@ ServerEvents.tags('item', event => {
     + added + ' broad namespaces + ' + Object.keys(RELIC_SINK_VALUE).length
     + ' overrides + ' + Object.keys(RELIC_SINK_ALLOW).length + ' allow, minus '
     + RELIC_SINK_DENY.size + ' deny)')
-})
+}))
 
 console.log('[IridescentCraft] Relic sink loaded (/icraft relics submit [confirm] | balance)')
 console.log('  Currency: ' + RELIC_ESSENCE_ITEM + ' · broad namespaces: ' + Object.keys(RELIC_SINK_NS_VALUE).join(', '))

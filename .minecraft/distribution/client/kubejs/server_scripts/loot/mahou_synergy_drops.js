@@ -17,7 +17,7 @@
 // at T2-T4 boss tiers is intentional progression-feeding.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/mahou_synergy_drops', 'LootJS.modifiers', event => {
 
   // ===== T2 REAGENTS (attuned_emerald, fae_essence) =====
 
@@ -84,4 +84,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('mahoutsukai:attuned_diamond').limitCount([2, 4]).when(c => c.randomChance(0.50)))
 
   console.log('[mahou_synergy_drops] registered 14 Mahou Tsukai reagent injection modifiers')
-})
+}))

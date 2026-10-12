@@ -167,11 +167,11 @@
     }
     global.registerServerTick('tick_manaPoolBonuses', 100, 60)
 
-    PlayerEvents.loggedIn(function (event) { update(event.player) })
-    PlayerEvents.respawned(function (event) { update(event.player) })
-    PlayerEvents.loggedOut(function (event) {
+    PlayerEvents.loggedIn(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.loggedIn', function (event) { update(event.player) }))
+    PlayerEvents.respawned(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.respawned', function (event) { update(event.player) }))
+    PlayerEvents.loggedOut(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.loggedOut', function (event) {
       try { delete appliedClass[String(event.player.uuid.toString())] } catch (e) {}
-    })
+    }))
 
     console.log('[IridescentCraft] mana_pool_bonuses v2 loaded')
     console.log('  Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)')

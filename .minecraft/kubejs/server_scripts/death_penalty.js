@@ -71,7 +71,7 @@ var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 // SECTION 1: DEATH EVENT — Apply durability loss
 // =============================================================================
 
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('death_penalty', 'EntityEvents.death', event => {
   // Unconditional entry log so we can confirm the handler fires at all.
   // 8 player deaths in the 14:31 session produced no [death-pen] lines
   // despite the script loading and ServerEvents.loaded firing -- which
@@ -271,7 +271,7 @@ EntityEvents.death(event => {
   let dimName = dimId.split(':')[1].replace(/_/g, ' ')
   let pctDisplay = Math.round(lossPct * 100)
   player.tell(Text.red(`☠ Death penalty: ${pctDisplay}% durability loss (${dimName})`))
-})
+}))
 
 
 // =============================================================================
@@ -279,10 +279,10 @@ EntityEvents.death(event => {
 // Cancel the vanilla item-destroyed event and mark as inert instead.
 // =============================================================================
 
-ItemEvents.canPickUp(event => {
+ItemEvents.canPickUp(icraft.guard('death_penalty', 'ItemEvents.canPickUp', event => {
   // This doesn't directly help — we need to intercept durability reaching 0.
   // The main protection is in the death handler above (clamping to maxDamage).
-})
+}))
 
 // Prevent items from breaking during normal use too
 // Vanilla destroys items the instant damageValue >= maxDamage inside
@@ -551,21 +551,21 @@ var brokenNotice = function (player, message) {
     player.tell(Text.gray(message))
   } catch (e) {}
 }
-PlayerEvents.loggedOut(event => {
+PlayerEvents.loggedOut(icraft.guard('death_penalty', 'PlayerEvents.loggedOut', event => {
   try { delete brokenNoticeAt[String(event.player.uuid)] } catch (e) {}
-})
+}))
 
 // Prevent broken tools from mining.
 // The notice goes out BEFORE cancel(): cancel() leaves the handler by
 // throwing, so the tell() that used to follow it was never reached.
-BlockEvents.broken(event => {
+BlockEvents.broken(icraft.guard('death_penalty', 'BlockEvents.broken', event => {
   if (!event.player) return
   var heldItem = event.player.mainHandItem
   if (isGenuinelyInert(heldItem)) {
     brokenNotice(event.player, 'Your tool is broken and cannot mine. Repair it at an anvil.')
     event.cancel()
   }
-})
+}))
 
 // Prevent broken weapons from dealing damage. Via DamageModifierRegistry.
 // 2026-10-10: this never ran -- it read `event.source.entity`, which scripts
@@ -591,13 +591,13 @@ BlockEvents.broken(event => {
 })()
 
 // Prevent broken items from being used (right-click actions)
-ItemEvents.rightClicked(event => {
+ItemEvents.rightClicked(icraft.guard('death_penalty', 'ItemEvents.rightClicked', event => {
   var stack = event.item
   if (isGenuinelyInert(stack)) {
     if (event.player) brokenNotice(event.player, 'This item is broken. Repair it at an anvil.')
     event.cancel()
   }
-})
+}))
 
 
 // =============================================================================
@@ -608,7 +608,7 @@ ItemEvents.rightClicked(event => {
 
 // Check repaired items periodically — if an item has the broken tag but
 // durability > 0, it was repaired. Remove the tag.
-PlayerEvents.inventoryChanged(event => {
+PlayerEvents.inventoryChanged(icraft.guard('death_penalty', 'PlayerEvents.inventoryChanged', event => {
   var stack = event.item
   if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG) && stack.isDamageableItem()) {
     // Small repair buffer — once damageValue dips at least 5 below the
@@ -620,7 +620,7 @@ PlayerEvents.inventoryChanged(event => {
       stack.nbt.remove(BROKEN_TAG)
     }
   }
-})
+}))
 
 // Login sweep -- scrub stale icraft_broken tags that were stamped under
 // an older (looser) INERT_THRESHOLD. Without this, items in the player's
@@ -630,7 +630,7 @@ PlayerEvents.inventoryChanged(event => {
 // on inventory motion, so a player who keeps using the same pickaxe never
 // triggers the per-item repair handler. The sweep covers every slot once
 // at login, the per-action isGenuinelyInert() helper handles the rest.
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('death_penalty', 'PlayerEvents.loggedIn', event => {
   var player = event.player
   if (!player) return
   var cleared = 0
@@ -653,7 +653,7 @@ PlayerEvents.loggedIn(event => {
   if (cleared > 0) {
     console.log('[death_penalty] cleared ' + cleared + ' stale icraft_broken tag(s) on login for ' + player.name.string)
   }
-})
+}))
 
 
 // =============================================================================
@@ -669,8 +669,8 @@ PlayerEvents.loggedIn(event => {
 // SECTION 6: GAMERULE — Ensure keepInventory is always on
 // =============================================================================
 
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('death_penalty', 'ServerEvents.loaded', event => {
   event.server.gameRules.get('keepInventory').set(true, event.server)
   console.log('[IridescentCraft] keepInventory enabled — death penalty handles consequences')
-})
+}))
 })()

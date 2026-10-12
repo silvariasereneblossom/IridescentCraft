@@ -167,7 +167,7 @@
     return id === MODULAR_ISS || id === MODULAR_ARS
   }
 
-  PlayerEvents.inventoryChanged(function (event) {
+  PlayerEvents.inventoryChanged(icraft.guard('origins/spell_book_transfer', 'PlayerEvents.inventoryChanged', function (event) {
     try {
       var item = event.item
       if (!item || item.isEmpty()) return
@@ -198,12 +198,12 @@
     } catch (e) {
       warnOnce('changed', 'inventoryChanged threw: ' + e)
     }
-  })
+  }))
 
   // Clear snapshot on disconnect to avoid stale memory.
-  PlayerEvents.loggedOut(function (event) {
+  PlayerEvents.loggedOut(icraft.guard('origins/spell_book_transfer', 'PlayerEvents.loggedOut', function (event) {
     try { delete inventorySnapshots[String(event.player.username)] } catch (e) {}
-  })
+  }))
 
   console.log('[IridescentCraft] spell_book_transfer loaded — ISB_Spells NBT preserved through Tetra replacement')
 })()

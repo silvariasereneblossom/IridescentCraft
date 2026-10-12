@@ -9,7 +9,7 @@
 // Mob kill drops have been removed — books are structure-loot only.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/planetary_loot', 'LootJS.modifiers', event => {
 
   // =========================================================================
   // PLANETARY ENCHANTMENT BOOKS IN STRUCTURE CHESTS
@@ -100,4 +100,4 @@ LootJS.modifiers(event => {
 
 
   console.log('[IridescentCraft] planetary_loot.js loaded — planetary enchant books (structure chests only)')
-})
+}))

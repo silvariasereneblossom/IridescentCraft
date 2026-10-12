@@ -91,7 +91,7 @@
   // Anvil + boss material + gold. One recipe per boss-material tier. The T2
   // path uses deepslate instead of obsidian (obsidian needs a T3 diamond
   // pickaxe; T2 players can't mine it).
-  ServerEvents.recipes(function (event) {
+  ServerEvents.recipes(icraft.guard('respec/class_respec', 'ServerEvents.recipes', function (event) {
     event.shaped(ALTAR, [
       'GBG',
       'GAG',
@@ -124,7 +124,7 @@
       A: 'minecraft:anvil',
       O: 'minecraft:obsidian'
     }).id('icraft:class_altar_recipe_t4')
-  })
+  }))
 
   // ── Class lookup ────────────────────────────────────────────────────────────
   // -> { known: <resolver available>, id: 'icraft:archmage' | null }
@@ -264,7 +264,7 @@
   }
 
   // The id filter makes this fire for the altar only (either hand).
-  ItemEvents.rightClicked(ALTAR, function (event) {
+  ItemEvents.rightClicked(ALTAR, icraft.guard('respec/class_respec', 'ItemEvents.rightClicked', function (event) {
     var player = event.player
     if (!player) return
     try {
@@ -272,7 +272,7 @@
     } catch (e) {
       warnOnce('use', 'altar use failed: ' + e)
     }
-  })
+  }))
 
   // 1 Hz per player, but a no-op unless somebody is choosing a class.
   global.registerPlayerTick('tick_classRespecWatch', 20, 3, function (event) {
@@ -297,17 +297,17 @@
     if (entry.left <= 0) clearPending(key)
   })
 
-  PlayerEvents.loggedOut(function (event) {
+  PlayerEvents.loggedOut(icraft.guard('respec/class_respec', 'PlayerEvents.loggedOut', function (event) {
     try {
       clearPending(uuidKey(event.player))
       invalidateClass(event.player)
     } catch (e) {}
-  })
+  }))
 
   // ── Skill-point trigger: not wired (see header) ────────────────────────────
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('respec/class_respec', 'ServerEvents.loaded', function (event) {
     event.server.runCommandSilent('scoreboard objectives add icraft_respec_skill trigger')
-  })
+  }))
 
   global.tick_skillRespec = function (event) {
     var server = event.server

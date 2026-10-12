@@ -112,7 +112,7 @@ var ATTR_DEFAULTS = {
 }
 
 // --- Set defaults on first login ---
-PlayerEvents.loggedIn(function(event) {
+PlayerEvents.loggedIn(icraft.guard('attributes/attribute_sync', 'PlayerEvents.loggedIn', function(event) {
   var player = event.player
   // Check if attributes have been initialized
   if (!player.persistentData.contains('icraft_spell_power')) {
@@ -122,7 +122,7 @@ PlayerEvents.loggedIn(function(event) {
     }
     console.log('[IridescentCraft] Initialized default attributes for ' + player.username)
   }
-})
+}))
 
 // --- COMBAT STAT APPLICATION ---
 // Single hurt handler for all combat attribute processing.
@@ -406,9 +406,9 @@ global.tick_attributeSync = function(event) {
 global.registerPlayerTick('tick_attributeSync', 100, 25)
 
 // Clean up on logout
-PlayerEvents.loggedOut(function(event) {
+PlayerEvents.loggedOut(icraft.guard('attributes/attribute_sync', 'PlayerEvents.loggedOut', function(event) {
   delete lastHealthMap[event.player.username]
-})
+}))
 
 console.log('[IridescentCraft] Attribute sync handlers loaded (v0.4 persistent NBT)')
 console.log('  Combat: crit/dodge/lifesteal/armor_pen/magic_res/spell_power via the damage registry')

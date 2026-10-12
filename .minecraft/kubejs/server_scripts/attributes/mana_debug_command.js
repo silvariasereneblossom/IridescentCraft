@@ -111,7 +111,7 @@ try {
     }
   }
 
-  ServerEvents.commandRegistry(function(event) {
+  ServerEvents.commandRegistry(icraft.guard('attributes/mana_debug_command', 'ServerEvents.commandRegistry', function(event) {
     var Commands = event.commands
 
     event.register(
@@ -134,7 +134,7 @@ try {
           })
         )
     )
-  })
+  }))
 
   console.log('[IridescentCraft] /icraft mana_debug command registered')
 } catch (e) {

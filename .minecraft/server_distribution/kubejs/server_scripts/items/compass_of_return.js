@@ -24,13 +24,13 @@ const COMPASS_COOLDOWN_TICKS = 12000  // 10 minutes
 // Store spawn position when player interacts with a bed.
 
 // Track bed interactions to store respawn position
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('items/compass_of_return', 'PlayerEvents.loggedIn', event => {
   // On login, try to read stored position — nothing to do, it persists
-})
+}))
 
 // Store bed position when player right-clicks a bed
 // Beds are right-clicked to sleep, so we can capture the position
-BlockEvents.rightClicked(event => {
+BlockEvents.rightClicked(icraft.guard('items/compass_of_return', 'BlockEvents.rightClicked', event => {
   let block = event.block
   if (!block.id.includes('_bed')) return
 
@@ -42,10 +42,10 @@ BlockEvents.rightClicked(event => {
   data.putInt('icraft_bed_y', block.pos.y)
   data.putInt('icraft_bed_z', block.pos.z)
   data.putString('icraft_bed_dim', player.level.dimension.toString())
-})
+}))
 
 // Compass right-click handler
-ItemEvents.rightClicked(event => {
+ItemEvents.rightClicked(icraft.guard('items/compass_of_return', 'ItemEvents.rightClicked', event => {
   let player = event.player
   let item = event.item
 
@@ -124,7 +124,7 @@ ItemEvents.rightClicked(event => {
   // 2026-10-11 it was the first statement after the item check, so nothing below it
   // ever ran and the compass never teleported anyone.
   event.cancel()
-})
+}))
 
 console.log('[IridescentCraft] Compass of Return loaded')
 console.log('  - Right-click to teleport to last bed')

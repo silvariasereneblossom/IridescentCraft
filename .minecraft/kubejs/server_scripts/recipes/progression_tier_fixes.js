@@ -1,7 +1,7 @@
 // progression_tier_fixes.js
 // Progression-framework tiering fixes -- process/station gates the *ingredient* audit
 // missed. Companion to create_blaze_burner_t1.js. See design/progression-framework.md.
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/progression_tier_fixes', 'ServerEvents.recipes', event => {
 
   // === #2: T1->T2 STEEL BRIDGE (Create heated mixing) ===
   // thermal:steel_ingot's only native recipe is Induction Smelter + coal_coke, and coke
@@ -51,4 +51,4 @@ ServerEvents.recipes(event => {
     g: '#forge:ingots/gold',
     d: 'botania:mana_diamond'        // was #forge:gems/diamond (diamond = T3 in-pack)
   }).id('icraft:ars/enchanting_apparatus_t2')
-})
+}))

@@ -14,7 +14,7 @@
 // 0_tick_master.js elsewhere in this folder).
 // =============================================================================
 
-ServerEvents.loaded(event => {
+ServerEvents.loaded(icraft.guard('0_server_ready_banner', 'ServerEvents.loaded', event => {
   let port = event.server.serverPort
   let lines = [
     '',
@@ -26,4 +26,4 @@ ServerEvents.loaded(event => {
     ''
   ]
   lines.forEach(l => console.info(l))
-})
+}))

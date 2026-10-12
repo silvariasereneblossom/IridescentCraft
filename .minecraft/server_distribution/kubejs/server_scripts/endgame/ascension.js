@@ -188,13 +188,13 @@ function refreshAscensionPlayerBonuses(player) {
   }
 }
 
-PlayerEvents.loggedIn(event => {
+PlayerEvents.loggedIn(icraft.guard('endgame/ascension', 'PlayerEvents.loggedIn', event => {
   refreshAscensionPlayerBonuses(event.player)
-})
+}))
 
-PlayerEvents.respawned(event => {
+PlayerEvents.respawned(icraft.guard('endgame/ascension', 'PlayerEvents.respawned', event => {
   refreshAscensionPlayerBonuses(event.player)
-})
+}))
 
 // Periodic refresh every 5 minutes
 global.tick_ascensionRefresh = (event) => {
@@ -226,7 +226,7 @@ function parseAscensionCommand(lower) {
   return null
 }
 
-PlayerEvents.chat(event => {
+PlayerEvents.chat(icraft.guard('endgame/ascension', 'PlayerEvents.chat', event => {
   let handled = false
   try {
     let lower = String(event.message || '').trim().toLowerCase()
@@ -240,7 +240,7 @@ PlayerEvents.chat(event => {
   }
   // Last, and outside the try: cancel() works by throwing.
   if (handled) event.cancel()
-})
+}))
 
 global.registerServerTick('tick_ascensionChat', 10, 3, (event) => {
   event.server.players.forEach(player => {
@@ -437,7 +437,7 @@ function handleAscensionActivation(player) {
 //   N = minecraft:nether_star
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('endgame/ascension', 'ServerEvents.recipes', event => {
   if (!ASCEND_PLAYER_COMMAND_OPEN) return
 
   event.shaped(
@@ -465,7 +465,7 @@ ServerEvents.recipes(event => {
       N: 'minecraft:nether_star'
     }
   ).id('iridescent:ascension_beacon')
-})
+}))
 
 // =============================================================================
 // 6. UTILITY

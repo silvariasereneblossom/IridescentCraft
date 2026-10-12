@@ -545,7 +545,7 @@
     player.give(Item.of(pick))
   }
 
-  ItemEvents.crafted(function (event) {
+  ItemEvents.crafted(icraft.guard('skills/justleveling_skills', 'ItemEvents.crafted', function (event) {
     try {
       var player = event.player
       if (!player || player.creative || player.spectator) return
@@ -586,7 +586,7 @@
         puff(player.level, 'minecraft:happy_villager', player.x, player.y + 1, player.z, 0.3, 6, 0)
       }
     } catch (e) { warnOnce('craft refund', e) }
-  })
+  }))
 
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -789,7 +789,7 @@
   // ═══════════════════════════════════════════════════════════════════════════
   // KILLS — Excitement (DEX 30), Treasure Sense (LCK 20)
   // ═══════════════════════════════════════════════════════════════════════════
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('skills/justleveling_skills', 'EntityEvents.death', function (event) {
     try {
       var target = event.entity
       if (!target || target.player) return
@@ -838,7 +838,7 @@
         player.tell('§6[Treasure Sense] §fDouble drops!')
       }
     } catch (e) { warnOnce('death handler', e) }
-  })
+  }))
 
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -849,7 +849,7 @@
   // The block stays placed. block.item is the block's pick-block stack (wall
   // torch -> torch, wheat crop -> seeds, fire -> nothing); only its ID is used,
   // so a container's contents are never copied.
-  BlockEvents.placed(function (event) {
+  BlockEvents.placed(icraft.guard('skills/justleveling_skills', 'BlockEvents.placed', function (event) {
     try {
       var player = event.player
       if (!player || player.creative || player.spectator) return
@@ -861,7 +861,7 @@
       if (!itemId || itemId === 'minecraft:air') return
       player.give(Item.of(itemId))
     } catch (e) { warnOnce('Thrifty Hands', e) }
-  })
+  }))
 
   // ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
   // ── Fortune's Favor (LCK >= 15): ~30% chance to re-roll an ore's drops ──
@@ -883,7 +883,7 @@
   // History: until 2026-10-11 this was `loot spawn … loot <table>` (no tool,
   // CHEST parameter set — half a stack of chest-pool loot per roll — and in the
   // Overworld whatever the dimension), then `fish` for one day.
-  BlockEvents.broken(function (event) {
+  BlockEvents.broken(icraft.guard('skills/justleveling_skills', 'BlockEvents.broken', function (event) {
     try {
       var player = event.player
       if (!player || player.creative || player.spectator) return
@@ -915,7 +915,7 @@
         puff(player.level, 'minecraft:happy_villager', x + 0.5, y + 1, z + 0.5, 0.3, 6, 0.1)
       }
     } catch (e) { warnOnce('mining bonus', e) }
-  })
+  }))
 
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -930,20 +930,20 @@
       delete hungerBudget[key]
     } catch (e) {}
   }
-  PlayerEvents.loggedOut(function (event) { forget(event.player) })
+  PlayerEvents.loggedOut(icraft.guard('skills/justleveling_skills', 'PlayerEvents.loggedOut', function (event) { forget(event.player) }))
   // New entity after a death: the hunger bar was reset, not drained.
-  PlayerEvents.respawned(function (event) {
+  PlayerEvents.respawned(icraft.guard('skills/justleveling_skills', 'PlayerEvents.respawned', function (event) {
     try { delete hungerBudget[keyOf(event.player)] } catch (e) {}
-  })
+  }))
   // The XP-refund tick used to keep its baseline in persistentData; unused now.
-  PlayerEvents.loggedIn(function (event) {
+  PlayerEvents.loggedIn(icraft.guard('skills/justleveling_skills', 'PlayerEvents.loggedIn', function (event) {
     try {
       var pd = event.player.persistentData
       if (pd && pd.contains('icraft_apt_xp_last')) pd.remove('icraft_apt_xp_last')
     } catch (e) {}
-  })
+  }))
 
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('skills/justleveling_skills', 'ServerEvents.loaded', function (event) {
     console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded -- ' + (MODS.length + 1) +
       ' attribute modifiers, 5 timed effects, 5 melee + 2 defensive hooks, kill / craft / block / XP-refund hooks' +
       ' (aptitudes via global.icraft.aptitude)')
@@ -952,5 +952,5 @@
     console.log('  Tier 15: Cleave, Steady Breath, Deadeye, Bulwark, Mana Blaze, Insight, Thrifty Hands, Fortune\'s Favor')
     console.log('  Tier 20: Hemorrhage, Overflow, Rapid Fire, Turtle Shield, Mystic Ward, Materials Science, Resourceful, Treasure Sense')
     console.log('  Tier 30: True Strength, Iron Stomach, Excitement, Lion Heart, Mana Inferno, Enlightenment, Master Craftsman, Motherlode')
-  })
+  }))
 })()

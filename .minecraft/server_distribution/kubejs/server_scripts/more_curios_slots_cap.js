@@ -96,7 +96,7 @@ const ICRAFT_SLOT_CAP_COUNT_LIVE = true
     var flagKey = 'icraft_slot_bonus_' + slot
     var cap = ICRAFT_SLOT_CAPS[slot] || ICRAFT_DEFAULT_CAP
 
-    ItemEvents.rightClicked(itemId, event => {
+    ItemEvents.rightClicked(itemId, icraft.guard('more_curios_slots_cap', 'ItemEvents.rightClicked', event => {
       // RHINO: declared OUTSIDE the try — a `var` declared inside a block is
       // scoped to that block in this Rhino build.
       var deny = false
@@ -134,7 +134,7 @@ const ICRAFT_SLOT_CAP_COUNT_LIVE = true
       }
       // cancel() unwinds by throwing KubeJS' EventExit — it must stay outside the try.
       if (deny) event.cancel()
-    })
+    }))
   })
 })()
 

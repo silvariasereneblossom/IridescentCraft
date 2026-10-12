@@ -215,9 +215,9 @@ var puff = function (entity, particle, dy, dx, spreadY, dz, count, speed) {
 // In memory (a 3 s window does not need to survive a restart); it used to be
 // one persistentData key per target, never removed.
 var relentlessHits = {}
-PlayerEvents.loggedOut(function (event) {
+PlayerEvents.loggedOut(icraft.guard('affixes/affix_effects', 'PlayerEvents.loggedOut', function (event) {
   try { delete relentlessHits[String(event.player.uuid)] } catch (e) {}
-})
+}))
 
 
 // ==========================================================================
@@ -692,7 +692,7 @@ core.onHurt('icraft.affixes.fire_vuln', function (event, ctx) {
 // ███ ON-KILL AFFIX EFFECTS ███
 // ==========================================================================
 
-EntityEvents.death(function (event) {
+EntityEvents.death(icraft.guard('affixes/affix_effects', 'EntityEvents.death', function (event) {
   var entity = event.entity
   if (!entity || !entity.living) return
   var source = event.source
@@ -767,7 +767,7 @@ EntityEvents.death(function (event) {
       pdata.putLong('icraft_apex_time', core.now(player))
     }
   }
-})
+}))
 
 
 // ==========================================================================

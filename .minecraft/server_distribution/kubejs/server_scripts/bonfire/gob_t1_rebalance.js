@@ -24,18 +24,18 @@
 // Tweak freely: change the recipe ingredients below, or the target tier tag.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('bonfire/gob_t1_rebalance', 'ServerEvents.recipes', event => {
     // Emerald-priced gnome hat (T1 path to the Gob summon item).
     event.shapeless("terramity:red_gnome_hat_helmet", [
         "minecraft:emerald",
         "minecraft:leather",
     ]).id("kubejs:gob_t1_emerald_gnome_hat")
-})
+}))
 
-ServerEvents.tags("block", event => {
+ServerEvents.tags("block", icraft.guard('bonfire/gob_t1_rebalance', 'ServerEvents.tags', event => {
     // Iron-breakable golden gnome statue (was diamond-tier).
     event.remove("minecraft:needs_diamond_tool", "terramity:golden_gnome_statue")
     event.add("minecraft:needs_iron_tool", "terramity:golden_gnome_statue")
-})
+}))
 
 console.log("[iridescent/gob_t1] emerald gnome-hat recipe + iron-breakable golden gnome statue loaded")

@@ -26,7 +26,7 @@
 // PNG assets are shipped (there is no bespoke token texture in the pack yet).
 // =============================================================================
 
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('codex_progression_tokens', 'StartupEvents.registry', event => {
 
     // T1 → T2 accumulation token (Engineering source = Create-tier).
     event.create('icraft:progression_token_t1')
@@ -60,6 +60,6 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0xFFD700)  // gold — Tier 3
-})
+}))
 
 console.log('[IridescentCraft] Codex progression tokens registered (t1/t2/t3)')

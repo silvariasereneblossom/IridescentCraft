@@ -10,7 +10,7 @@
 // DOES NOT modify grass drops — that's the seed discovery mechanism.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/crop_seed_reduction', 'LootJS.modifiers', event => {
 
   // =========================================================================
   // WHEAT: Normally drops 0-3 wheat seeds. Reduce to 5% chance of 1 seed.
@@ -113,4 +113,4 @@ LootJS.modifiers(event => {
   console.log('  - Potato/carrot: 2 guaranteed (1 is the Quark replant cost) + 5% extra')
   console.log('  - Melon/pumpkin stem seeds: 5% drop chance')
   console.log('  - Grass seed drops: UNCHANGED (discovery mechanism)')
-})
+}))

@@ -45,11 +45,12 @@
 // Apoth + Marquee tier injection.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/terramity_structure_drops', 'LootJS.modifiers', event => {
 
   // =========================================================================
   // T3 EXODIUM (warlock) — chthonic_dungeon + chthonian_breach
   // =========================================================================
+  icraft.section('loot/terramity_structure_drops/t3-exodium-chthonic-dungeon-chthonian-breach', function () {
   event
     .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:exodium_sword').when(c => c.randomChance(0.08)))
@@ -62,6 +63,7 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:exodium_sword').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:exodium_waraxe').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('terramity:exodium_twin_bracelets').when(c => c.randomChance(0.10)))
+  })
 
   // =========================================================================
   // T3 REVERIUM (paladin / anti-undead) — the two Nether dungeons
@@ -72,6 +74,7 @@ LootJS.modifiers(event => {
   // Same rule the operator set for the EPIC curios on 2026-10-10 ("late-tier
   // only") and for Nyxium before that: T3 gear comes from a T3 source. Rates
   // unchanged, table for table (catacombs -> dungeon, shrine -> breach).
+  icraft.section('loot/terramity_structure_drops/t3-reverium-the-two-nether-dungeons', function () {
   event
     .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:reverium_sword').when(c => c.randomChance(0.10)))
@@ -81,6 +84,7 @@ LootJS.modifiers(event => {
     .addLootTableModifier('terramity:chests/chthonian_breach_loot')
     .addLoot(LootEntry.of('terramity:reverium_sword').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:reverium_axe').when(c => c.randomChance(0.10)))
+  })
 
   // =========================================================================
   // T4 NYXIUM (knight + cosmic-purple) — boss drop instead of structure
@@ -92,8 +96,10 @@ LootJS.modifiers(event => {
   // Cataclysm Netherite Monstrosity — the metallic-knight T4 endgame boss
   // closest in theme to "nyxium knight greatsword." Drop rate matched to
   // planet_buster's ender_dragon allocation (0.15 in terramity_boss_drops.js).
+  icraft.section('loot/terramity_structure_drops/t4-nyxium-boss-drop-instead-of-structure', function () {
   global.icraftEntityMod(event, 'cataclysm:netherite_monstrosity')
     .addLoot(LootEntry.of('terramity:nyxium_greatsword').when(c => c.randomChance(0.15)))
+  })
 
   // =========================================================================
   // EPIC curios from audit Phase 4.1 — themed by aesthetic
@@ -109,6 +115,7 @@ LootJS.modifiers(event => {
   // (#minecraft:is_nether; the Nether is tier_3-staged), so that is where they
   // go. Same per-table chances as before; the holy theme no longer matches the
   // dungeon, the tier does.
+  icraft.section('loot/terramity_structure_drops/epic-curios-from-audit-phase-4.1-themed-by', function () {
   event
     .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:sacred_speed_bracelets').when(c => c.randomChance(0.08)))
@@ -134,6 +141,7 @@ LootJS.modifiers(event => {
   global.icraftEntityMod(event, 'minecraft:ender_dragon')
     .addLoot(LootEntry.of('terramity:antiprism').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('terramity:dragon_band').when(c => c.randomChance(0.12)))
+  })
 
   // =========================================================================
   // RARE tomes + bracelets — audit Phase 5 closure
@@ -147,6 +155,7 @@ LootJS.modifiers(event => {
   // rest. That makes them T3 in practice -- later than their label, never
   // earlier. Each tome had two rolls (one at 10%, one at 8%) and keeps both,
   // one per dungeon.
+  icraft.section('loot/terramity_structure_drops/rare-tomes-bracelets-audit-phase-5-closure', function () {
   event
     .addLootTableModifier('terramity:chests/chthonic_dungeon_loot')
     .addLoot(LootEntry.of('terramity:tome_of_commotion').when(c => c.randomChance(0.10)))
@@ -194,4 +203,5 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:malediction_bracelets').when(c => c.randomChance(0.08)))
 
   console.log('[terramity_structure_drops] T3/T4 ingot-family weapons + 8 EPIC curios + 9 RARE tomes/bracelets allocated to Terramity structures')
-})
+  })
+}))

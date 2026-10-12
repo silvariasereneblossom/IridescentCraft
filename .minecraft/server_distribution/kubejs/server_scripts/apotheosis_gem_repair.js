@@ -216,7 +216,7 @@
   // gem repair logs can include "recent chest at X opened Yt ago" --
   // converts an otherwise-source-less log line into a forensic clue
   // about which loot table is producing bare gems.
-  BlockEvents.rightClicked(event => {
+  BlockEvents.rightClicked(icraft.guard('apotheosis_gem_repair', 'BlockEvents.rightClicked', event => {
     try {
       if (!event.block || !event.player) return
       var blockId = String(event.block.id)
@@ -230,7 +230,7 @@
       pd.putString('_lastChestPos', pos.x + ',' + pos.y + ',' + pos.z + ' ' + blockId)
       pd.putLong('_lastChestTick', event.player.age)
     } catch (_) {}
-  })
+  }))
 
   // Player tick at 60-tick cadence (~3s). Bare gems are an edge case --
   // no need for a tighter scan rate. Most repairs will happen on the
@@ -293,7 +293,7 @@
   // dump producing one gem doesn't spam 5 lines.
   global._gem_trace_seen = global._gem_trace_seen || {}
 
-  EntityEvents.spawned(event => {
+  EntityEvents.spawned(icraft.guard('apotheosis_gem_repair', 'EntityEvents.spawned', event => {
     try {
       var entity = event.entity
       // ItemEntity has type minecraft:item.
@@ -357,7 +357,7 @@
     } catch (e) {
       try { console.warn('[gem-trace] handler threw: ' + e) } catch (_) {}
     }
-  })
+  }))
 
   // ── Loot-table-level diag + fix ──────────────────────────────────────────
   // 2026-05-15: tester reports bare gems still appearing in CHEST inventories
@@ -402,7 +402,7 @@
     nbt.put('affix_data', affixData)
   }
 
-  LootJS.modifiers(event => {
+  LootJS.modifiers(icraft.guard('apotheosis_gem_repair', 'LootJS.modifiers', event => {
     event.addLootTypeModifier(LootType.CHEST).apply(ctx => {
       try {
         var loot = ctx.getLoot()
@@ -434,7 +434,7 @@
         try { console.warn('[gem-loot-trace] apply threw: ' + e) } catch (_) {}
       }
     })
-  })
+  }))
 
   console.log('[IridescentCraft] apotheosis_gem_repair loaded v2026-05-18b ('
             + KNOWN_GEMS.length + ' fallback IDs; inventory-tick sweep + ItemEntity-spawn trace + LootJS-chest trace; '

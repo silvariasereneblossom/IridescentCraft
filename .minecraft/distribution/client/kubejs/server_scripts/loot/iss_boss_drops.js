@@ -23,7 +23,7 @@
 // peaks; intentional that endgame mages stack these effects unbounded.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/iss_boss_drops', 'LootJS.modifiers', event => {
   // ---- Dead King (T4 ISS boss) — blood staff 50% sustained ----
   global.icraftEntityMod(event, 'irons_spellbooks:dead_king')
     .addLoot(LootEntry.of('irons_spellbooks:blood_staff').when(c => c.randomChance(0.50)))
@@ -74,4 +74,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:lightning_rod').when(c => c.randomChance(0.05)))
 
   console.log('[iss_boss_drops] registered 8 entity loot modifiers')
-})
+}))

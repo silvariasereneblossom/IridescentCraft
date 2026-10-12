@@ -4,12 +4,13 @@
 // Must be in startup_scripts/ (requires game restart to apply)
 // =============================================================================
 
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('custom_items', 'StartupEvents.registry', event => {
 
     // =========================================================================
     // PROGRESSION TOKENS (consumed in tier gate recipes / granted by quests)
     // =========================================================================
 
+    icraft.section('custom_items/progression-tokens', function () {
     event.create('kubejs:twilight_progression_token_t2')
         .displayName('Twilight Progression Token')
         .tooltip('A shimmering token of power from the Twilight Forest')
@@ -36,6 +37,7 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0x4AEDD9)
+    })
 
     // (2026-10-11: the t2/t3/t4_token_fragment items that followed were removed --
     //  registered since the legacy token currency, referenced by nothing.)
@@ -45,6 +47,7 @@ StartupEvents.registry('item', event => {
     // =========================================================================
 
     // Tier 2 boss drops
+    icraft.section('custom_items/boss-materials', function () {
     event.create('kubejs:lich_soul')
         .displayName('Lich Soul')
         .tooltip('§5The captured essence of the Twilight Lich')
@@ -150,6 +153,7 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
         .color(0, 0x110022)
+    })
 
     // (2026-10-11: the INTERMEDIATE ALLOYS section -- brass_reinforced_iron_ingot,
     //  mana_infused_steel_ingot, ender_forged_diamond -- was removed: no recipe,
@@ -159,6 +163,7 @@ StartupEvents.registry('item', event => {
     // WAYSTONE CRAFTING MATERIAL (expensive boss-drop-gated waystone recipe)
     // =========================================================================
 
+    icraft.section('custom_items/waystone-crafting-material', function () {
     event.create('kubejs:waystone_core')
         .displayName('Waystone Core')
         .tooltip('§9A rare spatial anchor required to craft Waystones')
@@ -167,11 +172,13 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0x3366CC)
+    })
 
     // =========================================================================
     // REFORGING TOKENS (Apotheosis reforging gates)
     // =========================================================================
 
+    icraft.section('custom_items/reforging-tokens', function () {
     event.create('kubejs:basic_reforging_token')
         .displayName('Basic Reforging Token')
         .tooltip('§7Unlocks basic Apotheosis reforging')
@@ -198,6 +205,7 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/iron_ingot' })
         .color(0, 0xFFD700)
+    })
 
     // =========================================================================
     // SHORT-NAME TOKEN ALIASES
@@ -210,6 +218,7 @@ StartupEvents.registry('item', event => {
     //  tierN_token_fragment items were removed -- referenced by nothing.)
     // =========================================================================
 
+    icraft.section('custom_items/short-name-token-aliases', function () {
     event.create('kubejs:tier2_token')
         .displayName('Expansion Token')
         .tooltip('§7A mark of dimensional exploration')
@@ -217,11 +226,13 @@ StartupEvents.registry('item', event => {
         .rarity('uncommon')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0xC0C0C0)
+    })
 
     // =========================================================================
     // COMPASS OF RETURN (Magic Mirror — teleport to bed on 10 min CD)
     // =========================================================================
 
+    icraft.section('custom_items/compass-of-return', function () {
     event.create('kubejs:compass_of_return')
         .displayName('Compass of Return')
         .tooltip('§9Right-click to return to your last bed')
@@ -231,11 +242,13 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .glow(true)
         .textureJson({ layer0: 'kubejs:item/compass_of_return' })
+    })
 
     // =========================================================================
     // DRAGON SUMMONING CRYSTAL (End exploration gate item)
     // =========================================================================
 
+    icraft.section('custom_items/dragon-summoning-crystal', function () {
     event.create('kubejs:dragon_summoning_crystal')
         .displayName('Dragon Summoning Crystal')
         .tooltip('§5A crystallized beacon of draconic energy')
@@ -246,6 +259,7 @@ StartupEvents.registry('item', event => {
         .glow(true)
         .textureJson({ layer0: 'minecraft:item/end_crystal' })
         .color(0, 0xBB44FF)
+    })
 
     // =========================================================================
     // ENDGAME MATERIALS (T4 boss drops for Crucible/Prestige)
@@ -257,6 +271,7 @@ StartupEvents.registry('item', event => {
     // inventories migrate cleanly via PlayerEvents.loggedIn handler in
     // kubejs/server_scripts/migrations/rift_shard_rename.js. Once testers
     // confirm migration ran (target: ~2 weeks), this old entry can be removed.
+    icraft.section('custom_items/endgame-materials', function () {
     event.create('kubejs:rift_shard')
         .displayName('§7Rift Shard (deprecated — relog to convert)')
         .tooltip('§dA fragment of torn reality')
@@ -292,11 +307,13 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0xCC33FF)
+    })
 
     // =========================================================================
     // ABYSS CUSTOM RINGS (replace vanilla Abyss ring crafting)
     // =========================================================================
 
+    icraft.section('custom_items/abyss-custom-rings', function () {
     event.create('kubejs:ring_of_shadows')
         .displayName('Ring of Shadows')
         .tooltip('§7Grants Invisibility for 5s on sneak')
@@ -363,7 +380,8 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/emerald' })
         .color(0, 0xDD44FF)
-})
+    })
+}))
 
 
 // (2026-10-11: the five kubejs:transmuted_* "tier-skip" items were removed. The
@@ -372,7 +390,7 @@ StartupEvents.registry('item', event => {
 
 // ═══ CLASS RESPEC STATION ═══
 // Design Doc Part III: "Class Altar" — tier-appropriate boss material + 30 levels
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('custom_items#2', 'StartupEvents.registry', event => {
   event.create('icraft:class_altar')
     .displayName('§6Class Altar')
     .tooltip('§7Hold it, with a boss trophy in your other hand, and right-click to change your class')
@@ -396,4 +414,4 @@ StartupEvents.registry('item', event => {
     .rarity('uncommon')
     .textureJson({ layer0: 'minecraft:item/iron_ingot' })
     .color(0, 0x33AA33)
-})
+}))

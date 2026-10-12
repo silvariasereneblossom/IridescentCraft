@@ -57,24 +57,24 @@
     server.scheduleInTicks(RETRY_TICKS, function () { tryStart(server, attempt + 1) })
   }
 
-  ServerEvents.loaded(function (event) {
+  ServerEvents.loaded(icraft.guard('pregen/auto_chunky', 'ServerEvents.loaded', function (event) {
     var server = event.server
     if (server.persistentData.getBoolean(FLAG)) return
     console.log('[IridescentCraft] First world load - scheduling Chunky pre-gen auto-start')
     server.scheduleInTicks(RETRY_TICKS, function () { tryStart(server, 1) })
-  })
+  }))
 
   // --- Pause/continue (replaces the dead chunky-player-pause mod) -----------
   // Pause whenever a player is online; continue when the server empties.
   // Both commands are no-ops (failed-command return code, no exception) when
   // no pregen task exists, so gating on the started-flag alone is safe.
-  PlayerEvents.loggedIn(function (event) {
+  PlayerEvents.loggedIn(icraft.guard('pregen/auto_chunky', 'PlayerEvents.loggedIn', function (event) {
     var server = event.server
     if (!server.persistentData.getBoolean(FLAG)) return
     server.runCommandSilent('chunky pause')
-  })
+  }))
 
-  PlayerEvents.loggedOut(function (event) {
+  PlayerEvents.loggedOut(icraft.guard('pregen/auto_chunky', 'PlayerEvents.loggedOut', function (event) {
     var server = event.server
     if (!server.persistentData.getBoolean(FLAG)) return
     // the leaving player may still be in the list this tick - check next tick
@@ -83,5 +83,5 @@
         server.runCommandSilent('chunky continue')
       }
     })
-  })
+  }))
 })()

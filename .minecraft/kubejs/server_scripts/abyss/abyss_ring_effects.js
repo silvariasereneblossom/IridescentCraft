@@ -65,9 +65,9 @@ var ringsOf = function (player, forceScan) {
   ringCache[key] = { t: t, rings: rings }
   return rings
 }
-PlayerEvents.loggedOut(function (event) {
+PlayerEvents.loggedOut(icraft.guard('abyss/abyss_ring_effects', 'PlayerEvents.loggedOut', function (event) {
   try { delete ringCache[String(event.player.uuid)] } catch (e) {}
-})
+}))
 
 var getNearbyHostileMobs = function (player, radius) {
   var mobs = []

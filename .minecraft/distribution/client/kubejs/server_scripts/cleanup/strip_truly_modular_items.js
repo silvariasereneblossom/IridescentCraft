@@ -51,24 +51,24 @@ try {
     return stripped
   }
 
-  PlayerEvents.inventoryChanged(function(event) {
+  PlayerEvents.inventoryChanged(icraft.guard('cleanup/strip_truly_modular_items', 'PlayerEvents.inventoryChanged', function(event) {
     var stripped = stripDeadItems(event.player)
     if (stripped > 0) {
       console.log('[strip_truly_modular] removed ' + stripped +
                   ' dead-mod items from ' + event.player.name.string)
     }
-  })
+  }))
 
   // Also sweep on login -- catches the case where the player joins with
   // dead items in their inventory but doesn't change anything (just
   // standing around). inventoryChanged fires only on actual delta.
-  PlayerEvents.loggedIn(function(event) {
+  PlayerEvents.loggedIn(icraft.guard('cleanup/strip_truly_modular_items', 'PlayerEvents.loggedIn', function(event) {
     var stripped = stripDeadItems(event.player)
     if (stripped > 0) {
       console.log('[strip_truly_modular] login sweep removed ' + stripped +
                   ' dead-mod items from ' + event.player.name.string)
     }
-  })
+  }))
 
   console.log('[strip_truly_modular] loaded -- watching ' +
               DEAD_NAMESPACES.join(' / '))

@@ -22,7 +22,7 @@
 // Memory: project_mage_loadout.md.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/staff_wand_recipes', 'ServerEvents.recipes', event => {
 
   // ════════════════════════════════════════════════════════════════════
   // DAN'S MAGIC — strip Nether-tier recipes, replace with T1 recipes
@@ -31,6 +31,7 @@ ServerEvents.recipes(event => {
   // Strip all 5 original recipes (which require ghast_tear + lightning_rod +
   // staff_base). The staff_base intermediate stays craftable for mod
   // compatibility / future use, but isn't used in our new recipes.
+  icraft.section('recipes/staff_wand_recipes/dans-magic-strip-nether-tier-recipes', function () {
   ;[
     'dna:ice_staff', 'dna:lightning_staff', 'dna:magma_staff',
     'dna:tnt_staff', 'dna:toxic_staff'
@@ -77,6 +78,7 @@ ServerEvents.recipes(event => {
     A: 'dna:amethyst_powder',
     S: 'minecraft:stick'
   }).id('icraft:dna_apprentice_battlerod_t1')
+  })
 
 
   // ════════════════════════════════════════════════════════════════════
@@ -86,6 +88,7 @@ ServerEvents.recipes(event => {
 
   // Strip all element wand recipes (all use netherite_stick in source mod —
   // would gate them as T4 endgame, which doesn't fit our progression).
+  icraft.section('recipes/staff_wand_recipes/simple-staves-strip-mods-netherite-stick', function () {
   ;[
     'simple_staves:flame_wand',
     'simple_staves:wind_essence_wand',
@@ -180,4 +183,5 @@ ServerEvents.recipes(event => {
   // via the workbench-replacement system in Phase D.
 
   console.log('[staff_wand_recipes] loaded — Dan T1 (5) + SS elements (8) reseeded')
-})
+  })
+}))

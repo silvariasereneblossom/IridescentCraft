@@ -59,7 +59,7 @@
       return a || null
     }
 
-    ServerEvents.tick(function (event) {
+    ServerEvents.tick(icraft.guard('origins/class_passives_phase6h', 'ServerEvents.tick', function (event) {
       var server = event.server
       var tick = server.tickCount
 
@@ -146,7 +146,7 @@
           }
         })
       }
-    })
+    }))
 
     // The trance / adaptable attribute modifiers are transient (lost with the
     // player entity) while their "active" flags persist -- clear the flags when
@@ -161,8 +161,8 @@
         warnOnce('flag reset', e)
       }
     }
-    PlayerEvents.loggedIn(resetTransientFlags)
-    PlayerEvents.respawned(resetTransientFlags)
+    PlayerEvents.loggedIn(icraft.guard('origins/class_passives_phase6h', 'PlayerEvents.loggedIn', resetTransientFlags))
+    PlayerEvents.respawned(icraft.guard('origins/class_passives_phase6h', 'PlayerEvents.respawned', resetTransientFlags))
 
     // ── BERSERKER Battle Trance + SAMURAI Bushido + WANDERER Adaptable ──
     // 2026-05-15: migrated to DamageModifierRegistry (raw LivingHurtEvent).
@@ -252,7 +252,7 @@
     })
 
     // ── SAMURAI Bushido — kill within 3s of first strike grants Speed II for 3s ──
-    EntityEvents.death(function (event) {
+    EntityEvents.death(icraft.guard('origins/class_passives_phase6h', 'EntityEvents.death', function (event) {
       try {
         var killer = event.source && event.source.player
         if (!killer) return
@@ -270,7 +270,7 @@
       } catch (e) {
         warnOnce('bushido death handler', e)
       }
-    })
+    }))
 
     console.log('[IridescentCraft] class_passives_phase6h loaded (Berserker Battle Trance, Samurai Bushido, Wanderer Adaptable, Artificer Resourceful)')
   } catch (e) {

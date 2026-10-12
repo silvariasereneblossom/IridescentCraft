@@ -164,7 +164,7 @@ try {
   })
 
   // ─── MANA REAVER: kill hook ──────────────────────────────────────────
-  EntityEvents.death(function(event) {
+  EntityEvents.death(icraft.guard('origins/battlemage_arcane_cleave', 'EntityEvents.death', function(event) {
     try {
       var src = event.source
       if (!src || !src.player) return
@@ -181,7 +181,7 @@ try {
     } catch (e) {
       warnOnce('death handler', e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] battlemage_arcane_cleave loaded — Arcane Cleave (' +
     ARCANE_CLEAVE_AD_PER_HALF + ' AD per 100% bonus SP, costs ' +

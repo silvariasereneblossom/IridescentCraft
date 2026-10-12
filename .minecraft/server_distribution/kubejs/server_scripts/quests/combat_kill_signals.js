@@ -47,7 +47,7 @@
     killer.server.runCommandSilent('execute as ' + killer.username + ' run heracles dummy ' + dummyId)
   }
 
-  EntityEvents.death(function (event) {
+  EntityEvents.death(icraft.guard('quests/combat_kill_signals', 'EntityEvents.death', function (event) {
     try {
       var src = event.source
       if (!src) return
@@ -82,7 +82,7 @@
         console.warn('[combat_kill_signals] death handler threw (logging once): ' + err)
       }
     }
-  })
+  }))
 
   console.log('[combat_kill_signals] loaded — Apotheosis boss (apoth.boss) + champion (apoth.miniboss) kill -> Heracles dummy bridges')
 })()

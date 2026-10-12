@@ -15,7 +15,7 @@
 // Brewin' and Chewin', and Alex's Delight.
 // =============================================================================
 
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('recipes/cooking_conversion', 'ServerEvents.recipes', event => {
 
   // Helper: only create the recipe if the result item exists in the registry.
   // Returns a chainable object so .id() still works. If the item doesn't exist,
@@ -36,6 +36,7 @@ ServerEvents.recipes(event => {
 
   // --- Soups & Stews ---
 
+  icraft.section('recipes/cooking_conversion/soups-stews', function () {
   safeShapeless('farmersdelight:beef_stew', [
     'minecraft:cooked_beef', 'minecraft:potato', 'minecraft:carrot', 'minecraft:bowl'
   ]).id('icraft:fd_beef_stew')
@@ -63,9 +64,11 @@ ServerEvents.recipes(event => {
   safeShapeless('farmersdelight:baked_cod_stew', [
     'minecraft:cooked_cod', 'minecraft:potato', 'farmersdelight:tomato', 'minecraft:bowl'
   ]).id('icraft:fd_baked_cod_stew')
+  })
 
   // --- Main Dishes ---
 
+  icraft.section('recipes/cooking_conversion/main-dishes', function () {
   safeShapeless('farmersdelight:mushroom_rice', [
     'minecraft:brown_mushroom', 'farmersdelight:rice', 'minecraft:bowl'
   ]).id('icraft:fd_mushroom_rice')
@@ -102,9 +105,11 @@ ServerEvents.recipes(event => {
   safeShapeless('farmersdelight:grilled_salmon', [
     'minecraft:cooked_salmon', 'minecraft:potato', 'farmersdelight:cabbage', 'minecraft:bowl'
   ]).id('icraft:fd_grilled_salmon')
+  })
 
   // --- Feast-tier Dishes ---
 
+  icraft.section('recipes/cooking_conversion/feast-tier-dishes', function () {
   safeShapeless('farmersdelight:roast_chicken', [
     'minecraft:cooked_chicken', 'minecraft:potato', 'minecraft:carrot',
     'minecraft:bread', 'minecraft:bowl'
@@ -123,9 +128,11 @@ ServerEvents.recipes(event => {
     'minecraft:cooked_mutton', 'minecraft:potato', 'farmersdelight:onion',
     'minecraft:bowl'
   ]).id('icraft:fd_shepherds_pie')
+  })
 
   // --- Side Items ---
 
+  icraft.section('recipes/cooking_conversion/side-items', function () {
   safeShapeless('farmersdelight:fried_rice', [
     'farmersdelight:rice', 'minecraft:egg', 'minecraft:carrot',
     'farmersdelight:onion', 'minecraft:bowl'
@@ -213,9 +220,11 @@ ServerEvents.recipes(event => {
     'farmersdelight:rice', 'minecraft:dried_kelp', 'minecraft:cooked_salmon',
     'minecraft:carrot', 'minecraft:bowl'
   ]).id('icraft:fd_rice_roll_medley_block')
+  })
 
   // --- Sweets & Desserts ---
 
+  icraft.section('recipes/cooking_conversion/sweets-desserts', function () {
   safeShapeless('farmersdelight:fruit_salad', [
     'minecraft:apple', 'minecraft:melon_slice', 'minecraft:sweet_berries', 'minecraft:bowl'
   ]).id('icraft:fd_fruit_salad')
@@ -239,12 +248,14 @@ ServerEvents.recipes(event => {
   safeShapeless('farmersdelight:honey_cookie', [
     'minecraft:wheat', 'minecraft:honey_bottle'
   ]).id('icraft:fd_honey_cookie')
+  })
 
 
   // ═══ NETHER'S DELIGHT — Nether-themed Cooking Pot Meals ═══
 
   // [2026-10-10] result was 'nethersdelight:strider_stew' — no such item, so the
   // recipe was always skipped. Nether's Delight 4.0 calls it strider_moss_stew.
+  icraft.section('recipes/cooking_conversion/nethers-delight-nether-themed-cooking-pot', function () {
   safeShapeless('nethersdelight:strider_moss_stew', [
     'minecraft:cooked_porkchop', 'minecraft:warped_fungus', 'minecraft:crimson_fungus', 'minecraft:bowl'
   ]).id('icraft:nd_strider_stew')
@@ -256,6 +267,7 @@ ServerEvents.recipes(event => {
   safeShapeless('nethersdelight:magma_gelatin', [
     'minecraft:magma_cream', 'minecraft:sugar', 'minecraft:bowl'
   ]).id('icraft:nd_magma_gelatin')
+  })
 
 
   // ═══ CULTURAL DELIGHTS — Cultural food recipes ═══
@@ -263,6 +275,7 @@ ServerEvents.recipes(event => {
   // ('culturaldelights:kimchi' entry removed 2026-10-10 — Cultural Delights has
   //  no kimchi; the pack's only kimchi is brewinandchewin:kimchi, a keg ferment.)
 
+  icraft.section('recipes/cooking_conversion/cultural-delights-cultural-food-recipes', function () {
   safeShapeless('culturaldelights:tortilla', [
     'minecraft:wheat', 'minecraft:egg'
   ]).id('icraft:cd_tortilla')
@@ -276,6 +289,7 @@ ServerEvents.recipes(event => {
   safeShapeless('culturaldelights:elote', [
     'culturaldelights:corn_cob', 'minecraft:sugar', 'minecraft:stick'
   ]).id('icraft:cd_elote')
+  })
 
   // ('culturaldelights:gyoza' and 'culturaldelights:potsticker' entries removed
   //  2026-10-10 — neither item exists in Cultural Delights 0.16.5.)
@@ -285,6 +299,7 @@ ServerEvents.recipes(event => {
 
   // ('delightful:nut_mix' entry removed 2026-10-10 — no such item in Delightful 3.7.8.)
 
+  icraft.section('recipes/cooking_conversion/delightful-extra-food-variety', function () {
   safeShapeless('delightful:marshmallow_stick', [
     'minecraft:sugar', 'minecraft:sugar', 'minecraft:stick'
   ]).id('icraft:df_marshmallow_stick')
@@ -305,11 +320,13 @@ ServerEvents.recipes(event => {
   safeShapeless('delightful:salmonberry_pie', [
     'delightful:salmonberries', 'minecraft:sugar', 'minecraft:wheat', 'minecraft:egg'
   ]).id('icraft:df_salmonberry_pie')
+  })
 
 
   // ═══ BREWIN' AND CHEWIN' — Brewing/fermentation recipes ═══
   // These use their own keg block, but we add crafting alternatives too.
 
+  icraft.section('recipes/cooking_conversion/brewin-and-chewin-brewing-fermentation', function () {
   safeShapeless('brewinandchewin:beer', [
     'minecraft:wheat', 'minecraft:wheat', 'minecraft:sugar', 'minecraft:glass_bottle'
   ]).id('icraft:bc_beer')
@@ -367,12 +384,14 @@ ServerEvents.recipes(event => {
   safeShapeless('brewinandchewin:kombucha', [
     'minecraft:brown_mushroom', 'minecraft:sugar', 'minecraft:glass_bottle'
   ]).id('icraft:bc_kombucha')
+  })
 
 
   // ═══ ALEX'S DELIGHT — Alex's Mobs food integration ═══
 
   // ('alexsdelight:bison_stew' entry removed 2026-10-10 — no such item.)
 
+  icraft.section('recipes/cooking_conversion/alexs-delight-alexs-mobs-food-integration', function () {
   safeShapeless('alexsdelight:kangaroo_stew', [
     'alexsmobs:cooked_kangaroo_meat', 'minecraft:carrot', 'minecraft:bowl'
   ]).id('icraft:ad_kangaroo_stew')
@@ -381,4 +400,5 @@ ServerEvents.recipes(event => {
 
 
   console.log('[IridescentCraft] cooking_conversion.js loaded — crafting table alternatives for cooking pot recipes')
-})
+  })
+}))

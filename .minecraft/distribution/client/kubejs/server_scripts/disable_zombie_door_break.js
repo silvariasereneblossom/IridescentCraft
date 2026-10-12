@@ -26,7 +26,7 @@ try {
   var BreakDoorGoal = Java.loadClass('net.minecraft.world.entity.ai.goal.BreakDoorGoal')
   var Mob = Java.loadClass('net.minecraft.world.entity.Mob')
 
-  EntityEvents.spawned(event => {
+  EntityEvents.spawned(icraft.guard('disable_zombie_door_break', 'EntityEvents.spawned', event => {
     try {
       var entity = event.entity
       if (!entity) return
@@ -105,7 +105,7 @@ try {
     } catch (e) {
       console.warn('[no_door_break] spawned-handler threw: ' + e)
     }
-  })
+  }))
 
   console.log('[IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on ANY Mob spawn -- vanilla + modded)')
 } catch (e) {

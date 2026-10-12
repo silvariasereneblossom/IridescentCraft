@@ -19,7 +19,7 @@
 //     (those add Simply Swords + Tetra material drops; we add magic synergy here)
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/twilight_boss_drops', 'LootJS.modifiers', event => {
 
   // ---- Naga (T2 — first TF boss, snake queen) ----
   global.icraftEntityMod(event, 'twilightforest:naga')
@@ -58,4 +58,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:protection_rune').when(c => c.randomChance(0.20)))
 
   console.log('[twilight_boss_drops] registered 6 TF boss synergy modifiers')
-})
+}))

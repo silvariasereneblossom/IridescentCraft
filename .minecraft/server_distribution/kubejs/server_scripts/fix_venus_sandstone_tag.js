@@ -25,7 +25,7 @@
 // venus_sandstone -> venus_sand crushing compat rather than deleting it.
 // =============================================================================
 
-ServerEvents.tags('item', event => {
+ServerEvents.tags('item', icraft.guard('fix_venus_sandstone_tag', 'ServerEvents.tags', event => {
   event.add('forge:sandstone/venus_sandstone', 'ad_astra:venus_sandstone')
   console.log('[venus-sandstone-tag] forge:sandstone/venus_sandstone <- ad_astra:venus_sandstone (post-merge)')
-})
+}))

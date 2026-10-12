@@ -157,9 +157,9 @@ global.tick_classAttributeBonuses = function(event) {
 global.registerServerTick('tick_classAttributeBonuses', 100, 50)
 
 // Force re-apply on login (class may have changed while offline)
-PlayerEvents.loggedIn(function(event) {
+PlayerEvents.loggedIn(icraft.guard('attributes/class_attribute_bonuses', 'PlayerEvents.loggedIn', function(event) {
   delete lastAppliedClass[String(event.player.username)]
-})
+}))
 
 console.log('[IridescentCraft] Class attribute bonuses loaded (v0.4 persistent NBT)')
 console.log('  Archmage: spell_power +25%, mana_regen +20%')

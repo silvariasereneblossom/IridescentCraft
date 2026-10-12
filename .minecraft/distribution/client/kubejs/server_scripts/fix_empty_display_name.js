@@ -24,7 +24,7 @@
 // =============================================================================
 
 try {
-  EntityEvents.spawned(event => {
+  EntityEvents.spawned(icraft.guard('fix_empty_display_name', 'EntityEvents.spawned', event => {
     try {
       var e = event.entity
       if (!e || !e.living || e.player) return
@@ -68,7 +68,7 @@ try {
     } catch (_) {
       // never break spawn flow
     }
-  })
+  }))
 
   console.log('[IridescentCraft] fix_empty_display_name loaded -- empty customName overrides cleared at spawn')
 } catch (e) {

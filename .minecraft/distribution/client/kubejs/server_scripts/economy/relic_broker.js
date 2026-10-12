@@ -254,7 +254,7 @@ function brokerOpen(player) {
 // Registered WITH the block id, so the handler only runs for the Stand instead
 // of for every block right-click on the server (the id test below stays as a
 // belt-and-braces check).
-BlockEvents.rightClicked(BROKER_BLOCK, event => {
+BlockEvents.rightClicked(BROKER_BLOCK, icraft.guard('economy/relic_broker', 'BlockEvents.rightClicked', event => {
   var block = event.block
   if (!block || String(block.id) !== BROKER_BLOCK) return
   var player = event.player
@@ -263,7 +263,7 @@ BlockEvents.rightClicked(BROKER_BLOCK, event => {
   try { mainHand = String(event.hand) !== 'OFF_HAND' } catch (e) { mainHand = true }
   if (mainHand) brokerOpen(player)
   event.cancel()
-})
+}))
 
 // ---- B2: daily restock broadcast (via the 0_tick_master registry) -------------
 // Detects the world-day rollover and announces a restock once (new rotating stock
@@ -291,7 +291,7 @@ global.icraftBrokerRestockTick = function (event) {
 global.registerServerTick('icraftBrokerRestockTick', 200, 13)
 
 // ---- Recipes: essence block <-> 9 essence, + the T2 Relic Broker Stand --------
-ServerEvents.recipes(event => {
+ServerEvents.recipes(icraft.guard('economy/relic_broker', 'ServerEvents.recipes', event => {
   // 9 essence -> 1 block (the substantial-cost denominator)
   event.shaped('iridescent_relics:relic_essence_block', ['EEE', 'EEE', 'EEE'], { E: ESSENCE })
     .id('icraft:relic_essence_block_pack')
@@ -308,7 +308,7 @@ ServerEvents.recipes(event => {
     S: 'thermal:steel_ingot',
     A: 'minecraft:anvil',
   }).id('icraft:relic_broker_stand_t2')
-})
+}))
 
 console.log('[IridescentCraft] Relic Broker loaded (block ' + BROKER_BLOCK + ' -> tier-gated MerchantMenu)')
 console.log('  catalog: ' + BROKER_ENCHANTS.length + ' enchant books, ' + BROKER_MATERIALS.length

@@ -12,13 +12,14 @@
 // Do NOT duplicate them here.
 // =============================================================================
 
-StartupEvents.registry('item', event => {
+StartupEvents.registry('item', icraft.guard('endgame_items', 'StartupEvents.registry', event => {
 
     // =========================================================================
     // RIFT-EXCLUSIVE DROP MATERIALS
     // Obtained only inside Oblivion's Rift from floor guardians and mobs
     // =========================================================================
 
+    icraft.section('endgame_items/rift-exclusive-drop-materials', function () {
     event.create('kubejs:rift_core')
         .displayName('Rift Core')
         .tooltip('§5A solidified nexus of dimensional energy')
@@ -48,12 +49,14 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/map' })
         .color(0, 0xBB66FF)
+    })
 
     // =========================================================================
     // MYTHIC FORGE CRAFTING STATION
     // The endgame workbench for all Mythic enhancements
     // =========================================================================
 
+    icraft.section('endgame_items/mythic-forge-crafting-station', function () {
     event.create('kubejs:mythic_forge')
         .displayName('Mythic Forge')
         .tooltip('§5An ancient forge resonating with Rift energy')
@@ -64,6 +67,7 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/iron_ingot' })
         .color(0, 0x660099)
+    })
 
     // =========================================================================
     // MYTHIC INFUSION CATALYSTS
@@ -71,6 +75,7 @@ StartupEvents.registry('item', event => {
     // Used as recipe intermediates — craft catalyst, then apply to gear
     // =========================================================================
 
+    icraft.section('endgame_items/mythic-infusion-catalysts', function () {
     event.create('kubejs:mythic_catalyst_1')
         .displayName('Mythic Catalyst I')
         .tooltip('§dInfuses gear with Mythic I enhancement')
@@ -120,12 +125,14 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/diamond' })
         .color(0, 0x8800FF)
+    })
 
     // =========================================================================
     // VOID COFFER — Rift banking item
     // Used between floors to bank items safely
     // =========================================================================
 
+    icraft.section('endgame_items/void-coffer-rift-banking-item', function () {
     event.create('kubejs:void_coffer')
         .displayName('Void Coffer')
         .tooltip('§8A container woven from Rift fabric')
@@ -135,11 +142,13 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/ender_pearl' })
         .color(0, 0x220044)
+    })
 
     // =========================================================================
     // REFORGE TOKEN — used for Mythic Reforging (affix reroll)
     // =========================================================================
 
+    icraft.section('endgame_items/reforge-token-used-for-mythic-reforging', function () {
     event.create('kubejs:mythic_reforge_token')
         .displayName('Mythic Reforge Token')
         .tooltip('§dReroll a single affix on a piece of gear')
@@ -149,6 +158,7 @@ StartupEvents.registry('item', event => {
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/iron_ingot' })
         .color(0, 0xDD55FF)
+    })
 
     // =========================================================================
     // MekaSuit Mk2 — RETIRED SHELL ITEMS [2026-06-06 MK2B]
@@ -172,6 +182,7 @@ StartupEvents.registry('item', event => {
     // =========================================================================
 
     // ── Moon Extraction ──
+    icraft.section('endgame_items/moon-extraction', function () {
     event.create('kubejs:helium_3')
         .displayName('Helium-3 Isotope')
         .tooltip('§bA rare fusion fuel isotope')
@@ -191,8 +202,10 @@ StartupEvents.registry('item', event => {
         .rarity('uncommon')
         .textureJson({ layer0: 'minecraft:item/glowstone_dust' })
         .color(0, 0xAAAAAA)
+    })
 
     // ── Mars Extraction ──
+    icraft.section('endgame_items/mars-extraction', function () {
     event.create('kubejs:ferric_oxide')
         .displayName('Ferric Oxide')
         .tooltip('§cConcentrated Martian iron compound')
@@ -212,8 +225,10 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
         .color(0, 0x88DDFF)
+    })
 
     // ── Mercury Extraction ──
+    icraft.section('endgame_items/mercury-extraction', function () {
     event.create('kubejs:solar_crystal')
         .displayName('Solar Crystal')
         .tooltip('§eCrystallized solar energy')
@@ -233,8 +248,10 @@ StartupEvents.registry('item', event => {
         .rarity('uncommon')
         .textureJson({ layer0: 'minecraft:item/glowstone_dust' })
         .color(0, 0x999999)
+    })
 
     // ── Venus Extraction ──
+    icraft.section('endgame_items/venus-extraction', function () {
     event.create('kubejs:sulfuric_compound')
         .displayName('Sulfuric Compound')
         .tooltip('§6Concentrated sulfuric material')
@@ -254,8 +271,10 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
         .color(0, 0xCC0000)
+    })
 
     // ── Glacio Extraction ──
+    icraft.section('endgame_items/glacio-extraction', function () {
     event.create('kubejs:alien_isotope')
         .displayName('Alien Isotope')
         .tooltip('§dAn isotope of unknown origin')
@@ -275,5 +294,6 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
         .color(0, 0x66CCFF)
+    })
 
-})
+}))

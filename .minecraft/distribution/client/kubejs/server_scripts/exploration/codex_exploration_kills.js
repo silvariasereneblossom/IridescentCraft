@@ -269,7 +269,7 @@ function exploreGiveTokens(player, tier, amount, label) {
 // let — KubeJS's Rhino throws "redeclaration of var" on a const/let in a
 // repeatedly-invoked closure; the triple `amt` made it certain). Module-scope
 // consts above are fine — they're declared once.
-EntityEvents.death(event => {
+EntityEvents.death(icraft.guard('exploration/codex_exploration_kills', 'EntityEvents.death', event => {
   try {
     var entity = event.entity
     var source = event.source
@@ -310,7 +310,7 @@ EntityEvents.death(event => {
   } catch (e) {
     console.warn('[codex_exploration_kills] death handler threw: ' + e)
   }
-})
+}))
 
 // =============================================================================
 // NON-OVERWORLD DIMENSION ENTRY BONUS — §3: "Non-overworld dimension (per tier)

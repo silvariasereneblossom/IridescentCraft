@@ -10,7 +10,7 @@
 // so high-tier ink stacks here are intentional.
 // =============================================================================
 
-LootJS.modifiers(event => {
+LootJS.modifiers(icraft.guard('loot/stalwart_dungeons_drops', 'LootJS.modifiers', event => {
 
   // ---- Awful Ghast (T3 nether mini-boss, gun/crystal drops vanilla) ----
   global.icraftEntityMod(event, 'stalwart_dungeons:awful_ghast')
@@ -50,4 +50,4 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.20)))
 
   console.log('[stalwart_dungeons_drops] registered 7 Stalwart nether mini-boss synergy modifiers')
-})
+}))

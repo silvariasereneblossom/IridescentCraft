@@ -32,7 +32,7 @@
 // The Paxi datapack is retired (its zip removed) so two mechanisms don't fight.
 // =============================================================================
 
-ServerEvents.tags("block", event => {
+ServerEvents.tags("block", icraft.guard('fix_stone_tags', 'ServerEvents.tags', event => {
   var MINEABLE = ['minecraft:stone']
   var NEEDS_GATES = ['minecraft:needs_stone_tool',
                      'minecraft:needs_iron_tool',
@@ -46,4 +46,4 @@ ServerEvents.tags("block", event => {
 
   console.log('[stone-tag-fix] ' + MINEABLE.length
     + ' block(s) -> mineable/pickaxe, cleared from needs_*_tool (wood-mineable, post-merge)')
-})
+}))

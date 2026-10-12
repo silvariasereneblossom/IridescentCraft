@@ -19,7 +19,7 @@
 
 var BOOK_TOOLTIP_DIAG_LOGGED = false
 
-ItemEvents.tooltip(event => {
+ItemEvents.tooltip(icraft.guard('enchanted_book_tooltip_fix', 'ItemEvents.tooltip', event => {
   event.addAdvanced('minecraft:enchanted_book', (stack, advanced, text) => {
     try {
       if (!stack || stack.isEmpty()) return
@@ -72,4 +72,4 @@ ItemEvents.tooltip(event => {
       console.warn('[book-tooltip-fix] error: ' + e)
     }
   })
-})
+}))

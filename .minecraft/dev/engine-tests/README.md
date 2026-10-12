@@ -48,6 +48,7 @@ every run and not counted.
 | `ascension`, `ascension-open` | `endgame/ascension.js` + `scaling/zz_ascension_scaling.js` |
 | `onboarding-bridge` | `quests/onboarding_bridge.js` |
 | `spawn-buff` | the five `scaling/` scripts and `core.spawnBuff`, against the same scripts as of `ffe5cef3` (`fixtures/`) |
+| `event-guard` | `kubejs/*_scripts/00_icraft_guard.js` on KubeJS's REAL handler chain (`guard/GuardChain.java`: `EventJS`, `EventExit` and `EventHandlerContainer.handle` from the KubeJS jar, so it needs that jar and Architectury next to Rhino and is not a `ci` suite). A guarded `cancel()` / `success(value)` / `exit()` reaches KubeJS intact; a throw is one `[icraft.guard] FAILED` line and the chain goes on; an engine-level throw is isolated with a line and never masks an exit; a `java.lang.Error` is not isolated; the guard switched off (no `java.util.Optional`, or its own switch) behaves like no guard; the three copies of the file are one file. `guard/real_engine_probe.js` is the same on a real server (run by hand, its header says how) |
 | `parse` | every script compiles on the real parser (`dev/rhino_parse/ParseAll.java`) |
 | `loot` | `dev/audit_loot.py` (the loot harness; needs the whole instance, reads the server's last boot log) |
 
@@ -81,6 +82,13 @@ every run and not counted.
 4. A script that moved or was renamed makes the suite fail with the path it wanted: fix the load
    list, not the script. When `main` changes a file a suite loads, re-run the suite (a suite went
    from 73/0 to 65/8 that way on 2026-10-12).
+
+## The event guard in the suites
+
+Pack scripts register through `icraft.guard`, so every load list in `suites.json` starts with
+`server:00_icraft_guard.js`, and the harness lets the two classes it loads through under their own names
+(`java.util.Optional`, and the `EventExit` stand-in). A guarded handler that throws is caught by the guard, not by
+`T_fire`: `lib/summary.js` counts it (`N guarded handler failures` in the RESULT line) and the suite fails.
 
 ## Mock honesty
 
