@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "36dd71dd",
+    "generated_from":  "6d75d234",
     "roots":  [
                   "kubejs",
                   "config",
@@ -69,8 +69,8 @@
                                                                      "size":  21339
                                                                  },
                   "config/Crust/default_game_rules.toml":  {
-                                                               "sha256":  "687770428336ea0649477f0ddcd63ca810ee9afb9821f39a98a33901d24e0bf1",
-                                                               "size":  7448
+                                                               "sha256":  "5ce587a214e84a557fbb575e8950faeea36aba918ef6d6f400139c262631ed6f",
+                                                               "size":  7546
                                                            },
                   "config/Crust/modes.toml":  {
                                                   "sha256":  "babadd961c17a81ca8b2bbb96510fc3e109a7b232d3f61a5613511fd3e47fa33",
