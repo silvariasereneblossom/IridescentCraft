@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c1871ece",
+    "generated_from":  "e2d7cb3c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5936,8 +5936,8 @@
                                                                        "size":  4166
                                                                    },
                   "kubejs/client_scripts/jei_hiding.js":  {
-                                                              "sha256":  "0547044fe384070b6f40d7aa500045179894afad55f7c15f700cc6ead830bcb1",
-                                                              "size":  3912
+                                                              "sha256":  "c3d2abfc3b8edec625bd48694174388c595d7b7b219e5a225344b87de4cbd9de",
+                                                              "size":  4965
                                                           },
                   "kubejs/client_scripts/mekasuit_mk2_tooltip.js":  {
                                                                         "sha256":  "d2f5c714c3814334f0661e2ac33efa378bfe9bf0cd0626724857b9ba42d90964",
@@ -7268,8 +7268,8 @@
                                                                             "size":  4651
                                                                         },
                   "kubejs/server_scripts/loot/loot_overhaul.js":  {
-                                                                      "sha256":  "48d8a821020f1f859d7aa85e991a2ddf1fcd20bea69331d779486bcdfe5c92ee",
-                                                                      "size":  40729
+                                                                      "sha256":  "70707df5b1a19b58618aa7330bdca85cbecd6bd1dac151d319ae23eb681a8eab",
+                                                                      "size":  41175
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
                                                                         "sha256":  "d64a978fb50e8b391f8fc152747996711c5a8b3f5d477dd071afacd11c011c62",
@@ -7492,8 +7492,8 @@
                                                                                  "size":  1477
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "933c48ae4057ddbe319c3ead499b61b0cd9ca19042756b498b62360d912ce89e",
-                                                                              "size":  30217
+                                                                              "sha256":  "7980915e3692c692a35ae3194985d16e90ca3675d4cd50fdc889a8ca12bea4a4",
+                                                                              "size":  32206
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "519ce4892061f9c4848855d812112543ef9d3793a77b2ac9e6690d8872f84f81",
