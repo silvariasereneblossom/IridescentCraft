@@ -1,6 +1,8 @@
 # dev/mods: what a mod jar ships, and the pack audited against it
 
 Static tools. Nothing here runs the game, changes a mod, an index entry, a script or a config.
+(One exception, in its own section at the end: `mod_index.py generate` writes the two distro indexes and the skip
+lists from the root index.)
 
 | File | What it is |
 |---|---|
@@ -65,3 +67,29 @@ detail: keep them out of this repo (`--out-dir`); without the option they go to 
 on the same jars and compare the report, the `--json` findings and `truth.json`: they must not differ (apart from the
 timestamp and the scanner version). Nothing may be added to a unit's `counts` or `notes` for the inventory's sake:
 the loot audit prints both. Bump `SCANNER_VERSION` when a unit's content changes.
+
+## The mod index: one source, the rest generated
+
+| File | What it is |
+|---|---|
+| `mod_index.py` | The generator and the gate. Source: `.minecraft/mods/.index` (one metafile per mod) and `mod_index.policy.json`. `generate` writes the server index, the client distribution's index, `client_only_mods.txt` and the skip lists inside the server scripts. `check` is the pre-push block and the GitHub Action. |
+| `mod_index.policy.json` | The facts a metafile cannot carry: the three metafiles that exist only in the client distribution's index, the two CurseForge mods pinned to a CDN url there, and the name patterns of retired mods a server must never keep. |
+| `mod_index_sets.py` | Which jars every consumer of the indexes would install and keep (server launcher, dev client, tester client, the legacy scripts), each modelled from its own code. Run it before and after any change to an index and `diff` the two. |
+| `mod_index_test.py` | Plants each past failure in a temporary copy and requires `check` to refuse it. |
+
+```
+python -I .minecraft/dev/mods/mod_index.py generate              # after editing a metafile or the policy
+python -I .minecraft/dev/mods/mod_index.py check                 # the gate; exit 1 on a finding
+python -I .minecraft/dev/mods/mod_index_sets.py sets --ref origin/main --out before.json
+python -I .minecraft/dev/mods/mod_index_sets.py sets --out after.json
+python -I .minecraft/dev/mods/mod_index_sets.py diff before.json after.json
+```
+
+`side` has one meaning, in the source: where the pack installs the jar. `both` = clients and the dedicated server;
+`client` = clients only, and the metafile is then absent from the server index; `server` = the dedicated server only.
+So the server index lists exactly what a server installs, and a client-only mod needs one edit: its `side`.
+
+Add, update or remove a mod at the index level: edit (or add, or delete) its metafile under `.minecraft/mods/.index`,
+run `generate`, commit everything it wrote, and compare the sets before and after. Never edit a file under
+`server_distribution/mods/.index` or `distribution/client/mods/.index`, or a block between `>>> mod_index.py` and
+`<<< mod_index.py`: the gate refuses the push.
