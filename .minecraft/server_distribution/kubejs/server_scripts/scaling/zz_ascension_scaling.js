@@ -49,6 +49,16 @@
 //   on them is proven safe (zz_boss_global_3x scales them in production). resId
 //   is resolved via the shared 0_iss_guard helper (handles entity.type's
 //   translation-key-form trap).
+//
+// SAVED WITH THE MOB (2026-10-12)
+//   Both modifiers go on through core.spawnBuff (0_lib_core.js, "spawn buffs")
+//   and are PERMANENT. entity.modifyAttribute adds a transient modifier, so as
+//   written before this date the buff would have been lost at the first
+//   save/load while the 'icraft_asc_scaled' flag stayed (it never bit: the
+//   ascension level has never been above 0). Flag 1 = scaled by the old code,
+//   scaled again on load at the level of that moment, share of health kept;
+//   flag 2 = saved with the mob, nothing to do. The five casters above are
+//   still skipped before anything here touches them.
 // =============================================================================
 
 // The 5 ISS AbstractSpellCastingMob casters that crash on attribute access.
@@ -77,8 +87,13 @@ EntityEvents.spawned(event => {
   // entity.type kept verbatim from the original handler (behaviour-preserving).
   if (!entity.monster && !isHostileModdedAsc(entity.type)) return
 
-  // Skip already-ascension-scaled mobs (prevent double-scaling on chunk reload)
-  if (entity.persistentData.contains('icraft_asc_scaled')) return
+  let core = global.icraft && global.icraft.core
+  if (!core) return
+
+  // Skip already-ascension-scaled mobs (prevent double-scaling on chunk reload).
+  // null = the scaling is saved with this mob.
+  let buff = core.spawnBuff(entity, 'icraft_asc_scaled')
+  if (!buff) return
 
   // Shared level lookup + multiplier tables (set by endgame/ascension.js, which
   // loads first). Absent only if ascension.js failed to load — it logs that.
@@ -93,18 +108,18 @@ EntityEvents.spawned(event => {
 
   // HP ×ascMult (MULTIPLY_TOTAL — sits on top of boss_hp's multiply_base ratio)
   if (hpMult > 1.0) {
-    entity.modifyAttribute(
+    buff.modifier(
       'minecraft:generic.max_health',
       'icraft_asc_hp',
       hpMult - 1.0,
       'multiply_total'
     )
-    entity.heal(entity.maxHealth)
+    buff.health()
   }
 
   // Damage ×ascMult (MULTIPLY_TOTAL)
   if (dmgMult > 1.0) {
-    entity.modifyAttribute(
+    buff.modifier(
       'minecraft:generic.attack_damage',
       'icraft_asc_dmg',
       dmgMult - 1.0,
@@ -112,7 +127,7 @@ EntityEvents.spawned(event => {
     )
   }
 
-  entity.persistentData.putBoolean('icraft_asc_scaled', true)
+  buff.done()
 })
 
 // Modded hostile mobs that may not extend Monster class. Moved VERBATIM from

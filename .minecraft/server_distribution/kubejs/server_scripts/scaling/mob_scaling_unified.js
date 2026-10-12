@@ -13,6 +13,15 @@
 // Boss entities are excluded here — they scale via boss_hp.js +
 // boss_progressive.js (modded bosses) or the ProgressiveBosses mod
 // (vanilla bosses).
+//
+// SAVED WITH THE MOB (2026-10-12)
+//   The tier modifier goes on through core.spawnBuff (0_lib_core.js, "spawn
+//   buffs") and is PERMANENT. Until this date it was transient
+//   (entity.modifyAttribute) and lost at the first save/load while the
+//   'icraft_scaled' flag stayed, so only a mob that had never been unloaded
+//   had its tier HP. A mob in that state (flag 1) is classified again when it
+//   loads, gets the modifier back and keeps its share of health; flag 2 =
+//   handled and saved, nothing to do.
 // =============================================================================
 
 // Equipment/scaling blacklist (#icraft:equipment_blacklist entity_types tag):
@@ -71,8 +80,13 @@ EntityEvents.spawned(event => {
     // their mod-native tuning is fine.
     if (resId.indexOf('irons_spellbooks:') === 0) return
 
-    // Skip already-processed mobs (single flag for both systems)
-    if (entity.persistentData.contains('icraft_scaled')) return
+    let core = global.icraft && global.icraft.core
+    if (!core) return
+
+    // Skip already-processed mobs (single flag for both systems).
+    // null = handled, and the tier modifier (if any) is saved with the mob.
+    let buff = core.spawnBuff(entity, 'icraft_scaled')
+    if (!buff) return
 
     // Skip bosses — they have their own scaling systems
     if (BOSSES.has(type)) return
@@ -80,21 +94,21 @@ EntityEvents.spawned(event => {
     // Only scale hostile mobs (skip passives, NPCs)
     let isHostile = entity.monster || isHostileMod(type)
     if (!isHostile) {
-      entity.persistentData.putBoolean('icraft_scaled', true)
+      buff.done()
       return
     }
 
     // Skip category-MONSTER projectile/beam/ring entities (Terramity etc.) so
     // their one-shot effect entities don't get tier-HP bloated. (A2 / PROJ-1.)
     if (isMobScaleBlacklisted(entity)) {
-      entity.persistentData.putBoolean('icraft_scaled', true)
+      buff.done()
       return
     }
 
     // ── Mob Tier HP ──
     let tierMult = getMobTierMultiplier(entity, type)
     if (tierMult > 1.0) {
-      entity.modifyAttribute(
+      buff.modifier(
         'minecraft:generic.max_health',
         'icraft_mob_tier_hp',
         tierMult - 1.0,
@@ -115,11 +129,12 @@ EntityEvents.spawned(event => {
     //    that's intended to compose with the new dimension scaling, not
     //    duplicate it.
 
-    // Heal to new max after all modifiers applied
-    entity.heal(entity.maxHealth)
+    // Heal to new max after all modifiers applied (a mob getting its lost
+    // modifier back keeps its share of health instead: see the header)
+    buff.health()
 
     // Mark as processed (single flag for both systems)
-    entity.persistentData.putBoolean('icraft_scaled', true)
+    buff.done()
   } catch (e) {
     // Some modded entities have abstract methods that crash when accessed
   }

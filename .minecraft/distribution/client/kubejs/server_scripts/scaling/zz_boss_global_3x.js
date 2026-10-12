@@ -12,7 +12,9 @@
 //     • minecraft:generic.max_health    ×3  (MULTIPLY_TOTAL, +2.0) + heal to full
 //     • minecraft:generic.attack_damage ×3  (MULTIPLY_TOTAL, +2.0)
 //     • irons_spellbooks:spell_power     ×2  (MULTIPLY_TOTAL, +1.0)  ← ISS bosses only
-//   via entity.modifyAttribute — the proven idiom (ascension.js / boss_hp.js).
+//   via core.spawnBuff (0_lib_core.js, "spawn buffs"), which SAVES the
+//   modifiers with the boss. (Until 2026-10-12: entity.modifyAttribute, which
+//   does not — see IDEMPOTENT / SAVED below.)
 //
 // WHY MULTIPLY_TOTAL (not multiply_base)
 //   The game computes an attribute as:
@@ -46,16 +48,29 @@
 //   by the vanilla attribute system AFTER all multiply_base regardless of insert
 //   order, so only boss_hp's spawn-time ratio READ is order-sensitive.)
 //
-// IDEMPOTENT / RELOAD-SAFE
-//   kjs$modifyAttribute derives a STABLE UUID from the modifier-id string and
-//   does removeModifier(uuid) → addPermanentModifier (javap-verified vs
-//   kubejs-forge-2001.6.5), so re-applying the same id never STACKS. We also
-//   guard with a persistentData flag ('icraft_boss_3x') so we don't re-heal on
-//   reload / chunk-reload. The modifier is PERMANENT (saved to entity NBT) so
-//   the buff survives a chunk reload. CAVEAT: because it's permanent, disabling
-//   this later (deleting the file) leaves the modifier stranded on any
-//   already-spawned + still-loaded boss until it despawns/dies — fine for
-//   transient boss encounters; a full revert would need a paired UUID-scrub.
+// IDEMPOTENT / SAVED WITH THE BOSS (corrected 2026-10-12)
+//   kjs$modifyAttribute derives a STABLE UUID from the modifier-id string
+//   (new UUID(name.hashCode(), name.hashCode())) and does removeModifier(uuid)
+//   → addTRANSIENTModifier: AttributeInstance.m_22118_, which only calls
+//   addModifier. m_22125_ (addPermanentModifier) is the one that also fills the
+//   set AttributeInstance.save() writes. (javap of kubejs-forge-2001.6.5-
+//   build.16 and the 1.20.1 srg jar. This header used to say
+//   "addPermanentModifier (javap-verified)"; that was wrong.) So the same id
+//   never STACKS, but a modifier added that way is NOT saved with the entity.
+//   Until 2026-10-12 this file used it behind the saved 'icraft_boss_3x' flag:
+//   a boss that was unloaded and loaded again (a structure boss waiting for
+//   players, a chunk unload, a server restart) came back WITHOUT the ×3, with
+//   its Health clamped to the smaller maximum, and the flag kept the buff from
+//   being applied again. In the world backup of 2026-10-11 none of the 21
+//   flagged bosses had a script modifier saved.
+//   Now core.spawnBuff makes each modifier permanent (same UUID, so still no
+//   stacking) and the flag is a number: 2 = saved with the boss, nothing to
+//   do, Health untouched; 1 = buffed by the old code and lost since → the buff
+//   goes back on when the boss loads and it keeps its SHARE of health (full
+//   stays full, half stays half; no heal on top of that).
+//   CAVEAT: a permanent modifier outlives this file. Disabling the buff later
+//   needs a pass that takes the three modifiers off the bosses that carry them
+//   (entity.removeAttribute); deleting the file is not enough.
 //
 // BOSS SET — keyed off the pack's roster (see the true-boss/miniboss boundary)
 //   Source = codex_exploration_kills.js NAMED_BOSSES_BY_TIER (the pack's curated
@@ -199,35 +214,40 @@ EntityEvents.spawned(event => {
 
   var resId = bg3_resId(entity)
   if (!resId || !BOSS_3X_SET[resId]) return                       // not a recognised boss
-  if (entity.persistentData.contains('icraft_boss_3x')) return    // already buffed (idempotent)
+
+  var core = global.icraft && global.icraft.core
+  if (!core) return
+  var buff = core.spawnBuff(entity, 'icraft_boss_3x')
+  if (!buff) return                                               // buffed, and saved with the boss
 
   // ── HP ×3 (MULTIPLY_TOTAL) + heal to the new max ──
+  // (a boss getting a lost buff back keeps its share of health instead)
   if (BOSS_3X_HP_MULT > 1.0) {
-    entity.modifyAttribute('minecraft:generic.max_health', 'icraft_boss_3x_hp',
+    buff.modifier('minecraft:generic.max_health', 'icraft_boss_3x_hp',
       BOSS_3X_HP_MULT - 1.0, 'multiply_total')
-    entity.heal(entity.maxHealth)
+    buff.health()
   }
 
   var dmgAllowed = !BOSS_3X_DMG_SKIP_SET[resId]
 
   // ── Melee attack damage ×3 (MULTIPLY_TOTAL) — melee/contact only ──
   if (BOSS_3X_DMG_MULT > 1.0 && dmgAllowed) {
-    entity.modifyAttribute('minecraft:generic.attack_damage', 'icraft_boss_3x_dmg',
+    buff.modifier('minecraft:generic.attack_damage', 'icraft_boss_3x_dmg',
       BOSS_3X_DMG_MULT - 1.0, 'multiply_total')
   }
 
   // ── ISS spell damage ×2 via spell_power (caster bosses' real threat) ──
   // Gated to the irons_spellbooks namespace (only ISS entities register the
-  // attribute; modifyAttribute would no-op elsewhere anyway, but skip the call).
+  // attribute; the call would do nothing elsewhere anyway, but skip it).
   // Safe on the ISS AbstractSpellCastingMob bosses (incl. archevoker) — same
   // attribute op the iridescent_difficulty mod runs on them in production; see
   // the BROKEN ENTITY SAFETY header note.
   if (BOSS_3X_SPELLPOWER_MULT > 1.0 && dmgAllowed && resId.indexOf('irons_spellbooks:') === 0) {
-    entity.modifyAttribute('irons_spellbooks:spell_power', 'icraft_boss_3x_spellpower',
+    buff.modifier('irons_spellbooks:spell_power', 'icraft_boss_3x_spellpower',
       BOSS_3X_SPELLPOWER_MULT - 1.0, 'multiply_total')
   }
 
-  entity.persistentData.putBoolean('icraft_boss_3x', true)
+  buff.done()
 })
 
 console.log('[iridescent/boss_3x] global boss buff loaded (hp ×3 + melee dmg ×3 + ISS spell ×2; see header for boundary + coverage)')

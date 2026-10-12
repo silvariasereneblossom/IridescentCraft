@@ -32,6 +32,13 @@
 //                   core.secondary(entity?)          -> true while dealDamage is running
 //   attributes      core.attribute(id)               -> Attribute object | null (resolved once)
 //                   core.attrValue(entity, id, fallback) / core.attrBase(entity, id, fallback)
+//                   core.attrValueWithout(entity, id, namePrefix, current)
+//                                                    -> the total with the modifiers whose name starts
+//                                                       with namePrefix left out
+//   spawn buffs     core.spawnBuff(entity, flag)     -> buff | null: a once-per-mob attribute buff that is
+//                                                       SAVED with the mob (see "spawn buffs" below)
+//                     buff.modifier(attrId, name, amount, op) / buff.health() / buff.done() / buff.legacy
+//                   core.saveModifier(entity, attrId, name, amount, op) -> 1 | 0 | -1
 //   enchantments    core.enchLevel(stack, enchId)    -> level (0 if absent)
 //                   core.armorEnchTotal(entity, id)  -> sum over the 4 armour pieces
 //                   core.heldEnchLevel(entity, id)   -> level on the main-hand item
@@ -338,6 +345,162 @@
     if (!attr) return fallback
     try { return finite(entity.getAttributeBaseValue(attr), fallback) } catch (e) { return fallback }
   }
+  // The total as it would be WITHOUT the modifiers whose name starts with
+  // `prefix` (vanilla's own formula: (base + additions) x (1 + sum of
+  // multiply_base) x product of (1 + multiply_total), then the attribute's
+  // range). `current` (the live value the caller already has) is returned
+  // untouched when no modifier is left out or the attribute cannot be read.
+  var attrValueWithout = function (entity, id, prefix, current) {
+    try {
+      var attr = attribute(id)
+      var inst = entity.getAttribute(attr ? attr : String(id))
+      if (!inst) return current
+      var lead = String(prefix)
+      var add = 0
+      var mulBase = 0
+      var mulTotal = 1
+      var left = 0
+      inst.getModifiers().forEach(function (m) {
+        if (String(m.getName()).indexOf(lead) === 0) { left++; return }
+        var amount = finite(m.getAmount(), 0)
+        var op = String(m.getOperation()).toUpperCase()
+        if (op === 'ADDITION') add += amount
+        else if (op === 'MULTIPLY_BASE') mulBase += amount
+        else if (op === 'MULTIPLY_TOTAL') mulTotal *= (1 + amount)
+      })
+      if (left === 0) return current
+      var value = (finite(inst.getBaseValue(), 0) + add) * (1 + mulBase) * mulTotal
+      return finite(inst.getAttribute().sanitizeValue(value), current)
+    } catch (e) {
+      warnOnce('attrValueWithout:' + id, '[icraft.core] attrValueWithout(' + id + ') threw: ' + e)
+      return current
+    }
+  }
+
+  // ---- spawn buffs: attribute modifiers that are SAVED with the mob ---------
+  // entity.modifyAttribute(attr, name, amount, op) adds a TRANSIENT modifier
+  // (kubejs-forge 2001.6.5, LivingEntityKJS.kjs$modifyAttribute: removeModifier(
+  // uuid), then AttributeInstance.addTransientModifier; AttributeInstance.save()
+  // writes only what addPermanentModifier added). Right for a player stat that
+  // a tick handler keeps re-applying. Wrong for a mob buff applied ONCE in
+  // EntityEvents.spawned behind a persistentData "done" flag: the flag is saved
+  // and the modifier is not, so a mob that is unloaded and loaded again (chunk
+  // unload, server restart, dimension change) comes back without the buff, has
+  // its Health clamped to the smaller maximum while it loads, and the flag
+  // keeps the script from ever applying it again. Five scaling/ scripts did
+  // exactly that until 2026-10-12.
+  //
+  // spawnBuff() keeps the flag and the modifier together. The flag is a NUMBER:
+  //   absent  never buffed -> apply; health() heals to the new maximum
+  //   1       written by the old scripts (putBoolean), or by a run whose
+  //           modifier could not be saved: the modifiers are gone -> apply
+  //           again; health() keeps the SHARE of the maximum the mob has now
+  //           (a boss at half health stays at half, an untouched one ends
+  //           full). What its Health was before the first reload is not
+  //           knowable: it was clamped away when the mob loaded.
+  //   2       the modifiers are saved with the mob -> spawnBuff() returns null
+  //           and the mob is left alone, Health included
+  // EntityEvents.spawned also fires for a mob loaded from disk (it is Forge's
+  // EntityJoinLevelEvent), which is what lets a "1" be repaired on load.
+  //
+  //   var buff = core.spawnBuff(entity, 'icraft_boss_3x')
+  //   if (!buff) return
+  //   buff.modifier('minecraft:generic.max_health', 'icraft_boss_3x_hp', 2.0, 'multiply_total')
+  //   buff.health()
+  //   buff.done()        // writes 2, or 1 when a modifier could not be saved
+  //
+  // A saved modifier outlives the script that added it: to retire a buff,
+  // take the modifier off the mobs that carry it (entity.removeAttribute(attr,
+  // name) in a spawned handler); deleting the call is not enough.
+
+  // 1 = on the entity and saved with it, 0 = the entity has no such attribute
+  // (nothing to do), -1 = failed (logged once per modifier name; the modifier
+  // is then on the mob the way entity.modifyAttribute leaves it: not saved).
+  var saveModifier = function (entity, id, name, amount, operation) {
+    var key = String(name)
+    try {
+      var attr = attribute(id)
+      var inst = entity.getAttribute(attr ? attr : String(id))
+      if (!inst) return 0
+      // KubeJS's own call: it derives the UUID from the name and removes any
+      // modifier already under it, so a second application replaces the first
+      // and never stacks.
+      entity.modifyAttribute(String(id), key, amount, operation)
+      var added = null
+      inst.getModifiers().forEach(function (m) {
+        if (added === null && String(m.getName()) === key) added = m
+      })
+      if (added === null) {
+        warnOnce('modifier:' + key, '[icraft.core] modifier ' + key + ' was not found on ' + entityId(entity) + ' after modifyAttribute')
+        return -1
+      }
+      // transient -> permanent: the same modifier under the same UUID
+      inst.removeModifier(added.getId())
+      inst.addPermanentModifier(added)
+      return 1
+    } catch (e) {
+      // The swap may have stopped half way (taken off, not put back): have
+      // KubeJS put the transient one on again, so the mob is at least buffed
+      // while it stays loaded. The caller's flag stays at 1 -> retried on load.
+      try { entity.modifyAttribute(String(id), key, amount, operation) } catch (ignored) {}
+      warnOnce('modifier:' + key, '[icraft.core] modifier ' + key + ' on ' + entityId(entity) + ' could not be saved: ' + e)
+      return -1
+    }
+  }
+
+  // health / maximum, 0..1 (1 when it cannot be read). The METHODS, not the
+  // bean properties: a public field of the same name on a mod's entity class
+  // would shadow `entity.health` (see `type` in the header).
+  var healthShare = function (entity) {
+    try {
+      var max = finite(entity.getMaxHealth(), 0)
+      if (!(max > 0)) return 1
+      var share = finite(entity.getHealth(), max) / max
+      if (share < 0) return 0
+      return share > 1 ? 1 : share
+    } catch (e) { return 1 }
+  }
+
+  var BUFF_SAVED = 2
+  var spawnBuff = function (entity, flag) {
+    var key = String(flag)
+    var data = null
+    var state = 0
+    try {
+      data = entity.persistentData
+      state = finite(data.getInt(key), 0)
+    } catch (e) {
+      warnOnce('buff:' + key, '[icraft.core] spawnBuff(' + key + ') could not read persistentData: ' + e)
+      return null
+    }
+    if (state >= BUFF_SAVED) return null
+    var legacy = state > 0
+    // read BEFORE this script changes the maximum
+    var share = legacy ? healthShare(entity) : 1
+    var saved = true
+    return {
+      legacy: legacy,
+      modifier: function (id, name, amount, operation) {
+        var result = saveModifier(entity, id, name, amount, operation)
+        if (result < 0) saved = false
+        return result > 0
+      },
+      health: function () {
+        try {
+          if (!legacy) { entity.heal(entity.getMaxHealth()); return }
+          // dead or dying (share 0): left as it is
+          if (share > 0) entity.setHealth(share * entity.getMaxHealth())
+        } catch (e) {
+          warnOnce('buff.health:' + key, '[icraft.core] spawnBuff(' + key + ').health() threw: ' + e)
+        }
+      },
+      done: function () {
+        try { data.putInt(key, saved ? BUFF_SAVED : 1) } catch (e) {
+          warnOnce('buff.done:' + key, '[icraft.core] spawnBuff(' + key + ').done() threw: ' + e)
+        }
+      }
+    }
+  }
 
   // ---- enchantments ---------------------------------------------------------
   var enchCache = {}   // id -> Enchantment | false
@@ -634,6 +797,9 @@
     attribute: attribute,
     attrValue: attrValue,
     attrBase: attrBase,
+    attrValueWithout: attrValueWithout,
+    spawnBuff: spawnBuff,
+    saveModifier: saveModifier,
     enchLevel: enchLevel,
     armorEnchTotal: armorEnchTotal,
     heldEnchLevel: heldEnchLevel,

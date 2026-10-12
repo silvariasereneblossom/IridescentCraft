@@ -17,6 +17,15 @@
 //   Kill 5:   +50% HP, +35% DMG, +8% SPD
 //   Kill 10:  +100% HP, +60% DMG, +12% SPD
 //   Kill 15+: +150% HP (cap), +80% DMG (cap), +15% SPD (cap)
+//
+// SAVED WITH THE BOSS (2026-10-12)
+//   The three modifiers go on through core.spawnBuff (0_lib_core.js, "spawn
+//   buffs") and are PERMANENT. Until this date they were transient
+//   (entity.modifyAttribute) and lost at the first save/load while the
+//   'icraft_prog_scaled' flag stayed. A boss in that state (flag 1) is scaled
+//   again when it loads, by the kill count of THAT moment (the count it
+//   spawned under was never stored), and keeps its share of health; flag 2 =
+//   saved with the boss, nothing to do.
 // =============================================================================
 
 // ─── Spawn: Apply scaling based on current kill count ───
@@ -26,7 +35,13 @@ EntityEvents.spawned(event => {
 
   let type = entity.type
   if (!isScalableBoss(type)) return
-  if (entity.persistentData.contains('icraft_prog_scaled')) return
+
+  let core = global.icraft && global.icraft.core
+  if (!core) return
+
+  // null = the scaling is already saved with this boss
+  let buff = core.spawnBuff(entity, 'icraft_prog_scaled')
+  if (!buff) return
 
   let kills = getKillCount(event.level, type)
   if (kills <= 0) return  // First encounter — base stats (already set by boss_hp.js)
@@ -34,17 +49,17 @@ EntityEvents.spawned(event => {
   let scale = getProgressiveScale(kills)
 
   if (scale.hp > 0) {
-    entity.modifyAttribute('minecraft:generic.max_health', 'icraft_prog_hp', scale.hp, 'multiply_base')
-    entity.heal(entity.maxHealth)
+    buff.modifier('minecraft:generic.max_health', 'icraft_prog_hp', scale.hp, 'multiply_base')
+    buff.health()
   }
   if (scale.dmg > 0) {
-    entity.modifyAttribute('minecraft:generic.attack_damage', 'icraft_prog_dmg', scale.dmg, 'multiply_base')
+    buff.modifier('minecraft:generic.attack_damage', 'icraft_prog_dmg', scale.dmg, 'multiply_base')
   }
   if (scale.spd > 0) {
-    entity.modifyAttribute('minecraft:generic.movement_speed', 'icraft_prog_spd', scale.spd, 'multiply_base')
+    buff.modifier('minecraft:generic.movement_speed', 'icraft_prog_spd', scale.spd, 'multiply_base')
   }
 
-  entity.persistentData.putBoolean('icraft_prog_scaled', true)
+  buff.done()
 })
 
 // ─── Kill: Increment kill counter ───
