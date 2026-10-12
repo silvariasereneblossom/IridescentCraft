@@ -150,6 +150,47 @@ enum Cmd {
         quiet: bool,
     },
 
+    /// Look a dry-run's plan over against the world as it is NOW: is it still
+    /// the same plan, what would a regeneration do to each file and each mod
+    /// store, and what would stop it. Reads only; safe while the server runs,
+    /// and --server-dir may be a share. Exit 0 = a run would go ahead, 2 = it
+    /// would not (the plan changed, or something stops it), 1 = no answer.
+    RegenPreflight {
+        /// The dry-run: a folder name under <server-dir>/regen-reports, or a path.
+        #[arg(long)]
+        run: String,
+    },
+
+    /// Carry a regeneration plan out: RESETS CHUNKS. Only on a scratch copy
+    /// of a server folder, for tests: the folder must hold a file named
+    /// .icraft_regen_sandbox whose first line is the folder's own full path,
+    /// and no launcher may be running on it. On the live server a
+    /// regeneration is started from the launcher's window, by the operator,
+    /// and from nowhere else. Exit 0 = done, 3 = the plan has changed (nothing
+    /// touched; a fresh dry-run was written), 2 = refused (nothing touched),
+    /// 1 = failed.
+    RegenExecute {
+        /// The dry-run to carry out: a folder name under
+        /// <server-dir>/regen-reports, or a path.
+        #[arg(long)]
+        run: String,
+        /// The first 8 characters of that plan's sha256.
+        #[arg(long)]
+        approve: String,
+    },
+
+    /// Undo a regeneration from its holding folder (scratch copies only, as
+    /// regen-execute). Exact for as long as the world has not changed since
+    /// the run.
+    RegenRollback {
+        /// A folder name under <server-dir>/regen-holding. Default: the newest.
+        #[arg(long)]
+        holding: Option<String>,
+        /// The first 8 characters of that run's plan sha256.
+        #[arg(long)]
+        approve: String,
+    },
+
     /// This server's own config values (worldgen and others): list, change,
     /// reset. They are kept in .icraft_config_overrides.json and written back
     /// into the config files before every server start, so a pack update
@@ -334,6 +375,71 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 }
             }
         }
+        Cmd::RegenPreflight { run } => match regen::exec::preflight(cfg, &run_dir(cfg, run)) {
+            Ok(preflight) => {
+                print_preflight(&preflight);
+                Ok(if preflight.ready() { 0 } else { 2 })
+            }
+            Err(why) => {
+                eprintln!("regen-preflight FAILED: {why}");
+                Ok(1)
+            }
+        },
+        Cmd::RegenExecute { run, approve } => {
+            let how = match regen::exec::sandbox_check(cfg) {
+                Ok(how) => how,
+                Err(why) => {
+                    eprintln!("regen-execute REFUSED, nothing was touched: {why}");
+                    return Ok(2);
+                }
+            };
+            println!("Scratch copy: {how}.");
+            let approval = regen::exec::Approval {
+                run_dir: run_dir(cfg, run),
+                typed: approve.clone(),
+                by: "command line (scratch copy)".to_string(),
+                pregen: regen::exec::Pregen::Off,
+            };
+            let outcome = regen::exec::execute(cfg, &approval);
+            if let regen::exec::Outcome::PlanChanged(preflight) = &outcome {
+                print_preflight(preflight);
+            }
+            println!("{}", outcome.line());
+            Ok(match outcome {
+                regen::exec::Outcome::Done(_) => 0,
+                regen::exec::Outcome::PlanChanged(_) => 3,
+                regen::exec::Outcome::Refused(_) => 2,
+                regen::exec::Outcome::Failed { .. } => 1,
+            })
+        }
+        Cmd::RegenRollback { holding, approve } => {
+            let how = match regen::exec::sandbox_check(cfg) {
+                Ok(how) => how,
+                Err(why) => {
+                    eprintln!("regen-rollback REFUSED, nothing was touched: {why}");
+                    return Ok(2);
+                }
+            };
+            println!("Scratch copy: {how}.");
+            let dir = match holding {
+                Some(name) => Some(cfg.server_dir.join(regen::exec::HOLDING_DIR).join(name)),
+                None => regen::exec::holdings(&cfg.server_dir).into_iter().next().map(|h| h.dir),
+            };
+            let Some(dir) = dir else {
+                eprintln!("regen-rollback: there is no holding folder under {}", cfg.server_dir.join(regen::exec::HOLDING_DIR).display());
+                return Ok(2);
+            };
+            match regen::exec::rollback(cfg, &dir, approve, "command line (scratch copy)") {
+                Ok(said) => {
+                    println!("{said}");
+                    Ok(0)
+                }
+                Err(why) => {
+                    eprintln!("regen-rollback NOT done: {why}");
+                    Ok(1)
+                }
+            }
+        }
         Cmd::Settings { action } => Ok(settings(action, cfg)),
         Cmd::Diagnose => {
             print!("{}", diagnose::report(cfg)?);
@@ -343,6 +449,52 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             print!("{}", firewall::audit()?);
             Ok(0)
         }
+    }
+}
+
+/// `--run`: a path to a dry-run's folder, or its name under
+/// `<server dir>/regen-reports`.
+fn run_dir(cfg: &ServerConfig, run: &str) -> PathBuf {
+    let direct = PathBuf::from(run);
+    if direct.join(icraft_core::regen::PLAN_FILE).is_file() {
+        direct
+    } else {
+        cfg.server_dir.join(icraft_core::regen::REPORTS_DIR).join(run)
+    }
+}
+
+/// What stands before a regeneration, as text.
+fn print_preflight(p: &icraft_core::regen::exec::Preflight) {
+    use icraft_core::regen::exec::Mark;
+    println!("dry-run      {}  (scope {})", p.run_name, p.scope);
+    println!("approved     plan sha256 {}", p.approved_hash);
+    println!("now          plan sha256 {}", p.current_hash);
+    if p.same_plan {
+        println!("plan         unchanged: {} chunk(s) to reset, {} to keep, of {} on disk", p.targets, p.kept, p.on_disk);
+    } else {
+        println!("plan         CHANGED: {} chunk(s) more than approved, {} fewer", p.added, p.removed);
+        for (label, list) in [("  new      ", &p.added_sample), ("  gone     ", &p.removed_sample)] {
+            if !list.is_empty() {
+                println!("{label}  {}", list.join("; "));
+            }
+        }
+        match &p.new_run {
+            Some(name) => println!("fresh        a dry-run of the plan as it is now was written: {name}"),
+            None => println!("fresh        run the dry-run again"),
+        }
+    }
+    for line in &p.lines {
+        let mark = match line.mark {
+            Mark::Ok => "[ok]  ",
+            Mark::Stop => "[STOP]",
+            Mark::Note => "[note]",
+        };
+        println!("{mark} {}", line.text);
+    }
+    if p.ready() {
+        println!("A run would go ahead. To approve this plan, the code is {}.", p.approval_text());
+    } else {
+        println!("A run would NOT go ahead as things stand.");
     }
 }
 

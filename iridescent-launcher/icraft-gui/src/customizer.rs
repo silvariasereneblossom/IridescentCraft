@@ -14,10 +14,12 @@
 //! operator's own policy file, and only when "Save as the standing policy" is
 //! clicked.
 //!
-//! The tab has two pages. This file is the first, "Backups and world
-//! refresh"; the second, "Worldgen settings", is `worldgen_page.rs` and is
-//! hosted from [`Customizer::ui`]. A further page is a struct with a
-//! `ui(&mut self, ui, server_dir)` of its own and one more entry in [`Page`].
+//! The tab has three pages. This file is the first, "Backups and world
+//! refresh"; the second, "Worldgen settings", is `worldgen_page.rs`; the
+//! third, "Regenerate", is `regen_page.rs`: the one place a plan made here can
+//! be carried out from. All are hosted from [`Customizer::ui`]. A further page
+//! is a struct with a `ui(&mut self, ui, server_dir)` of its own and one more
+//! entry in [`Page`].
 //!
 //! The tab draws itself from a server folder path and nothing else of the
 //! launcher's, so it can be hosted in a window of its own later.
@@ -49,6 +51,8 @@ enum Page {
     Refresh,
     /// The pack's worldgen config files (`worldgen_page.rs`).
     Worldgen,
+    /// Carrying a regeneration plan out (`regen_page.rs`).
+    Regenerate,
 }
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -92,6 +96,7 @@ struct Shown {
 pub struct Customizer {
     page: Page,
     worldgen: crate::worldgen_page::WorldgenPage,
+    regenerate: crate::regen_page::RegenPage,
 
     /// The install dir the fields below were loaded for.
     loaded_for: Option<PathBuf>,
@@ -141,6 +146,7 @@ impl Customizer {
         let mut tab = Customizer {
             page: Page::Refresh,
             worldgen: crate::worldgen_page::WorldgenPage::new(),
+            regenerate: crate::regen_page::RegenPage::new(),
             loaded_for: None,
             scope: ScopeKind::Report,
             ring: 8,
@@ -177,7 +183,7 @@ impl Customizer {
     }
 
     pub fn busy(&self) -> bool {
-        self.running_since.is_some()
+        self.running_since.is_some() || self.regenerate.busy()
     }
 
     pub fn failed(&self) -> bool {
@@ -190,7 +196,15 @@ impl Customizer {
         match self.page {
             Page::Refresh => "tab-customizer",
             Page::Worldgen => "tab-customizer-worldgen",
+            Page::Regenerate => "tab-customizer-regenerate",
         }
+    }
+
+    /// For a preview: show the Regenerate page and check the newest dry-run
+    /// there. A preview cannot type, so it can show the page and no more.
+    pub fn show_regenerate(&mut self) {
+        self.page = Page::Regenerate;
+        self.regenerate.preview();
     }
 
     /// For a preview: show the worldgen page, open `file` there and type
@@ -391,11 +405,17 @@ impl Customizer {
         ui.horizontal(|ui| {
             ui.selectable_value(&mut self.page, Page::Refresh, "  Backups and world refresh  ");
             ui.selectable_value(&mut self.page, Page::Worldgen, "  Worldgen settings  ");
+            ui.selectable_value(&mut self.page, Page::Regenerate, "  Regenerate  ");
         });
         ui.add_space(6.0);
         if self.page == Page::Worldgen {
             self.worldgen.expand_all = self.expand_all;
             self.worldgen.ui(ui, server_dir);
+            return false;
+        }
+        if self.page == Page::Regenerate {
+            self.regenerate.expand_all = self.expand_all;
+            self.regenerate.ui(ui, server_dir);
             return false;
         }
 
@@ -454,7 +474,7 @@ impl Customizer {
         ui.heading("World regeneration: dry-run");
         ui.label(
             RichText::new(
-                "Works out which chunks a regeneration would keep and which it would reset, and shows it below. It only READS the world: nothing is deleted or changed, and it is safe while the server is running. Carrying a plan out is a later step and is not built yet.",
+                "Works out which chunks a regeneration would keep and which it would reset, and shows it below. It only READS the world: nothing is deleted or changed, and it is safe while the server is running. Carrying a plan out is a separate step with its own page, 'Regenerate', and its own approval.",
             )
             .small()
             .weak(),

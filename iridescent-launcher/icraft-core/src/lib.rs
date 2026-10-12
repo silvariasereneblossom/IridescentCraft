@@ -20,14 +20,22 @@
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
 //!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
 //!
-//! Server Customizer, Phase B (on demand only -- none of these three is called
-//! from [`serve`] or a Cycle, and none of them writes inside the world folder):
+//! Server Customizer, the world (on demand only -- none of this is called from
+//! [`serve`] or a Cycle):
 //!
 //!   - [`nbt`], [`anvil`], [`worlddata`] — read a world: NBT, region files,
 //!     dimensions, player and mod data
 //!   - [`protection`] — the chunks a regeneration must keep (beds, claims,
 //!     spawn, waystones, lived-in, manual)
-//!   - [`regen`]     — the protection report and regeneration DRY-RUN
+//!   - [`regen`]     — the protection report and regeneration DRY-RUN: reads
+//!     only, never writes inside the world folder
+//!   - [`regen::exec`] — carrying a plan out. The ONE part that deletes world
+//!     data: started only by the operator's typed approval in the window (or,
+//!     on a marked scratch copy, from the command line), with the JVM down,
+//!     the launch gate held, a verified pinned backup first and a holding
+//!     folder to put everything back from. Its two writers are
+//!     `anvil::clear_chunks` and `nbt::Doc`. Its only hook into a launch is
+//!     [`regen::exec::start_guard`]: no JVM on a world a run left half reset
 //!
 //! Server Customizer, local settings (the one part that runs on every launch):
 //!

@@ -133,7 +133,7 @@ const SERVER_OWNED_FILES: &[&str] =
 
 /// True if `rel` (relative to the server dir) is one of [`SERVER_OWNED_FILES`].
 /// Case-insensitive: the box's file system is.
-fn is_server_owned(rel: &str) -> bool {
+pub(crate) fn is_server_owned(rel: &str) -> bool {
     SERVER_OWNED_FILES.iter().any(|f| rel.eq_ignore_ascii_case(f))
 }
 

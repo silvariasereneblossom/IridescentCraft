@@ -151,6 +151,14 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     // it, and keep backups out until the PID is published so none can start in
     // the gap (see backup.rs).
     let backup_guard = crate::backup::launch_guard();
+    // A world regeneration that was cut off half-way leaves a marker file: no
+    // JVM on a world that is half reset (regen/exec.rs). The run itself holds
+    // the gate just taken, so a launch never meets one in flight; this is for
+    // the launcher that died in the middle of one. Without the marker it is
+    // one stat call and nothing else.
+    if let Err(why) = crate::regen::exec::start_guard(cfg) {
+        anyhow::bail!("the server was not started: {why}");
+    }
     // This server's own config values (Server Customizer): put them back into
     // the files a sync may just have rewritten, before the JVM reads them. Every
     // entry point comes through here, so "Run only" is covered too. Nothing
@@ -887,6 +895,28 @@ mod tests {
         assert!(text.contains("the server was not started") && text.contains("does not parse"), "{text}");
         assert!(!jvm_active());
         assert!(dir.join(crate::overrides::REFUSED_FILE).exists());
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// The same, for a world regeneration that was cut off half-way: its
+    /// marker file is there, so nothing is spawned. And the guard is nothing
+    /// but that file: without it this launch gets as far as java.
+    #[test]
+    fn no_jvm_is_spawned_on_a_half_regenerated_world() {
+        let (dir, cfg) = fixture("guard-regen-unfinished");
+        fs::write(dir.join("server.properties"), "level-name=world\n").unwrap();
+        assert_eq!(crate::regen::exec::start_guard(&cfg), Ok(()));
+        assert!(!dir.join(crate::overrides::REFUSED_FILE).exists());
+
+        fs::write(dir.join(crate::regen::exec::MARKER_FILE), "started_unix=1\n").unwrap();
+        let err = launch_server_inner(&cfg, no_watchdog(), true).unwrap_err();
+        let text = format!("{err:#}");
+        assert!(text.contains("the server was not started") && text.contains("regeneration was left unfinished"), "{text}");
+        assert!(!jvm_active());
+        let refused = fs::read_to_string(dir.join(crate::overrides::REFUSED_FILE)).unwrap();
+        assert!(refused.contains("why=a world regeneration was left unfinished"), "{refused}");
+        // The marker is the launcher's to remove (a rollback does), never the guard's.
+        assert!(dir.join(crate::regen::exec::MARKER_FILE).exists());
         let _ = fs::remove_dir_all(&dir);
     }
 }

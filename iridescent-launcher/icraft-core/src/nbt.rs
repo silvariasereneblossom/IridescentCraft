@@ -15,9 +15,13 @@
 //!     instead of 5 GiB in total. A serde-based crate has to read every chunk
 //!     to its end.
 //!
-//! It only reads. Names and strings are decoded lossily (Java's "modified
+//! Those two only read. Names and strings are decoded lossily (Java's "modified
 //! UTF-8" differs from UTF-8 for NUL and for characters outside the BMP):
 //! every name this module is asked about is ASCII.
+//!
+//! The one writer is [`Doc`], further down: a second, lossless tree for the
+//! regeneration run, which has to take entries out of three saved-data files
+//! and change nothing else in them.
 //!
 //! Corrupt or half-written input is an `Err`, never a panic and never a large
 //! allocation: lengths are not trusted (bytes are pulled through `take`), and
@@ -374,8 +378,344 @@ fn scan_compound_long<R: Read>(r: &mut R, key: &str, descend_into: Option<&str>,
     }
 }
 
-/// An NBT writer, for building test worlds. Not compiled into the launcher:
-/// nothing here may ever write NBT.
+// =============================================================================
+// Editing: a lossless tree and its writer
+// =============================================================================
+//
+// [`Value`] is for asking questions: its compounds are sorted maps, its
+// strings are decoded, and an empty list forgets what it was a list of.
+// Written back, such a tree is the same data to Minecraft but not the same
+// bytes, and a tool that edits a mod's saved data should change the entry it
+// means to change and nothing else. [`Doc`] keeps everything the file says:
+// the order of entries, names and strings as stored (Java's modified UTF-8,
+// not decoded), a list's element type, the bits of a float, the root's name,
+// and whether the file was gzip, zlib or plain. Reading a file into a `Doc`
+// and writing it out gives back the same NBT byte for byte (the compressed
+// bytes differ: it is another deflate).
+//
+// The one user is the regeneration run (`regen::exec`), which removes entries
+// from saved-data lists. Nothing else in the launcher writes NBT.
+
+/// How a file's NBT is wrapped.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Container {
+    Gzip,
+    Zlib,
+    Plain,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Node {
+    Byte(i8),
+    Short(i16),
+    Int(i32),
+    Long(i64),
+    /// The bits, so that a NaN goes out as it came in.
+    Float(u32),
+    Double(u64),
+    ByteArray(Vec<u8>),
+    /// As stored: Java's modified UTF-8, not decoded.
+    String(Vec<u8>),
+    /// `element` is the list's declared type, kept for an empty list too.
+    List { element: u8, items: Vec<Node> },
+    /// Entries in file order, names as stored.
+    Compound(Vec<(Vec<u8>, Node)>),
+    IntArray(Vec<i32>),
+    LongArray(Vec<i64>),
+}
+
+impl Node {
+    pub fn tag(&self) -> u8 {
+        match self {
+            Node::Byte(_) => TAG_BYTE,
+            Node::Short(_) => TAG_SHORT,
+            Node::Int(_) => TAG_INT,
+            Node::Long(_) => TAG_LONG,
+            Node::Float(_) => TAG_FLOAT,
+            Node::Double(_) => TAG_DOUBLE,
+            Node::ByteArray(_) => TAG_BYTE_ARRAY,
+            Node::String(_) => TAG_STRING,
+            Node::List { .. } => TAG_LIST,
+            Node::Compound(_) => TAG_COMPOUND,
+            Node::IntArray(_) => TAG_INT_ARRAY,
+            Node::LongArray(_) => TAG_LONG_ARRAY,
+        }
+    }
+
+    /// A compound's entry (the first of that name).
+    pub fn get(&self, key: &str) -> Option<&Node> {
+        match self {
+            Node::Compound(entries) => entries.iter().find(|(name, _)| name.as_slice() == key.as_bytes()).map(|(_, v)| v),
+            _ => None,
+        }
+    }
+
+    pub fn get_mut(&mut self, key: &str) -> Option<&mut Node> {
+        match self {
+            Node::Compound(entries) => entries.iter_mut().find(|(name, _)| name.as_slice() == key.as_bytes()).map(|(_, v)| v),
+            _ => None,
+        }
+    }
+
+    /// Nested compound entries: `root.at(&["data", "Waystones"])`.
+    pub fn at(&self, path: &[&str]) -> Option<&Node> {
+        let mut here = self;
+        for key in path {
+            here = here.get(key)?;
+        }
+        Some(here)
+    }
+
+    pub fn at_mut(&mut self, path: &[&str]) -> Option<&mut Node> {
+        let mut here = self;
+        for key in path {
+            here = here.get_mut(key)?;
+        }
+        Some(here)
+    }
+
+    /// Any of the integer tags.
+    pub fn as_i64(&self) -> Option<i64> {
+        match self {
+            Node::Byte(v) => Some(i64::from(*v)),
+            Node::Short(v) => Some(i64::from(*v)),
+            Node::Int(v) => Some(i64::from(*v)),
+            Node::Long(v) => Some(*v),
+            _ => None,
+        }
+    }
+
+    pub fn as_i32(&self) -> Option<i32> {
+        self.as_i64().and_then(|v| i32::try_from(v).ok())
+    }
+
+    /// A string that is plain UTF-8 (every id and dimension name is).
+    pub fn as_str(&self) -> Option<&str> {
+        match self {
+            Node::String(bytes) => std::str::from_utf8(bytes).ok(),
+            _ => None,
+        }
+    }
+
+    pub fn as_list(&self) -> Option<&[Node]> {
+        match self {
+            Node::List { items, .. } => Some(items),
+            _ => None,
+        }
+    }
+
+    /// A list's items, to take some out. (Putting one in is the caller's to
+    /// get right: [`Doc::payload`] refuses a list of mixed tags.)
+    pub fn items_mut(&mut self) -> Option<&mut Vec<Node>> {
+        match self {
+            Node::List { items, .. } => Some(items),
+            _ => None,
+        }
+    }
+}
+
+fn read_node<R: Read>(r: &mut R, tag: u8, depth: u32) -> io::Result<Node> {
+    if depth > MAX_DEPTH {
+        return Err(bad("nested too deep"));
+    }
+    Ok(match tag {
+        TAG_BYTE => Node::Byte(read_u8(r)? as i8),
+        TAG_SHORT => Node::Short(read_u16(r)? as i16),
+        TAG_INT => Node::Int(read_i32(r)?),
+        TAG_LONG => Node::Long(read_i64(r)?),
+        TAG_FLOAT => Node::Float(read_i32(r)? as u32),
+        TAG_DOUBLE => Node::Double(read_i64(r)? as u64),
+        TAG_BYTE_ARRAY => {
+            let n = read_len(r)?;
+            Node::ByteArray(read_bytes(r, n)?)
+        }
+        TAG_STRING => Node::String(read_name(r)?),
+        TAG_LIST => {
+            let element = read_u8(r)?;
+            let n = read_len(r)?;
+            if element == TAG_END && n > 0 {
+                return Err(bad("a list of TAG_End with a length"));
+            }
+            let mut items = Vec::new();
+            for _ in 0..n {
+                items.push(read_node(r, element, depth + 1)?);
+            }
+            Node::List { element, items }
+        }
+        TAG_COMPOUND => {
+            let mut entries = Vec::new();
+            loop {
+                let entry = read_u8(r)?;
+                if entry == TAG_END {
+                    break;
+                }
+                let name = read_name(r)?;
+                let value = read_node(r, entry, depth + 1)?;
+                entries.push((name, value));
+            }
+            Node::Compound(entries)
+        }
+        TAG_INT_ARRAY => {
+            let n = read_len(r)?;
+            let raw = read_bytes(r, n * 4)?;
+            Node::IntArray(raw.chunks_exact(4).map(|c| i32::from_be_bytes([c[0], c[1], c[2], c[3]])).collect())
+        }
+        TAG_LONG_ARRAY => {
+            let n = read_len(r)?;
+            let raw = read_bytes(r, n * 8)?;
+            Node::LongArray(
+                raw.chunks_exact(8)
+                    .map(|c| i64::from_be_bytes([c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]]))
+                    .collect(),
+            )
+        }
+        other => return Err(bad(format!("unknown tag {other}"))),
+    })
+}
+
+fn put_len(out: &mut Vec<u8>, n: usize) -> io::Result<()> {
+    let n = i32::try_from(n).map_err(|_| bad("too many items for NBT"))?;
+    out.extend_from_slice(&n.to_be_bytes());
+    Ok(())
+}
+
+fn put_str(out: &mut Vec<u8>, s: &[u8]) -> io::Result<()> {
+    let n = u16::try_from(s.len()).map_err(|_| bad("a name or string longer than 65,535 bytes"))?;
+    out.extend_from_slice(&n.to_be_bytes());
+    out.extend_from_slice(s);
+    Ok(())
+}
+
+fn put_node(out: &mut Vec<u8>, node: &Node) -> io::Result<()> {
+    match node {
+        Node::Byte(v) => out.push(*v as u8),
+        Node::Short(v) => out.extend_from_slice(&v.to_be_bytes()),
+        Node::Int(v) => out.extend_from_slice(&v.to_be_bytes()),
+        Node::Long(v) => out.extend_from_slice(&v.to_be_bytes()),
+        Node::Float(bits) => out.extend_from_slice(&bits.to_be_bytes()),
+        Node::Double(bits) => out.extend_from_slice(&bits.to_be_bytes()),
+        Node::ByteArray(v) => {
+            put_len(out, v.len())?;
+            out.extend_from_slice(v);
+        }
+        Node::String(v) => put_str(out, v)?,
+        Node::List { element, items } => {
+            if let Some(odd) = items.iter().find(|item| item.tag() != *element) {
+                return Err(bad(format!("a list of tag {element} holds a tag {}", odd.tag())));
+            }
+            out.push(*element);
+            put_len(out, items.len())?;
+            for item in items {
+                put_node(out, item)?;
+            }
+        }
+        Node::Compound(entries) => {
+            for (name, value) in entries {
+                out.push(value.tag());
+                put_str(out, name)?;
+                put_node(out, value)?;
+            }
+            out.push(TAG_END);
+        }
+        Node::IntArray(v) => {
+            put_len(out, v.len())?;
+            for n in v {
+                out.extend_from_slice(&n.to_be_bytes());
+            }
+        }
+        Node::LongArray(v) => {
+            put_len(out, v.len())?;
+            for n in v {
+                out.extend_from_slice(&n.to_be_bytes());
+            }
+        }
+    }
+    Ok(())
+}
+
+/// A file's NBT with the wrapping taken off, and what the wrapping was.
+pub fn unwrap_container(raw: &[u8]) -> io::Result<(Container, Vec<u8>)> {
+    let mut out = Vec::new();
+    let container = match raw.first().copied() {
+        Some(0x1f) => {
+            flate2::bufread::GzDecoder::new(raw).take(MAX_TREE_BYTES).read_to_end(&mut out)?;
+            Container::Gzip
+        }
+        Some(0x78) => {
+            flate2::bufread::ZlibDecoder::new(raw).take(MAX_TREE_BYTES).read_to_end(&mut out)?;
+            Container::Zlib
+        }
+        Some(TAG_COMPOUND) => {
+            out.extend_from_slice(raw);
+            Container::Plain
+        }
+        Some(other) => return Err(bad(format!("not NBT (first byte 0x{other:02x})"))),
+        None => return Err(bad("empty file")),
+    };
+    Ok((container, out))
+}
+
+/// A whole NBT file, kept exactly: see "Editing" above.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Doc {
+    pub container: Container,
+    pub root_name: Vec<u8>,
+    /// Always a [`Node::Compound`].
+    pub root: Node,
+}
+
+impl Doc {
+    /// The file's bytes into a tree. Anything this cannot give back exactly is
+    /// an error: an unknown tag, a length that does not hold, bytes after the
+    /// root tag.
+    pub fn parse(raw: &[u8]) -> io::Result<Doc> {
+        let (container, payload) = unwrap_container(raw)?;
+        let mut r = &payload[..];
+        if read_u8(&mut r)? != TAG_COMPOUND {
+            return Err(bad("the root tag is not a compound"));
+        }
+        let root_name = read_name(&mut r)?;
+        let root = read_node(&mut r, TAG_COMPOUND, 0)?;
+        if !r.is_empty() {
+            return Err(bad(format!("{} byte(s) follow the root tag", r.len())));
+        }
+        Ok(Doc { container, root_name, root })
+    }
+
+    /// The tree as uncompressed NBT. For a tree nobody changed, these are the
+    /// bytes [`unwrap_container`] gives for the file it was read from.
+    pub fn payload(&self) -> io::Result<Vec<u8>> {
+        if !matches!(self.root, Node::Compound(_)) {
+            return Err(bad("the root is not a compound"));
+        }
+        let mut out = vec![TAG_COMPOUND];
+        put_str(&mut out, &self.root_name)?;
+        put_node(&mut out, &self.root)?;
+        Ok(out)
+    }
+
+    /// The file's bytes, wrapped the way it was.
+    pub fn to_bytes(&self) -> io::Result<Vec<u8>> {
+        use std::io::Write;
+        let payload = self.payload()?;
+        match self.container {
+            Container::Plain => Ok(payload),
+            Container::Gzip => {
+                let mut enc = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::default());
+                enc.write_all(&payload)?;
+                enc.finish()
+            }
+            Container::Zlib => {
+                let mut enc = flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
+                enc.write_all(&payload)?;
+                enc.finish()
+            }
+        }
+    }
+}
+
+/// A second, simpler NBT writer, for building test worlds from [`Value`]
+/// trees. Not compiled into the launcher.
 #[cfg(test)]
 pub(crate) mod testing {
     use super::*;
@@ -628,5 +968,111 @@ mod tests {
             ("Level", compound(vec![("Deeper", compound(vec![("InhabitedTime", Value::Long(2))]))])),
         ]);
         assert_eq!(scan_root_long(&mut &raw[..], "InhabitedTime", "Level").unwrap(), None);
+    }
+
+    /// Entries out of order, every tag, and the three things [`Value`] drops:
+    /// an empty list's element type, a string that is not UTF-8, a NaN's bits.
+    fn awkward() -> Vec<u8> {
+        let mut raw = encode_ordered(&[("zeta", Value::Int(1)), ("alpha", sample()), ("mid", Value::List(vec![]))]);
+        assert_eq!(raw.pop(), Some(TAG_END));
+        raw.extend_from_slice(&[TAG_LIST, 0, 5]);
+        raw.extend_from_slice(b"typed");
+        raw.push(TAG_COMPOUND);
+        raw.extend_from_slice(&0i32.to_be_bytes());
+        raw.extend_from_slice(&[TAG_STRING, 0, 3]);
+        raw.extend_from_slice(b"odd");
+        // U+1F600 the way Java writes it: a surrogate pair, three bytes each.
+        raw.extend_from_slice(&[0, 6, 0xED, 0xA0, 0xBD, 0xED, 0xB8, 0x80]);
+        raw.push(TAG_END);
+        raw
+    }
+
+    #[test]
+    fn a_doc_writes_back_the_bytes_it_read() {
+        let mut raw = awkward();
+        assert_eq!(raw.pop(), Some(TAG_END));
+        raw.extend_from_slice(&[TAG_FLOAT, 0, 3]);
+        raw.extend_from_slice(b"nan");
+        raw.extend_from_slice(&0x7fc0_1234u32.to_be_bytes());
+        raw.push(TAG_END);
+
+        let doc = Doc::parse(&raw).unwrap();
+        assert_eq!(doc.container, Container::Plain);
+        assert_eq!(doc.payload().unwrap(), raw);
+        assert_eq!(doc.to_bytes().unwrap(), raw);
+        assert_eq!(doc.root.get("typed"), Some(&Node::List { element: TAG_COMPOUND, items: vec![] }));
+        assert_eq!(doc.root.get("nan"), Some(&Node::Float(0x7fc0_1234)));
+        assert_eq!(doc.root.at(&["alpha", "nested", "deep", "z"]).and_then(Node::as_i32), Some(-9));
+        assert_eq!(doc.root.at(&["alpha", "name"]).and_then(Node::as_str), Some("Moongulf"));
+        assert_eq!(doc.root.get("odd").and_then(Node::as_str), None); // not UTF-8, and kept as it is
+
+        for (wrapped, container) in [(gzip(&raw), Container::Gzip), (zlib(&raw), Container::Zlib)] {
+            let doc = Doc::parse(&wrapped).unwrap();
+            assert_eq!(doc.container, container);
+            assert_eq!(unwrap_container(&doc.to_bytes().unwrap()).unwrap(), (container, raw.clone()));
+        }
+        // A named root keeps its name.
+        let mut named = vec![TAG_COMPOUND, 0, 4];
+        named.extend_from_slice(b"root");
+        named.extend_from_slice(&raw[3..]);
+        let doc = Doc::parse(&named).unwrap();
+        assert_eq!(doc.root_name, b"root".to_vec());
+        assert_eq!(doc.to_bytes().unwrap(), named);
+    }
+
+    #[test]
+    fn the_reader_sees_the_same_tree_after_a_doc_wrote_it() {
+        let raw = awkward();
+        for wrapped in [raw.clone(), gzip(&raw), zlib(&raw)] {
+            let written = Doc::parse(&wrapped).unwrap().to_bytes().unwrap();
+            assert_eq!(parse_bytes(&written).unwrap(), parse_bytes(&wrapped).unwrap());
+        }
+    }
+
+    #[test]
+    fn taking_an_entry_out_of_a_list_changes_nothing_else() {
+        let entry = |n: i32| compound(vec![("id", Value::Int(n)), ("name", string("x"))]);
+        let file = |ids: &[i32]| {
+            encode_ordered(&[
+                ("DataVersion", Value::Int(3465)),
+                ("data", compound(vec![("items", Value::List(ids.iter().map(|n| entry(*n)).collect()))])),
+                ("brewinandchewin:data_version", Value::Int(2)),
+            ])
+        };
+        let mut doc = Doc::parse(&gzip(&file(&[1, 2, 3]))).unwrap();
+        let items = doc.root.at_mut(&["data", "items"]).and_then(Node::items_mut).unwrap();
+        items.retain(|e| e.get("id").and_then(Node::as_i32) != Some(2));
+        assert_eq!(doc.payload().unwrap(), file(&[1, 3]));
+
+        // Emptied, the list still says what it is a list of, and reads back.
+        doc.root.at_mut(&["data", "items"]).and_then(Node::items_mut).unwrap().clear();
+        let emptied = Doc::parse(&doc.to_bytes().unwrap()).unwrap();
+        assert_eq!(emptied.container, Container::Gzip);
+        assert_eq!(emptied.root.at(&["data", "items"]), Some(&Node::List { element: TAG_COMPOUND, items: vec![] }));
+        assert_eq!(emptied.root.get("DataVersion").and_then(Node::as_i64), Some(3465));
+        assert_eq!(parse_bytes(&emptied.to_bytes().unwrap()).unwrap().at(&["data", "items"]).and_then(Value::as_list).map(<[Value]>::len), Some(0));
+    }
+
+    #[test]
+    fn a_doc_refuses_what_it_could_not_give_back() {
+        let raw = awkward();
+        for cut in [0, 1, 2, 3, 10, raw.len() / 2, raw.len() - 1] {
+            assert!(Doc::parse(&raw[..cut]).is_err(), "cut at {cut}");
+        }
+        // Bytes after the root tag: reading them away would lose them.
+        let mut trailing = raw.clone();
+        trailing.push(0);
+        assert!(Doc::parse(&trailing).is_err());
+        assert!(Doc::parse(&gzip(&trailing)).is_err());
+        assert!(Doc::parse(b"level-name=world").is_err());
+        assert!(Doc::parse(&[0x1f, 0x8b, 8, 0]).is_err());
+        // A list that was given an item of another type is not written.
+        let mut doc = Doc::parse(&raw).unwrap();
+        doc.root.get_mut("typed").and_then(Node::items_mut).unwrap().push(Node::Int(1));
+        assert!(doc.payload().is_err());
+        assert!(doc.to_bytes().is_err());
+        // Nor a tree whose root is not a compound.
+        let not_a_file = Doc { container: Container::Plain, root_name: Vec::new(), root: Node::Int(1) };
+        assert!(not_a_file.payload().is_err());
     }
 }

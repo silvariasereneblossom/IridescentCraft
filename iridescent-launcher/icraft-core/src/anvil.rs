@@ -25,15 +25,21 @@
 //!   - `entities/` and `poi/` hold chunks that `region/` does not (29 and 776
 //!     of them). "The chunks on disk" is the union of the three folders.
 //!
-//! **Everything here only reads, and is safe while the server runs.** Files are
+//! **Everything here but the last section only reads, and is safe while the
+//! server runs.** Files are
 //! opened sharing read, write and delete ([`open_shared`]), so the server can
 //! go on writing, renaming and deleting them; no lock is ever taken; and a
 //! region file is read into memory in one pass, then parsed from the copy. A
 //! chunk that does not parse (the server was in the middle of writing it) is
 //! tried once more from a fresh read and otherwise reported as unreadable --
 //! the caller treats unreadable as protected.
+//!
+//! The last section, "Clearing chunks", is the regeneration run's: it builds
+//! the bytes of a region file with some chunks taken out, and puts a file in
+//! another's place. Its one caller (`regen::exec`) holds the launch gate with
+//! the JVM down.
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::io::{self, BufReader, Read};
 use std::path::{Path, PathBuf};
@@ -505,6 +511,152 @@ fn terrain_chunk(file: &[u8], slot: Slot, dir: &Path, pos: ChunkPos) -> Result<O
     inhabited_time(kind, data)
 }
 
+// =============================================================================
+// Clearing chunks (the regeneration run)
+// =============================================================================
+//
+// A chunk is taken out of a region file by zeroing its location entry and its
+// timestamp entry in the header. That is all Minecraft looks at to decide that
+// a chunk is not there and that its sectors are free. No chunk is moved, so
+// every chunk that stays is where it was, bit for bit, and "the chunks that
+// were to stay did not change" can be checked by comparing bytes
+// ([`check_cleared`]). The sectors of the removed chunks are zeroed as well,
+// unless another entry claims them too (a damaged file: those are left).
+//
+// The new bytes are built in memory from the old ones. The caller keeps a copy
+// of the original and puts the new file in its place with [`replace_file`].
+
+/// The slot of a chunk within its region file: `z*32+x`, each within the file.
+pub fn slot_index(chunk: ChunkPos) -> u16 {
+    (chunk.1.rem_euclid(REGION_SIDE) * REGION_SIDE + chunk.0.rem_euclid(REGION_SIDE)) as u16
+}
+
+/// A region file with some of its chunks taken out.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Cleared {
+    /// The file as it should now be: the same length as before.
+    pub bytes: Vec<u8>,
+    /// The slots that were listed and no longer are.
+    pub removed: Vec<u16>,
+    /// Of those, the ones whose data is in a `c.<x>.<z>.mcc` beside the file,
+    /// which has to go with them.
+    pub external: Vec<u16>,
+    /// Chunks still listed.
+    pub kept: usize,
+}
+
+/// `file` without the chunks in the slots `drop`. A slot that lists no chunk
+/// is not an error: there is nothing to take out.
+pub fn clear_chunks(file: &[u8], drop: &BTreeSet<u16>) -> Result<Cleared, String> {
+    if file.len() < SECTOR_BYTES * 2 {
+        return Err("it is shorter than a region file's header".to_string());
+    }
+    let slots = header_slots(file);
+    // How many entries claim each sector: one, in a sound file.
+    let mut claims = vec![0u8; file.len().div_ceil(SECTOR_BYTES)];
+    for slot in &slots {
+        let start = slot.offset_sectors as usize;
+        for sector in start..start + usize::from(slot.sector_count) {
+            if let Some(count) = claims.get_mut(sector) {
+                *count = count.saturating_add(1);
+            }
+        }
+    }
+    let mut bytes = file.to_vec();
+    let mut removed = Vec::new();
+    let mut external = Vec::new();
+    for slot in slots.iter().filter(|s| drop.contains(&s.index)) {
+        let entry = usize::from(slot.index) * 4;
+        let start = slot.offset_sectors as usize;
+        // The fifth byte of a chunk's data is its compression type; bit 0x80
+        // says the data itself is in a .mcc file.
+        if start >= 2 && file.get(start * SECTOR_BYTES + 4).is_some_and(|kind| kind & 0x80 != 0) {
+            external.push(slot.index);
+        }
+        bytes[entry..entry + 4].fill(0);
+        bytes[SECTOR_BYTES + entry..SECTOR_BYTES + entry + 4].fill(0);
+        for sector in start..start + usize::from(slot.sector_count) {
+            if sector >= 2 && claims.get(sector) == Some(&1) {
+                let from = sector * SECTOR_BYTES;
+                let to = (from + SECTOR_BYTES).min(bytes.len());
+                bytes[from..to].fill(0);
+            }
+        }
+        removed.push(slot.index);
+    }
+    Ok(Cleared { bytes, kept: slots.len() - removed.len(), removed, external })
+}
+
+/// Is `after` what `before` was to become: the chunks in `dropped` no longer
+/// listed, and every other chunk listed where it was, with the timestamp and
+/// the bytes it had? Returns how many chunks stayed. This is the check the
+/// regeneration run makes on every file it rewrites, before the rewritten file
+/// goes anywhere near the world.
+pub fn check_cleared(before: &[u8], after: &[u8], dropped: &BTreeSet<u16>) -> Result<usize, String> {
+    if before.len() != after.len() {
+        return Err(format!("its length changed ({} -> {} bytes)", before.len(), after.len()));
+    }
+    if before.len() < SECTOR_BYTES * 2 {
+        return Err("it is shorter than a region file's header".to_string());
+    }
+    let stay: Vec<Slot> = header_slots(before).into_iter().filter(|s| !dropped.contains(&s.index)).collect();
+    if header_slots(after) != stay {
+        return Err("the chunks it lists are not exactly the ones that were to stay".to_string());
+    }
+    for slot in &stay {
+        let stamp = SECTOR_BYTES + usize::from(slot.index) * 4;
+        if before[stamp..stamp + 4] != after[stamp..stamp + 4] {
+            return Err(format!("the timestamp of the chunk in slot {} changed", slot.index));
+        }
+        let from = slot.offset_sectors as usize * SECTOR_BYTES;
+        let to = (from + usize::from(slot.sector_count) * SECTOR_BYTES).min(before.len());
+        if from < to && before[from..to] != after[from..to] {
+            return Err(format!("the data of the chunk in slot {} changed", slot.index));
+        }
+    }
+    Ok(stay.len())
+}
+
+/// What [`replace_file`] calls the file it writes before the rename. Not a
+/// region file name ([`parse_region_name`]), so a leftover is invisible to
+/// Minecraft and to a scan.
+pub const REPLACE_SUFFIX: &str = ".icraft-new";
+
+/// `fs::rename`, tried again for two seconds: Windows refuses while a virus
+/// scanner has the file it just saw being closed.
+pub fn rename_retrying(from: &Path, to: &Path) -> io::Result<()> {
+    let mut attempt = 0;
+    loop {
+        match fs::rename(from, to) {
+            Ok(()) => return Ok(()),
+            Err(_) if attempt < 10 => {
+                attempt += 1;
+                std::thread::sleep(RETRY_PAUSE);
+            }
+            Err(e) => return Err(e),
+        }
+    }
+}
+
+/// Put `bytes` where `path` is: written beside it, flushed to disk, renamed
+/// over it. A reader, or a power cut, finds the old file or the new one and
+/// never half of either.
+pub fn replace_file(path: &Path, bytes: &[u8]) -> io::Result<()> {
+    let name = path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    let tmp = path.with_file_name(format!("{name}{REPLACE_SUFFIX}"));
+    let written = (|| {
+        let mut file = fs::File::create(&tmp)?;
+        io::Write::write_all(&mut file, bytes)?;
+        file.sync_all()?;
+        drop(file);
+        rename_retrying(&tmp, path)
+    })();
+    if written.is_err() {
+        let _ = fs::remove_file(&tmp);
+    }
+    written
+}
+
 /// A region file, for building test worlds. Not compiled into the launcher.
 #[cfg(test)]
 pub(crate) mod testing {
@@ -782,6 +934,147 @@ mod tests {
         fs::rename(&path, &moved).unwrap();
         fs::remove_file(&moved).unwrap();
         drop(held);
+        let _ = fs::remove_dir_all(&world);
+    }
+
+    /// Four chunks in r.0.0: two plain ones, one of four sectors, one whose
+    /// data is in a .mcc file. Each with a timestamp of its own.
+    fn four_chunks() -> Vec<u8> {
+        let mut bytes = region_bytes(0, 0, &[
+            ((0, 0), 2, chunk_nbt((0, 0), 1)),
+            ((5, 0), 3, vec![7u8; SECTOR_BYTES * 3 + 100]),
+            ((31, 31), 2, chunk_nbt((31, 31), 9)),
+            ((7, 7), 0x82, Vec::new()),
+        ]);
+        for (n, pos) in [(0, 0), (5, 0), (31, 31), (7, 7)].into_iter().enumerate() {
+            let at = SECTOR_BYTES + usize::from(slot_index(pos)) * 4;
+            bytes[at..at + 4].copy_from_slice(&(1_700_000_000u32 + n as u32).to_be_bytes());
+        }
+        bytes
+    }
+
+    #[test]
+    fn clearing_takes_out_the_chunks_asked_for_and_touches_no_other() {
+        assert_eq!(slot_index((5, 0)), 5);
+        assert_eq!(slot_index((31, 31)), 31 * 32 + 31);
+        assert_eq!(slot_index((-27, -33)), 31 * 32 + 5); // in r.-1.-2, as `region_names` has it
+        assert_eq!(slot_index((170, 227)), (227 - 7 * 32) * 32 + (170 - 5 * 32));
+
+        let before = four_chunks();
+        // The big one, the external one, and a slot that holds nothing.
+        let drop: BTreeSet<u16> = [slot_index((5, 0)), slot_index((7, 7)), slot_index((9, 9))].into();
+        let cleared = clear_chunks(&before, &drop).unwrap();
+        assert_eq!(cleared.bytes.len(), before.len());
+        assert_eq!(cleared.removed, vec![slot_index((5, 0)), slot_index((7, 7))]);
+        assert_eq!(cleared.external, vec![slot_index((7, 7))]);
+        assert_eq!(cleared.kept, 2);
+        assert_eq!(check_cleared(&before, &cleared.bytes, &drop), Ok(2));
+
+        // The readers see the two that stayed, with the bytes they had.
+        let after = &cleared.bytes;
+        let left: Vec<ChunkPos> = header_slots(after).iter().map(|s| s.chunk(0, 0)).collect();
+        assert_eq!(left, vec![(0, 0), (31, 31)]);
+        for slot in header_slots(after) {
+            assert_eq!(chunk_payload(after, slot), chunk_payload(&before, slot));
+            assert!(inhabited_time(2, chunk_payload(after, slot).unwrap().1).unwrap().is_some());
+        }
+        // Outside the header entries and the removed chunks' own sectors,
+        // not one byte differs; inside them, every byte is zero.
+        let gone: Vec<Slot> = header_slots(&before).into_iter().filter(|s| drop.contains(&s.index)).collect();
+        assert_eq!(gone.len(), 2);
+        for (at, (old, new)) in before.iter().zip(after.iter()).enumerate() {
+            let in_entry = gone.iter().any(|s| {
+                let entry = usize::from(s.index) * 4;
+                (entry..entry + 4).contains(&at) || (SECTOR_BYTES + entry..SECTOR_BYTES + entry + 4).contains(&at)
+            });
+            let in_sectors = gone.iter().any(|s| {
+                let from = s.offset_sectors as usize * SECTOR_BYTES;
+                (from..from + usize::from(s.sector_count) * SECTOR_BYTES).contains(&at)
+            });
+            if in_entry || in_sectors {
+                assert_eq!(*new, 0, "byte {at} belongs to a removed chunk");
+            } else {
+                assert_eq!(old, new, "byte {at} belongs to nothing that was removed");
+            }
+        }
+        assert!(gone.iter().any(|s| s.sector_count == 4)); // the big one really was four sectors
+
+        // Nothing to take out: the same bytes. Everything: an empty file of the same size.
+        assert_eq!(clear_chunks(&before, &BTreeSet::new()).unwrap().bytes, before);
+        let all: BTreeSet<u16> = (0..1024).collect();
+        let emptied = clear_chunks(&before, &all).unwrap();
+        assert_eq!((emptied.removed.len(), emptied.kept), (4, 0));
+        assert!(header_slots(&emptied.bytes).is_empty());
+        assert!(emptied.bytes.iter().all(|b| *b == 0));
+        assert_eq!(check_cleared(&before, &emptied.bytes, &all), Ok(0));
+        // Not a region file at all.
+        assert!(clear_chunks(&before[..SECTOR_BYTES], &drop).is_err());
+        assert!(clear_chunks(b"", &drop).is_err());
+    }
+
+    #[test]
+    fn the_check_catches_every_way_a_rewrite_could_be_wrong() {
+        let before = four_chunks();
+        let drop: BTreeSet<u16> = [slot_index((5, 0))].into();
+        let good = clear_chunks(&before, &drop).unwrap().bytes;
+        assert_eq!(check_cleared(&before, &good, &drop), Ok(3));
+
+        // A chunk that was to go is still listed.
+        assert!(check_cleared(&before, &before, &drop).unwrap_err().contains("lists"));
+        // A chunk that was to stay is gone.
+        let too_many: BTreeSet<u16> = [slot_index((5, 0)), slot_index((0, 0))].into();
+        let overdone = clear_chunks(&before, &too_many).unwrap().bytes;
+        assert!(check_cleared(&before, &overdone, &drop).unwrap_err().contains("lists"));
+        // One byte of a kept chunk's data.
+        let kept = header_slots(&good)[0];
+        let mut flipped = good.clone();
+        flipped[kept.offset_sectors as usize * SECTOR_BYTES + 20] ^= 0xFF;
+        assert!(check_cleared(&before, &flipped, &drop).unwrap_err().contains("data of the chunk"));
+        // A kept chunk's timestamp.
+        let mut restamped = good.clone();
+        restamped[SECTOR_BYTES + usize::from(kept.index) * 4 + 3] ^= 1;
+        assert!(check_cleared(&before, &restamped, &drop).unwrap_err().contains("timestamp"));
+        // A kept chunk moved to another sector.
+        let mut moved = good.clone();
+        let entry = usize::from(kept.index) * 4;
+        moved[entry + 2] ^= 0x40;
+        assert!(check_cleared(&before, &moved, &drop).is_err());
+        // A file that grew or shrank.
+        assert!(check_cleared(&before, &good[..good.len() - SECTOR_BYTES], &drop).unwrap_err().contains("length"));
+    }
+
+    #[test]
+    fn a_sector_two_entries_claim_is_not_zeroed() {
+        let mut before = region_bytes(0, 0, &[((0, 0), 2, chunk_nbt((0, 0), 1)), ((1, 0), 2, chunk_nbt((1, 0), 2))]);
+        // A damaged header: (1,0) points at (0,0)'s sectors.
+        let first = before[0..4].to_vec();
+        before[4..8].copy_from_slice(&first);
+        let drop: BTreeSet<u16> = [1].into();
+        let cleared = clear_chunks(&before, &drop).unwrap();
+        assert_eq!(check_cleared(&before, &cleared.bytes, &drop), Ok(1));
+        let stayed = header_slots(&cleared.bytes)[0];
+        assert_eq!(stayed.index, 0);
+        assert_eq!(chunk_payload(&cleared.bytes, stayed), chunk_payload(&before, stayed));
+        assert_eq!(inhabited_time(2, chunk_payload(&cleared.bytes, stayed).unwrap().1), Ok(Some(1)));
+    }
+
+    #[test]
+    fn a_file_is_replaced_whole_or_not_at_all() {
+        let world = temp_world();
+        let path = world.join("r.0.0.mca");
+        fs::write(&path, b"old").unwrap();
+        replace_file(&path, b"new and longer").unwrap();
+        assert_eq!(fs::read(&path).unwrap(), b"new and longer");
+        // Where there was no file, there is one now; and nothing is left beside either.
+        let fresh = world.join("r.1.0.mca");
+        replace_file(&fresh, b"x").unwrap();
+        assert_eq!(fs::read(&fresh).unwrap(), b"x");
+        let names: Vec<String> = fs::read_dir(&world).unwrap().map(|e| e.unwrap().file_name().into_string().unwrap()).collect();
+        assert!(names.iter().all(|n| !n.ends_with(REPLACE_SUFFIX)), "{names:?}");
+        // A folder that is not there: an error, and the old file is untouched.
+        assert!(replace_file(&world.join("nowhere").join("r.0.0.mca"), b"y").is_err());
+        assert_eq!(fs::read(&path).unwrap(), b"new and longer");
+        assert_eq!(parse_region_name(&format!("r.0.0.mca{REPLACE_SUFFIX}")), None);
         let _ = fs::remove_dir_all(&world);
     }
 }

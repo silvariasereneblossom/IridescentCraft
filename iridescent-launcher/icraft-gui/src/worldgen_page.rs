@@ -149,6 +149,8 @@ impl WorldgenPage {
             Err("the server is running".to_string())
         } else if icraft_core::backup::in_progress() {
             Err("a world backup is running".to_string())
+        } else if icraft_core::regen::exec::in_progress() {
+            Err("a world regeneration is running".to_string())
         } else {
             overrides::apply_when_stopped(cfg, "window")
         };

@@ -1,9 +1,11 @@
-//! Chunk regeneration, Phase B: the protection report and the DRY-RUN.
+//! Chunk regeneration: the protection report and the DRY-RUN (Phase B). The
+//! part that carries a plan out is the submodule [`exec`] (Phase C).
 //!
-//! **This module deletes nothing and never writes inside the world folder.**
-//! It reads the world (see [`crate::anvil`] for why that is safe while the
-//! server runs), works out what a regeneration would keep and what it would
-//! reset, and writes that down next to the server:
+//! **Nothing in this file touches the world folder.** It reads the world (see
+//! [`crate::anvil`] for why that is safe while the server runs), works out what
+//! a regeneration would keep and what it would reset, and writes that down
+//! next to the server. The only thing it ever deletes is its own oldest report
+//! folders ([`prune_reports`]):
 //!
 //! ```text
 //! <server dir>/regen-reports/<YYYYmmdd-HHMMSS>-<scope>/
@@ -25,11 +27,10 @@
 //!
 //! A chunk is regenerated when the scope selects it and no layer protects it.
 //!
-//! `plan.json` is what the execution phase (Phase C, not built) will ask for:
-//! it must recompute the plan with the server stopped and refuse to act unless
-//! the hash matches the one the operator approved. A dry-run taken while the
-//! server runs is therefore safe to take and to read, but it is the stopped
-//! recomputation that counts.
+//! `plan.json` is what the execution ([`exec`]) is handed: it recomputes the
+//! plan with the server stopped and does nothing unless the hash is the one
+//! the operator approved. A dry-run taken while the server runs is therefore
+//! safe to take and to read, but it is the stopped recomputation that counts.
 //!
 //! Triggers: the launcher's Customizer tab, which sets everything on screen and
 //! shows the result ([`run_logged`], [`list_runs`], [`load_view`]);
@@ -54,6 +55,8 @@ use crate::protection::{self, fmt_ticks, layer_names, DimProtection, Layer, Sett
 use crate::restart_policy::fmt_span;
 use crate::worlddata::{self, BlockPos, ClaimOwner, LevelInfo, Player, Waystone};
 
+pub mod exec;
+
 /// `<unix-secs> <reason> [key=value ...]`: run a report now. Keys: `scope`,
 /// `dims`, `png`, and any setting of [`protection::POLICY_FILE`].
 pub const REQUEST_FILE: &str = ".icraft_regen_request";
@@ -63,6 +66,9 @@ pub const RESULT_FILE: &str = ".icraft_regen_request.result";
 pub const LOG_FILE: &str = "regen_dryrun.log";
 /// Under the server dir: one folder per run.
 pub const REPORTS_DIR: &str = "regen-reports";
+/// Run folders kept there. A run is about 6 MB (one row per chunk on disk),
+/// and until 2026-10-12 nothing ever removed one.
+pub const REPORTS_KEPT: usize = 12;
 pub const PLAN_FILE: &str = "plan.json";
 
 const PLAN_VERSION: u32 = 1;
@@ -1791,6 +1797,13 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
     put(&out_dir, "report.txt", report.as_bytes())?;
     let summary = serde_json::to_vec_pretty(&view).map_err(|e| format!("cannot encode {SUMMARY_FILE}: {e}"))?;
     put(&out_dir, SUMMARY_FILE, &summary)?;
+    // Only the server's own report folder is kept tidy, never one given with --out.
+    if spec.out_root.is_none() {
+        let gone = prune_reports(&cfg.server_dir, REPORTS_KEPT, &[&out_dir]);
+        if !gone.is_empty() {
+            log::info!("[regen] removed {} old dry-run folder(s) from {REPORTS_DIR} (the newest {REPORTS_KEPT} are kept)", gone.len());
+        }
+    }
 
     let line = format!(
         "scope {}: {} of {} chunk(s) on disk would be regenerated, {} protected, {} warning(s); plan sha256 {}; report in {} ({:.1} s; nothing was modified)",
@@ -1857,6 +1870,36 @@ pub fn list_runs(server_dir: &Path) -> Vec<RunEntry> {
         .collect();
     runs.sort_by(|a, b| b.name.cmp(&a.name));
     runs
+}
+
+/// `20261011-121049-ring8`, `20261011-121049-all-2`: the names [`run`] gives
+/// its folders, and the only ones [`prune_reports`] will remove.
+fn is_run_name(name: &str) -> bool {
+    let b = name.as_bytes();
+    b.len() > 16
+        && b[..8].iter().all(u8::is_ascii_digit)
+        && b[8] == b'-'
+        && b[9..15].iter().all(u8::is_ascii_digit)
+        && b[15] == b'-'
+        && b[16..].iter().all(|c| c.is_ascii_alphanumeric() || *c == b'-')
+}
+
+/// Remove the oldest dry-run folders under `<server dir>/regen-reports`,
+/// keeping the newest `keep` and every folder in `spare`. Only a folder that
+/// carries a run's name and a run's `report.txt` is ever removed; anything
+/// else somebody put there stays. Returns the names removed.
+pub fn prune_reports(server_dir: &Path, keep: usize, spare: &[&Path]) -> Vec<String> {
+    let mut gone = Vec::new();
+    for old in list_runs(server_dir).into_iter().filter(|r| is_run_name(&r.name)).skip(keep) {
+        if spare.iter().any(|s| *s == old.dir.as_path()) || old.dir.parent() != Some(server_dir.join(REPORTS_DIR).as_path()) {
+            continue;
+        }
+        match fs::remove_dir_all(&old.dir) {
+            Ok(()) => gone.push(old.name),
+            Err(e) => log::warn!("[regen] could not remove the old dry-run folder {}: {e}", old.dir.display()),
+        }
+    }
+    gone
 }
 
 /// The [`RunView`] a run left in its folder. A run made before the launcher
@@ -2466,6 +2509,56 @@ mod tests {
         // No world at all.
         let empty = ServerConfig::from_path(fx.root.join("elsewhere"));
         assert!(run(&empty, &RunSpec::default()).unwrap_err().contains("no world"));
+    }
+
+    #[test]
+    fn old_report_folders_are_pruned_and_nothing_else_is() {
+        let fx = Fixture::new();
+        let reports = fx.root.join(REPORTS_DIR);
+        // Fifteen earlier runs, by name; and things that are not runs.
+        for n in 0..15 {
+            let dir = reports.join(format!("20260101-0000{n:02}-ring8"));
+            fs::create_dir_all(&dir).unwrap();
+            fs::write(dir.join("report.txt"), b"an old report").unwrap();
+        }
+        fs::create_dir_all(reports.join("my notes")).unwrap();
+        fs::write(reports.join("my notes").join("report.txt"), b"mine").unwrap();
+        fs::create_dir_all(reports.join("20260101-000000-ring8-keep me")).unwrap();
+        fs::write(reports.join("20260101-000000-ring8-keep me").join("report.txt"), b"mine").unwrap();
+        fs::create_dir_all(reports.join("20250101-000000-all")).unwrap(); // a run's name, but no report in it
+        fs::write(reports.join("readme.txt"), b"x").unwrap();
+        assert!(is_run_name("20261011-121049-ring8") && is_run_name("20261011-121049-all-2") && is_run_name("20261011-121049-box"));
+        for not_a_run in ["my notes", "20261011-121049", "20261011-121049-", "2026101-121049-all", "20261011_121049-all", "20261011-121049-all two", ""] {
+            assert!(!is_run_name(not_a_run), "{not_a_run}");
+        }
+
+        // A run of today: the newest. The oldest four of the fifteen go.
+        let s = fx.run("scope=report");
+        let names: Vec<String> = list_runs(&fx.root).into_iter().map(|r| r.name).collect();
+        assert_eq!(names.iter().filter(|n| is_run_name(n)).count(), REPORTS_KEPT);
+        assert!(s.out_dir.is_dir());
+        for n in 0..4 {
+            assert!(!reports.join(format!("20260101-0000{n:02}-ring8")).exists(), "run {n} should be gone");
+        }
+        for n in 4..15 {
+            assert!(reports.join(format!("20260101-0000{n:02}-ring8")).join("report.txt").is_file(), "run {n} should be kept");
+        }
+        assert!(reports.join("my notes").join("report.txt").is_file());
+        assert!(reports.join("20260101-000000-ring8-keep me").join("report.txt").is_file());
+        assert!(reports.join("20250101-000000-all").is_dir());
+        assert!(reports.join("readme.txt").is_file());
+
+        // A spared folder stays however old it is; a run written elsewhere prunes nothing here.
+        let oldest = reports.join("20260101-000004-ring8");
+        assert_eq!(prune_reports(&fx.root, 3, &[&oldest]).len(), REPORTS_KEPT - 3 - 1);
+        assert!(oldest.is_dir() && s.out_dir.is_dir());
+        let mut spec = fx.spec("scope=report");
+        spec.out_root = Some(fx.root.join("elsewhere"));
+        for _ in 0..3 {
+            run(&fx.cfg, &spec).unwrap();
+        }
+        assert_eq!(list_runs(&fx.root).into_iter().filter(|r| is_run_name(&r.name)).count(), 4);
+        assert_eq!(fs::read_dir(fx.root.join("elsewhere")).unwrap().count(), 3);
     }
 
     #[test]

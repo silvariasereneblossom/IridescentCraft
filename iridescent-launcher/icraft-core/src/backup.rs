@@ -15,7 +15,10 @@
 //!   - what:     the whole `<level-name>/` folder ->
 //!               `backups/world-YYYYmmdd-HHMM.zip`. Region files are stored
 //!               uncompressed (they are already zlib'd, and this is downtime);
-//!               `session.lock` is skipped.
+//!               `session.lock` is skipped. Beside it, under `server-state/`,
+//!               the files this server keeps that exist nowhere else: who may
+//!               join, the config override list and its history, the policy
+//!               files (see "The server's own state").
 //!   - verify:   the zip is reopened and every entry read back (CRC + size)
 //!               before it gets its final name. Only then are older scheduled
 //!               backups pruned. A zip that fails is deleted and the old ones
@@ -316,6 +319,16 @@ pub struct Entry {
     /// What asked for it: `cycle`, `request '<reason>'`, `cli`.
     #[serde(default)]
     pub trigger: String,
+    /// Files of the server's own state stored beside the world, under
+    /// `server-state/` in the zip. Not counted in `world_files`.
+    #[serde(default)]
+    pub state_files: u64,
+    /// SHA-256 over the world's file list (name, size, modified time) as it
+    /// was when the zip was written. Two equal fingerprints mean no world file
+    /// was added, removed, resized or rewritten in between: that is how the
+    /// regeneration run knows a backup is of the world exactly as it stands.
+    #[serde(default)]
+    pub world_fingerprint: String,
 }
 
 /// How the newest attempt went, so a failure shows up without reading logs.
@@ -616,7 +629,7 @@ fn session_lock_held(_world_dir: &Path) -> bool {
 }
 
 #[cfg(windows)]
-fn free_space(dir: &Path) -> Option<u64> {
+pub(crate) fn free_space(dir: &Path) -> Option<u64> {
     use std::os::windows::ffi::OsStrExt;
     use windows_sys::Win32::Storage::FileSystem::GetDiskFreeSpaceExW;
     let wide: Vec<u16> = dir.as_os_str().encode_wide().chain(std::iter::once(0)).collect();
@@ -630,7 +643,7 @@ fn free_space(dir: &Path) -> Option<u64> {
 }
 
 #[cfg(not(windows))]
-fn free_space(_dir: &Path) -> Option<u64> {
+pub(crate) fn free_space(_dir: &Path) -> Option<u64> {
     None
 }
 
@@ -654,6 +667,134 @@ struct Walk {
     bytes: u64,
     /// `session.lock`, plus anything that is neither a file nor a directory.
     skipped: Vec<String>,
+    /// The server's own state, read into memory (see [`collect_state`]).
+    state: Vec<StateFile>,
+    /// Its folders, as `server-state/.../`.
+    state_dirs: Vec<String>,
+    /// State files that could not be read, and why.
+    state_missing: Vec<String>,
+}
+
+impl Walk {
+    /// SHA-256 over one line per world file: name, size, modified time in
+    /// nanoseconds. The state files are not part of it.
+    fn fingerprint(&self) -> String {
+        use sha2::{Digest, Sha256};
+        let mut hasher = Sha256::new();
+        hasher.update(b"icraft-world-fingerprint v1\n");
+        for f in &self.files {
+            let nanos = f.mtime.and_then(|t| t.duration_since(UNIX_EPOCH).ok()).map_or(0, |d| d.as_nanos());
+            hasher.update(format!("{}\t{}\t{nanos}\n", f.name, f.size));
+        }
+        hasher.finalize().iter().map(|b| format!("{b:02x}")).collect()
+    }
+}
+
+// =============================================================================
+// The server's own state
+// =============================================================================
+//
+// A world is not all a server would lose. Since 2026-10-11 the identity files
+// are not in the pack repo any more (they are this server's, not the pack's),
+// and the config override layer lives only next to `server.properties`. So
+// every backup carries them too:
+//
+//   - `whitelist.json`, `ops.json`, `banned-ips.json`, `banned-players.json`,
+//     `usercache.json` (`sync::is_server_owned`)
+//   - `.icraft_config_overrides.json` and the `config-overrides/` folder (the
+//     history and the kept originals)
+//   - the `.icraft_*_policy` files (restart, backup, regeneration)
+//
+// They go under `server-state/` in the zip, NOT at its root: a restore is
+// "extract the zip in the server folder", and that must give the world back
+// without putting an old whitelist over the live one. Restoring any of these
+// is a decision of its own: copy the file out of `server-state\` by hand.
+//
+// Each file is read into memory when the world is walked (they are small) and
+// written from there, so one of them changing while the zip is written cannot
+// fail the backup. One that cannot be read is left out, with a warning in the
+// log: the world backup is not held up for it.
+
+/// Zip folder the server's own state is stored under.
+pub const STATE_PREFIX: &str = "server-state";
+/// Folders of the server dir taken whole.
+const STATE_DIRS: &[&str] = &[crate::overrides::DIR];
+/// A state file bigger than this is not what it claims to be: left out.
+const STATE_FILE_MAX: u64 = 64 * 1024 * 1024;
+
+struct StateFile {
+    /// Entry name in the zip: `server-state/whitelist.json`.
+    name: String,
+    bytes: Vec<u8>,
+    mtime: Option<SystemTime>,
+}
+
+/// Is this file of the server dir's root part of the state bundle?
+fn is_state_file(name: &str) -> bool {
+    name == crate::overrides::FILE
+        || crate::sync::is_server_owned(name)
+        || (name.starts_with(".icraft_") && name.ends_with("_policy"))
+}
+
+fn read_state_file(path: &Path, name: String, w: &mut Walk) {
+    let read = fs::metadata(path).and_then(|md| {
+        if md.len() > STATE_FILE_MAX {
+            let why = format!("it is {} (the limit is {})", fmt_bytes(md.len()), fmt_bytes(STATE_FILE_MAX));
+            return Err(std::io::Error::new(std::io::ErrorKind::InvalidData, why));
+        }
+        let mut bytes = Vec::new();
+        open_with_retry(path)?.read_to_end(&mut bytes)?;
+        Ok((bytes, md.modified().ok()))
+    });
+    match read {
+        Ok((bytes, mtime)) => w.state.push(StateFile { name, bytes, mtime }),
+        Err(e) => w.state_missing.push(format!("{name}: {e}")),
+    }
+}
+
+fn collect_state_dir(dir: &Path, rel: &str, w: &mut Walk) {
+    let Ok(rd) = fs::read_dir(dir) else {
+        w.state_missing.push(format!("{rel}/: unreadable"));
+        return;
+    };
+    let mut entries: Vec<fs::DirEntry> = rd.flatten().collect();
+    entries.sort_by_key(|e| e.file_name());
+    w.state_dirs.push(format!("{rel}/"));
+    for e in entries {
+        let name = e.file_name().to_string_lossy().into_owned();
+        let child = format!("{rel}/{name}");
+        match e.file_type() {
+            Ok(ft) if ft.is_dir() => collect_state_dir(&e.path(), &child, w),
+            Ok(ft) if ft.is_file() => read_state_file(&e.path(), child, w),
+            _ => {}
+        }
+    }
+}
+
+/// Read the server's own state into the walk. Never fails: what cannot be read
+/// is listed in `state_missing`.
+fn collect_state(server_dir: &Path, w: &mut Walk) {
+    let mut roots: Vec<String> = fs::read_dir(server_dir)
+        .into_iter()
+        .flatten()
+        .flatten()
+        .filter(|e| e.file_type().map_or(false, |t| t.is_file()))
+        .map(|e| e.file_name().to_string_lossy().into_owned())
+        .filter(|name| is_state_file(name))
+        .collect();
+    roots.sort();
+    for name in roots {
+        read_state_file(&server_dir.join(&name), format!("{STATE_PREFIX}/{name}"), w);
+    }
+    for dir in STATE_DIRS {
+        let path = server_dir.join(dir);
+        if path.is_dir() {
+            collect_state_dir(&path, &format!("{STATE_PREFIX}/{dir}"), w);
+        }
+    }
+    if !w.state.is_empty() || !w.state_dirs.is_empty() {
+        w.state_dirs.insert(0, format!("{STATE_PREFIX}/"));
+    }
 }
 
 fn walk_world(world_dir: &Path, top: &str) -> std::io::Result<Walk> {
@@ -777,6 +918,19 @@ fn write_zip(walk: &Walk, dest: &Path, deadline: Instant) -> Result<()> {
             );
         }
     }
+    for d in &walk.state_dirs {
+        zip.add_directory(d.as_str(), zip::write::FileOptions::default())
+            .with_context(|| format!("adding {d}"))?;
+    }
+    for f in &walk.state {
+        let mut options = zip::write::FileOptions::default().compression_method(zip::CompressionMethod::Deflated);
+        if let Some(t) = f.mtime.and_then(zip_time) {
+            options = options.last_modified_time(t);
+        }
+        zip.start_file(f.name.as_str(), options).with_context(|| format!("adding {}", f.name))?;
+        zip.write_all(&f.bytes).with_context(|| format!("writing {}", f.name))?;
+        check_deadline(deadline)?;
+    }
     let mut out = zip.finish().context("finishing the zip")?;
     out.flush().context("flushing the zip")?;
     out.get_ref().sync_all().context("syncing the zip to disk")?;
@@ -786,10 +940,19 @@ fn write_zip(walk: &Walk, dest: &Path, deadline: Instant) -> Result<()> {
 /// Reopen the zip and read every entry to its end. The zip reader checks each
 /// entry's CRC-32 as the last byte is read; on top of that the entry set and
 /// every size must match what the walk found.
-fn verify_zip(path: &Path, walk: &Walk, deadline: Instant) -> Result<()> {
+///
+/// `state_too`: the `server-state/` entries must be the walk's as well (a zip
+/// just written). Without it they are only read through, for their CRCs: an
+/// older zip checked against the world as it is now has the state of its own
+/// day, and none at all if an older launcher wrote it.
+fn verify_zip(path: &Path, walk: &Walk, state_too: bool, deadline: Instant) -> Result<()> {
     let f = File::open(path).with_context(|| format!("reopening {}", path.display()))?;
     let mut archive = zip::ZipArchive::new(BufReader::with_capacity(IO_BUF, f)).context("reading the zip index")?;
     let mut expected: HashMap<&str, u64> = walk.files.iter().map(|f| (f.name.as_str(), f.size)).collect();
+    if state_too {
+        expected.extend(walk.state.iter().map(|f| (f.name.as_str(), f.bytes.len() as u64)));
+    }
+    let state_prefix = format!("{STATE_PREFIX}/");
     let mut buf = vec![0u8; IO_BUF];
     for i in 0..archive.len() {
         let mut entry = archive.by_index(i).with_context(|| format!("opening entry #{i}"))?;
@@ -797,6 +960,11 @@ fn verify_zip(path: &Path, walk: &Walk, deadline: Instant) -> Result<()> {
             continue;
         }
         let name = entry.name().to_string();
+        if !state_too && name.starts_with(&state_prefix) {
+            std::io::copy(&mut entry, &mut std::io::sink()).with_context(|| format!("reading back {name}"))?;
+            check_deadline(deadline)?;
+            continue;
+        }
         let Some(want) = expected.remove(name.as_str()) else {
             bail!("unexpected entry {name}");
         };
@@ -980,7 +1148,11 @@ fn backup_steps(cfg: &ServerConfig, policy: &Policy, prune: bool, kind: Kind, tr
         .file_name()
         .map(|n| n.to_string_lossy().into_owned())
         .unwrap_or_else(|| level.clone());
-    let walk = walk_world(&world, &top).with_context(|| format!("reading {}", world.display()))?;
+    let mut walk = walk_world(&world, &top).with_context(|| format!("reading {}", world.display()))?;
+    collect_state(dir, &mut walk);
+    for missing in &walk.state_missing {
+        audit(dir, log::Level::Warn, &format!("server state NOT in this backup -- {missing}"));
+    }
 
     match free_space(&backups) {
         Some(free) if free < walk.bytes.saturating_mul(FREE_SPACE_FACTOR) => bail!(
@@ -1014,7 +1186,7 @@ fn backup_steps(cfg: &ServerConfig, policy: &Policy, prune: bool, kind: Kind, tr
         write_zip(&walk, &partial, deadline)?;
         let wrote = t.elapsed();
         let t = Instant::now();
-        verify_zip(&partial, &walk, deadline).context("verification failed")?;
+        verify_zip(&partial, &walk, true, deadline).context("verification failed")?;
         let verified = t.elapsed();
         let t = Instant::now();
         let sha = sha256_file(&partial).context("hashing the new zip")?;
@@ -1041,6 +1213,8 @@ fn backup_steps(cfg: &ServerConfig, policy: &Policy, prune: bool, kind: Kind, tr
         world_bytes: walk.bytes,
         duration_secs: started.elapsed().as_secs(),
         trigger: trigger.to_string(),
+        state_files: walk.state.len() as u64,
+        world_fingerprint: walk.fingerprint(),
     };
 
     let mut manifest = read_manifest(&backups).unwrap_or_else(|e| {
@@ -1103,8 +1277,9 @@ fn backup_steps(cfg: &ServerConfig, policy: &Policy, prune: bool, kind: Kind, tr
         ),
     };
     audit(dir, log::Level::Info, &format!(
-        "{trigger}: backups/{name} verified -- {} files, {} -> {} in {:.1}s (write {:.1}s, verify {:.1}s, sha256 {:.1}s); {kept}{}",
+        "{trigger}: backups/{name} verified -- {} files + {} of the server's own state, {} -> {} in {:.1}s (write {:.1}s, verify {:.1}s, sha256 {:.1}s); {kept}{}",
         entry.world_files,
+        entry.state_files,
         fmt_bytes(entry.world_bytes),
         fmt_bytes(entry.size),
         started.elapsed().as_secs_f64(),
@@ -1295,6 +1470,111 @@ pub fn run_now(cfg: &ServerConfig, if_due: bool) -> Outcome {
 }
 
 // =============================================================================
+// For the regeneration run
+// =============================================================================
+//
+// The run (`regen::exec`) takes the launch gate itself and keeps it from its
+// first check to its last, so the backup it needs is taken inside that hold:
+// the functions here are handed the gate instead of taking it.
+
+/// The launch gate, held (see [`launch_guard`]).
+pub type Gate = MutexGuard<'static, ()>;
+
+/// The backup a regeneration run stands on.
+#[derive(Debug, Clone)]
+pub struct Pinned {
+    pub entry: Entry,
+    /// A pinned backup that was already there is of the world exactly as it
+    /// is, and verified again. `false`: one was taken now.
+    pub reused: bool,
+}
+
+fn world_top(cfg: &ServerConfig) -> String {
+    cfg.world_dir().file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_else(|| cfg.level_name())
+}
+
+/// The fingerprint of the world as it is now (see [`Entry::world_fingerprint`]).
+pub fn world_fingerprint(cfg: &ServerConfig) -> Result<String, String> {
+    let world = cfg.world_dir();
+    walk_world(&world, &world_top(cfg)).map(|walk| walk.fingerprint()).map_err(|e| format!("reading {}: {e}", world.display()))
+}
+
+/// Is there a pinned backup of the world exactly as it is now? The newest one
+/// whose fingerprint is the world's. Reads only, takes no lock and verifies
+/// nothing: for showing, not for relying on ([`pinned_of_current_world`] is
+/// what a run relies on).
+pub fn pinned_candidate(cfg: &ServerConfig) -> Option<Entry> {
+    let fingerprint = world_fingerprint(cfg).ok()?;
+    let backups = cfg.backups_dir();
+    let mut manifest = read_manifest(&backups).ok()?;
+    reconcile(&mut manifest, &backups);
+    let found = manifest.of_kind(Kind::Manual).find(|e| e.world_fingerprint == fingerprint).cloned();
+    found
+}
+
+/// A verified, PINNED backup of the world exactly as it stands, or the reason
+/// there is none. An existing pinned backup serves when no world file was
+/// added, removed, resized or rewritten since it was taken (the fingerprint)
+/// and it verifies again against the world (its SHA-256 against the manifest,
+/// every entry read back with its CRC, the entry set against the world's
+/// files). That is what lets the operator take the backup, see it arrive on
+/// their own PC, and only then approve the run. Otherwise a new one is taken,
+/// and unlike every other backup a failure here is the caller's to act on: the
+/// run does not start without it.
+pub fn pinned_of_current_world(gate: &Gate, cfg: &ServerConfig, trigger: &str) -> Result<Pinned, String> {
+    pinned_of_current_world_at(gate, cfg, trigger, unix_now())
+}
+
+fn pinned_of_current_world_at(_gate: &Gate, cfg: &ServerConfig, trigger: &str, now: i64) -> Result<Pinned, String> {
+    let dir = &cfg.server_dir;
+    let world = cfg.world_dir();
+    let backups = cfg.backups_dir();
+    if !world.join("level.dat").is_file() {
+        return Err(format!("there is no world at {} (no level.dat)", world.display()));
+    }
+    if crate::run::jvm_active() {
+        return Err("the server is running; a backup needs it stopped".to_string());
+    }
+    if world_open_elsewhere(&world) {
+        return Err("the world is open in another process".to_string());
+    }
+    let (policy, _) = effective_policy(dir);
+    let walk = walk_world(&world, &world_top(cfg)).map_err(|e| format!("reading {}: {e}", world.display()))?;
+    let fingerprint = walk.fingerprint();
+    let mut manifest = read_manifest(&backups).unwrap_or_default();
+    reconcile(&mut manifest, &backups);
+    let same: Vec<Entry> = manifest.of_kind(Kind::Manual).filter(|e| e.world_fingerprint == fingerprint).cloned().collect();
+    for entry in same {
+        let path = backups.join(&entry.file);
+        let sound = {
+            let _flag = RunningFlag::raise();
+            let deadline = Instant::now() + policy.max_duration;
+            sha256_file(&path)
+                .map_err(|e| format!("it cannot be read ({e})"))
+                .and_then(|sha| if sha == entry.sha256 { Ok(()) } else { Err(format!("its SHA-256 is not the one in {MANIFEST_FILE}")) })
+                .and_then(|()| verify_zip(&path, &walk, false, deadline).map_err(|e| format!("{e:#}")))
+        };
+        match sound {
+            Ok(()) => {
+                audit(dir, log::Level::Info, &format!(
+                    "{trigger}: backups/{} is a pinned backup of the world exactly as it is now (no world file added, removed, resized or rewritten since); verified again -- used",
+                    entry.file
+                ));
+                return Ok(Pinned { entry, reused: true });
+            }
+            Err(why) => audit(dir, log::Level::Warn, &format!(
+                "{trigger}: backups/{} was taken of the world as it is now but does not verify ({why}) -- taking a new one",
+                entry.file
+            )),
+        }
+    }
+    match run_backup_at(cfg, &policy, false, Kind::Manual, trigger, now) {
+        Outcome::Created { entry, .. } => Ok(Pinned { entry, reused: false }),
+        other => Err(other.answer()),
+    }
+}
+
+// =============================================================================
 // Status (GUI badge, reports)
 // =============================================================================
 
@@ -1419,8 +1699,8 @@ pub fn report(cfg: &ServerConfig) -> String {
     reconcile(&mut manifest, &backups);
     for e in &manifest.backups {
         out.push_str(&format!(
-            "  {:<27} {:<9} {}  {} files  {}  sha256 {}\n",
-            e.file, e.kind, e.created_utc, e.world_files, fmt_bytes(e.size), e.sha256
+            "  {:<27} {:<9} {}  {} files + {} of the server's own  {}  sha256 {}\n",
+            e.file, e.kind, e.created_utc, e.world_files, e.state_files, fmt_bytes(e.size), e.sha256
         ));
     }
     let listed: Vec<&str> = manifest.backups.iter().map(|e| e.file.as_str()).collect();
@@ -1843,7 +2123,7 @@ mod tests {
         let walk = walk_world(&fx.cfg.world_dir(), "testworld").unwrap();
         let good = fx.root.join("good.zip");
         write_zip(&walk, &good, far).unwrap();
-        verify_zip(&good, &walk, far).unwrap();
+        verify_zip(&good, &walk, true, far).unwrap();
 
         // One flipped byte inside the stored region data: only the CRC can tell.
         let mut bytes = fs::read(&good).unwrap();
@@ -1852,18 +2132,18 @@ mod tests {
         bytes[at + 10] ^= 0xFF;
         let flipped = fx.root.join("flipped.zip");
         fs::write(&flipped, &bytes).unwrap();
-        let err = verify_zip(&flipped, &walk, far).unwrap_err();
+        let err = verify_zip(&flipped, &walk, true, far).unwrap_err();
         assert!(format!("{err:#}").contains("r.0.0.mca"), "{err:#}");
 
         // Cut short: the index at the end is gone.
         let cut = fx.root.join("cut.zip");
         fs::write(&cut, &fs::read(&good).unwrap()[..200_000]).unwrap();
-        assert!(verify_zip(&cut, &walk, far).is_err());
+        assert!(verify_zip(&cut, &walk, true, far).is_err());
 
         // A world file the zip doesn't have.
         fs::write(fx.cfg.world_dir().join("data").join("late.dat"), b"x").unwrap();
         let bigger = walk_world(&fx.cfg.world_dir(), "testworld").unwrap();
-        assert!(verify_zip(&good, &bigger, far).is_err());
+        assert!(verify_zip(&good, &bigger, true, far).is_err());
     }
 
     #[test]
@@ -1989,6 +2269,134 @@ mod tests {
         }
         assert!(!world_open_elsewhere(&fx.cfg.world_dir()));
         fx.created(fx.backup_at(SCHEDULED, T0));
+    }
+
+    #[test]
+    fn every_backup_carries_the_servers_own_state() {
+        let fx = Fixture::new();
+        fs::write(fx.root.join("whitelist.json"), br#"[{"uuid":"x","name":"y"}]"#).unwrap();
+        fs::write(fx.root.join("ops.json"), b"[]").unwrap();
+        fs::write(fx.root.join("usercache.json"), b"[]").unwrap();
+        fs::write(fx.root.join(crate::overrides::FILE), b"{\"overrides\":[]}").unwrap();
+        fs::write(fx.root.join(POLICY_FILE), b"keep=2\n").unwrap();
+        fs::write(fx.root.join(".icraft_regen_policy"), b"bed_radius=1\n").unwrap();
+        let kept = fx.root.join("config-overrides");
+        fs::create_dir_all(kept.join("originals").join("config")).unwrap();
+        fs::write(kept.join("history.log"), b"a line\n").unwrap();
+        fs::write(kept.join("originals").join("config").join("x.toml"), b"a = 1\n").unwrap();
+        // The pack's files and the launcher's own markers are not state.
+        fs::write(fx.root.join(".icraft_last_sha"), b"abc").unwrap();
+        fs::write(fx.root.join(".icraft_launcher_status"), b"x").unwrap();
+        fs::write(fx.root.join("eula.txt"), b"eula=true").unwrap();
+
+        let (entry, _) = fx.created(fx.backup_at(SCHEDULED, T0));
+        assert_eq!((entry.world_files, entry.state_files), (5, 8));
+        let zip_path = fx.backups().join(&entry.file);
+        let names = entry_names(&zip_path);
+        let find = |n: &str| names.iter().find(|e| e.0 == n).unwrap_or_else(|| panic!("{n} not in the zip"));
+        assert_eq!(find("server-state/whitelist.json").2, 25);
+        for name in [
+            "server-state/",
+            "server-state/ops.json",
+            "server-state/usercache.json",
+            "server-state/.icraft_config_overrides.json",
+            "server-state/.icraft_backup_policy",
+            "server-state/.icraft_regen_policy",
+            "server-state/config-overrides/",
+            "server-state/config-overrides/history.log",
+            "server-state/config-overrides/originals/config/",
+            "server-state/config-overrides/originals/config/x.toml",
+        ] {
+            find(name);
+        }
+        // Nothing of it sits at the zip's root: extracting the zip in the
+        // server folder gives the world back and a server-state folder beside
+        // it, never an old whitelist over the live one.
+        assert!(names.iter().all(|e| e.0.starts_with("testworld/") || e.0.starts_with("server-state/")), "{names:?}");
+        assert!(!names.iter().any(|e| e.0.contains("last_sha") || e.0.contains("launcher_status") || e.0.contains("eula") || e.0.contains("server.properties")));
+        let mut archive = zip::ZipArchive::new(File::open(&zip_path).unwrap()).unwrap();
+        let mut history = String::new();
+        archive.by_name("server-state/config-overrides/history.log").unwrap().read_to_string(&mut history).unwrap();
+        assert_eq!(history, "a line\n");
+        // The world's file count is still the world's, for the restore check.
+        assert_eq!(names.iter().filter(|e| e.0.starts_with("testworld/") && !e.0.ends_with('/')).count(), 5);
+        // A server with none of these files gets no server-state folder at all.
+        let bare = Fixture::new();
+        let (entry, _) = bare.created(bare.backup_at(SCHEDULED, T0));
+        assert_eq!(entry.state_files, 0);
+        assert!(!entry_names(&bare.backups().join(&entry.file)).iter().any(|e| e.0.starts_with("server-state")));
+    }
+
+    #[test]
+    fn the_fingerprint_follows_the_worlds_files_and_nothing_else() {
+        let fx = Fixture::new();
+        let first = world_fingerprint(&fx.cfg).unwrap();
+        assert_eq!(first.len(), 64);
+        assert_eq!(world_fingerprint(&fx.cfg).unwrap(), first);
+        // Outside the world, and session.lock inside it: no difference.
+        fs::write(fx.root.join("whitelist.json"), b"[]").unwrap();
+        fs::write(fx.cfg.world_dir().join("session.lock"), b"again").unwrap();
+        assert_eq!(world_fingerprint(&fx.cfg).unwrap(), first);
+        // A file resized, a file added, a file removed: each is a different world.
+        fs::write(fx.cfg.world_dir().join("data").join("raids.dat"), b"raids, longer").unwrap();
+        let resized = world_fingerprint(&fx.cfg).unwrap();
+        assert_ne!(resized, first);
+        fs::write(fx.cfg.world_dir().join("data").join("new.dat"), b"x").unwrap();
+        let added = world_fingerprint(&fx.cfg).unwrap();
+        assert_ne!(added, resized);
+        fs::remove_file(fx.cfg.world_dir().join("region").join("r.0.-1.mca")).unwrap();
+        assert_ne!(world_fingerprint(&fx.cfg).unwrap(), added);
+        // A backup records the fingerprint of what it holds.
+        let (entry, _) = fx.created(fx.backup_at(SCHEDULED, T0));
+        assert_eq!(entry.world_fingerprint, world_fingerprint(&fx.cfg).unwrap());
+    }
+
+    #[test]
+    fn a_regeneration_gets_a_pinned_backup_of_the_world_as_it_stands() {
+        let fx = Fixture::new();
+        let gate = launch_guard();
+        // None yet: one is taken, pinned.
+        let first = pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0).unwrap();
+        assert!(!first.reused);
+        assert_eq!((first.entry.kind.as_str(), first.entry.trigger.as_str()), ("manual", "pre-regen"));
+        assert_eq!(first.entry.world_fingerprint, world_fingerprint(&fx.cfg).unwrap());
+        // Asked again with the world as it was: the same zip, verified again,
+        // and no second one. A change outside the world does not matter.
+        fs::write(fx.root.join("whitelist.json"), b"[]").unwrap();
+        let again = pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0 + H).unwrap();
+        assert!(again.reused);
+        assert_eq!(again.entry, first.entry);
+        assert_eq!(scan(&fx.backups(), Kind::Manual).len(), 2); // + the 2025 decoy
+        // A scheduled backup of the same world is not a pinned one.
+        fx.created(fx.backup_at(SCHEDULED, T0 + 2 * H));
+        assert!(pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0 + 3 * H).unwrap().reused);
+
+        // The world changes: the old backup no longer stands for it.
+        fs::write(fx.cfg.world_dir().join("data").join("raids.dat"), b"raids, longer").unwrap();
+        let second = pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0 + 4 * H).unwrap();
+        assert!(!second.reused);
+        assert_ne!(second.entry.file, first.entry.file);
+        assert_eq!(scan(&fx.backups(), Kind::Manual).len(), 3);
+
+        // A zip that matches the world but no longer verifies is not trusted:
+        // one flipped byte, same size.
+        let path = fx.backups().join(&second.entry.file);
+        let mut bytes = fs::read(&path).unwrap();
+        let middle = bytes.len() / 2;
+        bytes[middle] ^= 0xFF;
+        fs::write(&path, &bytes).unwrap();
+        let third = pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0 + 5 * H).unwrap();
+        assert!(!third.reused);
+        assert_ne!(third.entry.file, second.entry.file);
+        let log = fs::read_to_string(fx.root.join("logs").join(LOG_FILE)).unwrap();
+        assert!(log.contains("does not verify") && log.contains("verified again -- used"), "{log}");
+
+        // No world, no backup, and it says so; nothing is ever pruned here.
+        fs::remove_file(fx.cfg.world_dir().join("level.dat")).unwrap();
+        assert!(pinned_of_current_world_at(&gate, &fx.cfg, "pre-regen", T0 + 6 * H).unwrap_err().contains("no world"));
+        assert_eq!(scan(&fx.backups(), Kind::Manual).len(), 4);
+        assert!(fx.decoys_intact());
+        drop(gate);
     }
 
     #[cfg(windows)]
