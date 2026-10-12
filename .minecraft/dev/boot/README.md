@@ -25,6 +25,18 @@ alone does both. Exit code 0 means: both boot, the checker found nothing new, an
 A checkout that does not have this folder yet (a branch cut before it landed) can be booted from one that has:
 `boot.ps1 -Tree <path to that checkout> -Compare origin/main`.
 
+**Then the push.** The pre-push gate will refuse it with `expected_state.json is STALE` unless the two manifests
+were regenerated after your LAST commit or merge, whatever that commit touched. Nothing is wrong with `main`: the
+gate writes the current short HEAD into `generated_from` and compares bytes with the file in your working tree, so
+every new HEAD reads stale until you regenerate. After the last commit, in Windows PowerShell 5.1 (the shell the
+hook uses), in-process:
+
+    & .\.minecraft\dev\generate_expected_state.ps1
+
+and push. Leave the two `expected_state.json` files modified and uncommitted: committing them makes a new HEAD and
+the stamp is one behind again. (Commit them only with a change that deletes a file under `kubejs`, `config` or
+`mods\.index`; the tools that delete on consumers read the committed copy.)
+
 Other calls:
 
 | Call | What it does |
@@ -60,7 +72,9 @@ at the top of `boot.ps1`.
   metafiles are CurseForge-mode with an empty URL, so a jar that is missing or has the wrong hash stops the run
   (exit 2) with the list. The custom jars come from the tree under test itself.
 - About 13 GB of memory free inside WSL for the default 8 GB heap: the heap, the JVM's own memory, and the run
-  folder, which is in memory (see "Script load order").
+  folder, which is in memory (see "Script load order"). The run refuses to start (exit 2) when less than the heap
+  plus 4 GB is available. That is per full-pack server: a second one running at the same time, of this tool or of a
+  hand-made rig, needs as much again, and each makes the other slow (see "Traps").
 - `boot.ps1 -Setup` once (the first boot does it too): it downloads the Forge installer named in the launcher source
   and runs `--installServer` into `~/icraft-boot/forge/<version>` in WSL. That needs the network and takes about a
   minute and a half. Everything after that runs offline, except that mods still try their own update checks.
@@ -90,12 +104,17 @@ All of it can be deleted at any time; the next run rebuilds what it needs.
 
    The patterns and lists are read from the launcher source **of the tree under test**
    (`iridescent-launcher\icraft-core\src\packwiz.rs`, `config.rs`), so there is one source for them.
-   The run prints the arithmetic. Checked on 2026-10-12 against a listing of the live server's `mods` folder, name
+   The run prints the arithmetic. Checked on 2026-10-12 against listings of the live server's `mods` folder, name
    for name, for both shapes of the index:
    - pack `13a94cc4` (hand-kept index): 454 metafiles - 19 client-side - 5 force-skipped = 430 entries = 428 jar
      names (two jars were named by two metafiles each) + 1 committed jar the index marked `client`
-     (`offlineskins`) = **429**;
-   - pack `53b75211` (generated index, since `7c1c2f88`): 429 metafiles, all `both`, none force-skipped = **429**.
+     (`offlineskins`) = **429**, the server's 429 jars of that morning;
+   - pack `53b75211` (generated index, since `7c1c2f88`): 429 metafiles, all `both`, none force-skipped = **429**;
+   - pack `59ee40da` (Entity Culling relabelled client-only in `0449ca14`): 428 metafiles = **428**, the server's
+     428 jars after it had synced that commit.
+
+   `boot.ps1 -ModSet -Ref origin/main -ExpectList <listing>` repeats that check against any listing (one jar name
+   per line) and exits 1 on a difference.
 3. **Every jar is verified** against the hash in its metafile (sha1, sha256 or sha512), a custom jar against
    `custom_jars_manifest.json`. A metafile without a hash cannot be verified: its jar is taken by name, the run says
    so, and its sha256 is recorded in the result (`mods.tsv`). The hand-kept index had seven such metafiles; the
@@ -111,19 +130,25 @@ All of it can be deleted at any time; the next run rebuilds what it needs.
    the game rejected, the scripts that loaded and in which order, and every WARN / ERROR line reduced to a signature.
 9. **Check**: `dev\loud\loud-check.ps1` on the captured logs (see "The checker on the rig").
 
-Timings on the dev PC (32 threads, WSL with 30 GB), pack `13a94cc4`, 8 GB heap, nothing else running:
+Timings measured on the dev PC on 2026-10-12 (32 threads, WSL with 30 GB), pack `13a94cc4`, 8 GB heap, no other
+JVM running:
 
 | Step | Time |
 |---|---|
-| computing the mod set and verifying jars | 1 s (the first time 35 s: 1.3 GB of jars are hashed and copied into the pool) |
-| assembling the sandbox | 10 s for a commit, 35 s for a working tree (its files are read through the Windows mount) |
-| JVM start to `Done` | about 2 min 20 s; the `Done (..s)` figure itself, which counts from a later point, is about 65 s |
+| computing the mod set and verifying jars | 1 s (the first time 35 s: the jars are hashed and copied into the pool) |
+| assembling the sandbox | 10 s for a commit, 30 to 65 s for a working tree (its files are read through the Windows mount) |
+| JVM start to `Done` | 2 min 30 s (151 s); the `Done (..s)` figure itself, which counts from a later point, was 62 s |
 | registry dump, idle, measurements | 1 min |
-| stop | 5 s |
+| stop | 2 to 9 s |
 | checker and extraction | 20 s |
-| **one boot, end to end** | **about 4.5 minutes** |
+| **one boot, end to end** | **about 5 minutes** (307 s) |
 
-Another full-pack JVM running in WSL at the same time (another session's own rig) makes these longer; the run notes it.
+At idle after `Done`: 20.0 TPS at about 2 ms a tick, 2,250 MB of live heap after a full GC, about 7 GB resident
+(the launcher's flags pre-touch the minimum heap, 4 GB here).
+
+With two other sessions' full-pack servers running in WSL at the same time, the same boot took 400 s from the JVM
+start to `Done` (`Done (139 s)`). The run notes every other JVM it finds, and the diff says when a side was measured
+that way: do not compare times across such runs.
 
 ## The result folder
 
@@ -156,17 +181,20 @@ What it records:
 - entity types with their mob category, their tags (`forge:bosses` among them) and, for living entities, the base
   attributes: the vanilla combat and movement attributes, and any other attribute whose base is not the attribute's
   default (`attribute_defaults` in the same file has the defaults; `attribute_count` says how many it has in all);
-- dimensions, game rules and their values in a fresh world, loot table ids, recipe ids with their type, advancement ids.
+- dimensions, game rules and their values in a fresh world, loot table ids, advancement ids;
+- every recipe after the script pass with its recipe type and its serializer. (On a recipe object `getType()` is
+  KubeJS's own helper and returns the serializer id, so the helper asks the recipe manager type by type; a recipe
+  whose type no mod registered is listed as `unregistered`.)
 
 From the logs: loot tables, recipes, advancements and other elements the game rejected at load, and which mixin
 configs applied (a `Mixing <class> from <config> into <target>` line in `debug.log`; a config is registered by every
 jar that ships one, and applies only when a class it targets is loaded on a dedicated server).
 
-**The committed snapshot** goes to `.minecraft\dev\registry\`: the compact, sorted id lists of `main`, one text file
-per registry, plus `entities.json`. It is meant as the authoritative id list for validators, replacing the item list
-of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`). Write or refresh it with
+**The committed snapshot** is `.minecraft\dev\registry\`: the compact, sorted id lists of `main`, one text file per
+registry, plus `entities.json` (its own README lists the files). It is the authoritative id list for validators and
+replaces the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`). Refresh it with
 `boot.ps1 -Ref origin/main -WriteSnapshot`, then commit the folder; `SOURCE.json` names the commit it describes.
-(When this tool first landed the snapshot had not been committed yet: if the folder is missing, that command makes it.)
+Nothing checks that it is current: refresh it when mods or registrations change.
 
 What a dump does not say:
 - base attributes are those of the entity TYPE. What the pack's scripts and difficulty mods add at spawn is not in it;
@@ -248,9 +276,11 @@ computed order was checked against the live server's own log: 157 of 157 scripts
 - **`-noverify` is required.** The pack's patched Ars Nouveau jar throws `VerifyError` in mod loading without it. It
   is in the launcher's flags; the tool warns when a tree's flags lack it.
 - **One full-pack server per host.** Two of them collide on Simple Voice Chat's UDP port, and the loser stops its
-  server right after `Done`. The tool takes a lock (`~/icraft-boot/lock`; a second call waits, `-LockWaitMinutes`),
-  picks a free server port and a free voice-chat port for every run, and notes any other JVM it finds running.
-  A rig that is not this tool does not take the lock: it still slows a run down.
+  server right after `Done`. The tool takes a lock (`~/icraft-boot/lock`): a second `boot.ps1` waits for the first
+  to finish, says who holds the rig, and gives up with exit 2 after `-LockWaitMinutes` (default 30). It also picks a
+  free server port and a free voice-chat port for every run. A rig that is not this tool does not take the lock:
+  the run then notes the other JVM, needs its memory on top (about 13 GB each), and is slow (400 s to `Done` instead
+  of 151 s with two others running). So boot through `boot.ps1`, and one session at a time.
 - **Chunky.** In a world that has not had one, `kubejs\server_scripts\pregen\auto_chunky.js` starts a pregeneration
   200 ticks after the load. It would run for the whole idle window and drown timings and logs. The tool writes the
   flag that script checks into the empty world folder before the first boot
@@ -267,12 +297,20 @@ computed order was checked against the live server's own log: 157 of 157 scripts
 
 ## What two boots of the same tree differ in
 
-Measured by booting the same server tree twice (see the numbers in the internal deployment guide; they are refreshed
-there when the pack changes much). Registries, loot tables, recipes, mixins, scripts and ERROR signatures are
-identical between two boots of the same tree. What varies:
-- `Done` and wall-clock times by several seconds, more when another JVM runs;
-- live heap by some tens of MB;
-- a handful of WARN signatures of `latest.log` that depend on thread timing or the network.
+Measured on 2026-10-12 by booting the same server tree twice (a working tree at `13a94cc4` against the commit
+`3bcd10b7`, whose server trees are identical). The same in both: every registry, the loot tables and the rejected
+ones, the recipes, the advancements, the scripts loaded and their order, the mixin configs that applied, every ERROR
+signature, the checker's findings. What differed:
+- times: `Done` by several seconds on a quiet host, by minutes when another JVM runs;
+- memory: live heap by 8 MB, resident memory by some hundreds of MB, loaded classes by about 50;
+- mixin classes: six of some 2,460, all of them applied AFTER `Done`, when a class is first used (a mob's goal, a
+  train carriage). The diff therefore compares class by class only what applied up to `Done`
+  (`mixins\applied.tsv`); the later ones are in `mixins\applied_after_done.tsv`;
+- five WARN signatures of `latest.log`: a load time that crossed from seconds to minutes, two `Can't keep up`
+  lines with the lag glued to its unit, and a config default printed as a list in hash order. The diff reduces
+  signatures one step further than the checker does, so that these three kinds do not show as new and gone.
+
+A new WARN signature of `latest.log` is reported and never counted as a regression.
 
 ## Not in scope
 
