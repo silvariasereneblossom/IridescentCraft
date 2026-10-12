@@ -534,7 +534,7 @@ def unit_record(u, fam_ids, ctx):
                    'twin': twin}
     data['folders_1_21_layout'] = dead
     counts['dead_files'] = sum(d['files'] for d in dead.values())
-    if any(not d['has_1_20_twin'] for d in dead.values()):
+    if any(d['twin'] and not d['has_1_20_twin'] for d in dead.values()):
         flags.append('1.21-folder-without-1.20-twin')
     elif dead:
         flags.append('1.21-folders')
@@ -1060,7 +1060,8 @@ def intake_skeleton(recs, repo, ctx):
         for k, d in r['data']['folders_1_21_layout'].items():
             ships.append('%d files under %s/%s%s (%s)' % (d['files'], '<ns>', k, tag(r),
                                                           'a 1.20.1-layout folder of that kind is there too, not necessarily with the same files' if d['has_1_20_twin']
-                                                          else 'NO 1.20.1 twin: this content is absent in game'))
+                                                          else ('NO 1.20.1 twin: this content is absent in game' if d['twin'] else
+                                                                'a registry 1.20.1 fills from code: data for another game version')))
     if ships:
         block('Data the game never reads', ships,
               'A 1.21-layout folder is ignored by 1.20.1: tags, loot tables or advancements in it do not exist in game.',

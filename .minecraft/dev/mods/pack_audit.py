@@ -680,10 +680,12 @@ def section_dead(ctx):
         for r in recs:
             d = r['data']['folders_1_21_layout']
             if d:
+                gone = [k for k, v in d.items() if v['twin'] and not v['has_1_20_twin']]
                 dead.append(OrderedDict((('jar', jar), ('archive', r['id'][4:]),
                                          ('folders', OrderedDict((k, v['files']) for k, v in d.items())),
-                                         ('without_1_20_twin', [k for k, v in d.items() if not v['has_1_20_twin']]),
-                                         ('sample', next(iter(d.values()))['sample']))))
+                                         ('without_1_20_twin', gone),
+                                         ('other_version_registries', [k for k, v in d.items() if not v['twin']]),
+                                         ('sample', d[gone[0]]['sample'] if gone else next(iter(d.values()))['sample']))))
     out['folders_1_21_layout'] = dead
     out['folders_1_21_layout_jars'] = len(set(d['jar'] for d in dead))
     out['folders_1_21_layout_files'] = sum(sum(d['folders'].values()) for d in dead)
@@ -1035,9 +1037,10 @@ def live_defects(ctx, S):
             ['%s (%s)' % (r['entity'], r['jar']) for r in bt])
     dd = [d for d in S['dead']['folders_1_21_layout'] if d['without_1_20_twin']]
     if dd:
-        add('defect', '%d jars ship data only in a 1.21-layout folder: it does not exist in game' % len(dd), 'static',
-            'The 1.20.1 game reads loot_tables/, recipes/, advancements/; it never opens loot_table/, recipe/, advancement/, '
-            'and has no painting_variant, jukebox_song or banner_pattern data registry.',
+        add('defect', '%d jars ship loot tables, recipes or tags only in a 1.21-layout folder: that content does not exist in game' % len(dd), 'static',
+            'The 1.20.1 game reads loot_tables/, recipes/, advancements/, tags/items/; it never opens loot_table/, recipe/, '
+            'advancement/, tags/item/. (Folders such as painting_variant or jukebox_song are registries 1.20.1 fills from '
+            'code: data for another game version, not counted here.)',
             ['%s: %s (e.g. %s)' % (d['archive'], ', '.join('%s x%d' % (k, d['folders'][k]) for k in d['without_1_20_twin']), d['sample']) for d in dd])
     tu = S['dead']['tables_naming_unknown_items']
     if tu['of_which_name_a_mod_that_is_not_installed'] or S['loot']['rejected_tables']:
@@ -1313,8 +1316,9 @@ def write_report(path, ctx, S, defects, review, meta):
     w('')
     w('### 1.21-layout folders (%d jars, %d files)' % (dead['folders_1_21_layout_jars'], dead['folders_1_21_layout_files']))
     w('')
-    L.extend(md_table(['archive', 'folders: files', 'no 1.20.1 twin'],
-                      [[r['archive'], '; '.join('%s: %d' % kv for kv in r['folders'].items()), ', '.join(r['without_1_20_twin']) or '-'] for r in dead['folders_1_21_layout']]))
+    L.extend(md_table(['archive', 'folders: files', 'content absent in game (no 1.20.1 twin)', 'data for another version'],
+                      [[r['archive'], '; '.join('%s: %d' % kv for kv in r['folders'].items()), ', '.join(r['without_1_20_twin']) or '-',
+                        ', '.join(r['other_version_registries']) or '-'] for r in dead['folders_1_21_layout']]))
     w('')
     tu = dead['tables_naming_unknown_items']
     w('### Loot tables that name item ids with no static evidence')

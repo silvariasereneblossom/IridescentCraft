@@ -4660,7 +4660,7 @@
     "templates": 233
    },
    "flags": [
-    "1.21-folder-without-1.20-twin",
+    "1.21-folders",
     "attribute-modification-event",
     "boss-bar",
     "damage-hook",
@@ -8090,7 +8090,7 @@
     "templates": 1
    },
    "flags": [
-    "1.21-folder-without-1.20-twin",
+    "1.21-folders",
     "damage-hook",
     "data-namespace-is-no-mod-id",
     "key-mappings",
