@@ -95,7 +95,10 @@ A sync from the repository overwrites `server.properties`, so a value you edit i
 icraft settings set server.properties <key> <value>                    a new value
 icraft settings pin server.properties <key> --pack-value <default>     keep a value you already edited in the file
 icraft settings status                                                 what this server overrides
+icraft settings start-check                                            would the launcher start the server right now?
 ```
+
+**The launcher refuses to start a server whose access settings it could not restore.** Once `white-list`, `enforce-whitelist` or `online-mode` is switched on through the override list, the launcher checks `server.properties` before every start. If the value is not there (the file could not be written, the key is gone, or the override list itself is unreadable), no server is started: the reason is written to `.icraft_start_refused` in the server folder and to the launcher's log, and the launcher's automatic restart attempts try again. Put the value right, then press **Cycle**.
 
 Settings usually chosen per server:
 
