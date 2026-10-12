@@ -1,2 +1,0 @@
-[2026-10-11 12:20:52] request 'onbox-verify': scope=ring:8 dims=minecraft:overworld -- reading the world (read-only)
-[2026-10-11 12:21:02] scope ring:8: 126 of 72,568 chunk(s) on disk would be regenerated, 1,099 protected, 109 warning(s); plan sha256 d51c8aa9b9443387; report in C:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\regen-reports\20261011-122052-ring8 (10.4 s; nothing was modified)
