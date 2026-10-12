@@ -23,6 +23,10 @@
 #            earlier boots written next to the log as rotated files. Stale only after
 #            two complete boots without the line; never on a short or partial log;
 #            never a finding, so no exit code and no `open` count moves.
+#            Then a latest.log ROLLED AT MIDNIGHT (the tail of a run): the boot is read
+#            from the rotated log before it and judged as one boot; an unfinished boot
+#            stays unfinished; a tail whose boot cannot be read back is "not
+#            judgeable", reported NOT RUN and never red.
 #   RECORD   Nothing is written without -Write; the findings log rolls above 1 MiB
 #            and carries what is open; every line of it is valid JSON.
 #
@@ -361,11 +365,12 @@ function Get-RolledName { param([int]$Days) return ($date0.AddDays($Days).ToStri
 function Get-RolledClock { param([int]$Days) return [regex]::Escape($date0.AddDays($Days).ToString('yyyy-MM-dd', $inv) + 'T') }
 # the healthy boot as a rotated log of another day ($Days back or forward), with its lines rewritten by $Edit
 function New-RolledLog {
-    param([string]$Logs, [int]$Days, [scriptblock]$Edit)
+    param([string]$Logs, [int]$Days, [scriptblock]$Edit, [int]$From = 0, [int]$To = -1)
+    if ($To -lt 0) { $To = $healthyLatest.Count - 1 }
     $stamp = '[' + $date0.AddDays($Days).ToString('ddMMMyyyy', $inv) + ' '
     $outLines = New-Object System.Collections.Generic.List[string]
-    foreach ($l in $healthyLatest) {
-        $x = $l
+    for ($i = $From; $i -le $To; $i++) {
+        $x = $healthyLatest[$i]
         if ($x.StartsWith('[' + $day0 + ' ')) { $x = $stamp + $x.Substring($day0.Length + 2) }
         if ($Edit) { foreach ($y in @(& $Edit $x)) { if ($null -ne $y) { $outLines.Add([string]$y) } } } else { $outLines.Add($x) }
     }
@@ -439,6 +444,55 @@ $runRows = @([System.IO.File]::ReadAllLines($propRun) | Where-Object { $_ -match
 $planted = @($runRows | Where-Object { $_.Contains('"sig":"' + $sigRun + '"') })
 Assert-That ($planted.Count -eq 1 -and $planted[0].Contains('"count":1,"runtime":true,"reason":""') -and -not $runRows[0].Contains('"runtime"')) '-ProposeBaseline marks a latest.log signature first printed after Done as "runtime": true (and not a load-time one)'
 Test-Case '   and that proposal, filled in, is a baseline the checker takes' $logsRun @('-Baseline', (Write-Baseline (Join-Path $WorkDir 'runtime-baseline.json') $runRows @())) 0 @()
+
+# A latest.log ROLLED AT MIDNIGHT. log4j starts a new latest.log at the first line after the box's midnight: the file is
+# then the tail of the run, and the boot is in the rotated log of the day before. Built here from the healthy boot: its
+# first lines as a rotated log dated one day back, the rest as latest.log. (Test-Stale also serves here: it checks the
+# exit code, the findings, the stale entries and what the report must say.)
+function Set-LatestTail {      # latest.log = the healthy boot from line $From on, rewritten by $Edit
+    param([string]$Logs, [int]$From, [scriptblock]$Edit)
+    $outLines = New-Object System.Collections.Generic.List[string]
+    for ($i = $From; $i -lt $healthyLatest.Count; $i++) {
+        if ($Edit) { foreach ($y in @(& $Edit $healthyLatest[$i])) { if ($null -ne $y) { $outLines.Add([string]$y) } } } else { $outLines.Add($healthyLatest[$i]) }
+    }
+    [System.IO.File]::WriteAllLines((Join-Path $Logs 'latest.log'), $outLines, $Utf8)
+}
+function Get-CutAt { param([int]$Ix) while (-not $healthyLatest[$Ix].StartsWith('[' + $day0 + ' ')) { $Ix++ }; return $Ix }   # a roll never splits a stack trace
+$doneIx = -1
+for ($i = 0; $i -lt $healthyLatest.Count; $i++) { if ($healthyLatest[$i] -match $rxDone) { $doneIx = $i; break } }
+$stopIx = -1
+for ($i = 0; $i -lt $healthyLatest.Count; $i++) { if ($healthyLatest[$i] -match 'MinecraftServer/\]: Stopping server') { $stopIx = $i; break } }
+$cutAfter  = Get-CutAt ($doneIx + 10)            # the roll came after Done: the whole boot is in the rotated log
+$cutBefore = Get-CutAt ([int]($doneIx / 2))      # the roll came while the server was loading: Done is in latest.log
+Assert-That ($doneIx -gt 100 -and $stopIx -gt $cutAfter -and $cutBefore -gt 700) 'the healthy boot can stand in for a rolled one (Done, then a server stop well after it)'
+$rolledNote = 'latest\.log was rolled at midnight .*this boot is read from ' + [regex]::Escape((Get-RolledName -1)) + ' \+ latest\.log'
+$notJudged  = 'NOT RUN : ARMED tier and whether the boot finished \(boot not judgeable: log rolled'
+
+$logsR = New-Case 'rolled' $null $null
+New-RolledLog $logsR -1 $null -From 0 -To ($cutAfter - 1); Set-LatestTail $logsR $cutAfter $null
+Test-Stale 'latest.log rolled at midnight, the boot complete in the log before it -> judged as one boot, clean' $logsR @() 0 @() @() @($rolledNote, ('boot    : ' + (Get-RolledClock -1)), 'ARMED   : \d+/\d+ lines present')
+New-RolledLog $logsR -1 { param($l) if ($l -notmatch 'LSP-Mixin/\]: FishingHookMixin') { $l } } -From 0 -To ($cutAfter - 1)
+Test-Stale '   and a line the boot must print, missing from the ROTATED part, is found' $logsR @() 1 @('MISSING armed:mixin:lovely_sparkle_pieces:FishingHookMixin') @() @($rolledNote)
+New-RolledLog $logsR -1 $null -From 0 -To ($cutAfter - 1); New-RolledLog $logsR -2 $null
+Test-Stale '   and stale entries are judged on the joined boot (the boot before it lacks the lines too)' $logsR @('-Baseline', $sb) 0 @() @($idDef, $idAcc) @($rolledNote, ('not in the complete boot before it \(' + (Get-RolledClock -2)))
+Clear-Rolled $logsR; New-RolledLog $logsR -1 $null -From 0 -To ($cutBefore - 1); Set-LatestTail $logsR $cutBefore $null
+Test-Stale 'rolled while the server was still loading (JVM start in the rotated log, Done in latest.log) -> clean' $logsR @() 0 @() @() @($rolledNote, 'ARMED   : \d+/\d+ lines present')
+Set-LatestTail $logsR $cutBefore $noDone
+Test-Stale 'rolled, and the boot really never reached Done -> an unfinished boot, as red as a fresh one' $logsR @() 2 @('CHECK-FAILED check:boot-incomplete') @() @($rolledNote)
+Clear-Rolled $logsR; New-RolledLog $logsR -2 $null -From 0 -To ($cutBefore - 1); New-RolledLog $logsR -1 $null -From $cutBefore -To ($cutAfter - 1); Set-LatestTail $logsR $cutAfter $null
+Test-Stale 'an uptime across two midnights (two rotated logs before latest.log) -> joined from all three' $logsR @() 0 @() @() @(('this boot is read from ' + [regex]::Escape((Get-RolledName -2)) + ' \+ ' + [regex]::Escape((Get-RolledName -1)) + ' \+ latest\.log'), ('boot    : ' + (Get-RolledClock -2)))
+Clear-Rolled $logsR
+Test-Stale 'rolled, and the log before it is not in the directory -> NOT RUN "boot not judgeable: log rolled", not red, exit 0' $logsR @() 0 @() @() @($notJudged, 'the rotated log before it is not in this directory', 'ARMED   : not judged \(log rolled', 'GREEN - nothing found \(2 check not run')
+Set-LatestTail $logsR $cutBefore $null
+Test-Stale '   the same when Done IS in the tail: lines printed before the roll are in the missing log, so none is called MISSING' $logsR @() 0 @() @() @($notJudged, 'ARMED   : not judged \(log rolled')
+Set-LatestTail $logsR $cutAfter $null
+New-RolledLog $logsR -1 $null
+Test-Stale 'the log before it ends with a server stop (another run) -> not joined to it, not judgeable, not red' $logsR @() 0 @() @() @($notJudged, 'ends with a server stop: it is another run')
+Clear-Rolled $logsR; New-RolledLog $logsR 0 $null -From 0 -To ($cutAfter - 1)
+Test-Stale 'the log before it ends on the same day (no change of date, so no roll at midnight) -> not joined, not judgeable' $logsR @() 0 @() @() @($notJudged, 'does not end on an earlier day')
+Test-Stale 'a FRESH latest.log (JVM start, no Done) next to a complete earlier boot -> still an unfinished boot, red' $logsNoDone @() 2 @('CHECK-FAILED check:boot-incomplete') @() @()
+$rolledOut = Invoke-Checker @('-LogsDir', $logsNoDone)
+Assert-That (@($rolledOut.Out | Where-Object { $_ -match 'rolled at midnight|log rolled' }).Count -eq 0) '   and nothing in that report speaks of a rolled log'
 
 # =============================================================================
 # PART 3 - RECORD (findings log + status file)

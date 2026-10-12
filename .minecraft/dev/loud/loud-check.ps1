@@ -19,6 +19,15 @@
 #   3. ARMED tier: every line of liveness_manifest.json is present (a feature got
 #      to the end of its registration), none of its `must_not` lines is, and its
 #      count is not below its floor. Judged only after `Done (..s)!`.
+#      A latest.log rolled at midnight: log4j starts a new latest.log at the first
+#      line after the box's midnight, so for the rest of that uptime the file is
+#      the tail of the run, with no JVM start and no Done. The boot is then read
+#      from the rotated log(s) before it plus latest.log and judged as one boot (a
+#      boot that never reached Done stays unfinished, red). When the log before it
+#      is not there, or belongs to another run, the boot is NOT JUDGEABLE: that
+#      is reported NOT RUN ("boot not judgeable: log rolled"), and nothing is red
+#      for it. A fresh latest.log (it starts at the JVM start) without Done is an
+#      unfinished boot as before.
 #   4. Failure patterns in latest.log / debug.log: mixin apply failures, missing
 #      mandatory dependencies, server tick loop exceptions, OutOfMemoryError,
 #      saved crash reports. debug.log is read when it is there (a copy of the
@@ -221,6 +230,39 @@ function Test-BootStart {
     }
     return $false
 }
+# Rotated logs (<date>-<n>.log.gz) of the days up to $UpToDate: date -> paths. The date in a rolled file's name is
+# never earlier than its content and files are rolled in order, so (name date, then first clock) descending is newest
+# first. <n> says nothing about the order within a day.
+function Get-RolledByDate {
+    param([string]$Root, [string]$UpToDate)
+    $byDate = @{}
+    foreach ($f in @(Get-ChildItem -LiteralPath $Root -File -Filter '*.log.gz')) {
+        $m = $rxRolled.Match($f.Name)
+        if (-not $m.Success) { continue }
+        $d = $m.Groups[1].Value
+        if ([string]::CompareOrdinal($d, $UpToDate) -gt 0) { continue }
+        if (-not $byDate.ContainsKey($d)) { $byDate[$d] = New-Object System.Collections.Generic.List[string] }
+        $byDate[$d].Add($f.FullName)
+    }
+    return $byDate
+}
+# One day's rotated logs that begin before $Before, newest first: path, first clock, whether the file starts at a JVM
+# start. Reads the head of each file only. Throws when one cannot be read: the caller must not guess past it.
+function Get-DayLogs {
+    param($Paths, [string]$Before)
+    $day = New-Object System.Collections.Generic.List[object]
+    foreach ($p in $Paths) {
+        $head = Read-LogLines $p 10
+        $clock = $null
+        foreach ($l in $head) { $clock = Get-LogClock $l; if ($clock) { break } }
+        if (-not $clock -or [string]::CompareOrdinal($clock, $Before) -ge 0) { continue }
+        $day.Add([pscustomobject]@{ path = $p; clock = $clock; start = (Test-BootStart $head) })
+    }
+    return @($day | Sort-Object -Property clock -Descending)
+}
+# A run that logged this line was shut down in that file: a later log without a JVM start cannot be its continuation.
+$rxStopping      = New-Object regex '\[net\.minecraft\.server\.MinecraftServer/\]: Stopping server'
+$MaxRolledPieces = 4
 function Get-Hash8 {
     param([string]$Text)
     $sha1 = [System.Security.Cryptography.SHA1]::Create()
@@ -352,6 +394,53 @@ function Invoke-Check {
             $lines[$s] = Read-LogLines $p
         } catch {
             Add-Finding 'CHECK-FAILED' 'RED' ("check:read:$s") $s ("cannot read $s (" + $_.Exception.Message + '): nothing in it was checked')
+        }
+    }
+
+    # ---- a latest.log rolled at midnight ---------------------------------------
+    # log4j starts a new latest.log at the first line after the box's midnight, not only at a JVM start. That file is
+    # the tail of a run that is still up: its boot (JVM start, Done, every load-time line) is in the rotated log before
+    # it. Read the boot from both. When that log cannot be found, the boot is NOT JUDGEABLE, which is not the same as
+    # unfinished: nothing is reported red for it.
+    if ($lines.ContainsKey('latest.log') -and -not (Test-BootStart $lines['latest.log'])) {
+        $tailClock = $null
+        foreach ($l in $lines['latest.log']) { $tailClock = Get-LogClock $l; if ($tailClock) { break } }
+        if ($tailClock) {                                   # (no clock at all: an empty or foreign file, left as it is)
+            $pieces = New-Object System.Collections.Generic.List[object]     # rotated logs of this run, newest first
+            $found = $false; $why = $null
+            $next = $tailClock                              # first clock of the log that follows the one looked at
+            try {
+                $byDate = Get-RolledByDate $logsRoot $tailClock.Substring(0, 10)
+                foreach ($d in @($byDate.Keys | Sort-Object -Descending)) {
+                    foreach ($r in @(Get-DayLogs $byDate[$d] $tailClock)) {
+                        $name = Split-Path -Leaf $r.path
+                        $pl = Read-LogLines $r.path
+                        $last = $null
+                        for ($k = $pl.Count - 1; $k -ge 0; $k--) { $last = Get-LogClock $pl[$k]; if ($last) { break } }
+                        $stopped = $false
+                        foreach ($l in $pl) { if ($rxStopping.IsMatch($l)) { $stopped = $true; break } }
+                        # the log before a rolled one ends on an earlier day (the roll IS the change of date), and its server never stopped
+                        if (-not $last -or [string]::CompareOrdinal($last.Substring(0, 10), $next.Substring(0, 10)) -ge 0) { $why = "the log before it ($name) does not end on an earlier day, so this is not a roll at midnight"; break }
+                        if ($stopped) { $why = "the log before it ($name) ends with a server stop: it is another run"; break }
+                        $pieces.Add([pscustomobject]@{ name = $name; lines = $pl })
+                        if ($r.start) { $found = $true; break }
+                        if ($pieces.Count -ge $MaxRolledPieces) { $why = "no JVM start in the $MaxRolledPieces rotated logs before it"; break }
+                        $next = $r.clock
+                    }
+                    if ($found -or $why) { break }
+                }
+            } catch { $why = 'a rotated log before it could not be read (' + $_.Exception.Message + ')' }
+            if ($found) {
+                $all = New-Object System.Collections.Generic.List[string]
+                $names = @()
+                for ($k = $pieces.Count - 1; $k -ge 0; $k--) { $names += $pieces[$k].name; foreach ($x in $pieces[$k].lines) { $all.Add($x) } }
+                foreach ($x in $lines['latest.log']) { $all.Add($x) }
+                $lines['latest.log'] = $all
+                $info.Add("latest.log was rolled at midnight (it starts at $tailClock, without a JVM start): this boot is read from " + ($names -join ' + ') + ' + latest.log')
+            } else {
+                if (-not $why) { $why = 'the rotated log before it is not in this directory' }
+                $script:rolledWhy = "latest.log starts at $tailClock without a JVM start; $why"
+            }
         }
     }
 
@@ -519,9 +608,15 @@ function Invoke-Check {
                 $script:doneRx = $rx
                 if ($bootDone) { $script:doneLine = $i }
             }
-            if (-not $bootDone) {
+            if (-not $bootDone -and -not $script:rolledWhy) {
                 Add-Finding 'CHECK-FAILED' 'RED' 'check:boot-incomplete' ([string]$bc.log) ("no '" + [string]$bc.pattern + "' line: the server is still starting, or it died before it finished. Liveness (ARMED) was not judged")
             }
+        }
+        # A rolled latest.log whose boot could not be read back: neither "finished" nor "unfinished" is known, and a line
+        # a healthy boot must print may be in the log that is missing. Nothing is judged, and it is said, not painted red.
+        if ($script:rolledWhy) {
+            $bootDone = $false
+            $notRun.Add("ARMED tier and whether the boot finished (boot not judgeable: log rolled. $($script:rolledWhy))")
         }
         $total = 0; $present = 0; $skipped = 0
         $owners = New-Object 'System.Collections.Generic.HashSet[string]'
@@ -563,6 +658,7 @@ function Invoke-Check {
         }
         $script:armedText = "$present/$total lines present"
         if (-not $bootDone) { $script:armedText = "not judged (boot incomplete), $total entries" }
+        if ($script:rolledWhy) { $script:armedText = "not judged (log rolled, boot not judgeable), $total entries" }
         if ($skipped -gt 0) { $script:armedText += ", $skipped entries not checked (their log was not read)" }
         if ($null -ne $expected -and $lines.ContainsKey('kubejs/server.log')) {
             $silent = @($expected['server'] | Where-Object { -not $owners.Contains('kubejs/server_scripts/' + $_) }).Count
@@ -738,31 +834,14 @@ function Invoke-Check {
                     $earlier = New-Object System.Collections.Generic.List[string]     # start clocks of the complete earlier boots read
                     $unreadable = $null
                     if ($pending.Count -gt 0) {
-                        # Rotated logs, newest first. The date in a rolled file's name is never earlier than its content and
-                        # files are rolled in order, so (name date, then first clock) descending is newest first. Only the
-                        # days needed are opened: this runs when an entry is absent, and stops at the boot that settles it.
-                        $bootDate = $script:bootClock.Substring(0, 10)
-                        $byDate = @{}
-                        foreach ($f in @(Get-ChildItem -LiteralPath $logsRoot -File -Filter '*.log.gz')) {
-                            $m = $rxRolled.Match($f.Name)
-                            if (-not $m.Success) { continue }
-                            $d = $m.Groups[1].Value
-                            if ([string]::CompareOrdinal($d, $bootDate) -gt 0) { continue }                  # rolled after the boot checked
-                            if (-not $byDate.ContainsKey($d)) { $byDate[$d] = New-Object System.Collections.Generic.List[string] }
-                            $byDate[$d].Add($f.FullName)
-                        }
+                        # Rotated logs that begin before this boot, newest first. Only the days needed are opened: this
+                        # runs when an entry is absent, and stops at the boot that settles it.
+                        $byDate = Get-RolledByDate $logsRoot $script:bootClock.Substring(0, 10)
                         foreach ($d in @($byDate.Keys | Sort-Object -Descending)) {
                             if ($pending.Count -eq 0 -or $unreadable) { break }
-                            $day = New-Object System.Collections.Generic.List[object]
-                            foreach ($p in $byDate[$d]) {
-                                try { $head = Read-LogLines $p 10 } catch { $unreadable = Split-Path -Leaf $p; break }
-                                $clock = $null
-                                foreach ($l in $head) { $clock = Get-LogClock $l; if ($clock) { break } }
-                                if (-not $clock -or [string]::CompareOrdinal($clock, $script:bootClock) -ge 0) { continue }   # not earlier than the boot checked
-                                $day.Add([pscustomobject]@{ path = $p; clock = $clock; start = (Test-BootStart $head) })
-                            }
-                            if ($unreadable) { break }
-                            foreach ($r in @($day | Sort-Object -Property clock -Descending)) {
+                            $dayLogs = @()
+                            try { $dayLogs = @(Get-DayLogs $byDate[$d] $script:bootClock) } catch { $unreadable = "a rotated log of $d"; break }
+                            foreach ($r in $dayLogs) {
                                 if ($pending.Count -eq 0) { break }
                                 try { $rl = Read-LogLines $r.path } catch { $unreadable = Split-Path -Leaf $r.path; break }
                                 $sigs = (Get-Observed $rl $rxLatest).counts
@@ -812,6 +891,7 @@ $script:srcList = @(); $script:shaAt = 'unknown'; $script:bootAt = 'unknown'
 $script:loadedText = @(); $script:armedText = $null; $script:expectedFrom = ''
 $script:kjsErrors = 0; $script:kjsAborts = 0; $script:patternHits = 0; $script:baselineText = $null
 $script:bootClock = $null; $script:bootStartSeen = $false; $script:doneRx = $null; $script:doneLine = 0; $script:staleText = $null
+$script:rolledWhy = $null       # set when latest.log is the tail of a run and its boot could not be read back
 try {
     Invoke-Check
 } catch {
