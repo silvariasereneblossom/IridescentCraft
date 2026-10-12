@@ -340,6 +340,12 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("simplyswords:soulkeeper").when(c => c.randomChance(0.15))
         )
+        // Runic Tablets: 2 per kill (operator ruling 2026-10-11 22:18 EDT, "Wither
+        // drops 2, no runic crafting"). A relic craft takes 4, so two kills. The
+        // tablet's only use in this pack is the Righteous / Tainted Relic craft:
+        // every other recipe that takes one is removed in
+        // recipes/tier_gated_recipes.js (Section E, "Runic crafting OFF").
+        .addLoot(LootEntry.of("simplyswords:runic_tablet", 2))
         // (The Wither is also the source of simplyswords:dormant_relic: guaranteed
         //  on a player's first kill, 15% afterwards. That is not a loot-table
         //  drop: loot/iss_boss_first_kill.js.)

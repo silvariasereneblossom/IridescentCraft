@@ -66,4 +66,22 @@ JEIEvents.hideItems(event => {
     'mutantmonsters:mutant_skeleton_shoulder_pad',
     'mutantmonsters:mutant_skeleton_skull',
   ].forEach(id => event.hide(id))
+
+  // Simply Swords runic crafting (2026-10-11, operator: "no runic crafting").
+  // The 15 runic weapons and the two fused gems have no recipe any more
+  // (server_scripts/recipes/tier_gated_recipes.js, "Runic crafting OFF") and
+  // no loot source (the mod's chest injection is stripped), so they are hidden
+  // here like the other items that are out of the pack. NOT hidden: the Runic
+  // Tablet (a Wither drop) and the Dormant / Righteous / Tainted Relics.
+  ;[
+    'simplyswords:runic_chakram', 'simplyswords:runic_claymore',
+    'simplyswords:runic_cutlass', 'simplyswords:runic_glaive',
+    'simplyswords:runic_greataxe', 'simplyswords:runic_greathammer',
+    'simplyswords:runic_halberd', 'simplyswords:runic_katana',
+    'simplyswords:runic_longsword', 'simplyswords:runic_rapier',
+    'simplyswords:runic_sai', 'simplyswords:runic_scythe',
+    'simplyswords:runic_spear', 'simplyswords:runic_twinblade',
+    'simplyswords:runic_warglaive',
+    'simplyswords:runefused_gem', 'simplyswords:netherfused_gem',
+  ].forEach(id => event.hide(id))
 })

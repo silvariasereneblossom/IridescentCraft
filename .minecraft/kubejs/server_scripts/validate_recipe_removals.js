@@ -65,6 +65,13 @@ ServerEvents.recipes(event => {
         'simplyswords:slumbering_lichblade', 'simplyswords:wickpiercer', 'simplyswords:mjolnir',
         'simplyswords:storms_edge', 'simplyswords:sword_on_a_stick', 'simplyswords:watcher_claymore',
         'simplyswords:dormant_relic',
+        // simplyswords "Runic crafting OFF" (2026-10-11) — the 15 runic weapons + the two fused gems
+        'simplyswords:runic_chakram', 'simplyswords:runic_claymore', 'simplyswords:runic_cutlass',
+        'simplyswords:runic_glaive', 'simplyswords:runic_greataxe', 'simplyswords:runic_greathammer',
+        'simplyswords:runic_halberd', 'simplyswords:runic_katana', 'simplyswords:runic_longsword',
+        'simplyswords:runic_rapier', 'simplyswords:runic_sai', 'simplyswords:runic_scythe',
+        'simplyswords:runic_spear', 'simplyswords:runic_twinblade', 'simplyswords:runic_warglaive',
+        'simplyswords:runefused_gem', 'simplyswords:netherfused_gem',
 
         // theabyss Section K.3-K.5 — kept identical to recipes/recipe_audit.js.
         // 2026-10-10: brought back in line after recipe_audit.js was corrected

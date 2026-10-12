@@ -52,7 +52,8 @@ RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js blue_skies:charoite_sword 
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js blue_skies:horizonite_sword  # same
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/staff_wand_recipes.js simple_staves:explosion_wand  # "stripped without replacement (redundant w/ Battlerod)"
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/strip_mutant_monsters.js mutantmonsters:creeper_minion_tracker  # Mutant Monsters gear removed by design
-RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:watching_warglaive  # 8 "unassigned reserve" uniques are creative-only by decision; dormant_relic is OPEN (loot-audit-2026-10.md)
+RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:watching_warglaive  # 8 "unassigned reserve" uniques are creative-only by decision. dormant_relic is in this group only because its source is a death-event drop the audit cannot see (the Wither, loot/iss_boss_first_kill.js, since 2026-10-11)
+RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:runic_chakram  # operator ruling 2026-10-11 "Wither drops 2, no runic crafting": the 15 runic weapons and the two fused gems are out of the pack on purpose (recipes removed, hidden in JEI)
 RECIPE_REMOVED_NO_LOOT_SOURCE compat/class_artifacts_recipes.js rpgseteffects:magic_leather  # documented orphan ("no longer craftable, no use")
 
 # --- loot tables the game rejects at load (TABLE_REJECTED) ----------------------------------------

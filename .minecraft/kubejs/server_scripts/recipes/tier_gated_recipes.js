@@ -305,6 +305,37 @@ ServerEvents.recipes(event => {
     'simplyswords:dormant_relic'
   ].forEach(id => event.remove({ output: id }))
 
+  // === Runic crafting OFF (operator ruling 2026-10-11 22:18 EDT: "Wither ===
+  // === drops 2, no runic crafting")                                      ===
+  // simplyswords:runic_tablet now drops from the Wither (loot_overhaul.js) and
+  // serves ONE purpose: the two relic crafts, recipe ids
+  // simplyswords:righteous_relic and simplyswords:tainted_relic (dormant relic
+  // + 4 tablets + ...). Those two are NOT touched here. Every other recipe that
+  // takes a tablet is removed (Simply Swords 1.56.0, jar-scanned; no other mod
+  // or pack file names the item):
+  //   - 15 runic weapons, 2 smithing recipes each, removed by output:
+  //     simplyswords:runic_<w> (netherite <w> + tablet) and
+  //     simplyswords:runic2_<w> (runic <w> + tablet, the re-roll);
+  //   - the fused gems, by output: simplyswords:runefused_gem (+
+  //     runefused_gem_reroll) and simplyswords:netherfused_gem;
+  //   - by id: simplyswords:runic_grimoire_recipe_shapeless (book + tablet;
+  //     the grimoire is swept on login anyway, codex_delivery.js).
+  // Already gone, removed by output in the list above: sunfire, harbinger,
+  // waking_lichblade, awakened_lichblade. Never loaded (their own mod-loaded
+  // conditions name mods that are not installed): the two Dreadtide recipes.
+  ;[
+    'simplyswords:runic_chakram',     'simplyswords:runic_claymore',
+    'simplyswords:runic_cutlass',     'simplyswords:runic_glaive',
+    'simplyswords:runic_greataxe',    'simplyswords:runic_greathammer',
+    'simplyswords:runic_halberd',     'simplyswords:runic_katana',
+    'simplyswords:runic_longsword',   'simplyswords:runic_rapier',
+    'simplyswords:runic_sai',         'simplyswords:runic_scythe',
+    'simplyswords:runic_spear',       'simplyswords:runic_twinblade',
+    'simplyswords:runic_warglaive',
+    'simplyswords:runefused_gem',     'simplyswords:netherfused_gem'
+  ].forEach(id => event.remove({ output: id }))
+  event.remove({ id: 'simplyswords:runic_grimoire_recipe_shapeless' })
+
 
   // ═══ SECTION K: STAFF / WAND DROP-ONLY ENFORCEMENT ═══
   // Companion to loot/staff_wand_drops.js — the 11 staves that ship with
