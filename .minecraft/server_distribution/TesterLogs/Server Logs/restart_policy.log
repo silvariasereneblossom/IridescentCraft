@@ -88,3 +88,7 @@
 [2026-10-11 22:25:42] uptime 3h55m | players 0 | empty for 0s | wait: nothing due yet
 [2026-10-11 22:30:43] uptime 4h00m | players 0 | empty for 5m | CYCLE: empty and past the empty threshold
 [2026-10-11 22:30:43] ACTION: Cycle now, no warnings (up 4h00m, empty for 5m)
+[2026-10-11 22:31:43] server down or restarting -- uptime clock stopped
+[2026-10-11 22:33:43] server up since 2026-10-11 22:33:17 -- uptime clock started
+[2026-10-11 22:33:43] uptime 25s | players not asked yet | empty for 0s | wait: nothing due yet
+[2026-10-11 23:20:42] server down or restarting -- uptime clock stopped

@@ -10,3 +10,5 @@
 [2026-10-11 16:34:45] cycle: world-20261011-0728.zip is 9h06m old -- not due (one every 12h00m)
 [2026-10-11 16:40:47] cycle: world-20261011-0728.zip is 9h12m old -- not due (one every 12h00m)
 [2026-10-11 18:27:43] cycle: world-20261011-0728.zip is 10h59m old -- not due (one every 12h00m)
+[2026-10-11 22:31:01] cycle: backing up world/ (1114 files, 1.16 GiB) -> backups/world-20261011-2231.zip
+[2026-10-11 22:31:14] cycle: backups/world-20261011-2231.zip verified -- 1114 files, 1.16 GiB -> 1.16 GiB in 13.0s (write 8.1s, verify 0.6s, sha256 4.3s); 2 scheduled backup(s) kept
