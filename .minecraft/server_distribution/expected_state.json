@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "a7b05937",
+    "generated_from":  "2740c3a5",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6968,8 +6968,8 @@
                                                                    "size":  21745
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "cc14ccce0a4d0c90fcbbf61540e55381daefbd92fa6f78f1535425d3252a0088",
-                                                              "size":  28963
+                                                              "sha256":  "266d3b7c88ddefeaf52d54b9a9fba5ee44d3be3577691ea10a79eadb3c28101d",
+                                                              "size":  37085
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "5bb897afd5f1e80a190817db7309c2121d410047857b592a50e85d99f6b759ec",
@@ -7520,12 +7520,12 @@
                                                                        "size":  13754
                                                                    },
                   "kubejs/server_scripts/scaling/boss_hp.js":  {
-                                                                   "sha256":  "805b480745199fc49aef3f1f71b0fa41523488e594f6d905427ce83037b17c46",
-                                                                   "size":  4160
+                                                                   "sha256":  "74d2c5d093874143ec3b9b12e76df815e7eca57014ce8e8863f5cbba3c709fe8",
+                                                                   "size":  5284
                                                                },
                   "kubejs/server_scripts/scaling/boss_progressive.js":  {
-                                                                            "sha256":  "658b35ade2afae9a6abdc724580d919e0ef5d005be7ace11328fd54ed47b71b9",
-                                                                            "size":  5972
+                                                                            "sha256":  "c63c7e75167f28c565f6ed42c6f5ab5240323d424c5859e803581b58560c7dd0",
+                                                                            "size":  6545
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
                                                                                "sha256":  "a97f559f2bc4e5d0f4321d4a65236b910b06241f8717b25f6f6145b25b4bce62",
@@ -7536,16 +7536,16 @@
                                                                          "size":  14139
                                                                      },
                   "kubejs/server_scripts/scaling/mob_scaling_unified.js":  {
-                                                                               "sha256":  "a614967c8b1b45fb64a58bf1182fcea4fd5c74e1f6861ef483286fb3a4a67abe",
-                                                                               "size":  12540
+                                                                               "sha256":  "9bfdaede0cd91699e3cbfff21e683589fd57aa71c5929294d578e6bad31a4ee0",
+                                                                               "size":  13165
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
-                                                                                "sha256":  "009e337bdeb97fed9283b94b0c917359e009a2aed46410265599feba6fc9114f",
-                                                                                "size":  6444
+                                                                                "sha256":  "fd8c8a52f1840ff7843b1d06c0e361d82f1f371878ab726c27e60622c333b46d",
+                                                                                "size":  7125
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
-                                                                             "sha256":  "1d27ad890dfea4a4ec006b5439bcb392bd6824e722c19baa8d770da65456890e",
-                                                                             "size":  13010
+                                                                             "sha256":  "40df269c137178e3fe2837eadcb5f464ff538435c93ce17a03a484940caec28e",
+                                                                             "size":  14208
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
                                                                               "sha256":  "0daa22fc220aa06a8f76138d2e8dd7bad6c99dd651b6084296afae9164597479",
