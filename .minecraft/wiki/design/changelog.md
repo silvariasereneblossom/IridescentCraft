@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Abyss's bosses carry the Abyssal artifacts
+
+- **Twelve Abyss-themed Celestial Artifacts now drop from the three Abyss bosses.** They were written for Abyss treasure chests, and The Abyss has none that roll loot. The Elder (20%) and The Roka (50%) drop one of Demon Curse, Twisted Scabbard, Catastrophe Scroll, Abyss Will Badge or Lock of Abyss. Nightblade always drops one of Abyss Core, Demon Heart, Twisted Heart, Twisted Scroll, Heart of Revenge, Chaotic Etching or Nihility Etching. Each of the three can also drop an enchanted book (10%, levels 20–30). The rates are provisional and may be tuned.
+- **Where to find them.** The Elder roams Blue Mountain and The Roka Blue Jungle. Nightblade is summoned at a Night Altar: light its eight upper pillars with Soul Hearts (Soul Guards drop them only to a Looting weapon), then use an Eye of Abyss on the altar.
+- **Nothing was taken away.** The artifacts keep their chest sources in the other dimensions.
+
 ## October 2026 — The test server has a whitelist
 
 - **Only listed players can join the test server.** To be added, send the server operator your exact in-game name, capitals included. If you see *"You are not white-listed on this server!"*, your name is not on the list yet or was entered with different capitals. Nothing changes for players who are already listed: characters, claims and quests are untouched.

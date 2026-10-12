@@ -565,9 +565,11 @@ The Abyss / TATOS (`theabyss`, T3 dimension `theabyss:the_abyss`) is installed. 
 
 `kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost`, `ring_of_void_sight`, `ring_of_the_knight`, `ring_of_dark_pact`, `ring_of_unorithe` — 8 rings total. Effects in `abyss/abyss_ring_effects.js`.
 
-**Drop sources (live, `abyss_boss_loot.js`).** Shadows / Phantom / Embers / Frost — `theabyss:chests/*` structure chests (15% each); Void Sight — deep/dungeon/temple/boss chests (10%); Knight — `theabyss:ice_knight` boss (25%); Dark Pact — `theabyss:soul_guard` boss (20%); Unorithe — `theabyss:guard` boss (15%). All sources are live theabyss entities/tables.
+**Drop sources (live, `abyss_boss_loot.js`).** All eight rings are boss drops (The Abyss has no chest that rolls loot): Shadows and Phantom — Nightblade (15% each); Embers — The Roka (15%); Frost — Ice Knight (15%); Void Sight — Elder (10%); Knight — Ice Knight (25%); Dark Pact — Soul Guard (20%); Unorithe — Guard (15%).
 
-The 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death) are boss-drop-only (their crafting recipes are stripped in §K) and drop from `theabyss:ice_knight` / `soul_guard` / `guard` per `abyss_boss_loot.js` §3-5. 7 elemental armor-set bonuses for the in-pack theabyss sets (Garnite, Aberythe, Incorythe, Fusion, Phantom, Glacerythe, Ignisithe) live in `abyss/abyss_armor_effects.js`.
+**Abyssal Celestial Artifacts (since 2026-10-11).** The same three bosses carry the Abyss-themed Celestial Artifacts. Elder (20%) and The Roka (50%) drop one of Demon Curse, Twisted Scabbard, Catastrophe Scroll, Abyss Will Badge or Lock of Abyss. Nightblade always drops one of Abyss Core, Demon Heart, Twisted Heart, Twisted Scroll, Heart of Revenge, Chaotic Etching or Nihility Etching. Each of the three also has a 10% chance of an enchanted book (levels 20–30). These rates are provisional. The Elder spawns in Blue Mountain and The Roka in Blue Jungle. Nightblade is summoned at a Night Altar: light the altar's eight upper pillars with Soul Hearts (Soul Guards drop them only to a Looting weapon), then use an Eye of Abyss (Roka Horn + Elder Eye + Crystal Hand + Eye of Ender + Ghast Tear) on the altar.
+
+The Unorithe armor set is boss-drop-only (its crafting recipes are stripped in §K): Soul Guard 15% per piece, Guard 12% per piece. (The Knight, Ragnarok, Dragon and Death sets listed here earlier are not items in the installed mod.) 7 elemental armor-set bonuses for the in-pack theabyss sets (Garnite, Aberythe, Incorythe, Fusion, Phantom, Glacerythe, Ignisithe) live in `abyss/abyss_armor_effects.js`.
 
 ### C.12 Boss mod integration — additional mods (design notes)
 
@@ -1962,7 +1964,7 @@ Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStru
 | Underdark | Mushroom / cave / Undergarden | Ancient ruin curios, fungal / cave-themed |
 | End / levitation | End-themed + flight | Ender curios, dragon items, levitation |
 | Sculk / echo | Sculk + Ancient City stealth lore | Sculk lens / shades / treads, echo glove, silent-walking |
-<!-- Abyssal theme row removed 2026-05-28 (#47): consumer was the absent The Abyss marquees row at N.1; original entry was "Abyssal | Abyss-tier dark / corruption | Chorus inhibitor, twisted heart, abyss core, cursed totems". If a future operator pass reassigns the 14-item curated pool (see T4 Abyssal item list below) to a different T4 structure, restore this row retargeted there. -->
+<!-- Abyssal theme row removed 2026-05-28 (#47): consumer was the absent The Abyss marquees row at N.1; original entry was "Abyssal | Abyss-tier dark / corruption | Chorus inhibitor, twisted heart, abyss core, cursed totems". If a future operator pass reassigns the 14-item curated pool (see T4 Abyssal item list below) to a different T4 structure, restore this row retargeted there. 2026-10-11: the pool went to the three Abyss bosses (C.11), not to a structure, so this row stays out. -->
 
 ### N.3 Per-structure themed pools (T1)
 
@@ -2140,7 +2142,7 @@ relics:wool_mitten                     relics:shadow_glaive
 artifacts:scarf_of_invisibility
 ```
 
-**T4 Abyssal — orphaned item pool** *(originally targeted at an aspirational **T4** "Abyss marquee" structure that is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods. NB: this is **not** the in-pack T3 theabyss/TATOS dimension — TATOS has no chest that rolls a loot table, so its loot is wired through the Abyss bosses in `abyss_boss_loot.js`. The marquee rule that pointed this pool at `theabyss:chests/*` could never apply and was removed on 2026-10-11; every item of the pool also sits in a T3/T4 dimension pool)*:
+**Abyssal pool — Abyss boss drops since 2026-10-11** *(this list was written for an Abyss chest marquee that could never exist: The Abyss has no chest that rolls a loot table. Its twelve Celestial Artifacts now drop from Elder, The Roka and Nightblade — see C.11. Shadow Glaive and Space Dissector are not part of the boss drops and keep their other sources. Every item also keeps its T3/T4 dimension-pool source)*:
 
 ```
 celestial_artifacts:abyss_core         celestial_artifacts:abyss_will_badge
