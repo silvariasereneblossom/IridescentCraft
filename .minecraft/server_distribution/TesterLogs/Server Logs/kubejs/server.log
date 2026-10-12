@@ -1,638 +1,638 @@
-[16:35:57] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[16:35:57] [INIT] Loaded plugins:
-[16:35:57] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[16:35:57] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[16:35:57] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[16:35:57] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[16:35:57] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[16:35:57] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[16:35:57] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[16:35:57] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[16:35:57] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[16:35:57] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[16:35:57] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[16:35:57] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[16:35:57] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[16:35:59] [INFO] 0_iss_guard.js#96: [iss-guard] loaded -- irons_spellbooks: mobs will be flagged with persistentData.icraft_iss_skip=true at spawn
-[16:35:59] [INFO] Loaded script server_scripts:0_iss_guard.js in 0.005 s
-[16:35:59] [INFO] 0_lib_aptitudes.js#101: Loaded Java class 'com.seniors.justlevelingfork.common.capability.AptitudeCapability'
-[16:35:59] [INFO] 0_lib_aptitudes.js#284: Loaded Java class 'celia.adwadg.linearxp.Utils.ExpUtils'
-[16:35:59] [INFO] 0_lib_aptitudes.js#285: Loaded Java class 'celia.adwadg.linearxp.Utils.ExperienceCalculator'
-[16:35:59] [INFO] 0_lib_aptitudes.js#291: Loaded Java class 'celia.adwadg.linearxp.Handler.ExpDisplayHandler'
-[16:35:59] [INFO] 0_lib_aptitudes.js#524: [IridescentCraft] 0_lib_aptitudes loaded -- global.icraft.aptitude {get,all,invalidate,xp}: direct AptitudeCapability read, 20-tick per-player cache; XP wallet: LinearXP (level + capability)
-[16:35:59] [INFO] Loaded script server_scripts:0_lib_aptitudes.js in 0.036 s
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.world.entity.player.Player'
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.tags.DamageTypeTags'
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.world.item.enchantment.EnchantmentHelper'
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
-[16:35:59] [INFO] 0_lib_core.js#109: Loaded Java class 'com.iridescentcraft.reforging.event.DamageModifierRegistry'
-[16:35:59] [INFO] 0_lib_core.js#652: [IridescentCraft] 0_lib_core loaded -- global.icraft.core (damage-source accessors, entity ids, world clock, one guarded hurt dispatcher, damage-type tags on)
-[16:35:59] [INFO] Loaded script server_scripts:0_lib_core.js in 0.023 s
-[16:35:59] [INFO] 0_lib_origins.js#219: [IridescentCraft] 0_lib_origins loaded -- global.icraft.origin {get,is,invalidate}, 100-tick per-player cache over ForgeCaps."origins:origins".Origins
-[16:35:59] [INFO] Loaded script server_scripts:0_lib_origins.js in 0.003 s
-[16:35:59] [INFO] Loaded script server_scripts:0_server_ready_banner.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:0_tick_master.js in 0.002 s
-[16:35:59] [INFO] abyss/abyss_armor_effects.js#223: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
-[16:35:59] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.004 s
-[16:35:59] [INFO] abyss/abyss_ring_effects.js#224: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
-[16:35:59] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.004 s
-[16:35:59] [INFO] affixes/affix_effects.js#1198: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
-[16:35:59] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.014 s
-[16:35:59] [INFO] affix_overworld_strip.js#100: [IridescentCraft] Apotheosis overworld affix-strip loaded
-[16:35:59] [INFO] Loaded script server_scripts:affix_overworld_strip.js in 0.004 s
-[16:35:59] [INFO] affix_skyshatter_mob_strip.js#109: [IridescentCraft] Skyshatter mob-strip loaded (any dim, any boss tag)
-[16:35:59] [INFO] Loaded script server_scripts:affix_skyshatter_mob_strip.js in 0.001 s
-[16:35:59] [INFO] apotheosis_gem_repair.js#76: Loaded Java class 'net.minecraft.nbt.CompoundTag'
-[16:35:59] [INFO] apotheosis_gem_repair.js#439: [IridescentCraft] apotheosis_gem_repair loaded v2026-05-18b (21 fallback IDs; inventory-tick sweep + ItemEntity-spawn trace + LootJS-chest trace; detects (a) bare no-NBT, (b) no/empty gem field, (c) missing affix_data, (d) missing/empty rarity, (e) stale icraft_broken tag from the death_penalty isDamageableItem trap)
-[16:35:59] [INFO] Loaded script server_scripts:apotheosis_gem_repair.js in 0.005 s
-[16:35:59] [INFO] aptitude_cost_backport.js#84: Loaded Java class 'com.seniors.justlevelingfork.network.packet.common.AptitudeLevelUpSP'
-[16:35:59] [INFO] Loaded script server_scripts:aptitude_cost_backport.js in 0.004 s
-[16:35:59] [INFO] armor_weight.js#350: [IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling
-[16:35:59] [INFO] armor_weight.js#351:   robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)
-[16:35:59] [INFO] armor_weight.js#352:   light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (per piece)
-[16:35:59] [INFO] armor_weight.js#353:   medium no effect (default for untagged armor)
-[16:35:59] [INFO] armor_weight.js#354:   heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)
-[16:35:59] [INFO] armor_weight.js#355:   + minecraft:protection -> +0.75 flat armor/level (addition; vanilla % EPF zeroed by ProtectionFlatArmorMixin)
-[16:35:59] [INFO] Loaded script server_scripts:armor_weight.js in 0.003 s
-[16:35:59] [INFO] attributes/attribute_commands.js#213: [IridescentCraft] Attribute chat commands loaded (v0.4)
-[16:35:59] [INFO] attributes/attribute_commands.js#214:   !stats / !attributes -- Show attribute values
-[16:35:59] [INFO] attributes/attribute_commands.js#215:   !class -- Show class info and bonuses
-[16:35:59] [INFO] Loaded script server_scripts:attributes/attribute_commands.js in 0.002 s
-[16:35:59] [INFO] attributes/attribute_sync.js#409: [IridescentCraft] Attribute sync handlers loaded (v0.4 persistent NBT)
-[16:35:59] [INFO] attributes/attribute_sync.js#410:   Combat: crit/dodge/lifesteal/armor_pen/magic_res/spell_power via the damage registry
-[16:35:59] [INFO] attributes/attribute_sync.js#411:   Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)
-[16:35:59] [INFO] attributes/attribute_sync.js#412:   Magic: mana_regen + CDR sync to ISB every 5s
-[16:35:59] [INFO] attributes/attribute_sync.js#413:   Utility: xp_multiplier via tick_xpMultiplier (1s totalExperience diff)
-[16:35:59] [INFO] attributes/attribute_sync.js#414:   Utility: healing_received via tick health tracking
-[16:35:59] [INFO] Loaded script server_scripts:attributes/attribute_sync.js in 0.004 s
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#164: [IridescentCraft] Class attribute bonuses loaded (v0.4 persistent NBT)
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#165:   Archmage: spell_power +25%, mana_regen +20%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#166:   Battlemage: spell_power +15%, magic_resistance +15%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#167:   Berserker: crit_damage +30%, lifesteal +5%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#168:   Samurai: crit_chance +10%, armor_penetration +10%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#169:   Ranger: crit_chance +8%, dodge_chance +5%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#170:   Paladin: healing_received +25%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#171:   Vanguard: dodge_chance +8%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#172:   Wanderer: xp_multiplier +15%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#173:   Artificer: cooldown_reduction +10%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#174:   Void Summoner: lifesteal +8%, spell_power +10%
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#175:   Elemental: spell_power +40%, crit_chance +12%, crit_damage 1.7, mana_regen +10% (+80% fire/ice/lightning via ISS powers)
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#176:   Blessed: spell_power +40%, magic_resistance +18%, healing_received +30%, mana_regen +20% (+80% holy/nature/evocation via ISS powers)
-[16:35:59] [INFO] attributes/class_attribute_bonuses.js#177:   Corrupted: spell_power +40%, magic_resistance +10%, lifesteal +15%, cooldown_reduction +8%, armor_penetration +10% (+80% blood/ender/eldritch via ISS powers)
-[16:35:59] [INFO] Loaded script server_scripts:attributes/class_attribute_bonuses.js in 0.002 s
-[16:35:59] [INFO] attributes/iss_school_to_ars_glyph.js#54: Loaded Java class 'com.iridescentcraft.reforging.event.ForgeEventRegistry'
-[16:35:59] [INFO] attributes/iss_school_to_ars_glyph.js#159: [iss_school_to_ars_glyph] loaded (4 elemental schools mapped via SpellDamageEvent.Pre)
-[16:35:59] [INFO] Loaded script server_scripts:attributes/iss_school_to_ars_glyph.js in 0.011 s
-[16:35:59] [INFO] attributes/iss_school_to_ars_spell.js#57: Loaded Java class 'net.minecraft.world.entity.LivingEntity'
-[16:35:59] [INFO] attributes/iss_school_to_ars_spell.js#142: [iss_school_to_ars] loaded (4 damage-type mappings)
-[16:35:59] [INFO] Loaded script server_scripts:attributes/iss_school_to_ars_spell.js in 0.007 s
-[16:35:59] [INFO] attributes/mana_debug_command.js#139: [IridescentCraft] /icraft mana_debug command registered
-[16:35:59] [INFO] Loaded script server_scripts:attributes/mana_debug_command.js in 0.003 s
-[16:35:59] [INFO] attributes/mana_pool_bonuses.js#35: Loaded Java class 'java.util.UUID'
-[16:35:59] [INFO] attributes/mana_pool_bonuses.js#176: [IridescentCraft] mana_pool_bonuses v2 loaded
-[16:35:59] [INFO] attributes/mana_pool_bonuses.js#177:   Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)
-[16:35:59] [INFO] attributes/mana_pool_bonuses.js#178:   Cleanup: 8 legacy UUIDs across 4 attributes (once per player)
-[16:35:59] [INFO] Loaded script server_scripts:attributes/mana_pool_bonuses.js in 0.004 s
-[16:35:59] [INFO] bonfire/boss_arena_registry.js#531: [iridescent/boss_arenas] registry loaded: 47 boss arenas (38 structure-located, 7 block-located, 2 summon-only)
-[16:35:59] [INFO] Loaded script server_scripts:bonfire/boss_arena_registry.js in 0.002 s
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#74: Loaded Java class 'net.blay09.mods.waystones.api.WaystonesAPI'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#75: Loaded Java class 'net.blay09.mods.waystones.api.WaystoneStyles'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#76: Loaded Java class 'net.blay09.mods.waystones.core.PlayerWaystoneManager'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#79: Loaded Java class 'net.minecraft.core.registries.Registries'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#80: Loaded Java class 'net.minecraft.tags.TagKey'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#82: Loaded Java class 'net.minecraft.nbt.StringTag'
-[16:35:59] [INFO] bonfire/boss_bonfire_system.js#389: [iridescent/bonfire] loaded; 47 boss arena(s) eligible for auto-bonfires
-[16:35:59] [INFO] Loaded script server_scripts:bonfire/boss_bonfire_system.js in 0.02 s
-[16:35:59] [INFO] bonfire/boss_compass_handler.js#688: Loaded Java class 'com.mojang.brigadier.arguments.StringArgumentType'
-[16:35:59] [INFO] bonfire/boss_compass_handler.js#749: [iridescent/boss_compass] handler loaded; 47 arena(s) selectable
-[16:35:59] [INFO] Loaded script server_scripts:bonfire/boss_compass_handler.js in 0.005 s
-[16:35:59] [INFO] bonfire/gob_t1_rebalance.js#41: [iridescent/gob_t1] emerald gnome-hat recipe + iron-breakable golden gnome statue loaded
-[16:35:59] [INFO] Loaded script server_scripts:bonfire/gob_t1_rebalance.js in 0.0 s
-[16:35:59] [INFO] cherry_spawn_biome.js#56: Loaded Java class 'net.minecraft.core.BlockPos'
-[16:35:59] [INFO] cherry_spawn_biome.js#57: Loaded Java class 'java.util.function.Predicate'
-[16:35:59] [INFO] cherry_spawn_biome.js#360: [IridescentCraft] cherry_spawn_biome v2 loaded -- search for iridescent_biomes:cherry_river_valley + village; max 15 attempts; first-join teleport armed
-[16:35:59] [INFO] Loaded script server_scripts:cherry_spawn_biome.js in 0.018 s
-[16:35:59] [INFO] class/equipment_hp_halving.js#142: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
-[16:35:59] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.002 s
-[16:35:59] [INFO] cleanup/strip_truly_modular_items.js#73: [strip_truly_modular] loaded -- watching miapi: / archery: / tm_arsenal: / modular_item_api: / truly_modular:
-[16:35:59] [INFO] Loaded script server_scripts:cleanup/strip_truly_modular_items.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:codex_delivery.js in 0.006 s
-[16:35:59] [INFO] Loaded script server_scripts:compat/class_artifacts_recipes.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:compat/disable_creeperlings.js in 0.0 s
-[16:35:59] [INFO] compat/terramity_cave_gnome_cave_only.js#32: [iridescent/cave_gnome] cave-only spawn gate active (wild surface spawns denied)
-[16:35:59] [INFO] Loaded script server_scripts:compat/terramity_cave_gnome_cave_only.js in 0.0 s
-[16:35:59] [INFO] death_penalty.js#455: Loaded Java class 'top.theillusivec4.curios.api.CuriosApi'
-[16:35:59] [INFO] Loaded script server_scripts:death_penalty.js in 0.009 s
-[16:35:59] [INFO] diag_armor_modifiers.js#58: [IridescentCraft] /icraft armormods command registered
-[16:35:59] [INFO] Loaded script server_scripts:diag_armor_modifiers.js in 0.0 s
-[16:35:59] [INFO] disable_zombie_door_break.js#26: Loaded Java class 'net.minecraft.world.entity.ai.goal.BreakDoorGoal'
-[16:35:59] [INFO] disable_zombie_door_break.js#27: Loaded Java class 'net.minecraft.world.entity.Mob'
-[16:35:59] [INFO] disable_zombie_door_break.js#110: [IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on ANY Mob spawn -- vanilla + modded)
-[16:35:59] [INFO] Loaded script server_scripts:disable_zombie_door_break.js in 0.008 s
-[16:35:59] [INFO] economy/relic_broker.js#45: Loaded Java class 'com.iridescentcraft.relics.broker.RelicBroker'
-[16:35:59] [INFO] economy/relic_broker.js#46: Loaded Java class 'net.minecraft.world.item.trading.MerchantOffers'
-[16:35:59] [INFO] economy/relic_broker.js#47: Loaded Java class 'net.minecraft.world.item.trading.MerchantOffer'
-[16:35:59] [INFO] economy/relic_broker.js#313: [IridescentCraft] Relic Broker loaded (block iridescent_relics:relic_broker_stand -> tier-gated MerchantMenu)
-[16:35:59] [INFO] economy/relic_broker.js#314:   catalog: 23 enchant books, 6 materials, 2 scroll tiers, 3 convenience, buys 8 boss relics. ALL PROVISIONAL.
-[16:35:59] [INFO] Loaded script server_scripts:economy/relic_broker.js in 0.006 s
-[16:35:59] [INFO] economy/relic_sink.js#377: [IridescentCraft] Relic sink loaded (/icraft relics submit [confirm] | balance)
-[16:35:59] [INFO] economy/relic_sink.js#378:   Currency: iridescent_relics:relic_essence · broad namespaces: artifacts, moreartifacts, celestial_artifacts, rpgseteffects, relics
-[16:35:59] [INFO] economy/relic_sink.js#379:   Boss-signature + override values: 47 · deny-list: 34 · ALL VALUES PROVISIONAL
-[16:35:59] [INFO] Loaded script server_scripts:economy/relic_sink.js in 0.004 s
-[16:35:59] [INFO] enchantments/enchant_effects.js#556: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
-[16:35:59] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.005 s
-[16:35:59] [INFO] end/dragon_exploration_gate.js#388: [IridescentCraft] Dragon exploration gate loaded
-[16:35:59] [INFO] end/dragon_exploration_gate.js#389:   - Dragon blocked until End exploration complete
-[16:35:59] [INFO] end/dragon_exploration_gate.js#390:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
-[16:35:59] [INFO] end/dragon_exploration_gate.js#391:   - Dragon Summoning Crystal required to start fight
-[16:35:59] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.004 s
-[16:35:59] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.0 s
-[16:35:59] [INFO] endgame/rift_mechanics.js#309: [IridescentCraft] Rift mechanics loaded
-[16:35:59] [INFO] endgame/rift_mechanics.js#310:   - Rift tracking data initialization
-[16:35:59] [INFO] endgame/rift_mechanics.js#311:   - Rift Shard/Catalyst Compendium milestones
-[16:35:59] [INFO] endgame/rift_mechanics.js#312:   - Mythic unique item server announcements
-[16:35:59] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.002 s
-[16:35:59] [INFO] enemyexpansion_explosive_launch_blocker.js#50: Loaded Java class 'net.minecraftforge.eventbus.api.Event$Result'
-[16:35:59] [INFO] enemyexpansion_explosive_launch_blocker.js#87: [IridescentCraft] enemyexpansion_explosive_launch_blocker loaded (event-driven: enemyexpansion:explosive_launch is denied at MobEffectEvent.Applicable for all living entities)
-[16:35:59] [INFO] Loaded script server_scripts:enemyexpansion_explosive_launch_blocker.js in 0.002 s
-[16:35:59] [INFO] example.js#5: Hello, World! (Loaded server scripts)
-[16:35:59] [INFO] Loaded script server_scripts:example.js in 0.0 s
-[16:35:59] [INFO] exploration/codex_exploration_kills.js#368: [IridescentCraft] Codex exploration KILL drops loaded
-[16:35:59] [INFO] exploration/codex_exploration_kills.js#369:   Minibosses: 40 | Named bosses: 67 | Dimension-entry bonuses: 10 (20 tokens, first entry)
-[16:35:59] [INFO] Loaded script server_scripts:exploration/codex_exploration_kills.js in 0.003 s
-[16:35:59] [INFO] fix_empty_display_name.js#73: [IridescentCraft] fix_empty_display_name loaded -- empty customName overrides cleared at spawn
-[16:35:59] [INFO] Loaded script server_scripts:fix_empty_display_name.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:fix_stone_tags.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:fix_venus_sandstone_tag.js in 0.0 s
-[16:35:59] [INFO] food/hunger_management.js#108: [IridescentCraft] AFK hunger management loaded
-[16:35:59] [INFO] food/hunger_management.js#109:   - AFK threshold: 20 minutes (24000 ticks)
-[16:35:59] [INFO] food/hunger_management.js#110:   - Sleep protection: Saturation I while sleeping
-[16:35:59] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:food_dedup_recipes.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.004 s
-[16:35:59] [INFO] gates/codex_boss_rush.js#528: [IridescentCraft] Codex boss-rush tracker loaded (/icraft codex bosses)
-[16:35:59] [INFO] gates/codex_boss_rush.js#529:   T1→T2 80% of 28 | T2→T3 90% of 23 | T3→T4 100% of 53 (incl. Lucifer)
-[16:35:59] [INFO] Loaded script server_scripts:gates/codex_boss_rush.js in 0.005 s
-[16:35:59] [INFO] gates/codex_progression_engine.js#625: Loaded Java class 'com.mojang.brigadier.arguments.IntegerArgumentType'
-[16:35:59] [INFO] gates/codex_progression_engine.js#722: [IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance | exchange)
-[16:35:59] [INFO] gates/codex_progression_engine.js#723:   Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)
-[16:35:59] [INFO] gates/codex_progression_engine.js#724:   Conversion entries (Engineering + Magic): 112
-[16:35:59] [INFO] gates/codex_progression_engine.js#725:   Bulk metals are CONTEXTUAL — mint the player's current transition tier (per-tier caps)
-[16:35:59] [INFO] gates/codex_progression_engine.js#726:   #69 token→XP exchange (T4-gated): 2/4/8 XP per T1/T2/T3 token
-[16:35:59] [INFO] Loaded script server_scripts:gates/codex_progression_engine.js in 0.007 s
-[16:35:59] [INFO] gates/milestone_detection.js#124: [IridescentCraft] Tier infrastructure loaded (milestone auto-advance retired -> Codex token economy)
-[16:35:59] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
-[16:35:59] [INFO] icraftsets_command.js#22: Loaded Java class 'com.everydayxp.rpgseteffects.system.slot.SetEquipmentHelper'
-[16:35:59] [INFO] icraftsets_command.js#45: [IridescentCraft] /icraftsets command registered
-[16:35:59] [INFO] Loaded script server_scripts:icraftsets_command.js in 0.001 s
-[16:35:59] [INFO] icraft_despawn_command.js#27: Loaded Java class 'net.minecraft.world.entity.MobCategory'
-[16:35:59] [INFO] icraft_despawn_command.js#28: Loaded Java class 'net.minecraft.world.entity.monster.Monster'
-[16:35:59] [INFO] icraft_despawn_command.js#33: Loaded Java class 'net.minecraft.world.entity.OwnableEntity'
-[16:35:59] [INFO] icraft_despawn_command.js#164: [IridescentCraft] /icraft despawn <radius> command registered
-[16:35:59] [INFO] Loaded script server_scripts:icraft_despawn_command.js in 0.007 s
-[16:35:59] [INFO] idle_hunger_pause.js#111: [IridescentCraft] idle_hunger_pause loaded — hunger drain pauses after 120s of inaction
-[16:35:59] [INFO] Loaded script server_scripts:idle_hunger_pause.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:integration/dna_simple_staves_buffs.js in 0.006 s
-[16:35:59] [INFO] integration/dna_simple_staves_strip.js#94: [dna_simple_staves_strip] loaded — 20 items stripped of right-click projectile use
-[16:35:59] [INFO] Loaded script server_scripts:integration/dna_simple_staves_strip.js in 0.001 s
-[16:35:59] [INFO] items/compass_of_return.js#129: [IridescentCraft] Compass of Return loaded
-[16:35:59] [INFO] items/compass_of_return.js#130:   - Right-click to teleport to last bed
-[16:35:59] [INFO] items/compass_of_return.js#131:   - 10 minute cooldown
-[16:35:59] [INFO] items/compass_of_return.js#132:   - Bed position tracked on right-click interaction
-[16:35:59] [INFO] Loaded script server_scripts:items/compass_of_return.js in 0.001 s
-[16:35:59] [INFO] liteminer_hunger_gate.js#122: [IridescentCraft] liteminer_hunger_gate loaded — chain breaks cancel below 6/20 hunger
-[16:35:59] [INFO] Loaded script server_scripts:liteminer_hunger_gate.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/0_entity_id_validator.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/alexsmobs_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/blue_skies_drops.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/boss_arena_material_tease.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/boss_arena_themed_loot.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/boss_refight_repair_floors.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/boss_unique_drops.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/cataclysm_boss_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/codex_exploration_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/dimensional_boss_drops.js in 0.0 s
-[16:35:59] [INFO] loot/fragment_core_drops.js#39: Loaded Java class 'net.minecraft.world.entity.item.ItemEntity'
-[16:35:59] [INFO] loot/fragment_core_drops.js#40: Loaded Java class 'net.minecraft.world.item.ItemStack'
-[16:35:59] [INFO] loot/fragment_core_drops.js#84: [IridescentCraft] fragment_core_drops loaded (4% from hostile mob death, ultris_spawned_mob excluded)
-[16:35:59] [INFO] Loaded script server_scripts:loot/fragment_core_drops.js in 0.014 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/grass_pam_seeds.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/iss_boss_drops.js in 0.001 s
-[16:35:59] [INFO] loot/iss_boss_first_kill.js#67: [IridescentCraft] iss_boss_first_kill loaded -- 4 first-kill book guarantees armed
-[16:35:59] [INFO] Loaded script server_scripts:loot/iss_boss_first_kill.js in 0.001 s
-[16:35:59] [INFO] loot/lootjs_overhaul.js#40: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.UniformGenerator'
-[16:35:59] [INFO] loot/lootjs_overhaul.js#49: Loaded Java class 'com.almostreliable.lootjs.filters.ItemFilter'
-[16:35:59] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.013 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/lovely_pieces_loot.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/mahou_synergy_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/majrusz_skeleton_punch_strip.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/meat_drop_doubling.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/staff_wand_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/stalwart_dungeons_drops.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/terramity_boss_drops.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/terramity_structure_drops.js in 0.001 s
-[16:35:59] [INFO] loot/tmb_plain_bow_effects.js#25: Loaded Java class 'net.minecraft.world.effect.MobEffectInstance'
-[16:35:59] [INFO] loot/tmb_plain_bow_effects.js#26: Loaded Java class 'net.minecraft.world.effect.MobEffects'
-[16:35:59] [INFO] loot/tmb_plain_bow_effects.js#86: [tmb_plain_bow_effects] wired theme effects for 5 plain TMB bows
-[16:35:59] [INFO] Loaded script server_scripts:loot/tmb_plain_bow_effects.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/twilight_boss_drops.js in 0.001 s
-[16:35:59] [INFO] loot/unique_itemset_registry.js#158: [unique_itemset_registry] 79 uniques registered (34 TMB bows + 45 SS swords); 40 new boss drops; buff ladder T1..T4 = 10/20/30/40%
-[16:35:59] [INFO] Loaded script server_scripts:loot/unique_itemset_registry.js in 0.003 s
-[16:35:59] [INFO] loot/unique_tier_buff.js#23: Loaded Java class 'net.minecraft.world.entity.projectile.Projectile'
-[16:35:59] [INFO] loot/unique_tier_buff.js#41: [unique_tier_buff] arrow tagger armed (Projectile spawn -> bow-id tag)
-[16:35:59] [INFO] loot/unique_tier_buff.js#98: [unique_tier_buff] tier-scaled damage handler registered (T1..T4 = 10/20/30/40%)
-[16:35:59] [INFO] Loaded script server_scripts:loot/unique_tier_buff.js in 0.006 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/zzz_iss_scroll_tier_clamp.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/zz_iss_arena_enrichment.js in 0.001 s
-[16:35:59] [INFO] loot/zz_pack_enchanted_books.js#48: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.ConstantValue'
-[16:35:59] [INFO] Loaded script server_scripts:loot/zz_pack_enchanted_books.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:loot/zz_unique_chest_strip.js in 0.0 s
-[16:35:59] [INFO] magic_crit_hook.js#127: [IridescentCraft] magic_crit_hook loaded -- magic damage can crit via book enchants
-[16:35:59] [INFO] Loaded script server_scripts:magic_crit_hook.js in 0.004 s
-[16:35:59] [INFO] megatorch_damage.js#53: Loaded Java class 'net.xalcon.torchmaster.common.ModCaps'
-[16:35:59] [INFO] megatorch_damage.js#111: [megatorch-damage] aura active: 10 dmg / 10t to hostiles within r=64 of a megatorch
-[16:35:59] [INFO] Loaded script server_scripts:megatorch_damage.js in 0.002 s
-[16:35:59] [INFO] mobgriefing_default.js#27: Loaded Java class 'net.minecraft.world.level.GameRules'
-[16:35:59] [INFO] mobgriefing_default.js#61: [IridescentCraft] mobgriefing_default loaded -- one-shot mobGriefing=false on world init
-[16:35:59] [INFO] Loaded script server_scripts:mobgriefing_default.js in 0.002 s
-[16:35:59] [INFO] more_curios_slots_cap.js#141: [IridescentCraft] More Curios Slots cap handler loaded (9 slot types; back=+1, others=+3)
-[16:35:59] [INFO] Loaded script server_scripts:more_curios_slots_cap.js in 0.002 s
-[16:35:59] [INFO] mutant_xp_boost.js#60: [IridescentCraft] mutant_xp_boost loaded (10x)
-[16:35:59] [INFO] Loaded script server_scripts:mutant_xp_boost.js in 0.002 s
-[16:35:59] [INFO] origins/artificial_construct_progression.js#181: [IridescentCraft] Artificial Construct progression loaded
-[16:35:59] [INFO] origins/artificial_construct_progression.js#182:   - 25% food efficiency from normal food
-[16:35:59] [INFO] origins/artificial_construct_progression.js#183:   - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)
-[16:35:59] [INFO] origins/artificial_construct_progression.js#184:   - Iron eating grants Regen III for 10s (400% healing acceleration)
-[16:35:59] [INFO] origins/artificial_construct_progression.js#185:   - Iron upgrade ladder: 1000/2000/4000/8000/16000
-[16:35:59] [INFO] origins/artificial_construct_progression.js#186:   - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)
-[16:35:59] [INFO] Loaded script server_scripts:origins/artificial_construct_progression.js in 0.001 s
-[16:35:59] [INFO] origins/battlemage_arcane_cleave.js#49: Loaded Java class 'io.redspace.ironsspellbooks.api.magic.MagicData'
-[16:35:59] [INFO] origins/battlemage_arcane_cleave.js#186: [IridescentCraft] battlemage_arcane_cleave loaded — Arcane Cleave (2 AD per 100% bonus SP, costs 10 mana/hit) + Mana Reaver (+15 mana/melee kill)
-[16:35:59] [INFO] Loaded script server_scripts:origins/battlemage_arcane_cleave.js in 0.01 s
-[16:35:59] [INFO] origins/battlemage_mana_shield.js#63: [IridescentCraft] Battlemage Mana Shield loaded
-[16:35:59] [INFO] origins/battlemage_mana_shield.js#64:   - Resistance I base (20% damage reduction)
-[16:35:59] [INFO] origins/battlemage_mana_shield.js#65:   - Resistance II with high magic bonus (36% reduction)
-[16:35:59] [INFO] origins/battlemage_mana_shield.js#66:   - Resistance III cap with very high magic bonus (48% reduction)
-[16:35:59] [INFO] Loaded script server_scripts:origins/battlemage_mana_shield.js in 0.001 s
-[16:35:59] [INFO] origins/class_passives.js#322: [IridescentCraft] Class passives loaded
-[16:35:59] [INFO] origins/class_passives.js#323:   - Samurai: Focus (movement shield + Vorpal by tier)
-[16:35:59] [INFO] origins/class_passives.js#324:   - Wanderer: Seasoned Traveler (dimension stacking)
-[16:35:59] [INFO] origins/class_passives.js#325:   - Paladin: Healing Aura (AoE regen)
-[16:35:59] [INFO] origins/class_passives.js#326:   - Archmage: Mana Attunement (magic bonus by tier)
-[16:35:59] [INFO] origins/class_passives.js#327:   - Orc: Bloodlust (hunger-scaling damage)
-[16:35:59] [INFO] origins/class_passives.js#328:   - Vanguard: Guardian's Presence (Weakness to nearby entities)
-[16:35:59] [INFO] origins/class_passives.js#329:   - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)
-[16:35:59] [INFO] Loaded script server_scripts:origins/class_passives.js in 0.002 s
-[16:35:59] [INFO] origins/class_passives_phase6h.js#275: [IridescentCraft] class_passives_phase6h loaded (Berserker Battle Trance, Samurai Bushido, Wanderer Adaptable, Artificer Resourceful)
-[16:35:59] [INFO] Loaded script server_scripts:origins/class_passives_phase6h.js in 0.001 s
-[16:35:59] [INFO] origins/origin_effects.js#260: [IridescentCraft] Origins custom effects loaded
-[16:35:59] [INFO] origins/origin_effects.js#261:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
-[16:35:59] [INFO] origins/origin_effects.js#262:   - Merling: Land discomfort after 5 min dry
-[16:35:59] [INFO] origins/origin_effects.js#263:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
-[16:35:59] [INFO] origins/origin_effects.js#264:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
-[16:35:59] [INFO] origins/origin_effects.js#265:   - Shulk: Hardened Shell (reduced death durability loss)
-[16:35:59] [INFO] origins/origin_effects.js#266:   - Dwarf: Miner's Appetite (Saturation on block break)
-[16:35:59] [INFO] origins/origin_effects.js#267:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
-[16:35:59] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.002 s
-[16:35:59] [INFO] origins/origin_status_commands.js#154: [IridescentCraft] /icraft witch_status + /icraft construct_status registered
-[16:35:59] [INFO] Loaded script server_scripts:origins/origin_status_commands.js in 0.001 s
-[16:35:59] [INFO] origins/phantom_undeath.js#113: [IridescentCraft] Phantom Undeath loaded
-[16:35:59] [INFO] origins/phantom_undeath.js#114:   - Phantoms cannot die — health locks to 0.5 hearts
-[16:35:59] [INFO] origins/phantom_undeath.js#115:   - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min
-[16:35:59] [INFO] origins/phantom_undeath.js#116:   - Resistance II during collapse to prevent instant re-collapse
-[16:35:59] [INFO] Loaded script server_scripts:origins/phantom_undeath.js in 0.0 s
-[16:35:59] [INFO] origins/spell_book_transfer.js#208: [IridescentCraft] spell_book_transfer loaded — ISB_Spells NBT preserved through Tetra replacement
-[16:35:59] [INFO] Loaded script server_scripts:origins/spell_book_transfer.js in 0.001 s
-[16:35:59] [INFO] origins/ss_unique_spellsword_scaling.js#100: [ss_unique_spellsword_scaling] loaded — 33 uniques scale with spell power
-[16:35:59] [INFO] Loaded script server_scripts:origins/ss_unique_spellsword_scaling.js in 0.003 s
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#249: [IridescentCraft] Witch of Ink progression loaded
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#250:   - Boss kill counter (Apotheosis/Champions +1, dimensional +10, cap 200)
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#251:   - Damage out: +0.1% per counter (cap +20% at 200, jar LivingHurtEvent)
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#252:   - Damage in:  -0.1% per counter (cap -20% at 200, jar LivingHurtEvent)
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#253:   - Penthesilea (at 200): +10% additive damage, +15% SP-to-AD conv,
-[16:35:59] [INFO] origins/witch_of_ink_progression.js#254:     +15% HP, permanent Haste I + Resistance I + Fire Resist + Regen I
-[16:35:59] [INFO] Loaded script server_scripts:origins/witch_of_ink_progression.js in 0.001 s
-[16:35:59] [INFO] origins/witherborn_slimebodied.js#191: [IridescentCraft] Witherborn & Slimebodied origins loaded
-[16:35:59] [INFO] origins/witherborn_slimebodied.js#192:   Witherborn: Wither on hit, hunger damage penalty
-[16:35:59] [INFO] origins/witherborn_slimebodied.js#193:   Slimebodied: satiety DR, food cooldown, satiety floor
-[16:35:59] [INFO] Loaded script server_scripts:origins/witherborn_slimebodied.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:pregen/auto_chunky.js in 0.0 s
-[16:35:59] [INFO] quests/combat_kill_signals.js#87: [combat_kill_signals] loaded — Apotheosis boss (apoth.boss) + champion (apoth.miniboss) kill -> Heracles dummy bridges
-[16:35:59] [INFO] Loaded script server_scripts:quests/combat_kill_signals.js in 0.001 s
-[16:35:59] [INFO] quests/heracles_reconcile.js#503: [heracles_reconcile] loaded — 91 quests auto-reconcile from existing advancements / tiers / flags (login + 30s periodic + /icraft_reconcile)
-[16:35:59] [INFO] Loaded script server_scripts:quests/heracles_reconcile.js in 0.005 s
-[16:35:59] [INFO] quests/onboarding_bridge.js#187: [iridescent/onboarding_bridge] loaded; bridging 2 dummy quests (JLF aptitude level 5 + onboarding capstone), 100-tick pass per player
-[16:35:59] [INFO] Loaded script server_scripts:quests/onboarding_bridge.js in 0.001 s
-[16:35:59] [INFO] randomize_blank_scrolls.js#42: Loaded Java class 'io.redspace.ironsspellbooks.api.registry.SpellRegistry'
-[16:35:59] [INFO] randomize_blank_scrolls.js#43: Loaded Java class 'io.redspace.ironsspellbooks.api.spells.ISpellContainer'
-[16:35:59] [INFO] Loaded script server_scripts:randomize_blank_scrolls.js in 0.005 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/boss_material_processing.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/cooking_for_blockheads_overrides.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/create_blaze_burner_t1.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/magic_recipes.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/mek_biofuel_squeeze.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/progression_tier_fixes.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/staff_wand_recipes.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/strip_mutant_monsters.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/strip_tmb_bow_recipes.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:regen_control.js in 0.001 s
-[16:35:59] [INFO] relic_boss_drops.js#113: [IridescentCraft] relic_boss_drops loaded (6 LivingDropsEvent bindings + ender_dragon via death event)
-[16:35:59] [INFO] Loaded script server_scripts:relic_boss_drops.js in 0.002 s
-[16:35:59] [INFO] respawn_hunger.js#40: [IridescentCraft] respawn_hunger loaded — respawn sets food=6, saturation=0
-[16:35:59] [INFO] Loaded script server_scripts:respawn_hunger.js in 0.0 s
-[16:35:59] [INFO] respec/class_respec.js#335: [class_respec] loaded — icraft:class_altar: 1 trophy (9 accepted) + 30 levels -> `origin gui <player> origins:class`
-[16:35:59] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.002 s
-[16:35:59] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.0 s
-[16:35:59] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.004 s
-[16:35:59] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.002 s
-[16:35:59] [INFO] scaling/mob_scaling_unified.js#269: [IridescentCraft] Unified mob scaling loaded (tier HP + dimension scaling)
-[16:35:59] [INFO] Loaded script server_scripts:scaling/mob_scaling_unified.js in 0.003 s
-[16:35:59] [INFO] scaling/zz_ascension_scaling.js#131: [iridescent/ascension] mob-scaling spawn handler loaded (runs after boss_hp; ISS-caster crash-guarded)
-[16:35:59] [INFO] Loaded script server_scripts:scaling/zz_ascension_scaling.js in 0.001 s
-[16:35:59] [INFO] scaling/zz_boss_global_3x.js#233: [iridescent/boss_3x] global boss buff loaded (hp ×3 + melee dmg ×3 + ISS spell ×2; see header for boundary + coverage)
-[16:35:59] [INFO] Loaded script server_scripts:scaling/zz_boss_global_3x.js in 0.001 s
-[16:35:59] [INFO] skills/justleveling_skills.js#432: Loaded Java class 'net.minecraft.world.inventory.EnchantmentMenu'
-[16:35:59] [INFO] skills/justleveling_skills.js#433: Loaded Java class 'net.minecraft.world.inventory.AnvilMenu'
-[16:35:59] [INFO] Loaded script server_scripts:skills/justleveling_skills.js in 0.019 s
-[16:35:59] [INFO] Loaded script server_scripts:skills/mastery_tax.js in 0.001 s
-[16:35:59] [INFO] skills/skill_effects.js#761: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
-[16:35:59] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.005 s
-[16:35:59] [INFO] spawn_priest_tower.js#309: [PRIEST-TOWER] spawn-village guarantee armed (signature: irons_spellbooks:inscription_table)
-[16:35:59] [INFO] Loaded script server_scripts:spawn_priest_tower.js in 0.004 s
-[16:35:59] [INFO] spawn_protection.js#74: [IridescentCraft] Spawn protection loaded (radius: 32)
-[16:35:59] [INFO] Loaded script server_scripts:spawn_protection.js in 0.0 s
-[16:35:59] [INFO] spawn_village_protection.js#77: [spawn-protection] hostile deletion zone active: r=96 around world spawn
-[16:35:59] [INFO] Loaded script server_scripts:spawn_village_protection.js in 0.0 s
-[16:35:59] [INFO] strip_anomalous_drops.js#132: [IridescentCraft] strip_anomalous_drops loaded (LivingDropsEvent strip layer for 24 flagged item IDs)
-[16:35:59] [INFO] Loaded script server_scripts:strip_anomalous_drops.js in 0.001 s
-[16:35:59] [INFO] Loaded script server_scripts:strip_infinity_ham.js in 0.001 s
-[16:35:59] [INFO] sunlight_smite.js#43: Loaded Java class 'net.minecraft.tags.EntityTypeTags'
-[16:35:59] [INFO] sunlight_smite.js#46: Loaded Java class 'net.minecraft.world.damagesource.DamageTypes'
-[16:35:59] [INFO] sunlight_smite.js#108: [IridescentCraft] sunlight_smite loaded: +100 HP/tick(10) to #minecraft:undead + #forge:undead in direct sky
-[16:35:59] [INFO] Loaded script server_scripts:sunlight_smite.js in 0.002 s
-[16:35:59] [INFO] tatos_dimension_lock.js#97: [IridescentCraft] tatos_dimension_lock loaded (theabyss:* mobs confined to 4 TATOS dims)
-[16:35:59] [INFO] Loaded script server_scripts:tatos_dimension_lock.js in 0.001 s
-[16:35:59] [INFO] tetra_terramity_perks.js#159: [IridescentCraft] tetra_terramity_perks loaded
-[16:35:59] [INFO] tetra_terramity_perks.js#160:   sapphire->fire_res passive | topaz->fire on hit
-[16:35:59] [INFO] tetra_terramity_perks.js#161:   ruby->+50% fire damage | onyx->+15% minion damage
-[16:35:59] [INFO] tetra_terramity_perks.js#162:   dimlite->night vision passive | iridium->stronger melee knockback
-[16:35:59] [INFO] Loaded script server_scripts:tetra_terramity_perks.js in 0.002 s
-[16:35:59] [INFO] ultris_randomizer_janitor.js#133: [IridescentCraft] ultris_randomizer_janitor loaded (100-tick stranded-marker sweep)
-[16:35:59] [INFO] Loaded script server_scripts:ultris_randomizer_janitor.js in 0.001 s
-[16:35:59] [INFO] Loaded 158/158 KubeJS server scripts in 0.5 s with 0 errors and 0 warnings
-[16:35:59] [INFO] Scripts loaded
-[16:35:59] [INFO] fix_stone_tags.js#47: [stone-tag-fix] 1 block(s) -> mineable/pickaxe, cleared from needs_*_tool (wood-mineable, post-merge)
-[16:35:59] [INFO] economy/relic_sink.js#371: [IridescentCraft] #icraft:relic_sinkable built (5 broad namespaces + 47 overrides + 2 allow, minus 34 deny)
-[16:35:59] [INFO] fix_venus_sandstone_tag.js#30: [venus-sandstone-tag] forge:sandstone/venus_sandstone <- ad_astra:venus_sandstone (post-merge)
-[16:35:59] [INFO] Initializing recipe event...
-[16:36:04] [INFO] [minecraft:block] Found 1857 tags, added 2 objects, removed 1 objects
-[16:36:04] [INFO] [minecraft:item] Found 4123 tags, added 464 objects, removed 34 objects
-[16:36:28] [INFO] Processing recipes...
-[16:36:28] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_cherry[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:cherry_log\"}
-[16:36:28] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_jungle[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:jungle_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:28] [WARN] Failed to parse recipe 'deeperdarker:resonarium_hoe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:28] [WARN] Failed to parse recipe 'cardinal_sins:halberdofpriderec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:28] [WARN] Failed to parse recipe 'cataclysm:stonecutting/azure_seastone_brick_stair_from_stonecutting[minecraft:stonecutting]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:28] [WARN] Failed to parse recipe 'botania:brew/clear[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:robedbootsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'traveloptics:sand_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'deeperdarker:resonarium_helmet_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:robedhoodrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:scytheofslothrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/feather_feet[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenhelmetrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'tetranomicon:netherite_opal[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/emptiness[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:darksteelleggingsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'delightful:knives/smithing/resonarium_knife[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'traveloptics:abyss_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/jump_boost[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/weak_regeneration[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'traveloptics:void_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\"}
-[16:36:29] [WARN] Failed to parse recipe 'traveloptics:male_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenbootsrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'deeperdarker:resonarium_pickaxe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/overload[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:spearoflustrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_yellow_autumn[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\"}
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:darksteelbootsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_origin[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/healing[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_snowblossom[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:cherry_log\"}
-[16:36:29] [WARN] Failed to parse recipe 'cardinal_sins:darksteelhelmetrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/strength[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/haste[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:29] [WARN] Failed to parse recipe 'botania:brew/soul_cross[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'deeperdarker:resonarium_shovel_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe '1_splatus:ultris/ominous_eye[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_dark_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:dark_oak_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:mech_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'stalwart_dungeons:warted_tungsten_shield_recipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_rainbow_birch[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_spruce[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:spruce_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:wrathswordrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'pamhc2foodcore:caramelcupcakeitem_x4[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'deeperdarker:resonarium_boots_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_jacaranda[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:jacaranda_log\"}
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/water_breathing[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/resistance[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:ignis_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:abyss_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:void_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:prideorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:abyss_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:abyss_craft2[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:robedchestrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_mahogany[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:mahogany_log\"}
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:axeofgluttonyrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/fire_resistance[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:robedleggingsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'stalwart_dungeons:netherite_hammer_recipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:abyssal_upgrade_smithing_template[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/invisibility[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'pamhc2foodcore:melonpieitem[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'tetranomicon:flaming_ruby[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe '1_splatus:ultris/command[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:daggerofgreedrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:slothorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'deeperdarker:resonarium_sword_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_birch[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_hellbark[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:hellbark_log\"}
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:darksteelchestplaterec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_willow[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:willow_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/bloodthirst[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/absorption[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'cardinal_sins:lustorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenchestplaterecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/regeneration[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:male_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenleggingsrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/speed[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'aetheric_tetranomicon:pyral_ingot_from_smelting_lost_content_items[minecraft:smelting]'! Falling back to vanilla: Unknown item 'lost_aether_content:phoenix_axe'
-[16:36:30] [WARN] Failed to parse recipe 'valhelsia_furniture:blue_cherry_chair[minecraft:crafting_shaped]'! Falling back to vanilla: Failed to parse custom ingredient ("valhelsia_core:platform_dependent") from {"type":"valhelsia_core:platform_dependent","fabric:type":"valhelsia_core:platform_dependent","fabric_value":{"item":"minecraft:stick"},"forge_value":{"tag":"forge:rods/wooden"}}: java.lang.IllegalArgumentException: Custom ingredient cannot be used inside an array ingredient. You can replace the array by a fabric:any ingredient.
-[16:36:30] [WARN] Failed to parse recipe 'valhelsia_furniture:black_warped_chair[minecraft:crafting_shaped]'! Falling back to vanilla: Failed to parse custom ingredient ("valhelsia_core:platform_dependent") from {"type":"valhelsia_core:platform_dependent","fabric:type":"valhelsia_core:platform_dependent","fabric_value":{"item":"minecraft:stick"},"forge_value":{"tag":"forge:rods/wooden"}}: java.lang.IllegalArgumentException: Custom ingredient cannot be used inside an array ingredient. You can replace the array by a fabric:any ingredient.
-[16:36:30] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_palm[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:palm_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/night_vision[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'traveloptics:male_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:30] [WARN] Failed to parse recipe 'botania:brew/allure[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
-[16:36:30] [WARN] Failed to parse recipe 'deeperdarker:resonarium_leggings_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'cardinal_sins:envysoulrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'traveloptics:mech_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'traveloptics:ignis_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'cardinal_sins:greedorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'pamhc2foodcore:honeymuffinitem[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_maple[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\"}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_orange_autumn[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:dark_oak_log\"}
-[16:36:31] [WARN] Failed to parse recipe 'cardinal_sins:gluttonysoulorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'deeperdarker:resonarium_chestplate_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'deeperdarker:resonarium_axe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'cardinal_sins:wrathorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_flowering_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_redwood[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:redwood_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_rubberwood[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"thermal:rubberwood_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_acacia[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:acacia_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:31] [WARN] Failed to parse recipe 'tetranomicon:cincinnasite_diamond[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'cardinal_sins:sickleofenvyrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'traveloptics:ignis_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'traveloptics:sand_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_umbran[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:umbran_log\"}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_fir[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:fir_log\"}
-[16:36:31] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_magic[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:magic_log\",\"Properties\":{\"axis\":\"y\"}}
-[16:36:31] [INFO] Found 28922 recipes in 2.952 s
-[16:36:31] [INFO] compat/class_artifacts_recipes.js#39: [IridescentCraft] Stripped 17 rpgseteffects crafting/smelting recipes (drops-only design)
-[16:36:31] [INFO] endgame/mythic_forge.js#266: [IridescentCraft] Mythic Forge recipes loaded
-[16:36:31] [INFO] endgame/mythic_forge.js#267:   - Mythic Forge crafting recipe
-[16:36:31] [INFO] endgame/mythic_forge.js#268:   - Rift Keystone entry item recipe
-[16:36:31] [INFO] endgame/mythic_forge.js#269:   - Void Coffer banking item recipe
-[16:36:31] [INFO] endgame/mythic_forge.js#270:   - Mythic Catalysts I-V
-[16:36:31] [INFO] endgame/mythic_forge.js#271:   - Mythic Reforge Token
-[16:36:31] [INFO] endgame/mythic_forge.js#272:   - 4 Mythic Unique item recipes (Blueprint)
-[16:36:32] [INFO] food_dedup_recipes.js#108: [icraft food_dedup] Removed recipes for 74 duplicate outputs
-[16:36:32] [INFO] recipes/ad_astra_gating.js#159: Loaded Java class 'net.minecraft.nbt.ListTag'
-[16:36:32] [INFO] recipes/ad_astra_gating.js#277: [IridescentCraft] ad_astra_gating.js loaded — Ad Astra recipes gated to T4+
-[16:36:32] [INFO] recipes/boss_material_processing.js#43: [IridescentCraft] Boss material processing recipes loaded
-[16:36:32] [INFO] recipes/cooking_conversion.js#383: [IridescentCraft] cooking_conversion.js loaded — crafting table alternatives for cooking pot recipes
-[16:36:32] [INFO] recipes/if_latex_rework.js#199: [IridescentCraft] IF latex rework + HDPE circuits loaded
-[16:36:32] [INFO] recipes/if_latex_rework.js#200:   - Logs → latex via Create mixing/crushing + Thermal crucible
-[16:36:32] [INFO] recipes/if_latex_rework.js#201:   - HDPE sheet/pellet/rod → dry rubber (1:9 / 1:3 / 1:6)
-[16:36:32] [INFO] recipes/if_latex_rework.js#202:   - Latex fluid → dry rubber via smelting + Create compacting
-[16:36:32] [INFO] recipes/if_latex_rework.js#203:   - HDPE Circuit Board: alternative for fission/fusion/machine recipes
-[16:36:32] [INFO] recipes/mek_biofuel_squeeze.js#177: [IridescentCraft] mek_biofuel_squeeze.js loaded -- factor 4, re-added 101 squeezed crushing->bio_fuel recipes
-[16:36:32] [INFO] recipes/planetary_extraction.js#184: [IridescentCraft] planetary_extraction.js loaded — planet crushing + hydrogen-to-fuel chain
-[16:36:35] [INFO] recipes/recipe_audit.js#530: [IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active
-[16:36:35] [INFO] recipes/staff_wand_recipes.js#182: [staff_wand_recipes] loaded — Dan T1 (5) + SS elements (8) reseeded
-[16:36:35] [INFO] recipes/strip_tmb_bow_recipes.js#25: [strip_tmb_bow_recipes] removed craft recipes for 34 boss-exclusive TMB bows
-[16:36:36] [INFO] recipes/tier_gated_recipes.js#585: [IridescentCraft] P3 tier_gated_recipes.js loaded
-[16:36:36] [INFO] recipes/waystone_recipes.js#270: [IridescentCraft] waystone_recipes.js loaded
-[16:36:36] [INFO] Posted recipe events in 5.050 s
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:acacia_chest_from_quark_acacia_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:acacia_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"acacia\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:cherry_chest_from_quark_cherry_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:cherry_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"cherry\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:mangrove_chest_from_quark_mangrove_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:mangrove_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"mangrove\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:bamboo_chest_from_quark_bamboo_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:bamboo_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"bamboo\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe forbidden_arcanus:aurum_chest_boat[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"forbidden_arcanus:aurum_boat"},{"fabric_value":{"tag":"c:chests"},"forge_value":{"tag":"forge:chests/wooden"}}],"result":{"item":"forbidden_arcanus:aurum_chest_boat"}}: An ingredient entry needs either a tag or an item
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:jungle_chest_from_quark_jungle_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:jungle_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"jungle\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:birch_chest_from_quark_birch_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:birch_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"birch\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:oak_chest_from_quark_oak_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:oak_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"oak\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:spruce_chest_from_quark_spruce_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:spruce_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"spruce\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:dark_oak_chest_from_quark_dark_oak_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:dark_oak_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"dark_oak\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:crimson_chest_from_quark_crimson_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:crimson_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"crimson\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe sophisticatedstorage:warped_chest_from_quark_warped_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:warped_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"warped\"}"}}: Item array cannot be empty, at least one item must be defined
-[16:36:36] [WARN] Error parsing recipe alexsdelight:barbecue_on_a_stick[minecraft:crafting_shapeless]: {"group":"barbecue_stick","type":"minecraft:crafting_shapeless","ingredients":[{"item":"farmersdelight:tomato"},{"item":"farmersdelight:onion"},{"item":"amfd:singular_cooked_moose_rib"},{"item":"minecraft:cooked_chicken"},{"item":"minecraft:stick"},{"item":"minecraft:stick"}],"result":{"item":"farmersdelight:barbecue_stick","count":2}}: Unknown item 'amfd:singular_cooked_moose_rib'
-[16:36:36] [WARN] Error parsing recipe forbidden_arcanus:edelwood_chest_boat[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"forbidden_arcanus:edelwood_boat"},{"fabric_value":{"tag":"c:chests"},"forge_value":{"tag":"forge:chests/wooden"}}],"result":{"item":"forbidden_arcanus:edelwood_chest_boat"}}: An ingredient entry needs either a tag or an item
-[16:36:36] [INFO] Added 359 recipes, removed 746 recipes, modified 578 recipes, with 14 failed recipes in 501.8 ms
-[16:36:37] [INFO] loot/0_entity_id_validator.js#92: Loaded Java class 'net.minecraft.core.registries.BuiltInRegistries'
-[16:36:37] [INFO] endgame/rift_mechanics.js#128: [IridescentCraft] Rift loot mechanics loaded (LootJS)
-[16:36:37] [INFO] endgame/rift_mechanics.js#129:   - T4 boss Rift Shard/Void Fragment drops: 12 bosses
-[16:36:37] [INFO] endgame/rift_mechanics.js#130:   - End mob Rift material drops: 3 mob types
-[16:36:37] [INFO] loot/abyss_boss_loot.js#123: [IridescentCraft] abyss_boss_loot.js loaded — Abyss boss drop gating active
-[16:36:37] [INFO] loot/alexsmobs_drops.js#131: [alexsmobs_drops] registered 21 entity loot modifiers (1 strip, 20 synergy adds)
-[16:36:37] [INFO] loot/blue_skies_drops.js#39: [blue_skies_drops] registered 4 Blue Skies boss synergy modifiers
-[16:36:37] [INFO] loot/boss_arena_material_tease.js#86: [boss_arena_material_tease] registered 13 arena material teases, 12 with a tier token (icraft #58 Piece B)
-[16:36:37] [INFO] loot/boss_arena_themed_loot.js#47: [boss_arena_themed_loot] scrubbed overworld diamonds/gunpowder from ISS catacombs/evoker_fort/pyromancer + cataclysm frosted_prison (ISS enrichment moved to zz_iss_arena_enrichment.js)
-[16:36:37] [INFO] icraft #58: [boss_refight_repair_floors] registered 12 refight-to-repair drop floors
-[16:36:37] [INFO] loot/boss_unique_drops.js#32: [boss_unique_drops] 40 boss-exclusive unique drops registered (SS T1 + TMB bows @ 15%)
-[16:36:37] [INFO] loot/cataclysm_boss_drops.js#85: [cataclysm_boss_drops] registered 8 Cataclysm boss synergy modifiers + 3 refight-to-repair material floors (ignitium/cursium/witherite); ender_guardian gauntlet is native
-[16:36:37] [INFO] loot/codex_exploration_drops.js#206: [codex_exploration_drops] Codex progression tokens injected into chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + low-rate enemy drops by dimension tier
-[16:36:37] [INFO] loot/crop_seed_reduction.js#111: [IridescentCraft] Crop seed reduction loaded
-[16:36:37] [INFO] loot/crop_seed_reduction.js#112:   - Wheat/beetroot seeds: 5% drop chance
-[16:36:37] [INFO] loot/crop_seed_reduction.js#113:   - Potato/carrot: 2 guaranteed (1 is the Quark replant cost) + 5% extra
-[16:36:37] [INFO] loot/crop_seed_reduction.js#114:   - Melon/pumpkin stem seeds: 5% drop chance
-[16:36:37] [INFO] loot/crop_seed_reduction.js#115:   - Grass seed drops: UNCHANGED (discovery mechanism)
-[16:36:37] [INFO] loot/dimensional_boss_drops.js#74: [dimensional_boss_drops] registered 11 dimension/mutant boss synergy modifiers
-[16:36:37] [INFO] loot/grass_pam_seeds.js#107: [grass_pam_seeds] Pam HC2 seeds added to 4 grass blocks (97 seeds, ~7% total per break)
-[16:36:37] [INFO] loot/iss_boss_drops.js#76: [iss_boss_drops] registered 8 entity loot modifiers
-[16:36:37] [INFO] loot/lootjs_overhaul.js#1744: [icraft-loot] T1 iron baseline: 15% iron_ingot (1-3) added to 33 overworld chest types
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3372: [IridescentCraft] LootJS structure chest overhaul loaded
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3373:   - Global chest strip: @ars_nouveau, irons_spellbooks (scrolls exempt), @moreartifacts, saplings, the denied relics
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3374:   - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG/DD/Abyss, T4(16%) End (RELIC_DENY filtered)
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3375:   - Tiered by dimension: Ars glyphs + spell books, Iron's Spellbooks books + inks, class-artifact relics
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3376:   - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3377:   - Diamonds + diamond gear stripped from every chest in the Overworld and the T2 dimensions
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3378:   - Overworld clutter: horse armor / spider eyes / rotten flesh / wood / stone removed; gunpowder, string, bone kept 50%, name tags 40%
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3379:   - Overworld food: listed non-meat foods kept 20% per stack, modded foods removed; village food + seed boost on top
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3380:   - Village chests: sanitised, curated artifact pool (1% per item), QoL roll (ink 30.9% / source gem 15.5%), compass 5%, backpack 4%
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3381:   - Ocean chests: prismarine, nautilus shell, fishing gear, heart of the sea
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3382:   - Marquee structures: themed pool per tier (7 / 8.4 / 9.8 / 11.2%) + scrolls + capped spell books
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3383:   - Epic Dungeons: tier-breaker strip, T1 magic kit, family theme loot
-[16:36:38] [INFO] loot/lootjs_overhaul.js#3384:   - Keebsz floors: F1-2 starter, F3-6 mid, F7-10 endgame
-[16:36:38] [INFO] loot/lovely_pieces_loot.js#248: [lovely-pieces-loot] tier pools wired: T1=20 T2=27 T3=21 legendaries=7 (boss-only)
-[16:36:38] [INFO] loot/mahou_synergy_drops.js#86: [mahou_synergy_drops] registered 14 Mahou Tsukai reagent injection modifiers
-[16:36:38] [INFO] loot/majrusz_skeleton_punch_strip.js#94: [icraft-loot] Majrusz skeleton Punch-strip registered (2 table patterns)
-[16:36:38] [INFO] loot/meat_drop_doubling.js#42: [meat-doubling] base meat drops doubled for 9 animals
-[16:36:38] [INFO] loot/planetary_loot.js#102: [IridescentCraft] planetary_loot.js loaded — planetary enchant books (structure chests only)
-[16:36:38] [INFO] loot/staff_wand_drops.js#116: [staff_wand_drops] loaded — 17 staves seeded across T2/T3/T4 bosses
-[16:36:38] [INFO] loot/stalwart_dungeons_drops.js#52: [stalwart_dungeons_drops] registered 7 Stalwart nether mini-boss synergy modifiers
-[16:36:38] [INFO] loot/terramity_boss_drops.js#66: [terramity_boss_drops] registered 7 non-gun EPIC weapon allocations
-[16:36:38] [INFO] loot/terramity_structure_drops.js#196: [terramity_structure_drops] T3/T4 ingot-family weapons + 8 EPIC curios + 9 RARE tomes/bracelets allocated to Terramity structures
-[16:36:38] [INFO] loot/twilight_boss_drops.js#60: [twilight_boss_drops] registered 6 TF boss synergy modifiers
-[16:36:38] [INFO] loot/zzz_iss_scroll_tier_clamp.js#126: [iss_scroll_tier_clamp] armed -- dropped ISS scroll levels clamp to killer tier (T1<=4 T2<=6 T3<=8 T4<=10; non-player/un-tiered -> T1)
-[16:36:38] [INFO] loot/zz_iss_arena_enrichment.js#81: [zz_iss_arena_enrichment] re-homed ISS arena enrichment AFTER lootjs_overhaul ISS strip (extracted from boss_arena_themed_loot + _material_tease; survives the registration-order removeIf)
-[16:36:38] [INFO] loot/zz_pack_enchanted_books.js#53: [icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)
-[16:36:38] [INFO] loot/zz_pack_enchanted_books.js#63: [icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)
-[16:36:38] [INFO] loot/zz_pack_enchanted_books.js#75: [icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden/DD/Abyss, 12.5%, levels 20-30)
-[16:36:38] [INFO] loot/zz_pack_enchanted_books.js#85: [icraft-loot] Registering T4 enchanted_book re-add (End, 15%, level 30)
-[16:36:38] [INFO] loot/zz_pack_enchanted_books.js#133: [icraft-loot] 21 marquee enchanted-book modifiers registered (10% each, tier-scaled levels)
-[16:36:38] [INFO] loot/zz_unique_chest_strip.js#33: [zz_unique_chest_strip] insurance strip armed for 34 TMB bows across all chests/ tables (boss-exclusive)
-[16:36:47] [INFO] Server resource reload complete!
-[16:36:47] [INFO] 0_server_ready_banner.js#28: 
-[16:36:47] [INFO] 0_server_ready_banner.js#28:   ============================================================
-[16:36:47] [INFO] 0_server_ready_banner.js#28:   >>>  IridescentCraft Server READY                       <<<
-[16:36:47] [INFO] 0_server_ready_banner.js#28:   >>>  Listening on 0.0.0.0:25565                            <<<
-[16:36:47] [INFO] 0_server_ready_banner.js#28:   >>>  Accepting player connections.                       <<<
-[16:36:47] [INFO] 0_server_ready_banner.js#28:   ============================================================
-[16:36:47] [INFO] 0_server_ready_banner.js#28: 
-[16:36:47] [INFO] 0_tick_master.js#139: [TickMaster] Registered 43 server tick functions
-[16:36:47] [INFO] 0_tick_master.js#140: [TickMaster] Registered 19 player tick functions
-[16:36:47] [INFO] cherry_spawn_biome.js#138: [icraft_spawn] search already ran to a dead end on this world; skipping
-[16:36:47] [INFO] death_penalty.js#672: [IridescentCraft] keepInventory enabled — death penalty handles consequences
-[16:36:48] [INFO] gates/astages_restrictions.js#563: [IridescentCraft] AStages native restrictions registered
-[16:36:48] [INFO] gates/astages_restrictions.js#564:   Tier 2: 6 mods + 17 items + 4 dimensions
-[16:36:48] [INFO] gates/astages_restrictions.js#565:   Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions
-[16:36:48] [INFO] gates/astages_restrictions.js#566:   Tier 4: 5 mods + 133 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts + Mekanism fusion/SPS/antimatter/ultimate-facility pins, locked decision C 2026-06-06)
-[16:36:48] [INFO] loot/0_entity_id_validator.js#143: [ENTITY-ID-VALIDATOR] all entity ids resolve (318 entity loot modifiers registered through the guard)
-[16:36:48] [INFO] skills/justleveling_skills.js#947: [IridescentCraft] JustLeveling Aptitude Skills loaded -- 27 attribute modifiers, 5 timed effects, 5 melee + 2 defensive hooks, kill / craft / block / XP-refund hooks (aptitudes via global.icraft.aptitude)
-[16:36:48] [INFO] skills/justleveling_skills.js#950:   Tier 5 : Might, Tough Hide, Light Step, Padded Frame, Mana Spark, Curious, Steady Hand, Lucky Charm
-[16:36:48] [INFO] skills/justleveling_skills.js#951:   Tier 10: Brutal Slash, Hearty Meals, Fleet of Foot, Second Wind, Conservation of Magic, Arcane Efficiency, Quarryman, Lucky Strike
-[16:36:48] [INFO] skills/justleveling_skills.js#952:   Tier 15: Cleave, Steady Breath, Deadeye, Bulwark, Mana Blaze, Insight, Thrifty Hands, Fortune's Favor
-[16:36:48] [INFO] skills/justleveling_skills.js#953:   Tier 20: Hemorrhage, Overflow, Rapid Fire, Turtle Shield, Mystic Ward, Materials Science, Resourceful, Treasure Sense
-[16:36:48] [INFO] skills/justleveling_skills.js#954:   Tier 30: True Strength, Iron Stomach, Excitement, Lion Heart, Mana Inferno, Enlightenment, Master Craftsman, Motherlode
-[16:36:48] [INFO] skills/mastery_tax.js#123: [IridescentCraft] Mastery Tax loaded (aptitudes via global.icraft.aptitude; drained through the XP wallet)
-[16:36:48] [INFO] skills/mastery_tax.js#124:   Tax curve (raw XP per level-up, by invested levels): 1-32 = 0 | 33 = 50 | 48 = 800 | 64 = 1600 | 65 = 1800 | 80 = 4800 | 96 = 8000 | 97 = 8800 | 128 = 33600 | 200 = 91200 | 248 = 129600
-[16:36:48] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
-[16:36:50] [INFO] scaling/zz_boss_global_3x.js#155: [iridescent/boss_3x] boss set built: 78 bosses get ×3 hp + ×3 dmg (+ ×2 spell_power on ISS bosses) (named=67, extras=11, excluded=0)
+[16:42:00] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[16:42:00] [INIT] Loaded plugins:
+[16:42:00] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[16:42:00] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[16:42:00] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[16:42:00] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[16:42:00] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[16:42:00] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[16:42:00] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[16:42:00] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[16:42:00] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[16:42:00] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[16:42:00] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[16:42:00] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[16:42:00] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[16:42:02] [INFO] 0_iss_guard.js#96: [iss-guard] loaded -- irons_spellbooks: mobs will be flagged with persistentData.icraft_iss_skip=true at spawn
+[16:42:02] [INFO] Loaded script server_scripts:0_iss_guard.js in 0.012 s
+[16:42:02] [INFO] 0_lib_aptitudes.js#101: Loaded Java class 'com.seniors.justlevelingfork.common.capability.AptitudeCapability'
+[16:42:02] [INFO] 0_lib_aptitudes.js#284: Loaded Java class 'celia.adwadg.linearxp.Utils.ExpUtils'
+[16:42:02] [INFO] 0_lib_aptitudes.js#285: Loaded Java class 'celia.adwadg.linearxp.Utils.ExperienceCalculator'
+[16:42:02] [INFO] 0_lib_aptitudes.js#291: Loaded Java class 'celia.adwadg.linearxp.Handler.ExpDisplayHandler'
+[16:42:02] [INFO] 0_lib_aptitudes.js#524: [IridescentCraft] 0_lib_aptitudes loaded -- global.icraft.aptitude {get,all,invalidate,xp}: direct AptitudeCapability read, 20-tick per-player cache; XP wallet: LinearXP (level + capability)
+[16:42:02] [INFO] Loaded script server_scripts:0_lib_aptitudes.js in 0.04 s
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.world.entity.player.Player'
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.tags.DamageTypeTags'
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.world.item.enchantment.EnchantmentHelper'
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
+[16:42:02] [INFO] 0_lib_core.js#109: Loaded Java class 'com.iridescentcraft.reforging.event.DamageModifierRegistry'
+[16:42:02] [INFO] 0_lib_core.js#652: [IridescentCraft] 0_lib_core loaded -- global.icraft.core (damage-source accessors, entity ids, world clock, one guarded hurt dispatcher, damage-type tags on)
+[16:42:02] [INFO] Loaded script server_scripts:0_lib_core.js in 0.059 s
+[16:42:02] [INFO] 0_lib_origins.js#219: [IridescentCraft] 0_lib_origins loaded -- global.icraft.origin {get,is,invalidate}, 100-tick per-player cache over ForgeCaps."origins:origins".Origins
+[16:42:02] [INFO] Loaded script server_scripts:0_lib_origins.js in 0.003 s
+[16:42:02] [INFO] Loaded script server_scripts:0_server_ready_banner.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:0_tick_master.js in 0.001 s
+[16:42:02] [INFO] abyss/abyss_armor_effects.js#223: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
+[16:42:02] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.004 s
+[16:42:02] [INFO] abyss/abyss_ring_effects.js#224: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
+[16:42:02] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.003 s
+[16:42:02] [INFO] affixes/affix_effects.js#1198: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
+[16:42:02] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.012 s
+[16:42:02] [INFO] affix_overworld_strip.js#100: [IridescentCraft] Apotheosis overworld affix-strip loaded
+[16:42:02] [INFO] Loaded script server_scripts:affix_overworld_strip.js in 0.005 s
+[16:42:02] [INFO] affix_skyshatter_mob_strip.js#109: [IridescentCraft] Skyshatter mob-strip loaded (any dim, any boss tag)
+[16:42:02] [INFO] Loaded script server_scripts:affix_skyshatter_mob_strip.js in 0.001 s
+[16:42:02] [INFO] apotheosis_gem_repair.js#76: Loaded Java class 'net.minecraft.nbt.CompoundTag'
+[16:42:02] [INFO] apotheosis_gem_repair.js#439: [IridescentCraft] apotheosis_gem_repair loaded v2026-05-18b (21 fallback IDs; inventory-tick sweep + ItemEntity-spawn trace + LootJS-chest trace; detects (a) bare no-NBT, (b) no/empty gem field, (c) missing affix_data, (d) missing/empty rarity, (e) stale icraft_broken tag from the death_penalty isDamageableItem trap)
+[16:42:02] [INFO] Loaded script server_scripts:apotheosis_gem_repair.js in 0.005 s
+[16:42:02] [INFO] aptitude_cost_backport.js#84: Loaded Java class 'com.seniors.justlevelingfork.network.packet.common.AptitudeLevelUpSP'
+[16:42:02] [INFO] Loaded script server_scripts:aptitude_cost_backport.js in 0.003 s
+[16:42:02] [INFO] armor_weight.js#350: [IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling
+[16:42:02] [INFO] armor_weight.js#351:   robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)
+[16:42:02] [INFO] armor_weight.js#352:   light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (per piece)
+[16:42:02] [INFO] armor_weight.js#353:   medium no effect (default for untagged armor)
+[16:42:02] [INFO] armor_weight.js#354:   heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)
+[16:42:02] [INFO] armor_weight.js#355:   + minecraft:protection -> +0.75 flat armor/level (addition; vanilla % EPF zeroed by ProtectionFlatArmorMixin)
+[16:42:02] [INFO] Loaded script server_scripts:armor_weight.js in 0.003 s
+[16:42:02] [INFO] attributes/attribute_commands.js#213: [IridescentCraft] Attribute chat commands loaded (v0.4)
+[16:42:02] [INFO] attributes/attribute_commands.js#214:   !stats / !attributes -- Show attribute values
+[16:42:02] [INFO] attributes/attribute_commands.js#215:   !class -- Show class info and bonuses
+[16:42:02] [INFO] Loaded script server_scripts:attributes/attribute_commands.js in 0.002 s
+[16:42:02] [INFO] attributes/attribute_sync.js#409: [IridescentCraft] Attribute sync handlers loaded (v0.4 persistent NBT)
+[16:42:02] [INFO] attributes/attribute_sync.js#410:   Combat: crit/dodge/lifesteal/armor_pen/magic_res/spell_power via the damage registry
+[16:42:02] [INFO] attributes/attribute_sync.js#411:   Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)
+[16:42:02] [INFO] attributes/attribute_sync.js#412:   Magic: mana_regen + CDR sync to ISB every 5s
+[16:42:02] [INFO] attributes/attribute_sync.js#413:   Utility: xp_multiplier via tick_xpMultiplier (1s totalExperience diff)
+[16:42:02] [INFO] attributes/attribute_sync.js#414:   Utility: healing_received via tick health tracking
+[16:42:02] [INFO] Loaded script server_scripts:attributes/attribute_sync.js in 0.004 s
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#164: [IridescentCraft] Class attribute bonuses loaded (v0.4 persistent NBT)
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#165:   Archmage: spell_power +25%, mana_regen +20%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#166:   Battlemage: spell_power +15%, magic_resistance +15%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#167:   Berserker: crit_damage +30%, lifesteal +5%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#168:   Samurai: crit_chance +10%, armor_penetration +10%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#169:   Ranger: crit_chance +8%, dodge_chance +5%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#170:   Paladin: healing_received +25%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#171:   Vanguard: dodge_chance +8%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#172:   Wanderer: xp_multiplier +15%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#173:   Artificer: cooldown_reduction +10%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#174:   Void Summoner: lifesteal +8%, spell_power +10%
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#175:   Elemental: spell_power +40%, crit_chance +12%, crit_damage 1.7, mana_regen +10% (+80% fire/ice/lightning via ISS powers)
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#176:   Blessed: spell_power +40%, magic_resistance +18%, healing_received +30%, mana_regen +20% (+80% holy/nature/evocation via ISS powers)
+[16:42:02] [INFO] attributes/class_attribute_bonuses.js#177:   Corrupted: spell_power +40%, magic_resistance +10%, lifesteal +15%, cooldown_reduction +8%, armor_penetration +10% (+80% blood/ender/eldritch via ISS powers)
+[16:42:02] [INFO] Loaded script server_scripts:attributes/class_attribute_bonuses.js in 0.002 s
+[16:42:02] [INFO] attributes/iss_school_to_ars_glyph.js#54: Loaded Java class 'com.iridescentcraft.reforging.event.ForgeEventRegistry'
+[16:42:02] [INFO] attributes/iss_school_to_ars_glyph.js#159: [iss_school_to_ars_glyph] loaded (4 elemental schools mapped via SpellDamageEvent.Pre)
+[16:42:02] [INFO] Loaded script server_scripts:attributes/iss_school_to_ars_glyph.js in 0.007 s
+[16:42:02] [INFO] attributes/iss_school_to_ars_spell.js#57: Loaded Java class 'net.minecraft.world.entity.LivingEntity'
+[16:42:02] [INFO] attributes/iss_school_to_ars_spell.js#142: [iss_school_to_ars] loaded (4 damage-type mappings)
+[16:42:02] [INFO] Loaded script server_scripts:attributes/iss_school_to_ars_spell.js in 0.005 s
+[16:42:02] [INFO] attributes/mana_debug_command.js#139: [IridescentCraft] /icraft mana_debug command registered
+[16:42:02] [INFO] Loaded script server_scripts:attributes/mana_debug_command.js in 0.002 s
+[16:42:02] [INFO] attributes/mana_pool_bonuses.js#35: Loaded Java class 'java.util.UUID'
+[16:42:02] [INFO] attributes/mana_pool_bonuses.js#176: [IridescentCraft] mana_pool_bonuses v2 loaded
+[16:42:02] [INFO] attributes/mana_pool_bonuses.js#177:   Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)
+[16:42:02] [INFO] attributes/mana_pool_bonuses.js#178:   Cleanup: 8 legacy UUIDs across 4 attributes (once per player)
+[16:42:02] [INFO] Loaded script server_scripts:attributes/mana_pool_bonuses.js in 0.003 s
+[16:42:02] [INFO] bonfire/boss_arena_registry.js#531: [iridescent/boss_arenas] registry loaded: 47 boss arenas (38 structure-located, 7 block-located, 2 summon-only)
+[16:42:02] [INFO] Loaded script server_scripts:bonfire/boss_arena_registry.js in 0.003 s
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#74: Loaded Java class 'net.blay09.mods.waystones.api.WaystonesAPI'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#75: Loaded Java class 'net.blay09.mods.waystones.api.WaystoneStyles'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#76: Loaded Java class 'net.blay09.mods.waystones.core.PlayerWaystoneManager'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#79: Loaded Java class 'net.minecraft.core.registries.Registries'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#80: Loaded Java class 'net.minecraft.tags.TagKey'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#82: Loaded Java class 'net.minecraft.nbt.StringTag'
+[16:42:02] [INFO] bonfire/boss_bonfire_system.js#389: [iridescent/bonfire] loaded; 47 boss arena(s) eligible for auto-bonfires
+[16:42:02] [INFO] Loaded script server_scripts:bonfire/boss_bonfire_system.js in 0.021 s
+[16:42:02] [INFO] bonfire/boss_compass_handler.js#688: Loaded Java class 'com.mojang.brigadier.arguments.StringArgumentType'
+[16:42:02] [INFO] bonfire/boss_compass_handler.js#749: [iridescent/boss_compass] handler loaded; 47 arena(s) selectable
+[16:42:02] [INFO] Loaded script server_scripts:bonfire/boss_compass_handler.js in 0.006 s
+[16:42:02] [INFO] bonfire/gob_t1_rebalance.js#41: [iridescent/gob_t1] emerald gnome-hat recipe + iron-breakable golden gnome statue loaded
+[16:42:02] [INFO] Loaded script server_scripts:bonfire/gob_t1_rebalance.js in 0.001 s
+[16:42:02] [INFO] cherry_spawn_biome.js#56: Loaded Java class 'net.minecraft.core.BlockPos'
+[16:42:02] [INFO] cherry_spawn_biome.js#57: Loaded Java class 'java.util.function.Predicate'
+[16:42:02] [INFO] cherry_spawn_biome.js#360: [IridescentCraft] cherry_spawn_biome v2 loaded -- search for iridescent_biomes:cherry_river_valley + village; max 15 attempts; first-join teleport armed
+[16:42:02] [INFO] Loaded script server_scripts:cherry_spawn_biome.js in 0.017 s
+[16:42:02] [INFO] class/equipment_hp_halving.js#142: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
+[16:42:02] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.001 s
+[16:42:02] [INFO] cleanup/strip_truly_modular_items.js#73: [strip_truly_modular] loaded -- watching miapi: / archery: / tm_arsenal: / modular_item_api: / truly_modular:
+[16:42:02] [INFO] Loaded script server_scripts:cleanup/strip_truly_modular_items.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:codex_delivery.js in 0.003 s
+[16:42:02] [INFO] Loaded script server_scripts:compat/class_artifacts_recipes.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:compat/disable_creeperlings.js in 0.0 s
+[16:42:02] [INFO] compat/terramity_cave_gnome_cave_only.js#32: [iridescent/cave_gnome] cave-only spawn gate active (wild surface spawns denied)
+[16:42:02] [INFO] Loaded script server_scripts:compat/terramity_cave_gnome_cave_only.js in 0.001 s
+[16:42:02] [INFO] death_penalty.js#455: Loaded Java class 'top.theillusivec4.curios.api.CuriosApi'
+[16:42:02] [INFO] Loaded script server_scripts:death_penalty.js in 0.009 s
+[16:42:02] [INFO] diag_armor_modifiers.js#58: [IridescentCraft] /icraft armormods command registered
+[16:42:02] [INFO] Loaded script server_scripts:diag_armor_modifiers.js in 0.001 s
+[16:42:02] [INFO] disable_zombie_door_break.js#26: Loaded Java class 'net.minecraft.world.entity.ai.goal.BreakDoorGoal'
+[16:42:02] [INFO] disable_zombie_door_break.js#27: Loaded Java class 'net.minecraft.world.entity.Mob'
+[16:42:02] [INFO] disable_zombie_door_break.js#110: [IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on ANY Mob spawn -- vanilla + modded)
+[16:42:02] [INFO] Loaded script server_scripts:disable_zombie_door_break.js in 0.009 s
+[16:42:02] [INFO] economy/relic_broker.js#45: Loaded Java class 'com.iridescentcraft.relics.broker.RelicBroker'
+[16:42:02] [INFO] economy/relic_broker.js#46: Loaded Java class 'net.minecraft.world.item.trading.MerchantOffers'
+[16:42:02] [INFO] economy/relic_broker.js#47: Loaded Java class 'net.minecraft.world.item.trading.MerchantOffer'
+[16:42:02] [INFO] economy/relic_broker.js#313: [IridescentCraft] Relic Broker loaded (block iridescent_relics:relic_broker_stand -> tier-gated MerchantMenu)
+[16:42:02] [INFO] economy/relic_broker.js#314:   catalog: 23 enchant books, 6 materials, 2 scroll tiers, 3 convenience, buys 8 boss relics. ALL PROVISIONAL.
+[16:42:02] [INFO] Loaded script server_scripts:economy/relic_broker.js in 0.005 s
+[16:42:02] [INFO] economy/relic_sink.js#377: [IridescentCraft] Relic sink loaded (/icraft relics submit [confirm] | balance)
+[16:42:02] [INFO] economy/relic_sink.js#378:   Currency: iridescent_relics:relic_essence · broad namespaces: artifacts, moreartifacts, celestial_artifacts, rpgseteffects, relics
+[16:42:02] [INFO] economy/relic_sink.js#379:   Boss-signature + override values: 47 · deny-list: 34 · ALL VALUES PROVISIONAL
+[16:42:02] [INFO] Loaded script server_scripts:economy/relic_sink.js in 0.003 s
+[16:42:02] [INFO] enchantments/enchant_effects.js#556: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
+[16:42:02] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.007 s
+[16:42:02] [INFO] end/dragon_exploration_gate.js#388: [IridescentCraft] Dragon exploration gate loaded
+[16:42:02] [INFO] end/dragon_exploration_gate.js#389:   - Dragon blocked until End exploration complete
+[16:42:02] [INFO] end/dragon_exploration_gate.js#390:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
+[16:42:02] [INFO] end/dragon_exploration_gate.js#391:   - Dragon Summoning Crystal required to start fight
+[16:42:02] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.002 s
+[16:42:02] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.0 s
+[16:42:02] [INFO] endgame/rift_mechanics.js#309: [IridescentCraft] Rift mechanics loaded
+[16:42:02] [INFO] endgame/rift_mechanics.js#310:   - Rift tracking data initialization
+[16:42:02] [INFO] endgame/rift_mechanics.js#311:   - Rift Shard/Catalyst Compendium milestones
+[16:42:02] [INFO] endgame/rift_mechanics.js#312:   - Mythic unique item server announcements
+[16:42:02] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.002 s
+[16:42:02] [INFO] enemyexpansion_explosive_launch_blocker.js#50: Loaded Java class 'net.minecraftforge.eventbus.api.Event$Result'
+[16:42:02] [INFO] enemyexpansion_explosive_launch_blocker.js#87: [IridescentCraft] enemyexpansion_explosive_launch_blocker loaded (event-driven: enemyexpansion:explosive_launch is denied at MobEffectEvent.Applicable for all living entities)
+[16:42:02] [INFO] Loaded script server_scripts:enemyexpansion_explosive_launch_blocker.js in 0.001 s
+[16:42:02] [INFO] example.js#5: Hello, World! (Loaded server scripts)
+[16:42:02] [INFO] Loaded script server_scripts:example.js in 0.0 s
+[16:42:02] [INFO] exploration/codex_exploration_kills.js#368: [IridescentCraft] Codex exploration KILL drops loaded
+[16:42:02] [INFO] exploration/codex_exploration_kills.js#369:   Minibosses: 40 | Named bosses: 67 | Dimension-entry bonuses: 10 (20 tokens, first entry)
+[16:42:02] [INFO] Loaded script server_scripts:exploration/codex_exploration_kills.js in 0.002 s
+[16:42:02] [INFO] fix_empty_display_name.js#73: [IridescentCraft] fix_empty_display_name loaded -- empty customName overrides cleared at spawn
+[16:42:02] [INFO] Loaded script server_scripts:fix_empty_display_name.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:fix_stone_tags.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:fix_venus_sandstone_tag.js in 0.0 s
+[16:42:02] [INFO] food/hunger_management.js#108: [IridescentCraft] AFK hunger management loaded
+[16:42:02] [INFO] food/hunger_management.js#109:   - AFK threshold: 20 minutes (24000 ticks)
+[16:42:02] [INFO] food/hunger_management.js#110:   - Sleep protection: Saturation I while sleeping
+[16:42:02] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:food_dedup_recipes.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.002 s
+[16:42:02] [INFO] gates/codex_boss_rush.js#528: [IridescentCraft] Codex boss-rush tracker loaded (/icraft codex bosses)
+[16:42:02] [INFO] gates/codex_boss_rush.js#529:   T1→T2 80% of 28 | T2→T3 90% of 23 | T3→T4 100% of 53 (incl. Lucifer)
+[16:42:02] [INFO] Loaded script server_scripts:gates/codex_boss_rush.js in 0.002 s
+[16:42:02] [INFO] gates/codex_progression_engine.js#625: Loaded Java class 'com.mojang.brigadier.arguments.IntegerArgumentType'
+[16:42:02] [INFO] gates/codex_progression_engine.js#722: [IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance | exchange)
+[16:42:02] [INFO] gates/codex_progression_engine.js#723:   Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)
+[16:42:02] [INFO] gates/codex_progression_engine.js#724:   Conversion entries (Engineering + Magic): 112
+[16:42:02] [INFO] gates/codex_progression_engine.js#725:   Bulk metals are CONTEXTUAL — mint the player's current transition tier (per-tier caps)
+[16:42:02] [INFO] gates/codex_progression_engine.js#726:   #69 token→XP exchange (T4-gated): 2/4/8 XP per T1/T2/T3 token
+[16:42:02] [INFO] Loaded script server_scripts:gates/codex_progression_engine.js in 0.005 s
+[16:42:02] [INFO] gates/milestone_detection.js#124: [IridescentCraft] Tier infrastructure loaded (milestone auto-advance retired -> Codex token economy)
+[16:42:02] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.002 s
+[16:42:02] [INFO] icraftsets_command.js#22: Loaded Java class 'com.everydayxp.rpgseteffects.system.slot.SetEquipmentHelper'
+[16:42:02] [INFO] icraftsets_command.js#45: [IridescentCraft] /icraftsets command registered
+[16:42:02] [INFO] Loaded script server_scripts:icraftsets_command.js in 0.001 s
+[16:42:02] [INFO] icraft_despawn_command.js#27: Loaded Java class 'net.minecraft.world.entity.MobCategory'
+[16:42:02] [INFO] icraft_despawn_command.js#28: Loaded Java class 'net.minecraft.world.entity.monster.Monster'
+[16:42:02] [INFO] icraft_despawn_command.js#33: Loaded Java class 'net.minecraft.world.entity.OwnableEntity'
+[16:42:02] [INFO] icraft_despawn_command.js#164: [IridescentCraft] /icraft despawn <radius> command registered
+[16:42:02] [INFO] Loaded script server_scripts:icraft_despawn_command.js in 0.006 s
+[16:42:02] [INFO] idle_hunger_pause.js#111: [IridescentCraft] idle_hunger_pause loaded — hunger drain pauses after 120s of inaction
+[16:42:02] [INFO] Loaded script server_scripts:idle_hunger_pause.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:integration/dna_simple_staves_buffs.js in 0.005 s
+[16:42:02] [INFO] integration/dna_simple_staves_strip.js#94: [dna_simple_staves_strip] loaded — 20 items stripped of right-click projectile use
+[16:42:02] [INFO] Loaded script server_scripts:integration/dna_simple_staves_strip.js in 0.001 s
+[16:42:02] [INFO] items/compass_of_return.js#129: [IridescentCraft] Compass of Return loaded
+[16:42:02] [INFO] items/compass_of_return.js#130:   - Right-click to teleport to last bed
+[16:42:02] [INFO] items/compass_of_return.js#131:   - 10 minute cooldown
+[16:42:02] [INFO] items/compass_of_return.js#132:   - Bed position tracked on right-click interaction
+[16:42:02] [INFO] Loaded script server_scripts:items/compass_of_return.js in 0.001 s
+[16:42:02] [INFO] liteminer_hunger_gate.js#122: [IridescentCraft] liteminer_hunger_gate loaded — chain breaks cancel below 6/20 hunger
+[16:42:02] [INFO] Loaded script server_scripts:liteminer_hunger_gate.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/0_entity_id_validator.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/alexsmobs_drops.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/blue_skies_drops.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/boss_arena_material_tease.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/boss_arena_themed_loot.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/boss_refight_repair_floors.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/boss_unique_drops.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/cataclysm_boss_drops.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/codex_exploration_drops.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/dimensional_boss_drops.js in 0.001 s
+[16:42:02] [INFO] loot/fragment_core_drops.js#39: Loaded Java class 'net.minecraft.world.entity.item.ItemEntity'
+[16:42:02] [INFO] loot/fragment_core_drops.js#40: Loaded Java class 'net.minecraft.world.item.ItemStack'
+[16:42:02] [INFO] loot/fragment_core_drops.js#84: [IridescentCraft] fragment_core_drops loaded (4% from hostile mob death, ultris_spawned_mob excluded)
+[16:42:02] [INFO] Loaded script server_scripts:loot/fragment_core_drops.js in 0.01 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/grass_pam_seeds.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/iss_boss_drops.js in 0.0 s
+[16:42:02] [INFO] loot/iss_boss_first_kill.js#67: [IridescentCraft] iss_boss_first_kill loaded -- 4 first-kill book guarantees armed
+[16:42:02] [INFO] Loaded script server_scripts:loot/iss_boss_first_kill.js in 0.0 s
+[16:42:02] [INFO] loot/lootjs_overhaul.js#40: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.UniformGenerator'
+[16:42:02] [INFO] loot/lootjs_overhaul.js#49: Loaded Java class 'com.almostreliable.lootjs.filters.ItemFilter'
+[16:42:02] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.012 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.002 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/lovely_pieces_loot.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/mahou_synergy_drops.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/majrusz_skeleton_punch_strip.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/meat_drop_doubling.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/staff_wand_drops.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/stalwart_dungeons_drops.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/terramity_boss_drops.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/terramity_structure_drops.js in 0.001 s
+[16:42:02] [INFO] loot/tmb_plain_bow_effects.js#25: Loaded Java class 'net.minecraft.world.effect.MobEffectInstance'
+[16:42:02] [INFO] loot/tmb_plain_bow_effects.js#26: Loaded Java class 'net.minecraft.world.effect.MobEffects'
+[16:42:02] [INFO] loot/tmb_plain_bow_effects.js#86: [tmb_plain_bow_effects] wired theme effects for 5 plain TMB bows
+[16:42:02] [INFO] Loaded script server_scripts:loot/tmb_plain_bow_effects.js in 0.002 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/twilight_boss_drops.js in 0.0 s
+[16:42:02] [INFO] loot/unique_itemset_registry.js#158: [unique_itemset_registry] 79 uniques registered (34 TMB bows + 45 SS swords); 40 new boss drops; buff ladder T1..T4 = 10/20/30/40%
+[16:42:02] [INFO] Loaded script server_scripts:loot/unique_itemset_registry.js in 0.002 s
+[16:42:02] [INFO] loot/unique_tier_buff.js#23: Loaded Java class 'net.minecraft.world.entity.projectile.Projectile'
+[16:42:02] [INFO] loot/unique_tier_buff.js#41: [unique_tier_buff] arrow tagger armed (Projectile spawn -> bow-id tag)
+[16:42:02] [INFO] loot/unique_tier_buff.js#98: [unique_tier_buff] tier-scaled damage handler registered (T1..T4 = 10/20/30/40%)
+[16:42:02] [INFO] Loaded script server_scripts:loot/unique_tier_buff.js in 0.003 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/zzz_iss_scroll_tier_clamp.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/zz_iss_arena_enrichment.js in 0.0 s
+[16:42:02] [INFO] loot/zz_pack_enchanted_books.js#48: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.ConstantValue'
+[16:42:02] [INFO] Loaded script server_scripts:loot/zz_pack_enchanted_books.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:loot/zz_unique_chest_strip.js in 0.0 s
+[16:42:02] [INFO] magic_crit_hook.js#127: [IridescentCraft] magic_crit_hook loaded -- magic damage can crit via book enchants
+[16:42:02] [INFO] Loaded script server_scripts:magic_crit_hook.js in 0.004 s
+[16:42:02] [INFO] megatorch_damage.js#53: Loaded Java class 'net.xalcon.torchmaster.common.ModCaps'
+[16:42:02] [INFO] megatorch_damage.js#111: [megatorch-damage] aura active: 10 dmg / 10t to hostiles within r=64 of a megatorch
+[16:42:02] [INFO] Loaded script server_scripts:megatorch_damage.js in 0.003 s
+[16:42:02] [INFO] mobgriefing_default.js#27: Loaded Java class 'net.minecraft.world.level.GameRules'
+[16:42:02] [INFO] mobgriefing_default.js#61: [IridescentCraft] mobgriefing_default loaded -- one-shot mobGriefing=false on world init
+[16:42:02] [INFO] Loaded script server_scripts:mobgriefing_default.js in 0.002 s
+[16:42:02] [INFO] more_curios_slots_cap.js#141: [IridescentCraft] More Curios Slots cap handler loaded (9 slot types; back=+1, others=+3)
+[16:42:02] [INFO] Loaded script server_scripts:more_curios_slots_cap.js in 0.002 s
+[16:42:02] [INFO] mutant_xp_boost.js#60: [IridescentCraft] mutant_xp_boost loaded (10x)
+[16:42:02] [INFO] Loaded script server_scripts:mutant_xp_boost.js in 0.001 s
+[16:42:02] [INFO] origins/artificial_construct_progression.js#181: [IridescentCraft] Artificial Construct progression loaded
+[16:42:02] [INFO] origins/artificial_construct_progression.js#182:   - 25% food efficiency from normal food
+[16:42:02] [INFO] origins/artificial_construct_progression.js#183:   - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)
+[16:42:02] [INFO] origins/artificial_construct_progression.js#184:   - Iron eating grants Regen III for 10s (400% healing acceleration)
+[16:42:02] [INFO] origins/artificial_construct_progression.js#185:   - Iron upgrade ladder: 1000/2000/4000/8000/16000
+[16:42:02] [INFO] origins/artificial_construct_progression.js#186:   - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)
+[16:42:02] [INFO] Loaded script server_scripts:origins/artificial_construct_progression.js in 0.001 s
+[16:42:02] [INFO] origins/battlemage_arcane_cleave.js#49: Loaded Java class 'io.redspace.ironsspellbooks.api.magic.MagicData'
+[16:42:02] [INFO] origins/battlemage_arcane_cleave.js#186: [IridescentCraft] battlemage_arcane_cleave loaded — Arcane Cleave (2 AD per 100% bonus SP, costs 10 mana/hit) + Mana Reaver (+15 mana/melee kill)
+[16:42:02] [INFO] Loaded script server_scripts:origins/battlemage_arcane_cleave.js in 0.007 s
+[16:42:02] [INFO] origins/battlemage_mana_shield.js#63: [IridescentCraft] Battlemage Mana Shield loaded
+[16:42:02] [INFO] origins/battlemage_mana_shield.js#64:   - Resistance I base (20% damage reduction)
+[16:42:02] [INFO] origins/battlemage_mana_shield.js#65:   - Resistance II with high magic bonus (36% reduction)
+[16:42:02] [INFO] origins/battlemage_mana_shield.js#66:   - Resistance III cap with very high magic bonus (48% reduction)
+[16:42:02] [INFO] Loaded script server_scripts:origins/battlemage_mana_shield.js in 0.001 s
+[16:42:02] [INFO] origins/class_passives.js#322: [IridescentCraft] Class passives loaded
+[16:42:02] [INFO] origins/class_passives.js#323:   - Samurai: Focus (movement shield + Vorpal by tier)
+[16:42:02] [INFO] origins/class_passives.js#324:   - Wanderer: Seasoned Traveler (dimension stacking)
+[16:42:02] [INFO] origins/class_passives.js#325:   - Paladin: Healing Aura (AoE regen)
+[16:42:02] [INFO] origins/class_passives.js#326:   - Archmage: Mana Attunement (magic bonus by tier)
+[16:42:02] [INFO] origins/class_passives.js#327:   - Orc: Bloodlust (hunger-scaling damage)
+[16:42:02] [INFO] origins/class_passives.js#328:   - Vanguard: Guardian's Presence (Weakness to nearby entities)
+[16:42:02] [INFO] origins/class_passives.js#329:   - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)
+[16:42:02] [INFO] Loaded script server_scripts:origins/class_passives.js in 0.002 s
+[16:42:02] [INFO] origins/class_passives_phase6h.js#275: [IridescentCraft] class_passives_phase6h loaded (Berserker Battle Trance, Samurai Bushido, Wanderer Adaptable, Artificer Resourceful)
+[16:42:02] [INFO] Loaded script server_scripts:origins/class_passives_phase6h.js in 0.002 s
+[16:42:02] [INFO] origins/origin_effects.js#260: [IridescentCraft] Origins custom effects loaded
+[16:42:02] [INFO] origins/origin_effects.js#261:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
+[16:42:02] [INFO] origins/origin_effects.js#262:   - Merling: Land discomfort after 5 min dry
+[16:42:02] [INFO] origins/origin_effects.js#263:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
+[16:42:02] [INFO] origins/origin_effects.js#264:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
+[16:42:02] [INFO] origins/origin_effects.js#265:   - Shulk: Hardened Shell (reduced death durability loss)
+[16:42:02] [INFO] origins/origin_effects.js#266:   - Dwarf: Miner's Appetite (Saturation on block break)
+[16:42:02] [INFO] origins/origin_effects.js#267:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
+[16:42:02] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.002 s
+[16:42:02] [INFO] origins/origin_status_commands.js#154: [IridescentCraft] /icraft witch_status + /icraft construct_status registered
+[16:42:02] [INFO] Loaded script server_scripts:origins/origin_status_commands.js in 0.001 s
+[16:42:02] [INFO] origins/phantom_undeath.js#113: [IridescentCraft] Phantom Undeath loaded
+[16:42:02] [INFO] origins/phantom_undeath.js#114:   - Phantoms cannot die — health locks to 0.5 hearts
+[16:42:02] [INFO] origins/phantom_undeath.js#115:   - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min
+[16:42:02] [INFO] origins/phantom_undeath.js#116:   - Resistance II during collapse to prevent instant re-collapse
+[16:42:02] [INFO] Loaded script server_scripts:origins/phantom_undeath.js in 0.001 s
+[16:42:02] [INFO] origins/spell_book_transfer.js#208: [IridescentCraft] spell_book_transfer loaded — ISB_Spells NBT preserved through Tetra replacement
+[16:42:02] [INFO] Loaded script server_scripts:origins/spell_book_transfer.js in 0.001 s
+[16:42:02] [INFO] origins/ss_unique_spellsword_scaling.js#100: [ss_unique_spellsword_scaling] loaded — 33 uniques scale with spell power
+[16:42:02] [INFO] Loaded script server_scripts:origins/ss_unique_spellsword_scaling.js in 0.003 s
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#249: [IridescentCraft] Witch of Ink progression loaded
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#250:   - Boss kill counter (Apotheosis/Champions +1, dimensional +10, cap 200)
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#251:   - Damage out: +0.1% per counter (cap +20% at 200, jar LivingHurtEvent)
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#252:   - Damage in:  -0.1% per counter (cap -20% at 200, jar LivingHurtEvent)
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#253:   - Penthesilea (at 200): +10% additive damage, +15% SP-to-AD conv,
+[16:42:02] [INFO] origins/witch_of_ink_progression.js#254:     +15% HP, permanent Haste I + Resistance I + Fire Resist + Regen I
+[16:42:02] [INFO] Loaded script server_scripts:origins/witch_of_ink_progression.js in 0.002 s
+[16:42:02] [INFO] origins/witherborn_slimebodied.js#191: [IridescentCraft] Witherborn & Slimebodied origins loaded
+[16:42:02] [INFO] origins/witherborn_slimebodied.js#192:   Witherborn: Wither on hit, hunger damage penalty
+[16:42:02] [INFO] origins/witherborn_slimebodied.js#193:   Slimebodied: satiety DR, food cooldown, satiety floor
+[16:42:02] [INFO] Loaded script server_scripts:origins/witherborn_slimebodied.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:pregen/auto_chunky.js in 0.001 s
+[16:42:02] [INFO] quests/combat_kill_signals.js#87: [combat_kill_signals] loaded — Apotheosis boss (apoth.boss) + champion (apoth.miniboss) kill -> Heracles dummy bridges
+[16:42:02] [INFO] Loaded script server_scripts:quests/combat_kill_signals.js in 0.0 s
+[16:42:02] [INFO] quests/heracles_reconcile.js#503: [heracles_reconcile] loaded — 91 quests auto-reconcile from existing advancements / tiers / flags (login + 30s periodic + /icraft_reconcile)
+[16:42:02] [INFO] Loaded script server_scripts:quests/heracles_reconcile.js in 0.005 s
+[16:42:02] [INFO] quests/onboarding_bridge.js#187: [iridescent/onboarding_bridge] loaded; bridging 2 dummy quests (JLF aptitude level 5 + onboarding capstone), 100-tick pass per player
+[16:42:02] [INFO] Loaded script server_scripts:quests/onboarding_bridge.js in 0.002 s
+[16:42:02] [INFO] randomize_blank_scrolls.js#42: Loaded Java class 'io.redspace.ironsspellbooks.api.registry.SpellRegistry'
+[16:42:02] [INFO] randomize_blank_scrolls.js#43: Loaded Java class 'io.redspace.ironsspellbooks.api.spells.ISpellContainer'
+[16:42:02] [INFO] Loaded script server_scripts:randomize_blank_scrolls.js in 0.006 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.002 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/boss_material_processing.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.002 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/cooking_for_blockheads_overrides.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/create_blaze_burner_t1.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/magic_recipes.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/mek_biofuel_squeeze.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.001 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/progression_tier_fixes.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
+[16:42:02] [INFO] Loaded script server_scripts:recipes/staff_wand_recipes.js in 0.0 s
+[16:42:03] [INFO] Loaded script server_scripts:recipes/strip_mutant_monsters.js in 0.001 s
+[16:42:03] [INFO] Loaded script server_scripts:recipes/strip_tmb_bow_recipes.js in 0.0 s
+[16:42:03] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.002 s
+[16:42:03] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.001 s
+[16:42:03] [INFO] Loaded script server_scripts:regen_control.js in 0.001 s
+[16:42:03] [INFO] relic_boss_drops.js#113: [IridescentCraft] relic_boss_drops loaded (6 LivingDropsEvent bindings + ender_dragon via death event)
+[16:42:03] [INFO] Loaded script server_scripts:relic_boss_drops.js in 0.002 s
+[16:42:03] [INFO] respawn_hunger.js#40: [IridescentCraft] respawn_hunger loaded — respawn sets food=6, saturation=0
+[16:42:03] [INFO] Loaded script server_scripts:respawn_hunger.js in 0.001 s
+[16:42:03] [INFO] respec/class_respec.js#335: [class_respec] loaded — icraft:class_altar: 1 trophy (9 accepted) + 30 levels -> `origin gui <player> origins:class`
+[16:42:03] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.002 s
+[16:42:03] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.009 s
+[16:42:03] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.009 s
+[16:42:03] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.006 s
+[16:42:03] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.002 s
+[16:42:03] [INFO] scaling/mob_scaling_unified.js#269: [IridescentCraft] Unified mob scaling loaded (tier HP + dimension scaling)
+[16:42:03] [INFO] Loaded script server_scripts:scaling/mob_scaling_unified.js in 0.003 s
+[16:42:03] [INFO] scaling/zz_ascension_scaling.js#131: [iridescent/ascension] mob-scaling spawn handler loaded (runs after boss_hp; ISS-caster crash-guarded)
+[16:42:03] [INFO] Loaded script server_scripts:scaling/zz_ascension_scaling.js in 0.001 s
+[16:42:03] [INFO] scaling/zz_boss_global_3x.js#233: [iridescent/boss_3x] global boss buff loaded (hp ×3 + melee dmg ×3 + ISS spell ×2; see header for boundary + coverage)
+[16:42:03] [INFO] Loaded script server_scripts:scaling/zz_boss_global_3x.js in 0.001 s
+[16:42:03] [INFO] skills/justleveling_skills.js#432: Loaded Java class 'net.minecraft.world.inventory.EnchantmentMenu'
+[16:42:03] [INFO] skills/justleveling_skills.js#433: Loaded Java class 'net.minecraft.world.inventory.AnvilMenu'
+[16:42:03] [INFO] Loaded script server_scripts:skills/justleveling_skills.js in 0.019 s
+[16:42:03] [INFO] Loaded script server_scripts:skills/mastery_tax.js in 0.001 s
+[16:42:03] [INFO] skills/skill_effects.js#761: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
+[16:42:03] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.005 s
+[16:42:03] [INFO] spawn_priest_tower.js#309: [PRIEST-TOWER] spawn-village guarantee armed (signature: irons_spellbooks:inscription_table)
+[16:42:03] [INFO] Loaded script server_scripts:spawn_priest_tower.js in 0.004 s
+[16:42:03] [INFO] spawn_protection.js#74: [IridescentCraft] Spawn protection loaded (radius: 32)
+[16:42:03] [INFO] Loaded script server_scripts:spawn_protection.js in 0.001 s
+[16:42:03] [INFO] spawn_village_protection.js#77: [spawn-protection] hostile deletion zone active: r=96 around world spawn
+[16:42:03] [INFO] Loaded script server_scripts:spawn_village_protection.js in 0.001 s
+[16:42:03] [INFO] strip_anomalous_drops.js#132: [IridescentCraft] strip_anomalous_drops loaded (LivingDropsEvent strip layer for 24 flagged item IDs)
+[16:42:03] [INFO] Loaded script server_scripts:strip_anomalous_drops.js in 0.001 s
+[16:42:03] [INFO] Loaded script server_scripts:strip_infinity_ham.js in 0.0 s
+[16:42:03] [INFO] sunlight_smite.js#43: Loaded Java class 'net.minecraft.tags.EntityTypeTags'
+[16:42:03] [INFO] sunlight_smite.js#46: Loaded Java class 'net.minecraft.world.damagesource.DamageTypes'
+[16:42:03] [INFO] sunlight_smite.js#108: [IridescentCraft] sunlight_smite loaded: +100 HP/tick(10) to #minecraft:undead + #forge:undead in direct sky
+[16:42:03] [INFO] Loaded script server_scripts:sunlight_smite.js in 0.001 s
+[16:42:03] [INFO] tatos_dimension_lock.js#97: [IridescentCraft] tatos_dimension_lock loaded (theabyss:* mobs confined to 4 TATOS dims)
+[16:42:03] [INFO] Loaded script server_scripts:tatos_dimension_lock.js in 0.0 s
+[16:42:03] [INFO] tetra_terramity_perks.js#159: [IridescentCraft] tetra_terramity_perks loaded
+[16:42:03] [INFO] tetra_terramity_perks.js#160:   sapphire->fire_res passive | topaz->fire on hit
+[16:42:03] [INFO] tetra_terramity_perks.js#161:   ruby->+50% fire damage | onyx->+15% minion damage
+[16:42:03] [INFO] tetra_terramity_perks.js#162:   dimlite->night vision passive | iridium->stronger melee knockback
+[16:42:03] [INFO] Loaded script server_scripts:tetra_terramity_perks.js in 0.002 s
+[16:42:03] [INFO] ultris_randomizer_janitor.js#133: [IridescentCraft] ultris_randomizer_janitor loaded (100-tick stranded-marker sweep)
+[16:42:03] [INFO] Loaded script server_scripts:ultris_randomizer_janitor.js in 0.001 s
+[16:42:03] [INFO] Loaded 158/158 KubeJS server scripts in 0.518 s with 0 errors and 0 warnings
+[16:42:03] [INFO] Scripts loaded
+[16:42:03] [INFO] fix_stone_tags.js#47: [stone-tag-fix] 1 block(s) -> mineable/pickaxe, cleared from needs_*_tool (wood-mineable, post-merge)
+[16:42:03] [INFO] economy/relic_sink.js#371: [IridescentCraft] #icraft:relic_sinkable built (5 broad namespaces + 47 overrides + 2 allow, minus 34 deny)
+[16:42:03] [INFO] fix_venus_sandstone_tag.js#30: [venus-sandstone-tag] forge:sandstone/venus_sandstone <- ad_astra:venus_sandstone (post-merge)
+[16:42:03] [INFO] Initializing recipe event...
+[16:42:07] [INFO] [minecraft:item] Found 4123 tags, added 464 objects, removed 34 objects
+[16:42:08] [INFO] [minecraft:block] Found 1857 tags, added 2 objects, removed 1 objects
+[16:42:31] [INFO] Processing recipes...
+[16:42:31] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_cherry[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:cherry_log\"}
+[16:42:31] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_jungle[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:jungle_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:31] [WARN] Failed to parse recipe 'deeperdarker:resonarium_hoe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:halberdofpriderec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'cataclysm:stonecutting/azure_seastone_brick_stair_from_stonecutting[minecraft:stonecutting]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/clear[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:robedbootsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'traveloptics:sand_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'deeperdarker:resonarium_helmet_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:robedhoodrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:scytheofslothrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/feather_feet[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenhelmetrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'tetranomicon:netherite_opal[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/emptiness[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:darksteelleggingsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'delightful:knives/smithing/resonarium_knife[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'traveloptics:abyss_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/jump_boost[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/weak_regeneration[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'traveloptics:void_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\"}
+[16:42:32] [WARN] Failed to parse recipe 'traveloptics:male_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenbootsrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'deeperdarker:resonarium_pickaxe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/overload[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:spearoflustrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_yellow_autumn[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\"}
+[16:42:32] [WARN] Failed to parse recipe 'cardinal_sins:darksteelbootsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:32] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_origin[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:32] [WARN] Failed to parse recipe 'botania:brew/healing[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:32] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_snowblossom[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:cherry_log\"}
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:darksteelhelmetrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/strength[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/haste[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/soul_cross[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'deeperdarker:resonarium_shovel_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe '1_splatus:ultris/ominous_eye[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_dark_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:dark_oak_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:mech_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'stalwart_dungeons:warted_tungsten_shield_recipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_rainbow_birch[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:33] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_spruce[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:spruce_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:wrathswordrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'pamhc2foodcore:caramelcupcakeitem_x4[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'deeperdarker:resonarium_boots_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_jacaranda[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:jacaranda_log\"}
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/water_breathing[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/resistance[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:ignis_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:abyss_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:void_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:prideorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:abyss_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:abyss_craft2[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:robedchestrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_mahogany[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:mahogany_log\"}
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:axeofgluttonyrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/fire_resistance[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:robedleggingsrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'stalwart_dungeons:netherite_hammer_recipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'traveloptics:abyssal_upgrade_smithing_template[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'botania:brew/invisibility[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:33] [WARN] Failed to parse recipe 'pamhc2foodcore:melonpieitem[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'tetranomicon:flaming_ruby[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe '1_splatus:ultris/command[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:daggerofgreedrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:slothorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'deeperdarker:resonarium_sword_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_birch[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:birch_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:33] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_hellbark[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:hellbark_log\"}
+[16:42:33] [WARN] Failed to parse recipe 'cardinal_sins:darksteelchestplaterec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:33] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_willow[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:willow_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/bloodthirst[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/absorption[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:lustorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenchestplaterecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/regeneration[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:male_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'stalwart_dungeons:wartedtungstenleggingsrecipe[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/speed[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'aetheric_tetranomicon:pyral_ingot_from_smelting_lost_content_items[minecraft:smelting]'! Falling back to vanilla: Unknown item 'lost_aether_content:phoenix_axe'
+[16:42:34] [WARN] Failed to parse recipe 'valhelsia_furniture:blue_cherry_chair[minecraft:crafting_shaped]'! Falling back to vanilla: Failed to parse custom ingredient ("valhelsia_core:platform_dependent") from {"type":"valhelsia_core:platform_dependent","fabric:type":"valhelsia_core:platform_dependent","fabric_value":{"item":"minecraft:stick"},"forge_value":{"tag":"forge:rods/wooden"}}: java.lang.IllegalArgumentException: Custom ingredient cannot be used inside an array ingredient. You can replace the array by a fabric:any ingredient.
+[16:42:34] [WARN] Failed to parse recipe 'valhelsia_furniture:black_warped_chair[minecraft:crafting_shaped]'! Falling back to vanilla: Failed to parse custom ingredient ("valhelsia_core:platform_dependent") from {"type":"valhelsia_core:platform_dependent","fabric:type":"valhelsia_core:platform_dependent","fabric_value":{"item":"minecraft:stick"},"forge_value":{"tag":"forge:rods/wooden"}}: java.lang.IllegalArgumentException: Custom ingredient cannot be used inside an array ingredient. You can replace the array by a fabric:any ingredient.
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_palm[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:palm_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/night_vision[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:male_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'botania:brew/allure[botania:brew]'! Falling back to vanilla: Cannot invoke "net.minecraft.core.Registry.m_7745_(net.minecraft.resources.ResourceLocation)" because "com.prunoideae.custom.brew.BotaniaRegistryObjectBuilderTypes.BREW_REGISTRY" is null
+[16:42:34] [WARN] Failed to parse recipe 'deeperdarker:resonarium_leggings_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:envysoulrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:mech_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:ignis_weapon[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:greedorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'pamhc2foodcore:honeymuffinitem[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_maple[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\"}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_orange_autumn[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:dark_oak_log\"}
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:gluttonysoulorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'deeperdarker:resonarium_chestplate_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'deeperdarker:resonarium_axe_smithing[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:wrathorbrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_flowering_oak[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:oak_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_redwood[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:redwood_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_rubberwood[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"thermal:rubberwood_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:devices/tree_extractor/tree_extractor_acacia[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"minecraft:acacia_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [WARN] Failed to parse recipe 'tetranomicon:cincinnasite_diamond[minecraft:smithing_transform]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'cardinal_sins:sickleofenvyrec[minecraft:smithing_transform]'! Falling back to vanilla: Ingredient 'template' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:ignis_book[minecraft:crafting_shaped]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'traveloptics:sand_craft[minecraft:crafting_shapeless]'! Falling back to vanilla: ItemStack 'result' can't be empty!
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_umbran[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:umbran_log\"}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_fir[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:fir_log\"}
+[16:42:34] [WARN] Failed to parse recipe 'thermal:compat/biomesoplenty/tree_extractor_bop_magic[thermal:tree_extractor]'! Falling back to vanilla: Non [a-z0-9_.-] character in namespace of location: {\"Name\":\"biomesoplenty:magic_log\",\"Properties\":{\"axis\":\"y\"}}
+[16:42:34] [INFO] Found 28922 recipes in 3.061 s
+[16:42:34] [INFO] compat/class_artifacts_recipes.js#39: [IridescentCraft] Stripped 17 rpgseteffects crafting/smelting recipes (drops-only design)
+[16:42:34] [INFO] endgame/mythic_forge.js#266: [IridescentCraft] Mythic Forge recipes loaded
+[16:42:34] [INFO] endgame/mythic_forge.js#267:   - Mythic Forge crafting recipe
+[16:42:34] [INFO] endgame/mythic_forge.js#268:   - Rift Keystone entry item recipe
+[16:42:34] [INFO] endgame/mythic_forge.js#269:   - Void Coffer banking item recipe
+[16:42:34] [INFO] endgame/mythic_forge.js#270:   - Mythic Catalysts I-V
+[16:42:34] [INFO] endgame/mythic_forge.js#271:   - Mythic Reforge Token
+[16:42:34] [INFO] endgame/mythic_forge.js#272:   - 4 Mythic Unique item recipes (Blueprint)
+[16:42:35] [INFO] food_dedup_recipes.js#108: [icraft food_dedup] Removed recipes for 74 duplicate outputs
+[16:42:35] [INFO] recipes/ad_astra_gating.js#159: Loaded Java class 'net.minecraft.nbt.ListTag'
+[16:42:35] [INFO] recipes/ad_astra_gating.js#277: [IridescentCraft] ad_astra_gating.js loaded — Ad Astra recipes gated to T4+
+[16:42:35] [INFO] recipes/boss_material_processing.js#43: [IridescentCraft] Boss material processing recipes loaded
+[16:42:35] [INFO] recipes/cooking_conversion.js#383: [IridescentCraft] cooking_conversion.js loaded — crafting table alternatives for cooking pot recipes
+[16:42:35] [INFO] recipes/if_latex_rework.js#199: [IridescentCraft] IF latex rework + HDPE circuits loaded
+[16:42:35] [INFO] recipes/if_latex_rework.js#200:   - Logs → latex via Create mixing/crushing + Thermal crucible
+[16:42:35] [INFO] recipes/if_latex_rework.js#201:   - HDPE sheet/pellet/rod → dry rubber (1:9 / 1:3 / 1:6)
+[16:42:35] [INFO] recipes/if_latex_rework.js#202:   - Latex fluid → dry rubber via smelting + Create compacting
+[16:42:35] [INFO] recipes/if_latex_rework.js#203:   - HDPE Circuit Board: alternative for fission/fusion/machine recipes
+[16:42:35] [INFO] recipes/mek_biofuel_squeeze.js#177: [IridescentCraft] mek_biofuel_squeeze.js loaded -- factor 4, re-added 101 squeezed crushing->bio_fuel recipes
+[16:42:35] [INFO] recipes/planetary_extraction.js#184: [IridescentCraft] planetary_extraction.js loaded — planet crushing + hydrogen-to-fuel chain
+[16:42:37] [INFO] recipes/recipe_audit.js#530: [IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active
+[16:42:38] [INFO] recipes/staff_wand_recipes.js#182: [staff_wand_recipes] loaded — Dan T1 (5) + SS elements (8) reseeded
+[16:42:38] [INFO] recipes/strip_tmb_bow_recipes.js#25: [strip_tmb_bow_recipes] removed craft recipes for 34 boss-exclusive TMB bows
+[16:42:38] [INFO] recipes/tier_gated_recipes.js#585: [IridescentCraft] P3 tier_gated_recipes.js loaded
+[16:42:39] [INFO] recipes/waystone_recipes.js#270: [IridescentCraft] waystone_recipes.js loaded
+[16:42:39] [INFO] Posted recipe events in 4.450 s
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:jungle_chest_from_quark_jungle_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:jungle_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"jungle\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe alexsdelight:barbecue_on_a_stick[minecraft:crafting_shapeless]: {"group":"barbecue_stick","type":"minecraft:crafting_shapeless","ingredients":[{"item":"farmersdelight:tomato"},{"item":"farmersdelight:onion"},{"item":"amfd:singular_cooked_moose_rib"},{"item":"minecraft:cooked_chicken"},{"item":"minecraft:stick"},{"item":"minecraft:stick"}],"result":{"item":"farmersdelight:barbecue_stick","count":2}}: Unknown item 'amfd:singular_cooked_moose_rib'
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:warped_chest_from_quark_warped_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:warped_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"warped\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:bamboo_chest_from_quark_bamboo_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:bamboo_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"bamboo\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe forbidden_arcanus:aurum_chest_boat[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"forbidden_arcanus:aurum_boat"},{"fabric_value":{"tag":"c:chests"},"forge_value":{"tag":"forge:chests/wooden"}}],"result":{"item":"forbidden_arcanus:aurum_chest_boat"}}: An ingredient entry needs either a tag or an item
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:crimson_chest_from_quark_crimson_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:crimson_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"crimson\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe forbidden_arcanus:edelwood_chest_boat[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","category":"misc","ingredients":[{"item":"forbidden_arcanus:edelwood_boat"},{"fabric_value":{"tag":"c:chests"},"forge_value":{"tag":"forge:chests/wooden"}}],"result":{"item":"forbidden_arcanus:edelwood_chest_boat"}}: An ingredient entry needs either a tag or an item
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:spruce_chest_from_quark_spruce_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:spruce_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"spruce\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:birch_chest_from_quark_birch_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:birch_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"birch\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:mangrove_chest_from_quark_mangrove_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:mangrove_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"mangrove\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:cherry_chest_from_quark_cherry_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:cherry_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"cherry\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:oak_chest_from_quark_oak_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:oak_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"oak\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:acacia_chest_from_quark_acacia_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:acacia_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"acacia\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [WARN] Error parsing recipe sophisticatedstorage:dark_oak_chest_from_quark_dark_oak_chest[minecraft:crafting_shapeless]: {"type":"minecraft:crafting_shapeless","conditions":[{"type":"forge:item_exists","item":"quark:dark_oak_chest"},{"type":"sophisticatedcore:item_enabled","itemRegistryName":"sophisticatedstorage:chest"}],"ingredients":[[],{"item":"minecraft:lever"}],"result":{"item":"sophisticatedstorage:chest","nbt":"{woodType:\"dark_oak\"}"}}: Item array cannot be empty, at least one item must be defined
+[16:42:39] [INFO] Added 359 recipes, removed 746 recipes, modified 578 recipes, with 14 failed recipes in 534.1 ms
+[16:42:40] [INFO] loot/0_entity_id_validator.js#92: Loaded Java class 'net.minecraft.core.registries.BuiltInRegistries'
+[16:42:40] [INFO] endgame/rift_mechanics.js#128: [IridescentCraft] Rift loot mechanics loaded (LootJS)
+[16:42:40] [INFO] endgame/rift_mechanics.js#129:   - T4 boss Rift Shard/Void Fragment drops: 12 bosses
+[16:42:40] [INFO] endgame/rift_mechanics.js#130:   - End mob Rift material drops: 3 mob types
+[16:42:40] [INFO] loot/abyss_boss_loot.js#123: [IridescentCraft] abyss_boss_loot.js loaded — Abyss boss drop gating active
+[16:42:40] [INFO] loot/alexsmobs_drops.js#131: [alexsmobs_drops] registered 21 entity loot modifiers (1 strip, 20 synergy adds)
+[16:42:40] [INFO] loot/blue_skies_drops.js#39: [blue_skies_drops] registered 4 Blue Skies boss synergy modifiers
+[16:42:40] [INFO] loot/boss_arena_material_tease.js#86: [boss_arena_material_tease] registered 13 arena material teases, 12 with a tier token (icraft #58 Piece B)
+[16:42:40] [INFO] loot/boss_arena_themed_loot.js#47: [boss_arena_themed_loot] scrubbed overworld diamonds/gunpowder from ISS catacombs/evoker_fort/pyromancer + cataclysm frosted_prison (ISS enrichment moved to zz_iss_arena_enrichment.js)
+[16:42:40] [INFO] icraft #58: [boss_refight_repair_floors] registered 12 refight-to-repair drop floors
+[16:42:40] [INFO] loot/boss_unique_drops.js#32: [boss_unique_drops] 40 boss-exclusive unique drops registered (SS T1 + TMB bows @ 15%)
+[16:42:40] [INFO] loot/cataclysm_boss_drops.js#85: [cataclysm_boss_drops] registered 8 Cataclysm boss synergy modifiers + 3 refight-to-repair material floors (ignitium/cursium/witherite); ender_guardian gauntlet is native
+[16:42:40] [INFO] loot/codex_exploration_drops.js#206: [codex_exploration_drops] Codex progression tokens injected into chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + low-rate enemy drops by dimension tier
+[16:42:40] [INFO] loot/crop_seed_reduction.js#111: [IridescentCraft] Crop seed reduction loaded
+[16:42:40] [INFO] loot/crop_seed_reduction.js#112:   - Wheat/beetroot seeds: 5% drop chance
+[16:42:40] [INFO] loot/crop_seed_reduction.js#113:   - Potato/carrot: 2 guaranteed (1 is the Quark replant cost) + 5% extra
+[16:42:40] [INFO] loot/crop_seed_reduction.js#114:   - Melon/pumpkin stem seeds: 5% drop chance
+[16:42:40] [INFO] loot/crop_seed_reduction.js#115:   - Grass seed drops: UNCHANGED (discovery mechanism)
+[16:42:40] [INFO] loot/dimensional_boss_drops.js#74: [dimensional_boss_drops] registered 11 dimension/mutant boss synergy modifiers
+[16:42:40] [INFO] loot/grass_pam_seeds.js#107: [grass_pam_seeds] Pam HC2 seeds added to 4 grass blocks (97 seeds, ~7% total per break)
+[16:42:40] [INFO] loot/iss_boss_drops.js#76: [iss_boss_drops] registered 8 entity loot modifiers
+[16:42:40] [INFO] loot/lootjs_overhaul.js#1744: [icraft-loot] T1 iron baseline: 15% iron_ingot (1-3) added to 33 overworld chest types
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3372: [IridescentCraft] LootJS structure chest overhaul loaded
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3373:   - Global chest strip: @ars_nouveau, irons_spellbooks (scrolls exempt), @moreartifacts, saplings, the denied relics
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3374:   - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG/DD/Abyss, T4(16%) End (RELIC_DENY filtered)
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3375:   - Tiered by dimension: Ars glyphs + spell books, Iron's Spellbooks books + inks, class-artifact relics
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3376:   - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3377:   - Diamonds + diamond gear stripped from every chest in the Overworld and the T2 dimensions
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3378:   - Overworld clutter: horse armor / spider eyes / rotten flesh / wood / stone removed; gunpowder, string, bone kept 50%, name tags 40%
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3379:   - Overworld food: listed non-meat foods kept 20% per stack, modded foods removed; village food + seed boost on top
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3380:   - Village chests: sanitised, curated artifact pool (1% per item), QoL roll (ink 30.9% / source gem 15.5%), compass 5%, backpack 4%
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3381:   - Ocean chests: prismarine, nautilus shell, fishing gear, heart of the sea
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3382:   - Marquee structures: themed pool per tier (7 / 8.4 / 9.8 / 11.2%) + scrolls + capped spell books
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3383:   - Epic Dungeons: tier-breaker strip, T1 magic kit, family theme loot
+[16:42:40] [INFO] loot/lootjs_overhaul.js#3384:   - Keebsz floors: F1-2 starter, F3-6 mid, F7-10 endgame
+[16:42:40] [INFO] loot/lovely_pieces_loot.js#248: [lovely-pieces-loot] tier pools wired: T1=20 T2=27 T3=21 legendaries=7 (boss-only)
+[16:42:40] [INFO] loot/mahou_synergy_drops.js#86: [mahou_synergy_drops] registered 14 Mahou Tsukai reagent injection modifiers
+[16:42:40] [INFO] loot/majrusz_skeleton_punch_strip.js#94: [icraft-loot] Majrusz skeleton Punch-strip registered (2 table patterns)
+[16:42:40] [INFO] loot/meat_drop_doubling.js#42: [meat-doubling] base meat drops doubled for 9 animals
+[16:42:40] [INFO] loot/planetary_loot.js#102: [IridescentCraft] planetary_loot.js loaded — planetary enchant books (structure chests only)
+[16:42:40] [INFO] loot/staff_wand_drops.js#116: [staff_wand_drops] loaded — 17 staves seeded across T2/T3/T4 bosses
+[16:42:40] [INFO] loot/stalwart_dungeons_drops.js#52: [stalwart_dungeons_drops] registered 7 Stalwart nether mini-boss synergy modifiers
+[16:42:40] [INFO] loot/terramity_boss_drops.js#66: [terramity_boss_drops] registered 7 non-gun EPIC weapon allocations
+[16:42:40] [INFO] loot/terramity_structure_drops.js#196: [terramity_structure_drops] T3/T4 ingot-family weapons + 8 EPIC curios + 9 RARE tomes/bracelets allocated to Terramity structures
+[16:42:40] [INFO] loot/twilight_boss_drops.js#60: [twilight_boss_drops] registered 6 TF boss synergy modifiers
+[16:42:40] [INFO] loot/zzz_iss_scroll_tier_clamp.js#126: [iss_scroll_tier_clamp] armed -- dropped ISS scroll levels clamp to killer tier (T1<=4 T2<=6 T3<=8 T4<=10; non-player/un-tiered -> T1)
+[16:42:40] [INFO] loot/zz_iss_arena_enrichment.js#81: [zz_iss_arena_enrichment] re-homed ISS arena enrichment AFTER lootjs_overhaul ISS strip (extracted from boss_arena_themed_loot + _material_tease; survives the registration-order removeIf)
+[16:42:40] [INFO] loot/zz_pack_enchanted_books.js#53: [icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)
+[16:42:40] [INFO] loot/zz_pack_enchanted_books.js#63: [icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)
+[16:42:40] [INFO] loot/zz_pack_enchanted_books.js#75: [icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden/DD/Abyss, 12.5%, levels 20-30)
+[16:42:40] [INFO] loot/zz_pack_enchanted_books.js#85: [icraft-loot] Registering T4 enchanted_book re-add (End, 15%, level 30)
+[16:42:40] [INFO] loot/zz_pack_enchanted_books.js#133: [icraft-loot] 21 marquee enchanted-book modifiers registered (10% each, tier-scaled levels)
+[16:42:40] [INFO] loot/zz_unique_chest_strip.js#33: [zz_unique_chest_strip] insurance strip armed for 34 TMB bows across all chests/ tables (boss-exclusive)
+[16:42:50] [INFO] Server resource reload complete!
+[16:42:50] [INFO] 0_server_ready_banner.js#28: 
+[16:42:50] [INFO] 0_server_ready_banner.js#28:   ============================================================
+[16:42:50] [INFO] 0_server_ready_banner.js#28:   >>>  IridescentCraft Server READY                       <<<
+[16:42:50] [INFO] 0_server_ready_banner.js#28:   >>>  Listening on 0.0.0.0:25565                            <<<
+[16:42:50] [INFO] 0_server_ready_banner.js#28:   >>>  Accepting player connections.                       <<<
+[16:42:50] [INFO] 0_server_ready_banner.js#28:   ============================================================
+[16:42:50] [INFO] 0_server_ready_banner.js#28: 
+[16:42:50] [INFO] 0_tick_master.js#139: [TickMaster] Registered 43 server tick functions
+[16:42:50] [INFO] 0_tick_master.js#140: [TickMaster] Registered 19 player tick functions
+[16:42:50] [INFO] cherry_spawn_biome.js#138: [icraft_spawn] search already ran to a dead end on this world; skipping
+[16:42:50] [INFO] death_penalty.js#672: [IridescentCraft] keepInventory enabled — death penalty handles consequences
+[16:42:50] [INFO] gates/astages_restrictions.js#563: [IridescentCraft] AStages native restrictions registered
+[16:42:50] [INFO] gates/astages_restrictions.js#564:   Tier 2: 6 mods + 17 items + 4 dimensions
+[16:42:50] [INFO] gates/astages_restrictions.js#565:   Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions
+[16:42:50] [INFO] gates/astages_restrictions.js#566:   Tier 4: 5 mods + 133 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts + Mekanism fusion/SPS/antimatter/ultimate-facility pins, locked decision C 2026-06-06)
+[16:42:50] [INFO] loot/0_entity_id_validator.js#143: [ENTITY-ID-VALIDATOR] all entity ids resolve (318 entity loot modifiers registered through the guard)
+[16:42:50] [INFO] skills/justleveling_skills.js#947: [IridescentCraft] JustLeveling Aptitude Skills loaded -- 27 attribute modifiers, 5 timed effects, 5 melee + 2 defensive hooks, kill / craft / block / XP-refund hooks (aptitudes via global.icraft.aptitude)
+[16:42:50] [INFO] skills/justleveling_skills.js#950:   Tier 5 : Might, Tough Hide, Light Step, Padded Frame, Mana Spark, Curious, Steady Hand, Lucky Charm
+[16:42:50] [INFO] skills/justleveling_skills.js#951:   Tier 10: Brutal Slash, Hearty Meals, Fleet of Foot, Second Wind, Conservation of Magic, Arcane Efficiency, Quarryman, Lucky Strike
+[16:42:50] [INFO] skills/justleveling_skills.js#952:   Tier 15: Cleave, Steady Breath, Deadeye, Bulwark, Mana Blaze, Insight, Thrifty Hands, Fortune's Favor
+[16:42:50] [INFO] skills/justleveling_skills.js#953:   Tier 20: Hemorrhage, Overflow, Rapid Fire, Turtle Shield, Mystic Ward, Materials Science, Resourceful, Treasure Sense
+[16:42:50] [INFO] skills/justleveling_skills.js#954:   Tier 30: True Strength, Iron Stomach, Excitement, Lion Heart, Mana Inferno, Enlightenment, Master Craftsman, Motherlode
+[16:42:50] [INFO] skills/mastery_tax.js#123: [IridescentCraft] Mastery Tax loaded (aptitudes via global.icraft.aptitude; drained through the XP wallet)
+[16:42:50] [INFO] skills/mastery_tax.js#124:   Tax curve (raw XP per level-up, by invested levels): 1-32 = 0 | 33 = 50 | 48 = 800 | 64 = 1600 | 65 = 1800 | 80 = 4800 | 96 = 8000 | 97 = 8800 | 128 = 33600 | 200 = 91200 | 248 = 129600
+[16:42:50] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
+[16:42:52] [INFO] scaling/zz_boss_global_3x.js#155: [iridescent/boss_3x] boss set built: 78 bosses get ×3 hp + ×3 dmg (+ ×2 spell_power on ISS bosses) (named=67, extras=11, excluded=0)

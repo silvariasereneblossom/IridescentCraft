@@ -80,7 +80,10 @@
 #      only an edit in the file (the next sync that rewrites the file would
 #      switch it off), when the list is on and empty (nobody can join), or
 #      when an entry carries a UUID the server will never match. Every run
-#      says whether names are authenticated (online-mode).
+#      says whether names are authenticated (online-mode). RED as well when
+#      the launcher has REFUSED to start the server (.icraft_start_refused):
+#      it does not start a server whose own whitelist or online-mode switch
+#      could not be put back, and leaves the reason in that file.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -553,7 +556,24 @@ function Get-OfflineUuid {
 # pasted into reports and into a public repository's issues.
 function Get-AccessPosture {
     param([string]$Root, [bool]$Public)
-    $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]) }
+    $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]); Refused = $false }
+    # The launcher's start guard: a server whose own whitelist / online-mode
+    # switch could not be put back is NOT started, and this file says why. It is
+    # removed by the next start the launcher allows.
+    $refusedPath = Join-Path $Root '.icraft_start_refused'
+    if (Test-Path -LiteralPath $refusedPath) {
+        $why = '(no reason in the file)'; $when = '?'
+        foreach ($l in (Get-Content -LiteralPath $refusedPath -ErrorAction SilentlyContinue)) {
+            if ($l -match '^why=(.*)$') { $why = $matches[1] }
+            if ($l -match '^refused=(.*)$') { $when = $matches[1] }
+        }
+        $r.State = 'RED'
+        $r.Refused = $true
+        $r.Line = "THE LAUNCHER REFUSED TO START THE SERVER ($when): $why"
+        $r.Notes.Add('The server is down ON PURPOSE: started as it was, it would have run with its whitelist or online mode off.') | Out-Null
+        $r.Notes.Add('On the server: put the value into server.properties (or repair .icraft_config_overrides.json), then press Cycle in the launcher. "icraft settings start-check" repeats the check without starting anything.') | Out-Null
+        return $r
+    }
     $p = @{}
     try {
         foreach ($l in (Get-Content -LiteralPath (Join-Path $Root 'server.properties') -ErrorAction Stop)) {
@@ -903,7 +923,11 @@ if (-not $realDrift) {
     if ($access.State -eq 'RED') {
         Write-Host "=== ACCESS RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
-        Write-Host "    -> the deploy is fine and the door is open. On the server: white-list=true in server.properties, pin it (icraft settings pin server.properties white-list --pack-value false), restart. Deployment guide section 15." -ForegroundColor Yellow
+        if ($access.Refused) {
+            Write-Host "    -> the server was NOT started, rather than started open. Fix the cause on the server, then press Cycle in the launcher (a remote Cycle request is declined while no server is up). Deployment guide section 15j." -ForegroundColor Yellow
+        } else {
+            Write-Host "    -> the deploy is fine and the door is open. On the server: white-list=true in server.properties, pin it (icraft settings pin server.properties white-list --pack-value false), restart. Deployment guide section 15." -ForegroundColor Yellow
+        }
         if ($backupState -eq 'RED') {
             Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red

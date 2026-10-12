@@ -768,10 +768,111 @@ pub fn apply_when_stopped(cfg: &ServerConfig, by: &str) -> Result<Report, String
     Ok(report)
 }
 
+// =============================================================================
+// The start guard: the one case where this layer stops a launch
+// =============================================================================
+//
+// Everything above is "never fatal": a value that cannot be put back is logged
+// and the server starts with the pack's. For a worldgen number that is right.
+// For the switches that decide who can join it is not: the pack ships
+// `white-list=false` / `online-mode=false`, so a put-back that fails after a
+// sync starts a public server with its door open. Operator ruling, 2026-10-11:
+// it should refuse to start. A server that is down is better than one that is
+// open.
+
+/// Keys of `server.properties` that decide who can join.
+pub const ACCESS_KEYS: &[&str] = &["white-list", "enforce-whitelist", "online-mode"];
+const SERVER_PROPERTIES: &str = "server.properties";
+/// Next to `server.properties` while a start stands refused: when, and why.
+/// The next start that is allowed removes it. For whoever looks at the box
+/// from elsewhere (`verify-server.ps1` reads it).
+pub const REFUSED_FILE: &str = ".icraft_start_refused";
+
+/// The overrides the guard holds the server to: an access key this server
+/// switched ON. One switched off, or being reset, is never a reason to refuse.
+fn switched_on(store: &Store) -> Vec<&Override> {
+    store
+        .overrides
+        .iter()
+        .filter(|o| {
+            !o.revert
+                && o.file.eq_ignore_ascii_case(SERVER_PROPERTIES)
+                && ACCESS_KEYS.contains(&o.key.as_str())
+                && same_value(&o.value, "true")
+        })
+        .collect()
+}
+
+/// The access keys this server has switched on through the list.
+pub fn guarded_keys(cfg: &ServerConfig) -> Vec<String> {
+    Store::load(&cfg.server_dir).map(|s| switched_on(&s).iter().map(|o| o.key.clone()).collect()).unwrap_or_default()
+}
+
+/// Does `server.properties` hold every access setting this server switched on?
+/// Reads only. `Err` is the reason a start would be refused: a key that is not
+/// `true` in the file, a file that cannot be read, or a list that cannot be
+/// read (the switches may be on it, so nothing can be confirmed).
+pub fn access_check(cfg: &ServerConfig) -> Result<(), String> {
+    let store = Store::load(&cfg.server_dir).map_err(|why| {
+        format!("{why}. Who may join this server may be set on that list, so it cannot be confirmed: repair the file or remove it")
+    })?;
+    let wanted = switched_on(&store);
+    if wanted.is_empty() {
+        return Ok(());
+    }
+    let doc = read_document(cfg, SERVER_PROPERTIES)?;
+    let mut off = Vec::new();
+    for o in wanted {
+        match doc.get(&o.key) {
+            Some(entry) if same_value(&entry.raw, "true") => {}
+            Some(entry) => off.push(format!("{}={} in {SERVER_PROPERTIES}", o.key, entry.raw.trim())),
+            None => off.push(format!("{} is missing from {SERVER_PROPERTIES}", o.key)),
+        }
+    }
+    if off.is_empty() {
+        Ok(())
+    } else {
+        Err(format!("{}: this server switched it on ({FILE}) and it could not be put back", off.join("; ")))
+    }
+}
+
+/// Called right after [`apply_at_start`], before the JVM is spawned: `Err`
+/// means do not start. The reason is logged in capitals, left in
+/// [`REFUSED_FILE`] and noted in the history; an allowed start clears the file.
+pub fn start_guard(cfg: &ServerConfig) -> Result<(), String> {
+    let checked = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| access_check(cfg)))
+        .unwrap_or_else(|_| Err("the check of this server's access settings panicked".to_string()));
+    let marker = cfg.server_dir.join(REFUSED_FILE);
+    match &checked {
+        Ok(()) => {
+            let _ = fs::remove_file(&marker);
+        }
+        Err(why) => {
+            log::error!("[overrides] !!! THE SERVER IS NOT STARTED: {why}");
+            log::error!("[overrides] !!! It would run with a whitelist or online mode this server switched ON turned OFF.");
+            log::error!("[overrides] !!! Put the value into {SERVER_PROPERTIES} or repair {FILE}, then Cycle. `icraft settings start-check` repeats this check.");
+            let unix = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
+            let body = format!(
+                "# The launcher refused to start the server. Removed by the next start it allows.\nrefused_unix={unix}\nrefused={}\nwhy={why}\n",
+                now_text()
+            );
+            if let Err(e) = fs::write(&marker, body) {
+                log::warn!("[overrides] {REFUSED_FILE} could not be written: {e}");
+            }
+            let line = format!("{} | server start | START REFUSED | {SERVER_PROPERTIES} | - | {why}\n", now_text());
+            if let Err(e) = append_to_history(cfg, &line) {
+                log::warn!("[overrides] {DIR}/{HISTORY_FILE} could not be appended to: {e}");
+            }
+        }
+    }
+    checked
+}
+
 /// Before every JVM start (`run::launch_server_inner`, inside the launch
 /// gate): put the overrides back into the files a sync may have rewritten.
-/// Nothing at all without the list; never fatal, never a panic: the server
-/// starts either way, and a failure is in the log in capitals.
+/// Nothing at all without the list; never a panic, and it never stops a launch
+/// itself: a failure is in the log in capitals. [`start_guard`], called next,
+/// is what refuses a start, and only for the access switches.
 pub fn apply_at_start(cfg: &ServerConfig) {
     if !cfg.server_dir.join(FILE).exists() {
         return;
@@ -1042,6 +1143,72 @@ mod tests {
         assert_eq!(fx.outcomes("t"), [change("white-list", Outcome::Reset, "true", "false")]);
         assert_eq!(fx.read("server.properties"), AS_SHIPPED);
         assert!(!fx.exists(FILE));
+    }
+
+    #[test]
+    fn a_server_never_starts_with_an_access_switch_it_turned_on_off() {
+        const ON: &str = "level-name=world\nonline-mode=false\nwhite-list=true\nenforce-whitelist=true\n";
+        const OFF: &str = "level-name=world\nonline-mode=false\nwhite-list=false\nenforce-whitelist=false\n";
+        let fx = Fx::new("guard");
+
+        // No list, or a list with none of the access keys: nothing to hold the server to.
+        fx.write("server.properties", OFF);
+        assert!(start_guard(&fx.cfg).is_ok());
+        stage(&fx.cfg, MEK, OSMIUM, "40", "t").unwrap();
+        assert!(start_guard(&fx.cfg).is_ok());
+        assert!(guarded_keys(&fx.cfg).is_empty());
+        assert!(!fx.exists(REFUSED_FILE));
+
+        // The operator's whitelist, pinned; then a sync puts the pack's file back.
+        fx.write("server.properties", ON);
+        pin(&fx.cfg, "server.properties", "white-list", "false", "t").unwrap();
+        pin(&fx.cfg, "server.properties", "enforce-whitelist", "false", "t").unwrap();
+        assert_eq!(guarded_keys(&fx.cfg), ["enforce-whitelist", "white-list"]);
+        assert!(access_check(&fx.cfg).is_ok());
+        fx.write("server.properties", OFF);
+        let why = access_check(&fx.cfg).unwrap_err();
+        assert!(why.contains("white-list=false") && why.contains("enforce-whitelist=false"), "{why}");
+        // The normal start: the put-back first, then the guard passes.
+        apply(&fx.cfg, "server start");
+        assert!(start_guard(&fx.cfg).is_ok());
+        assert_eq!(fx.read("server.properties"), ON);
+
+        // The put-back fails (a pack update dropped the key): refused, and the reason is on disk.
+        fx.write("server.properties", "level-name=world\nonline-mode=false\nenforce-whitelist=false\n");
+        assert_eq!(apply(&fx.cfg, "server start").failed(), 1);
+        let why = start_guard(&fx.cfg).unwrap_err();
+        assert!(why.contains("white-list is missing") && !why.contains("enforce-whitelist"), "{why}");
+        assert!(fx.read(REFUSED_FILE).contains("why=white-list is missing"), "{}", fx.read(REFUSED_FILE));
+        assert!(fx.history().iter().any(|l| l.contains("START REFUSED")), "{:?}", fx.history());
+        // The next start that is allowed clears it.
+        fx.write("server.properties", OFF);
+        apply(&fx.cfg, "server start");
+        assert!(start_guard(&fx.cfg).is_ok());
+        assert!(!fx.exists(REFUSED_FILE));
+
+        // Switching the whitelist off again is the operator's to do: a reset is not held against the file.
+        assert!(reset(&fx.cfg, "server.properties", "white-list").unwrap());
+        assert_eq!(guarded_keys(&fx.cfg), ["enforce-whitelist"]);
+        apply(&fx.cfg, "server start");
+        assert!(fx.read("server.properties").contains("white-list=false\nenforce-whitelist=true"));
+        assert!(start_guard(&fx.cfg).is_ok());
+        // Nor is a key this server set to false.
+        fx.write("server.properties", "level-name=world\nonline-mode=true\nwhite-list=false\nenforce-whitelist=true\n");
+        stage(&fx.cfg, "server.properties", "online-mode", "false", "t").unwrap();
+        assert_eq!(guarded_keys(&fx.cfg), ["enforce-whitelist"]);
+        assert!(start_guard(&fx.cfg).is_ok());
+
+        // A list that cannot be read: the switches may be on it, so no start.
+        fx.write(FILE, "{ not json");
+        let why = start_guard(&fx.cfg).unwrap_err();
+        assert!(why.contains("does not parse"), "{why}");
+        assert!(fx.exists(REFUSED_FILE));
+        // No server.properties at all, with a switch on the list: no start either.
+        fs::remove_file(fx.path(FILE)).unwrap();
+        fx.write("server.properties", ON);
+        pin(&fx.cfg, "server.properties", "white-list", "false", "t").unwrap();
+        fs::remove_file(fx.path("server.properties")).unwrap();
+        assert!(start_guard(&fx.cfg).is_err());
     }
 
     #[test]
