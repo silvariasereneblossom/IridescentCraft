@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "6d75d234",
+    "generated_from":  "5649efdf",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6964,8 +6964,8 @@
                                                                    "size":  21766
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "cbdb5e518b540e4350144716dcebf5b8ef9a2bf13087ffa8add86173863ad516",
-                                                              "size":  38401
+                                                              "sha256":  "6574a28d404e9d4c8a1571d2df24b9e79ced6fe1222a05d8b0c17c91af53d061",
+                                                              "size":  38666
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "5bb897afd5f1e80a190817db7309c2121d410047857b592a50e85d99f6b759ec",
