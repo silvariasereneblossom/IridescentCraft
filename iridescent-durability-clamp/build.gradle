@@ -29,6 +29,9 @@ minecraft {
 mixin {
     add sourceSets.main, "${mod_id}.refmap.json"
     config "${mod_id}.mixins.json"
+    // Empty-level prune backstop: a config of its own so it can be
+    // "required": false while the clamp's config stays required.
+    config "${mod_id}.emptylevel.mixins.json"
 }
 
 repositories {
@@ -53,7 +56,7 @@ jar {
             "Implementation-Version": mod_version,
             "Implementation-Vendor": mod_authors,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "${mod_id}.mixins.json"
+            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.emptylevel.mixins.json"
         ])
     }
     finalizedBy 'reobfJar'

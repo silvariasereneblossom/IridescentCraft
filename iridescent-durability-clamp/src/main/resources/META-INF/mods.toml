@@ -9,7 +9,7 @@ issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues
 # Forge configs (verified failure mode: durability clamp never
 # applied, items destroyed instead of clamped to maxDamage-1).
 # Declaring the config here is what Forge 1.20.1 actually honors.
-mixinConfigs=["iridescent_durability_clamp.mixins.json"]
+mixinConfigs=["iridescent_durability_clamp.mixins.json","iridescent_durability_clamp.emptylevel.mixins.json"]
 
 [[mods]]
 modId="${mod_id}"

@@ -23,6 +23,12 @@
 # refuses to deploy a jar that fails any of those. No external mod dependencies,
 # so there is NO compileOnly lib-staging step.
 #
+# The jar carries a SECOND config, iridescent_durability_clamp.emptylevel.mixins.json
+# (the empty-level prune backstop, `"required": false`): same checks, plus both
+# must be named in the manifest's MixinConfigs. A jar that changes that mixin
+# must boot an offline Forge server before it is pushed -- main is deployed to
+# the live server unattended.
+#
 # gradle-wrapper.jar is NOT tracked for this mod (the repo-root `*.jar` ignore
 # swallowed it), so a clean checkout has ./gradlew but no wrapper jar. It is
 # bootstrapped from a sibling mod (every tracked wrapper jar in this repo is
@@ -91,22 +97,29 @@ OUT="build/libs/$JAR_NAME"
 echo "[wsl-build] Built: $OUT"
 
 # --- verify the mixin payload (see header) ------------------------------------
-MIXIN_CFG="${MOD_ID}.mixins.json"
+# Two configs: the clamp's ("required": true) and the empty-level prune
+# backstop's ("required": false). Both must be in the jar AND named in the
+# manifest's MixinConfigs -- a config the manifest does not name is never loaded.
+MIXIN_CFGS=("${MOD_ID}.mixins.json" "${MOD_ID}.emptylevel.mixins.json")
 REFMAP="${MOD_ID}.refmap.json"
 LISTING="$(unzip -Z1 "$OUT")"
-for need in "$MIXIN_CFG" "$REFMAP"; do
-  grep -qxF "$need" <<<"$LISTING" || { echo "[wsl-build] ERROR: $need missing from $OUT -- NOT deploying"; exit 1; }
+# (Manifest lines wrap at 72 bytes; a continuation line starts with one space.)
+MANIFEST_CFGS="$(unzip -p "$OUT" META-INF/MANIFEST.MF | tr -d '\r' | awk '/^ /{printf "%s", substr($0,2); next} {printf "\n%s", $0} END{print ""}' | sed -n 's/^MixinConfigs: //p')"
+grep -qxF "$REFMAP" <<<"$LISTING" || { echo "[wsl-build] ERROR: $REFMAP missing from $OUT -- NOT deploying"; exit 1; }
+for MIXIN_CFG in "${MIXIN_CFGS[@]}"; do
+  grep -qxF "$MIXIN_CFG" <<<"$LISTING" || { echo "[wsl-build] ERROR: $MIXIN_CFG missing from $OUT -- NOT deploying"; exit 1; }
+  grep -qF ",$MIXIN_CFG," <<<",$MANIFEST_CFGS," || { echo "[wsl-build] ERROR: manifest MixinConfigs ($MANIFEST_CFGS) does not name $MIXIN_CFG -- NOT deploying"; exit 1; }
+  MIXIN_PKG="$(unzip -p "$OUT" "$MIXIN_CFG" | sed -n 's/.*"package"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
+  [ -n "$MIXIN_PKG" ] || { echo "[wsl-build] ERROR: no \"package\" in $MIXIN_CFG -- NOT deploying"; exit 1; }
+  # Every quoted *Mixin name in the config's mixins/client/server arrays.
+  MIXIN_CLASSES="$(unzip -p "$OUT" "$MIXIN_CFG" | tr -d '\r' | grep -oE '"[A-Za-z0-9_.$]*Mixin"' | tr -d '"' | sort -u)"
+  [ -n "$MIXIN_CLASSES" ] || { echo "[wsl-build] ERROR: $MIXIN_CFG lists no mixin classes -- NOT deploying"; exit 1; }
+  while IFS= read -r cls; do
+    path="$(tr '.' '/' <<<"$MIXIN_PKG.$cls").class"
+    grep -qxF "$path" <<<"$LISTING" || { echo "[wsl-build] ERROR: $MIXIN_CFG lists $cls but $path is not in $OUT -- NOT deploying"; exit 1; }
+    echo "[wsl-build] mixin ok: $MIXIN_CFG -> $path"
+  done <<<"$MIXIN_CLASSES"
 done
-MIXIN_PKG="$(unzip -p "$OUT" "$MIXIN_CFG" | sed -n 's/.*"package"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' | head -n1)"
-[ -n "$MIXIN_PKG" ] || { echo "[wsl-build] ERROR: no \"package\" in $MIXIN_CFG -- NOT deploying"; exit 1; }
-# Every quoted *Mixin name in the config's mixins/client/server arrays.
-MIXIN_CLASSES="$(unzip -p "$OUT" "$MIXIN_CFG" | tr -d '\r' | grep -oE '"[A-Za-z0-9_.$]*Mixin"' | tr -d '"' | sort -u)"
-[ -n "$MIXIN_CLASSES" ] || { echo "[wsl-build] ERROR: $MIXIN_CFG lists no mixin classes -- NOT deploying"; exit 1; }
-while IFS= read -r cls; do
-  path="$(tr '.' '/' <<<"$MIXIN_PKG.$cls").class"
-  grep -qxF "$path" <<<"$LISTING" || { echo "[wsl-build] ERROR: $MIXIN_CFG lists $cls but $path is not in $OUT -- NOT deploying"; exit 1; }
-  echo "[wsl-build] mixin ok: $path"
-done <<<"$MIXIN_CLASSES"
 
 # --- deploy -------------------------------------------------------------------
 if [ "$DEPLOY" = 1 ]; then
