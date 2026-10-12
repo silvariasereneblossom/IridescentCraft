@@ -49,6 +49,9 @@ $hookContent = @'
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
 #                                lint_kubejs_scope.py; only when a pushed commit
 #                                touches a kubejs script (or one of the lints)
+#   3b. engine test suite     - dev/engine-tests/run.py fast + the method-ref
+#                                validator; only when a script, a test or a
+#                                pinned engine jar changed (blocking)
 #   4. sync-distros.ps1       - verify the three distros stayed in sync
 #   5. lessons-pre-push.ps1   - track commits-since-last-scan + optionally
 #                                auto-invoke scan-lessons.ps1 / qa-lessons.ps1
@@ -136,6 +139,60 @@ if [ $KJS_RUN -eq 1 ] && [ -f "$DEV/lint_kubejs_traps.js" ]; then
         echo "[pre-push] KubeJS script lints FAILED (or could not run). Each flag names the"
         echo "  file, the line and the rule; the header of the lint explains the rule."
         echo "  Fix the script and re-push. Bypass: git push --no-verify"
+        exit 1
+    fi
+fi
+
+# --- Step 3b: engine test suite + method-ref validator (blocking) ---
+# The pack's scripts on the production Rhino jar, over mocks that are held to the real
+# classes (.minecraft/dev/engine-tests/README.md), and the bare-method-reference check
+# that CI otherwise only runs after the push. Runs when a pushed commit changes a kubejs
+# script, a test or mock, or the pinned KubeJS / Rhino / Architectury jars; about 10 s.
+# Self-contained: its own variables (ET_*), nothing from the other steps but PUSHED and DEV.
+# Not run here (it needs the whole instance and about 30 s more): the loot audit, i.e.
+#   python .minecraft/dev/engine-tests/run.py          (every suite)
+ET_ZERO=0000000000000000000000000000000000000000
+ET_RUN=0
+[ -z "$PUSHED" ] && ET_RUN=1
+while read -r _et_lref et_lsha _et_rref et_rsha; do
+    [ -z "$et_lsha" ] && continue
+    [ "$et_lsha" = "$ET_ZERO" ] && continue
+    if [ "$et_rsha" != "$ET_ZERO" ] && git cat-file -e "$et_rsha^{commit}" 2>/dev/null; then
+        et_base="$et_rsha"
+    else
+        et_base="$(git merge-base "$et_lsha" origin/main 2>/dev/null)"
+    fi
+    if [ -z "$et_base" ]; then ET_RUN=1; break; fi
+    if git diff --name-only "$et_base" "$et_lsha" 2>/dev/null \
+        | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/(engine-tests|rhino_parse)/|^\.minecraft/tools/check_kubejs_method_refs\.sh$|^\.minecraft/mods/\.index/(kubejs|rhino|architectury-api)\.pw\.toml$'; then
+        ET_RUN=1; break
+    fi
+done <<EOF
+$PUSHED
+EOF
+if [ $ET_RUN -eq 1 ] && [ -f "$DEV/engine-tests/run.py" ]; then
+    echo "[pre-push] kubejs scripts or engine tests changed: running the engine test suite"
+    ET_FAIL=0
+    if [ -f "$REPO_ROOT/.minecraft/tools/check_kubejs_method_refs.sh" ]; then
+        # by RELATIVE path: called as C:/.../check_kubejs_method_refs.sh its comment filter breaks on
+        # the colon of the drive letter and every comment that names a method is reported
+        ( cd "$REPO_ROOT" && bash .minecraft/tools/check_kubejs_method_refs.sh ) || ET_FAIL=1
+    fi
+    if command -v python >/dev/null 2>&1; then
+        # --fetch-dir: on a machine without the PrismLauncher instance the Rhino jar is
+        # downloaded from the URL in its packwiz metafile (hash-verified either way)
+        python -I -B "$DEV/engine-tests/run.py" fast --fetch-dir "$DEV/engine-tests/.out/jars" || ET_FAIL=1
+    else
+        echo "[pre-push] python not found: the engine test suite could NOT run"
+        ET_FAIL=1
+    fi
+    if [ $ET_FAIL -ne 0 ]; then
+        echo ""
+        echo "[pre-push] engine test suite FAILED (or could not run: no JDK 17+, no python, a jar"
+        echo "  with the wrong hash). Each FAIL line names the check; for the full output of one"
+        echo "  suite: python .minecraft/dev/engine-tests/run.py suite <name>"
+        echo "  Fix the script (or the test, if the behaviour change is intended) and re-push."
+        echo "  Bypass: git push --no-verify"
         exit 1
     fi
 fi
