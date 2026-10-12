@@ -1,8 +1,13 @@
 filename = 'majruszs-difficulty-forge-1.20.1-1.9.10.jar'
 name = "Majrusz's Progressive Difficulty"
 side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.9.10'
 
 [download]
+hash = 'eae1ea6ec5a2578f8a1d69b1845dc40c3b34529fd87152098904b0f2de702b4c06b873850bf48aaa6c7fe6d604ad31c8d195ab1f0277d76f56b54f689939d232'
 hash-format = 'sha512'
 mode = 'url'
 url = 'https://cdn.modrinth.com/data/GGDBwjOg/versions/IH8yR3yr/majruszs-difficulty-forge-1.20.1-1.9.10.jar'

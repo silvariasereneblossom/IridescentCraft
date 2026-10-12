@@ -3,16 +3,21 @@
 # =============================================================================
 # Output: .minecraft/wiki/Mod-List.md
 #
-# Sources of truth (in this order of precedence for side classification):
-#   1. .minecraft/mods/.index/*.pw.toml  -- packwiz-managed mods (most)
-#   2. .minecraft/server_distribution/client_only_mods.txt  -- strip list
-#   3. custom_jars_manifest.json  -- custom-bundled jars not in packwiz (the
-#      single source of truth; same registry cleanup_stale_jars.ps1 keeps by)
+# Sources of truth:
+#   1. .minecraft/mods/.index/*.pw.toml  -- the pack's mod index (the one source
+#      the distro indexes are generated from, see dev/mods/mod_index.py)
+#   2. custom_jars_manifest.json  -- custom-bundled jars with no metafile (the
+#      same registry cleanup_stale_jars.ps1 keeps by)
 #
-# Side resolution:
-#   - "client" if .pw.toml side='client' OR filename in client_only_mods.txt
-#   - "server" if .pw.toml side='server'
-#   - "both"   otherwise (default; covers most pack mods)
+# Side = the metafile's `side` (both / client / server), nothing else. It says
+# where the pack installs the jar; `mod_index.py check` refuses any other value.
+# A mod the server must not load is `side = 'client'`: there is no second list.
+#
+# 2026-10-12: the parser before this one read single-quoted values only and
+# grouped on the raw text. The 52 metafiles with `side = ''` were counted in
+# the total and then printed under no heading at all; a name in double quotes
+# fell back to the file name; and client_only_mods.txt (two stale names)
+# overrode the index.
 #
 # Run from repo root:
 #   pwsh .minecraft/dev/generate_modlist.ps1
@@ -29,7 +34,6 @@ $ErrorActionPreference = 'Stop'
 
 $mcRoot       = Join-Path $RepoRoot '.minecraft'
 $indexDir     = Join-Path $mcRoot   'mods\.index'
-$clientStrip  = Join-Path $mcRoot   'server_distribution\client_only_mods.txt'
 $manifestPath = Join-Path $mcRoot   'custom_jars_manifest.json'
 $wikiOut      = Join-Path $mcRoot   'wiki\Mod-List.md'
 
@@ -38,16 +42,19 @@ if (-not (Test-Path $indexDir)) {
     exit 1
 }
 
-# ---- Load the client-strip list (filenames that get removed from server) ----
-$clientStripSet = [System.Collections.Generic.HashSet[string]]::new(
-    [StringComparer]::OrdinalIgnoreCase)
-if (Test-Path $clientStrip) {
-    Get-Content $clientStrip | ForEach-Object {
-        $line = $_.Trim()
-        if ($line -and -not $line.StartsWith('#')) {
-            [void]$clientStripSet.Add($line)
-        }
-    }
+# ---- One value of a metafile: key = '...' or key = "..." ----
+# A value that holds an apostrophe is written in double quotes
+# ("YUNG's Better Mineshafts"), so both forms are read. $null when absent.
+$valueSingle = "'([^']*)'"
+$valueDouble = '"((?:[^"\\]|\\.)*)"'
+function Get-MetaValue {
+    param([string]$Text, [string]$Key)
+    $k = '(?m)^[ \t]*' + [regex]::Escape($Key) + '[ \t]*=[ \t]*'
+    $m = [regex]::Match($Text, $k + $valueSingle + '[ \t]*\r?$')
+    if ($m.Success) { return $m.Groups[1].Value }
+    $m = [regex]::Match($Text, $k + $valueDouble + '[ \t]*\r?$')
+    if ($m.Success) { return $m.Groups[1].Value.Replace('\"', '"').Replace('\\', '\') }
+    return $null
 }
 
 # ---- Custom-jar list: read from custom_jars_manifest.json (single source of truth) ----
@@ -68,22 +75,28 @@ if (Test-Path $manifestPath) {
 # ---- Parse all .pw.toml files ----
 $mods = @()
 Get-ChildItem "$indexDir\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Object {
-    $content = Get-Content $_.FullName -Raw
+    # Metafiles are UTF-8; Get-Content -Raw reads them as ANSI on Windows PowerShell 5.1.
+    $content = [System.IO.File]::ReadAllText($_.FullName, [System.Text.Encoding]::UTF8)
     # Packwiz BaseName is "modname.pw" (file is modname.pw.toml). Strip the .pw suffix for display.
     $fallbackName = $_.BaseName -replace '\.pw$', ''
-    $name     = if ($content -match "(?m)^\s*name\s*=\s*'([^']*)'")     { $matches[1] } else { $fallbackName }
-    $filename = if ($content -match "(?m)^\s*filename\s*=\s*'([^']*)'") { $matches[1] } else { '(no filename in .pw.toml)' }
-    $sideRaw  = if ($content -match "(?m)^\s*side\s*=\s*'([^']*)'")     { $matches[1] } else { 'both' }
-    $modrinth = if ($content -match "(?m)^\s*mod-id\s*=\s*'([^']*)'")   { $matches[1] } else { $null }
-
-    # Effective side: client_only_mods.txt overrides .pw.toml 'both' to 'client'
-    $effective = $sideRaw
-    if ($clientStripSet.Contains($filename)) { $effective = 'client' }
+    $name     = Get-MetaValue $content 'name'
+    $filename = Get-MetaValue $content 'filename'
+    $side     = Get-MetaValue $content 'side'
+    $modrinth = Get-MetaValue $content 'mod-id'
+    if (-not $name)     { $name = $fallbackName }
+    if (-not $filename) { $filename = '(no filename in .pw.toml)' }
+    # mod_index.py check refuses a side that is not both / client / server. A list
+    # that silently drops a mod is worse than one that says so: any other value is
+    # listed under "both" and reported.
+    if (@('both', 'client', 'server') -notcontains $side) {
+        Write-Warning ("[modlist] {0}: side = '{1}' is not both / client / server; listed under both" -f $_.Name, $side)
+        $side = 'both'
+    }
 
     $mods += [PSCustomObject]@{
         Name      = $name
         Filename  = $filename
-        Side      = $effective
+        Side      = $side
         Modrinth  = $modrinth
     }
 }
@@ -106,16 +119,15 @@ foreach ($c in $customJars) {
 }
 
 # ---- Group + sort ----
-$grouped = $mods | Group-Object -Property Side
-$both    = ($grouped | Where-Object Name -eq 'both').Group   | Sort-Object Name
-$client  = ($grouped | Where-Object Name -eq 'client').Group | Sort-Object Name
-$server  = ($grouped | Where-Object Name -eq 'server').Group | Sort-Object Name
+$both   = @($mods | Where-Object { $_.Side -eq 'both' }   | Sort-Object Name)
+$client = @($mods | Where-Object { $_.Side -eq 'client' } | Sort-Object Name)
+$server = @($mods | Where-Object { $_.Side -eq 'server' } | Sort-Object Name)
 
 # ---- Render Markdown ----
 $lines = [System.Collections.Generic.List[string]]::new()
 $lines.Add('# IridescentCraft Mod List')
 $lines.Add('')
-$lines.Add('> Auto-generated by `.minecraft/dev/generate_modlist.ps1` from packwiz `mods/.index/` + `client_only_mods.txt` + custom-jars allowlist.')
+$lines.Add('> Auto-generated by `.minecraft/dev/generate_modlist.ps1` from the pack''s mod index (`mods/.index/`) and the custom-jar manifest.')
 $lines.Add('> DO NOT edit manually -- re-run the script after pack changes.')
 $lines.Add('')
 $lines.Add(("**Total: {0} mods | Both: {1} | Client-only: {2} | Server-only: {3}**" -f `
@@ -134,9 +146,8 @@ $lines.Add('')
 
 $lines.Add(("## Client-only ({0} mods)" -f $client.Count))
 $lines.Add('')
-$lines.Add('Stripped from server installs by `strip_client_mods.bat` before launch. Client-only typically because:')
+$lines.Add('Installed on players'' clients, never on the dedicated server. Client-only typically because:')
 $lines.Add('- rendering / GUI mod with no server logic, OR')
-$lines.Add('- declares `side = "client"` in its packwiz entry, OR')
 $lines.Add('- crashes the dedicated server when loaded.')
 $lines.Add('')
 foreach ($m in $client) {

@@ -41,8 +41,11 @@ if [ ! -d "$INDEX_DIR" ]; then
     exit 1
 fi
 
-# Force-skip list
-FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans|ftbbackups|ftbchunks|ftbessentials|ftblibrary|ftbquests|ftbranks|ftbteams|ftbultimine|mca-social"
+# Force-skip list: jar-name patterns a dedicated server must never download (a regex
+# for grep -E). Reasons: .minecraft/dev/mods/mod_index.policy.json in the pack repository.
+# >>> mod_index.py: sh-regex (GENERATED from mods/.index + dev/mods/mod_index.policy.json. Do not edit: run mod_index.py generate)
+FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans|ftbbackups|ftbchunks|ftbessentials|ftblibrary|ftbquests|ftbranks|ftbteams|ftbultimine|mca-social|starlight|EquipmentCompare|ProbeJS|CherryVillage|ImmediatelyFast|mcasocial|champions|soulslike-weaponry|auudio_|BetterAdvancements-|biomemusic-|CTM-|CutThrough-|defaultoptions-|entity_texture_features_|fallingleaves-|fancymenu_|Highlighter-|inventoryhud\.|jeed-|jmi-|konkrete_|lazyDFU-|libIPN-|mek_walkable_cables-|melody_|MouseTweaks-|Prism-"
+# <<< mod_index.py
 
 # Custom JARs that aren't in TOMLs
 CUSTOM_JARS="iridescent_codex_data.jar|iridescent_origins-1.0.0.jar|iridescent_biomes-1.0.0.jar|iridescent_tetra_expansion-1.0.0.jar|iridescent_durability_clamp-0.1.0.jar|iridescent_difficulty-0.1.0.jar|iridescent_grand_compass-1.0.0.jar|justlevelingfork-1.2.1-iridescent.1.jar|mek_walkable_cables-1.0.1.jar|offlineskins-1.20.1-v1.jar|zeta_racefix-1.0.0.jar|Patchouli-1.20.1-85-FORGE.jar|ars_nouveau-1.20.1-4.12.7-all.jar"

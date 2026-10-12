@@ -2,7 +2,9 @@
 # install-hooks.ps1 - install the pre-push gate
 #
 # Writes a git pre-push hook that runs sync-distros.ps1 in detect-only mode
-# (push fails if any watched path is out of mirror across the three distros)
+# (push fails if any watched path is out of mirror across the three distros),
+# the mod index gate (dev/mods/mod_index.py check: the three mod indexes and
+# the client-only skip lists are generated from .minecraft/mods/.index)
 # and, when a pushed commit touches a kubejs script, the three script lints
 # (lint_kubejs_rhino.js, lint_kubejs_traps.js, lint_kubejs_scope.py; any flag
 # blocks). Re-run with -Install after this template changes: the installed
@@ -46,6 +48,7 @@ $hookContent = @'
 # IridescentCraft pre-push gate. Five checks, in order:
 #   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
 #   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
+#   +  mods/mod_index.py check - the mod index gate (its own block, after step 2)
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
 #                                lint_kubejs_scope.py; only when a pushed commit
 #                                touches a kubejs script (or one of the lints)
@@ -94,6 +97,59 @@ if ! git diff --quiet -- .minecraft/wiki/Mod-List.md 2>/dev/null; then
     echo "  Run: git add .minecraft/wiki/Mod-List.md && git commit -m 'modlist: refresh'"
     echo "  Then re-push. Bypass: git push --no-verify"
     exit 1
+fi
+
+# --- Mod index gate (blocking; one self-contained block) ---
+# .minecraft/mods/.index is the ONE source of the pack's mods. The server index, the
+# client distribution's index, client_only_mods.txt and the skip lists inside the
+# server scripts are generated from it by dev/mods/mod_index.py. `check` fails when
+#   - a metafile does not parse, has no hash, or its side is not both / client / server
+#   - two metafiles describe one jar, or one upstream project
+#   - a generated file is stale or was edited by hand (a mod in one index only, a
+#     side label that differs between distros)
+#   - a skip pattern would hide a jar the server index says the server gets
+# About a second, so it runs on every push. Where it cannot run (no python, or a
+# python older than 3.11) it blocks only a push that touches the index or its tools.
+MODIDX="$DEV/mods/mod_index.py"
+if [ -f "$MODIDX" ]; then
+    MODIDX_RC=2
+    if command -v python >/dev/null 2>&1; then
+        python -I "$MODIDX" check
+        MODIDX_RC=$?
+    fi
+    if [ $MODIDX_RC -eq 1 ]; then
+        echo ""
+        echo "[pre-push] mod index gate FAILED. Edit the source (.minecraft/mods/.index), then:"
+        echo "    python .minecraft/dev/mods/mod_index.py generate"
+        echo "  commit what it wrote and re-push. Bypass: git push --no-verify"
+        exit 1
+    fi
+    if [ $MODIDX_RC -ne 0 ]; then
+        MODIDX_TOUCHED=0
+        [ -z "$PUSHED" ] && MODIDX_TOUCHED=1
+        while read -r _lref lsha _rref rsha; do
+            [ -z "$lsha" ] && continue
+            [ "$lsha" = "0000000000000000000000000000000000000000" ] && continue
+            if [ "$rsha" != "0000000000000000000000000000000000000000" ] && git cat-file -e "$rsha^{commit}" 2>/dev/null; then
+                base="$rsha"
+            else
+                base="$(git merge-base "$lsha" origin/main 2>/dev/null)"
+            fi
+            if [ -z "$base" ]; then MODIDX_TOUCHED=1; break; fi
+            if git diff --name-only "$base" "$lsha" 2>/dev/null \
+                | grep -Eq 'mods/\.index/|^\.minecraft/dev/mods/mod_index|client_only_mods\.txt$'; then
+                MODIDX_TOUCHED=1; break
+            fi
+        done <<EOF
+$PUSHED
+EOF
+        if [ $MODIDX_TOUCHED -eq 1 ]; then
+            echo "[pre-push] the mod index gate could NOT run (needs python 3.11+ on PATH) and this push touches the mod index."
+            echo "  Bypass: git push --no-verify"
+            exit 1
+        fi
+        echo "[pre-push] WARN: mod index gate skipped (needs python 3.11+ on PATH); this push does not touch the mod index."
+    fi
 fi
 
 # --- Step 3: KubeJS script lints (blocking) ---

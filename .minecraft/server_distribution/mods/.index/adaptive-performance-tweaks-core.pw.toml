@@ -1,6 +1,6 @@
 filename = 'adaptive_performance_tweaks_core_1.20.1-11.6.1.jar'
 name = 'APTweaks: Core'
-side = ''
+side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'

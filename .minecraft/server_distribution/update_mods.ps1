@@ -35,17 +35,66 @@ if (-not (Test-Path $indexDir)) {
     exit 1
 }
 
-# Client-only and server-incompatible mods to skip
+# Jar-name patterns a dedicated server must never download: retired mods and the
+# pack's client-only mods (those are not in this index at all; the patterns are a
+# second line). The reason for each one is in the pack repository:
+# .minecraft/dev/mods/mod_index.policy.json
+# >>> mod_index.py: ps-array (GENERATED from mods/.index + dev/mods/mod_index.policy.json. Do not edit: run mod_index.py generate)
 $forceSkip = @(
-    "embeddium", "oculus", "immediatelyfast", "rubidium-extra",
-    "kubejsoffline", "light-overlay", "equipment-compare", "chat_heads",
-    "BetterAnimations", "transmog", "probejs", "irons_spells_js",
-    "gh_classes", "cherryvillage", "rechiseled", "supermartijn642",
-    "connectedglass", "trashcans",
-    "ftbbackups", "ftbchunks", "ftbessentials", "ftblibrary",
-    "ftbquests", "ftbranks", "ftbteams", "ftbultimine",
-    "mca-social"
+    'embeddium',
+    'oculus',
+    'immediatelyfast',
+    'rubidium-extra',
+    'kubejsoffline',
+    'light-overlay',
+    'equipment-compare',
+    'chat_heads',
+    'BetterAnimations',
+    'transmog',
+    'probejs',
+    'irons_spells_js',
+    'gh_classes',
+    'cherryvillage',
+    'rechiseled',
+    'supermartijn642',
+    'connectedglass',
+    'trashcans',
+    'ftbbackups',
+    'ftbchunks',
+    'ftbessentials',
+    'ftblibrary',
+    'ftbquests',
+    'ftbranks',
+    'ftbteams',
+    'ftbultimine',
+    'mca-social',
+    'starlight',
+    'EquipmentCompare',
+    'mcasocial',
+    'champions',
+    'soulslike-weaponry',
+    'auudio_',
+    'BetterAdvancements-',
+    'biomemusic-',
+    'CTM-',
+    'CutThrough-',
+    'defaultoptions-',
+    'entity_texture_features_',
+    'fallingleaves-',
+    'fancymenu_',
+    'Highlighter-',
+    'inventoryhud.',
+    'jeed-',
+    'jmi-',
+    'konkrete_',
+    'lazyDFU-',
+    'libIPN-',
+    'mek_walkable_cables-',
+    'melody_',
+    'MouseTweaks-',
+    'Prism-'
 )
+# <<< mod_index.py
 
 # -- Phase 1: Build expected mod map from TOMLs --
 Write-Host "  [1/3] Reading mod index..."

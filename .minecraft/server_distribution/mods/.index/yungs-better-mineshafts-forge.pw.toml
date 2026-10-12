@@ -1,5 +1,5 @@
 filename = 'YungsBetterMineshafts-1.20-Forge-4.0.4.jar'
-name = 'YUNG's Better Mineshafts'
+name = "YUNG's Better Mineshafts"
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]

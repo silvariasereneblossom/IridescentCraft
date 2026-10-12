@@ -1,5 +1,5 @@
 filename = 'puffish_skills-0.17.3-1.20-forge.jar'
-name = 'Pufferfish's Skills'
+name = "Pufferfish's Skills"
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]

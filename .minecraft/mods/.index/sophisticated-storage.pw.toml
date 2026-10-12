@@ -1,6 +1,6 @@
 filename = 'sophisticatedstorage-1.20.1-1.4.31.1558.jar'
 name = 'Sophisticated Storage'
-side = ''
+side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
