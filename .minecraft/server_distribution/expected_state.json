@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f3c51dc1",
+    "generated_from":  "8bb1cd4e",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8476,7 +8476,7 @@
                                                                     "size":  365
                                                                 },
                   "mods/.index/iridescent-durability-clamp.pw.toml":  {
-                                                                          "sha256":  "07c8914440b2567eaa0130510a0959a041cad465ea2bac7cacb847963b5c1dac",
+                                                                          "sha256":  "553075c42601a8f9d898ea2761a2674ae0bb50a8a74255375348d2ff224a055d",
                                                                           "size":  383
                                                                       },
                   "mods/.index/iridescent-grand-compass.pw.toml":  {
