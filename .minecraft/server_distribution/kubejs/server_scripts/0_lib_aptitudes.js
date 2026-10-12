@@ -31,7 +31,7 @@
 //   "justlevelingfork:aptitudes" and serialised as
 //       ForgeCaps."justlevelingfork:aptitudes"."aptitude.<name>" = <int>
 //   so the command returned 0 for the lifetime of the pack: all the aptitude skills, the
-//   mastery tax and the cost backport never did anything. (And each "read" was 8 commands,
+//   mastery tax and the cost backport (deleted 2026-10-11) never did anything. (And each "read" was 8 commands,
 //   every one of them serialising the whole player.)
 //
 // HOW IT READS
