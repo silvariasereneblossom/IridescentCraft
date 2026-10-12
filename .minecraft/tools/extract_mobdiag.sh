@@ -17,7 +17,9 @@ SRC=".minecraft/logs/kubejs/server.log"
 case "${1:-}" in
   --server)
     SRC=".minecraft/server_distribution/logs/kubejs/server.log"
-    [ ! -f "$SRC" ] && SRC=".minecraft/server_distribution/TesterLogs/Server Logs/kubejs-server.log"
+    # The server's log mirror left this repo on 2026-10-11 (it is private now):
+    # fall back to a clone of IridescentCraft-logs next to this one.
+    [ ! -f "$SRC" ] && SRC="../IridescentCraft-logs/server/kubejs/server.log"
     ;;
   --tester)
     user="${2:-silvieserene}"

@@ -48,6 +48,9 @@ import sys
 import zipfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+from server_logs import find_server_logs  # noqa: E402  (the server's logs left this repo on 2026-10-11)
+
 AUDIT = os.path.join(HERE, "loot_audit")
 CACHE = os.path.join(AUDIT, ".cache")
 DEFAULT_REPO = os.path.dirname(HERE)
@@ -404,7 +407,10 @@ def choose_scripts(repo):
 
 
 def server_log_order(repo):
-    log = os.path.join(repo, "server_distribution", "TesterLogs", "Server Logs", "kubejs", "server.log")
+    logs, _ = find_server_logs(repo)
+    if not logs:
+        return None
+    log = os.path.join(logs, "kubejs", "server.log")
     order = []
     try:
         for line in open(log, encoding="utf-8", errors="replace"):
@@ -419,8 +425,11 @@ def server_log_order(repo):
 def boot_log_rejects(repo):
     """Loot tables the dedicated server itself dropped at its last mirrored boot: ForgeHooks logs
     `Couldn't parse element loot_tables:<id>` and the exception on the next line.
-    -> (boot stamp, {table id: reason}); (None, {}) when no log is mirrored."""
-    log = os.path.join(repo, "server_distribution", "TesterLogs", "Server Logs", "latest.log")
+    -> (boot stamp, {table id: reason}); (None, {}) when no server log can be read (server_logs.py)."""
+    logs, _ = find_server_logs(repo)
+    if not logs:
+        return None, collections.OrderedDict()
+    log = os.path.join(logs, "latest.log")
     out, stamp, pending = collections.OrderedDict(), None, None
     try:
         with open(log, encoding="utf-8", errors="replace") as f:
@@ -768,6 +777,7 @@ def build(truth, h, repo, extra, accepted):
                       "a comment line parses as the KubeJS file property `%s = %s` (any `//` line of the form `word word` "
                       "is a property, anywhere in the file): the file may be skipped" % (bad, props[bad][-1]),
                       severity="error" if rel in h["_loot_files"] else "warn")
+    stats["server logs read from"] = find_server_logs(repo)[1]
     log_order = server_log_order(repo)
     if log_order:
         mine = [r for r in h["_order_all"] if r in set(log_order)]
@@ -1612,7 +1622,7 @@ def build(truth, h, repo, extra, accepted):
         F.add(7, "TABLE_REJECTED", tid, str(t.get("winner")), "%s is rejected by the game's loot parser (%s), so the table "
               "does not exist in game and whatever rolls it gets nothing" % (tid, why[0]), detail, severity="error")
     stats["tables the game rejects (jars + boot log)"] = "%d (boot log: %s)" % (
-        len(rejected), "%s, %d rejected" % (boot_stamp, len(boot_rejects)) if boot_stamp else "none mirrored")
+        len(rejected), "%s, %d rejected" % (boot_stamp, len(boot_rejects)) if boot_stamp else "NO SERVER LOG READ")
 
     # ---------------- [8] mock coverage ----------------
     for name, s in sorted(h["_stubs"].items()):

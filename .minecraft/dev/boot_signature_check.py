@@ -8,8 +8,11 @@
 # quiet. This converts "broken mod surfaces quietly, tester reports it weeks
 # later" into a same-day, single-command check.
 #
-# USAGE (dev container; the server log auto-mirror lands the input here):
-#   python3 .minecraft/dev/boot_signature_check.py                    # check latest mirrored log
+# USAGE. With no path, the log comes from wherever server_logs.py finds the
+# server's logs: $ICRAFT_SERVER_LOGS, the live server over the share, or a clone
+# of the private mirror IridescentCraft-logs next to this repo. (Until
+# 2026-10-11 the launcher mirrored them into this repo; that folder is gone.)
+#   python3 .minecraft/dev/boot_signature_check.py                    # check the server's latest.log
 #   python3 .minecraft/dev/boot_signature_check.py <path/to/log>      # check a specific log
 #   python3 .minecraft/dev/boot_signature_check.py --update-baseline  # bless current clusters
 #
@@ -25,7 +28,8 @@ import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
-DEFAULT_LOG = REPO / '.minecraft/server_distribution/TesterLogs/Server Logs/latest.log'
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from server_logs import find_server_logs  # noqa: E402
 BASELINE = Path(__file__).resolve().parent / 'boot_signature_baseline.json'
 
 SIG_LEN = 130
@@ -72,7 +76,15 @@ def main() -> int:
     args = [a for a in sys.argv[1:]]
     update = '--update-baseline' in args
     args = [a for a in args if a != '--update-baseline']
-    log_path = Path(args[0]) if args else DEFAULT_LOG
+    if args:
+        log_path = Path(args[0])
+    else:
+        folder, where = find_server_logs(str(REPO / '.minecraft'))
+        if not folder:
+            print(f'[boot-sig] {where}')
+            return 2
+        log_path = Path(folder) / 'latest.log'
+        print(f'[boot-sig] reading {where}')
     if not log_path.exists():
         print(f'[boot-sig] log not found: {log_path}')
         return 2
