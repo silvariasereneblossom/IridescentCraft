@@ -341,7 +341,8 @@ LootJS.modifiers(event => {
             LootEntry.of("simplyswords:soulkeeper").when(c => c.randomChance(0.15))
         )
         // Runic Tablets: 2 per kill (operator ruling 2026-10-11 22:18 EDT, "Wither
-        // drops 2, no runic crafting"). A relic craft takes 4, so two kills. The
+        // drops 2, no runic crafting"). A relic craft takes 3 (pattern
+        // "#O#" / "OXO" / "#S#", O = tablet), so two kills cover one craft. The
         // tablet's only use in this pack is the Righteous / Tainted Relic craft:
         // every other recipe that takes one is removed in
         // recipes/tier_gated_recipes.js (Section E, "Runic crafting OFF").

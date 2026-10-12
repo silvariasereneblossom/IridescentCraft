@@ -310,7 +310,8 @@ ServerEvents.recipes(event => {
   // simplyswords:runic_tablet now drops from the Wither (loot_overhaul.js) and
   // serves ONE purpose: the two relic crafts, recipe ids
   // simplyswords:righteous_relic and simplyswords:tainted_relic (dormant relic
-  // + 4 tablets + ...). Those two are NOT touched here. Every other recipe that
+  // + 3 tablets + 4 gold ingots + an enchanted golden apple, or + 4 phantom
+  // membranes + an eye of ender). Those two are NOT touched here. Every other recipe that
   // takes a tablet is removed (Simply Swords 1.56.0, jar-scanned; no other mod
   // or pack file names the item):
   //   - 15 runic weapons, 2 smithing recipes each, removed by output:
