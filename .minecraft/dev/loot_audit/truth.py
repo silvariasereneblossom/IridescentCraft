@@ -10,7 +10,8 @@ override, and where every loot table can be rolled from.
     python -I truth.py [--mods DIR] [--repo REPO] [--out FILE] [--no-cache]
                        [--vanilla JAR] [--forge JAR] [--libraries DIR] [--jobs N] [--pretty]
 
-Stdlib only.  Per-archive results are cached under <repo>/dev/loot_audit/.cache/jars, keyed by
+Stdlib only.  The archive scanner itself is dev/mods/jarscan.py (shared with the per-jar inventory); this file
+merges its records.  Per-archive results are cached under <repo>/dev/loot_audit/.cache/jars, keyed by
 (filename, size, mtime, SCANNER_VERSION); --no-cache ignores the existing entries and rewrites them.
 Default output: <repo>/dev/loot_audit/.cache/truth.json.
 
@@ -96,7 +97,6 @@ table_roots.rolled_by kinds:
     block_default       <ns>:blocks/<id> (block existence not checked)
 """
 import argparse
-import hashlib
 import json
 import multiprocessing
 import os
@@ -109,8 +109,8 @@ from collections import Counter, defaultdict, deque
 # The archive scanner (one record per jar / zip, nested jars included, with its cache) is shared with the
 # per-jar inventory: dev/mods/jarscan.py.  This file is the loot audit's MERGE of those records.
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'mods'))
-from jarscan import (DirSrc, RX_PATH, RX_RL, SCANNER_VERSION, as_list, cache_load, new_unit, nid,
-    scan_family_cached, scan_unit_data)  # noqa: E402
+from jarscan import (DirSrc, RX_PATH, RX_RL, SCANNER_VERSION, as_list, find_forge_jar,  # noqa: E402
+                     find_vanilla_jar, mod_tasks, new_unit, nid, scan_all, scan_unit_data)
 
 VANILLA_DIMS = ('minecraft:overworld', 'minecraft:the_nether', 'minecraft:the_end')
 # vanilla structure TYPES whose pieces are placed from code by template-path prefix (not via jigsaw)
@@ -145,55 +145,6 @@ class Notes(object):
         for k in sorted(self.d):
             out[k] = {'count': self.n[k], 'items': self.d[k]}
         return out
-
-
-def find_vanilla_jar(libs):
-    d = os.path.join(libs, 'com', 'mojang', 'minecraft', '1.20.1')
-    if os.path.isdir(d):
-        for f in sorted(os.listdir(d)):
-            if f.endswith('-client.jar'):
-                return os.path.join(d, f)
-    for dp, dn, fn in os.walk(libs):
-        for f in fn:
-            if f.endswith('.jar') and 'minecraft' in f.lower():
-                p = os.path.join(dp, f)
-                try:
-                    with zipfile.ZipFile(p) as zf:
-                        zf.getinfo('data/minecraft/loot_tables/chests/simple_dungeon.json')
-                    return p
-                except Exception:
-                    pass
-    return None
-
-
-def find_forge_jar(libs, repo):
-    d = os.path.join(libs, 'net', 'minecraftforge', 'forge')
-    if not os.path.isdir(d):
-        return None
-    want = None
-    try:
-        with open(os.path.join(repo, 'mmc-pack.json'), 'r', encoding='utf-8') as f:
-            for c in json.load(f).get('components', []):
-                if c.get('uid') == 'net.minecraftforge':
-                    want = '1.20.1-' + str(c.get('version'))
-    except (OSError, ValueError):
-        pass
-    cands = sorted(x for x in os.listdir(d) if x.startswith('1.20.1-'))
-    if want in cands:
-        cands = [want]
-    for v in reversed(cands):
-        p = os.path.join(d, v, 'forge-%s-universal.jar' % v)
-        if os.path.isfile(p):
-            return p
-    return None
-
-
-def file_sha256(path):
-    h = hashlib.sha256()
-    with open(path, 'rb') as f:
-        for chunk in iter(lambda: f.read(1 << 20), b''):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def kubejs_registered_items(repo, notes):
@@ -1751,20 +1702,10 @@ def main():
     else:
         notes.add('missing_inputs', 'Forge universal jar not found: forge:* tags and Forge\'s vanilla loot-table '
                                     'overrides are missing from the result')
-    repo_mods = os.path.join(args.repo, 'mods')
-    repo_jars = set(f for f in os.listdir(repo_mods) if f.endswith('.jar')) if os.path.isdir(repo_mods) else set()
-    inst_jars = set(f for f in os.listdir(args.mods) if f.endswith('.jar')) if os.path.isdir(args.mods) else set()
+    jar_tasks, inst_jars = mod_tasks(args.mods, args.repo)
     if not inst_jars:
         notes.add('missing_inputs', 'no jars found in --mods %s' % args.mods)
-    for f in sorted(inst_jars | repo_jars):
-        t = {'kind': 'mod', 'id': 'mod:' + f, 'classes': True, 'order': 2}
-        if f in repo_jars:
-            t['path'] = os.path.join(repo_mods, f)
-            t['repo_copy'] = True
-            t['instance_sha256'] = file_sha256(os.path.join(args.mods, f)) if f in inst_jars else None
-        else:
-            t['path'] = os.path.join(args.mods, f)
-        tasks.append(t)
+    tasks.extend(jar_tasks)
     pdir = os.path.join(args.repo, 'config', 'paxi', 'datapacks')
     zips = sorted(f for f in os.listdir(pdir) if f.lower().endswith('.zip')) if os.path.isdir(pdir) else []
     order = []
@@ -1794,29 +1735,7 @@ def main():
                       'order': 3 + i})
     kj_order = 3 + len(order)
 
-    fams = {}
-    todo = []
-    hits = 0
-    for t in tasks:
-        rec = None if args.no_cache else cache_load(cache_dir, t)
-        if rec is not None:
-            fams[t['id']] = rec
-            hits += 1
-        else:
-            t2 = dict(t)
-            t2['cache_dir'] = cache_dir
-            todo.append(t2)
-    todo.sort(key=lambda t: -os.path.getsize(t['path']))
-    jobs = args.jobs or max(1, min(16, (os.cpu_count() or 4) - 2))
-    if todo:
-        if jobs > 1 and len(todo) > 2:
-            with multiprocessing.Pool(min(jobs, len(todo))) as pool:
-                for rec in pool.imap_unordered(scan_family_cached, todo, chunksize=1):
-                    fams[rec['task_id']] = rec
-        else:
-            for t in todo:
-                rec = scan_family_cached(t)
-                fams[rec['task_id']] = rec
+    fams, hits = scan_all(tasks, cache_dir, args.no_cache, args.jobs)
     t_scan = time.time() - t0
 
     kj = []

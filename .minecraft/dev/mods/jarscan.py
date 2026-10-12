@@ -33,7 +33,7 @@ import zipfile
 import zlib
 from collections import Counter, defaultdict
 
-SCANNER_VERSION = 10
+SCANNER_VERSION = 11
 
 NESTED_DIRS = ('META-INF/jarjar', 'META-INF/jars')
 END_BIOMES = ['minecraft:the_end', 'minecraft:end_highlands', 'minecraft:end_midlands',
@@ -368,8 +368,10 @@ def analyse_template(raw):
 _CP_SIZE = {3: 5, 4: 5, 7: 3, 9: 5, 10: 5, 11: 5, 12: 5, 15: 4, 16: 3, 17: 5, 18: 5, 19: 3, 20: 3}
 
 
-def class_strings(b):
-    """Set of the UTF8 payloads referenced by CONSTANT_String entries (i.e. string literals)."""
+def class_pool(b):
+    """One walk over a class file's constant pool.
+    -> (utf8 {index: offset of the entry}, CONSTANT_String indexes, CONSTANT_Class {index: name index},
+        offset of the byte after the pool or None when the pool is cut short); None = not a class file."""
     if b[:4] != b'\xca\xfe\xba\xbe':
         return None
     n = (b[8] << 8) | b[9]
@@ -377,7 +379,9 @@ def class_strings(b):
     i = 1
     utf = {}
     sidx = []
+    cidx = {}
     size = _CP_SIZE
+    end = None
     try:
         while i < n:
             t = b[off]
@@ -387,19 +391,149 @@ def class_strings(b):
             elif t == 8:
                 sidx.append((b[off + 1] << 8) | b[off + 2])
                 off += 3
+            elif t == 7:
+                cidx[i] = (b[off + 1] << 8) | b[off + 2]
+                off += 3
             elif t == 5 or t == 6:
                 off += 9
                 i += 1
             else:
                 off += size[t]
             i += 1
+        end = off
     except (IndexError, KeyError):
         pass
+    return utf, sidx, cidx, end
+
+
+def pool_utf(b, utf, idx):
+    """Bytes of the CONSTANT_Utf8 entry `idx` (None when there is no such entry)."""
+    o = utf.get(idx)
+    if o is None:
+        return None
+    return b[o + 3:o + 3 + ((b[o + 1] << 8) | b[o + 2])]
+
+
+def pool_strings(b, pool):
     out = set()
-    for s in sidx:
+    utf = pool[0]
+    for s in pool[1]:
         o = utf.get(s)
         if o is not None:
             out.add(b[o + 3:o + 3 + ((b[o + 1] << 8) | b[o + 2])])
+    return out
+
+
+def class_strings(b):
+    """Set of the UTF8 payloads referenced by CONSTANT_String entries (i.e. string literals)."""
+    pool = class_pool(b)
+    if pool is None:
+        return None
+    return pool_strings(b, pool)
+
+
+def _u2(b, o):
+    return (b[o] << 8) | b[o + 1]
+
+
+def _skip_members(b, off):
+    """Skip a fields[] or methods[] table -> offset after it."""
+    n = _u2(b, off)
+    off += 2
+    for _ in range(n):
+        ac = _u2(b, off + 6)
+        off += 8
+        for _ in range(ac):
+            off += 6 + _S_I(b, off + 2)[0]
+    return off
+
+
+def _read_element(b, p, utf, depth=0):
+    """element_value of an annotation -> (value, offset).  Class descriptors and strings come back as str,
+    arrays as lists, nested annotations as (type, {name: value}); constants and enums as None."""
+    tag = b[p]
+    p += 1
+    if tag == 0x73:                                     # 's' string
+        v = pool_utf(b, utf, _u2(b, p))
+        return (v.decode('utf-8', 'replace') if v is not None else None), p + 2
+    if tag == 0x63:                                     # 'c' class
+        v = pool_utf(b, utf, _u2(b, p))
+        return (v.decode('utf-8', 'replace') if v is not None else None), p + 2
+    if tag == 0x65:                                     # 'e' enum
+        return None, p + 4
+    if tag == 0x40:                                     # '@' annotation
+        if depth > 8:
+            raise ValueError('annotation nesting')
+        return _read_annotation(b, p, utf, depth + 1)
+    if tag == 0x5b:                                     # '[' array
+        n = _u2(b, p)
+        p += 2
+        out = []
+        for _ in range(n):
+            v, p = _read_element(b, p, utf, depth + 1)
+            out.append(v)
+        return out, p
+    if tag in (0x42, 0x43, 0x44, 0x46, 0x49, 0x4a, 0x53, 0x5a):
+        return None, p + 2
+    raise ValueError('bad element_value tag %r' % tag)
+
+
+def _read_annotation(b, p, utf, depth=0):
+    t = pool_utf(b, utf, _u2(b, p))
+    n = _u2(b, p + 2)
+    p += 4
+    vals = {}
+    for _ in range(n):
+        k = pool_utf(b, utf, _u2(b, p))
+        v, p = _read_element(b, p + 2, utf, depth)
+        vals[k.decode('utf-8', 'replace') if k is not None else '?'] = v
+    return ((t.decode('utf-8', 'replace') if t is not None else '?'), vals), p
+
+
+def class_annotations(b, pool):
+    """Class-level annotations (runtime visible and invisible) -> [(type descriptor, {element: value})]."""
+    utf, end = pool[0], pool[3]
+    if end is None:
+        return []
+    out = []
+    try:
+        off = end + 6
+        off += 2 + 2 * _u2(b, off)                      # interfaces
+        off = _skip_members(b, off)                     # fields
+        off = _skip_members(b, off)                     # methods
+        ac = _u2(b, off)
+        off += 2
+        for _ in range(ac):
+            name = pool_utf(b, utf, _u2(b, off))
+            ln = _S_I(b, off + 2)[0]
+            body = off + 6
+            if name in (b'RuntimeInvisibleAnnotations', b'RuntimeVisibleAnnotations'):
+                p = body + 2
+                for _ in range(_u2(b, body)):
+                    ann, p = _read_annotation(b, p, utf)
+                    out.append(ann)
+            off = body + ln
+    except (IndexError, ValueError, struct.error):
+        pass
+    return out
+
+
+def mixin_targets(b):
+    """Target classes of a mixin class, read from its @Mixin annotation (value = classes, targets = names),
+    as internal names (net/minecraft/...).  None = not a class file; [] = no @Mixin annotation found."""
+    pool = class_pool(b)
+    if pool is None:
+        return None
+    out = []
+    for t, vals in class_annotations(b, pool):
+        if t != 'Lorg/spongepowered/asm/mixin/Mixin;':
+            continue
+        for v in as_list(vals.get('value')):
+            if isinstance(v, str):
+                out.append(v[1:-1] if v.startswith('L') and v.endswith(';') else v)
+        for v in as_list(vals.get('targets')):
+            if isinstance(v, str):
+                out.append(v.replace('.', '/'))
     return out
 
 
@@ -778,7 +912,7 @@ def new_unit(uid):
             'lang_entity': [], 'lang_item': [], 'lang_block': [], 'item_models': [],
             'counts': {}, 'notes': [], 'skipped_nested': [],
             'class_n': 0, 'class_names': [], 'class_rl': {}, 'class_path': {}, 'class_path_ns': {},
-            'class_dims': {}, 'class_prefix': [], 'class_leaf': {}, 'fam_ns': []}
+            'class_dims': {}, 'class_prefix': [], 'class_leaf': {}, 'fam_ns': [], 'inv': {}}
 
 
 _BLOCK_KEYS = ('Name', 'block', 'blocks', 'state', 'fluid', 'ignored_blocks')
@@ -1253,6 +1387,668 @@ def scan_unit_data(u, src):
     u['counts'] = dict(counts)
 
 
+# --------------------------------------------------------------------------- inventory: class hints
+#
+# Everything from here to scan_unit_inventory fills u['inv'], which only dev/mods/inventory.py reads.
+
+_CLIENT_PREFIX = (b'net/minecraft/client/', b'com/mojang/blaze3d/')
+_MOD_ANN = b'Lnet/minecraftforge/fml/common/Mod;'
+_ONLYIN_ANN = b'Lnet/minecraftforge/api/distmarker/OnlyIn;'
+_CONFIG_TYPE = b'net/minecraftforge/fml/config/ModConfig$Type'
+_DIST_GUARDS = frozenset((b'net/minecraftforge/fml/DistExecutor', b'net/minecraftforge/fml/loading/FMLEnvironment',
+                          b'net/minecraftforge/api/distmarker/Dist'))
+# a class that NAMES one of these (a CONSTANT_Class entry: it calls, extends, casts to or catches it)
+_HINT_CLASSES = {}
+for _label, _names in (
+        ('boss_event', ('net/minecraft/server/level/ServerBossEvent', 'net/minecraft/world/BossEvent',
+                        'net/minecraft/world/BossEvent$BossBarColor', 'net/minecraft/world/BossEvent$BossBarOverlay')),
+        ('key_mapping', ('net/minecraft/client/KeyMapping', 'net/minecraftforge/client/event/RegisterKeyMappingsEvent',
+                         'net/fabricmc/fabric/api/client/keybinding/v1/KeyBindingHelper')),
+        ('config_spec', ('net/minecraftforge/common/ForgeConfigSpec', 'net/minecraftforge/common/ForgeConfigSpec$Builder')),
+        ('game_rule_register', ('net/minecraft/world/level/GameRules$Category',)),
+        ('loot_code', ('net/minecraftforge/event/LootTableLoadEvent', 'net/minecraftforge/common/loot/LootModifier',
+                       'net/minecraftforge/common/loot/IGlobalLootModifier')),
+        ('attr_create', ('net/minecraftforge/event/entity/EntityAttributeCreationEvent',)),
+        ('attr_modify', ('net/minecraftforge/event/entity/EntityAttributeModificationEvent',)),
+        ('attr_register', ('net/minecraft/world/entity/ai/attributes/RangedAttribute',)),
+        ('spawn_hook', ('net/minecraftforge/event/entity/living/MobSpawnEvent$FinalizeSpawn',
+                        'net/minecraftforge/event/entity/living/MobSpawnEvent$PositionCheck',
+                        'net/minecraftforge/event/entity/living/MobSpawnEvent$SpawnPlacementCheck',
+                        'net/minecraftforge/event/entity/living/MobSpawnEvent$AllowDespawn',
+                        'net/minecraftforge/event/entity/living/MobSpawnEvent')),
+        ('entity_join', ('net/minecraftforge/event/entity/EntityJoinLevelEvent',)),
+        ('hurt_hook', ('net/minecraftforge/event/entity/living/LivingHurtEvent',
+                       'net/minecraftforge/event/entity/living/LivingDamageEvent',
+                       'net/minecraftforge/event/entity/living/LivingAttackEvent')),
+        ('screen_init', ('net/minecraftforge/client/event/ScreenEvent$Init', 'net/minecraftforge/client/event/ScreenEvent$Init$Post',
+                         'net/minecraftforge/client/event/ScreenEvent$Init$Pre')),
+        ('trades', ('net/minecraftforge/event/village/VillagerTradesEvent',
+                    'net/minecraftforge/event/village/WandererTradesEvent')),
+        ('commands', ('net/minecraftforge/event/RegisterCommandsEvent',)),
+        ('reload_listener', ('net/minecraftforge/event/AddReloadListenerEvent',)),
+        ('server_tick', ('net/minecraftforge/event/TickEvent$ServerTickEvent', 'net/minecraftforge/event/TickEvent$LevelTickEvent',
+                         'net/minecraftforge/event/TickEvent$PlayerTickEvent')),
+        ('entity_type', ('net/minecraft/world/entity/EntityType$Builder',)),
+        ('curio_item', ('top/theillusivec4/curios/api/type/capability/ICurioItem',)),
+        ('fabric_client_entry', ('net/fabricmc/api/ClientModInitializer',)),
+):
+    for _n in _names:
+        _HINT_CLASSES[_n.encode()] = _label
+_HINT_NAMES = frozenset(_HINT_CLASSES)
+_HINT_KEEP = 25                   # class names kept per hint
+_HINT_KEEP_ALL = ('boss_event',)  # hints whose class list is kept longer (the roster audit maps them to entities)
+# first ancestor outside the jar -> what kind of thing the class is (hint only: mods also extend each other)
+_ITEM_ROOTS = ('ArmorItem', 'SwordItem', 'AxeItem', 'PickaxeItem', 'ShovelItem', 'HoeItem', 'DiggerItem', 'TieredItem',
+               'BowItem', 'CrossbowItem', 'ProjectileWeaponItem', 'ShieldItem', 'TridentItem', 'ElytraItem', 'Item')
+
+
+def new_class_hints():
+    return {'client': 0, 'onlyin': 0, 'mcreator': 0, 'errors': 0, 'hints': {}, 'mod_classes': [],
+            'config_types': set(), 'supers': {}, 'boss': [], 'bossrefs': {}}
+
+
+def note_class_hints(acc, cname, b, pool):
+    utf, cidx, end = pool[0], pool[2], pool[3]
+    refs = set()
+    for ni in cidx.values():
+        o = utf.get(ni)
+        if o is not None:
+            refs.add(b[o + 3:o + 3 + ((b[o + 1] << 8) | b[o + 2])])
+    client = False
+    if b.find(b'net/minecraft/client/') >= 0 or b.find(b'com/mojang/blaze3d/') >= 0:
+        for r in refs:
+            if r.startswith(_CLIENT_PREFIX):
+                client = True
+                break
+    if client:
+        acc['client'] += 1
+    if b.find(_ONLYIN_ANN) >= 0:
+        acc['onlyin'] += 1
+    if cname.startswith('net/mcreator/'):
+        acc['mcreator'] += 1
+    hit = refs & _HINT_NAMES
+    if hit:
+        for label in set(_HINT_CLASSES[r] for r in hit):
+            e = acc['hints'].get(label)
+            if e is None:
+                e = acc['hints'][label] = [0, []]
+            e[0] += 1
+            if len(e[1]) < (400 if label in _HINT_KEEP_ALL else _HINT_KEEP):
+                e[1].append(cname)
+            if label == 'boss_event':
+                acc['boss'].append(cname)
+    if b.find(b'oss') >= 0:
+        # classes of other packages with "boss" in the name: a jar's own ServerBossEvent subclass is found
+        # below, and the entities that use it are boss-bar candidates too
+        loc = [r.decode('utf-8', 'replace') for r in refs
+               if (b'Boss' in r or b'boss' in r) and not r.startswith(b'net/minecraft/')]
+        if loc:
+            acc['bossrefs'][cname] = loc
+    if _CONFIG_TYPE in refs:
+        for o in utf.values():
+            ln = (b[o + 1] << 8) | b[o + 2]
+            if ln == 6:
+                v = b[o + 3:o + 9]
+                if v in (b'COMMON', b'CLIENT', b'SERVER'):
+                    acc['config_types'].add(v.decode())
+    if b.find(_MOD_ANN) >= 0:
+        acc['mod_classes'].append({'c': cname, 'client': client, 'dist_guard': bool(refs & _DIST_GUARDS)})
+    if end is not None and len(b) >= end + 6:
+        sup = pool_utf(b, utf, cidx.get(_u2(b, end + 4)))
+        if sup:
+            acc['supers'][cname] = sup.decode('utf-8', 'replace')
+
+
+def finish_class_hints(acc, n_classes):
+    supers = acc['supers']
+
+    def root(c):
+        n = 0
+        while c in supers and n < 60:
+            c = supers[c]
+            n += 1
+        return c
+
+    ent = Counter()
+    itm = Counter()
+    for c in supers:
+        r = root(c)
+        if r.startswith('net/minecraft/world/entity/') and not r.startswith('net/minecraft/world/entity/ai/'):
+            ent[r[len('net/minecraft/world/entity/'):]] += 1
+        elif r.startswith('net/minecraft/world/item/') and r.rpartition('/')[2] in _ITEM_ROOTS:
+            itm[r.rpartition('/')[2]] += 1
+    out = {'n': n_classes, 'client': acc['client'], 'onlyin': acc['onlyin']}
+    if acc['mcreator']:
+        out['mcreator'] = acc['mcreator']
+    if acc['errors']:
+        out['errors'] = acc['errors']
+    if acc['hints']:
+        out['hints'] = dict((k, [v[0], sorted(v[1])]) for k, v in sorted(acc['hints'].items()))
+    if acc['mod_classes']:
+        out['mod_classes'] = sorted(acc['mod_classes'], key=lambda m: m['c'])
+    if acc['config_types']:
+        out['config_types'] = sorted(acc['config_types'])
+    if acc['boss']:
+        # [class, first ancestor outside the jar, classes of the jar that extend it]: a boss bar set up in a
+        # base class is inherited by every entity below it
+        kids = defaultdict(list)
+        for c, sup in supers.items():
+            kids[sup].append(c)
+
+        def below(c):
+            found, todo = [], [c]
+            while todo and len(found) < 120:
+                for k in kids.get(todo.pop(), ()):
+                    found.append(k)
+                    todo.append(k)
+            return sorted(found)
+
+        rows = dict((c, [c, root(c), below(c)]) for c in acc['boss'])
+        helpers = set(c for c in acc['boss'] if root(c) in ('net/minecraft/server/level/ServerBossEvent',
+                                                           'net/minecraft/world/BossEvent'))
+        for c, loc in acc['bossrefs'].items():
+            if c not in rows:
+                via = sorted(h for h in loc if h in helpers)
+                if via:
+                    rows[c] = [c, root(c), below(c), via[0]]
+        out['boss'] = [rows[c] for c in sorted(rows)]
+    if ent:
+        out['entity_roots'] = dict(ent.most_common(40))
+    if itm:
+        out['item_roots'] = dict(itm.most_common())
+    return out
+
+
+# --------------------------------------------------------------------------- inventory: metadata and data
+
+try:
+    import tomllib
+except ImportError:               # Python 3.10: the regex reader below is used for every mods.toml
+    tomllib = None
+
+# data/<ns>/<folder> names that only a 1.21+ game reads (1.20.1 uses the plural, or has no such registry)
+DEAD_DIRS = frozenset(('loot_table', 'recipe', 'advancement', 'structure', 'function', 'predicate', 'item_modifier',
+                       'painting_variant', 'enchantment', 'enchantment_provider', 'jukebox_song', 'wolf_variant',
+                       'banner_pattern', 'trial_spawner', 'instrument', 'data_maps', 'neoforge'))
+DEAD_TAG_DIRS = frozenset(('item', 'block', 'entity_type', 'fluid', 'game_event', 'function'))
+DEAD_TWIN = {'loot_table': 'loot_tables', 'recipe': 'recipes', 'advancement': 'advancements',
+             'structure': 'structures', 'function': 'functions', 'predicate': 'predicates',
+             'item_modifier': 'item_modifiers', 'tags/item': 'tags/items', 'tags/block': 'tags/blocks',
+             'tags/entity_type': 'tags/entity_types', 'tags/fluid': 'tags/fluids',
+             'tags/game_event': 'tags/game_events', 'tags/function': 'tags/functions'}
+_TAG_VALUES_FOR = ('entity_types', 'functions')      # registries whose tag members the inventory keeps
+_MANIFEST_KEYS = ('MixinConfigs', 'MixinConnector', 'FMLModType', 'Automatic-Module-Name', 'Implementation-Version',
+                  'Implementation-Title', 'FMLCorePluginContainsFMLMod', 'Fabric-Loom-Version')
+_TOML_TOP = ('modLoader', 'loaderVersion', 'license', 'clientSideOnly', 'showAsResourcePack', 'showAsDataPack')
+_RX_RECIPE_TYPE = re.compile(r'"type"\s*:\s*"([^"]+)"')
+
+
+def read_manifest(raw):
+    """Main section of a MANIFEST.MF, with continuation lines joined -> {key: value}."""
+    out = {}
+    key = None
+    for line in raw.decode('utf-8', 'replace').replace('\r\n', '\n').replace('\r', '\n').split('\n'):
+        if not line:
+            if out:
+                break
+            continue
+        if line[0] == ' ' and key is not None:
+            out[key] += line[1:]
+            continue
+        k, sep, v = line.partition(':')
+        if sep:
+            key = k.strip()
+            out[key] = v.strip()
+    return out
+
+
+def parse_mods_toml_full(text, manifest):
+    """mods.toml -> {'parser', 'top', 'top_keys', 'mods', 'deps', 'mixins'} (identity, side hints, deps)."""
+    out = {'parser': 'regex', 'top': {}, 'top_keys': [], 'mods': [], 'deps': [], 'mixins': []}
+    text = text.replace('\r\n', '\n').replace('\r', '\n')
+    data = None
+    if tomllib is not None:
+        try:
+            data = tomllib.loads(text)
+            out['parser'] = 'toml'
+        except Exception as e:      # Forge's reader accepts files a strict TOML parser refuses
+            out['toml_error'] = str(e)[:160]
+
+    def ver(v):
+        v = None if v is None else str(v)
+        if v and '${' in v:
+            v = manifest.get('Implementation-Version') or v
+        return v
+
+    if isinstance(data, dict):
+        out['top_keys'] = sorted(data)
+        for k in _TOML_TOP:
+            if isinstance(data.get(k), (str, bool, int, float)):
+                out['top'][k] = data[k]
+        for m in as_list(data.get('mods')):
+            if isinstance(m, dict) and isinstance(m.get('modId'), str):
+                e = {'id': m['modId'], 'version': ver(m.get('version'))}
+                for k, k2 in (('displayName', 'name'), ('displayTest', 'displayTest')):
+                    if isinstance(m.get(k), str):
+                        e[k2] = m[k]
+                out['mods'].append(e)
+        deps = data.get('dependencies')
+        if isinstance(deps, dict):
+            for owner, lst in deps.items():
+                for d in as_list(lst):
+                    if isinstance(d, dict) and isinstance(d.get('modId'), str):
+                        out['deps'].append({'of': owner, 'id': d['modId'], 'mandatory': d.get('mandatory'),
+                                            'range': d.get('versionRange'), 'ordering': d.get('ordering'),
+                                            'side': d.get('side')})
+        for m in as_list(data.get('mixins')):
+            if isinstance(m, dict) and isinstance(m.get('config'), str):
+                out['mixins'].append(m['config'])
+        for k, v in data.items():
+            if k.lower() == 'mixinconfigs':
+                out['mixins'].extend(x for x in as_list(v) if isinstance(x, str))
+        return out
+    for k in _TOML_TOP:
+        m = re.search(r'^[ \t]*%s[ \t]*=[ \t]*["\']?([^"\'\n#]+)' % k, text.split('[[', 1)[0], re.M)
+        if m:
+            v = m.group(1).strip()
+            out['top'][k] = True if v == 'true' else (False if v == 'false' else v)
+    secs = re.split(r'^[ \t]*\[\[\s*mods\s*\]\][ \t]*(?:#.*)?$', text, flags=re.M)
+    for sec in secs[1:]:
+        sec = re.split(r'^[ \t]*\[', sec, maxsplit=1, flags=re.M)[0]
+
+        def g(k, sec=sec):
+            mm = re.search(r'^[ \t]*%s[ \t]*=[ \t]*["\']([^"\']*)["\']' % k, sec, re.M)
+            return mm.group(1) if mm else None
+
+        if g('modId'):
+            e = {'id': g('modId'), 'version': ver(g('version'))}
+            if g('displayName'):
+                e['name'] = g('displayName')
+            if g('displayTest'):
+                e['displayTest'] = g('displayTest')
+            out['mods'].append(e)
+    for owner, body in re.findall(r'\[\[\s*dependencies\.([^\]]+?)\s*\]\](.*?)(?=\n[ \t]*\[\[|\Z)', text, re.S):
+        def g(k, body=body):
+            mm = re.search(r'^[ \t]*%s[ \t]*=[ \t]*["\']?([^"\'\n#]+)' % k, body, re.M)
+            return mm.group(1).strip() if mm else None
+
+        if g('modId'):
+            mand = g('mandatory')
+            out['deps'].append({'of': owner.strip(), 'id': g('modId'),
+                                'mandatory': True if mand == 'true' else (False if mand == 'false' else mand),
+                                'range': g('versionRange'), 'ordering': g('ordering'), 'side': g('side')})
+    for m in re.finditer(r'^[ \t]*mixinConfigs[ \t]*=[ \t]*\[([^\]]*)\]', text, re.M | re.I):
+        out['mixins'].extend(re.findall(r'["\']([^"\']+)["\']', m.group(1)))
+    for body in re.findall(r'\[\[\s*mixins\s*\]\](.*?)(?=\n[ \t]*\[|\Z)', text, re.S):
+        m = re.search(r'^[ \t]*config[ \t]*=[ \t]*["\']([^"\']+)["\']', body, re.M)
+        if m:
+            out['mixins'].append(m.group(1))
+    return out
+
+
+def _tag_registry(rest):
+    """['items', 'a', 'b.json'] -> ('items', 'a/b'); ['worldgen', 'biome', 'x.json'] -> ('worldgen/biome', 'x')"""
+    if rest[0] == 'worldgen' and len(rest) > 2:
+        return 'worldgen/' + rest[1], '/'.join(rest[2:])[:-5]
+    return rest[0], '/'.join(rest[1:])[:-5]
+
+
+def scan_unit_inventory(u, src):
+    """Fill u['inv'] with what only the per-jar inventory reads.  Reads the archive a second time for the few
+    file kinds scan_unit_data does not keep (recipes, most tags, mixin configs, language keys by prefix)."""
+    inv = u.setdefault('inv', {})
+    names = src.names
+    nameset = set(names)
+    inv_notes = inv['notes'] = []
+
+    def note(msg):
+        if len(inv_notes) < 40:
+            inv_notes.append(msg)
+
+    # ---- identity
+    man = {}
+    if 'META-INF/MANIFEST.MF' in nameset:
+        try:
+            man = read_manifest(src.read('META-INF/MANIFEST.MF'))
+        except Exception as e:
+            note('MANIFEST unreadable: %s' % e)
+    inv['manifest'] = dict((k, man[k]) for k in _MANIFEST_KEYS if k in man)
+    declared = {}                 # mixin config -> [where it is declared]
+
+    def declare(cfg, where, env=None):
+        cfg = cfg.strip()
+        if not cfg:
+            return
+        e = declared.setdefault(cfg, {'decl': []})
+        if where not in e['decl']:
+            e['decl'].append(where)
+        if env:
+            e['env'] = env
+
+    for cfg in (man.get('MixinConfigs') or '').split(','):
+        declare(cfg, 'manifest')
+    if 'META-INF/mods.toml' in nameset:
+        try:
+            t = parse_mods_toml_full(src.read('META-INF/mods.toml').decode('utf-8-sig', 'replace'), man)
+            for cfg in t.pop('mixins'):
+                declare(cfg, 'mods.toml')
+            inv['forge'] = t
+        except Exception as e:
+            note('mods.toml unreadable: %s: %s' % (type(e).__name__, e))
+    for meta in ('fabric.mod.json', 'quilt.mod.json'):
+        if meta not in nameset:
+            continue
+        obj, err, _ = load_json(src.read(meta))
+        if not isinstance(obj, dict):
+            note('%s unparseable: %s' % (meta, err))
+            continue
+        if meta == 'quilt.mod.json':
+            inv['quilt'] = True
+            continue
+        f = {'id': obj.get('id'), 'version': str(obj.get('version')), 'environment': obj.get('environment', '*')}
+        if isinstance(obj.get('name'), str):
+            f['name'] = obj['name']
+        for k in ('depends', 'recommends', 'suggests', 'breaks', 'conflicts'):
+            if isinstance(obj.get(k), dict) and obj[k]:
+                f[k] = dict((str(a), (b if isinstance(b, str) else json.dumps(b))) for a, b in sorted(obj[k].items()))
+        if isinstance(obj.get('entrypoints'), dict):
+            f['entrypoints'] = dict((str(k), len(as_list(v))) for k, v in sorted(obj['entrypoints'].items()))
+        if isinstance(obj.get('accessWidener'), str):
+            f['accessWidener'] = obj['accessWidener']
+        if isinstance(obj.get('provides'), list):
+            f['provides'] = [x for x in obj['provides'] if isinstance(x, str)]
+        if isinstance(obj.get('jars'), list):
+            f['jars'] = [x.get('file') for x in obj['jars'] if isinstance(x, dict) and isinstance(x.get('file'), str)]
+        for m in as_list(obj.get('mixins')):
+            if isinstance(m, str):
+                declare(m, 'fabric.mod.json')
+            elif isinstance(m, dict) and isinstance(m.get('config'), str):
+                declare(m['config'], 'fabric.mod.json', m.get('environment'))
+        inv['fabric'] = f
+    svc = sorted(n[len('META-INF/services/'):] for n in names if n.startswith('META-INF/services/') and not n.endswith('/'))
+    if svc:
+        inv['services'] = svc
+    if 'META-INF/coremods.json' in nameset:
+        obj, err, _ = load_json(src.read('META-INF/coremods.json'))
+        inv['coremods'] = sorted(str(v) for v in obj.values()) if isinstance(obj, dict) else ['?']
+    if 'META-INF/jarjar/metadata.json' in nameset:
+        obj, err, _ = load_json(src.read('META-INF/jarjar/metadata.json'))
+        jj = []
+        for e in as_list(obj.get('jars') if isinstance(obj, dict) else None):
+            if not isinstance(e, dict):
+                continue
+            ident = e.get('identifier') or {}
+            vers = e.get('version') or {}
+            jj.append({'path': e.get('path'), 'group': ident.get('group'), 'artifact': ident.get('artifact'),
+                       'version': vers.get('artifactVersion'), 'range': vers.get('range')})
+        inv['jarjar'] = jj
+
+    # ---- access transformer / access widener
+    for at_name, key in (('META-INF/accesstransformer.cfg', 'at'), ((inv.get('fabric') or {}).get('accessWidener'), 'aw')):
+        if not at_name or at_name not in nameset:
+            continue
+        try:
+            text = src.read(at_name).decode('utf-8', 'replace')
+        except Exception as e:
+            note('%s unreadable: %s' % (at_name, e))
+            continue
+        n = 0
+        classes = set()
+        for line in text.splitlines():
+            line = line.split('#', 1)[0].strip()
+            if not line or line.startswith('accessWidener'):
+                continue
+            parts = line.split()
+            if len(parts) < 2:
+                continue
+            n += 1
+            classes.add((parts[1] if key == 'at' else parts[2] if len(parts) > 2 else parts[1]).replace('/', '.'))
+        cl = sorted(c for c in classes if c.startswith('net.minecraft.client.') or c.startswith('com.mojang.blaze3d.'))
+        inv[key] = {'file': at_name, 'lines': n, 'classes': sorted(classes)[:300], 'n_classes': len(classes),
+                    'client_classes': len(cl)}
+
+    # ---- mixin configs
+    for n in names:
+        if '/' not in n and n.endswith('.json') and 'mixin' in n.lower() and n not in declared:
+            declared[n] = {'decl': []}
+    mixins = []
+    for cfg in sorted(declared):
+        e = {'cfg': cfg, 'decl': declared[cfg]['decl']}
+        if declared[cfg].get('env'):
+            e['env'] = declared[cfg]['env']
+        if cfg not in nameset:
+            e['absent'] = True
+            mixins.append(e)
+            continue
+        obj, err, _ = load_json(src.read(cfg))
+        if not isinstance(obj, dict):
+            e['error'] = err or 'not an object'
+            mixins.append(e)
+            continue
+        if 'package' not in obj and not any(k in obj for k in ('mixins', 'client', 'server')):
+            if not e['decl']:
+                continue          # a refmap or some other json that only has "mixin" in its name
+            e['empty'] = True     # a declared config with no mixins of its own (mixinextras.init ...)
+            mixins.append(e)
+            continue
+        pkg = obj.get('package') if isinstance(obj.get('package'), str) else ''
+        e['pkg'] = pkg
+        for k in ('required', 'plugin', 'refmap', 'minVersion', 'compatibilityLevel'):
+            if isinstance(obj.get(k), (str, bool, int, float)):
+                e[k] = obj[k]
+        if e.get('refmap') and e['refmap'] not in nameset:
+            e['refmap_missing'] = True
+        targets = {}
+        missing = []
+        for side, key in (('common', 'mixins'), ('client', 'client'), ('server', 'server')):
+            lst = [x for x in as_list(obj.get(key)) if isinstance(x, str)]
+            e[side] = lst
+            for mname in lst:
+                cn = ((pkg + '.' if pkg else '') + mname).replace('.', '/') + '.class'
+                if cn not in nameset:
+                    missing.append(mname)
+                    continue
+                try:
+                    tg = mixin_targets(src.read(cn))
+                except Exception:
+                    tg = None
+                if tg:
+                    targets[mname] = sorted(set(tg))
+        e['targets'] = targets
+        if missing:
+            e['missing'] = missing
+        mixins.append(e)
+    if mixins:
+        inv['mixins'] = mixins
+
+    # ---- data/
+    ns_cat = defaultdict(Counter)
+    recipes = {'n': 0, 'types': Counter(), 'ids': defaultdict(list), 'cond': 0, 'bad': 0}
+    adv = defaultdict(list)
+    functions = []
+    fn_tags = {}
+    tags = defaultdict(dict)
+    tag_values = defaultdict(dict)
+    damage_types = []
+    dim_types = []
+    biome_mods = {}
+    dead = Counter()
+    dead_sample = {}
+    assets_ns = Counter()
+    cfg_like = []
+    top = Counter()
+    lang = {'n': 0, 'prefix': Counter(), 'key': {}, 'gamerule': [], 'attribute': [], 'enchantment': [],
+            'effect': [], 'files': 0}
+    for name in names:
+        if name.endswith('/'):
+            continue
+        head, _, tail = name.partition('/')
+        top[head if tail else '<root>'] += 1
+        if head == 'data':
+            parts = name.split('/')
+            if len(parts) < 4:
+                continue
+            ns, cat = parts[1], parts[2]
+            rest = parts[3:]
+            catkey = cat
+            if cat in ('worldgen', 'forge') and len(rest) > 1:
+                catkey = cat + '/' + rest[0]
+            elif cat == 'tags' and len(rest) > 1:
+                catkey = 'tags/' + _tag_registry(rest)[0]
+            ns_cat[ns][catkey] += 1
+            try:
+                if cat in DEAD_DIRS or (cat == 'tags' and len(rest) > 1 and rest[0] in DEAD_TAG_DIRS):
+                    dk = cat if cat != 'tags' else 'tags/' + rest[0]
+                    dead[dk] += 1
+                    dead_sample.setdefault(dk, name)
+                    if dk == 'tags/entity_type' and name.endswith('.json'):
+                        # not loaded by 1.20.1, but it is the author's own list (c:bosses ...)
+                        obj, err, _ = load_json(src.read(name))
+                        if obj is not None:
+                            tag_values['entity_type (1.21 folder, not loaded)'][ns + ':' + '/'.join(rest[1:])[:-5]] =                                 [v for v, _ in parse_tag_file(obj).get('v', [])]
+                elif cat == 'recipes':
+                    if not name.endswith('.json'):
+                        continue
+                    raw = src.read(name)
+                    recipes['n'] += 1
+                    recipes['ids'][ns].append('/'.join(rest)[:-5])
+                    obj, err, _ = load_json(raw)
+                    if isinstance(obj, dict):
+                        t = obj.get('type')
+                        recipes['types'][nid(t) if isinstance(t, str) and t else '<no type>'] += 1
+                        if any(k in obj for k in _COND_KEYS):
+                            recipes['cond'] += 1
+                    else:
+                        recipes['bad'] += 1
+                        m = _RX_RECIPE_TYPE.search(raw.decode('utf-8', 'replace'))
+                        recipes['types'][(nid(m.group(1)) if m else '<unparseable>')] += 1
+                elif cat == 'advancements':
+                    if name.endswith('.json'):
+                        adv[ns].append('/'.join(rest)[:-5])
+                elif cat == 'functions':
+                    if name.endswith('.mcfunction'):
+                        functions.append(ns + ':' + '/'.join(rest)[:-11])
+                elif cat == 'tags':
+                    if not name.endswith('.json') or len(rest) < 2:
+                        continue
+                    reg, path = _tag_registry(rest)
+                    tid = ns + ':' + path
+                    if reg == 'items' and tid in u['item_tags']:
+                        f = u['item_tags'][tid]
+                    elif reg == 'worldgen/biome' and tid in u['biome_tags']:
+                        f = u['biome_tags'][tid]
+                    else:
+                        obj, err, _ = load_json(src.read(name))
+                        if obj is None:
+                            continue
+                        f = parse_tag_file(obj)
+                    tags[reg][tid] = [1 if f.get('r') else 0, len(f.get('v', []))]
+                    if reg in _TAG_VALUES_FOR:
+                        tag_values[reg][tid] = [v for v, _ in f.get('v', [])]
+                    if reg == 'functions' and ns == 'minecraft' and path in ('tick', 'load'):
+                        fn_tags[path] = {'r': bool(f.get('r')), 'v': [v for v, _ in f.get('v', [])]}
+                elif cat == 'damage_type':
+                    if name.endswith('.json'):
+                        damage_types.append(ns + ':' + '/'.join(rest)[:-5])
+                elif cat == 'dimension_type':
+                    if name.endswith('.json'):
+                        dim_types.append(ns + ':' + '/'.join(rest)[:-5])
+                elif cat == 'forge' and rest[0] == 'biome_modifier' and len(rest) > 1 and name.endswith('.json'):
+                    obj, err, _ = load_json(src.read(name))
+                    if not isinstance(obj, dict):
+                        continue
+                    rec = {'t': nid(obj.get('type'), 'forge')}
+                    b = [x for x in norm_ref_list(obj.get('biomes')) if isinstance(x, str)]
+                    if b:
+                        rec['b'] = b[:8]
+                    sp = []
+                    for s in as_list(obj.get('spawners')):
+                        if isinstance(s, dict) and isinstance(s.get('type'), str):
+                            sp.append([nid(s['type']), s.get('weight'), s.get('minCount'), s.get('maxCount')])
+                    if sp:
+                        rec['sp'] = sp
+                    rm = [x for x in norm_ref_list(obj.get('entity_types')) if isinstance(x, str)]
+                    if rm:
+                        rec['rm'] = rm
+                    if 'features' in obj:
+                        rec['f'] = len(as_list(obj.get('features')))
+                        if isinstance(obj.get('step'), str):
+                            rec['step'] = obj['step']
+                    biome_mods[ns + ':' + '/'.join(rest[1:])[:-5]] = rec
+            except Exception as e:
+                note('error reading %s: %s: %s' % (name, type(e).__name__, e))
+        elif head == 'assets':
+            parts = name.split('/')
+            if len(parts) < 3:
+                continue
+            assets_ns[parts[1]] += 1
+            if len(parts) == 4 and parts[2] == 'lang' and parts[3] == 'en_us.json':
+                try:
+                    obj, err, _ = load_json(src.read(name))
+                except Exception:
+                    obj = None
+                if not isinstance(obj, dict):
+                    continue
+                lang['files'] += 1
+                for k, v in obj.items():
+                    if not isinstance(k, str):
+                        continue
+                    lang['n'] += 1
+                    kp = k.split('.')
+                    lang['prefix'][kp[0]] += 1
+                    if kp[0] == 'key':
+                        if len(lang['key']) < 400:
+                            lang['key'][k] = v if isinstance(v, str) else None
+                    elif kp[0] == 'gamerule':
+                        if not k.endswith('.description') and len(lang['gamerule']) < 200:
+                            lang['gamerule'].append(k)
+                    elif kp[0] == 'attribute':
+                        if len(lang['attribute']) < 200:
+                            lang['attribute'].append(k)
+                    elif kp[0] == 'enchantment' and len(kp) == 3:
+                        lang['enchantment'].append(kp[1] + ':' + kp[2])
+                    elif kp[0] == 'effect' and len(kp) == 3:
+                        lang['effect'].append(kp[1] + ':' + kp[2])
+        elif not name.endswith('.class'):
+            low = name.lower()
+            if (low.startswith(('defaultconfigs/', 'defaultconfig/', 'config/', 'configs/'))
+                    or ('/' not in name and low.endswith(('.toml', '.json5', '.cfg')))):
+                if len(cfg_like) < 30:
+                    cfg_like.append(name)
+    inv['top'] = dict(top.most_common(12))
+    inv['ns'] = dict((ns, dict(c)) for ns, c in sorted(ns_cat.items()))
+    if assets_ns:
+        inv['assets_ns'] = dict(sorted(assets_ns.items()))
+    if recipes['n']:
+        inv['recipes'] = {'n': recipes['n'], 'types': dict(sorted(recipes['types'].items())),
+                          'ids': dict((ns, sorted(v)) for ns, v in sorted(recipes['ids'].items())),
+                          'cond': recipes['cond'], 'bad': recipes['bad']}
+    if adv:
+        inv['advancements'] = dict((ns, sorted(v)) for ns, v in sorted(adv.items()))
+    if functions:
+        inv['functions'] = sorted(functions)
+    if fn_tags:
+        inv['fn_tags'] = fn_tags
+    if tags:
+        inv['tags'] = dict((reg, dict(sorted(t.items()))) for reg, t in sorted(tags.items()))
+    if tag_values:
+        inv['tag_values'] = dict((reg, dict(sorted(t.items()))) for reg, t in sorted(tag_values.items()))
+    if damage_types:
+        inv['damage_types'] = sorted(damage_types)
+    if dim_types:
+        inv['dimension_types'] = sorted(dim_types)
+    if biome_mods:
+        inv['biome_modifiers'] = dict(sorted(biome_mods.items()))
+    if dead:
+        inv['dead_dirs'] = dict((k, [v, dead_sample[k]]) for k, v in sorted(dead.items()))
+    if cfg_like:
+        inv['config_files'] = cfg_like
+    if lang['files']:
+        inv['lang'] = {'n': lang['n'], 'prefix': dict(lang['prefix'].most_common(30)), 'key': lang['key'],
+                       'gamerule': sorted(lang['gamerule']), 'attribute': sorted(lang['attribute']),
+                       'enchantment': sorted(set(lang['enchantment'])), 'effect': sorted(set(lang['effect']))}
+
+
 def scan_unit_classes(u, src, fam_ns_b, fam_paths_b, fam_dims_b, fam_leaves_b):
     cls_names = []
     rl = {}
@@ -1267,6 +2063,7 @@ def scan_unit_classes(u, src, fam_ns_b, fam_paths_b, fam_dims_b, fam_leaves_b):
     for d in fam_dims_b:
         dim_consts[d] = d.decode()
     fullmatch = RXB_CONST.fullmatch
+    hints = new_class_hints()
     for name in src.names:
         if not name.endswith('.class'):
             continue
@@ -1275,7 +2072,14 @@ def scan_unit_classes(u, src, fam_ns_b, fam_paths_b, fam_dims_b, fam_leaves_b):
             b = src.read(name)
         except Exception:
             continue
-        strs = class_strings(b)
+        pool = class_pool(b)
+        if pool is None:
+            continue
+        try:
+            note_class_hints(hints, name[:-6], b, pool)
+        except Exception:
+            hints['errors'] += 1
+        strs = pool_strings(b, pool)
         if not strs:
             continue
         ci = None
@@ -1347,6 +2151,7 @@ def scan_unit_classes(u, src, fam_ns_b, fam_paths_b, fam_dims_b, fam_leaves_b):
     u['class_leaf'] = leafs
     u['class_dims'] = cdims
     u['class_prefix'] = sorted(p.decode('ascii') for p in prefixes if len(p) <= 120)
+    u.setdefault('inv', {})['code'] = finish_class_hints(hints, n_classes)
 
 
 def scan_family(task):
@@ -1395,6 +2200,10 @@ def scan_family(task):
             scan_unit_data(u, src)
         except Exception as e:
             u['notes'].append('unit data scan crashed: %s: %s' % (type(e).__name__, e))
+        try:
+            scan_unit_inventory(u, src)
+        except Exception as e:      # never into u['notes']: the loot audit prints those
+            u['inv']['error'] = 'inventory scan crashed: %s: %s' % (type(e).__name__, e)
     fam_ns = set(['minecraft'])
     own_ns = set()
     fam_paths = set()
@@ -1470,3 +2279,101 @@ def scan_family_cached(task):
     return rec
 
 
+# --------------------------------------------------------------------------- task lists / running a scan
+
+def find_vanilla_jar(libs):
+    d = os.path.join(libs, 'com', 'mojang', 'minecraft', '1.20.1')
+    if os.path.isdir(d):
+        for f in sorted(os.listdir(d)):
+            if f.endswith('-client.jar'):
+                return os.path.join(d, f)
+    for dp, dn, fn in os.walk(libs):
+        for f in fn:
+            if f.endswith('.jar') and 'minecraft' in f.lower():
+                p = os.path.join(dp, f)
+                try:
+                    with zipfile.ZipFile(p) as zf:
+                        zf.getinfo('data/minecraft/loot_tables/chests/simple_dungeon.json')
+                    return p
+                except Exception:
+                    pass
+    return None
+
+
+def find_forge_jar(libs, repo):
+    d = os.path.join(libs, 'net', 'minecraftforge', 'forge')
+    if not os.path.isdir(d):
+        return None
+    want = None
+    try:
+        with open(os.path.join(repo, 'mmc-pack.json'), 'r', encoding='utf-8') as f:
+            for c in json.load(f).get('components', []):
+                if c.get('uid') == 'net.minecraftforge':
+                    want = '1.20.1-' + str(c.get('version'))
+    except (OSError, ValueError):
+        pass
+    cands = sorted(x for x in os.listdir(d) if x.startswith('1.20.1-'))
+    if want in cands:
+        cands = [want]
+    for v in reversed(cands):
+        p = os.path.join(d, v, 'forge-%s-universal.jar' % v)
+        if os.path.isfile(p):
+            return p
+    return None
+
+
+def file_sha256(path):
+    h = hashlib.sha256()
+    with open(path, 'rb') as f:
+        for chunk in iter(lambda: f.read(1 << 20), b''):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def mod_tasks(mods_dir, repo):
+    """One task per mod jar: every *.jar of the instance `mods_dir` plus every *.jar of <repo>/mods.  A jar
+    whose file name also exists in <repo>/mods is read from the repo (the committed custom jars).
+    -> (tasks, instance jar names)"""
+    repo_mods = os.path.join(repo, 'mods')
+    repo_jars = set(f for f in os.listdir(repo_mods) if f.endswith('.jar')) if os.path.isdir(repo_mods) else set()
+    inst_jars = set(f for f in os.listdir(mods_dir) if f.endswith('.jar')) if os.path.isdir(mods_dir) else set()
+    tasks = []
+    for f in sorted(inst_jars | repo_jars):
+        t = {'kind': 'mod', 'id': 'mod:' + f, 'classes': True, 'order': 2}
+        if f in repo_jars:
+            t['path'] = os.path.join(repo_mods, f)
+            t['repo_copy'] = True
+            t['instance_sha256'] = file_sha256(os.path.join(mods_dir, f)) if f in inst_jars else None
+        else:
+            t['path'] = os.path.join(mods_dir, f)
+        tasks.append(t)
+    return tasks, inst_jars
+
+
+def scan_all(tasks, cache_dir, no_cache=False, jobs=0):
+    """Scan every task, from the cache where it is still valid -> ({task id: record}, cache hits)."""
+    import multiprocessing
+    fams = {}
+    todo = []
+    hits = 0
+    for t in tasks:
+        rec = None if no_cache else cache_load(cache_dir, t)
+        if rec is not None:
+            fams[t['id']] = rec
+            hits += 1
+        else:
+            t2 = dict(t)
+            t2['cache_dir'] = cache_dir
+            todo.append(t2)
+    todo.sort(key=lambda t: -os.path.getsize(t['path']))
+    jobs = jobs or max(1, min(16, (os.cpu_count() or 4) - 2))
+    if todo:
+        if jobs > 1 and len(todo) > 2:
+            with multiprocessing.Pool(min(jobs, len(todo))) as pool:
+                for rec in pool.imap_unordered(scan_family_cached, todo, chunksize=1):
+                    fams[rec['task_id']] = rec
+        else:
+            for t in todo:
+                rec = scan_family_cached(t)
+                fams[rec['task_id']] = rec
+    return fams, hits
