@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "about": [
+    "What the offline boot rig (.minecraft/dev/boot) prints that the live server does not. Read by icboot.py, which hands loud-check.ps1 the baseline of the tree under test PLUS this file. The live baseline (dev/loud/baseline.json) is never edited for the rig.",
+    "`signatures`: lines of a rig boot that are accepted, each with the reason it is a property of the rig (a fresh world, Linux, no players, loopback) and not of the tree under test.",
+    "`defects`: lines of a rig boot that are defects of the pack and that the live baseline does not carry under this wording. They stay findings (KNOWN DEFECT); the gate does not fail on a known defect.",
+    "`liveness_skip`: entries of dev/loud/liveness_manifest.json that cannot print on the rig, each with the reason.",
+    "Same rules as the live baseline: nothing gets in without being read; a signature is the line without clock, numbers of two or more digits, addresses and ids, cut at 200 characters; no names, this file is public.",
+    "State on 2026-10-12 (pack 13a94cc4): of the live baseline's 160 accepted signatures the rig prints 154 (the six missing are the Patreon-library network failures, marked runtime there), and of its 9 defects it prints 7. README.md, section 'The rig against the live server', explains the two it does not print and the one entry below."
+  ],
+  "signatures": [],
+  "defects": [
+    {
+      "log": "latest.log",
+      "sig": "ERROR [net.minecraft.server.ServerAdvancementManager/]: Parsing error loading custom advancement cataclysm_ut:kill_monstrosity2: Unknown entity type 'cataclysm:old_netherite_monstrosity', valid types are: m",
+      "what": "The same defect as the live baseline's cataclysm_ut advancement entry (the add-on names an entity this Cataclysm does not have). Only the end of the line differs: it lists the valid entity types, which in a fresh world come in registration order (minecraft:allay first), while on the live world Forge has re-read the ids from level.dat and the list starts elsewhere. Remove this entry together with the live one",
+      "listed": "2026-10-12"
+    }
+  ],
+  "liveness_skip": []
+}
