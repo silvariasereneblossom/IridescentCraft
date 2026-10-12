@@ -7,7 +7,8 @@
   "mixins": [],
   "client": [],
   "server": [
-    "LevelEmptyTickerPruneMixin"
+    "LevelEmptyTickerPruneMixin",
+    "LevelEmptyFreshBlockEntityPruneMixin"
   ],
   "injectors": {
     "defaultRequire": 0

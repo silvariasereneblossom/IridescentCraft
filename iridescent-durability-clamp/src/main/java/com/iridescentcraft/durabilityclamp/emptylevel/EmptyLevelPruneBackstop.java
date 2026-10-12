@@ -7,6 +7,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.TimeUnit;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -43,21 +44,30 @@ import org.slf4j.Logger;
  * the removal half of vanilla's own loop and nothing else: no block entity is
  * ticked and no live ticker is touched.
  *
- * <p><strong>What it leaves alone.</strong> Forge adds two more lists to the
- * same method, {@code freshBlockEntities} / {@code pendingFreshBlockEntities}
- * (block entities waiting for {@code onLoad()}); they also only drain in
- * {@code tickBlockEntities()}. They hold block entities, not chunks, and
- * dropping from them would skip an {@code onLoad()} call, so they are not
- * pruned here.
+ * <p><strong>Forge's second pair of lists.</strong> Forge adds
+ * {@code freshBlockEntities} / {@code pendingFreshBlockEntities} to
+ * {@code Level}: every block entity of a freshly loaded chunk, waiting for
+ * {@code onLoad()}, drained only by the same {@code tickBlockEntities()}. In
+ * an empty level they keep the block entities of chunks long gone (about a
+ * tenth of the leaked bytes once the chunks themselves are freed). At the
+ * same moment as the tickers, the entries whose {@code isRemoved()} is true
+ * are dropped from them, through a second mixin
+ * ({@code LevelEmptyFreshBlockEntityPruneMixin}). A removed block entity
+ * loses its late {@code onLoad()}; a live one is never touched and still gets
+ * {@code onLoad()} exactly once when the level ticks its block entities again.
  *
  * <p><strong>Fail soft.</strong> Nothing here can stop the server. The mixin
  * config is not required; a level without the mixin, or one on which the hook
  * has never been seen to fire, is never pruned; any unexpected error switches
  * the backstop off for the rest of the run. Each of those is logged as
  * {@code [empty-level-prune] ABSENT}. The "active" line is printed only after
- * the hook has actually fired.
+ * the hook has actually fired. The two mixins fail separately: without the
+ * second one the tickers are still pruned and the log says which part is
+ * missing.
  *
  * <p>JVM switches: {@code -Diridescent.emptyLevelPrune=false} turns it off;
+ * {@code -Diridescent.emptyLevelPrune.freshBlockEntities=false} turns off
+ * only the part for Forge's lists;
  * {@code -Diridescent.emptyLevelPrune.intervalTicks=N} changes the interval
  * ({@value #MIN_INTERVAL_TICKS} to {@value #MAX_INTERVAL_TICKS}).
  */
@@ -67,12 +77,14 @@ public final class EmptyLevelPruneBackstop {
     private static final String TAG = "[empty-level-prune]";
 
     static final String PROP_ENABLED = "iridescent.emptyLevelPrune";
+    static final String PROP_FRESH_ENABLED = "iridescent.emptyLevelPrune.freshBlockEntities";
     static final String PROP_INTERVAL = "iridescent.emptyLevelPrune.intervalTicks";
     static final int DEFAULT_INTERVAL_TICKS = 100;
     static final int MIN_INTERVAL_TICKS = 20;
     static final int MAX_INTERVAL_TICKS = 6000;
 
-    private static final boolean ENABLED = readEnabled();
+    private static final boolean ENABLED = readSwitch(PROP_ENABLED);
+    private static final boolean FRESH_ENABLED = readSwitch(PROP_FRESH_ENABLED);
     private static final int INTERVAL_TICKS = readIntervalTicks();
 
     /** At most one "dropped" line per level in this long; the counts in between are summed. */
@@ -132,9 +144,15 @@ public final class EmptyLevelPruneBackstop {
             return;
         }
         state.skippedTicks = 0;
-        int dropped = access.iridescent$pruneRemovedTickers();
-        if (dropped > 0) {
-            reportDropped(level, access, state, dropped);
+        int tickers = Math.max(0, access.iridescent$pruneRemovedTickers());
+        // Forge's onLoad() waiting lists: a separate mixin, so it may be missing on its own.
+        EmptyLevelFreshAccess fresh = null;
+        if (FRESH_ENABLED && level instanceof EmptyLevelFreshAccess present) {
+            fresh = present;
+        }
+        int waiting = fresh == null ? 0 : Math.max(0, fresh.iridescent$pruneRemovedFreshBlockEntities());
+        if (tickers > 0 || waiting > 0) {
+            reportDropped(level, access, fresh, state, tickers, waiting);
         }
     }
 
@@ -148,20 +166,37 @@ public final class EmptyLevelPruneBackstop {
         return before - tickers.size();
     }
 
-    private static void reportDropped(ServerLevel level, EmptyLevelTickerAccess access, LevelState state, int dropped) {
-        state.droppedTotal += dropped;
-        state.droppedSinceLog += dropped;
+    /** Called by the mixin with each of Forge's onLoad() waiting lists. Calls onLoad() on nothing. */
+    public static int dropRemovedBlockEntities(List<BlockEntity> waiting) {
+        int before = waiting.size();
+        if (before == 0) {
+            return 0;
+        }
+        waiting.removeIf(BlockEntity::isRemoved);
+        return before - waiting.size();
+    }
+
+    private static void reportDropped(ServerLevel level, EmptyLevelTickerAccess access, EmptyLevelFreshAccess fresh,
+                                      LevelState state, int tickers, int waiting) {
+        state.droppedTotal += tickers;
+        state.droppedSinceLog += tickers;
+        state.waitingDroppedTotal += waiting;
+        state.waitingDroppedSinceLog += waiting;
         long now = System.nanoTime();
         if (state.logged && now - state.lastLogNanos < LOG_EVERY_NANOS) {
             return;
         }
-        LOGGER.info("{} {}: dropped {} removed block-entity tickers ({} since boot, {} still listed). "
+        String waitingPart = fresh == null ? "" : " and " + state.waitingDroppedSinceLog
+            + " removed block entities that were waiting for onLoad() (" + state.waitingDroppedTotal
+            + " since boot, " + fresh.iridescent$freshBlockEntityCount() + " still waiting)";
+        LOGGER.info("{} {}: dropped {} removed block-entity tickers ({} since boot, {} still listed){}. "
                 + "Chunks are being loaded in this level while it has no players.",
             TAG, level.dimension().location(), state.droppedSinceLog, state.droppedTotal,
-            access.iridescent$tickerCount());
+            access.iridescent$tickerCount(), waitingPart);
         state.logged = true;
         state.lastLogNanos = now;
         state.droppedSinceLog = 0;
+        state.waitingDroppedSinceLog = 0;
     }
 
     @SubscribeEvent
@@ -183,8 +218,12 @@ public final class EmptyLevelPruneBackstop {
         int levels = 0;
         int mixed = 0;
         int hooked = 0;
+        int freshMixed = 0;
         for (ServerLevel level : server.getAllLevels()) {
             levels++;
+            if (level instanceof EmptyLevelFreshAccess) {
+                freshMixed++;
+            }
             if (level instanceof EmptyLevelTickerAccess) {
                 mixed++;
                 LevelState state = STATES.get(level);
@@ -206,14 +245,24 @@ public final class EmptyLevelPruneBackstop {
             LOGGER.warn("{} OFF: the mixin applied (hook seen on {} of {} levels) but -D{}=false is set. "
                 + "Nothing will be pruned.", TAG, hooked, levels, PROP_ENABLED);
         } else {
+            boolean freshActive = FRESH_ENABLED && freshMixed > 0;
             LOGGER.info("{} active: mixin applied to Level, hook on tickBlockEntities() seen on {} of {} levels. "
-                + "Removed block-entity tickers are dropped every {} ticks while a level skips its block-entity tick.",
-                TAG, hooked, levels, INTERVAL_TICKS);
+                + "Removed block-entity tickers are dropped every {} ticks while a level skips its block-entity tick.{}",
+                TAG, hooked, levels, INTERVAL_TICKS,
+                freshActive ? " So are removed block entities still waiting for onLoad() (Forge's fresh lists)." : "");
+            if (freshMixed == 0) {
+                LOGGER.warn("{} ABSENT (part): the mixin for Forge's fresh-block-entity lists is not on Level; look "
+                    + "for a Mixin warning naming LevelEmptyFreshBlockEntityPruneMixin earlier in this log. Removed "
+                    + "block entities waiting for onLoad() are not dropped. The ticker prune is not affected.", TAG);
+            } else if (!FRESH_ENABLED) {
+                LOGGER.warn("{} OFF (part): -D{}=false is set. Removed block entities waiting for onLoad() are not "
+                    + "dropped. The ticker prune is not affected.", TAG, PROP_FRESH_ENABLED);
+            }
         }
     }
 
-    private static boolean readEnabled() {
-        String value = System.getProperty(PROP_ENABLED);
+    private static boolean readSwitch(String property) {
+        String value = System.getProperty(property);
         return value == null || !value.trim().equalsIgnoreCase("false");
     }
 
@@ -237,5 +286,7 @@ public final class EmptyLevelPruneBackstop {
         long lastLogNanos;
         long droppedSinceLog;
         long droppedTotal;
+        long waitingDroppedSinceLog;
+        long waitingDroppedTotal;
     }
 }
