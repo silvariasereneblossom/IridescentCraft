@@ -2939,16 +2939,9 @@ LootJS.modifiers(event => {
     'relics:wool_mitten',                    'relics:shadow_glaive',
     'artifacts:scarf_of_invisibility'
   ]
-  // T4 Abyssal (The Abyss marquees) — TBD exact table IDs.
-  var T4_ABYSSAL = [
-    'celestial_artifacts:abyss_core',        'celestial_artifacts:abyss_will_badge',
-    'celestial_artifacts:lock_of_abyss',     'celestial_artifacts:demon_heart',
-    'celestial_artifacts:demon_curse',       'celestial_artifacts:twisted_heart',
-    'celestial_artifacts:twisted_scroll',    'celestial_artifacts:twisted_scabbard',
-    'celestial_artifacts:catastrophe_scroll','celestial_artifacts:heart_of_revenge',
-    'celestial_artifacts:chaotic_etching',   'celestial_artifacts:nihility_etching',
-    'relics:shadow_glaive',                  'relics:space_dissector'
-  ]
+  // (T4 Abyssal: the list that stood here was never delivered — see the note
+  //  after the T4 marquees. Since 2026-10-11 its Celestial Artifacts drop from
+  //  the three Abyss bosses: loot/abyss_boss_loot.js Section 6.)
 
   // Helper: apply marquee themed pool to a table or array of tables.
   // opts.theme       — array of item IDs (themed pool)
@@ -3092,8 +3085,10 @@ LootJS.modifiers(event => {
     { theme: T4_SCULK, tier: 4, book: true, structure: 'minecraft:ancient_city' })
   // (The Abyss marquee was removed 2026-10-11, operator ruling: no Abyss chest
   //  rolls a loot table with the installed The Abyss, so the rule could never
-  //  apply — see the note in Section 4B. The T4_ABYSSAL list above is now
-  //  unused; every item on it is also added by another rule of this pack.)
+  //  apply — see the note in Section 4B. Its T4_ABYSSAL list is gone too:
+  //  operator ruling 2026-10-11, the pool's twelve Celestial Artifacts drop
+  //  from Elder / The Roka / Nightblade instead (loot/abyss_boss_loot.js
+  //  Section 6). Shadow Glaive and Space Dissector keep their other rules.)
 
   // =========================================================================
   // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY

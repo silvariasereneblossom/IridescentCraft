@@ -27,7 +27,25 @@
 //
 // Armor drop locations:
 //   Unorithe set — Higher-tier Abyss bosses (soul_guard 15%/piece, guard 12%/piece)
+//
+// Abyssal Celestial Artifacts (since 2026-10-11 -- see Section 6):
+//   Elder, The Roka — one of the five T3 artifacts (chances below)
+//   Nightblade — one of the seven T4 artifacts
+//   all three — an enchanted book, levels 20-30
 // =============================================================================
+
+// ── Abyssal pool rates (Section 6) ── PROVISIONAL ──────────────────────────
+// Operator ruling 2026-10-11 (decision sheet rows E1-E6): shipped before the
+// spawn check, so these are the numbers to retune once it has been run.
+// The Elder is a common natural spawn (Blue Mountain), The Roka a rare one
+// (Blue Jungle), Nightblade an altar summon that costs a Roka and an Elder
+// kill. Rule from the proposal: HALVE ABYSSAL_ELDER_CHANCE if a 20-minute
+// spawn check in Blue Mountain shows more than about 5 Elders per hour.
+// (Unique names: every server script shares one top-level scope.)
+var ABYSSAL_ELDER_CHANCE      = 0.20   // Elder: one of the T3 five
+var ABYSSAL_ROKA_CHANCE       = 0.50   // The Roka: one of the T3 five
+var ABYSSAL_NIGHTBLADE_CHANCE = 1.00   // Nightblade: one of the T4 seven
+var ABYSSAL_BOOK_CHANCE       = 0.10   // each of the three: enchanted book, levels 20-30
 
 LootJS.modifiers(event => {
 
@@ -120,5 +138,75 @@ LootJS.modifiers(event => {
   // The Abyss, so all 16 entries (4 modifiers) are dropped.
 
 
-  console.log('[IridescentCraft] abyss_boss_loot.js loaded — Abyss boss drop gating active')
+  // =========================================================================
+  // SECTION 6: ABYSSAL CELESTIAL ARTIFACTS — the three real Abyss bosses
+  // =========================================================================
+  // These were the T4_ABYSSAL themed pool of lootjs_overhaul.js, meant for
+  // Abyss structure chests (11.2% per chest + a 10% book). No Abyss chest
+  // rolls a loot table (Section 1), so the pool never dropped anywhere in the
+  // Abyss. Operator ruling 2026-10-11: the bosses carry it, split by tier.
+  //   - Elder and The Roka (natural spawns): one of the five artifacts the
+  //     pack keeps in its T3 dimension pool (artifactT3Pool).
+  //   - Nightblade (the capstone: its summon costs a Roka Horn, an Elder Eye,
+  //     a Crystal Hand and 8 Soul Hearts): one of the seven it keeps in the
+  //     T4 pool. Shadow Glaive is left off on purpose (it has four other
+  //     sources); Space Dissector is on RELIC_DENY and was never in the pool.
+  // Not on Soul Guard / Guard (40-HP mobs that spawn in groups) and not on the
+  // Ice Knight (it spawns in theabyss:frost_world, not in the Abyss).
+  //
+  // Shape: <modifier>.randomChance(CHANCE).addWeightedLoot(pool) — one gated
+  // roll that picks exactly one artifact (equal weights). A LootJS condition
+  // gates only what follows it in the same modifier, so the pool and the book
+  // are separate modifiers, and both are separate from the ring modifiers in
+  // Section 1: a kill can drop a ring, an artifact and a book.
+  // The chest pools in lootjs_overhaul.js are unchanged.
+
+  var abyssalT3Five = [
+    'celestial_artifacts:demon_curse',
+    'celestial_artifacts:twisted_scabbard',
+    'celestial_artifacts:catastrophe_scroll',
+    'celestial_artifacts:abyss_will_badge',
+    'celestial_artifacts:lock_of_abyss'
+  ]
+  var abyssalT4Seven = [
+    'celestial_artifacts:abyss_core',
+    'celestial_artifacts:demon_heart',
+    'celestial_artifacts:twisted_heart',
+    'celestial_artifacts:twisted_scroll',
+    'celestial_artifacts:heart_of_revenge',
+    'celestial_artifacts:chaotic_etching',
+    'celestial_artifacts:nihility_etching'
+  ]
+  var abyssalPool = function (ids) {
+    return ids.map(function (id) { return LootEntry.of(id).withWeight(1) })
+  }
+
+  global.icraftEntityMod(event, 'theabyss:elder')
+    .randomChance(ABYSSAL_ELDER_CHANCE)
+    .addWeightedLoot(abyssalPool(abyssalT3Five))
+
+  global.icraftEntityMod(event, 'theabyss:the_roka')
+    .randomChance(ABYSSAL_ROKA_CHANCE)
+    .addWeightedLoot(abyssalPool(abyssalT3Five))
+
+  global.icraftEntityMod(event, 'theabyss:nightblade_boss')
+    .randomChance(ABYSSAL_NIGHTBLADE_CHANCE)
+    .addWeightedLoot(abyssalPool(abyssalT4Seven))
+
+  // The marquee's enchanted book (levels 20-30), now per kill. The entry is a
+  // plain minecraft:book: enchantWithLevels only stores enchantments on that
+  // (see loot/zz_pack_enchanted_books.js). No strip in the pack removes
+  // enchanted books from entity loot, so it can be registered from here.
+  var AbyssalUniform = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.UniformGenerator')
+  ;['theabyss:elder', 'theabyss:the_roka', 'theabyss:nightblade_boss'].forEach(function (boss) {
+    global.icraftEntityMod(event, boss)
+      .addLoot(LootEntry.of('minecraft:book')
+        .enchantWithLevels(AbyssalUniform.between(20, 30), true)
+        .when(c => c.randomChance(ABYSSAL_BOOK_CHANCE)))
+  })
+
+
+  console.log('[IridescentCraft] abyss_boss_loot.js loaded — Abyss boss drop gating active'
+    + ' (Abyssal artifacts: Elder ' + ABYSSAL_ELDER_CHANCE + ', Roka ' + ABYSSAL_ROKA_CHANCE
+    + ', Nightblade ' + ABYSSAL_NIGHTBLADE_CHANCE + ', book ' + ABYSSAL_BOOK_CHANCE + ' — provisional)')
 })
