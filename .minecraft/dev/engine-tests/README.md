@@ -98,7 +98,13 @@ A mock that offers something the engine lacks makes dead code look alive (the `i
 - **`mock-facts`**: about a hundred expressions (`real-engine/0_engine_facts.js`) are evaluated on the
   mocks, and where a mock answers at all it must give the answer the real engine gave.
 
-The real side is **`truth/engine-members.json`**: member tables of 126 classes (player, inventory,
+`event.cancel()` in a suite throws `dev.latvian.mods.kubejs.event.EventExit` out of a Java method, as in
+game (`harness/dev/.../EventExit.java` stands in for the class under its own name; the real one needs
+Minecraft to load). A script `catch`, or a guard that must let the exit through, therefore receives what
+it receives on the engine: `e.name === 'JavaException'`, `e.javaException` an `EventExit` (recorded on the
+real engine in `truth/engine-facts.txt`).
+
+The real side is **`truth/engine-members.json`**: member tables of about 130 classes (player, inventory,
 item stack, entity, living entity, damage source, level, server, the 74 KubeJS events, ...) read on a
 real Forge server through the engine's own `JavaMembers` and name remapper, with the mixins applied.
 For seven of them the probe also proved the table equal to what a script enumerates on a live

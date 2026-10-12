@@ -108,6 +108,10 @@ String(source.getType()) :: typeof=string value=generic
 typeof source.isCritical :: typeof=string value=undefined
 psource.actual === player :: typeof=boolean value=true
 typeof psource.player :: typeof=string value=object
+event.cancel() inside try/catch: what the catch receives :: typeof=string value=JavaException: dev.latvian.mods.kubejs.event.EventExit: result
+event.cancel(): e.name :: typeof=string value=JavaException
+event.cancel(): e.javaException class :: typeof=string value=dev.latvian.mods.kubejs.event.EventExit
+event.cancel(): the statement after it runs :: typeof=boolean value=false
 [FakePlayer] typeof inv.size :: typeof=string value=undefined
 [FakePlayer] inv.slots :: typeof=number value=41
 player class :: typeof=string value=net.minecraft.server.level.ServerPlayer

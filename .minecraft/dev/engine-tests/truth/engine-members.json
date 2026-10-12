@@ -254,6 +254,12 @@
    "methods": "addDrop(ItemStack) addDrop(ItemStack,float) cancel() cancel(Object) equals(Object) exit() exit(Object) getClass() getDrops() getEntity() getLevel() getLootingLevel() getPlayer() getServer() getSource() hashCode() isRecentlyHit() notify() notifyAll() success() success(Object) toString() wait() wait(long) wait(long,int)",
    "fields": "eventDrops"
   },
+  "dev.latvian.mods.kubejs.event.EventExit": {
+   "ids": "addSuppressed cause class equals fillInStackTrace getCause getClass getLocalizedMessage getMessage getStackTrace getSuppressed hashCode initCause localizedMessage message notify notifyAll printStackTrace result setStackTrace stackTrace suppressed toString wait",
+   "sids": "",
+   "methods": "addSuppressed(Throwable) equals(Object) fillInStackTrace() getCause() getClass() getLocalizedMessage() getMessage() getStackTrace() getSuppressed() hashCode() initCause(Throwable) notify() notifyAll() printStackTrace() printStackTrace(PrintStream) printStackTrace(PrintWriter) setStackTrace(StackTraceElement[]) toString() wait() wait(long) wait(long,int)",
+   "fields": "result"
+  },
   "dev.latvian.mods.kubejs.event.StartupEventJS": {
    "ids": "cancel class equals exit getClass hashCode notify notifyAll success toString wait",
    "sids": "",

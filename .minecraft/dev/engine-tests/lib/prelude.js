@@ -39,17 +39,22 @@ var T_realEvent = function (name) { var p = name.split('.'); return T_EVENT_GROU
 // `cancelled` is the harness's own record of event.cancel(); a script must not read it (the engine has no such member)
 var T_EVENT_PLUMBING = ['cancelled']
 
-// event.cancel() exits by throwing, exactly like KubeJS's EventExit.
-var T_EXIT = { exit: true }
+// event.cancel() leaves the handler by throwing dev.latvian.mods.kubejs.event.EventExit out of a Java method,
+// as EventJS.cancel() does in game (harness/dev/.../EventExit.java stands in for the class, under its own name):
+// a script catch, or a guard that has to let the exit through, receives the same wrapped Java exception.
+var T_isExit = function (e) {
+  return e !== null && typeof e === 'object' && e.javaException !== undefined && e.javaException !== null &&
+    String(e.javaException.getClass().getName()) === 'dev.latvian.mods.kubejs.event.EventExit'
+}
 var T_UNCAUGHT = []
 var T_fire = function (name, ev) {
   T_honestEventObject(T_realEvent(name), ev, T_EVENT_PLUMBING)     // only keys the real event class has
   ev.cancelled = false
-  ev.cancel = function () { throw T_EXIT }
+  ev.cancel = function () { T.exit() }
   var list = T_HANDLERS[name] || []
   for (var i = 0; i < list.length; i++) {
     try { list[i](ev) } catch (e) {
-      if (e === T_EXIT) { ev.cancelled = true; return ev }
+      if (T_isExit(e)) { ev.cancelled = true; return ev }
       T_UNCAUGHT.push(name + '#' + i + ': ' + e)
     }
   }

@@ -19,7 +19,7 @@
       "scopes": [["lib/dialect_prelude.js", "suites/dialect.js"]]
     },
     {
-      "name": "mock-facts", "kind": "harness", "fast": true, "ci": true, "expect": 99,
+      "name": "mock-facts", "kind": "harness", "fast": true, "ci": true, "expect": 103,
       "about": "the mocks give the real engine's answer to every engine fact they answer at all (truth/engine-facts.txt)",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", "real-engine/0_engine_facts.js", "suites/mock_facts.js", "lib/summary.js"]]
     },

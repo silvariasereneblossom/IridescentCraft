@@ -11,7 +11,8 @@
 //
 // A fact is [label, why, flags, fn(o)]. `o` holds: player (holding 3 diamonds in slot 0
 // and 2 in slot 40), inv, stack (slot 0), mob (a zombie), level, server, source
-// (generic damage), psource (player attack by `player`).
+// (generic damage), psource (player attack by `player`), event (the event object a
+// handler is given).
 // flags: 'M' = also asked of the mocks. Return a primitive or a string: an object's
 // own toString may carry an address.
 //
@@ -147,3 +148,13 @@ EF('String(source.getType())', 'getType() is the message id (getMsgId renamed)',
 EF('typeof source.isCritical', 'not a member', 'M', function (o) { return typeof o.source.isCritical })
 EF('psource.actual === player', 'the attacker', 'M', function (o) { return o.psource.actual === o.player })
 EF('typeof psource.player', 'KubeJS: the attacking player', 'M', function (o) { return typeof o.psource.player })
+
+// ---- event.cancel() ------------------------------------------------------------
+EF('event.cancel() inside try/catch: what the catch receives', 'cancel() leaves the handler by THROWING: a try/catch around it swallows the exit, and an event guard must let it through', 'M',
+  function (o) { try { o.event.cancel(); return 'no throw' } catch (e) { return String(e) } })
+EF('event.cancel(): e.name', 'how a guard can tell the exit from a real error', 'M',
+  function (o) { try { o.event.cancel(); return 'no throw' } catch (e) { return String(e.name) } })
+EF('event.cancel(): e.javaException class', 'the Java exception behind it', 'M',
+  function (o) { try { o.event.cancel(); return 'no throw' } catch (e) { return String(e.javaException.getClass().getName()) } })
+EF('event.cancel(): the statement after it runs', 'nothing after cancel() runs', 'M',
+  function (o) { var after = false; try { o.event.cancel(); after = true } catch (e) { } return after })
