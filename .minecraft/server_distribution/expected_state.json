@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3ce1c668",
+    "generated_from":  "f3c51dc1",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8484,7 +8484,7 @@
                                                                        "size":  374
                                                                    },
                   "mods/.index/iridescent-lovely-pieces.pw.toml":  {
-                                                                       "sha256":  "4dd13151177a130c9a8f9b582871082f4b95b5ffe4bbee36b5bdb2fd5910531b",
+                                                                       "sha256":  "16275097af06be393f05367a4457e2322cbe0abcee060f726db637b87713ed74",
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
