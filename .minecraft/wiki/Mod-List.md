@@ -265,7 +265,7 @@ Installed on both client and server -- the bulk of the pack.
 - **Moog's End Structures** -- `mes-1.4.6-1.20.jar` [(modrinth)](https://modrinth.com/mod/r4PuRGfV)
 - **Moonlight Library** -- `moonlight-1.20-2.16.28-forge.jar` [(modrinth)](https://modrinth.com/mod/twkfQtEc)
 - **More Artifacts** -- `moreartifacts-1.5.5-1.20.1.jar` [(modrinth)](https://modrinth.com/mod/pw7I8DWj)
-- **More Curios Slots** -- `more_curios_slots-1.3.jar`
+- **More Curios Slots** -- `more_curios_slots-1.3.jar` [(modrinth)](https://modrinth.com/mod/v4mOUzHT)
 - **More Dragon Eggs** -- `moredragoneggs-4.0.jar`
 - **Morph-o-Tool** -- `Morph-o-Tool-1.7-38.jar` [(modrinth)](https://modrinth.com/mod/rtbzFq0N)
 - **Mowzie's Mobs** -- `mowziesmobs-1.8.2.jar`
