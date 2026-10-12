@@ -52,12 +52,27 @@ COLOURS (Book.<init> and its users, read 2026-10-11)
   - $(li) bullets are hard-coded black (ChatFormatting.BLACK), whatever
     text_color says.
 
+TEXTURES (Book.<init>, GuiBook.drawPageFiller and its callers, read 2026-10-12)
+  - book_texture, filler_texture and crafting_texture are built with
+    new ResourceLocation(value): an invalid value throws and the book never
+    registers. An absent key falls back to patchouli:textures/gui/
+    book_brown.png, page_filler.png and crafting.png.
+  - Nothing checks that the file exists. A path no pack ships is drawn as
+    vanilla's magenta/black missing texture, and the client log says
+    "Failed to load texture: <id>" the first time it is drawn.
+  - filler_texture fills the blank right-hand page of an entry with an odd
+    page count (GuiBookEntry), a short last spread of an entry list
+    (GuiBookEntryList) and `empty` pages (PageEmpty). Until 2026-10-12
+    book.json named patchouli:textures/gui/book_filler.png, which no jar ships.
+  - Checked against the jars committed in .minecraft/mods (and this jar): a
+    texture that only a resource pack or an uncommitted jar ships fails here.
+
 NOT a defect: with Advanced Tooltips (F3+H) on, PageText.render prints every
 entry's resource ID under its title. That is Patchouli's author-debug view.
 
 Usage: python3 validate_codex.py <built iridescent_codex_data.jar> [--repo <repo root>]
        --repo defaults to this script's repo; it enables the cross-checks
-       (shadowing packs, keybind names, advancements, item IDs).
+       (shadowing packs, keybind names, advancements, item IDs, book textures).
 Exit code 1 if any ERROR is found.
 """
 import argparse
@@ -120,6 +135,14 @@ DEFAULT_BOOK_TEXTURE = "patchouli:textures/gui/book_brown.png"
 # Darkest opaque pixel of the two page text areas (x 15..130 and 141..256,
 # y 18..159 of the 512x256 sheet), measured in Patchouli-1.20.1-85-FORGE.jar.
 PAGE_DARKEST = {"patchouli:textures/gui/book_brown.png": "f9eed0"}
+
+# ---- book.json textures (Book.<init>) ----------------------------------------
+# key -> the texture Patchouli draws when the key is absent (Book.DEFAULT_*_TEXTURE)
+TEXTURE_KEYS = {
+    "book_texture": DEFAULT_BOOK_TEXTURE,
+    "filler_texture": "patchouli:textures/gui/page_filler.png",
+    "crafting_texture": "patchouli:textures/gui/crafting.png",
+}
 
 
 class Report:
@@ -213,6 +236,28 @@ def check_colors(book_json, report):
             report.error("book.json", f"{line} -- below the {MIN_READING_CONTRAST:g}:1 floor for reading text")
         else:
             report.note(line)
+
+
+def check_textures(book_json, ctx, report):
+    """Each book texture must be a file that a jar in .minecraft/mods ships."""
+    for key, default in TEXTURE_KEYS.items():
+        value = book_json.get(key, default)
+        rl = parse_rl(value) if isinstance(value, str) else None
+        if rl is None:
+            report.error("book.json", f"{key} '{value}' is not a valid resource location -- Patchouli builds it with "
+                                      "new ResourceLocation(value), which throws and stops the book registering")
+            continue
+        if ctx["assets"] is None:
+            continue
+        ns, path = rl.split(":", 1)
+        asset = f"assets/{ns}/{path}"
+        line = f"{key} {rl}" + ("" if key in book_json else " (Patchouli's default, the key is absent)")
+        owner = ctx["assets"].get(asset)
+        if owner is None:
+            report.error("book.json", f"{line}: no jar in .minecraft/mods ships {asset} -- "
+                                      "drawn as the magenta/black missing texture")
+        else:
+            report.note(f"{line}: shipped by mods/{owner}")
 
 
 # ---- repo cross-reference data ---------------------------------------------
@@ -315,6 +360,27 @@ def load_advancements(mc, jar):
         except zipfile.BadZipFile:
             continue
     return found
+
+
+def load_assets(mc, jar, jar_name):
+    """assets/ file -> the jar that ships it: every jar committed in
+    .minecraft/mods, with the jar under validation standing in for its own
+    deployed copy (the copy in mods/ is still the previous build)."""
+    shipped = {}
+    for path in sorted((mc / "mods").glob("*.jar")):
+        if path.name == jar_name:
+            continue
+        try:
+            with zipfile.ZipFile(path) as zf:
+                for n in zf.namelist():
+                    if n.startswith("assets/") and not n.endswith("/"):
+                        shipped.setdefault(n, path.name)
+        except zipfile.BadZipFile:
+            continue
+    for n in jar.namelist():
+        if n.startswith("assets/") and not n.endswith("/"):
+            shipped.setdefault(n, jar_name)
+    return shipped
 
 
 def check_shadowing(mc, report):
@@ -519,14 +585,15 @@ def main():
     jar_sha = hashlib.sha256(args.jar.read_bytes()).hexdigest()
 
     mc = args.repo / ".minecraft"
-    ctx = {"keybinds": None, "advancements": None, "items": None}
+    ctx = {"keybinds": None, "advancements": None, "items": None, "assets": None}
     if mc.is_dir():
         ctx["keybinds"] = load_keybinds(mc)
         ctx["advancements"] = load_advancements(mc, jar)
         ctx["items"] = load_items(mc)
+        ctx["assets"] = load_assets(mc, jar, args.jar.name)
         check_shadowing(mc, report)
     else:
-        report.warn("--repo", f"{mc} not found -- shadowing/keybind/advancement/item cross-checks skipped")
+        report.warn("--repo", f"{mc} not found -- shadowing/keybind/advancement/item/texture cross-checks skipped")
     if mc.is_dir() and ctx["keybinds"] is None:
         report.warn("keybinds", "config/defaultoptions/keybindings.txt missing -- $(k:) check skipped")
     if mc.is_dir() and ctx["items"]["snapshot"] is None:
@@ -601,6 +668,7 @@ def main():
     check_text(book_json.get("landing_text"), "book.json landing_text", book, ctx, report)
     check_item(book_json.get("index_icon"), "book.json index_icon", ctx, report)
     check_colors(book_json, report)
+    check_textures(book_json, ctx, report)
 
     pages_seen = 0
     for (folder, rid), (rel, data) in sorted(parsed.items()):

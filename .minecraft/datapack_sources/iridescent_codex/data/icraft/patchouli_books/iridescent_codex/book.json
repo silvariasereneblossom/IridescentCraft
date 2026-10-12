@@ -5,7 +5,7 @@
   "creative_tab": "misc",
   "model": "patchouli:book_brown",
   "book_texture": "patchouli:textures/gui/book_brown.png",
-  "filler_texture": "patchouli:textures/gui/book_filler.png",
+  "filler_texture": "patchouli:textures/gui/page_filler.png",
   "crafting_texture": "patchouli:textures/gui/crafting.png",
   "text_color": "3b2a1a",
   "header_color": "2a1a0e",
