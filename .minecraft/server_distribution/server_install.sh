@@ -127,6 +127,7 @@ FORCE_EXCLUDE["CutThrough-v8.0.2-1.20.1-Forge.jar"]=1
 FORCE_EXCLUDE["defaultoptions-forge-1.20.1-18.0.5.jar"]=1
 FORCE_EXCLUDE["embeddium-0.3.31+mc1.20.1.jar"]=1
 FORCE_EXCLUDE["entity_texture_features_1.20.1-forge-7.0.13.jar"]=1
+FORCE_EXCLUDE["entityculling-forge-1.10.0-mc1.20.1.jar"]=1
 FORCE_EXCLUDE["fallingleaves-1.20.1-2.1.2.jar"]=1
 FORCE_EXCLUDE["fancymenu_forge_3.8.1_MC_1.20.1.jar"]=1
 FORCE_EXCLUDE["Highlighter-1.20.1-forge-1.1.9.jar"]=1

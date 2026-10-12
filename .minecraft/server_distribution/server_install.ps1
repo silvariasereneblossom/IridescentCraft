@@ -115,6 +115,7 @@ $forceSkip = @(
     'CutThrough-',
     'defaultoptions-',
     'entity_texture_features_',
+    'entityculling-',
     'fallingleaves-',
     'fancymenu_',
     'Highlighter-',
