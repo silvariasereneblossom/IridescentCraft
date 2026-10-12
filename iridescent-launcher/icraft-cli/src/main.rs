@@ -212,6 +212,12 @@ enum SettingsCmd {
     /// Write the waiting overrides into the config files now. Refused while a
     /// server has the world open (they are written before its next start).
     Apply,
+    /// Would the launcher start the server with server.properties as it is?
+    /// It does not when a whitelist or online mode this server switched on
+    /// (`white-list`, `enforce-whitelist`, `online-mode` on the override list)
+    /// is off in the file. Reads only. At a real start the overrides are
+    /// written first and this check runs after.
+    StartCheck,
 }
 
 fn main() -> ExitCode {
@@ -438,6 +444,20 @@ fn settings(action: &SettingsCmd, cfg: &ServerConfig) -> u8 {
                 u8::from(report.failed() > 0)
             }
             Err(why) => failed(format!("not written: {why}. The overrides are written before the next server start.")),
+        },
+        SettingsCmd::StartCheck => match overrides::access_check(cfg) {
+            Ok(()) => {
+                let guarded = overrides::guarded_keys(cfg);
+                if guarded.is_empty() {
+                    println!("Nothing is guarded: no whitelist or online-mode setting is switched on through the override list. The server starts with whatever server.properties holds.");
+                } else {
+                    println!("Passed: server.properties holds {} = true. The launcher would start the server.", guarded.join(", "));
+                }
+                0
+            }
+            Err(why) => failed(format!(
+                "the launcher would NOT start the server with the files as they are: {why}. (At a real start the overrides are written first, then this check runs.)"
+            )),
         },
     }
 }

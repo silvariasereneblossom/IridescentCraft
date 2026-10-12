@@ -158,6 +158,14 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     // launch (see overrides.rs). Inside the gate, so the tab cannot be writing
     // the same files at the same moment.
     crate::overrides::apply_at_start(cfg);
+    // The one thing that does stop a launch (operator ruling 2026-10-11): a
+    // whitelist or online mode this server switched ON has to be in
+    // server.properties now, or no JVM is started. The pack's file has both
+    // off, so a put-back that failed would open a public server. The caller
+    // sees a launch failure; the heartbeat's auto-Cycles retry the put-back.
+    if let Err(why) = crate::overrides::start_guard(cfg) {
+        anyhow::bail!("the server was not started: {why}");
+    }
     let mut child = cmd.spawn().context("spawning java")?;
     *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
     drop(backup_guard);
@@ -820,4 +828,65 @@ fn pick_argfile(cfg: &ServerConfig) -> Result<PathBuf> {
         "neither win_args.txt nor unix_args.txt found under {}",
         cfg.libraries_dir().display()
     );
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+
+    /// A server folder that gets as far as the spawn: the argfile is there.
+    fn fixture(name: &str) -> (PathBuf, ServerConfig) {
+        let dir = std::env::temp_dir().join(format!("icraft-run-{name}-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let cfg = ServerConfig::from_path(&dir);
+        for args in [cfg.win_args(), cfg.unix_args()] {
+            fs::create_dir_all(args.parent().unwrap()).unwrap();
+            fs::write(&args, "").unwrap();
+        }
+        (dir, cfg)
+    }
+
+    fn no_watchdog() -> WatchdogOptions {
+        WatchdogOptions { boot_timeout: Duration::ZERO, idle_timeout: Duration::ZERO, poll_interval: Duration::from_secs(1) }
+    }
+
+    /// The refusing half of the start guard, at the level that owns the spawn.
+    /// An `Err` that names the guard can only come from before `cmd.spawn()`:
+    /// had java been started on these empty argfiles, the result would be an
+    /// exit code (or "spawning java" where there is no java at all).
+    #[test]
+    fn no_jvm_is_spawned_when_the_start_guard_refuses() {
+        // 1. The whitelist is pinned on, a sync has put the pack's file back,
+        //    and the put-back cannot write (its temp name is taken by a folder).
+        let (dir, cfg) = fixture("guard-put-back-fails");
+        fs::write(dir.join("server.properties"), "level-name=world\nwhite-list=true\n").unwrap();
+        crate::overrides::pin(&cfg, "server.properties", "white-list", "false", "test").unwrap();
+        fs::write(dir.join("server.properties"), "level-name=world\nwhite-list=false\n").unwrap();
+        fs::create_dir_all(dir.join("server.properties.icraft-tmp")).unwrap();
+
+        let err = launch_server_inner(&cfg, no_watchdog(), true).unwrap_err();
+        assert!(format!("{err:#}").contains("the server was not started: white-list=false"), "{err:#}");
+        assert!(!jvm_active());
+        assert_eq!(fs::read_to_string(dir.join("server.properties")).unwrap(), "level-name=world\nwhite-list=false\n");
+        let marker = fs::read_to_string(dir.join(crate::overrides::REFUSED_FILE)).unwrap();
+        assert!(marker.contains("why=white-list=false"), "{marker}");
+        let history = crate::overrides::history_tail(&dir, 20);
+        assert!(history.iter().any(|l| l.contains("START REFUSED")), "{history:?}");
+        let _ = fs::remove_dir_all(&dir);
+
+        // 2. The list cannot be read. The file even has the whitelist on, but
+        //    what this server asked for is unknown, so: no start.
+        let (dir, cfg) = fixture("guard-list-unreadable");
+        fs::write(dir.join("server.properties"), "level-name=world\nwhite-list=true\n").unwrap();
+        fs::write(dir.join(crate::overrides::FILE), "{ not json").unwrap();
+
+        let err = launch_server_inner(&cfg, no_watchdog(), true).unwrap_err();
+        let text = format!("{err:#}");
+        assert!(text.contains("the server was not started") && text.contains("does not parse"), "{text}");
+        assert!(!jvm_active());
+        assert!(dir.join(crate::overrides::REFUSED_FILE).exists());
+        let _ = fs::remove_dir_all(&dir);
+    }
 }

@@ -411,6 +411,13 @@ pub fn status_text(cfg: &ServerConfig) -> String {
         };
         out.push_str(&format!("    {} = {}   (the pack's: {pack})   {detail}\n", l.item.key, l.item.value));
     }
+    let guarded = overrides::guarded_keys(cfg);
+    if !guarded.is_empty() {
+        out.push_str(&format!(
+            "Guarded: the launcher does not start the server unless server.properties holds {} = true.\n",
+            guarded.join(", ")
+        ));
+    }
     out
 }
 
