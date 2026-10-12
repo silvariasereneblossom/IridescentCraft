@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "91c8fa49",
+    "generated_from":  "c1871ece",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7208,8 +7208,8 @@
                                                                                   "size":  397
                                                                               },
                   "kubejs/server_scripts/loot/abyss_boss_loot.js":  {
-                                                                        "sha256":  "253982fda6c695335746b69610c0fbf704d571f6886f041ee16521f92c872055",
-                                                                        "size":  6790
+                                                                        "sha256":  "828aa193cd40b6317e93e3d86d10271fa76561a148115ae86dbd6f5d20f6c897",
+                                                                        "size":  11620
                                                                     },
                   "kubejs/server_scripts/loot/alexsmobs_drops.js":  {
                                                                         "sha256":  "0d24345b2b74590093203de3279dc66dde9c6439de780bfeb07bc06810b7318f",
@@ -7272,8 +7272,8 @@
                                                                       "size":  40729
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "999d08cbb508e33fd34cd1eb075d0631b1df448c0790f49f654b2dad798eccef",
-                                                                        "size":  184951
+                                                                        "sha256":  "d64a978fb50e8b391f8fc152747996711c5a8b3f5d477dd071afacd11c011c62",
+                                                                        "size":  184670
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "343221f83f285660a058d608482cebd63d7cb043521c79dae00a9159ca13b53b",
