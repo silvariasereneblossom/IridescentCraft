@@ -26,11 +26,21 @@
 #   pwsh       -File .minecraft\dev\loud\replay-test.ps1 -Newer     # + boots mirrored after the anchor
 #
 # Exit 0 pass, 1 fail, 2 could not run (history not available: a shallow clone, or
-# the history of this repo was rewritten). The boots are read from git HISTORY, so
-# the test does not need the mirror folder on the tip (it left the public tip when
-# the launcher began mirroring to the private logs repo); -RepoRoot runs it against
-# another checkout. The checker's own baseline.json describes today's boots, so old
-# boots are replayed with -NoBaseline; the baseline cases build their own file.
+# the history of this repo was rewritten).
+#
+# WHERE THE BOOTS COME FROM: pinned commits of THIS repository. The corpus is the
+# anchor commit and the 44 log-mirror commits before it, read with `git show
+# <commit>:<path>` under the path the mirror had then ($LogRel below). Nothing is
+# read from the working tree, so the test runs the same now that the mirror folder
+# has left the tip (since 2026-10-12 the launcher mirrors to the private repository
+# IridescentCraft-logs). That repository cannot be the corpus: it starts on
+# 2026-10-12 and carries neither the 45 successive versions nor the
+# expected_state.json of each boot's commit. -RepoRoot runs the test against
+# another checkout of this repository. -Newer adds the versions mirrored here after
+# the anchor (none after the mirror moved; the commit that deletes the folder is
+# not a boot and is skipped).
+# The checker's own baseline.json describes today's boots, so old boots are
+# replayed with -NoBaseline; the baseline cases build their own file.
 # Prints dates, commits, verdicts and finding ids only - never log content: the
 # mirrored logs can hold player names and chat.
 #
@@ -55,7 +65,7 @@ $ErrorActionPreference = 'Stop'
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $Checker   = Join-Path $ScriptDir 'loud-check.ps1'
 $PsExe     = (Get-Process -Id $PID).Path
-$LogRel    = '.minecraft/server_distribution/TesterLogs/Server Logs'
+$LogRel    = '.minecraft/server_distribution/TesterLogs/Server Logs'      # the mirror's path in HISTORY (see the header); not needed on the tip
 $StateRel  = '.minecraft/server_distribution/expected_state.json'
 $Utf8      = New-Object System.Text.UTF8Encoding($false)
 $fail      = New-Object System.Collections.Generic.List[string]
@@ -126,12 +136,13 @@ Write-Host "[replay-test] work    $WorkDir" -ForegroundColor DarkGray
 # =============================================================================
 # PART 1 - REPLAY
 # =============================================================================
-$listed = @(& git -C $RepoRoot log "-$Count" '--format=%h|%ad' '--date=format:%Y-%m-%d %H:%M' $Anchor -- "$LogRel/kubejs/server.log")
+# --diff-filter=AM: only commits that wrote the file. The one that removes the mirror folder from the tip is not a boot.
+$listed = @(& git -C $RepoRoot log "-$Count" '--diff-filter=AM' '--format=%h|%ad' '--date=format:%Y-%m-%d %H:%M' $Anchor -- "$LogRel/kubejs/server.log")
 if ($listed.Count -lt $Count) { Stop-CannotRun "only $($listed.Count) mirrored versions of kubejs/server.log up to $Anchor, expected $Count" }
 $boots = New-Object System.Collections.Generic.List[object]
 for ($i = $listed.Count - 1; $i -ge 0; $i--) { $t = $listed[$i].Split('|'); $boots.Add([pscustomobject]@{ Hash = $t[0]; Date = $t[1]; Set = 'measured' }) }
 if ($Newer) {
-    $more = @(& git -C $RepoRoot log '--format=%h|%ad' '--date=format:%Y-%m-%d %H:%M' "$Anchor..HEAD" -- "$LogRel/kubejs/server.log")
+    $more = @(& git -C $RepoRoot log '--diff-filter=AM' '--format=%h|%ad' '--date=format:%Y-%m-%d %H:%M' "$Anchor..HEAD" -- "$LogRel/kubejs/server.log")
     for ($i = $more.Count - 1; $i -ge 0; $i--) { $t = $more[$i].Split('|'); $boots.Add([pscustomobject]@{ Hash = $t[0]; Date = $t[1]; Set = 'newer' }) }
 }
 

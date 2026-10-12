@@ -44,6 +44,12 @@
 #   loud-check.ps1 -LogsDir <dir> -Sources kubejs/server.log         # only that log
 #   loud-check.ps1 -LogsDir <dir> -Write                             # also record (see OUTPUT)
 #
+#   A copy of the logs directory: since 2026-10-12 the launcher mirrors it to the
+#   private repository IridescentCraft-logs (folder server\), not into this one.
+#   dev\server_logs.py lists where the tools look ($ICRAFT_SERVER_LOGS, the live
+#   share, a clone of that repository next to this one). Nothing here needs the
+#   old in-repo mirror folder.
+#
 #   -ExpectedState  expected_state.json of the deployed tree. Default: next to the
 #                   logs directory (the box), then one level further up.
 #   -Manifest       default liveness_manifest.json next to this script.
