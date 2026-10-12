@@ -103,6 +103,12 @@
     said[key] = true
     try { console.warn(message + ' (logged once per script load)') } catch (ignored) {}
   }
+  // the same for a line that is good news (proof in the boot log that a path ran)
+  var logOnce = function (key, message) {
+    if (said[key]) return
+    said[key] = true
+    try { console.log(message + ' (logged once per script load)') } catch (ignored) {}
+  }
 
   // ---- numbers --------------------------------------------------------------
   var finite = function (value, fallback) {
@@ -412,6 +418,11 @@
   // A saved modifier outlives the script that added it: to retire a buff,
   // take the modifier off the mobs that carry it (entity.removeAttribute(attr,
   // name) in a spawned handler); deleting the call is not enough.
+  //
+  // In kubejs/server.log, once per script load each: "spawn buffs: first
+  // modifier saved with a mob: ..." (the save path ran) and "spawn buffs: first
+  // mob repaired under <flag>: ..." (a flag-1 mob got a modifier back, with its
+  // health/max before and after). A WARN "could not be saved" is the failure.
 
   // 1 = on the entity and saved with it, 0 = the entity has no such attribute
   // (nothing to do), -1 = failed (logged once per modifier name; the modifier
@@ -437,6 +448,7 @@
       // transient -> permanent: the same modifier under the same UUID
       inst.removeModifier(added.getId())
       inst.addPermanentModifier(added)
+      logOnce('modifier.saved', '[icraft.core] spawn buffs: first modifier saved with a mob: ' + key + ' on ' + entityId(entity))
       return 1
     } catch (e) {
       // The swap may have stopped half way (taken off, not put back): have
@@ -460,6 +472,12 @@
       return share > 1 ? 1 : share
     } catch (e) { return 1 }
   }
+  // 'health/max' for a log line
+  var healthText = function (entity) {
+    try {
+      return (Math.round(finite(entity.getHealth(), 0) * 10) / 10) + '/' + (Math.round(finite(entity.getMaxHealth(), 0) * 10) / 10)
+    } catch (e) { return '?/?' }
+  }
 
   var BUFF_SAVED = 2
   var spawnBuff = function (entity, flag) {
@@ -477,12 +495,15 @@
     var legacy = state > 0
     // read BEFORE this script changes the maximum
     var share = legacy ? healthShare(entity) : 1
+    var before = legacy ? healthText(entity) : ''
     var saved = true
+    var count = 0
     return {
       legacy: legacy,
       modifier: function (id, name, amount, operation) {
         var result = saveModifier(entity, id, name, amount, operation)
         if (result < 0) saved = false
+        if (result > 0) count++
         return result > 0
       },
       health: function () {
@@ -497,6 +518,10 @@
       done: function () {
         try { data.putInt(key, saved ? BUFF_SAVED : 1) } catch (e) {
           warnOnce('buff.done:' + key, '[icraft.core] spawnBuff(' + key + ').done() threw: ' + e)
+        }
+        if (legacy && saved && count > 0) {
+          logOnce('buff.repaired:' + key, '[icraft.core] spawn buffs: first mob repaired under ' + key + ': ' +
+            entityId(entity) + ' health/max ' + before + ' -> ' + healthText(entity))
         }
       }
     }
