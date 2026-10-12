@@ -178,7 +178,7 @@ function relicCapKey(itemId) {
 function relicScan(player) {
   const pdata = player.persistentData
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   const found = {}   // itemId -> aggregate
   for (let i = 0; i < size; i++) {
@@ -262,7 +262,7 @@ function relicSubmit(player, confirm) {
   // ---- EXECUTE ----
   const pdata = player.persistentData
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
   lines.forEach(l => {
     let toRemove = l.n
     for (let i = 0; i < size && toRemove > 0; i++) {
@@ -298,7 +298,7 @@ function relicSubmit(player, confirm) {
 // =============================================================================
 function relicBalance(player) {
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
   let held = 0
   for (let i = 0; i < size; i++) {
     let stack = inv.getStackInSlot(i)
