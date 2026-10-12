@@ -13,6 +13,13 @@ pub const GITHUB_REPO_BRANCH: &str = "main";
 /// Server-distribution path within the repo.
 pub const REPO_SERVER_PATH: &str = ".minecraft/server_distribution";
 
+/// Where the server's log mirror is pushed: a PRIVATE repository of its own
+/// (operator ruling 2026-10-11). Never the pack repo above, which is public;
+/// logs carry player names, chat and addresses.
+pub const LOGS_REPO_OWNER: &str = GITHUB_REPO_OWNER;
+pub const LOGS_REPO_NAME: &str = "IridescentCraft-logs";
+pub const LOGS_REPO_BRANCH: &str = "main";
+
 /// JAR filenames that are NOT managed by packwiz and must be
 /// preserved by `cleanup_stale_jars` when the manifest can't be loaded.
 ///
@@ -161,7 +168,7 @@ impl ServerConfig {
     pub fn crash_reports(&self) -> PathBuf { self.server_dir.join("crash-reports") }
     /// Per-launch OOM heap dumps (`heap_<YYYYmmdd_HHMMSS>.hprof`). Same
     /// location the bat/sh launchers use. Deliberately EXCLUDED from the
-    /// TesterLogs mirror in [`crate::logpush`] -- each dump is
+    /// log mirror in [`crate::logpush`] -- each dump is
     /// heap-sized and would blow past GitHub's blob limit.
     pub fn heapdumps_dir(&self) -> PathBuf { self.crash_reports().join("heapdumps") }
 

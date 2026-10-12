@@ -1,0 +1,61 @@
+# .gitattributes of the private log mirror, IridescentCraft-logs.
+#
+# The launcher pushes the server's logs there through the GitHub API, which
+# stores bytes exactly as sent. So that a clone of the repo is clean, the
+# launcher normalises line endings itself, by THESE rules: this file is the
+# copy kept in the launcher source (icraft-core/src/logs_repo.gitattributes),
+# and a launcher test fails when its tables and this file disagree. Change the
+# rules in both places together.
+
+# Default: text auto-detect, stored with LF
+* text=auto eol=lf
+
+# Always text
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+*.psm1  text eol=crlf
+*.psd1  text eol=crlf
+*.sh    text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.toml  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.lang  text eol=lf
+*.mcmeta text eol=lf
+*.snbt  text eol=lf
+*.java  text eol=lf
+*.kt    text eol=lf
+*.kts   text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+gradlew text eol=lf
+
+# Never converted
+*.jar   binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.ogg   binary
+*.wav   binary
+*.mp3   binary
+*.mp4   binary
+*.webm  binary
+*.dat   binary
+*.nbt   binary
+*.mca   binary
+*.mcstructure binary
+*.schem binary
+*.schematic binary
+*.psd   binary
+*.blend binary
+*.pdf   binary

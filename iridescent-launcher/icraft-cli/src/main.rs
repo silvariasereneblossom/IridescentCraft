@@ -105,8 +105,9 @@ enum Cmd {
         idle_timeout: u64,
     },
 
-    /// Mirror logs/ and crash-reports/ to the repo now (GitHub API; needs the
-    /// saved token). Exit 1 if the push failed.
+    /// Mirror logs/ and crash-reports/ to the private logs repo now (GitHub
+    /// API; needs the saved token). Debug logs are not included. Exit 1 if
+    /// the push failed.
     PushCrashLogs,
 
     /// Zip the world into backups/ now, as a pinned `manual-*.zip` (never
@@ -346,7 +347,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
         }
         // Staged, then pushed through the GitHub API on this thread, bounded
         // (logpush.rs). Exit 1 when the push failed; the reason is logged.
-        Cmd::PushCrashLogs => Ok(if logpush::push_now(cfg).is_ok() { 0 } else { 1 }),
+        Cmd::PushCrashLogs => Ok(if logpush::push_now(cfg, false).is_ok() { 0 } else { 1 }),
         Cmd::Backup { if_due } => {
             let outcome = backup::run_now(cfg, *if_due);
             println!("{}", outcome.answer());

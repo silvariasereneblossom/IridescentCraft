@@ -79,7 +79,7 @@ pub const REQUEST_FILE: &str = ".icraft_backup_request";
 pub const RESULT_FILE: &str = ".icraft_backup_request.result";
 /// In `backups/`: the verified backups, for the badge and the off-box pull job.
 pub const MANIFEST_FILE: &str = "backups.json";
-/// Audit log, in the server's `logs/` (mirrored to TesterLogs with the rest).
+/// Audit log, in the server's `logs/` (mirrored to the private logs repo with the rest).
 pub const LOG_FILE: &str = "backup.log";
 
 const MANIFEST_VERSION: u32 = 1;

@@ -1,4 +1,9 @@
-//! The server's logs, mirrored to the repo -- never between a stop and a start.
+//! The server's logs, mirrored to a private repo -- never between a stop and a start.
+//!
+//! Where they go (operator ruling 2026-10-11, decision sheet A5 / A6 / A12):
+//! a PRIVATE repository of their own, `IridescentCraft-logs`, folder `server/`.
+//! Until then they went into the public pack repo, player names and chat lines
+//! included. `debug.log` and its rotations are mirrored only after a crash.
 //!
 //! Until 2026-10-11 `serve()` pushed the logs inline after the JVM exited, with
 //! git, from a clone under `%LOCALAPPDATA%\icraft-launcher\push`. Every restart
@@ -8,8 +13,10 @@
 //! Now the work is split in two:
 //!
 //!   1. **At exit: stage.** [`stage`] copies `logs/` and `crash-reports/` into
-//!      `<server>/TesterLogs/Server Logs/` -- local files, changed ones only,
-//!      no network and no child process. This is all the restart path does.
+//!      `<server>/.icraft_log_stage/` -- local files, changed ones only, no
+//!      network and no child process. This is all the restart path does. The
+//!      folder is the launcher's own: no path in the pack repo can ever name
+//!      it, so no sync (diff, full zip, prune) can write or delete in it.
 //!   2. **Later, on a thread of its own: push.** [`defer`] hands the staged
 //!      files to a background worker, which waits until the server is back up
 //!      (or until [`release`] says no restart is coming, or [`MAX_DEFER`]) and
@@ -31,12 +38,14 @@ use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use std::time::{Duration, Instant};
 
-use crate::config::{ServerConfig, GITHUB_REPO_BRANCH, GITHUB_REPO_NAME, GITHUB_REPO_OWNER};
-use crate::github::GitData;
+use crate::config::{ServerConfig, LOGS_REPO_BRANCH, LOGS_REPO_NAME, LOGS_REPO_OWNER};
+use crate::github::{ApiError, GitData};
 use crate::run::{server_state, ServerState};
 
-/// Where the mirror lives in the repo.
-pub const REPO_LOG_DIR: &str = ".minecraft/server_distribution/TesterLogs/Server Logs";
+/// Where the mirror lives in the logs repo.
+pub const REPO_LOG_DIR: &str = "server";
+/// The staging folder, in the server folder.
+pub const STAGE_DIR: &str = ".icraft_log_stage";
 /// Present in the server folder from the moment logs are staged until a push
 /// attempt has finished.
 pub const PENDING_MARKER: &str = ".icraft_log_push_pending";
@@ -51,6 +60,13 @@ const MAX_FILE_BYTES: u64 = 50 * 1024 * 1024;
 const FAST_FORWARD_ATTEMPTS: usize = 5;
 
 fn stage_dir(cfg: &ServerConfig) -> PathBuf {
+    cfg.server_dir.join(STAGE_DIR)
+}
+
+/// Where logs were staged until 2026-10-11: inside the tree the pack repo
+/// mirrors (`server_distribution/TesterLogs/Server Logs`). See
+/// [`retire_legacy_stage`].
+fn legacy_stage_dir(cfg: &ServerConfig) -> PathBuf {
     cfg.server_dir.join("TesterLogs").join("Server Logs")
 }
 
@@ -70,7 +86,7 @@ fn target_branch() -> String {
         .ok()
         .map(|b| b.trim().to_string())
         .filter(|b| !b.is_empty())
-        .unwrap_or_else(|| GITHUB_REPO_BRANCH.to_string())
+        .unwrap_or_else(|| LOGS_REPO_BRANCH.to_string())
 }
 
 // =============================================================================
@@ -83,28 +99,53 @@ pub struct Staged {
     pub copied: usize,
     pub unchanged: usize,
     pub failed: usize,
+    /// Debug logs left out (see [`is_debug_log`]).
+    pub held_back: usize,
 }
 
 /// Copy `logs/` and `crash-reports/` into the staging folder: files that are
-/// new or changed, never a heap dump. Local and quick; safe on the restart
-/// path. Never fails the caller.
-pub fn stage(cfg: &ServerConfig) -> Staged {
+/// new or changed, never a heap dump, and the debug logs only when the run
+/// that just ended `crashed`. Local and quick; safe on the restart path. Never
+/// fails the caller.
+pub fn stage(cfg: &ServerConfig, crashed: bool) -> Staged {
     let started = Instant::now();
     let to = stage_dir(cfg);
     let mut staged = Staged::default();
     for from in [cfg.logs_dir(), cfg.crash_reports()] {
         if from.is_dir() {
-            mirror_dir(&from, &to, &mut staged);
+            mirror_dir(&from, &to, crashed, &mut staged);
         }
     }
     log::info!(
-        "[logs] staged for the next push: {} file(s) copied, {} unchanged{} ({} ms)",
+        "[logs] staged for the next push: {} file(s) copied, {} unchanged{}{} ({} ms)",
         staged.copied,
         staged.unchanged,
         if staged.failed > 0 { format!(", {} FAILED", staged.failed) } else { String::new() },
+        if crashed {
+            "; crash exit, so debug.log and debug-1.log.gz are included".to_string()
+        } else {
+            format!("; {} debug log(s) left out (mirrored only after a crash)", staged.held_back)
+        },
         started.elapsed().as_millis()
     );
     staged
+}
+
+/// `debug.log` and its rotations (`debug-1.log.gz` ...). `debug.log` is about
+/// 8 MB and is rewritten whole at every start; log4j renumbers the rotations at
+/// every start too, so all of them change. Uploaded at every restart that was
+/// 11 MB of request for logs nobody reads unless something broke. They stay on
+/// the server, readable over the share.
+fn is_debug_log(name: &str) -> bool {
+    let name = name.to_ascii_lowercase();
+    name == "debug.log" || (name.starts_with("debug-") && name.ends_with(".log.gz"))
+}
+
+/// What a crash exit adds: the crashed run's own debug log, and the run before
+/// it (in a crash loop that is the previous crash; older rotations are not).
+fn is_crash_debug_log(name: &str) -> bool {
+    let name = name.to_ascii_lowercase();
+    name == "debug.log" || name == "debug-1.log.gz"
 }
 
 /// Heap dumps (`crash-reports/heapdumps/`, any `*.hprof`) are roughly
@@ -118,7 +159,7 @@ fn is_heap_dump(path: &Path, is_dir: bool) -> bool {
     path.extension().map_or(false, |ext| ext.eq_ignore_ascii_case("hprof"))
 }
 
-fn mirror_dir(src: &Path, dst: &Path, staged: &mut Staged) {
+fn mirror_dir(src: &Path, dst: &Path, crashed: bool, staged: &mut Staged) {
     if let Err(e) = fs::create_dir_all(dst) {
         log::warn!("[logs] cannot create {}: {e}", dst.display());
         staged.failed += 1;
@@ -141,9 +182,14 @@ fn mirror_dir(src: &Path, dst: &Path, staged: &mut Staged) {
         if is_heap_dump(&from, kind.is_dir()) {
             continue;
         }
+        let name = entry.file_name().to_string_lossy().into_owned();
+        if kind.is_file() && is_debug_log(&name) && !(crashed && is_crash_debug_log(&name)) {
+            staged.held_back += 1;
+            continue;
+        }
         let to = dst.join(entry.file_name());
         if kind.is_dir() {
-            mirror_dir(&from, &to, staged);
+            mirror_dir(&from, &to, crashed, staged);
         } else if kind.is_file() {
             match copy_if_changed(&from, &to) {
                 Ok(true) => staged.copied += 1,
@@ -233,14 +279,16 @@ fn remote_listing(api: &GitData, root_tree: &str) -> Result<HashMap<String, Stri
 // Line endings: store what `git add` would store
 // -----------------------------------------------------------------------------
 //
-// The repo's `.gitattributes` normalises text to LF (`* text=auto eol=lf`,
-// `*.txt text`, `*.gz binary`, ...). The git-based push got that for free;
+// The logs repo's `.gitattributes` normalises text to LF (`* text=auto eol=lf`,
+// `*.txt text`, `*.gz binary`, ...; the same rules as the pack repo, whose
+// mirror the logs repo was seeded from). A git-based push gets that for free;
 // the API takes bytes as they are. Uploading a Windows log raw would put CRLF
 // into the repo: every old crash report would be re-uploaded once for nothing
 // but its line endings (46 files in the first trial), and from then on every
 // clone would show those files as modified. So the same rules are applied
 // here before a file is hashed or uploaded. The two extension lists mirror
-// `.gitattributes`; a unit test reads that file and fails when they drift.
+// `logs_repo.gitattributes` (beside this file: the `.gitattributes` the logs
+// repo was created with); a unit test fails when they drift.
 
 /// How git stores a file of a given name.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -395,8 +443,20 @@ fn push(cfg: &ServerConfig) -> Result<Outcome> {
         anyhow!("no GitHub token saved (GitHub auth section) -- the logs stay staged in {}", stage_dir(cfg).display())
     })?;
     let deadline = Instant::now() + PUSH_DEADLINE;
-    let api = GitData::new(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, &token).deadline(deadline);
-    push_with(&api, &target_branch(), &stage_dir(cfg), deadline)
+    let api = GitData::new(LOGS_REPO_OWNER, LOGS_REPO_NAME, &token).deadline(deadline);
+    push_with(&api, &target_branch(), &stage_dir(cfg), deadline).map_err(explain_no_access)
+}
+
+/// The logs repo is private: to a token that may not see it, GitHub answers
+/// 404 (not 403), which reads like a typo in the name. Say what it means.
+fn explain_no_access(error: anyhow::Error) -> anyhow::Error {
+    match error.downcast_ref::<ApiError>().and_then(|e| e.code) {
+        Some(403) | Some(404) => error.context(format!(
+            "the saved token cannot use the private repository {LOGS_REPO_OWNER}/{LOGS_REPO_NAME} \
+             (it needs read and write access to that repository's contents)"
+        )),
+        _ => error,
+    }
 }
 
 // =============================================================================
@@ -482,8 +542,8 @@ fn set_state(state: PushState) {
 
 /// The JVM-exit hook of a supervised run: stage now, push later. Returns as
 /// soon as the local copies are done.
-pub fn stage_and_defer(cfg: &ServerConfig) {
-    stage(cfg);
+pub fn stage_and_defer(cfg: &ServerConfig, crashed: bool) {
+    stage(cfg, crashed);
     defer(cfg);
 }
 
@@ -516,14 +576,18 @@ pub fn release() {
 pub fn resume_pending(cfg: &ServerConfig) {
     if cfg.server_dir.join(PENDING_MARKER).is_file() {
         log::info!("[logs] logs staged before this launcher started are still unpushed -- queued");
+        // Stage again: the launcher that left the marker may have staged
+        // somewhere else (before 2026-10-11, inside the synced tree). Debug
+        // logs a crash exit staged are still there; none are added here.
+        stage(cfg, false);
         defer(cfg);
     }
 }
 
 /// Stage and push on the calling thread, bounded by [`PUSH_DEADLINE`]. For the
 /// CLI, whose process ends when its command does. `Err` = the push failed.
-pub fn push_now(cfg: &ServerConfig) -> Result<Outcome> {
-    stage(cfg);
+pub fn push_now(cfg: &ServerConfig, crashed: bool) -> Result<Outcome> {
+    stage(cfg, crashed);
     let _ = write_marker(cfg);
     run_push(cfg)
 }
@@ -591,8 +655,29 @@ fn run_push(cfg: &ServerConfig) -> Result<Outcome> {
     let _ = fs::remove_file(cfg.server_dir.join(PENDING_MARKER));
     if result.is_ok() {
         retire_push_clone();
+        retire_legacy_stage(cfg);
     }
     result
+}
+
+/// Remove the staging folder of before 2026-10-11 once a push from the new one
+/// has gone through. It sits inside the tree the pack repo used to mirror
+/// (`TesterLogs/Server Logs`), holds about 50 MB of copies that are all either
+/// in the logs repo or still in `logs/`, and left in place it would pass for
+/// the current one. Not touched when the server folder is inside a git working
+/// tree (a developer running the server from a clone: those files are tracked).
+fn retire_legacy_stage(cfg: &ServerConfig) {
+    let dir = legacy_stage_dir(cfg);
+    if !dir.is_dir() || crate::git::find_git_root(&cfg.server_dir).is_some() {
+        return;
+    }
+    let (removed, left) = remove_tree(&dir);
+    if left == 0 {
+        let _ = fs::remove_dir(cfg.server_dir.join("TesterLogs"));
+        log::info!("[logs] removed the old staging folder {} ({removed} entries); logs are staged in {STAGE_DIR} now", dir.display());
+    } else {
+        log::warn!("[logs] the old staging folder {} is only partly removed ({left} entries in use); it is unused, and the next push tries again", dir.display());
+    }
 }
 
 // =============================================================================
@@ -843,16 +928,15 @@ mod tests {
         assert_eq!(eol_rule("no-extension"), Eol::Auto);
     }
 
-    /// The tables above are a copy of the repo's `.gitattributes`. This reads
-    /// the real file and fails when a rule there is not mirrored here, so the
-    /// log mirror can never start storing line endings git would not.
+    /// The tables above are a copy of the LOGS repo's `.gitattributes`, which is
+    /// kept beside this file (`logs_repo.gitattributes`: what the repo was
+    /// created with; change both together). This fails when a rule there is
+    /// not mirrored here, so the mirror can never store line endings a clone
+    /// of that repo would show as modified.
     #[test]
-    fn the_line_ending_rules_match_the_repos_gitattributes() {
-        let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("..").join("..").join(".gitattributes");
-        let Ok(text) = fs::read_to_string(&path) else {
-            eprintln!("no {} (built outside the repo) -- skipped", path.display());
-            return;
-        };
+    fn the_line_ending_rules_match_the_logs_repos_gitattributes() {
+        let path = Path::new("src/logs_repo.gitattributes");
+        let text = include_str!("logs_repo.gitattributes");
         let mut rules = 0;
         for line in text.lines().map(str::trim).filter(|l| !l.is_empty() && !l.starts_with('#')) {
             let mut words = line.split_whitespace();
@@ -876,7 +960,7 @@ mod tests {
             assert_eq!(
                 eol_rule(&sample),
                 expected,
-                ".gitattributes says `{line}`; add it to TEXT_EXTENSIONS / BINARY_EXTENSIONS in logpush.rs"
+                "logs_repo.gitattributes says `{line}`; add it to TEXT_EXTENSIONS / BINARY_EXTENSIONS in logpush.rs"
             );
             rules += 1;
         }
@@ -884,9 +968,81 @@ mod tests {
     }
 
     #[test]
-    fn the_mirror_lives_under_the_server_distribution_path() {
-        assert!(REPO_LOG_DIR.starts_with(crate::config::REPO_SERVER_PATH));
+    fn the_mirror_is_private_and_the_stage_is_outside_the_synced_tree() {
+        // Not the pack repo: that one is public.
+        assert_ne!(LOGS_REPO_NAME, crate::config::GITHUB_REPO_NAME);
+        assert_eq!(LOGS_REPO_NAME, "IridescentCraft-logs");
+        assert_eq!(REPO_LOG_DIR, "server");
+        // A dot-file name of the launcher's own: no path under
+        // server_distribution/ in the pack repo is called this.
+        assert!(STAGE_DIR.starts_with(".icraft_"));
+        let cfg = ServerConfig::from_path("srv");
+        assert_eq!(stage_dir(&cfg), Path::new("srv").join(".icraft_log_stage"));
+        assert_ne!(stage_dir(&cfg), legacy_stage_dir(&cfg));
         assert_eq!(PUSH_DEADLINE, Duration::from_secs(300));
+    }
+
+    #[test]
+    fn debug_logs_are_mirrored_only_after_a_crash() {
+        let root = scratch("debug");
+        let cfg = ServerConfig::from_path(&root);
+        fs::create_dir_all(cfg.logs_dir()).unwrap();
+        for name in ["latest.log", "debug.log", "debug-1.log.gz", "debug-2.log.gz", "2026-10-11-1.log.gz", "debugger-notes.log"] {
+            fs::write(cfg.logs_dir().join(name), name).unwrap();
+        }
+        let staged = stage_dir(&cfg);
+
+        // A clean exit: the three debug logs stay on the server.
+        assert_eq!(stage(&cfg, false), Staged { copied: 3, unchanged: 0, failed: 0, held_back: 3 });
+        let names: Vec<String> = scan(&staged).into_iter().map(|f| f.rel).collect();
+        assert_eq!(names, ["2026-10-11-1.log.gz", "debugger-notes.log", "latest.log"]);
+
+        // A crash: this run's debug.log and the previous run's, not the older ones.
+        assert_eq!(stage(&cfg, true), Staged { copied: 2, unchanged: 3, failed: 0, held_back: 1 });
+        assert!(staged.join("debug.log").is_file());
+        assert!(staged.join("debug-1.log.gz").is_file());
+        assert!(!staged.join("debug-2.log.gz").exists());
+
+        // The next clean exit leaves what the crash staged where it is.
+        fs::write(cfg.logs_dir().join("debug.log"), "the next run, which did not crash").unwrap();
+        assert_eq!(stage(&cfg, false), Staged { copied: 0, unchanged: 3, failed: 0, held_back: 3 });
+        assert_eq!(fs::read_to_string(staged.join("debug.log")).unwrap(), "debug.log");
+
+        assert!(is_debug_log("DEBUG.LOG") && is_debug_log("debug-12.log.gz"));
+        assert!(!is_debug_log("debug.log.txt") && !is_debug_log("kubejs-debug.log"));
+        let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn a_token_without_access_to_the_private_repo_is_explained() {
+        let hidden = anyhow::Error::new(ApiError { code: Some(404), message: "GET /git/ref/heads/main: Not Found".into() });
+        let text = format!("{:#}", explain_no_access(hidden));
+        assert!(text.contains("cannot use the private repository silvariasereneblossom/IridescentCraft-logs"), "{text}");
+        assert!(text.contains("HTTP 404"), "{text}");
+        let other = anyhow::Error::new(ApiError { code: Some(422), message: "x".into() });
+        assert_eq!(format!("{:#}", explain_no_access(other)), "HTTP 422: x");
+    }
+
+    #[test]
+    fn the_old_staging_folder_is_removed_but_never_inside_a_git_tree() {
+        let root = scratch("legacy");
+        // On the server: no git tree above it.
+        let cfg = ServerConfig::from_path(root.join("box"));
+        fs::create_dir_all(legacy_stage_dir(&cfg).join("kubejs")).unwrap();
+        fs::write(legacy_stage_dir(&cfg).join("latest.log"), "old").unwrap();
+        fs::write(legacy_stage_dir(&cfg).join("kubejs").join("server.log"), "old").unwrap();
+        if crate::git::find_git_root(&cfg.server_dir).is_none() {
+            retire_legacy_stage(&cfg);
+            assert!(!cfg.server_dir.join("TesterLogs").exists());
+        }
+        // In a developer's clone: the files are tracked there and stay.
+        let dev = ServerConfig::from_path(root.join("clone").join("server_distribution"));
+        fs::create_dir_all(root.join("clone").join(".git")).unwrap();
+        fs::create_dir_all(legacy_stage_dir(&dev)).unwrap();
+        fs::write(legacy_stage_dir(&dev).join("latest.log"), "tracked").unwrap();
+        retire_legacy_stage(&dev);
+        assert!(legacy_stage_dir(&dev).join("latest.log").is_file());
+        let _ = fs::remove_dir_all(&root);
     }
 
     #[test]
@@ -901,7 +1057,7 @@ mod tests {
         fs::write(cfg.crash_reports().join("crash-2026-10-11_11.37.00-server.txt"), "boom").unwrap();
         fs::write(cfg.crash_reports().join("heapdumps").join("heap_1.hprof"), "dump").unwrap();
 
-        assert_eq!(stage(&cfg), Staged { copied: 3, unchanged: 0, failed: 0 });
+        assert_eq!(stage(&cfg, false), Staged { copied: 3, unchanged: 0, failed: 0, held_back: 0 });
         let staged = stage_dir(&cfg);
         assert_eq!(fs::read_to_string(staged.join("latest.log")).unwrap(), "one");
         assert_eq!(fs::read_to_string(staged.join("kubejs").join("server.log")).unwrap(), "kube");
@@ -910,10 +1066,10 @@ mod tests {
         assert!(!staged.join("heapdumps").exists());
 
         // Nothing changed: nothing is copied again.
-        assert_eq!(stage(&cfg), Staged { copied: 0, unchanged: 3, failed: 0 });
+        assert_eq!(stage(&cfg, false), Staged { copied: 0, unchanged: 3, failed: 0, held_back: 0 });
         // One file grew: that one is copied.
         fs::write(cfg.logs_dir().join("latest.log"), "one, and more").unwrap();
-        assert_eq!(stage(&cfg), Staged { copied: 1, unchanged: 2, failed: 0 });
+        assert_eq!(stage(&cfg, false), Staged { copied: 1, unchanged: 2, failed: 0, held_back: 0 });
         assert_eq!(fs::read_to_string(staged.join("latest.log")).unwrap(), "one, and more");
 
         let names: Vec<String> = scan(&staged).into_iter().map(|f| f.rel).collect();
@@ -994,10 +1150,7 @@ mod tests {
                         ("GET", "/git/ref/heads/main") => (200, serde_json::json!({ "object": { "sha": head } })),
                         ("GET", "/git/commits/c0") => (200, serde_json::json!({ "tree": { "sha": "t0" } })),
                         ("GET", "/git/commits/c1") => (200, serde_json::json!({ "tree": { "sha": "t1" } })),
-                        ("GET", "/git/trees/t0") | ("GET", "/git/trees/t1") => dir_listing(".minecraft", "m0"),
-                        ("GET", "/git/trees/m0") => dir_listing("server_distribution", "s0"),
-                        ("GET", "/git/trees/s0") => dir_listing("TesterLogs", "l0"),
-                        ("GET", "/git/trees/l0") => dir_listing("Server Logs", "g0"),
+                        ("GET", "/git/trees/t0") | ("GET", "/git/trees/t1") => dir_listing("server", "g0"),
                         ("GET", "/git/trees/g0?recursive=1") => {
                             let mut tree = vec![serde_json::json!({ "path": "kubejs", "type": "tree", "sha": "k0", "mode": "040000" })];
                             for (name, content) in &remote_files {
@@ -1127,9 +1280,9 @@ mod tests {
         for tree in &trees {
             let entries = tree.body["tree"].as_array().unwrap();
             assert_eq!(entries.len(), 2);
-            assert_eq!(entries[0]["path"], ".minecraft/server_distribution/TesterLogs/Server Logs/crash-2026-10-11_11.37.00-server.txt");
+            assert_eq!(entries[0]["path"], "server/crash-2026-10-11_11.37.00-server.txt");
             assert_eq!(entries[0]["sha"], git_blob_id(b"boom\n"));
-            assert_eq!(entries[1]["path"], ".minecraft/server_distribution/TesterLogs/Server Logs/latest.log");
+            assert_eq!(entries[1]["path"], "server/latest.log");
             assert_eq!(entries[1]["sha"], git_blob_id(b"new run\n"));
             assert_eq!(entries[1]["mode"], "100644");
         }

@@ -1943,14 +1943,16 @@ impl IcraftApp {
             // Run only = bare JVM launch for debugging: NOT supervised.
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
-                    let result = icraft_core::run::launch_server_piped(&c, false).map(|_| ());
+                    let result = icraft_core::run::launch_server_piped(&c, false);
                     // Nothing restarts a run-only server: stage, and push now
                     // (in the background -- this task does not wait for it).
-                    icraft_core::logpush::stage_and_defer(&c);
+                    // Debug logs go along only when the run ended in a crash.
+                    let crashed = matches!(&result, Ok(code) if *code != 0);
+                    icraft_core::logpush::stage_and_defer(&c, crashed);
                     icraft_core::logpush::release();
                     icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
                     log::info!("[run] *** all post-exit hooks complete -- ready ***");
-                    result
+                    result.map(|_| ())
                 });
             }
             // Stop / Kill / Force kill are intentionally NOT gated on
@@ -2201,7 +2203,7 @@ impl IcraftApp {
                 log::info!("[logs] Push crash logs clicked -- staging, then pushing in the background (see the Logs badge)");
                 let c = cfg.clone();
                 std::thread::spawn(move || {
-                    icraft_core::logpush::stage_and_defer(&c);
+                    icraft_core::logpush::stage_and_defer(&c, false);
                     icraft_core::logpush::release();
                 });
             }
@@ -2210,7 +2212,7 @@ impl IcraftApp {
         ui.add_space(8.0);
         ui.heading("GitHub auth");
         ui.label(egui::RichText::new(
-            "PAT used by 'Push crash logs', Apply Self-Update, AND the repo sync (Cycle/Serve) -- saving one lifts the sync API off the 60/hr unauth limit (5000/hr), which prevents the intermittent 'API unreachable -> starts on old content' Cycle failure. Stored in %LOCALAPPDATA%\\icraft-launcher\\.icraft_token (gitignored). Needs Contents:write on the IridescentCraft repo."
+            "PAT used by 'Push crash logs', Apply Self-Update, AND the repo sync (Cycle/Serve) -- saving one lifts the sync API off the 60/hr unauth limit (5000/hr), which prevents the intermittent 'API unreachable -> starts on old content' Cycle failure. Stored in %LOCALAPPDATA%\\icraft-launcher\\.icraft_token (gitignored). Needs read access to the IridescentCraft repo, and Contents: read and write on the PRIVATE IridescentCraft-logs repo (the log mirror)."
         ).small().weak());
         ui.add_space(2.0);
 

@@ -207,10 +207,12 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     } else {
         log::info!("Server stopped normally.");
     }
+    // The debug logs are mirrored only for a run that ended in a crash.
+    let crashed = exit_code != 0;
     if opts.defer_log_push {
-        logpush::stage_and_defer(cfg);
+        logpush::stage_and_defer(cfg, crashed);
     } else {
-        let _ = logpush::push_now(cfg);
+        let _ = logpush::push_now(cfg, crashed);
     }
 
     Ok(exit_code)

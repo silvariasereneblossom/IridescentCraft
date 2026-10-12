@@ -96,7 +96,15 @@ const HEAD_FETCH_BACKOFF: &[Duration] =
 // the box each Cycle. Excluding it keeps the diff content-only. (Pairs with the
 // stamp-head-sha.yml `**/TesterLogs/**` ignore fix that stops these commits from
 // advancing .icraft_head_sha and making the Repo HEAD badge read "behind".)
-const EXCLUDED_DIRS: &[&str] = &["world", "logs", "crash-reports", "backups", "libraries", ".cache", "TesterLogs"];
+// Since 2026-10-11 the SERVER's mirror is not in this repo at all (it goes to a
+// private repo, see logpush.rs) and the folder was taken off the public tip.
+// The exclusion stays: those deletions arrive here as `removed` entries and
+// must not be acted on, and client logs still live under TesterLogs.
+// `.icraft_log_stage` is the launcher's own staging folder (logpush.rs). No
+// pack path should ever be called that; listed so that one that was could
+// still not write or delete in it.
+const EXCLUDED_DIRS: &[&str] =
+    &["world", "logs", "crash-reports", "backups", "libraries", ".cache", "TesterLogs", crate::logpush::STAGE_DIR];
 const SELF_UPDATE_FILES: &[&str] = &[
     "iridescentserver.bat",
     "iridescentserver.sh",
@@ -1571,6 +1579,57 @@ mod tests {
         assert!(remove_synced_file(&dir, "kubejs/old.js").unwrap());
         assert!(!dir.join("kubejs").join("old.js").exists());
         assert!(!remove_synced_file(&dir, "kubejs/old.js").unwrap(), "already gone is not an error");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// 2026-10-11: the server's log mirror was taken out of the pack repo
+    /// (`server_distribution/TesterLogs/Server Logs`, 400+ files). Those
+    /// deletions reach every server as `removed` entries of a diff sync. The
+    /// launcher of that day and before staged its logs in that very folder, and
+    /// the new one stages in `.icraft_log_stage`: neither may lose a file to
+    /// the sync, while pack content the pack dropped still goes.
+    #[test]
+    fn removing_the_log_mirror_from_the_pack_deletes_nothing_on_the_server() {
+        let dir = scratch("mirror-removed");
+        let cfg = ServerConfig::from_path(&dir);
+        let old_stage = dir.join("TesterLogs").join("Server Logs");
+        let new_stage = dir.join(crate::logpush::STAGE_DIR);
+        fs::create_dir_all(old_stage.join("kubejs")).unwrap();
+        fs::create_dir_all(&new_stage).unwrap();
+        fs::create_dir_all(dir.join("kubejs").join("server_scripts")).unwrap();
+        fs::write(old_stage.join("latest.log"), "staged").unwrap();
+        fs::write(old_stage.join("kubejs").join("server.log"), "staged").unwrap();
+        fs::write(new_stage.join("latest.log"), "staged").unwrap();
+        fs::write(dir.join("kubejs").join("server_scripts").join("old.js"), "x").unwrap();
+
+        let removed = |path: &str| github::ChangedFile { filename: path.to_string(), status: "removed".to_string() };
+        let files = vec![
+            removed(".minecraft/server_distribution/TesterLogs/Server Logs/latest.log"),
+            removed(".minecraft/server_distribution/TesterLogs/Server Logs/kubejs/server.log"),
+            // The dead second mirror: not under the server's part of the repo at all.
+            removed(".minecraft/TesterLogs/Server Logs/latest.log"),
+            // Should the pack ever carry a path with the staging folder's name.
+            removed(".minecraft/server_distribution/.icraft_log_stage/latest.log"),
+            removed(".minecraft/server_distribution/kubejs/server_scripts/old.js"),
+        ];
+        diff_sync(&cfg, &files, "0123456789abcdef0123456789abcdef01234567", &None).unwrap();
+
+        assert_eq!(fs::read_to_string(old_stage.join("latest.log")).unwrap(), "staged");
+        assert_eq!(fs::read_to_string(old_stage.join("kubejs").join("server.log")).unwrap(), "staged");
+        assert_eq!(fs::read_to_string(new_stage.join("latest.log")).unwrap(), "staged");
+        assert!(!dir.join("kubejs").join("server_scripts").join("old.js").exists(), "dropped pack content still goes");
+        // Nothing failed, so the marker moved on: the sync is not retried.
+        assert_eq!(fs::read_to_string(cfg.last_sha()).unwrap().trim(), "0123456789abcdef0123456789abcdef01234567");
+
+        // The full-zip overlay does not write into either folder.
+        let zip = dir.join("zip");
+        fs::create_dir_all(zip.join("TesterLogs").join("Server Logs")).unwrap();
+        fs::create_dir_all(zip.join(crate::logpush::STAGE_DIR)).unwrap();
+        fs::write(zip.join("TesterLogs").join("Server Logs").join("latest.log"), "from the zip").unwrap();
+        fs::write(zip.join(crate::logpush::STAGE_DIR).join("latest.log"), "from the zip").unwrap();
+        mirror_distro(&zip, &dir).unwrap();
+        assert_eq!(fs::read_to_string(old_stage.join("latest.log")).unwrap(), "staged");
+        assert_eq!(fs::read_to_string(new_stage.join("latest.log")).unwrap(), "staged");
         let _ = fs::remove_dir_all(&dir);
     }
 

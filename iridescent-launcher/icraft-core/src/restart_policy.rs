@@ -47,7 +47,7 @@ pub const MIN_UPTIME: Duration = Duration::from_secs(10 * 60);
 /// busy_warn_sec=60
 /// ```
 pub const OVERRIDE_FILE: &str = ".icraft_restart_policy";
-/// Audit log, in the server's `logs/` (mirrored to TesterLogs with the rest).
+/// Audit log, in the server's `logs/` (mirrored to the private logs repo with the rest).
 pub const LOG_FILE: &str = "restart_policy.log";
 const LOG_ROLL_BYTES: u64 = 1024 * 1024;
 
