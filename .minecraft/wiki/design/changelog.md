@@ -46,6 +46,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **The server launcher's Customizer tab has a Worldgen settings page.** Biome layout, terrain shape and ore generation (TerraBlender, Biomes O' Plenty, Tectonic, Mekanism, Large Ore Deposits, Thermal, Create and more) are listed setting by setting, each with the mod's own description and allowed range, instead of being spread over dozens of config files.
 - **A server's changes are its own and survive pack updates.** They are kept apart from the pack's files and put back before every server start. Any setting can be returned to the pack's value with one click. Nothing changes for players or for other servers unless a server's owner changes something.
 - **New terrain only.** These settings shape chunks as they are generated; land that already exists stays as it is until it is regenerated.
+- **Ordinary ore veins included.** Iron, copper, ancient debris, zinc and the Thermal ores (tin, lead, silver, nickel) can be tuned there as well: veins per chunk and the height band of each.
 
 ## October 2026 — Mapping what a world refresh would keep
 

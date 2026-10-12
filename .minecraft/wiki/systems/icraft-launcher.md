@@ -82,7 +82,8 @@ Rust workspace with three crates:
 - A change made there belongs to that server only. The launcher keeps it in a list of its own and writes it back into the mod's config file before every server start, so a pack update cannot undo it. One click gives a setting back the pack's value, and all of a server's own values are shown together in one table.
 - Config files are only written while the server is stopped. A change saved while it is running waits for the next restart.
 - These settings shape terrain as it is generated. Chunks that already exist keep what they were generated with until they are regenerated, and changing the biome layout or the terrain shape of a world in use leaves a visible seam where new chunks meet old ones.
-- A few settings are shown but locked, because they are not server-only: the world's build height, and one snow setting that every player's game reads from its own copy. Not covered yet: the ore amounts the pack sets through its datapacks, and how often the pack's own cherry biomes appear.
+- The ordinary ore veins are on the page too: how many veins of vanilla iron and copper, ancient debris, Create zinc and Thermal tin, lead, silver and nickel are tried per chunk, and between which heights. The pack sets these in a datapack rather than a config file; the page edits the numbers inside it and nothing else.
+- A few settings are shown but locked, because they are not server-only: the world's build height, and one snow setting that every player's game reads from its own copy. How often the pack's own cherry biomes appear is shown as a fixed number: it is built into the pack's biome mod and cannot be changed from the launcher.
 - Every change that reaches a config file is logged, and each file is kept as it was before the first change to it. `icraft settings` does the same from the command line.
 
 **Who may join (since 2026-10):**
