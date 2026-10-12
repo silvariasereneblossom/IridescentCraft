@@ -83,13 +83,22 @@ EntityEvents.spawned(event => {
     let core = global.icraft && global.icraft.core
     if (!core) return
 
+    // Skip bosses — they have their own scaling systems.
+    // This test comes BEFORE the saved-flag test on purpose. A boss that was
+    // not on the BOSSES list when it spawned (22 named bosses joined it on
+    // 2026-10-12) may carry this script's tier modifier, SAVED with it, and the
+    // saved flag would send it straight out of this handler with 9x health for
+    // good. So: take the modifier off; the boss keeps its share of health.
+    // Nothing happens for a boss that never had it.
+    if (BOSSES.has(type)) {
+      core.dropModifier(entity, 'minecraft:generic.max_health', 'icraft_mob_tier_hp')
+      return
+    }
+
     // Skip already-processed mobs (single flag for both systems).
     // null = handled, and the tier modifier (if any) is saved with the mob.
     let buff = core.spawnBuff(entity, 'icraft_scaled')
     if (!buff) return
-
-    // Skip bosses — they have their own scaling systems
-    if (BOSSES.has(type)) return
 
     // Only scale hostile mobs (skip passives, NPCs)
     let isHostile = entity.monster || isHostileMod(type)
@@ -223,6 +232,20 @@ const BOSSES = new Set([
   'theabyss:nightblade_boss', 'theabyss:the_roka', 'theabyss:elder',
   'ub:sorcerer', 'ub:storm',
   'majestic_menaces:teikoku_senshi',
+  // The 22 named (trophy) bosses of NAMED_BOSSES_BY_TIER
+  // (exploration/codex_exploration_kills.js) that were missing here and in
+  // 0_lib_core.js BOSS_IDS. Operator ruling 2026-10-12: "Treat them as bosses".
+  // Until then each got this script's x3 on top of zz_boss_global_3x.js's x3.
+  'terramity:gob', 'terramity:super_sniffer', 'terramity:enchanter_merlin',
+  'mowziesmobs:frostmaw', 'mowziesmobs:ferrous_wroughtnaut', 'mowziesmobs:umvuthi',
+  'mowziesmobs:sculptor',
+  'cataclysm:the_baby_leviathan', 'cataclysm:scylla',
+  'cardinal_sins:linneausofsloth', 'cardinal_sins:sinofgluttony', 'cardinal_sins:sinofgreed',
+  'cardinal_sins:sinofenvy', 'cardinal_sins:sinoflust', 'cardinal_sins:sinofpride',
+  'cardinal_sins:sinofwrath', 'cardinal_sins:drakara',
+  'cardinal_sins:lucifer', 'cardinal_sins:luciferphase_1',
+  'irons_spellbooks:archevoker',
+  'terramity:virtue', 'terramity:sorceress_circe',
 ])
 
 // ── Basic Mobs (3x HP) ──

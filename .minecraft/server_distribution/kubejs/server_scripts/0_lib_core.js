@@ -39,6 +39,8 @@
 //                                                       SAVED with the mob (see "spawn buffs" below)
 //                     buff.modifier(attrId, name, amount, op) / buff.health() / buff.done() / buff.legacy
 //                   core.saveModifier(entity, attrId, name, amount, op) -> 1 | 0 | -1
+//                   core.dropModifier(entity, attrId, name) -> true when a modifier of that name was
+//                                                       taken off (max_health: the mob keeps its share)
 //   enchantments    core.enchLevel(stack, enchId)    -> level (0 if absent)
 //                   core.armorEnchTotal(entity, id)  -> sum over the 4 armour pieces
 //                   core.heldEnchLevel(entity, id)   -> level on the main-hand item
@@ -166,11 +168,13 @@
     return m ? (m[1] + ':' + m[2]) : s
   }
 
-  // Bosses = the ids the pack itself treats as bosses: the union of
-  // scaling/boss_hp.js (BOSS_HP) and scaling/mob_scaling_unified.js (BOSSES).
+  // Bosses = the ids the pack itself treats as bosses. THE SAME IDS as BOSSES in
+  // scaling/mob_scaling_unified.js (the list that keeps a boss out of the
+  // mob-tier multiplier): keep the two in step. scaling/boss_hp.js (BOSS_HP)
+  // is the subset that has a designed health.
   // Replaces substring tests on 'golem' / 'guardian' / 'ghast' / 'storm' /
   // 'dragon' / 'boss' that also matched iron golems, ordinary guardians and
-  // ghasts. Keep in step with those two lists.
+  // ghasts.
   var BOSS_IDS = {}
   ;[
     'minecraft:ender_dragon', 'minecraft:wither', 'minecraft:warden', 'minecraft:elder_guardian',
@@ -199,7 +203,22 @@
     'theabyss:soul_guard', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:the_roka',
     'theabyss:elder',
     'ub:sorcerer', 'ub:storm',
-    'majestic_menaces:teikoku_senshi'
+    'majestic_menaces:teikoku_senshi',
+    // The 22 named (trophy) bosses of NAMED_BOSSES_BY_TIER
+    // (exploration/codex_exploration_kills.js) that were on neither list.
+    // Operator ruling 2026-10-12: "Treat them as bosses". Until then each got
+    // the mob-tier x3 on top of the boss x3 (9x health) and a Vorpal crit could
+    // behead it.
+    'terramity:gob', 'terramity:super_sniffer', 'terramity:enchanter_merlin',
+    'mowziesmobs:frostmaw', 'mowziesmobs:ferrous_wroughtnaut', 'mowziesmobs:umvuthi',
+    'mowziesmobs:sculptor',
+    'cataclysm:the_baby_leviathan', 'cataclysm:scylla',
+    'cardinal_sins:linneausofsloth', 'cardinal_sins:sinofgluttony', 'cardinal_sins:sinofgreed',
+    'cardinal_sins:sinofenvy', 'cardinal_sins:sinoflust', 'cardinal_sins:sinofpride',
+    'cardinal_sins:sinofwrath', 'cardinal_sins:drakara',
+    'cardinal_sins:lucifer', 'cardinal_sins:luciferphase_1',
+    'irons_spellbooks:archevoker',
+    'terramity:virtue', 'terramity:sorceress_circe'
   ].forEach(function (id) { BOSS_IDS[id] = true })
 
   // entity, or an id string (a JS string or a Java String: both lack getType())
@@ -491,6 +510,38 @@
     try {
       return (Math.round(finite(entity.getHealth(), 0) * 10) / 10) + '/' + (Math.round(finite(entity.getMaxHealth(), 0) * 10) / 10)
     } catch (e) { return '?/?' }
+  }
+
+  // Take a named modifier OFF an entity. For retiring a saved spawn buff: a
+  // saved modifier outlives the rule that put it on (a mob that has since
+  // become a boss still carries its mob-tier health). On max_health the mob
+  // keeps its SHARE of health: half stays half of the new maximum.
+  // -> true when a modifier was removed, false when there was none (or on a
+  //    failure, logged once per modifier name).
+  var dropModifier = function (entity, id, name) {
+    var key = String(name)
+    try {
+      var attr = attribute(id)
+      var inst = entity.getAttribute(attr ? attr : String(id))
+      if (!inst) return false
+      var found = null
+      inst.getModifiers().forEach(function (m) {
+        if (found === null && String(m.getName()) === key) found = m
+      })
+      if (found === null) return false
+      var isHealth = String(id) === 'minecraft:generic.max_health'
+      var share = isHealth ? healthShare(entity) : 1
+      var before = isHealth ? healthText(entity) : ''
+      inst.removeModifier(found.getId())
+      // dead or dying (share 0): left as it is
+      if (isHealth && share > 0) entity.setHealth(share * entity.getMaxHealth())
+      logOnce('modifier.dropped:' + key, '[icraft.core] spawn buffs: first modifier taken off a mob: ' + key + ' on ' +
+        entityId(entity) + (isHealth ? ' health/max ' + before + ' -> ' + healthText(entity) : ''))
+      return true
+    } catch (e) {
+      warnOnce('drop:' + key, '[icraft.core] modifier ' + key + ' on ' + entityId(entity) + ' could not be taken off: ' + e)
+      return false
+    }
   }
 
   var BUFF_SAVED = 2
@@ -854,6 +905,7 @@
     attrValueWithout: attrValueWithout,
     spawnBuff: spawnBuff,
     saveModifier: saveModifier,
+    dropModifier: dropModifier,
     enchLevel: enchLevel,
     armorEnchTotal: armorEnchTotal,
     heldEnchLevel: heldEnchLevel,
