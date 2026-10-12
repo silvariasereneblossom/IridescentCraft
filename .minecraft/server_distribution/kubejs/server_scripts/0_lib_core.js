@@ -432,7 +432,12 @@
     try {
       var attr = attribute(id)
       var inst = entity.getAttribute(attr ? attr : String(id))
-      if (!inst) return 0
+      if (!inst) {
+        if (String(id) !== 'minecraft:generic.max_health') return 0
+        // Every living entity has max_health: no instance means the lookup
+        // itself failed. That must not be recorded as "nothing to do".
+        throw 'no attribute instance for ' + id
+      }
       // KubeJS's own call: it derives the UUID from the name and removes any
       // modifier already under it, so a second application replaces the first
       // and never stacks.
