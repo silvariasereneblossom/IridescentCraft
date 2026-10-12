@@ -125,18 +125,14 @@ const BOSS_3X_EXTRAS = [
   'ars_nouveau:wilden_boss',
   // The Abyss — structure bosses with designed HP in boss_hp.js (absent from codex rosters).
   'theabyss:nightblade_boss', 'theabyss:the_roka', 'theabyss:elder',
-  // Battle Towers — Tower Guardian (boss_hp.js).
-  'keebsz:tower_guardian',
-  // Ultimate Bosses (boss_hp.js).
-  'ub:sorcerer', 'ub:storm',
-  // Majestic Menaces — Teikoku Senshi. The namespace is AMBIGUOUS in the pack
-  // (boss_hp.js + mob_scaling use majestic_menaces:, codex_boss_rush uses
-  // crazybossfights:); include BOTH so whichever the installed jar registers is
-  // covered — the other simply no-ops.
-  'majestic_menaces:teikoku_senshi', 'crazybossfights:teikoku_senshi',
-  // Ultris — Ultra Wither + Sanctum Keeper (codex_boss_rush.js T3; blaze_king is
-  // already in NAMED).
-  'ultris_mr:ultra_wither', 'ultris_mr:sanctum_keeper',
+  // Majestic Menaces — Teikoku Senshi. Registered as majestic_menaces:teikoku_senshi
+  // (measured on a full-pack boot, 2026-10-12); the `crazybossfights:` spelling
+  // that stood beside it registers nothing and is gone.
+  'majestic_menaces:teikoku_senshi',
+  // Removed 2026-10-12, not registered entity types (they matched nothing):
+  // keebsz:tower_guardian (Battle Towers), ub:sorcerer and ub:storm (Ultimate
+  // Bosses), ultris_mr:ultra_wither and ultris_mr:sanctum_keeper (Ultris). The
+  // three mods are installed; whatever their bosses are, these ids are not them.
 ]
 
 // Operator opt-out lever — boss ids to drop from the buff entirely. EMPTY by

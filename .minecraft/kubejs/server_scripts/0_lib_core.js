@@ -190,7 +190,6 @@
     'cataclysm:netherite_monstrosity', 'cataclysm:ignis', 'cataclysm:ender_guardian',
     'cataclysm:ancient_remnant', 'cataclysm:the_leviathan', 'cataclysm:the_harbinger',
     'cataclysm:maledictus', 'cataclysm:ender_golem', 'cataclysm:ignited_revenant',
-    'cataclysm:void_blossom',
     'botania:doppleganger',
     'meetyourfight:swampjaw', 'meetyourfight:bellringer', 'meetyourfight:dame_fortuna',
     'meetyourfight:rosalyne',
@@ -198,11 +197,11 @@
     'mutantmonsters:mutant_enderman',
     'stalwart_dungeons:shelterer', 'stalwart_dungeons:nether_keeper', 'stalwart_dungeons:awful_ghast',
     'stalwart_dungeons:incomplete_wither',
-    'keebsz:tower_guardian',
     'irons_spellbooks:dead_king', 'irons_spellbooks:fire_boss', 'irons_spellbooks:citadel_keeper',
     'theabyss:soul_guard', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:the_roka',
     'theabyss:elder',
-    'ub:sorcerer', 'ub:storm',
+    // (cataclysm:void_blossom, keebsz:tower_guardian, ub:sorcerer and ub:storm
+    //  were listed until 2026-10-12: not registered entity types.)
     'majestic_menaces:teikoku_senshi',
     // The 22 named (trophy) bosses of NAMED_BOSSES_BY_TIER
     // (exploration/codex_exploration_kills.js) that were on neither list.

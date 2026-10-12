@@ -108,7 +108,6 @@ function getBossHP(type) {
     'minecraft:ender_dragon':           1000,
     'cataclysm:ender_guardian':         1500,
     'cataclysm:ancient_remnant':        2500,
-    'cataclysm:void_blossom':           2000,
     'cataclysm:ender_golem':            1200,
     'cataclysm:ignited_revenant':       1000,
 
@@ -127,14 +126,15 @@ function getBossHP(type) {
     'mutantmonsters:mutant_creeper':    300,
     'mutantmonsters:mutant_enderman':   500,
 
-    'keebsz:tower_guardian':            600,
-
     'irons_spellbooks:dead_king':       800,
     'irons_spellbooks:fire_boss':       700,
     'irons_spellbooks:citadel_keeper':  600,
 
-    'ub:sorcerer':                      700,
-    'ub:storm':                         800,
+    // Removed 2026-10-12: four rows whose ids are not registered entity types,
+    // so their designed health was never applied to anything --
+    // cataclysm:void_blossom 2000, keebsz:tower_guardian 600, ub:sorcerer 700,
+    // ub:storm 800. (Battle Towers and Ultimate Bosses are installed; their
+    // bosses, whatever their real ids, have the mods' own health.)
 
     'majestic_menaces:teikoku_senshi':  1000,
   }

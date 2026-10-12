@@ -78,12 +78,10 @@ const NAMED_BOSSES_BY_TIER = {
     'mowziesmobs:ferrous_wroughtnaut',
     'mowziesmobs:umvuthi',
     'mowziesmobs:sculptor',
-    // Marium's Soulslike Weaponry — early-chain boss-bar bosses (overworld
-    // structures/altars). Nether-anchored 4 are in tier 3 below.
-    'soulsweapons:draugr_boss',
-    'soulsweapons:returning_knight',
-    'soulsweapons:night_shade',
-    'soulsweapons:moonknight',
+    // (Marium's Soulslike Weaponry's four early bosses -- soulsweapons:
+    //  draugr_boss, returning_knight, night_shade, moonknight -- stood here
+    //  until 2026-10-12. The mod is not in the mod set, so the ids matched
+    //  nothing. Put them back if the mod returns.)
   ],
   2: [
     // === milestone_detection.js TIER_2_BOSSES ===
@@ -134,14 +132,9 @@ const NAMED_BOSSES_BY_TIER = {
     'irons_spellbooks:fire_boss',
     'irons_spellbooks:citadel_keeper',
     'irons_spellbooks:archevoker',
-    'ultris_mr:blaze_king',
-    // Marium's Soulslike Weaponry — Nether-anchored endgame bosses (boss-bar).
-    // Decaying King pre-placed in the Nether `decaying_kingdom`; the Chaos
-    // Monarch + Day Stalker/Night Prowler duo ride its progression depth (T3).
-    'soulsweapons:accursed_lord_boss',
-    'soulsweapons:chaos_monarch',
-    'soulsweapons:day_stalker',
-    'soulsweapons:night_prowler',
+    // (Removed 2026-10-12, not registered entity types: ultris_mr:blaze_king --
+    //  Ultris registers no entity type -- and soulsweapons: accursed_lord_boss,
+    //  chaos_monarch, day_stalker, night_prowler -- the mod is not installed.)
   ],
   4: [
     // === milestone_detection.js TIER_4_BOSSES ===
@@ -172,7 +165,8 @@ const MINIBOSSES_BY_TIER = {
     'mutantmonsters:mutant_zombie',
     'mutantmonsters:mutant_skeleton',
     'mutantmonsters:mutant_creeper',
-    'mutantmonsters:mutant_zombie_villager',
+    // (mutantmonsters:mutant_zombie_villager removed 2026-10-12: not an entity
+    //  type in the installed Mutant Monsters.)
     // Mowzie's Mobs — Naga is the overworld (beach/mountain) mini-boss; NOT in the
     // jar bosses.json tag (no boss bar) → miniboss, not a named trophy boss.
     'mowziesmobs:naga',
@@ -183,8 +177,8 @@ const MINIBOSSES_BY_TIER = {
     'mutantmonsters:mutant_enderman',
     'meetyourfight:bellringer',
     'meetyourfight:swampjaw',
-    'ultris_mr:corrupted_enderman',
-    'ultris_mr:giant',
+    // (ultris_mr:corrupted_enderman and ultris_mr:giant removed 2026-10-12:
+    //  Ultris registers no entity type.)
     'terramity:gundalf',
     'terramity:trial_guardian',
     'terramity:ultra_sniffer',
@@ -194,13 +188,15 @@ const MINIBOSSES_BY_TIER = {
     // Stalwart Dungeons mini-bosses (all catalog T3).
     'undergarden:forgotten',
     'undergarden:rotbeast',
-    'undergarden:masticator',
     'deeperdarker:shriek_worm',
     'irons_spellbooks:cryomancer',
     'irons_spellbooks:pyromancer',
     'irons_spellbooks:necromancer',
     'irons_spellbooks:priest',
-    'irons_spellbooks:magehunter',
+    // (Removed 2026-10-12, not entity types: undergarden:masticator, and
+    //  irons_spellbooks:magehunter -- that id is the sword. The mob is
+    //  irons_spellbooks:magehunter_vindicator; listing it would start paying
+    //  6 tokens a kill, which nobody has ruled on.)
     'stalwart_dungeons:awful_ghast',
     'stalwart_dungeons:nether_keeper',
     'stalwart_dungeons:shelterer',
@@ -219,7 +215,7 @@ const MINIBOSSES_BY_TIER = {
     'terramity:uvogre',
     'terramity:duskrok',
     'terramity:hellrok',
-    'ultris_mr:shulker_stone',
+    // (ultris_mr:shulker_stone removed 2026-10-12: not an entity type.)
   ],
 }
 

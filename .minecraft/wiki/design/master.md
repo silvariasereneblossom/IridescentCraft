@@ -167,12 +167,12 @@ Advance a tier by hitting **either** its **token threshold** *or* its **boss-rus
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses |
-| T2 → T3 | **1000** | 90% of T2 bosses |
-| T3 → T4 | **2000** | 100% of T3 bosses (incl. Lucifer) |
+| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
+| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (the pack finale; unlocks all post-game / Ad Astra) |
 
-There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **full per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md); minibosses excluded).
+There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md); minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12; `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed.
 
 ### The four lanes
 

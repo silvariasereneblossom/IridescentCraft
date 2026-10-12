@@ -124,12 +124,12 @@ The token economy ([master.md Part III](master.md#part-iii--progression-the-toke
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses |
-| T2 → T3 | **1000** | 90% of T2 bosses |
-| T3 → T4 | **2000** | 100% of T3 bosses (incl. Lucifer) |
+| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
+| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
 
-Boss-rush denominator = the **full per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
+Boss-rush denominator = the **per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12; `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
 
 #### A.7.1 Engineering lane (material → token)
 

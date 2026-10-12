@@ -17,9 +17,9 @@ Tier progression runs on **one combined pool of physical, tiered progression tok
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses |
-| T2 → T3 | **1000** | 90% of T2 bosses |
-| T3 → T4 | **2000** | 100% of T3 bosses (incl. Lucifer) |
+| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
+| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (the pack finale) |
 
 ### Four lanes feed the pool

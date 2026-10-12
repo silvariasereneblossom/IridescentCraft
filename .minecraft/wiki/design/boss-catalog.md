@@ -214,6 +214,14 @@
 
 ## Summary
 
+> **Not every boss in this catalog counts toward the boss rush (2026-10-12).** The boss rush credits a kill by the
+> boss's entity type, and its rosters now hold only bosses that exist as entity types in the current pack: 11 in
+> Tier 1, 20 in Tier 2, 43 in Tier 3. Left out until they can be recognised: the Brutal Bosses champions and the
+> Ultris bosses (those mods add no entity types of their own), the Marium's Soulslike Weaponry bosses (the mod is not
+> in the pack at the moment), the Battle Towers guardian and the two Ultimate Bosses, plus `cataclysm:void_blossom`,
+> `undergarden:masticator` and `mutantmonsters:mutant_zombie_villager`. Teikoku Senshi is
+> `majestic_menaces:teikoku_senshi`.
+
 **Total tracked progression bosses: ~113 entries** across ~14 mods (counting variants), after the 2026-06-01 pass folded in the Cardinal Sins ladder (+9, incl. Lucifer) and dropped two phantoms (`cataclysm:void_blossom`, LuMoreBosses `end_dwellee`). The `boss_checklist-forge-4.1.0.jar` registry has 167 entries across 57 mods but the in-pack subset is far smaller because most listed mods (Alex's Caves, Mowzie's Mobs, Adventurez, Soulsweapons, Goety, etc.) are not installed. The TIER_2_BOSSES / TIER_3_BOSSES / TIER_4_BOSSES arrays in `kubejs/server_scripts/gates/milestone_detection.js` capture the hand-curated "main quest" bosses; the per-tier boss-rush rosters in `codex_boss_rush.js` are the canonical denominators for the 80 / 90 / 100% advance routes. Everything else on this list is "additional boss-tier content" the compass could optionally support.
 
 ### Rough tier distribution

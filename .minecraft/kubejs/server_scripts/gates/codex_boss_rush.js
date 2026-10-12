@@ -96,31 +96,46 @@ var BOSS_RUSH_TIERS = {
 //   • Cardinal Sins folded into T3 (7 sins + Drakara) and T3-roster Lucifer per
 //     the 2026-05-31 ladder — boss-catalog.md predates that integration.
 //
-// NOTE on T1 reachability: the catalog flags Brutal Bosses as a placeholder set
-// pending a mod-swap, and several entries are biome-random (Mad Cow / Evil
-// Chicken / Killer Rabbit / Snow Golem) that a player may never encounter. With
-// 80% required, T1 boss-rush is the hardest pure route by design; the other
-// (non-combat / cumulative / token) routes remain open. Flagged in the report.
+// NOTE on T1 reachability (historical): the catalog flagged Brutal Bosses as a
+// placeholder set pending a mod-swap. Its 13 ids were never entity types and
+// left the roster on 2026-10-12 (see below).
+
+// ROSTERS HOLD REGISTERED ENTITY TYPES ONLY (2026-10-12, operator ruling "Drop
+// the dead ids, rescale targets" and, with the numbers in front of them,
+// "Ship 9 / 18 / 43"). A kill is credited by entity type id, and 31 of the 104
+// ids listed here until that date were not entity types on the pack's mod set
+// (checked against a registry dump of a full-pack boot, 815 living types): the
+// required count was higher than the number of bosses that exist, at every
+// tier, so nobody could ever advance by this route.
+//     T1  28 listed, 11 real, needed 23   ->  11 listed, need 9  (80%)
+//     T2  23 listed, 19 real, needed 21   ->  20 listed, need 18 (90%)
+//     T3  53 listed, 43 real, needed 53   ->  43 listed, need 43 (100%)
+// Removed, with the reason, so that each can come back when it is real:
+//   * brutalbosses: zombieboss, skeletonshieldboss, cavespiderboss, huskboss,
+//     strayboss, drownedboss, phantomboss, witchboss, irongolemboss, rabbitboss,
+//     madcowboss, evilchickenboss, snowgolemboss (T1) -- Brutal Bosses is
+//     installed and registers no entity type; its bosses cannot be told from
+//     ordinary mobs by type id.
+//   * soulsweapons: draugr_boss, returning_knight, night_shade, moonknight (T1),
+//     accursed_lord_boss, chaos_monarch, day_stalker, night_prowler (T3), and
+//     the moonknight_phase_2 alias -- Marium's Soulslike Weaponry is not in the
+//     mod set.
+//   * ultris_mr: corrupted_enderman, giant, phantom_swarm (T2), blaze_king,
+//     ultra_wither, sanctum_keeper (T3) -- Ultris is installed and registers no
+//     entity type under any namespace.
+//   * undergarden:masticator, mutantmonsters:mutant_zombie_villager,
+//     irons_spellbooks:magehunter (T3) -- not entity types in the installed
+//     versions (`magehunter` is the sword; the mob is
+//     irons_spellbooks:magehunter_vindicator, NOT added: adding a boss changes
+//     the ruled count).
+// Corrected, not removed: Teikoku Senshi is majestic_menaces:teikoku_senshi
+// (it was listed under `crazybossfights:`, which registers nothing).
+// Before adding an id, check that it is a registered entity type.
 
 var BOSS_RUSH_ROSTERS = {
 
   // ===== T1 — Overworld (entry tier) — 80% to advance =====
   1: [
-    // Brutal Bosses — structure-locked overworld variants (catalog T1).
-    'brutalbosses:zombieboss',
-    'brutalbosses:skeletonshieldboss',
-    'brutalbosses:cavespiderboss',
-    'brutalbosses:huskboss',
-    'brutalbosses:strayboss',
-    'brutalbosses:drownedboss',
-    'brutalbosses:phantomboss',
-    'brutalbosses:witchboss',
-    'brutalbosses:irongolemboss',
-    // Brutal Bosses — biome-conditional-random variants (catalog T1, Discovery 4).
-    'brutalbosses:rabbitboss',
-    'brutalbosses:madcowboss',
-    'brutalbosses:evilchickenboss',
-    'brutalbosses:snowgolemboss',
     // Mutant Monsters — Skull-Spirit / random T1 variants.
     'mutantmonsters:mutant_zombie',
     'mutantmonsters:mutant_skeleton',
@@ -139,16 +154,6 @@ var BOSS_RUSH_ROSTERS = {
     'mowziesmobs:umvuthi',
     'mowziesmobs:sculptor',
     'mowziesmobs:naga',
-    // Marium's Soulslike Weaponry — early chain (overworld structures/altars). The
-    // Nether-anchored 4 (Decaying King, Chaos Monarch, Day Stalker, Night Prowler)
-    // are in T3 below. Draugr pre-placed in champions_graves (taiga); Moonknight
-    // summoned at cathedral_of_resurrection (hills); Returning Knight + Night Shade
-    // are Old-Moon-Altar / ambush summons. Location law → T1. (HP runs hot for T1 —
-    // see build-report balance flags; difficulty is independent of tier.)
-    'soulsweapons:draugr_boss',
-    'soulsweapons:returning_knight',
-    'soulsweapons:night_shade',
-    'soulsweapons:moonknight',
   ],
 
   // ===== T2 — First-dimensional (Twilight / Aether / Blue Skies) — 90% =====
@@ -177,14 +182,11 @@ var BOSS_RUSH_ROSTERS = {
     // Mutant Monsters — Mutant Enderman (T2 summon context; T4 natural is the
     // same entity ID — deduped to ONE roster slot, placed at T2 per catalog).
     'mutantmonsters:mutant_enderman',
-    // Majestic Menaces — ships under modid `crazybossfights` (catalog footnote).
-    'crazybossfights:teikoku_senshi',   // catalog "T2-T3" → located T2
+    // Majestic Menaces — the entity is registered as majestic_menaces:teikoku_senshi
+    // (the catalog footnote's modid `crazybossfights` registers nothing).
+    'majestic_menaces:teikoku_senshi',  // catalog "T2-T3" → located T2
     // Ars Nouveau — Wilden Chimera ritual boss.
     'ars_nouveau:wilden_boss',          // catalog "T2-T3" → located T2
-    // Ultris (3).
-    'ultris_mr:corrupted_enderman',
-    'ultris_mr:giant',
-    'ultris_mr:phantom_swarm',
   ],
 
   // ===== T3 — Nether / Undergarden / Deeper Darker — 100% (includes Lucifer) =====
@@ -207,11 +209,9 @@ var BOSS_RUSH_ROSTERS = {
     'irons_spellbooks:cryomancer',      // catalog "T2-T3" → located T3 (mob)
     'irons_spellbooks:pyromancer',      // catalog "T2-T3" → located T3 (mob)
     'irons_spellbooks:necromancer',
-    'irons_spellbooks:magehunter',
     'irons_spellbooks:priest',
-    // Undergarden (4).
+    // Undergarden (3).
     'undergarden:forgotten_guardian',
-    'undergarden:masticator',
     'undergarden:forgotten',
     'undergarden:rotbeast',
     // Deeper Darker (2).
@@ -232,14 +232,8 @@ var BOSS_RUSH_ROSTERS = {
     'minecraft:wither',
     // Alex's Mobs — Warped Mosco.
     'alexsmobs:warped_mosco',
-    // Ultris — T3 (3; Ultra Wither + Sanctum Keeper are catalog "T3-T4" → T3).
-    'ultris_mr:blaze_king',
-    'ultris_mr:ultra_wither',
-    'ultris_mr:sanctum_keeper',
     // Terramity — Gatmancer.
     'terramity:gatmancer',
-    // Mutant Monsters — Mutant Zombie Villager.
-    'mutantmonsters:mutant_zombie_villager',
     // ----- Cardinal Sins ladder (folded in; boss-catalog.md predates it) -----
     // The 7 sins + Drakara are T3 (relocated to Nether/Undergarden); Lucifer is
     // the T3 capstone whose 100% clear IS the combat T3→T4 route (framework §5).
@@ -252,17 +246,6 @@ var BOSS_RUSH_ROSTERS = {
     'cardinal_sins:sinofwrath',
     'cardinal_sins:drakara',
     'cardinal_sins:lucifer',            // ← Lucifer: T3 100%-clear gate to T4
-    // ----- Marium's Soulslike Weaponry — Nether-anchored endgame (4) -----------
-    // Decaying King (Accursed Lord) is PRE-PLACED in `decaying_kingdom` which
-    // generates in `#minecraft:is_nether` → unambiguous T3. Chaos Monarch (Blackstone
-    // Pedestal, Nether-material-gated) + the Day Stalker / Night Prowler Chaos-Orb
-    // duo finale (gated behind Moonknight + Chaos Monarch + Decaying-King mats) ride
-    // its progression depth → T3. (The early 4 — Draugr/Returning Knight/Night Shade/
-    // Moonknight — are in the T1 roster above.)
-    'soulsweapons:accursed_lord_boss',  // "The Decaying King" — Nether decaying_kingdom
-    'soulsweapons:chaos_monarch',
-    'soulsweapons:day_stalker',
-    'soulsweapons:night_prowler',
   ],
 }
 
@@ -277,9 +260,6 @@ var BOSS_PHASE_ALIASES = {
   'cardinal_sins:sinofenvyphase_1': 'cardinal_sins:sinofenvy',
   'cardinal_sins:sinofpridephase_1':'cardinal_sins:sinofpride',
   'cardinal_sins:sinofwrathphase_1':'cardinal_sins:sinofwrath',
-  // Marium's Soulslike Weaponry — Moonknight 2nd phase ("Harbinger of Moonlight")
-  // is a distinct entity ID; credit the canonical moonknight slot (counts once).
-  'soulsweapons:moonknight_phase_2': 'soulsweapons:moonknight',
 }
 
 // Resolve an entity ID to its canonical roster ID (apply phase aliases).
