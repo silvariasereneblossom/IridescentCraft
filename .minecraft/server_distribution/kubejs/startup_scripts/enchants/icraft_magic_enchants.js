@@ -327,9 +327,10 @@ try {
 
         // Did the custom crit roll fire on THIS tick? If not, no decap.
         // Same clock, read the same way as the writer (attribute_sync.js:
-        // putLong('icraft_last_crit_tick', attacker.server.tickCount)).
+        // putLong('icraft_last_crit_tick', Number(attacker.level.time)) -- the
+        // world clock since 2026-10-12, not server.tickCount).
         var lastCrit = Number(attacker.persistentData.getLong('icraft_last_crit_tick'))
-        var curTick = Number(attacker.server.tickCount)
+        var curTick = Number(attacker.level.time)
         if (lastCrit !== curTick) return
 
         var victim = event.getEntity()
