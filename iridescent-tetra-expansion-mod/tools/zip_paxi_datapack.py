@@ -49,6 +49,11 @@ DATAPACKS = [
     # silently drifted from the loaded zip (an aethersteel hammer-ladder edit sat
     # undeployed 2026-06-02..06-16). Now packed from source like the rest.
     "icraft_tetra_overrides",
+    # added 2026-10-11: hand-maintained until then. Source and the three loaded
+    # zips were content-identical that day (30 files), so packing from source is
+    # safe from here on. First packed for the retired kubejs:tier2_token entry
+    # in the Majrusz undead-army treasure bag.
+    "icraft_progdiff_overrides",
 ]
 
 DISTRO_ROOTS = [

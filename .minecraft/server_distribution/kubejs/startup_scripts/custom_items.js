@@ -201,8 +201,11 @@ StartupEvents.registry('item', event => {
 
     // =========================================================================
     // SHORT-NAME TOKEN ALIASES
-    // Only tier2_token is left: a Majrusz treasure-bag loot table in the
-    // icraft_progdiff_overrides Paxi pack still drops it.
+    // Only tier2_token is left. Nothing drops it any more: the Majrusz
+    // undead-army treasure bag in the icraft_progdiff_overrides Paxi pack was
+    // its last source and lost the entry on 2026-10-11 (decision sheet C8). It
+    // stays REGISTERED on purpose: unregistering an item deletes every stack of
+    // it that players already hold or have stored.
     // (2026-10-11: tier1_token, tier3_token, tier4_token and the three
     //  tierN_token_fragment items were removed -- referenced by nothing.)
     // =========================================================================

@@ -60,13 +60,8 @@
           ]
         },
         {
-          "type": "minecraft:item",
-          "name": "kubejs:tier2_token",
-          "weight": 10
-        },
-        {
           "type": "minecraft:empty",
-          "weight": 55
+          "weight": 65
         }
       ]
     },
