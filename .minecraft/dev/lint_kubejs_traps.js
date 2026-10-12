@@ -24,6 +24,24 @@
 //                                                    -> `tick % interval === offset` is never true
 //   MATH-CONST      Math.PI / Math.E / ...            -> undefined on this engine (the functions are fine)
 //   NO-SUCH-METHOD  .getInternal() / .getItemSlot() / .isInstance() -> "not a function"
+//   SILENT-CATCH    a NEW catch that logs nothing, does not use the error and does not rethrow
+//                                                    -> whatever its try block gets wrong is invisible for good
+//                   (ratchet, see below; the catches that existed on 2026-10-11 are grandfathered)
+//
+// The silent-catch ratchet (operator ruling 2026-10-11). Most of the dead features of the audit sat behind a
+// `catch (e) {}`: the code threw on every call and nothing ever said so. The pack had several hundred of those
+// when the rule was made, so they are grandfathered by a per-file count in lint_kubejs_traps.silent_catches.json;
+// from then on a file may not hold MORE unmarked silent catches than its count. A new one must either report
+//   console.error('[my_script] <what failed>: ' + e)            (rare paths)
+//   global.icraft.core.warnOnce('<key>', '[my_script] ...: ' + e)  (hot paths: once per boot)
+// or carry a reason inside the catch:
+//   } catch (e) { /* swallow-ok: getTier is absent on a client-only stub */ }
+//   } catch (e) {
+//     // swallow-ok: optional mod, the class is not there on a server without it
+//   }
+// A marked catch no longer counts. Fixing or marking old ones is welcome and never blocks; lower the counts with
+//   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-down
+// (it only ever lowers them). The counts are never raised by a tool: that is the whole point.
 //
 // Recorded exceptions (lint_kubejs_traps.exceptions.json, next to this file) are data, each with a reason:
 //   * an entry tolerates exactly `count` sites of one rule in one file. One more site and the whole
@@ -40,6 +58,14 @@ catch (e) {
 }
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+// what counts as "the catch reported it": a console / chat / status line, or one of the pack's log helpers
+const LOG_RE = /console\.|\.tell\(|\blog\w*\(|\bwarn\w*\(|\berror\w*\(|print\w*\(|tellThrottled|logOnce|statusMessage|displayClientMessage/;
+const SWALLOW_OK = /swallow-ok\s*:\s*(\S.{2,})/;
+const SILENT_MSG = 'a catch that hides whatever its try block gets wrong: nothing is logged, the error is not used, nothing is rethrown. ' +
+  'Rule (2026-10-11): no NEW silent catch. Report it (console.error(\'[script] what failed: \' + e), or global.icraft.core.warnOnce(key, msg) on a hot path), ' +
+  'or put a reason inside the catch: // swallow-ok: <why nothing can be done here>';
 
 const SOURCE_ID = /^(source|src|damageSource|dmgSource|dmgSrc)$/;
 const MATH_CONST = new Set(['PI', 'E', 'SQRT2', 'SQRT1_2', 'LN2', 'LN10', 'LOG2E', 'LOG10E']);
@@ -105,10 +131,41 @@ function lint(file) {
   const src = fs.readFileSync(file, 'utf8');
   const sites = [];      // { rule, line, msg }
   const idiom = [];      // fallback-idiom sites (recorded exception, structural)
+  const silent = [];     // unmarked silent catches: { line, id }
+  const comments = [];   // { text, start, end, line }
+  let marked = 0, badMark = 0;
   let ast;
-  try { ast = acorn.parse(src, { ecmaVersion: 'latest', sourceType: 'script', locations: true, allowReturnOutsideFunction: true }); }
-  catch (e) { return { sites: [{ rule: 'PARSE-FAIL', line: 0, msg: e.message + ' (a file that does not parse cannot be checked)' }], idiom }; }
+  try {
+    ast = acorn.parse(src, { ecmaVersion: 'latest', sourceType: 'script', locations: true, allowReturnOutsideFunction: true,
+      onComment: (block, text, start, end, startLoc) => comments.push({ text, start, end, line: startLoc.line }) });
+  } catch (e) { return { sites: [{ rule: 'PARSE-FAIL', line: 0, msg: e.message + ' (a file that does not parse cannot be checked)' }], idiom, silent, marked }; }
   const site = (rule, node, msg) => sites.push({ rule, line: node.loc.start.line, msg });
+
+  // a catch is silent when its body, comments aside, neither logs, nor names the caught error, nor rethrows
+  function silentCatch(tryNode) {
+    const h = tryNode.handler;
+    let body = '';
+    let pos = h.body.start + 1;
+    for (const c of comments) {
+      if (c.start < pos || c.end > h.body.end) continue;
+      body += src.slice(pos, c.start) + ' ';
+      pos = c.end;
+    }
+    body += src.slice(pos, h.body.end - 1);
+    const pname = h.param && h.param.type === 'Identifier' ? h.param.name : null;
+    const usesParam = !!pname && new RegExp('(^|[^\\w$])' + pname.replace(/\$/g, '\\$') + '($|[^\\w$])').test(body);
+    if (LOG_RE.test(body) || usesParam || /\bthrow\b/.test(body)) return;
+    // the marker sits inside the catch clause, or trails its closing brace on the same line
+    const note = comments.find(c => /swallow-ok/.test(c.text) && ((c.start >= h.start && c.end <= h.end) || (c.start >= h.end && c.line === h.loc.end.line)));
+    if (note) {
+      if (SWALLOW_OK.test(note.text)) { marked++; return; }
+      badMark++;
+      site('SILENT-CATCH', h, '`swallow-ok` without a reason: write // swallow-ok: <why nothing can be done here>');
+      return;
+    }
+    const id = crypto.createHash('sha1').update(src.slice(tryNode.start, tryNode.end).replace(/\s+/g, ' ')).digest('hex').slice(0, 8);
+    silent.push({ line: h.loc.start.line, id });
+  }
 
   // pass 1: per function, where `<object>.actual` is read (for the fallback idiom)
   const actualReads = new Map(); // function node (or null) -> [{ obj, pos }]
@@ -148,6 +205,7 @@ function lint(file) {
       case 'Program': case 'BlockStatement': afterExit(node.body); break;
       case 'SwitchCase': afterExit(node.consequent); break;
       case 'TryStatement': {
+        if (node.handler) silentCatch(node);
         visit(node.block, node, { fn: c.fn, tryDepth: c.tryDepth + (node.handler ? 1 : 0), inConcat: false }, 'block');
         if (node.handler) visit(node.handler, node, c, 'handler');
         if (node.finalizer) visit(node.finalizer, node, c, 'finalizer');
@@ -208,7 +266,7 @@ function lint(file) {
     }
   }
   visit(ast, null, { fn: null, tryDepth: 0, inConcat: false }, null);
-  return { sites, idiom };
+  return { sites, idiom, silent, marked };
 }
 
 // ---- recorded exceptions ----
@@ -228,8 +286,13 @@ try {
 
 const argv = process.argv.slice(2);
 const listExceptions = argv.includes('--exceptions');
+const ratchetDown = argv.includes('--ratchet-down');
+const ratchetSnapshot = argv.includes('--ratchet-snapshot');
+const KNOWN_FLAGS = new Set(['--exceptions', '--ratchet-down', '--ratchet-snapshot']);
+for (const a of argv) if (a.startsWith('--') && !KNOWN_FLAGS.has(a)) { console.error('[trap-lint] CANNOT RUN: unknown option ' + a); process.exit(2); }
 let files = argv.filter(a => !a.startsWith('--'));
 const all = files.length === 0;
+if ((ratchetDown || ratchetSnapshot) && !all) { console.error('[trap-lint] CANNOT RUN: --ratchet-down / --ratchet-snapshot work on the whole pack, not on named files'); process.exit(2); }
 if (all) {
   const root = path.join(__dirname, '..', 'kubejs');
   const walk = (dir) => {
@@ -244,12 +307,51 @@ if (all) {
   if (files.length === 0) { console.error('[trap-lint] CANNOT RUN: no scripts found under ' + root); process.exit(2); }
 }
 
-let total = 0, excused = 0;
+// ---- silent-catch ratchet: the grandfathered counts ----
+// { files: { "<path below kubejs/>": { count, ids: [fingerprint of each grandfathered try/catch] } } }
+// The count is the rule; the ids only let the lint point at the catch that is new instead of listing them all.
+const RATCHET_FILE = path.join(__dirname, 'lint_kubejs_traps.silent_catches.json');
+let ratchet = null;
+if (fs.existsSync(RATCHET_FILE)) {
+  try {
+    ratchet = JSON.parse(fs.readFileSync(RATCHET_FILE, 'utf8')).files;
+    if (!ratchet || typeof ratchet !== 'object') throw new Error('"files" is missing');
+    for (const [k, v] of Object.entries(ratchet)) if (!(v.count >= 0) || !Array.isArray(v.ids)) throw new Error('bad entry for ' + k);
+  } catch (e) {
+    console.error('[trap-lint] CANNOT RUN: ' + RATCHET_FILE + ' is unreadable (' + e.message + ')');
+    process.exit(2);
+  }
+} else if (!ratchetSnapshot) {
+  // without the list every old catch would look new, and with "no list = no rule" a deleted file would switch the rule off
+  console.error('[trap-lint] CANNOT RUN: ' + RATCHET_FILE + ' is missing (the grandfathered silent catches). Restore it from git; do not regenerate it.');
+  process.exit(2);
+}
+if (ratchetSnapshot && ratchet) {
+  console.error('[trap-lint] CANNOT RUN: ' + path.basename(RATCHET_FILE) + ' exists. A snapshot is taken once, when the rule starts; afterwards counts only go down (--ratchet-down).');
+  process.exit(2);
+}
+function writeRatchet(map, note) {
+  const keys = Object.keys(map).filter(k => map[k].count > 0).sort();
+  const total = keys.reduce((n, k) => n + map[k].count, 0);
+  const rows = keys.map(k => '    ' + JSON.stringify(k) + ': {"count": ' + map[k].count + ', "ids": ' + JSON.stringify(map[k].ids) + '}');
+  fs.writeFileSync(RATCHET_FILE, '{\n' +
+    '  "comment": "Grandfathered silent catches for the SILENT-CATCH rule of lint_kubejs_traps.js (ratchet, operator ruling 2026-10-11). A file may hold at most `count` unmarked silent catches; a file that is not listed may hold none. `ids` are fingerprints of the grandfathered try/catch blocks, used only to point at the new one. Counts go DOWN only (--ratchet-down after fixing or marking some); never raise one by hand to get a push through: report the error, or write // swallow-ok: <reason> inside the catch.",\n' +
+    '  "taken": ' + JSON.stringify(note) + ',\n' +
+    '  "total": ' + total + ',\n' +
+    '  "files": {\n' + rows.join(',\n') + '\n  }\n}\n');
+  return { files: keys.length, total };
+}
+
+const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+let total = 0, excused = 0, grandfathered = 0, swallowOk = 0, headroom = 0;
 const seenKeys = new Set();
+const current = {};       // key -> unmarked silent catches found now
 for (const f of files) {
   const key = relKey(f);
   seenKeys.add(key);
   const res = lint(f);
+  current[key] = res.silent;
+  swallowOk += res.marked;
   const out = [];
   const byRule = new Map();
   for (const s of res.sites) { if (!byRule.has(s.rule)) byRule.set(s.rule, []); byRule.get(s.rule).push(s); }
@@ -268,6 +370,24 @@ for (const f of files) {
     out.push(key + ':0\tSTALE-EXCEPTION\t' + exc.rule + ' x' + exc.count + ' is recorded for this file and no site is left: remove the entry from ' + path.basename(EXC_FILE));
   for (const s of res.idiom) notes.push(key + ':' + s.line + '\tSRC-ENTITY\trecorded exception: ' + s.text + ' after a `.actual` read (fallback idiom, the second branch never wins)');
   excused += res.idiom.length;
+
+  // the ratchet: more unmarked silent catches than the file is allowed
+  if (ratchet) {
+    const allowed = ratchet[key] ? ratchet[key].count : 0;
+    if (res.silent.length > allowed) {
+      const known = new Set(ratchet[key] ? ratchet[key].ids : []);
+      let fresh = res.silent.filter(s => !known.has(s.id));
+      if (fresh.length < res.silent.length - allowed) fresh = res.silent;   // the ids do not single them out: show all
+      const tail = allowed === 0 ? ' [no silent catch is grandfathered in this file]'
+        : ' [' + res.silent.length + ' unmarked silent catches in this file, ' + allowed + ' grandfathered' +
+          (fresh.length > res.silent.length - allowed ? '; ' + (res.silent.length - allowed) + ' of the ' + fresh.length + ' shown must be fixed or marked' : '') + ']';
+      for (const s of fresh) out.push(key + ':' + s.line + '\tSILENT-CATCH\t' + SILENT_MSG + tail);
+      grandfathered += allowed;
+    } else {
+      grandfathered += res.silent.length;
+      headroom += allowed - res.silent.length;
+    }
+  }
   total += out.length;
   const showNotes = listExceptions && notes.length > 0;
   if (out.length || !all || showNotes) console.log((out.length ? 'FLAGS ' : (showNotes ? 'noted ' : 'clean ')) + key + (out.length ? '\n  ' + out.join('\n  ') : ''));
@@ -278,5 +398,28 @@ if (all) for (const exc of recorded) if (!seenKeys.has(exc.file)) {
   total++;
   console.log('FLAGS ' + exc.file + '\n  ' + exc.file + ':0\tSTALE-EXCEPTION\tthe file is gone: remove the entry from ' + path.basename(EXC_FILE));
 }
-console.log('[trap-lint] ' + files.length + ' file(s), ' + total + ' flag(s), ' + excused + ' recorded exception(s)' + (excused && !listExceptions ? ' (--exceptions lists them)' : ''));
+
+if (ratchetSnapshot) {
+  const map = {};
+  for (const [k, list] of Object.entries(current)) map[k] = { count: list.length, ids: list.map(s => s.id) };
+  const w = writeRatchet(map, today() + ', snapshot of ' + files.length + ' scripts when the rule started');
+  console.log('[trap-lint] ratchet snapshot written: ' + w.total + ' silent catch(es) grandfathered in ' + w.files + ' file(s) -> ' + path.basename(RATCHET_FILE));
+} else if (ratchetDown) {
+  // lower only: a file keeps min(recorded, found); a file that is not listed stays at 0; a vanished file is dropped
+  const map = {}; let before = 0;
+  for (const [k, v] of Object.entries(ratchet)) {
+    before += v.count;
+    if (!current[k]) continue;
+    const n = Math.min(v.count, current[k].length);
+    map[k] = { count: n, ids: current[k].length <= v.count ? current[k].map(s => s.id) : v.ids };
+  }
+  const prev = JSON.parse(fs.readFileSync(RATCHET_FILE, 'utf8')).taken;
+  const w = writeRatchet(map, String(prev).split(';')[0] + '; lowered ' + today());
+  console.log('[trap-lint] ratchet lowered: ' + before + ' -> ' + w.total + ' grandfathered silent catch(es) (' + path.basename(RATCHET_FILE) + '); commit it with the fix');
+}
+
+let line = '[trap-lint] ' + files.length + ' file(s), ' + total + ' flag(s), ' + excused + ' recorded exception(s)' + (excused && !listExceptions ? ' (--exceptions lists them)' : '');
+if (ratchet) line += '; silent catches: ' + grandfathered + ' grandfathered, ' + swallowOk + ' marked swallow-ok' +
+  (all && headroom > 0 && !ratchetDown ? ' (' + headroom + ' fewer than recorded: --ratchet-down)' : '');
+console.log(line);
 process.exitCode = total ? 1 : 0;
