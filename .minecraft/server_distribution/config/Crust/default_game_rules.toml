@@ -98,6 +98,7 @@ config_enabled = false
   player.artifacts.vampiric_glove.max_healing_per_hit = 6
   player.artifacts.villager_hat.reputation_bonus = 100
   player.artifacts.whoopee_cushion.fart_chance = 12
+  player.blahaj.contained.enable_use = false
   player.disable_elytra_movement_check = false
   player.do_immediate_respawn = false
   player.do_limited_crafting = false
@@ -167,6 +168,7 @@ config_enabled = false
   chat.announce_advancements = true
   chat.command_block_output = true
   chat.log_admin_commands = true
+  chat."puffish_skills:announce_new_points" = true
   chat.send_command_feedback = true
   chat.show_death_messages = true
 
@@ -175,7 +177,7 @@ config_enabled = false
 # Default game rule settings for the 'misc' category.
 
   misc.command_modification_block_limit = 32768
-  misc.decorative_blocks:disable_thatch = false
+  misc."decorative_blocks:disable_thatch" = false
   misc.global_sound_events = true
   misc.max_command_chain_length = 65536
   misc.reduced_debug_info = false
