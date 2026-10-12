@@ -32,11 +32,22 @@ import org.apache.logging.log4j.Logger;
  * <pre>
  *   var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
  *   DR.register('icraft.my_handler', function(event) {
- *     var src = event.source.entity
- *     if (!src) return
+ *     var attacker = event.source.actual   // NOT event.source.entity, see below
+ *     if (!attacker) return
  *     event.amount = event.amount * 1.25
  *   })
  * </pre>
+ *
+ * <p><b>Reading the attacker.</b> In a script, KubeJS exposes
+ * {@code DamageSource.getEntity()} as {@code getActual()} and
+ * {@code getDirectEntity()} as {@code getImmediate()}. {@code event.source.entity}
+ * and {@code event.source.directEntity} are {@code undefined}: a handler that
+ * begins with {@code var src = event.source.entity; if (!src) return} returns
+ * on its first line for every hit and never says so. (This example showed
+ * exactly that until 2026-10-12.) Server scripts should prefer
+ * {@code global.icraft.core.onHurt(key, fn, who)} from
+ * {@code kubejs/server_scripts/0_lib_core.js}: it resolves the attacker, guards
+ * against re-entrant damage and isolates each handler.
  *
  * Re-registering the same key replaces the previous handler -- safe under
  * KubeJS script reloads. Handlers run in iteration order of the underlying
