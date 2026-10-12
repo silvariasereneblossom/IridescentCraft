@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b84be4b5",
+    "generated_from":  "3ce1c668",
     "roots":  [
                   "kubejs",
                   "config",
@@ -1480,8 +1480,8 @@
                                                    "size":  53143
                                                },
                   "config/attributeslib.cfg":  {
-                                                   "sha256":  "be2e1afbad08aa44dc02740c44622e72c107a3c9d8c8a96e26655bc4b81a96e0",
-                                                   "size":  3076
+                                                   "sha256":  "a0456716344600628247c4c4e00891b442712c5c0e3adb7f9c19205fc612cc07",
+                                                   "size":  3077
                                                },
                   "config/autofish.config":  {
                                                  "sha256":  "9b1c36cb6be87016d7e2d2af7cc2bd3c44f6ac5d589cb15b7fe716df0bd714c9",
