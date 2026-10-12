@@ -271,10 +271,25 @@ ItemEvents.entityInteracted(event => {
 
 // ═══════════════════════════════════════════════════════════════════════════
 // ENGINEERING: Material Save (on crafting — return random ingredient)
-// Triggers when a player picks up a crafted result from inventory change.
-// Uses a tracking map to detect "new items gained" vs inventory churn.
+//              Craft Bonus   (on crafting — one extra copy of the result)
+//
+// On a REAL craft only: ItemEvents.crafted = Forge's ItemCraftedEvent, with
+// event.item = the crafted result. Operator ruling 2026-10-12: "Fix it now".
+//
+// Until that date both hung on PlayerEvents.inventoryChanged, whose header here
+// claimed "a tracking map to detect new items gained vs inventory churn". There
+// was no such map. That event fires for EVERY slot change: a stack moved, an
+// item picked up, a tool or armor piece losing a point of durability, every
+// slot at login and at each container open. So each of those rolled for a free
+// material (Material Save) or for a COPY of the changed item, NBT included
+// (Craft Bonus): mining with a diamond pickaxe rolled for a diamond and for a
+// second pickaxe every two seconds. skills/justleveling_skills.js had the same
+// fault and was moved to the craft event on 2026-10-10.
+//
+// Unchanged: the item patterns, the percentages (the two scoreboard scores),
+// the 2-second cooldown per effect and its saved keys, what is handed out.
 // ═══════════════════════════════════════════════════════════════════════════
-PlayerEvents.inventoryChanged(event => {
+ItemEvents.crafted(event => {
   if (!event.player || !event.player.server) return
   if (event.player.spectator || event.player.creative) return
 
@@ -289,7 +304,8 @@ PlayerEvents.inventoryChanged(event => {
   // Only triggers for "crafted-type" items (tools, equipment, processed goods)
   let materialSave = getScore(srv, name, 'icraft_material_save')
   if (materialSave > 0) {
-    let id = item.id
+    // String(): the id arrives as a Java string (see 0_lib_core.js)
+    let id = String(item.id)
     // Detect crafted items by type: tools, weapons, armor, processed materials,
     // mechanical components, building blocks from crafting
     let craftedPatterns = [
@@ -305,7 +321,7 @@ PlayerEvents.inventoryChanged(event => {
       'create:', 'mekanism:', 'thermal:', 'industrialforegoing:'
     ]
     if (craftedPatterns.some(p => id.includes(p))) {
-      // Use a cooldown via persistent data to avoid spamming on inventory shifts
+      // A cooldown via persistent data: a shift-click batch is one roll
       try {
         // World game time (Level.getGameTime(), `level.time` to scripts), not
         // server.tickCount: the stamp is persisted on the player and tickCount
@@ -363,7 +379,7 @@ PlayerEvents.inventoryChanged(event => {
   // Craft Bonus: chance for double output on crafting
   let craftBonus = getScore(srv, name, 'icraft_craft_bonus')
   if (craftBonus > 0) {
-    let id = item.id
+    let id = String(item.id)
     // Trigger on processed/crafted results (not raw materials or drops)
     let craftResults = [
       '_sword', '_pickaxe', '_axe', '_shovel', '_hoe',
@@ -698,7 +714,7 @@ global.registerServerTick('tick_skillEffects', 25, 0)
 // for bonus smelting output via loot table modification.
 // ═══════════════════════════════════════════════════════════════════════════
 // Note: LootJS modifiers apply globally, not per-player. We handle the
-// per-player crafting effects via PlayerEvents.inventoryChanged above.
+// per-player crafting effects via ItemEvents.crafted above.
 // This section adds bonus drops from blocks for engineering-skilled players.
 BlockEvents.broken(event => {
   if (!event.player || !event.player.server) return
@@ -752,8 +768,8 @@ BlockEvents.broken(event => {
 //                     Fire Resistance at 16+, scales with furnace count
 //   enchant_cost_reduction -> XP near enchanting stations
 //   material_save -> Returns contextual ingredients on crafting items
-//                    (via inventoryChanged) + bonus block drops on harvest
-//   craft_bonus -> Chance for double output on crafting (via inventoryChanged),
+//                    (via ItemEvents.crafted) + bonus block drops on harvest
+//   craft_bonus -> Chance for double output on crafting (via ItemEvents.crafted),
 //                  gives copy of crafted item with sound/particle feedback
 //   fishing_speed -> Lure enchant on held fishing rod
 // ═══════════════════════════════════════════════════════════════════════════
