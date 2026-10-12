@@ -9,14 +9,20 @@
 //! belong on the page, which part of a shared file is worldgen, and where
 //! the sharp edges are.
 //!
-//! What is deliberately NOT here: values that live inside datapack zips (the
-//! pack's vanilla / Create / Thermal ore counts in `config/paxi/datapacks`),
-//! anything compiled into a jar (the `iridescent_biomes` region weight), and
+//! One source is not a config file: the placed features inside the pack's
+//! worldgen datapack zip (`config/paxi/datapacks`), where the pack sets how
+//! many veins of vanilla, Create and Thermal ore are tried per chunk. JSON has
+//! no comments, so for those the catalog supplies what a config file would
+//! say itself: which values are settings ([`NUMBERS_ONLY`]) and what they may
+//! be ([`RANGES`]).
+//!
+//! What is deliberately NOT here: anything compiled into a jar (the
+//! `iridescent_biomes` region weight, shown as a fixed line: [`FIXED`]), and
 //! settings that change what a mod registers rather than what it generates.
 
 use std::path::Path;
 
-use crate::cfgedit::{same_value, Entry};
+use crate::cfgedit::{same_value, Document, Entry, Kind};
 use crate::config::ServerConfig;
 use crate::overrides;
 
@@ -42,6 +48,12 @@ pub struct Source {
 impl Source {
     pub fn shows(&self, key: &str) -> bool {
         self.keys.is_empty() || self.keys.iter().any(|prefix| key.starts_with(*prefix))
+    }
+
+    /// Is this entry one of the file's settings? As [`Source::shows`], and in a
+    /// datapack file only the numbers are.
+    pub fn shows_entry(&self, e: &Entry) -> bool {
+        self.shows(&e.key) && (!NUMBERS_ONLY.contains(&self.id) || matches!(e.kind, Kind::Int | Kind::Float))
     }
 
     pub fn caution(&self, key: &str) -> Option<&'static str> {
@@ -76,6 +88,40 @@ const LOCKED: &[(&str, &str, &str)] = &[
     ("tectonic", "general.snow_start_offset", "Each player's game reads its own copy of this to decide where snow falls, so it has to match the pack the players run. It is not a server-only setting."),
     ("tectonic", "minor_version", "The file's own format version."),
 ];
+
+/// Catalog files where only the numbers are settings. The rest of a datapack
+/// file is structure (`"type": "minecraft:count"`, `"feature": ...`): changing
+/// it changes what the file is, and a file the game cannot read stops the
+/// datapack from loading.
+const NUMBERS_ONLY: &[&str] = &["datapack-ores"];
+
+/// Ranges a file does not state itself: (source id, the end of the key, lowest,
+/// highest). These are the game's own limits for a placed feature (a `count`
+/// placement takes 0 to 256; a vertical anchor takes -2032 to 2031). NOT
+/// checked by starting a server with a value outside them: the game is
+/// expected to refuse the whole file.
+const RANGES: &[(&str, &str, f64, f64)] = &[
+    ("datapack-ores", ".count", 0.0, 256.0),
+    ("datapack-ores", ".absolute", -2032.0, 2031.0),
+    ("datapack-ores", ".above_bottom", -2032.0, 2031.0),
+    ("datapack-ores", ".below_top", -2032.0, 2031.0),
+];
+
+/// A worldgen number that is in no file and cannot be changed from here, shown
+/// so that nobody looks for it.
+pub struct Fixed {
+    pub group: &'static str,
+    pub title: &'static str,
+    pub value: &'static str,
+    pub why: &'static str,
+}
+
+pub const FIXED: &[Fixed] = &[Fixed {
+    group: "Biome layout",
+    title: "The pack's cherry biomes: region weight",
+    value: "7",
+    why: "Compiled into the iridescent_biomes jar. This is the number in the pack's source when this launcher was built; it is not read from the jar. It is weighed against TerraBlender's vanilla weight and the Biomes O' Plenty weights. Changing it means rebuilding the jar.",
+}];
 
 pub const SOURCES: &[Source] = &[
     Source {
@@ -205,6 +251,15 @@ pub const SOURCES: &[Source] = &[
         cautions: &[],
     },
     Source {
+        id: "datapack-ores",
+        group: "Ores",
+        title: "Pack datapack: ordinary ore veins",
+        path: "config/paxi/datapacks/icraft_worldgen_overrides.zip!/data/*/worldgen/placed_feature/*.json",
+        keys: &[],
+        about: "Vanilla iron, copper and ancient debris, Create zinc, and Thermal tin, lead, silver and nickel: how many veins are tried per chunk and between which heights. `count` is the tries per chunk. Under the height step, `max_inclusive` is the top of the band and `min_inclusive` the bottom; `absolute` is a Y level, `above_bottom` and `below_top` count from the world's floor and ceiling. The pack sets these in a datapack, which is read when the server starts.",
+        cautions: &[],
+    },
+    Source {
         id: "ore-excavation",
         group: "Ores",
         title: "Create Ore Excavation: drill veins",
@@ -232,6 +287,23 @@ pub fn files(cfg: &ServerConfig) -> Vec<CatalogFile> {
     let mut out = Vec::new();
     for source in SOURCES {
         let path = source.path.replace("{world}", &level);
+        if let Some(at) = path.to_ascii_lowercase().find(overrides::ZIP_SEPARATOR) {
+            // Files inside a datapack zip: `data/<namespace>/.../<name>.json`.
+            let zip = &path[..at + 4];
+            let pattern = &path[at + overrides::ZIP_SEPARATOR.len()..];
+            for inner in zip_members(&join(&cfg.server_dir, zip), pattern) {
+                let parts: Vec<&str> = inner.split('/').collect();
+                let stem = parts.last().map_or("", |file| file.trim_end_matches(".json"));
+                let namespace = parts.get(1).copied().unwrap_or("");
+                out.push(CatalogFile {
+                    source,
+                    rel: format!("{zip}!/{inner}"),
+                    label: format!("{namespace}: {stem}"),
+                    name: format!("{}/{namespace}/{stem}", source.id),
+                });
+            }
+            continue;
+        }
         match path.rsplit_once('/') {
             Some((folder, pattern)) if pattern.starts_with("*.") => {
                 let ext = pattern[1..].to_ascii_lowercase();
@@ -257,6 +329,26 @@ pub fn files(cfg: &ServerConfig) -> Vec<CatalogFile> {
         }
     }
     out
+}
+
+/// The files of a zip whose path matches `pattern`, sorted. A `*` part of the
+/// pattern is any one folder; a last part of `*.json` is any such file. A zip
+/// that is missing or unreadable has none.
+fn zip_members(zip: &Path, pattern: &str) -> Vec<String> {
+    let wanted: Vec<&str> = pattern.split('/').collect();
+    let matches = |name: &str| {
+        let parts: Vec<&str> = name.split('/').collect();
+        parts.len() == wanted.len()
+            && parts.iter().zip(&wanted).all(|(part, want)| match want.strip_prefix('*') {
+                Some(end) => !part.is_empty() && part.ends_with(end),
+                None => part == want,
+            })
+    };
+    let Ok(file) = std::fs::File::open(zip) else { return Vec::new() };
+    let Ok(archive) = zip::ZipArchive::new(file) else { return Vec::new() };
+    let mut found: Vec<String> = archive.file_names().filter(|name| matches(name)).map(str::to_string).collect();
+    found.sort();
+    found
 }
 
 fn join(base: &Path, rel: &str) -> std::path::PathBuf {
@@ -287,7 +379,33 @@ pub fn stage(cfg: &ServerConfig, target: &Target, key: &str, input: &str, by: &s
     if let Some(why) = target.source.and_then(|s| s.locked(key)) {
         return Err(format!("`{key}` is not changed from here. {why}"));
     }
+    if let Some(source) = target.source {
+        // What only the catalog knows: which values of a datapack file are
+        // settings, and the ranges such a file cannot state.
+        let doc = read(cfg, target)?;
+        if let Some(e) = doc.get(key) {
+            if !source.shows_entry(e) && source.shows(key) {
+                return Err(format!("`{key}` is part of the file's structure, not a setting: only its numbers are changed from here"));
+            }
+            e.encode(input)?;
+        }
+    }
     overrides::stage(cfg, &target.rel, key, input, by)
+}
+
+/// Read a file as the page and the command line show it: as
+/// [`overrides::read_document`] does, with the ranges only the catalog knows.
+pub fn read(cfg: &ServerConfig, target: &Target) -> Result<Document, String> {
+    let mut doc = overrides::read_document(cfg, &target.rel)?;
+    if let Some(source) = target.source {
+        for e in &mut doc.entries {
+            if let Some((_, _, min, max)) = RANGES.iter().find(|(id, end, _, _)| *id == source.id && e.key.ends_with(*end)) {
+                e.min = Some(*min);
+                e.max = Some(*max);
+            }
+        }
+    }
+    Ok(doc)
 }
 
 /// `icraft settings files`: the catalog, as text.
@@ -304,12 +422,15 @@ pub fn files_text(cfg: &ServerConfig) -> String {
                 continue;
             }
             for f in mine {
-                let settings = overrides::read_document(cfg, &f.rel).map_or(0, |d| d.entries.iter().filter(|e| e.editable() && source.shows(&e.key)).count());
+                let settings = overrides::read_document(cfg, &f.rel).map_or(0, |d| d.entries.iter().filter(|e| e.editable() && source.shows_entry(e)).count());
                 let yours = store.overrides.iter().filter(|o| o.file == f.rel).count();
                 let yours = if yours > 0 { format!("   {yours} of yours") } else { String::new() };
                 out.push_str(&format!("  {:<28} {settings:>3} setting(s){yours}   {}\n", f.name, f.rel));
             }
         }
+    }
+    for fixed in FIXED {
+        out.push_str(&format!("\nFixed, not a setting: {} = {} ({})\n", fixed.title, fixed.value, fixed.why));
     }
     out.push_str("\nAny other file under config/, defaultconfigs/ or <world>/serverconfig/, and server.properties, can be named by its path.\n");
     out
@@ -349,7 +470,7 @@ fn entry_line(e: &Entry, yours: Option<&overrides::Override>, caution: Option<&s
 /// `icraft settings show`: every setting of one file. `all` ignores the
 /// catalog's "worldgen keys only" filter.
 pub fn show_text(cfg: &ServerConfig, target: &Target, all: bool) -> Result<String, String> {
-    let doc = overrides::read_document(cfg, &target.rel)?;
+    let doc = read(cfg, target)?;
     let store = overrides::Store::load(&cfg.server_dir)?;
     let mut out = format!("{}\n{}\n", target.rel, target.label);
     if let Some(source) = target.source {
@@ -364,12 +485,18 @@ pub fn show_text(cfg: &ServerConfig, target: &Target, all: bool) -> Result<Strin
     let mut section: Option<&str> = None;
     let mut shown = 0;
     for e in &doc.entries {
-        if !all && !target.source.map_or(true, |s| s.shows(&e.key)) {
+        if !all && !target.source.map_or(true, |s| s.shows_entry(e)) {
             continue;
         }
         if section != Some(e.section.as_str()) {
             section = Some(e.section.as_str());
-            out.push_str(&format!("\n[{}]\n", e.section));
+            // A JSON section is a position in a list: say what stands there.
+            let about = doc.sections.iter().find(|(path, _)| path == &e.section).map_or("", |(_, text)| text.as_str());
+            if doc.format == crate::cfgedit::Format::Json && !about.is_empty() {
+                out.push_str(&format!("\n[{}]   {about}\n", e.section));
+            } else {
+                out.push_str(&format!("\n[{}]\n", e.section));
+            }
         }
         let caution = target.source.and_then(|s| s.caution(&e.key));
         let locked = target.source.and_then(|s| s.locked(&e.key));
@@ -383,8 +510,8 @@ pub fn show_text(cfg: &ServerConfig, target: &Target, all: bool) -> Result<Strin
 
 /// The same settings as JSON (one object per setting), for scripts.
 pub fn show_json(cfg: &ServerConfig, target: &Target, all: bool) -> Result<String, String> {
-    let doc = overrides::read_document(cfg, &target.rel)?;
-    let entries: Vec<&Entry> = doc.entries.iter().filter(|e| all || target.source.map_or(true, |s| s.shows(&e.key))).collect();
+    let doc = read(cfg, target)?;
+    let entries: Vec<&Entry> = doc.entries.iter().filter(|e| all || target.source.map_or(true, |s| s.shows_entry(e))).collect();
     serde_json::to_string_pretty(&entries).map_err(|e| e.to_string())
 }
 
@@ -504,6 +631,60 @@ mod tests {
         let text = show_text(&cfg, &tectonic, false).unwrap();
         assert!(text.contains("max_y = 320   [locked]"), "{text}");
         assert!(text.contains("vertical_scale = 0.38   <- YOURS = 0.5 at the next server start (the pack's: 0.38)"), "{text}");
+        let _ = fs::remove_dir_all(dir);
+    }
+
+    #[test]
+    fn datapack_ore_counts_are_files_of_numbers_with_the_games_ranges() {
+        use std::io::Write;
+        let (dir, cfg) = fixture("datapack");
+        let iron = "{\r\n  \"feature\": \"minecraft:ore_iron\",\r\n  \"placement\": [\r\n    {\r\n      \"type\": \"minecraft:count\",\r\n      \"count\": 113\r\n    },\r\n    {\r\n      \"type\": \"minecraft:height_range\",\r\n      \"height\": {\r\n        \"type\": \"minecraft:trapezoid\",\r\n        \"max_inclusive\": {\r\n          \"absolute\": 384\r\n        },\r\n        \"min_inclusive\": {\r\n          \"above_bottom\": 0\r\n        }\r\n      }\r\n    }\r\n  ]\r\n}";
+        let folder = join(&dir, "config/paxi/datapacks");
+        fs::create_dir_all(&folder).unwrap();
+        let mut zip = zip::ZipWriter::new(fs::File::create(folder.join("icraft_worldgen_overrides.zip")).unwrap());
+        for (name, text) in [
+            ("pack.mcmeta", "{}"),
+            ("data/thermal/worldgen/placed_feature/tin_ore.json", "{\"placement\": [{\"type\": \"minecraft:count\", \"count\": 5}]}"),
+            ("data/minecraft/worldgen/placed_feature/ore_iron_upper.json", iron),
+            ("data/icraft/worldgen/structure_set/cherry_villages.json", "{\"spacing\": 10}"),
+            ("data/minecraft/worldgen/placed_feature/deeper/nested.json", "{\"count\": 1}"),
+        ] {
+            zip.start_file(name, zip::write::FileOptions::default()).unwrap();
+            zip.write_all(text.as_bytes()).unwrap();
+        }
+        zip.finish().unwrap();
+
+        // Only the placed features, by namespace and name.
+        let found = files(&cfg);
+        let names: Vec<&str> = found.iter().map(|f| f.name.as_str()).filter(|n| n.starts_with("datapack-ores")).collect();
+        assert_eq!(names, ["datapack-ores/minecraft/ore_iron_upper", "datapack-ores/thermal/tin_ore"]);
+        let file = found.iter().find(|f| f.name == "datapack-ores/minecraft/ore_iron_upper").unwrap();
+        assert_eq!(file.rel, "config/paxi/datapacks/icraft_worldgen_overrides.zip!/data/minecraft/worldgen/placed_feature/ore_iron_upper.json");
+        assert_eq!(file.label, "minecraft: ore_iron_upper");
+
+        // The numbers, with the game's ranges; none of the structure.
+        let iron_file = target(&cfg, "datapack-ores/minecraft/ore_iron_upper");
+        let text = show_text(&cfg, &iron_file, false).unwrap();
+        assert!(text.contains("[placement[0]]   minecraft:count\n  count = 113   (0 to 256)"), "{text}");
+        assert!(text.contains("absolute = 384   (-2032 to 2031)") && text.contains("above_bottom = 0   (-2032 to 2031)"), "{text}");
+        assert!(!text.contains("type =") && !text.contains("feature ="), "{text}");
+        assert!(text.contains("3 setting(s)"), "{text}");
+        assert!(show_text(&cfg, &iron_file, true).unwrap().contains("feature = minecraft:ore_iron"));
+
+        // Refused before anything is saved: out of the game's range, not a
+        // number, and the structure of the file.
+        assert!(stage(&cfg, &iron_file, "placement[0].count", "300", "t").unwrap_err().contains("more than 256"));
+        assert!(stage(&cfg, &iron_file, "placement[0].count", "9.5", "t").is_err());
+        assert!(stage(&cfg, &iron_file, "placement[0].type", "minecraft:other", "t").unwrap_err().contains("structure"));
+        assert!(stage(&cfg, &iron_file, "feature", "minecraft:ore_gold", "t").unwrap_err().contains("structure"));
+        assert!(status_text(&cfg).starts_with("No local config overrides"));
+        assert_eq!(stage(&cfg, &iron_file, "placement[0].count", "90", "t"), Ok(overrides::Staged::Saved));
+        let text = show_text(&cfg, &iron_file, false).unwrap();
+        assert!(text.contains("count = 113   (0 to 256)   <- YOURS = 90 at the next server start (the pack's: 113)"), "{text}");
+
+        let listing = files_text(&cfg);
+        assert!(listing.contains("datapack-ores/minecraft/ore_iron_upper") && listing.contains("3 setting(s)   1 of yours"), "{listing}");
+        assert!(listing.contains("Fixed, not a setting: The pack's cherry biomes: region weight = 7"), "{listing}");
         let _ = fs::remove_dir_all(dir);
     }
 

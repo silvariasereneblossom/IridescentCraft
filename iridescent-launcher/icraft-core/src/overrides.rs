@@ -20,6 +20,10 @@
 //!     value" works without the network.
 //!   * Only `config/`, `defaultconfigs/`, `<world>/serverconfig/` and
 //!     `server.properties` can be named. Nothing here can reach a region file.
+//!   * A `.json` file inside a datapack zip under `config/paxi/datapacks/` can
+//!     be named too (`<pack>.zip!/data/...json`): the pack keeps some worldgen
+//!     numbers there. The zip is rewritten with that one entry replaced and
+//!     every other entry copied as stored.
 //!
 //! Every change that reaches a file is appended to
 //! `config-overrides/history.log`, and the file as it was before its first
@@ -33,7 +37,7 @@
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
-use std::io::Write;
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 use serde::{Deserialize, Serialize};
@@ -137,29 +141,144 @@ pub fn normalize(rel: &str) -> String {
     rel.trim().replace('\\', "/").trim_matches('/').to_string()
 }
 
-/// The file an override may name, or why it may not.
+/// Between a datapack zip and a file inside it:
+/// `config/paxi/datapacks/<pack>.zip!/data/<namespace>/.../<file>.json`.
+pub const ZIP_SEPARATOR: &str = ".zip!/";
+/// The one folder whose zips may be edited inside: the datapacks Paxi loads.
+const DATAPACK_DIR: &str = "config/paxi/datapacks/";
+
+/// Where an override's file is on disk.
+struct Located {
+    /// The file that is read and replaced: the config file itself, or the zip
+    /// that holds it.
+    path: PathBuf,
+    /// The path inside the zip, for a datapack file.
+    inner: Option<String>,
+    format: Format,
+}
+
+/// The file an override may name, or why it may not. For a file inside a
+/// datapack zip the path returned is the zip's.
 pub fn resolve(cfg: &ServerConfig, rel: &str) -> Result<(PathBuf, Format), String> {
+    locate(cfg, rel).map(|at| (at.path, at.format))
+}
+
+fn locate(cfg: &ServerConfig, rel: &str) -> Result<Located, String> {
     let rel = normalize(rel);
-    let parts: Vec<&str> = rel.split('/').collect();
-    if parts.iter().any(|p| p.is_empty() || *p == "." || *p == ".." || p.contains(':')) {
+    let lower = rel.to_ascii_lowercase();
+    // ASCII lowercasing keeps every byte offset.
+    let (outer, inner) = match lower.find(ZIP_SEPARATOR) {
+        Some(at) => (&rel[..at + 4], Some(&rel[at + ZIP_SEPARATOR.len()..])),
+        None => (rel.as_str(), None),
+    };
+    let plain = |path: &str| !path.split('/').any(|p| p.is_empty() || p == "." || p == ".." || p.contains(':') || p.contains('!'));
+    if !plain(outer) || !inner.map_or(true, plain) {
         return Err(format!("`{rel}` is not a plain path inside the server folder"));
     }
-    let lower = rel.to_ascii_lowercase();
+    let parts: Vec<&str> = outer.split('/').collect();
+    let outer_lower = outer.to_ascii_lowercase();
     let serverconfig = format!("{}/serverconfig/", normalize(&cfg.level_name()).to_ascii_lowercase());
-    let allowed = lower == "server.properties"
-        || (parts.len() >= 2 && (lower.starts_with("config/") || lower.starts_with("defaultconfigs/")))
-        || lower.starts_with(&serverconfig);
+    let allowed = outer_lower == "server.properties"
+        || (parts.len() >= 2 && (outer_lower.starts_with("config/") || outer_lower.starts_with("defaultconfigs/")))
+        || outer_lower.starts_with(&serverconfig);
     if !allowed {
         return Err(format!(
             "`{rel}` is not under config/, defaultconfigs/ or <world>/serverconfig/, and is not server.properties: overrides are not written there"
         ));
     }
-    let format = Format::of_path(&rel).ok_or_else(|| format!("`{rel}`: only .toml, .cfg, .json and .properties files can carry overrides"))?;
+    let format = match inner {
+        None => Format::of_path(outer).ok_or_else(|| format!("`{rel}`: only .toml, .cfg, .json and .properties files can carry overrides"))?,
+        Some(inner) => {
+            if !outer_lower.starts_with(DATAPACK_DIR) || outer_lower[DATAPACK_DIR.len()..].contains('/') {
+                return Err(format!("`{rel}`: only a datapack zip directly under {DATAPACK_DIR} can be edited inside"));
+            }
+            if !inner.to_ascii_lowercase().ends_with(".json") {
+                return Err(format!("`{rel}`: only a .json file inside a datapack can carry overrides"));
+            }
+            Format::Json
+        }
+    };
     let mut path = cfg.server_dir.clone();
     for part in &parts {
         path.push(part);
     }
-    Ok((path, format))
+    Ok(Located { path, inner: inner.map(str::to_string), format })
+}
+
+fn read_located(at: &Located) -> Result<String, String> {
+    let Some(inner) = &at.inner else { return read_text(&at.path) };
+    let file = fs::File::open(&at.path).map_err(|e| {
+        if e.kind() == std::io::ErrorKind::NotFound {
+            "the file does not exist".to_string()
+        } else {
+            format!("cannot be read: {e}")
+        }
+    })?;
+    let mut archive = zip::ZipArchive::new(file).map_err(|e| format!("is not a zip that can be read: {e}"))?;
+    let mut entry = archive.by_name(inner).map_err(|_| format!("the zip has no `{inner}`"))?;
+    let mut bytes = Vec::new();
+    entry.read_to_end(&mut bytes).map_err(|e| format!("cannot be read: {e}"))?;
+    String::from_utf8(bytes).map_err(|_| "is not UTF-8 text".to_string())
+}
+
+fn parse_located(at: &Located, text: &str) -> Document {
+    // A datapack file keeps its numbers inside lists (placement steps).
+    if at.inner.is_some() {
+        Document::parse_json_deep(text)
+    } else {
+        Document::parse(at.format, text)
+    }
+}
+
+fn write_located(at: &Located, text: &str) -> std::io::Result<()> {
+    match &at.inner {
+        None => write_atomic(&at.path, text.as_bytes()),
+        Some(inner) => replace_in_zip(&at.path, inner, text.as_bytes()),
+    }
+}
+
+/// Rewrite a zip with one entry's content replaced. Every other entry is
+/// copied as it is stored (never decompressed), in the same order, into a new
+/// file beside the zip, which then takes the zip's place: a reader sees the old
+/// zip or the new one.
+fn replace_in_zip(zip_path: &Path, inner: &str, bytes: &[u8]) -> std::io::Result<()> {
+    fn other(e: zip::result::ZipError) -> std::io::Error {
+        std::io::Error::new(std::io::ErrorKind::Other, e.to_string())
+    }
+    let name = zip_path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
+    let tmp = zip_path.with_file_name(format!("{name}.icraft-tmp"));
+    let written = (|| {
+        let mut archive = zip::ZipArchive::new(fs::File::open(zip_path)?).map_err(other)?;
+        let mut writer = zip::ZipWriter::new(fs::File::create(&tmp)?);
+        let mut replaced = false;
+        for i in 0..archive.len() {
+            let entry = archive.by_index_raw(i).map_err(other)?;
+            if entry.name() == inner {
+                let options = zip::write::FileOptions::default()
+                    .compression_method(zip::CompressionMethod::Deflated)
+                    .last_modified_time(entry.last_modified());
+                drop(entry);
+                writer.start_file(inner, options).map_err(other)?;
+                writer.write_all(bytes)?;
+                replaced = true;
+            } else {
+                writer.raw_copy_file(entry).map_err(other)?;
+            }
+        }
+        if !replaced {
+            return Err(std::io::Error::new(std::io::ErrorKind::NotFound, format!("the zip has no `{inner}`")));
+        }
+        let file = writer.finish().map_err(other)?;
+        file.sync_all()?;
+        drop(file);
+        // The zip must be closed before it can be replaced (Windows).
+        drop(archive);
+        fs::rename(&tmp, zip_path)
+    })();
+    if written.is_err() {
+        let _ = fs::remove_file(&tmp);
+    }
+    written
 }
 
 fn read_text(path: &Path) -> Result<String, String> {
@@ -175,9 +294,9 @@ fn read_text(path: &Path) -> Result<String, String> {
 
 /// Read and parse a file overrides may name.
 pub fn read_document(cfg: &ServerConfig, rel: &str) -> Result<Document, String> {
-    let (path, format) = resolve(cfg, rel)?;
-    let text = read_text(&path).map_err(|why| format!("{}: {why}", normalize(rel)))?;
-    Ok(Document::parse(format, &text))
+    let at = locate(cfg, rel)?;
+    let text = read_located(&at).map_err(|why| format!("{}: {why}", normalize(rel)))?;
+    Ok(parse_located(&at, &text))
 }
 
 /// Write beside the target and rename over it: a reader sees the old file or
@@ -390,7 +509,9 @@ pub fn status(cfg: &ServerConfig) -> Result<Vec<Listed>, String> {
 /// The files that carry an override, lowercased, for deploy-parity checks: a
 /// hash mismatch on one of these is intended, not drift.
 pub fn overridden_files(server_dir: &Path) -> BTreeSet<String> {
-    Store::load(server_dir).map(|s| s.overrides.iter().map(|o| o.file.to_ascii_lowercase()).collect()).unwrap_or_default()
+    // For a file inside a datapack zip, the file on disk that differs is the zip.
+    let on_disk = |o: &Override| o.file.split("!/").next().unwrap_or(o.file.as_str()).to_ascii_lowercase();
+    Store::load(server_dir).map(|s| s.overrides.iter().map(on_disk).collect()).unwrap_or_default()
 }
 
 /// "3 local config override(s) in 2 file(s)", or `None` without any.
@@ -520,15 +641,15 @@ fn fail_all(store: &Store, indexes: &[usize], report: &mut Report, why: &str) {
 
 fn apply_file(cfg: &ServerConfig, file: &str, store: &mut Store, dropped: &mut BTreeSet<usize>, report: &mut Report) {
     let indexes: Vec<usize> = store.overrides.iter().enumerate().filter(|(_, o)| o.file == file).map(|(i, _)| i).collect();
-    let (path, format) = match resolve(cfg, file) {
+    let at = match locate(cfg, file) {
         Ok(found) => found,
         Err(why) => return fail_all(store, &indexes, report, &why),
     };
-    let text = match read_text(&path) {
+    let text = match read_located(&at) {
         Ok(text) => text,
         Err(why) => return fail_all(store, &indexes, report, &why),
     };
-    let mut doc = Document::parse(format, &text);
+    let mut doc = parse_located(&at, &text);
     // None of our values in it: the file is as the pack (or the mod) left it.
     let pristine = indexes.iter().all(|&i| {
         let o = &store.overrides[i];
@@ -603,7 +724,7 @@ fn apply_file(cfg: &ServerConfig, file: &str, store: &mut Store, dropped: &mut B
         if pristine {
             keep_original(cfg, file, &text, report);
         }
-        match write_atomic(&path, doc.text().as_bytes()) {
+        match write_located(&at, doc.text()) {
             Ok(()) => report.files_written += 1,
             Err(e) => {
                 // Nothing reached the disk: every edit of this file failed,
@@ -633,8 +754,9 @@ fn apply_file(cfg: &ServerConfig, file: &str, store: &mut Store, dropped: &mut B
 /// The file as it was before its first override (or as a sync last left it),
 /// under `config-overrides/originals/`. Best effort.
 fn keep_original(cfg: &ServerConfig, file: &str, text: &str, report: &mut Report) {
+    // A file inside a zip is kept under a folder named like the zip.
     let mut path = cfg.server_dir.join(DIR).join(ORIGINALS_DIR);
-    for part in file.split('/') {
+    for part in file.replace("!/", "/").split('/') {
         path.push(part);
     }
     let kept = path.parent().map_or(Ok(()), fs::create_dir_all).and_then(|()| fs::write(&path, text));
@@ -1281,6 +1403,105 @@ mod tests {
         assert_eq!(report.count(|o| *o == Outcome::Set), 1);
         assert_eq!(report.notes.len(), 1);
         assert_eq!(fx.read("world/.icraft_world.json"), "[1, 2]");
+    }
+
+    const PACK: &str = "config/paxi/datapacks/icraft_worldgen_overrides.zip";
+    const IRON: &str = "config/paxi/datapacks/icraft_worldgen_overrides.zip!/data/minecraft/worldgen/placed_feature/ore_iron_upper.json";
+    const IRON_JSON: &str = "{\r\n  \"feature\": \"minecraft:ore_iron\",\r\n  \"placement\": [\r\n    {\r\n      \"type\": \"minecraft:count\",\r\n      \"count\": 113\r\n    },\r\n    {\r\n      \"type\": \"minecraft:in_square\"\r\n    }\r\n  ]\r\n}";
+    const TIN_JSON: &str = "{\n  \"placement\": [\n    {\n      \"type\": \"thermal:config\",\n      \"config\": \"tin_ore\"\n    },\n    {\n      \"type\": \"minecraft:count\",\n      \"count\": 5\n    }\n  ]\n}\n";
+
+    /// The pack's datapack as a sync delivers it.
+    fn pack_zip(fx: &Fx, iron: &str) {
+        fs::create_dir_all(fx.path("config/paxi/datapacks")).unwrap();
+        let mut zip = zip::ZipWriter::new(fs::File::create(fx.path(PACK)).unwrap());
+        for (name, text, method) in [
+            ("pack.mcmeta", "{\"pack\":{\"pack_format\":15,\"description\":\"x\"}}", zip::CompressionMethod::Stored),
+            ("data/minecraft/worldgen/placed_feature/ore_iron_upper.json", iron, zip::CompressionMethod::Deflated),
+            ("data/thermal/worldgen/placed_feature/tin_ore.json", TIN_JSON, zip::CompressionMethod::Deflated),
+        ] {
+            zip.start_file(name, zip::write::FileOptions::default().compression_method(method)).unwrap();
+            zip.write_all(text.as_bytes()).unwrap();
+        }
+        zip.finish().unwrap();
+    }
+
+    /// (name, content, how it is stored) of every entry, in order.
+    fn zip_entries(fx: &Fx) -> Vec<(String, String, zip::CompressionMethod)> {
+        let mut archive = zip::ZipArchive::new(fs::File::open(fx.path(PACK)).unwrap()).unwrap();
+        let mut out = Vec::new();
+        for i in 0..archive.len() {
+            let mut entry = archive.by_index(i).unwrap();
+            let mut text = String::new();
+            entry.read_to_string(&mut text).unwrap();
+            out.push((entry.name().to_string(), text, entry.compression()));
+        }
+        out
+    }
+
+    #[test]
+    fn a_value_inside_a_datapack_zip() {
+        let fx = Fx::new("zip");
+        pack_zip(&fx, IRON_JSON);
+        let before = zip_entries(&fx);
+        let key = "placement[0].count";
+
+        // Staging does not touch the zip.
+        assert_eq!(read_document(&fx.cfg, IRON).unwrap().get(key).unwrap().raw, "113");
+        assert_eq!(stage(&fx.cfg, IRON, key, "90", "test"), Ok(Staged::Saved));
+        assert_eq!(zip_entries(&fx), before);
+        assert_eq!(fx.states(), [State::Waiting]);
+
+        // Applying changes one value of one entry. The other entries are as
+        // they were, in the same order and stored the same way.
+        assert_eq!(fx.outcomes("test"), [change(key, Outcome::Set, "113", "90")]);
+        let after = zip_entries(&fx);
+        assert_eq!(after.len(), 3);
+        assert_eq!(after[0], before[0]);
+        assert_eq!(after[2], before[2]);
+        assert_eq!(after[1].0, before[1].0);
+        assert_eq!(after[1].1, IRON_JSON.replace("\"count\": 113", "\"count\": 90"));
+        assert!(!fx.exists(&format!("{PACK}.icraft-tmp")));
+        assert_eq!(fx.read(&format!("{DIR}/{ORIGINALS_DIR}/{PACK}/data/minecraft/worldgen/placed_feature/ore_iron_upper.json")), IRON_JSON);
+        assert_eq!(fx.states(), [State::InFile]);
+        // The file on disk that now differs from the pack's is the zip.
+        assert_eq!(overridden_files(&fx.dir).into_iter().collect::<Vec<_>>(), [PACK.to_string()]);
+
+        // A sync brings the pack's zip back with a new pack value: ours goes
+        // back in, and the pack's new value is what a reset would restore.
+        pack_zip(&fx, &IRON_JSON.replace("113", "100"));
+        assert_eq!(fx.states(), [State::Waiting]);
+        assert_eq!(fx.outcomes("server start"), [change(key, Outcome::Reapplied, "100", "90")]);
+        assert_eq!(zip_entries(&fx)[1].1, IRON_JSON.replace("\"count\": 113", "\"count\": 90"));
+
+        // A second file of the same zip, then both back to the pack's values.
+        let tin = format!("{PACK}!/data/thermal/worldgen/placed_feature/tin_ore.json");
+        assert_eq!(stage(&fx.cfg, &tin, "placement[1].count", "8", "test"), Ok(Staged::Saved));
+        assert_eq!(apply(&fx.cfg, "test").files_written, 1);
+        assert!(zip_entries(&fx)[2].1.contains("\"count\": 8"));
+        assert_eq!(reset(&fx.cfg, IRON, key), Ok(true));
+        assert_eq!(reset(&fx.cfg, &tin, "placement[1].count"), Ok(true));
+        assert_eq!(apply(&fx.cfg, "test").failed(), 0);
+        let end = zip_entries(&fx);
+        assert_eq!(end[0], before[0]);
+        assert_eq!(end[1].1, IRON_JSON.replace("113", "100"));
+        assert_eq!(end[2].1, TIN_JSON);
+        assert!(!fx.exists(FILE));
+
+        // What cannot be named: a zip anywhere else, anything but JSON inside
+        // one, a path that climbs out of it, a file the zip does not hold.
+        for bad in [
+            "config/other.zip!/data/x.json",
+            "config/paxi/datapacks/sub/pack.zip!/data/x.json",
+            "mods/some.zip!/data/x.json",
+            "config/paxi/datapacks/icraft_worldgen_overrides.zip!/pack.mcmeta",
+            "config/paxi/datapacks/icraft_worldgen_overrides.zip!/../x.json",
+            "config/paxi/datapacks/icraft_worldgen_overrides.zip!/data//x.json",
+        ] {
+            assert!(resolve(&fx.cfg, bad).is_err(), "{bad} was accepted");
+        }
+        assert!(stage(&fx.cfg, &format!("{PACK}!/data/nope.json"), "a", "1", "t").unwrap_err().contains("the zip has no"));
+        // The zip itself, named whole, is not a config file.
+        assert!(resolve(&fx.cfg, PACK).is_err());
     }
 
     #[test]

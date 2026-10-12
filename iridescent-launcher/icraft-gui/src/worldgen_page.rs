@@ -22,7 +22,7 @@ use icraft_core::config::ServerConfig;
 use icraft_core::overrides::{self, Listed, State};
 use icraft_core::worldgen::{self, CatalogFile, Source, Target};
 
-use crate::customizer::{mono_line, open_path, section, BAD, GOOD, WARN};
+use crate::customizer::{open_path, section, BAD, GOOD, WARN};
 
 type Id = (String, String);
 
@@ -98,12 +98,27 @@ impl WorldgenPage {
             .collect();
     }
 
+    /// A file's name for a table. A file inside a datapack zip goes by its
+    /// catalog name: its path is wider than the window.
+    fn short_file(&self, rel: &str) -> String {
+        if !rel.contains("!/") {
+            return rel.to_string();
+        }
+        match self.files.iter().find(|f| f.rel == rel) {
+            Some(f) => f.name.clone(),
+            None => rel.rsplit('/').next().unwrap_or(rel).to_string(),
+        }
+    }
+
     fn mine(&self, file: &str, key: &str) -> Option<&Listed> {
         self.listed.iter().find(|l| l.item.file == file && l.item.key == key)
     }
 
     fn read_selected(&mut self, cfg: &ServerConfig) {
-        self.doc = self.selected.as_ref().map(|rel| overrides::read_document(cfg, rel));
+        self.doc = self.selected.clone().map(|rel| {
+            let source = self.files.iter().find(|f| f.rel == rel).map(|f| f.source);
+            worldgen::read(cfg, &Target { rel, source, label: String::new() })
+        });
     }
 
     /// The overrides, the open file and the history, as they are on disk now.
@@ -357,7 +372,7 @@ impl WorldgenPage {
                     }
                     ui.end_row();
                     for l in &self.listed {
-                        ui.label(RichText::new(l.item.file.as_str()).small());
+                        ui.label(RichText::new(self.short_file(&l.item.file)).small()).on_hover_text(l.item.file.as_str());
                         ui.label(l.item.key.as_str());
                         ui.label(RichText::new(plain(&l.item.value)).strong());
                         ui.label(l.item.base.as_deref().map_or("?".to_string(), plain));
@@ -391,7 +406,9 @@ impl WorldgenPage {
                 let title = format!("The last {} changes that reached a file", self.history.len());
                 section(ui, self.expand_all, "worldgen-history", title, false, |ui| {
                     for line in &self.history {
-                        mono_line(ui, line);
+                        // Wrapped: one line that does not fit would widen the
+                        // whole page past the window.
+                        ui.add(egui::Label::new(RichText::new(line.as_str()).monospace().small()).wrap(true));
                     }
                 });
             }
@@ -419,6 +436,11 @@ impl WorldgenPage {
                     if ui.selectable_label(selected, text).clicked() {
                         actions.push(Action::Select(f.rel.clone()));
                     }
+                }
+                // Numbers of this group that are in no file: shown, not offered.
+                for fixed in worldgen::FIXED.iter().filter(|fixed| fixed.group == *group) {
+                    ui.add(egui::Label::new(RichText::new(format!("{}: {}", fixed.title, fixed.value)).weak()).wrap(true)).on_hover_text(fixed.why);
+                    ui.add(egui::Label::new(RichText::new("fixed: compiled into the jar").small().weak()).wrap(true));
                 }
                 ui.add_space(6.0);
             }
@@ -462,7 +484,7 @@ impl WorldgenPage {
         let touched = |e: &Entry| self.mine(rel, &e.key).is_some() || self.edits.contains_key(&(rel.clone(), e.key.clone()));
         let mut sections: Vec<(&str, Vec<&Entry>)> = Vec::new();
         for e in &doc.entries {
-            if !source.map_or(true, |s| s.shows(&e.key)) {
+            if !source.map_or(true, |s| s.shows_entry(e)) {
                 continue;
             }
             if self.only_mine && !touched(e) {

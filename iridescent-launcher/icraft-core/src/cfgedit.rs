@@ -207,11 +207,28 @@ pub struct Document {
     /// problems is shown, and edits to it are refused only if they would
     /// disturb another key (see [`Document::set`]).
     pub problems: Vec<String>,
+    /// JSON only: values inside arrays are entries too (see
+    /// [`Document::parse_json_deep`]).
+    deep: bool,
 }
 
 impl Document {
     pub fn parse(format: Format, text: &str) -> Document {
-        let mut doc = Document { format, text: text.to_string(), entries: Vec::new(), sections: Vec::new(), problems: Vec::new() };
+        Document::parse_as(format, text, false)
+    }
+
+    /// JSON with the values inside arrays addressable as well, by position:
+    /// `placement[0].count`, `placement[2].height.min_inclusive.absolute`.
+    /// Datapack files keep their numbers there (a placed feature is a list of
+    /// placement steps). An array is then no entry of its own, and an object
+    /// that says what it is (`"type": "minecraft:count"`) carries that as its
+    /// section's comment, since a position alone tells a reader nothing.
+    pub fn parse_json_deep(text: &str) -> Document {
+        Document::parse_as(Format::Json, text, true)
+    }
+
+    fn parse_as(format: Format, text: &str, deep: bool) -> Document {
+        let mut doc = Document { format, text: text.to_string(), entries: Vec::new(), sections: Vec::new(), problems: Vec::new(), deep };
         match format {
             Format::Toml => parse_toml(text, &mut doc),
             Format::Cfg => parse_cfg(text, &mut doc),
@@ -247,7 +264,7 @@ impl Document {
         }
         let mut text = self.text.clone();
         text.replace_range(entry.start..entry.end, raw);
-        let fresh = Document::parse(self.format, &text);
+        let fresh = Document::parse_as(self.format, &text, self.deep);
         // In TOML and JSON the way a value is written is its type: a number
         // stays a number, a string a string. The other two formats are untyped.
         let typed = matches!(self.format, Format::Toml | Format::Json);
@@ -748,6 +765,9 @@ struct JsonScan<'a> {
     text: &'a str,
     b: &'a [u8],
     i: usize,
+    /// Descend into arrays (`name[0]`, `name[1]`, ...) instead of recording
+    /// each as one list.
+    deep: bool,
 }
 
 impl<'a> JsonScan<'a> {
@@ -834,6 +854,40 @@ impl<'a> JsonScan<'a> {
                     }
                 }
             }
+            Some(b'[') if self.deep => {
+                self.i += 1;
+                // The element's path is the array's own name with its position:
+                // the caller pushed `placement`; each element is `placement[n]`.
+                let base = path.pop();
+                let mut index = 0usize;
+                let walked = loop {
+                    self.ws();
+                    if self.b.get(self.i).copied() == Some(b']') {
+                        self.i += 1;
+                        break Ok(());
+                    }
+                    path.push(format!("{}[{index}]", base.as_deref().unwrap_or("")));
+                    let inner = self.value(path, doc, depth + 1);
+                    path.pop();
+                    if let Err(why) = inner {
+                        break Err(why);
+                    }
+                    index += 1;
+                    self.ws();
+                    match self.b.get(self.i).copied() {
+                        Some(b',') => self.i += 1,
+                        Some(b']') => {
+                            self.i += 1;
+                            break Ok(());
+                        }
+                        _ => break Err(format!("a `,` or `]` was expected at byte {}", self.i)),
+                    }
+                };
+                if let Some(base) = base {
+                    path.push(base);
+                }
+                walked
+            }
             Some(b'[') => {
                 self.i = balanced_end(self.text, start, b'[', b']', false);
                 self.record(path, doc, start, Kind::List, false);
@@ -865,17 +919,19 @@ impl<'a> JsonScan<'a> {
 }
 
 fn parse_json(text: &str, doc: &mut Document) {
-    let mut scan = JsonScan { text, b: text.as_bytes(), i: if text.starts_with('\u{feff}') { 3 } else { 0 } };
+    let mut scan = JsonScan { text, b: text.as_bytes(), i: if text.starts_with('\u{feff}') { 3 } else { 0 }, deep: doc.deep };
     let mut path = Vec::new();
     if let Err(why) = scan.value(&mut path, doc, 0) {
         doc.problem(why);
     }
+    // JSON has no comments. What an object says it is (`"type": "..."`) is the
+    // nearest thing to a description of the values beside it.
+    let kinds: std::collections::BTreeMap<String, String> =
+        doc.entries.iter().filter(|e| e.name == "type" && e.kind == Kind::Text).map(|e| (e.section.clone(), e.value())).collect();
     let mut seen = std::collections::BTreeSet::new();
     for e in &doc.entries {
-        if let Some(parent) = (!e.section.is_empty()).then(|| e.section.clone()) {
-            if seen.insert(parent.clone()) {
-                doc.sections.push((parent, String::new()));
-            }
+        if !e.section.is_empty() && seen.insert(e.section.clone()) {
+            doc.sections.push((e.section.clone(), kinds.get(&e.section).cloned().unwrap_or_default()));
         }
     }
 }
@@ -1111,6 +1167,64 @@ mod tests {
             JSON.replace("0.25", "0.3").replace("\"on\": true", "\"on\": false").replace("\"a \\\"b\\\"\"", "\"c\\\\d\"")
         );
         assert_eq!(doc.get("name").unwrap().value(), "c\\d");
+    }
+
+    /// A placed feature as the pack's datapack writes it (CRLF and all).
+    const PLACED: &str = "{\r\n  \"feature\": \"minecraft:ore_iron\",\r\n  \"placement\": [\r\n    {\r\n      \"type\": \"minecraft:count\",\r\n      \"count\": 113\r\n    },\r\n    {\r\n      \"type\": \"minecraft:in_square\"\r\n    },\r\n    {\r\n      \"type\": \"minecraft:height_range\",\r\n      \"height\": {\r\n        \"type\": \"minecraft:trapezoid\",\r\n        \"max_inclusive\": {\r\n          \"absolute\": 384\r\n        },\r\n        \"min_inclusive\": {\r\n          \"absolute\": 80\r\n        }\r\n      }\r\n    },\r\n    {\r\n      \"type\": \"minecraft:biome\"\r\n    }\r\n  ],\r\n  \"tags\": [\"a\", 2, [true]]\r\n}";
+
+    #[test]
+    fn json_deep_reaches_the_values_inside_arrays() {
+        // Read the ordinary way, the list of placement steps is one opaque value.
+        let flat = Document::parse(Format::Json, PLACED);
+        assert_eq!(flat.entries.iter().map(|e| e.key.as_str()).collect::<Vec<_>>(), ["feature", "placement", "tags"]);
+        assert_eq!(flat.get("placement").unwrap().kind, Kind::List);
+
+        let mut doc = Document::parse_json_deep(PLACED);
+        assert!(doc.problems.is_empty(), "{:?}", doc.problems);
+        let keys: Vec<&str> = doc.entries.iter().map(|e| e.key.as_str()).collect();
+        assert_eq!(
+            keys,
+            [
+                "feature",
+                "placement[0].type",
+                "placement[0].count",
+                "placement[1].type",
+                "placement[2].type",
+                "placement[2].height.type",
+                "placement[2].height.max_inclusive.absolute",
+                "placement[2].height.min_inclusive.absolute",
+                "placement[3].type",
+                "tags[0]",
+                "tags[1]",
+                "tags[2][0]",
+            ]
+        );
+        let count = doc.get("placement[0].count").unwrap();
+        assert_eq!((count.kind, count.raw.as_str(), count.section.as_str(), count.name.as_str()), (Kind::Int, "113", "placement[0]", "count"));
+        assert_eq!(doc.get("tags[1]").unwrap().section, "");
+        assert_eq!(doc.get("tags[2][0]").unwrap().kind, Kind::Bool);
+        // A position says nothing; what the step calls itself does.
+        let about = |section: &str| doc.sections.iter().find(|(path, _)| path == section).map(|(_, text)| text.as_str());
+        assert_eq!(about("placement[0]"), Some("minecraft:count"));
+        assert_eq!(about("placement[2].height"), Some("minecraft:trapezoid"));
+        assert_eq!(about("placement[2].height.max_inclusive"), Some(""));
+
+        // Edits are in place here too, and stay deep when re-read.
+        assert_eq!(doc.set("placement[0].count", "90"), Ok(true));
+        assert_eq!(doc.set("placement[2].height.min_inclusive.absolute", "-24"), Ok(true));
+        assert_eq!(doc.text(), PLACED.replace("\"count\": 113", "\"count\": 90").replace("\"absolute\": 80", "\"absolute\": -24"));
+        assert_eq!(doc.get("placement[0].count").unwrap().raw, "90");
+        // A number cannot become a string, nor swallow the rest of the array.
+        assert!(doc.set("placement[0].count", "\"many\"").is_err());
+        assert!(doc.set("placement[0].count", "1 }, {").is_err());
+
+        // A damaged list: what was read stays, and the problem is reported.
+        let broken = Document::parse_json_deep("{ \"a\": [1, 2 3] }");
+        assert_eq!(broken.entries.len(), 2);
+        assert_eq!(broken.problems.len(), 1);
+        // A list at the top of a file.
+        let top = Document::parse_json_deep("[ {\"x\": 1}, 5 ]");
+        assert_eq!(top.entries.iter().map(|e| e.key.as_str()).collect::<Vec<_>>(), ["[0].x", "[1]"]);
     }
 
     #[test]
