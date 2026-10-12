@@ -39,7 +39,8 @@
     var mob = level.createEntity('minecraft:zombie')
     var objects = {
       player: player, inv: player.inventory, stack: player.inventory.getStackInSlot(0), mob: mob,
-      level: level, server: server, source: level.damageSources().generic(), psource: level.damageSources().playerAttack(player)
+      level: level, server: server, source: level.damageSources().generic(), psource: level.damageSources().playerAttack(player),
+      event: event
     }
 
     // ---- facts ------------------------------------------------------------------

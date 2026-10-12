@@ -1,7 +1,8 @@
 {
   "about": "Which real class each mock stands in for. MemberCheck (suite mock-honesty) fails on a mock class that is not listed here and on a mock member the real class does not offer to a script. real = the classes whose members the mock may offer (merged); jar = a file-name pattern when the real class is a mod's own and so is read from its jar with javap instead of from truth/engine-members.json; harness = members that are test plumbing, each with its reason (a member named t_* needs no entry); harness-class = a class no script under test is ever handed.",
-  "holders": ["mk.W", "mk.S", "mk.A", "mk.M", "mk.T"],
+  "holders": ["mk.W", "mk.S", "mk.A", "mk.M", "mk.T", "dev.latvian.mods.kubejs.event.EventExit"],
   "mocks": {
+    "dev.latvian.mods.kubejs.event.EventExit": {"real": ["dev.latvian.mods.kubejs.event.EventExit"]},
     "mk.W": {"harness-class": "holder of the mocks; its statics (LOG, counters) are read by tests through mk.T"},
     "mk.S": {"harness-class": "holder of the startup / client mocks; its static methods are test-side builders"},
     "mk.A": {"harness-class": "holder of the ascension / onboarding additions; its static methods are test-side reads"},

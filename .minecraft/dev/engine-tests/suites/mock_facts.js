@@ -13,7 +13,8 @@
   var objects = {
     player: player, inv: player.inventory, stack: player.inventory.getStackInSlot(0), mob: T_mob('minecraft:zombie'),
     level: T_OW, server: T_server, source: T.source('minecraft:generic', null, null),
-    psource: T.source('minecraft:player_attack', player, player)
+    psource: T.source('minecraft:player_attack', player, player),
+    event: { cancel: function () { T.exit() } }      // what T_fire gives a handler (lib/prelude.js)
   }
   var clean = function (s) { return String(s).replace(/@[0-9a-f]{4,}/g, '@#').replace(/[\r\n\t]+/g, ' ') }
   var notMocked = []

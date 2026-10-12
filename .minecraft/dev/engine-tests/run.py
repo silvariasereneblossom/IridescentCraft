@@ -252,8 +252,7 @@ class Ctx:
         cp = self.jars.rhino_cp()
         classes = os.path.join(OUT, "classes")
         if not self._built:
-            srcs = sorted(glob.glob(os.path.join(HERE, "harness", "*.java")) +
-                          glob.glob(os.path.join(HERE, "harness", "mk", "*.java")))
+            srcs = sorted(glob.glob(os.path.join(HERE, "harness", "**", "*.java"), recursive=True))
             compile_java(self.jdk, srcs, cp, classes)
             self._built = True
         return [classes] + cp

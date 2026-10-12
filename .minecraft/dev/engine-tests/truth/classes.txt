@@ -81,4 +81,5 @@ dev.latvian.mods.kubejs.bindings.JavaWrapper
 dev.latvian.mods.rhino.mod.wrapper.AABBWrapper
 dev.latvian.mods.rhino.mod.wrapper.ColorWrapper
 dev.latvian.mods.kubejs.util.ConsoleJS
+dev.latvian.mods.kubejs.event.EventExit
 dev.latvian.mods.rhino.mod.util.color.Color

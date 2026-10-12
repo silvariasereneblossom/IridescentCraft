@@ -105,6 +105,8 @@ public class T {
       @Override public void death(W.Living victim, W.Source source) { d.accept(victim, source); }
     };
   }
+  /** what EventJS.cancel() does in game: leave the handler by throwing EventExit */
+  public static Object exit() throws dev.latvian.mods.kubejs.event.EventExit { throw new dev.latvian.mods.kubejs.event.EventExit(null); }
   public static void wear(W.Living e, String slot, W.Stack s) { e.setItemSlot(W.Slot.valueOf(slot.toUpperCase()), s); }
 
   /**
