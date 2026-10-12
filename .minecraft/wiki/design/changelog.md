@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The server launcher can carry a world refresh out
+
+- **The launcher can now reset the parts of the world a refresh plan marks, and nothing else.** The plan is the map made earlier: beds, claims, the spawn area, used waystones and lived-in chunks are kept exactly as they are; the rest is taken out so Minecraft generates it again when somebody goes there. **Nothing has been regenerated on the test server**: this is the tool, not a run of it.
+- **It only runs on the server operator's typed go-ahead**, with the server stopped, after working the plan out again from the world as it is. If the world changed since the plan was looked at, nothing happens and the difference is shown.
+- **It takes a checked backup first and keeps everything it removes.** A run that is undone before the server starts again gives the world back exactly as it was. It is refused outright if a player last logged out in an area that would be reset.
+- **World backups now carry the server's own files too** (who may join, the server's own settings), so a lost server can be rebuilt from a backup alone.
+
 ## October 2026 — The Abyss's bosses carry the Abyssal artifacts
 
 - **Twelve Abyss-themed Celestial Artifacts now drop from the three Abyss bosses.** They were written for Abyss treasure chests, and The Abyss has none that roll loot. The Elder (20%) and The Roka (50%) drop one of Demon Curse, Twisted Scabbard, Catastrophe Scroll, Abyss Will Badge or Lock of Abyss. Nightblade always drops one of Abyss Core, Demon Heart, Twisted Heart, Twisted Scroll, Heart of Revenge, Chaotic Etching or Nihility Etching. Each of the three can also drop an enchanted book (10%, levels 20–30). The rates are provisional and may be tuned.
