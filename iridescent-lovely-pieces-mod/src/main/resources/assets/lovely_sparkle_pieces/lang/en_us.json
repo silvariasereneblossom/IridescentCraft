@@ -400,5 +400,7 @@
   "tooltip.lovelysparklepieces.soul_quiver.des2": "Even without souls, there's a 50% chance not to consume normal arrows.",
   "tooltip.lovely_sparkle_pieces.woodgrain_quiver.des": "Projectile damage increased by 10%.",
   "tooltip.lovely_sparkle_pieces.woodgrain_quiver.des1": "Launchers have a 40% chance not to consume arrows.",
-  "tooltip.lovely_sparkle_pieces.woodgrain_quiver.des2": "Arrows are finely tuned for greater accuracy."
+  "tooltip.lovely_sparkle_pieces.woodgrain_quiver.des2": "Arrows are finely tuned for greater accuracy.",
+  "painting.lovely_sparkle_pieces.lsp_painting1.title": "Lovely Sparkle",
+  "painting.lovely_sparkle_pieces.lsp_painting1.author": "Lovely Sparkle Pieces"
 }

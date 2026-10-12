@@ -36,6 +36,7 @@ import net.royling.lovelysparklepieces.ModEvents.necklace.LavaDefance;
 import net.royling.lovelysparklepieces.ModItem.ModCurios.ModCurios;
 import net.royling.lovelysparklepieces.ModItem.ModCuriosRender.MagmaAmuletRender;
 import net.royling.lovelysparklepieces.ModItem.ModUsingItem.ModItems;
+import net.royling.lovelysparklepieces.ModPainting.ModPaintings;
 import net.royling.lovelysparklepieces.ModSounds.ModSounds;
 import net.royling.lovelysparklepieces.PlayerData.ChipsData;
 import net.royling.lovelysparklepieces.PlayerData.SoulData;
@@ -76,6 +77,7 @@ public class LovelySparklePieces {
         ModEntities.ENTITIES.register(modEventBus);
         ModMobEffects.MOB_EFFECTS.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
+        ModPaintings.PAINTINGS.register(modEventBus);
 
         // 注册到 Forge 事件总线
         MinecraftForge.EVENT_BUS.register(this);
