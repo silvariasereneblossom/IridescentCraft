@@ -1,6 +1,6 @@
 filename = 'celestial_core-1.5.7.jar'
 name = 'Celestial Core'
-side = 'server'
+side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
