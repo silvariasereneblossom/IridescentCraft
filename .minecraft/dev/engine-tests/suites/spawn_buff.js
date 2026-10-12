@@ -206,4 +206,7 @@ check('S14 saveModifier: 1 saved, 0 no such attribute', core.saveModifier(zombie
 
 __host.print('')
 if (T_DISHONEST.length) __host.print('DISHONEST MOCKS (' + T_DISHONEST.length + '):\n   ' + T_DISHONEST.join('\n   '))
-__host.print('RESULT: ' + passed + ' passed, ' + failed + ' failed, ' + T_DISHONEST.length + ' dishonest mock members')
+// the handlers run behind icraft.guard: one that throws is reported by the guard, and has to fail this suite
+var T_guardFailed = (typeof icraft !== 'undefined' && icraft.guard && typeof icraft.guard.failures === 'function') ? icraft.guard.failures() : []
+for (var T_gi = 0; T_gi < T_guardFailed.length; T_gi++) __host.print('GUARDED HANDLER FAILED: ' + T_guardFailed[T_gi].name + ' in ' + T_guardFailed[T_gi].event + ': ' + T_guardFailed[T_gi].first)
+__host.print('RESULT: ' + passed + ' passed, ' + failed + ' failed, ' + T_DISHONEST.length + ' dishonest mock members, ' + T_guardFailed.length + ' guarded handler failures')

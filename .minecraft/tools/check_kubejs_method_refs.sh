@@ -35,6 +35,10 @@
 #     `typeof core.isBoss === 'function' && core.isBoss(id)`) -- `typeof` reads
 #     the member's TYPE, which is exactly what a bare ref is for. Only the
 #     probe itself is dropped; any other bare ref on the same line still flags.
+#   - The two labels of an event guard, `icraft.guard('<script>', '<Group.event>',`
+#     (kubejs/*_scripts/00_icraft_guard.js): the second one is the registration's
+#     own name as a STRING (`'ItemEvents.canPickUp'`), not a member read. Only the
+#     two string arguments are dropped; the handler after them is still checked.
 #
 # What still needs `// CI-ignore: <reason>` on the line (verify first -- javap
 # the live jar, don't guess):
@@ -81,6 +85,7 @@ fi
 #           - the feature-detect idiom `obj.method && obj.method(`
 #           - `typeof obj.method` probes (the probe only, then the line is
 #             re-tested for any bare ref left over)
+#           - the two string labels of `icraft.guard('..', '..',` (same way)
 #         A hit inside a string literal is NOT filtered; add `// CI-ignore`.
 #
 # perl, not `grep -P`: under a non-UTF-8 locale (Git Bash with LANG unset)
@@ -105,6 +110,7 @@ found=$(
     next if /CI-ignore/;
     next if /(\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+)\s*&&\s*\1\s*\(/;
     (my $rest = $_) =~ s/\btypeof\s*\(?\s*[A-Za-z_\$][\w\$.]*//g;
+    $rest =~ s/\bicraft\.guard\(\s*([\x27"])[^\x27"]*\1\s*,\s*([\x27"])[^\x27"]*\2//g;
     print if $rest =~ /\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+[^a-zA-Z_(\n]/;
   '
 )

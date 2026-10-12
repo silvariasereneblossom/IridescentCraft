@@ -1,5 +1,13 @@
 ;(function () {
   __host.print('')
+  // Scripts register through icraft.guard (kubejs/server_scripts/00_icraft_guard.js). A handler that throws is
+  // then caught by the guard, which prints its own line and lets the event go on: T_fire never sees it. It is
+  // a failed handler all the same, so it is counted here and fails the suite.
+  var guardFailed = []
+  if (typeof icraft !== 'undefined' && icraft.guard && typeof icraft.guard.failures === 'function') guardFailed = icraft.guard.failures()
+  for (var gi = 0; gi < guardFailed.length; gi++) {
+    __host.print('GUARDED HANDLER FAILED: ' + guardFailed[gi].name + ' in ' + guardFailed[gi].event + ' x' + guardFailed[gi].count + ': ' + guardFailed[gi].first)
+  }
   if (T_UNCAUGHT.length) __host.print('UNCAUGHT handler errors:\n   ' + T_UNCAUGHT.join('\n   '))
   var javaLog = T.strings(T.sget('mk.W', 'LOG'))
   if (javaLog.length) __host.print('Java registry log:\n   ' + T.join(javaLog))
@@ -19,5 +27,6 @@
     __host.snap(T.state(T_server))
   }
   __host.print('RESULT: ' + T_pass + ' passed, ' + T_fail + ' failed, ' + T_UNCAUGHT.length + ' uncaught, ' +
-    T.totalThrows() + ' registry-level throws, ' + T_LOAD_ERRORS.length + ' load errors, ' + T_DISHONEST.length + ' dishonest mock members')
+    T.totalThrows() + ' registry-level throws, ' + T_LOAD_ERRORS.length + ' load errors, ' + T_DISHONEST.length + ' dishonest mock members, ' +
+    guardFailed.length + ' guarded handler failures')
 })()

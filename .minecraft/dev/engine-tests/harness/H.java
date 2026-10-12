@@ -59,9 +59,15 @@ public class H {
     public void alias(String realName, String mockName) { aliases.put(realName, mockName); }
     public Object loadClass(String name) throws Exception {
       String target = aliases.containsKey(name) ? aliases.get(name) : name;
-      if (!target.startsWith("mk.")) throw new ClassNotFoundException(name + " (not mapped to a mock)");
+      if (!target.startsWith("mk.") && !REAL.contains(target)) throw new ClassNotFoundException(name + " (not mapped to a mock)");
       return new NativeJavaClass(cx, scope, Class.forName(target));
     }
+    /**
+     * Classes a script may load under their own name: what kubejs/server_scripts/00_icraft_guard.js loads.
+     * java.util.Optional is the JDK's own (the guard throws an exit again through Optional.orElseThrow, and
+     * tries that once when it loads), and EventExit is the stand-in that carries the real class's name.
+     */
+    static final java.util.Set<String> REAL = java.util.Set.of("java.util.Optional", "dev.latvian.mods.kubejs.event.EventExit");
     public String load(String path) {
       try {
         String src = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);

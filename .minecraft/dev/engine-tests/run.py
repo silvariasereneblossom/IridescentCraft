@@ -655,8 +655,67 @@ def run_truth_fresh(ctx, suite, snap=None):
     return bad == 0, note, "\n".join(out) + "\n"
 
 
+def run_guard(ctx, suite, snap=None):
+    """kubejs/*_scripts/00_icraft_guard.js on KubeJS's real handler chain (guard/GuardChain.java).
+
+    Not the mk.* harness: this one has the KubeJS and Architectury jars on its class path, so EventJS.cancel()
+    throws the real EventExit and EventHandlerContainer.handle() is the loop the game runs. Three runs: the
+    guard as shipped, the guard without the class its rethrow needs (it must switch itself off and say so),
+    and the guard with its PASS_THROUGH switch set."""
+    scripts = [os.path.join(ctx.pack, "kubejs", k + "_scripts", "00_icraft_guard.js") for k in ("server", "startup", "client")]
+    out = []
+    bad = 0
+    missing = [p for p in scripts if not os.path.isfile(p)]
+    if missing:
+        return False, "the guard file is missing: " + ", ".join(os.path.relpath(p, ctx.pack) for p in missing), ""
+    digests = {digest(p, "sha256") for p in scripts}
+    if len(digests) != 1:
+        bad += 1
+        out.append("  FAIL  the server / startup / client copies of 00_icraft_guard.js differ: it is ONE file in three places")
+    else:
+        out.append("  ok    the server / startup / client copies of 00_icraft_guard.js are one file")
+    cp = ctx.jars.rhino_cp() + [ctx.jars.mod("kubejs"), ctx.jars.mod("architectury-api")]
+    classes = os.path.join(OUT, "guard-classes")
+    compile_java(ctx.jdk, [os.path.join(HERE, "guard", "GuardChain.java")], cp, classes)
+    runs = [("as shipped", [], "cases.js"),
+            ("without java.util.Optional", ["--deny", "java.util.Optional"], "cases_off.js"),
+            ("PASS_THROUGH set", ["--pass-through"], "cases_off.js")]
+    passed = 1 - bad
+    for label, flags, cases in runs:
+        cmd = [ctx.jdk["java"], "-Dfile.encoding=UTF-8", "-cp", os.pathsep.join([classes] + cp), "GuardChain"] + flags + \
+              [scripts[0], os.path.join(HERE, "guard", cases)]
+        r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+        text = r.stdout + r.stderr
+        out.append("-- the guard " + label)
+        out.append(text.rstrip())
+        m = re.search(r"RESULT: (\d+) passed, (\d+) failed", text)
+        if m is None:
+            bad += 1
+            out.append("  FAIL  no RESULT line (exit %d)" % r.returncode)
+            continue
+        passed += int(m.group(1))
+        bad += int(m.group(2))
+        if r.returncode != 0 and int(m.group(2)) == 0:
+            bad += 1
+            out.append("  FAIL  exit %d with no failed check" % r.returncode)
+    note = "%d checks" % passed
+    if bad:
+        note += ", %d FAILED" % bad
+    ok = bad == 0
+    want = suite.get("expect")
+    if ok and want is not None and passed != want:
+        ok = False
+        note += " (expected %d: a check was added or stopped running; update `expect` in suites.json " \
+                "only if that is intended)" % want
+    if snap is not None:
+        for line in "\n".join(out).splitlines():
+            if line.startswith("  ok") or line.startswith("  FAIL") or line.startswith("--"):
+                snap.write(line.rstrip() + "\n")
+    return ok, note, "\n".join(out) + "\n"
+
+
 KINDS = {"harness": run_harness, "members": run_members, "parse": run_parse, "loot": run_loot,
-         "known-false": run_known_false, "truth-fresh": run_truth_fresh}
+         "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard}
 
 
 def run_suites(ctx, suites, verbose):

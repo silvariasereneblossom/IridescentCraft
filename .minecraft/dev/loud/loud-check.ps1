@@ -12,6 +12,10 @@
 #      can NEVER be baselined - a baseline hides whatever was broken the day it
 #      was taken:
 #        - Error in '<handler>'            (the handler aborted; all it had left to do is dead)
+#        - [icraft.guard] FAILED <name> in <event>   (a guarded handler or section threw: the event
+#          went on for the other scripts, so KubeJS prints no `Error in` line; this is the line now)
+#        - [icraft.guard] OFF              (the event guard is not guarding: its self-test failed,
+#          RED, or its PASS_THROUGH switch is set, AMBER)
 #        - a summary line `Loaded N/M KubeJS ... scripts ... E errors` with N != M or E > 0
 #        - any ERROR-level line
 #   2. LOADED tier: every script of the deployed tree (expected_state.json) has a
@@ -173,6 +177,9 @@ function Get-Family {
         'summary'          { return 'kjs' }
         'summary-warnings' { return 'kjs' }
         'kjs-error'        { return 'kjs' }
+        'guard'            { return 'kjs' }
+        'guard-off'        { return 'kjs' }
+        'guard-off-switch' { return 'kjs' }
         'loaded'           { return 'loaded' }
         'stale'            { return 'loaded' }
         'armed'            { return 'armed' }
@@ -469,10 +476,14 @@ function Invoke-Check {
     $rxSummary = New-Object regex 'Loaded (\d+)/(\d+) KubeJS (\w+) scripts in .*? with (\d+) errors? and (\d+) warnings?'
     $rxErrLine = New-Object regex '^\[[\d:]+\] \[ERROR\] ?!? ?(.*)$'
     $rxLoaded  = New-Object regex 'Loaded script (\w+_scripts):(\S+) in '
+    # kubejs/*_scripts/00_icraft_guard.js: a guarded handler (or a section of one) threw. The guard keeps the
+    # rest of the event alive, so there is no `Error in` line any more; this one is the failure line now.
+    $rxGuard    = New-Object regex '\[icraft\.guard\] FAILED (\S+) in (\S+):'
+    $rxGuardOff = New-Object regex '\[icraft\.guard\] OFF( by its PASS_THROUGH switch)?'
     $loaded      = @{}     # kind -> HashSet of relative script paths
     $summaryOk   = @{}     # kind -> $true when a summary line exists
     $summaryText = @{}
-    $kjsErrors = 0; $kjsAborts = 0
+    $kjsErrors = 0; $kjsAborts = 0; $kjsGuards = 0
     foreach ($pair in @(@('kubejs/server.log', 'server'), @('kubejs/startup.log', 'startup'))) {
         $src = $pair[0]; $kind = $pair[1]
         if (-not $lines.ContainsKey($src)) { continue }
@@ -480,6 +491,7 @@ function Invoke-Check {
         $set = New-Object 'System.Collections.Generic.HashSet[string]'
         $handlers = @{}; $sigs = @{}; $sigOrder = New-Object System.Collections.Generic.List[string]
         $bad = $null; $warned = $null; $seenSummary = $false
+        $guards = @{}; $guardOrder = New-Object System.Collections.Generic.List[string]; $guardOff = 0; $guardOffSwitch = 0
         foreach ($l in $lines[$src]) {
             $m = $rxLoaded.Match($l)
             if ($m.Success) { if ($m.Groups[1].Value -eq ($kind + '_scripts')) { [void]$set.Add($m.Groups[2].Value) }; continue }
@@ -492,6 +504,14 @@ function Invoke-Check {
                 elseif ($w -gt 0) { $warned = "Loaded $n/$of KubeJS $kind scripts with 0 errors and $w warnings" }
                 continue
             }
+            $g = $rxGuard.Match($l)
+            if ($g.Success) {
+                $gk = $g.Groups[1].Value + '@' + $g.Groups[2].Value
+                if ($guards.ContainsKey($gk)) { $guards[$gk]++ } else { $guards[$gk] = 1; $guardOrder.Add($gk) }
+                continue
+            }
+            $g = $rxGuardOff.Match($l)
+            if ($g.Success) { if ($g.Groups[1].Success) { $guardOffSwitch++ } else { $guardOff++ }; continue }
             $h = $rxHandler.Match($l)
             if ($h.Success) {
                 $name = $h.Groups[1].Value
@@ -510,6 +530,17 @@ function Invoke-Check {
             $kjsAborts += $handlers[$name]
             Add-Finding 'ERROR' 'RED' ("handler:$name") $src ("Error in '$name' x" + $handlers[$name] + ': the handler aborted, whatever it had left to register is dead')
         }
+        $shownGuards = 0; $restGuards = 0
+        foreach ($gk in $guardOrder) {
+            $kjsGuards += $guards[$gk]
+            if ($shownGuards -ge $MaxPerFamily) { $restGuards++; continue }
+            $shownGuards++
+            $gp = $gk.Split('@')
+            Add-Finding 'ERROR' 'RED' ("guard:$gk") $src ('[icraft.guard] FAILED ' + $gp[0] + ' in ' + $gp[1] + ' x' + $guards[$gk] + ': that handler (or section) threw and did not finish; the handlers after it still ran. The line carries the error')
+        }
+        if ($restGuards -gt 0) { Add-Finding 'ERROR' 'RED' ("guard:more:$kind") $src ("$restGuards more guarded handlers failed, not listed one by one") }
+        if ($guardOff -gt 0)       { Add-Finding 'ERROR' 'RED'   ("guard-off:$kind") $src ('[icraft.guard] OFF: the event guard failed its self-test and switched itself off; one throwing handler ends an event for every script after it') }
+        if ($guardOffSwitch -gt 0) { Add-Finding 'ERROR' 'AMBER' ("guard-off-switch:$kind") $src ('[icraft.guard] OFF by its PASS_THROUGH switch: event handlers are not isolated') }
         if ($bad)    { Add-Finding 'ERROR' 'RED'   ("summary:$kind") $src $bad }
         if ($warned) { Add-Finding 'ERROR' 'AMBER' ("summary-warnings:$kind") $src $warned }
         if (-not $seenSummary) {
@@ -525,7 +556,7 @@ function Invoke-Check {
         }
         if ($restSigs -gt 0) { Add-Finding 'ERROR' 'RED' ("kjs-error:more:$kind") $src ("$restSigs more distinct ERROR lines ($restLines in all) not listed one by one") }
     }
-    $script:kjsErrors = $kjsErrors; $script:kjsAborts = $kjsAborts
+    $script:kjsErrors = $kjsErrors; $script:kjsAborts = $kjsAborts; $script:kjsGuards = $kjsGuards
 
     # ---- 2. LOADED tier -------------------------------------------------------
     $expected = $null   # kind -> HashSet
@@ -889,7 +920,7 @@ function Invoke-Check {
 # ---- run ---------------------------------------------------------------------
 $script:srcList = @(); $script:shaAt = 'unknown'; $script:bootAt = 'unknown'
 $script:loadedText = @(); $script:armedText = $null; $script:expectedFrom = ''
-$script:kjsErrors = 0; $script:kjsAborts = 0; $script:patternHits = 0; $script:baselineText = $null
+$script:kjsErrors = 0; $script:kjsAborts = 0; $script:kjsGuards = 0; $script:patternHits = 0; $script:baselineText = $null
 $script:bootClock = $null; $script:bootStartSeen = $false; $script:doneRx = $null; $script:doneLine = 0; $script:staleText = $null
 $script:rolledWhy = $null       # set when latest.log is the tail of a run and its boot could not be read back
 try {
@@ -1008,7 +1039,7 @@ if (-not $Quiet) {
     Write-Host ("[loud-check] boot    : {0}   sha: {1}   sources: {2}" -f $script:bootAt, $script:shaAt, ($script:srcList -join ', '))
     if ($script:loadedText.Count) { Write-Host ("[loud-check] LOADED  : {0}  ({1})" -f ($script:loadedText -join ', '), $script:expectedFrom) }
     if ($script:armedText)        { Write-Host ("[loud-check] ARMED   : {0}" -f $script:armedText) }
-    Write-Host ("[loud-check] FAILURES: {0} KubeJS ERROR line(s), {1} handler abort(s), {2} failure-pattern line(s) in latest.log / debug.log" -f $script:kjsErrors, $script:kjsAborts, $script:patternHits)
+    Write-Host ("[loud-check] FAILURES: {0} KubeJS ERROR line(s), {1} handler abort(s), {2} guarded handler failure(s), {3} failure-pattern line(s) in latest.log / debug.log" -f $script:kjsErrors, $script:kjsAborts, $script:kjsGuards, $script:patternHits)
     if ($script:baselineText)     { Write-Host ("[loud-check] BASELINE: {0}" -f $script:baselineText) }
     foreach ($n in $info)   { Write-Host ("[loud-check] note    : {0}" -f $n) -ForegroundColor DarkGray }
     foreach ($n in $notRun) { Write-Host ("[loud-check] NOT RUN : {0}" -f $n) -ForegroundColor Yellow }

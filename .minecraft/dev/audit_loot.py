@@ -23,8 +23,10 @@ the jars and from the last mirrored server boot log. Run from anywhere (PowerShe
     python -I .minecraft/dev/audit_loot.py --json out.json # machine-readable findings
 
 Exit code: 1 when the ENGINE section is non-empty (a script fails to load, a LootJS.modifiers
-handler throws, a builder has no actions: all of these silently drop every later modifier in the
-game) or when a finding is not listed in dev/loot_audit/accepted.txt; 0 otherwise.
+handler or one of its icraft.section blocks throws, a builder has no actions: each of these drops
+modifiers in the game without a word in the loot itself) or when a finding is not listed in
+dev/loot_audit/accepted.txt; 0 otherwise. The handlers run behind the pack's real event guard
+(kubejs/server_scripts/00_icraft_guard.js), so a throw is reported as GUARD_FAILED.
 
 Needs: Python 3.10+, a JDK (javac/java on PATH), and the PrismLauncher instance (the only place the
 third-party jars exist). First run scans ~460 jars (minutes); later runs use the per-jar cache in
@@ -378,6 +380,12 @@ def find_lib(mods_dir, *parts):
     return hits[-1] if hits else None
 
 
+# kubejs/server_scripts/00_icraft_guard.js: icraft.guard / icraft.section (event isolation). The real file is
+# loaded and its self-test runs, so the handlers the audit fires are guarded as in game: one that throws is
+# caught by the guard, and shows here as the guard's own "[icraft.guard] FAILED" line (GUARD_FAILED below).
+GUARD_SCRIPT = "00_icraft_guard.js"
+
+
 def choose_scripts(repo):
     """Every server script in KubeJS load order, and the subset the audit loads."""
     root = os.path.join(repo, "kubejs", "server_scripts")
@@ -397,11 +405,14 @@ def choose_scripts(repo):
         src = open(os.path.join(root, rel.replace("/", os.sep)), encoding="utf-8", errors="replace").read()
         is_loot = rel.startswith("loot/") or re.search(r"\bLootJS\s*\.", src) is not None
         is_recipe = "ServerEvents.recipes" in src
+        if rel == GUARD_SCRIPT:
+            is_loot = is_recipe = False      # it names both events in its comments and registers nothing
         if is_loot:
             loot_files.append(rel)
         if is_recipe:
             recipe_files.append(rel)
-        if is_loot or is_recipe:
+        # the guard file: every registration below is `X.y(icraft.guard(...))`, so it loads too (first: its priority)
+        if is_loot or is_recipe or rel == GUARD_SCRIPT:
             loaded.append(rel)
     return root, ordered, loaded, loot_files, recipe_files, info
 
@@ -540,7 +551,8 @@ def external_globals(repo, root, loaded):
         defs = defined_by.get(name, set())
         if not defs:
             continue
-        if any(base == "server_scripts" and rel in loaded for base, rel in defs):
+        # the guard file only makes sure the namespace object `global.icraft` exists; its members are defined elsewhere
+        if any(base == "server_scripts" and rel in loaded and rel != GUARD_SCRIPT for base, rel in defs):
             continue
         stubs[name] = {"defined_in": sorted("%s/%s" % d for d in defs), "used_at": where[:5]}
     return stubs
@@ -580,6 +592,7 @@ def run_harness(args, truth, repo):
         "--opaque", w("opaque.txt", opaque),
         "--stub-globals", w("stubs.txt", sorted(stubs)),
         "--pass-through", w("pass.txt", ["loot/0_entity_id_validator.js"]),
+        "--transparent", w("transparent.txt", [GUARD_SCRIPT]),
         "--capture-events", w("capture.txt", ["ServerEvents.recipes"]),
         "--out", os.path.join(CACHE, "harness.json"),
     ]
@@ -757,6 +770,24 @@ def build(truth, h, repo, extra, accepted):
         elif x["status"] == "not_run":
             F.add(0, "HANDLER_NOT_RUN", "%s:%s" % (x["file"], x["line"]), "%s:%s" % (x["file"], x["line"]),
                   "never runs (an earlier handler threw)", severity="error")
+    # the guard's own report: a handler (or a section of one) that threw, or a guard that switched itself off
+    guard_lines = [c for c in h["console"] if "[icraft.guard]" in c["msg"]]
+    guard_armed = any("[icraft.guard] armed" in c["msg"] for c in guard_lines)
+    for c in guard_lines:
+        mm = re.search(r"\[icraft\.guard\] FAILED (\S+) in (\S+): (.*)", c["msg"])
+        if mm:
+            F.add(0, "GUARD_FAILED", "%s %s" % (mm.group(1), mm.group(2)), mm.group(1),
+                  "%s throws in %s: %s -- in game the guard reports it and the rest of the event runs, but whatever this "
+                  "handler / section had left to register is missing" % (mm.group(1), mm.group(2), mm.group(3)[:400]),
+                  severity="error")
+        elif "[icraft.guard] armed" not in c["msg"]:
+            F.add(0, "GUARD_NOT_ARMED", c["msg"][:60], "%s:%s" % (c["file"], c["line"]),
+                  "the event guard did not arm on the real Rhino: %s" % c["msg"][:400], severity="error")
+    if GUARD_SCRIPT in h["_order_all"]:
+        if not guard_armed:
+            F.add(0, "GUARD_NOT_ARMED", "no armed line", GUARD_SCRIPT,
+                  "%s loaded without printing its armed line: the handlers below ran unguarded" % GUARD_SCRIPT, severity="error")
+        stats["event guard (%s)" % GUARD_SCRIPT] = "armed" if guard_armed else "NOT ARMED"
     for m in mods:
         if m.get("no_actions"):
             F.add(0, "NO_ACTIONS", loc(m), loc(m),

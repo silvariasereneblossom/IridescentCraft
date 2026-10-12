@@ -88,6 +88,37 @@ public class LootHarness {
     static Set<String> passThrough = new HashSet<>();
 
     /**
+     * Files whose frames are not part of the script's own call path at all: 00_icraft_guard.js. A guarded
+     * handler runs inside the guard's wrapper, and a section inside icraft.section, so each adds a frame of
+     * the guard file AND, outside it, the frame of whoever called into the guard (for a section: the handler,
+     * standing at its `icraft.section(` line). Both are dropped, which leaves exactly the frames the same
+     * rule had before the handlers were guarded. (The wrapper itself is called from Java: nothing outside it.)
+     */
+    static Set<String> transparent = new HashSet<>();
+
+    /** The script frames, innermost first, without the guard's own frames (see {@link #transparent}). */
+    static List<dev.latvian.mods.rhino.ScriptStackElement> frames() {
+        List<dev.latvian.mods.rhino.ScriptStackElement> out = new ArrayList<>();
+        boolean dropCaller = false;
+        for (dev.latvian.mods.rhino.ScriptStackElement el :
+                new dev.latvian.mods.rhino.EvaluatorException(cx, "pos").getScriptStack()) {
+            if (el.fileName == null) {
+                continue;
+            }
+            if (transparent.contains(el.fileName)) {
+                dropCaller = true;
+                continue;
+            }
+            if (dropCaller) {
+                dropCaller = false;
+                continue;
+            }
+            out.add(el);
+        }
+        return out;
+    }
+
+    /**
      * Source position of the script code that is calling into the mock right now. Frames inside a
      * pass-through helper (loot/0_entity_id_validator.js: global.icraftEntityMod) are skipped, so a
      * modifier is attributed to the script that asked for it; "via" then names the helper.
@@ -98,13 +129,9 @@ public class LootHarness {
         int line = 0;
         String via = null;
         try {
-            dev.latvian.mods.rhino.ScriptStackElement[] stack =
-                    new dev.latvian.mods.rhino.EvaluatorException(cx, "pos").getScriptStack();
+            List<dev.latvian.mods.rhino.ScriptStackElement> stack = frames();
             boolean found = false;
             for (dev.latvian.mods.rhino.ScriptStackElement el : stack) {
-                if (el.fileName == null) {
-                    continue;
-                }
                 if (passThrough.contains(el.fileName)) {
                     if (via == null) {
                         via = el.fileName + ":" + el.lineNumber;
@@ -116,9 +143,9 @@ public class LootHarness {
                 found = true;
                 break;
             }
-            if (!found && stack.length > 0 && stack[0].fileName != null) {
-                f = stack[0].fileName;
-                line = stack[0].lineNumber;
+            if (!found && !stack.isEmpty()) {
+                f = stack.get(0).fileName;
+                line = stack.get(0).lineNumber;
                 via = null;
             }
         } catch (Throwable ignored) {
@@ -144,11 +171,8 @@ public class LootHarness {
     static List<String> stack() {
         List<String> out = new ArrayList<>();
         try {
-            for (dev.latvian.mods.rhino.ScriptStackElement el :
-                    new dev.latvian.mods.rhino.EvaluatorException(cx, "pos").getScriptStack()) {
-                if (el.fileName != null) {
-                    out.add(el.fileName + ":" + el.lineNumber);
-                }
+            for (dev.latvian.mods.rhino.ScriptStackElement el : frames()) {
+                out.add(el.fileName + ":" + el.lineNumber);
             }
         } catch (Throwable ignored) {
         }
@@ -2626,6 +2650,17 @@ public class LootHarness {
         KNOWN_CLASSES.put("net.minecraft.world.level.storage.loot.providers.number.ConstantValue", ConstantValue.class);
         KNOWN_CLASSES.put("com.almostreliable.lootjs.filters.ItemFilter", ItemFilter.class);
         KNOWN_CLASSES.put("com.almostreliable.lootjs.core.LootContextType", LootContextType.class);
+        // what 00_icraft_guard.js loads: the JDK class it rethrows an exit with (real, so its self-test runs
+        // here as it does in game and the handlers below are really guarded), and KubeJS's exit class
+        KNOWN_CLASSES.put("java.util.Optional", java.util.Optional.class);
+        KNOWN_CLASSES.put("dev.latvian.mods.kubejs.event.EventExit", EventExit.class);
+    }
+
+    /** Stand-in for dev.latvian.mods.kubejs.event.EventExit (what event.cancel() throws). Nothing here throws one. */
+    public static final class EventExit extends Exception {
+        public EventExit() {
+            super("result");
+        }
     }
 
     /** `Java.loadClass(name)`. */
@@ -2727,6 +2762,9 @@ public class LootHarness {
         List<String> eventGroups = args.containsKey("--event-groups") ? lines(args.get("--event-groups")) : new ArrayList<>();
         if (args.containsKey("--pass-through")) {
             passThrough.addAll(lines(args.get("--pass-through")));
+        }
+        if (args.containsKey("--transparent")) {
+            transparent.addAll(lines(args.get("--transparent")));
         }
         if (args.containsKey("--capture-events")) {
             captureEvents.addAll(lines(args.get("--capture-events")));

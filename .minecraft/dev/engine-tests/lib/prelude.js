@@ -69,7 +69,11 @@ var T_CLASS_MAP = {
   'net.minecraft.tags.DamageTypeTags': 'mk.W$DamageTypeTags',
   'net.minecraft.world.item.enchantment.EnchantmentHelper': 'mk.W$EnchantmentHelper',
   'net.minecraft.resources.ResourceLocation': 'mk.W$RL',
-  'net.minecraftforge.registries.ForgeRegistries': 'mk.W$ForgeRegistries'
+  'net.minecraftforge.registries.ForgeRegistries': 'mk.W$ForgeRegistries',
+  // kubejs/server_scripts/00_icraft_guard.js: the JDK class it throws an exit again with, and the exit class
+  // (H.java lets these two through under their own names; nothing else is loadable that is not a mock)
+  'java.util.Optional': 'java.util.Optional',
+  'dev.latvian.mods.kubejs.event.EventExit': 'dev.latvian.mods.kubejs.event.EventExit'
 }
 var T_CLASS_MISSES = []
 var Java = {
