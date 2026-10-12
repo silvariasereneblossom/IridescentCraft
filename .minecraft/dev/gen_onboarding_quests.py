@@ -410,20 +410,23 @@ QUESTS = [
     {
         "stem": "onboarding_first_level",
         "title": "Level Up",
-        "subtitle": "Reach JustLevelingFork level 5",
+        "subtitle": "Raise any aptitude to level 2",
         "desc": [
-            "JustLevelingFork (JLF) tracks per-character progression separate from skill points.",
+            "Aptitudes are your character's eight stats. Each one starts at level 1.",
             "",
-            "Earn XP from any source until you hit JLF level 5.",
+            "Open the Aptitudes screen (default key: Y) and spend experience levels to raise any one of them to level 2.",
         ],
         "icon": "minecraft:experience_bottle",
         "pos": [1, 3],
         "deps": ["onboarding_first_iron_pick"],
+        # The task key and the dummy value keep their old "level_5" names: they are
+        # ids (never shown), and quests/onboarding_bridge.js fires this exact value.
+        # The bar itself is APTITUDE_LEVEL in that script; keep the text below in step.
         "tasks": {
             "jlf_level_5": {
                 "type": "heracles:dummy",
                 "value": "jlf_level_5_reached",
-                "description": "Reach JLF level 5 (KubeJS fires this task on level-up).",
+                "description": "Have any aptitude at level 2 or higher. Checked every few seconds.",
             },
         },
         "rewards": {

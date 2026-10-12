@@ -5,11 +5,11 @@
       "item": "minecraft:experience_bottle"
     },
     "title": "Level Up",
-    "subtitle": "Reach JustLevelingFork level 5",
+    "subtitle": "Raise any aptitude to level 2",
     "description": [
-      "JustLevelingFork (JLF) tracks per-character progression separate from skill points.",
+      "Aptitudes are your character's eight stats. Each one starts at level 1.",
       "",
-      "Earn XP from any source until you hit JLF level 5."
+      "Open the Aptitudes screen (default key: Y) and spend experience levels to raise any one of them to level 2."
     ],
     "groups": {
       "Onboarding": {
@@ -30,7 +30,7 @@
     "jlf_level_5": {
       "type": "heracles:dummy",
       "value": "jlf_level_5_reached",
-      "description": "Reach JLF level 5 (KubeJS fires this task on level-up)."
+      "description": "Have any aptitude at level 2 or higher. Checked every few seconds."
     }
   },
   "rewards": {

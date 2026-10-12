@@ -6,7 +6,7 @@
 // complete, and the capstone gates the whole Combat chapter.
 //
 //   quest                         dummy value                          fires when
-//   onboarding_first_level        jlf_level_5_reached                  an aptitude reaches level 5
+//   onboarding_first_level        jlf_level_5_reached                  any aptitude is at level 2 or more
 //   onboarding_survivor_capstone  onboarding_survivor_capstone_check   its 11 dependencies are complete
 //
 // (The three "read a codex page" quests were removed 2026-06-03, #45 read-fix B:
@@ -25,11 +25,9 @@
 //     starts at 1) in the player capability "justlevelingfork:aptitudes"; the
 //     read here is the mod's own static accessor, AptitudeCapability.get(player)
 //     (no NBT serialisation).
-//       "JLF level 5" = the player's HIGHEST aptitude is 5 or more. That is the
-//       pack's first aptitude milestone (skills unlock at 5/10/15/20/30). The
-//       sum of all eight (JLF's "global level") starts at 8, so it cannot be
-//       what the quest means: it would be complete before the player did
-//       anything.
+//       The quest reads the player's HIGHEST aptitude. The sum of all eight
+//       (JLF's "global level") starts at 8, so it cannot be what the quest
+//       means: it would be complete before the player did anything.
 //   * Quest completion was read from player.persistentData.heracles.quests.
 //     Heracles keeps progress in its own SavedData; that compound never
 //     existed. Completion and dependencies are now asked of Heracles
@@ -41,6 +39,16 @@
 //     says the quest is complete (so an admin `/heracles reset` re-arms it by
 //     itself), and until then the dummy is fired on every pass in which the
 //     quest is completable and the condition holds.
+//
+// 2026-10-11 -- the bar is one aptitude at level 2, not 5 (operator ruling):
+//   The 10-10 fix made the quest completable at "highest aptitude >= 5", the
+//   first skill milestone. Under the level-cost curve that is four purchases,
+//   about 55 experience levels -- far too much for an onboarding quest that the
+//   capstone (and through it the whole Combat chapter) waits on. The quest
+//   teaches "open the screen and buy a level": one purchase, level 1 -> 2.
+//   The dummy value and the task key still say "level_5". They are ids, never
+//   shown to a player, and the quest JSON and this script must agree on them;
+//   renaming them buys nothing and risks the two going out of step.
 //
 // COST: one pass per player per POLL_TICKS (5 s) on the player's own age, via
 // the master tick dispatcher. Per bridge: one Heracles map lookup; for an
@@ -60,8 +68,9 @@
   // re-fires its dummy at most this often (ticks) instead of every pass.
   var BLIND_REFIRE_TICKS = 1200
 
-  // JLF aptitude level that completes onboarding_first_level (see header).
-  var JLF_LEVEL = 5
+  // Aptitude level that completes onboarding_first_level: any one aptitude at
+  // this level or above (see header). The quest text states the same number.
+  var APTITUDE_LEVEL = 2
 
   var warned = {}
   var warnOnce = function (key, message) {
@@ -114,7 +123,7 @@
     {
       quest: 'onboarding_first_level',
       dummy: 'jlf_level_5_reached',
-      ready: function (player) { return topAptitude(player) >= JLF_LEVEL }
+      ready: function (player) { return topAptitude(player) >= APTITUDE_LEVEL }
     },
     {
       quest: 'onboarding_survivor_capstone',
@@ -185,5 +194,5 @@
   })
 
   console.log('[iridescent/onboarding_bridge] loaded; bridging ' + BRIDGES.length +
-    ' dummy quests (JLF aptitude level ' + JLF_LEVEL + ' + onboarding capstone), ' + POLL_TICKS + '-tick pass per player')
+    ' dummy quests (any aptitude at level ' + APTITUDE_LEVEL + '+, onboarding capstone), ' + POLL_TICKS + '-tick pass per player')
 })()
