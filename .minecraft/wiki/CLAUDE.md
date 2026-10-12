@@ -149,18 +149,18 @@ When adding a new custom JAR:
 ### Distribution Sync
 All changes to kubejs, configs, datapacks, or lang files must be synced to all three distributions: main instance, server_distribution, distribution/client.
 
-### Mod Index Side Labels
-The `side` field in `.pw.toml` files has DIFFERENT meanings per distribution:
-- **Server distribution** (`server_distribution/mods/.index/`): `side = 'client'` mods are SKIPPED (rendering, UI mods not needed on dedicated server)
-- **Client distribution** (`distribution/client/mods/.index/`): `side = 'server'` mods are SKIPPED (the installer doesn't download them)
-- Almost ALL mods should be `side = 'both'` in the client distribution. Only true server-admin tools should be `side = 'server'`.
-- When copying `.index/` between distributions, verify `side` labels are correct for each context.
+### Mod Index: one source, the rest generated (since 2026-10-12)
+The pack's mods live in ONE place: `.minecraft/mods/.index/*.pw.toml`. Never edit or copy a metafile in `server_distribution/mods/.index/` or `distribution/client/mods/.index/`: both are GENERATED, and the pre-push hook and a GitHub Action refuse a push that left them stale.
+- `side` has one meaning, in the source: where the pack installs the jar. `both` = clients and the dedicated server. `client` = clients only (the generator leaves it out of the server index, so a server never downloads it and its cleanup removes it). `server` = the dedicated server only. Empty is not allowed.
+- Add, update or remove a mod: edit the metafile under `.minecraft/mods/.index/`, then run `python .minecraft/dev/mods/mod_index.py generate` and commit everything it wrote. `python .minecraft/dev/mods/mod_index.py check` is the gate.
+- `server_distribution/client_only_mods.txt` and the skip lists inside `strip_client_mods.bat/.sh`, `server_install.ps1/.sh`, `update_mods.ps1/.sh` and `iridescentserver.sh` are generated too (the blocks between `>>> mod_index.py` and `<<< mod_index.py`). Patterns for retired mods live in `.minecraft/dev/mods/mod_index.policy.json`.
+- Before and after any change to an index, `python .minecraft/dev/mods/mod_index_sets.py sets --ref <commit>` and `diff` show which jars every consumer (server launcher, dev client, tester client, the legacy scripts) would install.
 
 ### Server Mod Compatibility Audit
 When adding new mods or after batch updates, audit mods for dedicated server compatibility. Mods that reference client-only classes (`Screen`, `MouseHandler`, `Minecraft`, rendering classes) will crash the dedicated server. For each new mod:
 1. Check if the mod explicitly supports dedicated servers (CurseForge/Modrinth page)
 2. If uncertain, check the mod's mixins/code for client class references
-3. Client-only mods must be: marked `side = 'client'` in server `.pw.toml`, added to `strip_client_mods.bat/.sh`, and added to force-skip lists in `server_install.ps1`, `update_mods.ps1`, `update_mods.sh`
+3. A client-only mod gets `side = 'client'` in its metafile under `.minecraft/mods/.index/`, then `python .minecraft/dev/mods/mod_index.py generate`. That is the whole procedure: the generator removes it from the server index and adds it to every skip list (see "Mod Index" above). The launcher still carries a compiled copy of the skip patterns; the gate fails if that copy would hide a mod the index gives the server.
 
 Known server-incompatible mods (crash on dedicated server):
 - MCA Social Expansion (references `Screen` in network registration)

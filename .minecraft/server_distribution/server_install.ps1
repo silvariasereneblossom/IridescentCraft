@@ -70,32 +70,66 @@ $skippedExists = 0
 $failed = 0
 $total = 0
 
-# Client-only and server-incompatible mods to skip
-# Mods marked 'both' but crash or are useless on dedicated servers
+# Jar-name patterns a dedicated server must never download: retired mods and the
+# pack's client-only mods (those are not in this index at all; the patterns are a
+# second line). The reason for each one is in the pack repository:
+# .minecraft/dev/mods/mod_index.policy.json
+# >>> mod_index.py: ps-array (GENERATED from mods/.index + dev/mods/mod_index.policy.json. Do not edit: run mod_index.py generate)
 $forceSkip = @(
-    "embeddium",           # Rendering engine
-    "oculus",              # Shader support
-    "immediatelyfast",     # Client rendering optimization
-    "rubidium-extra",      # Embeddium addon
-    "kubejsoffline",       # Client GUI mod, crashes on server
-    "light-overlay",       # F7 light level display
-    "equipment-compare",   # Client tooltip mod
-    "chat_heads",          # Client chat rendering
-    "BetterAnimations",    # Client animation (NOT player-animation -- that's a dependency)
-    "transmog",            # Client cosmetic
-    "probejs",             # Dev tool, crashes on dedicated server
-    "irons_spells_js",     # KubeJS Iron's Spells addon, references client classes
-    "gh_classes",          # Disabled -- conflicts with icraft class layer
-    "cherryvillage",       # Removed -- unregistered worldgen feature crash
-    "rechiseled",          # Removed -- SuperMartijn642 Core Lib incompatibility
-    "supermartijn642",     # Lib dependency, removed
-    "connectedglass",     # Depends on SuperMartijn642, removed
-    "trashcans",
-    "ftbbackups", "ftbchunks", "ftbessentials", "ftblibrary",
-    "ftbquests", "ftbranks", "ftbteams", "ftbultimine",
-    "mca-social",          # Depends on SuperMartijn642, removed
-    "starlight"            # Create + Starlight: BlockStarLightEngine.initNibble ISE crash (known 2026-04-03)
+    'embeddium',
+    'oculus',
+    'immediatelyfast',
+    'rubidium-extra',
+    'kubejsoffline',
+    'light-overlay',
+    'equipment-compare',
+    'chat_heads',
+    'BetterAnimations',
+    'transmog',
+    'probejs',
+    'irons_spells_js',
+    'gh_classes',
+    'cherryvillage',
+    'rechiseled',
+    'supermartijn642',
+    'connectedglass',
+    'trashcans',
+    'ftbbackups',
+    'ftbchunks',
+    'ftbessentials',
+    'ftblibrary',
+    'ftbquests',
+    'ftbranks',
+    'ftbteams',
+    'ftbultimine',
+    'mca-social',
+    'starlight',
+    'EquipmentCompare',
+    'mcasocial',
+    'champions',
+    'soulslike-weaponry',
+    'auudio_',
+    'BetterAdvancements-',
+    'biomemusic-',
+    'CTM-',
+    'CutThrough-',
+    'defaultoptions-',
+    'entity_texture_features_',
+    'fallingleaves-',
+    'fancymenu_',
+    'Highlighter-',
+    'inventoryhud.',
+    'jeed-',
+    'jmi-',
+    'konkrete_',
+    'lazyDFU-',
+    'libIPN-',
+    'mek_walkable_cables-',
+    'melody_',
+    'MouseTweaks-',
+    'Prism-'
 )
+# <<< mod_index.py
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
 $totalFiles = $tomlFiles.Count

@@ -42,60 +42,66 @@ delete_mod() {
     done
 }
 
-# --- Rendering / client-only mods that crash on dedicated server ---
-delete_mod "embeddium*"
-delete_mod "oculus*"
-delete_mod "immediatelyfast*"
+# Jar-name patterns a dedicated server must never keep: the pack's client-only
+# mods and retired mods. The reason for each one is in the pack repository:
+# .minecraft/dev/mods/mod_index.policy.json
+# >>> mod_index.py: sh-delete (GENERATED from mods/.index + dev/mods/mod_index.policy.json. Do not edit: run mod_index.py generate)
+delete_mod "*embeddium*"
+delete_mod "*oculus*"
+delete_mod "*immediatelyfast*"
 delete_mod "*rubidium-extra*"
-
-# --- Client GUI / display mods ---
 delete_mod "*kubejsoffline*"
 delete_mod "*light-overlay*"
 delete_mod "*equipment-compare*"
-delete_mod "*EquipmentCompare*"
 delete_mod "*chat_heads*"
 delete_mod "*BetterAnimations*"
 delete_mod "*transmog*"
-
-# --- Dev tools that crash on server ---
 delete_mod "*probejs*"
-delete_mod "*ProbeJS*"
-
-# --- References client classes ---
 delete_mod "*irons_spells_js*"
-
-# --- Crashes with Create (BlockStarLightEngine.initNibble ISE) ---
-delete_mod "*starlight*"
-
-# --- Disabled mods that may linger from manual copies ---
 delete_mod "*gh_classes*"
-
-# --- Removed mods (worldgen crash) ---
 delete_mod "*cherryvillage*"
-delete_mod "*CherryVillage*"
-
-# --- Removed mods (SuperMartijn642 lib incompatibility) ---
 delete_mod "*rechiseled*"
 delete_mod "*supermartijn642*"
-
-# --- Removed (dedicated-server ClientLevel dist cascade; bundled Fabric-port ranged_weapon_api breaks dist-cleaning) ---
+delete_mod "*connectedglass*"
+delete_mod "*trashcans*"
+delete_mod "*ftbbackups*"
+delete_mod "*ftbchunks*"
+delete_mod "*ftbessentials*"
+delete_mod "*ftblibrary*"
+delete_mod "*ftbquests*"
+delete_mod "*ftbranks*"
+delete_mod "*ftbteams*"
+delete_mod "*ftbultimine*"
+delete_mod "*mca-social*"
+delete_mod "*starlight*"
+delete_mod "*EquipmentCompare*"
+delete_mod "*ProbeJS*"
+delete_mod "*CherryVillage*"
+delete_mod "*ImmediatelyFast*"
+delete_mod "*mcasocial*"
+delete_mod "*champions*"
 delete_mod "*soulslike-weaponry*"
-
-# --- Client-side-only mods (side='client' in metadata) ---
-delete_mod "*auudio*"
-delete_mod "*BetterAdvancements*"
-delete_mod "*biomemusic*"
+delete_mod "*auudio_*"
+delete_mod "*BetterAdvancements-*"
+delete_mod "*biomemusic-*"
 delete_mod "*CTM-*"
-delete_mod "*CutThrough*"
-delete_mod "*fallingleaves*"
-delete_mod "*Highlighter*"
-delete_mod "*inventoryhud*"
+delete_mod "*CutThrough-*"
+delete_mod "*defaultoptions-*"
+delete_mod "*entity_texture_features_*"
+delete_mod "*fallingleaves-*"
+delete_mod "*fancymenu_*"
+delete_mod "*Highlighter-*"
+delete_mod "*inventoryhud.*"
 delete_mod "*jeed-*"
-delete_mod "*jmi-forge*"
-delete_mod "*lazyDFU*"
-delete_mod "*libIPN*"
-delete_mod "*MouseTweaks*"
+delete_mod "*jmi-*"
+delete_mod "*konkrete_*"
+delete_mod "*lazyDFU-*"
+delete_mod "*libIPN-*"
+delete_mod "*mek_walkable_cables-*"
+delete_mod "*melody_*"
+delete_mod "*MouseTweaks-*"
 delete_mod "*Prism-*"
+# <<< mod_index.py
 
 echo ""
 echo "Removed $removed mod file(s)."

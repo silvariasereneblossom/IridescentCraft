@@ -113,10 +113,40 @@ else
     exit 1
 fi
 
-# Mods marked side='both' in metadata but actually client-only (crash on headless servers)
+# The pack's client-only jars, by exact name. They are not in this index at all; the
+# list is a second line in case a client index is copied here.
 declare -A FORCE_EXCLUDE
+# >>> mod_index.py: sh-exact (GENERATED from mods/.index + dev/mods/mod_index.policy.json. Do not edit: run mod_index.py generate)
+FORCE_EXCLUDE["auudio_forge_1.0.3_MC_1.19.3.jar"]=1
+FORCE_EXCLUDE["BetterAdvancements-NeoForge-1.20.1-0.4.2.25.jar"]=1
+FORCE_EXCLUDE["BetterAnimationsCollection-v8.0.1-1.20.1-Forge.jar"]=1
+FORCE_EXCLUDE["biomemusic-1.20.1-3.5.jar"]=1
+FORCE_EXCLUDE["chat_heads-0.15.0-forge-1.20.jar"]=1
+FORCE_EXCLUDE["CTM-1.20.1-1.1.10.jar"]=1
+FORCE_EXCLUDE["CutThrough-v8.0.2-1.20.1-Forge.jar"]=1
+FORCE_EXCLUDE["defaultoptions-forge-1.20.1-18.0.5.jar"]=1
 FORCE_EXCLUDE["embeddium-0.3.31+mc1.20.1.jar"]=1
-# Add any future false-both mods here
+FORCE_EXCLUDE["entity_texture_features_1.20.1-forge-7.0.13.jar"]=1
+FORCE_EXCLUDE["fallingleaves-1.20.1-2.1.2.jar"]=1
+FORCE_EXCLUDE["fancymenu_forge_3.8.1_MC_1.20.1.jar"]=1
+FORCE_EXCLUDE["Highlighter-1.20.1-forge-1.1.9.jar"]=1
+FORCE_EXCLUDE["ImmediatelyFast-Forge-1.5.4+1.20.4.jar"]=1
+FORCE_EXCLUDE["inventoryhud.forge.1.20.1-3.4.26.jar"]=1
+FORCE_EXCLUDE["jeed-1.20-2.2.5.jar"]=1
+FORCE_EXCLUDE["jmi-forge-1.20.1-0.14-48.jar"]=1
+FORCE_EXCLUDE["konkrete_forge_1.8.0_MC_1.20-1.20.1.jar"]=1
+FORCE_EXCLUDE["kubejsoffline-5.2.0.27.jar"]=1
+FORCE_EXCLUDE["lazyDFU-[UNOFFICIAL]-1.20.jar"]=1
+FORCE_EXCLUDE["libIPN-forge-1.20-4.0.2.jar"]=1
+FORCE_EXCLUDE["light-overlay-8.0.0-forge.jar"]=1
+FORCE_EXCLUDE["mek_walkable_cables-1.0.1.jar"]=1
+FORCE_EXCLUDE["melody_forge_1.0.3_MC_1.20.1-1.20.4.jar"]=1
+FORCE_EXCLUDE["MouseTweaks-forge-mc1.20.1-2.25.1.jar"]=1
+FORCE_EXCLUDE["oculus-mc1.20.1-1.8.0.jar"]=1
+FORCE_EXCLUDE["Prism-1.20.1-forge-1.0.5.jar"]=1
+FORCE_EXCLUDE["probejs-7.0.0-forge.jar"]=1
+FORCE_EXCLUDE["rubidium-extra-0.5.4.4+mc1.20.1-build.131.jar"]=1
+# <<< mod_index.py
 
 DOWNLOADED=0
 SKIPPED_CLIENT=0

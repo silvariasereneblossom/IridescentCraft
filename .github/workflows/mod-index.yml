@@ -1,0 +1,83 @@
+name: Mod index gate
+
+# The pack's mods live in ONE place, .minecraft/mods/.index. The server index, the
+# client distribution's index, client_only_mods.txt and the skip lists inside the
+# server scripts are generated from it by .minecraft/dev/mods/mod_index.py.
+#
+# This runs the same check as the pre-push hook, for the pushes that did not go
+# through it (another machine, a hook that was never installed, --no-verify):
+#   - every metafile parses, has a hash, and its side is both / client / server
+#   - no two metafiles for one jar or for one upstream project
+#   - the generated files are what the generator would write (no mod in one index
+#     only, no side label that differs between distros, no hand-edited skip list)
+#   - no skip pattern hides a jar the server index says the server gets
+#
+# History: three boss mods sat in the root index only and were absent in game
+# (2026-06-01); a client renderer was labelled `both` in the server index and took
+# the server down (2026-06-02); the parity gate written after that never reached main.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/server_distribution/mods/.index/**'
+      - '.minecraft/distribution/client/mods/.index/**'
+      - '.minecraft/dev/mods/mod_index*'
+      - '.minecraft/server_distribution/client_only_mods.txt'
+      - '.minecraft/server_distribution/*.ps1'
+      - '.minecraft/server_distribution/*.sh'
+      - '.minecraft/server_distribution/*.bat'
+      - '.minecraft/server_distribution/IridescentCraft Dedicated Server/update_mods.ps1'
+      - 'iridescent-launcher/icraft-core/src/packwiz.rs'
+      - '.github/workflows/mod-index.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/server_distribution/mods/.index/**'
+      - '.minecraft/distribution/client/mods/.index/**'
+      - '.minecraft/dev/mods/mod_index*'
+      - '.minecraft/server_distribution/client_only_mods.txt'
+      - 'iridescent-launcher/icraft-core/src/packwiz.rs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: mod_index.py check
+    runs-on: ubuntu-latest
+    steps:
+      # Only the files the check reads: the repository is large and the jars,
+      # the launcher binary and the configs are of no use here.
+      - name: Checkout (index, generator, generated scripts)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/mods/.index/
+            /.minecraft/server_distribution/mods/.index/
+            /.minecraft/distribution/client/mods/.index/
+            /.minecraft/dev/mods/
+            /.minecraft/server_distribution/client_only_mods.txt
+            /.minecraft/server_distribution/*.ps1
+            /.minecraft/server_distribution/*.sh
+            /.minecraft/server_distribution/*.bat
+            /.minecraft/server_distribution/IridescentCraft Dedicated Server/update_mods.ps1
+            /iridescent-launcher/icraft-core/src/packwiz.rs
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the mod index and everything generated from it
+        run: python -I .minecraft/dev/mods/mod_index.py check
+
+      # Each past failure is planted in a temporary copy and must be refused.
+      - name: The gate still refuses what it exists to refuse
+        run: python -I .minecraft/dev/mods/mod_index_test.py

@@ -30,7 +30,7 @@
     "kubejs/config": "NOT WATCHED. KubeJS-internal config files (probe-settings.json, etc) vary per environment.",
     "datapack_sources": "NOT WATCHED. Build SOURCES for custom datapack jars (iridescent_codex_data.jar etc). Distros ship the BUILT jar in mods/, not the source tree. Only present in main.",
     "config": "NOT WATCHED (whole tree). Mod configs legitimately differ server vs client. The paxi/datapacks subtree is watched separately (see its note).",
-    "mods": "NOT WATCHED. packwiz manages these; custom jars need the verify_distros.sh|.bat|.ps1 helper per deployment-and-utility-guide.md, not this script.",
+    "mods": "NOT WATCHED here, gated elsewhere. The mod index (mods/.index) is not a mirror: the server index and the client distribution's index are GENERATED from the root index by dev/mods/mod_index.py (a client-only mod is absent from the server's), and `mod_index.py check` is its own block in the pre-push hook and a GitHub Action. Custom jars are checked by verify-custom-jars.ps1 (run by this script).",
     "kubejs/server_scripts/validate_recipe_removals.js": "EXCLUDED. Dev-only validator (master-appendix.md \u00a7126: 'run at server start as a sanity check for stale IDs'); intentionally not deployed to the distributions.",
     "kubejs/data": "WATCHED (since 2026-06-07). Verified byte-identical x3 at adoption; datapack-style server data must not drift.",
     "config/paxi/datapacks": "WATCHED (since 2026-06-07). Paxi zips were always supposed to be identical x3 (manual-copy rule); verified identical at adoption. Rebuild zips into main, run -Fix to propagate."

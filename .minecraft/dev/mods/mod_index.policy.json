@@ -1,0 +1,57 @@
+{
+  "_comment": "Policy for dev/mods/mod_index.py: the facts about the mod index that a metafile cannot carry. The mods themselves, and which side each one installs on, live in .minecraft/mods/.index/*.pw.toml. After editing this file run `python .minecraft/dev/mods/mod_index.py generate`.",
+
+  "client_distro_only": {
+    "_comment": "Metafiles kept by hand in distribution/client/mods/.index and in no other index. The dev client's prelaunch overlays them (reconcile_client_index.ps1); a tester's sync and the server never see them. Not part of the pack as delivered to testers. Removing them is the operator's call.",
+    "fancymenu.pw.toml": "FancyMenu: main-menu customisation, dev client only",
+    "konkrete.pw.toml": "Konkrete: library FancyMenu needs",
+    "melody.pw.toml": "Melody: library FancyMenu needs"
+  },
+
+  "client_distro_url_mode": {
+    "_comment": "CurseForge mods whose author switched off third-party API distribution: the API returns no download url even with a key and packwiz-installer stops. In the client distribution's index (the packwiz-installer form) they are pinned to the forgecdn url, which serves them regardless. The source keeps mode = 'metadata:curseforge', so the launcher and the PowerShell downloaders keep both of their candidate urls.",
+    "simple-staves.pw.toml": "API distribution disabled (found 2026-06-24)",
+    "sleep-hunger.pw.toml": "API distribution disabled (found 2026-06-24)"
+  },
+
+  "server_skip_patterns": [
+    {"_comment": "Substrings of jar names a dedicated server must never download or keep. A client-only mod of the pack needs NO entry here: `side = 'client'` in its metafile keeps it out of the server index and mod_index.py derives a pattern from its jar name. This list is for jars that are not in the index (retired mods, mods that were never in the pack) and for the patterns compiled into the launcher (icraft-core/src/packwiz.rs FORCE_SKIP_PATTERNS, which must stay a subset of this list until the launcher reads it from a file). No pattern may match a jar the server index installs: mod_index.py check fails if one does."},
+
+    {"pattern": "embeddium", "why": "rendering engine (client-only mod of the pack)"},
+    {"pattern": "oculus", "why": "shader support (client-only mod of the pack)"},
+    {"pattern": "immediatelyfast", "why": "client rendering optimisation (client-only mod of the pack)"},
+    {"pattern": "rubidium-extra", "why": "Embeddium add-on (client-only mod of the pack)"},
+    {"pattern": "kubejsoffline", "why": "client GUI mod, crashes a dedicated server (client-only mod of the pack)"},
+    {"pattern": "light-overlay", "why": "light-level display (client-only mod of the pack)"},
+    {"pattern": "equipment-compare", "why": "client tooltip mod, no longer in the pack"},
+    {"pattern": "chat_heads", "why": "client chat rendering (client-only mod of the pack)"},
+    {"pattern": "BetterAnimations", "why": "client animation (client-only mod of the pack); not player-animation, which is a dependency"},
+    {"pattern": "transmog", "why": "client cosmetic, not in the pack"},
+    {"pattern": "probejs", "why": "dev tool, crashes a dedicated server (client-only mod of the pack)"},
+    {"pattern": "irons_spells_js", "why": "KubeJS Iron's Spells add-on, references client classes; not in the pack"},
+    {"pattern": "gh_classes", "why": "disabled: conflicts with the pack's class layer"},
+    {"pattern": "cherryvillage", "why": "removed: unregistered worldgen feature crash"},
+    {"pattern": "rechiseled", "why": "removed: SuperMartijn642 Core Lib incompatibility"},
+    {"pattern": "supermartijn642", "why": "removed: library of the above"},
+    {"pattern": "connectedglass", "why": "removed: needs SuperMartijn642"},
+    {"pattern": "trashcans", "why": "removed: needs SuperMartijn642"},
+    {"pattern": "ftbbackups", "why": "removed FTB suite"},
+    {"pattern": "ftbchunks", "why": "removed FTB suite"},
+    {"pattern": "ftbessentials", "why": "removed FTB suite"},
+    {"pattern": "ftblibrary", "why": "removed FTB suite"},
+    {"pattern": "ftbquests", "why": "removed FTB suite"},
+    {"pattern": "ftbranks", "why": "removed FTB suite"},
+    {"pattern": "ftbteams", "why": "removed FTB suite"},
+    {"pattern": "ftbultimine", "why": "removed FTB suite"},
+    {"pattern": "mca-social", "why": "removed: references Screen in network registration"},
+    {"pattern": "starlight", "why": "Create + Starlight: BlockStarLightEngine.initNibble crash (2026-04-03)"},
+
+    {"pattern": "EquipmentCompare", "why": "case variant for the Linux scripts (their matching is case-sensitive)"},
+    {"pattern": "ProbeJS", "why": "case variant for the Linux scripts"},
+    {"pattern": "CherryVillage", "why": "case variant for the Linux scripts"},
+    {"pattern": "ImmediatelyFast", "why": "case variant for the Linux scripts"},
+    {"pattern": "mcasocial", "why": "removed: MCA Social Expansion, unhyphenated jar name"},
+    {"pattern": "champions", "why": "removed 2026-04: spawn lag"},
+    {"pattern": "soulslike-weaponry", "why": "removed 2026-06-02: dedicated-server ClientLevel dist cascade (bundled Fabric-port ranged_weapon_api)"}
+  ]
+}
