@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "ba256896",
+    "generated_from":  "b84be4b5",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7108,8 +7108,8 @@
                                                                                "size":  17171
                                                                            },
                   "kubejs/server_scripts/endgame/ascension.js":  {
-                                                                     "sha256":  "21fd9a533451cc801a41980a0f2911333df4179aa661f8a38e2aeb44f073eade",
-                                                                     "size":  13725
+                                                                     "sha256":  "854147abe38ea901952cd3cfd190258cefee15f2c0bcb43eede02044082d09e8",
+                                                                     "size":  19725
                                                                  },
                   "kubejs/server_scripts/endgame/mythic_forge.js":  {
                                                                         "sha256":  "a70a3d55dfa76cd2e84d35d0dc76c56c03e1c8f2d0dc08064b55724f20385def",
