@@ -82,7 +82,7 @@ Installed on both client and server -- the bulk of the pack.
 - **Cherry Samurai Temple** -- `cherry_samurai_temple-1.0.1 Forge 1.20.1.jar` [(modrinth)](https://modrinth.com/mod/kN5LSkbe)
 - **Chipped** -- `chipped-forge-1.20.1-3.0.7.jar` [(modrinth)](https://modrinth.com/mod/BAscRYKm)
 - **chisels-and-bits** -- `chisels-and-bits-forge-20.1.20.jar`
-- **choicetheorems-overhauled-village** -- `[forge]ctov-3.4.14.jar` [(modrinth)](https://modrinth.com/mod/fgmhI8kH)
+- **ChoiceTheorem's Overhauled Village** -- `[forge]ctov-3.4.14.jar` [(modrinth)](https://modrinth.com/mod/fgmhI8kH)
 - **Chunky** -- `Chunky-1.3.146.jar` [(modrinth)](https://modrinth.com/mod/fALzjamp)
 - **Chunky Player Pause** -- `chunky-player-pause-1.0.0.jar` [(modrinth)](https://modrinth.com/mod/wYO04fON)
 - **Citadel** -- `citadel-2.6.3-1.20.1.jar` [(modrinth)](https://modrinth.com/mod/jJfV67b1)
@@ -314,7 +314,7 @@ Installed on both client and server -- the bulk of the pack.
 - **Progressive Bosses** -- `progressivebosses-4.3.12.jar` [(modrinth)](https://modrinth.com/mod/Zxspe0HA)
 - **Protect Your Moa** -- `aether_protect_your_moa-1.20.1-1.0.0-neoforge.jar` [(modrinth)](https://modrinth.com/mod/6KeEgbxe)
 - **Pufferfish's Attributes** -- `puffish_attributes-0.8.2-1.20-forge.jar` [(modrinth)](https://modrinth.com/mod/FCFcFw09)
-- **puffish-skills** -- `puffish_skills-0.17.3-1.20-forge.jar` [(modrinth)](https://modrinth.com/mod/hqQqvaa4)
+- **Pufferfish's Skills** -- `puffish_skills-0.17.3-1.20-forge.jar` [(modrinth)](https://modrinth.com/mod/hqQqvaa4)
 - **Puzzles Lib** -- `PuzzlesLib-v8.1.33-1.20.1-Forge.jar` [(modrinth)](https://modrinth.com/mod/QAGBst4M)
 - **Quark** -- `Quark-4.0-462.jar` [(modrinth)](https://modrinth.com/mod/qnQsVE2z)
 - **QuickStack** -- `quickstack-1.20.1-1.jar`

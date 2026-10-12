@@ -1,6 +1,6 @@
 filename = 'neruina-3.2.2+1.20.1-forge.jar'
 name = 'Neruina'
-side = ''
+side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
