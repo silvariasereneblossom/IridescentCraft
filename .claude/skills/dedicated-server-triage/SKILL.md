@@ -5,16 +5,16 @@ description: >-
   won't boot, stays down behind a running launcher, won't pick up a fix, or
   lets the wrong people in. Covers the crash-report -> classify -> fix at the
   repo source -> push -> re-sync -> restart -> verify loop, remote control of
-  the box, the uptime restart policy that deploys HEAD, "launcher up, JVM
-  down", server access (whitelist, server-owned identity files, a refused
-  start, adding a tester), the legacy service-mode trap, and the
-  client-only-mod crash class (embeddium/rubidium/oculus). USE THIS SKILL
-  whenever the user says the server crashed, the server box is down, "check the
-  server", a fix "didn't re-sync out", a jar shows stale on the server, a
-  client-only mod broke the server, or a player can't join or needs
-  whitelisting — even if they just say "we got a crash on server load". The
-  live server is DOWNSTREAM of pushed HEAD and only pulls when it restarts, so
-  check what actually reached the box before declaring a fix shipped.
+  the box, the restart policy that deploys HEAD, "launcher up, JVM down", a
+  refused start (access switch or unfinished regeneration), server access
+  (whitelist, server-owned identity files, adding a tester), the legacy
+  service-mode trap, and the client-only-mod crash class
+  (embeddium/rubidium/oculus). USE THIS SKILL whenever the user says the server
+  crashed, the server box is down, "check the server", a fix "didn't re-sync
+  out", a jar shows stale on the server, a client-only mod broke the server, or
+  a player can't join or needs whitelisting — even if they just say "we got a
+  crash on server load". The live server only pulls pushed HEAD when it
+  restarts: check what reached the box before calling a fix shipped.
 ---
 
 # Dedicated-server triage (IridescentCraft)
@@ -23,20 +23,20 @@ description: >-
 
 The dev repo's `.minecraft\server_distribution\` is the **source**. The live server runs on a separate Windows box (`Sereneblossomns`) and is downstream of pushed repo HEAD. **Production runs under `icraft-gui.exe`** (the Rust launcher; the NSSM service `IridescentMC` was retired in 2026-09):
 
-- **Every start is a sync, then a put-back.** Serve (full) and Cycle both run the GitHub diff sync (`.icraft_last_sha` vs `origin/main`), the custom-jar hash-verify and the mod hygiene; then, directly before the JVM is spawned, the launcher writes this server's own config values (`.icraft_config_overrides.json`) back into whatever the sync rewrote, and **refuses to start** if a whitelist or online-mode switch this server turned on is still off after that (the start guard, see Access). A Cycle additionally applies a staged launcher update (`icraft-gui.exe.new`) and relaunches the GUI. There is no restart-without-sync path.
+- **Every start is a sync, then a put-back between two guards.** Serve (full) and Cycle both run the GitHub diff sync (`.icraft_last_sha` vs `origin/main`), the custom-jar hash-verify and the mod hygiene. Then, directly before the JVM is spawned, in this order: (1) the launcher **refuses to start** on a world a regeneration left half done (`.icraft_regen_in_progress` exists); (2) it writes this server's own config values (`.icraft_config_overrides.json`) back into whatever the sync rewrote; (3) it **refuses to start** if a whitelist or online-mode switch this server turned on is still off after that. Either refusal leaves `.icraft_start_refused` with the reason (see A refused start). A Cycle additionally applies a staged launcher update (`icraft-gui.exe.new`) and relaunches the GUI. There is no restart-without-sync path.
 - **The server only pulls when it restarts.** Three things restart it, and all three are Cycles (so all three deploy HEAD):
   - **the uptime restart policy** (since 2026-10-10): 4 h of uptime when nobody is online (empty for 5 min, no warnings), 12 h when players are on (60 s / 10 s in-game countdown). Uptime counts from the "Done" line, so every restart resets it. Audit log: `logs\restart_policy.log`. Runtime override: `.icraft_restart_policy` next to `server.properties` (`mode=live|dry-run|off`, re-read every minute);
   - **the heartbeat** — auto-Cycle on a non-zero exit or a dead listener (3 tries / 30 min);
   - **an on-demand Cycle** — the GUI's Cycle button, or `request_cycle.ps1` from anywhere (see Remote control).
 - So a push reaches an idle server within ~4 h on its own, and at once if you ask for a Cycle. **Do not push half-finished server-side work to `main` expecting it to wait for a nightly window** — the fixed 05:00 restart is gone.
-- **The log push is not part of a restart** (since 2026-10-11). Logs are copied aside at JVM exit and pushed by a background thread once the server is `Started` again, through the GitHub API: no git, no clone, nothing between the stop and the start. A failed push holds nothing up; the files go out after the next exit.
+- **The log push is not part of a restart** (since 2026-10-11), **and it no longer goes to this repo** (since 2026-10-12). Logs are copied aside at JVM exit (`.icraft_log_stage\`) and pushed by a background thread once the server is `Started` again, through the GitHub API, to the private repository `IridescentCraft-logs`: no git, no clone, nothing between the stop and the start. A failed push holds nothing up; the files go out after the next exit. No `server logs auto-mirror` commit lands on this repo's `main` any more.
 
-**Legacy launch paths** (`iridescentserver.bat` / `.sh`, `run.bat` / `run.sh`: bootstrap and non-GUI hosts). **Never start the LIVE server with them.** The put-back exists only in the launcher: these scripts start the JVM with whatever `server.properties` holds, and `iridescentserver`'s own sync has just put the pack's copy there (`white-list=false`), so the public server would start open. On the live box a start is a Cycle. What they do, on a host that does use them:
+**Legacy launch paths** (`iridescentserver.bat` / `.sh`, `run.bat` / `run.sh`: bootstrap and non-GUI hosts). **Never start the LIVE server with them.** The put-back and both start guards exist only in the launcher: these scripts start the JVM with whatever `server.properties` holds, and `iridescentserver`'s own sync has just put the pack's copy there (`white-list=false`), so the public server would start open. On the live box a start is a Cycle. What they do, on a host that does use them:
 
 - **Normal (interactive) launch** runs phases each boot: Phase -1 `sync_from_repo.bat` (robocopy `/MIR` mirror from the Z: repo share), Phase 0 `phase0_sync.ps1` (GitHub-API diff vs `.icraft_last_sha`), then mod hygiene (`strip_client_mods` -> `update_mods.ps1` -> `cleanup_stale_jars.ps1`).
 - **Service mode (`ICRAFT_SERVICE_MODE=1`)** **SKIPS Phase -1, Phase 0, AND mod-sync** — "deployed state is authoritative." A `git push` does **NOT** reach a service-mode server on its own. If a box is ever run this way again, this is the "I pushed the fix but it still crashes" trap.
 
-**Always fix at the repo source, never the live runtime** — the runtime is overwritten on the next sync. The exception is what belongs to the server itself: its identity files and its override list (see Access). The repo does not hold them and no sync touches them.
+**Always fix at the repo source, never the live runtime** — the runtime is overwritten on the next sync. The exception is what belongs to the server itself: its identity files and its override list (see Access). The repo does not hold them and no sync touches them. A config value on that list (the whitelist switches, a worldgen setting from the launcher's Customizer tab) makes its file differ from the pack's **on purpose**: `verify-server.ps1` lists each one as INTENTIONAL, and the launcher writes it back before every start, so "repairing" the file undoes nothing (guide §13). Since 2026-10-12 such a value can also sit **inside a Paxi datapack zip** (the ore counts in `config\paxi\datapacks\icraft_worldgen_overrides.zip`; the list names the member as `<pack>.zip!/data/….json`). The launcher rewrites the zip with that one member changed, so the server's zip differs from the pack's on purpose: INTENTIONAL, never to be overwritten by hand. Compare such a zip member by member, never by hash: it is not byte-equal to the pack's again even after every value is reset, and the launcher then prints a report-only `would-repair` line for it at each launch until a sync replaces the file. Neither is drift (guide §13k).
 
 ## Paths (this pack)
 
@@ -46,20 +46,24 @@ The dev repo's `.minecraft\server_distribution\` is the **source**. The live ser
 - Launcher (legacy, never on the live box): `iridescentserver.bat` / `iridescentserver.sh`; bare Forge launch `run.bat` / `run.sh`; env flag `ICRAFT_SERVICE_MODE=1`; force flag `iridescentserver.bat /force`. The NSSM service `IridescentMC` no longer exists.
 - Launcher status: `.icraft_launcher_status` (rewritten whole every 15 s: state, restart phase and since when, whether a JVM exists, `stuck=`, `heartbeat=`, `log_push=`). `verify-server.ps1` reads it.
 - Restart machinery: `request_cycle.ps1` (ask the GUI for a Cycle; logs to `logs\cycle_requests.log`), `.icraft_cycle_request` / `.icraft_cycle_request.result` (the request file it writes and the GUI's answer), `.icraft_restart_policy` (optional policy override), `logs\restart_policy.log` (policy audit trail, and the watchdog's `WATCHDOG: STUCK` lines).
-- Access (the server's own, not in the repo): `whitelist.json`, `ops.json`, `banned-ips.json`, `banned-players.json`, `usercache.json`; `.icraft_config_overrides.json` (the override list) and `config-overrides\history.log` (every value the launcher wrote into a config file, and every `START REFUSED`); `.icraft_start_refused` (there only while a start stands refused: `refused=` when, `why=`; the next start the launcher allows removes it); `manage_whitelist.ps1` (synced from the pack).
-- World backups (launcher, since 2026-10-11 — there is no backup mod): `backups\world-YYYYmmdd-HHMM.zip` (scheduled: taken in a Cycle's stopped window once the newest is 12 h old, newest 2 kept), `backups\manual-YYYYmmdd-HHMM.zip` (pinned: asked for, never pruned), `backups\backups.json` (the verified backups of both kinds), `logs\backup.log` (every decision and failure), `.icraft_backup_policy` (optional override), `request_backup.ps1` + `.icraft_backup_request` / `.icraft_backup_request.result` (ask for a pinned backup).
-- Logs: `logs\latest.log`, `logs\debug.log`. Crashes: `crash-reports\crash-*.txt` (Forge). Both folders are mirrored by the launcher to `<repo>\.minecraft\server_distribution\TesterLogs\Server Logs\` (commits named `server logs auto-mirror`), two to three minutes after each restart. `crash-<date>_<time>.log` in the runtime root (written on a non-zero exit) is not mirrored: the Forge report it quotes is.
+- Access (the server's own, not in the repo): `whitelist.json`, `ops.json`, `banned-ips.json`, `banned-players.json`, `usercache.json`; `.icraft_config_overrides.json` (the override list) and `config-overrides\history.log` (every value the launcher wrote into a config file, and every `START REFUSED` of the access guard); `manage_whitelist.ps1` (synced from the pack).
+- Start refusal: `.icraft_start_refused` (there only while a start stands refused, for either cause: `refused=` when, `why=` which cause; the next start the launcher allows removes it).
+- World backups (launcher, since 2026-10-11 — there is no backup mod): `backups\world-YYYYmmdd-HHMM.zip` (scheduled: taken in a Cycle's stopped window once the newest is 12 h old, newest 2 kept), `backups\manual-YYYYmmdd-HHMM.zip` (pinned: asked for, or taken by a regeneration run before it changes anything; never pruned), `backups\backups.json` (the verified backups of both kinds), `logs\backup.log` (every decision and failure), `.icraft_backup_policy` (optional override), `request_backup.ps1` + `.icraft_backup_request` / `.icraft_backup_request.result` (ask for a pinned backup). Since 2026-10-12 every zip also holds the server's own files under `server-state\` (see World backups).
+- World regeneration (launcher, since 2026-10-12): `.icraft_regen_in_progress` (there only while a run or a rollback is changing the world; left behind = unfinished, and no JVM starts), `regen-holding\<stamp>-<code>\` (what a run took out of the world, with `holding.json`: its way back; never pruned), `logs\regen_execute.log` (every run, refusal and rollback), `regen-reports\` (dry-runs: maps, read-only).
+- Logs: `logs\latest.log`, `logs\debug.log`. Crashes: `crash-reports\crash-*.txt` (Forge). The launcher stages both folders in `<runtime root>\.icraft_log_stage\` and mirrors them to the **private** repository `IridescentCraft-logs`, folder `server/`, two to three minutes after each restart. `debug.log` and `debug-1.log.gz` are mirrored only after a crash exit (JVM exit code not 0); they are always on the box. `crash-<date>_<time>.log` in the runtime root (written on a non-zero exit) is not mirrored: the Forge report it quotes is. Guide §14, current state in §14i.
+- Where dev tools find those logs: `<repo>\.minecraft\dev\server_logs.py` (`$ICRAFT_SERVER_LOGS`, then the live share's `logs\`, then a clone of the logs repository beside the pack clone, `..\IridescentCraft-logs\server`). The old public mirror, `server_distribution\TesterLogs\Server Logs\`, is gone from this repo's tip (not from its history) and, as a staging folder, from the box: it carried player names and chat. Log lines still do, so quote them in the internal repo only, never here.
 - Mod hygiene: `strip_client_mods.bat`/`.sh`, `cleanup_stale_jars.ps1`, `update_mods.ps1`, `client_only_mods.txt`, `custom_jars_manifest.json`.
 - Sync marker: `.icraft_last_sha`. Legacy sync scripts: `sync_from_repo.bat`/`.sh`, `phase0_sync.ps1`.
 - Preflight: `diagnose.bat` / `diagnose.ps1` (Java, RAM, disk, mod count, custom-jar SHA, recent crashes).
-- Health check: `<repo>\.minecraft\dev\verify-server.ps1` (live vs freshly fetched `origin/main`). Exit 0 parity · 1 drift · 5 server down · 6 access RED (whitelist off, or a refused start) · 3 backups RED · 4 boot log RED (reported in that order when several apply) · 2 could not run. Any commit the server has not synced yet counts as drift, a docs or skill commit included: it clears at the next restart.
-- Internal runbooks: `IridescentCraft-internal\dev\deployment-and-utility-guide.md` (§8 verify-server, §9 restarts and remote control, §11 backups, §13 override layer, §14 log push and launcher status, §15 access), `dev\failure-modes.md` (§8 to §11), `dev\lessons-learned.md`.
+- Health check: `<repo>\.minecraft\dev\verify-server.ps1` (live vs freshly fetched `origin/main`). Exit 0 parity · 1 drift · 5 server down · 6 access RED (whitelist off, or a refused start of either cause) · 3 backups RED · 4 boot log RED (reported in that order when several apply) · 2 could not run. AMBER (boot-log lines nobody has accepted) and INTENTIONAL (this server's own config values) are printed and never change the exit code. Any commit the server has not synced yet counts as drift, a docs or skill commit included: it clears at the next restart.
+- Boot-log checker behind it: `<repo>\.minecraft\dev\loud\loud-check.ps1`, with `baseline.json` (what was read and accepted, and the known defects) and `liveness_manifest.json` (the lines every boot must carry).
+- Internal runbooks: `IridescentCraft-internal\dev\deployment-and-utility-guide.md` (§8 verify-server, §9 restarts and remote control, §11 backups, §12 regeneration dry-run, §13 override layer and worldgen settings, §14 log push and launcher status, §15 access, §16 regeneration), `dev\failure-modes.md` (§8 to §11), `dev\lessons-learned.md`.
 
 ## Remote control (the box is NOT file-only)
 
 Verified 2026-10-09 from the dev PC, as `sereneblossom\silvariazemaitis` (admin on the box). Earlier docs and briefs assumed only the Z: file share worked; that was wrong. Do the work yourself over remoting instead of handing the operator manual steps.
 
-- **Files:** `Z:` = `\\Sereneblossomns\c$` (admin share) — read logs, crash reports, markers and the launcher status; write the small runtime control files (`.icraft_cycle_request`, `.icraft_restart_policy`) and, through `manage_whitelist.ps1` only, `whitelist.json`. Never edit synced content there.
+- **Files:** `Z:` = `\\Sereneblossomns\c$` (admin share) — read logs, crash reports, markers and the launcher status; write the small runtime control files (`.icraft_cycle_request`, `.icraft_restart_policy`) and, through `manage_whitelist.ps1` only, `whitelist.json`. Never edit synced content there, and never touch `.icraft_regen_in_progress`, `.icraft_start_refused` or `regen-holding\`: they are the launcher's.
 - **Commands:** `Invoke-Command -ComputerName Sereneblossomns -ScriptBlock { ... }` (WinRM) — `Get-Process java,icraft-gui`, `Get-ScheduledTask`, `jcmd <pid> GC.class_histogram` (the server JDK ships `jcmd`), and running the runtime's own scripts. **Never print a process's `CommandLine` from the box** (an older launcher put its GitHub token on git's command line): names, pids, start times and CPU answer the question.
 - **Scheduled tasks:** `schtasks /S Sereneblossomns ...` connects too; from PowerShell prefer `Get-ScheduledTask` / `Unregister-ScheduledTask` inside `Invoke-Command` (a task name with spaces is easy to mis-quote through `schtasks` and comes back "path not found").
 - **What remoting can't do:** type into the server console (`whitelist reload` included) or click the GUI — the GUI process owns the JVM's stdin and lives in the interactive session. Use the file-based requests below.
@@ -96,7 +100,13 @@ Invoke-Command -ComputerName Sereneblossomns -ScriptBlock {
 }
 ```
 
-`.icraft_backup_policy` keys: `mode=live|off` (off stops the scheduled ones only), `interval_hours`, `keep`, `max_minutes`. A line that doesn't parse does **not** stop backups: the launcher backs up on the defaults, **prunes nothing**, and turns the Backup badge red until the file is fixed or removed. Retention only ever deletes `world-YYYYmmdd-HHMM.zip`; a `manual-*.zip` stays until someone deletes it (each is the size of the world). A backup failure never keeps the server down — it is in `backup.log` and on the badge. Restoring one: deployment guide §11.
+`.icraft_backup_policy` keys: `mode=live|off` (off stops the scheduled ones only), `interval_hours`, `keep`, `max_minutes`. A line that doesn't parse does **not** stop backups: the launcher backs up on the defaults, **prunes nothing**, and turns the Backup badge red until the file is fixed or removed. Retention only ever deletes `world-YYYYmmdd-HHMM.zip`; a `manual-*.zip` stays until someone deletes it (each is the size of the world). A backup failure never keeps the server down — it is in `backup.log` and on the badge. Restoring one: deployment guide §11f.
+
+**Every zip also carries the server's own state** (since 2026-10-12), under `server-state\`: the five identity files, the override list, `config-overrides\` and the `.icraft_*_policy` files that exist. `backup.log` says `… N files + M of the server's own state`; `WARN: server state NOT in this backup -- <file>` = that file was left out, the world part is still good.
+
+- **Extracting a zip in the server folder restores the world only.** `server-state\` lands as a folder beside `world\` that nothing reads: the live whitelist, bans and overrides stay as they are. Do not copy it over the live files to "finish" a restore: that puts the lists of the backup's day over today's. Taking one of those files back is a decision of its own, with the server stopped: guide §11j.
+- The bundle is names, UUIDs and banned addresses: list a zip (`tar -tf`), never print or commit what is in it.
+- A regeneration run takes a pinned `manual-*.zip` first (trigger `pre-regen <code>` in `backups.json`) unless one already matches the world, and does not run without it.
 
 ## Launcher up, JVM down
 
@@ -121,13 +131,44 @@ Reading the status file:
 - `written` older than ~3 min: the launcher itself is closed or hung, or the box is off. The file cannot say what the JVM is doing; use `Get-Process`.
 - `phase=` names the step: `cycle: content sync from GitHub`, `cycle: launcher self-update`, `pre-launch: sync check, mod verify, backup` (then `logs\backup.log`), `starting: JVM booting` (there IS a JVM: read `logs\latest.log` for where the boot stopped), `stopping: …`, `post-exit: …`, `auto-restart backoff`.
 - `phase=no supervised server`: nobody is running the server. With `heartbeat=GAVE UP -- crash loop` the three auto-Cycles are spent: newest crash report, then the Triage flow. Otherwise it was stopped on purpose, exited cleanly, or auto-restart is off (`heartbeat=DOWN …`).
-- **`.icraft_start_refused` exists next to it: the server is down on purpose.** The start guard found a whitelist or online-mode switch off and started no JVM (no crash report, nothing in `latest.log`). `why=` in that file is the cause; the heartbeat retries three times, then `GAVE UP`. Causes and fixes: Access, and guide §15j.
+- **`.icraft_start_refused` exists next to it: the server is down on purpose.** The launcher started no JVM (no crash report, nothing in `latest.log`); the heartbeat retries three times, then `GAVE UP`. There are two causes with different fixes, and `why=` in that file says which: see A refused start.
 - `stuck=` set: the launcher's own watchdog, a phase past 10 min (also `WATCHDOG: STUCK in '<phase>'` in `logs\restart_policy.log`). It reports and does nothing else.
-- `log_push=`: how the last log push went. It is never the reason the server is down.
+- `log_push=`: how the last log push went. It is never the reason the server is down. `FAILED … the saved token cannot use the private repository …` = the token on the box has no access to `IridescentCraft-logs`; the logs stay staged and go out once it has (guide §14).
 
 **A stalled `git` is no longer the expected cause.** The 39-minute outage of 2026-10-11 was a restart waiting on the log push's git; that push now runs no git and sits after the start. `git.exe` under the launcher means someone clicked Sync, Apply Self-Update or Rebuild + Push GUI, and those calls are killed after 5 min. Look instead for the child with an old start time and no CPU between the two samples (a `java.exe` during `pre-launch` is the Java check or the Forge installer, not the server), or for no child at all, which leaves the step `phase=` names: the network to GitHub, a mod download, the backup.
 
-**Then:** tell the planning session before touching anything on the box. The request file cannot restart a server that is not up, and after `GAVE UP` nothing restarts it remotely: the way out is at the box's desktop (Stop if a run is still live, then Cycle). **Do not start a second launcher over WinRM** (its window is in no session anyone can see, and the first one is still there), and do not reach for the `.bat` scripts. Stage timings and the forensic record: deployment guide §14e, failure-modes §9.
+**Then:** tell the planning session before touching anything on the box. The request file cannot restart a server that is not up, and after `GAVE UP` nothing restarts it remotely: the way out is at the box's desktop (Stop if a run is still live, then Cycle; after an unfinished regeneration, Roll back first). **Do not start a second launcher over WinRM** (its window is in no session anyone can see, and the first one is still there), and do not reach for the `.bat` scripts. Stage timings and the forensic record: deployment guide §14e, failure-modes §9.
+
+## A refused start (two causes)
+
+`.icraft_start_refused` next to `server.properties` means the launcher started no JVM, on purpose. **Read its `why=` line before anything else**: it names the cause, and the fixes differ.
+
+| | Unfinished regeneration | Access switch not restored |
+|---|---|---|
+| `why=` | `a world regeneration was left unfinished (.icraft_regen_in_progress is there) …` | `white-list=false in server.properties …`, `… is missing from server.properties`, or `.icraft_config_overrides.json does not parse` |
+| What happened | The launcher died or failed part-way through a regeneration run or its rollback: some chunks are reset, some are not | A pinned `white-list`, `enforce-whitelist` or `online-mode` could not be put back, or the list or the file cannot be read |
+| Checked | First, before the put-back | Last, after the put-back |
+| The auto-Cycles | Cure nothing: **every Cycle is refused again** until the run is rolled back | Each retries the put-back, which often cures it |
+| `config-overrides\history.log` | No line. The record is `logs\regen_execute.log` | A `START REFUSED` line |
+| Fix, at the box | Customizer -> **Regenerate** -> **Roll back** on the run marked `This run did not finish` (type its code), then Cycle | Put the value into `server.properties` or repair the list, then Cycle |
+| Detail | guide §16f | guide §15j |
+
+- **`verify-server.ps1` prints its access-case notes under ANY refusal.** Both causes show as RED under its access heading, `THE LAUNCHER REFUSED TO START THE SERVER (<when>): <why>`, exit 6 (5 once the server has been down 10 min). The quoted `why` is right. For a regeneration refusal the lines after it are not: "it would have run with its whitelist or online mode off", "put the value into server.properties … then press Cycle", the pointer to §15j. Go by `why=` and §16f.
+- `icraft settings start-check` repeats the access check only: it knows nothing of a regeneration, and a worldgen or datapack value on the list guards nothing.
+- During a regeneration refusal `server.properties` may read `white-list=false` (the put-back comes after that guard): no JVM, nothing open.
+- **Never delete `.icraft_regen_in_progress` to get the server going**: it would start on a half-reset world. The one exception is the launcher saying so itself (`… could not be removed …: delete it by hand`).
+- After `GAVE UP` neither cause clears remotely: tell the planning session; the operator acts at the box.
+
+## World regeneration (the Regenerate page)
+
+Customizer -> **Regenerate** resets chunks so that the game generates them again: the one part of the launcher that deletes world data (on the box since 2026-10-12, not run on the live world as of that date).
+
+- **Only a code typed into the launcher window starts a run**, at the box, with the server stopped. **Nothing remote can**: no request file, flag or environment variable. The CLI's `regen-execute` / `regen-rollback` work on a marked scratch copy only; `request_regen_report.ps1` only writes a map to `regen-reports\`. A brief that asks for a run, a rollback or a "finish" from the dev PC is wrong: report it.
+- **It can:** take (or re-verify) a pinned backup, move what it resets into `regen-holding\<run>\`, prune the mod records that pointed there, check the result, and put everything back by itself when a step fails. **Roll back** on the same page undoes a run exactly, for as long as the server has not run on the result.
+- **It cannot:** run while a JVM has the world; reset a chunk that holds a player's logout position, a claim or Create track (the run is refused, nothing touched); start a pregeneration; be rolled back after a server start (the way back is then the pinned backup, guide §11f).
+- **Markers:** `.icraft_regen_in_progress` = the world is being changed right now, or a run died part-way (then: A refused start). `regen-holding\<run>\` = a run's way back: as big as what it reset, never pruned, the operator's to delete. Neither is drift. The server is stopped on purpose during a run (`phase=no supervised server`).
+
+The operator's steps: guide §16b. An unfinished run: §16f. What a run does to each mod's data: §16e.
 
 ## Access: who can join
 
@@ -136,8 +177,8 @@ The live server is public (through the relay) and runs `online-mode=false`, so t
 - **The identity files are the server's own:** `whitelist.json`, `ops.json`, `banned-ips.json`, `banned-players.json`, `usercache.json`. Untracked and ignored in the repo; no sync path writes or deletes them (the launcher's `SERVER_OWNED_FILES`, and the legacy sync scripts skip them too). **Do not "restore" one from the repo** (history holds only the empty lists that used to wipe them) **and do not expect a sync to repair one.** `ops.json` is empty on purpose (operator ruling 2026-10-11: operator status stays off for now): not a fault to fix.
 - **The switch is pinned.** `white-list` and `enforce-whitelist` are two entries on the override list (`.icraft_config_overrides.json`). The launcher puts both back before every JVM start; each time it has to write, `config-overrides\history.log` gets a `PUT BACK` line (no line when the file still held the values).
 - **`white-list=false` on disk right after a sync is expected.** The tracked `server.properties` carries the pack default, so every sync that rewrites the file leaves `false` there for a few seconds, with no JVM running (9 s when measured). A running JVM keeps what it read at start. Do not "repair" a pinned value back to the pack's, and do not expect a hand edit to last: the list decides.
-- **The start guard** (since 2026-10-11). After the put-back, every `white-list`, `enforce-whitelist` or `online-mode` the list switches ON must read `true` in `server.properties`. If one does not, or the file or the list cannot be read, **no JVM is started**: `.icraft_start_refused` says when and why, `history.log` gets `START REFUSED`, the heartbeat's three auto-Cycles each retry the put-back, then it gives up and the server stays down until Cycle is pressed at the box. A pass leaves no trace. `icraft settings start-check` repeats the check read-only, over the share too (the CLI is a CI artifact, not on the box; exit 0 = it would start).
-- **The check:** `verify-server.ps1` section 7 (counts only, never a name). **RED, exit 6** = the whitelist is off on the public server (the file says `false` and no pin puts it back), `server.properties` is unreadable, or `THE LAUNCHER REFUSED TO START THE SERVER` (with the launcher's reason; exit 5 once the server has been down 10 min). YELLOW covers the expected cases (file `false` with the pin in place; on but not pinned; on and empty). What to do on RED: guide §15j.
+- **The access start guard** (since 2026-10-11). After the put-back, every `white-list`, `enforce-whitelist` or `online-mode` the list switches ON must read `true` in `server.properties`. If one does not, or the file or the list cannot be read, **no JVM is started**: `.icraft_start_refused` says when and why, `history.log` gets `START REFUSED`, the heartbeat's three auto-Cycles each retry the put-back, then it gives up and the server stays down until Cycle is pressed at the box. A pass leaves no trace. `icraft settings start-check` repeats the check read-only, over the share too (the CLI is a CI artifact, not on the box; exit 0 = this guard would pass). The other thing that refuses a start, an unfinished regeneration, has nothing to do with access: A refused start.
+- **The check:** `verify-server.ps1` section 7 (counts only, never a name). **RED, exit 6** = the whitelist is off on the public server (the file says `false` and no pin puts it back), `server.properties` is unreadable, or `THE LAUNCHER REFUSED TO START THE SERVER` (with the launcher's reason; exit 5 once the server has been down 10 min). YELLOW covers the expected cases (file `false` with the pin in place; on but not pinned; on and empty). What to do on RED: guide §15j, unless the reason is a regeneration (then A refused start: the script's notes do not apply).
 - **Someone joining under a listed player's name** (offline mode checks the name, not an account) cannot be banned on their own: the UUID is the real player's and every relay connection has the same address. Take the name off the whitelist. The operator has accepted this risk for now.
 
 Adding or removing a player:
@@ -153,12 +194,12 @@ Then the server has to re-read the file: `whitelist reload` typed in the launche
 
 ## Triage flow
 
-1. **Get the signal.** Read the NEWEST `crash-reports\crash-*.txt` (not the rolled `latest.log`) and tail `logs\latest.log`. If you only have the pushed copies, look in `<repo>\.minecraft\server_distribution\TesterLogs\Server Logs\` (pull first; the newest run arrives a few minutes after the restart). No crash report and no JVM: see Launcher up, JVM down.
+1. **Get the signal.** Read the NEWEST `crash-reports\crash-*.txt` (not the rolled `latest.log`) and tail `logs\latest.log`. If the share is out of reach, the pushed copies are in a clone of the private `IridescentCraft-logs` repository, under `server\` (pull first; the newest run arrives a few minutes after the restart, `debug.log` only after a crash exit). No crash report and no JVM: see Launcher up, JVM down.
 2. **Classify** against the signatures below.
 3. **Fix at the repo source** under `<repo>\.minecraft\…` (or the relevant mod's resources). Never edit the Z: runtime.
 4. **Push** (standing auto-push to main).
 5. **Re-sync the server (mode-aware, below) + restart.**
-6. **Verify:** watch `logs\latest.log` for "Done preparing level"/"For help, type \"help\"" and confirm no new `crash-reports\crash-*.txt`.
+6. **Verify:** watch `logs\latest.log` for "Done preparing level"/"For help, type \"help\"" and confirm no new `crash-reports\crash-*.txt`. Then `verify-server.ps1`: exit 0, and read its AMBER lines (A boot that did not crash, below).
 
 ## Crash signatures (known)
 
@@ -166,6 +207,22 @@ Then the server has to re-read the file: `whitelist reload` typed in the launche
 - **Both-sides mod dropped from the server → the CLIENT now DCs on join (registry NPE).** After you remove a `side='both'` mod from the server to fix a server crash (delete its `.pw.toml` from the distro `mods\.index\`), the **client must drop it too** — otherwise the client still registers that mod's content and the join handshake fails with `NullPointerException: Registry Object not present: <namespace>:<id>` (real case: `soulsweapons:ghostly` after Marium's Soulslike was dropped, `902f1e9`). The client purge only lands if the **test instance actually synced to origin** — a stale/diverged instance keeps the removed jar (the prelaunch sync used to silently stick on a stray local commit and drift 120 commits behind; fixed 2026-06-03 with force-sync + index reconcile, see lessons-learned). **FIRST check the instance is at origin HEAD:** `git -C <instance> rev-list --count HEAD..origin/main` must be `0` (non-zero = stale → `git -C <instance> fetch origin; git -C <instance> reset --hard origin/main`, then relaunch). Even after a sync, the instance's overlaid `mods\.index\` can keep the removed mod as an **untracked leftover** — `prism_prelaunch.bat`'s Phase-2 `reconcile_client_index.ps1` purges that (drops untracked tomls absent from origin's main index + the client-distro index, while preserving the client-only overlay). The standalone twin of this is the server case below; the principle is symmetric — a side change isn't shipped until BOTH sides actually re-synced.
 - **Reload-unsafe Forge listener (#60).** `java.lang.IllegalStateException: null` in `rhino…enterActivation…` during "Ticking entity" (after a `/reload` or on a mob attack). ROOT: a raw `MinecraftForge.EVENT_BUS.addListener` registered from a KubeJS server script captures a Rhino scope that dies on reload. FIX: route through the mod-owned dispatcher or a KubeJS `EventGroup` (see `kubejs\server_scripts\relic_boss_drops.js` + `strip_anomalous_drops.js`); never raw-register from a server script.
 - **Biome feature-order cycle (#64).** Crash on world load: `Feature order cycle found, involved sources: [...]` from `ModdedBiomeSlicesManager`. ROOT: a custom biome injects a feature out of order vs TerraBlender region init. FIX: reorder the feature deps; validate with `iridescent-biomes-mod\tools\check_feature_cycles.py`.
+
+## A boot that did not crash: the boot-log check
+
+`verify-server.ps1` runs `loud-check.ps1` over the box's `logs\`:
+
+- **RED, exit 4:** a KubeJS error or handler abort, a script that did not load or is stale, a line of the liveness manifest missing, a mixin / dependency / tick-loop / OOM pattern. Also when the boot has no `Done` line (`boot-incomplete`): still starting (wait, run it again), or it died on the way. A `latest.log` the game rolled at the box's midnight is read together with the rotated log before it, so an uptime across midnight is judged as one boot; where that earlier log is not at hand the check says `boot not judgeable: log rolled` under NOT RUN and nothing turns red.
+- **AMBER, exit code unchanged:** ERROR lines of `latest.log` (WARN in the KubeJS logs) that nobody has accepted in `baseline.json`.
+  - `KNOWN DEFECT, reviewed and not baselined (…)` is expected. Today, nine lines at most: the dead `cataclysm_ut` add-on (6), `chunky_player_pause` (2), Crust's `default_game_rules.toml` (1: upstream; Crust rewrites the file in a form it cannot read back, so a fix holds one boot. Leave it).
+  - **`not in the baseline, xN: …` is NEW: this boot logged an error that no accepted boot did.** A change that landed without crashing anything shows here first. Read the line, find the push that brought it (`.icraft_last_sha` against `git log`), fix it at the source. Accept it in `baseline.json` only once it is understood and harmless, with the reason; never to quiet the output. `baselined at xN, now xM` (three times as often) gets the same treatment.
+  - Nothing forces anyone to look at AMBER: report the count, and whether any line was new.
+- `STALE DEFECT <id>` / `STALE ACCEPTED <id>` after the findings is not a finding: a line the baseline lists was absent from two complete boots in a row, so its entry can be deleted. No verdict or exit code moves.
+
+Two lines to know:
+
+- `logs\latest.log`, seconds after `Done`: **`[empty-level-prune] active: … N of N levels … (Forge's fresh lists).`** = the backstop against the empty-level chunk leak (`iridescent_durability_clamp`) is on. `ABSENT` = it did not apply; `ABSENT (part)` = only its second part (Forge's fresh lists) did not. **Either way the server is fine: no restart.** What is missing is the protection (chunks loaded in a level without players pile up again: the nightly out-of-memory of 2026-10), so report it and look for a mixin warning naming `LevelEmpty…PruneMixin`. `OFF` = a JVM switch, on purpose. The checker does not look for `ABSENT`.
+- `logs\kubejs\server.log`: **`0_lib_core loaded -- global.icraft.core`**. All script-applied mob and boss scaling depends on `0_lib_core.js` loading: the `scaling\*.js` handlers return silently without it, other scripts log `0_lib_core.js did not load -- … OFF`. The line is in the liveness manifest, so missing = RED. Fix that file before chasing anything that looks like a balance bug.
 
 ## Re-sync the server (mode-aware) + restart
 
@@ -181,7 +238,11 @@ Then the server has to re-read the file: `whitelist reload` typed in the launche
 ## Footguns (each has cost a session)
 
 - **Editing the Z: live runtime instead of the repo source** — overwritten on the next sync. Fix the repo, push, then deploy. (The server's own files are the exception: Access.)
-- **Starting the live server with `iridescentserver.bat`, `run.bat` or a `.sh` script** — they skip the override put-back and the start guard, so the public server starts with the pack's `white-list=false`. Use the launcher (a Cycle), also when it has refused a start.
+- **Starting the live server with `iridescentserver.bat`, `run.bat` or a `.sh` script** — they skip the override put-back and both start guards, so the public server starts with the pack's `white-list=false`, and on a half-regenerated world if that is why the launcher refused. Use the launcher, also when it has refused a start.
+- **Answering a refused start with "press Cycle" before reading `why=`** — an unfinished regeneration is refused again until it is rolled back, and `verify-server.ps1` prints the access advice either way.
+- **Deleting `.icraft_regen_in_progress`, or clearing `regen-holding\`, to get a server going or free disk space** — a start on a half-reset world; the exact way back gone.
+- **Copying a backup's `server-state\` over the live files** — the whitelist, bans and overrides of the backup's day over today's. Extracting a zip restores the world only (guide §11j).
+- **Reading AMBER as green** — the exit code does not move. A `not in the baseline` line is new and needs reading.
 - **Starting a second launcher over WinRM to get a down server going** — nobody can see or click it, and it is a second supervisor on the same server. The fix is Cycle at the box.
 - **"Restoring" `whitelist.json` / `ops.json` / a ban list / `usercache.json` from the repo, or waiting for a sync to fix one** — they are the server's own; the repo's old copies were empty lists. An empty `ops.json` is the operator's choice.
 - **`whitelist add` / `op` in offline mode** — stores the wrong UUID and reports success. `manage_whitelist.ps1`, then `whitelist reload`.
