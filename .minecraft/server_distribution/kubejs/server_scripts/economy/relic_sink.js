@@ -141,6 +141,12 @@ const RELIC_SINK_CAP_OVERRIDE = {
 // truth shared by the sweep here AND the Relic Broker buy trades (Phase B1).
 // =============================================================================
 function relicEssenceValue(itemId) {
+  // A stack's id reaches a script as a java.lang.String, which rhino hands over
+  // as a wrapped OBJECT: a JS Set never matches it (two wrappers of the same
+  // text do not match each other either). Until 2026-10-12 this line answered
+  // "not denied" for every carried item, so the deny list denied nothing.
+  // Normalised here, once, for every caller (the sweep and the Broker).
+  itemId = String(itemId)
   if (RELIC_SINK_DENY.has(itemId)) return 0
   if (RELIC_SINK_VALUE[itemId] !== undefined) return RELIC_SINK_VALUE[itemId]
   if (RELIC_SINK_ALLOW[itemId] !== undefined) return RELIC_SINK_ALLOW[itemId]
@@ -172,13 +178,13 @@ function relicCapKey(itemId) {
 function relicScan(player) {
   const pdata = player.persistentData
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   const found = {}   // itemId -> aggregate
   for (let i = 0; i < size; i++) {
     let stack = inv.getStackInSlot(i)
     if (stack.isEmpty()) continue
-    let id = stack.id
+    let id = String(stack.id)                          // JS string: `found` keys, cap keys and the report all use it
     if (id === RELIC_ESSENCE_ITEM) continue            // never sink the currency
     let value = relicEssenceValue(id)
     if (value <= 0) continue
@@ -256,7 +262,7 @@ function relicSubmit(player, confirm) {
   // ---- EXECUTE ----
   const pdata = player.persistentData
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
   lines.forEach(l => {
     let toRemove = l.n
     for (let i = 0; i < size && toRemove > 0; i++) {
@@ -292,7 +298,7 @@ function relicSubmit(player, confirm) {
 // =============================================================================
 function relicBalance(player) {
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
   let held = 0
   for (let i = 0; i < size; i++) {
     let stack = inv.getStackInSlot(i)

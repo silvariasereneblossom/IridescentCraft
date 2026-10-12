@@ -1,13 +1,20 @@
 // =============================================================================
 // ISS ARENA ENRICHMENT — re-homed from boss_arena_themed_loot.js + _material_tease.js
 // =============================================================================
-// WHY THIS FILE LOADS LAST (the `zz_` prefix): lootjs_overhaul.js installs a
+// WHY THIS FILE LOADS LATE (the `zz_` prefix): it has to register AFTER
+// loot/lootjs_overhaul.js, and it does. It does NOT load last (this header
+// said so until 2026-10-12): it is third from last in loot/. Boot order of the
+// tail: zzz_iss_scroll_tier_clamp.js, THIS FILE, zz_pack_enchanted_books.js,
+// zz_unique_chest_strip.js ('Z' sorts before '_', so zzz_* comes first). What
+// the two files after it remove is removed from this file's adds as well.
+// lootjs_overhaul.js installs a
 // `LootType.CHEST` strip `removeLoot(stripISSExceptScroll)` that removes every
 // irons_spellbooks:* item except `scroll`. LootJS `removeLoot` is a ONE-SHOT
 // `removeIf` applied in REGISTRATION (script-load) ORDER — CFR-decompiled from
 // lootjs 2.13.1 (2026-06-14): `RemoveLootAction.applyLootHandler` = a single
 // `loot.removeIf(predicate)`, NOT a persistent whole-pass filter. KubeJS loads
-// scripts ALPHABETICALLY, so `boss_arena_*.js` registered their ISS-arena
+// scripts in folder-listing order (by name, case-insensitively, on the Windows
+// server), so `boss_arena_*.js` registered their ISS-arena
 // enrichment BEFORE `lootjs_overhaul.js` registered the strip -> the strip ate
 // them. Re-homing those adds here (this file loads AFTER lootjs_overhaul) makes
 // them register AFTER the strip, so they SURVIVE -- with NO over-delivery to

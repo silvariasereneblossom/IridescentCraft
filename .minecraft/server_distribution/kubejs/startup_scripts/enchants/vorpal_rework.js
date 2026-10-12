@@ -185,8 +185,8 @@ try {
   // script can observe is the pack's own roll in server_scripts/attributes/
   // attribute_sync.js: it reads attributeslib:crit_chance (the attribute
   // Hook 1 raises -- "land more crits ... then sometimes behead") and, when
-  // it fires, stamps the attacker with icraft_last_crit_tick = the server
-  // tick. That stamp is the crit signal, exactly as for Arcane Vorpal
+  // it fires, stamps the attacker with icraft_last_crit_tick = the world
+  // clock. That stamp is the crit signal, exactly as for Arcane Vorpal
   // (icraft_magic_enchants.js). It also fits the estimate above: 40% of
   // crits at L8 is "~5-15% kills-per-swing depending on crit gear" at a
   // 12-37% crit rate -- an attribute-roll rate that gear moves (a
@@ -267,9 +267,10 @@ try {
 
         // only crits: did the custom crit roll fire for this attacker on THIS
         // tick? Same clock, read the same way as the writer (attribute_sync.js:
-        // putLong('icraft_last_crit_tick', attacker.server.tickCount)).
+        // putLong('icraft_last_crit_tick', Number(attacker.level.time)) -- the
+        // world clock since 2026-10-12, not server.tickCount).
         var lastCrit = Number(attacker.persistentData.getLong('icraft_last_crit_tick'))
-        var curTick = Number(attacker.server.tickCount)
+        var curTick = Number(attacker.level.time)
         if (lastCrit !== curTick) return
 
         // Don't behead bosses / players.

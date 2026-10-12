@@ -56,19 +56,36 @@
 
   // ── Helper: progression tier from visited dimensions (only goes up) ──
   // (was the top-level `getPlayerTier`; renamed + scoped, see header)
+  //
+  // Exact dimension ids, with the tier of each dimension's stage gate in
+  // gates/astages_restrictions.js (operator ruling 2026-10-11: the stage gate
+  // is the authority for a dimension's tier).
+  //   * The Otherside and the Abyss are tier 3. This copy still had them at 4
+  //     after the other six were moved (ea83e349). The Abyss's Frost World is
+  //     tier 3 as well (same ruling).
+  //   * Tier 4 is the End alone.
+  //   * Deep Aether has no dimension of its own: its biomes generate inside
+  //     aether:the_aether, so it is tier 2 with the Aether.
+  // No substring tests: `includes('aether')` also "matched" a Deep Aether id
+  // that does not exist, and would match any later id that merely contains it.
+  var DIMENSION_TIER = {
+    'twilightforest:twilight_forest': 2,
+    'aether:the_aether': 2,
+    'blue_skies:everbright': 2,
+    'blue_skies:everdawn': 2,
+    'minecraft:the_nether': 3,
+    'undergarden:undergarden': 3,
+    'deeperdarker:otherside': 3,
+    'theabyss:the_abyss': 3,
+    'theabyss:frost_world': 3,
+    'minecraft:the_end': 4
+  }
+
   var detectDimensionTier = function (player) {
     var data = player.persistentData
     var tier = data.getInt('icraft_detected_tier') || 1
-    var dim = String(player.level.dimension)
-
-    if (dim.includes('the_end') || dim.includes('otherside') || dim.includes('the_abyss')) {
-      tier = Math.max(tier, 4)
-    } else if (dim.includes('the_nether') || dim.includes('undergarden')) {
-      tier = Math.max(tier, 3)
-    } else if (dim.includes('twilight') || dim.includes('aether') || dim.includes('blue_skies') ||
-               dim.includes('everbright') || dim.includes('everdawn')) {
-      tier = Math.max(tier, 2)
-    }
+    var here = DIMENSION_TIER[String(player.level.dimension)]
+    if (here > tier) tier = here
 
     data.putInt('icraft_detected_tier', tier)
     return tier

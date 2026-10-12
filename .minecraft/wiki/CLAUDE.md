@@ -77,12 +77,13 @@ Working events (SERVER scripts only, unless noted):
 - `EntityEvents.spawned`, `EntityEvents.death`
 - `ItemEvents.tooltip` (client_scripts/)
 - `LootJS.modifiers`
+- `AStageEvents.added`, `AStageEvents.removed` - server_scripts/ only. The group is `AStageEvents` (singular "Stage"); the handler gets `event.getStage()` and `event.getPlayer()`. The pack uses `AStageEvents.added` to cascade lower tiers and sync advancements on every stage grant.
 
 Discovery: every available event is documented under `local/kubejs/event_groups/<EventGroup>/<eventName>.md` after KubeJS first runs. Each .md file lists "Valid script types" - check this before registering an event in a different scope.
 
 NOT available (will crash):
 - `PlayerEvents.pickedUpItem`, `PlayerEvents.death`, `PlayerEvents.changeDimension`
-- `AStagesEvents` (use command-based approach instead)
+- `AStagesEvents` (plural) does not exist: the event group is `AStageEvents`, listed above. This line used to say stage events were unavailable; they are not.
 - `MoreJS` (not installed)
 
 ## Workflow

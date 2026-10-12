@@ -40,11 +40,22 @@ const ResourceLocation = Java.loadClass('net.minecraft.resources.ResourceLocatio
 
 // --- Helpers ---
 
+// What was really registered, per tier: counted by the helpers below as each
+// AStages call returns, and printed at the end of registerStageRestrictions().
+// (That boot line used to be typed by hand and had drifted: it said "Tier 2:
+// 6 mods + 17 items" while the calls registered 1 mod and 76 items.)
+let stageCounts = {}
+function countStage(tier, kind) {
+  if (!stageCounts[tier]) stageCounts[tier] = { mods: 0, items: 0, ores: 0, dimensions: 0, recipes: 0 }
+  stageCounts[tier][kind]++
+}
+
 /**
  * Register a mod restriction for an entire mod.
  */
 function stageMod(tier, modId, restrictionId) {
   AStages.addRestrictionForMod(restrictionId, tier, modId)
+  countStage(tier, 'mods')
 }
 
 /**
@@ -59,6 +70,7 @@ function stageItems(tier, items, idPrefix) {
       tier,
       Item.of(itemId).item
     )
+    countStage(tier, 'items')
   })
 }
 
@@ -73,6 +85,7 @@ function stageOre(tier, oreId, replacementId, restrictionId) {
     Block.getBlock(oreId).defaultBlockState(),
     Block.getBlock(replacementId).defaultBlockState()
   )
+  countStage(tier, 'ores')
 }
 
 /**
@@ -81,6 +94,7 @@ function stageOre(tier, oreId, replacementId, restrictionId) {
  */
 function stageDimension(tier, dimId, restrictionId) {
   AStages.addRestrictionForDimension(restrictionId, tier, new ResourceLocation(dimId))
+  countStage(tier, 'dimensions')
 }
 
 /**
@@ -99,6 +113,7 @@ function stageCraftingRecipes(tier, recipeIds, idPrefix) {
       crafting,
       new ResourceLocation(recipeId)
     )
+    countStage(tier, 'recipes')
   })
 }
 
@@ -108,6 +123,7 @@ function stageCraftingRecipes(tier, recipeIds, idPrefix) {
 // =============================================================================
 
 function registerStageRestrictions() {
+  stageCounts = {}
 
   // =========================================================================
   // TIER 2 — Thermal, IF basic, Ars Nouveau, T2 dimension materials
@@ -486,7 +502,11 @@ function registerStageRestrictions() {
   stageOre('tier_4', 'aethersteel:aetherslate', 'aether:holystone', 'modpack/ore_aetherslate')
 
   // -- Dimension restrictions --
-  stageDimension('tier_4', 'deep_aether:the_aether', 'modpack/dim_deep_aether')
+  // (A tier_4 gate on 'deep_aether:the_aether' stood here until 2026-10-12. It
+  //  gated nothing: Deep Aether registers no dimension, its biomes generate
+  //  inside aether:the_aether, which is gated at tier_2 above. Ruling
+  //  2026-10-11: Deep Aether goes with the Aether. Its tier-4 materials are
+  //  gated by the Aethersteel ore and item restrictions in this file.)
   stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
 
   // -- Ad Astra Planets (Post-T4 Endgame) --
@@ -560,10 +580,16 @@ function registerStageRestrictions() {
     console.error('[IridescentCraft] stage-gated recipes NOT registered: ' + e)
   }
 
+  // The counts are what the helpers registered above, not typed by hand.
+  // (Tier 4's dimensions are the End and the 5 Ad Astra planets; its items
+  // include the 14 Awakening artifacts and the Mekanism fusion / SPS /
+  // antimatter / ultimate-factory pins, locked decision C 2026-06-06.)
   console.log('[IridescentCraft] AStages native restrictions registered')
-  console.log('  Tier 2: 6 mods + 17 items + 4 dimensions')
-  console.log('  Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 133 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts + Mekanism fusion/SPS/antimatter/ultimate-facility pins, locked decision C 2026-06-06)')
+  ;['tier_2', 'tier_3', 'tier_4'].forEach(tier => {
+    let c = stageCounts[tier] || { mods: 0, items: 0, ores: 0, dimensions: 0, recipes: 0 }
+    console.log('  Tier ' + tier.replace('tier_', '') + ': ' + c.mods + ' mods + ' + c.items + ' items + ' +
+      c.ores + ' ores + ' + c.dimensions + ' dimensions + ' + c.recipes + ' recipes')
+  })
 }
 
 // Once per script load: the flag is re-created whenever this file is

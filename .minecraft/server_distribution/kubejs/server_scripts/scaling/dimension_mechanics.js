@@ -9,7 +9,6 @@
 //   - Undergarden: Virulent Spores (poison on hit), Decay Aura (weakness)
 //   - Deeper Darker: Darkness Empowerment, Sculk Resonance
 //   - Nether: Soulfire Burns (fire bypass), Infernal Rage (extended aggro)
-//   - Deep Aether: Radiant Shield (first-hit absorb)
 //   - The Aether: Thin Air, Vertigo, Updrafts (altitude hazards)
 //   - The Abyss: Oppressive Darkness, Corruption, Fear Aura, Void Whispers
 //   - End: Void Corruption (stacking debuff)
@@ -121,14 +120,11 @@ EntityEvents.spawned(event => {
     }
   }
 
-  // ── Deep Aether: Radiant Shield ──
-  // 20% of mobs spawn with absorption (first-hit absorb)
-  if (dim === 'deep_aether:the_aether') {
-    if (Math.random() < 0.20) {
-      entity.potionEffects.add('minecraft:absorption', 999999, 1, false, true)
-      entity.persistentData.putBoolean('icraft_radiant', true)
-    }
-  }
+  // ("Deep Aether: Radiant Shield" -- 20% of mobs spawning with Absorption II --
+  //  stood here until 2026-10-12, keyed on 'deep_aether:the_aether'. No such
+  //  dimension exists (Deep Aether's biomes generate inside aether:the_aether),
+  //  so no mob ever got it. Deep Aether mobs get the Aether block below, as
+  //  they always have. Reviving it by biome or by mob id is an operator call.)
 
   // ── End: Void Corruption Aura ──
   // End mobs gain slight strength scaling

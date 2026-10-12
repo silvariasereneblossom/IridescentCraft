@@ -43,6 +43,9 @@
 //                   core.armorEnchTotal(entity, id)  -> sum over the 4 armour pieces
 //                   core.heldEnchLevel(entity, id)   -> level on the main-hand item
 //                   core.gearEnchMax(entity, id)     -> best of armour + both hands
+//   inventory       core.mainSlotCount()             -> 36: the slots of a player's inventory a sweep may
+//                                                       read and consume (hotbar + backpack, never the
+//                                                       worn armour or the off hand; see below)
 //   misc            core.forgeData(entity)           -> Forge getPersistentData() | null
 //                   core.light(entity)               -> 0..15 (7 when unknown)
 //                   core.warnOnce(key, message)
@@ -77,6 +80,12 @@
 //   * Forge's Entity.getPersistentData() (what the pack's jars and Apotheosis
 //     write) is `entity.forgePersistentData`; `entity.persistentData` is
 //     KubeJS's own compound.
+//   * Inventory: `player.inventory` is the vanilla Inventory. It has NO `size`
+//     (`inv.size` reads as undefined, so `for (i < inv.size)` runs zero times
+//     and says nothing); the slot count is `inv.slots` / `inv.containerSize`,
+//     41 for a player: 0-8 hotbar, 9-35 backpack, 36-39 the worn armour
+//     (feet..head), 40 the off hand. getStackInSlot(i) / setStackInSlot(i, s)
+//     are real. count() / find() look at all 41.
 //
 // RE-ENTRANCY
 //   LivingHurtEvent fires again for damage dealt from inside a hurt handler
@@ -803,8 +812,23 @@
     return out
   }
 
+  // ---- player inventory: the slots a sweep may read and consume ---------------
+  // A sweep that converts or destroys items (the Codex submit / balance /
+  // exchange, the relic sink) stops at the MAIN inventory: hotbar 0-8 and
+  // backpack 9-35. Not `inv.slots` (41): 36-39 are the armour a player is
+  // wearing and 40 is the off hand, and neither may be taken by a submit. The
+  // relic sink's own text promises it ("worn relics are safe -- only your
+  // backpack is scanned"). Ruling 2026-10-12; to widen the scope, change it
+  // here, in this one place.
+  // A FUNCTION on purpose, not a constant: the seven loops that use it read the
+  // nonexistent `inv.size` for months and ran zero times without a word. A
+  // missing function throws; a missing property is just `undefined` again.
+  var MAIN_INVENTORY_SLOTS = 36
+  var mainSlotCount = function () { return MAIN_INVENTORY_SLOTS }
+
   global.icraft.core = {
     warnOnce: warnOnce,
+    mainSlotCount: mainSlotCount,
     finite: finite,
     isPlayer: isPlayer,
     entityId: entityId,

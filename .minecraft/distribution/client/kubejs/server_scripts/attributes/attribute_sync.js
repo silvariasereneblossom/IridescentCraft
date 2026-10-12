@@ -229,15 +229,19 @@ core.onHurt('icraft.attribute_sync.hurt', function (event, ctx) {
     // 2026-05-21: Stamp the current tick so post-priority listeners
     // (e.g. icraft_magic_enchants.js Arcane Vorpal decap) can detect
     // "the custom crit fired for THIS attack" by comparing
-    // icraft_last_crit_tick to the current server tick. Spell crits
+    // icraft_last_crit_tick to the current tick. Spell crits
     // never set DamageSource.isCritical (vanilla only sets that for
     // Player.attack melee swings), so the flag stamp is the only
     // post-hoc signal for downstream listeners.
-    // (server.tickCount on purpose: the reader compares it with the server
-    // tick of the SAME hit; it is not a cooldown and does not need to
-    // survive a restart.)
+    // 2026-10-12: the stamp is the WORLD clock (level.time), no longer
+    // server.tickCount. The value is saved with the player, and tickCount
+    // starts again at 0 on every boot, so a stamp left by an earlier boot
+    // could equal a later boot's tick; the world clock never repeats. The two
+    // readers (startup_scripts/enchants/vorpal_rework.js and
+    // icraft_magic_enchants.js) read the clock the same way: change all three
+    // together or no crit is ever recognised.
     try {
-      attacker.persistentData.putLong('icraft_last_crit_tick', attacker.server.tickCount)
+      attacker.persistentData.putLong('icraft_last_crit_tick', Number(attacker.level.time))
     } catch (e) {}
   } else {
     // 2026-10-11: the stamp has to mean "THIS hit was a crit". It is keyed by
@@ -250,7 +254,7 @@ core.onHurt('icraft.attribute_sync.hurt', function (event, ctx) {
     // same-tick stamp is actually there.
     try {
       var critData = attacker.persistentData
-      if (Number(critData.getLong('icraft_last_crit_tick')) === Number(attacker.server.tickCount)) {
+      if (Number(critData.getLong('icraft_last_crit_tick')) === Number(attacker.level.time)) {
         critData.putLong('icraft_last_crit_tick', -1)
       }
     } catch (e) {}

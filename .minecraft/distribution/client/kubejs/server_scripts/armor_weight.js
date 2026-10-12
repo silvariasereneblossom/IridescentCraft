@@ -1,24 +1,36 @@
 // =============================================================================
-// ARMOR WEIGHT SYSTEM — light / medium / heavy per-piece scaling
+// ARMOR WEIGHT SYSTEM — robe / light / medium / heavy per-piece scaling
 // =============================================================================
-// Tags: data/icraft/tags/items/armor_{light,medium,heavy}.json
+// Tags: data/icraft/tags/items/armor_{robe,light,heavy}.json (robe is checked
+// first). Anything else, armor_medium.json included, is 'medium': no effect.
+// Reforged armor takes its class from its major module instead of a tag.
 //
-// Per-piece effects (scale linearly with the count of equipped pieces in
-// each category):
-//   light  +0.05 mana_regen, +1.25% movement_speed, -5% generic.armor,
-//          -7.5% generic.armor_toughness  ← NEW (light-only)
-//   medium  no effect (default for untagged items)
-//   heavy  -0.05 mana_regen, -1.25% movement_speed, +5% generic.armor
+// Per-piece effects (the COEF_* tables below are the numbers; each scales with
+// the count of worn pieces of that class, and the classes add up):
+//            mana_regen   movement_speed   generic.armor   armor_toughness
+//            (addition)   (multiply_base)  (multiply_base) (multiply_base)
+//   robe       +0.10         +1.5%            -7.5%           -10%
+//   light      +0.05         +5%              -5%             -7.5%
+//   medium      0             0                0               0
+//   heavy      -0.05         -5%              +5%              0
+//   4/4 robe: an extra +0.5 mana_regen (ROBE_SET_BONUS_MANA).
 //
-// Net (lightCount - heavyCount) determines the sign and magnitude on the
-// mana/speed/armor axes. A player wearing 4 light pieces gets +20% mana
-// regen / +5% speed / -20% armor; full plate gets the opposite.
+// So four light pieces are +0.20 mana regen, +20% speed, -20% armor and -30%
+// toughness; full plate is -0.20 mana regen, -20% speed and +20% armor.
+// (This header described three classes and a speed step of 1.25% per piece,
+// 5% at four, until 2026-10-12. The code has had four classes and 0.05 since
+// the file was imported; only the comment was changed. Which speed step is
+// MEANT is an open question for the operator.)
 //
-// Toughness is asymmetric: ONLY light contributes a penalty (-30% at 4/4
-// light), heavy does not add toughness back. Design intent: make it
-// genuinely hard to be tanky in light armor regardless of race, without
-// editing the toughness value on every individual robe item. Heavy armor
-// keeps its native material toughness (diamond/netherite high baseline).
+// Toughness is asymmetric: robe and light take a penalty, heavy does not add
+// toughness back. Design intent: make it genuinely hard to be tanky in light
+// armor regardless of race, without editing the toughness value on every
+// individual robe item. Heavy armor keeps its native material toughness
+// (diamond/netherite high baseline).
+//
+// Also applied here: +0.75 flat armor per worn Protection level (the reworked
+// Protection enchant) and the Faefolk toughness penalty (-50% unless 4/4 robe
+// or 4/4 light).
 //
 // Refresh: tick every 100 ticks (5s — matches class_passives + mana_pool
 // cadence). PlayerEvents.inventoryChanged also fires the recompute for

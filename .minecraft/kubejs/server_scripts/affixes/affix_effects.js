@@ -1000,7 +1000,9 @@ var tickPlayer = function (player) {
 
   if (!gear.any) return
   var dim = String(player.level.dimension)
-  var inAether = (dim === 'aether:the_aether' || dim === 'deep_aether:the_aether')
+  // Deep Aether is not a dimension: its biomes generate inside aether:the_aether
+  // (the 'deep_aether:the_aether' this line also tested does not exist).
+  var inAether = (dim === 'aether:the_aether')
   var hurt = player.health < player.maxHealth
 
   // ── Twilight's Embrace: Regen I in forest + speed at night ──

@@ -13,8 +13,11 @@
 // Dimension scaling:
 //   Overworld: 10%     Twilight: 12%     Blue Skies: 14%
 //   Aether: 15%        Undergarden: 17%  Deeper Darker: 18%
-//   The Abyss: 18%     Nether: 20%       Deep Aether: 22%
-//   The End: 25%
+//   The Abyss: 18%     Nether: 20%       The End: 25%
+//   (Deep Aether is part of the Aether: 15%. It registers no dimension of its
+//    own, so the 22% row this table carried for 'deep_aether:the_aether' never
+//    applied; removed 2026-10-12, ruling 2026-10-11 "Deep Aether scales with
+//    the Aether".)
 //
 // Soulbound (Ensorcellation, repurposed):
 //   I: 50% reduction    II: 75% reduction    III: 100% (no loss)
@@ -34,7 +37,6 @@ const DIMENSION_DURABILITY_LOSS = {
   'deeperdarker:otherside':             0.18,
   'theabyss:the_abyss':                 0.18,
   'minecraft:the_nether':               0.20,
-  'deep_aether:the_aether':             0.22,
   'minecraft:the_end':                  0.25,
   // Ad Astra Planets (Post-T4 Endgame)
   'ad_astra:moon':                      0.22,

@@ -54,9 +54,16 @@ const EXPLORE_TOKEN_ITEM = {
 
 // =============================================================================
 // NAMED (trophy) BOSSES — the one-time-first-kill + repeat-kill roster.
-// T2/T3/T4 mirror milestone_detection.js TIER_N_BOSSES verbatim (the canonical
-// "main quest" boss line). T1 is NOT curated in milestone_detection.js (per
-// boss-catalog.md, T1 has no trophy-boss tracker yet); we seed a small
+// THIS TABLE IS ITS OWN SOURCE. T2/T3/T4 were first copied from the
+// TIER_N_BOSSES lists of gates/milestone_detection.js; those lists were removed
+// on 2026-06-01 (c53348c0, milestone auto-advance retired), so there is nothing
+// left there to "mirror" (this header said so until 2026-10-12). Readers: the
+// kill credit below, and scaling/zz_boss_global_3x.js through
+// global.ICRAFT_NAMED_BOSS_IDS. The pack's other boss lists (0_lib_core.js
+// BOSS_IDS, scaling/boss_hp.js, scaling/mob_scaling_unified.js,
+// gates/codex_boss_rush.js) are separate copies and do not all agree with it.
+// T1 was never in milestone_detection.js (per boss-catalog.md, T1 has no
+// trophy-boss tracker); we seed a small
 // jar-confirmed T1 set so T1 has *a* combat token path. Keep T1 conservative —
 // these are the structure-locked overworld bosses confirmed T1 in the catalog.
 // =============================================================================
@@ -333,7 +340,12 @@ const EXPLORE_DIMENSIONS = {
   'undergarden:undergarden':        { tier: 3, key: 'undergarden' },
   'deeperdarker:otherside':         { tier: 3, key: 'deeperdarker' },
   // --- T4 dimensions ---
-  'deep_aether:the_aether':         { tier: 4, key: 'deep_aether' },
+  // ('deep_aether:the_aether' { tier: 4, key: 'deep_aether' } stood here until
+  //  2026-10-12. No such dimension exists: Deep Aether's biomes generate inside
+  //  aether:the_aether, so that bonus was never paid and the flag
+  //  icraft_codex_dimentry_deep_aether was never set. Two quests still wait for
+  //  that flag (quests/heracles_reconcile.js); how "reached the Deep Aether"
+  //  should be detected is an operator decision.)
   'minecraft:the_end':              { tier: 4, key: 'the_end' },
   'theabyss:the_abyss':             { tier: 3, key: 'the_abyss' },   // tier 3 like the stage gate (2026-10-11); same t3 token either way
 }

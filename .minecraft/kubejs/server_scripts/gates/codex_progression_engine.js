@@ -295,7 +295,7 @@ function codexCurrentTier(player) {
 function codexSubmit(player, lane) {
   const pdata = player.persistentData
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   // tier → tokens earned this submission (for the give + the report)
   const earned = { 1: 0, 2: 0, 3: 0 }
@@ -416,7 +416,7 @@ function codexSubmit(player, lane) {
 // =============================================================================
 function codexBalance(player) {
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   // Count held tokens per tier.
   const held = { 1: 0, 2: 0, 3: 0 }
@@ -459,7 +459,7 @@ function codexBalance(player) {
 // =============================================================================
 function codexCheckAdvance(player) {
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   for (let t = 1; t <= 3; t++) {
     let c = CODEX_TOKENS[t]
@@ -550,7 +550,7 @@ function codexExchange(player, tier, amountArg) {
   if (!conf || !rate) { player.tell(Text.red('[Codex] Invalid tier: ' + tier)); return 0 }
   const tokenId = conf.item
   const inv = player.inventory
-  const size = inv.size
+  const size = global.icraft.core.mainSlotCount()
 
   // Count held tokens of this tier.
   let held = 0
