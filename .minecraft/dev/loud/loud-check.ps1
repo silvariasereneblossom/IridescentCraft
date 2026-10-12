@@ -21,30 +21,39 @@
 #      count is not below its floor. Judged only after `Done (..s)!`.
 #   4. Failure patterns in latest.log / debug.log: mixin apply failures, missing
 #      mandatory dependencies, server tick loop exceptions, OutOfMemoryError,
-#      saved crash reports.
-#   5. NEW signatures: ERROR / WARN lines that are not in the baseline, and
-#      baselined ones that grew 3x. Runs only when a baseline file exists
-#      (baseline.json next to this script, or -Baseline); every baseline entry
-#      needs a reason and the date it was accepted. Until the first triage is
-#      done the check is reported as NOT RUN - it never reports "0 new".
-#      -ProposeBaseline <file> writes this boot's signatures as the list to
-#      triage (reason and date empty, so it is refused until someone fills them).
+#      saved crash reports. debug.log is read when it is there (a copy of the
+#      logs carries it only after a crash); when it is not, the report says so.
+#   5. NEW signatures against baseline.json (next to this script, or -Baseline):
+#      ERROR / FATAL lines of latest.log and WARN lines of the KubeJS logs that
+#      nobody has looked at yet, and accepted ones seen 3x as often as accepted
+#      (per load pass: a /reload prints every load-time line again). WARN lines
+#      of latest.log are NOT in the tier (several hundred a boot, not triaged).
+#      The baseline has two lists:
+#        signatures  accepted, each with a reason and the date;
+#        defects     reviewed and deliberately NOT accepted: they stay findings
+#                    (KNOWN DEFECT) until fixed, then the entry is deleted.
+#      A baseline hides what was broken the day it was taken, so nothing gets in
+#      without being read: -ProposeBaseline <file> writes the current list with
+#      reason and date empty, and such a file is refused. -NoBaseline switches
+#      the tier off (for old boots); it is then reported NOT RUN, never "0 new".
+#      The file is public: no entry may carry a player name, chat or an address.
 #
 # USAGE (Windows PowerShell 5.1 or PowerShell 7)
 #   loud-check.ps1 -LogsDir "Z:\...\IridescentCraft Dedicated Server\logs"
-#   loud-check.ps1 -LogsDir ".minecraft\server_distribution\TesterLogs\Server Logs"
+#   loud-check.ps1 -LogsDir <any copy of that directory> -ExpectedState <file>
 #   loud-check.ps1 -LogsDir <dir> -Sources kubejs/server.log         # only that log
 #   loud-check.ps1 -LogsDir <dir> -Write                             # also record (see OUTPUT)
 #
 #   -ExpectedState  expected_state.json of the deployed tree. Default: next to the
-#                   logs directory (the box), then one level further up (the mirror).
+#                   logs directory (the box), then one level further up.
 #   -Manifest       default liveness_manifest.json next to this script.
 #   -Sources        subset of: kubejs/server.log kubejs/startup.log latest.log debug.log
+#                   (default: the first three, and debug.log when it exists)
 #   -Sha / -Boot    override what is read from .icraft_last_sha / the first latest.log line.
 #
 # OUTPUT
 #   The report goes to the console. Nothing is written unless -Write is given
-#   (verify-server.ps1 and a look at the mirrored copy must not leave files behind):
+#   (verify-server.ps1 and a look at a copy of the logs must not leave files behind):
 #     -FindingsPath  default <LogsDir>\loud\findings.jsonl. Append-only, one JSON
 #                    object per line; a finding closes with a later line carrying
 #                    the same id and "state":"closed". Rolled to findings.jsonl.1
@@ -62,7 +71,8 @@
 #   code, and both are listed.
 #
 # Finding kinds: ERROR (failure line / pattern), MISSING (liveness), STALE (script
-# on the box, not in the tree), NEW (signature not in the baseline), CHECK-FAILED.
+# on the box, not in the tree), NEW (signature not in the baseline, or a known
+# defect that is not fixed; severity AMBER), CHECK-FAILED.
 # The launcher will own the on-box watcher; this script is its reference and the
 # post-deploy check (verify-server.ps1). ASCII only: Windows PowerShell 5.1 reads a
 # BOM-less script as ANSI.
@@ -74,6 +84,7 @@ param(
     [string]$Manifest,
     [string]$ExpectedState,
     [string]$Baseline,
+    [switch]$NoBaseline,
     [string]$ProposeBaseline,
     [string[]]$Sources,
     [string]$Sha,
@@ -127,6 +138,7 @@ function Get-Family {
         'pattern'          { return 'pattern' }
         'new'              { return 'new' }
         'grew'             { return 'new' }
+        'defect'           { return 'new' }
         default            { return 'check' }
     }
 }
@@ -229,7 +241,13 @@ function Invoke-Check {
 
     $srcList = @()
     if ($Sources) { foreach ($s in $Sources) { foreach ($t in ($s -split ',')) { if ($t.Trim()) { $srcList += $t.Trim().Replace('\', '/') } } } }
-    if ($srcList.Count -eq 0) { $srcList = $AllSources }
+    if ($srcList.Count -eq 0) {
+        # debug.log is checked when it is there. A copy of the logs carries it only after a crash; the one
+        # pattern it adds is also read from latest.log, and its absence is reported, not passed over.
+        $srcList = @($AllSources | Where-Object { $_ -ne 'debug.log' })
+        if (Test-Path -LiteralPath (Join-Path $logsRoot 'debug.log') -PathType Leaf) { $srcList += 'debug.log' }
+        else { $notRun.Add('debug.log (it is not in this directory): its mixin-failure pattern was read from latest.log only') }
+    }
     foreach ($s in $srcList) {
         if ($AllSources -cnotcontains $s) {
             Add-Finding 'CHECK-FAILED' 'RED' 'check:sources' '' ("unknown source '$s' (known: " + ($AllSources -join ', ') + ')')
@@ -500,31 +518,35 @@ function Invoke-Check {
     }
 
     # ---- 5. NEW signatures against the baseline ------------------------------
+    # In the tier (operator ruling 2026-10-11): ERROR / FATAL lines of latest.log and WARN lines of the KubeJS
+    # logs. NOT in it: WARN lines of latest.log (several hundred per boot, not triaged) and KubeJS ERROR lines
+    # (check 1: never baselined).
     $blPath = $Baseline
-    if (-not $blPath) {
+    if (-not $blPath -and -not $NoBaseline) {
         $d = Join-Path $ScriptDir 'baseline.json'
         if (Test-Path -LiteralPath $d -PathType Leaf) { $blPath = $d }
     }
     $newSources = @(@('latest.log', 'kubejs/server.log', 'kubejs/startup.log') | Where-Object { $lines.ContainsKey($_) })
-    $rxLatest = New-Object regex '^\[[^\]]+\] \[[^\]]*/(ERROR|WARN|FATAL)\] (.*)$'
-    $rxKjs    = New-Object regex '^\[[\d:]+\] \[(WARN)\] (.*)$'    # KubeJS ERROR lines are never baselined (check 1)
+    $rxLatest = New-Object regex '^\[[^\]]+\] \[[^\]]*/(ERROR|FATAL)\] (.*)$'
+    $rxKjs    = New-Object regex '^\[[\d:]+\] \[(WARN)\] (.*)$'
     $observed = @{}       # src -> @{ counts = sig -> n; order = sigs as first seen }
     if ($blPath -or $ProposeBaseline) {
         foreach ($src in $newSources) {
             $rx = $rxKjs
             if ($src -eq 'latest.log') { $rx = $rxLatest }
-            $obs = @{}; $order = New-Object System.Collections.Generic.List[string]
+            $obs = New-Object 'System.Collections.Generic.Dictionary[string,int]'
+            $order = New-Object System.Collections.Generic.List[string]
             foreach ($l in $lines[$src]) {
                 $m = $rx.Match($l)
                 if (-not $m.Success) { continue }
                 $sig = $m.Groups[1].Value + ' ' + (Get-Signature $m.Groups[2].Value)
-                if ($obs.ContainsKey($sig)) { $obs[$sig]++ } else { $obs[$sig] = 1; $order.Add($sig) }
+                if ($obs.ContainsKey($sig)) { $obs[$sig] = $obs[$sig] + 1 } else { $obs[$sig] = 1; $order.Add($sig) }
             }
             $observed[$src] = @{ counts = $obs; order = $order }
         }
     }
     if ($ProposeBaseline) {
-        # the list for the triage: every signature of this boot, reason and date left empty on purpose
+        # the list for a triage: every signature of this boot, reason and date left empty on purpose
         $rowsOut = New-Object System.Collections.Generic.List[string]
         foreach ($src in $newSources) {
             foreach ($sig in $observed[$src].order) {
@@ -532,43 +554,71 @@ function Invoke-Check {
             }
         }
         [System.IO.File]::WriteAllText($ProposeBaseline, "{`n  `"version`": 1,`n  `"signatures`": [`n" + ($rowsOut -join ",`n") + "`n  ]`n}`n", $Utf8NoBom)
-        $info.Add("$($rowsOut.Count) ERROR / WARN signatures of this boot written to $ProposeBaseline (give each a reason and a date, or delete it; read it for names before committing)")
+        $info.Add("$($rowsOut.Count) signatures of this boot (latest.log ERROR, KubeJS WARN) written to $ProposeBaseline (give each a reason and a date, or leave it out; read it for names before committing)")
     }
-    if (-not $blPath) {
-        if ($newSources.Count -gt 0) { $notRun.Add('NEW-signature check (ERROR / WARN lines against a baseline): no baseline.json yet, the triage of a healthy boot is owed') }
+    if ($NoBaseline -and -not $Baseline) {
+        if ($newSources.Count -gt 0) { $notRun.Add('NEW-signature check (switched off with -NoBaseline)') }
+    } elseif (-not $blPath) {
+        if ($newSources.Count -gt 0) { $notRun.Add('NEW-signature check (latest.log ERROR and KubeJS WARN lines against a baseline): there is no baseline.json next to the checker') }
     } else {
         $bl = $null
+        $known   = New-Object 'System.Collections.Generic.Dictionary[string,object]'
+        $defects = New-Object 'System.Collections.Generic.Dictionary[string,object]'
         try {
             if (-not (Test-Path -LiteralPath $blPath -PathType Leaf)) { throw "not found: $blPath" }
             $bl = [System.IO.File]::ReadAllText($blPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
-            $known = @{}
             foreach ($b in @($bl.signatures)) {
+                if ($null -eq $b) { continue }
                 if (-not $b.log -or -not $b.sig) { throw 'a baseline entry lacks log / sig' }
                 if (-not $b.reason -or -not ([string]$b.reason).Trim() -or -not $b.accepted) { throw ("baseline entry without a reason and an accepted date: " + [string]$b.sig) }
                 $known[[string]$b.log + '|' + [string]$b.sig] = $b
+            }
+            # reviewed and deliberately NOT accepted: a defect stays a finding until it is fixed
+            if ($bl.PSObject.Properties['defects']) {
+                foreach ($b in @($bl.defects)) {
+                    if ($null -eq $b) { continue }
+                    if (-not $b.log -or -not $b.sig -or -not $b.what) { throw 'a defects entry lacks log / sig / what' }
+                    $k = [string]$b.log + '|' + [string]$b.sig
+                    if ($known.ContainsKey($k)) { throw ('a signature is both baselined and listed as a defect: ' + [string]$b.sig) }
+                    $defects[$k] = $b
+                }
             }
         } catch {
             $bl = $null
             Add-Finding 'CHECK-FAILED' 'RED' 'check:baseline' '' ('NEW-signature check not run, the baseline is unusable: ' + $_.Exception.Message)
         }
         if ($null -ne $bl) {
+            # A /reload prints every load-time line again: growth is judged per load pass, not per file.
+            $passes = 1
+            if ($lines.ContainsKey('kubejs/server.log')) {
+                $n = 0
+                foreach ($l in $lines['kubejs/server.log']) { if ($l -match 'Loaded \d+/\d+ KubeJS server scripts') { $n++ } }
+                if ($n -gt 1) { $passes = $n; $info.Add("$n script load passes in this log (the server was reloaded): baseline counts are compared per pass") }
+            }
             foreach ($src in $newSources) {
                 [void]$evaluated.Add("new|$src")
                 $obs = $observed[$src].counts; $order = $observed[$src].order
-                $shown = 0; $rest = 0
+                $shown = 0; $rest = 0; $grown = 0; $grownRest = 0
                 foreach ($sig in $order) {
                     $key = $src + '|' + $sig
-                    if (-not $known.ContainsKey($key)) {
+                    if ($defects.ContainsKey($key)) {
+                        Add-Finding 'NEW' 'AMBER' ('defect:' + (Get-Hash8 $key)) $src ('KNOWN DEFECT, reviewed and not baselined (' + [string]$defects[$key].what + '), x' + $obs[$sig] + ': ' + $sig)
+                    } elseif (-not $known.ContainsKey($key)) {
                         if ($shown -lt $MaxPerFamily) { $shown++; Add-Finding 'NEW' 'AMBER' ('new:' + (Get-Hash8 $key)) $src ('not in the baseline, x' + $obs[$sig] + ': ' + $sig) }
                         else { $rest++ }
                     } else {
                         $was = 1
                         if ($known[$key].PSObject.Properties['count'] -and [int]$known[$key].count -gt 0) { $was = [int]$known[$key].count }
-                        if ($obs[$sig] -ge 3 * $was) { Add-Finding 'NEW' 'AMBER' ('grew:' + (Get-Hash8 $key)) $src ("baselined at x$was, now x" + $obs[$sig] + ': ' + $sig) }
+                        if ($obs[$sig] -ge 3 * $was * $passes) {
+                            if ($grown -lt $MaxPerFamily) { $grown++; Add-Finding 'NEW' 'AMBER' ('grew:' + (Get-Hash8 $key)) $src ("baselined at x$was, now x" + $obs[$sig] + ': ' + $sig) }
+                            else { $grownRest++ }
+                        }
                     }
                 }
                 if ($rest -gt 0) { Add-Finding 'NEW' 'AMBER' ("new:more:$src") $src ("$rest more signatures not in the baseline, not listed one by one") }
+                if ($grownRest -gt 0) { Add-Finding 'NEW' 'AMBER' ("grew:more:$src") $src ("$grownRest more baselined signatures at 3x their accepted count, not listed one by one") }
             }
+            $script:baselineText = "$($known.Count) signatures accepted, $($defects.Count) listed as defects"
         }
     }
 }
@@ -576,7 +626,7 @@ function Invoke-Check {
 # ---- run ---------------------------------------------------------------------
 $script:srcList = @(); $script:shaAt = 'unknown'; $script:bootAt = 'unknown'
 $script:loadedText = @(); $script:armedText = $null; $script:expectedFrom = ''
-$script:kjsErrors = 0; $script:kjsAborts = 0; $script:patternHits = 0
+$script:kjsErrors = 0; $script:kjsAborts = 0; $script:patternHits = 0; $script:baselineText = $null
 try {
     Invoke-Check
 } catch {
@@ -693,6 +743,7 @@ if (-not $Quiet) {
     if ($script:loadedText.Count) { Write-Host ("[loud-check] LOADED  : {0}  ({1})" -f ($script:loadedText -join ', '), $script:expectedFrom) }
     if ($script:armedText)        { Write-Host ("[loud-check] ARMED   : {0}" -f $script:armedText) }
     Write-Host ("[loud-check] FAILURES: {0} KubeJS ERROR line(s), {1} handler abort(s), {2} failure-pattern line(s) in latest.log / debug.log" -f $script:kjsErrors, $script:kjsAborts, $script:patternHits)
+    if ($script:baselineText)     { Write-Host ("[loud-check] BASELINE: {0}" -f $script:baselineText) }
     foreach ($n in $info)   { Write-Host ("[loud-check] note    : {0}" -f $n) -ForegroundColor DarkGray }
     foreach ($n in $notRun) { Write-Host ("[loud-check] NOT RUN : {0}" -f $n) -ForegroundColor Yellow }
     $shown = 0

@@ -49,6 +49,9 @@
 #      scripts dead) while this tool said PARITY OK. The manifest is taken from
 #      the commit the server is ON (it is versioned with the scripts), or from
 #      origin/main when that commit predates it. Nothing is written to the box.
+#      Lines of latest.log (ERROR) and of the KubeJS log (WARN) that are not in
+#      dev\loud\baseline.json, and the known defects listed there, are AMBER:
+#      printed, with no effect on the exit code. Everything else it finds is RED.
 #   5. Local config overrides - informational, never changes the exit code. The
 #      server's .icraft_config_overrides.json (launcher Customizer tab, or
 #      `icraft settings`) lists config values the operator set ON THE SERVER on
@@ -95,7 +98,7 @@
 #
 # Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
 #             3 = parity, but the world backups are RED (stale / none / failed);
-#             4 = parity and backups fine, but the boot-log check found failures
+#             4 = parity and backups fine, but the boot-log check is RED: failures
 #                 or could not run (server still starting, logs unreadable);
 #             5 = parity, but the SERVER IS DOWN or a restart is stuck: the
 #                 launcher is up and no JVM has existed for 10 minutes or more.
@@ -425,6 +428,8 @@ if (-not (Test-Path -LiteralPath $backupManifestPath)) {
 $loudScript   = Join-Path (Join-Path $ScriptDir 'loud') 'loud-check.ps1'
 $loudLogs     = Join-Path $ServerRoot 'logs'
 $loudExit     = $null      # stays $null when the checker could not even be started
+$loudWorst    = $null      # GREEN / AMBER / RED as the checker's status file states it
+$loudOpen     = 0
 $loudNote     = $null
 $loudManifest = $null      # temp copy of the manifest the server's commit carries
 $loudFrom     = 'the working tree'
@@ -801,23 +806,38 @@ Write-Host ("-- boot-log check (loud-check.ps1 over logs\; liveness manifest fro
 if ($loudNote) {
     Write-Host ("  COULD NOT CHECK: {0}" -f $loudNote) -ForegroundColor Red
 } else {
-    $loudArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $loudScript, '-LogsDir', $loudLogs)
+    # The verdict (GREEN / AMBER / RED) is read from the checker's status file. It is written, with the
+    # findings log, to two temp files on THIS PC: nothing lands on the box.
+    $loudTmp = Join-Path ([System.IO.Path]::GetTempPath()) ('icraft-loud-' + [Guid]::NewGuid().ToString('N').Substring(0, 8))
+    $loudArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $loudScript, '-LogsDir', $loudLogs,
+                  '-Write', '-FindingsPath', ($loudTmp + '.findings.jsonl'), '-StatusPath', ($loudTmp + '.status'))
     if ($loudManifest) { $loudArgs += @('-Manifest', $loudManifest) }
     try {
         & (Get-Process -Id $PID).Path @loudArgs
         $loudExit = $LASTEXITCODE
+        if (Test-Path -LiteralPath ($loudTmp + '.status')) {
+            foreach ($sl in [System.IO.File]::ReadAllLines($loudTmp + '.status')) {
+                if ($sl -match '^worst=(\w+)$') { $loudWorst = $matches[1] }
+                if ($sl -match '^open=(\d+)$')  { $loudOpen = [int]$matches[1] }
+            }
+        }
     } catch {
         $loudNote = "loud-check.ps1 could not be started: $($_.Exception.Message)"
         Write-Host ("  COULD NOT CHECK: {0}" -f $loudNote) -ForegroundColor Red
     }
+    Remove-Item -LiteralPath ($loudTmp + '.findings.jsonl'), ($loudTmp + '.status') -Force -ErrorAction SilentlyContinue
     if ($loudManifest) { Remove-Item -LiteralPath $loudManifest -Force -ErrorAction SilentlyContinue }
     if ($IsVerbose -and $loudExit -eq 2) {
         Write-Host "    cause: exit 2 = a check could not run. Right after a Cycle the server is still starting (no 'Done' line yet): wait for the banner and run this again." -ForegroundColor DarkYellow
     }
 }
-# 'GREEN' only on a clean exit: an unknown exit code is not a pass
+# 'GREEN' only on a clean exit, 'AMBER' only when the checker itself says its worst finding is AMBER
+# (signatures not in the baseline, known defects that are not fixed): anything else, and any exit code
+# the status file does not explain, is RED.
 $loudState = 'RED'
 if ($loudExit -eq 0) { $loudState = 'GREEN' }
+elseif ($loudExit -eq 1 -and $loudWorst -eq 'AMBER') { $loudState = 'AMBER' }
+$loudAmberLine = "$loudOpen line(s) in the boot log that are not accepted: new signatures or known defects (listed above). Read them; fix, or accept in dev\loud\baseline.json with a reason"
 $loudLine = "the boot-log check found failures (exit $loudExit): see the findings above"
 if ($null -eq $loudExit) { $loudLine = "the boot-log check could not run: $loudNote" }
 elseif ($loudExit -eq 2) { $loudLine = 'the boot-log check could not judge the boot (exit 2): see the CHECK-FAILED line(s) above' }
@@ -911,7 +931,7 @@ if (-not $realDrift) {
             Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
         }
-        if ($loudState -ne 'GREEN') {
+        if ($loudState -eq 'RED') {
             Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
         }
@@ -932,7 +952,7 @@ if (-not $realDrift) {
             Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
         }
-        if ($loudState -ne 'GREEN') {
+        if ($loudState -eq 'RED') {
             Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
         }
@@ -945,7 +965,7 @@ if (-not $realDrift) {
         Write-Host "=== BACKUPS RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
         Write-Host "    -> the deploy is fine, the world backups are not: see logs\backup.log on the server." -ForegroundColor Yellow
-        if ($loudState -ne 'GREEN') {
+        if ($loudState -eq 'RED') {
             Write-Host "=== BOOT LOG RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
         }
@@ -954,7 +974,10 @@ if (-not $realDrift) {
     if ($backupState -eq 'YELLOW') {
         Write-Host ("    backups YELLOW: {0}" -f $backupLine) -ForegroundColor Yellow
     }
-    if ($loudState -ne 'GREEN') {
+    if ($loudState -eq 'AMBER') {
+        Write-Host ("    boot log AMBER: {0}" -f $loudAmberLine) -ForegroundColor Yellow
+    }
+    if ($loudState -eq 'RED') {
         Write-Host "=== BOOT LOG RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
         Write-Host "    -> the deploy landed, and the server is not healthy on it. Fix at the repo source, push, Cycle; a server that is still starting needs a few minutes and a second run." -ForegroundColor Yellow
@@ -974,9 +997,12 @@ if ($backupState -eq 'RED') {
     Write-Host "=== BACKUPS RED (as well as the drift below) ===" -ForegroundColor Red
     Write-Host ("    {0}" -f $backupLine) -ForegroundColor Red
 }
-if ($loudState -ne 'GREEN') {
+if ($loudState -eq 'RED') {
     Write-Host "=== BOOT LOG RED (as well as the drift below) ===" -ForegroundColor Red
     Write-Host ("    {0}" -f $loudLine) -ForegroundColor Red
+}
+if ($loudState -eq 'AMBER') {
+    Write-Host ("    boot log AMBER: {0}" -f $loudAmberLine) -ForegroundColor Yellow
 }
 
 if ($jarDrift -eq 0 -and $contentCommits -eq 0 -and $markerProblem) {

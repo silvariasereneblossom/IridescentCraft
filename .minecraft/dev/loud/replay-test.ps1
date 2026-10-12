@@ -26,7 +26,11 @@
 #   pwsh       -File .minecraft\dev\loud\replay-test.ps1 -Newer     # + boots mirrored after the anchor
 #
 # Exit 0 pass, 1 fail, 2 could not run (history not available: a shallow clone, or
-# the mirrored logs were moved out of this repo and its history rewritten).
+# the history of this repo was rewritten). The boots are read from git HISTORY, so
+# the test does not need the mirror folder on the tip (it left the public tip when
+# the launcher began mirroring to the private logs repo); -RepoRoot runs it against
+# another checkout. The checker's own baseline.json describes today's boots, so old
+# boots are replayed with -NoBaseline; the baseline cases build their own file.
 # Prints dates, commits, verdicts and finding ids only - never log content: the
 # mirrored logs can hold player names and chat.
 #
@@ -42,6 +46,7 @@ param(
     [int]$Count = 45,
     [switch]$Newer,
     [string]$Manifest,
+    [string]$RepoRoot,
     [string]$WorkDir,
     [switch]$Keep
 )
@@ -57,7 +62,7 @@ $fail      = New-Object System.Collections.Generic.List[string]
 
 function Stop-CannotRun { param([string]$Why) Write-Host "[replay-test] COULD NOT RUN: $Why" -ForegroundColor Red; exit 2 }
 
-$RepoRoot = "$(& git -C $ScriptDir rev-parse --show-toplevel 2>$null)".Trim()
+if (-not $RepoRoot) { $RepoRoot = "$(& git -C $ScriptDir rev-parse --show-toplevel 2>$null)".Trim() }
 if (-not $RepoRoot) { Stop-CannotRun 'not inside a git checkout' }
 & git -C $RepoRoot cat-file -e "$Anchor^{commit}" 2>$null
 if ($LASTEXITCODE -ne 0) { Stop-CannotRun "anchor commit $Anchor is not in this clone (shallow clone, or history was rewritten)" }
@@ -87,6 +92,9 @@ function Invoke-Checker {
     param([string[]]$Arguments)
     $base = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $Checker)
     if ($Manifest) { $Arguments += @('-Manifest', $Manifest) }
+    # baseline.json next to the checker describes today's boots, not the ones replayed here: only the
+    # baseline cases (which name their own file) run the NEW tier
+    if ($Arguments -notcontains '-Baseline') { $Arguments += '-NoBaseline' }
     $out = & $PsExe @base @Arguments
     return [pscustomobject]@{ Exit = $LASTEXITCODE; Out = @($out | ForEach-Object { "$_" }) }
 }
@@ -245,10 +253,15 @@ Test-Case 'in-house mixin did not apply (FishingHookMixin)' (New-Case 'mixin' 'l
 Test-Case 'OutOfMemoryError in latest.log' (New-Case 'oom' 'latest.log' { param($l) $l; if ($l -match 'Done \(\d+\.\d+s\)!') { '[11Oct2026 09:00:00.000] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Encountered an unexpected exception'; 'java.lang.OutOfMemoryError: Java heap space' } }) @() 1 @('ERROR pattern:oom', 'ERROR pattern:tick-loop')
 Test-Case 'mixin apply failure in debug.log only' (New-Case 'mixinfail' 'debug.log' { param($l) $l; if ($l -match 'ModLauncher running') { '[11Oct2026 09:00:00.000] [main/DEBUG] [mixin/]: org.spongepowered.asm.mixin.transformer.throwables.InvalidMixinException: planted' } }) @() 1 @('ERROR pattern:mixin-apply')
 Test-Case 'startup log missing' (New-Case 'nostartup' 'kubejs/startup.log' { param($l) $l } | ForEach-Object { Remove-Item -LiteralPath (Join-Path $_ 'kubejs\startup.log') -Force; $_ }) @() 2 @('CHECK-FAILED check:read:kubejs/startup.log')
+Test-Case 'debug.log absent, as in a copy of the logs (reported NOT RUN, not a failure)' (New-Case 'nodebug' $null $null | ForEach-Object { Remove-Item -LiteralPath (Join-Path $_ 'debug.log') -Force; $_ }) @() 0 @()
+$nd = Invoke-Checker @('-LogsDir', (Join-Path (Join-Path $WorkDir 'case-nodebug') 'logs'))
+Assert-That (@($nd.Out | Where-Object { $_ -match 'NOT RUN : debug\.log' }).Count -eq 1) '   and the report says so: NOT RUN : debug.log'
+Test-Case 'debug.log asked for by name and absent' (Join-Path (Join-Path $WorkDir 'case-nodebug') 'logs') @('-Sources', 'latest.log,debug.log') 2 @('CHECK-FAILED check:read:debug.log')
 Test-Case 'startup script not loaded' (New-Case 'startup' 'kubejs/startup.log' { param($l) if ($l -notmatch 'Loaded script startup_scripts:virtual_gold_clamp\.js ') { $l } }) @() 1 @('MISSING loaded:startup_scripts/virtual_gold_clamp.js')
 
-# baseline (NEW tier). The proposal is taken from the healthy boot itself, so with every row accepted it
-# must come out clean; then one signature is withheld, and one is recorded at a third of what is seen.
+# baseline (NEW tier): ERROR / FATAL lines of latest.log and WARN lines of the KubeJS logs. The proposal is taken from
+# the healthy boot itself, so with every row accepted it must come out clean; then one signature is withheld, one is
+# moved to the defects list, one is recorded at a third of what is seen, and the server is "reloaded" twice.
 $caseLogs = New-Case 'baseline' $null $null
 $noFile = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Join-Path $WorkDir 'no-such-baseline.json'))
 Assert-That ($noFile.Exit -eq 2 -and (@(Get-Ids $noFile) -join '|') -eq 'CHECK-FAILED check:baseline') 'baseline named but missing -> exit 2, CHECK-FAILED check:baseline (never "0 new")'
@@ -257,25 +270,48 @@ $prop = Invoke-Checker @('-LogsDir', $caseLogs, '-ProposeBaseline', $proposal)
 $propRows = @()
 if (Test-Path -LiteralPath $proposal) { $propRows = @([System.IO.File]::ReadAllLines($proposal) | Where-Object { $_ -match '^\s+\{"log":' }) }
 Assert-That ($prop.Exit -eq 0 -and $propRows.Count -gt 10) "-ProposeBaseline writes the list to triage ($($propRows.Count) signatures of the healthy boot)"
+Assert-That (@($propRows | Where-Object { $_ -match '"log":"latest\.log","sig":"WARN ' }).Count -eq 0 -and @($propRows | Where-Object { $_ -match '"log":"latest\.log","sig":"ERROR ' }).Count -gt 0 -and @($propRows | Where-Object { $_ -match '"log":"kubejs/server\.log","sig":"WARN ' }).Count -gt 0) 'the tier is latest.log ERROR + KubeJS WARN: no latest.log WARN line is in the list'
 $asIs = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', $proposal)
 Assert-That ($asIs.Exit -eq 2 -and (@(Get-Ids $asIs) -join '|') -eq 'CHECK-FAILED check:baseline') 'the proposal as written (no reason, no date) is refused -> exit 2, CHECK-FAILED check:baseline'
 function Write-Baseline {
-    param([string]$Path, [string[]]$Rows)
+    param([string]$Path, [string[]]$Rows, [string[]]$Defects)
     $filled = @($Rows | ForEach-Object { $_.TrimEnd(',').Replace('"reason":"","accepted":""', '"reason":"test fixture","accepted":"2026-10-11"') })
-    [System.IO.File]::WriteAllText($Path, '{"version":1,"signatures":[' + "`n" + ($filled -join ",`n") + "`n]}", $Utf8)
+    $def = @($Defects | Where-Object { $_ } | ForEach-Object { ($_.TrimEnd(',') -replace ',"count":\d+,"reason":"","accepted":""', ',"what":"planted defect","listed":"2026-10-11"') })
+    [System.IO.File]::WriteAllText($Path, '{"version":1,"signatures":[' + "`n" + ($filled -join ",`n") + "`n" + '],"defects":[' + "`n" + ($def -join ",`n") + "`n]}", $Utf8)
     return $Path
 }
-Test-Case 'baseline with every signature accepted' $caseLogs @('-Baseline', (Write-Baseline (Join-Path $WorkDir 'full-baseline.json') $propRows)) 0 @()
-$one = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'minus-one.json') @($propRows | Select-Object -Skip 1)))
+Test-Case 'baseline with every signature accepted' $caseLogs @('-Baseline', (Write-Baseline (Join-Path $WorkDir 'full-baseline.json') $propRows @())) 0 @()
+$one = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'minus-one.json') @($propRows | Select-Object -Skip 1) @()))
 $oneIds = @(Get-Ids $one)
 Assert-That ($one.Exit -eq 1 -and $oneIds.Count -eq 1 -and $oneIds[0] -match '^NEW new:[0-9a-f]{8}$' -and (@($one.Out | Where-Object { $_ -match '\] AMBER - ' }).Count -eq 1)) 'one signature withheld from the baseline -> exit 1, AMBER, exactly one NEW finding'
+$dfc = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'one-defect.json') @($propRows | Select-Object -Skip 1) @($propRows[0])))
+$dfcIds = @(Get-Ids $dfc)
+Assert-That ($dfc.Exit -eq 1 -and $dfcIds.Count -eq 1 -and $dfcIds[0] -match '^NEW defect:[0-9a-f]{8}$' -and (@($dfc.Out | Where-Object { $_ -match 'KNOWN DEFECT, reviewed and not baselined \(planted defect\)' }).Count -eq 1)) 'a signature on the defects list stays a finding (defect:), with what was written about it'
+$both = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'both.json') $propRows @($propRows[0])))
+Assert-That ($both.Exit -eq 2 -and (@(Get-Ids $both) -join '|') -eq 'CHECK-FAILED check:baseline') 'a signature both accepted and listed as a defect -> the baseline is refused'
 $repeat = @($propRows | Where-Object { $m = [regex]::Match($_, '"count":(\d+)'); $m.Success -and [int]$m.Groups[1].Value -ge 3 } | Select-Object -First 1)
+$single = @($propRows | Where-Object { $_ -match '"log":"kubejs/server\.log".*"count":1,' } | Select-Object -First 1)
 if ($repeat.Count -eq 1) {
     $grown = @($propRows | ForEach-Object { if ($_ -eq $repeat[0]) { $_ -replace '"count":\d+', '"count":1' } else { $_ } })
-    $g = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'grown.json') $grown))
+    $g = Invoke-Checker @('-LogsDir', $caseLogs, '-Baseline', (Write-Baseline (Join-Path $WorkDir 'grown.json') $grown @()))
     $gIds = @(Get-Ids $g)
     Assert-That ($g.Exit -eq 1 -and $gIds.Count -eq 1 -and $gIds[0] -match '^NEW grew:[0-9a-f]{8}$') 'a signature seen 3x as often as it was accepted -> exactly one NEW finding (grew:)'
-} else { Write-Host '  skip  no signature repeats 3 times in this boot: the growth rule was not exercised' -ForegroundColor Yellow; $fail.Add('growth rule not exercised') }
+} elseif ($single.Count -eq 1) {
+    # no line repeats in this boot: print one KubeJS WARN line three times instead
+    $sigText = [regex]::Match($single[0], '"sig":"WARN ((?:[^"\\]|\\.){20})').Groups[1].Value -replace '\\(.)', '$1'
+    $script:tripled = $false
+    $caseGrow = New-Case 'grow' 'kubejs/server.log' { param($l) $l; if (-not $script:tripled -and $l -match '\[WARN\]' -and $l.Contains($sigText)) { $script:tripled = $true; $l; $l } }
+    $g = Invoke-Checker @('-LogsDir', $caseGrow, '-Baseline', (Join-Path $WorkDir 'full-baseline.json'))
+    $gIds = @(Get-Ids $g)
+    Assert-That ($g.Exit -eq 1 -and $gIds.Count -eq 1 -and $gIds[0] -match '^NEW grew:[0-9a-f]{8}$') 'a line printed 3x as often as it was accepted -> exactly one NEW finding (grew:)'
+} else { Assert-That $false 'growth rule: no signature in this boot to exercise it with' }
+# a /reload prints every load-time line again; two reloads make three passes, and nothing "grew"
+$caseReload = New-Case 'reload' $null $null
+$kjs = Join-Path (Join-Path $caseReload 'kubejs') 'server.log'
+$once = [System.IO.File]::ReadAllText($kjs)
+[System.IO.File]::WriteAllText($kjs, $once + $once + $once, $Utf8)
+$rl = Invoke-Checker @('-LogsDir', $caseReload, '-Sources', 'kubejs/server.log', '-Baseline', (Join-Path $WorkDir 'full-baseline.json'))
+Assert-That ($rl.Exit -eq 0 -and @(Get-Ids $rl).Count -eq 0 -and @($rl.Out | Where-Object { $_ -match '3 script load passes' }).Count -eq 1) 'the KubeJS log of a server reloaded twice (every line three times) -> nothing grew, the report says 3 load passes'
 
 # =============================================================================
 # PART 3 - RECORD (findings log + status file)
