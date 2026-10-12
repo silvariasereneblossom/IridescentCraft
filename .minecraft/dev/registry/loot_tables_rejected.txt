@@ -1,0 +1,10 @@
+bettercopper:blocks/old_copper_block
+blahaj:blocks/blahaj_backpack
+culturaldelights:blocks/avocado_bundle
+culturaldelights:blocks/avocado_leaf_carpet
+culturaldelights:blocks/exotic_roll_medley_block
+idas:chests/dread_citadel/dread_citadel
+idas:chests/dread_citadel/dread_citadel_library
+idas:chests/dread_citadel/dread_citadel_throne
+idas:chests/haunted_manor/if_haunted_manor
+idas:chests/labyrinth/if_labyrinth_tomb
