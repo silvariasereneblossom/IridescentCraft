@@ -1,0 +1,98 @@
+name: KubeJS script checks
+
+# What can be checked without the mod jars, on every push that touches a script, a test or the
+# pinned engine jars:
+#   lints   the three script lints of the pre-push hook (lint_kubejs_rhino.js, lint_kubejs_traps.js,
+#           lint_kubejs_scope.py). Until 2026-10-12 they ran only in the hook of a clone that had
+#           installed it.
+#   engine  .minecraft/dev/engine-tests/run.py ci: the pack's scripts on the PRODUCTION script engine
+#           (the rhino-forge jar, downloaded from the URL in its packwiz metafile and verified by its
+#           hash) over mocks that are held to the real classes, plus ParseAll (every script compiles
+#           on the real parser). See .minecraft/dev/engine-tests/README.md.
+# Not here: the loot audit (it needs the whole instance) and the real-engine boot (a Forge server).
+# The bare-method-reference check has its own workflow (kubejs-method-ref-validator.yml).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/server_scripts/**'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/client_scripts/**'
+      - '.minecraft/dev/lint_kubejs_*'
+      - '.minecraft/dev/engine-tests/**'
+      - '.minecraft/dev/rhino_parse/**'
+      - '.minecraft/mods/.index/kubejs.pw.toml'
+      - '.minecraft/mods/.index/rhino.pw.toml'
+      - '.minecraft/mods/.index/architectury-api.pw.toml'
+      - '.github/workflows/kubejs-script-checks.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/server_scripts/**'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/client_scripts/**'
+      - '.minecraft/dev/lint_kubejs_*'
+      - '.minecraft/dev/engine-tests/**'
+      - '.minecraft/dev/rhino_parse/**'
+  workflow_dispatch:
+
+concurrency:
+  group: kubejs-script-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lints:
+    name: Script lints
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'    # the lints load the parser bundled with Node (--expose-internals)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: lint_kubejs_rhino.js
+        run: node --expose-internals .minecraft/dev/lint_kubejs_rhino.js
+      - name: lint_kubejs_traps.js
+        if: always()
+        run: node --expose-internals .minecraft/dev/lint_kubejs_traps.js
+      - name: lint_kubejs_scope.py
+        if: always()
+        run: python -I .minecraft/dev/lint_kubejs_scope.py
+
+  engine:
+    name: Engine test suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Engine jars (cache)
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/engine-jars
+          key: engine-jars-${{ hashFiles('.minecraft/mods/.index/rhino.pw.toml') }}
+      - name: run.py ci
+        run: python -I -B .minecraft/dev/engine-tests/run.py ci --fetch-dir "$RUNNER_TEMP/engine-jars"
