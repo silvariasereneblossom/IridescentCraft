@@ -1749,17 +1749,30 @@ def diff_results(a_dir, b_dir):
     if os.path.isdir(ma) and os.path.isdir(mb):
         started, stopped = _sets(a_dir, b_dir, 'mixins/configs_applied.txt')
         cadd, crem = _sets(a_dir, b_dir, 'mixins/configs_registered.txt')
-        # class by class only for what applied up to Done; a mixin that applied later on either side is not a change
-        all_a = set(read_list(os.path.join(ma, 'applied.tsv'))) | set(read_list(os.path.join(ma, 'applied_after_done.tsv')))
-        all_b = set(read_list(os.path.join(mb, 'applied.tsv'))) | set(read_list(os.path.join(mb, 'applied_after_done.tsv')))
-        madd = sorted(set(read_list(os.path.join(mb, 'applied.tsv'))) - all_a)
-        mrem = sorted(set(read_list(os.path.join(ma, 'applied.tsv'))) - all_b)
+        # Class by class. A mixin applies when its target class is first loaded, and which classes a boot loads
+        # varies a little (what the spawn area generated, which mob spawned): two boots of ONE tree differ in up
+        # to seven mixin classes. So a mixin counts as stopped (started) only when the other boot DID load its
+        # target class (some other mixin went into it there) or its config is not registered there at all.
+        def rows(d):
+            got = set(read_list(os.path.join(d, 'applied.tsv'))) | set(read_list(os.path.join(d, 'applied_after_done.tsv')))
+            return set(tuple(r.split('\t')) for r in got if r.count('\t') == 2)
+        all_a, all_b = rows(ma), rows(mb)
+        targets_a, targets_b = set(r[2] for r in all_a), set(r[2] for r in all_b)
+        reg_a, reg_b = set(read_list(os.path.join(ma, 'configs_registered.txt'))), set(read_list(os.path.join(mb, 'configs_registered.txt')))
+        mrem = sorted(r for r in all_a - all_b if r[2] in targets_b or r[0] not in reg_b)
+        madd = sorted(r for r in all_b - all_a if r[2] in targets_a or r[0] not in reg_a)
+        unsure = sorted((all_a ^ all_b) - set(mrem) - set(madd))
         out['mixins'] = {'configs_stopped_applying': stopped, 'configs_started_applying': started, 'configs_registered_added': cadd,
-                         'configs_registered_removed': crem, 'mixins_stopped': mrem, 'mixins_started': madd}
+                         'configs_registered_removed': crem, 'mixins_stopped': ['\t'.join(r) for r in mrem],
+                         'mixins_started': ['\t'.join(r) for r in madd], 'target_not_loaded_on_one_side': ['\t'.join(r) for r in unsure]}
         gone_with_jar = set(crem)
         real = [c for c in stopped if c not in gone_with_jar]
         if real:
             out['regressions'].append('%d mixin config(s) still registered and no longer applying anything: %s' % (len(real), ', '.join(real[:8])))
+        lost = [r for r in mrem if r[0] in reg_b]
+        if lost:
+            out['regressions'].append('%d mixin class(es) no longer apply although their config is registered and their target class is loaded: %s'
+                                      % (len(lost), ', '.join('%s (%s)' % (r[1], r[0]) for r in lost[:6])))
     else:
         out['notes'].append('no debug.log on one side: mixins not compared')
 
@@ -1872,6 +1885,8 @@ def diff_text(d):
             len(mx['configs_stopped_applying']), len(mx['configs_started_applying']), len(mx['mixins_stopped']), len(mx['mixins_started'])))
         L += _cap(mx['configs_stopped_applying'], 12, lambda x: 'stopped: ' + x) + _cap(mx['configs_started_applying'], 12, lambda x: 'started: ' + x)
         L += _cap(mx['mixins_stopped'], 10, lambda x: '- ' + x.replace('\t', '  ')) + _cap(mx['mixins_started'], 10, lambda x: '+ ' + x.replace('\t', '  '))
+        if mx.get('target_not_loaded_on_one_side'):
+            L.append('      (%d more differ only because one boot never loaded their target class: not a change, see the README)' % len(mx['target_not_loaded_on_one_side']))
         L.append('')
     L.append('scripts')
     for kind in ('server', 'startup'):

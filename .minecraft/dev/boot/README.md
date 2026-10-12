@@ -246,8 +246,16 @@ that needs a second boot, a player, an old world, or Windows.
 - the checker's findings that are new or gone.
 
 A **regression** makes the exit code 1: the new tree no longer boots; data newly rejected at load; a mixin config
-that is still registered and no longer applies anything; a script in the tree that did not load; a handler that now
-aborts; a new ERROR signature; a new red finding of the checker. Ids added or removed are reported, not judged.
+that is still registered and no longer applies anything; a mixin class that no longer applies although its config
+is registered and its target class is loaded; a script in the tree that did not load; a handler that now aborts; a
+new ERROR signature; a new red finding of the checker. Ids added or removed are reported, not judged.
+
+An example, `boot.ps1 -Diff a43766b4,59ee40da` (a day of commits on 2026-10-12), in full: one jar gone (Entity
+Culling), two rebuilt under their name (`iridescent_durability_clamp`, `lovely_sparkle_pieces`), one registry entry
+added (`minecraft:painting_variant` `lovely_sparkle_pieces:lsp_painting1`), one mixin class started
+(`LevelEmptyFreshBlockEntityPruneMixin` into `Level`), two ERROR signatures gone (the refused Armor Formula entry and
+the painting tag that named an unregistered variant), one WARN gone (Forge's "1 files which are client-side-only
+mods ... will be skipped" for that jar), two of the checker's known defects gone, 0 regressions.
 
 Read the numbers with the noise in mind (see "What two boots of the same tree differ in").
 
@@ -303,9 +311,13 @@ ones, the recipes, the advancements, the scripts loaded and their order, the mix
 signature, the checker's findings. What differed:
 - times: `Done` by several seconds on a quiet host, by minutes when another JVM runs;
 - memory: live heap by 8 MB, resident memory by some hundreds of MB, loaded classes by about 50;
-- mixin classes: six of some 2,460, all of them applied AFTER `Done`, when a class is first used (a mob's goal, a
-  train carriage). The diff therefore compares class by class only what applied up to `Done`
-  (`mixins\applied.tsv`); the later ones are in `mixins\applied_after_done.tsv`;
+- mixin classes: up to seven of some 2,460 between any two of four boots of one tree, before `Done` as well as
+  after it. A mixin applies when its target class is first loaded, and which classes a boot loads depends on what
+  the spawn area generated and which mob spawned (`ProjectileUtil`, a mob's goal, a Create train carriage). The
+  diff therefore counts a mixin class as stopped or started only when the other boot DID load its target class
+  (some other mixin went into it there) or its config is not registered there at all; the rest are counted in one
+  line. With that rule the four boots show no mixin change among them, and a real one is still found (the diff of
+  `a43766b4` against `59ee40da` names the one mixin class a rebuilt jar added, into `net.minecraft.world.level.Level`);
 - five WARN signatures of `latest.log`: a load time that crossed from seconds to minutes, two `Can't keep up`
   lines with the lag glued to its unit, and a config default printed as a list in hash order. The diff reduces
   signatures one step further than the checker does, so that these three kinds do not show as new and gone.
