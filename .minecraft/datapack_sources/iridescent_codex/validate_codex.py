@@ -27,12 +27,30 @@ book `landing_text`)
   - a link still open at the end of a text -> the rest of the text is the link
   - unknown $(cmd) prints literally; unknown $(fn:x) -> "[MISSING FUNCTION: fn]"
   - $(k:name) matching no KeyMapping -> "N/A"; $(c:x) without "/" -> "INVALID COMMAND"
-  - entry/category names and page titles are NOT macro-parsed -> "$(" prints raw
+  - entry/category names and page titles are NOT macro-parsed -> "$(" prints raw.
+    They ARE drawn through vanilla's formatted-string path, so a legacy
+    section-sign code works in them: style_codex.py prefixes every page title
+    with the italic code at build time (a title without it means that step did
+    not run). A code in an entry/category NAME would also style the entry-list
+    rows, the tooltips and the search key.
   - Patchouli's built-in macro "/$" -> "$()" mangles any "/" typed right before "$("
   - an advancement gate (icraft:*) that doesn't exist locks the entry forever
   - an icon/spotlight item that isn't registered renders blank (checked against
     the owning jar's bytecode for our namespaces -- the Item Audit snapshot
     still lists items we removed)
+
+COLOURS (Book.<init> and its users, read 2026-10-11)
+  - text_color, header_color, nameplate_color, link_color, link_hover_color,
+    progress_bar_color and progress_bar_background are parsed with
+    Integer.parseInt(value, 16): a non-hex value throws and the book never
+    registers.
+  - text_color draws the body text, the entry-list rows and the search box.
+    header_color draws every entry/page/category header, the progress-bar frame
+    and its label. Both are reading text and must keep at least 7:1 against the
+    page art (PAGE_DARKEST below: the darkest opaque pixel of the sheet's two
+    page text areas).
+  - $(li) bullets are hard-coded black (ChatFormatting.BLACK), whatever
+    text_color says.
 
 NOT a defect: with Advanced Tooltips (F3+H) on, PageText.render prints every
 entry's resource ID under its title. That is Patchouli's author-debug view.
@@ -49,6 +67,9 @@ import re
 import sys
 import zipfile
 from pathlib import Path
+
+sys.dont_write_bytecode = True  # the import below must not leave a __pycache__ in the source tree
+from style_codex import ITALIC, SECTION, TITLED_PAGE_TYPES  # noqa: E402
 
 BOOK_NS = "icraft"
 BOOK_ID = "iridescent_codex"
@@ -86,6 +107,19 @@ RL_NAMESPACE = re.compile(r"^[a-z0-9_.-]+$")
 RL_PATH = re.compile(r"^[a-z0-9/._-]+$")
 ITEM_ID = re.compile(r"^([a-z0-9_.-]+:[a-z0-9/._-]+)")
 HEX_DIGITS = re.compile(r"^[0-9a-fA-F]+$")
+HEX_COLOR = re.compile(r"^[0-9a-fA-F]{6}$")
+
+# ---- book.json colours (Book.<init>) -----------------------------------------
+COLOR_KEYS = (
+    "text_color", "header_color", "nameplate_color", "link_color",
+    "link_hover_color", "progress_bar_color", "progress_bar_background",
+)
+READING_COLORS = ("text_color", "header_color")
+MIN_READING_CONTRAST = 7.0
+DEFAULT_BOOK_TEXTURE = "patchouli:textures/gui/book_brown.png"
+# Darkest opaque pixel of the two page text areas (x 15..130 and 141..256,
+# y 18..159 of the 512x256 sheet), measured in Patchouli-1.20.1-85-FORGE.jar.
+PAGE_DARKEST = {"patchouli:textures/gui/book_brown.png": "f9eed0"}
 
 
 class Report:
@@ -138,6 +172,47 @@ def expand_macros(text, macros):
 def item_id(stack_string):
     m = ITEM_ID.match(stack_string)
     return m.group(1) if m else None
+
+
+def luminance(hex6):
+    """WCAG relative luminance of an rrggbb colour."""
+    def linear(c):
+        c /= 255.0
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    r, g, b = (int(hex6[i:i + 2], 16) for i in (0, 2, 4))
+    return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
+
+
+def contrast(a, b):
+    hi, lo = sorted((luminance(a), luminance(b)), reverse=True)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def check_colors(book_json, report):
+    colors = {}
+    for key in COLOR_KEYS:
+        value = book_json.get(key)
+        if value is None:
+            continue
+        if isinstance(value, str) and HEX_COLOR.match(value):
+            colors[key] = value
+        else:
+            report.error("book.json", f"{key} '{value}' must be 6 hex digits -- Patchouli parses it with "
+                                      "Integer.parseInt(value, 16), and a non-hex value stops the book registering")
+    texture = book_json.get("book_texture", DEFAULT_BOOK_TEXTURE)
+    page = PAGE_DARKEST.get(texture)
+    if page is None:
+        report.note(f"book_texture {texture} has no measured page colour in PAGE_DARKEST -- text contrast not checked")
+        return
+    for key in READING_COLORS:
+        if key not in colors:
+            continue
+        ratio = contrast(colors[key], page)
+        line = f"{key} {colors[key]} on the darkest page pixel {page}: {ratio:.2f}:1"
+        if ratio < MIN_READING_CONTRAST:
+            report.error("book.json", f"{line} -- below the {MIN_READING_CONTRAST:g}:1 floor for reading text")
+        else:
+            report.note(line)
 
 
 # ---- repo cross-reference data ---------------------------------------------
@@ -297,6 +372,7 @@ class Book:
         self.macros = dict(DEFAULT_MACROS)
         self.links = 0
         self.pages = 0
+        self.titles = 0        # page titles carrying the build's italic code
 
 
 def check_text(text, where, book, ctx, report):
@@ -378,6 +454,22 @@ def check_link(param, where, book, report):
 def check_literal(value, where, field, report):
     if isinstance(value, str) and "$(" in value:
         report.error(where, f"{field} contains \"$(\" -- names/titles aren't macro-parsed, it prints raw")
+
+
+def check_name_style(value, where, report):
+    if isinstance(value, str) and SECTION in value:
+        report.warn(where, "name carries a section-sign formatting code -- it also styles the entry-list rows, "
+                           "the tooltips and the search key, not just the page header")
+
+
+def check_title_style(title, where, book, report):
+    """A drawn page title must carry exactly the italic code style_codex.py adds."""
+    if not title.startswith(ITALIC):
+        report.error(where, "title is not italicised -- style_codex.py did not run on this jar (build with build_codex.sh)")
+        return
+    book.titles += 1
+    if SECTION in title[len(ITALIC):]:
+        report.warn(where, "title carries a second section-sign formatting code after the build's italic code")
 
 
 def check_advancement(adv, where, ctx, report):
@@ -508,6 +600,7 @@ def main():
 
     check_text(book_json.get("landing_text"), "book.json landing_text", book, ctx, report)
     check_item(book_json.get("index_icon"), "book.json index_icon", ctx, report)
+    check_colors(book_json, report)
 
     pages_seen = 0
     for (folder, rid), (rel, data) in sorted(parsed.items()):
@@ -520,6 +613,7 @@ def main():
         if "flag" in data:
             report.warn(rel, f"config flag '{data['flag']}' can hide this at runtime (not evaluated here)")
         check_literal(data.get("name"), rel, "name", report)
+        check_name_style(data.get("name"), rel, report)
         check_item(data.get("icon"), rel, ctx, report)
         check_advancement(data.get("advancement"), rel, ctx, report)
 
@@ -568,6 +662,10 @@ def main():
                 if template not in book.templates:
                     report.error(where, f"page type '{ptype}' is not a Patchouli page type or a template in this book -- the whole book fails to load")
             check_literal(page.get("title"), where, "title", report)
+            title = page.get("title")
+            if (isinstance(title, str) and title and normalized.startswith("patchouli:")
+                    and normalized[len("patchouli:"):] in TITLED_PAGE_TYPES):
+                check_title_style(title, where, book, report)
             check_text(page.get("text"), where, book, ctx, report)
             check_advancement(page.get("advancement"), where, ctx, report)
             if normalized == "patchouli:spotlight":
@@ -587,7 +685,7 @@ def main():
 def finish(report, book, jar_path, jar_sha):
     print(f"== Codex validation: {jar_path.name} (sha256 {jar_sha[:12]}) ==")
     print(f"   loaded tree: {len(book.categories)} categories / {len(book.entries)} entries / "
-          f"{book.pages} pages / {book.links} links checked")
+          f"{book.pages} pages / {book.titles} italic page titles / {book.links} links checked")
     for label, bucket in (("ERROR", report.errors), ("WARN", report.warnings), ("NOTE", report.notes)):
         if bucket:
             print(f"--- {label}: {len(bucket)} ---")

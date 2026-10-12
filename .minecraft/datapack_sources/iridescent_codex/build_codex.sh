@@ -5,7 +5,8 @@
 # Compiles the minimal @Mod class (javafml entrypoint so Patchouli's
 # BookRegistry scanner sees our data/), mirrors data/ -> assets/ (Patchouli
 # 1.20.1-85 reads book CONTENT only from assets/ -- book.json stays in data/),
-# packs everything into the JAR, validates the packed JAR with
+# styles the staged copy (style_codex.py: page titles in italics -- the sources
+# under data/ stay plain), packs everything into the JAR, validates the packed JAR with
 # validate_codex.py (every entry/category/link/keybind must resolve the way
 # Patchouli loads it), and only then deploys to all three distributions.
 #
@@ -85,6 +86,14 @@ cp -r assets "$STAGE/"
 cp -r data "$STAGE/"
 cp pack.mcmeta "$STAGE/"
 cp -r "$BUILD_DIR/com" "$STAGE/"
+
+echo "[Codex Build] Styling the staged book (page titles in italics) ..."
+# Both staged trees get the same edit, so they still match byte for byte (the
+# validator checks). Never run this on the source tree.
+if ! python3 "$SCRIPT_DIR/style_codex.py" "$STAGE/$BOOK_DATA" "$STAGE/$BOOK_ASSETS"; then
+    echo "ERROR: style_codex.py failed -- NOT packing."
+    exit 1
+fi
 
 echo "[Codex Build] Packing JAR ..."
 jar cf "$JAR" -C "$STAGE" .
