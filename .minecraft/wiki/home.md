@@ -62,7 +62,7 @@ The canonical design reference for all modpack systems.
 | Patchouli Codex | Working | 11 categories, 80 entries, advancement-gated |
 | Book suppression | Working | Duplicate mod guidebooks suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
-| Prestige/Ascension (Part IX) | Implemented | 5 ascension levels with mob scaling and stat bonuses |
+| Prestige/Ascension (Part IX) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
 | Loot table overhaul | Implemented | 35+ structure mods, boss drops, tier tokens |
 | Villager trade rework | Implemented | Books removed, XP trades added |
 | Waystone recipes | Implemented | Boss-drop gated crafting |

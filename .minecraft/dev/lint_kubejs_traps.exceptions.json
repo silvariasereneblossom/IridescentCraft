@@ -1,13 +1,4 @@
 {
   "comment": "Recorded exceptions for lint_kubejs_traps.js. An entry tolerates exactly `count` sites of one rule in one file (path below kubejs/). One more site flags the whole file+rule; no site left flags the entry itself. Every entry needs a reason; add `owed` when the exception is a known defect waiting for a decision rather than accepted code.",
-  "exceptions": [
-    {
-      "file": "server_scripts/endgame/ascension.js",
-      "rule": "AFTER-EXIT",
-      "count": 4,
-      "recorded": "2026-10-11",
-      "reason": "KNOWN DEFECT, deliberately not fixed here: all four chat branches (!ascension, !ascend, !ascension-set, !ascension-reset) call event.cancel() first, so Ascension has never been reachable.",
-      "owed": "Operator decision. The fix is to move four lines, but it switches on a permanent, irreversible per-world difficulty change that has never run. Fix the script (cancel last) and delete this entry in the same commit, or retire the feature."
-    }
-  ]
+  "exceptions": []
 }
