@@ -1,0 +1,84 @@
+# Classes whose script-visible members the real-engine probe records (truth/engine-members.json).
+# One fully qualified name per line. Every class a mock stands in for (harness/mock-map.json)
+# must be here; every KubeJS event class is added by the probe itself.
+# After editing: python .minecraft/dev/engine-tests/run.py real-engine --record
+
+# --- vanilla: entities and players
+net.minecraft.world.entity.Entity
+net.minecraft.world.entity.LivingEntity
+net.minecraft.world.entity.Mob
+net.minecraft.world.entity.TamableAnimal
+net.minecraft.world.entity.item.ItemEntity
+net.minecraft.world.entity.boss.enderdragon.EnderDragon
+net.minecraft.world.entity.player.Player
+net.minecraft.server.level.ServerPlayer
+net.minecraft.world.entity.player.Inventory
+net.minecraft.world.Container
+net.minecraft.world.food.FoodData
+net.minecraft.world.entity.EntityType
+net.minecraft.world.entity.MobType
+net.minecraft.world.entity.EquipmentSlot
+com.mojang.authlib.GameProfile
+
+# --- vanilla: items, nbt, ids
+net.minecraft.world.item.ItemStack
+net.minecraft.world.item.Item
+net.minecraft.world.item.enchantment.Enchantment
+net.minecraft.world.item.enchantment.EnchantmentHelper
+net.minecraft.nbt.CompoundTag
+net.minecraft.nbt.ListTag
+net.minecraft.resources.ResourceLocation
+net.minecraft.resources.ResourceKey
+net.minecraft.core.Holder
+net.minecraft.core.Holder$Reference
+
+# --- vanilla: attributes and effects
+net.minecraft.world.entity.ai.attributes.Attribute
+net.minecraft.world.entity.ai.attributes.Attributes
+net.minecraft.world.entity.ai.attributes.AttributeInstance
+net.minecraft.world.entity.ai.attributes.AttributeModifier
+net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation
+net.minecraft.world.effect.MobEffect
+net.minecraft.world.effect.MobEffectInstance
+
+# --- vanilla: damage
+net.minecraft.world.damagesource.DamageSource
+net.minecraft.world.damagesource.DamageSources
+net.minecraft.world.damagesource.DamageType
+net.minecraft.tags.DamageTypeTags
+
+# --- vanilla: level and server
+net.minecraft.world.level.Level
+net.minecraft.server.level.ServerLevel
+net.minecraft.world.level.storage.LevelData
+net.minecraft.server.MinecraftServer
+net.minecraft.server.players.PlayerList
+net.minecraft.world.scores.Scoreboard
+net.minecraft.world.scores.Score
+net.minecraft.world.scores.Objective
+net.minecraft.core.BlockPos
+net.minecraft.world.phys.Vec3
+net.minecraft.world.phys.AABB
+net.minecraft.network.chat.Component
+net.minecraft.network.chat.MutableComponent
+
+# --- Forge
+net.minecraftforge.registries.ForgeRegistries
+net.minecraftforge.registries.IForgeRegistry
+net.minecraftforge.event.entity.living.LivingHurtEvent
+net.minecraftforge.event.entity.living.LivingKnockBackEvent
+net.minecraftforge.event.entity.living.MobEffectEvent$Applicable
+net.minecraftforge.event.ItemAttributeModifierEvent
+net.minecraftforge.eventbus.api.Event$Result
+
+# --- KubeJS / Rhino wrappers scripts touch directly
+dev.latvian.mods.kubejs.level.BlockContainerJS
+dev.latvian.mods.kubejs.entity.EntityPotionEffectsJS
+dev.latvian.mods.kubejs.bindings.TextWrapper
+dev.latvian.mods.kubejs.bindings.ItemWrapper
+dev.latvian.mods.kubejs.bindings.UtilsWrapper
+dev.latvian.mods.kubejs.bindings.JavaWrapper
+dev.latvian.mods.rhino.mod.wrapper.AABBWrapper
+dev.latvian.mods.rhino.mod.wrapper.ColorWrapper
+dev.latvian.mods.kubejs.util.ConsoleJS
+dev.latvian.mods.rhino.mod.util.color.Color

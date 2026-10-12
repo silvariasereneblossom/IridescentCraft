@@ -1,0 +1,116 @@
+# Answers of the REAL engine to real-engine/0_engine_facts.js (label :: answer). Do not edit:
+# regenerate with `python .minecraft/dev/engine-tests/run.py real-engine record`.
+typeof inv.size :: typeof=string value=undefined
+'size' in inv :: typeof=boolean value=false
+typeof inv.getSize :: typeof=string value=undefined
+inv.size() throws :: typeof=string value=throws TypeError
+loop to inv.size iterations :: typeof=number value=0
+inv.slots :: typeof=number value=41
+inv.getSlots() :: typeof=number value=41
+inv.containerSize :: typeof=number value=41
+inv.getContainerSize() :: typeof=number value=41
+inv.items.size() :: typeof=number value=36
+inv.getStackInSlot(0).count :: typeof=number value=3
+inv.getItem(0).count :: typeof=number value=3
+inv.getStackInSlot(40).count :: typeof=number value=2
+inv.getStackInSlot(41).isEmpty() :: typeof=boolean value=true
+diamonds found by a loop to inv.slots :: typeof=number value=5
+diamonds found by a loop over slots 0-35 :: typeof=number value=3
+inv.count('minecraft:diamond') :: typeof=number value=5
+inv.find('minecraft:diamond') :: typeof=number value=0
+typeof inv.get :: typeof=string value=undefined
+typeof stack.id :: typeof=string value=object
+String(stack.id) :: typeof=string value=minecraft:diamond
+stack.id === 'minecraft:diamond' :: typeof=boolean value=true
+stack.id == 'minecraft:diamond' :: typeof=boolean value=true
+new Set([id]).has(stack.id) :: typeof=boolean value=false
+new Set([id]).has(String(stack.id)) :: typeof=boolean value=true
+new Set([id]).has('' + stack.id) :: typeof=boolean value=true
+typeof new Map([[id, 7]]).get(stack.id) :: typeof=string value=undefined
+new Set([stack.id]).has(stack.id) :: typeof=boolean value=false
+({id: 5})[stack.id] :: typeof=number value=5
+[id].indexOf(stack.id) :: typeof=number value=0
+[id].includes(stack.id) :: typeof=boolean value=true
+switch (stack.id) :: typeof=string value=matched
+typeof stack.id.split(':')[0] :: typeof=string value=object
+({minecraft: 9})[stack.id.split(':')[0]] :: typeof=number value=9
+typeof stack.id.length :: typeof=string value=function
+stack.id.replace(/[:/]/g, '_') :: typeof=string value=minecraft:diamond
+String(stack.id).replace(/[:/]/g, '_') :: typeof=string value=minecraft_diamond
+JSON.stringify({a: stack.id}) :: typeof=string value={"a":"minecraft:diamond"}
+stack.count :: typeof=number value=3
+stack.isEmpty() :: typeof=boolean value=false
+typeof stack.isEmpty :: typeof=string value=function
+typeof stack.getTag :: typeof=string value=undefined
+typeof stack.setTag :: typeof=string value=undefined
+typeof stack.getNbt :: typeof=string value=function
+typeof stack.hasNBT :: typeof=string value=function
+typeof stack.hasTag :: typeof=string value=function
+stack.hasNBT() :: typeof=boolean value=false
+typeof stack.getInternal :: typeof=string value=undefined
+typeof stack.itemStack :: typeof=string value=undefined
+typeof stack.enchantments.getLevel :: typeof=string value=undefined
+typeof stack.item.id :: typeof=string value=object
+typeof mob.type :: typeof=string value=object
+String(mob.type) :: typeof=string value=minecraft:zombie
+typeof mob.getType() :: typeof=string value=object
+typeof mob.getEntityType :: typeof=string value=function
+typeof mob.hurt :: typeof=string value=undefined
+typeof mob.attack :: typeof=string value=function
+typeof mob.tickCount :: typeof=string value=undefined
+typeof mob.age :: typeof=string value=number
+typeof mob.level :: typeof=string value=object
+typeof mob.getItemSlot :: typeof=string value=undefined
+typeof mob.getItemBySlot :: typeof=string value=function
+typeof mob.setDeltaMovement :: typeof=string value=function
+typeof mob.setMotion :: typeof=string value=function
+typeof mob.uuid :: typeof=string value=object
+typeof mob.getUUID :: typeof=string value=undefined
+typeof mob.persistentData :: typeof=string value=object
+typeof mob.forgePersistentData :: typeof=string value=object
+mob.isLiving() :: typeof=boolean value=true
+mob.isPlayer() :: typeof=boolean value=false
+player.isPlayer() :: typeof=boolean value=true
+mob.isMonster() :: typeof=boolean value=true
+typeof mob.maxHealth :: typeof=string value=number
+typeof mob.modifyAttribute :: typeof=string value=function
+typeof mob.getAttribute :: typeof=string value=function
+typeof mob.position :: typeof=string value=function
+typeof mob.getX :: typeof=string value=function
+typeof player.inventory :: typeof=string value=object
+typeof player.getInventory :: typeof=string value=function
+typeof player.username :: typeof=string value=object
+typeof player.give :: typeof=string value=function
+typeof player.tell :: typeof=string value=function
+typeof level.time :: typeof=string value=number
+typeof level.gameTime :: typeof=string value=undefined
+typeof level.getGameTime :: typeof=string value=undefined
+typeof level.dayTime :: typeof=string value=function
+String(level.dimension) :: typeof=string value=minecraft:overworld
+typeof level.dimension :: typeof=string value=object
+level.dimension == 'minecraft:overworld' :: typeof=boolean value=true
+typeof level.dropItem :: typeof=string value=undefined
+typeof level.getBlock :: typeof=string value=function
+typeof level.hasChunkAt :: typeof=string value=function
+typeof level.persistentData :: typeof=string value=object
+typeof server.tickCount :: typeof=string value=number
+typeof server.runCommandSilent :: typeof=string value=function
+typeof server.persistentData :: typeof=string value=object
+typeof server.players :: typeof=string value=object
+typeof source.entity :: typeof=string value=undefined
+typeof source.getEntity :: typeof=string value=undefined
+typeof source.directEntity :: typeof=string value=undefined
+typeof source.getDirectEntity :: typeof=string value=undefined
+typeof source.getActual :: typeof=string value=function
+typeof source.getImmediate :: typeof=string value=function
+typeof source.type :: typeof=string value=function
+String(source.getType()) :: typeof=string value=generic
+typeof source.isCritical :: typeof=string value=undefined
+psource.actual === player :: typeof=boolean value=true
+typeof psource.player :: typeof=string value=object
+[FakePlayer] typeof inv.size :: typeof=string value=undefined
+[FakePlayer] inv.slots :: typeof=number value=41
+player class :: typeof=string value=net.minecraft.server.level.ServerPlayer
+player.inventory class :: typeof=string value=net.minecraft.world.entity.player.Inventory
+stack class :: typeof=string value=net.minecraft.world.item.ItemStack
+stack.id class :: typeof=string value=java.lang.String

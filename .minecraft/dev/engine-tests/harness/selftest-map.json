@@ -1,0 +1,23 @@
+{
+  "about": "The self-test of MemberCheck: harness/mk/Bad.java holds deliberately dishonest mocks, and `expect` is exactly what the checker must report for them (the text before the colon of each FAIL line). run.py fails suite mock-honesty when the report differs, so a checker that stops catching one of these cannot pass.",
+  "holders": ["mk.Bad"],
+  "expect": [
+    "mk.Bad$Inventory.size",
+    "mk.Bad$Level.gameTime",
+    "mk.Bad$Level.getGameTime",
+    "mk.Bad$Source.type",
+    "mk.Bad$Vec3.x",
+    "mk.Bad$Vec3.y",
+    "mk.Bad$Vec3.z",
+    "mk.Bad$Slots.getStackInSlot(0 arguments)",
+    "mk.Bad$Unlisted"
+  ],
+  "mocks": {
+    "mk.Bad": {"harness-class": "holder"},
+    "mk.Bad$Inventory": {"real": ["net.minecraft.world.entity.player.Inventory"]},
+    "mk.Bad$Level": {"real": ["net.minecraft.server.level.ServerLevel"]},
+    "mk.Bad$Source": {"real": ["net.minecraft.world.damagesource.DamageSource"]},
+    "mk.Bad$Vec3": {"real": ["net.minecraft.world.phys.Vec3"]},
+    "mk.Bad$Slots": {"real": ["net.minecraft.world.entity.player.Inventory"]}
+  }
+}
