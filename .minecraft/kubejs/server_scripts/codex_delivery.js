@@ -619,7 +619,10 @@
     'terramity:terramity_guidebook',
     'terramity:guide_book',
     'simplyswords:runic_grimoire',
-    'simplyswords:runic_tablet',
+    // (simplyswords:runic_tablet was on this list until 2026-10-11. It is not a
+    //  book: it is the smithing material of Simply Swords' runic weapons and an
+    //  ingredient of the Righteous / Tainted Relic crafts, and this sweep deleted
+    //  every tablet a player carried. Operator ruling, decision sheet D1.)
     'epicfight:skill_book',
     'epicfight:combat_book',
     'epicfight:combatants_companion',

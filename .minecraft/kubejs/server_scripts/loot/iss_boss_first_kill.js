@@ -11,6 +11,14 @@
 //   - fire_boss      -> blaze_spell_book (T3)
 //   - valkyrie_queen -> magehunter (T3)
 //
+// THE WITHER -> simplyswords:dormant_relic (operator ruling 2026-10-11, decision
+// sheet D1). Not an ISS book, but the same mechanism: guaranteed on a player's
+// first Wither kill, and — unlike the four above, which have no repeat here —
+// its `repeatChance` (15%, the pack's rate for a boss's unique sword) on every
+// later kill. The relic had no source at all: Simply Swords only hands it out through
+// its chest injection, which the pack strips. It is the base of the Righteous
+// Relic and the Tainted Relic crafts.
+//
 // Tetra replacement files auto-convert dropped vanilla ISS books into our
 // modular variants on inventory tick, so we drop vanilla items here.
 //
@@ -22,7 +30,9 @@ try {
     { entity: 'irons_spellbooks:dead_king',       item: 'irons_spellbooks:necronomicon_spell_book', flag: 'dead_king' },
     { entity: 'irons_spellbooks:archevoker',      item: 'irons_spellbooks:evoker_spell_book',       flag: 'archevoker' },
     { entity: 'irons_spellbooks:fire_boss',       item: 'irons_spellbooks:blaze_spell_book',        flag: 'fire_boss' },
-    { entity: 'aether:valkyrie_queen',            item: 'irons_spellbooks:magehunter',              flag: 'valkyrie_queen' }
+    { entity: 'aether:valkyrie_queen',            item: 'irons_spellbooks:magehunter',              flag: 'valkyrie_queen' },
+    // repeatChance: after the first kill, this chance per kill (absent = first kill only)
+    { entity: 'minecraft:wither',                 item: 'simplyswords:dormant_relic',               flag: 'wither_dormant_relic', repeatChance: 0.15 }
   ]
 
   EntityEvents.death(function(event) {
@@ -45,7 +55,9 @@ try {
         // the guarantee once; the old keys are ignored.
         var flagKey = 'icraft_fk2_' + entry.flag
         var pdata = killer.persistentData
-        if (pdata.contains(flagKey) && pdata.getBoolean(flagKey)) return  // already got it
+        var hadFirst = pdata.contains(flagKey) && pdata.getBoolean(flagKey)
+        // Already got the guarantee: nothing more, unless the entry has a repeat chance.
+        if (hadFirst && !(entry.repeatChance > 0 && Math.random() < entry.repeatChance)) return
         // Drop at the boss (vanilla Entity.spawnAtLocation(ItemStack)); the flag
         // is set only after the drop call returned.
         var dropStack = Item.of(entry.item)
@@ -54,6 +66,10 @@ try {
           return
         }
         ent.spawnAtLocation(dropStack)
+        if (hadFirst) {
+          console.log('[iss_first_kill] ' + killer.username + ' repeat kill of ' + entry.entity + ' -> ' + entry.item)
+          return
+        }
         pdata.putBoolean(flagKey, true)
         killer.tell('§dThe §5' + entry.entity.split(':')[1].replace(/_/g, ' ') + '§d falls. A first-kill reward materializes.')
         console.log('[iss_first_kill] ' + killer.username + ' first-killed ' + entry.entity + ' -> ' + entry.item)
@@ -64,7 +80,7 @@ try {
     }
   })
 
-  console.log('[IridescentCraft] iss_boss_first_kill loaded -- 4 first-kill book guarantees armed')
+  console.log('[IridescentCraft] iss_boss_first_kill loaded -- ' + FIRST_KILL_DROPS.length + ' first-kill guarantees armed (4 ISS books, the Wither\'s Dormant Relic)')
 } catch (e) {
   console.warn('[IridescentCraft] iss_boss_first_kill bootstrap FAILED: ' + e)
 }
