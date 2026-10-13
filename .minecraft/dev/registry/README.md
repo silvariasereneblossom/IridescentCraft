@@ -5,8 +5,8 @@ ids the game registered, not the ids a jar's assets or a wiki page suggest. `SOU
 taken from.
 
 They are the id lists for validators (does this item, entity, structure, loot table, attribute, effect exist?) and
-they replace the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`), which has no row for any mod added
-since.
+they replace the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`), which had no row for any mod added
+since and was deleted on 2026-10-13, when nothing read it any more.
 
 | File | One line per |
 |---|---|

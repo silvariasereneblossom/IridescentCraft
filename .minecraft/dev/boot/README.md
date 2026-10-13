@@ -198,7 +198,8 @@ jar that ships one, and applies only when a class it targets is loaded on a dedi
 
 **The committed snapshot** is `.minecraft\dev\registry\`: the compact, sorted id lists of `main`, one text file per
 registry, plus `entities.json` (its own README lists the files). It is the authoritative id list for validators and
-replaces the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`). Refresh it with
+replaces the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`, deleted on 2026-10-13: nothing read
+it any more). Refresh it with
 `boot.ps1 -Ref origin/main -WriteSnapshot`, then commit the folder; `SOURCE.json` names the commit it describes.
 `registry_current.py` (next to the tool; the pre-push hook and the Action `registry-snapshot.yml` run it) says whether
 the snapshot is still of this pack's MODS: it blocks a push whose server jar set differs from the snapshot's, and
