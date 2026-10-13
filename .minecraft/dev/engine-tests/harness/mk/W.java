@@ -412,6 +412,11 @@ public class W {
     public void kjs$setStackInSlot(int i, Stack s) { slots[i] = s; }
   }
 
+  /** The `AStages` binding: com.alessandro.astages.integration.kubejs.AStagesKubeJSUtil (static). */
+  public static class AStagesKubeJSUtil {
+    public static boolean playerHasStage(String stage, Player p) { return p != null && p.astages.contains(stage); }
+  }
+
   // ------------------------------------------------------------------ damage
   public static class DamageType {
     final String id, msg;
@@ -791,6 +796,10 @@ public class W {
     final FoodData foodData = new FoodData();
     final List<Stack> given = new ArrayList<>();
     int xpGiven;
+    final Set<String> astages = new LinkedHashSet<>();
+    public Player t_stage(String stage) { astages.add(stage); return this; }
+    public Player t_unstage(String stage) { astages.remove(stage); return this; }
+    public int t_inventoryReads() { return inv.reads; }
     public Player(String name, Level l, double x, double y, double z) {
       super("minecraft:player", l, x, y, z); this.name = name; this.server = (l == null) ? null : l.server;
       for (String a : Attr.ALL.keySet()) attrs.add(a);
@@ -877,8 +886,19 @@ public class W {
       for (Entity e : entities) if (box.has(e)) l.add(e);
       return l;
     }
-    public Block kjs$getBlock(int x, int y, int z) { blockReads++; return new Block(this, new BlockPos(x, y, z)); }
-    public Block kjs$getBlock(BlockPos p) { blockReads++; return new Block(this, p); }
+    public Block kjs$getBlock(int x, int y, int z) { blockReads++; if (!hasChunkAt(x, z)) chunkLoads++; return new Block(this, new BlockPos(x, y, z)); }
+    public Block kjs$getBlock(BlockPos p) { blockReads++; if (!hasChunkAt(p)) chunkLoads++; return new Block(this, p); }
+    // Level.hasChunkAt(BlockPos) / hasChunkAt(int blockX, int blockZ): neither loads. Every chunk is loaded
+    // until a test unloads one (t_unload); a getBlock into an unloaded chunk is counted in chunkLoads, because
+    // on the real level that read LOADS the chunk.
+    final Set<Long> unloaded = new LinkedHashSet<>();
+    int chunkLoads;
+    static long chunkKey(int cx, int cz) { return (((long) cx) << 32) ^ (cz & 0xffffffffL); }
+    public boolean hasChunkAt(BlockPos p) { return hasChunkAt(p.getX(), p.getZ()); }
+    public boolean hasChunkAt(int x, int z) { return !unloaded.contains(chunkKey(x >> 4, z >> 4)); }
+    public Level t_unload(int blockX, int blockZ) { unloaded.add(chunkKey(blockX >> 4, blockZ >> 4)); return this; }
+    public int t_blockReads() { return blockReads; }
+    public int t_chunkLoads() { return chunkLoads; }
     public int getMaxLocalRawBrightness(BlockPos p) { return light; }
     public int getBrightness(Object lightLayer, BlockPos p) { return light; }
     public boolean destroyBlock(BlockPos p, boolean drop) { return destroyBlock(p, drop, null); }

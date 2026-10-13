@@ -24,6 +24,7 @@
     "mk.W$ForgeRegistries": {"real": ["net.minecraftforge.registries.ForgeRegistries"]},
     "mk.W$Reg": {"real": ["net.minecraftforge.registries.IForgeRegistry"]},
     "mk.W$EnchantmentHelper": {"real": ["net.minecraft.world.item.enchantment.EnchantmentHelper"]},
+    "mk.W$AStagesKubeJSUtil": {"real": ["com.alessandro.astages.integration.kubejs.AStagesKubeJSUtil"], "jar": "astages-*.jar"},
     "mk.W$DamageTypeTags": {"real": ["net.minecraft.tags.DamageTypeTags"]},
     "mk.W$Tag": {"real": ["net.minecraft.nbt.CompoundTag"], "harness": {"convertJavaToJs": "Rhino's CustomJavaToJsWrapper hook: how KubeJS wraps a CompoundTag for scripts"}},
     "mk.W$ListTag": {"real": ["net.minecraft.nbt.ListTag"], "harness": {"convertJavaToJs": "Rhino's CustomJavaToJsWrapper hook"}},

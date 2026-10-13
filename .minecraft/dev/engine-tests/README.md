@@ -46,6 +46,7 @@ every run and not counted.
 | `mock-facts` | the mocks answer the engine facts exactly as the real engine answered them |
 | `registry-data` | `dev/rosters/validate.py`: every id of the boss and dimension registries (`kubejs/config/icraft/registry/*.json`) is something the game registers (`dev/registry`), the files are consistent, and nothing deviates from the expectations without a reason in `dev/rosters/accepted.json` |
 | `registry` | `kubejs/server_scripts/0_lib_registry.js` (`icraft.bosses`, `icraft.dims`) answers every id and every system exactly as `dev/rosters/rosters.py` does (`run.py` generates the expectation from it: `{"gen": "registry-expect"}`); a Java string id works; what it hands out is a copy; a misspelt system throws; a registry that cannot be read is an error on every call, never an empty roster; `core.isBoss` asks it |
+| `core-helpers` | the engine-safe helpers of `global.icraft.core` (`0_lib_core.js`): `idSet` answers a Java string, a JS string and a ResourceLocation alike; `eachMainSlot` walks slots 0 to 35 of an inventory that has no `size`; `playerTier` is the highest tier stage held (the `AStages` binding, held to its jar); `blockIfLoaded` never reads a block of an unloaded chunk; `warnOnce`, `now` |
 | `inventory-scan` | `economy/relic_sink.js`: the scan visits the main inventory, the deny list denies, the cap is read back |
 | `ascension`, `ascension-open` | `endgame/ascension.js` + `scaling/zz_ascension_scaling.js` |
 | `onboarding-bridge` | `quests/onboarding_bridge.js` |

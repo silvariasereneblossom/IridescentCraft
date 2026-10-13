@@ -35,6 +35,13 @@
                   "suites/registry.js", "lib/summary.js"]]
     },
     {
+      "name": "core-helpers", "kind": "harness", "fast": true, "ci": true, "expect": 52,
+      "about": "the engine-safe helpers of global.icraft.core: idSet answers a Java string, a JS string and a ResourceLocation alike; eachMainSlot walks slots 0-35 of an inventory that has no `size`; playerTier is the highest tier stage held; blockIfLoaded never reads a block of an unloaded chunk; warnOnce and now",
+      "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
+                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js"]},
+                  "suites/core_helpers.js", "lib/summary.js"]]
+    },
+    {
       "name": "inventory-scan", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 14,
       "about": "economy/relic_sink.js on a mock inventory that behaves like the real one: the scan visits slots, the deny list denies, the cap key is stable",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",

@@ -91,6 +91,8 @@ T_honestKeys('console', console, 'dev.latvian.mods.kubejs.util.ConsoleJS', false
 // JsonIO.readString(path): how 0_lib_registry.js reads kubejs/config/icraft/registry/*.json. The Host reads the file of the
 // pack under test with the engine's own two calls (H.java readJsonText); suite mock-facts compares the answers.
 var JsonIO = { readString: function (path) { return __host.readJsonText(String(path)) } }
+// the AStages mod's binding (a static class; held to its jar by mock-honesty)
+var AStages = W_('AStagesKubeJSUtil')
 T_honestKeys('JsonIO', JsonIO, 'dev.latvian.mods.kubejs.util.JsonIO', true)
 T_honestKeys('Text', Text, 'dev.latvian.mods.kubejs.bindings.TextWrapper', true)
 T_honestKeys('Item', Item, 'dev.latvian.mods.kubejs.bindings.ItemWrapper', true)

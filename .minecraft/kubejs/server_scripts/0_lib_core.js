@@ -5,6 +5,8 @@
 // Exported through `global.icraft.core` only (no top-level names):
 //
 //   entity ids      core.entityId(entity)            -> 'minecraft:zombie' | ''
+//                   core.idSet([ids])                -> a set that can be asked with a Java string:
+//                                                       .has(x) .add(x) .count() .list()
 //                   core.isBoss(entityOrId)          -> true | false
 //                                                       (the flag `boss` of the boss registry:
 //                                                       icraft.bosses, 0_lib_registry.js)
@@ -50,6 +52,12 @@
 //   inventory       core.mainSlotCount()             -> 36: the slots of a player's inventory a sweep may
 //                                                       read and consume (hotbar + backpack, never the
 //                                                       worn armour or the off hand; see below)
+//                   core.eachMainSlot(player, fn)    -> fn(stack, slot, inv) for every non-empty stack of
+//                                                       those 36 slots; return true to stop
+//   player          core.playerTier(player)          -> 1..4: the highest tier_N stage the player holds
+//   blocks          core.blockIfLoaded(level, x, y, z) | (level, blockPos)
+//                                                    -> the block, or null when its chunk is not loaded
+//                                                       (level.getBlock LOADS it; this never does)
 //   misc            core.forgeData(entity)           -> Forge getPersistentData() | null
 //                   core.light(entity)               -> 0..15 (7 when unknown)
 //                   core.warnOnce(key, message)
@@ -618,6 +626,147 @@
     return best
   }
 
+  var MAIN_INVENTORY_SLOTS = 36   // see "player inventory: the slots a sweep may read and consume" below
+
+  // ---- id sets: a set that can be asked with what the game hands a script -----
+  // On this engine a String that comes back from a Java method (entity.type,
+  // stack.id, block.id, player.username, a dimension) is a wrapped OBJECT, and a
+  // JS Set / Map never matches it: `new Set([id]).has(stack.id)` is false and
+  // `new Map([[id, 1]]).get(stack.id)` is undefined, with no error. Per-kill
+  // boss scaling, the relic sink's deny list and a class check never ran
+  // because of it. idSet() normalises BOTH sides with String(), so it answers
+  // the same for a JS string, a Java String and a ResourceLocation.
+  //
+  //   var BOSSES = core.idSet(['minecraft:wither', 'minecraft:ender_dragon'])
+  //   if (BOSSES.has(core.entityId(entity))) ...
+  //   if (DIMS.has(player.level.dimension)) ...          // a ResourceLocation works
+  //
+  //   set.has(x)    true | false     (null / undefined -> false)
+  //   set.add(x)    -> the set
+  //   set.count()   how many         (a FUNCTION: a property that is misspelled
+  //   set.list()    the ids, as JS strings        reads undefined and says nothing)
+  // The argument is a JS array, or a Java List / Set (anything with forEach).
+  // Anything else THROWS: a list that cannot be read must not become an empty
+  // set that quietly matches nothing.
+  var idSet = function (ids) {
+    var table = {}
+    var n = 0
+    var put = function (id) {
+      if (id === null || id === undefined) return
+      // '$' in front: an id may be 'toString' or 'hasOwnProperty' (a player name can)
+      var key = '$' + String(id)
+      if (table[key] !== true) { table[key] = true; n++ }
+    }
+    if (ids !== null && ids !== undefined) {
+      if (typeof ids === 'string') throw new Error('[icraft.core] idSet(' + ids + '): give it a list of ids, not one id')
+      if (typeof ids.length === 'number') {
+        for (var i = 0; i < ids.length; i++) put(ids[i])
+      } else if (typeof ids.forEach === 'function') {
+        ids.forEach(function (id) { put(id) })
+      } else {
+        throw new Error('[icraft.core] idSet: the argument is not a list (no length, no forEach)')
+      }
+    }
+    var self = {
+      has: function (id) {
+        if (id === null || id === undefined) return false
+        return table['$' + String(id)] === true
+      },
+      add: function (id) { put(id); return self },
+      count: function () { return n },
+      list: function () {
+        var out = []
+        for (var key in table) out.push(key.substring(1))
+        return out
+      }
+    }
+    return self
+  }
+
+  // ---- player inventory: walk the main slots ----------------------------------
+  // fn(stack, slot, inv) for every NON-EMPTY stack of the main inventory (slots
+  // 0..35: hotbar and backpack; never the worn armour 36-39 or the off hand 40,
+  // see mainSlotCount below). Return true from fn to stop.
+  //   -> how many stacks fn was given; -1 when the inventory could not be read
+  //      (logged once). An error thrown BY fn is the caller's and is not caught.
+  // `player.inventory` is the vanilla Inventory: it has no `size`, so a loop
+  // bounded by `inv.size` runs zero times without a word. This is the loop.
+  var eachMainSlot = function (player, fn) {
+    var inv = null
+    var why = ''
+    try { inv = player.inventory } catch (e) { inv = null; why = ' (' + e + ')' }
+    if (!inv || typeof inv.getStackInSlot !== 'function') {
+      warnOnce('eachMainSlot', '[icraft.core] eachMainSlot: no inventory with getStackInSlot on ' + (player ? entityId(player) : player) + why)
+      return -1
+    }
+    var seen = 0
+    for (var slot = 0; slot < MAIN_INVENTORY_SLOTS; slot++) {
+      var stack = null
+      try { stack = inv.getStackInSlot(slot) } catch (e) {
+        warnOnce('eachMainSlot.read', '[icraft.core] eachMainSlot: getStackInSlot(' + slot + ') threw: ' + e)
+        return -1
+      }
+      if (!stack || stack.isEmpty()) continue
+      seen++
+      if (fn(stack, slot, inv) === true) break
+    }
+    return seen
+  }
+
+  // ---- player tier --------------------------------------------------------------
+  // The player's progression tier, 1..4: the HIGHEST `tier_N` stage they hold
+  // (AStages; `tier_1` is the baseline, so a player with no stage is tier 1).
+  // A stage that is held out of order counts: tier_3 without tier_2 is 3.
+  // 1 when AStages cannot be asked (logged once): the lowest tier unlocks the
+  // least, so a failure never hands out more than the player has.
+  // (Not the same question as "which tier is the player working towards":
+  // gates/codex_progression_engine.js codexCurrentTier keeps that one.)
+  var playerTier = function (player) {
+    if (!player) return 1
+    try {
+      for (var t = 4; t >= 2; t--) {
+        if (AStages.playerHasStage('tier_' + t, player) === true) return t
+      }
+      return 1
+    } catch (e) {
+      warnOnce('playerTier', '[icraft.core] playerTier: AStages could not be asked (' + e + '); everyone reads as tier 1')
+      return 1
+    }
+  }
+
+  // ---- block reads that never load a chunk --------------------------------------
+  // level.getBlock(..) LOADS the chunk when it is not loaded: to FULL, on the
+  // server thread, and without a warning (BlockContainerJS -> getBlockState ->
+  // getChunk(.., FULL, true)). From a timer, a saved position or another
+  // dimension that is a chunk load per call, and in a level without players
+  // every one of them leaks (the nightly out-of-memory of 2026-10-09).
+  // hasChunkAt does not load.
+  //   core.blockIfLoaded(level, x, y, z)     numbers; a fraction is floored (the
+  //                                          block that holds the point, also for
+  //                                          negative coordinates)
+  //   core.blockIfLoaded(level, blockPos)
+  //   -> the block (what level.getBlock returns), or null when its chunk is not
+  //      loaded, a coordinate is not a number, or the read failed (logged once)
+  var blockIfLoaded = function (level, x, y, z) {
+    if (!level) return null
+    try {
+      if (y === undefined && z === undefined) {
+        if (x === null || x === undefined) return null
+        if (level.hasChunkAt(x) !== true) return null
+        return level.getBlock(x)
+      }
+      var bx = Math.floor(finite(x, NaN))
+      var by = Math.floor(finite(y, NaN))
+      var bz = Math.floor(finite(z, NaN))
+      if (bx !== bx || by !== by || bz !== bz) return null
+      if (level.hasChunkAt(bx, bz) !== true) return null
+      return level.getBlock(bx, by, bz)
+    } catch (e) {
+      warnOnce('blockIfLoaded', '[icraft.core] blockIfLoaded threw: ' + e)
+      return null
+    }
+  }
+
   // ---- hurt registry --------------------------------------------------------
   var depth = 0        // > 0 while dealDamage() is inside a nested hurt()
   var depthTime = -1   // game time at which depth was last raised
@@ -854,12 +1003,15 @@
   // A FUNCTION on purpose, not a constant: the seven loops that use it read the
   // nonexistent `inv.size` for months and ran zero times without a word. A
   // missing function throws; a missing property is just `undefined` again.
-  var MAIN_INVENTORY_SLOTS = 36
   var mainSlotCount = function () { return MAIN_INVENTORY_SLOTS }
 
   global.icraft.core = {
     warnOnce: warnOnce,
     mainSlotCount: mainSlotCount,
+    eachMainSlot: eachMainSlot,
+    idSet: idSet,
+    playerTier: playerTier,
+    blockIfLoaded: blockIfLoaded,
     finite: finite,
     isPlayer: isPlayer,
     entityId: entityId,
