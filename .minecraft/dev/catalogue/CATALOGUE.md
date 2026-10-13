@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 24 | 23 | 26 | 2 |
-| server | 160 | 322 | 238 | 19 |
+| server | 160 | 323 | 238 | 19 |
 | client | 13 | 8 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 321`, `startup: 23`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 322`, `startup: 23`).
 
 ## How to read it
 
@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 250. 243 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 251. 244 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -56,7 +56,7 @@ Structural, by the script that loads first:
 |---|---|---|---|
 | `startup:00_icraft_guard.js` | 1000 | 21 | `icraft.guard`, `icraft.handler`, `icraft.live` |
 | `server:00_icraft_guard.js` | 1000 | 146 | `icraft.guard`, `icraft.lib`, `icraft.live` |
-| `server:0_lib_core.js` | 880 | 20 | `icraft.core` |
+| `server:0_lib_core.js` | 880 | 21 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
 | `server:0_tick_master.js` | 840 | 42 | `global.registerPlayerTick`, `global.registerServerTick` |
 | `client:00_icraft_guard.js` | 1000 | 9 | `icraft.guard`, `icraft.live` |
@@ -68,7 +68,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | Library | Script | Priority | Sets | Scripts that read it | of them while loading |
 |---|---|---|---|---|---|
 | `aptitudes` | `server:0_lib_aptitudes.js` | 890 | `icraft.aptitude` | 3 | 0 |
-| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 61 | 20 |
+| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 61 | 21 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
 | `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
 | `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 17 | 0 |
@@ -199,7 +199,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 89 |  | `loot/tmb_plain_bow_effects.js` | `DR_eff.registerLate` |
 | 90 |  | `loot/twilight_boss_drops.js` | `LootJS.modifiers` |
 | 91 |  | `loot/unique_itemset_registry.js` |  |
-| 92 |  | `loot/unique_tier_buff.js` | `DR_uniq.register`, `EntityEvents.spawned` |
+| 92 |  | `loot/unique_tier_buff.js` | `EntityEvents.spawned`, `hurt` |
 | 93 |  | `loot/zzz_iss_scroll_tier_clamp.js` | `LootJS.modifiers` |
 | 94 |  | `loot/zz_iss_arena_enrichment.js` | `LootJS.modifiers` |
 | 95 |  | `loot/zz_pack_enchanted_books.js` | `LootJS.modifiers` |
@@ -733,7 +733,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 ### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)
 
-**`hurt`** (25)
+**`hurt`** (26)
 
 1. `origins/origin_effects.js` as `icraft.origin.blazeborn.take` [first, secondary, unchecked]
 2. `skills/justleveling_skills.js` as `icraft.justleveling.1` [first, unchecked]
@@ -758,8 +758,9 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 21. `skills/skill_effects.js` as `icraft.skill_effects.1`
 22. `skills/skill_effects.js` as `icraft.skill_effects.2`
 23. `tetra_terramity_perks.js` as `icraft.tetra_terramity_perks`
-24. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, cancelled, unchecked]
-25. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, cancelled, unchecked]
+24. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff` [last, cancelled, unchecked]
+25. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, cancelled, unchecked]
+26. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, cancelled, unchecked]
 
 ### Straight on a Java registry, with no liveness id (the key is what the registry calls it)
 
@@ -778,10 +779,6 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 **`DR_eff.registerLate`** (1)
 
 1. `loot/tmb_plain_bow_effects.js` as `icraft.tmb_plain_bow_effects`
-
-**`DR_uniq.register`** (1)
-
-1. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff`
 
 **`DamageModifierRegistry_aspb.register`** (1)
 
@@ -854,7 +851,7 @@ own one-shot `global._*` flags.
 | `icraft.aptitude` | `server:0_lib_aptitudes.js` | `server:endgame/ascension.js`, `server:skills/justleveling_skills.js`, `server:skills/mastery_tax.js` |
 | `icraft.attr` | `server:attributes/attribute_sync.js` | `server:attributes/attribute_commands.js` |
 | `icraft.bosses` | `server:0_lib_registry.js` | 19 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
-| `icraft.core` | `server:0_lib_core.js` | 61 scripts (20 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
+| `icraft.core` | `server:0_lib_core.js` | 61 scripts (21 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 9 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/lootjs_overhaul.js`, `server:loot/lovely_pieces_loot.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
 | `icraft.origin` | `server:0_lib_origins.js` | 17 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
@@ -1640,11 +1637,11 @@ own one-shot `global._*` flags.
 
 ### `loot/unique_tier_buff.js`
 
-- place 92 of 160
+- place 92 of 160; header: @events @file @live
 - events: `EntityEvents.spawned`
-- straight on a Java registry: `DR_uniq.register` `icraft.unique_tier_buff`
+- hurt handlers: `icraft.unique_tier_buff` [any, last, cancelled, unchecked]
 - features: `unique-tier-buff`
-- reads: `global.ICRAFT_TIER_DMG_MULT` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
+- reads: `global.ICRAFT_TIER_DMG_MULT` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `loot/zzz_iss_scroll_tier_clamp.js`
 

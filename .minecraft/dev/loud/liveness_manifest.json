@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 321,
-   "digest": "1fbab63955dafc82",
+   "count": 322,
+   "digest": "21c997994ea21e05",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -590,6 +590,10 @@
     {
      "id": "icraft.tetra_terramity_perks@hurt",
      "script": "tetra_terramity_perks.js"
+    },
+    {
+     "id": "icraft.unique_tier_buff@hurt",
+     "script": "loot/unique_tier_buff.js"
     },
     {
      "id": "icraftBrokerRestockTick@tick.server",

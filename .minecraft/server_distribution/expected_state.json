@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "80bc540b",
+    "generated_from":  "dce94e5c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "e952c08b1fb486fee2cb8659ad45e27698aa66b95e62ab2270bbf154cc3c11be",
-                                                                  "size":  47689
+                                                                  "sha256":  "4345e417cb5b7e4cc8727f57e78f787e4ea2033834fe9a2f44ff9f0219222c85",
+                                                                  "size":  47752
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7352,8 +7352,8 @@
                                                                                 "size":  13729
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
-                                                                         "sha256":  "5b3b10efb71a4b8b0e3e3c412a64dc6dcb7ce8f67aabd09aae7fd71026565b15",
-                                                                         "size":  5070
+                                                                         "sha256":  "5fd0ff962260b1305174d82e191f8d8f8a139936663e14f5a2ef3a13f7c738e0",
+                                                                         "size":  6171
                                                                      },
                   "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
                                                                                 "sha256":  "c77690fc6ff920fd1a488054bad1ea298c99e0e80ffffa96483a124701259781",

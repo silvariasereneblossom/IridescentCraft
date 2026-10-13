@@ -95,7 +95,6 @@
   "loot/tmb_plain_bow_effects.js",
   "loot/twilight_boss_drops.js",
   "loot/unique_itemset_registry.js",
-  "loot/unique_tier_buff.js",
   "loot/zzz_iss_scroll_tier_clamp.js",
   "megatorch_damage.js",
   "mobgriefing_default.js",

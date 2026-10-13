@@ -1,11 +1,15 @@
+// @file kubejs/server_scripts/loot/unique_tier_buff.js
+// @events EntityEvents.spawned, hurt
+// @live unique-tier-buff
 // =============================================================================
 // UNIQUE TIER BUFF — Simply Swords + Too Many Bows tier-scaled damage
 // =============================================================================
 // Operator (2026-06-03): buff both unique itemsets, scaled by tier —
 //   T1 +10%  T2 +20%  T3 +30%  T4 +40%   (global.ICRAFT_TIER_DMG_MULT)
 //
-// Mechanism = the pack's DamageModifierRegistry (raw Forge LivingHurtEvent), the
-// same lever ss_unique_spellsword_scaling.js uses. One handler covers BOTH:
+// Mechanism = the raw Forge LivingHurtEvent, through the shared hurt dispatcher of
+// 0_lib_core.js (the same lever ss_unique_spellsword_scaling.js uses). One handler
+// covers BOTH:
 //   - MELEE (SS swords): the attacker's mainhand item is the weapon at hit time.
 //   - RANGED (TMB bows): the bow isn't in hand when the arrow lands, so we tag
 //     the arrow with the FIRING BOW'S ID at spawn (EntityEvents.spawned, reading
@@ -44,10 +48,19 @@ try {
 }
 
 // ---- Damage handler: apply the tier multiplier (melee sword OR tagged arrow) ----
+// Until 2026-10-13 it sat straight on the Java damage registry, which runs its entries
+// in the HASH order of their keys: this one ran after the dispatcher's handlers, after
+// the startup script's deathskin bonus, the Blazeborn bonus, the armour clamp and
+// Arcane Cleave (an ADDITION: the multiplier applies to it), and before the class
+// passives and the Enderian bonus. `place: 'last'` holds that place (the order inside
+// it is the library's list PLACED). `cancelled`: it is still called for a hit an earlier
+// handler cancelled, as it was. `unchecked`: the amount it hands on is left as it is.
+// `who` is 'any': a tagged arrow whose shooter is gone has no attacker, and a MOB that
+// holds one of these swords gets the multiplier too (both measured).
+// An option taken off, or added, changes damage numbers: decision list entry 45; the
+// hit table that holds this handler is dev/engine-tests, suite `hit-table`.
 try {
-  var DR_uniq = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-
-  DR_uniq.register('icraft.unique_tier_buff', function (event) {
+  if (icraft.lib.need('core', 'loot/unique_tier_buff')) global.icraft.core.onHurt('icraft.unique_tier_buff', function (event) {
     try {
       // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
       // lands as-is: it must not proc or be multiplied a second time. Same rule the
@@ -96,7 +109,7 @@ try {
     } catch (e) {
       console.warn('[unique_tier_buff] damage handler threw: ' + e)
     }
-  })
+  }, 'any', { place: 'last', cancelled: true, unchecked: true })
   console.log('[unique_tier_buff] tier-scaled damage handler registered (T1..T4 = 10/20/30/40%)')
 } catch (e) {
   console.error('[unique_tier_buff] damage handler init failed: ' + e)

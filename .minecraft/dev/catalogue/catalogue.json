@@ -5763,9 +5763,13 @@
        "name": "loot/unique_tier_buff"
       },
       {
-       "kind": "direct",
-       "group": "DR_uniq.register",
-       "name": "icraft.unique_tier_buff"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.unique_tier_buff",
+       "who": "any",
+       "place": "last",
+       "cancelled": true,
+       "unchecked": true
       }
      ],
      "sections": 0,
@@ -5773,7 +5777,7 @@
       "unique-tier-buff"
      ],
      "ownSlots": 0,
-     "names": 2,
+     "names": 1,
      "reads": [
       {
        "name": "ICRAFT_TIER_DMG_MULT",
@@ -5791,10 +5795,16 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.lib",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
@@ -5811,10 +5821,24 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
      ]
     },
     {
@@ -9685,13 +9709,6 @@
       "kind": "direct"
      }
     ],
-    "DR_uniq.register": [
-     {
-      "script": "loot/unique_tier_buff.js",
-      "name": "icraft.unique_tier_buff",
-      "kind": "direct"
-     }
-    ],
     "DamageModifierRegistry_aspb.register": [
      {
       "script": "attributes/iss_school_to_ars_spell.js",
@@ -11050,6 +11067,15 @@
       "who": "attacker"
      },
      {
+      "script": "loot/unique_tier_buff.js",
+      "name": "icraft.unique_tier_buff",
+      "kind": "hurt",
+      "who": "any",
+      "place": "last",
+      "cancelled": true,
+      "unchecked": true
+     },
+     {
       "script": "origins/class_passives_phase6h.js",
       "name": "icraft.class_passives_h6",
       "kind": "hurt",
@@ -12148,7 +12174,7 @@
     },
     {
      "script": "server:loot/unique_tier_buff.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:loot/zzz_iss_scroll_tier_clamp.js",
@@ -12947,7 +12973,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 20
+   "usersAtLoad": 21
   },
   "origins": {
    "script": "server:0_lib_origins.js",
