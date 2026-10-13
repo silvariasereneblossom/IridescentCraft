@@ -419,6 +419,28 @@ def run_liveness(ctx, suite, snap=None):
     return r.returncode == 0, note, out
 
 
+def run_node(ctx, suite, snap=None):
+    """A dev tool written for node, run as its own suite: `script` (below .minecraft/dev) with `args`, and
+    `--pack <the pack under test>` when the suite says "pack": true. Exit 0 passes, 2 means it could not run.
+    The note is the tool's last line that starts with `tag` (or with RESULT:)."""
+    node = shutil.which("node")
+    if node is None:
+        raise RunnerError("node is not on PATH (the catalogue tools need it, like the script lints)")
+    cmd = [node, "--expose-internals", os.path.join(DEV, *suite["script"].split("/"))] + list(suite.get("args", []))
+    if suite.get("pack"):
+        cmd += ["--pack", ctx.pack]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    out = r.stdout + r.stderr
+    if r.returncode == 2:
+        raise RunnerError(out.strip() or "%s could not run" % suite["script"])
+    tag = suite.get("tag", "RESULT:")
+    last = [l for l in out.strip().splitlines() if l.startswith(tag)]
+    note = last[-1][len(tag):].strip() if last else "no `%s` line (exit %d)" % (tag, r.returncode)
+    if len(note) > 150:
+        note = note[:147] + "..."
+    return r.returncode == 0, note, out
+
+
 RESULT_RE = re.compile(r"^RESULT: (\d+) passed, (\d+) failed(.*)$", re.M)
 
 
@@ -811,7 +833,7 @@ def run_guard(ctx, suite, snap=None):
 
 KINDS = {"harness": run_harness, "members": run_members, "parse": run_parse, "loot": run_loot,
          "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard, "rosters": run_rosters,
-         "liveness": run_liveness, "overloads": run_overloads}
+         "liveness": run_liveness, "overloads": run_overloads, "node": run_node}
 
 
 def run_suites(ctx, suites, verbose):

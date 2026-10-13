@@ -121,6 +121,34 @@
 //         a handler finished and sections of it never did.
 //   Nothing else is printed: 250 registrations are one line, not 250.
 //
+// LIBRARIES: WHO HAS LOADED, WHO IS MISSING (icraft.lib)
+//   A library is a script other scripts call (0_lib_core.js, 0_tick_master.js,
+//   ...). Until 2026-10-13 a script that found its library missing either threw
+//   a TypeError of its own, printed its own line, or tested `if (core && ..)`
+//   inside a handler and did nothing, for ever, without a word. Now:
+//
+//     icraft.lib.announce('core')
+//         the LAST statement of a library: it ran to its end. A file that
+//         throws half way never gets there.
+//     if (!icraft.lib.need('core', 'scaling/my_script')) return
+//         a script that cannot work without the library asks for it first.
+//         Missing: ONE line per library per script load
+//           [icraft.lib] MISSING core: scaling/my_script needs this library ...
+//         (an ERROR line: the boot-log checker counts it as a load error);
+//         the scripts that ask after the first one are counted, not printed.
+//     icraft.lib.has('core')   the same answer without the line.
+//
+//   And when the scripts of a type have loaded (zzz_icraft_live.js), the
+//   libraries that announced themselves are compared with the ones the scripts
+//   are known to have (the `libraries` part of the expected list):
+//     [icraft.lib] server: 7 libraries announced (...); against the expected list: 0 not loaded
+//     [icraft.lib] NOT LOADED x<n>: core (0_lib_core.js)     (an ERROR line)
+//   so a library that did not load is named once, whether or not any script
+//   asked. Libraries load before the scripts that use them because of their
+//   `// priority` lines; dev/catalogue/load_order.js holds that order.
+//   A library belongs to ONE script type: a startup script cannot ask for a
+//   server library while it loads (it is not there yet).
+//
 // `icraft` -- the one top-level name this file adds. It is this script type's
 // own object whose prototype is global.icraft (the map `global` is ONE map for
 // startup, server and client scripts: BuiltinKubeJSPlugin.GLOBAL), so
@@ -442,6 +470,8 @@ var icraft = (function () {
     var i = 0
     var g = ''
     var id = ''
+    var libNames = []
+    var libGone = []
     try {
       scriptType = String(type)
       if (given !== undefined) expected = (given !== null && typeof given === 'object') ? given : null
@@ -490,11 +520,25 @@ var icraft = (function () {
       }
       if (missing.length > 0) printNames('error', '[icraft.live] NOT ARMED', missing)
       if (unlisted.length > 0) printNames('log', '[icraft.live] UNLISTED', unlisted)
+      // libraries: the ones that announced themselves, against the ones the scripts of this type have
+      libNames = libOrder.slice()
+      libNames.sort()
+      if (expected !== null && expected.libraries) {
+        for (id in expected.libraries) {
+          if (libs[id] !== true) libGone.push(id + ' (' + expected.libraries[id] + ')')
+        }
+        libGone.sort()
+      }
+      if (libNames.length > 0 || libGone.length > 0) {
+        say('log', '[icraft.lib] ' + scriptType + ': ' + libNames.length + ' libraries announced (' + libNames.join(', ') + ')' +
+          ((expected !== null && expected.libraries) ? '; against the expected list: ' + libGone.length + ' not loaded' : '; NOT compared with an expected list'))
+      }
+      if (libGone.length > 0) printNames('error', '[icraft.lib] NOT LOADED', libGone)
       summarised = true
     } catch (e) {
       say('error', '[icraft.live] the ARMED summary failed: ' + e)
     }
-    return { type: scriptType, armed: live.length, missing: missing, unlisted: unlisted, digest: sum }
+    return { type: scriptType, armed: live.length, missing: missing, unlisted: unlisted, digest: sum, libraries: libNames, librariesMissing: libGone }
   }
 
   // What `/icraft live` shows. filter: a part of an id or of the script that owns it ('' = everything).
@@ -584,6 +628,51 @@ var icraft = (function () {
     if (r.features.fired.length > 0) out.push('  fired, feature x' + r.features.fired.length + ': ' + r.features.fired.join(', '))
     if (r.sections.notRun.length > 0) out.push('  not run, section x' + r.sections.notRun.length + ': ' + r.sections.notRun.join(', '))
     return out
+  }
+
+  // ---- libraries: who announced itself, who was asked for and is not there ----
+  var libs = {}            // name -> true: the library ran to its last statement
+  var libOrder = []
+  var libMissing = {}      // name -> { count, first }: asked for while it was not there
+  var libMissingOrder = []
+
+  // The last statement of a library. Never throws.
+  var libAnnounce = function (name) {
+    try {
+      var key = String(name)
+      if (libs[key] === true) return
+      libs[key] = true
+      libOrder.push(key)
+      // after the summary line: said, so that no library appears unseen
+      if (summarised) say('log', '[icraft.lib] ANNOUNCED late x1: ' + key)
+    } catch (err) {
+      say('error', '[icraft.lib] could not record a library: ' + err)
+    }
+  }
+
+  var libHas = function (name) { return libs[String(name)] === true }
+
+  // -> true when the library has announced itself. When it has not: false, and ONE error line per
+  // library per script load (who: the script that asks, as in icraft.guard's name). Never throws.
+  var libNeed = function (name, who) {
+    var key = String(name)
+    var m = null
+    if (libs[key] === true) return true
+    try {
+      m = libMissing[key]
+      if (m) {
+        m.count++
+        return false
+      }
+      libMissing[key] = { count: 1, first: String(who) }
+      libMissingOrder.push(key)
+      say('error', '[icraft.lib] MISSING ' + key + ': ' + who + ' needs this library and it has not announced itself ' +
+        '(it failed to load, it loads after that script, or it is not a library of this script type) ' +
+        '[logged once per library per script load; scripts that ask later are counted]')
+    } catch (err) {
+      say('error', '[icraft.lib] could not report a missing library: ' + err)
+    }
+    return false
   }
 
   // ---- guard ----------------------------------------------------------------
@@ -735,6 +824,22 @@ var icraft = (function () {
       var out = []
       for (var i = 0; i < live.length; i++) {
         out.push({ id: live[i].id, name: live[i].name, group: live[i].group, fired: live[i].fired, times: live[i].times })
+      }
+      return out
+    }
+  }
+
+  own.lib = {
+    announce: libAnnounce,   // ('name'): the last statement of a library
+    need: libNeed,           // ('name', 'the asking script') -> true | false, with ONE error line per missing library
+    has: libHas,             // ('name') -> true | false, no line
+    // the libraries that announced themselves, in that order (a copy)
+    names: function () { return libOrder.slice() },
+    // [{ name, count, first }]: asked for while missing, in the order they were first asked for
+    missing: function () {
+      var out = []
+      for (var i = 0; i < libMissingOrder.length; i++) {
+        out.push({ name: libMissingOrder[i], count: libMissing[libMissingOrder[i]].count, first: libMissing[libMissingOrder[i]].first })
       }
       return out
     }

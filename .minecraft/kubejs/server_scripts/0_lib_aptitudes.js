@@ -1,7 +1,10 @@
+// priority: 890
+// @file kubejs/server_scripts/0_lib_aptitudes.js
+// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned
 // =============================================================================
 // icraft.aptitude -- the ONE resolver for "what are this player's aptitude levels"
 // (and the one place that knows how the pack's XP wallet really works)
-// File: kubejs/server_scripts/0_lib_aptitudes.js   (0_ prefix: loads before consumers)
+// File: kubejs/server_scripts/0_lib_aptitudes.js   (loads before its consumers: the priority line on top)
 // =============================================================================
 // API (exported through `global`, never through top-level names):
 //
@@ -525,3 +528,6 @@
     (direct ? 'direct AptitudeCapability read, ' + TTL_DIRECT + '-tick' : 'NBT read (ForgeCaps."' + CAP_ID + '"), ' + TTL_NBT + '-tick') +
     ' per-player cache; XP wallet: ' + (linear ? 'LinearXP (level + capability)' : 'vanilla (LinearXP not found)'))
 })()
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('aptitudes')

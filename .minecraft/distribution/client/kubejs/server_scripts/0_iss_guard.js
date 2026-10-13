@@ -1,3 +1,6 @@
+// priority: 900
+// @file kubejs/server_scripts/0_iss_guard.js
+// @events EntityEvents.spawned
 // =============================================================================
 // 0_iss_guard.js -- centralized guard against irons_spellbooks
 // abstract-getItemBySlot crashes.
@@ -11,7 +14,7 @@
 // entity.mainHandItem / entity.armorSlots / equipment introspection)
 // will take down the server when an ISS wizard spawns.
 //
-// This script (loaded FIRST via the 0_ alphabetical prefix):
+// This script (the FIRST EntityEvents.spawned handler of the pack: the priority line on top of this file):
 //
 //   1. Subscribes to EntityEvents.spawned. On any irons_spellbooks:
 //      mob, stamps icraft_iss_skip=true into persistentData. Survives
@@ -94,3 +97,6 @@ EntityEvents.spawned(icraft.guard('0_iss_guard', 'EntityEvents.spawned', event =
 }))
 
 console.log('[iss-guard] loaded -- irons_spellbooks: mobs will be flagged with persistentData.icraft_iss_skip=true at spawn')
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('iss-guard')

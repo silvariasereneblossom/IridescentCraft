@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/loot/zz_iss_arena_enrichment.js
+// @events LootJS.modifiers
+// @after loot/lootjs_overhaul.js  the ISS strip of that file removes what is added before it (LootJS removals apply in registration order)
 // =============================================================================
 // ISS ARENA ENRICHMENT — re-homed from boss_arena_themed_loot.js + _material_tease.js
 // =============================================================================

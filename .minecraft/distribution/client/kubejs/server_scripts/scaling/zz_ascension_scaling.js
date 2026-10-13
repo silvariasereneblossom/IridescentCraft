@@ -1,3 +1,7 @@
+// @file kubejs/server_scripts/scaling/zz_ascension_scaling.js
+// @events EntityEvents.spawned
+// @registry bosses
+// @after scaling/boss_hp.js  boss_hp works out its ratio from the maximum health at spawn: the ascension multiplier must not be on the mob yet
 // =============================================================================
 // IridescentCraft — Ascension Mob Scaling (relocated on-spawn handler)
 // File: kubejs/server_scripts/scaling/zz_ascension_scaling.js

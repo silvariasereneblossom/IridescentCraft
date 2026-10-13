@@ -44,8 +44,11 @@
     }
 
     // ---- facts ------------------------------------------------------------------
-    for (var f = 0; f < ENGINE_FACTS.length; f++) {
-      var fact = ENGINE_FACTS[f]
+    // 0_script_file_facts.js: the comment-line parser, the script sort and the handler order (same shape)
+    var allFacts = ENGINE_FACTS.concat(typeof SCRIPT_FILE_FACTS === 'undefined' ? [] : SCRIPT_FILE_FACTS)
+    if (typeof SCRIPT_FILE_FACTS === 'undefined') out('MISSING 0_script_file_facts.js did not load: its facts were not asked')
+    for (var f = 0; f < allFacts.length; f++) {
+      var fact = allFacts[f]
       var got
       try { var v = fact[3](objects); got = 'typeof=' + (typeof v) + ' value=' + clean(v) } catch (e) { got = 'THROWS ' + clean(e) }
       out('FACT ' + fact[0] + ' :: ' + got)

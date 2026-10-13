@@ -90,8 +90,8 @@
       ]
     },
     {
-      "name": "event-guard", "kind": "guard", "fast": true, "expect": 70,
-      "about": "kubejs/*_scripts/00_icraft_guard.js on KubeJS's REAL handler chain (EventHandlerContainer.handle from the KubeJS jar): a guarded cancel / success / exit reaches KubeJS intact, a throw is reported once and the chain goes on, an engine-level throw is isolated WITH a line and never masks an exit, a java.lang.Error is not isolated; switched off, it behaves like no guard; its three copies are one file. Liveness (icraft.live): a registration is ARMED when made, FIRED once the first time its handler finishes, a cancel counts as fired, a throw is FAILED and not fired; the summary line, NOT ARMED / UNLISTED against an expected list, the digest gen_liveness.js computes"
+      "name": "event-guard", "kind": "guard", "fast": true, "expect": 73,
+      "about": "kubejs/*_scripts/00_icraft_guard.js on KubeJS's REAL handler chain (EventHandlerContainer.handle from the KubeJS jar): a guarded cancel / success / exit reaches KubeJS intact, a throw is reported once and the chain goes on, an engine-level throw is isolated WITH a line and never masks an exit, a java.lang.Error is not isolated; switched off, it behaves like no guard; its three copies are one file. Liveness (icraft.live): a registration is ARMED when made, FIRED once the first time its handler finishes, a cancel counts as fired, a throw is FAILED and not fired; the summary line, NOT ARMED / UNLISTED against an expected list, the digest gen_liveness.js computes. Libraries (icraft.lib): a library that announced itself is there, a missing one is ONE error line that names the first script that asked, the announced ones are compared with the expected list (NOT LOADED, an ERROR line)"
     },
     {
       "name": "liveness", "kind": "harness", "fast": true, "ci": true, "expect": 46,
@@ -108,6 +108,14 @@
     {
       "name": "liveness-manifest", "kind": "liveness", "fast": true, "ci": true,
       "about": "dev/loud/gen_liveness.js --check: dev/loud/liveness_manifest.json and kubejs/config/icraft/live/expected.json (x3) are exactly what the scripts register, name and report today; a registration added, renamed or removed without regenerating fails here (needs node, like the script lints)"
+    },
+    {
+      "name": "script-model", "kind": "node", "fast": true, "ci": true, "script": "catalogue/script_model.test.js",
+      "about": "dev/catalogue/script_model.js against the ENGINE: what KubeJS reads from a script's comment lines (an `@` header field is never a file property), how it sorts scripts (highest priority first, equal priorities in listing order) and in which order handlers of one event run, each put to the model with the cases of real-engine/0_script_file_facts.js and held to the answers recorded on a real server (truth/engine-facts.txt); and dev/catalogue/load_order.js against small packs with ONE planted defect each"
+    },
+    {
+      "name": "load-order", "kind": "node", "fast": true, "ci": true, "script": "catalogue/load_order.js", "pack": true, "tag": "[load-order]",
+      "about": "dev/catalogue/load_order.js on the pack: in all three trees, every order the code proves (a global read while loading, or set and read in handlers of one event) holds in the order the engine really loads the scripts in and is either structural (a library's priority) or declared with `// @after`; every declared `@after` holds and can be shown; header fields that are there are what the code does; a new script has them; no file is switched off or mis-prioritised by a comment line"
     },
     {
       "name": "parse", "kind": "parse", "fast": true, "ci": true,

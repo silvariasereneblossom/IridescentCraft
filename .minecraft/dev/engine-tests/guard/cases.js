@@ -262,11 +262,28 @@ chain('live: the digest is the one dev/loud/gen_liveness.js computes (same arith
       icraft.live.digest(['recipes/some_long_script_name#2@ServerEvents.recipes', 'tick_x@tick.server']))
   }],
   ['digest 4bb5bea31c9d1cde 000000070000000b 0e52707c4414a4e7$'])
+// ---- libraries (icraft.lib): who announced itself, who was asked for and is not there ----------------
+var LIB = '\\[icraft\\.lib\\] '
+chain('lib: a library that announced itself is there: need() and has() are true, and nothing is printed', 'PASS',
+  [function (event) {
+    icraft.lib.announce('lib-a'); icraft.lib.announce('lib-b'); icraft.lib.announce('lib-a')
+    console.log('need=' + icraft.lib.need('lib-a', 't/consumer') + ' has=' + icraft.lib.has('lib-a') + ' names=' + icraft.lib.names().join('|'))
+  }],
+  ['need=true has=true names=lib-a\\|lib-b$'], [LIB, 'error: '])
+chain('lib: a missing library is ONE error line that names the first script that asked; the next one is counted', 'PASS',
+  [function (event) {
+    console.log('first=' + icraft.lib.need('lib-gone', 't/first') + ' second=' + icraft.lib.need('lib-gone', 't/second') + ' has=' + icraft.lib.has('lib-gone'))
+    var m = icraft.lib.missing()
+    console.log('missing=' + m.length + ' name=' + m[0].name + ' count=' + m[0].count + ' first=' + m[0].first)
+  }],
+  ['error: ' + LIB + 'MISSING lib-gone: t/first needs this library and it has not announced itself', 'first=false second=false has=false',
+   'missing=1 name=lib-gone count=2 first=t/first$'],
+  ['(?s)MISSING lib-gone.*MISSING lib-gone', 't/second needs'])
 var s9 = icraft.guard('t/s9', 'Test.sect', function (event) {
   icraft.section('t/s9/first', function () { console.log('s9 first ran') })
   icraft.section('t/s9/second', function () { var u; u.foo() })
 })
-chain('live: the summary line, NOT ARMED (an ERROR line) and UNLISTED against an expected list', 'PASS',
+chain('live: the summary line, NOT ARMED (an ERROR line) and UNLISTED against an expected list; the libraries against theirs', 'PASS',
   [function (event) {
     var listed = {}
     var all = icraft.live.entries()
@@ -275,17 +292,25 @@ chain('live: the summary line, NOT ARMED (an ERROR line) and UNLISTED against an
     listed['t/ghost@Test.event'] = 'ghost.js'
     listed['t/opt@Test.event'] = 'opt.js'
     var r = icraft.live.loaded('test', { armed: listed, optional: ['t/opt@Test.event'],
-      sections: { 't/s9@Test.sect': ['t/s9/first', 't/s9/second', 't/s9/third'] }, features: { 'feat-a': 'cases.js', 'feat-z': 'cases.js' } })
+      sections: { 't/s9@Test.sect': ['t/s9/first', 't/s9/second', 't/s9/third'] }, features: { 'feat-a': 'cases.js', 'feat-z': 'cases.js' },
+      libraries: { 'lib-a': 'a.js', 'lib-never': 'never.js' } })
     console.log('returned missing=' + r.missing.join('|') + ' unlisted=' + r.unlisted.join('|') + ' armed=' + r.armed)
+    console.log('returned libraries=' + r.libraries.join('|') + ' not loaded=' + r.librariesMissing.join('|'))
   }],
   ['log: ' + LIVE + 'ARMED test: \\d+ registrations \\(\\d+ handlers on \\d+ events, 1 tick functions, 0 hurt handlers\\), digest [0-9a-f]{16}; against the expected list: 1 not armed, 1 unlisted(\\n|$)',
    'error: ' + LIVE + 'NOT ARMED x1: t/ghost@Test\\.event(\\n|$)', 'log: ' + LIVE + 'UNLISTED x1: t/l1@Test\\.live(\\n|$)',
-   'returned missing=t/ghost@Test\\.event unlisted=t/l1@Test\\.live armed=\\d+'],
-  ['NOT ARMED[^\\n]*t/opt', 'warn: '])
+   'returned missing=t/ghost@Test\\.event unlisted=t/l1@Test\\.live armed=\\d+',
+   'log: ' + LIB + 'test: 2 libraries announced \\(lib-a, lib-b\\); against the expected list: 1 not loaded(\\n|$)',
+   'error: ' + LIB + 'NOT LOADED x1: lib-never \\(never\\.js\\)(\\n|$)',
+   'returned libraries=lib-a\\|lib-b not loaded=lib-never \\(never\\.js\\)$'],
+  ['NOT ARMED[^\\n]*t/opt', 'warn: ', 'NOT LOADED[^\\n]*lib-a'])
 chain('live: a handler finished and sections of it did not: one NOT RUN line (the failed one and the one never reached)', 'PASS',
   [function (event) { s9(event); s9(event) }],
   ['s9 first ran', FAILED + ' t/s9/second in Test\\.sect', 'log: ' + LIVE + 'NOT RUN section \\(2 of 3 in t/s9@Test\\.sect did not finish although the handler did\\) x2: t/s9/second, t/s9/third(\\n|$)'],
   ['(?s)NOT RUN section.*NOT RUN section'])
+chain('lib: a library that announces itself after the summary line is said (ANNOUNCED late)', 'PASS',
+  [function (event) { icraft.lib.announce('lib-late'); icraft.lib.announce('lib-late') }],
+  ['log: ' + LIB + 'ANNOUNCED late x1: lib-late$'], ['(?s)ANNOUNCED late.*ANNOUNCED late'])
 chain('live: a registration made after the summary line is said (ARMED late)', 'PASS',
   [function (event) { icraft.guard('t/late', 'Test.event', function (e) { }) }],
   ['log: ' + LIVE + 'ARMED late x1: t/late@Test\\.event$'])

@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/bonfire/boss_compass_handler.js
+// @events ItemEvents.rightClicked, PlayerEvents.loggedOut, ServerEvents.commandRegistry, ServerEvents.recipes, tick.player
+// @after bonfire/boss_arena_registry.js  reads global.ICRAFT_BOSS_ARENAS while it loads
 // =============================================================================
 // kubejs/server_scripts/bonfire/boss_compass_handler.js
 //

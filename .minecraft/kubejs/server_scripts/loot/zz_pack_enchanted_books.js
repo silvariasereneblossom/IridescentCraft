@@ -1,3 +1,8 @@
+// @file kubejs/server_scripts/loot/zz_pack_enchanted_books.js
+// @events LootJS.modifiers
+// @registry dimensions
+// @after loot/lootjs_overhaul.js  its handler sets global.ICRAFT_MARQUEE_BOOKS, which this handler reads
+// @after loot/loot_overhaul.js  the enchanted-book strip of that file removes what is added before it (LootJS removals apply in registration order)
 // =============================================================================
 // PACK ENCHANTED BOOKS — tier-scaled + marquee books, registered LATE
 // =============================================================================

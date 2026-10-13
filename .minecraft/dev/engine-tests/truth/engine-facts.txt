@@ -120,6 +120,59 @@ event.cancel() inside try/catch: what the catch receives :: typeof=string value=
 event.cancel(): e.name :: typeof=string value=JavaException
 event.cancel(): e.javaException class :: typeof=string value=dev.latvian.mods.kubejs.event.EventExit
 event.cancel(): the statement after it runs :: typeof=boolean value=false
+script file: a comment of several words :: typeof=string value=priority=0 skipped=no why=""
+script file: @after with a path :: typeof=string value=priority=0 skipped=no why="" after="<not set>"
+script file: @after with a path and a reason :: typeof=string value=priority=0 skipped=no why="" after="<not set>"
+script file: @after with one word :: typeof=string value=priority=0 skipped=no why="" after="<not set>"
+script file: @after with a colon :: typeof=string value=priority=0 skipped=no why="" after="<not set>"
+script file: @file :: typeof=string value=priority=0 skipped=no why="" file="<not set>"
+script file: @events :: typeof=string value=priority=0 skipped=no why="" events="<not set>"
+script file: @events with one word :: typeof=string value=priority=0 skipped=no why="" events="<not set>"
+script file: @registry :: typeof=string value=priority=0 skipped=no why="" registry="<not set>"
+script file: @live :: typeof=string value=priority=0 skipped=no why="" live="<not set>"
+script file: @priority is not priority :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: after WITHOUT the @ is a property :: typeof=string value=priority=0 skipped=no why="" after="boss_hp"
+script file: ONE word is a property (all but its last letter = its last letter) :: typeof=string value=priority=0 skipped=no why="" CONTRAC="T" CONTRACT="<not set>"
+script file: two words are a property :: typeof=string value=priority=0 skipped=no why="" LOAD="ORDER"
+script file: priority: 5 :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: priority 5 (no colon) :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: priority=5 (no spaces) :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: priority5 (glued) :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: priority : 5 (a space before the colon) :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: priority:: 5 :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: priority with tabs :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: an indented priority line :: typeof=string value=priority=3 skipped=no why="" priority="3"
+script file: Priority with a capital :: typeof=string value=priority=0 skipped=no why="" priority="<not set>" Priority="3"
+script file: priority: -5 :: typeof=string value=priority=-5 skipped=no why="" priority="-5"
+script file: priority: +5 :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: priority: 007 :: typeof=string value=priority=7 skipped=no why="" priority="007"
+script file: priority twice: the last one wins :: typeof=string value=priority=7 skipped=no why="" priority="7"
+script file: priority deep inside a function :: typeof=string value=priority=9 skipped=no why="" priority="9"
+script file: a // line inside a block comment is read :: typeof=string value=priority=5 skipped=no why="" priority="5"
+script file: a star line of a block comment is not :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: a comment after code is not :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: three slashes are not :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: priority with words after it is not :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: priority: high (the file does not load) :: typeof=string value=DOES NOT LOAD java.lang.NumberFormatException
+script file: priority: 1_000 (the file does not load) :: typeof=string value=DOES NOT LOAD java.lang.NumberFormatException
+script file: priority: 99999999999 (the file does not load) :: typeof=string value=DOES NOT LOAD java.lang.NumberFormatException
+script file: a byte order mark before the slashes :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: a no-break space after the slashes :: typeof=string value=priority=0 skipped=no why="" priority="<not set>"
+script file: ignored true :: typeof=string value=priority=0 skipped=yes why="Ignored" ignored="true"
+script file: ignore: true :: typeof=string value=priority=0 skipped=yes why="Ignored" ignore="true"
+script file: ignored: false :: typeof=string value=priority=0 skipped=no why="" ignored="false"
+script file: ignored true, then ignored false :: typeof=string value=priority=0 skipped=no why="" ignored="false"
+script file: packmode :: typeof=string value=priority=0 skipped=yes packmode="hard"
+script file: requires a mod that is not there :: typeof=string value=priority=0 skipped=yes requires="icraft_no_such_mod"
+script sort: no priority: the order of the list is kept :: typeof=string value=c.js a.js b.js
+script sort: one high :: typeof=string value=b.js c.js a.js
+script sort: one low :: typeof=string value=a.js b.js c.js
+script sort: equal high priorities keep their order :: typeof=string value=m.js a.js k.js z.js b.js
+script sort: equal low priorities keep their order :: typeof=string value=k.js z.js m.js a.js b.js
+script sort: the pack: the guard 1000, libraries from 900 down, the rest, the summary -1000 :: typeof=string value=00_icraft_guard.js 0_iss_guard.js 0_lib_core.js 0_lib_registry.js 0_tick_master.js abyss/x.js loot/y.js zzz_icraft_live.js
+script sort: a priority written as 0 and no priority are the same :: typeof=string value=z1.js a1.js m1.js b1.js
+script sort: 200 files of three priorities come out highest first, each priority in the order it went in :: typeof=string value=true (200 files)
+handler order: handlers registered for a target run before the untargeted ones, each group in registration order :: typeof=string value=B:time D:time A:untargeted C:untargeted
 [FakePlayer] typeof inv.size :: typeof=string value=undefined
 [FakePlayer] inv.slots :: typeof=number value=41
 player class :: typeof=string value=net.minecraft.server.level.ServerPlayer

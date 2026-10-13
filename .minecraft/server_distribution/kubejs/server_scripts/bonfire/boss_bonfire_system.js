@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/bonfire/boss_bonfire_system.js
+// @events tick.player
+// @after bonfire/boss_arena_registry.js  reads global.ICRAFT_BOSS_ARENAS while it loads
 // =============================================================================
 // kubejs/server_scripts/bonfire/boss_bonfire_system.js
 //

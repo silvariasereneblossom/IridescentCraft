@@ -1,3 +1,6 @@
+// priority: 850
+// @file kubejs/server_scripts/0_server_ready_banner.js
+// @events ServerEvents.loaded
 // =============================================================================
 // 0_server_ready_banner.js  -  emit a prominent "READY" marker on server load
 // =============================================================================
@@ -10,8 +13,8 @@
 // readable equivalent for anyone tailing the log live -- much more visible
 // than scanning for "Done" in the noise.
 //
-// Filename starts with `0_` so it loads first (same convention as 0_iss_guard.js,
-// 0_tick_master.js elsewhere in this folder).
+// It keeps the place among the first scripts that its `0_` name gave it (the priority
+// line on top of this file); nothing depends on that place.
 // =============================================================================
 
 ServerEvents.loaded(icraft.guard('0_server_ready_banner', 'ServerEvents.loaded', event => {

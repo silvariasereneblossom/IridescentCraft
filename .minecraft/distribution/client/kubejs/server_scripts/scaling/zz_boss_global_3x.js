@@ -1,3 +1,8 @@
+// @file kubejs/server_scripts/scaling/zz_boss_global_3x.js
+// @events EntityEvents.spawned
+// @registry bosses
+// @live boss-x3
+// @after scaling/boss_hp.js  boss_hp works out its ratio from the maximum health at spawn: the x3 must not be on the boss yet
 // =============================================================================
 // IridescentCraft — Global Boss Buff (health ×3, melee damage ×3, ISS spell ×2)
 // File: kubejs/server_scripts/scaling/zz_boss_global_3x.js

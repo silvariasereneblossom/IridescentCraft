@@ -1,0 +1,7 @@
+{
+ "about": [
+  "Findings of dev/catalogue/load_order.js that are known and not fixed, each with its reason. An entry is { code, script, on, reason }: `code` and `script` as the FAIL line prints them (script = <type>:<path>), `on` = the other script or the global of that line when it names one.",
+  "An accepted finding is printed on every run (ACCEPTED). An entry that matches nothing any more fails the check: delete it with the fix."
+ ],
+ "accepted": []
+}

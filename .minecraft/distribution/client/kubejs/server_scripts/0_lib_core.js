@@ -1,6 +1,11 @@
+// priority: 880
+// @file kubejs/server_scripts/0_lib_core.js
+// @events none
+// @registry bosses
+// @live spawn-buff-repaired, spawn-buff-saved
 // =============================================================================
 // icraft.core -- shared primitives for the hit / tick handlers
-// File: kubejs/server_scripts/0_lib_core.js   (0_ prefix: loads before consumers)
+// File: kubejs/server_scripts/0_lib_core.js   (loads before its consumers: the priority line on top)
 // =============================================================================
 // Exported through `global.icraft.core` only (no top-level names):
 //
@@ -1108,3 +1113,6 @@
     'entity ids, world clock, one guarded hurt dispatcher' + (DamageRegistry ? '' : ' [REGISTRY MISSING]') +
     ', damage-type tags ' + (TAG_FIRE ? 'on' : 'off (id matching only)') + ')')
 })()
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('core')

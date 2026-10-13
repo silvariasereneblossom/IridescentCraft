@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/loot/0_entity_id_validator.js
+// @events ServerEvents.loaded
+// @registry bosses
 // =============================================================================
 // ENTITY-ID GUARD for loot modifiers  —  global.icraftEntityMod(event, id)
 // =============================================================================
@@ -198,3 +201,6 @@
     }
   }))
 })()
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('entity-mod')

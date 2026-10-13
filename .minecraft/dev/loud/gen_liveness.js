@@ -14,6 +14,8 @@
 //   <core>.onHurt('<key>', ...) / .onHurtLate(...)  ARMED   <key>@hurt / <key>@hurt.late
 //   icraft.section('<name>', fn)                    FIRED   only (inside its handler)
 //   icraft.live.fired('<name>')                     FIRED   only (a feature did its work)
+//   icraft.lib.announce('<name>')                   a LIBRARY ran to its end (the game compares the
+//                                                   announced ones with the `libraries` of the expected list)
 //
 // The runtime half is kubejs/*_scripts/00_icraft_guard.js (icraft.live) and
 // zzz_icraft_live.js: they print `[icraft.live] ARMED <type>: <n> registrations
@@ -115,6 +117,9 @@ const isIcraft = (n, prop) => !!n && n.type === 'CallExpression' && n.callee.typ
 // icraft.live.fired(...)
 const isLiveFired = (n) => !!n && n.type === 'CallExpression' && memberName(n.callee) === 'fired' && n.callee.object.type === 'MemberExpression' &&
   memberName(n.callee.object) === 'live' && n.callee.object.object.type === 'Identifier' && n.callee.object.object.name === 'icraft';
+// icraft.lib.announce(...)
+const isLibAnnounce = (n) => !!n && n.type === 'CallExpression' && memberName(n.callee) === 'announce' && n.callee.object.type === 'MemberExpression' &&
+  memberName(n.callee.object) === 'lib' && n.callee.object.object.type === 'Identifier' && n.callee.object.object.name === 'icraft';
 const TICKS = { registerServerTick: 'tick.server', registerPlayerTick: 'tick.player' };
 const HURTS = { onHurt: 'hurt', onHurtLate: 'hurt.late' };
 const CONSOLE = new Set(['log', 'info', 'warn', 'error']);
@@ -134,7 +139,7 @@ function flat(n) {
 //      'function' (some other function: when it runs is not known from here)
 function readScript(file, where) {
   const src = fs.readFileSync(file, 'utf8');
-  const out = { regs: [], sections: [], features: [], logs: [], direct: [] };
+  const out = { regs: [], sections: [], features: [], logs: [], direct: [], libraries: [] };
   let ast;
   try { ast = acorn.parse(src, { ecmaVersion: 'latest', sourceType: 'script', locations: true, allowReturnOutsideFunction: true }); }
   catch (e) { problem(where, 'does not parse (' + e.message + ')'); return out; }
@@ -238,6 +243,12 @@ function readScript(file, where) {
         if (n.arguments.length !== 1 || name === null) problem(where + ':' + line, 'icraft.live.fired: the name must be ONE string literal (the manifest and the check sheet are generated from it)');
         else if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) problem(where + ':' + line, "icraft.live.fired('" + name + "'): a feature name is lower-case words joined by '-'");
         else out.features.push({ name, line });
+      } else if (isLibAnnounce(n)) {
+        const name = strLit(n.arguments[0]);
+        if (n.arguments.length !== 1 || name === null) problem(where + ':' + line, 'icraft.lib.announce: the name must be ONE string literal (the expected list is generated from it)');
+        else if (!/^[a-z0-9][a-z0-9-]*$/.test(name)) problem(where + ':' + line, "icraft.lib.announce('" + name + "'): a library name is lower-case words joined by '-'");
+        else if (ctx !== 'load') problem(where + ':' + line, "icraft.lib.announce('" + name + "') is inside a function: a library announces itself as the last statement of its file");
+        else out.libraries.push({ name, line });
       } else if (m && TICKS[m] && n.callee.object.type === 'Identifier' && n.callee.object.name === 'global') {
         const name = strLit(n.arguments[0]);
         if (name === null) problem(where + ':' + line, m + ': the name must be a string literal (the manifest is generated from it)');
@@ -294,7 +305,7 @@ for (const tree of Object.keys(TREES)) {
   data[tree] = {};
   for (const type of TYPES) {
     const dir = path.join(PACK, TREES[tree], type + '_scripts');
-    const d = { scripts: listScripts(dir), armed: new Map(), sections: new Map(), features: new Map(), late: [], perScript: new Map(), detail: new Map(), exists: fs.existsSync(dir) };
+    const d = { scripts: listScripts(dir), armed: new Map(), sections: new Map(), features: new Map(), libraries: new Map(), late: [], perScript: new Map(), detail: new Map(), exists: fs.existsSync(dir) };
     for (const rel of d.scripts) {
       const where = TREES[tree] + '/' + type + '_scripts/' + rel;
       const r = readScript(path.join(dir, rel), where);
@@ -315,6 +326,10 @@ for (const tree of Object.keys(TREES)) {
         if (d.features.has(f.name) && d.features.get(f.name) !== rel) problem(where + ':' + f.line, "the feature '" + f.name + "' is reported from two scripts (" + d.features.get(f.name) + ' too): give each its own name');
         d.features.set(f.name, rel);
       }
+      for (const l of r.libraries) {
+        if (d.libraries.has(l.name) && d.libraries.get(l.name) !== rel) problem(where + ':' + l.line, "the library '" + l.name + "' is announced by two scripts (" + d.libraries.get(l.name) + ' too): one name, one script');
+        d.libraries.set(l.name, rel);
+      }
     }
     data[tree][type] = d;
   }
@@ -329,19 +344,20 @@ const sortedObj = (map) => { const o = {}; for (const k of [...map.keys()].sort(
 const expected = {
   about: [
     'GENERATED by dev/loud/gen_liveness.js from the scripts; do not edit. Read by kubejs/*_scripts/00_icraft_guard.js (icraft.live.loaded) when the scripts of a type have loaded.',
-    'Per script type: `armed` = every registration the scripts make while they load (id -> script; an id is <name>@<group>: the event of a guarded handler, tick.server / tick.player, hurt / hurt.late), `optional` = ids that are not in every tree the type is deployed from (a dev-only script), `late` = ids registered inside another handler (not compared at load), `sections` = guarded handler -> the sections inside it, `features` = icraft.live.fired names -> script.',
+    'Per script type: `armed` = every registration the scripts make while they load (id -> script; an id is <name>@<group>: the event of a guarded handler, tick.server / tick.player, hurt / hurt.late), `optional` = ids that are not in every tree the type is deployed from (a dev-only script), `late` = ids registered inside another handler (not compared at load), `sections` = guarded handler -> the sections inside it, `features` = icraft.live.fired names -> script, `libraries` = icraft.lib.announce names -> script (one that did not announce itself prints `[icraft.lib] NOT LOADED ...`, an ERROR line).',
     'A registration that is in the list and was not made prints `[icraft.live] NOT ARMED ...` (an ERROR line); one that was made and is not here prints `[icraft.live] UNLISTED ...`. The pre-push hook refuses a stale file (suite liveness-manifest).'
   ],
   schema: 1
 };
 for (const type of TYPES) {
-  const armed = new Map(), sections = new Map(), features = new Map(), late = new Set();
+  const armed = new Map(), sections = new Map(), features = new Map(), libraries = new Map(), late = new Set();
   const inTrees = new Map();
   for (const tree of DEPLOYED[type]) {
     const d = data[tree][type];
     for (const [id, rel] of d.armed) { armed.set(id, rel); inTrees.set(id, (inTrees.get(id) || 0) + 1); }
     for (const [h, list] of d.sections) sections.set(h, list.slice());
     for (const [name, rel] of d.features) features.set(name, rel);
+    for (const [name, rel] of d.libraries) libraries.set(name, rel);
     for (const id of d.late) late.add(id);
   }
   const optional = [...armed.keys()].filter((id) => inTrees.get(id) < DEPLOYED[type].length).sort();
@@ -351,6 +367,7 @@ for (const type of TYPES) {
   part.late = [...late].sort();
   part.sections = sortedObj(sections);
   part.features = sortedObj(features);
+  part.libraries = sortedObj(libraries);
   expected[type] = part;
 }
 const expectedText = JSON.stringify(expected, null, 1) + '\n';

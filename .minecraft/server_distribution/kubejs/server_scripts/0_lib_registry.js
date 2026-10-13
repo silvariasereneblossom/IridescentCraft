@@ -1,7 +1,11 @@
+// priority: 860
+// @file kubejs/server_scripts/0_lib_registry.js
+// @events none
+// @registry bosses, dimensions
 // =============================================================================
 // icraft.bosses / icraft.dims -- the pack's boss roster and dimension tiers,
 // read from ONE data file each
-// File: kubejs/server_scripts/0_lib_registry.js   (0_ prefix: loads before consumers)
+// File: kubejs/server_scripts/0_lib_registry.js   (loads before its consumers: the priority line on top)
 // Data: kubejs/config/icraft/registry/bosses.json, dimensions.json
 // =============================================================================
 // Until 2026-10-13 the boss roster was copied by hand into ten script files that
@@ -510,3 +514,6 @@
     systems: function (which) { return Object.keys(String(which) === 'dims' ? DIM_SYSTEMS : BOSS_SYSTEMS) }
   }
 })()
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('registry')

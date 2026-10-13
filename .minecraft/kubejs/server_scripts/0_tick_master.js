@@ -1,3 +1,6 @@
+// priority: 840
+// @file kubejs/server_scripts/0_tick_master.js
+// @events PlayerEvents.tick, ServerEvents.loaded, ServerEvents.tick
 // =============================================================================
 // MASTER TICK HANDLER — Consolidates all ServerEvents.tick and PlayerEvents.tick
 // dispatches into TWO event registrations to reduce KubeJS event bus overhead.
@@ -157,3 +160,6 @@ ServerEvents.loaded(icraft.guard('0_tick_master', 'ServerEvents.loaded', event =
   console.log('[TickMaster] Registered ' + global.serverTickFunctions.length + ' server tick functions')
   console.log('[TickMaster] Registered ' + global.playerTickFunctions.length + ' player tick functions')
 }))
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('ticks')

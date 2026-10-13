@@ -1,6 +1,9 @@
+// priority: 870
+// @file kubejs/server_scripts/0_lib_origins.js
+// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned
 // =============================================================================
 // icraft.origin -- the ONE resolver for "what class / race / origin is this player"
-// File: kubejs/server_scripts/0_lib_origins.js   (0_ prefix: loads before consumers)
+// File: kubejs/server_scripts/0_lib_origins.js   (loads before its consumers: the priority line on top)
 // =============================================================================
 // API (exported through `global`, never through top-level names):
 //
@@ -219,3 +222,6 @@
   console.log('[IridescentCraft] 0_lib_origins loaded -- global.icraft.origin {get,is,invalidate}, ' +
     TTL_TICKS + '-tick per-player cache over ForgeCaps."origins:origins".Origins')
 })()
+
+// the last statement: this library ran to its end (icraft.lib, 00_icraft_guard.js)
+icraft.lib.announce('origins')
