@@ -6286,9 +6286,13 @@
        "name": "origins/battlemage_arcane_cleave"
       },
       {
-       "kind": "direct",
-       "group": "DR_bc.register",
-       "name": "icraft.battlemage_arcane_cleave"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.battlemage_arcane_cleave",
+       "who": "attackerPlayer",
+       "place": "last",
+       "cancelled": true,
+       "unchecked": true
       }
      ],
      "sections": 0,
@@ -6299,10 +6303,16 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.lib",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
@@ -6319,7 +6329,16 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
        ],
        "held": "priority"
       }
@@ -9688,13 +9707,6 @@
       "kind": "direct"
      }
     ],
-    "DR_bc.register": [
-     {
-      "script": "origins/battlemage_arcane_cleave.js",
-      "name": "icraft.battlemage_arcane_cleave",
-      "kind": "direct"
-     }
-    ],
     "DR_dpa.register": [
      {
       "script": "death_penalty.js",
@@ -11067,6 +11079,15 @@
       "who": "attacker"
      },
      {
+      "script": "origins/battlemage_arcane_cleave.js",
+      "name": "icraft.battlemage_arcane_cleave",
+      "kind": "hurt",
+      "who": "attackerPlayer",
+      "place": "last",
+      "cancelled": true,
+      "unchecked": true
+     },
+     {
       "script": "loot/unique_tier_buff.js",
       "name": "icraft.unique_tier_buff",
       "kind": "hurt",
@@ -12190,7 +12211,7 @@
     },
     {
      "script": "server:origins/battlemage_arcane_cleave.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:origins/class_passives.js",
@@ -12973,7 +12994,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 21
+   "usersAtLoad": 22
   },
   "origins": {
    "script": "server:0_lib_origins.js",

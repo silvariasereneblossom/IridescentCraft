@@ -1,5 +1,5 @@
 // @file kubejs/server_scripts/origins/battlemage_arcane_cleave.js
-// @events EntityEvents.death
+// @events EntityEvents.death, hurt
 // =============================================================================
 // BATTLEMAGE — Arcane Cleave + Mana Reaver
 // =============================================================================
@@ -118,10 +118,22 @@ try {
     } catch (e) { return 0 }
   }
 
-  // ─── ARCANE CLEAVE: deal-damage hook (DamageModifierRegistry) ─────────
-  var DR_bc = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  // ─── ARCANE CLEAVE: deal-damage hook (the hurt dispatcher of 0_lib_core.js) ─────────
+  // Until 2026-10-13 it sat straight on the Java damage registry, which runs its entries
+  // in the HASH order of their keys: this one ran after the dispatcher's handlers (the
+  // crit roll among them), after the startup script's deathskin bonus, the Blazeborn bonus
+  // and the armour clamp, and before the unique-weapon multiplier, the class passives and
+  // the Enderian bonus. The bonus is an ADDITION, so the place is a number: what ran
+  // before it does not multiply it, what runs after it does. `place: 'last'` holds the
+  // place (the order inside it is the library's list PLACED). `unchecked`: the amount it
+  // hands on is left as it is.
+  // `cancelled`: it is still called for a hit an earlier handler cancelled, as it was.
+  // MEASURED, and kept on purpose (decision list Part 9): a Battlemage who swings a BROKEN
+  // weapon deals nothing (death_penalty.js cancels the hit) and still pays the 10 mana.
+  // An option taken off, or added, changes damage or mana: decision list entry 45; the hit
+  // table that holds this handler is dev/engine-tests, suite `hit-table`.
   var PlayerClass_bc = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_bc.register('icraft.battlemage_arcane_cleave', function(event) {
+  if (icraft.lib.need('core', 'origins/battlemage_arcane_cleave')) global.icraft.core.onHurt('icraft.battlemage_arcane_cleave', function(event) {
     try {
       // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
       // lands as-is: it must not proc or be multiplied a second time. Same rule the
@@ -162,7 +174,7 @@ try {
     } catch (e) {
       warnThrew('hurt handler', e)
     }
-  })
+  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
 
   // ─── MANA REAVER: kill hook ──────────────────────────────────────────
   EntityEvents.death(icraft.guard('origins/battlemage_arcane_cleave', 'EntityEvents.death', function(event) {

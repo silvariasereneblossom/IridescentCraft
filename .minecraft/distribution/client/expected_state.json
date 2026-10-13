@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "dce94e5c",
+    "generated_from":  "6739f3dc",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "4345e417cb5b7e4cc8727f57e78f787e4ea2033834fe9a2f44ff9f0219222c85",
-                                                                  "size":  47752
+                                                                  "sha256":  "5ad6c78eed0405f75322874ce62272a27325b66c832fa3644ecc9224ed1fdaa7",
+                                                                  "size":  47834
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7392,8 +7392,8 @@
                                                                                             "size":  9113
                                                                                         },
                   "kubejs/server_scripts/origins/battlemage_arcane_cleave.js":  {
-                                                                                    "sha256":  "3c8ce19e94d3be91e3284d8f7998fb0ff613b6f1ff1565fb74a2ed9865f7ef75",
-                                                                                    "size":  8417
+                                                                                    "sha256":  "f26a867c8540c07945b0546a54ec5b532a51236c9a457bd6d25e05b9e716f670",
+                                                                                    "size":  9586
                                                                                 },
                   "kubejs/server_scripts/origins/battlemage_mana_shield.js":  {
                                                                                   "sha256":  "429b83288b7c287a81120cde165c865b6f667cf7b8eabac4070e72b09cd7aa16",

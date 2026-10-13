@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 322,
-   "digest": "21c997994ea21e05",
+   "count": 323,
+   "digest": "75d56f030c74344d",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -522,6 +522,10 @@
     {
      "id": "icraft.attribute_sync.hurt@hurt",
      "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "icraft.battlemage_arcane_cleave@hurt",
+     "script": "origins/battlemage_arcane_cleave.js"
     },
     {
      "id": "icraft.class_passives_h6@hurt",
