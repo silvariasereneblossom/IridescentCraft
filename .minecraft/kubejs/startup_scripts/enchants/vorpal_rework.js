@@ -162,7 +162,7 @@ try {
         // Fail-soft
       }
   }
-  ItemAttributeRegistry_vrp.register('icraft.vorpal_rework_attr', attrHandler)
+  ItemAttributeRegistry_vrp.register('icraft.vorpal_rework_attr', icraft.handler('enchants/vorpal_rework', 'ItemAttributeRegistry.register', attrHandler))
 
   // -----------------------------------------------------------------------
   // Hook 2: LivingHurtEvent -- decapitate on crit.
@@ -293,7 +293,7 @@ try {
   // LATE phase: after attribute_sync's NORMAL-phase crit roll has stamped
   // icraft_last_crit_tick (registerLate also drops any NORMAL-phase entry
   // an older copy of this script left under the same key).
-  DamageModifierRegistry_vrp.registerLate('icraft.vorpal_rework_decap', decapHandler)
+  DamageModifierRegistry_vrp.registerLate('icraft.vorpal_rework_decap', icraft.handler('enchants/vorpal_rework', 'DamageModifierRegistry.registerLate', decapHandler))
 
   console.log('[IridescentCraft] vorpal_rework loaded (crit_damage scaling + decap-on-crit)')
 } catch (e) {

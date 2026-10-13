@@ -154,7 +154,7 @@ try {
       }
   }
 
-  ItemAttributeRegistry_vg.register('icraft.virtual_gold_clamp', handler)
+  ItemAttributeRegistry_vg.register('icraft.virtual_gold_clamp', icraft.handler('virtual_gold_clamp', 'ItemAttributeRegistry.register', handler))
   console.log('[IridescentCraft] virtual_gold_clamp loaded (attribute clamp for ' +
               (Object.keys(VG_WEAPONS).length + Object.keys(VG_ARMOR).length) + ' items)')
 } catch (e) {

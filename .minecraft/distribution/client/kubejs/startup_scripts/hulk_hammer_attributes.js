@@ -113,7 +113,7 @@ try {
       }
   }
 
-  ItemAttributeRegistry_hh.register('icraft.hulk_hammer_attributes', handler)
+  ItemAttributeRegistry_hh.register('icraft.hulk_hammer_attributes', icraft.handler('hulk_hammer_attributes', 'ItemAttributeRegistry.register', handler))
   console.log('[IridescentCraft] hulk_hammer_attributes loaded (20 dmg / 0.5 aspd / +50% vs undead)')
 } catch (e) {
   console.warn('[IridescentCraft] hulk_hammer_attributes bootstrap FAILED: ' + e)

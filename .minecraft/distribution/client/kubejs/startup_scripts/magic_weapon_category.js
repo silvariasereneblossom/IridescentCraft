@@ -96,7 +96,7 @@
         // reference=SWORD -> insert magic_weapon AT sword's index, pushing SWORD
         // to idx+1. Most wands extend SwordItem so SWORD.predicate matches them;
         // we must precede SWORD in VALUES iteration to win the match.
-        LootCategory.register(LootCategory.SWORD, 'magic_weapon', predicate, slots)
+        LootCategory.register(LootCategory.SWORD, 'magic_weapon', icraft.handler('magic_weapon_category', 'LootCategory.register', predicate), slots)
         console.log('[magic-weapon] LootCategory.magic_weapon registered '
                   + '(hardcoded 26-ID set, MAINHAND/OFFHAND slots, '
                   + 'inserted before SWORD for SwordItem-extending wand precedence)')

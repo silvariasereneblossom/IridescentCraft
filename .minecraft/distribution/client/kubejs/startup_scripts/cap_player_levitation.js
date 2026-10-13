@@ -91,7 +91,7 @@ try {
   // Reload-safe via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber owned by
   // the mod) instead of a raw MinecraftForge.EVENT_BUS listener whose JS closure
   // would crash after a context dispose. Dispatcher runs at NORMAL priority.
-  ForgeEventRegistry_lev.registerEffectApplicable('icraft.cap_player_levitation', handler)
+  ForgeEventRegistry_lev.registerEffectApplicable('icraft.cap_player_levitation', icraft.handler('cap_player_levitation', 'ForgeEventRegistry.registerEffectApplicable', handler))
   console.log('[IridescentCraft] cap_player_levitation loaded (max amp=' +
               MAX_AMP + ')')
 } catch (e) {

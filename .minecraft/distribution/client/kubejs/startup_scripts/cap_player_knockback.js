@@ -171,7 +171,7 @@ try {
   // the mod) instead of a raw MinecraftForge.EVENT_BUS listener whose JS closure
   // would crash after a context dispose. Dispatcher runs at NORMAL priority --
   // after most affix handlers compute their strength multipliers; cap is final.
-  ForgeEventRegistry_kb.registerKnockBack('icraft.cap_player_knockback', handler)
+  ForgeEventRegistry_kb.registerKnockBack('icraft.cap_player_knockback', icraft.handler('cap_player_knockback', 'ForgeEventRegistry.registerKnockBack', handler))
   console.log('[IridescentCraft] cap_player_knockback loaded (cap=' +
               KNOCKBACK_CAP + ', EMERGENCY -- tighten until jockey diag lands)')
 } catch (e) {

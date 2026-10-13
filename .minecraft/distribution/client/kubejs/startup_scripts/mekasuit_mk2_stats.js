@@ -139,7 +139,7 @@ try {
     }
   }
 
-  ItemAttributeRegistry_mk2.register('icraft.mekasuit_mk2_stats', handler)
+  ItemAttributeRegistry_mk2.register('icraft.mekasuit_mk2_stats', icraft.handler('mekasuit_mk2_stats', 'ItemAttributeRegistry.register', handler))
   console.log('[IridescentCraft] mekasuit_mk2_stats loaded (pinnacle layer: +' +
               MK2_BONUS.armor + ' armor / +' + MK2_BONUS.tough + ' tough / +' +
               MK2_BONUS.kbr + ' KBR per Mk2-marked MekaSuit piece)')

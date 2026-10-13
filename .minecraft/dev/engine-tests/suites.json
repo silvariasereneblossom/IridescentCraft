@@ -94,7 +94,7 @@
       "about": "kubejs/*_scripts/00_icraft_guard.js on KubeJS's REAL handler chain (EventHandlerContainer.handle from the KubeJS jar): a guarded cancel / success / exit reaches KubeJS intact, a throw is reported once and the chain goes on, an engine-level throw is isolated WITH a line and never masks an exit, a java.lang.Error is not isolated; switched off, it behaves like no guard; its three copies are one file. Liveness (icraft.live): a registration is ARMED when made, FIRED once the first time its handler finishes, a cancel counts as fired, a throw is FAILED and not fired; the summary line, NOT ARMED / UNLISTED against an expected list, the digest gen_liveness.js computes"
     },
     {
-      "name": "liveness", "kind": "harness", "fast": true, "ci": true, "expect": 35,
+      "name": "liveness", "kind": "harness", "fast": true, "ci": true, "expect": 46,
       "about": "ARMED and FIRED outside the guard: a tick function of 0_tick_master.js and a hurt handler of 0_lib_core.js are armed when registered and fired the first time they return (not when they throw, not behind a closed gate); a curated feature (the relic sink and its deny list) fires where it did its work; zzz_icraft_live.js prints the one summary line, compares with kubejs/config/icraft/live/expected.json, collects FIRED lines for a second, and never prints a player name",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
                   {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:0_tick_master.js",

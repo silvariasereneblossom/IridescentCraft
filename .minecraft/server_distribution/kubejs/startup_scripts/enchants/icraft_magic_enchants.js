@@ -237,7 +237,7 @@ try {
       }
   }
 
-  ItemAttributeRegistry_ime.register('icraft.magic_enchants_attr', handler)
+  ItemAttributeRegistry_ime.register('icraft.magic_enchants_attr', icraft.handler('enchants/icraft_magic_enchants', 'ItemAttributeRegistry.register', handler))
 
   // ---------------------------------------------------------------------
   // Arcane Vorpal decap hook
@@ -344,7 +344,7 @@ try {
   }
   // LATE phase: runs after attribute_sync's NORMAL crit roll stamps
   // icraft_last_crit_tick (preserves the old EventPriority.LOW ordering).
-  DamageModifierRegistry_ime.registerLate('icraft.magic_enchants_decap', decapHandler)
+  DamageModifierRegistry_ime.registerLate('icraft.magic_enchants_decap', icraft.handler('enchants/icraft_magic_enchants', 'DamageModifierRegistry.registerLate', decapHandler))
 
   console.log('[IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks + arcane_vorpal decap)')
 } catch (e) {

@@ -84,7 +84,7 @@ try {
       }
   }
 
-  DamageModifierRegistry_ds.register('icraft.deathskin_undead_bonus', handler)
+  DamageModifierRegistry_ds.register('icraft.deathskin_undead_bonus', icraft.handler('deathskin_undead_bonus', 'DamageModifierRegistry.register', handler))
   console.log('[IridescentCraft] deathskin_undead_bonus loaded (attribute-driven)')
 } catch (e) {
   console.warn('[IridescentCraft] deathskin_undead_bonus bootstrap FAILED: ' + e)

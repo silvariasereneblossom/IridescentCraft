@@ -17,6 +17,17 @@
 //             second handler of the SAME event in one file adds '#2', '#3'.
 //     event   the registration it is passed to, as written.
 //
+//   a handler that goes straight onto one of the mod's Java registries (they are
+//   not KubeJS events: ItemAttributeRegistry, ForgeEventRegistry, the damage
+//   registry, Apotheosis's LootCategory) gets its liveness id the same way:
+//
+//   ForgeEventRegistry.registerKnockBack('icraft.my_key', icraft.handler('my_script', 'ForgeEventRegistry.registerKnockBack', function (event) {
+//     ...
+//   }))
+//
+//     name    as for guard
+//     group   '<RegistryClass>.<method>' it is passed to (lint rule GUARD-SHAPE)
+//
 //   and inside a long handler, around one block of rules:
 //
 //   icraft.section('loot/my_script/village-strips', function () {
@@ -78,13 +89,15 @@
 //   A script that LOADED has proved nothing: about thirty features of this
 //   pack never ran while every check said the scripts were fine. So the guard
 //   also keeps, for this script type and since this file loaded:
-//     ARMED  every registration: each guard() call, each tick function of
-//            0_tick_master.js, each hurt handler of 0_lib_core.js;
+//     ARMED  every registration: each guard() call, each handler() call, each
+//            tick function of 0_tick_master.js, each hurt handler of
+//            0_lib_core.js;
 //     FIRED  the FIRST time each of them ran to its end (a handler that leaves
 //            through event.cancel() has done its work: that counts; one that
 //            throws is FAILED and does not). After that first time the cost
 //            on the hot path is one boolean read.
 //   An id is '<name>@<group>'. The group of a guarded handler is its event;
+//   of a registry handler the registry method ('ItemAttributeRegistry.register');
 //   of a tick function 'tick.server' / 'tick.player'; of a hurt handler 'hurt'
 //   / 'hurt.late'. Sections are only ever FIRED, and so are FEATURES:
 //
@@ -648,6 +661,34 @@ var icraft = (function () {
     if (exit !== null) rethrow(exit)
   }
 
+  // ---- handler: a liveness id for a function put straight on a Java registry --
+  // The mod's own registries (ItemAttributeRegistry, ForgeEventRegistry,
+  // DamageModifierRegistry) and Apotheosis's LootCategory take a function and
+  // call it from Java. They are not KubeJS events, so guard() does not fit: a
+  // registry catches what its handler throws and logs it itself, some handlers
+  // RETURN a value the registry uses (a LootCategory predicate), and none of
+  // them leaves through an EventExit. Until 2026-10-13 such a handler had no
+  // id: eleven startup scripts could say LOADED and nothing more.
+  //   ARMED  '<name>@<group>' when handler() is called (the registration is the
+  //          next thing the script does);
+  //   FIRED  the first time the function RETURNS. One boolean read afterwards.
+  // Nothing else changes: `this`, the arguments and the return value pass
+  // through, and a throw passes through untouched and uncounted (the registry's
+  // own catch reports it, exactly as before; it is not FIRED).
+  var handler = function (name, group, fn) {
+    if (typeof fn !== 'function') {
+      say('error', '[icraft.guard] MISUSE: handler(' + name + ', ' + group + ', <' + (typeof fn) +
+        '>) was not given a function; the value is registered as it is')
+      return fn
+    }
+    var entry = arm(name, group)
+    return function () {
+      var result = fn.apply(this, arguments)
+      if (entry.fired === false) fire(entry)
+      return result
+    }
+  }
+
   // ---- diagnostics ----------------------------------------------------------
   // [{ name, event, count, first, last }] in the order they first failed
   guard.failures = function () {
@@ -678,6 +719,7 @@ var icraft = (function () {
   var own = (shared !== null && (typeof shared === 'object' || typeof shared === 'function')) ? Object.create(shared) : {}
   own.guard = guard
   own.section = section
+  own.handler = handler
   own.live = {
     arm: arm,                // (name, group) -> entry: 0_tick_master.js and 0_lib_core.js register theirs
     fire: fire,              // (entry): it ran to its end for the first time

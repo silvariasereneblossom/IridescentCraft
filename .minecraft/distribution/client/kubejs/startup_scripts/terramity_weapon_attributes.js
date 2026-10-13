@@ -95,7 +95,7 @@ try {
       }
   }
 
-  ItemAttributeRegistry_tw.register('icraft.terramity_weapon_attributes', handler)
+  ItemAttributeRegistry_tw.register('icraft.terramity_weapon_attributes', icraft.handler('terramity_weapon_attributes', 'ItemAttributeRegistry.register', handler))
   console.log('[IridescentCraft] terramity_weapon_attributes loaded (exodium_waraxe + reverium_axe damage clamp)')
 } catch (e) {
   console.warn('[IridescentCraft] terramity_weapon_attributes bootstrap FAILED: ' + e)

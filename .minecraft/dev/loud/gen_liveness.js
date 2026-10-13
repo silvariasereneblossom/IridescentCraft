@@ -7,6 +7,8 @@
 // sources, so nobody hand-writes a list that can go stale:
 //
 //   icraft.guard('<name>', '<event>', handler)      ARMED   <name>@<event>
+//   icraft.handler('<name>', '<Registry>.<method>', fn)   ARMED   <name>@<Registry>.<method>
+//                                                   (a function put straight on a Java registry)
 //   global.registerServerTick('<name>', ...)        ARMED   <name>@tick.server
 //   global.registerPlayerTick('<name>', ...)        ARMED   <name>@tick.player
 //   <core>.onHurt('<key>', ...) / .onHurtLate(...)  ARMED   <key>@hurt / <key>@hurt.late
@@ -142,7 +144,7 @@ function readScript(file, where) {
   const named = new Map();     // function name -> ctx
   const globals = new Map();   // global.<name> -> ctx
   const regOf = (call) => {
-    if (isIcraft(call, 'guard') && call.arguments.length === 3) {
+    if ((isIcraft(call, 'guard') || isIcraft(call, 'handler')) && call.arguments.length === 3) {
       const name = strLit(call.arguments[0]), ev = strLit(call.arguments[1]);
       if (name !== null && ev !== null) return { ctx: 'handler:' + name + '@' + ev, fn: call.arguments[2] };
     }
@@ -221,6 +223,11 @@ function readScript(file, where) {
           }
           out.regs.push({ id: name + '@' + ev, line, ctx, detail });
         }
+      } else if (isIcraft(n, 'handler')) {
+        // a function put straight on a Java registry, with its liveness id (00_icraft_guard.js, icraft.handler)
+        const name = strLit(n.arguments[0]), group = strLit(n.arguments[1]);
+        if (n.arguments.length !== 3 || name === null || group === null) problem(where + ':' + line, 'icraft.handler: name and group must be string literals (lint rule GUARD-SHAPE says the same)');
+        else out.regs.push({ id: name + '@' + group, line, ctx, detail: 'called from Java by `' + group + '`' });
       } else if (isIcraft(n, 'section')) {
         const name = strLit(n.arguments[0]);
         if (name === null) problem(where + ':' + line, 'icraft.section: the name must be a string literal');
@@ -250,8 +257,9 @@ function readScript(file, where) {
         }
       } else if (m && CONSOLE.has(m) && n.callee.object.type === 'Identifier' && n.callee.object.name === 'console') {
         out.logs.push({ text: flat(n.arguments[0]), level: m, line, ctx });
-      } else if (m && /^register[A-Z]?\w*$/.test(m) && n.callee.object.type === 'Identifier' && registries.has(n.callee.object.name)) {
-        // a handler put straight on one of the mod's Java registries: it has no guard, no tick, no dispatcher id
+      } else if (m && /^register[A-Z]?\w*$/.test(m) && n.callee.object.type === 'Identifier' && registries.has(n.callee.object.name) &&
+                 !n.arguments.some((a) => isIcraft(a, 'handler'))) {
+        // a handler put straight on one of the mod's Java registries WITHOUT icraft.handler: it has no id at all
         out.direct.push({ what: n.callee.object.name + '.' + m, line, ctx });
       }
     }

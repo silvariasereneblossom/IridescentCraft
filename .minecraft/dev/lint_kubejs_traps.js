@@ -44,6 +44,10 @@
 //                                                          event in the file (name + event is unique per file)
 //                                                  event = the registration it is passed to, as written
 //                     section(name, function)      name  = '<this script>/<part>', unique in the file
+//                     handler(name, group, fn)     name  = as for guard (name + group is unique per file)
+//                                                  group = '<Class>.<method>' of the Java registry call it is
+//                                                          passed to: the method as written, the class as the
+//                                                          script loaded it (Java.loadClass('...<Class>'))
 //                   -> "[icraft.guard] FAILED <name> in <event>" would point at the wrong script or event
 //
 // Rules of 2026-10-13 (package H; each proven by a fixture under dev/lint-fixtures, run by lint_kubejs_traps.test.js):
@@ -256,6 +260,41 @@ function lint(file) {
     if (guardKeys.has(k)) site('GUARD-SHAPE', call, "icraft.guard('" + name + "', '" + event + "', ..) is used twice in this file: add '#2' to the second name");
     guardKeys.add(k);
   }
+  // the simple class name each variable of this file was loaded as: var X = Java.loadClass('a.b.Class')
+  const loadedAs = new Map();
+  (function collectLoads(n) {
+    if (!n || typeof n.type !== 'string') return;
+    let id = null, init = null;
+    if (n.type === 'VariableDeclarator' && n.id.type === 'Identifier') { id = n.id.name; init = n.init; }
+    if (n.type === 'AssignmentExpression' && n.left.type === 'Identifier') { id = n.left.name; init = n.right; }
+    if (id && init && init.type === 'CallExpression' && init.arguments.length === 1 && strLit(init.arguments[0]) !== null &&
+        (dotted(init.callee) === 'Java.loadClass' || (init.callee.type === 'Identifier' && /loadClass/i.test(init.callee.name))))
+      loadedAs.set(id, strLit(init.arguments[0]).split('.').pop().split('$').pop());
+    for (const k of Object.keys(n)) {
+      if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+      const v = n[k];
+      if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') collectLoads(c); }
+      else if (v && typeof v.type === 'string') collectLoads(v);
+    }
+  })(ast);
+  // icraft.handler(name, group, fn) as an argument of `reg`, the registration call on a Java registry
+  function checkHandler(call, reg) {
+    const a = call.arguments;
+    if (a.length !== 3) { site('GUARD-SHAPE', call, 'icraft.handler takes (name, group, function): ' + a.length + ' argument(s) here'); return; }
+    const name = strLit(a[0]), group = strLit(a[1]);
+    if (name === null || group === null) { site('GUARD-SHAPE', call, 'icraft.handler: name and group must be string literals (the lint and the liveness generator read them)'); return; }
+    if (!guardName.test(name)) site('GUARD-SHAPE', call, "icraft.handler('" + name + "', ..): the name must be this script's own path, '" + scriptName + "' (or '" + scriptName + "#2')");
+    if (!reg || reg.type !== 'CallExpression' || reg.callee.type !== 'MemberExpression' || reg.callee.computed || reg.callee.object.type !== 'Identifier') {
+      site('GUARD-SHAPE', call, "icraft.handler(..) must be an argument of the registration it names: <Registry>.<method>(.., icraft.handler('" + name + "', '<Registry>.<method>', fn))");
+    } else {
+      const obj = reg.callee.object.name, method = reg.callee.property.name;
+      const cls = loadedAs.has(obj) ? loadedAs.get(obj) : obj;
+      if (group !== cls + '.' + method) site('GUARD-SHAPE', call, "icraft.handler(.., '" + group + "', ..) is passed to " + obj + '.' + method + ' (class ' + cls + "): the group must be '" + cls + '.' + method + "', or the liveness line names another registration");
+    }
+    const k = name + ' in ' + group;
+    if (guardKeys.has(k)) site('GUARD-SHAPE', call, "icraft.handler('" + name + "', '" + group + "', ..) is used twice in this file: add '#2' to the second name");
+    guardKeys.add(k);
+  }
   function checkSection(call) {
     const a = call.arguments;
     const name = strLit(a[0]);
@@ -370,6 +409,7 @@ function lint(file) {
             "Wrap it: " + ev + "(icraft.guard('" + scriptName + "', '" + ev + "', handler))");
         }
         if (isIcraftCall(node, 'section')) checkSection(node);
+        if (isIcraftCall(node, 'handler')) checkHandler(node, (parent && parent.type === 'CallExpression' && key === 'arguments') ? parent : null);
         if (name && TICK_REG.has(name)) {
           const a = node.arguments;
           const iv = a[1] && a[1].type === 'Literal' && typeof a[1].value === 'number' ? a[1].value : null;

@@ -1388,8 +1388,8 @@
   "startup": {
    "log": "kubejs/startup.log",
    "tree": "server_distribution/kubejs/startup_scripts",
-   "count": 11,
-   "digest": "25a95564655610e8",
+   "count": 23,
+   "digest": "40721b2f3d26cfce",
    "late": [],
    "at_boot": [
     "boss_compass_item@StartupEvents.registry",
@@ -1408,6 +1408,14 @@
     {
      "id": "boss_compass_item@StartupEvents.registry",
      "script": "boss_compass_item.js"
+    },
+    {
+     "id": "cap_player_knockback@ForgeEventRegistry.registerKnockBack",
+     "script": "cap_player_knockback.js"
+    },
+    {
+     "id": "cap_player_levitation@ForgeEventRegistry.registerEffectApplicable",
+     "script": "cap_player_levitation.js"
     },
     {
      "id": "codex_progression_tokens@StartupEvents.registry",
@@ -1430,20 +1438,60 @@
      "script": "custom_items.js"
     },
     {
+     "id": "deathskin_undead_bonus@DamageModifierRegistry.register",
+     "script": "deathskin_undead_bonus.js"
+    },
+    {
+     "id": "enchants/icraft_magic_enchants@DamageModifierRegistry.registerLate",
+     "script": "enchants/icraft_magic_enchants.js"
+    },
+    {
+     "id": "enchants/icraft_magic_enchants@ItemAttributeRegistry.register",
+     "script": "enchants/icraft_magic_enchants.js"
+    },
+    {
+     "id": "enchants/vorpal_rework@DamageModifierRegistry.registerLate",
+     "script": "enchants/vorpal_rework.js"
+    },
+    {
+     "id": "enchants/vorpal_rework@ItemAttributeRegistry.register",
+     "script": "enchants/vorpal_rework.js"
+    },
+    {
      "id": "endgame_items@StartupEvents.registry",
      "script": "endgame_items.js"
+    },
+    {
+     "id": "hulk_hammer_attributes@ItemAttributeRegistry.register",
+     "script": "hulk_hammer_attributes.js"
     },
     {
      "id": "hulk_hammer_durability@ItemEvents.modification",
      "script": "hulk_hammer_durability.js"
     },
     {
+     "id": "magic_weapon_category@LootCategory.register",
+     "script": "magic_weapon_category.js"
+    },
+    {
+     "id": "mekasuit_mk2_stats@ItemAttributeRegistry.register",
+     "script": "mekasuit_mk2_stats.js"
+    },
+    {
      "id": "sigil_registry@StartupEvents.registry",
      "script": "sigil_registry.js"
     },
     {
+     "id": "terramity_weapon_attributes@ItemAttributeRegistry.register",
+     "script": "terramity_weapon_attributes.js"
+    },
+    {
      "id": "terramity_weapon_durability@ItemEvents.modification",
      "script": "terramity_weapon_durability.js"
+    },
+    {
+     "id": "virtual_gold_clamp@ItemAttributeRegistry.register",
+     "script": "virtual_gold_clamp.js"
     },
     {
      "id": "virtual_gold_durability@ItemEvents.modification",

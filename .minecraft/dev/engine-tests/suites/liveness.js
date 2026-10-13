@@ -94,6 +94,38 @@ T_run('liveness: a hurt handler is ARMED when registered, FIRED the first time i
     'three hits, one FIRED line for each group')
 })
 
+// ---- icraft.handler: a function put straight on a Java registry ----
+var lv_direct = { ran: 0, amount: -1 }
+var LV_Registry = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+LV_Registry.register('t.lv.direct', icraft.handler('t_lv_direct', 'DamageModifierRegistry.register', function (event) {
+  lv_direct.ran++
+  lv_direct.amount = Number(event.getAmount())
+}))
+
+T_run('liveness: a handler put straight on a Java registry is ARMED by icraft.handler, FIRED the first time it returns', function () {
+  ok(LV_fired('t_lv_direct@DamageModifierRegistry.register') === 'false', 'registered through icraft.handler: armed under <name>@<Registry.method>, not fired')
+  ok(LV_count(/^\[icraft\.live\] ARMED late x1: t_lv_direct@DamageModifierRegistry\.register$/) === 1, 'and said once (it was registered after the summary line)')
+  var victim = T_mob('minecraft:zombie')
+  T.fireHurt(victim, new MSource('minecraft:generic', null, null), 6)
+  ok(lv_direct.ran === 1 && lv_direct.amount === 6, 'the registry called it from Java with the event (ran ' + lv_direct.ran + ', amount ' + lv_direct.amount + ')')
+  ok(LV_fired('t_lv_direct@DamageModifierRegistry.register') === 'true', 'and it is FIRED')
+  T.fireHurt(victim, new MSource('minecraft:generic', null, null), 2)
+  T_tick(20)
+  ok(lv_direct.ran === 2 && LV_count(/FIRED DamageModifierRegistry\.register [^\n]*t_lv_direct/) === 1, 'two calls, one FIRED line')
+  var add = icraft.handler('t_lv_ret', 'Test.call', function (a, b) { return a + b })
+  ok(add(2, 3) === 5, 'the arguments and the return value pass through (a LootCategory predicate returns its answer)')
+  var holder = { k: 7, read: icraft.handler('t_lv_this', 'Test.call', function () { return this.k }) }
+  ok(holder.read() === 7, '`this` passes through')
+  var thrower = icraft.handler('t_lv_throw', 'Test.call', function () { throw new Error('the handler\'s own error') })
+  var caught = ''
+  try { thrower() } catch (e) { caught = String(e) }
+  ok(caught.indexOf('own error') >= 0, 'a throw passes through untouched: the registry\'s own catch reports it, as before (' + caught.slice(0, 50) + ')')
+  ok(LV_fired('t_lv_throw@Test.call') === 'false', 'and a handler that threw is NOT fired')
+  var errorsBefore = T_LOG.error.length
+  ok(icraft.handler('t_lv_bad', 'Test.call', 5) === 5, 'something that is not a function is handed back as it is')
+  ok(T_LOG.error.length === errorsBefore + 1 && /MISUSE: handler\(t_lv_bad, Test\.call/.test(String(T_LOG.error[T_LOG.error.length - 1])), 'with one MISUSE line')
+})
+
 T_run('liveness: a feature is FIRED where it did its work (the relic sink and its deny list)', function () {
   var r = icraft.live.report('')
   ok(r.features.fired.length === 0 && r.features.never.indexOf('relic-sink') >= 0 && r.features.never.indexOf('relic-sink-deny') >= 0 && r.features.known > 10,
