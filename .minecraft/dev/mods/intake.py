@@ -720,9 +720,12 @@ def cmd_update(args):
     if not os.path.isfile(new_jar):
         die('not a file: %s' % new_jar)
     new_name = os.path.basename(new_jar)
-    if m['own'] and not args.diff_only:
-        die('%s is one of the pack\'s own jars: it is rebuilt and released by the custom-jar-release procedure. '
-            'This command only compares for it: add --diff-only' % m['jar'])
+    if m['own'] and not args.diff_only and m['jar'] != new_name:
+        # this command never moves the metafile, the three jar copies or the manifest line of an own jar. AFTER a
+        # release with a new file name the index names the new jar already: then it runs, and only the record moves
+        die('%s is one of the pack\'s own jars: its jar, its manifest line and its metafile are moved by the '
+            'custom-jar-release procedure. Run this command after that release, with the released jar (it then '
+            'rewrites the record only), or compare two builds with --diff-only' % m['jar'])
     if m['where'] != 'source' and not args.diff_only:
         die('%s is a client-distribution-only metafile, kept by hand: --diff-only' % m['metafile'])
     report = []
@@ -761,7 +764,8 @@ def cmd_update(args):
     boot = None
     rc_boot = 0
     if already:
-        say('[intake] %s names %s already (the launcher moved the metafile): left as it is' % (m['metafile'], new_name))
+        say('[intake] %s names %s already (%s): left as it is' % (
+            m['metafile'], new_name, 'a custom-jar release' if m['own'] else 'the launcher moved the metafile'))
         if generate_index() != 0:
             die('the mod index gate fails (above): fix that first')
     elif not args.diff_only:

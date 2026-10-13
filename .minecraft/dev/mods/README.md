@@ -211,9 +211,15 @@ place in the pack that still names one of them (scripts, kubejs data, the regist
 trees, datapack zips, dev tool lists, wiki). The record is rewritten for the new jar; answers already given are
 kept; a question the new version raises is asked `by update` and the gate holds the push until it is answered.
 
-`--diff-only` compares and sweeps and writes nothing. It is the only form for one of the pack's own jars (those are
-rebuilt and released by the custom-jar-release procedure); give it `--old-jar` and, to include a boot diff,
+`--diff-only` compares and sweeps and writes nothing; give it `--old-jar` and, to include a boot diff,
 `--boot-result <a saved boot result of the new side that holds a diff against the old>`.
+
+**One of the pack's own jars** (`custom_jars_manifest.json`) is rebuilt and released by the custom-jar-release
+procedure, and this command never moves its metafile, its three jar copies or its manifest line. A rebuild under
+the same file name needs nothing here. A release under a NEW file name does: the gate then says
+`NO RECORD OF THIS JAR`, and `intake.py update <mod> <the released jar>`, run after the release, finds the
+metafile already on the new jar and rewrites only the record (with its boot diff, like any update). The same
+holds when the launcher moved a third-party mod's metafile itself.
 
 Without a boot (`--no-boot`) only the files that left the jar are known, not what the game stops registering.
 

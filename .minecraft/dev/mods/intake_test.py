@@ -383,6 +383,35 @@ def flow():
             check("update --diff-only: compares two jars and writes nothing",
                   rc == 0 and "gatetest:chests/vault" in out and sb.digest([ROOT, SERVER, CLIENT, RECORDS]) == before_own, out)
 
+            # a release of an own jar under a NEW file name (custom-jar-release does this: metafile, manifest, jars).
+            # The gate then asks for a record of the new jar, and update must be able to give it one.
+            s3 = Sandbox()
+            try:
+                old_name = s3.record(own[0])["jar"]
+                released = os.path.join(s3.jars, "own-jar-release-9.9.9.jar")
+                build_jar(released, "9.9.9")
+                meta = s3.read(ROOT + own[0] + ".pw.toml").decode("utf-8")
+                old_hash = [l for l in meta.split("\n") if l.startswith("hash = ")][0]
+                meta = meta.replace(old_name, "own-jar-release-9.9.9.jar").replace(
+                    old_hash, "hash = '%s'" % hashlib.sha256(open(released, "rb").read()).hexdigest())
+                s3.write(ROOT + own[0] + ".pw.toml", meta)
+                man = json.loads(s3.read(".minecraft/custom_jars_manifest.json").decode("utf-8"))
+                man["jars"]["own-jar-release-9.9.9.jar"] = man["jars"].pop(old_name)
+                s3.write(".minecraft/custom_jars_manifest.json", json.dumps(man, indent=2))
+                rc, out = s3.tool("mod_index.py", "generate")
+                rc, out = s3.intake("check")
+                check("an own jar released under a new file name: the gate asks for a record of it",
+                      rc == 1 and "NO RECORD OF THIS JAR   " + own[0] in out, out)
+                rc, out = s3.intake("update", own[0], released, "--no-boot", "--mods", s3.jars)
+                check("update: after that release it rewrites the record and leaves the metafile alone",
+                      rc == 0 and "a custom-jar release" in out and s3.record(own[0])["jar"] == "own-jar-release-9.9.9.jar"
+                      and s3.read(ROOT + own[0] + ".pw.toml").decode("utf-8") == meta, out)
+                rc, out = s3.intake("check")
+                check("... and the gate no longer misses the record (it asks what the update raised)",
+                      "NO RECORD OF THIS JAR" not in out and (rc == 0 or "raised by an update" in out), out)
+            finally:
+                s3.close()
+
         # remove
         shutil.copy2(jar2, os.path.join(sb.jars, os.path.basename(jar2)))
         os.remove(jar1)
