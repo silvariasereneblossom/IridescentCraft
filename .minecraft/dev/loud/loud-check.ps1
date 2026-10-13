@@ -47,7 +47,9 @@
 #      which sections did not finish. And over the boots in the rotated logs
 #      (-FiredBoots, default 10): what has never fired in the boots in which a
 #      player was online. With nobody online most handlers cannot fire, so a boot
-#      without a player says nothing about them.
+#      without a player says nothing about them. Going back, the reading stops at
+#      the third complete boot in a row that has no `[icraft.live]` line: those are
+#      boots from before the lines existed, and nothing older can have one.
 #      A latest.log rolled at midnight: log4j starts a new latest.log at the first
 #      line after the box's midnight, so for the rest of that uptime the file is
 #      the tail of the run, with no JVM start and no Done. The boot is then read
@@ -912,24 +914,27 @@ function Invoke-Check {
                 if ($playerNow) { $withPlayer = 1 }
                 if ($FiredBoots -gt 0 -and $withPlayer -lt $FiredBoots -and $script:bootClock -and $lines.ContainsKey('latest.log')) {
                     $opened = 0; $maxOpen = 120
+                    $without = 0; $stopAfter = 3      # complete boots in a row without a liveness line: older ones predate the lines
                     try {
                         $byDate = Get-RolledByDate $logsRoot $script:bootClock.Substring(0, 10)
                         $piece = $null          # a log that does not start at a JVM start is the tail of the boot before it
                         foreach ($d in @($byDate.Keys | Sort-Object -Descending)) {
-                            if ($withPlayer -ge $FiredBoots -or $opened -ge $maxOpen) { break }
+                            if ($withPlayer -ge $FiredBoots -or $opened -ge $maxOpen -or $without -ge $stopAfter) { break }
                             foreach ($r in @(Get-DayLogs $byDate[$d] $script:bootClock)) {
-                                if ($withPlayer -ge $FiredBoots -or $opened -ge $maxOpen) { break }
+                                if ($withPlayer -ge $FiredBoots -or $opened -ge $maxOpen -or $without -ge $stopAfter) { break }
                                 $opened++
                                 $one = Read-LiveLines (Read-LogLines $r.path) $null
                                 if ($null -ne $piece) { foreach ($x in $piece.fired) { [void]$one.fired.Add($x) }; if ($piece.player) { $one.player = $true }; foreach ($x in $piece.summaries) { $one.summaries.Add($x) } }
                                 if (-not $r.start) { $piece = $one; continue }
                                 $piece = $null
-                                if ($one.summaries.Count -eq 0) { continue }          # a boot from before the liveness lines
+                                if ($one.summaries.Count -eq 0) { $without++; continue }          # a boot from before the liveness lines
+                                $without = 0
                                 $boots.Add([pscustomobject]@{ clock = $r.clock; player = $one.player; fired = $one.fired })
                                 if ($one.player) { $withPlayer++ }
                             }
                         }
                         $readNote = "$opened rotated log(s) read"
+                        if ($without -ge $stopAfter) { $readNote += "; stopped at $stopAfter boots in a row without a liveness line: older boots are from before the lines" }
                     } catch { $readNote = 'the rotated logs could not be read (' + $_.Exception.Message + ')' }
                 } elseif ($FiredBoots -eq 0) { $readNote = 'earlier boots not read (-FiredBoots 0)' }
                 $played = @($boots | Where-Object { $_.player })

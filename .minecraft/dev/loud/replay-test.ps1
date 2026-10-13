@@ -688,6 +688,14 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
         'HISTORY : 3 boot\(s\) with liveness lines, 1 with a player online \(3 rotated log\(s\) read\)',
         ('NEVER   : ' + ($knownN - 2) + ' of ' + $knownN + ' names never fired with a player on in the last 1 such boot\(s\) \(since ' + (Get-RolledClock -1)))
     Test-Stale '   -FiredBoots 0: this boot alone, no rotated log is opened' $logsH @('-FiredBoots', '0') 0 @() @() @('HISTORY : 1 boot\(s\) with liveness lines, 0 with a player online \(earlier boots not read \(-FiredBoots 0\)\)')
+    # further back: three boots without a liveness line, then one WITH lines and a player. The reading stops at the
+    # third boot without lines (older boots are from before the lines existed), so that last one is never opened.
+    New-RolledLog $logsH -4 $null
+    New-RolledLog $logsH -5 $null
+    New-RolledLog $logsH -6 $withPlayer
+    Test-Stale '   three boots in a row without a liveness line end the reading: an older log is not opened' $logsH @() 0 @() @() @(
+        'HISTORY : 3 boot\(s\) with liveness lines, 1 with a player online \(5 rotated log\(s\) read; stopped at 3 boots in a row without a liveness line')
+    Clear-Rolled $logsH; New-RolledLog $logsH -1 $withPlayer; New-RolledLog $logsH -2 $nobodyOn; New-RolledLog $logsH -3 $null
     $hOut = Invoke-Checker @('-LogsDir', $logsH)
     Assert-That (@($hOut.Out | Where-Object { $_ -match 'Scanner|joined the game|logged in with entity id' }).Count -eq 0) '   the report prints names of registrations only: no line of a log, no player'
 }
