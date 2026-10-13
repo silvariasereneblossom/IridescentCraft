@@ -143,7 +143,7 @@
 | Stalwart Dungeons | `stalwart_dungeons:giddy_blaze` | Giddy Blaze | T3 | structure-locked | Nether fortress overlay | uncommon_ink, fire_rune | 3 |
 | Meet Your Fight | `meetyourfight:dame_fortuna` | Dame Fortuna | T3 | summoned-by-item | overworld + Calling Bell variant | mod-specific cosmetics | 4 |
 | Meet Your Fight | `meetyourfight:rosalyne` | Rosalyne, Blade of Dusk | T3 | summoned-by-item | dusk-time summon | mod-specific cosmetics | 4 |
-| Vanilla | `minecraft:wither` | Wither | T3 | summoned-by-altar | player crafts wither skeleton skull cross + soul sand | Nether Star, wither skull (cross-mod Mahou reagent), advancement-locks | 1 |
+| Vanilla (replaced by Progressive Bosses) | `minecraft:wither`; the entity you fight is `progressivebosses:wither` (Progressive Bosses swaps it in the moment a Wither is summoned or built) | Wither | T3 | summoned-by-altar | player crafts wither skeleton skull cross + soul sand | 2 Nether Stars, 3-6 Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, Advanced Reforging Token (60%), Soulkeeper (15%); first kill per player: the Dormant Relic (15% on later kills) | 1 |
 | Alex's Mobs | `alexsmobs:warped_mosco` | Warped Mosco | T3 | biome-conditional-random | Warped Forest (Nether) | rare_ink, fire_upgrade_orb | 3 |
 | Ultris | `ultris_mr:blaze_king` | Blaze King | T3 | structure-locked | `1_splatus:blazetower` (Nether fortress region) | Blaze King's Helmet, fire-themed unique | 3 |
 | Ultris | `ultris_mr:ultra_wither` | Ultra Wither | T3-T4 | summoned-by-item | Enchanted Command Block thrown at Wither | ultra wither-themed unique | 4 |

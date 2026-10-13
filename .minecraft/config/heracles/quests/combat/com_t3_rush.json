@@ -30,12 +30,12 @@
       "type": "heracles:composite",
       "amount": 4,
       "tasks": {
-        "kill_harbinger": { "type": "heracles:kill_entity", "title": "The Harbinger", "entity": "cataclysm:the_harbinger", "amount": 1 },
-        "kill_ignis": { "type": "heracles:kill_entity", "title": "Ignis", "entity": "cataclysm:ignis", "amount": 1 },
-        "kill_leviathan": { "type": "heracles:kill_entity", "title": "The Leviathan", "entity": "cataclysm:the_leviathan", "amount": 1 },
-        "kill_forgotten_guardian": { "type": "heracles:kill_entity", "title": "Forgotten Guardian", "entity": "undergarden:forgotten_guardian", "amount": 1 },
-        "kill_stalker": { "type": "heracles:kill_entity", "title": "The Stalker", "entity": "deeperdarker:stalker", "amount": 1 },
-        "kill_wither": { "type": "heracles:kill_entity", "title": "The Wither", "entity": "minecraft:wither", "amount": 1 }
+        "kill_harbinger": { "type": "heracles:kill_entity", "title": "The Harbinger", "entity": { "type": "cataclysm:the_harbinger" }, "amount": 1 },
+        "kill_ignis": { "type": "heracles:kill_entity", "title": "Ignis", "entity": { "type": "cataclysm:ignis" }, "amount": 1 },
+        "kill_leviathan": { "type": "heracles:kill_entity", "title": "The Leviathan", "entity": { "type": "cataclysm:the_leviathan" }, "amount": 1 },
+        "kill_forgotten_guardian": { "type": "heracles:kill_entity", "title": "Forgotten Guardian", "entity": { "type": "undergarden:forgotten_guardian" }, "amount": 1 },
+        "kill_stalker": { "type": "heracles:kill_entity", "title": "The Stalker", "entity": { "type": "deeperdarker:stalker" }, "amount": 1 },
+        "kill_wither": { "type": "heracles:kill_entity", "title": "The Wither", "entity": { "type": "progressivebosses:wither" }, "amount": 1 }
       }
     }
   },
