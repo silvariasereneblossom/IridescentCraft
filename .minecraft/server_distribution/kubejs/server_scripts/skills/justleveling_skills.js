@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/skills/justleveling_skills.js
+// @events BlockEvents.broken, BlockEvents.placed, EntityEvents.death, ItemEvents.crafted, PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, ServerEvents.loaded, tick.server
 // =============================================================================
 // IridescentCraft — JustLeveling Aptitude Skills
 // File: kubejs/server_scripts/skills/justleveling_skills.js
@@ -104,11 +106,10 @@
 // =============================================================================
 
 ;(function () {
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    try { console.warn('[justleveling_skills] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnFailed = function (where, e) {
+    global.icraft.core.warnOnce('skills/justleveling_skills:' + where, '[justleveling_skills] ' + where + ' failed: ' + e)
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -121,7 +122,7 @@
   // -> { strength, ..., luck, total }; all zero when the levels cannot be read
   var aptOf = function (player) {
     var a = null
-    try { a = global.icraft.aptitude.all(player) } catch (e) { warnOnce('aptitude lookup', e) }
+    try { a = global.icraft.aptitude.all(player) } catch (e) { warnFailed('aptitude lookup', e) }
     return a || NO_APTITUDES
   }
   var keyOf = function (player) { return String(player.uuid.toString()) }
@@ -164,7 +165,7 @@
     UUID_jl = Java.loadClass('java.util.UUID')
     PlayerClass_jl = Java.loadClass('net.minecraft.world.entity.player.Player')
   } catch (e) {
-    warnOnce('loading the Java handles', e)
+    warnFailed('loading the Java handles', e)
   }
 
   // Attribute objects, resolved once each. null = not registered (mod absent).
@@ -178,7 +179,7 @@
     } catch (e) {
       attr = null
     }
-    if (!attr) warnOnce('looking up attribute ' + id, 'it is not in the attribute registry -- skills on it are skipped')
+    if (!attr) warnFailed('looking up attribute ' + id, 'it is not in the attribute registry -- skills on it are skipped')
     attrCache[id] = attr || null
     return attrCache[id]
   }
@@ -196,7 +197,7 @@
       return UUID_jl.fromString(half.substring(0, 8) + '-' + half.substring(8, 12) + '-' + half.substring(12, 16) +
         '-' + half.substring(0, 4) + '-' + half.substring(4, 16))
     } catch (e) {
-      warnOnce('modifier uuid for ' + id, e)
+      warnFailed('modifier uuid for ' + id, e)
       return null
     }
   }
@@ -278,7 +279,7 @@
         return
       } catch (e) {
         checkedWrites = false
-        warnOnce('reading live attribute modifiers', e + ' -- falling back to unconditional writes')
+        warnFailed('reading live attribute modifiers', e + ' -- falling back to unconditional writes')
       }
     }
     if (amount > 0) player.modifyAttribute(attr, m.key, amount, m.op)
@@ -302,7 +303,7 @@
       level.spawnParticles(particle, true, x, y, z, spread, spread, spread, count, speed)
     } catch (e) {
       particlesOk = false
-      warnOnce('particles', e)
+      warnFailed('particles', e)
     }
   }
 
@@ -334,7 +335,7 @@
       }
       setModifier(player, TURTLE_SHIELD,
         (apt.defense >= TURTLE_SHIELD.req && !player.isBlocking()) ? TURTLE_SHIELD.amount : 0)
-    } catch (e) { warnOnce('attribute passives', e) }
+    } catch (e) { warnFailed('attribute passives', e) }
 
     // ── Steady Breath (CON >= 15) ──
     // Underwater: Water Breathing for 30 of every 100 ticks (no icon, no
@@ -346,14 +347,14 @@
       } else if (hungerBudget.hasOwnProperty(key)) {
         delete hungerBudget[key]
       }
-    } catch (e) { warnOnce('Steady Breath', e) }
+    } catch (e) { warnFailed('Steady Breath', e) }
 
     // ── Hearty Meals (CON >= 10): Regen I when food >= 18 ──
     try {
       if (apt.constitution >= 10 && Number(player.foodLevel) >= 18) {
         player.potionEffects.add('minecraft:regeneration', 120, 0, false, false)
       }
-    } catch (e) { warnOnce('Hearty Meals', e) }
+    } catch (e) { warnFailed('Hearty Meals', e) }
 
     // ── Second Wind (DEF >= 10): Regen III for 5s when HP < 30%, 60s cooldown ──
     try {
@@ -367,14 +368,14 @@
           player.tell('§7[§cSecond Wind§7] §fRegeneration III activated!')
         }
       }
-    } catch (e) { warnOnce('Second Wind', e) }
+    } catch (e) { warnFailed('Second Wind', e) }
 
     // ── Overflow (CON >= 20): Absorption I (4 HP) while at full HP ──
     try {
       if (apt.constitution >= 20 && Number(player.health) >= Number(player.maxHealth)) {
         player.potionEffects.add('minecraft:absorption', 120, 0, false, false)
       }
-    } catch (e) { warnOnce('Overflow', e) }
+    } catch (e) { warnFailed('Overflow', e) }
 
     // ── Iron Stomach (CON >= 30): Saturation I for 6s, every 5s ──
     // (was `effect give <name> minecraft:saturation 6 0 true`: same effect, no command)
@@ -382,7 +383,7 @@
       if (apt.constitution >= 30) {
         player.potionEffects.add('minecraft:saturation', 120, 0, false, false)
       }
-    } catch (e) { warnOnce('Iron Stomach', e) }
+    } catch (e) { warnFailed('Iron Stomach', e) }
   }
 
   var onSkillsTick = function (event) {
@@ -391,7 +392,7 @@
         if (player.spectator || player.creative) return
         if (!(Number(player.health) > 0)) return          // dead, waiting to respawn
         tickPlayer(player, aptOf(player), keyOf(player), clockOf(player))
-      } catch (e) { warnOnce('skills tick', e) }
+      } catch (e) { warnFailed('skills tick', e) }
     })
   }
   global.registerServerTick('tick_justlevelingSkills', 100, 37, onSkillsTick)
@@ -432,7 +433,7 @@
     EnchantMenuClass = Java.loadClass('net.minecraft.world.inventory.EnchantmentMenu')
     AnvilMenuClass = Java.loadClass('net.minecraft.world.inventory.AnvilMenu')
   } catch (e) {
-    warnOnce('loading the menu classes', e + ' -- XP refunds fall back to menu type ids')
+    warnFailed('loading the menu classes', e + ' -- XP refunds fall back to menu type ids')
   }
   // Second way to recognise a station: the open menu's registered type id.
   // Covers Quark's matrix enchanting (not an EnchantmentMenu) without loading a
@@ -486,7 +487,7 @@
           player.tell('§b[' + label + '] §f' + back.toFixed(2) + ' of ' + spent +
             (spent === 1 ? ' level' : ' levels') + ' refunded')
         }
-      } catch (e) { warnOnce('XP refund tick', e) }
+      } catch (e) { warnFailed('XP refund tick', e) }
     })
   }
   global.registerServerTick('tick_aptitudeXpRefund', 5, 3, onXpRefundTick)
@@ -585,7 +586,7 @@
       if (triggered) {
         puff(player.level, 'minecraft:happy_villager', player.x, player.y + 1, player.z, 0.3, 6, 0)
       }
-    } catch (e) { warnOnce('craft refund', e) }
+    } catch (e) { warnFailed('craft refund', e) }
   }))
 
 
@@ -629,11 +630,13 @@
         if (typeKey) bossTagIds[String(typeKey)] = true
       }
     } catch (e) {
-      warnOnce('reading #forge:bosses', e + ' -- True Strength uses the name hints only')
+      warnFailed('reading #forge:bosses', e + ' -- True Strength uses the name hints only')
     }
     return bossTagIds
   }
-  var isBoss = function (target) {
+  // (Not core.isBoss under another name: this is the wider test of the paragraph above,
+  // and an entity that cannot be identified counts as spared.)
+  var sparedByTrueStrength = function (target) {
     var type = typeIdOf(target)
     if (!type) return true                               // cannot identify it: do not execute it
     for (var i = 0; i < BOSS_HINTS.length; i++) {
@@ -653,7 +656,7 @@
   try {
     DR_jl = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   } catch (e) {
-    warnOnce('loading DamageModifierRegistry', e + ' -- the combat skills are off')
+    warnFailed('loading DamageModifierRegistry', e + ' -- the combat skills are off')
   }
 
   if (DR_jl && PlayerClass_jl) {
@@ -707,7 +710,7 @@
         if (apt.strength >= 20) {
           try {
             target.potionEffects.add('minecraft:wither', 80, 0, false, false)
-          } catch (e2) { warnOnce('Hemorrhage', e2) }
+          } catch (e2) { warnFailed('Hemorrhage', e2) }
         }
 
         // ── True Strength (STR >= 30): execute at <= 5% HP ──
@@ -718,7 +721,7 @@
           var maxHp = Number(target.maxHealth)
           if (hp > 0 && maxHp > 0 && usable(hp) && usable(maxHp)) {
             var remaining = hp - amount
-            if (remaining > 0 && remaining <= maxHp * 0.05 && !isBoss(target)) {
+            if (remaining > 0 && remaining <= maxHp * 0.05 && !sparedByTrueStrength(target)) {
               var shield = Number(target.absorptionAmount)
               if (!(shield > 0) || shield === Infinity) shield = 0
               // far past any armor / protection reduction, still a sane float
@@ -737,7 +740,7 @@
         }
 
         if (amount !== original && usable(amount)) event.amount = amount
-      } catch (e) { warnOnce('hurt handler (dealing)', e) }
+      } catch (e) { warnFailed('hurt handler (dealing)', e) }
     })
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -782,7 +785,7 @@
         }
 
         if (amount !== original && usable(amount)) event.amount = amount
-      } catch (e) { warnOnce('hurt handler (taking)', e) }
+      } catch (e) { warnFailed('hurt handler (taking)', e) }
     })
   }
 
@@ -805,7 +808,7 @@
           player.potionEffects.add('minecraft:speed', 200, 2, false, true)
           player.potionEffects.add('minecraft:haste', 200, 1, false, true)
           puff(player.level, 'minecraft:happy_villager', player.x, player.y + 1, player.z, 0.5, 8, 0)
-        } catch (e2) { warnOnce('Excitement', e2) }
+        } catch (e2) { warnFailed('Excitement', e2) }
       }
 
       // ── Treasure Sense (LCK >= 20): 5% chance to double-roll mob loot ──
@@ -837,7 +840,7 @@
         puff(target.level, 'minecraft:totem_of_undying', x + 0.5, y + 1, z + 0.5, 0.4, 12, 0.1)
         player.tell('§6[Treasure Sense] §fDouble drops!')
       }
-    } catch (e) { warnOnce('death handler', e) }
+    } catch (e) { warnFailed('death handler', e) }
   }))
 
 
@@ -860,7 +863,7 @@
       var itemId = String(stack.id || '')
       if (!itemId || itemId === 'minecraft:air') return
       player.give(Item.of(itemId))
-    } catch (e) { warnOnce('Thrifty Hands', e) }
+    } catch (e) { warnFailed('Thrifty Hands', e) }
   }))
 
   // ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
@@ -914,7 +917,7 @@
         server.runCommandSilent(spawnAt)
         puff(player.level, 'minecraft:happy_villager', x + 0.5, y + 1, z + 0.5, 0.3, 6, 0.1)
       }
-    } catch (e) { warnOnce('mining bonus', e) }
+    } catch (e) { warnFailed('mining bonus', e) }
   }))
 
 

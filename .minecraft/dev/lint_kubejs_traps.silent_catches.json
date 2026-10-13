@@ -62,7 +62,7 @@
     "server_scripts/origins/class_passives_phase6h.js": {"count": 1, "ids": ["b52d2cb2"]},
     "server_scripts/origins/origin_status_commands.js": {"count": 4, "ids": ["0bea85aa","0bc86290","db2fe819","db2fe819"]},
     "server_scripts/origins/phantom_undeath.js": {"count": 1, "ids": ["a5f8c103"]},
-    "server_scripts/origins/spell_book_transfer.js": {"count": 4, "ids": ["6b3c0fff","dce412bf","a1babf3c","c4d844af"]},
+    "server_scripts/origins/spell_book_transfer.js": {"count": 4, "ids": ["0eee0204","dce412bf","a1babf3c","c4d844af"]},
     "server_scripts/origins/ss_unique_spellsword_scaling.js": {"count": 1, "ids": ["3c89212e"]},
     "server_scripts/origins/witch_of_ink_progression.js": {"count": 4, "ids": ["2fa7f9e5","ad069a00","8d16b436","297c126f"]},
     "server_scripts/origins/witherborn_slimebodied.js": {"count": 2, "ids": ["8a6f313a","01ddbeb4"]},

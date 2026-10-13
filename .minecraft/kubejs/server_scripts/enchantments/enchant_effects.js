@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/enchantments/enchant_effects.js
+// @events BlockEvents.broken, hurt, tick.server
 // =============================================================================
 // IridescentCraft — Custom Enchantment Effects
 // File: kubejs/server_scripts/enchantments/enchant_effects.js
@@ -52,8 +54,8 @@ var getEnchLevel = function (entity, enchId) { return core.gearEnchMax(entity, e
 var getWeaponEnchLevel = function (entity, enchId) { return core.heldEnchLevel(entity, enchId) }
 // Sum of the levels across all armor pieces
 var getArmorEnchTotal = function (entity, enchId) { return core.armorEnchTotal(entity, enchId) }
-// entity or registry id
-var isBoss = function (entityOrId) { return core.isBoss(entityOrId) }
+// entity or registry id: the core's own function (the boss registry), not a wrapper around it
+var isBoss = core.isBoss
 
 var PLANETS = {
   'ad_astra:moon': true, 'ad_astra:mars': true, 'ad_astra:mercury': true,

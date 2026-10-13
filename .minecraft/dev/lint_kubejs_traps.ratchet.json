@@ -36,26 +36,10 @@
     },
     "HELPER-COPY": {
       "started": "2026-10-13",
-      "total": 20,
+      "total": 3,
       "files": {
         "server_scripts/0_lib_aptitudes.js": 1,
-        "server_scripts/attributes/mana_pool_bonuses.js": 1,
-        "server_scripts/codex_delivery.js": 1,
-        "server_scripts/enchantments/enchant_effects.js": 1,
-        "server_scripts/origins/artificial_construct_progression.js": 1,
-        "server_scripts/origins/battlemage_arcane_cleave.js": 1,
-        "server_scripts/origins/class_passives.js": 1,
-        "server_scripts/origins/class_passives_phase6h.js": 1,
-        "server_scripts/origins/phantom_undeath.js": 1,
-        "server_scripts/origins/spell_book_transfer.js": 1,
-        "server_scripts/origins/witch_of_ink_progression.js": 1,
-        "server_scripts/origins/witherborn_slimebodied.js": 1,
-        "server_scripts/quests/onboarding_bridge.js": 1,
-        "server_scripts/respec/class_respec.js": 1,
-        "server_scripts/skills/justleveling_skills.js": 2,
-        "server_scripts/skills/mastery_tax.js": 1,
-        "server_scripts/tatos_dimension_lock.js": 2,
-        "server_scripts/ultris_randomizer_janitor.js": 1
+        "server_scripts/tatos_dimension_lock.js": 2
       }
     },
     "ID-SET": {

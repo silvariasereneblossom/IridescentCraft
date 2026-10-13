@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/ultris_randomizer_janitor.js
+// @events tick.server
 // =============================================================================
 // ULTRIS RANDOMIZER JANITOR -- sweep stranded Ultris RNG paper markers
 // File: kubejs/server_scripts/ultris_randomizer_janitor.js  (canonical only;
@@ -55,11 +57,10 @@
   var LEGACY_COMMAND =
     'kill @e[type=item,nbt={Item:{id:"minecraft:paper",tag:{UltrisRandomizerItem:1}}}]'
 
-  var warned = {}
-  var warnOnce = function (key, message) {
-    if (warned[key]) return
-    warned[key] = true
-    try { console.warn('[ultris_randomizer_janitor] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnKeyed = function (key, message) {
+    global.icraft.core.warnOnce('ultris_randomizer_janitor:' + key, '[ultris_randomizer_janitor] ' + message)
   }
 
   // Typed-query plumbing, resolved on the first sweep with a player online.
@@ -89,7 +90,7 @@
       }
     } catch (e2) {
       query = null
-      warnOnce('query', 'typed item-entity query unavailable, using the kill command instead: ' + e2)
+      warnKeyed('query', 'typed item-entity query unavailable, using the kill command instead: ' + e2)
     }
     return query
   }
@@ -120,11 +121,11 @@
       } catch (e2) {
         // The typed query does not work on this build: stop using it.
         query = null
-        warnOnce('sweep', 'typed item-entity sweep failed, using the kill command from now on: ' + e2)
+        warnKeyed('sweep', 'typed item-entity sweep failed, using the kill command from now on: ' + e2)
         legacySweep(server)
       }
     } catch (e) {
-      warnOnce('error', 'sweep error: ' + e)
+      warnKeyed('error', 'sweep error: ' + e)
     }
   }
 

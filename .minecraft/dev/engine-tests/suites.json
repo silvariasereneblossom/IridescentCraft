@@ -66,10 +66,10 @@
                   "suites/ascension_open.js", "lib/summary.js"]]
     },
     {
-      "name": "onboarding-bridge", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 9,
+      "name": "onboarding-bridge", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 11,
       "about": "quests/onboarding_bridge.js: the Level Up dummy fires at any aptitude 2+, waits for its dependency, never without a readable capability",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
-                  {"js": "var T_BRIDGE = '${server:quests/onboarding_bridge.js}', T_WANT = 2, T_WANT_LOG = 'any aptitude at level 2+'; T_loadAll(['${server:00_icraft_guard.js}', '${server:0_tick_master.js}'])"},
+                  {"js": "var T_BRIDGE = '${server:quests/onboarding_bridge.js}', T_WANT = 2, T_WANT_LOG = 'any aptitude at level 2+'; T_loadAll(['${server:00_icraft_guard.js}', '${server:0_lib_core.js}', '${server:0_lib_registry.js}', '${server:0_tick_master.js}'])"},
                   "suites/onboarding_bridge.js", "lib/summary.js"]]
     },
     {

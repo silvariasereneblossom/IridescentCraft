@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/battlemage_arcane_cleave.js
+// @events EntityEvents.death
 // =============================================================================
 // BATTLEMAGE — Arcane Cleave + Mana Reaver
 // =============================================================================
@@ -89,11 +91,10 @@ try {
     try { return String(source.getType()) } catch (e) { return '' }
   }
 
-  var warned = {}
-  var warnOnce = function(where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[battlemage_arcane_cleave] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/battlemage_arcane_cleave:' + where, '[battlemage_arcane_cleave] ' + where + ' threw: ' + e)
   }
 
   // Cosmetic only. Direct particle send (no command parse per hit); switched
@@ -159,7 +160,7 @@ try {
       // Subtle visual: a few enchantment particles on the target
       puff(target, 'minecraft:enchant', 1.0, 0.3, 6, 0.5)
     } catch (e) {
-      warnOnce('hurt handler', e)
+      warnThrew('hurt handler', e)
     }
   })
 
@@ -179,7 +180,7 @@ try {
       // Visual: instant flash of soul-fire particles on the player
       puff(player, 'minecraft:soul_fire_flame', 1.2, 0.3, 8, 0.05)
     } catch (e) {
-      warnOnce('death handler', e)
+      warnThrew('death handler', e)
     }
   }))
 

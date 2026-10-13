@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/origins/class_passives.js
+// @events EntityEvents.death, tick.server
+// @registry dimensions
 // =============================================================================
 // CLASS PASSIVES — KubeJS implementations for origin-described mechanics
 // =============================================================================
@@ -39,18 +42,17 @@
 
   // One line per failing block per script load -- console.warn lines are held
   // in memory until /reload, so a tick path must never log repeatedly.
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[class_passives] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/class_passives:' + where, '[class_passives] ' + where + ' threw: ' + e)
   }
 
   // Per-player fault isolation: one broken player/block must not take the
   // rest of the tick down (or reach TickMaster, which logs every time).
   var eachPlayer = function (server, where, fn) {
     server.players.forEach(function (player) {
-      try { fn(player) } catch (e) { warnOnce(where, e) }
+      try { fn(player) } catch (e) { warnThrew(where, e) }
     })
   }
 
@@ -324,7 +326,7 @@
         }
       })
     } catch (e) {
-      warnOnce('void summoner soul tether', e)
+      warnThrew('void summoner soul tether', e)
     }
   }))
 

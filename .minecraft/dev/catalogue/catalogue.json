@@ -2175,6 +2175,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -2210,6 +2216,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -2653,6 +2663,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -2688,6 +2704,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -3199,9 +3219,6 @@
       }
      ],
      "sections": 0,
-     "registries": [
-      "bosses (through core.isBoss)"
-     ],
      "ownSlots": 3,
      "names": 0,
      "reads": [
@@ -3249,6 +3266,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6058,6 +6079,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -6079,6 +6106,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6129,6 +6160,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6198,6 +6233,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.dims",
        "kind": "global",
        "from": "0_lib_registry.js",
@@ -6239,6 +6280,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -6304,6 +6350,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6471,6 +6521,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -6506,6 +6562,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6536,6 +6596,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -6565,6 +6631,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6692,6 +6762,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -6732,6 +6807,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -6767,6 +6848,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6939,6 +7024,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -6980,6 +7071,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
      ]
     },
     {
@@ -7839,6 +7935,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -7881,6 +7983,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -8476,7 +8582,7 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
@@ -8501,6 +8607,14 @@
        "held": "priority"
       },
       {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
+       ],
+       "held": "priority"
+      },
+      {
        "script": "0_tick_master.js",
        "basis": "load",
        "on": [
@@ -8508,6 +8622,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -8554,6 +8672,12 @@
        "when": "handler"
       },
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -8583,6 +8707,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -9036,6 +9164,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -9051,6 +9185,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -11614,12 +11752,20 @@
      "when": "load"
     },
     {
+     "script": "server:attributes/mana_pool_bonuses.js",
+     "when": "handler"
+    },
+    {
      "script": "server:bonfire/boss_compass_handler.js",
      "when": "handler"
     },
     {
      "script": "server:class/equipment_hp_halving.js",
      "when": "load"
+    },
+    {
+     "script": "server:codex_delivery.js",
+     "when": "handler"
     },
     {
      "script": "server:compat/disable_creeperlings.js",
@@ -11698,7 +11844,15 @@
      "when": "load"
     },
     {
+     "script": "server:origins/artificial_construct_progression.js",
+     "when": "handler"
+    },
+    {
      "script": "server:origins/battlemage_arcane_cleave.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:origins/class_passives.js",
      "when": "handler"
     },
     {
@@ -11710,6 +11864,14 @@
      "when": "handler"
     },
     {
+     "script": "server:origins/phantom_undeath.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:origins/spell_book_transfer.js",
+     "when": "handler"
+    },
+    {
      "script": "server:origins/ss_unique_spellsword_scaling.js",
      "when": "load"
     },
@@ -11718,7 +11880,19 @@
      "when": "load"
     },
     {
+     "script": "server:origins/witherborn_slimebodied.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:quests/onboarding_bridge.js",
+     "when": "handler"
+    },
+    {
      "script": "server:relic_boss_drops.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:respec/class_respec.js",
      "when": "handler"
     },
     {
@@ -11751,6 +11925,10 @@
     },
     {
      "script": "server:skills/justleveling_skills.js",
+     "when": "load"
+    },
+    {
+     "script": "server:skills/mastery_tax.js",
      "when": "handler"
     },
     {
@@ -11764,6 +11942,10 @@
     {
      "script": "server:tetra_terramity_perks.js",
      "when": "load"
+    },
+    {
+     "script": "server:ultris_randomizer_janitor.js",
+     "when": "handler"
     },
     {
      "script": "startup:enchants/icraft_magic_enchants.js",
@@ -12396,8 +12578,10 @@
     "server:apotheosis_gem_repair.js",
     "server:attributes/attribute_sync.js",
     "server:attributes/iss_school_to_ars_spell.js",
+    "server:attributes/mana_pool_bonuses.js",
     "server:bonfire/boss_compass_handler.js",
     "server:class/equipment_hp_halving.js",
+    "server:codex_delivery.js",
     "server:compat/disable_creeperlings.js",
     "server:compat/terramity_cave_gnome_cave_only.js",
     "server:death_penalty.js",
@@ -12417,12 +12601,19 @@
     "server:loot/unique_tier_buff.js",
     "server:loot/zzz_iss_scroll_tier_clamp.js",
     "server:magic_crit_hook.js",
+    "server:origins/artificial_construct_progression.js",
     "server:origins/battlemage_arcane_cleave.js",
+    "server:origins/class_passives.js",
     "server:origins/class_passives_phase6h.js",
     "server:origins/origin_effects.js",
+    "server:origins/phantom_undeath.js",
+    "server:origins/spell_book_transfer.js",
     "server:origins/ss_unique_spellsword_scaling.js",
     "server:origins/witch_of_ink_progression.js",
+    "server:origins/witherborn_slimebodied.js",
+    "server:quests/onboarding_bridge.js",
     "server:relic_boss_drops.js",
+    "server:respec/class_respec.js",
     "server:scaling/boss_hp.js",
     "server:scaling/boss_progressive.js",
     "server:scaling/dimension_mechanics.js",
@@ -12431,13 +12622,15 @@
     "server:scaling/zz_ascension_scaling.js",
     "server:scaling/zz_boss_global_3x.js",
     "server:skills/justleveling_skills.js",
+    "server:skills/mastery_tax.js",
     "server:skills/skill_effects.js",
     "server:strip_anomalous_drops.js",
     "server:tetra_terramity_perks.js",
+    "server:ultris_randomizer_janitor.js",
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 17
+   "usersAtLoad": 18
   },
   "origins": {
    "script": "server:0_lib_origins.js",

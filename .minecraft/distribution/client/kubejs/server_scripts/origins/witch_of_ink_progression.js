@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/origins/witch_of_ink_progression.js
+// @events EntityEvents.death, PlayerEvents.loggedIn, PlayerEvents.respawned, tick.server
+// @registry bosses
 // =============================================================================
 // WITCH OF INK — Boss Kill Counter, Hyperscaling Damage, Penthesilea Capstone
 // =============================================================================
@@ -44,11 +47,10 @@
     }
   }
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[witch_of_ink] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/witch_of_ink_progression:' + where, '[witch_of_ink] ' + where + ' threw: ' + e)
   }
 
   // The "dimensional bosses" (+10 on the counter) are the entries of the boss
@@ -102,7 +104,7 @@
       forgeData.putInt('icraft_witch_ink_counter', data.getInt('icraft_witch_ink_counter'))
       forgeData.putBoolean('icraft_witch_penthesilea', data.getBoolean('icraft_witch_penthesilea'))
     } catch (e) {
-      warnOnce('jar counter sync', e)
+      warnThrew('jar counter sync', e)
     }
   }
 
@@ -179,7 +181,7 @@
       syncToJar(player)
       applyPenthesileaHP(player)
     } catch (e) {
-      warnOnce('boss-kill counter', e)
+      warnThrew('boss-kill counter', e)
     }
   }))
 
@@ -201,7 +203,7 @@
         if (!isWitchOfInk(player)) return
         applyPenthesileaBuffs(player)
       } catch (e) {
-        warnOnce('buff tick', e)
+        warnThrew('buff tick', e)
       }
     })
   }
@@ -220,7 +222,7 @@
       applyPenthesileaHP(player)
       applyPenthesileaBuffs(player)
     } catch (e) {
-      warnOnce('login/respawn restore', e)
+      warnThrew('login/respawn restore', e)
     }
   }
   PlayerEvents.loggedIn(icraft.guard('origins/witch_of_ink_progression', 'PlayerEvents.loggedIn', restore))

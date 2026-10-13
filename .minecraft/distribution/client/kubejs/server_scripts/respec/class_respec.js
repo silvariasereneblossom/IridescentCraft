@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/respec/class_respec.js
+// @events ItemEvents.rightClicked, PlayerEvents.loggedOut, ServerEvents.loaded, ServerEvents.recipes, tick.player, tick.server
 // =============================================================================
 // IridescentCraft — Class Respec Station
 // File: kubejs/server_scripts/respec/class_respec.js
@@ -74,11 +76,10 @@
   var IS_TROPHY = {}
   TROPHIES.forEach(function (id) { IS_TROPHY[id] = true })
 
-  var warned = {}
-  var warnOnce = function (key, message) {
-    if (warned[key]) return
-    warned[key] = true
-    try { console.warn('[class_respec] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnKeyed = function (key, message) {
+    global.icraft.core.warnOnce('respec/class_respec:' + key, '[class_respec] ' + message)
   }
 
   var tell = function (player, message) {
@@ -139,7 +140,7 @@
       out.known = true
       out.id = id ? String(id) : null
     } catch (e) {
-      warnOnce('resolver', 'class lookup failed: ' + e)
+      warnKeyed('resolver', 'class lookup failed: ' + e)
     }
     return out
   }
@@ -164,30 +165,30 @@
     try {
       ran = Number(player.server.runCommandSilent('origin gui ' + player.username + ' ' + CLASS_LAYER))
     } catch (e) {
-      warnOnce('command', '`origin gui` threw: ' + e)
+      warnKeyed('command', '`origin gui` threw: ' + e)
       return false
     }
     if (!(ran > 0)) {
-      warnOnce('command0', '`origin gui <player> ' + CLASS_LAYER + '` returned 0 (command missing or layer unknown)')
+      warnKeyed('command0', '`origin gui <player> ' + CLASS_LAYER + '` returned 0 (command missing or layer unknown)')
       return false
     }
     var after = readClass(player, true)
     if (after.known && after.id !== null) {
-      warnOnce('noreset', '`origin gui` ran but the class layer still holds ' + after.id)
+      warnKeyed('noreset', '`origin gui` ran but the class layer still holds ' + after.id)
       return false
     }
     return true
   }
 
   var takeLevels = function (player, cost, before) {
-    try { player.addXPLevels(-cost) } catch (e) { warnOnce('xp', 'addXPLevels failed: ' + e) }
+    try { player.addXPLevels(-cost) } catch (e) { warnKeyed('xp', 'addXPLevels failed: ' + e) }
     var after = before
     try { after = Number(player.xpLevel) } catch (e2) {}
     if (!(after <= before - cost)) {
       // Something vetoed the level change (it is a cancellable Forge event).
       // The respec already happened, so set the level directly.
       try { player.setXpLevel(Math.max(0, before - cost)) } catch (e3) {
-        warnOnce('xpset', 'could not take ' + cost + ' levels: ' + e3)
+        warnKeyed('xpset', 'could not take ' + cost + ' levels: ' + e3)
       }
     }
   }
@@ -250,7 +251,7 @@
     }
 
     // 4. the respec happened: take the cost.
-    try { trophy.shrink(1) } catch (e4) { warnOnce('trophy', 'could not consume the trophy: ' + e4) }
+    try { trophy.shrink(1) } catch (e4) { warnKeyed('trophy', 'could not consume the trophy: ' + e4) }
     takeLevels(player, XP_COST, levels)
 
     // 5. watch for the new class.
@@ -270,7 +271,7 @@
     try {
       useAltar(player)
     } catch (e) {
-      warnOnce('use', 'altar use failed: ' + e)
+      warnKeyed('use', 'altar use failed: ' + e)
     }
   }))
 

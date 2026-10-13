@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/quests/onboarding_bridge.js
+// @events PlayerEvents.loggedOut, tick.player
+// @live quest-bridge
 // =============================================================================
 // kubejs/server_scripts/quests/onboarding_bridge.js
 //
@@ -72,11 +75,10 @@
   // this level or above (see header). The quest text states the same number.
   var APTITUDE_LEVEL = 2
 
-  var warned = {}
-  var warnOnce = function (key, message) {
-    if (warned[key]) return
-    warned[key] = true
-    try { console.warn('[onboarding_bridge] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnKeyed = function (key, message) {
+    global.icraft.core.warnOnce('quests/onboarding_bridge:' + key, '[onboarding_bridge] ' + message)
   }
 
   // ---- JustLevelingFork ------------------------------------------------------
@@ -89,7 +91,7 @@
         aptitudeClass = Java.loadClass('com.seniors.justlevelingfork.common.capability.AptitudeCapability')
       } catch (e) {
         aptitudeClass = null
-        warnOnce('jlf', 'JustLevelingFork AptitudeCapability not loadable -- onboarding_first_level cannot complete: ' + e)
+        warnKeyed('jlf', 'JustLevelingFork AptitudeCapability not loadable -- onboarding_first_level cannot complete: ' + e)
       }
     }
     return aptitudeClass
@@ -110,7 +112,7 @@
         if (level > top) top = level
       }
     } catch (e) {
-      warnOnce('jlfread', 'reading the aptitude capability failed: ' + e)
+      warnKeyed('jlfread', 'reading the aptitude capability failed: ' + e)
       return 0
     }
     return top
@@ -137,7 +139,7 @@
       var api = global.icraft ? global.icraft.heracles : null
       if (api && api.available()) return api
     } catch (e) {}
-    warnOnce('heracles', 'global.icraft.heracles unavailable -- firing dummies blind (no completion check)')
+    warnKeyed('heracles', 'global.icraft.heracles unavailable -- firing dummies blind (no completion check)')
     return null
   }
 
@@ -169,7 +171,7 @@
       console.log('[onboarding_bridge] ' + player.username + ' completed ' + bridge.quest +
         ' (dummy ' + bridge.dummy + ')')
     } else {
-      warnOnce('nofire:' + bridge.quest, '`heracles dummy ' + bridge.dummy + '` ran for ' + player.username +
+      warnKeyed('nofire:' + bridge.quest, '`heracles dummy ' + bridge.dummy + '` ran for ' + player.username +
         ' but ' + bridge.quest + ' is still incomplete -- is the dummy value still in the quest JSON? Retrying every pass')
     }
   }
@@ -183,7 +185,7 @@
       try {
         runBridge(player, BRIDGES[i], api)
       } catch (e) {
-        warnOnce('bridge:' + BRIDGES[i].quest, BRIDGES[i].quest + ' bridge failed: ' + e)
+        warnKeyed('bridge:' + BRIDGES[i].quest, BRIDGES[i].quest + ' bridge failed: ' + e)
       }
     }
   })

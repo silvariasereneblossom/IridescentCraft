@@ -3,6 +3,7 @@
 var H_done = {}        // 'player|quest' -> true
 var H_deps = {}        // 'player|quest' -> true when every dependency is complete
 var H_fired = []
+var H_stuck = {}      // player name -> true: the dummy runs and the quest stays incomplete
 var hk = function (p, q) { return String(p.username) + '|' + q }
 global.icraft = global.icraft || {}
 global.icraft.heracles = {
@@ -11,6 +12,7 @@ global.icraft.heracles = {
   depsComplete: function (p, q) { return H_deps[hk(p, q)] === true },
   fireDummy: function (p, dummy) {
     H_fired.push(String(p.username) + ':' + dummy)
+    if (H_stuck[String(p.username)] === true) return
     if (dummy === 'jlf_level_5_reached') H_done[hk(p, 'onboarding_first_level')] = true
     if (dummy === 'onboarding_survivor_capstone_check') H_done[hk(p, 'onboarding_survivor_capstone')] = true
   }
@@ -56,4 +58,21 @@ T_run('bridge: unreadable capability never completes it', function () {
   H_deps[hk(p, 'onboarding_first_level')] = true
   pass()
   ok(fired('Ghost') === 0, 'no capability: not fired')
+})
+
+// The script's own warning lines go through global.icraft.core.warnOnce since 2026-10-13 (its copy
+// of that helper is gone, as in fourteen other scripts): one line per key per script load, with the
+// core's wording. This is the one such line a suite can reach without breaking a mock.
+T_run('bridge: a dummy that does not land is said once, through core.warnOnce', function () {
+  var p = T_newPlayer('Echo'); A.cap(p); A.apt(p, 'luck', T_WANT)
+  H_deps[hk(p, 'onboarding_first_level')] = true
+  H_stuck.Echo = true
+  var before = T_LOG.warn.length
+  pass(); pass()
+  var lines = T_LOG.warn.slice(before).filter(function (l) {
+    return l.indexOf('[onboarding_bridge] ') === 0 && l.indexOf('onboarding_first_level is still incomplete') >= 0
+  })
+  ok(fired('Echo') === 2, 'the dummy is fired again on every pass while the quest stays incomplete (' + fired('Echo') + ')')
+  ok(lines.length === 1 && /\(logged once per script load\)$/.test(lines[0]),
+    'two failed passes, ONE warning, ending with the core\'s "once" wording: ' + lines.join(' / '))
 })

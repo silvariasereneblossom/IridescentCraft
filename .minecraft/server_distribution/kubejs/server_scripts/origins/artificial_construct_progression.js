@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/artificial_construct_progression.js
+// @events ItemEvents.rightClicked, PlayerEvents.loggedIn, PlayerEvents.respawned
 // =============================================================================
 // ARTIFICIAL CONSTRUCT — Iron Eating & Upgrade Progression
 // =============================================================================
@@ -35,11 +37,10 @@
   var CAPSTONE_AD_BONUS = 0.25
   var CAPSTONE_TOUGHNESS_BONUS = 1.0  // ADD_VALUE (matches L1-L5 scale of bonus*4)
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[artificial_construct] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/artificial_construct_progression:' + where, '[artificial_construct] ' + where + ' threw: ' + e)
   }
 
   var applyConstructBonuses = function (player) {
@@ -159,7 +160,7 @@
         eatIron(player, item, 9, 9, 4.5, 0.8, 0.8)
       }
     } catch (e) {
-      warnOnce('right-click handler', e)
+      warnThrew('right-click handler', e)
     }
     // cancel() works by throwing -- it must stay outside the try above
     if (handled) event.cancel()
@@ -172,7 +173,7 @@
     try {
       if (isArtificialConstruct(event.player)) applyConstructBonuses(event.player)
     } catch (e) {
-      warnOnce('bonus re-apply', e)
+      warnThrew('bonus re-apply', e)
     }
   }
   PlayerEvents.loggedIn(icraft.guard('origins/artificial_construct_progression', 'PlayerEvents.loggedIn', reapply))

@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/spell_book_transfer.js
+// @events PlayerEvents.inventoryChanged, PlayerEvents.loggedOut, tick.player
 // =============================================================================
 // MODULAR SPELL BOOK — preserve inscribed spells through Tetra replacement
 // =============================================================================
@@ -62,11 +64,10 @@
   // username -> { slotIndex: { id, spells } }
   var inventorySnapshots = {}
 
-  var warned = {}
-  var warnOnce = function (key, message) {
-    if (warned[key]) return
-    warned[key] = true
-    try { console.warn('[spell_book_transfer] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnKeyed = function (key, message) {
+    global.icraft.core.warnOnce('origins/spell_book_transfer:' + key, '[spell_book_transfer] ' + message)
   }
 
   var isVanillaSpellBook = function (itemId) {
@@ -94,10 +95,10 @@
         if (isVanillaSpellBook(id)) ids.push(id)
       }
       books = (ids.length > 0) ? Ingredient.of(ids) : null
-      if (ids.length === 0) warnOnce('none', 'no vanilla spell-book items in the item registry')
+      if (ids.length === 0) warnKeyed('none', 'no vanilla spell-book items in the item registry')
     } catch (e) {
       books = null
-      warnOnce('resolve', 'could not pre-resolve the spell-book set, using the full slot walk: ' + e)
+      warnKeyed('resolve', 'could not pre-resolve the spell-book set, using the full slot walk: ' + e)
     }
     return books
   }
@@ -127,7 +128,7 @@
         try { present = inv.find(set) >= 0 } catch (e) {
           books = null
           set = null
-          warnOnce('find', 'inventory.find(ingredient) failed, using the full slot walk: ' + e)
+          warnKeyed('find', 'inventory.find(ingredient) failed, using the full slot walk: ' + e)
         }
       }
       if (present) {
@@ -196,7 +197,7 @@
       console.log('[spell_book_transfer] ' + name + ': copied spells from ' + prev.id +
                   ' (slot ' + slot + ') to ' + id)
     } catch (e) {
-      warnOnce('changed', 'inventoryChanged threw: ' + e)
+      warnKeyed('changed', 'inventoryChanged threw: ' + e)
     }
   }))
 

@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/skills/mastery_tax.js
+// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, ServerEvents.loaded, tick.server
 // =============================================================================
 // MASTERY TAX — Escalating XP cost for JustLeveling aptitude breadth
 // =============================================================================
@@ -54,11 +56,10 @@
     return Math.floor(800 * (investedLevels - 96) + 8000)
   }
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    try { console.warn('[mastery_tax] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnFailed = function (where, e) {
+    global.icraft.core.warnOnce('skills/mastery_tax:' + where, '[mastery_tax] ' + where + ' failed: ' + e)
   }
 
   // uuid -> cumulative aptitude total at the last readable pass (session memory)
@@ -107,7 +108,7 @@
     event.server.players.forEach(function (player) {
       try {
         checkPlayer(player)
-      } catch (e) { warnOnce('tax pass', e) }
+      } catch (e) { warnFailed('tax pass', e) }
     })
   }
   global.registerServerTick('tick_masteryTax', 40, 0, onTick)

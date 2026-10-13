@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/witherborn_slimebodied.js
+// @events EntityEvents.hurt, ItemEvents.rightClicked, PlayerEvents.inventoryChanged, PlayerEvents.loggedOut, tick.server
 // =============================================================================
 // WITHERBORN & SLIMEBODIED — Custom Origin Mechanics
 // =============================================================================
@@ -14,11 +16,10 @@
     try { return global.icraft.origin.get(player, 'origin') } catch (e) { return null }
   }
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[witherborn_slimebodied] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/witherborn_slimebodied:' + where, '[witherborn_slimebodied] ' + where + ' threw: ' + e)
   }
 
   // ===========================================================================
@@ -43,7 +44,7 @@
       // Wither II for 5 seconds
       target.potionEffects.add('minecraft:wither', 100, 1, false, true)
     } catch (e) {
-      warnOnce('wither-on-hit', e)
+      warnThrew('wither-on-hit', e)
     }
   }))
 
@@ -112,7 +113,7 @@
           }
         }
       } catch (e) {
-        warnOnce('tick', e)
+        warnThrew('tick', e)
       }
     })
   }
@@ -161,7 +162,7 @@
         }
       }
     } catch (e) {
-      warnOnce('food right-click', e)
+      warnThrew('food right-click', e)
     }
     // cancel() works by throwing -- it must stay outside the try above
     if (blocked) event.cancel()
@@ -184,7 +185,7 @@
       }
       if (currentFood !== lastFood) data.putInt('icraft_slime_last_food', currentFood)
     } catch (e) {
-      warnOnce('food tracker', e)
+      warnThrew('food tracker', e)
     }
   }))
 

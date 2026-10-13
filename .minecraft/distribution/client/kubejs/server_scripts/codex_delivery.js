@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/codex_delivery.js
+// @events PlayerEvents.chat, PlayerEvents.loggedIn, ServerEvents.commandRegistry, ServerEvents.recipes, tick.server
 // =============================================================================
 // IRIDESCENT CODEX — First-Join Delivery, Magic Starter Kit & Book Suppression
 // =============================================================================
@@ -50,11 +52,10 @@
   var CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
   var CODEX_FLAG = 'icraft_codex_given'
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[codex] ' + where + ' (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnAbout = function (where, e) {
+    global.icraft.core.warnOnce('codex_delivery:' + where, '[codex] ' + where + ': ' + e)
   }
 
   // ── Magic class starter kit ────────────────────────────────────────────────
@@ -158,7 +159,7 @@
         }
       } catch (e) {
         issClasses = false
-        warnOnce('Iron\'s Spellbooks classes not loadable -- starter scrolls fall back to NBT', e)
+        warnAbout('Iron\'s Spellbooks classes not loadable -- starter scrolls fall back to NBT', e)
       }
     }
     return issClasses || null
@@ -184,9 +185,9 @@
           iss.ISpellContainer.createScrollContainer(spell, level, stack)
           return stack
         }
-        warnOnce('starter scroll: unknown spell ' + spellId + ' -- using the NBT form', 'not in the ISS spell registry')
+        warnAbout('starter scroll: unknown spell ' + spellId + ' -- using the NBT form', 'not in the ISS spell registry')
       } catch (e) {
-        warnOnce('starter scroll: ISS API path failed -- using the NBT form', e)
+        warnAbout('starter scroll: ISS API path failed -- using the NBT form', e)
       }
     }
     try {
@@ -194,7 +195,7 @@
         '{"irons_spellbooks:spell_container":{data:[{id:"' + spellId + '",index:0,level:' + level +
         ',locked:1b}],maxSpells:1,mustEquip:0b,spellWheel:0b}}')
     } catch (e2) {
-      warnOnce('starter scroll: NBT path failed -- giving a blank scroll', e2)
+      warnAbout('starter scroll: NBT path failed -- giving a blank scroll', e2)
     }
     return Item.of('irons_spellbooks:scroll')
   }
@@ -246,14 +247,14 @@
         // isEmpty is a METHOD on ItemStack. An unknown item id resolves to an
         // empty stack and player.give() of it silently gives nothing.
         if (!stack || stack.isEmpty()) {
-          warnOnce('starter kit entry "' + label + '" does not resolve to an item -- skipped', 'empty stack')
+          warnAbout('starter kit entry "' + label + '" does not resolve to an item -- skipped', 'empty stack')
         } else {
           player.give(stack)
           delivered++
           given = true
         }
       } catch (e) {
-        warnOnce('starter kit entry "' + label + '" could not be given', e)
+        warnAbout('starter kit entry "' + label + '" could not be given', e)
       }
       if (!given && entry.book) booksMissing++
       if (!given && entry.scroll) scrollsMissing++
@@ -273,7 +274,7 @@
       player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName(className) + "'s catalyst has been added to your inventory.")
       player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
     } catch (e) {
-      warnOnce('starter kit message', e)
+      warnAbout('starter kit message', e)
     }
     return 'granted'
   }
@@ -302,7 +303,7 @@
       var stack = null
       try { stack = entryStack(entry) } catch (e) { stack = null }
       if (!stack || stack.isEmpty()) {
-        warnOnce('starter kit top-up: "' + entryLabel(entry) + '" does not resolve to an item -- top-up postponed', 'empty stack')
+        warnAbout('starter kit top-up: "' + entryLabel(entry) + '" does not resolve to an item -- top-up postponed', 'empty stack')
         return 'failed'
       }
       stacks.push(stack)
@@ -314,7 +315,7 @@
     data.putBoolean(fullKey, true)
     data.putBoolean(MAGIC_SCROLLS_PREFIX + className, true)
     for (var j = 0; j < stacks.length; j++) {
-      try { player.give(stacks[j]) } catch (e3) { warnOnce('starter kit top-up: an item could not be given', e3) }
+      try { player.give(stacks[j]) } catch (e3) { warnAbout('starter kit top-up: an item could not be given', e3) }
     }
     console.log('[codex/starter] ' + className + ' kit top-up -> ' + player.username + ': ' + books +
       ' book(s) + ' + (stacks.length - books) + ' scroll(s) the original kit never contained')
@@ -323,7 +324,7 @@
         ' starter kit was missing its spell book' + (books > 1 ? 's' : '') +
         (stacks.length > books ? ' and scrolls' : '') + ' \u2014 they have been added to your inventory.')
     } catch (e2) {
-      warnOnce('starter kit top-up message', e2)
+      warnAbout('starter kit top-up message', e2)
     }
     return 'topped-up'
   }
@@ -411,7 +412,7 @@
         if (data.contains(OBSOLETE_KEYS[i])) data.remove(OBSOLETE_KEYS[i])
       }
     } catch (e) {
-      warnOnce('login delivery', e)
+      warnAbout('login delivery', e)
     }
   }))
 
@@ -425,7 +426,7 @@
       try {
         grantStarterForOwnClass(player)
       } catch (e) {
-        warnOnce('starter check', e)
+        warnAbout('starter check', e)
       }
     })
   }
@@ -473,7 +474,7 @@
         try { global.icraft.origin.invalidate(player) } catch (e) {}
         dumpOrigins(player)
       } catch (e) {
-        warnOnce('origin dump', e)
+        warnAbout('origin dump', e)
       }
     })
   }
@@ -534,7 +535,7 @@
 
         // --- !origindump is handled by tick_codexOriginDump above ---
       } catch (e) {
-        warnOnce('chat command processing', e)
+        warnAbout('chat command processing', e)
       }
     })
   }

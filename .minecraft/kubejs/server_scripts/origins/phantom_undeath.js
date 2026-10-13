@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/phantom_undeath.js
+// @events EntityEvents.death, tick.server
 // =============================================================================
 // PHANTOM — Spectral Undeath
 // =============================================================================
@@ -31,11 +33,10 @@
     }
   }
 
-  var warned = {}
-  var warnOnce = function (where, e) {
-    if (warned[where]) return
-    warned[where] = true
-    console.warn('[phantom_undeath] ' + where + ' threw (logged once): ' + e)
+  // once per failing block per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('origins/phantom_undeath:' + where, '[phantom_undeath] ' + where + ' threw: ' + e)
   }
 
   var COLLAPSE_TICKS = 6000  // 5 minutes
@@ -82,10 +83,10 @@
           'title ' + name + ' subtitle {"text":"Your form holds... barely.","color":"dark_gray"}'
         )
       } catch (e) {
-        warnOnce('collapse effects', e)
+        warnThrew('collapse effects', e)
       }
     } catch (e) {
-      warnOnce('death handler', e)
+      warnThrew('death handler', e)
     }
     if (revived) event.cancel()
   }))
@@ -104,7 +105,7 @@
           player.tell('\u00a77Your spectral form stabilizes. You feel whole again.')
         }
       } catch (e) {
-        warnOnce('collapse tick', e)
+        warnThrew('collapse tick', e)
       }
     })
   }

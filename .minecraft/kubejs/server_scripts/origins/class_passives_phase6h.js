@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/class_passives_phase6h.js
+// @events EntityEvents.death, PlayerEvents.loggedIn, PlayerEvents.respawned, ServerEvents.tick
 // =============================================================================
 // CLASS PASSIVES — Phase 6H additions
 // =============================================================================
@@ -37,16 +39,15 @@
       }
     }
 
-    var warned = {}
-    var warnOnce = function (where, e) {
-      if (warned[where]) return
-      warned[where] = true
-      console.warn('[class_passives_phase6h] ' + where + ' threw (logged once): ' + e)
+    // once per failing block per script load: the table and the wording of "once" are
+    // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+    var warnThrew = function (where, e) {
+      global.icraft.core.warnOnce('origins/class_passives_phase6h:' + where, '[class_passives_phase6h] ' + where + ' threw: ' + e)
     }
 
     var eachPlayer = function (server, where, fn) {
       server.players.forEach(function (player) {
-        try { fn(player) } catch (e) { warnOnce(where, e) }
+        try { fn(player) } catch (e) { warnThrew(where, e) }
       })
     }
 
@@ -158,7 +159,7 @@
         data.putInt('icraft_berserker_tranceActive', 0)
         data.putInt('icraft_wanderer_adaptActive', 0)
       } catch (e) {
-        warnOnce('flag reset', e)
+        warnThrew('flag reset', e)
       }
     }
     PlayerEvents.loggedIn(icraft.guard('origins/class_passives_phase6h', 'PlayerEvents.loggedIn', resetTransientFlags))
@@ -247,7 +248,7 @@
           }
         }
       } catch (e) {
-        warnOnce('damage handler', e)
+        warnThrew('damage handler', e)
       }
     })
 
@@ -268,7 +269,7 @@
         }
         data.putLong('icraft_samurai_firstStrikeTick', 0)
       } catch (e) {
-        warnOnce('bushido death handler', e)
+        warnThrew('bushido death handler', e)
       }
     }))
 

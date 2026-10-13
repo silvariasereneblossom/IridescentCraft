@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/attributes/mana_pool_bonuses.js
+// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, tick.server
 // =============================================================================
 // MANA POOL BONUSES (2026-05-15 v2) — flat 1.5x for the three magic classes
 // =============================================================================
@@ -45,11 +47,10 @@
     var manaAttrRl = ResourceLocation_mp.tryParse(MANA_ATTR_ID)
     var manaAttr = manaAttrRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(manaAttrRl) : null
 
-    var warned = {}
-    var warnOnce = function (where, e) {
-      if (warned[where]) return
-      warned[where] = true
-      console.warn('[mana_pool] ' + where + ' threw (logged once): ' + e)
+    // once per failing block per script load: the table and the wording of "once" are
+    // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+    var warnThrew = function (where, e) {
+      global.icraft.core.warnOnce('attributes/mana_pool_bonuses:' + where, '[mana_pool] ' + where + ' threw: ' + e)
     }
 
     // 'archmage' | 'battlemage' | 'void_summoner' | null
@@ -157,8 +158,8 @@
     }
 
     var update = function (player) {
-      try { scrubStaleOnce(player) } catch (e) { warnOnce('legacy scrub', e) }
-      try { applyMageBuff(player) } catch (e) { warnOnce('applyMageBuff', e) }
+      try { scrubStaleOnce(player) } catch (e) { warnThrew('legacy scrub', e) }
+      try { applyMageBuff(player) } catch (e) { warnThrew('applyMageBuff', e) }
     }
 
     // ── Tick + login wiring ────────────────────────────────────────────────
