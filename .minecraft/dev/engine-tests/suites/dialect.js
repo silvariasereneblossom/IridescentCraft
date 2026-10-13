@@ -29,6 +29,20 @@ eq(outcome(function () { var fs = []; for (var i = 0; i < 3; i++) { var v = i; f
   'a closure over a var in the loop body sees its own iteration (var is block-scoped here)')
 eq(outcome(function () { var fs = []; for (let i = 0; i < 3; i++) fs.push(function () { return i }); return fs.map(function (f) { return f() }).join(',') }), '3,3,3',
   'closures over the for-HEAD variable all see its final value (unlike ES6): copy it into a body let first')
+// 2026-10-13: the same holds for EVERY loop head, whatever the keyword and whatever the loop. These six are what
+// lint rule LOOP-CLOSURE (lint_kubejs_traps.js) rests on; if one changes, the rule is wrong.
+eq(outcome(function () { var fs = []; for (var i = 0; i < 3; i++) fs.push(function () { return i }); return fs.map(function (f) { return f() }).join(',') }), '3,3,3',
+  'closures over a `var` for-head variable see its final value')
+eq(outcome(function () { var fs = []; for (let k in { a: 1, b: 2, c: 3 }) fs.push(function () { return k }); return fs.map(function (f) { return f() }).join(',') }), 'c,c,c',
+  'closures over a `let` for-IN head variable all see the LAST key (ES6: a,b,c)')
+eq(outcome(function () { var fs = []; for (const k in { a: 1, b: 2, c: 3 }) fs.push(function () { return k }); return fs.map(function (f) { return f() }).join(',') }), 'c,c,c',
+  'closures over a `const` for-IN head variable all see the LAST key (ES6: a,b,c)')
+eq(outcome(function () { var fs = []; for (let v of [1, 2, 3]) fs.push(function () { return v }); return fs.map(function (f) { return f() }).join(',') }), '3,3,3',
+  'closures over a `let` for-OF head variable all see the LAST element (ES6: 1,2,3)')
+eq(outcome(function () { var fs = []; for (const v of [1, 2, 3]) fs.push(function () { return v }); return fs.map(function (f) { return f() }).join(',') }), '3,3,3',
+  'closures over a `const` for-OF head variable all see the LAST element (ES6: 1,2,3)')
+eq(outcome(function () { var fs = []; [1, 2, 3].forEach(function (v) { fs.push(function () { return v }) }); return fs.map(function (f) { return f() }).join(',') }), '1,2,3',
+  'a closure over a PARAMETER of the callback (forEach) sees its own call: that is the safe form')
 
 section('const inside try')
 var D_constTry = function () {
@@ -108,6 +122,13 @@ eq(typeof D_s.toUpperCase(), 'object', 'String methods return Java strings again
 eq(D_s.replace(/[:\/]/g, '_'), 'minecraft:diamond', 'x.replace(/regex/, ..) changes NOTHING (Java replace takes the regex as literal text)')
 eq(String(D_s).replace(/[:\/]/g, '_'), 'minecraft_diamond', 'String(x).replace(/regex/, ..) works')
 eq(outcome(function () { return D_s.charCodeAt(0) + 1 }), 'NaN', 'x.charCodeAt(i) is a raw java.lang.Character: NaN in arithmetic (use codePointAt)')
+// 2026-10-13: it is wrong on a plain JS string as well, and in every use, not only in arithmetic. These four are
+// what lint rule CHARCODEAT rests on.
+eq(outcome(function () { return 'abc'.charCodeAt(1) + 0 }), 'NaN', "'abc'.charCodeAt(1) + 0 is NaN on a JS string too")
+eq(outcome(function () { return 'abc'.charCodeAt(1) === 98 }), 'false', "'abc'.charCodeAt(1) === 98 is false")
+eq(outcome(function () { return 'abc'.charCodeAt(1) < 100 }), 'false', "'abc'.charCodeAt(1) < 100 is false")
+ok(String(outcome(function () { return typeof 'abc'.charCodeAt(1) })).indexOf('THROWS InternalError: Invalid JavaScript value of type java.lang.Character') === 0,
+  'typeof x.charCodeAt(i) THROWS (InternalError: Invalid JavaScript value of type java.lang.Character)')
 eq(D_s.codePointAt(0), 109, 'x.codePointAt(i) is a number')
 ok(String(outcome(function () { return D_s.substring(0, 99) })).indexOf('StringIndexOutOfBounds') >= 0, 'an out-of-range substring throws a Java exception')
 

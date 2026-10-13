@@ -15,7 +15,9 @@ name: KubeJS script checks
 #           the tip BEFORE this push: a count that went up, or a file that appeared with a count,
 #           fails. The lint alone compares the scripts with the counts file of the same tree, so a
 #           raised count passed it (decision sheet G20). And the lint's own test
-#           (lint_kubejs_traps.test.js: the ratchet cases in a temporary git repository).
+#           (lint_kubejs_traps.test.js: every fixture under dev/lint-fixtures is flagged exactly as it
+#           marks itself, the members the lint calls missing are the engine suite's, and the ratchet
+#           cases in a temporary git repository).
 # Not here: the loot audit (it needs the whole instance) and the real-engine boot (a Forge server).
 # The bare-method-reference check has its own workflow (kubejs-method-ref-validator.yml).
 
@@ -27,6 +29,7 @@ on:
       - '.minecraft/kubejs/startup_scripts/**'
       - '.minecraft/kubejs/client_scripts/**'
       - '.minecraft/dev/lint_kubejs_*'
+      - '.minecraft/dev/lint-fixtures/**'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
       - '.minecraft/kubejs/config/icraft/**'
@@ -44,6 +47,7 @@ on:
       - '.minecraft/kubejs/startup_scripts/**'
       - '.minecraft/kubejs/client_scripts/**'
       - '.minecraft/dev/lint_kubejs_*'
+      - '.minecraft/dev/lint-fixtures/**'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
       - '.minecraft/kubejs/config/icraft/**'

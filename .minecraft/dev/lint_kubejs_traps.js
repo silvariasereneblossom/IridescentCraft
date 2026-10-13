@@ -4,6 +4,8 @@
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js              # all kubejs scripts
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js a.js b.js    # just these
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --exceptions # also list every recorded exception
+//   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-down             # lower the grandfathered counts
+//   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-start=ID-SET     # a new ratcheted rule's first counts
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-base=origin/main
 //                                                    # only compare the grandfathered counts with that commit
 //
@@ -43,6 +45,44 @@
 //                                                  event = the registration it is passed to, as written
 //                     section(name, function)      name  = '<this script>/<part>', unique in the file
 //                   -> "[icraft.guard] FAILED <name> in <event>" would point at the wrong script or event
+//
+// Rules of 2026-10-13 (package H; each proven by a fixture under dev/lint-fixtures, run by lint_kubejs_traps.test.js):
+//   FILE-PROPERTY   a comment line KubeJS acts on. It reads EVERY line `// <word> <word>` of a script as a file
+//                   property (ScriptFileInfo.preload: ^(\w+)\s*[:=]?\s*(-?\w+)$, the colon optional, anywhere in the
+//                   file). `// ignored true` or `// ignore true` switches the file off, `// packmode x` and
+//                   `// requires y` skip it unless that mode / mod is there, `// priority high` makes it fail to load,
+//                   and `// priority 5` reorders the load: none of it writes a log line. A deliberate
+//                   `// priority: N` is recorded as an exception, with its reason.
+//   LOOP-CLOSURE    a function created in a loop body that reads the loop's HEAD variable and is not called at once
+//                   -> it sees the value the loop ENDED with. Measured on the production Rhino (suite dialect): true
+//                   for `let`, `const` and `var`, in for, for-in and for-of. An argument of forEach / map / filter /
+//                   some / every / find / reduce / sort / replace and an IIFE run in their own iteration: not flagged.
+//   CHARCODEAT      .charCodeAt(..) -> a raw java.lang.Character: NaN in arithmetic, false in comparisons, a throw in
+//                   typeof and concatenation. Use .codePointAt(..)
+//   ID-SET          new Set(..) / new Map(..) -> never matches a string that comes from Java (`.has` false, `.get`
+//                   undefined). Use global.icraft.core.idSet([...]). Ratcheted.
+//   NO-SUCH-MEMBER  the members the failure ledger knows are not there, each one an entry of
+//                   engine-tests/truth/known-false.json (the test holds the two lists together): inv.size /
+//                   inv.getSize(), level.dayTime as a value, level.dropItem(), entity.hurt(), getUUID(), setTag(),
+//                   hasTag() with no argument, Item.of(..).itemStack, getMsgId(), isCritical(),
+//                   enchantments.getLevel(), event.amount in an EntityEvents.hurt handler
+//   ENTITY-TYPE     <entity>.type read as a value -> a Java string, and shadowed on classes with a public `type`
+//                   field. Use global.icraft.core.entityId(entity). Ratcheted.
+//   TICKCOUNT-SAVED a value read from .tickCount written to persistent data -> wrong after every restart
+//   BLOCK-READ      level.getBlock / getBlockState / getBlockEntity / getChunkAt in a function that never asks
+//                   hasChunkAt / isLoaded / core.blockIfLoaded -> the read LOADS the chunk. Ratcheted.
+//   DIRECT-HURT-REG DamageModifierRegistry.register / registerLate(..) outside 0_lib_core.js -> no re-entrancy
+//                   guard, no NaN guard, no liveness id. Use core.onHurt / core.onHurtLate. Ratcheted.
+//   HELPER-COPY     a server script's own copy of a core helper: a function named warnOnce / entityId / idSet /
+//                   playerTier / getPlayerTier / blockIfLoaded / mainSlotCount / isBoss, the entity-id regex
+//                   /^entity\.([^.]+)\.(.+)$/, or getEntityType().builtInRegistryHolder(). Ratcheted.
+//
+// "Ratcheted" (lint_kubejs_traps.ratchet.json): the sites that existed when the rule started are a per-file count,
+// as for SILENT-CATCH below. A file may not hold MORE sites of the rule than its count; a file that is not listed
+// may hold none. Fixing sites never blocks: --ratchet-down lowers the counts (it only ever lowers them), and
+// --ratchet-base=<ref> refuses a count that rose. A rule gets its first counts once, with --ratchet-start=<RULE>.
+// A site that is RIGHT as it stands (a Set keyed by numbers, a block read at an event's own position) is not
+// debt: it goes in lint_kubejs_traps.exceptions.json with its reason, like every other recorded exception.
 //
 // The silent-catch ratchet (operator ruling 2026-10-11). Most of the dead features of the audit sat behind a
 // `catch (e) {}`: the code threw on every call and nothing ever said so. The pack had several hundred of those
@@ -109,6 +149,30 @@ const isIcraftCall = (n, prop) => !!n && n.type === 'CallExpression' && n.callee
 const strLit = (n) => (n && n.type === 'Literal' && typeof n.value === 'string') ? n.value : null;
 
 const isFn = (n) => n.type === 'FunctionDeclaration' || n.type === 'FunctionExpression' || n.type === 'ArrowFunctionExpression';
+
+// ---- the rules of 2026-10-13 (package H): constants ----
+const HURT_REGISTRY_CLASS = 'com.iridescentcraft.reforging.event.DamageModifierRegistry';
+// the translation-key fallback of core.entityId, as a regex source: /^entity\.([^.]+)\.(.+)$/
+const ID_FALLBACK_PATTERN = '^entity\\.([^.]+)\\.(.+)$';
+// a local function of this name -> the export of global.icraft.core that is the one home of that helper
+const CORE_HELPER_NAMES_TO = { warnOnce: 'warnOnce', entityId: 'entityId', idSet: 'idSet', playerTier: 'playerTier', getPlayerTier: 'playerTier',
+  blockIfLoaded: 'blockIfLoaded', mainSlotCount: 'mainSlotCount', isBoss: 'isBoss' };
+const CORE_HELPER_NAMES = new Set(Object.keys(CORE_HELPER_NAMES_TO));
+// the names a declaration pattern binds
+function patternNames(p) {
+  if (!p) return [];
+  switch (p.type) {
+    case 'Identifier': return [p.name];
+    case 'ObjectPattern': return [].concat.apply([], p.properties.map(pr => patternNames(pr.type === 'RestElement' ? pr.argument : pr.value)));
+    case 'ArrayPattern': return [].concat.apply([], p.elements.map(patternNames));
+    case 'RestElement': return patternNames(p.argument);
+    case 'AssignmentPattern': return patternNames(p.left);
+    default: return [];
+  }
+}
+// Rules with sites that are older than the rule: those are grandfathered by a per-file count in
+// lint_kubejs_traps.ratchet.json (the way SILENT-CATCH is, minus the fingerprints). Every other rule is strict.
+const RATCHETED_RULES = ['ID-SET', 'ENTITY-TYPE', 'BLOCK-READ', 'DIRECT-HURT-REG', 'HELPER-COPY'];
 
 function dotted(n) {
   if (!n) return '?';
@@ -334,6 +398,294 @@ function lint(file) {
     }
   }
   visit(ast, null, { fn: null, tryDepth: 0, inConcat: false }, null);
+
+  // =================================================================================================
+  // The rules of 2026-10-13 (package H). Each was a dead feature or a measured engine fact; the fixtures
+  // in dev/lint-fixtures prove each one flags its case (lint_kubejs_traps.test.js).
+  // =================================================================================================
+  const base = relKey(file).replace(/^[^/]*_scripts\//, '');
+  const isServerScript = /^server_scripts\//.test(relKey(file));
+  const isCore = isServerScript && base === '0_lib_core.js';
+
+  // ---- FILE-PROPERTY: a comment line KubeJS acts on (ScriptFileInfo.preload, read from the jar) ----
+  // Line based, exactly as the engine does it: trim, starts with `//`, the rest trimmed matches
+  // ^(\w+)\s*[:=]?\s*(-?\w+)$ ; anywhere in the file, inside a block comment or a template string too.
+  (function fileProperties() {
+    const lines = src.split(/\r?\n/);
+    for (let i = 0; i < lines.length; i++) {
+      const t = lines[i].trim();
+      if (t.slice(0, 2) !== '//') continue;
+      const m = /^(\w+)\s*[:=]?\s*(-?\w+)$/.exec(t.slice(2).trim());
+      if (!m) continue;
+      const key = m[1], value = m[2];
+      let msg = null;
+      if (key === 'priority') {
+        msg = /^-?\d+$/.test(value)
+          ? 'this comment sets the file\'s load priority to ' + value + ' (KubeJS sorts scripts by it and by nothing else). A priority is a decision: record it in lint_kubejs_traps.exceptions.json with its reason'
+          : 'KubeJS reads this comment as the file property priority = "' + value + '" and Integer.parseInt throws on it: the file does not load. Reword the comment';
+      } else if ((key === 'ignored' || key === 'ignore') && value === 'true') {
+        msg = 'KubeJS reads this comment as the file property ' + key + ' = true: the file is switched OFF, with no line in any log. Reword the comment';
+      } else if (key === 'packmode') {
+        msg = 'KubeJS reads this comment as the file property packmode = "' + value + '": the file is skipped unless the pack mode is exactly that. Reword the comment';
+      } else if (key === 'requires') {
+        msg = 'KubeJS reads this comment as the file property requires = "' + value + '": the file is skipped unless a mod with that id is loaded. Reword the comment (or record the requirement as an exception)';
+      }
+      if (msg) sites.push({ rule: 'FILE-PROPERTY', line: i + 1, msg });
+    }
+  })();
+
+  // ---- helpers for the receiver heuristics ----
+  const lastSeg = (n) => {
+    if (!n) return '';
+    if (n.type === 'Identifier') return n.name;
+    if (n.type === 'ThisExpression') return 'this';
+    if (n.type === 'MemberExpression' && !n.computed && n.property.type === 'Identifier') return n.property.name;
+    if (n.type === 'CallExpression' && n.callee.type === 'MemberExpression' && !n.callee.computed && n.callee.property.type === 'Identifier') return n.callee.property.name + '()';
+    return '';
+  };
+  const INV_RX = /^(inv|inventory|playerInv|playerInventory|getInventory\(\))$/i;
+  const LEVEL_RX = /^(level|lvl|world|serverLevel|overworld\(\)|getLevel\(\)|ow|dim)$/i;
+  const ENTITY_RX = /^(entity|ent|mob|target|victim|attacker|killer|hitter|living|boss|getEntity\(\))$/;
+  const containsNode = (root, pred) => {
+    let hit = false;
+    (function w(n) {
+      if (hit || !n || typeof n.type !== 'string') return;
+      if (pred(n)) { hit = true; return; }
+      for (const k of Object.keys(n)) {
+        if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+        const v = n[k];
+        if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') w(c); }
+        else if (v && typeof v.type === 'string') w(v);
+      }
+    })(root);
+    return hit;
+  };
+  const isMemberNamed = (n, name) => !!n && n.type === 'MemberExpression' && !n.computed && n.property.type === 'Identifier' && n.property.name === name;
+  const calleeName = (call) => (call.callee.type === 'MemberExpression' && !call.callee.computed && call.callee.property.type === 'Identifier') ? call.callee.property.name
+    : (call.callee.type === 'Identifier' ? call.callee.name : null);
+
+  // ---- DIRECT-HURT-REG: the names this file binds to the Java damage registry ----
+  const hurtRegistryNames = new Set();
+  const isHurtRegistryLoad = (n) => !!n && n.type === 'CallExpression' && n.arguments.length === 1 && strLit(n.arguments[0]) === HURT_REGISTRY_CLASS &&
+    (dotted(n.callee) === 'Java.loadClass' || (n.callee.type === 'Identifier' && /loadClass/i.test(n.callee.name)));
+  containsNode(ast, (n) => {
+    if (n.type === 'VariableDeclarator' && n.id.type === 'Identifier' && isHurtRegistryLoad(n.init)) hurtRegistryNames.add(n.id.name);
+    if (n.type === 'AssignmentExpression' && n.left.type === 'Identifier' && isHurtRegistryLoad(n.right)) hurtRegistryNames.add(n.left.name);
+    return false;
+  });
+
+  // ---- TICKCOUNT-SAVED: per function, the names that hold a value read from .tickCount ----
+  // (a property or an object key that is merely NAMED like a tainted variable is not that variable: core.now(..))
+  const hasTickCount = (root, tainted) => {
+    let hit = false;
+    (function w(n, parent, key) {
+      if (hit || !n || typeof n.type !== 'string') return;
+      if (isMemberNamed(n, 'tickCount')) { hit = true; return; }
+      if (n.type === 'Identifier' && tainted.has(n.name)) {
+        const isName = parent && ((parent.type === 'MemberExpression' && key === 'property' && !parent.computed) || (parent.type === 'Property' && key === 'key' && !parent.computed));
+        if (!isName) { hit = true; return; }
+      }
+      for (const k of Object.keys(n)) {
+        if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+        const v = n[k];
+        if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') w(c, n, k); }
+        else if (v && typeof v.type === 'string') w(v, n, k);
+      }
+    })(root, null, null);
+    return hit;
+  };
+  const taintedIn = new Map();   // function node (or null) -> Set of names
+  (function collectTaint(node, fn) {
+    if (!node || typeof node.type !== 'string') return;
+    if (isFn(node)) fn = node;
+    if (!taintedIn.has(fn)) taintedIn.set(fn, new Set());
+    const set = taintedIn.get(fn);
+    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier' && node.init && hasTickCount(node.init, set)) set.add(node.id.name);
+    if (node.type === 'AssignmentExpression' && node.left.type === 'Identifier' && hasTickCount(node.right, set)) set.add(node.left.name);
+    for (const k of Object.keys(node)) {
+      if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+      const v = node[k];
+      if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') collectTaint(c, fn); }
+      else if (v && typeof v.type === 'string') collectTaint(v, fn);
+    }
+  })(ast, null);
+  const PUT_RX = /^put(Int|Long|Double|Float|Short|Byte|String|Boolean)?$/;
+  const touchesPersistent = (n) => containsNode(n, (x) => isMemberNamed(x, 'persistentData') || isMemberNamed(x, 'forgePersistentData') ||
+    (x.type === 'Identifier' && /^(pd|pdata|persistent|persistentData|data|nbt|tag)$/i.test(x.name)));
+
+  // ---- LOOP-CLOSURE: a function created in a loop body that reads the loop's HEAD variable ----
+  // Measured on the production Rhino (suite dialect): for (let|const|var x ...; ...), for (.. in ..) and
+  // for (.. of ..) all share ONE binding of the head variable, so every such closure sees the value the
+  // loop ended with. A function that is called at once (an argument of forEach / map / ..., an IIFE) reads
+  // the value of its own iteration and is not flagged.
+  const SYNC_CALLS = new Set(['forEach', 'map', 'filter', 'some', 'every', 'find', 'findIndex', 'reduce', 'reduceRight', 'flatMap', 'sort', 'replace']);
+  const declaresName = (fnNode, name) => {
+    if (fnNode.params.some(p => patternNames(p).indexOf(name) >= 0)) return true;
+    if (fnNode.id && fnNode.id.name === name && fnNode.type === 'FunctionExpression') return true;
+    return containsNode(fnNode.body, (x) => (x.type === 'VariableDeclarator' && patternNames(x.id).indexOf(name) >= 0) ||
+      (x.type === 'FunctionDeclaration' && x.id && x.id.name === name));
+  };
+  const readsName = (fnNode, name) => {
+    let hit = false;
+    (function w(n, parent, key) {
+      if (hit || !n || typeof n.type !== 'string') return;
+      if (n !== fnNode && isFn(n) && declaresName(n, name)) return;   // shadowed further in
+      if (n.type === 'Identifier' && n.name === name) {
+        const isPropName = parent && ((parent.type === 'MemberExpression' && key === 'property' && !parent.computed) ||
+          (parent.type === 'Property' && key === 'key' && !parent.computed));
+        if (!isPropName) { hit = true; return; }
+      }
+      for (const k of Object.keys(n)) {
+        if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+        const v = n[k];
+        if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') w(c, n, k); }
+        else if (v && typeof v.type === 'string') w(v, n, k);
+      }
+    })(fnNode.body, fnNode, 'body');
+    return hit;
+  };
+  function loopClosures(loop, names) {
+    (function w(n, parent, key) {
+      if (!n || typeof n.type !== 'string') return;
+      if (isFn(n)) {
+        const called = parent && parent.type === 'CallExpression' && key === 'callee';
+        const syncArg = parent && parent.type === 'CallExpression' && key === 'arguments' && SYNC_CALLS.has(calleeName(parent));
+        if (!called && !syncArg) {
+          for (const name of names) {
+            if (!declaresName(n, name) && readsName(n, name)) {
+              site('LOOP-CLOSURE', n, 'this function is created inside the loop at line ' + loop.loc.start.line + ' and reads its head variable `' + name +
+                '`. On this engine every function made in the loop shares ONE `' + name + '` and sees the value the loop ENDED with, for `let`, `const` and `var`, ' +
+                'in for, for-in and for-of alike. Copy it first: `let ' + name + '_ = ' + name + '` in the loop body, and read the copy');
+            }
+          }
+          return;   // inner functions of a flagged / cleared function are its own business
+        }
+      }
+      for (const k of Object.keys(n)) {
+        if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+        const v = n[k];
+        if (Array.isArray(v)) { for (const c of v) if (c && typeof c.type === 'string') w(c, n, k); }
+        else if (v && typeof v.type === 'string') w(v, n, k);
+      }
+    })(loop.body, loop, 'body');
+  }
+
+  // ---- BLOCK-READ: the functions that ask "is it loaded" somewhere ----
+  const LOADED_CALLS = new Set(['hasChunkAt', 'isLoaded', 'hasChunk', 'isAreaLoaded', 'blockIfLoaded', 'isPositionEntityTicking', 'hasChunksAt']);
+  const BLOCK_READS = new Set(['getBlock', 'getBlockState', 'getBlockEntity', 'getChunkAt']);
+  const asksLoaded = new Map();
+  const fnAsksLoaded = (fn) => {
+    if (!asksLoaded.has(fn)) asksLoaded.set(fn, containsNode(fn === null ? ast : fn, (x) => x.type === 'CallExpression' && LOADED_CALLS.has(calleeName(x))));
+    return asksLoaded.get(fn);
+  };
+
+  // ---- one walk for the node rules ----
+  const parentOf = new WeakMap();
+  const noSuch = (node, type, member, msg) => site('NO-SUCH-MEMBER', node, msg);
+  (function walk(node, parent, key, fnStack, hurtHandlerParam) {
+    if (!node || typeof node.type !== 'string') return;
+    let fns = fnStack, hurtParam = hurtHandlerParam;
+    if (isFn(node)) {
+      fns = fnStack.concat([node]);
+      // the handler of EntityEvents.hurt(...), also through icraft.guard(name, event, handler)
+      const viaGuard = parent && isIcraftCall(parent, 'guard') ? parent : null;
+      const reg = viaGuard ? parentOf.get(viaGuard) : parent;
+      if (reg && reg.type === 'CallExpression' && dotted(reg.callee) === 'EntityEvents.hurt' && node.params[0] && node.params[0].type === 'Identifier') hurtParam = node.params[0].name;
+    }
+    const fn = fns.length ? fns[fns.length - 1] : null;
+
+    switch (node.type) {
+      case 'ForStatement':
+        if (node.init && node.init.type === 'VariableDeclaration') loopClosures(node, [].concat.apply([], node.init.declarations.map(d => patternNames(d.id))));
+        break;
+      case 'ForInStatement': case 'ForOfStatement':
+        if (node.left.type === 'VariableDeclaration') loopClosures(node, [].concat.apply([], node.left.declarations.map(d => patternNames(d.id))));
+        break;
+      case 'NewExpression':
+        if (!isCore && node.callee.type === 'Identifier' && (node.callee.name === 'Set' || node.callee.name === 'Map')) {
+          site('ID-SET', node, 'new ' + node.callee.name + '(..): a JS ' + node.callee.name + ' never matches a string that comes from Java (entity.type, stack.id, block.id, a dimension, a username: ' +
+            '`.has` is false and `.get` undefined, without an error). For ids and names use global.icraft.core.idSet([...]) (it normalises what it is asked); ' +
+            'a ' + node.callee.name + ' whose keys are numbers or strings the script built itself is recorded as an exception, with that reason');
+        }
+        break;
+      case 'Literal':
+        if (isServerScript && !isCore && base !== '0_iss_guard.js' && node.regex && node.regex.pattern === ID_FALLBACK_PATTERN)
+          site('HELPER-COPY', node, 'this is the translation-key fallback of global.icraft.core.entityId (a local copy of the entity-id reader): call the helper');
+        break;
+      case 'VariableDeclarator': case 'FunctionDeclaration': case 'AssignmentExpression': {
+        if (!isServerScript || isCore) break;
+        let name = null, value = null;
+        if (node.type === 'FunctionDeclaration') { name = node.id && node.id.name; value = node; }
+        else if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier') { name = node.id.name; value = node.init; }
+        else if (node.type === 'AssignmentExpression' && node.left.type === 'Identifier') { name = node.left.name; value = node.right; }
+        if (name && value && isFn(value) && CORE_HELPER_NAMES.has(name))
+          site('HELPER-COPY', node, 'a local function named ' + name + ': global.icraft.core.' + CORE_HELPER_NAMES_TO[name] + ' is the one home of that helper (a copy drifts: ten copies of the id reader, fifteen of warnOnce, five player-tier readers disagreed). ' +
+            'Use `var ' + name + ' = global.icraft.core.' + CORE_HELPER_NAMES_TO[name] + '`');
+        break;
+      }
+      case 'MemberExpression': {
+        if (node.computed || node.property.type !== 'Identifier') break;
+        const p = node.property.name;
+        const isCallee = !!parent && parent.type === 'CallExpression' && key === 'callee';
+        const recv = lastSeg(node.object);
+        if (p === 'type' && !isCallee && !isCore && ENTITY_RX.test(recv))
+          site('ENTITY-TYPE', node, dotted(node) + ': the `type` bean of an entity is shadowed on classes that have a public `type` field (Creeper Overhaul), and what it returns is a Java string. ' +
+            'Read the id through global.icraft.core.entityId(' + dotted(node.object) + ') (it calls getType(), and returns a JS string)');
+        // the ledger's known-missing members (each one is an entry of engine-tests/truth/known-false.json)
+        if (p === 'size' && !isCallee && INV_RX.test(recv)) noSuch(node, 'net.minecraft.world.entity.player.Inventory', 'size', dotted(node) + ' is undefined on the vanilla Inventory, so a loop bounded by it runs ZERO times: use global.icraft.core.eachMainSlot(player, fn) or core.mainSlotCount()');
+        if (p === 'getSize' && isCallee && INV_RX.test(recv)) noSuch(node, 'net.minecraft.world.entity.player.Inventory', 'getSize', dotted(node) + '() does not exist on the vanilla Inventory: use global.icraft.core.eachMainSlot(player, fn) or core.mainSlotCount()');
+        if (p === 'dayTime' && !isCallee && LEVEL_RX.test(recv)) noSuch(node, 'net.minecraft.world.level.Level', 'dayTime', dotted(node) + ' is the dayTime() METHOD for scripts, not a number (arithmetic on it is NaN): call ' + dotted(node) + '()');
+        if (p === 'dropItem' && isCallee && LEVEL_RX.test(recv)) noSuch(node, 'net.minecraft.world.level.Level', 'dropItem', dotted(node) + '() does not exist: use block.popItem(stack), or new ItemEntity(level, x, y, z, stack) + level.addFreshEntity');
+        if (p === 'hurt' && isCallee && !EVENT_GROUP.test(recv)) noSuch(node, 'net.minecraft.world.entity.Entity', 'hurt', dotted(node) + '() does not exist for scripts ("Cannot find function hurt"): KubeJS names it attack(source, amount); for damage dealt by a handler use global.icraft.core.dealDamage');
+        if (p === 'getUUID' && isCallee) noSuch(node, 'net.minecraft.world.entity.Entity', 'getUUID', dotted(node) + '() does not exist for scripts: use .uuid / .getUuid()');
+        if (p === 'setTag' && isCallee) noSuch(node, 'net.minecraft.world.item.ItemStack', 'setTag', dotted(node) + '() does not exist for scripts: assign stack.nbt');
+        if (p === 'hasTag' && isCallee && parent.arguments.length === 0) noSuch(node, 'net.minecraft.world.item.ItemStack', 'hasTag', dotted(node) + '() with no argument throws: hasTag(id) is the item-TAG test; the NBT test is hasNBT()');
+        if (p === 'itemStack' && !isCallee && node.object.type === 'CallExpression' && dotted(node.object.callee) === 'Item.of') noSuch(node, 'net.minecraft.world.item.ItemStack', 'itemStack', 'Item.of(..).itemStack is undefined: Item.of(..) IS the stack');
+        if (p === 'getMsgId' && isCallee) noSuch(node, 'net.minecraft.world.damagesource.DamageSource', 'getMsgId', dotted(node) + '() does not exist for scripts: use getType() (or global.icraft.core.dmgMsg / dmgId)');
+        if (p === 'isCritical' && isCallee) noSuch(node, 'net.minecraft.world.damagesource.DamageSource', 'isCritical', dotted(node) + '() exists on no class of this pack: the only crit a script can see is the pack\'s own roll');
+        if (p === 'getLevel' && isCallee && lastSeg(node.object) === 'enchantments') noSuch(node, null, 'item.enchantments.getLevel', dotted(node) + '(): stack.enchantments is a map of id -> level and has no getLevel: use global.icraft.core.enchLevel(stack, id)');
+        if (p === 'amount' && hurtParam !== null && node.object.type === 'Identifier' && node.object.name === hurtParam)
+          noSuch(node, 'dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS', 'amount', hurtParam + '.amount does not exist on EntityEvents.hurt: the name is ' + hurtParam + '.damage');
+        break;
+      }
+      case 'CallExpression': {
+        const name = calleeName(node);
+        if (name === 'builtInRegistryHolder' && isServerScript && !isCore && base !== '0_iss_guard.js' && node.callee.type === 'MemberExpression' &&
+            node.callee.object.type === 'CallExpression' && (calleeName(node.callee.object) === 'getEntityType' || calleeName(node.callee.object) === 'getType'))
+          site('HELPER-COPY', node, dotted(node.callee) + '(): a local copy of the entity-id reader' +
+            (calleeName(node.callee.object) === 'getType' ? ' (and getType() is the id STRING for scripts: this call throws on every entity, the copy lives on its fallback)' : '') +
+            '. global.icraft.core.entityId(entity) is the one home of it');
+        if (name === 'charCodeAt' && node.callee.type === 'MemberExpression')
+          site('CHARCODEAT', node, '.charCodeAt(..) hands back a raw java.lang.Character on this engine: NaN in arithmetic, false in every comparison, a throw in typeof and in string concatenation. Use .codePointAt(..) (a number)');
+        if (node.callee.type === 'MemberExpression' && !node.callee.computed && node.callee.object.type === 'Identifier' && hurtRegistryNames.has(node.callee.object.name) &&
+            (name === 'register' || name === 'registerLate' || name === 'registerEarly') && !isCore)
+          site('DIRECT-HURT-REG', node, dotted(node.callee) + '(..) puts a handler straight on the Java damage registry: it is outside the shared dispatcher, so it has no re-entrancy guard (a splash or thorns hit runs it again), ' +
+            'no NaN guard on the amount, and no liveness id. Use global.icraft.core.' + (name === 'registerLate' ? 'onHurtLate' : 'onHurt') + '(key, fn, who)');
+        if (name && PUT_RX.test(name) && node.callee.type === 'MemberExpression' && node.arguments.length >= 2 &&
+            hasTickCount(node.arguments[node.arguments.length - 1], taintedIn.get(fn) || new Set()) && touchesPersistent(node.callee.object))
+          site('TICKCOUNT-SAVED', node, 'a value read from .tickCount is written to persistent data: tickCount restarts at 0 on every boot, so a saved cooldown or timestamp is in the future (or the past) after a restart. ' +
+            'Save global.icraft.core.now(entity) (the world game time) instead');
+        if (name && BLOCK_READS.has(name) && node.callee.type === 'MemberExpression' && LEVEL_RX.test(lastSeg(node.callee.object)) && !isCore) {
+          if (!fns.some(f => fnAsksLoaded(f)) && !(fns.length === 0 && fnAsksLoaded(null)))
+            site('BLOCK-READ', node, dotted(node.callee) + '(..) LOADS the chunk when it is not loaded (to FULL, on the server thread) and nothing in this function asks first. From a timer, a saved position or another dimension ' +
+              'that is one chunk load per call, and in a level without players every one of them leaks. Use global.icraft.core.blockIfLoaded(level, x, y, z) (null when not loaded), or level.hasChunkAt(pos) before the read');
+        }
+        break;
+      }
+    }
+    if (node.type === 'AssignmentExpression' && node.left.type === 'MemberExpression' && touchesPersistent(node.left.object) &&
+        hasTickCount(node.right, taintedIn.get(fn) || new Set()))
+      site('TICKCOUNT-SAVED', node, 'a value read from .tickCount is assigned into persistent data: tickCount restarts at 0 on every boot. Save global.icraft.core.now(entity) (the world game time) instead');
+
+    for (const k of Object.keys(node)) {
+      if (k === 'loc' || k === 'start' || k === 'end' || k === 'type') continue;
+      const v = node[k];
+      if (Array.isArray(v)) { for (const ch of v) if (ch && typeof ch.type === 'string') { parentOf.set(ch, node); walk(ch, node, k, fns, hurtParam); } }
+      else if (v && typeof v.type === 'string') { parentOf.set(v, node); walk(v, node, k, fns, hurtParam); }
+    }
+  })(ast, null, null, [], null);
+
+  sites.sort((a, b) => a.line - b.line);
   return { sites, idiom, silent, marked };
 }
 
@@ -357,16 +709,18 @@ const listExceptions = argv.includes('--exceptions');
 const ratchetDown = argv.includes('--ratchet-down');
 const ratchetSnapshot = argv.includes('--ratchet-snapshot');
 const KNOWN_FLAGS = new Set(['--exceptions', '--ratchet-down', '--ratchet-snapshot']);
-const VALUE_FLAGS = new Set(['--ratchet-base', '--ratchet-head']);   // written --flag=<value>
+const VALUE_FLAGS = new Set(['--ratchet-base', '--ratchet-head', '--ratchet-start']);   // written --flag=<value>
 const flagValue = (name) => { const a = argv.find(x => x.startsWith(name + '=')); return a ? a.slice(name.length + 1) : null; };
 for (const a of argv) if (a.startsWith('--') && !KNOWN_FLAGS.has(a) && !(a.includes('=') && VALUE_FLAGS.has(a.slice(0, a.indexOf('='))) && a.length > a.indexOf('=') + 1)) {
   console.error('[trap-lint] CANNOT RUN: unknown option ' + a + (VALUE_FLAGS.has(a) ? ' (write ' + a + '=<git ref>)' : '')); process.exit(2);
 }
-const ratchetBase = flagValue('--ratchet-base'), ratchetHead = flagValue('--ratchet-head');
+const ratchetBase = flagValue('--ratchet-base'), ratchetHead = flagValue('--ratchet-head'), ratchetStart = flagValue('--ratchet-start');
+if (ratchetStart !== null && RATCHETED_RULES.indexOf(ratchetStart) < 0) { console.error('[trap-lint] CANNOT RUN: --ratchet-start=' + ratchetStart + ': not a ratcheted rule (' + RATCHETED_RULES.join(', ') + ')'); process.exit(2); }
 if (ratchetHead !== null && ratchetBase === null) { console.error('[trap-lint] CANNOT RUN: --ratchet-head needs --ratchet-base=<git ref>'); process.exit(2); }
 let files = argv.filter(a => !a.startsWith('--'));
 const all = files.length === 0;
 if ((ratchetDown || ratchetSnapshot) && !all) { console.error('[trap-lint] CANNOT RUN: --ratchet-down / --ratchet-snapshot work on the whole pack, not on named files'); process.exit(2); }
+if (ratchetStart !== null && (!all || ratchetDown || ratchetSnapshot || ratchetBase !== null)) { console.error('[trap-lint] CANNOT RUN: --ratchet-start is a run of its own on the whole pack'); process.exit(2); }
 if (ratchetBase !== null && (!all || ratchetDown || ratchetSnapshot || listExceptions)) { console.error('[trap-lint] CANNOT RUN: --ratchet-base is a run of its own (no files, no other option but --ratchet-head)'); process.exit(2); }
 if (all) {
   const root = path.join(__dirname, '..', 'kubejs');
@@ -386,14 +740,29 @@ if (all) {
 // { files: { "<path below kubejs/>": { count, ids: [fingerprint of each grandfathered try/catch] } } }
 // The count is the rule; the ids only let the lint point at the catch that is new instead of listing them all.
 const RATCHET_FILE = path.join(__dirname, 'lint_kubejs_traps.silent_catches.json');
+// { rules: { "<RULE>": { started, total, files: { "<path below kubejs/>": count } } } } for RATCHETED_RULES
+const RULE_RATCHET_FILE = path.join(__dirname, 'lint_kubejs_traps.ratchet.json');
 
 // ---- the counts files against a git ref (--ratchet-base): no count may rise ----
 // One reader per counts file: text -> Map of '<label>' -> count, where a label is what a flag line names.
 // A second counts file (a per-rule ratchet for other rules) is one more entry in this list.
+// `group` = the rule an entry belongs to. A group that is not in the base at all is a rule that STARTED in this
+// push (its counts are its first snapshot, said in the output); the silent catches are one group that exists
+// whenever their file does.
 const RATCHET_FILES = [
-  { file: RATCHET_FILE, rule: 'SILENT-CATCH', what: 'unmarked silent catches',
-    read: (text) => { const m = new Map(); for (const [k, v] of Object.entries(JSON.parse(text).files || {})) m.set(k, { key: k, count: v.count }); return m; },
+  { file: RATCHET_FILE, what: 'unmarked silent catches',
+    read: (text) => { const m = new Map(); for (const [k, v] of Object.entries(JSON.parse(text).files || {})) m.set(k, { key: k, count: v.count, group: 'SILENT-CATCH' }); return m; },
+    groups: () => ['SILENT-CATCH'],
     how: 'report the error (console.error / global.icraft.core.warnOnce) or mark the catch // swallow-ok: <reason>' },
+  { file: RULE_RATCHET_FILE, what: 'sites of that rule',
+    read: (text) => {
+      const m = new Map();
+      for (const [rule, r] of Object.entries(JSON.parse(text).rules || {}))
+        for (const [k, n] of Object.entries(r.files || {})) m.set(k + ' [' + rule + ']', { key: k, count: n, group: rule });
+      return m;
+    },
+    groups: (text) => Object.keys(JSON.parse(text).rules || {}),
+    how: 'fix the new site (the rule\'s message says how), or record it in lint_kubejs_traps.exceptions.json with the reason it is right' },
 ];
 function ratchetAgainst(baseRef, headRef) {
   const { execFileSync } = require('child_process');
@@ -434,10 +803,11 @@ function ratchetAgainst(baseRef, headRef) {
       console.log('FLAGS ' + name + '\n  ' + name + ':0\tRATCHET-RAISED\tthe counts file exists at ' + baseRef + ' and is gone here: without it nothing is grandfathered and nothing is checked. Restore it from git.');
       continue;
     }
-    let b, h;
-    try { b = rf.read(baseText); h = rf.read(headText); }
+    let b, h, baseGroups;
+    try { b = rf.read(baseText); h = rf.read(headText); baseGroups = new Set(rf.groups(baseText)); }
     catch (e) { console.error('[trap-lint] CANNOT RUN: ' + name + ' is unreadable (' + e.message + ')'); process.exit(2); }
     compared++;
+    const started = {};
     // the debt of scripts that are gone: a key that is new may take it over (a moved script)
     let pool = 0;
     for (const [label, v] of b) if (!h.has(label) && !scriptExists(v.key)) pool += v.count;
@@ -447,11 +817,13 @@ function ratchetAgainst(baseRef, headRef) {
     for (const [label, v] of [...h].sort((x, y) => x[0] < y[0] ? -1 : 1)) {
       const was = b.has(label) ? b.get(label).count : 0;
       if (!(v.count > was)) continue;
+      if (!baseGroups.has(v.group)) { started[v.group] = (started[v.group] || 0) + v.count; continue; }
       if (!b.has(label) && pool >= v.count) { pool -= v.count; notes.push(name + ': ' + label + ' is new with ' + v.count + ', taken over from a script that no longer exists'); continue; }
       flags++;
-      console.log('FLAGS ' + label + '\n  ' + label + ':0\tRATCHET-RAISED\t' + rf.rule + ': the grandfathered count of this file went UP against ' + baseRef + ', ' + was + ' -> ' + v.count +
+      console.log('FLAGS ' + label + '\n  ' + v.key + ':0\tRATCHET-RAISED\t' + v.group + ': the grandfathered count of this file went UP against ' + baseRef + ', ' + was + ' -> ' + v.count +
         ' (' + name + '). The count is the debt of ' + rf.what + ' the file had when the rule started; it only goes down. Put ' + was + ' back and ' + rf.how + '.');
     }
+    for (const g of Object.keys(started).sort()) notes.push(name + ': rule ' + g + ' is not in ' + baseRef + ': it starts in this push, with ' + started[g] + ' grandfathered');
     notes.push(name + ': ' + sumB + ' -> ' + sumH + ' grandfathered in ' + b.size + ' -> ' + h.size + ' file(s)');
   }
   for (const n of notes) console.log('  ' + n);
@@ -480,6 +852,39 @@ if (ratchetSnapshot && ratchet) {
   console.error('[trap-lint] CANNOT RUN: ' + path.basename(RATCHET_FILE) + ' exists. A snapshot is taken once, when the rule starts; afterwards counts only go down (--ratchet-down).');
   process.exit(2);
 }
+let ruleRatchet = {};
+if (fs.existsSync(RULE_RATCHET_FILE)) {
+  try {
+    ruleRatchet = JSON.parse(fs.readFileSync(RULE_RATCHET_FILE, 'utf8')).rules;
+    if (!ruleRatchet || typeof ruleRatchet !== 'object') throw new Error('"rules" is missing');
+    for (const [rule, r] of Object.entries(ruleRatchet)) {
+      if (RATCHETED_RULES.indexOf(rule) < 0) throw new Error(rule + ' is not a ratcheted rule of this lint');
+      if (!r.files || typeof r.files !== 'object') throw new Error('bad entry for ' + rule);
+      for (const [k, n] of Object.entries(r.files)) if (!(n > 0) || n !== Math.floor(n)) throw new Error('bad count for ' + rule + ' ' + k);
+    }
+  } catch (e) {
+    console.error('[trap-lint] CANNOT RUN: ' + RULE_RATCHET_FILE + ' is unreadable (' + e.message + ')');
+    process.exit(2);
+  }
+}
+if (ratchetStart !== null && ruleRatchet[ratchetStart]) {
+  console.error('[trap-lint] CANNOT RUN: ' + ratchetStart + ' already has its counts in ' + path.basename(RULE_RATCHET_FILE) + '. A rule starts once; afterwards counts only go down (--ratchet-down).');
+  process.exit(2);
+}
+const ruleAllowed = (rule, key) => (ruleRatchet[rule] && ruleRatchet[rule].files[key]) || 0;
+function writeRuleRatchet(rulesMap) {
+  const names = Object.keys(rulesMap).sort();
+  const blocks = names.map(rule => {
+    const r = rulesMap[rule];
+    const keys = Object.keys(r.files).filter(k => r.files[k] > 0).sort();
+    const total = keys.reduce((n, k) => n + r.files[k], 0);
+    return '    ' + JSON.stringify(rule) + ': {\n      "started": ' + JSON.stringify(r.started) + ',\n      "total": ' + total + ',\n      "files": {' +
+      (keys.length ? '\n' + keys.map(k => '        ' + JSON.stringify(k) + ': ' + r.files[k]).join(',\n') + '\n      ' : '') + '}\n    }';
+  });
+  fs.writeFileSync(RULE_RATCHET_FILE, '{\n' +
+    '  "comment": "Grandfathered sites of the ratcheted rules of lint_kubejs_traps.js (' + RATCHETED_RULES.join(', ') + '). A file may hold at most this many sites of the rule; a file that is not listed may hold none. `started` is the day the rule got its first counts (--ratchet-start=<RULE>, once). Counts go DOWN only (--ratchet-down after fixing some); never raise one by hand: fix the new site, or record it in lint_kubejs_traps.exceptions.json with the reason it is right. --ratchet-base=<ref> (pre-push hook, CI) refuses a count that rose.",\n' +
+    '  "rules": {\n' + blocks.join(',\n') + '\n  }\n}\n');
+}
 function writeRatchet(map, note) {
   const keys = Object.keys(map).filter(k => map[k].count > 0).sort();
   const total = keys.reduce((n, k) => n + map[k].count, 0);
@@ -494,6 +899,9 @@ function writeRatchet(map, note) {
 
 const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
 let total = 0, excused = 0, grandfathered = 0, swallowOk = 0, headroom = 0;
+const ruleNow = {};            // rule -> key -> sites found now (no recorded exception)
+const ruleGrand = {};          // rule -> grandfathered sites
+for (const r of RATCHETED_RULES) { ruleNow[r] = {}; ruleGrand[r] = 0; }
 const seenKeys = new Set();
 const current = {};       // key -> unmarked silent catches found now
 for (const f of files) {
@@ -511,6 +919,20 @@ for (const f of files) {
     if (exc && list.length === exc.count) {
       excused += list.length;
       for (const s of list) notes.push(key + ':' + s.line + '\t' + rule + '\trecorded exception: ' + exc.reason);
+      continue;
+    }
+    if (ruleNow[rule] && !exc) {
+      // a ratcheted rule: as many sites as the file had when the rule started, and no more
+      ruleNow[rule][key] = list.length;
+      const allowed = ruleAllowed(rule, key);
+      if (list.length <= allowed || ratchetStart === rule) {
+        ruleGrand[rule] += list.length;
+        for (const s of list) notes.push(key + ':' + s.line + '\t' + rule + '\tgrandfathered (' + list.length + ' of ' + (ratchetStart === rule ? list.length : allowed) + ' in this file): ' + s.msg.split('. ')[0]);
+        continue;
+      }
+      for (const s of list) out.push(key + ':' + s.line + '\t' + rule + '\t' + s.msg);
+      out.push(key + ':0\t' + rule + '\t' + list.length + ' site(s) in this file, ' + (allowed === 0 ? 'none is grandfathered' : allowed + ' grandfathered (' + path.basename(RULE_RATCHET_FILE) + ')') +
+        ': every site is shown, ' + (list.length - allowed) + ' of them must be fixed. The count never goes up');
       continue;
     }
     for (const s of list) out.push(key + ':' + s.line + '\t' + rule + '\t' + s.msg);
@@ -554,7 +976,30 @@ if (ratchetSnapshot) {
   for (const [k, list] of Object.entries(current)) map[k] = { count: list.length, ids: list.map(s => s.id) };
   const w = writeRatchet(map, today() + ', snapshot of ' + files.length + ' scripts when the rule started');
   console.log('[trap-lint] ratchet snapshot written: ' + w.total + ' silent catch(es) grandfathered in ' + w.files + ' file(s) -> ' + path.basename(RATCHET_FILE));
+} else if (ratchetStart !== null) {
+  // a rule's first counts: what the pack holds today, minus the files a recorded exception covers
+  const filesOf = {}; let n = 0;
+  for (const [k, c] of Object.entries(ruleNow[ratchetStart])) if (c > 0) { filesOf[k] = c; n += c; }
+  const next = {};
+  for (const [rule, r] of Object.entries(ruleRatchet)) next[rule] = { started: r.started, files: r.files };
+  next[ratchetStart] = { started: today(), files: filesOf };
+  writeRuleRatchet(next);
+  console.log('[trap-lint] ' + ratchetStart + ' starts: ' + n + ' site(s) grandfathered in ' + Object.keys(filesOf).length + ' file(s) -> ' + path.basename(RULE_RATCHET_FILE));
 } else if (ratchetDown) {
+  // the per-rule counts, the same way: min(recorded, found now), a vanished or clean file is dropped
+  if (Object.keys(ruleRatchet).length) {
+    const next = {}; let was = 0, now = 0;
+    for (const [rule, r] of Object.entries(ruleRatchet)) {
+      next[rule] = { started: r.started, files: {} };
+      for (const [k, c] of Object.entries(r.files)) {
+        was += c;
+        const n = Math.min(c, ruleNow[rule][k] || 0);
+        if (n > 0) { next[rule].files[k] = n; now += n; }
+      }
+    }
+    writeRuleRatchet(next);
+    console.log('[trap-lint] rule ratchet lowered: ' + was + ' -> ' + now + ' grandfathered site(s) (' + path.basename(RULE_RATCHET_FILE) + '); commit it with the fix');
+  }
   // lower only: a file keeps min(recorded, found); a file that is not listed stays at 0; a vanished file is dropped
   const map = {}; let before = 0;
   for (const [k, v] of Object.entries(ratchet)) {
@@ -571,5 +1016,12 @@ if (ratchetSnapshot) {
 let line = '[trap-lint] ' + files.length + ' file(s), ' + total + ' flag(s), ' + excused + ' recorded exception(s)' + (excused && !listExceptions ? ' (--exceptions lists them)' : '');
 if (ratchet) line += '; silent catches: ' + grandfathered + ' grandfathered, ' + swallowOk + ' marked swallow-ok' +
   (all && headroom > 0 && !ratchetDown ? ' (' + headroom + ' fewer than recorded: --ratchet-down)' : '');
+{
+  const parts = RATCHETED_RULES.filter(r => ruleGrand[r] > 0).map(r => r + ' ' + ruleGrand[r]);
+  let ruleHeadroom = 0;
+  if (all) for (const [rule, r] of Object.entries(ruleRatchet)) for (const [k, c] of Object.entries(r.files)) ruleHeadroom += Math.max(0, c - (ruleNow[rule][k] || 0));
+  if (parts.length || ruleHeadroom) line += '; ratcheted rules: ' + (parts.length ? parts.join(', ') + ' grandfathered' : 'none grandfathered') +
+    (ruleHeadroom > 0 && !ratchetDown ? ' (' + ruleHeadroom + ' fewer than recorded: --ratchet-down)' : '');
+}
 console.log(line);
 process.exitCode = total ? 1 : 0;

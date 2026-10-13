@@ -14,7 +14,7 @@
       "about": "no mock offers a member, a kind of member or an arity that the real class does not have"
     },
     {
-      "name": "dialect", "kind": "harness", "fast": true, "ci": true, "expect": 64,
+      "name": "dialect", "kind": "harness", "fast": true, "ci": true, "expect": 74,
       "about": "what this Rhino build does with const / let / var, strings from Java, Set and Map: the facts the lints and the scripts rely on",
       "scopes": [["lib/dialect_prelude.js", "suites/dialect.js"]]
     },

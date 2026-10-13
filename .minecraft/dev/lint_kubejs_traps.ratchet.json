@@ -1,0 +1,96 @@
+{
+  "comment": "Grandfathered sites of the ratcheted rules of lint_kubejs_traps.js (ID-SET, ENTITY-TYPE, BLOCK-READ, DIRECT-HURT-REG, HELPER-COPY). A file may hold at most this many sites of the rule; a file that is not listed may hold none. `started` is the day the rule got its first counts (--ratchet-start=<RULE>, once). Counts go DOWN only (--ratchet-down after fixing some); never raise one by hand: fix the new site, or record it in lint_kubejs_traps.exceptions.json with the reason it is right. --ratchet-base=<ref> (pre-push hook, CI) refuses a count that rose.",
+  "rules": {
+    "BLOCK-READ": {
+      "started": "2026-10-13",
+      "total": 10,
+      "files": {
+        "server_scripts/apotheosis_gem_repair.js": 1,
+        "server_scripts/bonfire/boss_bonfire_system.js": 1,
+        "server_scripts/enchantments/enchant_effects.js": 1,
+        "server_scripts/origins/class_passives_phase6h.js": 1,
+        "server_scripts/skills/skill_effects.js": 2,
+        "server_scripts/spawn_priest_tower.js": 4
+      }
+    },
+    "DIRECT-HURT-REG": {
+      "started": "2026-10-13",
+      "total": 14,
+      "files": {
+        "server_scripts/attributes/iss_school_to_ars_spell.js": 1,
+        "server_scripts/death_penalty.js": 1,
+        "server_scripts/loot/tmb_plain_bow_effects.js": 1,
+        "server_scripts/loot/unique_tier_buff.js": 1,
+        "server_scripts/origins/battlemage_arcane_cleave.js": 1,
+        "server_scripts/origins/class_passives_phase6h.js": 1,
+        "server_scripts/origins/origin_effects.js": 3,
+        "server_scripts/skills/justleveling_skills.js": 2,
+        "startup_scripts/deathskin_undead_bonus.js": 1,
+        "startup_scripts/enchants/icraft_magic_enchants.js": 1,
+        "startup_scripts/enchants/vorpal_rework.js": 1
+      }
+    },
+    "ENTITY-TYPE": {
+      "started": "2026-10-13",
+      "total": 12,
+      "files": {
+        "server_scripts/apotheosis_gem_repair.js": 1,
+        "server_scripts/compat/disable_creeperlings.js": 1,
+        "server_scripts/compat/terramity_cave_gnome_cave_only.js": 1,
+        "server_scripts/exploration/codex_exploration_kills.js": 1,
+        "server_scripts/gates/milestone_detection.js": 1,
+        "server_scripts/loot/iss_boss_first_kill.js": 1,
+        "server_scripts/origins/witch_of_ink_progression.js": 1,
+        "server_scripts/relic_boss_drops.js": 1,
+        "server_scripts/scaling/boss_hp.js": 1,
+        "server_scripts/scaling/boss_progressive.js": 2,
+        "server_scripts/scaling/zz_ascension_scaling.js": 1
+      }
+    },
+    "HELPER-COPY": {
+      "started": "2026-10-13",
+      "total": 40,
+      "files": {
+        "server_scripts/0_lib_aptitudes.js": 1,
+        "server_scripts/affix_overworld_strip.js": 2,
+        "server_scripts/affix_skyshatter_mob_strip.js": 2,
+        "server_scripts/attributes/mana_pool_bonuses.js": 1,
+        "server_scripts/bonfire/boss_compass_handler.js": 1,
+        "server_scripts/codex_delivery.js": 1,
+        "server_scripts/enchantments/enchant_effects.js": 1,
+        "server_scripts/fix_empty_display_name.js": 2,
+        "server_scripts/icraft_despawn_command.js": 1,
+        "server_scripts/origins/artificial_construct_progression.js": 1,
+        "server_scripts/origins/battlemage_arcane_cleave.js": 1,
+        "server_scripts/origins/class_passives.js": 1,
+        "server_scripts/origins/class_passives_phase6h.js": 1,
+        "server_scripts/origins/phantom_undeath.js": 1,
+        "server_scripts/origins/spell_book_transfer.js": 1,
+        "server_scripts/origins/witch_of_ink_progression.js": 3,
+        "server_scripts/origins/witherborn_slimebodied.js": 1,
+        "server_scripts/quests/onboarding_bridge.js": 1,
+        "server_scripts/relic_boss_drops.js": 2,
+        "server_scripts/respec/class_respec.js": 1,
+        "server_scripts/scaling/mob_equipment.js": 2,
+        "server_scripts/scaling/mob_scaling_unified.js": 2,
+        "server_scripts/scaling/zz_boss_global_3x.js": 2,
+        "server_scripts/skills/justleveling_skills.js": 2,
+        "server_scripts/skills/mastery_tax.js": 1,
+        "server_scripts/strip_anomalous_drops.js": 2,
+        "server_scripts/tatos_dimension_lock.js": 2,
+        "server_scripts/ultris_randomizer_janitor.js": 1
+      }
+    },
+    "ID-SET": {
+      "started": "2026-10-13",
+      "total": 6,
+      "files": {
+        "server_scripts/class/equipment_hp_halving.js": 1,
+        "server_scripts/economy/relic_sink.js": 1,
+        "server_scripts/integration/dna_simple_staves_strip.js": 1,
+        "server_scripts/origins/ss_unique_spellsword_scaling.js": 1,
+        "server_scripts/scaling/mob_scaling_unified.js": 2
+      }
+    }
+  }
+}
