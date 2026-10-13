@@ -2521,6 +2521,30 @@ public class LootHarness {
      * use DURING REGISTRATION is recorded and listed in the report: those are the places where the
      * mock, not the game, decided what happened.
      */
+    /**
+     * `global.icraft` in the audit: the namespace object several scripts fill. Two of them are loaded for real (the
+     * event guard and the registry reader, 0_lib_registry.js: icraft.bosses / icraft.dims / icraft.registry), the
+     * others are not (0_lib_core.js, 0_lib_origins.js, ...). So a member a loaded script has SET is that value, and
+     * any other member is an Opaque stand-in, as the whole namespace was before the registry reader existed.
+     */
+    public static final class NamespaceStub extends NativeObject {
+        final String name;
+
+        NamespaceStub(Context c, String name) {
+            super(c);
+            this.name = name;
+        }
+
+        @Override
+        public Object get(Context c, String key, Scriptable start) {
+            Object v = super.get(c, key, start);
+            if (v == Scriptable.NOT_FOUND && !key.equals("toString") && !key.equals("valueOf")) {
+                return new Opaque(name + "." + key, false);
+            }
+            return v;
+        }
+    }
+
     public static final class Opaque extends BaseFunction {
         final String name;
         final boolean eventGroup;
@@ -2844,7 +2868,7 @@ public class LootHarness {
             ScriptableObject.putProperty(top, g, new Opaque(g, false), cx);
         }
         for (String g : stubGlobals) {
-            ScriptableObject.putProperty(global, g, new Opaque("global." + g, false), cx);
+            ScriptableObject.putProperty(global, g, g.equals("icraft") ? new NamespaceStub(cx, "global." + g) : new Opaque("global." + g, false), cx);
         }
 
         // --- load (KubeJS ScriptManager.load: one pack scope, files in order, a throwing file is logged and skipped)

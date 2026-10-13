@@ -268,15 +268,27 @@ class Truth:
 # pack facts read straight from the repo
 # --------------------------------------------------------------------------------------------
 def dimension_tiers(repo):
-    """The stage gate is the authority for which tier a dimension belongs to."""
-    tiers = {"minecraft:overworld": 1}
-    p = os.path.join(repo, "kubejs", "server_scripts", "gates", "astages_restrictions.js")
+    """The stage gate is the authority for which tier a dimension belongs to.
+
+    The gates are the entries of the dimension registry that have a `stageGate` (kubejs/config/icraft/registry/
+    dimensions.json, read through dev/rosters/rosters.py). Until 2026-10-13 this function read the
+    `stageDimension('tier_N', '<dimension>', ...)` calls out of gates/astages_restrictions.js; when those calls
+    became a loop over the registry it found none, returned the Overworld alone, and the audit went from 153
+    findings to 141 without a word. So: a registry that cannot be read ends the audit, it is not "no tiers".
+    """
+    d = os.path.join(HERE, "rosters")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import rosters
     try:
-        src = open(p, encoding="utf-8", errors="replace").read()
-    except OSError:
-        return tiers
-    for m in re.finditer(r"stageDimension\(\s*'tier_(\d)'\s*,\s*'([a-z0-9_:/.-]+)'", src):
-        tiers[m.group(2)] = int(m.group(1))
+        reg = rosters.load(repo)
+    except rosters.RegistryError as e:
+        sys.exit("[loot-audit] the dimension registry cannot be read, so no dimension has a tier: %s" % e)
+    tiers = {"minecraft:overworld": 1}
+    for dim in reg.dim_ids("stageGate"):
+        tiers[dim] = reg.dims[dim]["tier"]
+    if len(tiers) < 2:
+        sys.exit("[loot-audit] the dimension registry has no dimension with a stageGate: the tier-leak section would check nothing")
     return tiers
 
 
@@ -555,8 +567,10 @@ def external_globals(repo, root, loaded):
         defs = defined_by.get(name, set())
         if not defs:
             continue
-        # the guard file only makes sure the namespace object `global.icraft` exists; its members are defined elsewhere
-        if any(base == "server_scripts" and rel in loaded and rel != GUARD_SCRIPT for base, rel in defs):
+        # the guard file only makes sure the namespace object `global.icraft` exists, and the registry reader adds
+        # its own three members to it; the other members are defined in scripts the audit does not load, so the
+        # namespace stays a stub (LootHarness.NamespaceStub: what a loaded script set is real, the rest opaque)
+        if any(base == "server_scripts" and rel in loaded and rel not in (GUARD_SCRIPT, REGISTRY_SCRIPT) for base, rel in defs):
             continue
         stubs[name] = {"defined_in": sorted("%s/%s" % d for d in defs), "used_at": where[:5]}
     return stubs
