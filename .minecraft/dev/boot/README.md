@@ -72,7 +72,8 @@ at the top of `boot.ps1`.
   it) and python 3.11 or newer. Nothing else: the engine uses the standard library only.
 - `git` on the Windows side (a commit is exported with `git archive`).
 - The mod jars on this PC. Default: the PrismLauncher instance `IridescentCraft` under `%APPDATA%`; otherwise
-  `-JarCache <folder>[,<folder>]` or `$env:ICRAFT_BOOT_JAR_CACHE`. **Nothing is downloaded.** 89 server-side
+  `-JarCache <folder>[,<folder>]` or `$env:ICRAFT_BOOT_JAR_CACHE` (folders separated by `;`). A folder that does
+  not exist is named in a note and not searched. **Nothing is downloaded.** 89 server-side
   metafiles are CurseForge-mode with an empty URL, so a jar that is missing or has the wrong hash stops the run
   (exit 2) with the list. The custom jars come from the tree under test itself.
 - About 13 GB of memory free inside WSL for the default 8 GB heap: the heap, the JVM's own memory, and the run
@@ -404,6 +405,11 @@ computed order was checked against the live server's own log: 157 of 157 scripts
 - **The Forge maven answers 403** to a client without a browser-like user agent. The setup sends the launcher's.
 - **In a KubeJS script, a private JDK collection cannot be read.** `stream.toList()` returns one, and `size()` on
   it throws `IllegalAccessException`. Copy it first: `new ArrayList(x)`. The helper does.
+- **`powershell -File` hands a comma list over as one string.** Only `powershell -Command`, or a call from inside
+  PowerShell, parses `a,b` as two values. `-JarCache a,b` is split by the script itself since 2026-10-13; before
+  that the two folders arrived as one path that does not exist, the engine dropped it without a word, and a jar
+  that only those folders held was reported missing (a jar already in the pool hid it). `-JvmArg a,b` is NOT
+  split, because a JVM argument may hold a comma: under `-File` it is one argument. `-Diff a,b` was always split.
 - **A fault that needs a second boot is invisible here** (the Crust config above).
 - **A chunk that cannot generate takes the server down, and the JVM stays.** Seen on 2026-10-13 with `-ForceChunks`
   and a `forceload` in the broken End: the command fails (`Command exception`), two milliseconds later the level's

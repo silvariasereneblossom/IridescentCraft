@@ -33,7 +33,9 @@
 #   -Heap 8G           -Xmx of the server (default 8G; -HeapMin defaults to half of it)
 #   -Seed <n>          world seed (default 20261012)
 #   -IdleSeconds <n>   how long the server idles after Done before TPS and memory are read (default 45)
-#   -JvmArg <a>,<b>    extra JVM arguments, after the launcher's
+#   -JvmArg <a>,<b>    extra JVM arguments, after the launcher's. Under `powershell -File` a comma list arrives as
+#                      ONE argument and is passed on as one (a JVM argument may hold a comma, so it is not split):
+#                      give several from inside PowerShell or with `powershell -Command`
 #   -ConsoleFile <f>   a text file of server console commands, one per line (# starts a comment): each is sent
 #                      after the idle measurements, two seconds apart; what they print is in the captured logs
 #   -ChunkFile <f>     more chunks to generate after the measurements, on top of one new chunk per dimension: a text
@@ -43,8 +45,11 @@
 #   -NoChunks          generate no chunk (the feature order of every dimension is still read and judged)
 #   -ForceChunks       ask for chunks also in a dimension whose feature order has a cycle: shows what a player
 #                      entering it would meet (every chunk fails); never for a result to compare with
-#   -JarCache <dir>,.. folders that hold the mod jars (default: $env:ICRAFT_BOOT_JAR_CACHE, else the
-#                      PrismLauncher instance IridescentCraft under %APPDATA%)
+#   -JarCache <dir>,.. folders that hold the mod jars (default: $env:ICRAFT_BOOT_JAR_CACHE, separated by ;, else the
+#                      PrismLauncher instance IridescentCraft under %APPDATA%). The comma list works under
+#                      `powershell -File` too (which hands it over as one string); a folder whose name holds a
+#                      comma goes through the environment variable. A folder that does not exist is named in a
+#                      note and not searched
 #   -IndexDir <dir>    a mod index directory other than <tree>\.minecraft\server_distribution\mods\.index
 #   -ResultsRoot <dir> where results are kept (default: $env:ICRAFT_BOOT_RESULTS, else %USERPROFILE%\icraft-boot\results)
 #   -WslHome <path>    the rig's folder in WSL (default: $ICRAFT_BOOT_WSL_HOME there, else ~/icraft-boot)
@@ -115,7 +120,16 @@ if (-not $ResultsRoot) { $ResultsRoot = Join-Path $env:USERPROFILE 'icraft-boot\
 $ResultsRoot = Get-FullPath $ResultsRoot
 if (-not $JarCache -and $env:ICRAFT_BOOT_JAR_CACHE) { $JarCache = @($env:ICRAFT_BOOT_JAR_CACHE -split ';' | Where-Object { $_ }) }
 if (-not $JarCache) { $JarCache = @(Join-Path $env:APPDATA 'PrismLauncher\instances\IridescentCraft\.minecraft\mods') }
+if ($PSBoundParameters.ContainsKey('JarCache')) {
+    # `powershell -File boot.ps1 -JarCache a,b` binds ONE string, 'a,b' (only -Command, or a call from inside
+    # PowerShell, parses the comma as an array). Unsplit, that is one folder that does not exist, the engine
+    # drops it without a word, and a jar that is only in a,b is reported missing.
+    $JarCache = @($JarCache | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+}
 $JarCache = @($JarCache | ForEach-Object { Get-FullPath $_ })
+foreach ($jc in $JarCache) {
+    if (-not (Test-Path -LiteralPath $jc -PathType Container)) { Say "note: jar cache folder not found, not searched: $jc" }
+}
 
 # ---- WSL ---------------------------------------------------------------------
 $WslArgs = @()
