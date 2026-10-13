@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/quests/heracles_reconcile.js
+// @events PlayerEvents.loggedIn, ServerEvents.commandRegistry, tick.server
 // =============================================================================
 // kubejs/server_scripts/quests/heracles_reconcile.js
 //
@@ -140,6 +142,9 @@ global.icraft.heracles = {
 }
 
 // ---- condition probes (all defensive) -------------------------------------
+// Each answers false when its read throws: "not earned" is the safe answer (no
+// quest is completed for it). It says so once: a probe that throws every time is
+// a group of quests that silently never reconciles.
 function reconHasAdv(player, advId) {
   try {
     // NOTE: selector args [...] are only valid on @-selectors, NOT a bare name.
@@ -147,18 +152,30 @@ function reconHasAdv(player, advId) {
     // form `<user>[...]` is a parse error that spams the log + always fails).
     return player.server.runCommandSilent(
       'execute if entity @a[name=' + player.username + ',advancements={' + advId + '=true}]') > 0
-  } catch (e) { return false }
+  } catch (e) {
+    reconWarnOnce('probe.adv', 'the advancement probe threw (answered "not earned"): ' + e)
+    return false
+  }
 }
 function reconHasStage(player, stage) {
-  try { return AStages.playerHasStage(stage, player) } catch (e) { return false }
+  try { return AStages.playerHasStage(stage, player) } catch (e) {
+    reconWarnOnce('probe.stage', 'the stage probe threw (answered "not earned"): ' + e)
+    return false
+  }
 }
 function reconHasFlag(player, key) {
-  try { return player.persistentData.getBoolean(key) } catch (e) { return false }
+  try { return player.persistentData.getBoolean(key) } catch (e) {
+    reconWarnOnce('probe.flag', 'the flag probe threw (answered "not earned"): ' + e)
+    return false
+  }
 }
 function reconHasItem(player, itemPredicate) {
   try {
     return player.server.runCommandSilent('clear ' + player.username + ' ' + itemPredicate + ' 0') > 0
-  } catch (e) { return false }
+  } catch (e) {
+    reconWarnOnce('probe.item', 'the held-item probe threw (answered "not earned"): ' + e)
+    return false
+  }
 }
 
 // Re-fire an advancement THROUGH Heracles' listener: revoke (so the grant isn't
@@ -373,14 +390,28 @@ var RECONCILE = [
 
 // ---- idempotency -----------------------------------------------------------
 function reconGuardKey(quest) { return 'icraft_recon_' + quest }
-function reconIsGuarded(player, quest) { try { return player.persistentData.getBoolean(reconGuardKey(quest)) } catch (e) { return false } }
-function reconMarkGuarded(player, quest) { try { player.persistentData.putBoolean(reconGuardKey(quest), true) } catch (e) {} }
+// A guard that cannot be read answers "not reconciled yet", and one that cannot be
+// written leaves it so: the quest is then tried again at every pass (Heracles'
+// own "already complete" answer still stops a second completion). Said once.
+function reconIsGuarded(player, quest) {
+  try { return player.persistentData.getBoolean(reconGuardKey(quest)) } catch (e) {
+    reconWarnOnce('guard.read', 'reading a reconcile guard threw (the quest counts as not yet synced): ' + e)
+    return false
+  }
+}
+function reconMarkGuarded(player, quest) {
+  try { player.persistentData.putBoolean(reconGuardKey(quest), true) } catch (e) {
+    reconWarnOnce('guard.write', 'writing a reconcile guard threw (the quest will be tried again): ' + e)
+  }
+}
 function reconClearGuards(player) {
   try {
     for (var i = 0; i < RECONCILE.length; i++) {
       player.persistentData.putBoolean(reconGuardKey(RECONCILE[i].q), false)
     }
-  } catch (err) {}
+  } catch (err) {
+    reconWarnOnce('guard.clear', 'clearing the reconcile guards threw (the reset is incomplete): ' + err)
+  }
 }
 
 // "Already complete the normal way?" -- asks Heracles (see header). Unknown
@@ -408,7 +439,10 @@ function reconcileAll(player, verbose) {
     if (reconHeraclesComplete(player, entry.q)) { reconMarkGuarded(player, entry.q); if (verbose) report.push([entry.q, 'already-done']); continue }
 
     var ok = false
-    try { ok = !!entry.met(player) } catch (err) { ok = false }
+    try { ok = !!entry.met(player) } catch (err) {
+      reconWarnOnce('met:' + entry.q, 'the condition of ' + entry.q + ' threw (answered "not earned"): ' + err)
+      ok = false
+    }
     if (!ok) { if (verbose) report.push([entry.q, 'not-yet']); continue }
 
     // Condition met -> complete. Primary: Heracles' force-complete.
@@ -440,16 +474,23 @@ function reconcileAll(player, verbose) {
 // ---- triggers --------------------------------------------------------------
 PlayerEvents.loggedIn(icraft.guard('quests/heracles_reconcile', 'PlayerEvents.loggedIn', event => {
   try { reconcileAll(event.player, false) } catch (e) { console.warn('[heracles_reconcile] login pass threw: ' + e) }
-  try { event.player.persistentData.putInt('icraft_recon_recheck_ticks', 100) } catch (e) {}
+  try { event.player.persistentData.putInt('icraft_recon_recheck_ticks', 100) } catch (e) {
+    reconWarnOnce('recheck.arm', 'arming the 5 s re-pass after a login threw (the 30 s pass still runs): ' + e)
+  }
 }))
 
 global.tick_heraclesReconcileRecheck = function(event) {
   event.server.players.forEach(function(player) {
     var left = 0
-    try { left = player.persistentData.getInt('icraft_recon_recheck_ticks') } catch (e) { return }
+    try { left = player.persistentData.getInt('icraft_recon_recheck_ticks') } catch (e) {
+      reconWarnOnce('recheck.read', 'reading the re-pass countdown threw (no re-pass for this player): ' + e)
+      return
+    }
     if (!left || left <= 0) return
     left -= 20
-    try { player.persistentData.putInt('icraft_recon_recheck_ticks', Math.max(0, left)) } catch (e) {}
+    try { player.persistentData.putInt('icraft_recon_recheck_ticks', Math.max(0, left)) } catch (e) {
+      reconWarnOnce('recheck.write', 'writing the re-pass countdown threw: ' + e)
+    }
     if (left <= 0) {
       try { reconcileAll(player, false) } catch (e) { console.warn('[heracles_reconcile] recheck threw for ' + player.username + ': ' + e) }
     }
@@ -477,7 +518,11 @@ ServerEvents.commandRegistry(icraft.guard('quests/heracles_reconcile', 'ServerEv
   var commands = event.commands
   var run = function (ctx, doReset) {
     var sp = null
-    try { sp = ctx.source.getPlayerOrException() } catch (e) { ctx.source.sendFailure(Text.of('Must be run as a player')); return 0 }
+    try { sp = ctx.source.getPlayerOrException() } catch (e) {
+      // swallow-ok: not a player (the console, a command block): the source is told so and the command ends
+      ctx.source.sendFailure(Text.of('Must be run as a player'))
+      return 0
+    }
     if (doReset) reconClearGuards(sp)
     var report = null
     try { report = reconcileAll(sp, true) } catch (e2) { sp.tell(Text.red('[Reconcile] threw: ' + e2)); return 0 }

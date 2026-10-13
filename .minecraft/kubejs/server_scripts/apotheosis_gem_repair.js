@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/apotheosis_gem_repair.js
+// @events BlockEvents.rightClicked, EntityEvents.spawned, LootJS.modifiers, tick.player
 // =============================================================================
 // IridescentCraft — Apotheosis errored-gem auto-repair
 // =============================================================================
@@ -75,6 +77,12 @@
 
   var CompoundTag_gr = Java.loadClass('net.minecraft.nbt.CompoundTag')
 
+  // once per failing place per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew = function (where, e) {
+    global.icraft.core.warnOnce('apotheosis_gem_repair:' + where, '[gem-repair] ' + where + ' threw: ' + e)
+  }
+
   function isApothGem(stack) {
     // 2026-05-18 fix: stack.isEmpty (no parens) is a function-ref-always-truthy
     // trap per feedback_kubejs_tooltip_api. Inventory sweep silently did nothing
@@ -138,7 +146,7 @@
     try {
       player.tell(Text.gray('A stale broken-tag in your ' + slotLabel
                           + ' was stripped from an Apotheosis gem.'))
-    } catch (_) {}
+    } catch (eTell) { warnThrew('telling a player about a stripped tag', eTell) }
   }
 
   function pickRandomGem() {
@@ -165,7 +173,10 @@
       if (dt < 0 || dt > 200) return ''  // only correlate within ~10s
       return ' (recent chest at ' + pd.getString('_lastChestPos')
            + ' opened ' + dt + 't ago)'
-    } catch (_) { return '' }
+    } catch (eCtx) {
+      warnThrew('the recent-chest note of a repair line (the line goes out without it)', eCtx)
+      return ''
+    }
   }
 
   // Categorize WHY a gem stack is errored — useful for forensics and for
@@ -208,7 +219,7 @@
       player.tell(Text.gray('An errored gem in your ' + slotLabel
                           + ' was auto-repaired to ' + gemId
                           + ' (common). Reason: ' + reason + '.'))
-    } catch (_) {}
+    } catch (eTell) { warnThrew('telling a player about a repaired gem', eTell) }
   }
 
   // Stamp the player with the position + tick of the most recent chest /
@@ -216,20 +227,21 @@
   // gem repair logs can include "recent chest at X opened Yt ago" --
   // converts an otherwise-source-less log line into a forensic clue
   // about which loot table is producing bare gems.
+  // (No try of its own since 2026-10-13: the guard isolates a throw and prints the
+  // FAILED line. The empty catch that stood here is why the stamp could go
+  // unwritten for months without a word, see recentChestContext.)
   BlockEvents.rightClicked(icraft.guard('apotheosis_gem_repair', 'BlockEvents.rightClicked', event => {
-    try {
-      if (!event.block || !event.player) return
-      var blockId = String(event.block.id)
-      var match = blockId.indexOf('chest') >= 0
-               || blockId.indexOf('barrel') >= 0
-               || blockId.indexOf('shulker_box') >= 0
-               || blockId.indexOf('spawner') >= 0
-      if (!match) return
-      var pos = event.block.pos
-      var pd = event.player.persistentData
-      pd.putString('_lastChestPos', pos.x + ',' + pos.y + ',' + pos.z + ' ' + blockId)
-      pd.putLong('_lastChestTick', event.player.age)
-    } catch (_) {}
+    if (!event.block || !event.player) return
+    var blockId = String(event.block.id)
+    var match = blockId.indexOf('chest') >= 0
+             || blockId.indexOf('barrel') >= 0
+             || blockId.indexOf('shulker_box') >= 0
+             || blockId.indexOf('spawner') >= 0
+    if (!match) return
+    var pos = event.block.pos
+    var pd = event.player.persistentData
+    pd.putString('_lastChestPos', pos.x + ',' + pos.y + ',' + pos.z + ' ' + blockId)
+    pd.putLong('_lastChestTick', event.player.age)
   }))
 
   // Player tick at 60-tick cadence (~3s). Bare gems are an edge case --
@@ -247,11 +259,14 @@
     // `i < undefined` is false -- the sweep had never looked at a single slot.
     // `containerSize` is Container.getContainerSize().
     var size = 0
-    try { size = inv.containerSize } catch (_) {}
+    try { size = inv.containerSize } catch (_) { /* swallow-ok: the line below takes 41, a player inventory's slot count, whenever this read gives no number */ }
     if (!(size > 0)) size = 41
     for (var i = 0; i < size; i++) {
       var stack
-      try { stack = inv.getItem(i) } catch (_) { continue }
+      try { stack = inv.getItem(i) } catch (eSlot) {
+        warnThrew('reading an inventory slot (the slot is skipped)', eSlot)
+        continue
+      }
       if (!isApothGem(stack)) continue
       var label = (i < 9) ? 'hotbar slot ' + i
                 : (i < 36) ? 'inventory slot ' + i
@@ -274,7 +289,7 @@
         mutated = true
       }
       if (mutated) {
-        try { inv.setItem(i, stack) } catch (_) {}
+        try { inv.setItem(i, stack) } catch (eSet) { warnThrew('writing a repaired gem back to its slot', eSet) }
       }
     }
   }
@@ -303,7 +318,10 @@
 
       // entity.item is the ItemStack the entity wraps.
       var stack
-      try { stack = entity.item } catch (_) { return }
+      try { stack = entity.item } catch (eItem) {
+        warnThrew('reading the stack of an item entity (it is not traced)', eItem)
+        return
+      }
       // 2026-05-18 fix: stack.isEmpty (no parens) is function-ref-always-truthy;
       // use stack.isEmpty() (with parens). Per feedback_kubejs_tooltip_api.
       if (!stack || stack.isEmpty()) return
@@ -313,10 +331,11 @@
       var pos = entity.position()
       var px = Math.floor(pos.x()), py = Math.floor(pos.y()), pz = Math.floor(pos.z())
       var lvl = entity.level
+      // `level.dimension` is the dimension id for scripts. (Until 2026-10-13 this
+      // first called lvl.dimension().location(): the id is not a function, so that
+      // threw on every call and the line below was what answered.)
       var dim = 'unknown'
-      try { dim = String(lvl.dimension().location()) } catch (_) {
-        try { dim = String(lvl.dimension) } catch (_) {}
-      }
+      try { dim = String(lvl.dimension) } catch (eDim) { warnThrew('reading the dimension of a gem trace (unknown)', eDim) }
 
       // Per-(dimension, position-within-3-blocks) one-shot per session
       // to avoid log spam from a single source.
@@ -347,7 +366,7 @@
             }
           }
         }
-      } catch (_) {}
+      } catch (eScan) { warnThrew('the block scan around a bare gem (no nearby block is named)', eScan) }
 
       console.warn('[gem-trace] bare apotheosis:gem spawned'
                 + ' pos=' + px + ',' + py + ',' + pz
@@ -376,7 +395,11 @@
     try {
       if (String(stack.id) !== 'apotheosis:gem') return false
       return isBareGem(stack)
-    } catch (_) { return false }
+    } catch (eBare) {
+      // false = "not a bare gem": an errored gem then stays in the chest as it is
+      warnThrew('testing a chest stack for a bare gem (it counts as fine)', eBare)
+      return false
+    }
   }
 
   // [2026-10-11] This was `.modifyLoot(bareGemFilter, function (context, stack) {...})`.
@@ -412,9 +435,9 @@
           if (!isBareChestGem(stack)) continue
           try {
             var tableId = 'unknown'
-            try { tableId = String(ctx.getLootTableId()) } catch (_) {}
+            try { tableId = String(ctx.getLootTableId()) } catch (eTable) { warnThrew('reading the loot table id of a chest gem trace (unknown)', eTable) }
             var dim = 'unknown'
-            try { dim = String(ctx.getLevel().dimension) } catch (_) {}
+            try { dim = String(ctx.getLevel().dimension) } catch (eDim2) { warnThrew('reading the dimension of a chest gem trace (unknown)', eDim2) }
             var key = tableId + '|' + dim
             if (!global._gem_loot_seen[key]) {
               global._gem_loot_seen[key] = true

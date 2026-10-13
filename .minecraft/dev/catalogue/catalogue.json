@@ -1810,6 +1810,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -2173,7 +2177,7 @@
      ],
      "sections": 0,
      "ownSlots": 0,
-     "names": 7,
+     "names": 8,
      "reads": [
       {
        "name": "icraft.guard",
@@ -2191,6 +2195,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -2516,8 +2524,14 @@
      ],
      "sections": 0,
      "ownSlots": 0,
-     "names": 19,
+     "names": 20,
      "reads": [
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -2534,6 +2548,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -7119,6 +7137,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -11928,6 +11950,10 @@
      "when": "handler"
     },
     {
+     "script": "server:cherry_spawn_biome.js",
+     "when": "handler"
+    },
+    {
      "script": "server:class/equipment_hp_halving.js",
      "when": "load"
     },
@@ -12748,6 +12774,7 @@
     "server:attributes/iss_school_to_ars_spell.js",
     "server:attributes/mana_pool_bonuses.js",
     "server:bonfire/boss_compass_handler.js",
+    "server:cherry_spawn_biome.js",
     "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
     "server:compat/disable_creeperlings.js",

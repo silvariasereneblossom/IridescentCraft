@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "78d8cd47",
+    "generated_from":  "d4a505c3",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7028,8 +7028,8 @@
                                                                          "size":  51249
                                                                      },
                   "kubejs/server_scripts/apotheosis_gem_repair.js":  {
-                                                                         "sha256":  "f598da12817dfac329483cd6e5b2ac41e3e0e1ce74f427a66869540360a9441f",
-                                                                         "size":  21586
+                                                                         "sha256":  "3465a1c628f6ba219143ba9a39c6119c8bb75ac817aabc15ae50cd5bbc727d0c",
+                                                                         "size":  23489
                                                                      },
                   "kubejs/server_scripts/armor_weight.js":  {
                                                                 "sha256":  "9d9d62d42b1fce01df444c609a50c52437f6b1cc501c0cd66de798e5090a2d9d",
@@ -7056,8 +7056,8 @@
                                                                                       "size":  7222
                                                                                   },
                   "kubejs/server_scripts/attributes/mana_debug_command.js":  {
-                                                                                 "sha256":  "5824801c89393338bf6941790f165a4dc7be6fcca06c3b67049ee977a75803a4",
-                                                                                 "size":  5433
+                                                                                 "sha256":  "8669bb2d12b26356648cf23eaae1c0b9d1bfff37d202e7f51288ad9a47b78e13",
+                                                                                 "size":  6467
                                                                              },
                   "kubejs/server_scripts/attributes/mana_pool_bonuses.js":  {
                                                                                 "sha256":  "48a94688ac2616d2292ea64be4855d8e846a4acc1a3481e82d0d370003e81776",
@@ -7080,8 +7080,8 @@
                                                                             "size":  2209
                                                                         },
                   "kubejs/server_scripts/cherry_spawn_biome.js":  {
-                                                                      "sha256":  "b4d80d3a5acb56d25ff861ade6926e3cc24d11a4e3f8e28832fbbd2764c0c96a",
-                                                                      "size":  18089
+                                                                      "sha256":  "a43cf3cda6a492f3226e6e921879fe790b80524b2903cb2d308872e887a48720",
+                                                                      "size":  19907
                                                                   },
                   "kubejs/server_scripts/class/equipment_hp_halving.js":  {
                                                                               "sha256":  "44d818ff82099cef0ff8e49843f306799e44186554ae49e275d48282e7652878",
@@ -7444,8 +7444,8 @@
                                                                               "size":  4082
                                                                           },
                   "kubejs/server_scripts/quests/heracles_reconcile.js":  {
-                                                                             "sha256":  "a07b63e44486898b521fb1e9acb66ce196bf192adda422059f866e6c83cac6da",
-                                                                             "size":  31987
+                                                                             "sha256":  "f3ee63ca572ed16a4acaf350a44e33168a917e4119e5327cc4f09697cc792f0a",
+                                                                             "size":  33867
                                                                          },
                   "kubejs/server_scripts/quests/onboarding_bridge.js":  {
                                                                             "sha256":  "71ed7475624fcd3ee7997e449241f65c9b8f943ac737d63b2252aa8665555a3d",
@@ -7568,8 +7568,8 @@
                                                                              "size":  13841
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "b5c0222f1f7b6edfcbf68c748155f37d77f9d99182a32116d374378b7cfd11ff",
-                                                                              "size":  55976
+                                                                              "sha256":  "8bd4225c5512be072fcaebb04f00de5f349de7d6fd0a6c51b5147542884ab9d0",
+                                                                              "size":  57207
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "73e9392bf46bc820ec290cece35fe7394cf4f866d53de03d9028a873f411903b",

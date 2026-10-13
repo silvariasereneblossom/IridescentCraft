@@ -140,7 +140,11 @@
   // string), not the `type` property, which a public `type` field on some mod
   // entities shadows.
   var typeIdOf = function (entity) {
-    try { return String(entity.getType()) } catch (e) { return '' }
+    try { return String(entity.getType()) } catch (e) {
+      // '' = "cannot identify it": the one caller (True Strength) then spares it
+      warnFailed('reading an entity type (True Strength spares what it cannot identify)', e)
+      return ''
+    }
   }
   // The shared hit-handler rule of 0_lib_core.js, without depending on it:
   // damage dealt from inside another hurt handler (splash, chain, thorns) is
@@ -149,7 +153,11 @@
     try {
       var core = global.icraft.core
       return !!(core && core.secondary && core.secondary())
-    } catch (e) { return false }
+    } catch (e) {
+      // false = "a primary hit": the answer that lets the melee skills proc
+      warnFailed('the secondary-hit test (the hit counts as a primary one)', e)
+      return false
+    }
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -178,6 +186,7 @@
       attr = rl ? ForgeRegistries_jl.ATTRIBUTES.getValue(rl) : null
     } catch (e) {
       attr = null
+      warnFailed('looking up attribute ' + id, e)       // same key as the line below: the error is what is printed
     }
     if (!attr) warnFailed('looking up attribute ' + id, 'it is not in the attribute registry -- skills on it are skipped')
     attrCache[id] = attr || null
@@ -452,13 +461,19 @@
       // getType() throws for a menu without a type (the player's own inventory)
       var typeKey = ForgeRegistries_jl.MENU_TYPES.getKey(menu.getType())
       return typeKey ? String(typeKey) : ''
-    } catch (e) { return '' }
+    } catch (e) {
+      // swallow-ok: expected for a menu without a type (see above); '' = not a station, no refund
+      return ''
+    }
   }
 
   // -> 'enchant' | 'anvil' | null
   var stationOf = function (player) {
     var menu = null
-    try { menu = player.openInventory } catch (e) { return null }
+    try { menu = player.openInventory } catch (e) {
+      warnFailed('reading the open menu (no XP refund)', e)
+      return null
+    }
     if (!menu) return null
     if (EnchantMenuClass && menu instanceof EnchantMenuClass) return 'enchant'
     if (AnvilMenuClass && menu instanceof AnvilMenuClass) return 'anvil'
@@ -604,7 +619,11 @@
     return a || null
   }
   var msgIdOf = function (source) {
-    try { return String(source.getType()) } catch (e) { return '' }
+    try { return String(source.getType()) } catch (e) {
+      // '' is not a melee id: every melee skill then skips the hit
+      warnFailed('reading the damage type of a hit (the hit counts as not melee)', e)
+      return ''
+    }
   }
   // 'player' = a player's own swing (incl. sweep). Projectiles and spells carry other ids.
   var isMeleeId = function (id) {
@@ -645,7 +664,11 @@
     try {
       var core = global.icraft.core
       if (core && core.isBoss && core.isBoss(type) === true) return true
-    } catch (e) {}
+    } catch (e) {
+      // the roster could not be asked (isBoss throws without its registry): the
+      // name hints above and the tag below are then all that spares a boss
+      warnFailed('the boss roster test of True Strength (the name hints and #forge:bosses still apply)', e)
+    }
     return bossIdsFromTag()[type] === true
   }
 
@@ -897,7 +920,10 @@
       if (blockId.indexOf(':') <= 0) return
       if (block.entity) return                             // container contents would be duplicated
       var canHarvest = true
-      try { canHarvest = !!player.hasCorrectToolForDrops(block.blockState) } catch (e4) { canHarvest = true }
+      try { canHarvest = !!player.hasCorrectToolForDrops(block.blockState) } catch (e4) {
+        canHarvest = true
+        warnFailed('the tool test of the mining bonus (the block counts as harvestable)', e4)
+      }
       if (!canHarvest) return
       var x = Number(block.x)
       var y = Number(block.y)
@@ -924,26 +950,24 @@
   // ═══════════════════════════════════════════════════════════════════════════
   // HOUSEKEEPING
   // ═══════════════════════════════════════════════════════════════════════════
+  // (The three handlers below have no try of their own since 2026-10-13: the guard
+  // isolates a throw and prints the FAILED line.)
   var forget = function (player) {
-    try {
-      var key = keyOf(player)
-      delete secondWindReady[key]
-      delete lastCombat[key]
-      delete craftRefundAt[key]
-      delete hungerBudget[key]
-    } catch (e) {}
+    var key = keyOf(player)
+    delete secondWindReady[key]
+    delete lastCombat[key]
+    delete craftRefundAt[key]
+    delete hungerBudget[key]
   }
   PlayerEvents.loggedOut(icraft.guard('skills/justleveling_skills', 'PlayerEvents.loggedOut', function (event) { forget(event.player) }))
   // New entity after a death: the hunger bar was reset, not drained.
   PlayerEvents.respawned(icraft.guard('skills/justleveling_skills', 'PlayerEvents.respawned', function (event) {
-    try { delete hungerBudget[keyOf(event.player)] } catch (e) {}
+    delete hungerBudget[keyOf(event.player)]
   }))
   // The XP-refund tick used to keep its baseline in persistentData; unused now.
   PlayerEvents.loggedIn(icraft.guard('skills/justleveling_skills', 'PlayerEvents.loggedIn', function (event) {
-    try {
-      var pd = event.player.persistentData
-      if (pd && pd.contains('icraft_apt_xp_last')) pd.remove('icraft_apt_xp_last')
-    } catch (e) {}
+    var pd = event.player.persistentData
+    if (pd && pd.contains('icraft_apt_xp_last')) pd.remove('icraft_apt_xp_last')
   }))
 
   ServerEvents.loaded(icraft.guard('skills/justleveling_skills', 'ServerEvents.loaded', function (event) {

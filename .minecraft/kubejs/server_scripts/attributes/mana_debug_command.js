@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/attributes/mana_debug_command.js
+// @events ServerEvents.commandRegistry
 // =============================================================================
 // /icraft mana_debug -- dump unified mana pool state
 // =============================================================================
@@ -7,6 +9,10 @@
 // confirm getCurrentMana/getMaxMana are returning the ISS values.
 //
 // Op-only (permission level 2).
+//
+// A read that throws is PRINTED in the dump (`threw: <error>`), in the place of
+// the value. Until 2026-10-13 each read had an empty catch and the dump showed
+// "unknown" or 0 instead: a debug command that hid what it was asked to show.
 // =============================================================================
 
 try {
@@ -19,28 +25,36 @@ try {
     { label: 'ISS spell_power', id: 'irons_spellbooks:spell_power' },
   ]
 
+  // what a failed read prints in the place of its value
+  var threw_mdc = function(e) { return 'threw: ' + e }
+
+  // -> the Attribute, null when it is not registered, or { failed: <error> }
   var resolveAttr = function(id) {
     try {
       var rl = ResourceLocation_mdc.tryParse(id)
       return rl ? ForgeRegistries_mdc.ATTRIBUTES.getValue(rl) : null
-    } catch (e) { return null }
+    } catch (e) { return { failed: e } }
   }
 
   var formatModifier = function(mod) {
     var uuid = 'unknown'
-    try { uuid = String(mod.getId()) } catch (_) {}
+    try { uuid = String(mod.getId()) } catch (e1) { uuid = threw_mdc(e1) }
     var name = 'unknown'
-    try { name = String(mod.getName()) } catch (_) {}
+    try { name = String(mod.getName()) } catch (e2) { name = threw_mdc(e2) }
     var amt = 0
-    try { amt = mod.getAmount() } catch (_) {}
+    try { amt = mod.getAmount() } catch (e3) { amt = threw_mdc(e3) }
     var op = 'unknown'
-    try { op = String(mod.getOperation().name()) } catch (_) {}
+    try { op = String(mod.getOperation().name()) } catch (e4) { op = threw_mdc(e4) }
     return uuid + '  amt=' + amt + '  op=' + op + '  name=' + name
   }
 
   var dumpAttribute = function(sp, label, id) {
     sp.tell('§6--- ' + label + ' (' + id + ') ---')
     var attr = resolveAttr(id)
+    if (attr && attr.failed) {
+      sp.tell('§c  the attribute registry could not be asked: ' + attr.failed)
+      return
+    }
     if (!attr) {
       sp.tell('§c  attribute not registered (mod absent?)')
       return
@@ -55,9 +69,9 @@ try {
       return
     }
     var base = 0
-    try { base = inst.getBaseValue() } catch (_) {}
+    try { base = inst.getBaseValue() } catch (e1) { base = threw_mdc(e1) }
     var value = 0
-    try { value = inst.getValue() } catch (_) {}
+    try { value = inst.getValue() } catch (e2) { value = threw_mdc(e2) }
     sp.tell('§7  base=§f' + base + '§7  aggregated=§a' + value)
     var iter = inst.getModifiers().iterator()
     var count = 0
@@ -85,13 +99,13 @@ try {
         return
       }
       var current = 0
-      try { current = cap.getCurrentMana() } catch (_) {}
+      try { current = cap.getCurrentMana() } catch (e1) { current = threw_mdc(e1) }
       var max = 0
-      try { max = cap.getMaxMana() } catch (_) {}
+      try { max = cap.getMaxMana() } catch (e2) { max = threw_mdc(e2) }
       var glyphBonus = 0
-      try { glyphBonus = cap.getGlyphBonus() } catch (_) {}
+      try { glyphBonus = cap.getGlyphBonus() } catch (e3) { glyphBonus = threw_mdc(e3) }
       var bookTier = 0
-      try { bookTier = cap.getBookTier() } catch (_) {}
+      try { bookTier = cap.getBookTier() } catch (e4) { bookTier = threw_mdc(e4) }
       sp.tell('§7  current=§f' + current + '§7  max=§a' + max
             + '§7  glyphBonus=' + glyphBonus + '  bookTier=' + bookTier)
 
@@ -121,6 +135,7 @@ try {
           .executes(function(ctx) {
             var sp
             try { sp = ctx.source.getPlayerOrException() } catch (e) {
+              // swallow-ok: not a player (the console, a command block): the source is told so and the command ends
               ctx.source.sendFailure(Text.of('Must be run as a player'))
               return 0
             }

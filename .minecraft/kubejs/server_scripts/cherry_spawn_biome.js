@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/cherry_spawn_biome.js
+// @events PlayerEvents.loggedIn, ServerEvents.loaded
 // =============================================================================
 // CHERRY RIVER VALLEY -- world spawn at a cherry-biome village
 // =============================================================================
@@ -80,20 +82,26 @@ try {
     ResourceLocation_cs.tryParse('minecraft:village')
   )
 
-  // KubeJS's ServerLevel wrapper hides setSharedSpawnPos by name. Try several
-  // paths: Forge's setDefaultSpawnPos, LevelData.setSpawn, the m_ SRG names.
-  // First success wins. Returns true if any path succeeded, false otherwise.
+  // once per failing place per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew_cs = function (where, e) {
+    global.icraft.core.warnOnce('cherry_spawn_biome:' + where, '[icraft_spawn] ' + where + ' threw: ' + e)
+  }
+
+  // The world spawn is set with ServerLevel.setDefaultSpawnPos(BlockPos, float), the
+  // name this engine has for it; the level data's own setter is the second path.
+  // Returns true when one of the two worked; both callers report a false.
+  // Until 2026-10-13 five names were tried in turn, each behind an empty catch.
+  // Three of them do not exist for a script (setSharedSpawnPos, the SRG name
+  // m_8615_, getServerLevelData: the member tables of dev/engine-tests/truth, and
+  // a full-pack boot) and could only ever throw; they are gone.
   var applySpawnPos = function(ow, pos) {
-    // Path 1: Forge's setDefaultSpawnPos(BlockPos, float)
-    try { ow.setDefaultSpawnPos(pos, 0.0); return true } catch (_) {}
-    // Path 2: vanilla setSharedSpawnPos by name (sometimes exposed)
-    try { ow.setSharedSpawnPos(pos, 0.0); return true } catch (_) {}
-    // Path 3: SRG name for setSharedSpawnPos (Forge 1.20.1)
-    try { ow.m_8615_(pos, 0.0); return true } catch (_) {}
-    // Path 4: through LevelData (always present, vanilla path)
-    try { ow.getLevelData().setSpawn(pos, 0.0); return true } catch (_) {}
-    // Path 5: through serverLevelData getter (KubeJS variant)
-    try { ow.getServerLevelData().setSpawn(pos, 0.0); return true } catch (_) {}
+    try { ow.setDefaultSpawnPos(pos, 0.0); return true } catch (e1) {
+      warnThrew_cs('setDefaultSpawnPos (the level data is tried next)', e1)
+    }
+    try { ow.getLevelData().setSpawn(pos, 0.0); return true } catch (e2) {
+      warnThrew_cs('getLevelData().setSpawn', e2)
+    }
     return false
   }
 
@@ -104,7 +112,11 @@ try {
       var key = holder.unwrapKey()
       if (!key.isPresent()) return null
       return String(key.get().location())
-    } catch (e) { return null }
+    } catch (e) {
+      // null = "this village is not in the cherry biome": the search moves on
+      warnThrew_cs('reading the biome at a village (it counts as not in the cherry biome)', e)
+      return null
+    }
   }
 
   var cherryPredicate = new Predicate_cs({
@@ -113,7 +125,11 @@ try {
         var key = biomeHolder.unwrapKey()
         if (!key.isPresent()) return false
         return String(key.get().location()) === TARGET_BIOME
-      } catch (e) { return false }
+      } catch (e) {
+        // false = "not the cherry biome": if this throws every time the search finds nothing
+        warnThrew_cs('the biome test of the search (the biome counts as no match)', e)
+        return false
+      }
     }
   })
 
@@ -129,7 +145,10 @@ try {
       // try -- a `var` declared in a block is invisible outside it in this
       // Rhino build (see the 2026-10-10 header note).
       var pdata = null
-      try { pdata = ow.getPersistentData ? ow.getPersistentData() : null } catch (_) {}
+      try { pdata = ow.getPersistentData ? ow.getPersistentData() : null } catch (ePd) {
+        // without it no flag can be read or stored: the search then runs at every boot
+        warnThrew_cs('reading the level\'s persistent data (the one-shot guard is off)', ePd)
+      }
       if (pdata && pdata.contains(FLAG_SET)) {
         console.log('[icraft_spawn] already set this world; skipping')
         return
@@ -141,7 +160,9 @@ try {
       // Records "the search has run and has nothing more to try" so it never
       // repeats on later boots. No-op if persistent data is unavailable.
       var markExhausted = function() {
-        try { if (pdata) pdata.putBoolean(FLAG_EXHAUSTED, true) } catch (_) {}
+        try { if (pdata) pdata.putBoolean(FLAG_EXHAUSTED, true) } catch (eEx) {
+          warnThrew_cs('storing ' + FLAG_EXHAUSTED + ' (the search will run again at the next boot)', eEx)
+        }
       }
 
       var origin = ow.getSharedSpawnPos()
@@ -220,7 +241,9 @@ try {
                 Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types').MOTION_BLOCKING_NO_LEAVES,
                 villagePos.getX(), villagePos.getZ()
               )
-            } catch (_) {}
+            } catch (eH) {
+              warnThrew_cs('getHeight at the village (the spawn keeps the Y the structure search gave)', eH)
+            }
             var safePos = new BlockPos_cs(villagePos.getX(), surfaceY, villagePos.getZ())
 
             // 1. Set world spawn (compass + bedless respawn)
@@ -235,7 +258,10 @@ try {
               // every one of them (none carries the first-spawn marker) back to
               // the village on their next login.
               var armTeleport = false
-              try { armTeleport = ow.time <= NEW_WORLD_MAX_GAMETIME } catch (_) {}
+              try { armTeleport = ow.time <= NEW_WORLD_MAX_GAMETIME } catch (eT) {
+                // not armed is the safe answer (nobody is pulled to the village)
+                warnThrew_cs('reading the game time (the first-join teleport is not armed)', eT)
+              }
               try {
                 if (pdata) {
                   pdata.putBoolean(FLAG_SET, true)
@@ -245,7 +271,9 @@ try {
                     pdata.putInt('icraft_cherry_village_z', safePos.getZ())
                   }
                 }
-              } catch (_) {}
+              } catch (eF) {
+                warnThrew_cs('storing the spawn flags (the search will run again at the next boot)', eF)
+              }
               console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
                           safePos.getX() + ',' + safePos.getY() + ',' + safePos.getZ() +
                           (armTeleport ? ' (player first-join teleport armed)'
@@ -278,7 +306,9 @@ try {
                       'within ' + MAX_ATTEMPTS + ' attempts)')
           try {
             if (pdata) pdata.putBoolean(FLAG_SET, true)
-          } catch (_) {}
+          } catch (eFb) {
+            warnThrew_cs('storing ' + FLAG_SET + ' after the fallback (the search will run again at the next boot)', eFb)
+          }
         } else {
           console.warn('[icraft_spawn] all setSpawnPos paths failed for cherry fallback at ' +
                        bestCherryFallback.getX() + ',' + bestCherryFallback.getY() + ',' +
@@ -334,7 +364,10 @@ try {
         y = ow.getHeight(
           Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types').MOTION_BLOCKING_NO_LEAVES,
           x, z)
-      } catch (eh) {}
+      } catch (eh) {
+        // y stays at the minimum: the teleport is skipped just below, which is the safe outcome
+        warnThrew_cs('getHeight at a first login (the first-join teleport is skipped)', eh)
+      }
       if (!(y > minY)) {
         console.log('[icraft_spawn] first-join teleport skipped for ' + player.username +
                     ': village column ' + x + ',' + z + ' has no surface loaded yet (player stays at world spawn)')
