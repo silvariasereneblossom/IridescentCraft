@@ -4249,7 +4249,7 @@
       "bosses (through core.isBoss)"
      ],
      "ownSlots": 0,
-     "names": 10,
+     "names": 11,
      "reads": [
       {
        "name": "icraft.core",

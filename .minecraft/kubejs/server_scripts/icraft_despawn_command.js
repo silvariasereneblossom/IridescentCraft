@@ -11,16 +11,21 @@
 //   1. every entity in the box: Level.getEntities(player, AABB)
 //   2. Spherical refine via distanceToSqr (radius is true distance, not box)
 //   3. Skip if entity == player
-//   4. Skip unless it is `instanceof Monster` (the vanilla hostile base class).
-//      This line used to read "Skip if MobCategory != MONSTER (passives, animals,
-//      villagers, golems)". That test has never run (see the marker in the loop),
-//      and a working one is NOT what the line promises: decision list Part 8.
-//      So ghasts, slimes, phantoms, shulkers and hoglins stay, as they always did.
+//   4. Skip unless it is a hostile mob: a Mob that is `instanceof Monster` (the
+//      vanilla hostile base class) or implements `Enemy` (vanilla's own marker for
+//      a hostile mob that is no Monster: ghast, phantom, slime, magma cube,
+//      shulker, hoglin, and their relatives in the mods). Since 2026-10-13
+//      (decision list entry 63, option c); until then only `instanceof Monster`,
+//      so those stayed. NOT the mob category of the entity type: that is whatever
+//      a mod registered, and it names villagers, pets and effect entities too
+//      (measured on every creatable type: Part 8 of the decision list).
 //   5. Skip a boss: the entity type is in #forge:bosses, or it is a boss of the
-//      pack's registry (global.icraft.core.isBoss). Since 2026-10-13: until then
-//      the tag test threw on every entity and the command removed bosses.
-//   6. Skip if entity is owned/tamed: an OwnableEntity with an owner (tamed pets).
-//      A summon whose mod keeps its owner another way is NOT seen (Part 8).
+//      pack's registry (global.icraft.core.isBoss).
+//   6. Skip if it has an owner: an OwnableEntity with an owner (tamed pets, the
+//      summons of Ars Nouveau), or a summon whose owner the mod keeps itself and
+//      answers through getSummoner() (Iron's Spellbooks: the summoned zombie,
+//      skeleton and vex). getSummoner() finds the owner only while the owner is
+//      in the summon's dimension: a summon whose owner is elsewhere is removed.
 // An entity whose tests throw is KEPT and reported once in the log.
 //
 // Action: entity.discard() -- silent removal, no drops, no XP. Right call
@@ -34,8 +39,9 @@
 // =============================================================================
 
 try {
-  var MobCategory_dsp = Java.loadClass('net.minecraft.world.entity.MobCategory')
+  var Mob_dsp = Java.loadClass('net.minecraft.world.entity.Mob')
   var Monster_dsp = Java.loadClass('net.minecraft.world.entity.monster.Monster')
+  var Enemy_dsp = Java.loadClass('net.minecraft.world.entity.monster.Enemy')
   var Registries_dsp = Java.loadClass('net.minecraft.core.registries.Registries')
   var TagKey_dsp = Java.loadClass('net.minecraft.tags.TagKey')
   var ResourceLocation_dsp = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -91,7 +97,6 @@ try {
       try {
         if (e === sp) continue
         if (e.distanceToSqr(sp) > radiusSq) continue
-        var type = e.getType()
         // Bucket the entity type for the diagnostic line when killed=0: the
         // registry id through global.icraft.core.entityId (0_lib_core.js), the one
         // reader of it. Until 2026-10-13 this asked
@@ -100,23 +105,12 @@ try {
         // bucket was minecraft:pig (measured on all 1,411 creatable types).
         var typeId = global.icraft.core.entityId(e) || '?'
         typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
-        // Hostile = `instanceof Monster`.
-        // NOT LIVE, left as they are (decision list Part 8, the /icraft despawn
-        // entry): the two getCategory() tests below are called on `type`, which is
-        // the id STRING for scripts, so both THROW on every entity inside a silent
-        // catch and never widen the test. Measured 2026-10-13 on every creatable
-        // entity type: a working category test (e.getEntityType().getCategory())
-        // would newly remove 58 types, and 29 of them are not hostile mobs (a
-        // player's own Umvuthana followers, a villager of the Abyss, thirteen
-        // Terramity effect entities that are registered as mobs, ...).
-        var isMonster = e instanceof Monster_dsp
-        if (!isMonster) {
-          try { isMonster = type.getCategory().equals(MobCategory_dsp.MONSTER) } catch (_) {}
-        }
-        if (!isMonster) {
-          try { isMonster = String(type.getCategory().name()) === 'MONSTER' } catch (_) {}
-        }
-        if (!isMonster) continue
+        // Hostile = a Mob that is a Monster or an Enemy (rule 4 of the header). The two
+        // tests of the mob category that stood here threw on every entity (they were
+        // called on the id string) and are gone: a working one would remove 29 entity
+        // types that are not hostile (decision list Part 8).
+        if (!(e instanceof Mob_dsp)) continue
+        if (!(e instanceof Monster_dsp) && !(e instanceof Enemy_dsp)) continue
         hostile++
         // Bosses stay: the tag of the entity TYPE (getEntityType(); until 2026-10-13
         // this asked the id string and threw, so the Wither and the Harbinger were
@@ -125,6 +119,8 @@ try {
         if (e.getEntityType().is(BOSSES_TAG)) continue
         if (global.icraft.core.isBoss(e)) continue
         if (e instanceof OwnableEntity_dsp && e.getOwnerUUID() != null) continue
+        // a summon whose mod keeps the owner itself (Iron's Spellbooks): rule 6 of the header
+        if (typeof e.getSummoner === 'function' && e.getSummoner() != null) continue
         e.discard()
         killed++
       } catch (ee) {

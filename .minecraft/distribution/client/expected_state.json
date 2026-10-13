@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c928efe6",
+    "generated_from":  "e163a266",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7196,8 +7196,8 @@
                                                                              "size":  7302
                                                                          },
                   "kubejs/server_scripts/icraft_despawn_command.js":  {
-                                                                          "sha256":  "a61e050028483436c647b93d2cf9f301f13b43f14f6678bba21070975557d5c6",
-                                                                          "size":  8786
+                                                                          "sha256":  "73db7ef8e7d155cef54aec89ef592286d04005df8134b1d586e76aa54535e030",
+                                                                          "size":  8784
                                                                       },
                   "kubejs/server_scripts/icraftsets_command.js":  {
                                                                       "sha256":  "3ae9ce1c2c58bbbed893cbdb14c357cb5e7168f99fe13653dc3514f15b6703cf",
