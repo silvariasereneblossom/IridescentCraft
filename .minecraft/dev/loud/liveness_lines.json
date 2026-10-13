@@ -2,7 +2,7 @@
  "version": 2,
  "about": [
   "The HAND-KEPT part of the liveness manifest: log lines a healthy boot must print, matched by regex. dev/loud/gen_liveness.js copies `entries` into dev/loud/liveness_manifest.json (the file loud-check.ps1 reads); the ARMED ids and the FIRED names of that file are generated from the scripts and are not listed here.",
-  "A line belongs here only when it proves something the generated set does not. `proves` says which: handler-ran (printed inside a load-time handler: the event was posted and the handler got there), own-check (a `must_not` line or a `min` floor), direct-registry (a handler put straight on a Java registry of the mod, which has no id), no-registration (a script that only publishes a table), mixin (an in-house mixin applied), corpus (a load-time line that the replay corpus needs: see its `why`). `why` is the sentence for that entry.",
+  "A line belongs here only when it proves something the generated set does not. `proves` says which: handler-ran (printed inside a load-time handler: the event was posted and the handler got there; the checker's `notfired:` finding says the same at AMBER since 2026-10-13, and these lines stay until it has been live for a few boots), own-check (a `must_not` line or a `min` floor), direct-registry (a handler put straight on a Java registry of the mod, which has no id), no-registration (a script that only publishes a table), mixin (an in-house mixin applied), corpus (a load-time line that the replay corpus needs: see its `why`). `why` is the sentence for that entry.",
   "Rules, unchanged: (1) an entry names its owner, so a commit that deletes or renames a feature removes or updates its entry (the generator refuses an entry whose owner script is gone); (2) `pattern` is a .NET regex searched in each line of `log`; script lines carry their own script path, which is part of the pattern; (3) `must_not` lists lines that mean the feature failed even though its line printed; (4) `min` is a floor for the first capture group of `pattern`.",
   "A NEW script needs no entry: write its registrations with icraft.guard / registerServerTick / core.onHurt and regenerate. Add a line here only for one of the first five reasons above.",
   "`dropped` records the 134-entry manifest of 2026-10-11: the entries that were removed on 2026-10-13 when the ARMED set became generated, each with the reason. `node --expose-internals dev/loud/gen_liveness.js --lines` prints where every kept line is printed and what its script registers."
@@ -55,7 +55,7 @@
    "log": "kubejs/server.log",
    "pattern": "0_server_ready_banner\\.js#\\d+:\\s+>>>\\s+IridescentCraft Server READY",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:0_tick_master.js:player",
@@ -107,7 +107,7 @@
    "log": "kubejs/server.log",
    "pattern": "death_penalty\\.js#\\d+: \\[IridescentCraft\\] keepInventory enabled",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:endgame/mythic_forge.js",
@@ -115,7 +115,7 @@
    "log": "kubejs/server.log",
    "pattern": "endgame/mythic_forge\\.js#\\d+: \\[IridescentCraft\\] Mythic Forge recipes loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:endgame/rift_mechanics.js",
@@ -123,7 +123,7 @@
    "log": "kubejs/server.log",
    "pattern": "endgame/rift_mechanics\\.js#\\d+: \\[IridescentCraft\\] Rift loot mechanics loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:enemyexpansion_explosive_launch_blocker.js",
@@ -151,7 +151,7 @@
    "pattern": "\\[boss_refight_repair_floors\\] registered [\\d.]+ refight-to-repair drop floors",
    "note": "no script prefix on this line: KubeJS takes the trailing '(icraft #58)' of the message for the source position",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/0_entity_id_validator.js",
@@ -170,7 +170,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/abyss_boss_loot\\.js#\\d+: \\[IridescentCraft\\] abyss_boss_loot\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/alexsmobs_drops.js",
@@ -178,7 +178,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/alexsmobs_drops\\.js#\\d+: \\[alexsmobs_drops\\] registered [\\d.]+ entity loot modifiers",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/blue_skies_drops.js",
@@ -186,7 +186,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/blue_skies_drops\\.js#\\d+: \\[blue_skies_drops\\] registered [\\d.]+ Blue Skies boss synergy",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/boss_arena_material_tease.js",
@@ -194,7 +194,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/boss_arena_material_tease\\.js#\\d+: \\[boss_arena_material_tease\\] registered [\\d.]+ arena material teases",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/boss_unique_drops.js",
@@ -202,7 +202,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/boss_unique_drops\\.js#\\d+: \\[boss_unique_drops\\] [\\d.]+ boss-exclusive unique drops registered",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/cataclysm_boss_drops.js",
@@ -210,7 +210,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/cataclysm_boss_drops\\.js#\\d+: \\[cataclysm_boss_drops\\] registered [\\d.]+ Cataclysm boss synergy",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/crop_seed_reduction.js",
@@ -218,7 +218,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/crop_seed_reduction\\.js#\\d+: \\[IridescentCraft\\] Crop seed reduction loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/dimensional_boss_drops.js",
@@ -226,7 +226,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/dimensional_boss_drops\\.js#\\d+: \\[dimensional_boss_drops\\] registered [\\d.]+ dimension/mutant boss",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/iss_boss_drops.js",
@@ -234,7 +234,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/iss_boss_drops\\.js#\\d+: \\[iss_boss_drops\\] registered [\\d.]+ entity loot modifiers",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/lootjs_overhaul.js",
@@ -242,7 +242,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/lootjs_overhaul\\.js#\\d+: \\[IridescentCraft\\] LootJS structure chest overhaul loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/lovely_pieces_loot.js",
@@ -250,7 +250,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/lovely_pieces_loot\\.js#\\d+: \\[lovely-pieces-loot\\] tier pools wired",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/mahou_synergy_drops.js",
@@ -258,7 +258,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/mahou_synergy_drops\\.js#\\d+: \\[mahou_synergy_drops\\] registered [\\d.]+ Mahou Tsukai reagent",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/majrusz_skeleton_punch_strip.js",
@@ -266,7 +266,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/majrusz_skeleton_punch_strip\\.js#\\d+: \\[icraft-loot\\] Majrusz skeleton Punch-strip registered",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/planetary_loot.js",
@@ -274,7 +274,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/planetary_loot\\.js#\\d+: \\[IridescentCraft\\] planetary_loot\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/staff_wand_drops.js",
@@ -282,7 +282,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/staff_wand_drops\\.js#\\d+: \\[staff_wand_drops\\] loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/stalwart_dungeons_drops.js",
@@ -290,7 +290,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/stalwart_dungeons_drops\\.js#\\d+: \\[stalwart_dungeons_drops\\] registered [\\d.]+ Stalwart nether mini-boss",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/terramity_boss_drops.js",
@@ -298,7 +298,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/terramity_boss_drops\\.js#\\d+: \\[terramity_boss_drops\\] registered [\\d.]+ non-gun EPIC weapon",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/tmb_plain_bow_effects.js",
@@ -314,7 +314,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/twilight_boss_drops\\.js#\\d+: \\[twilight_boss_drops\\] registered [\\d.]+ TF boss synergy modifiers",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/unique_itemset_registry.js",
@@ -346,7 +346,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/zz_pack_enchanted_books\\.js#\\d+: \\[icraft-loot\\] [\\d.]+ marquee enchanted-book modifiers registered",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/zz_unique_chest_strip.js",
@@ -354,7 +354,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/zz_unique_chest_strip\\.js#\\d+: \\[zz_unique_chest_strip\\] insurance strip armed for [\\d.]+ TMB bows",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:loot/zzz_iss_scroll_tier_clamp.js",
@@ -362,7 +362,7 @@
    "log": "kubejs/server.log",
    "pattern": "loot/zzz_iss_scroll_tier_clamp\\.js#\\d+: \\[iss_scroll_tier_clamp\\] armed",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:mutant_xp_boost.js",
@@ -402,7 +402,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/ad_astra_gating\\.js#\\d+: \\[IridescentCraft\\] ad_astra_gating\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/boss_material_processing.js",
@@ -410,7 +410,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/boss_material_processing\\.js#\\d+: \\[IridescentCraft\\] Boss material processing recipes loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/cooking_conversion.js",
@@ -418,7 +418,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/cooking_conversion\\.js#\\d+: \\[IridescentCraft\\] cooking_conversion\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/if_latex_rework.js",
@@ -426,7 +426,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/if_latex_rework\\.js#\\d+: \\[IridescentCraft\\] IF latex rework \\+ HDPE circuits loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/mek_biofuel_squeeze.js",
@@ -434,7 +434,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/mek_biofuel_squeeze\\.js#\\d+: \\[IridescentCraft\\] mek_biofuel_squeeze\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/planetary_extraction.js",
@@ -442,7 +442,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/planetary_extraction\\.js#\\d+: \\[IridescentCraft\\] planetary_extraction\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/recipe_audit.js",
@@ -450,7 +450,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/recipe_audit\\.js#\\d+: \\[IridescentCraft\\] recipe_audit\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/staff_wand_recipes.js",
@@ -458,7 +458,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/staff_wand_recipes\\.js#\\d+: \\[staff_wand_recipes\\] loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/tier_gated_recipes.js",
@@ -466,7 +466,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/tier_gated_recipes\\.js#\\d+: \\[IridescentCraft\\] P[\\d.]+ tier_gated_recipes\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:recipes/waystone_recipes.js",
@@ -474,7 +474,7 @@
    "log": "kubejs/server.log",
    "pattern": "recipes/waystone_recipes\\.js#\\d+: \\[IridescentCraft\\] waystone_recipes\\.js loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:relic_boss_drops.js",
@@ -498,7 +498,7 @@
    "log": "kubejs/server.log",
    "pattern": "skills/justleveling_skills\\.js#\\d+: \\[IridescentCraft\\] JustLeveling Aptitude Skills loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:skills/mastery_tax.js",
@@ -506,7 +506,7 @@
    "log": "kubejs/server.log",
    "pattern": "skills/mastery_tax\\.js#\\d+: \\[IridescentCraft\\] Mastery Tax loaded",
    "proves": "handler-ran",
-   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made. Since 2026-10-13 a registration of this kind that did not fire is a finding too (`notfired:`, AMBER); this line is the RED one, and it stays until that finding has been live for a few boots"
   },
   {
    "id": "armed:spawn_priest_tower.js",

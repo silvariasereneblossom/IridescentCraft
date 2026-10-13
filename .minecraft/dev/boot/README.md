@@ -218,8 +218,10 @@ baselines do not list does (exit 1).
 The checker's ARMED line is the exact comparison: `registrations server N/N, startup M/M` means the digest the game
 printed (`[icraft.live] ARMED <type>: ... digest ...`) is the one `dev/loud/gen_liveness.js` computed from the scripts
 of the tree under test. A registration that was not made is a red finding by name (`armed:<name>@<event>`). The
-`FIRED` lines below it say what ran in the boot; they are a report and never fail the gate. With nobody online a rig
-boot fires the registration-time events and the server tick functions, and nothing a player has to do.
+`FIRED` lines below it say what ran in the boot. They are a report, with one exception: a registration whose event runs
+on every boot (recipes, loot modifiers, tags, commands, `ServerEvents.loaded`, the startup registries: 104 of them) and
+that did not fire is `notfired:<name>@<event>`, an AMBER finding, and the gate fails on it like on any finding that is
+not a known defect. With nobody online a rig boot fires those, the server tick functions, and nothing a player has to do.
 
 ### The rig against the live server
 
