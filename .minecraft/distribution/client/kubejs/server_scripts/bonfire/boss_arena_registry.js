@@ -6,15 +6,15 @@
 // (boss_compass_handler.js + boss_bonfire_system.js, same directory) read this
 // one table so they can never drift apart.
 //
-// WHY server_scripts (NOT startup): KubeJS gives each script TYPE its own
-// binding context — `global` set in a startup_scripts file is NOT visible to
-// server_scripts (verified: every cross-file `global.*` handshake in this pack,
-// e.g. 0_iss_guard.js → affix_*_strip.js, is server↔server). Both consumers
-// here are server scripts, so the registry must live in the server context too.
-// It LOADS FIRST within bonfire/ because the filename sorts before
-// boss_bonfire_system.js and boss_compass_handler.js (KubeJS loads a directory
-// alphabetically), so `global.ICRAFT_BOSS_ARENAS` is populated before either
-// handler's top-level code reads it.
+// WHY server_scripts: both consumers are server scripts, and the roster comes
+// from the boss registry, which a server library reads (0_lib_registry.js).
+// (`global` itself is ONE map for startup, server and client scripts. This
+// header said the opposite until 2026-10-13, and that was wrong.)
+// LOAD ORDER: both consumers read `global.ICRAFT_BOSS_ARENAS` while they load,
+// so this file must load before them. It does because its name sorts first in
+// bonfire/ (KubeJS loads a folder in the order the file system lists it), and
+// each consumer declares it: `// @after bonfire/boss_arena_registry.js`.
+// dev/catalogue/load_order.js fails a push that breaks that order.
 //
 // RELOAD-SAFETY (#60 lesson): this file only ASSIGNS a plain-data object to a
 // global — no item/block creation, no event listener, no recipe, nothing to

@@ -111,7 +111,7 @@
     },
     {
       "name": "script-model", "kind": "node", "fast": true, "ci": true, "script": "catalogue/script_model.test.js",
-      "about": "dev/catalogue/script_model.js against the ENGINE: what KubeJS reads from a script's comment lines (an `@` header field is never a file property), how it sorts scripts (highest priority first, equal priorities in listing order) and in which order handlers of one event run, each put to the model with the cases of real-engine/0_script_file_facts.js and held to the answers recorded on a real server (truth/engine-facts.txt); and dev/catalogue/load_order.js against small packs with ONE planted defect each"
+      "about": "dev/catalogue/script_model.js against the ENGINE: what KubeJS reads from a script's comment lines (an `@` header field is never a file property), how it sorts scripts (highest priority first, equal priorities in listing order) and in which order handlers of one event run, each put to the model with the cases of real-engine/0_script_file_facts.js and held to the answers recorded on a real server (truth/engine-facts.txt); and dev/catalogue/load_order.js against small packs with ONE planted defect each; and the script template as a new script"
     },
     {
       "name": "load-order", "kind": "node", "fast": true, "ci": true, "script": "catalogue/load_order.js", "pack": true, "tag": "[load-order]",

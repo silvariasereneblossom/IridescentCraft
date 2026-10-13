@@ -15,6 +15,9 @@
 // PART 2  the check. Small packs are written to a temp folder, each with ONE defect,
 //         and load_order.js must report exactly that defect (and nothing on the pack
 //         without it). Take a rule out of load_order.js and its case fails.
+// PART 3  the template: dev/catalogue/script_template.js as a new script of a pack
+//         passes the check, and no line of it is a file property for the engine.
+//
 // No git, no network, no mod jar: it runs in CI. The temp folder is deleted at the end.
 // Exit 0 all passed, 1 a failure, 2 could not run.
 // =============================================================================
@@ -240,6 +243,22 @@ expectCodes('a library announced inside a function that runs later',
 (function claimLines() {
   const model = M.readPack(pack({ 'server/a.js': '// this file must load before b.js\nvar a = 1 // not a claim\n// alphabetical order matters\n' }));
   ok(L.claims(model, 'root').map((c) => c.line).join() === '1,3', 'claims: comment lines that talk about order are listed for a reader');
+})();
+
+// ---- PART 3: the template ------------------------------------------------------------
+(function template() {
+  const file = path.join(__dirname, 'script_template.js');
+  if (!fs.existsSync(file)) { ok(false, 'template: dev/catalogue/script_template.js exists'); return; }
+  const text = fs.readFileSync(file, 'utf8');
+  const e = M.engineFile(text);
+  ok(Object.keys(e.props).length === 0 && e.skip === '' && e.error === '', 'template: no line of the template is a file property for the engine', JSON.stringify(e.props));
+  const libs = {
+    'server/0_lib_core.js': '// priority: 880\nglobal.icraft = global.icraft || {}\nglobal.icraft.core = { warnOnce: function () {}, entityId: function () { return \'\' }, now: function () { return 0 } }\nicraft.lib.announce(\'core\')\n',
+    'server/0_lib_registry.js': '// priority: 860\nglobal.icraft = global.icraft || {}\nglobal.icraft.bosses = { is: function () { return false } }\nglobal.icraft.dims = { tier: function () { return 1 } }\nicraft.lib.announce(\'registry\')\n',
+    'server/0_tick_master.js': '// priority: 840\nglobal.registerServerTick = function () {}\nglobal.registerPlayerTick = function () {}\nicraft.lib.announce(\'ticks\')\n'
+  };
+  const res = run(Object.assign({ 'server/items/my_script.js': text }, libs), { grandfathered: { startup: [], server: ['00_icraft_guard.js', '0_lib_core.js', '0_lib_registry.js', '0_tick_master.js'], client: [] } });
+  expectCodes('the template, saved as server_scripts/items/my_script.js, is a new script that passes', res, '');
 })();
 
 fs.rmSync(TMP, { recursive: true, force: true });

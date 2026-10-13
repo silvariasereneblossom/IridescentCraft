@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b1515056",
+    "generated_from":  "9a28d677",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5836,8 +5836,8 @@
                                                         "size":  364
                                                     },
                   "kubejs/README.md":  {
-                                           "sha256":  "a42af664c112b56c5c4c87aabff80b6af988d287731038d19416592c518b0ffa",
-                                           "size":  7099
+                                           "sha256":  "93c66f1d40b926694123370a5dd67dd72c9ff4fe9f57ca56c2d285237af0eaf0",
+                                           "size":  11514
                                        },
                   "kubejs/README.txt":  {
                                             "sha256":  "989f3737ae4621b8ff6730bce4cbeeee756921e7e510e0c281c8a350501d98af",
@@ -7068,8 +7068,8 @@
                                                                                 "size":  8528
                                                                             },
                   "kubejs/server_scripts/bonfire/boss_arena_registry.js":  {
-                                                                               "sha256":  "acd5945cd159f99be8d79eb3f2ce1a050b2654757dc8797a5ad039c470065ed2",
-                                                                               "size":  8709
+                                                                               "sha256":  "86f334eca125ada0bd5b26822d3578586f51e8b8e41b327fdbba89788622c998",
+                                                                               "size":  8726
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_bonfire_system.js":  {
                                                                                "sha256":  "9f54e652bd1455d2dc46682961afddeef026fcb09a8f32bdb7aa0303175e0aaf",
