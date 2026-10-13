@@ -579,7 +579,7 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
     function New-LiveLine { param([string]$Text, [string]$Level = 'INFO') $bang = ''; if ($Level -eq 'ERROR') { $bang = '! ' }; return ('[00:00:00] [' + $Level + '] ' + $bang + '00_icraft_guard.js#144: [icraft.live] ' + $Text) }
     # the healthy boot as a boot of a tree WITH the liveness script. $Server / $Startup: the lines each log gets (default: its healthy summary line)
     function New-LiveCase {
-        param([string]$Name, [string[]]$Server, [string[]]$Startup, [switch]$NoServerSummary)
+        param([string]$Name, [string[]]$Server, [string[]]$Startup, [switch]$NoServerSummary, [int]$ServerErrors = 0, [string[]]$Latest)
         $logs = New-Case $Name $null $null
         $es = Join-Path (Split-Path -Parent $logs) 'expected_state.json'
         $raw = [System.IO.File]::ReadAllText($es)
@@ -598,10 +598,18 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
                     }
                     foreach ($x in @($pair[1])) { if ($x) { $out.Add($x) } }
                     $out.Add('[00:00:00] [INFO] Loaded script ' + $type + '_scripts:' + $liveScript + ' in 0.0 s')
+                    # what KubeJS itself counted while the scripts loaded (a NOT ARMED line is a console.error)
+                    if ($type -eq 'server' -and $ServerErrors -gt 0) { $l = $l -replace 'with 0 errors', "with $ServerErrors errors" }
                 }
                 $out.Add($l)
             }
             [System.IO.File]::WriteAllLines($p, $out, $Utf8)
+        }
+        if ($Latest) {      # the copies latest.log carries of script lines, after Done
+            $lp = Join-Path $logs 'latest.log'
+            $lo = New-Object System.Collections.Generic.List[string]
+            foreach ($l in [System.IO.File]::ReadAllLines($lp, [System.Text.Encoding]::UTF8)) { $lo.Add($l); if ($l -match $rxDone) { foreach ($x in $Latest) { $lo.Add($x) } } }
+            [System.IO.File]::WriteAllLines($lp, $lo, $Utf8)
         }
         return $logs
     }
@@ -628,6 +636,16 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
     Test-Case ('one registration was not made (' + $idA + ') -> exactly that one, by name and event') $logsM @() 1 @("MISSING armed:$idA")
     $runM = Invoke-Checker @('-LogsDir', $logsM)
     Assert-That ((@($runM.Out | Where-Object { $_ -match ('NOT ARMED \(' + [regex]::Escape($scriptA) + '\)') }).Count -eq 1) -and (@($runM.Out | Where-Object { $_ -match ('registrations server ' + ($srvN - 1) + '/' + $srvN) }).Count -eq 1) -and (@($runM.Out | Where-Object { $_ -match 'kjs-error' }).Count -eq 0)) '   the finding names its script, the ARMED line counts one short, and the ERROR line is not reported a second time'
+
+    # as a real boot prints it: KubeJS counts the ERROR line in its load summary, and latest.log has a copy of it and of
+    # a guard's FAILED line. One finding per fact: no summary finding, no "new signature" for the copies.
+    $copyNotArmed = '[' + $day0 + ' 09:00:00.000] [main/ERROR] [KubeJS Server/]: 00_icraft_guard.js#143: [icraft.live] NOT ARMED x1: ' + $idA
+    $copyFailed   = '[' + $day0 + ' 09:00:01.000] [Server thread/ERROR] [KubeJS Server/]: 00_icraft_guard.js#143: [icraft.guard] FAILED loot/planted in ServerEvents.loaded: TypeError: planted (server_scripts:loot/planted.js#12) [the rest of the event still ran; logged once per script load, later failures are counted]'
+    $realLines = $oneMissing + @('[00:00:00] [ERROR] ! 00_icraft_guard.js#143: [icraft.guard] FAILED loot/planted in ServerEvents.loaded: TypeError: planted (server_scripts:loot/planted.js#12) [the rest of the event still ran; logged once per script load, later failures are counted]')
+    $logsReal = New-LiveCase 'live-real' $realLines @() -ServerErrors 1 -Latest @($copyNotArmed, $copyFailed)
+    Test-Stale 'as a real boot prints it (the load summary says 1 errors, latest.log has copies), with a baseline -> exactly the registration and the handler, nothing twice' $logsReal @('-Baseline', (Join-Path $WorkDir 'full-baseline.json')) 1 @("MISSING armed:$idA", 'ERROR guard:loot/planted@ServerEvents.loaded') @() @(
+        'the load summary of the server scripts counts 1 error line\(s\) that are the game''s own NOT ARMED lines', '2 line\(s\) of latest.log are copies of FAILED / NOT ARMED lines')
+    Test-Case '   a second, unexplained load error is still a load error' (New-LiveCase 'live-real2' $oneMissing @() -ServerErrors 2) @() 1 @("MISSING armed:$idA", 'ERROR summary:server')
 
     $three = @((New-ArmedLine 'server' ($srvN - 1) 'fedcba9876543210' '2 not armed, 1 unlisted'), (New-LiveLine ('NOT ARMED x2: ' + $idA + ', ' + $idB) 'ERROR'), (New-LiveLine 'UNLISTED x1: zz_left_behind@ServerEvents.loaded'))
     Test-Case 'two not made, and one made that the manifest does not have' (New-LiveCase 'live-three' $three @()) @() 1 @("MISSING armed:$idA", "MISSING armed:$idB", 'NEW unlisted:zz_left_behind@ServerEvents.loaded')

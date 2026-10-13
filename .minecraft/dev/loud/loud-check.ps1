@@ -30,6 +30,12 @@
 #          `[icraft.live] NOT ARMED` lines, `unlisted:<name>@<group>` (AMBER) for one
 #          that is armed and not in the manifest. Applies to a boot whose deployed
 #          tree has zzz_icraft_live.js; an older boot has no such line and says so.
+#          One finding per fact: a NOT ARMED line is an ERROR line printed while the
+#          scripts load, so KubeJS counts it in `... with E errors` and latest.log
+#          carries a copy. Neither is reported a second time (the summary finding
+#          only for errors beyond those lines; the copies in latest.log, and the
+#          copy of a guard's FAILED line, are left out of the NEW tier when the
+#          KubeJS log they come from was read).
 #        - the hand-kept lines (`entries`): each is present, none of its `must_not`
 #          lines is, and its count is not below its floor. They are the lines that
 #          prove what a registration cannot (liveness_lines.json says what, each).
@@ -583,6 +589,7 @@ function Invoke-Check {
         $handlers = @{}; $sigs = @{}; $sigOrder = New-Object System.Collections.Generic.List[string]
         $bad = $null; $warned = $null; $seenSummary = $false
         $guards = @{}; $guardOrder = New-Object System.Collections.Generic.List[string]; $guardOff = 0; $guardOffSwitch = 0
+        $notArmedLines = 0; $notArmedCounted = 0     # the game's own NOT ARMED lines since the last load summary / explained in a summary
         foreach ($l in $lines[$src]) {
             $m = $rxLoaded.Match($l)
             if ($m.Success) { if ($m.Groups[1].Value -eq ($kind + '_scripts')) { [void]$set.Add($m.Groups[2].Value) }; continue }
@@ -590,6 +597,10 @@ function Invoke-Check {
             if ($m.Success -and $m.Groups[3].Value -eq $kind) {
                 $seenSummary = $true
                 $n = [int]$m.Groups[1].Value; $of = [int]$m.Groups[2].Value; $e = [int]$m.Groups[4].Value; $w = [int]$m.Groups[5].Value
+                # a NOT ARMED line is printed with console.error while the scripts load: KubeJS counts it here.
+                # Check 3 reports each registration by name; only errors BEYOND those lines are a load error.
+                $own = [Math]::Min($e, $notArmedLines)
+                $e -= $own; $notArmedCounted += $own; $notArmedLines = 0
                 $summaryText[$kind] = "$n/$of, $e errors, $w warnings"
                 if ($n -ne $of -or $e -gt 0) { $bad = "Loaded $n/$of KubeJS $kind scripts with $e errors and $w warnings" }
                 elseif ($w -gt 0) { $warned = "Loaded $n/$of KubeJS $kind scripts with 0 errors and $w warnings" }
@@ -604,7 +615,7 @@ function Invoke-Check {
             $g = $rxGuardOff.Match($l)
             if ($g.Success) { if ($g.Groups[1].Success) { $guardOffSwitch++ } else { $guardOff++ }; continue }
             # an ERROR-level line of the game's own ARMED comparison: check 3 names each registration
-            if ($rxLiveNotArmed.IsMatch($l)) { continue }
+            if ($rxLiveNotArmed.IsMatch($l)) { $notArmedLines++; continue }
             $h = $rxHandler.Match($l)
             if ($h.Success) {
                 $name = $h.Groups[1].Value
@@ -619,6 +630,7 @@ function Invoke-Check {
         }
         $loaded[$kind] = $set
         $summaryOk[$kind] = $seenSummary
+        if ($notArmedCounted -gt 0) { $info.Add("the load summary of the $kind scripts counts $notArmedCounted error line(s) that are the game's own NOT ARMED lines: reported by name under ARMED, not as a load error") }
         foreach ($name in ($handlers.Keys | Sort-Object)) {
             $kjsAborts += $handlers[$name]
             Add-Finding 'ERROR' 'RED' ("handler:$name") $src ("Error in '$name' x" + $handlers[$name] + ': the handler aborted, whatever it had left to register is dead')
@@ -991,10 +1003,24 @@ function Invoke-Check {
     $rxKjs    = New-Object regex '^\[[\d:]+\] \[(WARN)\] (.*)$'
     $observed = @{}       # src -> @{ counts = sig -> n; order = sigs as first seen }
     if ($blPath -or $ProposeBaseline) {
+        # latest.log carries a copy of every script line. A guard's FAILED line and the game's NOT ARMED line are
+        # findings by name (checks 1 and 3) when their KubeJS log was read: their copies are not "new" lines.
+        $rxOwnCopy = New-Object regex '\[KubeJS (Server|Startup)/\]: .*(?:\[icraft\.guard\] FAILED |\[icraft\.live\] NOT ARMED )'
         foreach ($src in $newSources) {
             $rx = $rxKjs
-            if ($src -eq 'latest.log') { $rx = $rxLatest }
-            $observed[$src] = Get-Observed $lines[$src] $rx
+            $use = $lines[$src]
+            if ($src -eq 'latest.log') {
+                $rx = $rxLatest
+                $use = New-Object System.Collections.Generic.List[string]
+                $copies = 0
+                foreach ($l in $lines[$src]) {
+                    $m = $rxOwnCopy.Match($l)
+                    if ($m.Success -and $lines.ContainsKey('kubejs/' + $m.Groups[1].Value.ToLowerInvariant() + '.log')) { $copies++; continue }
+                    $use.Add($l)
+                }
+                if ($copies -gt 0) { $info.Add("$copies line(s) of latest.log are copies of FAILED / NOT ARMED lines of the KubeJS logs: reported by name there, not as new signatures") }
+            }
+            $observed[$src] = Get-Observed $use $rx
         }
     }
     if ($ProposeBaseline) {
