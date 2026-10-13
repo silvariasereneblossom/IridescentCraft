@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/attributes/iss_school_to_ars_spell.js
+// @events hurt
 // =============================================================================
 // ISS SCHOOL SP -> ARS SPELL DAMAGE BRIDGE
 // =============================================================================
@@ -53,7 +55,6 @@
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
 ;(function () {
 try {
-  var DamageModifierRegistry_aspb = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var LivingEntity_aspb = Java.loadClass('net.minecraft.world.entity.LivingEntity')
   var Player_aspb = Java.loadClass('net.minecraft.world.entity.player.Player')
   var ResourceLocation_aspb = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -132,13 +133,17 @@ try {
       }
   }
 
-  // Through the shared dispatcher when it is there: the mechanism above is
-  // "the attacker is a player", so only those hits are offered to the handler
-  // (it used to read the damage type of every hurt event on the server).
-  // Straight on the Java registry otherwise.
-  var core_aspb = global.icraft && global.icraft.core
-  if (core_aspb) core_aspb.onHurt('icraft.iss_school_to_ars_spell', handler, 'attackerPlayer')
-  else DamageModifierRegistry_aspb.register('icraft.iss_school_to_ars_spell', handler)
+  // Through the shared dispatcher (0_lib_core.js), as an ordinary handler: after the
+  // handlers of the scripts that load before this one, not for secondary damage, not
+  // for a cancelled hit. The mechanism above is "the attacker is a player", so only
+  // those hits are offered to it (it used to read the damage type of every hurt event
+  // on the server).
+  // Until 2026-10-13 a second branch put the handler straight on the Java registry
+  // when the core library was missing. That branch never ran (the library loads first,
+  // by its priority), and there the handler would have had another place and other
+  // rules; a missing library is said once now, by the guard, and the bridge is off.
+  if (!icraft.lib.need('core', 'attributes/iss_school_to_ars_spell')) return
+  global.icraft.core.onHurt('icraft.iss_school_to_ars_spell', handler, 'attackerPlayer')
   console.log('[iss_school_to_ars] loaded (' + resolvedCount + ' damage-type mappings)')
 } catch (e) {
   console.warn('[iss_school_to_ars] bootstrap FAILED: ' + e)

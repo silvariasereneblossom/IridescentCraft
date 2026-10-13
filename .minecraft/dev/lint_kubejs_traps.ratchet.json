@@ -14,9 +14,8 @@
     },
     "DIRECT-HURT-REG": {
       "started": "2026-10-13",
-      "total": 4,
+      "total": 3,
       "files": {
-        "server_scripts/attributes/iss_school_to_ars_spell.js": 1,
         "startup_scripts/deathskin_undead_bonus.js": 1,
         "startup_scripts/enchants/icraft_magic_enchants.js": 1,
         "startup_scripts/enchants/vorpal_rework.js": 1

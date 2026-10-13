@@ -34,7 +34,6 @@
   "attributes/attribute_commands.js",
   "attributes/class_attribute_bonuses.js",
   "attributes/iss_school_to_ars_glyph.js",
-  "attributes/iss_school_to_ars_spell.js",
   "bonfire/boss_arena_registry.js",
   "bonfire/gob_t1_rebalance.js",
   "class/equipment_hp_halving.js",

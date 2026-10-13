@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b0e003b5",
+    "generated_from":  "c928efe6",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7052,8 +7052,8 @@
                                                                                       "size":  7237
                                                                                   },
                   "kubejs/server_scripts/attributes/iss_school_to_ars_spell.js":  {
-                                                                                      "sha256":  "5d45cf328dc2a60f8029789912e16cad5225e43f63f193a2014163822210c3c6",
-                                                                                      "size":  7222
+                                                                                      "sha256":  "a8f4dbbc4e86fa331789ef51d3dd424a1769b2b152adf461bb859fb06e4c616d",
+                                                                                      "size":  7555
                                                                                   },
                   "kubejs/server_scripts/attributes/mana_debug_command.js":  {
                                                                                  "sha256":  "8669bb2d12b26356648cf23eaae1c0b9d1bfff37d202e7f51288ad9a47b78e13",

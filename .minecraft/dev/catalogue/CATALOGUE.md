@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 254. 247 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 255. 248 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -55,7 +55,7 @@ Structural, by the script that loads first:
 | Loads first | Priority | Scripts that need it while they load | They read |
 |---|---|---|---|
 | `startup:00_icraft_guard.js` | 1000 | 21 | `icraft.guard`, `icraft.handler`, `icraft.live` |
-| `server:00_icraft_guard.js` | 1000 | 147 | `icraft.guard`, `icraft.lib`, `icraft.live` |
+| `server:00_icraft_guard.js` | 1000 | 148 | `icraft.guard`, `icraft.lib`, `icraft.live` |
 | `server:0_lib_core.js` | 880 | 23 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
 | `server:0_tick_master.js` | 840 | 42 | `global.registerPlayerTick`, `global.registerServerTick` |
@@ -127,7 +127,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 17 |  | `attributes/attribute_sync.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `hurt`, `tick.player`, `tick.server` |
 | 18 |  | `attributes/class_attribute_bonuses.js` | `PlayerEvents.loggedIn`, `tick.server` |
 | 19 |  | `attributes/iss_school_to_ars_glyph.js` | `ForgeEventRegistry_aspg.registerSpellDamagePre` |
-| 20 |  | `attributes/iss_school_to_ars_spell.js` | `DamageModifierRegistry_aspb.register`, `hurt` |
+| 20 |  | `attributes/iss_school_to_ars_spell.js` | `hurt` |
 | 21 |  | `attributes/mana_debug_command.js` | `ServerEvents.commandRegistry` |
 | 22 |  | `attributes/mana_pool_bonuses.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `tick.server` |
 | 23 |  | `bonfire/boss_arena_registry.js` |  |
@@ -771,10 +771,6 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 ### Straight on a Java registry, with no liveness id (the key is what the registry calls it)
 
-**`DamageModifierRegistry_aspb.register`** (1)
-
-1. `attributes/iss_school_to_ars_spell.js` as `icraft.iss_school_to_ars_spell`
-
 **`DamageRegistry.register`** (2)
 
 1. `0_lib_core.js` as `icraft.core.then` (registered inside another handler)
@@ -1147,10 +1143,9 @@ own one-shot `global._*` flags.
 
 ### `attributes/iss_school_to_ars_spell.js`
 
-- place 20 of 160
+- place 20 of 160; header: @events @file
 - hurt handlers: `icraft.iss_school_to_ars_spell` [attackerPlayer]
-- straight on a Java registry: `DamageModifierRegistry_aspb.register` `icraft.iss_school_to_ars_spell`
-- reads: `icraft.core` of `0_lib_core.js` (load)
+- reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `attributes/mana_debug_command.js`
 

@@ -2152,11 +2152,6 @@
        "group": "hurt",
        "name": "icraft.iss_school_to_ars_spell",
        "who": "attackerPlayer"
-      },
-      {
-       "kind": "direct",
-       "group": "DamageModifierRegistry_aspb.register",
-       "name": "icraft.iss_school_to_ars_spell"
       }
      ],
      "sections": 0,
@@ -2168,9 +2163,23 @@
        "kind": "global",
        "from": "0_lib_core.js",
        "when": "load"
+      },
+      {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
       }
      ],
      "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
       {
        "script": "0_lib_core.js",
        "basis": "load",
@@ -2179,6 +2188,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -9740,13 +9753,6 @@
       "script": "skills/skill_effects.js",
       "name": "skills/skill_effects",
       "kind": "guard"
-     }
-    ],
-    "DamageModifierRegistry_aspb.register": [
-     {
-      "script": "attributes/iss_school_to_ars_spell.js",
-      "name": "icraft.iss_school_to_ars_spell",
-      "kind": "direct"
      }
     ],
     "DamageRegistry.register": [
