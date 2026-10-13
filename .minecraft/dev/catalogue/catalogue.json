@@ -4192,8 +4192,11 @@
       }
      ],
      "sections": 0,
+     "registries": [
+      "bosses (through core.isBoss)"
+     ],
      "ownSlots": 0,
-     "names": 9,
+     "names": 10,
      "reads": [
       {
        "name": "icraft.core",

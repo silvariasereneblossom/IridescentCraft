@@ -8,12 +8,20 @@
 // armor stands, or active bosses.
 //
 // Filter chain:
-//   1. AABB pre-filter via Level.getEntitiesOfClass(Mob.class, ...)
+//   1. every entity in the box: Level.getEntities(player, AABB)
 //   2. Spherical refine via distanceToSqr (radius is true distance, not box)
 //   3. Skip if entity == player
-//   4. Skip if MobCategory != MONSTER (passives, animals, villagers, golems)
-//   5. Skip if entity type is in #forge:bosses (don't despawn fight-bosses)
-//   6. Skip if entity is owned/tamed (your summons + pets stay)
+//   4. Skip unless it is `instanceof Monster` (the vanilla hostile base class).
+//      This line used to read "Skip if MobCategory != MONSTER (passives, animals,
+//      villagers, golems)". That test has never run (see the marker in the loop),
+//      and a working one is NOT what the line promises: decision list Part 8.
+//      So ghasts, slimes, phantoms, shulkers and hoglins stay, as they always did.
+//   5. Skip a boss: the entity type is in #forge:bosses, or it is a boss of the
+//      pack's registry (global.icraft.core.isBoss). Since 2026-10-13: until then
+//      the tag test threw on every entity and the command removed bosses.
+//   6. Skip if entity is owned/tamed: an OwnableEntity with an owner (tamed pets).
+//      A summon whose mod keeps its owner another way is NOT seen (Part 8).
+// An entity whose tests throw is KEPT and reported once in the log.
 //
 // Action: entity.discard() -- silent removal, no drops, no XP. Right call
 // for "clear test mobs"; for "kill with drops" use vanilla /kill with a
@@ -39,14 +47,20 @@ try {
     ResourceLocation_dsp.tryParse('forge:bosses')
   )
 
+  // once per failing place per script load: the table and the wording of "once" are
+  // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+  var warnThrew_dsp = function (where, e) {
+    global.icraft.core.warnOnce('icraft_despawn_command:' + where, '[icraft_despawn] ' + where + ' threw: ' + e)
+  }
+
   // 2026-04-25: original implementation used
   //   level.getEntitiesOfClass(Java.loadClass('...Mob'), aabb)
   // which returned an empty collection. Likely cause: Rhino doesn't
   // unwrap the JavaClass wrapper to a raw java.lang.Class<T> on the
   // Class<T> generic parameter. Switched to Level.getEntities(Entity
   // except, AABB) which has no Class parameter -- returns ALL entities
-  // in the AABB except the given one. We then filter by MobCategory
-  // ourselves via getType().getCategory().
+  // in the AABB except the given one. The loop below filters them itself
+  // (the filter chain of the header).
   var doDespawn = function(sp, radius) {
     var level = sp.level
     if (!level) {
@@ -86,19 +100,16 @@ try {
         // bucket was minecraft:pig (measured on all 1,411 creatable types).
         var typeId = global.icraft.core.entityId(e) || '?'
         typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
-        // Triple-fallback hostile detection. Rhino enum identity is
-        // unreliable when the JavaClass wrapper round-trips the enum
-        // value, so try Monster instanceof first (covers all vanilla +
-        // most modded hostiles since they extend Monster), then enum
-        // equals(), then string-name comparison.
-        // NOT LIVE, left as it is (measured 2026-10-13 on a full-pack boot; decision
-        // list Part 7, the /icraft despawn entry): `type` is a string, so the two
-        // getCategory() tests below and the #forge:bosses test further down THROW on
-        // every entity, each inside a silent catch. What the command really does:
-        // it removes whatever is `instanceof Monster` (the Wither and the Harbinger
-        // included) and nothing else (no ghast, no Ender Dragon, no Frostmaw).
-        var isMonster = false
-        try { isMonster = e instanceof Monster_dsp } catch (_) {}
+        // Hostile = `instanceof Monster`.
+        // NOT LIVE, left as they are (decision list Part 8, the /icraft despawn
+        // entry): the two getCategory() tests below are called on `type`, which is
+        // the id STRING for scripts, so both THROW on every entity inside a silent
+        // catch and never widen the test. Measured 2026-10-13 on every creatable
+        // entity type: a working category test (e.getEntityType().getCategory())
+        // would newly remove 58 types, and 29 of them are not hostile mobs (a
+        // player's own Umvuthana followers, a villager of the Abyss, thirteen
+        // Terramity effect entities that are registered as mobs, ...).
+        var isMonster = e instanceof Monster_dsp
         if (!isMonster) {
           try { isMonster = type.getCategory().equals(MobCategory_dsp.MONSTER) } catch (_) {}
         }
@@ -107,14 +118,19 @@ try {
         }
         if (!isMonster) continue
         hostile++
-        try { if (type.is(BOSSES_TAG)) continue } catch (_) {}
-        try {
-          if (e instanceof OwnableEntity_dsp && e.getOwnerUUID() != null) continue
-        } catch (_) {}
+        // Bosses stay: the tag of the entity TYPE (getEntityType(); until 2026-10-13
+        // this asked the id string and threw, so the Wither and the Harbinger were
+        // removed), then the pack's own roster. isBoss throws when the registry did
+        // not load: the entity is then kept, by the catch below.
+        if (e.getEntityType().is(BOSSES_TAG)) continue
+        if (global.icraft.core.isBoss(e)) continue
+        if (e instanceof OwnableEntity_dsp && e.getOwnerUUID() != null) continue
         e.discard()
         killed++
       } catch (ee) {
-        // Per-entity isolation -- one weird entity shouldn't abort the sweep
+        // Per-entity isolation: one weird entity does not abort the sweep. It is
+        // KEPT (a test that cannot be made never removes anything) and said once.
+        warnThrew_dsp('a test on an entity (it was kept)', ee)
       }
     }
     console.log('[icraft_despawn] ' + sp.username + ' radius=' + radius +
@@ -140,6 +156,7 @@ try {
             .executes(ctx => {
               var sp
               try { sp = ctx.source.getPlayerOrException() } catch (e) {
+                // swallow-ok: not a player (the console, a command block): the source is told so and the command ends
                 ctx.source.sendFailure(Text.of('Must be run as a player'))
                 return 0
               }

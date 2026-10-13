@@ -1411,6 +1411,7 @@ own one-shot `global._*` flags.
 
 - place 56 of 160; header: @events @file
 - events: `ServerEvents.commandRegistry`
+- registries: bosses (through core.isBoss)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `idle_hunger_pause.js`
