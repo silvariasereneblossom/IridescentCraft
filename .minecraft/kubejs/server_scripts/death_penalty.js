@@ -395,13 +395,37 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
 // the upcoming durability loss here and pre-clamp any armor that would
 // cross maxDamage, the about-to-run vanilla durability subtraction lands
 // in safe territory rather than synchronously breaking the item.
-// 2026-05-15: migrated to DamageModifierRegistry (raw LivingHurtEvent).
-// This handler READS damage to predict the upcoming durability tick; it
-// doesn't modify damage. event.amount (not event.damage) on the raw event.
+// On the raw Forge LivingHurtEvent. This handler READS damage to predict the
+// upcoming durability tick; it doesn't modify damage. event.amount (not
+// event.damage) on the raw event.
+//
+// It runs on the shared dispatcher of 0_lib_core.js, at the place it had while it
+// sat straight on the Java damage registry (until 2026-10-13). That registry runs
+// its entries in the HASH order of their keys: the clamp ran after the dispatcher's
+// handlers, after the startup script's deathskin bonus and after the Blazeborn
+// BONUS of an attacking player, and before Arcane Cleave, the unique-weapon
+// multiplier, the class passives and the Enderian bonus. So the amount it reads is
+// not the final one: what runs after it (a unique sword's x1.2, an Ender Shift's
+// x1.15) is not in its prediction. `place: 'last'` holds that place; the order
+// inside it is the library's list PLACED.
+// `secondary`: it also runs for secondary damage (thorns, a splash), as it did:
+// armour loses durability to those hits too. `cancelled` and `unchecked`: called as
+// the registry called it. An option taken off, or added, changes which hits clamp:
+// decision list entry 45; the hit table is dev/engine-tests, suite `hit-table`.
+// MEASURED there and on the full pack, and NOT changed (decision list Part 9):
+// `safe` below is clampPos - perPiece: the piece is given back, in advance, what
+// the handler expects vanilla to take from it next, so that it ends at the clamp.
+// A chestplate at 236 of 240 reads 230 after the handler for a hit of 36, and 14
+// for a hit of 900. The handler does not ask whether vanilla WILL take it. By
+// vanilla's code (not measured: a stand-in player cannot be hurt) a damage type
+// that bypasses armour takes no durability at all (a fall, magic, starvation,
+// freezing, a sonic boom), so such a hit leaves the piece with less damage than
+// it had; and what vanilla takes is a quarter of the FINAL amount, which the
+// handlers that run after this one may still raise.
 ;(function(){
-  var DR_dpa = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  if (!icraft.lib.need('core', 'death_penalty')) return
   var PlayerClass_dpa = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR_dpa.register('icraft.death_penalty.armor_clamp', function(event) {
+  global.icraft.core.onHurt('icraft.death_penalty.armor_clamp', function(event) {
     try {
       var player = event.entity
       if (!(player instanceof PlayerClass_dpa)) return
@@ -432,7 +456,7 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
     } catch (e) {
       console.warn('[durability] proactive armor clamp threw: ' + e)
     }
-  })
+  }, 'victimPlayer', { place: 'last', secondary: true, cancelled: true, unchecked: true })
 })()
 
 // Slower full-inventory + Curios sweep. Catches damageable items that aren't

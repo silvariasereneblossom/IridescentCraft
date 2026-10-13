@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "6739f3dc",
+    "generated_from":  "4f51469a",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "5ad6c78eed0405f75322874ce62272a27325b66c832fa3644ecc9224ed1fdaa7",
-                                                                  "size":  47834
+                                                                  "sha256":  "28b9c32db55054133add8aca30d4f6aa7b3d51a974a4c9bc0475aa5a8171abd6",
+                                                                  "size":  47898
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7112,8 +7112,8 @@
                                                                                          "size":  2052
                                                                                      },
                   "kubejs/server_scripts/death_penalty.js":  {
-                                                                 "sha256":  "90fb2308a3a19372265f83d02707ac068438b3374b53c7623428e694e4ff831f",
-                                                                 "size":  30527
+                                                                 "sha256":  "3699f8b69a86b9aa1aa8a228c920c06073d4f623529901bec5ec729cdd22dfe1",
+                                                                 "size":  32360
                                                              },
                   "kubejs/server_scripts/diag_armor_modifiers.js":  {
                                                                         "sha256":  "fddcdad360c8c795c5efadf6203548b8813924b3b763519b0a447fc91781f71d",

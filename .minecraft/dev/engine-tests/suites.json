@@ -111,7 +111,7 @@
                   {"load": ["server:abyss/abyss_armor_effects.js", "server:abyss/abyss_ring_effects.js", "server:affixes/affix_effects.js", "server:attributes/attribute_sync.js", "server:enchantments/enchant_effects.js", "server:origins/ss_unique_spellsword_scaling.js", "server:scaling/dimension_mechanics.js", "server:tetra_terramity_perks.js"]},
                   {"js": "var LN_AFTER_WHOLE = icraft.live.entries().length"},
                   {"load": ["server:death_penalty.js", "server:magic_crit_hook.js", "server:skills/skill_effects.js"]},
-                  {"js": "var LN_WHOLE = ['abyss/abyss_armor_effects', 'abyss/abyss_ring_effects', 'affixes/affix_effects', 'attributes/attribute_sync', 'enchantments/enchant_effects', 'origins/ss_unique_spellsword_scaling', 'scaling/dimension_mechanics', 'tetra_terramity_perks'], LN_PART = ['death_penalty', 'magic_crit_hook', 'skills/skill_effects'], LN_ASKING = 11"},
+                  {"js": "var LN_WHOLE = ['abyss/abyss_armor_effects', 'abyss/abyss_ring_effects', 'affixes/affix_effects', 'attributes/attribute_sync', 'enchantments/enchant_effects', 'origins/ss_unique_spellsword_scaling', 'scaling/dimension_mechanics', 'tetra_terramity_perks'], LN_PART = ['death_penalty', 'magic_crit_hook', 'skills/skill_effects'], LN_ASKING = 12"},
                   "suites/lib_need.js", "lib/summary.js"]]
     },
     {

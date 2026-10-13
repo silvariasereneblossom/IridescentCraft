@@ -2969,13 +2969,18 @@
       {
        "kind": "hurt",
        "group": "hurt",
-       "name": "icraft.death_penalty.broken_weapon",
-       "who": "attackerPlayer"
+       "name": "icraft.death_penalty.armor_clamp",
+       "who": "victimPlayer",
+       "place": "last",
+       "secondary": true,
+       "cancelled": true,
+       "unchecked": true
       },
       {
-       "kind": "direct",
-       "group": "DR_dpa.register",
-       "name": "icraft.death_penalty.armor_clamp"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.death_penalty.broken_weapon",
+       "who": "attackerPlayer"
       }
      ],
      "sections": 0,
@@ -9707,13 +9712,6 @@
       "kind": "direct"
      }
     ],
-    "DR_dpa.register": [
-     {
-      "script": "death_penalty.js",
-      "name": "icraft.death_penalty.armor_clamp",
-      "kind": "direct"
-     }
-    ],
     "DR_eff.registerLate": [
      {
       "script": "loot/tmb_plain_bow_effects.js",
@@ -11077,6 +11075,16 @@
       "name": "icraft.tetra_terramity_perks",
       "kind": "hurt",
       "who": "attacker"
+     },
+     {
+      "script": "death_penalty.js",
+      "name": "icraft.death_penalty.armor_clamp",
+      "kind": "hurt",
+      "who": "victimPlayer",
+      "place": "last",
+      "secondary": true,
+      "cancelled": true,
+      "unchecked": true
      },
      {
       "script": "origins/battlemage_arcane_cleave.js",
