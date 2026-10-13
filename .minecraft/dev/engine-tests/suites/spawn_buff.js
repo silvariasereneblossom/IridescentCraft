@@ -284,6 +284,59 @@ check('S16 and from then on a reload leaves its health alone (900 of ' + (wither
 var vw = join(__host.living('minecraft:wither', 300, L), 1.5)
 check('S16 minecraft:wither itself is answered as before (designed health, x3)', near(vw.rawMax(), (witherHp + 150) * witherX3) && !has(vw.mods(HP), 'icraft_mob_tier_hp'), 'max=' + vw.rawMax())
 
+__host.print('S17 a mod sets the base health AFTER the pack\'s handler (the Ender Dragon: Progressive Bosses, 200 -> 500)')
+// Measured on a full-pack boot, 2026-10-13: scaling/boss_hp.js sees the vanilla base 200 and saves +4.0 for the
+// designed 1000; Progressive Bosses' own join handler then sets the base to 500 and the health to 500: 500 of 7500.
+// The numbers below are the registry's (hp, flag x3), so the check follows the file.
+var dragonHp = global.icraft.bosses.hp('minecraft:ender_dragon')
+var dragonX3 = global.icraft.bosses.has('minecraft:ender_dragon', 'x3') ? 3 : 1
+var LD = __host.level()
+var dragon = join(__host.living('minecraft:ender_dragon', 200, LD))
+check('S17 as the pack\'s handlers leave it: ' + (dragonHp * dragonX3) + ' of ' + (dragonHp * dragonX3) + ' on the vanilla base', near(dragon.rawMax(), dragonHp * dragonX3) && near(dragon.rawHealth(), dragonHp * dragonX3), 'max=' + dragon.rawMax())
+dragon.modSetsBase(500)
+line('after the mod set its base, before the re-check', dragon)
+check('S17 then the mod sets base 500 and health 500: 500 of ' + (500 * (dragonHp / 200) * dragonX3) + ', the state measured in game', near(dragon.rawMax(), 500 * (dragonHp / 200) * dragonX3) && near(dragon.rawHealth(), 500))
+ticks(LD, 1)
+line('one tick later', dragon)
+check('S17 one tick later the designed value holds again: ' + (dragonHp * dragonX3) + ' of ' + (dragonHp * dragonX3) + ', at full health (a first spawn)', near(dragon.rawMax(), dragonHp * dragonX3) && near(dragon.rawHealth(), dragonHp * dragonX3), 'max=' + dragon.rawMax() + ' health=' + dragon.rawHealth())
+check('S17 the multiplier is saved, and the base it is for is remembered', !has(dragon.mods(HP), '*') && near(dragon.getPersistentData().getDouble('icraft_boss_hp_base'), 500))
+dragon.damageTo(1200)
+ticks(LD, 20)
+check('S17 the 20-tick pass changes nothing more, and does not heal (1200 stays 1200)', near(dragon.rawMax(), dragonHp * dragonX3) && near(dragon.rawHealth(), 1200), 'health=' + dragon.rawHealth())
+var dragon2 = join(dragon.reload())
+ticks(LD, 1); ticks(LD, 20)
+check('S17 saved and loaded: unchanged, health 1200', near(dragon2.rawMax(), dragonHp * dragonX3) && near(dragon2.rawHealth(), 1200), 'max=' + dragon2.rawMax() + ' health=' + dragon2.rawHealth())
+// a dragon that was alive before this date: base 500, the +4.0 worked out on 200, the boss x3, no remembered base
+var oldDragon = __host.living('minecraft:ender_dragon', 500, LD)
+core.saveModifier(oldDragon, HP, 'icraft_boss_hp_override', dragonHp / 200 - 1, 'multiply_base')
+core.saveModifier(oldDragon, HP, 'icraft_boss_3x_hp', 2.0, 'multiply_total')
+oldDragon.getPersistentData().putInt('icraft_boss_hp', 2)
+oldDragon.getPersistentData().putInt('icraft_boss_3x', 2)
+oldDragon.damageTo(3750)
+oldDragon = join(oldDragon.reload())
+line('a dragon saved before the fix at 3750/7500, loaded', oldDragon)
+check('S17 a dragon saved before the fix at half of 7500 loads at half of ' + (dragonHp * dragonX3) + ': corrected at once, its share kept', near(oldDragon.rawMax(), dragonHp * dragonX3) && near(oldDragon.rawHealth(), dragonHp * dragonX3 / 2), 'max=' + oldDragon.rawMax() + ' health=' + oldDragon.rawHealth())
+// only a moved BASE does this: a modifier another mod adds later multiplies on top, as before
+var LH = __host.level()
+var champ = join(__host.living('cataclysm:the_harbinger', 350, LH).attr(DMG, 10).attr(SPD, 0.3), 1.5)
+var champMax = champ.rawMax()
+champ.foreignModifier(HP, 'another_mod_bonus', 0.5, 'MULTIPLY_TOTAL', true)
+ticks(LH, 1); ticks(LH, 20)
+check('S17 a health modifier another mod adds after the join is NOT absorbed: ' + champMax + ' x 1.5 stays', near(champ.rawMax(), champMax * 1.5), 'max=' + champ.rawMax())
+var champ2 = join(champ.reload(), 1.5)
+ticks(LH, 1)
+check('S17 nor when that boss loads again', near(champ2.rawMax(), champMax * 1.5), 'max=' + champ2.rawMax())
+// a boss saved before this date that carries another mod's health modifier: cannot be judged, left alone
+var legacy = __host.living('cataclysm:the_harbinger', 350, LH).attr(DMG, 10).attr(SPD, 0.3)
+legacy.foreignModifier(HP, 'another_mod_bonus', 0.5, 'MULTIPLY_TOTAL', true)
+core.saveModifier(legacy, HP, 'icraft_boss_hp_override', 0.7, 'multiply_base')
+legacy.getPersistentData().putInt('icraft_boss_hp', 2)
+var legacyMax = legacy.rawMax()
+legacy = join(legacy.reload())
+check('S17 a boss saved before this date with another mod\'s modifier on its health is left as it is, and its base remembered', near(legacy.rawMax() / legacyMax, global.icraft.bosses.has('cataclysm:the_harbinger', 'x3') ? 3 : 1) &&
+  near(legacy.getPersistentData().getDouble('icraft_boss_hp_base'), 350), 'max=' + legacy.rawMax() + ' was ' + legacyMax)
+check('S17 every other scenario of this suite ran with the re-check scheduled and none was changed by it', failed === 0)
+
 __host.print('')
 if (T_DISHONEST.length) __host.print('DISHONEST MOCKS (' + T_DISHONEST.length + '):\n   ' + T_DISHONEST.join('\n   '))
 // the handlers run behind icraft.guard: one that throws is reported by the guard, and has to fail this suite

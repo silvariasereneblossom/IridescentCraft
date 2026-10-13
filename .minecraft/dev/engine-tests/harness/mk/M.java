@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,6 +116,8 @@ public class M {
     public void putInt(String k, int v) { m.put(k, Integer.valueOf(v)); }
     public void putBoolean(String k, boolean v) { m.put(k, Byte.valueOf((byte) (v ? 1 : 0))); }
     public boolean getBoolean(String k) { Object v = m.get(k); return v instanceof Number n && n.byteValue() != 0; }
+    public double getDouble(String k) { Object v = m.get(k); return v instanceof Number n ? n.doubleValue() : 0.0; }
+    public void putDouble(String k, double v) { m.put(k, Double.valueOf(v)); }
     public Tag getCompound(String k) { Object v = m.get(k); return v instanceof Tag t ? t : new Tag(); }
     public void put(String k, Object v) { m.put(k, v instanceof Tag ? v : new Tag()); }
     Tag copy() { Tag t = new Tag(); t.m.putAll(m); return t; }
@@ -123,7 +126,7 @@ public class M {
       StringBuilder sb = new StringBuilder();
       for (String k : new TreeSet<>(m.keySet())) {
         Object v = m.get(k);
-        if (!(v instanceof Number)) continue;
+        if (!(v instanceof Number) || v instanceof Double) continue;
         if (sb.length() > 0) sb.append(' ');
         sb.append(k).append('=').append(v).append(v instanceof Byte ? "b" : "");
       }
@@ -135,6 +138,20 @@ public class M {
     final Level overworld;
     Server(Level overworld) { this.overworld = overworld; }
     public Level getLevel(String id) { return overworld; }
+    // MinecraftServerKJS.scheduleInTicks(ticks, callback): the callback runs that many server ticks later
+    long now = 0;
+    final List<Object[]> scheduled = new ArrayList<>();     // { due tick, callback }
+    public void scheduleInTicks(long ticks, Object callback) { scheduled.add(new Object[] { Long.valueOf(now + ticks), callback }); }
+    /** test control: `ticks` server ticks pass; the callbacks that came due, in the order they were scheduled (the test calls them) */
+    public List<Object> advance(int ticks) {
+      now += ticks;
+      List<Object> due = new ArrayList<>();
+      for (Iterator<Object[]> it = scheduled.iterator(); it.hasNext();) {
+        Object[] e = it.next();
+        if (((Long) e[0]).longValue() <= now) { due.add(e[1]); it.remove(); }
+      }
+      return due;
+    }
   }
   public static class Level {
     final Tag data = new Tag();
@@ -183,6 +200,8 @@ public class M {
     public boolean isMonster() { return monster; }
     public Level getLevel() { return level; }
     public Tag getPersistentData() { return data; }
+    public boolean isAlive() { return health > 0.0f; }
+    public boolean isRemoved() { return false; }
     public float getHealth() { guard("getHealth"); return health; }
     public float getMaxHealth() { guard("getMaxHealth"); return (float) attrs.get(MAX_HEALTH).getValue(); }
     public void setHealth(float h) { guard("setHealth"); health = Math.max(0.0f, Math.min(h, getMaxHealth())); }
@@ -235,6 +254,12 @@ public class M {
       diffScaled = true;
     }
     public void damageTo(float h) { health = h; }
+    /** a mod's own join handler that sets the base health and the health to its number (Progressive Bosses on the
+     *  Ender Dragon: AttributeInstance.setBaseValue(500), setHealth(500)), after the pack's handlers */
+    public void modSetsBase(double base) {
+      attrs.get(MAX_HEALTH).setBaseValue(base);
+      setHealth((float) base);
+    }
     /** a modifier some other mod put on the entity (op: ADDITION / MULTIPLY_BASE / MULTIPLY_TOTAL) */
     public void foreignModifier(String attrId, String name, double amount, String op, boolean saved) {
       AttributeInstance i = attrs.get(Attribute.REG.get(attrId));

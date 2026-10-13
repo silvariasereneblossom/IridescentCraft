@@ -24,3 +24,8 @@ function forceScalable(on) {
     isScalableBoss = __realScalable
   }
 }
+// `n` server ticks pass on that level's server: what a script scheduled with server.scheduleInTicks runs
+function ticks(level, n) {
+  var due = level.getServer().advance(n)
+  for (var i = 0; i < due.size(); i++) due.get(i)()
+}
