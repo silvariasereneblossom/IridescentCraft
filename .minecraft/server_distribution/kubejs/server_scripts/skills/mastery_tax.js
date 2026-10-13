@@ -58,7 +58,7 @@
   var warnOnce = function (where, e) {
     if (warned[where]) return
     warned[where] = true
-    try { console.warn('[mastery_tax] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) {}
+    try { console.warn('[mastery_tax] ' + where + ' failed (logged once per script load): ' + e) } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   // uuid -> cumulative aptitude total at the last readable pass (session memory)

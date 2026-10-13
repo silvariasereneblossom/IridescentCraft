@@ -92,7 +92,7 @@
   var warnOnce = function (site, message) {
     if (warned[site]) return
     warned[site] = true
-    try { console.warn('[icraft.aptitude] ' + message + ' (logged once per script load)') } catch (ignored) {}
+    try { console.warn('[icraft.aptitude] ' + message + ' (logged once per script load)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   // ── the fork's capability class ───────────────────────────────────────────

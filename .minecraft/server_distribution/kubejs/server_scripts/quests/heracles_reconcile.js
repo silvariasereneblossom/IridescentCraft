@@ -68,7 +68,7 @@ var reconWarned = {}
 function reconWarnOnce(key, message) {
   if (reconWarned[key]) return
   reconWarned[key] = true
-  try { console.warn('[heracles_reconcile] ' + message + ' (logged once)') } catch (ignored) {}
+  try { console.warn('[heracles_reconcile] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
 }
 
 // ---- Heracles API (lazy; a missing / changed Heracles only costs detection) --

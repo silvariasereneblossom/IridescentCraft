@@ -355,7 +355,7 @@
                 + (nearbyBlock ? ' nearby=' + nearbyBlock : '')
                 + ' tick=' + entity.age)
     } catch (e) {
-      try { console.warn('[gem-trace] handler threw: ' + e) } catch (_) {}
+      try { console.warn('[gem-trace] handler threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
     }
   }))
 
@@ -422,16 +422,16 @@
                          + tableId + ' dim=' + dim + ' (logging once per pair)')
             }
           } catch (e) {
-            try { console.warn('[gem-loot-trace] handler threw: ' + e) } catch (_) {}
+            try { console.warn('[gem-loot-trace] handler threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
           }
           // Repair in place: write fallback variant + common rarity into NBT.
           // Mirrors the inventory-tick repair so the chest tooltip is correct.
           try { repairChestGem(stack) } catch (e) {
-            try { console.warn('[gem-loot-trace] repair threw: ' + e) } catch (_) {}
+            try { console.warn('[gem-loot-trace] repair threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
           }
         }
       } catch (e) {
-        try { console.warn('[gem-loot-trace] apply threw: ' + e) } catch (_) {}
+        try { console.warn('[gem-loot-trace] apply threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
       }
     })
   }))

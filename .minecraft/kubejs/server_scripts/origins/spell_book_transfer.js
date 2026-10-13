@@ -66,7 +66,7 @@
   var warnOnce = function (key, message) {
     if (warned[key]) return
     warned[key] = true
-    try { console.warn('[spell_book_transfer] ' + message + ' (logged once)') } catch (ignored) {}
+    try { console.warn('[spell_book_transfer] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   var isVanillaSpellBook = function (itemId) {

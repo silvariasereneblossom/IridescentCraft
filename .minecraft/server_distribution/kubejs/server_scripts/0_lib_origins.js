@@ -70,7 +70,7 @@
       console.warn('[icraft.origin] ' + what + ' failed: ' + e +
         ' -- class/race/origin checks answer null/false for the affected player' +
         ' until a read succeeds (logged once per script load)')
-    } catch (ignored) {}
+    } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   var layerName = function (layer) {

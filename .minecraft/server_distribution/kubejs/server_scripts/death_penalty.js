@@ -75,7 +75,7 @@ EntityEvents.death(icraft.guard('death_penalty', 'EntityEvents.death', event => 
       console.log('[death-event] fired for a player; event.player=' + hasEventPlayer)
     }
   } catch (e) {
-    try { console.log('[death-event] entry-log threw: ' + e) } catch (_) {}
+    try { console.log('[death-event] entry-log threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   // Player filter -- accept either the legacy `entity.player` truthy-

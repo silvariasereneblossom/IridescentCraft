@@ -122,13 +122,13 @@
   var warnOnce = function (key, message) {
     if (said[key]) return
     said[key] = true
-    try { console.warn(message + ' (logged once per script load)') } catch (ignored) {}
+    try { console.warn(message + ' (logged once per script load)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
   // the same for a line that is good news (proof in the boot log that a path ran)
   var logOnce = function (key, message) {
     if (said[key]) return
     said[key] = true
-    try { console.log(message + ' (logged once per script load)') } catch (ignored) {}
+    try { console.log(message + ' (logged once per script load)') } catch (ignored) { /* swallow-ok: the log call itself failed; a log line must never throw into its caller */ }
   }
 
   // ---- numbers --------------------------------------------------------------
@@ -157,7 +157,10 @@
     try {
       if (PlayerClass) return entity instanceof PlayerClass
       return entity.player === true
-    } catch (e) { return false }
+    } catch (e) {
+      warnOnce('isPlayer', '[icraft.core] isPlayer threw (answered false): ' + e)
+      return false
+    }
   }
 
   // ---- entity ids -----------------------------------------------------------
@@ -166,14 +169,14 @@
     if (!entity) return ''
     var s = ''
     // The METHOD, not the `type` property (see header).
-    try { s = String(entity.getType()) } catch (e) { s = '' }
+    try { s = String(entity.getType()) } catch (e) { s = '' /* swallow-ok: not an entity, or one without getType(): the registry-holder reader below is tried next */ }
     if (s.indexOf(':') > 0) return s
     try {
       if (typeof entity.getEntityType === 'function') {
         s = String(entity.getEntityType().builtInRegistryHolder().key().location())
         if (s.indexOf(':') > 0) return s
       }
-    } catch (e2) {}
+    } catch (e2) { /* swallow-ok: no usable getEntityType() either: the translation-key form below is the last reader, and '' is the answer for a non-entity */ }
     var m = s.match(TRANSLATION_KEY)
     return m ? (m[1] + ':' + m[2]) : s
   }
@@ -199,7 +202,11 @@
       id = (typeof entityOrId !== 'string' && typeof entityOrId.getType === 'function')
         ? entityId(entityOrId)
         : String(entityOrId)
-    } catch (e) { return false }
+    } catch (e) {
+      // "not a boss" is the answer that lets a Vorpal crit behead it: never give it quietly
+      warnOnce('isBoss', '[icraft.core] isBoss could not read an id (answered false): ' + e)
+      return false
+    }
     var roster = global.icraft.bosses
     if (!roster) throw new Error('[icraft.core] isBoss: icraft.bosses is missing (0_lib_registry.js did not load)')
     return roster.is(id)
@@ -208,15 +215,24 @@
   // ---- damage sources -------------------------------------------------------
   var attacker = function (source) {
     if (!source) return null
-    try { var a = source.actual; return a ? a : null } catch (e) { return null }
+    try { var a = source.actual; return a ? a : null } catch (e) {
+      warnOnce('attacker', '[icraft.core] source.actual threw (no attacker): ' + e)
+      return null
+    }
   }
   var direct = function (source) {
     if (!source) return null
-    try { var d = source.immediate; return d ? d : null } catch (e) { return null }
+    try { var d = source.immediate; return d ? d : null } catch (e) {
+      warnOnce('direct', '[icraft.core] source.immediate threw (no direct entity): ' + e)
+      return null
+    }
   }
   var dmgMsg = function (source) {
     if (!source) return ''
-    try { return String(source.getType()) } catch (e) { return '' }
+    try { return String(source.getType()) } catch (e) {
+      warnOnce('dmgMsg', '[icraft.core] source.getType() threw (no message id): ' + e)
+      return ''
+    }
   }
   // The registry id costs five member reads and several handlers ask about the
   // source of the same event: the last answer is kept (`===` on two wrappers
@@ -231,7 +247,10 @@
     try {
       var key = source.typeHolder().unwrapKey()
       if (key.isPresent()) id = String(key.get().location())
-    } catch (e) { id = '' }
+    } catch (e) {
+      id = ''
+      warnOnce('dmgId', '[icraft.core] the damage type id could not be read (fire / magic / fall tests answer by the message id only): ' + e)
+    }
     memoSource = source
     memoId = id
     memoKey = null
@@ -246,7 +265,10 @@
     return key
   }
   var tag = function (name) {
-    try { return DamageTypeTags ? DamageTypeTags[name] : null } catch (e) { return null }
+    try { return DamageTypeTags ? DamageTypeTags[name] : null } catch (e) {
+      warnOnce('tag:' + name, '[icraft.core] DamageTypeTags.' + name + ' could not be read: ' + e)
+      return null
+    }
   }
   var TAG_FIRE = tag('IS_FIRE')
   var TAG_EXPLOSION = tag('IS_EXPLOSION')
@@ -254,7 +276,10 @@
   var TAG_FALL = tag('IS_FALL')
   var inTag = function (source, tagKey) {
     if (!tagKey) return false
-    try { return source.is(tagKey) === true } catch (e) { return false }
+    try { return source.is(tagKey) === true } catch (e) {
+      warnOnce('inTag', '[icraft.core] source.is(tag) threw (answered false): ' + e)
+      return false
+    }
   }
   var anyOf = function (haystack, needles) {
     for (var i = 0; i < needles.length; i++) {
@@ -301,13 +326,14 @@
   // Game time of the entity's level (or of a level). Monotonic across restarts.
   var now = function (holder) {
     var t
+    var why = ''
     try {
       var level = (holder && holder.level) ? holder.level : holder
       t = finite(level.time, NaN)
       if (t !== t) t = finite(level.levelData.gameTime, NaN)
-    } catch (e) { t = NaN }
+    } catch (e) { t = NaN; why = ' (' + e + ')' }
     if (t !== t) {
-      warnOnce('now', '[icraft.core] could not read the world game time; cooldowns will not start')
+      warnOnce('now', '[icraft.core] could not read the world game time; cooldowns will not start' + why)
       return 0
     }
     return t
@@ -318,11 +344,17 @@
     try {
       var v = finite(entity.level.getMaxLocalRawBrightness(entity.blockPosition()), NaN)
       return (v === v) ? v : 7
-    } catch (e) { return 7 }
+    } catch (e) {
+      warnOnce('light', '[icraft.core] light(entity) threw (answered 7): ' + e)
+      return 7
+    }
   }
   var forgeData = function (entity) {
     if (!entity) return null
-    try { var d = entity.forgePersistentData; return d ? d : null } catch (e) { return null }
+    try { var d = entity.forgePersistentData; return d ? d : null } catch (e) {
+      warnOnce('forgeData', '[icraft.core] entity.forgePersistentData threw (answered null): ' + e)
+      return null
+    }
   }
 
   // ---- attributes -----------------------------------------------------------
@@ -337,7 +369,10 @@
     try {
       var value = ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(key))
       if (value) found = value
-    } catch (e) { found = null }
+    } catch (e) {
+      found = null
+      warnOnce('attribute:' + key, '[icraft.core] the attribute ' + key + ' could not be looked up (treated as not registered): ' + e)
+    }
     attrCache[key] = found
     return found
   }
@@ -345,12 +380,14 @@
   var attrValue = function (entity, id, fallback) {
     var attr = attribute(id)
     if (!attr) return fallback
-    try { return finite(entity.getAttributeValue(attr), fallback) } catch (e) { return fallback }
+    // swallow-ok below: vanilla THROWS ("Can't find attribute") for an attribute this entity type does not have,
+    // which is the ordinary case for a modded attribute on a mob; `fallback` is what the caller asked for then
+    try { return finite(entity.getAttributeValue(attr), fallback) } catch (e) { return fallback /* swallow-ok: the entity has no such attribute (vanilla throws for it) */ }
   }
   var attrBase = function (entity, id, fallback) {
     var attr = attribute(id)
     if (!attr) return fallback
-    try { return finite(entity.getAttributeBaseValue(attr), fallback) } catch (e) { return fallback }
+    try { return finite(entity.getAttributeBaseValue(attr), fallback) } catch (e) { return fallback /* swallow-ok: the entity has no such attribute (vanilla throws for it) */ }
   }
   // The total as it would be WITHOUT the modifiers whose name starts with
   // `prefix` (vanilla's own formula: (base + additions) x (1 + sum of
@@ -460,7 +497,7 @@
       // The swap may have stopped half way (taken off, not put back): have
       // KubeJS put the transient one on again, so the mob is at least buffed
       // while it stays loaded. The caller's flag stays at 1 -> retried on load.
-      try { entity.modifyAttribute(String(id), key, amount, operation) } catch (ignored) {}
+      try { entity.modifyAttribute(String(id), key, amount, operation) } catch (ignored) { /* swallow-ok: the second attempt after a failed save; the failure itself is reported on the next line */ }
       warnOnce('modifier:' + key, '[icraft.core] modifier ' + key + ' on ' + entityId(entity) + ' could not be saved: ' + e)
       return -1
     }
@@ -476,13 +513,16 @@
       var share = finite(entity.getHealth(), max) / max
       if (share < 0) return 0
       return share > 1 ? 1 : share
-    } catch (e) { return 1 }
+    } catch (e) {
+      warnOnce('healthShare', '[icraft.core] health / max health could not be read (a buffed mob is healed to full): ' + e)
+      return 1
+    }
   }
   // 'health/max' for a log line
   var healthText = function (entity) {
     try {
       return (Math.round(finite(entity.getHealth(), 0) * 10) / 10) + '/' + (Math.round(finite(entity.getMaxHealth(), 0) * 10) / 10)
-    } catch (e) { return '?/?' }
+    } catch (e) { return '?/?' /* swallow-ok: text for a log line; '?/?' is how the line says it could not be read */ }
   }
 
   // Take a named modifier OFF an entity. For retiring a saved spawn buff: a
@@ -576,11 +616,12 @@
     var key = String(id)
     if (enchCache.hasOwnProperty(key)) return enchCache[key]
     var found = false
+    var why = ''
     try {
       var value = ForgeRegistries.ENCHANTMENTS.getValue(ResourceLocation.tryParse(key))
       if (value) found = value
-    } catch (e) { found = false }
-    if (!found) warnOnce('ench:' + key, '[icraft.core] enchantment ' + key + ' is not registered; its effects are off')
+    } catch (e) { found = false; why = ' (the lookup threw: ' + e + ')' }
+    if (!found) warnOnce('ench:' + key, '[icraft.core] enchantment ' + key + ' is not registered; its effects are off' + why)
     enchCache[key] = found
     return found
   }
@@ -603,7 +644,10 @@
   var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
   var HAND_SLOTS = ['mainhand', 'offhand']
   var slotStack = function (entity, slot) {
-    try { return entity.getEquipment(slot) } catch (e) { return null }
+    try { return entity.getEquipment(slot) } catch (e) {
+      warnOnce('slot:' + slot, '[icraft.core] getEquipment(' + slot + ') threw on ' + entityId(entity) + ' (read as empty): ' + e)
+      return null
+    }
   }
   // sum of the level across the four armour pieces
   var armorEnchTotal = function (entity, id) {
@@ -935,7 +979,9 @@
           else if (after < 0) { event.setAmount(0); amount = 0 }
           else amount = after
           if (event.isCanceled()) return
-        } catch (e2) {}
+        } catch (e2) {
+          warnOnce('dispatch.amount', '[icraft.core] the amount of a hurt event could not be checked after handler ' + h.key + ': ' + e2)
+        }
       }
     }
   }
@@ -978,7 +1024,9 @@
       plans[phase] = plansFor(list)
       // A script loaded before this scheme registered `key` straight on the Java
       // registry; after a live /reload that closure would still be there.
-      try { if (DamageRegistry) DamageRegistry.unregister(id) } catch (e) {}
+      try { if (DamageRegistry) DamageRegistry.unregister(id) } catch (e) {
+        warnOnce('unregister:' + id, '[icraft.core] DamageModifierRegistry.unregister(' + id + ') threw: ' + e)
+      }
       return ensureDispatcher(phase)
     }
   }
@@ -1046,7 +1094,10 @@
     onHurtLate: registerHurt('late'),
     hurtHandlers: hurtHandlers,
     damageSource: function (target, kind, by) {
-      try { return sourceFor(target, kind, by) } catch (e) { return null }
+      try { return sourceFor(target, kind, by) } catch (e) {
+        warnOnce('damageSource:' + kind, '[icraft.core] damageSource(' + kind + ') could not be built (answered null): ' + e)
+        return null
+      }
     },
     dealDamage: dealDamage,
     dealDamageFrom: dealDamageFrom,

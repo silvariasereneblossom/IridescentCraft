@@ -84,7 +84,7 @@ try {
                       ', max allowed=' + MAX_AMP + ')')
         }
       } catch (e) {
-        try { console.warn('[levitation_cap] handler threw: ' + e) } catch (_) {}
+        try { console.warn('[levitation_cap] handler threw: ' + e) } catch (_) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
       }
   }
 

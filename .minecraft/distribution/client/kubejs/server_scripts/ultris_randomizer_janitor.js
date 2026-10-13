@@ -59,7 +59,7 @@
   var warnOnce = function (key, message) {
     if (warned[key]) return
     warned[key] = true
-    try { console.warn('[ultris_randomizer_janitor] ' + message + ' (logged once)') } catch (ignored) {}
+    try { console.warn('[ultris_randomizer_janitor] ' + message + ' (logged once)') } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
   }
 
   // Typed-query plumbing, resolved on the first sweep with a player online.
