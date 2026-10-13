@@ -1,0 +1,58 @@
+name: Expected-state gate self-test
+
+# expected_state.json (one per distribution) is the list of files a consumer should hold;
+# .minecraft/dev/generate_expected_state.ps1 -Check is the freshness gate the pre-push hook
+# runs through sync-distros.ps1. The gate has been wrong in the cheap direction once: it
+# compared the provenance field `generated_from` (HEAD when the manifest was written), so
+# every checkout whose HEAD was another commit read STALE (fixed 2026-10-13).
+#
+# This runs the gate's own test whenever the generator or the test changes: a temporary
+# tree, one change at a time, FRESH where only generated_from differs and STALE for a
+# changed, added or removed file or an edited entry. On both shells the pack uses: Windows
+# PowerShell 5.1 (every consumer) and PowerShell 7.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/dev/generate_expected_state.ps1'
+      - '.minecraft/dev/generate_expected_state_test.ps1'
+      - '.github/workflows/expected-state-gate.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/dev/generate_expected_state.ps1'
+      - '.minecraft/dev/generate_expected_state_test.ps1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  selftest:
+    name: generate_expected_state_test.ps1
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout (the generator and its test)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/dev/generate_expected_state.ps1
+            /.minecraft/dev/generate_expected_state_test.ps1
+
+      - name: Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          & .\.minecraft\dev\generate_expected_state_test.ps1
+          exit $LASTEXITCODE
+
+      - name: PowerShell 7
+        if: always()
+        shell: pwsh
+        run: |
+          & ./.minecraft/dev/generate_expected_state_test.ps1
+          exit $LASTEXITCODE

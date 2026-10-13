@@ -40,6 +40,19 @@
 #   UTF-8 no BOM; LF line endings (matches *.json eol=lf in .gitattributes so the
 #   gate's byte-compare is deterministic across pwsh / Windows PS / platforms).
 #
+#   generated_from IS NOT PART OF THE COMPARISON (since 2026-10-13). It is
+#   provenance only: no consumer decides anything from it (sync.rs deserializes
+#   and ignores it, loud-check.ps1 prints it). It names HEAD at the moment the
+#   manifest was written, which is always the PARENT of the commit that carries
+#   the manifest, so with it in the compare every clean checkout of main read
+#   STALE and every session had to regenerate after its last commit, leaving a
+#   one-line change it could never commit away. -Check compares everything else
+#   (roots, every path, every sha256, size and volatile flag), and a plain run
+#   leaves a manifest alone when nothing but generated_from would change: the
+#   field then says "HEAD when the file list last changed".
+#   generate_expected_state_test.ps1 proves both ways (fresh in a checkout whose
+#   HEAD moved; stale for a changed, added or removed file or an edited entry).
+#
 # -----------------------------------------------------------------------------
 # EXCLUSION CHOICES (documented per house rule #4)
 # -----------------------------------------------------------------------------
@@ -88,6 +101,7 @@
 # USAGE
 #   pwsh .minecraft/dev/generate_expected_state.ps1            # write manifests
 #   pwsh .minecraft/dev/generate_expected_state.ps1 -Check     # exit 1 if stale
+#   pwsh .minecraft/dev/generate_expected_state_test.ps1       # the gate's own test
 #   (the pre-push gate sync-distros.ps1 invokes -Check for its freshness check)
 # =============================================================================
 
@@ -248,8 +262,21 @@ function Write-Utf8NoBom {
     [System.IO.File]::WriteAllText($Path, $Text, $enc)
 }
 
+# The manifest text as -Check compares it: LF, no trailing newline, and the VALUE
+# of the one top-level "generated_from" line blanked (see the header: provenance,
+# different in every checkout whose HEAD is not the commit it was written at).
+# Only the first match is replaced; a file key is a path under a managed root and
+# is nested deeper, so it cannot be that line.
+function Get-ComparableManifest {
+    param([string]$Text)
+    $t = ($Text -replace "`r`n", "`n").TrimEnd("`n")
+    $rx = New-Object System.Text.RegularExpressions.Regex('"generated_from"(\s*):(\s*)"[^"]*"')
+    return $rx.Replace($t, '"generated_from"$1:$2"-"', 1)
+}
+
 $stale = @()
 $written = 0
+$unchanged = 0
 
 foreach ($d in $Distros) {
     $distroRoot = Join-Path $mcRoot $d
@@ -268,16 +295,25 @@ foreach ($d in $Distros) {
         if (Test-Path -LiteralPath $manifestPath) {
             $current = [System.IO.File]::ReadAllText($manifestPath) -replace "`r`n", "`n"
         }
-        if ($current.TrimEnd("`n") -ne $json.TrimEnd("`n")) {
+        if ((Get-ComparableManifest $current) -cne (Get-ComparableManifest $json)) {
             $stale += $d
             Write-Host "  [STALE] $d/expected_state.json differs from regenerated content" -ForegroundColor Red
         } else {
             Write-Host "  [ok]    $d/expected_state.json fresh ($fileCount files, $volCount volatile)" -ForegroundColor Green
         }
     } else {
-        Write-Utf8NoBom -Path $manifestPath -Text $json
-        Write-Host "  -> $manifestPath ($fileCount files, $volCount volatile)" -ForegroundColor Cyan
-        $written++
+        $current = $null
+        if (Test-Path -LiteralPath $manifestPath) { $current = [System.IO.File]::ReadAllText($manifestPath) }
+        if ($null -ne $current -and (Get-ComparableManifest $current) -ceq (Get-ComparableManifest $json)) {
+            # nothing but generated_from would change: not a new manifest, and rewriting
+            # it would dirty the tree with a line the next commit makes wrong again
+            Write-Host "  [same]  $d/expected_state.json already describes this tree ($fileCount files, $volCount volatile); left as it is" -ForegroundColor Green
+            $unchanged++
+        } else {
+            Write-Utf8NoBom -Path $manifestPath -Text $json
+            Write-Host "  -> $manifestPath ($fileCount files, $volCount volatile)" -ForegroundColor Cyan
+            $written++
+        }
     }
 }
 
@@ -295,5 +331,9 @@ if ($Check) {
 }
 
 Write-Host ""
-Write-Host "[expected-state] generated_from=$gitSha. wrote $written manifest(s). Commit them alongside any config/kubejs/.index changes + push (consumers read them after a full-zip overlay)." -ForegroundColor Green
+if ($written -eq 0) {
+    Write-Host "[expected-state] $unchanged manifest(s) already fresh, nothing written." -ForegroundColor Green
+} else {
+    Write-Host "[expected-state] generated_from=$gitSha. wrote $written manifest(s), $unchanged already fresh. Commit them alongside any config/kubejs/.index changes + push (consumers read them after a full-zip overlay)." -ForegroundColor Green
+}
 exit 0
