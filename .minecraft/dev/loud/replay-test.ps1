@@ -45,6 +45,23 @@
 # Exit 0 pass, 1 fail, 2 could not run (history not available: a shallow clone, or
 # the history of this repo was rewritten).
 #
+# NO GATE RUNS THIS: MANUAL, ON PURPOSE. Measured 2026-10-13 on the dev PC (Windows
+# PowerShell 5.1, warm disk): 171 s for the whole run, PASS. It reads 45 old commits
+# out of history, so it also needs a full clone. That is too slow for the pre-push
+# hook, where it would run on most script pushes (the manifest it reads is
+# regenerated whenever a registration changes), and the engine suite's CI job
+# checks out one commit. So nothing fails by itself when this test breaks: it sat
+# red on main for hours on 2026-10-12 after a manifest line was added for a script
+# the old boots do not have.
+# RUN IT BY HAND, and say so in the close-out, after a change to any of:
+#   loud-check.ps1                          the checker under test
+#   liveness_lines.json, gen_liveness.js    what the checker expects of a boot
+#   baseline.json handling in the checker   (the baseline cases build their own file)
+#   this file
+# A change to a script's registrations alone regenerates liveness_manifest.json;
+# the checker does not judge a line whose script is not in the tree of an old boot,
+# so that needs no run.
+#
 # WHERE THE BOOTS COME FROM: pinned commits of THIS repository. The corpus is the
 # anchor commit and the 44 log-mirror commits before it, read with `git show
 # <commit>:<path>` under the path the mirror had then ($LogRel below). Nothing is
