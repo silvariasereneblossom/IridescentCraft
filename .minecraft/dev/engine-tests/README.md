@@ -89,6 +89,19 @@ every run and not counted.
    list, not the script. When `main` changes a file a suite loads, re-run the suite (a suite went
    from 73/0 to 65/8 that way on 2026-10-12).
 
+**A test that makes a temporary git repository** (any test of any tool, not only here) must start its
+git children WITHOUT git's repository variables. Git runs a hook with `GIT_DIR` set to the repository
+being pushed, and a child `git -C <temp folder> ...` obeys `GIT_DIR`, not `-C`: on 2026-10-13 the first
+run of `dev/lint_kubejs_traps.test.js` from the real pre-push hook did its `git init` and `git config`
+on the real clone (`core.bare = true`, a test identity) and git failed in every worktree of it until
+the config was put back by hand. Run by hand, or in CI, the same test was clean: only a hook sets the
+variable. Three rules, each enough alone (that test's `newRepo` is the pattern): clear the variables
+`git rev-parse --local-env-vars` prints from the child's environment; after `git init`, ask git where
+the repository is and stop unless it is inside the temp folder; never write with `git config` (pass
+identity and settings as `-c` options). And test it with `GIT_DIR` pointed at a second throwaway
+repository, never at a real one. The same variable makes `git -C <dir> rev-parse --show-prefix` answer
+an empty prefix: a tool that works out its own path inside the repository must clear it too.
+
 ## The event guard in the suites
 
 Pack scripts register through `icraft.guard`, so every load list in `suites.json` starts with
