@@ -964,6 +964,20 @@ def run_server(run_dir, consts, flags, params, boot):
             except (OSError, subprocess.TimeoutExpired) as ex:
                 boot['jcmd_error'] = str(ex)
             boot['peak_rss_mb'] = proc_status_mb(proc.pid, 'VmHWM')
+            # console commands of the caller (-ConsoleFile), AFTER every measurement: what they print is in the
+            # captured logs. Two seconds each: the pack's FIRED lines are printed once a second.
+            # (the heap histogram above stops the server for some seconds: let it catch up first, or every
+            # command lands in one tick and a selector does not find what the line before it summoned)
+            if params.get('console'):
+                wait_for(lambda: False, 20)
+            for c in params.get('console') or []:
+                if proc.poll() is not None:
+                    break
+                say('console  : ' + c)
+                send(c)
+                wait_for(lambda: False, 3)
+            if params.get('console'):
+                boot['console_commands'] = list(params['console'])
         else:
             boot['died'] = 'the JVM exited while idle after Done (exit %s)' % proc.returncode
             say('BOOT FAILED: ' + boot['died'])
@@ -1477,7 +1491,8 @@ def cmd_run(req):
     result_dir = to_wsl(req['result_dir'])
     params = {'heap': req.get('heap') or '8G', 'seed': str(req.get('seed') or '20261012'),
               'idle_seconds': int(req.get('idle_seconds') or 45), 'boot_timeout': int(req.get('boot_timeout') or 900),
-              'stop_timeout': int(req.get('stop_timeout') or 240), 'jvm_extra': req.get('jvm_extra') or []}
+              'stop_timeout': int(req.get('stop_timeout') or 240), 'jvm_extra': req.get('jvm_extra') or [],
+              'console': [c for c in (req.get('console') or []) if c and c.strip()]}
     hm = heap_mb(params['heap'])
     params['heap_min'] = req.get('heap_min') or ('%dM' % (hm // 2))
     heap_mb(params['heap_min'])

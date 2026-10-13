@@ -48,6 +48,7 @@ Other calls:
 | `boot.ps1 -ModSet -ExpectList <file>` | ... and compares it with a listing of a server's `mods` folder (one jar name per line) |
 | `boot.ps1 -Ref origin/main -WriteSnapshot` | refreshes `.minecraft\dev\registry` from that commit |
 | `boot.ps1 -List` | the saved results |
+| `boot.ps1 -Name <n> -ConsoleFile <file>` | boots this checkout and then sends the server console commands of a text file (one per line, `#` starts a comment), three seconds apart, after every measurement. What they print is in the captured logs. For a check that needs an action and no player: `icraft live`, a `summon`, a `loot spawn ... kill`. Use a name of its own: such a run is not a clean result to compare with |
 | `boot.ps1 -Setup` | first-time setup only |
 
 Options (`-Heap`, `-Seed`, `-IdleSeconds`, `-JvmArg`, `-JarCache`, `-ResultsRoot`, `-Name`, `-Keep`, ...) are listed
@@ -213,6 +214,12 @@ What a dump does not say:
 
 A known defect of the pack (the baseline's `defects` list) is reported and does not fail the gate; anything the
 baselines do not list does (exit 1).
+
+The checker's ARMED line is the exact comparison: `registrations server N/N, startup M/M` means the digest the game
+printed (`[icraft.live] ARMED <type>: ... digest ...`) is the one `dev/loud/gen_liveness.js` computed from the scripts
+of the tree under test. A registration that was not made is a red finding by name (`armed:<name>@<event>`). The
+`FIRED` lines below it say what ran in the boot; they are a report and never fail the gate. With nobody online a rig
+boot fires the registration-time events and the server tick functions, and nothing a player has to do.
 
 ### The rig against the live server
 

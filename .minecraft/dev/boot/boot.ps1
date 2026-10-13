@@ -34,6 +34,8 @@
 #   -Seed <n>          world seed (default 20261012)
 #   -IdleSeconds <n>   how long the server idles after Done before TPS and memory are read (default 45)
 #   -JvmArg <a>,<b>    extra JVM arguments, after the launcher's
+#   -ConsoleFile <f>   a text file of server console commands, one per line (# starts a comment): each is sent
+#                      after the idle measurements, two seconds apart; what they print is in the captured logs
 #   -JarCache <dir>,.. folders that hold the mod jars (default: $env:ICRAFT_BOOT_JAR_CACHE, else the
 #                      PrismLauncher instance IridescentCraft under %APPDATA%)
 #   -IndexDir <dir>    a mod index directory other than <tree>\.minecraft\server_distribution\mods\.index
@@ -67,6 +69,7 @@ param(
     [string]$Seed = '20261012',
     [int]$IdleSeconds = 45,
     [string[]]$JvmArg,
+    [string]$ConsoleFile,
     [string[]]$JarCache,
     [string]$IndexDir,
     [string]$ResultsRoot,
@@ -232,6 +235,9 @@ function Invoke-Boot {
         keep = [bool]$Keep; jvm_extra = @($JvmArg | Where-Object { $_ })
     }
     if ($HeapMin)  { $req['heap_min'] = $HeapMin }
+    if ($ConsoleFile) {
+        $req['console'] = @([System.IO.File]::ReadAllLines((Get-FullPath $ConsoleFile)) | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') })
+    }
     if ($IndexDir) { $req['index_dir'] = (Get-FullPath $IndexDir) }
     $rc = Invoke-Engine 'run' $req
     if ($rc -eq $ExitCannot -or -not (Test-Path -LiteralPath (Join-Path $dir 'result.json'))) { return $ExitCannot }
