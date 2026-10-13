@@ -52,8 +52,11 @@
     live.batch(true)
   }
 
-  // what fired in the last second before a stop would otherwise never be printed
+  // What fired in the last second before a stop would otherwise never be printed.
+  // No tick follows a stop, so from here on a FIRED line is printed at once
+  // (this handler's own line among them: it is queued when the handler returns).
   ServerEvents.unloaded(icraft.guard('zzz_icraft_live', 'ServerEvents.unloaded', function (event) {
+    live.batch(false)
     live.flush()
   }))
 
