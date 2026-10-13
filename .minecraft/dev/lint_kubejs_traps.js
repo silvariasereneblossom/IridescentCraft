@@ -4,6 +4,8 @@
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js              # all kubejs scripts
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js a.js b.js    # just these
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --exceptions # also list every recorded exception
+//   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-base=origin/main
+//                                                    # only compare the grandfathered counts with that commit
 //
 // Exit code 0 clean, 1 when anything is flagged, 2 when the lint could not run (no parser, unreadable
 // exceptions file). Blocking in the pre-push hook (install-hooks.ps1), next to lint_kubejs_rhino.js
@@ -56,6 +58,19 @@
 // A marked catch no longer counts. Fixing or marking old ones is welcome and never blocks; lower the counts with
 //   node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-down
 // (it only ever lowers them). The counts are never raised by a tool: that is the whole point.
+//
+// ...and not by hand either: --ratchet-base=<git ref> (decision sheet G20, 2026-10-13). The lint above compares the
+// scripts with the counts file OF THE SAME TREE, so a session that raised a count (or deleted the file and took a
+// new snapshot) passed its own lint. This mode compares the counts file with the one at <ref> and flags
+// RATCHET-RAISED for every file whose count went up, or that appeared with a count. It lints nothing and takes
+// about 0.1 s; the pre-push hook runs it against the commit the push is based on (the remote's tip) for every
+// push, and the `KubeJS script checks` Action against the tip before the push.
+//   --ratchet-head=<git ref>   read the counts from that commit instead of the working tree (the hook passes
+//                              the commit being pushed)
+// A script that MOVED keeps its debt: a key that is new may take over the counts of keys whose script no longer
+// exists (old path gone, new path listed, the sum not larger). Everything else that rises is a flag. A base
+// commit from before a counts file existed has nothing to compare with and passes with a note.
+// Exit 0 nothing rose, 1 a count rose, 2 could not run (unknown ref, not a git checkout, unreadable file).
 //
 // Recorded exceptions (lint_kubejs_traps.exceptions.json, next to this file) are data, each with a reason:
 //   * an entry tolerates exactly `count` sites of one rule in one file. One more site and the whole
@@ -342,10 +357,17 @@ const listExceptions = argv.includes('--exceptions');
 const ratchetDown = argv.includes('--ratchet-down');
 const ratchetSnapshot = argv.includes('--ratchet-snapshot');
 const KNOWN_FLAGS = new Set(['--exceptions', '--ratchet-down', '--ratchet-snapshot']);
-for (const a of argv) if (a.startsWith('--') && !KNOWN_FLAGS.has(a)) { console.error('[trap-lint] CANNOT RUN: unknown option ' + a); process.exit(2); }
+const VALUE_FLAGS = new Set(['--ratchet-base', '--ratchet-head']);   // written --flag=<value>
+const flagValue = (name) => { const a = argv.find(x => x.startsWith(name + '=')); return a ? a.slice(name.length + 1) : null; };
+for (const a of argv) if (a.startsWith('--') && !KNOWN_FLAGS.has(a) && !(a.includes('=') && VALUE_FLAGS.has(a.slice(0, a.indexOf('='))) && a.length > a.indexOf('=') + 1)) {
+  console.error('[trap-lint] CANNOT RUN: unknown option ' + a + (VALUE_FLAGS.has(a) ? ' (write ' + a + '=<git ref>)' : '')); process.exit(2);
+}
+const ratchetBase = flagValue('--ratchet-base'), ratchetHead = flagValue('--ratchet-head');
+if (ratchetHead !== null && ratchetBase === null) { console.error('[trap-lint] CANNOT RUN: --ratchet-head needs --ratchet-base=<git ref>'); process.exit(2); }
 let files = argv.filter(a => !a.startsWith('--'));
 const all = files.length === 0;
 if ((ratchetDown || ratchetSnapshot) && !all) { console.error('[trap-lint] CANNOT RUN: --ratchet-down / --ratchet-snapshot work on the whole pack, not on named files'); process.exit(2); }
+if (ratchetBase !== null && (!all || ratchetDown || ratchetSnapshot || listExceptions)) { console.error('[trap-lint] CANNOT RUN: --ratchet-base is a run of its own (no files, no other option but --ratchet-head)'); process.exit(2); }
 if (all) {
   const root = path.join(__dirname, '..', 'kubejs');
   const walk = (dir) => {
@@ -364,6 +386,81 @@ if (all) {
 // { files: { "<path below kubejs/>": { count, ids: [fingerprint of each grandfathered try/catch] } } }
 // The count is the rule; the ids only let the lint point at the catch that is new instead of listing them all.
 const RATCHET_FILE = path.join(__dirname, 'lint_kubejs_traps.silent_catches.json');
+
+// ---- the counts files against a git ref (--ratchet-base): no count may rise ----
+// One reader per counts file: text -> Map of '<label>' -> count, where a label is what a flag line names.
+// A second counts file (a per-rule ratchet for other rules) is one more entry in this list.
+const RATCHET_FILES = [
+  { file: RATCHET_FILE, rule: 'SILENT-CATCH', what: 'unmarked silent catches',
+    read: (text) => { const m = new Map(); for (const [k, v] of Object.entries(JSON.parse(text).files || {})) m.set(k, { key: k, count: v.count }); return m; },
+    how: 'report the error (console.error / global.icraft.core.warnOnce) or mark the catch // swallow-ok: <reason>' },
+];
+function ratchetAgainst(baseRef, headRef) {
+  const { execFileSync } = require('child_process');
+  const git = (args, okFail) => {
+    try { return execFileSync('git', ['-C', __dirname].concat(args), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 }); }
+    catch (e) { if (okFail) return null; console.error('[trap-lint] CANNOT RUN: git ' + args.join(' ') + ' failed: ' + String(e.stderr || e.message).trim()); process.exit(2); }
+  };
+  // this folder as git names it inside the repository ('.minecraft/dev/'). Asked of git, not computed from
+  // --show-toplevel: on Windows the two can be spelled differently (an 8.3 short name on one side) and
+  // path.relative then walks out of the repository.
+  const prefix = git(['rev-parse', '--show-prefix']).trim();
+  const inRepo = (relToHere) => path.posix.normalize(prefix + relToHere);
+  const resolve = (ref) => {
+    const sha = git(['rev-parse', '--verify', '--quiet', ref + '^{commit}'], true);
+    if (!sha) { console.error('[trap-lint] CANNOT RUN: ' + ref + ' is not a commit of this clone (fetch it first)'); process.exit(2); }
+    return sha.trim();
+  };
+  const base = resolve(baseRef), head = headRef === null ? null : resolve(headRef);
+  // `git show <sha>:<path>`; null when the path does not exist in that commit
+  const at = (sha, abs) => {
+    const rel = inRepo(path.basename(abs));
+    if (git(['cat-file', '-e', sha + ':' + rel], true) === null) return null;
+    return git(['show', sha + ':' + rel]);
+  };
+  const scriptExists = (key) => {
+    if (head === null) return fs.existsSync(path.join(__dirname, '..', 'kubejs', key));
+    return git(['cat-file', '-e', head + ':' + inRepo('../kubejs/' + key)], true) !== null;
+  };
+  let flags = 0, compared = 0;
+  const notes = [];
+  for (const rf of RATCHET_FILES) {
+    const name = path.basename(rf.file);
+    const baseText = at(base, rf.file);
+    const headText = head === null ? (fs.existsSync(rf.file) ? fs.readFileSync(rf.file, 'utf8') : null) : at(head, rf.file);
+    if (baseText === null) { notes.push(name + ': not in ' + baseRef + ' (older than the rule), nothing to compare'); continue; }
+    if (headText === null) {
+      flags++;
+      console.log('FLAGS ' + name + '\n  ' + name + ':0\tRATCHET-RAISED\tthe counts file exists at ' + baseRef + ' and is gone here: without it nothing is grandfathered and nothing is checked. Restore it from git.');
+      continue;
+    }
+    let b, h;
+    try { b = rf.read(baseText); h = rf.read(headText); }
+    catch (e) { console.error('[trap-lint] CANNOT RUN: ' + name + ' is unreadable (' + e.message + ')'); process.exit(2); }
+    compared++;
+    // the debt of scripts that are gone: a key that is new may take it over (a moved script)
+    let pool = 0;
+    for (const [label, v] of b) if (!h.has(label) && !scriptExists(v.key)) pool += v.count;
+    let sumB = 0, sumH = 0;
+    for (const v of b.values()) sumB += v.count;
+    for (const v of h.values()) sumH += v.count;
+    for (const [label, v] of [...h].sort((x, y) => x[0] < y[0] ? -1 : 1)) {
+      const was = b.has(label) ? b.get(label).count : 0;
+      if (!(v.count > was)) continue;
+      if (!b.has(label) && pool >= v.count) { pool -= v.count; notes.push(name + ': ' + label + ' is new with ' + v.count + ', taken over from a script that no longer exists'); continue; }
+      flags++;
+      console.log('FLAGS ' + label + '\n  ' + label + ':0\tRATCHET-RAISED\t' + rf.rule + ': the grandfathered count of this file went UP against ' + baseRef + ', ' + was + ' -> ' + v.count +
+        ' (' + name + '). The count is the debt of ' + rf.what + ' the file had when the rule started; it only goes down. Put ' + was + ' back and ' + rf.how + '.');
+    }
+    notes.push(name + ': ' + sumB + ' -> ' + sumH + ' grandfathered in ' + b.size + ' -> ' + h.size + ' file(s)');
+  }
+  for (const n of notes) console.log('  ' + n);
+  console.log('[trap-lint] ratchet against ' + baseRef + ' (' + base.slice(0, 9) + ')' + (head === null ? ', working tree' : ', ' + headRef + ' (' + head.slice(0, 9) + ')') + ': ' +
+    compared + ' counts file(s) compared, ' + flags + ' flag(s)');
+  process.exit(flags ? 1 : 0);
+}
+if (ratchetBase !== null) ratchetAgainst(ratchetBase, ratchetHead);
+
 let ratchet = null;
 if (fs.existsSync(RATCHET_FILE)) {
   try {

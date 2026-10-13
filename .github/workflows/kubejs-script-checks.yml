@@ -11,6 +11,11 @@ name: KubeJS script checks
 #           on the real parser). See .minecraft/dev/engine-tests/README.md. Suite liveness-manifest
 #           (gen_liveness.js --check, needs Node) fails when the committed liveness manifest
 #           or kubejs/config/icraft/live/expected.json is not what the scripts register today.
+#   ratchet the grandfathered counts of lint_kubejs_traps.js (so many silent catches per file) against
+#           the tip BEFORE this push: a count that went up, or a file that appeared with a count,
+#           fails. The lint alone compares the scripts with the counts file of the same tree, so a
+#           raised count passed it (decision sheet G20). And the lint's own test
+#           (lint_kubejs_traps.test.js: the ratchet cases in a temporary git repository).
 # Not here: the loot audit (it needs the whole instance) and the real-engine boot (a Forge server).
 # The bare-method-reference check has its own workflow (kubejs-method-ref-validator.yml).
 
@@ -80,6 +85,27 @@ jobs:
       - name: lint_kubejs_scope.py
         if: always()
         run: python -I .minecraft/dev/lint_kubejs_scope.py
+      - name: lint_kubejs_traps.test.js (the lint still flags what it exists to flag)
+        if: always()
+        run: node .minecraft/dev/lint_kubejs_traps.test.js
+      # The checkout holds one commit; the base is fetched by its hash (a pull request: the target branch).
+      - name: Grandfathered counts against the tip before this push
+        if: always()
+        env:
+          BEFORE: ${{ github.event.before }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ -n "$BASE_REF" ]; then
+            git fetch --no-tags --depth=1 origin "$BASE_REF"
+            BASE="$(git rev-parse FETCH_HEAD)"
+          elif [ -n "$BEFORE" ] && [ "$BEFORE" != "0000000000000000000000000000000000000000" ]; then
+            git fetch --no-tags --depth=1 origin "$BEFORE"
+            BASE="$BEFORE"
+          else
+            echo "no base commit for this event (a manual run): nothing to compare with"
+            exit 0
+          fi
+          node --expose-internals .minecraft/dev/lint_kubejs_traps.js --ratchet-base="$BASE"
 
   engine:
     name: Engine test suite

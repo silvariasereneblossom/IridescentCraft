@@ -56,6 +56,8 @@ $hookContent = @'
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
 #                                lint_kubejs_scope.py; only when a pushed commit
 #                                touches a kubejs script (or one of the lints)
+#   +  lint_kubejs_traps.js --ratchet-base - the grandfathered counts of the commit being
+#                                pushed against the commit it is based on (its own block)
 #   3b. engine test suite     - dev/engine-tests/run.py fast + the method-ref
 #                                validator; only when a script, a test or a
 #                                pinned engine jar changed (blocking)
@@ -317,6 +319,66 @@ if [ $KJS_RUN -eq 1 ] && [ -f "$DEV/lint_kubejs_traps.js" ]; then
         echo "[pre-push] KubeJS script lints FAILED (or could not run). Each flag names the"
         echo "  file, the line and the rule; the header of the lint explains the rule."
         echo "  Fix the script and re-push. Bypass: git push --no-verify"
+        exit 1
+    fi
+fi
+
+# --- Lint ratchets against the base commit (blocking; one self-contained block) ---
+# Step 3 holds the scripts to the grandfathered counts OF THE SAME TREE
+# (lint_kubejs_traps.silent_catches.json: so many silent catches per file and no more).
+# A session that raised a count, or deleted the file and took a new snapshot, passed its own
+# lint (decision sheet G20). This compares the counts file of the commit being pushed with
+# the one of the commit the push is based on (the remote's tip): a count that went up, or a
+# file that appeared with a count, blocks. A count that went down, and a script that moved
+# with its count, pass. Nothing is linted here; about 0.3 s.
+# Runs when a pushed commit touches the lint, its counts files, its test or its fixtures
+# (a push that changes none of them cannot change a count); the lint's own test then runs
+# too (about 10 s). Self-contained: its own variables (RB_*), nothing but PUSHED and DEV.
+RB_LINT="$DEV/lint_kubejs_traps.js"
+if [ -f "$RB_LINT" ] && grep -q -- '--ratchet-base' "$RB_LINT"; then
+    RB_ZERO=0000000000000000000000000000000000000000
+    RB_FAIL=0
+    RB_TEST=0
+    if [ -z "$PUSHED" ]; then
+        # run by hand: the working tree against origin/main
+        RB_TEST=1
+        if command -v node >/dev/null 2>&1; then
+            node --expose-internals "$RB_LINT" --ratchet-base=origin/main < /dev/null || RB_FAIL=1
+        else
+            echo "[pre-push] node not found: the ratchet comparison could NOT run"; RB_FAIL=1
+        fi
+    fi
+    while read -r _rb_lref rb_lsha _rb_rref rb_rsha; do
+        [ -z "$rb_lsha" ] && continue
+        [ "$rb_lsha" = "$RB_ZERO" ] && continue
+        if [ "$rb_rsha" != "$RB_ZERO" ] && git cat-file -e "$rb_rsha^{commit}" 2>/dev/null; then
+            rb_base="$rb_rsha"
+        else
+            rb_base="$(git merge-base "$rb_lsha" origin/main 2>/dev/null)"
+        fi
+        [ -z "$rb_base" ] && continue    # no common history with main: nothing to compare with
+        if git diff --name-only "$rb_base" "$rb_lsha" 2>/dev/null \
+            | grep -Eq '^\.minecraft/dev/(lint_kubejs_traps|lint-fixtures/)'; then
+            RB_TEST=1
+            if command -v node >/dev/null 2>&1; then
+                node --expose-internals "$RB_LINT" --ratchet-base="$rb_base" --ratchet-head="$rb_lsha" < /dev/null || RB_FAIL=1
+            else
+                echo "[pre-push] node not found: the ratchet comparison could NOT run"; RB_FAIL=1
+            fi
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $RB_TEST -eq 1 ] && [ $RB_FAIL -eq 0 ] && [ -f "$DEV/lint_kubejs_traps.test.js" ]; then
+        echo "[pre-push] the trap lint changed: running its own test"
+        node "$DEV/lint_kubejs_traps.test.js" < /dev/null | grep -Ev '^ok ' || true
+        [ "${PIPESTATUS[0]}" -eq 0 ] || RB_FAIL=1
+    fi
+    if [ $RB_FAIL -ne 0 ]; then
+        echo ""
+        echo "[pre-push] the lint ratchet FAILED: a grandfathered count rose against the base commit, or"
+        echo "  the lint's own test failed (lines above). Counts only go down: report the error or mark"
+        echo "  the catch // swallow-ok: <reason>, and put the count back. Bypass: git push --no-verify"
         exit 1
     fi
 fi
