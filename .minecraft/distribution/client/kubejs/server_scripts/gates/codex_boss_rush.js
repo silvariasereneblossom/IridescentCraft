@@ -92,7 +92,8 @@ var BOSS_RUSH_TIERS = {
 //     Harbinger/Leviathan → T3, etc. (catalog's first/lower tier number).
 //   • Multi-phase bosses count ONCE. Phase aliases (e.g. cardinal_sins:
 //     luciferphase_1) map to the canonical final entity via BOSS_PHASE_ALIASES
-//     below, so killing any phase credits the one roster slot.
+//     below (`phaseOf` in the boss registry), so killing any phase credits the
+//     one roster slot.
 //   • Cardinal Sins folded into T3 (7 sins + Drakara) and T3-roster Lucifer per
 //     the 2026-05-31 ladder — boss-catalog.md predates that integration.
 //
@@ -132,135 +133,31 @@ var BOSS_RUSH_TIERS = {
 // (it was listed under `crazybossfights:`, which registers nothing).
 // Before adding an id, check that it is a registered entity type.
 
-var BOSS_RUSH_ROSTERS = {
-
-  // ===== T1 — Overworld (entry tier) — 80% to advance =====
-  1: [
-    // Mutant Monsters — Skull-Spirit / random T1 variants.
-    'mutantmonsters:mutant_zombie',
-    'mutantmonsters:mutant_skeleton',
-    'mutantmonsters:mutant_creeper',
-    // Terramity — confirmed-T1 structure bosses (Virtue + Circe relocated to T4;
-    // Ultra Sniffer / Gundalf / Trial Guardian are T2 below).
-    'terramity:gob',
-    'terramity:enchanter_merlin',
-    'terramity:super_sniffer',
-    // Mowzie's Mobs — all 4 boss-tag bosses + Naga mini-boss generate in OVERWORLD
-    // structures/biomes (jar-verified: frostmaw=#forge:is_snowy, wrought_chamber=
-    // underground OW, umvuthi=is_savanna, sculptor=#forge:is_peak, naga=is_beach/
-    // is_mountain). Location law → T1.
-    'mowziesmobs:frostmaw',
-    'mowziesmobs:ferrous_wroughtnaut',
-    'mowziesmobs:umvuthi',
-    'mowziesmobs:sculptor',
-    'mowziesmobs:naga',
-  ],
-
-  // ===== T2 — First-dimensional (Twilight / Aether / Blue Skies) — 90% =====
-  2: [
-    // Twilight Forest (8 — includes alpha_yeti, which the curated-20 omits).
-    'twilightforest:naga',
-    'twilightforest:lich',
-    'twilightforest:hydra',
-    'twilightforest:ur_ghast',          // catalog "T2-T3" → located T2
-    'twilightforest:knight_phantom',
-    'twilightforest:snow_queen',
-    'twilightforest:minoshroom',
-    'twilightforest:alpha_yeti',
-    // Blue Skies (4).
-    'blue_skies:summoner',
-    'blue_skies:alchemist',
-    'blue_skies:starlit_crusher',
-    'blue_skies:arachnarch',
-    // Aether (3).
-    'aether:slider',
-    'aether:valkyrie_queen',
-    'aether:sun_spirit',
-    // Meet Your Fight — T2 summon bosses (2).
-    'meetyourfight:bellringer',
-    'meetyourfight:swampjaw',
-    // Mutant Monsters — Mutant Enderman (T2 summon context; T4 natural is the
-    // same entity ID — deduped to ONE roster slot, placed at T2 per catalog).
-    'mutantmonsters:mutant_enderman',
-    // Majestic Menaces — the entity is registered as majestic_menaces:teikoku_senshi
-    // (the catalog footnote's modid `crazybossfights` registers nothing).
-    'majestic_menaces:teikoku_senshi',  // catalog "T2-T3" → located T2
-    // Ars Nouveau — Wilden Chimera ritual boss.
-    'ars_nouveau:wilden_boss',          // catalog "T2-T3" → located T2
-  ],
-
-  // ===== T3 — Nether / Undergarden / Deeper Darker — 100% (includes Lucifer) =====
-  3: [
-    // L_Ender's Cataclysm (9).
-    'cataclysm:netherite_monstrosity',  // the current T3 entity (NOT the legacy "Old")
-    'cataclysm:ignis',
-    'cataclysm:ignited_revenant',       // catalog T3 (scripted post-Ignis)
-    'cataclysm:maledictus',
-    'cataclysm:the_harbinger',          // catalog "T3-T4" → located T3
-    'cataclysm:the_leviathan',          // catalog "T3-T4" → located T3
-    'cataclysm:the_baby_leviathan',
-    'cataclysm:coralssus',
-    'cataclysm:scylla',
-    // Iron's Spellbooks (8 — bosses + boss-tier mobs the catalog assigns T3).
-    'irons_spellbooks:dead_king',
-    'irons_spellbooks:fire_boss',
-    'irons_spellbooks:citadel_keeper',
-    'irons_spellbooks:archevoker',
-    'irons_spellbooks:cryomancer',      // catalog "T2-T3" → located T3 (mob)
-    'irons_spellbooks:pyromancer',      // catalog "T2-T3" → located T3 (mob)
-    'irons_spellbooks:necromancer',
-    'irons_spellbooks:priest',
-    // Undergarden (3).
-    'undergarden:forgotten_guardian',
-    'undergarden:forgotten',
-    'undergarden:rotbeast',
-    // Deeper Darker (2).
-    'deeperdarker:stalker',
-    'deeperdarker:shattered',
-    // Stalwart Dungeons (7).
-    'stalwart_dungeons:awful_ghast',
-    'stalwart_dungeons:nether_keeper',
-    'stalwart_dungeons:shelterer',
-    'stalwart_dungeons:shelterer_without_armor',
-    'stalwart_dungeons:incomplete_wither',
-    'stalwart_dungeons:reinforced_blaze',
-    'stalwart_dungeons:giddy_blaze',
-    // Meet Your Fight — T3 (2).
-    'meetyourfight:dame_fortuna',
-    'meetyourfight:rosalyne',
-    // Vanilla (Nether).
-    'minecraft:wither',
-    // Alex's Mobs — Warped Mosco.
-    'alexsmobs:warped_mosco',
-    // Terramity — Gatmancer.
-    'terramity:gatmancer',
-    // ----- Cardinal Sins ladder (folded in; boss-catalog.md predates it) -----
-    // The 7 sins + Drakara are T3 (relocated to Nether/Undergarden); Lucifer is
-    // the T3 capstone whose 100% clear IS the combat T3→T4 route (framework §5).
-    'cardinal_sins:linneausofsloth',
-    'cardinal_sins:sinofgluttony',
-    'cardinal_sins:sinofgreed',
-    'cardinal_sins:sinofenvy',
-    'cardinal_sins:sinoflust',
-    'cardinal_sins:sinofpride',
-    'cardinal_sins:sinofwrath',
-    'cardinal_sins:drakara',
-    'cardinal_sins:lucifer',            // ← Lucifer: T3 100%-clear gate to T4
-  ],
-}
+// The rosters are read from the boss registry (kubejs/config/icraft/registry/
+// bosses.json, through icraft.bosses): an entry's `rush` is the roster (tier)
+// it counts for. Until 2026-10-13 the three lists stood here, 11 / 20 / 43 ids.
+// To add a boss to a roster: its registry entry. Mind that the roster SIZE is
+// the denominator of the percentage: the sizes above are a ruling.
+var BOSS_RUSH_ROSTERS = (function () {
+  var out = { 1: [], 2: [], 3: [] }
+  var ids = icraft.bosses.ids('rush')
+  for (var i = 0; i < ids.length; i++) out[icraft.bosses.get(ids[i], 'rush')].push(ids[i])
+  return out
+})()
 
 // =============================================================================
 // PHASE / VARIANT ALIASES
 // Killing one of these intermediate-phase or variant entity IDs credits the
 // canonical roster entity (the value). Keeps multi-phase bosses = ONE slot.
 // =============================================================================
-var BOSS_PHASE_ALIASES = {
-  // Cardinal Sins multi-phase finales (jar-verified phase_1 → True/final entity).
-  'cardinal_sins:luciferphase_1':   'cardinal_sins:lucifer',
-  'cardinal_sins:sinofenvyphase_1': 'cardinal_sins:sinofenvy',
-  'cardinal_sins:sinofpridephase_1':'cardinal_sins:sinofpride',
-  'cardinal_sins:sinofwrathphase_1':'cardinal_sins:sinofwrath',
-}
+// = `phaseOf` in the boss registry: the entry of the phase entity names the
+// boss a kill is credited to (four Cardinal Sins phase_1 entities today).
+var BOSS_PHASE_ALIASES = (function () {
+  var out = {}
+  var ids = icraft.bosses.ids('phase')
+  for (var i = 0; i < ids.length; i++) out[ids[i]] = icraft.bosses.get(ids[i], 'phase')
+  return out
+})()
 
 // Resolve an entity ID to its canonical roster ID (apply phase aliases).
 function brCanonical(entityId) {
