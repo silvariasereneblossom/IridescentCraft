@@ -29,6 +29,13 @@
 #            judgeable", reported NOT RUN and never red.
 #   RECORD   Nothing is written without -Write; the findings log rolls above 1 MiB
 #            and carries what is open; every line of it is valid JSON.
+#   LIVENESS The game's own `[icraft.live]` lines, planted on the healthy boot (which is
+#            from before they existed): the ARMED registrations are exact (a missing
+#            one is named with its event, an unlisted one is AMBER, a digest that is
+#            not the manifest's is RED), a boot from before the lines is not judged,
+#            and FIRED is never a finding: nothing fired at all is a clean exit 0. Over
+#            boots written next to the log as rotated files: what never fired in the
+#            boots with a player online.
 #
 #   powershell -File .minecraft\dev\loud\replay-test.ps1            # all three parts
 #   pwsh       -File .minecraft\dev\loud\replay-test.ps1 -Newer     # + boots mirrored after the anchor
@@ -537,11 +544,142 @@ $last = @([System.IO.File]::ReadAllLines($fl))[-1]
 Assert-That ($r4.Exit -eq 0 -and $st['worst'] -eq 'GREEN' -and $st['open'] -eq '0' -and $last -match '"state":"closed"' -and $last -match '"id":"armed:loot/twilight_boss_drops\.js"') 'when the line is back the finding closes with a later line of the same id; status GREEN, open=0'
 
 # =============================================================================
+# PART 4 - LIVENESS (ARMED exact from the generated manifest; FIRED is never a finding)
+# =============================================================================
+# The healthy anchor boot is from before the game printed [icraft.live] lines, so the cases plant them: the tree of
+# the boot is given zzz_icraft_live.js (in expected_state.json and as a `Loaded script` line of both logs), and the
+# logs get the lines 00_icraft_guard.js prints. Ids, counts and digests are read from the manifest under test, so
+# the cases hold whatever the scripts register today.
+Write-Host ""
+Write-Host "== PART 4: liveness lines planted on the healthy boot ==" -ForegroundColor Cyan
+$mfPath = $Manifest
+if (-not $mfPath) { $mfPath = Join-Path $ScriptDir 'liveness_manifest.json' }
+$mfLive = [System.IO.File]::ReadAllText($mfPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+if ($null -eq $mfLive.PSObject.Properties['armed']) {
+    Write-Host '  note  the manifest under test has no generated `armed` part (a manifest from before 2026-10-13): PART 4 skipped' -ForegroundColor DarkGray
+} else {
+    $liveScript = [string]$mfLive.generated.live_script
+    $srvN = [int]$mfLive.armed.server.count;  $srvD = [string]$mfLive.armed.server.digest
+    $stuN = [int]$mfLive.armed.startup.count; $stuD = [string]$mfLive.armed.startup.digest
+    $regs = @($mfLive.armed.server.registrations)
+    $idA = [string]$regs[0].id; $idB = [string]$regs[1].id; $scriptA = [string]$regs[0].script
+    $bootIds = @($mfLive.armed.server.at_boot)
+    $bootN = $bootIds.Count + @($mfLive.armed.startup.at_boot).Count
+    $playId = [string](@($regs | Where-Object { $bootIds -notcontains [string]$_.id -and [string]$_.id -ne $idA -and [string]$_.id -ne $idB })[-1].id)      # one that needs a player
+    $feats = @($mfLive.fired.server.features)
+    $featA = [string]$feats[0].name
+    $knownN = $srvN + $stuN + $feats.Count + @($mfLive.fired.startup.features).Count
+    $sectA = @($mfLive.fired.server.sections)[0]
+    function Get-LiveName { param([string]$Id) return $Id.Substring(0, $Id.LastIndexOf('@')) }
+    function Get-LiveGroup { param([string]$Id) return $Id.Substring($Id.LastIndexOf('@') + 1) }
+    function New-ArmedLine {
+        param([string]$Type, [int]$N, [string]$D, [string]$Tail = '0 not armed, 0 unlisted')
+        return ('[00:00:00] [INFO] 00_icraft_guard.js#144: [icraft.live] ARMED ' + $Type + ': ' + $N + ' registrations (' + $N + ' handlers on 9 events, 0 tick functions, 0 hurt handlers), digest ' + $D + '; against the expected list: ' + $Tail)
+    }
+    function New-LiveLine { param([string]$Text, [string]$Level = 'INFO') $bang = ''; if ($Level -eq 'ERROR') { $bang = '! ' }; return ('[00:00:00] [' + $Level + '] ' + $bang + '00_icraft_guard.js#144: [icraft.live] ' + $Text) }
+    # the healthy boot as a boot of a tree WITH the liveness script. $Server / $Startup: the lines each log gets (default: its healthy summary line)
+    function New-LiveCase {
+        param([string]$Name, [string[]]$Server, [string[]]$Startup, [switch]$NoServerSummary)
+        $logs = New-Case $Name $null $null
+        $es = Join-Path (Split-Path -Parent $logs) 'expected_state.json'
+        $raw = [System.IO.File]::ReadAllText($es)
+        $rx = New-Object regex '"kubejs/server_scripts/[^"]+\.js"\s*:\s*\{'
+        $add = '"kubejs/server_scripts/' + $liveScript + '": {}, "kubejs/startup_scripts/' + $liveScript + '": {}, '
+        $m = $rx.Match($raw)
+        [System.IO.File]::WriteAllText($es, $raw.Substring(0, $m.Index) + $add + $raw.Substring($m.Index), $Utf8)
+        foreach ($pair in @(@('server', $Server, $srvN, $srvD), @('startup', $Startup, $stuN, $stuD))) {
+            $type = $pair[0]
+            $p = Join-Path (Join-Path $logs 'kubejs') ($type + '.log')
+            $out = New-Object System.Collections.Generic.List[string]
+            foreach ($l in [System.IO.File]::ReadAllLines($p, [System.Text.Encoding]::UTF8)) {
+                if ($l -match ('Loaded \d+/\d+ KubeJS ' + $type + ' scripts')) {
+                    if (-not ($type -eq 'server' -and $NoServerSummary)) {
+                        if ($type -eq 'server' -and $Server -and @($Server | Where-Object { $_ -match '\] ARMED server:' }).Count -gt 0) { } else { $out.Add((New-ArmedLine $type $pair[2] $pair[3])) }
+                    }
+                    foreach ($x in @($pair[1])) { if ($x) { $out.Add($x) } }
+                    $out.Add('[00:00:00] [INFO] Loaded script ' + $type + '_scripts:' + $liveScript + ' in 0.0 s')
+                }
+                $out.Add($l)
+            }
+            [System.IO.File]::WriteAllLines($p, $out, $Utf8)
+        }
+        return $logs
+    }
+    $regOk = [regex]::Escape("registrations server $srvN/$srvN, startup $stuN/$stuN")
+
+    $logsL = New-LiveCase 'live-clean' @() @()
+    Test-Stale 'liveness lines with the manifest''s digests, nothing fired at all -> clean: FIRED is never a finding' $logsL @() 0 @() @() @(('ARMED   : \d+/\d+ lines present; ' + $regOk),
+        'FIRED   : 0 of \d+ registrations fired in this boot; features 0 of \d+; sections 0 of \d+ ran; a player was online: no',
+        ('AT BOOT : ' + $bootN + ' of the ' + $bootN + ' registrations that run on every boot did NOT fire'),
+        'HISTORY : 1 boot\(s\) with liveness lines, 0 with a player online .*nothing can be said about what never fires in play')
+    $quietL = Invoke-Checker @('-LogsDir', $logsL, '-Quiet')
+    Assert-That ($quietL.Exit -eq 0 -and $quietL.Out.Count -eq 1 -and $quietL.Out[0] -match 'GREEN - nothing found') '   -Quiet: one GREEN line, the FIRED report is not printed'
+    $lvFind = Join-Path $WorkDir 'live-findings.jsonl'; $lvStat = Join-Path $WorkDir 'live-status'
+    $lvW = Invoke-Checker @('-LogsDir', $logsL, '-Write', '-FindingsPath', $lvFind, '-StatusPath', $lvStat, '-Quiet')
+    $lvS = Read-Status $lvStat
+    Assert-That ($lvW.Exit -eq 0 -and $lvS['worst'] -eq 'GREEN' -and $lvS['open'] -eq '0' -and -not (Test-Path -LiteralPath $lvFind)) '   -Write: nothing of it is a finding (worst=GREEN, open=0, no findings log)'
+
+    Test-Stale 'a boot from before the liveness lines (the healthy boot as it is) -> the registrations are not judged, and it says so' (New-Case 'live-old' $null $null) @() 0 @() @() @(('ARMED registrations \(server\) not judged: the tree of this boot has no server_scripts/' + [regex]::Escape($liveScript)), 'ARMED   : \d+/\d+ lines present$')
+
+    Test-Case 'the tree has the liveness script and the server log has no ARMED line' (New-LiveCase 'live-nosummary' @() @() -NoServerSummary) @() 1 @('MISSING armed:summary:server')
+
+    $oneMissing = @((New-ArmedLine 'server' ($srvN - 1) '0123456789abcdef' '1 not armed, 0 unlisted'), (New-LiveLine ('NOT ARMED x1: ' + $idA) 'ERROR'))
+    $logsM = New-LiveCase 'live-notarmed' $oneMissing @()
+    Test-Case ('one registration was not made (' + $idA + ') -> exactly that one, by name and event') $logsM @() 1 @("MISSING armed:$idA")
+    $runM = Invoke-Checker @('-LogsDir', $logsM)
+    Assert-That ((@($runM.Out | Where-Object { $_ -match ('NOT ARMED \(' + [regex]::Escape($scriptA) + '\)') }).Count -eq 1) -and (@($runM.Out | Where-Object { $_ -match ('registrations server ' + ($srvN - 1) + '/' + $srvN) }).Count -eq 1) -and (@($runM.Out | Where-Object { $_ -match 'kjs-error' }).Count -eq 0)) '   the finding names its script, the ARMED line counts one short, and the ERROR line is not reported a second time'
+
+    $three = @((New-ArmedLine 'server' ($srvN - 1) 'fedcba9876543210' '2 not armed, 1 unlisted'), (New-LiveLine ('NOT ARMED x2: ' + $idA + ', ' + $idB) 'ERROR'), (New-LiveLine 'UNLISTED x1: zz_left_behind@ServerEvents.loaded'))
+    Test-Case 'two not made, and one made that the manifest does not have' (New-LiveCase 'live-three' $three @()) @() 1 @("MISSING armed:$idA", "MISSING armed:$idB", 'NEW unlisted:zz_left_behind@ServerEvents.loaded')
+
+    Test-Case 'the digest is not the manifest''s and the game named nothing' (New-LiveCase 'live-digest' @((New-ArmedLine 'server' $srvN 'aaaaaaaaaaaaaaaa')) @()) @() 1 @('MISSING armed:set:server')
+
+    $lateLines = @((New-ArmedLine 'server' ($srvN - 1) 'bbbbbbbbbbbbbbbb' '1 not armed, 0 unlisted'), (New-LiveLine ('NOT ARMED x1: ' + $idA) 'ERROR'), (New-LiveLine ('ARMED late x1: ' + $idA)))
+    Test-Stale 'not made at load, made later (ARMED late) -> not a missing registration; a note says the manifest counts it at load' (New-LiveCase 'live-late' $lateLines @()) @() 0 @() @() @('made after the scripts loaded \(ARMED late\)')
+
+    $notDone = New-LiveCase 'live-notdone' $oneMissing @()
+    $ndLatest = Join-Path $notDone 'latest.log'
+    [System.IO.File]::WriteAllLines($ndLatest, @([System.IO.File]::ReadAllLines($ndLatest, [System.Text.Encoding]::UTF8) | Where-Object { $_ -notmatch $rxDone }), $Utf8)
+    Test-Case 'a registration not made, in a boot that did not finish -> not judged (the boot is the finding)' $notDone @() 2 @('CHECK-FAILED check:boot-incomplete')
+
+    $firedLines = @((New-LiveLine ('FIRED ' + (Get-LiveGroup $idA) + ' x1: ' + (Get-LiveName $idA))), (New-LiveLine ('FIRED ' + (Get-LiveGroup $playId) + ' x1: ' + (Get-LiveName $playId))),
+        (New-LiveLine ('FIRED feature x1: ' + $featA)), (New-LiveLine 'FIRED Test.unknown x1: not/in/the/manifest'), (New-LiveLine 'PLAYER first login since the server scripts loaded'))
+    $logsF = New-LiveCase 'live-fired' $firedLines @()
+    Test-Stale 'two registrations and a feature fired, a player was on -> reported, clean; a name the manifest does not have is not counted' $logsF @() 0 @() @() @(
+        ('FIRED   : 2 of ' + ($srvN + $stuN) + ' registrations fired in this boot; features 1 of \d+ \(' + [regex]::Escape($featA) + '\); sections \d+ of \d+ ran; a player was online: yes'),
+        'HISTORY : 1 boot\(s\) with liveness lines, 1 with a player online',
+        ('NEVER   : ' + ($knownN - 3) + ' of ' + $knownN + ' names never fired with a player on in the last 1 such boot'))
+
+    if ($null -ne $sectA) {
+        $ofName = Get-LiveName ([string]$sectA.of); $ofGroup = Get-LiveGroup ([string]$sectA.of)
+        $secLines = @((New-LiveLine ('FIRED ' + $ofGroup + ' x1: ' + $ofName)), (New-LiveLine ('NOT RUN section (1 of 3 in ' + [string]$sectA.of + ' did not finish although the handler did) x1: ' + [string]$sectA.name)))
+        Test-Stale 'a handler finished and a section of it did not -> reported (NOT RUN), clean' (New-LiveCase 'live-section' $secLines @()) @() 0 @() @() @('NOT RUN : 1 section\(s\) did not finish although their handler did', [regex]::Escape([string]$sectA.name))
+    }
+
+    # across boots: this boot had nobody on; the boot before it had a player (and fired $idA and a feature); the one
+    # before that had nobody on (and fired $idB). What fired only with nobody on has still never fired in play.
+    $latestLive = { param([string]$Text) return ('[' + $day0 + ' 09:00:00.000] [Server thread/INFO] [KubeJS Server/]: 00_icraft_guard.js#144: [icraft.live] ' + $Text) }
+    $armedLatest = ('ARMED server: ' + $srvN + ' registrations (' + $srvN + ' handlers on 9 events, 0 tick functions, 0 hurt handlers), digest ' + $srvD + '; against the expected list: 0 not armed, 0 unlisted')
+    $withPlayer = { param($l) $l; if ($l -match $rxDone) { (& $latestLive $armedLatest); (& $latestLive ('FIRED ' + (Get-LiveGroup $idA) + ' x1: ' + (Get-LiveName $idA))); (& $latestLive ('FIRED feature x1: ' + $featA)); (& $latestLive 'PLAYER first login since the server scripts loaded') } }
+    $nobodyOn   = { param($l) $l; if ($l -match $rxDone) { (& $latestLive $armedLatest); (& $latestLive ('FIRED ' + (Get-LiveGroup $idB) + ' x1: ' + (Get-LiveName $idB))) } }
+    $logsH = New-LiveCase 'live-history' @((New-LiveLine ('FIRED ' + (Get-LiveGroup $idB) + ' x1: ' + (Get-LiveName $idB)))) @()
+    New-RolledLog $logsH -1 $withPlayer
+    New-RolledLog $logsH -2 $nobodyOn
+    New-RolledLog $logsH -3 $null
+    Test-Stale 'three boots with liveness lines, a player in one of them -> what never fired WITH A PLAYER ON, and a boot from before the lines is not counted' $logsH @() 0 @() @() @(
+        'HISTORY : 3 boot\(s\) with liveness lines, 1 with a player online \(3 rotated log\(s\) read\)',
+        ('NEVER   : ' + ($knownN - 2) + ' of ' + $knownN + ' names never fired with a player on in the last 1 such boot\(s\) \(since ' + (Get-RolledClock -1)))
+    Test-Stale '   -FiredBoots 0: this boot alone, no rotated log is opened' $logsH @('-FiredBoots', '0') 0 @() @() @('HISTORY : 1 boot\(s\) with liveness lines, 0 with a player online \(earlier boots not read \(-FiredBoots 0\)\)')
+    $hOut = Invoke-Checker @('-LogsDir', $logsH)
+    Assert-That (@($hOut.Out | Where-Object { $_ -match 'Scanner|joined the game|logged in with entity id' }).Count -eq 0) '   the report prints names of registrations only: no line of a log, no player'
+}
+
+# =============================================================================
 Write-Host ""
 if (-not $Keep) { Remove-Item -LiteralPath $WorkDir -Recurse -Force -ErrorAction SilentlyContinue } else { Write-Host "[replay-test] kept $WorkDir" -ForegroundColor DarkGray }
 if ($fail.Count -gt 0) {
     Write-Host ("[replay-test] FAIL - {0} assertion(s) failed" -f $fail.Count) -ForegroundColor Red
     exit 1
 }
-Write-Host ("[replay-test] PASS - {0} RED / {1} GREEN over the {2} measured boots, planted defects and record checks all as expected (PowerShell {3})" -f $red.Count, $green.Count, $measured.Count, $PSVersionTable.PSVersion) -ForegroundColor Green
+Write-Host ("[replay-test] PASS - {0} RED / {1} GREEN over the {2} measured boots, planted defects, record checks and liveness cases all as expected (PowerShell {3})" -f $red.Count, $green.Count, $measured.Count, $PSVersionTable.PSVersion) -ForegroundColor Green
 exit 0
