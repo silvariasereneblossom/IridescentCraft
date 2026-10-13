@@ -55,7 +55,7 @@ Top-level keys of the output
     forge_loot_modifiers          {glm id: {pack, type, active, loot_table_ids, condition_types, table_keys,
                                    strings, sources?}}    (Forge global loot modifiers shipped as data)
     entities / items              {id: [evidence]}  entities: lang, loot_table, spawn_egg
-                                  items: tsv, model, lang (item.* key), lang_block (block.* key), kubejs
+                                  items: registry (dev/registry/items.txt), model, lang (item.* key), lang_block (block.* key), kubejs
     item_tags, item_tag_members (every tag, in full), item_tags_broken,
     item_tags_unknown_required_members
     paxi_drift                    zip vs datapack_sources/<name> comparison
@@ -1329,22 +1329,20 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
         ns, _, p = tid.partition(':')
         if p.startswith('entities/') and '/' not in p[9:]:
             entities[ns + ':' + p[9:]].add('loot_table')
-    tsv = os.path.join(repo, 'TesterLogs', 'Item Audit', 'all_items.tsv')
-    tsv_n = 0
+    # The registered items of the last full-pack boot (dev/registry/items.txt, one id per line; its
+    # SOURCE.json names the commit). Until 2026-10-13 this read TesterLogs/Item Audit/all_items.tsv, a
+    # hand export of 2026-04-27 with no row for any mod added since and rows for mods removed since.
+    reg = os.path.join(repo, 'dev', 'registry', 'items.txt')
+    reg_n = 0
     try:
-        with open(tsv, 'r', encoding='utf-8', errors='replace') as f:
-            first = True
+        with open(reg, 'r', encoding='utf-8', errors='replace') as f:
             for line in f:
-                if first:
-                    first = False
-                    if line.startswith('namespace'):
-                        continue
-                c = line.rstrip('\n').split('\t')
-                if len(c) >= 2 and c[0] and c[1]:
-                    items[c[0] + ':' + c[1]].add('tsv')
-                    tsv_n += 1
+                i = line.strip()
+                if i and not i.startswith('#') and RX_RL.match(i):
+                    items[i].add('registry')
+                    reg_n += 1
     except OSError as e:
-        notes.add('items', 'item TSV not readable: %s' % e)
+        notes.add('items', 'registry snapshot items.txt not readable (dev/registry; refresh with boot.ps1 -WriteSnapshot): %s' % e)
     for i in kubejs_registered_items(repo, notes):
         items[i].add('kubejs')
 
@@ -1610,7 +1608,7 @@ def build_truth(args, fams, tasks, kubejs_units, t_scan, cache_hits, notes):
         'table_roots': dict(total=len(table_roots), **root_stats),
         'biomes_known': len(known_biomes), 'biomes_with_dimension': len(biome_dims),
         'biomes_unknown_dimension': len(biome_unknown),
-        'entities': len(entities), 'items': len(items), 'items_in_tsv': tsv_n, 'item_tags': len(item_tags),
+        'entities': len(entities), 'items': len(items), 'items_in_registry': reg_n, 'item_tags': len(item_tags),
     }
 
     truth = {
@@ -1782,9 +1780,9 @@ def main():
           'nbt tables not shipped=%d' % (s['template_pools'], s['worldgen_structures'],
                                          s['worldgen_structures_in_no_set'], s['structure_sets'],
                                          s['processor_loot'], s['nbt_tables_not_shipped']['distinct']))
-    print('biomes: known=%d with dimension=%d unknown=%d | entities=%d items=%d (tsv %d) item_tags=%d'
+    print('biomes: known=%d with dimension=%d unknown=%d | entities=%d items=%d (registry snapshot %d) item_tags=%d'
           % (s['biomes_known'], s['biomes_with_dimension'], s['biomes_unknown_dimension'], s['entities'],
-             s['items'], s['items_in_tsv'], s['item_tags']))
+             s['items'], s['items_in_registry'], s['item_tags']))
     print('notes: %s' % ', '.join('%s=%d' % (k, v['count']) for k, v in truth['notes'].items()))
     print('elapsed: %.1fs (archive scan %.1fs, merge+write %.1fs)' % (el, t_scan, el - t_scan))
     return 0

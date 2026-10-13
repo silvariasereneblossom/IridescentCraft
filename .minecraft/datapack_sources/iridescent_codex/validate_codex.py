@@ -36,8 +36,11 @@ book `landing_text`)
   - Patchouli's built-in macro "/$" -> "$()" mangles any "/" typed right before "$("
   - an advancement gate (icraft:*) that doesn't exist locks the entry forever
   - an icon/spotlight item that isn't registered renders blank (checked against
-    the owning jar's bytecode for our namespaces -- the Item Audit snapshot
-    still lists items we removed)
+    the owning jar's bytecode for our namespaces, so a jar that has not been
+    booted yet is still judged by what it holds; every other namespace against
+    the registry snapshot of the last full-pack boot, .minecraft/dev/registry/
+    items.txt. Until 2026-10-13 that was the hand export of 2026-04-27,
+    TesterLogs/Item Audit/all_items.tsv, which had no row for a mod added since)
 
 COLOURS (Book.<init> and its users, read 2026-10-11)
   - text_color, header_color, nameplate_color, link_color, link_hover_color,
@@ -306,9 +309,12 @@ def load_items(mc):
     OUR namespaces (a jar committed in .minecraft/mods ships assets/<ns>/ or
     data/<ns>/, or KubeJS registers into <ns>): the item must be a KubeJS
     create('...') ID or its path must be a string constant in the owning jar's
-    bytecode -- never trust the Item Audit snapshot here, it outlives removed
-    items (e.g. the 15 per-tier modular spell books). Third-party namespaces:
-    the Item Audit snapshot (all_items.tsv; best effort, can lag)."""
+    bytecode -- not the registry snapshot: this validator runs on a freshly
+    built jar BEFORE it is deployed, so the jar in mods/ is newer than any
+    boot. Third-party namespaces: the registry snapshot of the last full-pack
+    boot (.minecraft/dev/registry/items.txt, one registered id per line; its
+    SOURCE.json names the commit, dev/boot/registry_current.py says whether
+    it is still of this pack's mods)."""
     kubejs, snapshot, owned = set(), set(), {}
     for script in (mc / "kubejs/startup_scripts").rglob("*.js"):
         for rid in re.findall(r"\.create\(\s*['\"]([a-z0-9_.:/-]+)['\"]", script.read_text(encoding="utf-8", errors="replace")):
@@ -328,14 +334,13 @@ def load_items(mc):
             continue
     for rid in kubejs:
         owned.setdefault(rid.split(":", 1)[0], set())
-    path = mc / "TesterLogs/Item Audit/all_items.tsv"
+    path = mc / "dev/registry/items.txt"
     if path.is_file():
         with path.open(encoding="utf-8") as f:
-            next(f, None)
             for line in f:
-                cols = line.rstrip("\n").split("\t")
-                if len(cols) >= 2:
-                    snapshot.add(f"{cols[0]}:{cols[1]}")
+                rid = line.strip()
+                if rid and not rid.startswith("#"):
+                    snapshot.add(rid)
     return {"kubejs": kubejs, "owned": owned, "snapshot": snapshot if path.is_file() else None}
 
 
@@ -565,7 +570,7 @@ def check_item(stack, where, ctx, report):
         if path not in items["owned"][ns]:
             report.error(where, f"item {iid} is not registered by the jar/KubeJS that owns '{ns}' -- the icon renders blank")
     elif items["snapshot"] is not None and iid not in items["snapshot"]:
-        report.warn(where, f"item {iid} is not in the Item Audit snapshot (all_items.tsv) -- blank icon if it doesn't exist")
+        report.warn(where, f"item {iid} is not a registered item (registry snapshot, dev/registry/items.txt) -- the icon renders blank")
 
 
 # ---- main ---------------------------------------------------------------------
@@ -597,7 +602,7 @@ def main():
     if mc.is_dir() and ctx["keybinds"] is None:
         report.warn("keybinds", "config/defaultoptions/keybindings.txt missing -- $(k:) check skipped")
     if mc.is_dir() and ctx["items"]["snapshot"] is None:
-        report.note("TesterLogs/Item Audit/all_items.tsv missing -- third-party icon/spotlight items unchecked")
+        report.note("dev/registry/items.txt missing -- third-party icon/spotlight items unchecked")
 
     book = Book()
 
