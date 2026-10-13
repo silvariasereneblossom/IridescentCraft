@@ -25,17 +25,11 @@ alone does both. Exit code 0 means: both boot, the checker found nothing new, an
 A checkout that does not have this folder yet (a branch cut before it landed) can be booted from one that has:
 `boot.ps1 -Tree <path to that checkout> -Compare origin/main`.
 
-**Then the push.** The pre-push gate will refuse it with `expected_state.json is STALE` unless the two manifests
-were regenerated after your LAST commit or merge, whatever that commit touched. Nothing is wrong with `main`: the
-gate writes the current short HEAD into `generated_from` and compares bytes with the file in your working tree, so
-every new HEAD reads stale until you regenerate. After the last commit, in Windows PowerShell 5.1 (the shell the
-hook uses), in-process:
-
-    & .\.minecraft\dev\generate_expected_state.ps1
-
-and push. Leave the two `expected_state.json` files modified and uncommitted: committing them makes a new HEAD and
-the stamp is one behind again. (Commit them only with a change that deletes a file under `kubejs`, `config` or
-`mods\.index`; the tools that delete on consumers read the committed copy.)
+**Then the push.** When the change touched a file under `kubejs`, `config` or `mods\.index` of a distribution, the
+two `expected_state.json` manifests list a new hash: regenerate them and commit them WITH the change
+(`sync-distros.ps1 -Fix` does it, or `& .\.minecraft\dev\generate_expected_state.ps1`). Since 2026-10-13 the
+freshness gate no longer compares the `generated_from` line, so a checkout whose HEAD moved is not stale by that
+alone and nothing has to be regenerated after the last commit.
 
 Other calls:
 
