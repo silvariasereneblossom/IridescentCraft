@@ -58,6 +58,7 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | flags `vorpalMelee`, `vorpalArcane` | never beheaded (a `boss` is spared anyway) | the two startup scripts in `enchants/` |
 | flag `caster` | the five spellcasters the spawn scripts must not touch | five spawn scripts |
 | `absent` | the reason an entry is kept although its id is NOT a registered entity type | the validator |
+| `sameAs` | this id is a second entity id of that boss (see below); the entry carries nothing else | the reader: every question, `canon`, `entityIds` |
 | `note` | free text | nobody |
 
 What an entry does NOT do, and still has to be done by hand: the boss's own drops (`loot/*_boss_drops.js`,
@@ -69,6 +70,36 @@ A flag that is forgotten is not silent: `validate.py` expects a named boss to be
 `boss` (ruled 2026-10-12: minibosses are bosses; they keep their own health, without the mob-tier multiplier), a boss with a
 designed health to be `x3`, a named or miniboss entry of tier 1-3 to be on a rush roster, and so on (the rules are
 at the top of `validate.py`). A deviation fails until it is written into `accepted.json` with its reason.
+
+## A boss the game hands out under another entity id (`sameAs`)
+
+```json
+"minecraft:wither": { "tier": 3, "kind": "named", "hp": 600, "flags": ["boss", "x3"], "rush": 3 },
+"progressivebosses:wither": { "sameAs": "minecraft:wither", "note": "why the game uses this id" }
+```
+
+Progressive Bosses cancels the join of every `minecraft:wither` and adds its own `progressivebosses:wither`, so the
+Wither a player fights never has the id the pack wrote everywhere (measured 2026-10-13: until then the designed
+health, the boss x3, the kill tokens, the boss rush, the first-kill relic and every loot rule missed it). An entry
+with `sameAs` is a SECOND ID of another entry and nothing else (`note` is required, every other key is refused):
+
+- a question asked with either id (`is`, `has`, `get`, `tier`, `hp`, `kind`) is answered from the boss;
+- no list holds the second id (`ids`, `byTier`, `arenas`): the named roster stays 58 and the tier-3 rush 43;
+- `icraft.bosses.canon(id)` is the boss an entity id is. A script that keeps a table built from `ids()` or saves
+  something under a boss id (a first-kill flag, a rush credit) keys it on `canon(id)`, so one boss is paid once;
+- `icraft.bosses.entityIds(id)` is `[boss id, second ids...]`. A rule registered per entity TYPE covers them all:
+  `global.icraftEntityMod` (every LootJS entity modifier of the pack goes through it) does that by itself, so a
+  loot script keeps naming the boss.
+
+When to use it: the validator cannot tell that a registered id is never handed to a script. For a boss a mod
+replaces or whose class extends a vanilla mob, check on a full-pack boot what `getEncodeId()` of the spawned
+entity says (internal `dev/registries-2026-10-13/zzzz_wither_probe.js`). The other case, an entity whose OWN id is
+never handed out (`irons_spellbooks:magehunter_vindicator` is typed `minecraft:vindicator`), is not solved by
+`sameAs`: there the id a script sees belongs to an ordinary mob.
+
+What `sameAs` does not reach: everything outside the scripts that names the boss by id (the difficulty mod's
+exclude list, quests, other mods' config lists). `dev/mods/pack_audit.py` counts a second id as a script boss, so
+it shows up there when the difficulty mod does not exclude it.
 
 ## Adding a dimension
 
@@ -110,6 +141,8 @@ icraft.bosses.has(id, 'x3')          // is the id in that system
 icraft.bosses.get(id, 'relic')       // the value that system gets, or null (records are fresh copies)
 icraft.bosses.tier(id)   .hp(id)   .kind(id)
 icraft.bosses.byTier(2)  .byTier(2, 'rush')  .ids('x3')  .arenas()  .enabled('perKill')
+icraft.bosses.canon(id)              // the boss this entity id is (itself, unless `sameAs`)
+icraft.bosses.entityIds(id)          // [boss id, its second ids]: the entity types a per-type rule must cover
 icraft.dims.tier(id)   .has(id, 'loot')   .get(id, 'deathPenalty')
 icraft.dims.inTier(2, 'loot')   .inTiers([1, 2], 'loot')   .ids('stageGate')
 ```

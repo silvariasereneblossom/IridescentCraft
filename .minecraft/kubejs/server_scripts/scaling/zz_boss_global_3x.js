@@ -193,7 +193,10 @@ EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spa
   }
 
   var resId = bg3_resId(entity)
-  if (!resId || !BOSS_3X_SET[resId]) return                       // not a recognised boss
+  if (!resId) return
+  // the boss this entity id IS (boss registry, `sameAs`): the sets hold bosses
+  var bossId = icraft.bosses.canon(resId)
+  if (!BOSS_3X_SET[bossId]) return                                // not a recognised boss
 
   var core = global.icraft && global.icraft.core
   if (!core) return
@@ -208,7 +211,7 @@ EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spa
     buff.health()
   }
 
-  var dmgAllowed = !BOSS_3X_DMG_SKIP_SET[resId]
+  var dmgAllowed = !BOSS_3X_DMG_SKIP_SET[bossId]
 
   // ── Melee attack damage ×3 (MULTIPLY_TOTAL) — melee/contact only ──
   if (BOSS_3X_DMG_MULT > 1.0 && dmgAllowed) {

@@ -14,6 +14,9 @@ answers both core.isBoss and the mob-tier exclusion. Also compared: the facts of
 (tier, kind, absent), the order of the entries (the arena table and every roster iterate in file order), the
 switches and the boot line. Put the output in the commit message of a registry edit.
 
+A second id (`sameAs`) is a row of its own: its cells are what a script that asks WITH that id is answered, the
+cells of the boss it is. It is in no list, so no roster size moves; `sameAs` is one more fact column.
+
 Needs git. table.py is the other proof: this tree's registry against the lists the scripts held before.
 """
 import argparse
@@ -21,12 +24,13 @@ import json
 import os
 import subprocess
 import sys
+from collections import OrderedDict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import rosters  # noqa: E402
 
-BOSS_FACTS = ('tier', 'kind', 'absent')
+BOSS_FACTS = ('tier', 'kind', 'absent', 'sameAs')
 DIM_FACTS = ('tier',)
 
 
@@ -110,7 +114,14 @@ def main():
                 if a != b:
                     cells.append((what, i, col, a, b))
 
-    side((old.bosses, new.bosses), list(rosters.BOSS_SYSTEMS.keys()), BOSS_FACTS, rosters.boss_cell, 'boss')
+    def as_asked(reg):
+        """id -> the entry a script that asks with that id is answered from, plus `sameAs` for a second id"""
+        rows = OrderedDict(reg.bosses)
+        for a, t in reg.aliases.items():
+            rows[a] = dict(reg.bosses[t], sameAs=t)
+        return rows
+
+    side((as_asked(old), as_asked(new)), list(rosters.BOSS_SYSTEMS.keys()), BOSS_FACTS, rosters.boss_cell, 'boss')
     side((old.dims, new.dims), list(rosters.DIM_SYSTEMS.keys()), DIM_FACTS, rosters.dim_cell, 'dimension')
 
     other = []
@@ -122,6 +133,10 @@ def main():
         other.append('the ORDER of the dimension entries changed (the tier groups iterate in file order)')
     if list(old.arenas().keys()) != list(new.arenas().keys()):
         other.append('the arena keys or their order changed: %s -> %s' % (list(old.arenas().keys()), list(new.arenas().keys())))
+    roster_sizes = [(sys_name, len(old.boss_ids(sys_name)), len(new.boss_ids(sys_name))) for sys_name in rosters.BOSS_SYSTEMS]
+    moved = ['%s %d -> %d' % r for r in roster_sizes if r[1] != r[2]]
+    if len(old.bosses) != len(new.bosses):
+        moved.insert(0, 'bosses %d -> %d' % (len(old.bosses), len(new.bosses)))
     if canon(old.switches) != canon(new.switches):
         other.append('switches: %s -> %s' % (canon(old.switches), canon(new.switches)))
     line_old, line_new = rosters.boot_line(old), rosters.boot_line(new)
@@ -129,7 +144,7 @@ def main():
     lines = []
     out = lines.append
     out('registry of this tree against %s: %d cell(s) differ of %d compared (%d boss ids x %d columns, %d dimension ids x %d columns)'
-        % (base_name, len(cells), compared, len(set(list(old.bosses) + list(new.bosses))), len(rosters.BOSS_SYSTEMS) + len(BOSS_FACTS),
+        % (base_name, len(cells), compared, len(set(list(as_asked(old)) + list(as_asked(new)))), len(rosters.BOSS_SYSTEMS) + len(BOSS_FACTS),
            len(set(list(old.dims) + list(new.dims))), len(rosters.DIM_SYSTEMS) + len(DIM_FACTS)))
     by_col = {}
     for what, i, col, a, b in cells:
@@ -140,10 +155,11 @@ def main():
         out('  ' + o)
     if not other:
         out('  order of the entries, arena keys and switches: unchanged')
+    out('  sizes of the lists (a second id is in none): ' + ('unchanged' if not moved else ', '.join(moved)))
     if line_old == line_new:
         out('  boot line: unchanged')
     else:
-        out('  boot line before: ' + line_old)
+        out('  boot line before (as the reader of this tree words it): ' + line_old)
         out('  boot line after:  ' + line_new)
     print('\n'.join(lines))
 

@@ -131,7 +131,10 @@ def boss_lists(repo):
     try:
         reg = rosters.load(repo)
         for name, system in BOSS_LIST_SOURCES:
-            out[name] = set(reg.boss_ids(system))
+            ids = set(reg.boss_ids(system))
+            # a second entity id of a boss (`sameAs`: progressivebosses:wither is the Wither) is that boss for every
+            # script, so for an audit of ENTITY ids it is in every list its boss is in
+            out[name] = ids | set(a for a, t in reg.aliases.items() if t in ids)
     except rosters.RegistryError as e:
         problems.append('boss registry: %s' % e)
     cfg = toml_file(os.path.join(repo, 'config', 'iridescent_difficulty-common.toml'))

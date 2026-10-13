@@ -44,7 +44,10 @@ try {
       if (!src) return
       var killer = src.player
       if (!killer) return
-      var entityType = String(ent.type)
+      // The boss this entity IS (boss registry, `sameAs`): the Wither a player fights
+      // is progressivebosses:wither, never minecraft:wither. Until 2026-10-13 this
+      // compared the raw type, so the Wither's entry below never matched a kill.
+      var entityType = icraft.bosses.canon(String(ent.type))
 
       for (var i = 0; i < FIRST_KILL_DROPS.length; i++) {
         var entry = FIRST_KILL_DROPS[i]

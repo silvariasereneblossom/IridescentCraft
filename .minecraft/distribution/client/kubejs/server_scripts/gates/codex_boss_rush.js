@@ -159,9 +159,12 @@ var BOSS_PHASE_ALIASES = (function () {
   return out
 })()
 
-// Resolve an entity ID to its canonical roster ID (apply phase aliases).
+// Resolve an entity ID to its canonical roster ID: first the boss this entity
+// id IS (boss registry, `sameAs`: progressivebosses:wither is the Wither), then
+// the phase aliases.
 function brCanonical(entityId) {
-  return BOSS_PHASE_ALIASES[entityId] || entityId
+  var id = icraft.bosses.canon(entityId)
+  return BOSS_PHASE_ALIASES[id] || id
 }
 
 // =============================================================================

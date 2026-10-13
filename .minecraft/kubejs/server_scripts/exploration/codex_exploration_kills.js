@@ -116,7 +116,10 @@ EntityEvents.death(icraft.guard('exploration/codex_exploration_kills', 'EntityEv
     var source = event.source
     if (!entity || !source || !source.player) return
     var player = source.player
-    var entityId = String(entity.type)
+    // The boss this entity IS (boss registry, `sameAs`): a boss the game hands out
+    // under a second entity id (the Wither: progressivebosses:wither) is paid as
+    // that boss, and its first-kill flag is the boss's one flag.
+    var entityId = icraft.bosses.canon(String(entity.type))
 
     // --- NAMED boss? (one-time first-kill bonus, then repeat value) ---
     var namedTier = NAMED_BOSS_TIER[entityId]

@@ -7,6 +7,7 @@
 // The reader has to give exactly that, id by id: so the proof table of
 // dev/rosters/table.py (old script lists == rosters.py) also holds for what a
 // script is answered in game. Then the reader's own rules: ids are normalised
+// and a second id of a boss (`sameAs`) answers as that boss and is in no list
 // (a Java string works), what it hands out is a copy, an unknown system throws,
 // and a registry that cannot be read is an error on every call, never an empty
 // roster.
@@ -225,6 +226,72 @@
     var err = reload(realText.bosses, realText.dims)
     ok(err === '' && global.icraft.registry.ok() === true && bosses().is(T_REG.aBoss) === true && T_LOG.error.length === 0 &&
       T_LOG.info.indexOf(T_REG.bootLine) >= 0, 'the real files again: loaded, answers, the boot line, no error')
+  })
+
+  // ---- second ids (`sameAs`) -------------------------------------------------
+  // The game hands scripts some bosses under a second entity id (the Wither a
+  // player fights is progressivebosses:wither, never minecraft:wither). The file
+  // may hold none, so the rules are tested on a planted one first, then on
+  // whatever the pack's file holds.
+  T_run('a second id (sameAs) answers as the boss it is, and is in no list', function () {
+    var boss = T_REG.aBoss
+    var second = 'test:second_id'
+    var withSecond = changed(realText.bosses, function (d) { d.bosses[second] = { sameAs: boss, note: 'planted by the suite' } })
+    var err = reload(withSecond, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && T_LOG.error.length === 0, 'the file with a planted second id loads (' + err + T_LOG.error.join(' | ') + ')')
+    ok(bosses().canon(second) === boss && bosses().canon(boss) === boss && bosses().canon('minecraft:zombie') === 'minecraft:zombie',
+      'canon: the second id is the boss, the boss is itself, an id with no entry is itself')
+    ok(bosses().canon(__host.javaString(second)) === boss && typeof bosses().canon(__host.javaString(second)) === 'string', 'canon takes a Java string and hands back a JS string')
+    var bad = ''
+    for (var s = 0; s < T_REG.bossSystems.length && bad === ''; s++) {
+      var system = T_REG.bossSystems[s]
+      if (bosses().has(second, system) !== bosses().has(boss, system)) bad = 'has(.., ' + system + ')'
+      else if (!same(bosses().get(second, system), bosses().get(boss, system))) bad = 'get(.., ' + system + ')'
+    }
+    ok(bad === '', 'has / get of the second id are those of the boss, for all ' + T_REG.bossSystems.length + ' systems' + (bad === '' ? '' : ' -- ' + bad))
+    ok(bosses().is(second) === true && bosses().tier(second) === bosses().tier(boss) && bosses().kind(second) === bosses().kind(boss) &&
+      bosses().hp(second) === bosses().hp(boss) && bosses().is(__host.javaString(second)) === true, 'is / tier / kind / hp too, and with a Java string')
+    ok(global.icraft.core.isBoss(second) === true && global.icraft.core.isBoss(T_mob(second)) === true, 'core.isBoss: the id and the entity')
+    bad = ''
+    if (!same(bosses().ids(), T_REG.bossIds)) bad = 'ids()'
+    for (var s2 = 0; s2 < T_REG.bossSystems.length && bad === ''; s2++) {
+      if (bosses().ids(T_REG.bossSystems[s2]).indexOf(second) >= 0) bad = 'ids(' + T_REG.bossSystems[s2] + ')'
+    }
+    for (var t = 1; t <= 4 && bad === ''; t++) { if (bosses().byTier(t).indexOf(second) >= 0) bad = 'byTier(' + t + ')' }
+    ok(bad === '', 'no list holds it: ids() is the ' + T_REG.bossIds.length + ' bosses, ids(system) and byTier(n) unchanged' + (bad === '' ? '' : ' -- ' + bad))
+    ok(same(bosses().entityIds(boss), [boss, second]) && same(bosses().entityIds(second), [boss, second]) &&
+      same(bosses().entityIds('minecraft:zombie'), ['minecraft:zombie']), 'entityIds: [boss, second id] asked either way; an id with no entry comes back alone')
+    var list = bosses().entityIds(boss)
+    list.push('minecraft:zombie')
+    ok(bosses().entityIds(boss).length === 2, 'entityIds hands out a fresh list')
+    var planted = T_REG.aliases.length + 1       // the file's own second ids, and the planted one
+    ok(String(global.icraft.registry.line()).indexOf(', ' + planted + ' second id' + (planted === 1 ? '' : 's') + ';') > 0 &&
+      String(global.icraft.registry.line()).indexOf('bosses: ' + T_REG.bossIds.length + ' entries') > 0,
+      'the boot line counts it apart (' + planted + '): the number of entries is the number of bosses')
+    refused('a second id that names no entry', changed(realText.bosses, function (d) { d.bosses[second] = { sameAs: 'test:nobody' } }), realText.dims, 'sameAs names no other entry', 'bosses')
+    refused('a second id that names itself', changed(realText.bosses, function (d) { d.bosses[second] = { sameAs: second } }), realText.dims, 'sameAs names no other entry', 'bosses')
+    refused('a second id that names a second id', changed(withSecond, function (d) { d.bosses['test:third_id'] = { sameAs: second } }), realText.dims, 'itself a second id', 'bosses')
+    refused('a second id with flags of its own', changed(realText.bosses, function (d) { d.bosses[second] = { sameAs: boss, flags: ['x3'] } }), realText.dims, 'unknown key "flags"', 'bosses')
+    refused('a second id with a tier of its own', changed(realText.bosses, function (d) { d.bosses[second] = { sameAs: boss, tier: 2 } }), realText.dims, 'unknown key "tier"', 'bosses')
+    refused('a phase credited to a second id', changed(withSecond, function (d) { d.bosses['test:phase'] = { tier: 1, kind: 'unlisted', phaseOf: second } }), realText.dims, 'phaseOf names no entry', 'bosses')
+    err = reload(realText.bosses, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && bosses().canon(second) === second && bosses().is(second) === false, 'the real file again: the planted id is nobody')
+    // the pack's own second ids, as rosters.py reads them
+    bad = ''
+    for (var a = 0; a < T_REG.aliases.length && bad === ''; a++) {
+      var al = T_REG.aliases[a][0]
+      var of = T_REG.aliases[a][1]
+      if (bosses().canon(al) !== of) bad = 'canon(' + al + ') = ' + bosses().canon(al)
+      else if (bosses().ids().indexOf(al) >= 0) bad = al + ' is in ids()'
+      else if (bosses().is(al) !== bosses().is(of) || bosses().tier(al) !== bosses().tier(of) || bosses().kind(al) !== bosses().kind(of) || bosses().hp(al) !== bosses().hp(of)) bad = al + ' does not answer as ' + of
+      for (var s3 = 0; s3 < T_REG.bossSystems.length && bad === ''; s3++) {
+        if (!same(bosses().get(al, T_REG.bossSystems[s3]), bosses().get(of, T_REG.bossSystems[s3]))) bad = 'get(' + al + ', ' + T_REG.bossSystems[s3] + ')'
+      }
+    }
+    for (var e = 0; e < T_REG.entityIds.length && bad === ''; e++) {
+      if (!same(bosses().entityIds(T_REG.entityIds[e][0]), T_REG.entityIds[e][1])) bad = 'entityIds(' + T_REG.entityIds[e][0] + ') = ' + JSON.stringify(bosses().entityIds(T_REG.entityIds[e][0]))
+    }
+    ok(bad === '', 'the ' + T_REG.aliases.length + ' second id(s) of the pack\'s file answer as rosters.py has them' + (bad === '' ? '' : ' -- ' + bad))
   })
 
   T_run('a switch is read from the file', function () {

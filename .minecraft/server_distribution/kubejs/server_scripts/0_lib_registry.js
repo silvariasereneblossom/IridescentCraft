@@ -27,6 +27,27 @@
 //   icraft.bosses.ids(system?)        -> [ids] in file order
 //   icraft.bosses.enabled(name)       -> a switch of bosses.json ("switches")
 //   icraft.bosses.arenas()            -> { arenaKey: record } in file order, a fresh copy
+//   icraft.bosses.canon(id)           -> the id of the boss this entity id IS (itself,
+//                                        unless the registry says `sameAs`)
+//   icraft.bosses.entityIds(id)       -> [the boss's id, then every id that is `sameAs` it]:
+//                                        the entity types a rule for that boss has to cover
+//
+// ONE BOSS, TWO ENTITY IDS (`sameAs`). The game can hand a script a boss under an
+// id that is not its roster id: Progressive Bosses cancels the join of every
+// minecraft:wither and adds its own progressivebosses:wither, so "the Wither" a
+// player fights is never minecraft:wither (measured 2026-10-13). An entry
+//     "progressivebosses:wither": { "sameAs": "minecraft:wither" }
+// says so, and nothing else: it has no flags, tier or kind of its own.
+//   * Every question asked WITH an id (is, has, get, tier, hp, kind) is answered
+//     from the boss it is: a script that asks with the id of the entity in front
+//     of it needs no change.
+//   * Every LIST (ids, byTier, arenas) holds bosses, never a second id of one: a
+//     roster keeps its size (the boss-rush percentages are ruled on those sizes).
+//   * A script that keeps a table built from ids(), or saves something under a
+//     boss id (a first-kill flag, a rush credit), keys it on canon(id). That is
+//     how one boss is never paid twice.
+//   * A rule registered per entity TYPE (a LootJS entity modifier) is registered
+//     for entityIds(id): global.icraftEntityMod does it.
 //
 //   icraft.dims.tier(id)              -> 1..4, 0 when the dimension has no entry
 //   icraft.dims.has(id, system)       -> true | false
@@ -118,6 +139,7 @@
   var BOSS_KINDS = ['named', 'miniboss', 'unlisted']
   var BOSS_FLAGS = ['boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster']
   var BOSS_KEYS = ['tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'absent', 'note']
+  var ALIAS_KEYS = ['sameAs', 'note']       // an entry with `sameAs` is a second id of another entry and nothing else
   var BOSS_SWITCHES = ['perKill']
   var DIM_FLAGS = ['loot', 'classPassives']
   var DIM_KEYS = ['tier', 'flags', 'stageGate', 'exploration', 'deathPenalty', 'mobEquipment', 'note']
@@ -177,6 +199,15 @@
     var s = ''
     for (id in doc.bosses) {
       e = doc.bosses[id]
+      if (isObject(e) && e.sameAs !== undefined) {
+        // a second id of another entry: it names a real entry (not itself, not another
+        // second id, not an `absent` one) and carries nothing of its own
+        checkKeysAndFlags(id, e, ALIAS_KEYS, [], bad)
+        if (!(typeof e.sameAs === 'string' && e.sameAs !== id && own(doc.bosses, e.sameAs))) bad.push(id + ': sameAs names no other entry')
+        else if (!isObject(doc.bosses[e.sameAs]) || doc.bosses[e.sameAs].sameAs !== undefined) bad.push(id + ': sameAs names an entry that is itself a second id')
+        else if (doc.bosses[e.sameAs].absent !== undefined) bad.push(id + ': sameAs names an entry marked absent')
+        continue
+      }
       if (!checkKeysAndFlags(id, e, BOSS_KEYS, BOSS_FLAGS, bad)) continue
       if (BOSS_KINDS.indexOf(e.kind) < 0) bad.push(id + ': kind "' + e.kind + '" is none of ' + BOSS_KINDS.join(' / '))
       if (e.tier === undefined) {
@@ -185,7 +216,8 @@
       } else if (!isTier(e.tier)) bad.push(id + ': tier ' + e.tier + ' is not 1-4')
       if (e.hp !== undefined && !(typeof e.hp === 'number' && e.hp > 0)) bad.push(id + ': hp is not a positive number')
       if (e.rush !== undefined && !(e.rush === 1 || e.rush === 2 || e.rush === 3)) bad.push(id + ': rush ' + e.rush + ' is not a roster (1-3)')
-      if (e.phaseOf !== undefined && !(typeof e.phaseOf === 'string' && own(doc.bosses, e.phaseOf))) bad.push(id + ': phaseOf names no entry')
+      if (e.phaseOf !== undefined && !(typeof e.phaseOf === 'string' && own(doc.bosses, e.phaseOf) &&
+          isObject(doc.bosses[e.phaseOf]) && doc.bosses[e.phaseOf].sameAs === undefined)) bad.push(id + ': phaseOf names no entry (or a second id: name the boss)')
       if (e.relic !== undefined && !(isObject(e.relic) && typeof e.relic.item === 'string' &&
           typeof e.relic.chance === 'number' && typeof e.relic.looting === 'number')) bad.push(id + ': relic needs item, chance, looting')
       if (e.arena !== undefined) {
@@ -242,9 +274,12 @@
   }
 
   // ---- load both files --------------------------------------------------------
-  var bossEntries = {}
+  var bossEntries = {}      // the bosses: every entry that is not a second id
   var bossIds = []
   var bossIx = null
+  var bossAlias = {}        // second id -> the id of the boss it is (`sameAs`)
+  var bossAliasOf = {}      // boss id -> [its second ids], in file order
+  var bossAliasCount = 0
   var bossSwitches = {}
   var bossProblem = ''
   var dimEntries = {}
@@ -257,12 +292,21 @@
   ;(function () {
     var r = readDoc('bosses.json', 'bosses')
     var bad = []
+    var id = ''
+    var target = ''
     if (r.problem !== '') bossProblem = r.problem
     else {
       bad = checkBosses(r.doc)
       if (bad.length > 0) bossProblem = summary(bad)
       else {
-        bossEntries = r.doc.bosses
+        for (id in r.doc.bosses) {
+          if (r.doc.bosses[id].sameAs === undefined) { bossEntries[id] = r.doc.bosses[id]; continue }
+          target = r.doc.bosses[id].sameAs
+          bossAlias[id] = target
+          if (!own(bossAliasOf, target)) bossAliasOf[target] = []
+          bossAliasOf[target].push(id)
+          bossAliasCount++
+        }
         bossIds = Object.keys(bossEntries)
         bossIx = buildIndex(bossEntries, BOSS_SYSTEMS)
         bossSwitches = isObject(r.doc.switches) ? r.doc.switches : {}
@@ -312,36 +356,52 @@
     return out
   }
 
+  // the id of the boss an entity id is: itself, unless the registry says `sameAs`
+  var canonId = function (id) {
+    var key = String(id)
+    return own(bossAlias, key) ? bossAlias[key] : key
+  }
+
   // ---- icraft.bosses ----------------------------------------------------------
   var bosses = {
     is: function (id) {
       needBosses()
-      return own(bossIx.index['isBoss'], String(id))
+      return own(bossIx.index['isBoss'], canonId(id))
     },
     has: function (id, system) {
       needBosses()
-      return own(bossIx.index[systemName(BOSS_SYSTEMS, system, 'boss')], String(id))
+      return own(bossIx.index[systemName(BOSS_SYSTEMS, system, 'boss')], canonId(id))
     },
     get: function (id, system) {
       needBosses()
       var s = systemName(BOSS_SYSTEMS, system, 'boss')
-      var key = String(id)
+      var key = canonId(id)
       return own(bossIx.index[s], key) ? copy(bossIx.index[s][key]) : null
     },
     tier: function (id) {
       needBosses()
-      var key = String(id)
+      var key = canonId(id)
       return (own(bossEntries, key) && bossEntries[key].tier !== undefined) ? bossEntries[key].tier : 0
     },
     hp: function (id) {
       needBosses()
-      var key = String(id)
+      var key = canonId(id)
       return own(bossIx.index.hp, key) ? bossIx.index.hp[key] : null
     },
     kind: function (id) {
       needBosses()
-      var key = String(id)
+      var key = canonId(id)
       return own(bossEntries, key) ? bossEntries[key].kind : ''
+    },
+    canon: function (id) {
+      needBosses()
+      return canonId(id)
+    },
+    // [the boss's own id, then its second ids]; an id with no entry comes back alone
+    entityIds: function (id) {
+      needBosses()
+      var key = canonId(id)
+      return own(bossAliasOf, key) ? [key].concat(bossAliasOf[key]) : [key]
     },
     byTier: function (tier, system) {
       needBosses()
@@ -435,7 +495,7 @@
     for (i = 0; i < dimIds.length; i++) tiers[dimEntries[dimIds[i]].tier]++
     bootLine = '[icraft.registry] loaded -- bosses: ' + bossIds.length + ' entries (' + kinds.named + ' named, ' + kinds.miniboss +
       ' miniboss, ' + kinds.unlisted + ' unlisted; ' + n('isBoss') + ' boss, ' + n('hp') + ' designed hp, ' + n('x3') + ' x3, ' +
-      n('rush') + ' rush, ' + n('arena') + ' arenas, ' + absent + ' absent; per-kill scaling ' +
+      n('rush') + ' rush, ' + n('arena') + ' arenas, ' + absent + ' absent, ' + bossAliasCount + ' second id' + (bossAliasCount === 1 ? '' : 's') + '; per-kill scaling ' +
       ((own(bossSwitches, 'perKill') && bossSwitches.perKill.on === true) ? 'ON' : 'off') + '), dimensions: ' + dimIds.length +
       ' entries (tier 1-4: ' + tiers[1] + ' / ' + tiers[2] + ' / ' + tiers[3] + ' / ' + tiers[4] + ')'
     console.log(bootLine)

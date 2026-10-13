@@ -39,9 +39,20 @@
 // Also exported: global.icraftEntityIdOk(id) -> true / false / null (null =
 // cannot tell), for scripts that only need the check.
 //
-// Grep the log for ENTITY-ID-VALIDATOR. Files outside loot/ that still call
-// event.addEntityLootModifier directly are NOT covered (today: endgame/
-// rift_mechanics.js).
+// ONE BOSS, SEVERAL ENTITY IDS (2026-10-13). The game hands scripts some bosses
+// under a second entity id: Progressive Bosses replaces every minecraft:wither
+// with its own progressivebosses:wither, so a modifier on minecraft:wither never
+// ran on a Wither a player killed. The boss registry records such an id
+// (`sameAs` in kubejs/config/icraft/registry/bosses.json), and this guard
+// registers the modifier for EVERY entity id of the boss it is given
+// (icraft.bosses.entityIds): one LootJS modifier that matches either type, so a
+// kill rolls the rules once whichever type died. A loot script keeps naming the
+// boss by its roster id and needs no change. An id with no second id: the call
+// is the direct one, as before.
+//
+// Grep the log for ENTITY-ID-VALIDATOR. A file that calls
+// event.addEntityLootModifier directly is NOT covered (none today: endgame/
+// rift_mechanics.js goes through this guard).
 // =============================================================================
 
 ;(function () {
@@ -85,6 +96,8 @@
   var regState = 0          // 0 = not resolved yet, 1 = usable, -1 = unavailable
   var okCount = 0
   var bad = []              // distinct unresolvable ids seen since this script loaded
+  var widened = []          // 'boss id + second id' of every modifier registered for more than one entity type
+  var rosterDown = false    // the boss registry could not be asked (said once)
 
   function registryUsable() {
     if (regState !== 0) return regState === 1
@@ -115,8 +128,37 @@
     }
   }
 
+  // [id, then the second ids the boss registry knows for it]. Only registered
+  // entity types (a second id of a mod that is not installed must not land on
+  // pigs). The registry not loaded: the id alone, and one error line here on top
+  // of the registry's own.
+  var entityIdsOf = function (id) {
+    var sid = String(id)
+    var out = [sid]
+    var all = null
+    var i = 0
+    try {
+      all = global.icraft.bosses.entityIds(sid)
+    } catch (e) {
+      if (!rosterDown) {
+        rosterDown = true
+        console.error(TAG + 'the boss registry could not be asked for second entity ids (' + e + '): every modifier is'
+          + ' registered for the id it names ONLY. A boss the game hands out under another id (the Wither) gets none.')
+      }
+      return out
+    }
+    // the id a script names may itself be a second id: the boss's own id comes first
+    out = []
+    for (i = 0; i < all.length; i++) {
+      if (all[i] === sid || global.icraftEntityIdOk(all[i]) !== false) out.push(all[i])
+    }
+    return out
+  }
+
   // Drop-in for event.addEntityLootModifier(id). ONE id per call (that is how
   // every script in loot/ uses it): for several entities, call it once per id.
+  // The id is a boss's roster id or any entity id; second ids of a boss are added
+  // here (see the header).
   global.icraftEntityMod = function (event, id) {
     if (arguments.length !== 2) {
       console.error(TAG + 'icraftEntityMod(event, id) takes exactly ONE entity id, got '
@@ -130,7 +172,13 @@
       return INERT
     }
     okCount++               // true, or null = unchecked (fail open)
-    return event.addEntityLootModifier(id)
+    var ids = entityIdsOf(id)
+    if (ids.length < 2) return event.addEntityLootModifier(id)
+    widened.push(ids.join(' + '))
+    // (LootJS: addEntityLootModifier(EntityType...) -- one modifier, any of the types)
+    if (ids.length === 2) return event.addEntityLootModifier(ids[0], ids[1])
+    if (ids.length === 3) return event.addEntityLootModifier(ids[0], ids[1], ids[2])
+    return event.addEntityLootModifier(ids)
   }
 
   // Boot summary (one line, after the first loot build).
@@ -140,7 +188,8 @@
       if (regState !== 1) {
         console.error(TAG + 'registry lookup unavailable - ' + okCount + ' entity loot modifiers registered UNCHECKED')
       } else if (bad.length === 0) {
-        console.log(TAG + 'all entity ids resolve (' + okCount + ' entity loot modifiers registered through the guard)')
+        console.log(TAG + 'all entity ids resolve (' + okCount + ' entity loot modifiers registered through the guard'
+          + (widened.length > 0 ? '; ' + widened.length + ' of them for a boss with a second entity id: ' + widened.join(', ') : '') + ')')
       } else {
         console.error(TAG + bad.length + ' UNRESOLVABLE ENTITY ID(S), their modifiers were skipped: ' + bad.join(', '))
       }

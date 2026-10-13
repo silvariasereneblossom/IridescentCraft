@@ -21,6 +21,7 @@ SCHEMA = 1
 BOSS_KINDS = ('named', 'miniboss', 'unlisted')
 BOSS_FLAGS = ('boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster')
 BOSS_KEYS = ('tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'absent', 'note')
+ALIAS_KEYS = ('sameAs', 'note')     # an entry with `sameAs` is a second entity id of another entry, and nothing else
 ARENA_KEYS = ('key', 'display', 'tier', 'dimension', 'locator', 'structure', 'signatureBlock', 'waystone', 'summonEntity', 'ritual')
 RELIC_KEYS = ('item', 'chance', 'looting')
 BOSS_SWITCHES = ('perKill',)
@@ -95,9 +96,28 @@ class Registry(object):
         self.root = root
         self.bosses_doc = bosses_doc
         self.dims_doc = dims_doc
-        self.bosses = bosses_doc['bosses']          # OrderedDict, file order
+        # the bosses, file order: every entry that is not a second id (`sameAs`) of another
+        self.bosses = OrderedDict((i, e) for i, e in bosses_doc['bosses'].items() if not (isinstance(e, dict) and 'sameAs' in e))
+        # second id -> the id of the boss it is. The game hands a script that boss under this id too
+        # (progressivebosses:wither is the Wither). A list never holds one; a question asked with one is
+        # answered from the boss (0_lib_registry.js does the same, suite `registry` compares).
+        self.aliases = OrderedDict((i, e['sameAs']) for i, e in bosses_doc['bosses'].items() if isinstance(e, dict) and 'sameAs' in e)
+        self.alias_entries = OrderedDict((i, e) for i, e in bosses_doc['bosses'].items() if isinstance(e, dict) and 'sameAs' in e)
         self.dims = dims_doc['dimensions']
         self.switches = bosses_doc.get('switches') or {}
+
+    def canon(self, i):
+        return self.aliases.get(i, i)
+
+    def entity_ids(self, i):
+        """[the boss's id, then its second ids]: the entity types a per-type rule for that boss has to cover"""
+        c = self.canon(i)
+        return [c] + [a for a, t in self.aliases.items() if t == c]
+
+    def answer(self, i, system):
+        """what a script that asks WITH this id gets from a system (a second id answers as its boss); None = not in it"""
+        e = self.bosses.get(self.canon(i))
+        return boss_cell(e, system) if e is not None else None
 
     def switch_on(self, name):
         s = self.switches.get(name)
@@ -184,9 +204,10 @@ def boot_line(reg):
     n = lambda system: len(reg.boss_ids(system))
     tiers = [len(reg.dims_in_tier(t)) for t in (1, 2, 3, 4)]
     return ('[icraft.registry] loaded -- bosses: %d entries (%d named, %d miniboss, %d unlisted; %d boss, %d designed hp, '
-            '%d x3, %d rush, %d arenas, %d absent; per-kill scaling %s), dimensions: %d entries (tier 1-4: %d / %d / %d / %d)'
+            '%d x3, %d rush, %d arenas, %d absent, %d second id%s; per-kill scaling %s), dimensions: %d entries (tier 1-4: %d / %d / %d / %d)'
             % (len(b), kinds['named'], kinds['miniboss'], kinds['unlisted'], n('isBoss'), n('hp'), n('x3'), n('rush'),
-               n('arena'), sum(1 for e in b.values() if e.get('absent')), 'ON' if reg.switch_on('perKill') else 'off',
+               n('arena'), sum(1 for e in b.values() if e.get('absent')), len(reg.aliases), '' if len(reg.aliases) == 1 else 's',
+               'ON' if reg.switch_on('perKill') else 'off',
                len(reg.dims), tiers[0], tiers[1], tiers[2], tiers[3]))
 
 

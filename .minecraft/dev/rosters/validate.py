@@ -100,6 +100,20 @@ def shape_problems(reg):
     def is_tier(v):
         return isinstance(v, int) and not isinstance(v, bool) and 1 <= v <= 4
 
+    # second ids: an entry with `sameAs` names a boss and carries nothing else (0_lib_registry.js refuses the same)
+    for i, e in reg.alias_entries.items():
+        for k in e:
+            if k not in rosters.ALIAS_KEYS:
+                bad.append('%s: has `sameAs`, so it is a second id of another entry and cannot carry "%s" (flags, tier and kind '
+                           'are those of the boss it names)' % (i, k))
+        t = e.get('sameAs')
+        if not (isinstance(t, str) and t != i and t in reg.bosses):
+            bad.append('%s: sameAs names no other boss entry (a second id cannot name a second id)' % i)
+        elif 'absent' in reg.bosses[t]:
+            bad.append('%s: sameAs names %s, which is marked absent' % (i, t))
+        if not (isinstance(e.get('note'), str) and e['note'].strip()):
+            bad.append('%s: a second id needs a "note": how the game comes to hand scripts the boss under this id' % i)
+
     arena_keys = {}
     for i, e in reg.bosses.items():
         if not isinstance(e, dict):
@@ -207,6 +221,10 @@ def id_problems(reg, game, pack):
     bad = []
     src = game.get('source', {})
     ents, dims = game['entities'], game['dimensions']
+    for i in reg.aliases:
+        if i not in ents:
+            bad.append('%s: a second id (sameAs) that is not a registered entity type (dev/registry/entity_types.txt): no script '
+                       'is ever handed it' % i)
     for i, e in reg.bosses.items():
         if not isinstance(e, dict):
             continue
@@ -358,11 +376,14 @@ def notes(reg, game):
     tagged = []
     for i, f in sorted(game.get('entity_facts', {}).items()):
         tags = [t for t in (f.get('tags') or []) if t in ('forge:bosses', 'c:bosses')]
-        if tags and i not in reg.bosses:
+        if tags and i not in reg.bosses and i not in reg.aliases:
             tagged.append(i)
     if tagged:
         out.append('%d entity type(s) carry the tag forge:bosses or c:bosses and have no entry (for every script they are '
                    'ordinary mobs): %s' % (len(tagged), ', '.join(tagged)))
+    if reg.aliases:
+        out.append('%d second id(s): the game hands scripts a boss under another entity id too, and the registry answers for '
+                   'both: %s' % (len(reg.aliases), ', '.join('%s = %s' % (a, t) for a, t in reg.aliases.items())))
     absent = [i for i, e in reg.bosses.items() if isinstance(e, dict) and 'absent' in e]
     if absent:
         out.append('%d entr(y/ies) kept although the id is not a registered entity type: %s' % (len(absent), ', '.join(absent)))
