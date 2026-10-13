@@ -36,6 +36,13 @@
 #   -JvmArg <a>,<b>    extra JVM arguments, after the launcher's
 #   -ConsoleFile <f>   a text file of server console commands, one per line (# starts a comment): each is sent
 #                      after the idle measurements, two seconds apart; what they print is in the captured logs
+#   -ChunkFile <f>     more chunks to generate after the measurements, on top of one new chunk per dimension: a text
+#                      file, one target per line (block coordinates, radius in chunks, # starts a comment):
+#                        <dimension> <x> <z> [radius]
+#                        <dimension> structure <structure id> [radius] [<x> <z> to search from]
+#   -NoChunks          generate no chunk (the feature order of every dimension is still read and judged)
+#   -ForceChunks       ask for chunks also in a dimension whose feature order has a cycle: shows what a player
+#                      entering it would meet (every chunk fails); never for a result to compare with
 #   -JarCache <dir>,.. folders that hold the mod jars (default: $env:ICRAFT_BOOT_JAR_CACHE, else the
 #                      PrismLauncher instance IridescentCraft under %APPDATA%)
 #   -IndexDir <dir>    a mod index directory other than <tree>\.minecraft\server_distribution\mods\.index
@@ -70,6 +77,9 @@ param(
     [int]$IdleSeconds = 45,
     [string[]]$JvmArg,
     [string]$ConsoleFile,
+    [string]$ChunkFile,
+    [switch]$NoChunks,
+    [switch]$ForceChunks,
     [string[]]$JarCache,
     [string]$IndexDir,
     [string]$ResultsRoot,
@@ -222,6 +232,9 @@ function Test-Reusable {
     if ($null -eq $r) { return $false }
     if ([int]$r.tool_version -ne $ToolVersion) { return $false }
     if ([string]$r.heap -ne $Heap -or [string]$r.seed -ne $Seed) { return $false }
+    # a result without the chunk generation is half a result, unless that is what was asked for now
+    if (-not $NoChunks -and -not $r.chunks) { return $false }
+    if ($r.forced) { return $false }
     return $true
 }
 
@@ -238,6 +251,11 @@ function Invoke-Boot {
     if ($ConsoleFile) {
         $req['console'] = @([System.IO.File]::ReadAllLines((Get-FullPath $ConsoleFile)) | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') })
     }
+    if ($ChunkFile) {
+        $req['chunks'] = @([System.IO.File]::ReadAllLines((Get-FullPath $ChunkFile)) | ForEach-Object { $_.Trim() } | Where-Object { $_ -and -not $_.StartsWith('#') })
+    }
+    if ($NoChunks) { $req['no_chunks'] = $true }
+    if ($ForceChunks) { $req['force_chunks'] = $true }
     if ($IndexDir) { $req['index_dir'] = (Get-FullPath $IndexDir) }
     $rc = Invoke-Engine 'run' $req
     if ($rc -eq $ExitCannot -or -not (Test-Path -LiteralPath (Join-Path $dir 'result.json'))) { return $ExitCannot }

@@ -45,8 +45,10 @@ try:
 except ImportError:  # python < 3.11
     tomllib = None
 
-TOOL_VERSION = 1
+TOOL_VERSION = 2
 HELPER_NAME = 'zzz_icboot_registry_dump.js'      # its name inside the sandbox's kubejs/server_scripts
+WORLDGEN_HELPER = 'zzz_icboot_worldgen.js'       # the second helper: feature order and new chunks
+HELPER_NAMES = (HELPER_NAME, WORLDGEN_HELPER)
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 EXIT_OK, EXIT_FINDINGS, EXIT_CANNOT, EXIT_BOOT = 0, 1, 2, 3
@@ -712,8 +714,9 @@ def assemble(run_dir, src_root, home, consts, resolved, params):
     names = sorted(resolved, key=ntfs_key)
     for fn in (names if mode == 'creation' else names[::-1]):
         shutil.copyfile(pool.path_of(resolved[fn]), os.path.join(run_dir, 'mods', fn))
-    # the registry-dump helper goes in with the copy, so that it too sits where its name puts it
-    helper = {'server_scripts': [(HELPER_NAME, os.path.join(HERE, 'sandbox', 'icboot_registry_dump.js'))]}
+    # the two helpers go in with the copy, so that they too sit where their names put them
+    helper = {'server_scripts': [(HELPER_NAME, os.path.join(HERE, 'sandbox', 'icboot_registry_dump.js')),
+                                 (WORLDGEN_HELPER, os.path.join(HERE, 'sandbox', 'icboot_worldgen.js'))]}
     for d in ('config', 'defaultconfigs', 'kubejs'):
         s = os.path.join(sd, d)
         if not os.path.isdir(s):
@@ -725,6 +728,8 @@ def assemble(run_dir, src_root, home, consts, resolved, params):
     os.symlink(os.path.join(forge_dir(home, consts['forge_version']), 'libraries'), os.path.join(run_dir, 'libraries'))
     os.makedirs(os.path.join(run_dir, 'heapdumps'))
     os.makedirs(os.path.join(run_dir, 'icboot-out'))
+    write_json(os.path.join(run_dir, 'icboot-out', 'worldgen_request.json'),
+               {'force': bool(params.get('worldgen_force')), 'extra': params.get('worldgen_extra') or []})
     write_text(os.path.join(run_dir, 'eula.txt'), 'eula=true\n')
 
     notes = []
@@ -862,6 +867,8 @@ RX_DONE = re.compile(r'\]: Done \((\d+\.\d+)s\)!')
 RX_TPS = re.compile(r'Overall: Mean tick time: ([\d.]+) ms\. Mean TPS: ([\d.]+)')
 RX_SEED = re.compile(r'\]: Seed: \[(-?\d+)\]')
 RX_PREGEN = re.compile(r'Chunky pre-gen started|\[Chunky\] Task running')
+RX_WG_START = re.compile(r'\[icboot\] worldgen: start (\d+)/(\d+) (\S+) \((.*)\)\s*$')
+RX_WG_END = re.compile(r'\[icboot\] worldgen: end (\d+)/(\d+) (\S+) (\w+)')
 
 
 def run_server(run_dir, consts, flags, params, boot):
@@ -875,7 +882,8 @@ def run_server(run_dir, consts, flags, params, boot):
     boot.update({'pid': proc.pid, 'reached_done': False, 'died': None, 'pregen_started': False})
     tail = Tail(os.path.join(run_dir, 'logs', 'latest.log'))
     crash_dir = os.path.join(run_dir, 'crash-reports')
-    seen = {'tps': None, 'seed': None}
+    seen = {'tps': None, 'seed': None, 'wg_open': None}
+    out_dir = os.path.join(run_dir, 'icboot-out')
 
     def send(cmd):
         try:
@@ -886,6 +894,17 @@ def run_server(run_dir, consts, flags, params, boot):
 
     def crashed():
         return os.path.isdir(crash_dir) and any(f.endswith('.txt') for f in os.listdir(crash_dir))
+
+    def thread_dump(name):
+        """What every thread of the JVM is doing, into the captured dump folder. Returns the text, or None."""
+        try:
+            text = subprocess.run(['jcmd', str(proc.pid), 'Thread.print'], capture_output=True, text=True, timeout=60).stdout
+        except (OSError, subprocess.TimeoutExpired):
+            return None
+        if '"' not in text:
+            return None
+        write_text(os.path.join(out_dir, name), text)
+        return text
 
     def pump():
         for line in tail.new_lines():
@@ -902,6 +921,43 @@ def run_server(run_dir, consts, flags, params, boot):
                 seen['seed'] = m.group(1)
             if RX_PREGEN.search(line):
                 boot['pregen_started'] = True
+            m = RX_WG_START.search(line)
+            if m:
+                seen['wg_open'] = '%s (%s), target %s of %s' % (m.group(3), m.group(4), m.group(1), m.group(2))
+            elif RX_WG_END.search(line):
+                seen['wg_open'] = None
+
+    def run_worldgen():
+        """One new chunk per dimension (and what the request added), after every measurement. The helper works
+        on the server thread and a chunk request has no time limit of its own: the limit is here."""
+        wg = boot.setdefault('worldgen', {})
+        if not os.path.isfile(os.path.join(out_dir, 'worldgen_analysis.json')):
+            wg['state'] = 'not started: the feature order analysis was not written'
+            return
+        done = os.path.join(out_dir, 'worldgen_done.json')
+        t_wg = time.monotonic()
+        send('icboot_worldgen')
+        wait_for(lambda: os.path.isfile(done) or crashed(), params['worldgen_timeout'], 0.5)
+        wg['seconds'] = round(time.monotonic() - t_wg, 1)
+        if os.path.isfile(done):
+            wg['state'] = 'finished'
+        elif proc.poll() is not None:
+            wg['state'] = 'the JVM exited during the chunk generation (exit %s)' % proc.returncode
+        elif crashed():
+            wg['state'] = 'the server wrote a crash report during the chunk generation'
+        else:
+            wg['state'] = 'not finished after %d s' % params['worldgen_timeout']
+            wg['timed_out'] = True
+            wg['thread_dump'] = 'dump/threads-worldgen-timeout.txt' if thread_dump('threads-worldgen-timeout.txt') else None
+        if wg['state'] != 'finished':
+            wg['in_progress'] = seen['wg_open']
+            say('WORLDGEN: %s%s' % (wg['state'], '; in progress: ' + seen['wg_open'] if seen['wg_open'] else ''))
+            return
+        # the server thread must still tick after it: a level left with a broken chunk stops at its next save pass
+        seen['tps'] = None
+        send('forge tps')
+        wg['ticking_after'] = bool(wait_for(lambda: seen['tps'] is not None or crashed(), 30, 0.5) and seen['tps'] is not None)
+        say('worldgen: the helper finished in %.0f s; the server %s' % (wg['seconds'], 'still ticks' if wg['ticking_after'] else 'does NOT answer any more'))
 
     def wait_for(cond, seconds, step=1.0):
         end = time.monotonic() + seconds
@@ -931,6 +987,9 @@ def run_server(run_dir, consts, flags, params, boot):
         boot['dump_written'] = wait_for(lambda: os.path.isfile(marker), 180)
         if not boot['dump_written']:
             say('the registry dump was not written within 180 s of Done')
+        # the feature order of every dimension is read right after it (read-only, before the idle window)
+        if not wait_for(lambda: os.path.isfile(os.path.join(out_dir, 'worldgen_analysis.json')), 120):
+            say('the feature order analysis was not written within 120 s of the registry dump')
         t_idle = time.monotonic()
         wait_for(lambda: False, params['idle_seconds'])
         if boot['pregen_started']:
@@ -964,6 +1023,8 @@ def run_server(run_dir, consts, flags, params, boot):
             except (OSError, subprocess.TimeoutExpired) as ex:
                 boot['jcmd_error'] = str(ex)
             boot['peak_rss_mb'] = proc_status_mb(proc.pid, 'VmHWM')
+            if params.get('worldgen'):
+                run_worldgen()
             # console commands of the caller (-ConsoleFile), AFTER every measurement: what they print is in the
             # captured logs. Two seconds each: the pack's FIRED lines are printed once a second.
             # (the heap histogram above stops the server for some seconds: let it catch up first, or every
@@ -986,10 +1047,16 @@ def run_server(run_dir, consts, flags, params, boot):
     t_stop = time.monotonic()
     if proc.poll() is None:
         send('stop')
+        # a server that crashed has already tried to stop: it exits by itself within seconds, or never
+        limit = 30 if not boot['reached_done'] else (60 if crashed() else params['stop_timeout'])
         try:
-            proc.wait(timeout=params['stop_timeout'] if boot['reached_done'] else 30)
+            proc.wait(timeout=limit)
         except subprocess.TimeoutExpired:
             boot['killed'] = True
+            dump = thread_dump('threads-at-kill.txt')
+            if dump is not None:
+                # a JVM that stays up without its server thread crashed and could not finish its own stop
+                boot['server_thread_at_kill'] = '"Server thread"' in dump
             proc.kill()
             proc.wait()
     pump()
@@ -1095,7 +1162,325 @@ def entities_text(defaults, entities):
     return '{\n"attribute_defaults": {\n' + ',\n'.join(drows) + '\n},\n"entities": {\n' + ',\n'.join(rows) + '\n}\n}\n'
 
 
-def extract(result_dir, run_dir, scripts_in_tree):
+# -----------------------------------------------------------------------------
+# worldgen: the feature order of every dimension, and new chunks
+# -----------------------------------------------------------------------------
+# The game sorts the placed features of ALL biomes of a dimension's biome source into one order, the first
+# time a chunk of that dimension is decorated (FeatureSorter). It flattens each biome's features, step after
+# step, and takes every pair of neighbours as "a before b". Two biomes that list two features of one step in
+# opposite orders, or one biome that lists a feature twice in a step, close a loop: the sort throws and no
+# chunk of the dimension can generate. The helper dumps the lists as the game holds them (after Forge biome
+# modifiers) and the game's own verdict; here the loop is named: step, features, biomes.
+STEP_NAMES = ('raw_generation', 'lakes', 'local_modifications', 'underground_structures', 'surface_structures',
+              'strongholds', 'underground_ores', 'underground_decoration', 'fluid_springs', 'vegetal_decoration',
+              'top_layer_modification')
+RX_SORTER_BIOME = re.compile(r'worldgen/biome / ([^\]\s]+)\]')
+RX_CAUSED_BY = re.compile(r'^Caused by: (.*)$')
+
+
+# Asked for in every boot, on top of one far chunk per dimension: the one place of the pack where EVERY
+# player arrives in a dimension. (The Overworld's spawn area is generated by the boot itself.)
+DEFAULT_CHUNKS = (
+    {'dim': 'minecraft:the_end', 'x': 0, 'z': 0, 'radius': 1, 'label': 'the central island, where the exit portal stands'},
+    {'dim': 'minecraft:the_end', 'x': 100, 'z': 0, 'radius': 0, 'label': 'the platform every player arrives on'},
+)
+
+
+def parse_chunk_lines(lines):
+    """-ChunkFile: one target per line, block coordinates, radius in chunks.
+         <dimension> <x> <z> [radius]
+         <dimension> structure <structure id> [radius] [<x> <z> to search from]"""
+    out = []
+    for raw in lines:
+        parts = raw.split()
+        if not parts or parts[0].startswith('#'):
+            continue
+        try:
+            if len(parts) >= 3 and parts[1] == 'structure':
+                e = {'dim': parts[0], 'structure': parts[2], 'radius': int(parts[3]) if len(parts) > 3 else 1,
+                     'x': int(parts[4]) if len(parts) > 5 else 0, 'z': int(parts[5]) if len(parts) > 5 else 0}
+                e['label'] = 'the nearest %s to %d %d, %d chunk(s) around its start' % (e['structure'], e['x'], e['z'], e['radius'])
+            else:
+                e = {'dim': parts[0], 'x': int(parts[1]), 'z': int(parts[2]), 'radius': int(parts[3]) if len(parts) > 3 else 0}
+                e['label'] = 'block %d %d' % (e['x'], e['z']) + (', %d chunk(s) around' % e['radius'] if e['radius'] else '')
+        except (ValueError, IndexError):
+            raise Cannot("-ChunkFile: cannot read the line '%s' (<dimension> <x> <z> [radius], or <dimension> structure <id> [radius] [<x> <z>])" % raw)
+        if not 0 <= e['radius'] <= 8:
+            raise Cannot("-ChunkFile: radius %d in '%s': 0 to 8 chunks" % (e['radius'], raw))
+        out.append(e)
+    return out
+
+
+def step_name(i):
+    return STEP_NAMES[i] if 0 <= i < len(STEP_NAMES) else 'step %d' % i
+
+
+def _int(v):
+    return int(round(float(v)))
+
+
+def feature_cycles(biomes, features):
+    """The loops FeatureSorter finds in the lists of one dimension.
+    `biomes`: [{'id', 'steps': [[feature index, ..] per step]}]; `features`: [{'id', 'eq'}], where two entries
+    with the same `eq` are ONE feature to the game (equal configured feature and placement, two ids).
+    Returns (duplicates, cycles): a biome that lists one feature twice in a step, and the shortest loop of
+    every knot of the order graph with the biomes that give each of its edges."""
+    eq_of = [_int(f['eq']) for f in features]
+    name_of = {}
+    for i, f in enumerate(features):
+        name_of.setdefault(eq_of[i], []).append(f['id'])
+    duplicates, edges = [], {}
+    for b in biomes:
+        for s, row in enumerate(b['steps']):
+            row = [_int(x) for x in row]
+            where = {}
+            for pos, fid in enumerate(row):
+                where.setdefault(eq_of[fid], []).append(pos)
+            for eq, positions in sorted(where.items()):
+                if len(positions) > 1:
+                    ids = sorted(set(features[row[p]]['id'] for p in positions))
+                    duplicates.append({'biome': b['id'], 'step': s, 'step_name': step_name(s), 'features': ids,
+                                       'positions': [p + 1 for p in positions], 'of': len(row),
+                                       'between': [features[row[p]]['id'] for p in range(positions[0] + 1, positions[1])][:6]})
+            for a, c in zip(row, row[1:]):
+                edges.setdefault(s, {}).setdefault(eq_of[a], {}).setdefault(eq_of[c], set()).add(b['id'])
+    cycles = []
+    for s in sorted(edges):
+        adj = edges[s]
+        nodes = sorted(set(adj) | set(v for d in adj.values() for v in d))
+        # strongly connected components (Tarjan, iterative): a loop lives inside one of them
+        index, low, on, stack, comps, n = {}, {}, set(), [], [], 0
+        for root in nodes:
+            if root in index:
+                continue
+            work = [(root, iter(sorted(adj.get(root, ()))))]
+            index[root] = low[root] = n
+            n += 1
+            stack.append(root)
+            on.add(root)
+            while work:
+                v, it = work[-1]
+                pushed = False
+                for w in it:
+                    if w not in index:
+                        index[w] = low[w] = n
+                        n += 1
+                        stack.append(w)
+                        on.add(w)
+                        work.append((w, iter(sorted(adj.get(w, ())))))
+                        pushed = True
+                        break
+                    if w in on:
+                        low[v] = min(low[v], index[w])
+                if pushed:
+                    continue
+                work.pop()
+                if work:
+                    low[work[-1][0]] = min(low[work[-1][0]], low[v])
+                if low[v] == index[v]:
+                    comp = []
+                    while True:
+                        w = stack.pop()
+                        on.discard(w)
+                        comp.append(w)
+                        if w == v:
+                            break
+                    comps.append(comp)
+        for comp in comps:
+            inside = set(comp)
+            if len(comp) == 1 and comp[0] not in adj.get(comp[0], ()):
+                continue
+            best = None
+            for start in sorted(comp):                      # the shortest loop through any feature of the knot
+                prev, queue, found = {start: None}, [start], None
+                while queue and found is None:
+                    v = queue.pop(0)
+                    for w in sorted(adj.get(v, ())):
+                        if w not in inside:
+                            continue
+                        if w == start:
+                            found = v
+                            break
+                        if w not in prev:
+                            prev[w] = v
+                            queue.append(w)
+                if found is None:
+                    continue
+                path = [found]
+                while prev[path[-1]] is not None:
+                    path.append(prev[path[-1]])
+                path.reverse()
+                if best is None or len(path) < len(best):
+                    best = path
+            if best is None:
+                continue
+            loop = []
+            for i, a in enumerate(best):
+                c = best[(i + 1) % len(best)]
+                loop.append({'from': ' = '.join(name_of[a]), 'to': ' = '.join(name_of[c]), 'biomes': sorted(adj[a][c])})
+            involved = sorted(set(x for e in loop for x in e['biomes']))
+            alone = sorted(set.intersection(*[set(e['biomes']) for e in loop]))
+            cycles.append({'step': s, 'step_name': step_name(s), 'features_in_knot': len(comp), 'loop': loop,
+                           'biomes': involved, 'one_biome_alone': alone})
+    return duplicates, cycles
+
+
+def read_worldgen(result_dir, latest, params, boot):
+    """The helper's two files as findings. Returns (summary for result.json, problems)."""
+    dump_dir = os.path.join(result_dir, 'dump')
+    out_dir = os.path.join(result_dir, 'worldgen')
+    os.makedirs(os.path.join(out_dir, 'feature_order'), exist_ok=True)
+    problems, summary = [], {'dimensions': {}, 'targets': [], 'asked': bool(params.get('worldgen'))}
+    wg = boot.get('worldgen') or {}
+
+    analysis = None
+    p = os.path.join(dump_dir, 'worldgen_analysis.json')
+    if os.path.isfile(p):
+        try:
+            raw = read_json(p)
+            if raw.get('error'):
+                problems.append('worldgen: the feature order analysis failed in game: %s' % raw['error'])
+            analysis = raw.get('data')
+        except Exception as e:
+            problems.append('worldgen: worldgen_analysis.json is unreadable (%s)' % e)
+    elif boot.get('reached_done'):
+        problems.append('worldgen: the feature order of the dimensions was not read (no worldgen_analysis.json; see logs/kubejs/server.log for [icboot] lines)')
+    if analysis:
+        features = analysis.get('features') or []
+        for dim in sorted(analysis.get('dimensions') or {}):
+            rec = analysis['dimensions'][dim]
+            biomes = rec.get('biomes') or []
+            sorter = rec.get('sorter') or {}
+            verdict = sorter.get('verdict') or 'error'
+            duplicates, cycles = feature_cycles(biomes, features)
+            used = set(_int(x) for b in biomes for row in b['steps'] for x in row)
+            d = {'generator': rec.get('generator'), 'biome_source': rec.get('biome_source'), 'biomes': len(biomes),
+                 'features': len(used), 'feature_order': verdict, 'duplicates': duplicates, 'cycles': cycles}
+            if verdict != 'ok':
+                d['game_says'] = sorter.get('message')
+                d['game_names'] = sorted(set(RX_SORTER_BIOME.findall(sorter.get('message') or '')))
+            summary['dimensions'][dim] = d
+            lines = []
+            for b in sorted(biomes, key=lambda x: x['id']):
+                for s, row in enumerate(b['steps']):
+                    if row:
+                        lines.append('%s\t%s\t%s' % (b['id'], step_name(s), ' > '.join(features[_int(x)]['id'] for x in row)))
+            write_list(os.path.join(out_dir, 'feature_order', registry_file(dim)), lines)
+
+            if verdict == 'cycle':
+                def some(items, n):
+                    return ', '.join(items[:n]) + (' and %d more' % (len(items) - n) if len(items) > n else '')
+                what, groups = [], {}
+                # a feature twice in one biome's step: that biome alone closes the loop (the game names one such biome only)
+                for u in duplicates:
+                    groups.setdefault((u['step'], tuple(u['features'])), []).append(u)
+                for (_s, ids), us in sorted(groups.items()):
+                    if len(ids) > 1:
+                        head = '%s are ONE feature to the game (the same configured feature and placement under %d ids) and are both listed' % (' and '.join(ids), len(ids))
+                    else:
+                        head = '%s is listed twice' % ids[0]
+                    what.append('step %s: %s by %d biome(s): %s (places %s of %d in %s)' % (
+                        us[0]['step_name'], head, len(us), some([u['biome'] for u in us], 6),
+                        ' and '.join(str(x) for x in us[0]['positions'][:2]), us[0]['of'], us[0]['biome']))
+                # two or more biomes that disagree
+                for c in cycles:
+                    if c['one_biome_alone']:
+                        continue
+                    what.append('step %s: a loop of %d feature(s): %s' % (c['step_name'], len(c['loop']), '; '.join(
+                        '%s before %s in %s' % (e['from'], e['to'], some(e['biomes'], 3)) for e in c['loop'])))
+                if len(what) > 6:
+                    what = what[:6] + ['%d more: worldgen/summary.json' % (len(what) - 6)]
+                problems.append('worldgen: %s CANNOT GENERATE A CHUNK: feature order cycle (the game names %s). %s' % (
+                    dim, ', '.join(d['game_names']) or 'no biome', '; '.join(what) or 'this tool found no loop in the dumped lists: read worldgen/summary.json'))
+                if not cycles:
+                    problems.append('worldgen: %s: the game reports a feature order cycle and this tool finds none in the lists the helper dumped' % dim)
+            elif verdict != 'ok':
+                problems.append('worldgen: %s: the feature order could not be checked: %s' % (dim, (sorter.get('message') or '')[:300]))
+            elif cycles:
+                problems.append('worldgen: %s: this tool finds a feature order loop (step %s) that the game does not report: the tool is wrong about this dimension, read worldgen/summary.json' % (dim, cycles[0]['step_name']))
+
+    # ---- the chunks ----
+    chunks = None
+    p = os.path.join(dump_dir, 'worldgen.json')
+    if os.path.isfile(p):
+        try:
+            chunks = read_json(p).get('data')
+        except Exception as e:
+            problems.append('worldgen: worldgen.json is unreadable (%s)' % e)
+    # what the game logged while a target was open: the root cause of a failed chunk is there, not in what a script sees
+    causes, open_n = {}, None
+    for l in latest:
+        m = RX_WG_START.search(l)
+        if m:
+            open_n = int(m.group(1))
+            continue
+        if RX_WG_END.search(l):
+            open_n = None
+            continue
+        if open_n is not None:
+            m = RX_CAUSED_BY.match(l)
+            if m and m.group(1) not in causes.setdefault(open_n, []):
+                causes[open_n].append(m.group(1))
+    rows = []
+    if chunks:
+        if chunks.get('request_error'):
+            problems.append('worldgen: the request file could not be read in game: %s' % chunks['request_error'])
+        summary['far_chunk'], summary['spawn'], summary['force'] = chunks.get('far_chunk'), chunks.get('spawn'), bool(chunks.get('force'))
+        summary['helper_millis'] = _int(chunks.get('millis') or 0)
+        for n, t in enumerate(chunks.get('targets') or [], 1):
+            rec = {k: t.get(k) for k in ('dim', 'label', 'kind', 'status', 'stage', 'why', 'structure', 'biomes', 'starts', 'evidence')}
+            for k in ('chunk', 'located', 'failed_chunk'):
+                if t.get(k):
+                    rec[k] = [_int(x) for x in t[k]]
+            rec['chunks_ok'] = sum(1 for c in t.get('chunks') or [] if c[2] == 'ok')
+            rec['chunks_asked'] = (2 * _int(t.get('radius') or 0) + 1) ** 2 if t.get('chunk') else 0
+            rec['millis'] = _int(t['millis']) if t.get('millis') is not None else None
+            rec['was_loaded'] = bool(t.get('was_loaded'))
+            if t.get('status') == 'failed':
+                rec['error'] = list(t.get('error') or []) + [c for c in causes.get(n, []) if c not in (t.get('error') or [])]
+            summary['targets'].append(rec)
+            where = 'chunk %s %s' % tuple(rec['chunk']) if rec.get('chunk') else ''
+            rows.append('\t'.join([rec['dim'] or '', rec['kind'] or '', rec['label'] or '', rec['status'] or '', where,
+                                   '%d/%d' % (rec['chunks_ok'], rec['chunks_asked']), ', '.join(rec.get('biomes') or []),
+                                   str(rec['millis'] if rec['millis'] is not None else ''), rec.get('stage') or '',
+                                   (rec.get('why') or ' | '.join(rec.get('error') or []))[:400]]))
+            if rec['status'] == 'failed':
+                root = (rec['error'][-1] if rec.get('error') else 'no reason recorded')[:300]
+                other = rec.get('failed_chunk') and rec['failed_chunk'] != rec.get('chunk')
+                problems.append('worldgen: %s: %s did not generate (%s%s, biome %s, stage %s): %s' % (
+                    rec['dim'], rec['label'], where or 'no chunk', ', failed at chunk %s %s' % tuple(rec['failed_chunk']) if other else '',
+                    ', '.join(rec.get('biomes') or []) or '?', rec.get('stage'), root))
+            elif rec['status'] == 'ok' and rec['kind'] == 'dimension' and rec['was_loaded']:
+                problems.append('worldgen: %s: the chunk %s was already loaded: it proves nothing about new chunks' % (rec['dim'], where))
+        if not chunks.get('finished'):
+            problems.append('worldgen: the chunk generation stopped after %d of %s target(s)%s%s' % (
+                len(chunks.get('targets') or []), chunks.get('asked'), ': ' + wg['state'] if wg.get('state') else '',
+                '; in progress: ' + wg['in_progress'] if wg.get('in_progress') else ''))
+        elif wg.get('ticking_after') is False:
+            problems.append('worldgen: the server thread did not answer any more after the chunk generation')
+    elif params.get('worldgen') and boot.get('reached_done'):
+        problems.append('worldgen: no chunk was generated (%s)' % (wg.get('state') or 'the helper wrote nothing'))
+    write_list(os.path.join(out_dir, 'chunks.tsv'), ['dimension\tkind\ttarget\tstatus\tchunk\tchunks ok\tbiomes\tms\tstage\treason'] + rows)
+
+    dims = summary['dimensions']
+    default = {t['dim']: t for t in summary['targets'] if t['kind'] == 'dimension'}
+    for dim, d in dims.items():
+        d['chunk'] = (default.get(dim) or {}).get('status') or ('not asked' if not params.get('worldgen') else 'not reached')
+        if params.get('worldgen') and chunks and chunks.get('finished') and dim not in default:
+            problems.append('worldgen: %s: no chunk was asked for (the helper did not list this dimension)' % dim)
+    summary['counts'] = {
+        'dimensions': len(dims), 'feature_order_ok': sum(1 for d in dims.values() if d['feature_order'] == 'ok'),
+        'chunk_ok': sum(1 for d in dims.values() if d['chunk'] == 'ok'),
+        'extra_targets': sum(1 for t in summary['targets'] if t['kind'] != 'dimension'),
+        'extra_ok': sum(1 for t in summary['targets'] if t['kind'] != 'dimension' and t['status'] == 'ok'),
+        'seconds': wg.get('seconds')}
+    summary['state'] = wg.get('state')
+    summary['ticking_after'] = wg.get('ticking_after')
+    write_json(os.path.join(out_dir, 'summary.json'), summary)
+    return summary, problems
+
+
+def extract(result_dir, run_dir, scripts_in_tree, params=None, boot=None):
     logs = os.path.join(result_dir, 'logs')
     ex = os.path.join(result_dir, 'extract')
     reg = os.path.join(result_dir, 'registry')
@@ -1275,7 +1660,11 @@ def extract(result_dir, run_dir, scripts_in_tree):
     else:
         problems.append('logs/debug.log is missing: which mixins applied is not known for this boot')
     counts['registries'] = len(reg_counts)
-    return counts, problems, done_line
+
+    worldgen, wg_problems = read_worldgen(result_dir, latest, params or {}, boot or {})
+    counts['worldgen'] = worldgen['counts']
+    problems += wg_problems
+    return counts, problems, done_line, worldgen
 
 
 def copy_tree(src, dst):
@@ -1352,7 +1741,7 @@ def compose_check(result_dir, src_root, scripts_in_tree, label):
     es = os.path.join(src_root, '.minecraft', 'server_distribution', 'expected_state.json')
     if os.path.isfile(es):
         listed = set(m.group(1) + '/' + m.group(2) for m in re.finditer(r'"kubejs/(server|startup)_scripts/([^"]+\.js)"\s*:\s*\{', read_text(es)))
-        have = set('%s/%s' % (k, s) for k in ('server', 'startup') for s in scripts_in_tree[k] if s != HELPER_NAME)
+        have = set('%s/%s' % (k, s) for k in ('server', 'startup') for s in scripts_in_tree[k] if s not in HELPER_NAMES)
         if listed != have:
             notes.append("the tree's expected_state.json lists %d scripts the tree does not have and lacks %d it has (regenerate it before pushing)" % (len(listed - have), len(have - listed)))
     return notes
@@ -1492,7 +1881,10 @@ def cmd_run(req):
     params = {'heap': req.get('heap') or '8G', 'seed': str(req.get('seed') or '20261012'),
               'idle_seconds': int(req.get('idle_seconds') or 45), 'boot_timeout': int(req.get('boot_timeout') or 900),
               'stop_timeout': int(req.get('stop_timeout') or 240), 'jvm_extra': req.get('jvm_extra') or [],
-              'console': [c for c in (req.get('console') or []) if c and c.strip()]}
+              'console': [c for c in (req.get('console') or []) if c and c.strip()],
+              'worldgen': not req.get('no_chunks'), 'worldgen_timeout': int(req.get('worldgen_timeout') or 300),
+              'worldgen_force': bool(req.get('force_chunks')),
+              'worldgen_extra': list(DEFAULT_CHUNKS) + parse_chunk_lines(req.get('chunks') or [])}
     hm = heap_mb(params['heap'])
     params['heap_min'] = req.get('heap_min') or ('%dM' % (hm // 2))
     heap_mb(params['heap_min'])
@@ -1557,9 +1949,16 @@ def cmd_run(req):
                     shutil.copyfile(os.path.join(run_dir, 'console.log'), os.path.join(result_dir, 'console.log'))
             boot.pop('pid', None)
             result['boot'] = boot
-            counts, problems, _done_line = extract(result_dir, run_dir, scripts_in_tree)
+            counts, problems, _done_line, worldgen = extract(result_dir, run_dir, scripts_in_tree, params, boot)
             result['counts'] = counts
             result['problems'] += problems
+            # result.json carries the verdict per dimension; the loops and the lists are in worldgen/
+            result['worldgen'] = {'state': worldgen.get('state'), 'ticking_after': worldgen.get('ticking_after'), 'asked': worldgen['asked'],
+                                  'far_chunk': worldgen.get('far_chunk'), 'counts': worldgen['counts'],
+                                  'dimensions': {k: {'feature_order': v['feature_order'], 'chunk': v['chunk'], 'biomes': v['biomes'], 'features': v['features']}
+                                                 for k, v in worldgen['dimensions'].items()},
+                                  'targets': [{k: t.get(k) for k in ('dim', 'kind', 'label', 'status', 'chunk', 'chunks_ok', 'chunks_asked', 'biomes', 'millis', 'stage')}
+                                              for t in worldgen['targets']]}
             write_list(os.path.join(result_dir, 'config_generated.txt'), config_generated(run_dir, src_root))
             result['notes'] += compose_check(result_dir, src_root, scripts_in_tree, label)
             if boot.get('heap_dumps'):
@@ -1617,6 +2016,7 @@ def cmd_finish(req):
     write_json(os.path.join(result_dir, 'summary.json'), {
         'name': result['name'], 'verdict': verdict, 'exit_code': code, 'tool_version': result['tool_version'],
         'heap': result['params']['heap'], 'seed': result['params']['seed'], 'label': result['source'].get('label') or '',
+        'chunks': bool(result['params'].get('worldgen')), 'forced': bool(result['params'].get('worldgen_force')),
         'sha': result['source'].get('sha') or '', 'kind': result['source']['kind'], 'finished': result.get('finished') or ''})
 
     c = result.get('counts') or {}
@@ -1639,7 +2039,24 @@ def cmd_finish(req):
             say('mixins   : %d classes applied up to Done and %d after it, from %d of %d registered configs' % (
                 c['mixins_applied'], c.get('mixins_applied_after_done', 0), c['mixin_configs_applied'], c['mixin_configs_registered']))
         sl = c.get('scripts_loaded') or {}
-        say('scripts  : %s server, %s startup loaded (the server count includes the rig helper)' % (sl.get('server'), sl.get('startup')))
+        say('scripts  : %s server, %s startup loaded (the server count includes the two rig helpers)' % (sl.get('server'), sl.get('startup')))
+        w = c.get('worldgen') or {}
+        if w.get('dimensions'):
+            line = 'worldgen : feature order without a cycle in %d of %d dimensions' % (w['feature_order_ok'], w['dimensions'])
+            if (result.get('worldgen') or {}).get('asked'):
+                line += '; a new chunk generated in %d of %d' % (w['chunk_ok'], w['dimensions'])
+                if w.get('extra_targets'):
+                    line += '; %d of %d other target(s)' % (w['extra_ok'], w['extra_targets'])
+                if w.get('seconds') is not None:
+                    line += ' (%.0f s)' % w['seconds']
+            else:
+                line += '; no chunk asked for (-NoChunks)'
+            say(line)
+            bad = sorted(k for k, v in (result['worldgen'].get('dimensions') or {}).items()
+                         if v['feature_order'] != 'ok' or (result['worldgen'].get('asked') and v['chunk'] != 'ok'))
+            for k in bad:
+                v = result['worldgen']['dimensions'][k]
+                say('  %-36s feature order %s, new chunk %s' % (k, v['feature_order'], v['chunk']))
     if check.get('verdict'):
         v = check['verdict']
         say('checker  : %s - %s; %d known defect(s) of the pack, %d other finding(s)' % (v['worst'], v['tail'], len(known), len(new)))
@@ -1833,6 +2250,72 @@ def diff_results(a_dir, b_dir):
     for f in out['checker']['findings_new']:
         if f['sev'] == 'RED':
             out['regressions'].append('checker: %s %s (%s)' % (f['kind'], f['id'], f['detail'][:140]))
+
+    # worldgen: the verdict per dimension, the other targets, and what changed in the lists the game sorts
+    wa, wb = ra.get('worldgen'), rb.get('worldgen')
+    wg = {'dimensions': {}, 'targets': {}, 'feature_order': {}, 'compared': bool(wa and wb)}
+    out['worldgen'] = wg
+    if not (wa and wb):
+        out['notes'].append('no worldgen check on the %s side (a result of an older tool): feature order and new chunks are not compared'
+                            % ('base' if not wa else 'new'))
+    else:
+        both_asked = bool(wa.get('asked') and wb.get('asked'))
+        if not both_asked:
+            out['notes'].append('chunks were not asked for on one side (-NoChunks): only the feature order is compared')
+        dma, dmb = wa.get('dimensions') or {}, wb.get('dimensions') or {}
+        for dim in sorted(set(dma) | set(dmb)):
+            a, b = dma.get(dim), dmb.get(dim)
+            pa = [a['feature_order'], a['chunk']] if a else None
+            pb = [b['feature_order'], b['chunk']] if b else None
+            if pa != pb:
+                wg['dimensions'][dim] = [pa, pb]
+            if b and b['feature_order'] != 'ok' and (a is None or a['feature_order'] == 'ok'):
+                out['regressions'].append('worldgen: %s has a feature order %s now: no chunk of it can generate (the PROBLEM lines of the new boot name the features)' % (dim, b['feature_order']))
+            elif both_asked and a and b and a['chunk'] == 'ok' and b['chunk'] != 'ok':
+                out['regressions'].append('worldgen: %s generated a new chunk in the base and does not in the new tree (%s)' % (dim, b['chunk']))
+        ta = {(t['dim'], t['label']): t for t in wa.get('targets') or [] if t.get('kind') != 'dimension'}
+        tb = {(t['dim'], t['label']): t for t in wb.get('targets') or [] if t.get('kind') != 'dimension'}
+        for key in sorted(set(ta) | set(tb)):
+            a, b = ta.get(key), tb.get(key)
+            if (a or {}).get('status') != (b or {}).get('status'):
+                wg['targets']['%s: %s' % key] = [(a or {}).get('status'), (b or {}).get('status')]
+            if a and b and a.get('status') == 'ok' and b.get('status') != 'ok':
+                out['regressions'].append('worldgen: %s: %s generated in the base and does not in the new tree (%s)' % (key[0], key[1], b.get('status')))
+
+        def lists(d):
+            got = {}
+            root = os.path.join(d, 'worldgen', 'feature_order')
+            for fn in sorted(os.listdir(root)) if os.path.isdir(root) else []:
+                dim = fn[:-4].replace('__', ':').replace('--', '/')
+                for line in read_list(os.path.join(root, fn)):
+                    parts = line.split('\t')
+                    if len(parts) == 3:
+                        got.setdefault(dim, {})[(parts[0], parts[1])] = parts[2].split(' > ')
+            return got
+        la, lb = lists(a_dir), lists(b_dir)
+        for dim in sorted(set(la) | set(lb)):
+            ch = []
+            xa, xb = la.get(dim, {}), lb.get(dim, {})
+            for key in sorted(set(xa) | set(xb)):
+                fa, fb = xa.get(key, []), xb.get(key, [])
+                if fa == fb:
+                    continue
+                # the pairs of kept features that changed places (None when there are more than a handful)
+                ua, pos = [f for f in dict.fromkeys(fa) if f in fb], {f: i for i, f in enumerate(dict.fromkeys(fb))}
+                swapped = []
+                for i, x in enumerate(ua):
+                    for y in ua[i + 1:]:
+                        if swapped is not None and pos[x] > pos[y]:
+                            swapped.append([x, y])
+                            if len(swapped) > 6:
+                                swapped = None
+                    if swapped is None:
+                        break
+                ch.append({'biome': key[0], 'step': key[1], 'added': [f for f in fb if f not in fa], 'removed': [f for f in fa if f not in fb],
+                           'twice_before': sorted(set(f for f in fa if fa.count(f) > 1)), 'twice_now': sorted(set(f for f in fb if fb.count(f) > 1)),
+                           'reordered': swapped != [], 'swapped': swapped, 'before': len(fa), 'now': len(fb)})
+            if ch:
+                wg['feature_order'][dim] = ch
     return out
 
 
@@ -1921,6 +2404,41 @@ def diff_text(d):
         cap = 15 if k.endswith(('ERROR', 'FATAL')) or k.startswith('kubejs') else 6
         L += _cap(v['new'], cap, lambda x: 'new  x%d: %s' % (x['count'], x['sig'][:170])) + _cap(v['gone'], cap, lambda x: 'gone x%d: %s' % (x['count'], x['sig'][:170]))
     L.append('')
+    w = d.get('worldgen') or {}
+    if w.get('compared'):
+        L.append('worldgen: %d dimension(s) with another verdict, %d other target(s) with another outcome, %d dimension(s) whose feature lists changed' % (
+            len(w['dimensions']), len(w['targets']), len(w['feature_order'])))
+        for dim in sorted(w['dimensions']):
+            a, b = w['dimensions'][dim]
+            show = lambda p: 'absent' if p is None else 'feature order %s, new chunk %s' % tuple(p)
+            L.append('      %s: %s -> %s' % (dim, show(a), show(b)))
+        for key in sorted(w['targets']):
+            L.append('      %s: %s -> %s' % (key, w['targets'][key][0], w['targets'][key][1]))
+        for dim in sorted(w['feature_order']):
+            ch = w['feature_order'][dim]
+            L.append('  %s: %d biome/step list(s) changed' % (dim, len(ch)))
+            # the same few features changing places in many biomes is ONE change (one modifier applied before another)
+            only_order, groups = [c for c in ch if c.get('swapped') and not c['added'] and not c['removed'] and c['twice_before'] == c['twice_now']], {}
+            for c in only_order:
+                groups.setdefault((c['step'], tuple(tuple(p) for p in c['swapped'])), []).append(c['biome'])
+            for (step, pairs), biomes in sorted(groups.items(), key=lambda g: -len(g[1])):
+                L.append('      %d list(s) of step %s, the same features only: %s changed places (%s%s)' % (
+                    len(biomes), step, '; '.join('%s and %s' % p for p in pairs), ', '.join(biomes[:3]), ' and %d more' % (len(biomes) - 3) if len(biomes) > 3 else ''))
+            ch = [c for c in ch if c not in only_order]
+
+            def one(c):
+                bits = []
+                if c['added']:
+                    bits.append('+ ' + ', '.join(c['added'][:4]) + (' ...' if len(c['added']) > 4 else ''))
+                if c['removed']:
+                    bits.append('- ' + ', '.join(c['removed'][:4]) + (' ...' if len(c['removed']) > 4 else ''))
+                if c['twice_before'] != c['twice_now']:
+                    bits.append('listed twice: %s -> %s' % (', '.join(c['twice_before']) or 'none', ', '.join(c['twice_now']) or 'none'))
+                if c['reordered']:
+                    bits.append('order of the kept features changed')
+                return '%s %s (%d -> %d): %s' % (c['biome'], c['step'], c['before'], c['now'], '; '.join(bits) or 'changed')
+            L += _cap(ch, 12, one)
+        L.append('')
     c = d['checker']
     L.append('boot-log checker: %s -> %s; %d finding(s) only in the new boot, %d only in the base' % (c['base'], c['new'], len(c['findings_new']), len(c['findings_gone'])))
     L += _cap(c['findings_new'], 15, lambda f: 'new : %s %s %s: %s' % (f['sev'], f['kind'], f['id'], f['detail'][:150]))
