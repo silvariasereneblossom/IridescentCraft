@@ -806,8 +806,19 @@ const RATCHET_FILES = [
 ];
 function ratchetAgainst(baseRef, headRef) {
   const { execFileSync } = require('child_process');
+  // Git starts a hook with GIT_DIR (and friends) set. With them, `git -C <this folder>` takes this folder for the
+  // TOP of the work tree: --show-prefix answers '', every counts file reads as "not in the base", and the
+  // comparison passes without having compared anything (seen in the first real hook run, 2026-10-13). So git is
+  // started without the variables that tie a process to one repository (git rev-parse --local-env-vars) and
+  // finds the repository from this folder, as it does outside a hook.
+  const env = Object.assign({}, process.env);
+  for (const k of Object.keys(env)) {
+    if (['GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_CONFIG', 'GIT_CONFIG_PARAMETERS', 'GIT_CONFIG_COUNT', 'GIT_OBJECT_DIRECTORY', 'GIT_DIR', 'GIT_WORK_TREE',
+      'GIT_IMPLICIT_WORK_TREE', 'GIT_GRAFT_FILE', 'GIT_INDEX_FILE', 'GIT_NO_REPLACE_OBJECTS', 'GIT_REPLACE_REF_BASE', 'GIT_PREFIX', 'GIT_SHALLOW_FILE',
+      'GIT_COMMON_DIR', 'GIT_INTERNAL_SUPER_PREFIX', 'GIT_NAMESPACE', 'GIT_CEILING_DIRECTORIES'].indexOf(k.toUpperCase()) >= 0) delete env[k];
+  }
   const git = (args, okFail) => {
-    try { return execFileSync('git', ['-C', __dirname].concat(args), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 }); }
+    try { return execFileSync('git', ['-C', __dirname].concat(args), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024, env }); }
     catch (e) { if (okFail) return null; console.error('[trap-lint] CANNOT RUN: git ' + args.join(' ') + ' failed: ' + String(e.stderr || e.message).trim()); process.exit(2); }
   };
   // this folder as git names it inside the repository ('.minecraft/dev/'). Asked of git, not computed from
@@ -821,6 +832,18 @@ function ratchetAgainst(baseRef, headRef) {
     return sha.trim();
   };
   const base = resolve(baseRef), head = headRef === null ? null : resolve(headRef);
+  // The path must be RIGHT before "the file is not in the base" can mean "older than the rule": the commit that
+  // is judged (the head, or the checkout this lint runs from) holds this very lint under it.
+  {
+    const self = inRepo(path.basename(__filename));
+    const here = head === null ? git(['ls-files', '--error-unmatch', '--', path.basename(__filename)], true) !== null
+      : git(['cat-file', '-e', head + ':' + self], true) !== null;
+    if (!here) {
+      console.error('[trap-lint] CANNOT RUN: this lint is not at ' + self + ' in ' + (head === null ? 'the checkout' : headRef) +
+        ': the path of this folder inside the repository was worked out wrong (prefix "' + prefix + '"), so nothing could be compared');
+      process.exit(2);
+    }
+  }
   // `git show <sha>:<path>`; null when the path does not exist in that commit
   const at = (sha, abs) => {
     const rel = inRepo(path.basename(abs));

@@ -365,6 +365,38 @@ function partGitEnv() {
     check('git-env: PART ratchet-base passes when the test is started with GIT_DIR set (exit ' + child.status + ')', child.status === 0 && /16 case\(s\), 0 failed/.test(child.stdout || ''),
       ((child.stdout || '') + (child.stderr || '')).split(/\r?\n/).filter(l => !/^ok /.test(l)).slice(-12).join('\n'));
     check('git-env: and the decoy config is still byte for byte what it was', fs.readFileSync(cfg, 'utf8') === before, fs.readFileSync(cfg, 'utf8'));
+    // 4. the lint's own --ratchet-base, started the way a hook of ITS repository starts it: GIT_DIR names the
+    //    repository, the process sits somewhere inside it. A raised count must still be found. (With the
+    //    variable left in, git answered an empty prefix, the counts file read as "not in the base", and the
+    //    comparison passed without comparing: the first real hook run, 2026-10-13.)
+    const repo = tmpDir('hookrepo');
+    try {
+      const DEV = '.minecraft/dev/';
+      const counts = (n) => JSON.stringify({ files: { 'server_scripts/a.js': { count: n, ids: [] } } }) + '\n';
+      const git = newRepo(repo);
+      write(repo, DEV + 'lint_kubejs_traps.js', fs.readFileSync(LINT));
+      write(repo, DEV + 'lint_kubejs_traps.exceptions.json', '{ "exceptions": [] }\n');
+      write(repo, DEV + 'lint_kubejs_traps.silent_catches.json', counts(2));
+      write(repo, '.minecraft/kubejs/server_scripts/a.js', '// a\n');
+      commitAll(git, 'base');
+      write(repo, DEV + 'lint_kubejs_traps.silent_catches.json', counts(3));
+      commitAll(git, 'raised');
+      const inHook = Object.assign({}, CLEAN_ENV, { GIT_DIR: path.join(repo, '.git'), GIT_INDEX_FILE: path.join(repo, '.git', 'index'), GIT_PREFIX: '' });
+      const r = spawnSync(process.execPath, ['--expose-internals', path.join(repo, DEV, 'lint_kubejs_traps.js'), '--ratchet-base=HEAD~1', '--ratchet-head=HEAD'],
+        { cwd: repo, encoding: 'utf8', env: inHook });
+      const out = (r.stdout || '') + (r.stderr || '');
+      check('git-env: --ratchet-base still compares when it is started from a hook (GIT_DIR set): a raised count is flagged (exit ' + r.status + ')',
+        r.status === 1 && out.indexOf('server_scripts/a.js:0\tRATCHET-RAISED') >= 0 && out.indexOf('1 counts file(s) compared') >= 0 && out.indexOf('lint_kubejs_traps.silent_catches.json: 2 -> 3') >= 0, out);
+      // and a lint that cannot find itself under the path it worked out says so instead of passing
+      fs.mkdirSync(path.join(repo, 'elsewhere'), { recursive: true });
+      for (const f of ['lint_kubejs_traps.js', 'lint_kubejs_traps.exceptions.json', 'lint_kubejs_traps.silent_catches.json'])
+        fs.copyFileSync(path.join(repo, DEV, f), path.join(repo, 'elsewhere', f));
+      write(repo, 'kubejs/server_scripts/a.js', '// a\n');
+      const lost = spawnSync(process.execPath, ['--expose-internals', path.join(repo, 'elsewhere', 'lint_kubejs_traps.js'), '--ratchet-base=HEAD~1', '--ratchet-head=HEAD'],
+        { cwd: repo, encoding: 'utf8', env: CLEAN_ENV });
+      check('git-env: a lint that is not in the commit it judges cannot run (exit ' + lost.status + '), it does not pass',
+        lost.status === 2 && ((lost.stdout || '') + (lost.stderr || '')).indexOf('CANNOT RUN') >= 0, (lost.stdout || '') + (lost.stderr || ''));
+    } finally { rmrf(repo); }
   } finally { rmrf(decoy); rmrf(work); }
 }
 
