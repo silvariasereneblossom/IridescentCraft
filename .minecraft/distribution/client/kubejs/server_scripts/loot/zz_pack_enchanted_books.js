@@ -63,9 +63,7 @@
     console.log('[icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)')
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('twilightforest:twilight_forest',
-        'aether:the_aether',
-        'blue_skies:everbright', 'blue_skies:everdawn')
+      .anyDimension(icraft.dims.inTier(2, 'loot'))
       .addLoot(
         LootEntry.of('minecraft:book')
           .enchantWithLevels(UniformGenerator.between(15, 30), true)
@@ -75,7 +73,7 @@
     console.log('[icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden/DD/Abyss, 12.5%, levels 20-30)')
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+      .anyDimension(icraft.dims.inTier(3, 'loot'))
       .addLoot(
         LootEntry.of('minecraft:book')
           .enchantWithLevels(UniformGenerator.between(20, 30), true)

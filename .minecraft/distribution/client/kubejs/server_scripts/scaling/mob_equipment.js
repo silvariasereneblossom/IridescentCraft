@@ -19,17 +19,13 @@
 //   quality scales with difficulty while this script scales with dimension
 // =============================================================================
 
-// Entities with abstract getItemBySlot / setItemSlot that crash on access.
-// Keep in sync with the BROKEN_ENTITIES list in mob_scaling_unified.js.
-// Rhino's try/catch does NOT catch java.lang.Error subclasses like
-// AbstractMethodError, so we must early-exit BEFORE any item-slot access.
-const MOB_EQUIP_BROKEN_ENTITIES = new Set([
-  'irons_spellbooks:necromancer',
-  'irons_spellbooks:archevoker',
-  'irons_spellbooks:cryomancer',
-  'irons_spellbooks:pyromancer',
-  'irons_spellbooks:priest',
-])
+// The five Iron's Spellbooks casters these spawn scripts must not touch are the
+// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
+// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
+// ids stood here, and in four other scripts, each "kept in sync" by hand.
+// The reason is unchanged: on these classes an item-slot or NBT access throws a
+// java.lang.Error (AbstractMethodError), which no script catch sees, so the
+// test has to come BEFORE any such access.
 // 2026-04-22: even after extending the set the log STILL showed
 // NecromancerEntity.getItemBySlot AbstractMethodError in spawned handlers.
 // All AbstractSpellCastingMob subclasses in irons_spellbooks share the
@@ -102,11 +98,11 @@ EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned
   // would otherwise be equipped and leak gear via death drops. (A2 / PROJ-1.)
   if (isMobEquipBlacklisted(entity)) return
   // Centralized ISS-mob skip + bail log via 0_iss_guard.js. The local
-  // BROKEN_ENTITIES + isIronsSpellbooksMob checks below remain as a
+  // The `caster` test (boss registry) + isIronsSpellbooksMob below remain as a
   // fallback in case the guard script ever fails to load first.
   if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'mob_equipment')) return
   var resId = entityResId(entity)
-  if (MOB_EQUIP_BROKEN_ENTITIES.has(resId)) return
+  if (icraft.bosses.has(resId, 'caster')) return
   if (isIronsSpellbooksMob(resId)) return
   if (entity.persistentData.contains('icraft_equipped')) return
 
@@ -131,121 +127,21 @@ EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned
   entity.persistentData.putBoolean('icraft_equipped', true)
 }))
 
+// The gear roll of a dimension = `mobEquipment` on its entry in the dimension
+// registry (kubejs/config/icraft/registry/dimensions.json, through icraft.dims):
+// chance, the five item pools, enchantLevel, fullSetChance. Until 2026-10-13
+// the ten configs stood here (tier 1: 5%, leather/iron; tier 2: 20-25%,
+// iron/steel; tier 3: 40-50%, steel/diamond; tier 4: 75%, diamond/netherite).
+// null = no roll in that dimension.
+// (Deep Aether has no entry: it registers no dimension, its mobs spawn inside
+//  aether:the_aether and use the Aether config, as they always have. Ruling
+//  2026-10-11: Deep Aether scales with the Aether.)
+// One copy per dimension is kept: the reader hands out a fresh copy per call.
+var EQUIP_CONFIG_CACHE = {}
 function getEquipConfig(dim) {
-  const CONFIGS = {
-    // Tier 1: 5% chance, leather/iron, no enchants
-    'minecraft:overworld': {
-      chance: 0.05,
-      weapons: ['minecraft:iron_sword', 'minecraft:iron_axe'],
-      helmets: ['minecraft:leather_helmet', 'minecraft:iron_helmet'],
-      chests:  ['minecraft:leather_chestplate', 'minecraft:iron_chestplate'],
-      legs:    ['minecraft:leather_leggings', 'minecraft:iron_leggings'],
-      boots:   ['minecraft:leather_boots', 'minecraft:iron_boots'],
-      enchantLevel: 0,
-      fullSetChance: 0.2  // 20% get full set, rest get random pieces
-    },
-
-    // Tier 2: 20-25% chance, iron/steel tier
-    'twilightforest:twilight_forest': {
-      chance: 0.20,
-      weapons: ['minecraft:iron_sword', 'minecraft:iron_axe', 'twilightforest:steeleaf_sword'],
-      helmets: ['minecraft:iron_helmet', 'minecraft:chainmail_helmet'],
-      chests:  ['minecraft:iron_chestplate', 'minecraft:chainmail_chestplate'],
-      legs:    ['minecraft:iron_leggings', 'minecraft:chainmail_leggings'],
-      boots:   ['minecraft:iron_boots', 'minecraft:chainmail_boots'],
-      enchantLevel: 1,
-      fullSetChance: 0.3
-    },
-    'blue_skies:everbright': {
-      chance: 0.25,
-      weapons: ['minecraft:iron_sword', 'minecraft:iron_axe'],
-      helmets: ['minecraft:iron_helmet', 'minecraft:chainmail_helmet'],
-      chests:  ['minecraft:iron_chestplate'],
-      legs:    ['minecraft:iron_leggings'],
-      boots:   ['minecraft:iron_boots'],
-      enchantLevel: 1,
-      fullSetChance: 0.3
-    },
-    'blue_skies:everdawn': {
-      chance: 0.25,
-      weapons: ['minecraft:iron_sword', 'minecraft:iron_axe'],
-      helmets: ['minecraft:iron_helmet', 'minecraft:chainmail_helmet'],
-      chests:  ['minecraft:iron_chestplate'],
-      legs:    ['minecraft:iron_leggings'],
-      boots:   ['minecraft:iron_boots'],
-      enchantLevel: 1,
-      fullSetChance: 0.3
-    },
-    'aether:the_aether': {
-      chance: 0.25,
-      weapons: ['minecraft:iron_sword', 'minecraft:iron_axe'],
-      helmets: ['minecraft:iron_helmet'],
-      chests:  ['minecraft:iron_chestplate', 'minecraft:diamond_chestplate'],
-      legs:    ['minecraft:iron_leggings'],
-      boots:   ['minecraft:iron_boots'],
-      enchantLevel: 1,
-      fullSetChance: 0.35
-    },
-
-    // Tier 3: 40-50% chance, steel/diamond tier
-    'undergarden:undergarden': {
-      chance: 0.40,
-      weapons: ['minecraft:iron_sword', 'minecraft:diamond_sword', 'minecraft:diamond_axe'],
-      helmets: ['minecraft:iron_helmet', 'minecraft:diamond_helmet'],
-      chests:  ['minecraft:iron_chestplate', 'minecraft:diamond_chestplate'],
-      legs:    ['minecraft:iron_leggings', 'minecraft:diamond_leggings'],
-      boots:   ['minecraft:iron_boots', 'minecraft:diamond_boots'],
-      enchantLevel: 2,
-      fullSetChance: 0.4
-    },
-    'deeperdarker:otherside': {
-      chance: 0.45,
-      weapons: ['minecraft:diamond_sword', 'minecraft:diamond_axe'],
-      helmets: ['minecraft:diamond_helmet', 'minecraft:iron_helmet'],
-      chests:  ['minecraft:diamond_chestplate'],
-      legs:    ['minecraft:diamond_leggings'],
-      boots:   ['minecraft:diamond_boots'],
-      enchantLevel: 3,
-      fullSetChance: 0.45
-    },
-    'minecraft:the_nether': {
-      chance: 0.50,
-      weapons: ['minecraft:diamond_sword', 'minecraft:diamond_axe', 'minecraft:netherite_sword'],
-      helmets: ['minecraft:diamond_helmet', 'minecraft:netherite_helmet'],
-      chests:  ['minecraft:diamond_chestplate', 'minecraft:netherite_chestplate'],
-      legs:    ['minecraft:diamond_leggings'],
-      boots:   ['minecraft:diamond_boots', 'minecraft:netherite_boots'],
-      enchantLevel: 3,
-      fullSetChance: 0.5
-    },
-    'theabyss:the_abyss': {
-      chance: 0.45,
-      weapons: ['minecraft:diamond_sword', 'minecraft:diamond_axe'],
-      helmets: ['minecraft:diamond_helmet'],
-      chests:  ['minecraft:diamond_chestplate'],
-      legs:    ['minecraft:diamond_leggings'],
-      boots:   ['minecraft:diamond_boots'],
-      enchantLevel: 2,
-      fullSetChance: 0.4
-    },
-
-    // Tier 4: 75% chance, diamond/netherite tier
-    // (A 60% netherite config for 'deep_aether:the_aether' stood here until
-    //  2026-10-12. No such dimension exists: Deep Aether's biomes generate
-    //  inside aether:the_aether, so its mobs use the Aether config above, as
-    //  they always have. Ruling 2026-10-11: Deep Aether scales with the Aether.)
-    'minecraft:the_end': {
-      chance: 0.75,
-      weapons: ['minecraft:netherite_sword', 'minecraft:netherite_axe', 'minecraft:diamond_sword'],
-      helmets: ['minecraft:netherite_helmet', 'minecraft:diamond_helmet'],
-      chests:  ['minecraft:netherite_chestplate'],
-      legs:    ['minecraft:netherite_leggings'],
-      boots:   ['minecraft:netherite_boots'],
-      enchantLevel: 5,
-      fullSetChance: 0.7
-    },
-  }
-  return CONFIGS[dim] || null
+  var key = String(dim)
+  if (!EQUIP_CONFIG_CACHE.hasOwnProperty(key)) EQUIP_CONFIG_CACHE[key] = icraft.dims.get(key, 'mobEquipment')
+  return EQUIP_CONFIG_CACHE[key]
 }
 
 function equipMob(entity, config) {

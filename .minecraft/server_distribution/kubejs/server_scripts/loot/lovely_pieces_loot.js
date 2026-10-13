@@ -182,7 +182,7 @@ LootJS.modifiers(icraft.guard('loot/lovely_pieces_loot', 'LootJS.modifiers', fun
   icraft.section('loot/lovely_pieces_loot/t2-progression-dimensions-every-chest', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
     .randomChance(LSP_T2_SHARE)
     .addWeightedLoot(LSP_T2)
   })
@@ -193,7 +193,7 @@ LootJS.modifiers(icraft.guard('loot/lovely_pieces_loot', 'LootJS.modifiers', fun
   icraft.section('loot/lovely_pieces_loot/t3-nether-tier-dimensions-endgame-overworld', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
     .randomChance(LSP_T3_SHARE)
     .addWeightedLoot(LSP_T3)
 

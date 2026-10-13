@@ -27,26 +27,12 @@
 
 // (IIFE - all KubeJS files of one type share a single Rhino scope; see dev/lint_kubejs_scope.py)
 ;(function () {
-const DIMENSION_DURABILITY_LOSS = {
-  'minecraft:overworld':                0.10,
-  'twilightforest:twilight_forest':     0.12,
-  'blue_skies:everbright':              0.14,
-  'blue_skies:everdawn':                0.14,
-  'aether:the_aether':                  0.15,
-  'undergarden:undergarden':            0.17,
-  'deeperdarker:otherside':             0.18,
-  'theabyss:the_abyss':                 0.18,
-  'minecraft:the_nether':               0.20,
-  'minecraft:the_end':                  0.25,
-  // Ad Astra Planets (Post-T4 Endgame)
-  'ad_astra:moon':                      0.22,
-  'ad_astra:mars':                      0.25,
-  'ad_astra:mercury':                   0.27,
-  'ad_astra:venus':                     0.28,
-  'ad_astra:glacio':                    0.30
-}
+// Durability lost on death, per dimension = `deathPenalty` on its entry in the
+// dimension registry (kubejs/config/icraft/registry/dimensions.json, through
+// icraft.dims). Until 2026-10-13 the fifteen values stood here; the table in
+// the header above is what they are today.
 
-// Fallback for unrecognized dimensions
+// Fallback for a dimension that has no entry, or no deathPenalty on it
 const DEFAULT_LOSS = 0.15
 
 // Soulbound enchant ID (Ensorcellation)
@@ -110,7 +96,7 @@ EntityEvents.death(icraft.guard('death_penalty', 'EntityEvents.death', event => 
   })()
 
   // Get loss percentage for this dimension
-  let lossPct = DIMENSION_DURABILITY_LOSS[dimId] || DEFAULT_LOSS
+  let lossPct = icraft.dims.get(dimId, 'deathPenalty') || DEFAULT_LOSS
 
   // --- Check Soulbound on each item individually ---
   // We process armor slots + mainhand + offhand

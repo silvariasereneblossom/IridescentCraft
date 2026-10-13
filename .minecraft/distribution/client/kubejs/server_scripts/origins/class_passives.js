@@ -68,23 +68,15 @@
   //     aether:the_aether, so it is tier 2 with the Aether.
   // No substring tests: `includes('aether')` also "matched" a Deep Aether id
   // that does not exist, and would match any later id that merely contains it.
-  var DIMENSION_TIER = {
-    'twilightforest:twilight_forest': 2,
-    'aether:the_aether': 2,
-    'blue_skies:everbright': 2,
-    'blue_skies:everdawn': 2,
-    'minecraft:the_nether': 3,
-    'undergarden:undergarden': 3,
-    'deeperdarker:otherside': 3,
-    'theabyss:the_abyss': 3,
-    'theabyss:frost_world': 3,
-    'minecraft:the_end': 4
-  }
+  // The table is the dimension registry (kubejs/config/icraft/registry/
+  // dimensions.json, through icraft.dims): a dimension with the flag
+  // `classPassives` counts, with its tier. Until 2026-10-13 the ten entries
+  // stood here.
 
   var detectDimensionTier = function (player) {
     var data = player.persistentData
     var tier = data.getInt('icraft_detected_tier') || 1
-    var here = DIMENSION_TIER[String(player.level.dimension)]
+    var here = icraft.dims.get(String(player.level.dimension), 'classPassives')
     if (here > tier) tier = here
 
     data.putInt('icraft_detected_tier', tier)

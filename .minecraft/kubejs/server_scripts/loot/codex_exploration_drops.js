@@ -93,12 +93,7 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
   icraft.section('loot/codex_exploration_drops/t2-twilight-forest-aether-blue-skies-every', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension(
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright',
-      'blue_skies:everdawn'
-    )
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
     .addLoot(
       LootEntry.of(TOK_T2).limitCount([2, 4]).when(c => c.randomChance(0.45))
     )
@@ -113,12 +108,7 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
   icraft.section('loot/codex_exploration_drops/t3-nether-undergarden-deeper-darker-the', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension(
-      'minecraft:the_nether',
-      'undergarden:undergarden',
-      'deeperdarker:otherside',
-      'theabyss:the_abyss'
-    )
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([2, 5]).when(c => c.randomChance(0.45))
     )

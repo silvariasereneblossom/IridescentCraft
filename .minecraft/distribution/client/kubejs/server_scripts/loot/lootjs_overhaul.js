@@ -406,9 +406,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   //  dimension of its own, so that id never matched anything. 2026-10-10.)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn', 'minecraft:the_nether', 'undergarden:undergarden',
-      'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTiers([2, 3], 'loot'))
     .addLoot(LootEntry.of('relics:shadow_glaive').when(c => c.randomChance(0.01)))
 
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
@@ -642,9 +640,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
     .addLoot(
       LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
     )
@@ -652,7 +648,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // T3 (Nether, Undergarden, Deeper Darker, Abyss): Archmage spell book (3%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
     )
@@ -730,8 +726,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var glyphT2PerItem = 0.14 / glyphT2.length  // ~14% combined
   var glyphModT2 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
   glyphT2.forEach(g => {
     glyphModT2.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT2PerItem)))
   })
@@ -748,7 +743,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var glyphT3PerItem = 0.15 / glyphT3.length  // ~15% combined
   var glyphModT3 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
   glyphT3.forEach(g => {
     glyphModT3.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT3PerItem)))
   })
@@ -781,8 +776,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   glyphT2.concat(glyphT3, glyphT4).forEach(g => { _glyphStripOW.removeLoot(g) })
 
   var _glyphStripT2 = event.addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
   glyphT3.concat(glyphT4).forEach(g => { _glyphStripT2.removeLoot(g) })
   })
 
@@ -879,8 +873,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
   artifactT2Pool.forEach(item => {
     modT2.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
   })
@@ -937,7 +930,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
   artifactT3Pool.forEach(function(item) {
     modT3.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT3PerItem)))
   })
@@ -2013,10 +2006,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   icraft.section('loot/lootjs_overhaul/section-5a1.5-pre-t3-diamond-hard-strip', function () {
   var preT3DiamondStrip = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld',
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTiers([1, 2], 'loot'))
   preT3DiamondStrip.removeLoot('minecraft:diamond')
   preT3DiamondStrip.removeLoot('minecraft:diamond_sword')
   preT3DiamondStrip.removeLoot('minecraft:diamond_pickaxe')
@@ -2073,10 +2063,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var regexDiamondStrip = event
     .addLootTableModifier(/^[a-z0-9_]+:.*chests?\/.*/,
       'minecraft:house_1', /^ctov:(?:village|pillager_outpost)\/.*/)
-    .anyDimension('minecraft:overworld',
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTiers([1, 2], 'loot'))
   regexDiamondStrip.removeLoot('minecraft:diamond')
   regexDiamondStrip.removeLoot('minecraft:diamond_sword')
   regexDiamondStrip.removeLoot('minecraft:diamond_pickaxe')
@@ -2110,24 +2097,15 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   icraft.section('loot/lootjs_overhaul/pre-t3-diamonds-outside-the-chest-context', function () {
   event
     .addLootTableModifier('aquaculture:box/treasure_chest')
-    .anyDimension('minecraft:overworld',
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTiers([1, 2], 'loot'))
     .replaceLoot('minecraft:diamond', LootEntry.of('minecraft:emerald'), true)
   event
     .addLootTableModifier('aether:selectors/whirlwind_junk', 'aether:selectors/evil_whirlwind_junk')
-    .anyDimension('minecraft:overworld',
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTiers([1, 2], 'loot'))
     .removeLoot('minecraft:diamond')
   event
     .addLootTableModifier('tetra:actions/geode')
-    .anyDimension('minecraft:overworld',
-      'twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTiers([1, 2], 'loot'))
     .replaceLoot('minecraft:diamond', LootEntry.of('minecraft:emerald'), true)
     .replaceLoot('tetra:pristine_diamond', LootEntry.of('tetra:pristine_emerald'), true)
   })
@@ -2165,9 +2143,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // T2 (TF, Aether, Blue Skies): Scrolls, iron/gold spell books, uncommon ink
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension(icraft.dims.inTier(2, 'loot'))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.075)))
@@ -2175,7 +2151,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // T3 (Nether, Undergarden, Deeper Darker, Abyss): Scrolls, gold/diamond spell books, rare ink
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension(icraft.dims.inTier(3, 'loot'))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
@@ -3412,7 +3388,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   t3Relics.forEach(relic => {
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_nether', 'undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+      .anyDimension(icraft.dims.inTier(3, 'loot'))
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.008)))
   })
 

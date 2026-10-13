@@ -98,6 +98,20 @@ function stageDimension(tier, dimId, restrictionId) {
 }
 
 /**
+ * The dimension gates of one tier, from the dimension registry
+ * (kubejs/config/icraft/registry/dimensions.json, through icraft.dims): every
+ * dimension of that tier whose entry has a `stageGate` (the restriction id) is
+ * closed to a player without the stage tier_<tier>. Until 2026-10-13 the
+ * fourteen gates were fourteen calls in registerStageRestrictions below.
+ * To gate a new dimension: its registry entry.
+ */
+function stageTierDimensions(tier) {
+  icraft.dims.inTier(tier, 'stageGate').forEach(dimId => {
+    stageDimension('tier_' + tier, dimId, icraft.dims.get(dimId, 'stageGate'))
+  })
+}
+
+/**
  * Stage-lock crafting-table recipes by recipe id: the result slot stays empty
  * for a player who lacks the stage, and JEI hides the recipe from them.
  * The recipe type comes from the Forge registry (no obfuscated field lookup).
@@ -220,10 +234,9 @@ function registerStageRestrictions() {
   ], 'modpack/item_t2')
 
   // -- Dimension restrictions --
-  stageDimension('tier_2', 'twilightforest:twilight_forest', 'modpack/dim_twilight')
-  stageDimension('tier_2', 'blue_skies:everbright', 'modpack/dim_everbright')
-  stageDimension('tier_2', 'blue_skies:everdawn', 'modpack/dim_everdawn')
-  stageDimension('tier_2', 'aether:the_aether', 'modpack/dim_aether')
+  // (Twilight Forest, the Aether, Everbright, Everdawn: the tier-2 entries of
+  //  the dimension registry that have a stageGate)
+  stageTierDimensions(2)
 
 
   // =========================================================================
@@ -333,10 +346,8 @@ function registerStageRestrictions() {
   stageOre('tier_3', 'forbidden_arcanus:deepslate_arcane_crystal_ore', 'minecraft:deepslate', 'modpack/ore_arcane_crystal_deep')
 
   // -- Dimension restrictions --
-  stageDimension('tier_3', 'undergarden:undergarden', 'modpack/dim_undergarden')
-  stageDimension('tier_3', 'deeperdarker:otherside', 'modpack/dim_otherside')
-  stageDimension('tier_3', 'minecraft:the_nether', 'modpack/dim_nether')
-  stageDimension('tier_3', 'theabyss:the_abyss', 'modpack/dim_abyss')
+  // (the Nether, the Undergarden, the Otherside, the Abyss)
+  stageTierDimensions(3)
 
 
   // =========================================================================
@@ -507,16 +518,10 @@ function registerStageRestrictions() {
   //  inside aether:the_aether, which is gated at tier_2 above. Ruling
   //  2026-10-11: Deep Aether goes with the Aether. Its tier-4 materials are
   //  gated by the Aethersteel ore and item restrictions in this file.)
-  stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
-
-  // -- Ad Astra Planets (Post-T4 Endgame) --
-  // All 5 planets require tier_4 stage. Belt-and-suspenders with recipe gating
-  // on the Rocket Workbench and rocket tiers themselves.
-  stageDimension('tier_4', 'ad_astra:moon',    'modpack/dim_moon')
-  stageDimension('tier_4', 'ad_astra:mars',    'modpack/dim_mars')
-  stageDimension('tier_4', 'ad_astra:mercury', 'modpack/dim_mercury')
-  stageDimension('tier_4', 'ad_astra:venus',   'modpack/dim_venus')
-  stageDimension('tier_4', 'ad_astra:glacio',  'modpack/dim_glacio')
+  // The End, and the five Ad Astra planets (post-T4 endgame: all five require
+  // the tier_4 stage, belt-and-suspenders with the recipe gating on the Rocket
+  // Workbench and the rocket tiers themselves).
+  stageTierDimensions(4)
 
   // =========================================================================
   // IRON JETPACKS — Cannot be AStages-gated (single dynamic item ID)
