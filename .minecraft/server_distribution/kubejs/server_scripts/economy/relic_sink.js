@@ -147,7 +147,11 @@ function relicEssenceValue(itemId) {
   // "not denied" for every carried item, so the deny list denied nothing.
   // Normalised here, once, for every caller (the sweep and the Broker).
   itemId = String(itemId)
-  if (RELIC_SINK_DENY.has(itemId)) return 0
+  if (RELIC_SINK_DENY.has(itemId)) {
+    // liveness: the deny list denied a carried item (it matched nothing until 2026-10-12)
+    icraft.live.fired('relic-sink-deny')
+    return 0
+  }
   if (RELIC_SINK_VALUE[itemId] !== undefined) return RELIC_SINK_VALUE[itemId]
   if (RELIC_SINK_ALLOW[itemId] !== undefined) return RELIC_SINK_ALLOW[itemId]
   var ns = itemId.split(':')[0]
@@ -280,6 +284,8 @@ function relicSubmit(player, confirm) {
   })
 
   player.give(Item.of(RELIC_ESSENCE_ITEM, totalEssence))
+  // liveness: the sweep found relics, took them and paid essence
+  icraft.live.fired('relic-sink')
 
   player.tell(Text.gold('═══ Relic Sink ═══'))
   lines.forEach(l => {

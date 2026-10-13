@@ -46,6 +46,8 @@ try {
       var victim = event.entity
       if (!victim || !(victim instanceof LivingEntityClass)) return
       var attacker = core ? core.attacker(src) : src.actual
+      // liveness: an arrow tagged by a unique bow hit a living victim (this returned on every hit until 2026-10-11)
+      icraft.live.fired('unique-bow-effects')
 
       if (bow === 'too_many_bows:dark_bow') {
         eff(victim, MobEffects.BLINDNESS, 4, 0); eff(victim, MobEffects.WEAKNESS, 5, 0)

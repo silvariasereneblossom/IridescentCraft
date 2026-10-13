@@ -315,6 +315,8 @@ function runAscensionCommand(player, command) {
 
 function tellAscensionStatus(player) {
   let level = getAscensionLevel(player.level)
+  // liveness: the status command read the world's Ascension level and is answering
+  icraft.live.fired('ascension-status')
   if (level === 0) {
     player.tell(Text.gold('[Ascension] ').append(
       Text.white('This world is at base difficulty (Ascension 0).')

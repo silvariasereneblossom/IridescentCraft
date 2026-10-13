@@ -1,0 +1,151 @@
+{
+ "about": [
+  "HAND-KEPT: for each name that can print an `[icraft.live] FIRED` line, the action that makes it fire. `node --expose-internals dev/loud/gen_liveness.js --sheet <file>` joins this with the scripts and writes the in-game check sheet (kept in the internal repo: dev/liveness-check-sheet.md). The scripted checks of the test PC run these actions and assert the lines.",
+  "`features`: one entry per icraft.live.fired name (the generator refuses a sheet with a feature that has none): `proves` = what the line means, `do` = the instruction, `cmd` = paste-ready commands in order, `needs` = what must be true first. `<Name>` is the test player.",
+  "`events`: the action for every handler of an event that has no entry of its own. `ids`: an entry for one id (<name>@<group>). The generator adds what it reads from the script itself: the item a handler is registered for, a tick function's interval, who a hurt handler listens to.",
+  "Ids are the ones the scripts and registries use; look one up before writing it. No player names: this file is public."
+ ],
+ "features": {
+  "abyssal-artifact": {
+   "proves": "the artifact rule's chance passed on a real roll and one artifact was added (a LootJS rule has no script code at roll time; the rule carries one action for this line)",
+   "do": "Roll the Nightblade's kill loot (its chance is 100%; Elder and The Roka share the line at lower chances).",
+   "cmd": ["/summon theabyss:nightblade_boss ~ ~ ~4 {NoAI:1b}", "/loot give @s kill @e[type=theabyss:nightblade_boss,limit=1,sort=nearest]", "/kill @e[type=theabyss:nightblade_boss]"]
+  },
+  "ascension-status": {
+   "proves": "the status command read the world's Ascension level and answered",
+   "do": "Say `!ascension` in chat; expect \"This world is at base difficulty (Ascension 0).\" Do NOT set a level above 0 on the live world."
+  },
+  "boss-x3": {
+   "proves": "a boss of the roster was given the x3 through core.spawnBuff (saved modifiers)",
+   "do": "Summon a roster boss, then read its modifiers (icraft_boss_3x_hp under max health).",
+   "cmd": ["/summon cataclysm:the_harbinger ~ ~ ~6 {NoAI:1b}", "/data get entity @e[type=cataclysm:the_harbinger,limit=1,sort=nearest] Attributes", "/kill @e[type=cataclysm:the_harbinger]"]
+  },
+  "codex-balance": {
+   "proves": "the balance scan SAW tokens in an inventory (its loop ran zero times until 2026-10-12)",
+   "do": "Hold a token, ask for the balance; the line for Tier 1 reads 1 / 500.",
+   "cmd": ["/give <Name> icraft:progression_token_t1 1", "/icraft codex balance"]
+  },
+  "codex-exchange": {
+   "proves": "tokens were found, taken and paid out as XP",
+   "do": "Exchange one Tier 1 token (2 XP).",
+   "cmd": ["/give <Name> icraft:progression_token_t1 1", "/icraft codex exchange 1 all"],
+   "needs": "the player holds the stage tier_4 (the exchange is closed below it)"
+  },
+  "codex-submit": {
+   "proves": "a submission scanned the inventory, took materials and granted tokens (its loops ran zero times until 2026-10-12)",
+   "do": "Submit 100 iron ingots: 1 token of the player's current tier, the ingots are gone.",
+   "cmd": ["/give <Name> minecraft:iron_ingot 100", "/icraft codex submit"],
+   "needs": "the player is below tier_4 (bulk metals stop minting at the last tier) and under the iron cap"
+  },
+  "compass-of-return": {
+   "proves": "the teleport command moved the player (the compass never teleported anyone before 2026-10-11)",
+   "do": "Right-click a bed (that sets the point), walk away, right-click the compass; expect \"The needle guides you home.\"",
+   "cmd": ["/give <Name> kubejs:compass_of_return"]
+  },
+  "first-kill-book": {
+   "proves": "a first-kill reward of an Iron's Spellbooks boss was dropped at the boss",
+   "do": "Kill one of the four bosses as a player for the first time (the damage command gives the kill to the player).",
+   "cmd": ["/summon irons_spellbooks:dead_king ~ ~ ~6 {NoAI:1b}", "/damage @e[type=irons_spellbooks:dead_king,limit=1,sort=nearest] 100000 minecraft:player_attack by <Name>"],
+   "needs": "a player who has not had this boss's first-kill reward"
+  },
+  "quest-bridge": {
+   "proves": "a Heracles dummy completed its quest (the Level Up bridge: quest onboarding_first_level)",
+   "do": "Raise any aptitude to level 2; the quest \"Level Up\" completes a few seconds later.",
+   "needs": "a player whose quest \"Level Up\" is unlocked and not complete"
+  },
+  "relic-sink": {
+   "proves": "the sweep found relics in the backpack, took them and paid essence (its loops ran zero times until 2026-10-12)",
+   "do": "Convert one curio: the preview lists it, the confirm takes it and gives 20 Relic Essence.",
+   "cmd": ["/give <Name> artifacts:night_vision_goggles 1", "/icraft relics submit", "/icraft relics submit confirm"]
+  },
+  "relic-sink-deny": {
+   "proves": "the deny list denied a carried item (it matched nothing until 2026-10-12: a Set asked with a Java string)",
+   "do": "Carry a deny-listed item and ask for the preview: the item is not offered.",
+   "cmd": ["/give <Name> artifacts:mimic_spawn_egg 1", "/icraft relics submit"]
+  },
+  "skill-craft-bonus": {
+   "proves": "Craft Bonus rolled on a real craft and handed the copy out (it rolled on every inventory change before 2026-10-12)",
+   "do": "With the score at 100, craft sticks from planks in survival: one extra stick is given. Then set the score back.",
+   "cmd": ["/scoreboard players set <Name> icraft_craft_bonus 100", "/scoreboard players set <Name> icraft_craft_bonus 0"],
+   "needs": "survival mode (the handler skips creative and spectator)"
+  },
+  "skill-material-save": {
+   "proves": "Material Save rolled on a real craft and handed its material out (it rolled on every inventory change before 2026-10-12)",
+   "do": "With the score at 100, craft an iron pickaxe in survival: an iron ingot or nugget is given. Then set the score back.",
+   "cmd": ["/scoreboard players set <Name> icraft_material_save 100", "/scoreboard players set <Name> icraft_material_save 0"],
+   "needs": "survival mode (the handler skips creative and spectator)"
+  },
+  "spawn-buff-repaired": {
+   "proves": "a mob saved before 2026-10-12 without its buff got it back as saved modifiers, and kept its share of health",
+   "do": "Walk to a boss or scaled mob that was saved in the world before 2026-10-12 (its chunk must load).",
+   "needs": "such a mob exists: on a fresh world this line cannot appear"
+  },
+  "spawn-buff-saved": {
+   "proves": "a fresh mob got its spawn buff as SAVED modifiers (they were lost on every save before 2026-10-12)",
+   "do": "Nothing: the first scaled mob that spawns fires it, usually before anyone joins."
+  },
+  "unique-bow-effects": {
+   "proves": "an arrow tagged by a unique bow hit a living victim and the bow's effect code was reached (it returned on every hit until 2026-10-11)",
+   "do": "Shoot a mob with the bow: Blindness and Weakness on the victim.",
+   "cmd": ["/give <Name> too_many_bows:dark_bow", "/give <Name> minecraft:arrow 16", "/summon minecraft:zombie ~ ~ ~6 {NoAI:1b}"]
+  },
+  "unique-tier-buff": {
+   "proves": "a hit with a unique weapon (or its tagged arrow) was multiplied by its tier (inert until 2026-10-11)",
+   "do": "Hit a mob with the sword.",
+   "cmd": ["/give <Name> simplyswords:sword_on_a_stick", "/summon minecraft:zombie ~ ~ ~2 {NoAI:1b}"]
+  },
+  "wither-relic": {
+   "proves": "the Wither's Dormant Relic was dropped at the boss (guaranteed on a player's first kill, 10% after)",
+   "do": "Kill a Wither as a player; simplyswords:dormant_relic drops at it.",
+   "cmd": ["/summon minecraft:wither ~ ~ ~8 {NoAI:1b}", "/damage @e[type=minecraft:wither,limit=1,sort=nearest] 100000 minecraft:player_attack by <Name>"],
+   "needs": "a player who has not had the Wither's first-kill reward (otherwise 1 kill in 10)"
+  },
+  "wither-tablets": {
+   "proves": "the Wither's loot rule ran on a real roll (2 simplyswords:runic_tablet each time; the rule carries one action for this line)",
+   "do": "Roll the Wither's kill loot: 2 Runic Tablets every time.",
+   "cmd": ["/summon minecraft:wither ~ ~ ~8 {NoAI:1b}", "/loot give @s kill @e[type=minecraft:wither,limit=1,sort=nearest]", "/kill @e[type=minecraft:wither]"]
+  },
+  "vorpal-decap": {
+   "proves": "a critical melee hit with Vorpal passed its roll and was made lethal (the mob dies at once and may drop its head)",
+   "do": "Critical hits (falling) on non-boss mobs with a sword enchanted ensorcellation:vorpal: 5% per level a hit, so about 1 in 4 crits at level 5.",
+   "cmd": ["/give <Name> minecraft:netherite_sword{Enchantments:[{id:\"ensorcellation:vorpal\",lvl:5s}]}", "/summon minecraft:zombie ~ ~ ~2 {NoAI:1b}"],
+   "needs": "survival or adventure reach, and a real critical hit (the handler reads the crit stamp attribute_sync.js writes)"
+  },
+  "arcane-decap": {
+   "proves": "a critical spell hit with Arcane Vorpal passed its roll and was made lethal",
+   "do": "Critical spell hits on non-boss mobs with a staff or spellbook enchanted iridescent_reforging:vorpal_arcane.",
+   "needs": "a caster with spell crit chance; the roll is per level, as for Vorpal"
+  }
+ },
+ "groups": {
+  "tick.player": "a player tick function runs for each online player when `player.age % interval == offset`: be online for at most `interval` ticks",
+  "tick.server": "a server tick function runs with nobody online, when `tick % interval == offset`: it fires by itself within `interval` ticks of the load",
+  "hurt": "a handler of the shared hurt dispatcher (0_lib_core.js): it fires on the first hit it listens to whose gate is open and that it survives",
+  "hurt.late": "the same, in the LATE phase (after every script's normal handlers)"
+ },
+ "events": {
+  "AStageEvents.added": "Give the test player a stage they do not have (a tier is granted by its trigger: a boss kill or a Codex submission).",
+  "BlockEvents.broken": "Break any block in survival.",
+  "BlockEvents.placed": "Place any block.",
+  "BlockEvents.rightClicked": "Right-click any block (a bed for the Compass of Return).",
+  "EntityEvents.checkSpawn": "Nothing: any natural spawn attempt near a player fires it. Stand in the dark for a minute.",
+  "EntityEvents.death": {"do": "Kill any mob as a player.", "cmd": ["/summon minecraft:zombie ~ ~ ~2 {NoAI:1b}", "/damage @e[type=minecraft:zombie,limit=1,sort=nearest] 1000 minecraft:player_attack by <Name>"]},
+  "EntityEvents.hurt": {"do": "Hit any mob.", "cmd": ["/summon minecraft:zombie ~ ~ ~2 {NoAI:1b}", "/damage @e[type=minecraft:zombie,limit=1,sort=nearest] 1 minecraft:player_attack by <Name>"]},
+  "EntityEvents.spawned": "Nothing: the first mob that spawns fires it, usually before anyone joins.",
+  "ItemEvents.canPickUp": "Drop an item and walk over it.",
+  "ItemEvents.crafted": "Craft anything in survival (planks into sticks).",
+  "ItemEvents.entityInteracted": "Right-click any mob with an item in hand.",
+  "ItemEvents.pickedUp": "Drop an item and pick it up again.",
+  "ItemEvents.tooltip": "On the CLIENT (logs/kubejs/client.log): open the inventory and hover an item; the handler runs when the game first builds tooltips.",
+  "JEIEvents.hideItems": "On the CLIENT (logs/kubejs/client.log): join a world; JEI runs the handler when it loads its plugins.",
+  "ItemEvents.rightClicked": "Right-click with the item the handler is registered for (the column names it when the script writes it as a literal; otherwise any item).",
+  "PlayerEvents.chat": "Say anything in chat.",
+  "PlayerEvents.inventoryChanged": "Pick up or move any item.",
+  "PlayerEvents.loggedIn": "Join the server.",
+  "PlayerEvents.loggedOut": "Leave the server (the line is printed after the player is gone).",
+  "PlayerEvents.respawned": {"do": "Die and respawn.", "cmd": ["/kill <Name>"]},
+  "PlayerEvents.tick": "Be online for one tick.",
+  "ServerEvents.unloaded": "Nothing: it fires when the server stops; the line is among the last of the log."
+ },
+ "ids": {}
+}

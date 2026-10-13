@@ -394,6 +394,8 @@ function codexSubmit(player, lane) {
     return 0
   }
 
+  // liveness: a submission scanned the inventory, took materials and granted tokens
+  icraft.live.fired('codex-submit')
   player.tell(Text.gold('═══ Codex Submission' + (lane ? ' — ' + lane.charAt(0).toUpperCase() + lane.slice(1) : '') + ' ═══'))
   lines.forEach(l => {
     player.tell(Text.gray('  ' + l.consumed + '× ').append(Text.white(l.name))
@@ -427,6 +429,8 @@ function codexBalance(player) {
       if (!stack.isEmpty() && stack.id === id) held[t] += stack.count
     }
   }
+  // liveness: the balance scan SAW tokens in an inventory (it counted nothing for months)
+  if (held[1] + held[2] + held[3] > 0) icraft.live.fired('codex-balance')
 
   player.tell(Text.gold('═══ Codex Balance ═══'))
   for (let t = 1; t <= 3; t++) {
@@ -586,6 +590,8 @@ function codexExchange(player, tier, amountArg) {
   // this exactly as they would any XP gain — a deliberate INT-build synergy.)
   const xp = convert * rate
   player.giveExperiencePoints(xp)
+  // liveness: tokens were found, taken and paid out as XP
+  icraft.live.fired('codex-exchange')
 
   const remaining = held - convert
   player.tell(Text.gold('═══ Codex Exchange ═══'))

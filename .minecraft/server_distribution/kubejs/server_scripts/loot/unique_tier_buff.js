@@ -90,6 +90,8 @@ try {
 
       if (tier >= 1 && mult[tier]) {
         event.amount = event.amount * mult[tier]
+        // liveness: a hit with a unique weapon (or its tagged arrow) was multiplied
+        icraft.live.fired('unique-tier-buff')
       }
     } catch (e) {
       console.warn('[unique_tier_buff] damage handler threw: ' + e)

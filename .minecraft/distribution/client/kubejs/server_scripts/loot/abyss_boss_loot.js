@@ -191,14 +191,20 @@ LootJS.modifiers(icraft.guard('loot/abyss_boss_loot', 'LootJS.modifiers', event 
   global.icraftEntityMod(event, 'theabyss:elder')
     .randomChance(ABYSSAL_ELDER_CHANCE)
     .addWeightedLoot(abyssalPool(abyssalT3Five))
+    // liveness (here and on the two rules below): the chance passed and one artifact
+    // was rolled (a LootJS rule has no script code at roll time otherwise; the action
+    // adds and removes nothing)
+    .apply(function (ctx) { icraft.live.fired('abyssal-artifact') })
 
   global.icraftEntityMod(event, 'theabyss:the_roka')
     .randomChance(ABYSSAL_ROKA_CHANCE)
     .addWeightedLoot(abyssalPool(abyssalT3Five))
+    .apply(function (ctx) { icraft.live.fired('abyssal-artifact') })
 
   global.icraftEntityMod(event, 'theabyss:nightblade_boss')
     .randomChance(ABYSSAL_NIGHTBLADE_CHANCE)
     .addWeightedLoot(abyssalPool(abyssalT4Seven))
+    .apply(function (ctx) { icraft.live.fired('abyssal-artifact') })
 
   // The marquee's enchanted book (levels 20-30), now per kill. The entry is a
   // plain minecraft:book: enchantWithLevels only stores enchantments on that

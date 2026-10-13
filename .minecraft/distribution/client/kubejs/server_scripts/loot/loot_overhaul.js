@@ -362,6 +362,9 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
         // every other recipe that takes one is removed in
         // recipes/tier_gated_recipes.js (Section E, "Runic crafting OFF").
         .addLoot(LootEntry.of("simplyswords:runic_tablet", 2))
+        // liveness: this modifier RAN on a Wither's loot (a LootJS rule has no script
+        // code at roll time otherwise; the action adds and removes nothing)
+        .apply(function (ctx) { icraft.live.fired('wither-tablets') })
         // (The Wither is also the source of simplyswords:dormant_relic: guaranteed
         //  on a player's first kill, 15% afterwards. That is not a loot-table
         //  drop: loot/iss_boss_first_kill.js.)

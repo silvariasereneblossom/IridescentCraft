@@ -280,6 +280,8 @@ try {
         if (newDmg > event.getAmount()) event.setAmount(newDmg)
         // ...and make it stick after mitigation (see LethalBlow above).
         if (LethalBlow_vrp != null) LethalBlow_vrp.mark(victim)
+        // liveness: a critical melee hit with Vorpal passed its roll and was made lethal
+        icraft.live.fired('vorpal-decap')
       } catch (e) {
         // Fail-soft, but not silent: say so once per load.
         if (!decapWarned) {

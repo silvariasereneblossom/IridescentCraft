@@ -112,6 +112,8 @@ ItemEvents.rightClicked(icraft.guard('items/compass_of_return', 'ItemEvents.righ
     data.putLong('icraft_compass_last_use', now)
 
     player.tell('\u00a79[Compass of Return]\u00a77 The needle guides you home.')
+    // liveness: the teleport command moved the player (the compass never teleported anyone before)
+    icraft.live.fired('compass-of-return')
   }
 
   try {

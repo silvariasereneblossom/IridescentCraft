@@ -332,6 +332,8 @@ try {
         if (lethal > event.getAmount()) event.setAmount(lethal)
         // ...and make it stick after mitigation (see LethalBlow above).
         if (LethalBlow_ime != null) LethalBlow_ime.mark(victim)
+        // liveness: a critical spell hit with Arcane Vorpal passed its roll and was made lethal
+        icraft.live.fired('arcane-decap')
       } catch (e) {
         // Fail-soft, but not silent: say so once per load.
         if (!decapWarned) {

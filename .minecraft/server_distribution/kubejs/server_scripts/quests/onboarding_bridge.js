@@ -164,6 +164,8 @@
 
     api.fireDummy(player, bridge.dummy)
     if (api.isComplete(player, bridge.quest) === true) {
+      // liveness: the dummy completed its quest (the Level Up bridge among them)
+      icraft.live.fired('quest-bridge')
       console.log('[onboarding_bridge] ' + player.username + ' completed ' + bridge.quest +
         ' (dummy ' + bridge.dummy + ')')
     } else {

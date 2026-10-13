@@ -549,6 +549,11 @@
         try { data.putInt(key, saved ? BUFF_SAVED : 1) } catch (e) {
           warnOnce('buff.done:' + key, '[icraft.core] spawnBuff(' + key + ').done() threw: ' + e)
         }
+        // liveness: a mob got its buff as SAVED modifiers (a fresh spawn), or got a lost one back (a legacy mob)
+        if (live !== null && saved && count > 0) {
+          if (legacy) icraft.live.fired('spawn-buff-repaired')
+          else icraft.live.fired('spawn-buff-saved')
+        }
         if (legacy && saved && count > 0) {
           logOnce('buff.repaired:' + key, '[icraft.core] spawn buffs: first mob repaired under ' + key + ': ' +
             entityId(entity) + ' health/max ' + before + ' -> ' + healthText(entity))

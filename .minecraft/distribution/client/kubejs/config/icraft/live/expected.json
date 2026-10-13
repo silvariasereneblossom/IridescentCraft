@@ -601,7 +601,27 @@
     "recipes/waystone_recipes/utility-items-moderate-cost-no-core-required"
    ]
   },
-  "features": {}
+  "features": {
+   "abyssal-artifact": "loot/abyss_boss_loot.js",
+   "ascension-status": "endgame/ascension.js",
+   "boss-x3": "scaling/zz_boss_global_3x.js",
+   "codex-balance": "gates/codex_progression_engine.js",
+   "codex-exchange": "gates/codex_progression_engine.js",
+   "codex-submit": "gates/codex_progression_engine.js",
+   "compass-of-return": "items/compass_of_return.js",
+   "first-kill-book": "loot/iss_boss_first_kill.js",
+   "quest-bridge": "quests/onboarding_bridge.js",
+   "relic-sink": "economy/relic_sink.js",
+   "relic-sink-deny": "economy/relic_sink.js",
+   "skill-craft-bonus": "skills/skill_effects.js",
+   "skill-material-save": "skills/skill_effects.js",
+   "spawn-buff-repaired": "0_lib_core.js",
+   "spawn-buff-saved": "0_lib_core.js",
+   "unique-bow-effects": "loot/tmb_plain_bow_effects.js",
+   "unique-tier-buff": "loot/unique_tier_buff.js",
+   "wither-relic": "loot/iss_boss_first_kill.js",
+   "wither-tablets": "loot/loot_overhaul.js"
+  }
  },
  "startup": {
   "armed": {
@@ -653,7 +673,10 @@
     "endgame_items/glacio-extraction"
    ]
   },
-  "features": {}
+  "features": {
+   "arcane-decap": "enchants/icraft_magic_enchants.js",
+   "vorpal-decap": "enchants/vorpal_rework.js"
+  }
  },
  "client": {
   "armed": {

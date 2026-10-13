@@ -228,6 +228,8 @@ EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spa
   }
 
   buff.done()
+  // liveness: a boss of the roster got the x3 through core.spawnBuff
+  icraft.live.fired('boss-x3')
 }))
 
 console.log('[iridescent/boss_3x] global boss buff loaded (hp ×3 + melee dmg ×3 + ISS spell ×2; see header for boundary + coverage)')

@@ -66,6 +66,9 @@ try {
           return
         }
         ent.spawnAtLocation(dropStack)
+        // liveness: a first-kill reward was dropped (the Wither's Dormant Relic has a name of its own)
+        if (entry.entity === 'minecraft:wither') icraft.live.fired('wither-relic')
+        else icraft.live.fired('first-kill-book')
         if (hadFirst) {
           console.log('[iss_first_kill] ' + killer.username + ' repeat kill of ' + entry.entity + ' -> ' + entry.item)
           return

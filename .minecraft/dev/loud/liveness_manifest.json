@@ -2450,7 +2450,84 @@
      "of": "recipes/waystone_recipes@ServerEvents.recipes"
     }
    ],
-   "features": []
+   "features": [
+    {
+     "name": "abyssal-artifact",
+     "script": "loot/abyss_boss_loot.js"
+    },
+    {
+     "name": "ascension-status",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "name": "boss-x3",
+     "script": "scaling/zz_boss_global_3x.js"
+    },
+    {
+     "name": "codex-balance",
+     "script": "gates/codex_progression_engine.js"
+    },
+    {
+     "name": "codex-exchange",
+     "script": "gates/codex_progression_engine.js"
+    },
+    {
+     "name": "codex-submit",
+     "script": "gates/codex_progression_engine.js"
+    },
+    {
+     "name": "compass-of-return",
+     "script": "items/compass_of_return.js"
+    },
+    {
+     "name": "first-kill-book",
+     "script": "loot/iss_boss_first_kill.js"
+    },
+    {
+     "name": "quest-bridge",
+     "script": "quests/onboarding_bridge.js"
+    },
+    {
+     "name": "relic-sink",
+     "script": "economy/relic_sink.js"
+    },
+    {
+     "name": "relic-sink-deny",
+     "script": "economy/relic_sink.js"
+    },
+    {
+     "name": "skill-craft-bonus",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "name": "skill-material-save",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "name": "spawn-buff-repaired",
+     "script": "0_lib_core.js"
+    },
+    {
+     "name": "spawn-buff-saved",
+     "script": "0_lib_core.js"
+    },
+    {
+     "name": "unique-bow-effects",
+     "script": "loot/tmb_plain_bow_effects.js"
+    },
+    {
+     "name": "unique-tier-buff",
+     "script": "loot/unique_tier_buff.js"
+    },
+    {
+     "name": "wither-relic",
+     "script": "loot/iss_boss_first_kill.js"
+    },
+    {
+     "name": "wither-tablets",
+     "script": "loot/loot_overhaul.js"
+    }
+   ]
   },
   "startup": {
    "sections": [
@@ -2559,7 +2636,16 @@
      "of": "endgame_items@StartupEvents.registry"
     }
    ],
-   "features": []
+   "features": [
+    {
+     "name": "arcane-decap",
+     "script": "enchants/icraft_magic_enchants.js"
+    },
+    {
+     "name": "vorpal-decap",
+     "script": "enchants/vorpal_rework.js"
+    }
+   ]
   },
   "client": {
    "sections": [],

@@ -362,6 +362,8 @@ ItemEvents.crafted(icraft.guard('skills/skill_effects', 'ItemEvents.crafted', ev
             }
             let pick = returnMaterials[Math.floor(Math.random() * returnMaterials.length)]
             player.give(Item.of(pick))
+            // liveness: Material Save rolled on a real craft and handed its material out
+            icraft.live.fired('skill-material-save')
             // Particle feedback at player position
             let pos = player.blockPosition()
             srv.runCommandSilent(
@@ -404,6 +406,8 @@ ItemEvents.crafted(icraft.guard('skills/skill_effects', 'ItemEvents.crafted', ev
             let bonus = item.copy()
             bonus.count = 1
             player.give(bonus)
+            // liveness: Craft Bonus rolled on a real craft and handed the copy out
+            icraft.live.fired('skill-craft-bonus')
             // Feedback
             let pos = player.blockPosition()
             srv.runCommandSilent(
