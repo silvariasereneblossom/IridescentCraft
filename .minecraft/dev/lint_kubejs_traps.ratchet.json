@@ -14,7 +14,7 @@
     },
     "DIRECT-HURT-REG": {
       "started": "2026-10-13",
-      "total": 12,
+      "total": 10,
       "files": {
         "server_scripts/attributes/iss_school_to_ars_spell.js": 1,
         "server_scripts/death_penalty.js": 1,
@@ -22,7 +22,7 @@
         "server_scripts/loot/unique_tier_buff.js": 1,
         "server_scripts/origins/battlemage_arcane_cleave.js": 1,
         "server_scripts/origins/class_passives_phase6h.js": 1,
-        "server_scripts/origins/origin_effects.js": 3,
+        "server_scripts/origins/origin_effects.js": 1,
         "startup_scripts/deathskin_undead_bonus.js": 1,
         "startup_scripts/enchants/icraft_magic_enchants.js": 1,
         "startup_scripts/enchants/vorpal_rework.js": 1

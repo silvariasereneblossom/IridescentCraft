@@ -6534,19 +6534,27 @@
        "offset": 20
       },
       {
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.origin.blazeborn.take",
+       "who": "victimPlayer",
+       "place": "first",
+       "secondary": true,
+       "unchecked": true
+      },
+      {
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.origin.enderian.shift",
+       "who": "attackerPlayer",
+       "place": "last",
+       "cancelled": true,
+       "unchecked": true
+      },
+      {
        "kind": "direct",
        "group": "DR.register",
        "name": "icraft.origin.blazeborn.deal"
-      },
-      {
-       "kind": "direct",
-       "group": "DR.register",
-       "name": "icraft.origin.blazeborn.take"
-      },
-      {
-       "kind": "direct",
-       "group": "DR.register",
-       "name": "icraft.origin.enderian.shift"
       }
      ],
      "sections": 0,
@@ -6557,10 +6565,16 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.lib",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
@@ -6583,7 +6597,16 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
        ],
        "held": "priority"
       },
@@ -6596,6 +6619,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -9616,16 +9643,6 @@
       "script": "origins/origin_effects.js",
       "name": "icraft.origin.blazeborn.deal",
       "kind": "direct"
-     },
-     {
-      "script": "origins/origin_effects.js",
-      "name": "icraft.origin.blazeborn.take",
-      "kind": "direct"
-     },
-     {
-      "script": "origins/origin_effects.js",
-      "name": "icraft.origin.enderian.shift",
-      "kind": "direct"
      }
     ],
     "DR_bc.register": [
@@ -10875,6 +10892,15 @@
     ],
     "hurt": [
      {
+      "script": "origins/origin_effects.js",
+      "name": "icraft.origin.blazeborn.take",
+      "kind": "hurt",
+      "who": "victimPlayer",
+      "place": "first",
+      "secondary": true,
+      "unchecked": true
+     },
+     {
       "script": "skills/justleveling_skills.js",
       "name": "icraft.justleveling.1",
       "kind": "hurt",
@@ -11010,6 +11036,15 @@
       "name": "icraft.tetra_terramity_perks",
       "kind": "hurt",
       "who": "attacker"
+     },
+     {
+      "script": "origins/origin_effects.js",
+      "name": "icraft.origin.enderian.shift",
+      "kind": "hurt",
+      "who": "attackerPlayer",
+      "place": "last",
+      "cancelled": true,
+      "unchecked": true
      }
     ],
     "tick.player": [
@@ -12120,7 +12155,7 @@
     },
     {
      "script": "server:origins/origin_effects.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:origins/phantom_undeath.js",
@@ -12891,7 +12926,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 18
+   "usersAtLoad": 19
   },
   "origins": {
    "script": "server:0_lib_origins.js",

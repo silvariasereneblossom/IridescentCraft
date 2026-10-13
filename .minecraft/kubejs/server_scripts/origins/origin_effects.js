@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/origin_effects.js
+// @events BlockEvents.broken, hurt, tick.player, tick.server
 // =============================================================================
 // ORIGINS CUSTOM EFFECTS
 // Place in: kubejs/server_scripts/origins/origin_effects.js
@@ -103,12 +105,26 @@ global.tick_blazebornNetherAffinity = (event) => {
 }
 global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 
-// Apply damage bonus + reduction via DamageModifierRegistry.
-// 2026-05-15: migrated off EntityEvents.hurt — that KubeJS wrapper has no
-// settable damage field. The registry dispatches the RAW Forge
-// LivingHurtEvent, which supports event.setAmount(...) (and Rhino-style
-// `event.amount = X` resolves to setAmount).
+// Apply damage bonus + reduction on the raw Forge LivingHurtEvent (it supports
+// event.setAmount(...), and Rhino-style `event.amount = X` resolves to it; the
+// KubeJS wrapper EntityEvents.hurt has no settable damage field).
+//
+// The handlers of this file run on the shared dispatcher of 0_lib_core.js, each
+// at the place it had while it sat straight on the Java damage registry (until
+// 2026-10-13). That registry runs its entries in the HASH order of their keys:
+//   the reduction (take) ran FIRST, before the dispatcher's own handlers
+//     (crit, affixes, enchants) and before the aptitude skills;
+//   the bonus (deal) and the Enderian bonus ran AFTER them, and after the
+//     startup script deathskin_undead_bonus.js: place 'last'.
+// `unchecked` leaves the amount a handler hands on as it is, as the registry
+// did. The reduction is `secondary`: it also applies to secondary damage (thorns,
+// a splash), as it did. The bonuses are `cancelled`: they are still called for a
+// hit an earlier handler cancelled (0 * 1.2 is 0; the call is what is kept).
+// An option taken off, or added, changes damage numbers: decision list entry 45;
+// the hit table that holds these handlers is dev/engine-tests, suite `hit-table`.
 ;(function(){
+  if (!icraft.lib.need('core', 'origins/origin_effects')) return
+  var core = global.icraft.core
   var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
@@ -133,7 +149,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
   })
 
   // Taking damage in/after Nether: -10% / -20%
-  DR.register('icraft.origin.blazeborn.take', function(event) {
+  core.onHurt('icraft.origin.blazeborn.take', function(event) {
     var entity = event.entity
     if (!(entity instanceof PlayerClass)) return
     if (!entity.tags.contains('icraft_blazeborn')) return
@@ -142,7 +158,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     if (!inNether && !awakened) return
     var reduction = awakened ? 0.20 : 0.10
     event.amount = event.amount * (1 - reduction)
-  })
+  }, 'victimPlayer', { place: 'first', secondary: true, unchecked: true })
 })()
 
 // =============================================================================
@@ -151,11 +167,13 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 // Uses ender pearl throw detection as trigger.
 // =============================================================================
 
-// Enderian: +15% damage for 10s after teleport. Via DamageModifierRegistry.
+// Enderian: +15% damage for 10s after teleport. On the dispatcher, placed last
+// (see the Blazeborn block above).
 ;(function(){
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  if (!icraft.lib.need('core', 'origins/origin_effects')) return
+  var core = global.icraft.core
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
-  DR.register('icraft.origin.enderian.shift', function(event) {
+  core.onHurt('icraft.origin.enderian.shift', function(event) {
     // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
     // lands as-is: it must not proc or be multiplied a second time. Same rule the
     // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
@@ -173,7 +191,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     if (now < buffExpiry && buffExpiry - now <= 200) {
       event.amount = event.amount * 1.15
     }
-  })
+  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
 })()
 
 // Detect ender pearl landing / teleport and apply buff

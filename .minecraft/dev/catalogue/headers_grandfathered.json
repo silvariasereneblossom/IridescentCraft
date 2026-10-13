@@ -102,7 +102,6 @@
   "more_curios_slots_cap.js",
   "mutant_xp_boost.js",
   "origins/battlemage_mana_shield.js",
-  "origins/origin_effects.js",
   "origins/origin_status_commands.js",
   "pregen/auto_chunky.js",
   "quests/combat_kill_signals.js",
