@@ -14,15 +14,18 @@ Minecraft **1.20.1 Forge** modpack. **This repo is the source of truth:** the li
 - **NO `Co-Authored-By` line** on commits.
 - **Push the internal repo automatically too** (path below) when you touch it.
 - **Commit-first to test:** never hot-edit the PrismLauncher instance or expect an unpushed change to show in-game — the prelaunch sync overwrites it. Roll back by reverting the commit, not by patching the instance.
-- Pre-push hook blocks on a regenerated `Mod-List.md`? → `git add .minecraft/wiki/Mod-List.md`, commit, re-push.
+- **The pre-push hook is installed per clone** (`.minecraft\dev\install-hooks.ps1 -Install`; a worktree uses its clone's hook, and the installed hook is a copy of the template: re-install after the template changes). It runs `Mod-List.md`, the mod index gate, the mod intake gate, the registry snapshot check, the quest validator, the script lints with their ratchet comparison, the engine suite (`run.py fast`) and `sync-distros.ps1`; most blocks run only when the push touches their files. Blocked on a regenerated `Mod-List.md`? → `git add .minecraft/wiki/Mod-List.md`, commit, re-push. Every suite by hand: `python .minecraft\dev\engine-tests\run.py all`.
+- **A third-party mod is added, updated or removed only through `.minecraft\dev\mods\intake.py`** (`add`, `update`, `remove`; procedure in `.minecraft\dev\mods\README.md`), never by copying or editing a metafile by hand: the pre-push hook and CI refuse a mod with no intake record and a new mod with an open decision. Which mods the pack carries, and every answer to a record's decision, is the operator's: report the record, do not answer it.
 
 ## Build & deploy
 - **Host gradle is dead** (#39). Build custom mods via each mod's `wsl-build.sh` (WSL2 + JDK17); it deploys to all 3 distro `mods/` and runs the data preprocessors.
 - `iridescent_*` jars are git-ignored artifacts **force-committed** into 3 distro `mods/` + tracked in `custom_jars_manifest.json` (regen after ANY content change, even at the same filename). **Route every jar rebuild/redeploy through the `custom-jar-release` skill** — skipping the manifest regen silently breaks delivery.
+- **A custom jar released under a NEW file name** also needs, before the push: the registry snapshot refreshed from the release commit (`boot.ps1 -Ref <commit> -WriteSnapshot`, commit `dev\registry`) and its intake record moved (`intake.py update <mod> <the released jar>`). A rebuild under the same name needs neither.
 
 ## Skills (`.claude/skills/`, auto-surface by topic)
 - **`custom-jar-release`** — jar build → manifest regen → commit/push; stale-jar diagnosis; version-bump lockstep.
 - **`dedicated-server-triage`** — server crash-on-load, client-only-mod-on-server, the `ICRAFT_SERVICE_MODE` sync trap, re-sync + restart.
+- **`mod-intake`** — add, update, remove or audit a third-party mod through `.minecraft\dev\mods\intake.py`: metafile, generated indexes, boot diff, intake record, decisions applied through the boss and dimension registries; the hook's `[mod-intake] FAIL` lines.
 - **`tetra-module-wiring`** — Tetra materials / modules / variants / schematics; the `**` attribute rule; the three material homes.
 
 ## Durable stores — internal repo `C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft-internal`
