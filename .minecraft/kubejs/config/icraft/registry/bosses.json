@@ -138,6 +138,8 @@
     "cardinal_sins:sinofpridephase_1": { "tier": 3, "kind": "unlisted", "phaseOf": "cardinal_sins:sinofpride" },
     "cardinal_sins:sinofwrathphase_1": { "tier": 3, "kind": "unlisted", "phaseOf": "cardinal_sins:sinofwrath" },
     "minecraft:wither": { "tier": 3, "kind": "named", "hp": 600, "flags": ["boss", "x3", "witchInk", "vorpalMelee", "vorpalArcane"], "rush": 3 },
+    "progressivebosses:wither": { "sameAs": "minecraft:wither",
+      "note": "the Wither a player fights. Progressive Bosses cancels the join of every minecraft:wither (summoned or built) and adds this entity in its place (class PBWither, base health 500, its own loot table), so no script is ever handed minecraft:wither. Measured on a full-pack boot, 2026-10-13" },
     "meetyourfight:dame_fortuna": { "tier": 3, "kind": "named", "hp": 700, "flags": ["boss", "x3", "perKill", "witchInk"], "rush": 3 },
     "meetyourfight:rosalyne": { "tier": 3, "kind": "named", "hp": 800, "flags": ["boss", "x3", "perKill", "witchInk"], "rush": 3 },
     "stalwart_dungeons:shelterer": { "tier": 3, "kind": "miniboss", "hp": 500, "flags": ["boss", "perKill"], "rush": 3 },

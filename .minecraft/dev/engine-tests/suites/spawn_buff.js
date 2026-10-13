@@ -251,6 +251,39 @@ check('S15 an ordinary mob saved the same way keeps it (150 of 300)', near(zk.ra
 // and a stand-in built from that id here would test something that cannot happen. The four casters of that
 // namespace leave the handler on their `caster` flag before any health test (S11).
 
+__host.print('S16 a boss the game hands out under a second entity id (the Wither is progressivebosses:wither)')
+// The boss registry: "progressivebosses:wither": { "sameAs": "minecraft:wither" }. Progressive Bosses replaces every
+// vanilla Wither with its own entity (class PBWither, base health 500): measured on a full-pack boot, 2026-10-13.
+// Until then that entity was an ordinary monster for every script: mob tier x3, no designed health, no boss x3.
+// The numbers are the registry's own for the Wither (hp, flag x3), so the check follows the file.
+var witherHp = global.icraft.bosses.hp('minecraft:wither')
+var witherX3 = global.icraft.bosses.has('minecraft:wither', 'x3') ? 3 : 1
+var pbw = join(__host.living('progressivebosses:wither', 500, L), 1.5)
+line('second id, fresh', pbw)
+check('S16 the registry answers for the second id as for the Wither', global.icraft.bosses.canon('progressivebosses:wither') === 'minecraft:wither' &&
+  global.icraft.bosses.hp('progressivebosses:wither') === witherHp && global.icraft.core.isBoss('progressivebosses:wither') === true)
+check('S16 it gets the designed health and the boss buff of the Wither: (' + witherHp + ' + 500*0.5) * ' + witherX3 + ' = ' + ((witherHp + 250) * witherX3) + ', at full health',
+  near(pbw.rawMax(), (witherHp + 250) * witherX3) && pbw.rawHealth() === pbw.rawMax(), 'max=' + pbw.rawMax() + ' health=' + pbw.rawHealth())
+check('S16 and no mob-tier modifier; the buffs are saved (flags 2)', !has(pbw.mods(HP), 'icraft_mob_tier_hp') && has(pbw.mods(HP), 'icraft_boss_hp_override') &&
+  !has(pbw.mods(HP), '*') && flagIs(pbw, 'icraft_boss_hp', 2) && (witherX3 === 1 || flagIs(pbw, 'icraft_boss_3x', 2)), 'hp[' + pbw.mods(HP) + '] ' + pbw.flags())
+var pbw2 = join(pbw.reload(), 1.5)
+check('S16 unchanged over a reload', sameNumbers(pbw2, pbw), 'max=' + pbw2.rawMax())
+// one that was alive before the fix: saved as an ordinary monster (mob tier x3, flag 2), at half health
+var pbOld = savedWithTier('progressivebosses:wither', 500)
+pbOld.damageTo(750)
+pbOld = join(pbOld.reload())
+line('second id, saved before the fix at 750/1500, loaded', pbOld)
+// It is healed to full, once: for the two boss scripts this is its first spawn (no flag of theirs is on it), and a
+// first spawn starts at full health. The same happened to the 22 named bosses that joined the roster on 2026-10-12.
+check('S16 one saved before the fix with the mob tier (750 of 1500) loses it and gets the boss buffs: ' + (witherHp * witherX3) + ', healed to full once',
+  !has(pbOld.mods(HP), 'icraft_mob_tier_hp') && near(pbOld.rawMax(), witherHp * witherX3) && near(pbOld.rawHealth(), witherHp * witherX3) &&
+  flagIs(pbOld, 'icraft_boss_hp', 2), 'max=' + pbOld.rawMax() + ' health=' + pbOld.rawHealth())
+pbOld.damageTo(900)
+var pbOld2 = join(pbOld.reload())
+check('S16 and from then on a reload leaves its health alone (900 of ' + (witherHp * witherX3) + ')', near(pbOld2.rawHealth(), 900) && near(pbOld2.rawMax(), witherHp * witherX3), 'health=' + pbOld2.rawHealth())
+var vw = join(__host.living('minecraft:wither', 300, L), 1.5)
+check('S16 minecraft:wither itself is answered as before (designed health, x3)', near(vw.rawMax(), (witherHp + 150) * witherX3) && !has(vw.mods(HP), 'icraft_mob_tier_hp'), 'max=' + vw.rawMax())
+
 __host.print('')
 if (T_DISHONEST.length) __host.print('DISHONEST MOCKS (' + T_DISHONEST.length + '):\n   ' + T_DISHONEST.join('\n   '))
 // the handlers run behind icraft.guard: one that throws is reported by the guard, and has to fail this suite
