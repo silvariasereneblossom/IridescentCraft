@@ -436,8 +436,16 @@ $PUSHED
 EOF
     if [ $RB_TEST -eq 1 ] && [ $RB_FAIL -eq 0 ] && [ -f "$DEV/lint_kubejs_traps.test.js" ]; then
         echo "[pre-push] the trap lint changed: running its own test"
-        node "$DEV/lint_kubejs_traps.test.js" < /dev/null | grep -Ev '^ok ' || true
-        [ "${PIPESTATUS[0]}" -eq 0 ] || RB_FAIL=1
+        # The exit code is taken from node itself, not from a pipeline: `node .. | grep -v .. || true` lost it
+        # whenever grep printed nothing, so a test that crashed before its summary line left this block green
+        # (2026-10-13, the first run from a real hook). The test starts its own git children without GIT_DIR.
+        rb_out="$(node "$DEV/lint_kubejs_traps.test.js" < /dev/null 2>&1)"
+        rb_rc=$?
+        printf '%s\n' "$rb_out" | grep -Ev '^ok ' || true
+        if [ $rb_rc -ne 0 ]; then
+            echo "[pre-push] lint_kubejs_traps.test.js exited with $rb_rc"
+            RB_FAIL=1
+        fi
     fi
     if [ $RB_FAIL -ne 0 ]; then
         echo ""

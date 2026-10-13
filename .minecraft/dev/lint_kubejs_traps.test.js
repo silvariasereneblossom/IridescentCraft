@@ -14,11 +14,23 @@
 // PART rule-ratchet   the per-rule counts (lint_kubejs_traps.ratchet.json): at its count a file is clean, one
 //                     more site flags, an unlisted file holds none, --ratchet-down only lowers,
 //                     --ratchet-start works once, --ratchet-base lets a rule start and never rise.
+// PART git-env        the test's temporary repositories when GIT_DIR is set, as in a hook (see the note below)
 // PART ratchet-base   `--ratchet-base=<ref>` in a temporary git repository: a grandfathered count that is
 //                     raised by hand, a file that appears with a count, a deleted counts file are flagged; a
 //                     lowered count, an untouched file and a script that MOVED with its count are not.
 //
 // Nothing in the real tree is touched: every case runs on a copy in a temporary folder.
+//
+// THE TEMPORARY REPOSITORIES AND A GIT HOOK (2026-10-13, it happened once). Git runs a hook with GIT_DIR set to
+// the repository being pushed. A child `git -C <temp folder> ...` obeys GIT_DIR, not -C: the first run of this
+// test from the real pre-push hook did `git init` and four `git config` writes on the REAL clone (core.bare =
+// true, a test identity, autocrlf, gpgsign) and broke git for every worktree of it until the config was put back
+// by hand. Three things keep that from happening again, each enough alone:
+//   1. every child process is started without git's repository variables (CLEAN_ENV: the list
+//      `git rev-parse --local-env-vars` prints);
+//   2. newRepo() asks git where the repository it just made IS and stops unless that is inside the temp folder;
+//   3. nothing is written with `git config`: identity and settings are -c options of the one commit.
+// PART git-env proves 1 and 2 with GIT_DIR pointed at a second throwaway repository, never at a real one.
 // Run by the pre-push hook when the lint, this test or a fixture changes (install-hooks.ps1, the block
 // "Lint ratchets against the base commit") and by the `KubeJS script checks` Action.
 const fs = require('fs');
@@ -30,6 +42,33 @@ const LINT = path.join(__dirname, 'lint_kubejs_traps.js');
 const only = process.argv.slice(2);
 const wanted = (part) => only.length === 0 || only.some(w => part.indexOf(w) >= 0);
 
+// git's own list of the variables that tie a process to one repository (git rev-parse --local-env-vars)
+const GIT_REPO_VARS = ['GIT_ALTERNATE_OBJECT_DIRECTORIES', 'GIT_CONFIG', 'GIT_CONFIG_PARAMETERS', 'GIT_CONFIG_COUNT', 'GIT_OBJECT_DIRECTORY',
+  'GIT_DIR', 'GIT_WORK_TREE', 'GIT_IMPLICIT_WORK_TREE', 'GIT_GRAFT_FILE', 'GIT_INDEX_FILE', 'GIT_NO_REPLACE_OBJECTS', 'GIT_REPLACE_REF_BASE',
+  'GIT_PREFIX', 'GIT_SHALLOW_FILE', 'GIT_COMMON_DIR', 'GIT_INTERNAL_SUPER_PREFIX', 'GIT_NAMESPACE', 'GIT_CEILING_DIRECTORIES'];
+function cleanEnv(from) {
+  const e = Object.assign({}, from || process.env);
+  for (const k of Object.keys(e)) if (GIT_REPO_VARS.indexOf(k.toUpperCase()) >= 0 || /^GIT_CONFIG_(KEY|VALUE)_\d+$/i.test(k)) delete e[k];
+  return e;
+}
+const CLEAN_ENV = cleanEnv();
+// identity and settings of the test's commits, on the command line: never written to a config file
+const COMMIT_OPTS = ['-c', 'user.email=lint-test@example.invalid', '-c', 'user.name=lint test', '-c', 'commit.gpgsign=false', '-c', 'core.autocrlf=false'];
+const real = (p) => { try { return fs.realpathSync.native(p); } catch (e) { return path.resolve(p); } };
+// A new repository in `root`, and a function that runs git in it. Stops BEFORE anything is written when the
+// repository git works on is not inside `root`.
+function newRepo(root, env) {
+  const run = (...a) => execFileSync('git', ['-C', root].concat(a), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: env || CLEAN_ENV });
+  run('init', '-q');
+  const gitDir = real(run('rev-parse', '--absolute-git-dir').trim());
+  const inside = path.relative(real(root), gitDir);
+  if (inside === '' || inside.startsWith('..') || path.isAbsolute(inside))
+    throw new Error('REFUSING TO GO ON: git in ' + root + ' works on ' + gitDir + ', which is not inside that folder. ' +
+      'Something ties this process to another repository (GIT_DIR?); nothing was written to it by this test.');
+  return run;
+}
+const commitAll = (git, message) => { git.apply(null, COMMIT_OPTS.concat(['add', '-A'])); git.apply(null, COMMIT_OPTS.concat(['commit', '-q', '-m', message])); };
+
 let cases = 0, bad = 0;
 function check(name, ok, detail) {
   cases++;
@@ -39,7 +78,7 @@ function check(name, ok, detail) {
   if (detail) console.log('      ' + String(detail).trim().split(/\r?\n/).slice(-14).join('\n      '));
 }
 function runLint(lint, args, cwd) {
-  const r = spawnSync(process.execPath, ['--expose-internals', lint].concat(args), { cwd: cwd || path.dirname(lint), encoding: 'utf8' });
+  const r = spawnSync(process.execPath, ['--expose-internals', lint].concat(args), { cwd: cwd || path.dirname(lint), encoding: 'utf8', env: CLEAN_ENV });
   return { code: r.status, out: (r.stdout || '') + (r.stderr || '') };
 }
 function tmpDir(tag) { return fs.mkdtempSync(path.join(os.tmpdir(), 'trap-lint-' + tag + '-')); }
@@ -61,20 +100,14 @@ function partRatchetBase() {
   let git;
   const mk = () => {
     const root = tmpDir('ratchet');
-    git = (...a) => execFileSync('git', ['-C', root].concat(a), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    git('init', '-q');
-    git('config', 'user.email', 'lint-test@example.invalid');
-    git('config', 'user.name', 'lint test');
-    git('config', 'core.autocrlf', 'false');
-    git('config', 'commit.gpgsign', 'false');
+    git = newRepo(root);
     write(root, DEV + 'lint_kubejs_traps.js', fs.readFileSync(LINT));
     write(root, DEV + 'lint_kubejs_traps.exceptions.json', '{ "exceptions": [] }\n');
     write(root, COUNTS, counts({ 'server_scripts/a.js': 2, 'server_scripts/sub/b.js': 1 }));
     write(root, '.minecraft/kubejs/server_scripts/a.js', '// a\n');
     write(root, '.minecraft/kubejs/server_scripts/sub/b.js', '// b\n');
     write(root, '.minecraft/kubejs/server_scripts/c.js', '// c\n');
-    git('add', '-A');
-    git('commit', '-q', '-m', 'base');
+    commitAll(git, 'base');
     return root;
   };
   const lintOf = (root) => path.join(root, DEV, 'lint_kubejs_traps.js');
@@ -101,20 +134,20 @@ function partRatchetBase() {
       write(root, COUNTS, counts({ 'server_scripts/c.js': 2, 'server_scripts/sub/b.js': 1 })), 1, ['server_scripts/c.js:0\tRATCHET-RAISED'], []],
     ['the counts file deleted', (root) => fs.unlinkSync(path.join(root, COUNTS)), 1, ['RATCHET-RAISED', 'is gone here'], []],
     ['a base from before the counts file existed', (root) => {
-      git('rm', '-q', '--cached', COUNTS); git('commit', '-q', '-m', 'no counts file yet');
+      git('rm', '-q', '--cached', COUNTS); git.apply(null, COMMIT_OPTS.concat(['commit', '-q', '-m', 'no counts file yet']));
       write(root, COUNTS, counts({ 'server_scripts/a.js': 9 }));
     }, 0, ['nothing to compare', '0 counts file(s) compared'], ['RATCHET-RAISED']],
     ['an unknown ref', () => ['--ratchet-base=no-such-ref'], 2, ['is not a commit of this clone'], []],
     ['--ratchet-head: the committed counts are judged, not the working tree', (root) => {
       write(root, COUNTS, counts({ 'server_scripts/a.js': 5, 'server_scripts/sub/b.js': 1 }));
-      git('add', '-A'); git('commit', '-q', '-m', 'raised');
+      commitAll(git, 'raised');
       write(root, COUNTS, counts({ 'server_scripts/a.js': 2, 'server_scripts/sub/b.js': 1 }));   // put back in the tree only
       return ['--ratchet-base=HEAD~1', '--ratchet-head=HEAD'];
     }, 1, ['server_scripts/a.js:0\tRATCHET-RAISED', '2 -> 5'], []],
     ['--ratchet-head: a moved script is looked up in that commit', (root) => {
       git('mv', '.minecraft/kubejs/server_scripts/a.js', '.minecraft/kubejs/server_scripts/sub/a_moved.js');
       write(root, COUNTS, counts({ 'server_scripts/sub/a_moved.js': 2, 'server_scripts/sub/b.js': 1 }));
-      git('add', '-A'); git('commit', '-q', '-m', 'moved');
+      commitAll(git, 'moved');
       write(root, '.minecraft/kubejs/server_scripts/a.js', '// back in the tree only\n');
       return ['--ratchet-base=HEAD~1', '--ratchet-head=HEAD'];
     }, 0, ['taken over from a script that no longer exists'], ['RATCHET-RAISED']],
@@ -228,20 +261,14 @@ function partRuleRatchet() {
   let git;
   const mk = (withRulesFile) => {
     const root = tmpDir('rules');
-    git = (...a) => execFileSync('git', ['-C', root].concat(a), { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-    git('init', '-q');
-    git('config', 'user.email', 'lint-test@example.invalid');
-    git('config', 'user.name', 'lint test');
-    git('config', 'core.autocrlf', 'false');
-    git('config', 'commit.gpgsign', 'false');
+    git = newRepo(root);
     write(root, DEV + 'lint_kubejs_traps.js', fs.readFileSync(LINT));
     write(root, DEV + 'lint_kubejs_traps.exceptions.json', '{ "exceptions": [] }\n');
     write(root, DEV + 'lint_kubejs_traps.silent_catches.json', '{ "files": {} }\n');
     if (withRulesFile) write(root, RULES, rulesFile({ 'ID-SET': { 'server_scripts/a.js': 2 } }));
     write(root, SCRIPT + 'a.js', TWO_SETS);
     write(root, SCRIPT + 'b.js', '// clean\n');
-    git('add', '-A');
-    git('commit', '-q', '-m', 'base');
+    commitAll(git, 'base');
     return root;
   };
   const lintOf = (root) => path.join(root, DEV, 'lint_kubejs_traps.js');
@@ -290,11 +317,64 @@ function partRuleRatchet() {
 }
 
 // =====================================================================================================
+// PART git-env
+// =====================================================================================================
+// The hook environment, simulated: GIT_DIR points at a repository. Here it is a SECOND throwaway repository
+// (the "decoy"), never a real one. With that variable set:
+//   - newRepo() with the test's clean environment makes its repository in the temp folder and leaves the
+//     decoy's config byte for byte as it was;
+//   - newRepo() with the variable left in (what the first version of this test did) is REFUSED before a write;
+//   - a whole part of this test, run as a child with the variable set, passes and leaves the decoy alone.
+function partGitEnv() {
+  const decoy = tmpDir('decoy'), work = tmpDir('work');
+  try {
+    execFileSync('git', ['-C', decoy, 'init', '-q'], { stdio: 'ignore', env: CLEAN_ENV });
+    const decoyGit = path.join(decoy, '.git');
+    const cfg = path.join(decoyGit, 'config');
+    const before = fs.readFileSync(cfg, 'utf8');
+    const hookEnv = Object.assign({}, CLEAN_ENV, { GIT_DIR: decoyGit, GIT_INDEX_FILE: path.join(decoyGit, 'index'), GIT_PREFIX: '' });
+    check('git-env: the clean environment drops what a hook sets', cleanEnv(hookEnv).GIT_DIR === undefined && cleanEnv(hookEnv).GIT_INDEX_FILE === undefined && cleanEnv(hookEnv).PATH === hookEnv.PATH,
+      JSON.stringify(Object.keys(cleanEnv(hookEnv)).filter(k => /^GIT_/.test(k))));
+    // 1. the test's own way, while this very process has GIT_DIR set
+    const saved = {};
+    for (const k of ['GIT_DIR', 'GIT_INDEX_FILE', 'GIT_PREFIX']) { saved[k] = process.env[k]; process.env[k] = hookEnv[k]; }
+    let made = '', threw = '';
+    try {
+      const git = newRepo(work);
+      write(work, 'a.txt', 'a\n');
+      commitAll(git, 'in the temp repository');
+      made = git('log', '--oneline').trim();
+    } catch (e) { threw = String(e.message || e); }
+    finally { for (const k of Object.keys(saved)) { if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k]; } }
+    check('git-env: with GIT_DIR set, the test still commits into ITS temp repository', threw === '' && /in the temp repository/.test(made) && fs.existsSync(path.join(work, '.git')), threw || made);
+    check('git-env: and the repository GIT_DIR names is untouched (config byte for byte, no commit)', fs.readFileSync(cfg, 'utf8') === before && !fs.existsSync(path.join(decoyGit, 'refs', 'heads', 'master')) && !fs.existsSync(path.join(decoyGit, 'refs', 'heads', 'main')),
+      fs.readFileSync(cfg, 'utf8'));
+    // 2. the old way (the variable reaches git): refused before any write
+    const work2 = tmpDir('work2');
+    let refused = '';
+    try { newRepo(work2, hookEnv); } catch (e) { refused = String(e.message || e); }
+    rmrf(work2);
+    check('git-env: a repository that is NOT in the temp folder is refused', refused.indexOf('REFUSING TO GO ON') === 0, refused || 'newRepo did not throw');
+    // (git init itself, run with GIT_DIR set, re-initialises the decoy: that one write is git's, made before the
+    // guard can look. It is why rule 1 exists; the guard is the backstop that stops everything after it.)
+    const afterRefusal = fs.readFileSync(cfg, 'utf8');
+    check('git-env: after the refusal the decoy carries no test identity', !/lint-test@example\.invalid|lint test/.test(afterRefusal), afterRefusal);
+    // 3. a whole part of this test as a child process in the hook environment
+    fs.writeFileSync(cfg, before);
+    const child = spawnSync(process.execPath, [__filename, 'ratchet-base'], { encoding: 'utf8', env: hookEnv });
+    check('git-env: PART ratchet-base passes when the test is started with GIT_DIR set (exit ' + child.status + ')', child.status === 0 && /16 case\(s\), 0 failed/.test(child.stdout || ''),
+      ((child.stdout || '') + (child.stderr || '')).split(/\r?\n/).filter(l => !/^ok /.test(l)).slice(-12).join('\n'));
+    check('git-env: and the decoy config is still byte for byte what it was', fs.readFileSync(cfg, 'utf8') === before, fs.readFileSync(cfg, 'utf8'));
+  } finally { rmrf(decoy); rmrf(work); }
+}
+
+// =====================================================================================================
 try { execFileSync('git', ['--version'], { stdio: 'ignore' }); }
 catch (e) { console.error('[trap-lint test] CANNOT RUN: git is not on PATH (' + e.message + ')'); process.exit(2); }
 if (wanted('fixtures')) partFixtures();
 if (wanted('known-false')) partKnownFalse();
 if (wanted('rule-ratchet')) partRuleRatchet();
 if (wanted('ratchet-base')) partRatchetBase();
+if (wanted('git-env')) partGitEnv();
 console.log('\n[trap-lint test] ' + cases + ' case(s), ' + bad + ' failed');
 process.exit(bad ? 1 : 0);
