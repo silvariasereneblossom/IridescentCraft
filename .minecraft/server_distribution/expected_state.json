@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "4f51469a",
+    "generated_from":  "04e51e82",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "28b9c32db55054133add8aca30d4f6aa7b3d51a974a4c9bc0475aa5a8171abd6",
-                                                                  "size":  47898
+                                                                  "sha256":  "479235448f8347e15c262d4f27ecda43945db5c5777253df980db2bd66e7274b",
+                                                                  "size":  47967
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7412,8 +7412,8 @@
                                                                                   "size":  14870
                                                                               },
                   "kubejs/server_scripts/origins/origin_effects.js":  {
-                                                                          "sha256":  "e49350054f8ce88de56dc2228892a0c53b7300d92eed897af64530618fef2e6a",
-                                                                          "size":  14485
+                                                                          "sha256":  "93243a5c4de66ec7c8e5887eff7d3279b20b111ce04fa850f6b90d8778d8bae7",
+                                                                          "size":  14468
                                                                       },
                   "kubejs/server_scripts/origins/origin_status_commands.js":  {
                                                                                   "sha256":  "f731aef4be5971bc22b3c4b8cc7c6bb1d1134718634f957357b422af3034b838",

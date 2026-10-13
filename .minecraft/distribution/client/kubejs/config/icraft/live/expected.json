@@ -121,6 +121,7 @@
    "icraft.justleveling.1@hurt": "skills/justleveling_skills.js",
    "icraft.justleveling.2@hurt": "skills/justleveling_skills.js",
    "icraft.magic_crit@hurt": "magic_crit_hook.js",
+   "icraft.origin.blazeborn.deal@hurt": "origins/origin_effects.js",
    "icraft.origin.blazeborn.take@hurt": "origins/origin_effects.js",
    "icraft.origin.enderian.shift@hurt": "origins/origin_effects.js",
    "icraft.skill_effects.1@hurt": "skills/skill_effects.js",

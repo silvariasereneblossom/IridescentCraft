@@ -6603,6 +6603,15 @@
       {
        "kind": "hurt",
        "group": "hurt",
+       "name": "icraft.origin.blazeborn.deal",
+       "who": "attackerPlayer",
+       "place": "last",
+       "cancelled": true,
+       "unchecked": true
+      },
+      {
+       "kind": "hurt",
+       "group": "hurt",
        "name": "icraft.origin.blazeborn.take",
        "who": "victimPlayer",
        "place": "first",
@@ -6617,11 +6626,6 @@
        "place": "last",
        "cancelled": true,
        "unchecked": true
-      },
-      {
-       "kind": "direct",
-       "group": "DR.register",
-       "name": "icraft.origin.blazeborn.deal"
       }
      ],
      "sections": 0,
@@ -9705,13 +9709,6 @@
       "kind": "guard"
      }
     ],
-    "DR.register": [
-     {
-      "script": "origins/origin_effects.js",
-      "name": "icraft.origin.blazeborn.deal",
-      "kind": "direct"
-     }
-    ],
     "DR_eff.registerLate": [
      {
       "script": "loot/tmb_plain_bow_effects.js",
@@ -11075,6 +11072,15 @@
       "name": "icraft.tetra_terramity_perks",
       "kind": "hurt",
       "who": "attacker"
+     },
+     {
+      "script": "origins/origin_effects.js",
+      "name": "icraft.origin.blazeborn.deal",
+      "kind": "hurt",
+      "who": "attackerPlayer",
+      "place": "last",
+      "cancelled": true,
+      "unchecked": true
      },
      {
       "script": "death_penalty.js",

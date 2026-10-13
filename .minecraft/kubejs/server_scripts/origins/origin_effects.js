@@ -125,14 +125,13 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 ;(function(){
   if (!icraft.lib.need('core', 'origins/origin_effects')) return
   var core = global.icraft.core
-  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   // Dealing damage in/after Nether: +10% (in Nether) or +20% (after awakening, anywhere)
   // `source.actual`: KubeJS exposes DamageSource.getEntity() to scripts as
   // getActual() (@RemapForJS), so `source.entity` is undefined and this handler
   // used to return on its first line for every hit.
-  DR.register('icraft.origin.blazeborn.deal', function(event) {
+  core.onHurt('icraft.origin.blazeborn.deal', function(event) {
     // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
     // lands as-is: it must not proc or be multiplied a second time. Same rule the
     // shared dispatcher applies to every onHurt handler (0_lib_core.js, RE-ENTRANCY).
@@ -146,7 +145,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     if (!inNether && !awakened) return
     var bonus = awakened ? 0.20 : 0.10
     event.amount = event.amount * (1 + bonus)
-  })
+  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
 
   // Taking damage in/after Nether: -10% / -20%
   core.onHurt('icraft.origin.blazeborn.take', function(event) {
