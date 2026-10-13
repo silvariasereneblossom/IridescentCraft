@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c7455cc5",
+    "generated_from":  "80bc540b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "49b94da88c5c378e260b4c0621b2ef0dcd99f1cf37f77cab33ebdd4c9c8ffeea",
-                                                                  "size":  47616
+                                                                  "sha256":  "e952c08b1fb486fee2cb8659ad45e27698aa66b95e62ab2270bbf154cc3c11be",
+                                                                  "size":  47689
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7404,8 +7404,8 @@
                                                                           "size":  14922
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
-                                                                                  "sha256":  "9f19c0a02bf6c2725864760bbe750bf5fb53b6d5cbb1ffb50cb5e2851e20b4a1",
-                                                                                  "size":  13792
+                                                                                  "sha256":  "b5e6237be0620e24066f4163d7e0fb9162684e79f886598e47e1444b8d6d535c",
+                                                                                  "size":  14870
                                                                               },
                   "kubejs/server_scripts/origins/origin_effects.js":  {
                                                                           "sha256":  "e49350054f8ce88de56dc2228892a0c53b7300d92eed897af64530618fef2e6a",

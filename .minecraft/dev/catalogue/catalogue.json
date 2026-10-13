@@ -6452,9 +6452,13 @@
        "name": "origins/class_passives_phase6h"
       },
       {
-       "kind": "direct",
-       "group": "DR_h6.register",
-       "name": "icraft.class_passives_h6"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.class_passives_h6",
+       "who": "any",
+       "place": "last",
+       "cancelled": true,
+       "unchecked": true
       }
      ],
      "sections": 0,
@@ -6465,10 +6469,16 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.lib",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
@@ -6485,7 +6495,16 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
        ],
        "held": "priority"
       }
@@ -9666,13 +9685,6 @@
       "kind": "direct"
      }
     ],
-    "DR_h6.register": [
-     {
-      "script": "origins/class_passives_phase6h.js",
-      "name": "icraft.class_passives_h6",
-      "kind": "direct"
-     }
-    ],
     "DR_uniq.register": [
      {
       "script": "loot/unique_tier_buff.js",
@@ -11038,6 +11050,15 @@
       "who": "attacker"
      },
      {
+      "script": "origins/class_passives_phase6h.js",
+      "name": "icraft.class_passives_h6",
+      "kind": "hurt",
+      "who": "any",
+      "place": "last",
+      "cancelled": true,
+      "unchecked": true
+     },
+     {
       "script": "origins/origin_effects.js",
       "name": "icraft.origin.enderian.shift",
       "kind": "hurt",
@@ -12151,7 +12172,7 @@
     },
     {
      "script": "server:origins/class_passives_phase6h.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:origins/origin_effects.js",
@@ -12926,7 +12947,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 19
+   "usersAtLoad": 20
   },
   "origins": {
    "script": "server:0_lib_origins.js",

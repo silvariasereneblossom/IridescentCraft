@@ -1,5 +1,5 @@
 // @file kubejs/server_scripts/origins/class_passives_phase6h.js
-// @events EntityEvents.death, PlayerEvents.loggedIn, PlayerEvents.respawned, ServerEvents.tick
+// @events EntityEvents.death, PlayerEvents.loggedIn, PlayerEvents.respawned, ServerEvents.tick, hurt
 // =============================================================================
 // CLASS PASSIVES — Phase 6H additions
 // =============================================================================
@@ -166,14 +166,26 @@
     PlayerEvents.respawned(icraft.guard('origins/class_passives_phase6h', 'PlayerEvents.respawned', resetTransientFlags))
 
     // ── BERSERKER Battle Trance + SAMURAI Bushido + WANDERER Adaptable ──
-    // 2026-05-15: migrated to DamageModifierRegistry (raw LivingHurtEvent).
+    // On the raw Forge LivingHurtEvent, through the shared dispatcher of 0_lib_core.js.
     // Runs on every hit by anything: bail before any work unless the attacker
     // is a player with one of the three classes (one cached lookup).
+    //
+    // Until 2026-10-13 the handler sat straight on the Java damage registry, which runs
+    // its entries in the HASH order of their keys: this one ran after the dispatcher's
+    // handlers, after the startup script's deathskin bonus, the Blazeborn bonus, the
+    // armour clamp, Arcane Cleave and the unique-weapon multiplier, and before the
+    // Enderian bonus. `place: 'last'` holds that place (the order inside it is the
+    // library's list PLACED). `cancelled`: it is still called for a hit an earlier
+    // handler cancelled, as it was (measured: a Berserker's hit with a broken weapon
+    // deals nothing and still counts as combat for Battle Trance). `unchecked`: the
+    // amount it hands on is left as it is. `who` is 'any' because of the one-per-boot
+    // line below, which is printed on the first hurt event of any kind.
+    // An option taken off, or added, changes behaviour: decision list entry 45; the hit
+    // table that holds this handler is dev/engine-tests, suite `hit-table`.
     var WEAPON_TYPES = ['sword', 'axe', 'bow', 'crossbow', 'trident', 'hammer', 'mace', 'magic']
-    var DR_h6 = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
     var PlayerClass_h6 = Java.loadClass('net.minecraft.world.entity.player.Player')
     var sourceShapeLogged = false
-    DR_h6.register('icraft.class_passives_h6', function (event) {
+    if (icraft.lib.need('core', 'origins/class_passives_phase6h')) global.icraft.core.onHurt('icraft.class_passives_h6', function (event) {
       try {
         // Secondary damage (splash / chain / reflect dealt through icraft.core.dealDamage)
         // lands as-is: it must not proc or be multiplied a second time. Same rule the
@@ -250,7 +262,7 @@
       } catch (e) {
         warnThrew('damage handler', e)
       }
-    })
+    }, 'any', { place: 'last', cancelled: true, unchecked: true })
 
     // ── SAMURAI Bushido — kill within 3s of first strike grants Speed II for 3s ──
     EntityEvents.death(icraft.guard('origins/class_passives_phase6h', 'EntityEvents.death', function (event) {

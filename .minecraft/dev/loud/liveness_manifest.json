@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 320,
-   "digest": "25f2274143a64015",
+   "count": 321,
+   "digest": "1fbab63955dafc82",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -522,6 +522,10 @@
     {
      "id": "icraft.attribute_sync.hurt@hurt",
      "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "icraft.class_passives_h6@hurt",
+     "script": "origins/class_passives_phase6h.js"
     },
     {
      "id": "icraft.death_penalty.broken_weapon@hurt",
