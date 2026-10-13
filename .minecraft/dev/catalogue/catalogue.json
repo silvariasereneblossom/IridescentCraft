@@ -1385,6 +1385,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -1392,6 +1398,14 @@
       }
      ],
      "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
       {
        "script": "0_lib_core.js",
        "basis": "load",
@@ -1408,6 +1422,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -1457,6 +1475,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -1468,7 +1492,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -1488,6 +1513,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -1551,6 +1580,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -1562,7 +1597,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -1582,6 +1618,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -1955,6 +1995,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerPlayerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -1972,7 +2018,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -1993,6 +2040,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -2918,6 +2969,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerPlayerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -2929,7 +2986,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -2949,6 +3007,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -3235,6 +3298,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -3246,7 +3315,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -5925,9 +5995,23 @@
        "kind": "global",
        "from": "0_lib_core.js",
        "when": "load"
+      },
+      {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
       }
      ],
      "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
       {
        "script": "0_lib_core.js",
        "basis": "load",
@@ -5936,6 +6020,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -6658,9 +6746,23 @@
        "kind": "global",
        "from": "0_lib_core.js",
        "when": "load"
+      },
+      {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
       }
      ],
      "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
       {
        "script": "0_lib_core.js",
        "basis": "load",
@@ -6669,6 +6771,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -8178,6 +8284,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerPlayerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -8195,7 +8307,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -8216,6 +8329,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -8789,6 +8907,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "icraft.live",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -8812,7 +8936,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -8832,6 +8957,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
      ]
     },
     {
@@ -9125,6 +9255,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -9132,6 +9268,14 @@
       }
      ],
      "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
       {
        "script": "0_lib_core.js",
        "basis": "load",
@@ -9148,6 +9292,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {

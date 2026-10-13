@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/magic_crit_hook.js
+// @events hurt
 // =============================================================================
 // MAGIC CRIT HOOK -- enable critical hits on magic-typed damage
 // =============================================================================
@@ -62,8 +64,10 @@ try {
       try { return EnchantmentHelper_mc.getItemEnchantmentLevel(ench, stack) } catch (_) { return 0 }
     }
 
-    var core = global.icraft && global.icraft.core
-    if (!core) throw new Error('0_lib_core.js did not load')
+    // The hook needs the core library. A missing one is said ONCE, for every
+    // script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+    if (!icraft.lib.need('core', 'magic_crit_hook')) return
+    var core = global.icraft.core
 
     var isMagicDamage = function(src) {
       // the registry id ('minecraft:indirect_magic'); the msg id only if there is none

@@ -40,11 +40,10 @@
 // =============================================================================
 
 ;(function () {
-var core = global.icraft && global.icraft.core
-if (!core) {
-  console.error('[IridescentCraft] enchant_effects.js: 0_lib_core.js did not load -- custom enchantments are OFF')
-  return
-}
+// Nothing below works without the core library. A missing one is said ONCE, for
+// every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+if (!icraft.lib.need('core', 'enchantments/enchant_effects')) return
+var core = global.icraft.core
 
 // ─── Helpers ───
 

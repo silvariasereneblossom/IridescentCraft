@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/affixes/affix_effects.js
+// @events EntityEvents.death, PlayerEvents.loggedOut, hurt, tick.server
 // =============================================================================
 // IridescentCraft — Complex Affix Effects (Event-Driven)
 // File: kubejs/server_scripts/affixes/affix_effects.js
@@ -53,11 +55,10 @@
 // =============================================================================
 
 ;(function () {
-var core = global.icraft && global.icraft.core
-if (!core) {
-  console.error('[IridescentCraft] affix_effects.js: 0_lib_core.js did not load -- affix effects are OFF')
-  return
-}
+// Nothing below works without the core library. A missing one is said ONCE, for
+// every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+if (!icraft.lib.need('core', 'affixes/affix_effects')) return
+var core = global.icraft.core
 
 // ─── Affix detection ───
 

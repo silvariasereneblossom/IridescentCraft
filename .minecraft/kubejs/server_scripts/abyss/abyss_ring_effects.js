@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/abyss/abyss_ring_effects.js
+// @events PlayerEvents.loggedOut, hurt, tick.server
 // =============================================================================
 // IridescentCraft — Abyss Custom Ring Effects
 // File: kubejs/server_scripts/abyss/abyss_ring_effects.js
@@ -21,11 +23,10 @@
 // =============================================================================
 
 ;(function () {
-var core = global.icraft && global.icraft.core
-if (!core) {
-  console.error('[IridescentCraft] abyss_ring_effects.js: 0_lib_core.js did not load -- ring effects are OFF')
-  return
-}
+// Nothing below works without the core library. A missing one is said ONCE, for
+// every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+if (!icraft.lib.need('core', 'abyss/abyss_ring_effects')) return
+var core = global.icraft.core
 
 // ─── Helpers ───
 

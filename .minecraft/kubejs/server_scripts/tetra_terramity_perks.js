@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/tetra_terramity_perks.js
+// @events hurt, tick.server
 // =============================================================================
 // TETRA TERRAMITY PERKS -- functional perks for the 6 Terramity materials
 // =============================================================================
@@ -38,8 +40,10 @@
 
 ;(function () {
 try {
-  var core = global.icraft && global.icraft.core
-  if (!core) throw new Error('0_lib_core.js did not load')
+  // Nothing below works without the core library. A missing one is said ONCE, for
+  // every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+  if (!icraft.lib.need('core', 'tetra_terramity_perks')) return
+  var core = global.icraft.core
 
   var TERRAMITY_MATS = { sapphire: true, topaz: true, ruby: true, onyx: true, dimlite: true, iridium: true }
   var NO_MATS = { any: false }

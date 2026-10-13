@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/death_penalty.js
+// @events BlockEvents.broken, EntityEvents.death, ItemEvents.canPickUp, ItemEvents.rightClicked, PlayerEvents.inventoryChanged, PlayerEvents.loggedIn, PlayerEvents.loggedOut, ServerEvents.loaded, hurt, tick.player
+// @registry dimensions
 // =============================================================================
 // DEATH PENALTY SYSTEM — Priority 13
 // Design Doc Part I, Section 27: Death & Penalty System
@@ -561,11 +564,10 @@ BlockEvents.broken(icraft.guard('death_penalty', 'BlockEvents.broken', event => 
 // hurt event is cancelled. Projectiles and spells already in flight are left
 // alone (a broken bow / staff cannot be used: see rightClicked below).
 ;(function(){
-  var core = global.icraft && global.icraft.core
-  if (!core) {
-    console.error('[death_penalty] 0_lib_core.js did not load -- broken weapons still deal damage')
-    return
-  }
+  // This block needs the core library. A missing one is said ONCE, for every
+  // script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+  if (!icraft.lib.need('core', 'death_penalty')) return
+  var core = global.icraft.core
   core.onHurt('icraft.death_penalty.broken_weapon', function(event, ctx) {
     var player = ctx.attacker
     if (core.direct(ctx.source) !== player) return

@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/skills/skill_effects.js
+// @events BlockEvents.broken, BlockEvents.rightClicked, ItemEvents.crafted, ItemEvents.entityInteracted, ServerEvents.loaded, hurt, tick.server
+// @live skill-craft-bonus, skill-material-save
 // =============================================================================
 // IridescentCraft — Pufferfish Skills Command Reward Bridge (Phase 3)
 // File: kubejs/server_scripts/skills/skill_effects.js
@@ -112,11 +115,10 @@ let FURNACE_KEYS = [
 //     core.onHurt handler off while it lands. Before, each splash hit would
 //     have re-entered this handler and splashed again from its own target.
 ;(function(){
-  var core = global.icraft && global.icraft.core
-  if (!core) {
-    console.error('[IridescentCraft] skill_effects.js: 0_lib_core.js did not load -- execute / splash / ammo-save / all-resistance are OFF')
-    return
-  }
+  // This block needs the core library. A missing one is said ONCE, for every
+  // script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+  if (!icraft.lib.need('core', 'skills/skill_effects')) return
+  var core = global.icraft.core
 
   core.onHurt('icraft.skill_effects.1', function(event, ctx) {
     var source = ctx.source

@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js
+// @events hurt
 // =============================================================================
 // SIMPLY SWORDS ELEMENTAL UNIQUES — Spell-power utility for non-casters
 // =============================================================================
@@ -30,6 +32,11 @@
 // =============================================================================
 
 ;(function () {
+// Nothing in this file works without the core library (the id set right below is
+// already the core's). A missing one is said ONCE, for every script that asks
+// (icraft.lib, 00_icraft_guard.js), not by each script. Until 2026-10-13 the test
+// stood below the id set, where a missing core had already thrown.
+if (!icraft.lib.need('core', 'origins/ss_unique_spellsword_scaling')) return
 const SS_UNIQUE_AD_PER_HALF_SP = 1.0  // +0.5 AD per 50% bonus SP == +1 AD per 100%
 
 // Elemental SS uniques only — weapons whose theme is an explicit element
@@ -76,8 +83,7 @@ try {
   }
 
   // 2026-05-15: migrated to DamageModifierRegistry.
-  var core = global.icraft && global.icraft.core
-  if (!core) throw new Error('0_lib_core.js did not load')
+  var core = global.icraft.core
   core.onHurt('icraft.ss_unique_spellsword', function(event, ctx) {
     var source = ctx.source
     var player = ctx.attacker

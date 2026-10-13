@@ -29,7 +29,7 @@ var T_reg = function (name) {
 }
 var PlayerEvents = { loggedIn: T_reg('P.loggedIn'), loggedOut: T_reg('P.loggedOut'), respawned: T_reg('P.respawned'), tick: T_reg('P.tick'), chat: T_reg('P.chat'), inventoryChanged: T_reg('P.inventoryChanged') }
 var EntityEvents = { death: T_reg('E.death'), hurt: T_reg('E.hurt'), spawned: T_reg('E.spawned'), checkSpawn: T_reg('E.checkSpawn') }
-var ItemEvents = { rightClicked: T_reg('I.rightClicked'), entityInteracted: T_reg('I.entityInteracted'), canPickUp: T_reg('I.canPickUp') }
+var ItemEvents = { rightClicked: T_reg('I.rightClicked'), entityInteracted: T_reg('I.entityInteracted'), canPickUp: T_reg('I.canPickUp'), crafted: T_reg('I.crafted') }
 var BlockEvents = { broken: T_reg('B.broken'), rightClicked: T_reg('B.rightClicked'), placed: T_reg('B.placed') }
 var ServerEvents = { tick: T_reg('S.tick'), loaded: T_reg('S.loaded'), unloaded: T_reg('S.unloaded'), commandRegistry: T_reg('S.commandRegistry'), recipes: T_reg('S.recipes'), tags: T_reg('S.tags') }
 // every event offered above exists on the engine

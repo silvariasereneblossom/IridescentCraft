@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/attributes/attribute_sync.js
+// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, hurt, tick.player, tick.server
 // =============================================================================
 // Iridescent Attributes -- Sync Handlers (v0.4 Persistent NBT)
 // =============================================================================
@@ -33,11 +35,10 @@
 // =============================================================================
 
 ;(function () {
-var core = global.icraft && global.icraft.core
-if (!core) {
-  console.error('[IridescentCraft] attribute_sync.js: 0_lib_core.js did not load -- attribute sync is OFF')
-  return
-}
+// Nothing below works without the core library. A missing one is said ONCE, for
+// every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+if (!icraft.lib.need('core', 'attributes/attribute_sync')) return
+var core = global.icraft.core
 
 // --- Helper: read an icraft attribute from persistentData ---
 // For unified stats (spell_power / mana_regen / cooldown_reduction) we

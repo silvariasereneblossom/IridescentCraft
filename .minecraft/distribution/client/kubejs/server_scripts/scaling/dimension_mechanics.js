@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/scaling/dimension_mechanics.js
+// @events EntityEvents.death, EntityEvents.hurt, EntityEvents.spawned, hurt, tick.player, tick.server
+// @registry bosses
 // =============================================================================
 // IridescentCraft — Dimension-Specific Combat Mechanics
 // File: kubejs/server_scripts/scaling/dimension_mechanics.js
@@ -49,11 +52,10 @@
 // =============================================================================
 
 ;(function () {
-var core = global.icraft && global.icraft.core
-if (!core) {
-  console.error('[IridescentCraft] dimension_mechanics.js: 0_lib_core.js did not load -- dimension mechanics are OFF')
-  return
-}
+// Nothing below works without the core library. A missing one is said ONCE, for
+// every script that asks (icraft.lib, 00_icraft_guard.js), not by each script.
+if (!icraft.lib.need('core', 'scaling/dimension_mechanics')) return
+var core = global.icraft.core
 
 // The Abyss bosses = the flag `abyssBoss` of the boss registry (kubejs/data/
 // icraft/registry/bosses.json); until 2026-10-13 five ids stood here.
