@@ -2074,7 +2074,7 @@ own one-shot `global._*` flags.
 
 ### `tatos_dimension_lock.js`
 
-- place 156 of 160
+- place 156 of 160; header: @events @file
 - events: `EntityEvents.spawned`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 

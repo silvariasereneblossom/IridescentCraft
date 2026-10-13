@@ -36,11 +36,8 @@
     },
     "HELPER-COPY": {
       "started": "2026-10-13",
-      "total": 3,
-      "files": {
-        "server_scripts/0_lib_aptitudes.js": 1,
-        "server_scripts/tatos_dimension_lock.js": 2
-      }
+      "total": 0,
+      "files": {}
     },
     "ID-SET": {
       "started": "2026-10-13",

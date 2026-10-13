@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b225ed97",
+    "generated_from":  "4c0dbd94",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7604,8 +7604,8 @@
                                                                   "size":  6699
                                                               },
                   "kubejs/server_scripts/tatos_dimension_lock.js":  {
-                                                                        "sha256":  "c819399aaa0969a14ecbecf043f2dab66b37f0b84adec1bfdae6a1e592ab11c9",
-                                                                        "size":  4118
+                                                                        "sha256":  "0d9983a1b68d09c9c2914527801224bf0162ce9953f65816541686394dead401",
+                                                                        "size":  5205
                                                                     },
                   "kubejs/server_scripts/tetra_terramity_perks.js":  {
                                                                          "sha256":  "c456b3a1c2da92d0852cd1b065e3021d484e619da03cad91a4cda857ae5729f6",

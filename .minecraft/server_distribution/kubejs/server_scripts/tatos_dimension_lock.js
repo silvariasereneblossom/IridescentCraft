@@ -1,6 +1,22 @@
+// @file kubejs/server_scripts/tatos_dimension_lock.js
+// @events EntityEvents.spawned
 // =============================================================================
 // TATOS DIMENSION LOCK -- confine all theabyss:* mobs to TATOS dimensions
 // =============================================================================
+// STATUS: NOT LIVE. This script has never discarded an entity (found
+// 2026-10-13, measured on a full-pack boot with all 1,411 creatable entity
+// types). For scripts entity.getType() is the id STRING ("theabyss:x"): the
+// first read below (getType().builtInRegistryHolder()) throws on every
+// entity, and the fallback only takes a value that looks like
+// "entity.<ns>.<path>", which the id never does. typeId stays null and the
+// handler returns on its `if (!typeId) return` line, for every entity.
+// It is LEFT AS IT IS on purpose. With a working id read
+// (global.icraft.core.entityId) every theabyss:* entity that joins a level
+// outside the four dimensions would be deleted, also the ones already in the
+// world when their chunk loads: that is a change to what spawns and what
+// exists, and the operator's decision (decision list Part 7, the Tatos entry).
+// The text below describes what was intended.
+// -----------------------------------------------------------------------------
 // 2026-04-25: tester reported TATOS mobs (Abyss Skeleton, etc.) appearing in
 // the Overworld and breaking doors. TATOS' own datapack biome_modifiers
 // only target theabyss:* biomes -- so overworld TATOS spawns must come
