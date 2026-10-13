@@ -54,6 +54,13 @@ Read in the bytecode of `kubejs-forge-2001.6.5`, then asked of KubeJS's own clas
   so is `// last hurt`). Each of the six field names was put to the engine in the form a script writes it.
 - **Handlers of one event** run in the order they were registered. Handlers registered for a target run before
   the untargeted ones when that target fires.
+- **Hurt handlers** (`core.onHurt` / `onHurtLate`) are listed in the order they RUN, which is registration order
+  only for the unplaced ones: a handler with a `place` runs before them (`first`) or after every other entry of the
+  Java damage registry (`last`), in the order of the list `PLACED` of `0_lib_core.js`, which this tool reads from
+  the library's source. Each handler's place and options (`secondary`, `cancelled`, `unchecked`) are printed with
+  it; an option that is not a literal, or a placed key that is not on the list, is a problem and nothing is
+  written. The registry itself runs its entries in the HASH order of their keys (a `ConcurrentHashMap`), which is
+  why a handler straight on it is listed apart, "with no liveness id", and why the lint refuses a new one.
 
 `python .minecraft/dev/engine-tests/run.py real-engine` boots the server again and compares; `record` rewrites
 the answers after an engine update.
