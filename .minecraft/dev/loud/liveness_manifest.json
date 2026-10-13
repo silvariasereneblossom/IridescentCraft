@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 316,
-   "digest": "19931ceb12d27eb7",
+   "count": 318,
+   "digest": "13d26c6507b7e27c",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -550,6 +550,14 @@
     {
      "id": "icraft.iss_school_to_ars_spell@hurt",
      "script": "attributes/iss_school_to_ars_spell.js"
+    },
+    {
+     "id": "icraft.justleveling.1@hurt",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "icraft.justleveling.2@hurt",
+     "script": "skills/justleveling_skills.js"
     },
     {
      "id": "icraft.magic_crit@hurt",

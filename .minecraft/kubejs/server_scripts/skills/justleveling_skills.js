@@ -1,5 +1,5 @@
 // @file kubejs/server_scripts/skills/justleveling_skills.js
-// @events BlockEvents.broken, BlockEvents.placed, EntityEvents.death, ItemEvents.crafted, PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, ServerEvents.loaded, tick.server
+// @events BlockEvents.broken, BlockEvents.placed, EntityEvents.death, ItemEvents.crafted, PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, ServerEvents.loaded, hurt, tick.server
 // =============================================================================
 // IridescentCraft — JustLeveling Aptitude Skills
 // File: kubejs/server_scripts/skills/justleveling_skills.js
@@ -608,7 +608,7 @@
   // ═══════════════════════════════════════════════════════════════════════════
   // COMBAT
   // ═══════════════════════════════════════════════════════════════════════════
-  // Raw LivingHurtEvent through the pack's DamageModifierRegistry (2026-05-15).
+  // The raw Forge LivingHurtEvent, through the hurt dispatcher of 0_lib_core.js (see the registration below).
   // DamageSource accessors under their KubeJS script names:
   //   getEntity() -> getActual()   (`source.entity` is undefined)
   //   getMsgId()  -> getType()     (`source.type` is vanilla's type() method)
@@ -675,21 +675,23 @@
   // A damage figure this file is willing to write back.
   var usable = function (n) { return n >= 0 && n !== Infinity }
 
-  var DR_jl = null
-  try {
-    DR_jl = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
-  } catch (e) {
-    warnFailed('loading DamageModifierRegistry', e + ' -- the combat skills are off')
-  }
-
-  if (DR_jl && PlayerClass_jl) {
+  // Both handlers run on the shared dispatcher of 0_lib_core.js. Until 2026-10-13 they sat straight on the
+  // Java damage registry, which runs its entries in the HASH order of their keys: these two ran before
+  // the dispatcher's handlers (the crit roll, affixes, enchants, ...). `place: 'first'` keeps them there,
+  // in the order of the library's list PLACED (the Blazeborn reduction, then .1, then .2); `unchecked`
+  // leaves the amount they hand on as it is, as the registry did. Neither is called for secondary damage
+  // or for a cancelled hit: their own first line says the same.
+  // An option taken off, or added, changes damage numbers: decision list entry 45; the hit table that
+  // holds these two is dev/engine-tests, suite `hit-table`.
+  if (PlayerClass_jl && icraft.lib.need('core', 'skills/justleveling_skills')) {
+    var core_jl = global.icraft.core
     // ─────────────────────────────────────────────────────────────────────────
     // DEALING DAMAGE (melee): Cleave (STR 15), Brutal Slash (STR 10),
     // Hemorrhage (STR 20), True Strength (STR 30), Lucky Strike (LCK 10)
     // Nothing here deals damage or kills by itself: it only changes the amount
     // of the hit being processed, so the handler cannot re-enter.
     // ─────────────────────────────────────────────────────────────────────────
-    DR_jl.register('icraft.justleveling.1', function (event) {
+    core_jl.onHurt('icraft.justleveling.1', function (event) {
       try {
         if (isSecondaryHit() || event.isCanceled()) return
         var source = event.source
@@ -764,12 +766,12 @@
 
         if (amount !== original && usable(amount)) event.amount = amount
       } catch (e) { warnFailed('hurt handler (dealing)', e) }
-    })
+    }, 'attackerPlayer', { place: 'first', unchecked: true })
 
     // ─────────────────────────────────────────────────────────────────────────
     // TAKING DAMAGE: Lion Heart (DEF 30), Mystic Ward (MAG 20), Cleave stamp
     // ─────────────────────────────────────────────────────────────────────────
-    DR_jl.register('icraft.justleveling.2', function (event) {
+    core_jl.onHurt('icraft.justleveling.2', function (event) {
       try {
         if (isSecondaryHit() || event.isCanceled()) return
         var player = event.entity
@@ -809,7 +811,7 @@
 
         if (amount !== original && usable(amount)) event.amount = amount
       } catch (e) { warnFailed('hurt handler (taking)', e) }
-    })
+    }, 'victimPlayer', { place: 'first', unchecked: true })
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

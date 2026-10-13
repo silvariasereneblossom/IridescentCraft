@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 24 | 23 | 26 | 2 |
-| server | 160 | 317 | 238 | 19 |
+| server | 160 | 319 | 238 | 19 |
 | client | 13 | 8 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 316`, `startup: 23`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 318`, `startup: 23`).
 
 ## How to read it
 
@@ -254,7 +254,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 144 |  | `scaling/mob_scaling_unified.js` | `EntityEvents.spawned` |
 | 145 |  | `scaling/zz_ascension_scaling.js` | `EntityEvents.spawned` |
 | 146 |  | `scaling/zz_boss_global_3x.js` | `EntityEvents.spawned` |
-| 147 |  | `skills/justleveling_skills.js` | `BlockEvents.broken`, `BlockEvents.placed`, `DR_jl.register`, `EntityEvents.death`, `ItemEvents.crafted`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `tick.server` |
+| 147 |  | `skills/justleveling_skills.js` | `BlockEvents.broken`, `BlockEvents.placed`, `EntityEvents.death`, `ItemEvents.crafted`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `hurt`, `tick.server` |
 | 148 |  | `skills/mastery_tax.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `tick.server` |
 | 149 |  | `skills/skill_effects.js` | `BlockEvents.broken`, `BlockEvents.rightClicked`, `ItemEvents.crafted`, `ItemEvents.entityInteracted`, `ServerEvents.loaded`, `hurt`, `tick.server` |
 | 150 |  | `spawn_priest_tower.js` | `ServerEvents.loaded` |
@@ -733,28 +733,30 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 ### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)
 
-**`hurt`** (20)
+**`hurt`** (22)
 
-1. `abyss/abyss_armor_effects.js` as `icraft.abyss.armor.take`
-2. `abyss/abyss_armor_effects.js` as `icraft.abyss.armor.deal`
-3. `abyss/abyss_ring_effects.js` as `icraft.abyss.rings.deal`
-4. `abyss/abyss_ring_effects.js` as `icraft.abyss.rings.take`
-5. `affixes/affix_effects.js` as `icraft.affixes.offensive`
-6. `affixes/affix_effects.js` as `icraft.affixes.fire_vuln`
-7. `affixes/affix_effects.js` as `icraft.affixes.defensive`
-8. `attributes/attribute_sync.js` as `icraft.attribute_sync.hurt`
-9. `attributes/iss_school_to_ars_spell.js` as `icraft.iss_school_to_ars_spell`
-10. `death_penalty.js` as `icraft.death_penalty.broken_weapon`
-11. `enchantments/enchant_effects.js` as `icraft.enchants.weapon`
-12. `enchantments/enchant_effects.js` as `icraft.enchants.armor`
-13. `enchantments/enchant_effects.js` as `icraft.enchants.lunar_stride`
-14. `enchantments/enchant_effects.js` as `icraft.enchants.stellar_shield`
-15. `magic_crit_hook.js` as `icraft.magic_crit`
-16. `origins/ss_unique_spellsword_scaling.js` as `icraft.ss_unique_spellsword`
-17. `scaling/dimension_mechanics.js` as `icraft.dimension_mechanics.blue_skies`
-18. `skills/skill_effects.js` as `icraft.skill_effects.1`
-19. `skills/skill_effects.js` as `icraft.skill_effects.2`
-20. `tetra_terramity_perks.js` as `icraft.tetra_terramity_perks`
+1. `skills/justleveling_skills.js` as `icraft.justleveling.1` [first, unchecked]
+2. `skills/justleveling_skills.js` as `icraft.justleveling.2` [first, unchecked]
+3. `abyss/abyss_armor_effects.js` as `icraft.abyss.armor.take`
+4. `abyss/abyss_armor_effects.js` as `icraft.abyss.armor.deal`
+5. `abyss/abyss_ring_effects.js` as `icraft.abyss.rings.deal`
+6. `abyss/abyss_ring_effects.js` as `icraft.abyss.rings.take`
+7. `affixes/affix_effects.js` as `icraft.affixes.offensive`
+8. `affixes/affix_effects.js` as `icraft.affixes.fire_vuln`
+9. `affixes/affix_effects.js` as `icraft.affixes.defensive`
+10. `attributes/attribute_sync.js` as `icraft.attribute_sync.hurt`
+11. `attributes/iss_school_to_ars_spell.js` as `icraft.iss_school_to_ars_spell`
+12. `death_penalty.js` as `icraft.death_penalty.broken_weapon`
+13. `enchantments/enchant_effects.js` as `icraft.enchants.weapon`
+14. `enchantments/enchant_effects.js` as `icraft.enchants.armor`
+15. `enchantments/enchant_effects.js` as `icraft.enchants.lunar_stride`
+16. `enchantments/enchant_effects.js` as `icraft.enchants.stellar_shield`
+17. `magic_crit_hook.js` as `icraft.magic_crit`
+18. `origins/ss_unique_spellsword_scaling.js` as `icraft.ss_unique_spellsword`
+19. `scaling/dimension_mechanics.js` as `icraft.dimension_mechanics.blue_skies`
+20. `skills/skill_effects.js` as `icraft.skill_effects.1`
+21. `skills/skill_effects.js` as `icraft.skill_effects.2`
+22. `tetra_terramity_perks.js` as `icraft.tetra_terramity_perks`
 
 ### Straight on a Java registry, with no liveness id (the key is what the registry calls it)
 
@@ -779,11 +781,6 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 **`DR_h6.register`** (1)
 
 1. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6`
-
-**`DR_jl.register`** (2)
-
-1. `skills/justleveling_skills.js` as `icraft.justleveling.1`
-2. `skills/justleveling_skills.js` as `icraft.justleveling.2`
 
 **`DR_uniq.register`** (1)
 
@@ -2024,9 +2021,9 @@ own one-shot `global._*` flags.
 - place 147 of 160; header: @events @file
 - events: `ItemEvents.crafted`, `EntityEvents.death`, `BlockEvents.placed`, `BlockEvents.broken`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `PlayerEvents.loggedIn`, `ServerEvents.loaded`
 - tick functions: `tick_justlevelingSkills` (server, every 100, offset 37), `tick_aptitudeXpRefund` (server, every 5, offset 3)
-- straight on a Java registry: `DR_jl.register` `icraft.justleveling.1`, `DR_jl.register` `icraft.justleveling.2`
+- hurt handlers: `icraft.justleveling.1` [attackerPlayer, first, unchecked], `icraft.justleveling.2` [victimPlayer, first, unchecked]
 - registries: bosses (through core.isBoss)
-- reads: `icraft.aptitude` of `0_lib_aptitudes.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
+- reads: `icraft.aptitude` of `0_lib_aptitudes.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `skills/mastery_tax.js`
 

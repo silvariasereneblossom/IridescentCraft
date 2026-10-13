@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c3aca56a",
+    "generated_from":  "e04b1cec",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "98c121a9759b815b349ca30ecda26854765f58ecdc604a444041a9d427472233",
-                                                                  "size":  47346
+                                                                  "sha256":  "275c5f5114038861e6f401c476af01217ffb5bd75647292e27045f0c713e3ab2",
+                                                                  "size":  47478
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7568,8 +7568,8 @@
                                                                              "size":  13841
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "8bd4225c5512be072fcaebb04f00de5f349de7d6fd0a6c51b5147542884ab9d0",
-                                                                              "size":  57207
+                                                                              "sha256":  "ed89549138a8bd9314418311696324cba1939a1c28866abede48882b470a4ee8",
+                                                                              "size":  57971
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "73e9392bf46bc820ec290cece35fe7394cf4f866d53de03d9028a873f411903b",

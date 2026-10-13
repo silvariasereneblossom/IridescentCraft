@@ -8728,14 +8728,20 @@
        "offset": 3
       },
       {
-       "kind": "direct",
-       "group": "DR_jl.register",
-       "name": "icraft.justleveling.1"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.justleveling.1",
+       "who": "attackerPlayer",
+       "place": "first",
+       "unchecked": true
       },
       {
-       "kind": "direct",
-       "group": "DR_jl.register",
-       "name": "icraft.justleveling.2"
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "icraft.justleveling.2",
+       "who": "victimPlayer",
+       "place": "first",
+       "unchecked": true
       }
      ],
      "sections": 0,
@@ -8764,6 +8770,12 @@
        "when": "load"
       },
       {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -8775,7 +8787,8 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
        ],
        "held": "priority"
       },
@@ -9640,18 +9653,6 @@
      {
       "script": "origins/class_passives_phase6h.js",
       "name": "icraft.class_passives_h6",
-      "kind": "direct"
-     }
-    ],
-    "DR_jl.register": [
-     {
-      "script": "skills/justleveling_skills.js",
-      "name": "icraft.justleveling.1",
-      "kind": "direct"
-     },
-     {
-      "script": "skills/justleveling_skills.js",
-      "name": "icraft.justleveling.2",
       "kind": "direct"
      }
     ],
@@ -10873,6 +10874,22 @@
      }
     ],
     "hurt": [
+     {
+      "script": "skills/justleveling_skills.js",
+      "name": "icraft.justleveling.1",
+      "kind": "hurt",
+      "who": "attackerPlayer",
+      "place": "first",
+      "unchecked": true
+     },
+     {
+      "script": "skills/justleveling_skills.js",
+      "name": "icraft.justleveling.2",
+      "kind": "hurt",
+      "who": "victimPlayer",
+      "place": "first",
+      "unchecked": true
+     },
      {
       "script": "abyss/abyss_armor_effects.js",
       "name": "icraft.abyss.armor.take",

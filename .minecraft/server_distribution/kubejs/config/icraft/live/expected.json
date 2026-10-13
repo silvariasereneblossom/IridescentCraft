@@ -115,6 +115,8 @@
    "icraft.enchants.stellar_shield@hurt": "enchantments/enchant_effects.js",
    "icraft.enchants.weapon@hurt": "enchantments/enchant_effects.js",
    "icraft.iss_school_to_ars_spell@hurt": "attributes/iss_school_to_ars_spell.js",
+   "icraft.justleveling.1@hurt": "skills/justleveling_skills.js",
+   "icraft.justleveling.2@hurt": "skills/justleveling_skills.js",
    "icraft.magic_crit@hurt": "magic_crit_hook.js",
    "icraft.skill_effects.1@hurt": "skills/skill_effects.js",
    "icraft.skill_effects.2@hurt": "skills/skill_effects.js",
