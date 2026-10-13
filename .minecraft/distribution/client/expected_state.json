@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "1f77f641",
+    "generated_from":  "c27c2027",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3028,8 +3028,8 @@
                                                                                       "size":  1761
                                                                                   },
                   "config/heracles/quests/capstones/capstone_lucifer.json":  {
-                                                                                 "sha256":  "5a4563530074686c9b13100d61e534b712db02cb0d66274115aa58d4e90937f8",
-                                                                                 "size":  1541
+                                                                                 "sha256":  "891b93236e4ad030cc17e5aadde486512ffb5fb43fde7259d5c722c4b7e39f93",
+                                                                                 "size":  1553
                                                                              },
                   "config/heracles/quests/combat/com_apotheosis_boss.json":  {
                                                                                  "sha256":  "af5e8528362e37ee0402e535159c03aeec9f7449f6edcf9701df895a2ad47ab8",
@@ -3040,44 +3040,44 @@
                                                                           "size":  921
                                                                       },
                   "config/heracles/quests/combat/com_first_boss.json":  {
-                                                                            "sha256":  "53b42dcf6cc2fdf04295f3a071ad45763e9507ae5870a29fa6c26f9f1d1103d9",
-                                                                            "size":  1542
+                                                                            "sha256":  "3f78cbfc745f6d4e991f970b11f5c160132670fd41ac114f3b99d4a1c92c44df",
+                                                                            "size":  1590
                                                                         },
                   "config/heracles/quests/combat/com_first_miniboss.json":  {
-                                                                                "sha256":  "12e6dd81d0b00cf0a4d8ea7d1c7fe0d49907c77f40b51f90030e8448de874c6a",
-                                                                                "size":  1443
+                                                                                "sha256":  "5dfe58e4c27398ce530722c251c3a02c13311a84fef87836d2d4ca26d087cadb",
+                                                                                "size":  1479
                                                                             },
                   "config/heracles/quests/combat/com_hunter_capstone.json":  {
-                                                                                 "sha256":  "adab47ddad235119eea418eb087daccedf4ebb3e805f08b3589ba89596baf30f",
-                                                                                 "size":  1560
+                                                                                 "sha256":  "9b195363ae81e50d40546d343285db85e6a64366be0e22ce2af2ab03916ca458",
+                                                                                 "size":  1608
                                                                              },
                   "config/heracles/quests/combat/com_kill_creepers.json":  {
-                                                                               "sha256":  "afa2d6e32eb2c0daee81559d3354bcbaff412b2147d0d109271dc78879de8dd6",
-                                                                               "size":  881
+                                                                               "sha256":  "fb148ae09c38ca11a8ee15897e9c353e5d04112a51a09fdf0456db1ae9242920",
+                                                                               "size":  893
                                                                            },
                   "config/heracles/quests/combat/com_kill_skeletons.json":  {
-                                                                                "sha256":  "8ad61b5cb4b39ac78b512b28ff22997a51242d98767ca28b16cb84072a48bd56",
-                                                                                "size":  777
+                                                                                "sha256":  "e17cce9ed201031d3842e0ab1c2211bba75815a7d84b18051be51afc7e3dd8bf",
+                                                                                "size":  789
                                                                             },
                   "config/heracles/quests/combat/com_kill_spiders.json":  {
-                                                                              "sha256":  "5283ec63c6894f3933a3b2df098d2320787f4391651ccf68528e26478294144a",
-                                                                              "size":  902
+                                                                              "sha256":  "d207c25a6aed2a7f2e27fba11c84cb4834cf8a34a886b13a9888a77939b73206",
+                                                                              "size":  914
                                                                           },
                   "config/heracles/quests/combat/com_kill_zombies.json":  {
-                                                                              "sha256":  "7066e6f281cbff6d91e6281f614a716218bb3dff6c70e7f60513e4e588548b98",
-                                                                              "size":  823
+                                                                              "sha256":  "de65c15974c5cee9a41bee349fc68d2fba530187136bcadf80041961ad2dd1de",
+                                                                              "size":  835
                                                                           },
                   "config/heracles/quests/combat/com_t1_rush.json":  {
-                                                                         "sha256":  "3e0d352ea394e5dadfe3a71e3fbb1184f358231e6ddc23f179085332837f4a51",
-                                                                         "size":  2214
+                                                                         "sha256":  "5d49e15ed03850a5cd880cd379520ad62dde0c628d801d9679f94c2c9e1c3214",
+                                                                         "size":  2274
                                                                      },
                   "config/heracles/quests/combat/com_t2_rush.json":  {
-                                                                         "sha256":  "ff5bf16e488855a2aa6fe9dae9fe2e5172248fc6ffbb3086df27449211ffa49e",
-                                                                         "size":  1962
+                                                                         "sha256":  "9a4facfb3289f22b771b2be3fc574508bdbd70ef3fea81ebb59591af794bc49b",
+                                                                         "size":  2034
                                                                      },
                   "config/heracles/quests/combat/com_t3_rush.json":  {
-                                                                         "sha256":  "b1a90ae8d92799b6e05fd00dd04e467d976f65b420cf226f58a7444238a2344a",
-                                                                         "size":  2284
+                                                                         "sha256":  "a7a77dc55be69b5282c806cfe7658644e663dd2ab57b3a8a6a2ef815474c60f4",
+                                                                         "size":  2364
                                                                      },
                   "config/heracles/quests/engineering/eng_intro.json":  {
                                                                             "sha256":  "8dcde72d18b9fcdda635c0a8dfe3d029ac04b6053b8543fd6f08f856e5eddcf4",
@@ -3268,8 +3268,8 @@
                                                                                 "size":  1708
                                                                             },
                   "config/heracles/quests/exploration/exp_t2_boss_tokens.json":  {
-                                                                                     "sha256":  "571d6e89438228f7ea6b565137769334540d9dee185b304a1efd35573772c6e4",
-                                                                                     "size":  1584
+                                                                                     "sha256":  "a5041fda277457b9f46545d22e2b4630af59c6375bf469df7beacaa5e2ac471e",
+                                                                                     "size":  1608
                                                                                  },
                   "config/heracles/quests/exploration/exp_t2_dimensions.json":  {
                                                                                     "sha256":  "4bc68772f4af2326a83ab23f4168212276d2bd5b5aec8e1158189623fc4a44f3",
@@ -3492,8 +3492,8 @@
                                                                                             "size":  1960
                                                                                         },
                   "config/heracles/quests/overworld_foundations/ovf_capstone.json":  {
-                                                                                         "sha256":  "73168d402e0dae01d9d4d1e46b8fa5e7636e4234b40a83f03d1f91cc6988f019",
-                                                                                         "size":  3175
+                                                                                         "sha256":  "afda76321a011dd3f63915e9ed83bfcea489137a873e8bcca329f99fa3528068",
+                                                                                         "size":  3187
                                                                                      },
                   "config/heracles/quests/overworld_foundations/ovf_create_andesite.json":  {
                                                                                                 "sha256":  "fa591a4430808046abd776f37c8334035d03dcc3d37c8a6eea9cda7e0cc3cf06",
@@ -3520,24 +3520,24 @@
                                                                                               "size":  1108
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_frostmaw.json":  {
-                                                                                                "sha256":  "97311774d17c8d3f36355f570164f7ff5f77a3fde53c78af0ddc0b7645383761",
-                                                                                                "size":  1201
+                                                                                                "sha256":  "4e4423a8a3002f0697f7d120a41f918f61d8b0519c5f88504ab21ddcc03c02d1",
+                                                                                                "size":  1213
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_sculptor.json":  {
-                                                                                                "sha256":  "5f64e1dc0734f8d80800fed417b73065df8c3619a670be2c861b6ff6a2e104b9",
-                                                                                                "size":  1253
+                                                                                                "sha256":  "68883bf9c2c36d1d40ddaf69bdd9da6afa5203990da9cb56ec50269c8fa4e75a",
+                                                                                                "size":  1265
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_umvuthi.json":  {
-                                                                                               "sha256":  "a0e10c8ee0e370c1bbd8ad38632c37e792c2bf2710b88b6310c669f40f31767e",
-                                                                                               "size":  1177
+                                                                                               "sha256":  "ce8f295ec99e96c6da00142490245745aa4f12f59943598b523da3c54a5324f7",
+                                                                                               "size":  1189
                                                                                            },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_wroughtnaut.json":  {
-                                                                                                   "sha256":  "04ddb5af4aebfce74b68cff97f6aa937baf39da5075f4197783a509ea2e9ce22",
-                                                                                                   "size":  1249
+                                                                                                   "sha256":  "abddfd2ca8c42a593d31ff2c87a4fb185f78f188e932988528da34bb87679576",
+                                                                                                   "size":  1261
                                                                                                },
                   "config/heracles/quests/overworld_foundations/ovf_mutant_slayer.json":  {
-                                                                                              "sha256":  "c920a0d00f89a2359858c9309e7032f28ba76e63e7944c1ae4619dd068b392ed",
-                                                                                              "size":  1606
+                                                                                              "sha256":  "de2d2f2fabc3dd068a4feec914cbac8588c25b006921138541c5f5b4caf3358b",
+                                                                                              "size":  1642
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_simplyswords.json":  {
                                                                                              "sha256":  "024ede630a855ced377c2a674e71650354a9f2f2be4fa3630287aaee769f7650",
@@ -3548,12 +3548,12 @@
                                                                                                "size":  1138
                                                                                            },
                   "config/heracles/quests/overworld_foundations/ovf_terramity_gob.json":  {
-                                                                                              "sha256":  "5594355f564a0360ef8412e8143b23bbcd74be87166215b512c7a08e98e8b232",
-                                                                                              "size":  1069
+                                                                                              "sha256":  "c99181bbd7141fb71d2dad63dee86e5d53050437967ef9dd54f5d9828d65cdce",
+                                                                                              "size":  1081
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_terramity_sniffer.json":  {
-                                                                                                  "sha256":  "907d395a6a31469ccdd70330c616f915becc41ccfa4f49af51e4ae4331e58ec4",
-                                                                                                  "size":  1070
+                                                                                                  "sha256":  "8d6bf76695ec9f10f67d03493b6aa65a16b62ea55c19f6377fe0512e39576ae8",
+                                                                                                  "size":  1082
                                                                                               },
                   "config/heracles/quests/overworld_foundations/ovf_tetra_forge.json":  {
                                                                                             "sha256":  "6b571b99ab63ea5e399c6efb37ac46583b80f07ef50b5bccf6eaf1177c3ccc47",
@@ -7528,8 +7528,8 @@
                                                                  "size":  2858
                                                              },
                   "kubejs/server_scripts/relic_boss_drops.js":  {
-                                                                    "sha256":  "ca854f85ed5d8ccc1ea2da0e4824466ef2108d569454d39874b027a6daaac820",
-                                                                    "size":  9741
+                                                                    "sha256":  "13a25849a2ba3c644358b547bbdc518897c0e5bdd5a06fc30bb33698305f25d2",
+                                                                    "size":  10510
                                                                 },
                   "kubejs/server_scripts/respawn_hunger.js":  {
                                                                   "sha256":  "a02212e9f878769c45582ecb88c2c50fe245adec092f92af628fdbab5405e894",
@@ -7540,8 +7540,8 @@
                                                                        "size":  14002
                                                                    },
                   "kubejs/server_scripts/scaling/boss_hp.js":  {
-                                                                   "sha256":  "a9e634cb46ca4f830afd4a8391915af4903f088f245139f539683f3aba11676c",
-                                                                   "size":  2872
+                                                                   "sha256":  "f7a5e4fdea2ebbe460026293f571cec63b106f5a8dea386109542d6c8c7eec80",
+                                                                   "size":  9005
                                                                },
                   "kubejs/server_scripts/scaling/boss_progressive.js":  {
                                                                             "sha256":  "05b1bf20fb29119bfc220df1acfe2b44ea95172cf239d6fba3c3ae8a4b562d2c",
