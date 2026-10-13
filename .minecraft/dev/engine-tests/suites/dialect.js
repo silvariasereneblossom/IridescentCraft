@@ -130,6 +130,8 @@ eq(outcome(function () { return 'abc'.charCodeAt(1) < 100 }), 'false', "'abc'.ch
 ok(String(outcome(function () { return typeof 'abc'.charCodeAt(1) })).indexOf('THROWS InternalError: Invalid JavaScript value of type java.lang.Character') === 0,
   'typeof x.charCodeAt(i) THROWS (InternalError: Invalid JavaScript value of type java.lang.Character)')
 eq(D_s.codePointAt(0), 109, 'x.codePointAt(i) is a number')
+eq(outcome(function () { var js = String(D_s); return typeof js + ' ' + js.startsWith('minecraft:') + ' ' + js.startsWith('forge:') + ' / ' + D_s.startsWith('minecraft:') }), 'string true false / true',
+  'startsWith works on a JS string (String.prototype) and on a Java string (its own method): a script may hand either to a prefix test')
 ok(String(outcome(function () { return D_s.substring(0, 99) })).indexOf('StringIndexOutOfBounds') >= 0, 'an out-of-range substring throws a Java exception')
 
 section('Java classes')

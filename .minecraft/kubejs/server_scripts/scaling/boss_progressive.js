@@ -33,7 +33,7 @@ EntityEvents.spawned(icraft.guard('scaling/boss_progressive', 'EntityEvents.spaw
   let entity = event.entity
   if (!entity || !entity.living) return
 
-  let type = entity.type
+  let type = global.icraft.core.entityId(entity)
   if (!isScalableBoss(type)) return
 
   let core = global.icraft && global.icraft.core
@@ -67,7 +67,7 @@ EntityEvents.death(icraft.guard('scaling/boss_progressive', 'EntityEvents.death'
   let entity = event.entity
   if (!entity || !entity.living) return
 
-  let type = entity.type
+  let type = global.icraft.core.entityId(entity)
   if (!isScalableBoss(type)) return
 
   incrementKillCount(event.level, type)

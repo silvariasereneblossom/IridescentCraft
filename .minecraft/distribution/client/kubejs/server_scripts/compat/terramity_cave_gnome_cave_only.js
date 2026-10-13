@@ -22,7 +22,7 @@
 // =============================================================================
 
 EntityEvents.checkSpawn(icraft.guard('compat/terramity_cave_gnome_cave_only', 'EntityEvents.checkSpawn', event => {
-  if (String(event.entity.type) !== 'terramity:cave_gnome') return
+  if (global.icraft.core.entityId(event.entity) !== 'terramity:cave_gnome') return
   // Only the wild runtime mob-spawn loop; never eggs / structures / commands.
   if (String(event.type) !== 'NATURAL') return
   // Surface (direct sky access) -> deny; cave (sky-occluded) -> allow.

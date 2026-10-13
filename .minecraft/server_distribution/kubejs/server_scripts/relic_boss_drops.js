@@ -157,7 +157,7 @@ function nearestPlayerTo(server, entity) {
 EntityEvents.death(icraft.guard('relic_boss_drops', 'EntityEvents.death', function (event) {
   try {
     var entity = event.entity
-    if (!entity || String(entity.type) !== 'minecraft:ender_dragon') return
+    if (!entity || global.icraft.core.entityId(entity) !== 'minecraft:ender_dragon') return
     var level = entity.level
     if (level && level.isClientSide && level.isClientSide()) return
     // [2026-10-11] Was `server.runCommandSilent('summon minecraft:item ' + pos.x ...)`:

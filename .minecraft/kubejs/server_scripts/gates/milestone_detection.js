@@ -27,7 +27,7 @@ EntityEvents.death(icraft.guard('gates/milestone_detection', 'EntityEvents.death
   // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death handler.
   var source = event.source
   if (!source || !source.player) return
-  if (event.entity.type.toString() !== 'minecraft:ender_dragon') return
+  if (global.icraft.core.entityId(event.entity) !== 'minecraft:ender_dragon') return
   var player = source.player
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/kill_dragon`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_egg`)

@@ -298,7 +298,7 @@
       var entity = event.entity
       // ItemEntity has type minecraft:item.
       var typeId = ''
-      try { typeId = String(entity.type) } catch (_) {}
+      typeId = global.icraft.core.entityId(entity)
       if (typeId !== 'minecraft:item') return
 
       // entity.item is the ItemStack the entity wraps.

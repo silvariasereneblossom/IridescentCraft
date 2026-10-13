@@ -82,8 +82,9 @@ EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.
   if (icraft.bosses.has(resId, 'caster')) return
 
   // Scale all hostile mobs AND bosses (ascension affects everything).
-  // entity.type kept verbatim from the original handler (behaviour-preserving).
-  if (!entity.monster && !isHostileModdedAsc(entity.type)) return
+  // (the id through core.entityId since 2026-10-13: the same text as `entity.type` for every entity type but the 15
+  // Creeper Overhaul creepers, which are monsters and never reach the second test)
+  if (!entity.monster && !isHostileModdedAsc(global.icraft.core.entityId(entity))) return
 
   let core = global.icraft && global.icraft.core
   if (!core) return

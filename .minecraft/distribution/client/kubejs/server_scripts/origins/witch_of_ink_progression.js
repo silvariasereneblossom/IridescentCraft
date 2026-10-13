@@ -62,17 +62,9 @@
   // KubeJS's id string (what death_penalty.js logs in production); a mod entity
   // with its own public `type` member shadows it (Creeper Overhaul), so
   // anything that is not a plain id falls back to the registry lookup.
-  var ID_FORM = /^[a-z0-9_.-]+:[a-z0-9_.\/-]+$/
-  var entityId = function (entity) {
-    var id = ''
-    try { id = String(entity.type) } catch (e) {}
-    if (ID_FORM.test(id)) return id
-    try {
-      return String(entity.getType().builtInRegistryHolder().key().location())
-    } catch (e2) {
-      return id
-    }
-  }
+  // (global.icraft.core.entityId since 2026-10-13. The copy that stood here read `entity.type` and fell back to
+  // entity.getType().builtInRegistryHolder(), which throws on every entity: getType() is the id STRING for scripts.)
+  var entityId = global.icraft.core.entityId
 
   // +1 sources. Apotheosis marks a boss with a boolean `apoth.boss` in the
   // entity's FORGE persistent data (ApothBoss: getPersistentData().putBoolean),

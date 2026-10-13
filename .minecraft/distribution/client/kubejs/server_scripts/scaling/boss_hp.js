@@ -108,7 +108,7 @@ EntityEvents.spawned(icraft.guard('scaling/boss_hp', 'EntityEvents.spawned', eve
   let entity = event.entity
   if (!entity || !entity.living) return
 
-  let type = entity.type
+  let type = global.icraft.core.entityId(entity)
   let targetHP = getBossHP(type)
   if (!targetHP) return
 

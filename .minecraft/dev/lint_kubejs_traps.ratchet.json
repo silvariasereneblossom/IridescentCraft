@@ -3,14 +3,13 @@
   "rules": {
     "BLOCK-READ": {
       "started": "2026-10-13",
-      "total": 10,
+      "total": 6,
       "files": {
         "server_scripts/apotheosis_gem_repair.js": 1,
         "server_scripts/bonfire/boss_bonfire_system.js": 1,
         "server_scripts/enchantments/enchant_effects.js": 1,
         "server_scripts/origins/class_passives_phase6h.js": 1,
-        "server_scripts/skills/skill_effects.js": 2,
-        "server_scripts/spawn_priest_tower.js": 4
+        "server_scripts/skills/skill_effects.js": 2
       }
     },
     "DIRECT-HURT-REG": {
@@ -32,24 +31,12 @@
     },
     "ENTITY-TYPE": {
       "started": "2026-10-13",
-      "total": 12,
-      "files": {
-        "server_scripts/apotheosis_gem_repair.js": 1,
-        "server_scripts/compat/disable_creeperlings.js": 1,
-        "server_scripts/compat/terramity_cave_gnome_cave_only.js": 1,
-        "server_scripts/exploration/codex_exploration_kills.js": 1,
-        "server_scripts/gates/milestone_detection.js": 1,
-        "server_scripts/loot/iss_boss_first_kill.js": 1,
-        "server_scripts/origins/witch_of_ink_progression.js": 1,
-        "server_scripts/relic_boss_drops.js": 1,
-        "server_scripts/scaling/boss_hp.js": 1,
-        "server_scripts/scaling/boss_progressive.js": 2,
-        "server_scripts/scaling/zz_ascension_scaling.js": 1
-      }
+      "total": 0,
+      "files": {}
     },
     "HELPER-COPY": {
       "started": "2026-10-13",
-      "total": 39,
+      "total": 37,
       "files": {
         "server_scripts/0_lib_aptitudes.js": 1,
         "server_scripts/affix_overworld_strip.js": 2,
@@ -65,7 +52,7 @@
         "server_scripts/origins/class_passives_phase6h.js": 1,
         "server_scripts/origins/phantom_undeath.js": 1,
         "server_scripts/origins/spell_book_transfer.js": 1,
-        "server_scripts/origins/witch_of_ink_progression.js": 3,
+        "server_scripts/origins/witch_of_ink_progression.js": 1,
         "server_scripts/origins/witherborn_slimebodied.js": 1,
         "server_scripts/quests/onboarding_bridge.js": 1,
         "server_scripts/relic_boss_drops.js": 2,
