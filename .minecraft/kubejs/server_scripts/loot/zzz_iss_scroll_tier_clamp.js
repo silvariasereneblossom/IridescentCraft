@@ -52,14 +52,11 @@
 // =============================================================================
 
 // Provisional tier -> max scroll level. FLAG: tune in a feel-pass.
+// (the tier is global.icraft.core.playerTier since 2026-10-13: no player, or a
+// failure to ask AStages, is tier 1 = cap 4, as before)
+var ISS_SCROLL_CAP_BY_TIER = [4, 4, 6, 8, 10]   // index = tier 1..4 (0 unused)
 function issScrollTierCap(player) {
-  try {
-    if (!player) return 4
-    if (AStages.playerHasStage('tier_4', player)) return 10
-    if (AStages.playerHasStage('tier_3', player)) return 8
-    if (AStages.playerHasStage('tier_2', player)) return 6
-    return 4
-  } catch (e) { return 4 }
+  return ISS_SCROLL_CAP_BY_TIER[global.icraft.core.playerTier(player)]
 }
 
 function issScrollStackId(stack) {

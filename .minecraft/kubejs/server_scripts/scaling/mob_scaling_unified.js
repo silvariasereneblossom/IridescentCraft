@@ -203,7 +203,7 @@ function isHostileMod(type) {
 // 0_lib_core.js ("keep the two in step").
 
 // ── Basic Mobs (3x HP) ──
-const BASIC_MOBS = new Set([
+const BASIC_MOBS = global.icraft.core.idSet([
   'minecraft:zombie', 'minecraft:skeleton', 'minecraft:spider', 'minecraft:creeper',
   'minecraft:drowned', 'minecraft:stray', 'minecraft:husk', 'minecraft:cave_spider',
   'minecraft:slime', 'minecraft:silverfish', 'minecraft:witch', 'minecraft:phantom',
@@ -224,7 +224,7 @@ const BASIC_MOBS = new Set([
 ])
 
 // ── Mid-Tier Mobs (1.5x HP) ──
-const MID_TIER_MOBS = new Set([
+const MID_TIER_MOBS = global.icraft.core.idSet([
   'minecraft:blaze', 'minecraft:wither_skeleton', 'minecraft:piglin_brute',
   'minecraft:ghast', 'minecraft:hoglin', 'minecraft:zoglin', 'minecraft:piglin',
   'minecraft:zombified_piglin', 'minecraft:guardian', 'minecraft:elder_guardian',

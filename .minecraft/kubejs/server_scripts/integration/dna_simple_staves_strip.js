@@ -33,7 +33,7 @@
 // can be released; the client may still play its local draw animation.
 // =============================================================================
 
-const STRIPPED_ITEMS = new Set([
+const STRIPPED_ITEMS = global.icraft.core.idSet([
   // Dan's Magic — 5 staves (no projectile use; they are buffs only)
   'dna:ice_staff',
   'dna:lightning_staff',
@@ -91,5 +91,5 @@ ItemEvents.rightClicked(icraft.guard('integration/dna_simple_staves_strip', 'Ite
   if (shouldCancel) event.cancel()
 }))
 
-console.log('[dna_simple_staves_strip] loaded — ' + STRIPPED_ITEMS.size +
+console.log('[dna_simple_staves_strip] loaded — ' + STRIPPED_ITEMS.count() +
             ' items stripped of right-click projectile use')

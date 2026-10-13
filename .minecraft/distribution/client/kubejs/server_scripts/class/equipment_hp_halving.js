@@ -20,7 +20,7 @@
 // =============================================================================
 
 // Glass cannon classes that get equipment HP halving
-const GLASS_CANNON_CLASSES = new Set([
+const GLASS_CANNON_CLASSES = global.icraft.core.idSet([
   'icraft:ranger',
   'icraft:archmage',
   'icraft:void_summoner',

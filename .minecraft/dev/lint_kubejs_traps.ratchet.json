@@ -49,13 +49,12 @@
     },
     "HELPER-COPY": {
       "started": "2026-10-13",
-      "total": 40,
+      "total": 39,
       "files": {
         "server_scripts/0_lib_aptitudes.js": 1,
         "server_scripts/affix_overworld_strip.js": 2,
         "server_scripts/affix_skyshatter_mob_strip.js": 2,
         "server_scripts/attributes/mana_pool_bonuses.js": 1,
-        "server_scripts/bonfire/boss_compass_handler.js": 1,
         "server_scripts/codex_delivery.js": 1,
         "server_scripts/enchantments/enchant_effects.js": 1,
         "server_scripts/fix_empty_display_name.js": 2,
@@ -83,14 +82,8 @@
     },
     "ID-SET": {
       "started": "2026-10-13",
-      "total": 6,
-      "files": {
-        "server_scripts/class/equipment_hp_halving.js": 1,
-        "server_scripts/economy/relic_sink.js": 1,
-        "server_scripts/integration/dna_simple_staves_strip.js": 1,
-        "server_scripts/origins/ss_unique_spellsword_scaling.js": 1,
-        "server_scripts/scaling/mob_scaling_unified.js": 2
-      }
+      "total": 0,
+      "files": {}
     }
   }
 }

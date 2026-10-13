@@ -122,7 +122,7 @@ const RELIC_SINK_DENY_LIST = [
   // relics framework -- the research block + the relic XP bottle + ammo
   'relics:researching_table', 'relics:relic_experience_bottle', 'relics:solid_snowball',
 ]
-const RELIC_SINK_DENY = new Set(RELIC_SINK_DENY_LIST)
+const RELIC_SINK_DENY = global.icraft.core.idSet(RELIC_SINK_DENY_LIST)
 
 // ---- Per-resource LIFETIME cap (item units) -- anti-farm backstop -------------
 // Bounds the degenerate case (a single farmable relic source). Relics are loot-
@@ -145,7 +145,9 @@ function relicEssenceValue(itemId) {
   // as a wrapped OBJECT: a JS Set never matches it (two wrappers of the same
   // text do not match each other either). Until 2026-10-12 this line answered
   // "not denied" for every carried item, so the deny list denied nothing.
-  // Normalised here, once, for every caller (the sweep and the Broker).
+  // Normalised here, once, for every caller (the sweep and the Broker): the
+  // object-key lookups below need a JS string as well. The deny list itself is
+  // a core.idSet since 2026-10-13 and would take either.
   itemId = String(itemId)
   if (RELIC_SINK_DENY.has(itemId)) {
     // liveness: the deny list denied a carried item (it matched nothing until 2026-10-12)
@@ -181,17 +183,14 @@ function relicCapKey(itemId) {
 // =============================================================================
 function relicScan(player) {
   const pdata = player.persistentData
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
 
   const found = {}   // itemId -> aggregate
-  for (let i = 0; i < size; i++) {
-    let stack = inv.getStackInSlot(i)
-    if (stack.isEmpty()) continue
+  // every non-empty stack of the main inventory (slots 0-35: never worn armour or the off hand)
+  global.icraft.core.eachMainSlot(player, function (stack) {
     let id = String(stack.id)                          // JS string: `found` keys, cap keys and the report all use it
-    if (id === RELIC_ESSENCE_ITEM) continue            // never sink the currency
+    if (id === RELIC_ESSENCE_ITEM) return              // never sink the currency
     let value = relicEssenceValue(id)
-    if (value <= 0) continue
+    if (value <= 0) return
     if (!found[id]) {
       let cap = relicSinkCap(id)
       let already = pdata.getInt(relicCapKey(id))
@@ -199,7 +198,7 @@ function relicScan(player) {
                     remainingCap: Math.max(0, cap - already) }
     }
     found[id].available += stack.count
-  }
+  })
   // sinkableNow = min(available, remainingCap)
   for (const id in found) {
     let f = found[id]
@@ -265,19 +264,18 @@ function relicSubmit(player, confirm) {
 
   // ---- EXECUTE ----
   const pdata = player.persistentData
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
   lines.forEach(l => {
     let toRemove = l.n
-    for (let i = 0; i < size && toRemove > 0; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === l.id) {
+    global.icraft.core.eachMainSlot(player, function (stack, slot, inv) {
+      if (toRemove <= 0) return true                   // done: stop the walk
+      if (stack.id === l.id) {
         let take = Math.min(stack.count, toRemove)
         stack.count = stack.count - take
         toRemove -= take
-        if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
+        if (stack.count <= 0) inv.setStackInSlot(slot, Item.empty)
       }
-    }
+      return toRemove <= 0
+    })
     // bank lifetime cap progress
     const key = relicCapKey(l.id)
     pdata.putInt(key, pdata.getInt(key) + l.n)
@@ -303,13 +301,10 @@ function relicSubmit(player, confirm) {
 // BALANCE -- held essence + a preview of sinkable relics carried.
 // =============================================================================
 function relicBalance(player) {
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
   let held = 0
-  for (let i = 0; i < size; i++) {
-    let stack = inv.getStackInSlot(i)
-    if (!stack.isEmpty() && stack.id === RELIC_ESSENCE_ITEM) held += stack.count
-  }
+  global.icraft.core.eachMainSlot(player, function (stack) {
+    if (stack.id === RELIC_ESSENCE_ITEM) held += stack.count
+  })
 
   const found = relicScan(player)
   const ids = Object.keys(found)
@@ -383,9 +378,9 @@ ServerEvents.tags('item', icraft.guard('economy/relic_sink', 'ServerEvents.tags'
   console.log('[IridescentCraft] #icraft:relic_sinkable built ('
     + added + ' broad namespaces + ' + Object.keys(RELIC_SINK_VALUE).length
     + ' overrides + ' + Object.keys(RELIC_SINK_ALLOW).length + ' allow, minus '
-    + RELIC_SINK_DENY.size + ' deny)')
+    + RELIC_SINK_DENY.count() + ' deny)')
 }))
 
 console.log('[IridescentCraft] Relic sink loaded (/icraft relics submit [confirm] | balance)')
 console.log('  Currency: ' + RELIC_ESSENCE_ITEM + ' · broad namespaces: ' + Object.keys(RELIC_SINK_NS_VALUE).join(', '))
-console.log('  Boss-signature + override values: ' + Object.keys(RELIC_SINK_VALUE).length + ' · deny-list: ' + RELIC_SINK_DENY.size + ' · ALL VALUES PROVISIONAL')
+console.log('  Boss-signature + override values: ' + Object.keys(RELIC_SINK_VALUE).length + ' · deny-list: ' + RELIC_SINK_DENY.count() + ' · ALL VALUES PROVISIONAL')

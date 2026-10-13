@@ -64,17 +64,16 @@
 //  undefined getPlayerStageTier() probe, so it ALWAYS fell back to 1 and the
 //  tier-gate never actually worked. This reads AStages directly.)
 
-function getPlayerTier(player) {
-    var tier = 0
-    try {
-        if (player.creative) return 4
-        for (var t = 1; t <= 4; t++) {
-            if (AStages.playerHasStage("tier_" + t, player)) tier = t
-        }
-        return Math.max(1, tier)
-    } catch (e) {
-        return 1
+// Since 2026-10-13 the stage read is global.icraft.core.playerTier (the highest
+// tier_N stage held, 1 when AStages cannot be asked); this function keeps only
+// what is the compass's own: a creative player sees every boss.
+function compassPlayerTier(player) {
+    var creative = false
+    try { creative = player.creative === true } catch (e) {
+        global.icraft.core.warnOnce('boss_compass:creative', '[boss_compass] could not read player.creative: ' + e)
     }
+    if (creative) return 4
+    return global.icraft.core.playerTier(player)
 }
 
 // ---- Grand Compass bridge (#70) -------------------------------------------
@@ -438,7 +437,7 @@ function inTargetDimension(player, target) {
 // display name. Shared by the chat menu and the right-click cycle so both walk
 // the roster in the same order.
 function eligibleBossIds(player) {
-    var tier = getPlayerTier(player)
+    var tier = compassPlayerTier(player)
     var arenas = global.ICRAFT_BOSS_ARENAS || {}
     return Object.keys(arenas)
         .filter(id => arenas[id].tier <= tier)
@@ -447,7 +446,7 @@ function eligibleBossIds(player) {
 }
 
 function showTargetMenu(player) {
-    var tier = getPlayerTier(player)
+    var tier = compassPlayerTier(player)
     var arenas = global.ICRAFT_BOSS_ARENAS || {}
     var eligible = eligibleBossIds(player)
 
@@ -502,7 +501,7 @@ function applyTarget(player, boss_id, posLabel) {
         player.tell(Text.red("Unknown boss arena: " + boss_id))
         return
     }
-    var tier = getPlayerTier(player)
+    var tier = compassPlayerTier(player)
     if (meta.tier > tier) {
         player.tell(Text.red(meta.display + " is Tier " + meta.tier
             + "; you are Tier " + tier + ". Advance first."))

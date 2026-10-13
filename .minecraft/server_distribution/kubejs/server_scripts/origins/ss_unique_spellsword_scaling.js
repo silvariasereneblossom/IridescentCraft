@@ -38,7 +38,7 @@ const SS_UNIQUE_AD_PER_HALF_SP = 1.0  // +0.5 AD per 50% bonus SP == +1 AD per 1
 // waxweaver, watching_warglaive, watcher_claymore, wickpiercer,
 // sword_on_a_stick, dormant_relic) are NOT in this set — they're
 // physical/utility weapons that shouldn't scale with spell power.
-const SS_UNIQUES = new Set([
+const SS_UNIQUES = global.icraft.core.idSet([
   // Fire (7)
   'simplyswords:emberblade', 'simplyswords:emberlash', 'simplyswords:sunfire',
   'simplyswords:flamewind', 'simplyswords:molten_edge', 'simplyswords:brimstone_claymore',
@@ -97,7 +97,7 @@ try {
     event.amount = event.amount + bonusAD
   }, 'attackerPlayer')
 
-  console.log('[ss_unique_spellsword_scaling] loaded — ' + SS_UNIQUES.size +
+  console.log('[ss_unique_spellsword_scaling] loaded — ' + SS_UNIQUES.count() +
               ' uniques scale with spell power')
 } catch (e) {
   console.error('[ss_unique_spellsword_scaling] init failed: ' + e)

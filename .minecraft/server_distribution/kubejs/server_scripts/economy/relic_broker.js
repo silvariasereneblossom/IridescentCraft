@@ -140,12 +140,9 @@ var BROKER_BUYS = [
 
 // ---- Helpers ----
 // astages tier: tier_1 is the baseline everyone sees; 2/3/4 gated by the stage.
-function brokerPlayerTier(player) {
-  if (AStages.playerHasStage('tier_4', player)) return 4
-  if (AStages.playerHasStage('tier_3', player)) return 3
-  if (AStages.playerHasStage('tier_2', player)) return 2
-  return 1
-}
+// (global.icraft.core.playerTier since 2026-10-13: the same highest-stage read.
+// One difference, in a failure only: when AStages cannot be asked it answers
+// tier 1 with one warning, where the four calls that stood here threw.)
 
 function brokerEssence(n) { return Item.of(ESSENCE, n) }
 
@@ -176,7 +173,7 @@ function brokerShows(entry, tier, day) {
 
 // Build the player's tier-filtered, daily-rotated MerchantOffers.
 function brokerBuildOffers(player, day) {
-  var tier = brokerPlayerTier(player)
+  var tier = global.icraft.core.playerTier(player)
   var offers = new $MerchantOffers()
 
   BROKER_ENCHANTS.forEach(e => {
