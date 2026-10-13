@@ -1,0 +1,79 @@
+name: Heracles quest validator
+
+# Every quest file of the three distributions, held to the shape Heracles really decodes
+# (.minecraft/tools/validate_heracles_quests.py; the shape: .minecraft/wiki/design/heracles-json-shape.md).
+#
+# One task that does not decode empties the WHOLE quest, and the game logs nothing: a quest
+# without a task shows in the book and can never be completed. 51 kill tasks written
+# "entity": "<id>" (Heracles reads { "type": "<id>" }) left 21 quests in that state and
+# reached main, because nothing ran the validator (2026-10-13).
+#
+# This runs the same check as the pre-push hook, for the pushes that did not go through it
+# (another machine, a hook that was never installed, --no-verify), and then plants each
+# defect in a temporary tree to prove the validator still refuses it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/config/heracles/**'
+      - '.minecraft/server_distribution/config/heracles/**'
+      - '.minecraft/distribution/client/config/heracles/**'
+      - '.minecraft/tools/validate_heracles_quests*.py'
+      - '.minecraft/dev/registry/entity_types.txt'
+      - '.github/workflows/heracles-quests.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/config/heracles/**'
+      - '.minecraft/server_distribution/config/heracles/**'
+      - '.minecraft/distribution/client/config/heracles/**'
+      - '.minecraft/tools/validate_heracles_quests*.py'
+      - '.minecraft/dev/registry/entity_types.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: validate_heracles_quests.py
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Only what the validator reads: the three quest trees, the tool and its test, and
+      # the entity types of the last full-pack boot (kill-task ids are checked against it).
+      - name: Checkout (quests, validator, entity list)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/config/heracles/
+            /.minecraft/server_distribution/config/heracles/
+            /.minecraft/distribution/client/config/heracles/
+            /.minecraft/tools/validate_heracles_quests.py
+            /.minecraft/tools/validate_heracles_quests_test.py
+            /.minecraft/dev/registry/entity_types.txt
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # --require-entity-list: without the list the id check is skipped with a NOTE; here
+      # that must be a failure, or a checkout that lost the file would look like a pass.
+      - name: Quests of the dev tree
+        run: python -I .minecraft/tools/validate_heracles_quests.py .minecraft/config/heracles/quests --require-entity-list
+      - name: Quests of the server distribution
+        if: always()
+        run: python -I .minecraft/tools/validate_heracles_quests.py .minecraft/server_distribution/config/heracles/quests --require-entity-list
+      - name: Quests of the client distribution
+        if: always()
+        run: python -I .minecraft/tools/validate_heracles_quests.py .minecraft/distribution/client/config/heracles/quests --require-entity-list
+
+      # Each past failure is planted in a temporary tree and must be refused.
+      - name: The validator still refuses what it exists to refuse
+        if: always()
+        run: python -I .minecraft/tools/validate_heracles_quests_test.py

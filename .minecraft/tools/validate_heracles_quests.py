@@ -17,10 +17,20 @@ Also emits non-fatal NOTES for pack-specific smells (placeholder `kubejs:*` toke
 "BUILD NOTE"/"placeholder"/"TODO" copy, references to the non-existent
 `/icraft_quests` command).
 
-Usage: python3 validate_heracles_quests.py [QUESTS_ROOT]
+Usage: python3 validate_heracles_quests.py [QUESTS_ROOT] [--require-entity-list]
        default QUESTS_ROOT = .minecraft/config/heracles/quests
-Exit code 1 if any ERROR is found. An error in a file listed in OWED is printed under OWED and does
-not fail the run: the quest is known to be broken and waits for a decision.
+       --require-entity-list   fail (exit 2) when dev/registry/entity_types.txt is not found above the
+                               quests root, instead of skipping the entity-id check with a NOTE. The
+                               gates pass it: a checkout that lacks the list must not look like a pass.
+Exit code 1 if any ERROR is found, 2 when the run could not be made (no quest file, or no entity list
+with --require-entity-list). An error in a file listed in OWED is printed under OWED and does not fail
+the run: the quest is known to be broken and waits for a decision.
+
+Where it runs (since 2026-10-13; before that nobody ran it, and 51 kill tasks of the bare-string shape
+reached main): the pre-push hook, on all three quest trees, when a pushed commit changes a file under
+any distro's config/heracles/ (dev/install-hooks.ps1, the block "Heracles quest validator"), and the
+GitHub Action heracles-quests.yml. validate_heracles_quests_test.py plants each defect the validator
+exists for and requires the refusal.
 """
 import json
 import re
@@ -205,7 +215,11 @@ def validate_rewards(f, rewards, ctx="rewards"):
 
 
 def main():
-    root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    flags = {a for a in sys.argv[1:] if a.startswith("--")}
+    if flags - {"--require-entity-list"}:
+        print(f"unknown option: {' '.join(sorted(flags - {'--require-entity-list'}))}"); sys.exit(2)
+    root = Path(args[0]) if args else Path(
         ".minecraft/config/heracles/quests")
     files = sorted(root.rglob("*.json"))
     if not files:
@@ -213,6 +227,10 @@ def main():
     global ENTITY_TYPES
     ENTITY_TYPES = load_entity_types(root)
     if ENTITY_TYPES is None:
+        if "--require-entity-list" in flags:
+            print(f"CANNOT RUN: dev/registry/entity_types.txt not found above {root} (--require-entity-list): "
+                  f"the kill-task ids could not be checked against the registered entity types")
+            sys.exit(2)
         note(Path("."), "dev/registry/entity_types.txt not found above the quests root: kill-task ids are NOT "
                         "checked against the registered entity types")
 

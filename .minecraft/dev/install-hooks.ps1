@@ -49,6 +49,8 @@ $hookContent = @'
 #   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
 #   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
 #   +  mods/mod_index.py check - the mod index gate (its own block, after step 2)
+#   +  validate_heracles_quests.py - the quest validator (its own block; only when a
+#                                pushed commit touches config/heracles/ in any distro)
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
 #                                lint_kubejs_scope.py; only when a pushed commit
 #                                touches a kubejs script (or one of the lints)
@@ -149,6 +151,68 @@ EOF
             exit 1
         fi
         echo "[pre-push] WARN: mod index gate skipped (needs python 3.11+ on PATH); this push does not touch the mod index."
+    fi
+fi
+
+# --- Heracles quest validator (blocking; one self-contained block) ---
+# tools/validate_heracles_quests.py holds every quest file to the shape Heracles really
+# decodes. One task that does not decode empties the WHOLE quest, without a log line: 51
+# kill tasks written "entity": "<id>" (Heracles reads { "type": "<id>" }) left 21 quests
+# that could never be completed, and reached main because nothing ran the validator
+# (2026-10-13). Runs when a pushed commit changes a file under any distro's
+# config/heracles/, the validator, or the entity list it checks ids against
+# (dev/registry/entity_types.txt); all three quest trees, under a second each.
+# Self-contained: its own variables (HQ_*), nothing from the other steps but PUSHED and REPO_ROOT.
+HQ_TOOL="$REPO_ROOT/.minecraft/tools/validate_heracles_quests.py"
+if [ -f "$HQ_TOOL" ]; then
+    HQ_ZERO=0000000000000000000000000000000000000000
+    HQ_RUN=0
+    [ -z "$PUSHED" ] && HQ_RUN=1
+    while read -r _hq_lref hq_lsha _hq_rref hq_rsha; do
+        [ -z "$hq_lsha" ] && continue
+        [ "$hq_lsha" = "$HQ_ZERO" ] && continue
+        if [ "$hq_rsha" != "$HQ_ZERO" ] && git cat-file -e "$hq_rsha^{commit}" 2>/dev/null; then
+            hq_base="$hq_rsha"
+        else
+            hq_base="$(git merge-base "$hq_lsha" origin/main 2>/dev/null)"
+        fi
+        if [ -z "$hq_base" ]; then HQ_RUN=1; break; fi
+        if git diff --name-only "$hq_base" "$hq_lsha" 2>/dev/null \
+            | grep -Eq '(^|/)config/heracles/|^\.minecraft/tools/validate_heracles_quests|^\.minecraft/dev/registry/entity_types\.txt$'; then
+            HQ_RUN=1; break
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $HQ_RUN -eq 1 ]; then
+        echo "[pre-push] quest files changed: running the Heracles quest validator"
+        HQ_FAIL=0
+        if command -v python >/dev/null 2>&1; then
+            for hq_root in ".minecraft/config/heracles/quests" \
+                           ".minecraft/server_distribution/config/heracles/quests" \
+                           ".minecraft/distribution/client/config/heracles/quests"; do
+                [ -d "$REPO_ROOT/$hq_root" ] || continue
+                hq_out="$(cd "$REPO_ROOT" && python -I "$HQ_TOOL" "$hq_root" --require-entity-list 2>&1)"
+                hq_rc=$?
+                if [ $hq_rc -eq 0 ]; then
+                    echo "  ok    $hq_root: $(printf '%s\n' "$hq_out" | grep -E '^--- (ERRORS|OWED|WARNINGS)' | tr -d '\r' | tr '\n' ' ')"
+                else
+                    printf '%s\n' "$hq_out"
+                    echo "  FAIL  $hq_root (exit $hq_rc)"
+                    HQ_FAIL=1
+                fi
+            done
+        else
+            echo "[pre-push] python not found: the Heracles quest validator could NOT run"
+            HQ_FAIL=1
+        fi
+        if [ $HQ_FAIL -ne 0 ]; then
+            echo ""
+            echo "[pre-push] Heracles quest validator FAILED (or could not run). Each ERROR names the"
+            echo "  quest file and the field; the shape is in .minecraft/wiki/design/heracles-json-shape.md."
+            echo "  Fix the quest in all three trees and re-push. Bypass: git push --no-verify"
+            exit 1
+        fi
     fi
 fi
 
