@@ -35,6 +35,7 @@ ACCEPTED_FILE = os.path.join(HERE, 'accepted.json')
 # rule -> what it expects. A deviation is reported with the rule's name.
 BOSS_RULES = OrderedDict([
     ('named-not-boss',        'a named boss has the flag `boss` (core.isBoss, no mob-tier health)'),
+    ('miniboss-not-boss',     'a miniboss has the flag `boss` (ruled 2026-10-12: minibosses are bosses)'),
     ('named-not-x3',          'a named boss has the flag `x3`'),
     ('hp-not-x3',             'a boss with a designed health has the flag `x3`'),
     ('x3-not-named',          'only named bosses have the flag `x3`'),
@@ -286,6 +287,8 @@ def deviations(reg):
         kind, tier = e.get('kind'), e.get('tier')
         if kind == 'named' and 'boss' not in fl:
             out['named-not-boss'].append(i)
+        if kind == 'miniboss' and 'boss' not in fl:
+            out['miniboss-not-boss'].append(i)
         if kind == 'named' and 'x3' not in fl:
             out['named-not-x3'].append(i)
         if 'hp' in e and 'x3' not in fl:

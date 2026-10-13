@@ -66,7 +66,7 @@
                   "suites/onboarding_bridge.js", "lib/summary.js"]]
     },
     {
-      "name": "spawn-buff", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 47,
+      "name": "spawn-buff", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 52,
       "about": "the five scaling scripts + core.spawnBuff against the same scripts as of ffe5cef3 (fixtures/): buffs survive a save/load, a first spawn is bit-identical, legacy mobs are repaired",
       "scopes": [
         ["lib/honest.js", "lib/spawn/prelude.js",

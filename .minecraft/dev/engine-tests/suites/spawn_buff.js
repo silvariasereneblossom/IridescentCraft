@@ -204,6 +204,53 @@ __host.print('S14 API')
 check('S14 spawnBuff is null once the flag is 2', core.spawnBuff(a, 'icraft_boss_3x') === null)
 check('S14 saveModifier: 1 saved, 0 no such attribute', core.saveModifier(zombie(L), HP, 'icraft_t', 0.5, 'multiply_base') === 1 && core.saveModifier(__host.living('test:x', 5, L), DMG, 'icraft_t', 0.5, 'multiply_base') === 0)
 
+__host.print('S15 an entity that became a boss in the registry after it was saved with the mob-tier modifier')
+// The exclusion from the mob-tier health is the registry's flag `boss` (system tierHpExcluded), and the same
+// test takes a SAVED icraft_mob_tier_hp off again (the mob was no boss when it spawned: 22 named bosses on
+// 2026-10-12, the minibosses, the Wilden boss and the Magehunter by the ruling of that day). Asked of the
+// registry, so an id that gets the flag later is covered without a line here.
+function savedWithTier(id, base) {
+  var m = __host.living(id, base, L)
+  core.saveModifier(m, HP, 'icraft_mob_tier_hp', 2.0, 'multiply_base')
+  m.getPersistentData().putInt('icraft_scaled', 2)
+  return m
+}
+var excluded = global.icraft.bosses.ids('tierHpExcluded')
+var kept = []
+var asked = 0
+for (var xi = 0; xi < excluded.length; xi++) {
+  var xid = String(excluded[xi])
+  if (xid.indexOf('irons_spellbooks:') === 0) continue    // that namespace leaves the handler before any test (below)
+  asked++
+  var xm = join(savedWithTier(xid, 100).reload())
+  if (has(xm.mods(HP), 'icraft_mob_tier_hp')) kept.push(xid)
+}
+__host.print('     ' + asked + ' of the ' + excluded.length + ' ids with the flag `boss` asked (the rest: irons_spellbooks:)')
+check('S15 every boss of the registry outside irons_spellbooks: loses a saved mob-tier modifier when it loads', asked > 0 && kept.length === 0, 'kept by: ' + kept.join(', '))
+var mini = savedWithTier('mowziesmobs:naga', 100)
+mini.damageTo(150)
+mini = join(mini.reload())
+line('miniboss saved at 150/300, loaded', mini)
+check('S15 a miniboss (mowziesmobs:naga) saved at 150 of 300 is at 50 of 100: the modifier is gone, its share of health kept', near(mini.rawMax(), 100) && near(mini.rawHealth(), 50) && String(mini.mods(HP)) === '', 'max=' + mini.rawMax() + ' health=' + mini.rawHealth())
+var wild = savedWithTier('ars_nouveau:wilden_boss', 100).attr(DMG, 10)
+core.saveModifier(wild, HP, 'icraft_boss_3x_hp', 2.0, 'multiply_total')
+core.saveModifier(wild, DMG, 'icraft_boss_3x_dmg', 2.0, 'multiply_total')
+wild.getPersistentData().putInt('icraft_boss_3x', 2)
+wild.damageTo(450)
+wild = join(wild.reload())
+line('Wilden boss saved at 450/900, loaded', wild)
+check('S15 the Wilden boss (mob tier x3 and boss x3 saved: 450 of 900) is at 150 of 300: the boss x3 stays', near(wild.rawMax(), 300) && near(wild.rawHealth(), 150) && has(wild.mods(HP), 'icraft_boss_3x_hp') && !has(wild.mods(HP), 'icraft_mob_tier_hp'), 'max=' + wild.rawMax() + ' health=' + wild.rawHealth())
+var freshMini = join(__host.living('mowziesmobs:naga', 100, L))
+check('S15 a fresh miniboss gets no mob-tier modifier', freshMini.rawMax() === 100 && String(freshMini.mods(HP)) === '', 'max=' + freshMini.rawMax())
+var zk = savedWithTier('minecraft:zombie', 100)
+zk.damageTo(150)
+zk = join(zk.reload())
+check('S15 an ordinary mob saved the same way keeps it (150 of 300)', near(zk.rawMax(), 300) && near(zk.rawHealth(), 150) && has(zk.mods(HP), 'icraft_mob_tier_hp'), 'max=' + zk.rawMax())
+// No check for irons_spellbooks:magehunter_vindicator, which has the flag too: the game creates that entity with
+// the TYPE minecraft:vindicator (measured on a full-pack boot, 2026-10-12), so no script ever sees its registry id
+// and a stand-in built from that id here would test something that cannot happen. The four casters of that
+// namespace leave the handler on their `caster` flag before any health test (S11).
+
 __host.print('')
 if (T_DISHONEST.length) __host.print('DISHONEST MOCKS (' + T_DISHONEST.length + '):\n   ' + T_DISHONEST.join('\n   '))
 // the handlers run behind icraft.guard: one that throws is reported by the guard, and has to fail this suite

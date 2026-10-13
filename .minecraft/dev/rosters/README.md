@@ -65,7 +65,8 @@ What an entry does NOT do, and still has to be done by hand: the boss's own drop
 structure tag of a structure arena (`kubejs/data/icraft/tags/worldgen/structure/<arena key>.json`; the validator
 checks it), and the two lists outside the scripts (below).
 
-A flag that is forgotten is not silent: `validate.py` expects a named boss to be `boss` and `x3`, a boss with a
+A flag that is forgotten is not silent: `validate.py` expects a named boss to be `boss` and `x3`, a miniboss to be
+`boss` (ruled 2026-10-12: minibosses are bosses; they keep their own health, without the mob-tier multiplier), a boss with a
 designed health to be `x3`, a named or miniboss entry of tier 1-3 to be on a rush roster, and so on (the rules are
 at the top of `validate.py`). A deviation fails until it is written into `accepted.json` with its reason.
 
