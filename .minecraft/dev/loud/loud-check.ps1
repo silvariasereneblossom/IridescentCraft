@@ -39,12 +39,20 @@
 #        - the hand-kept lines (`entries`): each is present, none of its `must_not`
 #          lines is, and its count is not below its floor. They are the lines that
 #          prove what a registration cannot (liveness_lines.json says what, each).
-#   3b. FIRED: reported, NEVER a finding, no exit code depends on it. A registration
+#   3b. FIRED: reported, and with ONE exception never a finding. A registration
 #      that was made has not run. The game prints `[icraft.live] FIRED <group> x<n>:
 #      <names>` the first time each registration, and each curated feature
 #      (icraft.live.fired), runs to its end. Reported per boot: how many fired,
-#      which features, which registrations that run on every boot did not (AT BOOT),
-#      which sections did not finish. And over the boots in the rotated logs
+#      which features, which sections did not finish.
+#      The exception (ruled 2026-10-13): a registration whose event runs on EVERY
+#      boot with nobody online (the manifest's `at_boot`: recipes, loot modifiers,
+#      tags, commands, ServerEvents.loaded, the startup registries) and that did
+#      NOT fire in a finished boot is `notfired:<name>@<group>` (MISSING, AMBER):
+#      the event was not posted, or the handler never got to its end. Not when
+#      the handler FAILED (the guard's finding says so), and not before the server
+#      has printed what fired while it started (it prints once a second: a log
+#      read in the first second after Done has no such line yet).
+#      And over the boots in the rotated logs
 #      (-FiredBoots, default 10): what has never fired in the boots in which a
 #      player was online. With nobody online most handlers cannot fire, so a boot
 #      without a player says nothing about them. Going back, the reading stops at
@@ -146,7 +154,7 @@
 # on the box, not in the tree), NEW (signature not in the baseline, a known
 # defect that is not fixed, or a registration that is not in the manifest;
 # severity AMBER), CHECK-FAILED.
-# Not a finding: everything check 3b prints (FIRED, AT BOOT, NOT RUN, NEVER).
+# Not a finding: what check 3b prints (FIRED, NOT RUN, HISTORY, NEVER), except `notfired:`.
 # Not a finding: `STALE DEFECT` / `STALE ACCEPTED` (check 6), printed after the
 # findings; the last line of the report carries their count.
 # The launcher will own the on-box watcher; this script is its reference and the
@@ -222,6 +230,7 @@ function Get-Family {
         'stale'            { return 'loaded' }
         'armed'            { return 'armed' }
         'unlisted'         { return 'armed' }
+        'notfired'         { return 'armed' }
         'mustnot'          { return 'armed' }
         'pattern'          { return 'pattern' }
         'new'              { return 'new' }
@@ -639,6 +648,7 @@ function Invoke-Check {
         }
         $shownGuards = 0; $restGuards = 0
         foreach ($gk in $guardOrder) {
+            [void]$script:guardFailed.Add($gk)
             $kjsGuards += $guards[$gk]
             if ($shownGuards -ge $MaxPerFamily) { $restGuards++; continue }
             $shownGuards++
@@ -815,6 +825,7 @@ function Invoke-Check {
             $known   = New-Object 'System.Collections.Generic.HashSet[string]'      # every id of the manifest that can fire
             $scriptOf = @{}
             $atBoot  = New-Object System.Collections.Generic.List[string]
+            $atBootSrc = @{}
             $firedNow = New-Object 'System.Collections.Generic.HashSet[string]'
             $notRunNow = New-Object 'System.Collections.Generic.HashSet[string]'
             $playerNow = $false; $liveRead = 0; $featureKnown = 0; $sectionKnown = 0; $sectionOwed = 0
@@ -824,7 +835,6 @@ function Invoke-Check {
                 if ($null -eq $am) { continue }
                 $want = New-Object 'System.Collections.Generic.HashSet[string]'
                 foreach ($r in @($am.registrations)) { [void]$want.Add([string]$r.id); [void]$known.Add([string]$r.id); $scriptOf[[string]$r.id] = [string]$r.script }
-                foreach ($x in @($am.at_boot)) { if ($x) { $atBoot.Add([string]$x) } }
                 $fm = $mf.fired.$type
                 if ($null -ne $fm) {
                     foreach ($f in @($fm.features)) { if ($null -ne $f) { [void]$known.Add([string]$f.name + '@feature'); $scriptOf[[string]$f.name + '@feature'] = [string]$f.script; $featureKnown++ } }
@@ -850,6 +860,7 @@ function Invoke-Check {
                     continue
                 }
                 $liveRead++
+                foreach ($x in @($am.at_boot)) { if ($x) { $atBoot.Add([string]$x); $atBootSrc[[string]$x] = $src } }
                 $last = $live.summaries[$live.summaries.Count - 1]
                 $missing = New-Object System.Collections.Generic.List[string]
                 $madeLate = 0
@@ -898,8 +909,27 @@ function Invoke-Check {
                 $firedReport.Add([pscustomobject]@{ head = 'FIRED   '; text = $t; rows = @() })
                 if ($bootDone) {
                     $cold = @($atBoot | Where-Object { -not $firedNow.Contains($_) } | Sort-Object)
+                    # The server prints what fired once a second, so the handlers that ran while it started are in
+                    # its first such line, together with the first tick functions. Until that line exists a server
+                    # registration is not "not fired", it is not printed yet. Startup scripts print at once.
+                    $flushed = @($firedNow | Where-Object { $_.EndsWith('@tick.server') }).Count -gt 0
+                    $tooEarly = 0; $failedToo = 0; $shownCold = 0; $restCold = 0
+                    foreach ($id in $cold) {
+                        $csrc = [string]$atBootSrc[$id]
+                        if ($csrc -eq 'kubejs/server.log' -and -not $flushed) { $tooEarly++; continue }
+                        if ($script:guardFailed.Contains($id)) { $failedToo++; continue }      # it threw: the guard's finding is the finding
+                        if ($shownCold -ge $MaxPerFamily) { $restCold++; continue }
+                        $shownCold++
+                        $by = ''
+                        if ($scriptOf.ContainsKey($id)) { $by = ' (' + $scriptOf[$id] + ')' }
+                        Add-Finding 'MISSING' 'AMBER' ("notfired:$id") $csrc ("registered and NOT run$by" + ': its event runs on every boot, and this boot finished without the handler getting to its end. The event was not posted, or an earlier handler ended it')
+                    }
+                    if ($restCold -gt 0) { Add-Finding 'MISSING' 'AMBER' 'notfired:more' '' ("$restCold more registrations that run on every boot did not fire, not listed one by one") }
                     if ($cold.Count -gt 0) {
-                        $firedReport.Add([pscustomobject]@{ head = 'AT BOOT '; text = "$($cold.Count) of the $($atBoot.Count) registrations that run on every boot did NOT fire in this one (their event was not posted, or the handler did not finish; a FAILED handler is a finding of its own)"; rows = @(Format-LiveGroups $cold $FiredShow) })
+                        $t = "$($cold.Count) of the $($atBoot.Count) registrations that run on every boot did NOT fire in this one"
+                        if ($tooEarly -gt 0) { $t += "; $tooEarly not judged: the server has not printed its first FIRED lines yet (it prints once a second; read again)" }
+                        if ($failedToo -gt 0) { $t += "; $failedToo of them FAILED (the guard's finding)" }
+                        $firedReport.Add([pscustomobject]@{ head = 'AT BOOT '; text = $t; rows = @(Format-LiveGroups $cold $FiredShow) })
                     }
                 }
                 if ($notRunNow.Count -gt 0) {
@@ -1199,6 +1229,7 @@ $script:loadedText = @(); $script:armedText = $null; $script:expectedFrom = ''
 $script:kjsErrors = 0; $script:kjsAborts = 0; $script:kjsGuards = 0; $script:patternHits = 0; $script:baselineText = $null
 $script:bootClock = $null; $script:bootStartSeen = $false; $script:doneRx = $null; $script:doneLine = 0; $script:staleText = $null
 $script:rolledWhy = $null       # set when latest.log is the tail of a run and its boot could not be read back
+$script:guardFailed = New-Object 'System.Collections.Generic.HashSet[string]'     # '<name>@<event>' of every guarded handler that FAILED
 try {
     Invoke-Check
 } catch {

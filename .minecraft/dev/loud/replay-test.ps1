@@ -33,9 +33,11 @@
 #            from before they existed): the ARMED registrations are exact (a missing
 #            one is named with its event, an unlisted one is AMBER, a digest that is
 #            not the manifest's is RED), a boot from before the lines is not judged,
-#            and FIRED is never a finding: nothing fired at all is a clean exit 0. Over
-#            boots written next to the log as rotated files: what never fired in the
-#            boots with a player online.
+#            and FIRED is never a finding, with one exception: a registration that
+#            runs on every boot and did not fire is `notfired:` (AMBER), unless its
+#            handler FAILED or the server has not printed its first FIRED lines yet.
+#            Over boots written next to the log as rotated files: what never fired in
+#            the boots with a player online.
 #
 #   powershell -File .minecraft\dev\loud\replay-test.ps1            # all three parts
 #   pwsh       -File .minecraft\dev\loud\replay-test.ps1 -Newer     # + boots mirrored after the anchor
@@ -577,9 +579,16 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
         return ('[00:00:00] [INFO] 00_icraft_guard.js#144: [icraft.live] ARMED ' + $Type + ': ' + $N + ' registrations (' + $N + ' handlers on 9 events, 0 tick functions, 0 hurt handlers), digest ' + $D + '; against the expected list: ' + $Tail)
     }
     function New-LiveLine { param([string]$Text, [string]$Level = 'INFO') $bang = ''; if ($Level -eq 'ERROR') { $bang = '! ' }; return ('[00:00:00] [' + $Level + '] ' + $bang + '00_icraft_guard.js#144: [icraft.live] ' + $Text) }
-    # the healthy boot as a boot of a tree WITH the liveness script. $Server / $Startup: the lines each log gets (default: its healthy summary line)
+    # FIRED lines as the game prints them: one line per group
+    function Get-FiredLines { param($Ids) return @($Ids | Group-Object { Get-LiveGroup ([string]$_) } | ForEach-Object { New-LiveLine ('FIRED ' + $_.Name + ' x' + $_.Count + ': ' + (@($_.Group | ForEach-Object { Get-LiveName ([string]$_) }) -join ', ')) }) }
+    # the startup registrations all run while the game loads, and startup scripts print at once: a healthy boot has these
+    $startupBoot = @($mfLive.armed.startup.at_boot)
+    $startupFired = @(Get-FiredLines $startupBoot)
+    # the healthy boot as a boot of a tree WITH the liveness script. $Server / $Startup: the lines each log gets
+    # (default: the server log its summary line only, the startup log its summary line and its FIRED lines)
     function New-LiveCase {
         param([string]$Name, [string[]]$Server, [string[]]$Startup, [switch]$NoServerSummary, [int]$ServerErrors = 0, [string[]]$Latest)
+        if (-not $Startup -or $Startup.Count -eq 0) { $Startup = $startupFired }
         $logs = New-Case $Name $null $null
         $es = Join-Path (Split-Path -Parent $logs) 'expected_state.json'
         $raw = [System.IO.File]::ReadAllText($es)
@@ -616,9 +625,9 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
     $regOk = [regex]::Escape("registrations server $srvN/$srvN, startup $stuN/$stuN")
 
     $logsL = New-LiveCase 'live-clean' @() @()
-    Test-Stale 'liveness lines with the manifest''s digests, nothing fired at all -> clean: FIRED is never a finding' $logsL @() 0 @() @() @(('ARMED   : \d+/\d+ lines present; ' + $regOk),
-        'FIRED   : 0 of \d+ registrations fired in this boot; features 0 of \d+; sections 0 of \d+ ran; a player was online: no',
-        ('AT BOOT : ' + $bootN + ' of the ' + $bootN + ' registrations that run on every boot did NOT fire'),
+    Test-Stale 'liveness lines with the manifest''s digests, no FIRED line of the server yet -> clean: nothing is "not fired" before the server printed its first lines' $logsL @() 0 @() @() @(('ARMED   : \d+/\d+ lines present; ' + $regOk),
+        ('FIRED   : ' + $startupBoot.Count + ' of \d+ registrations fired in this boot; features 0 of \d+; sections \d+ of \d+ ran; a player was online: no'),
+        ('AT BOOT : ' + $bootIds.Count + ' of the ' + $bootN + ' registrations that run on every boot did NOT fire in this one; ' + $bootIds.Count + ' not judged: the server has not printed its first FIRED lines yet'),
         'HISTORY : 1 boot\(s\) with liveness lines, 0 with a player online .*nothing can be said about what never fires in play')
     $quietL = Invoke-Checker @('-LogsDir', $logsL, '-Quiet')
     Assert-That ($quietL.Exit -eq 0 -and $quietL.Out.Count -eq 1 -and $quietL.Out[0] -match 'GREEN - nothing found') '   -Quiet: one GREEN line, the FIRED report is not printed'
@@ -626,6 +635,21 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
     $lvW = Invoke-Checker @('-LogsDir', $logsL, '-Write', '-FindingsPath', $lvFind, '-StatusPath', $lvStat, '-Quiet')
     $lvS = Read-Status $lvStat
     Assert-That ($lvW.Exit -eq 0 -and $lvS['worst'] -eq 'GREEN' -and $lvS['open'] -eq '0' -and -not (Test-Path -LiteralPath $lvFind)) '   -Write: nothing of it is a finding (worst=GREEN, open=0, no findings log)'
+
+    # every registration that runs on every boot fired (as a real boot prints them: grouped, with the first tick functions)
+    $tickId = [string](@($regs | Where-Object { ([string]$_.id).EndsWith('@tick.server') })[0].id)
+    $tickLine = New-LiveLine ('FIRED tick.server x1: ' + (Get-LiveName $tickId))
+    $serverFired = @(Get-FiredLines $bootIds) + @($tickLine)
+    Test-Stale 'every registration that runs on every boot fired -> clean' (New-LiveCase 'live-allboot' $serverFired @()) @() 0 @() @() @(('FIRED   : ' + ($bootN + 1) + ' of \d+ registrations fired in this boot'))
+    $allBootRun = Invoke-Checker @('-LogsDir', (Join-Path (Join-Path $WorkDir 'case-live-allboot') 'logs'))
+    Assert-That (@($allBootRun.Out | Where-Object { $_ -match 'AT BOOT' }).Count -eq 0) '   and the report has no AT BOOT line'
+    $coldId = [string]$bootIds[0]
+    $serverMinus = @(Get-FiredLines @($bootIds | Where-Object { [string]$_ -ne $coldId })) + @($tickLine)
+    Test-Stale ('one of them did not fire (' + $coldId + ') -> exactly that one, AMBER') (New-LiveCase 'live-cold' $serverMinus @()) @() 1 @("MISSING notfired:$coldId") @() @('AT BOOT : 1 of the \d+ registrations that run on every boot did NOT fire in this one$', '\] AMBER - 1 MISSING')
+    $failedLine = '[00:00:00] [ERROR] ! 00_icraft_guard.js#143: [icraft.guard] FAILED ' + (Get-LiveName $coldId) + ' in ' + (Get-LiveGroup $coldId) + ': TypeError: planted (server_scripts:planted.js#12) [the rest of the event still ran; logged once per script load, later failures are counted]'
+    Test-Stale '   the same, and that handler FAILED -> the guard''s finding only: one fact, one finding' (New-LiveCase 'live-coldfailed' ($serverMinus + @($failedLine)) @()) @() 1 @("ERROR guard:$coldId") @() @('1 of them FAILED \(the guard''s finding\)')
+    $startupCold = [string]$startupBoot[0]
+    Test-Case ('a STARTUP registration did not fire (' + $startupCold + ') -> that one') (New-LiveCase 'live-coldstartup' $serverFired @(Get-FiredLines @($startupBoot | Where-Object { [string]$_ -ne $startupCold }))) @() 1 @("MISSING notfired:$startupCold")
 
     Test-Stale 'a boot from before the liveness lines (the healthy boot as it is) -> the registrations are not judged, and it says so' (New-Case 'live-old' $null $null) @() 0 @() @() @(('ARMED registrations \(server\) not judged: the tree of this boot has no server_scripts/' + [regex]::Escape($liveScript)), 'ARMED   : \d+/\d+ lines present$')
 
@@ -664,9 +688,9 @@ if ($null -eq $mfLive.PSObject.Properties['armed']) {
         (New-LiveLine ('FIRED feature x1: ' + $featA)), (New-LiveLine 'FIRED Test.unknown x1: not/in/the/manifest'), (New-LiveLine 'PLAYER first login since the server scripts loaded'))
     $logsF = New-LiveCase 'live-fired' $firedLines @()
     Test-Stale 'two registrations and a feature fired, a player was on -> reported, clean; a name the manifest does not have is not counted' $logsF @() 0 @() @() @(
-        ('FIRED   : 2 of ' + ($srvN + $stuN) + ' registrations fired in this boot; features 1 of \d+ \(' + [regex]::Escape($featA) + '\); sections \d+ of \d+ ran; a player was online: yes'),
+        ('FIRED   : ' + (2 + $startupBoot.Count) + ' of ' + ($srvN + $stuN) + ' registrations fired in this boot; features 1 of \d+ \(' + [regex]::Escape($featA) + '\); sections \d+ of \d+ ran; a player was online: yes'),
         'HISTORY : 1 boot\(s\) with liveness lines, 1 with a player online',
-        ('NEVER   : ' + ($knownN - 3) + ' of ' + $knownN + ' names never fired with a player on in the last 1 such boot'))
+        ('NEVER   : ' + ($knownN - 3 - $startupBoot.Count) + ' of ' + $knownN + ' names never fired with a player on in the last 1 such boot'))
 
     if ($null -ne $sectA) {
         $ofName = Get-LiveName ([string]$sectA.of); $ofGroup = Get-LiveGroup ([string]$sectA.of)
