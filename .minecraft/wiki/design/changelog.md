@@ -6,6 +6,16 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Kill quests count kills, and three bosses follow their rules
+
+- **Kill quests can be completed.** Twenty-one quests that ask you to kill something could never be completed, and three more were locked behind them. Twenty of them now count the kills they state: the three Boss-Rush gauntlets, *Giant Slayer*, *Bigger They Come*, *Veteran Hunter*, the four hunter quests (zombies, skeletons, spiders, creepers), *Frontiers II*, the Mowzie's Mobs, Mutant Monsters and Terramity quests of Overworld Foundations, *Foundations Laid* and *Capstone: Lucifer*. Kills made before this change were never recorded, so they are not credited: the kills have to be done again.
+- **One quest is still broken:** *Brutal Bosses: Claim a Dungeon* cannot be completed yet. It is on the known-issues list.
+- **Boss-Rush III counts the Wither.** Its Wither line named an entity the game never lets you fight.
+- **The Wither is a boss for every pack rule.** The Wither you fight is Progressive Bosses' own version, and the pack's boss rules did not reach it. It now has its boss health (2,550 at the Overworld's starting difficulty), drops its pack loot (2 Nether Stars, 3-6 Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, often an Advanced Reforging Token), gives the Dormant Relic on your first kill, and counts for the Codex and the boss rush.
+- **The Ender Dragon has its designed 3,000 health.** It used to appear with 500 health out of a maximum of 7,500.
+- **The Dragon's Eye is not lost when no player is in the dimension** as the dragon dies: it drops where the dragon died.
+- **Minibosses follow the boss rules.** Twenty-one minibosses and Ars Nouveau's Wilden Chimera are no longer beheaded by Vorpal. Seventeen of the minibosses and the Chimera no longer get the ordinary-mob health bonus on top of their own (Gundalf 3,500 to 1,500, the Chimera 10,500 to 4,500 at the Overworld's starting difficulty). They still grow with the difficulty of where you meet them.
+
 ## October 2026 — Armor follows its designed curve
 
 - **Armor now has the diminishing returns it was designed with in June.** That curve never took effect: a mistake in the setting made the game fall back to the armor mod's default. From the next server restart armor blocks about 24% of a hit at 10 armor, 35% at 20, 51% at 50, 63% at 100 and 77% at 200, up to a cap of 95%.

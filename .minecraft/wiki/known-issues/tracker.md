@@ -10,6 +10,15 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
+### Quest "Brutal Bosses: Claim a Dungeon" cannot be completed — **Open (design decision pending)**
+The quest asks for one Brutal Bosses champion kill, but its kill lines name things the game does not know as creatures, so the quest shows in the book with nothing to do. The twenty other kill quests that were broken the same way count kills since 2026-10-13. What this quest should count is a pending design call.
+
+### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
+Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
+
+### The End does not generate in test conditions — **Investigating**
+In an offline test of the full pack no new chunk of The End could be generated; all 25 other dimensions generated theirs. No player has entered The End on the test server yet, so it is not known whether the live server behaves the same. Being looked into.
+
 ### Trinity mage classes (Elemental / Blessed / Corrupted) — **Needs verification**
 The three new specialist mage classes shipped (Phase 1a): selectable, with their three-school spell-power bonus, edge resistances, HP tiers, 2× mana pools, and themed starter kits. Awaiting in-game confirmation that (a) each is selectable and shows the right HP/stats, (b) casting an on-triad Iron's Spellbooks spell deals the intended ~+80% bump, and (c) the resistance triangle actually applies in PvP (a 2-player smoke test). Their signature active abilities and the offensive side of the rock-paper-scissors triangle are intentionally **Deferred** to a Phase 1b follow-up.
 
