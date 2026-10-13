@@ -43,7 +43,8 @@ sys.path.insert(0, DEV)
 import inventory as inv_mod  # noqa: E402
 import packlists  # noqa: E402
 
-KEY_BOSS_LISTS = ('0_lib_core.js BOSS_IDS', 'mob_scaling_unified.js BOSSES', 'boss_hp.js BOSS_HP',
+# the first three are what the scaling scripts read from the boss registry (packlists.BOSS_LIST_SOURCES)
+KEY_BOSS_LISTS = ('bosses.json boss: core.isBoss', 'bosses.json boss: no mob-tier health', 'bosses.json hp: designed health',
                   'iridescent_difficulty excludes')
 NOT_A_MOD_CONFIG = ('forge', 'fml', 'minecraft', 'defaultoptions', 'crash_assistant', 'paxi', 'kubejs', 'openloader',
                     'heracles', 'ftbquests', 'packwiz', 'icraft', 'iridescent')
@@ -870,7 +871,7 @@ def review_list(ctx, sections):
                       'boss, miniboss or mob for each; today they scale as trash mobs'))
         if boss_some.get(jar):
             s.append((6, 'boss-like entities on a kill roster that scaling treats as trash mobs (%d)' % boss_some[jar],
-                      'designed health and the x3 exemption for each (BOSS_IDS, BOSSES, boss_hp.js)'))
+                      'designed health and the mob-tier exemption for each (`hp` and the flag `boss` of bosses.json)'))
         if dim_gap.get(jar):
             s.append((8, 'dimensions missing from a tier list (%d)' % dim_gap[jar],
                       'the tier of each dimension, then the same id into every list'))
@@ -981,7 +982,7 @@ def live_defects(ctx, S):
     if ne:
         add('ruling', '%d ids the scripts treat as bosses are not on the difficulty mod\'s exclude list' % len(ne),
             'the pack\'s own lists',
-            'The scripts give these a designed health (boss_hp.js) or exempt them from the x3 (BOSS_IDS / BOSSES). The '
+            'The scripts give these a designed health (`hp`) or exempt them from the mob-tier x3 (the flag `boss` of bosses.json). The '
             'difficulty mod exempts only what its list names, so it scales them with the dimension curve on top. '
             'Intended for some, an omission for others: the list was written when the roster was 23 long.', [short(ne, 80)])
     drows = ros['dimensions_in_no_list'] + ros['dimensions_missing_from_a_list']

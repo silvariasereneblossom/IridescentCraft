@@ -11,8 +11,9 @@ Two ways in:
     mentions        Mentions(repo): every `ns:path` token in every script and config file, so any id can be
                     asked "which files of the pack name you at all"
 
-When the script registries of the framework draft (kubejs/config/icraft/registry/*.json) exist, the named
-lists should be read from there instead; the callers only see {list name: set of ids}.
+The named lists of the SCRIPTS are the script registries since 2026-10-13 (kubejs/config/icraft/registry/
+bosses.json and dimensions.json, read through dev/rosters/rosters.py): the scripts hold no boss or dimension
+list of their own any more. The callers only see {list name: set of ids}.
 
 Stdlib only.
 """
@@ -102,32 +103,37 @@ def cfg_list(text, name):
 
 # --------------------------------------------------------------------------- named lists
 
+# list name -> system of the boss registry (dev/rosters/rosters.py BOSS_SYSTEMS). The first two are one flag
+# (`boss`) read by two scripts.
 BOSS_LIST_SOURCES = (
-    # (list name, file under kubejs/server_scripts, anchor regex)
-    ('0_lib_core.js BOSS_IDS', '0_lib_core.js', r'var BOSS_IDS = \{\}\s*;'),
-    ('mob_scaling_unified.js BOSSES', 'scaling/mob_scaling_unified.js', r'const BOSSES = new Set\('),
-    ('boss_hp.js BOSS_HP', 'scaling/boss_hp.js', r'const BOSS_HP = '),
-    ('codex_exploration_kills.js NAMED_BOSSES_BY_TIER', 'exploration/codex_exploration_kills.js',
-     r'const NAMED_BOSSES_BY_TIER = '),
-    ('codex_boss_rush.js BOSS_RUSH_ROSTERS', 'gates/codex_boss_rush.js', r'var BOSS_RUSH_ROSTERS = '),
+    ('bosses.json boss: core.isBoss', 'isBoss'),
+    ('bosses.json boss: no mob-tier health', 'tierHpExcluded'),
+    ('bosses.json hp: designed health', 'hp'),
+    ('bosses.json kind named: trophy-boss tokens', 'tokensNamed'),
+    ('bosses.json rush: boss-rush rosters', 'rush'),
 )
+
+
+def _rosters():
+    import sys
+    d = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'rosters'))
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import rosters
+    return rosters
 
 
 def boss_lists(repo):
     """-> ({list name: set(entity ids)}, [problems])"""
     out = {}
     problems = []
-    root = os.path.join(repo, 'kubejs', 'server_scripts')
-    for name, rel, anchor in BOSS_LIST_SOURCES:
-        src = read_text(os.path.join(root, rel.replace('/', os.sep)))
-        if src is None:
-            problems.append('%s: file not found (%s)' % (name, rel))
-            continue
-        lit = literal_after(strip_js_comments(src), anchor)
-        if lit is None:
-            problems.append('%s: the list was not found in %s (renamed?)' % (name, rel))
-            continue
-        out[name] = ids_in(lit)
+    rosters = _rosters()
+    try:
+        reg = rosters.load(repo)
+        for name, system in BOSS_LIST_SOURCES:
+            out[name] = set(reg.boss_ids(system))
+    except rosters.RegistryError as e:
+        problems.append('boss registry: %s' % e)
     cfg = toml_file(os.path.join(repo, 'config', 'iridescent_difficulty-common.toml'))
     if cfg is None:
         problems.append('iridescent_difficulty-common.toml: not readable')
@@ -141,14 +147,13 @@ def dimension_lists(repo):
     """-> ({list name: {dimension id: tier or None}}, [problems]).  tier None = listed, no tier in that list."""
     out = {}
     problems = []
-    src = read_text(os.path.join(repo, 'kubejs', 'server_scripts', 'gates', 'astages_restrictions.js'))
-    if src is None:
-        problems.append('astages_restrictions.js: not found')
-    else:
-        d = {}
-        for m in re.finditer(r"stageDimension\(\s*'tier_(\d)'\s*,\s*'([a-z0-9_:/.\-]+)'", strip_js_comments(src)):
-            d[m.group(2)] = int(m.group(1))
-        out['stage gates (astages_restrictions.js)'] = d
+    rosters = _rosters()
+    reg = None
+    try:
+        reg = rosters.load(repo)
+        out['stage gates (dimensions.json stageGate)'] = dict((i, reg.dims[i]['tier']) for i in reg.dim_ids('stageGate'))
+    except rosters.RegistryError as e:
+        problems.append('dimension registry: %s' % e)
     cfg = toml_file(os.path.join(repo, 'config', 'iridescent_difficulty-common.toml'))
     if cfg is None:
         problems.append('iridescent_difficulty-common.toml: not readable')
@@ -170,16 +175,20 @@ def dimension_lists(repo):
                 problems.append('apotheosis/adventure.cfg: list "%s" not found' % name)
                 continue
             out['Apotheosis "%s"' % name] = dict((ln.split('|', 1)[0], None) for ln in lines if ':' in ln)
+    # the loot rules: the tier groups of the registry (flag `loot`), plus every dimension a rule names by id
     root = os.path.join(repo, 'kubejs', 'server_scripts')
     dims = {}
+    if reg is not None:
+        for i in reg.dim_ids('loot'):
+            dims[i] = None
     for dp, dn, fn in os.walk(os.path.join(root, 'loot')):
         for f in fn:
             if f.endswith('.js'):
                 src = strip_js_comments(read_text(os.path.join(dp, f)) or '')
-                for m in re.finditer(r'\.anyDimension\(([^)]*)\)', src):
+                for m in re.finditer(r"\.anyDimension\(((?:[^()]|\([^()]*\))*)\)", src):
                     for dim in ids_in(m.group(1)):
                         dims[dim] = None
-    out['loot rules (.anyDimension in kubejs/server_scripts/loot)'] = dims
+    out['loot rules (dimensions.json loot + .anyDimension ids in kubejs/server_scripts/loot)'] = dims
     return out, problems
 
 

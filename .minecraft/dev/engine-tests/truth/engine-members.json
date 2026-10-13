@@ -137,7 +137,7 @@
   "Vec3d": "net.minecraft.world.phys.Vec3",
   "Vec3i": "net.minecraft.core.Vec3i",
   "console": "object dev.latvian.mods.kubejs.util.ConsoleJS",
-  "global": "object {}"
+  "global": "object {icraftEngineProbeStartupJson=typeof=object schema=1}"
  },
  "classes": {
   "com.mojang.authlib.GameProfile": {
@@ -541,6 +541,12 @@
    "sids": "CLIENT SERVER STARTUP current getCurrent",
    "methods": "!getCurrent(ConsoleJS) !getCurrent(Context) debug(Object) debugf(String,Object[]) equals(Object) error(Object) error(String,Throwable) error(String,Throwable,Pattern) errorf(String,Object[]) errorsComponent(String) flush(boolean) getClass() getDebugEnabled() getLogger() getMuted() getScriptLine() getWriteToFile() group() groupEnd() handleError(ConsoleLine,Throwable,Pattern,boolean) hashCode() info(Object) infof(String,Object[]) log(Object[]) notify() notifyAll() printClass(String) printClass(String,boolean) printObject(Object) printObject(Object,boolean) resetFile() setCapturingErrors(boolean) setDebugEnabled(boolean) setMuted(boolean) setWriteToFile(boolean) shouldPrintDebug() toString() trace() wait() wait(long) wait(long,int) warn(Object) warn(String,Throwable) warn(String,Throwable,Pattern) warnf(String,Object[]) writeToFile(LogType,String) writeToFile(LogType,long,String)",
    "fields": "!CLIENT !SERVER !STARTUP scriptType"
+  },
+  "dev.latvian.mods.kubejs.util.JsonIO": {
+   "ids": "class equals getClass hashCode notify notifyAll toString wait",
+   "sids": "copy getJsonHashBytes getJsonHashString jsonHashBytes jsonHashString of parse parseRaw primitiveOf read readJson readString toArray toObject toPrettyString toPrimitive toString write writeJsonHash",
+   "methods": "!copy(JsonElement) !getJsonHashBytes(JsonElement) !getJsonHashString(JsonElement) !of(Object) !parse(String) !parseRaw(String) !primitiveOf(Object) !read(Path) !readJson(Path) !readString(Path) !toArray(JsonElement) !toObject(JsonElement) !toPrettyString(JsonElement) !toPrimitive(JsonElement) !toString(JsonElement) !write(Path,JsonObject) !writeJsonHash(DataOutputStream,JsonElement) equals(Object) getClass() hashCode() notify() notifyAll() toString() wait() wait(long) wait(long,int)",
+   "fields": ""
   },
   "dev.latvian.mods.rhino.mod.util.color.Color": {
    "ids": "argbJS createTextColorJS fireworkColorJS getArgbJS getFireworkColorJS getHexJS getRgbJS getSerializeJS hexJS rgbJS serializeJS specialEquals",

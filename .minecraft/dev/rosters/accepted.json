@@ -1,0 +1,111 @@
+{
+  "about": "Where the registries deviate from what dev/rosters/validate.py expects, id by id, with the reason. Every line is a place where the scripts disagreed before the registries existed (2026-10-13): the registry reproduces it exactly and nobody has ruled on it, unless the reason says it is deliberate. validate.py fails on a deviation that is not listed here, and on a line here that no longer deviates. To accept a new one: add `id: reason` under its rule.",
+
+  "hp-not-x3": {
+    "mutantmonsters:mutant_zombie": "miniboss: the x3 is for trophy bosses (the boundary written in scaling/zz_boss_global_3x.js); open: add some minibosses to the x3",
+    "mutantmonsters:mutant_skeleton": "miniboss: see mutant_zombie",
+    "mutantmonsters:mutant_creeper": "miniboss: see mutant_zombie",
+    "mutantmonsters:mutant_enderman": "miniboss: see mutant_zombie",
+    "meetyourfight:swampjaw": "miniboss: see mutant_zombie",
+    "meetyourfight:bellringer": "miniboss: see mutant_zombie",
+    "deeperdarker:shriek_worm": "miniboss: see mutant_zombie",
+    "deeperdarker:sculk_centipede": "on no kill roster, designed health 650, no x3: see mutant_zombie; open: should it pay miniboss tokens",
+    "stalwart_dungeons:shelterer": "miniboss: see mutant_zombie",
+    "stalwart_dungeons:nether_keeper": "miniboss: see mutant_zombie",
+    "stalwart_dungeons:awful_ghast": "miniboss: see mutant_zombie",
+    "stalwart_dungeons:incomplete_wither": "miniboss: see mutant_zombie",
+    "cataclysm:ender_golem": "miniboss (designed 1,200): see mutant_zombie"
+  },
+
+  "x3-not-named": {
+    "majestic_menaces:teikoku_senshi": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and designed health, no kill tokens; open: named or not",
+    "ars_nouveau:wilden_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and a boss-rush slot, not `boss` for core.isBoss, no kill tokens; open",
+    "theabyss:nightblade_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
+    "theabyss:the_roka": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
+    "theabyss:elder": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not"
+  },
+
+  "boss-not-on-kill-roster": {
+    "minecraft:elder_guardian": "`boss` for core.isBoss and the mob-tier exclusion, on no kill roster, no x3, no designed health; open",
+    "majestic_menaces:teikoku_senshi": "see x3-not-named",
+    "deeperdarker:sculk_centipede": "see hp-not-x3",
+    "theabyss:soul_guard": "`boss` and an Abyss boss, on no kill roster, no x3, no designed health; open",
+    "theabyss:ice_knight": "`boss` and an Abyss boss, on no kill roster, no x3, no designed health; open",
+    "theabyss:nightblade_boss": "see x3-not-named",
+    "theabyss:the_roka": "see x3-not-named",
+    "theabyss:elder": "see x3-not-named"
+  },
+
+  "named-not-in-rush": {
+    "cataclysm:ancient_remnant": "named (tier 3 by its first listing, tier 4 by its second) and on no boss-rush roster; open"
+  },
+
+  "miniboss-not-in-rush": {
+    "twilightforest:adherent": "pays miniboss tokens, not on the tier-2 boss-rush roster; open: the roster is ruled at 11 / 20 / 43",
+    "twilightforest:harbinger_cube": "see adherent",
+    "terramity:gundalf": "see adherent (it has a Boss Compass arena)",
+    "terramity:trial_guardian": "see adherent",
+    "terramity:ultra_sniffer": "see adherent",
+    "deeperdarker:shriek_worm": "pays miniboss tokens, not on the tier-3 boss-rush roster; open"
+  },
+
+  "rush-tier": {
+    "cardinal_sins:lucifer": "deliberate: a tier-4 named boss on the TIER-3 roster, the capstone whose kill completes the tier-3 rush",
+    "cataclysm:ignited_revenant": "named at tier 4, on the tier-3 boss-rush roster (the boss catalog places it at tier 3); open: which tier"
+  },
+
+  "arena-tier": {
+    "cardinal_sins:lucifer": "the Boss Compass shows the arena at tier 3 (the capstone of the tier-3 rush); the kill pays tier-4 tokens"
+  },
+
+  "vorpal-lists": {
+    "twilightforest:knight_phantom": "on Arcane Vorpal's blocklist only. No effect today: both handlers also ask core.isBoss, and it is `boss`. Open: one list",
+    "twilightforest:snow_queen": "see knight_phantom",
+    "twilightforest:minoshroom": "see knight_phantom",
+    "cataclysm:maledictus": "see knight_phantom",
+    "cataclysm:ancient_remnant": "see knight_phantom"
+  },
+
+  "dim-no-stage-gate": {
+    "theabyss:frost_world": "tier 3 for the class passives only; no stage gate (reachable from the gated Abyss); open"
+  },
+
+  "dim-not-in-loot": {
+    "theabyss:frost_world": "in no loot rule; open",
+    "ad_astra:moon": "the planets have their own loot rules (loot/planetary_loot.js), not the tier-4 group, which is the End alone",
+    "ad_astra:mars": "see moon",
+    "ad_astra:mercury": "see moon",
+    "ad_astra:venus": "see moon",
+    "ad_astra:glacio": "see moon"
+  },
+
+  "dim-no-class-passives": {
+    "ad_astra:moon": "gated at tier 4, and the class passives' tier table never held the planets (a player there already has tier 4 from the End or the stage); open",
+    "ad_astra:mars": "see moon",
+    "ad_astra:mercury": "see moon",
+    "ad_astra:venus": "see moon",
+    "ad_astra:glacio": "see moon"
+  },
+
+  "dim-no-exploration": {
+    "theabyss:frost_world": "no first-arrival bonus; open",
+    "ad_astra:moon": "no first-arrival bonus for the planets; open",
+    "ad_astra:mars": "see moon",
+    "ad_astra:mercury": "see moon",
+    "ad_astra:venus": "see moon",
+    "ad_astra:glacio": "see moon"
+  },
+
+  "dim-no-mob-equipment": {
+    "theabyss:frost_world": "no gear roll for its mobs; open",
+    "ad_astra:moon": "no gear roll for planet mobs; open",
+    "ad_astra:mars": "see moon",
+    "ad_astra:mercury": "see moon",
+    "ad_astra:venus": "see moon",
+    "ad_astra:glacio": "see moon"
+  },
+
+  "dim-no-death-penalty": {
+    "theabyss:frost_world": "takes the default 15% (the Abyss itself is 18%); open"
+  }
+}

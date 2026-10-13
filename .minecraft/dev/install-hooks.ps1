@@ -203,7 +203,9 @@ fi
 # The pack's scripts on the production Rhino jar, over mocks that are held to the real
 # classes (.minecraft/dev/engine-tests/README.md), and the bare-method-reference check
 # that CI otherwise only runs after the push. Runs when a pushed commit changes a kubejs
-# script, a test or mock, or the pinned KubeJS / Rhino / Architectury jars; about 10 s.
+# script, a test or mock, the pinned KubeJS / Rhino / Architectury jars, or the boss and
+# dimension registries (kubejs/config/icraft/registry, their tools in dev/rosters, the game's
+# registry dump in dev/registry: suite registry-data is their validator); about 10 s.
 # Self-contained: its own variables (ET_*), nothing from the other steps but PUSHED and DEV.
 # Not run here (it needs the whole instance and about 30 s more): the loot audit, i.e.
 #   python .minecraft/dev/engine-tests/run.py          (every suite)
@@ -220,7 +222,7 @@ while read -r _et_lref et_lsha _et_rref et_rsha; do
     fi
     if [ -z "$et_base" ]; then ET_RUN=1; break; fi
     if git diff --name-only "$et_base" "$et_lsha" 2>/dev/null \
-        | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/(engine-tests|rhino_parse)/|^\.minecraft/tools/check_kubejs_method_refs\.sh$|^\.minecraft/mods/\.index/(kubejs|rhino|architectury-api)\.pw\.toml$'; then
+        | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/(engine-tests|rhino_parse|rosters|registry)/|^\.minecraft/kubejs/config/icraft/registry/|^\.minecraft/tools/check_kubejs_method_refs\.sh$|^\.minecraft/mods/\.index/(kubejs|rhino|architectury-api)\.pw\.toml$'; then
         ET_RUN=1; break
     fi
 done <<EOF

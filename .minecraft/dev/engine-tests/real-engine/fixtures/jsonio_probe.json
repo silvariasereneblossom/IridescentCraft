@@ -1,0 +1,8 @@
+{
+  "schema": 1,
+  "text": "Gob's Court — <b> & \u00e9",
+  "numbers": [0.1, 0.40, 1, 1.0, 1000, 2500],
+  "flags": ["boss", "x3"],
+  "nested": { "b": true, "a": null, "z": { "tier": 3 } },
+  "minecraft:the_end": { "tier": 4 }
+}

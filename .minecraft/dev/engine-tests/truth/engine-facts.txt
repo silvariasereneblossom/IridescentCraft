@@ -19,6 +19,14 @@ diamonds found by a loop over slots 0-35 :: typeof=number value=3
 inv.count('minecraft:diamond') :: typeof=number value=5
 inv.find('minecraft:diamond') :: typeof=number value=0
 typeof inv.get :: typeof=string value=undefined
+typeof JsonIO.readString :: typeof=string value=function
+typeof JsonIO.readString(file) :: typeof=string value=object
+String(JsonIO.readString(file)) :: typeof=string value={"schema":1,"text":"Gob's Court — <b> & é","numbers":[0.1,0.40,1,1.0,1000,2500],"flags":["boss","x3"],"nested":{"b":true,"a":null,"z":{"tier":3}},"minecraft:the_end":{"tier":4}}
+JSON.parse(String(JsonIO.readString(file))) round trip :: typeof=string value=Gob's Court — <b> & é | 0.1,0.4,1,1,1000,2500 | schema,text,numbers,flags,nested,minecraft:the_end | b,a,z | string number null 4
+new Set([..]).has(a flag parsed from the file) :: typeof=boolean value=true
+JsonIO.readString(a file that does not exist) :: typeof=string value=null (the value)
+JsonIO.read(file).schema :: typeof=string value=object object 1
+startup script: JsonIO.readString(file), handed over on global :: typeof=string value=typeof=object schema=1
 typeof stack.id :: typeof=string value=object
 String(stack.id) :: typeof=string value=minecraft:diamond
 stack.id === 'minecraft:diamond' :: typeof=boolean value=true

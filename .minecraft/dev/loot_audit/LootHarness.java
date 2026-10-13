@@ -2663,6 +2663,35 @@ public class LootHarness {
         }
     }
 
+    /**
+     * `JsonIO.readString(path)`: how kubejs/server_scripts/0_lib_registry.js reads the boss and dimension registries
+     * (kubejs/config/icraft/registry/*.json), which the loot scripts ask for their tier groups of dimensions. The same
+     * two calls as KubeJS's own (kubejs-forge 2001.6.5, read from its bytecode): Gson's JsonParser.parseReader on the
+     * file, or null when it is no regular file, printed by Rhino's JsonUtils.toString. `path` is relative to the game
+     * directory there, and to the pack under audit here (two levels above --scripts-root).
+     */
+    public static final class JsonIOBinding {
+        public String readString(String path) throws Exception {
+            Map<String, Object> m = pos();
+            m.put("path", path);
+            jsonReads.add(m);
+            Path p = gameDir.resolve(path).normalize();
+            if (!p.startsWith(gameDir)) {
+                throw new java.io.IOException("You can't access files outside Minecraft directory!");
+            }
+            com.google.gson.JsonElement json = null;
+            if (Files.isRegularFile(p)) {
+                try (java.io.BufferedReader r = Files.newBufferedReader(p)) {
+                    json = com.google.gson.JsonParser.parseReader(r);
+                }
+            }
+            return dev.latvian.mods.rhino.mod.util.JsonUtils.toString(json);
+        }
+    }
+
+    static Path gameDir;
+    static final List<Map<String, Object>> jsonReads = new ArrayList<>();
+
     /** `Java.loadClass(name)`. */
     public static final class JavaBinding {
         public Object loadClass(String name) {
@@ -2735,6 +2764,7 @@ public class LootHarness {
             args.put(argv[i], argv[i + 1]);
         }
         Path root = Path.of(args.get("--scripts-root"));
+        gameDir = root.toAbsolutePath().normalize().getParent().getParent();     // <pack>/kubejs/server_scripts -> <pack>
         List<String> files = lines(args.get("--files"));
         ITEMS = new HashSet<>(lines(args.get("--items")));
         ITEMS.add("minecraft:air");
@@ -2802,6 +2832,7 @@ public class LootHarness {
         bind("Platform", PlatformWrapper.class);
         bind("Java", new JavaBinding());
         bind("console", new Console());
+        bind("JsonIO", new JsonIOBinding());
         NativeObject global = new NativeObject(cx);
         ScriptableObject.putProperty(top, "global", global, cx);
         for (String g : eventGroups) {

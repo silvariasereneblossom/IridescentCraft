@@ -1,5 +1,5 @@
 {
-  "about": "The suites of dev/engine-tests. kind: harness (scripts on the production Rhino jar over the mk.* mocks), guard (the event guard on the real KubeJS event classes: guard/GuardChain.java), members (the mocks against the real classes), known-false / truth-fresh (the recorded engine tables), parse (ParseAll), loot (audit_loot.py). fast = runs in the pre-push hook; ci = needs no mod jar beyond Rhino; snapshot = can record a golden snapshot. In a harness suite an entry is a file of this folder, 'server:<path>' / 'startup:<path>' (a pack script, evaluated directly), {load: [...]} (pack scripts through T_loadAll, so a script that fails to load is a recorded failure), {patch, find, replace} inside a load list (a patched copy), or {js: '...'} (generated; ${server:x.js} becomes the path). expect = the exact number of checks.",
+  "about": "The suites of dev/engine-tests. kind: harness (scripts on the production Rhino jar over the mk.* mocks), guard (the event guard on the real KubeJS event classes: guard/GuardChain.java), members (the mocks against the real classes), known-false / truth-fresh (the recorded engine tables), parse (ParseAll), loot (audit_loot.py), rosters (dev/rosters/validate.py). fast = runs in the pre-push hook; ci = needs no mod jar beyond Rhino; snapshot = can record a golden snapshot. In a harness suite an entry is a file of this folder, 'server:<path>' / 'startup:<path>' (a pack script, evaluated directly), {load: [...]} (pack scripts through T_loadAll, so a script that fails to load is a recorded failure), {patch, find, replace} inside a load list (a patched copy), or {js: '...'} (generated; ${server:x.js} becomes the path), or {gen: 'name'} (a file run.py generates: registry-expect = what dev/rosters/rosters.py says of the pack's registries). expect = the exact number of checks.",
   "suites": [
     {
       "name": "truth-fresh", "kind": "truth-fresh", "fast": true, "ci": true,
@@ -19,22 +19,33 @@
       "scopes": [["lib/dialect_prelude.js", "suites/dialect.js"]]
     },
     {
-      "name": "mock-facts", "kind": "harness", "fast": true, "ci": true, "expect": 103,
+      "name": "mock-facts", "kind": "harness", "fast": true, "ci": true, "expect": 109,
       "about": "the mocks give the real engine's answer to every engine fact they answer at all (truth/engine-facts.txt)",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", "real-engine/0_engine_facts.js", "suites/mock_facts.js", "lib/summary.js"]]
+    },
+    {
+      "name": "registry-data", "kind": "rosters", "fast": true, "ci": true,
+      "about": "dev/rosters/validate.py: every id of kubejs/config/icraft/registry/*.json is something the game registers (dev/registry), the files are consistent, and no boss or dimension deviates from the expectations without a reason in dev/rosters/accepted.json"
+    },
+    {
+      "name": "registry", "kind": "harness", "fast": true, "ci": true, "expect": 89,
+      "about": "kubejs/server_scripts/0_lib_registry.js (icraft.bosses, icraft.dims) answers every id and every system as dev/rosters/rosters.py does; ids are normalised (a Java string works); a registry that cannot be read is an error on every call, never an empty roster; core.isBoss asks it",
+      "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", {"gen": "registry-expect"},
+                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js"]},
+                  "suites/registry.js", "lib/summary.js"]]
     },
     {
       "name": "inventory-scan", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 14,
       "about": "economy/relic_sink.js on a mock inventory that behaves like the real one: the scan visits slots, the deny list denies, the cap key is stable",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
-                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:economy/relic_sink.js"]},
+                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:economy/relic_sink.js"]},
                   "suites/inventory_scan.js", "lib/summary.js"]]
     },
     {
       "name": "ascension", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 73,
       "about": "endgame/ascension.js + scaling/zz_ascension_scaling.js: status and operator commands, the !ascend switch (off), player bonuses, mob scaling",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
-                  {"load": ["server:00_icraft_guard.js", "server:0_iss_guard.js", "server:0_lib_core.js", "server:0_tick_master.js", "server:0_lib_aptitudes.js",
+                  {"load": ["server:00_icraft_guard.js", "server:0_iss_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:0_tick_master.js", "server:0_lib_aptitudes.js",
                             "server:endgame/ascension.js", "server:scaling/zz_ascension_scaling.js"]},
                   "suites/ascension.js", "lib/summary.js"]]
     },
@@ -42,7 +53,7 @@
       "name": "ascension-open", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 25,
       "about": "the same scripts with ASCEND_PLAYER_COMMAND_OPEN switched on in a patched copy: the activation path",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
-                  {"load": ["server:00_icraft_guard.js", "server:0_iss_guard.js", "server:0_lib_core.js", "server:0_tick_master.js", "server:0_lib_aptitudes.js",
+                  {"load": ["server:00_icraft_guard.js", "server:0_iss_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:0_tick_master.js", "server:0_lib_aptitudes.js",
                             {"patch": "server:endgame/ascension.js", "find": "const ASCEND_PLAYER_COMMAND_OPEN = false", "replace": "const ASCEND_PLAYER_COMMAND_OPEN = true"},
                             "server:scaling/zz_ascension_scaling.js"]},
                   "suites/ascension_open.js", "lib/summary.js"]]
@@ -65,7 +76,7 @@
          "fixtures/spawn-buff-old/scaling/zz_boss_global_3x.js",
          "lib/spawn/lib.js", "lib/spawn/export_old.js"],
         ["lib/honest.js", "lib/spawn/prelude.js",
-         "server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_iss_guard.js", "lib/spawn/stubs.js",
+         "server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:0_iss_guard.js", "lib/spawn/stubs.js",
          "server:scaling/boss_hp.js", "server:scaling/boss_progressive.js", "server:scaling/mob_scaling_unified.js",
          "server:scaling/zz_ascension_scaling.js", "server:scaling/zz_boss_global_3x.js",
          "lib/spawn/lib.js", "suites/spawn_buff.js"]

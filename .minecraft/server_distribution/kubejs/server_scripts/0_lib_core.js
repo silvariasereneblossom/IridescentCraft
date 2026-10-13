@@ -6,6 +6,8 @@
 //
 //   entity ids      core.entityId(entity)            -> 'minecraft:zombie' | ''
 //                   core.isBoss(entityOrId)          -> true | false
+//                                                       (the flag `boss` of the boss registry:
+//                                                       icraft.bosses, 0_lib_registry.js)
 //                   core.isPlayer(entity)            -> true | false
 //   damage source   core.attacker(source)            -> Entity | null   (DamageSource.getEntity)
 //                   core.direct(source)              -> Entity | null   (DamageSource.getDirectEntity)
@@ -168,67 +170,31 @@
     return m ? (m[1] + ':' + m[2]) : s
   }
 
-  // Bosses = the ids the pack itself treats as bosses. THE SAME IDS as BOSSES in
-  // scaling/mob_scaling_unified.js (the list that keeps a boss out of the
-  // mob-tier multiplier): keep the two in step. scaling/boss_hp.js (BOSS_HP)
-  // is the subset that has a designed health.
-  // Replaces substring tests on 'golem' / 'guardian' / 'ghast' / 'storm' /
-  // 'dragon' / 'boss' that also matched iron golems, ordinary guardians and
-  // ghasts.
-  var BOSS_IDS = {}
-  ;[
-    'minecraft:ender_dragon', 'minecraft:wither', 'minecraft:warden', 'minecraft:elder_guardian',
-    'twilightforest:naga', 'twilightforest:lich', 'twilightforest:hydra', 'twilightforest:ur_ghast',
-    'twilightforest:knight_phantom', 'twilightforest:snow_queen', 'twilightforest:minoshroom',
-    'twilightforest:alpha_yeti',
-    'blue_skies:summoner', 'blue_skies:alchemist', 'blue_skies:starlit_crusher', 'blue_skies:arachnarch',
-    'aether:slider', 'aether:valkyrie_queen', 'aether:sun_spirit',
-    'deep_aether:eots_controller',
-    'undergarden:forgotten_guardian', 'undergarden:forgotten',
-    'deeperdarker:stalker', 'deeperdarker:shattered', 'deeperdarker:shriek_worm',
-    'deeperdarker:sculk_centipede',
-    'cataclysm:netherite_monstrosity', 'cataclysm:ignis', 'cataclysm:ender_guardian',
-    'cataclysm:ancient_remnant', 'cataclysm:the_leviathan', 'cataclysm:the_harbinger',
-    'cataclysm:maledictus', 'cataclysm:ender_golem', 'cataclysm:ignited_revenant',
-    'botania:doppleganger',
-    'meetyourfight:swampjaw', 'meetyourfight:bellringer', 'meetyourfight:dame_fortuna',
-    'meetyourfight:rosalyne',
-    'mutantmonsters:mutant_zombie', 'mutantmonsters:mutant_skeleton', 'mutantmonsters:mutant_creeper',
-    'mutantmonsters:mutant_enderman',
-    'stalwart_dungeons:shelterer', 'stalwart_dungeons:nether_keeper', 'stalwart_dungeons:awful_ghast',
-    'stalwart_dungeons:incomplete_wither',
-    'irons_spellbooks:dead_king', 'irons_spellbooks:fire_boss', 'irons_spellbooks:citadel_keeper',
-    'theabyss:soul_guard', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:the_roka',
-    'theabyss:elder',
-    // (cataclysm:void_blossom, keebsz:tower_guardian, ub:sorcerer and ub:storm
-    //  were listed until 2026-10-12: not registered entity types.)
-    'majestic_menaces:teikoku_senshi',
-    // The 22 named (trophy) bosses of NAMED_BOSSES_BY_TIER
-    // (exploration/codex_exploration_kills.js) that were on neither list.
-    // Operator ruling 2026-10-12: "Treat them as bosses". Until then each got
-    // the mob-tier x3 on top of the boss x3 (9x health) and a Vorpal crit could
-    // behead it.
-    'terramity:gob', 'terramity:super_sniffer', 'terramity:enchanter_merlin',
-    'mowziesmobs:frostmaw', 'mowziesmobs:ferrous_wroughtnaut', 'mowziesmobs:umvuthi',
-    'mowziesmobs:sculptor',
-    'cataclysm:the_baby_leviathan', 'cataclysm:scylla',
-    'cardinal_sins:linneausofsloth', 'cardinal_sins:sinofgluttony', 'cardinal_sins:sinofgreed',
-    'cardinal_sins:sinofenvy', 'cardinal_sins:sinoflust', 'cardinal_sins:sinofpride',
-    'cardinal_sins:sinofwrath', 'cardinal_sins:drakara',
-    'cardinal_sins:lucifer', 'cardinal_sins:luciferphase_1',
-    'irons_spellbooks:archevoker',
-    'terramity:virtue', 'terramity:sorceress_circe'
-  ].forEach(function (id) { BOSS_IDS[id] = true })
-
+  // Bosses = the entries of kubejs/config/icraft/registry/bosses.json that carry
+  // the flag `boss`, asked through icraft.bosses (0_lib_registry.js; it loads
+  // after this file, and the lookup happens when isBoss is CALLED). Until
+  // 2026-10-13 the ids stood here as BOSS_IDS, a hand copy of the list in
+  // scaling/mob_scaling_unified.js; both now read that one flag.
+  // (The registry replaced substring tests on 'golem' / 'guardian' / 'ghast' /
+  // 'storm' / 'dragon' / 'boss' that also matched iron golems, ordinary
+  // guardians and ghasts.)
+  //
   // entity, or an id string (a JS string or a Java String: both lack getType())
+  // No registry (a file is missing or was refused at load) -> this THROWS, as
+  // every registry call does. "Nobody is a boss" would let a Vorpal crit behead
+  // Lucifer and an execute skill kill a boss outright: a missing roster is an
+  // error, never an empty one.
   var isBoss = function (entityOrId) {
     if (!entityOrId) return false
+    var id = ''
     try {
-      var id = (typeof entityOrId !== 'string' && typeof entityOrId.getType === 'function')
+      id = (typeof entityOrId !== 'string' && typeof entityOrId.getType === 'function')
         ? entityId(entityOrId)
         : String(entityOrId)
-      return BOSS_IDS[id] === true
     } catch (e) { return false }
+    var roster = global.icraft.bosses
+    if (!roster) throw new Error('[icraft.core] isBoss: icraft.bosses is missing (0_lib_registry.js did not load)')
+    return roster.is(id)
   }
 
   // ---- damage sources -------------------------------------------------------

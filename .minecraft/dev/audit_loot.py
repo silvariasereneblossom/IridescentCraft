@@ -384,6 +384,10 @@ def find_lib(mods_dir, *parts):
 # loaded and its self-test runs, so the handlers the audit fires are guarded as in game: one that throws is
 # caught by the guard, and shows here as the guard's own "[icraft.guard] FAILED" line (GUARD_FAILED below).
 GUARD_SCRIPT = "00_icraft_guard.js"
+# kubejs/server_scripts/0_lib_registry.js: icraft.bosses / icraft.dims, read from kubejs/config/icraft/registry/*.json.
+# The loot scripts ask it for the dimensions of a tier (`.anyDimension(icraft.dims.inTier(2, 'loot'))`), so the real
+# file is loaded, with a JsonIO that reads the pack's own registry files (LootHarness.JsonIOBinding).
+REGISTRY_SCRIPT = "0_lib_registry.js"
 
 
 def choose_scripts(repo):
@@ -412,7 +416,7 @@ def choose_scripts(repo):
         if is_recipe:
             recipe_files.append(rel)
         # the guard file: every registration below is `X.y(icraft.guard(...))`, so it loads too (first: its priority)
-        if is_loot or is_recipe or rel == GUARD_SCRIPT:
+        if is_loot or is_recipe or rel == GUARD_SCRIPT or rel == REGISTRY_SCRIPT:
             loaded.append(rel)
     return root, ordered, loaded, loot_files, recipe_files, info
 
@@ -578,7 +582,7 @@ def run_harness(args, truth, repo):
     groups = ["ServerEvents", "EntityEvents", "PlayerEvents", "BlockEvents", "ItemEvents", "LevelEvents",
               "NetworkEvents", "AStageEvents", "JLForkEvents", "ForgeEvents", "MoreJSEvents", "FTBQuestsEvents",
               "CommonAddedEvents", "ArchEvents", "WorldgenEvents"]
-    opaque = ["NBT", "AStages", "Text", "Items", "Component", "Utils", "Block", "Fluid", "JsonIO", "Ingredient",
+    opaque = ["NBT", "AStages", "Text", "Items", "Component", "Utils", "Block", "Fluid", "Ingredient",
               "Color", "Vec3", "BlockPos", "UUID", "Notification", "Stats", "Facing", "Direction"]
     files = [
         "--scripts-root", root,
@@ -608,7 +612,8 @@ def run_harness(args, truth, repo):
     marker = os.path.join(classes, "LootHarness.class")
     if not os.path.exists(marker) or os.path.getmtime(marker) < os.path.getmtime(src):
         os.makedirs(classes, exist_ok=True)
-        r = subprocess.run(["javac", "-Xlint:-unchecked", "-cp", rhino[-1], "-d", classes, src], capture_output=True, text=True)
+        r = subprocess.run(["javac", "-Xlint:-unchecked", "-cp", os.pathsep.join([rhino[-1], gson]), "-d", classes, src],
+                           capture_output=True, text=True)
         if r.returncode != 0:
             eprint(r.stdout[-3000:], r.stderr[-6000:])
             sys.exit("javac LootHarness.java failed")

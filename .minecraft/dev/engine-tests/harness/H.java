@@ -22,7 +22,7 @@ import java.util.Set;
  * The one harness of dev/engine-tests: loads .js files, in order, into a scope of the PRODUCTION
  * Rhino build (the rhino-forge jar the game runs) over the mk.* mocks. Driven by run.py.
  *
- *   java H [--truth truth.json] [--snap out.txt] a1.js a2.js [-- b1.js b2.js ...]
+ *   java H [--truth truth.json] [--snap out.txt] [--pack-root dir] [--probe-json file] a1.js a2.js [-- b1.js b2.js ...]
  *
  * "--" starts a NEW scope (so two versions of the same scripts can be loaded side by side); the
  * scopes share one Host, whose `stash` map carries values (functions included) to the next scope.
@@ -34,6 +34,9 @@ import java.util.Set;
  * the Host about them (truthHas / truthEvent) so that a script-side mock (an event object built in
  * JS, an event name) can be held to the same rule as the Java mocks: only what the engine has.
  * --snap: every Host.snap(line) is written there (the golden-snapshot facility).
+ * --pack-root: the .minecraft folder of the pack under test. A script's JsonIO.readString('kubejs/...') reads
+ * its file from there (Host.readJsonText), as KubeJS resolves such a path against the game directory.
+ * --probe-json: the file the JsonIO engine facts read; served as kubejs/icraft_engine_probe.json.
  *
  * Exit code: 0 ok, 1 a check failed (Host.fail()), 2 a file did not load.
  */
@@ -47,6 +50,8 @@ public class H {
     final Map<String, Set<String>> truthIds = new HashMap<>();
     final Map<String, String> facts = new HashMap<>();
     public final Map<String, Object> stash = new HashMap<>();
+    java.nio.file.Path packRoot;
+    java.nio.file.Path probeJson;
     public int failures = 0;
 
     public void print(Object s) { System.out.println(String.valueOf(s)); }
@@ -90,6 +95,28 @@ public class H {
     public String javaString(String s) { return new String(s); }
     /** the recorded answer of the real engine to an engine fact (truth/engine-facts.txt), or null */
     public String fact(String label) { return facts.get(label); }
+
+    // ---- JsonIO.readString ------------------------------------------------------------------------
+    /** the name the probe file has on the real-engine probe server (real-engine/run_real_engine.sh) */
+    static final String PROBE_NAME = "kubejs/icraft_engine_probe.json";
+    /**
+     * What KubeJS's JsonIO.readString(path) gives a script, with the same two calls (read from the bytecode of
+     * kubejs-forge 2001.6.5): the file parsed by Gson's JsonParser.parseReader, or null when it is no regular file,
+     * printed by Rhino's own JsonUtils.toString (the class is in the Rhino jar this harness runs on). `path` is
+     * relative to the game directory there and to --pack-root here. Suite mock-facts holds the answers to the engine's.
+     */
+    public String readJsonText(String path) throws Exception {
+      java.nio.file.Path p;
+      if (PROBE_NAME.equals(path)) p = probeJson;
+      else p = (packRoot == null) ? null : packRoot.resolve(path).normalize();
+      if (p == null) throw new java.io.IOException("the harness was started without --pack-root / --probe-json: " + path);
+      if (packRoot != null && !PROBE_NAME.equals(path) && !p.startsWith(packRoot)) throw new java.io.IOException("You can't access files outside Minecraft directory!");
+      JsonElement json = null;
+      if (Files.isRegularFile(p)) {
+        try (java.io.BufferedReader r = Files.newBufferedReader(p)) { json = JsonParser.parseReader(r); }
+      }
+      return dev.latvian.mods.rhino.mod.util.JsonUtils.toString(json);
+    }
 
     // ---- the real engine's member tables ------------------------------------------------------
     public boolean hasTruth() { return truth != null; }
@@ -156,6 +183,8 @@ public class H {
         }
         continue;
       }
+      if (f.equals("--pack-root")) { host.packRoot = Paths.get(args[++i]).toAbsolutePath().normalize(); continue; }
+      if (f.equals("--probe-json")) { host.probeJson = Paths.get(args[++i]).toAbsolutePath().normalize(); continue; }
       if (f.equals("--snap")) { host.snap = new PrintWriter(Files.newBufferedWriter(Paths.get(args[++i]), StandardCharsets.UTF_8)); continue; }
       if (scope == null || f.equals("--")) {
         scope = cx.initStandardObjects();

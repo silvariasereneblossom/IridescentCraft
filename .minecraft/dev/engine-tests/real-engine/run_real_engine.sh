@@ -32,6 +32,9 @@ ln -s "$SERVER/libraries" libraries
 for j in "$@"; do cp "$MODS/$j" mods/ || { echo "REAL-ENGINE ERROR: missing jar $MODS/$j"; exit 5; }; done
 ( cd mods && sha256sum *.jar ) > "$OUT/jars.sha256"
 cp "$PROBE"/*.js kubejs/server_scripts/
+# what the JsonIO facts read, and the startup-side probe (both optional: an older probe folder has neither)
+[ -f "$PROBE/jsonio_probe.json" ] && cp "$PROBE/jsonio_probe.json" kubejs/icraft_engine_probe.json
+if ls "$PROBE"/startup/*.js >/dev/null 2>&1; then mkdir -p kubejs/startup_scripts && cp "$PROBE"/startup/*.js kubejs/startup_scripts/; fi
 echo "eula=true" > eula.txt
 cat > server.properties <<EOF
 online-mode=false

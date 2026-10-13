@@ -88,6 +88,10 @@ var T_passthru = function (s) { return String(s) }
 var Text = { of: T_passthru, gold: T_passthru, gray: T_passthru, white: T_passthru, darkPurple: T_passthru, lightPurple: T_passthru, aqua: T_passthru, red: T_passthru, yellow: T_passthru, green: T_passthru }
 var Item = { of: function (id, n) { return new MStack(String(id), (typeof n === 'number') ? n : 1) }, empty: MStack.EMPTY }
 T_honestKeys('console', console, 'dev.latvian.mods.kubejs.util.ConsoleJS', false)
+// JsonIO.readString(path): how 0_lib_registry.js reads kubejs/config/icraft/registry/*.json. The Host reads the file of the
+// pack under test with the engine's own two calls (H.java readJsonText); suite mock-facts compares the answers.
+var JsonIO = { readString: function (path) { return __host.readJsonText(String(path)) } }
+T_honestKeys('JsonIO', JsonIO, 'dev.latvian.mods.kubejs.util.JsonIO', true)
 T_honestKeys('Text', Text, 'dev.latvian.mods.kubejs.bindings.TextWrapper', true)
 T_honestKeys('Item', Item, 'dev.latvian.mods.kubejs.bindings.ItemWrapper', true)
 T_honestKeys('Java', Java, 'dev.latvian.mods.kubejs.bindings.JavaWrapper', false)

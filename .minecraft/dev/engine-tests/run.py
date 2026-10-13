@@ -61,6 +61,10 @@ LIBS = {
 ENGINE_JARS = ["kubejs", "rhino", "architectury-api"]   # packwiz metafile names; the real-engine boot loads these
 
 
+# the file the JsonIO engine facts read: on the real server as kubejs/icraft_engine_probe.json, in the harness under the same name
+JSONIO_PROBE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "real-engine", "fixtures", "jsonio_probe.json")
+
+
 class RunnerError(Exception):
     """The runner could not do its job (exit 2), as opposed to a suite failing (exit 1)."""
 
@@ -305,7 +309,10 @@ def expand(ctx, suite, snap):
             return patched(entry)
         raise RunnerError("suite %s: cannot use %r here" % (suite["name"], entry))
 
-    argv = ["--truth", ctx.truth_file(), "--facts", os.path.join(TRUTH, "engine-facts.txt")]
+    # --pack-root: where a script's JsonIO.readString('kubejs/...') finds its file (the pack under test);
+    # --probe-json: the one file the JsonIO engine facts read (real-engine/fixtures)
+    argv = ["--truth", ctx.truth_file(), "--facts", os.path.join(TRUTH, "engine-facts.txt"),
+            "--pack-root", ctx.pack, "--probe-json", JSONIO_PROBE]
     if snap:
         argv += ["--snap", snap]
     for i, scope in enumerate(suite["scopes"]):
@@ -316,12 +323,69 @@ def expand(ctx, suite, snap):
                 # through T_loadAll: a script that fails to load is recorded, and the tests assert on it
                 paths = [js_path(one(e)) for e in entry["load"]]
                 argv.append(write("T_loadAll(%s)\n" % json.dumps(paths), "load"))
+            elif isinstance(entry, dict) and "gen" in entry:
+                if entry["gen"] not in GENERATED:
+                    raise RunnerError("suite %s: no generator %r" % (suite["name"], entry["gen"]))
+                argv.append(write(GENERATED[entry["gen"]](ctx), "gen"))
             elif isinstance(entry, dict) and "js" in entry:
                 text = re.sub(r"\$\{([^}]+)\}", lambda m: js_path(one(m.group(1))), entry["js"])
                 argv.append(write(text + "\n", "inline"))
             else:
                 argv.append(one(entry))
     return argv
+
+
+def rosters_module():
+    """dev/rosters/rosters.py: the registries of the pack as data (the one statement of what a system gets)"""
+    d = os.path.join(DEV, "rosters")
+    if d not in sys.path:
+        sys.path.insert(0, d)
+    import rosters
+    return rosters
+
+
+def gen_registry_expect(ctx):
+    """`var T_REG = {...}`: what rosters.py says every system gets from the registry files of the pack under test."""
+    rosters = rosters_module()
+    try:
+        reg = rosters.load(ctx.pack)
+    except rosters.RegistryError as e:
+        raise RunnerError("the registries of %s cannot be read: %s" % (ctx.pack, e))
+
+    def cells(entries, systems, cell):
+        return dict((s, [[i, cell(e, s)] for i, e in entries.items() if cell(e, s) is not None]) for s in systems)
+
+    boss_ids = list(reg.bosses)
+    dim_ids = list(reg.dims)
+    a_boss = [i for i in boss_ids if rosters.boss_cell(reg.bosses[i], "isBoss") and reg.bosses[i].get("flags") and "tier" in reg.bosses[i]]
+    doc = {
+        "readerPath": js_path(ctx.resolve("server:0_lib_registry.js")),
+        "bootLine": rosters.boot_line(reg),
+        "bossSystems": list(rosters.BOSS_SYSTEMS), "dimSystems": list(rosters.DIM_SYSTEMS),
+        "bossIds": boss_ids, "dimIds": dim_ids,
+        "bossCells": cells(reg.bosses, rosters.BOSS_SYSTEMS, rosters.boss_cell),
+        "dimCells": cells(reg.dims, rosters.DIM_SYSTEMS, rosters.dim_cell),
+        "bossTier": dict((i, reg.bosses[i].get("tier", 0)) for i in boss_ids),
+        "bossKind": dict((i, reg.bosses[i].get("kind")) for i in boss_ids),
+        "dimTier": dict((i, reg.dims[i].get("tier", 0)) for i in dim_ids),
+        "arenas": [[k, v] for k, v in reg.arenas().items()],
+        "perKill": reg.switch_on("perKill"),
+        "aBoss": a_boss[0] if a_boss else "", "aDim": dim_ids[1] if len(dim_ids) > 1 else "",
+    }
+    return "var T_REG = " + json.dumps(doc, ensure_ascii=False) + "\n"
+
+
+GENERATED = {"registry-expect": gen_registry_expect}
+
+
+def run_rosters(ctx, suite, snap=None):
+    """dev/rosters/validate.py: the registry files against the game's real registries, and their own consistency."""
+    cmd = [sys.executable, "-I", "-B", os.path.join(DEV, "rosters", "validate.py"), "--pack", ctx.pack]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    out = r.stdout + r.stderr
+    last = [l for l in out.strip().splitlines() if l.startswith("[rosters] ")]
+    note = last[-1][len("[rosters] "):].strip() if last else "no [rosters] line (exit %d)" % r.returncode
+    return r.returncode == 0, note, out
 
 
 RESULT_RE = re.compile(r"^RESULT: (\d+) passed, (\d+) failed(.*)$", re.M)
@@ -715,7 +779,7 @@ def run_guard(ctx, suite, snap=None):
 
 
 KINDS = {"harness": run_harness, "members": run_members, "parse": run_parse, "loot": run_loot,
-         "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard}
+         "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard, "rosters": run_rosters}
 
 
 def run_suites(ctx, suites, verbose):
@@ -827,6 +891,10 @@ def real_engine(ctx, mode, forge_server, port):
     os.makedirs(probe)
     for f in glob.glob(os.path.join(HERE, "real-engine", "*.js")):
         shutil.copy(f, probe)
+    shutil.copy(JSONIO_PROBE, os.path.join(probe, "jsonio_probe.json"))
+    os.makedirs(os.path.join(probe, "startup"))
+    for f in glob.glob(os.path.join(HERE, "real-engine", "startup", "*.js")):
+        shutil.copy(f, os.path.join(probe, "startup"))
     with open(os.path.join(TRUTH, "classes.txt"), encoding="utf-8") as f:
         classes = [l.strip() for l in f if l.strip() and not l.startswith("#")]
     with open(os.path.join(probe, "0_engine_probe_classes.js"), "w", encoding="utf-8", newline="\n") as f:

@@ -22,6 +22,9 @@ on:
       - '.minecraft/dev/lint_kubejs_*'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/dev/rosters/**'
+      - '.minecraft/dev/registry/**'
       - '.minecraft/mods/.index/kubejs.pw.toml'
       - '.minecraft/mods/.index/rhino.pw.toml'
       - '.minecraft/mods/.index/architectury-api.pw.toml'
@@ -35,6 +38,9 @@ on:
       - '.minecraft/dev/lint_kubejs_*'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/dev/rosters/**'
+      - '.minecraft/dev/registry/**'
   workflow_dispatch:
 
 concurrency:

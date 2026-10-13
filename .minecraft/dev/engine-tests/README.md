@@ -44,6 +44,8 @@ every run and not counted.
 | `mock-honesty` | no mock offers a member, a kind of member or an arity the real class lacks (see below) |
 | `dialect` | what this Rhino build does with `const` / `let` / `var`, closures, unsupported syntax, strings from Java |
 | `mock-facts` | the mocks answer the engine facts exactly as the real engine answered them |
+| `registry-data` | `dev/rosters/validate.py`: every id of the boss and dimension registries (`kubejs/config/icraft/registry/*.json`) is something the game registers (`dev/registry`), the files are consistent, and nothing deviates from the expectations without a reason in `dev/rosters/accepted.json` |
+| `registry` | `kubejs/server_scripts/0_lib_registry.js` (`icraft.bosses`, `icraft.dims`) answers every id and every system exactly as `dev/rosters/rosters.py` does (`run.py` generates the expectation from it: `{"gen": "registry-expect"}`); a Java string id works; what it hands out is a copy; a misspelt system throws; a registry that cannot be read is an error on every call, never an empty roster; `core.isBoss` asks it |
 | `inventory-scan` | `economy/relic_sink.js`: the scan visits the main inventory, the deny list denies, the cap is read back |
 | `ascension`, `ascension-open` | `endgame/ascension.js` + `scaling/zz_ascension_scaling.js` |
 | `onboarding-bridge` | `quests/onboarding_bridge.js` |
@@ -89,6 +91,16 @@ Pack scripts register through `icraft.guard`, so every load list in `suites.json
 `server:00_icraft_guard.js`, and the harness lets the two classes it loads through under their own names
 (`java.util.Optional`, and the `EventExit` stand-in). A guarded handler that throws is caught by the guard, not by
 `T_fire`: `lib/summary.js` counts it (`N guarded handler failures` in the RESULT line) and the suite fails.
+
+## The registries in the suites
+
+Scripts read the boss and dimension registries through `0_lib_registry.js`, which calls `JsonIO.readString(path)`.
+In a suite that call reads the registry files of the pack under test (`--pack`): `H.java` `readJsonText` makes
+the same two calls KubeJS makes (Gson's `JsonParser.parseReader`, then Rhino's own `JsonUtils.toString`), and the
+`JsonIO` facts of `real-engine/0_engine_facts.js` hold its answers to the real engine's (what a script gets, the
+exact text, a file that does not exist, the same call from a startup script). So a load list that has
+`server:0_lib_core.js` also has `server:0_lib_registry.js`, and a suite sees the real roster. A suite that needs a
+boss the pack does not have wraps the reader (`lib/spawn/stubs.js`), it does not edit the file.
 
 ## Mock honesty
 

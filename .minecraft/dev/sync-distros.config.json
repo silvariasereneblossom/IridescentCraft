@@ -7,6 +7,7 @@
     "custom_jars_manifest.json",
     "kubejs/assets",
     "kubejs/data",
+    "kubejs/config/icraft",
     "config/paxi/datapacks"
   ],
   "EXCLUDE_PATTERNS": [
@@ -27,7 +28,8 @@
     "kubejs/client_scripts": "NOT WATCHED. server_distribution strips client_scripts that touch client-only classes (per CLAUDE.md Server Mod Compatibility Audit). distribution/client should mirror main but a single-direction-mirror check would need a per-distro WATCHED system this script doesn't yet support.",
     "kubejs/libraries": "EXCLUDED. KubeJS-generated IDE autocomplete stubs; never present in distros.",
     "kubejs/assets": "WATCHED (since 2026-06-07). The old 'varies legitimately' note was documenting DRIFT as design: audit found stale tetra lang (June 1 vs June 3) + a theabyss lang dir that never left main -> raw workbench IDs on tester screens. Client renders from ITS kubejs/assets, so distribution/client staleness is player-visible. Authoritative source is main; distros mirror.",
-    "kubejs/config": "NOT WATCHED. KubeJS-internal config files (probe-settings.json, etc) vary per environment.",
+    "kubejs/config": "NOT WATCHED, except its icraft/ subfolder (next line). KubeJS-internal config files (probe-settings.json, etc) vary per environment.",
+    "kubejs/config/icraft": "WATCHED (since 2026-10-13). The pack's own data files that scripts read with JsonIO: registry/bosses.json and registry/dimensions.json, the one home of the boss roster and the dimension tiers (reader kubejs/server_scripts/0_lib_registry.js, tools dev/rosters). Every script that asks about bosses or dimension tiers fails loudly without them, so they must be identical x3 like the scripts. Authoritative source is main; distros mirror. Why here and not under kubejs/data: a datapack folder is scanned by every mod's reload listeners (Sophisticated Core reads every data/<namespace>/registry/*.json and logged an ERROR for each file on the first test boot).",
     "datapack_sources": "NOT WATCHED. Build SOURCES for custom datapack jars (iridescent_codex_data.jar etc). Distros ship the BUILT jar in mods/, not the source tree. Only present in main.",
     "config": "NOT WATCHED (whole tree). Mod configs legitimately differ server vs client. The paxi/datapacks subtree is watched separately (see its note).",
     "mods": "NOT WATCHED here, gated elsewhere. The mod index (mods/.index) is not a mirror: the server index and the client distribution's index are GENERATED from the root index by dev/mods/mod_index.py (a client-only mod is absent from the server's), and `mod_index.py check` is its own block in the pre-push hook and a GitHub Action. Custom jars are checked by verify-custom-jars.ps1 (run by this script).",

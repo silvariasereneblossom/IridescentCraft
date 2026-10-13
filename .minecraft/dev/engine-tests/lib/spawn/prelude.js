@@ -20,4 +20,8 @@ var EntityEvents = {
 T_honestEvent('EntityEvents.spawned')
 T_honestEvent('EntityEvents.death')
 T_honestKeys('console', console, 'dev.latvian.mods.kubejs.util.ConsoleJS', false)
+// JsonIO.readString(path): how 0_lib_registry.js reads kubejs/config/icraft/registry/*.json. The Host reads the file of the
+// pack under test with the engine's own two calls (H.java readJsonText); suite mock-facts compares the answers.
+var JsonIO = { readString: function (path) { return __host.readJsonText(String(path)) } }
+T_honestKeys('JsonIO', JsonIO, 'dev.latvian.mods.kubejs.util.JsonIO', true)
 T_honestKeys('Java', Java, 'dev.latvian.mods.kubejs.bindings.JavaWrapper', false)

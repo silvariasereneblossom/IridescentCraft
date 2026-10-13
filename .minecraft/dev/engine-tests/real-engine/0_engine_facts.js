@@ -50,6 +50,27 @@ EF("inv.count('minecraft:diamond')", 'KubeJS count by ingredient', '', function 
 EF("inv.find('minecraft:diamond')", 'KubeJS first slot by ingredient', '', function (o) { return o.inv.find('minecraft:diamond') })
 EF('typeof inv.get', 'no get(i)', 'M', function (o) { return typeof o.inv.get })
 
+// ---- JsonIO: how a script reads a data file (kubejs/server_scripts/0_lib_registry.js) ----
+// The probe file is real-engine/fixtures/jsonio_probe.json, put into the probe server as
+// kubejs/icraft_engine_probe.json (the harness serves the same file under that name).
+EF('typeof JsonIO.readString', 'the one call the registry reader makes', 'M', function (o) { return typeof JsonIO.readString })
+EF('typeof JsonIO.readString(file)', 'a String from Java: typeof object, so String() before JSON.parse', 'M', function (o) { return typeof JsonIO.readString('kubejs/icraft_engine_probe.json') })
+EF('String(JsonIO.readString(file))', 'the file parsed by Gson and printed again: this exact text', 'M', function (o) { return String(JsonIO.readString('kubejs/icraft_engine_probe.json')) })
+EF('JSON.parse(String(JsonIO.readString(file))) round trip', 'plain JS values: text (apostrophe, dash, <, escape), numbers, key order', 'M', function (o) {
+  var d = JSON.parse(String(JsonIO.readString('kubejs/icraft_engine_probe.json')))
+  return d.text + ' | ' + d.numbers.join(',') + ' | ' + Object.keys(d).join(',') + ' | ' + Object.keys(d.nested).join(',') + ' | ' + (typeof d.text) + ' ' + (typeof d.numbers[0]) + ' ' + d.nested.a + ' ' + d['minecraft:the_end'].tier
+})
+EF('new Set([..]).has(a flag parsed from the file)', 'JSON.parse gives JS strings: a Set matches them', 'M', function (o) {
+  var d = JSON.parse(String(JsonIO.readString('kubejs/icraft_engine_probe.json')))
+  return new Set(['boss']).has(d.flags[0])
+})
+EF('JsonIO.readString(a file that does not exist)', 'no throw: what a missing registry file looks like to the reader', 'M', function (o) {
+  var v = JsonIO.readString('kubejs/icraft_no_such_file.json')
+  return (v === null) ? 'null (the value)' : ((typeof v) + ' ' + String(v))
+})
+EF('JsonIO.read(file).schema', 'the Map form (not used by the reader): a wrapped Java value', '', function (o) { var m = JsonIO.read('kubejs/icraft_engine_probe.json'); return (typeof m) + ' ' + (typeof m.schema) + ' ' + m.schema })
+EF('startup script: JsonIO.readString(file), handed over on global', 'JsonIO works in startup scripts; `global` is one map for startup and server scripts', '', function (o) { return String(global.icraftEngineProbeStartupJson) })
+
 // ---- item id: a Java String, and what matches it ----------------------------
 EF('typeof stack.id', "a String from Java is typeof 'object'", 'M', function (o) { return typeof o.stack.id })
 EF('String(stack.id)', 'the id', 'M', function (o) { return String(o.stack.id) })
