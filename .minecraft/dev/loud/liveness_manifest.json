@@ -1,160 +1,3109 @@
 {
-  "version": 1,
-  "about": [
-    "ARMED tier of the loud-failure watcher (loud-check.ps1): lines a healthy boot must print, one per feature.",
-    "Seeded 2026-10-11 from the 138 'loaded / registered / armed' lines every healthy boot since the audit prints.",
-    "Rules: (1) an entry names its owner, so a commit that deletes or renames a feature removes or updates its entry;",
-    "(2) `pattern` is a .NET regex searched in each line of `log`; script lines carry their own script path, which is part of the pattern;",
-    "(3) `must_not` lists lines that mean the feature failed even though its armed line printed;",
-    "(4) `min` is a floor for the first capture group of `pattern`;",
-    "(5) a line printed at file load proves LOADED, not ARMED: loot and recipe scripts print theirs inside the handler.",
-    "The LOADED tier (one 'Loaded script' line per deployed script, both summary lines) is generated from expected_state.json and is not listed here."
-  ],
-  "boot_complete": {"log": "latest.log", "pattern": "Done \\(\\d+\\.\\d+s\\)!", "note": "liveness is judged only once this line exists; before it the server is still starting (or died on the way)"},
-  "entries": [
-    {"id": "armed:0_iss_guard.js", "owner": "kubejs/server_scripts/0_iss_guard.js", "log": "kubejs/server.log", "pattern": "0_iss_guard\\.js#\\d+: \\[iss-guard\\] loaded"},
-    {"id": "armed:0_lib_aptitudes.js", "owner": "kubejs/server_scripts/0_lib_aptitudes.js", "log": "kubejs/server.log", "pattern": "0_lib_aptitudes\\.js#\\d+: \\[IridescentCraft\\] 0_lib_aptitudes loaded -- global\\.icraft\\.aptitude .* direct AptitudeCapability read"},
-    {"id": "armed:0_lib_core.js", "owner": "kubejs/server_scripts/0_lib_core.js", "log": "kubejs/server.log", "pattern": "0_lib_core\\.js#\\d+: \\[IridescentCraft\\] 0_lib_core loaded -- global\\.icraft\\.core"},
-    {"id": "armed:0_lib_origins.js", "owner": "kubejs/server_scripts/0_lib_origins.js", "log": "kubejs/server.log", "pattern": "0_lib_origins\\.js#\\d+: \\[IridescentCraft\\] 0_lib_origins loaded -- global\\.icraft\\.origin"},
-    {"id": "armed:0_lib_registry.js", "owner": "kubejs/server_scripts/0_lib_registry.js", "log": "kubejs/server.log", "pattern": "0_lib_registry\\.js#\\d+: \\[icraft\\.registry\\] loaded -- bosses: \\d+ entries .* dimensions: \\d+ entries", "must_not": ["\\[icraft\\.registry\\] NOT LOADED"], "note": "the boss and dimension registries (kubejs/config/icraft/registry/*.json) were read and accepted; every roster script asks them"},
-    {"id": "armed:0_server_ready_banner.js", "owner": "kubejs/server_scripts/0_server_ready_banner.js", "log": "kubejs/server.log", "pattern": "0_server_ready_banner\\.js#\\d+:\\s+>>>\\s+IridescentCraft Server READY"},
-    {"id": "armed:0_tick_master.js:player", "owner": "kubejs/server_scripts/0_tick_master.js", "log": "kubejs/server.log", "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) player tick functions", "min": 19, "note": "floor = the count on 2026-10-11"},
-    {"id": "armed:0_tick_master.js:server", "owner": "kubejs/server_scripts/0_tick_master.js", "log": "kubejs/server.log", "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) server tick functions", "min": 43, "note": "floor = the count on 2026-10-11; a tick function that stops registering drops the count"},
-    {"id": "armed:abyss/abyss_armor_effects.js", "owner": "kubejs/server_scripts/abyss/abyss_armor_effects.js", "log": "kubejs/server.log", "pattern": "abyss/abyss_armor_effects\\.js#\\d+: \\[IridescentCraft\\] abyss_armor_effects\\.js loaded"},
-    {"id": "armed:abyss/abyss_ring_effects.js", "owner": "kubejs/server_scripts/abyss/abyss_ring_effects.js", "log": "kubejs/server.log", "pattern": "abyss/abyss_ring_effects\\.js#\\d+: \\[IridescentCraft\\] abyss_ring_effects\\.js loaded"},
-    {"id": "armed:affix_overworld_strip.js", "owner": "kubejs/server_scripts/affix_overworld_strip.js", "log": "kubejs/server.log", "pattern": "affix_overworld_strip\\.js#\\d+: \\[IridescentCraft\\] Apotheosis overworld affix-strip loaded"},
-    {"id": "armed:affix_skyshatter_mob_strip.js", "owner": "kubejs/server_scripts/affix_skyshatter_mob_strip.js", "log": "kubejs/server.log", "pattern": "affix_skyshatter_mob_strip\\.js#\\d+: \\[IridescentCraft\\] Skyshatter mob-strip loaded"},
-    {"id": "armed:affixes/affix_effects.js", "owner": "kubejs/server_scripts/affixes/affix_effects.js", "log": "kubejs/server.log", "pattern": "affixes/affix_effects\\.js#\\d+: \\[IridescentCraft\\] affix_effects\\.js loaded"},
-    {"id": "armed:apotheosis_gem_repair.js", "owner": "kubejs/server_scripts/apotheosis_gem_repair.js", "log": "kubejs/server.log", "pattern": "apotheosis_gem_repair\\.js#\\d+: \\[IridescentCraft\\] apotheosis_gem_repair loaded v"},
-    {"id": "armed:armor_weight.js", "owner": "kubejs/server_scripts/armor_weight.js", "log": "kubejs/server.log", "pattern": "armor_weight\\.js#\\d+: \\[IridescentCraft\\] armor_weight loaded"},
-    {"id": "armed:attributes/attribute_commands.js", "owner": "kubejs/server_scripts/attributes/attribute_commands.js", "log": "kubejs/server.log", "pattern": "attributes/attribute_commands\\.js#\\d+: \\[IridescentCraft\\] Attribute chat commands loaded"},
-    {"id": "armed:attributes/attribute_sync.js", "owner": "kubejs/server_scripts/attributes/attribute_sync.js", "log": "kubejs/server.log", "pattern": "attributes/attribute_sync\\.js#\\d+: \\[IridescentCraft\\] Attribute sync handlers loaded"},
-    {"id": "armed:attributes/class_attribute_bonuses.js", "owner": "kubejs/server_scripts/attributes/class_attribute_bonuses.js", "log": "kubejs/server.log", "pattern": "attributes/class_attribute_bonuses\\.js#\\d+: \\[IridescentCraft\\] Class attribute bonuses loaded"},
-    {"id": "armed:attributes/iss_school_to_ars_glyph.js", "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_glyph.js", "log": "kubejs/server.log", "pattern": "attributes/iss_school_to_ars_glyph\\.js#\\d+: \\[iss_school_to_ars_glyph\\] loaded"},
-    {"id": "armed:attributes/iss_school_to_ars_spell.js", "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_spell.js", "log": "kubejs/server.log", "pattern": "attributes/iss_school_to_ars_spell\\.js#\\d+: \\[iss_school_to_ars\\] loaded"},
-    {"id": "armed:attributes/mana_debug_command.js", "owner": "kubejs/server_scripts/attributes/mana_debug_command.js", "log": "kubejs/server.log", "pattern": "attributes/mana_debug_command\\.js#\\d+: \\[IridescentCraft\\] /icraft mana_debug command registered"},
-    {"id": "armed:attributes/mana_pool_bonuses.js", "owner": "kubejs/server_scripts/attributes/mana_pool_bonuses.js", "log": "kubejs/server.log", "pattern": "attributes/mana_pool_bonuses\\.js#\\d+: \\[IridescentCraft\\] mana_pool_bonuses v[\\d.]+ loaded"},
-    {"id": "armed:bonfire/boss_arena_registry.js", "owner": "kubejs/server_scripts/bonfire/boss_arena_registry.js", "log": "kubejs/server.log", "pattern": "bonfire/boss_arena_registry\\.js#\\d+: \\[iridescent/boss_arenas\\] registry loaded"},
-    {"id": "armed:bonfire/boss_bonfire_system.js", "owner": "kubejs/server_scripts/bonfire/boss_bonfire_system.js", "log": "kubejs/server.log", "pattern": "bonfire/boss_bonfire_system\\.js#\\d+: \\[iridescent/bonfire\\] loaded"},
-    {"id": "armed:bonfire/boss_compass_handler.js", "owner": "kubejs/server_scripts/bonfire/boss_compass_handler.js", "log": "kubejs/server.log", "pattern": "bonfire/boss_compass_handler\\.js#\\d+: \\[iridescent/boss_compass\\] handler loaded"},
-    {"id": "armed:bonfire/gob_t1_rebalance.js", "owner": "kubejs/server_scripts/bonfire/gob_t1_rebalance.js", "log": "kubejs/server.log", "pattern": "bonfire/gob_t1_rebalance\\.js#\\d+: \\[iridescent/gob_t1\\] emerald gnome-hat recipe \\+ iron-breakable"},
-    {"id": "armed:cherry_spawn_biome.js", "owner": "kubejs/server_scripts/cherry_spawn_biome.js", "log": "kubejs/server.log", "pattern": "cherry_spawn_biome\\.js#\\d+: \\[IridescentCraft\\] cherry_spawn_biome v[\\d.]+ loaded"},
-    {"id": "armed:class/equipment_hp_halving.js", "owner": "kubejs/server_scripts/class/equipment_hp_halving.js", "log": "kubejs/server.log", "pattern": "class/equipment_hp_halving\\.js#\\d+: \\[IridescentCraft\\] equipment_hp_halving\\.js loaded"},
-    {"id": "armed:cleanup/strip_truly_modular_items.js", "owner": "kubejs/server_scripts/cleanup/strip_truly_modular_items.js", "log": "kubejs/server.log", "pattern": "cleanup/strip_truly_modular_items\\.js#\\d+: \\[strip_truly_modular\\] loaded"},
-    {"id": "armed:compat/terramity_cave_gnome_cave_only.js", "owner": "kubejs/server_scripts/compat/terramity_cave_gnome_cave_only.js", "log": "kubejs/server.log", "pattern": "compat/terramity_cave_gnome_cave_only\\.js#\\d+: \\[iridescent/cave_gnome\\] cave-only spawn gate active"},
-    {"id": "armed:death_penalty.js", "owner": "kubejs/server_scripts/death_penalty.js", "log": "kubejs/server.log", "pattern": "death_penalty\\.js#\\d+: \\[IridescentCraft\\] keepInventory enabled"},
-    {"id": "armed:diag_armor_modifiers.js", "owner": "kubejs/server_scripts/diag_armor_modifiers.js", "log": "kubejs/server.log", "pattern": "diag_armor_modifiers\\.js#\\d+: \\[IridescentCraft\\] /icraft armormods command registered"},
-    {"id": "armed:disable_zombie_door_break.js", "owner": "kubejs/server_scripts/disable_zombie_door_break.js", "log": "kubejs/server.log", "pattern": "disable_zombie_door_break\\.js#\\d+: \\[IridescentCraft\\] disable_zombie_door_break loaded"},
-    {"id": "armed:economy/relic_broker.js", "owner": "kubejs/server_scripts/economy/relic_broker.js", "log": "kubejs/server.log", "pattern": "economy/relic_broker\\.js#\\d+: \\[IridescentCraft\\] Relic Broker loaded"},
-    {"id": "armed:economy/relic_sink.js", "owner": "kubejs/server_scripts/economy/relic_sink.js", "log": "kubejs/server.log", "pattern": "economy/relic_sink\\.js#\\d+: \\[IridescentCraft\\] Relic sink loaded"},
-    {"id": "armed:enchantments/enchant_effects.js", "owner": "kubejs/server_scripts/enchantments/enchant_effects.js", "log": "kubejs/server.log", "pattern": "enchantments/enchant_effects\\.js#\\d+: \\[IridescentCraft\\] enchant_effects\\.js loaded"},
-    {"id": "armed:end/dragon_exploration_gate.js", "owner": "kubejs/server_scripts/end/dragon_exploration_gate.js", "log": "kubejs/server.log", "pattern": "end/dragon_exploration_gate\\.js#\\d+: \\[IridescentCraft\\] Dragon exploration gate loaded"},
-    {"id": "armed:endgame/mythic_forge.js", "owner": "kubejs/server_scripts/endgame/mythic_forge.js", "log": "kubejs/server.log", "pattern": "endgame/mythic_forge\\.js#\\d+: \\[IridescentCraft\\] Mythic Forge recipes loaded"},
-    {"id": "armed:endgame/rift_mechanics.js", "owner": "kubejs/server_scripts/endgame/rift_mechanics.js", "log": "kubejs/server.log", "pattern": "endgame/rift_mechanics\\.js#\\d+: \\[IridescentCraft\\] Rift loot mechanics loaded"},
-    {"id": "armed:endgame/rift_mechanics.js#2", "owner": "kubejs/server_scripts/endgame/rift_mechanics.js", "log": "kubejs/server.log", "pattern": "endgame/rift_mechanics\\.js#\\d+: \\[IridescentCraft\\] Rift mechanics loaded"},
-    {"id": "armed:enemyexpansion_explosive_launch_blocker.js", "owner": "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js", "log": "kubejs/server.log", "pattern": "enemyexpansion_explosive_launch_blocker\\.js#\\d+: \\[IridescentCraft\\] enemyexpansion_explosive_launch_blocker loaded"},
-    {"id": "armed:example.js", "owner": "kubejs/server_scripts/example.js", "log": "kubejs/server.log", "pattern": "example\\.js#\\d+: Hello, World! \\(Loaded server scripts\\)"},
-    {"id": "armed:exploration/codex_exploration_kills.js", "owner": "kubejs/server_scripts/exploration/codex_exploration_kills.js", "log": "kubejs/server.log", "pattern": "exploration/codex_exploration_kills\\.js#\\d+: \\[IridescentCraft\\] Codex exploration KILL drops loaded"},
-    {"id": "armed:fix_empty_display_name.js", "owner": "kubejs/server_scripts/fix_empty_display_name.js", "log": "kubejs/server.log", "pattern": "fix_empty_display_name\\.js#\\d+: \\[IridescentCraft\\] fix_empty_display_name loaded"},
-    {"id": "armed:food/hunger_management.js", "owner": "kubejs/server_scripts/food/hunger_management.js", "log": "kubejs/server.log", "pattern": "food/hunger_management\\.js#\\d+: \\[IridescentCraft\\] AFK hunger management loaded"},
-    {"id": "armed:gates/astages_restrictions.js", "owner": "kubejs/server_scripts/gates/astages_restrictions.js", "log": "kubejs/server.log", "pattern": "gates/astages_restrictions\\.js#\\d+: \\[IridescentCraft\\] AStages native restrictions registered", "must_not": ["stage-gated recipes NOT registered"]},
-    {"id": "armed:gates/codex_boss_rush.js", "owner": "kubejs/server_scripts/gates/codex_boss_rush.js", "log": "kubejs/server.log", "pattern": "gates/codex_boss_rush\\.js#\\d+: \\[IridescentCraft\\] Codex boss-rush tracker loaded"},
-    {"id": "armed:gates/codex_progression_engine.js", "owner": "kubejs/server_scripts/gates/codex_progression_engine.js", "log": "kubejs/server.log", "pattern": "gates/codex_progression_engine\\.js#\\d+: \\[IridescentCraft\\] Codex progression engine loaded"},
-    {"id": "armed:gates/milestone_detection.js", "owner": "kubejs/server_scripts/gates/milestone_detection.js", "log": "kubejs/server.log", "pattern": "gates/milestone_detection\\.js#\\d+: \\[IridescentCraft\\] Tier infrastructure loaded"},
-    {"id": "armed:loot/boss_refight_repair_floors.js", "owner": "kubejs/server_scripts/loot/boss_refight_repair_floors.js", "log": "kubejs/server.log", "pattern": "\\[boss_refight_repair_floors\\] registered [\\d.]+ refight-to-repair drop floors", "note": "no script prefix on this line: KubeJS takes the trailing '(icraft #58)' of the message for the source position"},
-    {"id": "armed:icraft_despawn_command.js", "owner": "kubejs/server_scripts/icraft_despawn_command.js", "log": "kubejs/server.log", "pattern": "icraft_despawn_command\\.js#\\d+: \\[IridescentCraft\\] /icraft despawn <radius> command registered"},
-    {"id": "armed:icraftsets_command.js", "owner": "kubejs/server_scripts/icraftsets_command.js", "log": "kubejs/server.log", "pattern": "icraftsets_command\\.js#\\d+: \\[IridescentCraft\\] /icraftsets command registered"},
-    {"id": "armed:idle_hunger_pause.js", "owner": "kubejs/server_scripts/idle_hunger_pause.js", "log": "kubejs/server.log", "pattern": "idle_hunger_pause\\.js#\\d+: \\[IridescentCraft\\] idle_hunger_pause loaded"},
-    {"id": "armed:integration/dna_simple_staves_strip.js", "owner": "kubejs/server_scripts/integration/dna_simple_staves_strip.js", "log": "kubejs/server.log", "pattern": "integration/dna_simple_staves_strip\\.js#\\d+: \\[dna_simple_staves_strip\\] loaded"},
-    {"id": "armed:items/compass_of_return.js", "owner": "kubejs/server_scripts/items/compass_of_return.js", "log": "kubejs/server.log", "pattern": "items/compass_of_return\\.js#\\d+: \\[IridescentCraft\\] Compass of Return loaded"},
-    {"id": "armed:liteminer_hunger_gate.js", "owner": "kubejs/server_scripts/liteminer_hunger_gate.js", "log": "kubejs/server.log", "pattern": "liteminer_hunger_gate\\.js#\\d+: \\[IridescentCraft\\] liteminer_hunger_gate loaded"},
-    {"id": "armed:loot/0_entity_id_validator.js", "owner": "kubejs/server_scripts/loot/0_entity_id_validator.js", "log": "kubejs/server.log", "pattern": "loot/0_entity_id_validator\\.js#\\d+: \\[ENTITY-ID-VALIDATOR\\] all entity ids resolve \\([\\d.]+ entity loot modifiers", "must_not": ["UNRESOLVABLE ENTITY ID"]},
-    {"id": "armed:loot/abyss_boss_loot.js", "owner": "kubejs/server_scripts/loot/abyss_boss_loot.js", "log": "kubejs/server.log", "pattern": "loot/abyss_boss_loot\\.js#\\d+: \\[IridescentCraft\\] abyss_boss_loot\\.js loaded"},
-    {"id": "armed:loot/alexsmobs_drops.js", "owner": "kubejs/server_scripts/loot/alexsmobs_drops.js", "log": "kubejs/server.log", "pattern": "loot/alexsmobs_drops\\.js#\\d+: \\[alexsmobs_drops\\] registered [\\d.]+ entity loot modifiers"},
-    {"id": "armed:loot/blue_skies_drops.js", "owner": "kubejs/server_scripts/loot/blue_skies_drops.js", "log": "kubejs/server.log", "pattern": "loot/blue_skies_drops\\.js#\\d+: \\[blue_skies_drops\\] registered [\\d.]+ Blue Skies boss synergy"},
-    {"id": "armed:loot/boss_arena_material_tease.js", "owner": "kubejs/server_scripts/loot/boss_arena_material_tease.js", "log": "kubejs/server.log", "pattern": "loot/boss_arena_material_tease\\.js#\\d+: \\[boss_arena_material_tease\\] registered [\\d.]+ arena material teases"},
-    {"id": "armed:loot/boss_unique_drops.js", "owner": "kubejs/server_scripts/loot/boss_unique_drops.js", "log": "kubejs/server.log", "pattern": "loot/boss_unique_drops\\.js#\\d+: \\[boss_unique_drops\\] [\\d.]+ boss-exclusive unique drops registered"},
-    {"id": "armed:loot/cataclysm_boss_drops.js", "owner": "kubejs/server_scripts/loot/cataclysm_boss_drops.js", "log": "kubejs/server.log", "pattern": "loot/cataclysm_boss_drops\\.js#\\d+: \\[cataclysm_boss_drops\\] registered [\\d.]+ Cataclysm boss synergy"},
-    {"id": "armed:loot/crop_seed_reduction.js", "owner": "kubejs/server_scripts/loot/crop_seed_reduction.js", "log": "kubejs/server.log", "pattern": "loot/crop_seed_reduction\\.js#\\d+: \\[IridescentCraft\\] Crop seed reduction loaded"},
-    {"id": "armed:loot/dimensional_boss_drops.js", "owner": "kubejs/server_scripts/loot/dimensional_boss_drops.js", "log": "kubejs/server.log", "pattern": "loot/dimensional_boss_drops\\.js#\\d+: \\[dimensional_boss_drops\\] registered [\\d.]+ dimension/mutant boss"},
-    {"id": "armed:loot/fragment_core_drops.js", "owner": "kubejs/server_scripts/loot/fragment_core_drops.js", "log": "kubejs/server.log", "pattern": "loot/fragment_core_drops\\.js#\\d+: \\[IridescentCraft\\] fragment_core_drops loaded"},
-    {"id": "armed:loot/iss_boss_drops.js", "owner": "kubejs/server_scripts/loot/iss_boss_drops.js", "log": "kubejs/server.log", "pattern": "loot/iss_boss_drops\\.js#\\d+: \\[iss_boss_drops\\] registered [\\d.]+ entity loot modifiers"},
-    {"id": "armed:loot/iss_boss_first_kill.js", "owner": "kubejs/server_scripts/loot/iss_boss_first_kill.js", "log": "kubejs/server.log", "pattern": "loot/iss_boss_first_kill\\.js#\\d+: \\[IridescentCraft\\] iss_boss_first_kill loaded"},
-    {"id": "armed:loot/lootjs_overhaul.js", "owner": "kubejs/server_scripts/loot/lootjs_overhaul.js", "log": "kubejs/server.log", "pattern": "loot/lootjs_overhaul\\.js#\\d+: \\[IridescentCraft\\] LootJS structure chest overhaul loaded"},
-    {"id": "armed:loot/lovely_pieces_loot.js", "owner": "kubejs/server_scripts/loot/lovely_pieces_loot.js", "log": "kubejs/server.log", "pattern": "loot/lovely_pieces_loot\\.js#\\d+: \\[lovely-pieces-loot\\] tier pools wired"},
-    {"id": "armed:loot/mahou_synergy_drops.js", "owner": "kubejs/server_scripts/loot/mahou_synergy_drops.js", "log": "kubejs/server.log", "pattern": "loot/mahou_synergy_drops\\.js#\\d+: \\[mahou_synergy_drops\\] registered [\\d.]+ Mahou Tsukai reagent"},
-    {"id": "armed:loot/majrusz_skeleton_punch_strip.js", "owner": "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js", "log": "kubejs/server.log", "pattern": "loot/majrusz_skeleton_punch_strip\\.js#\\d+: \\[icraft-loot\\] Majrusz skeleton Punch-strip registered"},
-    {"id": "armed:loot/planetary_loot.js", "owner": "kubejs/server_scripts/loot/planetary_loot.js", "log": "kubejs/server.log", "pattern": "loot/planetary_loot\\.js#\\d+: \\[IridescentCraft\\] planetary_loot\\.js loaded"},
-    {"id": "armed:loot/staff_wand_drops.js", "owner": "kubejs/server_scripts/loot/staff_wand_drops.js", "log": "kubejs/server.log", "pattern": "loot/staff_wand_drops\\.js#\\d+: \\[staff_wand_drops\\] loaded"},
-    {"id": "armed:loot/stalwart_dungeons_drops.js", "owner": "kubejs/server_scripts/loot/stalwart_dungeons_drops.js", "log": "kubejs/server.log", "pattern": "loot/stalwart_dungeons_drops\\.js#\\d+: \\[stalwart_dungeons_drops\\] registered [\\d.]+ Stalwart nether mini-boss"},
-    {"id": "armed:loot/terramity_boss_drops.js", "owner": "kubejs/server_scripts/loot/terramity_boss_drops.js", "log": "kubejs/server.log", "pattern": "loot/terramity_boss_drops\\.js#\\d+: \\[terramity_boss_drops\\] registered [\\d.]+ non-gun EPIC weapon"},
-    {"id": "armed:loot/tmb_plain_bow_effects.js", "owner": "kubejs/server_scripts/loot/tmb_plain_bow_effects.js", "log": "kubejs/server.log", "pattern": "loot/tmb_plain_bow_effects\\.js#\\d+: \\[tmb_plain_bow_effects\\] wired theme effects for [\\d.]+ plain TMB bows"},
-    {"id": "armed:loot/twilight_boss_drops.js", "owner": "kubejs/server_scripts/loot/twilight_boss_drops.js", "log": "kubejs/server.log", "pattern": "loot/twilight_boss_drops\\.js#\\d+: \\[twilight_boss_drops\\] registered [\\d.]+ TF boss synergy modifiers"},
-    {"id": "armed:loot/unique_itemset_registry.js", "owner": "kubejs/server_scripts/loot/unique_itemset_registry.js", "log": "kubejs/server.log", "pattern": "loot/unique_itemset_registry\\.js#\\d+: \\[unique_itemset_registry\\] [\\d.]+ uniques registered"},
-    {"id": "armed:loot/unique_tier_buff.js", "owner": "kubejs/server_scripts/loot/unique_tier_buff.js", "log": "kubejs/server.log", "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] arrow tagger armed"},
-    {"id": "armed:loot/unique_tier_buff.js#2", "owner": "kubejs/server_scripts/loot/unique_tier_buff.js", "log": "kubejs/server.log", "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] tier-scaled damage handler registered"},
-    {"id": "armed:loot/zz_pack_enchanted_books.js", "owner": "kubejs/server_scripts/loot/zz_pack_enchanted_books.js", "log": "kubejs/server.log", "pattern": "loot/zz_pack_enchanted_books\\.js#\\d+: \\[icraft-loot\\] [\\d.]+ marquee enchanted-book modifiers registered"},
-    {"id": "armed:loot/zz_unique_chest_strip.js", "owner": "kubejs/server_scripts/loot/zz_unique_chest_strip.js", "log": "kubejs/server.log", "pattern": "loot/zz_unique_chest_strip\\.js#\\d+: \\[zz_unique_chest_strip\\] insurance strip armed for [\\d.]+ TMB bows"},
-    {"id": "armed:loot/zzz_iss_scroll_tier_clamp.js", "owner": "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js", "log": "kubejs/server.log", "pattern": "loot/zzz_iss_scroll_tier_clamp\\.js#\\d+: \\[iss_scroll_tier_clamp\\] armed"},
-    {"id": "armed:magic_crit_hook.js", "owner": "kubejs/server_scripts/magic_crit_hook.js", "log": "kubejs/server.log", "pattern": "magic_crit_hook\\.js#\\d+: \\[IridescentCraft\\] magic_crit_hook loaded"},
-    {"id": "armed:megatorch_damage.js", "owner": "kubejs/server_scripts/megatorch_damage.js", "log": "kubejs/server.log", "pattern": "megatorch_damage\\.js#\\d+: \\[megatorch-damage\\] aura active"},
-    {"id": "armed:mobgriefing_default.js", "owner": "kubejs/server_scripts/mobgriefing_default.js", "log": "kubejs/server.log", "pattern": "mobgriefing_default\\.js#\\d+: \\[IridescentCraft\\] mobgriefing_default loaded"},
-    {"id": "armed:more_curios_slots_cap.js", "owner": "kubejs/server_scripts/more_curios_slots_cap.js", "log": "kubejs/server.log", "pattern": "more_curios_slots_cap\\.js#\\d+: \\[IridescentCraft\\] More Curios Slots cap handler loaded"},
-    {"id": "armed:mutant_xp_boost.js", "owner": "kubejs/server_scripts/mutant_xp_boost.js", "log": "kubejs/server.log", "pattern": "mutant_xp_boost\\.js#\\d+: \\[IridescentCraft\\] mutant_xp_boost loaded"},
-    {"id": "armed:origins/artificial_construct_progression.js", "owner": "kubejs/server_scripts/origins/artificial_construct_progression.js", "log": "kubejs/server.log", "pattern": "origins/artificial_construct_progression\\.js#\\d+: \\[IridescentCraft\\] Artificial Construct progression loaded"},
-    {"id": "armed:origins/battlemage_arcane_cleave.js", "owner": "kubejs/server_scripts/origins/battlemage_arcane_cleave.js", "log": "kubejs/server.log", "pattern": "origins/battlemage_arcane_cleave\\.js#\\d+: \\[IridescentCraft\\] battlemage_arcane_cleave loaded"},
-    {"id": "armed:origins/battlemage_mana_shield.js", "owner": "kubejs/server_scripts/origins/battlemage_mana_shield.js", "log": "kubejs/server.log", "pattern": "origins/battlemage_mana_shield\\.js#\\d+: \\[IridescentCraft\\] Battlemage Mana Shield loaded"},
-    {"id": "armed:origins/class_passives.js", "owner": "kubejs/server_scripts/origins/class_passives.js", "log": "kubejs/server.log", "pattern": "origins/class_passives\\.js#\\d+: \\[IridescentCraft\\] Class passives loaded"},
-    {"id": "armed:origins/class_passives_phase6h.js", "owner": "kubejs/server_scripts/origins/class_passives_phase6h.js", "log": "kubejs/server.log", "pattern": "origins/class_passives_phase6h\\.js#\\d+: \\[IridescentCraft\\] class_passives_phase6h loaded"},
-    {"id": "armed:origins/origin_effects.js", "owner": "kubejs/server_scripts/origins/origin_effects.js", "log": "kubejs/server.log", "pattern": "origins/origin_effects\\.js#\\d+: \\[IridescentCraft\\] Origins custom effects loaded"},
-    {"id": "armed:origins/origin_status_commands.js", "owner": "kubejs/server_scripts/origins/origin_status_commands.js", "log": "kubejs/server.log", "pattern": "origins/origin_status_commands\\.js#\\d+: \\[IridescentCraft\\] /icraft witch_status \\+ /icraft"},
-    {"id": "armed:origins/phantom_undeath.js", "owner": "kubejs/server_scripts/origins/phantom_undeath.js", "log": "kubejs/server.log", "pattern": "origins/phantom_undeath\\.js#\\d+: \\[IridescentCraft\\] Phantom Undeath loaded"},
-    {"id": "armed:origins/spell_book_transfer.js", "owner": "kubejs/server_scripts/origins/spell_book_transfer.js", "log": "kubejs/server.log", "pattern": "origins/spell_book_transfer\\.js#\\d+: \\[IridescentCraft\\] spell_book_transfer loaded"},
-    {"id": "armed:origins/ss_unique_spellsword_scaling.js", "owner": "kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js", "log": "kubejs/server.log", "pattern": "origins/ss_unique_spellsword_scaling\\.js#\\d+: \\[ss_unique_spellsword_scaling\\] loaded"},
-    {"id": "armed:origins/witch_of_ink_progression.js", "owner": "kubejs/server_scripts/origins/witch_of_ink_progression.js", "log": "kubejs/server.log", "pattern": "origins/witch_of_ink_progression\\.js#\\d+: \\[IridescentCraft\\] Witch of Ink progression loaded"},
-    {"id": "armed:origins/witherborn_slimebodied.js", "owner": "kubejs/server_scripts/origins/witherborn_slimebodied.js", "log": "kubejs/server.log", "pattern": "origins/witherborn_slimebodied\\.js#\\d+: \\[IridescentCraft\\] Witherborn & Slimebodied origins loaded"},
-    {"id": "armed:quests/combat_kill_signals.js", "owner": "kubejs/server_scripts/quests/combat_kill_signals.js", "log": "kubejs/server.log", "pattern": "quests/combat_kill_signals\\.js#\\d+: \\[combat_kill_signals\\] loaded"},
-    {"id": "armed:quests/heracles_reconcile.js", "owner": "kubejs/server_scripts/quests/heracles_reconcile.js", "log": "kubejs/server.log", "pattern": "quests/heracles_reconcile\\.js#\\d+: \\[heracles_reconcile\\] loaded"},
-    {"id": "armed:quests/onboarding_bridge.js", "owner": "kubejs/server_scripts/quests/onboarding_bridge.js", "log": "kubejs/server.log", "pattern": "quests/onboarding_bridge\\.js#\\d+: \\[iridescent/onboarding_bridge\\] loaded"},
-    {"id": "armed:recipes/ad_astra_gating.js", "owner": "kubejs/server_scripts/recipes/ad_astra_gating.js", "log": "kubejs/server.log", "pattern": "recipes/ad_astra_gating\\.js#\\d+: \\[IridescentCraft\\] ad_astra_gating\\.js loaded"},
-    {"id": "armed:recipes/boss_material_processing.js", "owner": "kubejs/server_scripts/recipes/boss_material_processing.js", "log": "kubejs/server.log", "pattern": "recipes/boss_material_processing\\.js#\\d+: \\[IridescentCraft\\] Boss material processing recipes loaded"},
-    {"id": "armed:recipes/cooking_conversion.js", "owner": "kubejs/server_scripts/recipes/cooking_conversion.js", "log": "kubejs/server.log", "pattern": "recipes/cooking_conversion\\.js#\\d+: \\[IridescentCraft\\] cooking_conversion\\.js loaded"},
-    {"id": "armed:recipes/if_latex_rework.js", "owner": "kubejs/server_scripts/recipes/if_latex_rework.js", "log": "kubejs/server.log", "pattern": "recipes/if_latex_rework\\.js#\\d+: \\[IridescentCraft\\] IF latex rework \\+ HDPE circuits loaded"},
-    {"id": "armed:recipes/mek_biofuel_squeeze.js", "owner": "kubejs/server_scripts/recipes/mek_biofuel_squeeze.js", "log": "kubejs/server.log", "pattern": "recipes/mek_biofuel_squeeze\\.js#\\d+: \\[IridescentCraft\\] mek_biofuel_squeeze\\.js loaded"},
-    {"id": "armed:recipes/planetary_extraction.js", "owner": "kubejs/server_scripts/recipes/planetary_extraction.js", "log": "kubejs/server.log", "pattern": "recipes/planetary_extraction\\.js#\\d+: \\[IridescentCraft\\] planetary_extraction\\.js loaded"},
-    {"id": "armed:recipes/recipe_audit.js", "owner": "kubejs/server_scripts/recipes/recipe_audit.js", "log": "kubejs/server.log", "pattern": "recipes/recipe_audit\\.js#\\d+: \\[IridescentCraft\\] recipe_audit\\.js loaded"},
-    {"id": "armed:recipes/staff_wand_recipes.js", "owner": "kubejs/server_scripts/recipes/staff_wand_recipes.js", "log": "kubejs/server.log", "pattern": "recipes/staff_wand_recipes\\.js#\\d+: \\[staff_wand_recipes\\] loaded"},
-    {"id": "armed:recipes/tier_gated_recipes.js", "owner": "kubejs/server_scripts/recipes/tier_gated_recipes.js", "log": "kubejs/server.log", "pattern": "recipes/tier_gated_recipes\\.js#\\d+: \\[IridescentCraft\\] P[\\d.]+ tier_gated_recipes\\.js loaded"},
-    {"id": "armed:recipes/waystone_recipes.js", "owner": "kubejs/server_scripts/recipes/waystone_recipes.js", "log": "kubejs/server.log", "pattern": "recipes/waystone_recipes\\.js#\\d+: \\[IridescentCraft\\] waystone_recipes\\.js loaded"},
-    {"id": "armed:relic_boss_drops.js", "owner": "kubejs/server_scripts/relic_boss_drops.js", "log": "kubejs/server.log", "pattern": "relic_boss_drops\\.js#\\d+: \\[IridescentCraft\\] relic_boss_drops loaded"},
-    {"id": "armed:respawn_hunger.js", "owner": "kubejs/server_scripts/respawn_hunger.js", "log": "kubejs/server.log", "pattern": "respawn_hunger\\.js#\\d+: \\[IridescentCraft\\] respawn_hunger loaded"},
-    {"id": "armed:respec/class_respec.js", "owner": "kubejs/server_scripts/respec/class_respec.js", "log": "kubejs/server.log", "pattern": "respec/class_respec\\.js#\\d+: \\[class_respec\\] loaded"},
-    {"id": "armed:scaling/mob_scaling_unified.js", "owner": "kubejs/server_scripts/scaling/mob_scaling_unified.js", "log": "kubejs/server.log", "pattern": "scaling/mob_scaling_unified\\.js#\\d+: \\[IridescentCraft\\] Unified mob scaling loaded"},
-    {"id": "armed:scaling/zz_ascension_scaling.js", "owner": "kubejs/server_scripts/scaling/zz_ascension_scaling.js", "log": "kubejs/server.log", "pattern": "scaling/zz_ascension_scaling\\.js#\\d+: \\[iridescent/ascension\\] mob-scaling spawn handler loaded"},
-    {"id": "armed:scaling/zz_boss_global_3x.js", "owner": "kubejs/server_scripts/scaling/zz_boss_global_3x.js", "log": "kubejs/server.log", "pattern": "scaling/zz_boss_global_3x\\.js#\\d+: \\[iridescent/boss_3x\\] global boss buff loaded"},
-    {"id": "armed:skills/justleveling_skills.js", "owner": "kubejs/server_scripts/skills/justleveling_skills.js", "log": "kubejs/server.log", "pattern": "skills/justleveling_skills\\.js#\\d+: \\[IridescentCraft\\] JustLeveling Aptitude Skills loaded"},
-    {"id": "armed:skills/mastery_tax.js", "owner": "kubejs/server_scripts/skills/mastery_tax.js", "log": "kubejs/server.log", "pattern": "skills/mastery_tax\\.js#\\d+: \\[IridescentCraft\\] Mastery Tax loaded"},
-    {"id": "armed:skills/skill_effects.js", "owner": "kubejs/server_scripts/skills/skill_effects.js", "log": "kubejs/server.log", "pattern": "skills/skill_effects\\.js#\\d+: \\[IridescentCraft\\] skill_effects\\.js Phase [\\d.]+ loaded"},
-    {"id": "armed:spawn_priest_tower.js", "owner": "kubejs/server_scripts/spawn_priest_tower.js", "log": "kubejs/server.log", "pattern": "spawn_priest_tower\\.js#\\d+: \\[PRIEST-TOWER\\] spawn-village guarantee armed", "must_not": ["\\[PRIEST-TOWER\\] placing at"]},
-    {"id": "armed:spawn_protection.js", "owner": "kubejs/server_scripts/spawn_protection.js", "log": "kubejs/server.log", "pattern": "spawn_protection\\.js#\\d+: \\[IridescentCraft\\] Spawn protection loaded"},
-    {"id": "armed:spawn_village_protection.js", "owner": "kubejs/server_scripts/spawn_village_protection.js", "log": "kubejs/server.log", "pattern": "spawn_village_protection\\.js#\\d+: \\[spawn-protection\\] hostile deletion zone active"},
-    {"id": "armed:strip_anomalous_drops.js", "owner": "kubejs/server_scripts/strip_anomalous_drops.js", "log": "kubejs/server.log", "pattern": "strip_anomalous_drops\\.js#\\d+: \\[IridescentCraft\\] strip_anomalous_drops loaded"},
-    {"id": "armed:sunlight_smite.js", "owner": "kubejs/server_scripts/sunlight_smite.js", "log": "kubejs/server.log", "pattern": "sunlight_smite\\.js#\\d+: \\[IridescentCraft\\] sunlight_smite loaded"},
-    {"id": "armed:tatos_dimension_lock.js", "owner": "kubejs/server_scripts/tatos_dimension_lock.js", "log": "kubejs/server.log", "pattern": "tatos_dimension_lock\\.js#\\d+: \\[IridescentCraft\\] tatos_dimension_lock loaded"},
-    {"id": "armed:tetra_terramity_perks.js", "owner": "kubejs/server_scripts/tetra_terramity_perks.js", "log": "kubejs/server.log", "pattern": "tetra_terramity_perks\\.js#\\d+: \\[IridescentCraft\\] tetra_terramity_perks loaded"},
-    {"id": "armed:ultris_randomizer_janitor.js", "owner": "kubejs/server_scripts/ultris_randomizer_janitor.js", "log": "kubejs/server.log", "pattern": "ultris_randomizer_janitor\\.js#\\d+: \\[IridescentCraft\\] ultris_randomizer_janitor loaded"},
-    {"id": "armed:mixin:lovely_sparkle_pieces:FishingHookMixin", "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)", "log": "latest.log", "pattern": "\\[LSP-Mixin/\\]: FishingHookMixin applied to \\S+ \\(1/1 hooks\\)"},
-    {"id": "armed:mixin:lovely_sparkle_pieces:EnchantmentMenuMixin", "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)", "log": "latest.log", "pattern": "\\[LSP-Mixin/\\]: EnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)"},
-    {"id": "armed:mixin:lovely_sparkle_pieces:ApothEnchantmentMenuMixin", "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)", "log": "latest.log", "pattern": "\\[LSP-Mixin/\\]: ApothEnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)"}
-  ],
-  "not_seeded": [
-    {"line": "#_server_ready_banner.js:", "why": "blank line of the banner"},
-    {"line": "#_server_ready_banner.js:   ============================================================", "why": "rule line of the banner"},
-    {"line": "#_server_ready_banner.js:   >>>  Accepting player connections.                       <<<", "why": "same print as the READY line, which is the entry"},
-    {"line": "#_server_ready_banner.js:   >>>  Listening on #.#:#                            <<<", "why": "same print as the READY line; the address is configuration, not liveness"},
-    {"line": "Loaded #/# KubeJS server scripts in # s with # errors and # warnings", "why": "the summary line: checked by the LOADED tier, with the count taken from the deployed tree"},
-    {"line": "Scripts loaded", "why": "printed by KubeJS itself, not by a script; the summary line covers it"},
-    {"line": "cherry_spawn_biome.js: [icraft_spawn] search already ran to a dead end on this world; skipping", "why": "world state (this world's spawn search is finished), not registration; a fresh world prints something else"},
-    {"line": "loot/lootjs_overhaul.js:   - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)", "why": "detail line of the same print as 'LootJS structure chest overhaul loaded', which is the entry"}
-  ]
+ "version": 2,
+ "about": [
+  "GENERATED by dev/loud/gen_liveness.js; do not edit. Read by dev/loud/loud-check.ps1 (and by dev/boot, which hands it to the checker).",
+  "ARMED tier, exact: `armed.<type>` lists every registration the scripts of the tree make while they load (server and startup: the DEDICATED SERVER tree; client: the client distribution), with the digest the game prints in its `[icraft.live] ARMED <type>: ...` line. A boot whose digest is not this one is RED, and the registrations are named from the `[icraft.live] NOT ARMED` / `UNLISTED` lines.",
+  "It applies to a boot whose deployed tree has zzz_icraft_live.js (older boots have no such lines and are judged by `entries` alone).",
+  "FIRED tier, never a failure by itself: `fired.<type>` lists what else can be seen running: `sections` (name, and the handler it is in) and `features` (icraft.live.fired names). Every armed id fires too. `at_boot` are the armed ids whose event runs on every boot with nobody online.",
+  "`entries` = the hand-kept log lines of dev/loud/liveness_lines.json, copied through: lines that prove something the generated set does not (each says what, under `proves`). Edit them THERE."
+ ],
+ "boot_complete": {
+  "log": "latest.log",
+  "pattern": "Done \\(\\d+\\.\\d+s\\)!",
+  "note": "liveness is judged only once this line exists; before it the server is still starting (or died on the way)"
+ },
+ "generated": {
+  "by": "dev/loud/gen_liveness.js",
+  "live_script": "zzz_icraft_live.js"
+ },
+ "armed": {
+  "server": {
+   "log": "kubejs/server.log",
+   "tree": "server_distribution/kubejs/server_scripts",
+   "count": 316,
+   "digest": "19931ceb12d27eb7",
+   "late": [],
+   "at_boot": [
+    "0_server_ready_banner@ServerEvents.loaded",
+    "0_tick_master@ServerEvents.loaded",
+    "0_tick_master@ServerEvents.tick",
+    "apotheosis_gem_repair@LootJS.modifiers",
+    "attributes/mana_debug_command@ServerEvents.commandRegistry",
+    "bonfire/boss_compass_handler@ServerEvents.commandRegistry",
+    "bonfire/boss_compass_handler@ServerEvents.recipes",
+    "bonfire/gob_t1_rebalance@ServerEvents.recipes",
+    "bonfire/gob_t1_rebalance@ServerEvents.tags",
+    "cherry_spawn_biome@ServerEvents.loaded",
+    "class/equipment_hp_halving@ServerEvents.loaded",
+    "codex_delivery@ServerEvents.commandRegistry",
+    "codex_delivery@ServerEvents.recipes",
+    "compat/class_artifacts_recipes@ServerEvents.recipes",
+    "death_penalty@ServerEvents.loaded",
+    "diag_armor_modifiers@ServerEvents.commandRegistry",
+    "economy/relic_broker@ServerEvents.recipes",
+    "economy/relic_sink@ServerEvents.commandRegistry",
+    "economy/relic_sink@ServerEvents.tags",
+    "end/dragon_exploration_gate@ServerEvents.recipes",
+    "endgame/ascension@ServerEvents.recipes",
+    "endgame/mythic_forge@ServerEvents.recipes",
+    "endgame/rift_mechanics@LootJS.modifiers",
+    "fix_stone_tags@ServerEvents.tags",
+    "fix_venus_sandstone_tag@ServerEvents.tags",
+    "food_dedup_recipes@ServerEvents.recipes",
+    "gates/astages_restrictions@ServerEvents.loaded",
+    "gates/codex_boss_rush@ServerEvents.commandRegistry",
+    "gates/codex_progression_engine@ServerEvents.commandRegistry",
+    "gates/codex_progression_engine@ServerEvents.tags",
+    "icraft_despawn_command@ServerEvents.commandRegistry",
+    "icraftsets_command@ServerEvents.commandRegistry",
+    "loot/0_entity_id_validator@ServerEvents.loaded",
+    "loot/abyss_boss_loot@LootJS.modifiers",
+    "loot/alexsmobs_drops@LootJS.modifiers",
+    "loot/blue_skies_drops@LootJS.modifiers",
+    "loot/boss_arena_material_tease@LootJS.modifiers",
+    "loot/boss_arena_themed_loot@LootJS.modifiers",
+    "loot/boss_refight_repair_floors@LootJS.modifiers",
+    "loot/boss_unique_drops@LootJS.modifiers",
+    "loot/cataclysm_boss_drops@LootJS.modifiers",
+    "loot/codex_exploration_drops@LootJS.modifiers",
+    "loot/crop_seed_reduction@LootJS.modifiers",
+    "loot/dimensional_boss_drops@LootJS.modifiers",
+    "loot/grass_pam_seeds@LootJS.modifiers",
+    "loot/iss_boss_drops@LootJS.modifiers",
+    "loot/loot_overhaul@LootJS.modifiers",
+    "loot/lootjs_overhaul@LootJS.modifiers",
+    "loot/lovely_pieces_loot@LootJS.modifiers",
+    "loot/mahou_synergy_drops@LootJS.modifiers",
+    "loot/majrusz_skeleton_punch_strip@LootJS.modifiers",
+    "loot/meat_drop_doubling@LootJS.modifiers",
+    "loot/planetary_loot@LootJS.modifiers",
+    "loot/staff_wand_drops@LootJS.modifiers",
+    "loot/stalwart_dungeons_drops@LootJS.modifiers",
+    "loot/terramity_boss_drops@LootJS.modifiers",
+    "loot/terramity_structure_drops@LootJS.modifiers",
+    "loot/twilight_boss_drops@LootJS.modifiers",
+    "loot/zz_iss_arena_enrichment@LootJS.modifiers",
+    "loot/zz_pack_enchanted_books@LootJS.modifiers",
+    "loot/zz_unique_chest_strip@LootJS.modifiers",
+    "loot/zzz_iss_scroll_tier_clamp@LootJS.modifiers",
+    "megatorch_damage@ServerEvents.tick",
+    "mobgriefing_default@ServerEvents.loaded",
+    "origins/class_passives_phase6h@ServerEvents.tick",
+    "origins/origin_status_commands@ServerEvents.commandRegistry",
+    "pregen/auto_chunky@ServerEvents.loaded",
+    "quests/heracles_reconcile@ServerEvents.commandRegistry",
+    "recipes/ad_astra_gating@ServerEvents.recipes",
+    "recipes/boss_material_processing@ServerEvents.recipes",
+    "recipes/cooking_conversion@ServerEvents.recipes",
+    "recipes/cooking_for_blockheads_overrides@ServerEvents.recipes",
+    "recipes/create_blaze_burner_t1@ServerEvents.recipes",
+    "recipes/if_latex_rework@ServerEvents.recipes",
+    "recipes/magic_recipes@ServerEvents.recipes",
+    "recipes/mek_biofuel_squeeze@ServerEvents.recipes",
+    "recipes/planetary_extraction@ServerEvents.recipes",
+    "recipes/progression_tier_fixes@ServerEvents.recipes",
+    "recipes/recipe_audit@ServerEvents.recipes",
+    "recipes/refined_storage_dualpath@ServerEvents.recipes",
+    "recipes/staff_wand_recipes@ServerEvents.recipes",
+    "recipes/strip_mutant_monsters@ServerEvents.recipes",
+    "recipes/strip_tmb_bow_recipes@ServerEvents.recipes",
+    "recipes/tier_gated_recipes@ServerEvents.recipes",
+    "recipes/waystone_recipes@ServerEvents.recipes",
+    "regen_control@ServerEvents.loaded",
+    "respec/class_respec@ServerEvents.loaded",
+    "respec/class_respec@ServerEvents.recipes",
+    "skills/justleveling_skills@ServerEvents.loaded",
+    "skills/mastery_tax@ServerEvents.loaded",
+    "skills/skill_effects@ServerEvents.loaded",
+    "spawn_priest_tower@ServerEvents.loaded",
+    "zzz_icraft_live@ServerEvents.commandRegistry"
+   ],
+   "registrations": [
+    {
+     "id": "0_iss_guard@EntityEvents.spawned",
+     "script": "0_iss_guard.js"
+    },
+    {
+     "id": "0_lib_aptitudes@PlayerEvents.loggedIn",
+     "script": "0_lib_aptitudes.js"
+    },
+    {
+     "id": "0_lib_aptitudes@PlayerEvents.loggedOut",
+     "script": "0_lib_aptitudes.js"
+    },
+    {
+     "id": "0_lib_aptitudes@PlayerEvents.respawned",
+     "script": "0_lib_aptitudes.js"
+    },
+    {
+     "id": "0_lib_origins@PlayerEvents.loggedIn",
+     "script": "0_lib_origins.js"
+    },
+    {
+     "id": "0_lib_origins@PlayerEvents.loggedOut",
+     "script": "0_lib_origins.js"
+    },
+    {
+     "id": "0_lib_origins@PlayerEvents.respawned",
+     "script": "0_lib_origins.js"
+    },
+    {
+     "id": "0_server_ready_banner@ServerEvents.loaded",
+     "script": "0_server_ready_banner.js"
+    },
+    {
+     "id": "0_tick_master@PlayerEvents.tick",
+     "script": "0_tick_master.js"
+    },
+    {
+     "id": "0_tick_master@ServerEvents.loaded",
+     "script": "0_tick_master.js"
+    },
+    {
+     "id": "0_tick_master@ServerEvents.tick",
+     "script": "0_tick_master.js"
+    },
+    {
+     "id": "abyss/abyss_ring_effects@PlayerEvents.loggedOut",
+     "script": "abyss/abyss_ring_effects.js"
+    },
+    {
+     "id": "affix_overworld_strip@EntityEvents.spawned",
+     "script": "affix_overworld_strip.js"
+    },
+    {
+     "id": "affix_skyshatter_mob_strip@EntityEvents.spawned",
+     "script": "affix_skyshatter_mob_strip.js"
+    },
+    {
+     "id": "affixes/affix_effects@EntityEvents.death",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "affixes/affix_effects@PlayerEvents.loggedOut",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "apotheosis_gem_repair@BlockEvents.rightClicked",
+     "script": "apotheosis_gem_repair.js"
+    },
+    {
+     "id": "apotheosis_gem_repair@EntityEvents.spawned",
+     "script": "apotheosis_gem_repair.js"
+    },
+    {
+     "id": "apotheosis_gem_repair@LootJS.modifiers",
+     "script": "apotheosis_gem_repair.js"
+    },
+    {
+     "id": "armor_weight@PlayerEvents.inventoryChanged",
+     "script": "armor_weight.js"
+    },
+    {
+     "id": "armor_weight@PlayerEvents.loggedIn",
+     "script": "armor_weight.js"
+    },
+    {
+     "id": "armor_weight@PlayerEvents.loggedOut",
+     "script": "armor_weight.js"
+    },
+    {
+     "id": "armor_weight@PlayerEvents.respawned",
+     "script": "armor_weight.js"
+    },
+    {
+     "id": "attributes/attribute_commands@PlayerEvents.chat",
+     "script": "attributes/attribute_commands.js"
+    },
+    {
+     "id": "attributes/attribute_sync@PlayerEvents.loggedIn",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "attributes/attribute_sync@PlayerEvents.loggedOut",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "attributes/class_attribute_bonuses@PlayerEvents.loggedIn",
+     "script": "attributes/class_attribute_bonuses.js"
+    },
+    {
+     "id": "attributes/mana_debug_command@ServerEvents.commandRegistry",
+     "script": "attributes/mana_debug_command.js"
+    },
+    {
+     "id": "attributes/mana_pool_bonuses@PlayerEvents.loggedIn",
+     "script": "attributes/mana_pool_bonuses.js"
+    },
+    {
+     "id": "attributes/mana_pool_bonuses@PlayerEvents.loggedOut",
+     "script": "attributes/mana_pool_bonuses.js"
+    },
+    {
+     "id": "attributes/mana_pool_bonuses@PlayerEvents.respawned",
+     "script": "attributes/mana_pool_bonuses.js"
+    },
+    {
+     "id": "bonfire/boss_compass_handler@ItemEvents.rightClicked",
+     "script": "bonfire/boss_compass_handler.js"
+    },
+    {
+     "id": "bonfire/boss_compass_handler@PlayerEvents.loggedOut",
+     "script": "bonfire/boss_compass_handler.js"
+    },
+    {
+     "id": "bonfire/boss_compass_handler@ServerEvents.commandRegistry",
+     "script": "bonfire/boss_compass_handler.js"
+    },
+    {
+     "id": "bonfire/boss_compass_handler@ServerEvents.recipes",
+     "script": "bonfire/boss_compass_handler.js"
+    },
+    {
+     "id": "bonfire/gob_t1_rebalance@ServerEvents.recipes",
+     "script": "bonfire/gob_t1_rebalance.js"
+    },
+    {
+     "id": "bonfire/gob_t1_rebalance@ServerEvents.tags",
+     "script": "bonfire/gob_t1_rebalance.js"
+    },
+    {
+     "id": "cherry_spawn_biome@PlayerEvents.loggedIn",
+     "script": "cherry_spawn_biome.js"
+    },
+    {
+     "id": "cherry_spawn_biome@ServerEvents.loaded",
+     "script": "cherry_spawn_biome.js"
+    },
+    {
+     "id": "class/equipment_hp_halving@ServerEvents.loaded",
+     "script": "class/equipment_hp_halving.js"
+    },
+    {
+     "id": "cleanup/strip_truly_modular_items@PlayerEvents.inventoryChanged",
+     "script": "cleanup/strip_truly_modular_items.js"
+    },
+    {
+     "id": "cleanup/strip_truly_modular_items@PlayerEvents.loggedIn",
+     "script": "cleanup/strip_truly_modular_items.js"
+    },
+    {
+     "id": "codex_delivery@PlayerEvents.chat",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "codex_delivery@PlayerEvents.loggedIn",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "codex_delivery@ServerEvents.commandRegistry",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "codex_delivery@ServerEvents.recipes",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "compat/class_artifacts_recipes@ServerEvents.recipes",
+     "script": "compat/class_artifacts_recipes.js"
+    },
+    {
+     "id": "compat/disable_creeperlings@EntityEvents.spawned",
+     "script": "compat/disable_creeperlings.js"
+    },
+    {
+     "id": "compat/terramity_cave_gnome_cave_only@EntityEvents.checkSpawn",
+     "script": "compat/terramity_cave_gnome_cave_only.js"
+    },
+    {
+     "id": "death_penalty@BlockEvents.broken",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@EntityEvents.death",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@ItemEvents.canPickUp",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@ItemEvents.rightClicked",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@PlayerEvents.inventoryChanged",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@PlayerEvents.loggedIn",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@PlayerEvents.loggedOut",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "death_penalty@ServerEvents.loaded",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "diag_armor_modifiers@ServerEvents.commandRegistry",
+     "script": "diag_armor_modifiers.js"
+    },
+    {
+     "id": "disable_zombie_door_break@EntityEvents.spawned",
+     "script": "disable_zombie_door_break.js"
+    },
+    {
+     "id": "economy/relic_broker@BlockEvents.rightClicked",
+     "script": "economy/relic_broker.js"
+    },
+    {
+     "id": "economy/relic_broker@ServerEvents.recipes",
+     "script": "economy/relic_broker.js"
+    },
+    {
+     "id": "economy/relic_sink@ServerEvents.commandRegistry",
+     "script": "economy/relic_sink.js"
+    },
+    {
+     "id": "economy/relic_sink@ServerEvents.tags",
+     "script": "economy/relic_sink.js"
+    },
+    {
+     "id": "enchantments/enchant_effects@BlockEvents.broken",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate#2@EntityEvents.death",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate@EntityEvents.death",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate@EntityEvents.spawned",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate@PlayerEvents.inventoryChanged",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate@ServerEvents.recipes",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "endgame/ascension@PlayerEvents.chat",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "endgame/ascension@PlayerEvents.loggedIn",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "endgame/ascension@PlayerEvents.respawned",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "endgame/ascension@ServerEvents.recipes",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "endgame/mythic_forge@ServerEvents.recipes",
+     "script": "endgame/mythic_forge.js"
+    },
+    {
+     "id": "endgame/rift_mechanics#2@PlayerEvents.inventoryChanged",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "endgame/rift_mechanics@ItemEvents.crafted",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "endgame/rift_mechanics@ItemEvents.pickedUp",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "endgame/rift_mechanics@LootJS.modifiers",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "endgame/rift_mechanics@PlayerEvents.inventoryChanged",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "endgame/rift_mechanics@PlayerEvents.loggedIn",
+     "script": "endgame/rift_mechanics.js"
+    },
+    {
+     "id": "exploration/codex_exploration_kills@EntityEvents.death",
+     "script": "exploration/codex_exploration_kills.js"
+    },
+    {
+     "id": "fix_empty_display_name@EntityEvents.spawned",
+     "script": "fix_empty_display_name.js"
+    },
+    {
+     "id": "fix_stone_tags@ServerEvents.tags",
+     "script": "fix_stone_tags.js"
+    },
+    {
+     "id": "fix_venus_sandstone_tag@ServerEvents.tags",
+     "script": "fix_venus_sandstone_tag.js"
+    },
+    {
+     "id": "food_dedup_recipes@ServerEvents.recipes",
+     "script": "food_dedup_recipes.js"
+    },
+    {
+     "id": "gates/astages_restrictions@ServerEvents.loaded",
+     "script": "gates/astages_restrictions.js"
+    },
+    {
+     "id": "gates/codex_boss_rush@EntityEvents.death",
+     "script": "gates/codex_boss_rush.js"
+    },
+    {
+     "id": "gates/codex_boss_rush@ServerEvents.commandRegistry",
+     "script": "gates/codex_boss_rush.js"
+    },
+    {
+     "id": "gates/codex_progression_engine@ServerEvents.commandRegistry",
+     "script": "gates/codex_progression_engine.js"
+    },
+    {
+     "id": "gates/codex_progression_engine@ServerEvents.tags",
+     "script": "gates/codex_progression_engine.js"
+    },
+    {
+     "id": "gates/milestone_detection@AStageEvents.added",
+     "script": "gates/milestone_detection.js"
+    },
+    {
+     "id": "gates/milestone_detection@EntityEvents.death",
+     "script": "gates/milestone_detection.js"
+    },
+    {
+     "id": "gates/milestone_detection@PlayerEvents.loggedIn",
+     "script": "gates/milestone_detection.js"
+    },
+    {
+     "id": "icraft.abyss.armor.deal@hurt",
+     "script": "abyss/abyss_armor_effects.js"
+    },
+    {
+     "id": "icraft.abyss.armor.take@hurt",
+     "script": "abyss/abyss_armor_effects.js"
+    },
+    {
+     "id": "icraft.abyss.rings.deal@hurt",
+     "script": "abyss/abyss_ring_effects.js"
+    },
+    {
+     "id": "icraft.abyss.rings.take@hurt",
+     "script": "abyss/abyss_ring_effects.js"
+    },
+    {
+     "id": "icraft.affixes.defensive@hurt",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "icraft.affixes.fire_vuln@hurt",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "icraft.affixes.offensive@hurt",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "icraft.attribute_sync.hurt@hurt",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "icraft.death_penalty.broken_weapon@hurt",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "icraft.dimension_mechanics.blue_skies@hurt",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "icraft.enchants.armor@hurt",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "icraft.enchants.lunar_stride@hurt",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "icraft.enchants.stellar_shield@hurt",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "icraft.enchants.weapon@hurt",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "icraft.iss_school_to_ars_spell@hurt",
+     "script": "attributes/iss_school_to_ars_spell.js"
+    },
+    {
+     "id": "icraft.magic_crit@hurt",
+     "script": "magic_crit_hook.js"
+    },
+    {
+     "id": "icraft.skill_effects.1@hurt",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "icraft.skill_effects.2@hurt",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "icraft.ss_unique_spellsword@hurt",
+     "script": "origins/ss_unique_spellsword_scaling.js"
+    },
+    {
+     "id": "icraft.tetra_terramity_perks@hurt",
+     "script": "tetra_terramity_perks.js"
+    },
+    {
+     "id": "icraftBrokerRestockTick@tick.server",
+     "script": "economy/relic_broker.js"
+    },
+    {
+     "id": "icraft_despawn_command@ServerEvents.commandRegistry",
+     "script": "icraft_despawn_command.js"
+    },
+    {
+     "id": "icraftsets_command@ServerEvents.commandRegistry",
+     "script": "icraftsets_command.js"
+    },
+    {
+     "id": "idle_hunger_pause@PlayerEvents.loggedOut",
+     "script": "idle_hunger_pause.js"
+    },
+    {
+     "id": "integration/dna_simple_staves_buffs@PlayerEvents.loggedIn",
+     "script": "integration/dna_simple_staves_buffs.js"
+    },
+    {
+     "id": "integration/dna_simple_staves_buffs@PlayerEvents.loggedOut",
+     "script": "integration/dna_simple_staves_buffs.js"
+    },
+    {
+     "id": "integration/dna_simple_staves_buffs@PlayerEvents.respawned",
+     "script": "integration/dna_simple_staves_buffs.js"
+    },
+    {
+     "id": "integration/dna_simple_staves_strip@ItemEvents.rightClicked",
+     "script": "integration/dna_simple_staves_strip.js"
+    },
+    {
+     "id": "items/compass_of_return@BlockEvents.rightClicked",
+     "script": "items/compass_of_return.js"
+    },
+    {
+     "id": "items/compass_of_return@ItemEvents.rightClicked",
+     "script": "items/compass_of_return.js"
+    },
+    {
+     "id": "items/compass_of_return@PlayerEvents.loggedIn",
+     "script": "items/compass_of_return.js"
+    },
+    {
+     "id": "liteminer_hunger_gate@BlockEvents.broken",
+     "script": "liteminer_hunger_gate.js"
+    },
+    {
+     "id": "liteminer_hunger_gate@PlayerEvents.loggedOut",
+     "script": "liteminer_hunger_gate.js"
+    },
+    {
+     "id": "loot/0_entity_id_validator@ServerEvents.loaded",
+     "script": "loot/0_entity_id_validator.js"
+    },
+    {
+     "id": "loot/abyss_boss_loot@LootJS.modifiers",
+     "script": "loot/abyss_boss_loot.js"
+    },
+    {
+     "id": "loot/alexsmobs_drops@LootJS.modifiers",
+     "script": "loot/alexsmobs_drops.js"
+    },
+    {
+     "id": "loot/blue_skies_drops@LootJS.modifiers",
+     "script": "loot/blue_skies_drops.js"
+    },
+    {
+     "id": "loot/boss_arena_material_tease@LootJS.modifiers",
+     "script": "loot/boss_arena_material_tease.js"
+    },
+    {
+     "id": "loot/boss_arena_themed_loot@LootJS.modifiers",
+     "script": "loot/boss_arena_themed_loot.js"
+    },
+    {
+     "id": "loot/boss_refight_repair_floors@LootJS.modifiers",
+     "script": "loot/boss_refight_repair_floors.js"
+    },
+    {
+     "id": "loot/boss_unique_drops@LootJS.modifiers",
+     "script": "loot/boss_unique_drops.js"
+    },
+    {
+     "id": "loot/cataclysm_boss_drops@LootJS.modifiers",
+     "script": "loot/cataclysm_boss_drops.js"
+    },
+    {
+     "id": "loot/codex_exploration_drops@LootJS.modifiers",
+     "script": "loot/codex_exploration_drops.js"
+    },
+    {
+     "id": "loot/crop_seed_reduction@LootJS.modifiers",
+     "script": "loot/crop_seed_reduction.js"
+    },
+    {
+     "id": "loot/dimensional_boss_drops@LootJS.modifiers",
+     "script": "loot/dimensional_boss_drops.js"
+    },
+    {
+     "id": "loot/fragment_core_drops@EntityEvents.death",
+     "script": "loot/fragment_core_drops.js"
+    },
+    {
+     "id": "loot/grass_pam_seeds@LootJS.modifiers",
+     "script": "loot/grass_pam_seeds.js"
+    },
+    {
+     "id": "loot/iss_boss_drops@LootJS.modifiers",
+     "script": "loot/iss_boss_drops.js"
+    },
+    {
+     "id": "loot/iss_boss_first_kill@EntityEvents.death",
+     "script": "loot/iss_boss_first_kill.js"
+    },
+    {
+     "id": "loot/loot_overhaul@LootJS.modifiers",
+     "script": "loot/loot_overhaul.js"
+    },
+    {
+     "id": "loot/lootjs_overhaul@LootJS.modifiers",
+     "script": "loot/lootjs_overhaul.js"
+    },
+    {
+     "id": "loot/lovely_pieces_loot@LootJS.modifiers",
+     "script": "loot/lovely_pieces_loot.js"
+    },
+    {
+     "id": "loot/mahou_synergy_drops@LootJS.modifiers",
+     "script": "loot/mahou_synergy_drops.js"
+    },
+    {
+     "id": "loot/majrusz_skeleton_punch_strip@LootJS.modifiers",
+     "script": "loot/majrusz_skeleton_punch_strip.js"
+    },
+    {
+     "id": "loot/meat_drop_doubling@LootJS.modifiers",
+     "script": "loot/meat_drop_doubling.js"
+    },
+    {
+     "id": "loot/planetary_loot@LootJS.modifiers",
+     "script": "loot/planetary_loot.js"
+    },
+    {
+     "id": "loot/staff_wand_drops@LootJS.modifiers",
+     "script": "loot/staff_wand_drops.js"
+    },
+    {
+     "id": "loot/stalwart_dungeons_drops@LootJS.modifiers",
+     "script": "loot/stalwart_dungeons_drops.js"
+    },
+    {
+     "id": "loot/terramity_boss_drops@LootJS.modifiers",
+     "script": "loot/terramity_boss_drops.js"
+    },
+    {
+     "id": "loot/terramity_structure_drops@LootJS.modifiers",
+     "script": "loot/terramity_structure_drops.js"
+    },
+    {
+     "id": "loot/twilight_boss_drops@LootJS.modifiers",
+     "script": "loot/twilight_boss_drops.js"
+    },
+    {
+     "id": "loot/unique_tier_buff@EntityEvents.spawned",
+     "script": "loot/unique_tier_buff.js"
+    },
+    {
+     "id": "loot/zz_iss_arena_enrichment@LootJS.modifiers",
+     "script": "loot/zz_iss_arena_enrichment.js"
+    },
+    {
+     "id": "loot/zz_pack_enchanted_books@LootJS.modifiers",
+     "script": "loot/zz_pack_enchanted_books.js"
+    },
+    {
+     "id": "loot/zz_unique_chest_strip@LootJS.modifiers",
+     "script": "loot/zz_unique_chest_strip.js"
+    },
+    {
+     "id": "loot/zzz_iss_scroll_tier_clamp@LootJS.modifiers",
+     "script": "loot/zzz_iss_scroll_tier_clamp.js"
+    },
+    {
+     "id": "megatorch_damage@ServerEvents.tick",
+     "script": "megatorch_damage.js"
+    },
+    {
+     "id": "mobgriefing_default@ServerEvents.loaded",
+     "script": "mobgriefing_default.js"
+    },
+    {
+     "id": "more_curios_slots_cap@ItemEvents.rightClicked",
+     "script": "more_curios_slots_cap.js"
+    },
+    {
+     "id": "origins/artificial_construct_progression@ItemEvents.rightClicked",
+     "script": "origins/artificial_construct_progression.js"
+    },
+    {
+     "id": "origins/artificial_construct_progression@PlayerEvents.loggedIn",
+     "script": "origins/artificial_construct_progression.js"
+    },
+    {
+     "id": "origins/artificial_construct_progression@PlayerEvents.respawned",
+     "script": "origins/artificial_construct_progression.js"
+    },
+    {
+     "id": "origins/battlemage_arcane_cleave@EntityEvents.death",
+     "script": "origins/battlemage_arcane_cleave.js"
+    },
+    {
+     "id": "origins/class_passives@EntityEvents.death",
+     "script": "origins/class_passives.js"
+    },
+    {
+     "id": "origins/class_passives_phase6h@EntityEvents.death",
+     "script": "origins/class_passives_phase6h.js"
+    },
+    {
+     "id": "origins/class_passives_phase6h@PlayerEvents.loggedIn",
+     "script": "origins/class_passives_phase6h.js"
+    },
+    {
+     "id": "origins/class_passives_phase6h@PlayerEvents.respawned",
+     "script": "origins/class_passives_phase6h.js"
+    },
+    {
+     "id": "origins/class_passives_phase6h@ServerEvents.tick",
+     "script": "origins/class_passives_phase6h.js"
+    },
+    {
+     "id": "origins/origin_effects@BlockEvents.broken",
+     "script": "origins/origin_effects.js"
+    },
+    {
+     "id": "origins/origin_status_commands@ServerEvents.commandRegistry",
+     "script": "origins/origin_status_commands.js"
+    },
+    {
+     "id": "origins/phantom_undeath@EntityEvents.death",
+     "script": "origins/phantom_undeath.js"
+    },
+    {
+     "id": "origins/spell_book_transfer@PlayerEvents.inventoryChanged",
+     "script": "origins/spell_book_transfer.js"
+    },
+    {
+     "id": "origins/spell_book_transfer@PlayerEvents.loggedOut",
+     "script": "origins/spell_book_transfer.js"
+    },
+    {
+     "id": "origins/witch_of_ink_progression@EntityEvents.death",
+     "script": "origins/witch_of_ink_progression.js"
+    },
+    {
+     "id": "origins/witch_of_ink_progression@PlayerEvents.loggedIn",
+     "script": "origins/witch_of_ink_progression.js"
+    },
+    {
+     "id": "origins/witch_of_ink_progression@PlayerEvents.respawned",
+     "script": "origins/witch_of_ink_progression.js"
+    },
+    {
+     "id": "origins/witherborn_slimebodied@EntityEvents.hurt",
+     "script": "origins/witherborn_slimebodied.js"
+    },
+    {
+     "id": "origins/witherborn_slimebodied@ItemEvents.rightClicked",
+     "script": "origins/witherborn_slimebodied.js"
+    },
+    {
+     "id": "origins/witherborn_slimebodied@PlayerEvents.inventoryChanged",
+     "script": "origins/witherborn_slimebodied.js"
+    },
+    {
+     "id": "origins/witherborn_slimebodied@PlayerEvents.loggedOut",
+     "script": "origins/witherborn_slimebodied.js"
+    },
+    {
+     "id": "pregen/auto_chunky@PlayerEvents.loggedIn",
+     "script": "pregen/auto_chunky.js"
+    },
+    {
+     "id": "pregen/auto_chunky@PlayerEvents.loggedOut",
+     "script": "pregen/auto_chunky.js"
+    },
+    {
+     "id": "pregen/auto_chunky@ServerEvents.loaded",
+     "script": "pregen/auto_chunky.js"
+    },
+    {
+     "id": "quests/combat_kill_signals@EntityEvents.death",
+     "script": "quests/combat_kill_signals.js"
+    },
+    {
+     "id": "quests/heracles_reconcile@PlayerEvents.loggedIn",
+     "script": "quests/heracles_reconcile.js"
+    },
+    {
+     "id": "quests/heracles_reconcile@ServerEvents.commandRegistry",
+     "script": "quests/heracles_reconcile.js"
+    },
+    {
+     "id": "quests/onboarding_bridge@PlayerEvents.loggedOut",
+     "script": "quests/onboarding_bridge.js"
+    },
+    {
+     "id": "randomize_blank_scrolls@PlayerEvents.inventoryChanged",
+     "script": "randomize_blank_scrolls.js"
+    },
+    {
+     "id": "randomize_blank_scrolls@PlayerEvents.loggedIn",
+     "script": "randomize_blank_scrolls.js"
+    },
+    {
+     "id": "recipes/ad_astra_gating@ServerEvents.recipes",
+     "script": "recipes/ad_astra_gating.js"
+    },
+    {
+     "id": "recipes/boss_material_processing@ServerEvents.recipes",
+     "script": "recipes/boss_material_processing.js"
+    },
+    {
+     "id": "recipes/cooking_conversion@ServerEvents.recipes",
+     "script": "recipes/cooking_conversion.js"
+    },
+    {
+     "id": "recipes/cooking_for_blockheads_overrides@ServerEvents.recipes",
+     "script": "recipes/cooking_for_blockheads_overrides.js"
+    },
+    {
+     "id": "recipes/create_blaze_burner_t1@ServerEvents.recipes",
+     "script": "recipes/create_blaze_burner_t1.js"
+    },
+    {
+     "id": "recipes/if_latex_rework@ServerEvents.recipes",
+     "script": "recipes/if_latex_rework.js"
+    },
+    {
+     "id": "recipes/magic_recipes@ServerEvents.recipes",
+     "script": "recipes/magic_recipes.js"
+    },
+    {
+     "id": "recipes/mek_biofuel_squeeze@ServerEvents.recipes",
+     "script": "recipes/mek_biofuel_squeeze.js"
+    },
+    {
+     "id": "recipes/planetary_extraction@ServerEvents.recipes",
+     "script": "recipes/planetary_extraction.js"
+    },
+    {
+     "id": "recipes/progression_tier_fixes@ServerEvents.recipes",
+     "script": "recipes/progression_tier_fixes.js"
+    },
+    {
+     "id": "recipes/recipe_audit@ServerEvents.recipes",
+     "script": "recipes/recipe_audit.js"
+    },
+    {
+     "id": "recipes/refined_storage_dualpath@ServerEvents.recipes",
+     "script": "recipes/refined_storage_dualpath.js"
+    },
+    {
+     "id": "recipes/staff_wand_recipes@ServerEvents.recipes",
+     "script": "recipes/staff_wand_recipes.js"
+    },
+    {
+     "id": "recipes/strip_mutant_monsters@ServerEvents.recipes",
+     "script": "recipes/strip_mutant_monsters.js"
+    },
+    {
+     "id": "recipes/strip_tmb_bow_recipes@ServerEvents.recipes",
+     "script": "recipes/strip_tmb_bow_recipes.js"
+    },
+    {
+     "id": "recipes/tier_gated_recipes@ServerEvents.recipes",
+     "script": "recipes/tier_gated_recipes.js"
+    },
+    {
+     "id": "recipes/waystone_recipes@ServerEvents.recipes",
+     "script": "recipes/waystone_recipes.js"
+    },
+    {
+     "id": "regen_control@ServerEvents.loaded",
+     "script": "regen_control.js"
+    },
+    {
+     "id": "relic_boss_drops@EntityEvents.death",
+     "script": "relic_boss_drops.js"
+    },
+    {
+     "id": "respawn_hunger@PlayerEvents.respawned",
+     "script": "respawn_hunger.js"
+    },
+    {
+     "id": "respec/class_respec@ItemEvents.rightClicked",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "respec/class_respec@PlayerEvents.loggedOut",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "respec/class_respec@ServerEvents.loaded",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "respec/class_respec@ServerEvents.recipes",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "scaling/boss_hp@EntityEvents.spawned",
+     "script": "scaling/boss_hp.js"
+    },
+    {
+     "id": "scaling/boss_progressive@EntityEvents.death",
+     "script": "scaling/boss_progressive.js"
+    },
+    {
+     "id": "scaling/boss_progressive@EntityEvents.spawned",
+     "script": "scaling/boss_progressive.js"
+    },
+    {
+     "id": "scaling/dimension_mechanics@EntityEvents.death",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "scaling/dimension_mechanics@EntityEvents.hurt",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "scaling/dimension_mechanics@EntityEvents.spawned",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "scaling/mob_equipment@EntityEvents.spawned",
+     "script": "scaling/mob_equipment.js"
+    },
+    {
+     "id": "scaling/mob_scaling_unified@EntityEvents.spawned",
+     "script": "scaling/mob_scaling_unified.js"
+    },
+    {
+     "id": "scaling/zz_ascension_scaling@EntityEvents.spawned",
+     "script": "scaling/zz_ascension_scaling.js"
+    },
+    {
+     "id": "scaling/zz_boss_global_3x@EntityEvents.spawned",
+     "script": "scaling/zz_boss_global_3x.js"
+    },
+    {
+     "id": "skills/justleveling_skills@BlockEvents.broken",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@BlockEvents.placed",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@EntityEvents.death",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@ItemEvents.crafted",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@PlayerEvents.loggedIn",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@PlayerEvents.loggedOut",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@PlayerEvents.respawned",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/justleveling_skills@ServerEvents.loaded",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "skills/mastery_tax@PlayerEvents.loggedIn",
+     "script": "skills/mastery_tax.js"
+    },
+    {
+     "id": "skills/mastery_tax@PlayerEvents.loggedOut",
+     "script": "skills/mastery_tax.js"
+    },
+    {
+     "id": "skills/mastery_tax@PlayerEvents.respawned",
+     "script": "skills/mastery_tax.js"
+    },
+    {
+     "id": "skills/mastery_tax@ServerEvents.loaded",
+     "script": "skills/mastery_tax.js"
+    },
+    {
+     "id": "skills/skill_effects#2@BlockEvents.broken",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "skills/skill_effects@BlockEvents.broken",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "skills/skill_effects@BlockEvents.rightClicked",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "skills/skill_effects@ItemEvents.crafted",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "skills/skill_effects@ItemEvents.entityInteracted",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "skills/skill_effects@ServerEvents.loaded",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "spawn_priest_tower@ServerEvents.loaded",
+     "script": "spawn_priest_tower.js"
+    },
+    {
+     "id": "spawn_protection@BlockEvents.broken",
+     "script": "spawn_protection.js"
+    },
+    {
+     "id": "spawn_protection@BlockEvents.placed",
+     "script": "spawn_protection.js"
+    },
+    {
+     "id": "spawn_village_protection@EntityEvents.spawned",
+     "script": "spawn_village_protection.js"
+    },
+    {
+     "id": "strip_infinity_ham@PlayerEvents.inventoryChanged",
+     "script": "strip_infinity_ham.js"
+    },
+    {
+     "id": "strip_infinity_ham@PlayerEvents.loggedIn",
+     "script": "strip_infinity_ham.js"
+    },
+    {
+     "id": "tatos_dimension_lock@EntityEvents.spawned",
+     "script": "tatos_dimension_lock.js"
+    },
+    {
+     "id": "tick_abyssArmorEffects@tick.server",
+     "script": "abyss/abyss_armor_effects.js"
+    },
+    {
+     "id": "tick_abyssRingEffects@tick.server",
+     "script": "abyss/abyss_ring_effects.js"
+    },
+    {
+     "id": "tick_affixEffects@tick.server",
+     "script": "affixes/affix_effects.js"
+    },
+    {
+     "id": "tick_apothGemRepair@tick.player",
+     "script": "apotheosis_gem_repair.js"
+    },
+    {
+     "id": "tick_aptitudeXpRefund@tick.server",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "tick_armorWeight@tick.server",
+     "script": "armor_weight.js"
+    },
+    {
+     "id": "tick_ascensionChat@tick.server",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "tick_ascensionRefresh@tick.server",
+     "script": "endgame/ascension.js"
+    },
+    {
+     "id": "tick_attributeSync@tick.player",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "tick_battlemageManaShield@tick.server",
+     "script": "origins/battlemage_mana_shield.js"
+    },
+    {
+     "id": "tick_blazebornNetherAffinity@tick.player",
+     "script": "origins/origin_effects.js"
+    },
+    {
+     "id": "tick_bossBonfire@tick.player",
+     "script": "bonfire/boss_bonfire_system.js"
+    },
+    {
+     "id": "tick_bossCompassHud@tick.player",
+     "script": "bonfire/boss_compass_handler.js"
+    },
+    {
+     "id": "tick_classAttributeBonuses@tick.server",
+     "script": "attributes/class_attribute_bonuses.js"
+    },
+    {
+     "id": "tick_classPassives@tick.server",
+     "script": "origins/class_passives.js"
+    },
+    {
+     "id": "tick_classRespecWatch@tick.player",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "tick_codexBookSweep@tick.server",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "tick_codexChatProcessor@tick.server",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "tick_codexDimEntryBonus@tick.player",
+     "script": "exploration/codex_exploration_kills.js"
+    },
+    {
+     "id": "tick_codexOriginDump@tick.server",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "tick_codexStarterCheck@tick.server",
+     "script": "codex_delivery.js"
+    },
+    {
+     "id": "tick_deathPenaltyBrokenCheck@tick.player",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "tick_dimEnvironmentalHazards@tick.player",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "tick_dna_simple_staves_buffs@tick.server",
+     "script": "integration/dna_simple_staves_buffs.js"
+    },
+    {
+     "id": "tick_dragonSummonCrystal@tick.server",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "tick_dragonsInfluence@tick.player",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "tick_durabilityFullSweep@tick.player",
+     "script": "death_penalty.js"
+    },
+    {
+     "id": "tick_enchantConvergence@tick.server",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "tick_enchantLunarStride@tick.server",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "tick_enchantPeriodicEffects@tick.server",
+     "script": "enchantments/enchant_effects.js"
+    },
+    {
+     "id": "tick_endExplorationTracking@tick.player",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "tick_enderianShift@tick.player",
+     "script": "origins/origin_effects.js"
+    },
+    {
+     "id": "tick_enhancedVoidCorruption@tick.player",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "tick_equipmentHpHalving@tick.server",
+     "script": "class/equipment_hp_halving.js"
+    },
+    {
+     "id": "tick_fullMoonDetection@tick.player",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "tick_glassCannonTagCheck@tick.server",
+     "script": "class/equipment_hp_halving.js"
+    },
+    {
+     "id": "tick_healingReceived@tick.player",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "tick_heraclesReconcilePeriodic@tick.server",
+     "script": "quests/heracles_reconcile.js"
+    },
+    {
+     "id": "tick_heraclesReconcileRecheck@tick.server",
+     "script": "quests/heracles_reconcile.js"
+    },
+    {
+     "id": "tick_hungerManagement@tick.server",
+     "script": "food/hunger_management.js"
+    },
+    {
+     "id": "tick_icraftLive@tick.server",
+     "script": "zzz_icraft_live.js"
+    },
+    {
+     "id": "tick_idleHungerPause@tick.server",
+     "script": "idle_hunger_pause.js"
+    },
+    {
+     "id": "tick_justlevelingSkills@tick.server",
+     "script": "skills/justleveling_skills.js"
+    },
+    {
+     "id": "tick_manaPoolBonuses@tick.server",
+     "script": "attributes/mana_pool_bonuses.js"
+    },
+    {
+     "id": "tick_masteryTax@tick.server",
+     "script": "skills/mastery_tax.js"
+    },
+    {
+     "id": "tick_milestoneTierEnsure@tick.server",
+     "script": "gates/milestone_detection.js"
+    },
+    {
+     "id": "tick_onboardingBridge@tick.player",
+     "script": "quests/onboarding_bridge.js"
+    },
+    {
+     "id": "tick_originEffectsAvianMerling@tick.server",
+     "script": "origins/origin_effects.js"
+    },
+    {
+     "id": "tick_phantomUndeath@tick.server",
+     "script": "origins/phantom_undeath.js"
+    },
+    {
+     "id": "tick_regenControl@tick.player",
+     "script": "regen_control.js"
+    },
+    {
+     "id": "tick_revenantShadowStrike@tick.server",
+     "script": "origins/origin_effects.js"
+    },
+    {
+     "id": "tick_skillEffects@tick.server",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "tick_skillRespec@tick.server",
+     "script": "respec/class_respec.js"
+    },
+    {
+     "id": "tick_spawnVillageSweep@tick.server",
+     "script": "spawn_village_protection.js"
+    },
+    {
+     "id": "tick_spellBookSnapshot@tick.player",
+     "script": "origins/spell_book_transfer.js"
+    },
+    {
+     "id": "tick_sunlightSmite@tick.server",
+     "script": "sunlight_smite.js"
+    },
+    {
+     "id": "tick_terramityTetraPerks@tick.server",
+     "script": "tetra_terramity_perks.js"
+    },
+    {
+     "id": "tick_ultrisJanitor@tick.server",
+     "script": "ultris_randomizer_janitor.js"
+    },
+    {
+     "id": "tick_voidCorruptionCleanse@tick.server",
+     "script": "scaling/dimension_mechanics.js"
+    },
+    {
+     "id": "tick_witchOfInkBuffs@tick.server",
+     "script": "origins/witch_of_ink_progression.js"
+    },
+    {
+     "id": "tick_witherbornSlimebodied@tick.server",
+     "script": "origins/witherborn_slimebodied.js"
+    },
+    {
+     "id": "tick_xpMultiplier@tick.server",
+     "script": "attributes/attribute_sync.js"
+    },
+    {
+     "id": "zzz_icraft_live@PlayerEvents.loggedIn",
+     "script": "zzz_icraft_live.js"
+    },
+    {
+     "id": "zzz_icraft_live@ServerEvents.commandRegistry",
+     "script": "zzz_icraft_live.js"
+    },
+    {
+     "id": "zzz_icraft_live@ServerEvents.unloaded",
+     "script": "zzz_icraft_live.js"
+    }
+   ]
+  },
+  "startup": {
+   "log": "kubejs/startup.log",
+   "tree": "server_distribution/kubejs/startup_scripts",
+   "count": 11,
+   "digest": "25a95564655610e8",
+   "late": [],
+   "at_boot": [
+    "boss_compass_item@StartupEvents.registry",
+    "codex_progression_tokens@StartupEvents.registry",
+    "cursed_pyramid_items@StartupEvents.registry",
+    "custom_enchantments@StartupEvents.registry",
+    "custom_items#2@StartupEvents.registry",
+    "custom_items@StartupEvents.registry",
+    "endgame_items@StartupEvents.registry",
+    "hulk_hammer_durability@ItemEvents.modification",
+    "sigil_registry@StartupEvents.registry",
+    "terramity_weapon_durability@ItemEvents.modification",
+    "virtual_gold_durability@ItemEvents.modification"
+   ],
+   "registrations": [
+    {
+     "id": "boss_compass_item@StartupEvents.registry",
+     "script": "boss_compass_item.js"
+    },
+    {
+     "id": "codex_progression_tokens@StartupEvents.registry",
+     "script": "codex_progression_tokens.js"
+    },
+    {
+     "id": "cursed_pyramid_items@StartupEvents.registry",
+     "script": "cursed_pyramid_items.js"
+    },
+    {
+     "id": "custom_enchantments@StartupEvents.registry",
+     "script": "custom_enchantments.js"
+    },
+    {
+     "id": "custom_items#2@StartupEvents.registry",
+     "script": "custom_items.js"
+    },
+    {
+     "id": "custom_items@StartupEvents.registry",
+     "script": "custom_items.js"
+    },
+    {
+     "id": "endgame_items@StartupEvents.registry",
+     "script": "endgame_items.js"
+    },
+    {
+     "id": "hulk_hammer_durability@ItemEvents.modification",
+     "script": "hulk_hammer_durability.js"
+    },
+    {
+     "id": "sigil_registry@StartupEvents.registry",
+     "script": "sigil_registry.js"
+    },
+    {
+     "id": "terramity_weapon_durability@ItemEvents.modification",
+     "script": "terramity_weapon_durability.js"
+    },
+    {
+     "id": "virtual_gold_durability@ItemEvents.modification",
+     "script": "virtual_gold_durability.js"
+    }
+   ]
+  },
+  "client": {
+   "log": "kubejs/client.log",
+   "tree": "distribution/client/kubejs/client_scripts",
+   "count": 8,
+   "digest": "1f0500cb34f3b90d",
+   "late": [],
+   "at_boot": [],
+   "registrations": [
+    {
+     "id": "armor_weight_tooltip@ItemEvents.tooltip",
+     "script": "armor_weight_tooltip.js"
+    },
+    {
+     "id": "broken_tooltip@ItemEvents.tooltip",
+     "script": "broken_tooltip.js"
+    },
+    {
+     "id": "dna_simple_staves_tooltip@ItemEvents.tooltip",
+     "script": "dna_simple_staves_tooltip.js"
+    },
+    {
+     "id": "enchanted_book_tooltip_fix@ItemEvents.tooltip",
+     "script": "enchanted_book_tooltip_fix.js"
+    },
+    {
+     "id": "food_dedup_jei_hide@JEIEvents.hideItems",
+     "script": "food_dedup_jei_hide.js"
+    },
+    {
+     "id": "jei_hiding@JEIEvents.hideItems",
+     "script": "jei_hiding.js"
+    },
+    {
+     "id": "mekasuit_mk2_tooltip@ItemEvents.tooltip",
+     "script": "mekasuit_mk2_tooltip.js"
+    },
+    {
+     "id": "reforged_armor_enchant_tooltip@ItemEvents.tooltip",
+     "script": "reforged_armor_enchant_tooltip.js"
+    }
+   ]
+  }
+ },
+ "fired": {
+  "server": {
+   "sections": [
+    {
+     "name": "endgame/mythic_forge/section-1-mythic-forge-crafting-recipe",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/section-2-rift-keystone-recipe",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/section-3-void-coffer-recipe",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/mythic-catalyst-i-5-shards-2-void-fragments",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/mythic-catalyst-ii-5-shards-4-void-fragments",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/mythic-catalyst-iii-shards-fragments-1",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/mythic-catalyst-iv-shards-fragments-2",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/mythic-catalyst-v-shards-fragments-essences",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/section-5-mythic-reforge-token",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/voidheart-blade-on-kill-damage-stacking",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/oblivion-aegis-death-delay-chestplate",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/riftwalker-boots-teleport-speed-boots",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "endgame/mythic_forge/oblivion-crown-wallhack-vision-first-strike",
+     "of": "endgame/mythic_forge@ServerEvents.recipes"
+    },
+    {
+     "name": "loot/abyss_boss_loot/section-1-the-five-structure-chest-rings",
+     "of": "loot/abyss_boss_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/abyss_boss_loot/section-2-custom-ring-drops-boss-kills",
+     "of": "loot/abyss_boss_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/abyss_boss_loot/section-4-unorithe-armor-set-higher-tier",
+     "of": "loot/abyss_boss_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/abyss_boss_loot/section-6-abyssal-celestial-artifacts-the",
+     "of": "loot/abyss_boss_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/codex_exploration_drops/t1-overworld-dungeon-structure-chests-only",
+     "of": "loot/codex_exploration_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/codex_exploration_drops/t2-twilight-forest-aether-blue-skies-every",
+     "of": "loot/codex_exploration_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/codex_exploration_drops/t3-nether-undergarden-deeper-darker-the",
+     "of": "loot/codex_exploration_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/codex_exploration_drops/t4-end-every-chest-in-the-dimension",
+     "of": "loot/codex_exploration_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/codex_exploration_drops/occasional-enemy-drops-3-occasionally",
+     "of": "loot/codex_exploration_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-2-bosses-twilight-forest",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-2-bosses-blue-skies",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-2-bosses-aether",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-2-3-bridge-deep-aether",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-3-bosses-cataclysm",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-3-bosses-undergarden",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-3-bosses-deeper-darker",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-3-bosses-vanilla",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/tier-4-bosses-ender-dragon-gaia-guardian",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/section-2-structure-chest-loot-token",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/section-3-remove-tier-breaking-loot",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/dungeons-arise-verified-namespace-dungeons",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/yungs-better-dungeons-verified-common",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/yungs-better-strongholds-verified-library",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/yungs-better-fortresses-verified-common",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/valhelsia-structures-verified-present",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/choicetheorems-overhauled-village-verified",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/section-5-enchanted-book-removal-from",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/section-6-fishing-loot-tier-gating",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/loot_overhaul/section-7-mob-drop-stripping-gear-tier",
+     "of": "loot/loot_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/arcane-essence-injection",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/full-robe-piece-drops",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/relic-deny-the-one-deny-set-for-every-relic",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/relic-deny-the-one-deny-set-for-every-relic-2",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/terramity-gun-ammo-gun-armor-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/terramity-armor-set-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/terramity-non-gun-epic-curio-melee-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/compass-of-return-2.5-in-cave-structure",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-1b-global-magic-item-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/iss-chest-re-adds",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ars-nouveau-spell-books",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ars-nouveau-glyphs",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ars-nouveau-glyphs-2",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ars-nouveau-glyphs-3",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ars-nouveau-glyphs-4",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/off-tier-glyph-strips",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t1-pool-overworld",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t2-pool-twilight-forest-aether-blue-skies",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t3-pool-nether-undergarden",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t4-pool-end",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/flight-ring-ultra-rare-end-standalone",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/explorify",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/villages-pillages",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/unwrecked-ships",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/better-desert-temples-storage-tier",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/better-desert-temples-mid-tier",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/better-desert-temples-pharaoh-tier",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/celestial-artifacts",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/keebsz-battle-towers",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/irons-spellbooks-structures",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/moogs-end-structures",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/when-dungeons-arise",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/valhelsia-structures",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/idas-integrated-dungeons-and-structures",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/dungeons-plus",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/dungeon-crawl",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/structory-t1-overworld",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/structory-towers-t1-t2-overworld",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/universal-strip-kill-tier-breakers-across",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/universal-t1-magic-progression-kit",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/tier-3-master-chests-bonus-magic-drops",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/yungs-better-dungeons",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/yungs-better-strongholds",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/yungs-better-nether-fortresses",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/yungs-better-ocean-monuments",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/blue-skies",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/blue-skies-runic-arc-as-very-rare-structure",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/blue-skies-dusk-arc-is-removed-from-the-pack",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/aether",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/deep-aether",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/undergarden",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/deeper-and-darker",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/cataclysm-structures",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/twilight-forest",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/choicetheorems-overhauled-village",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/explorations",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-5-diamond-netherite-removal-from",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-4d-village-house-chests-tools-magic",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/village-house-clutter-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/butcher-chest-guaranteed-meat",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/farmers-delight-seeds-in-grass-tall-grass",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-4e-t1-iron-baseline-guarantee-iron",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/full-removals-horse-armor-spider-eyes",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/gunpowder-50-reduction",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/string-50-reduction",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/bones-50-reduction",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/name-tags-60-reduction",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-5a1.5-pre-t3-diamond-hard-strip",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/belt-and-suspenders-explicit-per-table",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/wide-regex-catch-all-any-chest-pathed-table",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/pre-t3-diamonds-outside-the-chest-context",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-5a3-irons-spells-tiered-loot",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/non-meat-food-items-to-reduce",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/remove-unstackable-food-entirely",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/village-food-seed-boost-registration",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/family-ovdb-dungeoneering-supplies",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/family-ovdp-decrepit-theme",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/family-ovds-web-venom-theme",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/add-small-chance-of-a-bed-in-overworld",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/remove-modded-foods-from-structure-chests",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/remove-tier-gated-mod-items-from-overworld",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/vanilla-ocean-structures-shipwrecks-ocean",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/ocean-structure-curio-drops-heavily-oceanic",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/yungs-better-ocean-monuments-premium-ocean",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-6-village-chest-loot-restrictions",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-6-village-chest-loot-restrictions-2",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/village-chest-sanitization",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/predicate-catch-all-strip-any-artifact-that",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/village-artifact-pool",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/rotten-flesh-strip-modded-villages-werent",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-6b-village-qol-roll-magic-material",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/natures-compass-base-sophisticated-backpack",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t1-marquees",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t2-marquees",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t3-marquees",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/t4-marquees",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-8a-village-chest-affix-gear-white",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/section-8b-boosted-magic-materials-in",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/moved-to-server-scripts-loot-fragment-core",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/floor-1-3",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/floor-4-6",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/floor-7-10",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/simply-swords-unique-strip-chest-tables-only",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lovely_pieces_loot/t1-curated-overworld-dungeon-structure",
+     "of": "loot/lovely_pieces_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lovely_pieces_loot/t2-progression-dimensions-every-chest",
+     "of": "loot/lovely_pieces_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lovely_pieces_loot/t3-nether-tier-dimensions-endgame-overworld",
+     "of": "loot/lovely_pieces_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lovely_pieces_loot/t4-legendaries-boss-drops-only-.-10-per",
+     "of": "loot/lovely_pieces_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/terramity_structure_drops/t3-exodium-chthonic-dungeon-chthonian-breach",
+     "of": "loot/terramity_structure_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/terramity_structure_drops/t3-reverium-the-two-nether-dungeons",
+     "of": "loot/terramity_structure_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/terramity_structure_drops/t4-nyxium-boss-drop-instead-of-structure",
+     "of": "loot/terramity_structure_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/terramity_structure_drops/epic-curios-from-audit-phase-4.1-themed-by",
+     "of": "loot/terramity_structure_drops@LootJS.modifiers"
+    },
+    {
+     "name": "loot/terramity_structure_drops/rare-tomes-bracelets-audit-phase-5-closure",
+     "of": "loot/terramity_structure_drops@LootJS.modifiers"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-a-rocket-workbench-gateway-item",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-b-jet-suit-remove-entirely",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-c-tier-1-rocket",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-d-tier-2-rocket",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-e-tier-3-rocket",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-f-tier-4-rocket",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/ad_astra_gating/section-g-mekasuit-mk2-ultimate-armor",
+     "of": "recipes/ad_astra_gating@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/soups-stews",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/main-dishes",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/feast-tier-dishes",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/side-items",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/sweets-desserts",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/nethers-delight-nether-themed-cooking-pot",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/cultural-delights-cultural-food-recipes",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/delightful-extra-food-variety",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/brewin-and-chewin-brewing-fermentation",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/cooking_conversion/alexs-delight-alexs-mobs-food-integration",
+     "of": "recipes/cooking_conversion@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/if_latex_rework/section-a-logs-latex",
+     "of": "recipes/if_latex_rework@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/if_latex_rework/section-b-mekanism-hdpe-latex-items",
+     "of": "recipes/if_latex_rework@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/if_latex_rework/section-c-direct-latex-fluid-dry-rubber",
+     "of": "recipes/if_latex_rework@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/if_latex_rework/section-d-hdpe-circuit-board-industrial",
+     "of": "recipes/if_latex_rework@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/if_latex_rework/section-e-hdpe-circuit-as-alternative",
+     "of": "recipes/if_latex_rework@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/moon-stone-helium-3-titanium-dust-iron",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/mars-stone-ferric-oxide-cryogenic-crystal",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/mercury-stone-solar-crystal-rare-earth-dust",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/venus-stone-sulfuric-compound-pressure",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/glacio-stone-alien-isotope-cryogenic",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/moon-stone",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/mars-stone",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/mercury-stone",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/venus-stone",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/glacio-stone",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/planetary_extraction/section-c-water-fusion-fuel",
+     "of": "recipes/planetary_extraction@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-a-create-recipe-leaks",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-b-thermal-expansion-leaks",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-c-mekanism-leaks",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-d-industrial-foregoing-leaks",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-e-ars-nouveau-occultism-botania",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-f-miscellaneous-cross-mod-leaks",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-h-darkorb-orb-of-origin-recipe-gate",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-i-terramity-remove-guns-armor",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-j-mekanism-tool-armor-removal",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-k-the-abyss-ring-recipe-removal",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-l-blue-skies-dusk-arc-shadow-armor",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/recipe_audit/section-m-blue-skies-material-stat-nerfs",
+     "of": "recipes/recipe_audit@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-1-remove-default-rs-recipes",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-2-shared-component-machine-casing",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-3-quartz-enriched-iron-base-crafting",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/basic-processor",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/improved-processor",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/advanced-processor",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-5-controller-core-of-the-rs-network",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-6-grid-crafting-grid",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-7-disk-drive",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-8-crafter",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-9-cable",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-10-storage-parts-dual-path-with-hybrid",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/refined_storage_dualpath/step-11-tier-4-advanced-rsinfinitybooster",
+     "of": "recipes/refined_storage_dualpath@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/staff_wand_recipes/dans-magic-strip-nether-tier-recipes",
+     "of": "recipes/staff_wand_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/staff_wand_recipes/simple-staves-strip-mods-netherite-stick",
+     "of": "recipes/staff_wand_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-a-diamond-netherite-gate",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-b-mod-machine-tier-gates",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-c-cross-mod-material-leaks",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-d-vanilla-recipe-cleanup",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-e-simply-swords-unique-removal",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/drops-2-no-runic-crafting",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-k-staff-wand-drop-only-enforcement",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-f-apotheosis-workstation-recipes",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-g-exploit-closures",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-h-enchant-utility-workstations-t2",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i-icarus-wings-t3",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i.7-ars-apprentice-spell-book-t2",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i.8-iss-arcane-anvil-t2",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i.9-iss-mana-ring-t2",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i.10-disenchanting-disenchanter-t1",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-i.11-torchmaster-megatorch-t1",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/tier_gated_recipes/section-j-compass-of-return",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/remove-all-default-waystone-recipes",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/waystone-core-the-universal-gating-component",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/waystone-blocks-all-require-core-themed",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/sharestone-same-core-cost-dye-for-color",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/warp-plate-expensive-utility-block",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/portstone-public-waystone-even-more",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    },
+    {
+     "name": "recipes/waystone_recipes/utility-items-moderate-cost-no-core-required",
+     "of": "recipes/waystone_recipes@ServerEvents.recipes"
+    }
+   ],
+   "features": []
+  },
+  "startup": {
+   "sections": [
+    {
+     "name": "custom_enchantments/category-1-dimensional-survival",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-2-resource-enhancement",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-3-scaling-combat",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-4-anti-boss",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-5-path-synergy",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-6-utility-survival",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_enchantments/category-7-planetary-hazard-protection",
+     "of": "custom_enchantments@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/progression-tokens",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/boss-materials",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/waystone-crafting-material",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/reforging-tokens",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/short-name-token-aliases",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/compass-of-return",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/dragon-summoning-crystal",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/endgame-materials",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "custom_items/abyss-custom-rings",
+     "of": "custom_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/rift-exclusive-drop-materials",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/mythic-forge-crafting-station",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/mythic-infusion-catalysts",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/void-coffer-rift-banking-item",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/reforge-token-used-for-mythic-reforging",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/moon-extraction",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/mars-extraction",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/mercury-extraction",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/venus-extraction",
+     "of": "endgame_items@StartupEvents.registry"
+    },
+    {
+     "name": "endgame_items/glacio-extraction",
+     "of": "endgame_items@StartupEvents.registry"
+    }
+   ],
+   "features": []
+  },
+  "client": {
+   "sections": [],
+   "features": []
+  }
+ },
+ "entries": [
+  {
+   "id": "armed:0_lib_aptitudes.js",
+   "owner": "kubejs/server_scripts/0_lib_aptitudes.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_aptitudes\\.js#\\d+: \\[IridescentCraft\\] 0_lib_aptitudes loaded -- global\\.icraft\\.aptitude .* direct AptitudeCapability read",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 43 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:0_lib_core.js",
+   "owner": "kubejs/server_scripts/0_lib_core.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_core\\.js#\\d+: \\[IridescentCraft\\] 0_lib_core loaded -- global\\.icraft\\.core",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (2 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:0_lib_origins.js",
+   "owner": "kubejs/server_scripts/0_lib_origins.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_origins\\.js#\\d+: \\[IridescentCraft\\] 0_lib_origins loaded -- global\\.icraft\\.origin",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 41 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:0_lib_registry.js",
+   "owner": "kubejs/server_scripts/0_lib_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_registry\\.js#\\d+: \\[icraft\\.registry\\] loaded -- bosses: \\d+ entries .* dimensions: \\d+ entries",
+   "must_not": [
+    "\\[icraft\\.registry\\] NOT LOADED"
+   ],
+   "note": "the boss and dimension registries (kubejs/config/icraft/registry/*.json) were read and accepted; every roster script asks them",
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:0_server_ready_banner.js",
+   "owner": "kubejs/server_scripts/0_server_ready_banner.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_server_ready_banner\\.js#\\d+:\\s+>>>\\s+IridescentCraft Server READY",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:0_tick_master.js:player",
+   "owner": "kubejs/server_scripts/0_tick_master.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) player tick functions",
+   "min": 19,
+   "note": "floor = the count on 2026-10-11",
+   "proves": "own-check",
+   "why": "checks more than presence: a count below `min` means something stopped registering; and it is printed inside the handler of ServerEvents.loaded"
+  },
+  {
+   "id": "armed:0_tick_master.js:server",
+   "owner": "kubejs/server_scripts/0_tick_master.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) server tick functions",
+   "min": 43,
+   "note": "floor = the count on 2026-10-11; a tick function that stops registering drops the count",
+   "proves": "own-check",
+   "why": "checks more than presence: a count below `min` means something stopped registering; and it is printed inside the handler of ServerEvents.loaded"
+  },
+  {
+   "id": "armed:attributes/iss_school_to_ars_glyph.js",
+   "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_glyph.js",
+   "log": "kubejs/server.log",
+   "pattern": "attributes/iss_school_to_ars_glyph\\.js#\\d+: \\[iss_school_to_ars_glyph\\] loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:attributes/iss_school_to_ars_spell.js",
+   "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_spell.js",
+   "log": "kubejs/server.log",
+   "pattern": "attributes/iss_school_to_ars_spell\\.js#\\d+: \\[iss_school_to_ars\\] loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:bonfire/boss_arena_registry.js",
+   "owner": "kubejs/server_scripts/bonfire/boss_arena_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "bonfire/boss_arena_registry\\.js#\\d+: \\[iridescent/boss_arenas\\] registry loaded",
+   "proves": "no-registration",
+   "why": "the script registers nothing the generated set can see (it publishes a table other scripts read): the line is the only sign that it ran to its end"
+  },
+  {
+   "id": "armed:death_penalty.js",
+   "owner": "kubejs/server_scripts/death_penalty.js",
+   "log": "kubejs/server.log",
+   "pattern": "death_penalty\\.js#\\d+: \\[IridescentCraft\\] keepInventory enabled",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:endgame/mythic_forge.js",
+   "owner": "kubejs/server_scripts/endgame/mythic_forge.js",
+   "log": "kubejs/server.log",
+   "pattern": "endgame/mythic_forge\\.js#\\d+: \\[IridescentCraft\\] Mythic Forge recipes loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:endgame/rift_mechanics.js",
+   "owner": "kubejs/server_scripts/endgame/rift_mechanics.js",
+   "log": "kubejs/server.log",
+   "pattern": "endgame/rift_mechanics\\.js#\\d+: \\[IridescentCraft\\] Rift loot mechanics loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:enemyexpansion_explosive_launch_blocker.js",
+   "owner": "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js",
+   "log": "kubejs/server.log",
+   "pattern": "enemyexpansion_explosive_launch_blocker\\.js#\\d+: \\[IridescentCraft\\] enemyexpansion_explosive_launch_blocker loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:gates/astages_restrictions.js",
+   "owner": "kubejs/server_scripts/gates/astages_restrictions.js",
+   "log": "kubejs/server.log",
+   "pattern": "gates/astages_restrictions\\.js#\\d+: \\[IridescentCraft\\] AStages native restrictions registered",
+   "must_not": [
+    "stage-gated recipes NOT registered"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:loot/boss_refight_repair_floors.js",
+   "owner": "kubejs/server_scripts/loot/boss_refight_repair_floors.js",
+   "log": "kubejs/server.log",
+   "pattern": "\\[boss_refight_repair_floors\\] registered [\\d.]+ refight-to-repair drop floors",
+   "note": "no script prefix on this line: KubeJS takes the trailing '(icraft #58)' of the message for the source position",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/0_entity_id_validator.js",
+   "owner": "kubejs/server_scripts/loot/0_entity_id_validator.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/0_entity_id_validator\\.js#\\d+: \\[ENTITY-ID-VALIDATOR\\] all entity ids resolve \\([\\d.]+ entity loot modifiers",
+   "must_not": [
+    "UNRESOLVABLE ENTITY ID"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:loot/abyss_boss_loot.js",
+   "owner": "kubejs/server_scripts/loot/abyss_boss_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/abyss_boss_loot\\.js#\\d+: \\[IridescentCraft\\] abyss_boss_loot\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/alexsmobs_drops.js",
+   "owner": "kubejs/server_scripts/loot/alexsmobs_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/alexsmobs_drops\\.js#\\d+: \\[alexsmobs_drops\\] registered [\\d.]+ entity loot modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/blue_skies_drops.js",
+   "owner": "kubejs/server_scripts/loot/blue_skies_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/blue_skies_drops\\.js#\\d+: \\[blue_skies_drops\\] registered [\\d.]+ Blue Skies boss synergy",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/boss_arena_material_tease.js",
+   "owner": "kubejs/server_scripts/loot/boss_arena_material_tease.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/boss_arena_material_tease\\.js#\\d+: \\[boss_arena_material_tease\\] registered [\\d.]+ arena material teases",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/boss_unique_drops.js",
+   "owner": "kubejs/server_scripts/loot/boss_unique_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/boss_unique_drops\\.js#\\d+: \\[boss_unique_drops\\] [\\d.]+ boss-exclusive unique drops registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/cataclysm_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/cataclysm_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/cataclysm_boss_drops\\.js#\\d+: \\[cataclysm_boss_drops\\] registered [\\d.]+ Cataclysm boss synergy",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/crop_seed_reduction.js",
+   "owner": "kubejs/server_scripts/loot/crop_seed_reduction.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/crop_seed_reduction\\.js#\\d+: \\[IridescentCraft\\] Crop seed reduction loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/dimensional_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/dimensional_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/dimensional_boss_drops\\.js#\\d+: \\[dimensional_boss_drops\\] registered [\\d.]+ dimension/mutant boss",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/iss_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/iss_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/iss_boss_drops\\.js#\\d+: \\[iss_boss_drops\\] registered [\\d.]+ entity loot modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/lootjs_overhaul.js",
+   "owner": "kubejs/server_scripts/loot/lootjs_overhaul.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/lootjs_overhaul\\.js#\\d+: \\[IridescentCraft\\] LootJS structure chest overhaul loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/lovely_pieces_loot.js",
+   "owner": "kubejs/server_scripts/loot/lovely_pieces_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/lovely_pieces_loot\\.js#\\d+: \\[lovely-pieces-loot\\] tier pools wired",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/mahou_synergy_drops.js",
+   "owner": "kubejs/server_scripts/loot/mahou_synergy_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/mahou_synergy_drops\\.js#\\d+: \\[mahou_synergy_drops\\] registered [\\d.]+ Mahou Tsukai reagent",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/majrusz_skeleton_punch_strip.js",
+   "owner": "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/majrusz_skeleton_punch_strip\\.js#\\d+: \\[icraft-loot\\] Majrusz skeleton Punch-strip registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/planetary_loot.js",
+   "owner": "kubejs/server_scripts/loot/planetary_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/planetary_loot\\.js#\\d+: \\[IridescentCraft\\] planetary_loot\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/staff_wand_drops.js",
+   "owner": "kubejs/server_scripts/loot/staff_wand_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/staff_wand_drops\\.js#\\d+: \\[staff_wand_drops\\] loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/stalwart_dungeons_drops.js",
+   "owner": "kubejs/server_scripts/loot/stalwart_dungeons_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/stalwart_dungeons_drops\\.js#\\d+: \\[stalwart_dungeons_drops\\] registered [\\d.]+ Stalwart nether mini-boss",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/terramity_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/terramity_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/terramity_boss_drops\\.js#\\d+: \\[terramity_boss_drops\\] registered [\\d.]+ non-gun EPIC weapon",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/tmb_plain_bow_effects.js",
+   "owner": "kubejs/server_scripts/loot/tmb_plain_bow_effects.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/tmb_plain_bow_effects\\.js#\\d+: \\[tmb_plain_bow_effects\\] wired theme effects for [\\d.]+ plain TMB bows",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/twilight_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/twilight_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/twilight_boss_drops\\.js#\\d+: \\[twilight_boss_drops\\] registered [\\d.]+ TF boss synergy modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/unique_itemset_registry.js",
+   "owner": "kubejs/server_scripts/loot/unique_itemset_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_itemset_registry\\.js#\\d+: \\[unique_itemset_registry\\] [\\d.]+ uniques registered",
+   "proves": "no-registration",
+   "why": "the script registers nothing the generated set can see (it publishes a table other scripts read): the line is the only sign that it ran to its end"
+  },
+  {
+   "id": "armed:loot/unique_tier_buff.js",
+   "owner": "kubejs/server_scripts/loot/unique_tier_buff.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] arrow tagger armed",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/unique_tier_buff.js#2",
+   "owner": "kubejs/server_scripts/loot/unique_tier_buff.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] tier-scaled damage handler registered",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/zz_pack_enchanted_books.js",
+   "owner": "kubejs/server_scripts/loot/zz_pack_enchanted_books.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zz_pack_enchanted_books\\.js#\\d+: \\[icraft-loot\\] [\\d.]+ marquee enchanted-book modifiers registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/zz_unique_chest_strip.js",
+   "owner": "kubejs/server_scripts/loot/zz_unique_chest_strip.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zz_unique_chest_strip\\.js#\\d+: \\[zz_unique_chest_strip\\] insurance strip armed for [\\d.]+ TMB bows",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/zzz_iss_scroll_tier_clamp.js",
+   "owner": "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zzz_iss_scroll_tier_clamp\\.js#\\d+: \\[iss_scroll_tier_clamp\\] armed",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:mutant_xp_boost.js",
+   "owner": "kubejs/server_scripts/mutant_xp_boost.js",
+   "log": "kubejs/server.log",
+   "pattern": "mutant_xp_boost\\.js#\\d+: \\[IridescentCraft\\] mutant_xp_boost loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/battlemage_arcane_cleave.js",
+   "owner": "kubejs/server_scripts/origins/battlemage_arcane_cleave.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/battlemage_arcane_cleave\\.js#\\d+: \\[IridescentCraft\\] battlemage_arcane_cleave loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/class_passives_phase6h.js",
+   "owner": "kubejs/server_scripts/origins/class_passives_phase6h.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/class_passives_phase6h\\.js#\\d+: \\[IridescentCraft\\] class_passives_phase6h loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/origin_effects.js",
+   "owner": "kubejs/server_scripts/origins/origin_effects.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/origin_effects\\.js#\\d+: \\[IridescentCraft\\] Origins custom effects loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (3 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:recipes/ad_astra_gating.js",
+   "owner": "kubejs/server_scripts/recipes/ad_astra_gating.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/ad_astra_gating\\.js#\\d+: \\[IridescentCraft\\] ad_astra_gating\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/boss_material_processing.js",
+   "owner": "kubejs/server_scripts/recipes/boss_material_processing.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/boss_material_processing\\.js#\\d+: \\[IridescentCraft\\] Boss material processing recipes loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/cooking_conversion.js",
+   "owner": "kubejs/server_scripts/recipes/cooking_conversion.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/cooking_conversion\\.js#\\d+: \\[IridescentCraft\\] cooking_conversion\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/if_latex_rework.js",
+   "owner": "kubejs/server_scripts/recipes/if_latex_rework.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/if_latex_rework\\.js#\\d+: \\[IridescentCraft\\] IF latex rework \\+ HDPE circuits loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/mek_biofuel_squeeze.js",
+   "owner": "kubejs/server_scripts/recipes/mek_biofuel_squeeze.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/mek_biofuel_squeeze\\.js#\\d+: \\[IridescentCraft\\] mek_biofuel_squeeze\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/planetary_extraction.js",
+   "owner": "kubejs/server_scripts/recipes/planetary_extraction.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/planetary_extraction\\.js#\\d+: \\[IridescentCraft\\] planetary_extraction\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/recipe_audit.js",
+   "owner": "kubejs/server_scripts/recipes/recipe_audit.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/recipe_audit\\.js#\\d+: \\[IridescentCraft\\] recipe_audit\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/staff_wand_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/staff_wand_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/staff_wand_recipes\\.js#\\d+: \\[staff_wand_recipes\\] loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/tier_gated_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/tier_gated_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/tier_gated_recipes\\.js#\\d+: \\[IridescentCraft\\] P[\\d.]+ tier_gated_recipes\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/waystone_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/waystone_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/waystone_recipes\\.js#\\d+: \\[IridescentCraft\\] waystone_recipes\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:relic_boss_drops.js",
+   "owner": "kubejs/server_scripts/relic_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "relic_boss_drops\\.js#\\d+: \\[IridescentCraft\\] relic_boss_drops loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:respec/class_respec.js",
+   "owner": "kubejs/server_scripts/respec/class_respec.js",
+   "log": "kubejs/server.log",
+   "pattern": "respec/class_respec\\.js#\\d+: \\[class_respec\\] loaded",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 43 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:skills/justleveling_skills.js",
+   "owner": "kubejs/server_scripts/skills/justleveling_skills.js",
+   "log": "kubejs/server.log",
+   "pattern": "skills/justleveling_skills\\.js#\\d+: \\[IridescentCraft\\] JustLeveling Aptitude Skills loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:skills/mastery_tax.js",
+   "owner": "kubejs/server_scripts/skills/mastery_tax.js",
+   "log": "kubejs/server.log",
+   "pattern": "skills/mastery_tax\\.js#\\d+: \\[IridescentCraft\\] Mastery Tax loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:spawn_priest_tower.js",
+   "owner": "kubejs/server_scripts/spawn_priest_tower.js",
+   "log": "kubejs/server.log",
+   "pattern": "spawn_priest_tower\\.js#\\d+: \\[PRIEST-TOWER\\] spawn-village guarantee armed",
+   "must_not": [
+    "\\[PRIEST-TOWER\\] placing at"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:strip_anomalous_drops.js",
+   "owner": "kubejs/server_scripts/strip_anomalous_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "strip_anomalous_drops\\.js#\\d+: \\[IridescentCraft\\] strip_anomalous_drops loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:FishingHookMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: FishingHookMixin applied to \\S+ \\(1/1 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:EnchantmentMenuMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: EnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:ApothEnchantmentMenuMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: ApothEnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  }
+ ]
 }

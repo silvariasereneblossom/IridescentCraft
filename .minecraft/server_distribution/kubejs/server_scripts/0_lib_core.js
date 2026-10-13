@@ -703,6 +703,11 @@
   // (This script interpreter is slow enough that 21 separately registered
   // handlers, each re-reading the event, cost ~4x what the dead ones did on
   // EVERY hurt event; measured on the production Rhino build.)
+  // Liveness (icraft.live, 00_icraft_guard.js): a handler is ARMED under
+  // '<key>@hurt' / '<key>@hurt.late' when it is registered, and FIRED the
+  // first time its function returns (its gate was open and it did not throw).
+  // null with a guard file that has no `live` yet: nothing is recorded.
+  var live = (typeof icraft !== 'undefined' && icraft !== null && icraft.live) ? icraft.live : null
   var WHO = { 'any': 0, 'attacker': 1, 'attackerPlayer': 2, 'victimPlayer': 3, 'player': 4 }
   var handlers = []       // NORMAL phase: { key, fn, who, gate }
   var lateHandlers = []   // LATE phase (after every NORMAL handler of every script)
@@ -761,6 +766,10 @@
                     attackerIsPlayer: (mask & 2) !== 0, victimIsPlayer: (mask & 4) !== 0 }
           }
           h.fn(event, ctx)
+          if (h.fired === false) {
+            h.fired = true
+            if (live !== null) live.fire(h.live)
+          }
         } catch (e) {
           warnOnce('hurt:' + h.key, '[icraft.core] hurt handler ' + h.key + ' threw: ' + e)
         }
@@ -805,7 +814,8 @@
     return function (key, fn, who, gate) {
       var id = String(key)
       var code = WHO.hasOwnProperty(String(who)) ? WHO[String(who)] : 0
-      var entry = { key: id, fn: fn, who: code, gate: (typeof gate === 'function') ? gate : null }
+      var entry = { key: id, fn: fn, who: code, gate: (typeof gate === 'function') ? gate : null,
+                    fired: false, live: (live !== null) ? live.arm(id, phase === 'late' ? 'hurt.late' : 'hurt') : null }
       var replaced = false
       for (var i = 0; i < list.length; i++) {
         if (list[i].key === id) { list[i] = entry; replaced = true; break }

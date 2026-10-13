@@ -1,0 +1,936 @@
+{
+ "version": 2,
+ "about": [
+  "The HAND-KEPT part of the liveness manifest: log lines a healthy boot must print, matched by regex. dev/loud/gen_liveness.js copies `entries` into dev/loud/liveness_manifest.json (the file loud-check.ps1 reads); the ARMED ids and the FIRED names of that file are generated from the scripts and are not listed here.",
+  "A line belongs here only when it proves something the generated set does not. `proves` says which: handler-ran (printed inside a load-time handler: the event was posted and the handler got there), own-check (a `must_not` line or a `min` floor), direct-registry (a handler put straight on a Java registry of the mod, which has no id), no-registration (a script that only publishes a table), mixin (an in-house mixin applied), corpus (a load-time line that the replay corpus needs: see its `why`). `why` is the sentence for that entry.",
+  "Rules, unchanged: (1) an entry names its owner, so a commit that deletes or renames a feature removes or updates its entry (the generator refuses an entry whose owner script is gone); (2) `pattern` is a .NET regex searched in each line of `log`; script lines carry their own script path, which is part of the pattern; (3) `must_not` lists lines that mean the feature failed even though its line printed; (4) `min` is a floor for the first capture group of `pattern`.",
+  "A NEW script needs no entry: write its registrations with icraft.guard / registerServerTick / core.onHurt and regenerate. Add a line here only for one of the first five reasons above.",
+  "`dropped` records the 134-entry manifest of 2026-10-11: the entries that were removed on 2026-10-13 when the ARMED set became generated, each with the reason. `node --expose-internals dev/loud/gen_liveness.js --lines` prints where every kept line is printed and what its script registers."
+ ],
+ "boot_complete": {
+  "log": "latest.log",
+  "pattern": "Done \\(\\d+\\.\\d+s\\)!",
+  "note": "liveness is judged only once this line exists; before it the server is still starting (or died on the way)"
+ },
+ "entries": [
+  {
+   "id": "armed:0_lib_aptitudes.js",
+   "owner": "kubejs/server_scripts/0_lib_aptitudes.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_aptitudes\\.js#\\d+: \\[IridescentCraft\\] 0_lib_aptitudes loaded -- global\\.icraft\\.aptitude .* direct AptitudeCapability read",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 43 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:0_lib_core.js",
+   "owner": "kubejs/server_scripts/0_lib_core.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_core\\.js#\\d+: \\[IridescentCraft\\] 0_lib_core loaded -- global\\.icraft\\.core",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (2 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:0_lib_origins.js",
+   "owner": "kubejs/server_scripts/0_lib_origins.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_origins\\.js#\\d+: \\[IridescentCraft\\] 0_lib_origins loaded -- global\\.icraft\\.origin",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 41 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:0_lib_registry.js",
+   "owner": "kubejs/server_scripts/0_lib_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_lib_registry\\.js#\\d+: \\[icraft\\.registry\\] loaded -- bosses: \\d+ entries .* dimensions: \\d+ entries",
+   "must_not": [
+    "\\[icraft\\.registry\\] NOT LOADED"
+   ],
+   "note": "the boss and dimension registries (kubejs/config/icraft/registry/*.json) were read and accepted; every roster script asks them",
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:0_server_ready_banner.js",
+   "owner": "kubejs/server_scripts/0_server_ready_banner.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_server_ready_banner\\.js#\\d+:\\s+>>>\\s+IridescentCraft Server READY",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:0_tick_master.js:player",
+   "owner": "kubejs/server_scripts/0_tick_master.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) player tick functions",
+   "min": 19,
+   "note": "floor = the count on 2026-10-11",
+   "proves": "own-check",
+   "why": "checks more than presence: a count below `min` means something stopped registering; and it is printed inside the handler of ServerEvents.loaded"
+  },
+  {
+   "id": "armed:0_tick_master.js:server",
+   "owner": "kubejs/server_scripts/0_tick_master.js",
+   "log": "kubejs/server.log",
+   "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) server tick functions",
+   "min": 43,
+   "note": "floor = the count on 2026-10-11; a tick function that stops registering drops the count",
+   "proves": "own-check",
+   "why": "checks more than presence: a count below `min` means something stopped registering; and it is printed inside the handler of ServerEvents.loaded"
+  },
+  {
+   "id": "armed:attributes/iss_school_to_ars_glyph.js",
+   "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_glyph.js",
+   "log": "kubejs/server.log",
+   "pattern": "attributes/iss_school_to_ars_glyph\\.js#\\d+: \\[iss_school_to_ars_glyph\\] loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:attributes/iss_school_to_ars_spell.js",
+   "owner": "kubejs/server_scripts/attributes/iss_school_to_ars_spell.js",
+   "log": "kubejs/server.log",
+   "pattern": "attributes/iss_school_to_ars_spell\\.js#\\d+: \\[iss_school_to_ars\\] loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:bonfire/boss_arena_registry.js",
+   "owner": "kubejs/server_scripts/bonfire/boss_arena_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "bonfire/boss_arena_registry\\.js#\\d+: \\[iridescent/boss_arenas\\] registry loaded",
+   "proves": "no-registration",
+   "why": "the script registers nothing the generated set can see (it publishes a table other scripts read): the line is the only sign that it ran to its end"
+  },
+  {
+   "id": "armed:death_penalty.js",
+   "owner": "kubejs/server_scripts/death_penalty.js",
+   "log": "kubejs/server.log",
+   "pattern": "death_penalty\\.js#\\d+: \\[IridescentCraft\\] keepInventory enabled",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:endgame/mythic_forge.js",
+   "owner": "kubejs/server_scripts/endgame/mythic_forge.js",
+   "log": "kubejs/server.log",
+   "pattern": "endgame/mythic_forge\\.js#\\d+: \\[IridescentCraft\\] Mythic Forge recipes loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:endgame/rift_mechanics.js",
+   "owner": "kubejs/server_scripts/endgame/rift_mechanics.js",
+   "log": "kubejs/server.log",
+   "pattern": "endgame/rift_mechanics\\.js#\\d+: \\[IridescentCraft\\] Rift loot mechanics loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:enemyexpansion_explosive_launch_blocker.js",
+   "owner": "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js",
+   "log": "kubejs/server.log",
+   "pattern": "enemyexpansion_explosive_launch_blocker\\.js#\\d+: \\[IridescentCraft\\] enemyexpansion_explosive_launch_blocker loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:gates/astages_restrictions.js",
+   "owner": "kubejs/server_scripts/gates/astages_restrictions.js",
+   "log": "kubejs/server.log",
+   "pattern": "gates/astages_restrictions\\.js#\\d+: \\[IridescentCraft\\] AStages native restrictions registered",
+   "must_not": [
+    "stage-gated recipes NOT registered"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:loot/boss_refight_repair_floors.js",
+   "owner": "kubejs/server_scripts/loot/boss_refight_repair_floors.js",
+   "log": "kubejs/server.log",
+   "pattern": "\\[boss_refight_repair_floors\\] registered [\\d.]+ refight-to-repair drop floors",
+   "note": "no script prefix on this line: KubeJS takes the trailing '(icraft #58)' of the message for the source position",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/0_entity_id_validator.js",
+   "owner": "kubejs/server_scripts/loot/0_entity_id_validator.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/0_entity_id_validator\\.js#\\d+: \\[ENTITY-ID-VALIDATOR\\] all entity ids resolve \\([\\d.]+ entity loot modifiers",
+   "must_not": [
+    "UNRESOLVABLE ENTITY ID"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:loot/abyss_boss_loot.js",
+   "owner": "kubejs/server_scripts/loot/abyss_boss_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/abyss_boss_loot\\.js#\\d+: \\[IridescentCraft\\] abyss_boss_loot\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/alexsmobs_drops.js",
+   "owner": "kubejs/server_scripts/loot/alexsmobs_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/alexsmobs_drops\\.js#\\d+: \\[alexsmobs_drops\\] registered [\\d.]+ entity loot modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/blue_skies_drops.js",
+   "owner": "kubejs/server_scripts/loot/blue_skies_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/blue_skies_drops\\.js#\\d+: \\[blue_skies_drops\\] registered [\\d.]+ Blue Skies boss synergy",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/boss_arena_material_tease.js",
+   "owner": "kubejs/server_scripts/loot/boss_arena_material_tease.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/boss_arena_material_tease\\.js#\\d+: \\[boss_arena_material_tease\\] registered [\\d.]+ arena material teases",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/boss_unique_drops.js",
+   "owner": "kubejs/server_scripts/loot/boss_unique_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/boss_unique_drops\\.js#\\d+: \\[boss_unique_drops\\] [\\d.]+ boss-exclusive unique drops registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/cataclysm_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/cataclysm_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/cataclysm_boss_drops\\.js#\\d+: \\[cataclysm_boss_drops\\] registered [\\d.]+ Cataclysm boss synergy",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/crop_seed_reduction.js",
+   "owner": "kubejs/server_scripts/loot/crop_seed_reduction.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/crop_seed_reduction\\.js#\\d+: \\[IridescentCraft\\] Crop seed reduction loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/dimensional_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/dimensional_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/dimensional_boss_drops\\.js#\\d+: \\[dimensional_boss_drops\\] registered [\\d.]+ dimension/mutant boss",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/iss_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/iss_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/iss_boss_drops\\.js#\\d+: \\[iss_boss_drops\\] registered [\\d.]+ entity loot modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/lootjs_overhaul.js",
+   "owner": "kubejs/server_scripts/loot/lootjs_overhaul.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/lootjs_overhaul\\.js#\\d+: \\[IridescentCraft\\] LootJS structure chest overhaul loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/lovely_pieces_loot.js",
+   "owner": "kubejs/server_scripts/loot/lovely_pieces_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/lovely_pieces_loot\\.js#\\d+: \\[lovely-pieces-loot\\] tier pools wired",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/mahou_synergy_drops.js",
+   "owner": "kubejs/server_scripts/loot/mahou_synergy_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/mahou_synergy_drops\\.js#\\d+: \\[mahou_synergy_drops\\] registered [\\d.]+ Mahou Tsukai reagent",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/majrusz_skeleton_punch_strip.js",
+   "owner": "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/majrusz_skeleton_punch_strip\\.js#\\d+: \\[icraft-loot\\] Majrusz skeleton Punch-strip registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/planetary_loot.js",
+   "owner": "kubejs/server_scripts/loot/planetary_loot.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/planetary_loot\\.js#\\d+: \\[IridescentCraft\\] planetary_loot\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/staff_wand_drops.js",
+   "owner": "kubejs/server_scripts/loot/staff_wand_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/staff_wand_drops\\.js#\\d+: \\[staff_wand_drops\\] loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/stalwart_dungeons_drops.js",
+   "owner": "kubejs/server_scripts/loot/stalwart_dungeons_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/stalwart_dungeons_drops\\.js#\\d+: \\[stalwart_dungeons_drops\\] registered [\\d.]+ Stalwart nether mini-boss",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/terramity_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/terramity_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/terramity_boss_drops\\.js#\\d+: \\[terramity_boss_drops\\] registered [\\d.]+ non-gun EPIC weapon",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/tmb_plain_bow_effects.js",
+   "owner": "kubejs/server_scripts/loot/tmb_plain_bow_effects.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/tmb_plain_bow_effects\\.js#\\d+: \\[tmb_plain_bow_effects\\] wired theme effects for [\\d.]+ plain TMB bows",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/twilight_boss_drops.js",
+   "owner": "kubejs/server_scripts/loot/twilight_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/twilight_boss_drops\\.js#\\d+: \\[twilight_boss_drops\\] registered [\\d.]+ TF boss synergy modifiers",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/unique_itemset_registry.js",
+   "owner": "kubejs/server_scripts/loot/unique_itemset_registry.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_itemset_registry\\.js#\\d+: \\[unique_itemset_registry\\] [\\d.]+ uniques registered",
+   "proves": "no-registration",
+   "why": "the script registers nothing the generated set can see (it publishes a table other scripts read): the line is the only sign that it ran to its end"
+  },
+  {
+   "id": "armed:loot/unique_tier_buff.js",
+   "owner": "kubejs/server_scripts/loot/unique_tier_buff.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] arrow tagger armed",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/unique_tier_buff.js#2",
+   "owner": "kubejs/server_scripts/loot/unique_tier_buff.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/unique_tier_buff\\.js#\\d+: \\[unique_tier_buff\\] tier-scaled damage handler registered",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:loot/zz_pack_enchanted_books.js",
+   "owner": "kubejs/server_scripts/loot/zz_pack_enchanted_books.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zz_pack_enchanted_books\\.js#\\d+: \\[icraft-loot\\] [\\d.]+ marquee enchanted-book modifiers registered",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/zz_unique_chest_strip.js",
+   "owner": "kubejs/server_scripts/loot/zz_unique_chest_strip.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zz_unique_chest_strip\\.js#\\d+: \\[zz_unique_chest_strip\\] insurance strip armed for [\\d.]+ TMB bows",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:loot/zzz_iss_scroll_tier_clamp.js",
+   "owner": "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js",
+   "log": "kubejs/server.log",
+   "pattern": "loot/zzz_iss_scroll_tier_clamp\\.js#\\d+: \\[iss_scroll_tier_clamp\\] armed",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of LootJS.modifiers: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:mutant_xp_boost.js",
+   "owner": "kubejs/server_scripts/mutant_xp_boost.js",
+   "log": "kubejs/server.log",
+   "pattern": "mutant_xp_boost\\.js#\\d+: \\[IridescentCraft\\] mutant_xp_boost loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/battlemage_arcane_cleave.js",
+   "owner": "kubejs/server_scripts/origins/battlemage_arcane_cleave.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/battlemage_arcane_cleave\\.js#\\d+: \\[IridescentCraft\\] battlemage_arcane_cleave loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/class_passives_phase6h.js",
+   "owner": "kubejs/server_scripts/origins/class_passives_phase6h.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/class_passives_phase6h\\.js#\\d+: \\[IridescentCraft\\] class_passives_phase6h loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:origins/origin_effects.js",
+   "owner": "kubejs/server_scripts/origins/origin_effects.js",
+   "log": "kubejs/server.log",
+   "pattern": "origins/origin_effects\\.js#\\d+: \\[IridescentCraft\\] Origins custom effects loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (3 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:recipes/ad_astra_gating.js",
+   "owner": "kubejs/server_scripts/recipes/ad_astra_gating.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/ad_astra_gating\\.js#\\d+: \\[IridescentCraft\\] ad_astra_gating\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/boss_material_processing.js",
+   "owner": "kubejs/server_scripts/recipes/boss_material_processing.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/boss_material_processing\\.js#\\d+: \\[IridescentCraft\\] Boss material processing recipes loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/cooking_conversion.js",
+   "owner": "kubejs/server_scripts/recipes/cooking_conversion.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/cooking_conversion\\.js#\\d+: \\[IridescentCraft\\] cooking_conversion\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/if_latex_rework.js",
+   "owner": "kubejs/server_scripts/recipes/if_latex_rework.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/if_latex_rework\\.js#\\d+: \\[IridescentCraft\\] IF latex rework \\+ HDPE circuits loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/mek_biofuel_squeeze.js",
+   "owner": "kubejs/server_scripts/recipes/mek_biofuel_squeeze.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/mek_biofuel_squeeze\\.js#\\d+: \\[IridescentCraft\\] mek_biofuel_squeeze\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/planetary_extraction.js",
+   "owner": "kubejs/server_scripts/recipes/planetary_extraction.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/planetary_extraction\\.js#\\d+: \\[IridescentCraft\\] planetary_extraction\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/recipe_audit.js",
+   "owner": "kubejs/server_scripts/recipes/recipe_audit.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/recipe_audit\\.js#\\d+: \\[IridescentCraft\\] recipe_audit\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/staff_wand_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/staff_wand_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/staff_wand_recipes\\.js#\\d+: \\[staff_wand_recipes\\] loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/tier_gated_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/tier_gated_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/tier_gated_recipes\\.js#\\d+: \\[IridescentCraft\\] P[\\d.]+ tier_gated_recipes\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:recipes/waystone_recipes.js",
+   "owner": "kubejs/server_scripts/recipes/waystone_recipes.js",
+   "log": "kubejs/server.log",
+   "pattern": "recipes/waystone_recipes\\.js#\\d+: \\[IridescentCraft\\] waystone_recipes\\.js loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.recipes: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:relic_boss_drops.js",
+   "owner": "kubejs/server_scripts/relic_boss_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "relic_boss_drops\\.js#\\d+: \\[IridescentCraft\\] relic_boss_drops loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:respec/class_respec.js",
+   "owner": "kubejs/server_scripts/respec/class_respec.js",
+   "log": "kubejs/server.log",
+   "pattern": "respec/class_respec\\.js#\\d+: \\[class_respec\\] loaded",
+   "proves": "corpus",
+   "why": "printed while the file loads, and the generated set lists the registrations of its script; KEPT because this line was missing in 43 of the 45 boots of the replay corpus (dev/loud/replay-test.ps1): without it the checker would say less about those boots than it did on 2026-10-12"
+  },
+  {
+   "id": "armed:skills/justleveling_skills.js",
+   "owner": "kubejs/server_scripts/skills/justleveling_skills.js",
+   "log": "kubejs/server.log",
+   "pattern": "skills/justleveling_skills\\.js#\\d+: \\[IridescentCraft\\] JustLeveling Aptitude Skills loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:skills/mastery_tax.js",
+   "owner": "kubejs/server_scripts/skills/mastery_tax.js",
+   "log": "kubejs/server.log",
+   "pattern": "skills/mastery_tax\\.js#\\d+: \\[IridescentCraft\\] Mastery Tax loaded",
+   "proves": "handler-ran",
+   "why": "printed INSIDE the handler of ServerEvents.loaded: the event was posted on this boot and the handler got to this line. The generated set proves the registration was made, and FIRED is never a failure by itself, so this line is the check that fails when a load-time handler did not run"
+  },
+  {
+   "id": "armed:spawn_priest_tower.js",
+   "owner": "kubejs/server_scripts/spawn_priest_tower.js",
+   "log": "kubejs/server.log",
+   "pattern": "spawn_priest_tower\\.js#\\d+: \\[PRIEST-TOWER\\] spawn-village guarantee armed",
+   "must_not": [
+    "\\[PRIEST-TOWER\\] placing at"
+   ],
+   "proves": "own-check",
+   "why": "checks more than presence: a `must_not` line means the feature reports its own failure"
+  },
+  {
+   "id": "armed:strip_anomalous_drops.js",
+   "owner": "kubejs/server_scripts/strip_anomalous_drops.js",
+   "log": "kubejs/server.log",
+   "pattern": "strip_anomalous_drops\\.js#\\d+: \\[IridescentCraft\\] strip_anomalous_drops loaded",
+   "proves": "direct-registry",
+   "why": "the script puts a handler straight on one of the mod's Java registries (1 such call(s)): no guard, tick or dispatcher id exists for it, so this line, printed after it while the file loads, is the only sign that it got there"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:FishingHookMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: FishingHookMixin applied to \\S+ \\(1/1 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:EnchantmentMenuMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: EnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  },
+  {
+   "id": "armed:mixin:lovely_sparkle_pieces:ApothEnchantmentMenuMixin",
+   "owner": "mods/lovely_sparkle_pieces (LspMixinPlugin)",
+   "log": "latest.log",
+   "pattern": "\\[LSP-Mixin/\\]: ApothEnchantmentMenuMixin applied to \\S+ \\(4/4 hooks\\)",
+   "proves": "mixin",
+   "why": "not a script: an in-house mixin applied (latest.log)"
+  }
+ ],
+ "dropped": [
+  {
+   "id": "armed:0_iss_guard.js",
+   "owner": "kubejs/server_scripts/0_iss_guard.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:abyss/abyss_armor_effects.js",
+   "owner": "kubejs/server_scripts/abyss/abyss_armor_effects.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:abyss/abyss_ring_effects.js",
+   "owner": "kubejs/server_scripts/abyss/abyss_ring_effects.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:affix_overworld_strip.js",
+   "owner": "kubejs/server_scripts/affix_overworld_strip.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:affix_skyshatter_mob_strip.js",
+   "owner": "kubejs/server_scripts/affix_skyshatter_mob_strip.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:affixes/affix_effects.js",
+   "owner": "kubejs/server_scripts/affixes/affix_effects.js",
+   "why": "printed while the file loads, in a script that makes 6 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:apotheosis_gem_repair.js",
+   "owner": "kubejs/server_scripts/apotheosis_gem_repair.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:armor_weight.js",
+   "owner": "kubejs/server_scripts/armor_weight.js",
+   "why": "printed while the file loads, in a script that makes 5 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:attributes/attribute_commands.js",
+   "owner": "kubejs/server_scripts/attributes/attribute_commands.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:attributes/attribute_sync.js",
+   "owner": "kubejs/server_scripts/attributes/attribute_sync.js",
+   "why": "printed while the file loads, in a script that makes 6 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:attributes/class_attribute_bonuses.js",
+   "owner": "kubejs/server_scripts/attributes/class_attribute_bonuses.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:attributes/mana_debug_command.js",
+   "owner": "kubejs/server_scripts/attributes/mana_debug_command.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:attributes/mana_pool_bonuses.js",
+   "owner": "kubejs/server_scripts/attributes/mana_pool_bonuses.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:bonfire/boss_bonfire_system.js",
+   "owner": "kubejs/server_scripts/bonfire/boss_bonfire_system.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:bonfire/boss_compass_handler.js",
+   "owner": "kubejs/server_scripts/bonfire/boss_compass_handler.js",
+   "why": "printed while the file loads, in a script that makes 5 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:bonfire/gob_t1_rebalance.js",
+   "owner": "kubejs/server_scripts/bonfire/gob_t1_rebalance.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:cherry_spawn_biome.js",
+   "owner": "kubejs/server_scripts/cherry_spawn_biome.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:class/equipment_hp_halving.js",
+   "owner": "kubejs/server_scripts/class/equipment_hp_halving.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:cleanup/strip_truly_modular_items.js",
+   "owner": "kubejs/server_scripts/cleanup/strip_truly_modular_items.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:compat/terramity_cave_gnome_cave_only.js",
+   "owner": "kubejs/server_scripts/compat/terramity_cave_gnome_cave_only.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:diag_armor_modifiers.js",
+   "owner": "kubejs/server_scripts/diag_armor_modifiers.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:disable_zombie_door_break.js",
+   "owner": "kubejs/server_scripts/disable_zombie_door_break.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:economy/relic_broker.js",
+   "owner": "kubejs/server_scripts/economy/relic_broker.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:economy/relic_sink.js",
+   "owner": "kubejs/server_scripts/economy/relic_sink.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:enchantments/enchant_effects.js",
+   "owner": "kubejs/server_scripts/enchantments/enchant_effects.js",
+   "why": "printed while the file loads, in a script that makes 8 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:end/dragon_exploration_gate.js",
+   "owner": "kubejs/server_scripts/end/dragon_exploration_gate.js",
+   "why": "printed while the file loads, in a script that makes 7 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:endgame/rift_mechanics.js#2",
+   "owner": "kubejs/server_scripts/endgame/rift_mechanics.js",
+   "why": "printed while the file loads, in a script that makes 6 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:example.js",
+   "owner": "kubejs/server_scripts/example.js",
+   "why": "the stock KubeJS example file: its line proves only that it loaded, which the LOADED tier checks"
+  },
+  {
+   "id": "armed:exploration/codex_exploration_kills.js",
+   "owner": "kubejs/server_scripts/exploration/codex_exploration_kills.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:fix_empty_display_name.js",
+   "owner": "kubejs/server_scripts/fix_empty_display_name.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:food/hunger_management.js",
+   "owner": "kubejs/server_scripts/food/hunger_management.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:gates/codex_boss_rush.js",
+   "owner": "kubejs/server_scripts/gates/codex_boss_rush.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:gates/codex_progression_engine.js",
+   "owner": "kubejs/server_scripts/gates/codex_progression_engine.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:gates/milestone_detection.js",
+   "owner": "kubejs/server_scripts/gates/milestone_detection.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:icraft_despawn_command.js",
+   "owner": "kubejs/server_scripts/icraft_despawn_command.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:icraftsets_command.js",
+   "owner": "kubejs/server_scripts/icraftsets_command.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:idle_hunger_pause.js",
+   "owner": "kubejs/server_scripts/idle_hunger_pause.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:integration/dna_simple_staves_strip.js",
+   "owner": "kubejs/server_scripts/integration/dna_simple_staves_strip.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:items/compass_of_return.js",
+   "owner": "kubejs/server_scripts/items/compass_of_return.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:liteminer_hunger_gate.js",
+   "owner": "kubejs/server_scripts/liteminer_hunger_gate.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:loot/fragment_core_drops.js",
+   "owner": "kubejs/server_scripts/loot/fragment_core_drops.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:loot/iss_boss_first_kill.js",
+   "owner": "kubejs/server_scripts/loot/iss_boss_first_kill.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:magic_crit_hook.js",
+   "owner": "kubejs/server_scripts/magic_crit_hook.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:megatorch_damage.js",
+   "owner": "kubejs/server_scripts/megatorch_damage.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:mobgriefing_default.js",
+   "owner": "kubejs/server_scripts/mobgriefing_default.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:more_curios_slots_cap.js",
+   "owner": "kubejs/server_scripts/more_curios_slots_cap.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/artificial_construct_progression.js",
+   "owner": "kubejs/server_scripts/origins/artificial_construct_progression.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/battlemage_mana_shield.js",
+   "owner": "kubejs/server_scripts/origins/battlemage_mana_shield.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/class_passives.js",
+   "owner": "kubejs/server_scripts/origins/class_passives.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/origin_status_commands.js",
+   "owner": "kubejs/server_scripts/origins/origin_status_commands.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/phantom_undeath.js",
+   "owner": "kubejs/server_scripts/origins/phantom_undeath.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/spell_book_transfer.js",
+   "owner": "kubejs/server_scripts/origins/spell_book_transfer.js",
+   "why": "printed while the file loads, in a script that makes 3 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/ss_unique_spellsword_scaling.js",
+   "owner": "kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/witch_of_ink_progression.js",
+   "owner": "kubejs/server_scripts/origins/witch_of_ink_progression.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:origins/witherborn_slimebodied.js",
+   "owner": "kubejs/server_scripts/origins/witherborn_slimebodied.js",
+   "why": "printed while the file loads, in a script that makes 5 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:quests/combat_kill_signals.js",
+   "owner": "kubejs/server_scripts/quests/combat_kill_signals.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:quests/heracles_reconcile.js",
+   "owner": "kubejs/server_scripts/quests/heracles_reconcile.js",
+   "why": "printed while the file loads, in a script that makes 4 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:quests/onboarding_bridge.js",
+   "owner": "kubejs/server_scripts/quests/onboarding_bridge.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:respawn_hunger.js",
+   "owner": "kubejs/server_scripts/respawn_hunger.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:scaling/mob_scaling_unified.js",
+   "owner": "kubejs/server_scripts/scaling/mob_scaling_unified.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:scaling/zz_ascension_scaling.js",
+   "owner": "kubejs/server_scripts/scaling/zz_ascension_scaling.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:scaling/zz_boss_global_3x.js",
+   "owner": "kubejs/server_scripts/scaling/zz_boss_global_3x.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:skills/skill_effects.js",
+   "owner": "kubejs/server_scripts/skills/skill_effects.js",
+   "why": "printed while the file loads, in a script that makes 9 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:spawn_protection.js",
+   "owner": "kubejs/server_scripts/spawn_protection.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:spawn_village_protection.js",
+   "owner": "kubejs/server_scripts/spawn_village_protection.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:sunlight_smite.js",
+   "owner": "kubejs/server_scripts/sunlight_smite.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:tatos_dimension_lock.js",
+   "owner": "kubejs/server_scripts/tatos_dimension_lock.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:tetra_terramity_perks.js",
+   "owner": "kubejs/server_scripts/tetra_terramity_perks.js",
+   "why": "printed while the file loads, in a script that makes 2 registration(s) the generated set lists by id"
+  },
+  {
+   "id": "armed:ultris_randomizer_janitor.js",
+   "owner": "kubejs/server_scripts/ultris_randomizer_janitor.js",
+   "why": "printed while the file loads, in a script that makes 1 registration(s) the generated set lists by id"
+  }
+ ],
+ "not_seeded": [
+  {
+   "line": "#_server_ready_banner.js:",
+   "why": "blank line of the banner"
+  },
+  {
+   "line": "#_server_ready_banner.js:   ============================================================",
+   "why": "rule line of the banner"
+  },
+  {
+   "line": "#_server_ready_banner.js:   >>>  Accepting player connections.                       <<<",
+   "why": "same print as the READY line, which is the entry"
+  },
+  {
+   "line": "#_server_ready_banner.js:   >>>  Listening on #.#:#                            <<<",
+   "why": "same print as the READY line; the address is configuration, not liveness"
+  },
+  {
+   "line": "Loaded #/# KubeJS server scripts in # s with # errors and # warnings",
+   "why": "the summary line: checked by the LOADED tier, with the count taken from the deployed tree"
+  },
+  {
+   "line": "Scripts loaded",
+   "why": "printed by KubeJS itself, not by a script; the summary line covers it"
+  },
+  {
+   "line": "cherry_spawn_biome.js: [icraft_spawn] search already ran to a dead end on this world; skipping",
+   "why": "world state (this world's spawn search is finished), not registration; a fresh world prints something else"
+  },
+  {
+   "line": "loot/lootjs_overhaul.js:   - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)",
+   "why": "detail line of the same print as 'LootJS structure chest overhaul loaded', which is the entry"
+  }
+ ]
+}

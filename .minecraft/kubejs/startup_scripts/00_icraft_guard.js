@@ -74,6 +74,40 @@
 //     set ISOLATE_UNCATCHABLE to false on a test instance and read KubeJS's own
 //     `Error in '<event>'` line.
 //
+// LIVENESS: WHAT IS ARMED, WHAT HAS FIRED (icraft.live)
+//   A script that LOADED has proved nothing: about thirty features of this
+//   pack never ran while every check said the scripts were fine. So the guard
+//   also keeps, for this script type and since this file loaded:
+//     ARMED  every registration: each guard() call, each tick function of
+//            0_tick_master.js, each hurt handler of 0_lib_core.js;
+//     FIRED  the FIRST time each of them ran to its end (a handler that leaves
+//            through event.cancel() has done its work: that counts; one that
+//            throws is FAILED and does not). After that first time the cost
+//            on the hot path is one boolean read.
+//   An id is '<name>@<group>'. The group of a guarded handler is its event;
+//   of a tick function 'tick.server' / 'tick.player'; of a hurt handler 'hurt'
+//   / 'hurt.late'. Sections are only ever FIRED, and so are FEATURES:
+//
+//     icraft.live.fired('codex-submit')
+//
+//   goes where "the handler ran" does not mean "the feature worked" (inside
+//   the branch that did the work). One line per name per script load; a short
+//   curated list, not every branch. Never put a player's name in a name: the
+//   lines go to the logs, and the logs are mirrored.
+//
+//   What is printed (dev/loud/loud-check.ps1 and the in-game check sheet read
+//   these lines; dev/loud/gen_liveness.js generates what they are held to):
+//     [icraft.live] ARMED <type>: <n> registrations (...), digest <16 hex>; ...
+//         once per script load, from zzz_icraft_live.js (it loads last). The
+//         expected ids come from kubejs/config/icraft/live/expected.json:
+//     [icraft.live] NOT ARMED x<n>: <id>, <id>      (an ERROR line)
+//     [icraft.live] UNLISTED x<n>: <id>, <id>       (armed, not in the list)
+//     [icraft.live] FIRED <group> x<n>: <name>, <name>
+//         as it happens; on the server the lines of one second share a line.
+//     [icraft.live] NOT RUN section (...) x<n>: <name>, <name>
+//         a handler finished and sections of it never did.
+//   Nothing else is printed: 250 registrations are one line, not 250.
+//
 // `icraft` -- the one top-level name this file adds. It is this script type's
 // own object whose prototype is global.icraft (the map `global` is ONE map for
 // startup, server and client scripts: BuiltinKubeJSPlugin.GLOBAL), so
@@ -206,8 +240,341 @@ var icraft = (function () {
       ' [the rest of the event still ran; logged once per script load, later failures are counted]')
   }
 
+  // ---- liveness: ARMED and FIRED ---------------------------------------------
+  var LINE_NAMES = 24      // names on one FIRED / NOT ARMED / UNLISTED line
+  var EXPECTED_FILE = 'kubejs/config/icraft/live/expected.json'
+  var live = []            // ARMED, in registration order: { name, group, id, fired, times }
+  var liveById = {}
+  var liveFired = 0
+  var sectionsRan = {}     // section name -> true
+  var sectionCount = 0
+  var featuresRan = {}     // feature name -> true
+  var featureCount = 0
+  var queue = []           // FIRED and not printed yet: { name, group }
+  var batching = false     // true = something flushes on a tick; false = a FIRED line is printed at once
+  var scriptType = '?'     // 'server' | 'startup' | 'client', said by zzz_icraft_live.js
+  var expected = null      // this script type's part of EXPECTED_FILE, or null
+  var summarised = false
+
+  // -> the entry of this registration (the same one when the id is registered again)
+  var arm = function (name, group) {
+    var id = String(name) + '@' + String(group)
+    var e = liveById[id]
+    if (e) {
+      e.times++
+      return e
+    }
+    e = { name: String(name), group: String(group), id: id, fired: false, times: 1 }
+    liveById[id] = e
+    live.push(e)
+    // after the summary line: a registration made inside a handler. Said, so that no id is armed unseen.
+    if (summarised) say('log', '[icraft.live] ARMED late x1: ' + id)
+    return e
+  }
+
+  var printNames = function (level, head, names) {
+    for (var from = 0; from < names.length; from += LINE_NAMES) {
+      var part = names.slice(from, from + LINE_NAMES)
+      say(level, head + ' x' + part.length + ': ' + part.join(', '))
+    }
+  }
+
+  // Prints what fired since the last call, one line per group.
+  var flush = function () {
+    var groups = {}
+    var order = []
+    var pending = queue
+    var i = 0
+    if (pending.length === 0) return
+    queue = []
+    try {
+      for (i = 0; i < pending.length; i++) {
+        if (!groups[pending[i].group]) {
+          groups[pending[i].group] = []
+          order.push(pending[i].group)
+        }
+        groups[pending[i].group].push(pending[i].name)
+      }
+      for (i = 0; i < order.length; i++) printNames('log', '[icraft.live] FIRED ' + order[i], groups[order[i]])
+    } catch (e) {
+      say('error', '[icraft.live] could not print ' + pending.length + ' FIRED name(s): ' + e)
+    }
+  }
+
+  // A handler finished for the first time: did every section the scripts have in it finish too?
+  var sectionsOwed = function (e) {
+    var want = (expected !== null && expected.sections) ? expected.sections[e.id] : null
+    var missing = []
+    if (!want) return
+    for (var i = 0; i < want.length; i++) {
+      if (sectionsRan[want[i]] !== true) missing.push(want[i])
+    }
+    if (missing.length > 0) {
+      printNames('log', '[icraft.live] NOT RUN section (' + missing.length + ' of ' + want.length + ' in ' + e.id +
+        ' did not finish although the handler did)', missing)
+    }
+  }
+
+  // The first time `e` ran to its end. Never throws: it is called on the way out of a handler.
+  var fire = function (e) {
+    try {
+      if (e === null || e === undefined || e.fired !== false) return
+      e.fired = true
+      liveFired++
+      queue.push(e)
+      sectionsOwed(e)
+      if (!batching) flush()
+    } catch (err) {
+      say('error', '[icraft.live] could not record a FIRED registration: ' + err)
+    }
+  }
+
+  // icraft.live.fired('feature-name'): the feature did its work. Never throws.
+  var feature = function (name) {
+    if (featuresRan[name] === true) return
+    try {
+      var key = String(name)
+      if (featuresRan[key] === true) return
+      featuresRan[key] = true
+      featureCount++
+      queue.push({ name: key, group: 'feature' })
+      if (!batching) flush()
+    } catch (err) {
+      say('error', '[icraft.live] could not record a FIRED feature: ' + err)
+    }
+  }
+
+  var sectionRan = function (name) {
+    var key = String(name)
+    if (sectionsRan[key] === true) return
+    sectionsRan[key] = true
+    sectionCount++
+  }
+
+  // Two running remainders over the sorted ids, as 16 hex digits. Plain double
+  // arithmetic that stays exact (every product is below 2^53), so
+  // dev/loud/gen_liveness.js computes the same digits from the script sources.
+  var HEX = '0123456789abcdef'
+  var hex8 = function (n) {
+    var out = ''
+    for (var i = 0; i < 8; i++) {
+      var d = n % 16
+      out = HEX.charAt(d) + out
+      n = (n - d) / 16
+    }
+    return out
+  }
+  // The printable ASCII characters in code order: a character's number is its
+  // place here plus 32 (31 for anything else). NOT charCodeAt: on this engine
+  // it hands back a java.lang.Character, arithmetic on it is NaN, and the
+  // digest of every list was sixteen zeros (suite event-guard caught it).
+  var ASCII = ' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+  var digest = function (sortedIds) {
+    var a = 7
+    var b = 11
+    for (var i = 0; i < sortedIds.length; i++) {
+      var s = String(sortedIds[i])
+      for (var j = 0; j < s.length; j++) {
+        var c = ASCII.indexOf(s.charAt(j)) + 32
+        a = (a * 31 + c) % 2147483647
+        b = (b * 131 + c) % 2147483629
+      }
+      a = (a * 31 + 10) % 2147483647
+      b = (b * 131 + 10) % 2147483629
+    }
+    return hex8(a) + hex8(b)
+  }
+
+  // -> { part: this script type's part of the expected list | null, problem: '' | why }
+  var readExpected = function (type) {
+    var text = null
+    var doc = null
+    if (typeof JsonIO === 'undefined') return { part: null, problem: '' }
+    try {
+      text = JsonIO.readString(EXPECTED_FILE)
+    } catch (e) {
+      return { part: null, problem: EXPECTED_FILE + ' could not be read (' + e + ')' }
+    }
+    if (text === null || text === undefined) return { part: null, problem: EXPECTED_FILE + ' does not exist' }
+    text = String(text)
+    if (text === '' || text === 'null') return { part: null, problem: EXPECTED_FILE + ' does not exist or is empty' }
+    try {
+      doc = JSON.parse(text)
+    } catch (e2) {
+      return { part: null, problem: EXPECTED_FILE + ' is not JSON (' + e2 + ')' }
+    }
+    if (doc === null || typeof doc !== 'object' || !doc[type] || typeof doc[type].armed !== 'object') {
+      return { part: null, problem: EXPECTED_FILE + ' has no "' + type + '" part' }
+    }
+    return { part: doc[type], problem: '' }
+  }
+
+  // Called once per script load by zzz_icraft_live.js, the last script of its
+  // type: every registration a script makes while it loads has been made.
+  // Prints the ONE summary line and, against the expected list, what is missing.
+  // `given` (tests): the expected part to use instead of the file.
+  var loaded = function (type, given) {
+    var ids = []
+    var events = {}
+    var eventCount = 0
+    var handlers = 0
+    var ticks = 0
+    var hurts = 0
+    var missing = []
+    var unlisted = []
+    var optional = {}
+    var problem = ''
+    var line = ''
+    var sum = ''
+    var i = 0
+    var g = ''
+    var id = ''
+    try {
+      scriptType = String(type)
+      if (given !== undefined) expected = (given !== null && typeof given === 'object') ? given : null
+      else {
+        var read = readExpected(scriptType)
+        expected = read.part
+        problem = read.problem
+      }
+      for (i = 0; i < live.length; i++) {
+        ids.push(live[i].id)
+        g = live[i].group
+        if (g === 'tick.server' || g === 'tick.player') ticks++
+        else if (g === 'hurt' || g === 'hurt.late') hurts++
+        else {
+          handlers++
+          if (events[g] !== true) {
+            events[g] = true
+            eventCount++
+          }
+        }
+      }
+      ids.sort()
+      sum = digest(ids)
+      line = '[icraft.live] ARMED ' + scriptType + ': ' + live.length + ' registrations (' + handlers + ' handlers on ' +
+        eventCount + ' events, ' + ticks + ' tick functions, ' + hurts + ' hurt handlers), digest ' + sum
+      if (expected !== null) {
+        if (expected.optional) {
+          for (i = 0; i < expected.optional.length; i++) optional[expected.optional[i]] = true
+        }
+        for (id in expected.armed) {
+          if (!liveById[id] && optional[id] !== true) missing.push(id)
+        }
+        for (i = 0; i < ids.length; i++) {
+          if (expected.armed[ids[i]] === undefined) unlisted.push(ids[i])
+        }
+        missing.sort()
+        line += '; against the expected list: ' + missing.length + ' not armed, ' + unlisted.length + ' unlisted'
+      } else {
+        line += '; NOT compared with an expected list'
+      }
+      if (!armed) line += ' [the guard is OFF: FIRED is not recorded for event handlers]'
+      say('log', line)
+      // a WARN line: the boot-log checker reports a warning nobody has accepted
+      if (expected === null && problem !== '') {
+        say('warn', '[icraft.live] no expected list: ' + problem + '. ARMED is a count only for this script load')
+      }
+      if (missing.length > 0) printNames('error', '[icraft.live] NOT ARMED', missing)
+      if (unlisted.length > 0) printNames('log', '[icraft.live] UNLISTED', unlisted)
+      summarised = true
+    } catch (e) {
+      say('error', '[icraft.live] the ARMED summary failed: ' + e)
+    }
+    return { type: scriptType, armed: live.length, missing: missing, unlisted: unlisted, digest: sum }
+  }
+
+  // What `/icraft live` shows. filter: a part of an id or of the script that owns it ('' = everything).
+  // A feature matches as '<name>@feature', a section as '<name>@section', so `feature` lists the features.
+  // -> { type, armed, fired, failed, never: [id], neverTotal, sections: { ran, known, notRun: [name] },
+  //      features: { fired: [name], never: [name], known, ran }, compared }
+  var report = function (filter) {
+    var want = (filter === null || filter === undefined) ? '' : String(filter)
+    var never = []
+    var neverTotal = 0
+    var notRun = []
+    var known = 0
+    var fFired = []
+    var fNever = []
+    var fKnown = 0
+    var i = 0
+    var id = ''
+    var name = ''
+    var list = null
+    var owner = function (table, key) { return (table && table[key] !== undefined) ? String(table[key]) : '' }
+    var matches = function (key, script) { return want === '' || key.indexOf(want) >= 0 || script.indexOf(want) >= 0 }
+    for (i = 0; i < live.length; i++) {
+      if (live[i].fired) continue
+      neverTotal++
+      if (matches(live[i].id, owner(expected !== null ? expected.armed : null, live[i].id))) never.push(live[i].id)
+    }
+    if (expected !== null && expected.sections) {
+      for (id in expected.sections) {
+        list = expected.sections[id]
+        for (i = 0; i < list.length; i++) {
+          known++
+          if (sectionsRan[list[i]] !== true && matches(list[i] + '@section', owner(expected.armed, id))) notRun.push(list[i])
+        }
+      }
+    }
+    if (expected !== null && expected.features) {
+      for (name in expected.features) {
+        fKnown++
+        if (featuresRan[name] === true) continue
+        if (matches(name + '@feature', owner(expected.features, name))) fNever.push(name)
+      }
+    }
+    for (name in featuresRan) {
+      if (matches(name + '@feature', owner(expected !== null ? expected.features : null, name))) fFired.push(name)
+    }
+    never.sort()
+    notRun.sort()
+    fNever.sort()
+    fFired.sort()
+    return {
+      type: scriptType, armed: live.length, fired: liveFired, failed: failedOrder.length, never: never, neverTotal: neverTotal,
+      sections: { ran: sectionCount, known: known, notRun: notRun },
+      features: { fired: fFired, never: fNever, known: fKnown, ran: featureCount },
+      compared: expected !== null
+    }
+  }
+
+  // The report as text, one string per line: this script type's part of `/icraft live`.
+  var lines = function (filter) {
+    var want = (filter === null || filter === undefined) ? '' : String(filter)
+    var r = report(want)
+    var out = []
+    var byGroup = {}
+    var order = []
+    var i = 0
+    var at = 0
+    var g = ''
+    out.push(r.type + ' scripts: ' + r.armed + ' armed, ' + r.fired + ' fired, ' + r.neverTotal + ' never fired, ' +
+      r.failed + ' FAILED; sections ' + r.sections.ran + (r.compared ? ' of ' + r.sections.known : '') + ' ran; features ' +
+      r.features.ran + (r.compared ? ' of ' + r.features.known : '') + ' fired' +
+      (r.compared ? '' : ' (no expected list: what never ran among sections and features cannot be listed)'))
+    if (want !== '') out.push('  filter "' + want + '": ' + r.never.length + ' of the ' + r.neverTotal + ' never-fired registrations')
+    for (i = 0; i < r.never.length; i++) {
+      at = r.never[i].lastIndexOf('@')
+      g = r.never[i].substring(at + 1)
+      if (!byGroup[g]) {
+        byGroup[g] = []
+        order.push(g)
+      }
+      byGroup[g].push(r.never[i].substring(0, at))
+    }
+    order.sort()
+    for (i = 0; i < order.length; i++) {
+      out.push('  never fired, ' + order[i] + ' x' + byGroup[order[i]].length + ': ' + byGroup[order[i]].join(', '))
+    }
+    if (r.features.never.length > 0) out.push('  never fired, feature x' + r.features.never.length + ': ' + r.features.never.join(', '))
+    if (r.features.fired.length > 0) out.push('  fired, feature x' + r.features.fired.length + ': ' + r.features.fired.join(', '))
+    if (r.sections.notRun.length > 0) out.push('  not run, section x' + r.sections.notRun.length + ': ' + r.sections.notRun.join(', '))
+    return out
+  }
+
   // ---- guard ----------------------------------------------------------------
-  var running = null     // the guard whose handler is running now (a section reports its event)
+  var running = null    // the guard whose handler is running now (a section reports its event)
 
   var guard = function (name, eventName, handler) {
     if (typeof eventName === 'function' && handler === undefined) {
@@ -219,8 +586,9 @@ var icraft = (function () {
         '>) was not given a function; the value is registered as it is')
       return handler
     }
+    // ARMED, also when the guard is off: the registration is made either way
+    var entry = arm(name, eventName)
     if (!armed) return handler
-    var entry = { name: String(name), event: String(eventName) }
     wrapped++
     return function (event) {
       var state = 0          // 0 = inside the handler, 1 = it returned, 2 = it threw something a catch sees
@@ -233,17 +601,21 @@ var icraft = (function () {
       } catch (e) {
         state = 2
         exit = exitOf(e)
-        if (exit === null) record(entry.name, entry.event, describe(e))
+        if (exit === null) record(entry.name, entry.group, describe(e))
       } finally {
         running = outer
         // Still 0 here: something that skipped the catch is on its way out.
         // Returning from a finally block drops it (a java.lang.Error never
         // gets this far; it does not run finally blocks either).
         if (state === 0 && ISOLATE_UNCATCHABLE) {
-          record(entry.name, entry.event, UNCATCHABLE)
+          record(entry.name, entry.group, UNCATCHABLE)
           return
         }
       }
+      // FIRED: it returned, or it left through KubeJS's own exit (a handler that
+      // cancels has done its work). Not when it threw. One boolean read from the
+      // second time on.
+      if (entry.fired === false && (state === 1 || exit !== null)) fire(entry)
       // Outside every try: this is the cancel, on its way to KubeJS.
       if (exit !== null) rethrow(exit)
     }
@@ -253,9 +625,10 @@ var icraft = (function () {
   var section = function (name, fn) {
     var state = 0
     var exit = null
-    var eventName = running !== null ? running.event : '?'
+    var eventName = running !== null ? running.group : '?'
     if (!armed) {
       fn()
+      sectionRan(name)
       return
     }
     try {
@@ -271,6 +644,7 @@ var icraft = (function () {
         return
       }
     }
+    if (state === 1 || exit !== null) sectionRan(name)
     if (exit !== null) rethrow(exit)
   }
 
@@ -304,6 +678,25 @@ var icraft = (function () {
   var own = (shared !== null && (typeof shared === 'object' || typeof shared === 'function')) ? Object.create(shared) : {}
   own.guard = guard
   own.section = section
+  own.live = {
+    arm: arm,                // (name, group) -> entry: 0_tick_master.js and 0_lib_core.js register theirs
+    fire: fire,              // (entry): it ran to its end for the first time
+    fired: feature,          // ('feature-name'): the feature did its work
+    flush: flush,            // print what fired since the last call
+    batch: function (on) { batching = (on === true) },
+    loaded: loaded,          // (type): the summary line; zzz_icraft_live.js only
+    report: report,          // (filter) -> what `/icraft live` shows, as data
+    lines: lines,            // (filter) -> the same as text
+    digest: digest,
+    // [{ id, name, group, fired, times }] in registration order (a copy)
+    entries: function () {
+      var out = []
+      for (var i = 0; i < live.length; i++) {
+        out.push({ id: live[i].id, name: live[i].name, group: live[i].group, fired: live[i].fired, times: live[i].times })
+      }
+      return out
+    }
+  }
 
   if (armed) {
     // (this line must not contain the failure line's own prefix: a grep for it would count a healthy boot)

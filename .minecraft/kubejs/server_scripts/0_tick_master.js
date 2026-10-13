@@ -23,6 +23,11 @@
 // every time, forever (7,612 lines in three days, May 2026). Now: the first
 // failure of each function is logged in full, then at most one summary line
 // (with a count) per function every ~1200 ticks.
+//
+// Liveness (icraft.live, 00_icraft_guard.js): every function registered here is
+// ARMED under '<name>@tick.server' / '<name>@tick.player', and FIRED the first
+// time it returns without throwing. With nobody online a server tick function
+// still runs (over no players); a player tick function does not.
 // =============================================================================
 
 // ─── Registration Arrays ───
@@ -37,6 +42,9 @@ global.playerTickFunctions = []
   // Server tick counter mirror, so player-tick failures share the same clock
   // for the summary cadence (player.age differs per player).
   var currentTick = 0
+
+  // null with a guard file that has no `live` yet: nothing is recorded, nothing breaks
+  var live = (typeof icraft !== 'undefined' && icraft !== null && icraft.live) ? icraft.live : null
 
   var register = function (list, kind, name, interval, offset, fn) {
     var f = (typeof fn === 'function') ? fn : global[name]
@@ -59,7 +67,9 @@ global.playerTickFunctions = []
       fn: f,
       errors: 0,          // total failures since load
       pending: 0,         // failures since the last log line
-      lastLogTick: 0
+      lastLogTick: 0,
+      fired: false,       // it has returned at least once
+      live: (live !== null) ? live.arm(name, 'tick.' + kind) : null
     })
   }
 
@@ -112,6 +122,10 @@ global.playerTickFunctions = []
       if (tick % entry.interval !== entry.offset) continue
       try {
         entry.fn(event)
+        if (entry.fired === false) {
+          entry.fired = true
+          if (live !== null) live.fire(entry.live)
+        }
       } catch (e) {
         reportError('server', entry, e)
       }
@@ -127,6 +141,10 @@ global.playerTickFunctions = []
       if (age % entry.interval !== entry.offset) continue
       try {
         entry.fn(event)
+        if (entry.fired === false) {
+          entry.fired = true
+          if (live !== null) live.fire(entry.live)
+        }
       } catch (e) {
         reportError('player', entry, e)
       }
