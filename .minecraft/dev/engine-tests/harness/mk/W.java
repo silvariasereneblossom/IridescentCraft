@@ -415,6 +415,8 @@ public class W {
   /** The `AStages` binding: com.alessandro.astages.integration.kubejs.AStagesKubeJSUtil (static). */
   public static class AStagesKubeJSUtil {
     public static boolean playerHasStage(String stage, Player p) { return p != null && p.astages.contains(stage); }
+    /** what a tier grant calls (gates/codex_progression_engine.js codexGrantTier) */
+    public static void addStageToPlayer(String stage, Player p) { if (p != null && stage != null) p.astages.add(stage); }
   }
 
   // ------------------------------------------------------------------ damage
@@ -813,6 +815,8 @@ public class W {
     public int kjs$getFoodLevel() { return foodData.food; }
     public void kjs$setFoodLevel(int f) { foodData.food = f; }
     public void giveExperiencePoints(int n) { xpGiven += n; }
+    /** vanilla's public field (the Codex exchange prints it); the mock never levels a player up */
+    public int experienceLevel = 0;
     public int kjs$getXp() { return xp; }
     public void kjs$addXP(int n) { xp += n; }
     int xp = 0;
