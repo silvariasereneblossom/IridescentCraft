@@ -123,6 +123,23 @@
                   "suites/liveness.js", "lib/summary.js"]]
     },
     {
+      "name": "hit-table", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 152,
+      "about": "the handlers that sit, or sat, straight on the Java damage registry (decision list entry 45), and the dispatcher they move onto. First scope, the library alone: the registry walks its keys in HASH order (the mock is a ConcurrentHashMap like the jar, held to the order a full-pack server printed), a twelfth key reorders the other eleven, the entry icraft.core.then is walked last in a table of 16 and of 32; the options of core.onHurt (place first / last, secondary, cancelled, unchecked) do what they say, and a registration that cannot be honoured is refused with an ERROR line. Second scope, the pack's own scripts: the order every handler runs in is the order the registry walked them in on 2026-10-13, wherever each one is registered today; and the hit table (class, origin, weapon; a primary and a secondary hit; what each handler did to the amount, in order; health, mana, effects, stamps, armour durability) is suites/hit_table.golden.js, recorded before any handler moved",
+      "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", "lib/hit/before_scripts.js",
+                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js"]},
+                  "suites/hit_table_options.js"],
+                 ["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", "lib/hit/before_scripts.js",
+                  {"load": ["server:00_icraft_guard.js", "startup:deathskin_undead_bonus.js"]},
+                  {"js": "HT_startupLate()"},
+                  {"load": ["server:0_iss_guard.js", "server:0_lib_aptitudes.js", "server:0_lib_core.js", "server:0_lib_origins.js",
+                            "server:0_lib_registry.js", "server:0_tick_master.js",
+                            "server:attributes/attribute_sync.js", "server:attributes/iss_school_to_ars_spell.js", "server:death_penalty.js",
+                            "server:loot/tmb_plain_bow_effects.js", "server:loot/unique_itemset_registry.js", "server:loot/unique_tier_buff.js",
+                            "server:origins/battlemage_arcane_cleave.js", "server:origins/class_passives_phase6h.js",
+                            "server:origins/origin_effects.js", "server:skills/justleveling_skills.js"]},
+                  "lib/hit/world.js", "suites/hit_table.golden.js", "suites/hit_table.js", "lib/summary.js"]]
+    },
+    {
       "name": "overload-calls", "kind": "overloads", "fast": true, "ci": true,
       "about": "overload_calls.py: no script calls a Java method with a value that fits two of its overloads (entity.spawnAtLocation(Item.of(id)) throws 'the choice of Java method is ambiguous' at the call; it kept every first-kill reward from dropping). The risky overload groups come from truth/engine-members.json; each call shape the scripts use carries the verdict of a real full-pack server"
     },

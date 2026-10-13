@@ -29,8 +29,16 @@
 //                                                             'victimPlayer' | 'player'
 //                                                        ctx: { victim, source, attacker,
 //                                                               attackerIsPlayer, victimIsPlayer }
-//                                                        gate: optional () -> bool for 'any' handlers
+//                                                        gate: optional () -> bool for 'any' handlers,
+//                                                              or an options object { gate, place,
+//                                                              secondary, cancelled, unchecked }
+//                                                              (see "hurt registry" below)
 //                   core.hurtHandlers()              -> { key: fn(event) } (diagnostics / tests)
+//                   core.hurtPlan()                  -> every handler in the order it runs, with its
+//                                                       place and options (diagnostics / tests)
+//                   core.hurtTap(fn | null)          -> fn(key, place, event, amountBefore,
+//                                                       cancelledBefore) after every handler that
+//                                                       ran (diagnostics / tests)
 //                   core.damageSource(target, kind, attacker) -> DamageSource | null
 //                     (kind: player | magic | thorns | sonic_boom | lightning |
 //                      on_fire | freeze | generic). For damage that SHOULD go
@@ -110,6 +118,9 @@
 //   the duration of the nested hurt() call and the dispatcher (so every handler
 //   registered through onHurt()/onHurtLate()) skips while it is raised: secondary damage
 //   lands as-is, it does not crit, proc, splash or reflect a second time.
+//   A handler that has to see secondary hits says so: the option `secondary`
+//   (three do: the Blazeborn damage reduction, the armour clamp, the plain-bow
+//   effects; they ran on those hits while they sat on the Java registry).
 //   Handlers registered straight on the Java registry can read
 //   global.icraft.core.secondary(event.entity) to opt in to the same rule.
 //
@@ -117,6 +128,7 @@
 //   * nothing here throws into the caller (neutral value instead)
 //   * a failure is logged once per key per script load, never per hit / tick
 //   * onHurt handlers never leave event.amount NaN / infinite / negative
+//     (but a handler registered `unchecked` is not checked: see "hurt registry")
 // =============================================================================
 
 ;(function () {
@@ -891,8 +903,8 @@
     return ok
   }
 
-  // ONE entry on the Java registry per phase. Each handler says which hits it
-  // wants:
+  // The dispatcher: one entry on the Java registry per place. Each handler says
+  // which hits it wants:
   //   'any'            every hurt event on the server (mob vs mob, a mob on fire, ...)
   //   'attacker'       there is an attacking entity
   //   'attackerPlayer' the attacker is a player
@@ -910,9 +922,63 @@
   // '<key>@hurt' / '<key>@hurt.late' when it is registered, and FIRED the
   // first time its function returns (its gate was open and it did not throw).
   // null with a guard file that has no `live` yet: nothing is recorded.
+  //
+  // WHAT THE JAVA REGISTRY DOES (DamageModifierRegistry, tetra-expansion jar).
+  // It keeps two ConcurrentHashMaps, NORMAL and LATE, and walks NORMAL, then
+  // LATE, for every LivingHurtEvent. A ConcurrentHashMap is walked in HASH
+  // order of its keys, not in the order they were put: read off the map on a
+  // full-pack server on 2026-10-13, NORMAL ran
+  //     icraft.origin.blazeborn.take, icraft.justleveling.1, icraft.justleveling.2,
+  //     icraft.core,
+  //     icraft.deathskin_undead_bonus (a startup script),
+  //     icraft.origin.blazeborn.deal, icraft.death_penalty.armor_clamp,
+  //     icraft.battlemage_arcane_cleave, icraft.unique_tier_buff,
+  //     icraft.class_passives_h6, icraft.origin.enderian.shift
+  // and with a twelfth key the map doubles its table and the order of ALL of
+  // them changes. So a handler put straight on the registry has no place it
+  // can rely on, and one more of them moves the others (lint DIRECT-HURT-REG).
+  //
+  // PLACES. A handler that was moved here from the registry keeps the place it
+  // had there, because an addition before a multiplication is another number
+  // than after it:
+  //   place 'first'  before every unplaced handler (the start of the entry
+  //                  `icraft.core`)
+  //   place 'last'   after every other entry of the registry, the startup
+  //                  scripts' ones included: an entry of its own,
+  //                  `icraft.core.then`. That key is in the LAST bin of the
+  //                  map, for a table of 16 and of 32 (String.hashCode is
+  //                  specified, so this is arithmetic, not luck: suite
+  //                  `hit-table` holds it to a real ConcurrentHashMap).
+  // Inside a place the order is the list PLACED below, never script load
+  // order. A key that is not on the list is refused, loudly: a placed handler
+  // is a recorded exception, not a convenience.
+  //
+  // OPTIONS (the fourth argument: a gate function, or an object)
+  //   gate       () -> bool, for 'any' handlers: checked before any event read
+  //   place      'first' | 'last' (NORMAL phase only; see above)
+  //   secondary  true: also called for a secondary hit (default: skipped while
+  //              dealDamage() is inside a nested hit)
+  //   cancelled  true: also called when an earlier handler cancelled the hit
+  //              (default: a cancelled hit ends the walk)
+  //   unchecked  true: the amount the handler leaves is not checked (default:
+  //              NaN / infinite is put back to the last good amount, negative
+  //              becomes 0). The registry never checked.
+  // The last three are what "exactly as on the registry" takes. Each is a
+  // behaviour: taking one off a handler is a balance decision, with a hit
+  // table (dev/engine-tests, suite `hit-table`).
   var live = (typeof icraft !== 'undefined' && icraft !== null && icraft.live) ? icraft.live : null
   var WHO = { 'any': 0, 'attacker': 1, 'attackerPlayer': 2, 'victimPlayer': 3, 'player': 4 }
-  var handlers = []       // NORMAL phase: { key, fn, who, gate }
+  var WHO_NAMES = ['any', 'attacker', 'attackerPlayer', 'victimPlayer', 'player']
+  var OPTIONS = { gate: true, place: true, secondary: true, cancelled: true, unchecked: true }
+  // The placed handlers, in the order they run inside their place: the order the
+  // registry's map walked these keys in while they sat on it (above).
+  var PLACED = {
+    first: ['icraft.origin.blazeborn.take', 'icraft.justleveling.1', 'icraft.justleveling.2'],
+    last: ['icraft.origin.blazeborn.deal', 'icraft.death_penalty.armor_clamp', 'icraft.battlemage_arcane_cleave',
+           'icraft.unique_tier_buff', 'icraft.class_passives_h6', 'icraft.origin.enderian.shift']
+  }
+  var ENTRY_KEYS = { normal: 'icraft.core', then: 'icraft.core.then', late: 'icraft.core.late' }
+  var handlers = []       // NORMAL phase, in registration order: { key, fn, who, gate, place, rank, ... }
   var lateHandlers = []   // LATE phase (after every NORMAL handler of every script)
 
   // situation mask: 1 = there is an attacker, 2 = it is a player, 4 = the victim is a player
@@ -923,34 +989,71 @@
     if (who === 3) return (mask & 4) !== 0
     return (mask & 6) !== 0
   }
-  var plansFor = function (list) {
-    var plans = []
+  // what one entry of the Java registry walks: a handler list per situation, and
+  // whether any handler of the entry wants a secondary / a cancelled hit at all
+  var tableFor = function (list) {
+    var table = { plans: [], secondary: false, cancelled: false }
     for (var mask = 0; mask < 8; mask++) {
       var plan = []
       for (var i = 0; i < list.length; i++) {
         if (wants(list[i].who, mask)) plan.push(list[i])
       }
-      plans.push(plan)
+      table.plans.push(plan)
     }
-    return plans
+    for (var j = 0; j < list.length; j++) {
+      if (list[j].secondary) table.secondary = true
+      if (list[j].cancelled) table.cancelled = true
+    }
+    return table
   }
-  var plans = { normal: plansFor(handlers), late: plansFor(lateHandlers) }
+  // The handlers of one place. 'main' (unplaced): in the order they were registered, and that
+  // is all. 'first' / 'last': by their rank on the list PLACED, put in by hand.
+  // NEVER through Array.sort: it is not stable on this engine. Twenty handlers of equal rank came
+  // back with the one registered last in front and the third at the end (measured on a full-pack
+  // boot and in suite `hit-table`, 2026-10-13), and no damage number showed it.
+  var placedList = function (place) {
+    var out = []
+    for (var i = 0; i < handlers.length; i++) {
+      var h = handlers[i]
+      if (h.place !== place) continue
+      var at = out.length
+      if (place !== 'main') { while (at > 0 && out[at - 1].rank > h.rank) at-- }
+      out.splice(at, 0, h)
+    }
+    return out
+  }
+  var tables = { normal: tableFor([]), then: tableFor([]), late: tableFor([]) }
+  var rebuild = function () {
+    tables.normal = tableFor(placedList('first').concat(placedList('main')))
+    tables.then = tableFor(placedList('last'))
+    tables.late = tableFor(lateHandlers)
+  }
 
-  // phase: 'normal' | 'late' | a fixed plan table (hurtHandlers below)
-  var dispatcher = function (phase) {
+  // Diagnostics: fn(key, place, event, amountBefore, cancelledBefore), called after
+  // every handler the dispatcher ran. One at a time; null takes it off. For the hit
+  // table (suite `hit-table`, and its probe on a real server), not for features.
+  var tap = null
+
+  // entry: 'normal' | 'then' | 'late', or a fixed table (hurtHandlers below)
+  var dispatcher = function (entry) {
     return function (event) {
-      var victim, source, hitter, todo
+      var victim, source, hitter, todo, table
       var mask = 0
+      var cancelled = false
+      var nested = false
       try {
-        if (event.isCanceled()) return
+        table = (typeof entry === 'string') ? tables[entry] : entry
+        cancelled = event.isCanceled() === true
+        if (cancelled && !table.cancelled) return
         victim = event.getEntity()
-        if (depth > 0 && secondary(victim)) return
+        nested = depth > 0 && secondary(victim)
+        if (nested && !table.secondary) return
         source = event.getSource()
         hitter = source ? source.actual : null
         if (!hitter) hitter = null
         if (hitter !== null) mask = isPlayer(hitter) ? 3 : 1
         if (isPlayer(victim)) mask += 4
-        todo = (typeof phase === 'string') ? plans[phase][mask] : phase[mask]
+        todo = table.plans[mask]
       } catch (e) {
         warnOnce('dispatch', '[icraft.core] could not read a hurt event: ' + e)
         return
@@ -959,15 +1062,23 @@
       if (n === 0) return
       var ctx = null
       var amount = 0
+      var counted = false   // `amount` is the last good amount (from the first checked handler on)
       for (var i = 0; i < n; i++) {
         var h = todo[i]
+        if (nested && !h.secondary) continue
+        if (cancelled && !h.cancelled) continue
+        var ran = false
+        var tapAmount = 0
+        var tapCancelled = false
         try {
           if (h.gate !== null && h.gate() !== true) continue
           if (ctx === null) {
-            amount = finite(event.getAmount(), 0)
             ctx = { victim: victim, source: source, attacker: hitter,
                     attackerIsPlayer: (mask & 2) !== 0, victimIsPlayer: (mask & 4) !== 0 }
           }
+          if (!counted && !h.unchecked) { amount = finite(event.getAmount(), 0); counted = true }
+          if (tap !== null) { tapAmount = event.getAmount(); tapCancelled = event.isCanceled() === true }
+          ran = true
           h.fn(event, ctx)
           if (h.fired === false) {
             h.fired = true
@@ -976,14 +1087,27 @@
         } catch (e) {
           warnOnce('hurt:' + h.key, '[icraft.core] hurt handler ' + h.key + ' threw: ' + e)
         }
-        // Never hand vanilla (or the next handler) a NaN / infinite / negative
-        // amount: NaN health is unrecoverable for the entity.
+        if (ran && tap !== null) {
+          try { tap(h.key, h.place, event, tapAmount, tapCancelled) } catch (eTap) {
+            tap = null
+            warnOnce('tap', '[icraft.core] the hurt tap threw and was taken off: ' + eTap)
+          }
+        }
         try {
           var after = Number(event.getAmount())
-          if (after !== after || after === Infinity || after === -Infinity) event.setAmount(amount)
-          else if (after < 0) { event.setAmount(0); amount = 0 }
+          if (h.unchecked) {
+            // as the registry ran it: whatever it left is what the next one gets
+            if (counted && after === after && after !== Infinity && after !== -Infinity && after >= 0) amount = after
+          } else if (after !== after || after === Infinity || after === -Infinity) {
+            // Never hand vanilla (or the next handler) a NaN / infinite / negative
+            // amount: NaN health is unrecoverable for the entity.
+            event.setAmount(amount)
+          } else if (after < 0) { event.setAmount(0); amount = 0 }
           else amount = after
-          if (event.isCanceled()) return
+          if (event.isCanceled() === true) {
+            if (!table.cancelled) return
+            cancelled = true
+          }
         } catch (e2) {
           warnOnce('dispatch.amount', '[icraft.core] the amount of a hurt event could not be checked after handler ' + h.key + ': ' + e2)
         }
@@ -991,17 +1115,19 @@
     }
   }
 
-  var dispatcherOn = { normal: false, late: false }
-  var ensureDispatcher = function (phase) {
-    if (dispatcherOn[phase]) return true
+  var dispatcherOn = { normal: false, then: false, late: false }
+  var ensureDispatcher = function (entry) {
+    if (dispatcherOn[entry]) return true
     if (!DamageRegistry) {
       warnOnce('registry', '[icraft.core] DamageModifierRegistry is missing: every hurt handler is OFF')
       return false
     }
     try {
-      if (phase === 'late') DamageRegistry.registerLate('icraft.core.late', dispatcher('late'))
+      // (the keys written out: the script catalogue reads them from here; ENTRY_KEYS above says the same)
+      if (entry === 'late') DamageRegistry.registerLate('icraft.core.late', dispatcher('late'))
+      else if (entry === 'then') DamageRegistry.register('icraft.core.then', dispatcher('then'))
       else DamageRegistry.register('icraft.core', dispatcher('normal'))
-      dispatcherOn[phase] = true
+      dispatcherOn[entry] = true
       return true
     } catch (e) {
       warnOnce('register', '[icraft.core] could not register the hurt dispatcher: ' + e)
@@ -1009,30 +1135,68 @@
     }
   }
 
-  // onHurt(key, fn, who, gate)
+  // A registration this library cannot honour is refused with an ERROR line (KubeJS
+  // counts it in its load summary): a handler in the wrong place, or one that runs on
+  // hits it was not meant for, changes damage numbers and says nothing.
+  var refuse = function (id, why) {
+    try { console.error('[icraft.core] onHurt(' + id + ') REFUSED, the handler is NOT registered: ' + why) } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so */ }
+    return false
+  }
+
+  // onHurt(key, fn, who, gateOrOptions)
   //   fn(event, ctx)  event: the raw Forge LivingHurtEvent
   //                   ctx:   { victim, source, attacker, attackerIsPlayer, victimIsPlayer }
   //   gate()          optional, for 'any' handlers: return true when the handler
   //                   has anything to do at all (checked before any event read)
+  //   options         { gate, place, secondary, cancelled, unchecked }: see OPTIONS above
   var registerHurt = function (phase) {
     var list = (phase === 'late') ? lateHandlers : handlers
-    return function (key, fn, who, gate) {
+    return function (key, fn, who, options) {
       var id = String(key)
       var code = WHO.hasOwnProperty(String(who)) ? WHO[String(who)] : 0
-      var entry = { key: id, fn: fn, who: code, gate: (typeof gate === 'function') ? gate : null,
+      var gate = null
+      var place = (phase === 'late') ? 'late' : 'main'
+      var rank = 0
+      var also = { secondary: false, cancelled: false, unchecked: false }
+      if (typeof options === 'function') gate = options
+      else if (options !== null && options !== undefined) {
+        if (typeof options !== 'object') return refuse(id, 'the fourth argument is neither a gate function nor an options object')
+        for (var name in options) {
+          if (!OPTIONS.hasOwnProperty(name)) return refuse(id, 'unknown option `' + name + '` (known: gate, place, secondary, cancelled, unchecked)')
+        }
+        if (options.gate !== undefined && options.gate !== null) {
+          if (typeof options.gate !== 'function') return refuse(id, 'the option `gate` is not a function')
+          gate = options.gate
+        }
+        for (var flag in also) {
+          if (options[flag] === undefined) continue
+          if (options[flag] !== true && options[flag] !== false) return refuse(id, 'the option `' + flag + '` is neither true nor false')
+          also[flag] = options[flag]
+        }
+        if (options.place !== undefined) {
+          var wanted = String(options.place)
+          if (phase === 'late') return refuse(id, 'a LATE handler has no place (the option `place` is for onHurt)')
+          if (!PLACED.hasOwnProperty(wanted)) return refuse(id, 'unknown place `' + wanted + '` (known: first, last)')
+          rank = PLACED[wanted].indexOf(id)
+          if (rank < 0) return refuse(id, 'this key is not on the list PLACED.' + wanted + ' of 0_lib_core.js: the order inside a place is that list, and a placed handler is a recorded exception')
+          place = wanted
+        }
+      }
+      var entry = { key: id, fn: fn, who: code, gate: gate, place: place, rank: rank,
+                    secondary: also.secondary, cancelled: also.cancelled, unchecked: also.unchecked,
                     fired: false, live: (live !== null) ? live.arm(id, phase === 'late' ? 'hurt.late' : 'hurt') : null }
       var replaced = false
       for (var i = 0; i < list.length; i++) {
         if (list[i].key === id) { list[i] = entry; replaced = true; break }
       }
       if (!replaced) list.push(entry)
-      plans[phase] = plansFor(list)
+      rebuild()
       // A script loaded before this scheme registered `key` straight on the Java
       // registry; after a live /reload that closure would still be there.
       try { if (DamageRegistry) DamageRegistry.unregister(id) } catch (e) {
         warnOnce('unregister:' + id, '[icraft.core] DamageModifierRegistry.unregister(' + id + ') threw: ' + e)
       }
-      return ensureDispatcher(phase)
+      return ensureDispatcher(phase === 'late' ? 'late' : (place === 'last' ? 'then' : 'normal'))
     }
   }
 
@@ -1041,9 +1205,31 @@
   var hurtHandlers = function () {
     var out = {}
     var all = handlers.concat(lateHandlers)
-    for (var i = 0; i < all.length; i++) out[all[i].key] = dispatcher(plansFor([all[i]]))
+    for (var i = 0; i < all.length; i++) out[all[i].key] = dispatcher(tableFor([all[i]]))
     return out
   }
+
+  // Every handler in the order the dispatcher runs them, for diagnostics, the
+  // catalogue's check and the hit table: [{ key, phase, place, entry, who,
+  // secondary, cancelled, unchecked, gated }]. `entry` is the key on the Java
+  // registry the handler runs under; what else sits on that registry (the startup
+  // scripts' handlers) is not known here.
+  var hurtPlan = function () {
+    var out = []
+    var add = function (list, phase, entry) {
+      for (var i = 0; i < list.length; i++) {
+        var h = list[i]
+        out.push({ key: h.key, phase: phase, place: h.place, entry: entry, who: WHO_NAMES[h.who],
+                   secondary: h.secondary, cancelled: h.cancelled, unchecked: h.unchecked, gated: h.gate !== null })
+      }
+    }
+    add(placedList('first'), 'normal', ENTRY_KEYS.normal)
+    add(placedList('main'), 'normal', ENTRY_KEYS.normal)
+    add(placedList('last'), 'normal', ENTRY_KEYS.then)
+    add(lateHandlers, 'late', ENTRY_KEYS.late)
+    return out
+  }
+  var hurtTap = function (fn) { tap = (typeof fn === 'function') ? fn : null }
 
   // ---- player inventory: the slots a sweep may read and consume ---------------
   // A sweep that converts or destroys items (the Codex submit / balance /
@@ -1098,6 +1284,8 @@
     onHurt: registerHurt('normal'),
     onHurtLate: registerHurt('late'),
     hurtHandlers: hurtHandlers,
+    hurtPlan: hurtPlan,
+    hurtTap: hurtTap,
     damageSource: function (target, kind, by) {
       try { return sourceFor(target, kind, by) } catch (e) {
         warnOnce('damageSource:' + kind, '[icraft.core] damageSource(' + kind + ') could not be built (answered null): ' + e)

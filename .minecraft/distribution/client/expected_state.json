@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5aac8d5b",
+    "generated_from":  "c3aca56a",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5828,8 +5828,8 @@
                                                         "size":  364
                                                     },
                   "kubejs/README.md":  {
-                                           "sha256":  "3aa94b2a17b50975cb2f5ee55bf16e87e9e5de361e16d76122db709b417eef37",
-                                           "size":  11993
+                                           "sha256":  "93417875c7eaad3024b31d5f1d4aa2a80ac14fc90275d46829eba9ce73ab98ee",
+                                           "size":  13163
                                        },
                   "kubejs/README.txt":  {
                                             "sha256":  "989f3737ae4621b8ff6730bce4cbeeee756921e7e510e0c281c8a350501d98af",
@@ -6988,8 +6988,8 @@
                                                                    "size":  23771
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "784073ca53b3cc8e049f06076a768176f0bcd5421bbd8f88ceade9047cef6e19",
-                                                              "size":  53044
+                                                              "sha256":  "b90f7b18d80d8e0e1457fb6a3ef30b3bb58b59753f21d0dd3d018770cae53a65",
+                                                              "size":  64396
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "bbfbc77336ab6c3210b5eb3b95073d71fa8495017d7143adec43db1173c21088",

@@ -1090,6 +1090,12 @@
       {
        "kind": "direct",
        "group": "DamageRegistry.register",
+       "name": "icraft.core.then",
+       "late": true
+      },
+      {
+       "kind": "direct",
+       "group": "DamageRegistry.register",
        "name": "icraft.core",
        "late": true
       }
@@ -1551,7 +1557,8 @@
        "kind": "hurt",
        "group": "hurt",
        "name": "icraft.affixes.fire_vuln",
-       "who": "any"
+       "who": "any",
+       "gated": true
       },
       {
        "kind": "hurt",
@@ -9665,6 +9672,12 @@
     "DamageRegistry.register": [
      {
       "script": "0_lib_core.js",
+      "name": "icraft.core.then",
+      "kind": "direct",
+      "late": true
+     },
+     {
+      "script": "0_lib_core.js",
       "name": "icraft.core",
       "kind": "direct",
       "late": true
@@ -10863,102 +10876,123 @@
      {
       "script": "abyss/abyss_armor_effects.js",
       "name": "icraft.abyss.armor.take",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "abyss/abyss_armor_effects.js",
       "name": "icraft.abyss.armor.deal",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "abyss/abyss_ring_effects.js",
       "name": "icraft.abyss.rings.deal",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "abyss/abyss_ring_effects.js",
       "name": "icraft.abyss.rings.take",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "affixes/affix_effects.js",
       "name": "icraft.affixes.offensive",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "affixes/affix_effects.js",
       "name": "icraft.affixes.fire_vuln",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "any",
+      "gated": true
      },
      {
       "script": "affixes/affix_effects.js",
       "name": "icraft.affixes.defensive",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "attributes/attribute_sync.js",
       "name": "icraft.attribute_sync.hurt",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "player"
      },
      {
       "script": "attributes/iss_school_to_ars_spell.js",
       "name": "icraft.iss_school_to_ars_spell",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "death_penalty.js",
       "name": "icraft.death_penalty.broken_weapon",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "enchantments/enchant_effects.js",
       "name": "icraft.enchants.weapon",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "enchantments/enchant_effects.js",
       "name": "icraft.enchants.armor",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "enchantments/enchant_effects.js",
       "name": "icraft.enchants.lunar_stride",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "enchantments/enchant_effects.js",
       "name": "icraft.enchants.stellar_shield",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "magic_crit_hook.js",
       "name": "icraft.magic_crit",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "origins/ss_unique_spellsword_scaling.js",
       "name": "icraft.ss_unique_spellsword",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "scaling/dimension_mechanics.js",
       "name": "icraft.dimension_mechanics.blue_skies",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "skills/skill_effects.js",
       "name": "icraft.skill_effects.1",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attackerPlayer"
      },
      {
       "script": "skills/skill_effects.js",
       "name": "icraft.skill_effects.2",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "victimPlayer"
      },
      {
       "script": "tetra_terramity_perks.js",
       "name": "icraft.tetra_terramity_perks",
-      "kind": "hurt"
+      "kind": "hurt",
+      "who": "attacker"
      }
     ],
     "tick.player": [

@@ -141,6 +141,19 @@ the engine member they replace:
 | `core.spawnBuff(entity, flag)` | `entity.modifyAttribute` for a once-per-mob buff (it is not saved) |
 | `core.isBoss(entityOrId)` | a list of boss ids |
 
+**A hurt handler.** `core.onHurt('<key>', function (event, ctx) { ... }, '<who>')` puts a handler on the one
+dispatcher of the pack: it runs after the handlers of the scripts that load before it, it is skipped for
+secondary damage (a splash, a chain, thorns: anything dealt through `core.dealDamage`) and for a hit an earlier
+handler cancelled, and the amount it leaves is checked. That is what a NEW handler wants. Never put one
+straight on `DamageModifierRegistry`: that registry runs its entries in the hash order of their keys, not in the
+order they were registered, and a twelfth key reorders the other eleven (lint rule DIRECT-HURT-REG).
+
+The fourth argument may be an options object (`gate`, `place`, `secondary`, `cancelled`, `unchecked`; the
+comment above `OPTIONS` in `0_lib_core.js` says what each does). They exist for the handlers that were moved off
+the registry and must do exactly what they did there; the handlers that have a `place` are a closed list in the
+library (`PLACED`). Adding one of these options to a handler, or taking one off, changes damage numbers: it
+needs a decision and a row in the hit table (`dev/engine-tests`, suite `hit-table`).
+
 **Registries.** Which entities are bosses and which tier a dimension has is data, in
 `kubejs/config/icraft/registry/bosses.json` and `dimensions.json`. A script asks `icraft.bosses` and
 `icraft.dims` and never keeps its own list of ids. `.minecraft/dev/rosters/README.md` has every key.

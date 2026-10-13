@@ -731,7 +731,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 43. `ultris_randomizer_janitor.js` as `tick_ultrisJanitor`
 44. `zzz_icraft_live.js` as `tick_icraftLive`
 
-### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they are registered)
+### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)
 
 **`hurt`** (20)
 
@@ -793,9 +793,10 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 1. `attributes/iss_school_to_ars_spell.js` as `icraft.iss_school_to_ars_spell`
 
-**`DamageRegistry.register`** (1)
+**`DamageRegistry.register`** (2)
 
-1. `0_lib_core.js` as `icraft.core` (registered inside another handler)
+1. `0_lib_core.js` as `icraft.core.then` (registered inside another handler)
+2. `0_lib_core.js` as `icraft.core` (registered inside another handler)
 
 **`DamageRegistry.registerLate`** (1)
 
@@ -1050,7 +1051,7 @@ own one-shot `global._*` flags.
 ### `0_lib_core.js`
 
 - place 4 of 160, priority 880; library `core`; header: @events @file @live @registry
-- straight on a Java registry: `DamageRegistry.registerLate` `icraft.core.late`, `DamageRegistry.register` `icraft.core`
+- straight on a Java registry: `DamageRegistry.registerLate` `icraft.core.late`, `DamageRegistry.register` `icraft.core.then`, `DamageRegistry.register` `icraft.core`
 - features: `spawn-buff-repaired`, `spawn-buff-saved`
 - registries: bosses
 - sets: `icraft.core`

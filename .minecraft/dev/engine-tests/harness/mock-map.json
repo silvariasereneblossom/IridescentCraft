@@ -38,6 +38,7 @@
     "mk.W$Hurt": {"real": ["net.minecraftforge.event.entity.living.LivingHurtEvent"]},
     "mk.W$DamageModifierRegistry": {"real": ["com.iridescentcraft.reforging.event.DamageModifierRegistry"], "jar": "iridescent_tetra_expansion-*.jar"},
     "mk.W$DamageModifierRegistry$Handler": {"harness-class": "the functional interface a script function is converted to"},
+    "mk.W$DamageModifierRegistry$Trace": {"harness-class": "test-side callback type: what each entry of the registry did to a hurt event (suite hit-table)"},
     "mk.W$Effects": {"real": ["dev.latvian.mods.kubejs.entity.EntityPotionEffectsJS"]},
     "mk.W$EntityType": {"real": ["net.minecraft.world.entity.EntityType"], "harness": {"of": "the registry type wrapper, called by H.java"}},
     "mk.W$Entity": {"real": ["net.minecraft.world.entity.Entity"]},

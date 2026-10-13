@@ -91,6 +91,16 @@ for (const type of TYPE_ORDER) {
 }
 for (const e of order.errors) problems.push('load_order.js: ' + (e.type ? e.type + ':' : '') + e.script + ': ' + e.text);
 
+// ---- the places of the hurt dispatcher: the list PLACED of 0_lib_core.js, read from its source ----
+const PLACED = (() => {
+  const file = path.join(PACK, 'kubejs', 'server_scripts', '0_lib_core.js');
+  if (!fs.existsSync(file)) return null;
+  const m = /var PLACED = \{\s*first: \[([^\]]*)\],\s*last: \[([^\]]*)\]\s*\}/.exec(fs.readFileSync(file, 'utf8'));
+  if (!m) return null;
+  const keys = (t) => (t.match(/'[^']+'/g) || []).map((x) => x.slice(1, -1));
+  return { first: keys(m[1]), last: keys(m[2]) };
+})();
+
 // ---- the facts -------------------------------------------------------------------------
 const deps = M.dependencies(model, 'root');
 const prov = M.providers(model, 'root');
@@ -121,11 +131,14 @@ for (const type of TYPE_ORDER) {
     for (const g of c.guards) registers.push({ kind: 'guard', group: g.group, name: g.name, target: g.target, late: !g.load });
     for (const g of c.handlers) registers.push({ kind: 'handler', group: g.group, name: g.name, target: '', late: !g.load });
     for (const g of c.ticks) registers.push({ kind: 'tick', group: g.group, name: g.name, target: '', every: g.interval, offset: g.offset, late: !g.load });
-    for (const g of c.hurts) registers.push({ kind: 'hurt', group: g.group, name: g.name, target: '', who: g.who, late: !g.load });
+    for (const g of c.hurts) registers.push({ kind: 'hurt', group: g.group, name: g.name, target: '', who: g.who, late: !g.load,
+      place: g.place, secondary: g.secondary, cancelled: g.cancelled, unchecked: g.unchecked, gated: g.gated, options: g.options });
     for (const g of c.direct) registers.push({ kind: 'direct', group: g.what, name: g.key, target: '', late: !g.load });
     for (const r of registers) {
       if (!events.has(r.group)) events.set(r.group, []);
-      events.get(r.group).push({ script: rel, name: r.name, target: r.target, kind: r.kind, late: r.late });
+      const e = { script: rel, name: r.name, target: r.target, kind: r.kind, late: r.late };
+      if (r.kind === 'hurt') Object.assign(e, { who: r.who, place: r.place, secondary: r.secondary, cancelled: r.cancelled, unchecked: r.unchecked, gated: r.gated });
+      events.get(r.group).push(e);
     }
     const reads = [];
     for (const d of deps.filter((x) => x.type === type && x.from === rel)) {
@@ -154,6 +167,21 @@ for (const type of TYPE_ORDER) {
       last: order.lasts.filter((k) => k.type === type && k.script === rel && k.trees.includes('root')).map((k) => k.group),
       header: [...s.header.has].sort()
     });
+  }
+  // hurt handlers run by place, not by registration alone: `first` (in the order of the library's list PLACED),
+  // the unplaced ones as registered, then `last` (the list's order again), in an entry of its own
+  if (events.has('hurt')) {
+    const list = events.get('hurt');
+    for (const r of list) {
+      const at = r.script + ' ' + r.name;
+      const reg = scripts.find((x) => x.path === r.script).registers.find((x) => x.kind === 'hurt' && x.name === r.name);
+      if (reg.options) problems.push(type + ':' + at + ': the options of this hurt handler cannot be read (' + reg.options + '): the run order below would be a guess');
+      if (r.place && !PLACED) problems.push(type + ':' + at + ': it is placed `' + r.place + '`, and the list PLACED of 0_lib_core.js could not be read');
+      else if (r.place && !(PLACED[r.place] || []).includes(r.name)) problems.push(type + ':' + at + ': placed `' + r.place + '`, but the key is not on PLACED.' + r.place + ' of 0_lib_core.js (the library refuses it at load)');
+    }
+    const rank = (r) => (PLACED && PLACED[r.place] ? PLACED[r.place].indexOf(r.name) : 0);
+    const placed = (p) => list.filter((r) => r.place === p).sort((a, b) => rank(a) - rank(b));
+    events.set('hurt', placed('first').concat(list.filter((r) => r.place !== 'first' && r.place !== 'last'), placed('last')));
   }
   const ev = {};
   for (const g of [...events.keys()].sort()) ev[g] = events.get(g);
@@ -320,6 +348,8 @@ for (const type of TYPE_ORDER) {
   md.push('');
 }
 
+const hurtFlags = (r) => [r.place, r.secondary ? 'secondary' : '', r.cancelled ? 'cancelled' : '', r.unchecked ? 'unchecked' : ''].filter((x) => x);
+const hurtNote = (r) => (hurtFlags(r).length ? ' [' + hurtFlags(r).join(', ') + ']' : '');
 for (const type of TYPE_ORDER) {
   const t = doc.types[type];
   const groups = Object.keys(t.events);
@@ -328,7 +358,7 @@ for (const type of TYPE_ORDER) {
   md.push('');
   const kinds = [['guard', 'Events (handlers through `icraft.guard`)'], ['handler', 'Java registries (functions through `icraft.handler`)'],
     ['tick', 'Tick functions (through the tick master, `0_tick_master.js`; each runs when `tick % every === offset`, in this order within a tick)'],
-    ['hurt', 'Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they are registered)'],
+    ['hurt', 'Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)'],
     ['direct', 'Straight on a Java registry, with no liveness id (the key is what the registry calls it)']];
   for (const [kind, title] of kinds) {
     const mine = groups.filter((g) => t.events[g].some((r) => r.kind === kind));
@@ -342,7 +372,7 @@ for (const type of TYPE_ORDER) {
       const targeted = list.filter((r) => r.target !== '');
       list.forEach((r, i) => {
         md.push((i + 1) + '. ' + code(r.script) + (r.name && r.name !== r.script.replace(/\.js$/, '') ? ' as ' + code(r.name) : '') +
-          (r.target ? ', for ' + code(r.target) : '') + (r.late ? ' (registered inside another handler)' : ''));
+          (r.target ? ', for ' + code(r.target) : '') + (r.late ? ' (registered inside another handler)' : '') + (kind === 'hurt' ? hurtNote(r) : ''));
       });
       if (targeted.length && targeted.length < list.length) md.push('', 'When one of the targets fires, its handlers (' + targeted.length + ' of the list) run before the untargeted ones.');
       md.push('');
@@ -382,7 +412,7 @@ for (const type of TYPE_ORDER) {
     if (by('guard').length) md.push('- events: ' + by('guard').map((r) => code(r.group) + (r.target ? ' for ' + code(r.target) : '') + (r.name !== s.path.replace(/\.js$/, '') ? ' as ' + code(r.name) : '')).join(', '));
     if (by('handler').length) md.push('- registry handlers: ' + by('handler').map((r) => code(r.group)).join(', '));
     if (by('tick').length) md.push('- tick functions: ' + by('tick').map((r) => code(r.name) + ' (' + r.group.replace('tick.', '') + ', every ' + (r.every === null ? '?' : r.every) + ', offset ' + (r.offset === null ? '?' : r.offset) + ')').join(', '));
-    if (by('hurt').length) md.push('- hurt handlers: ' + by('hurt').map((r) => code(r.name) + (r.group === 'hurt.late' ? ' (late)' : '') + ' [' + r.who + ']').join(', '));
+    if (by('hurt').length) md.push('- hurt handlers: ' + by('hurt').map((r) => code(r.name) + (r.group === 'hurt.late' ? ' (late)' : '') + ' [' + [r.who].concat(hurtFlags(r)).join(', ') + ']').join(', '));
     if (by('direct').length) md.push('- straight on a Java registry: ' + by('direct').map((r) => code(r.group) + (r.name ? ' ' + code(r.name) : '')).join(', '));
     if (s.sections) md.push('- sections: ' + s.sections);
     if (s.features.length) md.push('- features: ' + s.features.map(code).join(', '));

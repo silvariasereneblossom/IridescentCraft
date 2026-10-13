@@ -91,6 +91,16 @@ public class T {
     return ev;
   }
   public static void only(String key) { W.DamageModifierRegistry.only = key; }
+  /** after every entry of the damage registry that ran: fn(key, event, amountBefore, cancelledBefore); null takes it off */
+  public static void traceHurt(W.DamageModifierRegistry.Trace fn) { W.DamageModifierRegistry.trace = fn; }
+  /** the registry as the game starts it: both maps empty (a suite that puts the startup scripts' keys first) */
+  public static void clearHurtRegistry() {
+    W.DamageModifierRegistry.HANDLERS = new java.util.concurrent.ConcurrentHashMap<>();
+    W.DamageModifierRegistry.LATE = new java.util.concurrent.ConcurrentHashMap<>();
+    W.DamageModifierRegistry.THROWS.clear();
+  }
+  public static String normalKeys() { return String.join(",", W.DamageModifierRegistry.HANDLERS.keySet()); }
+  public static String lateKeys() { return String.join(",", W.DamageModifierRegistry.LATE.keySet()); }
   public static int handlerThrows(String key) { Integer n = W.DamageModifierRegistry.THROWS.get(key); return n == null ? 0 : n; }
   public static int totalThrows() { int n = 0; for (int v : W.DamageModifierRegistry.THROWS.values()) n += v; return n; }
   public static String handlerKeys() { return String.join(",", W.DamageModifierRegistry.HANDLERS.keySet()) + " | late: " + String.join(",", W.DamageModifierRegistry.LATE.keySet()); }

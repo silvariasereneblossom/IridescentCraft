@@ -71,8 +71,10 @@ public class H {
      * Classes a script may load under their own name: what kubejs/server_scripts/00_icraft_guard.js loads.
      * java.util.Optional is the JDK's own (the guard throws an exit again through Optional.orElseThrow, and
      * tries that once when it loads), and EventExit is the stand-in that carries the real class's name.
+     * java.util.UUID is the JDK's own too: skills/justleveling_skills.js loads it next to the Player class, and
+     * without it that script registers neither of its hurt handlers (suite hit-table).
      */
-    static final java.util.Set<String> REAL = java.util.Set.of("java.util.Optional", "dev.latvian.mods.kubejs.event.EventExit");
+    static final java.util.Set<String> REAL = java.util.Set.of("java.util.Optional", "java.util.UUID", "dev.latvian.mods.kubejs.event.EventExit");
     public String load(String path) {
       try {
         String src = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8);

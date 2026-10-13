@@ -211,6 +211,27 @@ const isIcraftCall = (n, p) => !!n && n.type === 'CallExpression' && prop(n.call
 // icraft.live.fired(..) / icraft.lib.announce(..) / icraft.lib.need(..)
 const isIcraft2 = (n, a, b) => !!n && n.type === 'CallExpression' && prop(n.callee) === b && prop(n.callee.object) === a && isId(n.callee.object.object, 'icraft');
 
+// The fourth argument of core.onHurt / onHurtLate: a gate function, or an options object (0_lib_core.js, OPTIONS).
+// -> { place: 'first' | 'last' | '', secondary, cancelled, unchecked, gated, options: '' | why they could not be read }
+// An option that is not a literal cannot be read here, and the catalogue's run order would be a guess: `options` says so.
+function hurtOptions(arg) {
+  const out = { place: '', secondary: false, cancelled: false, unchecked: false, gated: false, options: '' };
+  if (!arg) return out;
+  if (isFn(arg) || arg.type === 'Identifier') { out.gated = true; return out; }
+  if (arg.type !== 'ObjectExpression') { out.options = 'the fourth argument is neither a function nor an object literal'; return out; }
+  for (const q of arg.properties) {
+    const key = (q.type === 'Property' && !q.computed) ? (q.key.type === 'Identifier' ? q.key.name : strLit(q.key)) : null;
+    if (key === null) { out.options = 'an option of the object is not a plain key'; continue; }
+    if (key === 'gate') out.gated = true;
+    else if (key === 'place') { const v = strLit(q.value); if (v === null) out.options = 'the option `place` is not a string literal'; else out.place = v; }
+    else if (key === 'secondary' || key === 'cancelled' || key === 'unchecked') {
+      if (q.value.type === 'Literal' && typeof q.value.value === 'boolean') out[key] = q.value.value;
+      else out.options = 'the option `' + key + '` is not true or false, written out';
+    } else out.options = 'unknown option `' + key + '`';
+  }
+  return out;
+}
+
 function childNodes(n) {
   const out = [];
   for (const k of Object.keys(n)) {
@@ -399,7 +420,7 @@ function readCode(text) {
         }
       } else if (m && HURTS[m] && n.arguments.length >= 2) {
         const name = strLit(n.arguments[0]);
-        if (name !== null) out.hurts.push({ name, group: HURTS[m], id: name + '@' + HURTS[m], who: strLit(n.arguments[2]) || 'any', line, load });
+        if (name !== null) out.hurts.push({ name, group: HURTS[m], id: name + '@' + HURTS[m], who: strLit(n.arguments[2]) || 'any', line, load, ...hurtOptions(n.arguments[3]) });
       } else if (m && /^register[A-Z]?\w*$/.test(m) && n.callee.object.type === 'Identifier' && javaRegistries.has(n.callee.object.name) &&
                  !n.arguments.some((a) => isIcraftCall(a, 'handler'))) {
         out.direct.push({ what: n.callee.object.name + '.' + m, key: strLit(n.arguments[0]) || '', line, load });

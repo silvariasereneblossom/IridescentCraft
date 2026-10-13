@@ -529,22 +529,35 @@ public class W {
   /** com.iridescentcraft.reforging.event.DamageModifierRegistry */
   public static class DamageModifierRegistry {
     @FunctionalInterface public interface Handler { void accept(Hurt event); }
-    static final LinkedHashMap<String, Handler> HANDLERS = new LinkedHashMap<>();
-    static final LinkedHashMap<String, Handler> LATE = new LinkedHashMap<>();
+    // ConcurrentHashMap, as in the jar: the walk is in HASH order of the keys, not in the order they were put.
+    // (These were LinkedHashMaps until 2026-10-13: the mock ran the entries in registration order, the game never did.)
+    // Not final: a map that once held twelve keys keeps its doubled table when it is cleared, and walks its keys
+    // in another order than a fresh one. T.clearHurtRegistry() puts new maps here.
+    static java.util.concurrent.ConcurrentHashMap<String, Handler> HANDLERS = new java.util.concurrent.ConcurrentHashMap<>();
+    static java.util.concurrent.ConcurrentHashMap<String, Handler> LATE = new java.util.concurrent.ConcurrentHashMap<>();
     static final Map<String, Integer> THROWS = new HashMap<>();
     static String only = null;   // test hook: dispatch to this key only
+    /** test hook: called with key "" when an event reaches the registry, then after every entry that ran, with the
+     *  amount and the cancel flag that entry found */
+    @FunctionalInterface public interface Trace { void step(String key, Hurt event, float before, boolean cancelledBefore); }
+    static Trace trace = null;
     public static void register(String key, Handler h) { if (key != null && h != null) HANDLERS.put(key, h); }
     public static void registerLate(String key, Handler h) { if (key != null && h != null) { HANDLERS.remove(key); LATE.put(key, h); } }
     public static boolean unregister(String key) { if (key == null) return false; boolean a = HANDLERS.remove(key) != null; boolean b = LATE.remove(key) != null; return a || b; }
     public static int size() { return HANDLERS.size() + LATE.size(); }
-    @HideFromJS public static void dispatch(Hurt e) { run(HANDLERS, e); run(LATE, e); }
+    @HideFromJS public static void dispatch(Hurt e) {
+      if (trace != null) trace.step("", e, e.amount, e.canceled);
+      run(HANDLERS, e); run(LATE, e);
+    }
     private static void run(Map<String, Handler> m, Hurt e) {
       for (Map.Entry<String, Handler> en : new ArrayList<>(m.entrySet())) {
         if (only != null && !only.equals(en.getKey())) continue;
+        float before = e.amount; boolean cancelledBefore = e.canceled;
         try { en.getValue().accept(e); } catch (Throwable t) {
           THROWS.merge(en.getKey(), 1, Integer::sum);
           LOG.add("[damage_registry] handler '" + en.getKey() + "' threw " + t.getClass().getSimpleName() + ": " + t.getMessage());
         }
+        if (trace != null) trace.step(en.getKey(), e, before, cancelledBefore);
       }
     }
   }
@@ -589,6 +602,7 @@ public class W {
     final List<String> sounds = new ArrayList<>();
     int nbtReads = 0;
     @RemapForJS("age") public int tickCount = 100;
+    public boolean hurtMarked = false;
 
     public Entity(String typeId, Level lvl, double x, double y, double z) { this.typeId = typeId; this.lvl = lvl; this.x = x; this.y = y; this.z = z; if (lvl != null) lvl.entities.add(this); }
 
@@ -679,6 +693,7 @@ public class W {
     public void heal(float a) { if (a > 0) { healed += a; setHealth(health + a); } }
     public Effects kjs$getPotionEffects() { return new Effects(this); }
     public boolean hasEffect(Effect f) { return effects.containsKey(f.id); }
+    public boolean addEffect(S.MobEffectInstance i) { if (i == null) return false; effects.put(i.effect.id, new int[]{i.duration, i.amplifier}); return true; }
     public boolean removeEffect(Effect f) { return effects.remove(f.id) != null; }
     public Collection<String> getActiveEffects() { return effects.keySet(); }
     public Stack getItemBySlot(Slot s) { equipReads++; Stack v = gear.get(s); return v == null ? Stack.EMPTY : v; }
