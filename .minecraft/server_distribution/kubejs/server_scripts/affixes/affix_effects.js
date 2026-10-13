@@ -128,7 +128,10 @@ var getEquipItem = function (player, slot) {
       case 'feet': return player.feetArmorItem
       default: return null
     }
-  } catch (e) { return null }
+  } catch (e) {
+    core.warnOnce('affix.equip', '[affix_effects] reading an equipment slot threw (read as empty): ' + e)
+    return null
+  }
 }
 
 var GEAR_SLOTS = ['head', 'chest', 'legs', 'feet', 'mainhand', 'offhand']
@@ -163,7 +166,9 @@ var getNearbyEntities = function (entity, radius) {
     ).forEach(function (e) {
       if (e !== entity && e.living) results.push(e)
     })
-  } catch (e) {}
+  } catch (e) {
+    core.warnOnce('affix.nearby', '[affix_effects] the scan for nearby entities threw (nobody found: the area effect that asked did nothing): ' + e)
+  }
   return results
 }
 
@@ -197,7 +202,10 @@ var idHasAny = function (id, words) {
 // Same 2 s life as the vanilla chorus fruit hop: finds the ground at the
 // target column and refuses a spot that would put the player in a block.
 var safeTeleport = function (player, x, y, z) {
-  try { return player.randomTeleport(x, y, z, false) === true } catch (e) { return false }
+  try { return player.randomTeleport(x, y, z, false) === true } catch (e) {
+    core.warnOnce('affix.teleport', '[affix_effects] a teleport threw (treated as refused): ' + e)
+    return false
+  }
 }
 
 // Cosmetic only; switched off for the session the first time it fails.
@@ -208,6 +216,7 @@ var puff = function (entity, particle, dy, dx, spreadY, dz, count, speed) {
     entity.level.spawnParticles(particle, true,
       entity.x, entity.y + dy, entity.z, dx, spreadY, dz, count, speed)
   } catch (e) {
+    core.warnOnce('affix.particles', '[affix_effects] spawnParticles threw (particles are off until the scripts load again): ' + e)
     particlesOk = false
   }
 }
@@ -217,7 +226,8 @@ var puff = function (entity, particle, dy, dx, spreadY, dz, count, speed) {
 // one persistentData key per target, never removed.
 var relentlessHits = {}
 PlayerEvents.loggedOut(icraft.guard('affixes/affix_effects', 'PlayerEvents.loggedOut', function (event) {
-  try { delete relentlessHits[String(event.player.uuid)] } catch (e) {}
+  // (no try of its own: icraft.guard reports a throw in this handler)
+  delete relentlessHits[String(event.player.uuid)]
 }))
 
 
@@ -273,14 +283,14 @@ core.onHurt('icraft.affixes.offensive', function (event, ctx) {
   if (has(w, 'Skyshatter')) {
     if (since(pdata, 'icraft_skyshatter_cd', now) >= 40 && Math.random() < 0.20) {
       target.setMotion(0.0, 0.65, 0.0)
-      try { target.potionEffects.add('minecraft:levitation', 12, 0, false, false) } catch (e) {}
+      try { target.potionEffects.add('minecraft:levitation', 12, 0, false, false) } catch (e) { core.warnOnce('affix.skyshatter.levitation', '[affix_effects] Skyshatter: the levitation effect threw: ' + e) }
       // Lightning visual + thunder cue, no real lightning entity (would
       // damage + ignite). Particle column at the target's center plus a
       // subdued thunder so it reads as "shattered skyward" rather than
       // a lightning-strike kill.
       puff(target, 'minecraft:flash', 1.0, 0, 0, 0, 1, 0)
       puff(target, 'minecraft:cloud', 0.5, 0.5, 0.5, 0.5, 20, 0.05)
-      try { target.playSound('minecraft:entity.lightning_bolt.thunder', 0.4, 1.5) } catch (e) {}
+      try { target.playSound('minecraft:entity.lightning_bolt.thunder', 0.4, 1.5) } catch (e) { core.warnOnce('affix.skyshatter.sound', '[affix_effects] Skyshatter: the thunder sound threw: ' + e) }
       pdata.putLong('icraft_skyshatter_cd', now)
     }
   }
@@ -552,7 +562,7 @@ core.onHurt('icraft.affixes.offensive', function (event, ctx) {
     var nHits = pdata.getInt('icraft_nature_hits') + 1
     if (nHits >= 5) {
       getNearbyHostiles(target, 3).forEach(function (e) {
-        try { e.potionEffects.add('minecraft:poison', 60, 1, false, false) } catch (ex) {}
+        try { e.potionEffects.add('minecraft:poison', 60, 1, false, false) } catch (ex) { core.warnOnce('affix.natures-wrath.poison', '[affix_effects] Nature\'s Wrath: poison on a nearby mob threw: ' + ex) }
         core.dealDamage(e, 'player', 4, player)
       })
       // Also hit the target
@@ -582,7 +592,7 @@ core.onHurt('icraft.affixes.offensive', function (event, ctx) {
     // Heal nearby allies
     getNearbyEntities(player, 5).forEach(function (e) {
       if (e.player && e !== player) {
-        try { e.heal(0.5) } catch (ex) {}
+        try { e.heal(0.5) } catch (ex) { core.warnOnce('affix.celestial-radiance.heal', '[affix_effects] Celestial Radiance: healing a nearby player threw: ' + ex) }
       }
     })
   }
@@ -606,7 +616,7 @@ core.onHurt('icraft.affixes.offensive', function (event, ctx) {
       getNearbyHostiles(target, 4).forEach(function (e) {
         core.dealDamage(e, 'player', quakeDamage, player)
         // Knockback approximation via potion
-        try { e.potionEffects.add('minecraft:slowness', 20, 2, false, false) } catch (ex) {}
+        try { e.potionEffects.add('minecraft:slowness', 20, 2, false, false) } catch (ex) { core.warnOnce('affix.netherquake.slowness', '[affix_effects] Netherquake: slowness on a nearby mob threw: ' + ex) }
       })
       pdata.putLong('icraft_quake_cd', now)
     }
@@ -641,7 +651,7 @@ core.onHurt('icraft.affixes.offensive', function (event, ctx) {
       // Delayed damage to area (immediate for now, marked as "delayed")
       getNearbyHostiles(target, 3).forEach(function (e) {
         core.dealDamage(e, 'magic', 6, player)
-        try { e.setSecondsOnFire(2) } catch (ex) {}
+        try { e.setSecondsOnFire(2) } catch (ex) { core.warnOnce('affix.starfall.fire', '[affix_effects] Starfall: setting a nearby mob on fire threw: ' + ex) }
       })
       event.amount = event.amount + 6 // the struck target (see Warden's Echo)
       pdata.putLong('icraft_starfall_cd', now)
@@ -681,7 +691,7 @@ core.onHurt('icraft.affixes.fire_vuln', function (event, ctx) {
   }
   var isFire = core.isFire(ctx.source)
   if (!isFire) {
-    try { if (victim.remainingFireTicks > 0) isFire = true } catch (e) {}
+    try { if (victim.remainingFireTicks > 0) isFire = true } catch (e) { core.warnOnce('affix.fire-mark.fire-ticks', '[affix_effects] the fire-vulnerability mark: reading remainingFireTicks threw (a burning victim is not counted as a fire hit): ' + e) }
   }
   if (!isFire) return
   var pct = core.finite(pdata.getFloat('icraft_fire_vuln_pct'), 0)
@@ -714,7 +724,9 @@ EntityEvents.death(icraft.guard('affixes/affix_effects', 'EntityEvents.death', f
       try {
         e.potionEffects.add('minecraft:slowness', 100, 2, false, false)
         e.potionEffects.add('minecraft:weakness', 100, 1, false, false)
-      } catch (ex) {}
+      } catch (ex) {
+        core.warnOnce('affix.spectral-wail.effects', '[affix_effects] Spectral Wail: slowness and weakness on a nearby mob threw: ' + ex)
+      }
     })
   }
 
@@ -740,7 +752,9 @@ EntityEvents.death(icraft.guard('affixes/affix_effects', 'EntityEvents.death', f
   if (has(w, 'Siphoning')) {
     try {
       player.foodLevel = Math.min(20, player.foodLevel + Math.floor(Math.random() * 3) + 1)
-    } catch (e) {}
+    } catch (e) {
+      core.warnOnce('affix.siphoning.food', '[affix_effects] Siphoning: restoring food threw: ' + e)
+    }
   }
 
   // ── Magnetic: Items attracted to player after kill ──
@@ -756,7 +770,9 @@ EntityEvents.death(icraft.guard('affixes/affix_effects', 'EntityEvents.death', f
         'summon minecraft:vex ' + entity.x + ' ' + (entity.y + 1) + ' ' + entity.z +
         ' {Life:600,Tags:["icraft_summoned_ally"],ActiveEffects:[{Id:11,Amplifier:0,Duration:600}]}'
       )
-    } catch (e) {}
+    } catch (e) {
+      core.warnOnce('affix.summoners-accord.summon', '[affix_effects] Summoner\'s Accord: the summon command threw: ' + e)
+    }
   }
 
   // ── Apex Predator: Track Champion/Boss kills ──
@@ -845,7 +861,7 @@ core.onHurt('icraft.affixes.defensive', function (event, ctx) {
         player.health = 1
         // Fire nova
         getNearbyHostiles(player, 5).forEach(function (e) {
-          try { e.setSecondsOnFire(5) } catch (ex) {}
+          try { e.setSecondsOnFire(5) } catch (ex) { core.warnOnce('affix.undying-flame.fire', '[affix_effects] Undying Flame: setting a nearby mob on fire threw: ' + ex) }
           core.dealDamage(e, 'player', 8, player)
         })
         pdata.putLong('icraft_undying_cd', now)
@@ -924,13 +940,13 @@ core.onHurt('icraft.affixes.defensive', function (event, ctx) {
 
   // ── Frostward: Slows melee attackers ──
   if (attacker && anyHas(gear, 'Frostward')) {
-    try { attacker.potionEffects.add('minecraft:slowness', 60, 1, false, false) } catch (e) {}
+    try { attacker.potionEffects.add('minecraft:slowness', 60, 1, false, false) } catch (e) { core.warnOnce('affix.frostward.slowness', '[affix_effects] Frostward: slowness on the attacker threw: ' + e) }
   }
 
   // ── Blazeforged: Fire aura when below 30% HP ──
   if (hpFraction < 0.30 && anyHas(gear, 'Blazeforged')) {
     getNearbyHostiles(player, 3).forEach(function (e) {
-      try { e.setSecondsOnFire(3) } catch (ex) {}
+      try { e.setSecondsOnFire(3) } catch (ex) { core.warnOnce('affix.blazeforged.fire', '[affix_effects] Blazeforged: setting a nearby mob on fire threw: ' + ex) }
       core.dealDamage(e, 'on_fire', 3, player)
     })
   }
@@ -946,14 +962,14 @@ core.onHurt('icraft.affixes.defensive', function (event, ctx) {
   // ── Gloomward: Chance to blind attackers on block (shield affix) ──
   if (attacker && has(gear.offhand, 'Gloomward')) {
     if (Math.random() < 0.15) {
-      try { attacker.potionEffects.add('minecraft:blindness', 40, 0, false, false) } catch (e) {}
+      try { attacker.potionEffects.add('minecraft:blindness', 40, 0, false, false) } catch (e) { core.warnOnce('affix.gloomward.blindness', '[affix_effects] Gloomward: blindness on the attacker threw: ' + e) }
     }
   }
 
   // ── Repulsing: Blocking creates knockback wave ──
   if (has(gear.offhand, 'Repulsing')) {
     getNearbyHostiles(player, 2).forEach(function (e) {
-      try { e.potionEffects.add('minecraft:slowness', 20, 3, false, false) } catch (ex) {}
+      try { e.potionEffects.add('minecraft:slowness', 20, 3, false, false) } catch (ex) { core.warnOnce('affix.repulsing.slowness', '[affix_effects] Repulsing: slowness on a nearby mob threw: ' + ex) }
     })
   }
 
@@ -1048,21 +1064,21 @@ var tickPlayer = function (player) {
   // ── Sculk Resonance: Nearby hostile mobs glow (8-block detection) ──
   if (anyHas(gear, 'Sculk Resonance') || anyHas(gear, 'Resonance')) {
     getNearbyHostiles(player, 8).forEach(function (e) {
-      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) {}
+      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) { core.warnOnce('affix.sculk-resonance.glowing', '[affix_effects] Sculk Resonance: glowing on a nearby mob threw: ' + ex) }
     })
   }
 
   // ── Echolocating: Hostile mobs within 16 blocks glow through walls ──
   if (anyHas(gear, 'Echolocating')) {
     getNearbyHostiles(player, 16).forEach(function (e) {
-      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) {}
+      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) { core.warnOnce('affix.echolocating.glowing', '[affix_effects] Echolocating: glowing on a nearby mob threw: ' + ex) }
     })
   }
 
   // ── Void Gaze: See all entities within 32 blocks ──
   if (anyHas(gear, 'Void Gaze')) {
     getNearbyEntities(player, 32).forEach(function (e) {
-      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) {}
+      try { e.potionEffects.add('minecraft:glowing', 120, 0, false, false) } catch (ex) { core.warnOnce('affix.void-gaze.glowing', '[affix_effects] Void Gaze: glowing on a nearby entity threw: ' + ex) }
     })
   }
 
@@ -1111,7 +1127,7 @@ var tickPlayer = function (player) {
   // ── Warm: Reduced Freezing ──
   if (anyHas(gear, 'Warm')) {
     // Remove freezing ticks
-    try { player.setTicksFrozen(0) } catch (e) {}
+    try { player.setTicksFrozen(0) } catch (e) { core.warnOnce('affix.warm.thaw', '[affix_effects] Warm: clearing the freeze ticks threw: ' + e) }
   }
 
   // ── Repairing: Very slow passive durability regen ──
@@ -1124,7 +1140,9 @@ var tickPlayer = function (player) {
             item.damageValue = Math.max(0, item.damageValue - 1)
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        core.warnOnce('affix.repairing.repair', '[affix_effects] Repairing: mending an item threw: ' + e)
+      }
     }
   }
 

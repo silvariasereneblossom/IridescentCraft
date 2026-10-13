@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3e46608d",
+    "generated_from":  "793cbf1f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6984,12 +6984,12 @@
                                                                    "size":  39180
                                                                },
                   "kubejs/server_scripts/0_iss_guard.js":  {
-                                                               "sha256":  "ca51baa5c47c3d30773504e5586c9e39bad3b3b70abfc159b3d1e80f7bc1abcf",
-                                                               "size":  4411
+                                                               "sha256":  "c6b910289e97f69940159f3708d078b62f0d4704612b2cb31e1857fbcf55124f",
+                                                               "size":  5834
                                                            },
                   "kubejs/server_scripts/0_lib_aptitudes.js":  {
-                                                                   "sha256":  "3183b1cb3e7229ba682b01dbfd239113bd096cfd4749f4dc546c83e160661eee",
-                                                                   "size":  22355
+                                                                   "sha256":  "9ee476f26080f72dfeef9b9d60ec29982d405ad0e69fba38b4d637ff1aa9cb45",
+                                                                   "size":  23771
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
                                                               "sha256":  "784073ca53b3cc8e049f06076a768176f0bcd5421bbd8f88ceade9047cef6e19",
@@ -7028,8 +7028,8 @@
                                                                               "size":  4657
                                                                           },
                   "kubejs/server_scripts/affixes/affix_effects.js":  {
-                                                                         "sha256":  "f19958427e7ffb98367401508666bb19d6eb969376ce0a7c61ee952a3efc9bbd",
-                                                                         "size":  48336
+                                                                         "sha256":  "d3f7fff2e5caae421d0723bb9056fdd369583fffc473fb174b09d6bf1e7612e4",
+                                                                         "size":  51249
                                                                      },
                   "kubejs/server_scripts/apotheosis_gem_repair.js":  {
                                                                          "sha256":  "f598da12817dfac329483cd6e5b2ac41e3e0e1ce74f427a66869540360a9441f",

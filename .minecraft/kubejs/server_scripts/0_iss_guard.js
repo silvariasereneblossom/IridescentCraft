@@ -41,21 +41,35 @@
 
 global.ICRAFT_ISS_NS = 'irons_spellbooks:'
 
-// Resolve entity registry id with both the registry-key path and a
-// translation-key fallback. KubeJS exposes EntityType.toString() as
-// "entity.<ns>.<path>" in some Rhino paths instead of the canonical
-// "<ns>:<path>" -- normalize so the namespace check matches either.
-global.icraftIssResId = function(entity) {
-  try {
-    return String(entity.getType().builtInRegistryHolder().key().location())
-  } catch (e) {}
-  try {
-    var raw = String(entity.getType().toString())
-    var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-    if (m) return m[1] + ':' + m[2]
-    return raw
-  } catch (e) { return '' }
-}
+// The entity's registry id ("<ns>:<path>"). For scripts entity.getType() IS that
+// id, as a string; a value in the translation-key form ("entity.<ns>.<path>")
+// is normalised, so the namespace check matches either.
+// This file keeps its own reader on purpose: it loads BEFORE the core library
+// (priority 900 against 880) and is the one script that must not depend on
+// another to recognise a mob whose item slots crash the server.
+// Until 2026-10-13 a first read stood in front of this one,
+// entity.getType().builtInRegistryHolder(): on a string it threw for every
+// entity (measured on all 1,411 creatable types: answered 0 times), inside a
+// silent catch, and this fallback did the work. The answer is unchanged.
+global.icraftIssResId = (function () {
+  var warned = false     // (in a closure: this file is not wrapped, and a top-level name is shared by every server script)
+  return function(entity) {
+    try {
+      var raw = String(entity.getType())
+      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+      if (m) return m[1] + ':' + m[2]
+      return raw
+    } catch (e) {
+      // '' means "not an Iron's Spellbooks mob" to every caller, and that is the
+      // answer after which a script touches the mob's item slots: never give it quietly
+      if (!warned) {
+        warned = true
+        console.warn('[iss-guard] the id of an entity could not be read (' + e + '): it is NOT recognised as an irons_spellbooks mob (logged once per script load)')
+      }
+      return ''
+    }
+  }
+})()
 
 global.icraftIsIssMob = function(entity) {
   if (!entity) return false
@@ -64,7 +78,7 @@ global.icraftIsIssMob = function(entity) {
     if (entity.persistentData && entity.persistentData.contains('icraft_iss_skip')) {
       return true
     }
-  } catch (e) {}
+  } catch (e) { /* swallow-ok: the flag is only the fast path; when it cannot be read the namespace test below decides, and that test is complete */ }
   // Slow-path fallback: re-check via namespace (covers entities that
   // arrived before this script loaded, or whose persistentData was
   // cleared).
@@ -83,16 +97,17 @@ global.icraftSkipIssMob = function(entity, scriptName) {
   return true
 }
 
+// No try / catch of its own around the listener (it had a silent one until
+// 2026-10-13, "never let the guard listener itself crash the server"): that is
+// what icraft.guard does, and it SAYS so. A throw in here is one
+// `[icraft.guard] FAILED 0_iss_guard in EntityEvents.spawned` line and the spawn
+// handlers of the other scripts still run.
 EntityEvents.spawned(icraft.guard('0_iss_guard', 'EntityEvents.spawned', event => {
-  try {
-    var entity = event.entity
-    if (!entity || !entity.living || entity.player) return
-    var rid = global.icraftIssResId(entity)
-    if (String(rid || '').indexOf(global.ICRAFT_ISS_NS) === 0) {
-      try { entity.persistentData.putBoolean('icraft_iss_skip', true) } catch (e) {}
-    }
-  } catch (e) {
-    // Defensive: never let the guard listener itself crash the server.
+  var entity = event.entity
+  if (!entity || !entity.living || entity.player) return
+  var rid = global.icraftIssResId(entity)
+  if (String(rid || '').indexOf(global.ICRAFT_ISS_NS) === 0) {
+    try { entity.persistentData.putBoolean('icraft_iss_skip', true) } catch (e) { /* swallow-ok: the flag is an optimisation; a mob it could not be written on is still recognised by its namespace (icraftIsIssMob, the slow path) */ }
   }
 }))
 

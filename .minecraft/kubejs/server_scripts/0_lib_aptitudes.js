@@ -100,15 +100,17 @@
 
   // ── the fork's capability class ───────────────────────────────────────────
   var CapClass = null
+  var capWhy = ''
   try {
     CapClass = Java.loadClass('com.seniors.justlevelingfork.common.capability.AptitudeCapability')
   } catch (e) {
     CapClass = null
+    capWhy = ' (' + e + ')'
   }
   var direct = !!CapClass
   var directFails = 0
   if (!direct) {
-    warnOnce('load', 'AptitudeCapability could not be loaded -- reading aptitudes from player NBT instead, once per ' + TTL_NBT + ' ticks')
+    warnOnce('load', 'AptitudeCapability could not be loaded' + capWhy + ' -- reading aptitudes from player NBT instead, once per ' + TTL_NBT + ' ticks')
   }
 
   // getter(name) -> raw level; result: frozen { <8 names>, total }
@@ -180,7 +182,11 @@
     return t
   }
   var onServerThread = function (player) {
-    try { return player.server.isSameThread() !== false } catch (e) { return true }
+    try { return player.server.isSameThread() !== false } catch (e) {
+      // "yes" is the answer that lets a capability read happen: never give it quietly
+      warnOnce('thread', 'could not ask whether this is the server thread (' + e + ') -- assuming it is, and reading')
+      return true
+    }
   }
 
   var store = function (key, t, v) {
@@ -265,7 +271,9 @@
     try {
       var key = keyOf(player)
       if (cache.hasOwnProperty(key)) { delete cache[key]; cacheSize-- }
-    } catch (e) {}
+    } catch (e) {
+      warnOnce('invalidate', 'invalidate() failed: ' + e + ' -- a cached answer stays until its ' + TTL_DIRECT + ' / ' + TTL_NBT + ' ticks run out')
+    }
   }
 
   var forceRefresh = function (player) {
@@ -289,13 +297,18 @@
   } catch (e) {
     ExpUtils = null
     ExpCalc = null
+    // The pack ships LinearXP: without its classes every wallet call below works in vanilla
+    // levels and points, which is not how a player's XP is kept here (see THE XP WALLET).
+    warnOnce('linearxp', 'the LinearXP classes could not be loaded (' + e + ') -- the XP wallet falls back to vanilla levels and points')
   }
+  var linear = !!(ExpUtils && ExpCalc)
   try {
     ExpDisplay = Java.loadClass('celia.adwadg.linearxp.Handler.ExpDisplayHandler')
   } catch (e) {
     ExpDisplay = null
+    // said only when LinearXP itself is there (its absence is the line above)
+    if (linear) warnOnce('linearxp.display', 'LinearXP is loaded and its ExpDisplayHandler is not (' + e + ') -- a pending level-up is not folded in before the wallet is read')
   }
-  var linear = !!(ExpUtils && ExpCalc)
   var MAX_LEVELS = 2000000000
 
   // LinearXP: fold a pending level-up into experienceLevel and rewrite the
@@ -324,14 +337,19 @@
     try {
       var key = keyOf(player)
       if (lastLevel.hasOwnProperty(key)) { delete lastLevel[key]; lastLevelSize-- }
-    } catch (e) {}
+    } catch (e) {
+      warnOnce('dropBaseline', 'dropping a spend baseline failed: ' + e + ' -- the old level stays the baseline of that player\'s next pollSpend()')
+    }
   }
   // After this library moved the wallet itself: not a "spend", re-sync.
   var rebase = function (player) {
     try {
       var key = keyOf(player)
       if (lastLevel.hasOwnProperty(key)) lastLevel[key] = Math.floor(Number(player.xpLevel))
-    } catch (e) {}
+    } catch (e) {
+      // not harmless: the levels this library has just moved would be read as the player's own spend
+      warnOnce('rebase', 'moving a spend baseline failed: ' + e + ' -- the next pollSpend() may count this library\'s own wallet move as a spend')
+    }
   }
 
   // Move the wallet to `target` levels (>= 0). Returns the change in levels that
