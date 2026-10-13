@@ -46,16 +46,17 @@ try {
   var ResourceLocation_rbd = Java.loadClass('net.minecraft.resources.ResourceLocation')
 
   // boss entity id -> { relic: item id, chance: base drop chance, looting: per-looting-level bonus }
-  // All boss ids verified against codex_exploration_kills.js / codex_boss_rush.js.
+  // (All boss ids are checked against the game's registered entity types and the
+  //  relic ids against its items before a push: dev/rosters/validate.py.)
   // All relic ids are registered by iridescent-relics-mod (see IridescentRelics.java).
-  var RELIC_DROPS = {
-    'mowziesmobs:frostmaw':              { relic: 'iridescent_relics:frostmaw_heart',     chance: 0.40, looting: 0.10 },
-    'mowziesmobs:ferrous_wroughtnaut':   { relic: 'iridescent_relics:ironheart_cog',      chance: 0.40, looting: 0.10 },
-    'aether:sun_spirit':                 { relic: 'iridescent_relics:sunfeather_charm',    chance: 0.40, looting: 0.10 },
-    'twilightforest:lich':               { relic: 'iridescent_relics:phylactery_shard',    chance: 0.40, looting: 0.10 },
-    'cataclysm:the_leviathan':           { relic: 'iridescent_relics:leviathans_pearl',    chance: 0.40, looting: 0.10 },
-    'cardinal_sins:lucifer':             { relic: 'iridescent_relics:cursed_sigil_pride',  chance: 0.40, looting: 0.10 }
-  }
+  // The table is the `relic` of the boss registry (kubejs/config/icraft/registry/
+  // bosses.json, through icraft.bosses): { item, chance, looting } on the entry
+  // of the boss that drops it. Until 2026-10-13 the six rows stood here.
+  var RELIC_DROPS = {}
+  icraft.bosses.ids('relic').forEach(function (bossId) {
+    var r = icraft.bosses.get(bossId, 'relic')
+    RELIC_DROPS[bossId] = { relic: r.item, chance: r.chance, looting: r.looting }
+  })
 
   // Entity-resource-id helper (handles Rhino/SRG quirks; mirrors strip_anomalous_drops.js).
   var entityResId_rbd = function (entity) {

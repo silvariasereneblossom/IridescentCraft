@@ -201,19 +201,8 @@ try {
   // swing), so an arrow or a spell cast while holding the sword does not
   // behead -- that is Arcane Vorpal's job.
 
-  // Boss blocklist; extend as needed
-  var VORPAL_BOSS_BLOCKLIST = {
-    'minecraft:wither': 1,
-    'minecraft:ender_dragon': 1,
-    'cataclysm:netherite_monstrosity': 1,
-    'cataclysm:ender_guardian': 1,
-    'cataclysm:ignis': 1,
-    'cataclysm:the_leviathan': 1,
-    'twilightforest:naga': 1,
-    'twilightforest:lich': 1,
-    'twilightforest:hydra': 1,
-    'twilightforest:ur_ghast': 1
-  }
+  // Boss blocklist: the flag `vorpalMelee` of the boss registry (ten ids stood
+  // here until 2026-10-13); see isBossVictim below.
 
   // Registry id of an entity ('minecraft:zombie'), '' when unknown.
   // getType() = KubeJS's id string; getEntityType() = the vanilla EntityType.
@@ -228,18 +217,19 @@ try {
     return s
   }
 
-  // "Don't behead bosses": the list above, plus every id the pack itself
-  // treats as a boss (global.icraft.core.isBoss, server_scripts/0_lib_core.js
-  // -- `global` is shared by all script types and the server scripts are
-  // loaded whenever a world is running). If that library is not there the
-  // list above still applies.
+  // "Don't behead bosses": an id is spared when its entry in the boss registry
+  // (kubejs/config/icraft/registry/bosses.json) carries the flag `vorpalMelee`
+  // (this enchant's own blocklist) or the flag `boss` (what core.isBoss
+  // answers). The registry is read through global.icraft.bosses
+  // (server_scripts/0_lib_registry.js): `global` is shared by all script types
+  // and the server scripts are loaded whenever a world is running.
+  // If the registry is not there this THROWS, into the handler's own catch
+  // below: it says so once and nobody is beheaded. A missing roster must never
+  // read as "nobody is a boss".
   var isBossVictim = function(victimId) {
-    if (VORPAL_BOSS_BLOCKLIST[victimId] === 1) return true
-    try {
-      var core = global.icraft ? global.icraft.core : null
-      if (core && typeof core.isBoss === 'function' && core.isBoss(victimId) === true) return true
-    } catch (e) {}
-    return false
+    var roster = global.icraft ? global.icraft.bosses : null
+    if (!roster) throw new Error('the boss registry (icraft.bosses) is not loaded')
+    return roster.has(victimId, 'vorpalMelee') || roster.is(victimId)
   }
 
   var decapWarned = false

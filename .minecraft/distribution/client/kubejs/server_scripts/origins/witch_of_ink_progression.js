@@ -51,22 +51,10 @@
     console.warn('[witch_of_ink] ' + where + ' threw (logged once): ' + e)
   }
 
-  var DIMENSIONAL_BOSSES = {
-    'minecraft:ender_dragon': 1, 'minecraft:wither': 1,
-    'botania:doppleganger': 1,
-    'twilightforest:naga': 1, 'twilightforest:lich': 1, 'twilightforest:hydra': 1,
-    'twilightforest:ur_ghast': 1, 'twilightforest:knight_phantom': 1,
-    'twilightforest:snow_queen': 1, 'twilightforest:alpha_yeti': 1,
-    'twilightforest:minoshroom': 1,
-    'blue_skies:summoner': 1, 'blue_skies:starlit_crusher': 1,
-    'blue_skies:alchemist': 1, 'blue_skies:arachnarch': 1,
-    'cataclysm:netherite_monstrosity': 1, 'cataclysm:ender_guardian': 1,
-    'cataclysm:ignis': 1, 'cataclysm:the_harbinger': 1,
-    'cataclysm:the_leviathan': 1, 'cataclysm:ancient_remnant': 1,
-    'meetyourfight:swampjaw': 1, 'meetyourfight:dame_fortuna': 1,
-    'meetyourfight:bellringer': 1, 'meetyourfight:rosalyne': 1,
-    'theabyss:abyssal_guardian': 1
-  }
+  // The "dimensional bosses" (+10 on the counter) are the entries of the boss
+  // registry (kubejs/config/icraft/registry/bosses.json) with the flag `witchInk`;
+  // until 2026-10-13 the 26 ids stood here.
+  var isDimensionalBoss = function (id) { return icraft.bosses.has(id, 'witchInk') }
 
   var COUNTER_MAX = 200
 
@@ -169,7 +157,7 @@
       var currentCount = data.getInt('icraft_witch_ink_counter') || 0
       if (currentCount >= COUNTER_MAX) return
 
-      var addCount = DIMENSIONAL_BOSSES.hasOwnProperty(entityId(entity)) ? 10 : minorBossPoints(entity)
+      var addCount = isDimensionalBoss(entityId(entity)) ? 10 : minorBossPoints(entity)
       if (addCount <= 0) return
 
       var newCount = Math.min(currentCount + addCount, COUNTER_MAX)
