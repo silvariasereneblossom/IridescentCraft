@@ -29,7 +29,7 @@
         "simplyswords": { "type": "heracles:item", "title": "Simply Swords: Iron Rapier", "item": "simplyswords:iron_rapier", "amount": 1, "collection": "AUTOMATIC" },
         "waystones": { "type": "heracles:item", "title": "Waystones: Waystone", "item": "waystones:waystone", "amount": 1, "collection": "AUTOMATIC" },
         "terramity": { "type": "heracles:item", "title": "Terramity: Sapphire", "item": "terramity:sapphire", "amount": 1, "collection": "AUTOMATIC" },
-        "boss": { "type": "heracles:kill_entity", "title": "Slay a Tier 1 boss (Ferrous Wroughtnaut)", "entity": "mowziesmobs:ferrous_wroughtnaut", "amount": 1 }
+        "boss": { "type": "heracles:kill_entity", "title": "Slay a Tier 1 boss (Ferrous Wroughtnaut)", "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" }, "amount": 1 }
       }
     }
   },

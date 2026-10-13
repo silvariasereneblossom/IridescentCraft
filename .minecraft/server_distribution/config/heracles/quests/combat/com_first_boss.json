@@ -20,10 +20,10 @@
       "type": "heracles:composite",
       "amount": 1,
       "tasks": {
-        "wroughtnaut": { "type": "heracles:kill_entity", "title": "Ferrous Wroughtnaut", "entity": "mowziesmobs:ferrous_wroughtnaut", "amount": 1 },
-        "frostmaw": { "type": "heracles:kill_entity", "title": "Frostmaw", "entity": "mowziesmobs:frostmaw", "amount": 1 },
-        "umvuthi": { "type": "heracles:kill_entity", "title": "Umvuthi", "entity": "mowziesmobs:umvuthi", "amount": 1 },
-        "gob": { "type": "heracles:kill_entity", "title": "Gob", "entity": "terramity:gob", "amount": 1 }
+        "wroughtnaut": { "type": "heracles:kill_entity", "title": "Ferrous Wroughtnaut", "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" }, "amount": 1 },
+        "frostmaw": { "type": "heracles:kill_entity", "title": "Frostmaw", "entity": { "type": "mowziesmobs:frostmaw" }, "amount": 1 },
+        "umvuthi": { "type": "heracles:kill_entity", "title": "Umvuthi", "entity": { "type": "mowziesmobs:umvuthi" }, "amount": 1 },
+        "gob": { "type": "heracles:kill_entity", "title": "Gob", "entity": { "type": "terramity:gob" }, "amount": 1 }
       }
     }
   },

@@ -18,7 +18,7 @@
     "kill_wroughtnaut": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Ferrous Wroughtnaut",
-      "entity": "mowziesmobs:ferrous_wroughtnaut",
+      "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" },
       "amount": 1
     }
   },

@@ -14,7 +14,7 @@
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],
   "tasks": {
-    "kill_zombies": { "type": "heracles:kill_entity", "title": "Slay Zombies", "entity": "minecraft:zombie", "amount": 30 }
+    "kill_zombies": { "type": "heracles:kill_entity", "title": "Slay Zombies", "entity": { "type": "minecraft:zombie" }, "amount": 30 }
   },
   "rewards": {
     "apples": { "type": "heracles:item", "item": { "id": "minecraft:golden_apple", "count": 2 } }

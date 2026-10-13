@@ -16,7 +16,7 @@
     "kill_spiders": {
       "type": "heracles:kill_entity",
       "title": "Slay Spiders",
-      "entity": "minecraft:spider",
+      "entity": { "type": "minecraft:spider" },
       "amount": 20
     }
   },

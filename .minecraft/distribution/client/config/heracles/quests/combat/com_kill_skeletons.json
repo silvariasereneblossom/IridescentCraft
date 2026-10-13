@@ -13,7 +13,7 @@
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],
   "tasks": {
-    "kill_skeletons": { "type": "heracles:kill_entity", "title": "Slay Skeletons", "entity": "minecraft:skeleton", "amount": 30 }
+    "kill_skeletons": { "type": "heracles:kill_entity", "title": "Slay Skeletons", "entity": { "type": "minecraft:skeleton" }, "amount": 30 }
   },
   "rewards": {
     "arrows": { "type": "heracles:item", "item": { "id": "minecraft:arrow", "count": 64 } }

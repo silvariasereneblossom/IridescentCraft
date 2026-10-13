@@ -18,7 +18,7 @@
     "kill_umvuthi": {
       "type": "heracles:kill_entity",
       "title": "Defeat Umvuthi",
-      "entity": "mowziesmobs:umvuthi",
+      "entity": { "type": "mowziesmobs:umvuthi" },
       "amount": 1
     }
   },

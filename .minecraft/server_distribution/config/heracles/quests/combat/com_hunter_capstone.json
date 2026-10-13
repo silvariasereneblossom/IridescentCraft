@@ -19,10 +19,10 @@
       "type": "heracles:composite",
       "amount": 4,
       "tasks": {
-        "zombies": { "type": "heracles:kill_entity", "title": "Slay 50 Zombies", "entity": "minecraft:zombie", "amount": 50 },
-        "skeletons": { "type": "heracles:kill_entity", "title": "Slay 50 Skeletons", "entity": "minecraft:skeleton", "amount": 50 },
-        "spiders": { "type": "heracles:kill_entity", "title": "Slay 30 Spiders", "entity": "minecraft:spider", "amount": 30 },
-        "creepers": { "type": "heracles:kill_entity", "title": "Slay 25 Creepers", "entity": "minecraft:creeper", "amount": 25 }
+        "zombies": { "type": "heracles:kill_entity", "title": "Slay 50 Zombies", "entity": { "type": "minecraft:zombie" }, "amount": 50 },
+        "skeletons": { "type": "heracles:kill_entity", "title": "Slay 50 Skeletons", "entity": { "type": "minecraft:skeleton" }, "amount": 50 },
+        "spiders": { "type": "heracles:kill_entity", "title": "Slay 30 Spiders", "entity": { "type": "minecraft:spider" }, "amount": 30 },
+        "creepers": { "type": "heracles:kill_entity", "title": "Slay 25 Creepers", "entity": { "type": "minecraft:creeper" }, "amount": 25 }
       }
     }
   },

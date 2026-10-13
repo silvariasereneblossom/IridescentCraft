@@ -19,9 +19,9 @@
       "type": "heracles:composite",
       "amount": 1,
       "tasks": {
-        "mutant_zombie": { "type": "heracles:kill_entity", "title": "Mutant Zombie", "entity": "mutantmonsters:mutant_zombie", "amount": 1 },
-        "mutant_skeleton": { "type": "heracles:kill_entity", "title": "Mutant Skeleton", "entity": "mutantmonsters:mutant_skeleton", "amount": 1 },
-        "mutant_creeper": { "type": "heracles:kill_entity", "title": "Mutant Creeper", "entity": "mutantmonsters:mutant_creeper", "amount": 1 }
+        "mutant_zombie": { "type": "heracles:kill_entity", "title": "Mutant Zombie", "entity": { "type": "mutantmonsters:mutant_zombie" }, "amount": 1 },
+        "mutant_skeleton": { "type": "heracles:kill_entity", "title": "Mutant Skeleton", "entity": { "type": "mutantmonsters:mutant_skeleton" }, "amount": 1 },
+        "mutant_creeper": { "type": "heracles:kill_entity", "title": "Mutant Creeper", "entity": { "type": "mutantmonsters:mutant_creeper" }, "amount": 1 }
       }
     }
   },

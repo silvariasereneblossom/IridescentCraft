@@ -119,7 +119,7 @@ Default group when omitted: `"Main"` at position `[0, 0]`.
 Example:
 ```jsonc
 "tasks": {
-  "kill_zombies": { "type": "heracles:kill_entity", "entity": "minecraft:zombie", "amount": 10 },
+  "kill_zombies": { "type": "heracles:kill_entity", "entity": { "type": "minecraft:zombie" }, "amount": 10 },
   "find_temple":  { "type": "heracles:structure",   "structures": "minecraft:desert_pyramid" }
 }
 ```
@@ -189,14 +189,23 @@ Source: `KillEntityQuestTask$Type::id()` = `(heracles, kill_entity)`. Codec at `
 | `entity` | RestrictedEntityPredicate | — | YES |
 | `amount` | int | `1` | no |
 
-`entity` is a resourcefullib `RestrictedEntityPredicate`. The simple form is the entity ID string: `"minecraft:zombie"` or `"#minecraft:undead"`. For more complex predicates (nbt-match, has-attribute) see the resourcefullib RestrictedEntityPredicate schema.
+`entity` is a resourcefullib `RestrictedEntityPredicate`, and it is an **object**: `"entity": { "type": "minecraft:zombie" }`. `type` is the one required key; `location`, `effects`, `nbt`, `flags` and `target` are optional.
+
+> **Corrected 2026-10-13.** This page used to say the bare string (`"entity": "minecraft:zombie"`) and a tag (`"#minecraft:undead"`) work. Neither does. Measured on a full-pack server through Heracles' own decoder:
+>
+> - **A bare string does not decode** (`Not a JSON object: "minecraft:zombie"`), and one task that does not decode empties the task list of the **whole quest**. The quest still shows in the book, has nothing to do, and can never be completed: Heracles leaves a quest without tasks out of the list of quests a player can progress. Nothing is written to any log. 21 of the pack's quests were in this state until 2026-10-13.
+> - **The predicate compares one entity type.** No tag, no list. A quest that should count either of two entities needs two tasks (inside a `heracles:composite` with `amount: 1`).
+> - **An id that is not a registered entity type decodes as `minecraft:pig`** (the registry's default entry): the task then counts pigs. Check the id against the game's entity list before using it. A boss a mod builds on a vanilla mob (Brutal Bosses) has the vanilla mob's type, not an id of its own.
+> - **The id must be the entity a player actually kills.** Progressive Bosses replaces every Wither with `progressivebosses:wither` the moment it appears, so a task naming `minecraft:wither` can never count.
+>
+> `validate_heracles_quests.py` fails on a bare string and on an unregistered id.
 
 Storage: integer counter. Auto-renders "N/M killed" in UI.
 
 ```jsonc
 "slay_zombies": {
   "type": "heracles:kill_entity",
-  "entity": "minecraft:zombie",
+  "entity": { "type": "minecraft:zombie" },
   "amount": 10
 }
 ```

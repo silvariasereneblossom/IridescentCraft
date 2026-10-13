@@ -29,31 +29,31 @@
         "kill_wroughtnaut": {
           "type": "heracles:kill_entity",
           "title": "Defeat the Ferrous Wroughtnaut",
-          "entity": "mowziesmobs:ferrous_wroughtnaut",
+          "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" },
           "amount": 1
         },
         "kill_frostmaw": {
           "type": "heracles:kill_entity",
           "title": "Defeat a Frostmaw",
-          "entity": "mowziesmobs:frostmaw",
+          "entity": { "type": "mowziesmobs:frostmaw" },
           "amount": 1
         },
         "kill_umvuthi": {
           "type": "heracles:kill_entity",
           "title": "Defeat Umvuthi",
-          "entity": "mowziesmobs:umvuthi",
+          "entity": { "type": "mowziesmobs:umvuthi" },
           "amount": 1
         },
         "kill_gob": {
           "type": "heracles:kill_entity",
           "title": "Defeat Gob",
-          "entity": "terramity:gob",
+          "entity": { "type": "terramity:gob" },
           "amount": 1
         },
         "kill_mutant_zombie": {
           "type": "heracles:kill_entity",
           "title": "Defeat a Mutant Zombie",
-          "entity": "mutantmonsters:mutant_zombie",
+          "entity": { "type": "mutantmonsters:mutant_zombie" },
           "amount": 1
         }
       }

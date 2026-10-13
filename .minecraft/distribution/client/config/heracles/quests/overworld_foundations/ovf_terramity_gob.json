@@ -18,7 +18,7 @@
     "kill_gob": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Gob",
-      "entity": "terramity:gob",
+      "entity": { "type": "terramity:gob" },
       "amount": 1
     }
   },

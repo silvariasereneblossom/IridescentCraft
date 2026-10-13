@@ -13,7 +13,7 @@
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],
   "tasks": {
-    "kill_creepers": { "type": "heracles:kill_entity", "title": "Slay Creepers", "entity": "minecraft:creeper", "amount": 15 }
+    "kill_creepers": { "type": "heracles:kill_entity", "title": "Slay Creepers", "entity": { "type": "minecraft:creeper" }, "amount": 15 }
   },
   "rewards": {
     "powder": { "type": "heracles:item", "item": { "id": "minecraft:gunpowder", "count": 8 } },

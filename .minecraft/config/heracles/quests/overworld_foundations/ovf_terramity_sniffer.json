@@ -18,7 +18,7 @@
     "kill_sniffer": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Super Sniffer",
-      "entity": "terramity:super_sniffer",
+      "entity": { "type": "terramity:super_sniffer" },
       "amount": 1
     }
   },

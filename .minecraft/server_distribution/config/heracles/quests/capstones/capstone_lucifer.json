@@ -31,7 +31,7 @@
     "defeat_lucifer": {
       "type": "heracles:kill_entity",
       "title": "Defeat Lucifer",
-      "entity": "cardinal_sins:lucifer",
+      "entity": { "type": "cardinal_sins:lucifer" },
       "amount": 1
     }
   },

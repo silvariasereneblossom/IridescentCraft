@@ -18,7 +18,7 @@
     "kill_sculptor": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Sculptor",
-      "entity": "mowziesmobs:sculptor",
+      "entity": { "type": "mowziesmobs:sculptor" },
       "amount": 1
     }
   },

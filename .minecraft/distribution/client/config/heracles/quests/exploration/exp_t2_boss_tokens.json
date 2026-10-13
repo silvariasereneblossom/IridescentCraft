@@ -27,13 +27,13 @@
     "kill_naga": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Naga",
-      "entity": "twilightforest:naga",
+      "entity": { "type": "twilightforest:naga" },
       "amount": 1
     },
     "kill_lich": {
       "type": "heracles:kill_entity",
       "title": "Defeat the Lich",
-      "entity": "twilightforest:lich",
+      "entity": { "type": "twilightforest:lich" },
       "amount": 1
     }
   },
