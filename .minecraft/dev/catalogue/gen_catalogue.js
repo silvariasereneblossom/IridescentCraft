@@ -151,6 +151,7 @@ for (const type of TYPE_ORDER) {
       sets, setsLater, ownSlots: own,
       names: c.declares.length,
       reads, after,
+      last: order.lasts.filter((k) => k.type === type && k.script === rel && k.trees.includes('root')).map((k) => k.group),
       header: [...s.header.has].sort()
     });
   }
@@ -256,6 +257,16 @@ for (const c of byHand) {
   md.push('| ' + code(c.script) + ' | ' + code(c.after) + ' | ' + cell(because) + ' | file names, `@after` |');
 }
 md.push('');
+// a handler that must be the last one of its event: no script can be named, so it is not a row of the table above
+const lastRoot = order.lasts.filter((l) => l.trees.includes('root'));
+if (lastRoot.length) {
+  md.push('Declared the LAST handler of an event (`// @last <event>`; `load_order.js` fails when a script that loads later registers on it):');
+  md.push('');
+  md.push('| Script | Event | Registrations of other scripts before it | Held by |');
+  md.push('|---|---|---|---|');
+  for (const l of lastRoot) md.push('| ' + code(l.type + ':' + l.script) + ' | ' + code(l.group) + ' | ' + l.handlersBefore + ' | file names, `@last` |');
+  md.push('');
+}
 md.push('Structural, by the script that loads first:');
 md.push('');
 md.push('| Loads first | Priority | Scripts that need it while they load | They read |');
@@ -384,6 +395,7 @@ for (const type of TYPE_ORDER) {
     }
     const hand = s.after.filter((a) => a.held === 'listing');
     if (hand.length) md.push('- must load after: ' + hand.map((a) => code(a.script) + (a.basis === 'declared' ? ' (declared: ' + a.why + ')' : ' (proven by the code)')).join('; '));
+    if (s.last.length) md.push('- declared the last handler of: ' + s.last.map(code).join(', '));
     md.push('');
   }
 }

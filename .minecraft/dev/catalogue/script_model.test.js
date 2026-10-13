@@ -71,9 +71,9 @@ const ok = (cond, what, detail) => {
       ok(extra.length === 0, 'engine: ' + c.label + ' (the model finds no property the case does not ask for)', 'unasked: ' + extra.join(', '));
     }
     hold('script file: ' + c.label, mine);
-    // and the header reader must agree with the engine on what is NOT a property: an @ line of the five fields
+    // and the header reader must agree with the engine on what is NOT a property: an @ line of the six fields
     const h = M.readHeader(c.lines.join('\n'));
-    if (/^@(after|file|events|registry|live)( |$)/.test(c.label) && c.label.indexOf('colon') < 0 && c.label.indexOf('one word') < 0) {
+    if (/^@(after|file|events|registry|live|last)( |$)/.test(c.label) && c.label.indexOf('colon') < 0 && c.label.indexOf('one word') < 0) {
       ok(h.has.size === 1 && h.problems.length === 0 && Object.keys(e.props).length === 0, 'header: `' + c.lines[0] + '` is a header field and no file property', h.problems.join('; '));
     }
     if (c.label === '@after with a colon') ok(h.has.size === 0 && h.problems.length === 1, 'header: `// @after: x` is refused with a message (a field has no colon); it is no file property either', h.problems.join('; '));
@@ -191,6 +191,38 @@ expectCodes('a misspelt field (@depends)',
   run({ 'server/a_first.js': H1, 'server/b_second.js': '// @depends a_first.js\n' + H2 }), 'header server:b_second.js');
 expectCodes('prose that begins with an @word is left alone',
   run({ 'server/b_second.js': '// @monster entity tag" and accepted the fallback\n// @Mod.EventBusSubscriber owns it\n' + H2 }), '');
+
+// `@last <event>`: the handler of this script is the last one of that event (decision list entry 52). No script
+// can be named ("after every script that registers the event"), so the check looks at every later script.
+const LOOT = (name) => 'LootJS.modifiers(icraft.guard(\'' + name + '\', \'LootJS.modifiers\', function (e) { }))\n';
+const STRIP = '// @last LootJS.modifiers\n' + LOOT('loot/zz_strip');
+expectCodes('@last on the script that is the last one of its event',
+  run({ 'server/loot/add.js': LOOT('loot/add'), 'server/loot/zz_strip.js': STRIP }), '');
+(function lastIsRecorded() {
+  const res = run({ 'server/loot/add.js': LOOT('loot/add') + LOOT('loot/add#2'), 'server/loot/zz_strip.js': STRIP });
+  const l = res.lasts;
+  ok(l.length === 1 && l[0].script === 'loot/zz_strip.js' && l[0].group === 'LootJS.modifiers' && l[0].handlersBefore === 2 && l[0].own === 1 && l[0].trees.length === 3,
+    'check: a declared @last is reported with the registrations in front of it', JSON.stringify(l));
+})();
+expectCodes('@last, and a NEW script whose name lists later registers the event (zz_v.js after zz_strip.js)',
+  run({ 'server/loot/add.js': LOOT('loot/add'), 'server/loot/zz_strip.js': STRIP, 'server/loot/zz_v.js': LOOT('loot/zz_v') }), 'last server:loot/zz_strip.js');
+expectCodes('@last, and a script outside the folder registers the event later (a root-level script after loot/)',
+  run({ 'server/loot/zz_strip.js': STRIP, 'server/more_loot.js': LOOT('more_loot') }), 'last server:loot/zz_strip.js');
+expectCodes('zzz_x.js lists BEFORE zz_x.js on NTFS: a zzz_ script does not break an @last',
+  run({ 'server/loot/zz_strip.js': STRIP, 'server/loot/zzz_clamp.js': LOOT('loot/zzz_clamp') }), '');
+expectCodes('a later script that registers ANOTHER event does not break an @last',
+  run({ 'server/loot/zz_strip.js': STRIP, 'server/zz_other.js': H1 }), '');
+expectCodes('@last naming an event the script does not register',
+  run({ 'server/loot/zz_strip.js': '// @last ServerEvents.recipes\n' + LOOT('loot/zz_strip') }), 'last server:loot/zz_strip.js');
+expectCodes('two scripts declare @last on one event: the one that loads first fails',
+  run({ 'server/loot/a.js': '// @last LootJS.modifiers\n' + LOOT('loot/a'), 'server/loot/b.js': '// @last LootJS.modifiers\n' + LOOT('loot/b') }), 'last server:loot/a.js');
+expectCodes('@last without a value', run({ 'server/loot/zz_strip.js': '// @last\n' + LOOT('loot/zz_strip') }), 'header server:loot/zz_strip.js');
+expectCodes('a misspelt field (@final)', run({ 'server/loot/zz_strip.js': '// @final LootJS.modifiers\n' + LOOT('loot/zz_strip') }), 'header server:loot/zz_strip.js');
+(function lastAccepted() {
+  const files = { 'server/loot/zz_strip.js': STRIP, 'server/loot/zz_v.js': LOOT('loot/zz_v') };
+  const res = run(files, { accepted: [{ code: 'last', script: 'server:loot/zz_strip.js', on: 'server:loot/zz_v.js', reason: 'a known finding, reported' }] });
+  ok(res.errors.length === 0 && res.accepted.length === 1, 'check: a broken @last can be an accepted finding, named by both scripts', codes(res));
+})();
 
 const FULL = '// @file kubejs/server_scripts/items/thing.js\n// @events EntityEvents.spawned, tick.server\n// @registry bosses\n// @live thing-done\n';
 const BODY = 'EntityEvents.spawned(icraft.guard(\'items/thing\', \'EntityEvents.spawned\', function (e) { if (icraft.bosses.is(e.entity)) icraft.live.fired(\'thing-done\') }))\n' +

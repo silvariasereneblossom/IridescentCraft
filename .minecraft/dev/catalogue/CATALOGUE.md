@@ -44,6 +44,12 @@ Every order between two scripts that the code proves or a header declares: 248. 
 | `scaling/zz_ascension_scaling.js` | `scaling/boss_hp.js` | handler order on `EntityEvents.spawned`: boss_hp works out its ratio from the maximum health at spawn: the ascension multiplier must not be on the mob yet (declared by hand) | file names, `@after` |
 | `scaling/zz_boss_global_3x.js` | `scaling/boss_hp.js` | handler order on `EntityEvents.spawned`: boss_hp works out its ratio from the maximum health at spawn: the x3 must not be on the boss yet (declared by hand) | file names, `@after` |
 
+Declared the LAST handler of an event (`// @last <event>`; `load_order.js` fails when a script that loads later registers on it):
+
+| Script | Event | Registrations of other scripts before it | Held by |
+|---|---|---|---|
+| `server:loot/zz_unique_chest_strip.js` | `LootJS.modifiers` | 30 | file names, `@last` |
+
 Structural, by the script that loads first:
 
 | Loads first | Priority | Scripts that need it while they load | They read |
@@ -1667,9 +1673,10 @@ own one-shot `global._*` flags.
 
 ### `loot/zz_unique_chest_strip.js`
 
-- place 96 of 160
+- place 96 of 160; header: @events @file @last
 - events: `LootJS.modifiers`
 - reads: `global.ICRAFT_TMB_BOWS` of `loot/unique_itemset_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load)
+- declared the last handler of: `LootJS.modifiers`
 
 ### `magic_crit_hook.js`
 

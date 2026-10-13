@@ -5972,6 +5972,14 @@
        ],
        "held": "priority"
       }
+     ],
+     "last": [
+      "LootJS.modifiers"
+     ],
+     "header": [
+      "events",
+      "file",
+      "last"
      ]
     },
     {

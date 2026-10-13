@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "6cb08aa9",
+    "generated_from":  "7f4d63f0",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5828,8 +5828,8 @@
                                                         "size":  364
                                                     },
                   "kubejs/README.md":  {
-                                           "sha256":  "93c66f1d40b926694123370a5dd67dd72c9ff4fe9f57ca56c2d285237af0eaf0",
-                                           "size":  11514
+                                           "sha256":  "3aa94b2a17b50975cb2f5ee55bf16e87e9e5de361e16d76122db709b417eef37",
+                                           "size":  11993
                                        },
                   "kubejs/README.txt":  {
                                             "sha256":  "989f3737ae4621b8ff6730bce4cbeeee756921e7e510e0c281c8a350501d98af",
@@ -7360,8 +7360,8 @@
                                                                                 "size":  7286
                                                                             },
                   "kubejs/server_scripts/loot/zz_unique_chest_strip.js":  {
-                                                                              "sha256":  "6fd744c7e6b95b87f51b27d7101af5df2bbbc80d3ab9b1e2bc7b9d0d7f5dfc65",
-                                                                              "size":  2185
+                                                                              "sha256":  "ec2b63d3cdfa25ca5f4e3f26e533c034bda256e1c596b9092dfeeebb36a65fcd",
+                                                                              "size":  2602
                                                                           },
                   "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js":  {
                                                                                   "sha256":  "72f68ff36059d239d368e868270c4ee8d92e71e2ae2c378640ebf337bf902143",

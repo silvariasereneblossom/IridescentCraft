@@ -31,6 +31,11 @@
 //              relies on what the other script's handler of the SAME event did.
 //              One line per script. Never for a library: libraries load first
 //              because of their own priority line.
+//   @last      <event>
+//              only when this script's handler must be the LAST one of that
+//              event (a strip that has to run after every add of every other
+//              script). The check fails when a script that loads later
+//              registers on the event. It moves nothing, like @after.
 //
 // A COMMENT LINE CAN SWITCH THIS FILE OFF
 //   KubeJS reads every line `// <word> <word>` (and `// <word>`) of a script as

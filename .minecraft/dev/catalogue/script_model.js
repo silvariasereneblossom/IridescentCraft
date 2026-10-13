@@ -39,6 +39,8 @@
 //   // @after <path>.js  <why>                     must load after that script (same script type)
 //   // @registry bosses, dimensions                which registries it reads
 //   // @live <feature>, <feature>                  the icraft.live.fired names it reports
+//   // @last <event>                               no script that loads later registers on that event:
+//                                                  this script's handler is the last one of it to run
 // A field that is there is CHECKED against what the code does. Nothing is generated
 // from a header: the catalogue is read from the code.
 //
@@ -59,10 +61,11 @@ const TYPES = ['startup', 'server', 'client'];
 // the order the script types load in: startup scripts when the game starts, client scripts
 // after them (a client only), server scripts when a world loads (and again on /reload)
 const TYPE_RANK = { startup: 0, client: 1, server: 2 };
-const FIELDS = ['file', 'events', 'after', 'registry', 'live'];
+const FIELDS = ['file', 'events', 'after', 'registry', 'live', 'last'];
 // a field name somebody is likely to write instead of a real one
 const NEAR = { depends: 'after', dependson: 'after', requires: 'after', before: 'after', afters: 'after', loadafter: 'after',
-  event: 'events', registries: 'registry', reads: 'registry', feature: 'live', features: 'live', fires: 'live', path: 'file', name: 'file' };
+  event: 'events', registries: 'registry', reads: 'registry', feature: 'live', features: 'live', fires: 'live', path: 'file', name: 'file',
+  final: 'last', lasts: 'last', loadlast: 'last', latest: 'last' };
 const REGISTRY_NAMES = { bosses: 'icraft.bosses', dimensions: 'icraft.dims' };
 const MAX_DEPTH = 10;
 
@@ -146,9 +149,9 @@ function engineSort(items, priorityOf) {
 const stripMark = (text) => (text.charCodeAt(0) === 0xFEFF ? text.substring(1) : text);
 
 // ---- header fields ---------------------------------------------------------------
-// -> { fields: { file: [..], events: [..], after: [{ path, why, line }], registry: [..], live: [..] }, has: Set, problems: [text] }
+// -> { fields: { file: [..], events: [..], after: [{ path, why, line }], registry: [..], live: [..], last: [..] }, has: Set, problems: [text] }
 function readHeader(text) {
-  const out = { fields: { file: [], events: [], after: [], registry: [], live: [] }, has: new Set(), problems: [] };
+  const out = { fields: { file: [], events: [], after: [], registry: [], live: [], last: [] }, has: new Set(), problems: [] };
   const lines = splitLines(text);
   let inHeader = true;
   for (let i = 0; i < lines.length; i++) {

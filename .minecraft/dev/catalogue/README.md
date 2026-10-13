@@ -50,7 +50,8 @@ Read in the bytecode of `kubejs-forge-2001.6.5`, then asked of KubeJS's own clas
 - **Comment lines.** Every line that, trimmed, starts with `//` and whose rest is `<word> <word>`, or one word of
   two or more characters, is a file property, anywhere in the file; the last one of a key wins. `priority` must
   be a whole number or the file does not load; `ignored` / `ignore` `true` switches the file off.
-- **Header fields** start with `@`, so they can never be a property (`// after x` without the `@` is one).
+- **Header fields** start with `@`, so they can never be a property (`// after x` without the `@` is one, and
+  so is `// last hurt`). Each of the six field names was put to the engine in the form a script writes it.
 - **Handlers of one event** run in the order they were registered. Handlers registered for a target run before
   the untargeted ones when that target fires.
 
@@ -69,6 +70,12 @@ the answers after an engine update.
 2. **An order somebody declared.** `// @after <path>  <why>` for what no tool can read: a handler that relies on
    what another script's handler did to the same entity or the same loot list. The two scripts must share an
    event, the line must say why, and the order must hold.
+   **A handler somebody declared last.** `// @last <event>` for a handler that must run after EVERY other handler
+   of an event (a loot strip after every add): "every script that registers this event" names no script, so
+   `@after` cannot say it. The script must register on that event, and no script that loads after it may. The
+   failure names the later script. Like `@after`, the field moves nothing: the order is still the file names'.
+   (A handler registered for a target runs before the untargeted ones whatever the order; the field is about
+   registration order.)
 3. **Header fields** that are there say what the code does (`@file`, `@events`, `@registry`, `@live`). A script
    that is not on `headers_grandfathered.json` is new and has `@file` and `@events`.
 4. **Libraries.** A name is announced by one script; `icraft.lib.need('x')` names a library that exists and

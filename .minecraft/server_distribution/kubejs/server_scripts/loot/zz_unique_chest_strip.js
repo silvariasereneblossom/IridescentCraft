@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/loot/zz_unique_chest_strip.js
+// @events LootJS.modifiers
+// @last LootJS.modifiers
 // =============================================================================
 // zz_unique_chest_strip — INSURANCE: keep Too Many Bows bows out of all chests
 // =============================================================================
@@ -11,6 +14,10 @@
 // Named zz_ so it loads LAST — its removeLoot is registered after every other
 // script's addLoot, so it applies last per table. Reads global.ICRAFT_TMB_BOWS
 // (unique_itemset_registry.js) lazily inside the LootJS modifier callback.
+// [2026-10-13] "Last" is declared on top (`@last LootJS.modifiers`) and held on
+// every push by dev/catalogue/load_order.js: a script that registers a loot
+// modifier and loads after this one fails the check, with both names. The
+// field moves nothing; the file name is still what gives the order.
 //
 // [2026-10-10] The table filter was /chests\//. LootJS table regexes are
 // FULL-MATCH (ResourceLocationFilter.ByPattern.test == Pattern.matcher(id)

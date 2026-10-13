@@ -20,6 +20,7 @@ A new script begins with its header fields. Each starts the line with `// @`:
 | `@registry` | `bosses`, `dimensions` | when it reads one |
 | `@live` | the `icraft.live.fired` names it reports | when it reports one |
 | `@after` | `<folder>/<other>.js  <why>`, one line per script | only when it must load after another script (below) |
+| `@last` | an event, as `@events` names it | only when its handler must be the last one of that event (below) |
 
 You do not have to work the values out. Write the code, then:
 
@@ -63,6 +64,11 @@ the case when it reads a `global` of the other script while it loads, or when it
 other script's handler of the same event did (a loot strip before an add, a health value another handler set).
 The check finds the first kind in the code by itself and tells you the line to add; the second kind you declare,
 with the reason. Never write `@after` for a library.
+
+A script whose handler must run after EVERY other handler of an event (a loot strip that has to see what every
+other script added) cannot name them all. It says `// @last LootJS.modifiers`: the check then fails as soon as a
+script that loads later registers on that event, and names it. Neither field moves a script; the order is still
+the one the file names give.
 
 ```
 node --expose-internals .minecraft/dev/catalogue/load_order.js                 the check

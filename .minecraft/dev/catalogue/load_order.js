@@ -23,9 +23,14 @@
 //     did to the same entity or the same loot list)
 //     * `// @after <path>  <why>`: the two scripts must share an event, and the
 //       line must say why.
+//     * `// @last <event>`: this script's handler must be the LAST one of that
+//       event (a strip that has to run after every add). "After every script
+//       that registers this event" names no script, so `@after` cannot say it.
+//       The check fails when a script that loads LATER registers on the event,
+//       and names it. It moves nothing: the order is still the file names'.
 //   AND
 //     * a header field that is there is what the code does (@file, @events,
-//       @registry, @live); a script that is not on headers_grandfathered.json (a
+//       @registry, @live, @last); a script that is not on headers_grandfathered.json (a
 //       NEW script) has `@file` and `@events`;
 //     * a library that is asked for (icraft.lib.need) is announced by a script that
 //       loads first; a name is announced once;
@@ -72,12 +77,20 @@ function groupsOf(script) {
   return g;
 }
 
-// -> { errors: [{ code, type, script, on, text, trees }], accepted: [...], constraints: [...], stats }
+// how many registrations a script makes on one group
+function groupCount(script, group) {
+  let n = 0;
+  for (const k of ['guards', 'handlers', 'ticks', 'hurts']) for (const r of script.code[k]) if (r.group === group) n++;
+  return n;
+}
+
+// -> { errors: [{ code, type, script, on, text, trees }], accepted: [...], constraints: [...], lasts: [...] }
 function check(model, opts) {
   const accepted = (opts && opts.accepted) || [];
   const grandfathered = (opts && opts.grandfathered) || null;
   const raw = [];            // { code, type, script, on, text, tree }
   const constraintMap = new Map();
+  const lastMap = new Map();  // a declared `@last`: type|script|group -> { type, script, group, place, handlersBefore, own, trees }
   const err = (tree, code, type, script, on, text) => raw.push({ tree, code, type, script, on: on || '', text });
   const trees = Object.keys(M.TREES);
   const existsIn = (type, rel) => trees.filter((t) => model.trees[t][type].scripts.has(rel));
@@ -174,6 +187,30 @@ function check(model, opts) {
           constraintMap.get(key).trees.push(tree);
         }
 
+        // ---- the last handler of an event, declared ----
+        // Handlers of one event run in registration order, which is load order. `@last` holds when no script
+        // that loads after this one registers on the event (a handler registered for a target is outside
+        // this rule: it runs before the untargeted ones whatever the order).
+        for (const g of [...new Set(s.header.fields.last)]) {
+          if (!myGroups.has(g)) {
+            err(tree, 'last', type, rel, '', '`@last ' + g + '`: this script registers nothing on ' + g + ' (it registers on ' + ([...myGroups].sort().join(', ') || 'nothing') + ')');
+            continue;
+          }
+          let before = 0;
+          for (const r of t.order) {
+            if (r === rel) continue;
+            const o = t.scripts.get(r);
+            if (!groupsOf(o).has(g)) continue;
+            if (o.index < s.index) { before += groupCount(o, g); continue; }
+            err(tree, 'last', type, rel, type + ':' + r, 'declares `@last ' + g + '`, and ' + r + ' registers on ' + g + ' AFTER it (place ' + o.index + ', this script ' + s.index +
+              '): the handler that must be the last one of that event no longer is. Give the new script a name that lists before ' + rel +
+              ', or take the `@last` line off if that order has stopped mattering');
+          }
+          const key = type + '|' + rel + '|' + g;
+          if (!lastMap.has(key)) lastMap.set(key, { type, script: rel, group: g, place: s.index, handlersBefore: before, own: groupCount(s, g), trees: [] });
+          lastMap.get(key).trees.push(tree);
+        }
+
         // ---- libraries asked for ----
         for (const n of s.code.needs) {
           if (!announced.has(n.name)) err(tree, 'library', type, rel, '', 'icraft.lib.need(\'' + n.name + '\'): no ' + type + ' script announces a library of that name (announced: ' + ([...announced.keys()].sort().join(', ') || 'none') + ')');
@@ -251,7 +288,8 @@ function check(model, opts) {
     if (!used.has(i)) errors.push({ code: 'accepted', type: '', script: 'accepted.json', on: '', trees: [], text: 'the entry { ' + a.code + ', ' + a.script + (a.on ? ', ' + a.on : '') + ' } matches nothing any more: delete it' });
   });
   const constraints = [...constraintMap.values()].sort((a, b) => (a.type + a.script + a.after < b.type + b.script + b.after ? -1 : 1));
-  return { errors, accepted: acceptedHits, constraints };
+  const lasts = [...lastMap.values()].sort((a, b) => (a.type + a.script + a.group < b.type + b.script + b.group ? -1 : 1));
+  return { errors, accepted: acceptedHits, constraints, lasts };
 }
 
 function treeNote(e) {
@@ -355,6 +393,8 @@ if (require.main === module) {
     if (regs.length) console.log('// @registry ' + regs.join(', '));
     if (feats.length) console.log('// @live ' + feats.join(', '));
     for (const a of s.header.fields.after) console.log('// @after ' + a.path + (a.why ? '  ' + a.why : ''));
+    // a decision, like @after: printed back when it is there, never invented
+    if (s.header.fields.last.length) console.log('// @last ' + [...new Set(s.header.fields.last)].join(', '));
     process.exit(0);
   }
 
@@ -405,6 +445,10 @@ if (require.main === module) {
         (c.basis === 'load' ? 'proven by the code: reads ' + c.names.join(', ') + ' while it loads' : c.basis === 'same-event' ? 'proven by the code: ' + c.names.join(', ') : 'declared: handler order on ' + c.names.join(', ') + (c.why ? ' -- ' + c.why : '')) +
         '\n      held by ' + (c.held === 'priority' ? 'priority' : 'the listing order of the file names' + (c.declared ? ', declared with @after' : ', NOT declared')));
     }
+    for (const l of res.lasts) {
+      console.log(l.type + ':' + l.script + '  LAST on  ' + l.group + '\n      declared with @last: ' + l.handlersBefore + ' registration(s) of other scripts come before its ' + l.own +
+        '\n      held by the listing order of the file names (place ' + l.place + ')');
+    }
   }
 
   for (const e of res.errors) console.error('[load-order] FAIL ' + (e.type ? e.type + ':' : '') + e.script + ': ' + e.text + treeNote(e));
@@ -416,6 +460,7 @@ if (require.main === module) {
   const summary = M.TYPES.map((type) => type + ' ' + t[type].order.length + ' (' + [...new Set(t[type].order.map((r) => t[type].scripts.get(r).priority))].filter((p) => p !== 0).length + ' priorities)').join(', ');
   const line = 'scripts: ' + summary + '; order constraints: ' + res.constraints.length + ' (' + byHeld('priority') + ' held by priority, ' + byHeld('listing') + ' by the listing order and declared; ' +
     res.constraints.filter((c) => c.basis !== 'declared').length + ' proven by the code, ' + res.constraints.filter((c) => c.basis === 'declared').length + ' declared by hand)' +
+    (res.lasts.length ? '; ' + res.lasts.length + ' handler(s) declared the last of their event' : '') +
     (res.accepted.length ? '; ' + res.accepted.length + ' accepted finding(s)' : '');
   if (res.errors.length) {
     console.error('[load-order] ' + res.errors.length + ' failure(s). ' + line);
