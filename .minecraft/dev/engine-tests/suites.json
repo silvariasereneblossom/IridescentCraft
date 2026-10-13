@@ -1,5 +1,5 @@
 {
-  "about": "The suites of dev/engine-tests. kind: harness (scripts on the production Rhino jar over the mk.* mocks), guard (the event guard on the real KubeJS event classes: guard/GuardChain.java), members (the mocks against the real classes), known-false / truth-fresh (the recorded engine tables), parse (ParseAll), loot (audit_loot.py), rosters (dev/rosters/validate.py). fast = runs in the pre-push hook; ci = needs no mod jar beyond Rhino; snapshot = can record a golden snapshot. In a harness suite an entry is a file of this folder, 'server:<path>' / 'startup:<path>' (a pack script, evaluated directly), {load: [...]} (pack scripts through T_loadAll, so a script that fails to load is a recorded failure), {patch, find, replace} inside a load list (a patched copy), or {js: '...'} (generated; ${server:x.js} becomes the path), or {gen: 'name'} (a file run.py generates: registry-expect = what dev/rosters/rosters.py says of the pack's registries). expect = the exact number of checks.",
+  "about": "The suites of dev/engine-tests. kind: harness (scripts on the production Rhino jar over the mk.* mocks), guard (the event guard on the real KubeJS event classes: guard/GuardChain.java), members (the mocks against the real classes), known-false / truth-fresh (the recorded engine tables), parse (ParseAll), loot (audit_loot.py), rosters (dev/rosters/validate.py), liveness (dev/loud/gen_liveness.js --check). fast = runs in the pre-push hook; ci = needs no mod jar beyond Rhino; snapshot = can record a golden snapshot. In a harness suite an entry is a file of this folder, 'server:<path>' / 'startup:<path>' (a pack script, evaluated directly), {load: [...]} (pack scripts through T_loadAll, so a script that fails to load is a recorded failure), {patch, find, replace} inside a load list (a patched copy), or {js: '...'} (generated; ${server:x.js} becomes the path), or {gen: 'name'} (a file run.py generates: registry-expect = what dev/rosters/rosters.py says of the pack's registries). expect = the exact number of checks.",
   "suites": [
     {
       "name": "truth-fresh", "kind": "truth-fresh", "fast": true, "ci": true,
@@ -83,8 +83,20 @@
       ]
     },
     {
-      "name": "event-guard", "kind": "guard", "fast": true, "expect": 51,
-      "about": "kubejs/*_scripts/00_icraft_guard.js on KubeJS's REAL handler chain (EventHandlerContainer.handle from the KubeJS jar): a guarded cancel / success / exit reaches KubeJS intact, a throw is reported once and the chain goes on, an engine-level throw is isolated WITH a line and never masks an exit, a java.lang.Error is not isolated; switched off, it behaves like no guard; its three copies are one file"
+      "name": "event-guard", "kind": "guard", "fast": true, "expect": 70,
+      "about": "kubejs/*_scripts/00_icraft_guard.js on KubeJS's REAL handler chain (EventHandlerContainer.handle from the KubeJS jar): a guarded cancel / success / exit reaches KubeJS intact, a throw is reported once and the chain goes on, an engine-level throw is isolated WITH a line and never masks an exit, a java.lang.Error is not isolated; switched off, it behaves like no guard; its three copies are one file. Liveness (icraft.live): a registration is ARMED when made, FIRED once the first time its handler finishes, a cancel counts as fired, a throw is FAILED and not fired; the summary line, NOT ARMED / UNLISTED against an expected list, the digest gen_liveness.js computes"
+    },
+    {
+      "name": "liveness", "kind": "harness", "fast": true, "ci": true, "expect": 35,
+      "about": "ARMED and FIRED outside the guard: a tick function of 0_tick_master.js and a hurt handler of 0_lib_core.js are armed when registered and fired the first time they return (not when they throw, not behind a closed gate); a curated feature (the relic sink and its deny list) fires where it did its work; zzz_icraft_live.js prints the one summary line, compares with kubejs/config/icraft/live/expected.json, collects FIRED lines for a second, and never prints a player name",
+      "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
+                  {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:0_tick_master.js",
+                            "server:economy/relic_sink.js", "server:zzz_icraft_live.js"]},
+                  "suites/liveness.js", "lib/summary.js"]]
+    },
+    {
+      "name": "liveness-manifest", "kind": "liveness", "fast": true, "ci": true,
+      "about": "dev/loud/gen_liveness.js --check: dev/loud/liveness_manifest.json and kubejs/config/icraft/live/expected.json (x3) are exactly what the scripts register, name and report today; a registration added, renamed or removed without regenerating fails here (needs node, like the script lints)"
     },
     {
       "name": "parse", "kind": "parse", "fast": true, "ci": true,

@@ -29,3 +29,13 @@ chain('off: a section just runs its function (a throw in it ends the event)', 'E
     icraft.section('t/o4/second', function () { var u; u.foo() })
     console.log('MUST NOT PRINT')
   }), next], ['section ran'], ['MUST NOT PRINT', NEXT, FAILED])
+chain('off: a registration is still ARMED (it is made either way); FIRED is not recorded, and the summary says so', 'PASS',
+  [function (event) {
+    var all = icraft.live.entries()
+    var mine = null
+    for (var i = 0; i < all.length; i++) if (all[i].id === 't/o2@Test.event') mine = all[i]
+    console.log('o2 ' + (mine === null ? 'NOT ARMED' : 'armed fired=' + mine.fired))
+    icraft.live.loaded('test', null)
+  }],
+  ['o2 armed fired=false', '\\[icraft\\.live\\] ARMED test: \\d+ registrations .*NOT compared with an expected list \\[the guard is OFF: FIRED is not recorded for event handlers\\]'],
+  ['\\[icraft\\.live\\] FIRED Test'])

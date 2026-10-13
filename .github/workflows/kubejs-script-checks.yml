@@ -8,7 +8,9 @@ name: KubeJS script checks
 #   engine  .minecraft/dev/engine-tests/run.py ci: the pack's scripts on the PRODUCTION script engine
 #           (the rhino-forge jar, downloaded from the URL in its packwiz metafile and verified by its
 #           hash) over mocks that are held to the real classes, plus ParseAll (every script compiles
-#           on the real parser). See .minecraft/dev/engine-tests/README.md.
+#           on the real parser). See .minecraft/dev/engine-tests/README.md. Suite liveness-manifest
+#           (gen_liveness.js --check, needs Node) fails when the committed liveness manifest
+#           or kubejs/config/icraft/live/expected.json is not what the scripts register today.
 # Not here: the loot audit (it needs the whole instance) and the real-engine boot (a Forge server).
 # The bare-method-reference check has its own workflow (kubejs-method-ref-validator.yml).
 
@@ -22,7 +24,8 @@ on:
       - '.minecraft/dev/lint_kubejs_*'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
-      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/kubejs/config/icraft/**'
+      - '.minecraft/dev/loud/**'
       - '.minecraft/dev/rosters/**'
       - '.minecraft/dev/registry/**'
       - '.minecraft/mods/.index/kubejs.pw.toml'
@@ -38,7 +41,8 @@ on:
       - '.minecraft/dev/lint_kubejs_*'
       - '.minecraft/dev/engine-tests/**'
       - '.minecraft/dev/rhino_parse/**'
-      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/kubejs/config/icraft/**'
+      - '.minecraft/dev/loud/**'
       - '.minecraft/dev/rosters/**'
       - '.minecraft/dev/registry/**'
   workflow_dispatch:
@@ -95,6 +99,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'    # suite liveness-manifest: gen_liveness.js loads the parser bundled with Node
       - name: Engine jars (cache)
         uses: actions/cache@v4
         with:

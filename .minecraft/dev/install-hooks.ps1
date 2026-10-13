@@ -206,6 +206,11 @@ fi
 # script, a test or mock, the pinned KubeJS / Rhino / Architectury jars, or the boss and
 # dimension registries (kubejs/config/icraft/registry, their tools in dev/rosters, the game's
 # registry dump in dev/registry: suite registry-data is their validator); about 10 s.
+# Also the liveness files (dev/loud: the generator, the hand-kept lines, the generated
+# manifest; kubejs/config/icraft/live/expected.json): suite liveness-manifest runs
+# `gen_liveness.js --check` and FAILS when a script registers, names or reports something
+# the committed files do not have. Regenerate and commit:
+#   node --expose-internals .minecraft/dev/loud/gen_liveness.js
 # Self-contained: its own variables (ET_*), nothing from the other steps but PUSHED and DEV.
 # Not run here (it needs the whole instance and about 30 s more): the loot audit, i.e.
 #   python .minecraft/dev/engine-tests/run.py          (every suite)
@@ -222,7 +227,7 @@ while read -r _et_lref et_lsha _et_rref et_rsha; do
     fi
     if [ -z "$et_base" ]; then ET_RUN=1; break; fi
     if git diff --name-only "$et_base" "$et_lsha" 2>/dev/null \
-        | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/(engine-tests|rhino_parse|rosters|registry)/|^\.minecraft/kubejs/config/icraft/registry/|^\.minecraft/tools/check_kubejs_method_refs\.sh$|^\.minecraft/mods/\.index/(kubejs|rhino|architectury-api)\.pw\.toml$'; then
+        | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/(engine-tests|rhino_parse|rosters|registry|loud)/|^\.minecraft/kubejs/config/icraft/|^\.minecraft/tools/check_kubejs_method_refs\.sh$|^\.minecraft/mods/\.index/(kubejs|rhino|architectury-api)\.pw\.toml$'; then
         ET_RUN=1; break
     fi
 done <<EOF

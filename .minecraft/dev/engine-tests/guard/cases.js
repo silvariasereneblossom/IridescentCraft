@@ -176,3 +176,134 @@ chain('count: icraft.guard.failures() lists every name once, with how often it f
   }],
   ['failure t/q1 in Test\\.event x1', 'failure t/q8 in Test\\.event x3', 'failure t/e1 in Test\\.event x1', 'failure t/s1/second in Test\\.event x1',
    'failure t/r3 in \\? x1', 'names=15 failures=17 guarded=\\d+'])
+
+// ---- liveness: ARMED and FIRED (icraft.live) --------------------------------------------------------
+// Declared after the count case on purpose: the failures planted here must not move its numbers.
+var LIVE = '\\[icraft\\.live\\] '
+var liveEntry = function (id) {
+  var all = icraft.live.entries()
+  for (var i = 0; i < all.length; i++) if (all[i].id === id) return all[i]
+  return null
+}
+var liveShow = function (id) {
+  var e = liveEntry(id)
+  console.log('entry ' + id + ': ' + (e === null ? 'NOT ARMED' : 'armed fired=' + e.fired + ' times=' + e.times))
+}
+var l1 = icraft.guard('t/l1', 'Test.live', function (event) { console.log('l1 ran') })
+chain('live: a registration is ARMED when guard() is called, before its handler ever runs', 'PASS',
+  [function (event) { liveShow('t/l1@Test.live'); liveShow('t/never-registered@Test.live') }],
+  ['entry t/l1@Test\\.live: armed fired=false times=1', 'entry t/never-registered@Test\\.live: NOT ARMED'], [LIVE + 'FIRED'])
+chain('live: FIRED is recorded the first time a handler finishes, and ONCE (it runs three times: one line)', 'PASS',
+  [function (event) { l1(event); l1(event); l1(event); liveShow('t/l1@Test.live') }],
+  ['log: ' + LIVE + 'FIRED Test\\.live x1: t/l1(\\n|$)', 'entry t/l1@Test\\.live: armed fired=true times=1'],
+  ['(?s)FIRED Test\\.live x1: t/l1.*FIRED Test\\.live x1: t/l1'])
+chain('live: a handler that throws is FAILED and NOT fired', 'PASS',
+  [icraft.guard('t/l2', 'Test.event', function (event) { var u; u.foo() }),
+   function (event) { liveShow('t/l2@Test.event') }],
+  [FAILED + ' t/l2 in Test\\.event: TypeError', 'entry t/l2@Test\\.event: armed fired=false'], [LIVE + 'FIRED [^\\n]*t/l2'])
+chain('live: an exit counts as fired: a handler that cancels has done its work (and the cancel stands)', CANCEL,
+  [icraft.guard('t/l3', 'Test.event', function (event) { event.cancel() }), next],
+  [LIVE + 'FIRED Test\\.event x1: t/l3(\\n|$)'], [NEXT, FAILED])
+chain('live: ... and so does success(value), which keeps its value', 'EXIT INTERRUPT_TRUE value=kept',
+  [icraft.guard('t/l4', 'Test.event', function (event) { event.success('kept') }), next],
+  [LIVE + 'FIRED Test\\.event x1: t/l4(\\n|$)'], [NEXT, FAILED])
+chain('live: an engine-level throw is FAILED and NOT fired', 'PASS',
+  [icraft.guard('t/l5', 'Test.event', function (event) { rawThrow('runtime') }),
+   function (event) { liveShow('t/l5@Test.event') }],
+  [FAILED + ' t/l5 in Test\\.event: ' + NO_MESSAGE, 'entry t/l5@Test\\.event: armed fired=false'], [LIVE + 'FIRED [^\\n]*t/l5'])
+var l6calls = 0
+var l6 = icraft.guard('t/l6', 'Test.live', function (event) { l6calls++; if (l6calls === 1) { var u; u.foo() } })
+chain('live: a handler that failed once is FIRED the first time it does finish', 'PASS',
+  [function (event) { l6(event); liveShow('t/l6@Test.live'); l6(event); liveShow('t/l6@Test.live') }],
+  ['(?s)FAILED t/l6 in Test\\.live.*entry t/l6@Test\\.live: armed fired=false.*FIRED Test\\.live x1: t/l6\\n.*entry t/l6@Test\\.live: armed fired=true'])
+chain('live: the same id registered twice is ONE entry (times=2), fired once', 'PASS',
+  [icraft.guard('t/l7', 'Test.event', function (event) { }), icraft.guard('t/l7', 'Test.event', function (event) { }),
+   function (event) { liveShow('t/l7@Test.event') }],
+  ['entry t/l7@Test\\.event: armed fired=true times=2'], ['(?s)FIRED Test\\.event x1: t/l7.*FIRED Test\\.event x1: t/l7'])
+chain('live: a feature is one line however often it is reported; its name is all that is printed', 'PASS',
+  [function (event) {
+    icraft.live.fired('feat-a'); icraft.live.fired('feat-a'); icraft.live.fired('feat-b'); icraft.live.fired('feat-a')
+  }],
+  ['log: ' + LIVE + 'FIRED feature x1: feat-a(\\n|$)', 'log: ' + LIVE + 'FIRED feature x1: feat-b(\\n|$)'],
+  ['(?s)FIRED feature x1: feat-a.*FIRED feature x1: feat-a'])
+chain('live: arm() / fire() for a dispatcher of its own (the tick master, the hurt dispatcher)', 'PASS',
+  [function (event) {
+    var e = icraft.live.arm('tick_demo', 'tick.server')
+    console.log('before fired=' + e.fired + ' id=' + e.id)
+    icraft.live.fire(e); icraft.live.fire(e)
+    console.log('after fired=' + e.fired)
+    icraft.live.fire(null)
+  }],
+  ['before fired=false id=tick_demo@tick\\.server', 'log: ' + LIVE + 'FIRED tick\\.server x1: tick_demo(\\n|$)', 'after fired=true'],
+  ['(?s)FIRED tick\\.server x1: tick_demo.*FIRED tick\\.server', 'error: '])
+chain('live: batched, nothing is printed until flush(), then one line per group in the order they fired', 'PASS',
+  [function (event) {
+    icraft.live.batch(true)
+    icraft.live.fire(icraft.live.arm('t/b1', 'Test.batch')); icraft.live.fired('feat-c'); icraft.live.fire(icraft.live.arm('t/b2', 'Test.batch'))
+    console.log('-- before the flush')
+    icraft.live.flush()
+    console.log('-- after the flush')
+    icraft.live.flush()
+    icraft.live.batch(false)
+  }],
+  ['(?s)-- before the flush\\nlog: ' + LIVE + 'FIRED Test\\.batch x2: t/b1, t/b2\\nlog: ' + LIVE + 'FIRED feature x1: feat-c\\nlog: -- after the flush$'],
+  ['(?s)FIRED.*-- before the flush'])
+chain('live: a long list is cut into lines of 24 names', 'PASS',
+  [function (event) {
+    icraft.live.batch(true)
+    for (var i = 0; i < 50; i++) icraft.live.fire(icraft.live.arm('t/many' + i, 'Test.many'))
+    icraft.live.flush()
+    icraft.live.batch(false)
+  }],
+  ['FIRED Test\\.many x24: t/many0, t/many1, ', 'FIRED Test\\.many x24: t/many24, ', 'FIRED Test\\.many x2: t/many48, t/many49$'])
+chain('live: the digest is the one dev/loud/gen_liveness.js computes (same arithmetic, same digits)', 'PASS',
+  [function (event) {
+    console.log('digest ' + icraft.live.digest(['a@b', 'c@d']) + ' ' + icraft.live.digest([]) + ' ' +
+      icraft.live.digest(['recipes/some_long_script_name#2@ServerEvents.recipes', 'tick_x@tick.server']))
+  }],
+  ['digest 4bb5bea31c9d1cde 000000070000000b 0e52707c4414a4e7$'])
+var s9 = icraft.guard('t/s9', 'Test.sect', function (event) {
+  icraft.section('t/s9/first', function () { console.log('s9 first ran') })
+  icraft.section('t/s9/second', function () { var u; u.foo() })
+})
+chain('live: the summary line, NOT ARMED (an ERROR line) and UNLISTED against an expected list', 'PASS',
+  [function (event) {
+    var listed = {}
+    var all = icraft.live.entries()
+    for (var i = 0; i < all.length; i++) listed[all[i].id] = 'cases.js'
+    delete listed['t/l1@Test.live']
+    listed['t/ghost@Test.event'] = 'ghost.js'
+    listed['t/opt@Test.event'] = 'opt.js'
+    var r = icraft.live.loaded('test', { armed: listed, optional: ['t/opt@Test.event'],
+      sections: { 't/s9@Test.sect': ['t/s9/first', 't/s9/second', 't/s9/third'] }, features: { 'feat-a': 'cases.js', 'feat-z': 'cases.js' } })
+    console.log('returned missing=' + r.missing.join('|') + ' unlisted=' + r.unlisted.join('|') + ' armed=' + r.armed)
+  }],
+  ['log: ' + LIVE + 'ARMED test: \\d+ registrations \\(\\d+ handlers on \\d+ events, 1 tick functions, 0 hurt handlers\\), digest [0-9a-f]{16}; against the expected list: 1 not armed, 1 unlisted(\\n|$)',
+   'error: ' + LIVE + 'NOT ARMED x1: t/ghost@Test\\.event(\\n|$)', 'log: ' + LIVE + 'UNLISTED x1: t/l1@Test\\.live(\\n|$)',
+   'returned missing=t/ghost@Test\\.event unlisted=t/l1@Test\\.live armed=\\d+'],
+  ['NOT ARMED[^\\n]*t/opt', 'warn: '])
+chain('live: a handler finished and sections of it did not: one NOT RUN line (the failed one and the one never reached)', 'PASS',
+  [function (event) { s9(event); s9(event) }],
+  ['s9 first ran', FAILED + ' t/s9/second in Test\\.sect', 'log: ' + LIVE + 'NOT RUN section \\(2 of 3 in t/s9@Test\\.sect did not finish although the handler did\\) x2: t/s9/second, t/s9/third(\\n|$)'],
+  ['(?s)NOT RUN section.*NOT RUN section'])
+chain('live: a registration made after the summary line is said (ARMED late)', 'PASS',
+  [function (event) { icraft.guard('t/late', 'Test.event', function (e) { }) }],
+  ['log: ' + LIVE + 'ARMED late x1: t/late@Test\\.event$'])
+chain('live: report() / lines(): what `/icraft live` shows, with and without a filter', 'PASS',
+  [function (event) {
+    var r = icraft.live.report('')
+    console.log('report type=' + r.type + ' compared=' + r.compared + ' neverHasL2=' + (r.never.indexOf('t/l2@Test.event') >= 0) +
+      ' neverHasL1=' + (r.never.indexOf('t/l1@Test.live') >= 0) + ' sections=' + r.sections.ran + '/' + r.sections.known + ' notRun=' + r.sections.notRun.join('|') +
+      ' featNever=' + r.features.never.join('|') + ' featKnown=' + r.features.known)
+    var f = icraft.live.report('t/l5')
+    console.log('filtered never=' + f.never.join('|') + ' of ' + f.neverTotal)
+    var byScript = icraft.live.report('ghost.js')
+    console.log('by script never=' + byScript.never.length)
+    var text = icraft.live.lines('t/l')
+    for (var i = 0; i < text.length; i++) console.log('L| ' + text[i])
+  }],
+  ['report type=test compared=true neverHasL2=true neverHasL1=false sections=\\d+/3 notRun=t/s9/second\\|t/s9/third featNever=feat-z featKnown=2',
+   'filtered never=t/l5@Test\\.event of \\d+', 'by script never=0',
+   'L\\| test scripts: \\d+ armed, \\d+ fired, \\d+ never fired, \\d+ FAILED; sections \\d+ of 3 ran; features \\d+ of 2 fired(\\n|$)',
+   'L\\|   filter "t/l": 3 of the \\d+ never-fired registrations(\\n|$)', 'L\\|   never fired, Test\\.event x3: t/l2, t/l5, t/late(\\n|$)'],
+  ['error: '])

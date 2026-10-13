@@ -31,7 +31,7 @@ var PlayerEvents = { loggedIn: T_reg('P.loggedIn'), loggedOut: T_reg('P.loggedOu
 var EntityEvents = { death: T_reg('E.death'), hurt: T_reg('E.hurt'), spawned: T_reg('E.spawned'), checkSpawn: T_reg('E.checkSpawn') }
 var ItemEvents = { rightClicked: T_reg('I.rightClicked'), entityInteracted: T_reg('I.entityInteracted'), canPickUp: T_reg('I.canPickUp') }
 var BlockEvents = { broken: T_reg('B.broken'), rightClicked: T_reg('B.rightClicked'), placed: T_reg('B.placed') }
-var ServerEvents = { tick: T_reg('S.tick'), loaded: T_reg('S.loaded'), commandRegistry: T_reg('S.commandRegistry'), recipes: T_reg('S.recipes'), tags: T_reg('S.tags') }
+var ServerEvents = { tick: T_reg('S.tick'), loaded: T_reg('S.loaded'), unloaded: T_reg('S.unloaded'), commandRegistry: T_reg('S.commandRegistry'), recipes: T_reg('S.recipes'), tags: T_reg('S.tags') }
 // every event offered above exists on the engine
 var T_EVENT_GROUPS = { P: ['PlayerEvents', PlayerEvents], E: ['EntityEvents', EntityEvents], I: ['ItemEvents', ItemEvents], B: ['BlockEvents', BlockEvents], S: ['ServerEvents', ServerEvents] }
 for (var T_g in T_EVENT_GROUPS) { for (var T_h in T_EVENT_GROUPS[T_g][1]) T_honestEvent(T_EVENT_GROUPS[T_g][0] + '.' + T_h) }

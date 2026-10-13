@@ -388,6 +388,24 @@ def run_rosters(ctx, suite, snap=None):
     return r.returncode == 0, note, out
 
 
+def run_liveness(ctx, suite, snap=None):
+    """dev/loud/gen_liveness.js --check: the committed liveness manifest and the game's expected list are what
+    the scripts register, name and report today."""
+    node = shutil.which("node")
+    if node is None:
+        raise RunnerError("node is not on PATH (the liveness generator needs it, like the script lints)")
+    cmd = [node, "--expose-internals", os.path.join(DEV, "loud", "gen_liveness.js"), "--check", "--pack", ctx.pack]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    out = r.stdout + r.stderr
+    if r.returncode == 2:
+        raise RunnerError(out.strip() or "gen_liveness.js could not run")
+    last = [l for l in out.strip().splitlines() if l.startswith("[gen-liveness] ")]
+    note = last[0][len("[gen-liveness] "):].strip() if last else "no [gen-liveness] line (exit %d)" % r.returncode
+    if len(note) > 150:
+        note = note[:147] + "..."
+    return r.returncode == 0, note, out
+
+
 RESULT_RE = re.compile(r"^RESULT: (\d+) passed, (\d+) failed(.*)$", re.M)
 
 
@@ -779,7 +797,8 @@ def run_guard(ctx, suite, snap=None):
 
 
 KINDS = {"harness": run_harness, "members": run_members, "parse": run_parse, "loot": run_loot,
-         "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard, "rosters": run_rosters}
+         "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard, "rosters": run_rosters,
+         "liveness": run_liveness}
 
 
 def run_suites(ctx, suites, verbose):
