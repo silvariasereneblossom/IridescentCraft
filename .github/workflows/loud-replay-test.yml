@@ -1,0 +1,110 @@
+name: Loud check replay test
+
+# .minecraft/dev/loud/replay-test.ps1: the boot-log checker (loud-check.ps1) against the 45 boots
+# of this repository's history whose outcome is known, then against one planted defect at a time.
+#
+# The test takes about three minutes and reads 45 old commits, so it is in no pre-push hook, and
+# until 2026-10-13 it ran nowhere: it sat red on main for hours on 2026-10-12 after a manifest
+# line was added for a script the old boots do not have, and nothing said so (decision list
+# entry 49). It runs here on every push to main that touches the checker's folder. That includes
+# liveness_manifest.json, which is regenerated whenever a script registration changes: the case
+# that broke it.
+#
+# A red run is the finding. What it leaves behind:
+#   * the failed check on the commit and one error annotation that names the failing parts;
+#   * the job summary: verdict, commit, duration, the test's closing lines;
+#   * the whole output as an artifact (loud-replay-test-<commit>, kept 90 days).
+# Read the last runs from a terminal:
+#   gh run list --workflow loud-replay-test.yml --limit 5
+# The output holds dates, commits, verdicts and finding ids only, never a log line (the old
+# mirrored logs can hold player names and chat; the test's header says how that is kept).
+#
+# The history is needed (the boots are `git show <commit>:<path>` of pinned commits), its files
+# are not: a clone of every commit without blobs, and only the checker's folder checked out.
+# git fetches the few hundred old files the test asks for one by one.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/dev/loud/**'
+      - '.github/workflows/loud-replay-test.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: loud-replay-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  replay:
+    name: replay-test.ps1 (Windows PowerShell 5.1)
+    # Windows PowerShell 5.1 on purpose: it is what the server box and the dev PC run the checker with.
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (the checker's folder, every commit, no old files)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/dev/loud/
+
+      # No `2>&1` on the child: in Windows PowerShell a redirected stderr line of a native program
+      # is an error record, and this shell stops at the first one. The test prints to stdout.
+      - name: replay-test.ps1
+        id: replay
+        shell: powershell
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP 'loud-replay-test.txt'
+          $watch = [Diagnostics.Stopwatch]::StartNew()
+          powershell -NoProfile -ExecutionPolicy Bypass -File .minecraft\dev\loud\replay-test.ps1 | Tee-Object -FilePath $out
+          $code = $LASTEXITCODE
+          $seconds = [int]$watch.Elapsed.TotalSeconds
+          $verdict = switch ($code) { 0 { 'PASS' } 1 { 'FAIL' } 2 { 'COULD NOT RUN' } default { "EXIT $code" } }
+          "verdict=$verdict" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "seconds=$seconds" | Out-File -FilePath $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "[replay-test in CI] $verdict after $seconds s (exit code $code)"
+          exit $code
+
+      - name: Keep the result (job summary, annotation)
+        if: always()
+        shell: powershell
+        run: |
+          $out = Join-Path $env:RUNNER_TEMP 'loud-replay-test.txt'
+          $verdict = '${{ steps.replay.outputs.verdict }}'
+          if (-not $verdict) { $verdict = 'DID NOT FINISH' }
+          $lines = @()
+          if (Test-Path -LiteralPath $out) { $lines = @(Get-Content -LiteralPath $out) }
+          $tail = @($lines | Select-Object -Last 40)
+          $failing = @($lines | Where-Object { $_ -match '^\s*(FAIL|\[replay-test\] (FAIL|COULD NOT RUN))' } | Select-Object -First 12)
+          $summary = @(
+            "## Loud check replay test: $verdict",
+            '',
+            "- commit ``$env:GITHUB_SHA`` on ``$env:GITHUB_REF_NAME``",
+            "- duration: ${{ steps.replay.outputs.seconds }} s; output: $($lines.Count) lines (artifact ``loud-replay-test-$env:GITHUB_SHA``)",
+            '',
+            'The closing lines of the test:',
+            '',
+            '```'
+          ) + $tail + @('```')
+          [System.IO.File]::AppendAllLines($env:GITHUB_STEP_SUMMARY, [string[]]$summary, (New-Object System.Text.UTF8Encoding($false)))
+          if ($verdict -ne 'PASS') {
+            $what = if ($failing.Count) { ($failing | ForEach-Object { $_.Trim() }) -join ' | ' } else { 'see the job summary and the artifact' }
+            if ($what.Length -gt 900) { $what = $what.Substring(0, 900) + ' ...' }
+            Write-Host "::error title=Loud check replay test: $verdict::$what"
+          }
+
+      - name: Keep the result (the whole output)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loud-replay-test-${{ github.sha }}
+          path: ${{ runner.temp }}/loud-replay-test.txt
+          if-no-files-found: warn
+          retention-days: 90

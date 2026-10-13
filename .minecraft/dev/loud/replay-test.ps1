@@ -45,15 +45,22 @@
 # Exit 0 pass, 1 fail, 2 could not run (history not available: a shallow clone, or
 # the history of this repo was rewritten).
 #
-# NO GATE RUNS THIS: MANUAL, ON PURPOSE. Measured 2026-10-13 on the dev PC (Windows
-# PowerShell 5.1, warm disk): 171 s for the whole run, PASS. It reads 45 old commits
-# out of history, so it also needs a full clone. That is too slow for the pre-push
-# hook, where it would run on most script pushes (the manifest it reads is
-# regenerated whenever a registration changes), and the engine suite's CI job
-# checks out one commit. So nothing fails by itself when this test breaks: it sat
-# red on main for hours on 2026-10-12 after a manifest line was added for a script
-# the old boots do not have.
-# RUN IT BY HAND, and say so in the close-out, after a change to any of:
+# WHERE IT RUNS: IN CI, NOT IN THE PRE-PUSH HOOK. Measured 2026-10-13 on the dev PC
+# (Windows PowerShell 5.1, warm disk): 171 s for the whole run, PASS. It reads 45 old
+# commits out of history, so it also needs every commit of the repository. That is too
+# slow for the hook, where it would run on most script pushes (the manifest it reads
+# is regenerated whenever a registration changes).
+# Since 2026-10-13 the GitHub Action `Loud check replay test`
+# (.github/workflows/loud-replay-test.yml) runs it on every push to main that touches
+# this folder, on a Windows runner with Windows PowerShell 5.1 and a clone of every
+# commit without its files. A red run leaves a failed check on the commit, an error
+# annotation with the failing parts, a job summary and the whole output as an artifact:
+#   gh run list --workflow loud-replay-test.yml --limit 5
+# Before that nothing failed by itself when this test broke: it sat red on main for
+# hours on 2026-10-12 after a manifest line was added for a script the old boots do
+# not have. The Action runs AFTER the push, so a change here is still worth a run
+# by hand first.
+# RUN IT BY HAND before the push, and say so in the close-out, after a change to any of:
 #   loud-check.ps1                          the checker under test
 #   liveness_lines.json, gen_liveness.js    what the checker expects of a boot
 #   baseline.json handling in the checker   (the baseline cases build their own file)
