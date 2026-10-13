@@ -49,6 +49,8 @@ $hookContent = @'
 #   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
 #   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
 #   +  mods/mod_index.py check - the mod index gate (its own block, after step 2)
+#   +  boot/registry_current.py - is dev/registry still a snapshot of this pack's mods (its own
+#                                block; only when a pushed commit touches the mod set or the snapshot)
 #   +  validate_heracles_quests.py - the quest validator (its own block; only when a
 #                                pushed commit touches config/heracles/ in any distro)
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
@@ -151,6 +153,62 @@ EOF
             exit 1
         fi
         echo "[pre-push] WARN: mod index gate skipped (needs python 3.11+ on PATH); this push does not touch the mod index."
+    fi
+fi
+
+# --- Registry snapshot currency (one self-contained block) ---
+# .minecraft/dev/registry holds the ids a full-pack server boot registered; validators read
+# them as the truth (quests, the boss and dimension registries, the loot audit, the Codex).
+# dev/boot/registry_current.py compares the server mod set of this tree, computed with the
+# boot tool's own function, with the jars the snapshot was taken with. No jar is opened,
+# nothing boots; under a second. Two answers:
+#   STALE   (blocks)  a jar was added, removed, or replaced by another file: the id lists are
+#                     wrong for certain. Commit the mod change, refresh from that commit with
+#                     boot.ps1 -Ref <commit> -WriteSnapshot, commit dev/registry, push both.
+#   CHANGED (printed, does not block) the same jars, another recorded hash: a custom jar
+#                     rebuilt under its name. Its ids MAY have changed; the lines name the jars.
+# Runs when a pushed commit touches what the mod set is computed from (the server mod index
+# and the jars committed next to it, the custom-jar manifest, the launcher's filter), the
+# snapshot, or the tool. Self-contained: its own variables (RS_*), nothing but PUSHED and DEV.
+RS_TOOL="$DEV/boot/registry_current.py"
+if [ -f "$RS_TOOL" ]; then
+    RS_ZERO=0000000000000000000000000000000000000000
+    RS_RUN=0
+    [ -z "$PUSHED" ] && RS_RUN=1
+    while read -r _rs_lref rs_lsha _rs_rref rs_rsha; do
+        [ -z "$rs_lsha" ] && continue
+        [ "$rs_lsha" = "$RS_ZERO" ] && continue
+        if [ "$rs_rsha" != "$RS_ZERO" ] && git cat-file -e "$rs_rsha^{commit}" 2>/dev/null; then
+            rs_base="$rs_rsha"
+        else
+            rs_base="$(git merge-base "$rs_lsha" origin/main 2>/dev/null)"
+        fi
+        if [ -z "$rs_base" ]; then RS_RUN=1; break; fi
+        if git diff --name-only "$rs_base" "$rs_lsha" 2>/dev/null \
+            | grep -Eq '^\.minecraft/server_distribution/(mods/|custom_jars_manifest\.json$)|^iridescent-launcher/icraft-core/src/(packwiz|config)\.rs$|^\.minecraft/dev/registry/|^\.minecraft/dev/boot/(icboot|registry_current)'; then
+            RS_RUN=1; break
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $RS_RUN -eq 1 ]; then
+        RS_RC=2
+        if command -v python >/dev/null 2>&1; then
+            python -I "$RS_TOOL"
+            RS_RC=$?
+        else
+            echo "[pre-push] python not found: the registry snapshot check could NOT run"
+        fi
+        if [ $RS_RC -ne 0 ]; then
+            echo ""
+            if [ $RS_RC -eq 1 ]; then
+                echo "[pre-push] the registry snapshot is STALE for the mods this push carries (lines above)."
+            else
+                echo "[pre-push] the registry snapshot check could NOT run, and this push touches the mod set or the snapshot."
+            fi
+            echo "  Bypass: git push --no-verify"
+            exit 1
+        fi
     fi
 fi
 

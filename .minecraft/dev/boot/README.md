@@ -205,7 +205,11 @@ jar that ships one, and applies only when a class it targets is loaded on a dedi
 registry, plus `entities.json` (its own README lists the files). It is the authoritative id list for validators and
 replaces the item list of 2026-04-27 (`TesterLogs\Item Audit\all_items.tsv`). Refresh it with
 `boot.ps1 -Ref origin/main -WriteSnapshot`, then commit the folder; `SOURCE.json` names the commit it describes.
-Nothing checks that it is current: refresh it when mods or registrations change.
+`registry_current.py` (next to the tool; the pre-push hook and the Action `registry-snapshot.yml` run it) says whether
+the snapshot is still of this pack's MODS: it blocks a push whose server jar set differs from the snapshot's, and
+names the jars whose recorded hash changed under the same name without blocking. It does not see registrations
+made by the pack's own startup scripts and datapacks: after those, the refresh is still by hand
+(`.minecraft\dev\registry\README.md`, "Is it current?").
 
 What a dump does not say:
 - base attributes are those of the entity TYPE. What the pack's scripts and difficulty mods add at spawn is not in it;

@@ -1,0 +1,81 @@
+name: Registry snapshot currency
+
+# .minecraft/dev/registry is what a full-pack server boot registered: the id lists the
+# pack's validators trust (quests, the boss and dimension registries, the loot audit, the
+# Codex). SOURCE.json says which commit it was taken from; until 2026-10-13 nothing said
+# when the pack's mods had moved on without it.
+#
+# .minecraft/dev/boot/registry_current.py compares the server mod set of the pushed tree
+# (computed with the boot tool's own function; no jar is opened, nothing boots) with the
+# jars the snapshot was taken with:
+#   STALE    the job fails: a jar was added, removed or replaced by another file.
+#            Refresh on the dev PC:  boot.ps1 -Ref <commit> -WriteSnapshot  and commit dev/registry.
+#   CHANGED  the job passes with a warning annotation: the same jars, another recorded hash
+#            (a custom jar rebuilt under its name). Its ids MAY have changed; the log names the jars.
+# The same check runs in the pre-push hook; this is for the pushes that did not go through it.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/server_distribution/mods/**'
+      - '.minecraft/server_distribution/custom_jars_manifest.json'
+      - 'iridescent-launcher/icraft-core/src/packwiz.rs'
+      - 'iridescent-launcher/icraft-core/src/config.rs'
+      - '.minecraft/dev/registry/**'
+      - '.minecraft/dev/boot/icboot.py'
+      - '.minecraft/dev/boot/registry_current*.py'
+      - '.github/workflows/registry-snapshot.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/server_distribution/mods/**'
+      - '.minecraft/server_distribution/custom_jars_manifest.json'
+      - 'iridescent-launcher/icraft-core/src/packwiz.rs'
+      - 'iridescent-launcher/icraft-core/src/config.rs'
+      - '.minecraft/dev/registry/**'
+      - '.minecraft/dev/boot/icboot.py'
+      - '.minecraft/dev/boot/registry_current*.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: registry_current.py
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Only what the check reads. The jars committed next to the server index come along
+      # (17 MB): the mod set counts a committed jar by its NAME, so they must be in the tree.
+      - name: Checkout (server mod index, manifest, launcher filter, snapshot, tool)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/server_distribution/mods/
+            /.minecraft/server_distribution/custom_jars_manifest.json
+            /iridescent-launcher/icraft-core/src/packwiz.rs
+            /iridescent-launcher/icraft-core/src/config.rs
+            /.minecraft/dev/registry/SOURCE.json
+            /.minecraft/dev/registry/mods.txt
+            /.minecraft/dev/registry/mods_recorded.tsv
+            /.minecraft/dev/boot/icboot.py
+            /.minecraft/dev/boot/registry_current.py
+            /.minecraft/dev/boot/registry_current_test.py
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Is the snapshot a snapshot of this pack?
+        run: python -I .minecraft/dev/boot/registry_current.py
+
+      # Each case is planted in a temporary tree: an added, removed and replaced mod must be refused.
+      - name: The check still refuses what it exists to refuse
+        if: always()
+        run: python -I .minecraft/dev/boot/registry_current_test.py

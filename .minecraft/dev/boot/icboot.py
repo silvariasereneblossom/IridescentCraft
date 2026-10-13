@@ -26,7 +26,10 @@
 # =============================================================================
 
 import argparse
-import fcntl
+try:
+    import fcntl
+except ImportError:  # Windows: nothing boots there; registry_current.py imports this file for compute_modset
+    fcntl = None
 import gzip
 import hashlib
 import json
@@ -2465,6 +2468,19 @@ def cmd_diff(req):
 # -----------------------------------------------------------------------------
 # the committed snapshot
 # -----------------------------------------------------------------------------
+def modset_recorded(mods):
+    """The mod set as the INDEX records it, one line per jar: filename, the hash its metafile
+    names (format:hex) and the custom-jar manifest's sha256 when the jar has one. Nothing is read
+    from a jar, so registry_current.py (next to this file) computes the same lines from a checkout and
+    says which jar changed since the snapshot (a custom jar rebuilt under its name, a mod updated
+    in place). `mods` is compute_modset(...)['mods']."""
+    out = []
+    for m in sorted(mods, key=lambda x: x['filename']):
+        rec = ('%s:%s' % (m.get('hash_format') or '', (m.get('hash') or '').lower())) if m.get('hash') else '-'
+        out.append('%s\t%s\t%s' % (m['filename'], rec, (m.get('manifest_sha256') or '-').lower()))
+    return out
+
+
 SNAPSHOT_EXTRA = ('dimensions.txt', 'game_rules.txt', 'game_rule_values.tsv', 'loot_tables.txt', 'loot_tables_rejected.txt',
                   'recipes.tsv', 'recipe_type_counts.tsv', 'advancements.txt', 'entities.json')
 
@@ -2492,6 +2508,13 @@ def cmd_snapshot(req):
             shutil.copyfile(src, os.path.join(out, name))
             files[name] = sum(1 for _ in open(src, 'rb'))
             keep.add(name)
+    # what the index recorded for each jar of that boot: the currency check compares it with the tree
+    ms_path = os.path.join(result_dir, 'modset.json')
+    if os.path.isfile(ms_path):
+        lines = modset_recorded(read_json(ms_path).get('mods') or [])
+        write_list(os.path.join(out, 'mods_recorded.tsv'), lines)
+        files['mods_recorded.tsv'] = len(lines)
+        keep.add('mods_recorded.tsv')
     write_json(os.path.join(out, 'SOURCE.json'), {
         'commit': result['source'].get('sha'), 'forge': result.get('forge'), 'mods': result['modset']['count'],
         'seed': result['params']['seed'], 'tool_version': result['tool_version'], 'entries': files,
