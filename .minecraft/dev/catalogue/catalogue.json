@@ -3657,6 +3657,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -3672,6 +3678,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -4090,6 +4100,12 @@
      "names": 9,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -4105,6 +4121,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -11634,11 +11654,19 @@
      "when": "handler"
     },
     {
+     "script": "server:fix_empty_display_name.js",
+     "when": "handler"
+    },
+    {
      "script": "server:gates/codex_progression_engine.js",
      "when": "handler"
     },
     {
      "script": "server:gates/milestone_detection.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:icraft_despawn_command.js",
      "when": "handler"
     },
     {
@@ -12378,8 +12406,10 @@
     "server:enchantments/enchant_effects.js",
     "server:end/dragon_exploration_gate.js",
     "server:exploration/codex_exploration_kills.js",
+    "server:fix_empty_display_name.js",
     "server:gates/codex_progression_engine.js",
     "server:gates/milestone_detection.js",
+    "server:icraft_despawn_command.js",
     "server:integration/dna_simple_staves_strip.js",
     "server:items/compass_of_return.js",
     "server:loot/iss_boss_first_kill.js",

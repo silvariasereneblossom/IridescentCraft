@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/fix_empty_display_name.js
+// @events EntityEvents.spawned
 // =============================================================================
 // FIX -- clear empty customName overrides so death messages show entity type
 // =============================================================================
@@ -44,23 +46,14 @@ try {
 
       // Per-type one-shot log so we know we're biting (and how often).
       if (!global._empty_name_fixed) global._empty_name_fixed = {}
-      var typeId = '?'
-      try {
-        var FR = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
-        var rl = FR.ENTITY_TYPES.getKey(e.getType())
-        if (rl) typeId = String(rl)
-      } catch (_) {}
-      if (typeId === '?') {
-        try { typeId = String(e.getType().builtInRegistryHolder().key().location()) } catch (_) {}
-      }
-      if (typeId === '?') {
-        try {
-          var raw = String(e.getType().toString())
-          var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-          if (m) typeId = m[1] + ':' + m[2]
-          else typeId = raw
-        } catch (_) {}
-      }
+      // The registry id through global.icraft.core.entityId (0_lib_core.js), the one
+      // reader of it. Until 2026-10-13 this asked
+      // ForgeRegistries.ENTITY_TYPES.getKey(e.getType()): for scripts getType() is
+      // the id STRING, the registry answers its default key for anything that is
+      // not an entity type, and so EVERY entity was logged as minecraft:pig
+      // (measured on all 1,411 creatable types) and the "per type" line below
+      // printed once per boot, whatever was fixed.
+      var typeId = global.icraft.core.entityId(e) || '?'
       if (!global._empty_name_fixed[typeId]) {
         global._empty_name_fixed[typeId] = true
         console.log('[fix_empty_name] cleared empty customName on first spawn of ' + typeId)

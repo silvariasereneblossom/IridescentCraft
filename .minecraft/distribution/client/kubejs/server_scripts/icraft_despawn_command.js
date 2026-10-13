@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/icraft_despawn_command.js
+// @events ServerEvents.commandRegistry
 // =============================================================================
 // /icraft despawn <radius> -- clear hostile mobs around the player
 // =============================================================================
@@ -76,33 +78,25 @@ try {
         if (e === sp) continue
         if (e.distanceToSqr(sp) > radiusSq) continue
         var type = e.getType()
-        // Bucket the entity-type for diagnostic logging when killed=0.
-        // builtInRegistryHolder() returned ? for 22 entities in the prior
-        // test -- Rhino bridge can't traverse Holder.Reference.key() for
-        // some types. Use ForgeRegistries.getKey() as primary path.
-        var typeId = '?'
-        try {
-          var FR_dsp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
-          var rl = FR_dsp.ENTITY_TYPES.getKey(type)
-          if (rl) typeId = String(rl)
-        } catch (_) {}
-        if (typeId === '?') {
-          try { typeId = String(type.builtInRegistryHolder().key().location()) } catch (_) {}
-        }
-        if (typeId === '?') {
-          try {
-            var raw = String(type.toString())
-            var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-            if (m) typeId = m[1] + ':' + m[2]
-            else typeId = raw
-          } catch (_) {}
-        }
+        // Bucket the entity type for the diagnostic line when killed=0: the
+        // registry id through global.icraft.core.entityId (0_lib_core.js), the one
+        // reader of it. Until 2026-10-13 this asked
+        // ForgeRegistries.ENTITY_TYPES.getKey(type); `type` is the id STRING for
+        // scripts, the registry answers its default key for it, and every
+        // bucket was minecraft:pig (measured on all 1,411 creatable types).
+        var typeId = global.icraft.core.entityId(e) || '?'
         typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
         // Triple-fallback hostile detection. Rhino enum identity is
         // unreliable when the JavaClass wrapper round-trips the enum
         // value, so try Monster instanceof first (covers all vanilla +
         // most modded hostiles since they extend Monster), then enum
         // equals(), then string-name comparison.
+        // NOT LIVE, left as it is (measured 2026-10-13 on a full-pack boot; decision
+        // list Part 7, the /icraft despawn entry): `type` is a string, so the two
+        // getCategory() tests below and the #forge:bosses test further down THROW on
+        // every entity, each inside a silent catch. What the command really does:
+        // it removes whatever is `instanceof Monster` (the Wither and the Harbinger
+        // included) and nothing else (no ghast, no Ender Dragon, no Frostmaw).
         var isMonster = false
         try { isMonster = e instanceof Monster_dsp } catch (_) {}
         if (!isMonster) {
