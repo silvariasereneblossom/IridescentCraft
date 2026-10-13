@@ -149,15 +149,30 @@ def read_json(path):
         raise RegistryError('%s: not valid JSON (%s)' % (path, e))
 
 
-def load(minecraft_root):
-    d = os.path.join(minecraft_root, REGISTRY_DIR)
-    bosses = read_json(os.path.join(d, BOSS_FILE))
-    dims = read_json(os.path.join(d, DIM_FILE))
+def _registry(root, bosses, dims):
     if not isinstance(bosses, dict) or not isinstance(bosses.get('bosses'), dict):
         raise RegistryError('%s: no "bosses" object' % BOSS_FILE)
     if not isinstance(dims, dict) or not isinstance(dims.get('dimensions'), dict):
         raise RegistryError('%s: no "dimensions" object' % DIM_FILE)
-    return Registry(minecraft_root, bosses, dims)
+    return Registry(root, bosses, dims)
+
+
+def load(minecraft_root):
+    d = os.path.join(minecraft_root, REGISTRY_DIR)
+    return _registry(minecraft_root, read_json(os.path.join(d, BOSS_FILE)), read_json(os.path.join(d, DIM_FILE)))
+
+
+def from_text(bosses_text, dims_text, name=''):
+    """The two files as text (another commit's, read with git show): the same strict reading as load()."""
+    docs = []
+    for fn, text in ((BOSS_FILE, bosses_text), (DIM_FILE, dims_text)):
+        try:
+            docs.append(json.loads(text, object_pairs_hook=_no_duplicates))
+        except RegistryError as e:
+            raise RegistryError('%s%s: %s' % (name, fn, e))
+        except ValueError as e:
+            raise RegistryError('%s%s: not valid JSON (%s)' % (name, fn, e))
+    return _registry(None, docs[0], docs[1])
 
 
 def boot_line(reg):

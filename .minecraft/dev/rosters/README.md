@@ -21,6 +21,17 @@ python .minecraft/dev/rosters/validate.py --notes
 The pre-push hook and CI run it (`dev/engine-tests/run.py fast`, suite `registry-data`), together with suite
 `registry`, which holds the script-side reader to `rosters.py` on the production script engine.
 
+What the edit changes, cell by cell (one cell = what one consuming system gets from one entry), against
+`origin/main` or another commit:
+
+```bash
+python .minecraft/dev/rosters/registry_diff.py              # put the output in the commit message
+python .minecraft/dev/rosters/registry_diff.py --expect 46  # exit 1 unless exactly that many cells differ
+```
+
+A flag two systems read counts twice: `boss` answers `core.isBoss` and the mob-tier exclusion. Nothing it does
+not print has moved (it also compares the order of the entries, the arena keys, the switches and the boot line).
+
 ## Adding a boss
 
 One entry in `bosses.json`, next to related entries (the order of the file is the order scripts iterate):
