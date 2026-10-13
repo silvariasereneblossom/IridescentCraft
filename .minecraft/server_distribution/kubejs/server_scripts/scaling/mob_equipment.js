@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/scaling/mob_equipment.js
+// @events EntityEvents.spawned
+// @registry bosses, dimensions
 // =============================================================================
 // IridescentCraft — Mob Equipment Scaling by Dimension
 // File: kubejs/server_scripts/scaling/mob_equipment.js
@@ -42,18 +45,8 @@
 // holder's key.location() (always the canonical "ns:path" form), with a
 // regex fallback for the translation-key form. Use this canonical id
 // everywhere we compare entity types in this file.
-function entityResId(entity) {
-  try {
-    return String(entity.getType().builtInRegistryHolder().key().location())
-  } catch (e) {}
-  try {
-    var raw = String(entity.getType().toString())
-    // "entity.irons_spellbooks.necromancer" -> "irons_spellbooks:necromancer"
-    var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-    if (m) return m[1] + ':' + m[2]
-    return raw
-  } catch (e) { return '' }
-}
+// 2026-10-13: that reader is global.icraft.core.entityId (0_lib_core.js), the one
+// home of it; the copy that stood here is gone.
 function isIronsSpellbooksMob(resId) {
   return String(resId || '').indexOf('irons_spellbooks:') === 0
 }
@@ -101,7 +94,7 @@ EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned
   // The `caster` test (boss registry) + isIronsSpellbooksMob below remain as a
   // fallback in case the guard script ever fails to load first.
   if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'mob_equipment')) return
-  var resId = entityResId(entity)
+  var resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return
   if (isIronsSpellbooksMob(resId)) return
   if (entity.persistentData.contains('icraft_equipped')) return

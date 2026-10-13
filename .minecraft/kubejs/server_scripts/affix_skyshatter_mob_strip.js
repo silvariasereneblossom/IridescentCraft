@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/affix_skyshatter_mob_strip.js
+// @events EntityEvents.spawned
+// @registry bosses
 // =============================================================================
 // SKYSHATTER MOB STRIP -- player-only thematic affix never on mobs
 // =============================================================================
@@ -33,15 +36,8 @@ const SKYSHATTER_SLOTS = ['mainhand', 'offhand', 'head', 'chest', 'legs', 'feet'
 // java.lang.Error (AbstractMethodError), which no script catch sees, so the
 // test has to come BEFORE any such access.
 
-function _skyshatterEntityResId(entity) {
-  try { return String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {}
-  try {
-    var raw = String(entity.getType().toString())
-    var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-    if (m) return m[1] + ':' + m[2]
-    return raw
-  } catch (e) { return '' }
-}
+// The entity's registry id ('ns:path') is read through global.icraft.core.entityId
+// (0_lib_core.js), the one reader of it. Until 2026-10-13 a copy stood here.
 
 function _scrubSkyshatterFromStack(stack) {
   if (!stack || stack.isEmpty()) return false
@@ -81,7 +77,7 @@ EntityEvents.spawned(icraft.guard('affix_skyshatter_mob_strip', 'EntityEvents.sp
   let data = entity.persistentData
   if (data.contains('icraft_skyshatter_scrubbed')) return
 
-  let resId = _skyshatterEntityResId(entity)
+  let resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return
   // Local fallback: namespace check in case 0_iss_guard.js failed to load.
   if (resId.indexOf('irons_spellbooks:') === 0) return

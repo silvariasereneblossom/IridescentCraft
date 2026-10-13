@@ -42,16 +42,25 @@
 //   namespace (only ISS entities register the attribute) so it's a no-op on
 //   everything else.
 //
-// LOAD ORDER (the zz_ filename prefix is LOAD-BEARING)
-//   boss_hp.js computes its multiply_base ratio from entity.maxHealth AT SPAWN
-//   to reach a target HP. If our ×3 multiply_total were already present when
-//   boss_hp reads maxHealth, boss_hp would back-compute a ratio that CANCELS our
-//   ×3 (final == targetHP, not targetHP×3). KubeJS fires spawned-handlers in
-//   script LOAD order (alphabetical path); the zz_ prefix makes this file load
-//   LAST in scaling/, so boss_hp + boss_progressive have already applied their
-//   multiply_base before our multiply_total goes on. (multiply_total is applied
-//   by the vanilla attribute system AFTER all multiply_base regardless of insert
-//   order, so only boss_hp's spawn-time ratio READ is order-sensitive.)
+// LOAD ORDER (declared on top: `@after scaling/boss_hp.js`, held on every push by
+// dev/catalogue/load_order.js; the zz_ file name is what gives that order today)
+//   KubeJS fires spawned-handlers in script LOAD order, and scripts of one
+//   priority load in the order the folder lists them. That is not alphabetical:
+//   on the server's file system `zzz_x.js` lists BEFORE `zz_x.js`. The zz_ name
+//   puts this file after boss_hp.js and boss_progressive.js.
+//   What the order protects (corrected 2026-10-13; measured with the suite
+//   spawn-buff and the two zz_ scripts loaded BEFORE boss_hp.js: 68 of 70 pass):
+//     * boss_hp.js works out a multiply_base ratio from the boss's maximum
+//       health to reach a designed value. Since 2026-10-12 it reads that maximum
+//       WITHOUT the icraft_ modifiers, so on a normal first spawn the order no
+//       longer changes the result.
+//     * The order still decides two cases: boss_hp's fallback when that read
+//       cannot be made (it then starts from entity.maxHealth, and a ×3 that is
+//       already on the boss is cancelled: 1,325 instead of 2,925 in the suite),
+//       and its re-check after a mod has set the base health.
+//   (multiply_total is applied by the vanilla attribute system AFTER all
+//   multiply_base regardless of insert order, so only boss_hp's read of the
+//   maximum is order-sensitive.)
 //
 // IDEMPOTENT / SAVED WITH THE BOSS (corrected 2026-10-12)
 //   kjs$modifyAttribute derives a STABLE UUID from the modifier-id string
@@ -168,24 +177,9 @@ function bg3_buildDmgSkip() {
   return s
 }
 
-// Canonical resource id ("ns:path"), resolved the ROBUST way (matches
-// mob_scaling_unified.js): entity.type can return the translation-key form
-// ("entity.<ns>.<path>") in some KubeJS builds, which silently breaks "ns:path"
-// comparisons; the registry holder is authoritative. Safe on the ISS spellcasters
-// too (a static EntityType registry lookup, not an instance/slot method).
-function bg3_resId(entity) {
-  try {
-    return String(entity.getType().builtInRegistryHolder().key().location())
-  } catch (e) {
-    try {
-      var raw = String(entity.getType().toString())
-      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-      return m ? (m[1] + ':' + m[2]) : raw
-    } catch (e2) {
-      return ''
-    }
-  }
-}
+// The canonical resource id ("ns:path") is read through global.icraft.core.entityId
+// (0_lib_core.js), the one reader of it; a copy stood here until 2026-10-13. Safe on
+// the ISS spellcasters too (getType() is the id string, not an instance/slot method).
 
 EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spawned', event => {
   // RHINO-SAFETY: var (not const/let) — this closure fires on every entity spawn.
@@ -197,14 +191,16 @@ EntityEvents.spawned(icraft.guard('scaling/zz_boss_global_3x', 'EntityEvents.spa
     BOSS_3X_DMG_SKIP_SET = bg3_buildDmgSkip()
   }
 
-  var resId = bg3_resId(entity)
+  // nothing below works without the core library (it returned here four lines
+  // further down until 2026-10-13; no buff was ever applied without it)
+  var core = global.icraft && global.icraft.core
+  if (!core) return
+  var resId = core.entityId(entity)
   if (!resId) return
   // the boss this entity id IS (boss registry, `sameAs`): the sets hold bosses
   var bossId = icraft.bosses.canon(resId)
   if (!BOSS_3X_SET[bossId]) return                                // not a recognised boss
 
-  var core = global.icraft && global.icraft.core
-  if (!core) return
   var buff = core.spawnBuff(entity, 'icraft_boss_3x')
   if (!buff) return                                               // buffed, and saved with the boss
 

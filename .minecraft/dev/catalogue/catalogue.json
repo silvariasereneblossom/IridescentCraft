@@ -1600,12 +1600,18 @@
       "bosses"
      ],
      "ownSlots": 0,
-     "names": 3,
+     "names": 2,
      "reads": [
       {
        "name": "icraft.bosses",
        "kind": "global",
        "from": "0_lib_registry.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
        "when": "handler"
       },
       {
@@ -1630,6 +1636,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -1648,12 +1659,18 @@
       "bosses"
      ],
      "ownSlots": 0,
-     "names": 4,
+     "names": 3,
      "reads": [
       {
        "name": "icraft.bosses",
        "kind": "global",
        "from": "0_lib_registry.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
        "when": "handler"
       },
       {
@@ -1678,6 +1695,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -7711,6 +7733,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -8082,12 +8109,18 @@
       "dimensions"
      ],
      "ownSlots": 0,
-     "names": 14,
+     "names": 13,
      "reads": [
       {
        "name": "icraft.bosses",
        "kind": "global",
        "from": "0_lib_registry.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
        "when": "handler"
       },
       {
@@ -8118,6 +8151,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -8174,6 +8212,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -8271,7 +8314,7 @@
       "bosses"
      ],
      "ownSlots": 0,
-     "names": 8,
+     "names": 7,
      "reads": [
       {
        "name": "icraft.bosses",
@@ -8780,7 +8823,19 @@
      ],
      "sections": 0,
      "ownSlots": 0,
-     "names": 0
+     "names": 0,
+     "reads": [
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      }
+     ],
+     "header": [
+      "events",
+      "file"
+     ]
     },
     {
      "path": "strip_infinity_ham.js",
@@ -11515,6 +11570,14 @@
      "when": "load"
     },
     {
+     "script": "server:affix_overworld_strip.js",
+     "when": "handler"
+    },
+    {
+     "script": "server:affix_skyshatter_mob_strip.js",
+     "when": "handler"
+    },
+    {
      "script": "server:affixes/affix_effects.js",
      "when": "load"
     },
@@ -11643,6 +11706,10 @@
      "when": "load"
     },
     {
+     "script": "server:scaling/mob_equipment.js",
+     "when": "handler"
+    },
+    {
      "script": "server:scaling/mob_scaling_unified.js",
      "when": "load"
     },
@@ -11661,6 +11728,10 @@
     {
      "script": "server:skills/skill_effects.js",
      "when": "load"
+    },
+    {
+     "script": "server:strip_anomalous_drops.js",
+     "when": "handler"
     },
     {
      "script": "server:tetra_terramity_perks.js",
@@ -12291,6 +12362,8 @@
    "users": [
     "server:abyss/abyss_armor_effects.js",
     "server:abyss/abyss_ring_effects.js",
+    "server:affix_overworld_strip.js",
+    "server:affix_skyshatter_mob_strip.js",
     "server:affixes/affix_effects.js",
     "server:apotheosis_gem_repair.js",
     "server:attributes/attribute_sync.js",
@@ -12323,11 +12396,13 @@
     "server:scaling/boss_hp.js",
     "server:scaling/boss_progressive.js",
     "server:scaling/dimension_mechanics.js",
+    "server:scaling/mob_equipment.js",
     "server:scaling/mob_scaling_unified.js",
     "server:scaling/zz_ascension_scaling.js",
     "server:scaling/zz_boss_global_3x.js",
     "server:skills/justleveling_skills.js",
     "server:skills/skill_effects.js",
+    "server:strip_anomalous_drops.js",
     "server:tetra_terramity_perks.js",
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"

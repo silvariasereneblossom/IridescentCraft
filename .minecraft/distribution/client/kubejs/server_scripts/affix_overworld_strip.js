@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/affix_overworld_strip.js
+// @events EntityEvents.spawned
+// @registry bosses
 // =============================================================================
 // Apotheosis Affix Overworld Strip
 // =============================================================================
@@ -34,19 +37,8 @@ function _affixStripIsIssMob(resId) {
   return String(resId || '').indexOf('irons_spellbooks:') === 0
 }
 
-// KubeJS `entity.type` returns the translation-key form
-// ("entity.modid.path"), NOT the resource-location form. Normalize.
-function _affixStripEntityResId(entity) {
-  try {
-    return String(entity.getType().builtInRegistryHolder().key().location())
-  } catch (e) {}
-  try {
-    var raw = String(entity.getType().toString())
-    var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-    if (m) return m[1] + ':' + m[2]
-    return raw
-  } catch (e) { return '' }
-}
+// The entity's registry id ('ns:path') is read through global.icraft.core.entityId
+// (0_lib_core.js), the one reader of it. Until 2026-10-13 a copy stood here.
 
 EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned', event => {
   let entity = event.entity
@@ -71,7 +63,7 @@ EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned
 
   let data = entity.persistentData
 
-  let resId = _affixStripEntityResId(entity)
+  let resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return
   if (_affixStripIsIssMob(resId)) return
 

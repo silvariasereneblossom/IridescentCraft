@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/relic_boss_drops.js
+// @events EntityEvents.death
+// @registry bosses
 // =============================================================================
 // RELIC BOSS DROPS -- LivingDropsEvent injector for the iridescent_relics roster
 // Place in: kubejs/server_scripts/relic_boss_drops.js  (mirrored to all 3 distros)
@@ -58,23 +61,15 @@ try {
     RELIC_DROPS[bossId] = { relic: r.item, chance: r.chance, looting: r.looting }
   })
 
-  // Entity-resource-id helper (handles Rhino/SRG quirks; mirrors strip_anomalous_drops.js).
-  var entityResId_rbd = function (entity) {
-    try { return String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {}
-    try {
-      var raw = String(entity.getType().toString())
-      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-      if (m) return m[1] + ':' + m[2]
-      return raw
-    } catch (e) { return '' }
-  }
+  // The entity's registry id ('ns:path') is read through global.icraft.core.entityId
+  // (0_lib_core.js), the one reader of it. Until 2026-10-13 a copy stood here.
 
   var handler = function (event) {
     try {
       var entity = event.getEntity()
       if (entity == null) return
 
-      var entId = entityResId_rbd(entity)
+      var entId = global.icraft.core.entityId(entity)
       var cfg = RELIC_DROPS[entId]
       if (!cfg) return
 

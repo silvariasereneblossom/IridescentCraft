@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/scaling/mob_scaling_unified.js
+// @events EntityEvents.spawned
+// @registry bosses
 // =============================================================================
 // IridescentCraft — Mob Tier HP (post-2026-05-03)
 // File: kubejs/server_scripts/scaling/mob_scaling_unified.js
@@ -56,20 +59,15 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
     if (!entity || !entity.living) return
     if (entity.player) return
 
-    // 2026-04-25: KubeJS `entity.type` returns the translation-key form
-    // ("entity.<ns>.<path>"), not the resource-location form ("ns:path").
-    // BROKEN_ENTITIES Set lookups + indexOf('irons_spellbooks:') prefix
-    // checks both miss with the translation-key form. Resolve the canonical
-    // resource id via the registry holder and use that for all comparisons.
-    let resId = ''
-    try { resId = String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {
-      try {
-        let raw = String(entity.getType().toString())
-        let m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-        if (m) resId = m[1] + ':' + m[2]
-        else resId = raw
-      } catch (e2) {}
-    }
+    // Nothing below works without the core library (it returned here a few lines
+    // further down until 2026-10-13; no effect was ever applied without it).
+    let core = global.icraft && global.icraft.core
+    if (!core) return
+
+    // The registry id ("ns:path") through core.entityId, the one reader of it
+    // (0_lib_core.js); a copy stood here until 2026-10-13. Never `entity.type`:
+    // for scripts that is a Java value, and some mod classes shadow it.
+    let resId = core.entityId(entity)
     let type = resId  // keep alias for downstream code that uses `type`
 
     // Skip entities with broken abstract methods that crash on property access
@@ -79,9 +77,6 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
     // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
     // their mod-native tuning is fine.
     if (resId.indexOf('irons_spellbooks:') === 0) return
-
-    let core = global.icraft && global.icraft.core
-    if (!core) return
 
     // Skip bosses — they have their own scaling systems.
     // This test comes BEFORE the saved-flag test on purpose. A boss that was

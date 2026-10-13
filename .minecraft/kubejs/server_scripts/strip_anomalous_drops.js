@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/strip_anomalous_drops.js
+// @events none
 // =============================================================================
 // STRIP ANOMALOUS DROPS -- LivingDropsEvent post-loot-table strip layer
 // Place in: kubejs/server_scripts/strip_anomalous_drops.js
@@ -70,17 +72,8 @@ try {
     'minecraft:enchanted_book':       1, 'minecraft:enchanted_golden_apple': 1
   }
 
-  // Entity-resource-id helper (handles Rhino/SRG quirks the diag scripts
-  // documented; see diag_mob_drops.js entityResId).
-  var entityResId_sad = function (entity) {
-    try { return String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {}
-    try {
-      var raw = String(entity.getType().toString())
-      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
-      if (m) return m[1] + ':' + m[2]
-      return raw
-    } catch (e) { return '' }
-  }
+  // The entity's registry id ('ns:path') is read through global.icraft.core.entityId
+  // (0_lib_core.js), the one reader of it. Until 2026-10-13 a copy stood here.
 
   var handler = function (event) {
       try {
@@ -106,7 +99,7 @@ try {
         }
 
         if (removed.length > 0) {
-          var entId = entityResId_sad(entity)
+          var entId = global.icraft.core.entityId(entity)
           // [2026-10-11] Was `entity.position()` + `pos.x` (a Vec3 `.x` read throws
           // an uncatchable NullPointerException) and `entity.level()` (hidden from
           // scripts). The strip above already ran, but this log line never printed
