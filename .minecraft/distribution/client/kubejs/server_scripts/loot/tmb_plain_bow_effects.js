@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/loot/tmb_plain_bow_effects.js
+// @events hurt.late
+// @live unique-bow-effects
 // =============================================================================
 // TMB PLAIN-BOW THEME EFFECTS — wire effects onto the bare ModBowItem bows
 // =============================================================================
@@ -11,8 +14,25 @@
 //
 // Keyed off the `icraft_uniq_bow` arrow tag set in unique_tier_buff.js (the same
 // spawn tag the buff uses), read off the LivingHurtEvent's direct entity (arrow).
-// registerLate so it runs after the damage multiplier. Effects are deliberately
+// A LATE handler, so it runs after the damage multiplier. Effects are deliberately
 // modest (short debuffs / small self-heal) — flavor, not power spikes.
+//
+// On the shared dispatcher of 0_lib_core.js (core.onHurtLate) since 2026-10-13; until
+// then straight on the Java damage registry, in its LATE map, between the two Vorpal
+// decapitations (the map is walked in the hash order of its keys; the dispatcher's
+// LATE entry is walked at the same place). It is called as the registry called it:
+//   `secondary`  also for secondary damage. MEASURED, and kept on purpose (decision
+//                list Part 9): the one script that splashes a projectile hit
+//                (skills/skill_effects.js, AoE Splash) deals the splash with the
+//                SOURCE of the first hit, so the arrow is the direct entity of every
+//                splash hit too, and each monster the splash reaches gets the bow's
+//                effect: Aether's Call heals the shooter once per monster, Demon's
+//                Grasp pulls each of them.
+//   `cancelled`  also when an earlier handler cancelled the hit
+//   `unchecked`  the amount is not checked after it (it never changes the amount)
+// `who` is 'any': an arrow whose shooter is gone has no attacker.
+// An option taken off, or added, changes who gets an effect: decision list entry 45;
+// the hit table that holds this handler is dev/engine-tests, suite `hit-table`.
 //
 //   dark_bow        (shadow)  -> Blindness 4s + Weakness 5s
 //   cyroheart_bow   (cryo)    -> Slowness II 5s + freeze ramp (+120 frozen ticks)
@@ -25,13 +45,12 @@ try {
   var MobEffectInstance = Java.loadClass('net.minecraft.world.effect.MobEffectInstance')
   var MobEffects = Java.loadClass('net.minecraft.world.effect.MobEffects')
   var LivingEntityClass = Java.loadClass('net.minecraft.world.entity.LivingEntity')
-  var DR_eff = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
 
   var eff = function (target, effect, secs, amp) {
     try { target.addEffect(new MobEffectInstance(effect, Math.round(secs * 20), amp)) } catch (e) {}
   }
 
-  DR_eff.registerLate('icraft.tmb_plain_bow_effects', function (event) {
+  if (icraft.lib.need('core', 'loot/tmb_plain_bow_effects')) global.icraft.core.onHurtLate('icraft.tmb_plain_bow_effects', function (event) {
     try {
       var src = event.source; if (!src) return
       // In scripts DamageSource.getDirectEntity() is `immediate` and getEntity() is `actual`
@@ -84,7 +103,7 @@ try {
     } catch (e) {
       console.warn('[tmb_plain_bow_effects] handler threw: ' + e)
     }
-  })
+  }, 'any', { secondary: true, cancelled: true, unchecked: true })
   console.log('[tmb_plain_bow_effects] wired theme effects for 5 plain TMB bows')
 } catch (e) {
   console.error('[tmb_plain_bow_effects] init failed: ' + e)

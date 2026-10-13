@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "04e51e82",
+    "generated_from":  "b0e003b5",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "479235448f8347e15c262d4f27ecda43945db5c5777253df980db2bd66e7274b",
-                                                                  "size":  47967
+                                                                  "sha256":  "0cea437427c35c20b9e0b4352db4815660f6f213905250dffd41d2403d3e6095",
+                                                                  "size":  48045
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7336,8 +7336,8 @@
                                                                                   "size":  12619
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
-                                                                              "sha256":  "c5b6a4f764546c60370058c8775783dccec12e90d2fc85e07b1b043983172d83",
-                                                                              "size":  4793
+                                                                              "sha256":  "bf77baf6addc792a4daf75894e77237291f206d0539cbbad30ff53092fac329b",
+                                                                              "size":  6215
                                                                           },
                   "kubejs/server_scripts/loot/twilight_boss_drops.js":  {
                                                                             "sha256":  "2864c712f929c0d84cc521f6d7d496fc5b4c3573fa4f0c51553be53f02a61f92",

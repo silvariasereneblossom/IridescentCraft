@@ -5678,9 +5678,13 @@
      "priority": 0,
      "registers": [
       {
-       "kind": "direct",
-       "group": "DR_eff.registerLate",
-       "name": "icraft.tmb_plain_bow_effects"
+       "kind": "hurt",
+       "group": "hurt.late",
+       "name": "icraft.tmb_plain_bow_effects",
+       "who": "any",
+       "secondary": true,
+       "cancelled": true,
+       "unchecked": true
       }
      ],
      "sections": 0,
@@ -5688,13 +5692,19 @@
       "unique-bow-effects"
      ],
      "ownSlots": 0,
-     "names": 5,
+     "names": 4,
      "reads": [
       {
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
+      },
+      {
+       "name": "icraft.lib",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
       },
       {
        "name": "icraft.live",
@@ -5702,6 +5712,29 @@
        "from": "00_icraft_guard.js",
        "when": "handler"
       }
+     ],
+     "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
+       ],
+       "held": "priority"
+      }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
      ]
     },
     {
@@ -9709,13 +9742,6 @@
       "kind": "guard"
      }
     ],
-    "DR_eff.registerLate": [
-     {
-      "script": "loot/tmb_plain_bow_effects.js",
-      "name": "icraft.tmb_plain_bow_effects",
-      "kind": "direct"
-     }
-    ],
     "DamageModifierRegistry_aspb.register": [
      {
       "script": "attributes/iss_school_to_ars_spell.js",
@@ -11129,6 +11155,17 @@
       "unchecked": true
      }
     ],
+    "hurt.late": [
+     {
+      "script": "loot/tmb_plain_bow_effects.js",
+      "name": "icraft.tmb_plain_bow_effects",
+      "kind": "hurt",
+      "who": "any",
+      "secondary": true,
+      "cancelled": true,
+      "unchecked": true
+     }
+    ],
     "tick.player": [
      {
       "script": "apotheosis_gem_repair.js",
@@ -12205,7 +12242,7 @@
     },
     {
      "script": "server:loot/tmb_plain_bow_effects.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:loot/unique_tier_buff.js",
@@ -13008,7 +13045,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 22
+   "usersAtLoad": 23
   },
   "origins": {
    "script": "server:0_lib_origins.js",

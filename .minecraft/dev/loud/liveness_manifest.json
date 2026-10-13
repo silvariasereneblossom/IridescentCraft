@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 325,
-   "digest": "6f8d78cc2ca48f45",
+   "count": 326,
+   "digest": "31f43f757170113e",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -602,6 +602,10 @@
     {
      "id": "icraft.tetra_terramity_perks@hurt",
      "script": "tetra_terramity_perks.js"
+    },
+    {
+     "id": "icraft.tmb_plain_bow_effects@hurt.late",
+     "script": "loot/tmb_plain_bow_effects.js"
     },
     {
      "id": "icraft.unique_tier_buff@hurt",

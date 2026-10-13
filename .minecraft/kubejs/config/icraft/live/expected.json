@@ -128,6 +128,7 @@
    "icraft.skill_effects.2@hurt": "skills/skill_effects.js",
    "icraft.ss_unique_spellsword@hurt": "origins/ss_unique_spellsword_scaling.js",
    "icraft.tetra_terramity_perks@hurt": "tetra_terramity_perks.js",
+   "icraft.tmb_plain_bow_effects@hurt.late": "loot/tmb_plain_bow_effects.js",
    "icraft.unique_tier_buff@hurt": "loot/unique_tier_buff.js",
    "icraftBrokerRestockTick@tick.server": "economy/relic_broker.js",
    "icraft_despawn_command@ServerEvents.commandRegistry": "icraft_despawn_command.js",
