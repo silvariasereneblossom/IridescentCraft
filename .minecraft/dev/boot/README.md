@@ -2,8 +2,8 @@
 
 `boot.ps1` boots the pack's dedicated server offline in WSL and says what happened: whether it reached `Done`, how
 long it took, idle TPS and memory, what the game really registered, which mixins applied, which loot tables the game
-rejected, and what the boot-log checker says about the logs. It can do that for a commit, for a working tree with
-uncommitted changes, and it can diff two boots.
+rejected, whether every dimension can still generate a chunk, and what the boot-log checker says about the logs. It
+can do that for a commit, for a working tree with uncommitted changes, and it can diff two boots.
 
 Nothing booted the pack before a push until this existed. Loot tables the game rejects, mixins that never apply and
 script chains that abort at load were found four to six months late, on the live server.
@@ -49,6 +49,9 @@ Other calls:
 | `boot.ps1 -Ref origin/main -WriteSnapshot` | refreshes `.minecraft\dev\registry` from that commit |
 | `boot.ps1 -List` | the saved results |
 | `boot.ps1 -Name <n> -ConsoleFile <file>` | boots this checkout and then sends the server console commands of a text file (one per line, `#` starts a comment), three seconds apart, after every measurement. What they print is in the captured logs. For a check that needs an action and no player: `icraft live`, a `summon`, a `loot spawn ... kill`. Use a name of its own: such a run is not a clean result to compare with |
+| `boot.ps1 -Name <n> -ChunkFile <file>` | ... and generates more chunks than the standing ones (see "The worldgen check"): one target per line, block coordinates, radius in chunks: `<dimension> <x> <z> [radius]` or `<dimension> structure <structure id> [radius] [<x> <z>]` (the nearest one is located first) |
+| `boot.ps1 -NoChunks` | generates no chunk; the feature order of every dimension is still read and judged. Such a result is not reused as a base |
+| `boot.ps1 -Name <n> -ForceChunks` | asks for chunks also in a dimension whose feature order has a cycle: shows what a player entering it would meet. A diagnosis, never a result to compare with |
 | `boot.ps1 -Setup` | first-time setup only |
 
 Options (`-Heap`, `-Seed`, `-IdleSeconds`, `-JvmArg`, `-JarCache`, `-ResultsRoot`, `-Name`, `-Keep`, ...) are listed
@@ -59,7 +62,7 @@ at the top of `boot.ps1`.
 | Code | Meaning |
 |---|---|
 | 0 | booted, stopped cleanly, nothing new found; with `-Compare` / `-Diff`, no regression |
-| 1 | findings: the checker reports something that is not a known defect, or the diff shows a regression |
+| 1 | findings: the checker reports something that is not a known defect, a dimension has a feature order cycle or did not generate its chunk, or the diff shows a regression |
 | 2 | could not run: a prerequisite, a missing or wrong-hash jar, the lock, bad arguments |
 | 3 | the server did not boot, or did not stop cleanly |
 
@@ -124,11 +127,13 @@ All of it can be deleted at any time; the next run rebuilds what it needs.
    libraries, `eula.txt`, and a `server.properties` from the tree's with `online-mode=false`, `server-ip=127.0.0.1`,
    the pinned seed and free ports.
 5. **The JVM** gets the launcher's flags (`AIKAR_FLAGS` in `config.rs`) with the heap replaced by `-Heap`.
-6. **Boot, wait for `Done`, wait for the registry dump, idle 45 s, read TPS and memory, `stop`.**
+6. **Boot, wait for `Done`, wait for the registry dump and the feature order of every dimension, idle 45 s, read TPS
+   and memory, generate one new chunk per dimension, `stop`.**
 7. **Capture**: the whole `logs` folder (`latest.log`, `debug.log`, `kubejs\*`), crash reports, the console, the
    exit code.
-8. **Extract**: registries, entity facts, loot tables and recipes; from the logs the mixins that applied, the data
-   the game rejected, the scripts that loaded and in which order, and every WARN / ERROR line reduced to a signature.
+8. **Extract**: registries, entity facts, loot tables and recipes; the feature order and the chunks (see "The
+   worldgen check"); from the logs the mixins that applied, the data the game rejected, the scripts that loaded and
+   in which order, and every WARN / ERROR line reduced to a signature.
 9. **Check**: `dev\loud\loud-check.ps1` on the captured logs (see "The checker on the rig").
 
 Timings measured on the dev PC on 2026-10-12 (32 threads, WSL with 30 GB), pack `13a94cc4`, 8 GB heap, no other
@@ -140,6 +145,7 @@ JVM running:
 | assembling the sandbox | 10 s for a commit, 30 to 65 s for a working tree (its files are read through the Windows mount) |
 | JVM start to `Done` | 2 min 30 s (151 s); the `Done (..s)` figure itself, which counts from a later point, was 62 s |
 | registry dump, idle, measurements | 1 min |
+| one new chunk per dimension (since 2026-10-13, not in the total below) | 33 s |
 | stop | 2 to 9 s |
 | checker and extraction | 20 s |
 | **one boot, end to end** | **about 5 minutes** (307 s) |
@@ -163,6 +169,10 @@ that way: do not compare times across such runs.
 | `registry\all\*.txt` | every registry the server holds, static and datapack, one file each |
 | `registry\entities.json` | entity type: mob category, tags, base attributes |
 | `registry\loot_tables.txt`, `loot_tables_rejected.txt`, `recipes.tsv`, `advancements.txt`, `game_rule_values.tsv` | what their names say |
+| `worldgen\summary.json` | per dimension: generator, biome source, biomes, the game's verdict on the feature order, the loops named, the chunk; and every target with its biome, time and reason |
+| `worldgen\chunks.tsv` | the targets as a table |
+| `worldgen\feature_order\<dimension>.txt` | `biome`, step, the placed features in order, as the game holds them at run time |
+| `dump\` | the helpers' raw files; `threads-at-kill.txt` when the server had to be killed, `threads-worldgen-timeout.txt` when the chunks did not finish |
 | `mixins\applied.tsv`, `configs_applied.txt`, `configs_registered.txt` | from `debug.log`: config, mixin class, target class |
 | `extract\signatures.json`, `scripts.json`, `data_rejected.json` | the log reduced to what the diff compares |
 | `config_generated.txt` | config files the boot created that the tree does not track |
@@ -171,9 +181,9 @@ that way: do not compare times across such runs.
 ## The registry dump
 
 After `Done` a helper script, `sandbox\icboot_registry_dump.js`, walks the server's registries and writes JSON into the
-run folder. The tool copies it into the **sandbox's** `kubejs\server_scripts` and nowhere else; it must never be in a
-distro tree. It logs at INFO only, so it cannot add a finding of its own, and it is counted as one extra server script
-(158 loaded where the pack has 157).
+run folder. The tool copies it, and the worldgen helper next to it, into the **sandbox's** `kubejs\server_scripts` and
+nowhere else; they must never be in a distro tree. They log at INFO only, so they cannot add a finding of their own,
+and they are counted as two extra server scripts (162 loaded where the pack has 160).
 
 What it records:
 - every registry of the server, static and datapack (items, blocks, entity types, enchantments, attributes, mob
@@ -203,6 +213,81 @@ What a dump does not say:
 - key mappings, widgets and anything else that exists only on a client;
 - which loot table a chest in a generated structure rolls (that is `audit_loot.py`);
 - a Forge registry that is neither wrapped as a vanilla registry nor synced to clients is not listed.
+
+## The worldgen check
+
+A dimension can be unable to generate a single chunk and nothing says so until somebody enters it. The first time a
+chunk of a dimension is decorated, the game sorts the placed features of **all** biomes of that dimension's biome
+source into one order. Each biome's lists (eleven generation steps, after Forge biome modifiers) say "this before
+that" for every pair of neighbours. Two biomes that list two features of one step in opposite orders close a loop, and
+so does one biome that lists a feature twice in a step. Then the sort throws `Feature order cycle found, involved
+sources: [...]`, for every chunk of the dimension, whatever its biome. The message names one biome and no feature.
+
+Found on 2026-10-13: the End of this pack could not generate any chunk, and the data that caused it is in the oldest
+commit this repository has (2026-05-21). The live world had no End chunk yet, so nobody had seen it. Two placed features that a pack datapack had both pointed at
+one configured feature with an empty placement list were **equal** for the game (it tells placed features apart by
+their content, not by their id), and a mod's biome modifier listed them one after the other in every End biome: one
+feature, ordered before itself.
+
+So every boot of the rig asks every dimension, with a second helper, `sandbox\icboot_worldgen.js` (sandbox only, like
+the dump helper):
+
+1. **The feature order, read-only, before the idle window.** For every dimension: the chunk generator, the biomes of
+   its biome source, and per biome and step the placed features in order as the game holds them at run time. The
+   helper then calls the game's own sorter (`FeatureSorter.buildFeaturesPerStep`) on exactly those lists, the call the
+   chunk generator makes (and the one Blueprint makes for the Overworld, the Nether and the End, whose biome source it
+   wraps). The tool names the loop from the dumped lists: the step, the features, the biomes, and whether two ids are
+   one feature to the game. The game's verdict and the tool's must agree; a disagreement is reported as a problem.
+2. **New chunks, after every measurement.** One chunk per dimension, 50 chunks from the world spawn on both axes
+   (nothing has been generated there), and the two places of the End every player passes: the central island (3x3
+   chunks around the exit portal) and the arrival platform. `-ChunkFile` adds targets: block coordinates with a
+   radius, or a structure id, which is located first (`<result>\worldgen\summary.json` then says how many pieces its
+   start has and which blocks stand inside them).
+
+A chunk is asked for in two steps: up to `FEATURES` (every placed feature has run), then up to `FULL`. A failure up
+to `FEATURES` comes back to the helper as an exception and leaves the level able to tick. A dimension whose feature
+order has a cycle is not asked at all (every chunk of it fails): it is reported as `feature order cycle, new chunk
+skipped`. The helper works on the server thread and a chunk request has no time limit of its own; the tool waits
+300 s for the whole pass, then writes a thread dump (`dump\threads-worldgen-timeout.txt`), names the target that was
+in progress, and stops the server.
+
+What it costs, measured on 2026-10-13: the read 0.2 s for the 26 dimensions; the chunks 33 s (the Overworld's chunk
+11 s, the Abyss's 7 s, the End's central island 6 s, every other target under a second). A boot takes about half a
+minute longer than before.
+
+How it is reported. A cycle, a chunk that did not generate, a dimension that was not asked: each is a `PROBLEM` line,
+the verdict is FINDINGS and the exit code 1 (3 when the failure also took the server down). For example, on the
+commit before the fix:
+
+    worldgen : feature order without a cycle in 25 of 26 dimensions; a new chunk generated in 25 of 26; 0 of 2 other target(s) (26 s)
+      minecraft:the_end                    feature order cycle, new chunk skipped
+    PROBLEM  : worldgen: minecraft:the_end CANNOT GENERATE A CHUNK: feature order cycle (the game names
+               minecraft:end_barrens). step underground_ores: majruszsdifficulty:enderium_ore and
+               majruszsdifficulty:enderium_ore_large are ONE feature to the game (the same configured feature and
+               placement under 2 ids) and are both listed by 5 biome(s): minecraft:the_end, minecraft:end_highlands,
+               minecraft:end_midlands, minecraft:small_end_islands, minecraft:end_barrens (places 6 and 7 of 14 in
+               minecraft:the_end)
+
+The game names one biome only: it drops biomes from its list for as long as the rest still fails, so the name it
+prints is the last biome that fails by itself. The tool lists all of them.
+
+Reading a finding:
+- **"are ONE feature to the game"**: two placed feature ids with the same configured feature and equal placement
+  (an empty list, or only `in_square` / `biome`, which are single objects). Give one of them another configured
+  feature or a placement of its own. A datapack that switches features off by pointing several ids at one stub does
+  exactly this.
+- **"is listed twice"**: a biome's JSON and a biome modifier (or two modifiers) both add the feature. Remove one.
+- **"a loop of N features: a before b in ...; b before a in ..."**: biomes disagree. Reorder the list of the biome
+  that is yours (a datapack override of that biome, or of the modifier) to match the others.
+- `worldgen\feature_order\<dimension>.txt` has every list (`biome`, step, features in order); the diff of two boots
+  says which lists changed and how.
+
+What it does not show:
+- **One chunk is one biome.** The feature ORDER is checked for all biomes of a dimension; a feature that throws while
+  it is placed is only met where the chunk happens to be. `-ChunkFile` is for the places that matter.
+- **A failure after `FEATURES`** (light, the mobs spawned with the terrain, block entities) is reported with stage
+  `full`, and the server then crashes at its next save pass (see "Traps"): exit 3, with the same PROBLEM line.
+- Nothing a player does: portals, the dragon fight, an End gateway.
 
 ## The checker on the rig
 
@@ -237,7 +322,7 @@ The rig is a fresh world on Linux with nobody online; the live server is Windows
 | A path in a log line has `/` where the live server prints `\` | Linux. No signature of either baseline depends on it today except the Crust one above |
 | Server-local settings are not applied | The live server puts its override list (`.icraft_config_overrides.json`: worldgen settings, access settings) back before every start. The rig boots the pack's defaults |
 | No Chunky pregeneration | See "Traps" |
-| One more server script | The dump helper |
+| Two more server scripts | The two helpers |
 
 So a rig boot tells you about the pack at a commit, booted once from clean files. It does not tell you about a fault
 that needs a second boot, a player, an old world, or Windows.
@@ -252,12 +337,16 @@ that needs a second boot, a player, an old world, or Windows.
 - mixin configs and mixin classes that stopped or started applying;
 - scripts loaded, and scripts in the tree that did not load;
 - log signatures that are new and that are gone, ERROR first;
+- worldgen: the dimensions whose verdict changed (feature order, new chunk), the other targets whose outcome changed,
+  and every biome/step list whose features changed: added, removed, listed twice before or now, order changed;
 - the checker's findings that are new or gone.
 
 A **regression** makes the exit code 1: the new tree no longer boots; data newly rejected at load; a mixin config
 that is still registered and no longer applies anything; a mixin class that no longer applies although its config
 is registered and its target class is loaded; a script in the tree that did not load; a handler that now aborts; a
-new ERROR signature; a new red finding of the checker. Ids added or removed are reported, not judged.
+new ERROR signature; a new red finding of the checker; a dimension whose feature order has a cycle now, or that
+generated its chunk in the base and does not any more. Ids added or removed are reported, not judged, and so are
+changed feature lists.
 
 An example, `boot.ps1 -Diff a43766b4,59ee40da` (a day of commits on 2026-10-12), in full: one jar gone (Entity
 Culling), two rebuilt under their name (`iridescent_durability_clamp`, `lovely_sparkle_pieces`), one registry entry
@@ -312,6 +401,13 @@ computed order was checked against the live server's own log: 157 of 157 scripts
 - **In a KubeJS script, a private JDK collection cannot be read.** `stream.toList()` returns one, and `size()` on
   it throws `IllegalAccessException`. Copy it first: `new ArrayList(x)`. The helper does.
 - **A fault that needs a second boot is invisible here** (the Crust config above).
+- **A chunk that cannot generate takes the server down, and the JVM stays.** Seen on 2026-10-13 with `-ForceChunks`
+  and a `forceload` in the broken End: the command fails (`Command exception`), two milliseconds later the level's
+  save pass meets the broken chunk and the tick loop throws, a crash report is written, the server's own stop throws
+  again (`Exception stopping the server`), and the JVM does not exit: the thread dump a minute later has no
+  `Server thread`, only `DestroyJavaVM` waiting for four leftover threads. A launcher that asks "is the process
+  there" sees a server. The tool waits 60 s for a server that wrote a crash report, then writes
+  `dump\threads-at-kill.txt` and kills it.
 
 ## What two boots of the same tree differ in
 
@@ -331,6 +427,18 @@ signature, the checker's findings. What differed:
 - five WARN signatures of `latest.log`: a load time that crossed from seconds to minutes, two `Can't keep up`
   lines with the lag glued to its unit, and a config default printed as a list in hash order. The diff reduces
   signatures one step further than the checker does, so that these three kinds do not show as new and gone.
+
+- the order of two features that two modifiers of the same kind add to the same biomes. Of five boots on 2026-10-13,
+  two listed `tectonic:river_lichen` before `tectonic:river_lanterns` at the end of `vegetal_decoration` in 110
+  Overworld biomes and three the other way round: both boots of one commit had the first order; a boot of the next
+  commit (scripts and quests only) and two boots of trees with a change that touches neither feature had the second.
+  Every other list of the 26 dimensions was the same in all five. Tectonic adds the two with two Lithostitched
+  `add_features` modifiers. **Why their order moves was not found.** Ruled out from the bytecode: the game lists a
+  registry's entries in the order they were registered and lists data files sorted by id, and Lithostitched walks its
+  modifiers in that order. Within one boot the order is the same in every biome, so this closes no loop; it does
+  mean new chunks are decorated with those two features in another order after such a boot. The diff reports it as
+  ONE line (`110 list(s) of step vegetal_decoration, the same features only: ... changed places`): with nothing else
+  changed in those lists, it is not a change of the tree under test.
 
 A new WARN signature of `latest.log` is reported and never counted as a regression.
 

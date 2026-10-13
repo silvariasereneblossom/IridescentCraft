@@ -20,7 +20,17 @@ to the list when a new biome-shipping mod joins the pack.
 SAFE PATTERN: match a vanilla biome's step 9 verbatim. Vanilla doesn't crash,
 and any mod biome consistent with vanilla is consistent with us. If you want
 custom vegetation, layer it in via Forge biome modifiers (data/forge/
-biome_modifier/) which don't touch FeatureSorter.
+biome_modifier/): a modifier appends to every biome it names, in one order.
+
+WHAT THIS SCRIPT DOES NOT SEE (corrected 2026-10-13): it reads biome JSONs, of
+the Overworld, from a shortlist of jars. The game sorts the lists it holds at
+run time, AFTER biome modifiers have added to them, and it tells placed
+features apart by content: two ids with the same configured feature and an
+equal placement are one feature. The End of this pack could not generate a
+chunk for exactly that reason, through a biome modifier, with every biome
+JSON clean. The check on the real lists of every dimension is the boot gate:
+.minecraft/dev/boot (README, "The worldgen check"). This script stays the
+quick build-time check of this mod's own biome files.
 
 Usage:
     python3 tools/check_feature_cycles.py

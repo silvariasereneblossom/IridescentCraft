@@ -16,9 +16,6 @@ The quest asks for one Brutal Bosses champion kill, but its kill lines name thin
 ### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
-### The End does not generate in test conditions — **Investigating**
-In an offline test of the full pack no new chunk of The End could be generated; all 25 other dimensions generated theirs. No player has entered The End on the test server yet, so it is not known whether the live server behaves the same. Being looked into.
-
 ### Trinity mage classes (Elemental / Blessed / Corrupted) — **Needs verification**
 The three new specialist mage classes shipped (Phase 1a): selectable, with their three-school spell-power bonus, edge resistances, HP tiers, 2× mana pools, and themed starter kits. Awaiting in-game confirmation that (a) each is selectable and shows the right HP/stats, (b) casting an on-triad Iron's Spellbooks spell deals the intended ~+80% bump, and (c) the resistance triangle actually applies in PvP (a 2-player smoke test). Their signature active abilities and the offensive side of the rock-paper-scissors triangle are intentionally **Deferred** to a Phase 1b follow-up.
 
@@ -108,6 +105,9 @@ Implemented features awaiting confirmation on a live world:
 ## Recently resolved
 
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
+
+**World generation**
+- The End could not generate a single chunk: two switched-off ore entries in the pack's own data counted as one and the same feature for the game, and the game refuses to generate a dimension in which a feature has to come before itself. In an offline test of the full pack, asking for an End chunk crashed the server; the test server carries the same data, and nobody had entered The End there. Fixed on 2026-10-13, from the next server restart: in the same test the central island, the outer islands and an End City all generate, and so does a new chunk in each of the 25 other dimensions. The pack's offline boot test now checks all 26 dimensions every time it is run.
 
 **Mob drops**
 - Three mobs dropped nothing of their own, because each mod's drop list named an item that does not exist and the game discarded the whole list. The Abyss's End Spider now drops an Icora Nugget and its Slime Spider slime balls (both only to a Looting weapon, as the mod's other spiders do), and the boss of the Mercury arena drops its raw iron, magma cream and blaze rods.

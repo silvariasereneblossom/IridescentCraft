@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The End can be generated
+
+- **The End generates.** Until now no chunk of The End could be generated. In an offline test of the full pack, asking for one crashed the server; the test server carries the same data, so the first player through an End portal would have met the same. Nobody had tried yet. Two switched-off ore entries in the pack's own data were one and the same feature for the game, and the game refuses to generate a dimension in which a feature has to come before itself.
+- **What was tested.** In an offline test of the full pack the central island, the arrival platform, three places on the outer islands and an End City (with every chunk around it) generate, and the server keeps running.
+- **The offline boot test now covers every dimension.** Each time it is run it generates a new chunk in each of the 26 dimensions and checks each dimension's generation order for this kind of conflict, so the next mod that brings one can be caught before it reaches the server.
+- **Nothing else changes.** What generates in The End is what was designed; Enderium ore stays switched off. The Overworld and the other dimensions are not affected.
+
 ## October 2026 — Kill quests count kills, and three bosses follow their rules
 
 - **Kill quests can be completed.** Twenty-one quests that ask you to kill something could never be completed, and three more were locked behind them. Twenty of them now count the kills they state: the three Boss-Rush gauntlets, *Giant Slayer*, *Bigger They Come*, *Veteran Hunter*, the four hunter quests (zombies, skeletons, spiders, creepers), *Frontiers II*, the Mowzie's Mobs, Mutant Monsters and Terramity quests of Overworld Foundations, *Foundations Laid* and *Capstone: Lucifer*. Kills made before this change were never recorded, so they are not credited: the kills have to be done again.
