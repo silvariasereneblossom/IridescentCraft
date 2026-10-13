@@ -31,7 +31,6 @@
  ],
  "server": [
   "00_icraft_guard.js",
-  "armor_weight.js",
   "attributes/attribute_commands.js",
   "attributes/class_attribute_bonuses.js",
   "attributes/iss_school_to_ars_glyph.js",

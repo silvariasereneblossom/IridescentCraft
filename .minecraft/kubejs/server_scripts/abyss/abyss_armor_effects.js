@@ -32,6 +32,12 @@
 if (!icraft.lib.need('core', 'abyss/abyss_armor_effects')) return
 var core = global.icraft.core
 
+// once per failing place per script load: the table and the wording of "once" are
+// core.warnOnce's (0_lib_core.js); this only adds the script's name
+var warnThrew = function (where, e) {
+  core.warnOnce('abyss/abyss_armor_effects:' + where, '[abyss_armor_effects] ' + where + ' threw: ' + e)
+}
+
 // ─── Helpers ───
 
 // item ids are theabyss:<set>_armor_<piece>
@@ -46,7 +52,10 @@ var armorIdAt = function (player, index) {
     else if (index === 2) item = player.legsArmorItem
     else item = player.feetArmorItem
     if (item && !item.isEmpty()) return String(item.id)
-  } catch (e) {}
+  } catch (e) {
+    // '' = an empty slot: a set bonus that depends on the piece is then off
+    warnThrew('reading an armour slot (the slot counts as empty)', e)
+  }
   return ''
 }
 
@@ -69,7 +78,9 @@ var piecesOf = function (player) {
 }
 
 var isInAbyss = function (player) {
-  try { return String(player.level.dimension).indexOf('theabyss') >= 0 } catch (e) {}
+  try { return String(player.level.dimension).indexOf('theabyss') >= 0 } catch (e) {
+    warnThrew('reading the dimension (it counts as outside the Abyss)', e)
+  }
   return false
 }
 
@@ -97,14 +108,14 @@ var tickPlayer = function (player) {
   // Full set: complete poison immunity — remove poison on tick
   // Per piece: on-hit poison reduction handled in the hurt handler
   if (pieces.aberythe >= 4) {
-    try { player.removeEffect('minecraft:poison') } catch (e) {}
+    try { player.removeEffect('minecraft:poison') } catch (e) { warnThrew('Aberythe: removing Poison', e) }
   }
 
   // ── Incorythe Set: Night Vision + Darkness immunity ──
   // Full set only
   if (pieces.incorythe >= 4) {
     player.potionEffects.add('minecraft:night_vision', 300, 0, false, false)
-    try { player.removeEffect('minecraft:darkness') } catch (e) {}
+    try { player.removeEffect('minecraft:darkness') } catch (e) { warnThrew('Incorythe: removing Darkness', e) }
   }
 
   // ── Fusion Set: Explosion resistance ──
@@ -124,7 +135,7 @@ var tickPlayer = function (player) {
   if (pieces.glacerythe >= 4) {
     try {
       if (player.ticksFrozen > 0) player.setTicksFrozen(0)
-    } catch (e) {}
+    } catch (e) { warnThrew('Glacerythe: clearing the freeze', e) }
   }
 
   // ── Ignisithe Set: Fire immunity ──
@@ -135,7 +146,7 @@ var tickPlayer = function (player) {
     if (pieces.ignisithe >= 4) {
       try {
         if (player.remainingFireTicks > 0) player.setRemainingFireTicks(0)
-      } catch (e) {}
+      } catch (e) { warnThrew('Ignisithe: putting the fire out', e) }
     }
   }
 }
@@ -158,7 +169,11 @@ global.registerServerTick('tick_abyssArmorEffects', 40, 0)
 var isPoisonTick = function (player, source, attacker) {
   if (attacker) return false
   if (core.dmgId(source) !== 'minecraft:magic') return false
-  try { return player.hasEffect('minecraft:poison') === true } catch (e) { return false }
+  try { return player.hasEffect('minecraft:poison') === true } catch (e) {
+    // false = "not a poison tick": the Aberythe reduction is then never applied
+    warnThrew('Aberythe: asking for the Poison effect (the hit counts as no poison tick)', e)
+    return false
+  }
 }
 
 // PLAYER TAKES DAMAGE
@@ -195,14 +210,14 @@ core.onHurt('icraft.abyss.armor.take', function (event, ctx) {
       } else {
         attacker.potionEffects.add('minecraft:slowness', 40, 0, false, true)
       }
-    } catch (e) {}
+    } catch (e) { warnThrew('Glacerythe: slowing the attacker', e) }
   }
 
   // Ignisithe -- fire thorns
   if (pieces.ignisithe > 0) {
     try {
       attacker.setSecondsOnFire(pieces.ignisithe >= 4 ? 3 : 1)
-    } catch (e) {}
+    } catch (e) { warnThrew('Ignisithe: setting the attacker on fire', e) }
   }
 
   // Phantom (full) -- 2% lifesteal on damage TAKEN

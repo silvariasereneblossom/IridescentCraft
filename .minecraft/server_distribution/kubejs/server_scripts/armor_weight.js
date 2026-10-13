@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/armor_weight.js
+// @events PlayerEvents.inventoryChanged, PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, tick.server
 // =============================================================================
 // ARMOR WEIGHT SYSTEM — robe / light / medium / heavy per-piece scaling
 // =============================================================================
@@ -122,6 +124,12 @@ const FAEFOLK_TOUGHNESS_PENALTY = -0.5
 // death_penalty.js also declared).
 var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
+// once per failing place per script load: the table and the wording of "once" are
+// global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
+var warnThrew = function (where, e) {
+  global.icraft.core.warnOnce('armor_weight:' + where, '[armor_weight] ' + where + ' threw: ' + e)
+}
+
 // Reforged armor (iridescent_reforging:reforged_*) doesn't have a static
 // item tag — its weight class is dynamic, decided by the installed major
 // module. Detect via class identity and call getArmorWeight() directly.
@@ -138,6 +146,7 @@ function _getItemModularArmorClass() {
       _itemModularArmorClass = Java.loadClass('com.iridescentcraft.reforging.item.ItemModularArmor')
     } catch (e) {
       _itemModularArmorClass = false  // sentinel: class load failed, don't retry
+      warnThrew('loading ItemModularArmor (reforged armour is then weighed by its tags only)', e)
     }
   }
   return _itemModularArmorClass || null
@@ -158,7 +167,10 @@ function getProtectionEnchant() {
       var ForgeRegistries_mc = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
       var ResourceLocation_mc = Java.loadClass('net.minecraft.resources.ResourceLocation')
       _protectionEnch = ForgeRegistries_mc.ENCHANTMENTS.getValue(ResourceLocation_mc.tryParse('minecraft:protection'))
-    } catch (e) { _protectionEnch = null }
+    } catch (e) {
+      _protectionEnch = null
+      warnThrew('resolving minecraft:protection (its flat armor is off)', e)
+    }
   }
   return _protectionEnch
 }
@@ -197,7 +209,10 @@ function classifyArmor(stack) {
     if (stack.hasTag(TAG_ROBE))  return 'robe'
     if (stack.hasTag(TAG_LIGHT)) return 'light'
     if (stack.hasTag(TAG_HEAVY)) return 'heavy'
-  } catch (e) {}
+  } catch (e) {
+    // medium = no effect: a piece that cannot be classified changes no number
+    warnThrew('classifying an armour piece (it counts as medium)', e)
+  }
   return 'medium'
 }
 
@@ -216,7 +231,7 @@ function aggregateArmor(player) {
       try {
         var lvl = EnchantmentHelper_mc.getItemEnchantmentLevel(protEnch, item)
         if (lvl > 0) protLevels += lvl
-      } catch (e) {}
+      } catch (e) { warnThrew('reading a Protection level (the piece adds no flat armor)', e) }
     }
   })
   return {
@@ -234,7 +249,10 @@ function aggregateArmor(player) {
 function isFaefolk(player) {
   try {
     return global.icraft.origin.is(player, 'race', 'icraft:faefolk')
-  } catch (e) { return false }
+  } catch (e) {
+    warnThrew('the Faefolk test (the toughness penalty is then off)', e)
+    return false
+  }
 }
 
 var tickWarned = false
@@ -251,13 +269,17 @@ function isArmorSlotItem(stack) {
     livingResolveTried = true
     try {
       LivingEntity_mc = Java.loadClass('net.minecraft.world.entity.LivingEntity')
-    } catch (e) { LivingEntity_mc = null }
+    } catch (e) {
+      // swallow-ok: without the class every stack counts as armour (the line below), so the sync runs on every inventory change: the safe side
+      LivingEntity_mc = null
+    }
   }
   if (!LivingEntity_mc) return true
   try {
     var slotName = String(LivingEntity_mc.getEquipmentSlotForItem(stack).getName())
     return slotName === 'head' || slotName === 'chest' || slotName === 'legs' || slotName === 'feet'
   } catch (e2) {
+    // swallow-ok: "true when unsure" (the comment above): the sync then runs, and writes nothing when nothing changed
     return true
   }
 }
@@ -301,7 +323,7 @@ function syncArmorWeight(player, stripIfExempt) {
       player.modifyAttribute('minecraft:generic.armor', UUID_PROTECTION_ARMOR, 0, 'addition')
       player.modifyAttribute('minecraft:generic.armor_toughness', UUID_LIGHT_TOUGHNESS, 0, 'multiply_base')
       appliedState[key] = 'off'
-    } catch (e) {}
+    } catch (e) { warnThrew('zeroing the modifiers of a creative or spectator player', e) }
     return
   }
 
@@ -341,19 +363,19 @@ global.tick_armorWeight = function(event) {
 global.registerServerTick('tick_armorWeight', 100, 17)
 
 // Snappy refresh on equip swap.
+// (No try of their own since 2026-10-13, here and in forgetArmorWeight below: the
+// guard isolates a throw and prints the FAILED line.)
 PlayerEvents.inventoryChanged(icraft.guard('armor_weight', 'PlayerEvents.inventoryChanged', function(event) {
-  try {
-    var player = event.player
-    if (!player) return
-    if (!isArmorSlotItem(event.item)) return
-    syncArmorWeight(player, false)
-  } catch (e) {}
+  var player = event.player
+  if (!player) return
+  if (!isArmorSlotItem(event.item)) return
+  syncArmorWeight(player, false)
 }))
 
 // The modifiers die with the player entity: forget what was applied whenever
 // the entity is replaced, so the next pass writes them again.
 function forgetArmorWeight(event) {
-  try { delete appliedState[String(event.player.uuid)] } catch (e) {}
+  delete appliedState[String(event.player.uuid)]
 }
 PlayerEvents.loggedIn(icraft.guard('armor_weight', 'PlayerEvents.loggedIn', forgetArmorWeight))
 PlayerEvents.loggedOut(icraft.guard('armor_weight', 'PlayerEvents.loggedOut', forgetArmorWeight))

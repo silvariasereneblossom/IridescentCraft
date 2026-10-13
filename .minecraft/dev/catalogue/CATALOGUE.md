@@ -68,7 +68,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | Library | Script | Priority | Sets | Scripts that read it | of them while loading |
 |---|---|---|---|---|---|
 | `aptitudes` | `server:0_lib_aptitudes.js` | 890 | `icraft.aptitude` | 3 | 0 |
-| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 60 | 18 |
+| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 61 | 18 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
 | `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
 | `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 17 | 0 |
@@ -859,7 +859,7 @@ own one-shot `global._*` flags.
 | `icraft.aptitude` | `server:0_lib_aptitudes.js` | `server:endgame/ascension.js`, `server:skills/justleveling_skills.js`, `server:skills/mastery_tax.js` |
 | `icraft.attr` | `server:attributes/attribute_sync.js` | `server:attributes/attribute_commands.js` |
 | `icraft.bosses` | `server:0_lib_registry.js` | 19 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
-| `icraft.core` | `server:0_lib_core.js` | 60 scripts (18 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
+| `icraft.core` | `server:0_lib_core.js` | 61 scripts (18 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 9 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/lootjs_overhaul.js`, `server:loot/lovely_pieces_loot.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
 | `icraft.origin` | `server:0_lib_origins.js` | 17 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
@@ -1130,10 +1130,10 @@ own one-shot `global._*` flags.
 
 ### `armor_weight.js`
 
-- place 15 of 160
+- place 15 of 160; header: @events @file
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`
 - tick functions: `tick_armorWeight` (server, every 100, offset 17)
-- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
+- reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `attributes/attribute_commands.js`
 

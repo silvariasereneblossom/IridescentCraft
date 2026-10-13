@@ -1,16 +1,14 @@
 {
   "comment": "Grandfathered silent catches for the SILENT-CATCH rule of lint_kubejs_traps.js (ratchet, operator ruling 2026-10-11). A file may hold at most `count` unmarked silent catches; a file that is not listed may hold none. `ids` are fingerprints of the grandfathered try/catch blocks, used only to point at the new one. Counts go DOWN only (--ratchet-down after fixing or marking some); never raise one by hand to get a push through: report the error, or write // swallow-ok: <reason> inside the catch.",
   "taken": "2026-10-12, snapshot of 190 scripts when the rule started; lowered 2026-10-13",
-  "total": 300,
+  "total": 281,
   "files": {
     "client_scripts/food_dedup_jei_hide.js": {"count": 1, "ids": ["a98ff52f"]},
     "client_scripts/mekasuit_mk2_tooltip.js": {"count": 1, "ids": ["afef226f"]},
     "server_scripts/0_lib_origins.js": {"count": 2, "ids": ["1d68e171","7f63d52d"]},
-    "server_scripts/abyss/abyss_armor_effects.js": {"count": 9, "ids": ["aa6eeea9","409e119e","2259bd0c","17eaf3fa","8f47167b","9a14268d","46cb7237","745c632e","d00d9ef1"]},
     "server_scripts/abyss/abyss_ring_effects.js": {"count": 6, "ids": ["55ed6e5f","530fdfe3","316c632c","b296400b","da6669c6","f2c9ea13"]},
     "server_scripts/affix_overworld_strip.js": {"count": 3, "ids": ["57be08fa","e0bf6693","576e64b0"]},
     "server_scripts/affix_skyshatter_mob_strip.js": {"count": 3, "ids": ["bd2765c9","e0bf6693","576e64b0"]},
-    "server_scripts/armor_weight.js": {"count": 10, "ids": ["f80e30de","d292d618","a60f3536","02228d17","d9f5172e","495cc9b0","79ac39df","214e2333","fe4259a1","bb45e275"]},
     "server_scripts/attributes/attribute_commands.js": {"count": 1, "ids": ["17c01f14"]},
     "server_scripts/attributes/attribute_sync.js": {"count": 6, "ids": ["872a7abb","e4a207c0","a72fd684","cc83f30f","ac5067b0","403bf333"]},
     "server_scripts/attributes/class_attribute_bonuses.js": {"count": 1, "ids": ["aaf80593"]},

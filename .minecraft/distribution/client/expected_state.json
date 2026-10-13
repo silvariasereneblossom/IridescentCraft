@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "d4a505c3",
+    "generated_from":  "5aac8d5b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7008,8 +7008,8 @@
                                                                  "size":  7261
                                                              },
                   "kubejs/server_scripts/abyss/abyss_armor_effects.js":  {
-                                                                             "sha256":  "2de7f85a6dac956a57cc58503ef7ee3c08944e0be3da08c9a98475a30ca9967d",
-                                                                             "size":  8145
+                                                                             "sha256":  "66d6018d23d2612c08408ec4aa200800fbc181d8c44680c90d931761cb69c12e",
+                                                                             "size":  9146
                                                                          },
                   "kubejs/server_scripts/abyss/abyss_ring_effects.js":  {
                                                                             "sha256":  "20793719ba93714e7b04f67d1f1e25cbe7fbd7ada66922de23d50eb009da1297",
@@ -7032,8 +7032,8 @@
                                                                          "size":  23489
                                                                      },
                   "kubejs/server_scripts/armor_weight.js":  {
-                                                                "sha256":  "9d9d62d42b1fce01df444c609a50c52437f6b1cc501c0cd66de798e5090a2d9d",
-                                                                "size":  18094
+                                                                "sha256":  "9c131160fcf4a58346d6ee4e94b489da83bb584c65762f8944f65eb93e5539ef",
+                                                                "size":  19493
                                                             },
                   "kubejs/server_scripts/attributes/attribute_commands.js":  {
                                                                                  "sha256":  "9200d40a00155b45661cdd0d8f3f0f1f21800c57d5b3f5140243c85cbcf0cbbe",
