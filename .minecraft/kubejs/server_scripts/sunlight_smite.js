@@ -1,6 +1,21 @@
 // =============================================================================
 // SUNLIGHT SMITE -- accelerated daytime clear for undead mobs
 // =============================================================================
+// STATUS 2026-10-13: NOT LIVE, AND IT NEVER WAS. Left that way on purpose.
+//   Two calls below do not exist for scripts, and each sits in a silent catch:
+//     * isUndead() tests `entity.getType().is(TAG)`. For scripts getType() is the
+//       id STRING ("minecraft:zombie"), so `.is` is not a function: the test
+//       throws and answers false for every entity.
+//     * the hit is `entity.hurt(src, DAMAGE_PER_TICK)`. KubeJS names that method
+//       `attack`; `hurt` does not exist, so the line throws too.
+//   Both measured on a full-pack boot. The tick function runs every 10 ticks and
+//   does nothing. Everything this header says below describes the INTENT.
+//   It is not repaired here because a working version is a balance decision,
+//   not a fix: it kills undead at dawn with their drops, and the tag it tests
+//   (#minecraft:undead) holds 57 mod mobs, no vanilla zombie or skeleton, and
+//   five bosses. The decision and its options: internal decision list, Part 5,
+//   entry 44. The lint knows this file (a recorded exception, marked owed).
+// =============================================================================
 // Design intent (Silvaria 2026-04-24): venturing outside at night is
 // dangerous, well-lit bases should be safe, daytime outside should
 // aggressively clear leftover undead. Vanilla's 1 HP per ~20-tick sunlight
@@ -92,6 +107,8 @@ try {
           // resistance + armor; thematic sunlight-purge hit.
           try {
             var src = level.damageSources().magic()
+            // NOT LIVE (see STATUS in the header): `hurt` does not exist for scripts, this line throws
+            // into the catch below. Left as written until the operator rules what the script should do.
             entity.hurt(src, DAMAGE_PER_TICK)
             if (entity.getRemainingFireTicks() < 40) {
               entity.setRemainingFireTicks(40)
