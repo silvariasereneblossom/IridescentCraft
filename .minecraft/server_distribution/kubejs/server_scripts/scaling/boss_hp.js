@@ -59,84 +59,10 @@ EntityEvents.spawned(icraft.guard('scaling/boss_hp', 'EntityEvents.spawned', eve
   buff.done()
 }))
 
+// Designed health = `hp` of the boss registry (kubejs/config/icraft/registry/
+// bosses.json, read through icraft.bosses, 0_lib_registry.js). Until 2026-10-13
+// the 52 values stood here as BOSS_HP. null = no designed health: the boss
+// keeps its mod's own.
 function getBossHP(type) {
-  const BOSS_HP = {
-    // ── Tier 2 Bosses ──
-    'twilightforest:naga':              300,
-    'twilightforest:lich':              400,
-    'twilightforest:hydra':             500,
-    'twilightforest:ur_ghast':          600,
-    'twilightforest:knight_phantom':    350,
-    'twilightforest:snow_queen':        450,
-    'twilightforest:minoshroom':        300,
-    'twilightforest:alpha_yeti':        350,
-
-    'blue_skies:summoner':              350,
-    'blue_skies:alchemist':             400,
-    'blue_skies:starlit_crusher':       500,
-    'blue_skies:arachnarch':            450,
-
-    'aether:slider':                    400,
-    'aether:valkyrie_queen':            550,
-    'aether:sun_spirit':                500,
-
-    // ── Tier 3 Bosses ──
-    'undergarden:forgotten_guardian':    800,
-    'deeperdarker:stalker':             700,
-    'deeperdarker:shattered':           750,
-    'deeperdarker:shriek_worm':         600,
-    'deeperdarker:sculk_centipede':     650,
-
-    'cataclysm:netherite_monstrosity':  900,
-    'cataclysm:ignis':                  1000,
-    'cataclysm:the_harbinger':          800,
-    'cataclysm:the_leviathan':          850,
-    'cataclysm:maledictus':             900,
-
-    'minecraft:wither':                 600,
-
-    'meetyourfight:dame_fortuna':       700,
-    'meetyourfight:rosalyne':           800,
-    'meetyourfight:swampjaw':           600,
-    'meetyourfight:bellringer':         700,
-
-    'theabyss:nightblade_boss':         700,
-    'theabyss:the_roka':                800,
-    'theabyss:elder':                   900,
-
-    // ── Tier 4 Bosses ──
-    'minecraft:ender_dragon':           1000,
-    'cataclysm:ender_guardian':         1500,
-    'cataclysm:ancient_remnant':        2500,
-    'cataclysm:ender_golem':            1200,
-    'cataclysm:ignited_revenant':       1000,
-
-    'botania:doppleganger':             1200,
-
-    'deep_aether:eots_controller':      1500,
-
-    // ── Other Bosses (from boss mods) ──
-    'stalwart_dungeons:shelterer':      500,
-    'stalwart_dungeons:nether_keeper':  800,
-    'stalwart_dungeons:awful_ghast':    700,
-    'stalwart_dungeons:incomplete_wither': 600,
-
-    'mutantmonsters:mutant_zombie':     400,
-    'mutantmonsters:mutant_skeleton':   350,
-    'mutantmonsters:mutant_creeper':    300,
-    'mutantmonsters:mutant_enderman':   500,
-
-    'irons_spellbooks:dead_king':       800,
-    'irons_spellbooks:fire_boss':       700,
-    'irons_spellbooks:citadel_keeper':  600,
-
-    // Removed 2026-10-12: four rows whose ids are not registered entity types,
-    // so their designed health was never applied to anything --
-    // cataclysm:void_blossom 2000, keebsz:tower_guardian 600, ub:sorcerer 700,
-    // ub:storm 800. (Battle Towers and Ultimate Bosses are installed; their
-    // bosses, whatever their real ids, have the mods' own health.)
-
-    'majestic_menaces:teikoku_senshi':  1000,
-  }
-  return BOSS_HP[type] || null
+  return icraft.bosses.hp(type)
 }

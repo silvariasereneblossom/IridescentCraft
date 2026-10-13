@@ -44,7 +44,8 @@
 //   pyromancer / priest) — whose abstract slot methods throw AbstractMethodError
 //   (UNCATCHABLE by Rhino try/catch) → SERVER CRASH. We skip exactly those 5
 //   before any attribute access (same precise exclude as zz_boss_global_3x.js
-//   BOSS_3X_EXCLUDES / mob_scaling_unified.js BROKEN_ENTITIES). The safe ISS
+//   BOSS_3X_EXCLUDES / mob_scaling_unified.js BROKEN_ENTITIES; since 2026-10-13
+//   the flag `caster` of the boss registry, one list for all five scripts). The safe ISS
 //   bosses (dead_king / fire_boss / citadel_keeper) still scale — modifyAttribute
 //   on them is proven safe (zz_boss_global_3x scales them in production). resId
 //   is resolved via the shared 0_iss_guard helper (handles entity.type's
@@ -61,16 +62,13 @@
 //   still skipped before anything here touches them.
 // =============================================================================
 
-// The 5 ISS AbstractSpellCastingMob casters that crash on attribute access.
-// Mirrors mob_scaling_unified.js BROKEN_ENTITIES / zz_boss_global_3x.js
-// BOSS_3X_EXCLUDES (no shared global for this precise set yet).
-const ASC_BROKEN_ISS = {
-  'irons_spellbooks:necromancer': true,
-  'irons_spellbooks:archevoker':  true,
-  'irons_spellbooks:cryomancer':  true,
-  'irons_spellbooks:pyromancer':  true,
-  'irons_spellbooks:priest':      true,
-}
+// The five Iron's Spellbooks casters these spawn scripts must not touch are the
+// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
+// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
+// ids stood here, and in four other scripts, each "kept in sync" by hand.
+// The reason is unchanged: on these classes an item-slot or NBT access throws a
+// java.lang.Error (AbstractMethodError), which no script catch sees, so the
+// test has to come BEFORE any such access.
 
 EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.spawned', event => {
   let entity = event.entity
@@ -81,7 +79,7 @@ EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.
   // resId via the shared 0_iss_guard resolver (safe static registry lookup even
   // on the broken entities); fail-open to '' if the helper is somehow absent.
   let resId = global.icraftIssResId ? global.icraftIssResId(entity) : ''
-  if (ASC_BROKEN_ISS[resId]) return
+  if (icraft.bosses.has(resId, 'caster')) return
 
   // Scale all hostile mobs AND bosses (ascension affects everything).
   // entity.type kept verbatim from the original handler (behaviour-preserving).

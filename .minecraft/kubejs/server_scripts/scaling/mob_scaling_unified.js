@@ -73,7 +73,7 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
     let type = resId  // keep alias for downstream code that uses `type`
 
     // Skip entities with broken abstract methods that crash on property access
-    if (BROKEN_ENTITIES.has(resId)) return
+    if (icraft.bosses.has(resId, 'caster')) return
     // 2026-04-22: namespace-level skip for irons_spellbooks wizard mobs.
     // All AbstractSpellCastingMob subclasses share the abstract slot bug;
     // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
@@ -85,12 +85,12 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
 
     // Skip bosses — they have their own scaling systems.
     // This test comes BEFORE the saved-flag test on purpose. A boss that was
-    // not on the BOSSES list when it spawned (22 named bosses joined it on
+    // not on the boss roster when it spawned (22 named bosses joined it on
     // 2026-10-12) may carry this script's tier modifier, SAVED with it, and the
     // saved flag would send it straight out of this handler with 9x health for
     // good. So: take the modifier off; the boss keeps its share of health.
     // Nothing happens for a boss that never had it.
-    if (BOSSES.has(type)) {
+    if (icraft.bosses.has(type, 'tierHpExcluded')) {
       core.dropModifier(entity, 'minecraft:generic.max_health', 'icraft_mob_tier_hp')
       return
     }
@@ -186,67 +186,21 @@ function isHostileMod(type) {
          type.startsWith('stalwart_dungeons:')
 }
 
-// ── Boss Blacklist ──
-// Entities with abstract methods that crash KubeJS on any property access.
-// Rhino's try/catch does NOT catch java.lang.Error subclasses (e.g.
-// AbstractMethodError), so every handler that accesses item slots or
-// similar must guard against these entities BEFORE the call. Keep this
-// list in sync with MOB_EQUIP_BROKEN_ENTITIES in mob_equipment.js.
-const BROKEN_ENTITIES = new Set([
-  'irons_spellbooks:necromancer',
-  'irons_spellbooks:archevoker',
-  'irons_spellbooks:cryomancer',
-  'irons_spellbooks:pyromancer',
-  'irons_spellbooks:priest',
-])
+// ── Spellcaster skip ──
+// The five Iron's Spellbooks casters these spawn scripts must not touch are the
+// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
+// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
+// ids stood here, and in four other scripts, each "kept in sync" by hand.
+// The reason is unchanged: on these classes an item-slot or NBT access throws a
+// java.lang.Error (AbstractMethodError), which no script catch sees, so the
+// test has to come BEFORE any such access.
 
-const BOSSES = new Set([
-  'minecraft:ender_dragon', 'minecraft:wither', 'minecraft:warden',
-  'minecraft:elder_guardian',
-  'twilightforest:naga', 'twilightforest:lich', 'twilightforest:hydra',
-  'twilightforest:ur_ghast', 'twilightforest:knight_phantom',
-  'twilightforest:snow_queen', 'twilightforest:minoshroom', 'twilightforest:alpha_yeti',
-  'blue_skies:summoner', 'blue_skies:alchemist', 'blue_skies:starlit_crusher',
-  'blue_skies:arachnarch',
-  'aether:slider', 'aether:valkyrie_queen', 'aether:sun_spirit',
-  'deep_aether:eots_controller',
-  'undergarden:forgotten_guardian', 'undergarden:forgotten',
-  'deeperdarker:stalker', 'deeperdarker:shattered',
-  'deeperdarker:shriek_worm', 'deeperdarker:sculk_centipede',
-  'cataclysm:netherite_monstrosity', 'cataclysm:ignis',
-  'cataclysm:ender_guardian', 'cataclysm:ancient_remnant',
-  'cataclysm:the_leviathan', 'cataclysm:the_harbinger',
-  'cataclysm:maledictus', 'cataclysm:ender_golem',
-  'cataclysm:ignited_revenant',
-  'botania:doppleganger',
-  'meetyourfight:swampjaw', 'meetyourfight:bellringer',
-  'meetyourfight:dame_fortuna', 'meetyourfight:rosalyne',
-  'mutantmonsters:mutant_zombie', 'mutantmonsters:mutant_skeleton',
-  'mutantmonsters:mutant_creeper', 'mutantmonsters:mutant_enderman',
-  'stalwart_dungeons:shelterer', 'stalwart_dungeons:nether_keeper',
-  'stalwart_dungeons:awful_ghast', 'stalwart_dungeons:incomplete_wither',
-  'irons_spellbooks:dead_king', 'irons_spellbooks:fire_boss',
-  'irons_spellbooks:citadel_keeper',
-  'theabyss:soul_guard', 'theabyss:ice_knight',
-  'theabyss:nightblade_boss', 'theabyss:the_roka', 'theabyss:elder',
-  // (cataclysm:void_blossom, keebsz:tower_guardian, ub:sorcerer and ub:storm
-  //  were listed until 2026-10-12: not registered entity types.)
-  'majestic_menaces:teikoku_senshi',
-  // The 22 named (trophy) bosses of NAMED_BOSSES_BY_TIER
-  // (exploration/codex_exploration_kills.js) that were missing here and in
-  // 0_lib_core.js BOSS_IDS. Operator ruling 2026-10-12: "Treat them as bosses".
-  // Until then each got this script's x3 on top of zz_boss_global_3x.js's x3.
-  'terramity:gob', 'terramity:super_sniffer', 'terramity:enchanter_merlin',
-  'mowziesmobs:frostmaw', 'mowziesmobs:ferrous_wroughtnaut', 'mowziesmobs:umvuthi',
-  'mowziesmobs:sculptor',
-  'cataclysm:the_baby_leviathan', 'cataclysm:scylla',
-  'cardinal_sins:linneausofsloth', 'cardinal_sins:sinofgluttony', 'cardinal_sins:sinofgreed',
-  'cardinal_sins:sinofenvy', 'cardinal_sins:sinoflust', 'cardinal_sins:sinofpride',
-  'cardinal_sins:sinofwrath', 'cardinal_sins:drakara',
-  'cardinal_sins:lucifer', 'cardinal_sins:luciferphase_1',
-  'irons_spellbooks:archevoker',
-  'terramity:virtue', 'terramity:sorceress_circe',
-])
+// ── Bosses ──
+// The bosses this script leaves alone are the entries of the boss registry
+// (kubejs/config/icraft/registry/bosses.json) that carry the flag `boss`:
+// icraft.bosses.has(id, 'tierHpExcluded'), the same flag core.isBoss reads.
+// Until 2026-10-13 they stood here as BOSSES, a hand copy of BOSS_IDS in
+// 0_lib_core.js ("keep the two in step").
 
 // ── Basic Mobs (3x HP) ──
 const BASIC_MOBS = new Set([

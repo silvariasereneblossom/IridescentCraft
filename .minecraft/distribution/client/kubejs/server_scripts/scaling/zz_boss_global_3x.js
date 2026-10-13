@@ -73,10 +73,9 @@
 //   (entity.removeAttribute); deleting the file is not enough.
 //
 // BOSS SET — keyed off the pack's roster (see the true-boss/miniboss boundary)
-//   Source = codex_exploration_kills.js NAMED_BOSSES_BY_TIER (the pack's curated
-//   "trophy boss" roster, all 4 tiers — exposed as global.ICRAFT_NAMED_BOSS_IDS)
-//   ∪ BOSS_3X_EXTRAS (true bosses that roster omits — non-progression-lane mods)
-//   − BOSS_3X_EXCLUDES (operator opt-out lever; empty by default).
+//   Source = the flag `x3` of the boss registry (kubejs/config/icraft/registry/
+//   bosses.json): every boss of kind `named` (the pack's curated "trophy boss"
+//   roster, all 4 tiers) and five true bosses that roster omits.
 //
 //   THE BOUNDARY (operator: FLAGGED, not silently widened): the pack itself
 //   splits true/trophy bosses (NAMED_BOSSES_BY_TIER) from boss-tier MOBS /
@@ -86,7 +85,7 @@
 //   coralssus, alexsmobs warped_mosco, undergarden masticator/forgotten/rotbeast,
 //   cataclysm ender_golem, mutant_* …). This buff hits TRUE BOSSES ONLY. To also
 //   buff a miniboss (or a borderline like minecraft:elder_guardian / the stalwart
-//   dungeon bosses), add its id to BOSS_3X_EXTRAS below.
+//   dungeon bosses), give its registry entry the flag `x3`.
 //
 // "BROKEN ENTITY" (ISS spellcaster) SAFETY — why archevoker is now INCLUDED
 //   mob_scaling_unified.js / mob_equipment.js skip 5 ISS AbstractSpellCastingMob
@@ -100,7 +99,7 @@
 //   production (they're MONSTER-category and not in its exclude list) without
 //   crashing. So archevoker (a trophy boss) is buffed here via the same op class.
 //   (The other 4 are minibosses → outside the set by the boundary, not by a crash
-//   risk.) BOSS_3X_EXCLUDES remains as a manual opt-out lever, empty by default.
+//   risk.) Removing the flag `x3` from an entry is the manual opt-out lever.
 //
 // DAMAGE COVERAGE (what the damage buffs reach)
 //   • ISS bosses (Dead King, Echo of Tyros, Ancient Knight, Archevoker): spell
@@ -117,65 +116,50 @@ const BOSS_3X_HP_MULT         = 3.0   // ×3 max health    (MULTIPLY_TOTAL amoun
 const BOSS_3X_DMG_MULT        = 3.0   // ×3 attack damage (MULTIPLY_TOTAL amount = mult - 1)
 const BOSS_3X_SPELLPOWER_MULT = 2.0   // ×2 ISS spell power (ISS bosses only; amount = mult - 1)
 
-// True bosses the NAMED roster omits (non-progression-lane mods). Buffing an id
-// whose mod isn't installed is a harmless no-op (its spawn never fires), so this
-// stays broad on purpose. Documented per source.
-const BOSS_3X_EXTRAS = [
-  // Ars Nouveau — Wilden Chimera ritual boss (codex_boss_rush.js T2; absent from NAMED).
-  'ars_nouveau:wilden_boss',
-  // The Abyss — structure bosses with designed HP in boss_hp.js (absent from codex rosters).
-  'theabyss:nightblade_boss', 'theabyss:the_roka', 'theabyss:elder',
-  // Majestic Menaces — Teikoku Senshi. Registered as majestic_menaces:teikoku_senshi
-  // (measured on a full-pack boot, 2026-10-12); the `crazybossfights:` spelling
-  // that stood beside it registers nothing and is gone.
-  'majestic_menaces:teikoku_senshi',
-  // Removed 2026-10-12, not registered entity types (they matched nothing):
-  // keebsz:tower_guardian (Battle Towers), ub:sorcerer and ub:storm (Ultimate
-  // Bosses), ultris_mr:ultra_wither and ultris_mr:sanctum_keeper (Ultris). The
-  // three mods are installed; whatever their bosses are, these ids are not them.
-]
+// THE BOSS SET IS THE FLAG `x3` OF THE BOSS REGISTRY (kubejs/config/icraft/
+// registry/bosses.json, read through icraft.bosses, 0_lib_registry.js).
+// Until 2026-10-13 it was built here: the named roster of
+// codex_exploration_kills.js (global.ICRAFT_NAMED_BOSS_IDS) + BOSS_3X_EXTRAS
+// (five true bosses that roster omits: ars_nouveau:wilden_boss, theabyss:
+// nightblade_boss / the_roka / elder, majestic_menaces:teikoku_senshi) -
+// BOSS_3X_EXCLUDES (empty). The same 63 ids carry the flag now.
+//   * to buff a miniboss too: give its entry the flag `x3`;
+//   * to take a boss out of the buff: remove the flag (the old EXCLUDES lever);
+//   * to keep the health x3 and spare a boss BOTH damage buffs (melee and ISS
+//     spell power), the "softer damage curve for one-shot risks" lever: add the
+//     flag `x3DamageSkip` (the old BOSS_3X_DMG_SKIP; no boss has it).
 
-// Operator opt-out lever — boss ids to drop from the buff entirely. EMPTY by
-// default. (Previously held the 5 ISS AbstractSpellCastingMob entities on a
-// crash theory; that's disproven — see the "BROKEN ENTITY SAFETY" header note —
-// so archevoker, a trophy boss, is now buffed. Add an id here to exclude it.)
-const BOSS_3X_EXCLUDES = []
-
-// Bosses to SKIP the damage buffs for (BOTH melee attack_damage AND ISS
-// spell_power) while KEEPING the health ×3 — the operator's "softer damage curve
-// for one-shot risks" lever (NOT a silent global cap). Empty by default. Add a
-// one-shot offender's id here to spare it the damage scaling, e.g.:
-//   'minecraft:warden', 'cataclysm:netherite_monstrosity'
-const BOSS_3X_DMG_SKIP = []
-
-// O(1) membership maps, built LAZILY on first spawn (every server_script — incl.
-// codex_exploration_kills.js, which sets global.ICRAFT_NAMED_BOSS_IDS — has
-// loaded by the time any entity spawns; rebuilt fresh after /reload because the
-// module re-initialises). var (not const): module-scope cache.
+// O(1) membership maps, built LAZILY on first spawn (rebuilt fresh after
+// /reload because the module re-initialises). var (not const): module-scope cache.
 var BOSS_3X_SET = null
 var BOSS_3X_DMG_SKIP_SET = null
 
+// The log line keeps its three numbers: named = bosses of kind `named` in the
+// set, extras = the others in it, excluded = named bosses WITHOUT the flag.
 function bg3_buildSet() {
   var set = {}
-  var named = global.ICRAFT_NAMED_BOSS_IDS || []
-  for (var i = 0; i < named.length; i++) set[named[i]] = true
-  for (var j = 0; j < BOSS_3X_EXTRAS.length; j++) set[BOSS_3X_EXTRAS[j]] = true
-  for (var k = 0; k < BOSS_3X_EXCLUDES.length; k++) delete set[BOSS_3X_EXCLUDES[k]]
-  var n = 0
-  for (var key in set) n++
+  var ids = icraft.bosses.ids('x3')
+  var named = 0
+  for (var i = 0; i < ids.length; i++) {
+    set[ids[i]] = true
+    if (icraft.bosses.kind(ids[i]) === 'named') named++
+  }
+  var allNamed = icraft.bosses.ids('tokensNamed').length
+  var n = ids.length
   console.log('[iridescent/boss_3x] boss set built: ' + n + ' bosses get ×' + BOSS_3X_HP_MULT
     + ' hp + ×' + BOSS_3X_DMG_MULT + ' dmg (+ ×' + BOSS_3X_SPELLPOWER_MULT + ' spell_power on ISS bosses)'
-    + ' (named=' + named.length + ', extras=' + BOSS_3X_EXTRAS.length
-    + ', excluded=' + BOSS_3X_EXCLUDES.length + ')'
-    + (named.length === 0
-        ? ' — WARN: global.ICRAFT_NAMED_BOSS_IDS is EMPTY (codex_exploration_kills.js not loaded?); only EXTRAS will be buffed'
+    + ' (named=' + named + ', extras=' + (n - named)
+    + ', excluded=' + (allNamed - named) + ')'
+    + (named === 0
+        ? ' — WARN: no named boss in the registry has the flag x3; only the extras will be buffed'
         : ''))
   return set
 }
 
 function bg3_buildDmgSkip() {
   var s = {}
-  for (var i = 0; i < BOSS_3X_DMG_SKIP.length; i++) s[BOSS_3X_DMG_SKIP[i]] = true
+  var ids = icraft.bosses.ids('x3DamageSkip')
+  for (var i = 0; i < ids.length; i++) s[ids[i]] = true
   return s
 }
 

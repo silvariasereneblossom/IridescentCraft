@@ -122,54 +122,20 @@ function incrementKillCount(level, entityType) {
 }
 
 // ─── Scalable Boss Registry ───
-// Excludes Wither/Dragon/Elder Guardian (handled by Progressive Bosses mod)
+// The roster is the flag `perKill` of the boss registry (kubejs/config/icraft/
+// registry/bosses.json); it excludes Wither/Dragon/Elder Guardian (handled by
+// the Progressive Bosses mod).
+//
+// PER-KILL SCALING IS OFF, and has never run. Until 2026-10-13 this function
+// asked `new Set([...]).has(entity.type)`: entity.type is a Java string, which
+// a Set never matches on this engine, so no boss was ever scaled and no kill
+// was ever counted. The registry reader normalises ids, so asking it would
+// have switched the feature ON (a world-wide counter per boss type: +15% health
+// from the second kill, up to +150%). That is an operator decision, not a
+// refactor: the registry carries the switch ("switches": { "perKill" }), it is
+// off, and this function answers false exactly as before. To switch it on,
+// set "on": true there.
 function isScalableBoss(type) {
-  const BOSSES = new Set([
-    // Twilight Forest
-    'twilightforest:naga', 'twilightforest:lich', 'twilightforest:hydra',
-    'twilightforest:ur_ghast', 'twilightforest:knight_phantom',
-    'twilightforest:snow_queen', 'twilightforest:minoshroom', 'twilightforest:alpha_yeti',
-    // Blue Skies
-    'blue_skies:summoner', 'blue_skies:alchemist',
-    'blue_skies:starlit_crusher', 'blue_skies:arachnarch',
-    // Aether
-    'aether:slider', 'aether:valkyrie_queen', 'aether:sun_spirit',
-    // Deep Aether
-    'deep_aether:eots_controller',
-    // Undergarden
-    'undergarden:forgotten_guardian', 'undergarden:forgotten',
-    // Deeper Darker
-    'deeperdarker:stalker', 'deeperdarker:shattered',
-    'deeperdarker:shriek_worm', 'deeperdarker:sculk_centipede',
-    // Cataclysm
-    'cataclysm:netherite_monstrosity', 'cataclysm:ignis',
-    'cataclysm:ender_guardian', 'cataclysm:ancient_remnant',
-    'cataclysm:the_leviathan', 'cataclysm:the_harbinger',
-    'cataclysm:maledictus', 'cataclysm:ender_golem',
-    'cataclysm:ignited_revenant', 'cataclysm:void_blossom',
-    // Botania
-    'botania:doppleganger',
-    // Meet Your Fight
-    'meetyourfight:swampjaw', 'meetyourfight:bellringer',
-    'meetyourfight:dame_fortuna', 'meetyourfight:rosalyne',
-    // Mutant Monsters
-    'mutantmonsters:mutant_zombie', 'mutantmonsters:mutant_skeleton',
-    'mutantmonsters:mutant_creeper', 'mutantmonsters:mutant_enderman',
-    // Stalwart Dungeons
-    'stalwart_dungeons:shelterer', 'stalwart_dungeons:nether_keeper',
-    'stalwart_dungeons:awful_ghast', 'stalwart_dungeons:incomplete_wither',
-    // Battle Towers
-    'keebsz:tower_guardian',
-    // Iron's Spells
-    'irons_spellbooks:dead_king', 'irons_spellbooks:fire_boss',
-    'irons_spellbooks:citadel_keeper',
-    // The Abyss
-    'theabyss:soul_guard', 'theabyss:ice_knight',
-    'theabyss:nightblade_boss', 'theabyss:the_roka', 'theabyss:elder',
-    // Ultimate Bosses
-    'ub:sorcerer', 'ub:storm',
-    // Majestic Menaces
-    'majestic_menaces:teikoku_senshi',
-  ])
-  return BOSSES.has(type)
+  if (!icraft.bosses.enabled('perKill')) return false
+  return icraft.bosses.has(type, 'perKill')
 }

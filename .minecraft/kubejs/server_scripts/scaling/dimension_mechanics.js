@@ -55,10 +55,9 @@ if (!core) {
   return
 }
 
-var ABYSS_BOSSES = {
-  'theabyss:elder': true, 'theabyss:ice_knight': true, 'theabyss:nightblade_boss': true,
-  'theabyss:soul_guard': true, 'theabyss:the_roka': true
-}
+// The Abyss bosses = the flag `abyssBoss` of the boss registry (kubejs/data/
+// icraft/registry/bosses.json); until 2026-10-13 five ids stood here.
+var isAbyssBoss = function (id) { return icraft.bosses.has(id, 'abyssBoss') }
 
 // Total level of one enchantment across the four armour pieces
 var getArmorEnchTotalLocal = function (entity, enchId) {
@@ -157,7 +156,7 @@ EntityEvents.spawned(icraft.guard('scaling/dimension_mechanics', 'EntityEvents.s
   // All Abyss mobs get Resistance I (adapted to corrupted environment)
   // Boss entities are excluded (already handled by boss_hp.js)
   if (dim === 'theabyss:the_abyss') {
-    if (!ABYSS_BOSSES[type]) {
+    if (!isAbyssBoss(type)) {
       entity.potionEffects.add('minecraft:resistance', 999999, 0, false, false)
     }
   }
@@ -425,7 +424,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
         AABB.of(player.x - 16, player.y - 16, player.z - 16, player.x + 16, player.y + 16, player.z + 16)
       )
       for (let e of entities) {
-        if (e.living && ABYSS_BOSSES[core.entityId(e)]) {
+        if (e.living && isAbyssBoss(core.entityId(e))) {
           nearBoss = true
           break
         }

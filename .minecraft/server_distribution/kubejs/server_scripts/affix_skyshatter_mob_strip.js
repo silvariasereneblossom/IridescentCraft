@@ -25,16 +25,13 @@
 const SKYSHATTER_AFFIX_ID = 'apotheosis:skyshatter'
 const SKYSHATTER_SLOTS = ['mainhand', 'offhand', 'head', 'chest', 'legs', 'feet']
 
-// Mirrors the broken-entities skip list from affix_overworld_strip.js
-// and mob_scaling_unified.js. Calling getItemBySlot on these throws
-// AbstractMethodError that Rhino can't catch.
-const SKYSHATTER_STRIP_BROKEN_ENTITIES = new Set([
-  'irons_spellbooks:necromancer',
-  'irons_spellbooks:archevoker',
-  'irons_spellbooks:cryomancer',
-  'irons_spellbooks:pyromancer',
-  'irons_spellbooks:priest',
-])
+// The five Iron's Spellbooks casters these spawn scripts must not touch are the
+// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
+// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
+// ids stood here, and in four other scripts, each "kept in sync" by hand.
+// The reason is unchanged: on these classes an item-slot or NBT access throws a
+// java.lang.Error (AbstractMethodError), which no script catch sees, so the
+// test has to come BEFORE any such access.
 
 function _skyshatterEntityResId(entity) {
   try { return String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {}
@@ -85,7 +82,7 @@ EntityEvents.spawned(icraft.guard('affix_skyshatter_mob_strip', 'EntityEvents.sp
   if (data.contains('icraft_skyshatter_scrubbed')) return
 
   let resId = _skyshatterEntityResId(entity)
-  if (SKYSHATTER_STRIP_BROKEN_ENTITIES.has(resId)) return
+  if (icraft.bosses.has(resId, 'caster')) return
   // Local fallback: namespace check in case 0_iss_guard.js failed to load.
   if (resId.indexOf('irons_spellbooks:') === 0) return
 

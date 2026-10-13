@@ -20,17 +20,13 @@
 
 const AFFIX_STRIP_SLOTS = ['mainhand', 'offhand', 'head', 'chest', 'legs', 'feet']
 
-// Entities with abstract getItemBySlot / setItemSlot that crash on access.
-// Mirrors MOB_EQUIP_BROKEN_ENTITIES in scaling/mob_equipment.js.
-// Rhino try/catch does NOT catch java.lang.Error subclasses like
-// AbstractMethodError, so we must early-exit before slot access.
-const AFFIX_STRIP_BROKEN_ENTITIES = new Set([
-  'irons_spellbooks:necromancer',
-  'irons_spellbooks:archevoker',
-  'irons_spellbooks:cryomancer',
-  'irons_spellbooks:pyromancer',
-  'irons_spellbooks:priest',
-])
+// The five Iron's Spellbooks casters these spawn scripts must not touch are the
+// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
+// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
+// ids stood here, and in four other scripts, each "kept in sync" by hand.
+// The reason is unchanged: on these classes an item-slot or NBT access throws a
+// java.lang.Error (AbstractMethodError), which no script catch sees, so the
+// test has to come BEFORE any such access.
 
 // All AbstractSpellCastingMob subclasses share the abstract-slot bug.
 // Rather than enumerate every subclass, skip the whole namespace.
@@ -58,7 +54,7 @@ EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned
   if (!entity.monster) return
   if (event.level.dimension != 'minecraft:overworld') return
   // Centralized ISS-mob skip + bail log via 0_iss_guard.js. Local
-  // BROKEN_ENTITIES + _affixStripIsIssMob below remain as fallback.
+  // The `caster` test (boss registry) + _affixStripIsIssMob below remain as fallback.
   if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_overworld_strip')) return
 
   // Apotheosis stamps its bosses in FORGE persistent data
@@ -76,7 +72,7 @@ EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned
   let data = entity.persistentData
 
   let resId = _affixStripEntityResId(entity)
-  if (AFFIX_STRIP_BROKEN_ENTITIES.has(resId)) return
+  if (icraft.bosses.has(resId, 'caster')) return
   if (_affixStripIsIssMob(resId)) return
 
   // Already-processed marker to avoid re-strip on re-load (chunk unload/load
