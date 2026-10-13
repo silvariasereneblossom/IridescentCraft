@@ -137,23 +137,24 @@
    ]
   },
   "wither-relic": {
-   "proves": "the Wither's Dormant Relic was dropped at the boss (guaranteed on a player's first kill, 10% after)",
-   "do": "Kill a Wither as a player; simplyswords:dormant_relic drops at it.",
+   "proves": "the Wither's Dormant Relic was dropped at the boss (guaranteed on a player's first kill, 15% after)",
+   "do": "Kill a Wither as a player; simplyswords:dormant_relic drops where it dies, after its dying animation.",
    "cmd": [
-    "/summon minecraft:wither ~ ~ ~8 {NoAI:1b}",
-    "/damage @e[type=minecraft:wither,limit=1,sort=nearest] 100000 minecraft:player_attack by <Name>"
+    "/summon minecraft:wither ~ ~ ~12",
+    "(wait 11 seconds: the Wither is invulnerable while it charges up)",
+    "/damage @e[type=progressivebosses:wither,limit=1,sort=nearest] 100000 minecraft:player_attack by <Name>"
    ],
-   "needs": "a player who has not had the Wither's first-kill reward (otherwise 1 kill in 10); a Wither away from the world spawn (the spawn village deletes hostile mobs). NOT CONFIRMED (2026-10-13): on two offline boots a `/summon minecraft:wither` logged a spawn of `progressivebosses:wither` and no `minecraft:wither` entity was found afterwards. If the selector finds nothing, try `type=progressivebosses:wither`, and report which type the Wither has in play: this rule and the first-kill reward are keyed on `minecraft:wither`."
+   "needs": "a player who has not had the Wither's first-kill reward (otherwise about 1 kill in 7). CONFIRMED 2026-10-13 on full-pack boots: the Wither a player fights is `progressivebosses:wither` (Progressive Bosses replaces every `minecraft:wither` the moment it spawns, summoned or built), and the boss registry makes it the Wither for every rule. So the selectors name that type; `type=minecraft:wither` finds nothing. The replacement ignores `{NoAI:1b}`: it is a real, attacking Wither. It is invulnerable for its first 11 seconds (`/damage` does nothing until then), and after the killing hit it plays a 5-second dying animation (measured: 100 of its ticks) and only then drops its loot; by the mod's data it explodes at the end (power 8, not observed): stand back, away from anything you want to keep, and away from the world spawn (the spawn village deletes hostile mobs)."
   },
   "wither-tablets": {
    "proves": "the Wither's loot rule ran on a real roll (2 simplyswords:runic_tablet each time; the rule carries one action for this line)",
    "do": "Roll the Wither's kill loot: 2 Runic Tablets every time.",
    "cmd": [
-    "/summon minecraft:wither ~ ~ ~8 {NoAI:1b}",
-    "/loot give @s kill @e[type=minecraft:wither,limit=1,sort=nearest]",
-    "/kill @e[type=minecraft:wither]"
+    "/summon minecraft:wither ~ ~ ~12",
+    "/loot give @s kill @e[type=progressivebosses:wither,limit=1,sort=nearest]",
+    "/kill @e[type=progressivebosses:wither]"
    ],
-   "needs": "a Wither away from the world spawn (the spawn village deletes hostile mobs). NOT CONFIRMED (2026-10-13): on two offline boots a `/summon minecraft:wither` logged a spawn of `progressivebosses:wither` and no `minecraft:wither` entity was found afterwards. If the selector finds nothing, try `type=progressivebosses:wither`, and report which type the Wither has in play: this rule and the first-kill reward are keyed on `minecraft:wither`."
+   "needs": "nothing but the Wither: the loot command rolls its kill loot without a fight (measured: 2 Runic Tablets in 40 of 40 rolls). `/kill` was not tried on this entity: expect it to die like a killed one (below). CONFIRMED 2026-10-13 on full-pack boots: the Wither a player fights is `progressivebosses:wither` (Progressive Bosses replaces every `minecraft:wither` the moment it spawns, summoned or built), and the boss registry makes it the Wither for every rule. So the selectors name that type; `type=minecraft:wither` finds nothing. The replacement ignores `{NoAI:1b}`: it is a real, attacking Wither. It is invulnerable for its first 11 seconds (`/damage` does nothing until then), and after the killing hit it plays a 5-second dying animation (measured: 100 of its ticks) and only then drops its loot; by the mod's data it explodes at the end (power 8, not observed): stand back, away from anything you want to keep, and away from the world spawn (the spawn village deletes hostile mobs)."
   },
   "vorpal-decap": {
    "proves": "a critical melee hit with Vorpal passed its roll and was made lethal (the mob dies at once and may drop its head)",
