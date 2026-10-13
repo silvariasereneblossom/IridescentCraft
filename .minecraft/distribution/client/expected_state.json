@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c27c2027",
+    "generated_from":  "372fb293",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4336,8 +4336,8 @@
                                                                              "size":  1678
                                                                          },
                   "config/paxi/datapacks/icraft_progdiff_overrides.zip":  {
-                                                                              "sha256":  "fd8ddf6240a101501135b7a83fae6f567137e00af6f50a478d1e1e108018a5f3",
-                                                                              "size":  10602
+                                                                              "sha256":  "47a5c5f50d6f7654a9106cec574b902bdc05dd56406347437a23c816d74982ec",
+                                                                              "size":  10609
                                                                           },
                   "config/paxi/datapacks/icraft_skills.zip":  {
                                                                   "sha256":  "80bc7567841d1d9d9bb0cd880fac8f7c556b4e6850f7be208f148f8749a9accb",
