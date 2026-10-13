@@ -1,0 +1,426 @@
+#!/usr/bin/env python3
+"""intake_test.py -- does the intake tool do what it says, and does its gate refuse what it exists to refuse?
+
+Copies the index, the records, the registries and the tools to a temporary folder and works on the copy:
+
+  the gate      a clean copy passes; a mod with no record, a record made from another jar, a record no mod
+                belongs to, a record that does not parse, and a new mod with an owed decision are each refused;
+                the grandfathered backlog is not; a record that CLAIMS to be grandfathered is still new
+  add           a small jar built here goes into the three indexes, gets a record that asks for its side, its
+                dimension, its boss, its chests, its loot modifier and its boot, and the mod index gate stays green
+  decide/apply  an answer is recorded; a boss answer becomes a registry entry the validator accepts; an entry the
+                validator refuses leaves the registry byte for byte as it was
+  update        a second build of the jar that dropped a loot table: the table is reported as vanished, the script
+                that still names it is found, the new dimension is asked for
+  remove        the dry run lists the references and changes nothing; --apply takes the mod out of the three
+                indexes, writes the deny pattern into the two clean-up lists and deletes the record
+
+No boot is made (--no-boot): what a boot adds is exercised on the real rig, see README.md.
+Nothing in the real tree is touched. Usage: python .minecraft/dev/mods/intake_test.py
+Exit 0 when every case behaves, 1 otherwise. Python 3.11+.
+"""
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+import zipfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+MC = os.path.dirname(os.path.dirname(HERE))
+REPO = os.path.dirname(MC)
+
+COPY = [
+    ".minecraft/mods/.index",
+    ".minecraft/server_distribution/mods/.index",
+    ".minecraft/distribution/client/mods/.index",
+    ".minecraft/dev/mods",
+    ".minecraft/dev/rosters",
+    ".minecraft/dev/registry",
+    ".minecraft/kubejs/config/icraft",
+    ".minecraft/kubejs/data/icraft/tags",
+    ".minecraft/kubejs/server_scripts/gates/astages_restrictions.js",
+    ".minecraft/dev/gen_keybinds.ps1",
+    ".minecraft/config/Crust/default_game_rules.toml",
+    ".minecraft/config/apotheosis/adventure.cfg",
+    ".minecraft/config/iridescent_difficulty-common.toml",
+    ".minecraft/cleanup_stale_jars.ps1",
+    ".minecraft/custom_jars_manifest.json",
+    ".minecraft/server_distribution/client_only_mods.txt",
+    ".minecraft/server_distribution/server_install.ps1",
+    ".minecraft/server_distribution/server_install.sh",
+    ".minecraft/server_distribution/update_mods.ps1",
+    ".minecraft/server_distribution/update_mods.sh",
+    ".minecraft/server_distribution/iridescentserver.sh",
+    ".minecraft/server_distribution/strip_client_mods.bat",
+    ".minecraft/server_distribution/strip_client_mods.sh",
+    ".minecraft/server_distribution/IridescentCraft Dedicated Server/update_mods.ps1",
+    "iridescent-launcher/icraft-core/src/packwiz.rs",
+    "iridescent-launcher/icraft-core/src/config.rs",
+]
+ROOT = ".minecraft/mods/.index/"
+SERVER = ".minecraft/server_distribution/mods/.index/"
+CLIENT = ".minecraft/distribution/client/mods/.index/"
+RECORDS = ".minecraft/dev/mods/records/"
+BUNDLE = RECORDS + "grandfathered.json"
+SLUG = "gate-test-mod"
+MOD = "gatetest"
+
+
+def build_jar(path, version, with_vault=True, with_far2=False):
+    """A mod jar small enough to read in one look: one item, one boss-tagged entity, one dimension, one chest
+    table, one loot modifier, one config-less mods.toml."""
+    files = {
+        "META-INF/mods.toml": (
+            'modLoader="javafml"\nloaderVersion="[47,)"\nlicense="MIT"\n'
+            '[[mods]]\nmodId="%s"\nversion="%s"\ndisplayName="Gate Test Mod"\n'
+            '[[dependencies.%s]]\nmodId="forge"\nmandatory=true\nversionRange="[47,)"\nordering="NONE"\nside="BOTH"\n' % (MOD, version, MOD)),
+        "assets/%s/lang/en_us.json" % MOD: json.dumps({
+            "item.%s.widget" % MOD: "Widget", "entity.%s.big_boss" % MOD: "Big Boss", "key.%s.open" % MOD: "Open"}),
+        "data/%s/dimension/far.json" % MOD: json.dumps({"type": "minecraft:overworld", "generator": {"type": "minecraft:flat"}}),
+        "data/forge/tags/entity_types/bosses.json": json.dumps({"replace": False, "values": ["%s:big_boss" % MOD]}),
+        "data/%s/recipes/widget.json" % MOD: json.dumps({"type": "minecraft:crafting_shapeless", "ingredients": [{"item": "minecraft:stick"}],
+                                                        "result": {"item": "%s:widget" % MOD}}),
+        "data/%s/loot_modifiers/extra.json" % MOD: json.dumps({"type": "%s:extra" % MOD, "conditions": []}),
+        "data/forge/loot_modifiers/global_loot_modifiers.json": json.dumps({"replace": False, "entries": ["%s:extra" % MOD]}),
+    }
+    if with_vault:
+        files["data/%s/loot_tables/chests/vault.json" % MOD] = json.dumps({"type": "minecraft:chest", "pools": []})
+    if with_far2:
+        files["data/%s/dimension/farther.json" % MOD] = json.dumps({"type": "minecraft:overworld", "generator": {"type": "minecraft:flat"}})
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name in sorted(files):
+            zf.writestr(zipfile.ZipInfo(name, (2026, 1, 1, 0, 0, 0)), files[name])
+
+
+class Sandbox:
+    def __init__(self):
+        self.dir = tempfile.mkdtemp(prefix="mod-intake-test-")
+        for rel in COPY:
+            src = os.path.join(REPO, *rel.split("/"))
+            dst = os.path.join(self.dir, *rel.split("/"))
+            os.makedirs(os.path.dirname(dst), exist_ok=True)
+            if os.path.isdir(src):
+                shutil.copytree(src, dst, ignore=shutil.ignore_patterns(".cache", "__pycache__"))
+            elif os.path.isfile(src):
+                shutil.copy2(src, dst)
+        self.jars = os.path.join(self.dir, "jars")
+        os.makedirs(self.jars)
+
+    def path(self, rel):
+        return os.path.join(self.dir, *rel.split("/"))
+
+    def read(self, rel):
+        with open(self.path(rel), "rb") as f:
+            return f.read()
+
+    def write(self, rel, data):
+        os.makedirs(os.path.dirname(self.path(rel)), exist_ok=True)
+        with open(self.path(rel), "wb") as f:
+            f.write(data if isinstance(data, bytes) else data.encode("utf-8"))
+
+    def exists(self, rel):
+        return os.path.exists(self.path(rel))
+
+    def tool(self, script, *args):
+        env = dict(os.environ)
+        env.pop("ICRAFT_BOOT_JAR_CACHE", None)
+        r = subprocess.run([sys.executable, "-I", self.path(".minecraft/dev/mods/" + script)] + list(args),
+                           capture_output=True, text=True, errors="replace", env=env)
+        return r.returncode, r.stdout + r.stderr
+
+    def intake(self, *args):
+        return self.tool("intake.py", *args)
+
+    def bundle(self):
+        return json.loads(self.read(BUNDLE).decode("utf-8"))
+
+    def write_bundle(self, doc):
+        self.write(BUNDLE, json.dumps(doc, indent=1) + "\n")
+
+    def record(self, slug):
+        if self.exists(RECORDS + slug + ".json"):
+            return json.loads(self.read(RECORDS + slug + ".json").decode("utf-8"))
+        return self.bundle()["records"][slug]
+
+    def digest(self, rels):
+        h = hashlib.sha256()
+        for rel in rels:
+            root = self.path(rel)
+            if os.path.isfile(root):
+                h.update(open(root, "rb").read())
+                continue
+            for dp, dn, fn in os.walk(root):
+                dn.sort()
+                for f in sorted(fn):
+                    h.update(os.path.relpath(os.path.join(dp, f), self.dir).encode())
+                    h.update(open(os.path.join(dp, f), "rb").read())
+        return h.hexdigest()
+
+    def close(self):
+        shutil.rmtree(self.dir, ignore_errors=True)
+
+
+RESULTS = []
+
+
+def check(name, ok, detail=""):
+    RESULTS.append((name, ok))
+    print("  %s  %s%s" % ("ok  " if ok else "FAIL", name, "" if ok else "\n        " + detail.strip().replace("\n", "\n        ")[-1800:]))
+
+
+def first_grandfathered(sb):
+    base = json.loads(sb.read(".minecraft/dev/mods/intake_baseline.json").decode("utf-8"))["grandfathered"]
+    for slug in sorted(base):
+        if sb.exists(ROOT + slug + ".pw.toml"):
+            return slug
+    raise SystemExit("the baseline names no mod of the index")
+
+
+def gate_cases():
+    print("the gate")
+    sb = Sandbox()
+    try:
+        rc, out = sb.intake("check")
+        check("a clean copy passes", rc == 0 and "OK -" in out, out)
+        check("the grandfathered backlog is reported and is not a failure", rc == 0 and "decisions owed" in out, out)
+        victim = first_grandfathered(sb)
+
+        def case(name, expect, mutate):
+            s2 = Sandbox()
+            try:
+                mutate(s2)
+                rc2, out2 = s2.intake("check")
+                check(name, rc2 == 1 and expect in out2, "exit %s, expected %r in:\n%s" % (rc2, expect, out2))
+            finally:
+                s2.close()
+
+        new_meta = ("filename = 'gate-test-mod-1.0.0.jar'\nname = 'Gate Test Mod'\nside = 'both'\n\n[download]\nhash = '%s'\n"
+                    "hash-format = 'sha1'\nmode = 'url'\nurl = 'https://example.invalid/gate-test-mod-1.0.0.jar'\n" % ("0" * 40))
+
+        def add_meta(s):
+            s.write(ROOT + SLUG + ".pw.toml", new_meta)
+            rc3, out3 = s.tool("mod_index.py", "generate")
+            assert rc3 == 0, out3
+
+        case("a mod added to the index with no record is refused", "NO RECORD   " + SLUG, add_meta)
+        def drop(s):
+            doc = s.bundle()
+            del doc["records"][victim]
+            s.write_bundle(doc)
+        case("a grandfathered mod whose record was deleted is refused", "NO RECORD   " + victim, drop)
+
+        def bump(s):
+            raw = s.read(ROOT + victim + ".pw.toml").decode("utf-8")
+            line = [l for l in raw.split("\n") if l.startswith("filename")][0]
+            s.write(ROOT + victim + ".pw.toml", raw.replace(line, "filename = 'some-other-version-9.9.9.jar'"))
+            s.tool("mod_index.py", "generate")
+        case("a jar changed in the index without `update` is refused", "NO RECORD OF THIS JAR   " + victim, bump)
+        def orphan(s):
+            rec = dict(s.record(victim), mod="no-such-mod")
+            s.write(RECORDS + "no-such-mod.json", json.dumps(rec))
+        case("a record no mod belongs to is refused", "RECORD WITHOUT A MOD   no-such-mod", orphan)
+
+        def orphan_in_bundle(s):
+            doc = s.bundle()
+            doc["records"]["no-such-mod"] = dict(doc["records"][victim], mod="no-such-mod")
+            s.write_bundle(doc)
+        case("... also when it sits in the bundle", "RECORD WITHOUT A MOD   no-such-mod", orphan_in_bundle)
+        case("a record that does not parse is refused", "does not parse", lambda s: s.write(RECORDS + "broken.json", "{ not json"))
+        case("a bundle that does not parse is refused", "does not parse", lambda s: s.write(BUNDLE, "{ not json"))
+
+        def twice(s):
+            s.write(RECORDS + victim + ".json", json.dumps(s.record(victim)))
+        case("a record that exists twice is refused", "exists twice", twice)
+
+        def claims(s):
+            add_meta(s)
+            rec = s.record(victim)
+            rec.update(mod=SLUG, jar="gate-test-mod-1.0.0.jar", hash="sha1:" + "0" * 40, side="both", raised="grandfather")
+            rec["decisions"] = [{"key": "tier-gate", "surface": "tier-gate", "status": "owed", "raised": "grandfather"}]
+            s.write(RECORDS + SLUG + ".json", json.dumps(rec))
+        case("a new mod whose record claims to be grandfathered is still new", "OWED   " + SLUG, claims)
+
+        def side_differs(s):
+            doc = s.bundle()
+            rec = doc["records"][victim]
+            rec["side"] = "client" if rec["side"] != "client" else "both"
+            s.write_bundle(doc)
+        case("a record whose side is not the index's is refused", "SIDE   " + victim, side_differs)
+    finally:
+        sb.close()
+
+
+def flow():
+    print("add, decide, apply, update, remove (on a jar built here, without a boot)")
+    sb = Sandbox()
+    try:
+        jar1 = os.path.join(sb.jars, "gate-test-mod-1.0.0.jar")
+        jar2 = os.path.join(sb.dir, "new", "gate-test-mod-1.1.0.jar")
+        build_jar(jar1, "1.0.0")
+        build_jar(jar2, "1.1.0", with_vault=False, with_far2=True)
+        # a script, a quest and a config that name the mod: what update and remove have to find
+        sb.write(".minecraft/kubejs/server_scripts/loot/gate_test_rule.js",
+                 "LootJS.modifiers(e => { e.addLootTableModifier('gatetest:chests/vault').addLoot('gatetest:widget') })\n"
+                 "if (Platform.isLoaded('gatetest')) { console.log('here') }\n")
+        sb.write(".minecraft/config/heracles/quests/test/q.json", '{"tasks": {"a": {"entity": {"type": "gatetest:big_boss"}}}}')
+        sb.write(".minecraft/config/gatetest-common.toml", "[general]\nvalue = 1\n")
+        before_index = sb.digest([ROOT, SERVER, CLIENT])
+
+        rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/gate-test-mod-1.0.0.jar",
+                            "--slug", SLUG, "--no-boot", "--mods", sb.jars)
+        check("add: exits 0 and writes the record", rc == 0 and sb.exists(RECORDS + SLUG + ".json"), out)
+        check("add: the metafile is in the source index and in both generated indexes",
+              all(sb.exists(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
+        rc2, out2 = sb.tool("mod_index.py", "check")
+        check("add: the mod index gate is green afterwards", rc2 == 0, out2)
+        meta = sb.read(ROOT + SLUG + ".pw.toml").decode("utf-8")
+        check("add: the metafile carries the jar's own sha512",
+              hashlib.sha512(open(jar1, "rb").read()).hexdigest() in meta and "hash-format = 'sha512'" in meta, meta)
+        rec = sb.record(SLUG) if sb.exists(RECORDS + SLUG + ".json") else {"decisions": []}
+        keys = dict((d["key"], d) for d in rec["decisions"])
+        for want in ("side", "boot", "tier-gate", "dimension:gatetest:far", "boss:gatetest:big_boss", "loot:chests", "loot:modifiers", "keys", "codex"):
+            check("add: the record asks about %s" % want, want in keys, ", ".join(keys))
+        check("add: side is answered by --side, the boot is owed without a boot",
+              keys.get("side", {}).get("status") == "decided" and keys.get("boot", {}).get("status") == "owed", json.dumps(keys.get("boot")))
+        check("add: every decision says what happens by default",
+              all(d.get("default") for d in rec["decisions"] if d["key"] != "boot"), "")
+        rc, out = sb.intake("check")
+        check("the gate refuses the new mod while decisions are owed", rc == 1 and "OWED   " + SLUG in out, out)
+        rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/x.jar", "--slug", "again", "--no-boot", "--mods", sb.jars)
+        check("add: a jar that is already in the index is refused", rc == 2 and "already in the index" in out, out)
+        rc, out = sb.intake("show", SLUG)
+        check("show: the record reads as text, with DECIDE lines", rc == 0 and "DECIDE :" in out and "default:" in out, out)
+
+        # decide and apply
+        rc, out = sb.intake("decide", SLUG, "boss:gatetest:big_boss", "mob", "--note", "a test entity")
+        check("decide: `mob` needs no registry entry", rc == 0 and "DECIDED" in out, out)
+        rc, out = sb.intake("decide", SLUG, "dimension:gatetest:far", "3")
+        check("decide: a tier is an answer waiting for apply", rc == 0 and "UNAPPLIED" in out, out)
+        reg_before = sb.digest([".minecraft/kubejs/config/icraft/registry"])
+        rc, out = sb.intake("apply", SLUG)
+        check("apply: an entry the validator refuses leaves the registries byte for byte",
+              rc == 1 and sb.digest([".minecraft/kubejs/config/icraft/registry"]) == reg_before and "NOTHING was kept" in out, out)
+        rc, out = sb.intake("check")
+        check("the gate names a decided, unapplied decision", rc == 1 and "NOT APPLIED   " + SLUG in out, out)
+        rc, out = sb.intake("decide", SLUG, "dimension:gatetest:far", "untiered")
+        check("decide: `untiered` needs no registry entry", rc == 0 and "DECIDED" in out, out)
+        rc, out = sb.intake("decide", SLUG, "side", "sideways")
+        check("decide: an answer that is none of the options is refused", rc == 2, out)
+        rc, out = sb.intake("decide", SLUG, "boot", "accepted")
+        check("decide: the boot is not accepted without a reason", rc == 2, out)
+        rc, out = sb.intake("decide", SLUG, "boot", "accepted", "--note", "test jar: never booted")
+        rc, out = sb.intake("decide", SLUG, "--defaults", "--note", "test")
+        check("decide --defaults closes the rest", rc == 0, out)
+        rc, out = sb.intake("check")
+        check("the gate passes once every decision of the new mod is answered", rc == 0 and "1 new (1 complete)" in out, out)
+
+        # a real boss-like entity of the pack that is in no list: the entry must validate
+        boss = None
+        for r in sb.bundle()["records"].values():
+            for d in r["decisions"]:
+                if d["key"].startswith("boss:") and d["status"] == "owed" and any("registered: category" in e for e in d.get("evidence", [])):
+                    boss = (r["mod"], d["key"])
+                    break
+            if boss:
+                break
+        if boss:
+            rc, out = sb.intake("decide", boss[0], boss[1], "named", "tier=4", "--note", "test")
+            rc, out = sb.intake("apply", boss[0])
+            reg = json.loads(sb.read(".minecraft/kubejs/config/icraft/registry/bosses.json").decode("utf-8"))
+            check("apply: a decided boss becomes a registry entry the validator accepts (%s)" % boss[1],
+                  rc == 0 and boss[1][5:] in reg["bosses"] and reg["bosses"][boss[1][5:]]["flags"] == ["boss", "x3"], out)
+            rc, out = sb.intake("show", boss[0])
+            check("apply: the record then reads the answer from the registry", "[registry]" in out and boss[1] + "  [decided]" in out, out)
+            check("decide: a grandfathered record stays in the bundle", not sb.exists(RECORDS + boss[0] + ".json") and
+                  [d for d in sb.bundle()["records"][boss[0]]["decisions"] if d["key"] == boss[1]][0].get("answer") == "named", "")
+        else:
+            check("apply: a boss-like entity in no list exists to test with", True)
+
+        # update
+        rc, out = sb.intake("update", SLUG, jar2, "--url", "https://example.invalid/gate-test-mod-1.1.0.jar", "--no-boot", "--mods", sb.jars,
+                            "--out", os.path.join(sb.dir, "update.txt"))
+        check("update: exits 0", rc == 0, out)
+        check("update: the metafile names the new jar in all three indexes",
+              all(b"gate-test-mod-1.1.0.jar" in sb.read(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
+        check("update: the loot table that left the jar is reported as vanished", "gatetest:chests/vault" in out and "vanished" in out, out)
+        check("update: the script that still names it is found", "kubejs/server_scripts/loot/gate_test_rule.js" in out, out)
+        check("update: it says that without a boot the registered ids are not known", "No boot diff" in out, out)
+        rec = sb.record(SLUG)
+        keys = dict((d["key"], d) for d in rec["decisions"])
+        check("update: the new dimension is asked for, by the update",
+              keys.get("dimension:gatetest:farther", {}).get("raised") == "update" and keys["dimension:gatetest:farther"]["status"] == "owed", json.dumps(keys.get("dimension:gatetest:farther")))
+        check("update: answers given before are kept", keys.get("boss:gatetest:big_boss", {}).get("answer") == "mob", json.dumps(keys.get("boss:gatetest:big_boss")))
+        check("update: the record is of the new jar and has a history line", rec["jar"] == "gate-test-mod-1.1.0.jar" and rec.get("history"), "")
+        rc, out = sb.intake("check")
+        check("the gate refuses the update while its new questions are owed", rc == 1 and "OWED   " + SLUG in out, out)
+
+        # the launcher's own update: the metafile already names a third build, the record still the second
+        jar3 = os.path.join(sb.dir, "new", "gate-test-mod-1.2.0.jar")
+        build_jar(jar3, "1.2.0", with_vault=False, with_far2=True)
+        meta = sb.read(ROOT + SLUG + ".pw.toml").decode("utf-8")
+        meta = meta.replace("gate-test-mod-1.1.0.jar", "gate-test-mod-1.2.0.jar").replace(
+            hashlib.sha512(open(jar2, "rb").read()).hexdigest(), hashlib.sha512(open(jar3, "rb").read()).hexdigest())
+        sb.write(ROOT + SLUG + ".pw.toml", meta)
+        rc, out = sb.intake("check")
+        check("a metafile moved by hand to another jar is refused, even before the indexes are regenerated",
+              rc == 1 and "NO RECORD OF THIS JAR   " + SLUG in out, out)
+        rc, out = sb.intake("update", SLUG, jar3, "--no-boot", "--mods", sb.jars)
+        check("update: a metafile the launcher already moved is taken as it is", rc == 0 and "left as it is" in out
+              and sb.record(SLUG)["jar"] == "gate-test-mod-1.2.0.jar" and b"gate-test-mod-1.2.0.jar" in sb.read(SERVER + SLUG + ".pw.toml"), out)
+        jar2 = jar3
+        own = sorted(slug for slug, r in sb.bundle()["records"].items() if r.get("own") and sb.exists(ROOT + slug + ".pw.toml"))
+        check("the pack has own jars to test with", bool(own), "")
+        if own:
+            before_own = sb.digest([ROOT, SERVER, CLIENT, RECORDS])
+            rc, out = sb.intake("update", own[0], jar2, "--no-boot", "--mods", sb.jars)
+            check("update: one of the pack's own jars is refused and nothing is written (%s)" % own[0],
+                  rc == 2 and "own jars" in out and sb.digest([ROOT, SERVER, CLIENT, RECORDS]) == before_own, out)
+            rc, out = sb.intake("update", own[0], jar2, "--old-jar", jar1, "--diff-only", "--mods", sb.jars)
+            check("update --diff-only: compares two jars and writes nothing",
+                  rc == 0 and "gatetest:chests/vault" in out and sb.digest([ROOT, SERVER, CLIENT, RECORDS]) == before_own, out)
+
+        # remove
+        shutil.copy2(jar2, os.path.join(sb.jars, os.path.basename(jar2)))
+        os.remove(jar1)
+        check("a new mod's record is a file of its own, not in the bundle", sb.exists(RECORDS + SLUG + ".json") and SLUG not in sb.bundle()["records"], "")
+        watched = [ROOT, SERVER, CLIENT, RECORDS, ".minecraft/cleanup_stale_jars.ps1", "iridescent-launcher/icraft-core/src/config.rs"]
+        before = sb.digest(watched)
+        rc, out = sb.intake("remove", SLUG, "--mods", sb.jars)
+        check("remove (dry run): changes nothing", rc == 0 and sb.digest(watched) == before and "DRY RUN" in out, out)
+        for want in ("kubejs/server_scripts/loot/gate_test_rule.js", "config/heracles/quests/test/q.json", "config/gatetest-common.toml",
+                     "the mod id gatetest", "Deny-list pattern: 'gate-test-mod-'", "How the jar leaves"):
+            check("remove (dry run): reports %s" % want, want in out, out)
+        rc, out = sb.intake("remove", SLUG, "--apply", "--why", "test", "--mods", sb.jars)
+        check("remove --apply: exits 0", rc == 0, out)
+        check("remove --apply: the metafile is gone from all three indexes", not any(sb.exists(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
+        check("remove --apply: the record is gone", not sb.exists(RECORDS + SLUG + ".json"), out)
+        check("remove --apply: the indexes are what they were before the add", sb.digest([ROOT, SERVER, CLIENT]) == before_index, out)
+        ps1 = sb.read(".minecraft/cleanup_stale_jars.ps1").decode("utf-8")
+        rs = sb.read("iridescent-launcher/icraft-core/src/config.rs").decode("utf-8")
+        check("remove --apply: the deny pattern is in both clean-up lists", "'gate-test-mod-'" in ps1 and '"gate-test-mod-"' in rs, ps1[-1500:])
+        real_ps1 = open(os.path.join(MC, "cleanup_stale_jars.ps1"), "rb").read().decode("utf-8")
+        check("remove --apply: the clean-up script keeps its line endings and every old pattern",
+              ("\r\n" in ps1) == ("\r\n" in real_ps1) and all(("'%s'" % p) in ps1 for p in ("truly_modular", "fastback")), "")
+        rc, out = sb.tool("mod_index.py", "check")
+        check("remove --apply: the mod index gate is green", rc == 0, out)
+        rc, out = sb.intake("check")
+        check("remove --apply: the intake gate is green", rc == 0, out)
+    finally:
+        sb.close()
+
+
+def main():
+    gate_cases()
+    flow()
+    bad = [n for n, ok in RESULTS if not ok]
+    print("")
+    print("intake_test: %d checks, %d failed" % (len(RESULTS), len(bad)))
+    return 1 if bad else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
