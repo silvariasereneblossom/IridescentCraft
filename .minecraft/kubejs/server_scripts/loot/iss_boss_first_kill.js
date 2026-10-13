@@ -26,6 +26,7 @@
 // =============================================================================
 
 try {
+  var ItemEntity_fk = Java.loadClass('net.minecraft.world.entity.item.ItemEntity')
   var FIRST_KILL_DROPS = [
     { entity: 'irons_spellbooks:dead_king',       item: 'irons_spellbooks:necronomicon_spell_book', flag: 'dead_king' },
     { entity: 'irons_spellbooks:archevoker',      item: 'irons_spellbooks:evoker_spell_book',       flag: 'archevoker' },
@@ -58,14 +59,22 @@ try {
         var hadFirst = pdata.contains(flagKey) && pdata.getBoolean(flagKey)
         // Already got the guarantee: nothing more, unless the entry has a repeat chance.
         if (hadFirst && !(entry.repeatChance > 0 && Math.random() < entry.repeatChance)) return
-        // Drop at the boss (vanilla Entity.spawnAtLocation(ItemStack)); the flag
-        // is set only after the drop call returned.
+        // Drop at the boss; the flag is set only after the drop call returned.
         var dropStack = Item.of(entry.item)
         if (!dropStack || dropStack.isEmpty()) {
           console.warn('[iss_first_kill] unknown item ' + entry.item + ' -- no drop, flag not set')
           return
         }
-        ent.spawnAtLocation(dropStack)
+        // [2026-10-13] An explicit item entity, as relic_boss_drops.js and
+        // fragment_core_drops.js do. This was `ent.spawnAtLocation(dropStack)`: on
+        // the real engine that call is AMBIGUOUS (the stack Item.of returns fits
+        // both spawnAtLocation(ItemStack) and spawnAtLocation(ItemLike)) and threw
+        // on every kill that got here, for all five bosses: no first-kill reward
+        // was ever dropped. Measured on a full-pack boot, a Wither killed by a player.
+        var dropLevel = ent.level
+        var dropEntity = new ItemEntity_fk(dropLevel, ent.getX(), ent.getY(), ent.getZ(), dropStack)
+        dropEntity.setDefaultPickUpDelay()
+        dropLevel.addFreshEntity(dropEntity)
         // liveness: a first-kill reward was dropped (the Wither's Dormant Relic has a name of its own)
         if (entry.entity === 'minecraft:wither') icraft.live.fired('wither-relic')
         else icraft.live.fired('first-kill-book')
