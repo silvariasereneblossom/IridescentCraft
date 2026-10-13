@@ -49,17 +49,21 @@ Flags: *(none)* = build + deploy to all 3 distro `mods/`; `--no-deploy` = compil
 Content changed, filename/version unchanged (a data tweak or small fix at the same version, e.g. `1.0.0`):
 
 1. **Build + deploy:** `wsl bash -lc "cd /mnt/c/.../<mod> && ./wsl-build.sh"`. Confirm `BUILD SUCCESSFUL` and the three `-> …/mods/<jar>` deploy lines.
-2. **Regen the manifest:** `& '<repo>\.minecraft\dev\regen_custom_jars_manifest.ps1'`. It re-hashes every allowlisted custom jar and rewrites all 3 manifests. Confirm the jar's NEW sha/size prints.
-3. **Sync distros ONLY if you also changed kubejs:** `sync-distros.ps1 -Fix` mirrors `kubejs/{startup,server}_scripts` — NOT mods or datapacks. For a pure jar rebuild it's a no-op; run it only if this change also touched a server/startup script.
+2. **Regen the manifest:** `& '<repo>\.minecraft\dev\regen_custom_jars_manifest.ps1'`. It re-hashes every custom jar, rewrites all 3 `custom_jars_manifest.json`, and refreshes the jars' packwiz markers (`url` + `sha256` in the `.pw.toml` of all three `mods\.index`, through `sync_custom_jar_markers.py`). Confirm the jar's NEW sha/size prints.
+3. **Regenerate the two `expected_state.json` and commit them WITH the change.** A marker under `mods\.index` got a new hash, so `server_distribution\expected_state.json` and `distribution\client\expected_state.json` list a new one: `sync-distros.ps1 -Fix` regenerates them (and mirrors the watched trees: `kubejs` scripts, assets and data, `kubejs\config\icraft`, the Paxi datapacks, `cleanup_stale_jars.ps1`), or `& '<repo>\.minecraft\dev\generate_expected_state.ps1'` alone. Since `e3109139` the freshness gate does not compare the `generated_from` line, so nothing has to be regenerated after the last commit: the old "regenerate after your LAST commit and leave the two files uncommitted" is gone.
 4. **Stage explicitly (jars are tracked), commit, push:**
 ```
 git -C <repo> add <mod-dir>
 git -C <repo> add .minecraft/custom_jars_manifest.json .minecraft/server_distribution/custom_jars_manifest.json .minecraft/distribution/client/custom_jars_manifest.json
 git -C <repo> add .minecraft/mods/<jar> .minecraft/server_distribution/mods/<jar> .minecraft/distribution/client/mods/<jar>
+git -C <repo> add .minecraft/mods/.index/<marker>.pw.toml .minecraft/server_distribution/mods/.index/<marker>.pw.toml .minecraft/distribution/client/mods/.index/<marker>.pw.toml
+git -C <repo> add .minecraft/server_distribution/expected_state.json .minecraft/distribution/client/expected_state.json
 git -C <repo> commit -m "<mod>: <what changed>"
 git -C <repo> push origin main
 ```
 The pre-push hook regenerates `Mod-List.md`; if it blocks the push, `git add .minecraft/wiki/Mod-List.md` + commit + re-push. Never `--no-verify`. (CRLF warnings are normal — the repo's `.gitattributes` normalizes them.)
+
+After a same-name rebuild the hook's registry snapshot check prints `CHANGED: 1 jar(s) of the pack carry another recorded hash than at the snapshot ...` with the jar's name. That does not block the push: most rebuilds change code, not registrations. **When the rebuild added, removed or renamed a registered id** (an item, a block, an entity type, a painting variant, ...), refresh the snapshot from the pushed-to-be commit and commit the folder as a second commit: `powershell -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot`, then `git add .minecraft/dev/registry`. Validators (quests, the boss and dimension registries, the loot audit, the Codex) read that folder as the truth.
 
 ## Scenario B — version bump (filename changes): the lockstep
 
@@ -72,6 +76,10 @@ Bumping the version (e.g. `1.0.0 → 1.1.0`) changes the jar **filename**, and t
 5. **`<mod>.pw.toml`** in `mods/.index/` → `filename`; mirror to both distro `.index/` folders.
 
 Then run Scenario A (build + regen + commit). `git rm` the old-named jar from the 3 mods dirs and `git add` the new one.
+
+A new file name is a new jar for two gates, and both block the push until they are answered:
+- **The registry snapshot check says `STALE`** (the set of jars differs). Commit the release, then `powershell -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot` and commit `.minecraft\dev\registry` as a second commit; the push carries both.
+- **The mod intake gate says `NO RECORD OF THIS JAR <mod>`** (the mod's intake record was made from the old file name). After the release: `python -I .minecraft\dev\mods\intake.py update <mod> <repo>\.minecraft\mods\<new jar>`. It leaves the metafile, the jars and the manifest alone and rewrites the record, with a boot diff against `origin/main`; a question the new version raises has to be answered (`intake.py decide`) before the push. `<mod>` is the metafile's name without `.pw.toml`.
 
 ## Diagnosing "this custom jar shows stale" / "it got removed"
 
@@ -99,7 +107,9 @@ wsl bash -lc "cd /mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraf
 $r = 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft'
 git -C $r add iridescent-relics-mod `
   .minecraft/custom_jars_manifest.json .minecraft/server_distribution/custom_jars_manifest.json .minecraft/distribution/client/custom_jars_manifest.json `
-  .minecraft/mods/iridescent_relics-1.0.0.jar .minecraft/server_distribution/mods/iridescent_relics-1.0.0.jar .minecraft/distribution/client/mods/iridescent_relics-1.0.0.jar
+  .minecraft/mods/iridescent_relics-1.0.0.jar .minecraft/server_distribution/mods/iridescent_relics-1.0.0.jar .minecraft/distribution/client/mods/iridescent_relics-1.0.0.jar `
+  .minecraft/mods/.index/iridescent-relics.pw.toml .minecraft/server_distribution/mods/.index/iridescent-relics.pw.toml .minecraft/distribution/client/mods/.index/iridescent-relics.pw.toml `
+  .minecraft/server_distribution/expected_state.json .minecraft/distribution/client/expected_state.json
 git -C $r commit -m "iridescent_relics: <what changed>"
 git -C $r push origin main   # if the hook rejects: git add .minecraft/wiki/Mod-List.md, commit, re-push
 ```
