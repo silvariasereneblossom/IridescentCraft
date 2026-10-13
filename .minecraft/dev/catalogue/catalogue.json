@@ -4040,7 +4040,7 @@
       "codex-submit"
      ],
      "ownSlots": 0,
-     "names": 18,
+     "names": 20,
      "reads": [
       {
        "name": "icraft.core",
@@ -4070,6 +4070,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
      ]
     },
     {

@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/gates/codex_progression_engine.js
+// @events ServerEvents.commandRegistry, ServerEvents.tags
+// @live codex-balance, codex-exchange, codex-submit
 // =============================================================================
 // IRIDESCENT CODEX — PROGRESSION ENGINE (Phase 1: Engineering token economy)
 // File: kubejs/server_scripts/gates/codex_progression_engine.js
@@ -290,12 +293,49 @@ function codexCurrentTier(player) {
 }
 
 // =============================================================================
+// THE TWO SLOT WALKS — every count and every take in this file.
+// Both go through core.eachMainSlot (0_lib_core.js): the MAIN inventory, slots
+// 0 to 35, non-empty stacks, lowest slot first; never the worn armour (36-39)
+// or the off hand (40). Until 2026-10-13 submit, balance, the tier purchase and
+// the exchange each carried their own copy of these two loops (seven loops,
+// bounded by core.mainSlotCount(); before 2026-10-12 by `inv.size`, which does
+// not exist, so none of them ever ran). What they do is pinned by the suite
+// codex-submit (dev/engine-tests), which gives the same answers before and after.
+// An inventory that cannot be read THROWS here, as the loops did: the command
+// then tells the player it failed instead of reporting "nothing to submit".
+// =============================================================================
+// How many of `itemId` the main inventory holds.
+function codexCountItem(player, itemId) {
+  var held = 0
+  var seen = global.icraft.core.eachMainSlot(player, function (stack) {
+    if (stack.id === itemId) held += stack.count
+  })
+  if (seen < 0) throw new Error('the inventory could not be read')
+  return held
+}
+
+// Take `amount` of `itemId` out of the main inventory, lowest slot first. A
+// stack that reaches 0 is replaced by the empty stack. The caller has counted
+// first: `amount` is never more than codexCountItem answered.
+function codexTakeItem(player, itemId, amount) {
+  var toRemove = amount
+  var seen = global.icraft.core.eachMainSlot(player, function (stack, slot, inv) {
+    if (toRemove <= 0) return true                  // enough taken: stop the walk
+    if (stack.id === itemId) {
+      var take = Math.min(stack.count, toRemove)
+      stack.count = stack.count - take
+      toRemove -= take
+      if (stack.count <= 0) inv.setStackInSlot(slot, Item.empty)
+    }
+  })
+  if (seen < 0) throw new Error('the inventory could not be read')
+}
+
+// =============================================================================
 // SUBMIT — scan inventory, convert eligible materials, consume, report.
 // =============================================================================
 function codexSubmit(player, lane) {
   const pdata = player.persistentData
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
 
   // tier → tokens earned this submission (for the give + the report)
   const earned = { 1: 0, 2: 0, 3: 0 }
@@ -332,12 +372,8 @@ function codexSubmit(player, lane) {
       capKey = codexCapKey(itemId)           // bare key (unchanged)
     }
 
-    // Count this item across the whole inventory.
-    let available = 0
-    for (let i = 0; i < size; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === itemId) available += stack.count
-    }
+    // Count this item across the main inventory.
+    let available = codexCountItem(player, itemId)
     if (available <= 0) continue
     anyEligible = true
 
@@ -354,16 +390,7 @@ function codexSubmit(player, lane) {
     let consumed = (tokens / conv.value) * conv.per
 
     // Consume `consumed` items from the inventory.
-    let toRemove = consumed
-    for (let i = 0; i < size && toRemove > 0; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === itemId) {
-        let take = Math.min(stack.count, toRemove)
-        stack.count = stack.count - take
-        toRemove -= take
-        if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
-      }
-    }
+    codexTakeItem(player, itemId, consumed)
 
     // Bank cap progress + tally tokens.
     pdata.putInt(capKey, already + consumed)
@@ -417,17 +444,10 @@ function codexSubmit(player, lane) {
 // BALANCE — held tokens vs threshold, per tier, + advance check.
 // =============================================================================
 function codexBalance(player) {
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
-
   // Count held tokens per tier.
   const held = { 1: 0, 2: 0, 3: 0 }
   for (let t = 1; t <= 3; t++) {
-    let id = CODEX_TOKENS[t].item
-    for (let i = 0; i < size; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === id) held[t] += stack.count
-    }
+    held[t] = codexCountItem(player, CODEX_TOKENS[t].item)
   }
   // liveness: the balance scan SAW tokens in an inventory (it counted nothing for months)
   if (held[1] + held[2] + held[3] > 0) icraft.live.fired('codex-balance')
@@ -462,32 +482,16 @@ function codexBalance(player) {
 // yet granted, consume the threshold tokens and grant the stage.
 // =============================================================================
 function codexCheckAdvance(player) {
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
-
   for (let t = 1; t <= 3; t++) {
     let c = CODEX_TOKENS[t]
     if (AStages.playerHasStage(c.grantsStage, player)) continue
 
     // Count held tokens of this tier.
-    let held = 0
-    for (let i = 0; i < size; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === c.item) held += stack.count
-    }
+    let held = codexCountItem(player, c.item)
     if (held < c.threshold) continue
 
     // Consume exactly the threshold (the tokens are spent to buy the tier).
-    let toRemove = c.threshold
-    for (let i = 0; i < size && toRemove > 0; i++) {
-      let stack = inv.getStackInSlot(i)
-      if (!stack.isEmpty() && stack.id === c.item) {
-        let take = Math.min(stack.count, toRemove)
-        stack.count = stack.count - take
-        toRemove -= take
-        if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
-      }
-    }
+    codexTakeItem(player, c.item, c.threshold)
 
     codexGrantTier(player, c.grantsStage, c.threshold + ' Tier ' + t + ' Codex tokens')
   }
@@ -553,15 +557,9 @@ function codexExchange(player, tier, amountArg) {
   const rate = CODEX_XP_PER_TOKEN[tier]
   if (!conf || !rate) { player.tell(Text.red('[Codex] Invalid tier: ' + tier)); return 0 }
   const tokenId = conf.item
-  const inv = player.inventory
-  const size = global.icraft.core.mainSlotCount()
 
   // Count held tokens of this tier.
-  let held = 0
-  for (let i = 0; i < size; i++) {
-    let stack = inv.getStackInSlot(i)
-    if (!stack.isEmpty() && stack.id === tokenId) held += stack.count
-  }
+  let held = codexCountItem(player, tokenId)
   if (held <= 0) {
     player.tell(Text.gold('[Codex] ').append(Text.gray('You have no '))
       .append(Text.aqua('Codex Token ' + CODEX_TOKEN_ROMAN[tier])).append(Text.gray(' to exchange.')))
@@ -574,16 +572,7 @@ function codexExchange(player, tier, amountArg) {
   const convert = Math.min(want, held)
 
   // Consume `convert` tokens from the inventory.
-  let toRemove = convert
-  for (let i = 0; i < size && toRemove > 0; i++) {
-    let stack = inv.getStackInSlot(i)
-    if (!stack.isEmpty() && stack.id === tokenId) {
-      let take = Math.min(stack.count, toRemove)
-      stack.count = stack.count - take
-      toRemove -= take
-      if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
-    }
-  }
+  codexTakeItem(player, tokenId, convert)
 
   // Grant the XP as POINTS — fills the vanilla XP bar + plays the orb sound, and
   // is what Aptitude level-ups deduct against. (INT XP-gain perks, if any, scale

@@ -1389,7 +1389,7 @@ own one-shot `global._*` flags.
 
 ### `gates/codex_progression_engine.js`
 
-- place 53 of 160
+- place 53 of 160; header: @events @file @live
 - events: `ServerEvents.commandRegistry`, `ServerEvents.tags` for `item`
 - features: `codex-balance`, `codex-exchange`, `codex-submit`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`

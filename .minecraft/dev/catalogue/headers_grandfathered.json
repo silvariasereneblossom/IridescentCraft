@@ -63,7 +63,6 @@
   "food_dedup_recipes.js",
   "gates/astages_restrictions.js",
   "gates/codex_boss_rush.js",
-  "gates/codex_progression_engine.js",
   "gates/milestone_detection.js",
   "icraftsets_command.js",
   "idle_hunger_pause.js",
