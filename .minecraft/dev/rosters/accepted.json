@@ -19,7 +19,7 @@
 
   "x3-not-named": {
     "majestic_menaces:teikoku_senshi": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and designed health, no kill tokens; open: named or not",
-    "ars_nouveau:wilden_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and a boss-rush slot, not `boss` for core.isBoss, no kill tokens; open",
+    "ars_nouveau:wilden_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and a boss-rush slot, `boss` since the ruling of 2026-10-12, no kill tokens (ruled: on no kill roster)",
     "theabyss:nightblade_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
     "theabyss:the_roka": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
     "theabyss:elder": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not"
@@ -33,7 +33,9 @@
     "theabyss:ice_knight": "`boss` and an Abyss boss, on no kill roster, no x3, no designed health; open",
     "theabyss:nightblade_boss": "see x3-not-named",
     "theabyss:the_roka": "see x3-not-named",
-    "theabyss:elder": "see x3-not-named"
+    "theabyss:elder": "see x3-not-named",
+    "ars_nouveau:wilden_boss": "ruled 2026-10-12: `boss` (core.isBoss, no mob-tier health), on no kill roster, no tokens; see x3-not-named",
+    "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). No effect in play: the game gives the entity the type minecraft:vindicator (see its note)"
   },
 
   "named-not-in-rush": {
