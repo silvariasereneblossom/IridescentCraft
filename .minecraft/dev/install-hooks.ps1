@@ -9,8 +9,9 @@
 # and a new mod owes no decision)
 # and, when a pushed commit touches a kubejs script, the three script lints
 # (lint_kubejs_rhino.js, lint_kubejs_traps.js, lint_kubejs_scope.py; any flag
-# blocks). Re-run with -Install after this template changes: the installed
-# hook is a copy, it does not follow the repo.
+# blocks), the engine test suite, and the script load-order and catalogue
+# gate (dev/catalogue). Re-run with -Install after this template changes: the
+# installed hook is a copy, it does not follow the repo.
 # Bypass for emergencies: git push --no-verify.
 #
 # Run once after cloning the IridescentCraft repo on a new host:
@@ -65,6 +66,10 @@ $hookContent = @'
 #   3b. engine test suite     - dev/engine-tests/run.py fast + the method-ref
 #                                validator; only when a script, a test or a
 #                                pinned engine jar changed (blocking)
+#   +  catalogue/load_order.js, gen_catalogue.js --check - the script load order and every
+#                                constraint on it; the generated script catalogue is fresh (its
+#                                own block; only when a script, the catalogue or the liveness
+#                                manifest changed)
 #   4. sync-distros.ps1       - verify the three distros stayed in sync
 #   5. lessons-pre-push.ps1   - track commits-since-last-scan + optionally
 #                                auto-invoke scan-lessons.ps1 / qa-lessons.ps1
@@ -514,6 +519,71 @@ if [ $ET_RUN -eq 1 ] && [ -f "$DEV/engine-tests/run.py" ]; then
         echo "  Fix the script (or the test, if the behaviour change is intended) and re-push."
         echo "  Bypass: git push --no-verify"
         exit 1
+    fi
+fi
+
+# --- Script load order and catalogue (blocking; one self-contained block) ---
+# dev/catalogue/load_order.js computes the order KubeJS really loads the scripts in (the folder
+# as NTFS lists it, then `// priority`) and holds every order constraint to it, in all three
+# trees: a global read while a script loads, a global set and read in handlers of one event,
+# every `// @after` line; and that header fields say what the code does. It FAILS when a new
+# or renamed file loads before something it needs, with both names in the line.
+# dev/catalogue/gen_catalogue.js --check FAILS when the committed catalogue
+# (dev/catalogue/CATALOGUE.md, catalogue.json: every script's events, globals and place in the
+# load order, every event with its handlers in the order they run) is not what the scripts are
+# today. Regenerate and commit:
+#   node --expose-internals .minecraft/dev/catalogue/gen_catalogue.js
+# (after gen_liveness.js when a registration changed: the catalogue is checked against the
+# liveness manifest). Runs when a pushed commit changes a kubejs script in any distro, the
+# catalogue tools or files, or the liveness manifest; about a second. Neither tool calls git.
+# Self-contained: its own variables (SC_*), nothing from the other steps but PUSHED and DEV.
+SC_DIR="$DEV/catalogue"
+if [ -f "$SC_DIR/load_order.js" ] && [ -f "$SC_DIR/gen_catalogue.js" ]; then
+    SC_ZERO=0000000000000000000000000000000000000000
+    SC_RUN=0
+    [ -z "$PUSHED" ] && SC_RUN=1
+    while read -r _sc_lref sc_lsha _sc_rref sc_rsha; do
+        [ -z "$sc_lsha" ] && continue
+        [ "$sc_lsha" = "$SC_ZERO" ] && continue
+        if [ "$sc_rsha" != "$SC_ZERO" ] && git cat-file -e "$sc_rsha^{commit}" 2>/dev/null; then
+            sc_base="$sc_rsha"
+        else
+            sc_base="$(git merge-base "$sc_lsha" origin/main 2>/dev/null)"
+        fi
+        if [ -z "$sc_base" ]; then SC_RUN=1; break; fi
+        if git diff --name-only "$sc_base" "$sc_lsha" 2>/dev/null \
+            | grep -Eq 'kubejs/(server|startup|client)_scripts/.*\.js$|^\.minecraft/dev/catalogue/|^\.minecraft/dev/loud/liveness_manifest\.json$'; then
+            SC_RUN=1; break
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $SC_RUN -eq 1 ]; then
+        echo "[pre-push] kubejs scripts or the catalogue changed: checking the load order and the catalogue"
+        SC_FAIL=0
+        if command -v node >/dev/null 2>&1; then
+            # the exit code is taken from node itself, never from a pipeline
+            sc_out="$(node --expose-internals "$SC_DIR/load_order.js" < /dev/null 2>&1)"
+            sc_rc=$?
+            printf '%s\n' "$sc_out"
+            [ $sc_rc -ne 0 ] && SC_FAIL=1
+            sc_out="$(node --expose-internals "$SC_DIR/gen_catalogue.js" --check < /dev/null 2>&1)"
+            sc_rc=$?
+            printf '%s\n' "$sc_out"
+            [ $sc_rc -ne 0 ] && SC_FAIL=1
+        else
+            echo "[pre-push] node not found: the load-order check and the catalogue check could NOT run"
+            SC_FAIL=1
+        fi
+        if [ $SC_FAIL -ne 0 ]; then
+            echo ""
+            echo "[pre-push] the script load-order / catalogue gate FAILED (lines above). A FAIL line of"
+            echo "  [load-order] names the script and what it needs; a STALE catalogue is regenerated with"
+            echo "    node --expose-internals .minecraft/dev/catalogue/gen_catalogue.js"
+            echo "  and committed with the change. .minecraft/dev/catalogue/README.md explains both."
+            echo "  Bypass: git push --no-verify"
+            exit 1
+        fi
     fi
 fi
 

@@ -18,6 +18,12 @@ name: KubeJS script checks
 #           (lint_kubejs_traps.test.js: every fixture under dev/lint-fixtures is flagged exactly as it
 #           marks itself, the members the lint calls missing are the engine suite's, and the ratchet
 #           cases in a temporary git repository).
+#   order   dev/catalogue/load_order.js: the order KubeJS really loads the scripts in (the folder as
+#           NTFS lists it, then `// priority`), and every constraint on it in all three trees: a
+#           global read while a script loads, every `// @after` line, header fields against the code.
+#           And gen_catalogue.js --check: the committed script catalogue (dev/catalogue/CATALOGUE.md,
+#           catalogue.json) is what the scripts are today. The engine job also runs the tools' own
+#           test (suite script-model: the model against the answers recorded on a real server).
 # Not here: the loot audit (it needs the whole instance) and the real-engine boot (a Forge server).
 # The bare-method-reference check has its own workflow (kubejs-method-ref-validator.yml).
 
@@ -34,6 +40,7 @@ on:
       - '.minecraft/dev/rhino_parse/**'
       - '.minecraft/kubejs/config/icraft/**'
       - '.minecraft/dev/loud/**'
+      - '.minecraft/dev/catalogue/**'
       - '.minecraft/dev/rosters/**'
       - '.minecraft/dev/registry/**'
       - '.minecraft/mods/.index/kubejs.pw.toml'
@@ -52,6 +59,7 @@ on:
       - '.minecraft/dev/rhino_parse/**'
       - '.minecraft/kubejs/config/icraft/**'
       - '.minecraft/dev/loud/**'
+      - '.minecraft/dev/catalogue/**'
       - '.minecraft/dev/rosters/**'
       - '.minecraft/dev/registry/**'
   workflow_dispatch:
@@ -92,6 +100,12 @@ jobs:
       - name: lint_kubejs_traps.test.js (the lint still flags what it exists to flag)
         if: always()
         run: node .minecraft/dev/lint_kubejs_traps.test.js
+      - name: load_order.js (the real load order satisfies every constraint; header fields say what the code does)
+        if: always()
+        run: node --expose-internals .minecraft/dev/catalogue/load_order.js
+      - name: gen_catalogue.js --check (the committed script catalogue is fresh)
+        if: always()
+        run: node --expose-internals .minecraft/dev/catalogue/gen_catalogue.js --check
       # The checkout holds one commit; the base is fetched by its hash (a pull request: the target branch).
       - name: Grandfathered counts against the tip before this push
         if: always()
