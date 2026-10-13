@@ -391,6 +391,16 @@ def run_rosters(ctx, suite, snap=None):
     return r.returncode == 0, note, out
 
 
+def run_overloads(ctx, suite, snap=None):
+    """overload_calls.py: no script calls a Java method with a value that fits two of its overloads (the call throws)."""
+    cmd = [sys.executable, "-I", "-B", os.path.join(HERE, "overload_calls.py")]
+    r = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
+    out = r.stdout + r.stderr
+    last = [l for l in out.strip().splitlines() if l.startswith("[overload-calls] ")]
+    note = last[-1][len("[overload-calls] "):].strip() if last else "no [overload-calls] line (exit %d)" % r.returncode
+    return r.returncode == 0, note, out
+
+
 def run_liveness(ctx, suite, snap=None):
     """dev/loud/gen_liveness.js --check: the committed liveness manifest and the game's expected list are what
     the scripts register, name and report today."""
@@ -801,7 +811,7 @@ def run_guard(ctx, suite, snap=None):
 
 KINDS = {"harness": run_harness, "members": run_members, "parse": run_parse, "loot": run_loot,
          "known-false": run_known_false, "truth-fresh": run_truth_fresh, "guard": run_guard, "rosters": run_rosters,
-         "liveness": run_liveness}
+         "liveness": run_liveness, "overloads": run_overloads}
 
 
 def run_suites(ctx, suites, verbose):

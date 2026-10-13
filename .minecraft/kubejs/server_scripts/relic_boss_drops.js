@@ -174,8 +174,18 @@ EntityEvents.death(icraft.guard('relic_boss_drops', 'EntityEvents.death', functi
       killer.give(eye)
       console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye given to ' + killer.username + ' (' + how + ')')
     } else {
-      // Entity.spawnAtLocation(ItemStack): at the dragon, in the dragon's level.
-      entity.spawnAtLocation(eye)
+      // At the dragon, in the dragon's level: an explicit item entity, as the
+      // relic handler above and loot/fragment_core_drops.js do.
+      // [2026-10-13] This was entity.spawnAtLocation(eye). On the real engine that
+      // call is AMBIGUOUS (the stack fits spawnAtLocation(ItemStack) and
+      // spawnAtLocation(ItemLike)) and throws: with nobody in the dimension the
+      // eye was lost, and only the warning below said so. The same call had kept
+      // loot/iss_boss_first_kill.js from ever dropping a reward. (The class is
+      // loaded here: the `var` of the block above is not visible in this handler.)
+      var EyeItemEntity = Java.loadClass('net.minecraft.world.entity.item.ItemEntity')
+      var eyeDrop = new EyeItemEntity(level, entity.getX(), entity.getY(), entity.getZ(), eye)
+      eyeDrop.setDefaultPickUpDelay()
+      level.addFreshEntity(eyeDrop)
       console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye dropped at the dragon (no player in the dimension)')
     }
   } catch (e) {

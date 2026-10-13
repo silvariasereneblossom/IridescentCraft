@@ -95,6 +95,10 @@
                   "suites/liveness.js", "lib/summary.js"]]
     },
     {
+      "name": "overload-calls", "kind": "overloads", "fast": true, "ci": true,
+      "about": "overload_calls.py: no script calls a Java method with a value that fits two of its overloads (entity.spawnAtLocation(Item.of(id)) throws 'the choice of Java method is ambiguous' at the call; it kept every first-kill reward from dropping). The risky overload groups come from truth/engine-members.json; each call shape the scripts use carries the verdict of a real full-pack server"
+    },
+    {
       "name": "liveness-manifest", "kind": "liveness", "fast": true, "ci": true,
       "about": "dev/loud/gen_liveness.js --check: dev/loud/liveness_manifest.json and kubejs/config/icraft/live/expected.json (x3) are exactly what the scripts register, name and report today; a registration added, renamed or removed without regenerating fails here (needs node, like the script lints)"
     },
