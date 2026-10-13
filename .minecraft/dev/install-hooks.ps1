@@ -4,7 +4,9 @@
 # Writes a git pre-push hook that runs sync-distros.ps1 in detect-only mode
 # (push fails if any watched path is out of mirror across the three distros),
 # the mod index gate (dev/mods/mod_index.py check: the three mod indexes and
-# the client-only skip lists are generated from .minecraft/mods/.index)
+# the client-only skip lists are generated from .minecraft/mods/.index),
+# the mod intake gate (dev/mods/intake.py check: every mod has an intake record
+# and a new mod owes no decision)
 # and, when a pushed commit touches a kubejs script, the three script lints
 # (lint_kubejs_rhino.js, lint_kubejs_traps.js, lint_kubejs_scope.py; any flag
 # blocks). Re-run with -Install after this template changes: the installed
@@ -49,6 +51,8 @@ $hookContent = @'
 #   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
 #   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
 #   +  mods/mod_index.py check - the mod index gate (its own block, after step 2)
+#   +  mods/intake.py check  - the mod intake gate: every mod of the index has an intake record,
+#                                a new mod owes no decision (its own block, after the index gate)
 #   +  boot/registry_current.py - is dev/registry still a snapshot of this pack's mods (its own
 #                                block; only when a pushed commit touches the mod set or the snapshot)
 #   +  validate_heracles_quests.py - the quest validator (its own block; only when a
@@ -155,6 +159,67 @@ EOF
             exit 1
         fi
         echo "[pre-push] WARN: mod index gate skipped (needs python 3.11+ on PATH); this push does not touch the mod index."
+    fi
+fi
+
+# --- Mod intake gate (blocking; one self-contained block) ---
+# Every mod of the index has an INTAKE RECORD under .minecraft/dev/mods/records: the surfaces
+# it touches, what its content does by default, and the decision each needs (side, the tier of
+# a dimension, boss or mob, what its chests roll, ...). dev/mods/intake.py check fails when
+#   - a mod of the index has no record, or its record was made from another jar than the index
+#     names (a mod added or updated by hand instead of with intake.py add / intake.py update)
+#   - a NEW mod has a decision that is owed, or one that is decided and not yet applied to the
+#     boss or dimension registry. New = not listed in dev/mods/intake_baseline.json
+#   - a record belongs to no mod of the index, or does not parse
+# It does NOT fail on the owed decisions of the grandfathered mods (the pack as it was at the
+# first audit): that backlog is one count in the OK line; `intake.py audit` lists it by priority.
+# It reads the repo only (no jar, no boot), in under a second, so it runs on every push. Where it
+# cannot run (no python, or a python older than 3.11) it blocks only a push that touches the
+# index, the records, the registries or the tool.
+# Self-contained: its own variables (MI_*), nothing from the other steps but PUSHED and DEV.
+MI_TOOL="$DEV/mods/intake.py"
+if [ -f "$MI_TOOL" ]; then
+    MI_RC=2
+    if command -v python >/dev/null 2>&1; then
+        python -I "$MI_TOOL" check
+        MI_RC=$?
+    fi
+    if [ $MI_RC -eq 1 ]; then
+        echo ""
+        echo "[pre-push] mod intake gate FAILED (the FAIL lines above name the mod and the command)."
+        echo "  A mod is added with      python -I .minecraft/dev/mods/intake.py add <jar> --side ..."
+        echo "  updated with             python -I .minecraft/dev/mods/intake.py update <mod> <new jar>"
+        echo "  removed with             python -I .minecraft/dev/mods/intake.py remove <mod> --apply"
+        echo "  and a decision answered  python -I .minecraft/dev/mods/intake.py decide <mod> <key> <answer>"
+        echo "  The procedure: .minecraft/dev/mods/README.md. Bypass: git push --no-verify"
+        exit 1
+    fi
+    if [ $MI_RC -ne 0 ]; then
+        MI_ZERO=0000000000000000000000000000000000000000
+        MI_TOUCHED=0
+        [ -z "$PUSHED" ] && MI_TOUCHED=1
+        while read -r _mi_lref mi_lsha _mi_rref mi_rsha; do
+            [ -z "$mi_lsha" ] && continue
+            [ "$mi_lsha" = "$MI_ZERO" ] && continue
+            if [ "$mi_rsha" != "$MI_ZERO" ] && git cat-file -e "$mi_rsha^{commit}" 2>/dev/null; then
+                mi_base="$mi_rsha"
+            else
+                mi_base="$(git merge-base "$mi_lsha" origin/main 2>/dev/null)"
+            fi
+            if [ -z "$mi_base" ]; then MI_TOUCHED=1; break; fi
+            if git diff --name-only "$mi_base" "$mi_lsha" 2>/dev/null \
+                | grep -Eq 'mods/\.index/|^\.minecraft/dev/mods/(intake|records/)|^\.minecraft/kubejs/config/icraft/registry/'; then
+                MI_TOUCHED=1; break
+            fi
+        done <<EOF
+$PUSHED
+EOF
+        if [ $MI_TOUCHED -eq 1 ]; then
+            echo "[pre-push] the mod intake gate could NOT run (needs python 3.11+ on PATH) and this push touches the mod index, the intake records or the registries."
+            echo "  Bypass: git push --no-verify"
+            exit 1
+        fi
+        echo "[pre-push] WARN: mod intake gate skipped (needs python 3.11+ on PATH); this push touches neither the mod index nor the intake records."
     fi
 fi
 

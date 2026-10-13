@@ -1,0 +1,95 @@
+name: Mod intake gate
+
+# Every mod of the index has an INTAKE RECORD under .minecraft/dev/mods/records: the
+# surfaces it touches (side, dimensions, boss-like entities, structure chests, loot
+# modifiers, duplicates, gear classes, key mappings, game rules, config, Codex), what its
+# content does while nobody decides, and the decision each needs.
+#
+# .minecraft/dev/mods/intake.py check, the same check as the pre-push hook, for the pushes
+# that did not go through it (another machine, a hook that was never installed, --no-verify):
+#   - a mod of the index with no record, or a record made from another jar than the index
+#     names (a mod added or updated by hand instead of with intake.py add / update)
+#   - a NEW mod (not in dev/mods/intake_baseline.json) with a decision that is owed, or
+#     decided and not applied to the boss or dimension registry
+#   - a record no mod belongs to, or one that does not parse
+# The owed decisions of the grandfathered mods are a backlog, never a failure.
+#
+# History: until 2026-10-13 nobody was asked what a new mod's dimension tier, boss status,
+# chest loot or side should be. A boss mod ran four months as trash mobs for scaling, a
+# dimension five months on tier 1, a client renderer took the server down.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/distribution/client/mods/.index/**'
+      - '.minecraft/dev/mods/**'
+      - '.minecraft/dev/rosters/**'
+      - '.minecraft/dev/registry/**'
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/custom_jars_manifest.json'
+      - '.github/workflows/mod-intake.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/distribution/client/mods/.index/**'
+      - '.minecraft/dev/mods/**'
+      - '.minecraft/dev/rosters/**'
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/custom_jars_manifest.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: intake.py check
+    runs-on: ubuntu-latest
+    steps:
+      # Only what the check and its test read: the repository is large and the jars, the
+      # launcher binary and most of the configs are of no use here.
+      - name: Checkout (index, records, registries, tools)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/mods/.index/
+            /.minecraft/server_distribution/mods/.index/
+            /.minecraft/distribution/client/mods/.index/
+            /.minecraft/dev/mods/
+            /.minecraft/dev/rosters/
+            /.minecraft/dev/registry/
+            /.minecraft/dev/gen_keybinds.ps1
+            /.minecraft/kubejs/config/icraft/
+            /.minecraft/kubejs/data/icraft/tags/
+            /.minecraft/kubejs/server_scripts/gates/astages_restrictions.js
+            /.minecraft/config/Crust/default_game_rules.toml
+            /.minecraft/config/apotheosis/adventure.cfg
+            /.minecraft/config/iridescent_difficulty-common.toml
+            /.minecraft/cleanup_stale_jars.ps1
+            /.minecraft/custom_jars_manifest.json
+            /.minecraft/server_distribution/client_only_mods.txt
+            /.minecraft/server_distribution/*.ps1
+            /.minecraft/server_distribution/*.sh
+            /.minecraft/server_distribution/*.bat
+            /.minecraft/server_distribution/IridescentCraft Dedicated Server/update_mods.ps1
+            /iridescent-launcher/icraft-core/src/packwiz.rs
+            /iridescent-launcher/icraft-core/src/config.rs
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Every mod has a record; a new mod owes no decision
+        run: python -I .minecraft/dev/mods/intake.py check
+
+      # add, decide, apply, update and remove on a jar the test builds, in a temporary
+      # copy; and every case the gate exists to refuse must be refused.
+      - name: The tool does what it says, and the gate still refuses what it exists to refuse
+        run: python -I .minecraft/dev/mods/intake_test.py
