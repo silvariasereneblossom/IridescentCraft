@@ -16,7 +16,8 @@ Copies the index, the records, the registries and the tools to a temporary folde
                 indexes, writes the deny pattern into the two clean-up lists and deletes the record
   update+boot   with a saved boot result (made here, as boot.ps1 writes one) the sweep counts what the game stopped
                 registering; an id that only left the jar's files is checked against the new boot's registries
-  dependencies  a library just added to the tree (index + jar cache, not the instance) provides its mod to `add`
+  dependencies  a library just added to the tree (index + jar cache, not the instance) provides its mod to `add`;
+                `update` refuses a new jar whose dependency nothing provides before it writes anything
 
 No boot is made (--no-boot): what a real boot adds is exercised on the rig, see README.md.
 Nothing in the real tree is touched. Usage: python .minecraft/dev/mods/intake_test.py
@@ -72,14 +73,16 @@ SLUG = "gate-test-mod"
 MOD = "gatetest"
 
 
-def build_jar(path, version, with_vault=True, with_far2=False, drop=(), lang=None):
+def build_jar(path, version, with_vault=True, with_far2=False, drop=(), lang=None, needs=()):
     """A mod jar small enough to read in one look: one item, one boss-tagged entity, one dimension, one chest
-    table, one loot modifier, one config-less mods.toml. `drop`: files left out; `lang`: more language keys."""
+    table, one loot modifier, one config-less mods.toml. `drop`: files left out; `lang`: more language keys;
+    `needs`: more mandatory dependencies."""
     files = {
         "META-INF/mods.toml": (
             'modLoader="javafml"\nloaderVersion="[47,)"\nlicense="MIT"\n'
             '[[mods]]\nmodId="%s"\nversion="%s"\ndisplayName="Gate Test Mod"\n'
-            '[[dependencies.%s]]\nmodId="forge"\nmandatory=true\nversionRange="[47,)"\nordering="NONE"\nside="BOTH"\n' % (MOD, version, MOD)),
+            '[[dependencies.%s]]\nmodId="forge"\nmandatory=true\nversionRange="[47,)"\nordering="NONE"\nside="BOTH"\n' % (MOD, version, MOD)
+            + ''.join('[[dependencies.%s]]\nmodId="%s"\nmandatory=true\nversionRange="[0,)"\nordering="NONE"\nside="BOTH"\n' % (MOD, dep) for dep in needs)),
         "assets/%s/lang/en_us.json" % MOD: json.dumps({
             "item.%s.widget" % MOD: "Widget", "entity.%s.big_boss" % MOD: "Big Boss", "key.%s.open" % MOD: "Open"}),
         "data/%s/dimension/far.json" % MOD: json.dumps({"type": "minecraft:overworld", "generator": {"type": "minecraft:flat"}}),
@@ -540,6 +543,29 @@ def dependencies():
                             "--slug", "gate-dep3", "--no-boot", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
         check("add: a jar in a cache that the index does not name provides nothing",
               rc == 2 and "it needs gatestray" in out and not sb.exists(ROOT + "gate-dep3.pw.toml"), out)
+
+        # D3: update checks the new jar's dependencies the same way, before the metafile is rewritten
+        print("dependencies of update (D3)")
+        jar1 = os.path.join(sb.jars, "gate-test-mod-1.0.0.jar")
+        build_jar(jar1, "1.0.0")
+        rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/gate-test-mod-1.0.0.jar",
+                            "--slug", SLUG, "--no-boot", "--mods", sb.jars)
+        lacking = os.path.join(sb.dir, "new", "gate-test-mod-1.1.0.jar")
+        build_jar(lacking, "1.1.0", needs=("gatemissing",))
+        watched = [ROOT, SERVER, CLIENT, RECORDS]
+        before = sb.digest(watched)
+        rc, out = sb.intake("update", SLUG, lacking, "--url", "https://example.invalid/gate-test-mod-1.1.0.jar", "--no-boot", "--mods", sb.jars)
+        check("update: a new jar that needs a mod nothing provides is refused, and nothing is written",
+              rc == 2 and "needs gatemissing" in out and sb.digest(watched) == before, out)
+        rc, out = sb.intake("update", SLUG, lacking, "--old-jar", jar1, "--diff-only", "--mods", sb.jars)
+        check("update --diff-only: reports the missing dependency and writes nothing",
+              rc == 0 and "DEPENDENCY: the new jar needs gatemissing" in out and sb.digest(watched) == before, out)
+        wants_lib = os.path.join(sb.dir, "new", "gate-test-mod-1.2.0.jar")
+        build_jar(wants_lib, "1.2.0", needs=("gatelib",))
+        rc, out = sb.intake("update", SLUG, wants_lib, "--url", "https://example.invalid/gate-test-mod-1.2.0.jar", "--no-boot", "--mods", sb.jars,
+                            jar_cache=os.path.join(sb.dir, "downloads"))
+        check("update: a new jar that needs the library the tree has goes in",
+              rc == 0 and b"gate-test-mod-1.2.0.jar" in sb.read(ROOT + SLUG + ".pw.toml"), out)
     finally:
         sb.close()
 

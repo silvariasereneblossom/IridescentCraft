@@ -206,7 +206,9 @@ python -I .minecraft/dev/mods/intake.py update <mod> <new jar> --version <Modrin
 python -I .minecraft/dev/mods/intake.py update <mod> <new jar> --file-id <CurseForge file id>
 ```
 
-It compares what the two jars ship (the old jar is taken from the instance), moves the metafile to the new jar,
+It checks the new jar's mandatory dependencies as `add` does (the old jar provides nothing) and refuses before
+anything is written when one is missing (`--force` goes on; `--diff-only` reports it). It compares what the two jars
+ship (the old jar is taken from the instance), moves the metafile to the new jar,
 regenerates the indexes, boots the tree and diffs it against `--base`, and reports: every id that vanished from a
 registry, loot tables and recipes that are gone or newly rejected, loot tables whose content changed, and every
 place in the pack that still names one of them (scripts, kubejs data, the registries, quests, configs of the three

@@ -825,6 +825,18 @@ def cmd_update(args):
         out('')
         out('The old jar %s is not on this PC: no static comparison (pass --old-jar <path>).' % old_name)
 
+    # the dependencies of the new jar, as `add` checks them, before anything is written: the old jar provides nothing
+    inv, ctx = load_inventory(args)
+    recs = scan_jar(new_jar, dict(ctx))
+    missing = missing_dependencies(recs, provided_mods(args, inv, ctx, skip=[new_name, old_name or ''], extra_dirs=[os.path.dirname(new_jar)]))
+    if missing:
+        if not args.diff_only and not args.force:
+            die('the new jar needs %s, which no jar of the pack provides: add that first, with its own record '
+                '(or --force to see the boot fail). Nothing was written' % ', '.join(missing))
+        out('')
+        out('DEPENDENCY: the new jar needs %s, which no jar of the pack provides%s' % (
+            ', '.join(missing), '' if args.diff_only else ' (--force: the boot will say what that does)'))
+
     boot = None
     boot_dir = None
     rc_boot = 0
@@ -950,8 +962,6 @@ def cmd_update(args):
     if not args.diff_only:
         records = core.load_records()
         prev = records.get(m['slug'])
-        inv, ctx = load_inventory(args)
-        recs = scan_jar(new_jar, dict(ctx))
         inv.pop(old_name, None)
         inv[new_name] = recs
         state = derive.PackState(inv, None)
@@ -1623,6 +1633,7 @@ def main():
     p.add_argument('--diff-only', action='store_true', help='compare and sweep; write nothing')
     p.add_argument('--boot-result', help='with --diff-only: a saved boot result of the new side that holds a diff against the old')
     p.add_argument('--out', help='also write the report to this file')
+    p.add_argument('--force', action='store_true', help='go on although a dependency of the new jar is missing')
     common(p)
     p.set_defaults(fn=cmd_update)
 
