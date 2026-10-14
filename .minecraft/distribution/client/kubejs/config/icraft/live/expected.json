@@ -264,6 +264,7 @@
    "spawn_priest_tower@ServerEvents.loaded": "spawn_priest_tower.js",
    "spawn_protection@BlockEvents.broken": "spawn_protection.js",
    "spawn_protection@BlockEvents.placed": "spawn_protection.js",
+   "spawn_village_protection@BlockEvents.placed": "spawn_village_protection.js",
    "spawn_village_protection@EntityEvents.spawned": "spawn_village_protection.js",
    "strip_infinity_ham@PlayerEvents.inventoryChanged": "strip_infinity_ham.js",
    "strip_infinity_ham@PlayerEvents.loggedIn": "strip_infinity_ham.js",

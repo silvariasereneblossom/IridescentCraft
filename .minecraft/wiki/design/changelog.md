@@ -10,6 +10,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 - **The Wither has 1,800 health everywhere.** The difficulty curve that makes ordinary monsters tougher dimension by dimension was meant to leave the Wither alone, but it named a Wither the game never spawns. From the next server restart the Wither has its designed 1,800 health wherever it is summoned; it had 2,550 at the Overworld's starting difficulty, and the curve would have taken it past 15,000 in The End.
 - **The stronger Withers are out for now.** Corrupted Soul Sand, the block that summons Progressive Bosses' armoured, summoner and ultimate Withers, can no longer be crafted while their place in progression is worked out. A Corrupted Soul Sand block crafted before this change still works when you build with it. The plain Wither is not affected.
+- **A Wither cannot be built near the spawn village.** Monsters are kept out of a 96-block circle around the world spawn, and a Wither built inside it used to vanish together with its soul sand and skulls. Now the last skull is simply not placed: the blocks stay, the skull stays in your hand, and a message tells you to build further out. A Wither built outside the circle works as before.
 
 ## October 2026 — The End can be generated
 

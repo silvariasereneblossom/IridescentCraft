@@ -9258,6 +9258,11 @@
        "name": "spawn_village_protection"
       },
       {
+       "kind": "guard",
+       "group": "BlockEvents.placed",
+       "name": "spawn_village_protection"
+      },
+      {
        "kind": "tick",
        "group": "tick.server",
        "name": "tick_spawnVillageSweep",
@@ -9265,9 +9270,24 @@
       }
      ],
      "sections": 0,
+     "registries": [
+      "bosses"
+     ],
      "ownSlots": 0,
      "names": 0,
      "reads": [
+      {
+       "name": "icraft.bosses",
+       "kind": "global",
+       "from": "0_lib_registry.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -9298,6 +9318,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {
@@ -9729,6 +9754,11 @@
      {
       "script": "spawn_protection.js",
       "name": "spawn_protection",
+      "kind": "guard"
+     },
+     {
+      "script": "spawn_village_protection.js",
+      "name": "spawn_village_protection",
       "kind": "guard"
      }
     ],
@@ -12113,6 +12143,10 @@
      "when": "handler"
     },
     {
+     "script": "server:spawn_village_protection.js",
+     "when": "handler"
+    },
+    {
      "script": "startup:enchants/icraft_magic_enchants.js",
      "when": "handler"
     },
@@ -12353,6 +12387,10 @@
     {
      "script": "server:skills/skill_effects.js",
      "when": "load"
+    },
+    {
+     "script": "server:spawn_village_protection.js",
+     "when": "handler"
     },
     {
      "script": "server:strip_anomalous_drops.js",
@@ -13045,6 +13083,7 @@
     "server:skills/justleveling_skills.js",
     "server:skills/mastery_tax.js",
     "server:skills/skill_effects.js",
+    "server:spawn_village_protection.js",
     "server:strip_anomalous_drops.js",
     "server:tetra_terramity_perks.js",
     "server:ultris_randomizer_janitor.js",
@@ -13113,6 +13152,7 @@
     "server:scaling/mob_scaling_unified.js",
     "server:scaling/zz_ascension_scaling.js",
     "server:scaling/zz_boss_global_3x.js",
+    "server:spawn_village_protection.js",
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],

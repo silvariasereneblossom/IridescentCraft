@@ -1,3 +1,6 @@
+// @file kubejs/server_scripts/spawn_village_protection.js
+// @events BlockEvents.placed, EntityEvents.spawned, tick.server
+// @registry bosses
 // =============================================================================
 // SPAWN VILLAGE PROTECTION - hostile deletion zone around world spawn
 // =============================================================================
@@ -17,6 +20,8 @@
 //     tamed pets and villagers/golems are never touched (monster-gate).
 //   - RAID mobs are also removed -> raids effectively cannot execute inside
 //     the zone. Per the directive this is intended (village = safe haven).
+//   - A Wither BUILT inside the zone is refused at the skull placement: the
+//     blocks stay and the builder is told why (2026-10-14, below).
 //
 // Uses the KubeJS .monster semantics (MobCategory not friendly) - the same
 // gate as mob_equipment.js - so MONSTER-category projectile-mobs are covered.
@@ -43,13 +48,53 @@
     } catch (e) { return false }
   }
 
+  // A Wither BUILT inside the zone (operator ruling, 2026-10-14). The skull that
+  // completes the pattern clears the soul sand and the skulls, then the Wither
+  // joins and the cancel below deletes it: measured on a full-pack boot, the
+  // blocks were gone and no Wither appeared. Both happen inside that one skull
+  // placement, before Forge fires its place event. So the cancelled join notes
+  // where it was, and the place event of the same tick refuses the placement:
+  // Forge then puts back every block the placement changed, the pattern too,
+  // and the skull stays in the player's hand. A Wither built outside the zone,
+  // a golem, a skull set down on its own: none leaves a note, none is touched.
+  // Not covered: a dispenser that completes the pattern (no player, no event).
+  var refusedWither = null   // { time, x, y, z } of the last Wither join cancelled here
+  var noteIfWither = function (entity) {
+    try {
+      if (String(global.icraft.bosses.canon(global.icraft.core.entityId(entity))) !== 'minecraft:wither') return
+      refusedWither = { time: Number(entity.level.time), x: entity.x, y: entity.y, z: entity.z }
+    } catch (e) {
+      global.icraft.core.warnOnce('spawn_village_protection:wither', '[spawn-protection] could not tell whether a cancelled join was a Wither (a Wither built in the zone is not refused): ' + e)
+    }
+  }
+
   // Block hostile spawns inside the zone outright.
   EntityEvents.spawned(icraft.guard('spawn_village_protection', 'EntityEvents.spawned', function (event) {
     var entity = event.entity
     if (!entity || !entity.living || !entity.monster) return
     if (nearSpawn(event.server, entity)) {
+      noteIfWither(entity)
       event.cancel()
     }
+  }))
+
+  // Refuse the skull placement whose Wither was just cancelled (see above).
+  BlockEvents.placed(icraft.guard('spawn_village_protection', 'BlockEvents.placed', function (event) {
+    var w = refusedWither
+    if (!w || !event.player) return
+    refusedWither = null
+    if (Number(event.level.time) !== w.time) return
+    var dx = event.block.x - w.x, dy = event.block.y - w.y, dz = event.block.z - w.z
+    if (dx * dx + dy * dy + dz * dz > 25) return
+    console.log('[spawn-protection] refused a Wither built ' + RADIUS + ' blocks or less from the world spawn at ' +
+      event.block.x + ' ' + event.block.y + ' ' + event.block.z + '; its blocks were put back')
+    try {
+      event.player.tell('A Wither cannot be summoned this close to the spawn village. Build it at least ' + RADIUS + ' blocks from the world spawn.')
+    } catch (e) {
+      console.warn('[spawn-protection] the refusal message could not be sent: ' + e)
+    }
+    // cancel() unwinds by throwing, so it has to be the LAST statement.
+    event.cancel()
   }))
 
   // Sweep walk-ins. discard() = silent deletion (no drops/XP/death event).

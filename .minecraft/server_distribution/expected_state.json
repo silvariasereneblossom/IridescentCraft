@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e127b193",
+    "generated_from":  "8ad3d82b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "91d25982170c7bc599347649175ad31709980ac1075371f6f2463c63738a1da4",
-                                                                  "size":  48115
+                                                                  "sha256":  "e78db2c1471fdcd8e845fa85868ec5d23f08e62cebb3d1cd8acd85bb61e67200",
+                                                                  "size":  48196
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7592,8 +7592,8 @@
                                                                     "size":  3502
                                                                 },
                   "kubejs/server_scripts/spawn_village_protection.js":  {
-                                                                            "sha256":  "b48e0d96e9285c3e29dbddea710e03547257c30178646b7100ae3fb6e73d340a",
-                                                                            "size":  3840
+                                                                            "sha256":  "0249aab696d273d150326763d786e0304f18ea232b4b94fc73e36c4c87f9c6eb",
+                                                                            "size":  6560
                                                                         },
                   "kubejs/server_scripts/strip_anomalous_drops.js":  {
                                                                          "sha256":  "529e0c4dddbf7492751a5addd8f53a4c7d1d5220d6f33acf8c4d3f26d85c7043",

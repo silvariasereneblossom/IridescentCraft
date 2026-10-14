@@ -126,7 +126,6 @@
   "scaling/boss_progressive.js",
   "spawn_priest_tower.js",
   "spawn_protection.js",
-  "spawn_village_protection.js",
   "strip_infinity_ham.js",
   "sunlight_smite.js",
   "validate_recipe_removals.js",
