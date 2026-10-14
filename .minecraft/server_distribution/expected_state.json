@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "994fc864",
+    "generated_from":  "bbd413dc",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7652,8 +7652,8 @@
                                                                  "size":  17228
                                                              },
                   "kubejs/startup_scripts/deathskin_undead_bonus.js":  {
-                                                                           "sha256":  "72cec1d1de3353c50197db28e87c31e3b1ef44850c673d9c30257145adab3768",
-                                                                           "size":  4368
+                                                                           "sha256":  "e087a961eff611facd4e0b6e9abeb400c1d820ddefb3db105e60ceccd4c5abc1",
+                                                                           "size":  5259
                                                                        },
                   "kubejs/startup_scripts/enchants/icraft_magic_enchants.js":  {
                                                                                    "sha256":  "aa20a13fb8371ba361c8abb2a3e30cc862b1beaf075cac378b27a70dc4b0dca2",

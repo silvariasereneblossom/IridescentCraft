@@ -288,6 +288,12 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "server:0_lib_core.js",
+       "when": "handler"
+      },
+      {
        "name": "icraft.handler",
        "kind": "global",
        "from": "00_icraft_guard.js",
@@ -12391,6 +12397,10 @@
      "when": "handler"
     },
     {
+     "script": "startup:deathskin_undead_bonus.js",
+     "when": "handler"
+    },
+    {
      "script": "startup:enchants/icraft_magic_enchants.js",
      "when": "handler"
     },
@@ -13073,6 +13083,7 @@
     "server:strip_anomalous_drops.js",
     "server:tetra_terramity_perks.js",
     "server:ultris_randomizer_janitor.js",
+    "startup:deathskin_undead_bonus.js",
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],

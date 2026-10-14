@@ -47,6 +47,16 @@ try {
   var handlerWarned = false
   var handler = function(event) {
       try {
+        // Secondary damage (splash / chain / reflect dealt through
+        // icraft.core.dealDamage) lands as-is: it is not multiplied a second
+        // time. Same rule as every onHurt handler (0_lib_core.js) and the same
+        // first line as the two Vorpal handlers. Ruling 13, 2026-10-14
+        // (decision list entry 68): until that day this bonus was the one that
+        // multiplied it (a secondary hit of 9 on a zombie became 10.8).
+        try {
+          var coreLib = global.icraft ? global.icraft.core : null
+          if (coreLib && typeof coreLib.secondary === 'function' && coreLib.secondary(event.getEntity())) return
+        } catch (eSecondary) { /* swallow-ok: the core library could not be asked (it is a server-script library, absent while a startup script loads and on a client); the hit is then taken as a primary one, as every hit was before this test */ }
         var target = event.getEntity()
         if (!target || !(target instanceof LivingEntity_ds)) return
         if (target.getMobType() !== MobType_ds.UNDEAD) return
