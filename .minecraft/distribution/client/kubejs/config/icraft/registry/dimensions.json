@@ -80,6 +80,7 @@
         "legs": ["minecraft:diamond_leggings"],
         "boots": ["minecraft:diamond_boots"] } },
     "theabyss:frost_world": { "tier": 3, "flags": ["classPassives"] },
+    "theabyss:pocket_dimension": { "tier": 2 },
 
     "minecraft:the_end": { "tier": 4, "flags": ["loot", "classPassives"], "stageGate": "modpack/dim_end", "exploration": "the_end", "deathPenalty": 0.25,
       "mobEquipment": { "chance": 0.75, "enchantLevel": 5, "fullSetChance": 0.7,
@@ -92,6 +93,14 @@
     "ad_astra:mars": { "tier": 4, "stageGate": "modpack/dim_mars", "deathPenalty": 0.25 },
     "ad_astra:mercury": { "tier": 4, "stageGate": "modpack/dim_mercury", "deathPenalty": 0.27 },
     "ad_astra:venus": { "tier": 4, "stageGate": "modpack/dim_venus", "deathPenalty": 0.28 },
-    "ad_astra:glacio": { "tier": 4, "stageGate": "modpack/dim_glacio", "deathPenalty": 0.3 }
+    "ad_astra:glacio": { "tier": 4, "stageGate": "modpack/dim_glacio", "deathPenalty": 0.3 },
+    "ad_astra:earth_orbit": { "tier": 4, "stageGate": "modpack/dim_earth_orbit", "deathPenalty": 0.22, "flags": ["classPassives"] },
+    "ad_astra:glacio_orbit": { "tier": 4, "stageGate": "modpack/dim_glacio_orbit", "deathPenalty": 0.3, "flags": ["classPassives"] },
+    "ad_astra:mars_orbit": { "tier": 4, "stageGate": "modpack/dim_mars_orbit", "deathPenalty": 0.25, "flags": ["classPassives"] },
+    "ad_astra:mercury_orbit": { "tier": 4, "stageGate": "modpack/dim_mercury_orbit", "deathPenalty": 0.27, "flags": ["classPassives"] },
+    "ad_astra:moon_orbit": { "tier": 4, "stageGate": "modpack/dim_moon_orbit", "deathPenalty": 0.22, "flags": ["classPassives"] },
+    "ad_astra:venus_orbit": { "tier": 4, "stageGate": "modpack/dim_venus_orbit", "deathPenalty": 0.28, "flags": ["classPassives"] },
+    "irons_spellbooks:pocket_dimension": { "tier": 4, "deathPenalty": 0.25 },
+    "mahoutsukai:reality_marble": { "tier": 4, "deathPenalty": 0.25, "flags": ["classPassives"] }
   }
 }

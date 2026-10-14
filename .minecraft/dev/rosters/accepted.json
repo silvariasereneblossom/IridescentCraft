@@ -49,7 +49,9 @@
     "terramity:gundalf": "see adherent (it has a Boss Compass arena)",
     "terramity:trial_guardian": "see adherent",
     "terramity:ultra_sniffer": "see adherent",
-    "deeperdarker:shriek_worm": "pays miniboss tokens, not on the tier-3 boss-rush roster; open"
+    "deeperdarker:shriek_worm": "pays miniboss tokens, not on the tier-3 boss-rush roster; open",
+    "cataclysm:amethyst_crab": "operator 2026-10-14 (ruling 18): miniboss, tier 3, off the boss-rush roster (\"miniboss, tier 3 (Recommended)\", like Coralssus but not on the roster)",
+    "mca:grim_reaper": "operator 2026-10-14 (ruling 18): miniboss, tier 1, off the boss-rush roster (an optional summon of MCA's ritual)"
   },
 
   "rush-tier": {
@@ -70,7 +72,10 @@
   },
 
   "dim-no-stage-gate": {
-    "theabyss:frost_world": "tier 3 for the class passives only; no stage gate (reachable from the gated Abyss); open"
+    "theabyss:frost_world": "tier 3 for the class passives only; no stage gate (reachable from the gated Abyss); open",
+    "mahoutsukai:reality_marble": "operator 2026-10-14 (ruling 17): no stage gate needed: the whole mod is stage-locked at tier 4 and its scroll, the only way in, is refused without tier_4 (measured on a full-pack boot)",
+    "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): no stage gate (ruled \"No passives there\" instead); reached only by casting the Pocket Dimension spell. The spell can be learned before tier 4 (Ancient City echo shards): reported, not gated",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today (the Ring of Pocket Box has no recipe or loot); its gate comes with the ruled follow-up (ring restored at tier 2, custom dimension)"
   },
 
   "dim-not-in-loot": {
@@ -79,7 +84,16 @@
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
-    "ad_astra:glacio": "see moon"
+    "ad_astra:glacio": "see moon",
+    "ad_astra:earth_orbit": "operator 2026-10-14 (ruling 17): an orbit: a space station dimension with no structure chests; reached by rocket",
+    "ad_astra:moon_orbit": "see earth_orbit",
+    "ad_astra:mars_orbit": "see earth_orbit",
+    "ad_astra:mercury_orbit": "see earth_orbit",
+    "ad_astra:venus_orbit": "see earth_orbit",
+    "ad_astra:glacio_orbit": "see earth_orbit",
+    "mahoutsukai:reality_marble": "operator 2026-10-14 (ruling 17): a personal arena with no chests",
+    "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): a personal pocket room with no chests",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; its loot comes with the custom-dimension follow-up"
   },
 
   "dim-no-class-passives": {
@@ -87,7 +101,9 @@
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
-    "ad_astra:glacio": "see moon"
+    "ad_astra:glacio": "see moon",
+    "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): \"No passives there (Recommended)\": it has no stage gate, so tier-4 class passives would reach a tier-1 caster",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; comes with the custom-dimension follow-up"
   },
 
   "dim-no-exploration": {
@@ -96,7 +112,16 @@
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
-    "ad_astra:glacio": "see moon"
+    "ad_astra:glacio": "see moon",
+    "ad_astra:earth_orbit": "operator 2026-10-14 (ruling 17): no first-arrival bonus for the orbits (the planets have none either)",
+    "ad_astra:moon_orbit": "see earth_orbit",
+    "ad_astra:mars_orbit": "see earth_orbit",
+    "ad_astra:mercury_orbit": "see earth_orbit",
+    "ad_astra:venus_orbit": "see earth_orbit",
+    "ad_astra:glacio_orbit": "see earth_orbit",
+    "mahoutsukai:reality_marble": "operator 2026-10-14 (ruling 17): a personal arena, no first-arrival bonus",
+    "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): a personal pocket room, no first-arrival bonus",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; comes with the custom-dimension follow-up"
   },
 
   "dim-no-mob-equipment": {
@@ -105,10 +130,20 @@
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
-    "ad_astra:glacio": "see moon"
+    "ad_astra:glacio": "see moon",
+    "ad_astra:earth_orbit": "operator 2026-10-14 (ruling 17): no natural mobs in an orbit",
+    "ad_astra:moon_orbit": "see earth_orbit",
+    "ad_astra:mars_orbit": "see earth_orbit",
+    "ad_astra:mercury_orbit": "see earth_orbit",
+    "ad_astra:venus_orbit": "see earth_orbit",
+    "ad_astra:glacio_orbit": "see earth_orbit",
+    "mahoutsukai:reality_marble": "operator 2026-10-14 (ruling 17): no natural mobs (the swords it spawns are not mobs)",
+    "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): no natural mobs in a personal pocket room",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; comes with the custom-dimension follow-up"
   },
 
   "dim-no-death-penalty": {
-    "theabyss:frost_world": "takes the default 15% (the Abyss itself is 18%); open"
+    "theabyss:frost_world": "takes the default 15% (the Abyss itself is 18%); open",
+    "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; takes the default 15% until the custom-dimension follow-up sets one"
   }
 }

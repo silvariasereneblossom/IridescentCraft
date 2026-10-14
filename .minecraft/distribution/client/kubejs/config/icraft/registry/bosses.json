@@ -182,6 +182,7 @@
 
     "cataclysm:void_blossom": { "kind": "unlisted", "flags": ["perKill"],
       "absent": "not an entity type of the installed Cataclysm; only the per-kill list (switched off) still names it" },
+    "cataclysm:amethyst_crab": { "tier": 3, "kind": "miniboss", "flags": ["boss"] },
     "keebsz:tower_guardian": { "kind": "unlisted", "flags": ["perKill"],
       "absent": "Battle Towers registers no such entity type; only the per-kill list (switched off) still names it" },
     "ub:sorcerer": { "kind": "unlisted", "flags": ["perKill"],
@@ -189,6 +190,7 @@
     "ub:storm": { "kind": "unlisted", "flags": ["perKill"],
       "absent": "Ultimate Bosses registers no such entity type; only the per-kill list (switched off) still names it" },
     "theabyss:abyssal_guardian": { "kind": "unlisted", "flags": ["witchInk"],
-      "absent": "not an entity type of the installed The Abyss; only the Witch of Ink +10 list names it" }
+      "absent": "not an entity type of the installed The Abyss; only the Witch of Ink +10 list names it" },
+    "mca:grim_reaper": { "tier": 1, "kind": "miniboss", "flags": ["boss"] }
   }
 }

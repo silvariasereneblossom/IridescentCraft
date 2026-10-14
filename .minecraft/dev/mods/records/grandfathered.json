@@ -174,7 +174,18 @@
      "key": "dimension:ad_astra:earth_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:earth_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_earth_orbit",
+      "deathPenalty": 0.22,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -204,7 +215,18 @@
      "key": "dimension:ad_astra:glacio_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:glacio_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_glacio_orbit",
+      "deathPenalty": 0.3,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -234,7 +256,18 @@
      "key": "dimension:ad_astra:mars_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:mars_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_mars_orbit",
+      "deathPenalty": 0.25,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -264,7 +297,18 @@
      "key": "dimension:ad_astra:mercury_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:mercury_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_mercury_orbit",
+      "deathPenalty": 0.27,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -294,7 +338,18 @@
      "key": "dimension:ad_astra:moon_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:moon_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_moon_orbit",
+      "deathPenalty": 0.22,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -324,7 +379,18 @@
      "key": "dimension:ad_astra:venus_orbit",
      "surface": "dimensions",
      "subject": "ad_astra:venus_orbit",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "stageGate": "modpack/dim_venus_orbit",
+      "deathPenalty": 0.28,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): tier 4 (ruled 'The orbits should technically be Tier 4'); gate 'Add stage gates'; fields '+ penalty + passives' (the planet's death penalty; Earth orbit '22%, the Moon's (Recommended)'). Way in today: an Ad Astra rocket only, every rocket recipe needs a tier-4-staged material",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in ad_astra-forge-1.20.1-1.15.20.jar"
@@ -2291,7 +2357,11 @@
      "key": "boss:alexsmobs:void_worm_part",
      "surface": "bosses",
      "subject": "alexsmobs:void_worm_part",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator, ruling 18 of 2026-10-14 (decision sheet 2026-10-13): 'Three mobs (two parts, one clone)': a part of alexsmobs:void_worm, which carries the flags",
      "evidence": [
       "in #art_of_forging:bosses (says art_of_forging-1.8.4-1.20.1.jar)",
       "tagged #art_of_forging:bosses (dev/registry @59ee40da)",
@@ -14061,7 +14131,11 @@
      "key": "boss:deep_aether:eots_segment",
      "surface": "bosses",
      "subject": "deep_aether:eots_segment",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator, ruling 18 of 2026-10-14 (decision sheet 2026-10-13): 'Three mobs (two parts, one clone)': a segment of deep_aether:eots_controller, which carries the flags",
      "evidence": [
       "in #forge:bosses",
       "tagged #c:bosses, #forge:bosses (dev/registry @59ee40da)",
@@ -22697,7 +22771,14 @@
      "key": "dimension:irons_spellbooks:pocket_dimension",
      "surface": "dimensions",
      "subject": "irons_spellbooks:pocket_dimension",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "deathPenalty": 0.25
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): ruling 17a (the tier of the Eldritch spell's gate) answered '4 (Recommended)': the gate item is the Echo Shard (Ancient Cities, the pack's tier-4 sculk loot; no stage gate on the path, reported). Fields: death penalty 25%; 'No passives there (Recommended)': no stage gate, so tier-4 class passives would reach a tier-1 caster",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in irons_spellbooks-1.20.1-3.15.5.1.jar"
@@ -25836,7 +25917,14 @@
      "key": "boss:cataclysm:amethyst_crab",
      "surface": "bosses",
      "subject": "cataclysm:amethyst_crab",
-     "status": "owed",
+     "status": "decided",
+     "answer": "miniboss",
+     "fields": {
+      "tier": 3
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 18): 'miniboss, tier 3 (Recommended)': like Coralssus, off the boss-rush roster. Rig: base 200, 700 as a mob (x3.5 Overworld), no boss bar, spawns only in the Amethyst Nest, 20 kills = 155 meat + 71 shells",
      "evidence": [
       "in #art_of_forging:bosses (says art_of_forging-1.8.4-1.20.1.jar)",
       "tagged #art_of_forging:bosses (dev/registry @59ee40da)",
@@ -25883,7 +25971,11 @@
      "key": "boss:cataclysm:old_netherite_monstrosity",
      "surface": "bosses",
      "subject": "cataclysm:old_netherite_monstrosity",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 18): 'mob (Recommended)': not an entity type of the installed Cataclysm (the game makes a pig for the id); only Cataclysm UT's #forge:bosses tag names it",
      "evidence": [
       "in #forge:bosses (says cataclysm_ut-53 - 1.20.1.jar)",
       "NOT a registered entity type (dev/registry @59ee40da)"
@@ -27724,7 +27816,17 @@
      "key": "dimension:mahoutsukai:reality_marble",
      "surface": "dimensions",
      "subject": "mahoutsukai:reality_marble",
-     "status": "owed",
+     "status": "decided",
+     "answer": "4",
+     "fields": {
+      "deathPenalty": 0.25,
+      "flags": [
+       "classPassives"
+      ]
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): 'Mahou Tsukai should be T4, and you don't get access until T4'; fields '+ penalty + passives' (the End's 25%). Gate measured on the rig: the whole mod is stage-locked at tier 4; the scroll of the Reality Marble is refused without tier_4 and starts with it; no recipe makes the scroll",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in mahoutsukai-1.20.1-v1.34.81.jar"
@@ -29585,7 +29687,14 @@
      "key": "boss:mca:grim_reaper",
      "surface": "bosses",
      "subject": "mca:grim_reaper",
-     "status": "owed",
+     "status": "decided",
+     "answer": "miniboss",
+     "fields": {
+      "tier": 1
+     },
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 18): 'miniboss, tier 1 (Recommended)': off the boss-rush roster. Rig: base 300, 1,050 as a mob, boss bar, only MCA's summoning ritual, a Scythe every kill",
      "evidence": [
       "boss bar in its class GrimReaperEntity",
       "registered: category monster, base health 300 (dev/registry @59ee40da)"
@@ -43467,7 +43576,11 @@
      "key": "dimension:theabyss:pocket_dimension",
      "surface": "dimensions",
      "subject": "theabyss:pocket_dimension",
-     "status": "owed",
+     "status": "decided",
+     "answer": "2",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): ruling 17c (the tier of the Ring of Pocket Box's gate). The ring cannot be obtained today (every theabyss:ring_* recipe removed by recipe_audit.js section K; no loot or script gives it). Own answer: 'Restore the ring, make it Tier 2, have the Abyss pocket dimension hold some of the Terramity structure content, as well as other dangers - basically the start of custom dimension work, since it's currently unused'. NOT done here: the ring recipe and the custom dimension (follow-up); no way in until then",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in TATOS 1.0.5_beta.jar"
@@ -43481,7 +43594,11 @@
      "key": "dimension:theabyss:spectral_world",
      "surface": "dimensions",
      "subject": "theabyss:spectral_world",
-     "status": "owed",
+     "status": "decided",
+     "answer": "untiered",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 17): ruling 17b 'Spectral World untiered, marked unreachable (rec)'. No known entrance, confirmed: in all 458 jars only the Abyss's dimension file, its fog and screen-overlay handlers and its sky renderer name it; on a full-pack boot 480 Abyss items used and 224 blocks right-clicked / stepped into changed no dimension, and no command of the mod names it",
      "evidence": [
       "registered (dev/registry @59ee40da)",
       "data file in TATOS 1.0.5_beta.jar"
@@ -43515,7 +43632,11 @@
      "key": "boss:theabyss:abyssaur",
      "surface": "bosses",
      "subject": "theabyss:abyssaur",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mob (Recommended)'. Ruling 18. Rig: base 200, 700 as a mob, boss bar, natural spawn in the Blue Jungle (weight 1), drops nothing of its own",
      "evidence": [
       "boss bar in its class AbyssaurEntity",
       "registered: category monster, base health 200 (dev/registry @59ee40da)"
@@ -43529,7 +43650,11 @@
      "key": "boss:theabyss:crystal_golem",
      "surface": "bosses",
      "subject": "theabyss:crystal_golem",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mob (Recommended)'. Ruling 18. Rig: base 400, 1,400 as a mob, boss bar, natural spawn in the Slime Forest (weight 1), a Crystal Hand every kill",
      "evidence": [
       "boss bar in its class CrystalGolemEntity",
       "registered: category monster, base health 400 (dev/registry @59ee40da)"
@@ -43558,7 +43683,11 @@
      "key": "boss:theabyss:magician",
      "surface": "bosses",
      "subject": "theabyss:magician",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mob (Recommended)'. Ruling 18. Rig: base 150, 525 as a mob, boss bar, natural spawn in the Blue Mountain (weight 1), drops nothing of its own",
      "evidence": [
       "boss bar in its class MagicianEntity",
       "registered: category monster, base health 150 (dev/registry @59ee40da)"
@@ -43572,7 +43701,11 @@
      "key": "boss:theabyss:night_blade_boss_clone",
      "surface": "bosses",
      "subject": "theabyss:night_blade_boss_clone",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator, ruling 18 of 2026-10-14 (decision sheet 2026-10-13): 'Three mobs (two parts, one clone)': a clone of theabyss:nightblade_boss, which carries the flags",
      "evidence": [
       "boss bar in its class NightBladeBossCloneEntity",
       "registered: category monster, base health 150 (dev/registry @59ee40da)"
@@ -43997,7 +44130,11 @@
      "key": "boss:twilightforest:plateau_boss",
      "surface": "bosses",
      "subject": "twilightforest:plateau_boss",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mob",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mob (Recommended)'. Ruling 18. Rig: base 20, 70 as a mob, boss bar, made only by TF's Final Boss spawner; its death throws an NPE in TF (PlateauBoss.getRestrictionPoint) and crashed the rig once",
      "evidence": [
       "in #twilightforest:bosses",
       "tagged #c:bosses, #forge:bosses, #twilightforest:bosses (dev/registry @59ee40da)",
