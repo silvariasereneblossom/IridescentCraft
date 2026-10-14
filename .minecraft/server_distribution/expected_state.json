@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "53aabde3",
+    "generated_from":  "fde3ca19",
     "roots":  [
                   "kubejs",
                   "config",
@@ -995,8 +995,8 @@
                                                               "volatile":  true
                                                           },
                   "config/apocalypse-common.toml":  {
-                                                        "sha256":  "fde16592b3d734285b5ec410822650f8dcb0ce8b1bc49d65107e2859bc8de9b2",
-                                                        "size":  14457,
+                                                        "sha256":  "55fa04c5a45cb31cf34501ff5f97a2b9c86ff4360a5086f0fa03a2bbc1d9b0aa",
+                                                        "size":  14485,
                                                         "volatile":  true
                                                     },
                   "config/apoli-client.toml":  {
@@ -2208,8 +2208,8 @@
                                                            "size":  10695
                                                        },
                   "config/everydayxp/rpgseteffects/rpgseteffects.toml":  {
-                                                                             "sha256":  "ed6f5335e3d092f1abff026cb11d35bb3ccf2680125635c774544247127e9ca5",
-                                                                             "size":  994
+                                                                             "sha256":  "c8d8f24df0d7ed43b41d4855fa58eca1baa3f53e5ab4bde841e0a55c907e7c21",
+                                                                             "size":  1022
                                                                          },
                   "config/explorations.json":  {
                                                    "sha256":  "bb8bd4dcc29ff5fca5ac1cf7878972bcdf6ddac709b8041e4f6a8087e1f8de56",

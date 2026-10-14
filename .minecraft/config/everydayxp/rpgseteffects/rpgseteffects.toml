@@ -7,7 +7,7 @@
 	#Display boss bar for elite mobs on screen.
 	showBossBar = false
 	#List of entity IDs that can never become elite.
-	mobBlacklist = ["minecraft:creeper", "minecraft:slime", "minecraft:magma_cube", "minecraft:phantom", "minecraft:ghast", "minecraft:ender_dragon", "minecraft:wither", "minecraft:warden"]
+	mobBlacklist = ["minecraft:creeper", "minecraft:slime", "minecraft:magma_cube", "minecraft:phantom", "minecraft:ghast", "minecraft:ender_dragon", "minecraft:wither", "progressivebosses:wither", "minecraft:warden"]
 	#Chance for elite tier 1 (Elite).
 	#Range: 0.0 ~ 1.0
 	chanceTier1 = 0.0

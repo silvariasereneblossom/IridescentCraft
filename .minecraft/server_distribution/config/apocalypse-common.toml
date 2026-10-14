@@ -254,7 +254,7 @@
 	[potion_effects.potionEffectList]
 		"minecraft:fire_resistance 5" = ["minecraft:magma_cube", "minecraft:zombified_piglin", "minecraft:blaze", "minecraft:ghast", "minecraft:strider"]
 		"minecraft:strength 60" = ["apocalypse:ghost"]
-		"minecraft:regeneration 30" = ["minecraft:wither", "minecraft:ender_dragon"]
+		"minecraft:regeneration 30" = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon"]
 		"minecraft:resistance 100" = ["apocalypse:ghost"]
 
 [misc]
