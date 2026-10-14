@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8ad3d82b",
+    "generated_from":  "5cd6dbcc",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3487,10 +3487,6 @@
                                                                                                     "sha256":  "b8ce67f23f6c0e8a8078da2b1a66a9d219d8f4e20ca877e102f3223d63573b84",
                                                                                                     "size":  1219
                                                                                                 },
-                  "config/heracles/quests/overworld_foundations/ovf_brutal_boss.json":  {
-                                                                                            "sha256":  "caaced08f6c65cac85ce8018a89f227b8ff1a2773ae0ea8596d7b8a8b7cb91f7",
-                                                                                            "size":  1960
-                                                                                        },
                   "config/heracles/quests/overworld_foundations/ovf_capstone.json":  {
                                                                                          "sha256":  "afda76321a011dd3f63915e9ed83bfcea489137a873e8bcca329f99fa3528068",
                                                                                          "size":  3187

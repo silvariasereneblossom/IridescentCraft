@@ -10,9 +10,6 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
-### Quest "Brutal Bosses: Claim a Dungeon" cannot be completed — **Open (design decision pending)**
-The quest asks for one Brutal Bosses champion kill, but its kill lines name things the game does not know as creatures, so the quest shows in the book with nothing to do. The twenty other kill quests that were broken the same way count kills since 2026-10-13. What this quest should count is a pending design call.
-
 ### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
@@ -105,6 +102,9 @@ Implemented features awaiting confirmation on a live world:
 ## Recently resolved
 
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
+
+**Quests**
+- The quest *Brutal Bosses: Claim a Dungeon* could never be completed (its kill lines named things the game does not know as creatures). It was removed on 2026-10-14; nothing depended on it.
 
 **World generation**
 - The End could not generate a single chunk: two switched-off ore entries in the pack's own data counted as one and the same feature for the game, and the game refuses to generate a dimension in which a feature has to come before itself. In an offline test of the full pack, asking for an End chunk crashed the server; the test server carries the same data, and nobody had entered The End there. Fixed on 2026-10-13, from the next server restart: in the same test the central island, the outer islands and an End City all generate, and so does a new chunk in each of the 25 other dimensions. The pack's offline boot test now checks all 26 dimensions every time it is run.

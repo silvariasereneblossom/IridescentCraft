@@ -78,13 +78,9 @@ ENTITY_PREDICATE_KEYS = {"type", "location", "effects", "nbt", "flags", "target"
 
 # quest file (path under the quests root) -> why its errors do not fail the run.
 # A quest goes here only while it is left broken ON PURPOSE, with the decision it waits for.
-OWED = {
-    "overworld_foundations/ovf_brutal_boss.json":
-        "its six kill tasks name brutalbosses:<boss> ids, which are not entity types (Brutal Bosses' bosses are "
-        "vanilla mobs carrying the mod's marker). The quest loads with no task and cannot be completed. Written "
-        "in the object form each id would decode as minecraft:pig, so the file is left as it is until the "
-        "operator decides what the quest should count (registries decision list, 2026-10-13).",
-}
+# Empty since 2026-10-14: its one entry, overworld_foundations/ovf_brutal_boss.json, was removed from the
+# pack on the operator's ruling (its kill tasks named Brutal Bosses ids that are not entity types).
+OWED = {}
 SETTINGS_KEYS = {  # correct casing -> common wrong casing to warn on
     "individual_progress", "hidden", "unlockNotification",
     "showDependencyArrow", "repeatable", "autoClaimRewards",
