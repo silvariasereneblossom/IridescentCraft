@@ -426,6 +426,31 @@ def boot_evidence(rdir, diff, when):
     return ev
 
 
+def registered_ids(rdir):
+    """Every id a saved boot result registered -> {id: where}: every registry the server had (registry/all, one file
+    per registry), and the loot tables, advancements and recipes it loaded. None when the result has no dump."""
+    reg = os.path.join(rdir, 'registry')
+    if not os.path.isdir(os.path.join(reg, 'all')):
+        return None
+    out = {}
+
+    def take(path, where):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                for ln in f:
+                    i = ln.split('\t', 1)[0].strip()
+                    if i:
+                        out.setdefault(i, where)
+        except OSError:
+            pass
+    for path in sorted(glob.glob(os.path.join(reg, 'all', '*.txt'))):
+        # minecraft__worldgen--structure.txt is the registry minecraft:worldgen/structure
+        take(path, os.path.basename(path)[:-4].replace('__', ':', 1).replace('--', '/'))
+    for fn, where in (('loot_tables.txt', 'loot tables'), ('advancements.txt', 'advancements'), ('recipes.tsv', 'recipes')):
+        take(os.path.join(reg, fn), where)
+    return out
+
+
 # --------------------------------------------------------------------------- references in the pack
 
 SWEEP_ROOTS = (
@@ -762,6 +787,7 @@ def cmd_update(args):
         out('The old jar %s is not on this PC: no static comparison (pass --old-jar <path>).' % old_name)
 
     boot = None
+    boot_dir = None
     rc_boot = 0
     if already:
         say('[intake] %s names %s already (%s): left as it is' % (
@@ -805,7 +831,7 @@ def cmd_update(args):
             else:
                 rc_boot, rdir, diff = boot_compare(args, args.result or ('update-' + m['slug']), args.base, [os.path.dirname(new_jar)])
                 if os.path.isfile(os.path.join(rdir, 'result.json')):
-                    boot = boot_evidence(rdir, diff, today())
+                    boot, boot_dir = boot_evidence(rdir, diff, today()), rdir
     elif args.boot_result:
         # --diff-only with two boots that already exist: <result of the new side>, diffed against --base
         rdir = args.boot_result if os.path.isdir(args.boot_result) else os.path.join(results_root(), args.boot_result)
@@ -813,9 +839,14 @@ def cmd_update(args):
         if not diffs:
             die('%s has no diff-vs-*.json: make one with boot.ps1 -Diff <old>,<new>' % rdir)
         with open(diffs[-1], 'r', encoding='utf-8') as f:
-            boot = boot_evidence(rdir, json.load(f), today())
+            boot, boot_dir = boot_evidence(rdir, json.load(f), today()), rdir
 
+    # With a boot, an id has vanished when the GAME stopped registering it: the boot diff says which. An id that only
+    # left the jar's files (a recipe file named like an item, a language key) is checked against what the new boot
+    # registers and listed apart; it is swept as a vanished id only when no boot says what the game registers.
     vanished = OrderedDict()
+    booted = boot is not None and boot['verdict'] in ('PASS', 'FINDINGS')
+    new_regs = registered_ids(boot_dir) if booted else None
     if boot is not None:
         out('')
         out('The boot, new against old (%s against %s): %s, %d regression(s)' % (boot['result'], boot['base'], boot['verdict'], len(boot['regressions'])))
@@ -829,24 +860,48 @@ def cmd_update(args):
                 vanished[i] = 'registry %s' % reg
         for reg, ids in boot['added'].items():
             out('  new in %s: %d: %s%s' % (reg, len(ids), ', '.join(ids[:8]), ' ...' if len(ids) > 8 else ''))
-    else:
+    if not booted:
         out('')
         out('No boot diff: which ids the game stops registering is NOT known. The static comparison only says which files left the jar.')
+    elif new_regs is None:
+        out("  (the boot result holds no registry dump: the ids that only left the jar's files are not checked against it)")
+    file_only, still = OrderedDict(), OrderedDict()
     for kind, v in sd.items():
         if kind in STATIC_ID_KINDS or kind.startswith('worldgen/'):
             for i in v['vanished']:
-                vanished.setdefault(i, 'the jar no longer ships it (%s)' % kind)
+                why = 'the jar no longer ships it (%s)' % kind
+                if not booted:
+                    vanished.setdefault(i, why)
+                elif i in vanished:
+                    continue
+                elif new_regs is not None and i in new_regs:
+                    still.setdefault(i, new_regs[i])
+                else:
+                    file_only.setdefault(i, why)
     changed_tables = (sd.get('loot_tables') or {}).get('changed') or []
     out('')
     if vanished:
         hits = sweep(ids=vanished)
-        out('Ids that vanished: %d. Every place in the pack that still names one:' % len(vanished))
+        out('%s: %d. Every place in the pack that still names one:' % (
+            'Ids the game stopped registering (the boot diff)' if booted else 'Ids that vanished', len(vanished)))
         out(sweep_text(hits))
         named = set(t for files in hits.values() for found in files.values() for _n, t in found)
         for i in sorted(named):
             out('    %s: %s' % (i, vanished.get(i, '')))
     else:
-        out('No id vanished.')
+        out('No id vanished%s.' % (' from the game (the boot diff)' if booted else ''))
+    if still:
+        out('')
+        out("Left the jar's files, still registered in the new boot (NOT vanished): %d: %s%s" % (
+            len(still), ', '.join('%s (%s)' % kv for kv in list(still.items())[:12]), ' ...' if len(still) > 12 else ''))
+    if file_only:
+        hits = sweep(ids=file_only)
+        out('')
+        out("Left the jar's files and %s: %d. Not counted as vanished; places that name one:" % (
+            'not checked against the new boot (no registry dump)' if new_regs is None
+            else 'registered in neither boot (a language key, a file the game never loaded)', len(file_only)))
+        out('  ' + ', '.join(list(file_only)[:20]) + (' ...' if len(file_only) > 20 else ''))
+        out(sweep_text(hits))
     if changed_tables:
         hits = sweep(ids=changed_tables)
         out('')

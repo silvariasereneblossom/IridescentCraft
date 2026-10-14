@@ -14,8 +14,10 @@ Copies the index, the records, the registries and the tools to a temporary folde
                 that still names it is found, the new dimension is asked for
   remove        the dry run lists the references and changes nothing; --apply takes the mod out of the three
                 indexes, writes the deny pattern into the two clean-up lists and deletes the record
+  update+boot   with a saved boot result (made here, as boot.ps1 writes one) the sweep counts what the game stopped
+                registering; an id that only left the jar's files is checked against the new boot's registries
 
-No boot is made (--no-boot): what a boot adds is exercised on the real rig, see README.md.
+No boot is made (--no-boot): what a real boot adds is exercised on the rig, see README.md.
 Nothing in the real tree is touched. Usage: python .minecraft/dev/mods/intake_test.py
 Exit 0 when every case behaves, 1 otherwise. Python 3.11+.
 """
@@ -69,9 +71,9 @@ SLUG = "gate-test-mod"
 MOD = "gatetest"
 
 
-def build_jar(path, version, with_vault=True, with_far2=False):
+def build_jar(path, version, with_vault=True, with_far2=False, drop=(), lang=None):
     """A mod jar small enough to read in one look: one item, one boss-tagged entity, one dimension, one chest
-    table, one loot modifier, one config-less mods.toml."""
+    table, one loot modifier, one config-less mods.toml. `drop`: files left out; `lang`: more language keys."""
     files = {
         "META-INF/mods.toml": (
             'modLoader="javafml"\nloaderVersion="[47,)"\nlicense="MIT"\n'
@@ -90,6 +92,12 @@ def build_jar(path, version, with_vault=True, with_far2=False):
         files["data/%s/loot_tables/chests/vault.json" % MOD] = json.dumps({"type": "minecraft:chest", "pools": []})
     if with_far2:
         files["data/%s/dimension/farther.json" % MOD] = json.dumps({"type": "minecraft:overworld", "generator": {"type": "minecraft:flat"}})
+    if lang:
+        keys = json.loads(files["assets/%s/lang/en_us.json" % MOD])
+        keys.update(lang)
+        files["assets/%s/lang/en_us.json" % MOD] = json.dumps(keys)
+    for name in drop:
+        del files[name]
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
         for name in sorted(files):
@@ -442,9 +450,58 @@ def flow():
         sb.close()
 
 
+def fake_boot(root, removed_tables, items):
+    """A saved boot result of a new jar, as boot.ps1 writes one: it booted, its diff against the old jar says which
+    loot tables the game stopped loading, and its registry dump lists the items the game registers."""
+    d = os.path.join(root, "boot-new")
+    os.makedirs(os.path.join(d, "registry", "all"))
+    with open(os.path.join(d, "result.json"), "w") as f:
+        json.dump({"booted": True, "boot": {"reached_done": True, "clean_stop": True}}, f)
+    with open(os.path.join(d, "diff-vs-boot-old.json"), "w") as f:
+        json.dump({"base": {"name": "boot-old"}, "loot_tables": {"added": [], "removed": removed_tables}, "regressions": []}, f)
+    with open(os.path.join(d, "registry", "all", "minecraft__item.txt"), "w") as f:
+        f.write("\n".join(items) + "\n")
+    return d
+
+
+def update_with_boot():
+    """D1: with a boot diff, `update` sweeps the ids the GAME stopped registering. An id that only left the jar's
+    files is checked against the new boot's registries: still registered = not vanished; registered nowhere = listed
+    apart. (The Simply Swords proof reported 64 vanished ids where its boot said 4.)"""
+    print("update with a boot diff (D1)")
+    sb = Sandbox()
+    try:
+        old = os.path.join(sb.dir, "old", "gate-test-mod-1.0.0.jar")
+        new = os.path.join(sb.dir, "new", "gate-test-mod-1.1.0.jar")
+        build_jar(old, "1.0.0", lang={"item.%s.old_note" % MOD: "a description that left"})
+        # the new build drops the chest table (the game stops loading it) and the recipe file named like the item
+        # (the item stays registered: a recipe file of the same id is not the item)
+        build_jar(new, "1.1.0", with_vault=False, drop=("data/%s/recipes/widget.json" % MOD,))
+        sb.write(".minecraft/kubejs/server_scripts/loot/gate_test_rule.js",
+                 "LootJS.modifiers(e => { e.addLootTableModifier('gatetest:chests/vault').addLoot('gatetest:widget') })\n")
+        rdir = fake_boot(sb.dir, ["gatetest:chests/vault"], ["minecraft:stick", "gatetest:widget"])
+        slug = first_grandfathered(sb)
+        rc, out = sb.intake("update", slug, new, "--old-jar", old, "--diff-only", "--boot-result", rdir, "--mods", sb.jars)
+        check("update + boot: exits 0", rc == 0, out)
+        check("update + boot: the sweep counts the one id the game stopped registering",
+              "Ids the game stopped registering (the boot diff): 1." in out and "    gatetest:chests/vault: registry loot_tables" in out, out)
+        check("update + boot: the script that names it is found", "kubejs/server_scripts/loot/gate_test_rule.js" in out, out)
+        check("update + boot: a recipe file that left, named like an item the new boot registers, is NOT vanished",
+              "still registered in the new boot (NOT vanished): 1: gatetest:widget (minecraft:item)" in out
+              and "    gatetest:widget:" not in out, out)
+        check("update + boot: a language key the game never registered is listed apart",
+              "registered in neither boot" in out and "gatetest:old_note" in out, out)
+        rc, out = sb.intake("update", slug, new, "--old-jar", old, "--diff-only", "--mods", sb.jars)
+        check("update without a boot: every id that left the jar is swept, and it says so",
+              "No boot diff" in out and "Ids that vanished: 3." in out, out)
+    finally:
+        sb.close()
+
+
 def main():
     gate_cases()
     flow()
+    update_with_boot()
     bad = [n for n, ok in RESULTS if not ok]
     print("")
     print("intake_test: %d checks, %d failed" % (len(RESULTS), len(bad)))

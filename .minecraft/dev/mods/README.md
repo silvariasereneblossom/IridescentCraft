@@ -221,7 +221,11 @@ the same file name needs nothing here. A release under a NEW file name does: the
 metafile already on the new jar and rewrites only the record (with its boot diff, like any update). The same
 holds when the launcher moved a third-party mod's metafile itself.
 
-Without a boot (`--no-boot`) only the files that left the jar are known, not what the game stops registering.
+With a boot, the references are swept for the ids the GAME stopped registering (the boot diff). An id that only left
+the jar's files (a recipe file named like an item, a language key) is checked against the new boot's registries: still
+registered as anything is not vanished; registered nowhere is listed apart, with its references, and not counted.
+Without a boot (`--no-boot`) only the files that left the jar are known, not what the game stops registering: then
+every id that left the jar is swept.
 
 ### Remove a mod
 
