@@ -68,10 +68,13 @@ python -I .minecraft/dev/mods/intake.py add <jar> --side client --metafile <inst
 3. Record the rulings: `intake.py decide <mod> <key> <answer> [field=value ...] [--note "..."]`;
    `decide <mod> --defaults --note "..."` only for what the operator said to leave at its default.
 4. Commit the metafile, the generated indexes and the record. Then refresh the snapshot from that
-   commit and commit it: `powershell -File .minecraft\dev\boot\boot.ps1 -Ref HEAD -WriteSnapshot`.
-5. `intake.py apply <mod>`; `powershell -File .minecraft\dev\sync-distros.ps1 -Fix`; commit. When the
-   validator refuses an entry, `apply` keeps nothing and prints the rule: answer again with the field
-   it asks for, or write the reason into `dev/rosters/accepted.json`.
+   commit and commit it:
+   `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref HEAD -WriteSnapshot`.
+5. `intake.py apply <mod>`; `powershell -ExecutionPolicy Bypass -File .minecraft\dev\sync-distros.ps1 -Fix`;
+   commit. When the validator refuses an entry, `apply` keeps nothing and prints the rule: answer again
+   with the field it asks for, or write the reason into `dev/rosters/accepted.json`.
+   (`-ExecutionPolicy Bypass`: from Git Bash a bare `powershell -File` is refused, scripts are disabled
+   on this PC; the PowerShell tool already runs with Bypass.)
 6. What no registry does, as far as the answers ask for it: the difficulty mod's exclude list and
    Apotheosis's three dimension lists, boss drops, loot rules, armor weight tags, the game-rule
    defaults file, a tracked config per distro, quests, Codex pages, the wiki.
