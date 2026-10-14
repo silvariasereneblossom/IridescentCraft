@@ -2989,15 +2989,6 @@
       {
        "kind": "hurt",
        "group": "hurt",
-       "name": "icraft.death_penalty.armor_clamp",
-       "who": "victimPlayer",
-       "place": "last",
-       "secondary": true,
-       "unchecked": true
-      },
-      {
-       "kind": "hurt",
-       "group": "hurt",
        "name": "icraft.death_penalty.broken_weapon",
        "who": "attackerPlayer"
       }
@@ -11141,15 +11132,6 @@
       "kind": "hurt",
       "who": "attackerPlayer",
       "place": "last",
-      "unchecked": true
-     },
-     {
-      "script": "death_penalty.js",
-      "name": "icraft.death_penalty.armor_clamp",
-      "kind": "hurt",
-      "who": "victimPlayer",
-      "place": "last",
-      "secondary": true,
       "unchecked": true
      },
      {

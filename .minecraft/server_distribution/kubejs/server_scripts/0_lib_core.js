@@ -122,9 +122,10 @@
 //   registered through onHurt()/onHurtLate()) skips while it is raised: secondary damage
 //   lands as-is, it does not crit, proc, splash or reflect a second time.
 //   A handler that has to see secondary hits says so: the option `secondary`
-//   (two do: the Blazeborn damage reduction and the armour clamp; they ran on
-//   those hits while they sat on the Java registry. The plain-bow effects did
-//   until ruling 12 of 2026-10-14 put them on the primary hit only).
+//   (one does: the Blazeborn damage reduction; it ran on those hits while it sat
+//   on the Java registry. The plain-bow effects did until ruling 12 of 2026-10-14
+//   put them on the primary hit only; the armour clamp did until ruling 14 removed
+//   it the same day).
 //   Handlers registered straight on the Java registry can read
 //   global.icraft.core.secondary(event.entity) to opt in to the same rule.
 //
@@ -1060,7 +1061,7 @@
   // registry's map walked these keys in while they sat on it (above).
   var PLACED = {
     first: ['icraft.origin.blazeborn.take', 'icraft.justleveling.1', 'icraft.justleveling.2'],
-    last: ['icraft.origin.blazeborn.deal', 'icraft.death_penalty.armor_clamp', 'icraft.battlemage_arcane_cleave',
+    last: ['icraft.origin.blazeborn.deal', 'icraft.battlemage_arcane_cleave',
            'icraft.unique_tier_buff', 'icraft.class_passives_h6', 'icraft.origin.enderian.shift']
   }
   var ENTRY_KEYS = { normal: 'icraft.core', then: 'icraft.core.then', late: 'icraft.core.late' }

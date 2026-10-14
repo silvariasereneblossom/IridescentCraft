@@ -38,8 +38,9 @@ T_run('lib need: the others are counted', function () {
   var missing = icraft.lib.missing()
   ok(missing.length === 1 && missing[0].name === 'core', 'icraft.lib.missing() lists the core alone (' + missing.map(function (m) { return m.name }).join(', ') + ')')
   ok(missing.length === 1 && missing[0].first === LN_WHOLE[0], 'the first one that asked is ' + LN_WHOLE[0])
-  // (asks, not scripts: death_penalty.js asks twice, once for each of its two blocks that need the library)
-  ok(missing.length === 1 && missing[0].count === LN_ASKING, missing[0].count + ' asks were counted (want ' + LN_ASKING + ': eleven scripts, one of them asks twice)')
+  // (asks, not scripts: one per script since 2026-10-14; death_penalty.js asked twice, once for each of its two
+  // blocks that needed the library, until ruling 14 removed its armour clamp)
+  ok(missing.length === 1 && missing[0].count === LN_ASKING, missing[0].count + ' asks were counted (want ' + LN_ASKING + ': eleven scripts, one ask each)')
   ok(icraft.lib.has('core') === false && icraft.lib.need('core', 'suite/again') === false, 'has() and a later need() answer false')
   ok(ln_missing_lines().length === 1, 'and a later need() prints no second line')
 })

@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 24 | 23 | 26 | 2 |
-| server | 160 | 328 | 239 | 20 |
+| server | 160 | 327 | 239 | 20 |
 | client | 13 | 8 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 327`, `startup: 23`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 326`, `startup: 23`).
 
 ## How to read it
 
@@ -734,7 +734,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 ### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)
 
-**`hurt`** (29)
+**`hurt`** (28)
 
 1. `origins/origin_effects.js` as `icraft.origin.blazeborn.take` [first, secondary, unchecked]
 2. `skills/justleveling_skills.js` as `icraft.justleveling.1` [first, unchecked]
@@ -760,11 +760,10 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 22. `skills/skill_effects.js` as `icraft.skill_effects.2`
 23. `tetra_terramity_perks.js` as `icraft.tetra_terramity_perks`
 24. `origins/origin_effects.js` as `icraft.origin.blazeborn.deal` [last, unchecked]
-25. `death_penalty.js` as `icraft.death_penalty.armor_clamp` [last, secondary, unchecked]
-26. `origins/battlemage_arcane_cleave.js` as `icraft.battlemage_arcane_cleave` [last, unchecked]
-27. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff` [last, unchecked]
-28. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, unchecked]
-29. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, unchecked]
+25. `origins/battlemage_arcane_cleave.js` as `icraft.battlemage_arcane_cleave` [last, unchecked]
+26. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff` [last, unchecked]
+27. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, unchecked]
+28. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, unchecked]
 
 **`hurt.late`** (1)
 
@@ -1238,7 +1237,7 @@ own one-shot `global._*` flags.
 - place 34 of 160; header: @events @file @registry
 - events: `EntityEvents.death`, `ItemEvents.canPickUp`, `PlayerEvents.loggedOut`, `BlockEvents.broken`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`, `ServerEvents.loaded`
 - tick functions: `tick_deathPenaltyBrokenCheck` (player, every 2, offset 0), `tick_durabilityFullSweep` (player, every 10, offset 0)
-- hurt handlers: `icraft.death_penalty.armor_clamp` [victimPlayer, last, secondary, unchecked], `icraft.death_penalty.broken_weapon` [attackerPlayer]
+- hurt handlers: `icraft.death_penalty.broken_weapon` [attackerPlayer]
 - registries: dimensions
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.dims` of `0_lib_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 

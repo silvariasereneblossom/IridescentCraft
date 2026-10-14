@@ -33,8 +33,9 @@ var HT_row = function (name, fn) {
 // ---- the order: one line that must never change ---------------------------------------------------
 // Read off the registry's own maps on a full-pack server on 2026-10-13 (the probe's first two lines),
 // with the dispatcher's block written `core`. Wherever a handler is registered, this is its place.
+// Changed only by a ruling: icraft.death_penalty.armor_clamp left it on 2026-10-14 (ruling 14: removed).
 var HT_ORDER = 'icraft.origin.blazeborn.take , icraft.justleveling.1 , icraft.justleveling.2 , core , ' +
-  'icraft.deathskin_undead_bonus , icraft.origin.blazeborn.deal , icraft.death_penalty.armor_clamp , ' +
+  'icraft.deathskin_undead_bonus , icraft.origin.blazeborn.deal , ' +
   'icraft.battlemage_arcane_cleave , icraft.unique_tier_buff , icraft.class_passives_h6 , icraft.origin.enderian.shift' +
   ' | late: icraft.magic_enchants_decap , icraft.tmb_plain_bow_effects , icraft.vorpal_rework_decap'
 T_run('the order every handler runs in is the order the Java registry walked them in', function () {
@@ -128,7 +129,9 @@ T_run('the order every handler runs in is the order the Java registry walked the
   HT_row('justleveling.2.def30-mag20.half-health.secondary', function () { return HT_nestedPost(HT_player({ apt: DEF30, health: 10 }), mob(), 10) })
   HT_row('justleveling.2.def30-mag20.half-health.primary.real', function () { return HT_real(HT_player({ apt: DEF30, health: 10 }), mob(), 6) })
 
-  // -- death_penalty: the armour clamp (reads the amount, changes the armour)
+  // -- death_penalty: the armour clamp was removed (ruling 14, 2026-10-14). The rows stay: a hit on a player
+  //    in armour near its pin leaves the piece as it was in the scripts (the Java clamp, not run here, holds
+  //    it at max - 1 when vanilla takes the durability)
   HT_row('armor-clamp.hit-40.primary', function () { var p = HT_player({ chest: 236 }); return HT_post(p, mob(), 40) + ' | ' + HT_chest(p) })
   HT_row('armor-clamp.hit-4.primary', function () { var p = HT_player({ chest: 236 }); return HT_post(p, mob(), 4) + ' | ' + HT_chest(p) })
   HT_row('armor-clamp.hit-40.secondary', function () { var p = HT_player({ chest: 236 }); return HT_nestedPost(p, mob(), 40) + ' | ' + HT_chest(p) })

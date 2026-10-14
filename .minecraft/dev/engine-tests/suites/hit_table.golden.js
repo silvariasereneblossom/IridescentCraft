@@ -5,6 +5,7 @@
 //   ruling 11 (2026-10-14, decision list entry 66): a hit an earlier handler cancelled ends there; the four broken-weapon rows of Arcane Cleave (no 10 mana), the Samurai and the Berserker (no stamp), and the order row
 //   ruling 12 (2026-10-14, decision list entry 67): the plain-bow effects on the primary hit only; the two splash rows (no effect on the splash victim, no second heal of Aether's Call)
 //   ruling 13 (2026-10-14, decision list entry 68): no deathskin bonus on a secondary hit; the two secondary rows on an undead target (10 stays 10, 3 stays 3)
+//   ruling 14 (2026-10-14, decision list entry 69): the KubeJS armour clamp removed (the Java clamp holds armour at max - 1); the armour rows: a hit no longer sets the chestplate's damage in advance nor tags it in the scripts
 var HT_GOLDEN = [
   ["plain.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
   ["plain.primary.real", "real hit of 10: attack() true, health 20 -> 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
@@ -41,12 +42,12 @@ var HT_GOLDEN = [
   ["justleveling.2.def30-mag20.spell-power.primary", "posted 10 -> handed back 7.650000095367432 | [minecraft:player <- mob] justleveling.2:10>7.650000095367432"],
   ["justleveling.2.def30-mag20.half-health.secondary", "nested post of 10 (core.secondary() said true) -> handed back 10 | [minecraft:player <- mob] (no handler changed the amount)"],
   ["justleveling.2.def30-mag20.half-health.primary.real", "real hit of 6: attack() true, health 10 -> 5.15500020980835 | [minecraft:player <- mob] justleveling.2:6>4.84499979019165"],
-  ["armor-clamp.hit-40.primary", "posted 40 -> handed back 40 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 229 of 240, broken tag true"],
+  ["armor-clamp.hit-40.primary", "posted 40 -> handed back 40 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 236 of 240, broken tag absent"],
   ["armor-clamp.hit-4.primary", "posted 4 -> handed back 4 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 236 of 240, broken tag absent"],
-  ["armor-clamp.hit-40.secondary", "nested post of 40 (core.secondary() said true) -> handed back 40 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 229 of 240, broken tag true"],
-  ["armor-clamp.hit-40.secondary.real", "secondary hit of 12 (dealDamage thorns): true, health 20 -> 8 | [minecraft:player <- thorns] (no handler changed the amount) | chestplate damage 236 of 240, broken tag true"],
-  ["armor-clamp.hit-40.blazeborn-victim.primary", "posted 40 -> handed back 32 | [minecraft:player <- mob] origin.blazeborn.take:40>32 | chestplate damage 231 of 240, broken tag true"],
-  ["armor-clamp.hit-1000.primary", "posted 1000 -> handed back 1000 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 0 of 240, broken tag true"],
+  ["armor-clamp.hit-40.secondary", "nested post of 40 (core.secondary() said true) -> handed back 40 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 236 of 240, broken tag absent"],
+  ["armor-clamp.hit-40.secondary.real", "secondary hit of 12 (dealDamage thorns): true, health 20 -> 8 | [minecraft:player <- thorns] (no handler changed the amount) | chestplate damage 236 of 240, broken tag absent"],
+  ["armor-clamp.hit-40.blazeborn-victim.primary", "posted 40 -> handed back 32 | [minecraft:player <- mob] origin.blazeborn.take:40>32 | chestplate damage 236 of 240, broken tag absent"],
+  ["armor-clamp.hit-1000.primary", "posted 1000 -> handed back 1000 | [minecraft:player <- mob] (no handler changed the amount) | chestplate damage 236 of 240, broken tag absent"],
   ["armor-clamp.broken-sword-attacker.primary", "posted 40 -> handed back 0 | [minecraft:player <- player] core:40>0 CANCELLED | chestplate damage 236 of 240, broken tag absent"],
   ["arcane-cleave.battlemage.primary", "posted 10 -> handed back 12 | [minecraft:zombie <- player] battlemage_arcane_cleave:10>12 | mana 100 -> 90"],
   ["arcane-cleave.battlemage.no-mana.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount) | mana 5 -> 5"],
@@ -94,9 +95,9 @@ var HT_GOLDEN = [
   ["order.samurai-all.undead-target.primary", "posted 3 -> handed back 8.292824745178223 | [minecraft:zombie <- player] justleveling.1:3>3.6287999153137207 ; deathskin_undead_bonus:3.6287999153137207>4.354559898376465 ; origin.blazeborn.deal:4.354559898376465>5.2254719734191895 ; unique_tier_buff:5.2254719734191895>6.270566463470459 ; class_passives_h6:6.270566463470459>7.211151599884033 ; origin.enderian.shift:7.211151599884033>8.292824745178223 | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick now, wanderer_wpn_sword absent, wanderer_wpn_fist absent"],
   ["order.battlemage-all.broken-sword.primary", "posted 3 -> handed back 0 | [minecraft:zombie <- player] justleveling.1:3>3.6287999153137207 ; core:3.6287999153137207>0 CANCELLED | mana 100 -> 100"],
   ["order.battlemage-all.crit.primary", "posted 3 -> handed back 15.740072250366211 | [minecraft:zombie <- player] justleveling.1:3>4.354559898376465 ; core:4.354559898376465>6.531839847564697 ; deathskin_undead_bonus:6.531839847564697>7.838207721710205 ; origin.blazeborn.deal:7.838207721710205>9.40584945678711 ; battlemage_arcane_cleave:9.40584945678711>11.40584945678711 ; unique_tier_buff:11.40584945678711>13.687019348144531 ; origin.enderian.shift:13.687019348144531>15.740072250366211 | mana 100 -> 90"],
-  ["order.player-on-player.primary", "posted 40 -> handed back 42.791038513183594 | [minecraft:player <- player] origin.blazeborn.take:40>32 ; justleveling.2:32>25.84000015258789 ; origin.blazeborn.deal:25.84000015258789>31.007999420166016 ; unique_tier_buff:31.007999420166016>37.209598541259766 ; origin.enderian.shift:37.209598541259766>42.791038513183594 | victim: chestplate damage 232 of 240, broken tag true"],
-  ["order.player-on-player.secondary", "nested post of 40 (core.secondary() said true) -> handed back 32 | [minecraft:player <- player] origin.blazeborn.take:40>32 | victim: chestplate damage 231 of 240, broken tag true"],
-  ["order.mob-on-player.primary", "posted 40 -> handed back 25.84000015258789 | [minecraft:player <- mob] origin.blazeborn.take:40>32 ; justleveling.2:32>25.84000015258789 | victim: chestplate damage 233 of 240, broken tag true"],
+  ["order.player-on-player.primary", "posted 40 -> handed back 42.791038513183594 | [minecraft:player <- player] origin.blazeborn.take:40>32 ; justleveling.2:32>25.84000015258789 ; origin.blazeborn.deal:25.84000015258789>31.007999420166016 ; unique_tier_buff:31.007999420166016>37.209598541259766 ; origin.enderian.shift:37.209598541259766>42.791038513183594 | victim: chestplate damage 236 of 240, broken tag absent"],
+  ["order.player-on-player.secondary", "nested post of 40 (core.secondary() said true) -> handed back 32 | [minecraft:player <- player] origin.blazeborn.take:40>32 | victim: chestplate damage 236 of 240, broken tag absent"],
+  ["order.mob-on-player.primary", "posted 40 -> handed back 25.84000015258789 | [minecraft:player <- mob] origin.blazeborn.take:40>32 ; justleveling.2:32>25.84000015258789 | victim: chestplate damage 236 of 240, broken tag absent"],
   ["corner.infinite.plain.primary", "posted Infinity -> handed back 0 | [minecraft:zombie <- player] core:Infinity>0"],
   ["corner.infinite.blazeborn-victim.primary", "posted Infinity -> handed back 0 | [minecraft:player <- mob] core:Infinity>0"],
   ["corner.infinite.str30.primary", "posted Infinity -> handed back 0 | [minecraft:zombie <- player] core:Infinity>0 | victim: wither no"],

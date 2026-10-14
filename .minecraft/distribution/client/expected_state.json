@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5e9c9005",
+    "generated_from":  "5afdadfb",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5964,8 +5964,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "7501eb50db13559bbc3d6a84ce93a01fbb3a8a47a381fe9c6dac6c650582bc97",
-                                                                  "size":  48232
+                                                                  "sha256":  "6761eb6eb6b0dd74741e19eb734e40611b5c4151c3f5f1cf9c5c16157415db2e",
+                                                                  "size":  48168
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "6f4cec1b865ff26ed198395e8b7928806460fb68b317367b9dc6d8938f486850",
@@ -6984,8 +6984,8 @@
                                                                    "size":  23771
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "ac68f1793eeb1cb8b43c4f3b5eb708b78a3bee45d92c48b02a58d494dd07d194",
-                                                              "size":  69405
+                                                              "sha256":  "4e0d3a0545c937fb7bf7beb724d6f3f1db4489badd3a726ca4fb8804a5540256",
+                                                              "size":  69413
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "bbfbc77336ab6c3210b5eb3b95073d71fa8495017d7143adec43db1173c21088",
@@ -7104,8 +7104,8 @@
                                                                                          "size":  2052
                                                                                      },
                   "kubejs/server_scripts/death_penalty.js":  {
-                                                                 "sha256":  "473d17ef35a04d7fd15db36bb63522f7aa221595bf74449af3592bff1581dc24",
-                                                                 "size":  32469
+                                                                 "sha256":  "9e68ee3454f3d50da35c283ed0b69d550df0614642a8ddc9cf885d2a934c3b18",
+                                                                 "size":  29768
                                                              },
                   "kubejs/server_scripts/diag_armor_modifiers.js":  {
                                                                         "sha256":  "fddcdad360c8c795c5efadf6203548b8813924b3b763519b0a447fc91781f71d",

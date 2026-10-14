@@ -104,7 +104,9 @@ HO_r.main2 = HO_core.onHurt('t.ho.main2', HO_mark('main2', function (event) {
   if (HO_flags.nan) event.setAmount(NaN)
   if (HO_flags.negative) event.setAmount(-3)
 }), 'any')
-HO_r.clamp = HO_core.onHurt('icraft.death_penalty.armor_clamp', HO_mark('clamp', function (event) {
+// (a stand-in for a placed-last handler of a player victim with all three options; it borrows the key of Arcane
+// Cleave, which stands where icraft.death_penalty.armor_clamp stood until ruling 14 removed it, 2026-10-14)
+HO_r.clamp = HO_core.onHurt('icraft.battlemage_arcane_cleave', HO_mark('clamp', function (event) {
   if (HO_flags.uncheckedNan) event.setAmount(NaN)
 }), 'victimPlayer', { place: 'last', secondary: true, cancelled: true, unchecked: true })
 HO_r.jl1 = HO_core.onHurt('icraft.justleveling.1', HO_mark('jl1'), 'attackerPlayer', { place: 'first' })
@@ -175,8 +177,8 @@ T_run('unchecked: the amount a handler leaves is checked, unless it says not', f
   ev = HO_hit(HO_q, HO_generic(), 5)
   HO_flags.uncheckedNan = false
   HO_core.hurtTap(null)
-  ok(found['icraft.death_penalty.armor_clamp'] === 5 && found['icraft.origin.enderian.shift'] !== found['icraft.origin.enderian.shift'],
-     'an unchecked handler that leaves NaN: the handler after it is handed NaN, as on the registry  (clamp found ' + found['icraft.death_penalty.armor_clamp'] + ', shift found ' + found['icraft.origin.enderian.shift'] + ')')
+  ok(found['icraft.battlemage_arcane_cleave'] === 5 && found['icraft.origin.enderian.shift'] !== found['icraft.origin.enderian.shift'],
+     'an unchecked handler that leaves NaN: the handler after it is handed NaN, as on the registry  (clamp found ' + found['icraft.battlemage_arcane_cleave'] + ', shift found ' + found['icraft.origin.enderian.shift'] + ')')
   ok(Number(ev.getAmount()) === 5, '... and that next handler, a checked one, puts the last good amount back  (got ' + ev.getAmount() + ')')
   ok(HO_log.indexOf('shift') > HO_log.indexOf('clamp') && HO_log.indexOf('late') >= 0, '... and the walk goes on  (got ' + HO_log.join(' ') + ')')
   var arrived = HO_hit(HO_mobA, HO_generic(), Infinity)
@@ -226,7 +228,7 @@ T_run('hurtPlan and hurtTap: what runs, in which order, and what each handler di
   }
   ok(text.join(' ') === 'origin.blazeborn.take[core/first/any/secondary] justleveling.1[core/first/attackerPlayer] justleveling.2[core/first/any] ' +
      't.ho.main1[core/main/any] t.ho.unchecked[core/main/any/unchecked] t.ho.main2[core/main/any] t.ho.gated[core/main/any/gated] ' +
-     'origin.blazeborn.deal[core.then/last/any/cancelled] death_penalty.armor_clamp[core.then/last/victimPlayer/secondary/cancelled/unchecked] origin.enderian.shift[core.then/last/any] ' +
+     'origin.blazeborn.deal[core.then/last/any/cancelled] battlemage_arcane_cleave[core.then/last/victimPlayer/secondary/cancelled/unchecked] origin.enderian.shift[core.then/last/any] ' +
      't.ho.late[core.late/late/any] t.ho.late.every[core.late/late/any/secondary/cancelled/unchecked]',
      'hurtPlan: every handler in the order it runs, with its entry, place, who and options  (got ' + text.join(' ') + ')')
   var seen = []
@@ -252,9 +254,9 @@ T_run('a placed handler is ARMED and FIRED like any other', function () {
     for (var i = 0; i < all.length; i++) if (all[i].id === id) return String(all[i].fired)
     return 'not armed'
   }
-  ok(fired('icraft.origin.blazeborn.take@hurt') === 'true' && fired('icraft.death_penalty.armor_clamp@hurt') === 'true' && fired('t.ho.late.every@hurt.late') === 'true',
+  ok(fired('icraft.origin.blazeborn.take@hurt') === 'true' && fired('icraft.battlemage_arcane_cleave@hurt') === 'true' && fired('t.ho.late.every@hurt.late') === 'true',
      'placed first, placed last and LATE: each is armed under <key>@hurt / @hurt.late and has fired  (' + fired('icraft.origin.blazeborn.take@hurt') + ', ' +
-     fired('icraft.death_penalty.armor_clamp@hurt') + ', ' + fired('t.ho.late.every@hurt.late') + ')')
+     fired('icraft.battlemage_arcane_cleave@hurt') + ', ' + fired('t.ho.late.every@hurt.late') + ')')
   ok(fired('t.ho.x1@hurt') === 'not armed', 'a refused registration armed nothing  (' + fired('t.ho.x1@hurt') + ')')
   ok(HO_core.hurtHandlers().hasOwnProperty('icraft.origin.blazeborn.take') && HO_core.hurtHandlers().hasOwnProperty('t.ho.late'),
      'hurtHandlers() offers the placed and the LATE handlers by key, as before')
