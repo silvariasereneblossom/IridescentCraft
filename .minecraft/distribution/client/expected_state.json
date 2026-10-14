@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "fde3ca19",
+    "generated_from":  "e127b193",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "0cea437427c35c20b9e0b4352db4815660f6f213905250dffd41d2403d3e6095",
-                                                                  "size":  48045
+                                                                  "sha256":  "91d25982170c7bc599347649175ad31709980ac1075371f6f2463c63738a1da4",
+                                                                  "size":  48115
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
@@ -7516,8 +7516,8 @@
                                                                                  "size":  1548
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "2f2e4826fee59c7e8e2c7f6ee20c238feda52387e4056382873622f8e96ba56d",
-                                                                              "size":  34072
+                                                                              "sha256":  "85b59fabb794d7c0e6c5e52dc7ba420a61b025097cb9b675cefec4d3ef8050df",
+                                                                              "size":  34959
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "5ca4bcc435042ab860530412a6fd17a7a3652c3945a4f98411b2daa06056518e",

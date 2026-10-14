@@ -10,7 +10,7 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 24 | 23 | 26 | 2 |
-| server | 160 | 327 | 238 | 19 |
+| server | 160 | 327 | 239 | 19 |
 | client | 13 | 8 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs). The registrations the
@@ -1903,7 +1903,7 @@ own one-shot `global._*` flags.
 
 - place 134 of 160
 - events: `ServerEvents.recipes`
-- sections: 17
+- sections: 18
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/waystone_recipes.js`

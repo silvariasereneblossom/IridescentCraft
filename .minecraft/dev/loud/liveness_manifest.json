@@ -2478,6 +2478,10 @@
      "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
     },
     {
+     "name": "recipes/tier_gated_recipes/section-g2-stronger-withers-removed",
+     "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
+    },
+    {
      "name": "recipes/tier_gated_recipes/section-h-enchant-utility-workstations-t2",
      "of": "recipes/tier_gated_recipes@ServerEvents.recipes"
     },
