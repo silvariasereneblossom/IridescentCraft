@@ -35,6 +35,8 @@
 //                                        unless the registry says `sameAs`)
 //   icraft.bosses.entityIds(id)       -> [the boss's id, then every id that is `sameAs` it]:
 //                                        the entity types a rule for that boss has to cover
+//   icraft.bosses.seenAs()            -> [{ id, type, class, baseHealth, mainHand }]: the bosses the
+//                                        game hands out under ANOTHER entity type (below), a fresh copy
 //
 // ONE BOSS, TWO ENTITY IDS (`sameAs`). The game can hand a script a boss under an
 // id that is not its roster id: Progressive Bosses cancels the join of every
@@ -52,6 +54,16 @@
 //     how one boss is never paid twice.
 //   * A rule registered per entity TYPE (a LootJS entity modifier) is registered
 //     for entityIds(id): global.icraftEntityMod does it.
+//
+// ONE BOSS UNDER ANOTHER TYPE (`seenAs`). Some bosses never carry their own id: the
+// Magehunter of Iron's Spellbooks is created with the type minecraft:vindicator and
+// saved under it, so in play it is a plain Vindicator (measured 2026-10-14). An entry
+//     "irons_spellbooks:magehunter_vindicator": { ..., "seenAs": { "type": "minecraft:vindicator",
+//       "class": "<its Java class>", "baseHealth": 50, "mainHand": "irons_spellbooks:magehunter" } }
+// says how to tell it from the ordinary mobs of that type: by its Java class, or by
+// its marks (base max health AND the item in its main hand). This reader only checks
+// and hands the record out; core.entityId (0_lib_core.js) does the recognising and
+// stamps the entity, so every script that reads an id through it gets the boss's id.
 //
 //   icraft.dims.tier(id)              -> 1..4, 0 when the dimension has no entry
 //   icraft.dims.has(id, system)       -> true | false
@@ -142,7 +154,8 @@
 
   var BOSS_KINDS = ['named', 'miniboss', 'unlisted']
   var BOSS_FLAGS = ['boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster']
-  var BOSS_KEYS = ['tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'absent', 'note']
+  var BOSS_KEYS = ['tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note']
+  var SEEN_AS_KEYS = ['type', 'class', 'baseHealth', 'mainHand']
   var ALIAS_KEYS = ['sameAs', 'note']       // an entry with `sameAs` is a second id of another entry and nothing else
   var BOSS_SWITCHES = ['perKill']
   var DIM_FLAGS = ['loot', 'classPassives']
@@ -201,6 +214,11 @@
     var e = null
     var keys = {}
     var s = ''
+    var seenTypes = {}
+    var sa = null
+    var k = ''
+    var hasClass = false
+    var hasMarks = false
     for (id in doc.bosses) {
       e = doc.bosses[id]
       if (isObject(e) && e.sameAs !== undefined) {
@@ -229,6 +247,24 @@
             isTier(e.arena.tier))) bad.push(id + ': arena needs key, display and a tier 1-4')
         else if (keys[e.arena.key] === true) bad.push(id + ': arena key "' + e.arena.key + '" is used twice')
         else keys[e.arena.key] = true
+      }
+      if (e.seenAs !== undefined) {
+        sa = e.seenAs
+        if (!isObject(sa)) { bad.push(id + ': seenAs is not an object'); continue }
+        for (k in sa) {
+          if (SEEN_AS_KEYS.indexOf(k) < 0) bad.push(id + ': seenAs has an unknown key "' + k + '"')
+        }
+        if (!(typeof sa.type === 'string' && sa.type.indexOf(':') > 0 && sa.type !== id)) bad.push(id + ': seenAs needs the entity `type` the game hands it out under (an id, not its own)')
+        else if (own(doc.bosses, sa.type)) bad.push(id + ': seenAs type ' + sa.type + ' has an entry of its own')
+        else if (own(seenTypes, sa.type)) bad.push(id + ': seenAs type ' + sa.type + ' is already the type of ' + seenTypes[sa.type])
+        else seenTypes[sa.type] = id
+        hasClass = sa['class'] !== undefined
+        hasMarks = sa.baseHealth !== undefined || sa.mainHand !== undefined
+        if (hasClass && !(typeof sa['class'] === 'string' && sa['class'] !== '')) bad.push(id + ': seenAs class is not a class name')
+        if (hasMarks && !(typeof sa.baseHealth === 'number' && sa.baseHealth > 0 && typeof sa.mainHand === 'string' && sa.mainHand.indexOf(':') > 0)) {
+          bad.push(id + ': seenAs marks need both baseHealth (a positive number) and mainHand (an item id)')
+        }
+        if (!hasClass && !hasMarks) bad.push(id + ': seenAs needs a class, or marks (baseHealth and mainHand), to recognise the entity by')
       }
     }
     if (doc.switches !== undefined && !isObject(doc.switches)) bad.push('"switches" is not an object')
@@ -406,6 +442,20 @@
       needBosses()
       var key = canonId(id)
       return own(bossAliasOf, key) ? [key].concat(bossAliasOf[key]) : [key]
+    },
+    // [{ id, type, class, baseHealth, mainHand }] in file order: the entries with `seenAs`, a fresh copy
+    seenAs: function () {
+      needBosses()
+      var out = []
+      var i = 0
+      var rec = null
+      for (i = 0; i < bossIds.length; i++) {
+        if (bossEntries[bossIds[i]].seenAs === undefined) continue
+        rec = copy(bossEntries[bossIds[i]].seenAs)
+        rec.id = bossIds[i]
+        out.push(rec)
+      }
+      return out
     },
     byTier: function (tier, system) {
       needBosses()

@@ -373,6 +373,8 @@ def gen_registry_expect(ctx):
         # second ids (`sameAs`): [id, the boss it is], and for each boss that has one [boss id, its entity ids]
         "aliases": [[a, t] for a, t in reg.aliases.items()],
         "entityIds": [[t, reg.entity_ids(t)] for t in sorted(set(reg.aliases.values()))],
+        # bosses the game hands out under another entity type (`seenAs`), as icraft.bosses.seenAs() hands them out
+        "seenAs": reg.seen_as(),
         "aBoss": a_boss[0] if a_boss else "", "aDim": dim_ids[1] if len(dim_ids) > 1 else "",
     }
     return "var T_REG = " + json.dumps(doc, ensure_ascii=False) + "\n"

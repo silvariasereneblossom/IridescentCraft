@@ -14,7 +14,8 @@
     "stalwart_dungeons:nether_keeper": "miniboss: see mutant_zombie",
     "stalwart_dungeons:awful_ghast": "miniboss: see mutant_zombie",
     "stalwart_dungeons:incomplete_wither": "miniboss: see mutant_zombie",
-    "cataclysm:ender_golem": "miniboss (designed 1,200): see mutant_zombie"
+    "cataclysm:ender_golem": "miniboss (designed 1,200): see mutant_zombie",
+    "irons_spellbooks:magehunter_vindicator": "ruling 24 (2026-10-14): a real boss fight, designed health 500 (about 525 in the Overworld), tier 3; no x3, no tokens, no rush slot, as the registry has it (the operator's answer: '500 (about 525)', which said so)"
   },
 
   "x3-not-named": {
@@ -35,7 +36,7 @@
     "theabyss:the_roka": "see x3-not-named",
     "theabyss:elder": "see x3-not-named",
     "ars_nouveau:wilden_boss": "ruled 2026-10-12: `boss` (core.isBoss, no mob-tier health), on no kill roster, no tokens; see x3-not-named",
-    "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). No effect in play: the game gives the entity the type minecraft:vindicator (see its note)"
+    "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). Since ruling 24 (2026-10-14) it reaches play: the game hands it out as a minecraft:vindicator and `seenAs` recognises it (see its note)"
   },
 
   "named-not-in-rush": {

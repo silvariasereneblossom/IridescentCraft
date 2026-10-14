@@ -115,6 +115,7 @@ def shape_problems(reg):
             bad.append('%s: a second id needs a "note": how the game comes to hand scripts the boss under this id' % i)
 
     arena_keys = {}
+    seen_types = {}
     for i, e in reg.bosses.items():
         if not isinstance(e, dict):
             bad.append('%s: not an object' % i)
@@ -168,6 +169,34 @@ def shape_problems(reg):
                     bad.append('%s: arena has a structure and the locator %s' % (i, a['locator']))
                 if 'summonEntity' in a and a['summonEntity'] != i:
                     bad.append('%s: arena summonEntity is %s, not this entity' % (i, a['summonEntity']))
+        if 'seenAs' in e:
+            sa = e['seenAs']
+            if not isinstance(sa, dict):
+                bad.append('%s: seenAs is not an object' % i)
+            else:
+                for k in sa:
+                    if k not in rosters.SEEN_AS_KEYS:
+                        bad.append('%s: seenAs has an unknown key "%s"' % (i, k))
+                t = sa.get('type')
+                if not (isinstance(t, str) and ':' in t and t != i):
+                    bad.append('%s: seenAs needs the entity `type` the game hands it out under (an id, not its own)' % i)
+                elif t in reg.bosses or t in reg.aliases:
+                    bad.append('%s: seenAs type %s has an entry of its own' % (i, t))
+                elif t in seen_types:
+                    bad.append('%s: seenAs type %s is already the type of %s' % (i, t, seen_types[t]))
+                else:
+                    seen_types[t] = i
+                has_class = 'class' in sa
+                has_marks = 'baseHealth' in sa or 'mainHand' in sa
+                if has_class and not (isinstance(sa['class'], str) and sa['class']):
+                    bad.append('%s: seenAs class is not a class name' % i)
+                if has_marks and not (isinstance(sa.get('baseHealth'), (int, float)) and not isinstance(sa.get('baseHealth'), bool)
+                                      and sa['baseHealth'] > 0 and isinstance(sa.get('mainHand'), str) and ':' in sa['mainHand']):
+                    bad.append('%s: seenAs marks need both baseHealth (a positive number) and mainHand (an item id)' % i)
+                if not has_class and not has_marks:
+                    bad.append('%s: seenAs needs a class, or marks (baseHealth and mainHand), to recognise the entity by' % i)
+                if not (isinstance(e.get('note'), str) and e['note'].strip()):
+                    bad.append('%s: an entry with seenAs needs a "note": how the game comes to hand the boss out under that type' % i)
         if 'absent' in e and not (isinstance(e['absent'], str) and e['absent'].strip()):
             bad.append('%s: absent needs the reason the entry is kept' % i)
         if 'note' in e and not isinstance(e['note'], str):
@@ -262,6 +291,12 @@ def id_problems(reg, game, pack):
         r = e.get('relic')
         if isinstance(r, dict) and r.get('item') not in game['items']:
             bad.append('%s: relic item %s is not a registered item' % (i, r.get('item')))
+        sa = e.get('seenAs')
+        if isinstance(sa, dict):
+            if sa.get('type') not in ents:
+                bad.append('%s: seenAs type %s is not a registered entity type: nothing is ever recognised' % (i, sa.get('type')))
+            if 'mainHand' in sa and sa['mainHand'] not in game['items']:
+                bad.append('%s: seenAs mainHand %s is not a registered item: the marks never match' % (i, sa['mainHand']))
     for i, e in reg.dims.items():
         if not isinstance(e, dict):
             continue

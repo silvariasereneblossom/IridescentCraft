@@ -20,7 +20,8 @@ SCHEMA = 1
 
 BOSS_KINDS = ('named', 'miniboss', 'unlisted')
 BOSS_FLAGS = ('boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster')
-BOSS_KEYS = ('tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'absent', 'note')
+BOSS_KEYS = ('tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note')
+SEEN_AS_KEYS = ('type', 'class', 'baseHealth', 'mainHand')   # a boss the game hands out under ANOTHER entity type
 ALIAS_KEYS = ('sameAs', 'note')     # an entry with `sameAs` is a second entity id of another entry, and nothing else
 ARENA_KEYS = ('key', 'display', 'tier', 'dimension', 'locator', 'structure', 'signatureBlock', 'waystone', 'summonEntity', 'ritual')
 RELIC_KEYS = ('item', 'chance', 'looting')
@@ -139,6 +140,17 @@ class Registry(object):
             a = e.get('arena')
             if a:
                 out[a['key']] = OrderedDict((k, v) for k, v in a.items() if k != 'key')
+        return out
+
+    def seen_as(self):
+        """[{id, type, class, baseHealth, mainHand}] in file order: the bosses the game hands out under another entity type
+        (0_lib_registry.js icraft.bosses.seenAs(); core.entityId recognises them)"""
+        out = []
+        for i, e in self.bosses.items():
+            if isinstance(e, dict) and isinstance(e.get('seenAs'), dict):
+                rec = OrderedDict(e['seenAs'])
+                rec['id'] = i
+                out.append(rec)
         return out
 
     def arena_entity(self):

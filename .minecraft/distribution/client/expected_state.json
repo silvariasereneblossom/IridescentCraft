@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "bbd413dc",
+    "generated_from":  "5e9c9005",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5964,12 +5964,12 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "e78db2c1471fdcd8e845fa85868ec5d23f08e62cebb3d1cd8acd85bb61e67200",
-                                                                  "size":  48196
+                                                                  "sha256":  "7501eb50db13559bbc3d6a84ce93a01fbb3a8a47a381fe9c6dac6c650582bc97",
+                                                                  "size":  48232
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "f7323b2a197cccdc6e62cd80f07d94c08fdcaba08bb53fa9880a79bdc4fe95d7",
-                                                                    "size":  26759
+                                                                    "sha256":  "6f4cec1b865ff26ed198395e8b7928806460fb68b317367b9dc6d8938f486850",
+                                                                    "size":  27259
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "f220dd6bc7e83be42edb4570d0d4fa47a0d821051ae15df7643c6584308546d3",
@@ -6984,16 +6984,16 @@
                                                                    "size":  23771
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "73c8b053536fb3f9d13385417116bbbc1daab9dfd0206e58c49925acc32c820f",
-                                                              "size":  64469
+                                                              "sha256":  "ac68f1793eeb1cb8b43c4f3b5eb708b78a3bee45d92c48b02a58d494dd07d194",
+                                                              "size":  69405
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "bbfbc77336ab6c3210b5eb3b95073d71fa8495017d7143adec43db1173c21088",
                                                                  "size":  9198
                                                              },
                   "kubejs/server_scripts/0_lib_registry.js":  {
-                                                                  "sha256":  "6c89bb43f6b4777659e6e9b30efd31a1e68c3e13bbf62a3ce439855ab1fba8f7",
-                                                                  "size":  24315
+                                                                  "sha256":  "dbae2daebf016073e5afe3a7006ddbea624063a8c2df7a26bab2b71ec90d784f",
+                                                                  "size":  27382
                                                               },
                   "kubejs/server_scripts/0_server_ready_banner.js":  {
                                                                          "sha256":  "504b19b960c5a01cfa24dda19449a4212ee7bca421e4c969c7c606539c1d7c53",
@@ -7552,8 +7552,8 @@
                                                                          "size":  9972
                                                                      },
                   "kubejs/server_scripts/scaling/mob_scaling_unified.js":  {
-                                                                               "sha256":  "c9151e2a7dbb5f3445ff8a6f0b11251b8c29a6d6e91ffad8e13d14e2c8fffc2a",
-                                                                               "size":  12287
+                                                                               "sha256":  "c12e5b2627f7d29daa65336eaf53475bbfedb14369a714ec60648dd461ece2d4",
+                                                                               "size":  12724
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
                                                                                 "sha256":  "a447d9cc1e29a1140146590bcdac1c31b9bfea159f4cc3ab674543806fa176ad",
@@ -7564,8 +7564,8 @@
                                                                              "size":  13841
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "ed89549138a8bd9314418311696324cba1939a1c28866abede48882b470a4ee8",
-                                                                              "size":  57971
+                                                                              "sha256":  "4382e9e40e27ba6420b5f494cfed172550f3eda51bbdf570b0c8fac5c85c068b",
+                                                                              "size":  58205
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "73e9392bf46bc820ec290cece35fe7394cf4f866d53de03d9028a873f411903b",
@@ -7652,12 +7652,12 @@
                                                                            "size":  5259
                                                                        },
                   "kubejs/startup_scripts/enchants/icraft_magic_enchants.js":  {
-                                                                                   "sha256":  "aa20a13fb8371ba361c8abb2a3e30cc862b1beaf075cac378b27a70dc4b0dca2",
-                                                                                   "size":  19005
+                                                                                   "sha256":  "ab6a6ffe92166728f23a1f9a5554832788111b73b47abd021c4854b6c66a275a",
+                                                                                   "size":  19629
                                                                                },
                   "kubejs/startup_scripts/enchants/vorpal_rework.js":  {
-                                                                           "sha256":  "ec261950e60120abb76018bf3709befe4cac98bf66b627c7f3f7f43d088a455a",
-                                                                           "size":  16232
+                                                                           "sha256":  "4ac716481bed8216c8b5ba85175a76b01f8e9b758b0f523194bf6057f77f2c32",
+                                                                           "size":  16856
                                                                        },
                   "kubejs/startup_scripts/endgame_items.js":  {
                                                                   "sha256":  "cc5c001d6a56acd233287d570acd87c4e48b18124c6a8411ad378d05885ed55d",

@@ -616,6 +616,7 @@
   "features": {
    "abyssal-artifact": "loot/abyss_boss_loot.js",
    "ascension-status": "endgame/ascension.js",
+   "boss-seen-as": "0_lib_core.js",
    "boss-x3": "scaling/zz_boss_global_3x.js",
    "codex-balance": "gates/codex_progression_engine.js",
    "codex-exchange": "gates/codex_progression_engine.js",

@@ -663,7 +663,10 @@
     }
     try {
       var core = global.icraft.core
-      if (core && core.isBoss && core.isBoss(type) === true) return true
+      // asked with the ENTITY, not its type: a boss the game hands out under another
+      // type (the registry's `seenAs`: the Magehunter is a minecraft:vindicator) is
+      // recognised by core.entityId (ruling 24, 2026-10-14)
+      if (core && core.isBoss && core.isBoss(target) === true) return true
     } catch (e) {
       // the roster could not be asked (isBoss throws without its registry): the
       // name hints above and the tag below are then all that spares a boss

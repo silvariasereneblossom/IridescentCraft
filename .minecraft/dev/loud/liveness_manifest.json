@@ -2556,6 +2556,10 @@
      "script": "endgame/ascension.js"
     },
     {
+     "name": "boss-seen-as",
+     "script": "0_lib_core.js"
+    },
+    {
      "name": "boss-x3",
      "script": "scaling/zz_boss_global_3x.js"
     },

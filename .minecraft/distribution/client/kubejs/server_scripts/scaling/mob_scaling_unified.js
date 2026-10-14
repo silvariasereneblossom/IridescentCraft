@@ -72,11 +72,6 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
 
     // Skip entities with broken abstract methods that crash on property access
     if (icraft.bosses.has(resId, 'caster')) return
-    // 2026-04-22: namespace-level skip for irons_spellbooks wizard mobs.
-    // All AbstractSpellCastingMob subclasses share the abstract slot bug;
-    // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
-    // their mod-native tuning is fine.
-    if (resId.indexOf('irons_spellbooks:') === 0) return
 
     // Skip bosses — they have their own scaling systems.
     // This test comes BEFORE the saved-flag test on purpose. A boss that was
@@ -85,10 +80,22 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
     // saved flag would send it straight out of this handler with 9x health for
     // good. So: take the modifier off; the boss keeps its share of health.
     // Nothing happens for a boss that never had it.
+    // It also comes before the irons_spellbooks namespace skip below (moved
+    // 2026-10-14, ruling 24): the Magehunter is a vindicator to the game and got
+    // the tier modifier as one; recognised (core.entityId, `seenAs`) its id is in
+    // that namespace, and it must still lose the modifier. For every other
+    // irons_spellbooks boss the drop finds nothing and the handler ends here, as
+    // the namespace skip ended it.
     if (icraft.bosses.has(type, 'tierHpExcluded')) {
       core.dropModifier(entity, 'minecraft:generic.max_health', 'icraft_mob_tier_hp')
       return
     }
+
+    // 2026-04-22: namespace-level skip for irons_spellbooks wizard mobs.
+    // All AbstractSpellCastingMob subclasses share the abstract slot bug;
+    // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
+    // their mod-native tuning is fine.
+    if (resId.indexOf('irons_spellbooks:') === 0) return
 
     // Skip already-processed mobs (single flag for both systems).
     // null = handled, and the tier modifier (if any) is saved with the mob.

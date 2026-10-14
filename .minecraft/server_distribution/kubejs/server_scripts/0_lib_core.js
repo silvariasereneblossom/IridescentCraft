@@ -2,7 +2,7 @@
 // @file kubejs/server_scripts/0_lib_core.js
 // @events none
 // @registry bosses
-// @live spawn-buff-repaired, spawn-buff-saved
+// @live spawn-buff-repaired, spawn-buff-saved, boss-seen-as
 // =============================================================================
 // icraft.core -- shared primitives for the hit / tick handlers
 // File: kubejs/server_scripts/0_lib_core.js   (loads before its consumers: the priority line on top)
@@ -10,6 +10,9 @@
 // Exported through `global.icraft.core` only (no top-level names):
 //
 //   entity ids      core.entityId(entity)            -> 'minecraft:zombie' | ''
+//                                                       (a boss the game hands out under another
+//                                                       type answers with its own id: `seenAs`)
+//                   core.seenAsId(entity)            -> that boss id, or '' (see "entity ids" below)
 //                   core.idSet([ids])                -> a set that can be asked with a Java string:
 //                                                       .has(x) .add(x) .count() .list()
 //                   core.isBoss(entityOrId)          -> true | false
@@ -182,9 +185,79 @@
   }
 
   // ---- entity ids -----------------------------------------------------------
+  // A BOSS UNDER ANOTHER TYPE (`seenAs` in the boss registry, 0_lib_registry.js).
+  // Iron's Spellbooks creates its Magehunter with the type minecraft:vindicator and
+  // saves it under that id: the Evoker Fort's tower places it during worldgen, so it
+  // is a plain Vindicator (class net.minecraft.world.entity.monster.Vindicator) before
+  // any script sees it, and a summoned one becomes one at its first save (measured on
+  // a full-pack boot, 2026-10-14). The registry entry says how to tell it from an
+  // ordinary mob of that type: its Java class, or its marks (base max health AND the
+  // item in its main hand: 50 and the Magehunter sword). The first time an id is read
+  // for such an entity it is stamped (persistentData SEEN_KEY, saved with it), and
+  // every later read, after any reload, answers from the stamp. Ruling 24, 2026-10-14.
+  // A registry that is not loaded recognises nothing here (it is loud where it loads,
+  // and core.isBoss throws without it).
+  var SEEN_KEY = 'icraft_entity_id'
+  var seenTable = null   // '$' + type -> [{ id, cls, baseHealth, mainHand }], from icraft.bosses.seenAs()
+  var seenRoster = null  // the registry object the table was built from (a reloaded registry is a new object)
+  var seenRows = function (typeId) {
+    var roster = global.icraft.bosses
+    if (!roster) return null             // still loading (the registry loads after this file): asked again next time
+    if (seenTable === null || seenRoster !== roster) {
+      seenRoster = roster
+      var list = null
+      try { list = roster.seenAs() } catch (e) {
+        warnOnce('seenAs', '[icraft.core] the boss registry could not be asked for `seenAs` (no boss is recognised under another type): ' + e)
+        seenTable = {}
+        return null
+      }
+      var table = {}
+      for (var i = 0; i < list.length; i++) {
+        var key = '$' + String(list[i].type)
+        if (!table[key]) table[key] = []
+        table[key].push({ id: String(list[i].id), cls: list[i]['class'] ? String(list[i]['class']) : '',
+                          baseHealth: (list[i].baseHealth === undefined) ? NaN : Number(list[i].baseHealth),
+                          mainHand: list[i].mainHand ? String(list[i].mainHand) : '' })
+      }
+      seenTable = table
+    }
+    var rows = seenTable['$' + typeId]
+    return rows ? rows : null
+  }
+  // the boss id an entity of type `typeId` is (stamp, class or marks), or ''
+  var recognise = function (entity, typeId) {
+    var rows = seenRows(typeId)
+    if (rows === null) return ''
+    var data = null
+    try { data = entity.persistentData } catch (e) { data = null /* swallow-ok: no KubeJS data on it: it is recognised by class or marks below, and cannot be stamped */ }
+    if (data) {
+      var stamped = ''
+      try { stamped = String(data.getString(SEEN_KEY)) } catch (e) { stamped = '' /* swallow-ok: an unreadable stamp is no stamp; class and marks below decide */ }
+      for (var i = 0; stamped !== '' && i < rows.length; i++) if (rows[i].id === stamped) return stamped
+    }
+    for (var j = 0; j < rows.length; j++) {
+      var row = rows[j]
+      var how = ''
+      if (row.cls !== '') {
+        try { if (String(entity.getClass().getName()) === row.cls) how = 'its Java class' } catch (e) { how = '' /* swallow-ok: the class could not be read; the marks below decide */ }
+      }
+      if (how === '' && row.mainHand !== '' && attrBase(entity, 'minecraft:generic.max_health', NaN) === row.baseHealth) {
+        var held = ''
+        try { held = String(entity.getMainHandItem().id) } catch (e) { held = '' /* swallow-ok: no readable main hand: not this boss by its marks */ }
+        if (held === row.mainHand) how = 'base health ' + row.baseHealth + ' and ' + row.mainHand + ' in its hand'
+      }
+      if (how === '') continue
+      try { if (data) data.putString(SEEN_KEY, row.id) } catch (e) {
+        warnOnce('seenAs.stamp', '[icraft.core] could not stamp ' + row.id + ' on a ' + typeId + ' (it is recognised again on every read): ' + e)
+      }
+      logOnce('seenAs:' + row.id + ':' + how, '[icraft.core] recognised ' + row.id + ' in a ' + typeId + ' by ' + how + '; stamped ' + SEEN_KEY)
+      if (live !== null) icraft.live.fired('boss-seen-as')
+      return row.id
+    }
+    return ''
+  }
   var TRANSLATION_KEY = /^entity\.([^.]+)\.(.+)$/
-  var entityId = function (entity) {
-    if (!entity) return ''
+  var typeIdOf = function (entity) {
     var s = ''
     // The METHOD, not the `type` property (see header).
     try { s = String(entity.getType()) } catch (e) { s = '' /* swallow-ok: not an entity, or one without getType(): the registry-holder reader below is tried next */ }
@@ -197,6 +270,18 @@
     } catch (e2) { /* swallow-ok: no usable getEntityType() either: the translation-key form below is the last reader, and '' is the answer for a non-entity */ }
     var m = s.match(TRANSLATION_KEY)
     return m ? (m[1] + ':' + m[2]) : s
+  }
+  var entityId = function (entity) {
+    if (!entity) return ''
+    var s = typeIdOf(entity)
+    if (s.indexOf(':') < 0) return s
+    var seen = recognise(entity, s)
+    return seen !== '' ? seen : s
+  }
+  var seenAsId = function (entity) {
+    if (!entity) return ''
+    var s = typeIdOf(entity)
+    return (s.indexOf(':') > 0) ? recognise(entity, s) : ''
   }
 
   // Bosses = the entries of kubejs/config/icraft/registry/bosses.json that carry
@@ -1255,6 +1340,7 @@
     finite: finite,
     isPlayer: isPlayer,
     entityId: entityId,
+    seenAsId: seenAsId,
     isBoss: isBoss,
     attacker: attacker,
     direct: direct,

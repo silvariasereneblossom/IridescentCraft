@@ -59,6 +59,7 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | flag `caster` | the five spellcasters the spawn scripts must not touch | five spawn scripts |
 | `absent` | the reason an entry is kept although its id is NOT a registered entity type | the validator |
 | `sameAs` | this id is a second entity id of that boss (see below); the entry carries nothing else | the reader: every question, `canon`, `entityIds` |
+| `seenAs` | `{ type, class, baseHealth, mainHand }`: the game hands this boss out under ANOTHER entity type; how to tell it from that type's ordinary mobs (see below) | `0_lib_core.js` `core.entityId` / `core.seenAsId`, through `icraft.bosses.seenAs()` |
 | `note` | free text | nobody |
 
 What an entry does NOT do, and still has to be done by hand: the boss's own drops (`loot/*_boss_drops.js`,
@@ -95,11 +96,40 @@ When to use it: the validator cannot tell that a registered id is never handed t
 replaces or whose class extends a vanilla mob, check on a full-pack boot what `getEncodeId()` of the spawned
 entity says (internal `dev/registries-2026-10-13/zzzz_wither_probe.js`). The other case, an entity whose OWN id is
 never handed out (`irons_spellbooks:magehunter_vindicator` is typed `minecraft:vindicator`), is not solved by
-`sameAs`: there the id a script sees belongs to an ordinary mob.
+`sameAs`: there the id a script sees belongs to an ordinary mob. That is `seenAs` (next section).
 
 What `sameAs` does not reach: everything outside the scripts that names the boss by id (the difficulty mod's
 exclude list, quests, other mods' config lists). `dev/mods/pack_audit.py` counts a second id as a script boss, so
 it shows up there when the difficulty mod does not exclude it.
+
+## A boss the game hands out under ANOTHER type (`seenAs`)
+
+```json
+"irons_spellbooks:magehunter_vindicator": { "tier": 3, "kind": "unlisted", "hp": 500, "flags": ["boss"],
+  "seenAs": { "type": "minecraft:vindicator", "class": "io.redspace.ironsspellbooks.entity.mobs.MagehunterVindicator",
+              "baseHealth": 50, "mainHand": "irons_spellbooks:magehunter" }, "note": "..." }
+```
+
+Iron's Spellbooks creates its Magehunter with the TYPE `minecraft:vindicator` and saves it under that id. The Evoker
+Fort's tower places it during worldgen, so a fort's Magehunter is a plain `Vindicator` before any script sees it; a
+summoned one keeps its own class only until it is saved (measured on a full-pack boot, 2026-10-14). Its own id is
+never handed to a script, and the id it is handed out under belongs to every ordinary vindicator, so neither the id
+nor `sameAs` can say which one is the boss. `seenAs` says how: by its Java `class`, or by its marks, `baseHealth`
+(the base max health) AND `mainHand` (the item in its main hand), both or neither. At least one of the two.
+
+- `core.entityId(entity)` (`0_lib_core.js`) answers the boss's id for such an entity, and so does every script that
+  reads an id through it (`core.isBoss`, the registry questions, the scaling scripts); `core.seenAsId(entity)` answers
+  that id or `''` (the two Vorpal startup scripts ask it). The first answer stamps the entity
+  (`persistentData icraft_entity_id`, saved with it), and later reads, after any reload, answer from the stamp: a
+  Magehunter that loses its sword stays the Magehunter. The log says it once per script load:
+  `[icraft.core] recognised <boss id> in a <type> by <how>; stamped icraft_entity_id`; liveness feature
+  `boss-seen-as`.
+- One type is the `seenAs` type of one entry at most, and never a type that has an entry of its own.
+- What it does not reach: anything that reads the entity's TYPE itself, inside the scripts or outside them: a
+  LootJS modifier per entity type (the boss drops the type's loot table), entity-type tags, the difficulty mod and
+  every other mod's config list. A script that reads `getType()` itself (and not `core.entityId`) does not see it
+  either; ask with the entity (`core.isBoss(entity)`), not with a type string.
+- `validate.py` checks the shape, that the type and the item are registered, and that the entry has a `note`.
 
 ## Adding a dimension
 
@@ -143,6 +173,7 @@ icraft.bosses.tier(id)   .hp(id)   .kind(id)
 icraft.bosses.byTier(2)  .byTier(2, 'rush')  .ids('x3')  .arenas()  .enabled('perKill')
 icraft.bosses.canon(id)              // the boss this entity id is (itself, unless `sameAs`)
 icraft.bosses.entityIds(id)          // [boss id, its second ids]: the entity types a per-type rule must cover
+icraft.bosses.seenAs()               // [{ id, type, class, baseHealth, mainHand }]: core.entityId reads it
 icraft.dims.tier(id)   .has(id, 'loot')   .get(id, 'deathPenalty')
 icraft.dims.inTier(2, 'loot')   .inTiers([1, 2], 'loot')   .ids('stageGate')
 ```

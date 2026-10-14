@@ -28,8 +28,8 @@
       "about": "dev/rosters/validate.py: every id of kubejs/config/icraft/registry/*.json is something the game registers (dev/registry), the files are consistent, and no boss or dimension deviates from the expectations without a reason in dev/rosters/accepted.json"
     },
     {
-      "name": "registry", "kind": "harness", "fast": true, "ci": true, "expect": 107,
-      "about": "kubejs/server_scripts/0_lib_registry.js (icraft.bosses, icraft.dims) answers every id and every system as dev/rosters/rosters.py does; ids are normalised (a Java string works); a registry that cannot be read is an error on every call, never an empty roster; core.isBoss asks it",
+      "name": "registry", "kind": "harness", "fast": true, "ci": true, "expect": 125,
+      "about": "kubejs/server_scripts/0_lib_registry.js (icraft.bosses, icraft.dims) answers every id and every system as dev/rosters/rosters.py does; ids are normalised (a Java string works); a registry that cannot be read is an error on every call, never an empty roster; core.isBoss asks it; a boss the game hands out under another type (`seenAs`) is recognised by core.entityId by its marks and its stamp",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js", {"gen": "registry-expect"},
                   {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js"]},
                   "suites/registry.js", "lib/summary.js"]]

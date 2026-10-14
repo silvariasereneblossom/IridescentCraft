@@ -321,6 +321,13 @@ try {
         if (victim instanceof PlayerClass_ime) return
         var victimId = entityIdOf(victim)
         if (victimId.indexOf(':') < 0) return
+        // A boss the game hands out under another entity type (the registry's
+        // `seenAs`: the Magehunter is a minecraft:vindicator to the game) is
+        // asked about under its own id. Ruling 24, 2026-10-14.
+        try {
+          var coreSeen = global.icraft ? global.icraft.core : null
+          if (coreSeen && typeof coreSeen.seenAsId === 'function') { var seenId = coreSeen.seenAsId(victim); if (seenId) victimId = seenId }
+        } catch (eSeen) { /* swallow-ok: seenAsId never throws by its contract; should the call itself fail, the victim is asked about under its own type, as before 2026-10-14 */ }
         if (isBossVictim(victimId)) return
 
         var chance = VORPAL_ARCANE_DECAP_PER_LEVEL * level

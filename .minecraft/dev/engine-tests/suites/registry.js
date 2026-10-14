@@ -294,6 +294,58 @@
     ok(bad === '', 'the ' + T_REG.aliases.length + ' second id(s) of the pack\'s file answer as rosters.py has them' + (bad === '' ? '' : ' -- ' + bad))
   })
 
+  // ---- a boss under another type (`seenAs`) ---------------------------------
+  // Iron's Spellbooks' Magehunter is created with the type minecraft:vindicator and
+  // saved under it: in play it is a plain Vindicator. The entry says how to tell it
+  // apart (its Java class, or its marks: base health + the item in its main hand);
+  // core.entityId recognises it and stamps it. The class path cannot be built on a
+  // mock (a mock's class is the mock's): it is measured on the full pack (internal
+  // dev/rulings-combat-2026-10-14/). Here: the record, the refusals, the marks, the stamp.
+  T_run('a boss under another type (seenAs): the record, the refusals, the marks and the stamp', function () {
+    var core = global.icraft.core
+    ok(same(bosses().seenAs(), T_REG.seenAs), 'seenAs() is what rosters.py reads (' + T_REG.seenAs.length + ' entr' + (T_REG.seenAs.length === 1 ? 'y' : 'ies') + ')')
+    var copyList = bosses().seenAs()
+    if (copyList.length > 0) { copyList[0].type = 'test:changed'; copyList.push({}) }
+    ok(same(bosses().seenAs(), T_REG.seenAs), 'it hands out a fresh copy')
+    var boss = 'test:seen_boss'
+    var planted = changed(realText.bosses, function (d) {
+      d.bosses[boss] = { tier: 2, kind: 'unlisted', flags: ['boss'], seenAs: { type: 'test:plain_mob', baseHealth: 50, mainHand: 'test:marker_sword' }, note: 'planted by the suite' }
+    })
+    var err = reload(planted, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && T_LOG.error.length === 0, 'a file with a planted seenAs entry loads (' + err + T_LOG.error.join(' | ') + ')')
+    var marked = function (base, held) {
+      var m = T_mob('test:plain_mob')
+      if (base !== null) T.get(m, 'attrBase').put('minecraft:generic.max_health', base)
+      if (held !== null) m.setItemSlot(MSlot.MAINHAND, new MStack(held, 1))
+      return m
+    }
+    var plain = marked(null, null)
+    ok(core.entityId(plain) === 'test:plain_mob' && core.seenAsId(plain) === '' && core.isBoss(plain) === false, 'a mob of that type without the marks: its own type, not a boss')
+    ok(core.entityId(marked(50, null)) === 'test:plain_mob' && core.entityId(marked(24, 'test:marker_sword')) === 'test:plain_mob',
+      'one mark alone is not enough (base health 50 without the item; the item on base health 24)')
+    var it = marked(50, 'test:marker_sword')
+    ok(core.entityId(it) === boss && core.seenAsId(it) === boss && core.isBoss(it) === true, 'both marks: core.entityId and seenAsId answer the boss id, core.isBoss is true')
+    ok(String(it.persistentData.getString('icraft_entity_id')) === boss, 'and it is stamped (persistentData icraft_entity_id)')
+    it.setItemSlot(MSlot.MAINHAND, new MStack('minecraft:air', 0))
+    ok(core.entityId(it) === boss, 'the stamp holds when the marks are gone (the sword taken from its hand)')
+    var reloaded = marked(null, null)
+    reloaded.persistentData.putString('icraft_entity_id', boss)
+    ok(core.entityId(reloaded) === boss && core.isBoss(reloaded) === true, 'a mob of that type that carries only the stamp (as after a save and load) is the boss')
+    var other = T_mob('minecraft:zombie')
+    other.persistentData.putString('icraft_entity_id', boss)
+    ok(core.entityId(other) === 'minecraft:zombie', 'a stamp on a mob of ANOTHER type is not read')
+    ok(core.entityId(T_mob('minecraft:zombie')) === 'minecraft:zombie' && core.seenAsId(null) === '' && core.entityId(null) === '', 'any other type, and nothing, as before')
+    var refusedSeen = function (what, fn, needle) { refused(what, changed(planted, function (d) { fn(d.bosses[boss].seenAs, d) }), realText.dims, needle, 'bosses') }
+    refusedSeen('a seenAs with an unknown key', function (sa) { sa.colour = 'red' }, 'seenAs has an unknown key "colour"')
+    refusedSeen('a seenAs whose type is its own id', function (sa) { sa.type = boss }, 'seenAs needs the entity `type`')
+    refusedSeen('a seenAs whose type has an entry of its own', function (sa) { sa.type = T_REG.aBoss }, 'has an entry of its own')
+    refusedSeen('a seenAs with one mark only', function (sa) { delete sa.mainHand }, 'marks need both baseHealth')
+    refusedSeen('a seenAs with neither class nor marks', function (sa) { delete sa.mainHand; delete sa.baseHealth }, 'needs a class, or marks')
+    refusedSeen('two entries seen as one type', function (sa, d) { d.bosses['test:seen_twice'] = { tier: 2, kind: 'unlisted', seenAs: { type: 'test:plain_mob', 'class': 'x.Y' } } }, 'is already the type of')
+    err = reload(realText.bosses, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && T_LOG.error.length === 0, 'the real file again')
+  })
+
   T_run('a switch is read from the file', function () {
     reload(changed(realText.bosses, function (d) { d.switches.perKill.on = true }), realText.dims)
     ok(bosses().enabled('perKill') === true && String(global.icraft.registry.line()).indexOf('per-kill scaling ON') > 0, 'perKill on in the file: enabled() true and the boot line says ON')
