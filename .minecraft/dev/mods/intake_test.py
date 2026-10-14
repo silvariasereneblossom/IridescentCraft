@@ -16,6 +16,7 @@ Copies the index, the records, the registries and the tools to a temporary folde
                 indexes, writes the deny pattern into the two clean-up lists and deletes the record
   update+boot   with a saved boot result (made here, as boot.ps1 writes one) the sweep counts what the game stopped
                 registering; an id that only left the jar's files is checked against the new boot's registries
+  dependencies  a library just added to the tree (index + jar cache, not the instance) provides its mod to `add`
 
 No boot is made (--no-boot): what a real boot adds is exercised on the rig, see README.md.
 Nothing in the real tree is touched. Usage: python .minecraft/dev/mods/intake_test.py
@@ -104,6 +105,17 @@ def build_jar(path, version, with_vault=True, with_far2=False, drop=(), lang=Non
             zf.writestr(zipfile.ZipInfo(name, (2026, 1, 1, 0, 0, 0)), files[name])
 
 
+def build_plain_jar(path, mod, version, needs=()):
+    """A mod jar with one mods.toml and nothing else: `needs` are mandatory dependencies."""
+    toml = ('modLoader="javafml"\nloaderVersion="[47,)"\nlicense="MIT"\n[[mods]]\nmodId="%s"\nversion="%s"\n'
+            'displayName="%s"\n' % (mod, version, mod))
+    for dep in ("forge",) + tuple(needs):
+        toml += ('[[dependencies.%s]]\nmodId="%s"\nmandatory=true\nversionRange="[0,)"\nordering="NONE"\nside="BOTH"\n' % (mod, dep))
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr(zipfile.ZipInfo("META-INF/mods.toml", (2026, 1, 1, 0, 0, 0)), toml)
+
+
 class Sandbox:
     def __init__(self):
         self.dir = tempfile.mkdtemp(prefix="mod-intake-test-")
@@ -133,15 +145,17 @@ class Sandbox:
     def exists(self, rel):
         return os.path.exists(self.path(rel))
 
-    def tool(self, script, *args):
+    def tool(self, script, *args, jar_cache=None):
         env = dict(os.environ)
         env.pop("ICRAFT_BOOT_JAR_CACHE", None)
+        if jar_cache:
+            env["ICRAFT_BOOT_JAR_CACHE"] = jar_cache
         r = subprocess.run([sys.executable, "-I", self.path(".minecraft/dev/mods/" + script)] + list(args),
                            capture_output=True, text=True, errors="replace", env=env)
         return r.returncode, r.stdout + r.stderr
 
-    def intake(self, *args):
-        return self.tool("intake.py", *args)
+    def intake(self, *args, jar_cache=None):
+        return self.tool("intake.py", *args, jar_cache=jar_cache)
 
     def bundle(self):
         return json.loads(self.read(BUNDLE).decode("utf-8"))
@@ -498,10 +512,43 @@ def update_with_boot():
         sb.close()
 
 
+def dependencies():
+    """D2: a library added to the tree a minute ago (its metafile in the index, its jar in a jar cache, not yet in
+    the instance) provides its mod to the next `add`. A jar in a cache that the index does not name provides nothing."""
+    print("dependencies of add (D2)")
+    sb = Sandbox()
+    try:
+        lib = os.path.join(sb.dir, "downloads", "gatelib-1.0.0.jar")
+        build_plain_jar(lib, "gatelib", "1.0.0")
+        build_plain_jar(os.path.join(sb.dir, "downloads", "gatestray-1.0.0.jar"), "gatestray", "1.0.0")
+        rc, out = sb.intake("add", lib, "--side", "both", "--url", "https://example.invalid/gatelib-1.0.0.jar",
+                            "--slug", "gate-lib", "--no-boot", "--mods", sb.jars)
+        check("add: a library with no dependency goes in", rc == 0, out)
+        same = os.path.join(sb.dir, "downloads", "gatedep-1.0.0.jar")
+        build_plain_jar(same, "gatedep", "1.0.0", needs=("gatelib",))
+        rc, out = sb.intake("add", same, "--side", "both", "--url", "https://example.invalid/gatedep-1.0.0.jar",
+                            "--slug", "gate-dep", "--no-boot", "--mods", sb.jars)
+        check("add: a mod that needs the library just added, from the same folder, goes in", rc == 0 and "it needs" not in out, out)
+        other = os.path.join(sb.dir, "elsewhere", "gatedep2-1.0.0.jar")
+        build_plain_jar(other, "gatedep2", "1.0.0", needs=("gatelib",))
+        rc, out = sb.intake("add", other, "--side", "both", "--url", "https://example.invalid/gatedep2-1.0.0.jar",
+                            "--slug", "gate-dep2", "--no-boot", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
+        check("add: ... and from another folder, the library's in ICRAFT_BOOT_JAR_CACHE", rc == 0 and "it needs" not in out, out)
+        stray = os.path.join(sb.dir, "elsewhere", "gatedep3-1.0.0.jar")
+        build_plain_jar(stray, "gatedep3", "1.0.0", needs=("gatestray",))
+        rc, out = sb.intake("add", stray, "--side", "both", "--url", "https://example.invalid/gatedep3-1.0.0.jar",
+                            "--slug", "gate-dep3", "--no-boot", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
+        check("add: a jar in a cache that the index does not name provides nothing",
+              rc == 2 and "it needs gatestray" in out and not sb.exists(ROOT + "gate-dep3.pw.toml"), out)
+    finally:
+        sb.close()
+
+
 def main():
     gate_cases()
     flow()
     update_with_boot()
+    dependencies()
     bad = [n for n, ok in RESULTS if not ok]
     print("")
     print("intake_test: %d checks, %d failed" % (len(RESULTS), len(bad)))

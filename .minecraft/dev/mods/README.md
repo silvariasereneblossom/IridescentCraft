@@ -163,7 +163,9 @@ python -I .minecraft/dev/mods/intake.py add <jar> --side client --metafile <inst
 What it does, in this order, in this checkout, committing nothing:
 
 1. Refuses a jar whose mod id the pack already has (that is `update`), whose name a deny or skip pattern would
-   delete on consumers, or whose mandatory dependency no jar of the pack provides.
+   delete on consumers, or whose mandatory dependency no jar of the pack provides. Provided = a jar in the instance
+   (`--mods`), or a mod the tree's index names whose jar is in a jar cache (`--mods`, `.minecraft/mods`,
+   `ICRAFT_BOOT_JAR_CACHE`, the new jar's own folder): a library added a minute earlier counts.
 2. Writes `.minecraft/mods/.index/<name>.pw.toml` with the side you gave, runs `mod_index.py generate` and `check`.
 3. `boot.ps1 -ModSet`: the server's mod set of this tree, every jar verified against its metafile.
 4. Boots the full pack with the mod in and diffs it against `--base` (default `origin/main`; a saved result is

@@ -117,15 +117,61 @@ def load_inventory(args):
     return inv, ctx
 
 
-def scan_jar(path, ctx):
+def try_scan_jar(path, ctx):
+    """A jar's records (the jar, then each nested jar) -> (records or None, the error)"""
     import inventory
     import jarscan
     task = {'kind': 'mod', 'id': 'mod:' + os.path.basename(path), 'path': path, 'classes': True, 'order': 2}
     fams, _ = jarscan.scan_all([task], inventory.scan_cache_dir(MC), False, 1)
     fam = fams.get(task['id']) or {}
     if fam.get('error') or not fam.get('units'):
-        die('cannot read %s: %s' % (path, fam.get('error')))
-    return inventory.family_records(fam, ctx)
+        return None, fam.get('error')
+    return inventory.family_records(fam, ctx), None
+
+
+def scan_jar(path, ctx):
+    recs, err = try_scan_jar(path, ctx)
+    if recs is None:
+        die('cannot read %s: %s' % (path, err))
+    return recs
+
+
+NOT_A_MOD_DEPENDENCY = ('minecraft', 'forge', 'fml', 'java')
+
+
+def provided_mods(args, inv, ctx, skip=(), extra_dirs=()):
+    """Mod id -> [the jars that provide it]: every jar in the instance (--mods), and every jar the tree's index names
+    that sits in a jar cache (the folders a boot reads: --mods, .minecraft/mods, ICRAFT_BOOT_JAR_CACHE, `extra_dirs`).
+    A mod added to the tree a minute ago is in the index and a cache, not yet in the instance. `skip`: jar file names
+    that provide nothing here (the candidate itself, the old jar of an update)."""
+    skip = set(s.lower() for s in skip)
+    out = OrderedDict()
+
+    def take(name, rr, where=''):
+        for r in rr:
+            for mm in r['identity']['mods']:
+                out.setdefault(mm.get('id'), []).append((name if r is rr[0] else '%s (nested)' % name) + where)
+    for name, rr in inv.items():
+        if name.lower() not in skip:
+            take(name, rr)
+    have = set(n.lower() for n in inv)
+    dirs = [os.path.abspath(d) for d in extra_dirs] + jar_dirs(args)
+    for m in core.load_index():
+        if m['jar'].lower() in have or m['jar'].lower() in skip:
+            continue
+        path = next((os.path.join(d, m['jar']) for d in dirs if os.path.isfile(os.path.join(d, m['jar']))), None)
+        if path:
+            rr, _err = try_scan_jar(path, dict(ctx))
+            if rr:
+                take(m['jar'], rr, ' (the index, %s)' % os.path.dirname(path))
+    return out
+
+
+def missing_dependencies(recs, provided):
+    """The mandatory dependencies of a jar (its records) that neither the jar nor the pack provides -> [mod id]"""
+    own_ids = set(m.get('id') for r in recs for m in r['identity']['mods'])
+    return sorted(set(d['id'] for d in recs[0]['identity']['dependencies']
+                      if d.get('mandatory') and d['id'] not in NOT_A_MOD_DEPENDENCY and d['id'] not in provided and d['id'] not in own_ids))
 
 
 def file_hash(path, fmt):
@@ -613,19 +659,12 @@ def cmd_add(args):
     recs = scan_jar(jar, dict(ctx))
     top = recs[0]
     mod_ids = [m.get('id') for m in top['identity']['mods'] if m.get('id')]
-    installed = {}
-    for name, rr in inv.items():
-        if name.lower() == filename.lower():       # the candidate itself, when it already sits in the mods folder
-            continue
-        for r in rr:
-            for m in r['identity']['mods']:
-                installed.setdefault(m.get('id'), []).append(name if r is rr[0] else '%s (nested)' % name)
+    # the candidate itself provides nothing here, also when it already sits in the mods folder
+    installed = provided_mods(args, inv, ctx, skip=[filename], extra_dirs=[os.path.dirname(jar)])
     clash = [(i, installed[i]) for i in mod_ids if i in installed and any('(nested)' not in x for x in installed[i])]
     if clash:
         die('the pack already has the mod id %s (%s): a new version of a mod is `update`' % (clash[0][0], ', '.join(clash[0][1])))
-    own_ids = set(m.get('id') for r in recs for m in r['identity']['mods'])
-    missing = sorted(set(d['id'] for d in top['identity']['dependencies']
-                         if d.get('mandatory') and d['id'] not in ('minecraft', 'forge', 'fml', 'java') and d['id'] not in installed and d['id'] not in own_ids))
+    missing = missing_dependencies(recs, installed)
     if missing and not args.force:
         die('it needs %s, which no jar of the pack provides: add that first (or --force to see the boot fail)' % ', '.join(missing))
 
