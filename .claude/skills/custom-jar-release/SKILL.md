@@ -3,8 +3,10 @@ name: custom-jar-release
 description: >-
   Build, deploy, and release an IridescentCraft custom mod jar (the in-house
   iridescent_* mods + managed forks like justlevelingfork) the correct,
-  footgun-free way: wsl-build -> regen the custom_jars manifest -> commit the 3
-  deployed jars + 3 manifests -> push. Also DIAGNOSES "stale jar" situations and
+  footgun-free way: wsl-build -> regen the custom_jars manifest (it also
+  refreshes the jars' index markers) -> regenerate the two expected_state.json
+  -> commit the 3 deployed jars + 3 manifests + 3 markers + the 2
+  expected_state.json -> push. Also DIAGNOSES "stale jar" situations and
   handles the version-bump lockstep. USE THIS SKILL whenever the user wants to
   rebuild, redeploy, or ship a custom jar; bump a custom mod's version; or asks
   why a custom jar shows up as "stale", got removed, or isn't reaching the
@@ -63,7 +65,7 @@ git -C <repo> push origin main
 ```
 The pre-push hook regenerates `Mod-List.md`; if it blocks the push, `git add .minecraft/wiki/Mod-List.md` + commit + re-push. Never `--no-verify`. (CRLF warnings are normal — the repo's `.gitattributes` normalizes them.)
 
-After a same-name rebuild the hook's registry snapshot check prints `CHANGED: 1 jar(s) of the pack carry another recorded hash than at the snapshot ...` with the jar's name. That does not block the push: most rebuilds change code, not registrations. **When the rebuild added, removed or renamed a registered id** (an item, a block, an entity type, a painting variant, ...), refresh the snapshot from the pushed-to-be commit and commit the folder as a second commit: `powershell -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot`, then `git add .minecraft/dev/registry`. Validators (quests, the boss and dimension registries, the loot audit, the Codex) read that folder as the truth.
+After a same-name rebuild the hook's registry snapshot check prints `CHANGED: 1 jar(s) of the pack carry another recorded hash than at the snapshot ...` with the jar's name. That does not block the push: most rebuilds change code, not registrations. **When the rebuild added, removed or renamed a registered id** (an item, a block, an entity type, a painting variant, ...), refresh the snapshot from the pushed-to-be commit and commit the folder as a second commit: `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot`, then `git add .minecraft/dev/registry`. Validators (quests, the boss and dimension registries, the loot audit, the Codex) read that folder as the truth.
 
 ## Scenario B — version bump (filename changes): the lockstep
 
@@ -78,7 +80,7 @@ Bumping the version (e.g. `1.0.0 → 1.1.0`) changes the jar **filename**, and t
 Then run Scenario A (build + regen + commit). `git rm` the old-named jar from the 3 mods dirs and `git add` the new one.
 
 A new file name is a new jar for two gates, and both block the push until they are answered:
-- **The registry snapshot check says `STALE`** (the set of jars differs). Commit the release, then `powershell -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot` and commit `.minecraft\dev\registry` as a second commit; the push carries both.
+- **The registry snapshot check says `STALE`** (the set of jars differs). Commit the release, then `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot` and commit `.minecraft\dev\registry` as a second commit; the push carries both.
 - **The mod intake gate says `NO RECORD OF THIS JAR <mod>`** (the mod's intake record was made from the old file name). After the release: `python -I .minecraft\dev\mods\intake.py update <mod> <repo>\.minecraft\mods\<new jar>`. It leaves the metafile, the jars and the manifest alone and rewrites the record, with a boot diff against `origin/main`; a question the new version raises has to be answered (`intake.py decide`) before the push. `<mod>` is the metafile's name without `.pw.toml`.
 
 ## Diagnosing "this custom jar shows stale" / "it got removed"
@@ -103,7 +105,9 @@ A new file name is a new jar for two gates, and both block the push until they a
 wsl bash -lc "cd /mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraft/iridescent-relics-mod && ./wsl-build.sh"
 #   -> BUILD SUCCESSFUL; deployed to 3 mods/
 & 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft\.minecraft\dev\regen_custom_jars_manifest.ps1'
-#   -> prints the new sha for iridescent_relics-1.0.0.jar across all 3 manifests
+#   -> prints the new sha for iridescent_relics-1.0.0.jar across all 3 manifests, then refreshes the markers
+& 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft\.minecraft\dev\generate_expected_state.ps1'
+#   -> rewrites server_distribution\expected_state.json and distribution\client\expected_state.json (the marker's new hash)
 $r = 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft'
 git -C $r add iridescent-relics-mod `
   .minecraft/custom_jars_manifest.json .minecraft/server_distribution/custom_jars_manifest.json .minecraft/distribution/client/custom_jars_manifest.json `
