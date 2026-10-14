@@ -144,7 +144,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'Keep (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.3.2.jar: mods mixinextras"
      ],
@@ -153,7 +157,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage' (offered as: stage-gate the whole mod at tier 4). NOT applied: needs a stageMod line in gates/astages_restrictions.js (follow-up; it also locks Ad Astra steel out of other mods' early recipes)",
      "evidence": [
       "410 registered items (dev/registry @59ee40da); 83 item language keys, 598 recipes"
      ],
@@ -329,7 +337,11 @@
     {
      "key": "loot:chests",
      "surface": "loot:chests",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "8 structures in 8 sets; 56 templates, 27 with a loot container",
       "6 chest and 0 archaeology tables: ad_astra:chests/dungeon/moon/dungeon_chest, ad_astra:chests/dungeon/moon/large_dungeon_chest, ad_astra:chests/temple/mars/temple, ad_astra:chests/village/moon/blacksmith, ad_astra:chests/village/moon/house, minecraft:loot"
@@ -342,7 +354,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand), own answer: 'Mekanism steel is canonical, recipes from other mods create Mekanism steel'. NOT applied: steel unification is follow-up recipe work",
      "evidence": [
       "#forge:ingots/steel is also filled by Mekanism-1.20.1-10.4.16.80.jar, tetra-1.20.1-6.12.0.jar, thermal_integration-1.20.1-11.0.1.27.jar",
       "#forge:nuggets/steel is also filled by Mekanism-1.20.1-10.4.16.80.jar, tetra-1.20.1-6.12.0.jar, thermal_integration-1.20.1-11.0.1.27.jar",
@@ -384,7 +400,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set ad_astra:lunar_tower: spacing 34, separation 13",
       "structure set ad_astra:lunarian_village: spacing 30, separation 14",
@@ -401,7 +421,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: carryon, immersiveengineering (a pack rule keyed on the mod id misses it)"
      ],
@@ -1162,7 +1186,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "cumulus_menus-1.20.1-1.0.1-neoforge.jar: mods cumulus_menus; client-leaning, screen-init-hook",
       "curios-forge-5.6.1+1.20.1.jar: mods curios; key-mappings, screen-init-hook",
@@ -1174,7 +1202,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)': the dimension's tier-2 stage gate plus item stages",
      "evidence": [
       "284 registered items (dev/registry @59ee40da); 165 item language keys, 369 recipes"
      ],
@@ -1274,7 +1306,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "aether:double_drops: type aether:double_drops, on every table its conditions match",
       "aether:enchanted_grass_berry_bush: type aether:enchanted_grass, on every table its conditions match",
@@ -1292,7 +1328,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:rods/wooden is also filled by blue_skies-1.20.1-1.3.31.jar, chisels-and-bits-forge-20.1.20.jar"
      ],
@@ -1315,7 +1355,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 12, AxeItem 5, BowItem 1, ProjectileWeaponItem 1"
      ],
@@ -1327,7 +1371,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 1, SwordItem 12, AxeItem 5, BowItem 1, ProjectileWeaponItem 1; curio item classes: 5"
      ],
@@ -1369,7 +1417,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set aether:bronze_dungeon: spacing 6, separation 5",
       "structure set aether:large_aercloud: spacing 6, separation 3",
@@ -1381,7 +1433,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: randomium (a pack rule keyed on the mod id misses it)"
      ],
@@ -2201,7 +2257,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "tier-1",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'tier-1 (Recommended)'",
      "evidence": [
       "278 registered items (dev/registry @59ee40da); 255 item language keys, 84 recipes"
      ],
@@ -2261,7 +2321,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "alexsmobs:ancient_dart: type alexsmobs:ancient_dart, on minecraft:chests/jungle_temple, minecraft:chests/jungle_temple_dispenser",
       "alexsmobs:banana_drop: type alexsmobs:banana_drop, on minecraft:blocks/jungle_leaves",
@@ -2273,7 +2337,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:crops/banana is also filled by pamhc2trees-1.20-1.0.2.jar",
       "#forge:crops/rice is also filled by FarmersDelight-1.20.1-1.2.11.jar, pamhc2crops-1.20-1.0.3.jar, thermal_cultivation-1.20.1-11.0.1.24.jar",
@@ -2298,7 +2366,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 2"
      ],
@@ -2310,7 +2382,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 2, SwordItem 2",
       "4 enchantments (lootable and tradeable unless the pack says otherwise): alexsmobs:board_return, alexsmobs:lavawax, alexsmobs:serpentfriend, alexsmobs:straddle_jump"
@@ -2337,7 +2413,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "biome modifiers: 1 alexsmobs:am_leafcutter_ant_spawns, 1 alexsmobs:am_mob_spawns",
       "worldgen files: 1 configured_feature, 1 placed_feature"
@@ -2347,7 +2427,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: domesticationinnovation (a pack rule keyed on the mod id misses it)"
      ],
@@ -3782,7 +3866,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "geckolib-forge-1.20.1-4.4.4.jar: mods geckolib; client-leaning",
       "mixinextras-forge-0.2.0-beta.8.jar: mods mixinextras"
@@ -3792,7 +3880,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)'. Codex progression, tier_gated_recipes, progression_tier_fixes, 4 item stages",
      "evidence": [
       "402 registered items (dev/registry @59ee40da); 180 item language keys, 635 recipes"
      ],
@@ -3835,7 +3927,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "ars_nouveau:dungeon_loot: type ars_nouveau:dungeon_loot, on minecraft:chests/abandoned_mineshaft, minecraft:chests/bastion_treasure, minecraft:chests/desert_pyramid"
      ],
@@ -3844,7 +3940,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'light'. Battlemage set light; Arcanist and Sorcerer stay robe, so the mod is mixed. NOT applied: the 4 Battlemage pieces into the light weight tag (follow-up tag work)",
      "evidence": [
       "ArmorItem classes: 3; 6 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -3857,7 +3957,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1, BowItem 1, CrossbowItem 1, ShieldItem 1"
      ],
@@ -3869,7 +3973,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 3, SwordItem 1, BowItem 1, CrossbowItem 1, ShieldItem 1; curio item classes: 1",
       "3 enchantments (lootable and tradeable unless the pack says otherwise): ars_nouveau:mana_boost, ars_nouveau:mana_regen, ars_nouveau:reactive"
@@ -3910,7 +4018,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set ars_nouveau:wilden_den_set: spacing 36, separation 10",
       "biome modifiers: 4 forge:add_spawns, 2 forge:add_features",
@@ -3922,7 +4034,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: carryon, malum, nyfsquiver (a pack rule keyed on the mod id misses it)"
      ],
@@ -6387,7 +6503,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)'. Everbright and Everdawn tier-2 stage gates plus recipe_audit.js",
      "evidence": [
       "703 registered items (dev/registry @59ee40da); 244 item language keys, 695 recipes"
      ],
@@ -6526,7 +6646,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this'. Blue Skies' copies (#forge:ores/emerald, #forge:rods/wooden) are canonical. NOT applied: unification is follow-up recipe/tag work",
      "evidence": [
       "#forge:ores/emerald is also filled by chisels-and-bits-forge-20.1.20.jar, deeperdarker-forge-1.20.1-1.3.3.jar",
       "#forge:rods/wooden is also filled by aether-1.20.1-1.5.2-neoforge.jar, chisels-and-bits-forge-20.1.20.jar"
@@ -6536,7 +6660,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mixed (Recommended)'. 20 pieces heavy (tagged), the Shadow set medium by default",
      "evidence": [
       "ArmorItem classes: 1; 24 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -6549,7 +6677,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 2, AxeItem 1, ShieldItem 2"
      ],
@@ -6561,7 +6693,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 8 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 1, SwordItem 2, AxeItem 1, ShieldItem 2"
      ],
@@ -6587,7 +6723,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set blue_skies:everbright_blinding_dungeon: spacing 45, separation None",
       "structure set blue_skies:everdawn_blinding_dungeon: spacing 45, separation None",
@@ -7016,7 +7156,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)'. Codex progression, 18 item stages, recipe gates",
      "evidence": [
       "847 registered items (dev/registry @59ee40da); 299 item language keys, 1302 recipes"
      ],
@@ -7045,7 +7189,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other'. Chisels & Bits' #forge:storage_blocks/quartz is canonical. NOT applied: follow-up unification work",
      "evidence": [
       "#forge:storage_blocks/quartz is also filled by chisels-and-bits-forge-20.1.20.jar"
      ],
@@ -7068,7 +7216,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "magic",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'magic'. NOT applied: tag Botania's weapons icraft:magic_weapon (follow-up tag work)",
      "evidence": [
       "weapon classes: SwordItem 6, AxeItem 3, BowItem 2"
      ],
@@ -7080,7 +7232,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 11, SwordItem 6, AxeItem 3, BowItem 2"
      ],
@@ -7120,7 +7276,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "biome modifiers: 2 forge:add_features, 2 forge:remove_features",
       "worldgen files: 18 configured_feature, 2 placed_feature"
@@ -7130,7 +7290,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: buzzier_bees (a pack rule keyed on the mod id misses it)"
      ],
@@ -13849,7 +14013,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "aeroblender-1.20.1-1.0.2-rc1-neoforge.jar: mods aeroblender; tag-replace-in-shared-namespace",
       "mixinextras-forge-0.3.2.jar: mods mixinextras"
@@ -13859,7 +14027,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "rework-t4",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'I actually think we need to move Aether to T4, and retune/rework accordingly.'. Own answer to the question 'Deep Aether tier gate' (offered: stage / tier-1 / recipes). NOT applied: moving the Aether (aether:the_aether, today tier 2) to tier 4 is a design change for planning: registry tier, stage gate, loot group, difficulty and Apotheosis lists, mob gear, progression",
      "evidence": [
       "349 registered items (dev/registry @59ee40da); 107 item language keys, 353 recipes"
      ],
@@ -13919,7 +14091,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "deep_aether:bronze_loot_reward_modifiers: type deep_aether:aether_dungeon_loot, on aether:chests/dungeon/bronze/bronze_dungeon_reward",
       "deep_aether:fish_aether: type deep_aether:aether_fish_loot, on minecraft:gameplay/fishing",
@@ -13948,7 +14124,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 4, AxeItem 2, BowItem 1, ShieldItem 2"
      ],
@@ -13960,7 +14140,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 3, SwordItem 4, AxeItem 2, BowItem 1, ShieldItem 2; curio item classes: 1",
       "1 enchantments (lootable and tradeable unless the pack says otherwise): deep_aether:gloves_reach"
@@ -14002,7 +14186,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set deep_aether:brass_dungeon: spacing 20, separation 12",
       "biome modifiers: 7 forge:add_features, 2 forge:add_spawns",
@@ -14015,7 +14203,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "replace:true on 1 tag(s) of another mod's namespace: items aether:accepted_music_discs",
       "data under a namespace that is no mod id: lost_aether_content (a pack rule keyed on the mod id misses it)",
@@ -14100,7 +14292,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)'. the Otherside's tier-3 stage gate",
      "evidence": [
       "174 registered items (dev/registry @59ee40da); 46 item language keys, 376 recipes"
      ],
@@ -14205,7 +14401,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "deeperdarker:warden_carapace_from_ancient_city: type deeperdarker:add, on minecraft:chests/ancient_city",
       "deeperdarker:warden_carapace_from_warden: type deeperdarker:add, on minecraft:entities/warden",
@@ -14217,7 +14417,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:ores/coal is also filled by The_Undergarden-1.20.1-0.8.14.jar, chisels-and-bits-forge-20.1.20.jar",
       "#forge:ores/copper is also filled by chisels-and-bits-forge-20.1.20.jar, tetra-1.20.1-6.12.0.jar",
@@ -14233,7 +14437,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mixed (Recommended)'. Warden set heavy (tagged), Resonarium medium by default",
      "evidence": [
       "ArmorItem classes: 2; 8 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -14246,7 +14454,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 2",
       "2 enchantments (lootable and tradeable unless the pack says otherwise): deeperdarker:catalysis, deeperdarker:sculk_smite"
@@ -14287,7 +14499,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set deeperdarker:ancient_temple: spacing 28, separation 8",
       "worldgen files: 4 biome, 2 configured_carver, 47 configured_feature, 1 noise_settings, 44 placed_feature"
@@ -14297,7 +14513,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'. the 17 Ancient City wall overrides carry the Otherside portal",
      "evidence": [
       "overrides 17 vanilla worldgen: template minecraft:ancient_city/walls/intact_corner_wall_1, template minecraft:ancient_city/walls/intact_horizontal_wall_1, template minecraft:ancient_city/walls/intact_horizontal_wall_2, template minecraft:ancient_city/walls/intact_horizontal_wall_bridge, template minecraft:ancient_city/walls/intact_horizontal_wall_passage_1 ... (17 in all)",
       "data under a namespace that is no mod id: carryon, geode_plus, pneumaticcraft (a pack rule keyed on the mod id misses it)"
@@ -22460,7 +22680,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "recipes",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'recipes (Recommended)'",
      "evidence": [
       "224 registered items (dev/registry @59ee40da); 229 item language keys, 257 recipes"
      ],
@@ -22634,7 +22858,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "irons_spellbooks:chest_loot/ancient_city_modifier: type irons_spellbooks:append_loot, on minecraft:chests/ancient_city",
       "irons_spellbooks:chest_loot/compat_generic_loot_modifier: type irons_spellbooks:append_loot, on betterdungeons:skeleton_dungeon/chests/common, betterdungeons:spider_dungeon/chests/egg_room, betterdungeons:zombie_dungeon/chests/common",
@@ -22669,7 +22897,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mixed (Recommended)': 5 items tagged icraft:magic_weapon, the rest by Java class",
      "evidence": [
       "weapon classes: SwordItem 3, CrossbowItem 1"
      ],
@@ -22681,7 +22913,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 19, SwordItem 3, CrossbowItem 1; curio item classes: 3"
      ],
@@ -22721,7 +22957,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set irons_spellbooks:ancient_battleground: spacing 35, separation 12",
       "structure set irons_spellbooks:catacombs: spacing 72, separation 48",
@@ -22741,7 +22981,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: irons_jewelry, neoforge (a pack rule keyed on the mod id misses it)"
      ],
@@ -25427,7 +25671,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'loot-only (Recommended)'. gear from its bosses' materials; the Mechanical Fusion Anvil stage-locked at tier 4",
      "evidence": [
       "284 registered items (dev/registry @59ee40da); 155 item language keys, 189 recipes"
      ],
@@ -25719,7 +25967,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 2, ProjectileWeaponItem 1, ShieldItem 3"
      ],
@@ -25731,7 +25983,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 2 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 8, SwordItem 2, ProjectileWeaponItem 1, ShieldItem 3; curio item classes: 1"
      ],
@@ -25771,7 +26027,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set cataclysm:abandoned_structures: spacing 30, separation 20",
       "structure set cataclysm:acropolis: spacing 80, separation 50",
@@ -25789,7 +26049,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: alexscaves, iceandfire (a pack rule keyed on the mod id misses it)"
      ],
@@ -27473,7 +27737,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 4, BowItem 1"
      ],
@@ -27485,7 +27753,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 4, BowItem 1",
       "1 enchantments (lootable and tradeable unless the pack says otherwise): mahoutsukai:projector"
@@ -27526,7 +27798,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "worldgen files: 1 biome, 1 configured_surface_builder, 4 density_function"
      ],
@@ -29292,7 +29568,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "tier-1",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'tier-1 (Recommended)'",
      "evidence": [
       "233 registered items (dev/registry @59ee40da); 220 item language keys, 226 recipes"
      ],
@@ -29318,7 +29598,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:dusts/rose_gold is also filled by thermal_integration-1.20.1-11.0.1.27.jar",
       "#forge:ingots/rose_gold is also filled by thermal_integration-1.20.1-11.0.1.27.jar",
@@ -29329,7 +29613,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1"
      ],
@@ -29341,7 +29629,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 1"
      ],
@@ -29367,7 +29659,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: atmospheric, autumity, bakery, berry_good, buzzier_bees, environmental, fabric, neopolitan, upgrade_aquatic (a pack rule keyed on the mod id misses it)"
      ],
@@ -29376,7 +29672,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "none",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'none (Recommended)'",
      "evidence": [
       "mod ids: mca"
      ],
@@ -30374,7 +30674,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'loot-only (Recommended)'. its gear drops from its bosses",
      "evidence": [
       "56 registered items (dev/registry @59ee40da); 49 item language keys, 12 recipes"
      ],
@@ -30482,7 +30786,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "medium",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'medium (Recommended)'. the Wrought Helm, medium by default",
      "evidence": [
       "ArmorItem classes: 5; 1 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -41799,7 +42107,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "recipes",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'recipes (Recommended)'. recipe_audit.js (163 ids) and tier_gated_recipes",
      "evidence": [
       "754 registered items (dev/registry @59ee40da); 569 item language keys, 681 recipes"
      ],
@@ -42017,7 +42329,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "retarget",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'retarget'. NOT applied: move its 19 loot modifiers' accessories to tier-matched tables (follow-up loot work)",
      "evidence": [
       "terramity:aegis_mod: type terramity:terramity_loot_modifier, on minecraft:blocks/gold_ore",
       "terramity:cleansing_mod: type terramity:terramity_loot_modifier, on minecraft:entities/cow",
@@ -42040,7 +42356,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "override",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'override'. NOT applied: override its spawner / hoglin / villager tables in the pack (follow-up loot work; settles the hoglin clash with Nether's Delight)",
      "evidence": [
       "minecraft:blocks/spawner",
       "minecraft:entities/hoglin",
@@ -42065,7 +42385,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 28, AxeItem 15, ShieldItem 1"
      ],
@@ -42077,7 +42401,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 15 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 88, SwordItem 28, AxeItem 15, ShieldItem 1; curio item classes: 179",
       "12 enchantments (lootable and tradeable unless the pack says otherwise): terramity:bottomless_magazine, terramity:curse_of_misfiring, terramity:gentle_explosives, terramity:leadfoot, terramity:lucky_blanks, terramity:narrowed_pellets, terramity:overclocked, terramity:quicker_cooling ... (12 in all)"
@@ -42104,7 +42432,11 @@
     {
      "key": "game-rules",
      "surface": "game-rules",
-     "status": "owed",
+     "status": "decided",
+     "answer": "set",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'its explosive weapons should be disabled'. Own answer: allowTerramityExplosives = false. NOT applied: a line in config/Crust/default_game_rules.toml (follow-up; out of the intake chip's scope)",
      "evidence": [
       "1 gamerule.* language keys; 1 classes register game rules: gamerule.allowTerramityExplosives"
      ],
@@ -42130,7 +42462,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'Keep for now, but future scoping work will create a custom dimension for some of the Terramity worldgen spawns.'. Own answer, recorded as keep",
      "evidence": [
       "structure set terramity:ancient_outcrop: spacing 45, separation 40",
       "structure set terramity:chthonian_breach: spacing 22, separation 18",
@@ -43099,7 +43435,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)': the Abyss's tier-3 stage gate, 7 item stages, ring / Arcane Workbench / Unorithe recipe removals",
      "evidence": [
       "480 registered items (dev/registry @59ee40da); 458 item language keys, 353 recipes"
      ],
@@ -43345,7 +43685,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 14, AxeItem 8"
      ],
@@ -43357,7 +43701,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)': 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 45, SwordItem 14, AxeItem 8"
      ],
@@ -43397,7 +43745,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set theabyss:abylager_hut: spacing 12, separation 2",
       "structure set theabyss:altar: spacing 32, separation 16",
@@ -43417,7 +43769,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: abyss (a pack rule keyed on the mod id misses it)"
      ],
@@ -43426,7 +43782,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "none",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'none (Recommended)'",
      "evidence": [
       "mod ids: theabyss"
      ],
@@ -43498,7 +43858,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)': the dimension's tier-2 stage gate plus 4 recipe gates; TF's own enforced progression",
      "evidence": [
       "562 registered items (dev/registry @59ee40da); 202 item language keys, 444 recipes"
      ],
@@ -43725,7 +44089,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "twilightforest:fiery_pick_smelting: type twilightforest:fiery_pick_smelting, on every table its conditions match",
       "twilightforest:giant_pick_grouping: type twilightforest:giant_block_grouping, on every table its conditions match"
@@ -43749,7 +44117,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 5, AxeItem 2, BowItem 4, ShieldItem 1"
      ],
@@ -43761,7 +44133,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)': 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 8, SwordItem 5, AxeItem 2, BowItem 4, ShieldItem 1",
       "3 enchantments (lootable and tradeable unless the pack says otherwise): twilightforest:chill_aura, twilightforest:destruction, twilightforest:fire_react"
@@ -43774,7 +44150,11 @@
     {
      "key": "game-rules",
      "surface": "game-rules",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)': tfEnforcedProgression stays at TF's default (on)",
      "evidence": [
       "1 gamerule.* language keys; 1 classes register game rules: gamerule.tfEnforcedProgression"
      ],
@@ -43800,7 +44180,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set twilightforest:aurora_palace: spacing None, separation None",
       "structure set twilightforest:dark_tower: spacing None, separation None",
@@ -43818,7 +44202,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: alexscaves, immersiveengineering, randomium (a pack rule keyed on the mod id misses it)"
      ],
@@ -43898,7 +44286,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage (Recommended)'. the Undergarden's tier-3 stage gate",
      "evidence": [
       "283 registered items (dev/registry @59ee40da); 112 item language keys, 289 recipes"
      ],
@@ -43989,7 +44381,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:ores/coal is also filled by chisels-and-bits-forge-20.1.20.jar, deeperdarker-forge-1.20.1-1.3.3.jar",
       "#forge:ores/diamond is also filled by chisels-and-bits-forge-20.1.20.jar, deeperdarker-forge-1.20.1-1.3.3.jar",
@@ -44015,7 +44411,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 2, AxeItem 1, ProjectileWeaponItem 1, ShieldItem 1"
      ],
@@ -44027,7 +44427,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "overrides",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'overrides (Recommended)'. 5 lines of apotheosis/adventure.cfg",
      "evidence": [
       "gear classes: ArmorItem 3, SwordItem 2, AxeItem 1, ProjectileWeaponItem 1, ShieldItem 1",
       "3 enchantments (lootable and tradeable unless the pack says otherwise): undergarden:longevity, undergarden:ricochet, undergarden:self_sling"
@@ -44054,7 +44458,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set undergarden:catacombs: spacing 24, separation 12",
       "structure set undergarden:forgotten_vestige: spacing 6, separation 3",
