@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e163a266",
+    "generated_from":  "53aabde3",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3700,8 +3700,8 @@
                                                           "size":  5297
                                                       },
                   "config/iridescent_difficulty-common.toml":  {
-                                                                   "sha256":  "ef10b11699fe794afb036e97f5f2a40eeb93f5a882bb1edf4fa41f04b4554df2",
-                                                                   "size":  6705
+                                                                   "sha256":  "88072b9ea83d6d6b60b712fdc78225020bf1eea50c115479a58377c7a8bf99ba",
+                                                                   "size":  6733
                                                                },
                   "config/ironfurnaces-client.toml":  {
                                                           "sha256":  "da5307a9495f5fda0f4d73fe57f099dea993a3687d4182c28fea8663ada36fe8",

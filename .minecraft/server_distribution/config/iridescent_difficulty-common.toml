@@ -110,7 +110,7 @@
 #other hostile mob.
 [excludes]
 	#Resource IDs of entities to skip entirely.
-	entities = ["minecraft:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss"]
+	entities = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss"]
 	#Resource IDs of mobs to scale EVEN IF their registered
 	#MobCategory is not MONSTER. Some mods (notably MCreator packs
 	#like Terramity) register clearly-hostile mobs under MISC/CREATURE,

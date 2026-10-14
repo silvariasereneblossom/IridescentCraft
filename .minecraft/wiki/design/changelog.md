@@ -6,6 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Wither keeps its designed health, and two removals
+
+- **The Wither has 1,800 health everywhere.** The difficulty curve that makes ordinary monsters tougher dimension by dimension was meant to leave the Wither alone, but it named a Wither the game never spawns. From the next server restart the Wither has its designed 1,800 health wherever it is summoned; it had 2,550 at the Overworld's starting difficulty, and the curve would have taken it past 15,000 in The End.
+
 ## October 2026 — The End can be generated
 
 - **The End generates.** Until now no chunk of The End could be generated. In an offline test of the full pack, asking for one crashed the server; the test server carries the same data, so the first player through an End portal would have met the same. Nobody had tried yet. Two switched-off ore entries in the pack's own data were one and the same feature for the game, and the game refuses to generate a dimension in which a feature has to come before itself.
