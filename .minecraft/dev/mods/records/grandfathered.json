@@ -3049,7 +3049,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "apotheosis:affix_conversion: type apotheosis:affix_conversion, on every table its conditions match",
       "apotheosis:affix_hook: type apotheosis:affix_hook, on every table its conditions match",
@@ -7750,7 +7754,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "bygonenether:soul_stone_from_block: type bygonenether:replace_item, on bygonenether:blocks/soul_stone",
       "bygonenether:soul_stone_in_catacombs: type bygonenether:replace_item, on bygonenether:chests/catacomb/treasure_rib"
@@ -7760,7 +7768,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:blocks/blackstone"
      ],
@@ -8123,7 +8135,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'loot-only'. Its gear should be boss-drop gear. NOT applied: today its 34 recipes are open from the start (follow-up recipe work)",
      "evidence": [
       "91 registered items (dev/registry @59ee40da); 66 item language keys, 34 recipes"
      ],
@@ -8329,7 +8345,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mixed (Recommended)'. Darksteel heavy, Robed robe. NOT applied: today both are medium by default (follow-up tag work)",
      "evidence": [
       "ArmorItem classes: 10; 8 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -8342,7 +8362,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "review",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'Let's go through them in a separate chip and tag based on effect/aesthetic'. Own answer. NOT applied: a separate chip tags its 15 swords and 2 axes by effect and look",
      "evidence": [
       "weapon classes: SwordItem 15, AxeItem 2"
      ],
@@ -8354,7 +8378,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 10, SwordItem 15, AxeItem 2"
      ],
@@ -8380,7 +8408,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "move",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'This will go in the new dimension, as opposed to Overworld'. Own answer. NOT applied: its worldgen moves to the planned custom dimension (follow-up)",
      "evidence": [
       "biome modifiers: 17 forge:add_features, 1 forge:add_spawns",
       "adds mob spawns: cardinal_sins:warriorofash",
@@ -8841,7 +8873,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "celestial_artifacts:chests/abandoned_mineshaft: type celestial_core:add_loot_table, on minecraft:chests/abandoned_mineshaft",
       "celestial_artifacts:chests/ancient_city: type celestial_core:add_loot_table, on minecraft:chests/ancient_city",
@@ -9044,7 +9080,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "celestial_core:chests/abandoned_mineshaft: type celestial_core:add_loot_table, on minecraft:chests/abandoned_mineshaft",
       "celestial_core:chests/end_city_treasure: type celestial_core:add_loot_table, on minecraft:chests/end_city_treasure",
@@ -18518,7 +18558,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "farmersdelight:add_loot_abandoned_mineshaft: type farmersdelight:add_loot_table, on minecraft:chests/abandoned_mineshaft",
       "farmersdelight:add_loot_bastion_hoglin_stable: type farmersdelight:add_loot_table, on minecraft:chests/bastion_hoglin_stable",
@@ -19450,7 +19494,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "forbidden_arcanus:abandoned_mineshaft_additions: type valhelsia_core:append_loot, on minecraft:chests/abandoned_mineshaft",
       "forbidden_arcanus:artisan_relic_addition: type valhelsia_core:append_loot, on minecraft:chests/village/village_armorer, minecraft:chests/village/village_toolsmith, minecraft:chests/village/village_weaponsmith",
@@ -20745,7 +20793,11 @@
     {
      "key": "loot:chests",
      "surface": "loot:chests",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "83 structures in 8 sets; 257 templates, 144 with a loot container",
       "157 chest and 9 archaeology tables: idas:chests/abandonedhouse/abandonedhouse, idas:chests/abandonedhouse/abandonedhouse_create, idas:chests/abandonedhouse/abandonedhouse_library, idas:chests/ancient_mines/minesbasic, idas:chests/ancient_mines/minescreate, idas:chests/ancient_mines/mineshall, idas:chests/ancient_portal/ancient_portal_nether, idas:chests/ancient_portal/ancient_portal_overworld ... (166 in all)"
@@ -21368,7 +21420,11 @@
     {
      "key": "loot:chests",
      "surface": "loot:chests",
-     "status": "owed",
+     "status": "decided",
+     "answer": "strip",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'strip'. NOT applied: strip integrated_stronghold:dispensers/maze, the one table no rule names (follow-up loot work)",
      "evidence": [
       "1 structures in 1 sets; 61 templates, 13 with a loot container",
       "20 chest and 0 archaeology tables: integrated_stronghold:chests/armory, integrated_stronghold:chests/bedroom, integrated_stronghold:chests/brewing, integrated_stronghold:chests/crypt, integrated_stronghold:chests/dining_hall, integrated_stronghold:chests/enchanting, integrated_stronghold:chests/farm, integrated_stronghold:chests/grand_library ... (20 in all)"
@@ -28054,7 +28110,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'loot-only'. its 4 items as boss drops. NOT applied where a recipe makes one today (follow-up check)",
      "evidence": [
       "4 registered items (dev/registry @59ee40da); 7 item language keys, 1 recipes"
      ],
@@ -28080,7 +28140,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 1 placed_feature"
@@ -28090,7 +28154,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'both'. NOT applied: a Codex page and quests (follow-up content work)",
      "evidence": [
       "mod ids: majestic_menaces"
      ],
@@ -28725,7 +28793,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "stage",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'stage'. NOT applied: stage-lock the summons to their bosses' tiers (follow-up)",
      "evidence": [
       "38 registered items (dev/registry @59ee40da); 36 item language keys, 38 recipes"
      ],
@@ -28805,7 +28877,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 3"
      ],
@@ -28817,7 +28893,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 3; curio item classes: 1"
      ],
@@ -28843,7 +28923,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: gunswithoutroses (a pack rule keyed on the mod id misses it)"
      ],
@@ -28852,7 +28936,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'both'. NOT applied: a Codex page and quests for its three bosses (follow-up content work)",
      "evidence": [
       "mod ids: meetyourfight"
      ],
@@ -30912,7 +31000,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: AxeItem 2, BowItem 1"
      ],
@@ -30924,7 +31016,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 5, AxeItem 2, BowItem 1"
      ],
@@ -30936,7 +31032,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "mowziesmobs-1.8.2.jar: a Forge config spec, types CLIENT, COMMON"
      ],
@@ -30948,7 +31048,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set mowziesmobs:frostmaw_spawns: spacing 25, separation 8",
       "structure set mowziesmobs:monasteries: spacing 25, separation 8",
@@ -31237,7 +31341,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'loot-only (Recommended)'. strip_mutant_monsters.js, the pack's drop strip, the Hulk Hammer from the Mutant Zombie",
      "evidence": [
       "21 registered items (dev/registry @59ee40da); 23 item language keys, 6 recipes"
      ],
@@ -31319,7 +31427,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 1"
      ],
@@ -32062,7 +32174,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "nethersdelight:chopping_feather: type farmersdelight:add_item, on every table its conditions match",
       "nethersdelight:chopping_ham_from_hoglin: type farmersdelight:add_item, on every table its conditions match",
@@ -32080,7 +32196,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:entities/hoglin",
       "minecraft:entities/strider",
@@ -35371,7 +35491,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "recipes",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'recipes (Recommended)'. ruling 5 removed the three Corrupted Soul Sand recipes",
      "evidence": [
       "4 registered items (dev/registry @59ee40da); 3 item language keys, 6 recipes"
      ],
@@ -35413,7 +35537,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: iguanatweaksexpanded, iguanatweaksreborn (a pack rule keyed on the mod id misses it)"
      ],
@@ -36781,7 +36909,11 @@
     {
      "key": "loot:chests",
      "surface": "loot:chests",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "101 structures in 36 sets; 3085 templates, 518 with a loot container",
       "158 chest and 15 archaeology tables: repurposed_structures:chests/ancient_cities/end, repurposed_structures:chests/ancient_cities/end_spawner_box, repurposed_structures:chests/ancient_cities/nether, repurposed_structures:chests/ancient_cities/nether_magma_box, repurposed_structures:chests/ancient_cities/ocean, repurposed_structures:chests/ancient_cities/ocean_ice_box, repurposed_structures:chests/bastions/underground/bridge, repurposed_structures:chests/bastions/underground/other ... (173 in all)",
@@ -36795,7 +36927,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "repurposed_structures:import_modded_loot: type repurposed_structures:import_modded_loot, on every table its conditions match"
      ],
@@ -40597,7 +40733,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "tier-1",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'tier-1 (Recommended)'",
      "evidence": [
       "98 registered items (dev/registry @59ee40da); 59 item language keys, 76 recipes"
      ],
@@ -40738,7 +40878,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 3, AxeItem 2"
      ],
@@ -40750,7 +40894,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'default (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 15, SwordItem 3, AxeItem 2",
       "1 enchantments (lootable and tradeable unless the pack says otherwise): stalwart_dungeons:thunder_strike"
@@ -40763,7 +40911,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "biome modifiers: 3 forge:add_features",
       "worldgen files: 3 configured_feature, 3 placed_feature"
@@ -40773,7 +40925,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'both'. NOT applied: a Codex page and quests (follow-up content work)",
      "evidence": [
       "mod ids: stalwart_dungeons"
      ],
@@ -41497,7 +41653,11 @@
     {
      "key": "loot:chests",
      "surface": "loot:chests",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "10 structures in 10 sets; 28 templates, 7 with a loot container",
       "12 chest and 1 archaeology tables: joshie:colosseum_middle, joshie:colosseum_top, joshie:forge, joshie:house_1, joshie:house_2, joshie:house_3, joshie:ocean_temple, joshie:spires/trial_rewards_normal ... (13 in all)"
@@ -41663,7 +41823,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "off",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'off'. Offered as 'switch some off'; the follow-up confirms which of the five (ash, antique ink x2, rope, straw). NOT applied (follow-up loot work)",
      "evidence": [
       "supplementaries:ash_from_burning_mobs: type moonlight:add_item, on every table its conditions match",
       "supplementaries:fishing_antique_ink: type moonlight:add_item, on minecraft:gameplay/fishing/junk",
@@ -41676,7 +41840,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'Remove all Supplementaries duplicates'. Own answer: the other mods' flax, brick and copper are canonical. NOT applied (follow-up recipe/tag work)",
      "evidence": [
       "#forge:crops/flax is also filled by pamhc2crops-1.20-1.0.3.jar, thermal_cultivation-1.20.1-11.0.1.24.jar",
       "#forge:ingots/brick is also filled by chisels-and-bits-forge-20.1.20.jar",
@@ -42693,7 +42861,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "tetra:bartering_additions: type tetra:replace_table, on minecraft:gameplay/piglin_bartering"
      ],
@@ -42702,7 +42874,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:ingots/bronze is also filled by Mekanism-1.20.1-10.4.16.80.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
       "#forge:ingots/electrum is also filled by createaddition-1.20.1-1.3.3.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -46261,7 +46437,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "structure set ub:tower: spacing 30, separation 20"
      ],
@@ -46270,7 +46450,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "functions on the tick tag: ub:tick; on the load tag: ub:load",
       "data under a namespace that is no mod id: ub (a pack rule keyed on the mod id misses it)"
@@ -46280,7 +46464,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'both'. NOT applied: a Codex page and quests (follow-up content work)",
      "evidence": [
       "mod ids: mr_ultimate_bosses"
      ],
@@ -46859,7 +47047,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "valhelsia_structures:jar_treasure: type valhelsia_core:append_loot, on every table its conditions match"
      ],
