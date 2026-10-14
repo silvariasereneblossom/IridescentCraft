@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "7995dee9",
+    "generated_from":  "994fc864",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6984,8 +6984,8 @@
                                                                    "size":  23771
                                                                },
                   "kubejs/server_scripts/0_lib_core.js":  {
-                                                              "sha256":  "b90f7b18d80d8e0e1457fb6a3ef30b3bb58b59753f21d0dd3d018770cae53a65",
-                                                              "size":  64396
+                                                              "sha256":  "73c8b053536fb3f9d13385417116bbbc1daab9dfd0206e58c49925acc32c820f",
+                                                              "size":  64469
                                                           },
                   "kubejs/server_scripts/0_lib_origins.js":  {
                                                                  "sha256":  "bbfbc77336ab6c3210b5eb3b95073d71fa8495017d7143adec43db1173c21088",
@@ -7332,8 +7332,8 @@
                                                                                   "size":  12619
                                                                               },
                   "kubejs/server_scripts/loot/tmb_plain_bow_effects.js":  {
-                                                                              "sha256":  "bf77baf6addc792a4daf75894e77237291f206d0539cbbad30ff53092fac329b",
-                                                                              "size":  6215
+                                                                              "sha256":  "79bfbdeb3ed9ba43ff8e6a7da3b4429fc8e38a5a82b127b16e032caf5982b10b",
+                                                                              "size":  6340
                                                                           },
                   "kubejs/server_scripts/loot/twilight_boss_drops.js":  {
                                                                             "sha256":  "2864c712f929c0d84cc521f6d7d496fc5b4c3573fa4f0c51553be53f02a61f92",

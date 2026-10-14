@@ -768,7 +768,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 **`hurt.late`** (1)
 
-1. `loot/tmb_plain_bow_effects.js` as `icraft.tmb_plain_bow_effects` [secondary, cancelled, unchecked]
+1. `loot/tmb_plain_bow_effects.js` as `icraft.tmb_plain_bow_effects` [cancelled, unchecked]
 
 ### Straight on a Java registry, with no liveness id (the key is what the registry calls it)
 
@@ -1606,7 +1606,7 @@ own one-shot `global._*` flags.
 ### `loot/tmb_plain_bow_effects.js`
 
 - place 89 of 160; header: @events @file @live
-- hurt handlers: `icraft.tmb_plain_bow_effects` (late) [any, secondary, cancelled, unchecked]
+- hurt handlers: `icraft.tmb_plain_bow_effects` (late) [any, cancelled, unchecked]
 - features: `unique-bow-effects`
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 

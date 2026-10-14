@@ -20,14 +20,16 @@
 // On the shared dispatcher of 0_lib_core.js (core.onHurtLate) since 2026-10-13; until
 // then straight on the Java damage registry, in its LATE map, between the two Vorpal
 // decapitations (the map is walked in the hash order of its keys; the dispatcher's
-// LATE entry is walked at the same place). It is called as the registry called it:
-//   `secondary`  also for secondary damage. MEASURED, and kept on purpose (decision
-//                list Part 9): the one script that splashes a projectile hit
-//                (skills/skill_effects.js, AoE Splash) deals the splash with the
-//                SOURCE of the first hit, so the arrow is the direct entity of every
-//                splash hit too, and each monster the splash reaches gets the bow's
-//                effect: Aether's Call heals the shooter once per monster, Demon's
-//                Grasp pulls each of them.
+// LATE entry is walked at the same place).
+//   Secondary damage: the effect is for the arrow's own victim only (ruling 12,
+//                2026-10-14; decision list entry 67). The one script that splashes a
+//                projectile hit (skills/skill_effects.js, AoE Splash) deals the splash
+//                with the SOURCE of the first hit, so the arrow is the direct entity of
+//                every splash hit too; until that day the handler was registered
+//                `secondary` and each monster the splash reached got the bow's effect
+//                (Aether's Call healed the shooter once per monster). Now the splash
+//                carries damage only, as every other handler's secondary hit does.
+// It is called as the registry called it:
 //   `cancelled`  also when an earlier handler cancelled the hit
 //   `unchecked`  the amount is not checked after it (it never changes the amount)
 // `who` is 'any': an arrow whose shooter is gone has no attacker.
@@ -103,7 +105,7 @@ try {
     } catch (e) {
       console.warn('[tmb_plain_bow_effects] handler threw: ' + e)
     }
-  }, 'any', { secondary: true, cancelled: true, unchecked: true })
+  }, 'any', { cancelled: true, unchecked: true })
   console.log('[tmb_plain_bow_effects] wired theme effects for 5 plain TMB bows')
 } catch (e) {
   console.error('[tmb_plain_bow_effects] init failed: ' + e)

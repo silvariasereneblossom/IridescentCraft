@@ -119,8 +119,9 @@
 //   registered through onHurt()/onHurtLate()) skips while it is raised: secondary damage
 //   lands as-is, it does not crit, proc, splash or reflect a second time.
 //   A handler that has to see secondary hits says so: the option `secondary`
-//   (three do: the Blazeborn damage reduction, the armour clamp, the plain-bow
-//   effects; they ran on those hits while they sat on the Java registry).
+//   (two do: the Blazeborn damage reduction and the armour clamp; they ran on
+//   those hits while they sat on the Java registry. The plain-bow effects did
+//   until ruling 12 of 2026-10-14 put them on the primary hit only).
 //   Handlers registered straight on the Java registry can read
 //   global.icraft.core.secondary(event.entity) to opt in to the same rule.
 //

@@ -3,6 +3,7 @@
 // A line that changes here is a damage number that changed. See suites/hit_table.js.
 // Recorded before any handler moved off the registry (2026-10-13); changed since only on a ruling:
 //   ruling 11 (2026-10-14, decision list entry 66): a hit an earlier handler cancelled ends there; the four broken-weapon rows of Arcane Cleave (no 10 mana), the Samurai and the Berserker (no stamp), and the order row
+//   ruling 12 (2026-10-14, decision list entry 67): the plain-bow effects on the primary hit only; the two splash rows (no effect on the splash victim, no second heal of Aether's Call)
 var HT_GOLDEN = [
   ["plain.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
   ["plain.primary.real", "real hit of 10: attack() true, health 20 -> 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
@@ -72,11 +73,11 @@ var HT_GOLDEN = [
   ["class-passives.wanderer.sword.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount) | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick absent, wanderer_wpn_sword now, wanderer_wpn_fist absent"],
   ["class-passives.wanderer.fist.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount) | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick absent, wanderer_wpn_sword absent, wanderer_wpn_fist now"],
   ["bow-effects.dark-bow.primary", "posted 6 -> handed back 6.599999904632568 | [minecraft:zombie <- arrow] unique_tier_buff:6>6.599999904632568 | victim: blindness yes, weakness yes, levitation no, wither no, slowness no, fire 0, frozen 0"],
-  ["bow-effects.dark-bow.secondary", "secondary hit of 6 (dealDamageFrom, the source of the first hit): true, health 20 -> 14 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness yes, weakness yes, levitation no, wither no, slowness no, fire 0, frozen 0"],
+  ["bow-effects.dark-bow.secondary", "secondary hit of 6 (dealDamageFrom, the source of the first hit): true, health 20 -> 14 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness no, weakness no, levitation no, wither no, slowness no, fire 0, frozen 0"],
   ["bow-effects.cyroheart-bow.primary", "posted 6 -> handed back 6.599999904632568 | [minecraft:zombie <- arrow] unique_tier_buff:6>6.599999904632568 | victim: blindness no, weakness no, levitation no, wither no, slowness yes, fire 0, frozen 120"],
   ["bow-effects.necro-flame-bow.primary", "posted 6 -> handed back 7.800000190734863 | [minecraft:zombie <- arrow] unique_tier_buff:6>7.800000190734863 | victim: blindness no, weakness no, levitation no, wither yes, slowness no, fire 80, frozen 0"],
   ["bow-effects.aethers-call.primary", "posted 6 -> handed back 7.199999809265137 | [minecraft:zombie <- arrow] unique_tier_buff:6>7.199999809265137 | victim: blindness no, weakness no, levitation yes, wither no, slowness no, fire 0, frozen 0 | shooter health 10 -> 12"],
-  ["bow-effects.aethers-call.secondary", "secondary hit of 6 (dealDamageFrom, the source of the first hit): true, health 20 -> 14 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness no, weakness no, levitation yes, wither no, slowness no, fire 0, frozen 0 | shooter health 10 -> 12"],
+  ["bow-effects.aethers-call.secondary", "secondary hit of 6 (dealDamageFrom, the source of the first hit): true, health 20 -> 14 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness no, weakness no, levitation no, wither no, slowness no, fire 0, frozen 0 | shooter health 10 -> 10"],
   ["bow-effects.demons-grasp.primary", "posted 6 -> handed back 7.800000190734863 | [minecraft:zombie <- arrow] unique_tier_buff:6>7.800000190734863 | victim: blindness no, weakness yes, levitation no, wither no, slowness no, pulled yes"],
   ["bow-effects.untagged-arrow.primary", "posted 6 -> handed back 6 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness no, weakness no, levitation no, wither no, slowness no, fire 0, frozen 0"],
   ["ars-bridge.flare.fire-power-1.5.primary", "posted 10 -> handed back 15 | [minecraft:zombie <- fire] core:10>15"],

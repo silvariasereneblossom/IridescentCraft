@@ -5694,7 +5694,6 @@
        "group": "hurt.late",
        "name": "icraft.tmb_plain_bow_effects",
        "who": "any",
-       "secondary": true,
        "cancelled": true,
        "unchecked": true
       }
@@ -11185,7 +11184,6 @@
       "name": "icraft.tmb_plain_bow_effects",
       "kind": "hurt",
       "who": "any",
-      "secondary": true,
       "cancelled": true,
       "unchecked": true
      }
