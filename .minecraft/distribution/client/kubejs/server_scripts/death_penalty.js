@@ -409,8 +409,10 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
 // x1.15) is not in its prediction. `place: 'last'` holds that place; the order
 // inside it is the library's list PLACED.
 // `secondary`: it also runs for secondary damage (thorns, a splash), as it did:
-// armour loses durability to those hits too. `cancelled` and `unchecked`: called as
-// the registry called it. An option taken off, or added, changes which hits clamp:
+// armour loses durability to those hits too. A hit an earlier handler cancelled ends
+// before it (ruling 11, 2026-10-14, decision list entry 66; a cancelled hit takes no
+// durability). `unchecked`: called as the registry called it. An option taken off, or
+// added, changes which hits clamp:
 // decision list entry 45; the hit table is dev/engine-tests, suite `hit-table`.
 // MEASURED there and on the full pack, and NOT changed (decision list Part 9):
 // `safe` below is clampPos - perPiece: the piece is given back, in advance, what
@@ -456,7 +458,7 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
     } catch (e) {
       console.warn('[durability] proactive armor clamp threw: ' + e)
     }
-  }, 'victimPlayer', { place: 'last', secondary: true, cancelled: true, unchecked: true })
+  }, 'victimPlayer', { place: 'last', secondary: true, unchecked: true })
 })()
 
 // Slower full-inventory + Curios sweep. Catches damageable items that aren't

@@ -759,12 +759,12 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 21. `skills/skill_effects.js` as `icraft.skill_effects.1`
 22. `skills/skill_effects.js` as `icraft.skill_effects.2`
 23. `tetra_terramity_perks.js` as `icraft.tetra_terramity_perks`
-24. `origins/origin_effects.js` as `icraft.origin.blazeborn.deal` [last, cancelled, unchecked]
-25. `death_penalty.js` as `icraft.death_penalty.armor_clamp` [last, secondary, cancelled, unchecked]
-26. `origins/battlemage_arcane_cleave.js` as `icraft.battlemage_arcane_cleave` [last, cancelled, unchecked]
-27. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff` [last, cancelled, unchecked]
-28. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, cancelled, unchecked]
-29. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, cancelled, unchecked]
+24. `origins/origin_effects.js` as `icraft.origin.blazeborn.deal` [last, unchecked]
+25. `death_penalty.js` as `icraft.death_penalty.armor_clamp` [last, secondary, unchecked]
+26. `origins/battlemage_arcane_cleave.js` as `icraft.battlemage_arcane_cleave` [last, unchecked]
+27. `loot/unique_tier_buff.js` as `icraft.unique_tier_buff` [last, unchecked]
+28. `origins/class_passives_phase6h.js` as `icraft.class_passives_h6` [last, unchecked]
+29. `origins/origin_effects.js` as `icraft.origin.enderian.shift` [last, unchecked]
 
 **`hurt.late`** (1)
 
@@ -1238,7 +1238,7 @@ own one-shot `global._*` flags.
 - place 34 of 160; header: @events @file @registry
 - events: `EntityEvents.death`, `ItemEvents.canPickUp`, `PlayerEvents.loggedOut`, `BlockEvents.broken`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`, `ServerEvents.loaded`
 - tick functions: `tick_deathPenaltyBrokenCheck` (player, every 2, offset 0), `tick_durabilityFullSweep` (player, every 10, offset 0)
-- hurt handlers: `icraft.death_penalty.armor_clamp` [victimPlayer, last, secondary, cancelled, unchecked], `icraft.death_penalty.broken_weapon` [attackerPlayer]
+- hurt handlers: `icraft.death_penalty.armor_clamp` [victimPlayer, last, secondary, unchecked], `icraft.death_penalty.broken_weapon` [attackerPlayer]
 - registries: dimensions
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.dims` of `0_lib_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 
@@ -1625,7 +1625,7 @@ own one-shot `global._*` flags.
 
 - place 92 of 160; header: @events @file @live
 - events: `EntityEvents.spawned`
-- hurt handlers: `icraft.unique_tier_buff` [any, last, cancelled, unchecked]
+- hurt handlers: `icraft.unique_tier_buff` [any, last, unchecked]
 - features: `unique-tier-buff`
 - reads: `global.ICRAFT_TIER_DMG_MULT` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
@@ -1696,7 +1696,7 @@ own one-shot `global._*` flags.
 
 - place 103 of 160; header: @events @file
 - events: `EntityEvents.death`
-- hurt handlers: `icraft.battlemage_arcane_cleave` [attackerPlayer, last, cancelled, unchecked]
+- hurt handlers: `icraft.battlemage_arcane_cleave` [attackerPlayer, last, unchecked]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/battlemage_mana_shield.js`
@@ -1717,7 +1717,7 @@ own one-shot `global._*` flags.
 
 - place 106 of 160; header: @events @file
 - events: `ServerEvents.tick`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `EntityEvents.death`
-- hurt handlers: `icraft.class_passives_h6` [any, last, cancelled, unchecked]
+- hurt handlers: `icraft.class_passives_h6` [any, last, unchecked]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/origin_effects.js`
@@ -1725,7 +1725,7 @@ own one-shot `global._*` flags.
 - place 107 of 160; header: @events @file
 - events: `BlockEvents.broken`
 - tick functions: `tick_originEffectsAvianMerling` (server, every 40, offset 0), `tick_blazebornNetherAffinity` (player, every 200, offset 50), `tick_enderianShift` (player, every 20, offset 7), `tick_revenantShadowStrike` (server, every 40, offset 20)
-- hurt handlers: `icraft.origin.blazeborn.deal` [attackerPlayer, last, cancelled, unchecked], `icraft.origin.blazeborn.take` [victimPlayer, first, secondary, unchecked], `icraft.origin.enderian.shift` [attackerPlayer, last, cancelled, unchecked]
+- hurt handlers: `icraft.origin.blazeborn.deal` [attackerPlayer, last, unchecked], `icraft.origin.blazeborn.take` [victimPlayer, first, secondary, unchecked], `icraft.origin.enderian.shift` [attackerPlayer, last, unchecked]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `origins/origin_status_commands.js`

@@ -9,7 +9,8 @@
 // handlers was moved onto the shared dispatcher (0_lib_core.js). A handler moves
 // only while every row stays what it was: where a handler is registered must not
 // change a number. The same rows on a full-pack server, before and after:
-// internal dev/hit-table-d-2026-10-13/.
+// internal dev/hit-table-d-2026-10-13/. Since 2026-10-14 rows change on purpose, one ruling at a time
+// (decision list Part 9): the golden file's header names each ruling and the rows it changed.
 //
 // To record again (only when a ROW is added, or a handler's behaviour is changed
 // on purpose, with the decision that allows it):
@@ -275,7 +276,7 @@ T_run('the order every handler runs in is the order the Java registry walked the
 })()
 
 // ---- against the golden ---------------------------------------------------------------------------
-T_run('every row is what it was before any handler moved (suites/hit_table.golden.js)', function () {
+T_run('every row is what suites/hit_table.golden.js holds (recorded before any handler moved, changed since only on a ruling)', function () {
   var golden = {}, seen = {}, i
   for (i = 0; i < HT_GOLDEN.length; i++) golden[HT_GOLDEN[i][0]] = HT_GOLDEN[i][1]
   for (i = 0; i < HT_ROWS.length; i++) {

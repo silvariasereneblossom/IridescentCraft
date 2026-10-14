@@ -118,8 +118,9 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 //     startup script deathskin_undead_bonus.js: place 'last'.
 // `unchecked` leaves the amount a handler hands on as it is, as the registry
 // did. The reduction is `secondary`: it also applies to secondary damage (thorns,
-// a splash), as it did. The bonuses are `cancelled`: they are still called for a
-// hit an earlier handler cancelled (0 * 1.2 is 0; the call is what is kept).
+// a splash), as it did. A hit an earlier handler cancelled ends before the two
+// bonuses (ruling 11, 2026-10-14, decision list entry 66; until that day they were
+// registered `cancelled` and called for it, 0 * 1.2 being 0).
 // An option taken off, or added, changes damage numbers: decision list entry 45;
 // the hit table that holds these handlers is dev/engine-tests, suite `hit-table`.
 ;(function(){
@@ -145,7 +146,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     if (!inNether && !awakened) return
     var bonus = awakened ? 0.20 : 0.10
     event.amount = event.amount * (1 + bonus)
-  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
+  }, 'attackerPlayer', { place: 'last', unchecked: true })
 
   // Taking damage in/after Nether: -10% / -20%
   core.onHurt('icraft.origin.blazeborn.take', function(event) {
@@ -190,7 +191,7 @@ global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
     if (now < buffExpiry && buffExpiry - now <= 200) {
       event.amount = event.amount * 1.15
     }
-  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
+  }, 'attackerPlayer', { place: 'last', unchecked: true })
 })()
 
 // Detect ender pearl landing / teleport and apply buff

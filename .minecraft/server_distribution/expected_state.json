@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5cd6dbcc",
+    "generated_from":  "7995dee9",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7108,8 +7108,8 @@
                                                                                          "size":  2052
                                                                                      },
                   "kubejs/server_scripts/death_penalty.js":  {
-                                                                 "sha256":  "3699f8b69a86b9aa1aa8a228c920c06073d4f623529901bec5ec729cdd22dfe1",
-                                                                 "size":  32360
+                                                                 "sha256":  "473d17ef35a04d7fd15db36bb63522f7aa221595bf74449af3592bff1581dc24",
+                                                                 "size":  32469
                                                              },
                   "kubejs/server_scripts/diag_armor_modifiers.js":  {
                                                                         "sha256":  "fddcdad360c8c795c5efadf6203548b8813924b3b763519b0a447fc91781f71d",
@@ -7348,8 +7348,8 @@
                                                                                 "size":  13729
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
-                                                                         "sha256":  "5fd0ff962260b1305174d82e191f8d8f8a139936663e14f5a2ef3a13f7c738e0",
-                                                                         "size":  6171
+                                                                         "sha256":  "c90f069a3c2b2d8b049e0c0d95caec288b7d2ee4e01a8640e50c87616f5bc695",
+                                                                         "size":  6274
                                                                      },
                   "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
                                                                                 "sha256":  "c77690fc6ff920fd1a488054bad1ea298c99e0e80ffffa96483a124701259781",
@@ -7392,8 +7392,8 @@
                                                                                             "size":  9113
                                                                                         },
                   "kubejs/server_scripts/origins/battlemage_arcane_cleave.js":  {
-                                                                                    "sha256":  "f26a867c8540c07945b0546a54ec5b532a51236c9a457bd6d25e05b9e716f670",
-                                                                                    "size":  9586
+                                                                                    "sha256":  "dccbb86413224428d0b5abdbb75df9f328d22e7f8dc0d210a8514cd16ffcf4e6",
+                                                                                    "size":  9618
                                                                                 },
                   "kubejs/server_scripts/origins/battlemage_mana_shield.js":  {
                                                                                   "sha256":  "429b83288b7c287a81120cde165c865b6f667cf7b8eabac4070e72b09cd7aa16",
@@ -7404,12 +7404,12 @@
                                                                           "size":  14922
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
-                                                                                  "sha256":  "b5e6237be0620e24066f4163d7e0fb9162684e79f886598e47e1444b8d6d535c",
-                                                                                  "size":  14870
+                                                                                  "sha256":  "ee8a0e63297374c337b03e1fcc6a3b43d96f6d9122c66a80bfae87eb14a859d7",
+                                                                                  "size":  14943
                                                                               },
                   "kubejs/server_scripts/origins/origin_effects.js":  {
-                                                                          "sha256":  "93243a5c4de66ec7c8e5887eff7d3279b20b111ce04fa850f6b90d8778d8bae7",
-                                                                          "size":  14468
+                                                                          "sha256":  "f9c1e386055e147d122b146dae4bc845de8efe02ea23998fe85129269656695d",
+                                                                          "size":  14501
                                                                       },
                   "kubejs/server_scripts/origins/origin_status_commands.js":  {
                                                                                   "sha256":  "f731aef4be5971bc22b3c4b8cc7c6bb1d1134718634f957357b422af3034b838",

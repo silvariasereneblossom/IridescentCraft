@@ -2986,7 +2986,6 @@
        "who": "victimPlayer",
        "place": "last",
        "secondary": true,
-       "cancelled": true,
        "unchecked": true
       },
       {
@@ -5819,7 +5818,6 @@
        "name": "icraft.unique_tier_buff",
        "who": "any",
        "place": "last",
-       "cancelled": true,
        "unchecked": true
       }
      ],
@@ -6342,7 +6340,6 @@
        "name": "icraft.battlemage_arcane_cleave",
        "who": "attackerPlayer",
        "place": "last",
-       "cancelled": true,
        "unchecked": true
       }
      ],
@@ -6551,7 +6548,6 @@
        "name": "icraft.class_passives_h6",
        "who": "any",
        "place": "last",
-       "cancelled": true,
        "unchecked": true
       }
      ],
@@ -6652,7 +6648,6 @@
        "name": "icraft.origin.blazeborn.deal",
        "who": "attackerPlayer",
        "place": "last",
-       "cancelled": true,
        "unchecked": true
       },
       {
@@ -6670,7 +6665,6 @@
        "name": "icraft.origin.enderian.shift",
        "who": "attackerPlayer",
        "place": "last",
-       "cancelled": true,
        "unchecked": true
       }
      ],
@@ -11141,7 +11135,6 @@
       "kind": "hurt",
       "who": "attackerPlayer",
       "place": "last",
-      "cancelled": true,
       "unchecked": true
      },
      {
@@ -11151,7 +11144,6 @@
       "who": "victimPlayer",
       "place": "last",
       "secondary": true,
-      "cancelled": true,
       "unchecked": true
      },
      {
@@ -11160,7 +11152,6 @@
       "kind": "hurt",
       "who": "attackerPlayer",
       "place": "last",
-      "cancelled": true,
       "unchecked": true
      },
      {
@@ -11169,7 +11160,6 @@
       "kind": "hurt",
       "who": "any",
       "place": "last",
-      "cancelled": true,
       "unchecked": true
      },
      {
@@ -11178,7 +11168,6 @@
       "kind": "hurt",
       "who": "any",
       "place": "last",
-      "cancelled": true,
       "unchecked": true
      },
      {
@@ -11187,7 +11176,6 @@
       "kind": "hurt",
       "who": "attackerPlayer",
       "place": "last",
-      "cancelled": true,
       "unchecked": true
      }
     ],

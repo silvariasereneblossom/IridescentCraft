@@ -175,10 +175,11 @@
     // handlers, after the startup script's deathskin bonus, the Blazeborn bonus, the
     // armour clamp, Arcane Cleave and the unique-weapon multiplier, and before the
     // Enderian bonus. `place: 'last'` holds that place (the order inside it is the
-    // library's list PLACED). `cancelled`: it is still called for a hit an earlier
-    // handler cancelled, as it was (measured: a Berserker's hit with a broken weapon
-    // deals nothing and still counts as combat for Battle Trance). `unchecked`: the
-    // amount it hands on is left as it is. `who` is 'any' because of the one-per-boot
+    // library's list PLACED). A hit an earlier handler cancelled ends there (ruling 11,
+    // 2026-10-14; decision list entry 66): a Berserker's swing with a broken weapon is
+    // no combat for Battle Trance and a Samurai's is no first strike (until that day the
+    // handler was registered `cancelled` and stamped both). `unchecked`: the amount it
+    // hands on is left as it is. `who` is 'any' because of the one-per-boot
     // line below, which is printed on the first hurt event of any kind.
     // An option taken off, or added, changes behaviour: decision list entry 45; the hit
     // table that holds this handler is dev/engine-tests, suite `hit-table`.
@@ -262,7 +263,7 @@
       } catch (e) {
         warnThrew('damage handler', e)
       }
-    }, 'any', { place: 'last', cancelled: true, unchecked: true })
+    }, 'any', { place: 'last', unchecked: true })
 
     // ── SAMURAI Bushido — kill within 3s of first strike grants Speed II for 3s ──
     EntityEvents.death(icraft.guard('origins/class_passives_phase6h', 'EntityEvents.death', function (event) {

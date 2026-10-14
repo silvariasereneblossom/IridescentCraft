@@ -127,9 +127,10 @@ try {
   // before it does not multiply it, what runs after it does. `place: 'last'` holds the
   // place (the order inside it is the library's list PLACED). `unchecked`: the amount it
   // hands on is left as it is.
-  // `cancelled`: it is still called for a hit an earlier handler cancelled, as it was.
-  // MEASURED, and kept on purpose (decision list Part 9): a Battlemage who swings a BROKEN
-  // weapon deals nothing (death_penalty.js cancels the hit) and still pays the 10 mana.
+  // A hit an earlier handler cancelled ends there (ruling 11, 2026-10-14; decision list
+  // entry 66): a Battlemage who swings a BROKEN weapon deals nothing (death_penalty.js
+  // cancels the hit) and pays no mana for it. Until that day the handler was registered
+  // `cancelled` and took the 10 mana all the same.
   // An option taken off, or added, changes damage or mana: decision list entry 45; the hit
   // table that holds this handler is dev/engine-tests, suite `hit-table`.
   var PlayerClass_bc = Java.loadClass('net.minecraft.world.entity.player.Player')
@@ -174,7 +175,7 @@ try {
     } catch (e) {
       warnThrew('hurt handler', e)
     }
-  }, 'attackerPlayer', { place: 'last', cancelled: true, unchecked: true })
+  }, 'attackerPlayer', { place: 'last', unchecked: true })
 
   // ─── MANA REAVER: kill hook ──────────────────────────────────────────
   EntityEvents.death(icraft.guard('origins/battlemage_arcane_cleave', 'EntityEvents.death', function(event) {

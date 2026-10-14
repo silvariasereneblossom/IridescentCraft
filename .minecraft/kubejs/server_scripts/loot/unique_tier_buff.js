@@ -53,8 +53,10 @@ try {
 // the startup script's deathskin bonus, the Blazeborn bonus, the armour clamp and
 // Arcane Cleave (an ADDITION: the multiplier applies to it), and before the class
 // passives and the Enderian bonus. `place: 'last'` holds that place (the order inside
-// it is the library's list PLACED). `cancelled`: it is still called for a hit an earlier
-// handler cancelled, as it was. `unchecked`: the amount it hands on is left as it is.
+// it is the library's list PLACED). A hit an earlier handler cancelled ends there (ruling
+// 11, 2026-10-14, decision list entry 66; until that day it was registered `cancelled`,
+// multiplied the 0 and marked its liveness feature fired). `unchecked`: the amount it
+// hands on is left as it is.
 // `who` is 'any': a tagged arrow whose shooter is gone has no attacker, and a MOB that
 // holds one of these swords gets the multiplier too (both measured).
 // An option taken off, or added, changes damage numbers: decision list entry 45; the
@@ -109,7 +111,7 @@ try {
     } catch (e) {
       console.warn('[unique_tier_buff] damage handler threw: ' + e)
     }
-  }, 'any', { place: 'last', cancelled: true, unchecked: true })
+  }, 'any', { place: 'last', unchecked: true })
   console.log('[unique_tier_buff] tier-scaled damage handler registered (T1..T4 = 10/20/30/40%)')
 } catch (e) {
   console.error('[unique_tier_buff] damage handler init failed: ' + e)
