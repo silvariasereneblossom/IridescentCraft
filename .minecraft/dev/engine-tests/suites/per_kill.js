@@ -68,7 +68,7 @@ check('P1 the Wither (both ids), the Ender Dragon, the Warden and a zombie are n
   pkBossId(__host.living('minecraft:wither', 300, L0)) === null && pkBossId(__host.living('progressivebosses:wither', 300, L0)) === null &&
   pkBossId(__host.living('minecraft:ender_dragon', 200, L0)) === null && pkBossId(__host.living('minecraft:warden', 500, L0)) === null &&
   pkBossId(__host.living('minecraft:zombie', 20, L0)) === null)
-check('P1 75 registered bosses carry the flag (the 53 of April and the 22 named), 79 entries with the 4 absent ones', global.icraft.bosses.ids('perKill').length === 79)
+check('P1 78 registered bosses carry the flag (the 53 of April, the 22 named, the 3 Cardinal Sins first phases), 82 entries with the 4 absent ones', global.icraft.bosses.ids('perKill').length === 82)
 
 __host.print('P2  the curve: fight n is the row "kill n"')
 function row(f) { var s = pkScale(f); return s.hp + '/' + s.dmg + '/' + s.spd }
@@ -206,6 +206,24 @@ die(h11)
 global.icraft.bosses = realBosses
 icraft.bosses = realBosses
 check('P11 with the switch off a boss is not fixed and its death counts for nobody', !has(h11.flags(), 'icraft_pk_scaled') && near(h11.rawMax(), 2925) && kills(O, HARB) === 5)
+
+__host.print('P13 the Cardinal Sins first phases (decision entry 92): flagged like Lucifer\'s, each counts its own kills')
+var L13 = __host.level()
+var PHASES = ['cardinal_sins:sinofenvyphase_1', 'cardinal_sins:sinofpridephase_1', 'cardinal_sins:sinofwrathphase_1', 'cardinal_sins:luciferphase_1']
+var phaseIds = PHASES.map(function (id) { return String(pkBossId(__host.living(id, 350, L13))) }).join(',')
+check('P13 the three first phases and Lucifer\'s are scalable under their own ids', phaseIds === PHASES.join(','), phaseIds)
+var Q = L13.t_player('Q', 10, 0, 0)
+var WRATH1 = 'cardinal_sins:sinofwrathphase_1'
+setKills(Q, WRATH1, 4)
+var wr = join(__host.living(WRATH1, 350, L13).attr(DMG, 3).attr(SPD, 0.45), 1.5)
+var wMax0 = wr.rawMax(), wDmg0 = wr.value(DMG), wSpd0 = wr.value(SPD)
+hit(wr, Q)
+check('P13 the Sin of Wrath\'s first phase, 4 kills of it: fight 5, health x1.5, damage x1.35, speed x1.08 of what the pack builds',
+  flagIs(wr, 'icraft_pk_kills', 4) && near(wr.rawMax(), wMax0 * 1.5) && near(wr.value(DMG), wDmg0 * 1.35) && near(wr.value(SPD), wSpd0 * 1.08),
+  'max ' + wMax0 + ' -> ' + wr.rawMax() + ' dmg ' + wDmg0 + ' -> ' + wr.value(DMG))
+die(wr)
+check('P13 its death counts for the first phase (4 -> 5), not for the Sin of Wrath', kills(Q, WRATH1) === 5 && kills(Q, 'cardinal_sins:sinofwrath') === 0,
+  'phase ' + kills(Q, WRATH1) + ' sin ' + kills(Q, 'cardinal_sins:sinofwrath'))
 
 __host.print('P12 liveness')
 var fired = icraft.live.report('feature').features.fired.join(',')

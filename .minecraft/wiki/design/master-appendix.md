@@ -788,7 +788,8 @@ The percentages are of the boss as you would meet it otherwise (its designed hea
 curve). Damage is the boss's melee: many bosses' spells and projectiles hit for their own numbers and are not
 scaled. Nothing else changes: the moveset, the drops and the tokens are those of the first fight.
 
-**Which bosses:** the trophy bosses of every tier and the pack's designed minibosses (75 kinds). **Not scaled:**
+**Which bosses:** the trophy bosses of every tier and the pack's designed minibosses (78 kinds; in the two-phase fights of
+Envy, Pride, Wrath and Lucifer each phase counts its own kills). **Not scaled:**
 the Wither and the Ultimate Wither, the Ender Dragon, the Warden, the Elder Guardian, and the minibosses the pack
 has not designed.
 
