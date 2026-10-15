@@ -1769,7 +1769,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "9 registered items (dev/registry @59ee40da); 4 item language keys, 33 recipes"
      ],
@@ -1796,7 +1800,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: aether_treasure_reforging"
      ],
@@ -3029,7 +3037,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "73 registered items (dev/registry @59ee40da); 43 item language keys, 99 recipes"
      ],
@@ -3074,7 +3086,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: CrossbowItem 1"
      ],
@@ -3086,7 +3102,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: CrossbowItem 1",
       "145 enchantments (lootable and tradeable unless the pack says otherwise): apotheosis:bane_of_illagers, apotheosis:berserkers_fury, apotheosis:capturing, apotheosis:chainsaw, apotheosis:chromatic, apotheosis:crescendo, apotheosis:earths_boon, apotheosis:endless_quiver ... (145 in all)"
@@ -3113,7 +3133,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set apotheosis:tower_leaf: spacing 26, separation 20",
       "structure set apotheosis:tower_main: spacing 26, separation 15",
@@ -4200,7 +4224,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "33 registered items (dev/registry @59ee40da); 36 item language keys, 31 recipes"
      ],
@@ -4248,7 +4276,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: tetratic (a pack rule keyed on the mod id misses it)"
      ],
@@ -4257,7 +4289,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: art_of_forging"
      ],
@@ -4343,7 +4379,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "expandability-forge-9.0.4.jar: mods expandability",
       "mixinextras-forge-0.3.5.jar: mods mixinextras"
@@ -4353,7 +4393,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "45 registered items (dev/registry @59ee40da); 45 item language keys, 3 recipes"
      ],
@@ -4421,7 +4465,11 @@
     {
      "key": "game-rules",
      "surface": "game-rules",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "82 gamerule.* language keys; 1 classes register game rules: gamerule.artifacts.anglersHat.luckOfTheSeaLevelBonus, gamerule.artifacts.anglersHat.lureLevelBonus, gamerule.artifacts.antidoteVessel.enabled, gamerule.artifacts.antidoteVessel.maxEffectDuration, gamerule.artifacts.aquaDashers.enabled, gamerule.artifacts.bunnyHoppers.doCancelFallDamage ... (82 in all)"
      ],
@@ -4433,7 +4481,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 1 placed_feature"
@@ -4443,7 +4495,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: artifacts"
      ],
@@ -7537,7 +7593,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.3.6.jar: mods mixinextras"
      ],
@@ -7546,7 +7606,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "47 registered items (dev/registry @59ee40da); 36 item language keys, 208 recipes"
      ],
@@ -7588,7 +7652,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: brewinandchewin"
      ],
@@ -7746,7 +7814,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "35 registered items (dev/registry @59ee40da); 39 item language keys, 58 recipes"
      ],
@@ -7801,7 +7873,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: ShieldItem 1"
      ],
@@ -7813,7 +7889,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ShieldItem 1"
      ],
@@ -7825,7 +7905,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set bygonenether:catacomb: spacing 12, separation 4",
       "structure set bygonenether:citadel: spacing 12, separation 4",
@@ -7838,7 +7922,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: bygonenether"
      ],
@@ -8518,7 +8606,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "12 registered items (dev/registry @59ee40da); 12 item language keys, 0 recipes"
      ],
@@ -8561,7 +8653,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "CasterCuriosBonus-1.20.1-1.1.0.jar: a Forge config spec, types COMMON"
      ],
@@ -8573,7 +8669,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: caster_curios_bonus"
      ],
@@ -8871,7 +8971,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "107 registered items (dev/registry @59ee40da); 107 item language keys, 74 recipes"
      ],
@@ -8924,7 +9028,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: AxeItem 1"
      ],
@@ -8936,7 +9044,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: AxeItem 1; curio item classes: 1"
      ],
@@ -8962,7 +9074,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "celestial_artifacts-1.5.9.jar: a Forge config spec, types CLIENT, COMMON"
      ],
@@ -8974,7 +9090,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: l2hostility (a pack rule keyed on the mod id misses it)"
      ],
@@ -8983,7 +9103,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: celestial_artifacts"
      ],
@@ -9078,7 +9202,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "l2damagetracker-0.3.8.jar: mods l2damagetracker; attribute-modification-event, damage-hook",
       "l2itemselector-0.1.7.jar: mods l2itemselector; key-mappings, mixin-refmap-missing",
@@ -9092,7 +9220,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "58 registered items (dev/registry @59ee40da); 55 item language keys, 50 recipes"
      ],
@@ -9145,7 +9277,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1, AxeItem 1"
      ],
@@ -9157,7 +9293,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 1, SwordItem 1, AxeItem 1"
      ],
@@ -9183,7 +9323,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "celestial_core-1.5.7.jar: a Forge config spec, types CLIENT, COMMON",
       "l2damagetracker-0.3.8.jar: a Forge config spec, types CLIENT, COMMON",
@@ -9200,7 +9344,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: celestial_core"
      ],
@@ -9599,7 +9747,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "scena-forge-1.0.103.jar: mods scena; key-mappings"
      ],
@@ -9608,7 +9760,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "41 registered items (dev/registry @59ee40da); 29 item language keys, 21 recipes"
      ],
@@ -9661,7 +9817,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: chiselsandbits"
      ],
@@ -12019,7 +12179,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "Ponder-Forge-1.20.1-1.0.91.jar: mods ponder; key-mappings",
       "flywheel-forge-1.20.1-1.0.5.jar: mods flywheel; client-leaning",
@@ -12030,7 +12194,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "699 registered items (dev/registry @59ee40da); 99 item language keys, 1766 recipes"
      ],
@@ -12074,7 +12242,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1, ProjectileWeaponItem 1"
      ],
@@ -12086,7 +12258,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 7, SwordItem 1, ProjectileWeaponItem 1",
       "2 enchantments (lootable and tradeable unless the pack says otherwise): create:capacity, create:potato_recovery"
@@ -12129,7 +12305,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 3 forge:add_features",
       "worldgen files: 3 configured_feature, 3 placed_feature"
@@ -12618,7 +12798,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "46 registered items (dev/registry @59ee40da); 33 item language keys, 135 recipes"
      ],
@@ -12663,7 +12847,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: createaddition"
      ],
@@ -13232,7 +13420,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "67 registered items (dev/registry @59ee40da); 51 item language keys, 81 recipes"
      ],
@@ -13271,7 +13463,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 4 forge:add_features",
       "worldgen files: 6 configured_feature, 5 placed_feature"
@@ -13281,7 +13477,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "overrides 4 vanilla recipes: minecraft:beetroot_soup, minecraft:mushroom_stew, minecraft:rabbit_stew_from_brown_mushroom, minecraft:rabbit_stew_from_red_mushroom"
      ],
@@ -13290,7 +13490,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: culturaldelights"
      ],
@@ -14955,7 +15159,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "179 registered items (dev/registry @59ee40da); 150 item language keys, 858 recipes"
      ],
@@ -15033,7 +15241,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 3 forge:add_features",
       "worldgen files: 3 configured_feature, 3 placed_feature"
@@ -15043,7 +15255,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "overrides 6 vanilla recipes: minecraft:beetroot_soup, minecraft:mushroom_stew, minecraft:pumpkin_pie, minecraft:pumpkin_seeds, minecraft:rabbit_stew_from_brown_mushroom ... (6 in all)",
       "data under a namespace that is no mod id: abnormals_delight, additionaladditions, ae2, aether_redux, ancient_aether, atmospheric, autumnity, biomemakeover, biomeswevegone, botanypots, brewincompatdelight, buzzier_bees, casualness_delight, collectorsreap, corn_delight, cosmopolitan, create_sa, duckling, ecologics, enderio, ends_delight, enlightened_end, farmersrespite, finsandtails, forestry, frozenup, fruitsdelight, hauntedharvest, hearthandharvest, letfishlove, lolenderite, lost_aether_content, malum, miners_delight, moredelight, mynethersdelight, mypersonaldelight, neapolitan, nethers_exoticism, nirvana, nourished_nether, peculiars, phantasm, salt, seasonals, seeddelight, seeds, snowyspirit, sob, some_assembly_required, spawn, spirit, sprout, sullysmod, sunflowerdelight, twigs, twilightdelight, undergardendelight, untameddelight, unusualend, upgrade_aquatic, vampiresdelight, veggiesdelight, vintagedelight, wildberries, windswept, windswept_delights (a pack rule keyed on the mod id misses it)"
@@ -15053,7 +15269,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: delightful"
      ],
@@ -15891,7 +16111,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "functions on the tick tag: endfight:tick; on the load tag: endfight:load",
       "data under a namespace that is no mod id: endfight (a pack rule keyed on the mod id misses it)"
@@ -18587,7 +18811,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "177 registered items (dev/registry @59ee40da); 92 item language keys, 346 recipes"
      ],
@@ -18668,7 +18896,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "1 enchantments (lootable and tradeable unless the pack says otherwise): farmersdelight:backstabbing"
      ],
@@ -18694,7 +18926,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 9 farmersdelight:add_features_by_filter",
       "worldgen files: 10 configured_feature, 9 placed_feature"
@@ -18704,7 +18940,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: tconstruct (a pack rule keyed on the mod id misses it)"
      ],
@@ -18713,7 +18953,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: farmersdelight"
      ],
@@ -19526,7 +19770,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "257 registered items (dev/registry @59ee40da); 144 item language keys, 256 recipes"
      ],
@@ -19595,7 +19843,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1"
      ],
@@ -19607,7 +19859,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 1",
       "2 enchantments (lootable and tradeable unless the pack says otherwise): forbidden_arcanus:indestructible, forbidden_arcanus:permafrost"
@@ -19634,7 +19890,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set forbidden_arcanus:nipas: spacing 35, separation 8",
       "biome modifiers: 10 forge:add_features, 1 valhelsia_core:add_nether_spawns, 1 forge:add_spawns",
@@ -20841,7 +21101,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "3 registered items (dev/registry @59ee40da); 3 item language keys, 1 recipes"
      ],
@@ -20884,7 +21148,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set idas:idas_common: spacing 21, separation 12",
       "structure set idas:idas_nether: spacing 35, separation 20",
@@ -20900,7 +21168,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: idas"
      ],
@@ -21185,7 +21457,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: industrialforegoing"
      ],
@@ -21463,7 +21739,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.2.0-beta.7.jar: mods mixinextras"
      ],
@@ -21472,7 +21752,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "3 registered items (dev/registry @59ee40da); 3 item language keys, 1 recipes"
      ],
@@ -21501,7 +21785,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set integrated_stronghold:stronghold: spacing 85, separation 50"
      ],
@@ -21510,7 +21798,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "replace:true on 1 tag(s) of minecraft: worldgen/structure minecraft:eye_of_ender_located",
       "overrides 1 vanilla advancements: minecraft:story/follow_ender_eye"
@@ -21520,7 +21812,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: integrated_stronghold"
      ],
@@ -29190,7 +29486,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "ArmorItem classes: 10; 3 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -29203,7 +29503,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: BowItem 1"
      ],
@@ -29215,7 +29519,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 10, BowItem 1"
      ],
@@ -29255,7 +29563,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 6 forge:add_features",
       "worldgen files: 21 configured_feature, 22 placed_feature"
@@ -29265,7 +29577,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: per-viam-invenire (a pack rule keyed on the mod id misses it)"
      ],
@@ -29344,7 +29660,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "16 registered items (dev/registry @59ee40da); 0 item language keys, 0 recipes"
      ],
@@ -29373,7 +29693,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 2 forge:add_features",
       "worldgen files: 10 configured_feature, 10 placed_feature"
@@ -29383,7 +29707,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: mekanismaaa"
      ],
@@ -32234,7 +32562,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "33 registered items (dev/registry @59ee40da); 20 item language keys, 32 recipes"
      ],
@@ -32283,7 +32615,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1"
      ],
@@ -32295,7 +32631,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 1"
      ],
@@ -32307,7 +32647,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "nethersdelight-1.20.1-4.0.jar: a Forge config spec"
      ],
@@ -32319,7 +32663,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 1 placed_feature"
@@ -32329,7 +32677,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "overrides 1 vanilla recipes: minecraft:furnace"
      ],
@@ -32338,7 +32690,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: nethersdelight"
      ],
@@ -32923,7 +33279,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "226 registered items (dev/registry @59ee40da); 84 item language keys, 425 recipes"
      ],
@@ -32982,7 +33342,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "ArmorItem classes: 1; 0 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -32991,7 +33355,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 1"
      ],
@@ -33031,7 +33399,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 6 forge:add_features",
       "worldgen files: 6 configured_feature, 6 placed_feature"
@@ -33041,7 +33413,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: per_viam_invenire (a pack rule keyed on the mod id misses it)"
      ],
@@ -33121,7 +33497,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "22 registered items (dev/registry @59ee40da); 21 item language keys, 26 recipes"
      ],
@@ -33148,7 +33528,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "replace:true on 4 tag(s) of another mod's namespace: items diet:grains, items diet:proteins, items diet:sugars, items diet:vegetables",
       "data under a namespace that is no mod id: diet (a pack rule keyed on the mod id misses it)"
@@ -33158,7 +33542,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: oceansdelight"
      ],
@@ -33900,7 +34288,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "2 registered items (dev/registry @59ee40da); 0 item language keys, 4 recipes"
      ],
@@ -33925,7 +34317,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 1 placed_feature"
@@ -33935,7 +34331,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: overworld_quartz"
      ],
@@ -34075,7 +34475,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "222 registered items (dev/registry @59ee40da); 216 item language keys, 177 recipes"
      ],
@@ -34128,7 +34532,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 8 forge:add_features",
       "worldgen files: 6 configured_feature, 8 placed_feature"
@@ -34138,7 +34546,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: pamhc2crops"
      ],
@@ -34211,7 +34623,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "180 registered items (dev/registry @59ee40da); 181 item language keys, 199 recipes"
      ],
@@ -34250,7 +34666,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "pamhc2foodcore-1.20.4-1.0.5.jar: a Forge config spec, types CLIENT, COMMON, SERVER"
      ],
@@ -34262,7 +34682,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: pamhc2foodcore"
      ],
@@ -34336,7 +34760,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "871 registered items (dev/registry @59ee40da); 871 item language keys, 887 recipes"
      ],
@@ -34375,7 +34803,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "pamhc2foodextended-1.20.4-1.0.1.jar: a Forge config spec, types CLIENT, COMMON, SERVER"
      ],
@@ -34387,7 +34819,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: pamhc2foodextended"
      ],
@@ -34461,7 +34897,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "156 registered items (dev/registry @59ee40da); 57 item language keys, 77 recipes"
      ],
@@ -34504,7 +34944,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 50 forge:add_features",
       "worldgen files: 50 configured_feature, 50 placed_feature"
@@ -34514,7 +34958,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: pamhc2trees"
      ],
@@ -35960,7 +36408,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "838 registered items (dev/registry @59ee40da); 71 item language keys, 1602 recipes"
      ],
@@ -36047,7 +36499,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "worldgen files: 1 biome, 6 configured_feature, 8 placed_feature"
      ],
@@ -36056,7 +36512,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "overrides 23 vanilla recipes: minecraft:bookshelf, minecraft:bread, minecraft:chest, minecraft:chest_minecart, minecraft:cookie ... (23 in all)"
      ],
@@ -36065,7 +36525,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: quark"
      ],
@@ -36424,7 +36888,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "3 registered items (dev/registry @59ee40da); 2 item language keys, 5 recipes"
      ],
@@ -36449,7 +36917,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: raw_netherite"
      ],
@@ -36897,7 +37369,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "31 registered items (dev/registry @59ee40da); 30 item language keys, 0 recipes"
      ],
@@ -36936,7 +37412,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: relics"
      ],
@@ -37020,7 +37500,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.4.1.jar: mods mixinextras"
      ],
@@ -37060,7 +37544,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "repurposed_structures-7.1.21+1.20.1-forge.jar: a Forge config spec, types COMMON"
      ],
@@ -37072,7 +37560,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set repurposed_structures:ancient_cities_end: spacing 88, separation 46",
       "structure set repurposed_structures:ancient_cities_nether: spacing 400, separation 250",
@@ -37091,7 +37583,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: pneumaticcraft (a pack rule keyed on the mod id misses it)"
      ],
@@ -37100,7 +37596,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: repurposed_structures"
      ],
@@ -37647,7 +38147,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 5 noise_settings, 1 placed_feature"
@@ -40145,7 +40649,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "66 registered items (dev/registry @59ee40da); 59 item language keys, 72 recipes"
      ],
@@ -40221,7 +40729,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: accessories, carryon (a pack rule keyed on the mod id misses it)"
      ],
@@ -40230,7 +40742,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: sophisticatedbackpacks"
      ],
@@ -40511,7 +41027,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.4.1.jar: mods mixinextras"
      ],
@@ -40533,7 +41053,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "2 enchantments (lootable and tradeable unless the pack says otherwise): minecraft:soul_fire_aspect, minecraft:soul_flame"
      ],
@@ -41802,7 +42326,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set joshie:colossuem: spacing 96, separation 32",
       "structure set joshie:conduit_ruins: spacing 64, separation 16",
@@ -41819,7 +42347,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: joshie (a pack rule keyed on the mod id misses it)"
      ],
@@ -41828,7 +42360,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: mr_sunken_spires"
      ],
@@ -41917,7 +42453,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mixinextras-forge-0.3.6.jar: mods mixinextras",
       "mixinsquared-forge-0.1.1.jar: mods mixinsquared"
@@ -41927,7 +42467,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "287 registered items (dev/registry @59ee40da); 58 item language keys, 306 recipes"
      ],
@@ -41988,7 +42532,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "ArmorItem classes: 1; 0 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -41997,7 +42545,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: ProjectileWeaponItem 1"
      ],
@@ -42009,7 +42561,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ArmorItem 1, ProjectileWeaponItem 1",
       "3 enchantments (lootable and tradeable unless the pack says otherwise): supplementaries:lumisene_fire_aspect, supplementaries:lumisene_flame, supplementaries:stasis"
@@ -42036,7 +42592,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set supplementaries:way_signs: spacing 19, separation 10",
       "biome modifiers: 3 forge:add_features",
@@ -42047,7 +42607,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "data under a namespace that is no mod id: neapolitan, trinkets (a pack rule keyed on the mod id misses it)"
      ],
@@ -42056,7 +42620,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: supplementaries"
      ],
@@ -42965,7 +43533,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "86 registered items (dev/registry @59ee40da); 23 item language keys, 26 recipes"
      ],
@@ -43033,7 +43605,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: ProjectileWeaponItem 1"
      ],
@@ -43045,7 +43621,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: ProjectileWeaponItem 1",
       "18 enchantments (lootable and tradeable unless the pack says otherwise): level:100, level:1000, level:20, level:200, level:30, level:300, level:40, level:400 ... (18 in all)"
@@ -43072,7 +43652,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set tetra:forged_ruins: spacing 14, separation 8",
       "biome modifiers: 1 forge:add_features",
@@ -43509,7 +44093,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "1 registered items (dev/registry @59ee40da); 0 item language keys, 46 recipes"
      ],
@@ -43534,7 +44122,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: tetracelium"
      ],
@@ -45035,7 +45627,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "thermal_cultivation-1.20.1-11.0.1.24.jar: a Forge config spec"
      ],
@@ -45307,7 +45903,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "thermal_core-1.20.1-11.0.6.24.jar: mods thermal"
      ],
@@ -45316,7 +45916,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "497 registered items (dev/registry @59ee40da); 345 item language keys, 580 recipes"
      ],
@@ -45355,7 +45959,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "ArmorItem classes: 0; 12 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -45368,7 +45976,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "thermal_core-1.20.1-11.0.6.24.jar: a Forge config spec"
      ],
@@ -45380,7 +45992,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "biome modifiers: 10 forge:add_features",
       "worldgen files: 12 configured_feature, 12 placed_feature",
@@ -45546,7 +46162,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "0 registered items (dev/registry @59ee40da); 12 item language keys, 487 recipes"
      ],
@@ -45592,7 +46212,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: thermal_integration"
      ],
@@ -47172,7 +47796,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "170 registered items (dev/registry @59ee40da); 0 item language keys, 179 recipes"
      ],
@@ -47226,7 +47854,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "structure set valhelsia_structures:big_trees: spacing 30, separation 8",
       "structure set valhelsia_structures:castle_ruins: spacing 35, separation 8",
@@ -47244,7 +47876,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "replace:true on 1 tag(s) of minecraft: worldgen/biome minecraft:has_structure/swamp_hut"
      ],
@@ -47253,7 +47889,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: valhelsia_structures"
      ],
@@ -47327,7 +47967,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "127 registered items (dev/registry @59ee40da); 117 item language keys, 169 recipes"
      ],
@@ -47367,7 +48011,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "VanillaCookbook-2.2.4.jar: a Forge config spec, types CLIENT, COMMON"
      ],
@@ -47380,7 +48028,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "replace:true on 1 tag(s) of forge: items forge:milk/milk_bottle"
      ],
@@ -47389,7 +48041,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: vanillacookbook"
      ],
@@ -48009,7 +48665,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "3 registered items (dev/registry @59ee40da); 3 item language keys, 3 recipes"
      ],
@@ -48034,7 +48694,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "weapon classes: SwordItem 1"
      ],
@@ -48046,7 +48710,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "gear classes: SwordItem 1"
      ],
@@ -48058,7 +48726,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "operator",
+     "on": "2026-10-15",
+     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
      "evidence": [
       "mod ids: wstweaks"
      ],
