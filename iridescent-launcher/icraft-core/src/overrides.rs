@@ -51,6 +51,10 @@ pub const FILE: &str = ".icraft_config_overrides.json";
 pub const DIR: &str = "config-overrides";
 pub const HISTORY_FILE: &str = "history.log";
 pub const ORIGINALS_DIR: &str = "originals";
+/// Under [`DIR`]: a datapack zip as the pack delivered it, kept while this
+/// layer has values in it, so that resetting the last one puts the pack's own
+/// bytes back (see [`restore_pack_zips`]).
+pub const PACK_ZIPS_DIR: &str = "pack-zips";
 /// Per-world record (shared with later Customizer phases: other keys in it are
 /// preserved).
 pub const WORLD_MANIFEST: &str = ".icraft_world.json";
@@ -765,6 +769,106 @@ fn keep_original(cfg: &ServerConfig, file: &str, text: &str, report: &mut Report
     }
 }
 
+// A datapack zip this layer has written into is never byte-equal to the pack's
+// again, not even once every value is back: the zip writer re-compresses the
+// entry it replaces and rewrites the central directory (B2 landing,
+// 2026-10-12). The launcher then reported `would-repair` for it at every start
+// until a sync replaced the file. Operator ruling 20 (2026-10-14): a full reset
+// restores the pack's zip byte for byte. So the zip is kept as the pack
+// delivered it (the last time it held none of this server's values), and when
+// the last value in it is reset, that copy's bytes go back, provided it holds
+// what the reset left entry by entry (a sync may have brought another zip in
+// the meantime: then the content-only reset stands and a sync replaces it).
+
+/// The zips named by an override, relative and `/`-separated.
+fn zips_of(store: &Store) -> BTreeSet<String> {
+    store.overrides.iter().filter(|o| o.file.contains("!/")).filter_map(|o| o.file.split("!/").next().map(str::to_string)).collect()
+}
+
+fn pack_zip_copy(cfg: &ServerConfig, zip: &str) -> PathBuf {
+    zip.split('/').fold(cfg.server_dir.join(DIR).join(PACK_ZIPS_DIR), |p, part| p.join(part))
+}
+
+/// Before anything is written: keep every override's zip that holds none of
+/// this server's values (the pack's, as a sync or the pack left it). Returns
+/// the zips the list names. Best effort: without a copy a reset restores the
+/// content only, as before.
+fn keep_pack_zips(cfg: &ServerConfig, store: &Store, report: &mut Report) -> BTreeSet<String> {
+    let zips = zips_of(store);
+    for zip in &zips {
+        let ours_in_it = store.overrides.iter().filter(|o| o.file.split("!/").next() == Some(zip.as_str())).any(|o| {
+            let Some(written) = &o.written else { return false };
+            match locate(cfg, &o.file).and_then(|at| read_located(&at).map(|text| parse_located(&at, &text))) {
+                Ok(doc) => doc.get(&o.key).map_or(false, |entry| same_value(&entry.raw, written)),
+                // Unreadable: nothing is known, so nothing is kept.
+                Err(_) => true,
+            }
+        });
+        if ours_in_it {
+            continue;
+        }
+        let live = zip.split('/').fold(cfg.server_dir.clone(), |p, part| p.join(part));
+        let copy = pack_zip_copy(cfg, zip);
+        let kept = fs::read(&live).and_then(|bytes| {
+            copy.parent().map_or(Ok(()), fs::create_dir_all)?;
+            write_atomic(&copy, &bytes)
+        });
+        if let Err(e) = kept {
+            report.notes.push(format!("the pack's {zip} could not be kept under {DIR}/{PACK_ZIPS_DIR} ({e}): a reset will restore its values, not its bytes"));
+        }
+    }
+    zips
+}
+
+/// (name, stored bytes uncompressed) of every entry, in order.
+fn zip_contents(path: &Path) -> Result<Vec<(String, Vec<u8>)>, String> {
+    let file = fs::File::open(path).map_err(|e| e.to_string())?;
+    let mut archive = zip::ZipArchive::new(file).map_err(|e| e.to_string())?;
+    let mut out = Vec::with_capacity(archive.len());
+    for i in 0..archive.len() {
+        let mut entry = archive.by_index(i).map_err(|e| e.to_string())?;
+        let mut bytes = Vec::new();
+        entry.read_to_end(&mut bytes).map_err(|e| e.to_string())?;
+        out.push((entry.name().to_string(), bytes));
+    }
+    Ok(out)
+}
+
+/// After writing: a zip that had values of this server and has none left gets
+/// the pack's own bytes back from its kept copy, when the copy holds what the
+/// reset left, entry by entry. The copy goes either way: the next override
+/// takes a new one.
+fn restore_pack_zips(cfg: &ServerConfig, store: &Store, before: &BTreeSet<String>, report: &mut Report) {
+    let still = zips_of(store);
+    for zip in before.difference(&still) {
+        let copy = pack_zip_copy(cfg, zip);
+        if !copy.is_file() {
+            continue;
+        }
+        let live = zip.split('/').fold(cfg.server_dir.clone(), |p, part| p.join(part));
+        match (zip_contents(&live), zip_contents(&copy)) {
+            (Ok(now), Ok(pack)) if now == pack => {
+                let same_bytes = fs::read(&live).ok() == fs::read(&copy).ok();
+                if !same_bytes {
+                    match fs::read(&copy).and_then(|bytes| write_atomic(&live, &bytes)) {
+                        Ok(()) => log::info!("[overrides] {zip}: no value of this server left in it -- the pack's zip is back, byte for byte"),
+                        Err(e) => {
+                            report.notes.push(format!("{zip}: the pack's zip could not be put back ({e}); it holds the pack's values, and a sync replaces it"));
+                            continue;
+                        }
+                    }
+                }
+            }
+            (Ok(_), Ok(_)) => report.notes.push(format!(
+                "{zip}: holds the pack's values again, but not what the copy kept under {DIR}/{PACK_ZIPS_DIR} holds (a sync brought another zip?): \
+                 it stays as it is, and the next sync replaces it"
+            )),
+            (Err(e), _) | (_, Err(e)) => report.notes.push(format!("{zip}: could not be compared with the pack's copy ({e}); it stays as it is")),
+        }
+        let _ = fs::remove_file(&copy);
+    }
+}
+
 fn append_history(cfg: &ServerConfig, by: &str, report: &mut Report) {
     let mut lines = String::new();
     let now = now_text();
@@ -852,6 +956,7 @@ fn apply(cfg: &ServerConfig, by: &str) -> Report {
     }
     let before = store.clone();
     let files: BTreeSet<String> = store.overrides.iter().map(|o| o.file.clone()).collect();
+    let zips = keep_pack_zips(cfg, &store, &mut report);
     let mut dropped = BTreeSet::new();
     for file in &files {
         apply_file(cfg, file, &mut store, &mut dropped, &mut report);
@@ -862,6 +967,7 @@ fn apply(cfg: &ServerConfig, by: &str) -> Report {
         index += 1;
         keep
     });
+    restore_pack_zips(cfg, &store, &zips, &mut report);
     if store != before {
         if let Err(why) = store.save(&cfg.server_dir) {
             report.error = Some(format!("the config files were updated, but {why}"));
@@ -1469,6 +1575,7 @@ mod tests {
         // A sync brings the pack's zip back with a new pack value: ours goes
         // back in, and the pack's new value is what a reset would restore.
         pack_zip(&fx, &IRON_JSON.replace("113", "100"));
+        let synced = fs::read(fx.path(PACK)).unwrap();
         assert_eq!(fx.states(), [State::Waiting]);
         assert_eq!(fx.outcomes("server start"), [change(key, Outcome::Reapplied, "100", "90")]);
         assert_eq!(zip_entries(&fx)[1].1, IRON_JSON.replace("\"count\": 113", "\"count\": 90"));
@@ -1486,6 +1593,10 @@ mod tests {
         assert_eq!(end[1].1, IRON_JSON.replace("113", "100"));
         assert_eq!(end[2].1, TIN_JSON);
         assert!(!fx.exists(FILE));
+        // Ruling 20: the full reset gives back the pack's zip as the last sync
+        // delivered it, byte for byte, and the kept copy goes.
+        assert!(fs::read(fx.path(PACK)).unwrap() == synced, "the zip is not the pack's, byte for byte");
+        assert!(!fx.exists(&format!("{DIR}/{PACK_ZIPS_DIR}/{PACK}")));
 
         // What cannot be named: a zip anywhere else, anything but JSON inside
         // one, a path that climbs out of it, a file the zip does not hold.
@@ -1502,6 +1613,59 @@ mod tests {
         assert!(stage(&fx.cfg, &format!("{PACK}!/data/nope.json"), "a", "1", "t").unwrap_err().contains("the zip has no"));
         // The zip itself, named whole, is not a config file.
         assert!(resolve(&fx.cfg, PACK).is_err());
+    }
+
+    /// Operator ruling 20: a full reset of datapack values restores the pack's
+    /// zip byte for byte. Only when it holds what the pack's copy holds: a zip
+    /// that changed under the values (a hand, another pack) keeps the
+    /// content-only reset, and says so.
+    #[test]
+    fn a_full_reset_gives_back_the_packs_zip_byte_for_byte() {
+        let fx = Fx::new("zip-bytes");
+        pack_zip(&fx, IRON_JSON);
+        let pack = fs::read(fx.path(PACK)).unwrap();
+        let key = "placement[0].count";
+        let kept = format!("{DIR}/{PACK_ZIPS_DIR}/{PACK}");
+
+        // Set: the zip is rewritten (other bytes than the pack's), the pack's kept.
+        stage(&fx.cfg, IRON, key, "90", "window").unwrap();
+        assert_eq!(apply(&fx.cfg, "window").files_written, 1);
+        assert!(fs::read(fx.path(PACK)).unwrap() != pack);
+        assert!(fs::read(fx.path(&kept)).unwrap() == pack);
+        // A start with the value in place keeps the copy as it is.
+        assert_eq!(fx.outcomes("server start"), [change(key, Outcome::InPlace, "90", "90")]);
+        assert!(fs::read(fx.path(&kept)).unwrap() == pack);
+
+        // Reset: the pack's own bytes are back, the copy is gone.
+        assert_eq!(reset(&fx.cfg, IRON, key), Ok(true));
+        let report = apply(&fx.cfg, "window");
+        assert_eq!((report.failed(), report.notes.len()), (0, 0), "{report:?}");
+        assert!(fs::read(fx.path(PACK)).unwrap() == pack, "not the pack's zip, byte for byte");
+        assert!(!fx.exists(&kept));
+        assert!(!fx.exists(FILE));
+
+        // The same, but the zip changed under the value (another entry edited by
+        // hand): the values go back, the bytes of the copy do not, and it says why.
+        stage(&fx.cfg, IRON, key, "90", "window").unwrap();
+        apply(&fx.cfg, "window");
+        let mut zip = zip::ZipWriter::new(fs::File::create(fx.path(PACK)).unwrap());
+        for (name, text) in [
+            ("pack.mcmeta", "{\"pack\":{\"pack_format\":15,\"description\":\"x\"}}".to_string()),
+            ("data/minecraft/worldgen/placed_feature/ore_iron_upper.json", IRON_JSON.replace("113", "90")),
+            ("data/thermal/worldgen/placed_feature/tin_ore.json", TIN_JSON.replace('5', "6")),
+        ] {
+            zip.start_file(name, zip::write::FileOptions::default()).unwrap();
+            zip.write_all(text.as_bytes()).unwrap();
+        }
+        zip.finish().unwrap();
+        assert_eq!(reset(&fx.cfg, IRON, key), Ok(true));
+        let report = apply(&fx.cfg, "window");
+        assert_eq!(report.failed(), 0);
+        assert!(report.notes.iter().any(|n| n.contains("not what the copy kept")), "{:?}", report.notes);
+        let end = zip_entries(&fx);
+        assert_eq!(end[1].1, IRON_JSON);
+        assert_eq!(end[2].1, TIN_JSON.replace('5', "6"));
+        assert!(!fx.exists(&kept));
     }
 
     /// A value inside a datapack zip is on the world's record like a value in
