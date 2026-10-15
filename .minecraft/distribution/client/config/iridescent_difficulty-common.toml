@@ -32,8 +32,9 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
-		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
-		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Extra multiplier applied ONLY to attack_damage, on top of the
+		#start/cap curve (health/armor/speed are unaffected). 100 = damage
+		#tracks the curve; 130 = +30% incoming damage over the curve.
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
@@ -48,8 +49,9 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
-		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
-		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Extra multiplier applied ONLY to attack_damage, on top of the
+		#start/cap curve (health/armor/speed are unaffected). 100 = damage
+		#tracks the curve; 130 = +30% incoming damage over the curve.
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
@@ -64,8 +66,9 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
-		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
-		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Extra multiplier applied ONLY to attack_damage, on top of the
+		#start/cap curve (health/armor/speed are unaffected). 100 = damage
+		#tracks the curve; 130 = +30% incoming damage over the curve.
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
@@ -80,8 +83,9 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 200.0
-		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
-		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Extra multiplier applied ONLY to attack_damage, on top of the
+		#start/cap curve (health/armor/speed are unaffected). 100 = damage
+		#tracks the curve; 130 = +30% incoming damage over the curve.
 		#Range: 50.0 ~ 10000.0
 		damageMultiplierPct = 130.0
 
