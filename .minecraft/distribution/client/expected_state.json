@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "da0ba2ef",
+    "generated_from":  "f1844623",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4184,8 +4184,8 @@
                                                        "size":  1120
                                                    },
                   "config/multiplayerbosses-common.toml":  {
-                                                               "sha256":  "96847890f88103031780ac86378b9040394d78c9a6bac8dd6189d03cde7ab168",
-                                                               "size":  2399
+                                                               "sha256":  "c618b51b83cda136f5ac17d9d609054968e32dba3e8de2ae897bf871b241ce52",
+                                                               "size":  2480
                                                            },
                   "config/mutantmonsters-common.toml":  {
                                                             "sha256":  "0e1662186bcba15036ebe5a8ce282bc9128b34602a7d07897244bbbd18c34962",
@@ -6895,6 +6895,10 @@
                                                                               "sha256":  "fbdc155c25f8198ba5c6fa9d6cd98607a8608623456ddb551e150e8c64f1ce69",
                                                                               "size":  1389
                                                                           },
+                  "kubejs/data/progressivebosses/loot_tables/entities/wither.json":  {
+                                                                                         "sha256":  "18c06f68f8535883123cb4b148d7d4e384513717cae626b9945602fdd85e2b57",
+                                                                                         "size":  297
+                                                                                     },
                   "kubejs/data/progressivebosses/loot_tables/entities/wither/ultimate.json":  {
                                                                                                   "sha256":  "aa723ac812e91f64d452ce7f7b5fb89d8d8939150710396d6035ae1e41c23c25",
                                                                                                   "size":  1168
