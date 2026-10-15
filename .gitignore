@@ -78,6 +78,12 @@ saves/
 .minecraft/server_distribution/banned-players.json
 .minecraft/server_distribution/usercache.json
 .minecraft/server_distribution/usernamecache.json
+# Per-player files some mods write into the game folder: Structurize names a
+# player's scan pack after the player, WorldEdit names a session file by the
+# player's UUID. Per player, never part of the pack (one of each was tracked
+# until 2026-10-15, ruling 21).
+.minecraft/blueprints/
+**/config/worldedit/sessions/
 # The server's local config overrides and their history (launcher override
 # layer): per server, never part of the pack.
 .minecraft/server_distribution/.icraft_config_overrides.json
@@ -88,15 +94,26 @@ installer.log
 # OOM heap dumps (crash-reports/heapdumps/heap_*.hprof) are ~heap-sized
 # (-Xmx10G+) — far past GitHub's blob limit. icraft-core's crash mirror
 # already skips them; this is the second layer so a stray copy can never be
-# committed from a TesterLogs folder. (The server's own log mirror left this
-# repo on 2026-10-11: it is pushed to the private IridescentCraft-logs repo.)
+# committed from a crash-reports folder.
 *.hprof
-# Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
-# block loose crash-logs that accumulate at distro root
-.minecraft/server_distribution/logs/
-.minecraft/server_distribution/crash-reports/
-.minecraft/distribution/client/logs/
-.minecraft/distribution/client/crash-reports/
+# Logs and crash reports are never committed, at any depth (ruling 21,
+# 2026-10-14). This repository is public, and a log or a crash report carries
+# player names, UUIDs, chat and addresses. Where they go instead:
+#   - the server's: the launcher pushes them to the PRIVATE repository
+#     IridescentCraft-logs, folder server/ (since 2026-10-12);
+#   - a tester's: they stay on the tester's own PC (prism_postexit.bat still
+#     copies each session's into .minecraft/TesterLogs/<account>/ there) and
+#     are sent to the operator privately, who files them in
+#     IridescentCraft-logs, folder testers/.
+# The copies once tracked here (TesterLogs/, crash-reports/, logs/) moved to
+# testers/ on 2026-10-15; the public history still holds them (no rewrite was
+# ruled). Never `git add -f` one.
+**/TesterLogs/
+**/crash-reports/
+**/logs/
+crash-*.txt
+*.log
+*.log.gz
 
 *.zip
 !global_packs/required_data/*.zip

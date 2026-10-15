@@ -15,10 +15,16 @@ REM      .minecraft/TesterLogs/<username>/kubejs/, plus any crash reports
 REM      created during this session (latest.log creation time as the
 REM      session-start anchor).
 REM   3. git add + commit + (fetch + rebase) + push the WHOLE TesterLogs/
-REM      tree so server-side logs deposited via Z: by push_crash_logs.bat
-REM      ride along.
+REM      tree. SINCE 2026-10-15 THIS STEP STAGES NOTHING: TesterLogs/ is in
+REM      .gitignore (ruling 21, 2026-10-14). The pack repository is public
+REM      and a log carries player names, UUIDs, chat and addresses, so a
+REM      tester's logs stay on their own PC, in TesterLogs\<account>\ as step 2
+REM      leaves them, and are sent to the operator privately (the operator
+REM      files them in the PRIVATE IridescentCraft-logs repo, folder testers/).
+REM      `git add` therefore prints "paths are ignored" and the WARN below,
+REM      then "No changes to push": expected. Never add -f to it.
 REM
-REM Always pushes latest.log + debug.log + kubejs/{client,server,startup}.log,
+REM Copies latest.log + debug.log + kubejs/{client,server,startup}.log,
 REM regardless of clean exit or crash. Failure modes surface error text
 REM (previously >nul 2>&1 swallowed git failures, so unpushed local commits
 REM silently accumulated for days when push hit auth/network/divergence).

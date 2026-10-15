@@ -1,5 +1,14 @@
 # Server-side PAT setup for auto log-push
 
+> **Out of date on where logs go.** Since 2026-10-12 nothing pushes logs into
+> this (public) pack repository: the launcher (`icraft-gui`) pushes the
+> server's logs to the PRIVATE repository `IridescentCraft-logs`, folder
+> `server/`, and `push_crash_logs.{bat,sh}` do nothing. Logs and crash reports
+> are never committed to the pack repository (`.gitignore`, ruling 21 of
+> 2026-10-14). A fine-grained token made from the steps below would need
+> access to `IridescentCraft-logs` as well; the box runs a classic token, and
+> a fine-grained one has not been tried.
+
 `push_crash_logs.{bat,sh}` and the native `icraft serve` post-exit
 flow auto-commit + auto-push server logs to the repo. Both require a
 GitHub Personal Access Token to authenticate the push from the server

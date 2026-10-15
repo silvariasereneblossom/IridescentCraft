@@ -22,7 +22,7 @@ case "${1:-}" in
     [ ! -f "$SRC" ] && SRC="../IridescentCraft-logs/server/kubejs/server.log"
     ;;
   --tester)
-    user="${2:-silvieserene}"
+    user="${2:?--tester needs the account name, the folder under TesterLogs/}"
     SRC=".minecraft/TesterLogs/${user}/kubejs/server.log"
     ;;
   '') ;;

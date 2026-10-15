@@ -287,14 +287,16 @@ if (Test-Path $serverLog) {
 
 # ---------------------------------------------------------------------------
 Section 'DONE'
-Log "Diagnostic complete. Push this file to the repo so Claude can read it."
+Log "Diagnostic complete. Send this file to the operator privately: it can carry player names and addresses, so it never goes into the public pack repo."
 
 Write-Host ''
 Write-Host '[diag] Diagnostic complete.' -ForegroundColor Green
 Write-Host "[diag] Output written to: $OutFile" -ForegroundColor Cyan
 Write-Host ''
-Write-Host '[diag] Next: copy icraft_diagnostic.txt into your local repo,' -ForegroundColor Yellow
-Write-Host '[diag] commit, and push. Place anywhere (e.g. .minecraft\TesterLogs\).' -ForegroundColor Yellow
+Write-Host '[diag] Next: send icraft_diagnostic.txt to the operator privately.' -ForegroundColor Yellow
+Write-Host '[diag] Never commit it: the pack repo is public and the file can carry' -ForegroundColor Yellow
+Write-Host '[diag] player names and addresses (the operator files it in the private' -ForegroundColor Yellow
+Write-Host '[diag] IridescentCraft-logs repo).' -ForegroundColor Yellow
 Write-Host ''
 
 } catch {

@@ -11,7 +11,8 @@
 #
 #   OverrideCommands  -> true   (gate: without it Prism IGNORES the commands)
 #   PreLaunchCommand  -> .minecraft/prism_prelaunch.bat (force-sync + cleanup)
-#   PostExitCommand   -> .minecraft/prism_postexit.bat  (TesterLogs auto-push)
+#   PostExitCommand   -> .minecraft/prism_postexit.bat  (local TesterLogs copy;
+#                        nothing is pushed since 2026-10-15, see its header)
 #
 # NOTE: this self-heals on the SECOND+ launch only -- it can't fix the
 # first-run chicken-and-egg, because the bat that runs it must ALREADY be

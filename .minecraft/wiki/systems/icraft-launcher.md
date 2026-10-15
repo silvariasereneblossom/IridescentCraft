@@ -48,7 +48,7 @@ Rust workspace with three crates:
 - Forge installer download + `--installServer` invocation
 - EULA write
 - Java spawn with Aikar flags
-- Crash-report capture + tail-of-latest.log + git push to TesterLogs
+- Crash-report capture + tail-of-latest.log; the server's logs and crash reports are pushed to a private log repository, never to this public one
 - PAT auth via `ICRAFT_GH_TOKEN` env var or `.icraft_token` file
 - Hang-detection watchdog: polls `logs/latest.log` mtime; kills on `boot_timeout` (default 15 min) or `idle_timeout` (default 15 min, post-boot) with graceful SIGTERM-equivalent so worlds flush. Configurable per-launch via `--boot-timeout` / `--idle-timeout`.
 

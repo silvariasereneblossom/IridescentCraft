@@ -126,6 +126,12 @@ These are preserved from the instance regardless of mode. In Mode B the overlay 
 - `servers.dat` — server list
 - `usercache.json`, `whitelist.json`, etc. — server-only files that shouldn't exist on client anyway
 
+## Your logs and crash reports
+
+They stay on your PC and are never committed to the pack repository: it is public, and a log or a crash report carries player names, chat and addresses. After each session the post-exit hook keeps a copy of the session's logs, and of any crash report it wrote, in `.minecraft/TesterLogs/<your account>/`; it no longer pushes anything. When you hit a problem, send those files (or `logs/latest.log` and the newest file in `crash-reports/`) to Silvaria privately, who files them in a private log repository.
+
+Until 2026-10-15 the repository tracked a set of old logs and crash reports (so a Mode A sync put the tracked `logs/latest.log` back on every launch). The first Mode A sync after that removes every file at those tracked paths from the instance, including the previous session's `logs/latest.log`, `logs/debug.log` and KubeJS logs and the `TesterLogs/` copies; logs and crash reports under any other name stay. From then on the sync leaves all of them alone.
+
 ## When to use which mode
 
 - **Silvaria's own dev instance:** Mode A (force-sync to `origin/main` via `prism_prelaunch.bat`). Fast, and the git history gives you rollback if something goes wrong

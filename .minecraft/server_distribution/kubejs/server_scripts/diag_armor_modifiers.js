@@ -2,7 +2,7 @@
 // DIAG: /icraft armormods — dump every LIVE modifier on the armor attributes
 // =============================================================================
 // Born from the 2026-06-11 armor investigation: a flat -4 generic.armor on
-// silvieserene turned out to be the Archmage glass_frame Origins power
+// a tester turned out to be the Archmage glass_frame Origins power
 // (Apoli renders modifiers without a "name" field as "Unnamed
 // EntityAttributeModifier", and /data get only shows PERSISTED modifiers,
 // so neither surface identified the author). This command reads the live

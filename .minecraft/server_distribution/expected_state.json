@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "fdcfed2b",
+    "generated_from":  "c2ea6421",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5803,10 +5803,6 @@
                                                                    "sha256":  "2441604ea6f0d7c56ba0c5aef71cab6ea4674167a7aa729194663acb671ec878",
                                                                    "size":  20626
                                                                },
-                  "config/worldedit/sessions/8a11a35f-44a9-4cfe-9b3f-bc54a38f2b60.json":  {
-                                                                                              "sha256":  "2e83ca1298479a816ecc0a8345c39946f5401f09079e0c202b5a001dd34242bd",
-                                                                                              "size":  138
-                                                                                          },
                   "config/worldedit/worldedit.properties":  {
                                                                 "sha256":  "a72715124a5c1669e238a01182182757540bfb12028ab8b5013b0406764aa1bb",
                                                                 "size":  2495
@@ -7128,8 +7124,8 @@
                                                                  "size":  29768
                                                              },
                   "kubejs/server_scripts/diag_armor_modifiers.js":  {
-                                                                        "sha256":  "fddcdad360c8c795c5efadf6203548b8813924b3b763519b0a447fc91781f71d",
-                                                                        "size":  2550
+                                                                        "sha256":  "1f617545118aee8ea4ac0eb46652ae32022e374210fbcf8800ff25d8ee71e0a1",
+                                                                        "size":  2546
                                                                     },
                   "kubejs/server_scripts/disable_zombie_door_break.js":  {
                                                                              "sha256":  "94135d937a6d69291a9c8ff861fdc3a31d38adc5718ff7f0b90d82a9e5aa9eb3",
