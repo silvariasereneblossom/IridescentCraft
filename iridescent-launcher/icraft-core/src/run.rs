@@ -2,7 +2,8 @@
 //!
 //! Equivalent to the `java @libraries/.../win_args.txt nogui ...` block
 //! at the end of `iridescentserver.bat`, plus a watchdog thread that
-//! polls `logs/latest.log` mtime to detect hangs.
+//! polls `logs/latest.log` mtime to detect hangs, and (piped launches) a
+//! watch on the game's own crash lines: see "A server thread that crashed".
 //!
 //! Two thresholds:
 //!   - `boot_timeout`: max time without ANY log activity (catches
@@ -179,13 +180,19 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     drop(backup_guard);
     set_server_state(ServerState::Starting);
 
+    // What the game's own fatal path prints during this run (see "A server
+    // thread that crashed" below). Only the piped launches read the output.
+    let fatal: Arc<Mutex<Fatal>> = Arc::new(Mutex::new(Fatal::default()));
+    let run_over = Arc::new(AtomicBool::new(false));
+    let killed_after_fatal = Arc::new(AtomicBool::new(false));
     if pipe_output {
         if let Some(stdout) = child.stdout.take() {
-            spawn_log_pump(stdout);
+            spawn_log_pump(stdout, Arc::clone(&fatal));
         }
         if let Some(stderr) = child.stderr.take() {
-            spawn_log_pump(stderr);
+            spawn_log_pump(stderr, Arc::clone(&fatal));
         }
+        let _ = spawn_fatal_watch(child.id(), Arc::clone(&fatal), FATAL_GRACES, Arc::clone(&run_over), Arc::clone(&killed_after_fatal));
     }
 
     // Shared handle to the child's stdin -- the operator-stdin
@@ -216,10 +223,20 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     };
 
     let exit_status = child.wait().context("waiting for java")?;
-    let code = exit_status.code().unwrap_or(-1);
+    run_over.store(true, Ordering::SeqCst);
+    let jvm_code = exit_status.code().unwrap_or(-1);
     let killed_by_watchdog = kill_signal.load(Ordering::Relaxed);
     set_server_state(ServerState::PostExit);
-    log::info!("[run] *** Java process exited with code {code}; running post-exit hooks ***");
+    log::info!("[run] *** Java process exited with code {jvm_code}; running post-exit hooks ***");
+    let seen = *fatal.lock().unwrap();
+    let code = reported_exit_code(jvm_code, &seen, killed_after_fatal.load(Ordering::SeqCst));
+    if code != jvm_code {
+        log::warn!(
+            "[run] !!! the server thread crashed during this run (the game's own crash lines{}): \
+             reported as exit code {code}, not {jvm_code}, so it is handled as the crash it is",
+            if seen.stop_failed_at.is_some() { ", and its stop failed" } else { "" }
+        );
+    }
 
     // Tell the watchdog we're done so it doesn't try to kill an already-dead PID.
     if let Some(h) = watchdog_handle {
@@ -326,6 +343,159 @@ fn spawn_watchdog(
 const NEWLINE: &[u8] = b"\r\n";
 #[cfg(not(windows))]
 const NEWLINE: &[u8] = b"\n";
+
+// =============================================================================
+// A server thread that crashed: what the exit code does not say
+// =============================================================================
+//
+// Measured 2026-10-15 in the rig (operator ruling 19, the End's old feature
+// order cycle re-created by a test datapack and an End chunk forced): the tick
+// loop crashes, the game's own stop throws ("Exception stopping the server"),
+// and nothing is left that runs the server. What the JVM does next depends on
+// the threads still in it:
+//   - a bare Forge server: its last non-daemon threads (vanilla's IO workers)
+//     time out and the JVM exits with code 0, a minute after the crash. The
+//     heartbeat took that for a clean stop: "not restarting", and the status
+//     file showed nothing wrong. The server stayed down.
+//   - the full pack: other non-daemon threads keep the JVM alive for good, with
+//     no server thread (the boot rig on 2026-10-13; the box for a week from
+//     2026-09-04). Only the listener probe could see it, about five minutes
+//     after the crash, and only once the server had reached Started.
+// The game's fatal path prints lines nothing else prints (`fatal_line`), so the
+// log pump watches for them:
+//   - the server thread crashed: an exit after this is a crash whatever its
+//     code (the crash log is written, the debug logs mirrored, the heartbeat
+//     restarts it);
+//   - its stop failed: nothing is left to save, so a JVM still alive
+//     `FatalGraces::stop_failed` later is killed;
+//   - a crash whose stop neither fails nor ends: killed `FatalGraces::crashed`
+//     after the crash. A stop that saves the world ends well inside it.
+
+/// What the log pump saw of the game's fatal path during one run.
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct Fatal {
+    pub crashed_at: Option<Instant>,
+    pub stop_failed_at: Option<Instant>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum FatalLine {
+    /// `MinecraftServer.runServer` caught what the tick loop threw.
+    Crashed,
+    /// The stop that follows threw too.
+    StopFailed,
+}
+
+/// How long a JVM may live on after the fatal lines before it is killed.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct FatalGraces {
+    pub stop_failed: Duration,
+    pub crashed: Duration,
+}
+
+const FATAL_GRACES: FatalGraces = FatalGraces {
+    stop_failed: Duration::from_secs(30),
+    crashed: Duration::from_secs(10 * 60),
+};
+
+/// `[time] [thread/LEVEL] [logger]: message`, split at the line's OWN
+/// brackets, so text quoted inside a message (a chat line) is never taken for
+/// the line's thread or logger.
+fn log_parts(line: &str) -> Option<(&str, &str, &str)> {
+    let (_, rest) = line.strip_prefix('[')?.split_once("] [")?;
+    let (thread, rest) = rest.split_once("] [")?;
+    let (logger, message) = rest.split_once("]: ")?;
+    Some((thread, logger, message))
+}
+
+/// A line of the game's own fatal path, as the server's console prints it
+/// (`[time] [Server thread/ERROR] [minecraft/MinecraftServer]: ...`; the log
+/// file's `net.minecraft.server.MinecraftServer/` form is read too). Only an
+/// ERROR line of the server thread from `MinecraftServer` itself counts: no
+/// chat line, no mod's logger and no other thread prints one.
+fn fatal_line(line: &str) -> Option<FatalLine> {
+    let (thread, logger, message) = log_parts(line)?;
+    if thread != "Server thread/ERROR" || !logger.trim_end_matches('/').ends_with("MinecraftServer") {
+        return None;
+    }
+    if message.starts_with("Encountered an unexpected exception")
+        || message.starts_with("This crash report has been saved to: ")
+        || message.starts_with("We were unable to save this crash report to disk.")
+    {
+        Some(FatalLine::Crashed)
+    } else if message.starts_with("Exception stopping the server") {
+        Some(FatalLine::StopFailed)
+    } else {
+        None
+    }
+}
+
+fn note_fatal(fatal: &Mutex<Fatal>, line: &str) {
+    let Some(what) = fatal_line(line) else { return };
+    let mut f = fatal.lock().unwrap();
+    let slot = match what {
+        FatalLine::Crashed => &mut f.crashed_at,
+        FatalLine::StopFailed => &mut f.stop_failed_at,
+    };
+    if slot.is_none() {
+        *slot = Some(Instant::now());
+        match what {
+            FatalLine::Crashed => log::error!("[run] !!! the server thread crashed (the game's crash lines): the JVM should exit once its stop is done"),
+            FatalLine::StopFailed => log::error!("[run] !!! the server's own stop failed: nothing is left to save, and nothing runs the server any more"),
+        }
+    }
+}
+
+/// Why a JVM that is still alive at `now` must go, if it must.
+fn overdue(f: &Fatal, graces: FatalGraces, now: Instant) -> Option<String> {
+    if let Some(at) = f.stop_failed_at {
+        let lived = now.saturating_duration_since(at);
+        if lived >= graces.stop_failed {
+            return Some(format!("its stop failed {} s ago and it has not exited", lived.as_secs()));
+        }
+    }
+    if let Some(at) = f.crashed_at {
+        let lived = now.saturating_duration_since(at);
+        if lived >= graces.crashed {
+            return Some(format!("its server thread crashed {} s ago and the stop has not ended", lived.as_secs()));
+        }
+    }
+    None
+}
+
+/// The exit code a run reports. A JVM that exits 0 after the server thread
+/// crashed (or after its stop failed) did not stop cleanly: 1, so every caller
+/// handles it as the crash it is.
+fn reported_exit_code(jvm_code: i32, f: &Fatal, killed_after_fatal: bool) -> i32 {
+    let fatal = killed_after_fatal || f.crashed_at.is_some() || f.stop_failed_at.is_some();
+    if fatal && jvm_code == 0 {
+        1
+    } else {
+        jvm_code
+    }
+}
+
+/// Kill the JVM `pid` once [`overdue`] says so, unless the run is over first.
+/// Detached; one per piped launch.
+fn spawn_fatal_watch(pid: u32, fatal: Arc<Mutex<Fatal>>, graces: FatalGraces, run_over: Arc<AtomicBool>, killed: Arc<AtomicBool>) -> thread::JoinHandle<()> {
+    thread::spawn(move || loop {
+        thread::sleep(Duration::from_millis(500));
+        if run_over.load(Ordering::SeqCst) {
+            return;
+        }
+        let seen = *fatal.lock().unwrap();
+        let Some(why) = overdue(&seen, graces, Instant::now()) else { continue };
+        log::error!("[run] !!! a JVM with no server thread: {why}. Killing pid {pid}, so the restart path runs (crash log, logs, heartbeat).");
+        killed.store(true, Ordering::SeqCst);
+        match kill_pid_force(pid) {
+            Ok(()) => return,
+            Err(e) => {
+                log::warn!("[run] kill of pid {pid} failed: {e} (tried again in 30 s)");
+                thread::sleep(Duration::from_secs(30));
+            }
+        }
+    })
+}
 
 /// Outer Mutex protects the slot itself; inner Arc<Mutex<...>> is
 /// shared with the forwarder + watchdog. Set on each launch_server_watched
@@ -601,7 +771,7 @@ pub fn send_console_line(line: &str) -> Result<()> {
 /// paths / mod names; on Windows the JVM writes stdout in the system
 /// code page, typically cp1252). Lossy decode replaces invalid bytes
 /// with U+FFFD instead of killing the pump.
-fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
+fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R, fatal: Arc<Mutex<Fatal>>) {
     use std::io::BufRead;
     thread::spawn(move || {
         let mut reader = std::io::BufReader::new(reader);
@@ -627,6 +797,7 @@ fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
             } else if let Some(players) = parse_list_reply(&line) {
                 *LAST_LIST_REPLY.lock().unwrap() = Some((Instant::now(), players));
             }
+            note_fatal(&fatal, &line);
 
             // Operational event highlights -- player session + lag
             // warnings get an extra prominent log line above the
@@ -896,6 +1067,128 @@ mod tests {
         assert!(!jvm_active());
         assert!(dir.join(crate::overrides::REFUSED_FILE).exists());
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// The lines as the server printed them in the rig (2026-10-15: a bare
+    /// Forge server, the End's feature order cycle re-created, an End chunk
+    /// forced), on the console and in the log file. Then the lines that must
+    /// never count.
+    #[test]
+    fn only_the_games_own_fatal_lines_count() {
+        for line in [
+            "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Encountered an unexpected exception",
+            "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: This crash report has been saved to: C:\\srv\\.\\crash-reports\\crash-2026-10-15_09.56.19-server.txt",
+            "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: We were unable to save this crash report to disk.",
+            "[15Oct2026 09:56:19.576] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Encountered an unexpected exception",
+        ] {
+            assert_eq!(fatal_line(line), Some(FatalLine::Crashed), "{line}");
+        }
+        for line in [
+            "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Exception stopping the server",
+            "[15Oct2026 09:56:19.940] [Server thread/ERROR] [net.minecraft.server.MinecraftServer/]: Exception stopping the server",
+        ] {
+            assert_eq!(fatal_line(line), Some(FatalLine::StopFailed), "{line}");
+        }
+        for line in [
+            // Forge prints it for every crash report, the ones a mod writes and survives too.
+            "[09:56:19] [Server thread/FATAL] [ne.mi.co.ForgeMod/]: Preparing crash report with UUID 865af5c2-ff92-48b5-be71-45f0ebb4c10a",
+            // What a chunk that fails to generate prints, before anything has crashed.
+            "[09:56:18] [Server thread/ERROR] [minecraft/BlockableEventLoop]: Error executing task on Chunk source main thread executor for minecraft:the_end",
+            "[09:56:19] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server",
+            // Players, and a player quoting a whole fatal line.
+            "[09:56:19] [Server thread/INFO] [minecraft/MinecraftServer]: <someone> Encountered an unexpected exception",
+            "[09:56:19] [Server thread/INFO] [minecraft/MinecraftServer]: <someone> [09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Exception stopping the server",
+            "[09:56:18] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] Encountered an unexpected exception",
+            // Another logger, another thread, a stack trace line.
+            "[09:56:19] [Server thread/ERROR] [somemod/Thing]: Encountered an unexpected exception",
+            "[09:56:19] [Worker-Main-3/ERROR] [minecraft/MinecraftServer]: Encountered an unexpected exception",
+            "java.util.concurrent.CompletionException: net.minecraft.ReportedException: Exception generating new chunk",
+            "",
+        ] {
+            assert_eq!(fatal_line(line), None, "{line}");
+        }
+    }
+
+    #[test]
+    fn an_exit_after_a_crash_is_a_crash_whatever_its_code() {
+        let now = Instant::now();
+        let clean = Fatal::default();
+        let crashed = Fatal { crashed_at: Some(now), stop_failed_at: None };
+        let stop_failed = Fatal { crashed_at: Some(now), stop_failed_at: Some(now) };
+        assert_eq!(reported_exit_code(0, &clean, false), 0, "a stop with no fatal line is what it says");
+        assert_eq!(reported_exit_code(1, &clean, false), 1);
+        assert_eq!(reported_exit_code(0, &crashed, false), 1, "the bare server of the rig: crashed, then exit 0");
+        assert_eq!(reported_exit_code(0, &stop_failed, false), 1);
+        assert_eq!(reported_exit_code(0, &Fatal { crashed_at: None, stop_failed_at: Some(now) }, false), 1, "a stop that failed saved nothing");
+        assert_eq!(reported_exit_code(1, &stop_failed, true), 1, "killed: taskkill's own code stands");
+        assert_eq!(reported_exit_code(0, &clean, true), 1);
+        assert_eq!(reported_exit_code(-1, &crashed, false), -1);
+    }
+
+    #[test]
+    fn a_jvm_is_overdue_only_after_its_grace() {
+        let graces = FatalGraces { stop_failed: Duration::from_secs(30), crashed: Duration::from_secs(600) };
+        let t0 = Instant::now();
+        let at = |s: u64| t0 + Duration::from_secs(s);
+        assert_eq!(overdue(&Fatal::default(), graces, at(3600)), None, "a server that never crashed is never overdue");
+        let crashed = Fatal { crashed_at: Some(t0), stop_failed_at: None };
+        assert_eq!(overdue(&crashed, graces, at(599)), None, "a stop that is still saving gets its time");
+        assert!(overdue(&crashed, graces, at(600)).unwrap().contains("crashed 600 s ago"));
+        // The rig: crashed, the stop failed 0.4 s later.
+        let failed = Fatal { crashed_at: Some(t0), stop_failed_at: Some(t0) };
+        assert_eq!(overdue(&failed, graces, at(29)), None);
+        assert!(overdue(&failed, graces, at(30)).unwrap().contains("its stop failed 30 s ago"));
+        // A clock read before the line was noted is not "overdue".
+        assert_eq!(overdue(&Fatal { crashed_at: Some(at(10)), stop_failed_at: Some(at(10)) }, graces, t0), None);
+    }
+
+    /// The watch kills a process that outlives its grace, and leaves alone one
+    /// whose run is over first. Real processes, real kill.
+    #[test]
+    fn the_watch_kills_a_jvm_that_outlives_its_failed_stop() {
+        fn sleeper() -> std::process::Child {
+            #[cfg(windows)]
+            let mut cmd = Command::new("ping");
+            #[cfg(windows)]
+            cmd.args(["-n", "120", "127.0.0.1"]);
+            #[cfg(not(windows))]
+            let mut cmd = Command::new("sleep");
+            #[cfg(not(windows))]
+            cmd.arg("120");
+            cmd.stdout(Stdio::null()).stderr(Stdio::null()).spawn().unwrap()
+        }
+        let graces = FatalGraces { stop_failed: Duration::from_secs(1), crashed: Duration::from_secs(600) };
+
+        // Its stop failed: killed about a second later.
+        let mut child = sleeper();
+        let fatal = Arc::new(Mutex::new(Fatal::default()));
+        let (over, killed) = (Arc::new(AtomicBool::new(false)), Arc::new(AtomicBool::new(false)));
+        let watch = spawn_fatal_watch(child.id(), Arc::clone(&fatal), graces, Arc::clone(&over), Arc::clone(&killed));
+        note_fatal(&fatal, "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Encountered an unexpected exception");
+        note_fatal(&fatal, "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Exception stopping the server");
+        let started = Instant::now();
+        let status = child.wait().unwrap();
+        over.store(true, Ordering::SeqCst);
+        watch.join().unwrap();
+        assert!(killed.load(Ordering::SeqCst));
+        assert!(!status.success());
+        assert!(started.elapsed() < Duration::from_secs(30), "killed after {:?}", started.elapsed());
+        assert_ne!(reported_exit_code(status.code().unwrap_or(-1), &fatal.lock().unwrap(), true), 0);
+
+        // Crashed, the stop still running (no failure line yet): the 10 min
+        // grace holds, and the run ends first. Nothing is killed.
+        let mut child = sleeper();
+        let fatal = Arc::new(Mutex::new(Fatal::default()));
+        let (over, killed) = (Arc::new(AtomicBool::new(false)), Arc::new(AtomicBool::new(false)));
+        let watch = spawn_fatal_watch(child.id(), Arc::clone(&fatal), graces, Arc::clone(&over), Arc::clone(&killed));
+        note_fatal(&fatal, "[09:56:19] [Server thread/ERROR] [minecraft/MinecraftServer]: Encountered an unexpected exception");
+        thread::sleep(Duration::from_secs(2));
+        assert!(child.try_wait().unwrap().is_none(), "still saving: left alone");
+        over.store(true, Ordering::SeqCst);
+        watch.join().unwrap();
+        assert!(!killed.load(Ordering::SeqCst));
+        let _ = child.kill();
+        let _ = child.wait();
     }
 
     /// The same, for a world regeneration that was cut off half-way: its
