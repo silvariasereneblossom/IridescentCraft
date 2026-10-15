@@ -133,11 +133,14 @@ def write(path, data, raw=False):
         f.write(data if raw else (json.dumps(data, indent=1) if not isinstance(data, str) else data).encode('utf-8'))
 
 
-def build(tmp, toml=None, adv=None, per_distro=None, policy=None, bosses=None):
-    """a pack-shaped folder; per_distro = {distro index: (toml, cfg)} overrides one distro's files"""
+def build(tmp, toml=None, adv=None, per_distro=None, policy=None, bosses=None, categories=None):
+    """a pack-shaped folder; per_distro = {distro index: (toml, cfg)} overrides one distro's files; categories =
+    {entity id: mob category} for dev/registry/entities.json (without it every category is unknown)"""
     write(os.path.join(tmp, 'kubejs', 'config', 'icraft', 'registry', 'bosses.json'), bosses or BOSSES)
     write(os.path.join(tmp, 'kubejs', 'config', 'icraft', 'registry', 'dimensions.json'), DIMS)
     reg = os.path.join(tmp, 'dev', 'registry')
+    if categories is not None:
+        write(os.path.join(reg, 'entities.json'), {"entities": dict((i, {"category": c}) for i, c in categories.items())})
     write(os.path.join(reg, 'entity_types.txt'), '\n'.join(ENTITY_TYPES) + '\n')
     write(os.path.join(reg, 'dimensions.txt'), '\n'.join(DIMENSIONS) + '\n')
     for fn in ('structures.txt', 'blocks.txt', 'items.txt'):
@@ -210,9 +213,23 @@ def toml_with(**kw):
 def c_missing_boss(tmp):
     pol = build(tmp, toml=toml_with(entities='["testmod:king", "testmod:queen", "otherid:queen"]'))
     rc, out = run(tmp, pol)
-    bad = expect(out, rc, 0, 'BOSS-NOT-EXCLUDED', 'testmod:knight (miniboss)', 'difficulty: 1 bosses not excluded')
+    bad = expect(out, rc, 0, 'BOSS-NOT-EXCLUDED', 'testmod:knight (miniboss)', 'difficulty: 1 boss ids on the curve (not excluded)')
     rc2, out2 = run(tmp, pol, 'check', '--strict')
     return bad + expect(out2, rc2, 1)
+
+
+def c_boss_not_monster(tmp):
+    """the curve takes category monster only: a missing boss of another category is a note; on forceScaleEntities it
+    is scaled again, so a finding"""
+    cats = dict((i, 'monster') for i in ENTITY_TYPES)
+    cats['testmod:knight'] = 'creature'
+    pol = build(tmp, toml=toml_with(entities='["testmod:king", "testmod:queen", "otherid:queen"]'), categories=cats)
+    rc, out = run(tmp, pol, 'check', '--strict')
+    bad = expect(out, rc, 0, 'BOSS-NOT-SCALED', 'testmod:knight (miniboss), category creature', '| 0 findings', absent=('BOSS-NOT-EXCLUDED',))
+    with open(os.path.join(tmp, DIFF), 'w', encoding='utf-8', newline='\n') as f:
+        f.write(toml_with(entities='["testmod:king", "testmod:queen", "otherid:queen"]', forceScaleEntities='["testmod:knight"]'))
+    rc, out = run(tmp, pol)
+    return bad + expect(out, rc, 0, 'BOSS-NOT-EXCLUDED', 'testmod:knight (miniboss)')
 
 
 def c_missing_second_id(tmp):
@@ -474,6 +491,7 @@ def c_real_pack_copy(tmp):
 CASES = [
     ('check: a clean fixture has no finding (and --strict exits 0)', c_clean),
     ('check: a registry boss missing from the exclude list', c_missing_boss),
+    ('check: a boss of another category than monster is a note; on forceScaleEntities a finding', c_boss_not_monster),
     ('check: a second id (sameAs) missing from the exclude list', c_missing_second_id),
     ('check: exclude entries naming no entity, one of them an `absent` registry entry', c_dead_entry),
     ('check: a boss handed out under another type is a note, not a missing id', c_seen_as),

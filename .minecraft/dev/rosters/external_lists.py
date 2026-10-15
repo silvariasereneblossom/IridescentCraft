@@ -218,12 +218,16 @@ class Distro(object):
         self.texts = OrderedDict()
         self.values = OrderedDict()
         self.errors = OrderedDict()     # key -> reason
+        self.force_scale = []           # [excludes] forceScaleEntities: scaled although not of category monster
         for rel, path in self.paths.items():
             keys = [k for k, (f, _s, _n) in KEYS.items() if f == rel]
             try:
                 text = read_file(path, self.rels[rel])
                 self.texts[rel] = text
                 doc = toml_doc(text) if rel == DIFF_REL else None
+                if doc is not None:
+                    fs = (doc.get('excludes') or {}).get('forceScaleEntities')
+                    self.force_scale = [x for x in fs if isinstance(x, str)] if isinstance(fs, list) else []
             except ListError as e:
                 for k in keys:
                     self.errors[k] = str(e)
@@ -445,7 +449,15 @@ def by_tier(reg, dims, tier_of=None):
 
 # ------------------------------------------------------------------------------------------------------ check
 
-def check_excludes(reg, game, pol, have):
+def curve_scales(game, force_scale, i):
+    """does the difficulty mod scale this entity type at all? It takes category MONSTER only, or an id on
+    forceScaleEntities (iridescent-difficulty-mod MobScalingHandler.onEntityJoin). Category from the boot's
+    dev/registry/entities.json; unknown counts as scaled."""
+    c = ((game.get('entity_facts') or {}).get(i) or {}).get('category')
+    return c is None or c == 'monster' or i in force_scale
+
+
+def check_excludes(reg, game, pol, have, force_scale=()):
     key = 'difficulty.excludes'
     out = []
     scope = pol.scope or 'isBoss'
@@ -453,17 +465,24 @@ def check_excludes(reg, game, pol, have):
     ruled = pol.scope is not None
     level = 'note' if pol.scope is False else 'finding'
     missing = [x for x in want if x not in have and x not in pol.keep]
-    if missing:
+    scaled = [x for x in missing if curve_scales(game, force_scale, x)]
+    inert = [x for x in missing if x not in scaled]
+    if scaled:
         groups = OrderedDict()
-        for x in missing:
+        for x in scaled:
             b = want[x]
             groups.setdefault(reg.bosses[b].get('tier'), []).append(describe_boss(reg, x, b if b != x else None))
         out.append(Finding('BOSS-NOT-EXCLUDED', level, key,
                            '%d entity id(s) of registry bosses (scope %s%s) are not on the exclude list: the dimension curve '
                            'scales them on top of their designed health and the x3'
-                           % (len(missing), scope, '' if ruled else '; the ruling is owed'),
+                           % (len(scaled), scope, '' if ruled else '; the ruling is owed'),
                            ['tier %s (%d): %s' % (t, len(v), ', '.join(v)) for t, v in sorted(groups.items(), key=lambda kv: str(kv[0]))],
-                           len(missing) if level == 'finding' else 0))
+                           len(scaled) if level == 'finding' else 0))
+    if inert:
+        cat = lambda x: ((game.get('entity_facts') or {}).get(x) or {}).get('category')
+        out.append(note('BOSS-NOT-SCALED', key, '%d entity id(s) of registry bosses are not on the list and are never scaled anyway: the '
+                        'curve takes category monster only, or an id on forceScaleEntities' % len(inert),
+                        ['%s, category %s' % (describe_boss(reg, x, want[x] if want[x] != x else None), cat(x)) for x in inert]))
     seen = set()
     twice = []
     for x in have:
@@ -510,7 +529,8 @@ def check_dims(reg, game, pol, distro):
     key = 'difficulty.t1..t4'
     twice = ['%s (%s)' % (d, ', '.join('t%d' % t for t in ts)) for d, ts in listed.items() if len(ts) > 1]
     if twice:
-        out.append(finding('DIM-TWICE', key, '%d dimension(s) on more than one tier list, or twice on one' % len(twice), twice, count=len(twice)))
+        out.append(finding('DIM-TWICE', key, '%d dimension(s) on more than one tier list, or twice on one (the mod takes the '
+                           'highest: it asks t4, t3, t2, t1 in turn)' % len(twice), twice, count=len(twice)))
     dead = [d for d in listed if d not in game['dimensions']]
     if dead:
         out.append(finding('DIM-DEAD', key, '%d tier-list %s no dimension of the game' % (len(dead), 'entry names' if len(dead) == 1 else 'entries name'),
@@ -602,7 +622,7 @@ def check_distro(reg, game, pol, distro):
     for k, why in distro.errors.items():
         out.append(finding('NOT-READABLE', k, why))
     if 'difficulty.excludes' in distro.values:
-        out += check_excludes(reg, game, pol, distro.values['difficulty.excludes'])
+        out += check_excludes(reg, game, pol, distro.values['difficulty.excludes'], distro.force_scale)
     if all('difficulty.t%d' % t in distro.values for t in TIERS):
         out += check_dims(reg, game, pol, distro)
     for n in APOTH_LISTS:
@@ -824,7 +844,7 @@ def summary(groups, distro_findings, unreadable, owed, pol_problems):
         return sum(f.count for f in first if f.code == code and f.level == 'finding')
     apo_lists = len(set(f.key for f in first if f.code == 'APOTH-MISSING' and f.level == 'finding'))
     parts = [
-        'difficulty: %d bosses not excluded, %d dead entries, %d tiers differ, %d dimensions not listed'
+        'difficulty: %d boss ids on the curve (not excluded), %d dead entries, %d tiers differ, %d dimensions not listed'
         % (c('BOSS-NOT-EXCLUDED'), c('EXCLUDE-DEAD'), c('DIM-TIER'), c('DIM-MISSING')),
         'Apotheosis: %d dead entries, %d dimensions not listed (%d of 3 lists)' % (c('APOTH-DEAD'), c('APOTH-MISSING'), apo_lists),
         'distros: %s' % ('agree' if not distro_findings and len(groups) <= 1
