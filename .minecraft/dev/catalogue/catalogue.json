@@ -8,7 +8,7 @@
  "schema": 1,
  "types": {
   "startup": {
-   "count": 24,
+   "count": 25,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -484,8 +484,56 @@
      "names": 0
     },
     {
-     "path": "hulk_hammer_attributes.js",
+     "path": "gates/iss_pocket_dimension_gate.js",
      "place": 14,
+     "priority": 0,
+     "registers": [
+      {
+       "kind": "guard",
+       "group": "ForgeEvents.onEvent",
+       "name": "gates/iss_pocket_dimension_gate",
+       "target": "io.redspace.ironsspellbooks.api.events.SpellPreCastEvent"
+      }
+     ],
+     "sections": 0,
+     "features": [
+      "pocket-dimension-refused"
+     ],
+     "ownSlots": 0,
+     "names": 0,
+     "reads": [
+      {
+       "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.live",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "handler"
+      }
+     ],
+     "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.guard"
+       ],
+       "held": "priority"
+      }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
+     ]
+    },
+    {
+     "path": "hulk_hammer_attributes.js",
+     "place": 15,
      "priority": 0,
      "registers": [
       {
@@ -518,7 +566,7 @@
     },
     {
      "path": "hulk_hammer_durability.js",
-     "place": 15,
+     "place": 16,
      "priority": 0,
      "registers": [
       {
@@ -551,7 +599,7 @@
     },
     {
      "path": "iridescent_codex.js",
-     "place": 16,
+     "place": 17,
      "priority": 0,
      "sections": 0,
      "ownSlots": 0,
@@ -559,7 +607,7 @@
     },
     {
      "path": "magic_weapon_category.js",
-     "place": 17,
+     "place": 18,
      "priority": 0,
      "registers": [
       {
@@ -592,7 +640,7 @@
     },
     {
      "path": "mekasuit_mk2_stats.js",
-     "place": 18,
+     "place": 19,
      "priority": 0,
      "registers": [
       {
@@ -625,7 +673,7 @@
     },
     {
      "path": "sigil_registry.js",
-     "place": 19,
+     "place": 20,
      "priority": 0,
      "registers": [
       {
@@ -659,7 +707,7 @@
     },
     {
      "path": "terramity_weapon_attributes.js",
-     "place": 20,
+     "place": 21,
      "priority": 0,
      "registers": [
       {
@@ -692,7 +740,7 @@
     },
     {
      "path": "terramity_weapon_durability.js",
-     "place": 21,
+     "place": 22,
      "priority": 0,
      "registers": [
       {
@@ -725,7 +773,7 @@
     },
     {
      "path": "virtual_gold_clamp.js",
-     "place": 22,
+     "place": 23,
      "priority": 0,
      "registers": [
       {
@@ -758,7 +806,7 @@
     },
     {
      "path": "virtual_gold_durability.js",
-     "place": 23,
+     "place": 24,
      "priority": 0,
      "registers": [
       {
@@ -791,7 +839,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 24,
+     "place": 25,
      "priority": -1000,
      "sections": 0,
      "sets": [
@@ -851,6 +899,14 @@
       "script": "cap_player_knockback.js",
       "name": "cap_player_knockback",
       "kind": "handler"
+     }
+    ],
+    "ForgeEvents.onEvent": [
+     {
+      "script": "gates/iss_pocket_dimension_gate.js",
+      "name": "gates/iss_pocket_dimension_gate",
+      "target": "io.redspace.ironsspellbooks.api.events.SpellPreCastEvent",
+      "kind": "guard"
      }
     ],
     "ItemAttributeRegistry.register": [

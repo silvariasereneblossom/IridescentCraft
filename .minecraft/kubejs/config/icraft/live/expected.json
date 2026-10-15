@@ -661,6 +661,7 @@
    "enchants/vorpal_rework@DamageModifierRegistry.registerLate": "enchants/vorpal_rework.js",
    "enchants/vorpal_rework@ItemAttributeRegistry.register": "enchants/vorpal_rework.js",
    "endgame_items@StartupEvents.registry": "endgame_items.js",
+   "gates/iss_pocket_dimension_gate@ForgeEvents.onEvent": "gates/iss_pocket_dimension_gate.js",
    "hulk_hammer_attributes@ItemAttributeRegistry.register": "hulk_hammer_attributes.js",
    "hulk_hammer_durability@ItemEvents.modification": "hulk_hammer_durability.js",
    "magic_weapon_category@LootCategory.register": "magic_weapon_category.js",
@@ -709,6 +710,7 @@
   },
   "features": {
    "arcane-decap": "enchants/icraft_magic_enchants.js",
+   "pocket-dimension-refused": "gates/iss_pocket_dimension_gate.js",
    "vorpal-decap": "enchants/vorpal_rework.js"
   },
   "libraries": {}

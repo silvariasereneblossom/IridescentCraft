@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "39c4c086",
+    "generated_from":  "f99021ff",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5964,8 +5964,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "f1b061286aa2819646edcdfa0109f24db61ab01c1f6506555716009561905fbc",
-                                                                  "size":  48255
+                                                                  "sha256":  "1e20ff323d38b6c1639912f47323fff5cebe2548fb248c197341dfe9fa4d6e3e",
+                                                                  "size":  48420
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "1655eb6b8db2b9301c72648d2950c56d8e95306d08c19ffd1307775364df4a87",
@@ -7687,6 +7687,10 @@
                                                             "sha256":  "395c96d3ddd178821db851f387e91560e606ea752177f66d2016f12bd0542b8f",
                                                             "size":  127
                                                         },
+                  "kubejs/startup_scripts/gates/iss_pocket_dimension_gate.js":  {
+                                                                                    "sha256":  "1992130897a0786afb64ec8764ca1189113e22fce13c55265a71aba347de957c",
+                                                                                    "size":  3438
+                                                                                },
                   "kubejs/startup_scripts/hulk_hammer_attributes.js":  {
                                                                            "sha256":  "0d940efc2cca31e6d249d45926dd41d928c1669b81a04c82dbbec319c25aa9c1",
                                                                            "size":  6598

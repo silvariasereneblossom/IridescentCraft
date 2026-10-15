@@ -1428,8 +1428,8 @@
   "startup": {
    "log": "kubejs/startup.log",
    "tree": "server_distribution/kubejs/startup_scripts",
-   "count": 23,
-   "digest": "40721b2f3d26cfce",
+   "count": 24,
+   "digest": "258525a176707170",
    "late": [],
    "at_boot": [
     "boss_compass_item@StartupEvents.registry",
@@ -1500,6 +1500,10 @@
     {
      "id": "endgame_items@StartupEvents.registry",
      "script": "endgame_items.js"
+    },
+    {
+     "id": "gates/iss_pocket_dimension_gate@ForgeEvents.onEvent",
+     "script": "gates/iss_pocket_dimension_gate.js"
     },
     {
      "id": "hulk_hammer_attributes@ItemAttributeRegistry.register",
@@ -2740,6 +2744,10 @@
     {
      "name": "arcane-decap",
      "script": "enchants/icraft_magic_enchants.js"
+    },
+    {
+     "name": "pocket-dimension-refused",
+     "script": "gates/iss_pocket_dimension_gate.js"
     },
     {
      "name": "vorpal-decap",
