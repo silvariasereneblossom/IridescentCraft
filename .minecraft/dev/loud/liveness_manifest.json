@@ -2633,6 +2633,10 @@
      "script": "0_lib_core.js"
     },
     {
+     "name": "sunlight-smite",
+     "script": "sunlight_smite.js"
+    },
+    {
      "name": "unique-bow-effects",
      "script": "loot/tmb_plain_bow_effects.js"
     },

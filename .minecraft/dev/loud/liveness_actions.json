@@ -188,6 +188,16 @@
     "/data get entity @e[type=mutantmonsters:mutant_zombie,limit=1,sort=nearest] Attributes",
     "/kill @e[type=mutantmonsters:mutant_zombie]"
    ]
+  },
+  "sunlight-smite": {
+   "proves": "at day a hostile undead under open sky near a player in the Overworld took Sunlight Smite's 2 magic damage",
+   "do": "At day, under open sky, more than 100 blocks from the world spawn: summon a zombie; it loses 2 health twice a second (about 5 s to die) and burns. A skeleton horse beside it is not touched by the script.",
+   "cmd": [
+    "/time set 1000",
+    "/summon minecraft:zombie ~ ~ ~5 {NoAI:1b}",
+    "/summon minecraft:skeleton_horse ~ ~ ~8",
+    "/kill @e[type=minecraft:skeleton_horse,limit=1,sort=nearest]"
+   ]
   }
  },
  "groups": {

@@ -126,7 +126,6 @@
   "spawn_priest_tower.js",
   "spawn_protection.js",
   "strip_infinity_ham.js",
-  "sunlight_smite.js",
   "validate_recipe_removals.js",
   "zzz_icraft_live.js"
  ],

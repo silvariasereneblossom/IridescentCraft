@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c969cd4f",
+    "generated_from":  "35d406a3",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "ddb3ad65bfb7bf7d8053d536d50293d202d704528077bc2d255ddeb36f40b875",
-                                                                  "size":  48685
+                                                                  "sha256":  "5640c1b9586a73a6373db70d6c1641cb0a1493bb4a0bb9ed089f5f340bbbc27c",
+                                                                  "size":  48727
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f9bf66665461417fc4cb5bfe0f1344abd600d2f8c591b907071294f258b28bef",
@@ -7624,8 +7624,8 @@
                                                                       "size":  4278
                                                                   },
                   "kubejs/server_scripts/sunlight_smite.js":  {
-                                                                  "sha256":  "6bf752ce2c3f6777ba370122f6a11e61f4f1f8fdc061b9ca44aa01d48d7f65e5",
-                                                                  "size":  6699
+                                                                  "sha256":  "5c6a7a963a2ff79d1048410eb972fdb0c5b786a2f42b9210aae9aa3a6c5a2704",
+                                                                  "size":  5230
                                                               },
                   "kubejs/server_scripts/tetra_terramity_perks.js":  {
                                                                          "sha256":  "d1e14b476b8bce37d87b52516e9c6d7fe899e3581881cdfe763b118a38686fed",

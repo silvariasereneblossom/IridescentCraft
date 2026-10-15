@@ -634,6 +634,7 @@
    "skill-material-save": "skills/skill_effects.js",
    "spawn-buff-repaired": "0_lib_core.js",
    "spawn-buff-saved": "0_lib_core.js",
+   "sunlight-smite": "sunlight_smite.js",
    "unique-bow-effects": "loot/tmb_plain_bow_effects.js",
    "unique-tier-buff": "loot/unique_tier_buff.js",
    "wither-relic": "loot/iss_boss_first_kill.js",

@@ -9558,9 +9558,27 @@
       }
      ],
      "sections": 0,
-     "ownSlots": 1,
-     "names": 9,
+     "features": [
+      "sunlight-smite"
+     ],
+     "registries": [
+      "bosses (through core.isBoss)"
+     ],
+     "ownSlots": 0,
+     "names": 11,
      "reads": [
+      {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraft.live",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "handler"
+      },
       {
        "name": "registerServerTick",
        "kind": "global",
@@ -9577,6 +9595,12 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live",
+      "registry"
      ]
     },
     {
@@ -12510,6 +12534,10 @@
      "when": "handler"
     },
     {
+     "script": "server:sunlight_smite.js",
+     "when": "handler"
+    },
+    {
      "script": "server:tetra_terramity_perks.js",
      "when": "load"
     },
@@ -13202,6 +13230,7 @@
     "server:skills/skill_effects.js",
     "server:spawn_village_protection.js",
     "server:strip_anomalous_drops.js",
+    "server:sunlight_smite.js",
     "server:tetra_terramity_perks.js",
     "server:ultris_randomizer_janitor.js",
     "startup:deathskin_undead_bonus.js",
