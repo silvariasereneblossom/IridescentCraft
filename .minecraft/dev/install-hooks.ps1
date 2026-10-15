@@ -6,7 +6,9 @@
 # the mod index gate (dev/mods/mod_index.py check: the three mod indexes and
 # the client-only skip lists are generated from .minecraft/mods/.index),
 # the mod intake gate (dev/mods/intake.py check: every mod has an intake record
-# and a new mod owes no decision)
+# and a new mod owes no decision), a one-line report of the difficulty mod's and
+# Apotheosis's own lists against the registries (dev/rosters/external_lists.py;
+# never blocks)
 # and, when a pushed commit touches a kubejs script, the three script lints
 # (lint_kubejs_rhino.js, lint_kubejs_traps.js, lint_kubejs_scope.py; any flag
 # blocks), the engine test suite, and the script load-order and catalogue
@@ -58,6 +60,10 @@ $hookContent = @'
 #                                block; only when a pushed commit touches the mod set or the snapshot)
 #   +  validate_heracles_quests.py - the quest validator (its own block; only when a
 #                                pushed commit touches config/heracles/ in any distro)
+#   +  rosters/external_lists.py check --summary - the difficulty mod's and Apotheosis's own
+#                                boss and dimension lists against the registries (its own block;
+#                                prints one line, NEVER blocks; only when a pushed commit touches
+#                                the registries, either config or the tool)
 #   3. KubeJS script lints    - lint_kubejs_rhino.js, lint_kubejs_traps.js,
 #                                lint_kubejs_scope.py; only when a pushed commit
 #                                touches a kubejs script (or one of the lints)
@@ -342,6 +348,54 @@ EOF
             echo "  quest file and the field; the shape is in .minecraft/wiki/design/heracles-json-shape.md."
             echo "  Fix the quest in all three trees and re-push. Bypass: git push --no-verify"
             exit 1
+        fi
+    fi
+fi
+
+# --- Lists outside the registry (a report: prints, NEVER blocks; one self-contained block) ---
+# The difficulty mod (config/iridescent_difficulty-common.toml: dimension tiers, boss exclude list)
+# and Apotheosis (config/apotheosis/adventure.cfg: three per-dimension lists) keep their own copies
+# of what the boss and dimension registries say, in each distro, and nothing feeds them (ruling 25,
+# 2026-10-14). dev/rosters/external_lists.py check --summary prints one line: how far they are from
+# the registry, whether the three distros agree, and how many rulings the operator still owes before
+# `generate` may rewrite them. Runs when a pushed commit touches the registries, either config in any
+# distro, the tool or its policy, the registry reader, or the game's entity / dimension lists
+# (dev/registry). Under a second.
+# Self-contained: its own variables (EL_*), nothing from the other steps but PUSHED and DEV.
+EL_TOOL="$DEV/rosters/external_lists.py"
+if [ -f "$EL_TOOL" ]; then
+    EL_ZERO=0000000000000000000000000000000000000000
+    EL_RUN=0
+    [ -z "$PUSHED" ] && EL_RUN=1
+    while read -r _el_lref el_lsha _el_rref el_rsha; do
+        [ -z "$el_lsha" ] && continue
+        [ "$el_lsha" = "$EL_ZERO" ] && continue
+        if [ "$el_rsha" != "$EL_ZERO" ] && git cat-file -e "$el_rsha^{commit}" 2>/dev/null; then
+            el_base="$el_rsha"
+        else
+            el_base="$(git merge-base "$el_lsha" origin/main 2>/dev/null)"
+        fi
+        if [ -z "$el_base" ]; then EL_RUN=1; break; fi
+        if git diff --name-only "$el_base" "$el_lsha" 2>/dev/null \
+            | grep -Eq '^\.minecraft/kubejs/config/icraft/registry/|(^|/)config/iridescent_difficulty-common\.toml$|(^|/)config/apotheosis/adventure\.cfg$|^\.minecraft/dev/rosters/(external_lists|rosters\.py)|^\.minecraft/dev/registry/(entity_types|dimensions)\.txt$'; then
+            EL_RUN=1; break
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $EL_RUN -eq 1 ]; then
+        if command -v python >/dev/null 2>&1; then
+            el_out="$(python -I -B "$EL_TOOL" check --summary < /dev/null 2>&1)"
+            el_line="$(printf '%s\n' "$el_out" | grep -E '^\[external-lists\] ' | tail -n 1 | tr -d '\r')"
+            if [ -n "$el_line" ]; then
+                echo "$el_line"
+                echo "  (a report, it never blocks; in full: python .minecraft/dev/rosters/external_lists.py)"
+            else
+                echo "[pre-push] WARN: the lists outside the registry were not reported (no [external-lists] line; never blocks):"
+                printf '%s\n' "$el_out" | tail -n 5
+            fi
+        else
+            echo "[pre-push] WARN: python not found: the lists outside the registry were not reported (never blocks)"
         fi
     fi
 fi
