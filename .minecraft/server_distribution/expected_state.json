@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "0b84d607",
+    "generated_from":  "c9f2633a",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3007,6 +3007,10 @@
                                                                                  "sha256":  "891b93236e4ad030cc17e5aadde486512ffb5fb43fde7259d5c722c4b7e39f93",
                                                                                  "size":  1553
                                                                              },
+                  "config/heracles/quests/capstones/capstone_ultimate_wither.json":  {
+                                                                                         "sha256":  "f54778637e6c1abb25995b678d20fc16619a4f50b6775fc324704d0742e12677",
+                                                                                         "size":  1743
+                                                                                     },
                   "config/heracles/quests/combat/com_apotheosis_boss.json":  {
                                                                                  "sha256":  "af5e8528362e37ee0402e535159c03aeec9f7449f6edcf9701df895a2ad47ab8",
                                                                                  "size":  1162

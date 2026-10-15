@@ -1,0 +1,50 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "progressivebosses:corrupted_soul_sand" },
+    "title": "Challenge: The Ultimate Wither",
+    "subtitle": "An optional Tier 4 fight in the Nether",
+    "description": [
+      "The strongest Wither there is, and it only exists in the Nether.",
+      "",
+      "Craft Corrupted Soul Sand (soul sand or soul soil + 3 Nether Stars;",
+      "the recipe opens at Tier 4). Build the Wither's T of soul sand in",
+      "the Nether with the Corrupted Soul Sand in the centre of the arms,",
+      "then set the three Wither Skeleton Skulls on top. Built anywhere",
+      "else, the corruption is refused and your blocks stay where they are.",
+      "",
+      "It fights harder than any Wither: 3,000 health, heavy armour, a",
+      "storm of skulls, charges and minions.",
+      "",
+      "§7It drops 5 Nether Stars (the 3 you spent come back, and 2 more,",
+      "§7as a plain Wither gives), 2 Netherite Upgrade templates and a",
+      "§7great deal of experience. Optional: no gate depends on it."
+    ],
+    "groups": {
+      "Capstones": { "position": [160, 140] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "DEPENDENCIES_VISIBLE"
+  },
+  "dependencies": ["reach_tier_4"],
+  "tasks": {
+    "defeat_ultimate_wither": {
+      "type": "heracles:advancement",
+      "title": "Defeat the Ultimate Wither",
+      "advancements": ["progressivebosses:max_lvl_wither"]
+    }
+  },
+  "rewards": {
+    "ignitium": {
+      "type": "heracles:item",
+      "title": "Ignitium ingots",
+      "item": { "id": "cataclysm:ignitium_ingot", "count": 3 }
+    },
+    "ultimate_wither_xp": {
+      "type": "heracles:xp",
+      "xptype": "LEVEL",
+      "amount": 25
+    }
+  }
+}
