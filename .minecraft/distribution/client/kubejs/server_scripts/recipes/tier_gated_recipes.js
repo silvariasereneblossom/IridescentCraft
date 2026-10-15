@@ -456,17 +456,21 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
   })
 
 
-  // ═══ SECTION G.2: PROGRESSIVE BOSSES' STRONGER WITHERS, REMOVED FOR NOW ═══
+  // ═══ SECTION G.2: PROGRESSIVE BOSSES' STRONGER WITHERS: ONLY THE ULTIMATE ═══
   // Corrupted Soul Sand is the one block that summons the mod's level 1 to 3
   // Withers (armoured, summoner, ultimate). The mod's three shapeless recipes
   // (progressivebosses:corrupted_soul_sand_1, _2 and _3: soul sand or soul soil
-  // plus 1, 2 or 3 Nether Stars) are its only source. Operator ruling of
-  // 2026-10-14: "Need to scope them as part of pack progression, remove for
-  // now". Their place in progression is decided separately; until it ships, no
-  // recipe makes the block. A block crafted before this removal still works:
-  // the Wither reads its level from the placed block, not from the recipe.
-  icraft.section('recipes/tier_gated_recipes/section-g2-stronger-withers-removed', function () {
-  event.remove({ output: 'progressivebosses:corrupted_soul_sand' })
+  // plus 1, 2 or 3 Nether Stars) are its only source; the level is in the
+  // result's {BlockEntityTag:{lvl:N}} and is read from the placed block.
+  // Operator rulings of 2026-10-14: all three removed ("remove for now"), then
+  // placement P2: only the Ultimate Wither (level 3) returns, an optional tier-4
+  // challenge in the Nether; levels 1 and 2 stay out. So _1 and _2 stay removed
+  // and _3 stays as the mod has it (3 stars), stage-locked to tier_4 by recipe
+  // id in gates/astages_restrictions.js. Its loot, XP and health:
+  // kubejs/data/progressivebosses and the registry's levelHp.
+  icraft.section('recipes/tier_gated_recipes/section-g2-stronger-withers', function () {
+  event.remove({ id: 'progressivebosses:corrupted_soul_sand_1' })
+  event.remove({ id: 'progressivebosses:corrupted_soul_sand_2' })
   })
 
 

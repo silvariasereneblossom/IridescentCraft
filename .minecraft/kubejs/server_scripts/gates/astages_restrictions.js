@@ -579,7 +579,8 @@ function registerStageRestrictions() {
       'icraft:augmenting_table_t4',       // recipes/tier_gated_recipes.js F
       'minecraft:end_crystal',            // vanilla recipe, no longer removed (D)
       'icraft:dragon_summoning_crystal',  // end/dragon_exploration_gate.js
-      'icraft:nasa_workbench_t4'          // recipes/ad_astra_gating.js A
+      'icraft:nasa_workbench_t4',         // recipes/ad_astra_gating.js A
+      'progressivebosses:corrupted_soul_sand_3' // the Ultimate Wither's block (recipes/tier_gated_recipes.js G.2; ruled 2026-10-14)
     ], 'modpack/recipe')
   } catch (e) {
     console.error('[IridescentCraft] stage-gated recipes NOT registered: ' + e)

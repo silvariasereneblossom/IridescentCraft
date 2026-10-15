@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "6761eb6eb6b0dd74741e19eb734e40611b5c4151c3f5f1cf9c5c16157415db2e",
-                                                                  "size":  48168
+                                                                  "sha256":  "0c537f2b5506ffec346e59eaa6908567adcc4b11656e97d7e09064ec6b63c041",
+                                                                  "size":  48160
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "ced3c9536c3fdc6b1fada6ada1be933c04aeeee10355a47acce021ac1a6283e7",
@@ -7180,8 +7180,8 @@
                                                                       "size":  3705
                                                                   },
                   "kubejs/server_scripts/gates/astages_restrictions.js":  {
-                                                                              "sha256":  "09b005388c6a3b8feca15ff1faa2d849e3519195778fcd81ebf1d8dc78aade7b",
-                                                                              "size":  31788
+                                                                              "sha256":  "3a0bc97049c1360b3a0236db4362940743efe7aa27c15b023a901b67b97ddd17",
+                                                                              "size":  31921
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
                                                                          "sha256":  "689066016bbc1b5b9498659e477f96ef3e98debf6127b7b7cdaf6925cee4b4eb",
@@ -7516,8 +7516,8 @@
                                                                                  "size":  1548
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "85b59fabb794d7c0e6c5e52dc7ba420a61b025097cb9b675cefec4d3ef8050df",
-                                                                              "size":  34959
+                                                                              "sha256":  "090cc54480c895b3dba16e26abe5781e1a7b1fb80427d3f7a4e8c2c3978af4b2",
+                                                                              "size":  35234
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "5ca4bcc435042ab860530412a6fd17a7a3652c3945a4f98411b2daa06056518e",
