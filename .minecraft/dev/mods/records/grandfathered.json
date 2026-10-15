@@ -931,7 +931,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "addonslib:add_loot_table: type addonslib:add_loot_table, on every table its conditions match"
      ],
@@ -1777,7 +1781,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "aether_treasure_reforging:neptune_upgrade_treasure: type nitrogen_internals:add_dungeon_loot, on aether:chests/dungeon/bronze/bronze_dungeon_reward",
       "aether_treasure_reforging:phoenix_upgrade_treasure: type nitrogen_internals:add_dungeon_loot, on aether:chests/dungeon/gold/gold_dungeon_reward",
@@ -4219,7 +4227,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "art_of_forging:ancient_city_additions: type art_of_forging:add_to_table, on minecraft:chests/ancient_city",
       "art_of_forging:blaze_condition_additions: type art_of_forging:add_to_table, on every table its conditions match",
@@ -4368,7 +4380,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "artifacts:inject/archaeology/desert_pyramid: type artifacts:roll_loot_table, on minecraft:archaeology/desert_pyramid",
       "artifacts:inject/archaeology/desert_well: type artifacts:roll_loot_table, on minecraft:archaeology/desert_well",
@@ -7542,7 +7558,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "brewinandchewin:slicing_flaxen_cheese_wheel: type brewinandchewin:slicing, on every table its conditions match",
       "brewinandchewin:slicing_pizza: type brewinandchewin:slicing, on every table its conditions match",
@@ -8524,7 +8544,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "irons_spellbooks:chests/ccb_ancient_city_modifier: type irons_spellbooks:append_loot, on minecraft:chests/ancient_city",
       "irons_spellbooks:chests/ccb_compat_good_loot_modifier: type irons_spellbooks:append_loot, on betterdeserttemples:chests/library, betterdeserttemples:chests/storage, betterdeserttemples:chests/tomb",
@@ -9596,7 +9620,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other'. the other mods' copies canonical where they overlap (its quartz block stays canonical by the Botania answer). NOT applied (follow-up)",
      "evidence": [
       "#forge:crops/beetroot is also filled by Delightful-1.20.1-3.7.8.jar, pamhc2foodcore-1.20.4-1.0.5.jar, pamhc2foodextended-1.20.4-1.0.1.jar",
       "#forge:crops/carrot is also filled by Delightful-1.20.1-3.7.8.jar, pamhc2foodcore-1.20.4-1.0.5.jar, pamhc2foodextended-1.20.4-1.0.1.jar",
@@ -12014,7 +12042,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'Create canonical, but compatible with all recipes.'. Own answer. NOT applied (follow-up unification that keeps every recipe working)",
      "evidence": [
       "#forge:dough/wheat is also filled by FarmersDelight-1.20.1-1.2.11.jar",
       "#forge:dusts/obsidian is also filled by Mekanism-1.20.1-10.4.16.80.jar, createaddition-1.20.1-1.3.3.jar, occultism-1.20.1-1.157.0.jar",
@@ -12598,7 +12630,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:dusts/diamond is also filled by Mekanism-1.20.1-10.4.16.80.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
       "#forge:dusts/obsidian is also filled by Mekanism-1.20.1-10.4.16.80.jar, create-1.20.1-6.0.8.jar, occultism-1.20.1-1.157.0.jar",
@@ -13208,7 +13244,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:entities/glow_squid",
       "minecraft:entities/squid"
@@ -13218,7 +13258,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this'. Cultural Delights' corn canonical. NOT applied (follow-up)",
      "evidence": [
       "#forge:crops/corn is also filled by pamhc2crops-1.20-1.0.3.jar, thermal_cultivation-1.20.1-11.0.1.24.jar"
      ],
@@ -14923,7 +14967,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "delightful:acorn_from_knife: type delightful:add_item, on every table its conditions match",
       "delightful:acorn_rare: type delightful:add_item, on every table its conditions match",
@@ -14944,7 +14992,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this'. Delightful's copies canonical. NOT applied (follow-up); note: overlaps Farmer's Delight 'this' on crops (onion, tomato) and the Supplementaries ruling",
      "evidence": [
       "#forge:crops/beetroot is also filled by chisels-and-bits-forge-20.1.20.jar, pamhc2foodcore-1.20.4-1.0.5.jar, pamhc2foodextended-1.20.4-1.0.1.jar",
       "#forge:crops/carrot is also filled by chisels-and-bits-forge-20.1.20.jar, pamhc2foodcore-1.20.4-1.0.5.jar, pamhc2foodextended-1.20.4-1.0.1.jar",
@@ -15826,7 +15878,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:entities/ender_dragon"
      ],
@@ -18585,7 +18641,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this'. Farmer's Delight's copies canonical. NOT applied: unification is follow-up recipe/tag work",
      "evidence": [
       "#forge:crops/cabbage is also filled by pamhc2crops-1.20-1.0.3.jar",
       "#forge:crops/onion is also filled by Delightful-1.20.1-3.7.8.jar, pamhc2crops-1.20-1.0.3.jar, thermal_cultivation-1.20.1-11.0.1.24.jar",
@@ -21082,7 +21142,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Thermal's gears canonical. NOT applied (follow-up)",
      "evidence": [
       "#forge:gears/diamond is also filled by thermal_foundation-1.20.1-11.0.6.70.jar",
       "#forge:gears/gold is also filled by thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -29099,7 +29163,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this (Recommended)'. Mekanism canonical where it overlaps (matches 'Mekanism steel is canonical'). NOT applied (follow-up unification)",
      "evidence": [
       "#forge:dusts/bronze is also filled by thermal_foundation-1.20.1-11.0.6.70.jar",
       "#forge:dusts/copper is also filled by occultism-1.20.1-1.157.0.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -29288,7 +29356,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:ores/fluorite is also filled by Mekanism-1.20.1-10.4.16.80.jar",
       "#forge:ores/lead is also filled by Mekanism-1.20.1-10.4.16.80.jar, tetra-1.20.1-6.12.0.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -32863,7 +32935,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "occultism:datura_seed_from_grass: type occultism:add_item, on every table its conditions match",
       "occultism:datura_seed_from_tall_grass: type occultism:add_item, on every table its conditions match",
@@ -32883,7 +32959,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other'. Mekanism / Thermal canonical, Occultism's dusts and silver unified away. NOT applied (follow-up)",
      "evidence": [
       "#forge:dusts/copper is also filled by Mekanism-1.20.1-10.4.16.80.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
       "#forge:dusts/gold is also filled by Mekanism-1.20.1-10.4.16.80.jar, thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -33053,7 +33133,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "farmersdelight:cut_elder_guardian: type farmersdelight:add_item, on every table its conditions match",
       "farmersdelight:cut_tentacles_squid: type farmersdelight:add_item, on every table its conditions match",
@@ -33828,7 +33912,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "this",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'this'. Overworld Quartz's ore canonical for #forge:ores/quartz. NOT applied (follow-up)",
      "evidence": [
       "#forge:ores/quartz is also filled by chisels-and-bits-forge-20.1.20.jar"
      ],
@@ -33999,7 +34087,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. the ruled mods (Farmer's Delight, Delightful, Cultural Delights) canonical where they overlap; Pam's own crops stay. NOT applied (follow-up)",
      "evidence": [
       "#forge:crops/amaranth is also filled by thermal_cultivation-1.20.1-11.0.1.24.jar",
       "#forge:crops/barley is also filled by thermal_cultivation-1.20.1-11.0.1.24.jar",
@@ -34131,7 +34223,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Delightful canonical where ruled; Core canonical over Extended. NOT applied (follow-up)",
      "evidence": [
       "#forge:bread/bread is also filled by pamhc2foodextended-1.20.4-1.0.1.jar",
       "#forge:cheese/cheese is also filled by pamhc2foodextended-1.20.4-1.0.1.jar",
@@ -34252,7 +34348,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Food Core (and Delightful where ruled) canonical. NOT applied (follow-up)",
      "evidence": [
       "#forge:bread/bread is also filled by pamhc2foodcore-1.20.4-1.0.5.jar",
       "#forge:cheese/cheese is also filled by pamhc2foodcore-1.20.4-1.0.5.jar",
@@ -34373,7 +34473,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Delightful's cherry, plum, rambutan canonical; bananas coexist. NOT applied (follow-up)",
      "evidence": [
       "#forge:crops/banana is also filled by alexsmobs-1.22.9.jar",
       "#forge:fruits/banana is also filled by alexsmobs-1.22.9.jar",
@@ -35882,7 +35986,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:blocks/black_stained_glass",
       "minecraft:blocks/blue_stained_glass",
@@ -35905,7 +36013,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "coexist",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'coexist (Recommended)'",
      "evidence": [
       "#forge:ingots/copper is also filled by chisels-and-bits-forge-20.1.20.jar, supplementaries-1.20-3.1.42-forge.jar",
       "#forge:storage_blocks/apple is also filled by thermal_foundation-1.20.1-11.0.6.70.jar",
@@ -36324,7 +36436,11 @@
     {
      "key": "loot:vanilla",
      "surface": "loot:vanilla",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "minecraft:blocks/ancient_debris"
      ],
@@ -36793,7 +36909,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "relics:relic_loot: type relics:relic_loot, on every table its conditions match"
      ],
@@ -37498,7 +37618,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "rftoolsdim:chest_extra: type rftoolsdim:enderman_extra, on every table its conditions match",
       "rftoolsdim:chest_extraplus: type rftoolsdim:enderman_extra, on every table its conditions match",
@@ -40048,7 +40172,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "sophisticatedbackpacks:chests/abandoned_mineshaft: type sophisticatedbackpacks:inject_loot, on minecraft:chests/abandoned_mineshaft",
       "sophisticatedbackpacks:chests/bastion_treasure: type sophisticatedbackpacks:inject_loot, on minecraft:chests/bastion_treasure",
@@ -40392,7 +40520,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "soul_fire_d:bastion_other_loot_modifier: type soul_fire_d:chest_loot_modifier, on minecraft:chests/bastion_other"
      ],
@@ -43389,7 +43521,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "tetracelium:auto_smelt: type twilightforest:fiery_pick_smelting, on every table its conditions match"
      ],
@@ -44859,7 +44995,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "thermal:seeds_from_grass: type thermal:seeds_from_grass, on every table its conditions match"
      ],
@@ -44868,7 +45008,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. the other mods' crops canonical where they overlap (Farmer's Delight, Delightful, Cultural Delights ruled canonical). NOT applied (follow-up)",
      "evidence": [
       "#forge:crops/amaranth is also filled by pamhc2crops-1.20-1.0.3.jar",
       "#forge:crops/barley is also filled by pamhc2crops-1.20-1.0.3.jar",
@@ -45184,7 +45328,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "mixed",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'mixed (Recommended)'. Mekanism canonical where both make it; Thermal canonical for the rest (gears, plates, its own alloys). NOT applied (follow-up)",
      "evidence": [
       "#forge:dusts/bronze is also filled by Mekanism-1.20.1-10.4.16.80.jar",
       "#forge:dusts/copper is also filled by Mekanism-1.20.1-10.4.16.80.jar, occultism-1.20.1-1.157.0.jar",
@@ -45410,7 +45558,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Mekanism steel canonical; rose gold MCA's. NOT applied (follow-up)",
      "evidence": [
       "#forge:dusts/rose_gold is also filled by minecraft-comes-alive-7.6.15+1.20.1-universal.jar",
       "#forge:dusts/steel is also filled by Mekanism-1.20.1-10.4.16.80.jar",
@@ -47202,7 +47354,11 @@
     {
      "key": "duplicates",
      "surface": "duplicates",
-     "status": "owed",
+     "status": "decided",
+     "answer": "other",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'other (Recommended)'. Farmer's Delight's milk bottle canonical. NOT applied (follow-up)",
      "evidence": [
       "#forge:milk/milk_bottle is also filled by FarmersDelight-1.20.1-1.2.11.jar"
      ],
@@ -47865,7 +48021,11 @@
     {
      "key": "loot:modifiers",
      "surface": "loot:modifiers",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "operator",
+     "on": "2026-10-14",
+     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
      "evidence": [
       "wstweaks:wstmodifier: type wstweaks:wstmodifier, on every table its conditions match"
      ],
