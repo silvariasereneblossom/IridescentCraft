@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "0c537f2b5506ffec346e59eaa6908567adcc4b11656e97d7e09064ec6b63c041",
-                                                                  "size":  48160
+                                                                  "sha256":  "f9b11188428157b5782db5b43c182e8af9e5e1f87066c29e209a5f0fe3e4ab54",
+                                                                  "size":  48263
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f62b4b5bec106fad4c0d7fac04f388bfd12a818c12fd1b2776e0538e74fc96b3",
@@ -7119,6 +7119,10 @@
                                                                                          "sha256":  "457fe4db109cd3a408ee7ec7ef9e1a160643f953c785eeb3ed9067da1ddc3bf2",
                                                                                          "size":  2052
                                                                                      },
+                  "kubejs/server_scripts/compat/twilight_plateau_boss_guard.js":  {
+                                                                                      "sha256":  "0d11c34ef9c059bdf0ed092b39777c27d5dfb2b5119c8f63a13de96082d021d8",
+                                                                                      "size":  2620
+                                                                                  },
                   "kubejs/server_scripts/death_penalty.js":  {
                                                                  "sha256":  "9e68ee3454f3d50da35c283ed0b69d550df0614642a8ddc9cf885d2a934c3b18",
                                                                  "size":  29768

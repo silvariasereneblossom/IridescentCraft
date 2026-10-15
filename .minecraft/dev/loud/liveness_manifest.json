@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 326,
-   "digest": "1cbce747043e47c4",
+   "count": 327,
+   "digest": "0c887ea57460a6ee",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -314,6 +314,10 @@
     {
      "id": "compat/terramity_cave_gnome_cave_only@EntityEvents.checkSpawn",
      "script": "compat/terramity_cave_gnome_cave_only.js"
+    },
+    {
+     "id": "compat/twilight_plateau_boss_guard@EntityEvents.spawned",
+     "script": "compat/twilight_plateau_boss_guard.js"
     },
     {
      "id": "death_penalty@BlockEvents.broken",

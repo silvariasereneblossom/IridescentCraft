@@ -962,7 +962,7 @@
    }
   },
   "server": {
-   "count": 160,
+   "count": 161,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -2928,8 +2928,46 @@
      ]
     },
     {
-     "path": "death_penalty.js",
+     "path": "compat/twilight_plateau_boss_guard.js",
      "place": 34,
+     "priority": 0,
+     "registers": [
+      {
+       "kind": "guard",
+       "group": "EntityEvents.spawned",
+       "name": "compat/twilight_plateau_boss_guard",
+       "target": "twilightforest:plateau_boss"
+      }
+     ],
+     "sections": 0,
+     "ownSlots": 0,
+     "names": 0,
+     "reads": [
+      {
+       "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      }
+     ],
+     "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.guard"
+       ],
+       "held": "priority"
+      }
+     ],
+     "header": [
+      "events",
+      "file"
+     ]
+    },
+    {
+     "path": "death_penalty.js",
+     "place": 35,
      "priority": 0,
      "registers": [
       {
@@ -3066,7 +3104,7 @@
     },
     {
      "path": "diag_armor_modifiers.js",
-     "place": 35,
+     "place": 36,
      "priority": 0,
      "registers": [
       {
@@ -3099,7 +3137,7 @@
     },
     {
      "path": "disable_zombie_door_break.js",
-     "place": 36,
+     "place": 37,
      "priority": 0,
      "registers": [
       {
@@ -3132,7 +3170,7 @@
     },
     {
      "path": "economy/relic_broker.js",
-     "place": 37,
+     "place": 38,
      "priority": 0,
      "registers": [
       {
@@ -3211,7 +3249,7 @@
     },
     {
      "path": "economy/relic_sink.js",
-     "place": 38,
+     "place": 39,
      "priority": 0,
      "registers": [
       {
@@ -3277,7 +3315,7 @@
     },
     {
      "path": "enchantments/enchant_effects.js",
-     "place": 39,
+     "place": 40,
      "priority": 0,
      "registers": [
       {
@@ -3394,7 +3432,7 @@
     },
     {
      "path": "end/dragon_exploration_gate.js",
-     "place": 40,
+     "place": 41,
      "priority": 0,
      "registers": [
       {
@@ -3488,7 +3526,7 @@
     },
     {
      "path": "endgame/ascension.js",
-     "place": 41,
+     "place": 42,
      "priority": 0,
      "registers": [
       {
@@ -3582,7 +3620,7 @@
     },
     {
      "path": "endgame/mythic_forge.js",
-     "place": 42,
+     "place": 43,
      "priority": 0,
      "registers": [
       {
@@ -3621,7 +3659,7 @@
     },
     {
      "path": "endgame/rift_mechanics.js",
-     "place": 43,
+     "place": 44,
      "priority": 0,
      "registers": [
       {
@@ -3685,7 +3723,7 @@
     },
     {
      "path": "enemyexpansion_explosive_launch_blocker.js",
-     "place": 44,
+     "place": 45,
      "priority": 0,
      "registers": [
       {
@@ -3699,7 +3737,7 @@
     },
     {
      "path": "exploration/codex_exploration_kills.js",
-     "place": 45,
+     "place": 46,
      "priority": 0,
      "registers": [
       {
@@ -3784,7 +3822,7 @@
     },
     {
      "path": "fix_empty_display_name.js",
-     "place": 46,
+     "place": 47,
      "priority": 0,
      "registers": [
       {
@@ -3827,7 +3865,7 @@
     },
     {
      "path": "fix_stone_tags.js",
-     "place": 47,
+     "place": 48,
      "priority": 0,
      "registers": [
       {
@@ -3861,7 +3899,7 @@
     },
     {
      "path": "fix_venus_sandstone_tag.js",
-     "place": 48,
+     "place": 49,
      "priority": 0,
      "registers": [
       {
@@ -3895,7 +3933,7 @@
     },
     {
      "path": "food/hunger_management.js",
-     "place": 49,
+     "place": 50,
      "priority": 0,
      "registers": [
       {
@@ -3930,7 +3968,7 @@
     },
     {
      "path": "food_dedup_recipes.js",
-     "place": 50,
+     "place": 51,
      "priority": 0,
      "registers": [
       {
@@ -3963,7 +4001,7 @@
     },
     {
      "path": "gates/astages_restrictions.js",
-     "place": 51,
+     "place": 52,
      "priority": 0,
      "registers": [
       {
@@ -4013,7 +4051,7 @@
     },
     {
      "path": "gates/codex_boss_rush.js",
-     "place": 52,
+     "place": 53,
      "priority": 0,
      "registers": [
       {
@@ -4068,7 +4106,7 @@
     },
     {
      "path": "gates/codex_progression_engine.js",
-     "place": 53,
+     "place": 54,
      "priority": 0,
      "registers": [
       {
@@ -4129,7 +4167,7 @@
     },
     {
      "path": "gates/milestone_detection.js",
-     "place": 54,
+     "place": 55,
      "priority": 0,
      "registers": [
       {
@@ -4199,7 +4237,7 @@
     },
     {
      "path": "icraftsets_command.js",
-     "place": 55,
+     "place": 56,
      "priority": 0,
      "registers": [
       {
@@ -4232,7 +4270,7 @@
     },
     {
      "path": "icraft_despawn_command.js",
-     "place": 56,
+     "place": 57,
      "priority": 0,
      "registers": [
       {
@@ -4278,7 +4316,7 @@
     },
     {
      "path": "idle_hunger_pause.js",
-     "place": 57,
+     "place": 58,
      "priority": 0,
      "registers": [
       {
@@ -4331,7 +4369,7 @@
     },
     {
      "path": "integration/dna_simple_staves_buffs.js",
-     "place": 58,
+     "place": 59,
      "priority": 0,
      "registers": [
       {
@@ -4395,7 +4433,7 @@
     },
     {
      "path": "integration/dna_simple_staves_strip.js",
-     "place": 59,
+     "place": 60,
      "priority": 0,
      "registers": [
       {
@@ -4442,7 +4480,7 @@
     },
     {
      "path": "items/compass_of_return.js",
-     "place": 60,
+     "place": 61,
      "priority": 0,
      "registers": [
       {
@@ -4500,7 +4538,7 @@
     },
     {
      "path": "liteminer_hunger_gate.js",
-     "place": 61,
+     "place": 62,
      "priority": 0,
      "registers": [
       {
@@ -4538,7 +4576,7 @@
     },
     {
      "path": "loot/0_entity_id_validator.js",
-     "place": 62,
+     "place": 63,
      "priority": 0,
      "library": "entity-mod",
      "registers": [
@@ -4597,7 +4635,7 @@
     },
     {
      "path": "loot/abyss_boss_loot.js",
-     "place": 63,
+     "place": 64,
      "priority": 0,
      "registers": [
       {
@@ -4651,7 +4689,7 @@
     },
     {
      "path": "loot/alexsmobs_drops.js",
-     "place": 64,
+     "place": 65,
      "priority": 0,
      "registers": [
       {
@@ -4690,7 +4728,7 @@
     },
     {
      "path": "loot/blue_skies_drops.js",
-     "place": 65,
+     "place": 66,
      "priority": 0,
      "registers": [
       {
@@ -4729,7 +4767,7 @@
     },
     {
      "path": "loot/boss_arena_material_tease.js",
-     "place": 66,
+     "place": 67,
      "priority": 0,
      "registers": [
       {
@@ -4762,7 +4800,7 @@
     },
     {
      "path": "loot/boss_arena_themed_loot.js",
-     "place": 67,
+     "place": 68,
      "priority": 0,
      "registers": [
       {
@@ -4795,7 +4833,7 @@
     },
     {
      "path": "loot/boss_refight_repair_floors.js",
-     "place": 68,
+     "place": 69,
      "priority": 0,
      "registers": [
       {
@@ -4834,7 +4872,7 @@
     },
     {
      "path": "loot/boss_unique_drops.js",
-     "place": 69,
+     "place": 70,
      "priority": 0,
      "registers": [
       {
@@ -4885,7 +4923,7 @@
     },
     {
      "path": "loot/cataclysm_boss_drops.js",
-     "place": 70,
+     "place": 71,
      "priority": 0,
      "registers": [
       {
@@ -4924,7 +4962,7 @@
     },
     {
      "path": "loot/codex_exploration_drops.js",
-     "place": 71,
+     "place": 72,
      "priority": 0,
      "registers": [
       {
@@ -4978,7 +5016,7 @@
     },
     {
      "path": "loot/crop_seed_reduction.js",
-     "place": 72,
+     "place": 73,
      "priority": 0,
      "registers": [
       {
@@ -5011,7 +5049,7 @@
     },
     {
      "path": "loot/dimensional_boss_drops.js",
-     "place": 73,
+     "place": 74,
      "priority": 0,
      "registers": [
       {
@@ -5050,7 +5088,7 @@
     },
     {
      "path": "loot/fragment_core_drops.js",
-     "place": 74,
+     "place": 75,
      "priority": 0,
      "registers": [
       {
@@ -5083,7 +5121,7 @@
     },
     {
      "path": "loot/grass_pam_seeds.js",
-     "place": 75,
+     "place": 76,
      "priority": 0,
      "registers": [
       {
@@ -5116,7 +5154,7 @@
     },
     {
      "path": "loot/iss_boss_drops.js",
-     "place": 76,
+     "place": 77,
      "priority": 0,
      "registers": [
       {
@@ -5155,7 +5193,7 @@
     },
     {
      "path": "loot/iss_boss_first_kill.js",
-     "place": 77,
+     "place": 78,
      "priority": 0,
      "registers": [
       {
@@ -5213,7 +5251,7 @@
     },
     {
      "path": "loot/lootjs_overhaul.js",
-     "place": 78,
+     "place": 79,
      "priority": 0,
      "registers": [
       {
@@ -5270,7 +5308,7 @@
     },
     {
      "path": "loot/loot_overhaul.js",
-     "place": 79,
+     "place": 80,
      "priority": 0,
      "registers": [
       {
@@ -5324,7 +5362,7 @@
     },
     {
      "path": "loot/lovely_pieces_loot.js",
-     "place": 80,
+     "place": 81,
      "priority": 0,
      "registers": [
       {
@@ -5378,7 +5416,7 @@
     },
     {
      "path": "loot/mahou_synergy_drops.js",
-     "place": 81,
+     "place": 82,
      "priority": 0,
      "registers": [
       {
@@ -5417,7 +5455,7 @@
     },
     {
      "path": "loot/majrusz_skeleton_punch_strip.js",
-     "place": 82,
+     "place": 83,
      "priority": 0,
      "registers": [
       {
@@ -5450,7 +5488,7 @@
     },
     {
      "path": "loot/meat_drop_doubling.js",
-     "place": 83,
+     "place": 84,
      "priority": 0,
      "registers": [
       {
@@ -5489,7 +5527,7 @@
     },
     {
      "path": "loot/planetary_loot.js",
-     "place": 84,
+     "place": 85,
      "priority": 0,
      "registers": [
       {
@@ -5522,7 +5560,7 @@
     },
     {
      "path": "loot/staff_wand_drops.js",
-     "place": 85,
+     "place": 86,
      "priority": 0,
      "registers": [
       {
@@ -5561,7 +5599,7 @@
     },
     {
      "path": "loot/stalwart_dungeons_drops.js",
-     "place": 86,
+     "place": 87,
      "priority": 0,
      "registers": [
       {
@@ -5600,7 +5638,7 @@
     },
     {
      "path": "loot/terramity_boss_drops.js",
-     "place": 87,
+     "place": 88,
      "priority": 0,
      "registers": [
       {
@@ -5639,7 +5677,7 @@
     },
     {
      "path": "loot/terramity_structure_drops.js",
-     "place": 88,
+     "place": 89,
      "priority": 0,
      "registers": [
       {
@@ -5684,7 +5722,7 @@
     },
     {
      "path": "loot/tmb_plain_bow_effects.js",
-     "place": 89,
+     "place": 90,
      "priority": 0,
      "registers": [
       {
@@ -5748,7 +5786,7 @@
     },
     {
      "path": "loot/twilight_boss_drops.js",
-     "place": 90,
+     "place": 91,
      "priority": 0,
      "registers": [
       {
@@ -5787,7 +5825,7 @@
     },
     {
      "path": "loot/unique_itemset_registry.js",
-     "place": 91,
+     "place": 92,
      "priority": 0,
      "sections": 0,
      "sets": [
@@ -5801,7 +5839,7 @@
     },
     {
      "path": "loot/unique_tier_buff.js",
-     "place": 92,
+     "place": 93,
      "priority": 0,
      "registers": [
       {
@@ -5889,7 +5927,7 @@
     },
     {
      "path": "loot/zzz_iss_scroll_tier_clamp.js",
-     "place": 93,
+     "place": 94,
      "priority": 0,
      "registers": [
       {
@@ -5928,7 +5966,7 @@
     },
     {
      "path": "loot/zz_iss_arena_enrichment.js",
-     "place": 94,
+     "place": 95,
      "priority": 0,
      "registers": [
       {
@@ -5976,7 +6014,7 @@
     },
     {
      "path": "loot/zz_pack_enchanted_books.js",
-     "place": 95,
+     "place": 96,
      "priority": 0,
      "registers": [
       {
@@ -6050,7 +6088,7 @@
     },
     {
      "path": "loot/zz_unique_chest_strip.js",
-     "place": 96,
+     "place": 97,
      "priority": 0,
      "registers": [
       {
@@ -6097,7 +6135,7 @@
     },
     {
      "path": "magic_crit_hook.js",
-     "place": 97,
+     "place": 98,
      "priority": 0,
      "registers": [
       {
@@ -6149,7 +6187,7 @@
     },
     {
      "path": "megatorch_damage.js",
-     "place": 98,
+     "place": 99,
      "priority": 0,
      "registers": [
       {
@@ -6182,7 +6220,7 @@
     },
     {
      "path": "mobgriefing_default.js",
-     "place": 99,
+     "place": 100,
      "priority": 0,
      "registers": [
       {
@@ -6215,7 +6253,7 @@
     },
     {
      "path": "more_curios_slots_cap.js",
-     "place": 100,
+     "place": 101,
      "priority": 0,
      "registers": [
       {
@@ -6249,7 +6287,7 @@
     },
     {
      "path": "mutant_xp_boost.js",
-     "place": 101,
+     "place": 102,
      "priority": 0,
      "registers": [
       {
@@ -6264,7 +6302,7 @@
     },
     {
      "path": "origins/artificial_construct_progression.js",
-     "place": 102,
+     "place": 103,
      "priority": 0,
      "registers": [
       {
@@ -6323,7 +6361,7 @@
     },
     {
      "path": "origins/battlemage_arcane_cleave.js",
-     "place": 103,
+     "place": 104,
      "priority": 0,
      "registers": [
       {
@@ -6395,7 +6433,7 @@
     },
     {
      "path": "origins/battlemage_mana_shield.js",
-     "place": 104,
+     "place": 105,
      "priority": 0,
      "registers": [
       {
@@ -6436,7 +6474,7 @@
     },
     {
      "path": "origins/class_passives.js",
-     "place": 105,
+     "place": 106,
      "priority": 0,
      "registers": [
       {
@@ -6516,7 +6554,7 @@
     },
     {
      "path": "origins/class_passives_phase6h.js",
-     "place": 106,
+     "place": 107,
      "priority": 0,
      "registers": [
       {
@@ -6603,7 +6641,7 @@
     },
     {
      "path": "origins/origin_effects.js",
-     "place": 107,
+     "place": 108,
      "priority": 0,
      "registers": [
       {
@@ -6735,7 +6773,7 @@
     },
     {
      "path": "origins/origin_status_commands.js",
-     "place": 108,
+     "place": 109,
      "priority": 0,
      "registers": [
       {
@@ -6774,7 +6812,7 @@
     },
     {
      "path": "origins/phantom_undeath.js",
-     "place": 109,
+     "place": 110,
      "priority": 0,
      "registers": [
       {
@@ -6844,7 +6882,7 @@
     },
     {
      "path": "origins/spell_book_transfer.js",
-     "place": 110,
+     "place": 111,
      "priority": 0,
      "registers": [
       {
@@ -6913,7 +6951,7 @@
     },
     {
      "path": "origins/ss_unique_spellsword_scaling.js",
-     "place": 111,
+     "place": 112,
      "priority": 0,
      "registers": [
       {
@@ -6965,7 +7003,7 @@
     },
     {
      "path": "origins/witch_of_ink_progression.js",
-     "place": 112,
+     "place": 113,
      "priority": 0,
      "registers": [
       {
@@ -7063,7 +7101,7 @@
     },
     {
      "path": "origins/witherborn_slimebodied.js",
-     "place": 113,
+     "place": 114,
      "priority": 0,
      "registers": [
       {
@@ -7148,7 +7186,7 @@
     },
     {
      "path": "pregen/auto_chunky.js",
-     "place": 114,
+     "place": 115,
      "priority": 0,
      "registers": [
       {
@@ -7191,7 +7229,7 @@
     },
     {
      "path": "quests/combat_kill_signals.js",
-     "place": 115,
+     "place": 116,
      "priority": 0,
      "registers": [
       {
@@ -7224,7 +7262,7 @@
     },
     {
      "path": "quests/heracles_reconcile.js",
-     "place": 116,
+     "place": 117,
      "priority": 0,
      "registers": [
       {
@@ -7297,7 +7335,7 @@
     },
     {
      "path": "quests/onboarding_bridge.js",
-     "place": 117,
+     "place": 118,
      "priority": 0,
      "registers": [
       {
@@ -7376,7 +7414,7 @@
     },
     {
      "path": "randomize_blank_scrolls.js",
-     "place": 118,
+     "place": 119,
      "priority": 0,
      "registers": [
       {
@@ -7414,7 +7452,7 @@
     },
     {
      "path": "recipes/ad_astra_gating.js",
-     "place": 119,
+     "place": 120,
      "priority": 0,
      "registers": [
       {
@@ -7453,7 +7491,7 @@
     },
     {
      "path": "recipes/boss_material_processing.js",
-     "place": 120,
+     "place": 121,
      "priority": 0,
      "registers": [
       {
@@ -7486,7 +7524,7 @@
     },
     {
      "path": "recipes/cooking_conversion.js",
-     "place": 121,
+     "place": 122,
      "priority": 0,
      "registers": [
       {
@@ -7525,7 +7563,7 @@
     },
     {
      "path": "recipes/cooking_for_blockheads_overrides.js",
-     "place": 122,
+     "place": 123,
      "priority": 0,
      "registers": [
       {
@@ -7558,7 +7596,7 @@
     },
     {
      "path": "recipes/create_blaze_burner_t1.js",
-     "place": 123,
+     "place": 124,
      "priority": 0,
      "registers": [
       {
@@ -7591,7 +7629,7 @@
     },
     {
      "path": "recipes/if_latex_rework.js",
-     "place": 124,
+     "place": 125,
      "priority": 0,
      "registers": [
       {
@@ -7630,7 +7668,7 @@
     },
     {
      "path": "recipes/magic_recipes.js",
-     "place": 125,
+     "place": 126,
      "priority": 0,
      "registers": [
       {
@@ -7663,7 +7701,7 @@
     },
     {
      "path": "recipes/mek_biofuel_squeeze.js",
-     "place": 126,
+     "place": 127,
      "priority": 0,
      "registers": [
       {
@@ -7696,7 +7734,7 @@
     },
     {
      "path": "recipes/planetary_extraction.js",
-     "place": 127,
+     "place": 128,
      "priority": 0,
      "registers": [
       {
@@ -7735,7 +7773,7 @@
     },
     {
      "path": "recipes/progression_tier_fixes.js",
-     "place": 128,
+     "place": 129,
      "priority": 0,
      "registers": [
       {
@@ -7768,7 +7806,7 @@
     },
     {
      "path": "recipes/recipe_audit.js",
-     "place": 129,
+     "place": 130,
      "priority": 0,
      "registers": [
       {
@@ -7807,7 +7845,7 @@
     },
     {
      "path": "recipes/refined_storage_dualpath.js",
-     "place": 130,
+     "place": 131,
      "priority": 0,
      "registers": [
       {
@@ -7846,7 +7884,7 @@
     },
     {
      "path": "recipes/staff_wand_recipes.js",
-     "place": 131,
+     "place": 132,
      "priority": 0,
      "registers": [
       {
@@ -7885,7 +7923,7 @@
     },
     {
      "path": "recipes/strip_mutant_monsters.js",
-     "place": 132,
+     "place": 133,
      "priority": 0,
      "registers": [
       {
@@ -7918,7 +7956,7 @@
     },
     {
      "path": "recipes/strip_tmb_bow_recipes.js",
-     "place": 133,
+     "place": 134,
      "priority": 0,
      "registers": [
       {
@@ -7957,7 +7995,7 @@
     },
     {
      "path": "recipes/tier_gated_recipes.js",
-     "place": 134,
+     "place": 135,
      "priority": 0,
      "registers": [
       {
@@ -7996,7 +8034,7 @@
     },
     {
      "path": "recipes/waystone_recipes.js",
-     "place": 135,
+     "place": 136,
      "priority": 0,
      "registers": [
       {
@@ -8035,7 +8073,7 @@
     },
     {
      "path": "regen_control.js",
-     "place": 136,
+     "place": 137,
      "priority": 0,
      "registers": [
       {
@@ -8088,7 +8126,7 @@
     },
     {
      "path": "relic_boss_drops.js",
-     "place": 137,
+     "place": 138,
      "priority": 0,
      "registers": [
       {
@@ -8154,7 +8192,7 @@
     },
     {
      "path": "respawn_hunger.js",
-     "place": 138,
+     "place": 139,
      "priority": 0,
      "registers": [
       {
@@ -8187,7 +8225,7 @@
     },
     {
      "path": "respec/class_respec.js",
-     "place": 139,
+     "place": 140,
      "priority": 0,
      "registers": [
       {
@@ -8287,7 +8325,7 @@
     },
     {
      "path": "scaling/boss_hp.js",
-     "place": 140,
+     "place": 141,
      "priority": 0,
      "registers": [
       {
@@ -8335,7 +8373,7 @@
     },
     {
      "path": "scaling/boss_progressive.js",
-     "place": 141,
+     "place": 142,
      "priority": 0,
      "registers": [
       {
@@ -8388,7 +8426,7 @@
     },
     {
      "path": "scaling/dimension_mechanics.js",
-     "place": 142,
+     "place": 143,
      "priority": 0,
      "registers": [
       {
@@ -8528,7 +8566,7 @@
     },
     {
      "path": "scaling/mob_equipment.js",
-     "place": 143,
+     "place": 144,
      "priority": 0,
      "registers": [
       {
@@ -8594,7 +8632,7 @@
     },
     {
      "path": "scaling/mob_scaling_unified.js",
-     "place": 144,
+     "place": 145,
      "priority": 0,
      "registers": [
       {
@@ -8655,7 +8693,7 @@
     },
     {
      "path": "scaling/zz_ascension_scaling.js",
-     "place": 145,
+     "place": 146,
      "priority": 0,
      "registers": [
       {
@@ -8731,7 +8769,7 @@
     },
     {
      "path": "scaling/zz_boss_global_3x.js",
-     "place": 146,
+     "place": 147,
      "priority": 0,
      "registers": [
       {
@@ -8805,7 +8843,7 @@
     },
     {
      "path": "skills/justleveling_skills.js",
-     "place": 147,
+     "place": 148,
      "priority": 0,
      "registers": [
       {
@@ -8951,7 +8989,7 @@
     },
     {
      "path": "skills/mastery_tax.js",
-     "place": 148,
+     "place": 149,
      "priority": 0,
      "registers": [
       {
@@ -9036,7 +9074,7 @@
     },
     {
      "path": "skills/skill_effects.js",
-     "place": 149,
+     "place": 150,
      "priority": 0,
      "registers": [
       {
@@ -9169,7 +9207,7 @@
     },
     {
      "path": "spawn_priest_tower.js",
-     "place": 150,
+     "place": 151,
      "priority": 0,
      "registers": [
       {
@@ -9202,7 +9240,7 @@
     },
     {
      "path": "spawn_protection.js",
-     "place": 151,
+     "place": 152,
      "priority": 0,
      "registers": [
       {
@@ -9240,7 +9278,7 @@
     },
     {
      "path": "spawn_village_protection.js",
-     "place": 152,
+     "place": 153,
      "priority": 0,
      "registers": [
       {
@@ -9318,7 +9356,7 @@
     },
     {
      "path": "strip_anomalous_drops.js",
-     "place": 153,
+     "place": 154,
      "priority": 0,
      "registers": [
       {
@@ -9345,7 +9383,7 @@
     },
     {
      "path": "strip_infinity_ham.js",
-     "place": 154,
+     "place": 155,
      "priority": 0,
      "registers": [
       {
@@ -9383,7 +9421,7 @@
     },
     {
      "path": "sunlight_smite.js",
-     "place": 155,
+     "place": 156,
      "priority": 0,
      "registers": [
       {
@@ -9418,7 +9456,7 @@
     },
     {
      "path": "tatos_dimension_lock.js",
-     "place": 156,
+     "place": 157,
      "priority": 0,
      "registers": [
       {
@@ -9455,7 +9493,7 @@
     },
     {
      "path": "tetra_terramity_perks.js",
-     "place": 157,
+     "place": 158,
      "priority": 0,
      "registers": [
       {
@@ -9528,7 +9566,7 @@
     },
     {
      "path": "ultris_randomizer_janitor.js",
-     "place": 158,
+     "place": 159,
      "priority": 0,
      "registers": [
       {
@@ -9573,7 +9611,7 @@
     },
     {
      "path": "validate_recipe_removals.js",
-     "place": 159,
+     "place": 160,
      "priority": 0,
      "notIn": [
       "server_distribution/kubejs",
@@ -9613,7 +9651,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 160,
+     "place": 161,
      "priority": -1000,
      "registers": [
       {
@@ -9938,6 +9976,12 @@
      {
       "script": "compat/disable_creeperlings.js",
       "name": "compat/disable_creeperlings",
+      "kind": "guard"
+     },
+     {
+      "script": "compat/twilight_plateau_boss_guard.js",
+      "name": "compat/twilight_plateau_boss_guard",
+      "target": "twilightforest:plateau_boss",
       "kind": "guard"
      },
      {

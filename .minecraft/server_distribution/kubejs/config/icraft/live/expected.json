@@ -56,6 +56,7 @@
    "compat/class_artifacts_recipes@ServerEvents.recipes": "compat/class_artifacts_recipes.js",
    "compat/disable_creeperlings@EntityEvents.spawned": "compat/disable_creeperlings.js",
    "compat/terramity_cave_gnome_cave_only@EntityEvents.checkSpawn": "compat/terramity_cave_gnome_cave_only.js",
+   "compat/twilight_plateau_boss_guard@EntityEvents.spawned": "compat/twilight_plateau_boss_guard.js",
    "death_penalty@BlockEvents.broken": "death_penalty.js",
    "death_penalty@EntityEvents.death": "death_penalty.js",
    "death_penalty@ItemEvents.canPickUp": "death_penalty.js",
