@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3afebeae",
+    "generated_from":  "51b0d8ea",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7376,8 +7376,8 @@
                                                                          "size":  6274
                                                                      },
                   "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
-                                                                                "sha256":  "c77690fc6ff920fd1a488054bad1ea298c99e0e80ffffa96483a124701259781",
-                                                                                "size":  7034
+                                                                                "sha256":  "46acb86f515c9fb19deeff6ca80a50ea84e8f69223088bfddc352a3742117e42",
+                                                                                "size":  7143
                                                                             },
                   "kubejs/server_scripts/loot/zz_pack_enchanted_books.js":  {
                                                                                 "sha256":  "09342e82003a0f931c8ed751ed39c7f03aabe5b63e433a17a9aed4d39444c0f9",

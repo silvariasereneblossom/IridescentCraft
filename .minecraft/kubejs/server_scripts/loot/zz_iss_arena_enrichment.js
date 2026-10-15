@@ -64,7 +64,7 @@ LootJS.modifiers(icraft.guard('loot/zz_iss_arena_enrichment', 'LootJS.modifiers'
     .addLoot(LootEntry.of('irons_spellbooks:arcane_salvage').limitCount([1, 2]).when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of(T3).when(c => c.randomChance(0.05)))
 
-  // ---- Evoker Fort (Archevoker) — evocation / arcane theme (+ arcane_essence tease, moved here) ----
+  // ---- Evoker Fort (Archevoker, and the Magehunter in its tower) — evocation / arcane theme (+ arcane_essence tease, moved here) ----
   event.addLootTableModifier('irons_spellbooks:chests/evoker_fort')
     .addLoot(LootEntry.of('irons_spellbooks:evocation_rune').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('irons_spellbooks:evocation_upgrade_orb').when(c => c.randomChance(0.10)))
@@ -73,7 +73,7 @@ LootJS.modifiers(icraft.guard('loot/zz_iss_arena_enrichment', 'LootJS.modifiers'
     .addLoot(LootEntry.of('irons_spellbooks:lesser_spell_slot_upgrade').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').when(c => c.randomChance(0.10)))
 
-  // ---- Mountain Tower (Magehunter) — ice / arcane theme ----
+  // ---- Mountain Tower (Cryomancer; no arena boss: the Magehunter is met at the Evoker Fort, decision entry 80) — ice / arcane theme ----
   event.addLootTableModifier('irons_spellbooks:chests/mountain_tower/mountain_tower')
     .addLoot(LootEntry.of('irons_spellbooks:ice_rune').when(c => c.randomChance(0.22)))
     .addLoot(LootEntry.of('irons_spellbooks:ice_upgrade_orb').when(c => c.randomChance(0.10)))
