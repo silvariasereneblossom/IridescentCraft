@@ -84,9 +84,11 @@
 #      switch it off), when the list is on and empty (nobody can join), or
 #      when an entry carries a UUID the server will never match. Every run
 #      says whether names are authenticated (online-mode). RED as well when
-#      the launcher has REFUSED to start the server (.icraft_start_refused):
-#      it does not start a server whose own whitelist or online-mode switch
-#      could not be put back, and leaves the reason in that file.
+#      the launcher has REFUSED to start the server (.icraft_start_refused),
+#      with the advice for its cause: a world regeneration left unfinished
+#      (roll it back at the box; no remote request starts it), or a whitelist
+#      or online-mode switch of this server that could not be put back (fix
+#      it, then Cycle, or request_cycle.ps1 once the heartbeat has given up).
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -513,6 +515,10 @@ function Get-LauncherLiveness {
     $phase = [string]$st['phase']
     $why = "phase: $phase"
     if ($st['heartbeat']) { $why += "; heartbeat: $($st['heartbeat'])" }
+    if ([string]$st['heartbeat'] -like 'GAVE UP*') {
+        # Since 2026-10-15 (operator ruling 20) a request is the way back.
+        $r.Notes.Add('the heartbeat GAVE UP (three restarts in 30 min did not bring the server up). Fix the cause, then request_cycle.ps1 over remoting starts it again (launcher of 2026-10-15 or later; an older one declines), or press Cycle at the box. An unfinished regeneration is rolled back at the box first.') | Out-Null
+    }
     if ($st['stuck']) {
         $r.State = 'RED'
         $r.Line = "launcher up, restart $($st['stuck'])"
@@ -561,9 +567,12 @@ function Get-OfflineUuid {
 # pasted into reports and into a public repository's issues.
 function Get-AccessPosture {
     param([string]$Root, [bool]$Public)
-    $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]); Refused = $false }
-    # The launcher's start guard: a server whose own whitelist / online-mode
-    # switch could not be put back is NOT started, and this file says why. It is
+    $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]); Refused = $false; Cause = $null }
+    # The launcher's start guards leave this file when they refuse a start, with
+    # the reason. Two causes, with different fixes (operator ruling 20, sheet
+    # G19): a world regeneration left unfinished (checked first; every start,
+    # remote or at the box, is refused until it is rolled back), or a whitelist /
+    # online-mode switch this server turned on that could not be put back. It is
     # removed by the next start the launcher allows.
     $refusedPath = Join-Path $Root '.icraft_start_refused'
     if (Test-Path -LiteralPath $refusedPath) {
@@ -575,8 +584,15 @@ function Get-AccessPosture {
         $r.State = 'RED'
         $r.Refused = $true
         $r.Line = "THE LAUNCHER REFUSED TO START THE SERVER ($when): $why"
-        $r.Notes.Add('The server is down ON PURPOSE: started as it was, it would have run with its whitelist or online mode off.') | Out-Null
-        $r.Notes.Add('On the server: put the value into server.properties (or repair .icraft_config_overrides.json), then press Cycle in the launcher. "icraft settings start-check" repeats the check without starting anything.') | Out-Null
+        if ($why -like 'a world regeneration was left unfinished*' -or (Test-Path -LiteralPath (Join-Path $Root '.icraft_regen_in_progress'))) {
+            $r.Cause = 'regen'
+            $r.Notes.Add('The server is down ON PURPOSE: a world regeneration run (or its rollback) did not finish, so part of the world may be reset and part not. Every start is refused until it is rolled back, a remote request included.') | Out-Null
+            $r.Notes.Add('At the box: Customizer -> Regenerate -> Roll back on the run marked "This run did not finish" (type its code), then press Cycle. Never delete .icraft_regen_in_progress to get the server going. Deployment guide section 16f.') | Out-Null
+        } else {
+            $r.Cause = 'access'
+            $r.Notes.Add('The server is down ON PURPOSE: started as it was, it would have run with its whitelist or online mode off.') | Out-Null
+            $r.Notes.Add('On the server: put the value into server.properties (or repair .icraft_config_overrides.json), then press Cycle in the launcher. Once its heartbeat has given up (three refused starts), request_cycle.ps1 starts it again from the dev PC too (launcher of 2026-10-15 or later). "icraft settings start-check" repeats the check without starting anything. Deployment guide section 15j.') | Out-Null
+        }
         return $r
     }
     $p = @{}
@@ -926,6 +942,11 @@ if (-not $realDrift) {
         if ($access.State -eq 'RED') {
             Write-Host "=== ACCESS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
+            if ($access.Refused -and $access.Cause -eq 'regen') {
+                Write-Host "    -> down because a regeneration is unfinished: roll it back at the box (Customizer -> Regenerate -> Roll back), then Cycle. Deployment guide section 16f." -ForegroundColor Yellow
+            } elseif ($access.Refused) {
+                Write-Host "    -> down because an access switch could not be put back: fix it on the server, then Cycle at the box, or request_cycle.ps1 once the heartbeat has given up. Deployment guide section 15j." -ForegroundColor Yellow
+            }
         }
         if ($backupState -eq 'RED') {
             Write-Host "=== BACKUPS RED (as well) ===" -ForegroundColor Red
@@ -943,8 +964,10 @@ if (-not $realDrift) {
     if ($access.State -eq 'RED') {
         Write-Host "=== ACCESS RED ===" -ForegroundColor Red
         Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
-        if ($access.Refused) {
-            Write-Host "    -> the server was NOT started, rather than started open. Fix the cause on the server, then press Cycle in the launcher (a remote Cycle request is declined while no server is up). Deployment guide section 15j." -ForegroundColor Yellow
+        if ($access.Refused -and $access.Cause -eq 'regen') {
+            Write-Host "    -> the server was NOT started on a half-reset world. Roll the run back at the box (Customizer -> Regenerate -> Roll back), then Cycle; no remote request starts it before that. Deployment guide section 16f." -ForegroundColor Yellow
+        } elseif ($access.Refused) {
+            Write-Host "    -> the server was NOT started, rather than started open. Fix the cause on the server, then press Cycle in the launcher; once the heartbeat has given up, request_cycle.ps1 over remoting starts it again (launcher of 2026-10-15 or later). Deployment guide section 15j." -ForegroundColor Yellow
         } else {
             Write-Host "    -> the deploy is fine and the door is open. On the server: white-list=true in server.properties, pin it (icraft settings pin server.properties white-list --pack-value false), restart. Deployment guide section 15." -ForegroundColor Yellow
         }
