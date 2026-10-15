@@ -45,6 +45,7 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | `tier` | 1-4 | the kill tokens (their tier) |
 | `kind` | `named` = trophy boss: first-kill bonus, then repeat tokens. `miniboss` = tokens on every kill. `unlisted` = on neither kill roster | `exploration/codex_exploration_kills.js` |
 | `hp` | designed health | `scaling/boss_hp.js` |
+| `levelHp` | `{ "<level>": designed health }` for a Progressive Bosses level of the same entity type (the entity's `getLvl()` at its join); a level not listed takes `hp`, so it needs an `hp`. The Wither: `{ "3": 1000 }`, the Ultimate Wither (ruled 2026-10-14) | `scaling/boss_hp.js` through `icraft.bosses.hp(id, level)` |
 | flag `boss` | `core.isBoss` (affixes, enchants, skills, both Vorpal decapitations) AND no mob-tier health multiplier | `0_lib_core.js`, `scaling/mob_scaling_unified.js` |
 | flag `x3` | health x3, melee x3, Iron's Spellbooks spell power x2 | `scaling/zz_boss_global_3x.js` |
 | flag `x3DamageSkip` | keeps the health x3, skips both damage buffs (no boss has it) | same |

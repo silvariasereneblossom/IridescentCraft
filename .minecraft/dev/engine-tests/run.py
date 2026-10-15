@@ -375,6 +375,8 @@ def gen_registry_expect(ctx):
         "entityIds": [[t, reg.entity_ids(t)] for t in sorted(set(reg.aliases.values()))],
         # bosses the game hands out under another entity type (`seenAs`), as icraft.bosses.seenAs() hands them out
         "seenAs": reg.seen_as(),
+        # a Progressive Bosses level's own designed health (`levelHp`): [boss id, level, hp(id, level)]
+        "levelHp": [[i, int(k), reg.hp(i, int(k))] for i, e in reg.bosses.items() for k in sorted((e.get("levelHp") or {}))],
         "aBoss": a_boss[0] if a_boss else "", "aDim": dim_ids[1] if len(dim_ids) > 1 else "",
     }
     return "var T_REG = " + json.dumps(doc, ensure_ascii=False) + "\n"

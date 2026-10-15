@@ -135,6 +135,18 @@ def shape_problems(reg):
             bad.append('%s: tier %r is not 1-4' % (i, e['tier']))
         if 'hp' in e and not (isinstance(e['hp'], (int, float)) and not isinstance(e['hp'], bool) and e['hp'] > 0):
             bad.append('%s: hp is not a positive number' % i)
+        if 'levelHp' in e:
+            lv = e['levelHp']
+            if not (isinstance(lv, dict) and lv):
+                bad.append('%s: levelHp is not an object of levels' % i)
+            else:
+                if 'hp' not in e:
+                    bad.append('%s: levelHp without hp (a level not listed takes hp)' % i)
+                for k, v in lv.items():
+                    if not (len(k) == 1 and k in '123456789'):
+                        bad.append('%s: levelHp level "%s" is not 1-9' % (i, k))
+                    elif not (isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0):
+                        bad.append('%s: levelHp %s is not a positive number' % (i, k))
         if 'rush' in e and e['rush'] not in (1, 2, 3):
             bad.append('%s: rush %r is not a roster (1-3)' % (i, e['rush']))
         if 'phaseOf' in e and not (isinstance(e['phaseOf'], str) and e['phaseOf'] in reg.bosses and e['phaseOf'] != i):

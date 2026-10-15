@@ -109,7 +109,7 @@ EntityEvents.spawned(icraft.guard('scaling/boss_hp', 'EntityEvents.spawned', eve
   if (!entity || !entity.living) return
 
   let type = global.icraft.core.entityId(entity)
-  let targetHP = getBossHP(type)
+  let targetHP = getBossHP(type, bossLevel(entity))
   if (!targetHP) return
 
   let core = global.icraft && global.icraft.core
@@ -170,6 +170,18 @@ function bossHpSettleLater(core, entity, targetHP, fresh) {
 // bosses.json, read through icraft.bosses, 0_lib_registry.js). Until 2026-10-13
 // the 52 values stood here as BOSS_HP. null = no designed health: the boss
 // keeps its mod's own.
-function getBossHP(type) {
-  return icraft.bosses.hp(type)
+// A boss with levels (2026-10-14): the entry's `levelHp` gives a level its own
+// designed health, else `hp`. The level is Progressive Bosses' own, read from
+// the entity at its join (the mod sets it before it adds the entity, and a
+// saved one has it back from its data): the Ultimate Wither is level 3 of
+// progressivebosses:wither, designed 1,000 (x3 = 3,000; the plain Wither 600).
+function getBossHP(type, level) {
+  return icraft.bosses.hp(type, level)
+}
+
+// the entity's Progressive Bosses level (getLvl: its Wither, dragon and elder
+// guardian), or null for an entity that has none
+function bossLevel(entity) {
+  if (typeof entity.getLvl !== 'function') return null
+  return Number(entity.getLvl())
 }

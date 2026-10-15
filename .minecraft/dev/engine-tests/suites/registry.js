@@ -346,6 +346,48 @@
     ok(err === '' && global.icraft.registry.ok() === true && T_LOG.error.length === 0, 'the real file again')
   })
 
+  // ---- a level of a boss (`levelHp`) -------------------------------------------
+  // Progressive Bosses' levels are one entity type (the Ultimate Wither is level 3 of
+  // progressivebosses:wither), so a level's own designed health is asked with the level:
+  // hp(id, level). Planted first (the rules), then the pack's file as rosters.py reads it.
+  T_run('a level of a boss (levelHp) has its own designed health; any other level takes hp', function () {
+    var boss = T_REG.aBoss
+    var base = bosses().hp(boss)
+    var withLevels = changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = { '3': 1000, '1': 700 } })
+    var err = reload(withLevels, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && T_LOG.error.length === 0, 'a file with a planted levelHp loads (' + err + T_LOG.error.join(' | ') + ')')
+    ok(bosses().hp(boss, 3) === 1000 && bosses().hp(boss, '3') === 1000 && bosses().hp(boss, 1) === 700, 'hp(id, level) of a listed level: its own (a number or a string level)')
+    ok(bosses().hp(boss) === 400 && bosses().hp(boss, null) === 400 && bosses().hp(boss, 0) === 400 && bosses().hp(boss, 2) === 400 && bosses().hp(boss, 9) === 400,
+      'no level, level 0 and a level not listed: hp')
+    ok(bosses().get(boss, 'hp') === 400 && bosses().has(boss, 'hp') === true, 'the hp system is unchanged by levelHp (get / has)')
+    ok(bosses().hp('minecraft:zombie', 3) === null, 'an id with no entry: null with a level too')
+    refused('levelHp that is not an object', changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = 1000 }), realText.dims, 'levelHp is not an object', 'bosses')
+    refused('levelHp with no level in it', changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = {} }), realText.dims, 'levelHp is not an object', 'bosses')
+    refused('a level 0 (the plain entity takes hp)', changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = { '0': 500 } }), realText.dims, 'level "0" is not 1-9', 'bosses')
+    refused('a level that is not a number', changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = { 'three': 500 } }), realText.dims, 'level "three" is not 1-9', 'bosses')
+    refused('a level health that is not a positive number', changed(realText.bosses, function (d) { d.bosses[boss].hp = 400; d.bosses[boss].levelHp = { '3': -5 } }), realText.dims, 'levelHp 3 is not a positive number', 'bosses')
+    refused('levelHp without hp', changed(realText.bosses, function (d) { delete d.bosses[boss].hp; d.bosses[boss].levelHp = { '3': 1000 } }), realText.dims, 'levelHp without hp', 'bosses')
+    err = reload(realText.bosses, realText.dims)
+    ok(err === '' && global.icraft.registry.ok() === true && bosses().hp(boss) === base, 'the real file again')
+    // the pack's own levels, as rosters.py has them: the boss and each of its second ids
+    var bad = ''
+    for (var i = 0; i < T_REG.levelHp.length && bad === ''; i++) {
+      var row = T_REG.levelHp[i]        // [boss id, level, designed health]
+      var ids = bosses().entityIds(row[0])
+      for (var j = 0; j < ids.length && bad === ''; j++) {
+        if (bosses().hp(ids[j], row[1]) !== row[2]) bad = 'hp(' + ids[j] + ', ' + row[1] + ') = ' + bosses().hp(ids[j], row[1])
+        else if (bosses().hp(ids[j], 0) !== bosses().get(row[0], 'hp')) bad = 'hp(' + ids[j] + ', 0) = ' + bosses().hp(ids[j], 0)
+      }
+    }
+    var withLevel = {}
+    for (var k = 0; k < T_REG.levelHp.length; k++) withLevel[T_REG.levelHp[k][0]] = true
+    for (var b = 0; b < T_REG.bossIds.length && bad === ''; b++) {
+      var id = T_REG.bossIds[b]
+      if (withLevel[id] !== true && (bosses().hp(id, 3) !== bosses().hp(id) || bosses().hp(id, 1) !== bosses().hp(id))) bad = id + ' has no levelHp but hp(id, level) differs from hp(id)'
+    }
+    ok(bad === '', 'the ' + T_REG.levelHp.length + ' level(s) of the pack\'s file, asked with the boss and its second ids; every other boss answers hp for any level' + (bad === '' ? '' : ' -- ' + bad))
+  })
+
   T_run('a switch is read from the file', function () {
     reload(changed(realText.bosses, function (d) { d.switches.perKill.on = true }), realText.dims)
     ok(bosses().enabled('perKill') === true && String(global.icraft.registry.line()).indexOf('per-kill scaling ON') > 0, 'perKill on in the file: enabled() true and the boot line says ON')

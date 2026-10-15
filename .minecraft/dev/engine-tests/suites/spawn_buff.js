@@ -284,6 +284,24 @@ check('S16 and from then on a reload leaves its health alone (900 of ' + (wither
 var vw = join(__host.living('minecraft:wither', 300, L), 1.5)
 check('S16 minecraft:wither itself is answered as before (designed health, x3)', near(vw.rawMax(), (witherHp + 150) * witherX3) && !has(vw.mods(HP), 'icraft_mob_tier_hp'), 'max=' + vw.rawMax())
 
+__host.print('S16b a Progressive Bosses level with a designed health of its own (the Ultimate Wither is level 3)')
+// The registry: "minecraft:wither": { "hp": 600, "levelHp": { "3": 1000 } } (ruled 2026-10-14: designed 1,000 x3 for
+// level 3, the plain Wither stays 600 x3). The level is the mod's own (PBWither.getLvl), set before the join; a level
+// the entry does not list takes hp. The numbers follow the file.
+var ultHp = global.icraft.bosses.hp('progressivebosses:wither', 3)
+var ult = join(__host.pbWither('progressivebosses:wither', 500, L, 3))
+line('level 3, fresh', ult)
+check('S16b level 3: the designed health of its level, ' + ultHp + ' x ' + witherX3 + ' = ' + (ultHp * witherX3) + ', at full health',
+  near(ult.rawMax(), ultHp * witherX3) && ult.rawHealth() === ult.rawMax() && has(ult.mods(HP), 'icraft_boss_hp_override') && flagIs(ult, 'icraft_boss_hp', 2),
+  'max=' + ult.rawMax() + ' health=' + ult.rawHealth() + ' hp[' + ult.mods(HP) + ']')
+var ult2 = join(ult.reload())
+check('S16b unchanged over a reload (the level comes back with the entity)', sameNumbers(ult2, ult), 'max=' + ult2.rawMax())
+var lvl0 = join(__host.pbWither('progressivebosses:wither', 500, L, 0))
+var lvl2 = join(__host.pbWither('progressivebosses:wither', 500, L, 2))
+check('S16b level 0 (the plain Wither) and a level the entry does not list (2): hp, ' + witherHp + ' x ' + witherX3 + ' = ' + (witherHp * witherX3),
+  near(lvl0.rawMax(), witherHp * witherX3) && near(lvl2.rawMax(), witherHp * witherX3), 'level 0 max=' + lvl0.rawMax() + ', level 2 max=' + lvl2.rawMax())
+check('S16b the registry has a level-3 value at all (else this block proves nothing)', ultHp !== witherHp && ultHp > 0, 'hp(.., 3)=' + ultHp + ' hp=' + witherHp)
+
 __host.print('S17 a mod sets the base health AFTER the pack\'s handler (the Ender Dragon: Progressive Bosses, 200 -> 500)')
 // Measured on a full-pack boot, 2026-10-13: scaling/boss_hp.js sees the vanilla base 200 and saves +4.0 for the
 // designed 1000; Progressive Bosses' own join handler then sets the base to 500 and the health to 500: 500 of 7500.

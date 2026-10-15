@@ -117,6 +117,19 @@
       "hideInstances": "test switch: getAttribute() finds nothing",
       "untouchable": "test switch: any attribute / health call throws AbstractMethodError",
       "value": "test-side read", "rawHealth": "test-side read", "rawMax": "test-side read",
+      "mods": "test-side read: modifier names", "flags": "test-side read: persistent flags"}},
+    "mk.M$PBWither": {"real": ["net.minecraft.world.entity.LivingEntity", "insane96mcp.progressivebosses.module.wither.entity.PBWither"], "jar": "progressivebosses-*.jar", "harness": {
+      "attr": "test-side builder: gives the entity an attribute",
+      "reload": "test control: save + load (only permanent modifiers come back)",
+      "difficultyJoin": "test control: the iridescent_difficulty mod's own join handler",
+      "damageTo": "test control: sets Health",
+      "modSetsBase": "test control: a mod sets the base health and the health after the pack's handlers",
+      "foreignModifier": "test control: a modifier another mod put on the entity",
+      "valueWithout": "test-side ground truth for core.attrValueWithout",
+      "failPermanent": "test switch: addPermanentModifier throws",
+      "hideInstances": "test switch: getAttribute() finds nothing",
+      "untouchable": "test switch: any attribute / health call throws AbstractMethodError",
+      "value": "test-side read", "rawHealth": "test-side read", "rawMax": "test-side read",
       "mods": "test-side read: modifier names", "flags": "test-side read: persistent flags"}}
   }
 }

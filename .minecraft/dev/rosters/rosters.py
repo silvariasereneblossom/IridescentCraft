@@ -20,7 +20,7 @@ SCHEMA = 1
 
 BOSS_KINDS = ('named', 'miniboss', 'unlisted')
 BOSS_FLAGS = ('boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster')
-BOSS_KEYS = ('tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note')
+BOSS_KEYS = ('tier', 'kind', 'hp', 'levelHp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note')
 SEEN_AS_KEYS = ('type', 'class', 'baseHealth', 'mainHand')   # a boss the game hands out under ANOTHER entity type
 ALIAS_KEYS = ('sameAs', 'note')     # an entry with `sameAs` is a second entity id of another entry, and nothing else
 ARENA_KEYS = ('key', 'display', 'tier', 'dimension', 'locator', 'structure', 'signatureBlock', 'waystone', 'summonEntity', 'ritual')
@@ -114,6 +114,17 @@ class Registry(object):
         """[the boss's id, then its second ids]: the entity types a per-type rule for that boss has to cover"""
         c = self.canon(i)
         return [c] + [a for a, t in self.aliases.items() if t == c]
+
+    def hp(self, i, level=None):
+        """designed health asked with this id, for a Progressive Bosses level when given: the entry's `levelHp`
+        for that level, else `hp` (0_lib_registry.js icraft.bosses.hp(id, level) answers the same)"""
+        e = self.bosses.get(self.canon(i))
+        if e is None:
+            return None
+        lv = e.get('levelHp') or {}
+        if level is not None and str(int(level)) in lv:
+            return lv[str(int(level))]
+        return e.get('hp')
 
     def answer(self, i, system):
         """what a script that asks WITH this id gets from a system (a second id answers as its boss); None = not in it"""

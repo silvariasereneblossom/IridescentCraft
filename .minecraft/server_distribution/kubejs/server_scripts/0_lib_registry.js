@@ -26,6 +26,11 @@
 //                                        fresh copy of the record, a flag system: true)
 //   icraft.bosses.tier(id)            -> 1..4, 0 when the id has no entry or no tier
 //   icraft.bosses.hp(id)              -> designed health, or null
+//   icraft.bosses.hp(id, level)       -> the designed health of that level of the boss: the
+//                                        entry's `levelHp` (keyed by level, "3": 1000), else
+//                                        `hp`. The level is Progressive Bosses' (entity.getLvl(),
+//                                        read by scaling/boss_hp.js): the Ultimate Wither is
+//                                        level 3 of the same entity type (ruled 2026-10-14)
 //   icraft.bosses.kind(id)            -> 'named' | 'miniboss' | 'unlisted' | ''
 //   icraft.bosses.byTier(n, system?)  -> [ids] of that tier, in file order
 //   icraft.bosses.ids(system?)        -> [ids] in file order
@@ -154,7 +159,7 @@
 
   var BOSS_KINDS = ['named', 'miniboss', 'unlisted']
   var BOSS_FLAGS = ['boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster']
-  var BOSS_KEYS = ['tier', 'kind', 'hp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note']
+  var BOSS_KEYS = ['tier', 'kind', 'hp', 'levelHp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note']
   var SEEN_AS_KEYS = ['type', 'class', 'baseHealth', 'mainHand']
   var ALIAS_KEYS = ['sameAs', 'note']       // an entry with `sameAs` is a second id of another entry and nothing else
   var BOSS_SWITCHES = ['perKill']
@@ -237,6 +242,17 @@
         if (e.kind !== 'unlisted') bad.push(id + ': kind ' + e.kind + ' needs a tier')
       } else if (!isTier(e.tier)) bad.push(id + ': tier ' + e.tier + ' is not 1-4')
       if (e.hp !== undefined && !(typeof e.hp === 'number' && e.hp > 0)) bad.push(id + ': hp is not a positive number')
+      if (e.levelHp !== undefined) {
+        // { "<level 1-9>": designed health }: a level not listed takes `hp`, so an entry with levelHp has an hp
+        if (!isObject(e.levelHp) || Object.keys(e.levelHp).length === 0) bad.push(id + ': levelHp is not an object of levels')
+        else {
+          if (e.hp === undefined) bad.push(id + ': levelHp without hp (a level not listed takes hp)')
+          for (s in e.levelHp) {
+            if (!/^[1-9]$/.test(s)) bad.push(id + ': levelHp level "' + s + '" is not 1-9')
+            else if (!(typeof e.levelHp[s] === 'number' && e.levelHp[s] > 0)) bad.push(id + ': levelHp ' + s + ' is not a positive number')
+          }
+        }
+      }
       if (e.rush !== undefined && !(e.rush === 1 || e.rush === 2 || e.rush === 3)) bad.push(id + ': rush ' + e.rush + ' is not a roster (1-3)')
       if (e.phaseOf !== undefined && !(typeof e.phaseOf === 'string' && own(doc.bosses, e.phaseOf) &&
           isObject(doc.bosses[e.phaseOf]) && doc.bosses[e.phaseOf].sameAs === undefined)) bad.push(id + ': phaseOf names no entry (or a second id: name the boss)')
@@ -423,9 +439,11 @@
       var key = canonId(id)
       return (own(bossEntries, key) && bossEntries[key].tier !== undefined) ? bossEntries[key].tier : 0
     },
-    hp: function (id) {
+    hp: function (id, level) {
       needBosses()
       var key = canonId(id)
+      var lv = (level === undefined || level === null) ? '' : String(Number(level))
+      if (lv !== '' && own(bossEntries, key) && isObject(bossEntries[key].levelHp) && own(bossEntries[key].levelHp, lv)) return bossEntries[key].levelHp[lv]
       return own(bossIx.index.hp, key) ? bossIx.index.hp[key] : null
     },
     kind: function (id) {

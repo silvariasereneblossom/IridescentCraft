@@ -231,7 +231,7 @@ public class M {
     // ---- test controls ----
     /** save + load: only permanent modifiers come back; Attributes load before Health, which is clamped. */
     public Living reload() {
-      Living n = new Living(typeId, attrs.get(MAX_HEALTH).base, level);
+      Living n = fresh();
       n.monster = monster; n.player = player; n.untouchable = untouchable; n.diffScaled = diffScaled;
       n.attrs.clear();
       for (Map.Entry<Attribute, AttributeInstance> e : attrs.entrySet()) {
@@ -287,8 +287,20 @@ public class M {
       return String.join(",", out);
     }
     public String flags() { return data.show(); }
+    /** the entity a load makes of this one, before its data is copied in (package-private: not for scripts) */
+    Living fresh() { return new Living(typeId, attrs.get(MAX_HEALTH).base, level); }
+  }
+
+  /** Progressive Bosses' Wither (PBWither): a Living with the mod's level (ILvl.getLvl). The mod sets the level
+   *  before it adds the entity, and a saved one reads it back from its data: the same level after a reload. */
+  public static class PBWither extends Living {
+    final int lvl;
+    public PBWither(String typeId, double baseHealth, Level level, int lvl) { super(typeId, baseHealth, level); this.lvl = lvl; }
+    public int getLvl() { return lvl; }
+    @Override Living fresh() { return new PBWither(typeId, attrs.get(MAX_HEALTH).base, level, lvl); }
   }
 
   public static Level level() { return new Level(); }
   public static Living living(String typeId, double baseHealth, Level level) { return new Living(typeId, baseHealth, level); }
+  public static PBWither pbWither(String typeId, double baseHealth, Level level, int lvl) { return new PBWither(typeId, baseHealth, level, lvl); }
 }

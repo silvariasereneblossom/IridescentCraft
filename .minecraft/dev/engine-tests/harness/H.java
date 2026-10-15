@@ -151,6 +151,7 @@ public class H {
     // ---- the spawn-buff stand-ins ---------------------------------------------------------------
     public mk.M.Level level() { return mk.M.level(); }
     public mk.M.Living living(String typeId, double baseHealth, mk.M.Level level) { return mk.M.living(typeId, baseHealth, level); }
+    public mk.M.PBWither pbWither(String typeId, double baseHealth, mk.M.Level level, int lvl) { return mk.M.pbWither(typeId, baseHealth, level, lvl); }
   }
 
   public static void main(String[] args) throws Exception {
