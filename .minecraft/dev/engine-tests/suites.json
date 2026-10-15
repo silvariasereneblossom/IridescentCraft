@@ -49,8 +49,8 @@
                   "suites/inventory_scan.js", "lib/summary.js"]]
     },
     {
-      "name": "codex-submit", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 50,
-      "about": "gates/codex_progression_engine.js on an inventory that behaves like the real one: submit, balance and exchange read and take from the MAIN inventory only (slots 0-35, never worn armour or the off hand), take whole units from the lowest slot up and leave the remainder, stop at a resource's lifetime cap, mint the tier the player is working towards, spend exactly a threshold for the next tier, and pay experience at tier 4 only",
+      "name": "codex-submit", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 55,
+      "about": "gates/codex_progression_engine.js on an inventory that behaves like the real one: submit, balance and exchange read and take from the MAIN inventory only (slots 0-35, never worn armour or the off hand), take whole units from the lowest slot up and leave the remainder, stop at a resource's lifetime cap, mint the tier the player is working towards, spend exactly a threshold for the next tier and only with the stage below held (the strict ladder, ruling 8), and pay experience at tier 4 only",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
                   {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js"]},
                   {"js": "var T_javaLoadClass = Java.loadClass; Java.loadClass = function (name) { if (String(name) === 'com.mojang.brigadier.arguments.IntegerArgumentType') return {}; return T_javaLoadClass(name) }"},

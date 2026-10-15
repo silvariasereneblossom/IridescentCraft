@@ -16,7 +16,8 @@
 //     data (one key per item; per item AND tier for the four bulk metals);
 //   * the bulk metals mint the token of the tier the player is working towards, and
 //     nothing once tier 4 is held; a lane (`engineering`, `magic`) converts its own;
-//   * a held threshold of tokens is spent, exactly, for the next tier;
+//   * a held threshold of tokens is spent, exactly, for the next tier, and only with the
+//     stage below held (the strict ladder, ruling 8 of 2026-10-14);
 //   * the exchange takes tokens for experience at tier 4 only.
 //
 // The suite calls the script's own functions (codexSubmit, codexBalance,
@@ -158,17 +159,38 @@ T_run('codex advance: exactly the threshold is spent, once', function () {
   codexCheckAdvance(p)
   ok(cx_row(p, [7, 8]) === '7:12 8:64' && !cx_has(p, 'tier_3'), 'a second check takes nothing: the tier is held')
 
-  // as it is: the threshold of a HIGHER tier's token buys its tier without the one below (the grant marks the lower ones)
+  // the ladder is strict (ruling 8, 2026-10-14): the threshold of a HIGHER tier's token buys nothing without the
+  // stage below. Until then this player got tier 3 with tier 2 marked, and all 1000 were spent (decision list entry 61)
   var jumper = T_newPlayer('Jumper')
   for (var k = 0; k <= 14; k++) cx_put(jumper, k, CX.T2, 64)   // 960
   cx_put(jumper, 15, CX.T2, 40)                               // 1000
   A.clearCommands(T_server)
   codexCheckAdvance(jumper)
-  ok(cx_has(jumper, 'tier_3') && cx_has(jumper, 'tier_2') && cx_has(jumper, 'tier_1') && !cx_has(jumper, 'tier_4'),
-    '1000 tier-2 tokens and no tier_2: tier 3 is bought and tier 2 marked with it')
-  ok(cx_row(jumper, [0, 14, 15]) === '0:0 14:0 15:0', 'all 1000 are spent (' + cx_row(jumper, [0, 14, 15]) + ')')
+  ok(!cx_has(jumper, 'tier_3') && !cx_has(jumper, 'tier_2') && !cx_has(jumper, 'tier_4'),
+    '1000 tier-2 tokens and no tier_2: no tier is bought')
+  ok(cx_row(jumper, [0, 14, 15]) === '0:64 14:64 15:40', 'none of the 1000 is spent (' + cx_row(jumper, [0, 14, 15]) + ')')
   var commands = String(A.commands(T_server))
-  ok(commands.indexOf('only icraft:stage_tier_2') >= 0 && commands.indexOf('only icraft:stage_tier_3') >= 0, 'both advancements are granted')
+  ok(commands.indexOf('only icraft:stage_tier_') < 0, 'no advancement is granted (' + commands + ')')
+  A.clearTold(jumper)
+  codexBalance(jumper)
+  ok(cx_told(jumper, '1000 / 1000') && cx_told(jumper, 'unlock tier_2 first') && !cx_has(jumper, 'tier_3'),
+    'balance shows the 1000 and says tier_2 comes first, and buys nothing')
+  jumper.t_stage('tier_2')                                    // the stage below, held now
+  A.clearCommands(T_server)
+  codexCheckAdvance(jumper)
+  ok(cx_has(jumper, 'tier_3') && !cx_has(jumper, 'tier_4') && cx_row(jumper, [0, 14, 15]) === '0:0 14:0 15:0',
+    'with tier_2 held the same 1000 buy tier 3, all spent (' + cx_row(jumper, [0, 14, 15]) + ')')
+  commands = String(A.commands(T_server))
+  ok(commands.indexOf('only icraft:stage_tier_3') >= 0, 'and the tier-3 advancement is granted')
+
+  // both prices held: one check climbs two rungs and pays both, in order
+  var climber = T_newPlayer('Climber')
+  for (var m = 0; m <= 7; m++) cx_put(climber, m, CX.T1, 64)  // 512 tier-1
+  for (var q = 8; q <= 23; q++) cx_put(climber, q, CX.T2, 64) // 1024 tier-2
+  codexCheckAdvance(climber)
+  ok(cx_has(climber, 'tier_2') && cx_has(climber, 'tier_3') && !cx_has(climber, 'tier_4'),
+    '500 tier-1 and 1000 tier-2 tokens: tier 2, then tier 3, in one check')
+  ok(cx_row(climber, [7, 22, 23]) === '7:12 22:0 23:24', 'both prices are spent, the rest stays (' + cx_row(climber, [7, 22, 23]) + ')')
 })
 
 T_run('codex exchange: tokens for experience, at tier 4 only', function () {

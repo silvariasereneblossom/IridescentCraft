@@ -28,7 +28,8 @@
 //     Phase-1 test harness.)
 //
 //   • Tier-advance — banking the threshold of a tier's token consumes it and
-//     grants the next AStages stage, mirroring milestone_detection.js's
+//     grants the next AStages stage, only with the stage below held (the
+//     ladder is strict, ruling 8 of 2026-10-14), mirroring milestone_detection.js's
 //     grantTier (same cascade + Patchouli advancement + broadcast). Lives
 //     ALONGSIDE milestone_detection.js — both may grant stages; that's fine
 //     for now (Phase-1 brief).
@@ -457,10 +458,13 @@ function codexBalance(player) {
     let c = CODEX_TOKENS[t]
     let has = AStages.playerHasStage(c.grantsStage, player)
     let meets = held[t] >= c.threshold
+    let below = codexStageBelow(t)
+    let blocked = below && !AStages.playerHasStage(below, player)
     let colour = has ? Text.green : (meets ? Text.aqua : Text.white)
     let line = Text.gray('  Tier ' + t + '→' + (t + 1) + ': ')
       .append(colour(held[t] + ' / ' + c.threshold))
     if (has) line = line.append(Text.green('  ✔ ' + c.grantsStage + ' already unlocked'))
+    else if (meets && blocked) line = line.append(Text.yellow('  ✖ unlock ' + below + ' first'))
     else if (meets) line = line.append(Text.aqua('  ★ threshold met — advancing!'))
     player.tell(line)
   }
@@ -477,14 +481,28 @@ function codexBalance(player) {
   return 1
 }
 
+// The stage a player must hold before tier t's tokens buy the next one (the
+// ladder is strict, ruling 8 of 2026-10-14): tier_2 before tier 2's tokens buy
+// tier_3, tier_3 before tier 3's buy tier_4. Until then 1000 tier-2 tokens
+// bought tier 3 for a player who never held tier 2 (decision list entry 61).
+// Tier 1's tokens ask for nothing: tier_1 is the stage every survival player
+// starts with (gates/milestone_detection.js grants it at login and restores it).
+function codexStageBelow(t) {
+  return t > 1 ? 'tier_' + t : null
+}
+
 // =============================================================================
-// ADVANCE — for each tier whose held tokens ≥ threshold and whose stage is not
-// yet granted, consume the threshold tokens and grant the stage.
+// ADVANCE — for each tier whose held tokens ≥ threshold, whose stage is not
+// yet granted and whose stage below IS held, consume the threshold tokens and
+// grant the stage. The tiers are taken in order, so a player who holds both
+// prices climbs two rungs in one check and pays both.
 // =============================================================================
 function codexCheckAdvance(player) {
   for (let t = 1; t <= 3; t++) {
     let c = CODEX_TOKENS[t]
     if (AStages.playerHasStage(c.grantsStage, player)) continue
+    let below = codexStageBelow(t)
+    if (below && !AStages.playerHasStage(below, player)) continue
 
     // Count held tokens of this tier.
     let held = codexCountItem(player, c.item)
