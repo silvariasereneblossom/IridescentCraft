@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "62bad97d",
+    "generated_from":  "87c2abb8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7208,8 +7208,8 @@
                                                                               "size":  31921
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
-                                                                         "sha256":  "689066016bbc1b5b9498659e477f96ef3e98debf6127b7b7cdaf6925cee4b4eb",
-                                                                         "size":  21460
+                                                                         "sha256":  "9b6697a00fc2e63994747617f3864f753f00ccea19d019640b8b86d631510349",
+                                                                         "size":  23662
                                                                      },
                   "kubejs/server_scripts/gates/codex_progression_engine.js":  {
                                                                                   "sha256":  "78fce9b6f0c433d4616ca3f27ec590f01e910ab2f6eab6f013e9a8d8d5ca01b5",

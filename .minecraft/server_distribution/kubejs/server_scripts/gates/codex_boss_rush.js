@@ -7,8 +7,11 @@
 //   • Per player, track which of a tier's bosses they have killed.
 //   • When they clear a PERCENT of that tier's FULL boss roster, auto-advance:
 //        T1 → T2 at  80%  of every T1 boss
-//        T2 → T3 at  90%  of every T2 boss
-//        T3 → T4 at 100%  of every T3 boss   (the roster INCLUDES Lucifer)
+//        T2 → T3 at  90%  of every T2 boss   (only with tier_2 held)
+//        T3 → T4 at 100%  of every T3 boss   (only with tier_3 held; the
+//                                            roster INCLUDES Lucifer)
+//     The ladder is strict, as for the Codex tokens (decision entry 91,
+//     2026-10-15): see brStageBelow.
 //     "auto-advance" == grant the next AStages stage, mirroring
 //     milestone_detection.js's grantTier (cascade lower tiers + Patchouli
 //     icraft:stage_tierN advancement + the gold banner + challenge sound).
@@ -236,23 +239,46 @@ function brNeeded(tier) {
   return Math.ceil(cfg.pct * roster.length)
 }
 
+// The stage a player must hold before tier t's roster buys the next one: the
+// same strict ladder as the Codex tokens (ruling 8 of 2026-10-14, carried to
+// the boss rush by planning 2026-10-15, decision list entry 91). tier_2 before
+// 90 % of the tier-2 bosses buy tier_3, tier_3 before 100 % of the tier-3
+// bosses buy tier_4. Tier 1's roster asks for nothing: tier_1 is the stage
+// every survival player starts with (gates/milestone_detection.js). Until then
+// 18 tier-2 bosses killed by a player who never held tier_2 gave tier_3. Kills
+// are still recorded without the stage below: they count once it is held.
+function brStageBelow(tier) {
+  return tier > 1 ? 'tier_' + tier : null
+}
+
 // =============================================================================
-// ADVANCE — if a tier's cleared-count meets its threshold and its stage isn't
-// granted yet, auto-advance (grant the stage via brGrantTier).
+// ADVANCE — if a tier's cleared-count meets its threshold, its stage isn't
+// granted yet and the stage below IS held, auto-advance (grant the stage via
+// brGrantTier). Returns true when it granted.
 // =============================================================================
 function brCheckAdvance(player, tier) {
   var cfg = BOSS_RUSH_TIERS[tier]
-  if (!cfg) return
-  if (AStages.playerHasStage(cfg.grantsStage, player)) return
+  if (!cfg) return false
+  if (AStages.playerHasStage(cfg.grantsStage, player)) return false
+  var below = brStageBelow(tier)
+  if (below && !AStages.playerHasStage(below, player)) return false
 
   var cleared = brClearedCount(player, tier)
   var need = brNeeded(tier)
-  if (cleared < need) return
+  if (cleared < need) return false
 
   var total = BOSS_RUSH_ROSTERS[tier].length
   var pctTxt = Math.round(cfg.pct * 100)
   brGrantTier(player, cfg.grantsStage,
     'Boss Rush: cleared ' + cleared + '/' + total + ' Tier ' + tier + ' bosses (' + pctTxt + '%)')
+  return true
+}
+
+// Every tier in order, as the Codex's codexCheckAdvance takes its tokens: a
+// player whose tier-2 threshold was met while tier_2 was missing climbs two
+// rungs on the kill that buys tier_2.
+function brClimb(player) {
+  for (var t = 1; t <= 3; t++) brCheckAdvance(player, t)
 }
 
 // =============================================================================
@@ -314,6 +340,7 @@ EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', e
   try { entityId = String(event.entity.getType()) } catch (e) { return }
   if (entityId === '') return
   var canonId = brCanonical(entityId)
+  var met = false
 
   for (var tier = 1; tier <= 3; tier++) {
     // Skip tiers the player has already advanced past (cleared-count is moot once
@@ -327,13 +354,22 @@ EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', e
     var total = BOSS_RUSH_ROSTERS[tier].length
     var need = brNeeded(tier)
     var pctTxt = Math.round(BOSS_RUSH_TIERS[tier].pct * 100)
+    var below = brStageBelow(tier)
+    var bossName = entityId
+    try { bossName = String(event.entity.name.string) } catch (e2) { bossName = entityId }
 
-    if (newCount >= need) {
-      brCheckAdvance(player, tier)
+    if (newCount >= need && below && !AStages.playerHasStage(below, player)) {
+      // Threshold met without the stage below: nothing is granted (the strict
+      // ladder); the kills stay counted for when the stage is held.
+      player.tell(Text.gold('[Boss Rush] ')
+        .append(Text.white(bossName))
+        .append(Text.gray(' defeated — Tier ' + tier + ': '))
+        .append(Text.aqua(newCount + '/' + total))
+        .append(Text.yellow('  ✖ unlock ' + below + ' first, then /icraft codex bosses')))
+    } else if (newCount >= need) {
+      met = true
     } else {
       // Progress nudge (mirrors milestone_detection.js's per-kill tell style).
-      var bossName = entityId
-      try { bossName = String(event.entity.name.string) } catch (e2) { bossName = entityId }
       player.tell(Text.gold('[Boss Rush] ')
         .append(Text.white(bossName))
         .append(Text.gray(' defeated — Tier ' + tier + ': '))
@@ -341,6 +377,7 @@ EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', e
         .append(Text.gray(' (need ' + need + ' = ' + pctTxt + '%)')))
     }
   }
+  if (met) brClimb(player)
 }))
 
 // =============================================================================
@@ -361,12 +398,15 @@ function brReport(player) {
     var pctHave = total > 0 ? Math.floor((cleared / total) * 100) : 0
     var pctNeed = Math.round(cfg.pct * 100)
     var has = AStages.playerHasStage(cfg.grantsStage, player)
+    var below = brStageBelow(tier)
+    var blocked = below && !AStages.playerHasStage(below, player)
 
     var colour = has ? Text.green : (cleared >= need ? Text.aqua : Text.white)
     var line = Text.gray('  ' + cfg.label + ' (need ' + pctNeed + '%): ')
       .append(colour(cleared + ' / ' + total))
       .append(Text.gray('  ' + pctHave + '%'))
     if (has) line = line.append(Text.green('  ✔ ' + cfg.grantsStage + ' unlocked'))
+    else if (cleared >= need && blocked) line = line.append(Text.yellow('  ✖ unlock ' + below + ' first'))
     else if (cleared >= need) line = line.append(Text.aqua('  ★ threshold met!'))
     else line = line.append(Text.gray('  (' + (need - cleared) + ' more)'))
     player.tell(line)
@@ -375,8 +415,9 @@ function brReport(player) {
   player.tell(Text.gold('═══════════════════════'))
 
   // A pure-display call may reveal the player already qualifies (e.g. roster
-  // shrank, or kills predate this file) — opportunistically advance.
-  for (var t = 1; t <= 3; t++) brCheckAdvance(player, t)
+  // shrank, kills predate this file, or the stage below arrived by another
+  // route since the threshold was met) — opportunistically advance.
+  brClimb(player)
   return 1
 }
 
