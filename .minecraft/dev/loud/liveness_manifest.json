@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 327,
-   "digest": "0c887ea57460a6ee",
+   "count": 326,
+   "digest": "24a11e9e77444a9a",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -1162,10 +1162,6 @@
     {
      "id": "strip_infinity_ham@PlayerEvents.loggedIn",
      "script": "strip_infinity_ham.js"
-    },
-    {
-     "id": "tatos_dimension_lock@EntityEvents.spawned",
-     "script": "tatos_dimension_lock.js"
     },
     {
      "id": "tick_abyssArmorEffects@tick.server",

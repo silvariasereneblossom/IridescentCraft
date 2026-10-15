@@ -962,7 +962,7 @@
    }
   },
   "server": {
-   "count": 161,
+   "count": 160,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -9455,45 +9455,8 @@
      ]
     },
     {
-     "path": "tatos_dimension_lock.js",
-     "place": 157,
-     "priority": 0,
-     "registers": [
-      {
-       "kind": "guard",
-       "group": "EntityEvents.spawned",
-       "name": "tatos_dimension_lock"
-      }
-     ],
-     "sections": 0,
-     "ownSlots": 1,
-     "names": 2,
-     "reads": [
-      {
-       "name": "icraft.guard",
-       "kind": "global",
-       "from": "00_icraft_guard.js",
-       "when": "load"
-      }
-     ],
-     "after": [
-      {
-       "script": "00_icraft_guard.js",
-       "basis": "load",
-       "on": [
-        "icraft.guard"
-       ],
-       "held": "priority"
-      }
-     ],
-     "header": [
-      "events",
-      "file"
-     ]
-    },
-    {
      "path": "tetra_terramity_perks.js",
-     "place": 158,
+     "place": 157,
      "priority": 0,
      "registers": [
       {
@@ -9566,7 +9529,7 @@
     },
     {
      "path": "ultris_randomizer_janitor.js",
-     "place": 159,
+     "place": 158,
      "priority": 0,
      "registers": [
       {
@@ -9611,7 +9574,7 @@
     },
     {
      "path": "validate_recipe_removals.js",
-     "place": 160,
+     "place": 159,
      "priority": 0,
      "notIn": [
       "server_distribution/kubejs",
@@ -9651,7 +9614,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 161,
+     "place": 160,
      "priority": -1000,
      "registers": [
       {
@@ -10042,11 +10005,6 @@
      {
       "script": "spawn_village_protection.js",
       "name": "spawn_village_protection",
-      "kind": "guard"
-     },
-     {
-      "script": "tatos_dimension_lock.js",
-      "name": "tatos_dimension_lock",
       "kind": "guard"
      }
     ],

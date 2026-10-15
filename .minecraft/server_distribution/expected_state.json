@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c2ea6421",
+    "generated_from":  "8481fab0",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "f9b11188428157b5782db5b43c182e8af9e5e1f87066c29e209a5f0fe3e4ab54",
-                                                                  "size":  48263
+                                                                  "sha256":  "e1fbb970f44d32eb62339ef7873a1d33bd631dd2d853f918d60a336d4ec679d1",
+                                                                  "size":  48188
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f62b4b5bec106fad4c0d7fac04f388bfd12a818c12fd1b2776e0538e74fc96b3",
@@ -7619,10 +7619,6 @@
                                                                   "sha256":  "6bf752ce2c3f6777ba370122f6a11e61f4f1f8fdc061b9ca44aa01d48d7f65e5",
                                                                   "size":  6699
                                                               },
-                  "kubejs/server_scripts/tatos_dimension_lock.js":  {
-                                                                        "sha256":  "0d9983a1b68d09c9c2914527801224bf0162ce9953f65816541686394dead401",
-                                                                        "size":  5205
-                                                                    },
                   "kubejs/server_scripts/tetra_terramity_perks.js":  {
                                                                          "sha256":  "d1e14b476b8bce37d87b52516e9c6d7fe899e3581881cdfe763b118a38686fed",
                                                                          "size":  7141

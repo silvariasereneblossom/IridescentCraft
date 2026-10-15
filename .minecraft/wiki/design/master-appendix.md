@@ -1241,7 +1241,6 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `player_t1_damage_softener.js` | T1-tier damage softener (early-game survival) |
 | `spawn_protection.js` | Spawn-area protection enforcement |
 | `sunlight_smite.js` | Sunlight damage to specific mobs (vampire-themed ?) |
-| `tatos_dimension_lock.js` | Dimension entry lock helper (per-dimension stage check) |
 | `tetra_terramity_perks.js` | Server-tick perk hook for Tetra-Terramity integration |
 | `ultris_randomizer_janitor.js` | Janitor sweep for stranded Ultris RNG-paper marker items (`{UltrisRandomizerItem:1}` paper that the datapack's same-tick read-then-kill missed under load), preventing them from leaking into the player loot stream |
 | `validate_recipe_removals.js` | **Audit Phase 3.3.** Server-start validator: scans REMOVAL_TARGETS list against the live item registry; logs warnings for stale IDs |

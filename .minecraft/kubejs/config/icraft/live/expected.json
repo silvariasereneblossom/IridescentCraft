@@ -268,7 +268,6 @@
    "spawn_village_protection@EntityEvents.spawned": "spawn_village_protection.js",
    "strip_infinity_ham@PlayerEvents.inventoryChanged": "strip_infinity_ham.js",
    "strip_infinity_ham@PlayerEvents.loggedIn": "strip_infinity_ham.js",
-   "tatos_dimension_lock@EntityEvents.spawned": "tatos_dimension_lock.js",
    "tick_abyssArmorEffects@tick.server": "abyss/abyss_armor_effects.js",
    "tick_abyssRingEffects@tick.server": "abyss/abyss_ring_effects.js",
    "tick_affixEffects@tick.server": "affixes/affix_effects.js",

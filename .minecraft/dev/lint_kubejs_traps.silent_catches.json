@@ -1,7 +1,7 @@
 {
   "comment": "Grandfathered silent catches for the SILENT-CATCH rule of lint_kubejs_traps.js (ratchet, operator ruling 2026-10-11). A file may hold at most `count` unmarked silent catches; a file that is not listed may hold none. `ids` are fingerprints of the grandfathered try/catch blocks, used only to point at the new one. Counts go DOWN only (--ratchet-down after fixing or marking some); never raise one by hand to get a push through: report the error, or write // swallow-ok: <reason> inside the catch.",
-  "taken": "2026-10-12, snapshot of 190 scripts when the rule started; lowered 2026-10-14",
-  "total": 278,
+  "taken": "2026-10-12, snapshot of 190 scripts when the rule started; lowered 2026-10-15",
+  "total": 273,
   "files": {
     "client_scripts/food_dedup_jei_hide.js": {"count": 1, "ids": ["a98ff52f"]},
     "client_scripts/mekasuit_mk2_tooltip.js": {"count": 1, "ids": ["afef226f"]},
@@ -76,7 +76,6 @@
     "server_scripts/strip_anomalous_drops.js": {"count": 2, "ids": ["12be1a00","fa1788ae"]},
     "server_scripts/strip_infinity_ham.js": {"count": 5, "ids": ["cd8e7c8d","68e90e89","740fac7e","1a0d8dd2","b2ffe877"]},
     "server_scripts/sunlight_smite.js": {"count": 2, "ids": ["9cea0f6f","cd286011"]},
-    "server_scripts/tatos_dimension_lock.js": {"count": 5, "ids": ["e3f190d7","bc37e744","09d0eb4d","58765b47","e8b5efa6"]},
     "server_scripts/tetra_terramity_perks.js": {"count": 4, "ids": ["4fda26fa","0109b781","d1bf8ffe","387e34e5"]},
     "server_scripts/ultris_randomizer_janitor.js": {"count": 1, "ids": ["166b10e8"]},
     "startup_scripts/cap_player_knockback.js": {"count": 1, "ids": ["0a7e7b66"]},
