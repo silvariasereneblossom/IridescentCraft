@@ -5972,8 +5972,8 @@
                                                                   "size":  48255
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "f62b4b5bec106fad4c0d7fac04f388bfd12a818c12fd1b2776e0538e74fc96b3",
-                                                                    "size":  27585
+                                                                    "sha256":  "1655eb6b8db2b9301c72648d2950c56d8e95306d08c19ffd1307775364df4a87",
+                                                                    "size":  27742
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "fb5ce29a6dec94e3541fc6806fa42f20cfebaf3e1a4a1a8b708519461ccadb98",
@@ -6572,8 +6572,8 @@
                                                                                         "size":  111
                                                                                     },
                   "kubejs/data/icraft/tags/worldgen/structure/iss_magehunter.json":  {
-                                                                                         "sha256":  "b79727e5da3a629b974f0079642e8caeb3c1cb86dc1ee60b1a1280d9fca42c6e",
-                                                                                         "size":  109
+                                                                                         "sha256":  "6a564a435e56de875a595d5f8147885e3ffc80d0c5a83d30a8e69a36e6cdd366",
+                                                                                         "size":  106
                                                                                      },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_enchanter_merlin.json":  {
                                                                                                      "sha256":  "69692c9ede947bf611ae37892a9dbc5fdfa94139e0d19507b989cf212a4f31a6",
