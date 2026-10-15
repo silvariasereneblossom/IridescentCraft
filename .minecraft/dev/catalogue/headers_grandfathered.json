@@ -123,7 +123,6 @@
   "regen_control.js",
   "respawn_hunger.js",
   "scaling/boss_hp.js",
-  "scaling/boss_progressive.js",
   "spawn_priest_tower.js",
   "spawn_protection.js",
   "strip_infinity_ham.js",

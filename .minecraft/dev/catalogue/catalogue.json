@@ -8475,14 +8475,29 @@
        "kind": "guard",
        "group": "EntityEvents.death",
        "name": "scaling/boss_progressive"
+      },
+      {
+       "kind": "guard",
+       "group": "ServerEvents.commandRegistry",
+       "name": "scaling/boss_progressive"
+      },
+      {
+       "kind": "hurt",
+       "group": "hurt",
+       "name": "scaling/boss_progressive",
+       "who": "player"
       }
      ],
      "sections": 0,
+     "features": [
+      "per-kill-counted",
+      "per-kill-scaled"
+     ],
      "registries": [
       "bosses"
      ],
      "ownSlots": 0,
-     "names": 4,
+     "names": 18,
      "reads": [
       {
        "name": "icraft.bosses",
@@ -8494,13 +8509,19 @@
        "name": "icraft.core",
        "kind": "global",
        "from": "0_lib_core.js",
-       "when": "handler"
+       "when": "load"
       },
       {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
+      },
+      {
+       "name": "icraft.live",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "handler"
       }
      ],
      "after": [
@@ -8511,7 +8532,21 @@
         "icraft.guard"
        ],
        "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
+       ],
+       "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live",
+      "registry"
      ]
     },
     {
@@ -10791,6 +10826,11 @@
       "kind": "guard"
      },
      {
+      "script": "scaling/boss_progressive.js",
+      "name": "scaling/boss_progressive",
+      "kind": "guard"
+     },
+     {
       "script": "zzz_icraft_live.js",
       "name": "zzz_icraft_live",
       "kind": "guard"
@@ -11193,6 +11233,12 @@
       "name": "icraft.ss_unique_spellsword",
       "kind": "hurt",
       "who": "attackerPlayer"
+     },
+     {
+      "script": "scaling/boss_progressive.js",
+      "name": "scaling/boss_progressive",
+      "kind": "hurt",
+      "who": "player"
      },
      {
       "script": "scaling/dimension_mechanics.js",
@@ -12421,7 +12467,7 @@
     },
     {
      "script": "server:scaling/boss_progressive.js",
-     "when": "handler"
+     "when": "load"
     },
     {
      "script": "server:scaling/dimension_mechanics.js",
@@ -13162,7 +13208,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 23
+   "usersAtLoad": 24
   },
   "origins": {
    "script": "server:0_lib_origins.js",

@@ -8,18 +8,15 @@ function join(entity, diff) {
   return entity
 }
 function setAscension(n) { __ascLevel = n }
-// boss_progressive.js: per-kill scaling never runs. In the OLD scripts isScalableBoss(entity.type) is
-// `new Set([...]).has(<Java String>)`, which is false on this engine (see the S7 note in the suite); in the
-// pack's scripts it asks the boss registry, where the system is switched off ("switches": perKill). To
-// exercise the rest of that handler the lookup can be forced: the old list with the id as a JS string, the
-// registry's `perKill` flag without its switch.
+// boss_progressive.js (the OLD scripts of fixtures/): per-kill scaling never runs. isScalableBoss(entity.type) is
+// `new Set([...]).has(<Java String>)`, which is false on this engine. To exercise the rest of that old handler the
+// lookup can be forced (the old list with the id as a JS string). The pack's script is per player since 2026-10-15
+// and acts at a boss's first exchange with a player, not at spawn: suite per-kill.
 var __realScalable = null
 function forceScalable(on) {
   if (on) {
     if (__realScalable === null) __realScalable = isScalableBoss
-    isScalableBoss = (global.icraft && global.icraft.bosses)
-      ? function (type) { return global.icraft.bosses.has(type, 'perKill') }
-      : function (type) { return __realScalable(String(type)) }
+    isScalableBoss = function (type) { return __realScalable(String(type)) }
   } else if (__realScalable !== null) {
     isScalableBoss = __realScalable
   }

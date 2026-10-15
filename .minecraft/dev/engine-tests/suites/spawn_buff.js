@@ -90,31 +90,19 @@ join(d2, 1.5)
 line('old transient modifiers still live, then new join', d2)
 check('S6 new scripts over live transient modifiers replace them', d2.rawMax() === a.rawMax() && !has(d2.mods(HP), '*') && !has(d2.mods(DMG), '*'), 'max=' + d2.rawMax())
 
-__host.print('S7  per-kill scaling (5 kills: +50% hp, +35% dmg, +8% speed)')
+__host.print('S7  per-kill scaling acts at the first exchange of a boss with a player, never at its spawn')
+// Since 2026-10-15 (ruling 23) per-kill scaling is per player and is fixed the first time the boss trades a hit with
+// a player (suite per-kill). Until then it was a world-wide counter applied at spawn, and it never ran: the OLD
+// scripts asked new Set([...]).has(<Java String>), false on this engine. So a boss joins exactly as under the old
+// scripts, also with kills on the old world-wide counter (which nothing reads any more).
 var L5 = __host.level()
 L5.setKills('cataclysm_the_harbinger', 5)
-// As the file is: isScalableBoss(entity.type) is new Set([...]).has(<Java String>). A String that comes
-// back from a Java method is a wrapped object on this engine (WrapFactory.javaPrimitiveWrap defaults to
-// true and nothing in KubeJS turns it off), and Set.has() does not match it against a JS string.
-var e5 = __host.living('cataclysm:the_harbinger', 350, L5)
-__host.print('     typeof entity.type = ' + (typeof e5.type) + ', new Set([id]).has(entity.type) = ' + new Set(['cataclysm:the_harbinger']).has(e5.type) +
-  ', isScalableBoss(entity.type) = ' + isScalableBoss(e5.type))
 var p0 = join(harbinger(L5), 1.5)
 var q0 = oldJoin(harbinger(L5), 1.5)
-check('S7 as shipped, old AND new: a boss with 5 kills on record gets NO per-kill scaling (the lookup never matches)', near(p0.rawMax(), 2925) && sameNumbers(p0, q0) && !has(p0.flags(), 'icraft_prog_scaled') && !has(q0.flags(), 'icraft_prog_scaled'))
-// The rest of the handler, with the lookup forced to work (String(type)) in both versions:
-forceScalable(true); oldForceScalable(true)
-var p = join(harbinger(L5), 1.5)
-var q = oldJoin(harbinger(L5), 1.5)
-line('new (lookup forced)', p)
-check('S7 max (800 + 350*(0.5+0.5)) * 3 = 3450, dmg 10*1.35*3 = 40.5, speed 0.324', near(p.rawMax(), 3450) && near(p.value(DMG), 40.5) && near(p.value(SPD), 0.324))
-check('S7 bit-identical to the old scripts', sameNumbers(p, q))
-check('S7 saved, flag 2', !has(p.mods(HP), '*') && !has(p.mods(DMG), '*') && !has(p.mods(SPD), '*') && flagIs(p, 'icraft_prog_scaled', 2))
-var q2 = join(q.reload(), 1.5)
-check('S7 legacy boss gets the same back', sameNumbers(q2, p), 'max=' + q2.rawMax())
-var p2 = join(p.reload(), 1.5)
-check('S7 survives a reload', sameNumbers(p2, p))
-forceScalable(false); oldForceScalable(false)
+check('S7 a boss joins bit-identical to the old scripts, with 5 kills on the old counter: no per-kill scaling at spawn', near(p0.rawMax(), 2925) && sameNumbers(p0, q0) &&
+  !has(p0.flags(), 'icraft_prog_scaled') && !has(p0.flags(), 'icraft_pk_scaled') && !has(q0.flags(), 'icraft_prog_scaled'))
+var p1 = join(p0.reload(), 1.5)
+check('S7 and after a reload', sameNumbers(p1, p0) && !has(p1.flags(), 'icraft_pk_scaled'))
 
 __host.print('S8  ordinary mobs (tier HP)')
 var z = join(zombie(L), 1.5)

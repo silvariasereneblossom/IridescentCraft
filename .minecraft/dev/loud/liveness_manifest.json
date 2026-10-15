@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 326,
-   "digest": "24a11e9e77444a9a",
+   "count": 328,
+   "digest": "7c433abb457985e3",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -112,6 +112,7 @@
     "regen_control@ServerEvents.loaded",
     "respec/class_respec@ServerEvents.loaded",
     "respec/class_respec@ServerEvents.recipes",
+    "scaling/boss_progressive@ServerEvents.commandRegistry",
     "skills/justleveling_skills@ServerEvents.loaded",
     "skills/mastery_tax@ServerEvents.loaded",
     "skills/skill_effects@ServerEvents.loaded",
@@ -1033,6 +1034,14 @@
     },
     {
      "id": "scaling/boss_progressive@EntityEvents.spawned",
+     "script": "scaling/boss_progressive.js"
+    },
+    {
+     "id": "scaling/boss_progressive@ServerEvents.commandRegistry",
+     "script": "scaling/boss_progressive.js"
+    },
+    {
+     "id": "scaling/boss_progressive@hurt",
      "script": "scaling/boss_progressive.js"
     },
     {
@@ -2586,6 +2595,14 @@
     {
      "name": "noseenotick-tag-entries",
      "script": "compat/noseenotick_tag_entries.js"
+    },
+    {
+     "name": "per-kill-counted",
+     "script": "scaling/boss_progressive.js"
+    },
+    {
+     "name": "per-kill-scaled",
+     "script": "scaling/boss_progressive.js"
     },
     {
      "name": "quest-bridge",

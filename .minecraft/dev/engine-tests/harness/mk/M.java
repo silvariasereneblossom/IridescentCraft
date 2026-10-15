@@ -120,6 +120,7 @@ public class M {
     public void putDouble(String k, double v) { m.put(k, Double.valueOf(v)); }
     public Tag getCompound(String k) { Object v = m.get(k); return v instanceof Tag t ? t : new Tag(); }
     public void put(String k, Object v) { m.put(k, v instanceof Tag ? v : new Tag()); }
+    public Set<String> getAllKeys() { return new TreeSet<>(m.keySet()); }
     Tag copy() { Tag t = new Tag(); t.m.putAll(m); return t; }
     /** e.g. "icraft_boss_hp=1b icraft_boss_3x=2" (b = written by putBoolean) */
     public String show() {
@@ -157,6 +158,16 @@ public class M {
     final Tag data = new Tag();
     final Server server = new Server(this);
     public Server getServer() { return server; }
+    /** the players in this level, as ServerLevel.getPlayers() (KubeJS: level.players) */
+    final List<Living> players = new ArrayList<>();
+    public List<Living> getPlayers() { return players; }
+    /** test control: a player (player = true) joins this level at x, y, z */
+    public Living t_player(String name, double x, double y, double z) {
+      Living p = new Living("minecraft:player", 20.0, this);
+      p.player = true; p.monster = false; p.x = x; p.y = y; p.z = z;
+      players.add(p);
+      return p;
+    }
     public Tag getPersistentData() { return data; }
     /** boss_progressive.js kill counter: key = id with ':' replaced by '_' */
     public void setKills(String safeType, int n) {
@@ -202,6 +213,14 @@ public class M {
     public Tag getPersistentData() { return data; }
     public boolean isAlive() { return health > 0.0f; }
     public boolean isRemoved() { return false; }
+    // position (0, 0, 0 unless a test moves it), what Entity.distanceToSqr(Entity) answers for scripts
+    // (KubeJS remaps it to distanceToEntitySqr; distanceToSqr is the Vec3 overload), spectator mode, chat
+    double x, y, z;
+    boolean spectator = false;
+    final List<String> told = new ArrayList<>();
+    public double distanceToEntitySqr(Living o) { double a = x - o.x, b = y - o.y, c = z - o.z; return a * a + b * b + c * c; }
+    public boolean isSpectator() { return spectator; }
+    public void tell(Object message) { told.add(String.valueOf(message)); }
     public float getHealth() { guard("getHealth"); return health; }
     public float getMaxHealth() { guard("getMaxHealth"); return (float) attrs.get(MAX_HEALTH).getValue(); }
     public void setHealth(float h) { guard("setHealth"); health = Math.max(0.0f, Math.min(h, getMaxHealth())); }
@@ -233,6 +252,7 @@ public class M {
     public Living reload() {
       Living n = fresh();
       n.monster = monster; n.player = player; n.untouchable = untouchable; n.diffScaled = diffScaled;
+      n.x = x; n.y = y; n.z = z;
       n.attrs.clear();
       for (Map.Entry<Attribute, AttributeInstance> e : attrs.entrySet()) {
         AttributeInstance from = e.getValue();
@@ -287,6 +307,13 @@ public class M {
       return String.join(",", out);
     }
     public String flags() { return data.show(); }
+    /** test control: move the entity */
+    public Living t_at(double nx, double ny, double nz) { x = nx; y = ny; z = nz; return this; }
+    /** test control: spectator mode on or off */
+    public Living t_spectator(boolean on) { spectator = on; return this; }
+    /** test-side read: every chat line the entity was told, joined with " | " */
+    public String t_told() { return String.join(" | ", told); }
+    public void t_clearTold() { told.clear(); }
     /** the entity a load makes of this one, before its data is copied in (package-private: not for scripts) */
     Living fresh() { return new Living(typeId, attrs.get(MAX_HEALTH).base, level); }
   }

@@ -16,9 +16,13 @@ var EntityEvents = {
   spawned: function (fn) { __spawned.push(fn) },
   death: function (fn) { __death.push(fn) }
 }
+// scaling/boss_progressive.js registers /icraft bosskills (since 2026-10-15): the handler is kept, never run here
+var __commandRegistry = []
+var ServerEvents = { commandRegistry: function (fn) { __commandRegistry.push(fn) } }
 // script-side mocks, held to the engine's tables (lib/honest.js)
 T_honestEvent('EntityEvents.spawned')
 T_honestEvent('EntityEvents.death')
+T_honestEvent('ServerEvents.commandRegistry')
 T_honestKeys('console', console, 'dev.latvian.mods.kubejs.util.ConsoleJS', false)
 // JsonIO.readString(path): how 0_lib_registry.js reads kubejs/config/icraft/registry/*.json. The Host reads the file of the
 // pack under test with the engine's own two calls (H.java readJsonText); suite mock-facts compares the answers.

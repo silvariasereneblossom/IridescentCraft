@@ -49,7 +49,7 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | flag `boss` | `core.isBoss` (affixes, enchants, skills, both Vorpal decapitations) AND no mob-tier health multiplier | `0_lib_core.js`, `scaling/mob_scaling_unified.js` |
 | flag `x3` | health x3, melee x3, Iron's Spellbooks spell power x2 | `scaling/zz_boss_global_3x.js` |
 | flag `x3DamageSkip` | keeps the health x3, skips both damage buffs (no boss has it) | same |
-| flag `perKill` | per-kill scaling, which is SWITCHED OFF (`switches.perKill`) | `scaling/boss_progressive.js` |
+| flag `perKill` | per-kill scaling, per player: the highest kill count among the players within 64 blocks fixes the boss at its first exchange with a player (ON since 2026-10-15, `switches.perKill`; the Wither is not flagged) | `scaling/boss_progressive.js` |
 | `rush` | the boss-rush roster (1-3) it counts for. The roster SIZE is the denominator of a ruled percentage | `gates/codex_boss_rush.js` |
 | `phaseOf` | a kill of this entity is credited to that boss in the boss rush | same |
 | `relic` | `{ item, chance, looting }`: the relic it drops | `relic_boss_drops.js` |

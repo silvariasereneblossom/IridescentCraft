@@ -169,6 +169,25 @@
    "proves": "a critical spell hit with Arcane Vorpal passed its roll and was made lethal",
    "do": "Critical spell hits on non-boss mobs with a staff or spellbook enchanted iridescent_reforging:vorpal_arcane.",
    "needs": "a caster with spell crit chance; the roll is per level, as for Vorpal"
+  },
+  "per-kill-counted": {
+   "proves": "a boss with the registry flag perKill died and every player within 64 blocks had one kill added to their own count",
+   "do": "More than 100 blocks from the world spawn, summon a flagged boss and kill it within 64 blocks; then `/icraft bosskills` lists 1 kill.",
+   "cmd": [
+    "/summon mutantmonsters:mutant_zombie ~ ~ ~6 {NoAI:1b}",
+    "/kill @e[type=mutantmonsters:mutant_zombie,limit=1,sort=nearest]",
+    "/icraft bosskills"
+   ]
+  },
+  "per-kill-scaled": {
+   "proves": "a flagged boss traded its first hit with a player whose count is 1 or more, and was fixed above base (saved modifiers icraft_pk_hp / _dmg / _spd, one chat line)",
+   "do": "After the kill of per-kill-counted, summon the same boss and hit it once: the chat line says fight 2, +15 % health, +10 % damage, +3 % speed.",
+   "needs": "per-kill-counted done by the same player",
+   "cmd": [
+    "/summon mutantmonsters:mutant_zombie ~ ~ ~6 {NoAI:1b}",
+    "/data get entity @e[type=mutantmonsters:mutant_zombie,limit=1,sort=nearest] Attributes",
+    "/kill @e[type=mutantmonsters:mutant_zombie]"
+   ]
   }
  },
  "groups": {

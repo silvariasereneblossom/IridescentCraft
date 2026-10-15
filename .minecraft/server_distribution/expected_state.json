@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f99021ff",
+    "generated_from":  "c969cd4f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,12 +5968,12 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "1e20ff323d38b6c1639912f47323fff5cebe2548fb248c197341dfe9fa4d6e3e",
-                                                                  "size":  48420
+                                                                  "sha256":  "ddb3ad65bfb7bf7d8053d536d50293d202d704528077bc2d255ddeb36f40b875",
+                                                                  "size":  48685
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "1655eb6b8db2b9301c72648d2950c56d8e95306d08c19ffd1307775364df4a87",
-                                                                    "size":  27742
+                                                                    "sha256":  "f9bf66665461417fc4cb5bfe0f1344abd600d2f8c591b907071294f258b28bef",
+                                                                    "size":  28143
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "fb5ce29a6dec94e3541fc6806fa42f20cfebaf3e1a4a1a8b708519461ccadb98",
@@ -7568,8 +7568,8 @@
                                                                    "size":  9701
                                                                },
                   "kubejs/server_scripts/scaling/boss_progressive.js":  {
-                                                                            "sha256":  "3318d84a9f2e509be069ece43e1fa0fb63c4352adcef78bc53cb031f527f1fc7",
-                                                                            "size":  5538
+                                                                            "sha256":  "00eac6eb057143b6658ca6d5634eca5b873564dc1527a2c8e9298618805252be",
+                                                                            "size":  11127
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
                                                                                "sha256":  "7ec42da7daefec339db013a816c558d351a34f1ed651b1d543b55a9a3f46304f",
