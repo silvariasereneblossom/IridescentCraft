@@ -824,8 +824,13 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
 // disk under one of PRUNE_TO_REPO_TREE that the extracted repo tree does not
 // contain is a repo deletion, by definition -- these trees are authored in the
 // repo and nothing writes into them at runtime (KubeJS's own runtime output
-// lives in kubejs/exported, kubejs/logs, kubejs/.cache and kubejs/config, none
-// of which is listed). This is the same rule `mirror_mods` has always applied
+// lives in kubejs/exported, kubejs/logs, kubejs/.cache and the files directly
+// under kubejs/config, none of which is listed). `kubejs/config/icraft` is the
+// pack's own (the boss and dimension registries, the liveness list; since
+// 2026-10-13): the scripts only read it, so a file the repo drops there is a
+// repo deletion like any other (operator ruling 20, 2026-10-14; before it, a
+// dropped registry file stayed on a server that took the full-zip path).
+// This is the same rule `mirror_mods` has always applied
 // to stale `mods/.index/*.pw.toml`. It does not depend on `expected_state.json`
 // at all, so a manifest that lags HEAD can neither delete a newly added script
 // nor keep a deleted one alive.
@@ -846,6 +851,7 @@ const PRUNE_TO_REPO_TREE: &[&str] = &[
     "kubejs/client_scripts",
     "kubejs/data",
     "kubejs/assets",
+    "kubejs/config/icraft",
 ];
 
 /// Refuse to prune a tree when more than this percentage of its files would be
@@ -1631,6 +1637,62 @@ mod tests {
         assert_eq!(fs::read_to_string(old_stage.join("latest.log")).unwrap(), "staged");
         assert_eq!(fs::read_to_string(new_stage.join("latest.log")).unwrap(), "staged");
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// After a full-zip overlay, a file the repo dropped from one of the
+    /// pack's own trees goes, `kubejs/config/icraft` (the registries) included;
+    /// what KubeJS writes itself, directly under `kubejs/config`, stays.
+    #[test]
+    fn the_prune_covers_the_packs_part_of_kubejs_config() {
+        let root = scratch("prune");
+        let (src, dest) = (root.join("zip"), root.join("server"));
+        let put = |base: &Path, rel: &str| {
+            let p = join_rel(base, rel);
+            fs::create_dir_all(p.parent().unwrap()).unwrap();
+            fs::write(p, rel).unwrap();
+        };
+        for rel in [
+            "kubejs/config/icraft/registry/bosses.json",
+            "kubejs/config/icraft/registry/dimensions.json",
+            "kubejs/config/icraft/live/expected.json",
+            "kubejs/config/common.properties",
+            "kubejs/server_scripts/a.js",
+        ] {
+            put(&src, rel);
+            put(&dest, rel);
+        }
+        // Dropped by the repo: a registry file and a script.
+        put(&dest, "kubejs/config/icraft/registry/old_roster.json");
+        put(&dest, "kubejs/server_scripts/gone.js");
+        // KubeJS's own, never in the repo.
+        put(&dest, "kubejs/config/client.properties");
+        put(&dest, "kubejs/config/some-runtime-file.json");
+
+        assert!(PRUNE_TO_REPO_TREE.contains(&"kubejs/config/icraft"));
+        assert!(!PRUNE_TO_REPO_TREE.contains(&"kubejs/config"), "KubeJS writes its own files there");
+        for tree in PRUNE_TO_REPO_TREE.iter().copied() {
+            prune_to_repo_tree(&src, &dest, tree);
+        }
+        assert!(!join_rel(&dest, "kubejs/config/icraft/registry/old_roster.json").exists());
+        assert!(!join_rel(&dest, "kubejs/server_scripts/gone.js").exists());
+        for kept in [
+            "kubejs/config/icraft/registry/bosses.json",
+            "kubejs/config/icraft/registry/dimensions.json",
+            "kubejs/config/icraft/live/expected.json",
+            "kubejs/config/common.properties",
+            "kubejs/config/client.properties",
+            "kubejs/config/some-runtime-file.json",
+            "kubejs/server_scripts/a.js",
+        ] {
+            assert!(join_rel(&dest, kept).exists(), "{kept}");
+        }
+
+        // A zip without the tree at all (a bad extract): nothing is deleted.
+        let empty = root.join("empty-zip");
+        fs::create_dir_all(&empty).unwrap();
+        prune_to_repo_tree(&empty, &dest, "kubejs/config/icraft");
+        assert!(join_rel(&dest, "kubejs/config/icraft/registry/bosses.json").exists());
+        let _ = fs::remove_dir_all(&root);
     }
 
     #[test]
