@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "a4fab07b",
+    "generated_from":  "8f68ad2f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6895,6 +6895,10 @@
                                                                                                   "sha256":  "aa723ac812e91f64d452ce7f7b5fb89d8d8939150710396d6035ae1e41c23c25",
                                                                                                   "size":  1168
                                                                                               },
+                  "kubejs/data/progressivebosses/progressivebosses/wither/ultimate.json":  {
+                                                                                               "sha256":  "64be77091b46ec8b50f74b894333164a58cfa43c11fd1ff562d5102f141a9c55",
+                                                                                               "size":  3895
+                                                                                           },
                   "kubejs/data/rpgseteffects/loot_tables/items/artifact_piece_pouch.json":  {
                                                                                                 "sha256":  "a7a300d0c651c5b5cf6c6352f6f6b3f2138cb5d7d6d5ed4b967a145cbc01ead4",
                                                                                                 "size":  1462
