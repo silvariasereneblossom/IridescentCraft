@@ -15,7 +15,7 @@ skipped as a defense-in-depth check (internal content should never be in the
 source files mapped here, but the check costs nothing).
 
 Pages listed under wiki_only in the manifest are NEVER touched by the sync —
-they live only on the wiki side (e.g., _Sidebar.md, Tester-Installation-Guide.md).
+they live only on the wiki side (e.g., _Sidebar.md).
 """
 
 from __future__ import annotations

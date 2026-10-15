@@ -67,11 +67,11 @@
     { "src": ".minecraft/wiki/systems/overview.md",                                "dst": "Systems-Overview.md" },
     { "src": ".minecraft/wiki/systems/controls.md",                                "dst": "Controls.md" },
     { "src": ".minecraft/wiki/systems/tetra-materials.md",                         "dst": "Tetra-Materials.md" },
-    { "src": ".minecraft/wiki/systems/icraft-launcher.md",                         "dst": "Iridescent-Launcher.md" }
+    { "src": ".minecraft/wiki/systems/icraft-launcher.md",                         "dst": "Iridescent-Launcher.md" },
+    { "src": ".minecraft/wiki/tester-installation-guide.md",                       "dst": "Tester-Installation-Guide.md" }
   ],
   "wiki_only": [
-    "_comment: Pages that exist on the public wiki only and are not synced. The sync script will leave these untouched.",
-    "_Sidebar.md",
-    "Tester-Installation-Guide.md"
+    "_comment: Pages that exist on the public wiki only and are not synced. The sync script will leave these untouched. Tester-Installation-Guide.md was one until 2026-10-15; its source is now .minecraft/wiki/tester-installation-guide.md (it links with the wiki's own [[Page Name]] form, which the conversions leave alone).",
+    "_Sidebar.md"
   ]
 }
