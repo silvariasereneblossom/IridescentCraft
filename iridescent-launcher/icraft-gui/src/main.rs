@@ -428,7 +428,12 @@ const REMOTE_STALE_AFTER: Duration = Duration::from_secs(300);
 //      a launcher self-update) loop inside their worker thread. A non-zero exit
 //      (every recorded crash has exited 1) or a probe-forced stop that the
 //      operator did NOT ask for runs the Cycle sequence again, with backoff and
-//      a crash-loop cap. Exit 0 (e.g. an in-game /stop) is treated as intentional.
+//      a crash-loop cap. Exit 0 (e.g. an in-game /stop) is treated as intentional,
+//      unless the server thread crashed first: since 2026-10-15 run.rs reports
+//      such an exit as 1, and kills a JVM still alive 30 s after its stop failed
+//      (icraft_core::run, "A server thread that crashed"; measured in the rig,
+//      ruling 19: before that the probe below took five minutes, and a JVM that
+//      exited 0 on its own was not restarted at all).
 //   2. Listener probe -- while a supervised server is Started (or wedged in
 //      Stopping), a bare TCP connect to the game port every PROBE_INTERVAL.
 //      PROBE_FAILS_TO_HANG consecutive failures = the JVM is alive but no longer
@@ -638,10 +643,14 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
                 let mins = CRASH_WINDOW.as_secs() / 60;
                 log::error!(
                     "[heartbeat] server went DOWN ({why}) -- already auto-restarted {} times in {mins} min; \
-                     giving up (crash loop). Fix the cause, then click Cycle.",
+                     giving up (crash loop). Fix the cause, then click Cycle, or run request_cycle.ps1 \
+                     (on the box or over remoting): a request starts it again.",
                     q.len()
                 );
-                set_heartbeat_status(format!("GAVE UP -- crash loop ({} in {mins} min); click Cycle", q.len() + 1));
+                set_heartbeat_status(format!(
+                    "GAVE UP -- crash loop ({} in {mins} min); click Cycle or run request_cycle.ps1",
+                    q.len() + 1
+                ));
                 return r.map(|_| ());
             }
             q.push_back(Instant::now());
@@ -741,13 +750,15 @@ fn spawn_listener_probe() {
 // start). It answers "<unix-secs> accepted" or "<unix-secs> skipped: <why>" in
 // CYCLE_RESULT_FILE so the caller logs what actually happened. (Built for the
 // 05:00 nightly-restart task, which the uptime restart policy below replaced.)
+//
+// Since 2026-10-15 a request is also the way back after the heartbeat GAVE UP
+// (operator ruling 20): nothing runs then, so it is a start, answered
+// "accepted: start ...". The rules, the 10 min age limit included, are
+// `icraft_core::restart_policy::request_verdict`.
 
 const CYCLE_REQUEST_FILE: &str = ".icraft_cycle_request";
 const CYCLE_RESULT_FILE: &str = ".icraft_cycle_request.result";
 const CYCLE_REQUEST_POLL: Duration = Duration::from_secs(10);
-/// Older requests are dropped, so a launcher started hours later can't bounce
-/// the server on a leftover file.
-const CYCLE_REQUEST_MAX_AGE: Duration = Duration::from_secs(10 * 60);
 const CYCLE_WARN_LEAD: Duration = Duration::from_secs(60);
 /// A ~450-mod world save needs more than the Cycle button's 30 s (the old NSSM
 /// console-stop timeout was 120 s).
@@ -769,40 +780,85 @@ fn unix_now() -> u64 {
 
 /// Started once in `IcraftApp::new`.
 fn spawn_cycle_request_watcher() {
+    use icraft_core::restart_policy::RequestVerdict;
     std::thread::spawn(|| loop {
         std::thread::sleep(CYCLE_REQUEST_POLL);
         let Some(dir) = APP_SERVER_DIR.lock().unwrap().clone() else { continue };
         let Ok(body) = std::fs::read_to_string(dir.join(CYCLE_REQUEST_FILE)) else { continue };
         let _ = std::fs::remove_file(dir.join(CYCLE_REQUEST_FILE));
         let body = body.trim().to_string();
-        let verdict = cycle_request_precheck(&body);
-        let answer = match &verdict {
-            Ok(()) => "accepted".to_string(),
-            Err(why) => why.clone(),
-        };
+        let verdict = icraft_core::restart_policy::request_verdict(&request_facts(&dir, &body));
+        let answer = verdict.answer();
         log::info!("[scheduled] Cycle request '{body}': {answer}");
         let _ = std::fs::write(dir.join(CYCLE_RESULT_FILE), format!("{} {answer}\n", unix_now()));
-        if verdict.is_ok() {
-            warned_cycle("scheduled", "Server restart", CYCLE_WARN_LEAD);
+        match verdict {
+            RequestVerdict::Cycle => {
+                warned_cycle("scheduled", "Server restart", CYCLE_WARN_LEAD);
+            }
+            RequestVerdict::StartAfterGaveUp => start_after_gave_up(dir, &body),
+            RequestVerdict::Refused(_) => {}
         }
     });
 }
 
-/// Err = why the request is not run (reported back to the caller).
-fn cycle_request_precheck(body: &str) -> Result<(), String> {
-    let stamp: u64 = body
-        .split_whitespace()
-        .next()
-        .and_then(|s| s.parse().ok())
-        .ok_or_else(|| "rejected: no timestamp in the request".to_string())?;
-    let age = unix_now().saturating_sub(stamp);
-    if age > CYCLE_REQUEST_MAX_AGE.as_secs() {
-        return Err(format!("skipped: stale request ({age}s old)"));
+/// What the request rules (`restart_policy::request_verdict`) need to know.
+fn request_facts(dir: &std::path::Path, body: &str) -> icraft_core::restart_policy::RequestFacts {
+    let stamp: Option<u64> = body.split_whitespace().next().and_then(|s| s.parse().ok());
+    icraft_core::restart_policy::RequestFacts {
+        age_secs: stamp.map(|s| unix_now().saturating_sub(s)),
+        cycle_blocker: cycle_blocker(),
+        gave_up: !SUPERVISOR.running.load(Ordering::SeqCst) && SUPERVISOR.status.lock().unwrap().starts_with("GAVE UP"),
+        jvm_running: icraft_core::run::jvm_active(),
+        busy: TASK_BUSY.load(Ordering::SeqCst) || ADOPT_TASK.lock().unwrap().is_some(),
+        regen_unfinished: dir.join(icraft_core::regen::exec::MARKER_FILE).exists(),
     }
-    match cycle_blocker() {
-        Some(why) => Err(format!("skipped: {why}")),
-        None => Ok(()),
+}
+
+/// The way back after GAVE UP, from a request: the same supervised Cycle
+/// (sync + start) as the Cycle button with nothing running, the heartbeat
+/// armed again. Runs without the window (its frames stop while nobody looks
+/// at the box), which adopts the task at its next frame.
+fn start_after_gave_up(dir: PathBuf, body: &str) {
+    log::warn!("[scheduled] the heartbeat had given up; request '{body}' starts the server again (sync + start)");
+    arm_supervisor();
+    TASK_BUSY.store(true, Ordering::SeqCst);
+    // Held while the thread is made, so a frame can never see neither the
+    // window's task nor this one.
+    let mut slot = ADOPT_TASK.lock().unwrap();
+    *slot = Some(std::thread::spawn(move || {
+        let _busy = TaskBusy;
+        log::info!("== start after GAVE UP starting ==");
+        match supervise(ServerConfig::from_path(dir), true) {
+            Ok(_) => log::info!("== start after GAVE UP done =="),
+            Err(e) => log::error!("== start after GAVE UP FAILED: {e:#} =="),
+        }
+    }));
+}
+
+/// A task holds the launcher: set when the window or the request watcher
+/// starts one, cleared by that task's own thread (`TaskBusy`), even when it
+/// panics. The request watcher reads it; the window reads its own handle.
+static TASK_BUSY: AtomicBool = AtomicBool::new(false);
+/// A supervised run the request watcher started: the window takes it as its
+/// running task at its next frame, so its buttons treat it as one of theirs.
+static ADOPT_TASK: Mutex<Option<JoinHandle<()>>> = Mutex::new(None);
+
+struct TaskBusy;
+
+impl Drop for TaskBusy {
+    fn drop(&mut self) {
+        TASK_BUSY.store(false, Ordering::SeqCst);
     }
+}
+
+/// A fresh supervised launch re-arms the heartbeat: no stale stop or Cycle
+/// flag, an empty crash-loop history, no "GAVE UP" badge.
+fn arm_supervisor() {
+    SUPERVISOR.operator_stop.store(false, Ordering::SeqCst);
+    SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+    SUPERVISOR.restarts.lock().unwrap().clear();
+    set_heartbeat_status("");
+    SUPERVISOR.running.store(true, Ordering::SeqCst);
 }
 
 /// Why an automatic Cycle can't start right now, if anything: it needs a
@@ -1381,7 +1437,7 @@ impl IcraftApp {
     }
 
     fn task_running(&self) -> bool {
-        self.running_task.as_ref().map(|h| !h.is_finished()).unwrap_or(false)
+        self.running_task.as_ref().map(|h| !h.is_finished()).unwrap_or(false) || ADOPT_TASK.lock().unwrap().is_some()
     }
 
     fn drain_log(&mut self) {
@@ -1410,7 +1466,9 @@ impl IcraftApp {
         if self.task_running() { return; }
         let cfg = self.server_cfg();
         log::info!("== {} starting ==", name);
+        TASK_BUSY.store(true, Ordering::SeqCst);
         let h = std::thread::spawn(move || {
+            let _busy = TaskBusy;
             match work(cfg) {
                 Ok(_) => log::info!("== {} done ==", name),
                 Err(e) => log::error!("== {} FAILED: {e:#} ==", name),
@@ -1435,13 +1493,9 @@ impl IcraftApp {
     /// crash-loop history, and any "GAVE UP" badge.
     fn spawn_supervised(&mut self, name: &'static str, first_is_cycle: bool) {
         if self.task_running() { return; }
-        SUPERVISOR.operator_stop.store(false, Ordering::SeqCst);
-        SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
-        SUPERVISOR.restarts.lock().unwrap().clear();
-        set_heartbeat_status("");
-        // Set here (GUI thread), not only inside the worker, so a Cycle click in
-        // the instant after spawn already takes the supervised path.
-        SUPERVISOR.running.store(true, Ordering::SeqCst);
+        // Sets `running` here (GUI thread), not only inside the worker, so a
+        // Cycle click in the instant after spawn already takes the supervised path.
+        arm_supervisor();
         self.spawn(name, move |c| supervise(c, first_is_cycle));
     }
 
@@ -1481,6 +1535,14 @@ impl eframe::App for IcraftApp {
         self.preview_tick(ctx);
         // Drain log buffer + check task completion every frame.
         self.drain_log();
+        // A start the request watcher made (after GAVE UP) becomes this
+        // window's running task: Stop, Cycle and the rest see it as their own.
+        if self.running_task.is_none() {
+            if let Some(h) = ADOPT_TASK.lock().unwrap().take() {
+                log::info!("[scheduled] the window takes over the start made by a request");
+                self.running_task = Some(h);
+            }
+        }
         if let Some(h) = &self.running_task {
             if h.is_finished() {
                 self.running_task = None;

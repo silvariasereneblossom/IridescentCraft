@@ -195,6 +195,90 @@ pub fn decide(p: &Policy, uptime: Duration, players: Option<u32>, empty_for: Dur
     }
 }
 
+// =============================================================================
+// Cycle requests (`.icraft_cycle_request`, written by request_cycle.ps1)
+// =============================================================================
+//
+// A request Cycles a server that is up. Since 2026-10-15 (operator ruling 20)
+// it is also the way back after the heartbeat has GIVEN UP: three restarts in
+// 30 minutes that did not bring the server up (three refused starts, or a
+// crash loop) leave nothing running, and until then only the Cycle button at
+// the box could start it again. Every other state with no supervised server
+// was chosen at the box (Stop, auto-restart off, Run only) and stays that way.
+// The GUI gathers the facts; the rules are here so they are tested.
+
+/// Requests older than this are leftovers: a launcher started hours later
+/// must not act on one.
+pub const REQUEST_MAX_AGE: Duration = Duration::from_secs(10 * 60);
+
+/// What the GUI knows when a request arrives.
+#[derive(Debug, Clone, Default)]
+pub struct RequestFacts {
+    /// Seconds since the request's timestamp; `None` = it has none.
+    pub age_secs: Option<u64>,
+    /// Why a Cycle of a running server cannot start now (`None` = it can).
+    pub cycle_blocker: Option<String>,
+    /// The heartbeat gave up: nothing is supervised and its badge says GAVE UP.
+    pub gave_up: bool,
+    /// A JVM of this launcher is alive outside the supervisor (Run only).
+    pub jvm_running: bool,
+    /// The launcher is carrying out another task.
+    pub busy: bool,
+    /// `.icraft_regen_in_progress` is there: every start is refused anyway.
+    pub regen_unfinished: bool,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RequestVerdict {
+    /// Warn players, stop, then the Cycle (self-update + sync + start).
+    Cycle,
+    /// Nothing runs because the heartbeat gave up: sync and start, the
+    /// heartbeat armed again (its restart count cleared).
+    StartAfterGaveUp,
+    /// Nothing is done; the answer says why.
+    Refused(String),
+}
+
+impl RequestVerdict {
+    /// The line written to `.icraft_cycle_request.result` after the time.
+    /// request_cycle.ps1 tells `accepted: start` from `accepted`.
+    pub fn answer(&self) -> String {
+        match self {
+            RequestVerdict::Cycle => "accepted".to_string(),
+            RequestVerdict::StartAfterGaveUp => {
+                "accepted: start -- the heartbeat had given up and nothing was running; sync + start now, the heartbeat armed again".to_string()
+            }
+            RequestVerdict::Refused(why) => why.clone(),
+        }
+    }
+}
+
+pub fn request_verdict(f: &RequestFacts) -> RequestVerdict {
+    let Some(age) = f.age_secs else {
+        return RequestVerdict::Refused("rejected: no timestamp in the request".to_string());
+    };
+    if age > REQUEST_MAX_AGE.as_secs() {
+        return RequestVerdict::Refused(format!("skipped: stale request ({age}s old)"));
+    }
+    let Some(blocked) = &f.cycle_blocker else {
+        return RequestVerdict::Cycle;
+    };
+    if !f.gave_up {
+        return RequestVerdict::Refused(format!("skipped: {blocked}"));
+    }
+    let why = if f.jvm_running {
+        "a JVM is running outside the supervisor (Run only): stop it at the box first"
+    } else if f.busy {
+        "the launcher is carrying out another task: ask again when it is done"
+    } else if f.regen_unfinished {
+        "the heartbeat gave up, and a world regeneration was left unfinished (.icraft_regen_in_progress): every start is refused \
+         until the run is rolled back, at the box (Customizer -> Regenerate -> Roll back)"
+    } else {
+        return RequestVerdict::StartAfterGaveUp;
+    };
+    RequestVerdict::Refused(format!("skipped: {why}"))
+}
+
 /// `3h07m` / `12m` / `45s` -- for log lines.
 pub fn fmt_span(d: Duration) -> String {
     let s = d.as_secs();
@@ -261,6 +345,43 @@ mod tests {
         let p = Policy::parse("empty_after_min=1\nbusy_after_min=1\nempty_debounce_min=0").unwrap();
         assert_eq!(decide(&p, secs(599), Some(0), secs(599)), Decision::Young);
         assert_eq!(decide(&p, secs(600), Some(0), secs(600)), Decision::RestartEmpty);
+    }
+
+    #[test]
+    fn a_request_cycles_a_running_server_and_starts_one_that_gave_up() {
+        let up = RequestFacts { age_secs: Some(5), ..Default::default() };
+        assert_eq!(request_verdict(&up), RequestVerdict::Cycle);
+        assert_eq!(request_verdict(&up).answer(), "accepted");
+
+        let gave_up = RequestFacts {
+            age_secs: Some(5),
+            cycle_blocker: Some("no supervised server (stopped on purpose, or started via Run only / an older launcher)".to_string()),
+            gave_up: true,
+            ..Default::default()
+        };
+        assert_eq!(request_verdict(&gave_up), RequestVerdict::StartAfterGaveUp);
+        assert!(request_verdict(&gave_up).answer().starts_with("accepted: start"));
+
+        // Stopped at the box, auto-restart off, mid-restart: the box's choice stands.
+        let stopped = RequestFacts { gave_up: false, ..gave_up.clone() };
+        assert_eq!(request_verdict(&stopped), RequestVerdict::Refused(format!("skipped: {}", stopped.cycle_blocker.clone().unwrap())));
+
+        // After GAVE UP, still not: a Run-only JVM, another task, an unfinished regeneration.
+        for (facts, says) in [
+            (RequestFacts { jvm_running: true, ..gave_up.clone() }, "Run only"),
+            (RequestFacts { busy: true, ..gave_up.clone() }, "another task"),
+            (RequestFacts { regen_unfinished: true, ..gave_up.clone() }, "Roll back"),
+        ] {
+            match request_verdict(&facts) {
+                RequestVerdict::Refused(why) => assert!(why.starts_with("skipped: ") && why.contains(says), "{why}"),
+                other => panic!("{other:?} for {facts:?}"),
+            }
+        }
+
+        // Leftovers are never acted on, in any state.
+        assert_eq!(request_verdict(&RequestFacts { age_secs: Some(601), ..gave_up.clone() }), RequestVerdict::Refused("skipped: stale request (601s old)".to_string()));
+        assert_eq!(request_verdict(&RequestFacts { age_secs: Some(600), ..up.clone() }), RequestVerdict::Cycle);
+        assert_eq!(request_verdict(&RequestFacts { age_secs: None, ..gave_up }), RequestVerdict::Refused("rejected: no timestamp in the request".to_string()));
     }
 
     #[test]

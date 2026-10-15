@@ -29,8 +29,17 @@
     The GUI skips (and says why) when the server was stopped on purpose, is not
     fully up, or is already restarting; it ignores requests older than 10 min.
 
+    The way back after GAVE UP (since 2026-10-15, operator ruling 20): when the
+    heartbeat has given up (three restarts in 30 min that did not bring the
+    server up: refused starts, or a crash loop), nothing is running, and a
+    request STARTS the server again: sync + start, the heartbeat armed again,
+    as the Cycle button does at the box. Fix the cause first. It is still
+    declined while a world regeneration is unfinished (that needs Roll back
+    on the Regenerate page, at the box), and after a Stop at the box. A
+    launcher older than this answers "skipped: no supervised server".
+
     Exit codes:
-      0 = accepted -- the Cycle is running
+      0 = accepted -- the Cycle is running (or, after GAVE UP, the start)
       2 = skipped by the GUI (the reason is in the log)
       1 = the GUI never answered (not running, or hung) -- the request is
           withdrawn so a later start can't act on it
@@ -115,8 +124,12 @@ if (-not $answer) {
     Exit-Run $false 1
 }
 
-# Answer format: "<unix-secs> accepted" | "<unix-secs> skipped: <why>"
+# Answer format: "<unix-secs> accepted" | "<unix-secs> accepted: start ..." | "<unix-secs> skipped: <why>"
 $text = ($answer.Trim() -replace '^\d+\s+', '')
+if ($text -like 'accepted: start*') {
+    Write-CycleLog 'icraft-gui accepted: the heartbeat had given up and nothing was running, so it STARTS the server now (sync + start, the heartbeat armed again). Watch .icraft_launcher_status; if the cause is still there it gives up again after three tries.'
+    Exit-Run $true 0
+}
 if ($text -like 'accepted*') {
     Write-CycleLog 'icraft-gui accepted: warning players, then stop (120s save grace) + Cycle (self-update + sync + start).'
     Exit-Run $true 0
