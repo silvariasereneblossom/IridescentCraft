@@ -173,10 +173,31 @@ python .minecraft/dev/rosters/boss_tag.py --write    # then sync-distros.ps1 -Fi
 
 ## The lists that are still copies
 
-They are not script lists and the registries do not feed them; `dev/mods/pack_audit.py` compares them:
+They are not script lists and the registries do not feed them (each mod reads its own config, in each of the three
+distros):
 
-- `config/iridescent_difficulty-common.toml`: the difficulty mod's boss exclude list and its dimension tiers;
-- `config/apotheosis/adventure.cfg`: "Affix Convert Rarities", "Gem Dimensional Rarities", "Boss Spawn Dimensions".
+- `config/iridescent_difficulty-common.toml`: the difficulty mod's dimension tiers (`[dimensions] t1..t4`; a
+  dimension not listed is t1) and its boss exclude list (`[excludes] entities`, the ONLY exemption from the curve,
+  exact ids);
+- `config/apotheosis/adventure.cfg`: "Affix Convert Rarities", "Gem Dimensional Rarities" (a dimension not listed has
+  no rarity clamp: the whole ladder by weight) and "Boss Spawn Dimensions" (not listed: no Apotheosis boss spawns).
+
+`external_lists.py` holds them to the registry (ruling 25, 2026-10-14):
+
+```bash
+python .minecraft/dev/rosters/external_lists.py                     # the report (check): exit 0, it changes nothing
+python .minecraft/dev/rosters/external_lists.py check --summary     # one line; the pre-push hook prints it
+python .minecraft/dev/rosters/external_lists.py generate --dry-run  # what generate would write, as a diff
+python .minecraft/dev/rosters/external_lists_test.py                # its tests (CI: external-lists.yml)
+```
+
+`check` names registry bosses (and second ids) missing from the exclude list, exclude entries that name no entity,
+dimensions on another tier or on none, Apotheosis entries that are no dimension, registry dimensions missing from an
+Apotheosis list, and distros that disagree. `generate` writes exactly those keys from the registry and
+`external_lists.policy.json`, keeping every other byte of each file; it refuses while the policy holds a `null` (a
+ruling the operator owes). **Nothing is generated until the operator has ruled** which bosses leave the curve, where
+the curve puts the dimensions it does not list, and what Apotheosis gives the dimensions it does not list.
+`dev/mods/pack_audit.py` still counts the same differences for the pack audit.
 
 ## How a script asks
 

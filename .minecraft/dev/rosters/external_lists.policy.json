@@ -1,0 +1,74 @@
+{
+  "about": [
+    "The rulings dev/rosters/external_lists.py needs before `generate` may write the difficulty mod's and Apotheosis's",
+    "own lists (config/iridescent_difficulty-common.toml, config/apotheosis/adventure.cfg, three distros) from the registry.",
+    "A null is a ruling the operator still owes: `generate` refuses while any value it needs is null; `check` uses every",
+    "value that is ruled and the registry's answer where one is owed. Built check-only by ruling 25 (2026-10-14): NOTHING",
+    "below is ruled yet. What each ruling changes in play: the first report, internal dev/external-lists-2026-10-15/.",
+    "difficulty.excludes.scope: the registry system whose entries leave the dimension curve, with their second ids",
+    "  (isBoss = every entry flagged boss; x3, tokensNamed, rush ... = only those); false = the list is not generated.",
+    "  keep: ids kept on the list that the scope does not hold (each a registered entity type).",
+    "difficulty.dimensions.registryTiers: true = every registry dimension on the curve at its registry tier, except",
+    "  tierOf (another tier on the curve) and leaveOff (left off: the curve gives it t1); false = t1..t4 not generated.",
+    "apotheosis.<list>.dimensions: the value of one dimension (the ten real dimensions: today's values, copied 2026-10-15);",
+    "  tiers: the value of a registry tier, for every dimension without its own; leaveOff: dimensions left off that list.",
+    "  Unlisted in Apotheosis 7.4.8 (bytecode): no rarity clamp (the whole ladder by weight) and no boss spawns.",
+    "  Rarity lists: min|max of common uncommon rare epic mythic ancient. Boss Spawn Dimensions: chance|rule, rule one of",
+    "  NEEDS_SKY NEEDS_SURFACE SURFACE_OUTER_END ANY."
+  ],
+  "schema": 1,
+  "difficulty": {
+    "excludes": { "scope": null, "keep": [] },
+    "dimensions": { "registryTiers": null, "tierOf": {}, "leaveOff": [] }
+  },
+  "apotheosis": {
+    "Affix Convert Rarities": {
+      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "dimensions": {
+        "minecraft:overworld": "common|rare",
+        "twilightforest:twilight_forest": "common|epic",
+        "blue_skies:everbright": "common|epic",
+        "blue_skies:everdawn": "common|epic",
+        "aether:the_aether": "uncommon|epic",
+        "undergarden:undergarden": "uncommon|mythic",
+        "deeperdarker:otherside": "uncommon|mythic",
+        "minecraft:the_nether": "rare|mythic",
+        "theabyss:the_abyss": "rare|mythic",
+        "minecraft:the_end": "epic|ancient"
+      },
+      "leaveOff": []
+    },
+    "Gem Dimensional Rarities": {
+      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "dimensions": {
+        "minecraft:overworld": "common|rare",
+        "twilightforest:twilight_forest": "common|epic",
+        "blue_skies:everbright": "common|epic",
+        "blue_skies:everdawn": "common|epic",
+        "aether:the_aether": "uncommon|epic",
+        "undergarden:undergarden": "uncommon|mythic",
+        "deeperdarker:otherside": "uncommon|mythic",
+        "minecraft:the_nether": "rare|mythic",
+        "theabyss:the_abyss": "rare|mythic",
+        "minecraft:the_end": "epic|ancient"
+      },
+      "leaveOff": []
+    },
+    "Boss Spawn Dimensions": {
+      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "dimensions": {
+        "minecraft:overworld": "0.02|NEEDS_SKY",
+        "twilightforest:twilight_forest": "0.04|NEEDS_SURFACE",
+        "blue_skies:everbright": "0.04|NEEDS_SURFACE",
+        "blue_skies:everdawn": "0.04|NEEDS_SURFACE",
+        "aether:the_aether": "0.04|NEEDS_SURFACE",
+        "undergarden:undergarden": "0.06|ANY",
+        "deeperdarker:otherside": "0.06|ANY",
+        "minecraft:the_nether": "0.08|ANY",
+        "theabyss:the_abyss": "0.06|ANY",
+        "minecraft:the_end": "0.10|SURFACE_OUTER_END"
+      },
+      "leaveOff": []
+    }
+  }
+}

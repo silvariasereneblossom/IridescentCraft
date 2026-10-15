@@ -1,0 +1,84 @@
+name: Lists outside the registry
+
+# The difficulty mod (config/iridescent_difficulty-common.toml: dimension tiers t1..t4, the boss
+# exclude list) and Apotheosis (config/apotheosis/adventure.cfg: "Affix Convert Rarities", "Gem
+# Dimensional Rarities", "Boss Spawn Dimensions") keep their own copies of what the boss and
+# dimension registries say, in each of the three distros; nothing feeds them (ruling 25,
+# 2026-10-14; .minecraft/dev/rosters/README.md).
+#
+# .minecraft/dev/rosters/external_lists.py check prints the full report into this log. It is a
+# REPORT, never a failure: the lists differ from the registry until the operator has ruled what
+# `generate` may write. The tool's own test is the failure: each defect it exists to report is
+# planted in a temporary pack, and `generate` must refuse while a ruling is owed and write only
+# its keys once ruled (on fixtures and on a copy of the pack's real files).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/config/iridescent_difficulty-common.toml'
+      - '.minecraft/server_distribution/config/iridescent_difficulty-common.toml'
+      - '.minecraft/distribution/client/config/iridescent_difficulty-common.toml'
+      - '.minecraft/config/apotheosis/adventure.cfg'
+      - '.minecraft/server_distribution/config/apotheosis/adventure.cfg'
+      - '.minecraft/distribution/client/config/apotheosis/adventure.cfg'
+      - '.minecraft/dev/rosters/external_lists*'
+      - '.minecraft/dev/rosters/rosters.py'
+      - '.minecraft/dev/registry/entity_types.txt'
+      - '.minecraft/dev/registry/dimensions.txt'
+      - '.github/workflows/external-lists.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/config/icraft/registry/**'
+      - '.minecraft/config/iridescent_difficulty-common.toml'
+      - '.minecraft/server_distribution/config/iridescent_difficulty-common.toml'
+      - '.minecraft/distribution/client/config/iridescent_difficulty-common.toml'
+      - '.minecraft/config/apotheosis/adventure.cfg'
+      - '.minecraft/server_distribution/config/apotheosis/adventure.cfg'
+      - '.minecraft/distribution/client/config/apotheosis/adventure.cfg'
+      - '.minecraft/dev/rosters/external_lists*'
+      - '.minecraft/dev/rosters/rosters.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    name: external_lists.py
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Only what the tool and its test read: the registries, the game's ids of the last full-pack
+      # boot, the two configs in the three distros, the tools.
+      - name: Checkout (registries, game ids, the two configs, tools)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/kubejs/config/icraft/registry/
+            /.minecraft/dev/rosters/
+            /.minecraft/dev/registry/
+            /.minecraft/config/iridescent_difficulty-common.toml
+            /.minecraft/server_distribution/config/iridescent_difficulty-common.toml
+            /.minecraft/distribution/client/config/iridescent_difficulty-common.toml
+            /.minecraft/config/apotheosis/adventure.cfg
+            /.minecraft/server_distribution/config/apotheosis/adventure.cfg
+            /.minecraft/distribution/client/config/apotheosis/adventure.cfg
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # A report: exit 0 whatever the lists say (the summary line is the last line).
+      - name: The report (check only, nothing is changed)
+        run: python -I -B .minecraft/dev/rosters/external_lists.py check
+
+      - name: The tool reports what it exists to report, and generate writes only its keys
+        if: always()
+        run: python -I -B .minecraft/dev/rosters/external_lists_test.py
