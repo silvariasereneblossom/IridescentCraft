@@ -6,10 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
-## October 2026 — The Wither keeps its designed health, and two removals
+## October 2026 — The Wither keeps its designed health; the Ultimate Wither returns as a challenge
 
 - **The Wither has 1,800 health everywhere.** The difficulty curve that makes ordinary monsters tougher dimension by dimension was meant to leave the Wither alone, but it named a Wither the game never spawns. From the next server restart the Wither has its designed 1,800 health wherever it is summoned; it had 2,550 at the Overworld's starting difficulty, and the curve would have taken it past 15,000 in The End.
-- **The stronger Withers are out for now.** Corrupted Soul Sand, the block that summons Progressive Bosses' armoured, summoner and ultimate Withers, can no longer be crafted while their place in progression is worked out. A Corrupted Soul Sand block crafted before this change still works when you build with it. The plain Wither is not affected.
+- **The Ultimate Wither is an optional Tier 4 challenge.** Of Progressive Bosses' three stronger Withers only the strongest stays: Corrupted Soul Sand for it is crafted from soul sand or soul soil and 3 Nether Stars once you reach Tier 4, and the Wither built with it forms only in the Nether (anywhere else the build is refused and your blocks stay). It has 3,000 health and drops 5 Nether Stars, 2 Netherite Upgrade templates and 3,000 experience, with the Wither's usual spoils; the Capstones quest *Challenge: The Ultimate Wither* pays 3 Ignitium ingots and 25 levels. The armoured and summoner Withers stay out: their recipes are gone.
+- **Withers share their loot when several players fight.** With two or more players near, a Wither drops a loot bag for each player instead of one set of drops, and its health grows with the number of players. Each bag holds a plain Wither's spoils, Nether Stars included (until now a bag would have held no star); fought by a group, the Ultimate Wither drops these bags too.
+- **Far-off Withers keep fighting on a busy server.** With two or more players online the server pauses creatures far from every player; the Wither was meant to be exempt but was not. It now is.
 - **A Wither cannot be built near the spawn village.** Monsters are kept out of a 96-block circle around the world spawn, and a Wither built inside it used to vanish together with its soul sand and skulls. Now the last skull is simply not placed: the blocks stay, the skull stays in your hand, and a message tells you to build further out. A Wither built outside the circle works as before.
 - **The quest *Brutal Bosses: Claim a Dungeon* is removed.** It could never be completed: its targets were not creatures the game knows. Nothing depended on it, and Brutal Bosses' champions still guard their dungeons.
 

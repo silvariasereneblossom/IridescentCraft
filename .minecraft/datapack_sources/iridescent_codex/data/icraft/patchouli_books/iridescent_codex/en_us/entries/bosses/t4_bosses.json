@@ -14,6 +14,14 @@
     },
     {
       "type": "patchouli:text",
+      "text": "$(bold)The Ultimate Wither$() (optional) — the strongest Wither; it only forms in the Nether.$(br2)Craft $(bold)Corrupted Soul Sand$() (soul sand or soul soil + 3 Nether Stars, Tier 4). Build the Wither's T with it in the centre of the arms, then set the three skulls. Elsewhere the corruption is refused and your blocks stay."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)The Ultimate Wither$(), the fight$(br2)3,000 health, heavy armour, skull storms, charges and minions.$(br2)Drops 5 Nether Stars, 2 Netherite Upgrade templates and 3,000 experience, with the Wither's usual spoils. Fought by two or more players, it drops a plain Wither's loot bag for each player instead.$(br2)Quest: $(italic)Challenge: The Ultimate Wither$()."
+    },
+    {
+      "type": "patchouli:text",
       "text": "$(bold)Deep Aether Boss$() — EOTS Controller. Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), T4 boss materials.$(br2)$(bold)The Abyss$() — 6 bosses across The Abyss: The Other Side, each carrying its own unique.$(br2)$(bold)Stalwart Dungeons T3+$() — Shelterer, Nether Keeper, Awful Ghast.$(br2)$(bold)Next: start with the Ender Dragon — best unique odds in the pack, and Terramity's relocated Virtue and Sorceress Circe wait beyond.$()"
     }
   ],

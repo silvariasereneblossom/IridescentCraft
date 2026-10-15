@@ -143,10 +143,10 @@
 | Stalwart Dungeons | `stalwart_dungeons:giddy_blaze` | Giddy Blaze | T3 | structure-locked | Nether fortress overlay | uncommon_ink, fire_rune | 3 |
 | Meet Your Fight | `meetyourfight:dame_fortuna` | Dame Fortuna | T3 | summoned-by-item | overworld + Calling Bell variant | mod-specific cosmetics | 4 |
 | Meet Your Fight | `meetyourfight:rosalyne` | Rosalyne, Blade of Dusk | T3 | summoned-by-item | dusk-time summon | mod-specific cosmetics | 4 |
-| Vanilla (replaced by Progressive Bosses) | `minecraft:wither`; the entity you fight is `progressivebosses:wither` (Progressive Bosses swaps it in the moment a Wither is summoned or built) | Wither | T3 | summoned-by-altar | player crafts wither skeleton skull cross + soul sand | 2 Nether Stars, 3-6 Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, Advanced Reforging Token (60%), Soulkeeper (15%); first kill per player: the Dormant Relic (15% on later kills) | 1 |
+| Vanilla (replaced by Progressive Bosses) | `minecraft:wither`; the entity you fight is `progressivebosses:wither` (Progressive Bosses swaps it in the moment a Wither is summoned or built) | Wither | T3 | summoned-by-altar | player crafts wither skeleton skull cross + soul sand | 2 Nether Stars, 3-6 Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, Advanced Reforging Token (60%), Soulkeeper (15%); first kill per player: the Dormant Relic (15% on later kills). With two or more players near, those spoils come as one loot bag per player | 1 |
 | Alex's Mobs | `alexsmobs:warped_mosco` | Warped Mosco | T3 | biome-conditional-random | Warped Forest (Nether) | rare_ink, fire_upgrade_orb | 3 |
 | Ultris | `ultris_mr:blaze_king` | Blaze King | T3 | structure-locked | `1_splatus:blazetower` (Nether fortress region) | Blaze King's Helmet, fire-themed unique | 3 |
-| Ultris | `ultris_mr:ultra_wither` | Ultra Wither | T3-T4 | summoned-by-item | Enchanted Command Block thrown at Wither | ultra wither-themed unique | 4 |
+| Ultris | `ultris_mr:ultra_wither` (**not in the game**: Ultris is installed but registers no entity types, so this boss cannot be summoned; the stronger Wither of this pack is the Ultimate Wither, T4) | Ultra Wither | T3-T4 | summoned-by-item | Enchanted Command Block thrown at Wither | ultra wither-themed unique | 4 |
 | Ultris | `ultris_mr:sanctum_keeper` | Sanctum Keeper | T3-T4 | structure-locked | Sanctum structure (TBD) | mirrors of the Sanctum Keeper | 3 |
 | Terramity | `terramity:gatmancer` | Gatmancer | T3 | structure-locked | `terramity:infested_laboratory` — overworld | dungeon_effigy, dungeon_sentry items | 3 |
 | Mutant Monsters | `mutantmonsters:mutant_zombie_villager` | Mutant Zombie Villager | T3 | scripted (Skull Spirit on zombie villager) | overworld villages | mutant items | 4 |
@@ -191,13 +191,14 @@
 | Terramity | `terramity:uvogre` | Uvogre | T4 | structure-locked | `terramity:chthonic_cathedral` / nether biome variants | mod drops | 3 |
 | Terramity | `terramity:duskrok` | Duskrok | T4 | biome-conditional-random | nether biomes | mod drops | 4 |
 | Terramity | `terramity:hellrok` | Hellrok | T4 | biome-conditional-random | nether biomes | mod drops | 4 |
+| Progressive Bosses | `progressivebosses:wither` at level 3 (the same entity as the Wither; the level comes from the block it is built with) | Ultimate Wither (optional) | T4 | summoned-by-altar | the Nether only: the Wither's T with Corrupted Soul Sand (soul sand or soul soil + 3 Nether Stars, a Tier 4 recipe) in the centre of the arms; anywhere else the build is refused and the blocks stay | 3,000 health, heavy armour; 5 Nether Stars, 2 Netherite Upgrade templates, 3,000 XP and the Wither's other spoils (with two or more players near: a plain Wither's loot bag per player instead). Quest: Challenge: The Ultimate Wither | 1 |
 | Ultris | `ultris_mr:shulker_stone` | Shulker Stone | T4 | summoned-by-item | The End — shulker shell crafted item | End-themed unique | 3 |
 | Multiplayer Bosses[^mpb] | (enhances vanilla Dragon/Wither/Warden) | (no new entity) | T3-T4 | n/a | enhances existing kill targets | LootBag drops | n/a |
 | Vanilla | `minecraft:warden` | Warden | T4 | structure-locked | Ancient Cities (deep dark biome) | sculk catalyst, echo shard, Mahou attuned_diamond (cross-mod drop) | 2 |
 
 > **Removed phantoms (2026-06-01 #47 sweep).** `cataclysm:void_blossom`[^void_blossom] (the entity belongs to the absent `bosses_of_mass_destruction`, not Cataclysm) and `lu_more_bosses_and_mobs:end_dwellee`[^lmore] (LuMoreBossesAndMobs is not installed) were dropped from the T4 table. The footnotes are retained for the record.
 
-**T4 subtotal:** 14 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris). The Ender Dragon is the **pack finale** — reached via the Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender), its kill unlocks all post-game + Ad Astra. (Lucifer, the T3→T4 combat capstone, is listed under T3.)
+**T4 subtotal:** 15 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris; 1 Progressive Bosses: the optional Ultimate Wither). The Ender Dragon is the **pack finale** — reached via the Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender), its kill unlocks all post-game + Ad Astra. (Lucifer, the T3→T4 combat capstone, is listed under T3.)
 
 ---
 

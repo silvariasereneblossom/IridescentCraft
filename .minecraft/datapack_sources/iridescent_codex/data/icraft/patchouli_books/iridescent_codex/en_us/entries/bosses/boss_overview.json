@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Progressive Bosses$()$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$() do NOT scale progressively — they are the same difficulty every time. Only intentionally summoned bosses escalate."
+      "text": "$(bold)Progressive Bosses$()$(br2)This mod runs the Wither you summon. It does $(bold)not$() make a boss stronger each time it is killed: your first Wither and your tenth are the same fight.$(br2)A Wither built with $(bold)Corrupted Soul Sand$() is stronger than a plain one. The pack keeps one of those forms, the $(l:icraft:bosses/t4_bosses)Ultimate Wither$(/l): a Tier 4 challenge in the Nether."
     },
     {
       "type": "patchouli:text",
