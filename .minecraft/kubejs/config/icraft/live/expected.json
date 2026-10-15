@@ -622,6 +622,7 @@
    "codex-submit": "gates/codex_progression_engine.js",
    "compass-of-return": "items/compass_of_return.js",
    "first-kill-book": "loot/iss_boss_first_kill.js",
+   "noseenotick-tag-entries": "compat/noseenotick_tag_entries.js",
    "quest-bridge": "quests/onboarding_bridge.js",
    "relic-sink": "economy/relic_sink.js",
    "relic-sink-deny": "economy/relic_sink.js",

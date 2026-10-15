@@ -2580,6 +2580,10 @@
      "script": "loot/iss_boss_first_kill.js"
     },
     {
+     "name": "noseenotick-tag-entries",
+     "script": "compat/noseenotick_tag_entries.js"
+    },
+    {
      "name": "quest-bridge",
      "script": "quests/onboarding_bridge.js"
     },

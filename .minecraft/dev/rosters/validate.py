@@ -13,7 +13,9 @@ What it checks:
      not registered fails unless the entry says why it is kept (`absent`); an `absent` id that IS registered fails too;
   3. consistency inside the files (a tier exists; a boss with a designed HP is a boss; arena keys, stage-gate ids
      and exploration keys are unique; a structure arena has its structure tag);
-  4. the expectations below. Today's scripts disagree in known places; each known disagreement is listed in
+  4. the entity-type tag #icraft:registry_bosses (kubejs/data/icraft/tags/entity_types/registry_bosses.json) is what
+     boss_tag.py generates from the boss registry (NoSeeNoTick reads it);
+  5. the expectations below. Today's scripts disagree in known places; each known disagreement is listed in
      accepted.json with its reason, and a NEW one fails. That is what makes a forgotten flag loud: a named boss
      added without `x3` does not pass until someone says it is meant.
 
@@ -29,6 +31,7 @@ from collections import OrderedDict
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import rosters  # noqa: E402
+import boss_tag  # noqa: E402
 
 ACCEPTED_FILE = os.path.join(HERE, 'accepted.json')
 
@@ -462,6 +465,7 @@ def main():
         ids, src = id_problems(reg, game, pack)
         findings += [('id', p) for p in ids]
         findings += [('consistency', p) for p in consistency_problems(reg)]
+        findings += [('tag', p) for p in boss_tag.problems(reg, pack, game['entities'])]
         dev = deviations(reg)
         n_acc = 0
         for rule, got in dev.items():

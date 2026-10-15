@@ -157,6 +157,20 @@ One entry in `dimensions.json`:
 Not covered by the loot flag: a loot rule that names ONE dimension still names it in the script (21 Overworld
 rules, 14 End rules, the Ad Astra planets). No rule asks for the tier-4 group yet.
 
+## A list generated from the registry: `#icraft:registry_bosses`
+
+`kubejs/data/icraft/tags/entity_types/registry_bosses.json` is an entity-type tag of every entry with the flag `boss`
+and its second ids (`sameAs`), plus the separate body entities of two of them (`BODY` in `boss_tag.py`: the void
+worm's parts, the Eye of the Storm's segments). NoSeeNoTick reads it (`config/noseenotick-common.toml`, three
+distros): with 2 or more players online, the types in it keep ticking far from every player. After an edit that adds,
+removes or flags a boss:
+
+```bash
+python .minecraft/dev/rosters/boss_tag.py --write    # then sync-distros.ps1 -Fix
+```
+
+`validate.py` fails while the committed tag differs from what the registry says.
+
 ## The lists that are still copies
 
 They are not script lists and the registries do not feed them; `dev/mods/pack_audit.py` compares them:

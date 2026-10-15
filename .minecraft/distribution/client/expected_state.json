@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8481fab0",
+    "generated_from":  "39c4c086",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4228,8 +4228,8 @@
                                                                 "size":  1013
                                                             },
                   "config/noseenotick-common.toml":  {
-                                                         "sha256":  "9c0271c60b25b922d59d718b55bfd01c46165c14803695ce11a262653a74eead",
-                                                         "size":  1426
+                                                         "sha256":  "c0642fb078c68db336e191f749b102ad63d30353096e7da8329118bbe1646760",
+                                                         "size":  1300
                                                      },
                   "config/nucleus/configs.jsonc":  {
                                                        "sha256":  "04e13fe2902072703b859be66a9610f1d012122491a855e133dcbf747bd24664",
@@ -5964,8 +5964,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "e1fbb970f44d32eb62339ef7873a1d33bd631dd2d853f918d60a336d4ec679d1",
-                                                                  "size":  48188
+                                                                  "sha256":  "f1b061286aa2819646edcdfa0109f24db61ab01c1f6506555716009561905fbc",
+                                                                  "size":  48255
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "f62b4b5bec106fad4c0d7fac04f388bfd12a818c12fd1b2776e0538e74fc96b3",
@@ -6463,6 +6463,10 @@
                                                                                         "sha256":  "f83cab22a97c277ce957ae190504b533c841138976f4b872fb613ee8ff82c7a0",
                                                                                         "size":  922
                                                                                     },
+                  "kubejs/data/icraft/tags/entity_types/registry_bosses.json":  {
+                                                                                    "sha256":  "0cd238c8afcfaabc6e1d37e9fe804913d3c7fd36f5f0bc9ab4fe3328754ead67",
+                                                                                    "size":  6485
+                                                                                },
                   "kubejs/data/icraft/tags/items/armor_heavy.json":  {
                                                                          "sha256":  "6f6d0a8ae9478e8737df97e0a2ec9d92cad6783c9dd6516ab237cc0946ae543f",
                                                                          "size":  9755
@@ -7111,6 +7115,10 @@
                                                                                "sha256":  "68da22e4edc6de3669256c7bea9ca38e1603bc147756a2299218984020293edf",
                                                                                "size":  337
                                                                            },
+                  "kubejs/server_scripts/compat/noseenotick_tag_entries.js":  {
+                                                                                  "sha256":  "a8ef9e696b1d111ddcdad58665807f247fdcec051b5e615c36e860ad4639db1a",
+                                                                                  "size":  3479
+                                                                              },
                   "kubejs/server_scripts/compat/terramity_cave_gnome_cave_only.js":  {
                                                                                          "sha256":  "457fe4db109cd3a408ee7ec7ef9e1a160643f953c785eeb3ed9067da1ddc3bf2",
                                                                                          "size":  2052
