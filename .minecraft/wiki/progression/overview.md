@@ -56,7 +56,7 @@ All values configurable via `config/iridescent_difficulty-common.toml` (per-tier
 
 **Incoming damage runs +30% hotter than the table.** As of 2026-06-13, every tier carries a damage-only multiplier (`damageMultiplierPct = 130`) applied to mob **attack damage only** -- mob health, armor, and speed still follow the Start/Cap curve above, but mobs hit 30% harder than those percentages alone, at every point on the curve. Tunable per tier; 100 = damage tracks the curve.
 
-**Boss scaling stacks on top** via ProgressiveBosses (vanilla bosses) + `boss_progressive.js` (modded bosses). **Mob-tier static HP** (basic 3×, mid 1.5×, elite 1.25×) from `mob_scaling_unified.js` also composes with the dimension multiplier. **Elite-mob density** (the Elite Spawn % column) is handled by **Majrusz's Progressive Difficulty** (Master-stage scaling, replacing the removed Champions Unofficial).
+**Boss scaling stacks on top** via per-kill scaling, per player (`boss_progressive.js`): a boss is stronger for the players near it who have beaten it before (the Wither, the Ender Dragon, the Warden and the Elder Guardian are not scaled). **Mob-tier static HP** (basic 3×, mid 1.5×, elite 1.25×) from `mob_scaling_unified.js` also composes with the dimension multiplier. **Elite-mob density** (the Elite Spawn % column) is handled by **Majrusz's Progressive Difficulty** (Master-stage scaling, replacing the removed Champions Unofficial).
 
 **Replaces** the previous flat-multiplier scaling (which compounded with ScalingMobs's per-player tracker, ImprovedMobs's per-tick accumulator, MajruszsDifficulty's game stages, and Azukaars' fair-difficulty curve in unpredictable ways). All four are removed/disabled.
 

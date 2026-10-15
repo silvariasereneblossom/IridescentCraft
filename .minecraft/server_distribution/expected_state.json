@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "35d406a3",
+    "generated_from":  "62bad97d",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7564,8 +7564,8 @@
                                                                        "size":  14293
                                                                    },
                   "kubejs/server_scripts/scaling/boss_hp.js":  {
-                                                                   "sha256":  "0d7b061e66ffad05e827806c454bbfaf7a9744d0486cc3fd3e18a4817355d4be",
-                                                                   "size":  9701
+                                                                   "sha256":  "55b3da02777e2ac63bf4bf42d0154a7c368b5911390a979a4b8323c680a7fb3a",
+                                                                   "size":  9916
                                                                },
                   "kubejs/server_scripts/scaling/boss_progressive.js":  {
                                                                             "sha256":  "00eac6eb057143b6658ca6d5634eca5b873564dc1527a2c8e9298618805252be",
@@ -7580,16 +7580,16 @@
                                                                          "size":  9972
                                                                      },
                   "kubejs/server_scripts/scaling/mob_scaling_unified.js":  {
-                                                                               "sha256":  "c12e5b2627f7d29daa65336eaf53475bbfedb14369a714ec60648dd461ece2d4",
-                                                                               "size":  12724
+                                                                               "sha256":  "fda41104c7d351567fbfed868cb3b6719e394eab49ffdb9be40a68c240e76de1",
+                                                                               "size":  12796
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
                                                                                 "sha256":  "a447d9cc1e29a1140146590bcdac1c31b9bfea159f4cc3ab674543806fa176ad",
                                                                                 "size":  7782
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
-                                                                             "sha256":  "ccdeabe569ad07d6eeccc63c29b898717f74b173dbca72e6f925d2e8ebf9789e",
-                                                                             "size":  13841
+                                                                             "sha256":  "b027082806e33b52ffddf195d2bcaab0ed43005a3d960452ef1f9297a7c199e7",
+                                                                             "size":  13907
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
                                                                               "sha256":  "4382e9e40e27ba6420b5f494cfed172550f3eda51bbdf570b0c8fac5c85c068b",
@@ -7624,8 +7624,8 @@
                                                                       "size":  4278
                                                                   },
                   "kubejs/server_scripts/sunlight_smite.js":  {
-                                                                  "sha256":  "5c6a7a963a2ff79d1048410eb972fdb0c5b786a2f42b9210aae9aa3a6c5a2704",
-                                                                  "size":  5230
+                                                                  "sha256":  "175c13cb5b525a6b8529842b15b34e25e506303dff72285a6b9ef85b26512c78",
+                                                                  "size":  5384
                                                               },
                   "kubejs/server_scripts/tetra_terramity_perks.js":  {
                                                                          "sha256":  "d1e14b476b8bce37d87b52516e9c6d7fe899e3581881cdfe763b118a38686fed",
@@ -8480,7 +8480,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "6047a9f1b9c57b97aa12aca931bfb7069c79b9c557785bf31cf77b9a3577cc9a",
+                                                               "sha256":  "537fce8c1f2d97f6314b6e4424c5712a58a761f6988fefd009a96b3b410693d4",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

@@ -13,9 +13,9 @@
 // tier-HP rule rather than duplicating it: base mob -> mob_tier_hp
 // multiplier (this script) -> dimension multiplier (mod) -> final stat.
 //
-// Boss entities are excluded here — they scale via boss_hp.js +
-// boss_progressive.js (modded bosses) or the ProgressiveBosses mod
-// (vanilla bosses).
+// Boss entities are excluded here — they scale via boss_hp.js (designed
+// health), zz_boss_global_3x.js (the x3) and boss_progressive.js (per-kill
+// scaling, per player). The Progressive Bosses mod scales nothing per kill.
 //
 // SAVED WITH THE MOB (2026-10-12)
 //   The tier modifier goes on through core.spawnBuff (0_lib_core.js, "spawn

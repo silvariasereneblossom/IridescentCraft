@@ -143,7 +143,7 @@ So 4 players, 2 active, 2 idle → 50% tick rate. 7 players, 3 active → ~42.86
 
 **Source:** `iridescent-difficulty-mod/`
 **Build:** `./gradlew build` (ForgeGradle, no mixin)
-**Stacks on top of (not replaced):** ProgressiveBosses (vanilla bosses self-scale), `boss_progressive.js` (modded bosses), `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).
+**Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; vanilla bosses do not scale per kill), `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).
 
 ---
 

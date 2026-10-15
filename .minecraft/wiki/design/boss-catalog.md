@@ -126,7 +126,7 @@
 | Iron's Spellbooks | `irons_spellbooks:cryomancer` | Cryomancer (mob, boss-tier) | T2-T3[^iss_mob] | biome-conditional-random | snowy biomes / `mountain_tower` (snowy_plains / snowy_taiga / grove / ice_spikes) | ice_staff @ 15%, ice_rune @ 25% | 3 |
 | Iron's Spellbooks | `irons_spellbooks:pyromancer` | Pyromancer (mob, boss-tier) | T2-T3 | biome-conditional-random | Nether/hot biomes | pyromancer 4-piece armor @ 8-12%/piece, fire_rune @ 20% | 3 |
 | Iron's Spellbooks | `irons_spellbooks:necromancer` | Necromancer (mob, boss-tier) | T3 | biome-conditional-random | Catacombs / undead-themed biomes | rare_ink, blood_rune drops | 3 |
-| Iron's Spellbooks | `irons_spellbooks:magehunter` | Magehunter | T3 | structure-locked | `mountain_tower` + scripted Aether tie-in | rare_ink @ 15%, magehunter weapon @ 30% | 3 |
+| Iron's Spellbooks | `irons_spellbooks:magehunter_vindicator` | Magehunter Vindicator | T3 | structure-locked | `evoker_fort` (its tower) + scripted Aether tie-in | rare_ink @ 15%, magehunter weapon @ 30% | 3 |
 | Iron's Spellbooks | `irons_spellbooks:priest` | Priest | T3 | biome-conditional-random | various | priest staff, healing items | 4 |
 | Undergarden | `undergarden:forgotten_guardian` | Forgotten Guardian | T3 | structure-locked | `undergarden:forgotten_vestige` (Undergarden dimension, jigsaw 5-piece) | undergarden boss tokens, Mahou attuned_diamond | 2 |
 | Undergarden | `undergarden:masticator` | Masticator | T3 | biome-conditional-random | Undergarden — depthrock / smogstem biomes | mod-specific drops | 3 |

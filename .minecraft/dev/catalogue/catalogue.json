@@ -8459,6 +8459,11 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file",
+      "registry"
      ]
     },
     {

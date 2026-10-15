@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Bosses remember who beat them; sunlight burns the undead; the Codex ladder is strict
+
+- **Bosses get stronger for the players who have beaten them.** The first time a boss trades a hit with a player, it takes the highest kill count of that boss among the players within 64 blocks: your 2nd fight is +15% health, +10% damage and +3% speed, rising to +150% / +80% / +15% from the 15th fight. Everyone within 64 blocks when it dies counts the kill, and `/icraft bosskills` shows your own counts. Everyone starts at zero. The Wither, the Ender Dragon, the Warden and the Elder Guardian are not scaled.
+- **Sunlight burns hostile undead faster.** By day, a hostile undead mob under open sky near a player in the Overworld burns about four times faster than before (a zombie lasts about 15 seconds instead of a minute). Bosses, your own summons and pets, and wild zombie and skeleton horses are spared; a roof keeps any mob safe.
+- **A Codex tier is bought only with the tier below.** Tokens of a higher tier no longer buy their tier for a player who has not reached the one below it; `/icraft codex balance` says which tier comes first.
+
 ## October 2026 — The Wither keeps its designed health; the Ultimate Wither returns as a challenge
 
 - **The Wither has 1,800 health everywhere.** The difficulty curve that makes ordinary monsters tougher dimension by dimension was meant to leave the Wither alone, but it named a Wither the game never spawns. From the next server restart the Wither has its designed 1,800 health wherever it is summoned; it had 2,550 at the Overworld's starting difficulty, and the curve would have taken it past 15,000 in The End.

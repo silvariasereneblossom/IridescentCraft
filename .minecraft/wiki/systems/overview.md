@@ -311,7 +311,7 @@ Dragon Exploration Gate: players must explore End islands and complete objective
 
 - **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped, and bosses on the configurable exclusion list (a boss that is not listed is scaled like any other hostile mob).
 - **Idle gating:** the per-dimension timer ticks at the `active / total` player ratio in that dimension (idle = no movement/combat for N minutes, or within the spawn radius).
-- **Stacks on top of (not replaced):** ProgressiveBosses + `boss_progressive.js` (boss scaling), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
+- **Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; not the Wither, the Ender Dragon, the Warden or the Elder Guardian), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
 
 Full curve + commands: [`mods/custom.md`](../mods/custom.md#iridescent_difficulty-010jar) and `config/iridescent_difficulty-common.toml`.
 

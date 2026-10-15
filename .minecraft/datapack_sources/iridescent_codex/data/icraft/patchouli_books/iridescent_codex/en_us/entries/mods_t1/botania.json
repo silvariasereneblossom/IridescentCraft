@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack — crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1–T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
+      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack — crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1–T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. $(l:icraft:bosses/boss_overview)Scales with your kills$(/l)."
     },
     {
       "type": "patchouli:text",

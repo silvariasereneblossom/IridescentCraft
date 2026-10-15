@@ -597,7 +597,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 | Ultra Wither | Summoned (T3+) | T3-T4 | Yes — wither unique |
 | Shulker Stone | End | T4 | Yes — End-themed |
 
-> Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill — functions like Progressive Bosses 5th-kill difficulty.
+> Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill. The pack's per-kill scaling (D.6) does not reach these bosses.
 
 **Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. Relocated per #56 — lesser sins to the Undergarden (T2–T3), fierce sins + Drakara + Lucifer to the Nether (T3). **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (in `TIER_4_BOSSES`); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
 
@@ -734,60 +734,63 @@ Per-dimension elite-mob density is handled by **Majrusz's Progressive Difficulty
 
 Soulbound enchant: I = 50% prevention, II = 75%, III = 100% (and items don't go inert from death). Implementation: `kubejs/server_scripts/death_penalty.js`.
 
-### D.6 Boss HP base values + Progressive Bosses scaling
+### D.6 Boss health and per-kill scaling
 
-Per-boss base HP at first kill. All bosses scale with Progressive Bosses (per-world, not per-player).
+**Designed** is the health the pack gives a boss; a trophy boss then gets the boss x3, which gives the health of
+your **first fight**. The dimension's difficulty curve adds to that over time (the Wither excepted: 1,800
+everywhere). **From fight 15** is the cap of per-kill scaling (below).
 
-| Boss | Tier | First kill HP | 10th kill HP |
-|------|-----:|--------------:|-------------:|
-| Twilight Naga | 2 | 300 | 600 |
-| Twilight Lich | 2 | 400 | 800 |
-| Twilight Hydra | 2 | 500 | 1,000 |
-| Ur-Ghast | 2 | 600 | 1,200 |
-| Blue Skies bosses (Summoner / Alchemist / Starlit Crusher / Arachnarch) | 2 | 350-500 | 700-1,000 |
-| Aether bosses (Slider / Valkyrie Queen / Sun Spirit) | 2 | 400-550 | 800-1,100 |
-| `irons_spellbooks:citadel_keeper` | 3 | 600 | 1,200 |
-| `irons_spellbooks:fire_boss` | 3 | 700 | 1,400 |
-| `irons_spellbooks:dead_king` | 3 | 800 | 1,600 |
-| Wither | 3 | 600 | 1,200 |
-| Cataclysm Harbinger (Deeper Darker boss) | 3 | 800 | 1,600 |
-| `cataclysm:the_leviathan` | 3 | 850 | 1,700 |
-| `cataclysm:maledictus` | 3 | 900 | 1,800 |
-| `cataclysm:netherite_monstrosity` | 3 | 900 | 1,800 |
-| `cataclysm:ignis` | 3 | 1,000 | 2,000 |
-| `cataclysm:ignited_revenant` | 3 | 1,000 | 2,000 |
-| Meet Your Fight bosses | 3 | 700-1,000 | 1,400-2,000 |
-| `cataclysm:ender_golem` | 4 | 1,200 | 2,400 |
-| Ender Dragon | 4 | 1,000 | 2,000 |
-| Gaia Guardian | 4 | 1,200 | 2,400 |
-| `cataclysm:ender_guardian` | 4 | 1,500 | 3,000 |
-| `cataclysm:ancient_remnant` | 4 | 2,500 | 5,000 |
+| Boss | Tier | Designed | First fight | From fight 15 |
+|------|-----:|---------:|------------:|--------------:|
+| Twilight Naga | 2 | 300 | 900 | 2,250 |
+| Twilight Lich | 2 | 400 | 1,200 | 3,000 |
+| Twilight Hydra | 2 | 500 | 1,500 | 3,750 |
+| Ur-Ghast | 2 | 600 | 1,800 | 4,500 |
+| Blue Skies bosses (Summoner / Alchemist / Starlit Crusher / Arachnarch) | 2 | 350-500 | 1,050-1,500 | 2,625-3,750 |
+| Aether bosses (Slider / Valkyrie Queen / Sun Spirit) | 2 | 400-550 | 1,200-1,650 | 3,000-4,125 |
+| Citadel Keeper | 3 | 600 | 1,800 | 4,500 |
+| Fire Boss (Iron's Spellbooks) | 3 | 700 | 2,100 | 5,250 |
+| Dead King | 3 | 800 | 2,400 | 6,000 |
+| Wither | 3 | 600 | 1,800 | not scaled |
+| Ultimate Wither (built in the Nether with Corrupted Soul Sand) | 4 | 1,000 | 3,000 | not scaled |
+| The Harbinger | 3 | 800 | 2,400 | 6,000 |
+| The Leviathan | 3 | 850 | 2,550 | 6,375 |
+| Maledictus | 3 | 900 | 2,700 | 6,750 |
+| Netherite Monstrosity | 3 | 900 | 2,700 | 6,750 |
+| Ignis | 3 | 1,000 | 3,000 | 7,500 |
+| Meet Your Fight (Dame Fortuna / Rosalyne) | 3 | 700-800 | 2,100-2,400 | 5,250-6,000 |
+| Ancient Remnant | 3 | 2,500 | 7,500 | 18,750 |
+| Ignited Revenant | 4 | 1,000 | 3,000 | 7,500 |
+| Ender Golem (miniboss, no x3) | 4 | 1,200 | 1,200 | 3,000 |
+| Ender Dragon | 4 | 1,000 | 3,000 | not scaled |
+| Gaia Guardian | 4 | 1,200 | 3,600 | 9,000 |
+| Ender Guardian | 4 | 1,500 | 4,500 | 11,250 |
 
-Implementation: `kubejs/server_scripts/scaling/boss_hp.js` + `boss_progressive.js`.
+#### Per-kill scaling (per player)
 
-#### Progressive Bosses per-kill scaling
+A boss remembers the players who have beaten it. The first time it trades a hit with a player, it takes the
+**highest** kill count of that boss among the players within 64 blocks, and keeps it for the whole fight: a
+veteran who joins later changes nothing. Every player within 64 blocks when it dies counts the kill. Your counts
+are your own (they survive death); `/icraft bosskills` lists them with what your next fight of each will be. When
+a boss is stronger than its first fight, the players near it are told so in chat.
 
-Per-world, not per-player. Encourages varied boss hunting rather than farming one boss.
+| Fight | Health | Damage | Speed |
+|------:|-------:|-------:|------:|
+| 1st | base | base | base |
+| 2nd | +15% | +10% | +3% |
+| 3rd-4th | +30% | +20% | +5% |
+| 5th-6th | +50% | +35% | +8% |
+| 7th-9th | +75% | +48% | +10% |
+| 10th-14th | +100% | +60% | +12% |
+| 15th and on | +150% (cap) | +80% (cap) | +15% (cap) |
 
-| Kill count | HP bonus | Damage bonus | Speed bonus | New mechanics |
-|-----------:|---------:|-------------:|------------:|---------------|
-| 1st | base | base | base | Base moveset |
-| 2nd | +15% | +10% | +3% | — |
-| 3rd | +30% | +20% | +5% | +1 new attack pattern |
-| 5th | +50% | +35% | +8% | +1 additional phase |
-| 10th | +100% | +60% | +12% | Full enhanced moveset |
-| 15th+ | +150% (cap) | +80% (cap) | +15% (cap) | Maximum difficulty |
+The percentages are of the boss as you would meet it otherwise (its designed health, the x3, the difficulty
+curve). Damage is the boss's melee: many bosses' spells and projectiles hit for their own numbers and are not
+scaled. Nothing else changes: the moveset, the drops and the tokens are those of the first fight.
 
-#### Progressive Bosses drop-quality scaling
-
-Bosses drop slightly better gear at higher kill counts — incentivizes repeated farming as difficulty rises.
-
-| Kill count | Drop quality |
-|-----------:|--------------|
-| 1st-3rd | Base drops |
-| 4th-6th | +10% chance for higher affix rarity |
-| 7th-10th | +20% chance, bonus enchantment level |
-| 10th+ | +25% chance, guaranteed additional drop |
+**Which bosses:** the trophy bosses of every tier and the pack's designed minibosses (75 kinds). **Not scaled:**
+the Wither and the Ultimate Wither, the Ender Dragon, the Warden, the Elder Guardian, and the minibosses the pack
+has not designed.
 
 ### D.7 Apotheosis-spawned random world bosses
 
@@ -874,7 +877,7 @@ These targets drive the live difficulty stack (down from the original 7 — the 
 1. **`iridescent_difficulty`** — time-based per-dimension HP / damage / armor multipliers (D.4), ramping to a per-tier cap; the End uncaps after the Ender Dragon. Replaces ScalingMobs + the Improved-Mobs accumulator + Azukaar's.
 2. **`mob_scaling_unified.js` tier-HP block** — static per-category HP (basic 3× / mid 1.5× / elite 1.25×), composed on top of the dimension multiplier.
 3. **Majrusz's Progressive Difficulty** — per-dimension elite-mob density via Master-stage scaling (replaces former Champions Unofficial layer; Majrusz's own stat scaling is config-disabled).
-4. **Progressive Bosses** (+ `boss_progressive.js`) — per-kill boss scaling (D.6).
+4. **Per-kill boss scaling, per player** (`boss_progressive.js`) — each boss is stronger for players who have beaten it before (D.6). Progressive Bosses runs the Wither and does not scale per kill.
 5. **KubeJS mob event handlers** — dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire); environmental hazards in `scaling/dimension_mechanics.js`.
 6. **Loot table integration** — elite drops, boss drops, gear scaling per dimension.
 7. **Boss HP overrides** — custom HP via `kubejs/server_scripts/scaling/boss_hp.js` (D.6).
@@ -1072,7 +1075,7 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Cataclysmic Combat | B | Enhanced AI |
 | `iridescent_difficulty` (custom) | B | Time-based per-dimension HP/damage scaling (replaced ScalingMobs / Improved Mobs / Azukaar's, all removed 2026-05-03) |
 | Majrusz's Progressive Difficulty | B | Elite-mob Master-stage density (replaced Champions Unofficial); stat scaling config-disabled |
-| Progressive Bosses | B | Per-kill boss buffing |
+| Progressive Bosses | B | Runs the Wither (and the optional Ultimate Wither); no per-kill scaling |
 | Difficult Caves | B | Cave-specific aggression |
 | Spice of Life: Carrot Edition | B | Food diversity HP bonuses |
 | Hunger Overhaul | B | Faster hunger drain |
@@ -1298,7 +1301,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 |--------|------|
 | `mob_scaling_unified.js` | Static mob-tier HP block (basic 3× / mid 1.5× / elite 1.25×) that composes on top of the `iridescent_difficulty` mod's dimension multipliers. (The former Champions-dependent dimension-scaling block was retired when `iridescent_difficulty` took over dimension stats — 2026-05-03.) |
 | `boss_hp.js` | Per-boss HP base values (table in Section D.6) |
-| `boss_progressive.js` | Per-kill boss buffing (Progressive Bosses supplement) |
+| `boss_progressive.js` | Per-kill boss scaling, per player (D.6) |
 | `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside darkness-empowerment/hexing, theabyss oppressive-darkness/corruption/fear-aura/void-whispers, End multi-zone, Ad Astra atmospheric) |
 | `mob_equipment.js` | Mob equipment-spawn handler with iron-tier cap (was Improved Mobs-paired; Improved Mobs removed 2026-05-03 — verify the script still fires or is now dormant) |
 | `dimension_scaling.js.disabled` / `mob_tier_hp.js.disabled` | Older systems; superseded |

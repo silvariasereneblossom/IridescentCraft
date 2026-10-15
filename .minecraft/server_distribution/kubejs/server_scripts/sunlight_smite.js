@@ -24,13 +24,15 @@
 //         or an overhang keeps it safe, as a well-lit base should);
 //     takes 2 magic damage through core.dealDamage (a secondary hit: no hurt
 //     handler multiplies it) and is set alight for 2 seconds.
-//   * 2 damage twice a second: a zombie (20 health) is gone in about five
-//     seconds; nothing dies in one hit. Drops are the mob's own; no experience
-//     unless a player hit it in the last five seconds (the game's rule).
+//   * 2 damage twice a second, 4 a second: a zombie of this pack (70 health in
+//     the Overworld at the start: the mob tier and the difficulty curve) lasts
+//     about 15 seconds, a vanilla one of 20 health about five; nothing dies in
+//     one hit. Drops are the mob's own; no experience unless a player hit it in
+//     the last five seconds (the game's rule).
 // How many that is, counted on a copy of the live world (world-20261015-0251,
-// counts only): 2,919 saved undead in the Overworld, 7 of them bosses; 446 of
-// the others stand under open sky; 7 inside the scan of a player's saved
-// position (5 Meature, 1 Huntsman, 1 Skeleton).
+// counts only, by the 81 entity types the test above burns on the full pack):
+// 2,827 saved in the Overworld, 408 of them under open sky, 2 inside the scan
+// of a player's saved position (1 Huntsman, 1 Skeleton).
 //
 // UNTIL 2026-10-15 this script never damaged a mob: its undead test called
 // `.is` on the entity's id string and its hit called `entity.hurt`, which

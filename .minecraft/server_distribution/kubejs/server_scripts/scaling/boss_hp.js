@@ -1,11 +1,15 @@
+// @file kubejs/server_scripts/scaling/boss_hp.js
+// @events EntityEvents.spawned
+// @registry bosses
 // =============================================================================
 // IridescentCraft — Boss HP Overrides
 // File: kubejs/server_scripts/scaling/boss_hp.js
 //
 // Design Doc Part II: Boss HP Targets (First Kill)
 //
-// Sets custom base HP for all designed bosses. Progressive Bosses mod handles
-// per-kill scaling ON TOP of these base values.
+// Sets custom base HP for all designed bosses. Per-kill scaling (per player,
+// scaling/boss_progressive.js) multiplies ON TOP of the boss as built, at the
+// boss's first exchange with a player. Progressive Bosses scales nothing per kill.
 //
 // NOTE: Some bosses have hardcoded HP that may resist attribute modification.
 // If a boss ignores the override, it may need a mod-specific config or mixin.

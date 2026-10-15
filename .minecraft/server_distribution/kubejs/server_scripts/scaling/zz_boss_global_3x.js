@@ -24,9 +24,10 @@
 // WHY MULTIPLY_TOTAL (not multiply_base)
 //   The game computes an attribute as:
 //       base × (1 + Σ multiply_base) × Π (1 + multiply_total)
-//   boss_hp.js sets each designed boss's BASE hp via a multiply_base ratio, and
-//   boss_progressive.js adds per-kill multiply_base scaling; the iridescent_
-//   difficulty mod adds a per-dimension curve. A MULTIPLY_TOTAL ×3 sits cleanly
+//   boss_hp.js sets each designed boss's BASE hp via a multiply_base ratio; the
+//   iridescent_difficulty mod adds a per-dimension curve. (Per-kill scaling,
+//   boss_progressive.js, is multiply_total too since 2026-10-15, at a boss's
+//   first exchange with a player.) A MULTIPLY_TOTAL ×3 sits cleanly
 //   ON TOP of all of that — tripling whatever those produced, which is exactly
 //   what "×3 the boss" means. A multiply_base +2.0 would instead SUM with the
 //   others (base × (1 + ratio + 2.0)) — not a clean ×3. (Same reasoning as

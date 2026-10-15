@@ -1972,7 +1972,7 @@ own one-shot `global._*` flags.
 
 ### `scaling/boss_hp.js`
 
-- place 142 of 161
+- place 142 of 161; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)

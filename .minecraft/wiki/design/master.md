@@ -294,7 +294,7 @@ Threat scales along several axes, each controlled by a different system and tuna
 | HP (static mob tier) | `mob_scaling_unified.js` tier-HP block | Flat per-category multipliers (basic 3× / mid 1.5× / elite 1.25×), composed on top of the dimension multiplier. |
 | Behavior + AI | Cataclysmic Combat / Difficult Caves | Enhanced AI: tool-use, block-breaking, coordination, cave-specific aggression. |
 | Elite-mob density | **Majrusz's Progressive Difficulty** | Three-stage (Normal / Expert / Master) elite-mob scaling, tied to progression milestones (Nether entry → Expert, Dragon kill → Master). Replaces the removed Champions Unofficial. (Majrusz's own per-mob *stat* scaling is config-disabled; `iridescent_difficulty` owns dimension stats.) |
-| Boss persistence | Progressive Bosses (+ `boss_progressive.js`) | Each boss kill increases that boss's stats for the next encounter. Stacks on top of the dimension multiplier. |
+| Boss persistence | Per-kill scaling, per player (`boss_progressive.js`) | A boss is stronger for the players who have beaten it before: the highest kill count among the players within 64 blocks sets it, from +15% health at the 2nd fight to +150% from the 15th. Stacks on top of the dimension multiplier. Not the Wither, the Ender Dragon, the Warden or the Elder Guardian. |
 
 → Per-dimension multiplier tables + the time-based curve: [Appendix §D.4](master-appendix.md#d4-dimension-stat-multipliers-full) and [Progression Overview](../progression/overview.md#dimensional-progression).
 
@@ -376,7 +376,7 @@ Peak AI aggression in the End (design intent, now driven by Cataclysmic Combat +
 | 3 | 3–5 hits | High (4–6 hits) | Intense. Mechanics demand specific strategies. Poison, stealth, fire pressure. |
 | 4 | 4–8 hits (build-dependent) | Lethal (3–4 hits glass cannon) | Endgame. Every fight matters. Environmental + mob synergy. One mistake = death. |
 
-→ Per-class HP/DPS estimates, kill-speed targets, full multiplier table, Progressive Bosses scaling, regular mob equipment percentages: [Appendix §D](master-appendix.md#d-apotheosis-tables--scaling).
+→ Per-class HP/DPS estimates, kill-speed targets, full multiplier table, per-kill boss scaling, regular mob equipment percentages: [Appendix §D](master-appendix.md#d-apotheosis-tables--scaling).
 
 ---
 
@@ -785,7 +785,7 @@ The Compendium is the **completionist endgame** — a massive in-game checklist 
 
 A **Champion Bestiary** tracks affix combinations separately. Encountering every affix at least once unlocks "Champion Scholar" + the *Champion's Eye* curio (see Champion affixes from 16 blocks away).
 
-**Boss Chronicle.** Tracks every boss killed and at what Progressive Bosses difficulty.
+**Boss Chronicle.** Tracks every boss killed and at what per-kill scaling (your own counts: `/icraft bosskills`).
 
 | Milestone | Reward |
 |-----------|--------|

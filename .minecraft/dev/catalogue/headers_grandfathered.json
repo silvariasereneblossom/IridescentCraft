@@ -122,7 +122,6 @@
   "recipes/waystone_recipes.js",
   "regen_control.js",
   "respawn_hunger.js",
-  "scaling/boss_hp.js",
   "spawn_priest_tower.js",
   "spawn_protection.js",
   "strip_infinity_ham.js",
