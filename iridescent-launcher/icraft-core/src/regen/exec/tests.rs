@@ -23,8 +23,8 @@ use crate::nbt::testing::{compound, encode_ordered, gzip, string};
 use crate::worlddata::testing::{player_nbt, write_claims, write_gz, write_level, write_player, write_waystones};
 use std::sync::atomic::AtomicU32;
 
-const PLAYER: &str = "2336b337-85a7-37bc-bccb-30eb11749442";
-const PLAYER_NAME: &str = "Aria_Steele";
+const PLAYER: &str = "0e0c6371-8599-3a43-a117-30cb7e62c579"; // offline UUID of PLAYER_NAME
+const PLAYER_NAME: &str = "Player_One";
 
 static NEXT_DIR: AtomicU32 = AtomicU32::new(0);
 
@@ -295,11 +295,11 @@ fn refused(outcome: Outcome) -> String {
 
 #[test]
 fn the_fixtures_helpers_pack_as_minecraft_does() {
-    for (x, y, z) in [(2735, 67, 3641), (-1815, 25, 1121), (-1930, 13, -528), (0, -64, 0)] {
+    for (x, y, z) in [(687, 67, 1081), (-1815, 25, 1121), (-1930, 13, -528), (0, -64, 0)] {
         assert_eq!(BlockPos::from_long(pack(x, y, z)), BlockPos { x, y, z });
     }
     assert_eq!(pack(-1815, 25, 1121), -498_903_396_511_719); // a value from the live world
-    assert_eq!(chunk_key(175, 223), "957777707183"); // and a graveyard key from it
+    assert_eq!(chunk_key(47, 63), "270582939695"); // and a graveyard key like the live world's
     assert_eq!(parse_external_name("c.101.100.mcc"), Some((101, 100)));
     assert_eq!(parse_external_name("c.-3.7.mcc"), Some((-3, 7)));
     for not_one in ["r.1.2.mca", "c.1.mcc", "c.a.b.mcc", "c.1.2.mca", ""] {
@@ -583,7 +583,7 @@ fn what_the_run_cannot_answer_for_refuses_it() {
     let before = sv.snapshot();
     let (run_dir, hash) = sv.dry_run("scope=all");
     let why = refused(sv.run(&run_dir, &hash));
-    assert!(why.contains("Player file #1 (playerdata/2336b337...) logged out in chunk (5, 5)"), "{why}");
+    assert!(why.contains("Player file #1 (playerdata/0e0c6371...) logged out in chunk (5, 5)"), "{why}");
     assert!(!why.contains(PLAYER_NAME) && !why.contains(PLAYER), "{why}");
     assert!(!sv.log().contains(PLAYER_NAME) && !sv.log().contains(PLAYER));
     let look = preflight(&sv.cfg, &run_dir).unwrap();

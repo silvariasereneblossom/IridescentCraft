@@ -563,7 +563,7 @@ impl Customizer {
                 .desired_rows(2)
                 .desired_width(f32::INFINITY)
                 .font(egui::TextStyle::Monospace)
-                .hint_text("160,200..180,230"),
+                .hint_text("32,40..52,70"),
         );
         ui.label("Never keep, whatever the layers above say (same form)");
         ui.add(

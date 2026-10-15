@@ -367,7 +367,7 @@ pub struct DimensionScan {
     /// `c.x.z.mcc` files (chunks too big for a region file).
     pub external_chunk_files: usize,
     /// Region files the server wrote to while they were being read
-    /// (`region/r.5.7.mca`).
+    /// (`region/r.1.2.mca`).
     pub changed_during_scan: Vec<String>,
     /// Terrain chunks without an `InhabitedTime` tag.
     pub without_inhabited_time: usize,
@@ -750,7 +750,7 @@ mod tests {
         for not_ours in ["r.1.2.mca.bak", "r.+1.2.mca", "r.01.2.mca", "r.1.mca", "r.1.2.3.mca", "c.1.2.mcc", "r.a.b.mca", "r..1.mca", ""] {
             assert_eq!(parse_region_name(not_ours), None, "{not_ours}");
         }
-        assert_eq!(region_of((170, 227)), (5, 7));
+        assert_eq!(region_of((42, 67)), (1, 2));
         assert_eq!(region_of((-1, -32)), (-1, -1));
         assert_eq!(region_of((-33, 31)), (-2, 0));
         // A slot's chunk, both ways round, in a negative region.
@@ -796,14 +796,14 @@ mod tests {
     #[test]
     fn a_dimension_scan_reads_all_three_folders() {
         let world = temp_world();
-        write_region(&world, Store::Region, 5, 7, &[((170, 227), 6_166_097), ((160, 224), 0), ((191, 255), 12_000)]);
+        write_region(&world, Store::Region, 1, 2, &[((42, 67), 6_166_097), ((32, 64), 0), ((63, 95), 12_000)]);
         write_region(&world, Store::Region, -1, -1, &[((-1, -1), 33)]);
         // The placeholders Minecraft leaves behind, and things that are not region files.
         fs::write(world.join("region").join("r.9.9.mca"), b"").unwrap();
         fs::write(world.join("region").join("r.9.9.mca.bak"), b"junk").unwrap();
         fs::write(world.join("region").join("c.1.2.mcc"), b"junk").unwrap();
         // An entity chunk and a POI chunk with no terrain chunk.
-        write_region(&world, Store::Entities, 5, 7, &[((170, 227), 0), ((161, 224), 0)]);
+        write_region(&world, Store::Entities, 1, 2, &[((42, 67), 0), ((33, 64), 0)]);
         write_region(&world, Store::Poi, 0, 0, &[((3, 4), 0)]);
         fs::write(world.join("poi").join("r.1.1.mca"), b"").unwrap();
 
@@ -813,8 +813,8 @@ mod tests {
         assert_eq!(scan.files_of(Store::Poi).count(), 2);
         assert_eq!(scan.external_chunk_files, 1);
         assert!(scan.changed_during_scan.is_empty());
-        let real = scan.files_of(Store::Region).find(|f| f.name == "r.5.7.mca").unwrap();
-        assert_eq!(real.bytes, fs::metadata(world.join("region").join("r.5.7.mca")).unwrap().len());
+        let real = scan.files_of(Store::Region).find(|f| f.name == "r.1.2.mca").unwrap();
+        assert_eq!(real.bytes, fs::metadata(world.join("region").join("r.1.2.mca")).unwrap().len());
         assert_eq!(scan.without_inhabited_time, 0);
         assert!(scan.files.iter().all(|f| f.error.is_none()));
         let placeholder = scan.files_of(Store::Region).find(|f| f.name == "r.9.9.mca").unwrap();
@@ -822,13 +822,13 @@ mod tests {
 
         assert_eq!(scan.chunks.len(), 6);
         assert_eq!((scan.chunk_count(Store::Region), scan.chunk_count(Store::Entities), scan.chunk_count(Store::Poi)), (4, 2, 1));
-        assert_eq!(scan.chunks[&(170, 227)].inhabited, Some(6_166_097));
-        assert_eq!(scan.chunks[&(160, 224)].inhabited, Some(0));
-        assert_eq!(scan.chunks[&(191, 255)].inhabited, Some(12_000));
+        assert_eq!(scan.chunks[&(42, 67)].inhabited, Some(6_166_097));
+        assert_eq!(scan.chunks[&(32, 64)].inhabited, Some(0));
+        assert_eq!(scan.chunks[&(63, 95)].inhabited, Some(12_000));
         assert_eq!(scan.chunks[&(-1, -1)].inhabited, Some(33));
-        assert!(scan.chunks[&(170, 227)].in_store(Store::Region) && scan.chunks[&(170, 227)].in_store(Store::Entities));
+        assert!(scan.chunks[&(42, 67)].in_store(Store::Region) && scan.chunks[&(42, 67)].in_store(Store::Entities));
         // No terrain chunk: present, with no InhabitedTime to go by.
-        let orphan = &scan.chunks[&(161, 224)];
+        let orphan = &scan.chunks[&(33, 64)];
         assert!(orphan.in_store(Store::Entities) && !orphan.in_store(Store::Region));
         assert_eq!((orphan.inhabited, orphan.unreadable.clone()), (None, None));
         assert!(scan.chunks[&(3, 4)].in_store(Store::Poi));
@@ -958,7 +958,7 @@ mod tests {
         assert_eq!(slot_index((5, 0)), 5);
         assert_eq!(slot_index((31, 31)), 31 * 32 + 31);
         assert_eq!(slot_index((-27, -33)), 31 * 32 + 5); // in r.-1.-2, as `region_names` has it
-        assert_eq!(slot_index((170, 227)), (227 - 7 * 32) * 32 + (170 - 5 * 32));
+        assert_eq!(slot_index((42, 67)), (67 - 2 * 32) * 32 + (42 - 1 * 32));
 
         let before = four_chunks();
         // The big one, the external one, and a slot that holds nothing.

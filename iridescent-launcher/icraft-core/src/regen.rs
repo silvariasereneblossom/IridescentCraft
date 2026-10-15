@@ -106,7 +106,7 @@ pub enum Scope {
 }
 
 impl Scope {
-    /// `report`, `ring:8`, `all`, `box:160,200,180,230` (or `box:160,200..180,230`).
+    /// `report`, `ring:8`, `all`, `box:32,40,52,70` (or `box:32,40..52,70`).
     pub fn parse(text: &str) -> Result<Self, String> {
         let t = text.trim().to_ascii_lowercase();
         match t.as_str() {
@@ -2022,9 +2022,9 @@ mod tests {
     use std::sync::atomic::AtomicU32;
 
     const NETHER: &str = "minecraft:the_nether";
-    const ARIA: &str = "2336b337-85a7-37bc-bccb-30eb11749442";
-    const FALENDRIA: &str = "5468e8b0-f28f-38c0-bae5-f2f4fc64e097";
-    const SILVIE: &str = "7f115983-f49f-3639-abb2-bc6bdb6e831e";
+    const P1: &str = "0e0c6371-8599-3a43-a117-30cb7e62c579"; // offline UUIDs of the three names below
+    const P2: &str = "270bd0d1-69ee-3638-9c35-5040c29ee961";
+    const P3: &str = "bc24d5cc-490a-3d10-94be-7dad4e728856";
 
     static NEXT_DIR: AtomicU32 = AtomicU32::new(0);
 
@@ -2036,8 +2036,8 @@ mod tests {
     ///     alone in its region file, (100,100)
     ///   - (12,12) lived in for 100,000 ticks, (15,15) for 12,000, (16,16) for 5,000
     ///   - an entity chunk with no terrain at (25,25); a zero-byte r.5.5.mca
-    ///   - Aria: bed in chunk (12,12), logged out in chunk (5,5)
-    ///   - Falendria: no bed. Silvie: bed in the Nether (which has no chunks)
+    ///   - Player_One: bed in chunk (12,12), logged out in chunk (5,5)
+    ///   - Player_Two: no bed. Player_Three: bed in the Nether (which has no chunks)
     ///   - a waystone a player placed (and nobody activated) at chunk (18,18);
     ///     a claim at (19,19)
     struct Fixture {
@@ -2058,7 +2058,7 @@ mod tests {
             fs::write(root.join("server.properties"), "level-name=testworld\nonline-mode=false\n").unwrap();
             fs::write(
                 root.join("usercache.json"),
-                format!(r#"[{{"name":"Aria_Steele","uuid":"{ARIA}"}},{{"name":"Falendria","uuid":"{FALENDRIA}"}},{{"name":"silvieserene","uuid":"{SILVIE}"}}]"#),
+                format!(r#"[{{"name":"Player_One","uuid":"{P1}"}},{{"name":"Player_Two","uuid":"{P2}"}},{{"name":"Player_Three","uuid":"{P3}"}}]"#),
             )
             .unwrap();
             write_level(&world, (0, 64, 0));
@@ -2083,11 +2083,11 @@ mod tests {
             write_region(&world, Store::Poi, 0, 0, &[((12, 12), 0)]);
             fs::create_dir_all(world.join("DIM-1").join("data")).unwrap();
 
-            write_player(&world, ARIA, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[]));
-            write_player(&world, FALENDRIA, &player_nbt(None, (OVERWORLD, (0.5, 64.0, 0.5)), &[]));
-            write_player(&world, SILVIE, &player_nbt(Some((NETHER, (8, 64, 8))), (NETHER, (8.0, 64.0, 8.0)), &[]));
+            write_player(&world, P1, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[]));
+            write_player(&world, P2, &player_nbt(None, (OVERWORLD, (0.5, 64.0, 0.5)), &[]));
+            write_player(&world, P3, &player_nbt(Some((NETHER, (8, 64, 8))), (NETHER, (8.0, 64.0, 8.0)), &[]));
             write_waystones(&world, &[([1, 2, 3, 4], "", OVERWORLD, (18 * 16 + 3, 70, 18 * 16 + 4), "PLAYER")]);
-            write_claims(&world, ARIA, "Aria_Steele", &[(OVERWORLD, false, &[(19, 19)])]);
+            write_claims(&world, P1, "Player_One", &[(OVERWORLD, false, &[(19, 19)])]);
             Fixture { cfg: ServerConfig::from_path(&root), root }
         }
 
@@ -2156,7 +2156,7 @@ mod tests {
         let mut p = BTreeSet::new();
         for x in 11..=13 {
             for z in 11..=13 {
-                p.insert((x, z)); // Aria's bed, 3x3
+                p.insert((x, z)); // Player_One's bed, 3x3
             }
         }
         p.extend([(0, 0), (0, 1), (1, 0), (1, 1), (-1, -1)]); // spawn, where generated
@@ -2169,7 +2169,7 @@ mod tests {
         assert_eq!(Scope::parse("report"), Ok(Scope::Report));
         assert_eq!(Scope::parse(" ALL "), Ok(Scope::All));
         assert_eq!(Scope::parse("ring:8"), Ok(Scope::Ring(8)));
-        assert_eq!(Scope::parse("box:180,230,160,200"), Ok(Scope::Box { x1: 160, z1: 200, x2: 180, z2: 230 }));
+        assert_eq!(Scope::parse("box:52,70,32,40"), Ok(Scope::Box { x1: 32, z1: 40, x2: 52, z2: 70 }));
         assert_eq!(Scope::parse("box:-5,-6..7,8"), Ok(Scope::Box { x1: -5, z1: -6, x2: 7, z2: 8 }));
         for bad in ["", "ring", "ring:0", "ring:257", "ring:x", "box:1,2,3", "box:1,2,3,4,5", "box:a,b,c,d", "everything"] {
             assert!(Scope::parse(bad).is_err(), "{bad}");
@@ -2241,7 +2241,7 @@ mod tests {
         assert_eq!(plan["scope"], "all");
         assert_eq!(plan["total_chunks"], 428);
         assert_eq!(plan["world"]["level_name"], "testworld");
-        assert_eq!(plan["world"]["seed"], "5436401472302240754");
+        assert_eq!(plan["world"]["seed"], "4242424242424242424");
         assert_eq!(plan["plan_hash"], s.plan_hash.as_str());
         assert_eq!(plan_hash("testworld", [(OVERWORLD, &chunks)]), s.plan_hash);
         // Whole files: only the region file whose every chunk goes.
@@ -2268,7 +2268,7 @@ mod tests {
         assert_eq!(csv.lines().count(), 1 + 445);
         assert_eq!(csv.lines().filter(|l| l.ends_with(",regenerate")).count(), 428);
         assert_eq!(csv.lines().filter(|l| l.ends_with(",keep")).count(), 17);
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,12,12,192,192,r.0.0.mca,1,1,1,100000,1,bed+lived-in,bed of Aria_Steele,1,keep"), "{csv}");
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,12,12,192,192,r.0.0.mca,1,1,1,100000,1,bed+lived-in,bed of Player_One,1,keep"), "{csv}");
         assert!(csv.lines().any(|l| l == "minecraft:overworld,25,25,400,400,r.0.0.mca,0,1,0,,0,,,1,regenerate"));
         assert!(csv.lines().any(|l| l == "minecraft:overworld,-1,-1,-16,-16,r.-1.-1.mca,1,0,0,0,1,spawn,,1,keep"));
         let png = fs::read(s.out_dir.join("map-minecraft_overworld.png")).unwrap();
@@ -2279,9 +2279,9 @@ mod tests {
         let of = |kind: &str| warnings.lines().filter(|l| l.starts_with(&format!("{kind},"))).count();
         assert_eq!(of("lived-in-not-protected"), 1);
         assert!(warnings.contains("lived-in-not-protected,minecraft:overworld,16,16,,,,InhabitedTime 5000 ticks (4.2 min)"), "{warnings}");
-        assert_eq!(of("logout-position-in-target"), 1); // Aria, in chunk (5,5)
-        assert_eq!(of("player-no-bed"), 1); // Falendria
-        assert_eq!(of("bed-outside-scope"), 1); // Silvie's Nether bed
+        assert_eq!(of("logout-position-in-target"), 1); // Player_One, in chunk (5,5)
+        assert_eq!(of("player-no-bed"), 1); // Player_Two
+        assert_eq!(of("bed-outside-scope"), 1); // Player_Three's Nether bed
         assert_eq!(of("online-mode"), 1);
         assert_eq!(of("waystone-in-target") + of("claim-in-target"), 0);
         assert_eq!(s.warnings, warnings.lines().count() - 1);
@@ -2303,7 +2303,7 @@ mod tests {
         let removed = over.files.iter().find(|f| f.label == "REMOVED ENTIRELY").unwrap();
         assert_eq!((removed.region, removed.entities, removed.poi), (1, 0, 0));
         assert_eq!(view.players.len(), 3);
-        assert_eq!(view.players[0].name, "Aria_Steele");
+        assert_eq!(view.players[0].name, "Player_One");
         assert!(view.players[0].lines.iter().any(|l| l.starts_with("bed area     3x3 chunks: 9 on disk, 9 kept")), "{:?}", view.players[0].lines);
         assert!(view.warning_groups.iter().any(|g| g.kind == "lived-in-not-protected" && g.count == 1 && g.more == 0));
         assert_eq!(view.warning_groups.iter().map(|g| g.count).sum::<usize>(), view.warnings);
@@ -2396,7 +2396,7 @@ mod tests {
         assert_eq!(of("claim-in-target"), 1);
         assert_eq!(of("lived-in-not-protected"), 2); // (15,15) and (16,16)
         assert!(warnings.contains("waystone-in-target,minecraft:overworld,18,18,291,70,292,"), "{warnings}");
-        assert!(warnings.contains("claimed by Aria_Steele"));
+        assert!(warnings.contains("claimed by Player_One"));
         assert!(s.report.contains("[not the default]"));
 
         // unprotect= beats every layer and says so; protect= adds one.
@@ -2406,7 +2406,7 @@ mod tests {
         let chunks = plan_chunks(&fx.plan(&s), OVERWORLD);
         assert!(chunks.contains(&(12, 12)) && !chunks.contains(&(16, 16)));
         let warnings = fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap();
-        assert!(warnings.contains("unprotect-overrides-a-layer,minecraft:overworld,12,12,,,,an unprotect= line removes the protection of bed+lived-in [bed of Aria_Steele]; it WOULD BE REGENERATED"), "{warnings}");
+        assert!(warnings.contains("unprotect-overrides-a-layer,minecraft:overworld,12,12,,,,an unprotect= line removes the protection of bed+lived-in [bed of Player_One]; it WOULD BE REGENERATED"), "{warnings}");
         assert!(s.report.contains(".icraft_regen_policy is in effect"));
         assert_eq!(fx.plan(&s)["policy_file"], "unprotect=12,12\nprotect=16,16\n");
 
@@ -2439,13 +2439,13 @@ mod tests {
     fn only_waystones_players_use_are_kept_by_default() {
         let fx = Fixture::new();
         let world = fx.root.join("testworld");
-        let aria_way = "00000005-0000-0006-0000-000700000008";
+        let p1_way = "00000005-0000-0006-0000-000700000008";
         write_waystones(&world, &[
             ([1, 2, 3, 4], "", OVERWORLD, (18 * 16 + 3, 70, 18 * 16 + 4), "PLAYER"),       // placed by a player
-            ([5, 6, 7, 8], "Hearthome", OVERWORLD, (3 * 16, 70, 10 * 16), "VILLAGE"),      // generated, activated by Aria
+            ([5, 6, 7, 8], "Hearthome", OVERWORLD, (3 * 16, 70, 10 * 16), "VILLAGE"),      // generated, activated by Player_One
             ([9, 9, 9, 9], "", OVERWORLD, (7 * 16, 70, 7 * 16), "WILDERNESS"),             // generated, used by nobody
         ]);
-        write_player(&world, ARIA, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[aria_way]));
+        write_player(&world, P1, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[p1_way]));
 
         let s = fx.run("scope=all");
         // 17 as before, plus the activated one at (3,10); the unused one at (7,7) goes.
@@ -2469,7 +2469,7 @@ mod tests {
         let fx = Fixture::new();
         let world = fx.root.join("testworld");
         write_region(&world.join("DIM-1"), Store::Region, 0, 0, &[((0, 0), 0), ((1, 1), 0), ((9, 9), 50_000)]);
-        // Both dimensions: Silvie's Nether bed (chunk 0,0) keeps its 3x3, and the lived-in chunk stays.
+        // Both dimensions: Player_Three's Nether bed (chunk 0,0) keeps its 3x3, and the lived-in chunk stays.
         let s = fx.run("scope=all dims=all");
         assert_eq!(s.on_disk, 445 + 3);
         assert_eq!(s.targets, 428);

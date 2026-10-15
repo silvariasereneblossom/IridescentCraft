@@ -56,11 +56,11 @@ use crate::worlddata::{ClaimOwner, LevelInfo, Player, Waystone};
 /// waystone_radius=0         # chunks around each kept waystone
 /// inhabited_min_ticks=12000 # lived-in threshold | off
 /// inhabited_warn_ticks=1200 # report unprotected chunks at or above this
-/// protect=170,227                          # always keep: one chunk,
-/// protect=160,200..180,230                 #   a box of chunks (inclusive),
+/// protect=42,67                            # always keep: one chunk,
+/// protect=32,40..52,70                     #   a box of chunks (inclusive),
 /// protect=10,12@minecraft:the_nether       #   in another dimension,
-/// protect_blocks=2700,3600..2800,3700      #   or in block coordinates
-/// unprotect=165,220                        # never keep, whatever the layers say
+/// protect_blocks=652,1040..752,1140        #   or in block coordinates
+/// unprotect=37,60                          # never keep, whatever the layers say
 /// ```
 pub const POLICY_FILE: &str = ".icraft_regen_policy";
 
@@ -675,10 +675,10 @@ mod tests {
              inhabited_min_ticks=72000\n\
              inhabited_warn_ticks=6000\n\
              \n\
-             protect=170,227\n\
-             protect=180,230..160,200\n\
+             protect=42,67\n\
+             protect=52,70..32,40\n\
              protect=10,12@minecraft:the_nether\n\
-             protect_blocks=2700,3600..2800,3700\n\
+             protect_blocks=652,1040..752,1140\n\
              unprotect=-5,-6\n\
              unprotect_blocks=-1,-1\n",
         )
@@ -691,12 +691,12 @@ mod tests {
         assert_eq!(s.inhabited_min_ticks, Some(72_000));
         assert_eq!(s.inhabited_warn_ticks, 6_000);
         let shown: Vec<String> = s.protect.iter().map(ChunkBox::to_string).collect();
-        assert_eq!(shown, vec!["170,227", "160,200..180,230", "10,12@minecraft:the_nether", "168,225..175,231"]);
+        assert_eq!(shown, vec!["42,67", "32,40..52,70", "10,12@minecraft:the_nether", "40,65..47,71"]);
         let shown: Vec<String> = s.unprotect.iter().map(ChunkBox::to_string).collect();
         assert_eq!(shown, vec!["-5,-6", "-1,-1"]);
         assert!(s.validate().is_ok());
-        assert!(s.protect[1].contains(OVERWORLD, (160, 230)) && !s.protect[1].contains(OVERWORLD, (159, 230)));
-        assert!(!s.protect[1].contains(NETHER, (170, 210)));
+        assert!(s.protect[1].contains(OVERWORLD, (32, 70)) && !s.protect[1].contains(OVERWORLD, (31, 70)));
+        assert!(!s.protect[1].contains(NETHER, (42, 50)));
         assert!(s.protect[2].contains(NETHER, (10, 12)));
         assert!(s.describe().iter().filter(|(_, _, is_default)| !*is_default).count() >= 7);
 
@@ -729,8 +729,8 @@ mod tests {
             "claims=maybe",
             "waystones=some",
             "inhabited_min_ticks=10 minutes",
-            "protect=170",
-            "protect=170,227..",
+            "protect=42",
+            "protect=42,67..",
             "protect=1,2@",
             "protect=a,b",
             "unprotect=1.5,2",
@@ -739,11 +739,11 @@ mod tests {
             assert!(Settings::default().apply_policy(bad).is_err(), "{bad}");
         }
         // Box lists, as the launcher window takes them: one per line.
-        let boxes = parse_boxes("170,227\n\n  160,200..180,230   # the base\n# a comment\n10,12@minecraft:the_nether\n").unwrap();
+        let boxes = parse_boxes("42,67\n\n  32,40..52,70   # the base\n# a comment\n10,12@minecraft:the_nether\n").unwrap();
         let shown: Vec<String> = boxes.iter().map(ChunkBox::to_string).collect();
-        assert_eq!(shown, vec!["170,227", "160,200..180,230", "10,12@minecraft:the_nether"]);
+        assert_eq!(shown, vec!["42,67", "32,40..52,70", "10,12@minecraft:the_nether"]);
         assert_eq!(parse_boxes(""), Ok(vec![]));
-        assert!(parse_boxes("170,227\nnonsense").is_err());
+        assert!(parse_boxes("42,67\nnonsense").is_err());
 
         // A chunk on both manual lists.
         let mut s = Settings::default();
@@ -783,11 +783,11 @@ mod tests {
 
     #[test]
     fn the_bed_layer_is_the_bed_chunk_and_its_neighbours() {
-        // The live world's three beds.
+        // Three beds the way a live world has them (two of them close).
         let players = [
-            player("Aria_Steele", Some((OVERWORLD, (2735, 3640))), &[]),
-            player("Falendria", Some((OVERWORLD, (2670, 3641))), &[]),
-            player("silvieserene", Some((OVERWORLD, (2772, 3340))), &[]),
+            player("Player_One", Some((OVERWORLD, (687, 1080))), &[]),
+            player("Player_Two", Some((OVERWORLD, (622, 1081))), &[]),
+            player("Player_Three", Some((OVERWORLD, (724, 780))), &[]),
             player("visitor", None, &[]),
             player("netherite", Some((NETHER, (5, 5))), &[]),
         ];
@@ -796,7 +796,7 @@ mod tests {
         let scan = DimensionScan::default();
         let map = build(OVERWORLD, &sources, &only(Layer::Bed), &scan);
         assert_eq!(map.chunks.len(), 27);
-        for centre in [(170, 227), (166, 227), (173, 208)] {
+        for centre in [(42, 67), (38, 67), (45, 48)] {
             for dx in -1..=1 {
                 for dz in -1..=1 {
                     assert_eq!(map.layers_at((centre.0 + dx, centre.1 + dz)), Layer::Bed.bit());
@@ -804,16 +804,16 @@ mod tests {
             }
             assert!(!map.is_protected((centre.0 + 2, centre.1)) && !map.is_protected((centre.0, centre.1 - 2)));
         }
-        assert!(!map.is_protected((168, 227)), "between two 3x3 squares, in neither");
-        assert_eq!(map.chunks[&(170, 227)].why, vec!["bed of Aria_Steele".to_string()]);
+        assert!(!map.is_protected((40, 67)), "between two 3x3 squares, in neither");
+        assert_eq!(map.chunks[&(42, 67)].why, vec!["bed of Player_One".to_string()]);
         // Radius 0 = the bed chunk alone; radius 2 = 5x5; the Nether bed is the Nether's.
         let mut s = only(Layer::Bed);
         s.bed_radius = Some(0);
         assert_eq!(build(OVERWORLD, &sources, &s, &scan).chunks.len(), 3);
         s.bed_radius = Some(2);
         let wide = build(OVERWORLD, &sources, &s, &scan);
-        assert_eq!(wide.chunks.len(), 25 + 25 + 25 - 5, "Aria's and Falendria's 5x5 share one column");
-        assert_eq!(wide.chunks[&(168, 227)].why.len(), 2);
+        assert_eq!(wide.chunks.len(), 25 + 25 + 25 - 5, "Player_One's and Player_Two's 5x5 share one column");
+        assert_eq!(wide.chunks[&(40, 67)].why.len(), 2);
         let nether = build(NETHER, &sources, &only(Layer::Bed), &scan);
         assert_eq!(nether.chunks.len(), 9);
         assert!(nether.is_protected((0, 0)) && nether.is_protected((-1, -1)) && !nether.is_protected((2, 2)));
@@ -821,11 +821,11 @@ mod tests {
 
     #[test]
     fn claims_spawn_and_waystones() {
-        let lv = level((2720, 3632));
+        let lv = level((672, 1072));
         let owners = [
             ClaimOwner {
                 uuid: "u1".to_string(),
-                name: "Aria_Steele".to_string(),
+                name: "Player_One".to_string(),
                 claims: vec![
                     Claim { dim: OVERWORLD.to_string(), chunk: (10, 10), forceloaded: false },
                     Claim { dim: NETHER.to_string(), chunk: (1, 1), forceloaded: true },
@@ -837,8 +837,8 @@ mod tests {
                 claims: vec![Claim { dim: OVERWORLD.to_string(), chunk: (10, 10), forceloaded: false }],
             },
         ];
-        let players = [player("Aria_Steele", None, &["way-b"])];
-        // way-a: generated, nobody has used it. way-b: generated, activated by Aria.
+        let players = [player("Player_One", None, &["way-b"])];
+        // way-a: generated, nobody has used it. way-b: generated, activated by Player_One.
         // way-d: placed by a player, activated by nobody. way-e: generated, made global.
         let mut global = waystone("way-e", OVERWORLD, (160, 160), "WILDERNESS");
         global.global = true;
@@ -854,16 +854,16 @@ mod tests {
 
         let claims = build(OVERWORLD, &sources, &only(Layer::Claim), &scan);
         assert_eq!(claims.chunks.len(), 1);
-        assert_eq!(claims.chunks[&(10, 10)].why, vec!["claim: Aria_Steele".to_string(), "claim: server claims".to_string()]);
+        assert_eq!(claims.chunks[&(10, 10)].why, vec!["claim: Player_One".to_string(), "claim: server claims".to_string()]);
         assert_eq!(build(NETHER, &sources, &only(Layer::Claim), &scan).chunks.len(), 1);
 
-        // Spawn at block (2720, 3632) = chunk (170, 227); 128 blocks = 8 chunks each way.
+        // Spawn at block (672, 1072) = chunk (42, 67); 128 blocks = 8 chunks each way.
         let spawn = build(OVERWORLD, &sources, &only(Layer::Spawn), &scan);
         assert_eq!(spawn.chunks.len(), 17 * 17);
-        assert!(spawn.is_protected((162, 219)) && spawn.is_protected((178, 235)));
-        assert!(!spawn.is_protected((161, 227)) && !spawn.is_protected((170, 236)));
+        assert!(spawn.is_protected((34, 59)) && spawn.is_protected((50, 75)));
+        assert!(!spawn.is_protected((33, 67)) && !spawn.is_protected((42, 76)));
         assert_eq!(build(NETHER, &sources, &only(Layer::Spawn), &scan).chunks.len(), 0, "world spawn is an overworld thing");
-        assert_eq!(block_square_chunks(2720, 3632, 96), ((164, 221), (176, 233)));
+        assert_eq!(block_square_chunks(672, 1072, 96), ((36, 61), (48, 73)));
         assert_eq!(block_square_chunks(0, 0, 32), ((-2, -2), (2, 2)));
         assert_eq!(block_square_chunks(-1, 15, 0), ((-1, 0), (-1, 0)));
 
@@ -886,7 +886,7 @@ mod tests {
     #[test]
     fn lived_in_unreadable_manual_and_the_union() {
         let lv = level((0, 0));
-        let players = [player("Aria_Steele", Some((OVERWORLD, (8, 8))), &[])];
+        let players = [player("Player_One", Some((OVERWORLD, (8, 8))), &[])];
         let sources = Sources { level: &lv, players: &players, claims: &[], waystones: &[] };
         let scan = anvil::testing::scan_of(&[
             ((0, 0), Some(6_166_097), None),

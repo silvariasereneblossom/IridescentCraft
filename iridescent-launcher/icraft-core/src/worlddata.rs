@@ -601,7 +601,7 @@ pub(crate) mod testing {
             ("DataVersion", Value::Int(3465)),
             ("LastPlayed", Value::Long(1_791_728_884_631)),
             ("Version", compound(vec![("Name", string("1.20.1")), ("Id", Value::Int(3465))])),
-            ("WorldGenSettings", compound(vec![("seed", Value::Long(5_436_401_472_302_240_754))])),
+            ("WorldGenSettings", compound(vec![("seed", Value::Long(4_242_424_242_424_242_424))])),
         ]);
         write_gz(&world.join("level.dat"), &compound(vec![("Data", data)]));
     }
@@ -696,26 +696,26 @@ mod tests {
         dir
     }
 
-    const ARIA: &str = "2336b337-85a7-37bc-bccb-30eb11749442";
-    const SILVIE: &str = "7f115983-f49f-3639-abb2-bc6bdb6e831e";
+    const P1: &str = "0e0c6371-8599-3a43-a117-30cb7e62c579"; // offline UUID of "Player_One"
+    const P3: &str = "bc24d5cc-490a-3d10-94be-7dad4e728856"; // offline UUID of "Player_Three"
 
     #[test]
     fn packed_positions_and_uuids_decode_like_the_live_world() {
-        // Values and their meaning taken from the live world's files.
+        // Values and their meaning as in a real world's files (the ore deposit and waystone ones from the live world).
         assert_eq!(BlockPos::from_long(-498_903_396_511_719), BlockPos { x: -1815, y: 25, z: 1121 });
         assert_eq!(BlockPos::from_long(-530_239_484_657_651), BlockPos { x: -1930, y: 13, z: -528 });
-        assert_eq!(BlockPos::from_long(751_791_090_405_443), BlockPos { x: 2735, y: 67, z: 3641 });
-        assert_eq!(BlockPos { x: 2735, y: 67, z: 3640 }.chunk(), (170, 227));
+        assert_eq!(BlockPos::from_long(188_841_126_498_371), BlockPos { x: 687, y: 67, z: 1081 });
+        assert_eq!(BlockPos { x: 687, y: 67, z: 1080 }.chunk(), (42, 67));
         assert_eq!(BlockPos { x: -1, y: 0, z: -17 }.chunk(), (-1, -2));
         assert_eq!(
             uuid_from_ints(&[-901_396_754, 1_764_246_887, -1_678_078_288, -154_478_235]).as_deref(),
             Some("ca45c6ee-6928-4567-9bfa-8eb0f6cad965")
         );
         assert_eq!(uuid_from_ints(&[1, 2, 3]), None);
-        assert!(is_uuid(ARIA));
-        assert!(!is_uuid("2336b337-85a7-37bc-bccb-30eb1174944")); // short
-        assert!(!is_uuid("2336b337x85a7-37bc-bccb-30eb11749442"));
-        assert_eq!(uuid_version(ARIA), Some(3)); // offline-mode UUID
+        assert!(is_uuid(P1));
+        assert!(!is_uuid("0e0c6371-8599-3a43-a117-30cb7e62c57")); // short
+        assert!(!is_uuid("0e0c6371x8599-3a43-a117-30cb7e62c579"));
+        assert_eq!(uuid_version(P1), Some(3)); // offline-mode UUID
         assert_eq!(uuid_version("ca45c6ee-6928-4567-9bfa-8eb0f6cad965"), Some(4));
     }
 
@@ -723,11 +723,11 @@ mod tests {
     fn level_dat_gives_the_spawn_and_falls_back_to_the_old_copy() {
         let world = temp_world();
         assert!(read_level(&world).is_err());
-        write_level(&world, (2720, -64, 3632));
+        write_level(&world, (672, -64, 1072));
         let level = read_level(&world).unwrap();
-        assert_eq!(level.spawn, BlockPos { x: 2720, y: -64, z: 3632 });
-        assert_eq!(level.spawn.chunk(), (170, 227));
-        assert_eq!(level.seed, Some(5_436_401_472_302_240_754));
+        assert_eq!(level.spawn, BlockPos { x: 672, y: -64, z: 1072 });
+        assert_eq!(level.spawn.chunk(), (42, 67));
+        assert_eq!(level.seed, Some(4_242_424_242_424_242_424));
         assert_eq!(level.version_name.as_deref(), Some("1.20.1"));
         assert!(!level.from_old);
         // A torn level.dat: the previous save is used, and says so.
@@ -735,7 +735,7 @@ mod tests {
         fs::write(world.join("level.dat"), b"\x1f\x8b\x08 torn").unwrap();
         let level = read_level(&world).unwrap();
         assert!(level.from_old);
-        assert_eq!(level.spawn.chunk(), (170, 227));
+        assert_eq!(level.spawn.chunk(), (42, 67));
         let _ = fs::remove_dir_all(&world);
     }
 
@@ -744,37 +744,37 @@ mod tests {
         let world = temp_world();
         assert_eq!(read_players(&world, &BTreeMap::new()), Ok(vec![])); // no playerdata folder
         let way = "4ffd3f52-e39d-469d-a935-3497b58ac3cd";
-        write_player(&world, ARIA, &player_nbt(Some((OVERWORLD, (2735, 67, 3640))), (OVERWORLD, (2704.9, 65.0, 3423.1)), &[way]));
+        write_player(&world, P1, &player_nbt(Some((OVERWORLD, (687, 67, 1080))), (OVERWORLD, (656.9, 65.0, 863.1)), &[way]));
         // No bed, standing in the Nether at negative coordinates.
-        write_player(&world, SILVIE, &player_nbt(None, ("minecraft:the_nether", (-0.5, 70.0, -16.2)), &[]));
+        write_player(&world, P3, &player_nbt(None, ("minecraft:the_nether", (-0.5, 70.0, -16.2)), &[]));
         // Files Minecraft and mods keep next to them.
-        fs::write(world.join("playerdata").join(format!("{ARIA}.dat_old")), b"old").unwrap();
-        fs::write(world.join("playerdata").join(format!("{ARIA}.cosarmor")), b"mod").unwrap();
+        fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), b"old").unwrap();
+        fs::write(world.join("playerdata").join(format!("{P1}.cosarmor")), b"mod").unwrap();
         fs::write(world.join("playerdata").join("notes.dat"), b"x").unwrap();
 
-        let names: BTreeMap<String, String> = [(ARIA.to_string(), "Aria_Steele".to_string())].into();
+        let names: BTreeMap<String, String> = [(P1.to_string(), "Player_One".to_string())].into();
         let players = read_players(&world, &names).unwrap();
         assert_eq!(players.len(), 2);
-        let aria = &players[0];
-        assert_eq!(aria.label(), "Aria_Steele");
-        let bed = aria.bed.as_ref().unwrap();
-        assert_eq!((bed.dim.as_str(), bed.pos.chunk(), bed.forced), (OVERWORLD, (170, 227), false));
-        assert_eq!(aria.last_pos, Some((OVERWORLD.to_string(), BlockPos { x: 2704, y: 65, z: 3423 })));
-        assert_eq!(aria.waystones, vec![way.to_string()]);
-        let silvie = &players[1];
-        assert_eq!(silvie.label(), SILVIE);
-        assert_eq!(silvie.bed, None);
-        assert_eq!(silvie.last_pos, Some(("minecraft:the_nether".to_string(), BlockPos { x: -1, y: 70, z: -17 })));
+        let p1 = &players[0];
+        assert_eq!(p1.label(), "Player_One");
+        let bed = p1.bed.as_ref().unwrap();
+        assert_eq!((bed.dim.as_str(), bed.pos.chunk(), bed.forced), (OVERWORLD, (42, 67), false));
+        assert_eq!(p1.last_pos, Some((OVERWORLD.to_string(), BlockPos { x: 656, y: 65, z: 863 })));
+        assert_eq!(p1.waystones, vec![way.to_string()]);
+        let p3 = &players[1];
+        assert_eq!(p3.label(), P3);
+        assert_eq!(p3.bed, None);
+        assert_eq!(p3.last_pos, Some(("minecraft:the_nether".to_string(), BlockPos { x: -1, y: 70, z: -17 })));
 
         // A torn .dat with a good .dat_old is read from the old one...
-        let good = fs::read(world.join("playerdata").join(format!("{ARIA}.dat"))).unwrap();
-        fs::write(world.join("playerdata").join(format!("{ARIA}.dat_old")), &good).unwrap();
-        fs::write(world.join("playerdata").join(format!("{ARIA}.dat")), b"").unwrap();
+        let good = fs::read(world.join("playerdata").join(format!("{P1}.dat"))).unwrap();
+        fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), &good).unwrap();
+        fs::write(world.join("playerdata").join(format!("{P1}.dat")), b"").unwrap();
         let players = read_players(&world, &names).unwrap();
         assert!(players[0].from_old);
-        assert_eq!(players[0].bed.as_ref().unwrap().pos.chunk(), (170, 227));
+        assert_eq!(players[0].bed.as_ref().unwrap().pos.chunk(), (42, 67));
         // ...and with neither, the read fails rather than lose a player's bed.
-        fs::write(world.join("playerdata").join(format!("{ARIA}.dat_old")), b"").unwrap();
+        fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), b"").unwrap();
         assert!(read_players(&world, &names).is_err());
         let _ = fs::remove_dir_all(&world);
     }
@@ -783,8 +783,8 @@ mod tests {
     fn opac_claims_read_per_owner_and_dimension() {
         let world = temp_world();
         assert_eq!(read_claims(&world), Ok(None)); // the mod never ran here
-        write_claims(&world, ARIA, "Aria_Steele", &[
-            (OVERWORLD, false, &[(170, 227), (171, 227)]),
+        write_claims(&world, P1, "Player_One", &[
+            (OVERWORLD, false, &[(42, 67), (43, 67)]),
             (OVERWORLD, true, &[(-3, -4)]),
             ("minecraft:the_nether", false, &[(21, 28)]),
         ]);
@@ -798,21 +798,21 @@ mod tests {
         assert_eq!(owners[0].claims, vec![Claim { dim: OVERWORLD.to_string(), chunk: (0, 0), forceloaded: false }]);
         assert_eq!(owners[1].label(), "expired claims");
         assert!(owners[1].claims.is_empty());
-        let aria = &owners[2];
-        assert_eq!(aria.label(), "Aria_Steele");
-        let got: Vec<(&str, ChunkPos, bool)> = aria.claims.iter().map(|c| (c.dim.as_str(), c.chunk, c.forceloaded)).collect();
+        let p1 = &owners[2];
+        assert_eq!(p1.label(), "Player_One");
+        let got: Vec<(&str, ChunkPos, bool)> = p1.claims.iter().map(|c| (c.dim.as_str(), c.chunk, c.forceloaded)).collect();
         assert_eq!(got, vec![
             (OVERWORLD, (-3, -4), true),
-            (OVERWORLD, (170, 227), false),
-            (OVERWORLD, (171, 227), false),
+            (OVERWORLD, (42, 67), false),
+            (OVERWORLD, (43, 67), false),
             ("minecraft:the_nether", (21, 28), false),
         ]);
 
         // A file that is not what the reader expects is an error, never "no claims".
         let dir = world.join("data/openpartiesandclaims/player-claims");
-        fs::write(dir.join(format!("{SILVIE}.nbt")), b"not nbt").unwrap();
+        fs::write(dir.join(format!("{P3}.nbt")), b"not nbt").unwrap();
         assert!(read_claims(&world).is_err());
-        fs::write(dir.join(format!("{SILVIE}.nbt")), encode(&compound(vec![("username", string("x"))]))).unwrap();
+        fs::write(dir.join(format!("{P3}.nbt")), encode(&compound(vec![("username", string("x"))]))).unwrap();
         assert!(read_claims(&world).is_err());
         let odd = compound(vec![(
             "dimensions",
@@ -821,7 +821,7 @@ mod tests {
                 Value::List(vec![compound(vec![("x", Value::Int(1))])]),
             )])]))]))]),
         )]);
-        fs::write(dir.join(format!("{SILVIE}.nbt")), encode(&odd)).unwrap();
+        fs::write(dir.join(format!("{P3}.nbt")), encode(&odd)).unwrap();
         assert!(read_claims(&world).is_err());
         let _ = fs::remove_dir_all(&world);
     }
@@ -855,7 +855,7 @@ mod tests {
             compound(vec![("Location", compound(e))])
         };
         let graphs = Value::List(vec![
-            compound(vec![("Nodes", Value::List(vec![loc(5470, 134, 7281, Some(0)), loc(-33, 128, -1, Some(1))]))]),
+            compound(vec![("Nodes", Value::List(vec![loc(1374, 134, 2161, Some(0)), loc(-33, 128, -1, Some(1))]))]),
             compound(vec![("Nodes", Value::List(vec![loc(64, 130, 64, None), loc(1, 1, 1, Some(9))]))]),
         ]);
         let palette = Value::List(vec![compound(vec![("Id", string(OVERWORLD))]), compound(vec![("Id", string("minecraft:the_nether"))])]);
@@ -865,7 +865,7 @@ mod tests {
         let nodes = read_create_tracks(&world).unwrap().unwrap();
         let got: Vec<(usize, &str, BlockPos)> = nodes.iter().map(|n| (n.graph, n.dim.as_str(), n.pos)).collect();
         assert_eq!(got, vec![
-            (0, OVERWORLD, BlockPos { x: 2735, y: 67, z: 3640 }),
+            (0, OVERWORLD, BlockPos { x: 687, y: 67, z: 1080 }),
             (0, "minecraft:the_nether", BlockPos { x: -17, y: 64, z: -1 }),
             (1, OVERWORLD, BlockPos { x: 32, y: 65, z: 32 }),
             (1, OVERWORLD, BlockPos { x: 0, y: 0, z: 0 }), // D out of range = overworld, as Create decodes it
@@ -880,9 +880,9 @@ mod tests {
         assert_eq!(read_mca_villages(&data_dir), Ok(None));
         assert_eq!(read_ore_deposits(&data_dir), Ok(None));
         let building = compound(vec![
-            ("posX", Value::Int(2805)),
+            ("posX", Value::Int(757)),
             ("posY", Value::Int(67)),
-            ("posZ", Value::Int(3553)),
+            ("posZ", Value::Int(993)),
             ("type", string("town_center")),
         ]);
         let village = compound(vec![("id", Value::Int(0)), ("name", string("Moongulf")), ("buildings", Value::List(vec![building]))]);
@@ -890,7 +890,7 @@ mod tests {
         let villages = read_mca_villages(&data_dir).unwrap().unwrap();
         assert_eq!(villages.len(), 1);
         assert_eq!((villages[0].id, villages[0].name.as_str()), (0, "Moongulf"));
-        assert_eq!(villages[0].buildings, vec![("town_center".to_string(), BlockPos { x: 2805, y: 67, z: 3553 })]);
+        assert_eq!(villages[0].buildings, vec![("town_center".to_string(), BlockPos { x: 757, y: 67, z: 993 })]);
 
         let deposit = compound(vec![("name", string("silver")), ("pos", Value::Long(-498_903_396_511_719)), ("size", Value::Int(746))]);
         write_gz(&data_dir.join("large_ore_deposits.dat"), &compound(vec![("data", compound(vec![("generated", Value::List(vec![deposit]))]))]));
@@ -914,12 +914,12 @@ mod tests {
         assert_eq!(server_property(&dir, "motd"), None);
         fs::write(
             dir.join("usercache.json"),
-            r#"[{"name":"Aria_Steele","uuid":"2336B337-85a7-37bc-bccb-30eb11749442","expiresOn":"2026-11-10 16:08:38 -0700"},{"name":"x"}]"#,
+            r#"[{"name":"Player_One","uuid":"0E0C6371-8599-3a43-a117-30cb7e62c579","expiresOn":"2030-01-01 00:00:00 +0000"},{"name":"x"}]"#,
         )
         .unwrap();
         let names = read_usercache(&dir);
         assert_eq!(names.len(), 1);
-        assert_eq!(names.get(ARIA).map(String::as_str), Some("Aria_Steele"));
+        assert_eq!(names.get(P1).map(String::as_str), Some("Player_One"));
         fs::write(dir.join("usercache.json"), "not json").unwrap();
         assert!(read_usercache(&dir).is_empty());
         let _ = fs::remove_dir_all(&dir);
