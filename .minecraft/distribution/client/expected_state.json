@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "0c335425",
+    "generated_from":  "3afebeae",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7080,8 +7080,8 @@
                                                                                "size":  8726
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_bonfire_system.js":  {
-                                                                               "sha256":  "9f54e652bd1455d2dc46682961afddeef026fcb09a8f32bdb7aa0303175e0aaf",
-                                                                               "size":  19983
+                                                                               "sha256":  "b8f82e289d53fd1a8546c72c42178cf596b73161951d3fb35202c1320cc5a5ae",
+                                                                               "size":  23617
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_compass_handler.js":  {
                                                                                 "sha256":  "d58b168af4c8408c4f4f6b1b1d91c59b8f066a4163e5731d6f381f768c8246b7",

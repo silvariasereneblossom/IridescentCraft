@@ -40,6 +40,9 @@
 // IDEMPOTENT: one waystone per (world, boss_id), tracked in the overworld's
 // persistentData. First igniter gets a server-wide "{player} has lit the {boss}
 // bonfire" broadcast; later visitors see nothing (the waystone already exists).
+// ONE PER STRUCTURE (2026-10-15): an arena whose structure already has a lit
+// bonfire is skipped there (two arenas lead to the Evoker Fort); see
+// bonfireInStructure.
 //
 // RELOAD-SAFETY (#60 lesson): registers ONLY a player-tick via the pack's
 // global.registerPlayerTick master dispatcher (0_tick_master.js) + reads/writes
@@ -77,6 +80,7 @@
 var WS_API = Java.loadClass("net.blay09.mods.waystones.api.WaystonesAPI")
 var WS_STYLES = Java.loadClass("net.blay09.mods.waystones.api.WaystoneStyles")
 var WS_PWM = Java.loadClass("net.blay09.mods.waystones.core.PlayerWaystoneManager")
+var WS_MANAGER = Java.loadClass("net.blay09.mods.waystones.core.WaystoneManager")
 
 // ---- Structure-detection Java classes (match the compass tag path) ---------
 var BF_Registries  = Java.loadClass("net.minecraft.core.registries.Registries")
@@ -203,9 +207,63 @@ function markBonfireFired(server, bossId) {
     pd.put("iridescent", block)
 }
 
+// ---- One bonfire per structure --------------------------------------------
+// Two arenas can lead to one structure: since decision entry 80 (2026-10-15)
+// the Archevoker's and the Magehunter's both lead to the Evoker Fort. The lit
+// list is per arena and per world, so the first fort a player entered got two
+// waystones a second apart. Planning's ruling (2026-10-15, option b): skip an
+// arena whose structure already has a lit bonfire. The arena stays unlit and
+// lights in the next structure of its kind that has none, so each arena still
+// gets one bonfire per world and no structure gets two.
+//
+// "Has a lit bonfire" is read from the waystones themselves, not from the lit
+// list: a global waystone named "[Boss] ... Bonfire" (bonfireName; every
+// bonfire is made global) in this level, inside the bounding box of the
+// structure start the player is in. That also sees a bonfire lit before this
+// check existed (the lit list holds no positions). A lookup that throws is
+// reported once and answers "none": the arena is then lit as before this check
+// (a second waystone at worst).
+// getGlobalWaystones() is an ArrayList (Collectors.toList), which this engine
+// reads safely. Not WaystonesAPI.getAllWaystones(): a Stream, whose iterator is
+// a JDK-internal class, and the engine refuses calls into some of those
+// (StructureStart.getPieces().get(i) threw IllegalAccessException on the rig,
+// 2026-10-15; the Stream's hasNext() did not, on an empty list).
+function bonfireInStructure(server, level, start) {
+    var box = null
+    var dim = String(level.dimension)
+    var list = null
+    try {
+        box = start.getBoundingBox()
+        list = WS_MANAGER.get(server).getGlobalWaystones()
+        for (var i = 0; i < list.size(); i++) {
+            // RHINO: var (not const) in the loop body (see the header note).
+            var ws = list.get(i)
+            var name = String(ws.getName())
+            if (name.indexOf("[Boss] ") !== 0 || name.length < 15 || name.lastIndexOf(" Bonfire") !== name.length - 8) continue
+            if (String(ws.getDimension().location()) !== dim) continue
+            if (box.isInside(ws.getPos())) return ws
+        }
+    } catch (e) {
+        bonfireWarnOnce("in-structure", "could not read the waystones of a structure (an arena there may get a second bonfire): " + e)
+    }
+    return null
+}
+
+// One line per arena and structure start per script load: the skip runs on
+// every check while a player stands in such a structure.
+var bonfireSkipNoted = {}
+function noteSkipped(bossId, start, ws) {
+    var key = String(bossId) + "@" + String(start.getChunkPos())
+    if (bonfireSkipNoted[key]) return
+    bonfireSkipNoted[key] = true
+    var p = ws.getPos()
+    console.log("[bonfire] " + bossId + " not lit: its structure here (start " + start.getChunkPos() + ") already has '"
+        + ws.getName() + "' at " + p.getX() + "," + p.getY() + "," + p.getZ())
+}
+
 // ---- Structure detection --------------------------------------------------
 // Returns { bossId, meta } if the player is currently inside a registered boss
-// arena that hasn't been lit yet, else null. Reads the fired-set ONCE up front
+// arena that hasn't been lit yet and whose structure has no bonfire, else null. Reads the fired-set ONCE up front
 // and skips already-lit arenas with no structure query, so the common case
 // (walking the world) costs one persistentData read + cheap Set lookups.
 
@@ -254,6 +312,14 @@ function detectArenaAtPlayer(player, runBlockScan) {
             var tag = arenaTagFor(bossId)
             var start = sm.getStructureWithPieceAt(pos, tag)
             if (start && start.isValid()) {
+                // ONE BONFIRE PER STRUCTURE: skip an arena whose structure
+                // already has a lit bonfire (it stays unlit and lights in a
+                // structure that has none). See bonfireInStructure.
+                var other = bonfireInStructure(server, level, start)
+                if (other) {
+                    noteSkipped(bossId, start, other)
+                    continue
+                }
                 return { bossId: bossId, meta: meta }
             }
         } catch (e) {
