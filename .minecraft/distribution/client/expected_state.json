@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f7c695aa",
+    "generated_from":  "b7bf7894",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5955,6 +5955,10 @@
                                                                                   "sha256":  "2a5a4f7fa88b05e929302c64757480f4c2ae7ff3b7f3a4d060e6b2905a45afdb",
                                                                                   "size":  3899
                                                                               },
+                  "kubejs/client_scripts/terramity_unholy_lance_tooltip.js":  {
+                                                                                  "sha256":  "4d74a17bb6902a3b7b2948a62226b9245f66520c731cef5919932d3b355a0706",
+                                                                                  "size":  1450
+                                                                              },
                   "kubejs/client_scripts/zzz_icraft_live.js":  {
                                                                    "sha256":  "37582aa075b6ec6bef3be201d1097e25fa79b3d0eea6dc7d1e806e76195923c9",
                                                                    "size":  1809
@@ -5968,12 +5972,12 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "7b3afe0e87e704d4f66a3dc24270127342ab2e47b814693f124606f07ca25b6a",
-                                                                  "size":  48942
+                                                                  "sha256":  "f66608038d33f30156bf4d290abc067555438b56a10fc3c8d1b24e7465db6d19",
+                                                                  "size":  49324
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "677f392a63dca3b6261f6a8601db686f75e72ae19d58d72fc958cbc23ef908b1",
-                                                                    "size":  28747
+                                                                    "sha256":  "538db6f50e311034ecb359fd17ac4e8fe1920ff0603376b833d025f869146963",
+                                                                    "size":  28922
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
@@ -6968,9 +6972,13 @@
                                                                                                         "size":  632
                                                                                                     },
                   "kubejs/data/terramity/tags/worldgen/biome/has_structure/prismatic_pond_biomes.json":  {
-                                                                                                             "sha256":  "7d9e8824ef38d3ad82654104cb1dd896d650d0ab777a65684e8ea0043df3683f",
-                                                                                                             "size":  1029
+                                                                                                             "sha256":  "413ca2809b9c16ec4c6234d0d5ee0bf1920d11de5c7b9822db20a493ce8e49c5",
+                                                                                                             "size":  947
                                                                                                          },
+                  "kubejs/data/terramity/worldgen/structure/prismatic_pond.json":  {
+                                                                                       "sha256":  "d176cadf5d8ae7b2a2edbedb9d36b9e47624150f73e4d1e0a17a2ac5393646e3",
+                                                                                       "size":  464
+                                                                                   },
                   "kubejs/data/terramity/worldgen/structure_set/ancient_outcrop.json":  {
                                                                                             "sha256":  "06347b53d7c2bd6913963f29adb345135edaf29a9c22645470185153220d4412",
                                                                                             "size":  675
@@ -7135,6 +7143,10 @@
                                                                                          "sha256":  "457fe4db109cd3a408ee7ec7ef9e1a160643f953c785eeb3ed9067da1ddc3bf2",
                                                                                          "size":  2052
                                                                                      },
+                  "kubejs/server_scripts/compat/terramity_virtue_altar.js":  {
+                                                                                 "sha256":  "2a75e57c2885836555fd03076114eaee17e7d6c98d32a0b1af3263c653e8864c",
+                                                                                 "size":  13118
+                                                                             },
                   "kubejs/server_scripts/compat/twilight_plateau_boss_guard.js":  {
                                                                                       "sha256":  "0d11c34ef9c059bdf0ed092b39777c27d5dfb2b5119c8f63a13de96082d021d8",
                                                                                       "size":  2620

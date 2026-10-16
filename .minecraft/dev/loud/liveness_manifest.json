@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 329,
-   "digest": "683950c12e75325e",
+   "count": 331,
+   "digest": "62e1b0390bdb1a1c",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -316,6 +316,10 @@
     {
      "id": "compat/terramity_cave_gnome_cave_only@EntityEvents.checkSpawn",
      "script": "compat/terramity_cave_gnome_cave_only.js"
+    },
+    {
+     "id": "compat/terramity_virtue_altar@EntityEvents.spawned",
+     "script": "compat/terramity_virtue_altar.js"
     },
     {
      "id": "compat/twilight_plateau_boss_guard@EntityEvents.spawned",
@@ -1410,6 +1414,10 @@
      "script": "ultris_randomizer_janitor.js"
     },
     {
+     "id": "tick_virtueAltar@tick.server",
+     "script": "compat/terramity_virtue_altar.js"
+    },
+    {
      "id": "tick_voidCorruptionCleanse@tick.server",
      "script": "scaling/dimension_mechanics.js"
     },
@@ -1560,8 +1568,8 @@
   "client": {
    "log": "kubejs/client.log",
    "tree": "distribution/client/kubejs/client_scripts",
-   "count": 8,
-   "digest": "1f0500cb34f3b90d",
+   "count": 9,
+   "digest": "0accccd57cd8defd",
    "late": [],
    "at_boot": [],
    "registrations": [
@@ -1596,6 +1604,10 @@
     {
      "id": "reforged_armor_enchant_tooltip@ItemEvents.tooltip",
      "script": "reforged_armor_enchant_tooltip.js"
+    },
+    {
+     "id": "terramity_unholy_lance_tooltip@ItemEvents.tooltip",
+     "script": "terramity_unholy_lance_tooltip.js"
     }
    ]
   }
@@ -2656,6 +2668,14 @@
     {
      "name": "unique-tier-buff",
      "script": "loot/unique_tier_buff.js"
+    },
+    {
+     "name": "virtue-altar-refused",
+     "script": "compat/terramity_virtue_altar.js"
+    },
+    {
+     "name": "virtue-altar-summon",
+     "script": "compat/terramity_virtue_altar.js"
     },
     {
      "name": "wither-relic",

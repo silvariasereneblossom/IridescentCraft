@@ -56,6 +56,7 @@
    "compat/class_artifacts_recipes@ServerEvents.recipes": "compat/class_artifacts_recipes.js",
    "compat/disable_creeperlings@EntityEvents.spawned": "compat/disable_creeperlings.js",
    "compat/terramity_cave_gnome_cave_only@EntityEvents.checkSpawn": "compat/terramity_cave_gnome_cave_only.js",
+   "compat/terramity_virtue_altar@EntityEvents.spawned": "compat/terramity_virtue_altar.js",
    "compat/twilight_plateau_boss_guard@EntityEvents.spawned": "compat/twilight_plateau_boss_guard.js",
    "death_penalty@BlockEvents.broken": "death_penalty.js",
    "death_penalty@EntityEvents.death": "death_penalty.js",
@@ -329,6 +330,7 @@
    "tick_sunlightSmite@tick.server": "sunlight_smite.js",
    "tick_terramityTetraPerks@tick.server": "tetra_terramity_perks.js",
    "tick_ultrisJanitor@tick.server": "ultris_randomizer_janitor.js",
+   "tick_virtueAltar@tick.server": "compat/terramity_virtue_altar.js",
    "tick_voidCorruptionCleanse@tick.server": "scaling/dimension_mechanics.js",
    "tick_witchOfInkBuffs@tick.server": "origins/witch_of_ink_progression.js",
    "tick_witherbornSlimebodied@tick.server": "origins/witherborn_slimebodied.js",
@@ -642,6 +644,8 @@
    "sunlight-smite": "sunlight_smite.js",
    "unique-bow-effects": "loot/tmb_plain_bow_effects.js",
    "unique-tier-buff": "loot/unique_tier_buff.js",
+   "virtue-altar-refused": "compat/terramity_virtue_altar.js",
+   "virtue-altar-summon": "compat/terramity_virtue_altar.js",
    "wither-relic": "loot/iss_boss_first_kill.js",
    "wither-tablets": "loot/loot_overhaul.js"
   },
@@ -734,7 +738,8 @@
    "food_dedup_jei_hide@JEIEvents.hideItems": "food_dedup_jei_hide.js",
    "jei_hiding@JEIEvents.hideItems": "jei_hiding.js",
    "mekasuit_mk2_tooltip@ItemEvents.tooltip": "mekasuit_mk2_tooltip.js",
-   "reforged_armor_enchant_tooltip@ItemEvents.tooltip": "reforged_armor_enchant_tooltip.js"
+   "reforged_armor_enchant_tooltip@ItemEvents.tooltip": "reforged_armor_enchant_tooltip.js",
+   "terramity_unholy_lance_tooltip@ItemEvents.tooltip": "terramity_unholy_lance_tooltip.js"
   },
   "optional": [],
   "late": [],
