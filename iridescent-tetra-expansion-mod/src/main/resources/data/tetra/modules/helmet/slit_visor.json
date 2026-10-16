@@ -320,28 +320,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "slit_visor/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.429
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/tf_arctic"
       ],
       "key": "slit_visor/",
@@ -824,7 +802,7 @@
       "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3775
+          "minecraft:generic.armor": 0.4919
         },
         "integrity": 0.5,
         "glyph": {
@@ -846,7 +824,7 @@
       "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3775
+          "minecraft:generic.armor": 0.5034
         },
         "integrity": 0.5,
         "glyph": {
@@ -868,7 +846,7 @@
       "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3775
+          "minecraft:generic.armor": 0.5034
         },
         "integrity": 0.5,
         "glyph": {

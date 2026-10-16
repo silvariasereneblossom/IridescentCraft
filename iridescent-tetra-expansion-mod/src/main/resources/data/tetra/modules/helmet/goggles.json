@@ -394,8 +394,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56,
-          "**irons_spellbooks:spell_power": 0.0264
+          "irons_spellbooks:max_mana": 13.76,
+          "**irons_spellbooks:spell_power": 0.0344
         },
         "integrity": 0.5,
         "glyph": {
@@ -418,8 +418,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56,
-          "**irons_spellbooks:spell_power": 0.0264
+          "irons_spellbooks:max_mana": 14.08,
+          "**irons_spellbooks:spell_power": 0.0352
         },
         "integrity": 0.5,
         "glyph": {
@@ -442,32 +442,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56,
-          "**irons_spellbooks:spell_power": 0.0264
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "goggles/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 9.28,
-          "**irons_spellbooks:spell_power": 0.0232
+          "irons_spellbooks:max_mana": 14.08,
+          "**irons_spellbooks:spell_power": 0.0352
         },
         "integrity": 0.5,
         "glyph": {

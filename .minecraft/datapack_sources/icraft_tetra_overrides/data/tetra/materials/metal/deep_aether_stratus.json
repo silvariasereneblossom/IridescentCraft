@@ -1,0 +1,43 @@
+{
+  "_comment": "icraft override (replace: true), 2026-10-16 (chip C): the stratus ingot was claimed by two Tetra materials, this one (Aetheric Tetranomicon, 7.0/2031, iron hammer) and the pack's tetra:metal/stratus (iridescent_tetra_expansion, 8.4/1300, diamond hammer; operator ruling #66, 2026-06-02). The pack's keeps the ingot: this material's ingredient is pointed at no item (the 'disable:this' form other packs here use), so nothing new can be made of it. Its numbers are the jar's.",
+  "replace": true,
+  "key": "deep_aether_stratus",
+  "category": "metal",
+  "primary": 7,
+  "secondary": 2.7,
+  "tertiary": 3.2,
+  "durability": 2031,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 90,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "improvements": {
+    "aetheric_tetranomicon/aetheric": 0,
+    "aetheric_tetranomicon/levitator_tool": 0,
+    "aetheric_tetranomicon/levitator_weapon": 0
+  },
+  "tints": {
+    "glyph": "834f99",
+    "texture": "834f99"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "disable:this"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "deep_aether"
+    }
+  ]
+}

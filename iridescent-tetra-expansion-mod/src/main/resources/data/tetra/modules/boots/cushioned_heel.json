@@ -428,28 +428,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "cushioned_heel/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.0
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/aethersteel"
       ],
       "key": "cushioned_heel/",

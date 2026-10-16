@@ -1,0 +1,43 @@
+{
+  "_comment": "icraft override of the Aetheric Tetranomicon material at its own path (replace: true; the jar's file is ignored). The Aether is tier 4 since 2026-10-16 (chip C): netherite is the floor and only Aethersteel (8.5/2500) sits above it. Primary mapped from the family's 5.0-7.0 onto 7.24-8.2 (order kept, stratus 8.4 and Aethersteel above); durability netherite's 2031 (skyjade keeps 60 % of it: brittle); tool level netherite, efficiency at least netherite's 9, magic at least the pack's netherite 155 (skyjade keeps 1: it cannot be enchanted); forged with a diamond hammer like the pack's tier-4 materials. Jar values: primary 5, durability 250, magic 84, minecraft:iron, efficiency 6, hammer minecraft:gold.",
+  "replace": true,
+  "key": "aether_zanite",
+  "category": "gem",
+  "primary": 7.24,
+  "secondary": 2.4,
+  "tertiary": 0,
+  "durability": 2031,
+  "integrityCost": 2,
+  "integrityGain": 2,
+  "magicCapacity": 155,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "improvements": {
+    "arrested": 0,
+    "aetheric_tetranomicon/aetheric": 0,
+    "aetheric_tetranomicon/tenacity_tool": 0,
+    "aetheric_tetranomicon/tenacity_weapon": 0
+  },
+  "tints": {
+    "glyph": "763ace",
+    "texture": "763ace"
+  },
+  "textures": [
+    "shiny",
+    "crude"
+  ],
+  "material": {
+    "items": [
+      "aether:zanite_gemstone"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "aether"
+    }
+  ]
+}

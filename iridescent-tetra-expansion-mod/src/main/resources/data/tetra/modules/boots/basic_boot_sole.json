@@ -1056,28 +1056,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "basic_boot_sole/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.658
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 10
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/tf_arctic"
       ],
       "key": "basic_boot_sole/",
@@ -1417,7 +1395,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.886
+          "minecraft:generic.armor": 2.458,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1429,7 +1409,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 17
       }
     },
     {
@@ -1439,7 +1419,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.886
+          "minecraft:generic.armor": 2.515,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1451,7 +1433,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {
@@ -1461,7 +1443,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.886
+          "minecraft:generic.armor": 2.515,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1473,7 +1457,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {

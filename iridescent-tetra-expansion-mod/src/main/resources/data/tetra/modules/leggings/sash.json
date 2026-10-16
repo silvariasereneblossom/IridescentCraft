@@ -818,7 +818,7 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56
+          "irons_spellbooks:max_mana": 13.76
         },
         "integrity": 0.5,
         "glyph": {
@@ -841,7 +841,7 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56
+          "irons_spellbooks:max_mana": 14.08
         },
         "integrity": 0.5,
         "glyph": {
@@ -864,30 +864,7 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 10.56
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "sash/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 9.28
+          "irons_spellbooks:max_mana": 14.08
         },
         "integrity": 0.5,
         "glyph": {

@@ -1,4 +1,5 @@
 {
+  "_comment": "Aether Neptune armour (Aether Treasure Reforging: zanite armour + neptune mesh + the upgrade template). The material the expansion jar's armour replacements turn aether:neptune_* into. Ingredient corrected 2026-10-16 (chip C): it named aether:neptune_ingot, an item that does not exist; now the set's own neptune mesh. Numbers unchanged (the Aether armour conversions are not retiered: see the scope's section 8).",
   "key": "aether_neptune",
   "category": "gem",
   "primary": 5.2,
@@ -20,7 +21,7 @@
   ],
   "material": {
     "items": [
-      "aether:neptune_ingot"
+      "aether_treasure_reforging:neptune_mesh"
     ]
   },
   "conditions": [

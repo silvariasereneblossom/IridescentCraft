@@ -320,28 +320,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "light_pauldrons/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.649
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/tf_arctic"
       ],
       "key": "light_pauldrons/",
@@ -1606,7 +1584,7 @@
       "key": "light_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6428
+          "minecraft:generic.armor": 0.8376
         },
         "integrity": 0.5,
         "glyph": {
@@ -1628,7 +1606,7 @@
       "key": "light_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6428
+          "minecraft:generic.armor": 0.8571
         },
         "integrity": 0.5,
         "glyph": {
@@ -1650,7 +1628,7 @@
       "key": "light_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6428
+          "minecraft:generic.armor": 0.8571
         },
         "integrity": 0.5,
         "glyph": {

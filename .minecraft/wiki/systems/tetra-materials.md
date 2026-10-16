@@ -464,6 +464,21 @@ Aether / Deep Aether / Aether Redux / Ancient Aether compat. Stats track the sou
 | fibre | (4 entries: aether_redux_gilded_vine, aether_redux_golden_vine, deep_aether_sunroot_hanger, deep_aether_yagroot_vines) | 2-4 | 2.2-3.4 | 3-3.5 | 768-1024 | 24-120 | 0 | -- |
 | socket | `socket_aether_golden_amber`, `socket_aether_zanite`, `socket_deep_aether_skyjade` | 0 | 0 | 0 | 0-512 | 0 | 0-2 | -- |
 
+> **The pack overrides five of these (2026-10-16, the Aether moved to tier 4).** The table above is the jar's own values. In the
+> pack, netherite is the tier-4 floor and only Aethersteel sits above it, so the Aether family is lifted onto that floor
+> (each keeps its own perks; all are forged with a diamond hammer):
+>
+> | Key | Prim | Dur | MC | Eff | Tool Level |
+> |---|---|---|---|---|---|
+> | `aether_zanite` | 7.24 | 2031 | 155 | 9 | netherite |
+> | `aether_gravitite` | 7.72 | 2031 | 155 | 9 | netherite |
+> | `aether_valkyrie` | 7.72 | 2031 | 155 | 9 | netherite |
+> | `aether_phoenix` | 8.2 | 2031 | 155 | 9 | netherite |
+> | `deep_aether_skyjade` | 7.24 | 1219 | 1 | 10 | netherite |
+>
+> `deep_aether_stratus` no longer takes the stratus ingot: the pack's own `stratus` material (8.4 primary, 1300 durability)
+> is the one a stratus ingot makes.
+
 ### 3.5. art_of_forging-1.8.4-1.20.1.jar (22 materials)
 
 Art of Forging is itself a Tetra extension mod that adds a forging mechanic; its materials reflect the new endgame metals it adds.

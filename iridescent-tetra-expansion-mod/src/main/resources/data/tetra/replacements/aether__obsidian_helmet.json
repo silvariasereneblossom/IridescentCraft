@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/aether_obsidian"
+        "basic_crown/netherite"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/aether_obsidian"
+        "slit_visor/netherite"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/aether_obsidian"
+        "plain_crest/netherite"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/aether_obsidian"
+        "leather_strap/netherite"
       ]
     }
   }

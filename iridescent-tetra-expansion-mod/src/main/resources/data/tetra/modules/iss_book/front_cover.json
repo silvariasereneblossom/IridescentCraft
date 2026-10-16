@@ -887,31 +887,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "front_cover/",
-      "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0057
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "magicCapacity": 5
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/cm_ignitium"
       ],
       "key": "front_cover/",
@@ -1092,7 +1067,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0073
+          "**irons_spellbooks:spell_power": 0.01
         },
         "integrity": 0,
         "glyph": {
@@ -1104,7 +1079,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 8
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1117,7 +1092,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0073
+          "**irons_spellbooks:spell_power": 0.0105
         },
         "integrity": 0,
         "glyph": {
@@ -1129,7 +1104,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 8
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1142,7 +1117,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0073
+          "**irons_spellbooks:spell_power": 0.0105
         },
         "integrity": 0,
         "glyph": {
@@ -1154,7 +1129,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 8
       },
       "aspects": {
         "icraft_magic_weapon": 2

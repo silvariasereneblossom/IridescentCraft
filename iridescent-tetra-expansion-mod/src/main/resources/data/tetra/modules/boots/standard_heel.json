@@ -320,28 +320,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "standard_heel/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.214
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/tf_arctic"
       ],
       "key": "standard_heel/",
@@ -824,7 +802,7 @@
       "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1888
+          "minecraft:generic.armor": 0.246
         },
         "integrity": 0.5,
         "glyph": {
@@ -846,7 +824,7 @@
       "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1888
+          "minecraft:generic.armor": 0.2517
         },
         "integrity": 0.5,
         "glyph": {
@@ -868,7 +846,7 @@
       "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1888
+          "minecraft:generic.armor": 0.2517
         },
         "integrity": 0.5,
         "glyph": {

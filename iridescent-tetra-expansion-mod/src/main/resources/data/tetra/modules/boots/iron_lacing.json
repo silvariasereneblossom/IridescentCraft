@@ -819,8 +819,8 @@
       "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1056,
-          "minecraft:generic.knockback_resistance": 0.0106
+          "minecraft:generic.armor": 0.1376,
+          "minecraft:generic.knockback_resistance": 0.0138
         },
         "integrity": 0.5,
         "glyph": {
@@ -842,8 +842,8 @@
       "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1056,
-          "minecraft:generic.knockback_resistance": 0.0106
+          "minecraft:generic.armor": 0.1408,
+          "minecraft:generic.knockback_resistance": 0.0141
         },
         "integrity": 0.5,
         "glyph": {
@@ -865,31 +865,8 @@
       "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1056,
-          "minecraft:generic.knockback_resistance": 0.0106
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "iron_lacing/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.0928,
-          "minecraft:generic.knockback_resistance": 0.0093
+          "minecraft:generic.armor": 0.1408,
+          "minecraft:generic.knockback_resistance": 0.0141
         },
         "integrity": 0.5,
         "glyph": {

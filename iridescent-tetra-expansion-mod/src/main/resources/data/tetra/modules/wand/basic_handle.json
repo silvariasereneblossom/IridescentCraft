@@ -1302,10 +1302,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
+          "irons_spellbooks:max_mana": 5.16,
+          "**irons_spellbooks:spell_power": 0.0516,
+          "**irons_spellbooks:mana_regen": 0.0516,
+          "**irons_spellbooks:cooldown_reduction": 0.0516
         },
         "integrity": 1.0,
         "glyph": {
@@ -1330,10 +1330,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
+          "irons_spellbooks:max_mana": 5.28,
+          "**irons_spellbooks:spell_power": 0.0528,
+          "**irons_spellbooks:mana_regen": 0.0528,
+          "**irons_spellbooks:cooldown_reduction": 0.0528
         },
         "integrity": 1.0,
         "glyph": {
@@ -1358,10 +1358,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
+          "irons_spellbooks:max_mana": 5.28,
+          "**irons_spellbooks:spell_power": 0.0528,
+          "**irons_spellbooks:mana_regen": 0.0528,
+          "**irons_spellbooks:cooldown_reduction": 0.0528
         },
         "integrity": 1.0,
         "glyph": {
@@ -1374,34 +1374,6 @@
         ],
         "models": [],
         "magicCapacity": 2
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "basic_handle/",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.48,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
-        "integrity": 1.0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2

@@ -1141,29 +1141,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "cuirass/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.856,
-          "minecraft:generic.knockback_resistance": 0.04
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 10
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/cm_ignitium"
       ],
       "key": "cuirass/",
@@ -1377,8 +1354,9 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.112,
-          "minecraft:generic.knockback_resistance": 0.04
+          "minecraft:generic.armor": 2.752,
+          "minecraft:generic.knockback_resistance": 0.09,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1390,7 +1368,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 17
       }
     },
     {
@@ -1400,8 +1378,9 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.112,
-          "minecraft:generic.knockback_resistance": 0.04
+          "minecraft:generic.armor": 2.816,
+          "minecraft:generic.knockback_resistance": 0.09,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1413,7 +1392,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {
@@ -1423,8 +1402,9 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.112,
-          "minecraft:generic.knockback_resistance": 0.04
+          "minecraft:generic.armor": 2.816,
+          "minecraft:generic.knockback_resistance": 0.09,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1436,7 +1416,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {

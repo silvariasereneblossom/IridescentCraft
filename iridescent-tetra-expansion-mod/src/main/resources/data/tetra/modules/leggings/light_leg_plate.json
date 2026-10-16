@@ -1099,28 +1099,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "light_leg_plate/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.557
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 10
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/cm_ignitium"
       ],
       "key": "light_leg_plate/",
@@ -1326,7 +1304,9 @@
       "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.634
+          "minecraft:generic.armor": 0.826,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1338,7 +1318,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 17
       }
     },
     {
@@ -1348,7 +1328,9 @@
       "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.634
+          "minecraft:generic.armor": 0.845,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1360,7 +1342,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {
@@ -1370,7 +1352,9 @@
       "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.634
+          "minecraft:generic.armor": 0.845,
+          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -1382,7 +1366,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 18
       }
     },
     {

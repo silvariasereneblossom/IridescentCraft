@@ -1,16 +1,16 @@
 {
-  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = aether:carved_stone. Slider: guaranteed carved_stone 7-9 (key is needed for the dungeon).",
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair). T4 since 2026-10-16 (the Aether to tier 4, chip C; was T2 6.6/540). REPAIR ITEM = aether:carved_stone. Slider: guaranteed carved_stone 7-9 (key is needed for the dungeon). Tier-4 band below the Eye of the Storm's da_eots (9.0/1320), the Aether's apex: Slider 3,000 health -> 8.6/1200.",
   "key": "ae_slider",
   "category": "metal",
-  "primary": 6.6,
+  "primary": 8.6,
   "secondary": 3.4,
   "tertiary": 3.6,
-  "durability": 540,
-  "integrityCost": 2,
-  "integrityGain": 7,
-  "magicCapacity": 145,
-  "toolLevel": "minecraft:iron",
-  "toolEfficiency": 7,
+  "durability": 1200,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 200,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
   "tints": {
     "glyph": "a97142",
     "texture": "a97142"
@@ -25,6 +25,9 @@
       "aether:carved_stone"
     ]
   },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
   "conditions": [
     {
       "type": "forge:mod_loaded",
@@ -32,8 +35,8 @@
     }
   ],
   "attributes": {
-    "**irons_spellbooks:eldritch_spell_power": 0.12,
-    "**irons_spellbooks:eldritch_magic_resist": 0.07,
-    "**irons_spellbooks:spell_power": 0.09
+    "**irons_spellbooks:eldritch_spell_power": 0.15,
+    "**irons_spellbooks:eldritch_magic_resist": 0.09,
+    "**irons_spellbooks:spell_power": 0.11
   }
 }

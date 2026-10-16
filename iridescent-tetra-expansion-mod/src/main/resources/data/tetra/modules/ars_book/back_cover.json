@@ -886,31 +886,6 @@
     },
     {
       "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "back_cover/",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "magicCapacity": 3
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/cm_ignitium"
       ],
       "key": "back_cover/",
@@ -1091,7 +1066,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 7
+          "irons_spellbooks:max_mana": 10
         },
         "integrity": 1,
         "glyph": {
@@ -1103,7 +1078,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 5
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1116,7 +1091,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 7
+          "irons_spellbooks:max_mana": 10
         },
         "integrity": 1,
         "glyph": {
@@ -1128,7 +1103,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 5
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1141,7 +1116,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 7
+          "irons_spellbooks:max_mana": 10
         },
         "integrity": 1,
         "glyph": {
@@ -1153,7 +1128,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 5
       },
       "aspects": {
         "icraft_magic_weapon": 2

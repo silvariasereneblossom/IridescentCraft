@@ -97,7 +97,6 @@ MATERIAL_ITEM_MAP = {
     # (added during the modded-armor rebalance pass; each variant has the
     # source mod's exact armor profile mapped onto our 4 default modules).
     'aether_neptune':         (['aether:zanite_gemstone'],       2, HAMMER_IRON),
-    'aether_obsidian':        (['minecraft:obsidian'],           2, HAMMER_IRON),
     'tf_arctic':              (['twilightforest:arctic_fur'],    2, HAMMER_IRON),
     'tf_fiery':               (['twilightforest:fiery_ingot'],   2, HAMMER_IRON),
     'tf_ironwood':            (['twilightforest:ironwood_ingot'],2, HAMMER_IRON),

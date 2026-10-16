@@ -1241,7 +1241,7 @@
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3696
+          "minecraft:generic.armor": 0.4816
         },
         "integrity": 0.5,
         "glyph": {
@@ -1263,7 +1263,7 @@
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3696
+          "minecraft:generic.armor": 0.4928
         },
         "integrity": 0.5,
         "glyph": {
@@ -1285,29 +1285,7 @@
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3696
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "heavy_pauldrons/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.3248
+          "minecraft:generic.armor": 0.4928
         },
         "integrity": 0.5,
         "glyph": {

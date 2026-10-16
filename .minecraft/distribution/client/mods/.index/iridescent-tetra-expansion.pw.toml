@@ -3,7 +3,7 @@ name = 'Iridescent Tetra Expansion'
 side = 'both'
 
 [download]
-hash = 'e7fff8aed4fcf7b8b16177dfb2b69635e2c94b792bea384a6d3beed7b1d98edc'
+hash = '9307654199e46ccdf8c3d75aa6eaf9c4916b4e8cc6f20870b943f52dd9d3ac7b'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/mods/iridescent_tetra_expansion-1.0.0.jar'

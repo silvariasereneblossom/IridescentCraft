@@ -383,8 +383,8 @@
       "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2112,
-          "minecraft:generic.attack_speed": -0.0264
+          "minecraft:generic.armor": 0.2752,
+          "minecraft:generic.attack_speed": -0.0344
         },
         "integrity": 0.5,
         "glyph": {
@@ -406,8 +406,8 @@
       "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2112,
-          "minecraft:generic.attack_speed": -0.0264
+          "minecraft:generic.armor": 0.2816,
+          "minecraft:generic.attack_speed": -0.0352
         },
         "integrity": 0.5,
         "glyph": {
@@ -429,31 +429,8 @@
       "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2112,
-          "minecraft:generic.attack_speed": -0.0264
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "full_visor/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.1856,
-          "minecraft:generic.attack_speed": -0.0232
+          "minecraft:generic.armor": 0.2816,
+          "minecraft:generic.attack_speed": -0.0352
         },
         "integrity": 0.5,
         "glyph": {

@@ -1076,7 +1076,7 @@
       "key": "basic_cap/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0066
+          "**irons_spellbooks:mana_regen": 0.0086
         },
         "integrity": 0.5,
         "glyph": {
@@ -1101,7 +1101,7 @@
       "key": "basic_cap/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0066
+          "**irons_spellbooks:mana_regen": 0.0088
         },
         "integrity": 0.5,
         "glyph": {
@@ -1126,32 +1126,7 @@
       "key": "basic_cap/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0066
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "magicCapacity": 1
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "basic_cap/",
-      "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0058
+          "**irons_spellbooks:mana_regen": 0.0088
         },
         "integrity": 0.5,
         "glyph": {

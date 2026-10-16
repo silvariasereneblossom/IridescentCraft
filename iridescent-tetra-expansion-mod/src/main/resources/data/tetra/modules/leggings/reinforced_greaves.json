@@ -367,7 +367,7 @@
       "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.264
+          "minecraft:generic.armor": 0.344
         },
         "integrity": 0.5,
         "glyph": {
@@ -389,7 +389,7 @@
       "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.264
+          "minecraft:generic.armor": 0.352
         },
         "integrity": 0.5,
         "glyph": {
@@ -411,29 +411,7 @@
       "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.264
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aether_obsidian"
-      ],
-      "key": "reinforced_greaves/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.232
+          "minecraft:generic.armor": 0.352
         },
         "integrity": 0.5,
         "glyph": {
