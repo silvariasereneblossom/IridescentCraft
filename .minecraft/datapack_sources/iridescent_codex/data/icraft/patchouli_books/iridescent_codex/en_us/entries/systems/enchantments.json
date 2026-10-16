@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Dimensional Survival",
-      "text": "$(bold)Heatward$() — Fire/lava resistance scaling with level$(br)$(bold)Voidward$() — Void damage reduction$(br)$(bold)Depthstrider$() — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$() — Cold/height environment resistance$(br)$(bold)Warp Shield$() — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$()+ dimensional content.$()"
+      "text": "$(bold)Heatward$() — Fire/lava resistance scaling with level$(br)$(bold)Voidward$() — Void damage reduction$(br)$(bold)Depthstrider$() — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$() — Thin-air resistance high in the Aether (Tier 4)$(br)$(bold)Warp Shield$() — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$()+ dimensional content.$()"
     },
     {
       "type": "patchouli:text",

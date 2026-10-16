@@ -114,6 +114,10 @@ var BOSS_RUSH_TIERS = {
 //     T1  28 listed, 11 real, needed 23   ->  11 listed, need 9  (80%)
 //     T2  23 listed, 19 real, needed 21   ->  20 listed, need 18 (90%)
 //     T3  53 listed, 43 real, needed 53   ->  43 listed, need 43 (100%)
+// 2026-10-16 (the Aether to tier 4, scope R3): the Slider, the Valkyrie Queen and
+// the Sun Spirit left the T2 roster (tier 4 has no rush), Frostmaw moved from
+// T1 to T2. The percentages stand, the counts follow the registry by themselves:
+//     T1  10 listed, need 8 (80%)   T2  18 listed, need 17 (90%)   T3  43 / 43
 // Removed, with the reason, so that each can come back when it is real:
 //   * brutalbosses: zombieboss, skeletonshieldboss, cavespiderboss, huskboss,
 //     strayboss, drownedboss, phantomboss, witchboss, irongolemboss, rabbitboss,

@@ -5411,9 +5411,18 @@
      "features": [
       "wither-tablets"
      ],
+     "registries": [
+      "dimensions"
+     ],
      "ownSlots": 0,
      "names": 0,
      "reads": [
+      {
+       "name": "icraft.dims",
+       "kind": "global",
+       "from": "0_lib_registry.js",
+       "when": "handler"
+      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -12589,6 +12598,10 @@
      "when": "handler"
     },
     {
+     "script": "server:loot/loot_overhaul.js",
+     "when": "handler"
+    },
+    {
      "script": "server:loot/lootjs_overhaul.js",
      "when": "handler"
     },
@@ -13291,6 +13304,7 @@
     "server:loot/0_entity_id_validator.js",
     "server:loot/codex_exploration_drops.js",
     "server:loot/iss_boss_first_kill.js",
+    "server:loot/loot_overhaul.js",
     "server:loot/lootjs_overhaul.js",
     "server:loot/lovely_pieces_loot.js",
     "server:loot/zz_pack_enchanted_books.js",

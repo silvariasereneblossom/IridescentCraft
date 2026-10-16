@@ -1971,7 +1971,7 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 5.352
+          "minecraft:generic.armor": 6.422
         },
         "integrity": 0,
         "glyph": {
@@ -1983,7 +1983,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

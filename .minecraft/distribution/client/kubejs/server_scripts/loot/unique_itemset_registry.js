@@ -65,9 +65,12 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:toxic_longsword':  { tier: 2, kind: 'sword', boss: 'blue_skies:alchemist',          addDrop: false },
   'simplyswords:stars_edge':       { tier: 2, kind: 'sword', boss: 'blue_skies:starlit_crusher',    addDrop: false },
   'simplyswords:waxweaver':        { tier: 2, kind: 'sword', boss: 'blue_skies:arachnarch',         addDrop: false },
-  'simplyswords:thunderbrand':     { tier: 2, kind: 'sword', boss: 'aether:slider',                 addDrop: false },
-  'simplyswords:caelestis':        { tier: 2, kind: 'sword', boss: 'aether:valkyrie_queen',         addDrop: false },
-  'simplyswords:sunfire':          { tier: 2, kind: 'sword', boss: 'aether:sun_spirit',             addDrop: false },
+  // [2026-10-16] three spare uniques to tier-2 bosses that had none (operator
+  // ruling, Aether scope R2 "Spare uniques to T2 bosses"): T3 reserves until then,
+  // dropped by nothing. NEW drops (addDrop:true, boss_unique_drops.js).
+  'simplyswords:mjolnir':          { tier: 2, kind: 'sword', boss: 'twilightforest:minoshroom',     addDrop: true },
+  'simplyswords:storms_edge':      { tier: 2, kind: 'sword', boss: 'meetyourfight:bellringer',      addDrop: true },
+  'simplyswords:slumbering_lichblade': { tier: 2, kind: 'sword', boss: 'mutantmonsters:mutant_enderman', addDrop: true },
 
   // ---- T3 (EXISTING drops / reserved — tier recorded for buff) ----
   'simplyswords:brimstone_claymore':{ tier: 3, kind: 'sword', boss: 'cataclysm:netherite_monstrosity', addDrop: false },
@@ -79,12 +82,17 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:soulstealer':      { tier: 3, kind: 'sword', boss: 'deeperdarker:stalker',          addDrop: false },
   'simplyswords:soulpyre':         { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
   'simplyswords:soulkeeper':       { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:slumbering_lichblade': { tier: 3, kind: 'sword', boss: null,                        addDrop: false },
-  'simplyswords:storms_edge':      { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:mjolnir':          { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
+  // (mjolnir, storms_edge, slumbering_lichblade: T2 above since 2026-10-16)
 
   // ---- T4 (EXISTING drops / reserved — tier recorded for buff) ----
   'simplyswords:flamewind':        { tier: 4, kind: 'sword', boss: 'deep_aether:eots_controller',   addDrop: false },
+  // [2026-10-16] the Aether is tier 4 (operator ruling 2026-10-15, "rebalance the
+  // uniques for T4"): its three bosses keep their swords, which take the T4 buff.
+  // Damage and effects also retuned in config/simplyswords_main (Caelestis and
+  // Sunfire 13 base, as Thunderbrand).
+  'simplyswords:thunderbrand':     { tier: 4, kind: 'sword', boss: 'aether:slider',                 addDrop: false },
+  'simplyswords:caelestis':        { tier: 4, kind: 'sword', boss: 'aether:valkyrie_queen',         addDrop: false },
+  'simplyswords:sunfire':          { tier: 4, kind: 'sword', boss: 'aether:sun_spirit',             addDrop: false },
   'simplyswords:emberlash':        { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
   'simplyswords:waking_lichblade': { tier: 4, kind: 'sword', boss: 'minecraft:ender_dragon',        addDrop: false },
   'simplyswords:awakened_lichblade':{ tier: 4, kind: 'sword', boss: 'cataclysm:ancient_remnant',    addDrop: false },
@@ -121,9 +129,6 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:auroras_grace':   { tier: 2, kind: 'bow', boss: 'twilightforest:snow_queen',       addDrop: true },
   'too_many_bows:verdant_vigor':   { tier: 2, kind: 'bow', boss: 'twilightforest:minoshroom',       addDrop: true },
   'too_many_bows:burnt_relic':     { tier: 2, kind: 'bow', boss: 'twilightforest:hydra',            addDrop: true },
-  'too_many_bows:wind_bow':        { tier: 2, kind: 'bow', boss: 'aether:valkyrie_queen',           addDrop: true },
-  'too_many_bows:aethers_call':    { tier: 2, kind: 'bow', boss: 'aether:sun_spirit',               addDrop: true },
-  'too_many_bows:scatter_bow':     { tier: 2, kind: 'bow', boss: 'aether:slider',                   addDrop: true },
   'too_many_bows:vitality_weaver': { tier: 2, kind: 'bow', boss: 'blue_skies:summoner',             addDrop: true },
   'too_many_bows:webstring':       { tier: 2, kind: 'bow', boss: 'blue_skies:arachnarch',           addDrop: true },
 
@@ -131,7 +136,6 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:arcane_bow':      { tier: 3, kind: 'bow', boss: 'irons_spellbooks:archevoker',     addDrop: true },
   'too_many_bows:necro_flame_bow': { tier: 3, kind: 'bow', boss: 'irons_spellbooks:dead_king',      addDrop: true },
   'too_many_bows:solar_bow':       { tier: 3, kind: 'bow', boss: 'irons_spellbooks:fire_boss',      addDrop: true },
-  'too_many_bows:radiance':        { tier: 3, kind: 'bow', boss: 'aether:valkyrie_queen',           addDrop: true },  // was item-id 'irons_spellbooks:magehunter' -> silently pig (2026-06-06)
   'too_many_bows:ancient_sage_bow':{ tier: 3, kind: 'bow', boss: 'undergarden:forgotten_guardian',  addDrop: true },
   'too_many_bows:dusk_reaper':     { tier: 3, kind: 'bow', boss: 'deeperdarker:stalker',            addDrop: true },
   'too_many_bows:crimson_nexus':   { tier: 3, kind: 'bow', boss: 'cataclysm:the_harbinger',         addDrop: true },
@@ -145,6 +149,11 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:spectral_whisper':{ tier: 4, kind: 'bow', boss: 'minecraft:warden',                addDrop: true },
   'too_many_bows:shulker_blast':   { tier: 4, kind: 'bow', boss: 'cataclysm:ender_guardian',        addDrop: true },
   'too_many_bows:twin_shadows':    { tier: 4, kind: 'bow', boss: 'terramity:thunker',               addDrop: true },
+  // [2026-10-16] the Aether's bows, tier 4 with their bosses (were T2; Radiance T3)
+  'too_many_bows:wind_bow':        { tier: 4, kind: 'bow', boss: 'aether:valkyrie_queen',           addDrop: true },
+  'too_many_bows:aethers_call':    { tier: 4, kind: 'bow', boss: 'aether:sun_spirit',               addDrop: true },
+  'too_many_bows:scatter_bow':     { tier: 4, kind: 'bow', boss: 'aether:slider',                   addDrop: true },
+  'too_many_bows:radiance':        { tier: 4, kind: 'bow', boss: 'aether:valkyrie_queen',           addDrop: true },  // was item-id 'irons_spellbooks:magehunter' -> silently pig (2026-06-06)
 }
 
 // Derived helper sets (built once; consumers may also read the map directly).

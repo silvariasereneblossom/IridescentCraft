@@ -348,7 +348,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
   // Nether mobs near lava regenerate — handled via spawn regen above
   // (simplified: all Nether mobs get regen, which is close enough)
 
-  // ═══ THE AETHER HAZARDS (T2) ═══
+  // ═══ THE AETHER HAZARDS (T4 since 2026-10-16) ═══
   if (dim === 'aether:the_aether') {
     let y = player.blockPosition().y
 

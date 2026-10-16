@@ -1880,7 +1880,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.188
+          "minecraft:generic.armor": 1.426
         },
         "integrity": 0,
         "glyph": {
@@ -1892,7 +1892,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

@@ -236,9 +236,12 @@ var RECONCILE = [
   { q: 'eng_t3_unlock', adv: ['icraft:stage_tier_3'], met: p => reconHasStage(p, 'tier_3') },
 
   // === Exploration dimension trackers (engine dim-entry flags) ===
-  { q: 'exp_t2_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_twilight') && reconHasFlag(p, 'icraft_codex_dimentry_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_everbright') || reconHasFlag(p, 'icraft_codex_dimentry_everdawn')) },
+  // 2026-10-16: the Aether is tier 4. exp_t2_dimensions = Twilight + Everbright +
+  // Everdawn; the two tier-4 rows wait for the Aether's own flag (Deep Aether
+  // has no dimension, so icraft_codex_dimentry_deep_aether could never be set).
+  { q: 'exp_t2_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_twilight') && reconHasFlag(p, 'icraft_codex_dimentry_everbright') && reconHasFlag(p, 'icraft_codex_dimentry_everdawn') },
   { q: 'exp_t3_deep_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_nether') && reconHasFlag(p, 'icraft_codex_dimentry_undergarden') && reconHasFlag(p, 'icraft_codex_dimentry_deeperdarker') },
-  { q: 'exp_t4_final_frontiers', met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end')) },
+  { q: 'exp_t4_final_frontiers', met: p => reconHasFlag(p, 'icraft_codex_dimentry_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end')) },
   // Navigator: hold all four compasses (composite amount:4 = AND). (#45)
   { q: 'exp_navigator', met: p =>
       reconHasItem(p, 'explorerscompass:explorerscompass') && reconHasItem(p, 'naturescompass:naturescompass') &&
@@ -246,7 +249,7 @@ var RECONCILE = [
 
   // === Capstones ===
   { q: 'capstone_lucifer',     met: p => reconHasFlag(p, 'icraft_codex_firstkill_cardinal_sins_lucifer') },
-  { q: 'capstone_end_compass', adv: ['minecraft:end/kill_dragon'], met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
+  { q: 'capstone_end_compass', adv: ['minecraft:end/kill_dragon'], met: p => reconHasFlag(p, 'icraft_codex_dimentry_aether') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
   { q: 'capstone_end_bastion', adv: ['minecraft:story/enter_the_end'], met: p => reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
   { q: 'capstone_ender_dragon', adv: ['minecraft:end/kill_dragon'], met: p => reconHasAdv(p, 'minecraft:end/kill_dragon') },
 

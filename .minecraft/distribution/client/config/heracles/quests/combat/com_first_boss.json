@@ -7,7 +7,7 @@
       "A true boss — a boss bar, a real fight, a real reward. The Overworld's",
       "Tier 1 bosses come from Mowzie's Mobs and Terramity.",
       "",
-      "Fell the Ferrous Wroughtnaut, a Frostmaw, Umvuthi, or Gob. §7A boss's",
+      "Fell the Ferrous Wroughtnaut, Umvuthi, or Gob. §7A boss's",
       "first kill grants a one-time Exploration bonus, and counts toward the",
       "§cBoss Rush§7."
     ],
@@ -21,7 +21,6 @@
       "amount": 1,
       "tasks": {
         "wroughtnaut": { "type": "heracles:kill_entity", "title": "Ferrous Wroughtnaut", "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" }, "amount": 1 },
-        "frostmaw": { "type": "heracles:kill_entity", "title": "Frostmaw", "entity": { "type": "mowziesmobs:frostmaw" }, "amount": 1 },
         "umvuthi": { "type": "heracles:kill_entity", "title": "Umvuthi", "entity": { "type": "mowziesmobs:umvuthi" }, "amount": 1 },
         "gob": { "type": "heracles:kill_entity", "title": "Gob", "entity": { "type": "terramity:gob" }, "amount": 1 }
       }

@@ -62,7 +62,7 @@ TIER = {
 M = [
     # ---- T1 -- Overworld named bosses (Terramity / Mowzie's) ------------------
     ("bm_gob",        "metal", 1, "holy",     "d4af37", "terramity:gobs_gilded_hat_helmet", "Gilded Gnome Brass", "Gilded",     "A,floor", "Gob: only boss-unique drops are 1-of-3 gear; LootJS floor guarantees the gilded hat."),
-    ("bm_frostmaw",   "gem",   1, "ice",      "7ad6e8", "mowziesmobs:ice_crystal",          "Frostmaw Crystal",   "Glacial",    "",        "Frostmaw: native ice_crystal (boss carried)."),
+    # (bm_frostmaw moved to T2 2026-10-16: Frostmaw generates in Everbright now.)
     ("bm_wroughtnaut","metal", 1, "eldritch", "8a8a8a", "mowziesmobs:wrought_helmet",       "Thousand-Metal Iron","Wrought",    "A",       "Ferrous Wroughtnaut: guaranteed wrought_helmet (the only drops are helm+axe)."),
     ("bm_umvuthi",    "metal", 1, "holy",     "ffd966", "mowziesmobs:sol_visage",           "Solar Visage Gold",  "Solar",      "A",       "Umvuthi: guaranteed sol_visage mask (sole material-ish drop)."),
     ("bm_sculptor",   "gem",   1, "nature",   "9c7a4d", "mowziesmobs:sculptor_staff",       "Geomancy Stone",     "Geomancer",  "A,floor", "Tongbi/Sculptor: 1-of-5 gear; LootJS floor guarantees the staff."),
@@ -78,6 +78,7 @@ M = [
     ("tf_knightphantom", "metal", 2, "lightning", "b0c4de", "twilightforest:knightmetal_ring",  "Spectral Knightmetal","Spectral",   "M,floor", "Knight Phantom: empty (code-driven) table; floor the knightmetal_ring."),
     ("tf_snowqueen",     "gem",   2, "ice",       "a0e7f0", "twilightforest:snow_queen_trophy", "Aurora Ice",          "Aurora",     "A",       "Snow Queen: no clean material; guaranteed snow_queen_trophy."),
     ("tf_minoshroom",    "metal", 2, "nature",    "8c6e3f", "twilightforest:minoshroom_trophy", "Labyrinth Bronze",    "Labyrinth",  "A",       "Minoshroom: drops are food/axe/trophy; bind guaranteed minoshroom_trophy."),
+    ("bm_frostmaw",      "gem",   2, "ice",       "7ad6e8", "mowziesmobs:ice_crystal",          "Frostmaw Crystal",    "Glacial",    "",        "Frostmaw: native ice_crystal (boss carried). T1 until 2026-10-16 (moved to Everbright, tier 2)."),
     ("ae_slider",        "metal", 2, "eldritch",  "a97142", "aether:carved_stone",              "Bronze Slider",       "Slider",     "",        "Slider: guaranteed carved_stone 7-9 (key is needed for the dungeon)."),
     ("ae_valkyrie",      "metal", 2, "holy",      "c0c0c0", "aether:victory_medal",             "Valkyrie Silver",     "Valkyrie",   "S,floor", "Valkyrie Queen: only drops a key+sword; floor victory_medal (also from lesser valkyries)."),
     ("ae_sunspirit",     "metal", 2, "holy",      "ffcf40", "aether:sun_altar",                 "Solar Aether",        "Sunspirit",  "A",       "Sun Spirit: only key+altar; bind guaranteed sun_altar."),

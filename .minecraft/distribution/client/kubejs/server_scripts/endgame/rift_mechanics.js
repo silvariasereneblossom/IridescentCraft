@@ -102,6 +102,17 @@ LootJS.modifiers(icraft.guard('endgame/rift_mechanics', 'LootJS.modifiers', even
             .addLoot(LootEntry.of('kubejs:void_fragment', 1))
     }
 
+    // The Aether's three dungeon bosses, tier 4 since 2026-10-16 (Aether scope
+    // 3.1): 1 to 2 Rift Shards and a Void Fragment each, under the Eye of the
+    // Storm (2 + 1), the Aether's apex.
+    if (Platform.isLoaded('aether')) {
+        ;['aether:slider', 'aether:valkyrie_queen', 'aether:sun_spirit'].forEach(function (boss) {
+            riftEntityMod(event, boss)
+                .addLoot(LootEntry.of('kubejs:icraft_rift_shard').limitCount([1, 2]))
+                .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+        })
+    }
+
     // =========================================================================
     // SECTION 2: END DIMENSION MOB DROPS
     // Void Fragments have a small chance to drop from any End mob
@@ -126,7 +137,7 @@ LootJS.modifiers(icraft.guard('endgame/rift_mechanics', 'LootJS.modifiers', even
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.05)))
 
     console.log('[IridescentCraft] Rift loot mechanics loaded (LootJS)')
-    console.log('  - T4 boss Rift Shard/Void Fragment drops: 12 bosses')
+    console.log('  - T4 boss Rift Shard/Void Fragment drops: 15 bosses')
     console.log('  - End mob Rift material drops: 3 mob types')
 }))
 

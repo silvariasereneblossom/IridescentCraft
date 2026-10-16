@@ -7,12 +7,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 4 reached.$() The top of the ladder.$(br2)$(li)$(bold)Dimensions:$() the Deep Aether, and beyond it The End.$(li)$(bold)Tech:$() advanced Mekanism, RFTools Dimensions.$(li)$(bold)Magic:$() Mahou Tsukai.$(li)$(bold)Gear:$() Netherite, Gaia, Antimatter, Atomic Alloy.$(br2)There is no token gate beyond here."
+      "text": "$(bold)Tier 4 reached.$() The top of the ladder.$(br2)$(li)$(bold)Dimensions:$() the Aether (Deep Aether's biomes included), and beyond it The End.$(li)$(bold)Tech:$() advanced Mekanism, RFTools Dimensions.$(li)$(bold)Magic:$() Mahou Tsukai.$(li)$(bold)Gear:$() Netherite, Gaia, Antimatter, Atomic Alloy.$(br2)There is no token gate beyond here."
     },
     {
       "type": "patchouli:text",
       "title": "The Finale",
-      "text": "Reaching The End needs a Deep-Aether $(bold)End Compass$() - see $(l:icraft:progression/dimensions)Dimensional Progression$(/l). Defeat the $(t4)Ender Dragon$() to win and open the Ad Astra post-game.$(br2)Your surplus tokens now have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
+      "text": "Eyes of Ender lead you to The End - see $(l:icraft:progression/dimensions)Dimensional Progression$(/l). Defeat the $(t4)Ender Dragon$() to win and open the Ad Astra post-game.$(br2)Your surplus tokens now have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
     }
   ]
 }

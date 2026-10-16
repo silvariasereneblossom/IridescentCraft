@@ -1971,7 +1971,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.572
+          "minecraft:generic.armor": 1.886
         },
         "integrity": 0,
         "glyph": {
@@ -1983,7 +1983,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

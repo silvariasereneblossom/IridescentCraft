@@ -29,7 +29,7 @@ NO_ROLLER_FOUND loot/lootjs_overhaul.js /celestial_artifacts:.*/  # only Celesti
 ~TIER_MISMATCH loot/zz_iss_arena_enrichment.js T3->minecraft:overworld irons_spellbooks:chests/*  # same
 ~TIER_MISMATCH loot/lootjs_overhaul.js T2 dims deeperdarker:otherside,minecraft:the_nether,theabyss:the_abyss,undergarden:undergarden relics:shadow_glaive  # the rule is "T2/T3": the label parser reads the first number
 TIER_MISMATCH loot/lootjs_overhaul.js T1->minecraft:the_nether irons_spellbooks:chests/battleground/burial_loot  # T1 robe pieces also in Nether ISS tables: lower-tier loot in a higher tier is harmless
-TIER_MISMATCH loot/lootjs_overhaul.js T3 dims minecraft:the_end ars_nouveau:glyph_blink  # Ars has no T4 glyphs; the End takes the T3 list on purpose
+TIER_MISMATCH loot/lootjs_overhaul.js T3 dims aether:the_aether,minecraft:the_end ars_nouveau:glyph_blink  # Ars has no T4 glyphs; the tier-4 dimensions (the End, the Aether since 2026-10-16) take the T3 list on purpose
 TIER_MISMATCH loot/lootjs_overhaul.js T3->minecraft:overworld overhauledstructures:chests/ovdb_loot_tables/ovdb_chest_3  # "Tier 3" is the Epic Dungeons chest tier, not a pack tier
 TIER_MISMATCH loot/lootjs_overhaul.js T1->minecraft:the_nether minecraft:chests/shipwreck_map  # a Nether structure reuses the table; T1 loot in T3 is harmless
 TIER_MISMATCH loot/lootjs_overhaul.js T1->minecraft:the_nether minecraft:chests/village/village_plains_house  # same

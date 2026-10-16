@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Keep inventory is on.$() You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)Tier 2 dimensions: ~15% loss$(li)Tier 3 (Nether, Abyss, Undergarden): ~20% loss$(li)Tier 4 (End, Deep Aether): ~25% loss"
+      "text": "$(bold)Keep inventory is on.$() You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)Tier 2 dimensions: ~12-14% loss$(li)Tier 3 (Nether, Abyss, Undergarden): ~20% loss$(li)Tier 4: the Aether ~22%, the End ~25%"
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Wanderer Class Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically.$(br2)$(bold)Next: hunt Soulbound in high-tier structures and boss drops — it's the only true immunity.$()"
+      "text": "$(bold)Wanderer Class Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically.$(br2)$(bold)Next: hunt Soulbound in high-tier structures and boss drops \u2014 it's the only true immunity.$()"
     }
   ]
 }

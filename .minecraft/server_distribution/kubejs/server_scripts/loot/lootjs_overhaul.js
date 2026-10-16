@@ -61,9 +61,9 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // Tier-scaled enchanted books are layered on top of whatever the loot table
   // itself generated:
   //   Overworld: 7.5%
-  //   Twilight Forest/Aether/Blue Skies: 10%
+  //   Twilight Forest/Blue Skies: 10%
   //   Nether/Undergarden: 12.5%
-  //   End/Deeper and Darker/The Abyss: 15%
+  //   End/Aether (tier 4): 15%
   //
   // [2026-10-10] Those four adds used to be registered right here. They moved,
   // unchanged, to loot/zz_pack_enchanted_books.js: this file loads BEFORE
@@ -276,10 +276,10 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   global.icraftEntityMod(event, 'minecraft:ender_dragon')
     .addLoot(LootEntry.of('relics:enders_hand'))
 
-  // Space Dissector — rare T4 dimension drop
+  // Space Dissector — rare T4 dimension drop (the End and the Aether, 2026-10-16)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
     .addLoot(LootEntry.of('relics:space_dissector').when(c => c.randomChance(0.01)))
   })
 
@@ -466,11 +466,11 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     .addLoot(
       LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
     )
-  // Aether + Blue Skies: all chests are structures, so dimension filter is fine
+  // Blue Skies: all chests are structures, so dimension filter is fine
+  // (the Aether left this tier-2 rule 2026-10-16: it is tier 4)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension('blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
     )
@@ -637,7 +637,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
       LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025))
     )
 
-  // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
+  // T2 (TF, Blue Skies): Apprentice spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(icraft.dims.inTier(2, 'loot'))
@@ -653,10 +653,10 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
     )
 
-  // T4 (End): Archmage spell book (5%)
+  // T4 (End, Aether): Archmage spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
     )
@@ -681,8 +681,8 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // AN has 3 tiers (ONE/TWO/THREE, plus CREATIVE which we ignore). Mapping
   // to our 4 dimension tiers:
   //   AN T1 (35 glyphs) -> Overworld (our T1)
-  //   AN T2 (28 glyphs) -> TF/Aether/Blue Skies (our T2)
-  //   AN T3 (14 glyphs) -> Nether/Undergarden + End/DD/Abyss (our T3 + T4)
+  //   AN T2 (28 glyphs) -> TF/Blue Skies (our T2)
+  //   AN T3 (14 glyphs) -> Nether/Undergarden/DD/Abyss + End/Aether (our T3 + T4)
   // Arrays are exhaustive per AN's config — any future AN update adding
   // glyphs will need manual re-sync.
 
@@ -758,7 +758,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (AN T3 glyphs at the End rate)
   var glyphModT4 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
   glyphT4.forEach(g => {
     glyphModT4.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT4PerItem)))
   })
@@ -838,7 +838,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   modT1.addAlternativesLoot.apply(modT1, t1Alternatives)
   })
 
-  // --- T2 Pool (~12% combined) — Twilight Forest, Aether, Blue Skies ---
+  // --- T2 Pool (~12% combined) — Twilight Forest, Blue Skies ---
   // Combat + defensive artifacts + mid-tier magic.
   var artifactT2Pool = relicAllowed([
     'artifacts:power_glove', 'artifacts:feral_claws', 'artifacts:pickaxe_heater',
@@ -977,7 +977,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   var artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
   artifactT4Pool.forEach(function(item) {
     modT4.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
   })
@@ -990,7 +990,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   icraft.section('loot/lootjs_overhaul/flight-ring-ultra-rare-end-standalone', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
     .addLoot(LootEntry.of('celestial_artifacts:flight_ring')
       .when(function(c) { return c.randomChance(0.005) }))
   })
@@ -1465,7 +1465,9 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   })
 
   // --- Aether (191 tables, targeting chests only) ---
-  // T2-T3: Aether dimension dungeons (bronze/silver/gold)
+  // T4 since 2026-10-16: Aether dimension dungeons (bronze/silver/gold). The
+  // strip is not a tier rule (the Deep Aether, Undergarden and Deeper Darker
+  // tables carry the same one), so it stayed when the Aether moved.
   icraft.section('loot/lootjs_overhaul/aether', function () {
   event
     .addLootTableModifier(/aether:chests\/.*/)
@@ -2140,7 +2142,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.075)))
 
-  // T2 (TF, Aether, Blue Skies): Scrolls, iron/gold spell books, uncommon ink
+  // T2 (TF, Blue Skies): Scrolls, iron/gold spell books, uncommon ink
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(icraft.dims.inTier(2, 'loot'))
@@ -2156,10 +2158,10 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
 
-  // T4 (End): Scrolls, diamond/netherite spell books, epic ink
+  // T4 (End, Aether): Scrolls, diamond/netherite spell books, epic ink
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.045)))
@@ -3021,8 +3023,8 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     'artifacts:vampiric_glove',
     'ars_nouveau:apprentice_spell_book',     'irons_spellbooks:uncommon_ink'
   ]
-  // T2 Sky/cloud (Aether dungeons).
-  var T2_SKY = [
+  // Sky/cloud (Aether dungeons; tier 4 since 2026-10-16, was T2_SKY).
+  var T4_SKY = [
     'artifacts:cloud_in_a_bottle',           'artifacts:helium_flamingo',
     'artifacts:lucky_scarf',
     'moreartifacts:high_jumpers',            'moreartifacts:balloon',
@@ -3213,9 +3215,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   applyMarquee(['twilightforest:chests/tower_room',
                 'twilightforest:chests/tower_library'],
     { theme: T2_ELDRITCH, tier: 2, book: true })
-  // Aether dungeons (TBD exact table IDs — common pattern aether:chests/*).
-  applyMarquee(/aether:chests\/.*dungeon.*/,
-    { theme: T2_SKY, tier: 2, book: true })
+  // (The Aether dungeons' sky marquee moved to the T4 marquees, 2026-10-16.)
   // Blue Skies dungeons (TBD exact table IDs — broad pattern).
   applyMarquee(/blue_skies:chests\/.*dungeon.*/,
     { theme: T2_ELEMENTAL, tier: 2, book: true })
@@ -3250,6 +3250,12 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   applyMarquee(['minecraft:chests/ancient_city',
                 'minecraft:chests/ancient_city_ice_box'],
     { theme: T4_SCULK, tier: 4, book: true, structure: 'minecraft:ancient_city' })
+  // Aether dungeons (TBD exact table IDs — common pattern aether:chests/*).
+  // Tier 4 since 2026-10-16 (the Aether moved to tier 4): the same sky theme,
+  // at the tier-4 rate and book levels. The tables are the Aether's own, so no
+  // dimension condition is needed.
+  applyMarquee(/aether:chests\/.*dungeon.*/,
+    { theme: T4_SKY, tier: 4, book: true })
   })
   // (The Abyss marquee was removed 2026-10-11, operator ruling: no Abyss chest
   //  rolls a loot table with the installed The Abyss, so the rule could never
@@ -3355,7 +3361,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.004)))
   })
 
-  // T2 chest relics (combat + resistance — Blue Skies / Aether)
+  // T2 chest relics (combat + resistance — Blue Skies; the Aether left 2026-10-16, tier 4)
   var t2Relics = [
     'rpgseteffects:brutal_fist_relic',
     'rpgseteffects:lethal_crit_relic',
@@ -3369,8 +3375,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   t2Relics.forEach(relic => {
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('blue_skies:everbright', 'blue_skies:everdawn',
-        'aether:the_aether')
+      .anyDimension('blue_skies:everbright', 'blue_skies:everdawn')
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.006)))
   })
 
@@ -3392,7 +3397,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.008)))
   })
 
-  // T4 End relics (endgame — strongest passives)
+  // T4 relics (endgame — strongest passives): the End and the Aether (2026-10-16)
   var t4Relics = [
     'rpgseteffects:wither_immunity_relic',
     'rpgseteffects:beastheart_relic',
@@ -3402,7 +3407,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   t4Relics.forEach(relic => {
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_end')
+      .anyDimension(icraft.dims.inTier(4, 'loot'))
       .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.010)))
   })
 
@@ -3419,8 +3424,8 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     'twilightforest:entities/lich',
     'twilightforest:entities/hydra',
     'cataclysm:entities/ignis',
-    'aether:entities/slider',
     'blue_skies:entities/summoner'
+    // ('aether:entities/slider' moved to the T4 list below 2026-10-16: the Slider is tier 4)
     // ('alexscaves:entities/atlatitan' removed 2026-10-10 — Alex's Caves is not installed)
   ]
   t2BossPouchDrops.forEach(table => {
@@ -3437,7 +3442,8 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
     'cataclysm:entities/the_harbinger',   // [2026-10-10] was cataclysm:entities/harbinger — no such table; the entity is cataclysm:the_harbinger
-    'deeperdarker:entities/shattered'
+    'deeperdarker:entities/shattered',
+    'aether:entities/slider'              // [2026-10-16] from the T2 list: the Slider is tier 4
     // ('alexscaves:entities/watcher' removed 2026-10-10 — Alex's Caves is not installed)
   ]
   var awakeningPool = [
@@ -3592,7 +3598,7 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   //  @artifacts/@relics strip, per-tower "rebuilt" pools, village spell books.)
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
   console.log('  - Global chest strip: @ars_nouveau, irons_spellbooks (scrolls exempt), @moreartifacts, saplings, the denied relics')
-  console.log('  - Tiered artifact pools: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG/DD/Abyss, T4(16%) End (RELIC_DENY filtered)')
+  console.log('  - Tiered artifact pools: T1(10%) OW, T2(12%) TF/BS, T3(14%) Nether/UG/DD/Abyss, T4(16%) End/Aether (RELIC_DENY filtered)')
   console.log('  - Tiered by dimension: Ars glyphs + spell books, Iron\'s Spellbooks books + inks, class-artifact relics')
   console.log('  - Enchanted books: registered by zz_pack_enchanted_books.js (after the loot_overhaul.js strips)')
   console.log('  - Diamonds + diamond gear stripped from every chest in the Overworld and the T2 dimensions')

@@ -72,7 +72,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
 | `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
 | `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 17 | 0 |
-| `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 27 | 5 |
+| `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 28 | 5 |
 | `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 42 | 42 |
 
 ## startup scripts: load order
@@ -849,7 +849,7 @@ own one-shot `global._*` flags.
 | `icraft.attr` | `server:attributes/attribute_sync.js` | `server:attributes/attribute_commands.js` |
 | `icraft.bosses` | `server:0_lib_registry.js` | 20 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
 | `icraft.core` | `server:0_lib_core.js` | 64 scripts (24 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
-| `icraft.dims` | `server:0_lib_registry.js` | 9 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/lootjs_overhaul.js`, `server:loot/lovely_pieces_loot.js`, ... |
+| `icraft.dims` | `server:0_lib_registry.js` | 10 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/loot_overhaul.js`, `server:loot/lootjs_overhaul.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
 | `icraft.origin` | `server:0_lib_origins.js` | 17 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
 | `icraft.registry` | `server:0_lib_registry.js` | _nobody_ |
@@ -1572,7 +1572,8 @@ own one-shot `global._*` flags.
 - events: `LootJS.modifiers`
 - sections: 20
 - features: `wither-tablets`
-- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `icraft.section` of `00_icraft_guard.js`, `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
+- registries: dimensions
+- reads: `icraft.dims` of `0_lib_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `icraft.section` of `00_icraft_guard.js`, `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/lovely_pieces_loot.js`
 

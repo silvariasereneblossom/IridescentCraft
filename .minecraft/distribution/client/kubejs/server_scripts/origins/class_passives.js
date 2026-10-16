@@ -65,9 +65,10 @@
   //   * The Otherside and the Abyss are tier 3. This copy still had them at 4
   //     after the other six were moved (ea83e349). The Abyss's Frost World is
   //     tier 3 as well (same ruling).
-  //   * Tier 4 is the End alone.
+  //   * Tier 4 was the End alone; the Aether joined it 2026-10-16.
   //   * Deep Aether has no dimension of its own: its biomes generate inside
-  //     aether:the_aether, so it is tier 2 with the Aether.
+  //     aether:the_aether, so it is tier 4 with the Aether (tier 2 until
+  //     2026-10-16).
   // No substring tests: `includes('aether')` also "matched" a Deep Aether id
   // that does not exist, and would match any later id that merely contains it.
   // The table is the dimension registry (kubejs/config/icraft/registry/

@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 2 — Expansion",
-      "text": "$(bold)Material tier:$() Steel, Manasteel, Steeleaf, Ironwood, Fiery$(br)$(bold)Dimensions:$() Twilight Forest, Blue Skies, The Aether$(br)$(bold)Tech:$() Thermal Series, Industrial Foregoing (basic)$(br)$(bold)Magic:$() Ars Nouveau$(br)$(bold)Notable:$() First Simply Swords uniques drop from Twilight bosses. Diamonds remain Tier 3."
+      "text": "$(bold)Material tier:$() Steel, Manasteel, Steeleaf, Ironwood, Fiery$(br)$(bold)Dimensions:$() Twilight Forest, Blue Skies$(br)$(bold)Tech:$() Thermal Series, Industrial Foregoing (basic)$(br)$(bold)Magic:$() Ars Nouveau$(br)$(bold)Notable:$() First Simply Swords uniques drop from Twilight bosses. Diamonds remain Tier 3."
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 — Ascension",
-      "text": "$(bold)Material tier:$() Netherite, Gaia Ingots, Antimatter, Atomic Alloy$(br)$(bold)Dimensions:$() Deep Aether, The End (multi-zone)$(br)$(bold)Tech:$() Mekanism (advanced), RFTools Dimensions$(br)$(bold)Magic:$() Mahou Tsukai$(br)$(bold)Notable:$() The top of the ladder. Defeating the Ender Dragon is the finale and opens the post-game."
+      "text": "$(bold)Material tier:$() Netherite, Gaia Ingots, Antimatter, Atomic Alloy$(br)$(bold)Dimensions:$() The Aether (with Deep Aether), The End (multi-zone)$(br)$(bold)Tech:$() Mekanism (advanced), RFTools Dimensions$(br)$(bold)Magic:$() Mahou Tsukai$(br)$(bold)Notable:$() The top of the ladder. Defeating the Ender Dragon is the finale and opens the post-game."
     }
   ]
 }

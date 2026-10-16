@@ -66,7 +66,7 @@ LootJS.modifiers(icraft.guard('loot/staff_wand_drops', 'LootJS.modifiers', event
   global.icraftEntityMod(event, 'irons_spellbooks:pyromancer')
     .addLoot(LootEntry.of('irons_spellbooks:pyrium_staff').when(c => c.randomChance(0.15)))
 
-  // ── Aether Nature Staff — Slider (T2-T3 stone/earth boss, nature theme) ──
+  // ── Aether Nature Staff — Slider (stone/earth boss, nature theme; T4 since 2026-10-16) ──
   global.icraftEntityMod(event, 'aether:slider')
     .addLoot(LootEntry.of('aether:nature_staff').when(c => c.randomChance(0.25)))
 
@@ -88,7 +88,7 @@ LootJS.modifiers(icraft.guard('loot/staff_wand_drops', 'LootJS.modifiers', event
   global.icraftEntityMod(event, 'irons_spellbooks:dead_king')
     .addLoot(LootEntry.of('irons_spellbooks:staff_of_the_nines').when(c => c.randomChance(0.12)))
 
-  // ── Aether Cloud Staff — Valkyrie Queen (T3-T4 sky boss, cloud theme) ──
+  // ── Aether Cloud Staff — Valkyrie Queen (sky boss, cloud theme; T4 since 2026-10-16) ──
   global.icraftEntityMod(event, 'aether:valkyrie_queen')
     .addLoot(LootEntry.of('aether:cloud_staff').when(c => c.randomChance(0.20)))
 

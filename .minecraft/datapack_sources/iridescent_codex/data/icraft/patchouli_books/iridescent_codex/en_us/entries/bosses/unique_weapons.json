@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 2 Uniques",
-      "text": "$(li)Twilight Forest: Tempest, Soulrender, Emberblade, Whisperwind, Enigma, Frostfall, Icewhisper$(li)Blue Skies: Hiveheart, Toxic Longsword, Stars Edge, Waxweaver$(li)Aether: Thunderbrand, Caelestis, Sunfire"
+      "text": "$(li)Twilight Forest: Tempest, Soulrender, Emberblade, Whisperwind, Enigma, Frostfall, Icewhisper$(li)Blue Skies: Hiveheart, Toxic Longsword, Stars Edge, Waxweaver$(li)Minoshroom: Mjolnir$(li)Bellringer: Storm's Edge$(li)Mutant Enderman: Slumbering Lichblade"
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 Uniques",
-      "text": "$(li)Ender Dragon: Waking Lichblade (25%)$(li)Ultimate Bosses: Mjolnir, Storm's Edge$(li)Deep Aether: Flamewind$(li)Botania: Magiblade$(br2)$(bold)Build note:$() Uniques have no enchanting penalty — Apotheosis enchanting and affix reforging both work. A unique with excellent affixes and level 5 enchants is the strongest item in the pack.$(br2)$(bold)Next: pick a target from $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l) and go earn one.$()"
+      "text": "$(li)Ender Dragon: Waking Lichblade (25%)$(li)The Aether: Thunderbrand (Slider), Caelestis (Valkyrie Queen), Sunfire (Sun Spirit), Flamewind (Eye of the Storm)$(li)Botania: Magiblade$(br2)$(bold)Build note:$() Uniques have no enchanting penalty — Apotheosis enchanting and affix reforging both work. A unique with excellent affixes and level 5 enchants is the strongest item in the pack.$(br2)$(bold)Next: pick a target from $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l) and go earn one.$()"
     }
   ]
 }

@@ -515,9 +515,9 @@ function registerStageRestrictions() {
   // -- Dimension restrictions --
   // (A tier_4 gate on 'deep_aether:the_aether' stood here until 2026-10-12. It
   //  gated nothing: Deep Aether registers no dimension, its biomes generate
-  //  inside aether:the_aether, which is gated at tier_2 above. Ruling
-  //  2026-10-11: Deep Aether goes with the Aether. Its tier-4 materials are
-  //  gated by the Aethersteel ore and item restrictions in this file.)
+  //  inside aether:the_aether. Ruling 2026-10-11: Deep Aether goes with the
+  //  Aether. The Aether itself is gated at tier_4 since 2026-10-16 (registry
+  //  tier 4); the Aethersteel ore and item restrictions in this file stay.)
   // The End, and the five Ad Astra planets (post-T4 endgame: all five require
   // the tier_4 stage, belt-and-suspenders with the recipe gating on the Rocket
   // Workbench and the rocket tiers themselves).

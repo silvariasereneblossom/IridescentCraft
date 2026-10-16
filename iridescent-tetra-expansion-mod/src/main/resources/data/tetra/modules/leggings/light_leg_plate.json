@@ -1880,7 +1880,7 @@
       "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.528
+          "minecraft:generic.armor": 0.634
         },
         "integrity": 0,
         "glyph": {
@@ -1892,7 +1892,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

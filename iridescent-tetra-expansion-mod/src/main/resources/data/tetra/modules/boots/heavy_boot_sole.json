@@ -1880,7 +1880,7 @@
       "key": "heavy_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.616
+          "minecraft:generic.armor": 0.739
         },
         "integrity": 0,
         "glyph": {
@@ -1892,7 +1892,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

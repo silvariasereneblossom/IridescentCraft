@@ -74,7 +74,7 @@
 	"arcaneAssaultDuration": 120.0,
 	"arcaneAssaultSpellScaling": 1.399999976158142,
 	"thunderBlitzRadius": 2.0,
-	"thunderBlitzDamage": 3.0,
+	"thunderBlitzDamage": 5.0,
 	"thunderBlitzCooldown": 250.0,
 	"thunderBlitzChance": 15.0,
 	"thunderBlitzSpellScaling": 1.7000000476837158,
@@ -104,9 +104,9 @@
 	"abyssalStandardSpellScaling": 1.2000000476837158,
 	"righteousStandardCooldown": 700.0,
 	"righteousStandardChance": 15.0,
-	"righteousStandardDamage": 3.0,
+	"righteousStandardDamage": 5.0,
 	"righteousStandardSpellScaling": 1.100000023841858,
-	"righteousStandardSpellScalingHeal": 1.2999999523162842,
+	"righteousStandardSpellScalingHeal": 1.600000023841858,
 	"fatalFlickerCooldown": 175.0,
 	"fatalFlickerChance": 15.0,
 	"fatalFlickerRadius": 3.0,
@@ -172,5 +172,5 @@
 	"astralShiftDuration": 100.0,
 	"astralShiftDamageModifier": 1.0,
 	"astralShiftDamageMax": 300.0,
-	"astralShiftChance": 5.0
+	"astralShiftChance": 8.0
 }

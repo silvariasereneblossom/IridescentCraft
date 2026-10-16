@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 2 → Tier 3",
-      "text": "$(li)$(bold)Tokens:$() bank $(t3)1000$().$(li)$(bold)Boss Rush:$() clear $(t3)90%$() of the Tier 2 bosses — the Twilight Forest, Aether, and Blue Skies rosters.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
+      "text": "$(li)$(bold)Tokens:$() bank $(t3)1000$().$(li)$(bold)Boss Rush:$() clear $(t3)90%$() of the Tier 2 bosses — the Twilight Forest and Blue Skies rosters.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 — the finale",
-      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Reaching the End first requires the Deep-Aether $(bold)End Compass$() — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
+      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Eyes of Ender lead you to the End — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
     }
   ]
 }

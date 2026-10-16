@@ -87,15 +87,17 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
   })
 
   // ===========================================================================
-  // T2 — TWILIGHT FOREST / AETHER / BLUE SKIES — every chest in the dimension.
-  // Higher density: ~45% for a 2-4 stack (you came to the dimension to progress).
+  // T2 — TWILIGHT FOREST / BLUE SKIES — every chest in the dimension.
+  // Higher density: ~50% for a 2-4 stack (you came to the dimension to progress).
+  // [2026-10-16] 45% -> 50% (operator ruling, Aether scope R6 "Token top-up"):
+  // the Aether left this rule, and took its chests and arrival bonus with it.
   // ===========================================================================
   icraft.section('loot/codex_exploration_drops/t2-twilight-forest-aether-blue-skies-every', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(icraft.dims.inTier(2, 'loot'))
     .addLoot(
-      LootEntry.of(TOK_T2).limitCount([2, 4]).when(c => c.randomChance(0.45))
+      LootEntry.of(TOK_T2).limitCount([2, 4]).when(c => c.randomChance(0.50))
     )
   })
 
@@ -115,23 +117,21 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
   })
 
   // ===========================================================================
-  // T4 — END — every chest in the dimension.
+  // T4 — END / AETHER — every chest in the dimension.
   // Highest density: ~50% for a 3-6 stack. T4 has no token of its own, so the
   // endgame dimensions seed the t3 accumulation token (terminal-tier — these
   // tokens are spendable engineering/exploration currency, not a T4 gate).
   //
   // [2026-10-10] This list used to start with 'deep_aether:the_aether'. No such
   // dimension exists: Deep Aether adds its biomes and structures to
-  // aether:the_aether, so its chests have always taken the T2 rule above (and
-  // still do). Whether Deep Aether content should count as T4 is an open design
-  // question — it cannot be expressed by dimension.
+  // aether:the_aether.
+  // [2026-10-16] The Aether (Deep Aether's biomes included) is tier 4 (operator
+  // ruling 2026-10-15): this rule takes the registry's tier-4 loot group.
   // ===========================================================================
   icraft.section('loot/codex_exploration_drops/t4-end-every-chest-in-the-dimension', function () {
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension(
-      'minecraft:the_end'
-    )
+    .anyDimension(icraft.dims.inTier(4, 'loot'))
     .addLoot(
       LootEntry.of(TOK_T3).limitCount([3, 6]).when(c => c.randomChance(0.50))
     )
@@ -167,17 +167,17 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
      'minecraft:drowned', 'minecraft:pillager', 'minecraft:vindicator'],
     TOK_T1, 0.02, ['minecraft:overworld'])
 
-  // T2 dimensions — common hostiles found across TF / Aether / Blue Skies.
+  // T2 dimensions — common hostiles found across TF / Blue Skies.
   // (Per-dimension via .anyDimension so a vanilla zombie wandering a T2 dim
   //  drops a t2, while the same zombie in the Overworld drops a t1 above.)
+  // [2026-10-16] the Aether and its cockatrice / zephyr moved to the T4 list.
   seedMobDrops(
     ['minecraft:zombie', 'minecraft:skeleton', 'minecraft:spider',
      'twilightforest:skeleton_druid', 'twilightforest:swarm_spider',
      'twilightforest:redcap', 'twilightforest:kobold',
-     'aether:cockatrice', 'aether:zephyr',
      'blue_skies:venom_spider', 'blue_skies:nested_spider'],  // were spitfire/diamondback (no such entities -> pig) 2026-06-06
     TOK_T2, 0.04,
-    ['twilightforest:twilight_forest', 'aether:the_aether',
+    ['twilightforest:twilight_forest',
      'blue_skies:everbright', 'blue_skies:everdawn'])
 
   // T3 dimensions — Nether / Undergarden / Deeper Darker / Abyss common hostiles.
@@ -190,17 +190,18 @@ LootJS.modifiers(icraft.guard('loot/codex_exploration_drops', 'LootJS.modifiers'
     ['minecraft:the_nether', 'undergarden:undergarden',
      'deeperdarker:otherside', 'theabyss:the_abyss'])
 
-  // T4 dimensions (t3 token — terminal tier) — End.
+  // T4 dimensions (t3 token — terminal tier) — the End and the Aether.
   // ('deep_aether:the_aether' dropped from the dimension list 2026-10-10: not a
   //  dimension. deep_aether:venomite spawns in a Deep Aether biome of
-  //  aether:the_aether (yagroot_swamp), so its entry here only fires for one
-  //  killed in the End / Abyss — in practice never, before and after this
-  //  change. Same open question as the chest note above.)
+  //  aether:the_aether (yagroot_swamp); it fires since 2026-10-16, when the
+  //  Aether joined the tier-4 group. The cockatrice and the zephyr came from
+  //  the T2 list the same day.)
   seedMobDrops(
     ['minecraft:enderman', 'minecraft:shulker', 'minecraft:endermite',
-     'deep_aether:venomite'],  // were tempest/skyhunter (no such entities -> pig) 2026-06-06
+     'deep_aether:venomite',  // were tempest/skyhunter (no such entities -> pig) 2026-06-06
+     'aether:cockatrice', 'aether:zephyr'],
     TOK_T3, 0.05,
-    ['minecraft:the_end'])
+    icraft.dims.inTier(4, 'loot'))
 
   console.log('[codex_exploration_drops] Codex progression tokens injected into ' +
     'chest/barrel loot (OW dungeons t1 / T2-T4 dimension chests t2-t3) + ' +

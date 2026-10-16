@@ -8,7 +8,7 @@
 // Ruling (planning, 2026-10-12): the sweep covers the MAIN inventory only, slots 0-35.
 // =============================================================================
 var IS_GOGGLES = 'artifacts:night_vision_goggles'     // namespace `artifacts`: 20 essence
-var IS_HEART = 'iridescent_relics:frostmaw_heart'     // override: 150 essence
+var IS_HEART = 'iridescent_relics:frostmaw_heart'     // override: 250 essence (150 until 2026-10-16: Frostmaw moved to tier 2)
 var IS_DENIED = 'artifacts:mimic_spawn_egg'           // on RELIC_SINK_DENY_LIST
 var IS_ESSENCE = 'iridescent_relics:relic_essence'    // the currency itself
 var IS_SHIELD = 'moreartifacts:ankh_shield'           // override: 60 essence; held in the off hand below
@@ -30,7 +30,7 @@ T_run('relic sink: the scan visits the main inventory', function () {
   var found = relicScan(is_p)
   ok(found[IS_GOGGLES] !== undefined && Number(found[IS_GOGGLES].available) === 2,
     'a sinkable item in slot 3 is found, and the one worn in an armor slot is not counted (available: ' + (found[IS_GOGGLES] ? found[IS_GOGGLES].available : 'not found') + ')')
-  ok(found[IS_HEART] !== undefined && Number(found[IS_HEART].value) === 150, 'a boss relic is found at its override value')
+  ok(found[IS_HEART] !== undefined && Number(found[IS_HEART].value) === 250, 'a boss relic is found at its override value')
   ok(found[IS_SHIELD] === undefined, 'the item in the off hand is not swept')
   ok(found[IS_ESSENCE] === undefined, 'the currency itself is never sinkable')
   ok(found[IS_DENIED] === undefined, 'a deny-listed item is not found')
@@ -47,9 +47,9 @@ T_run('relic sink: submit converts, and the lifetime cap is read back', function
   relicSubmit(is_p, false)
   ok(is_count(3) === 2 && is_count(9) === 1, 'the preview consumes nothing')
   var essence = Number(relicSubmit(is_p, true))
-  ok(essence === 190, 'confirm returns 2 x 20 + 150 = 190 essence (got ' + essence + ')')
+  ok(essence === 290, 'confirm returns 2 x 20 + 250 = 290 essence (got ' + essence + ')')
   var given = T.get(is_p, 'given')
-  ok(Number(T.size(given)) === 1 && Number(A.count(given.get(0))) === 190 && String(given.get(0).id) === IS_ESSENCE, 'and gives it as one stack of the currency')
+  ok(Number(T.size(given)) === 1 && Number(A.count(given.get(0))) === 290 && String(given.get(0).id) === IS_ESSENCE, 'and gives it as one stack of the currency')
   ok(is_p.inventory.getStackInSlot(3).isEmpty() && is_p.inventory.getStackInSlot(9).isEmpty(), 'the converted stacks are gone')
   ok(is_count(7) === 1 && is_count(36) === 1 && is_count(40) === 1 && is_count(12) === 5, 'the denied item, the armor slot, the off hand and the held currency are untouched')
   T.slot(is_p, 4, new MStack(IS_GOGGLES, 1))

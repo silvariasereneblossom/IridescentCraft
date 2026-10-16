@@ -1,0 +1,25 @@
+{
+  "name": "The Aether",
+  "icon": "aether:zanite_gemstone",
+  "category": "icraft:mods_t4",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Bring a ranged option and watch your footing \u2014 the Aether is a $(t4)Tier 4$() dimension: aerial combat on floating islands, and Deep Aether's biomes grow on the same islands (it has no dimension of its own)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$() Three dungeon bosses \u2014 the Slider (Bronze), the Valkyrie Queen (Silver), the Sun Spirit (Gold) \u2014 each drop a Simply Swords unique and a Too Many Bows bow; the Eye of the Storm (Brass Dungeon) is the Aether's apex.$(br2)$(bold)Hazards:$() thin air above y 180 (Weakness, unless your armour carries Aether Acclimation), vertigo when sprinting above y 200, and an updraft that slows a fall into the void once. Aether mobs move fast; swets, whirlwinds, cockatrices and zephyrs grow with the Tier 4 curve."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Materials:$() Zanite, Gravitite and Ambrosium are Aether-native; Deep Aether adds Skyjade and Stratus, and $(bold)Aethersteel$() ore hides in its holystone. Death here costs 22% durability."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)No guide book.$() The Aether is exploration-driven \u2014 the dungeons each have discoverable lore, and the $(bold)Book of Lore$() found in them gives in-world context.$(br2)$(bold)Next: the Slider in the Bronze Dungeon \u2014 the Aether's first boss and your shot at Thunderbrand.$()"
+    }
+  ],
+  "advancement": "icraft:stage_tier_4"
+}

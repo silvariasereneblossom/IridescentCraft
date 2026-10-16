@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "blue_skies:frostbitten_forest", "required": false },
+    { "id": "blue_skies:frostbitten_forest_clearing", "required": false },
+    { "id": "blue_skies:snow_covered_pines", "required": false },
+    { "id": "blue_skies:polar_highland", "required": false },
+    { "id": "blue_skies:slushlands", "required": false }
+  ]
+}

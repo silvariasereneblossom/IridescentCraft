@@ -59,7 +59,7 @@
     },
     {
       "name": "boss-rush", "kind": "harness", "fast": true, "ci": true, "snapshot": true, "expect": 31,
-      "about": "gates/codex_boss_rush.js through its two handlers (a player kill, and /icraft codex bosses run through the Brigadier tree it registers): a roster boss counts once, a phase counts for its boss, a kill by no player or of no roster boss counts nothing; tier 1's threshold grants tier_2; tier 2's and tier 3's grant nothing without tier_2 / tier_3 held (the strict ladder of the Codex, ruling 8, carried to the rush: decision entry 91), the kills are kept and the player is told; the kill that buys the stage below climbs on; a stage below from another route is honoured at the next report. Rosters from the boss registry (11 / 20 / 43)",
+      "about": "gates/codex_boss_rush.js through its two handlers (a player kill, and /icraft codex bosses run through the Brigadier tree it registers): a roster boss counts once, a phase counts for its boss, a kill by no player or of no roster boss counts nothing; tier 1's threshold grants tier_2; tier 2's and tier 3's grant nothing without tier_2 / tier_3 held (the strict ladder of the Codex, ruling 8, carried to the rush: decision entry 91), the kills are kept and the player is told; the kill that buys the stage below climbs on; a stage below from another route is honoured at the next report. Rosters from the boss registry (10 / 18 / 43 since 2026-10-16)",
       "scopes": [["lib/honest.js", "lib/prelude.js", "lib/prelude_world.js",
                   {"load": ["server:00_icraft_guard.js", "server:0_lib_core.js", "server:0_lib_registry.js", "server:gates/codex_boss_rush.js"]},
                   "suites/boss_rush.js", "lib/summary.js"]]

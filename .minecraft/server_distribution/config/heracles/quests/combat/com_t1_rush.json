@@ -32,12 +32,6 @@
           "entity": { "type": "mowziesmobs:ferrous_wroughtnaut" },
           "amount": 1
         },
-        "kill_frostmaw": {
-          "type": "heracles:kill_entity",
-          "title": "Defeat a Frostmaw",
-          "entity": { "type": "mowziesmobs:frostmaw" },
-          "amount": 1
-        },
         "kill_umvuthi": {
           "type": "heracles:kill_entity",
           "title": "Defeat Umvuthi",

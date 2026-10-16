@@ -1962,7 +1962,7 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.264,
+          "minecraft:generic.armor": 0.317,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -1975,7 +1975,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

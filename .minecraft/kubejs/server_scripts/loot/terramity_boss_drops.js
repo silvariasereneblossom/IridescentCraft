@@ -35,14 +35,13 @@ LootJS.modifiers(icraft.guard('loot/terramity_boss_drops', 'LootJS.modifiers', e
     .addLoot(LootEntry.of('terramity:davy_jones').when(c => c.randomChance(0.10)))
 
   // ---- olympus — storm/divine theme ----
-  // Allocated to Aether Slider (T2 storm-themed) at lower rate, since
-  // olympus is T3-power-level and Slider is T2 boss; rare drop honors
-  // the cross-tier reward bridge.
+  // Allocated to Aether Slider (storm-themed; a T2 boss when this was written,
+  // tier 4 since 2026-10-16) at a low rate.
   global.icraftEntityMod(event, 'aether:slider')
     .addLoot(LootEntry.of('terramity:olympus').when(c => c.randomChance(0.05)))
 
   // ---- divine_intervention — holy/heal theme ----
-  // Allocated to Aether Sun Spirit (T2 holy/sun boss).
+  // Allocated to Aether Sun Spirit (holy/sun boss; tier 4 since 2026-10-16).
   global.icraftEntityMod(event, 'aether:sun_spirit')
     .addLoot(LootEntry.of('terramity:divine_intervention').when(c => c.randomChance(0.10)))
 

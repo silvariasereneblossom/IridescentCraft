@@ -30,7 +30,7 @@ LootJS.modifiers(icraft.guard('loot/mahou_synergy_drops', 'LootJS.modifiers', ev
   global.icraftEntityMod(event, 'twilightforest:hydra')
     .addLoot(LootEntry.of('mahoutsukai:fae_essence').when(c => c.randomChance(0.15)))
 
-  // ---- Aether Sun Spirit (T2 holy boss) — attuned_emerald ----
+  // ---- Aether Sun Spirit (holy boss; T4 since 2026-10-16) — attuned_emerald ----
   global.icraftEntityMod(event, 'aether:sun_spirit')
     .addLoot(LootEntry.of('mahoutsukai:attuned_emerald').when(c => c.randomChance(0.15)))
 

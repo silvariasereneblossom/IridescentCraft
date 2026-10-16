@@ -2,10 +2,11 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "deep_aether:skyjade" },
     "title": "Frontiers IV - The Final Frontiers",
-    "subtitle": "The Deep Aether and the End",
+    "subtitle": "The Aether and the End",
     "description": [
-      "The last frontiers. The Deep Aether is Tier 4's first dimension - work",
-      "it to forge the End Compass that opens the way to the End itself.",
+      "The last frontiers. The Aether, Deep Aether's biomes included, is Tier",
+      "4's first dimension - work it to forge the End Compass that opens the",
+      "way to the End itself.",
       "",
       "Each first arrival still banks an Exploration bonus (Tier 4 content",
       "mints the highest pool token - there is no separate T4 token; the",
@@ -25,8 +26,8 @@
   "tasks": {
     "enter_deep_aether": {
       "type": "heracles:changed_dimension",
-      "title": "Reach the Deep Aether",
-      "to": "deep_aether:the_aether"
+      "title": "Reach the Aether",
+      "to": "aether:the_aether"
     },
     "enter_end": {
       "type": "heracles:changed_dimension",

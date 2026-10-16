@@ -2,11 +2,11 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "twilightforest:twilight_portal_miniature_structure" },
     "title": "Frontiers I - The Mid-Tier Dimensions",
-    "subtitle": "Twilight Forest, Blue Skies, the Aether",
+    "subtitle": "Twilight Forest, Everbright, Everdawn",
     "description": [
       "Stepping into a new dimension banks Exploration tokens automatically -",
       "20 the first time you arrive in each. The three Tier 2 frontiers are",
-      "the Twilight Forest, Blue Skies, and the Aether.",
+      "the Twilight Forest and Blue Skies' two realms, Everbright and Everdawn.",
       "",
       "Visiting these is also one of the engine's Tier 2 unlock triggers, so",
       "the explorer's lane can open Tier 2 by sightseeing alone.",
@@ -29,23 +29,18 @@
       "title": "Reach the Twilight Forest",
       "to": "twilightforest:twilight_forest"
     },
-    "enter_aether": {
-      "type": "heracles:changed_dimension",
-      "title": "Reach the Aether",
-      "to": "aether:the_aether"
-    },
     "enter_blue_skies": {
       "type": "heracles:changed_dimension",
       "title": "Reach Blue Skies (Everbright)",
       "to": "blue_skies:everbright"
+    },
+    "enter_everdawn": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach Blue Skies (Everdawn)",
+      "to": "blue_skies:everdawn"
     }
   },
   "rewards": {
-    "aether_reagent": {
-      "type": "heracles:item",
-      "title": "Aether ambrosium",
-      "item": { "id": "aether:ambrosium_shard", "count": 6 }
-    },
     "twilight_reagent": {
       "type": "heracles:item",
       "title": "Twilight ironwood",

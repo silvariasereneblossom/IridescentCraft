@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-10-15T14:17:32Z",
+    "generated_at":  "2026-10-16T12:08:06Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -16,8 +16,8 @@
                                                      "size":  8941
                                                  },
                  "iridescent_codex_data.jar":  {
-                                                   "sha256":  "33fe1c9264061fd731fa564b76086132876eeb239f95aeae67da446e61d451ad",
-                                                   "size":  272865
+                                                   "sha256":  "ee6b036daa5993374474746da8f74b7df2817e072e6973afa1b9ddafdcd738bf",
+                                                   "size":  273553
                                                },
                  "iridescent_difficulty-0.1.0.jar":  {
                                                          "sha256":  "13a8ab38dbff5b57b07d841fac9958cf7affb755cc83cf6988190afe17e3d9fa",
@@ -40,8 +40,8 @@
                                                      "size":  52554
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "8b1b4d49ac325930648bec7817ec41e09014c01353816ddcb3672b945490ec15",
-                                                              "size":  1593926
+                                                              "sha256":  "e7fff8aed4fcf7b8b16177dfb2b69635e2c94b792bea384a6d3beed7b1d98edc",
+                                                              "size":  1593956
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
                                                                  "sha256":  "d2e98783792e7f06c2cf8a3ac40ce14e4ff4372bc3aec769928c1c8eb3acc4bf",

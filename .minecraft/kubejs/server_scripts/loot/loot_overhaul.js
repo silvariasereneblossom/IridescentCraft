@@ -178,7 +178,8 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     })
 
     // -----------------------------------------------------------------
-    // TIER 2 BOSSES — Aether
+    // TIER 4 BOSSES — Aether (tier 2 until 2026-10-16; the section id below
+    // keeps its old name: it is an id, not a label)
     // Verified: slider, valkyrie_queen, sun_spirit
     // -----------------------------------------------------------------
 
@@ -187,7 +188,9 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     global.icraftEntityMod(event, "aether:slider")
         // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
         // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
-        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.67)))
+        // [2026-10-16] tier 4: the advanced token at its tabled rate (0.6, as the
+        // Eye of the Storm), was the basic token at 0.67.
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.6)))
         .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:thunderbrand").when(c => c.randomChance(0.15))
@@ -207,7 +210,7 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     })
 
     // -----------------------------------------------------------------
-    // TIER 2-3 BRIDGE — Deep Aether
+    // TIER 4 — Deep Aether (the Aether's apex)
     // Verified: eots_controller (ONLY valid boss entity)
     // eots, boss, aether_boss DO NOT exist as entity IDs
     // -----------------------------------------------------------------
@@ -459,9 +462,10 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     // Elder Guardian — Ocean temple boss
     // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
-    // Enderman — rare void essence accumulation (END DIMENSION ONLY)
+    // Enderman — rare void essence accumulation (TIER-4 DIMENSIONS ONLY: the End,
+    // and since 2026-10-16 the Aether)
     global.icraftEntityMod(event, "minecraft:enderman")
-        .anyDimension('minecraft:the_end')
+        .anyDimension(icraft.dims.inTier(4, 'loot'))
         .addLoot(
             LootEntry.of("kubejs:void_essence")
                 .when(c => c.randomChance(0.02))
@@ -488,8 +492,10 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     // in a try so that a failure leaves the old, unconfined rule, not a throw
     // that would end the whole LootJS event.
     icraft.section('loot/loot_overhaul/section-2-structure-chest-loot-token', function () {
+    // [2026-10-16] gated on the tier-4 dimensions (the End and the Aether), the
+    // same set as every other tier-4 rule; the Overworld stays out.
     var urtEnd = event.addLootTableModifier("minecraft:chests/end_city_treasure")
-    try { urtEnd.anyDimension('minecraft:the_end') } catch (e) {
+    try { urtEnd.anyDimension(icraft.dims.inTier(4, 'loot')) } catch (e) {
         console.error('[icraft-loot] reforging-token End gate not applied: ' + e)
     }
     urtEnd.addLoot(
@@ -822,9 +828,9 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     //       whisperwind(UrGhast), enigma(KnightPhantom),
     //       frostfall(SnowQueen), icewhisper(AlphaYeti),
     //       hiveheart(Summoner), toxic_longsword(Alchemist),
-    //       stars_edge(StarlitCrusher), waxweaver(Arachnarch),
-    //       thunderbrand(Slider), caelestis(ValkyrieQueen),
-    //       sunfire(SunSpirit), flamewind(EotsController)
+    //       stars_edge(StarlitCrusher), waxweaver(Arachnarch)
+    //   T4 (the Aether, tier 4 since 2026-10-16): thunderbrand(Slider),
+    //       caelestis(ValkyrieQueen), sunfire(SunSpirit), flamewind(EotsController)
     //   T3: brimstone_claymore(NetheriteMonstrosity),
     //       molten_edge(Ignis), shadowsting(Harbinger),
     //       livyatan(Leviathan), twisted_blade(Maledictus),
@@ -838,10 +844,12 @@ LootJS.modifiers(icraft.guard('loot/loot_overhaul', 'LootJS.modifiers', event =>
     //    tier tokens. watching_warglaive is NOT assigned: its Void Blossom
     //    modifier was removed 2026-06-06 — no such entity is installed.)
     //
-    // NOT ASSIGNED HERE: harbinger, magiscythe, magispear, mjolnir,
-    //   slumbering_lichblade, storms_edge, wickpiercer, watching_warglaive,
-    //   dreadtide (no boss yet); sword_on_a_stick, magic_estoc, hearthflame,
-    //   watcher_claymore, ribboncleaver, twilight (T1 — boss_unique_drops.js)
+    // NOT ASSIGNED HERE: harbinger, magiscythe, magispear, wickpiercer,
+    //   watching_warglaive, dreadtide (no boss yet); sword_on_a_stick,
+    //   magic_estoc, hearthflame, watcher_claymore, ribboncleaver, twilight
+    //   (T1 — boss_unique_drops.js); mjolnir (Minoshroom), storms_edge
+    //   (Bellringer), slumbering_lichblade (Mutant Enderman): T2 since
+    //   2026-10-16, dropped by boss_unique_drops.js
     // =====================================================================
 
 }))

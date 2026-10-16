@@ -2,24 +2,27 @@
 // DIMENSIONAL BOSS DROPS — Phase 6F-3 (Undergarden + Deeper Darker + Aether mini-bosses)
 // =============================================================================
 // Catch-all for dimension-specific bosses/mini-bosses not covered by the
-// per-mod files. T3 dimensions (Undergarden / Deeper Darker / Aether mini-
-// bosses), with magic synergy crossovers tier-appropriate to each.
+// per-mod files. Undergarden / Deeper Darker (T3) and the Aether (T4 since
+// 2026-10-16), with magic synergy crossovers tier-appropriate to each.
 //
 // Boss-kill counter handled by gates/milestone_detection.js.
 // =============================================================================
 
 LootJS.modifiers(icraft.guard('loot/dimensional_boss_drops', 'LootJS.modifiers', event => {
 
-  // ---- Aether: Slider (T2 mini-boss, Bronze Dungeon) ----
+  // ---- Aether: Slider (T4 boss since 2026-10-16, Bronze Dungeon) ----
+  // Tier 4 (Aether scope 3.1): the ink one grade up per tier step (uncommon ->
+  // epic), the rune -> its upgrade orb; chances and counts as they were.
   global.icraftEntityMod(event, 'aether:slider')
-    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').limitCount([1, 2]).when(c => c.randomChance(0.40)))
-    .addLoot(LootEntry.of('irons_spellbooks:lightning_rune').when(c => c.randomChance(0.20)))
+    .addLoot(LootEntry.of('irons_spellbooks:epic_ink').limitCount([1, 2]).when(c => c.randomChance(0.40)))
+    .addLoot(LootEntry.of('irons_spellbooks:lightning_upgrade_orb').when(c => c.randomChance(0.20)))
 
-  // ---- Aether: Sun Spirit (T2 boss, Gold Dungeon) ----
+  // ---- Aether: Sun Spirit (T4 boss since 2026-10-16, Gold Dungeon) ----
+  // Tier 4: rare -> legendary ink, fire / holy rune -> their upgrade orbs.
   global.icraftEntityMod(event, 'aether:sun_spirit')
-    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
-    .addLoot(LootEntry.of('irons_spellbooks:fire_rune').when(c => c.randomChance(0.30)))
-    .addLoot(LootEntry.of('irons_spellbooks:holy_rune').when(c => c.randomChance(0.20)))
+    .addLoot(LootEntry.of('irons_spellbooks:legendary_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
+    .addLoot(LootEntry.of('irons_spellbooks:fire_upgrade_orb').when(c => c.randomChance(0.30)))
+    .addLoot(LootEntry.of('irons_spellbooks:holy_upgrade_orb').when(c => c.randomChance(0.20)))
 
   // ---- Deep Aether: EotS Controller (T4 sky-end boss) ----
   global.icraftEntityMod(event, 'deep_aether:eots_controller')

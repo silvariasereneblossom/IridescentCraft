@@ -65,7 +65,7 @@
           .when(function (c) { return c.randomChance(0.075) })
       )
 
-    console.log('[icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)')
+    console.log('[icraft-loot] Registering T2 enchanted_book re-add (TF/BlueSkies, 10%, levels 15-30)')
     event
       .addLootTypeModifier(LootType.CHEST)
       .anyDimension(icraft.dims.inTier(2, 'loot'))
@@ -85,10 +85,10 @@
           .when(function (c) { return c.randomChance(0.125) })
       )
 
-    console.log('[icraft-loot] Registering T4 enchanted_book re-add (End, 15%, level 30)')
+    console.log('[icraft-loot] Registering T4 enchanted_book re-add (End/Aether, 15%, level 30)')
     event
       .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_end')
+      .anyDimension(icraft.dims.inTier(4, 'loot'))
       .addLoot(
         LootEntry.of('minecraft:book')
           .enchantWithLevels(ConstantValue.exactly(30), true)

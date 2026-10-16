@@ -4,8 +4,8 @@
     "title": "Boss-Rush II - The Twilight Gauntlet",
     "subtitle": "Clear 90% of the Tier 2 roster",
     "description": [
-      "The Tier 2 boss-rush spans the Twilight Forest, Blue Skies, and Aether",
-      "bosses. Clearing 90% of the roster auto-advances you to Tier 3.",
+      "The Tier 2 boss-rush spans the Twilight Forest and Blue Skies bosses",
+      "(Frostmaw included). Clearing 90% of the roster auto-advances you to Tier 3.",
       "",
       "The composite below tracks four of the marquee fights; the real",
       "auto-advance denominator is the full roster. Check it with",
@@ -29,8 +29,7 @@
         "kill_lich": { "type": "heracles:kill_entity", "title": "Lich", "entity": { "type": "twilightforest:lich" }, "amount": 1 },
         "kill_hydra": { "type": "heracles:kill_entity", "title": "Hydra", "entity": { "type": "twilightforest:hydra" }, "amount": 1 },
         "kill_ur_ghast": { "type": "heracles:kill_entity", "title": "Ur-Ghast", "entity": { "type": "twilightforest:ur_ghast" }, "amount": 1 },
-        "kill_summoner": { "type": "heracles:kill_entity", "title": "Summoner", "entity": { "type": "blue_skies:summoner" }, "amount": 1 },
-        "kill_slider": { "type": "heracles:kill_entity", "title": "Slider", "entity": { "type": "aether:slider" }, "amount": 1 }
+        "kill_summoner": { "type": "heracles:kill_entity", "title": "Summoner", "entity": { "type": "blue_skies:summoner" }, "amount": 1 }
       }
     }
   },

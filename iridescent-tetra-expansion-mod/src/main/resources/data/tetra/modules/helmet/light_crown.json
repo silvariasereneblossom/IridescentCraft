@@ -1880,7 +1880,7 @@
       "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.264
+          "minecraft:generic.armor": 0.317
         },
         "integrity": 0,
         "glyph": {
@@ -1892,7 +1892,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "4d8fb45b",
+    "generated_from":  "9353d4e6",
     "roots":  [
                   "kubejs",
                   "config",
@@ -1008,8 +1008,8 @@
                                                    "size":  87
                                                },
                   "config/apotheosis/adventure.cfg":  {
-                                                          "sha256":  "aba978d0acb7fcbdb26372f20910d1e0e8892a344150d2b8d24c94054658a9d7",
-                                                          "size":  11496
+                                                          "sha256":  "08191ba035d1b87abcb7896c195446c59271678b03418f9beafd7bd2560896e0",
+                                                          "size":  11404
                                                       },
                   "config/apotheosis/apotheosis.cfg":  {
                                                            "sha256":  "5e9f9f1022e1707ed6b1930508384572fe42c659e331bfa8fe2e84f6aa2fb246",
@@ -3020,8 +3020,8 @@
                                                                                      "size":  1395
                                                                                  },
                   "config/heracles/quests/capstones/capstone_end_compass.json":  {
-                                                                                     "sha256":  "75efd4b65e33d11b436dffcba2b1a3a8d5ecfc44c75fc5b4775891a4be563b73",
-                                                                                     "size":  1533
+                                                                                     "sha256":  "659ee29d16cf76cf036a110e31c6eec4bace411f50058cbb4ee0eb69522bb237",
+                                                                                     "size":  1524
                                                                                  },
                   "config/heracles/quests/capstones/capstone_ender_dragon.json":  {
                                                                                       "sha256":  "8921ea8c2c483a7f5b01e8b57849b8c910bd17709a30a23b153db774afcdf6a4",
@@ -3044,8 +3044,8 @@
                                                                           "size":  921
                                                                       },
                   "config/heracles/quests/combat/com_first_boss.json":  {
-                                                                            "sha256":  "3f78cbfc745f6d4e991f970b11f5c160132670fd41ac114f3b99d4a1c92c44df",
-                                                                            "size":  1590
+                                                                            "sha256":  "a5aa83cc8f509f6c63ea82571246a18eddaea727f2e469204b3f9d212053bcf8",
+                                                                            "size":  1442
                                                                         },
                   "config/heracles/quests/combat/com_first_miniboss.json":  {
                                                                                 "sha256":  "5dfe58e4c27398ce530722c251c3a02c13311a84fef87836d2d4ca26d087cadb",
@@ -3072,12 +3072,12 @@
                                                                               "size":  835
                                                                           },
                   "config/heracles/quests/combat/com_t1_rush.json":  {
-                                                                         "sha256":  "5d49e15ed03850a5cd880cd379520ad62dde0c628d801d9679f94c2c9e1c3214",
-                                                                         "size":  2274
+                                                                         "sha256":  "21874edd5a8a604445fab8d23e0f4606d75bd8be6a32f24d97f199bd3d48cec4",
+                                                                         "size":  2076
                                                                      },
                   "config/heracles/quests/combat/com_t2_rush.json":  {
-                                                                         "sha256":  "9a4facfb3289f22b771b2be3fc574508bdbd70ef3fea81ebb59591af794bc49b",
-                                                                         "size":  2034
+                                                                         "sha256":  "82699a7fc73cbffb40b6d57ff8c86ddd5b1b9513aa3411d9b51cf0a8fe7520a0",
+                                                                         "size":  1915
                                                                      },
                   "config/heracles/quests/combat/com_t3_rush.json":  {
                                                                          "sha256":  "a7a77dc55be69b5282c806cfe7658644e663dd2ab57b3a8a6a2ef815474c60f4",
@@ -3276,16 +3276,16 @@
                                                                                      "size":  1608
                                                                                  },
                   "config/heracles/quests/exploration/exp_t2_dimensions.json":  {
-                                                                                    "sha256":  "4bc68772f4af2326a83ab23f4168212276d2bd5b5aec8e1158189623fc4a44f3",
-                                                                                    "size":  1785
+                                                                                    "sha256":  "be1116ebafcdc0322007f042ae6371ccfa05ef580caca6edeb9b36899591c149",
+                                                                                    "size":  1664
                                                                                 },
                   "config/heracles/quests/exploration/exp_t3_deep_dimensions.json":  {
                                                                                          "sha256":  "fad724e12706325e8fc0a837fbe635b2d2a2be1cc4d68c60209d9ebf449a2af2",
                                                                                          "size":  1754
                                                                                      },
                   "config/heracles/quests/exploration/exp_t4_final_frontiers.json":  {
-                                                                                         "sha256":  "15db2d355a80d25e55918c9d98fa2d469f11855fd3ba84ee5fcc440843205f6c",
-                                                                                         "size":  1511
+                                                                                         "sha256":  "6cfd0b25d74052c86426e4108d6971f5bed676cada078f932569abc26eaf9171",
+                                                                                         "size":  1532
                                                                                      },
                   "config/heracles/quests/groups.txt":  {
                                                             "sha256":  "c90d26651860be47ce2cd26c0817382c24e6964ac4405c8318b35350a0ba7b1a",
@@ -3392,16 +3392,16 @@
                                                                      "size":  846
                                                                  },
                   "config/heracles/quests/milestones/reach_tier_2.json":  {
-                                                                              "sha256":  "03fb32f3c0ab8d21547df3c7c5e58be5c73b9d786246336920025cfbdad883b0",
-                                                                              "size":  1510
+                                                                              "sha256":  "0bccb56fd299223b4675bcd1208748b01327184c66f27230b9eaf213f2aaae03",
+                                                                              "size":  1390
                                                                           },
                   "config/heracles/quests/milestones/reach_tier_3.json":  {
                                                                               "sha256":  "eaf158e732b59cce55198747fa397a314d0124f35ef03a27cbd0acad20eebe99",
                                                                               "size":  1494
                                                                           },
                   "config/heracles/quests/milestones/reach_tier_4.json":  {
-                                                                              "sha256":  "1d7c17fa87dd2907ffdf8ee56dfb28fcab68b275f47486baa51fb23762948c71",
-                                                                              "size":  1337
+                                                                              "sha256":  "8b8b46d8462030807d2b5447f777ce1fc3f715ae9c836d6f8977c7d8772f1479",
+                                                                              "size":  1359
                                                                           },
                   "config/heracles/quests/onboarding/onboarding_first_codex_open.json":  {
                                                                                              "sha256":  "fe9a55cf604aea414f46385e83601b3440de73cef9fd6f53a524d73016ea3e66",
@@ -3520,8 +3520,8 @@
                                                                                               "size":  1108
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_frostmaw.json":  {
-                                                                                                "sha256":  "4e4423a8a3002f0697f7d120a41f918f61d8b0519c5f88504ab21ddcc03c02d1",
-                                                                                                "size":  1213
+                                                                                                "sha256":  "2da2e21926f797b0487fe241202e6b416965c1ce7fc061d107301a7b8a378b76",
+                                                                                                "size":  1260
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_sculptor.json":  {
                                                                                                 "sha256":  "68883bf9c2c36d1d40ddaf69bdd9da6afa5203990da9cb56ec50269c8fa4e75a",
@@ -3728,8 +3728,8 @@
                                                           "size":  5297
                                                       },
                   "config/iridescent_difficulty-common.toml":  {
-                                                                   "sha256":  "56e9777dd3361061c5cd0d4bcbb857f3cdf44c3580f4819002a0092a95ac89a1",
-                                                                   "size":  6945
+                                                                   "sha256":  "de3bafe54577aae0b8cd16c01afe60e85e82fcdb222f5d2a7ad71d49ba731210",
+                                                                   "size":  7164
                                                                },
                   "config/ironfurnaces-client.toml":  {
                                                           "sha256":  "da5307a9495f5fda0f4d73fe57f099dea993a3687d4182c28fea8663ada36fe8",
@@ -4183,6 +4183,10 @@
                                                        "sha256":  "5ae01a76509fd779b19c7f3ac68459cc751d4c3815e730c18735e26cd3d971a1",
                                                        "size":  1120
                                                    },
+                  "config/mowziesmobs-common.toml":  {
+                                                         "sha256":  "5fdca892555ee1b6e12d053bf01cf4ec1e042617b70ee9944db1092c7e6a65d1",
+                                                         "size":  36497
+                                                     },
                   "config/multiplayerbosses-common.toml":  {
                                                                "sha256":  "c618b51b83cda136f5ac17d9d609054968e32dba3e8de2ae897bf871b241ce52",
                                                                "size":  2480
@@ -4348,8 +4352,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "667af43abd6005539eff01231b2051b485b2572cdb8d00aee9d8aae9c65e8aa1",
-                                                                           "size":  57558
+                                                                           "sha256":  "6747a77aa746b57075bb9663800485be4d85f4db81b7b245b5489f88f7fa3dc9",
+                                                                           "size":  57055
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "ffcf2f03054c1c744f1bba7ef4c0f3a5eaa6c1e75998f9de9932e2a3338a33f9",
@@ -4980,11 +4984,11 @@
                                                                         "size":  20
                                                                     },
                   "config/simplyswords_main/unique_effects.json5":  {
-                                                                        "sha256":  "f939b3c7e04ac677da5a6f83ef56d52ddaeb869cd98d7ff2dccfa3ef83ef63d8",
-                                                                        "size":  5507
+                                                                        "sha256":  "55d834831e0d59469fb02cad4ed0726c185cca80b011cc5a895bc7e3aff3efe3",
+                                                                        "size":  5506
                                                                     },
                   "config/simplyswords_main/weapon_attributes.json5":  {
-                                                                           "sha256":  "5df435bcfd6892dcec5dca03ad6a7a31d87553317791b4acf33600c9acdc18ab",
+                                                                           "sha256":  "d6f5787b5a9d80fd0907a4b800787e7abf0f4d8fb62502cd89801f5924b85fe3",
                                                                            "size":  5925
                                                                        },
                   "config/skeletonhorsespawn.json5":  {
@@ -5968,12 +5972,12 @@
                                                                   "size":  48727
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "89c3c36dea6c1daf2a6e905bd8a1d923ba222f201335de6ff4858cd02cda5a11",
-                                                                    "size":  28209
+                                                                    "sha256":  "677f392a63dca3b6261f6a8601db686f75e72ae19d58d72fc958cbc23ef908b1",
+                                                                    "size":  28747
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
-                                                                        "sha256":  "fb5ce29a6dec94e3541fc6806fa42f20cfebaf3e1a4a1a8b708519461ccadb98",
-                                                                        "size":  8459
+                                                                        "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
+                                                                        "size":  8597
                                                                     },
                   "kubejs/config/probe-settings.json":  {
                                                             "sha256":  "3c29245b1884f68ea3622f1365b9fc0f2e6b49d73db2b1e4704f43aa5834e56e",
@@ -6464,7 +6468,7 @@
                                                                                         "size":  922
                                                                                     },
                   "kubejs/data/icraft/tags/entity_types/registry_bosses.json":  {
-                                                                                    "sha256":  "0cd238c8afcfaabc6e1d37e9fe804913d3c7fd36f5f0bc9ab4fe3328754ead67",
+                                                                                    "sha256":  "c62bcce6a909acef8126029b091910665c23f6c754f3c2738b7ef23b1c08b5f6",
                                                                                     "size":  6485
                                                                                 },
                   "kubejs/data/icraft/tags/items/armor_heavy.json":  {
@@ -6571,6 +6575,10 @@
                                                                                          "sha256":  "6a564a435e56de875a595d5f8147885e3ffc80d0c5a83d30a8e69a36e6cdd366",
                                                                                          "size":  106
                                                                                      },
+                  "kubejs/data/icraft/tags/worldgen/structure/mowzie_frostmaw.json":  {
+                                                                                          "sha256":  "9216a5ab3ee47ab5ca65ba0ad4c6fb0782a694bb61596a41443ed19645218206",
+                                                                                          "size":  104
+                                                                                      },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_enchanter_merlin.json":  {
                                                                                                      "sha256":  "69692c9ede947bf611ae37892a9dbc5fdfa94139e0d19507b989cf212a4f31a6",
                                                                                                      "size":  102
@@ -6823,6 +6831,10 @@
                                                                                            "sha256":  "4865b5406aa30afc71df39a6bcb24e5a93a2141b289f0326bc9c0a17cbd5d1e1",
                                                                                            "size":  392
                                                                                        },
+                  "kubejs/data/mowziesmobs/tags/worldgen/biome/has_structure/has_mowzie_structure.json":  {
+                                                                                                              "sha256":  "205f62ced50abe4f76857ddafbbe273a7be037928519a86628e1b7e93a903055",
+                                                                                                              "size":  368
+                                                                                                          },
                   "kubejs/data/origins/powers/burn_in_daylight.json":  {
                                                                            "sha256":  "ca01cbc769f0071bee502c3dd2da34efb75746ba637f1db7b31c7866b4812408",
                                                                            "size":  1461
@@ -7128,8 +7140,8 @@
                                                                                       "size":  2620
                                                                                   },
                   "kubejs/server_scripts/death_penalty.js":  {
-                                                                 "sha256":  "9e68ee3454f3d50da35c283ed0b69d550df0614642a8ddc9cf885d2a934c3b18",
-                                                                 "size":  29768
+                                                                 "sha256":  "7efc12c2d05066d083299783f4a50d45e13ad19b3d653c6fd9036f4d10f3d879",
+                                                                 "size":  29839
                                                              },
                   "kubejs/server_scripts/diag_armor_modifiers.js":  {
                                                                         "sha256":  "1f617545118aee8ea4ac0eb46652ae32022e374210fbcf8800ff25d8ee71e0a1",
@@ -7144,8 +7156,8 @@
                                                                         "size":  16944
                                                                     },
                   "kubejs/server_scripts/economy/relic_sink.js":  {
-                                                                      "sha256":  "b801ed84dac0f3d36fa637f60ab68361ec7929f670c2c7022247e966684f48d3",
-                                                                      "size":  19605
+                                                                      "sha256":  "a0ca557ea3bfecce341b7ace517f6ef3c23cae411c5eb83a7e8e3a456e1ae593",
+                                                                      "size":  19713
                                                                   },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
                                                                                 "sha256":  "ed06c655e6341632c548921ccf984cffe910ac1aafb2f7e07503254b4875fdac",
@@ -7164,8 +7176,8 @@
                                                                         "size":  12196
                                                                     },
                   "kubejs/server_scripts/endgame/rift_mechanics.js":  {
-                                                                          "sha256":  "4ff5c7ae788800de9401080b156622525a4a39c1d7562885b95c25d7d66eaf05",
-                                                                          "size":  14492
+                                                                          "sha256":  "2916f0f4dc42395e6de2fad0e2c65d65cb393c1a5c79e418989e1f8ad041fad1",
+                                                                          "size":  15039
                                                                       },
                   "kubejs/server_scripts/enemyexpansion_explosive_launch_blocker.js":  {
                                                                                            "sha256":  "cfbda2daba6a76eceecae8f818ce1f7aa4e0a0a272a0a40488d51dfdb707a320",
@@ -7176,8 +7188,8 @@
                                                            "size":  126
                                                        },
                   "kubejs/server_scripts/exploration/codex_exploration_kills.js":  {
-                                                                                       "sha256":  "e780d3138bc4b1d247a2f8e6913fc888024556dd368a40b70e31704167568705",
-                                                                                       "size":  11704
+                                                                                       "sha256":  "9b9a6c03213add853b6028d3f80942b1cf4fec6f315860064516d03dd96d9d7f",
+                                                                                       "size":  11748
                                                                                    },
                   "kubejs/server_scripts/fix_empty_display_name.js":  {
                                                                           "sha256":  "1daa72720184493ce5b2a2deed6ae1247de93177874eb7753e1e7049e3a5dbb7",
@@ -7200,12 +7212,12 @@
                                                                       "size":  3705
                                                                   },
                   "kubejs/server_scripts/gates/astages_restrictions.js":  {
-                                                                              "sha256":  "3a0bc97049c1360b3a0236db4362940743efe7aa27c15b023a901b67b97ddd17",
-                                                                              "size":  31921
+                                                                              "sha256":  "2befcf0abc27d8f988bab62e03f1d9486f5cdd3bcc0c6d1ce6bbab7200eeb245",
+                                                                              "size":  31933
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
-                                                                         "sha256":  "9b6697a00fc2e63994747617f3864f753f00ccea19d019640b8b86d631510349",
-                                                                         "size":  23662
+                                                                         "sha256":  "cf2a477f421e30e2162f2e959f10aacd2288744a1532c829b97b1ba735579d70",
+                                                                         "size":  23986
                                                                      },
                   "kubejs/server_scripts/gates/codex_progression_engine.js":  {
                                                                                   "sha256":  "78fce9b6f0c433d4616ca3f27ec590f01e910ab2f6eab6f013e9a8d8d5ca01b5",
@@ -7284,16 +7296,16 @@
                                                                              "size":  6123
                                                                          },
                   "kubejs/server_scripts/loot/codex_exploration_drops.js":  {
-                                                                                "sha256":  "a9b84ead88aa81f82941e5f8b1e646ce22b0ccbdfbdb85915a8c7c3ff869b244",
-                                                                                "size":  10957
+                                                                                "sha256":  "8191d9fa469a87cddd06e664aa134b94259f2c18646e50da764afcce6458d0e0",
+                                                                                "size":  11129
                                                                             },
                   "kubejs/server_scripts/loot/crop_seed_reduction.js":  {
                                                                             "sha256":  "3cdda770f4caf236b36934a3def9148afc42f6cfc6d899b961dc27584fc09532",
                                                                             "size":  4799
                                                                         },
                   "kubejs/server_scripts/loot/dimensional_boss_drops.js":  {
-                                                                               "sha256":  "ac7a6093209f6e32ee69896e562ea55af6037f3fa75a71623ebb9ce9826d6f0f",
-                                                                               "size":  4760
+                                                                               "sha256":  "3fc390e53374230d92825da9f4ce84574ea929d8103b4c15cddd9bac9df5e921",
+                                                                               "size":  5045
                                                                            },
                   "kubejs/server_scripts/loot/fragment_core_drops.js":  {
                                                                             "sha256":  "f19c5ea59ce9de8dc52cc28642c2e56d9e5c77acea8e6e00a92c3eb3b4aeca6f",
@@ -7312,20 +7324,20 @@
                                                                             "size":  5950
                                                                         },
                   "kubejs/server_scripts/loot/loot_overhaul.js":  {
-                                                                      "sha256":  "578085cd690e178a99d3fe5b4fe996e4b8a463c3d781f97cce5c8fe37405bf5c",
-                                                                      "size":  43451
+                                                                      "sha256":  "d1b39ab94ed63a78a1cda19fca44533b4fe133b2d51c03a454524183a82f3e25",
+                                                                      "size":  44082
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "64a592009d611522a8b26b1f05cb4c071c2eed2e8f3c4ff708f90948cbb762c4",
-                                                                        "size":  192458
+                                                                        "sha256":  "1bc0b0073d79877d02193e216797a88219d7edf14c9fa960dfa0a1e0f6c6d430",
+                                                                        "size":  193233
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "b0d9c7335dc62413aa628a142f163dd199c849eaf6588e6d005b1b7550d4fc11",
                                                                            "size":  14504
                                                                        },
                   "kubejs/server_scripts/loot/mahou_synergy_drops.js":  {
-                                                                            "sha256":  "7e212d15440afea3c49e39cb1cf2406bdc2f88b4709715ea9ac5d530a7e4e3dd",
-                                                                            "size":  4909
+                                                                            "sha256":  "8e8b66496e11de216f4c2179cab0062e6f5adb5a4d178ea72e62a24a3fec02e4",
+                                                                            "size":  4927
                                                                         },
                   "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js":  {
                                                                                      "sha256":  "156a44451eb9b4588e329ece4feadb7ea74a6444cfbff3b77bbee2d3be278cf7",
@@ -7340,16 +7352,16 @@
                                                                        "size":  4176
                                                                    },
                   "kubejs/server_scripts/loot/staff_wand_drops.js":  {
-                                                                         "sha256":  "c1626cde164a8b762d3aa86a465b433bb0426babde1599bc3274a46ed997335f",
-                                                                         "size":  7623
+                                                                         "sha256":  "f7ff1b116983f2af2c308cdb0ee1fd853bdd320cbf98ecf9ce3d8492f9e410ed",
+                                                                         "size":  7653
                                                                      },
                   "kubejs/server_scripts/loot/stalwart_dungeons_drops.js":  {
                                                                                 "sha256":  "25c6b177208470fb0fe708d5d92edebd2cfa7e8f0a513d1b9f1cfedf4484bb50",
                                                                                 "size":  3344
                                                                             },
                   "kubejs/server_scripts/loot/terramity_boss_drops.js":  {
-                                                                             "sha256":  "c45b41eb556d832d17fb0a9c0bd6548d62aa31a7db01503750c6f467419a71ba",
-                                                                             "size":  3740
+                                                                             "sha256":  "a4de18930308ace0995a64a1d685dc7d56ecac0acfd7f95392d63f26e7161b59",
+                                                                             "size":  3710
                                                                          },
                   "kubejs/server_scripts/loot/terramity_structure_drops.js":  {
                                                                                   "sha256":  "0ca921f24c7d8b24867cfd326d4d3a30ae37bb6b91fa6b77fcef68d85b4b7227",
@@ -7364,8 +7376,8 @@
                                                                             "size":  3894
                                                                         },
                   "kubejs/server_scripts/loot/unique_itemset_registry.js":  {
-                                                                                "sha256":  "e3c36a53cd797a32c92ee333c1a02c9991f0e7106a9e1e99cafb956f4bbfc774",
-                                                                                "size":  13729
+                                                                                "sha256":  "1cb2e6ebf5fe4f5aac9f226e4f9ba049ac2cbc1ea0185c76e642e9734d842a2c",
+                                                                                "size":  14415
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
                                                                          "sha256":  "c90f069a3c2b2d8b049e0c0d95caec288b7d2ee4e01a8640e50c87616f5bc695",
@@ -7376,8 +7388,8 @@
                                                                                 "size":  7143
                                                                             },
                   "kubejs/server_scripts/loot/zz_pack_enchanted_books.js":  {
-                                                                                "sha256":  "09342e82003a0f931c8ed751ed39c7f03aabe5b63e433a17a9aed4d39444c0f9",
-                                                                                "size":  7286
+                                                                                "sha256":  "e40315cdfd61ebfbf6de1401aad1dc0ac9e4f79ab14cd3fe90acc5f86bd9311b",
+                                                                                "size":  7296
                                                                             },
                   "kubejs/server_scripts/loot/zz_unique_chest_strip.js":  {
                                                                               "sha256":  "ec2b63d3cdfa25ca5f4e3f26e533c034bda256e1c596b9092dfeeebb36a65fcd",
@@ -7420,8 +7432,8 @@
                                                                                   "size":  2814
                                                                               },
                   "kubejs/server_scripts/origins/class_passives.js":  {
-                                                                          "sha256":  "40ee9a09c2c10c178aae1c554e8598bcd3e88a000113bbbb7c323d45c876385e",
-                                                                          "size":  14922
+                                                                          "sha256":  "f5269936c76f88148fdfda0b8c71603cb237539315a396468a2ef09ee33d7254",
+                                                                          "size":  14991
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
                                                                                   "sha256":  "ee8a0e63297374c337b03e1fcc6a3b43d96f6d9122c66a80bfae87eb14a859d7",
@@ -7464,8 +7476,8 @@
                                                                               "size":  4082
                                                                           },
                   "kubejs/server_scripts/quests/heracles_reconcile.js":  {
-                                                                             "sha256":  "f3ee63ca572ed16a4acaf350a44e33168a917e4119e5327cc4f09697cc792f0a",
-                                                                             "size":  33867
+                                                                             "sha256":  "09a2f4d03f69097c96f936c1cc5f20e56157029089f4b5a18e3f3250de38107a",
+                                                                             "size":  34047
                                                                          },
                   "kubejs/server_scripts/quests/onboarding_bridge.js":  {
                                                                             "sha256":  "71ed7475624fcd3ee7997e449241f65c9b8f943ac737d63b2252aa8665555a3d",
@@ -7568,8 +7580,8 @@
                                                                             "size":  11127
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
-                                                                               "sha256":  "7ec42da7daefec339db013a816c558d351a34f1ed651b1d543b55a9a3f46304f",
-                                                                               "size":  28355
+                                                                               "sha256":  "d341a67a994c0e7d7aeb0b033b8e5328d8bcd790cc990452cf8a48b3e10fdb5c",
+                                                                               "size":  28372
                                                                            },
                   "kubejs/server_scripts/scaling/mob_equipment.js":  {
                                                                          "sha256":  "a67d7f49a6e996cbf489ed38df29e4e264ee2f2ca3c0eb466d37ae7d543df4f5",
@@ -8536,7 +8548,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "d3821dba96d78c51e80f773799fd651ed8d32c1b96a04430f8860be39e170107",
+                                                               "sha256":  "c89db6b92244bd61e948927a75cffb4b4c41b62941849f18a7badfa3ad6c86f3",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
@@ -8564,7 +8576,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "409cf1b60e411a5ea9d3ec1e2c68c29baae11e6119cb3f0ac412a0463594dda8",
+                                                                         "sha256":  "ad5a59473fcab97a9805c870374d637c1c7f08682706ff3076e32040e51cee84",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

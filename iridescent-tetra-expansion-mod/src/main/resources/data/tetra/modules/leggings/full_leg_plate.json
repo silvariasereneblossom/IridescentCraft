@@ -1971,7 +1971,7 @@
       "key": "full_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.074
+          "minecraft:generic.armor": 4.889
         },
         "integrity": 0,
         "glyph": {
@@ -1983,7 +1983,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

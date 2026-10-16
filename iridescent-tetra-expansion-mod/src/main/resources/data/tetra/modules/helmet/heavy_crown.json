@@ -1942,7 +1942,7 @@
       "key": "heavy_crown/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.616,
+          "minecraft:generic.armor": 0.739,
           "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0,
@@ -1955,7 +1955,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 12
       }
     },
     {

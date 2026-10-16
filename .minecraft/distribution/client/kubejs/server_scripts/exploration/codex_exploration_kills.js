@@ -175,9 +175,10 @@ const EXPLORE_DIM_ENTRY_BONUS = 20 // ⚠OPEN default (per dimension, first entr
 // (icraft_codex_dimentry_<key>): never rename one. Until 2026-10-13 the nine
 // entries stood here.
 // (There is no Deep Aether entry: it registers no dimension, its biomes
-//  generate inside aether:the_aether. Two quests still wait for the flag
-//  icraft_codex_dimentry_deep_aether (quests/heracles_reconcile.js); how
-//  "reached the Deep Aether" should be detected is an operator decision.)
+//  generate inside aether:the_aether. The two quests that waited for a flag
+//  icraft_codex_dimentry_deep_aether wait for the Aether's own flag
+//  (icraft_codex_dimentry_aether) since 2026-10-16, when the Aether moved to
+//  tier 4; quests/heracles_reconcile.js.)
 const EXPLORE_DIMENSIONS = (function () {
   var out = {}
   var ids = icraft.dims.ids('exploration')

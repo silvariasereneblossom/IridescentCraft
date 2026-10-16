@@ -1,6 +1,6 @@
 {
   "display": {
-    "icon": { "type": "heracles:item", "item": "aether:zanite_gemstone" },
+    "icon": { "type": "heracles:item", "item": "twilightforest:ironwood_ingot" },
     "title": "Ascension I - Reach Tier 2",
     "subtitle": "500 tokens, or 80% of the T1 boss-rush",
     "description": [
@@ -11,8 +11,8 @@
       "stage. You do NOT submit anything here; the milestone tracks the",
       "engine's decision.",
       "",
-      "Tier 2 unlocks the mid-tier dimensions (Twilight Forest, Blue Skies,",
-      "the Aether) and Thermal-tier engineering."
+      "Tier 2 unlocks the mid-tier dimensions (the Twilight Forest and Blue",
+      "Skies' Everbright and Everdawn) and Thermal-tier engineering."
     ],
     "groups": {
       "Tier Milestones": { "position": [0, 0] }
@@ -31,11 +31,6 @@
     }
   },
   "rewards": {
-    "zanite": {
-      "type": "heracles:item",
-      "title": "Aether zanite",
-      "item": { "id": "aether:zanite_gemstone", "count": 4 }
-    },
     "ironwood": {
       "type": "heracles:item",
       "title": "Twilight ironwood",

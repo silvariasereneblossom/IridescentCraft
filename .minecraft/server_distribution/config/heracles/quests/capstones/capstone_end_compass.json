@@ -2,19 +2,19 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:recovery_compass" },
     "title": "Capstone: The End Compass",
-    "subtitle": "Forged from the Deep Aether",
+    "subtitle": "Forged from the Aether",
     "description": [
       "The Eye of Ender will not serve you here. To even target the End",
-      "portal, you must first work Tier 4's first dimension - the Deep Aether -",
-      "and forge an End Compass from its materials.",
+      "portal, you must first work Tier 4's first dimension - the Aether, Deep",
+      "Aether's biomes included - and forge an End Compass from its materials.",
       "",
-      "Reach the Deep Aether below to begin. The End Compass points the way to",
+      "Reach the Aether below to begin. The End Compass points the way to",
       "an End Bastion: the gateway structure that anchors the stronghold",
-      "search, so the End is genuinely POST-Deep-Aether.",
+      "search, so the End is genuinely POST-Aether.",
       "",
-      "§7The End Compass item, its Deep-Aether recipe, and the End Bastion",
+      "§7The End Compass item, its Aether recipe, and the End Bastion",
       "§7structure are still being built (progression-framework 5). For now",
-      "§7this capstone tracks reaching the Deep Aether - the prerequisite."
+      "§7this capstone tracks reaching the Aether - the prerequisite."
     ],
     "groups": {
       "Capstones": { "position": [160, 60] }
@@ -28,8 +28,8 @@
   "tasks": {
     "reach_deep_aether": {
       "type": "heracles:changed_dimension",
-      "title": "Reach the Deep Aether",
-      "to": "deep_aether:the_aether"
+      "title": "Reach the Aether",
+      "to": "aether:the_aether"
     }
   },
   "rewards": {

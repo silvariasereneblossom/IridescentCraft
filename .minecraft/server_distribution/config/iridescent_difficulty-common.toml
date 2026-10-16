@@ -99,11 +99,11 @@
 	#T2 dimensions (Twilight Forest, Blue Skies, Aether).
 	#Deep Aether has no dimension of its own: its biomes are part of
 	#aether:the_aether, so they follow this tier.
-	t2 = ["twilightforest:twilight_forest", "blue_skies:everbright", "blue_skies:everdawn", "aether:the_aether"]
+	t2 = ["twilightforest:twilight_forest", "blue_skies:everbright", "blue_skies:everdawn"]
 	#T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss + its Frost World).
 	t3 = ["undergarden:undergarden", "deeperdarker:otherside", "minecraft:the_nether", "theabyss:the_abyss", "theabyss:frost_world"]
 	#T4 dimensions (The End).
-	t4 = ["minecraft:the_end"]
+	t4 = ["minecraft:the_end", "aether:the_aether"]
 	#Dimensions whose cap is removed once the Ender Dragon is killed
 	#in-world. By default only the End.
 	uncapAfterEnderDragon = ["minecraft:the_end"]
@@ -114,7 +114,7 @@
 #other hostile mob.
 [excludes]
 	#Resource IDs of entities to skip entirely.
-	entities = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss"]
+	entities = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss", "terramity:virtue"]
 	#Resource IDs of mobs to scale EVEN IF their registered
 	#MobCategory is not MONSTER. Some mods (notably MCreator packs
 	#like Terramity) register clearly-hostile mobs under MISC/CREATURE,
@@ -126,7 +126,7 @@
 	#already-scaled checks; this ONLY relaxes the category gate.
 	#The entity must still be a Mob subclass (projectiles/items are
 	#skipped regardless).
-	forceScaleEntities = ["terramity:dungeon_sentry"]
+	forceScaleEntities = ["terramity:dungeon_sentry", "aether:blue_swet", "aether:golden_swet", "aether:whirlwind", "aether:evil_whirlwind", "aether:aechor_plant", "aether:cockatrice", "aether:zephyr", "deep_aether:baby_zephyr", "deep_aether:venomite"]
 
 #Pause the per-dimension scaling timer when no active players
 #are in the dimension. An 'active' player is one who has moved
