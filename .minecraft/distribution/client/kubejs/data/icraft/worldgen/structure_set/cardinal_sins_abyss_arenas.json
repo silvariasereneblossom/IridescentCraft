@@ -1,0 +1,42 @@
+{
+  "structures": [
+    {
+      "structure": "icraft:cardinal_sins_sloth",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_gluttony",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_lust",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_greed",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_envy",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_wrath",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_pride",
+      "weight": 1
+    },
+    {
+      "structure": "icraft:cardinal_sins_drakara",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 32,
+    "separation": 8,
+    "salt": 739214651
+  }
+}
