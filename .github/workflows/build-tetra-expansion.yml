@@ -15,14 +15,17 @@
 #   - "iridescent-tetra-expansion-jar" artifact (downloadable from the run)
 #   - 30 day retention; bump if you need longer
 #
-# Caveat:
+# Libraries:
 #   - libs/ holds compile-time mod dependency jars (Tetra, ISS, Curios, etc.)
 #     that aren't tracked in git (binary blobs, redistribution licenses).
-#     The "Stage libs" step below stages them from a cache dir if available,
-#     or fails with a clear "missing libs" error otherwise. For CI to work,
-#     those jars need to be reachable from a stable URL or committed to a
-#     private mirror. Initial implementation expects libs/ to either be
-#     committed (toggleable via the LIBS_COMMITTED env) or hosted somewhere.
+#     tools/fetch_ci_libs.py downloads them from pinned, sha256-checked CDN
+#     URLs (tools/ci_libs.json). It first checks that the list covers every
+#     `fg.deobf("blank:...")` in build.gradle and names what is missing: this
+#     workflow was red from 2026-06-19 to 10-16 because Ensorcellation joined
+#     build.gradle and not the list. A new compileOnly mod = a new list entry.
+#   - Delivery does not depend on this workflow: the shipped jar is built by
+#     wsl-build.sh and committed. This build proves the committed source
+#     compiles on a clean machine and keeps a downloadable artifact.
 # =============================================================================
 
 name: Build iridescent_tetra_expansion
@@ -79,7 +82,7 @@ jobs:
       - name: Fetch compile-time libs
         run: |
           # libs/ holds third-party compileOnly mod jars (Tetra, ISS, Curios,
-          # Ars, Geckolib, Apothic Attributes, CoFH Core, mutil). They are NOT
+          # Ars, Geckolib, Apothic Attributes, CoFH Core, Ensorcellation, mutil). They are NOT
           # vendored into this public repo (redistribution terms); instead they
           # are pulled from their authors' official CDNs, pinned by immutable
           # per-version URL + sha256 in tools/ci_libs.json. The script fails

@@ -46,5 +46,11 @@
     "url": "https://cdn.modrinth.com/data/OWSRM4vD/versions/kglS53Hd/cofh_core-1.20.1-11.0.2.56.jar",
     "sha256": "d7cd3ec8083e294e17cb50fe607b416c1dc83ce885e53ba3995d86e028f790e0",
     "size": 1509649
+  },
+  {
+    "name": "ensorcellation-1.20.1-5.0.2.24.jar",
+    "url": "https://cdn.modrinth.com/data/ImlP9deQ/versions/VY1IIRi6/ensorcellation-1.20.1-5.0.2.24.jar",
+    "sha256": "84cb18702db2a26dfd5a21ff007e2bcf40e16092adf7b2a33b8489987c4d7b45",
+    "size": 113193
   }
 ]

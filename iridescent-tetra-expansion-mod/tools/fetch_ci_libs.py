@@ -2,7 +2,7 @@
 # =============================================================================
 # fetch_ci_libs.py -- populate libs/ with the compile-time mod dependency jars
 # the Tetra-expansion build needs (Tetra, ISS, Curios, Ars, Geckolib, Apothic
-# Attributes, CoFH Core, mutil).
+# Attributes, CoFH Core, Ensorcellation, mutil).
 #
 # Why this exists:
 #   build.gradle declares these as `compileOnly fg.deobf("blank:<name>:<ver>")`
@@ -30,20 +30,37 @@
 #   python3 tools/fetch_ci_libs.py --dest X   # fetch into X
 #   python3 tools/fetch_ci_libs.py --force    # re-download even if present+valid
 #
-# Exit 0 = all libs present + checksum-verified. Non-zero = a download or
-# checksum failed (the build cannot succeed; fail loud here, not at compile).
+# Coverage: every `fg.deobf("blank:<name>:<ver>")` in ../build.gradle must have
+#   a manifest entry saved as `<name>-<ver>.jar`, or gradle fails ALL the deobf
+#   dependencies with "Could not find blank:..." (2026-06-19 to 10-16 the CI
+#   build was red because Ensorcellation joined build.gradle and not this list).
+#   The script checks that first and names what is missing.
+#
+# Exit 0 = all libs present + checksum-verified. Non-zero = build.gradle names
+# a lib the manifest lacks, or a download or checksum failed (the build cannot
+# succeed; fail loud here, not at compile).
 # =============================================================================
 
 import argparse
 import hashlib
 import json
 import os
+import re
 import sys
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.path.join(HERE, "ci_libs.json")
 DEFAULT_DEST = os.path.normpath(os.path.join(HERE, "..", "libs"))
+BUILD_GRADLE = os.path.normpath(os.path.join(HERE, "..", "build.gradle"))
+DEOBF_COORD = re.compile(r"""fg\.deobf\(\s*["']blank:([^:"']+):([^:"']+)["']\s*\)""")
+
+
+def gradle_flatdir_jars(path=BUILD_GRADLE):
+    """The `<name>-<ver>.jar` file names build.gradle's flatDir deobf deps resolve to."""
+    with open(path, encoding="utf-8") as f:
+        text = "\n".join(line.split("//", 1)[0] for line in f)
+    return [f"{name}-{ver}.jar" for name, ver in DEOBF_COORD.findall(text)]
 
 
 def sha256_of(path):
@@ -74,6 +91,23 @@ def main():
 
     with open(MANIFEST, encoding="utf-8") as f:
         entries = json.load(f)
+
+    wanted = gradle_flatdir_jars()
+    names = {e["name"] for e in entries}
+    missing = [j for j in wanted if j not in names]
+    if missing:
+        print("ERROR: build.gradle compiles against libs tools/ci_libs.json does not provide:", file=sys.stderr)
+        for j in missing:
+            print(f"  - {j}", file=sys.stderr)
+        print(
+            "Add each with its immutable CDN url, sha256 and size (the pack's mods/.index/<mod>.pw.toml "
+            "names the url; hash the instance's copy after checking its sha512 against that metafile).",
+            file=sys.stderr,
+        )
+        return 1
+    for name in sorted(names - set(wanted)):
+        print(f"  note: {name} is in ci_libs.json but build.gradle does not name it")
+    print(f"  build.gradle names {len(wanted)} flatDir libs; ci_libs.json covers all of them")
 
     os.makedirs(args.dest, exist_ok=True)
     failures = []
