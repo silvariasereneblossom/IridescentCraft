@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5f96c35f",
+    "generated_from":  "06a8ff60",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6976,8 +6976,8 @@
                                                                                                              "size":  947
                                                                                                          },
                   "kubejs/data/terramity/worldgen/structure/prismatic_pond.json":  {
-                                                                                       "sha256":  "d176cadf5d8ae7b2a2edbedb9d36b9e47624150f73e4d1e0a17a2ac5393646e3",
-                                                                                       "size":  464
+                                                                                       "sha256":  "0febe33e73b185de82ac37f962dd49247fb2e6bafa7fa636ecb166262768fff6",
+                                                                                       "size":  498
                                                                                    },
                   "kubejs/data/terramity/worldgen/structure_set/ancient_outcrop.json":  {
                                                                                             "sha256":  "06347b53d7c2bd6913963f29adb345135edaf29a9c22645470185153220d4412",

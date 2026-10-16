@@ -12,5 +12,6 @@
   "terrain_height_radius_check": 1,
   "allowed_terrain_height_range": 32,
   "min_y_allowed": 16,
+  "burying_type": "AVERAGE_LAND",
   "spawn_overrides": {}
 }
