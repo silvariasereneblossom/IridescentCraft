@@ -194,10 +194,22 @@ python .minecraft/dev/rosters/external_lists_test.py                # its tests 
 `check` names registry bosses (and second ids) missing from the exclude list, exclude entries that name no entity,
 dimensions on another tier or on none, Apotheosis entries that are no dimension, registry dimensions missing from an
 Apotheosis list, and distros that disagree. `generate` writes exactly those keys from the registry and
-`external_lists.policy.json`, keeping every other byte of each file; it refuses while the policy holds a `null` (a
-ruling the operator owes). **Nothing is generated until the operator has ruled** which bosses leave the curve, where
-the curve puts the dimensions it does not list, and what Apotheosis gives the dimensions it does not list.
-`dev/mods/pack_audit.py` still counts the same differences for the pack audit.
+`external_lists.policy.json`, keeping every other byte of each file and each list's order (entries that stay keep
+their place, new ones are appended); it refuses while the policy holds a `null` (a ruling the operator owes).
+
+**Generated since 2026-10-16** (the operator ruled the policy that day): the bosses with a designed health or the x3
+are off the difficulty curve (and the Elder Guardian, kept by name), every registry dimension is on the curve at its
+registry tier, and Apotheosis lists every registry dimension except the orbits, the pocket dimensions and the Reality
+Marble on its boss spawn list. So after a registry edit that adds or retiers a boss or a dimension:
+
+```bash
+python .minecraft/dev/rosters/external_lists.py                     # the report names what is now missing
+python .minecraft/dev/rosters/external_lists.py generate            # rewrite the keys (all three distros)
+```
+
+then regenerate the two `expected_state.json` (the configs are a managed root) and commit them with the six configs.
+A new dimension needs its Apotheosis values in the policy first (`generate` says which are missing). The pre-push hook
+prints the report's summary line; it does not block. `dev/mods/pack_audit.py` counts the same differences.
 
 ## How a script asks
 

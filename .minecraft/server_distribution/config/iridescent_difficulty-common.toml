@@ -99,11 +99,11 @@
 	#T2 dimensions (Twilight Forest, Blue Skies, Aether).
 	#Deep Aether has no dimension of its own: its biomes are part of
 	#aether:the_aether, so they follow this tier.
-	t2 = ["twilightforest:twilight_forest", "blue_skies:everbright", "blue_skies:everdawn"]
+	t2 = ["twilightforest:twilight_forest", "blue_skies:everbright", "blue_skies:everdawn", "theabyss:pocket_dimension"]
 	#T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss + its Frost World).
 	t3 = ["undergarden:undergarden", "deeperdarker:otherside", "minecraft:the_nether", "theabyss:the_abyss", "theabyss:frost_world"]
 	#T4 dimensions (The End).
-	t4 = ["minecraft:the_end", "aether:the_aether"]
+	t4 = ["minecraft:the_end", "aether:the_aether", "ad_astra:moon", "ad_astra:mars", "ad_astra:mercury", "ad_astra:venus", "ad_astra:glacio", "ad_astra:earth_orbit", "ad_astra:glacio_orbit", "ad_astra:mars_orbit", "ad_astra:mercury_orbit", "ad_astra:moon_orbit", "ad_astra:venus_orbit", "irons_spellbooks:pocket_dimension", "mahoutsukai:reality_marble"]
 	#Dimensions whose cap is removed once the Ender Dragon is killed
 	#in-world. By default only the End.
 	uncapAfterEnderDragon = ["minecraft:the_end"]
@@ -114,7 +114,7 @@
 #other hostile mob.
 [excludes]
 	#Resource IDs of entities to skip entirely.
-	entities = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "twilightforest:final_boss", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:harbinger", "cataclysm:leviathan", "cataclysm:maledictus", "irons_spellbooks:dead_king_boss", "terramity:virtue"]
+	entities = ["minecraft:wither", "progressivebosses:wither", "minecraft:ender_dragon", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:knight_phantom", "twilightforest:ur_ghast", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "cataclysm:ignis", "cataclysm:netherite_monstrosity", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:maledictus", "terramity:virtue", "terramity:gob", "terramity:enchanter_merlin", "terramity:super_sniffer", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mowziesmobs:ferrous_wroughtnaut", "mowziesmobs:umvuthi", "mowziesmobs:sculptor", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "mowziesmobs:frostmaw", "meetyourfight:swampjaw", "meetyourfight:bellringer", "mutantmonsters:mutant_enderman", "majestic_menaces:teikoku_senshi", "ars_nouveau:wilden_boss", "cataclysm:the_harbinger", "cataclysm:the_leviathan", "cataclysm:scylla", "cataclysm:the_baby_leviathan", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "irons_spellbooks:archevoker", "undergarden:forgotten_guardian", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cardinal_sins:sinofgluttony", "cardinal_sins:sinofgreed", "cardinal_sins:sinofenvy", "cardinal_sins:linneausofsloth", "cardinal_sins:sinoflust", "cardinal_sins:sinofpride", "cardinal_sins:sinofwrath", "cardinal_sins:drakara", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "theabyss:nightblade_boss", "theabyss:the_roka", "theabyss:elder", "cardinal_sins:lucifer", "cardinal_sins:luciferphase_1", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "deep_aether:eots_controller", "terramity:sorceress_circe", "minecraft:warden", "botania:doppleganger"]
 	#Resource IDs of mobs to scale EVEN IF their registered
 	#MobCategory is not MONSTER. Some mods (notably MCreator packs
 	#like Terramity) register clearly-hostile mobs under MISC/CREATURE,

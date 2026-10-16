@@ -1008,8 +1008,8 @@
                                                    "size":  87
                                                },
                   "config/apotheosis/adventure.cfg":  {
-                                                          "sha256":  "08191ba035d1b87abcb7896c195446c59271678b03418f9beafd7bd2560896e0",
-                                                          "size":  11404
+                                                          "sha256":  "48f52b174e30f1734d65b89f3e03005bcb5c5c98cbe06cda61683b1d26e50fcd",
+                                                          "size":  12901
                                                       },
                   "config/apotheosis/apotheosis.cfg":  {
                                                            "sha256":  "5e9f9f1022e1707ed6b1930508384572fe42c659e331bfa8fe2e84f6aa2fb246",
@@ -3700,8 +3700,8 @@
                                                           "size":  5297
                                                       },
                   "config/iridescent_difficulty-common.toml":  {
-                                                                   "sha256":  "de3bafe54577aae0b8cd16c01afe60e85e82fcdb222f5d2a7ad71d49ba731210",
-                                                                   "size":  7164
+                                                                   "sha256":  "f1f0723cd1b905068b2b7e3373c1d644dfacd203f1a11f241e8693aa78f641fa",
+                                                                   "size":  8997
                                                                },
                   "config/ironfurnaces-client.toml":  {
                                                           "sha256":  "da5307a9495f5fda0f4d73fe57f099dea993a3687d4182c28fea8663ada36fe8",

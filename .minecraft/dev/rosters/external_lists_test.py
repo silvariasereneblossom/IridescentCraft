@@ -493,6 +493,15 @@ def c_real_pack_copy(tmp):
     checks clean, a second run changes nothing, and the ten real dimensions keep the values the policy copied"""
     copy_real(tmp)
     committed = os.path.join(HERE, 'external_lists.policy.json')
+    # the pack may already be generated: take the Nether out of every list of the copy, so generate has to write
+    # all six files whatever state the pack is in
+    for d in DISTROS:
+        p = os.path.join(tmp, d, DIFF)
+        t = open(p, encoding='utf-8', newline='').read()
+        open(p, 'w', encoding='utf-8', newline='').write(t.replace('"minecraft:the_nether", ', '', 1).replace(', "minecraft:the_nether"', '', 1))
+        p = os.path.join(tmp, d, APOTH)
+        t = open(p, encoding='utf-8', newline='').read()
+        open(p, 'w', encoding='utf-8', newline='').write(re.sub(r'(?m)^[ \t]+minecraft:the_nether\|.*\r?\n', '', t))
     before = snapshot(tmp)
     rc, out = run(tmp, committed)
     bad = expect(out, rc, 0, '[external-lists] REPORT (check only, nothing changed)')
