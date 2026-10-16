@@ -64,7 +64,7 @@ const RELIC_SINK_VALUE = {
   'iridescent_relics:frostmaw_heart':     250,  // T2 boss (mowziesmobs:frostmaw; T1 = 150 until 2026-10-16, moved to Everbright)
   'iridescent_relics:ironheart_cog':      150,  // T1 boss (ferrous_wroughtnaut)
   'iridescent_relics:remnant_relic':      200,  // cursed_pyramid (Ancient Remnant)
-  'iridescent_relics:sunfeather_charm':   250,  // T4 boss since 2026-10-16 (aether:sun_spirit); value kept at the T2 250 pending a ruling
+  'iridescent_relics:sunfeather_charm':   500,  // T4 boss (aether:sun_spirit) since 2026-10-16: the T4 value (as dragons_eye); T2 250 until then (implemented on recommendation, for review)
   'iridescent_relics:phylactery_shard':   250,  // T2 boss (twilightforest:lich)
   'iridescent_relics:leviathans_pearl':   400,  // T3 boss (cataclysm:the_leviathan)
   'iridescent_relics:cursed_sigil_pride': 400,  // T3 capstone (cardinal_sins:lucifer)

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "4434da06",
+    "generated_from":  "34c41ba6",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7192,8 +7192,8 @@
                                                                         "size":  16944
                                                                     },
                   "kubejs/server_scripts/economy/relic_sink.js":  {
-                                                                      "sha256":  "a0ca557ea3bfecce341b7ace517f6ef3c23cae411c5eb83a7e8e3a456e1ae593",
-                                                                      "size":  19713
+                                                                      "sha256":  "12fda4f51328e6e2b96fe0128308d05ef339088c619fc736c6dbe999c339bde2",
+                                                                      "size":  19764
                                                                   },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
                                                                                 "sha256":  "ed06c655e6341632c548921ccf984cffe910ac1aafb2f7e07503254b4875fdac",
@@ -7344,8 +7344,8 @@
                                                                             "size":  4799
                                                                         },
                   "kubejs/server_scripts/loot/dimensional_boss_drops.js":  {
-                                                                               "sha256":  "3fc390e53374230d92825da9f4ce84574ea929d8103b4c15cddd9bac9df5e921",
-                                                                               "size":  5045
+                                                                               "sha256":  "0991e40ed7ec120f148fb5f47f904eac8d099209fc29d2403dcb5404b5bf514b",
+                                                                               "size":  5179
                                                                            },
                   "kubejs/server_scripts/loot/fragment_core_drops.js":  {
                                                                             "sha256":  "f19c5ea59ce9de8dc52cc28642c2e56d9e5c77acea8e6e00a92c3eb3b4aeca6f",

@@ -18,9 +18,10 @@ LootJS.modifiers(icraft.guard('loot/dimensional_boss_drops', 'LootJS.modifiers',
     .addLoot(LootEntry.of('irons_spellbooks:lightning_upgrade_orb').when(c => c.randomChance(0.20)))
 
   // ---- Aether: Sun Spirit (T4 boss since 2026-10-16, Gold Dungeon) ----
-  // Tier 4: rare -> legendary ink, fire / holy rune -> their upgrade orbs.
+  // Tier 4: rare -> legendary ink, fire / holy rune -> their upgrade orbs. The legendary ink at the Eye of the
+  // Storm's rate (30 %, one), not the rare ink's 50 %, 1-2 it replaced (2026-10-16, on recommendation, for review).
   global.icraftEntityMod(event, 'aether:sun_spirit')
-    .addLoot(LootEntry.of('irons_spellbooks:legendary_ink').limitCount([1, 2]).when(c => c.randomChance(0.50)))
+    .addLoot(LootEntry.of('irons_spellbooks:legendary_ink').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:fire_upgrade_orb').when(c => c.randomChance(0.30)))
     .addLoot(LootEntry.of('irons_spellbooks:holy_upgrade_orb').when(c => c.randomChance(0.20)))
 
