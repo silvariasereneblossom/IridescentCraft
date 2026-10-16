@@ -88,9 +88,9 @@ current T2 Blue Skies feels vs the T1 version before committing.
 - **Opportunity:** SB's `EntityBackpackAdditionsConfig` ships a per-entity loot table mapping (`entityLootTableList`, format `"EntityRegistryName|LootTableName"`) plus difficulty-scaled tier selection (`leatherWeight` → `netheriteWeight` and `minBackpackTierMidDifficulty` / `HighDifficulty`). The tier-scaling is already built to track local difficulty, which lines up with our dimension progression. Could turn this into a "rare treasure hunt" mechanic rather than a silent loot injector.
 - **Design sketch:**
   - Overworld hostiles (zombie/skeleton/creeper/spider/husk/stray/drowned) → tier-appropriate T1 chest table (our own `icraft:chests/t1_mob_backpack`)
-  - Twilight Forest / Aether / Blue Skies mobs → T2 table
+  - Twilight Forest / Blue Skies mobs → T2 table
   - Nether mobs → T3 table
-  - End mobs → T4 table
+  - End / Aether mobs → T4 table (the Aether is T4 since 2026-10-16)
   - New icraft loot tables with flavor items matching each tier, NOT full dungeon loot (we want this to be a taste, not a bypass of structure exploration)
   - `chance = 0.005` (0.5%, half the default) so it's genuinely rare
   - `backpackDropChance = 1.0` — if it spawned with one, reward the kill

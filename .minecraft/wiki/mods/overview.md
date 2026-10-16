@@ -50,8 +50,8 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 |-----------|------|-------|
 | Twilight Forest | 2 | AStages-gated. Portal activator changed to T1 boss token (was diamond). |
 | Blue Skies | 2 | AStages-gated. Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. |
-| The Aether | 2 | AStages-gated. Dimension mechanics: thin air, vertigo, updrafts. |
-| Deep Aether | 4 | AStages-gated. Advanced Aether endgame dimension. |
+| The Aether | 4 | AStages-gated (Tier 2 until 2026-10-16). Dimension mechanics: faster mobs, thin air, vertigo, updrafts. |
+| Deep Aether | 4 | No dimension of its own: its biomes, bosses and materials are part of the Aether. |
 | The Undergarden | 3 | AStages-gated. 4 metals integrated into Tetra. |
 | Deeper and Darker | 3 | AStages-gated |
 | The Abyss | 3 | Dimension mechanics: oppressive darkness, corruption, fear aura. 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. |
@@ -112,7 +112,7 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
 | Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops from TATOS chests + Abyss bosses (`abyss_boss_loot.js`). Abyss darkness/corruption/fear/void-whispers fire in `theabyss:the_abyss`. |
 | Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
-| End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
+| End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, Eyes of Ender staged at T4 (an End Compass → End Bastion unlock is planned to replace them), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
 | Mob equipment (`mob_equipment.js`) | scripts | 3-day grace, equipment/damage caps, diamond→iron mob breaking tools. (Was an Improved Mobs config; that mod was removed 2026-05-03 — handler now holds these targets.) |
 | Tectonic | config | Lower, flatter terrain: `vertical_scale` 0.38 (down from 1.155), `ultrasmooth` on, `flat_terrain_skew` 0.65, ridge_scale reduced. Mountains still present but much less extreme (worldgen rebalance 2026-06-06). |
 | TerraBlender | config | `vanilla_overworld_region_weight` 9→16 — raises vanilla's share of the overworld so plains and other vanilla biomes are more common (worldgen rebalance 2026-06-06). |

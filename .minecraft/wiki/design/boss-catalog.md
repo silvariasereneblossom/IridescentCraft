@@ -60,7 +60,6 @@
 | Terramity | `terramity:gundalf` | Archmage Gundalf | T2 | structure-locked | `terramity:trial_spire` — ocean biomes | gundalfs_hat, guardians_hand | 3 |
 | Terramity | `terramity:trial_guardian` | Trial Guardian | T2 | structure-locked | `terramity:trial_spire` deep boss room | guardian_grimoire, guardians_hand, energized_core | 3 |
 | Terramity | `terramity:sorceress_circe` | Sorceress Circe | **T4 → The End** | structure-locked | `terramity:mausoleum` — **The End** (relocated, was taiga) | malediction_bracelets, evil_king_armor pieces | 3 |
-| Mowzie's Mobs | `mowziesmobs:frostmaw` | Frostmaw | T1 | structure-locked | `mowziesmobs:frostmaw_spawn` — `#forge:is_snowy` overworld (excl. ocean/river/beach/forest/taiga), 25-spacing | ice_crystal, frozen_core, `mowziesmobs:naga_fang_dagger` mats | 2 |
 | Mowzie's Mobs | `mowziesmobs:ferrous_wroughtnaut` | Ferrous Wroughtnaut | T1 | structure-locked | `mowziesmobs:wrought_chamber` — underground overworld (all `has_mowzie_structure` biomes) | wrought_axe (Axe of a Thousand Metals), wrought_helmet | 2 |
 | Mowzie's Mobs | `mowziesmobs:umvuthi` | Umvuthi, the Sunbird | T1 | structure-locked | `mowziesmobs:umvuthana_grove` — `minecraft:is_savanna` overworld | sol_visage mask, sun's blessing, solar beam mats | 2 |
 | Mowzie's Mobs | `mowziesmobs:sculptor` | Tongbi, the Sculptor | T1 | structure-locked + trade-challenge | `mowziesmobs:monastery` — `#forge:is_peak` overworld | sculptor_staff (geomancy), earthrend gauntlet mats | 3 |
@@ -70,11 +69,11 @@
 | Marium's Soulslike Weaponry | `soulsweapons:night_shade` | Frenzied Shade | T1 | scripted (emerge/ambush) | summoned/ambush spawn — no fixed structure | shadow-themed drops, soul mats | 4 |
 | Marium's Soulslike Weaponry | `soulsweapons:moonknight` | Fallen Icon → Harbinger of Moonlight | T1 (location) / ⚠ difficulty T2 | summoned-by-altar | `soulsweapons:cathedral_of_resurrection` — `#minecraft:is_hill` overworld; return `essence_of_eventide` to body | essence_of_luminescence, moonlight greatsword (Bluemoon), holy moonlight | 3 |
 
-**T1 subtotal (pre-full-audit):** Brutal Bosses (~18 overworld, undercounted above) + 3 Mutant Monsters + Terramity Gob / Super Sniffer / Merlin + **Mowzie's Mobs ×5 (Frostmaw, Ferrous Wroughtnaut, Umvuthi, Sculptor + Naga mini-boss — all overworld structure/biome spawns)** + **Marium's Soulslike Weaponry ×4 early chain (Draugr, Returning Knight, Night Shade, Moonknight — overworld structures/altars)**. The remaining 4 Soulsweapons bosses (Decaying King, Chaos Monarch, Day Stalker, Night Prowler) are Nether-anchored → T3 (below). LuMoreBosses (phantom ×2) and the legacy Cataclysm entity dropped; Virtue + Circe relocated to T4. Final counts pending the full-roster audit.
+**T1 subtotal (pre-full-audit):** Brutal Bosses (~18 overworld, undercounted above) + 3 Mutant Monsters + Terramity Gob / Super Sniffer / Merlin + **Mowzie's Mobs ×4 (Ferrous Wroughtnaut, Umvuthi, Sculptor + Naga mini-boss — all overworld structure/biome spawns; Frostmaw moved to T2 in Everbright on 2026-10-16)** + **Marium's Soulslike Weaponry ×4 early chain (Draugr, Returning Knight, Night Shade, Moonknight — overworld structures/altars)**. The remaining 4 Soulsweapons bosses (Decaying King, Chaos Monarch, Day Stalker, Night Prowler) are Nether-anchored → T3 (below). LuMoreBosses (phantom ×2) and the legacy Cataclysm entity dropped; Virtue + Circe relocated to T4. Final counts pending the full-roster audit.
 
 ---
 
-## T2 — First-dimensional (Twilight / Aether / Blue Skies)
+## T2 — First-dimensional (Twilight / Blue Skies)
 
 | Mod | Entity ID | Display Name | Tier | Spawn Mechanism | Spawn Location | Notable Drops | Discovery Pain |
 |-----|-----------|--------------|:---:|------------------|----------------|---------------|:--------------:|
@@ -84,25 +83,23 @@
 | Twilight Forest | `twilightforest:ur_ghast` | Ur-Ghast | T2-T3 | structure-locked | `dark_tower`, Twilight Forest dark forest | ur_ghast_tear, t2+t3 token fragments, `simplyswords:whisperwind` @ 20% | 1 |
 | Twilight Forest | `twilightforest:knight_phantom` | Knight Phantom | T2 | structure-locked | `knight_stronghold`, Twilight Forest | t2_token_fragment, `simplyswords:enigma` @ 12% | 1 |
 | Twilight Forest | `twilightforest:snow_queen` | Snow Queen | T2 | structure-locked | `aurora_palace`, Twilight Forest snow biome | ice_staff @ 50%, t2_token_fragment, `simplyswords:frostfall` @ 15% | 1 |
-| Twilight Forest | `twilightforest:minoshroom` | Minoshroom | T2 | structure-locked | `labyrinth`, Twilight Forest swamp | diamond_minotaur_axe, meef_stroganoff, minoshroom_trophy | 1 |
+| Twilight Forest | `twilightforest:minoshroom` | Minoshroom | T2 | structure-locked | `labyrinth`, Twilight Forest swamp | diamond_minotaur_axe, meef_stroganoff, minoshroom_trophy, `simplyswords:mjolnir` @ 15% (since 2026-10-16) | 1 |
 | Twilight Forest | `twilightforest:alpha_yeti` | Alpha Yeti | T2 | structure-locked | `yeti_cave`, Twilight Forest snow biome | ice_staff @ 25%, t2_token_fragment, `simplyswords:icewhisper` @ 10% | 1 |
 | Blue Skies | `blue_skies:summoner` | Summoner | T2 | summoned-by-altar | `nature_dungeon` (snow_covered_pines biome, Everbright) → use `blue_skies:nature_key` + summoning_tome | gold_spell_book, source_gem, basic_reforging_token, waystone_core, `simplyswords:hiveheart` @ 15%, alchemy_scroll | 2 |
 | Blue Skies | `blue_skies:alchemist` | Alchemist | T2 | summoned-by-altar | `poison_dungeon` (sunset_maple_forest biome, Everdawn) → use `blue_skies:poison_key` + summoning_tome | oakskin_elixir, evasion_elixir, `simplyswords:toxic_longsword` @ 15% | 2 |
 | Blue Skies | `blue_skies:starlit_crusher` | Starlit Crusher | T2 | summoned-by-altar | `everbright_blinding_dungeon` (calming_skies / brisk_meadow biomes, Everbright) → use `blue_skies:blinding_key` + summoning_tome | lightning_upgrade_orb @ 15%, `simplyswords:stars_edge` @ 15%, runic_arc @ 5% | 2 |
 | Blue Skies | `blue_skies:arachnarch` | Arachnarch | T2 | summoned-by-altar | `everdawn_blinding_dungeon` (Everdawn variant of blinding dungeon) → blinding_key + summoning_tome | `simplyswords:waxweaver` @ 12%, runic_arc @ 5% | 2 |
-| Aether | `aether:slider` | Slider | T2 | structure-locked | `bronze_dungeon` (Aether dimension, bronze biome) | bronze_dungeon_key, carved_stone, `simplyswords:thunderbrand`, `terramity:olympus` @ 5%, t2_token_fragment | 1 |
-| Aether | `aether:valkyrie_queen` | Valkyrie Queen | T2 | structure-locked + scripted | `silver_dungeon` (Aether), requires `aether:revoker` interaction | magehunter @ 30%, `simplyswords:caelestis`, t2_token_fragment | 2 |
-| Aether | `aether:sun_spirit` | Sun Spirit | T2 | structure-locked + scripted | `gold_dungeon` (Aether), requires summon ritual on Sun Altar | `simplyswords:sunfire`, `terramity:divine_intervention` @ 10%, t2_token_fragment | 2 |
-| Meet Your Fight | `meetyourfight:bellringer` | Bellringer | T2 | summoned-by-item | overworld (anywhere using a Calling Bell) | mod-specific cosmetics, music disc | 4 |
+| Mowzie's Mobs | `mowziesmobs:frostmaw` | Frostmaw | T2 (T1 until 2026-10-16) | structure-locked | `mowziesmobs:frostmaw_spawn` — Everbright's frozen biomes (frostbitten forest and its clearing, snow-covered pines, polar highland, slushlands); Boss Compass arena in Everbright. No longer generates in new Overworld chunks (chunks already generated keep theirs) | ice_crystal, frozen_core, `mowziesmobs:naga_fang_dagger` mats, Frostmaw Heart (T2 relic, relic sink 250 essence; was 150) | 2 |
+| Meet Your Fight | `meetyourfight:bellringer` | Bellringer | T2 | summoned-by-item | overworld (anywhere using a Calling Bell) | mod-specific cosmetics, music disc, `simplyswords:storms_edge` @ 15% (since 2026-10-16) | 4 |
 | Meet Your Fight | `meetyourfight:swampjaw` | Swampjaw | T2 | summoned-by-item | swamp biome (Bog Heart) | mod-specific cosmetics | 4 |
-| Mutant Monsters | `mutantmonsters:mutant_enderman` | Mutant Enderman | T2 | scripted (Skull Spirit on Enderman) | The End or Endermen-spawning areas | mutant ender, endersoul fragment | 4 |
+| Mutant Monsters | `mutantmonsters:mutant_enderman` | Mutant Enderman | T2 | scripted (Skull Spirit on Enderman) | The End or Endermen-spawning areas | mutant ender, endersoul fragment, `simplyswords:slumbering_lichblade` @ 15% (since 2026-10-16) | 4 |
 | Majestic Menaces | `majestic_menaces:teikoku_senshi` (`crazybossfights:teikoku_senshi`) | Teikoku Senshi | T2-T3[^teikoku] | summoned-by-item | Cherry biome (per `master-appendix.md §C.12`); summon item required | mod-specific drops | 4 |
 | Ars Nouveau | `ars_nouveau:wilden_boss` | Wilden Chimera | T2-T3 | summoned-by-altar | Ritual Brazier with Wilden Spike + Wilden Horn + Wilden Wing augments | wilden_tribute, source gem material | 3 |
 | Ultris | `ultris_mr:corrupted_enderman` | Corrupted Enderman | T2 | summoned-by-item | Overworld structure (Ultris specific) | void/teleport katana (Simply Swords TBD) | 3 |
 | Ultris | `ultris_mr:giant` | Giant | T2 | scripted | summoned via Strength Potion thrown at a Zombie | Giant Stompers | 4 |
 | Ultris | `ultris_mr:phantom_swarm` | Phantom Swarm | T2 | scripted | Overworld night event (after summoning lone phantom in End → setting it on fire) | swarm-specific drops | 4 |
 
-**T2 subtotal:** 23 entries (8 Twilight + 4 Blue Skies + 3 Aether + 2 Meet Your Fight + 1 Mutant Enderman + 1 Majestic Menaces + 1 Ars Nouveau + 3 Ultris).
+**T2 subtotal:** 21 entries (8 Twilight + 4 Blue Skies + 1 Mowzie's Mobs (Frostmaw, in Everbright since 2026-10-16) + 2 Meet Your Fight + 1 Mutant Enderman + 1 Majestic Menaces + 1 Ars Nouveau + 3 Ultris). The 3 Aether bosses moved to T4 on 2026-10-16.
 
 ---
 
@@ -172,7 +169,7 @@
 
 ---
 
-## T4 — Endgame (Deep Aether / End / Ad Astra)
+## T4 — Endgame (the Aether incl. Deep Aether's biomes / End / Ad Astra)
 
 | Mod | Entity ID | Display Name | Tier | Spawn Mechanism | Spawn Location | Notable Drops | Discovery Pain |
 |-----|-----------|--------------|:---:|------------------|----------------|---------------|:--------------:|
@@ -181,7 +178,10 @@
 | L_Ender's Cataclysm | `cataclysm:ancient_remnant` | Ancient Remnant | T4 | summoned-by-altar | `cursed_pyramid` deep chamber + Maledictus Eye | rare_ink, blood_rune, `simplyswords:awakened_lichblade` (Voidheart Blade base), `terramity:kamehameha` @ 5%, Mahou reagents | 3 |
 | Vanilla | `minecraft:ender_dragon` | Ender Dragon | T4 | dimensional-arrival | The End — main island | dragon egg, advancement chain, legendary_ink, `terramity:planet_buster` @ 15%, antiprism @ 10%, dragon_band @ 12%, Mahou attuned_diamond | 1 |
 | Botania | `botania:doppleganger` | Guardian of Gaia | T4 | summoned-by-altar | player builds Gaia ritual + uses Terrasteel Sword | gaia_ingot, gaia_block, dice_of_fate | 2 |
-| Deep Aether | `deep_aether:eots_controller` | Eye of the Storm | T4 | structure-locked | `deep_aether:brass_dungeon` (Deep Aether dimension) | t4 sky-end drops, `simplyswords:flamewind` @ 15% | 2 |
+| Aether | `aether:slider` | Slider | T4 (T2 until 2026-10-16) | structure-locked | `bronze_dungeon` (Aether dimension, bronze biome) | bronze_dungeon_key, carved_stone, `simplyswords:thunderbrand`, `too_many_bows:scatter_bow`, advanced_reforging_token @ 60%, epic_ink, lightning_upgrade_orb, 1-2 Rift Shards + Void Fragment, 2 Artifact Piece Pouches (+ small awakening-artifact chance), `terramity:olympus` @ 5%, tier-4 first-kill token | 1 |
+| Aether | `aether:valkyrie_queen` | Valkyrie Queen | T4 (T2 until 2026-10-16) | structure-locked + scripted | `silver_dungeon` (Aether), requires `aether:revoker` interaction | magehunter @ 30%, `simplyswords:caelestis`, `too_many_bows:wind_bow`, `too_many_bows:radiance`, 1-2 Rift Shards + Void Fragment, tier-4 first-kill token | 2 |
+| Aether | `aether:sun_spirit` | Sun Spirit | T4 (T2 until 2026-10-16) | structure-locked + scripted | `gold_dungeon` (Aether), requires summon ritual on Sun Altar | `simplyswords:sunfire`, `too_many_bows:aethers_call`, legendary_ink, fire + holy upgrade orbs, Sunfeather Charm (T4 relic), 1-2 Rift Shards + Void Fragment, `terramity:divine_intervention` @ 10%, tier-4 first-kill token | 2 |
+| Deep Aether | `deep_aether:eots_controller` | Eye of the Storm | T4 | structure-locked | `deep_aether:brass_dungeon` (Deep Aether biomes, inside the Aether dimension) | t4 sky-end drops, `simplyswords:flamewind` @ 15% | 2 |
 | Alex's Mobs | `alexsmobs:void_worm` | Void Worm | T4 | summoned-by-item | The End — toss a Mysterious Worm into the void | mysterious_worm essence, void-themed drops, legendary_ink | 4 |
 | Alex's Mobs | `alexsmobs:cachalot_whale` | Cachalot Whale (white variant) | T4 | biome-conditional-random | lukewarm/cold/deep oceans (white variant is rare-spawn) | cachalot whale tooth, leg/uncommon ink | 5 |
 | Mutant Monsters | `mutantmonsters:mutant_enderman` | Mutant Enderman | T4[^mutender] | scripted (Skull Spirit on Enderman) | End / overworld endermen | endersoul fragment, mutant items | 4 |
@@ -198,7 +198,7 @@
 
 > **Removed phantoms (2026-06-01 #47 sweep).** `cataclysm:void_blossom`[^void_blossom] (the entity belongs to the absent `bosses_of_mass_destruction`, not Cataclysm) and `lu_more_bosses_and_mobs:end_dwellee`[^lmore] (LuMoreBossesAndMobs is not installed) were dropped from the T4 table. The footnotes are retained for the record.
 
-**T4 subtotal:** 15 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris; 1 Progressive Bosses: the optional Ultimate Wither). The Ender Dragon is the **pack finale** — reached via the Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender), its kill unlocks all post-game + Ad Astra. (Lucifer, the T3→T4 combat capstone, is listed under T3.)
+**T4 subtotal:** 18 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 3 Aether (from T2, 2026-10-16); 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris; 1 Progressive Bosses: the optional Ultimate Wither). T4 has no boss rush. The Ender Dragon is the **pack finale** — reached today with Eyes of Ender (staged at T4; a planned **End Compass → End Bastion**, the compass crafted from the Aether's materials, would replace them), its kill unlocks all post-game + Ad Astra. (Lucifer, the T3→T4 combat capstone, is listed under T3.)
 
 ---
 
@@ -216,8 +216,9 @@
 ## Summary
 
 > **Not every boss in this catalog counts toward the boss rush (2026-10-12).** The boss rush credits a kill by the
-> boss's entity type, and its rosters now hold only bosses that exist as entity types in the current pack: 11 in
-> Tier 1, 20 in Tier 2, 43 in Tier 3. Left out until they can be recognised: the Brutal Bosses champions and the
+> boss's entity type, and its rosters now hold only bosses that exist as entity types in the current pack: 10 in
+> Tier 1, 18 in Tier 2, 43 in Tier 3 (since 2026-10-16, when Frostmaw moved from Tier 1 to Tier 2 and the Aether's
+> three dungeon bosses from Tier 2 to Tier 4, which has no boss rush; before: 11 / 20 / 43). Left out until they can be recognised: the Brutal Bosses champions and the
 > Ultris bosses (those mods add no entity types of their own), the Marium's Soulslike Weaponry bosses (the mod is not
 > in the pack at the moment), the Battle Towers guardian and the two Ultimate Bosses, plus `cataclysm:void_blossom`,
 > `undergarden:masticator` and `mutantmonsters:mutant_zombie_villager`. Teikoku Senshi is
@@ -229,10 +230,10 @@
 
 | Tier | Boss count | Of which Discovery Pain ≥4 |
 |------|-----------:|---------------------------:|
-| T1 | 27 | 11 (mostly biome-random brutal/mutant variants) |
-| T2 | 23 | 9 |
+| T1 | 26 | 11 (mostly biome-random brutal/mutant variants) |
+| T2 | 21 | 9 |
 | T3 | 49 | 17 |
-| T4 | 14 | 9 |
+| T4 | 17 | 9 |
 | **Total** | **113** | **46** |
 
 About **41% of progression bosses score Discovery Pain ≥4**, meaning a player without an external wiki has no reliable way to find them in-game. This is the compass system's core value proposition.

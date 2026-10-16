@@ -114,9 +114,9 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 | Tier | Identity | "Complete experience" composition | Player feel |
 |------|----------|-----------------------------------|-------------|
 | **T1** — Bronze Age Explorer | Overworld + Botania starter chain + Create kinetics + early ISS/Ars magic. Iron / copper / brass. (Post-alpha: Blue Skies as alt T1 dimension; see [Roadmap](../roadmap/planned.md).) | Overworld worldgen depth, Botania mana entry, Create early automation, starter spell scrolls, first village trades, Tetra modular weapons / wands / books, Apotheosis affix loop (common-rare). | *"I'm exploring and learning. Magic feels possible. Tech feels achievable."* |
-| **T2** — Enchanted Adventurer | Twilight Forest + Aether + Blue Skies (until T1 move) — three dimensional alt-paths. First mechanized tech via Thermal Series. New combat addons: Simply Swords uniques, Apotheosis-tier elite mobs, themed boss drops. | Three dimensions with distinct progression curves, first dimensional bosses (Naga / Hydra / Lich / Sun Spirit / etc.), Thermal Series mechanized intro (steam dynamos / pulverizers / induction smelters), Ars Nouveau source infrastructure, Manasteel + Steel + dimension-themed metals. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
+| **T2** — Enchanted Adventurer | Twilight Forest + Blue Skies' Everbright and Everdawn (until T1 move) — three dimensional alt-paths. First mechanized tech via Thermal Series. New combat addons: Simply Swords uniques, Apotheosis-tier elite mobs, themed boss drops. | Three dimensions with distinct progression curves, first dimensional bosses (Naga / Hydra / Lich / Frostmaw / etc.), Thermal Series mechanized intro (steam dynamos / pulverizers / induction smelters), Ars Nouveau source infrastructure, Manasteel + Steel + dimension-themed metals. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
 | **T3** — Empowered Slayer | Undergarden + Deeper Darker + Nether + Abyss. **The Mekanism tier** — most of the Mekanism progression chain (basic-to-intermediate factories, gas pipelines, fission/fusion prep). Diamond access. F&A Hephaestus Forge. Occultism spirit bindings. | Four mid-tier dimensions, Mekanism factories + Refined Storage networks, Terrasteel / Elementium / Enderium, Cataclysm boss line, Diamond/Netherite material chain unlocks, the affix Mythic ceiling. | *"I'm powerful. I'm scaling. I have a factory or a mage-lab or a death-set."* |
-| **T4** — God-Killer | Deep Aether + the End + Ad Astra planets. **Full package** — Mekanism advanced (MekaSuit, fission, antimatter), Mahou Tsukai, RFTools Dimensions, Ascension cycles, Rifts. | Endgame dimensions (each with its own boss + chase items), MekaSuit Mk2 + Mahou Tsukai + Ascension loops, Gaia / Aethersteel / Primordial Essence, Mythic Forge, Ancient affix ceiling. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
+| **T4** — God-Killer | The Aether (Deep Aether's biomes included) + the End + Ad Astra planets. **Full package** — Mekanism advanced (MekaSuit, fission, antimatter), Mahou Tsukai, RFTools Dimensions, Ascension cycles, Rifts. | Endgame dimensions (each with its own boss + chase items), MekaSuit Mk2 + Mahou Tsukai + Ascension loops, Gaia / Aethersteel / Primordial Essence, Mythic Forge, Ancient affix ceiling. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
 
 → Per-tier material lists and mod placements: [Appendix §A](master-appendix.md#a-tier-material-reference) and [§F](master-appendix.md#f-mod-roster-by-tier).
 
@@ -125,7 +125,7 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 Tier gating is enforced through **AStages** (per-player tier flags), **KubeJS** event hooks, and a small set of datapack overrides (`icraft_*_overrides`). In concrete terms:
 
 - **Items** — tier-inappropriate items cannot be used (held, equipped, or consumed) until the stage is unlocked. A T2 player who finds an Awakening artifact via creative gift sees it inert until they reach T4.
-- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies, Aether) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether) at T3; T4 dimensions (Deep Aether, End, Ad Astra planets) at T4.
+- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies' Everbright and Everdawn) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether) at T3; T4 dimensions (the Aether, End, Ad Astra planets) at T4.
 - **Recipes** — tier-gated crafting. Workbenches, advanced materials, and boss-tier crafting stations check the player's stage.
 - **Ores** — visually replaced (with a vanilla equivalent) until the appropriate tier. The player sees stone instead of diamond ore until T3; holystone instead of aether_debris until T4.
 
@@ -167,12 +167,12 @@ Advance a tier by hitting **either** its **token threshold** *or* its **boss-rus
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
-| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T1 → T2 | **500** | 80% of T1 bosses (8 of 10) |
+| T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
 | T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (the pack finale; unlocks all post-game / Ad Astra) |
 
-There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md); minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12; `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed.
+There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md); minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2 and the Aether's three dungeon bosses to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed.
 
 ### The four lanes
 
@@ -223,7 +223,7 @@ Both mechanisms preserve the gate (a player cannot fully outfit themselves in ne
 
 **Lucifer is the *combat* capstone of T3 → T4** — the final T3 boss in the 100% boss-rush clear, and the source of a unique **Lucifer's Token**. Non-combat lanes skip him entirely: banking the 2000-token threshold via Engineering or Magic reaches T4 with no fight. So at T3 → T4 only, a truly combat-averse player has exactly one door — a non-combat lane. A deliberate endgame pinch-point. See Part X.
 
-**The End is post-Deep-Aether.** Unlocking the End uses the *vanilla* process (stronghold + End Portal frames) with one change: the **Eye of Ender is replaced by an "End Compass"**, crafted from **Deep Aether materials** (a T4 dimension), which directs the player to an **"End Bastion."** You cannot target the portal until you have worked T4's first dimension. **Defeating the Ender Dragon is the pack finale** (T4 is terminal — no further token gate), unlocking all post-game content and the Ad Astra space tier. See Part IV + Part X.
+**The End is reached with Eyes of Ender today.** Unlocking the End uses the *vanilla* process (stronghold + End Portal frames), with the Eyes of Ender staged at T4. **Planned (not built yet):** the **Eye of Ender is to be replaced by an "End Compass"**, crafted from **the Aether's materials** (a T4 dimension), which would direct the player to an **"End Bastion"**, so that the portal could not be targeted until the player has worked the Aether. **Defeating the Ender Dragon is the pack finale** (T4 is terminal — no further token gate), unlocking all post-game content and the Ad Astra space tier. See Part IV + Part X.
 
 ---
 
@@ -236,7 +236,7 @@ Two design choices distinguish IridescentCraft from base Minecraft:
 - The **Nether is T3**, not T1/T2.
 - The **End is T4**, not the late-game finale of any tier.
 
-Twilight Forest, Blue Skies, and the Aether occupy the T2 band as "first dimensional" content. Deep Aether and the Ad Astra planets are T4 endgame.
+Twilight Forest and Blue Skies (Everbright and Everdawn) occupy the T2 band as "first dimensional" content. The Aether (Deep Aether's biomes generate inside it) and the Ad Astra planets are T4 endgame, alongside the End.
 
 ### Dimension philosophy
 
@@ -246,13 +246,13 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 |-----------|:---:|-----------|-------------------------|
 | Twilight Forest | T2 | 8-step encounter ladder (Naga → Lich → Hydra → Ur-Ghast → Knight Phantom → Snow Queen → Minoshroom → Alpha Yeti) | Canopy ambushes, dense fog, gentlest first-dimension experience |
 | Blue Skies | T2 | Summoner / Alchemist / Starlit Crusher / Arachnarch | Everbright/Everdawn duality, elemental damage that bypasses armor |
-| The Aether | T2 | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin-air, scarce holystone, flight rewarded |
 | Undergarden | T3 | Forgotten Guardian / Forgotten / Rotbeast | Hostile underground biome, attrition focus |
 | Deeper Darker | T3 | Sculk-themed | Oppressive darkness, stealth-required |
 | The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | Majrusz Master-stage scaling; Wither Skeletons function as mini-bosses |
 | The Abyss (TATOS) | T3 | Elder / Ice Knight / Nightblade / Soul Guard / The Roka / Guard | `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Oppressive darkness, corruption, fear aura, void whispers fire here via `dimension_mechanics.js`. Custom 8-ring `kubejs:ring_*` economy replaces theabyss's 30 stock rings (`abyss_boss_loot.js` + `abyss_ring_effects.js`); 7 elemental armor-set bonuses (`abyss_armor_effects.js`). |
-| Deep Aether | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). Its materials craft the **End Compass** that unlocks the End. |
-| The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached via the Deep-Aether **End Compass → End Bastion** (replaces the Eye of Ender); multi-zone scaling; Voidheart Blade Mythic Forge venue; Dragon kill → post-game + Ad Astra |
+| The Aether | T4 (T2 until 2026-10-16) | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin-air, scarce holystone, flight rewarded |
+| Deep Aether (biomes inside the Aether, no dimension of its own) | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). The planned **End Compass** is to be crafted from the Aether's materials. |
+| The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached with Eyes of Ender, staged at T4 (a planned **End Compass → End Bastion** route would replace them); multi-zone scaling; Voidheart Blade Mythic Forge venue; Dragon kill → post-game + Ad Astra |
 | Ad Astra (Moon, Mars, Mercury, Venus, Glacio) | post-game (T4 terminal) | Per-planet | Unlocked by the Ender Dragon kill; 4-tier rocket gate; Glacio is the post-T4 endgame (MekaSuit Mk2 reagent) |
 | Witch of Ink dimension *(planned origin-specific content surface; not yet a separate dimension in pack)* | T3+ (Origin-tied) | — | Origin-specific content surface |
 
@@ -260,7 +260,7 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 
 Beyond stat multipliers, each dimension has *scripted mechanics* that change how the player interacts with that space:
 
-- **Aether** — thin-air, vertigo, updrafts. Limited oxygen; gentle gravity/glide tuning; updraft columns near floating islands.
+- **Aether** (T4; Deep Aether's biomes included) — faster mobs, thin-air, vertigo, updrafts. Its mobs get Speed I, and its flyers Strength I as well; above Y 180 thin air brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player falling below Y 0 is caught once by an updraft (Slow Falling).
 - **Deeper Darker (Otherside)** — darkness empowerment + hexing. Sculk-mob night-vision/AI buffs at spawn; 15%-on-hit random debuff (slowness/weakness/mining-fatigue/blindness). Genuine Deeper-Darker flavor, fired via `dimension_mechanics.js`.
 - **The Abyss (TATOS)** — oppressive darkness, corruption, fear aura, void whispers. No held light + low light → mining-fatigue + slowness; periodic hunger ticks (corruption); Darkness near Abyss bosses (fear aura); Weakness below Y=20 (void whispers). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. (TATOS = "The Abyss: The Other Side"; installed, dim gated T3.)
 - **End** — multi-zone scaling. The dimension is divided into Outer Islands (T4 baseline), Deep End (T4-amplified), and Dragon's Domain (peak). Scaling factor doubles past a certain distance from spawn. Nine advancement overrides shape the End-progression flow.
@@ -276,7 +276,7 @@ Dimensions are gated through AStages dimension flags. A T2 player who attempts t
 
 > **Design note.** The Twilight Forest portal activator was changed from vanilla diamond to a T1 boss token. The pack's first dimension should not gate on diamond access, since diamonds are T3.
 
-> **The End's access is special.** The vanilla stronghold + End Portal process is retained, but the **Eye of Ender is replaced by an "End Compass"** crafted from **Deep Aether materials** (a T4 dimension). The compass directs the player to an **"End Bastion"** structure (reusing the `boss_compass` waystone system). Players therefore cannot even target the End portal until they have worked Deep Aether — the End is genuinely *post*-Deep-Aether. The exact Deep-Aether material bill and the End Bastion structure are build TBDs.
+> **The End's access is special (planned).** Today the vanilla stronghold + End Portal process is used as it is, with Eyes of Ender staged at T4. The plan: the **Eye of Ender is to be replaced by an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** structure (reusing the `boss_compass` waystone system). Players then could not even target the End portal until they have worked the Aether — the End would be genuinely *post*-Aether. The End Compass itself, its exact material bill and the End Bastion structure are build TBDs.
 
 ---
 
@@ -313,9 +313,9 @@ Player power scales along four axes:
 
 Each tier has a roster of bosses that serve as the difficulty climax and loot peak of that tier:
 
-- **T2 bosses** — Twilight (8) + Blue Skies (4) + Aether (3). Entry-tier challenge.
+- **T2 bosses** — Twilight (8) + Blue Skies (4) + Frostmaw (Everbright). Entry-tier challenge.
 - **T3 bosses** — Cataclysm (8) + Ignited Revenant + Wither + Stalker, capped by **Lucifer** (the T3 → T4 combat capstone). Mid-game peak.
-- **T4 bosses** — Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden. Endgame.
+- **T4 bosses** — Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + the Aether's dungeon bosses (Slider / Valkyrie Queen / Sun Spirit). Endgame.
 
 Boss kills feed the **Combat lane** of the token economy and count toward the **boss-rush %** (Part III). The Codex (Heracles-backed) tracks kills per tier: clearing 80 / 90 / 100% of a tier's roster auto-advances the tier, and individual kills also drop physical tokens into the combined pool. Clearing all T3 bosses *except* Lucifer unlocks Lucifer; banking enough T3 tokens unlocks him too. **Lucifer is the combat capstone, not a universal gate** — non-combat lanes reach T4 by banking the 2000-token threshold and never fight him (see Part X). The former internal-counter-grants-tiers model is superseded: tokens are physical and Codex-tracked.
 
@@ -343,8 +343,6 @@ Three principles guide the per-dimension design:
 
 **T2 — Blue Skies: Elemental Gauntlet.** Two dimensions (Everbright / Everdawn) with elemental themes. 30% of mob damage is converted to elemental (fire / ice) — bypasses standard armor but is mitigated by elemental resistance enchants. Periodic elemental storms buff matching-element mobs for 2 minutes. Mobs at high altitude gain a small speed bonus. Ranged mobs prioritize high ground; melee mobs try to knock players off platform edges.
 
-**T2 — The Aether: Aerial Warfare.** Vertical combat, narrow platforms, lethal falls. 40% of mobs fly or hover. Updraft zones launch entities upward. Cloud cover above Y>192 hides 10% of mobs until close range (soft ambush). Rare gravity wells halve fall damage but double knockback. Valkyrie-type mobs have parry mechanics — block frontal attacks periodically.
-
 **T3 — The Undergarden: Toxic Attrition.** The environment drains the player. 25% of mob hits apply 5-second poison (scaled with dimension multiplier). Mobs have natural damage reduction that regenerates if not hit for 5 seconds (Fungal Armor — sustained aggression rewarded). Detection range extends to 24 blocks in darkness; light sources reduce it. Standing still 10+ seconds applies Weakness I (Decay Aura — keep moving).
 
 **T3 — Deeper Darker: Horror Survival.** Stealth matters. Sprinting, breaking blocks, and fighting generate "noise" extending mob aggro radius from 24 to 8 blocks when sneaking. Mobs near sculk gain damage and vibration detection through walls. Mobs in light-level-0 gain +20% all stats; light-level-7+ lose 10%. Below Y=-32, all entities take 1 damage / 30s (Rift Pressure). Mobs do not make warning sounds — no aggro growls before attacks.
@@ -355,7 +353,9 @@ Three principles guide the per-dimension design:
 
 **T3 — The Abyss (TATOS).** Oppressive darkness mechanic — no held light + low light applies mining-fatigue + slowness; corruption ticks (periodic hunger); fear aura (Darkness within 16 blocks of Abyss bosses); void whispers (Weakness below Y=20). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. A custom `kubejs:ring_*` content surface (8 rings + 7 elemental armor sets + themed loot tables; see master-appendix §C.11) replaces theabyss's 30 stock rings. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 
-**T4 — Deep Aether: Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Celestial Events every 20 minutes give mobs a stat bonus and 50% more loot. Random wind shears push players and projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor adds stats, top floor has a mini-boss. Combo attacks (2–3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
+**T4 — The Aether: Aerial Warfare.** (T2 until 2026-10-16.) Vertical combat, narrow platforms, lethal falls. Its mobs move with Speed I, and its flyers also hit with Strength I. Thin air above Y 180 brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player who falls below Y 0 is caught once by an updraft (Slow Falling). 40% of mobs fly or hover. Cloud cover above Y>192 hides 10% of mobs until close range (soft ambush). Rare gravity wells halve fall damage but double knockback. Valkyrie-type mobs have parry mechanics — block frontal attacks periodically.
+
+**T4 — Deep Aether (its biomes, inside the Aether): Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Random wind shears push players and projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor adds stats, top floor has a mini-boss. Combo attacks (2–3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
 
 **T4 — The End: The Crucible.** Three zones with escalating mechanics, each adding to the previous:
 
@@ -528,7 +528,7 @@ The cross-mod ink economy starts here: ISS common_ink and uncommon_ink drop from
 
 ### Tier 2 — Source infrastructure and mid-tier magic
 
-**Ars Nouveau (deep).** Imbuement Chamber, Arcane Core, ritual brazier, full source-network expansion. Apprentice spell book unlocks. Spell-crafting bench gates behind T2. T2 form glyphs (aoe, underfoot) and mobility/utility effect glyphs seed into Twilight / Aether / Blue Skies chest loot.
+**Ars Nouveau (deep).** Imbuement Chamber, Arcane Core, ritual brazier, full source-network expansion. Apprentice spell book unlocks. Spell-crafting bench gates behind T2. T2 form glyphs (aoe, underfoot) and mobility/utility effect glyphs seed into Twilight / Blue Skies chest loot.
 
 **Botania.** Manasteel chain, Mana Spreader fundamentals, Runic Altar, mana diamond and mana pearl transmutation outputs.
 
@@ -643,7 +643,7 @@ Equipment is split into five sub-systems: weapons, armor, curios, modular spell 
 
 **Tetra modular** (the Tetra + `art_of_forging` + `adtetra` stack) is the primary crafted-weapon system: parts-based, customizable, scales with material tier. A T2 modular sword is a multi-part build (blade + hilt + guard) using T2 materials, honed at the workbench. T4 modular is the netherite-tier ceiling for crafted weapons. *(Older docs called this "Truly Modular"; that mod family is not in pack — the crafted-weapon role is filled by the Tetra stack. See [Appendix §F.5](master-appendix.md#f5-crosscutting--always-active).)*
 
-**Simply Swords** is the unique trophy-weapon system. **~42 named uniques, all boss-drop only.** Unique-weapon recipes are stripped. Each unique is allocated to a specific boss — Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc. ~28 are allocated; the remaining ~14 are reserved for allocation against **Ultimate Bosses + Ultris + Brutal Bosses** content (all in pack) and are currently creative-only. <!-- TODO #47/#25: reallocate the reserved uniques against BB/UB/Ultris drops in a dedicated authoring pass. NovaBosses (originally co-listed) is NOT in pack. -->
+**Simply Swords** is the unique trophy-weapon system. **~42 named uniques, all boss-drop only.** Unique-weapon recipes are stripped. Each unique is allocated to a specific boss — Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc. ~31 are allocated (Mjolnir, Storm's Edge and Slumbering Lichblade joined them on 2026-10-16 as T2 drops of the Minoshroom, the Bellringer and the Mutant Enderman); the remaining ~11 are reserved for allocation against **Ultimate Bosses + Ultris + Brutal Bosses** content (all in pack) and are currently creative-only. <!-- TODO #47/#25: reallocate the reserved uniques against BB/UB/Ultris drops in a dedicated authoring pass. NovaBosses (originally co-listed) is NOT in pack. -->
 
 > **Design intent.** The split is clean: crafted weapons are deterministic (build it from materials, get it); trophy weapons are aspirational (kill the boss, get the unique). A Mage can ignore Simply Swords entirely; a Hunter can ignore the Tetra crafted weapons entirely. Both reach T4.
 
@@ -675,9 +675,9 @@ Iron Jetpacks are ungated from T1 — early flight is intentional. Mahou Tsukai 
 | Pool | Dimensions | Combined drop rate |
 |------|-----------|------------------:|
 | T1 | Overworld | ~10% |
-| T2 | Twilight, Aether, Blue Skies, Deep Aether | ~12% |
+| T2 | Twilight, Blue Skies | ~12% |
 | T3 | Nether, Undergarden | ~14% |
-| T4 | End, Deeper Darker (Otherside) | ~16% |
+| T4 | End, Aether (Deep Aether's biomes included), Deeper Darker (Otherside) | ~16% |
 
 > **Design intent.** Players can always equip anything they find — there is no AStages restriction on curios. If a T1 player obtains an Awakening artifact via creative gift or boss tier-peek, they can equip it. Curio early access is rare enough not to break the gating, and rewards engagement.
 
@@ -711,7 +711,7 @@ Three gates structure the T3 → T4 → post-game arc:
 
 1. **Lucifer — the T3 → T4 combat capstone.** Lucifer is the final boss of the T3 boss-rush (the 100% clear) and the source of a unique **Lucifer's Token**. Clearing every other T3 boss unlocks Lucifer; banking enough T3 tokens also unlocks him. He is the *combat* capstone, **not a universal gate** — a non-combat player reaches T4 by banking the 2000-token threshold via Engineering or Magic and never fights him. So at T3 → T4 *only*, a combat-averse player has exactly one door: a non-combat lane. A deliberate endgame pinch-point (wired as Lucifer in `TIER_4_BOSSES`).
 
-2. **The End — gated behind Deep Aether.** The End uses the vanilla stronghold + End-Portal process, but the **Eye of Ender is replaced by an "End Compass"** crafted from **Deep Aether materials** (a T4 dimension). The compass directs the player to an **"End Bastion"** (reusing the `boss_compass` waystone system). You cannot target the End portal until you have worked Deep Aether — the End is genuinely *post*-Deep-Aether. *(Build TBDs: the End Bastion structure, the compass→structure mechanic, and the exact Deep-Aether material bill.)*
+2. **The End — to be gated behind the Aether (planned).** Today the End uses the vanilla stronghold + End-Portal process with Eyes of Ender, staged at T4. The plan replaces the **Eye of Ender with an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** (reusing the `boss_compass` waystone system), so the End portal could not be targeted until the player has worked the Aether — the End would be genuinely *post*-Aether. *(Build TBDs: the End Compass itself, the End Bastion structure, the compass→structure mechanic, and the exact material bill.)*
 
 3. **The Ender Dragon — the pack finale.** T4 is **terminal**: there is no further token gate. Defeating the Ender Dragon is the pack finale — it unlocks all post-game content and the **Ad Astra** space tier. (The End also uniquely uncaps its `iridescent_difficulty` curve once the Dragon dies — see Part V.) Killing the Ancient Remnant + completing the final quest chain is the "you beat the pack" trophy moment; the Dragon kill opens the door to everything after.
 
@@ -986,9 +986,9 @@ Curio, artifact, relic, and spell-book chest loot is distributed across 4 tier-b
 | Pool | Dimensions | Combined drop rate | Pool size |
 |------|-----------|------------------:|----------:|
 | T1 | Overworld | ~10% | ~19 items |
-| T2 | Twilight, Aether, Blue Skies, Deep Aether | ~12% | ~31 items |
+| T2 | Twilight, Blue Skies | ~12% | ~31 items |
 | T3 | Nether, Undergarden | ~14% | ~38 items |
-| T4 | End, Deeper Darker (Otherside) | ~16% | ~33 items |
+| T4 | End, Aether (Deep Aether's biomes included), Deeper Darker (Otherside) | ~16% | ~33 items |
 
 Per-tier rates increase modestly as the player progresses, signaling *you're getting better stuff*. Per-item rate is the combined rate divided by pool size — each individual item is roughly a 0.3–0.5% chance per chest. Rolls are independent per item.
 

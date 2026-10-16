@@ -7,9 +7,9 @@ IridescentCraft uses a 4-tier progression system gated by AStages. Tiers advance
 | Tier | Theme | Dimensions | Tech Mods | Magic Mods | Power Level |
 |------|-------|------------|-----------|------------|-------------|
 | 1 | Bronze Age Explorer | Overworld only | Create, Pretty Pipes | Botania, Iron's Spells | Learning basics |
-| 2 | Enchanted Adventurer | Twilight Forest, Blue Skies, The Aether | Thermal, IF (basic) | Ars Nouveau | Specialization |
+| 2 | Enchanted Adventurer | Twilight Forest, Blue Skies (Everbright, Everdawn) | Thermal, IF (basic) | Ars Nouveau | Specialization |
 | 3 | Empowered Slayer | Undergarden, Deeper Darker, Nether, The Abyss | IF (advanced), Mekanism (basic), RS | Occultism, Forbidden & Arcanus | Major power spike |
-| 4 | God-Killer | Deep Aether, The End | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power |
+| 4 | God-Killer | The Aether (Deep Aether's biomes included), The End | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power |
 
 ## The Token Economy (advance via threshold OR boss-rush)
 
@@ -17,8 +17,8 @@ Tier progression runs on **one combined pool of physical, tiered progression tok
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
-| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T1 → T2 | **500** | 80% of T1 bosses (8 of 10) |
+| T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
 | T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (the pack finale) |
 
@@ -31,7 +31,7 @@ Each tier is reachable by a single pure playstyle; hybrids mix freely.
 - **Exploration** — miniboss/boss first-kill + repeat-kill tokens, non-overworld dimension entry, chest/barrel finds.
 - **Combat** — boss + miniboss kills, which both feed the pool *and* count toward the boss-rush %.
 
-**Engine:** Heracles (the quest mod) does the token submission, kill-tracking, and stage-granting; the Patchouli Codex book is the documentation skin. **Lucifer** is the T3 → T4 combat capstone (non-combat lanes skip him). **The End** unlocks via a Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender). T4 is terminal — beating the **Ender Dragon** is the pack finale and opens the Ad Astra post-game.
+**Engine:** Heracles (the quest mod) does the token submission, kill-tracking, and stage-granting; the Patchouli Codex book is the documentation skin. **Lucifer** is the T3 → T4 combat capstone (non-combat lanes skip him). **The End** is reached with Eyes of Ender (staged at T4); an **End Compass → End Bastion** route, the compass crafted from the Aether's materials, is planned to replace them. T4 is terminal — beating the **Ender Dragon** is the pack finale and opens the Ad Astra post-game.
 
 → Full conversion tables + caps: [master.md Part III](../design/master.md#part-iii--progression-the-token-economy).
 
@@ -44,13 +44,13 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 | Tier | Dimensions | Start % | Cap % | Cap Hours | Elite Spawn % |
 |------|------------|---------|-------|-----------|------------------|
 | 1 | Overworld | 150% | 300% | 100h | 5% |
-| 2 | Twilight Forest, Blue Skies (Everbright/Everdawn), The Aether (Deep Aether's biomes included) | 200% | 350% | 100h | 7-8% |
+| 2 | Twilight Forest, Blue Skies (Everbright/Everdawn) | 200% | 350% | 100h | 7-8% |
 | 3 | The Undergarden, Deeper and Darker (Otherside), The Nether, The Abyss (and its Frost World) | 300% | 450% | 100h | 10-12% |
-| 4 | The End | 600% | 1000% | 200h | 13-15% |
+| 4 | The End, The Aether (Deep Aether's biomes included) | 600% | 1000% | 200h | 13-15% |
 
 After Ender Dragon is killed in-world: **The End uncaps** — multiplier extrapolates past 1000% indefinitely.
 
-**Deep Aether scales with the Aether.** Deep Aether is not a separate dimension — its biomes generate inside the Aether — so its ordinary mobs follow the Aether's Tier 2 curve and share its timer. Its bosses, materials and loot are still Tier 4 content. Any dimension not named in the table uses the Tier 1 curve.
+**Deep Aether scales with the Aether.** Deep Aether is not a separate dimension — its biomes generate inside the Aether — so its ordinary mobs follow the Aether's curve (Tier 4 since 2026-10-16, Tier 2 before) and share its timer. The Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites) are scaled by the curve as well. Any dimension not named in the table uses the Tier 1 curve.
 
 All values configurable via `config/iridescent_difficulty-common.toml` (per-tier `startPct`/`capPct`/`capHours`, per-dimension tier mapping, per-dimension `uncapAfterEnderDragon` flag).
 

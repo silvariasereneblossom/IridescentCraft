@@ -17,11 +17,10 @@ Keep inventory on death (no item loss). Penalty is durability-based.
 | Overworld | 1.0x | 10% |
 | Twilight Forest | 1.5x | 12% |
 | Blue Skies | 2.0x | 14% |
-| The Aether | 2.5x | 15% |
 | The Undergarden | 3.0x | 17% |
 | Deeper and Darker | 3.5x | 18% |
 | The Nether | 4.0x | 20% |
-| Deep Aether | 5.0x | 22% |
+| The Aether (Deep Aether's biomes included) | 6.0x-10.0x | 22% |
 | The End | 6.0x-10.0x | 25% |
 
 ### Soulbound Enchantment
@@ -43,13 +42,12 @@ Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 Each dimension has unique combat mechanics beyond stat scaling:
 - **Twilight Forest:** Canopy Ambush (invisibility), Pack Tactics, Twilight Corruption
 - **Blue Skies:** Elemental damage (30% bypasses armor), Elemental Storms
-- **The Aether:** Thin Air (slow regen above cloud level), Vertigo (screen effects near edges), Updrafts (launch zones near cliffs)
 - **Undergarden:** Virulent Spores (poison), Fungal Armor (regen), Decay Aura
 - **Deeper and Darker:** Acoustic Aggro, Sculk Resonance, Darkness Empowerment
 - **The Nether:** Infernal Rage, Soulfire Burns (30% bypasses armor), Blaze Swarm
-- **Deep Aether:** Celestial Empowerment, Wind Shear, Radiant Shield
+- **The Aether (Tier 4; Deep Aether's biomes included):** its mobs move with Speed I, and its flyers also hit with Strength I. Thin Air: above Y 180 you get Weakness unless your armor has Aether Acclimation. Vertigo: sprinting above Y 200 sometimes brings nausea. Updraft: falling below Y 0, you are given Slow Falling once.
 - **The Abyss (TATOS):** Oppressive Darkness (no held light + low light → mining-fatigue + slowness), Corruption (periodic hunger ticks), Fear Aura (Darkness within 16 blocks of Abyss bosses), Void Whispers (Weakness below Y=20). These fire in `theabyss:the_abyss` via `dimension_mechanics.js`. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
-- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached via the Deep-Aether End Compass → End Bastion (replaces the Eye of Ender). 9 advancement overrides, 5 End Apotheosis affixes.
+- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached with Eyes of Ender (staged at T4); an End Compass → End Bastion route, the compass crafted from the Aether's materials, is planned to replace them. 9 advancement overrides, 5 End Apotheosis affixes.
 
 ### Armor damage reduction
 
@@ -147,9 +145,9 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 |------|-----------|----------------------|-------|
 | Village | Village chests | 8% | Curated village artifact pool |
 | T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
-| T2 | Twilight Forest, Aether, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
+| T2 | Twilight Forest, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
 | T3 | Nether, Undergarden | 14% | Powerful offense artifacts + celestial items |
-| T4 | End, Deeper Darker (Otherside) | 16% | Endgame artifacts + relics items |
+| T4 | End, Aether, Deeper Darker (Otherside) | 16% | Endgame artifacts + relics items |
 
 **Per-structure theming (2026-05-17).** Marquee structures (high-profile landmarks per [master.md §XIII](../design/master.md#part-xiii--loot-economy)) receive a themed pool layered on top of a reduced dimensional baseline — 70% themed / 30% baseline inside the tier's combined rate. 14 marquees across the 4 tiers. Roster, theme catalog, and per-structure item lists: [master-appendix.md §N](../design/master-appendix.md#n-marquee-structures). ISS spellbooks capped at 2% per chest (starter kit handles onboarding). ISS scrolls remain uncapped.
 
@@ -159,9 +157,9 @@ Ars Nouveau spell books are blank caster tools that require glyphs inscribed at 
 | Tier | Dimensions | Glyphs | Combined Rate |
 |------|-----------|--------|---------------|
 | T1 | Overworld | 18 (Forms: projectile/touch/self + basic effects/augments) | ~12% |
-| T2 | TF, Aether, Blue Skies | 25 (aoe/underfoot + mobility/utility effects) | ~14% |
+| T2 | TF, Blue Skies | 25 (aoe/underfoot + mobility/utility effects) | ~14% |
 | T3 | Nether, Undergarden | 22 (linger + advanced effects: lightning, wall, fangs, blink, etc.) | ~15% |
-| T4 | End, Deeper Darker (Otherside) | 12 (summons, rune, wither, dispel, randomize) | ~18% |
+| T4 | End, Aether, Deeper Darker (Otherside) | 12 (summons, rune, wither, dispel, randomize) | ~18% |
 
 ### Custom Patched JARs
 The following mods ship as custom bytecode-patched JARs (added to custom JAR allowlist in server scripts):
@@ -214,18 +212,18 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 |-----------|--------|------|
 | Fragment Core | Any hostile mob | 4% drop |
 | T1 Relics (movement, utility) | Overworld / Twilight Forest chests | ~0.4% per chest |
-| T2 Relics (combat, immunity) | Blue Skies / Aether chests | ~0.6% per chest |
+| T2 Relics (combat, immunity) | Blue Skies chests | ~0.6% per chest |
 | T3 Relics (fire, decay) | Nether / Undergarden chests | ~0.8% per chest |
-| T4 Relics (endgame passives) | End / Deeper Darker (Otherside) chests | ~1.0% per chest |
+| T4 Relics (endgame passives) | End / Aether / Deeper Darker (Otherside) chests | ~1.0% per chest |
 | Artifact Piece Pouch | T2+ boss kills | 1× from T2 bosses, 2× from T4 bosses |
 | Normal artifacts | Pouch open | 14-way weighted pool, one per pouch |
 | Awakening artifacts | T4 boss direct drops only | 0.7% per awakening × 14 = ~9.3% combined per T4 boss |
 
 ### T2 Boss Sources
-Naga, Lich, Hydra (Twilight Forest), Ignis (Cataclysm), Slider (Aether), Summoner (Blue Skies).
+Naga, Lich, Hydra (Twilight Forest), Ignis (Cataclysm), Summoner (Blue Skies).
 
 ### T4 Boss Sources
-Ender Dragon, Ender Guardian, Harbinger (Cataclysm), Shattered (Deeper Darker).
+Ender Dragon, Ender Guardian, Harbinger (Cataclysm), Shattered (Deeper Darker), Slider (Aether).
 
 ### AStages Tier Gating
 - Normal artifacts + artifact_piece_pouch → T2 (picked up but not equipped until T2 unlock)
@@ -305,11 +303,11 @@ Dragon Exploration Gate: players must explore End islands and complete objective
 | Tier | Start % | Cap % | Cap Hours |
 |------|---------|-------|-----------|
 | T1 (Overworld) | 150% | 300% | 100 |
-| T2 (Twilight / Blue Skies / Aether, incl. Deep Aether's biomes) | 200% | 350% | 100 |
+| T2 (Twilight / Blue Skies) | 200% | 350% | 100 |
 | T3 (Undergarden / Deeper Darker / Nether / Abyss + Frost World) | 300% | 450% | 100 |
-| T4 (End) | 600% | 1000% | 200 |
+| T4 (End / Aether, incl. Deep Aether's biomes) | 600% | 1000% | 200 |
 
-- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped, and bosses on the configurable exclusion list (a boss that is not listed is scaled like any other hostile mob).
+- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped (except a short list that is scaled anyway, which since 2026-10-16 includes the Aether's own hostile creatures: swets, whirlwinds, the aechor plant, cockatrices, zephyrs, baby zephyrs and venomites), and bosses on the configurable exclusion list (a boss that is not listed is scaled like any other hostile mob).
 - **Idle gating:** the per-dimension timer ticks at the `active / total` player ratio in that dimension (idle = no movement/combat for N minutes, or within the spawn radius).
 - **Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; not the Wither, the Ender Dragon, the Warden or the Elder Guardian), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
 

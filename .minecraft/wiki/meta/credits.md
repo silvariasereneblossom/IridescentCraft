@@ -74,7 +74,7 @@ A non-exhaustive list of mods we lean on heavily for core systems. The pack does
 | Sophisticated Backpacks | P3pp3rF1y | Bag system |
 | When Dungeons Arise | foxyno | Structures (T1-T2 dungeons) |
 | Twilight Forest | Benimatic | T2 dimension |
-| Aether | Modding Legacy + Ascending | T2 dimension |
+| Aether | Modding Legacy + Ascending | T4 dimension |
 | Blue Skies | TaleOfTheChicken | T2 dimension |
 | Cataclysm | shar_3303 | T3-T4 ultra-bosses |
 | Mekanism | aidancbrady | T3 tech tier |

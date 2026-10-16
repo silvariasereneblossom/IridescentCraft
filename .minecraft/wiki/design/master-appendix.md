@@ -54,7 +54,7 @@ What is in / out of the player's accessible material set per tier. Cross-tier me
 - Ars Nouveau novice spell book + Scribes Table (T1 entry per 2026-04-24 design correction).
 - Tetra basic-tier modular workbench access.
 
-### A.2 Tier 2 (Twilight / Aether / Blue Skies dimensional access)
+### A.2 Tier 2 (Twilight / Blue Skies dimensional access)
 
 **New available (gated by tier_2 stage)**
 - Steel (Thermal): the workhorse T2 alloy.
@@ -62,7 +62,6 @@ What is in / out of the player's accessible material set per tier. Cross-tier me
 - Mana diamond + Mana pearl (Botania): T2 transmutation outputs. (Diamond ore itself stays T3-gated.)
 - Botania T2 workstations: Runic Altar, Spreader fundamentals, basic Mana Pool tier.
 - Twilight Forest dimensional metals: Steeleaf, Ironwood, Fiery, Knightmetal, Carminite (post-Lich progression). Full TF tool/armor sets in their respective metals.
-- Aether: Skyroot + Holystone + Zanite + Gravitite (mid-Aether materials).
 - Blue Skies: Aquite, Diopside / Charoite / Horizonite raw materials (the *vanilla* tools/armor crafted from these are recipe-stripped — see Section B; players use Tetra integration for proper T2 stats).
 - Apotheosis T2 workstations: Simple Reforging Table, Gem Cutting Table, Sigil of Socketing.
 - Ars Nouveau T2: Apprentice spell book, Enchanting Apparatus, Arcane Core, Imbuement Chamber (for non-shortcut recipes — diamond/netherite removed in Section B).
@@ -84,13 +83,13 @@ What is in / out of the player's accessible material set per tier. Cross-tier me
 - Nether materials: ancient debris (T3 gates Nether access).
 - Cataclysm: Witherite, Enderite, Ignitium, Cursium ingots (boss-drop chain — see Section C).
 - Apotheosis T3: Reforging Table, Sigil of Rebirth, Sigil of Withdrawal.
-- Aether: Valkyrie/Slider/Sun Spirit boss-tier materials.
 - Modular Spell Books T3: Diamond + Archmage variants.
 - ISS T3: Rare Ink, Diamond Spell Book, T3 Runes (fire/ice/blood/ender/lightning), upgrade orbs.
 
-### A.4 Tier 4 (Deep Aether / End / Ad Astra)
+### A.4 Tier 4 (The Aether incl. Deep Aether's biomes / End / Ad Astra)
 
 **New available (gated by tier_4 stage)**
+- Aether (T4 since 2026-10-16; T2 before): Skyroot + Holystone + Zanite + Gravitite, and the Valkyrie/Slider/Sun Spirit boss-tier materials.
 - Netherite (processable now — Ancient Debris drops + smithing template).
 - Gaia Ingot + Gaia Block (Botania endgame).
 - Aethersteel chain (Deep Aether T4 metal): scrap, ingot, nugget, block, full tool set + armor + smithing template + aether_debris ore + aetherslate ore.
@@ -124,12 +123,12 @@ The token economy ([master.md Part III](master.md#part-iii--progression-the-toke
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (9 of 11) |
-| T2 → T3 | **1000** | 90% of T2 bosses (18 of 20) |
+| T1 → T2 | **500** | 80% of T1 bosses (8 of 10) |
+| T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
 | T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
 
-Boss-rush denominator = the **per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12; `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
+Boss-rush denominator = the **per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2 and the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
 
 #### A.7.1 Engineering lane (material → token)
 
@@ -239,7 +238,7 @@ Draws **only** from the generation/cultivation/ritual side (mana/source farms, i
 #### A.7.4 T3 → T4 Lucifer + the End
 
 - **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone.** Non-combat lanes skip him (bank the 2000-token threshold). Both combat routes require him: he is the final T3 boss in the 100% boss-rush, and his unique **Lucifer's Token** is the "pure-except-for-the-fight" submission. (Lucifer is in `TIER_4_BOSSES`; clearing all other T3 bosses unlocks him.)
-- **The End** uses the vanilla stronghold + End-Portal process, but the **Eye of Ender is replaced by an "End Compass"** crafted from **Deep Aether materials**, which directs the player to an **"End Bastion"** (reuses the `boss_compass` waystone system). The End is therefore post-Deep-Aether.
+- **The End** uses the vanilla stronghold + End-Portal process with Eyes of Ender (staged at T4). **Planned, not built:** the **Eye of Ender is to be replaced by an "End Compass"** crafted from **the Aether's materials**, which would direct the player to an **"End Bastion"** (reusing the `boss_compass` waystone system), making the End post-Aether.
 - **T4 is terminal** — no token gate. The **Ender Dragon** is the pack finale (beat it → win + unlock the Ad Astra post-game).
 
 > **Supply-vs-threshold pacing (rough).** Threshold is always *reachable* (farmable boss repeat-kills guarantee closure). "Do-each-thing-once" supply (~550 / ~900 / ~1450) grows slower (~1.6×/tier) than the threshold curve (2×/tier), so upper tiers — esp. T3 → T4 — may lean on grind. Sensitive to the open Exploration values + the rich T3 Mekanism economy (likely lowballed). Needs a real model to settle.
@@ -420,7 +419,7 @@ Plus mob-drop overrides for `aether:cockatrice` (lightning_rod 25%), `twilight:s
 | Ur-Ghast | T2-T3 | t2_token_fragment + t3_token_fragment + ur_ghast_tear | whisperwind @ 20% |
 | Knight Phantom | T2 | t2_token_fragment | enigma @ 12% |
 | Snow Queen | T2 | t2_token_fragment | frostfall @ 15% |
-| Minoshroom | T2 | t2_token_fragment @ 35% | — |
+| Minoshroom | T2 | t2_token_fragment @ 35% | mjolnir @ 15% (since 2026-10-16) |
 | Alpha Yeti | T2 | t2_token_fragment @ 35% | icewhisper @ 10% |
 
 ### C.4 Blue Skies bosses (`loot/blue_skies_drops.js`)
@@ -436,11 +435,13 @@ All four BS bosses also drop `blue_skies:runic_arc` @ 5% (recipe-stripped per Se
 
 ### C.5 Aether bosses (`loot/loot_overhaul.js` Section 2 + `loot/dimensional_boss_drops.js`)
 
+Tier 4 since 2026-10-16 (Tier 2 before): their first-kill tokens are the tier-4 ones (tier-3 tokens, as for the End's bosses), and each of the three also drops 1-2 Rift Shards and a Void Fragment.
+
 | Boss | Tier | Drops |
 |------|-----:|-------|
-| Slider | T2 | t2_token_fragment + basic_reforging_token + waystone_core + simplyswords:thunderbrand |
-| Valkyrie Queen | T2 | t2_token_fragment + simplyswords:caelestis |
-| Sun Spirit | T2 | t2_token_fragment + simplyswords:sunfire |
+| Slider | T4 | advanced_reforging_token @ 60% (was basic) + waystone_core + epic_ink (was uncommon) + lightning_upgrade_orb (was the lightning rune) + simplyswords:thunderbrand + too_many_bows:scatter_bow + Artifact Piece Pouch on the T4 rule (2 pouches + a small chance at an awakening artifact) |
+| Valkyrie Queen | T4 | simplyswords:caelestis + too_many_bows:wind_bow + too_many_bows:radiance |
+| Sun Spirit | T4 | legendary_ink (was rare) + fire and holy upgrade orbs (were the runes) + simplyswords:sunfire + too_many_bows:aethers_call + Sunfeather Charm (now a T4 relic) |
 
 Deep Aether: `deep_aether:eots_controller` (T4 sky-end) drops `simplyswords:flamewind` @ 15%.
 
@@ -477,8 +478,8 @@ Cross-mod injection of Mahou reagents:
 - `unholy_lance` → Dead King (T4 ISS undead) @ 10%
 - `blasphemic_rapture` → Ignis (T3 fire) @ 10%
 - `davy_jones` → The Leviathan (T3-T4 ocean) @ 10%
-- `olympus` → Aether Slider (T2 storm) @ 5%
-- `divine_intervention` → Aether Sun Spirit (T2 holy) @ 10%
+- `olympus` → Aether Slider (T4 storm; T2 until 2026-10-16) @ 5%
+- `divine_intervention` → Aether Sun Spirit (T4 holy; T2 until 2026-10-16) @ 10%
 - `planet_buster` → Ender Dragon (T4 cosmic) @ 15%
 - `kamehameha` → Ancient Remnant (T4 placeholder until Mythic Forge recipe) @ 5%
 
@@ -607,7 +608,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 **Mutant Monsters.** Variants of vanilla zombie/skeleton/creeper/enderman with enhanced AI and drops. Block-break suppression in `mutant_monsters_no_griefing.js` — mutant zombie pillar-up and mutant creeper charged explosion bypass mobGriefing=false defaults. Wired via `dimensional_boss_drops.js`.
 
-**Ultimate Bosses.** In pack (`ultimate-bosses-1.0.4.jar`) but not yet enumerated in the dedicated `*_drops.js` files. Pending T4 loot + Rift materials allocation against the 14-weapon Simply Swords reserve.
+**Ultimate Bosses.** In pack (`ultimate-bosses-1.0.4.jar`) but not yet enumerated in the dedicated `*_drops.js` files. Pending T4 loot + Rift materials allocation against the Simply Swords reserve (14 weapons until 2026-10-16, when Mjolnir, Storm's Edge and Slumbering Lichblade went to T2 bosses).
 
 #### Loot config priorities
 
@@ -652,12 +653,12 @@ these clamps.
 | Tier | Dimensions | Rarity range | Max Sockets |
 |------|-----------|--------------|------------:|
 | 1 | Overworld | Common-Rare | 1 |
-| 2 | Twilight Forest / Blue Skies / Aether | Common-Epic | 2 |
+| 2 | Twilight Forest / Blue Skies | Common-Epic | 2 |
 | 3 | Nether / Undergarden / Deeper Darker / Abyss | Common-Mythic | 3 |
-| 4 | Deep Aether / End | Common-Ancient | 4+ |
+| 4 | Aether (Deep Aether's biomes included) / End | Common-Ancient | 4+ |
 
 Per-dimension floor (min rarity) keeps natural floors for higher tiers: Nether
-mob drops floor at Rare, Deep Aether floors at Rare, End floors at Epic — no
+mob drops floor at Rare, the Aether floors at Rare (Rare-Ancient since 2026-10-16; it was Uncommon-Epic as a T2 dimension), End floors at Epic — no
 "junk Common rolls in T4" pollution.
 
 Single-sourced 2026-06-06: the JSON affix definitions now ship **only** via the `icraft_apotheosis_affixes` Paxi datapack zip (the 83-file `kubejs/data/.../affixes/` shadow tree was retired across all 3 distros). Per-dimension tier inference is still configured in `config/apotheosis/adventure.cfg`. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) — the count is unchanged by the single-sourcing (it relocated definitions, it did not add or remove any). The same 2026-06-06 pass fixed 9 `mob_effect`-carrier affix schemas to per-rarity duration/amplifier.
@@ -693,7 +694,7 @@ Boss-source determined gem tier:
 
 ### D.4 Dimension stat multipliers (full)
 
-> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling is now owned by the bespoke **time-based `iridescent_difficulty` mod** (`iridescent_difficulty-0.1.0.jar`), which replaced **ScalingMobs / Improved-Mobs-accumulator / Azukaar's** (all removed). Multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) lives in [Progression Overview](../progression/overview.md#dimensional-progression) + `config/iridescent_difficulty-common.toml`. The table below is the **legacy flat-multiplier reference** kept for the per-dimension *relative* shape and the mob-gear% column; treat the absolute HP/DMG values as indicative, with `iridescent_difficulty`'s time-curve as the live source. Under the live engine **The Abyss (and its Frost World) runs the T3 curve**, and **Deep Aether runs the Aether's T2 curve** (it is not a separate dimension — its biomes generate inside the Aether), so the Deep Aether row below is a design target only.
+> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling is now owned by the bespoke **time-based `iridescent_difficulty` mod** (`iridescent_difficulty-0.1.0.jar`), which replaced **ScalingMobs / Improved-Mobs-accumulator / Azukaar's** (all removed). Multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) lives in [Progression Overview](../progression/overview.md#dimensional-progression) + `config/iridescent_difficulty-common.toml`. The table below is the **legacy flat-multiplier reference** kept for the per-dimension *relative* shape and the mob-gear% column; treat the absolute HP/DMG values as indicative, with `iridescent_difficulty`'s time-curve as the live source. Under the live engine **The Abyss (and its Frost World) runs the T3 curve**, and **Deep Aether runs the Aether's curve** (it is not a separate dimension — its biomes generate inside the Aether), so the Deep Aether row below is a design target only. **The Aether runs the T4 curve since 2026-10-16** (T2 before); its row below keeps the old T2 reference values.
 
 Four stats scale independently per dimension. **Damage scales fastest, HP moderately, Speed and Armor minimally.**
 
@@ -704,7 +705,7 @@ Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 | Overworld | 1 | 1.0 | 1.0 | 1.0 | 1.0 | 5% leather/iron | Baseline |
 | Twilight Forest | 2 | 1.8 | 2.0 | 1.05 | 1.3 | 20% iron-tier | Canopy ambushes |
 | Blue Skies | 2 | 2.0 | 2.3 | 1.05 | 1.4 | 25% iron-tier | Elemental damage |
-| The Aether | 2 | 2.2 | 2.5 | 1.08 | 1.5 | 25% iron/steel | Aerial combat |
+| The Aether | 4 (T2 until 2026-10-16) | 2.2 | 2.5 | 1.08 | 1.5 | 25% iron/steel | Aerial combat (legacy T2 values; see the engine note) |
 | Undergarden | 3 | 3.0 | 3.5 | 1.10 | 2.0 | 40% steel/diamond | Toxic attrition |
 | Deeper Darker (Otherside) | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 45% diamond-tier | Horror stealth + Abyss-themed custom mechanics |
 | The Nether | 3 | 4.0 | 5.0 | 1.12 | 2.5 | 50% diamond/netherite | Soulfire bypass |
@@ -725,11 +726,10 @@ Per-dimension elite-mob density is handled by **Majrusz's Progressive Difficulty
 | Overworld | 10% |
 | Twilight Forest | 12% |
 | Blue Skies | 14% |
-| The Aether | 15% |
 | The Undergarden | 17% |
 | Deeper Darker / Abyss | 18% |
 | The Nether | 20% |
-| Deep Aether | 22% |
+| The Aether (Deep Aether's biomes included; 15% until 2026-10-16) | 22% |
 | The End | 25% |
 
 Soulbound enchant: I = 50% prevention, II = 75%, III = 100% (and items don't go inert from death). Implementation: `kubejs/server_scripts/death_penalty.js`.
@@ -747,7 +747,6 @@ everywhere). **From fight 15** is the cap of per-kill scaling (below).
 | Twilight Hydra | 2 | 500 | 1,500 | 3,750 |
 | Ur-Ghast | 2 | 600 | 1,800 | 4,500 |
 | Blue Skies bosses (Summoner / Alchemist / Starlit Crusher / Arachnarch) | 2 | 350-500 | 1,050-1,500 | 2,625-3,750 |
-| Aether bosses (Slider / Valkyrie Queen / Sun Spirit) | 2 | 400-550 | 1,200-1,650 | 3,000-4,125 |
 | Citadel Keeper | 3 | 600 | 1,800 | 4,500 |
 | Fire Boss (Iron's Spellbooks) | 3 | 700 | 2,100 | 5,250 |
 | Dead King | 3 | 800 | 2,400 | 6,000 |
@@ -761,6 +760,9 @@ everywhere). **From fight 15** is the cap of per-kill scaling (below).
 | Meet Your Fight (Dame Fortuna / Rosalyne) | 3 | 700-800 | 2,100-2,400 | 5,250-6,000 |
 | Ancient Remnant | 3 | 2,500 | 7,500 | 18,750 |
 | Ignited Revenant | 4 | 1,000 | 3,000 | 7,500 |
+| Slider (Aether, Bronze Dungeon; T2 with 400 until 2026-10-16) | 4 | 1,000 | 3,000 | 7,500 |
+| Valkyrie Queen (Aether, Silver Dungeon; T2 with 550 until 2026-10-16) | 4 | 1,200 | 3,600 | 9,000 |
+| Sun Spirit (Aether, Gold Dungeon; T2 with 500 until 2026-10-16) | 4 | 1,200 | 3,600 | 9,000 |
 | Ender Golem (miniboss, no x3) | 4 | 1,200 | 1,200 | 3,000 |
 | Ender Dragon | 4 | 1,000 | 3,000 | not scaled |
 | Gaia Guardian | 4 | 1,200 | 3,600 | 9,000 |
@@ -865,7 +867,7 @@ Design targets for mob spawn-with-gear rates per dimension. Originally an Improv
 | Tier 1 | 5% | Leather / iron (random pieces) | None |
 | Tier 2 | 20-25% | Iron / steel | 0-1 (basic) |
 | Tier 3 | 40-50% | Steel / diamond | 1-3 (moderate) |
-| Tier 4 (Deep Aether) | 60% | Diamond / netherite | 2-4 |
+| Tier 4 (the Aether, Deep Aether's biomes included) | 60% | Diamond / netherite | 2-4 |
 | Tier 4 (End — outer/deep) | 70-80% | Netherite | 3-5 |
 | Tier 4 (End — Dragon's Domain) | 80% | Netherite + enchanted | 5+ |
 
@@ -883,7 +885,7 @@ These targets drive the live difficulty stack (down from the original 7 — the 
 6. **Loot table integration** — elite drops, boss drops, gear scaling per dimension.
 7. **Boss HP overrides** — custom HP via `kubejs/server_scripts/scaling/boss_hp.js` (D.6).
 
-End multi-zone implementation (Outer Islands / Deep End / Dragon's Domain) lives in `kubejs/server_scripts/end/dragon_exploration_gate.js` with biome-based scaling. Environmental hazard scripting (Void Corruption stacks, Celestial Events, Void Storms, Reality Fracture) lives in `kubejs/server_scripts/scaling/dimension_mechanics.js`.
+End multi-zone implementation (Outer Islands / Deep End / Dragon's Domain) lives in `kubejs/server_scripts/end/dragon_exploration_gate.js` with biome-based scaling. Environmental hazard scripting (Void Corruption stacks, Void Storms, Reality Fracture; there are no Celestial Events) lives in `kubejs/server_scripts/scaling/dimension_mechanics.js`.
 
 **Critical playtesting note:** all numbers in D.4-D.11 are *theoretical*. The interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics, and mob scaling creates emergent complexity that can only be balanced through iterative playtesting. Recommended testing approach:
 
@@ -1009,16 +1011,12 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | FTB Ultimine, FTB Chunks, FTB Essentials | B | Server utilities |
 | Embeddium, ModernFix, ImmediatelyFast, Oculus | C | Client performance |
 
-### F.2 Tier 2 (Twilight, Aether, Blue Skies — dimensional access)
+### F.2 Tier 2 (Twilight, Blue Skies — dimensional access)
 
 | Mod | Side | Notes |
 |-----|:----:|-------|
 | Twilight Forest | B | T2 dimension + 8-boss progression |
 | Blue Skies | B | Everbright/Everdawn duality |
-| The Aether (+ Deep Aether at T4) | B | T2 dim |
-| Aether Treasure Reforging | B | Aether reforging |
-| Aether Protect Your Moa | B | Aether companion |
-| Aetheric Tetranomicon | B | Aether-Tetra bridge |
 | Thermal Series (Foundation, Innovation, Expansion, Cultivation, Dynamics, Integration) | B | T2 RF + ore processing |
 | Industrial Foregoing (basic) | B | T2 mob interaction + automation |
 | Mekanism Tools | B | Tools (T2 entry) |
@@ -1047,10 +1045,14 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Mutant Monsters | B | T3 boss-tier mobs |
 | Apotheosis | B | T3 affixes (Epic) |
 
-### F.4 Tier 4 (Deep Aether, End, Ad Astra)
+### F.4 Tier 4 (the Aether incl. Deep Aether's biomes, End, Ad Astra)
 
 | Mod | Side | Notes |
 |-----|:----:|-------|
+| The Aether (+ Deep Aether, whose biomes generate inside it) | B | T4 dim (T2 until 2026-10-16) |
+| Aether Treasure Reforging | B | Aether reforging |
+| Aether Protect Your Moa | B | Aether companion |
+| Aetheric Tetranomicon | B | Aether-Tetra bridge |
 | Mekanism (advanced) | B | Items individually staged at T4 (MekaSuit, MekaTool, etc.) |
 | Cable Tiers | B | Mekanism cable upgrade tiers |
 | Walkable Mekanism Cables (`*`) | B | Coremod (custom JAR, walkable cables QoL) |
@@ -1140,7 +1142,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 - rpgseteffects: 14 base class artifacts (altharion / blade_dancer / blood_fury / chronorend / hellbrand / hexweaver / ignisphere / moonpiercer / phoenix / sanctum / shadow_hunter / stormpiercer / vaelkhor / wolfheart) + `artifact_piece_pouch`.
 - art_of_forging T2 (audit Phase 2.3): `ancient_axe`, `ancient_blade`, `ancient_flail`.
 
-**Dimensions**: `twilightforest:twilight_forest`, `blue_skies:everbright`, `blue_skies:everdawn`, `aether:the_aether`.
+**Dimensions**: `twilightforest:twilight_forest`, `blue_skies:everbright`, `blue_skies:everdawn`. (`aether:the_aether` moved to the Tier 4 stage on 2026-10-16.)
 
 ### G.2 Tier 3 stage
 
@@ -1183,7 +1185,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 
 **Ore replacements**: `aethersteel:aether_debris` and `aethersteel:aetherslate` replaced with `aether:holystone` until T4.
 
-**Dimensions**: `deep_aether:the_aether`, `minecraft:the_end`, plus 5 Ad Astra planets (`ad_astra:moon`, `ad_astra:mars`, `ad_astra:mercury`, `ad_astra:venus`, `ad_astra:glacio`).
+**Dimensions**: `aether:the_aether` (since 2026-10-16; Deep Aether registers no dimension of its own, its biomes are part of the Aether), `minecraft:the_end`, plus 5 Ad Astra planets (`ad_astra:moon`, `ad_astra:mars`, `ad_astra:mercury`, `ad_astra:venus`, `ad_astra:glacio`).
 
 ### G.4 Intentionally NOT mod-gated
 
@@ -1278,7 +1280,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | Script | Role |
 |--------|------|
 | `lootjs_overhaul.js` | Primary loot orchestrator (~2200 lines): 4 chest pools (T1/T2/T3/T4) + structure-loot tuning + village artifact whitelist + Ars glyph injection + 30+ structure mod loot tuning |
-| `loot_overhaul.js` | T2 boss group: TF + BS + Aether bosses with ISS reagent + Simply Swords allocation (Section 8 master list) |
+| `loot_overhaul.js` | T2 boss group: TF + BS bosses, plus the Aether bosses (T4 since 2026-10-16), with ISS reagent + Simply Swords allocation (Section 8 master list) |
 | `iss_boss_drops.js` | ISS bosses themed drops (5 bosses + ISS mob types) |
 | `iss_boss_first_kill.js` | First-kill guaranteed ISS drops via persistentData |
 | `cataclysm_boss_drops.js` | 8 Cataclysm bosses with ISS reagents + Simply Swords drops |
@@ -1444,9 +1446,9 @@ Magic damage bonus from Mana Attunement, applied multiplicatively to all magic d
 | Detected tier | Trigger dimension | Bonus |
 |:-:|---|:-:|
 | T1 | Overworld | +0% |
-| T2 | Twilight Forest / Aether / Blue Skies | +5% |
+| T2 | Twilight Forest / Blue Skies | +5% |
 | T3 | Nether | +10% |
-| T4 | End / Otherside / Abyss | +15% |
+| T4 | End / Aether (since 2026-10-16) / Otherside / Abyss | +15% |
 
 Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). Combined with the +25% Arcane Supremacy base + 10% standing-still bonus + race/origin bonuses, peak Archmage burst at T4 multi-stacks well past 50% magic damage.
 
@@ -1628,7 +1630,7 @@ Reroll operations at three Apotheosis workstations (Reforging Table → Advanced
 workstations are crafable from T1.
 
 The **rarity ladder** (D.1) is the second gate — even with tokens, a player in
-Overworld can't reroll above Rare, in Twilight/Aether can't reroll above Epic,
+Overworld can't reroll above Rare, in Twilight/Blue Skies can't reroll above Epic,
 etc. So token + dimension form the joint gate; workstation crafting is free.
 
 ### K.10 Implementation notes
@@ -1942,13 +1944,13 @@ Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStru
 | T1 | Woodland Mansion | Illager / dark | `minecraft:chests/woodland_mansion` |
 | T1 | Stronghold | Ancient / eldritch | `minecraft:chests/stronghold_corridor`, `minecraft:chests/stronghold_crossing`, `minecraft:chests/stronghold_library` |
 | T2 | Twilight Lich Tower | Eldritch | `twilightforest:chests/tower_room`, `twilightforest:chests/tower_library` |
-| T2 | Aether dungeons | Sky / cloud | aether boss-dungeon tables (TBD exact IDs) |
 | T2 | Blue Skies dungeons | Elemental | blue_skies dungeon tables (TBD exact IDs) |
 | T3 | Nether Fortress | Fire / blaze | `minecraft:chests/nether_bridge` |
 | T3 | Bastion Remnant | Piglin / gold | `minecraft:chests/bastion_treasure`, `minecraft:chests/bastion_hoglin_stable`, `minecraft:chests/bastion_bridge`, `minecraft:chests/bastion_other` |
 | T3 | Undergarden catacombs | Underdark | `undergarden:chests/catacombs` |
 | T4 | End City | End / levitation | `minecraft:chests/end_city_treasure` |
 | T4 | Ancient City | Sculk / echo | `minecraft:chests/ancient_city`, `minecraft:chests/ancient_city_ice_box` |
+| T4 (T2 until 2026-10-16) | Aether dungeons | Sky / cloud | aether boss-dungeon tables (TBD exact IDs) |
 
 ### N.2 Theme catalog
 
@@ -2053,19 +2055,6 @@ artifacts:vampiric_glove
 ars_nouveau:apprentice_spell_book      irons_spellbooks:uncommon_ink
 ```
 
-**T2 Sky / cloud** — Aether dungeons (12 items):
-
-```
-artifacts:cloud_in_a_bottle            artifacts:helium_flamingo
-artifacts:lucky_scarf
-moreartifacts:high_jumpers             moreartifacts:balloon
-celestial_artifacts:nostalgic_butterfly_ring
-celestial_artifacts:skywalker_scroll
-celestial_artifacts:gallop_necklace    celestial_artifacts:magic_horseshoe
-celestial_artifacts:deers_mercy_amulet celestial_artifacts:deer_inscribed_amulet
-ars_nouveau:apprentice_spell_book
-```
-
 **T2 Elemental** — Blue Skies dungeons (12 items):
 
 ```
@@ -2145,6 +2134,19 @@ relics:wool_mitten                     relics:shadow_glaive
 artifacts:scarf_of_invisibility
 ```
 
+**T4 Sky / cloud** — Aether dungeons (12 items; a T2 pool until 2026-10-16, same items, now at the T4 rate):
+
+```
+artifacts:cloud_in_a_bottle            artifacts:helium_flamingo
+artifacts:lucky_scarf
+moreartifacts:high_jumpers             moreartifacts:balloon
+celestial_artifacts:nostalgic_butterfly_ring
+celestial_artifacts:skywalker_scroll
+celestial_artifacts:gallop_necklace    celestial_artifacts:magic_horseshoe
+celestial_artifacts:deers_mercy_amulet celestial_artifacts:deer_inscribed_amulet
+ars_nouveau:apprentice_spell_book
+```
+
 **Abyssal pool — Abyss boss drops since 2026-10-11** *(this list was written for an Abyss chest marquee that could never exist: The Abyss has no chest that rolls a loot table. Its twelve Celestial Artifacts now drop from Elder, The Roka and Nightblade — see C.11. Shadow Glaive and Space Dissector are not part of the boss drops and keep their other sources. Every item also keeps its T3/T4 dimension-pool source)*:
 
 ```
@@ -2162,5 +2164,5 @@ relics:shadow_glaive                   relics:space_dissector
 - **ISS spellbook cap (2%).** `irons_spellbooks:copper_spell_book` (T1), `apprentice_spell_book` (T2), `archmage_spell_book` (T3) appear in themed pools where lore-fitting, capped at 2% per chest. Per the rationale in master.md Part XIII, the starter kit handles "hard to start magic" onboarding so higher legacy rates aren't justified.
 - **ISS scrolls are uncapped** and remain a primary mage-progression vector. They appear in T1 Magic and T1 Ancient / Eldritch pools per their tier.
 - **Cataclysm structures** are *intentionally not* in this roster. Cataclysm boss drops handle Cataclysm flavor; per-structure marquee pools on top would be double-coverage.
-- **Tables marked TBD** require packwiz/jar verification before final code wiring: T2 Aether dungeon tables, T2 Blue Skies dungeon tables. Initial implementation may use partial coverage on TBD entries. (Jar-verified 2026-10-11: the Lich Tower, Structory tower-top and Undergarden catacombs ids in the N.1 table.)
+- **Tables marked TBD** require packwiz/jar verification before final code wiring: T4 Aether dungeon tables, T2 Blue Skies dungeon tables. Initial implementation may use partial coverage on TBD entries. (Jar-verified 2026-10-11: the Lich Tower, Structory tower-top and Undergarden catacombs ids in the N.1 table.)
 - **`celestial_artifacts:ender_jump_scepter`** is flagged from the celestial_artifacts audit as ungated. Including in T4 End / levitation pool but mark for in-playtest verification — pull to boss-drop only if rate proves too generous.
