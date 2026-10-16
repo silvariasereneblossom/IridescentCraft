@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 25 | 24 | 26 | 3 |
-| server | 161 | 329 | 239 | 24 |
+| server | 162 | 330 | 241 | 24 |
 | client | 13 | 8 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 328`, `startup: 24`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 329`, `startup: 24`).
 
 ## How to read it
 
@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 258. 251 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 259. 252 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -48,14 +48,14 @@ Declared the LAST handler of an event (`// @last <event>`; `load_order.js` fails
 
 | Script | Event | Registrations of other scripts before it | Held by |
 |---|---|---|---|
-| `server:loot/zz_unique_chest_strip.js` | `LootJS.modifiers` | 30 | file names, `@last` |
+| `server:loot/zz_unique_chest_strip.js` | `LootJS.modifiers` | 31 | file names, `@last` |
 
 Structural, by the script that loads first:
 
 | Loads first | Priority | Scripts that need it while they load | They read |
 |---|---|---|---|
 | `startup:00_icraft_guard.js` | 1000 | 22 | `icraft.guard`, `icraft.handler`, `icraft.live` |
-| `server:00_icraft_guard.js` | 1000 | 149 | `icraft.guard`, `icraft.lib`, `icraft.live` |
+| `server:00_icraft_guard.js` | 1000 | 150 | `icraft.guard`, `icraft.lib`, `icraft.live` |
 | `server:0_lib_core.js` | 880 | 24 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
 | `server:0_tick_master.js` | 840 | 42 | `global.registerPlayerTick`, `global.registerServerTick` |
@@ -174,102 +174,103 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 63 |  | `liteminer_hunger_gate.js` | `BlockEvents.broken`, `PlayerEvents.loggedOut` |
 | 64 |  | `loot/0_entity_id_validator.js` (library `entity-mod`) | `ServerEvents.loaded` |
 | 65 |  | `loot/abyss_boss_loot.js` | `LootJS.modifiers` |
-| 66 |  | `loot/alexsmobs_drops.js` | `LootJS.modifiers` |
-| 67 |  | `loot/blue_skies_drops.js` | `LootJS.modifiers` |
-| 68 |  | `loot/boss_arena_material_tease.js` | `LootJS.modifiers` |
-| 69 |  | `loot/boss_arena_themed_loot.js` | `LootJS.modifiers` |
-| 70 |  | `loot/boss_refight_repair_floors.js` | `LootJS.modifiers` |
-| 71 |  | `loot/boss_unique_drops.js` | `LootJS.modifiers` |
-| 72 |  | `loot/cataclysm_boss_drops.js` | `LootJS.modifiers` |
-| 73 |  | `loot/codex_exploration_drops.js` | `LootJS.modifiers` |
-| 74 |  | `loot/crop_seed_reduction.js` | `LootJS.modifiers` |
-| 75 |  | `loot/dimensional_boss_drops.js` | `LootJS.modifiers` |
-| 76 |  | `loot/fragment_core_drops.js` | `EntityEvents.death` |
-| 77 |  | `loot/grass_pam_seeds.js` | `LootJS.modifiers` |
-| 78 |  | `loot/iss_boss_drops.js` | `LootJS.modifiers` |
-| 79 |  | `loot/iss_boss_first_kill.js` | `EntityEvents.death` |
-| 80 |  | `loot/lootjs_overhaul.js` | `LootJS.modifiers` |
-| 81 |  | `loot/loot_overhaul.js` | `LootJS.modifiers` |
-| 82 |  | `loot/lovely_pieces_loot.js` | `LootJS.modifiers` |
-| 83 |  | `loot/mahou_synergy_drops.js` | `LootJS.modifiers` |
-| 84 |  | `loot/majrusz_skeleton_punch_strip.js` | `LootJS.modifiers` |
-| 85 |  | `loot/meat_drop_doubling.js` | `LootJS.modifiers` |
-| 86 |  | `loot/planetary_loot.js` | `LootJS.modifiers` |
-| 87 |  | `loot/staff_wand_drops.js` | `LootJS.modifiers` |
-| 88 |  | `loot/stalwart_dungeons_drops.js` | `LootJS.modifiers` |
-| 89 |  | `loot/terramity_boss_drops.js` | `LootJS.modifiers` |
-| 90 |  | `loot/terramity_structure_drops.js` | `LootJS.modifiers` |
-| 91 |  | `loot/tmb_plain_bow_effects.js` | `hurt.late` |
-| 92 |  | `loot/twilight_boss_drops.js` | `LootJS.modifiers` |
-| 93 |  | `loot/unique_itemset_registry.js` |  |
-| 94 |  | `loot/unique_tier_buff.js` | `EntityEvents.spawned`, `hurt` |
-| 95 |  | `loot/zzz_iss_scroll_tier_clamp.js` | `LootJS.modifiers` |
-| 96 |  | `loot/zz_iss_arena_enrichment.js` | `LootJS.modifiers` |
-| 97 |  | `loot/zz_pack_enchanted_books.js` | `LootJS.modifiers` |
-| 98 |  | `loot/zz_unique_chest_strip.js` | `LootJS.modifiers` |
-| 99 |  | `magic_crit_hook.js` | `hurt` |
-| 100 |  | `megatorch_damage.js` | `ServerEvents.tick` |
-| 101 |  | `mobgriefing_default.js` | `ServerEvents.loaded` |
-| 102 |  | `more_curios_slots_cap.js` | `ItemEvents.rightClicked` |
-| 103 |  | `mutant_xp_boost.js` | `ForgeEventRegistry_xp.registerExperienceDrop` |
-| 104 |  | `origins/artificial_construct_progression.js` | `ItemEvents.rightClicked`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned` |
-| 105 |  | `origins/battlemage_arcane_cleave.js` | `EntityEvents.death`, `hurt` |
-| 106 |  | `origins/battlemage_mana_shield.js` | `tick.server` |
-| 107 |  | `origins/class_passives.js` | `EntityEvents.death`, `tick.server` |
-| 108 |  | `origins/class_passives_phase6h.js` | `EntityEvents.death`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `ServerEvents.tick`, `hurt` |
-| 109 |  | `origins/origin_effects.js` | `BlockEvents.broken`, `hurt`, `tick.player`, `tick.server` |
-| 110 |  | `origins/origin_status_commands.js` | `ServerEvents.commandRegistry` |
-| 111 |  | `origins/phantom_undeath.js` | `EntityEvents.death`, `tick.server` |
-| 112 |  | `origins/spell_book_transfer.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedOut`, `tick.player` |
-| 113 |  | `origins/ss_unique_spellsword_scaling.js` | `hurt` |
-| 114 |  | `origins/witch_of_ink_progression.js` | `EntityEvents.death`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `tick.server` |
-| 115 |  | `origins/witherborn_slimebodied.js` | `EntityEvents.hurt`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedOut`, `tick.server` |
-| 116 |  | `pregen/auto_chunky.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `ServerEvents.loaded` |
-| 117 |  | `quests/combat_kill_signals.js` | `EntityEvents.death` |
-| 118 |  | `quests/heracles_reconcile.js` | `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`, `tick.server` |
-| 119 |  | `quests/onboarding_bridge.js` | `PlayerEvents.loggedOut`, `tick.player` |
-| 120 |  | `randomize_blank_scrolls.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn` |
-| 121 |  | `recipes/ad_astra_gating.js` | `ServerEvents.recipes` |
-| 122 |  | `recipes/boss_material_processing.js` | `ServerEvents.recipes` |
-| 123 |  | `recipes/cooking_conversion.js` | `ServerEvents.recipes` |
-| 124 |  | `recipes/cooking_for_blockheads_overrides.js` | `ServerEvents.recipes` |
-| 125 |  | `recipes/create_blaze_burner_t1.js` | `ServerEvents.recipes` |
-| 126 |  | `recipes/if_latex_rework.js` | `ServerEvents.recipes` |
-| 127 |  | `recipes/magic_recipes.js` | `ServerEvents.recipes` |
-| 128 |  | `recipes/mek_biofuel_squeeze.js` | `ServerEvents.recipes` |
-| 129 |  | `recipes/planetary_extraction.js` | `ServerEvents.recipes` |
-| 130 |  | `recipes/progression_tier_fixes.js` | `ServerEvents.recipes` |
-| 131 |  | `recipes/recipe_audit.js` | `ServerEvents.recipes` |
-| 132 |  | `recipes/refined_storage_dualpath.js` | `ServerEvents.recipes` |
-| 133 |  | `recipes/staff_wand_recipes.js` | `ServerEvents.recipes` |
-| 134 |  | `recipes/strip_mutant_monsters.js` | `ServerEvents.recipes` |
-| 135 |  | `recipes/strip_tmb_bow_recipes.js` | `ServerEvents.recipes` |
-| 136 |  | `recipes/tier_gated_recipes.js` | `ServerEvents.recipes` |
-| 137 |  | `recipes/waystone_recipes.js` | `ServerEvents.recipes` |
-| 138 |  | `regen_control.js` | `ServerEvents.loaded`, `tick.player` |
-| 139 |  | `relic_boss_drops.js` | `EntityEvents.death`, `ForgeEventRegistry_rbd.registerDrops` |
-| 140 |  | `respawn_hunger.js` | `PlayerEvents.respawned` |
-| 141 |  | `respec/class_respec.js` | `ItemEvents.rightClicked`, `PlayerEvents.loggedOut`, `ServerEvents.loaded`, `ServerEvents.recipes`, `tick.player`, `tick.server` |
-| 142 |  | `scaling/boss_hp.js` | `EntityEvents.spawned` |
-| 143 |  | `scaling/boss_progressive.js` | `EntityEvents.death`, `EntityEvents.spawned`, `ServerEvents.commandRegistry`, `hurt` |
-| 144 |  | `scaling/dimension_mechanics.js` | `EntityEvents.death`, `EntityEvents.hurt`, `EntityEvents.spawned`, `hurt`, `tick.player`, `tick.server` |
-| 145 |  | `scaling/mob_equipment.js` | `EntityEvents.spawned` |
-| 146 |  | `scaling/mob_scaling_unified.js` | `EntityEvents.spawned` |
-| 147 |  | `scaling/zz_ascension_scaling.js` | `EntityEvents.spawned` |
-| 148 |  | `scaling/zz_boss_global_3x.js` | `EntityEvents.spawned` |
-| 149 |  | `skills/justleveling_skills.js` | `BlockEvents.broken`, `BlockEvents.placed`, `EntityEvents.death`, `ItemEvents.crafted`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `hurt`, `tick.server` |
-| 150 |  | `skills/mastery_tax.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `tick.server` |
-| 151 |  | `skills/skill_effects.js` | `BlockEvents.broken`, `BlockEvents.rightClicked`, `ItemEvents.crafted`, `ItemEvents.entityInteracted`, `ServerEvents.loaded`, `hurt`, `tick.server` |
-| 152 |  | `spawn_priest_tower.js` | `ServerEvents.loaded` |
-| 153 |  | `spawn_protection.js` | `BlockEvents.broken`, `BlockEvents.placed` |
-| 154 |  | `spawn_village_protection.js` | `BlockEvents.placed`, `EntityEvents.spawned`, `tick.server` |
-| 155 |  | `strip_anomalous_drops.js` | `ForgeEventRegistry_sad.registerDrops` |
-| 156 |  | `strip_infinity_ham.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn` |
-| 157 |  | `sunlight_smite.js` | `tick.server` |
-| 158 |  | `tetra_terramity_perks.js` | `hurt`, `tick.server` |
-| 159 |  | `ultris_randomizer_janitor.js` | `tick.server` |
-| 160 |  | `validate_recipe_removals.js` | `ServerEvents.recipes` |
-| 161 | -1000 | `zzz_icraft_live.js` | `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`, `ServerEvents.unloaded`, `tick.server` |
+| 66 |  | `loot/aether_reward_chests.js` | `LootJS.modifiers` |
+| 67 |  | `loot/alexsmobs_drops.js` | `LootJS.modifiers` |
+| 68 |  | `loot/blue_skies_drops.js` | `LootJS.modifiers` |
+| 69 |  | `loot/boss_arena_material_tease.js` | `LootJS.modifiers` |
+| 70 |  | `loot/boss_arena_themed_loot.js` | `LootJS.modifiers` |
+| 71 |  | `loot/boss_refight_repair_floors.js` | `LootJS.modifiers` |
+| 72 |  | `loot/boss_unique_drops.js` | `LootJS.modifiers` |
+| 73 |  | `loot/cataclysm_boss_drops.js` | `LootJS.modifiers` |
+| 74 |  | `loot/codex_exploration_drops.js` | `LootJS.modifiers` |
+| 75 |  | `loot/crop_seed_reduction.js` | `LootJS.modifiers` |
+| 76 |  | `loot/dimensional_boss_drops.js` | `LootJS.modifiers` |
+| 77 |  | `loot/fragment_core_drops.js` | `EntityEvents.death` |
+| 78 |  | `loot/grass_pam_seeds.js` | `LootJS.modifiers` |
+| 79 |  | `loot/iss_boss_drops.js` | `LootJS.modifiers` |
+| 80 |  | `loot/iss_boss_first_kill.js` | `EntityEvents.death` |
+| 81 |  | `loot/lootjs_overhaul.js` | `LootJS.modifiers` |
+| 82 |  | `loot/loot_overhaul.js` | `LootJS.modifiers` |
+| 83 |  | `loot/lovely_pieces_loot.js` | `LootJS.modifiers` |
+| 84 |  | `loot/mahou_synergy_drops.js` | `LootJS.modifiers` |
+| 85 |  | `loot/majrusz_skeleton_punch_strip.js` | `LootJS.modifiers` |
+| 86 |  | `loot/meat_drop_doubling.js` | `LootJS.modifiers` |
+| 87 |  | `loot/planetary_loot.js` | `LootJS.modifiers` |
+| 88 |  | `loot/staff_wand_drops.js` | `LootJS.modifiers` |
+| 89 |  | `loot/stalwart_dungeons_drops.js` | `LootJS.modifiers` |
+| 90 |  | `loot/terramity_boss_drops.js` | `LootJS.modifiers` |
+| 91 |  | `loot/terramity_structure_drops.js` | `LootJS.modifiers` |
+| 92 |  | `loot/tmb_plain_bow_effects.js` | `hurt.late` |
+| 93 |  | `loot/twilight_boss_drops.js` | `LootJS.modifiers` |
+| 94 |  | `loot/unique_itemset_registry.js` |  |
+| 95 |  | `loot/unique_tier_buff.js` | `EntityEvents.spawned`, `hurt` |
+| 96 |  | `loot/zzz_iss_scroll_tier_clamp.js` | `LootJS.modifiers` |
+| 97 |  | `loot/zz_iss_arena_enrichment.js` | `LootJS.modifiers` |
+| 98 |  | `loot/zz_pack_enchanted_books.js` | `LootJS.modifiers` |
+| 99 |  | `loot/zz_unique_chest_strip.js` | `LootJS.modifiers` |
+| 100 |  | `magic_crit_hook.js` | `hurt` |
+| 101 |  | `megatorch_damage.js` | `ServerEvents.tick` |
+| 102 |  | `mobgriefing_default.js` | `ServerEvents.loaded` |
+| 103 |  | `more_curios_slots_cap.js` | `ItemEvents.rightClicked` |
+| 104 |  | `mutant_xp_boost.js` | `ForgeEventRegistry_xp.registerExperienceDrop` |
+| 105 |  | `origins/artificial_construct_progression.js` | `ItemEvents.rightClicked`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned` |
+| 106 |  | `origins/battlemage_arcane_cleave.js` | `EntityEvents.death`, `hurt` |
+| 107 |  | `origins/battlemage_mana_shield.js` | `tick.server` |
+| 108 |  | `origins/class_passives.js` | `EntityEvents.death`, `tick.server` |
+| 109 |  | `origins/class_passives_phase6h.js` | `EntityEvents.death`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `ServerEvents.tick`, `hurt` |
+| 110 |  | `origins/origin_effects.js` | `BlockEvents.broken`, `hurt`, `tick.player`, `tick.server` |
+| 111 |  | `origins/origin_status_commands.js` | `ServerEvents.commandRegistry` |
+| 112 |  | `origins/phantom_undeath.js` | `EntityEvents.death`, `tick.server` |
+| 113 |  | `origins/spell_book_transfer.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedOut`, `tick.player` |
+| 114 |  | `origins/ss_unique_spellsword_scaling.js` | `hurt` |
+| 115 |  | `origins/witch_of_ink_progression.js` | `EntityEvents.death`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `tick.server` |
+| 116 |  | `origins/witherborn_slimebodied.js` | `EntityEvents.hurt`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedOut`, `tick.server` |
+| 117 |  | `pregen/auto_chunky.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `ServerEvents.loaded` |
+| 118 |  | `quests/combat_kill_signals.js` | `EntityEvents.death` |
+| 119 |  | `quests/heracles_reconcile.js` | `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`, `tick.server` |
+| 120 |  | `quests/onboarding_bridge.js` | `PlayerEvents.loggedOut`, `tick.player` |
+| 121 |  | `randomize_blank_scrolls.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn` |
+| 122 |  | `recipes/ad_astra_gating.js` | `ServerEvents.recipes` |
+| 123 |  | `recipes/boss_material_processing.js` | `ServerEvents.recipes` |
+| 124 |  | `recipes/cooking_conversion.js` | `ServerEvents.recipes` |
+| 125 |  | `recipes/cooking_for_blockheads_overrides.js` | `ServerEvents.recipes` |
+| 126 |  | `recipes/create_blaze_burner_t1.js` | `ServerEvents.recipes` |
+| 127 |  | `recipes/if_latex_rework.js` | `ServerEvents.recipes` |
+| 128 |  | `recipes/magic_recipes.js` | `ServerEvents.recipes` |
+| 129 |  | `recipes/mek_biofuel_squeeze.js` | `ServerEvents.recipes` |
+| 130 |  | `recipes/planetary_extraction.js` | `ServerEvents.recipes` |
+| 131 |  | `recipes/progression_tier_fixes.js` | `ServerEvents.recipes` |
+| 132 |  | `recipes/recipe_audit.js` | `ServerEvents.recipes` |
+| 133 |  | `recipes/refined_storage_dualpath.js` | `ServerEvents.recipes` |
+| 134 |  | `recipes/staff_wand_recipes.js` | `ServerEvents.recipes` |
+| 135 |  | `recipes/strip_mutant_monsters.js` | `ServerEvents.recipes` |
+| 136 |  | `recipes/strip_tmb_bow_recipes.js` | `ServerEvents.recipes` |
+| 137 |  | `recipes/tier_gated_recipes.js` | `ServerEvents.recipes` |
+| 138 |  | `recipes/waystone_recipes.js` | `ServerEvents.recipes` |
+| 139 |  | `regen_control.js` | `ServerEvents.loaded`, `tick.player` |
+| 140 |  | `relic_boss_drops.js` | `EntityEvents.death`, `ForgeEventRegistry_rbd.registerDrops` |
+| 141 |  | `respawn_hunger.js` | `PlayerEvents.respawned` |
+| 142 |  | `respec/class_respec.js` | `ItemEvents.rightClicked`, `PlayerEvents.loggedOut`, `ServerEvents.loaded`, `ServerEvents.recipes`, `tick.player`, `tick.server` |
+| 143 |  | `scaling/boss_hp.js` | `EntityEvents.spawned` |
+| 144 |  | `scaling/boss_progressive.js` | `EntityEvents.death`, `EntityEvents.spawned`, `ServerEvents.commandRegistry`, `hurt` |
+| 145 |  | `scaling/dimension_mechanics.js` | `EntityEvents.death`, `EntityEvents.hurt`, `EntityEvents.spawned`, `hurt`, `tick.player`, `tick.server` |
+| 146 |  | `scaling/mob_equipment.js` | `EntityEvents.spawned` |
+| 147 |  | `scaling/mob_scaling_unified.js` | `EntityEvents.spawned` |
+| 148 |  | `scaling/zz_ascension_scaling.js` | `EntityEvents.spawned` |
+| 149 |  | `scaling/zz_boss_global_3x.js` | `EntityEvents.spawned` |
+| 150 |  | `skills/justleveling_skills.js` | `BlockEvents.broken`, `BlockEvents.placed`, `EntityEvents.death`, `ItemEvents.crafted`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `hurt`, `tick.server` |
+| 151 |  | `skills/mastery_tax.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `ServerEvents.loaded`, `tick.server` |
+| 152 |  | `skills/skill_effects.js` | `BlockEvents.broken`, `BlockEvents.rightClicked`, `ItemEvents.crafted`, `ItemEvents.entityInteracted`, `ServerEvents.loaded`, `hurt`, `tick.server` |
+| 153 |  | `spawn_priest_tower.js` | `ServerEvents.loaded` |
+| 154 |  | `spawn_protection.js` | `BlockEvents.broken`, `BlockEvents.placed` |
+| 155 |  | `spawn_village_protection.js` | `BlockEvents.placed`, `EntityEvents.spawned`, `tick.server` |
+| 156 |  | `strip_anomalous_drops.js` | `ForgeEventRegistry_sad.registerDrops` |
+| 157 |  | `strip_infinity_ham.js` | `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn` |
+| 158 |  | `sunlight_smite.js` | `tick.server` |
+| 159 |  | `tetra_terramity_perks.js` | `hurt`, `tick.server` |
+| 160 |  | `ultris_randomizer_janitor.js` | `tick.server` |
+| 161 |  | `validate_recipe_removals.js` | `ServerEvents.recipes` |
+| 162 | -1000 | `zzz_icraft_live.js` | `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`, `ServerEvents.unloaded`, `tick.server` |
 
 ## client scripts: load order
 
@@ -465,39 +466,40 @@ When one of the targets fires, its handlers (1 of the list) run before the untar
 
 When one of the targets fires, its handlers (3 of the list) run before the untargeted ones.
 
-**`LootJS.modifiers`** (31)
+**`LootJS.modifiers`** (32)
 
 1. `apotheosis_gem_repair.js`
 2. `endgame/rift_mechanics.js`
 3. `loot/abyss_boss_loot.js`
-4. `loot/alexsmobs_drops.js`
-5. `loot/blue_skies_drops.js`
-6. `loot/boss_arena_material_tease.js`
-7. `loot/boss_arena_themed_loot.js`
-8. `loot/boss_refight_repair_floors.js`
-9. `loot/boss_unique_drops.js`
-10. `loot/cataclysm_boss_drops.js`
-11. `loot/codex_exploration_drops.js`
-12. `loot/crop_seed_reduction.js`
-13. `loot/dimensional_boss_drops.js`
-14. `loot/grass_pam_seeds.js`
-15. `loot/iss_boss_drops.js`
-16. `loot/lootjs_overhaul.js`
-17. `loot/loot_overhaul.js`
-18. `loot/lovely_pieces_loot.js`
-19. `loot/mahou_synergy_drops.js`
-20. `loot/majrusz_skeleton_punch_strip.js`
-21. `loot/meat_drop_doubling.js`
-22. `loot/planetary_loot.js`
-23. `loot/staff_wand_drops.js`
-24. `loot/stalwart_dungeons_drops.js`
-25. `loot/terramity_boss_drops.js`
-26. `loot/terramity_structure_drops.js`
-27. `loot/twilight_boss_drops.js`
-28. `loot/zzz_iss_scroll_tier_clamp.js`
-29. `loot/zz_iss_arena_enrichment.js`
-30. `loot/zz_pack_enchanted_books.js`
-31. `loot/zz_unique_chest_strip.js`
+4. `loot/aether_reward_chests.js`
+5. `loot/alexsmobs_drops.js`
+6. `loot/blue_skies_drops.js`
+7. `loot/boss_arena_material_tease.js`
+8. `loot/boss_arena_themed_loot.js`
+9. `loot/boss_refight_repair_floors.js`
+10. `loot/boss_unique_drops.js`
+11. `loot/cataclysm_boss_drops.js`
+12. `loot/codex_exploration_drops.js`
+13. `loot/crop_seed_reduction.js`
+14. `loot/dimensional_boss_drops.js`
+15. `loot/grass_pam_seeds.js`
+16. `loot/iss_boss_drops.js`
+17. `loot/lootjs_overhaul.js`
+18. `loot/loot_overhaul.js`
+19. `loot/lovely_pieces_loot.js`
+20. `loot/mahou_synergy_drops.js`
+21. `loot/majrusz_skeleton_punch_strip.js`
+22. `loot/meat_drop_doubling.js`
+23. `loot/planetary_loot.js`
+24. `loot/staff_wand_drops.js`
+25. `loot/stalwart_dungeons_drops.js`
+26. `loot/terramity_boss_drops.js`
+27. `loot/terramity_structure_drops.js`
+28. `loot/twilight_boss_drops.js`
+29. `loot/zzz_iss_scroll_tier_clamp.js`
+30. `loot/zz_iss_arena_enrichment.js`
+31. `loot/zz_pack_enchanted_books.js`
+32. `loot/zz_unique_chest_strip.js`
 
 **`PlayerEvents.chat`** (3)
 
@@ -1027,25 +1029,25 @@ own one-shot `global._*` flags.
 
 ### `00_icraft_guard.js`
 
-- place 1 of 161, priority 1000
+- place 1 of 162, priority 1000
 
 ### `0_iss_guard.js`
 
-- place 2 of 161, priority 900; library `iss-guard`; header: @events @file
+- place 2 of 162, priority 900; library `iss-guard`; header: @events @file
 - events: `EntityEvents.spawned`
 - sets: `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `0_lib_aptitudes.js`
 
-- place 3 of 161, priority 890; library `aptitudes`; header: @events @file
+- place 3 of 162, priority 890; library `aptitudes`; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.loggedOut`
 - sets: `icraft.aptitude`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `0_lib_core.js`
 
-- place 4 of 161, priority 880; library `core`; header: @events @file @live @registry
+- place 4 of 162, priority 880; library `core`; header: @events @file @live @registry
 - straight on a Java registry: `DamageRegistry.registerLate` `icraft.core.late`, `DamageRegistry.register` `icraft.core.then`, `DamageRegistry.register` `icraft.core`
 - features: `boss-seen-as`, `spawn-buff-repaired`, `spawn-buff-saved`
 - registries: bosses
@@ -1054,41 +1056,41 @@ own one-shot `global._*` flags.
 
 ### `0_lib_origins.js`
 
-- place 5 of 161, priority 870; library `origins`; header: @events @file
+- place 5 of 162, priority 870; library `origins`; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.loggedOut`
 - sets: `icraft.origin`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `0_lib_registry.js`
 
-- place 6 of 161, priority 860; library `registry`; header: @events @file @registry
+- place 6 of 162, priority 860; library `registry`; header: @events @file @registry
 - registries: bosses, dimensions
 - sets: `icraft.bosses`, `icraft.dims`, `icraft.registry`
 - reads: `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `0_server_ready_banner.js`
 
-- place 7 of 161, priority 850; header: @events @file
+- place 7 of 162, priority 850; header: @events @file
 - events: `ServerEvents.loaded`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `0_tick_master.js`
 
-- place 8 of 161, priority 840; library `ticks`; header: @events @file
+- place 8 of 162, priority 840; library `ticks`; header: @events @file
 - events: `ServerEvents.tick`, `PlayerEvents.tick`, `ServerEvents.loaded`
 - sets: `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js` (load)
 
 ### `abyss/abyss_armor_effects.js`
 
-- place 9 of 161; header: @events @file
+- place 9 of 162; header: @events @file
 - tick functions: `tick_abyssArmorEffects` (server, every 40, offset 0)
 - hurt handlers: `icraft.abyss.armor.take` [victimPlayer], `icraft.abyss.armor.deal` [attackerPlayer]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `abyss/abyss_ring_effects.js`
 
-- place 10 of 161; header: @events @file
+- place 10 of 162; header: @events @file
 - events: `PlayerEvents.loggedOut`
 - tick functions: `tick_abyssRingEffects` (server, every 20, offset 0)
 - hurt handlers: `icraft.abyss.rings.deal` [attackerPlayer], `icraft.abyss.rings.take` [victimPlayer]
@@ -1096,7 +1098,7 @@ own one-shot `global._*` flags.
 
 ### `affixes/affix_effects.js`
 
-- place 11 of 161; header: @events @file
+- place 11 of 162; header: @events @file
 - events: `PlayerEvents.loggedOut`, `EntityEvents.death`
 - tick functions: `tick_affixEffects` (server, every 100, offset 80)
 - hurt handlers: `icraft.affixes.offensive` [attackerPlayer], `icraft.affixes.fire_vuln` [any], `icraft.affixes.defensive` [victimPlayer]
@@ -1105,41 +1107,41 @@ own one-shot `global._*` flags.
 
 ### `affix_overworld_strip.js`
 
-- place 12 of 161; header: @events @file @registry
+- place 12 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftSkipIssMob` of `0_iss_guard.js`
 
 ### `affix_skyshatter_mob_strip.js`
 
-- place 13 of 161; header: @events @file @registry
+- place 13 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftSkipIssMob` of `0_iss_guard.js`
 
 ### `apotheosis_gem_repair.js`
 
-- place 14 of 161; header: @events @file
+- place 14 of 162; header: @events @file
 - events: `BlockEvents.rightClicked`, `EntityEvents.spawned`, `LootJS.modifiers`
 - tick functions: `tick_apothGemRepair` (player, every 60, offset 0)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 
 ### `armor_weight.js`
 
-- place 15 of 161; header: @events @file
+- place 15 of 162; header: @events @file
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`
 - tick functions: `tick_armorWeight` (server, every 100, offset 17)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `attributes/attribute_commands.js`
 
-- place 16 of 161
+- place 16 of 162
 - events: `PlayerEvents.chat`
 - reads: `icraft.attr` of `attributes/attribute_sync.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `attributes/attribute_sync.js`
 
-- place 17 of 161; header: @events @file
+- place 17 of 162; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`
 - tick functions: `tick_xpMultiplier` (server, every 20, offset 9), `tick_healingReceived` (player, every 1, offset 0), `tick_attributeSync` (player, every 100, offset 25)
 - hurt handlers: `icraft.attribute_sync.hurt` [player]
@@ -1148,52 +1150,52 @@ own one-shot `global._*` flags.
 
 ### `attributes/class_attribute_bonuses.js`
 
-- place 18 of 161
+- place 18 of 162
 - events: `PlayerEvents.loggedIn`
 - tick functions: `tick_classAttributeBonuses` (server, every 100, offset 50)
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `attributes/iss_school_to_ars_glyph.js`
 
-- place 19 of 161
+- place 19 of 162
 - straight on a Java registry: `ForgeEventRegistry_aspg.registerSpellDamagePre` `icraft.iss_school_to_ars_glyph`
 
 ### `attributes/iss_school_to_ars_spell.js`
 
-- place 20 of 161; header: @events @file
+- place 20 of 162; header: @events @file
 - hurt handlers: `icraft.iss_school_to_ars_spell` [attackerPlayer]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `attributes/mana_debug_command.js`
 
-- place 21 of 161; header: @events @file
+- place 21 of 162; header: @events @file
 - events: `ServerEvents.commandRegistry`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `attributes/mana_pool_bonuses.js`
 
-- place 22 of 161; header: @events @file
+- place 22 of 162; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.loggedOut`
 - tick functions: `tick_manaPoolBonuses` (server, every 100, offset 60)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `bonfire/boss_arena_registry.js`
 
-- place 23 of 161
+- place 23 of 162
 - registries: bosses
 - sets: `global.ICRAFT_BOSS_ARENAS`, `global.ICRAFT_BOSS_ARENAS_BY_STRUCTURE`
 - reads: `icraft.bosses` of `0_lib_registry.js` (load)
 
 ### `bonfire/boss_bonfire_system.js`
 
-- place 24 of 161; header: @after @events @file
+- place 24 of 162; header: @after @events @file
 - tick functions: `tick_bossBonfire` (player, every 20, offset 13)
 - reads: `global.ICRAFT_BOSS_ARENAS` of `bonfire/boss_arena_registry.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 - must load after: `bonfire/boss_arena_registry.js` (proven by the code)
 
 ### `bonfire/boss_compass_handler.js`
 
-- place 25 of 161; header: @after @events @file
+- place 25 of 162; header: @after @events @file
 - events: `ItemEvents.rightClicked` for `kubejs:boss_compass`, `ServerEvents.commandRegistry`, `ServerEvents.recipes`, `PlayerEvents.loggedOut`
 - tick functions: `tick_bossCompassHud` (player, every 20, offset 7)
 - reads: `global.ICRAFT_BOSS_ARENAS` of `bonfire/boss_arena_registry.js` (load), `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
@@ -1201,69 +1203,69 @@ own one-shot `global._*` flags.
 
 ### `bonfire/gob_t1_rebalance.js`
 
-- place 26 of 161
+- place 26 of 162
 - events: `ServerEvents.recipes`, `ServerEvents.tags` for `block`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `cherry_spawn_biome.js`
 
-- place 27 of 161; header: @events @file
+- place 27 of 162; header: @events @file
 - events: `ServerEvents.loaded`, `PlayerEvents.loggedIn`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `class/equipment_hp_halving.js`
 
-- place 28 of 161
+- place 28 of 162
 - events: `ServerEvents.loaded`
 - tick functions: `tick_equipmentHpHalving` (server, every 100, offset 60), `tick_glassCannonTagCheck` (server, every 100, offset 0)
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `cleanup/strip_truly_modular_items.js`
 
-- place 29 of 161
+- place 29 of 162
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `codex_delivery.js`
 
-- place 30 of 161; header: @events @file
+- place 30 of 162; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.chat`, `ServerEvents.commandRegistry`, `ServerEvents.recipes`
 - tick functions: `tick_codexStarterCheck` (server, every 100, offset 5), `tick_codexOriginDump` (server, every 20, offset 11), `tick_codexChatProcessor` (server, every 20, offset 13), `tick_codexBookSweep` (server, every 20, offset 0)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `compat/class_artifacts_recipes.js`
 
-- place 31 of 161
+- place 31 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `compat/disable_creeperlings.js`
 
-- place 32 of 161
+- place 32 of 162
 - events: `EntityEvents.spawned`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `compat/noseenotick_tag_entries.js`
 
-- place 33 of 161; header: @events @file @live
+- place 33 of 162; header: @events @file @live
 - features: `noseenotick-tag-entries`
 - reads: `icraft.live` of `00_icraft_guard.js` (load)
 
 ### `compat/terramity_cave_gnome_cave_only.js`
 
-- place 34 of 161
+- place 34 of 162
 - events: `EntityEvents.checkSpawn`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `compat/twilight_plateau_boss_guard.js`
 
-- place 35 of 161; header: @events @file
+- place 35 of 162; header: @events @file
 - events: `EntityEvents.spawned` for `twilightforest:plateau_boss`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `death_penalty.js`
 
-- place 36 of 161; header: @events @file @registry
+- place 36 of 162; header: @events @file @registry
 - events: `EntityEvents.death`, `ItemEvents.canPickUp`, `PlayerEvents.loggedOut`, `BlockEvents.broken`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`, `ServerEvents.loaded`
 - tick functions: `tick_deathPenaltyBrokenCheck` (player, every 2, offset 0), `tick_durabilityFullSweep` (player, every 10, offset 0)
 - hurt handlers: `icraft.death_penalty.broken_weapon` [attackerPlayer]
@@ -1272,19 +1274,19 @@ own one-shot `global._*` flags.
 
 ### `diag_armor_modifiers.js`
 
-- place 37 of 161
+- place 37 of 162
 - events: `ServerEvents.commandRegistry`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `disable_zombie_door_break.js`
 
-- place 38 of 161
+- place 38 of 162
 - events: `EntityEvents.spawned`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `economy/relic_broker.js`
 
-- place 39 of 161
+- place 39 of 162
 - events: `BlockEvents.rightClicked` for `<computed>`, `ServerEvents.recipes`
 - tick functions: `icraftBrokerRestockTick` (server, every 200, offset 13)
 - sets: `global.icraftBrokerRestockTick`
@@ -1293,7 +1295,7 @@ own one-shot `global._*` flags.
 
 ### `economy/relic_sink.js`
 
-- place 40 of 161
+- place 40 of 162
 - events: `ServerEvents.commandRegistry`, `ServerEvents.tags` for `item`
 - features: `relic-sink`, `relic-sink-deny`
 - sets: `global.icraftRelicEssenceValue`
@@ -1301,7 +1303,7 @@ own one-shot `global._*` flags.
 
 ### `enchantments/enchant_effects.js`
 
-- place 41 of 161; header: @events @file
+- place 41 of 162; header: @events @file
 - events: `BlockEvents.broken`
 - tick functions: `tick_enchantPeriodicEffects` (server, every 5, offset 0), `tick_enchantConvergence` (server, every 200, offset 75), `tick_enchantLunarStride` (server, every 40, offset 15)
 - hurt handlers: `icraft.enchants.weapon` [attackerPlayer], `icraft.enchants.armor` [victimPlayer], `icraft.enchants.lunar_stride` [victimPlayer], `icraft.enchants.stellar_shield` [victimPlayer]
@@ -1309,14 +1311,14 @@ own one-shot `global._*` flags.
 
 ### `end/dragon_exploration_gate.js`
 
-- place 42 of 161
+- place 42 of 162
 - events: `EntityEvents.spawned`, `EntityEvents.death`, `EntityEvents.death` as `end/dragon_exploration_gate#2`, `ServerEvents.recipes`, `PlayerEvents.inventoryChanged`
 - tick functions: `tick_endExplorationTracking` (player, every 200, offset 100), `tick_dragonSummonCrystal` (server, every 40, offset 10)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `endgame/ascension.js`
 
-- place 43 of 161
+- place 43 of 162
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.chat`, `ServerEvents.recipes`
 - tick functions: `tick_ascensionRefresh` (server, every 6000, offset 0), `tick_ascensionChat` (server, every 10, offset 3)
 - features: `ascension-status`
@@ -1325,25 +1327,25 @@ own one-shot `global._*` flags.
 
 ### `endgame/mythic_forge.js`
 
-- place 44 of 161
+- place 44 of 162
 - events: `ServerEvents.recipes`
 - sections: 13
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `endgame/rift_mechanics.js`
 
-- place 45 of 161
+- place 45 of 162
 - events: `LootJS.modifiers`, `PlayerEvents.loggedIn`, `ItemEvents.pickedUp`, `ItemEvents.crafted`, `PlayerEvents.inventoryChanged`, `PlayerEvents.inventoryChanged` as `endgame/rift_mechanics#2`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `enemyexpansion_explosive_launch_blocker.js`
 
-- place 46 of 161
+- place 46 of 162
 - straight on a Java registry: `ForgeEventRegistry_eel.registerEffectApplicable`
 
 ### `exploration/codex_exploration_kills.js`
 
-- place 47 of 161
+- place 47 of 162
 - events: `EntityEvents.death`
 - tick functions: `tick_codexDimEntryBonus` (player, every 40, offset 11)
 - registries: bosses, dimensions
@@ -1351,111 +1353,111 @@ own one-shot `global._*` flags.
 
 ### `fix_empty_display_name.js`
 
-- place 48 of 161; header: @events @file
+- place 48 of 162; header: @events @file
 - events: `EntityEvents.spawned`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `fix_stone_tags.js`
 
-- place 49 of 161
+- place 49 of 162
 - events: `ServerEvents.tags` for `block`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `fix_venus_sandstone_tag.js`
 
-- place 50 of 161
+- place 50 of 162
 - events: `ServerEvents.tags` for `item`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `food/hunger_management.js`
 
-- place 51 of 161
+- place 51 of 162
 - tick functions: `tick_hungerManagement` (server, every 100, offset 0)
 - reads: `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `food_dedup_recipes.js`
 
-- place 52 of 161
+- place 52 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `gates/astages_restrictions.js`
 
-- place 53 of 161
+- place 53 of 162
 - events: `ServerEvents.loaded`
 - registries: dimensions
 - reads: `icraft.dims` of `0_lib_registry.js` (load), `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `gates/codex_boss_rush.js`
 
-- place 54 of 161
+- place 54 of 162
 - events: `EntityEvents.death`, `ServerEvents.commandRegistry`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js` (load), `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `gates/codex_progression_engine.js`
 
-- place 55 of 161; header: @events @file @live
+- place 55 of 162; header: @events @file @live
 - events: `ServerEvents.commandRegistry`, `ServerEvents.tags` for `item`
 - features: `codex-balance`, `codex-exchange`, `codex-submit`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `gates/milestone_detection.js`
 
-- place 56 of 161
+- place 56 of 162
 - events: `EntityEvents.death`, `PlayerEvents.loggedIn`, `AStageEvents.added`
 - tick functions: `tick_milestoneTierEnsure` (server, every 100, offset 50)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `icraftsets_command.js`
 
-- place 57 of 161
+- place 57 of 162
 - events: `ServerEvents.commandRegistry`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `icraft_despawn_command.js`
 
-- place 58 of 161; header: @events @file
+- place 58 of 162; header: @events @file
 - events: `ServerEvents.commandRegistry`
 - registries: bosses (through core.isBoss)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `idle_hunger_pause.js`
 
-- place 59 of 161
+- place 59 of 162
 - events: `PlayerEvents.loggedOut`
 - tick functions: `tick_idleHungerPause` (server, every ?, offset 13)
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `integration/dna_simple_staves_buffs.js`
 
-- place 60 of 161
+- place 60 of 162
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`
 - tick functions: `tick_dna_simple_staves_buffs` (server, every 10, offset 4)
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `integration/dna_simple_staves_strip.js`
 
-- place 61 of 161
+- place 61 of 162
 - events: `ItemEvents.rightClicked`
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `items/compass_of_return.js`
 
-- place 62 of 161
+- place 62 of 162
 - events: `PlayerEvents.loggedIn`, `BlockEvents.rightClicked`, `ItemEvents.rightClicked`
 - features: `compass-of-return`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `liteminer_hunger_gate.js`
 
-- place 63 of 161
+- place 63 of 162
 - events: `BlockEvents.broken`, `PlayerEvents.loggedOut`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/0_entity_id_validator.js`
 
-- place 64 of 161; library `entity-mod`; header: @events @file @registry
+- place 64 of 162; library `entity-mod`; header: @events @file @registry
 - events: `ServerEvents.loaded`
 - registries: bosses
 - sets: `global.icraftEntityIdOk`, `global.icraftEntityMod`
@@ -1463,57 +1465,64 @@ own one-shot `global._*` flags.
 
 ### `loot/abyss_boss_loot.js`
 
-- place 65 of 161
+- place 65 of 162
 - events: `LootJS.modifiers`
 - sections: 4
 - features: `abyssal-artifact`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `icraft.section` of `00_icraft_guard.js`, `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
+### `loot/aether_reward_chests.js`
+
+- place 66 of 162; header: @events @file
+- events: `LootJS.modifiers`
+- sections: 2
+- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
+
 ### `loot/alexsmobs_drops.js`
 
-- place 66 of 161
+- place 67 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/blue_skies_drops.js`
 
-- place 67 of 161
+- place 68 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/boss_arena_material_tease.js`
 
-- place 68 of 161
+- place 69 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/boss_arena_themed_loot.js`
 
-- place 69 of 161
+- place 70 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/boss_refight_repair_floors.js`
 
-- place 70 of 161
+- place 71 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/boss_unique_drops.js`
 
-- place 71 of 161
+- place 72 of 162
 - events: `LootJS.modifiers`
 - reads: `global.ICRAFT_UNIQUE_DROP_CHANCE` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/cataclysm_boss_drops.js`
 
-- place 72 of 161
+- place 73 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/codex_exploration_drops.js`
 
-- place 73 of 161
+- place 74 of 162
 - events: `LootJS.modifiers`
 - sections: 5
 - registries: dimensions
@@ -1521,37 +1530,37 @@ own one-shot `global._*` flags.
 
 ### `loot/crop_seed_reduction.js`
 
-- place 74 of 161
+- place 75 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/dimensional_boss_drops.js`
 
-- place 75 of 161
+- place 76 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/fragment_core_drops.js`
 
-- place 76 of 161
+- place 77 of 162
 - events: `EntityEvents.death`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/grass_pam_seeds.js`
 
-- place 77 of 161
+- place 78 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/iss_boss_drops.js`
 
-- place 78 of 161
+- place 79 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/iss_boss_first_kill.js`
 
-- place 79 of 161
+- place 80 of 162
 - events: `EntityEvents.death`
 - features: `first-kill-book`, `wither-relic`
 - registries: bosses
@@ -1559,7 +1568,7 @@ own one-shot `global._*` flags.
 
 ### `loot/lootjs_overhaul.js`
 
-- place 80 of 161
+- place 81 of 162
 - events: `LootJS.modifiers`
 - sections: 103
 - registries: dimensions
@@ -1568,7 +1577,7 @@ own one-shot `global._*` flags.
 
 ### `loot/loot_overhaul.js`
 
-- place 81 of 161
+- place 82 of 162
 - events: `LootJS.modifiers`
 - sections: 20
 - features: `wither-tablets`
@@ -1577,7 +1586,7 @@ own one-shot `global._*` flags.
 
 ### `loot/lovely_pieces_loot.js`
 
-- place 82 of 161
+- place 83 of 162
 - events: `LootJS.modifiers`
 - sections: 4
 - registries: dimensions
@@ -1585,74 +1594,74 @@ own one-shot `global._*` flags.
 
 ### `loot/mahou_synergy_drops.js`
 
-- place 83 of 161
+- place 84 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/majrusz_skeleton_punch_strip.js`
 
-- place 84 of 161
+- place 85 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/meat_drop_doubling.js`
 
-- place 85 of 161
+- place 86 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/planetary_loot.js`
 
-- place 86 of 161
+- place 87 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/staff_wand_drops.js`
 
-- place 87 of 161
+- place 88 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/stalwart_dungeons_drops.js`
 
-- place 88 of 161
+- place 89 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/terramity_boss_drops.js`
 
-- place 89 of 161
+- place 90 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/terramity_structure_drops.js`
 
-- place 90 of 161
+- place 91 of 162
 - events: `LootJS.modifiers`
 - sections: 5
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`, `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/tmb_plain_bow_effects.js`
 
-- place 91 of 161; header: @events @file @live
+- place 92 of 162; header: @events @file @live
 - hurt handlers: `icraft.tmb_plain_bow_effects` (late) [any, cancelled, unchecked]
 - features: `unique-bow-effects`
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `loot/twilight_boss_drops.js`
 
-- place 92 of 161
+- place 93 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftEntityMod` of `loot/0_entity_id_validator.js`
 
 ### `loot/unique_itemset_registry.js`
 
-- place 93 of 161
+- place 94 of 162
 - sets: `global.ICRAFT_TIER_DMG_MULT`, `global.ICRAFT_TMB_BOWS`, `global.ICRAFT_UNIQUE_DROP_CHANCE`, `global.ICRAFT_UNIQUE_ITEMS`
 
 ### `loot/unique_tier_buff.js`
 
-- place 94 of 161; header: @events @file @live
+- place 95 of 162; header: @events @file @live
 - events: `EntityEvents.spawned`
 - hurt handlers: `icraft.unique_tier_buff` [any, last, unchecked]
 - features: `unique-tier-buff`
@@ -1660,20 +1669,20 @@ own one-shot `global._*` flags.
 
 ### `loot/zzz_iss_scroll_tier_clamp.js`
 
-- place 95 of 161
+- place 96 of 162
 - events: `LootJS.modifiers`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `loot/zz_iss_arena_enrichment.js`
 
-- place 96 of 161; header: @after @events @file
+- place 97 of 162; header: @after @events @file
 - events: `LootJS.modifiers`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 - must load after: `loot/lootjs_overhaul.js` (declared: the ISS strip of that file removes what is added before it (LootJS removals apply in registration order))
 
 ### `loot/zz_pack_enchanted_books.js`
 
-- place 97 of 161; header: @after @events @file @registry
+- place 98 of 162; header: @after @events @file @registry
 - events: `LootJS.modifiers`
 - registries: dimensions
 - reads: `global.ICRAFT_MARQUEE_BOOKS` of `loot/lootjs_overhaul.js`, `icraft.dims` of `0_lib_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load)
@@ -1681,62 +1690,62 @@ own one-shot `global._*` flags.
 
 ### `loot/zz_unique_chest_strip.js`
 
-- place 98 of 161; header: @events @file @last
+- place 99 of 162; header: @events @file @last
 - events: `LootJS.modifiers`
 - reads: `global.ICRAFT_TMB_BOWS` of `loot/unique_itemset_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 - declared the last handler of: `LootJS.modifiers`
 
 ### `magic_crit_hook.js`
 
-- place 99 of 161; header: @events @file
+- place 100 of 162; header: @events @file
 - hurt handlers: `icraft.magic_crit` [attackerPlayer]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `megatorch_damage.js`
 
-- place 100 of 161
+- place 101 of 162
 - events: `ServerEvents.tick`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `mobgriefing_default.js`
 
-- place 101 of 161
+- place 102 of 162
 - events: `ServerEvents.loaded`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `more_curios_slots_cap.js`
 
-- place 102 of 161
+- place 103 of 162
 - events: `ItemEvents.rightClicked` for `<computed>`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `mutant_xp_boost.js`
 
-- place 103 of 161
+- place 104 of 162
 - straight on a Java registry: `ForgeEventRegistry_xp.registerExperienceDrop` `icraft.mutant_xp_boost`
 
 ### `origins/artificial_construct_progression.js`
 
-- place 104 of 161; header: @events @file
+- place 105 of 162; header: @events @file
 - events: `ItemEvents.rightClicked`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/battlemage_arcane_cleave.js`
 
-- place 105 of 161; header: @events @file
+- place 106 of 162; header: @events @file
 - events: `EntityEvents.death`
 - hurt handlers: `icraft.battlemage_arcane_cleave` [attackerPlayer, last, unchecked]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/battlemage_mana_shield.js`
 
-- place 106 of 161
+- place 107 of 162
 - tick functions: `tick_battlemageManaShield` (server, every 100, offset 0)
 - reads: `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `origins/class_passives.js`
 
-- place 107 of 161; header: @events @file @registry
+- place 108 of 162; header: @events @file @registry
 - events: `EntityEvents.death`
 - tick functions: `tick_classPassives` (server, every 5, offset 0)
 - registries: dimensions
@@ -1744,14 +1753,14 @@ own one-shot `global._*` flags.
 
 ### `origins/class_passives_phase6h.js`
 
-- place 108 of 161; header: @events @file
+- place 109 of 162; header: @events @file
 - events: `ServerEvents.tick`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `EntityEvents.death`
 - hurt handlers: `icraft.class_passives_h6` [any, last, unchecked]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/origin_effects.js`
 
-- place 109 of 161; header: @events @file
+- place 110 of 162; header: @events @file
 - events: `BlockEvents.broken`
 - tick functions: `tick_originEffectsAvianMerling` (server, every 40, offset 0), `tick_blazebornNetherAffinity` (player, every 200, offset 50), `tick_enderianShift` (player, every 20, offset 7), `tick_revenantShadowStrike` (server, every 40, offset 20)
 - hurt handlers: `icraft.origin.blazeborn.deal` [attackerPlayer, last, unchecked], `icraft.origin.blazeborn.take` [victimPlayer, first, secondary, unchecked], `icraft.origin.enderian.shift` [attackerPlayer, last, unchecked]
@@ -1759,33 +1768,33 @@ own one-shot `global._*` flags.
 
 ### `origins/origin_status_commands.js`
 
-- place 110 of 161
+- place 111 of 162
 - events: `ServerEvents.commandRegistry`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`
 
 ### `origins/phantom_undeath.js`
 
-- place 111 of 161; header: @events @file
+- place 112 of 162; header: @events @file
 - events: `EntityEvents.death`
 - tick functions: `tick_phantomUndeath` (server, every 200, offset 0)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `origins/spell_book_transfer.js`
 
-- place 112 of 161; header: @events @file
+- place 113 of 162; header: @events @file
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedOut`
 - tick functions: `tick_spellBookSnapshot` (player, every 2, offset 0)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 
 ### `origins/ss_unique_spellsword_scaling.js`
 
-- place 113 of 161; header: @events @file
+- place 114 of 162; header: @events @file
 - hurt handlers: `icraft.ss_unique_spellsword` [attackerPlayer]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load)
 
 ### `origins/witch_of_ink_progression.js`
 
-- place 114 of 161; header: @events @file @registry
+- place 115 of 162; header: @events @file @registry
 - events: `EntityEvents.death`, `PlayerEvents.loggedIn`, `PlayerEvents.respawned`
 - tick functions: `tick_witchOfInkBuffs` (server, every 2200, offset 100)
 - registries: bosses
@@ -1793,26 +1802,26 @@ own one-shot `global._*` flags.
 
 ### `origins/witherborn_slimebodied.js`
 
-- place 115 of 161; header: @events @file
+- place 116 of 162; header: @events @file
 - events: `EntityEvents.hurt`, `PlayerEvents.loggedOut`, `ItemEvents.rightClicked`, `PlayerEvents.inventoryChanged`
 - tick functions: `tick_witherbornSlimebodied` (server, every 100, offset 35)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `pregen/auto_chunky.js`
 
-- place 116 of 161
+- place 117 of 162
 - events: `ServerEvents.loaded`, `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `quests/combat_kill_signals.js`
 
-- place 117 of 161
+- place 118 of 162
 - events: `EntityEvents.death`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `quests/heracles_reconcile.js`
 
-- place 118 of 161; header: @events @file
+- place 119 of 162; header: @events @file
 - events: `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`
 - tick functions: `tick_heraclesReconcileRecheck` (server, every 20, offset 9), `tick_heraclesReconcilePeriodic` (server, every 600, offset 13)
 - sets: `icraft.heracles`
@@ -1820,7 +1829,7 @@ own one-shot `global._*` flags.
 
 ### `quests/onboarding_bridge.js`
 
-- place 119 of 161; header: @events @file @live
+- place 120 of 162; header: @events @file @live
 - events: `PlayerEvents.loggedOut`
 - tick functions: `tick_onboardingBridge` (player, every ?, offset 37)
 - features: `quest-bridge`
@@ -1828,131 +1837,131 @@ own one-shot `global._*` flags.
 
 ### `randomize_blank_scrolls.js`
 
-- place 120 of 161
+- place 121 of 162
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/ad_astra_gating.js`
 
-- place 121 of 161
+- place 122 of 162
 - events: `ServerEvents.recipes`
 - sections: 7
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/boss_material_processing.js`
 
-- place 122 of 161
+- place 123 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/cooking_conversion.js`
 
-- place 123 of 161
+- place 124 of 162
 - events: `ServerEvents.recipes`
 - sections: 10
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/cooking_for_blockheads_overrides.js`
 
-- place 124 of 161
+- place 125 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/create_blaze_burner_t1.js`
 
-- place 125 of 161
+- place 126 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/if_latex_rework.js`
 
-- place 126 of 161
+- place 127 of 162
 - events: `ServerEvents.recipes`
 - sections: 5
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/magic_recipes.js`
 
-- place 127 of 161
+- place 128 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/mek_biofuel_squeeze.js`
 
-- place 128 of 161
+- place 129 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/planetary_extraction.js`
 
-- place 129 of 161
+- place 130 of 162
 - events: `ServerEvents.recipes`
 - sections: 11
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/progression_tier_fixes.js`
 
-- place 130 of 161
+- place 131 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/recipe_audit.js`
 
-- place 131 of 161
+- place 132 of 162
 - events: `ServerEvents.recipes`
 - sections: 12
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/refined_storage_dualpath.js`
 
-- place 132 of 161
+- place 133 of 162
 - events: `ServerEvents.recipes`
 - sections: 13
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/staff_wand_recipes.js`
 
-- place 133 of 161
+- place 134 of 162
 - events: `ServerEvents.recipes`
 - sections: 2
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/strip_mutant_monsters.js`
 
-- place 134 of 161
+- place 135 of 162
 - events: `ServerEvents.recipes`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/strip_tmb_bow_recipes.js`
 
-- place 135 of 161
+- place 136 of 162
 - events: `ServerEvents.recipes`
 - reads: `global.ICRAFT_TMB_BOWS` of `loot/unique_itemset_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `recipes/tier_gated_recipes.js`
 
-- place 136 of 161
+- place 137 of 162
 - events: `ServerEvents.recipes`
 - sections: 18
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `recipes/waystone_recipes.js`
 
-- place 137 of 161
+- place 138 of 162
 - events: `ServerEvents.recipes`
 - sections: 7
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `regen_control.js`
 
-- place 138 of 161
+- place 139 of 162
 - events: `ServerEvents.loaded`
 - tick functions: `tick_regenControl` (player, every ?, offset 3)
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load)
 
 ### `relic_boss_drops.js`
 
-- place 139 of 161; header: @events @file @registry
+- place 140 of 162; header: @events @file @registry
 - events: `EntityEvents.death`
 - straight on a Java registry: `ForgeEventRegistry_rbd.registerDrops` `iridescent_relics.boss_drops`
 - registries: bosses
@@ -1960,27 +1969,27 @@ own one-shot `global._*` flags.
 
 ### `respawn_hunger.js`
 
-- place 140 of 161
+- place 141 of 162
 - events: `PlayerEvents.respawned`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `respec/class_respec.js`
 
-- place 141 of 161; header: @events @file
+- place 142 of 162; header: @events @file
 - events: `ServerEvents.recipes`, `ItemEvents.rightClicked` for `<computed>`, `PlayerEvents.loggedOut`, `ServerEvents.loaded`
 - tick functions: `tick_classRespecWatch` (player, every 20, offset 3), `tick_skillRespec` (server, every 40, offset 0)
 - reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerPlayerTick` of `0_tick_master.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `scaling/boss_hp.js`
 
-- place 142 of 161; header: @events @file @registry
+- place 143 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `scaling/boss_progressive.js`
 
-- place 143 of 161; header: @events @file @live @registry
+- place 144 of 162; header: @events @file @live @registry
 - events: `EntityEvents.spawned`, `EntityEvents.death`, `ServerEvents.commandRegistry`
 - hurt handlers: `scaling/boss_progressive` [player]
 - features: `per-kill-counted`, `per-kill-scaled`
@@ -1989,7 +1998,7 @@ own one-shot `global._*` flags.
 
 ### `scaling/dimension_mechanics.js`
 
-- place 144 of 161; header: @events @file @registry
+- place 145 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`, `EntityEvents.hurt`, `EntityEvents.death`
 - tick functions: `tick_dimEnvironmentalHazards` (player, every 100, offset 0), `tick_fullMoonDetection` (player, every 24000, offset 13000), `tick_dragonsInfluence` (player, every 200, offset 0), `tick_enhancedVoidCorruption` (player, every 1200, offset 0), `tick_voidCorruptionCleanse` (server, every 20, offset 0)
 - hurt handlers: `icraft.dimension_mechanics.blue_skies` [victimPlayer]
@@ -1998,21 +2007,21 @@ own one-shot `global._*` flags.
 
 ### `scaling/mob_equipment.js`
 
-- place 145 of 161; header: @events @file @registry
+- place 146 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses, dimensions
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.dims` of `0_lib_registry.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftSkipIssMob` of `0_iss_guard.js`
 
 ### `scaling/mob_scaling_unified.js`
 
-- place 146 of 161; header: @events @file @registry
+- place 147 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `scaling/zz_ascension_scaling.js`
 
-- place 147 of 161; header: @after @events @file @registry
+- place 148 of 162; header: @after @events @file @registry
 - events: `EntityEvents.spawned`
 - registries: bosses
 - reads: `global.ICRAFT_ASCENSION` of `endgame/ascension.js`, `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftIssResId` of `0_iss_guard.js`
@@ -2020,7 +2029,7 @@ own one-shot `global._*` flags.
 
 ### `scaling/zz_boss_global_3x.js`
 
-- place 148 of 161; header: @after @events @file @live @registry
+- place 149 of 162; header: @after @events @file @live @registry
 - events: `EntityEvents.spawned`
 - features: `boss-x3`
 - registries: bosses
@@ -2029,7 +2038,7 @@ own one-shot `global._*` flags.
 
 ### `skills/justleveling_skills.js`
 
-- place 149 of 161; header: @events @file
+- place 150 of 162; header: @events @file
 - events: `ItemEvents.crafted`, `EntityEvents.death`, `BlockEvents.placed`, `BlockEvents.broken`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `PlayerEvents.loggedIn`, `ServerEvents.loaded`
 - tick functions: `tick_justlevelingSkills` (server, every 100, offset 37), `tick_aptitudeXpRefund` (server, every 5, offset 3)
 - hurt handlers: `icraft.justleveling.1` [attackerPlayer, first, unchecked], `icraft.justleveling.2` [victimPlayer, first, unchecked]
@@ -2038,14 +2047,14 @@ own one-shot `global._*` flags.
 
 ### `skills/mastery_tax.js`
 
-- place 150 of 161; header: @events @file
+- place 151 of 162; header: @events @file
 - events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.loggedOut`, `ServerEvents.loaded`
 - tick functions: `tick_masteryTax` (server, every 40, offset 0)
 - reads: `icraft.aptitude` of `0_lib_aptitudes.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `skills/skill_effects.js`
 
-- place 151 of 161; header: @events @file @live
+- place 152 of 162; header: @events @file @live
 - events: `ServerEvents.loaded`, `BlockEvents.broken`, `BlockEvents.rightClicked`, `ItemEvents.entityInteracted`, `ItemEvents.crafted`, `BlockEvents.broken` as `skills/skill_effects#2`
 - tick functions: `tick_skillEffects` (server, every 25, offset 0)
 - hurt handlers: `icraft.skill_effects.1` [attackerPlayer], `icraft.skill_effects.2` [victimPlayer]
@@ -2054,19 +2063,19 @@ own one-shot `global._*` flags.
 
 ### `spawn_priest_tower.js`
 
-- place 152 of 161
+- place 153 of 162
 - events: `ServerEvents.loaded`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `spawn_protection.js`
 
-- place 153 of 161
+- place 154 of 162
 - events: `BlockEvents.broken`, `BlockEvents.placed`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `spawn_village_protection.js`
 
-- place 154 of 161; header: @events @file @registry
+- place 155 of 162; header: @events @file @registry
 - events: `EntityEvents.spawned`, `BlockEvents.placed`
 - tick functions: `tick_spawnVillageSweep` (server, every ?, offset 0)
 - registries: bosses
@@ -2074,19 +2083,19 @@ own one-shot `global._*` flags.
 
 ### `strip_anomalous_drops.js`
 
-- place 155 of 161; header: @events @file
+- place 156 of 162; header: @events @file
 - straight on a Java registry: `ForgeEventRegistry_sad.registerDrops` `icraft.strip_anomalous_drops`
 - reads: `icraft.core` of `0_lib_core.js`
 
 ### `strip_infinity_ham.js`
 
-- place 156 of 161
+- place 157 of 162
 - events: `PlayerEvents.inventoryChanged`, `PlayerEvents.loggedIn`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `sunlight_smite.js`
 
-- place 157 of 161; header: @events @file @live @registry
+- place 158 of 162; header: @events @file @live @registry
 - tick functions: `tick_sunlightSmite` (server, every 10, offset 3)
 - features: `sunlight-smite`
 - registries: bosses (through core.isBoss)
@@ -2094,27 +2103,27 @@ own one-shot `global._*` flags.
 
 ### `tetra_terramity_perks.js`
 
-- place 158 of 161; header: @events @file
+- place 159 of 162; header: @events @file
 - tick functions: `tick_terramityTetraPerks` (server, every 40, offset 30)
 - hurt handlers: `icraft.tetra_terramity_perks` [attacker]
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `ultris_randomizer_janitor.js`
 
-- place 159 of 161; header: @events @file
+- place 160 of 162; header: @events @file
 - tick functions: `tick_ultrisJanitor` (server, every 100, offset 7)
 - reads: `icraft.core` of `0_lib_core.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `validate_recipe_removals.js`
 
-- place 160 of 161; not in server_distribution/kubejs, distribution/client/kubejs
+- place 161 of 162; not in server_distribution/kubejs, distribution/client/kubejs
 - events: `ServerEvents.recipes`
 - sets inside a handler: `global.icraftRecipeRemovalsValidated`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `zzz_icraft_live.js`
 
-- place 161 of 161, priority -1000
+- place 162 of 162, priority -1000
 - events: `ServerEvents.unloaded`, `PlayerEvents.loggedIn`, `ServerEvents.commandRegistry`
 - tick functions: `tick_icraftLive` (server, every 20, offset 19)
 - sets: `global.icraftLiveLines`

@@ -145,6 +145,7 @@
    "liteminer_hunger_gate@PlayerEvents.loggedOut": "liteminer_hunger_gate.js",
    "loot/0_entity_id_validator@ServerEvents.loaded": "loot/0_entity_id_validator.js",
    "loot/abyss_boss_loot@LootJS.modifiers": "loot/abyss_boss_loot.js",
+   "loot/aether_reward_chests@LootJS.modifiers": "loot/aether_reward_chests.js",
    "loot/alexsmobs_drops@LootJS.modifiers": "loot/alexsmobs_drops.js",
    "loot/blue_skies_drops@LootJS.modifiers": "loot/blue_skies_drops.js",
    "loot/boss_arena_material_tease@LootJS.modifiers": "loot/boss_arena_material_tease.js",
@@ -362,6 +363,10 @@
     "loot/abyss_boss_loot/section-2-custom-ring-drops-boss-kills",
     "loot/abyss_boss_loot/section-4-unorithe-armor-set-higher-tier",
     "loot/abyss_boss_loot/section-6-abyssal-celestial-artifacts-the"
+   ],
+   "loot/aether_reward_chests@LootJS.modifiers": [
+    "loot/aether_reward_chests/silver",
+    "loot/aether_reward_chests/gold"
    ],
    "loot/codex_exploration_drops@LootJS.modifiers": [
     "loot/codex_exploration_drops/t1-overworld-dungeon-structure-chests-only",

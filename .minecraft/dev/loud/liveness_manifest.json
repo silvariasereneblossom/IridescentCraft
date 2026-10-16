@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 328,
-   "digest": "7c433abb457985e3",
+   "count": 329,
+   "digest": "683950c12e75325e",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -58,6 +58,7 @@
     "icraftsets_command@ServerEvents.commandRegistry",
     "loot/0_entity_id_validator@ServerEvents.loaded",
     "loot/abyss_boss_loot@LootJS.modifiers",
+    "loot/aether_reward_chests@LootJS.modifiers",
     "loot/alexsmobs_drops@LootJS.modifiers",
     "loot/blue_skies_drops@LootJS.modifiers",
     "loot/boss_arena_material_tease@LootJS.modifiers",
@@ -671,6 +672,10 @@
     {
      "id": "loot/abyss_boss_loot@LootJS.modifiers",
      "script": "loot/abyss_boss_loot.js"
+    },
+    {
+     "id": "loot/aether_reward_chests@LootJS.modifiers",
+     "script": "loot/aether_reward_chests.js"
     },
     {
      "id": "loot/alexsmobs_drops@LootJS.modifiers",
@@ -1665,6 +1670,14 @@
     {
      "name": "loot/abyss_boss_loot/section-6-abyssal-celestial-artifacts-the",
      "of": "loot/abyss_boss_loot@LootJS.modifiers"
+    },
+    {
+     "name": "loot/aether_reward_chests/silver",
+     "of": "loot/aether_reward_chests@LootJS.modifiers"
+    },
+    {
+     "name": "loot/aether_reward_chests/gold",
+     "of": "loot/aether_reward_chests@LootJS.modifiers"
     },
     {
      "name": "loot/codex_exploration_drops/t1-overworld-dungeon-structure-chests-only",

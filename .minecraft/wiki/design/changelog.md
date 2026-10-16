@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Aether gear for Tier 4
+
+- **The Aether's Tetra materials are Tier 4 materials.** The Aether is a Tier 4 dimension, where netherite is the floor and only Aethersteel sits above it. The Slider's, the Valkyrie Queen's and the Sun Spirit's boss materials (carved stone, victory medal, sun altar) now sit in the Tier 4 boss band, just under the Eye of the Storm's squall plate, and need a diamond hammer to forge. Zanite, gravitite, valkyrie, phoenix and skyjade are netherite-grade in Tetra and keep their own perks (skyjade stays brittle and still takes no enchantments).
+- **A stratus ingot makes one Tetra material.** Two materials both claimed the ingot; the pack's own Stratus (the one with modular armour) keeps it.
+- **Neptune and obsidian armour at the Tetra workbench.** Neptune's material now names its real item, the neptune mesh. Aether obsidian armour converts into netherite modular armour, which matches its own numbers.
+- **The Silver and Gold dungeon reward chests pay Tier 4 loot.** The Silver chest holds a stratus ingot and the Gold chest two, every time; the plain iron and golden swords and the chainmail are gone from them. The Aether's own gear, Deep Aether's extras and the upgrade templates are unchanged.
+
 ## October 2026 — The Aether becomes Tier 4; Frostmaw moves to Everbright
 
 - **The Aether is a Tier 4 dimension.** It opens at Tier 4 instead of Tier 2 (Deep Aether's biomes are part of it; Deep Aether has no dimension of its own). Its mobs follow the Tier 4 difficulty curve, 600% rising to 1000% over 200 hours as in The End (it was 200% to 350% over 100 hours), and its own creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, Deep Aether's baby zephyrs and venomites) now grow with the curve too. A death there costs 22% durability (was 15%). Affixes and gems found there roll Rare to Ancient (was Uncommon to Epic), and Apotheosis invader bosses appear 8% of the time (was 4%). Its chests follow The End's Tier 4 loot rules, and its arrival bonus and first-kill boss tokens are The End's (Tier 3 tokens).

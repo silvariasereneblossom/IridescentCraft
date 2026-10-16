@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8afd6249",
+    "generated_from":  "f7c695aa",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5968,8 +5968,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "5640c1b9586a73a6373db70d6c1641cb0a1493bb4a0bb9ed089f5f340bbbc27c",
-                                                                  "size":  48727
+                                                                  "sha256":  "7b3afe0e87e704d4f66a3dc24270127342ab2e47b814693f124606f07ca25b6a",
+                                                                  "size":  48942
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "677f392a63dca3b6261f6a8601db686f75e72ae19d58d72fc958cbc23ef908b1",
@@ -7267,6 +7267,10 @@
                                                                         "sha256":  "5a4d4be72759714a5e4899f75283b4a0631014324f3242955d467805f7622e49",
                                                                         "size":  12494
                                                                     },
+                  "kubejs/server_scripts/loot/aether_reward_chests.js":  {
+                                                                             "sha256":  "08c2233b5e3119fec8435d47311780f5fcbc807b9dbe5262b34f1b835d8b0706",
+                                                                             "size":  2463
+                                                                         },
                   "kubejs/server_scripts/loot/alexsmobs_drops.js":  {
                                                                         "sha256":  "1e3e55c86d379e01288506f696c4d8ba900db0a7e61d0ffedc746343028c664a",
                                                                         "size":  7338
