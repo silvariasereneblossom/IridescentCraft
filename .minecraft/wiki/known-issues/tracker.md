@@ -10,6 +10,9 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
+### The Twilight Forest portal cannot be lit in survival — **Open (decision pending)**
+The pack replaced the diamond that lights a Twilight Forest portal with its own Twilight token, a leftover of the retired token currency. Nothing in the pack gives that token any more (no recipe, drop, quest or reward), so a survival player cannot open the portal. What should light it is a pending design call; until then, ask the server operator.
+
 ### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
@@ -65,7 +68,7 @@ Marquee structures are moving to per-structure themed loot pools (70% themed / 3
 The launcher updates the pack and pushes tester logs over a shared access token. If that token expires or is missing, the update/push can fail without an obvious symptom — and previously the game would launch on a stale pack with no warning. The launcher is now fail-visible (it surfaces an in-game warning and writes a marker when a sync didn't complete), and the operator is verifying the credential state.
 
 ### Ad Astra (space dimensions) — **In progress**
-The post-Tier-4 Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) are still being implemented: recipe gating, dimension scaling, loot, and space enchantments are in flight. The `planetary_loot` system has a known low-priority error that will clear once this work lands.
+The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). Loot and space enchantments are still in flight. The `planetary_loot` system has a known low-priority error that will clear once that work lands.
 
 ### ~72 custom items use placeholder art — **Open**
 About 72 custom items (progression tokens, boss materials, rings, end-game items, etc.) currently use tinted vanilla textures as functional, color-coded placeholders. Proper pixel art is a pending polish task.
@@ -102,6 +105,17 @@ Implemented features awaiting confirmation on a live world:
 ## Recently resolved
 
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
+
+**Progression**
+- The Codex could not take submissions, count held tokens or credit boss kills above Tier 1, and the boss-rush rosters listed bosses the pack does not have: no tier could be reached through the Codex. All of it works since October 2026 (10-12 at the latest).
+- A `/reload` switched every tier gate off until the next restart; gated recipes (netherite ingot, eye of ender, Digital Miner and others) were craftable by anyone, and the rocket workbench by no one. Fixed in October 2026.
+- Iron's Spellbooks' *Pocket Dimension* spell could be cast long before Tier 4; it is refused until Tier 4 since October 2026.
+
+**Items**
+- Two Engineering skills (Material Save, Craft Bonus) handed out free materials or copies of items on every inventory change, not only on a craft. They roll on a real craft only since October 2026.
+
+**Server**
+- A Twilight Forest placeholder boss crashed the server when it died or was saved. It is kept out of the world since October 2026.
 
 **Quests**
 - The quest *Brutal Bosses: Claim a Dungeon* could never be completed (its kill lines named things the game does not know as creatures). It was removed on 2026-10-14; nothing depended on it.
@@ -154,7 +168,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Several boss/entity crashes (Necromancer, Archevoker, Cryomancer, Wandering Magician and other unique Iron's Spells armor) fixed.
 - Mobs no longer break torches/doors/blocks at starter bases.
 - Blank "shot by ___" death messages fixed.
-- Abyss (TATOS) mobs confined to their own dimensions instead of leaking into the Overworld.
+- Abyss (TATOS) mobs stay in their own dimensions: a count on a copy of the test server's world found none anywhere else. (The script meant to send strays back had never worked, and was removed in October 2026.)
 
 **Gear & Tetra**
 - Items no longer disappear when they break — they go inert at near-zero durability instead (vanilla and modular gear).

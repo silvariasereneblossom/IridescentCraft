@@ -51,6 +51,8 @@ Rust workspace with three crates:
 - Crash-report capture + tail-of-latest.log; the server's logs and crash reports are pushed to a private log repository, never to this public one
 - PAT auth via `ICRAFT_GH_TOKEN` env var or `.icraft_token` file
 - Hang-detection watchdog: polls `logs/latest.log` mtime; kills on `boot_timeout` (default 15 min) or `idle_timeout` (default 15 min, post-boot) with graceful SIGTERM-equivalent so worlds flush. Configurable per-launch via `--boot-timeout` / `--idle-timeout`.
+- Crash detection (since 2026-10-15): the game's own fatal log lines make a run a crash whatever exit code the JVM returns. A server whose tick loop had died could exit with code 0 and pass for a clean stop, so it was never restarted; or its JVM stayed alive for minutes with the status still saying "up". Now a crashed run is restarted, a JVM still alive 30 seconds after a failed stop is killed, and after three restarts in 30 minutes that did not bring the server up the launcher gives up and says so; a Cycle request (not only the button at the server) then starts it again.
+- A restart never waits on the log push, and git can never stop the launcher with a prompt (since 2026-10-11).
 
 **World backups (since 2026-10):**
 - Every restart the launcher makes has a moment where the server is stopped and the world files are closed. If the newest scheduled backup is 12 hours old, the launcher uses that moment to zip the whole world folder into `backups/`. Restarts already happen every 4 to 12 hours, so this gives two backups a day with no restarts of its own.

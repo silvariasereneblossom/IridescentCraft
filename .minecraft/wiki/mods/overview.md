@@ -48,18 +48,15 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 
 | Dimension | Tier | Notes |
 |-----------|------|-------|
-| Twilight Forest | 2 | AStages-gated. Portal activator changed to T1 boss token (was diamond). |
+| Twilight Forest | 2 | AStages-gated. The portal is lit with the pack's Twilight token instead of a diamond; nothing gives that token at present (see [Known Issues](../known-issues/tracker.md)). |
 | Blue Skies | 2 | AStages-gated. Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. |
 | The Aether | 4 | AStages-gated (Tier 2 until 2026-10-16). Dimension mechanics: faster mobs, thin air, vertigo, updrafts. |
 | Deep Aether | 4 | No dimension of its own: its biomes, bosses and materials are part of the Aether. |
 | The Undergarden | 3 | AStages-gated. 4 metals integrated into Tetra. |
 | Deeper and Darker | 3 | AStages-gated |
 | The Abyss | 3 | Dimension mechanics: oppressive darkness, corruption, fear aura. 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. |
-| Ad Astra (Moon) | Post-T4 | 7x difficulty. BEING IMPLEMENTED |
-| Ad Astra (Mars) | Post-T4 | 8x difficulty. BEING IMPLEMENTED |
-| Ad Astra (Mercury) | Post-T4 | 9x difficulty. BEING IMPLEMENTED |
-| Ad Astra (Venus) | Post-T4 | 10x difficulty. BEING IMPLEMENTED |
-| Ad Astra (Glacio) | Post-T4 | 12x difficulty. BEING IMPLEMENTED |
+| Ad Astra (Moon, Mars, Mercury, Venus, Glacio, and their six orbits) | 4 | Each planet and orbit has its own Tier 4 gate; the rocket workbench is a Tier 4 recipe. Tier 4 difficulty curve. Loot and space enchantments still in progress. |
+| Iron's Spellbooks pocket dimension, Mahou Tsukai Reality Marble | 4 | The Pocket Dimension spell is refused before Tier 4. |
 
 ## Boss Mods
 
@@ -107,11 +104,11 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
 | Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden, F&A, and theabyss (TATOS) metals (4 live theabyss entries: garnite/knight/phantom/unorithe). Diamond hammer tier. |
-| Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
+| Ad Astra | recipes/config | Tier 4 space dimensions: rocket workbench locked to Tier 4, a Tier 4 gate on every planet and orbit, the Tier 4 difficulty curve, death penalty 22-30 %. Loot and space enchantments in progress. |
 | Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. **ERA 4 (2026-06-06):** fusion output buffed (`energyPerFusionFuel` 15M, x1.5) and fission output buffed (`energyPerFissionFuel` 1.5M, x1.25) so big reactors answer the higher machine costs; radiation disabled and meltdowns disabled (an over-damaged fission reactor force-shuts-down instead of exploding — dangerous but recoverable); new T4 stage pins on the fusion chain, SPS/antimatter, Digital Miner, and ultimate-tier facilities (intermediate machines left open). |
 | Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
 | Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops from TATOS chests + Abyss bosses (`abyss_boss_loot.js`). Abyss darkness/corruption/fear/void-whispers fire in `theabyss:the_abyss`. |
-| Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
+| Twilight Forest | tags | Portal activator changed from diamond to the pack's Twilight token (`kubejs:twilight_progression_token_t2`), which has no source at present. |
 | End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, Eyes of Ender staged at T4 (an End Compass → End Bastion unlock is planned to replace them), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
 | Mob equipment (`mob_equipment.js`) | scripts | 3-day grace, equipment/damage caps, diamond→iron mob breaking tools. (Was an Improved Mobs config; that mod was removed 2026-05-03 — handler now holds these targets.) |
 | Tectonic | config | Lower, flatter terrain: `vertical_scale` 0.38 (down from 1.155), `ultrasmooth` on, `flat_terrain_skew` 0.65, ridge_scale reduced. Mountains still present but much less extreme (worldgen rebalance 2026-06-06). |

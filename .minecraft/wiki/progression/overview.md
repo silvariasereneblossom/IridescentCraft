@@ -9,7 +9,9 @@ IridescentCraft uses a 4-tier progression system gated by AStages. Tiers advance
 | 1 | Bronze Age Explorer | Overworld only | Create, Pretty Pipes | Botania, Iron's Spells | Learning basics |
 | 2 | Enchanted Adventurer | Twilight Forest, Blue Skies (Everbright, Everdawn) | Thermal, IF (basic) | Ars Nouveau | Specialization |
 | 3 | Empowered Slayer | Undergarden, Deeper Darker, Nether, The Abyss | IF (advanced), Mekanism (basic), RS | Occultism, Forbidden & Arcanus | Major power spike |
-| 4 | God-Killer | The Aether (Deep Aether's biomes included), The End | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power |
+| 4 | God-Killer | The Aether (Deep Aether's biomes included), The End, the Ad Astra planets and orbits | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power |
+
+**Smaller dimensions.** A dimension's tier is the tier of the way in. The Abyss's Frost World counts as the Abyss (Tier 3). Iron's Spellbooks' pocket dimension (the Pocket Dimension spell, which cannot be cast before Tier 4) and Mahou Tsukai's Reality Marble are Tier 4. The Abyss's own pocket dimension counts as Tier 2, and its Spectral World has no way in.
 
 ## The Token Economy (advance via threshold OR boss-rush)
 
@@ -22,6 +24,12 @@ Tier progression runs on **one combined pool of physical, tiered progression tok
 | T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (the pack finale) |
 
+**One tier at a time.** A tier is bought only with the tier below it held. Tokens of a higher tier, or a cleared roster of a higher tier, do nothing until you have reached the tier below; kills still count, and are credited once you get there. `/icraft codex balance` and `/icraft codex bosses` say which tier comes first.
+
+**The boss-rush rosters** are the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters and others): 10 in Tier 1, 18 in Tier 2, 43 in Tier 3. Tier 4 has no boss rush. `/icraft codex bosses` shows the list and your progress.
+
+**Submitting.** `/icraft codex submit` takes the counted items from your main inventory (the hotbar included). Armor you wear and the item in your off hand are never taken.
+
 ### Four lanes feed the pool
 
 Each tier is reachable by a single pure playstyle; hybrids mix freely.
@@ -31,7 +39,7 @@ Each tier is reachable by a single pure playstyle; hybrids mix freely.
 - **Exploration** — miniboss/boss first-kill + repeat-kill tokens, non-overworld dimension entry, chest/barrel finds.
 - **Combat** — boss + miniboss kills, which both feed the pool *and* count toward the boss-rush %.
 
-**Engine:** Heracles (the quest mod) does the token submission, kill-tracking, and stage-granting; the Patchouli Codex book is the documentation skin. **Lucifer** is the T3 → T4 combat capstone (non-combat lanes skip him). **The End** is reached with Eyes of Ender (staged at T4); an **End Compass → End Bastion** route, the compass crafted from the Aether's materials, is planned to replace them. T4 is terminal — beating the **Ender Dragon** is the pack finale and opens the Ad Astra post-game.
+**Engine:** Heracles (the quest mod) does the token submission, kill-tracking, and stage-granting; the Patchouli Codex book is the documentation skin. **Lucifer** is the T3 → T4 combat capstone: the last boss of the Tier 3 roster (non-combat lanes skip him). **The End** is reached with Eyes of Ender (staged at T4); an **End Compass → End Bastion** route, the compass crafted from the Aether's materials, is planned to replace them. **The Ad Astra planets and orbits** are Tier 4 dimensions: a rocket (its workbench is a Tier 4 recipe) and the Tier 4 stage are what they ask. T4 is terminal — beating the **Ender Dragon** is the pack finale.
 
 → Full conversion tables + caps: [master.md Part III](../design/master.md#part-iii--progression-the-token-economy).
 
@@ -46,11 +54,13 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 | 1 | Overworld | 150% | 300% | 100h | 5% |
 | 2 | Twilight Forest, Blue Skies (Everbright/Everdawn) | 200% | 350% | 100h | 7-8% |
 | 3 | The Undergarden, Deeper and Darker (Otherside), The Nether, The Abyss (and its Frost World) | 300% | 450% | 100h | 10-12% |
-| 4 | The End, The Aether (Deep Aether's biomes included) | 600% | 1000% | 200h | 13-15% |
+| 4 | The End, The Aether (Deep Aether's biomes included), the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension, the Reality Marble | 600% | 1000% | 200h | 13-15% |
 
 After Ender Dragon is killed in-world: **The End uncaps** — multiplier extrapolates past 1000% indefinitely.
 
-**Deep Aether scales with the Aether.** Deep Aether is not a separate dimension — its biomes generate inside the Aether — so its ordinary mobs follow the Aether's curve (Tier 4 since 2026-10-16, Tier 2 before) and share its timer. The Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites) are scaled by the curve as well. Any dimension not named in the table uses the Tier 1 curve.
+**Deep Aether scales with the Aether.** Deep Aether is not a separate dimension — its biomes generate inside the Aether — so its ordinary mobs follow the Aether's curve (Tier 4 since 2026-10-16, Tier 2 before) and share its timer. The Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites) are scaled by the curve as well. The Abyss's pocket dimension runs the Tier 2 curve. Any dimension not named here uses the Tier 1 curve. (Until October 2026 the planets, orbits and pocket dimensions were on no list and ran the Tier 1 curve.)
+
+**Bosses with designed numbers are left off the curve.** A boss with a designed health or the boss x3 has the same health in every dimension (the Twilight Naga 900, the Wither 1,800, the Ender Dragon 3,000, before per-kill scaling): the curve no longer multiplies it again. Minibosses without a designed health still grow with the curve of where you meet them, like the mobs around them.
 
 All values configurable via `config/iridescent_difficulty-common.toml` (per-tier `startPct`/`capPct`/`capHours`, per-dimension tier mapping, per-dimension `uncapAfterEnderDragon` flag).
 
@@ -64,9 +74,12 @@ All values configurable via `config/iridescent_difficulty-common.toml` (per-tier
 
 AStages enforces per-player tier restrictions on:
 - Items (tier-inappropriate items cannot be used)
-- Dimensions (locked until stage unlocked)
+- Dimensions (locked until stage unlocked; every planet and orbit has its own Tier 4 gate, so a rocket handed to a Tier 3 player goes nowhere)
 - Recipes (tier-gated crafting)
 - Ores (hidden/replaced until appropriate tier)
+- One spell: Iron's Spellbooks' *Pocket Dimension* is refused before Tier 4 ("Pocket Dimension is a Tier 4 spell"); no mana, cooldown or scroll is used up
+
+The gates survive a `/reload` (until October 2026 a reload switched them off until the next restart).
 
 ## Material Progression
 

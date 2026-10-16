@@ -111,8 +111,9 @@ current T2 Blue Skies feels vs the T1 version before committing.
 ## Low Priority
 
 ### Ad Astra Endgame Completion
-- 5 planets as post-T4 content
-- Remaining: recipe gating, dimension scaling, loot tables, space enchantments
+- 5 planets and their 6 orbits as Tier 4 content
+- Done (October 2026): rocket workbench locked to Tier 4, a Tier 4 gate on every planet and orbit, the Tier 4 difficulty curve, death penalties, affix rarity clamps, invader bosses on the planets
+- Remaining: loot tables, space enchantments
 
 ### Config Hot-Reload System
 - Allow config/kubejs changes without full server restart
@@ -146,7 +147,7 @@ Items move here when implemented. See [Design Changelog](../design/changelog.md)
 - ~~Magic damage sync~~ → `skill_effects.js` syncs to ars_nouveau + irons_spellbooks
 - ~~Phantom Undeath~~ → `phantom_undeath.js`
 - ~~Compass of Return~~ → `compass_of_return.js` + loot + recipe
-- ~~Transmuted materials~~ → 5 items, forge tags, JEI hidden
+- ~~Transmuted materials~~ → retired: the 5 placeholder items never had recipes and were removed in October 2026 (transmutation is not in the game)
 - ~~Codex update~~ → 80+ entries current
 - ~~Tier loot fix (Nether = T3)~~ → Corrected in lootjs_overhaul.js
 - ~~Iron's Spells loot tiering~~ → Spell books + inks scale T1-T4

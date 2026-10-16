@@ -128,7 +128,7 @@ The token economy ([master.md Part III](master.md#part-iii--progression-the-toke
 | T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
 
-Boss-rush denominator = the **per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2 and the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
+Boss-rush denominator = the **per-tier boss roster**: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 10 / 18 / 43 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2 and the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. **The ladder is strict** (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only with the tier below held; early kills are kept and count once it is. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
 
 #### A.7.1 Engineering lane (material → token)
 
@@ -237,9 +237,9 @@ Draws **only** from the generation/cultivation/ritual side (mana/source farms, i
 
 #### A.7.4 T3 → T4 Lucifer + the End
 
-- **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone.** Non-combat lanes skip him (bank the 2000-token threshold). Both combat routes require him: he is the final T3 boss in the 100% boss-rush, and his unique **Lucifer's Token** is the "pure-except-for-the-fight" submission. (Lucifer is in `TIER_4_BOSSES`; clearing all other T3 bosses unlocks him.)
+- **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone.** Non-combat lanes skip him (bank the 2000-token threshold). The boss-rush route requires him: he is the final T3 boss in the 100% clear. A unique **Lucifer's Token** (the "pure-except-for-the-fight" submission, a second combat door) is designed but not in the game, and a Lucifer kill grants no tier on its own (the old single-kill milestone routes were retired on 2026-06-01).
 - **The End** uses the vanilla stronghold + End-Portal process with Eyes of Ender (staged at T4). **Planned, not built:** the **Eye of Ender is to be replaced by an "End Compass"** crafted from **the Aether's materials**, which would direct the player to an **"End Bastion"** (reusing the `boss_compass` waystone system), making the End post-Aether.
-- **T4 is terminal** — no token gate. The **Ender Dragon** is the pack finale (beat it → win + unlock the Ad Astra post-game).
+- **T4 is terminal** — no token gate. The **Ender Dragon** is the pack finale. The Ad Astra planets were designed as the post-game after it; in the game they and their orbits are T4 dimensions that ask for the T4 stage and a rocket, not a dragon kill.
 
 > **Supply-vs-threshold pacing (rough).** Threshold is always *reachable* (farmable boss repeat-kills guarantee closure). "Do-each-thing-once" supply (~550 / ~900 / ~1450) grows slower (~1.6×/tier) than the threshold curve (2×/tier), so upper tiers — esp. T3 → T4 — may lean on grind. Sensitive to the open Exploration values + the rich T3 Mekanism economy (likely lowballed). Needs a real model to settle.
 
@@ -326,18 +326,15 @@ All `event.remove` and `event.shaped` (override) calls across `kubejs/server_scr
 
 **Section G — Elytra crafting** blocked (T4 from End drops only).
 
-### B.3 `recipes/tier_skip.js` — transmutation (intentional bend mechanism)
+### B.3 `recipes/tier_skip.js` — transmutation (retired)
 
-The "bend not break" mechanism. Cross-tier conversion recipes at deliberately inefficient ratios:
-- T2 → T3 transmutation: ~32-64 T2 ingots for 1 T3 ingot via Create mixing or Thermal smelter.
-- Vanilla item ↔ Mekanism processing duplicates (e.g., `kubejs:enderium_via_occultism` provides a Thermal-bypass alt).
-- Cross-mod dual-paths for vanilla items (Mekanism + Botania routes for same outcome).
+The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is **not in the game**: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops are the remaining bend mechanism.
 
-Plus the Rift Keystone recipe: 8 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`.
+The Rift Keystone recipe that lived in the same file: 8 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`.
 
 ### B.4 `recipes/ad_astra_gating.js` — rocket progression
 
-- NASA Workbench: netherite + Mekanism Steel Casing + ad_astra:steel_block + reality_progression_token_t4.
+- NASA Workbench: netherite + Mekanism Steel Casing + ad_astra:steel_block, the recipe locked to the T4 stage (since 2026-10-10; it asked for `reality_progression_token_t4`, a retired token with no source, so no rocket could be built). Every planet and orbit also has its own T4 dimension gate (since 2026-10-14).
 - Tier 1 Rocket → Moon: netherite + thermal:enderium_ingot + ad_astra:steel_plate + ad_astra:engine_frame.
 - Tier 2 Rocket → Mars: + aethersteel:aethersteel_ingot + ad_astra:moon_stone.
 - Tier 3 Rocket → Venus/Mercury: + 2x aethersteel:aethersteel_ingot + ad_astra:mars_stone.
@@ -600,7 +597,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 > Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill. The pack's per-kill scaling (D.6) does not reach these bosses.
 
-**Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. The seven sins' and Drakara's arenas generate in the Abyss, Lucifer's in the Nether (October 2026; the earlier move to the Undergarden and the Nether placed no arena at all, because the mod builds its arenas only in the Overworld). Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer; Drakara waits in its arena. **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (in `TIER_4_BOSSES`); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
+**Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. The seven sins' and Drakara's arenas generate in the Abyss, Lucifer's in the Nether (October 2026; the earlier move to the Undergarden and the Nether placed no arena at all, because the mod builds its arenas only in the Overworld). Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer; Drakara waits in its arena. **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (the last entry of the T3 boss-rush roster; his kill alone grants no tier); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
 
 > **Removed (2026-06-01 #47 sweep):** the **LuMoreBossesAndMobs** block (Macholote / Terezinossauro / Mini Golems / End Dwellee) — the mod is **not installed** (no `lu_more`/`lumore` jar; `macholote` / `gold_mini_golem` are not registered entities). Its catalog rows + this design block were dropped.
 
@@ -661,6 +658,11 @@ Per-dimension floor (min rarity) keeps natural floors for higher tiers: Nether
 mob drops floor at Rare, the Aether floors at Rare (Rare-Ancient since 2026-10-16; it was Uncommon-Epic as a T2 dimension), End floors at Epic — no
 "junk Common rolls in T4" pollution.
 
+**Every tiered dimension has a clamp (since 2026-10-16).** Fifteen dimensions had no line, so affixes and gems found there rolled
+unclamped (up to Ancient at any tier). Now: the Abyss's Frost World as the Abyss (Rare-Mythic), the Abyss's pocket dimension as
+Tier 2 (Common-Epic), and the five Ad Astra planets, their six orbits, Iron's Spellbooks' pocket dimension and the Reality Marble
+as the End (Epic-Ancient). The lists are generated from the pack's dimension registry.
+
 Single-sourced 2026-06-06: the JSON affix definitions now ship **only** via the `icraft_apotheosis_affixes` Paxi datapack zip (the 83-file `kubejs/data/.../affixes/` shadow tree was retired across all 3 distros). Per-dimension tier inference is still configured in `config/apotheosis/adventure.cfg`. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) — the count is unchanged by the single-sourcing (it relocated definitions, it did not add or remove any). The same 2026-06-06 pass fixed 9 `mob_effect`-carrier affix schemas to per-rarity duration/amplifier.
 
 > **Scorching (ex-Igniting).** The fire affix was reworked 2026-06-06: its old `mob_effect` carrier granted the *attack target* fire_resistance (a wrong-way buff that helped the enemy). It is now a thin `attack_damage` carrier whose real payoff is an on-hit fire-**vulnerability** mark (15–50% by rarity, provisional) applied through `DamageModifierRegistry` in `affix_effects.js`. The player-facing name was renamed **Igniting → Scorching** in lang; the affix JSON file is still `igniting.json` (the id was kept to preserve in-world stacks).
@@ -694,7 +696,7 @@ Boss-source determined gem tier:
 
 ### D.4 Dimension stat multipliers (full)
 
-> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling is now owned by the bespoke **time-based `iridescent_difficulty` mod** (`iridescent_difficulty-0.1.0.jar`), which replaced **ScalingMobs / Improved-Mobs-accumulator / Azukaar's** (all removed). Multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) lives in [Progression Overview](../progression/overview.md#dimensional-progression) + `config/iridescent_difficulty-common.toml`. The table below is the **legacy flat-multiplier reference** kept for the per-dimension *relative* shape and the mob-gear% column; treat the absolute HP/DMG values as indicative, with `iridescent_difficulty`'s time-curve as the live source. Under the live engine **The Abyss (and its Frost World) runs the T3 curve**, and **Deep Aether runs the Aether's curve** (it is not a separate dimension — its biomes generate inside the Aether), so the Deep Aether row below is a design target only. **The Aether runs the T4 curve since 2026-10-16** (T2 before); its row below keeps the old T2 reference values.
+> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling is now owned by the bespoke **time-based `iridescent_difficulty` mod** (`iridescent_difficulty-0.1.0.jar`), which replaced **ScalingMobs / Improved-Mobs-accumulator / Azukaar's** (all removed). Multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) lives in [Progression Overview](../progression/overview.md#dimensional-progression) + `config/iridescent_difficulty-common.toml`. The table below is the **legacy flat-multiplier reference** kept for the per-dimension *relative* shape and the mob-gear% column; treat the absolute HP/DMG values as indicative, with `iridescent_difficulty`'s time-curve as the live source. Under the live engine **The Abyss (and its Frost World) runs the T3 curve**, and **Deep Aether runs the Aether's curve** (it is not a separate dimension — its biomes generate inside the Aether), so the Deep Aether row below is a design target only. **The Aether runs the T4 curve since 2026-10-16** (T2 before); its row below keeps the old T2 reference values. **Since the same day the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension and the Reality Marble run the T4 curve and the Abyss's pocket dimension the T2 curve**; before, they were on no list and ran the T1 curve. Bosses with a designed health or the x3 are on the exclusion list and are not scaled by any curve (D.6).
 
 Four stats scale independently per dimension. **Damage scales fastest, HP moderately, Speed and Armor minimally.**
 
@@ -730,15 +732,23 @@ Per-dimension elite-mob density is handled by **Majrusz's Progressive Difficulty
 | Deeper Darker / Abyss | 18% |
 | The Nether | 20% |
 | The Aether (Deep Aether's biomes included; 15% until 2026-10-16) | 22% |
+| The Moon, Earth orbit, Moon orbit | 22% |
+| Mars + orbit | 25% |
+| Mercury + orbit | 27% |
+| Venus + orbit | 28% |
+| Glacio + orbit | 30% |
 | The End | 25% |
+| Iron's Spellbooks' pocket dimension, the Reality Marble | 25% |
+| Any other dimension (the Abyss's Frost World and pocket dimension included) | 15% |
 
 Soulbound enchant: I = 50% prevention, II = 75%, III = 100% (and items don't go inert from death). Implementation: `kubejs/server_scripts/death_penalty.js`.
 
 ### D.6 Boss health and per-kill scaling
 
 **Designed** is the health the pack gives a boss; a trophy boss then gets the boss x3, which gives the health of
-your **first fight**. The dimension's difficulty curve adds to that over time (the Wither excepted: 1,800
-everywhere). **From fight 15** is the cap of per-kill scaling (below).
+your **first fight**. Since October 2026 every boss with a designed health or the x3 is left out of the dimension's
+difficulty curve, so its first fight is the same in every dimension (the Wither 1,800 everywhere); minibosses without a
+designed health still grow with the curve. **From fight 15** is the cap of per-kill scaling (below).
 
 | Boss | Tier | Designed | First fight | From fight 15 |
 |------|-----:|---------:|------------:|--------------:|
@@ -809,6 +819,13 @@ Independent from designed bosses. Spawn at random per-chunk-per-cycle in each di
 | End — Dragon's Domain | 10% | 10.0 | 80-100 |
 
 Apotheosis bosses drop gear with affixes matching their level. Higher level → better affix rarity.
+
+**Where they really spawn (the server's config, October 2026).** Overworld 2 %; Twilight Forest, Everbright, Everdawn 4 %;
+Undergarden, Otherside, the Abyss, its Frost World 6 %; the Nether 8 %; the Aether and the five Ad Astra planets 8 %; the End
+10 %. The orbits, both pocket dimensions and the Reality Marble have none. A dimension's line only works if a boss file names
+it: until 2026-10-16 only the Overworld, the Nether, the End and the Twilight Forest had one, so the other lines spawned nothing.
+Since then six pack boss files cover the other twelve (tier 2: a vindicator and a witch; tier 3: a wither skeleton and a
+zombified piglin; tier 4: an enderman and an evoker), each with Apotheosis's own gear templates and that tier's rarity range.
 
 ### D.8 Estimated player power (Tier 4, well-geared)
 
@@ -1186,7 +1203,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 
 **Ore replacements**: `aethersteel:aether_debris` and `aethersteel:aetherslate` replaced with `aether:holystone` until T4.
 
-**Dimensions**: `aether:the_aether` (since 2026-10-16; Deep Aether registers no dimension of its own, its biomes are part of the Aether), `minecraft:the_end`, plus 5 Ad Astra planets (`ad_astra:moon`, `ad_astra:mars`, `ad_astra:mercury`, `ad_astra:venus`, `ad_astra:glacio`).
+**Dimensions**: `aether:the_aether` (since 2026-10-16; Deep Aether registers no dimension of its own, its biomes are part of the Aether), `minecraft:the_end`, plus 5 Ad Astra planets (`ad_astra:moon`, `ad_astra:mars`, `ad_astra:mercury`, `ad_astra:venus`, `ad_astra:glacio`) and, since 2026-10-14, their six orbits (`ad_astra:earth_orbit`, `moon_orbit`, `mars_orbit`, `mercury_orbit`, `venus_orbit`, `glacio_orbit`). The Reality Marble needs no gate of its own (Mahou Tsukai is gated whole); Iron's Spellbooks' pocket dimension is closed by refusing the Pocket Dimension spell before T4 (since 2026-10-15).
 
 ### G.4 Intentionally NOT mod-gated
 
@@ -1247,7 +1264,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `mutant_monsters_no_grief.js` / `mutant_monsters_no_griefing.js` | BlockEvents.broken cancellation for mutantmonsters: namespace (mutant zombie pillar-up + mutant creeper explosion bypass mobGriefing) |
 | `player_t1_damage_softener.js` | T1-tier damage softener (early-game survival) |
 | `spawn_protection.js` | Spawn-area protection enforcement |
-| `sunlight_smite.js` | Sunlight damage to specific mobs (vampire-themed ?) |
+| `sunlight_smite.js` | Sunlight Smite: by day, hostile undead under open sky near a player in the Overworld take 2 damage every 10 ticks and burn 2 s; bosses and owned mobs are spared (live since 2026-10-15; it had never damaged a mob before) |
 | `tetra_terramity_perks.js` | Server-tick perk hook for Tetra-Terramity integration |
 | `ultris_randomizer_janitor.js` | Janitor sweep for stranded Ultris RNG-paper marker items (`{UltrisRandomizerItem:1}` paper that the datapack's same-tick read-then-kill missed under load), preventing them from leaking into the player loot stream |
 | `validate_recipe_removals.js` | **Audit Phase 3.3.** Server-start validator: scans REMOVAL_TARGETS list against the live item registry; logs warnings for stale IDs |
@@ -1258,7 +1275,8 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | Script | Role |
 |--------|------|
 | `astages_restrictions.js` | Authoritative stage definitions: stageMod / stageItems / stageDimension / stageOre per tier |
-| `milestone_detection.js` | Per-player T2/T3/T4 boss-kill counter; auto-grants tier flag at threshold |
+| `milestone_detection.js` | Tier infrastructure only: tier_1 on first join, creative bypass, the lower-tier cascade, the vanilla End advancements on a dragon kill (the old boss-kill tier routes were retired on 2026-06-01) |
+| `codex_progression_engine.js` / `codex_boss_rush.js` | The token bank and the boss-rush route (strict ladder since 2026-10-15) |
 | `dimension_gates.js.disabled` / `item_gates.js.disabled` | Older AStages-direct integrations; superseded |
 
 ### I.3 `recipes/`
@@ -1448,8 +1466,10 @@ Magic damage bonus from Mana Attunement, applied multiplicatively to all magic d
 |:-:|---|:-:|
 | T1 | Overworld | +0% |
 | T2 | Twilight Forest / Blue Skies | +5% |
-| T3 | Nether | +10% |
-| T4 | End / Aether (since 2026-10-16) / Otherside / Abyss | +15% |
+| T3 | Nether / Undergarden / Otherside / Abyss and its Frost World | +10% |
+| T4 | End / Aether (since 2026-10-16) / the Ad Astra orbits / the Reality Marble | +15% |
+
+The dimensions and their tiers are the pack's dimension registry (the Otherside and the Abyss counted as T4 here until 2026-10-12; the stage-gate tier, 3, is the rule). The Ad Astra planets themselves are not on this list.
 
 Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). Combined with the +25% Arcane Supremacy base + 10% standing-still bonus + race/origin bonuses, peak Archmage burst at T4 multi-stacks well past 50% magic damage.
 
@@ -1601,7 +1621,7 @@ Wanderer is the only class without a clear primary tree — by design. The class
 | Origin | Permanent | — | — |
 | Race | Permanent | — | — |
 | Class | Yes | 1 tier-appropriate boss drop + 30 XP levels | Class Altar (custom block) |
-| Skill point | Yes (per-point) | 5 XP levels per point refunded | `/puffish_skills skills reset <player> <category>` |
+| Skill point | Not available (designed: per point, 5 XP levels) | — | the Class Altar's skill trigger answers "not available yet" and takes nothing |
 
 #### Death + skill interactions
 

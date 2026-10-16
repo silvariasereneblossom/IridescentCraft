@@ -12,16 +12,24 @@ Keep inventory on death (no item loss). Penalty is durability-based.
 - Items NEVER break/destroy — at 0 durability they become inert (non-functional)
 - Scaling by dimension:
 
-| Dimension | Difficulty | Durability Loss |
-|-----------|-----------|----------------|
-| Overworld | 1.0x | 10% |
-| Twilight Forest | 1.5x | 12% |
-| Blue Skies | 2.0x | 14% |
-| The Undergarden | 3.0x | 17% |
-| Deeper and Darker | 3.5x | 18% |
-| The Nether | 4.0x | 20% |
-| The Aether (Deep Aether's biomes included) | 6.0x-10.0x | 22% |
-| The End | 6.0x-10.0x | 25% |
+| Dimension | Tier | Durability Loss |
+|-----------|-----:|----------------|
+| Overworld | 1 | 10% |
+| Twilight Forest | 2 | 12% |
+| Blue Skies (Everbright, Everdawn) | 2 | 14% |
+| The Undergarden | 3 | 17% |
+| Deeper and Darker (Otherside), The Abyss | 3 | 18% |
+| The Nether | 3 | 20% |
+| The Aether (Deep Aether's biomes included) | 4 | 22% |
+| The Moon, Earth orbit, Moon orbit | 4 | 22% |
+| Mars and its orbit | 4 | 25% |
+| Mercury and its orbit | 4 | 27% |
+| Venus and its orbit | 4 | 28% |
+| Glacio and its orbit | 4 | 30% |
+| The End, Iron's Spellbooks' pocket dimension, the Reality Marble | 4 | 25% |
+| Anywhere else (the Abyss's Frost World and pocket dimension included) | — | 15% |
+
+How fast mobs grow in each dimension is a separate curve: see [Difficulty engine](#difficulty-engine--iridescent_difficulty-time-based) below.
 
 ### Soulbound Enchantment
 
@@ -48,6 +56,22 @@ Each dimension has unique combat mechanics beyond stat scaling:
 - **The Aether (Tier 4; Deep Aether's biomes included):** its mobs move with Speed I, and its flyers also hit with Strength I. Thin Air: above Y 180 you get Weakness unless your armor has Aether Acclimation. Vertigo: sprinting above Y 200 sometimes brings nausea. Updraft: falling below Y 0, you are given Slow Falling once.
 - **The Abyss (TATOS):** Oppressive Darkness (no held light + low light → mining-fatigue + slowness), Corruption (periodic hunger ticks), Fear Aura (Darkness within 16 blocks of Abyss bosses), Void Whispers (Weakness below Y=20). These fire in `theabyss:the_abyss` via `dimension_mechanics.js`. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 - **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached with Eyes of Ender (staged at T4); an End Compass → End Bastion route, the compass crafted from the Aether's materials, is planned to replace them. 9 advancement overrides, 5 End Apotheosis affixes.
+
+### Sunlight Smite
+
+By day, a hostile undead mob standing under open sky near a player in the Overworld takes 2 damage every half second and burns briefly, on top of vanilla sunlight burning: an Overworld zombie lasts about 15 seconds instead of a minute, and nothing dies in one hit. Bosses, your own summons and pets, and wild zombie and skeleton horses are spared; a roof keeps any mob safe. (It had never damaged anything until October 2026.)
+
+### The spawn village
+
+Hostile mobs cannot appear within 96 blocks of the world spawn. A Wither built inside that circle is refused: the last skull is not placed, the soul sand and skulls stay where they are, the skull stays in your hand, and a message tells you to build at least 96 blocks out.
+
+### Invasion bosses
+
+Apotheosis "invader" bosses (named mobs in affixed gear) can appear in the Overworld, the Nether, the End, the Twilight Forest, Everbright, Everdawn, the Undergarden, the Otherside, the Abyss and its Frost World, the Aether and the five Ad Astra planets, more often in higher tiers (2% in the Overworld to 10% in the End; table in [Appendix §D.7](../design/master-appendix.md#d7-apotheosis-spawned-random-world-bosses)). Until October 2026 only the Overworld, the Nether, the End and the Twilight Forest had invaders that could actually spawn. The orbits, the pocket dimensions and the Reality Marble have none.
+
+### Bosses far from players keep fighting
+
+With two or more players online, the server pauses creatures far from every player. Every boss the pack knows (named bosses and minibosses alike, the Wither and the Ender Dragon included) is exempt and keeps going.
 
 ### Armor damage reduction
 
@@ -80,7 +104,7 @@ Custom HP multipliers applied via `mob_scaling_unified.js` based on mob category
 | Basic | 3x HP | Zombie (60 HP), Skeleton, Spider, Creeper, Drowned, Husk, Stray, Witch, Slime |
 | Mid-tier | 1.5x HP | Blaze, Wither Skeleton, Piglin Brute, TF/Aether/Blue Skies mobs, dungeon mobs |
 | Elite | 1.25x HP | Stacks on top of other affixes (Majrusz Progressive Difficulty elites) |
-| Boss | 1x HP | Unchanged, custom HP managed via boss_hp.js |
+| Boss | 1x HP | No mob-tier bonus, minibosses included (since October 2026); a designed health where the pack sets one (see [Appendix §D.6](../design/master-appendix.md#d6-boss-health-and-per-kill-scaling)) |
 | Catch-all | 3x HP | Any unlisted hostile mob defaults to basic tier |
 
 ## Progressive Difficulty (Majrusz's)
@@ -146,8 +170,8 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 | Village | Village chests | 8% | Curated village artifact pool |
 | T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
 | T2 | Twilight Forest, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
-| T3 | Nether, Undergarden | 14% | Powerful offense artifacts + celestial items |
-| T4 | End, Aether, Deeper Darker (Otherside) | 16% | Endgame artifacts + relics items |
+| T3 | Nether, Undergarden, Deeper Darker (Otherside), The Abyss | 14% | Powerful offense artifacts + celestial items |
+| T4 | End, Aether | 16% | Endgame artifacts + relics items |
 
 **Per-structure theming (2026-05-17).** Marquee structures (high-profile landmarks per [master.md §XIII](../design/master.md#part-xiii--loot-economy)) receive a themed pool layered on top of a reduced dimensional baseline — 70% themed / 30% baseline inside the tier's combined rate. 14 marquees across the 4 tiers. Roster, theme catalog, and per-structure item lists: [master-appendix.md §N](../design/master-appendix.md#n-marquee-structures). ISS spellbooks capped at 2% per chest (starter kit handles onboarding). ISS scrolls remain uncapped.
 
@@ -158,8 +182,8 @@ Ars Nouveau spell books are blank caster tools that require glyphs inscribed at 
 |------|-----------|--------|---------------|
 | T1 | Overworld | 18 (Forms: projectile/touch/self + basic effects/augments) | ~12% |
 | T2 | TF, Blue Skies | 25 (aoe/underfoot + mobility/utility effects) | ~14% |
-| T3 | Nether, Undergarden | 22 (linger + advanced effects: lightning, wall, fangs, blink, etc.) | ~15% |
-| T4 | End, Aether, Deeper Darker (Otherside) | 12 (summons, rune, wither, dispel, randomize) | ~18% |
+| T3 | Nether, Undergarden, Deeper Darker (Otherside), The Abyss | 22 (linger + advanced effects: lightning, wall, fangs, blink, etc.) | ~15% |
+| T4 | End, Aether | 12 (summons, rune, wither, dispel, randomize) | ~18% |
 
 ### Custom Patched JARs
 The following mods ship as custom bytecode-patched JARs (added to custom JAR allowlist in server scripts):
@@ -213,8 +237,8 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 | Fragment Core | Any hostile mob | 4% drop |
 | T1 Relics (movement, utility) | Overworld / Twilight Forest chests | ~0.4% per chest |
 | T2 Relics (combat, immunity) | Blue Skies chests | ~0.6% per chest |
-| T3 Relics (fire, decay) | Nether / Undergarden chests | ~0.8% per chest |
-| T4 Relics (endgame passives) | End / Aether / Deeper Darker (Otherside) chests | ~1.0% per chest |
+| T3 Relics (fire, decay) | Nether / Undergarden / Deeper Darker (Otherside) / Abyss chests | ~0.8% per chest |
+| T4 Relics (endgame passives) | End / Aether chests | ~1.0% per chest |
 | Artifact Piece Pouch | T2+ boss kills | 1× from T2 bosses, 2× from T4 bosses |
 | Normal artifacts | Pouch open | 14-way weighted pool, one per pouch |
 | Awakening artifacts | T4 boss direct drops only | 0.7% per awakening × 14 = ~9.3% combined per T4 boss |
@@ -266,7 +290,7 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 | T1 | Brass |
 | T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal, Diopside, Charoite, Horizonite |
 | T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Undergarden metals, F&A metals |
-| T4 | Aethersteel |
+| T4 | Aethersteel; the Aether's materials (zanite, gravitite, skyjade, valkyrie, phoenix, stratus) since the Aether became Tier 4 |
 
 See [Tetra Materials](tetra-materials.md) for full reference.
 
@@ -303,11 +327,11 @@ Dragon Exploration Gate: players must explore End islands and complete objective
 | Tier | Start % | Cap % | Cap Hours |
 |------|---------|-------|-----------|
 | T1 (Overworld) | 150% | 300% | 100 |
-| T2 (Twilight / Blue Skies) | 200% | 350% | 100 |
+| T2 (Twilight / Blue Skies / the Abyss's pocket dimension) | 200% | 350% | 100 |
 | T3 (Undergarden / Deeper Darker / Nether / Abyss + Frost World) | 300% | 450% | 100 |
-| T4 (End / Aether, incl. Deep Aether's biomes) | 600% | 1000% | 200 |
+| T4 (End / Aether, incl. Deep Aether's biomes / the Ad Astra planets and orbits / Iron's Spellbooks' pocket dimension / the Reality Marble) | 600% | 1000% | 200 |
 
-- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped (except a short list that is scaled anyway, which since 2026-10-16 includes the Aether's own hostile creatures: swets, whirlwinds, the aechor plant, cockatrices, zephyrs, baby zephyrs and venomites), and bosses on the configurable exclusion list (a boss that is not listed is scaled like any other hostile mob).
+- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; tamed + non-MONSTER mobs skipped (except a short list that is scaled anyway, which since 2026-10-16 includes the Aether's own hostile creatures: swets, whirlwinds, the aechor plant, cockatrices, zephyrs, baby zephyrs and venomites), and the bosses on the exclusion list. Since October 2026 that list holds every boss with a designed health or the boss x3 (78 entity ids, the Wither and the Ender Dragon among them), so their health is the same in every dimension; minibosses without a designed health are not on it and grow with the curve like the mobs around them. A dimension on no tier list runs the Tier 1 curve; until October 2026 that was the case for the planets, the orbits and the pocket dimensions.
 - **Idle gating:** the per-dimension timer ticks at the `active / total` player ratio in that dimension (idle = no movement/combat for N minutes, or within the spawn radius).
 - **Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; not the Wither, the Ender Dragon, the Warden or the Elder Guardian), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
 

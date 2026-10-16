@@ -516,6 +516,8 @@ Compat for "Dim Asc" (Dimensional Ascension Blue Skies). Overlaps heavily with `
 | wood | `bluebright`, `comet`, `dusk`, `frostbright`, `lunar_wood`, `maple`, `starlit` | 3 | 1.3-2.2 | 6 | 45-131 | 90 | 2 | stone |
 
 > **Three-way conflict** on `charoite`, `diopside`, `horizonite`: our datapack vs `dimasctetracompat` vs `txdacompat`. All three define the same key with different stats. Confirm winner in-game.
+>
+> **Diopside, settled (October 2026).** Tetra merges the two `diopside` files field by field with the pack's datapack last, so the pack's numbers win (the T2 row above: primary 5, durability 350). The pack's file named an item that does not exist, so nothing made the material until it was pointed at `blue_skies:diopside_gem`; a diopside blade now forges from the gem.
 
 ### 3.7. txdacompat-1.0.3-forge-1.20.1.jar (31 materials)
 
