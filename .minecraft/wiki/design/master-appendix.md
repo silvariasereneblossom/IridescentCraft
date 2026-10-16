@@ -441,7 +441,7 @@ Tier 4 since 2026-10-16 (Tier 2 before): their first-kill tokens are the tier-4 
 |------|-----:|-------|
 | Slider | T4 | advanced_reforging_token @ 60% (was basic) + waystone_core + epic_ink (was uncommon) + lightning_upgrade_orb (was the lightning rune) + simplyswords:thunderbrand + too_many_bows:scatter_bow + Artifact Piece Pouch on the T4 rule (2 pouches + a small chance at an awakening artifact) |
 | Valkyrie Queen | T4 | simplyswords:caelestis + too_many_bows:wind_bow + too_many_bows:radiance |
-| Sun Spirit | T4 | legendary_ink (was rare) + fire and holy upgrade orbs (were the runes) + simplyswords:sunfire + too_many_bows:aethers_call + Sunfeather Charm (now a T4 relic) |
+| Sun Spirit | T4 | legendary_ink 30 % (was rare ink 50 %, 1-2) + fire and holy upgrade orbs (were the runes) + simplyswords:sunfire + too_many_bows:aethers_call + Sunfeather Charm (now a T4 relic, 500 relic essence) |
 
 Deep Aether: `deep_aether:eots_controller` (T4 sky-end) drops `simplyswords:flamewind` @ 15%.
 
@@ -747,6 +747,7 @@ everywhere). **From fight 15** is the cap of per-kill scaling (below).
 | Twilight Hydra | 2 | 500 | 1,500 | 3,750 |
 | Ur-Ghast | 2 | 600 | 1,800 | 4,500 |
 | Blue Skies bosses (Summoner / Alchemist / Starlit Crusher / Arachnarch) | 2 | 350-500 | 1,050-1,500 | 2,625-3,750 |
+| Frostmaw (Everbright; T1 on the difficulty curve until 2026-10-16) | 2 | 500 | 1,500 | 3,750 |
 | Citadel Keeper | 3 | 600 | 1,800 | 4,500 |
 | Fire Boss (Iron's Spellbooks) | 3 | 700 | 2,100 | 5,250 |
 | Dead King | 3 | 800 | 2,400 | 6,000 |

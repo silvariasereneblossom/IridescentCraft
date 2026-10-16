@@ -6,6 +6,15 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Aether follow-ups
+
+- **Neptune armour converts like zanite armour.** At the Tetra workbench it becomes iron modular armour; it keeps its look, its armour bonus and its full-set bonus (water breathing and dolphin's grace). The old conversion multiplied spell power by about two per piece, so a full set multiplied it by eighteen. The Neptune Tetra material is gone.
+- **Converted Forbidden Arcanus armour can be repaired.** Mortem pieces with cloth, tyr pieces with golden dragon scales, draco arcanus pieces with dragon scales (the repair items named before did not exist).
+- **The Sun Spirit drops legendary ink like the Eye of the Storm:** 30% for one (it was 50% for one or two).
+- **The Sunfeather Charm is worth 500 relic essence**, the Tier 4 value (was 250).
+- **Frostmaw has 1,500 health wherever it stands**, like the other Tier 2 named bosses (designed 500 with the x3, off the dimension curve); per-kill scaling still applies.
+- **Quests.** The Frostmaw hunt moved to the Exploration chapter, next to the Tier 2 dimension bosses; the Tier 2 boss-rush quest lists Frostmaw (any 4 of 6); reaching Tier 2 gives 4 Everbright pyrope gems and *Frontiers I* gives 6 Everdawn moonstone shards, in place of the zanite and ambrosium they gave when the Aether was Tier 2.
+
 ## October 2026 — Virtue's altar is the Prismatic Pond
 
 - **The Prismatic Pond generates in the Aether.** Terramity's crystal pond was moved to the Deep Aether forests of the Aether in May, but it was placed below the Aether's floor and never generated. It now sits on the surface of the Deep Aether islands, never over the void, and the Boss Compass finds it. Only newly generated land has it; the server had generated no Aether land yet.
