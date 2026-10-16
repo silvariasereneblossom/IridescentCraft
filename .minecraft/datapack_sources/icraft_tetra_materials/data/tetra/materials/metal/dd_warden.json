@@ -1,4 +1,5 @@
 {
+  "_comment": "Conversion-only material (2026-10-16, Aether follow-up chip, item 4): it exists so the expansion jar can turn deeperdarker:warden_* armour into modular armour with its own numbers (replacements, module variants, repairs). Its ingredient named deeperdarker:warden_bone, an item that does not exist (Deeper Darker has no warden bone), so nothing was ever made of it; now \"disable:this\", the pack's form for that (no material claims an item by it). Its single-* attributes (*irons_spellbooks:ender_magic_resist, *irons_spellbooks:ender_spell_power, *irons_spellbooks:spell_power) were removed: a lone * never applied (failure-modes section 6), and written as ** they would compound per module, 4 modules a piece (the Neptune set did: +107 % spell power a piece). Repaired with deeperdarker:reinforced_echo_shard (gen_repair_definitions.py).",
   "key": "dd_warden",
   "category": "metal",
   "primary": 6.2,
@@ -20,7 +21,7 @@
   ],
   "material": {
     "items": [
-      "deeperdarker:warden_bone"
+      "disable:this"
     ]
   },
   "conditions": [
@@ -28,10 +29,5 @@
       "type": "forge:mod_loaded",
       "modid": "deeperdarker"
     }
-  ],
-  "attributes": {
-    "*irons_spellbooks:ender_spell_power": 0.1,
-    "*irons_spellbooks:ender_magic_resist": 0.08,
-    "*irons_spellbooks:spell_power": 0.3
-  }
+  ]
 }

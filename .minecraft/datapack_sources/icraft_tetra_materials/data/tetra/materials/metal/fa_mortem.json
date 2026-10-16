@@ -1,4 +1,5 @@
 {
+  "_comment": "Conversion-only material (2026-10-16, Aether follow-up chip, item 4): it exists so the expansion jar can turn forbidden_arcanus:mortem_* armour into modular armour with its own numbers (replacements, module variants, repairs). Its ingredient named forbidden_arcanus:mortem_ingot, an item that does not exist (Forbidden Arcanus has no mortem ingot: the set is crafted from cloth and bones), so nothing was ever made of it; now \"disable:this\", the pack's form for that (no material claims an item by it). Its single-* attributes (*irons_spellbooks:blood_spell_power, *irons_spellbooks:ender_spell_power, *irons_spellbooks:spell_power) were removed: a lone * never applied (failure-modes section 6), and written as ** they would compound per module, 4 modules a piece (the Neptune set did: +107 % spell power a piece). Repaired with forbidden_arcanus:cloth (gen_repair_definitions.py).",
   "key": "fa_mortem",
   "category": "metal",
   "primary": 5.2,
@@ -20,7 +21,7 @@
   ],
   "material": {
     "items": [
-      "forbidden_arcanus:mortem_ingot"
+      "disable:this"
     ]
   },
   "conditions": [
@@ -28,10 +29,5 @@
       "type": "forge:mod_loaded",
       "modid": "forbidden_arcanus"
     }
-  ],
-  "attributes": {
-    "*irons_spellbooks:ender_spell_power": 0.08,
-    "*irons_spellbooks:blood_spell_power": 0.06,
-    "*irons_spellbooks:spell_power": 0.15
-  }
+  ]
 }

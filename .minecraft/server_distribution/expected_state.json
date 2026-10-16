@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "ea0dd1fb",
+    "generated_from":  "4434da06",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4372,8 +4372,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "708acf32d0ea13f4ea999f13defbedb8b0a4056d1a4b5716c45785aa1affc80f",
-                                                                           "size":  56479
+                                                                           "sha256":  "7f1b6e9cf62ae46e9ed1646fe2c9d1de32c6f95c56064b2815ce49ab93f9a968",
+                                                                           "size":  58563
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",
@@ -8556,7 +8556,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "4782b85cba05b9870089c37d9b90c617ac3e180392e2df962db2fecbdc9b3dba",
+                                                                         "sha256":  "59fe6328b88c74e06b3766cfab4cb1697bb85613bf75c47cd7d50c6b7f3dce72",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

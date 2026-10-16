@@ -1,4 +1,5 @@
 {
+  "_comment": "Conversion-only material (2026-10-16, Aether follow-up chip, item 4): it exists so the expansion jar can turn forbidden_arcanus:draco_arcanus_* armour into modular armour with its own numbers (replacements, module variants, repairs). Its ingredient named forbidden_arcanus:draco_arcanus_ingot, an item that does not exist (Forbidden Arcanus has no draco arcanus ingot: the set is repaired with dragon scales), so nothing was ever made of it; now \"disable:this\", the pack's form for that (no material claims an item by it). Its single-* attributes (*irons_spellbooks:fire_spell_power, *irons_spellbooks:spell_power) were removed: a lone * never applied (failure-modes section 6), and written as ** they would compound per module, 4 modules a piece (the Neptune set did: +107 % spell power a piece). Repaired with forbidden_arcanus:dragon_scale (gen_repair_definitions.py).",
   "key": "fa_draco_arcanus",
   "category": "metal",
   "primary": 6.4,
@@ -20,7 +21,7 @@
   ],
   "material": {
     "items": [
-      "forbidden_arcanus:draco_arcanus_ingot"
+      "disable:this"
     ]
   },
   "conditions": [
@@ -28,9 +29,5 @@
       "type": "forge:mod_loaded",
       "modid": "forbidden_arcanus"
     }
-  ],
-  "attributes": {
-    "*irons_spellbooks:fire_spell_power": 0.12,
-    "*irons_spellbooks:spell_power": 0.3
-  }
+  ]
 }
