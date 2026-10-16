@@ -36,6 +36,11 @@
       "title": "Twilight ironwood",
       "item": { "id": "twilightforest:ironwood_ingot", "count": 4 }
     },
+    "pyrope": {
+      "type": "heracles:item",
+      "title": "Everbright pyrope",
+      "item": { "id": "blue_skies:pyrope_gem", "count": 4 }
+    },
     "tier_xp": {
       "type": "heracles:xp",
       "xptype": "LEVEL",

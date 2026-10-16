@@ -10,10 +10,10 @@
       "",
       "§7A frigid Tier 2 hunt — bring fire resistance to the cold and warmth to the heart."
     ],
-    "groups": { "Overworld Foundations": { "position": [640, 320] } }
+    "groups": { "Exploration": { "position": [160, 120] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
-  "dependencies": ["onboarding_survivor_capstone", "reach_tier_2"],
+  "dependencies": ["reach_tier_2"],
   "tasks": {
     "kill_frostmaw": {
       "type": "heracles:kill_entity",

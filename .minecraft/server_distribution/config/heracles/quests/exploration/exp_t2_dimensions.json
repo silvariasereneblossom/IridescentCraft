@@ -45,6 +45,11 @@
       "type": "heracles:item",
       "title": "Twilight ironwood",
       "item": { "id": "twilightforest:ironwood_ingot", "count": 4 }
+    },
+    "everdawn_reagent": {
+      "type": "heracles:item",
+      "title": "Everdawn moonstone",
+      "item": { "id": "blue_skies:moonstone_shard", "count": 6 }
     }
   }
 }

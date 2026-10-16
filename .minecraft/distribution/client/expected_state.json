@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "712806b5",
+    "generated_from":  "9aaa0e07",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3076,8 +3076,8 @@
                                                                          "size":  2076
                                                                      },
                   "config/heracles/quests/combat/com_t2_rush.json":  {
-                                                                         "sha256":  "82699a7fc73cbffb40b6d57ff8c86ddd5b1b9513aa3411d9b51cf0a8fe7520a0",
-                                                                         "size":  1915
+                                                                         "sha256":  "c2088697a9c32237cb17ce9dd6de3c9f7667117e4cf7a568d81e40f392212415",
+                                                                         "size":  2056
                                                                      },
                   "config/heracles/quests/combat/com_t3_rush.json":  {
                                                                          "sha256":  "a7a77dc55be69b5282c806cfe7658644e663dd2ab57b3a8a6a2ef815474c60f4",
@@ -3276,8 +3276,8 @@
                                                                                      "size":  1608
                                                                                  },
                   "config/heracles/quests/exploration/exp_t2_dimensions.json":  {
-                                                                                    "sha256":  "be1116ebafcdc0322007f042ae6371ccfa05ef580caca6edeb9b36899591c149",
-                                                                                    "size":  1664
+                                                                                    "sha256":  "58c996401f44a0b4b924b9791017c0eaa6a872deda19ac206f4747cb8d6f1341",
+                                                                                    "size":  1830
                                                                                 },
                   "config/heracles/quests/exploration/exp_t3_deep_dimensions.json":  {
                                                                                          "sha256":  "fad724e12706325e8fc0a837fbe635b2d2a2be1cc4d68c60209d9ebf449a2af2",
@@ -3392,8 +3392,8 @@
                                                                      "size":  846
                                                                  },
                   "config/heracles/quests/milestones/reach_tier_2.json":  {
-                                                                              "sha256":  "0bccb56fd299223b4675bcd1208748b01327184c66f27230b9eaf213f2aaae03",
-                                                                              "size":  1390
+                                                                              "sha256":  "6dcb3c9d47b892fc7421e030be2184df4f461bb1ef707223f65b53ac567cec49",
+                                                                              "size":  1540
                                                                           },
                   "config/heracles/quests/milestones/reach_tier_3.json":  {
                                                                               "sha256":  "eaf158e732b59cce55198747fa397a314d0124f35ef03a27cbd0acad20eebe99",
@@ -3520,8 +3520,8 @@
                                                                                               "size":  1108
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_frostmaw.json":  {
-                                                                                                "sha256":  "2da2e21926f797b0487fe241202e6b416965c1ce7fc061d107301a7b8a378b76",
-                                                                                                "size":  1260
+                                                                                                "sha256":  "b45402c201e1f936822868a50507bac05f1a45b1d9ff8ce6a1e933e3b69a2c67",
+                                                                                                "size":  1218
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_sculptor.json":  {
                                                                                                 "sha256":  "68883bf9c2c36d1d40ddaf69bdd9da6afa5203990da9cb56ec50269c8fa4e75a",
