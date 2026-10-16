@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "The Boss Ladder",
-      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Enchanter Merlin$() (Fairy Fountain), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t2)Tier 2$() — $(bold)Archmage Gundalf$() (Trial Spire).$(br)$(t3)Tier 3$() — $(bold)Gatmancer$() (Infested Laboratory).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond, the Aether), $(bold)Sorceress Circe$() (Mausoleum)."
+      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Enchanter Merlin$() (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral, together with Sorceress Circe), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t2)Tier 2$() — $(bold)Archmage Gundalf$() (appears when Sorceress Circe falls).$(br)$(t3)Tier 3$() — $(bold)Gatmancer$() (Chthonic Dungeon, the Nether).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond, the Aether), $(bold)Sorceress Circe$() (the Offering Pedestal in the Nether's Chthonic Cathedral, with Merlin)."
     },
     {
       "type": "patchouli:text",

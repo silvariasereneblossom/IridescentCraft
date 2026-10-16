@@ -600,7 +600,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 > Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill. The pack's per-kill scaling (D.6) does not reach these bosses.
 
-**Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. Relocated per #56 — lesser sins to the Undergarden (T2–T3), fierce sins + Drakara + Lucifer to the Nether (T3). **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (in `TIER_4_BOSSES`); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
+**Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. The seven sins' and Drakara's arenas generate in the Abyss, Lucifer's in the Nether (October 2026; the earlier move to the Undergarden and the Nether placed no arena at all, because the mod builds its arenas only in the Overworld). Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer; Drakara waits in its arena. **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (in `TIER_4_BOSSES`); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
 
 > **Removed (2026-06-01 #47 sweep):** the **LuMoreBossesAndMobs** block (Macholote / Terezinossauro / Mini Golems / End Dwellee) — the mod is **not installed** (no `lu_more`/`lumore` jar; `macholote` / `gold_mini_golem` are not registered entities). Its catalog rows + this design block were dropped.
 

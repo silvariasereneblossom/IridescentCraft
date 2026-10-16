@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Cardinal Sins arenas generate again
+
+- **The Cardinal Sins have arenas again.** Since the end of May no Cardinal Sins arena generated anywhere: the mod builds its arenas only in the Overworld, and the pack had moved them to the Undergarden and the Nether, so the shrine chain could not start. Now the seven sins and Drakara have their arenas in the Abyss, and Lucifer's arena is in the Nether. The Boss Compass finds every one of them. They stay Tier 3 bosses, and Lucifer stays the Tier 3 capstone.
+- **The shrine chain.** Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer's Atrocity Shrine. Sloth's Malevolichite Shrine takes a Soulweaver Orb (8 Malevolichite around an Eye of Ender; the ore sits in the floating pillars of the Overworld's Forgotten Forest). Every other orb is an Eye of Ender and the Essence the previous sin drops, at a smithing table with no template.
+- **The Boss Compass points to the right Terramity places.** Enchanter Merlin and Sorceress Circe are summoned together with Occult Fabric at the Offering Pedestal of the Nether's Chthonic Cathedral, Archmage Gundalf appears when Circe falls, and Gatmancers live in the Chthonic Dungeon. The compass pointed at the Fairy Fountain, the Mausoleum, the Trial Spire and the Infested Laboratory, where none of them is found.
+
 ## October 2026 — Aether follow-ups
 
 - **Neptune armour converts like zanite armour.** At the Tetra workbench it becomes iron modular armour; it keeps its look, its armour bonus and its full-set bonus (water breathing and dolphin's grace). The old conversion multiplied spell power by about two per piece, so a full set multiplied it by eighteen. The Neptune Tetra material is gone.

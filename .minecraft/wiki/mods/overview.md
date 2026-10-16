@@ -63,7 +63,7 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 
 ## Boss Mods
 
-Cataclysm, Meet Your Fight, Mutant Monsters, Ultimate Bosses, Ultris: Boss Expansion, Brutal Bosses, Majestic Menaces, Cardinal Sins (the 7 sins → Lucifer → Drakara ladder; Lucifer is the T3→T4 combat capstone). *(NovaBosses and LuMoreBossesAndMobs are NOT in pack; the "Cataclysm Apotheosis addon" is unverified — no such jar — see #47.)*
+Cataclysm, Meet Your Fight, Mutant Monsters, Ultimate Bosses, Ultris: Boss Expansion, Brutal Bosses, Majestic Menaces, Cardinal Sins (the 7 sins → Lucifer → Drakara ladder; Lucifer is the T3→T4 combat capstone; the seven sins' and Drakara's arenas are in the Abyss, Lucifer's in the Nether). *(NovaBosses and LuMoreBossesAndMobs are NOT in pack; the "Cataclysm Apotheosis addon" is unverified — no such jar — see #47.)*
 
 ## Food & Farming
 

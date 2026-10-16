@@ -10,6 +10,14 @@
     },
     {
       "type": "patchouli:text",
+      "text": "$(bold)The Cardinal Sins$()$(br)The seven sins and Drakara have their arenas in $(bold)the Abyss$(); Lucifer's is in $(bold)the Nether$(). The Boss Compass finds each one.$(br2)Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer's Atrocity Shrine. Drakara needs no shrine: it waits in its arena, underground."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Soul Orbs$()$(br)Sloth's Malevolichite Shrine takes a $(bold)Soulweaver Orb$(): 8 Malevolichite around an Eye of Ender. Malevolichite Ore sits in the floating pillars of the Overworld's Forgotten Forest.$(br2)Every other orb: an Eye of Ender and the Essence the previous sin drops, at a smithing table with no template."
+    },
+    {
+      "type": "patchouli:text",
       "text": "$(bold)Meet Your Fight$() \u2014 4 superbosses in specialized biomes:$(br)Swampjaw \u2192 $(l:icraft:bosses/unique_weapons)Harbinger$(/l) (18%)$(br)Bellringer \u2192 $(l:icraft:bosses/unique_weapons)Hearthflame$(/l) (18%)$(br)Dame Fortuna \u2192 $(l:icraft:bosses/unique_weapons)Magiscythe$(/l) (18%)$(br)Rosalyne \u2192 $(l:icraft:bosses/unique_weapons)Magispear$(/l) (18%)"
     },
     {
