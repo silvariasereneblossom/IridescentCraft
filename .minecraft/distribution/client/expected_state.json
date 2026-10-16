@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c2b63adb",
+    "generated_from":  "4507de6f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6415,6 +6415,30 @@
                                                                             "sha256":  "936318e4f56bcd7efd9c462efdf02306e908b60441fc5a4b3a4581fd8c5381cd",
                                                                             "size":  138
                                                                         },
+                  "kubejs/data/icraft/bosses/t2_vindicator.json":  {
+                                                                       "sha256":  "000d14783de0f1754cec661cb5dfb20194e40108ce16b325afd8702352455dc9",
+                                                                       "size":  2794
+                                                                   },
+                  "kubejs/data/icraft/bosses/t2_witch.json":  {
+                                                                  "sha256":  "3bc0ad2eb3502bbc77dab1340876449324602631ea5c50dec09ad17b5e01d2e2",
+                                                                  "size":  3074
+                                                              },
+                  "kubejs/data/icraft/bosses/t3_wither_skeleton.json":  {
+                                                                            "sha256":  "138bdc2e1c74f6dc337ea4d2fcb3d947cfcbb9858c7ba42d7d0d58da49780d96",
+                                                                            "size":  3324
+                                                                        },
+                  "kubejs/data/icraft/bosses/t3_zombified_piglin.json":  {
+                                                                             "sha256":  "fe27f4251fbc69e9ab3b9aa101dc1476545d225c7f153e386199312e33958516",
+                                                                             "size":  2844
+                                                                         },
+                  "kubejs/data/icraft/bosses/t4_enderman.json":  {
+                                                                     "sha256":  "20adfd2a2e9573c359c6c2ec799a2bbec6e9189ea06e4fb8ea99f7c2ae9024a8",
+                                                                     "size":  3121
+                                                                 },
+                  "kubejs/data/icraft/bosses/t4_evoker.json":  {
+                                                                   "sha256":  "86df3f95c55f05b4092ab7c5624b525e1b7d6f20b7afff73b5b3ebe4a140a8c3",
+                                                                   "size":  1766
+                                                               },
                   "kubejs/data/icraft/loot_tables/chests/cursed_pyramid.json":  {
                                                                                     "sha256":  "f05b771573721dc233e49632d1474338c914b6308e746e45d345196ec492e4a5",
                                                                                     "size":  4337
