@@ -54,7 +54,7 @@
 | Mutant Monsters | `mutantmonsters:mutant_creeper` | Mutant Creeper | T1-T2 | biome-conditional-random | Overworld surface (low spawn) | gunpowder, creeper minion egg | 4 |
 | Terramity | `terramity:gob` | Gob, King of Gnomes | T1 (kept; summon re-priced to emerald) | structure-locked | `terramity:court_of_gnomes` — swamp / dark forest / `#forge:is_swamp` | gobs_claymore, gobs_gilded_hat, belt_of_the_gnome_king | 3 |
 | Terramity | `terramity:enchanter_merlin` | Enchanter Merlin | T1 (confirmed) | structure-locked | `terramity:fairy_fountain`, `terramity:sword_shrine` — overworld | wizard staff, fairy summoning items | 3 |
-| Terramity | `terramity:virtue` | Virtue | **T4 → Deep Aether** | structure-locked | `terramity:prismatic_pond` — **Deep Aether** (relocated, was overworld) | archangel_halo, holy items | 3 |
+| Terramity | `terramity:virtue` | Virtue | **T4 → Deep Aether** | summoned at its altar | `terramity:prismatic_pond` — **Deep Aether** land biomes of the Aether (relocated 2026-05-30; a surface start since 2026-10-16, it never generated before); the Unholy Lance (Dead King) thrown into its prism solution is the only summon, the Overworld summon is refused | archangel_halo, holy items | 3 |
 | Terramity | `terramity:super_sniffer` | Super Sniffer | T1 (confirmed) | structure-locked | `terramity:ancient_outcrop` — desert / hot biomes | super_sniffers_pelt, giant_sniffers_hoof | 3 |
 | Terramity | `terramity:ultra_sniffer` | Ultra Sniffer | T2 | scripted (post-Super Sniffer) | summoned by Super Sniffer's Pelt | sniffer_kamehameha | 4 |
 | Terramity | `terramity:gundalf` | Archmage Gundalf | T2 | structure-locked | `terramity:trial_spire` — ocean biomes | gundalfs_hat, guardians_hand | 3 |

@@ -11,7 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "The Boss Ladder",
-      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Enchanter Merlin$() (Fairy Fountain), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t2)Tier 2$() — $(bold)Archmage Gundalf$() (Trial Spire).$(br)$(t3)Tier 3$() — $(bold)Gatmancer$() (Infested Laboratory).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond), $(bold)Sorceress Circe$() (Mausoleum)."
+      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Enchanter Merlin$() (Fairy Fountain), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t2)Tier 2$() — $(bold)Archmage Gundalf$() (Trial Spire).$(br)$(t3)Tier 3$() — $(bold)Gatmancer$() (Infested Laboratory).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond, the Aether), $(bold)Sorceress Circe$() (Mausoleum)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Virtue's Altar",
+      "text": "Virtue's altar is the $(bold)Prismatic Pond$(), a crystal pool on the Deep Aether islands of the Aether (the Boss Compass finds it).$(br2)Throw an $(bold)Unholy Lance$() (the Dead King's drop) into its prism solution: Virtue rises about ten seconds later. Thrown anywhere else, the lance calls nothing."
     },
     {
       "type": "patchouli:text",

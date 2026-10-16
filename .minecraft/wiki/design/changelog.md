@@ -6,6 +6,11 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Virtue's altar is the Prismatic Pond
+
+- **The Prismatic Pond generates in the Aether.** Terramity's crystal pond was moved to the Deep Aether forests of the Aether in May, but it was placed below the Aether's floor and never generated. It now sits on the surface of the Deep Aether islands, never over the void, and the Boss Compass finds it. Only newly generated land has it; the server had generated no Aether land yet.
+- **Virtue is summoned only at the pond.** Throw an Unholy Lance (the Dead King's drop) into the pond's prism solution: Virtue rises about ten seconds later. In the Overworld, where Terramity summoned Virtue anywhere under open sky, the lance now calls nothing and falls back to you, with a message saying where the altar is. Anywhere else the lance shatters after a second of flight, as before.
+
 ## October 2026 — Aether gear for Tier 4
 
 - **The Aether's Tetra materials are Tier 4 materials.** The Aether is a Tier 4 dimension, where netherite is the floor and only Aethersteel sits above it. The Slider's, the Valkyrie Queen's and the Sun Spirit's boss materials (carved stone, victory medal, sun altar) now sit in the Tier 4 boss band, just under the Eye of the Storm's squall plate, and need a diamond hammer to forge. Zanite, gravitite, valkyrie, phoenix and skyjade are netherite-grade in Tetra and keep their own perks (skyjade stays brittle and still takes no enchantments).
