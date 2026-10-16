@@ -1712,31 +1712,6 @@
     },
     {
       "materials": [
-        "tetra:gem/aether_neptune"
-      ],
-      "key": "front_cover/",
-      "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0223
-        },
-        "integrity": 1.0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "magicCapacity": 1
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/amethyst"
       ],
       "key": "front_cover/",

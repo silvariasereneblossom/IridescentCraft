@@ -648,7 +648,7 @@ The exact material set varies per module. Notable patterns:
 - 8 themed materials (fire/ice/shadow/holy/lightning/nature/ender/blood)
 - 27 datapack metals (steel, manasteel, aethersteel, iridium, etc.)
 - 5 datapack gems (ruby, sapphire, topaz, onyx, undergarden_utherium)
-- 3 modded-via-condition (aether_neptune, dd_warden, cm_ignitium, etc.)
+- modded-via-condition (dd_warden, cm_ignitium, etc.)
 - 1 bundle (arcane_ingot)
 - 1 each: tf_arctic, tf_yeti, bs_pyrope, tf_naga (cross-mod)
 

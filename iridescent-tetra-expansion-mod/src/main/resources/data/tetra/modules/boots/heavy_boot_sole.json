@@ -1211,28 +1211,6 @@
     },
     {
       "materials": [
-        "tetra:gem/aether_neptune"
-      ],
-      "key": "heavy_boot_sole/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.582
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 12
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/bs_pyrope"
       ],
       "key": "heavy_boot_sole/",

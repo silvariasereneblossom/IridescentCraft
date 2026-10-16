@@ -197,29 +197,6 @@
     },
     {
       "materials": [
-        "tetra:gem/aether_neptune"
-      ],
-      "key": "basic_cap/",
-      "extract": {
-        "primaryAttributes": {},
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "magicCapacity": 1
-      },
-      "aspects": {
-        "icraft_magic_weapon": 2
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/amethyst"
       ],
       "key": "basic_cap/",

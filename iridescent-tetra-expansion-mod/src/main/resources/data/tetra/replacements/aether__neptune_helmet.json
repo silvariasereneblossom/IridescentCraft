@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/aether_neptune"
+        "basic_crown/iron"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/aether_neptune"
+        "slit_visor/iron"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/aether_neptune"
+        "plain_crest/iron"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/aether_neptune"
+        "leather_strap/iron"
       ]
     }
   }

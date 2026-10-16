@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/basic_boot_sole",
-        "basic_boot_sole/aether_neptune"
+        "basic_boot_sole/iron"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/aether_neptune"
+        "padded_boot_lining/iron"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/aether_neptune"
+        "standard_heel/iron"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/aether_neptune"
+        "leather_lacing/iron"
       ]
     }
   }

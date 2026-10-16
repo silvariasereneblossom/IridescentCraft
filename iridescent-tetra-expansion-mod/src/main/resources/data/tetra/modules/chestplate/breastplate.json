@@ -1034,28 +1034,6 @@
     },
     {
       "materials": [
-        "tetra:gem/aether_neptune"
-      ],
-      "key": "breastplate/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 5.06
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 12
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/tf_arctic"
       ],
       "key": "breastplate/",

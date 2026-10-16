@@ -362,29 +362,6 @@
     },
     {
       "materials": [
-        "tetra:gem/aether_neptune"
-      ],
-      "key": "heavy_pauldrons/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.3397,
-          "minecraft:generic.armor_toughness": 0.1733
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/amethyst"
       ],
       "key": "heavy_pauldrons/",
