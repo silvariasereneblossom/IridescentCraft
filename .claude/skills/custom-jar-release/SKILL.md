@@ -42,15 +42,21 @@ So a rebuild that changes jar **content** but keeps the same **filename** will N
 Native Windows gradle fails on this host (task #39 — AF_UNIX EINVAL, JDK17/Win11). Every custom mod builds via its `wsl-build.sh` (WSL2 + JDK17, gradle 8.7). From PowerShell:
 
 ```
-wsl bash -lc "cd /mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraft/<mod> && ./wsl-build.sh"
+wsl -e bash -lc "cd '/mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraft/<mod>' && bash ./wsl-build.sh"
 ```
-Flags: *(none)* = build + deploy to all 3 distro `mods/`; `--no-deploy` = compile-verify only; `--clean` = gradle clean first. `wsl-build.sh` also auto-stages compileOnly libs (curios/relics/octolib/…) into the mod's `libs/` from the instance mods.
+The script finds the repo from its own path, so run from a worktree it deploys to THAT worktree's three distros (chip C, 2026-10-16: the Tetra expansion in 4 min 14 s with a warm gradle cache).
+
+Flags: *(none)* = build + deploy to all 3 distro `mods/`, **never the live server** (since `e9c5a8fe`; `--distros-only` is an alias of it, so older notes that say it still work); `--no-deploy` = compile-verify only; `--clean` = gradle clean first. **Tetra expansion only:** `--live` = also copy into the live server's `mods/` (Z:), `--live-only` = only there; both print a warning and wait 10 s. Never in an execution session: the live server is read-only for chips and takes pushed `main` at its policy Cycle, and a jar copied there before its commit is pushed runs with the OLD commit's scripts and data at the next crash restart. The other seven scripts have no live target at all. `wsl-build.sh` also auto-stages compileOnly libs (curios/relics/octolib/…) into the mod's `libs/` from the instance mods.
+
+**The Codex jar has no `wsl-build.sh`.** `iridescent_codex_data.jar` is built by `.minecraft/datapack_sources/iridescent_codex/build_codex.sh` (packs the jar, runs `validate_codex.py` on it, deploys to the three `mods/`): `wsl -e bash -lc "bash '/mnt/c/.../.minecraft/datapack_sources/iridescent_codex/build_codex.sh'"` (works from a worktree too). Then Scenario A from step 2 as written.
+
+**A new compileOnly dependency** goes in two lists: the jars the mod's `wsl-build.sh` stages into `libs/` (`stage_lib` in the Tetra expansion), AND, for the Tetra expansion, `tools/ci_libs.json` (name, CDN url, sha256, size), which `build-tetra-expansion.yml` fetches from. `tools/fetch_ci_libs.py` checks that list against every `fg.deobf("blank:…")` in `build.gradle` first and names what is missing; the workflow was red from 2026-06-19 to 2026-10-16 because Ensorcellation joined `build.gradle` and not the list (fixed `45500e2b`).
 
 ## Scenario A — same-version rebuild (the common case)
 
 Content changed, filename/version unchanged (a data tweak or small fix at the same version, e.g. `1.0.0`):
 
-1. **Build + deploy:** `wsl bash -lc "cd /mnt/c/.../<mod> && ./wsl-build.sh"`. Confirm `BUILD SUCCESSFUL` and the three `-> …/mods/<jar>` deploy lines.
+1. **Build + deploy:** `wsl -e bash -lc "cd '/mnt/c/.../<mod>' && bash ./wsl-build.sh"` (no flag: the three distros only). Confirm `BUILD SUCCESSFUL` and the three `-> …/mods/<jar>` deploy lines.
 2. **Regen the manifest:** `& '<repo>\.minecraft\dev\regen_custom_jars_manifest.ps1'`. It re-hashes every custom jar, rewrites all 3 `custom_jars_manifest.json`, and refreshes the jars' packwiz markers (`url` + `sha256` in the `.pw.toml` of all three `mods\.index`, through `sync_custom_jar_markers.py`). Confirm the jar's NEW sha/size prints.
 3. **Regenerate the two `expected_state.json` and commit them WITH the change.** A marker under `mods\.index` got a new hash, so `server_distribution\expected_state.json` and `distribution\client\expected_state.json` list a new one: `sync-distros.ps1 -Fix` regenerates them (and mirrors the watched trees: `kubejs` scripts, assets and data, `kubejs\config\icraft`, the Paxi datapacks, `cleanup_stale_jars.ps1`), or `& '<repo>\.minecraft\dev\generate_expected_state.ps1'` alone. Since `e3109139` the freshness gate does not compare the `generated_from` line, so nothing has to be regenerated after the last commit: the old "regenerate after your LAST commit and leave the two files uncommitted" is gone.
 4. **Stage explicitly (jars are tracked), commit, push:**
@@ -102,8 +108,8 @@ A new file name is a new jar for two gates, and both block the push until they a
 ## Worked example — same-version rebuild of iridescent_relics
 
 ```
-wsl bash -lc "cd /mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraft/iridescent-relics-mod && ./wsl-build.sh"
-#   -> BUILD SUCCESSFUL; deployed to 3 mods/
+wsl -e bash -lc "cd '/mnt/c/Users/silvariazemaitis/IridescentcraftDev/IridescentCraft/iridescent-relics-mod' && bash ./wsl-build.sh"
+#   -> BUILD SUCCESSFUL; deployed to 3 mods/ (never the live server)
 & 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft\.minecraft\dev\regen_custom_jars_manifest.ps1'
 #   -> prints the new sha for iridescent_relics-1.0.0.jar across all 3 manifests, then refreshes the markers
 & 'C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft\.minecraft\dev\generate_expected_state.ps1'
