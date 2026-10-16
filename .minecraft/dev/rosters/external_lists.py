@@ -722,6 +722,27 @@ def plan(reg, pol):
     return out, owed
 
 
+def stable_order(key, old, new):
+    """the generated entries of a key in the order the file already has them: entries that stay keep their place
+    (an Apotheosis line takes its new value in place), dropped ones go, new ones follow in registry order. Neither
+    mod reads an order, so this only keeps the diff to what changed."""
+    if key.startswith('apotheosis.'):
+        name = key.split('.', 1)[1]
+        dim = lambda ln: ln.partition('|')[0]
+        newd = OrderedDict((dim(x), x) for x in new)
+        out, seen = [], set()
+        for x in old:
+            d = dim(x)
+            if d in newd and d not in seen:
+                # a line that already says the same (0.10 and 0.1) keeps its text
+                out.append(x if same_value(name, x.partition('|')[2], newd[d].partition('|')[2]) else newd[d])
+                seen.add(d)
+        return out + [x for d, x in newd.items() if d not in seen]
+    want = set(new)
+    out = [x for x in OrderedDict.fromkeys(old) if x in want]
+    return out + [x for x in new if x not in out]
+
+
 def rewrite(text, rel, values):
     """-> new Text with the keys of `values` that live in this file replaced, every other line as it was"""
     new = Text(text.bytes(), text.where)
@@ -812,19 +833,25 @@ def cmd_generate(pack, reg, game, pol, dry_run):
         print('%s nothing to generate: every list is ruled "leave as it is".' % TAG)
         return 0
     distros = read_distros(pack)
+    # one order for all three distros: the first distro that reads the key gives it, so they agree afterwards
+    ordered = OrderedDict()
+    for k, v in values.items():
+        first = next((d.values[k] for d in distros if k in d.values), [])
+        ordered[k] = stable_order(k, first, v)
     pending, problems = [], []
     for d in distros:
         for rel, path in d.paths.items():
             keys = [k for k in values if KEYS[k][0] == rel]
             if not keys:
                 continue
+            mine = OrderedDict((k, ordered[k]) for k in keys)
             try:
                 old = d.texts.get(rel) or read_file(path, d.rels[rel])
-                new = rewrite(old, rel, values)
+                new = rewrite(old, rel, mine)
             except ListError as e:
                 problems.append(str(e))
                 continue
-            problems += verify(old, new, rel, values)
+            problems += verify(old, new, rel, mine)
             if new.bytes() != old.bytes():
                 pending.append((path, d.rels[rel], old, new, keys))
     if problems:

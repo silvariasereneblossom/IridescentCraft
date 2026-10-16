@@ -453,6 +453,26 @@ def c_generate_scope_list(tmp):
     return bad + expect(out, rc, 1, 'difficulty.excludes.scope: ["hp", "nonsense"] is not a system')
 
 
+def c_generate_keeps_order(tmp):
+    """entries that stay keep their place, dropped ones go, new ones are appended: the diff shows only what changed"""
+    t = toml_with(entities='["otherid:queen", "testmod:kingg", "testmod:king"]', t4='["testmod:moon"]')
+    spawn = ['testmod:moon|0.10|ANY', 'deep_aether:the_aether|0.08|NEEDS_SURFACE', 'minecraft:overworld|0.05|NEEDS_SKY']
+    pol = build(tmp, toml=t, adv=cfg(spawn=spawn))
+    rc, out = run(tmp, pol, 'generate')
+    bad = expect(out, rc, 0)
+    toml = open(os.path.join(tmp, DIFF), encoding='utf-8').read()
+    for want in ('\tentities = ["otherid:queen", "testmod:king", "testmod:knight", "testmod:queen"]', '\tt4 = ["testmod:moon", "minecraft:the_end"]'):
+        if want not in toml:
+            bad.append('the difficulty file does not hold: %s' % want)
+    adv = open(os.path.join(tmp, APOTH), encoding='utf-8').read()
+    want = ('        testmod:moon|0.10|ANY\n        minecraft:overworld|0.02|NEEDS_SKY\n        testmod:forest|0.04|NEEDS_SURFACE\n'
+            '        minecraft:the_nether|0.06|ANY\n        minecraft:the_end|0.10|SURFACE_OUTER_END\n     >')
+    if want not in adv:
+        bad.append('the boss spawn list is not in the old order with the new lines appended')
+    rc, out = run(tmp, pol, 'check', '--strict')
+    return bad + expect(out, rc, 0, '| 0 findings')
+
+
 REAL_FILES = [os.path.join('kubejs', 'config', 'icraft', 'registry', f) for f in ('bosses.json', 'dimensions.json')] + \
              [os.path.join('dev', 'registry', f) for f in ('entity_types.txt', 'dimensions.txt', 'structures.txt', 'blocks.txt',
                                                          'items.txt', 'entities.json', 'SOURCE.json')] + \
@@ -520,6 +540,7 @@ CASES = [
     ('generate: only the keys, in all three distros; clean after; a no-op twice', c_generate_writes_only_keys),
     ('generate: scope, keep, tierOf and leaveOff do what the policy says', c_generate_policy_shapes),
     ('generate: a list scope (hp or x3) with an id kept by name', c_generate_scope_list),
+    ('generate: entries that stay keep their place, new ones are appended', c_generate_keeps_order),
     ('real pack (a copy): the committed policy writes only its keys; clean after; a no-op twice', c_real_pack_copy),
 ]
 
