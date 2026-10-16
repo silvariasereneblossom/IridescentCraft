@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "9353d4e6",
+    "generated_from":  "4822f878",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4184,8 +4184,8 @@
                                                        "size":  1120
                                                    },
                   "config/mowziesmobs-common.toml":  {
-                                                         "sha256":  "5fdca892555ee1b6e12d053bf01cf4ec1e042617b70ee9944db1092c7e6a65d1",
-                                                         "size":  36497
+                                                         "sha256":  "abb27b5ba89280d842fa2d95d594ee4aa5cf8ae7b23dbde8b55df1d023b7802e",
+                                                         "size":  35681
                                                      },
                   "config/multiplayerbosses-common.toml":  {
                                                                "sha256":  "c618b51b83cda136f5ac17d9d609054968e32dba3e8de2ae897bf871b241ce52",
