@@ -37,6 +37,7 @@
 # Usage (from WSL bash, or `wsl bash -lc "cd <mod> && ./wsl-build.sh"`):
 #   ./wsl-build.sh             # build + deploy to 3 distros
 #   ./wsl-build.sh --no-deploy # build only (jar at build/libs/)
+#   ./wsl-build.sh --distros-only # same (alias; this mod has no live-server target)
 #   ./wsl-build.sh --clean     # ./gradlew clean first
 # =============================================================================
 set -euo pipefail
@@ -50,8 +51,9 @@ JAR_NAME="lovely_sparkle_pieces-${VERSION}.jar"
 DEPLOY=1; CLEAN=0
 for arg in "$@"; do
   case "$arg" in
-    --no-deploy) DEPLOY=0 ;;
-    --clean)     CLEAN=1 ;;
+    --no-deploy)    DEPLOY=0 ;;
+    --distros-only) DEPLOY=1 ;;   # alias: the only deploy target here is the 3 repo distros
+    --clean)        CLEAN=1 ;;
     *) echo "[wsl-build] unknown arg: $arg"; exit 2 ;;
   esac
 done

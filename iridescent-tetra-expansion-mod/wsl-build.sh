@@ -12,11 +12,19 @@
 #   sudo apt install -y openjdk-17-jdk python3 unzip
 #
 # Usage from WSL bash:
-#   ./wsl-build.sh                 # build + deploy to 3 distros + Z: live
+#   ./wsl-build.sh                 # build + deploy to the 3 repo distros (never the live server)
+#   ./wsl-build.sh --distros-only  # same (kept as an alias)
 #   ./wsl-build.sh --no-deploy     # build only; jar at build/libs/
-#   ./wsl-build.sh --distros-only  # build + deploy to 3 distros, skip Z:
-#   ./wsl-build.sh --live-only     # build + deploy to Z: only
 #   ./wsl-build.sh --clean         # also `./gradlew clean` first
+#   ./wsl-build.sh --live          # ALSO copy the jar into the live server's mods/ (Z:), with a warning
+#   ./wsl-build.sh --live-only     # copy into the live server's mods/ only, with a warning
+#
+# The live server is deployed by its policy Cycle from pushed main (commit
+# first, then push). A jar copied into its mods/ before its commit is pushed
+# runs with the scripts and data of the OLD commit at the next crash restart,
+# and the next Cycle overwrites it from main anyway. Until 2026-10-16 a bare
+# ./wsl-build.sh did this by default; a live copy now needs --live or
+# --live-only, typed on purpose (a hot fix the operator asked for).
 #
 # Performance note:
 #   /mnt/c/ access is slow under WSL2 (Plan9 protocol). If you build often,
@@ -33,18 +41,35 @@ REPO_ROOT="$(dirname "$MOD_ROOT")"
 JAR_NAME="iridescent_tetra_expansion-1.0.0.jar"
 
 # --- args --------------------------------------------------------------------
-DO_BUILD=1; DEPLOY_DISTROS=1; DEPLOY_LIVE=1; DO_CLEAN=0
+DO_BUILD=1; DEPLOY_DISTROS=1; DEPLOY_LIVE=0; DO_CLEAN=0
 for arg in "$@"; do
     case "$arg" in
         --no-deploy)    DEPLOY_DISTROS=0; DEPLOY_LIVE=0 ;;
-        --distros-only) DEPLOY_LIVE=0 ;;
-        --live-only)    DEPLOY_DISTROS=0 ;;
+        --distros-only) DEPLOY_DISTROS=1; DEPLOY_LIVE=0 ;;
+        --live)         DEPLOY_LIVE=1 ;;
+        --live-only)    DEPLOY_DISTROS=0; DEPLOY_LIVE=1 ;;
         --clean)        DO_CLEAN=1 ;;
         -h|--help)
-            sed -n '/^#/p' "$0" | head -40; exit 0 ;;
+            sed -n '/^#/p' "$0" | head -48; exit 0 ;;
         *) echo "[wsl-build] unknown arg: $arg"; exit 2 ;;
     esac
 done
+
+live_warning() {
+    echo "[wsl-build] ==================================================================="
+    echo "[wsl-build] WARNING: LIVE DEPLOY requested ($1)."
+    echo "[wsl-build]   This copies the jar straight into the live server's mods/ folder,"
+    echo "[wsl-build]   around the pack's commit-first rule: the server deploys pushed main"
+    echo "[wsl-build]   at its policy Cycle. If this jar's commit is not pushed yet, a crash"
+    echo "[wsl-build]   restart runs it with the OLD commit's scripts and data, and the next"
+    echo "[wsl-build]   Cycle replaces it with main's jar. Use only for a hot fix the"
+    echo "[wsl-build]   operator asked for. Ctrl-C within 10 s to cancel."
+    echo "[wsl-build] ==================================================================="
+    sleep 10
+}
+if [ "$DEPLOY_LIVE" = 1 ]; then
+    live_warning "$*"
+fi
 
 # --- env sanity --------------------------------------------------------------
 echo "[wsl-build] MOD_ROOT  = $MOD_ROOT"
@@ -179,7 +204,7 @@ fi
 if [ "$DEPLOY_LIVE" = 1 ]; then
     LIVE="/mnt/z/Users/silvariazemaitis/Desktop/IridescentCraft Dedicated Server/mods"
     if [ -d "$LIVE" ]; then
-        echo "[wsl-build] Deploying to Z: live server..."
+        echo "[wsl-build] Deploying to the LIVE server (Z:), as asked by --live / --live-only..."
         deploy_to "$LIVE"
     else
         echo "[wsl-build] Z: live mount not accessible from WSL ($LIVE missing) -- skip."
@@ -188,4 +213,7 @@ if [ "$DEPLOY_LIVE" = 1 ]; then
     fi
 fi
 
+if [ "$DEPLOY_LIVE" = 0 ]; then
+    echo "[wsl-build] Live server not touched (it deploys pushed main at its next Cycle)."
+fi
 echo "[wsl-build] Done."

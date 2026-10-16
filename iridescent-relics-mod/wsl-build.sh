@@ -11,6 +11,7 @@
 # Usage (from WSL bash):
 #   ./wsl-build.sh             # build + deploy jar to the 3 repo distros
 #   ./wsl-build.sh --no-deploy # build only (jar at build/libs/)
+#   ./wsl-build.sh --distros-only # same (alias; this mod has no live-server target)
 #   ./wsl-build.sh --clean     # ./gradlew clean first
 # =============================================================================
 set -euo pipefail
@@ -22,8 +23,9 @@ JAR_NAME="iridescent_relics-1.0.0.jar"
 DEPLOY=1; CLEAN=0
 for arg in "$@"; do
   case "$arg" in
-    --no-deploy) DEPLOY=0 ;;
-    --clean)     CLEAN=1 ;;
+    --no-deploy)    DEPLOY=0 ;;
+    --distros-only) DEPLOY=1 ;;   # alias: the only deploy target here is the 3 repo distros
+    --clean)        CLEAN=1 ;;
     *) echo "[wsl-build] unknown arg: $arg"; exit 2 ;;
   esac
 done
