@@ -60,7 +60,7 @@
       "arena": { "key": "blue_skies_starlit_crusher", "display": "Starlit Crusher", "tier": 2, "dimension": "blue_skies:everbright", "structure": "blue_skies:everbright_blinding_dungeon", "waystone": "Everbright Blinding Dungeon", "ritual": "Use a Blinding Key + Summoning Tome at the altar inside." } },
     "blue_skies:arachnarch": { "tier": 2, "kind": "named", "hp": 450, "flags": ["boss", "x3", "perKill", "witchInk"], "rush": 2,
       "arena": { "key": "blue_skies_arachnarch", "display": "Arachnarch", "tier": 2, "dimension": "blue_skies:everdawn", "structure": "blue_skies:everdawn_blinding_dungeon", "waystone": "Everdawn Blinding Dungeon", "ritual": "Use a Blinding Key + Summoning Tome at the altar inside." } },
-    "mowziesmobs:frostmaw": { "tier": 2, "kind": "named", "flags": ["boss", "x3", "perKill"], "rush": 2, "relic": { "item": "iridescent_relics:frostmaw_heart", "chance": 0.4, "looting": 0.1 },
+    "mowziesmobs:frostmaw": { "tier": 2, "kind": "named", "hp": 500, "flags": ["boss", "x3", "perKill"], "rush": 2, "relic": { "item": "iridescent_relics:frostmaw_heart", "chance": 0.4, "looting": 0.1 },
       "arena": { "key": "mowzie_frostmaw", "display": "Frostmaw", "tier": 2, "dimension": "blue_skies:everbright", "structure": "mowziesmobs:frostmaw_spawn", "waystone": "Frostmaw's Lair", "ritual": "It sleeps on the ice: strike the icicle it clutches to wake it." },
       "note": "Moved from the Overworld (tier 1) to Everbright's frozen biomes, 2026-10-16 (Aether scope R3): config/mowziesmobs-common.toml + kubejs/data/mowziesmobs/tags/worldgen/biome/has_structure/has_mowzie_structure.json. Frostmaws in Overworld chunks generated before that stay." },
     "terramity:gundalf": { "tier": 2, "kind": "miniboss", "flags": ["boss"],
