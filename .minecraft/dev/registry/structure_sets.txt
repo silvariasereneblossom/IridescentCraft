@@ -94,6 +94,8 @@ explorify:supply_caches
 explorify:taverns
 explorify:watchtowers
 forbidden_arcanus:nipas
+icraft:cardinal_sins_abyss_arenas
+icraft:cardinal_sins_lucifer_arena
 icraft:cherry_villages
 idas:idas_common
 idas:idas_nether

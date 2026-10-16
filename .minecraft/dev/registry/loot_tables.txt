@@ -9304,6 +9304,7 @@ progressivebosses:entities/elder_guardian_1
 progressivebosses:entities/elder_guardian_2
 progressivebosses:entities/ender_dragon/base
 progressivebosses:entities/ender_dragon/corrupted
+progressivebosses:entities/wither
 progressivebosses:entities/wither/armored
 progressivebosses:entities/wither/base
 progressivebosses:entities/wither/summoner
