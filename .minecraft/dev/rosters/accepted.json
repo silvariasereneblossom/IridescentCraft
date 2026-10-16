@@ -36,7 +36,10 @@
     "theabyss:the_roka": "see x3-not-named",
     "theabyss:elder": "see x3-not-named",
     "ars_nouveau:wilden_boss": "ruled 2026-10-12: `boss` (core.isBoss, no mob-tier health), on no kill roster, no tokens; see x3-not-named",
-    "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). Since ruling 24 (2026-10-14) it reaches play: the game hands it out as a minecraft:vindicator and `seenAs` recognises it (see its note)"
+    "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). Since ruling 24 (2026-10-14) it reaches play: the game hands it out as a minecraft:vindicator and `seenAs` recognises it (see its note)",
+    "cardinal_sins:sinofenvyphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92",
+    "cardinal_sins:sinofpridephase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92",
+    "cardinal_sins:sinofwrathphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92"
   },
 
   "named-not-in-rush": {

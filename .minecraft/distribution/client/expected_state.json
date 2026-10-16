@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "06a8ff60",
+    "generated_from":  "c2b63adb",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49324
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "538db6f50e311034ecb359fd17ac4e8fe1920ff0603376b833d025f869146963",
-                                                                    "size":  28922
+                                                                    "sha256":  "19a1661e863e223f7753b1f971331f52b3b70d7c27cde71d67d05939aef8a062",
+                                                                    "size":  28946
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
@@ -6472,8 +6472,8 @@
                                                                                         "size":  922
                                                                                     },
                   "kubejs/data/icraft/tags/entity_types/registry_bosses.json":  {
-                                                                                    "sha256":  "c62bcce6a909acef8126029b091910665c23f6c754f3c2738b7ef23b1c08b5f6",
-                                                                                    "size":  6485
+                                                                                    "sha256":  "c649d23d7981eb714e0756c40ff0de292e9566f22f0e4ae410ec64c2c7c536b1",
+                                                                                    "size":  6688
                                                                                 },
                   "kubejs/data/icraft/tags/items/armor_heavy.json":  {
                                                                          "sha256":  "6f6d0a8ae9478e8737df97e0a2ec9d92cad6783c9dd6516ab237cc0946ae543f",
