@@ -10,7 +10,7 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 25 | 24 | 26 | 3 |
-| server | 163 | 332 | 241 | 26 |
+| server | 163 | 332 | 241 | 27 |
 | client | 14 | 9 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
@@ -1267,7 +1267,7 @@ own one-shot `global._*` flags.
 - place 35 of 163; header: @events @file @live
 - events: `EntityEvents.spawned` for `<computed>`
 - tick functions: `tick_virtueAltar` (server, every 1, offset 0)
-- features: `virtue-altar-refused`, `virtue-altar-summon`
+- features: `virtue-altar-missed`, `virtue-altar-refused`, `virtue-altar-summon`
 - reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `compat/twilight_plateau_boss_guard.js`

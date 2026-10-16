@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "f66608038d33f30156bf4d290abc067555438b56a10fc3c8d1b24e7465db6d19",
-                                                                  "size":  49324
+                                                                  "sha256":  "a0670af1df2cedcad51abbb0b8a3caa6e91793364bfd7fdd75ddbe22183bcd5c",
+                                                                  "size":  49386
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "19a1661e863e223f7753b1f971331f52b3b70d7c27cde71d67d05939aef8a062",
@@ -7144,8 +7144,8 @@
                                                                                          "size":  2052
                                                                                      },
                   "kubejs/server_scripts/compat/terramity_virtue_altar.js":  {
-                                                                                 "sha256":  "2a75e57c2885836555fd03076114eaee17e7d6c98d32a0b1af3263c653e8864c",
-                                                                                 "size":  13118
+                                                                                 "sha256":  "05a7eb3b2c448d8d4574beb7839a7eee12c2bb0e1ddfa1fe8c95b228e3d1ef18",
+                                                                                 "size":  13821
                                                                              },
                   "kubejs/server_scripts/compat/twilight_plateau_boss_guard.js":  {
                                                                                       "sha256":  "0d11c34ef9c059bdf0ed092b39777c27d5dfb2b5119c8f63a13de96082d021d8",

@@ -3038,6 +3038,7 @@
      ],
      "sections": 0,
      "features": [
+      "virtue-altar-missed",
       "virtue-altar-refused",
       "virtue-altar-summon"
      ],

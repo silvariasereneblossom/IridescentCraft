@@ -644,6 +644,7 @@
    "sunlight-smite": "sunlight_smite.js",
    "unique-bow-effects": "loot/tmb_plain_bow_effects.js",
    "unique-tier-buff": "loot/unique_tier_buff.js",
+   "virtue-altar-missed": "compat/terramity_virtue_altar.js",
    "virtue-altar-refused": "compat/terramity_virtue_altar.js",
    "virtue-altar-summon": "compat/terramity_virtue_altar.js",
    "wither-relic": "loot/iss_boss_first_kill.js",

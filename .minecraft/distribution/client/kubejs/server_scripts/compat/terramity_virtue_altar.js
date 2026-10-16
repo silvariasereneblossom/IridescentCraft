@@ -1,11 +1,12 @@
 // @file kubejs/server_scripts/compat/terramity_virtue_altar.js
 // @events EntityEvents.spawned, tick.server
-// @live virtue-altar-refused, virtue-altar-summon
+// @live virtue-altar-missed, virtue-altar-refused, virtue-altar-summon
 // =============================================================================
 // Virtue's altar is the Prismatic Pond in the Aether: an Unholy Lance thrown
 // into (or within 4 blocks of) a pond's prism solution summons Virtue there.
-// A lance thrown in the Overworld summons nothing, comes back to its thrower,
-// and a chat line says where the altar is.
+// A lance thrown in the Overworld, or one that misses the pond in the Aether,
+// summons nothing, comes back to its thrower, and a chat line says where the
+// altar is.
 // =============================================================================
 // Ruled 2026-10-16 (Aether to tier 4, round 2, "Lance into the pond", V2 of the
 // scope in the internal repo, design/scope-aether-to-tier-4-2026-10-15.md 7.2).
@@ -35,6 +36,10 @@
 //     discarded and the lance is given back (or dropped where it was when the
 //     thrower is gone). Under open sky or not: the sky test moves with the
 //     lance, so the refusal does not guess it.
+//   - Aether, a lance that reaches that tick without the pond: given back the
+//     same way, with its own chat line (implemented on recommendation, for
+//     review: planning 16:00 EDT 10-16 under the operator's standing rule of
+//     11:36; the mod would have used it up).
 //   - Anywhere else, the mod is left as it is (the lance is used up at 20);
 //     the thrower gets the chat line one tick before.
 // =============================================================================
@@ -221,7 +226,8 @@
     icraft.live.fired('virtue-altar-summon')
   }
 
-  var refuse = function (rec) {
+  // one tick before the mod's timer: the projectile goes, the lance goes back to its thrower (or drops where it was)
+  var giveBack = function (rec, line) {
     var lance = rec.e
     var level = lance.level
     var owner = ownerOf(lance)
@@ -232,8 +238,7 @@
     } else {
       level.getBlock(Math.floor(x), Math.floor(y), Math.floor(z)).popItem(Item.of(LANCE_ITEM))
     }
-    tell(owner, 'The Unholy Lance falls back to you: Virtue cannot be called in the Overworld. ' + WHERE)
-    icraft.live.fired('virtue-altar-refused')
+    tell(owner, line)
   }
 
   EntityEvents.spawned(LANCE, icraft.guard('compat/terramity_virtue_altar', 'EntityEvents.spawned', function (event) {
@@ -280,7 +285,11 @@
       if (timerOf(rec) >= MOD_TIMER - 1) {
         rec.done = true
         if (dim === REFUSE_DIM) {
-          refuse(rec)
+          giveBack(rec, 'The Unholy Lance falls back to you: Virtue cannot be called in the Overworld. ' + WHERE)
+          icraft.live.fired('virtue-altar-refused')
+        } else if (dim === ALTAR_DIM) {
+          giveBack(rec, 'The Unholy Lance falls back to you: no prism solution within ' + REACH + ' blocks of it. ' + WHERE)
+          icraft.live.fired('virtue-altar-missed')
         } else {
           tell(ownerOf(lance), 'The Unholy Lance shatters without an altar. ' + WHERE)
         }

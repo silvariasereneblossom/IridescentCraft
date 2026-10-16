@@ -9,7 +9,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 ## October 2026 — Virtue's altar is the Prismatic Pond
 
 - **The Prismatic Pond generates in the Aether.** Terramity's crystal pond was moved to the Deep Aether forests of the Aether in May, but it was placed below the Aether's floor and never generated. It now sits on the surface of the Deep Aether islands, never over the void, and the Boss Compass finds it. Only newly generated land has it; the server had generated no Aether land yet.
-- **Virtue is summoned only at the pond.** Throw an Unholy Lance (the Dead King's drop) into the pond's prism solution: Virtue rises about ten seconds later. In the Overworld, where Terramity summoned Virtue anywhere under open sky, the lance now calls nothing and falls back to you, with a message saying where the altar is. Anywhere else the lance shatters after a second of flight, as before.
+- **Virtue is summoned only at the pond.** Throw an Unholy Lance (the Dead King's drop) into the pond's prism solution: Virtue rises about ten seconds later. In the Overworld, where Terramity summoned Virtue anywhere under open sky, the lance now calls nothing and falls back to you, with a message saying where the altar is. A lance that misses the pond in the Aether falls back to you the same way; in other dimensions it shatters after a second of flight, as before.
 
 ## October 2026 — Aether gear for Tier 4
 

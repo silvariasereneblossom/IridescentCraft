@@ -2670,6 +2670,10 @@
      "script": "loot/unique_tier_buff.js"
     },
     {
+     "name": "virtue-altar-missed",
+     "script": "compat/terramity_virtue_altar.js"
+    },
+    {
      "name": "virtue-altar-refused",
      "script": "compat/terramity_virtue_altar.js"
     },
