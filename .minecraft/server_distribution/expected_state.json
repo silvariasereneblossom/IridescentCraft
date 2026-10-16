@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "9aaa0e07",
+    "generated_from":  "00485b26",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4372,8 +4372,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "7f1b6e9cf62ae46e9ed1646fe2c9d1de32c6f95c56064b2815ce49ab93f9a968",
-                                                                           "size":  58563
+                                                                           "sha256":  "20d28154e52d7ec0df4fda895b2253156cd71027fab9049037f3b7287258dd2d",
+                                                                           "size":  58956
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",

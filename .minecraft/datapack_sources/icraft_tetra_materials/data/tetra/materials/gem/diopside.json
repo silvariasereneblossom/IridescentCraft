@@ -1,4 +1,5 @@
 {
+  "_comment": "Blue Skies diopside, a tier-2 gem (2026-10-16, Aether follow-up chip, item 4; implemented on recommendation, for review). This file shares its path with dimasctetracompat's gem/diopside.json (primary 8, durability 1661, diopside gem); Tetra merges the two field by field with this Paxi pack last, so the pack's numbers below win. Its ingredient named blue_skies:diopside, an item that does not exist, so until 2026-10-16 nothing made this material and the diopside gem made no Tetra gem material at all (the rig: only socket_blue_skies_diopside claimed it; txdacompat disables Tetranomicon's blue_skies_diopside). Now the gem itself. The single-* attributes (*irons_spellbooks:nature_spell_power, *irons_spellbooks:spell_power) never applied and were removed. The diopside armour conversion and its repairs are unchanged.",
   "key": "diopside",
   "category": "gem",
   "primary": 5.0,
@@ -21,14 +22,10 @@
   ],
   "material": {
     "items": [
-      "blue_skies:diopside"
+      "blue_skies:diopside_gem"
     ]
   },
   "requiredTools": {
     "hammer_dig": "minecraft:gold"
-  },
-  "attributes": {
-    "*irons_spellbooks:nature_spell_power": 0.06,
-    "*irons_spellbooks:spell_power": 0.15
   }
 }
