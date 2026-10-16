@@ -2,12 +2,16 @@
   "about": [
     "The rulings dev/rosters/external_lists.py needs before `generate` may write the difficulty mod's and Apotheosis's",
     "own lists (config/iridescent_difficulty-common.toml, config/apotheosis/adventure.cfg, three distros) from the registry.",
-    "A null is a ruling the operator still owes: `generate` refuses while any value it needs is null; `check` uses every",
-    "value that is ruled and the registry's answer where one is owed. Built check-only by ruling 25 (2026-10-14): NOTHING",
-    "below is ruled yet. What each ruling changes in play: the first report, internal dev/external-lists-2026-10-15/.",
-    "difficulty.excludes.scope: the registry system whose entries leave the dimension curve, with their second ids",
-    "  (isBoss = every entry flagged boss; x3, tokensNamed, rush ... = only those); false = the list is not generated.",
-    "  keep: ids kept on the list that the scope does not hold (each a registered entity type).",
+    "A null is a ruling still owed: `generate` refuses while any value it needs is null; `check` uses every ruled value.",
+    "RULED 2026-10-16 (operator, in the ruling-25 chat, each the recommended option): bosses with a designed health or",
+    "the x3 leave the curve, the Elder Guardian stays excluded as before (`Designed bosses`); every registry dimension at",
+    "its registry tier on the curve (`Registry tier`); rarities: the Frost World the Abyss's, the Abyss pocket tier 2's,",
+    "tier 4 the End's (`Tier ladder`); boss spawns on the Frost World (the Abyss's) and the 5 planets (8 %), none in the",
+    "orbits, the three pocket dimensions or the Reality Marble (`Planets + Frost World`). The Aether's values are the",
+    "Aether-to-tier-4 ruling's (design/scope-aether-to-tier-4-2026-10-15.md section 8, chip A), taken as given.",
+    "difficulty.excludes.scope: the registry system whose entries leave the dimension curve, with their second ids, or a",
+    "  list of systems (an entry held by any of them); false = the list is not generated. keep: ids kept on the list that",
+    "  the scope does not hold (each a registered entity type).",
     "difficulty.dimensions.registryTiers: true = every registry dimension on the curve at its registry tier, except",
     "  tierOf (another tier on the curve) and leaveOff (left off: the curve gives it t1); false = t1..t4 not generated.",
     "apotheosis.<list>.dimensions: the value of one dimension (the ten real dimensions: today's values, copied 2026-10-15);",
@@ -18,57 +22,99 @@
   ],
   "schema": 1,
   "difficulty": {
-    "excludes": { "scope": null, "keep": [] },
-    "dimensions": { "registryTiers": null, "tierOf": {}, "leaveOff": [] }
+    "excludes": {
+      "scope": [
+        "hp",
+        "x3"
+      ],
+      "keep": [
+        "minecraft:elder_guardian"
+      ]
+    },
+    "dimensions": {
+      "registryTiers": true,
+      "tierOf": {},
+      "leaveOff": []
+    }
   },
   "apotheosis": {
     "Affix Convert Rarities": {
-      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "tiers": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": "epic|ancient"
+      },
       "dimensions": {
         "minecraft:overworld": "common|rare",
         "twilightforest:twilight_forest": "common|epic",
         "blue_skies:everbright": "common|epic",
         "blue_skies:everdawn": "common|epic",
-        "aether:the_aether": "uncommon|epic",
+        "aether:the_aether": "rare|ancient",
         "undergarden:undergarden": "uncommon|mythic",
         "deeperdarker:otherside": "uncommon|mythic",
         "minecraft:the_nether": "rare|mythic",
         "theabyss:the_abyss": "rare|mythic",
-        "minecraft:the_end": "epic|ancient"
+        "minecraft:the_end": "epic|ancient",
+        "theabyss:frost_world": "rare|mythic",
+        "theabyss:pocket_dimension": "common|epic"
       },
       "leaveOff": []
     },
     "Gem Dimensional Rarities": {
-      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "tiers": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": "epic|ancient"
+      },
       "dimensions": {
         "minecraft:overworld": "common|rare",
         "twilightforest:twilight_forest": "common|epic",
         "blue_skies:everbright": "common|epic",
         "blue_skies:everdawn": "common|epic",
-        "aether:the_aether": "uncommon|epic",
+        "aether:the_aether": "rare|ancient",
         "undergarden:undergarden": "uncommon|mythic",
         "deeperdarker:otherside": "uncommon|mythic",
         "minecraft:the_nether": "rare|mythic",
         "theabyss:the_abyss": "rare|mythic",
-        "minecraft:the_end": "epic|ancient"
+        "minecraft:the_end": "epic|ancient",
+        "theabyss:frost_world": "rare|mythic",
+        "theabyss:pocket_dimension": "common|epic"
       },
       "leaveOff": []
     },
     "Boss Spawn Dimensions": {
-      "tiers": { "1": null, "2": null, "3": null, "4": null },
+      "tiers": {
+        "1": null,
+        "2": null,
+        "3": null,
+        "4": "0.08|NEEDS_SURFACE"
+      },
       "dimensions": {
         "minecraft:overworld": "0.02|NEEDS_SKY",
         "twilightforest:twilight_forest": "0.04|NEEDS_SURFACE",
         "blue_skies:everbright": "0.04|NEEDS_SURFACE",
         "blue_skies:everdawn": "0.04|NEEDS_SURFACE",
-        "aether:the_aether": "0.04|NEEDS_SURFACE",
+        "aether:the_aether": "0.08|NEEDS_SURFACE",
         "undergarden:undergarden": "0.06|ANY",
         "deeperdarker:otherside": "0.06|ANY",
         "minecraft:the_nether": "0.08|ANY",
         "theabyss:the_abyss": "0.06|ANY",
-        "minecraft:the_end": "0.10|SURFACE_OUTER_END"
+        "minecraft:the_end": "0.10|SURFACE_OUTER_END",
+        "theabyss:frost_world": "0.06|ANY"
       },
-      "leaveOff": []
+      "leaveOff": [
+        "ad_astra:earth_orbit",
+        "ad_astra:glacio_orbit",
+        "ad_astra:mars_orbit",
+        "ad_astra:mercury_orbit",
+        "ad_astra:moon_orbit",
+        "ad_astra:venus_orbit",
+        "irons_spellbooks:pocket_dimension",
+        "theabyss:pocket_dimension",
+        "mahoutsukai:reality_marble"
+      ]
     }
   }
 }

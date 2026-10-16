@@ -297,11 +297,14 @@ def load_policy(path, reg, game):
         ex = dif.get('excludes') or {}
         if _keys(ex, ('scope', 'keep'), 'difficulty.excludes', p):
             s = ex.get('scope')
-            if s is None or s is False or s in rosters.BOSS_SYSTEMS:
+            names = s if isinstance(s, list) else [s]
+            if s is None or s is False:
                 pol.scope = s
+            elif names and all(isinstance(n, str) and n in rosters.BOSS_SYSTEMS for n in names):
+                pol.scope = list(names) if isinstance(s, list) else s
             else:
-                p.append('difficulty.excludes.scope: "%s" is not a system of the boss registry (%s), false or null'
-                         % (s, ', '.join(rosters.BOSS_SYSTEMS)))
+                p.append('difficulty.excludes.scope: %s is not a system of the boss registry (%s), a list of them, '
+                         'false or null' % (json.dumps(s), ', '.join(rosters.BOSS_SYSTEMS)))
             for i in ex.get('keep') or []:
                 if i not in game['entities']:
                     p.append('difficulty.excludes.keep: %s is not an entity type the game registers' % i)
@@ -399,14 +402,24 @@ def same_value(name, a, b):
 
 # ------------------------------------------------------------------------------------- what the registry asks for
 
+def in_scope(reg, i, scope):
+    """is the boss entry `i` held by the system `scope`, or by any system of a list of them"""
+    return any(reg.answer(i, s) is not None for s in (scope if isinstance(scope, list) else [scope]))
+
+
+def scope_name(scope):
+    return ' or '.join(scope) if isinstance(scope, list) else str(scope)
+
+
 def exclude_ids(reg, scope):
-    """-> OrderedDict(entity id -> registry boss): the entity ids the curve must skip for the entries a system holds,
-    in registry order, with their second ids (`sameAs`). An entry kept as `absent` has no entity type; a boss the game
-    hands out under ANOTHER type (`seenAs`) cannot be named by id at all (its type is every ordinary mob's)."""
+    """-> OrderedDict(entity id -> registry boss): the entity ids the curve must skip for the entries a system holds
+    (or any system of a list), in registry order, with their second ids (`sameAs`). An entry kept as `absent` has no
+    entity type; a boss the game hands out under ANOTHER type (`seenAs`) cannot be named by id at all (its type is every
+    ordinary mob's)."""
     out = OrderedDict()
-    for i in reg.boss_ids(scope):
+    for i in reg.bosses:
         e = reg.bosses[i]
-        if e.get('absent') or e.get('seenAs'):
+        if not in_scope(reg, i, scope) or e.get('absent') or e.get('seenAs'):
             continue
         for x in reg.entity_ids(i):
             out.setdefault(x, i)
@@ -475,7 +488,7 @@ def check_excludes(reg, game, pol, have, force_scale=()):
         out.append(Finding('BOSS-NOT-EXCLUDED', level, key,
                            '%d entity id(s) of registry bosses (scope %s%s) are not on the exclude list: the dimension curve '
                            'scales them on top of their designed health and the x3'
-                           % (len(scaled), scope, '' if ruled else '; the ruling is owed'),
+                           % (len(scaled), scope_name(scope), '' if ruled else '; the ruling is owed'),
                            ['tier %s (%d): %s' % (t, len(v), ', '.join(v)) for t, v in sorted(groups.items(), key=lambda kv: str(kv[0]))],
                            len(scaled) if level == 'finding' else 0))
     if inert:
@@ -483,6 +496,10 @@ def check_excludes(reg, game, pol, have, force_scale=()):
         out.append(note('BOSS-NOT-SCALED', key, '%d entity id(s) of registry bosses are not on the list and are never scaled anyway: the '
                         'curve takes category monster only, or an id on forceScaleEntities' % len(inert),
                         ['%s, category %s' % (describe_boss(reg, x, want[x] if want[x] != x else None), cat(x)) for x in inert]))
+    kept = [x for x in pol.keep if x not in have and x not in want]
+    if kept:
+        out.append(finding('KEEP-NOT-LISTED', key, '%d id(s) the policy keeps on the list are not on it: %s' % (len(kept), ', '.join(kept)),
+                           count=len(kept)))
     seen = set()
     twice = []
     for x in have:
@@ -509,11 +526,11 @@ def check_excludes(reg, game, pol, have, force_scale=()):
     extra = [x for x in OrderedDict.fromkeys(have) if x in game['entities'] and x not in want and x not in pol.keep]
     if extra:
         out.append(Finding('EXCLUDE-EXTRA', 'finding' if ruled and pol.scope is not False else 'note', key,
-                           '%d registered %s on the list and not in scope %s%s' % (len(extra), 'entity is' if len(extra) == 1 else 'entities are', scope,
+                           '%d registered %s on the list and not in scope %s%s' % (len(extra), 'entity is' if len(extra) == 1 else 'entities are', scope_name(scope),
                                                                                     ' (generate would drop it unless `keep` names it)' if ruled else ''),
                            [describe_boss(reg, x, reg.canon(x) if reg.canon(x) != x else None) if reg.canon(x) in reg.bosses else x for x in extra],
                            len(extra) if ruled and pol.scope is not False else 0))
-    sa = [r for r in reg.seen_as() if reg.answer(r['id'], scope) is not None]
+    sa = [r for r in reg.seen_as() if in_scope(reg, r['id'], scope)]
     if sa:
         out.append(note('EXCLUDE-SEEN-AS', key, '%d boss(es) cannot be excluded by id: the game hands each out under the type of ordinary mobs'
                         % len(sa), ['%s is typed %s (excluding that id would exclude every %s)' % (r['id'], r['type'], r['type']) for r in sa]))
@@ -673,7 +690,8 @@ def plan(reg, pol):
     out, owed = OrderedDict(), []
     if pol.scope is None:
         owed.append('difficulty.excludes.scope: which registry bosses leave the dimension curve (isBoss = every one '
-                    'of the %d; another system = only those; false = leave the list as it is)' % len(reg.boss_ids('isBoss')))
+                    'of the %d; another system, or a list of systems = only those; false = leave the list as it is)'
+                    % len(reg.boss_ids('isBoss')))
     elif pol.scope is not False:
         ids = list(exclude_ids(reg, pol.scope))
         out['difficulty.excludes'] = ids + [x for x in pol.keep if x not in ids]

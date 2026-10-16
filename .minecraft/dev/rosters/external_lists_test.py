@@ -16,9 +16,8 @@ and Apotheosis's configs in the three distros), breaks it one way at a time and 
             nothing; on a fixture broken in all three distros (CRLF lines, a BOM, a comment after an array, an array
             over several lines) it rewrites only the keys, keeps every other line byte for byte, leaves a pack that
             checks clean and is a no-op the second time; scope / tierOf / leaveOff do what the policy says.
-  real pack a COPY of the pack's real registry, game ids and six config files: the committed policy refuses
-            (rulings owed) and changes nothing; with a test policy (NOT a ruling) generate writes only the keys and
-            the copy then checks clean.
+  real pack a COPY of the pack's real registry, game ids and six config files with the committed policy (ruled
+            2026-10-16): generate writes only the keys, the copy then checks clean, a second run changes nothing.
 
 Nothing in the real tree is written. Usage: python .minecraft/dev/rosters/external_lists_test.py
 Exit 0 when every case behaves, 1 otherwise.
@@ -433,6 +432,27 @@ def c_generate_policy_shapes(tmp):
     return bad + expect(out, rc, 0, '| 0 findings')
 
 
+def c_generate_scope_list(tmp):
+    """the ruling of 2026-10-16: a designed health OR the x3 (a list of systems), plus an id kept by name"""
+    p = json.loads(json.dumps(RULED))
+    p['difficulty']['excludes'] = {"scope": ["hp", "x3"], "keep": ["minecraft:zombie"]}
+    pol = build(tmp, policy=p)
+    rc, out = run(tmp, pol)
+    bad = expect(out, rc, 0, 'EXCLUDE-EXTRA', 'not in scope hp or x3', 'testmod:knight (miniboss)',
+                 'KEEP-NOT-LISTED', '1 id(s) the policy keeps on the list are not on it: minecraft:zombie', absent=('BOSS-NOT-EXCLUDED',))
+    rc, out = run(tmp, pol, 'generate')
+    bad += expect(out, rc, 0)
+    toml = open(os.path.join(tmp, DIFF), encoding='utf-8').read()
+    if '\tentities = ["testmod:king", "testmod:queen", "otherid:queen", "minecraft:zombie"]' not in toml:
+        bad.append('the exclude list is not the union of hp and x3 plus keep')
+    rc, out = run(tmp, pol, 'check', '--strict')
+    bad += expect(out, rc, 0, '| 0 findings')
+    p['difficulty']['excludes']['scope'] = ['hp', 'nonsense']
+    write(pol, p)
+    rc, out = run(tmp, pol, 'generate')
+    return bad + expect(out, rc, 1, 'difficulty.excludes.scope: ["hp", "nonsense"] is not a system')
+
+
 REAL_FILES = [os.path.join('kubejs', 'config', 'icraft', 'registry', f) for f in ('bosses.json', 'dimensions.json')] + \
              [os.path.join('dev', 'registry', f) for f in ('entity_types.txt', 'dimensions.txt', 'structures.txt', 'blocks.txt',
                                                          'items.txt', 'entities.json', 'SOURCE.json')] + \
@@ -449,26 +469,18 @@ def copy_real(tmp):
 
 
 def c_real_pack_copy(tmp):
+    """the committed policy (ruled 2026-10-16) on a COPY of the pack's real files: only its keys change, the copy then
+    checks clean, a second run changes nothing, and the ten real dimensions keep the values the policy copied"""
     copy_real(tmp)
     committed = os.path.join(HERE, 'external_lists.policy.json')
     before = snapshot(tmp)
-    rc, out = run(tmp, committed, 'generate')
-    bad = expect(out, rc, 1, 'OWED   difficulty.excludes.scope', 'nothing written')
-    if snapshot(tmp) != before:
-        bad.append('generate wrote on the copy with the committed policy (rulings owed)')
     rc, out = run(tmp, committed)
-    bad += expect(out, rc, 0, '[external-lists] REPORT (check only, nothing changed)')
-    # a TEST policy: the committed one with every null filled. These values are not rulings.
-    p = json.load(open(committed, encoding='utf-8'))
-    p['difficulty']['excludes']['scope'] = 'isBoss'
-    p['difficulty']['dimensions']['registryTiers'] = True
-    for name, vals in (('Affix Convert Rarities', ('common|rare', 'common|epic', 'uncommon|mythic', 'epic|ancient')),
-                       ('Gem Dimensional Rarities', ('common|rare', 'common|epic', 'uncommon|mythic', 'epic|ancient')),
-                       ('Boss Spawn Dimensions', ('0.02|NEEDS_SKY', '0.04|NEEDS_SURFACE', '0.06|ANY', '0.08|ANY'))):
-        p['apotheosis'][name]['tiers'] = dict((str(t), v) for t, v in zip((1, 2, 3, 4), vals))
-    test_pol = os.path.join(tmp, 'test-policy.json')
-    write(test_pol, p)
-    rc, out = run(tmp, test_pol, 'generate')
+    bad = expect(out, rc, 0, '[external-lists] REPORT (check only, nothing changed)')
+    rc, out = run(tmp, committed, 'generate', '--dry-run')
+    bad += expect(out, rc, 0, '(dry run: nothing written)')
+    if snapshot(tmp) != before:
+        bad.append('--dry-run wrote on the copy')
+    rc, out = run(tmp, committed, 'generate')
     bad += expect(out, rc, 0, 'rewrote 6 file(s)')
     after = snapshot(tmp)
     for rel in before:
@@ -478,13 +490,14 @@ def c_real_pack_copy(tmp):
                 bad.append('%s: lines outside the keys changed: %r' % (rel, extra[:3]))
         elif before[rel] != after[rel]:
             bad.append('%s changed' % rel)
-    rc, out = run(tmp, test_pol, 'check', '--strict')
+    rc, out = run(tmp, committed, 'check', '--strict')
     bad += expect(out, rc, 0, '| 0 findings; generate: ruled, ready')
-    # the ten real dimensions keep today's values: the policy copied them
+    rc, out = run(tmp, committed, 'generate')
+    bad += expect(out, rc, 0, 'rewrote 0 file(s)')
     adv = after[APOTH].decode('utf-8')
-    for line in ('minecraft:the_nether|0.08|ANY', 'aether:the_aether|uncommon|epic', 'minecraft:the_end|0.10|SURFACE_OUTER_END'):
+    for line in ('minecraft:the_nether|0.08|ANY', 'minecraft:the_nether|rare|mythic', 'minecraft:the_end|0.10|SURFACE_OUTER_END'):
         if line not in adv:
-            bad.append('today\'s value was not kept: %s' % line)
+            bad.append("today's value was not kept: %s" % line)
     return bad
 
 
@@ -506,7 +519,8 @@ CASES = [
     ('generate: refused on a policy problem, nothing written', c_generate_policy_problem),
     ('generate: only the keys, in all three distros; clean after; a no-op twice', c_generate_writes_only_keys),
     ('generate: scope, keep, tierOf and leaveOff do what the policy says', c_generate_policy_shapes),
-    ('real pack (a copy): the committed policy refuses; a test policy writes only the keys', c_real_pack_copy),
+    ('generate: a list scope (hp or x3) with an id kept by name', c_generate_scope_list),
+    ('real pack (a copy): the committed policy writes only its keys; clean after; a no-op twice', c_real_pack_copy),
 ]
 
 
