@@ -48,7 +48,7 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 
 | Dimension | Tier | Notes |
 |-----------|------|-------|
-| Twilight Forest | 2 | AStages-gated. The portal is lit with the pack's Twilight token instead of a diamond; nothing gives that token at present (see [Known Issues](../known-issues/tracker.md)). |
+| Twilight Forest | 2 | AStages-gated (Tier 2). The portal is lit with a Codex Token I or a diamond; anyone can light it, only a Tier 2 player can step through. |
 | Blue Skies | 2 | AStages-gated. Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. |
 | The Aether | 4 | AStages-gated (Tier 2 until 2026-10-16). Dimension mechanics: faster mobs, thin air, vertigo, updrafts. |
 | Deep Aether | 4 | No dimension of its own: its biomes, bosses and materials are part of the Aether. |
@@ -108,7 +108,7 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. **ERA 4 (2026-06-06):** fusion output buffed (`energyPerFusionFuel` 15M, x1.5) and fission output buffed (`energyPerFissionFuel` 1.5M, x1.25) so big reactors answer the higher machine costs; radiation disabled and meltdowns disabled (an over-damaged fission reactor force-shuts-down instead of exploding — dangerous but recoverable); new T4 stage pins on the fusion chain, SPS/antimatter, Digital Miner, and ultimate-tier facilities (intermediate machines left open). |
 | Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
 | Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops from TATOS chests + Abyss bosses (`abyss_boss_loot.js`). Abyss darkness/corruption/fear/void-whispers fire in `theabyss:the_abyss`. |
-| Twilight Forest | tags | Portal activator changed from diamond to the pack's Twilight token (`kubejs:twilight_progression_token_t2`), which has no source at present. |
+| Twilight Forest | tags | Portal activator: the Codex Token I (`icraft:progression_token_t1`) added to the mod's own diamond (since 17 October 2026; from April to October 2026 the only activator was a legacy token nothing gave). Entry to the dimension is gated at Tier 2. |
 | End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, Eyes of Ender staged at T4 (an End Compass → End Bastion unlock is planned to replace them), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
 | Mob equipment (`mob_equipment.js`) | scripts | 3-day grace, equipment/damage caps, diamond→iron mob breaking tools. (Was an Improved Mobs config; that mod was removed 2026-05-03 — handler now holds these targets.) |
 | Tectonic | config | Lower, flatter terrain: `vertical_scale` 0.38 (down from 1.155), `ultrasmooth` on, `flat_terrain_skew` 0.65, ridge_scale reduced. Mountains still present but much less extreme (worldgen rebalance 2026-06-06). |

@@ -274,9 +274,9 @@ Each mechanic is implemented as a KubeJS server-tick handler with persistent pla
 
 ### Access mechanism
 
-Dimensions are gated through AStages dimension flags. A T2 player who attempts to enter the Nether sees the portal fail to ignite, with a chat message indicating insufficient access. Dimension entry items — the Twilight Forest portal activator, Aether portal blocks, Blue Skies arc, Nether ignition — all check stage flags before triggering.
+Dimensions are gated through AStages dimension flags. A T2 player who attempts to enter the Nether sees the portal fail to ignite, with a chat message indicating insufficient access. Dimension entry items — Aether portal blocks, Blue Skies arc, Nether ignition — check stage flags before triggering. A Twilight Forest portal lights for anyone; stepping through it without Tier 2 is refused, as for every gated dimension.
 
-> **Design note.** The Twilight Forest portal activator was changed from vanilla diamond to a T1 boss token. The pack's first dimension should not gate on diamond access, since diamonds are T3.
+> **Design note.** The Twilight Forest portal activator was changed from vanilla diamond to a T1 boss token. The pack's first dimension should not gate on diamond access, since diamonds are T3. Since 17 October 2026 the activator is the **Codex Token I** (the Tier 1 token from boss kills, chests and submissions), added to the mod's own diamond; the Tier 2 dimension gate, not the activator, keeps players below Tier 2 out. From April to October 2026 the activator was a legacy token nothing gave, and the portal could not be lit in survival.
 
 > **The End's access is special (planned).** Today the vanilla stronghold + End Portal process is used as it is, with Eyes of Ender staged at T4. The plan: the **Eye of Ender is to be replaced by an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** structure (reusing the `boss_compass` waystone system). Players then could not even target the End portal until they have worked the Aether — the End would be genuinely *post*-Aether. The End Compass itself, its exact material bill and the End Bastion structure are build TBDs.
 

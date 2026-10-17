@@ -80,7 +80,7 @@ The canonical design reference for all modpack systems.
 | Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
 | The Abyss (TATOS) dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura, void whispers |
 | End overhaul | Implemented | Dragon Exploration Gate, End-themed loot and affixes (the End Compass → End Bastion route is planned, not built) |
-| TF portal activator | Broken | The Twilight Forest portal is lit with the pack's Twilight token, which nothing gives at present (see [Known Issues](known-issues/tracker.md)) |
+| TF portal activator | Implemented | The Twilight Forest portal is lit with a Codex Token I (the Tier 1 Codex token) or a diamond; stepping through needs Tier 2 (since 17 October 2026, from the next server restart) |
 | Custom Abyss-themed curio rings | Implemented | 8 curio rings as a curated T3 chain |
 | Server distribution | Implemented | Dedicated server distribution with a unified launcher |
 | Vanilla Origins overhaul | Implemented | All 9 origins rebalanced; no lethal environmental effects; food preferences, not restrictions |

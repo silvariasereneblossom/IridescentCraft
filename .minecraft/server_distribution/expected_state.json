@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "cf8889b4",
+    "generated_from":  "8242ee12",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3252,8 +3252,8 @@
                                                                                      "size":  1608
                                                                                  },
                   "config/heracles/quests/exploration/exp_t2_dimensions.json":  {
-                                                                                    "sha256":  "58c996401f44a0b4b924b9791017c0eaa6a872deda19ac206f4747cb8d6f1341",
-                                                                                    "size":  1830
+                                                                                    "sha256":  "67b1c64cc7494a46cee33d2561b789fed56c8f6ad6973abf7fba638fb5239b37",
+                                                                                    "size":  1964
                                                                                 },
                   "config/heracles/quests/exploration/exp_t3_deep_dimensions.json":  {
                                                                                          "sha256":  "fad724e12706325e8fc0a837fbe635b2d2a2be1cc4d68c60209d9ebf449a2af2",
@@ -7144,8 +7144,8 @@
                                                                                       "size":  634
                                                                                   },
                   "kubejs/data/twilightforest/tags/items/portal/activator.json":  {
-                                                                                      "sha256":  "97fc796d73298362903987975a6ec105245536f9d126991cef2d33045f3d8e20",
-                                                                                      "size":  84
+                                                                                      "sha256":  "45f96edb7df9565a55ae91d2391bfb155c827cb606fe9808f7b6841e3065da05",
+                                                                                      "size":  76
                                                                                   },
                   "kubejs/jsconfig.json":  {
                                                "sha256":  "121ec9d7902090c050b096aa83792aeb7580946392785f5bae5f8e4bc6dbcce4",

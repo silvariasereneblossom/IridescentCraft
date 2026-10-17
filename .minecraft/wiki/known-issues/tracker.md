@@ -10,9 +10,6 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
-### The Twilight Forest portal cannot be lit in survival — **Open (decision pending)**
-The pack replaced the diamond that lights a Twilight Forest portal with its own Twilight token, a leftover of the retired token currency. Nothing in the pack gives that token any more (no recipe, drop, quest or reward), so a survival player cannot open the portal. What should light it is a pending design call; until then, ask the server operator.
-
 ### The Boss Compass looks for the Thunker in the wrong structure — **Open**
 The Thunker's Boss Compass row leads to the Nether's Chthonic Cathedral, which holds no Thunker. Thunkers are a common spawn in every Nether biome and stand in the halls of the Chthonic Dungeon (found 2026-10-16).
 
@@ -110,6 +107,7 @@ Implemented features awaiting confirmation on a live world:
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
 
 **Progression**
+- The Twilight Forest portal could not be lit in survival: since April 2026 its only activator was a legacy token nothing gave. Since 17 October 2026 (from the next server restart) a Codex Token I lights it, and so does a diamond; stepping through still needs Tier 2.
 - The Codex could not take submissions, count held tokens or credit boss kills above Tier 1, and the boss-rush rosters listed bosses the pack does not have: no tier could be reached through the Codex. All of it works since October 2026 (10-12 at the latest).
 - A `/reload` switched every tier gate off until the next restart; gated recipes (netherite ingot, eye of ender, Digital Miner and others) were craftable by anyone, and the rocket workbench by no one. Fixed in October 2026.
 - Iron's Spellbooks' *Pocket Dimension* spell could be cast long before Tier 4; it is refused until Tier 4 since October 2026.

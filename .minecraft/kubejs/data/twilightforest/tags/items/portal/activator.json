@@ -1,6 +1,6 @@
 {
-  "replace": true,
+  "replace": false,
   "values": [
-    "kubejs:twilight_progression_token_t2"
+    "icraft:progression_token_t1"
   ]
 }
