@@ -18,6 +18,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "$(bold)Terramity's Chthonic Cathedral$() (the Nether)$(br)Occult Fabric on its Offering Pedestal calls $(bold)Enchanter Merlin$() and $(bold)Sorceress Circe$() together; when Circe falls, $(bold)Archmage Gundalf$() appears. Merlin and Circe count toward the Tier 3 boss rush.$(br2)Occult Fabric comes from Gatmancers and conjurlings, and sometimes from the Chthonic Dungeon's chests."
+    },
+    {
+      "type": "patchouli:text",
       "text": "$(bold)Meet Your Fight$() \u2014 4 superbosses in specialized biomes:$(br)Swampjaw \u2192 $(l:icraft:bosses/unique_weapons)Harbinger$(/l) (18%)$(br)Bellringer \u2192 $(l:icraft:bosses/unique_weapons)Hearthflame$(/l) (18%)$(br)Dame Fortuna \u2192 $(l:icraft:bosses/unique_weapons)Magiscythe$(/l) (18%)$(br)Rosalyne \u2192 $(l:icraft:bosses/unique_weapons)Magispear$(/l) (18%)"
     },
     {

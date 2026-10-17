@@ -2467,7 +2467,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0338
+          "**irons_spellbooks:spell_power": 0.0307
         },
         "integrity": 1.0,
         "glyph": {

@@ -1057,8 +1057,8 @@
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.588,
-          "minecraft:generic.armor_toughness": 0.3
+          "minecraft:generic.armor": 0.5423,
+          "minecraft:generic.armor_toughness": 0.2767
         },
         "integrity": 0.5,
         "glyph": {

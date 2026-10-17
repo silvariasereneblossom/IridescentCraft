@@ -964,7 +964,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.1245
+          "irons_spellbooks:max_mana": 2.8815
         },
         "integrity": 0.5,
         "glyph": {

@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Aether's apex$() — the Eye of the Storm (Brass Dungeon). Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), T4 boss materials.$(br2)$(bold)The Abyss$() — 6 bosses across The Abyss: The Other Side, each carrying its own unique.$(br2)$(bold)Stalwart Dungeons T3+$() — Shelterer, Nether Keeper, Awful Ghast.$(br2)$(bold)Next: start with the Ender Dragon — best unique odds in the pack, and Terramity's Virtue (called at its Prismatic Pond, in the Aether) and Sorceress Circe wait beyond.$()"
+      "text": "$(bold)The Aether's apex$() — the Eye of the Storm (Brass Dungeon). Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), T4 boss materials.$(br2)$(bold)The Abyss$() — 6 bosses across The Abyss: The Other Side, each carrying its own unique.$(br2)$(bold)Stalwart Dungeons T3+$() — Shelterer, Nether Keeper, Awful Ghast.$(br2)$(bold)Next: start with the Ender Dragon — best unique odds in the pack, and Terramity's Virtue (called at its Prismatic Pond, in the Aether) waits beyond.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

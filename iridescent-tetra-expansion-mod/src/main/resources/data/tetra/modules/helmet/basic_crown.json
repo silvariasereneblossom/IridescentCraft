@@ -2419,7 +2419,7 @@
       "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.572,
+          "minecraft:generic.armor": 2.372,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
@@ -2433,7 +2433,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 18
+        "magicCapacity": 17
       }
     },
     {

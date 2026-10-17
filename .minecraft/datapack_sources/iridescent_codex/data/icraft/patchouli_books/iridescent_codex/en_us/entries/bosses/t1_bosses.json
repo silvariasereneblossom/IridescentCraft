@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Structure Bosses",
-      "text": "$(bold)Terramity$() — $(item)Gob, King of Gnomes$() (Court of Gnomes — summon him with an emerald), $(item)Enchanter Merlin$() (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral; Sorceress Circe comes with him), $(item)Super Sniffer$() (Ancient Outcrop).$(br2)$(bold)Mowzie's Mobs$() — Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw moved to Everbright (Tier 2).$(br2)$(bold)Soulslike Weaponry$() — Draugr (taiga graves), Moonknight (Cathedral of Resurrection), Returning Knight and Night Shade (Old Moon Altar summons). $(warn)Their HP runs hot for T1 — bring backup.$()"
+      "text": "$(bold)Terramity$() — $(item)Gob, King of Gnomes$() (Court of Gnomes — summon him with an emerald), $(item)Super Sniffer$() (Ancient Outcrop). Enchanter Merlin is a Tier 3 boss (the Nether's Chthonic Cathedral).$(br2)$(bold)Mowzie's Mobs$() — Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw moved to Everbright (Tier 2).$(br2)$(bold)Soulslike Weaponry$() — Draugr (taiga graves), Moonknight (Cathedral of Resurrection), Returning Knight and Night Shade (Old Moon Altar summons). $(warn)Their HP runs hot for T1 — bring backup.$()"
     },
     {
       "type": "patchouli:text",

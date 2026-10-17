@@ -6,6 +6,11 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Chthonic Cathedral's bosses are Tier 3
+
+- **The Chthonic Cathedral's bosses are Tier 3 bosses.** Enchanter Merlin (was Tier 1), Sorceress Circe (was Tier 4) and Archmage Gundalf (was Tier 2) are all met at the Nether's Chthonic Cathedral: Occult Fabric on its Offering Pedestal calls Merlin and Circe together, and Gundalf appears when Circe falls. Merlin and Circe are on the Tier 3 boss rush now (Tier 1 → 2 needs 8 of 9 bosses, Tier 3 → 4 all 45). Their kill tokens, the Magic Estoc (Merlin) and the Astral Bound (Circe) and Circe's Tetra material follow them to Tier 3.
+- **Occult Fabric in the Nether.** The chance of Occult Fabric in a chest moved from the Overworld's Infested Laboratory to the Chthonic Dungeon, where the Gatmancers live (12 %).
+
 ## October 2026 — The Cardinal Sins arenas generate again
 
 - **The Cardinal Sins have arenas again.** Since the end of May no Cardinal Sins arena generated anywhere: the mod builds its arenas only in the Overworld, and the pack had moved them to the Undergarden and the Nether, so the shrine chain could not start. Now the seven sins and Drakara have their arenas in the Abyss, and Lucifer's arena is in the Nether. The Boss Compass finds every one of them. They stay Tier 3 bosses, and Lucifer stays the Tier 3 capstone.

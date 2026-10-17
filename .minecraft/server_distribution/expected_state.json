@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "23b63a74",
+    "generated_from":  "cf8889b4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4372,8 +4372,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "20d28154e52d7ec0df4fda895b2253156cd71027fab9049037f3b7287258dd2d",
-                                                                           "size":  58956
+                                                                           "sha256":  "a44fa78e0ce73543682d6a893b79587c7464e5bf7ccbc82ae56505b3f07389dd",
+                                                                           "size":  59000
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49386
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "34cc5ca871d3583176b2a9f8545a126779a36488a55abefd2e1c9f9fa710a626",
-                                                                    "size":  30058
+                                                                    "sha256":  "10b2c850b57d5d4c077e9c2672645b13927bd01eb52322a0769bb9dcffacca2e",
+                                                                    "size":  30069
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
@@ -6496,7 +6496,7 @@
                                                                                         "size":  922
                                                                                     },
                   "kubejs/data/icraft/tags/entity_types/registry_bosses.json":  {
-                                                                                    "sha256":  "c649d23d7981eb714e0756c40ff0de292e9566f22f0e4ae410ec64c2c7c536b1",
+                                                                                    "sha256":  "f6d975fc3fc928ae23c3fc334a7bda039f368a142432c91f6bf3dd5e522c6c66",
                                                                                     "size":  6688
                                                                                 },
                   "kubejs/data/icraft/tags/items/armor_heavy.json":  {
@@ -7372,8 +7372,8 @@
                                                                               "size":  31933
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
-                                                                         "sha256":  "cf2a477f421e30e2162f2e959f10aacd2288744a1532c829b97b1ba735579d70",
-                                                                         "size":  23986
+                                                                         "sha256":  "4b3faeb0b5d28987fba8746f74befbfdcb0b64d9c2c261d21a733c6d919e23f1",
+                                                                         "size":  24206
                                                                      },
                   "kubejs/server_scripts/gates/codex_progression_engine.js":  {
                                                                                   "sha256":  "78fce9b6f0c433d4616ca3f27ec590f01e910ab2f6eab6f013e9a8d8d5ca01b5",
@@ -7436,8 +7436,8 @@
                                                                          "size":  2627
                                                                      },
                   "kubejs/server_scripts/loot/boss_arena_material_tease.js":  {
-                                                                                  "sha256":  "9ddb5d21f9475ea159dab106cbb57790bfdd5e6de9fba2927313a12e15e24399",
-                                                                                  "size":  5415
+                                                                                  "sha256":  "2cb04231afd0729563ad574f4bb4a2549e13ace9f233585dcccfa4c2096f1c18",
+                                                                                  "size":  5692
                                                                               },
                   "kubejs/server_scripts/loot/boss_arena_themed_loot.js":  {
                                                                                "sha256":  "62c4fe5f7319a873b530fc482a88729363e68e15e24466b72f7510f77aba3402",
@@ -7536,8 +7536,8 @@
                                                                             "size":  3894
                                                                         },
                   "kubejs/server_scripts/loot/unique_itemset_registry.js":  {
-                                                                                "sha256":  "1cb2e6ebf5fe4f5aac9f226e4f9ba049ac2cbc1ea0185c76e642e9734d842a2c",
-                                                                                "size":  14415
+                                                                                "sha256":  "d6c4428a91d0efc4b75ea1fb8eef92927a83814659bf848d8bfdfb968ba12c46",
+                                                                                "size":  14767
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
                                                                          "sha256":  "c90f069a3c2b2d8b049e0c0d95caec288b7d2ee4e01a8640e50c87616f5bc695",
@@ -8648,7 +8648,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "f87455c6b943a337a5d3a7f5f4bdcae898463da229b303dd72b5b6f3198d3b76",
+                                                               "sha256":  "1d81da84efc859afccf1d0cf3aac9a6d724f1a275d86627ae6d3f2a44080ddd6",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
@@ -8676,7 +8676,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "59fe6328b88c74e06b3766cfab4cb1697bb85613bf75c47cd7d50c6b7f3dce72",
+                                                                         "sha256":  "b9faff57a39cefc82652a74a9359d2bdeec33694fbd42f8657148e92035f2efa",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

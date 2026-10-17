@@ -9,9 +9,10 @@
 // Brigadier tree the script registers, built here from a small stand-in of
 // Commands.literal (then / requires / executes) and run through its own `executes`.
 // The rosters are the boss registry's (kubejs/config/icraft/registry/bosses.json,
-// key `rush`): 10 / 18 / 43 bosses, 8 / 17 / 43 needed (11 / 20 / 43 and 9 / 18 / 43
+// key `rush`): 9 / 18 / 45 bosses, 8 / 17 / 45 needed (11 / 20 / 43 and 9 / 18 / 43
 // until 2026-10-16: the Aether's three bosses left the tier-2 roster, Frostmaw moved
-// from tier 1 to tier 2).
+// from tier 1 to tier 2; then 10 / 18 / 43 and 8 / 17 / 43 until the Chthonic Cathedral's
+// Merlin left tier 1 and he and Sorceress Circe joined the tier-3 roster, the same day).
 //
 // What is pinned:
 //   * a player kill of a roster boss is counted once (a second kill of the same boss,
@@ -69,9 +70,9 @@ var br_report = function (p) {
 
 T_run('boss rush: loads', function () {
   ok(T_LOAD_ERRORS.length === 0, 'the libraries and the rush load: ' + T_LOAD_ERRORS.join(' / '))
-  ok(BR[1].length === 10 && BR[2].length === 18 && BR[3].length === 43, 'the rosters from the registry: 10 / 18 / 43 (' + BR[1].length + ' / ' + BR[2].length + ' / ' + BR[3].length + ')')
+  ok(BR[1].length === 9 && BR[2].length === 18 && BR[3].length === 45, 'the rosters from the registry: 9 / 18 / 45 (' + BR[1].length + ' / ' + BR[2].length + ' / ' + BR[3].length + ')')
   var line = T_LOG.info.join('\n')
-  ok(line.indexOf('T1→T2 80% of 10 | T2→T3 90% of 18 | T3→T4 100% of 43') >= 0, 'the load line names the three thresholds')
+  ok(line.indexOf('T1→T2 80% of 9 | T2→T3 90% of 18 | T3→T4 100% of 45') >= 0, 'the load line names the three thresholds')
   var node = br_bossesNode()
   ok(node !== null && typeof node.exec === 'function' && node.req({ hasPermission: function (n) { return n === 0 } }) === true,
     '/icraft codex bosses is registered for every player (permission 0)')
@@ -82,7 +83,7 @@ T_run('boss rush: what counts', function () {
   br_kill(p, BR[1][0])
   br_kill(p, BR[1][0])
   ok(br_saved(p, 1).join(',') === BR[1][0], 'a boss killed twice counts once (' + br_saved(p, 1).join(',') + ')')
-  ok(br_told(p, 'Tier 1: ') && br_told(p, '1/10') && br_told(p, '(need 8 = 80%)'), 'the kill is told: 1/10, need 8')
+  ok(br_told(p, 'Tier 1: ') && br_told(p, '1/9') && br_told(p, '(need 8 = 80%)'), 'the kill is told: 1/9, need 8')
   var mob = T_mob(BR[1][1])
   T_fire('E.death', { entity: mob, source: new MSource('minecraft:generic', null, null), level: T_OW, server: T_server })
   br_kill(p, 'minecraft:zombie')
@@ -97,14 +98,14 @@ T_run('boss rush: what counts', function () {
 T_run('boss rush: tier 1 grants tier 2 with nothing more', function () {
   var p = T_newPlayer('Rookie').t_stage('tier_1')
   br_killN(p, 1, 7)
-  ok(!br_has(p, 'tier_2') && br_saved(p, 1).length === 7 && br_told(p, '7/10'), '7 of 10: no tier yet')
+  ok(!br_has(p, 'tier_2') && br_saved(p, 1).length === 7 && br_told(p, '7/9'), '7 of 9: no tier yet')
   A.clearCommands(T_server)
   br_kill(p, BR[1][7])
   ok(br_has(p, 'tier_2') && !br_has(p, 'tier_3'), 'the 8th tier-1 boss grants tier_2, nothing above it')
   var commands = String(A.commands(T_server))
   ok(commands.indexOf('advancement grant Rookie only icraft:stage_tier_2') >= 0 && commands.indexOf('playsound minecraft:ui.toast.challenge_complete player Rookie') >= 0,
     'the advancement and the sound are sent: ' + commands)
-  ok(br_told(p, 'TIER 2 UNLOCKED') && br_told(p, 'Boss Rush: cleared 8/10 Tier 1 bosses (80%)'), 'the banner names the route')
+  ok(br_told(p, 'TIER 2 UNLOCKED') && br_told(p, 'Boss Rush: cleared 8/9 Tier 1 bosses (80%)'), 'the banner names the route')
   br_kill(p, BR[1][8])
   ok(br_saved(p, 1).length === 8, 'with tier_2 held, a later tier-1 kill is not recorded any more')
 })
@@ -128,7 +129,7 @@ T_run('boss rush: the kill that buys tier 2 climbs on to tier 3', function () {
   var p = T_newPlayer('Climber').t_stage('tier_1')
   br_killN(p, 2, 17)
   br_killN(p, 1, 7)
-  ok(!br_has(p, 'tier_2') && !br_has(p, 'tier_3'), 'tier-2 threshold met, 7 of 10 tier-1: nothing yet')
+  ok(!br_has(p, 'tier_2') && !br_has(p, 'tier_3'), 'tier-2 threshold met, 7 of 9 tier-1: nothing yet')
   A.clearCommands(T_server)
   br_kill(p, BR[1][7])
   ok(br_has(p, 'tier_2') && br_has(p, 'tier_3') && !br_has(p, 'tier_4'), 'the 8th tier-1 boss grants tier_2, then tier_3, in one kill')
@@ -149,16 +150,16 @@ T_run('boss rush: a stage below from another route is honoured at the next repor
 })
 
 T_run('boss rush: no tier 4 without tier 3', function () {
-  // until 2026-10-15 a tier-2 player who killed all 43 tier-3 bosses got tier_4 (tier_3 marked)
+  // until 2026-10-15 a tier-2 player who killed all 43 tier-3 bosses got tier_4 (tier_3 marked; 45 since 2026-10-16)
   var p = T_newPlayer('Summit').t_stage('tier_1').t_stage('tier_2')
-  br_killN(p, 3, 43)
-  ok(!br_has(p, 'tier_4') && !br_has(p, 'tier_3') && br_saved(p, 3).length === 43, 'all 43 tier-3 bosses and no tier_3: no tier_4, the 43 kept')
-  ok(br_told(p, '43/43') && br_told(p, 'unlock tier_3 first'), 'the 43rd kill tells the player to unlock tier_3 first')
+  br_killN(p, 3, 45)
+  ok(!br_has(p, 'tier_4') && !br_has(p, 'tier_3') && br_saved(p, 3).length === 45, 'all 45 tier-3 bosses and no tier_3: no tier_4, the 45 kept')
+  ok(br_told(p, '45/45') && br_told(p, 'unlock tier_3 first'), 'the 45th kill tells the player to unlock tier_3 first')
   var q = T_newPlayer('Summit2').t_stage('tier_1').t_stage('tier_2').t_stage('tier_3')
-  br_killN(q, 3, 42)
-  ok(!br_has(q, 'tier_4') && br_told(q, '42/43'), 'with tier_3 held: 42 of 43 is not enough (100 %)')
-  br_kill(q, BR[3][42])
-  ok(br_has(q, 'tier_4') && br_told(q, 'TIER 4 UNLOCKED'), 'the 43rd grants tier_4')
+  br_killN(q, 3, 44)
+  ok(!br_has(q, 'tier_4') && br_told(q, '44/45'), 'with tier_3 held: 44 of 45 is not enough (100 %)')
+  br_kill(q, BR[3][44])
+  ok(br_has(q, 'tier_4') && br_told(q, 'TIER 4 UNLOCKED'), 'the 45th grants tier_4')
 })
 
 T_run('boss rush: the report and the handlers ran clean', function () {

@@ -47,7 +47,6 @@ global.ICRAFT_UNIQUE_ITEMS = {
 
   // ---- T1 (NEW — forced down to T1 bosses for full 4-tier spread) ----
   'simplyswords:sword_on_a_stick': { tier: 1, kind: 'sword', boss: 'terramity:gob',                 addDrop: true },
-  'simplyswords:magic_estoc':      { tier: 1, kind: 'sword', boss: 'terramity:enchanter_merlin',    addDrop: true },
   'simplyswords:hearthflame':      { tier: 1, kind: 'sword', boss: 'mowziesmobs:umvuthi',           addDrop: true },
   'simplyswords:watcher_claymore': { tier: 1, kind: 'sword', boss: 'mowziesmobs:ferrous_wroughtnaut',addDrop: true },
   'simplyswords:ribboncleaver':    { tier: 1, kind: 'sword', boss: 'mowziesmobs:sculptor',          addDrop: true },
@@ -73,6 +72,9 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:slumbering_lichblade': { tier: 2, kind: 'sword', boss: 'mutantmonsters:mutant_enderman', addDrop: true },
 
   // ---- T3 (EXISTING drops / reserved — tier recorded for buff) ----
+  // [2026-10-16] Magic Estoc tier 3 with Enchanter Merlin (tier 1 -> 3, on recommendation, for review: Merlin is
+  // summoned only at the Nether's Chthonic Cathedral, with Sorceress Circe)
+  'simplyswords:magic_estoc':      { tier: 3, kind: 'sword', boss: 'terramity:enchanter_merlin',    addDrop: true },
   'simplyswords:brimstone_claymore':{ tier: 3, kind: 'sword', boss: 'cataclysm:netherite_monstrosity', addDrop: false },
   'simplyswords:molten_edge':      { tier: 3, kind: 'sword', boss: 'cataclysm:ignis',               addDrop: false },
   'simplyswords:shadowsting':      { tier: 3, kind: 'sword', boss: 'cataclysm:the_harbinger',       addDrop: false },
@@ -133,6 +135,9 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:webstring':       { tier: 2, kind: 'bow', boss: 'blue_skies:arachnarch',           addDrop: true },
 
   // ---- T3 ----
+  // [2026-10-16] Astral Bound tier 3 with Sorceress Circe (tier 4 -> 3, on recommendation, for review: met at the
+  // Nether's Chthonic Cathedral with Merlin)
+  'too_many_bows:astral_bound':    { tier: 3, kind: 'bow', boss: 'terramity:sorceress_circe',       addDrop: true },
   'too_many_bows:arcane_bow':      { tier: 3, kind: 'bow', boss: 'irons_spellbooks:archevoker',     addDrop: true },
   'too_many_bows:necro_flame_bow': { tier: 3, kind: 'bow', boss: 'irons_spellbooks:dead_king',      addDrop: true },
   'too_many_bows:solar_bow':       { tier: 3, kind: 'bow', boss: 'irons_spellbooks:fire_boss',      addDrop: true },
@@ -145,7 +150,6 @@ global.ICRAFT_UNIQUE_ITEMS = {
   // ---- T4 ----
   'too_many_bows:dragons_breath':  { tier: 4, kind: 'bow', boss: 'minecraft:ender_dragon',          addDrop: true },
   'too_many_bows:arc_heavens':     { tier: 4, kind: 'bow', boss: 'deep_aether:eots_controller',     addDrop: true },
-  'too_many_bows:astral_bound':    { tier: 4, kind: 'bow', boss: 'terramity:sorceress_circe',       addDrop: true },
   'too_many_bows:spectral_whisper':{ tier: 4, kind: 'bow', boss: 'minecraft:warden',                addDrop: true },
   'too_many_bows:shulker_blast':   { tier: 4, kind: 'bow', boss: 'cataclysm:ender_guardian',        addDrop: true },
   'too_many_bows:twin_shadows':    { tier: 4, kind: 'bow', boss: 'terramity:thunker',               addDrop: true },

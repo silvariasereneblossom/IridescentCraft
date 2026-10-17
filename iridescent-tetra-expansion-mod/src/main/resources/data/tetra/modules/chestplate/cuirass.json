@@ -2394,7 +2394,7 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.88,
+          "minecraft:generic.armor": 2.656,
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
@@ -2408,7 +2408,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 18
+        "magicCapacity": 17
       }
     },
     {

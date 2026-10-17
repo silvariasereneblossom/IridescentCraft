@@ -123,9 +123,9 @@ The token economy ([master.md Part III](master.md#part-iii--progression-the-toke
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (8 of 10) |
+| T1 → T2 | **500** | 80% of T1 bosses (8 of 9) |
 | T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
-| T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
+| T3 → T4 | **2000** | 100% of T3 bosses (all 45, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
 
 Boss-rush denominator = the **per-tier boss roster**: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 10 / 18 / 43 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2 and the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. **The ladder is strict** (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only with the tier below held; early kills are kept and count once it is. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
