@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 — Ascension",
-      "text": "$(bold)Material tier:$() Netherite, Gaia Ingots, Antimatter, Atomic Alloy$(br)$(bold)Dimensions:$() The Aether (with Deep Aether), The End (multi-zone)$(br)$(bold)Tech:$() Mekanism (advanced), RFTools Dimensions$(br)$(bold)Magic:$() Mahou Tsukai$(br)$(bold)Notable:$() The top of the ladder. Defeating the Ender Dragon is the finale and opens the post-game."
+      "text": "$(bold)Material tier:$() Netherite, Gaia Ingots, Antimatter, Atomic Alloy$(br)$(bold)Dimensions:$() The Aether (with Deep Aether), The End (multi-zone), the Ad Astra planets and orbits$(br)$(bold)Tech:$() Mekanism (advanced), RFTools Dimensions$(br)$(bold)Magic:$() Mahou Tsukai$(br)$(bold)Notable:$() The top of the ladder. Defeating the Ender Dragon is the finale."
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8242ee12",
+    "generated_from":  "c65a7678",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3028,8 +3028,8 @@
                                                                                       "size":  1761
                                                                                   },
                   "config/heracles/quests/capstones/capstone_lucifer.json":  {
-                                                                                 "sha256":  "891b93236e4ad030cc17e5aadde486512ffb5fb43fde7259d5c722c4b7e39f93",
-                                                                                 "size":  1553
+                                                                                 "sha256":  "784342fbcd14ebd5d7ca13b718646e737855ce016a2f89c4607fbc8306f11cc7",
+                                                                                 "size":  1509
                                                                              },
                   "config/heracles/quests/capstones/capstone_ultimate_wither.json":  {
                                                                                          "sha256":  "f54778637e6c1abb25995b678d20fc16619a4f50b6775fc324704d0742e12677",
@@ -3080,8 +3080,8 @@
                                                                          "size":  2056
                                                                      },
                   "config/heracles/quests/combat/com_t3_rush.json":  {
-                                                                         "sha256":  "a7a77dc55be69b5282c806cfe7658644e663dd2ab57b3a8a6a2ef815474c60f4",
-                                                                         "size":  2364
+                                                                         "sha256":  "233cfba5f7ccc9931750822fbe06c0b461bda5c80c9053c4f799eded27dbdd83",
+                                                                         "size":  2410
                                                                      },
                   "config/heracles/quests/engineering/eng_intro.json":  {
                                                                             "sha256":  "8dcde72d18b9fcdda635c0a8dfe3d029ac04b6053b8543fd6f08f856e5eddcf4",
@@ -3400,8 +3400,8 @@
                                                                               "size":  1494
                                                                           },
                   "config/heracles/quests/milestones/reach_tier_4.json":  {
-                                                                              "sha256":  "8b8b46d8462030807d2b5447f777ce1fc3f715ae9c836d6f8977c7d8772f1479",
-                                                                              "size":  1359
+                                                                              "sha256":  "6454662ab3c683b3d529a61e89b5d37d6a2983f7662fe77f265fb6e636d4d286",
+                                                                              "size":  1439
                                                                           },
                   "config/heracles/quests/onboarding/onboarding_first_codex_open.json":  {
                                                                                              "sha256":  "fe9a55cf604aea414f46385e83601b3440de73cef9fd6f53a524d73016ea3e66",
@@ -8708,7 +8708,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "274ce054859cecaab04a8bfcb595a020384bff611ad1c30f29e668b621dc5baa",
+                                                               "sha256":  "c99fe56d5e953867b29cc7559cb4efb4518edd6d653d5c98f192c17980d277f3",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

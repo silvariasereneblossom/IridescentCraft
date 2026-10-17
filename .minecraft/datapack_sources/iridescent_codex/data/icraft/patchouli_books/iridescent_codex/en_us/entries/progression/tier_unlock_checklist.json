@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 — the finale",
-      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Eyes of Ender lead you to the End — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
+      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)Tier 4 opens the Ad Astra planets (by rocket) and the End; the $(t4)Ender Dragon$() is the finale, not a gate. Eyes of Ender lead you to the End — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
     }
   ]
 }

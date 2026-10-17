@@ -2,21 +2,20 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:wither_skeleton_skull" },
     "title": "Capstone: Lucifer",
-    "subtitle": "The combat gate of Tier 3 to Tier 4",
+    "subtitle": "The last name of the Tier 3 boss-rush",
     "description": [
       "Lucifer is the combat capstone - the final boss of the Tier 3 boss-rush.",
       "",
-      "Two combat doors lead through him:",
-      "  - Complete the full Tier 3 boss-rush (he is the last name on the list).",
-      "  - Or explore and bank your way up, then simply fight and fell him.",
+      "The combat road to Tier 4 is the full Tier 3 boss-rush, and he is",
+      "on it: Tier 4 comes when the whole roster is down, him included.",
+      "Killing him alone opens nothing.",
       "",
       "§7The peaceful lanes (Engineering, Magic) skip Lucifer entirely -",
       "§7banking 2000 tokens reaches Tier 4 with no fight. This is the one",
       "§7deliberate pinch-point where a combat-averse player must choose a",
       "§7non-combat lane.",
       "",
-      "His kill mints a Tier 3 token and is one of the engine's Tier 4",
-      "unlock triggers."
+      "His kill mints Tier 3 tokens for the bank, like any boss."
     ],
     "groups": {
       "Capstones": { "position": [0, 0] }

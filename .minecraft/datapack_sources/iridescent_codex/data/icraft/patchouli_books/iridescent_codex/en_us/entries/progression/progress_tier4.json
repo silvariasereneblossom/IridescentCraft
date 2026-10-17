@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "The Finale",
-      "text": "Eyes of Ender lead you to The End - see $(l:icraft:progression/dimensions)Dimensional Progression$(/l). Defeat the $(t4)Ender Dragon$() to win and open the Ad Astra post-game.$(br2)Your surplus tokens now have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
+      "text": "Eyes of Ender lead you to The End - see $(l:icraft:progression/dimensions)Dimensional Progression$(/l). Defeat the $(t4)Ender Dragon$() to win. The Ad Astra planets are open to you now too: a rocket, no dragon kill.$(br2)Your surplus tokens now have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
     }
   ]
 }

@@ -2,17 +2,18 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "deep_aether:stratus_ingot" },
     "title": "Ascension III - Reach Tier 4",
-    "subtitle": "2000 tokens, Lucifer, or the full T3 boss-rush",
+    "subtitle": "2000 tokens, or the full T3 boss-rush",
     "description": [
       "The final ascension before the endgame. Tier 4 opens the Aether (Deep",
       "Aether's biomes included) and the road to the End.",
       "",
       "Completes when the Codex engine grants you the Tier 4 stage - whether",
-      "you banked 2000 tokens, slew Lucifer, or completed the entire Tier 3",
-      "boss-rush.",
+      "you banked 2000 tokens or completed the entire Tier 3 boss-rush",
+      "(Lucifer included).",
       "",
-      "§7Next: work the Aether to forge an End Compass, open the End,",
-      "§7and face the Ender Dragon - the pack finale."
+      "§7Tier 4 also opens the Ad Astra planets and their orbits (a rocket",
+      "§7and the Rocket Workbench, no dragon kill). Eyes of Ender lead to",
+      "§7the End and the Ender Dragon - the pack finale."
     ],
     "groups": {
       "Tier Milestones": { "position": [320, 0] }
