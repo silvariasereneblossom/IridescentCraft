@@ -100,11 +100,6 @@
   },
 
   "dim-no-class-passives": {
-    "ad_astra:moon": "gated at tier 4, and the class passives' tier table never held the planets (a player there already has tier 4 from the End or the stage); open",
-    "ad_astra:mars": "see moon",
-    "ad_astra:mercury": "see moon",
-    "ad_astra:venus": "see moon",
-    "ad_astra:glacio": "see moon",
     "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): \"No passives there (Recommended)\": it has no stage gate, so tier-4 class passives would reach a tier-1 caster",
     "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; comes with the custom-dimension follow-up"
   },

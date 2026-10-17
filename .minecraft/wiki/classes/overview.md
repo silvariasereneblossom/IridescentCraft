@@ -66,7 +66,7 @@ Each also carries generic `spell_power 1.40` plus per-mage identity stats (Eleme
 | Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | — |
 | Void Summoner | +15% tamed damage (Dark Pact), +10% ATK in dark (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
 
-\* **Passive tier** is the highest tier of dimension the player has entered, and it never goes down: Tier 2 for the Twilight Forest, Everbright and Everdawn; Tier 3 for the Nether, the Undergarden, the Otherside, the Abyss and its Frost World; Tier 4 for the End, the Aether, the six Ad Astra orbits and the Reality Marble. The Overworld, the Ad Astra planets' surfaces and the two pocket dimensions do not raise it. It is separate from the Codex tier you buy with tokens (as of 2026-10-16).
+\* **Passive tier** is the highest tier of dimension the player has entered, and it never goes down: Tier 2 for the Twilight Forest, Everbright and Everdawn; Tier 3 for the Nether, the Undergarden, the Otherside, the Abyss and its Frost World; Tier 4 for the End, the Aether, the five Ad Astra planets and their six orbits, and the Reality Marble. The Overworld and the two pocket dimensions do not raise it. It is separate from the Codex tier you buy with tokens (as of 2026-10-17).
 
 ### Glass Cannon Mechanic
 

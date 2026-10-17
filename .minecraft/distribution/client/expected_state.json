@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "cf6f05c8",
+    "generated_from":  "f33055db",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5980,8 +5980,8 @@
                                                                     "size":  30183
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
-                                                                        "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
-                                                                        "size":  8597
+                                                                        "sha256":  "bea95fb525032cdad75d6d40bbf5fbede6d8dfbbc1928a3b676cf13858338a08",
+                                                                        "size":  8737
                                                                     },
                   "kubejs/config/probe-settings.json":  {
                                                             "sha256":  "3c29245b1884f68ea3622f1365b9fc0f2e6b49d73db2b1e4704f43aa5834e56e",
