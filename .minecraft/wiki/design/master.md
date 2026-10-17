@@ -125,7 +125,7 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 Tier gating is enforced through **AStages** (per-player tier flags), **KubeJS** event hooks, and a small set of datapack overrides (`icraft_*_overrides`). In concrete terms:
 
 - **Items** — tier-inappropriate items cannot be used (held, equipped, or consumed) until the stage is unlocked. A T2 player who finds an Awakening artifact via creative gift sees it inert until they reach T4.
-- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies' Everbright and Everdawn) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether) at T3; T4 dimensions (the Aether, End, Ad Astra planets) at T4.
+- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies' Everbright and Everdawn) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether, the Abyss) at T3; T4 dimensions (the Aether, End, the Ad Astra planets and each of their orbits) at T4. A dimension's tier is the tier of the way in: Iron's Spellbooks' pocket dimension is T4 because its spell cannot be cast before T4, and the Reality Marble is T4 because Mahou Tsukai is.
 - **Recipes** — tier-gated crafting. Workbenches, advanced materials, and boss-tier crafting stations check the player's stage.
 - **Ores** — visually replaced (with a vanilla equivalent) until the appropriate tier. The player sees stone instead of diamond ore until T3; holystone instead of aether_debris until T4.
 
@@ -167,12 +167,14 @@ Advance a tier by hitting **either** its **token threshold** *or* its **boss-rus
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (8 of 10) |
+| T1 → T2 | **500** | 80% of T1 bosses (8 of 9) |
 | T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
-| T3 → T4 | **2000** | 100% of T3 bosses (all 43, incl. Lucifer) |
-| T4 → post-game | — | **defeat the Ender Dragon** (the pack finale; unlocks all post-game / Ad Astra) |
+| T3 → T4 | **2000** | 100% of T3 bosses (all 45, incl. Lucifer) |
+| T4 → post-game | — | **defeat the Ender Dragon** (the pack finale) |
 
-There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md); minibosses excluded). The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2 and the Aether's three dungeon bosses to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until that date the rosters also listed bosses the pack does not have, so the route could not be completed.
+There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 10 / 18 / 43 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2 and the Aether's three dungeon bosses to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.
+
+**The ladder is strict** (since October 2026). A tier is bought only with the tier below held: neither 1,000 tier-2 tokens nor a cleared tier-2 roster buys tier 3 for a player who has not reached tier 2. Kills made early still count once the tier below is held. Tier 1's tokens ask for nothing (every survival player holds tier 1).
 
 ### The four lanes
 
@@ -210,20 +212,19 @@ The token economies depend on a set of recipe overrides that un-gate "T1/T2" sub
 
 ### Cross-tier material access — bend, not break
 
-Two mechanisms let a current-tier player access *small amounts* of next-tier material — sampling next-tier power without skipping the unlock:
+One mechanism lets a current-tier player access *small amounts* of next-tier material — sampling next-tier power without skipping the unlock:
 
-1. **Transmutation.** Expensive recipes convert current-tier materials into a small quantity of next-tier material. T2 → T3 means roughly 32–64 steel ingots for 1 diamond. Inefficient by design — provides a taste, not a full unlock.
-2. **Boss tier-peek drops.** Current-tier bosses occasionally drop next-tier reagents at 5–15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires.
+- **Boss tier-peek drops.** Current-tier bosses occasionally drop next-tier reagents at 5–15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires.
 
-Both mechanisms preserve the gate (a player cannot fully outfit themselves in next-tier gear without unlocking) while rewarding investment.
+It preserves the gate (a player cannot fully outfit themselves in next-tier gear without unlocking) while rewarding investment. (A second mechanism, *transmutation* — expensive recipes turning current-tier materials into a little next-tier material — was designed but never became recipes; its placeholder items were removed in October 2026.)
 
 → Recipe costs and tier-peek drop percentages: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state) and [§C](master-appendix.md#c-boss--loot-mapping).
 
 ### The T3 → T4 combat pinch + the End
 
-**Lucifer is the *combat* capstone of T3 → T4** — the final T3 boss in the 100% boss-rush clear, and the source of a unique **Lucifer's Token**. Non-combat lanes skip him entirely: banking the 2000-token threshold via Engineering or Magic reaches T4 with no fight. So at T3 → T4 only, a truly combat-averse player has exactly one door — a non-combat lane. A deliberate endgame pinch-point. See Part X.
+**Lucifer is the *combat* capstone of T3 → T4** — the final T3 boss in the 100% boss-rush clear. (A unique **Lucifer's Token**, a second combat door that would let an explorer who banked their way up skip the rest of the roster, is designed but not in the game: today his kill pays his first-kill tokens and the *Capstone: Lucifer* quest.) Non-combat lanes skip him entirely: banking the 2000-token threshold via Engineering or Magic reaches T4 with no fight. So at T3 → T4 only, a truly combat-averse player has exactly one door — a non-combat lane. A deliberate endgame pinch-point. See Part X.
 
-**The End is reached with Eyes of Ender today.** Unlocking the End uses the *vanilla* process (stronghold + End Portal frames), with the Eyes of Ender staged at T4. **Planned (not built yet):** the **Eye of Ender is to be replaced by an "End Compass"**, crafted from **the Aether's materials** (a T4 dimension), which would direct the player to an **"End Bastion"**, so that the portal could not be targeted until the player has worked the Aether. **Defeating the Ender Dragon is the pack finale** (T4 is terminal — no further token gate), unlocking all post-game content and the Ad Astra space tier. See Part IV + Part X.
+**The End is reached with Eyes of Ender today.** Unlocking the End uses the *vanilla* process (stronghold + End Portal frames), with the Eyes of Ender staged at T4. **Planned (not built yet):** the **Eye of Ender is to be replaced by an "End Compass"**, crafted from **the Aether's materials** (a T4 dimension), which would direct the player to an **"End Bastion"**, so that the portal could not be targeted until the player has worked the Aether. **Defeating the Ender Dragon is the pack finale** (T4 is terminal — no further token gate). The Ad Astra planets were designed as the post-game beyond it; in the game they are T4 dimensions, reached by rocket with the T4 stage (no dragon kill is asked). See Part IV + Part X.
 
 ---
 
@@ -253,7 +254,8 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 | The Aether | T4 (T2 until 2026-10-16) | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin-air, scarce holystone, flight rewarded |
 | Deep Aether (biomes inside the Aether, no dimension of its own) | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). The planned **End Compass** is to be crafted from the Aether's materials. |
 | The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached with Eyes of Ender, staged at T4 (a planned **End Compass → End Bastion** route would replace them); multi-zone scaling; Voidheart Blade Mythic Forge venue; Dragon kill → post-game + Ad Astra |
-| Ad Astra (Moon, Mars, Mercury, Venus, Glacio) | post-game (T4 terminal) | Per-planet | Unlocked by the Ender Dragon kill; 4-tier rocket gate; Glacio is the post-T4 endgame (MekaSuit Mk2 reagent) |
+| Ad Astra (Moon, Mars, Mercury, Venus, Glacio, and the six orbits) | T4 | Per-planet | Reached by rocket: the rocket workbench is a T4 recipe and every planet and orbit has its own T4 gate (designed as the post-game after the Ender Dragon; no dragon kill is asked today); 4-tier rocket gate; Glacio is the T4 endgame (MekaSuit Mk2 reagent) |
+| Iron's Spellbooks' pocket dimension, Mahou Tsukai's Reality Marble | T4 | — | Small personal dimensions: the Pocket Dimension spell cannot be cast before T4; the Reality Marble comes with Mahou Tsukai, a T4 mod |
 | Witch of Ink dimension *(planned origin-specific content surface; not yet a separate dimension in pack)* | T3+ (Origin-tied) | — | Origin-specific content surface |
 
 ### Dimensional mechanics — per-dimension play-feel modifiers
@@ -317,7 +319,7 @@ Each tier has a roster of bosses that serve as the difficulty climax and loot pe
 - **T3 bosses** — Cataclysm (8) + Ignited Revenant + Wither + Stalker, capped by **Lucifer** (the T3 → T4 combat capstone). Mid-game peak.
 - **T4 bosses** — Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + the Aether's dungeon bosses (Slider / Valkyrie Queen / Sun Spirit). Endgame.
 
-Boss kills feed the **Combat lane** of the token economy and count toward the **boss-rush %** (Part III). The Codex (Heracles-backed) tracks kills per tier: clearing 80 / 90 / 100% of a tier's roster auto-advances the tier, and individual kills also drop physical tokens into the combined pool. Clearing all T3 bosses *except* Lucifer unlocks Lucifer; banking enough T3 tokens unlocks him too. **Lucifer is the combat capstone, not a universal gate** — non-combat lanes reach T4 by banking the 2000-token threshold and never fight him (see Part X). The former internal-counter-grants-tiers model is superseded: tokens are physical and Codex-tracked.
+Boss kills feed the **Combat lane** of the token economy and count toward the **boss-rush %** (Part III). The Codex (Heracles-backed) tracks kills per tier: clearing 80 / 90 / 100% of a tier's roster auto-advances the tier (only with the tier below held), and individual kills also drop physical tokens into the combined pool. Lucifer is the last boss of the T3 roster. **Lucifer is the combat capstone, not a universal gate** — non-combat lanes reach T4 by banking the 2000-token threshold and never fight him (see Part X). The former internal-counter-grants-tiers model is superseded: tokens are physical and Codex-tracked.
 
 ### The "broken but not breakable" balance
 
@@ -365,7 +367,7 @@ Three principles guide the per-dimension design:
 
 Peak AI aggression in the End (design intent, now driven by Cataclysmic Combat + KubeJS handlers rather than the removed Improved Mobs): all mobs use found gear and enchanted weapons; mobs break any block (including obsidian, slowly); ranged mobs suppress while melee flanks; multiplayer targets the weakest player; Endermen teleport behind for backstabs; elite mobs adapt to player behavior (kiters → mobs speed up; face-tankers → mobs spread out).
 
-**T4 — Ad Astra Planets.** Each planet has its own atmosphere and mechanics. Oxygen drain without a tank, atmospheric pressure damage, Glacio-specific cryogenic damage. Elite-mob density runs at its highest (Majrusz Master-stage) per planet. Glacio is the post-T4 endgame.
+**T4 — Ad Astra Planets.** Each planet has its own atmosphere and mechanics. Oxygen drain without a tank, atmospheric pressure damage, Glacio-specific cryogenic damage. Elite-mob density runs at its highest (Majrusz Master-stage) per planet, and the planets and orbits run the T4 difficulty curve (since October 2026; before, they were on no list and ran the T1 curve). Glacio is the T4 endgame.
 
 #### Combat feel summary
 
@@ -495,7 +497,7 @@ Recommended primary tree per class. Players are not locked in — every class ca
 | **Origin** | No — permanent | — |
 | **Race** | No — permanent | — |
 | **Class** | Yes, at the Class Altar | 1 tier-appropriate boss drop + 30 XP levels |
-| **Skill point** | Yes, per-point | 5 levels per point refunded |
+| **Skill point** | Not available in the game (designed: per point, 5 levels) | — |
 
 Skill points are **not lost on death** and **not lost on class respec** — they're permanent growth. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). This creates interesting hybrid-build space without forcing a full skill reset every time the player tries a new class.
 
@@ -609,7 +611,7 @@ T4 stage opens **Mekanism advanced** (Digital Miner, Fusion Reactor Controller, 
 
 > **The advanced-power bargain.** Mekanism's machine energy costs are deliberately raised at the top end, so the *answer* to that cost is the reward chain itself: fusion and the SPS-to-antimatter run are the rich, rewarding power sources that make advanced Mekanism worth building — and antimatter doubles as the apex reagent that ties the tech endgame into the Mythic chain. Radiation and reactor meltdowns are **force-disabled** — the stance is dangerous-but-recoverable: top-tier reactors stay a build-and-tune challenge, not a save-erasing catastrophe.
 
-**Ad Astra** opens here too. The NASA Workbench requires the T4 reality progression token + Mekanism Steel Casing + netherite ingots. The 4-tier rocket progression gates each planet behind a tier-progression — the T4 Glacio rocket needs primordial_essence. Jet Suit recipes are stripped; MekaSuit fills that niche.
+**Ad Astra** opens here too. The NASA Workbench is a T4 recipe (netherite ingots + Mekanism Steel Casing + a steel block; until October 2026 it asked for a retired T4 token that nothing gave, so no rocket could be built), and every planet and orbit has its own T4 gate. The 4-tier rocket progression gates each planet behind a tier-progression — the T4 Glacio rocket needs primordial_essence. Jet Suit recipes are stripped; MekaSuit fills that niche.
 
 ### MekaSuit Mk2 — the endgame chain
 
@@ -709,11 +711,11 @@ T4 is not the finish line — it is the **starting line for five interlocking en
 
 Three gates structure the T3 → T4 → post-game arc:
 
-1. **Lucifer — the T3 → T4 combat capstone.** Lucifer is the final boss of the T3 boss-rush (the 100% clear) and the source of a unique **Lucifer's Token**. Clearing every other T3 boss unlocks Lucifer; banking enough T3 tokens also unlocks him. He is the *combat* capstone, **not a universal gate** — a non-combat player reaches T4 by banking the 2000-token threshold via Engineering or Magic and never fights him. So at T3 → T4 *only*, a combat-averse player has exactly one door: a non-combat lane. A deliberate endgame pinch-point (wired as Lucifer in `TIER_4_BOSSES`).
+1. **Lucifer — the T3 → T4 combat capstone.** Lucifer is the final boss of the T3 boss-rush (the 100% clear). A unique **Lucifer's Token** (a second combat door, for an explorer who banked their way up and then fights him) is designed but not in the game, and no other route depends on him. He is the *combat* capstone, **not a universal gate** — a non-combat player reaches T4 by banking the 2000-token threshold via Engineering or Magic and never fights him. So at T3 → T4 *only*, a combat-averse player has exactly one door: a non-combat lane. A deliberate endgame pinch-point (wired as Lucifer's slot on the T3 roster).
 
 2. **The End — to be gated behind the Aether (planned).** Today the End uses the vanilla stronghold + End-Portal process with Eyes of Ender, staged at T4. The plan replaces the **Eye of Ender with an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** (reusing the `boss_compass` waystone system), so the End portal could not be targeted until the player has worked the Aether — the End would be genuinely *post*-Aether. *(Build TBDs: the End Compass itself, the End Bastion structure, the compass→structure mechanic, and the exact material bill.)*
 
-3. **The Ender Dragon — the pack finale.** T4 is **terminal**: there is no further token gate. Defeating the Ender Dragon is the pack finale — it unlocks all post-game content and the **Ad Astra** space tier. (The End also uniquely uncaps its `iridescent_difficulty` curve once the Dragon dies — see Part V.) Killing the Ancient Remnant + completing the final quest chain is the "you beat the pack" trophy moment; the Dragon kill opens the door to everything after.
+3. **The Ender Dragon — the pack finale.** T4 is **terminal**: there is no further token gate. Defeating the Ender Dragon is the pack finale. The **Ad Astra** space tier was designed to open after it; in the game the planets and orbits are T4 dimensions that ask only for the T4 stage and a rocket. (The End also uniquely uncaps its `iridescent_difficulty` curve once the Dragon dies — see Part V.) Killing the Ancient Remnant + completing the final quest chain is the "you beat the pack" trophy moment; the Dragon kill opens the door to everything after.
 
 ### The five loops
 
@@ -902,7 +904,7 @@ The pack ships two complementary systems sharing one identity: **Heracles** (the
 Heracles is no longer just a quest tracker; it is **the engine that runs the token economy** (Part III). Its item-submission, kill-tracking, and stage-granting handle three load-bearing roles:
 
 1. **Token submission + tier advance (the gate).** Submitting Engineering / Magic / Exploration / Combat tokens banks them toward the tier threshold (500 / 1000 / 2000); reaching it grants the next AStages tier flag. This *is* the progression gate — Heracles token-submission is one of the two advance routes (the other is the boss-rush %). Earlier docs called the quest tree "NOT a progression gate"; under the locked framework, it is.
-2. **Boss-rush tracking.** Heracles tracks per-tier boss kills for the boss-rush route (80 / 90 / 100% clear → auto-advance) and for unlocking Lucifer. Boss-hunting quests also gate side rewards (Mythic Catalyst recipes, the Riftwalker Boots schematic, etc.).
+2. **Boss-rush tracking.** Heracles tracks per-tier boss kills for the boss-rush route (80 / 90 / 100% clear → auto-advance, only with the tier below held). Boss-hunting quests also gate side rewards (Mythic Catalyst recipes, the Riftwalker Boots schematic, etc.).
 3. **Discoverability + optional rewards.** The quest tree doubles as the player-facing index of pack content — every dimension, boss, and system gets a quest pointing at it — plus food-diversity, automation, and exploration completionism rewards.
 
 > **Design intent.** The Patchouli Codex is the documentation skin; Heracles is the mechanism. A player still advances by *doing the things* (submitting materials, killing bosses) — Heracles is the surface that receives those submissions and grants the tier. This supersedes the older "quests are a purely optional parallel rail; a KubeJS counter auto-grants tiers" model: the token economy is the gate, and Heracles runs it. (The legacy `milestone_detection.js` single-kill / cumulative-10 / craft-one-item counter is retired; only its boss-kill tracking survives into the Combat lane.)

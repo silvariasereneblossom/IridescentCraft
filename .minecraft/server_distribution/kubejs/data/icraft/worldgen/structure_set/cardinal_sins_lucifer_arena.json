@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "icraft:cardinal_sins_lucifer",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 90,
+    "separation": 24,
+    "salt": 1146583209
+  }
+}

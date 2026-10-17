@@ -118,13 +118,13 @@ Offline skin support — required for LAN play without Mojang auth.
 | Tier | Dimensions | Start % | Cap % | Cap Hours |
 |------|------------|---------|-------|-----------|
 | T1 | Overworld | 150% | 300% | 100 |
-| T2 | Twilight Forest, Blue Skies (Everbright, Everdawn) | 200% | 350% | 100 |
+| T2 | Twilight Forest, Blue Skies (Everbright, Everdawn), the Abyss's pocket dimension | 200% | 350% | 100 |
 | T3 | Undergarden, Deeper Darker, Nether, Abyss + its Frost World | 300% | 450% | 100 |
-| T4 | The End, Aether (Deep Aether's biomes included) | 600% | 1000% | 200 |
+| T4 | The End, Aether (Deep Aether's biomes included), the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension, the Reality Marble | 600% | 1000% | 200 |
 
 Dimensions are matched by exact id, and any dimension not listed uses the T1 curve. Deep Aether has no dimension of its own (its biomes are part of the Aether), so it follows the Aether: T4 since 2026-10-16 (T2 before). `/icraftdiff status all` shows the tier each dimension resolved to.
 
-**Multiplier scope:** linear on `max_health` / `attack_damage` / `armor`; `sqrt` on `movement_speed` (so a 6× HP mob isn't also 6× speed). Tamed mobs + non-MONSTER category mobs skipped, except the mobs on a configurable force-scale list; since 2026-10-16 that list includes the Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites). Bosses are skipped only when they are on the configurable excluded-entities list — there is no automatic boss detection.
+**Multiplier scope:** linear on `max_health` / `attack_damage` / `armor`; `sqrt` on `movement_speed` (so a 6× HP mob isn't also 6× speed). Tamed mobs + non-MONSTER category mobs skipped, except the mobs on a configurable force-scale list; since 2026-10-16 that list includes the Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites). Bosses are skipped only when they are on the configurable excluded-entities list — there is no automatic boss detection. Since 2026-10-16 the tier lists and that list are generated from the pack's boss and dimension registries: every boss with a designed health or the boss x3 is excluded (78 entity ids), and every tiered dimension is on its tier's list (the planets, orbits and pocket dimensions ran the T1 curve before).
 
 **End uncap:** killing the Ender Dragon in-world removes the cap for any dimension in the `uncapAfterEnderDragon` list (default: just `minecraft:the_end`). Multiplier extrapolates past the cap proportionally past `capHours`.
 

@@ -2394,7 +2394,7 @@
       "key": "scaled_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.8,
+          "minecraft:generic.armor": 1.66,
           "minecraft:generic.knockback_resistance": 0.07,
           "minecraft:generic.armor_toughness": 0.2
         },
@@ -2408,7 +2408,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 18
+        "magicCapacity": 17
       }
     },
     {

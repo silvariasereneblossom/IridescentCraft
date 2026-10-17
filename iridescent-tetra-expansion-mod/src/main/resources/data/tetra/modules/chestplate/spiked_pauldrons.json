@@ -1057,8 +1057,8 @@
       "key": "spiked_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.336,
-          "minecraft:generic.armor_toughness": 0.3
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
         },
         "integrity": 0.5,
         "glyph": {

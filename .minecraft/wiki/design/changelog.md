@@ -6,6 +6,17 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — The Chthonic Cathedral's bosses are Tier 3
+
+- **The Chthonic Cathedral's bosses are Tier 3 bosses.** Enchanter Merlin (was Tier 1), Sorceress Circe (was Tier 4) and Archmage Gundalf (was Tier 2) are all met at the Nether's Chthonic Cathedral: Occult Fabric on its Offering Pedestal calls Merlin and Circe together, and Gundalf appears when Circe falls. Merlin and Circe are on the Tier 3 boss rush now (Tier 1 → 2 needs 8 of 9 bosses, Tier 3 → 4 all 45). Their kill tokens, the Magic Estoc (Merlin) and the Astral Bound (Circe) and Circe's Tetra material follow them to Tier 3.
+- **Occult Fabric in the Nether.** The chance of Occult Fabric in a chest moved from the Overworld's Infested Laboratory to the Chthonic Dungeon, where the Gatmancers live (12 %).
+
+## October 2026 — The Cardinal Sins arenas generate again
+
+- **The Cardinal Sins have arenas again.** Since the end of May no Cardinal Sins arena generated anywhere: the mod builds its arenas only in the Overworld, and the pack had moved them to the Undergarden and the Nether, so the shrine chain could not start. Now the seven sins and Drakara have their arenas in the Abyss, and Lucifer's arena is in the Nether. The Boss Compass finds every one of them. They stay Tier 3 bosses, and Lucifer stays the Tier 3 capstone.
+- **The shrine chain.** Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer's Atrocity Shrine. Sloth's Malevolichite Shrine takes a Soulweaver Orb (8 Malevolichite around an Eye of Ender; the ore sits in the floating pillars of the Overworld's Forgotten Forest). Every other orb is an Eye of Ender and the Essence the previous sin drops, at a smithing table with no template.
+- **The Boss Compass points to the right Terramity places.** Enchanter Merlin and Sorceress Circe are summoned together with Occult Fabric at the Offering Pedestal of the Nether's Chthonic Cathedral, Archmage Gundalf appears when Circe falls, and Gatmancers live in the Chthonic Dungeon. The compass pointed at the Fairy Fountain, the Mausoleum, the Trial Spire and the Infested Laboratory, where none of them is found.
+
 ## October 2026 — Aether follow-ups
 
 - **Neptune armour converts like zanite armour.** At the Tetra workbench it becomes iron modular armour; it keeps its look, its armour bonus and its full-set bonus (water breathing and dolphin's grace). The old conversion multiplied spell power by about two per piece, so a full set multiplied it by eighteen. The Neptune Tetra material is gone.
@@ -14,6 +25,54 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **The Sunfeather Charm is worth 500 relic essence**, the Tier 4 value (was 250).
 - **Frostmaw has 1,500 health wherever it stands**, like the other Tier 2 named bosses (designed 500 with the x3, off the dimension curve); per-kill scaling still applies.
 - **Quests.** The Frostmaw hunt moved to the Exploration chapter, next to the Tier 2 dimension bosses; the Tier 2 boss-rush quest lists Frostmaw (any 4 of 6); reaching Tier 2 gives 4 Everbright pyrope gems and *Frontiers I* gives 6 Everdawn moonstone shards, in place of the zanite and ambrosium they gave when the Aether was Tier 2.
+
+## October 2026 — The rest of the week (10 to 16 October)
+
+The other October entries cover the week's big changes. This one gathers everything else a player meets.
+
+**Features that never worked now do.** Much of the pack's own content had never run on the server. Since this week:
+- Custom enchantments, Apotheosis affix effects, the Abyss rings and armour sets, the unique weapons' tier bonus (+10% at Tier 1 up to +40% at Tier 4), the plain-bow effects of Too Many Bows' themed bows, and the Deathskin bonus against undead all apply.
+- All forty aptitude skills read your real aptitude levels.
+- The bonfires, the Boss Compass, the Relic Broker's window, the class altar and the class starter kits work.
+- The Codex works: submitting materials, counting the tokens you hold, the Tier 4 token-to-experience exchange, crediting boss kills above Tier 1, and the relic sink. A submission takes only what is in your main inventory (hotbar included), never armour you wear or the item in your off hand.
+- Vorpal and Arcane Vorpal beheadings happen (on a crit of the pack's own crit roll) and kill through armour; MekaSuit Mk2 pieces get their bonus armour; the modular Ars spell book's covers and spine change something.
+- Lovely Pieces' Enchant Eye, fishing line, quivers and Newbie Umbrella work, and so does the Compass of Return.
+- Mutant Monsters drop ten times their experience.
+- Some things survive death now: the Relic Broker's daily limit no longer resets, a full Tetra armour set keeps its bonus after respawning, and your progress toward the next level is kept on death and on leaving the End.
+
+**Bosses.**
+- Twenty-two named bosses the pack's boss rules had missed (Lucifer, Frostmaw, Gob, Virtue and Sorceress Circe among them) follow them now: the boss health bonus applies once instead of twice (about a third of their old health), and they can no longer be beheaded or executed.
+- A boss keeps its health bonus when the server restarts or its chunk reloads; until now a boss waiting in its arena lost it.
+- The Magehunter Vindicator of the Evoker Fort is a real boss: 500 health, no beheading. Its Boss Compass row leads to the Evoker Fort (it pointed at the Mountain Tower), and no structure gets two bonfires.
+- The Amethyst Crab and MCA's Grim Reaper are minibosses: tokens on every kill, no beheading.
+- The first phases of the Sins of Envy, Pride and Wrath are bosses (about 1,050 to 1,125 health at the Nether's starting difficulty instead of 1,750 to 1,875) and grow per kill like Lucifer's.
+- **A boss with a designed health or the boss bonus has the same health in every dimension**: the dimension difficulty curve no longer multiplies it again. The Warden, for one, has 1,500 everywhere (it had 2,250 in the Overworld and 4,500 in the Nether at their starting difficulty). Minibosses without a designed health still grow with the curve.
+- With two or more players online, every boss keeps fighting when no player is near it (until now only the Wither was meant to, and it was not).
+
+**Progression and dimensions.**
+- The boss rush can be completed: its lists named bosses that do not exist, so no tier could be reached that way. And a tier is now bought only with the tier below held, by tokens or by the boss rush.
+- Tier gates survive a `/reload`, and the recipes they guard are locked by tier. The netherite ingot, the eye of ender, the Digital Miner, the Hephaestus Forge and the reforging and augmenting tables could be crafted by anyone; the rocket workbench and the Dragon Summoning Crystal (the only way to start the Ender Dragon fight) by no one. The End Crystal recipe is back.
+- The Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension and the Reality Marble are Tier 4 dimensions. Each planet and orbit has its own Tier 4 gate (a rocket handed to a Tier 3 player goes nowhere), their mobs follow the Tier 4 difficulty curve (they were on the Tier 1 curve), a death there costs 22% to 30% durability, and affixes and gems found there roll Epic to Ancient. The *Pocket Dimension* spell is refused before Tier 4. The Abyss's pocket dimension counts as Tier 2.
+- The Otherside and the Abyss count as Tier 3 for the Samurai's and the Archmage's tier passives.
+- Invader bosses can now appear in Everbright, Everdawn, the Undergarden, the Otherside, the Abyss and its Frost World, the Aether and the five planets. Most of these were on the spawn list with no bosses to send; the Frost World and the planets were not on it at all.
+
+**Loot.**
+- The Wither drops the Dormant Relic on your first kill (15% after that) and 2 Runic Tablets on every kill. The tablets go into the two relic crafts only: every runic weapon and fused-gem recipe is removed.
+- No more diamonds before Tier 3 from the Aquaculture treasure chest (an emerald now), Aether whirlwinds, or Tetra geodes (an emerald, and a pristine emerald instead of a pristine diamond). The Dungeons Arise diamond strip applies in the Overworld only.
+- The Lich, the Ur-Ghast, the Netherite Monstrosity, the Harbinger, the Wither and the Gaia Guardian drop their reforging token 60% of the time.
+- The Abyss's rings drop from its bosses: Nightblade the Shadows and Phantom rings (15% each), The Roka the Embers ring (15%), the Ice Knight the Frost ring (15%), the Elder the Void Sight ring (10%).
+- Terramity's Tier 3 gear (the Reverium sword and axe, the malediction and electron bracelets) and its "Tier 2" tomes left Overworld chests for its two Nether dungeons.
+- The Rift Shard and Mythic Catalyst counters count each item once.
+
+**Smaller changes.**
+- Material Save and Craft Bonus roll on a real craft only (they handed out free materials and copies of items on every inventory change).
+- The Wind Essence Wand gives +5% speed, as its tooltip says (it gave +50%).
+- Ars Nouveau's own max mana and mana regeneration say "(no effect here)": Ars spells draw from the Iron's Spellbooks mana pool.
+- Eighteen unused items are gone (the transmuted materials, three alloys, the rift gem and the old token fragments): nothing made or used them.
+- The *Level Up* onboarding quest completes at any aptitude level 2.
+- A cancelled hit triggers no on-hit effect, and the plain-bow effects and the Deathskin bonus apply to the hit itself, not to the splash damage it causes.
+- The pack's diopside Tetra material is made from the diopside gem (it named an item that does not exist).
+- Mowzie's Geomancer set counts as robes for armour weight; the Soul Butterfly's tooltip says one butterfly per use; the Codex's text is a warm sepia, with italic page titles.
 
 ## October 2026 — Virtue's altar is the Prismatic Pond
 
@@ -43,7 +102,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 ## October 2026 — Bosses remember who beat them; sunlight burns the undead; the Codex ladder is strict
 
 - **Bosses get stronger for the players who have beaten them.** The first time a boss trades a hit with a player, it takes the highest kill count of that boss among the players within 64 blocks: your 2nd fight is +15% health, +10% damage and +3% speed, rising to +150% / +80% / +15% from the 15th fight. Everyone within 64 blocks when it dies counts the kill, and `/icraft bosskills` shows your own counts. Everyone starts at zero. The Wither, the Ender Dragon, the Warden and the Elder Guardian are not scaled.
-- **Sunlight burns hostile undead faster.** By day, a hostile undead mob under open sky near a player in the Overworld burns about four times faster than before (a zombie lasts about 15 seconds instead of a minute). Bosses, your own summons and pets, and wild zombie and skeleton horses are spared; a roof keeps any mob safe.
+- **Sunlight burns hostile undead faster (Sunlight Smite).** By day, a hostile undead mob under open sky near a player in the Overworld burns about four times faster than before (a zombie lasts about 15 seconds instead of a minute). Bosses, your own summons and pets, and wild zombie and skeleton horses are spared; a roof keeps any mob safe.
 - **A Codex tier is bought only with the tier below.** Tokens of a higher tier no longer buy their tier for a player who has not reached the one below it; `/icraft codex balance` says which tier comes first.
 
 ## October 2026 — The Wither keeps its designed health; the Ultimate Wither returns as a challenge

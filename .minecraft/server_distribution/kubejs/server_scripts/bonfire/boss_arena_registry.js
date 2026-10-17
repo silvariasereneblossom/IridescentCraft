@@ -51,6 +51,13 @@
 //       the player is within range of one. These carry `locator: "block"` +
 //       `signatureBlock`, and NO `structure` field (so the structure-tag paths
 //       skip them cleanly). The #56 Nether/Undergarden relocation is untouched.
+//       SINCE 2026-10-16 NO ROW IS BLOCK-LOCATED: the mod's arena features place
+//       only in the Overworld (generate_dimensions, read from the bytecode), so
+//       the #56 relocation placed nothing; the nine Sins arenas are now pack
+//       jigsaw structures built from the mod's own templates
+//       (kubejs/data/icraft/worldgen/structure/cardinal_sins_*.json: Lucifer in
+//       the Nether, the other eight in the Abyss) and are structure-located like
+//       (A). The block path below stays for a future row.
 //
 // Still NOT compass-targetable (no fixed threshold of any kind):
 //   • Brutal Bosses biome-random variants (Mad Cow, Evil Chicken, ...)   — no anchor
@@ -59,7 +66,8 @@
 //   • Stalwart Dungeons mobs                                            — overlay, no own anchor
 // These are still tracked by codex_boss_rush.js for the combat advance route.
 //
-// EXCEPTIONS within the Cardinal Sins set (locator: "summon", no anchor):
+// EXCEPTIONS within the Cardinal Sins set until 2026-10-16 (locator: "summon",
+// no anchor; both are structure-located since, see (B)):
 //   • Drakara  — its template (structures/drakarastructure.nbt) holds ONLY the
 //                drakara entity, no shrine/unique block → nothing to scan for.
 //   • Sloth    — its only cardinal_sins block is `malevolichite_shrine`, which

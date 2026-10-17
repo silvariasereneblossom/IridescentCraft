@@ -1,16 +1,16 @@
 {
-  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = terramity:malediction_bracelets. Sorceress Circe: code-driven; malediction_bracelets (also a Gundalf drop) -> floor on Circe. FLAGGED.",
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T3). REPAIR ITEM = terramity:malediction_bracelets. Sorceress Circe: code-driven; malediction_bracelets (also a Gundalf drop) -> floor on Circe. FLAGGED. T4 until 2026-10-16 (Circe to tier 3, on recommendation, for review).",
   "key": "tm_circe",
   "category": "gem",
-  "primary": 9.0,
-  "secondary": 3.4,
-  "tertiary": 4.5,
-  "durability": 1320,
-  "integrityCost": 4,
-  "integrityGain": 11,
-  "magicCapacity": 220,
+  "primary": 8.3,
+  "secondary": 3.6,
+  "tertiary": 3.8,
+  "durability": 920,
+  "integrityCost": 3,
+  "integrityGain": 10,
+  "magicCapacity": 200,
   "toolLevel": "minecraft:netherite",
-  "toolEfficiency": 10,
+  "toolEfficiency": 9,
   "tints": {
     "glyph": "5d3a9b",
     "texture": "5d3a9b"
@@ -34,8 +34,8 @@
     }
   ],
   "attributes": {
-    "**irons_spellbooks:ender_spell_power": 0.15,
-    "**irons_spellbooks:ender_magic_resist": 0.1,
-    "**irons_spellbooks:spell_power": 0.12
+    "**irons_spellbooks:ender_spell_power": 0.12,
+    "**irons_spellbooks:ender_magic_resist": 0.08,
+    "**irons_spellbooks:spell_power": 0.1
   }
 }

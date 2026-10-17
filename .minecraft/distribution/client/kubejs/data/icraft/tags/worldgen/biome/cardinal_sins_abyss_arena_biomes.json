@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "theabyss:blue_mountain",
+    "theabyss:blaru_forest",
+    "theabyss:phantom_crate",
+    "theabyss:plains",
+    "theabyss:blue_jungle",
+    "theabyss:mud_plains",
+    "theabyss:slime_forest",
+    "theabyss:vigilant_forest",
+    "theabyss:shroomlands"
+  ]
+}

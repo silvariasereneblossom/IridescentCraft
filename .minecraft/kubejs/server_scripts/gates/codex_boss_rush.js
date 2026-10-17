@@ -118,6 +118,9 @@ var BOSS_RUSH_TIERS = {
 // the Sun Spirit left the T2 roster (tier 4 has no rush), Frostmaw moved from
 // T1 to T2. The percentages stand, the counts follow the registry by themselves:
 //     T1  10 listed, need 8 (80%)   T2  18 listed, need 17 (90%)   T3  43 / 43
+// The same day (on recommendation, for review): the Chthonic Cathedral's
+// Enchanter Merlin left T1 and he and Sorceress Circe joined T3:
+//     T1  9 listed, need 8 (80%)    T2  18 listed, need 17 (90%)   T3  45 / 45
 // Removed, with the reason, so that each can come back when it is real:
 //   * brutalbosses: zombieboss, skeletonshieldboss, cavespiderboss, huskboss,
 //     strayboss, drownedboss, phantomboss, witchboss, irongolemboss, rabbitboss,

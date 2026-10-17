@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "00485b26",
+    "generated_from":  "cf8889b4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4352,8 +4352,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "20d28154e52d7ec0df4fda895b2253156cd71027fab9049037f3b7287258dd2d",
-                                                                           "size":  58956
+                                                                           "sha256":  "a44fa78e0ce73543682d6a893b79587c7464e5bf7ccbc82ae56505b3f07389dd",
+                                                                           "size":  59000
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49386
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "dfeebe913c4d3285ba64fa18de7538bc8864aa09a7d9bcac353e3d3267b14f9c",
-                                                                    "size":  28957
+                                                                    "sha256":  "10b2c850b57d5d4c077e9c2672645b13927bd01eb52322a0769bb9dcffacca2e",
+                                                                    "size":  30069
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
@@ -6144,40 +6144,40 @@
                                                                           "size":  1459
                                                                       },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/drakarastruc_biome_modifier.json":  {
-                                                                                                          "sha256":  "18357c3af939e3cdd8fa7da024a3f05fb59798932655f8d7702fa1b602f5b60f",
-                                                                                                          "size":  734
+                                                                                                          "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                          "size":  366
                                                                                                       },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/envystructure_biome_modifier.json":  {
-                                                                                                           "sha256":  "eeafcbcaaacd3028ee2a6a750216d418e36a37a717c5fae8b40b2362bc1ee1af",
-                                                                                                           "size":  752
+                                                                                                           "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                           "size":  366
                                                                                                        },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/gluttonystucture_biome_modifier.json":  {
-                                                                                                              "sha256":  "7181b921eaa6fbdb033f3518e17525ac4a7014aafc03f3449480ef67c594e066",
-                                                                                                              "size":  761
+                                                                                                              "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                              "size":  366
                                                                                                           },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/greedstructure_biome_modifier.json":  {
-                                                                                                            "sha256":  "bf2564860a2bfe1edfa526ce55a4e7237c9e8f53668b871009f3647c92b71b8c",
-                                                                                                            "size":  729
+                                                                                                            "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                            "size":  366
                                                                                                         },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/luciferstructure_biome_modifier.json":  {
-                                                                                                              "sha256":  "c9631a5636d7f2b7c71167f519497482130fb25cfdbb6154169b184f51ee454d",
-                                                                                                              "size":  742
+                                                                                                              "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                              "size":  366
                                                                                                           },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/luststructuregenerator_biome_modifier.json":  {
-                                                                                                                    "sha256":  "fc4221978044dd47cba424469746448b46b275bed78c97c0d231bbf5459d19a8",
-                                                                                                                    "size":  790
+                                                                                                                    "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                                    "size":  366
                                                                                                                 },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/pridestructure_biome_modifier.json":  {
-                                                                                                            "sha256":  "932d2b44512444d0e53c399fba57f0130e1ac6ffd1b15046fe7f4f59f45b226d",
-                                                                                                            "size":  759
+                                                                                                            "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                            "size":  366
                                                                                                         },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/slothstructure_biome_modifier.json":  {
-                                                                                                            "sha256":  "9fd78151eafb309c9a2b983934cb3e41fc37a5e13e25a46c44cd57a2e8e27a54",
-                                                                                                            "size":  752
+                                                                                                            "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                            "size":  366
                                                                                                         },
                   "kubejs/data/cardinal_sins/forge/biome_modifier/wrathstructure_biome_modifier.json":  {
-                                                                                                            "sha256":  "f82daef41e1e48c319d0821735ee42b7eb7f4ed5af053b3f8e780d4d25c7b9d3",
-                                                                                                            "size":  737
+                                                                                                            "sha256":  "85dd583c771c969605e68e62619e016fce35edabfed1e8dc27e74030a1f8810c",
+                                                                                                            "size":  366
                                                                                                         },
                   "kubejs/data/cataclysm/loot_tables/archaeology/cursed_pyramid.json":  {
                                                                                             "sha256":  "d5ea97587ef14fa01325c3b13cf1e175adce914ed877e880b998fb98798dee04",
@@ -6496,7 +6496,7 @@
                                                                                         "size":  922
                                                                                     },
                   "kubejs/data/icraft/tags/entity_types/registry_bosses.json":  {
-                                                                                    "sha256":  "c649d23d7981eb714e0756c40ff0de292e9566f22f0e4ae410ec64c2c7c536b1",
+                                                                                    "sha256":  "f6d975fc3fc928ae23c3fc334a7bda039f368a142432c91f6bf3dd5e522c6c66",
                                                                                     "size":  6688
                                                                                 },
                   "kubejs/data/icraft/tags/items/armor_heavy.json":  {
@@ -6519,6 +6519,10 @@
                                                                           "sha256":  "4593581bfb2dfb5e9b5afbe820284e864b56f528b854bf3fb71322935ca0b7a3",
                                                                           "size":  893
                                                                       },
+                  "kubejs/data/icraft/tags/worldgen/biome/cardinal_sins_abyss_arena_biomes.json":  {
+                                                                                                       "sha256":  "3a5b7e4e426400b8fc0f58a86dc2a9902a439fe87b909ffd134af9e088ccf7a2",
+                                                                                                       "size":  297
+                                                                                                   },
                   "kubejs/data/icraft/tags/worldgen/structure/aether_slider.json":  {
                                                                                         "sha256":  "4ef6d61a94e64f0e1721c7df3eeeb375b349c2b3cbab23e10e5b6716de988cdc",
                                                                                         "size":  99
@@ -6546,6 +6550,42 @@
                   "kubejs/data/icraft/tags/worldgen/structure/blue_skies_summoner.json":  {
                                                                                               "sha256":  "9790f2e0976c9549d5f716af0db39f2d88d44a1d4cd90c989051b4548a0194cf",
                                                                                               "size":  103
+                                                                                          },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_drakara.json":  {
+                                                                                                "sha256":  "1b32d56ca5f584b716b2efa9ae1eefa02b492160bf73b9d13ee20ad2b01d4a8c",
+                                                                                                "size":  122
+                                                                                            },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_envy.json":  {
+                                                                                             "sha256":  "74004b553cb4b2fe0fe79497cf02e95139a20419b77feabc252e4ce5ce6f791c",
+                                                                                             "size":  119
+                                                                                         },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_gluttony.json":  {
+                                                                                                 "sha256":  "2d848effca2409039a9476910316949c3334aa52d97088a04eb5e852eb306aba",
+                                                                                                 "size":  123
+                                                                                             },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_greed.json":  {
+                                                                                              "sha256":  "3acaecd661d040b8f4225f06a8d33d366d67afc3759064f79f26398b2038e131",
+                                                                                              "size":  120
+                                                                                          },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_lucifer.json":  {
+                                                                                                "sha256":  "6640b309845463291f21d6c75786611fcf250198dab1befcf2c2d720af65d843",
+                                                                                                "size":  122
+                                                                                            },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_lust.json":  {
+                                                                                             "sha256":  "ffe1d8180ee2c918b9e89459862c5e02e92e159805f3a1bc837f89866214c155",
+                                                                                             "size":  119
+                                                                                         },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_pride.json":  {
+                                                                                              "sha256":  "26ae7f29b4186e3e3930903bd48241fdd983c0046692ca99e512f6df143857e6",
+                                                                                              "size":  120
+                                                                                          },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_sloth.json":  {
+                                                                                              "sha256":  "81bd522a156b77c6818f6d31ea408203d946c78bc6528747b9080bf45140abeb",
+                                                                                              "size":  120
+                                                                                          },
+                  "kubejs/data/icraft/tags/worldgen/structure/cardinal_sins_wrath.json":  {
+                                                                                              "sha256":  "a1f3de5bf65a87766e3fff9a1dbd0b77b3ed9b4226d1ad41424d88fc12e140f9",
+                                                                                              "size":  120
                                                                                           },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_ender_guardian.json":  {
                                                                                                    "sha256":  "e939818305e8b7a1e375bfb393aae1703bef2e303a96dd50e76f76f1f24c5909",
@@ -6608,24 +6648,24 @@
                                                                                           "size":  104
                                                                                       },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_enchanter_merlin.json":  {
-                                                                                                     "sha256":  "69692c9ede947bf611ae37892a9dbc5fdfa94139e0d19507b989cf212a4f31a6",
-                                                                                                     "size":  102
+                                                                                                     "sha256":  "05d5cd7b331821bc9f2b1ece8961cac502d127ed22aec50749ddbbdbc7ba4705",
+                                                                                                     "size":  106
                                                                                                  },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_gatmancer.json":  {
-                                                                                              "sha256":  "f410bcc158a5472b72bfc54fa45a1442e445553965c5fb203413b9d0728683d2",
-                                                                                              "size":  107
+                                                                                              "sha256":  "8e97d0ebdf7fc24e5016d57f9cf62d203717422e14d07142a9452f6f0e98bb95",
+                                                                                              "size":  104
                                                                                           },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_gob.json":  {
                                                                                         "sha256":  "18bfc1dced7be26676e08740e009d061403d41e15bf47a363935e1a2f021e302",
                                                                                         "size":  103
                                                                                     },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_gundalf.json":  {
-                                                                                            "sha256":  "f764bd033f93af1f00636fc6a042735a8b9bf7baeeb1232650bb9c07a2759441",
-                                                                                            "size":  99
+                                                                                            "sha256":  "05d5cd7b331821bc9f2b1ece8961cac502d127ed22aec50749ddbbdbc7ba4705",
+                                                                                            "size":  106
                                                                                         },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_sorceress_circe.json":  {
-                                                                                                    "sha256":  "31b2d98708d1f91e1330fadb5f5007c192ce400c6f613c0599723855760be844",
-                                                                                                    "size":  97
+                                                                                                    "sha256":  "05d5cd7b331821bc9f2b1ece8961cac502d127ed22aec50749ddbbdbc7ba4705",
+                                                                                                    "size":  106
                                                                                                 },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_super_sniffer.json":  {
                                                                                                   "sha256":  "9ec1e83c4f430aa043bf5a390e7016c23777402ff3171a58c5a54b8fa1b3a877",
@@ -6675,6 +6715,86 @@
                                                                                                          "sha256":  "d6b8959281c5b24e2dbea1c46a8bc4950ae7e83775cae298989aceda700fd8a6",
                                                                                                          "size":  107
                                                                                                      },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_drakara.json":  {
+                                                                                           "sha256":  "2b21ef08e97fa4a80e5800e2762bb5896ac53f6cdee482a7bed342eda3aa3041",
+                                                                                           "size":  470
+                                                                                       },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_envy.json":  {
+                                                                                        "sha256":  "44651bcc169737bb58581cb39156bf7549de949467a111e993e7dc12bb2e5105",
+                                                                                        "size":  401
+                                                                                    },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_gluttony.json":  {
+                                                                                            "sha256":  "bab17cbab4a5d1d9da542ff44d6a94f5229a342f7f87e5a1caedb4bb18c911c0",
+                                                                                            "size":  405
+                                                                                        },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_greed.json":  {
+                                                                                         "sha256":  "3af1c4ed990c3ce5e11d799e1e5a593b888bd699e873164324eda23f0ef382b9",
+                                                                                         "size":  511
+                                                                                     },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_lucifer.json":  {
+                                                                                           "sha256":  "9597099c6f35a66e79e08bd8fcb5df0ec6070d7f62d2e6382de9b1c6f27a0a2f",
+                                                                                           "size":  448
+                                                                                       },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_lust.json":  {
+                                                                                        "sha256":  "974c28e70ad6c1445edae347b10e76add73905120f36ffbd5affbd350057bc49",
+                                                                                        "size":  401
+                                                                                    },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_pride.json":  {
+                                                                                         "sha256":  "4c6fb9bc934068c62a4dde590fabfad71ba2d1253d503f3aa3649e0bfc608537",
+                                                                                         "size":  402
+                                                                                     },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_sloth.json":  {
+                                                                                         "sha256":  "8bf780039afe268ab2ba83af0338fff7e88053fc74a6f37382559ba89785e5f4",
+                                                                                         "size":  511
+                                                                                     },
+                  "kubejs/data/icraft/worldgen/structure/cardinal_sins_wrath.json":  {
+                                                                                         "sha256":  "1c4ea5931c246b209a3db61919f65926dbcaf444111c1e29618c303e78c0fcb9",
+                                                                                         "size":  511
+                                                                                     },
+                  "kubejs/data/icraft/worldgen/structure_set/cardinal_sins_abyss_arenas.json":  {
+                                                                                                    "sha256":  "26fb554c3e6d8f3b6cead00a702f5d3282dea46dbc16f3fb0105d0e69fd06747",
+                                                                                                    "size":  791
+                                                                                                },
+                  "kubejs/data/icraft/worldgen/structure_set/cardinal_sins_lucifer_arena.json":  {
+                                                                                                     "sha256":  "de3f640d993131ee95c8229c7b66840979d3341cc8288d3f4cde91213eec3848",
+                                                                                                     "size":  232
+                                                                                                 },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/drakara.json":  {
+                                                                                               "sha256":  "88bdbcb75ca7e2461a43600d86a4840a12b34c718d9eb9505def443f40b0062d",
+                                                                                               "size":  297
+                                                                                           },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/envy.json":  {
+                                                                                            "sha256":  "22f9852ada602ed2fb66362020049ec42f798ddfabf60070049e457074afac52",
+                                                                                            "size":  294
+                                                                                        },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/gluttony.json":  {
+                                                                                                "sha256":  "cc8c0c369e9991b25c33be4b887bab97e97bc6a1dd5d4b6186c2cc0aa9282d3c",
+                                                                                                "size":  298
+                                                                                            },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/greed.json":  {
+                                                                                             "sha256":  "c00c2832ba502fe0f916fcb3b47dddc342b8e98a40090d68c1f6f7c52238f286",
+                                                                                             "size":  295
+                                                                                         },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/lucifer.json":  {
+                                                                                               "sha256":  "d7b8580b6922697e5d476439666e601bd9725a379660d6e836c6ace43cd5bdd3",
+                                                                                               "size":  297
+                                                                                           },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/lust.json":  {
+                                                                                            "sha256":  "f0748a19b0c677d5aa9b41fc91e8c6566ce5ee353b1384e6ba349a305d91e6ac",
+                                                                                            "size":  294
+                                                                                        },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/pride.json":  {
+                                                                                             "sha256":  "242eea40bf0c1372aacaaefb126bea2ee66cd364e22ff38cd9fcd6eff3b3c5b2",
+                                                                                             "size":  295
+                                                                                         },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/sloth.json":  {
+                                                                                             "sha256":  "ef31ffafd5158b51af9a95debbaf36a619bbd24b1422a6eaf7146ef33a67c344",
+                                                                                             "size":  295
+                                                                                         },
+                  "kubejs/data/icraft/worldgen/template_pool/cardinal_sins/wrath.json":  {
+                                                                                             "sha256":  "d719ef17d027e1809f72254a5b1d279c5551a2a3b8dffe0a0c369044dfe2a036",
+                                                                                             "size":  295
+                                                                                         },
                   "kubejs/data/idas/loot_tables/chests/brickhouse_windmill.json":  {
                                                                                        "sha256":  "4cdd65812a0824407a7fbd3609a2f0fe81273066b532ddcf76fb9031734e60e7",
                                                                                        "size":  255
@@ -7120,8 +7240,8 @@
                                                                                 "size":  8825
                                                                             },
                   "kubejs/server_scripts/bonfire/boss_arena_registry.js":  {
-                                                                               "sha256":  "86f334eca125ada0bd5b26822d3578586f51e8b8e41b327fdbba89788622c998",
-                                                                               "size":  8726
+                                                                               "sha256":  "b586a950cbb24773b73c5b0f04a2bcd4b7bc0b38ed573aecadb3c32be1cdfbc7",
+                                                                               "size":  9314
                                                                            },
                   "kubejs/server_scripts/bonfire/boss_bonfire_system.js":  {
                                                                                "sha256":  "b8f82e289d53fd1a8546c72c42178cf596b73161951d3fb35202c1320cc5a5ae",
@@ -7252,8 +7372,8 @@
                                                                               "size":  31933
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
-                                                                         "sha256":  "cf2a477f421e30e2162f2e959f10aacd2288744a1532c829b97b1ba735579d70",
-                                                                         "size":  23986
+                                                                         "sha256":  "4b3faeb0b5d28987fba8746f74befbfdcb0b64d9c2c261d21a733c6d919e23f1",
+                                                                         "size":  24206
                                                                      },
                   "kubejs/server_scripts/gates/codex_progression_engine.js":  {
                                                                                   "sha256":  "78fce9b6f0c433d4616ca3f27ec590f01e910ab2f6eab6f013e9a8d8d5ca01b5",
@@ -7316,8 +7436,8 @@
                                                                          "size":  2627
                                                                      },
                   "kubejs/server_scripts/loot/boss_arena_material_tease.js":  {
-                                                                                  "sha256":  "9ddb5d21f9475ea159dab106cbb57790bfdd5e6de9fba2927313a12e15e24399",
-                                                                                  "size":  5415
+                                                                                  "sha256":  "2cb04231afd0729563ad574f4bb4a2549e13ace9f233585dcccfa4c2096f1c18",
+                                                                                  "size":  5692
                                                                               },
                   "kubejs/server_scripts/loot/boss_arena_themed_loot.js":  {
                                                                                "sha256":  "62c4fe5f7319a873b530fc482a88729363e68e15e24466b72f7510f77aba3402",
@@ -7416,8 +7536,8 @@
                                                                             "size":  3894
                                                                         },
                   "kubejs/server_scripts/loot/unique_itemset_registry.js":  {
-                                                                                "sha256":  "1cb2e6ebf5fe4f5aac9f226e4f9ba049ac2cbc1ea0185c76e642e9734d842a2c",
-                                                                                "size":  14415
+                                                                                "sha256":  "d6c4428a91d0efc4b75ea1fb8eef92927a83814659bf848d8bfdfb968ba12c46",
+                                                                                "size":  14767
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
                                                                          "sha256":  "c90f069a3c2b2d8b049e0c0d95caec288b7d2ee4e01a8640e50c87616f5bc695",
@@ -8588,7 +8708,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "2a0e63aab9c7f8351c06d784d28e89bb84225a9b96a64ccea33d8a8711162d22",
+                                                               "sha256":  "274ce054859cecaab04a8bfcb595a020384bff611ad1c30f29e668b621dc5baa",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
@@ -8616,7 +8736,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "df3e55ba811791f759e8591c620caf4b30b163702ac004f0ba497c1efd2733bc",
+                                                                         "sha256":  "55decb5a6da1b647a8d28400f758822f1381d81bb93985f2f99922919b9e463b",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

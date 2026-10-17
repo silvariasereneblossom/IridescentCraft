@@ -74,10 +74,13 @@ LootJS.modifiers(icraft.guard('loot/boss_arena_material_tease', 'LootJS.modifier
   // dd_stalker (Stalker) -> soul_crystal
   tease('deeperdarker:chests/ancient_temple_storage', 'deeperdarker:soul_crystal', 0.10, T3, 0.05)
   // tm_gatmancer (Gatmancer) -> occult_fabric
-  // No tier token here (operator ruling 2026-10-11): the Infested Laboratory
-  // generates in the Overworld, so its chest handed a T3 progression token to a
-  // T1 player. The material tease stays.
-  tease('terramity:chests/infested_lab_loot', 'terramity:occult_fabric', 0.12, null, 0)
+  // [2026-10-16, on recommendation, for review] in the Chthonic Dungeon's chests
+  // (the Nether): the Gatmancers live there (its pieces), not in the Infested
+  // Laboratory, and Occult Fabric is what summons Merlin and Circe at the
+  // Chthonic Cathedral. Until today it sat in the Infested Laboratory's chest
+  // (the Overworld), built on a wrong arena row. Still no tier token (operator
+  // ruling 2026-10-11 removed it there; the Nether's own chest tokens apply).
+  tease('terramity:chests/chthonic_dungeon_loot', 'terramity:occult_fabric', 0.12, null, 0)
 
   // ---- T4 ---- (no T4 token; T3 is the top progression token)
   // da_eots (Eye of the Storm) -> squall_plate

@@ -2328,7 +2328,7 @@
       "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.864,
+          "minecraft:generic.armor": 0.797,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
@@ -2342,7 +2342,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 18
+        "magicCapacity": 17
       }
     },
     {

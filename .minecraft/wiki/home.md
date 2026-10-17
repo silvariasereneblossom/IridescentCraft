@@ -56,7 +56,7 @@ The canonical design reference for all modpack systems.
 | Origin layer cleanup | Implemented | 3-prompt flow: Origin (13) → Race (11) → Class (10) |
 | Class respec | Implemented | Respec your class |
 | Equipment HP halving | Implemented | Glass-cannon: equipment max-HP bonuses halved |
-| Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat) |
+| Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat). Submitting, the token bank and the boss rush work since October 2026; a tier is bought only with the tier below held |
 | Heracles quest tree | In progress | Quest tree driving the token economy |
 | Engineering questline | Implemented | 14-quest Heracles engineering line (intro through T4 fusion/antimatter capstone) plus an Engineering Lane Codex category with 5 entries |
 | Patchouli Codex | Working | 11 categories, 80 entries, advancement-gated |
@@ -74,13 +74,13 @@ The canonical design reference for all modpack systems.
 | Mekanism balance overhaul | Implemented | Generator nerfs, 2× RF costs, tool/armor removal; ERA-4 pass buffs fusion/fission output, disables radiation + meltdowns (force-shutdown), and T4-pins the fusion/antimatter/Digital-Miner/ultimate facilities |
 | Food system overhaul | Implemented | Faster hunger drain, reduced structure food, spawn protection |
 | Farmer's Delight cooking conversion | Implemented | 70 recipes converted to Farmer's Delight cooking |
-| Ad Astra integration | In progress | 5 planets, post-T4 endgame, planetary extraction, space enchantments |
+| Ad Astra integration | In progress | 5 planets and 6 orbits as Tier 4 dimensions (gated, Tier 4 difficulty curve), planetary extraction; loot and space enchantments in progress |
 | Blue Skies balance pass | Implemented | Materials rebalanced to T2 + Tetra integration |
 | Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals |
 | Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
 | The Abyss (TATOS) dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura, void whispers |
-| End overhaul | Implemented | Dragon Exploration Gate, End Bastion unlock, End-themed loot and affixes |
-| TF portal activator | Implemented | Twilight Forest portal activated with a T1 boss token |
+| End overhaul | Implemented | Dragon Exploration Gate, End-themed loot and affixes (the End Compass → End Bastion route is planned, not built) |
+| TF portal activator | Broken | The Twilight Forest portal is lit with the pack's Twilight token, which nothing gives at present (see [Known Issues](known-issues/tracker.md)) |
 | Custom Abyss-themed curio rings | Implemented | 8 curio rings as a curated T3 chain |
 | Server distribution | Implemented | Dedicated server distribution with a unified launcher |
 | Vanilla Origins overhaul | Implemented | All 9 origins rebalanced; no lethal environmental effects; food preferences, not restrictions |

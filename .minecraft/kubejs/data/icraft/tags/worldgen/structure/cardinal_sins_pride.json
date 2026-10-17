@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "icraft:cardinal_sins_pride",
+      "required": false
+    }
+  ]
+}
