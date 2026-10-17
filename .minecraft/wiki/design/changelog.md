@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Wiki corrections (16 October)
+
+- **Ultris's Ultra Wither cannot be summoned in this pack.** The appendix listed it as a summonable boss. Ultris builds its bosses from vanilla mobs, and every Wither here is Progressive Bosses' own, so the Ominous Pearl never finds a Wither to transform; the stronger Wither is the Ultimate Wither. The other Ultris bosses exist but are on no boss list: no kill tokens, no boss-rush credit.
+- **Class passives, as they work.** Samurai's Vorpal goes up to Strength IV (the page said V); the Void Summoner's Soul Tether gives +1 XP and heals 5% of the mob's max health (up to 1 heart) for each mob dying within 16 blocks (the page said +10% XP). Both tier-scaled passives use the highest tier of dimension you have entered.
+- **Boss rush rosters: 9 / 18 / 45.** Three pages still gave 10 / 18 / 43 after Merlin and Circe became Tier 3 bosses.
+
 ## October 2026 — The Chthonic Cathedral's bosses are Tier 3
 
 - **The Chthonic Cathedral's bosses are Tier 3 bosses.** Enchanter Merlin (was Tier 1), Sorceress Circe (was Tier 4) and Archmage Gundalf (was Tier 2) are all met at the Nether's Chthonic Cathedral: Occult Fabric on its Offering Pedestal calls Merlin and Circe together, and Gundalf appears when Circe falls. Merlin and Circe are on the Tier 3 boss rush now (Tier 1 → 2 needs 8 of 9 bosses, Tier 3 → 4 all 45). Their kill tokens, the Magic Estoc (Merlin) and the Astral Bound (Circe) and Circe's Tetra material follow them to Tier 3.

@@ -128,7 +128,7 @@ The token economy ([master.md Part III](master.md#part-iii--progression-the-toke
 | T3 → T4 | **2000** | 100% of T3 bosses (all 45, incl. Lucifer) |
 | T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
 
-Boss-rush denominator = the **per-tier boss roster**: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 10 / 18 / 43 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2 and the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush); `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. **The ladder is strict** (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only with the tier below held; early kills are kept and count once it is. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
+Boss-rush denominator = the **per-tier boss roster**: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 9 / 18 / 45 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2, the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. **The ladder is strict** (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only with the tier below held; early kills are kept and count once it is. Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
 
 #### A.7.1 Engineering lane (material → token)
 
@@ -583,17 +583,18 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 | Blaze / Wither Skeleton / Piglin Brute | Nether fortresses, bastions | T3 |
 | Guardian / Phantom / Shulker | Ocean monuments, End cities | T3–T4 |
 
-**Ultris: Boss Expansion.** 8 unique bosses with custom AI, phases, music, and arena structures (Corrupted Enderman, Blaze King, Ultra Wither, Sanctum Keeper, Giant, Phantom Swarm, Shulker Stone, +1). Treated as progression-tier bosses on par with Cataclysm/Meet Your Fight; placed by dimension and difficulty.
+**Ultris: Boss Expansion.** 8 bosses with custom AI, phases, music and arena structures. Ultris is a datapack packaged as a mod: it registers **no entity types**, and each of its bosses is a vanilla mob that its functions take over (checked 2026-10-16 against the game's entity list and the mod's data). So the pack cannot tell an Ultris boss from the mob it is made of: Ultris bosses are on no boss list, pay no kill tokens, count for no boss rush, and get no pack loot (no Simply Swords unique is assigned to any of them; each drops the mod's own items). The tier below is the tier of the place it is met.
 
-| Boss | Location | Tier | Simply Swords unique? |
-|------|----------|:---:|:---:|
-| Corrupted Enderman | Overworld structure | T2 | Yes — void/teleport katana |
-| Giant | Overworld surface structure | T2 | No |
-| Phantom Swarm | Overworld night event | T2 | No |
-| Blaze King | Nether tower | T3 | Yes — fire greatsword |
-| Sanctum Keeper | T3-T4 structure | T3-T4 | TBD |
-| Ultra Wither | Summoned (T3+) | T3-T4 | Yes — wither unique |
-| Shulker Stone | End | T4 | Yes — End-themed |
+| Boss | Made from | How it appears | Area tier | Notes |
+|------|-----------|----------------|:---:|-------|
+| Corrupted Enderman | an Enderman | a rare random event near a player in the Overworld | T1 | drops the Ominous Pearl (the Ultra Wither's summon, which cannot work here) |
+| Giant | a Zombie | throw a Potion of Strength at a zombie near you (Overworld) | T1 | Giant Stompers |
+| Illusioner | an Illusioner | a rare random event near a player in the Overworld | T1 | |
+| Sanctum Keeper | a Stray | Ultris's Sanctum, underground in Overworld stronghold biomes | T1 | |
+| Blaze King | a Blaze | Ultris's Blaze King Tower, in Nether fortress biomes | T3 | drops the Endstone Key that opens the Shulker Stone's fight |
+| Phantom Swarm | Phantoms | a random event on the End's outer islands, away from End Cities | T4 | |
+| Shulker Stone | Ultris's own construct | Ultris's End pyramid beside End Cities: insert the Endstone Key at the pedestal on top | T4 | |
+| Ultra Wither | a Wither | **cannot be made in this pack.** Ultris turns a vanilla Wither hit by a thrown Ominous Pearl into the Ultra Wither, but every Wither in this pack is Progressive Bosses' own entity, so Ultris never finds one to transform | — | the pack's stronger Wither is the Ultimate Wither (D.6) |
 
 > Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill. The pack's per-kill scaling (D.6) does not reach these bosses.
 
@@ -601,7 +602,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 > **Removed (2026-06-01 #47 sweep):** the **LuMoreBossesAndMobs** block (Macholote / Terezinossauro / Mini Golems / End Dwellee) — the mod is **not installed** (no `lu_more`/`lumore` jar; `macholote` / `gold_mini_golem` are not registered entities). Its catalog rows + this design block were dropped.
 
-**Majestic Menaces.** Per-boss thematic drops; treated as named encounters (Teikoku Senshi line). T2-T3 placement.
+**Majestic Menaces.** Per-boss thematic drops. Teikoku Senshi (`majestic_menaces:teikoku_senshi`) is a Tier 2 boss: designed health 1,000, the boss x3, on the Tier 2 boss rush, no kill tokens.
 
 **Mutant Monsters.** Variants of vanilla zombie/skeleton/creeper/enderman with enhanced AI and drops. Block-break suppression in `mutant_monsters_no_griefing.js` — mutant zombie pillar-up and mutant creeper charged explosion bypass mobGriefing=false defaults. Wired via `dimensional_boss_drops.js`.
 
@@ -612,8 +613,8 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 Boss-mod loot tables should be configured in this order during implementation:
 
 1. Brutal Bosses datapacks — override default loot tables; tier 1 → vanilla materials + small XP; tier 4 → netherite scraps + Rare-Epic Apotheosis affix item; never includes Simply Swords uniques.
-2. Ultris — assign Simply Swords uniques + tier-appropriate materials per the table above.
-3. Cardinal Sins — allocate the sins/Lucifer/Drakara ladder (T3); Lucifer carries the unique **Lucifer's Token** (T3→T4 combat advance). Verify no drops bypass tier gating.
+2. Ultris — not possible with per-entity loot rules: its bosses are vanilla mobs (see above). Any Ultris loot would have to key on the mod's own entity tags.
+3. Cardinal Sins — allocate the sins/Lucifer/Drakara ladder (T3; Lucifer carries the Cursed Sigil of Pride relic, and no tier token: the designed Lucifer's Token is not in the game). Verify no drops bypass tier gating.
 4. Ultimate Bosses — assign T4 loot + Rift materials.
 5. Cataclysm-Apotheosis integration — *verify source: per #47 cleanup audit, no `cataclysm*apoth*` jar in the live mods folder; integration may be supplied by `cataclysm_ut` or similar. Operator confirmation needed.*
 

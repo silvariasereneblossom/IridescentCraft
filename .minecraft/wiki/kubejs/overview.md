@@ -6,7 +6,8 @@ IridescentCraft uses **KubeJS 6.x** (for Minecraft 1.20.1 Forge) as its primary 
 
 The KubeJS scripts and virtual datapack drive most of the custom RPG systems:
 
-- **Progression & gating** — tier (AStages) gating of items, recipes, and dimensions; boss-kill tracking and tier unlocks.
+- **Progression & gating** — tier (AStages) gating of items, recipes, and dimensions; the Codex token bank and the boss rush that buy each tier.
+- **Bosses & dimensions** — one boss list and one dimension list that every script reads: each boss's tier, kill tokens, boss-rush roster and Boss Compass row, and each dimension's tier, gate and death penalty.
 - **Loot** — tier-appropriate loot across chests and structures (via LootJS): artifact/relic tiering, spell-scroll and glyph injection, junk cleanup, and per-dimension scaling.
 - **Combat & mobs** — per-dimension mob stat scaling, mob equipment rules, knockback/velocity caps, and anomaly defenses.
 - **Skills & enchantments** — custom skill-tree effects, custom enchantment effects, and Apotheosis affix handlers.
@@ -27,9 +28,9 @@ For the design intent behind these systems, see the [Master Design Document](../
 
 ## Datapacks (Paxi)
 
-Custom data ships two ways: through the KubeJS virtual datapack (`kubejs/data/`) and as **zipped datapacks loaded by Paxi 4.0** (Paxi loads zip files, not folders). Active Paxi datapacks include the Iridescent Codex book, the Pufferfish's Skills trees, custom Apotheosis affixes, Botania overrides, and the Origins race/class definitions.
+Custom data ships two ways: through the KubeJS virtual datapack (`kubejs/data/`) and as **zipped datapacks loaded by Paxi 4.0** (Paxi loads zip files, not folders). Active Paxi datapacks include the Pufferfish's Skills trees, custom Apotheosis affixes, the pack's Tetra materials, worldgen and loot overrides, and overrides for Botania, Iron's Spellbooks, Terramity, Origins and other mods (as of 2026-10-16). The races and classes ship in the pack's own Origins mod, and the Iridescent Codex in its own content mod.
 
-> **Note:** Patchouli guidebooks (like the Codex) must live in a real datapack — Patchouli can't read book content from the KubeJS virtual datapack — which is why the Codex ships as its own content mod / Paxi datapack rather than from `kubejs/data/`.
+> **Note:** Patchouli guidebooks (like the Codex) must live in a real datapack — Patchouli can't read book content from the KubeJS virtual datapack — which is why the Codex ships as its own content mod rather than from `kubejs/data/`.
 
 ## Related pages
 

@@ -13,6 +13,9 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 ### The Twilight Forest portal cannot be lit in survival — **Open (decision pending)**
 The pack replaced the diamond that lights a Twilight Forest portal with its own Twilight token, a leftover of the retired token currency. Nothing in the pack gives that token any more (no recipe, drop, quest or reward), so a survival player cannot open the portal. What should light it is a pending design call; until then, ask the server operator.
 
+### The Boss Compass looks for the Thunker in the wrong structure — **Open**
+The Thunker's Boss Compass row leads to the Nether's Chthonic Cathedral, which holds no Thunker. Thunkers are a common spawn in every Nether biome and stand in the halls of the Chthonic Dungeon (found 2026-10-16).
+
 ### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 

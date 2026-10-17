@@ -26,7 +26,7 @@ Tier progression runs on **one combined pool of physical, tiered progression tok
 
 **One tier at a time.** A tier is bought only with the tier below it held. Tokens of a higher tier, or a cleared roster of a higher tier, do nothing until you have reached the tier below; kills still count, and are credited once you get there. `/icraft codex balance` and `/icraft codex bosses` say which tier comes first.
 
-**The boss-rush rosters** are the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters and others): 10 in Tier 1, 18 in Tier 2, 43 in Tier 3. Tier 4 has no boss rush. `/icraft codex bosses` shows the list and your progress.
+**The boss-rush rosters** are the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters and others): 9 in Tier 1, 18 in Tier 2, 45 in Tier 3 (since 2026-10-16, when Merlin and Circe became Tier 3 bosses). Tier 4 has no boss rush. `/icraft codex bosses` shows the list and your progress.
 
 **Submitting.** `/icraft codex submit` takes the counted items from your main inventory (the hotbar included). Armor you wear and the item in your off hand are never taken.
 

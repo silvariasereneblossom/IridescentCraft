@@ -10,7 +10,7 @@ Four layered character systems define player builds, with the first three presen
 | Origins (icraft) | Race | 11 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
 | Iridescent Classes (icraft) | Class | 13 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
 | Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
-| JustLevelingFork | — | Passive stat scaling via XP leveling | Always active |
+| Iridescent Aptitudes (the pack's JustLevelingFork) | — | Passive stat scaling via XP leveling | Always active |
 
 ## Three-Prompt Character Creation
 
@@ -56,15 +56,17 @@ Each also carries generic `spell_power 1.40` plus per-mage identity stats (Eleme
 | Class | Key Passives | KubeJS Mechanic |
 |-------|-------------|-----------------|
 | Berserker | +15% base melee (Brutal Strikes), +5% ATK/+1 armor (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP (Blood Fury) | — |
-| Samurai | +8% speed, +10% attack speed (Bushido), Focus (movement shield up to 10% HP, Vorpal I-V by tier) | `class_passives.js` |
+| Samurai | +8% speed, +10% attack speed (Bushido), Focus (a movement shield up to 10% of max HP, 10 s to recharge after it breaks), Vorpal (Strength I at tier 1 up to Strength IV at tier 4, by passive tier*) | `class_passives.js` |
 | Battlemage | +15% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonuses), **Arcane Cleave** (+1 melee AD per 50% bonus spell power, costs 10 mana/hit), **Mana Reaver** (+15 mana per melee kill) | `battlemage_mana_shield.js`, `battlemage_arcane_cleave.js` |
 | Wanderer | +5% ATK/speed/atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP/+2.5% speed per dimension visited) | `class_passives.js` |
 | Paladin | +3 armor/+1 toughness (Holy Armor), +10% KB resist, Healing Aura (0.5 HP/5s to allies in 8 blocks, 1 HP/5s self above 50%) | `class_passives.js` |
 | Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -15% damage (Damage Penalty), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |
 | Ranger | +15% speed, +10% atkspd, +20% projectile damage, -3 armor | — |
-| Archmage | +50% magic (Arcane Supremacy), -25% melee + tier-scaling magic amp T1:0%→T4:+15% (Mana Attunement), -4 armor/-2 toughness | `class_passives.js` |
+| Archmage | +50% magic (Arcane Supremacy), -25% melee + tier-scaling magic amp T1:0%→T4:+15% by passive tier* (Mana Attunement), -4 armor/-2 toughness | `class_passives.js` |
 | Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | — |
-| Void Summoner | +15% tamed damage (Dark Pact), +10% ATK in dark (Shadow Cloak), Soul Tether (5% lifesteal/10% XP from nearby mob deaths) | `class_passives.js` |
+| Void Summoner | +15% tamed damage (Dark Pact), +10% ATK in dark (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
+
+\* **Passive tier** is the highest tier of dimension the player has entered, and it never goes down: Tier 2 for the Twilight Forest, Everbright and Everdawn; Tier 3 for the Nether, the Undergarden, the Otherside, the Abyss and its Frost World; Tier 4 for the End, the Aether, the six Ad Astra orbits and the Reality Marble. The Overworld, the Ad Astra planets' surfaces and the two pocket dimensions do not raise it. It is separate from the Codex tier you buy with tokens (as of 2026-10-16).
 
 ### Glass Cannon Mechanic
 
