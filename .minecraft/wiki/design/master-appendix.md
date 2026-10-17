@@ -590,10 +590,10 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 | Corrupted Enderman | an Enderman | a rare random event near a player in the Overworld | T1 | drops the Ominous Pearl (the Ultra Wither's summon, which cannot work here) |
 | Giant | a Zombie | throw a Potion of Strength at a zombie near you (Overworld) | T1 | Giant Stompers |
 | Illusioner | an Illusioner | a rare random event near a player in the Overworld | T1 | |
-| Sanctum Keeper | a Stray | Ultris's Sanctum, underground in Overworld stronghold biomes | T1 | |
-| Blaze King | a Blaze | Ultris's Blaze King Tower, in Nether fortress biomes | T3 | drops the Endstone Key that opens the Shulker Stone's fight |
+| Sanctum Keeper | a Stray | Ultris's Sanctum, underground in Overworld stronghold biomes | T1 | the Spirit Bow |
+| Blaze King | a Blaze | Ultris's Blaze King Tower, in Nether fortress biomes | T3 | Blaze King's Helmet; the Endstone Key that opens the Shulker Stone's fight |
 | Phantom Swarm | Phantoms | a random event on the End's outer islands, away from End Cities | T4 | |
-| Shulker Stone | Ultris's own construct | Ultris's End pyramid beside End Cities: insert the Endstone Key at the pedestal on top | T4 | |
+| Shulker Stone | Ultris's own construct | Ultris's End pyramid beside End Cities: insert the Endstone Key at the pedestal on top | T4 | the Shulker Shell Helmet |
 | Ultra Wither | a Wither | **cannot be made in this pack.** Ultris turns a vanilla Wither hit by a thrown Ominous Pearl into the Ultra Wither, but every Wither in this pack is Progressive Bosses' own entity, so Ultris never finds one to transform | — | the pack's stronger Wither is the Ultimate Wither (D.6) |
 
 > Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill. The pack's per-kill scaling (D.6) does not reach these bosses.

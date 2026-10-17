@@ -48,7 +48,7 @@
 | Ultris | `minecraft:enderman` (Ultris) | Corrupted Enderman | — (T1 area) | scripted | a rare random event near a player in the Overworld | the Ominous Pearl (Ultris's Ultra Wither summon, which cannot work in this pack: see the Tier 3 table), the mod's own drops | 4 |
 | Ultris | `minecraft:zombie` (Ultris) | Giant | — (T1 area) | scripted | throw a Potion of Strength at a zombie near you (Overworld) | Giant Stompers | 4 |
 | Ultris | `minecraft:illusioner` (Ultris) | Illusioner | — (T1 area) | scripted | a rare random event near a player in the Overworld | the mod's own drops | 4 |
-| Ultris | `minecraft:stray` (Ultris) | Sanctum Keeper | — (T1 area) | structure-locked | Ultris's Sanctum (`1_splatus:sanctum`), underground in Overworld stronghold biomes | mirrors of the Sanctum Keeper | 3 |
+| Ultris | `minecraft:stray` (Ultris) | Sanctum Keeper | — (T1 area) | structure-locked | Ultris's Sanctum (`1_splatus:sanctum`), underground in Overworld stronghold biomes | the Spirit Bow | 3 |
 
 **T1 subtotal:** 17 rows: **11 on the boss list** (9 on the Tier 1 boss rush: Gob, Super Sniffer, the three Mutant Monsters, Mowzie's Wroughtnaut, Umvuthi, Sculptor and Naga; MCA's Grim Reaper, a miniboss on no roster; the Elder Guardian, no tokens) + Terramity's Dungeon Effigy + the Brutal Bosses champions (one row) + 4 Ultris bosses.
 
@@ -183,7 +183,7 @@
 | Alex's Mobs | `alexsmobs:cachalot_whale` | Cachalot Whale (white variant) | — (Overworld oceans) | biome-conditional-random | lukewarm/cold/deep oceans (white variant is rare-spawn) | cachalot whale tooth, leg/uncommon ink | 5 |
 | Progressive Bosses | `progressivebosses:wither` at level 3 (the same entity as the Wither; the level comes from the block it is built with) | Ultimate Wither (optional) | T3 · rush (it is the Wither's entry; designed health 1,000 at level 3) | summoned-by-altar | the Nether only: the Wither's T with Corrupted Soul Sand (soul sand or soul soil + 3 Nether Stars, a Tier 4 recipe) in the centre of the arms; anywhere else the build is refused and the blocks stay | 3,000 health, heavy armour; 5 Nether Stars, 2 Netherite Upgrade templates, 3,000 XP and the Wither's other spoils (with two or more players near: a plain Wither's loot bag per player instead). Quest: Challenge: The Ultimate Wither | 1 |
 | Ultris | `minecraft:phantom` (Ultris) | Phantom Swarm | — (T4 area) | scripted | a random event on the End's outer islands, away from End Cities | the mod's own drops | 4 |
-| Ultris | `minecraft:cow` (Ultris's construct) | Shulker Stone | — (T4 area) | summoned-by-item | Ultris's End pyramid (`1_splatus:endcity_pyramid`, beside End Cities): insert the Endstone Key (the Blaze King's drop) at the pedestal on top | End-themed unique | 3 |
+| Ultris | `minecraft:cow` (Ultris's construct) | Shulker Stone | — (T4 area) | summoned-by-item | Ultris's End pyramid (`1_splatus:endcity_pyramid`, beside End Cities): insert the Endstone Key (the Blaze King's drop) at the pedestal on top | the Shulker Shell Helmet | 3 |
 | Multiplayer Bosses[^mpb] | (enhances vanilla Dragon/Wither/Warden) | (no new entity) | n/a | n/a | enhances existing kill targets | LootBag drops | n/a |
 | Vanilla | `minecraft:warden` | Warden | T4 | structure-locked | Ancient Cities (deep dark biome) | sculk catalyst, echo shard, Mahou attuned_diamond (cross-mod drop) | 2 |
 

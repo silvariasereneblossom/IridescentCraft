@@ -1,5 +1,7 @@
 # Boss Waystone Rename-Blocking — Strategy Comparison
 
+> **Decision record (May 2026), acted on.** Boss waystones shipped as **Bonfires** (global waystones with a fixed "[Boss] <arena> Bonfire" name, placed the first time any player enters a boss arena). The global flag is the rename lock: only a creative-mode player can rename a global waystone. The second layer recommended here (a tick-guard that reverts renames) was not built, and the trigger is arena discovery, not a boss kill. Kept for the record (checked 2026-10-16).
+
 > **Purpose.** Decision doc for Task #46 (unified boss compass + auto-waystone). Boss-spawned waystones must have a fixed name set at creation (e.g., "Naga Court", "Hydra Lair", "Ur-Ghast Tower") that the player cannot edit — they are a *discovery record*, not a user-customizable label. Player-crafted waystones (via `kubejs:waystone_core`, see [`waystone_recipes.js`](../../kubejs/server_scripts/recipes/waystone_recipes.js)) remain freely renameable.
 >
 > **Inputs.** Verified against [`waystones-api-audit.md`](waystones-api-audit.md) and direct bytecode inspection of `waystones-forge-1.20.1-14.1.20.jar` (Blay's Forge port, in-pack). Also references [`boss-catalog.md`](boss-catalog.md) for the ~106-boss target count and [`master-appendix.md §J`](master-appendix.md#j-bytecode-patches) for prior bytecode-patch precedent.

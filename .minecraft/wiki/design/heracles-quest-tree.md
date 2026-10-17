@@ -1,6 +1,8 @@
 # Heracles quest tree — scoping spec
 
 *Status: SCOPING (2026-05-28). Authoring is multi-session, chapter-by-chapter.*
+
+> **Historical scoping spec (May 2026).** The quest book that shipped differs from the plan below; the quest files are the reference. As of 2026-10-16 it holds **161 quests in 13 groups**: Onboarding (12), Overworld Foundations (28), Practical Magic (24), Engineering (46), Magic Crafting (1), Main (7), The Frontier (10), Iridescent Codex (7), Exploration (6), Combat (9), Boss Rush (3), Tier Milestones (3) and Capstones (5). The Codex token economy decides when you advance a tier; the quests host the Engineering, Magic and Relic submissions and record each tier in Tier Milestones (they grant no stage). Quests open with the Heracles key, not from the Codex, and Codex entries unlock with your tier, not with quests. There are no "read the page" bonus quests, and no Tinkers', Tome Tower or Ad Astra quests. The token thresholds below (500 / 1000 / 2000) still hold.
 *Cross-references: master.md (tier philosophy), master-appendix.md (recipe + boss tables), boss-catalog.md (boss inventory — produced by audit agent in parallel).*
 
 ---
