@@ -1741,7 +1741,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0185
+          "**irons_spellbooks:spell_power": 0.0223
         },
         "integrity": 0.5,
         "glyph": {

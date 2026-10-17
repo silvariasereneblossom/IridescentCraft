@@ -802,8 +802,8 @@
       "key": "light_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.5949,
-          "minecraft:generic.armor_toughness": 0.4583
+          "minecraft:generic.armor": 0.7139,
+          "minecraft:generic.armor_toughness": 0.55
         },
         "integrity": 0.5,
         "glyph": {

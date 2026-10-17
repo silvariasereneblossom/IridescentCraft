@@ -11,6 +11,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **The Twilight Forest portal can be lit again.** Throw a **Codex Token I** (the Tier 1 Codex token) into a pool of water ringed by grass with flowers on it; a diamond, the mod's own key, works too. Since April the only key was a leftover token nothing gave, so no survival player could open the portal. Anyone can light it; stepping through still needs Tier 2. From the next server restart.
 - **Lucifer's Token is retired from the design.** It was to be a second combat door to Tier 4 (bank your way up, then kill Lucifer); it was never built. The combat road to Tier 4 is the full Tier 3 boss rush, Lucifer included. The Codex and the quests *Capstone: Lucifer*, *Boss-Rush III* and *Ascension III* say so now.
 - **The Ad Astra planets do not wait for the Ender Dragon.** They and their orbits are Tier 4 dimensions: the Tier 4 stage and a rocket take you there. The Codex said the dragon kill opens them; it never did, and it will not.
+- **Frostmaw's Tetra parts are Tier 2 parts.** The book covers, pauldrons and wand parts made of the Frostmaw crystal kept their Tier 1 numbers when Frostmaw became a Tier 2 boss; they match its armour parts now (about a fifth stronger). From the next server restart.
 
 ## October 2026 — Wiki corrections (16 October)
 

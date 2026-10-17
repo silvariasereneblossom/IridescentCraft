@@ -266,10 +266,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
+          "irons_spellbooks:max_mana": 4.5837,
+          "**irons_spellbooks:spell_power": 0.0459,
+          "**irons_spellbooks:mana_regen": 0.0459,
+          "**irons_spellbooks:cooldown_reduction": 0.0459
         },
         "integrity": 1.0,
         "glyph": {
