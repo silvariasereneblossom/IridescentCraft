@@ -10,9 +10,6 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
-### The Boss Compass looks for the Thunker in the wrong structure — **Open**
-The Thunker's Boss Compass row leads to the Nether's Chthonic Cathedral, which holds no Thunker. Thunkers are a common spawn in every Nether biome and stand in the halls of the Chthonic Dungeon (found 2026-10-16).
-
 ### Kill quests: kills from before 2026-10-13 are not credited — **Known limitation**
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
@@ -114,6 +111,9 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 
 **Items**
 - Two Engineering skills (Material Save, Craft Bonus) handed out free materials or copies of items on every inventory change, not only on a craft. They roll on a real craft only since October 2026.
+
+**Bosses**
+- The Boss Compass led to the Nether's Chthonic Cathedral for the Thunker, and no Thunker stands there. It leads to the Chthonic Dungeon since 2026-10-17, where Thunkers stand in some of the halls and rooms (they also roam every Nether biome). Its bonfire is the "Chthonic Dungeon (Thunker)" one.
 
 **Server**
 - A Twilight Forest placeholder boss crashed the server when it died or was saved. It is kept out of the world since October 2026.

@@ -172,7 +172,7 @@
     "deep_aether:eots_controller": { "tier": 4, "kind": "named", "hp": 1500, "flags": ["boss", "x3", "perKill"],
       "arena": { "key": "deep_aether_eots", "display": "Eye of the Storm", "tier": 4, "dimension": "aether:the_aether", "structure": "deep_aether:brass_dungeon", "waystone": "Brass Dungeon" } },
     "terramity:thunker": { "tier": 4, "kind": "miniboss", "flags": ["boss"],
-      "arena": { "key": "terramity_thunker", "display": "Thunker", "tier": 4, "dimension": "minecraft:the_nether", "structure": "terramity:chthonic_cathedral", "waystone": "Chthonic Cathedral" } },
+      "arena": { "key": "terramity_thunker", "display": "Thunker", "tier": 4, "dimension": "minecraft:the_nether", "structure": "terramity:chthonic_dungeon", "waystone": "Chthonic Dungeon (Thunker)", "ritual": "Thunkers stand in some of the Chthonic Dungeon's halls and rooms, and roam every Nether biome." } },
     "terramity:virtue": { "tier": 4, "kind": "named", "hp": 1500, "flags": ["boss", "x3", "perKill"],
       "arena": { "key": "terramity_virtue", "display": "Virtue", "tier": 4, "dimension": "aether:the_aether", "structure": "terramity:prismatic_pond", "waystone": "Prismatic Pond", "ritual": "Throw an Unholy Lance (the Dead King's drop) into the pond's prism solution; Virtue rises about ten seconds later. Thrown anywhere else, the lance calls nothing." } },
     "terramity:uvogre": { "tier": 4, "kind": "miniboss", "flags": ["boss"] },

@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    { "id": "terramity:chthonic_cathedral", "required": false }
+    { "id": "terramity:chthonic_dungeon", "required": false }
   ]
 }

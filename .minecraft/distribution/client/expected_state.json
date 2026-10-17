@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f18e45fa",
+    "generated_from":  "d8b6106b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49386
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "10b2c850b57d5d4c077e9c2672645b13927bd01eb52322a0769bb9dcffacca2e",
-                                                                    "size":  30069
+                                                                    "sha256":  "e1007218fc7807f504273ee8ba73639609dc56f75b95eda046125b861d8f998e",
+                                                                    "size":  30183
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "ed9ea648d143ef314a1d43083aa82921e1ab6918919337f7ca80c23dada6b2d0",
@@ -6672,8 +6672,8 @@
                                                                                                   "size":  103
                                                                                               },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_thunker.json":  {
-                                                                                            "sha256":  "05d5cd7b331821bc9f2b1ece8961cac502d127ed22aec50749ddbbdbc7ba4705",
-                                                                                            "size":  106
+                                                                                            "sha256":  "8e97d0ebdf7fc24e5016d57f9cf62d203717422e14d07142a9452f6f0e98bb95",
+                                                                                            "size":  104
                                                                                         },
                   "kubejs/data/icraft/tags/worldgen/structure/terramity_virtue.json":  {
                                                                                            "sha256":  "791550057bab25d7e7ee8c6cd6d684c36532aaee436728443d2b1af2741cb1af",

@@ -6,6 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Data fixes (17 October)
+
+- **The Boss Compass leads to the Thunker.** Its row pointed at the Chthonic Cathedral, where no Thunker stands; it points at the Chthonic Dungeon now, whose halls and rooms hold Thunkers (they also roam every Nether biome).
+
 ## October 2026 — The Twilight Forest portal lights again (17 October)
 
 - **The Twilight Forest portal can be lit again.** Throw a **Codex Token I** (the Tier 1 Codex token) into a pool of water ringed by grass with flowers on it; a diamond, the mod's own key, works too. Since April the only key was a leftover token nothing gave, so no survival player could open the portal. Anyone can light it; stepping through still needs Tier 2. From the next server restart.
