@@ -21,6 +21,13 @@ on:
       - '.minecraft/distribution/client/config/heracles/**'
       - '.minecraft/tools/validate_heracles_quests*.py'
       - '.minecraft/dev/registry/entity_types.txt'
+      - '.minecraft/dev/registry/items.txt'
+      - '.minecraft/dev/registry/loot_tables.txt'
+      - '.minecraft/dev/registry/loot_tables_rejected.txt'
+      - '.minecraft/dev/registry/advancements.txt'
+      - '.minecraft/kubejs/data/*/loot_tables/**'
+      - '.minecraft/server_distribution/kubejs/data/*/loot_tables/**'
+      - '.minecraft/distribution/client/kubejs/data/*/loot_tables/**'
       - '.github/workflows/heracles-quests.yml'
   pull_request:
     branches: [main]
@@ -30,6 +37,13 @@ on:
       - '.minecraft/distribution/client/config/heracles/**'
       - '.minecraft/tools/validate_heracles_quests*.py'
       - '.minecraft/dev/registry/entity_types.txt'
+      - '.minecraft/dev/registry/items.txt'
+      - '.minecraft/dev/registry/loot_tables.txt'
+      - '.minecraft/dev/registry/loot_tables_rejected.txt'
+      - '.minecraft/dev/registry/advancements.txt'
+      - '.minecraft/kubejs/data/*/loot_tables/**'
+      - '.minecraft/server_distribution/kubejs/data/*/loot_tables/**'
+      - '.minecraft/distribution/client/kubejs/data/*/loot_tables/**'
   workflow_dispatch:
 
 permissions:
@@ -41,9 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      # Only what the validator reads: the three quest trees, the tool and its test, and
-      # the entity types of the last full-pack boot (kill-task ids are checked against it).
-      - name: Checkout (quests, validator, entity list)
+      # Only what the validator reads: the three quest trees, the tool and its test, the lists
+      # of the last full-pack boot (entity types, items, loot tables, advancements: every id a
+      # task or reward names is checked against them) and the loot tables each distro ships.
+      - name: Checkout (quests, validator, registry lists, shipped loot tables)
         uses: actions/checkout@v4
         with:
           filter: blob:none
@@ -56,14 +71,21 @@ jobs:
             /.minecraft/tools/validate_heracles_quests.py
             /.minecraft/tools/validate_heracles_quests_test.py
             /.minecraft/dev/registry/entity_types.txt
+            /.minecraft/dev/registry/items.txt
+            /.minecraft/dev/registry/loot_tables.txt
+            /.minecraft/dev/registry/loot_tables_rejected.txt
+            /.minecraft/dev/registry/advancements.txt
+            /.minecraft/kubejs/data/*/loot_tables/
+            /.minecraft/server_distribution/kubejs/data/*/loot_tables/
+            /.minecraft/distribution/client/kubejs/data/*/loot_tables/
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      # --require-entity-list: without the list the id check is skipped with a NOTE; here
-      # that must be a failure, or a checkout that lost the file would look like a pass.
+      # --require-entity-list: without a snapshot list its id check is skipped with a NOTE;
+      # here that must be a failure, or a checkout that lost a file would look like a pass.
       - name: Quests of the dev tree
         run: python -I .minecraft/tools/validate_heracles_quests.py .minecraft/config/heracles/quests --require-entity-list
       - name: Quests of the server distribution

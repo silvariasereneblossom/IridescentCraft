@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "d8b6106b",
+    "generated_from":  "cf6f05c8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3416,8 +3416,8 @@
                                                                                        "size":  985
                                                                                    },
                   "config/heracles/quests/onboarding/onboarding_first_iron_pick.json":  {
-                                                                                            "sha256":  "d8cf60c06f214e0a316f333f3ea572107712f9ee6afc1e1abfab6d03cb422836",
-                                                                                            "size":  1002
+                                                                                            "sha256":  "07491bf9d4a9d44d9d097da711aa6d39e72abaaffaaf639d9bf977f47ea585ce",
+                                                                                            "size":  1036
                                                                                         },
                   "config/heracles/quests/onboarding/onboarding_first_kill.json":  {
                                                                                        "sha256":  "52e565d869c5e76b72eda43e2f819067d23b9bc125308c9b4ccf309cc45e78f4",
@@ -3576,16 +3576,16 @@
                                                                                         "size":  1145
                                                                                     },
                   "config/heracles/quests/practical_magic/iss_t1_first_book.json":  {
-                                                                                        "sha256":  "23e6c06e6e184231a5849f4818b9fef596b945054975a16b85023b5d6718b514",
-                                                                                        "size":  1349
+                                                                                        "sha256":  "56bc2beb47a85cff8cc07078c026df8edb1b3b3107255718b4fda23ee2f49659",
+                                                                                        "size":  1383
                                                                                     },
                   "config/heracles/quests/practical_magic/iss_t1_inscription_table.json":  {
                                                                                                "sha256":  "99cb052f5bcff6a56fc53456069aefb1171e843c53064af51db465a0b392407f",
                                                                                                "size":  1179
                                                                                            },
                   "config/heracles/quests/practical_magic/iss_t1_scroll.json":  {
-                                                                                    "sha256":  "b5c8639378c69ba36f2dc7ef4976b36334e4465eaefdea7e2f4194f00e1cfceb",
-                                                                                    "size":  1299
+                                                                                    "sha256":  "d1db5a4a7a2ecd22ae2cbf572af56e9b6ff7d0730ae1cea13a6510a79ee13589",
+                                                                                    "size":  1333
                                                                                 },
                   "config/heracles/quests/practical_magic/iss_t1_staff.json":  {
                                                                                    "sha256":  "2c154e55888cd5e61ed89a77d2e61fc430d49d087365a265755b1d6187b0316c",
@@ -3648,12 +3648,12 @@
                                                                                       "size":  1182
                                                                                   },
                   "config/heracles/quests/practical_magic/pm_capstone.json":  {
-                                                                                  "sha256":  "16138c698d8a4c72c5e5e5fe5eb99c683b1c82bf09d2bec0b7fda5ccfa9bbc3b",
-                                                                                  "size":  1673
+                                                                                  "sha256":  "c68dd9e483bd67623fcd4138f6e661d8e0c3fa8a33aaa41d600543c671834784",
+                                                                                  "size":  1741
                                                                               },
                   "config/heracles/quests/practical_magic/pm_intro.json":  {
-                                                                               "sha256":  "3ae5ae2787fe8751be8d1aee8756501d114609aacefe2282cca1d6fd1ca0f44e",
-                                                                               "size":  1203
+                                                                               "sha256":  "2330ed073a1244849d2256e357318f3dcca81595e306e94220e7806f26df317b",
+                                                                               "size":  1237
                                                                            },
                   "config/heracles/quests/practical_magic/pm_wand_craft.json":  {
                                                                                     "sha256":  "5937b2f80aab8b9cf43d1651a8a5cc2ac113dd9fac915ec64ce1b46d985e79e9",

@@ -119,6 +119,8 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - A Twilight Forest placeholder boss crashed the server when it died or was saved. It is kept out of the world since October 2026.
 
 **Quests**
+- Five Practical Magic rewards called "Random Spell Scroll" (*Iron's Spellbooks: A First Tome*, the scroll quest, *Practical Magic* and both scrolls of *Practical Mage*) gave nothing: the loot table they named did not exist, and the game only said so in chat. Each gives one spell scroll since 2026-10-17, bound to a random tier-1 spell the moment it lands in your inventory.
+- *Iron Tools* (craft an iron pickaxe) rewarded an item that does not exist, so it gave only its XP. It gives 3 iron ingots since 2026-10-17.
 - The quest *Brutal Bosses: Claim a Dungeon* could never be completed (its kill lines named things the game does not know as creatures). It was removed on 2026-10-14; nothing depended on it.
 
 **World generation**

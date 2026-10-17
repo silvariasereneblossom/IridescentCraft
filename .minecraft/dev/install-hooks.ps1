@@ -296,8 +296,10 @@ fi
 # kill tasks written "entity": "<id>" (Heracles reads { "type": "<id>" }) left 21 quests
 # that could never be completed, and reached main because nothing ran the validator
 # (2026-10-13). Runs when a pushed commit changes a file under any distro's
-# config/heracles/, the validator, or the entity list it checks ids against
-# (dev/registry/entity_types.txt); all three quest trees, under a second each.
+# config/heracles/, the validator, a list of the registry snapshot it checks ids against
+# (dev/registry: entity types, items, loot tables and the rejected ones, advancements), or a
+# loot table under any distro's kubejs/data (a reward may name it; since 2026-10-17);
+# all three quest trees, under a second each.
 # Self-contained: its own variables (HQ_*), nothing from the other steps but PUSHED and REPO_ROOT.
 HQ_TOOL="$REPO_ROOT/.minecraft/tools/validate_heracles_quests.py"
 if [ -f "$HQ_TOOL" ]; then
@@ -314,7 +316,7 @@ if [ -f "$HQ_TOOL" ]; then
         fi
         if [ -z "$hq_base" ]; then HQ_RUN=1; break; fi
         if git diff --name-only "$hq_base" "$hq_lsha" 2>/dev/null \
-            | grep -Eq '(^|/)config/heracles/|^\.minecraft/tools/validate_heracles_quests|^\.minecraft/dev/registry/entity_types\.txt$'; then
+            | grep -Eq '(^|/)config/heracles/|^\.minecraft/tools/validate_heracles_quests|^\.minecraft/dev/registry/(entity_types|items|loot_tables|loot_tables_rejected|advancements)\.txt$|(^|/)kubejs/data/[^/]+/loot_tables/'; then
             HQ_RUN=1; break
         fi
     done <<EOF

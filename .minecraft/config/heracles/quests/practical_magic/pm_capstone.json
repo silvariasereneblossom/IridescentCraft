@@ -58,14 +58,20 @@
       }
     },
     "scroll1": {
-      "type": "heracles:loottable",
+      "type": "heracles:item",
       "title": "Random Spell Scroll",
-      "loot_table": "icraft:magic/scroll_t1"
+      "item": {
+        "id": "irons_spellbooks:scroll",
+        "count": 1
+      }
     },
     "scroll2": {
-      "type": "heracles:loottable",
+      "type": "heracles:item",
       "title": "Random Spell Scroll",
-      "loot_table": "icraft:magic/scroll_t1"
+      "item": {
+        "id": "irons_spellbooks:scroll",
+        "count": 1
+      }
     },
     "xp": {
       "type": "heracles:xp",

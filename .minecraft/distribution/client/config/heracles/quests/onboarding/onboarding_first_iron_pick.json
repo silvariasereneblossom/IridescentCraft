@@ -37,9 +37,10 @@
   "rewards": {
     "starter_kit_iron": {
       "type": "heracles:item",
+      "title": "Iron for Repairs",
       "item": {
-        "id": "tetra:repair_kit_iron",
-        "count": 1
+        "id": "minecraft:iron_ingot",
+        "count": 3
       }
     },
     "xp_burst": {

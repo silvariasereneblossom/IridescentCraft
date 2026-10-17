@@ -12,6 +12,13 @@ Catches the documented footguns BEFORE they reach the (server-authoritative) liv
   - a kill task's `entity` written as a bare string -> that task does not decode -> the WHOLE quest
     loads with no task and can never be completed (21 quests, found 2026-10-13)
   - a kill task whose entity id is not a registered entity type -> it decodes as `minecraft:pig`
+  - a reward, a task or an advancement task naming an id the game does not have (checked against the
+    registry snapshot dev/registry of a full-pack boot): an item reward that is no item, a loot-table
+    reward whose table exists nowhere (Heracles then gives nothing and only tells the player "Loot table
+    ... does not exist!"; five scroll rewards did that from the day they were written until 2026-10-17),
+    a task item that is no item, an advancement that does not exist. A table the quest tree's own pack
+    ships under kubejs/data/<ns>/loot_tables/ counts before the snapshot is refreshed; a table the game's
+    parser rejected (dev/registry/loot_tables_rejected.txt) does not. An icon that is no item is a WARN.
 
 Also emits non-fatal NOTES for pack-specific smells (placeholder `kubejs:*` tokens,
 "BUILD NOTE"/"placeholder"/"TODO" copy, references to the non-existent
@@ -19,20 +26,23 @@ Also emits non-fatal NOTES for pack-specific smells (placeholder `kubejs:*` toke
 
 Usage: python3 validate_heracles_quests.py [QUESTS_ROOT] [--require-entity-list]
        default QUESTS_ROOT = .minecraft/config/heracles/quests
-       --require-entity-list   fail (exit 2) when dev/registry/entity_types.txt is not found above the
-                               quests root, instead of skipping the entity-id check with a NOTE. The
-                               gates pass it: a checkout that lacks the list must not look like a pass.
-Exit code 1 if any ERROR is found, 2 when the run could not be made (no quest file, or no entity list
-with --require-entity-list). An error in a file listed in OWED is printed under OWED and does not fail
+       --require-entity-list   fail (exit 2) when a list of the registry snapshot (dev/registry/
+                               entity_types.txt, items.txt, loot_tables.txt, advancements.txt) is not
+                               found above the quests root, instead of skipping that check with a NOTE.
+                               The gates pass it: a checkout that lacks a list must not look like a pass.
+Exit code 1 if any ERROR is found, 2 when the run could not be made (no quest file, or a snapshot list
+missing with --require-entity-list). An error in a file listed in OWED is printed under OWED and does not fail
 the run: the quest is known to be broken and waits for a decision.
 
 Where it runs (since 2026-10-13; before that nobody ran it, and 51 kill tasks of the bare-string shape
 reached main): the pre-push hook, on all three quest trees, when a pushed commit changes a file under
-any distro's config/heracles/ (dev/install-hooks.ps1, the block "Heracles quest validator"), and the
-GitHub Action heracles-quests.yml. validate_heracles_quests_test.py plants each defect the validator
+any distro's config/heracles/, a list of the snapshot it reads, or a loot table under any distro's
+kubejs/data (dev/install-hooks.ps1, the block "Heracles quest validator"), and the GitHub Action
+heracles-quests.yml. validate_heracles_quests_test.py plants each defect the validator
 exists for and requires the refusal.
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -97,15 +107,43 @@ def note(f, m): notes.append(f"  [NOTE]  {f}: {m}")
 
 
 ENTITY_TYPES = None   # the entity types of a real full-pack boot (dev/registry/entity_types.txt), when found
+ITEMS = None          # its items (dev/registry/items.txt)
+LOOT_TABLES = None    # its loaded loot tables + the tables the tree's own pack ships, minus the rejected ones
+REJECTED_TABLES = set()
+ADVANCEMENTS = None   # its advancements (dev/registry/advancements.txt)
+PACK_DATA = None      # the kubejs/data folder whose loot tables count (the quest tree's own distribution)
+
+
+def load_registry_list(root: Path, name: str):
+    """dev/registry/<name> of the pack the quests root belongs to, as a set, or None"""
+    for up in [root.resolve()] + list(root.resolve().parents):
+        f = up / "dev" / "registry" / name
+        if f.is_file():
+            return {l.strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")}
+    return None
 
 
 def load_entity_types(root: Path):
     """dev/registry/entity_types.txt of the pack the quests root belongs to, or None"""
+    return load_registry_list(root, "entity_types.txt")
+
+
+def pack_loot_tables(root: Path):
+    """(the kubejs/data folder nearest above the quests root, the loot table ids it ships) or (None, set())"""
     for up in [root.resolve()] + list(root.resolve().parents):
-        f = up / "dev" / "registry" / "entity_types.txt"
-        if f.is_file():
-            return {l.strip() for l in f.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")}
-    return None
+        data = up / "kubejs" / "data"
+        if data.is_dir():
+            ids = set()
+            for f in data.glob("*/loot_tables/**/*.json"):
+                rel = f.relative_to(data).as_posix()          # <ns>/loot_tables/<path>.json
+                ns, _, path = rel.partition("/loot_tables/")
+                ids.add(f"{ns}:{path[:-len('.json')]}")
+            try:
+                shown = Path(os.path.relpath(data)).as_posix()
+            except ValueError:   # another drive
+                shown = data.as_posix()
+            return shown, ids
+    return None, set()
 
 
 def check_kill_entity(f, where, ent):
@@ -148,6 +186,47 @@ def check_item_token(f, where, item):
                 f"(live pool token is icraft:progression_token_tN)")
 
 
+def item_id_of(item):
+    """the item id of a task / reward / icon `item` (a string, or an object with `id`), or None"""
+    iid = item.get("id") if isinstance(item, dict) else item
+    return iid if isinstance(iid, str) else None
+
+
+def check_item_registered(f, where, item, what):
+    """an item id (not a #tag) against dev/registry/items.txt"""
+    iid = item_id_of(item)
+    if iid is None or ITEMS is None or iid.startswith("#") or iid in ITEMS:
+        return
+    err(f, f"{where} {what} '{iid}' is not a registered item (dev/registry/items.txt): "
+           + ("the player is given nothing for it" if what == "reward item" else
+              "the task can never be completed"))
+
+
+def check_loot_table(f, where, table):
+    """a heracles:loottable reward's table against the snapshot and the tables the pack ships"""
+    if LOOT_TABLES is None or not isinstance(table, str):
+        return
+    if table in REJECTED_TABLES:
+        err(f, f"{where} loot table '{table}' is rejected by the game's parser "
+               f"(dev/registry/loot_tables_rejected.txt): it does not exist in game, the reward gives nothing")
+    elif table not in LOOT_TABLES:
+        err(f, f"{where} loot table '{table}' exists nowhere (not in dev/registry/loot_tables.txt, not under "
+               f"{PACK_DATA}/<ns>/loot_tables/): Heracles gives nothing and tells the player "
+               f"\"Loot table {table} does not exist!\"")
+
+
+def check_icon(f, icon):
+    """display.icon: an item icon that is no item shows nothing (WARN, the quest still works)"""
+    if not isinstance(icon, dict) or ITEMS is None:
+        return
+    inner = icon.get("item")
+    if isinstance(inner, dict) and "item" in inner and "id" not in inner:
+        inner = inner.get("item")    # the nested { "type": "heracles:item", "item": ... } form
+    iid = item_id_of(inner)
+    if iid and not iid.startswith("#") and iid not in ITEMS:
+        warn(f, f"display.icon item '{iid}' is not a registered item (dev/registry/items.txt): the icon shows nothing")
+
+
 def validate_tasks(f, tasks, ctx="tasks"):
     if not isinstance(tasks, dict):
         err(f, f"{ctx} must be a JSON object keyed by name, not {type(tasks).__name__}")
@@ -176,6 +255,17 @@ def validate_tasks(f, tasks, ctx="tasks"):
                        f"with an 'nbt' string) fails the codec -> task silently dropped -> quest renders "
                        f"NaN%. Use a string item + (if needed) a separate 'nbt' field.")
             check_item_token(f, f"{ctx}.{key} task", itm)
+            if isinstance(itm, str):
+                check_item_registered(f, f"{ctx}.{key} (heracles:item)", itm, "task item")
+        if ttype in ("heracles:item_interaction", "heracles:item_use"):
+            if isinstance(t.get("item"), str):
+                check_item_registered(f, f"{ctx}.{key} ({ttype})", t.get("item"), "task item")
+        if ttype == "heracles:advancement" and ADVANCEMENTS is not None:
+            advs = t.get("advancements")
+            for a in (advs if isinstance(advs, list) else []):
+                if isinstance(a, str) and a not in ADVANCEMENTS:
+                    err(f, f"{ctx}.{key} (heracles:advancement) advancement '{a}' does not exist "
+                           f"(dev/registry/advancements.txt): the task can never be completed")
         if ttype == "heracles:kill_entity":
             check_kill_entity(f, f"{ctx}.{key}", t.get("entity"))
         if ttype == "heracles:composite":
@@ -198,6 +288,9 @@ def validate_rewards(f, rewards, ctx="rewards"):
             err(f, f"{ctx}.{key} XP REWARD uses task-casing 'xpType'; reward field is 'xptype'")
         if rtype == "heracles:item":
             check_item_token(f, f"{ctx}.{key} reward", r.get("item"))
+            check_item_registered(f, f"{ctx}.{key} (heracles:item)", r.get("item"), "reward item")
+        if rtype == "heracles:loottable":
+            check_loot_table(f, f"{ctx}.{key} (heracles:loottable)", r.get("loot_table"))
         if rtype == "heracles:command":
             cmd = r.get("command", "")
             if "icraft_quests" in cmd:
@@ -220,7 +313,7 @@ def main():
     files = sorted(root.rglob("*.json"))
     if not files:
         print(f"No quest JSON under {root}"); sys.exit(2)
-    global ENTITY_TYPES
+    global ENTITY_TYPES, ITEMS, LOOT_TABLES, REJECTED_TABLES, ADVANCEMENTS, PACK_DATA
     ENTITY_TYPES = load_entity_types(root)
     if ENTITY_TYPES is None:
         if "--require-entity-list" in flags:
@@ -229,6 +322,21 @@ def main():
             sys.exit(2)
         note(Path("."), "dev/registry/entity_types.txt not found above the quests root: kill-task ids are NOT "
                         "checked against the registered entity types")
+    ITEMS = load_registry_list(root, "items.txt")
+    loaded = load_registry_list(root, "loot_tables.txt")
+    ADVANCEMENTS = load_registry_list(root, "advancements.txt")
+    REJECTED_TABLES = load_registry_list(root, "loot_tables_rejected.txt") or set()
+    PACK_DATA, shipped = pack_loot_tables(root)
+    LOOT_TABLES = None if loaded is None else (loaded | shipped) - REJECTED_TABLES
+    for name, got, what in (("items.txt", ITEMS, "item ids of rewards, tasks and icons"),
+                            ("loot_tables.txt", loaded, "loot-table rewards"),
+                            ("advancements.txt", ADVANCEMENTS, "advancement tasks")):
+        if got is None:
+            if "--require-entity-list" in flags:
+                print(f"CANNOT RUN: dev/registry/{name} not found above {root} (--require-entity-list): "
+                      f"the {what} could not be checked against the game's own list")
+                sys.exit(2)
+            note(Path("."), f"dev/registry/{name} not found above the quests root: the {what} are NOT checked")
 
     ids = {}
     parsed = {}
@@ -276,6 +384,8 @@ def main():
         disp = data.get("display", {})
         for g in (disp.get("groups", {}) if isinstance(disp, dict) else {}):
             groups_seen.setdefault(g, []).append(qid)
+        if isinstance(disp, dict):
+            check_icon(rel, disp.get("icon"))
         # tasks / rewards
         if "tasks" in data:
             validate_tasks(rel, data["tasks"])

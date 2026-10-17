@@ -8,6 +8,8 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ## October 2026 — Data fixes (17 October)
 
+- **"Random Spell Scroll" rewards give a scroll.** Five Practical Magic rewards named a loot table that did not exist and gave nothing; each gives one Iron's Spellbooks scroll now, bound to a random tier-1 spell the moment it lands in your inventory (as the Relic Broker's scrolls are).
+- ***Iron Tools* gives 3 iron ingots** instead of an item that does not exist.
 - **The Boss Compass leads to the Thunker.** Its row pointed at the Chthonic Cathedral, where no Thunker stands; it points at the Chthonic Dungeon now, whose halls and rooms hold Thunkers (they also roam every Nether biome).
 
 ## October 2026 — The Twilight Forest portal lights again (17 October)
