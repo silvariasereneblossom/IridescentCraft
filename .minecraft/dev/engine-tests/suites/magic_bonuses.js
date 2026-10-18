@@ -181,3 +181,15 @@ T_run('the Magic aptitude skills: spell power only', function () {
     near(MB_firebolt(p), r[4], 'MAG ' + r[0] + ': firebolt level 1 costs a zombie')
   })
 })
+
+T_run('the mage classes\' mana pool is their Origins power alone (decision list entry 129)', function () {
+  // the Origins pool power (multiply_base on irons_spellbooks:max_mana, base 100), as Origins puts it on the class
+  ok(MB_tickFn('tick_manaPoolBonuses') === null, 'mana_pool_bonuses.js registers no pool tick any more')
+  ;[['icraft:archmage', 1.5, 250], ['icraft:battlemage', 0.9, 190], ['icraft:void_summoner', 0.9, 190]].forEach(function (r) {
+    var p = MB_player({ cls: r[0], tier: 1 })
+    T.modifier(p, 'irons_spellbooks:max_mana', 'origins:mana_pool', r[1], 1)
+    MB_allTicks()
+    if (MB_tickFn('tick_manaPoolBonuses') !== null) MB_runTick('tick_manaPoolBonuses', 60)
+    near(p.getAttributeValue('irons_spellbooks:max_mana'), r[2], r[0] + ': max mana (' + MB_mods(p, 'irons_spellbooks:max_mana').join('; ') + ')')
+  })
+})
