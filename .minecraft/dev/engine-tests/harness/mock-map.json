@@ -45,6 +45,8 @@
     "mk.W$ItemEntity": {"real": ["net.minecraft.world.entity.item.ItemEntity"]},
     "mk.W$Living": {"real": ["net.minecraft.world.entity.LivingEntity"]},
     "mk.W$Mob": {"real": ["net.minecraft.world.entity.Mob"]},
+    "mk.W$IMagicSummon": {"real": ["io.redspace.ironsspellbooks.entity.mobs.IMagicSummon"], "jar": "irons_spellbooks-*.jar"},
+    "mk.W$MagicSummon": {"real": ["net.minecraft.world.entity.Mob", "io.redspace.ironsspellbooks.entity.mobs.SummonedZombie", "io.redspace.ironsspellbooks.entity.mobs.IMagicSummon"], "jar": "irons_spellbooks-*.jar"},
     "mk.W$Tamed": {"real": ["net.minecraft.world.entity.TamableAnimal"]},
     "mk.W$ShadowTypeMob": {"real": ["net.minecraft.world.entity.Mob"], "harness": {"type": "the point of this mock: a mod mob with a public `type` field (Creeper Overhaul's BaseCreeper), which shadows entity.type"}},
     "mk.W$ErrorMob": {"real": ["net.minecraft.world.entity.Mob"]},

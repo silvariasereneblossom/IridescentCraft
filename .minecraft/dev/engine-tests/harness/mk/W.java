@@ -780,6 +780,15 @@ public class W {
   public static class Mob extends Living {
     public Mob(String typeId, Level l, double x, double y, double z) { super(typeId, l, x, y, z); monster = true; }
   }
+  /** io.redspace.ironsspellbooks.entity.mobs.IMagicSummon (irons_spellbooks 3.15.5.1): a summon names its summoner */
+  public interface IMagicSummon { Entity getSummoner(); }
+  /** an Iron's Spells summon (SummonedZombie and kin): a Mob that is an IMagicSummon and NOT an OwnableEntity */
+  public static class MagicSummon extends Mob implements IMagicSummon {
+    Living summoner;
+    public MagicSummon(String typeId, Level l, double x, double y, double z) { super(typeId, l, x, y, z); }
+    public void setSummoner(Living s) { summoner = s; }
+    public Entity getSummoner() { return summoner; }
+  }
   /** a tamed animal */
   public static class Tamed extends Living {
     UUID owner;

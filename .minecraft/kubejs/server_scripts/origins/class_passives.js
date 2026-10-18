@@ -1,5 +1,5 @@
 // @file kubejs/server_scripts/origins/class_passives.js
-// @events EntityEvents.death, tick.server
+// @events EntityEvents.death, hurt, tick.server
 // @registry dimensions
 // =============================================================================
 // CLASS PASSIVES — KubeJS implementations for origin-described mechanics
@@ -323,7 +323,11 @@
         if (distSq > 256) return  // 16 blocks
         if (!sameDimension(player, entity)) return
 
-        // 10% bonus XP
+        // +1 XP per death. (The line reads "10%" of a constant 3, so it has
+        // always been 1. 10% of the mob's own reward would need
+        // getExperienceReward(), which walks the dying mob's equipment: the
+        // AbstractMethodError of 0_iss_guard.js on Iron's wizard mobs, which a
+        // script cannot catch. Decision list 131: the texts say +1 XP now.)
         var bonus = Math.max(1, Math.floor(3 * 0.10))
         player.giveExperiencePoints(bonus)
 
@@ -338,6 +342,35 @@
       warnThrew('void summoner soul tether', e)
     }
   }))
+
+  // ===========================================================================
+  // VOID SUMMONER — Dark Pact, for Iron's Spells summons
+  // ===========================================================================
+  // Dark Pact is an Origins power: +15% puffish_attributes:tamed_damage, which
+  // Pufferfish's Attributes applies to a hit by an OwnableEntity whose owner has
+  // it (a tamed wolf: 9 -> 10.35 on a 10-point hit, measured with the real
+  // origin). Iron's Spells summons (Raise Dead, Summon Vex, Summon Polar Bear,
+  // ...) are IMagicSummon, not OwnableEntity, so the power never reached them
+  // (9 -> 9), although its text, the Codex and the wiki all say "tamed /
+  // summoned". This handler gives a Void Summoner's Iron's summon the same +15%
+  // (2026-10-17, decision list 130, implemented on recommendation, for review).
+  // A tamed animal is not an IMagicSummon: Pufferfish alone handles it, once.
+  var IMagicSummon_cp = null
+  try {
+    IMagicSummon_cp = Java.loadClass('io.redspace.ironsspellbooks.entity.mobs.IMagicSummon')
+  } catch (e) {
+    warnThrew('dark pact (Iron\'s Spells summons): IMagicSummon not loadable', e)
+  }
+  var DARK_PACT_SUMMON_MULT = 1.15
+  if (IMagicSummon_cp !== null && icraft.lib.need('core', 'origins/class_passives')) {
+    global.icraft.core.onHurt('icraft.class_passives.dark_pact_summons', function (event, ctx) {
+      var summon = ctx.attacker
+      if (!summon || !(summon instanceof IMagicSummon_cp)) return
+      var summoner = summon.getSummoner()
+      if (!summoner || !summoner.player || getClass(summoner) !== 'void_summoner') return
+      event.amount = event.amount * DARK_PACT_SUMMON_MULT
+    }, 'attacker')
+  }
 
   console.log('[IridescentCraft] Class passives loaded')
   console.log('  - Samurai: Focus (movement shield + Vorpal by tier)')

@@ -193,3 +193,42 @@ T_run('the mage classes\' mana pool is their Origins power alone (decision list 
     near(p.getAttributeValue('irons_spellbooks:max_mana'), r[2], r[0] + ': max mana (' + MB_mods(p, 'irons_spellbooks:max_mana').join('; ') + ')')
   })
 })
+
+// ---- the Void Summoner (the operator, 23:25 EDT 10-17: "Let's check both, functionality and text") ----------------
+var MB_MagicSummon = __host.loadClass('mk.W$MagicSummon'), MB_Tamed = __host.loadClass('mk.W$Tamed')
+var MB_hitBy = function (attacker, amount) {
+  var z = T_mob('minecraft:zombie', 'minecraft:overworld', 2.5, 200, 0.5, 1000)
+  T_rand(0.999)
+  var ev = T_fireHurt(z, T.source('minecraft:mob_attack', attacker, attacker), amount)
+  T_rand()
+  return Number(ev.getAmount())
+}
+T_run('Dark Pact reaches an Iron\'s Spells summon of a Void Summoner (decision list entry 130)', function () {
+  ok(MB_core.hurtHandlers()['icraft.class_passives.dark_pact_summons'] !== undefined, 'class_passives.js registers the hurt handler icraft.class_passives.dark_pact_summons')
+  var vs = MB_player({ cls: 'icraft:void_summoner' }), none = MB_player({})
+  var summon = function (owner) { var s = new MB_MagicSummon('irons_spellbooks:summoned_zombie', T_level('minecraft:overworld'), 1.5, 200, 0.5); if (owner) s.setSummoner(owner); return s }
+  near(MB_hitBy(summon(vs), 10), 11.5, 'a Void Summoner\'s summoned zombie: a 10-point hit lands as 11.5')
+  near(MB_hitBy(summon(none), 10), 10, 'a classless player\'s summon: 10')
+  near(MB_hitBy(summon(null), 10), 10, 'a summon with no summoner: 10')
+  // a tamed wolf is Pufferfish's (tamed_damage, at the head of hurt): the dispatcher must leave it alone
+  var wolf = new MB_Tamed('minecraft:wolf', T_level('minecraft:overworld'), 1.5, 200, 0.5, vs.uuid)
+  near(MB_hitBy(wolf, 10), 10, 'a Void Summoner\'s tamed wolf: the handler adds nothing (Pufferfish\'s +15% is not counted twice)')
+})
+
+T_run('Soul Tether: a death within 16 blocks heals 5% of the mob\'s max health (up to 2) and gives 1 XP', function () {
+  var at = 5000.5
+  var vs = T_newPlayer('mbtether', 'minecraft:overworld', at, 64, 0.5)
+  MB_CLASS[MB_uid(vs)] = 'icraft:void_summoner'
+  var die = function (dim, dx, hp, full) {
+    vs.setHealth(full ? vs.getMaxHealth() : 5)
+    var h0 = Number(T.num(vs, 'healed')), x0 = Number(T.num(vs, 'xpGiven'))
+    var m = T_mob('minecraft:zombie', dim, at + dx, 64, 0.5, hp)
+    T_fire('E.death', { entity: m, source: T.source('minecraft:generic', null, null), level: m.level, server: T_server, player: null })
+    return { heal: Number(T.num(vs, 'healed')) - h0, xp: Number(T.num(vs, 'xpGiven')) - x0 }
+  }
+  var r = die('minecraft:overworld', 5, 20, false); near(r.heal, 1, 'a 20-health mob at 5 blocks: heals 1'); near(r.xp, 1, '... and 1 XP')
+  r = die('minecraft:overworld', 5, 100, false); near(r.heal, 2, 'a 100-health mob: heals 2 (the cap)'); near(r.xp, 1, '... and 1 XP')
+  r = die('minecraft:overworld', 16.5, 20, false); near(r.heal, 0, 'at 16.5 blocks: nothing'); near(r.xp, 0, '... no XP')
+  r = die('minecraft:the_nether', 5, 20, false); near(r.heal, 0, 'the same spot in another dimension: nothing'); near(r.xp, 0, '... no XP')
+  r = die('minecraft:overworld', 5, 20, true); near(r.heal, 0, 'at full health: no heal'); near(r.xp, 1, '... still 1 XP')
+})

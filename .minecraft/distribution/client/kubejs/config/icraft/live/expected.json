@@ -109,6 +109,7 @@
    "icraft.affixes.offensive@hurt": "affixes/affix_effects.js",
    "icraft.attribute_sync.hurt@hurt": "attributes/attribute_sync.js",
    "icraft.battlemage_arcane_cleave@hurt": "origins/battlemage_arcane_cleave.js",
+   "icraft.class_passives.dark_pact_summons@hurt": "origins/class_passives.js",
    "icraft.class_passives_h6@hurt": "origins/class_passives_phase6h.js",
    "icraft.death_penalty.broken_weapon@hurt": "death_penalty.js",
    "icraft.dimension_mechanics.blue_skies@hurt": "scaling/dimension_mechanics.js",
