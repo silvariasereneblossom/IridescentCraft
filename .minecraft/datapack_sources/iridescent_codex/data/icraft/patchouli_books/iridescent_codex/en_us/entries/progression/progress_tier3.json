@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "What's Next",
-      "text": "Toward $(t4)Tier 4$(): bank $(t4)2000$() tokens, or clear $(t4)100%$() of the Tier 3 bosses - ending with $(warn)Lucifer$(), the combat capstone.$(br2)$(note)The pinch:$() the boss-rush route demands Lucifer. A peaceful builder or cultivator just banks 2000 tokens and walks past him. Your choice."
+      "text": "Toward $(t4)Tier 4$(): bank $(t4){{tier 3 threshold}}$() tokens, or clear $(t4){{tier 3 rushpct}}$() of the Tier 3 bosses - ending with $(warn)Lucifer$(), the combat capstone.$(br2)$(note)The pinch:$() the boss-rush route demands Lucifer. A peaceful builder or cultivator just banks {{tier 3 threshold}} tokens and walks past him. Your choice."
     }
   ]
 }

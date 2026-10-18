@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hunt these in Overworld structures — iron or copper gear is enough if you dodge actively.$(br2)None drop Simply Swords uniques (those begin at Tier 2), but every kill counts toward your $(t2)80%$() boss-rush clear and banks Combat tokens.$(br2)The boss compass and bonfire waystones point you at arena structures as you discover them."
+      "text": "Hunt these in Overworld structures — iron or copper gear is enough if you dodge actively.$(br2)Several drop a unique weapon ($(l:icraft:bosses/unique_weapons)Unique Weapons$(/l)), and every kill counts toward your $(t2){{tier 1 rushpct}}$() boss-rush clear and banks Combat tokens.$(br2)The boss compass and bonfire waystones point you at arena structures as you discover them."
     },
     {
       "type": "patchouli:text",
@@ -16,12 +16,17 @@
     {
       "type": "patchouli:text",
       "title": "Structure Bosses",
-      "text": "$(bold)Terramity$() — $(item)Gob, King of Gnomes$() (Court of Gnomes — summon him with an emerald), $(item)Super Sniffer$() (Ancient Outcrop). Enchanter Merlin is a Tier 3 boss (the Nether's Chthonic Cathedral).$(br2)$(bold)Mowzie's Mobs$() — Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw moved to Everbright (Tier 2).$(br2)$(bold)Soulslike Weaponry$() — Draugr (taiga graves), Moonknight (Cathedral of Resurrection), Returning Knight and Night Shade (Old Moon Altar summons). $(warn)Their HP runs hot for T1 — bring backup.$()"
+      "text": "$(bold)Terramity$() — $(item)Gob, King of Gnomes$() (Court of Gnomes — summon him with an emerald), $(item)Super Sniffer$() (Ancient Outcrop). Enchanter Merlin is a Tier 3 boss (the Nether's Chthonic Cathedral).$(br2)$(bold)Mowzie's Mobs$() — Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw moved to Everbright (Tier 2)."
     },
     {
       "type": "patchouli:text",
       "title": "Mini-Bosses",
-      "text": "$(bold)Iron's Spellbooks$() — Archevoker, Cryomancer, Necromancer, Pyromancer appear in Overworld structures and villages. 25% chance for a Tier 2 token peek.$(br2)$(bold)Brutal Bosses$() — Champion-level mobs guarding Overworld dungeons. Variable drops, Tier 1 tokens guaranteed.$(br2)$(note)Mutant Monsters crafting recipes are stripped — the Hulk Hammer + rune/ink drops are the intended T1 reward path.$()$(br2)$(bold)Next: run /icraft codex bosses to see your clear count.$()"
+      "text": "$(bold)Iron's Spellbooks$() casters walk the Overworld too, but the Archevoker and its kin are {{boss irons_spellbooks:archevoker tier}} bosses: their tokens and their boss rush are Tier 3's.$(br2)$(bold)Brutal Bosses$() — champion-level mobs guarding Overworld dungeons, with loot of their own. They are on no kill roster: no Codex tokens.$(br2)$(note)Mutant Monsters crafting recipes are stripped — the Hulk Hammer + rune/ink drops are the intended T1 reward path.$()$(br2)$(bold)Next: run /icraft codex bosses to see your clear count.$()"
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "boss_roster",
+      "tier": 1
     }
   ]
 }

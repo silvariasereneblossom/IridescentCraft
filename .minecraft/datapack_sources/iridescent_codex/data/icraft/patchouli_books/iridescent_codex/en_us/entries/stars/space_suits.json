@@ -14,11 +14,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)MekaSuit$()$(br)Mekanism's power armor fills the Jet Suit niche \u2014 flight, space survival, and modular upgrades. Already gated behind T4 Mekanism progression. Your primary space exploration armor.$(br2)$(bold)MekaSuit Mk2$()$(br)The $(italic)ultimate$() armor in the pack. Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence. The only space armor that accepts Apotheosis affixes, custom enchantments, and socket gems."
+      "text": "$(bold)MekaSuit$()$(br)Mekanism's power armor fills the Jet Suit niche — flight, space survival, and modular upgrades. Already gated behind T4 Mekanism progression. Your primary space exploration armor.$(br2)$(bold)MekaSuit Mk2$()$(br)The $(italic)ultimate$() armor in the pack. Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence. The only space armor that accepts Apotheosis affixes, custom enchantments, and socket gems."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$()$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration.$(br2)$(bold)Next: suit up for the Moon first — basic suit, lowest hazard, and its Lunar Stride books make every later planet easier.$()"
+      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$()$(br)Death costs more out there: from {{dim ad_astra:moon death}} of your gear's durability on the Moon to {{dim ad_astra:glacio death}} on Glacio. Soulbound III on your space suit is almost mandatory for planet exploration.$(br2)$(bold)Next: suit up for the Moon first — basic suit, lowest hazard, and its Lunar Stride books make every later planet easier.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

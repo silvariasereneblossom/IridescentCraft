@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fight Terramity's structure bosses from Tier 1 on — this is a boss and combat content mod, and three of its bosses are on your Tier 1 boss-rush roster.$(br2)It also brings guns (craft them at the Gunsmith Station), armor sets with active abilities, and the structures that hold it all."
+      "text": "Fight Terramity's structure bosses from Tier 1 on — this is a boss and combat content mod, and {{bosses mod=terramity rush=1 word}} of its bosses are on your Tier 1 boss-rush roster.$(br2)It also brings guns (craft them at the Gunsmith Station), armor sets with active abilities, and the structures that hold it all."
     },
     {
       "type": "patchouli:text",
       "title": "The Boss Ladder",
-      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t3)Tier 3$() — $(bold)Gatmancer$() (Chthonic Dungeon, the Nether); $(bold)Enchanter Merlin$() and $(bold)Sorceress Circe$() (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral, together); $(bold)Archmage Gundalf$() (appears when Circe falls).$(br)$(t4)Tier 4$() — $(bold)Thunker$() (Chthonic Cathedral), $(bold)Virtue$() (Prismatic Pond, the Aether)."
+      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t3)Tier 3$() — $(bold)Gatmancer$() (Chthonic Dungeon, the Nether); $(bold)Enchanter Merlin$() and $(bold)Sorceress Circe$() (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral, together); $(bold)Archmage Gundalf$() (appears when Circe falls).$(br)$(t4)Tier 4$() — $(bold)Thunker$() ({{boss terramity:thunker place}}, {{boss terramity:thunker dim}}), $(bold)Virtue$() (Prismatic Pond, the Aether)."
     },
     {
       "type": "patchouli:text",

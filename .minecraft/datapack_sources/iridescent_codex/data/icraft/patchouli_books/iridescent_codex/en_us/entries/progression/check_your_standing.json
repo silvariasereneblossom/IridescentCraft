@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The Boss Rush",
-      "text": "$(bold)/icraft codex bosses$()$(br2)Shows, per tier, how many of that tier's bosses you have cleared and the share you need — $(t2)80%$() / $(t3)90%$() / $(t4)100%$(). Clearing the share auto-advances you, no tokens required.$(br2)Every boss and miniboss kill also feeds the token pool, so the two routes stack."
+      "text": "$(bold)/icraft codex bosses$()$(br2)Shows, per tier, how many of that tier's bosses you have cleared and the share you need — $(t2){{tier 1 rushpct}}$() / $(t3){{tier 2 rushpct}}$() / $(t4){{tier 3 rushpct}}$(). Clearing the share auto-advances you, no tokens required.$(br2)Every boss and miniboss kill also feeds the token pool, so the two routes stack."
     },
     {
       "type": "patchouli:text",

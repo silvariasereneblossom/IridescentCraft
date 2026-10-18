@@ -11,17 +11,17 @@
     {
       "type": "patchouli:text",
       "title": "T2 Boss Materials",
-      "text": "$(bold)Naga Scale$() \u2014 Twilight Forest Naga. Used in Tier 2 armor crafting recipes.$(br2)$(bold)Lich Soul$() \u2014 Lich. Used in necromantic recipes, Occultism preparations.$(br2)$(bold)Hydra Fang$() \u2014 Hydra. Used in melee weapon enhancement recipes.$(br2)$(bold)Ur-Ghast Tear$() \u2014 Ur-Ghast. Used in aerial mobility items."
+      "text": "$(bold)Naga Scale$() — Twilight Forest Naga. Used in Tier 2 armor crafting recipes.$(br2)$(bold)Lich Soul$() — Lich. Used in necromantic recipes, Occultism preparations.$(br2)$(bold)Hydra Fang$() — Hydra. Used in melee weapon enhancement recipes.$(br2)$(bold)Ur-Ghast Tear$() — Ur-Ghast. Used in aerial mobility items."
     },
     {
       "type": "patchouli:text",
       "title": "T3 Boss Materials",
-      "text": "$(bold)Harbinger Eye$() \u2014 Cataclysm: The Harbinger. High-value T3 crafting material.$(br2)$(bold)Ignis Core$() \u2014 Cataclysm: Ignis. Used in fire-themed T3+ recipes.$(br2)$(bold)Nether Soul Fragment$() \u2014 Wither Skeletons (rare). Used in Stalwart Dungeons preps.$(br2)$(bold)Gaia Spirit Fragment$() \u2014 Botania Gaia Guardian. Required for Mahou Tsukai initiation."
+      "text": "$(bold)Harbinger Eye$() — Cataclysm: The Harbinger. High-value T3 crafting material.$(br2)$(bold)Ignis Core$() — Cataclysm: Ignis. Used in fire-themed T3+ recipes.$(br2)$(bold)Nether Soul Fragment$() — Wither Skeletons (rare). Used in Stalwart Dungeons preps.$(br2)$(bold)Wither Bone$() — Wither. Used in Stalwart Dungeons and necromantic recipes."
     },
     {
       "type": "patchouli:text",
       "title": "T4 Boss Materials",
-      "text": "$(bold)Dragon Heart$() \u2014 Ender Dragon. Used in ultimate crafting recipes, Mythic infusion base.$(br2)$(bold)Dragon Scale$() \u2014 Ender Dragon. Used in Tier 4 armor crafting.$(br2)$(bold)Void Essence$() \u2014 Rare Enderman drop. Used in Void Summoner builds.$(br2)$(bold)Wither Bone$() \u2014 Wither. Used in Stalwart Dungeons and necromantic recipes."
+      "text": "$(bold)Dragon Heart$() — Ender Dragon. Used in ultimate crafting recipes, Mythic infusion base.$(br2)$(bold)Dragon Scale$() — Ender Dragon. Used in Tier 4 armor crafting.$(br2)$(bold)Void Essence$() — Rare Enderman drop. Used in Void Summoner builds.$(br2)$(bold)Gaia Spirit Fragment$() — Botania Gaia Guardian. Required for Mahou Tsukai initiation."
     }
   ]
 }

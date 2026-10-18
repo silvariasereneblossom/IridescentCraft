@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 2 Dimensions$()$(br2)$(bold)Twilight Forest$() — Dense, dark, ambush-heavy. Bosses guard progression. Home of the first Simply Swords uniques. Its portal (a flower-ringed pool) is lit with a $(bold)Codex Token I$(); stepping through needs Tier 2.$(br2)$(bold)Blue Skies$() (Everbright + Everdawn) — Elemental combat. Mobs deal elemental damage that bypasses standard armor."
+      "text": "$(bold)Tier 2 Dimensions$()$(br2)$(bold)Twilight Forest$() — Dense, dark, ambush-heavy. Bosses guard progression. Its portal (a flower-ringed pool) is lit with a $(bold)Codex Token I$(); stepping through needs Tier 2.$(br2)$(bold)Blue Skies$() (Everbright + Everdawn) — Elemental combat. Mobs deal elemental damage that bypasses standard armor."
     },
     {
       "type": "patchouli:text",
@@ -28,6 +28,26 @@
       "type": "patchouli:text",
       "title": "Reaching the End",
       "text": "The vanilla stronghold-and-portal process applies: Eyes of Ender (a Tier 4 item here) lead you to the portal.$(br2)$(italic)Planned, not in the game yet:$() an $(bold)End Compass$() crafted from the $(bold)Aether$()'s materials, pointing to an $(bold)End Bastion$().$(br2)$(bold)The finale:$() defeating the $(t4)Ender Dragon$(). The Ad Astra planets do not wait for it: they are Tier 4 dimensions, reached by rocket."
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "dimension_glance",
+      "tier": 1
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "dimension_glance",
+      "tier": 2
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "dimension_glance",
+      "tier": 3
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "dimension_glance",
+      "tier": 4
     }
   ]
 }

@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Two Routes per Tier",
-      "text": "Advance by reaching $(bold)either$() target — whichever comes first:$(br2)$(li)$(bold)Tokens$() — bank the threshold: $(t2)500$() → T2, $(t3)1000$() → T3, $(t4)2000$() → T4.$(li)$(bold)Boss Rush$() — clear a share of the tier's bosses: $(t2)80%$() → T2, $(t3)90%$() → T3, $(t4)100%$() → T4.$(br2)Tier 4 is the final gate. Beyond it, the Ender Dragon is the finale — see $(l:icraft:progression/tier_unlock_checklist)Tier Targets$(/l)."
+      "text": "Advance by reaching $(bold)either$() target — whichever comes first:$(br2)$(li)$(bold)Tokens$() — bank the threshold: $(t2){{tier 1 threshold}}$() for Tier 2, $(t3){{tier 2 threshold}}$() for Tier 3, $(t4){{tier 3 threshold}}$() for Tier 4.$(li)$(bold)Boss Rush$() — clear a share of the tier's bosses: $(t2){{tier 1 rushpct}}$() for Tier 2, $(t3){{tier 2 rushpct}}$() for Tier 3, $(t4){{tier 3 rushpct}}$() for Tier 4.$(br2)Tier 4 is the final gate. Beyond it, the Ender Dragon is the finale — see $(l:icraft:progression/tier_unlock_checklist)Tier Targets$(/l)."
     },
     {
       "type": "patchouli:text",

@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "What's Next",
-      "text": "Toward $(t3)Tier 3$(): bank $(t3)1000$() tokens, or clear $(t3)90%$() of the Tier 2 bosses.$(br2)Track it with $(l:icraft:progression/check_your_standing)Check Your Standing$(/l). $(note)Diamonds are still a Tier 3 material - not yet in worldgen or chests.$()"
+      "text": "Toward $(t3)Tier 3$(): bank $(t3){{tier 2 threshold}}$() tokens, or clear $(t3){{tier 2 rushpct}}$() of the Tier 2 bosses.$(br2)Track it with $(l:icraft:progression/check_your_standing)Check Your Standing$(/l). $(note)Diamonds are still a Tier 3 material - not yet in worldgen or chests.$()"
     }
   ]
 }

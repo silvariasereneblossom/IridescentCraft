@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mercury \u2014 The Burning World$()$(br)Difficulty: $(bold)9.0x$() (comparable to Dragon's Domain)$(br)Death Penalty: $(bold)27%$()$(br2)Mercury's day/night cycle is $(italic)lethal$(). The sun-facing side deals continuous fire damage. The dark side deals extreme cold damage. Survival requires constant awareness of the terminator line."
+      "text": "$(bold)Mercury — The Burning World$()$(br)Mobs: $(bold){{dim ad_astra:mercury difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:mercury death}}$()$(br2)Mercury's day/night cycle is $(italic)lethal$(). The sun-facing side deals continuous fire damage. The dark side deals extreme cold damage. Survival requires constant awareness of the terminator line."
     },
     {
       "type": "patchouli:text",
@@ -18,11 +18,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Rock Extraction$()$(br)Crush $(bold)Mercury Stone$() in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Solar Crystal$() (20%) \u2014 crystallized solar energy$(br)\u2022 $(bold)Rare Earth Dust$() (20%) \u2014 high-tech crafting$(br)\u2022 Gold Nuggets (35%)$(br2)The Thermal Pulverizer gives slightly better odds."
+      "text": "$(bold)Planetary Rock Extraction$()$(br)Crush $(bold)Mercury Stone$() in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)• $(bold)Solar Crystal$() (20%) — crystallized solar energy$(br)• $(bold)Rare Earth Dust$() (20%) — high-tech crafting$(br)• Gold Nuggets (35%)$(br2)The Thermal Pulverizer gives slightly better odds."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Stellar Shield Enchantment$()$(br)Mercury mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Stellar Shield$() (max level 3). This armor enchantment:$(br)\u2022 Grants solar radiation resistance$(br)\u2022 Reduces fire damage by 33% per level on planets$(br)\u2022 Negates Mercury day-side fire damage at level 3$(br2)Pairs well with Thermal Regulation for full Mercury survival.$(br2)$(bold)Next: farm both enchantments to level 3 \u2014 you'll want them on Venus too.$()"
+      "text": "$(bold)Stellar Shield Enchantment$()$(br)Mercury mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Stellar Shield$() (max level 3). This armor enchantment:$(br)• Grants solar radiation resistance$(br)• Reduces fire damage by 33% per level on planets$(br)• Negates Mercury day-side fire damage at level 3$(br2)Pairs well with Thermal Regulation for full Mercury survival.$(br2)$(bold)Next: farm both enchantments to level 3 — you'll want them on Venus too.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

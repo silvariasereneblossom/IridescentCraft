@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fight bosses — the best weapons in the pack drop only from them, and every kill banks Combat-lane tokens.$(br2)Each tier has required progression bosses and optional trophy bosses. $(bold)Simply Swords unique weapons$() are boss-drop-only: every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
+      "text": "Fight bosses — the best weapons in the pack drop only from them, and every kill banks Combat-lane tokens.$(br2)Each tier has required progression bosses and optional trophy bosses. $(bold)Simply Swords unique weapons$() are boss-drop-only: the pack has {{uniques kind=sword count}} of them and {{uniques kind=bow count}} Too Many Bows bows, each matched to a boss ($(l:icraft:bosses/unique_weapons)Unique Weapons$(/l)). You cannot craft them, trade for them, or find them in chests."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() — Named T3 superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$() — Overworld + dimensional mutant variants$(li)$(bold)Terramity$() — Structure bosses from Tier 1 up$(li)$(bold)Cataclysm$() — T3–T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() — T4 optional superbosses$(li)$(bold)Stalwart Dungeons$() — T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$() — Boss spellcasters in all tiers"
+      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() — Swampjaw and the Bellringer ({{boss meetyourfight:swampjaw tier}} minibosses), Dame Fortuna and Rosalyne ({{boss meetyourfight:dame_fortuna tier}} bosses)$(li)$(bold)Mutant Monsters$() — Overworld + dimensional mutant variants$(li)$(bold)Terramity$() — Structure bosses from Tier 1 up$(li)$(bold)Cataclysm$() — T3–T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() — T4 optional superbosses$(li)$(bold)Stalwart Dungeons$() — T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$() — spellcaster bosses and minibosses, all {{boss irons_spellbooks:dead_king tier}}"
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$() / $(t3)90%$() / $(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
+      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2){{tier 1 rushpct}}$() / $(t3){{tier 2 rushpct}}$() / $(t4){{tier 3 rushpct}}$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "rush_targets"
     }
   ]
 }

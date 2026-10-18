@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Banking T1 tokens",
-      "text": "Brass is the Tier 1 ceiling material and a bread-and-butter submission. Machine blocks mint the most: a $(bold)Crushing Wheel$() banks $(t1)25$() tokens, a $(bold)Mechanical Press$() $(t1)20$() (cap 2 each).$(br2)Bank $(t1)500$() total to ascend to $(t2)Tier 2$(). See the full Create writeup in $(l:icraft:mods_t1/create)Create$(/l)."
+      "text": "Brass is the Tier 1 ceiling material and a bread-and-butter submission. Machine blocks mint the most: a $(bold)Crushing Wheel$() banks $(t1)25$() tokens, a $(bold)Mechanical Press$() $(t1)20$() (cap 2 each).$(br2)Bank $(t1){{tier 1 threshold}}$() total to ascend to $(t2)Tier 2$(). See the full Create writeup in $(l:icraft:mods_t1/create)Create$(/l)."
     }
   ]
 }

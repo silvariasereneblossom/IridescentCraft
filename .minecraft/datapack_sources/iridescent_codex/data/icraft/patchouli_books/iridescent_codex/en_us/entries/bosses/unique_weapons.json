@@ -6,22 +6,32 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Earn these from bosses — nothing else drops them. Simply Swords uniques are the best weapons in the pack: not craftable, not tradeable, never in chests, each matched thematically to its boss.$(br2)$(bold)42 unique weapons$() exist across all 4 tiers. Drop chances run 8% (rarest) to 25% (Ender Dragon's Waking Lichblade) — expect 6–8 kills to see a drop."
+      "text": "Earn these from bosses — nothing else drops them. Simply Swords uniques are the best weapons in the pack: not craftable, not tradeable, never in chests, each matched thematically to its boss.$(br2)$(bold){{uniques kind=sword count}} swords and {{uniques kind=bow count}} bows$() across all four tiers. A boss drops its unique on {{uniques dropped=yes minchance}} to {{uniques dropped=yes maxchance}} of kills."
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "unique_list",
+      "tier": 1
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "unique_list",
+      "tier": 2
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "unique_list",
+      "tier": 3
+    },
+    {
+      "type": "icraft:generated",
+      "generator": "unique_list",
+      "tier": 4
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 2 Uniques",
-      "text": "$(li)Twilight Forest: Tempest, Soulrender, Emberblade, Whisperwind, Enigma, Frostfall, Icewhisper$(li)Blue Skies: Hiveheart, Toxic Longsword, Stars Edge, Waxweaver$(li)Minoshroom: Mjolnir$(li)Bellringer: Storm's Edge$(li)Mutant Enderman: Slumbering Lichblade"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 3 Uniques",
-      "text": "$(li)Meet Your Fight: Harbinger, Hearthflame, Magiscythe, Magispear$(li)Cataclysm: Brimstone Claymore, Molten Edge, Shadowsting, Livyatan, Twisted Blade, Emberlash, Arcanethyst, Awakened Lichblade$(li)Undergarden: Bramblethorn$(li)D&D: Soulstealer, Soulpyre$(li)Vanilla: Soulkeeper (Wither), Stormbringer (Warden)$(li)Abyss: Watching Warglaive, Void Saber, Dormant Relic, Tidebreaker, Runic Edge, Searing Light"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 4 Uniques",
-      "text": "$(li)Ender Dragon: Waking Lichblade (25%)$(li)The Aether: Thunderbrand (Slider), Caelestis (Valkyrie Queen), Sunfire (Sun Spirit), Flamewind (Eye of the Storm)$(li)Botania: Magiblade$(br2)$(bold)Build note:$() Uniques have no enchanting penalty — Apotheosis enchanting and affix reforging both work. A unique with excellent affixes and level 5 enchants is the strongest item in the pack.$(br2)$(bold)Next: pick a target from $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l) and go earn one.$()"
+      "title": "Building Around One",
+      "text": "$(bold)Build note:$() Uniques have no enchanting penalty — Apotheosis enchanting and affix reforging both work. A unique with excellent affixes and level 5 enchants is the strongest item in the pack.$(br2)$(bold)Next: pick a target from $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l) and go earn one.$()"
     }
   ]
 }

@@ -11,17 +11,17 @@
     {
       "type": "patchouli:text",
       "title": "Tier 1 → Tier 2",
-      "text": "$(li)$(bold)Tokens:$() bank $(t2)500$().$(li)$(bold)Boss Rush:$() clear $(t2)80%$() of the Tier 1 bosses (the Overworld roster).$(br2)Earn however you like — build Create machines, cultivate Botania mana, loot structures, or hunt Overworld bosses. Every lane feeds the same pool."
+      "text": "$(li)$(bold)Tokens:$() bank $(t2){{tier 1 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t2){{tier 1 rushpct}}$() of the {{tier 1 rushsize}} Tier 1 bosses ({{tier 1 rushneed}} kills).$(br2)Earn however you like — build Create machines, cultivate Botania mana, loot structures, or hunt Overworld bosses. Every lane feeds the same pool."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 2 → Tier 3",
-      "text": "$(li)$(bold)Tokens:$() bank $(t3)1000$().$(li)$(bold)Boss Rush:$() clear $(t3)90%$() of the Tier 2 bosses — the Twilight Forest and Blue Skies rosters.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
+      "text": "$(li)$(bold)Tokens:$() bank $(t3){{tier 2 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t3){{tier 2 rushpct}}$() of the {{tier 2 rushsize}} Tier 2 bosses ({{tier 2 rushneed}} kills), most of them in the Twilight Forest and Blue Skies.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 3 → Tier 4",
-      "text": "$(li)$(bold)Tokens:$() bank $(t4)2000$().$(li)$(bold)Boss Rush:$() clear $(t4)100%$() of the Tier 3 bosses — Nether, Undergarden, Deeper Dark, and the Abyss — finishing with $(bold)Lucifer$().$(br2)$(warn)The combat pinch:$() the boss-rush route to T4 ends at Lucifer, the combat capstone. A combat-averse player simply banks 2000 tokens instead and never has to fight him."
+      "text": "$(li)$(bold)Tokens:$() bank $(t4){{tier 3 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t4){{tier 3 rushpct}}$() of the {{tier 3 rushsize}} Tier 3 bosses — Nether, Undergarden, Deeper Dark, and the Abyss — finishing with $(bold)Lucifer$().$(br2)$(warn)The combat pinch:$() the boss-rush route to T4 ends at Lucifer, the combat capstone. A combat-averse player simply banks {{tier 3 threshold}} tokens instead and never has to fight him."
     },
     {
       "type": "patchouli:text",
