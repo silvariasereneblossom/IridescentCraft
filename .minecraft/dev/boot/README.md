@@ -322,6 +322,7 @@ The rig is a fresh world on Linux with nobody online; the live server is Windows
 | A path in a log line has `/` where the live server prints `\` | Linux. No signature of either baseline depends on it today except the Crust one above |
 | Server-local settings are not applied | The live server puts its override list (`.icraft_config_overrides.json`: worldgen settings, access settings) back before every start. The rig boots the pack's defaults |
 | No Chunky pregeneration | See "Traps" |
+| Iron's Spellbooks' spell config (`config/irons_spellbooks_spell_config/`, the pack's 37 files) is not applied | ISS builds it at the first `OnDatapackSyncEvent`: a player's login or `/reload` (the live log then says `Read 37 spell config files`). With no login every spell answers the PARAMETERS' defaults, not even the jar's own per-spell values: max level 1, school evocation (every spell deals `evocation_magic`), power multiplier 1.0 (firebolt level 1: power 12, not 18). A probe that measures spells fires `SpellConfigManager.onDatapackSync(new OnDatapackSyncEvent(server.getPlayerList(), null))` first. 2026-10-17: "every bound scroll is level 1" was this, not the script |
 | Two more server scripts | The two helpers |
 
 So a rig boot tells you about the pack at a commit, booted once from clean files. It does not tell you about a fault
