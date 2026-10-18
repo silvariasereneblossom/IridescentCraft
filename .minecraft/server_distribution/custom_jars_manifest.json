@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-10-17T22:26:49Z",
+    "generated_at":  "2026-10-17T23:55:00Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -16,8 +16,8 @@
                                                      "size":  8941
                                                  },
                  "iridescent_codex_data.jar":  {
-                                                   "sha256":  "4e6b081fc5c68c80949adcbf68dc8083d2a3d446d3ad6ba6bf50ee06664ecacf",
-                                                   "size":  524929
+                                                   "sha256":  "443285532003e63c394dfa08c68299f0984944209da5e27121c6dbdd6c54c90f",
+                                                   "size":  525151
                                                },
                  "iridescent_difficulty-0.1.0.jar":  {
                                                          "sha256":  "13a8ab38dbff5b57b07d841fac9958cf7affb755cc83cf6988190afe17e3d9fa",
@@ -32,8 +32,8 @@
                                                             "size":  25500
                                                         },
                  "iridescent_origins-1.0.0.jar":  {
-                                                      "sha256":  "d0f7afaf92d25e5f0de59778ed64b4bf41ae4348866c3d052a17cbd5cb6c3845",
-                                                      "size":  103810
+                                                      "sha256":  "40b011cbe42eb74ed98fbd375d9bc772219fb5ff7cd09cefa9e4c07c015ac44d",
+                                                      "size":  103836
                                                   },
                  "iridescent_relics-1.0.0.jar":  {
                                                      "sha256":  "4efa02a302c352f80133917fdfc7be2e80539aaee380369f0a590b8bfb53e2b0",

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Dark Pact$() — Tamed/summoned entities deal $(item)+15% damage$(). Your army hits harder.$(br2)$(bold)Soul Tether$() — Mob deaths within 16 blocks: $(item)5% lifesteal$() (capped 2 HP) + $(item)10% bonus XP$(). Your servants feed you.$(br2)$(bold)Shadow Cloak$() — +10% damage in darkness. Caves and night are your domain."
+      "text": "$(bold)Dark Pact$() — Your tamed animals and your Iron's Spells summons deal $(item)+15% damage$(). Your army hits harder.$(br2)$(bold)Soul Tether$() — Every death within 16 blocks, by any hand: you heal $(item)5% of its max health$() (up to 2 health) and gain $(item)1 XP$(). Your servants feed you.$(br2)$(bold)Shadow Cloak$() — +10% melee damage in darkness (light level 9 or lower); no penalty in light. Caves and night are your domain."
     },
     {
       "type": "patchouli:text",
