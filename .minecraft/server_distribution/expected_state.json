@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "afcc90e4",
+    "generated_from":  "735bdabf",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3248,16 +3248,16 @@
                                                                                 "size":  1708
                                                                             },
                   "config/heracles/quests/exploration/exp_t2_boss_tokens.json":  {
-                                                                                     "sha256":  "a5041fda277457b9f46545d22e2b4630af59c6375bf469df7beacaa5e2ac471e",
-                                                                                     "size":  1608
+                                                                                     "sha256":  "e054a2565774c2a4fc67ecdc6abdd616da049019df429a4e85232455abd30c03",
+                                                                                     "size":  1567
                                                                                  },
                   "config/heracles/quests/exploration/exp_t2_dimensions.json":  {
                                                                                     "sha256":  "67b1c64cc7494a46cee33d2561b789fed56c8f6ad6973abf7fba638fb5239b37",
                                                                                     "size":  1964
                                                                                 },
                   "config/heracles/quests/exploration/exp_t3_deep_dimensions.json":  {
-                                                                                         "sha256":  "fad724e12706325e8fc0a837fbe635b2d2a2be1cc4d68c60209d9ebf449a2af2",
-                                                                                         "size":  1754
+                                                                                         "sha256":  "c72738f70fcffc8dd445ed378305b499257371b185dda22185ad7e96dc5a2a1b",
+                                                                                         "size":  1795
                                                                                      },
                   "config/heracles/quests/exploration/exp_t4_final_frontiers.json":  {
                                                                                          "sha256":  "6cfd0b25d74052c86426e4108d6971f5bed676cada078f932569abc26eaf9171",
