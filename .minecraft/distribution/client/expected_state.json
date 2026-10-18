@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f33055db",
+    "generated_from":  "afcc90e4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7592,8 +7592,8 @@
                                                                                   "size":  2814
                                                                               },
                   "kubejs/server_scripts/origins/class_passives.js":  {
-                                                                          "sha256":  "f5269936c76f88148fdfda0b8c71603cb237539315a396468a2ef09ee33d7254",
-                                                                          "size":  14991
+                                                                          "sha256":  "f8aad8aa8ad1cc17d528cefda5a702b3980e368592d55c838c75d09079147ff0",
+                                                                          "size":  15614
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
                                                                                   "sha256":  "ee8a0e63297374c337b03e1fcc6a3b43d96f6d9122c66a80bfae87eb14a859d7",
@@ -7760,16 +7760,16 @@
                                                                              "size":  13907
                                                                          },
                   "kubejs/server_scripts/skills/justleveling_skills.js":  {
-                                                                              "sha256":  "4382e9e40e27ba6420b5f494cfed172550f3eda51bbdf570b0c8fac5c85c068b",
-                                                                              "size":  58205
+                                                                              "sha256":  "d3b445830bb036d9d1301c817e941cb0e63e9af351d3f2d74cb6f27171adf869",
+                                                                              "size":  58165
                                                                           },
                   "kubejs/server_scripts/skills/mastery_tax.js":  {
                                                                       "sha256":  "73e9392bf46bc820ec290cece35fe7394cf4f866d53de03d9028a873f411903b",
                                                                       "size":  7134
                                                                   },
                   "kubejs/server_scripts/skills/skill_effects.js":  {
-                                                                        "sha256":  "f6f1255e3c2b495589a52dc616d45259c95cd2632b4ab9a084de774775321d2a",
-                                                                        "size":  38890
+                                                                        "sha256":  "a992137c495c23bd1b7cd321546fcdd757ea60c477d6d63d7cdc00ab21d281a4",
+                                                                        "size":  37599
                                                                     },
                   "kubejs/server_scripts/spawn_priest_tower.js":  {
                                                                       "sha256":  "82638a8cb143436bcc74c2d3dbb7062acc28f9d843e8647a4f93d275811e385d",

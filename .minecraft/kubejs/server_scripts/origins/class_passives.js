@@ -231,9 +231,20 @@
       })
     }
 
-    // ── ARCHMAGE — Mana Attunement: tier-scaling magic bonus, every 10 seconds ──
-    // Amplifies magic equipment: T1 +0%, T2 +5%, T3 +10%, T4 +15%
+    // ── ARCHMAGE — Mana Attunement: tier-scaling spell power, every 10 seconds ──
+    // Amplifies magic equipment: T1 +0%, T2 +5%, T3 +10%, T4 +15% spell power
     // Weak early (glass cannon with no payoff), devastating late (glass nuke)
+    //
+    // 2026-10-17: ONE channel, Iron's spell power. Until then the same bonus was
+    // also put on puffish_attributes:magic_damage "for the other magic damage
+    // channels". That attribute reads NaN (a Pufferfish dynamic attribute), but it
+    // is not dead: Pufferfish's mixin multiplies, at the head of LivingEntity.hurt,
+    // every hit whose type is minecraft:magic / indirect_magic or tagged
+    // #c:is_magic / #neoforge:is_magic, and Iron's Spells tags all nine school
+    // damage types #neoforge:is_magic. So an Iron's spell got the bonus twice
+    // (tier 4: 1.15 x 1.15 = x1.3225 instead of +15%; measured on the full pack).
+    // Spell power is the channel the Codex names, and it also scales an Iron's
+    // spell's heals and shields; Ars Nouveau reads neither channel.
     if (tick % 200 === 25) {
       eachPlayer(server, 'archmage mana attunement', function (player) {
         if (getClass(player) !== 'archmage') return
@@ -247,10 +258,7 @@
         // never parsed on 1.20.1, so no such modifier ever existed)
 
         if (magicBonus > 0) {
-          // Apply to all magic damage channels
           try {
-            player.modifyAttribute('puffish_attributes:magic_damage',
-              'icraft_archmage_attunement', magicBonus, 'multiply_base')
             player.modifyAttribute('irons_spellbooks:spell_power',
               'icraft_archmage_attunement', magicBonus, 'multiply_base')
           } catch (e) {}

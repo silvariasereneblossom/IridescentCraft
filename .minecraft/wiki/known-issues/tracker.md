@@ -88,7 +88,7 @@ Implemented features awaiting confirmation on a live world:
 - Aethersteel Tier-4 ore replacement (ore appears as holystone until the T4 unlock)
 - Undergarden metals in Tetra crafting
 - Custom origin powers: Witherborn wither-on-hit, Slimebodied food/damage-reduction, Orc bloodlust, Witch of Ink progression, Artificial Construct iron-eating, Phantom Undeath, Samurai focus, Wanderer traveler bonuses, Paladin healing aura, Vanguard guardian's presence, Archmage mana attunement, Void Summoner soul tether, Battlemage mana shield
-- Magic damage sync across Ars Nouveau + Iron's Spells
+- Magic bonuses on Iron's spells, each counted once (2026-10-17: the magic damage sync is gone; Mana Attunement and the Magic aptitude skills are spell power only). Magic damage does not reach Ars Nouveau spells
 - Compass of Return (bed tracking + cross-dimension teleport)
 - Iron's Spells loot tiering (spell books / inks by dimension tier)
 - Simply Swords unique Abyss weapons

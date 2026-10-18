@@ -501,46 +501,17 @@ global.tick_skillEffects = (event) => {
             'icraft_mana_eff_sync', mc / 200, 'multiply_base')
         }
 
-        // ── Magic Damage Sync ──
-        // puffish_attributes:magic_damage is set by Origins powers (Archmage,
-        // Battlemage, Faefolk, Elf) and Sorcery skill tree, but magic mods
-        // don't read it. Sync the total bonus to Ars Nouveau's spell_damage.
-        // We read the player's magic_damage attribute total via command and
-        // apply the bonus portion to ars_nouveau spell damage.
-        //
-        // Known sources (multiply_base, additive):
-        //   Archmage: +0.50, Battlemage: +0.15, Faefolk: +0.30, Elf: +0.05
-        //   Sorcery skill tree: variable
-        // We sum from known origins + skill score rather than reading the
-        // attribute directly (KubeJS can't easily read attribute totals).
-        let magicBonus = 0
-        let magicScore = getScore(event.server, name, 'icraft_magic_damage')
-        if (magicScore > 0) magicBonus += magicScore / 100
-
-        // Detect origin/race magic bonuses through the shared cached resolver
-        // (0_lib_origins.js). These four checks used to be `execute if entity
-        // <name>[nbt=...]` commands, which never parsed (selector brackets need
-        // an @-selector) -- so until 2026-10 the class/race part of this sync
-        // was always 0.
-        try {
-          let origin = global.icraft.origin
-          let playerClass = origin.get(player, 'class')
-          let playerRace = origin.get(player, 'race')
-          // Archmage class: +50%
-          if (playerClass === 'icraft:archmage') magicBonus += 0.50
-          // Battlemage class: +15%
-          if (playerClass === 'icraft:battlemage') magicBonus += 0.15
-          // Faefolk race: +30%
-          if (playerRace === 'icraft:faefolk') magicBonus += 0.30
-          // Elf race: +5%
-          if (playerRace === 'icraft:elf') magicBonus += 0.05
-        } catch(e) {}
-
-        // Always written, including 0: a respec away from a magic class/race
-        // must take the bonus off again (the modifier is keyed by id, so this
-        // replaces in place).
-        player.modifyAttribute('irons_spellbooks:spell_power',
-          'icraft_magic_damage_sync', magicBonus, 'multiply_base')
+        // (The "Magic Damage Sync" that stood here is gone, 2026-10-17. It put
+        // +50% (Archmage), +15% (Battlemage), +30% (Faefolk) and +5% (Elf) on
+        // Iron's spell power, on the belief that magic mods do not read
+        // puffish_attributes:magic_damage, where the Origins powers put those
+        // bonuses. They do: Pufferfish multiplies every Iron's spell hit by it
+        // (the nine school damage types are #neoforge:is_magic), so since the
+        // class / race checks first worked (2026-10) each of those bonuses hit
+        // an Iron's spell twice, and the Battlemage got a bonus no power of its
+        // own names. It never wrote Ars Nouveau, as its header said it did, and
+        // the scoreboard it also read, icraft_magic_damage, is created and set
+        // by nothing. The modifier was transient: a restart takes it off.)
       } catch(e) {} // Silent fail if mod attributes don't exist
     })
   }

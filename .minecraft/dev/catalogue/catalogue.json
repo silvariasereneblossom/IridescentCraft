@@ -9434,12 +9434,6 @@
        "when": "handler"
       },
       {
-       "name": "icraft.origin",
-       "kind": "global",
-       "from": "0_lib_origins.js",
-       "when": "handler"
-      },
-      {
        "name": "registerServerTick",
        "kind": "global",
        "from": "0_tick_master.js",
@@ -12908,10 +12902,6 @@
     {
      "script": "server:respec/class_respec.js",
      "when": "handler"
-    },
-    {
-     "script": "server:skills/skill_effects.js",
-     "when": "handler"
     }
    ]
   },
@@ -13484,8 +13474,7 @@
     "server:origins/phantom_undeath.js",
     "server:origins/witch_of_ink_progression.js",
     "server:origins/witherborn_slimebodied.js",
-    "server:respec/class_respec.js",
-    "server:skills/skill_effects.js"
+    "server:respec/class_respec.js"
    ],
    "usersAtLoad": 0
   },

@@ -235,17 +235,18 @@
     ['icraft_padded_frame_a',      'minecraft:generic.armor',                'addition',      'defense',       5, 1],
     ['icraft_padded_frame_t',      'minecraft:generic.armor_toughness',      'addition',      'defense',       5, 1],
     ['icraft_bulwark',             'minecraft:generic.knockback_resistance', 'addition',      'defense',      15, 0.25],
-    // MAG — the unified mana pool / spell power live on the Iron's attributes;
-    // puffish magic_damage is the PuffishSkills damage channel.
+    // MAG — the unified mana pool / spell power live on the Iron's attributes.
+    // Spell power only (the table above). Until 2026-10-17 Mana Spark, Mana Blaze
+    // and Mana Inferno each had a second row on puffish_attributes:magic_damage:
+    // Pufferfish multiplies every Iron's spell hit by that attribute too
+    // (#neoforge:is_magic), so an Iron's spell got each skill twice (MAG 30:
+    // x1.5 x 1.5 = x2.25 instead of +50%; measured on the full pack).
     ['icraft_mana_spark_iss_mp',   'irons_spellbooks:max_mana',              'addition',      'magic',         5, 20],
-    ['icraft_mana_spark_dmg',      'puffish_attributes:magic_damage',        'multiply_base', 'magic',         5, 0.05],
     ['icraft_mana_spark_iss_dmg',  'irons_spellbooks:spell_power',           'multiply_base', 'magic',         5, 0.05],
     // Conservation of Magic: +15% mana regen stands in for "15% reduced mana cost"
     // (there is no spell-cost attribute).
     ['icraft_conservation_iss',    'irons_spellbooks:mana_regen',            'multiply_base', 'magic',        10, 0.15],
-    ['icraft_mana_blaze',          'puffish_attributes:magic_damage',        'multiply_base', 'magic',        15, 0.15],
     ['icraft_mana_blaze_iss',      'irons_spellbooks:spell_power',           'multiply_base', 'magic',        15, 0.15],
-    ['icraft_mana_inferno',        'puffish_attributes:magic_damage',        'multiply_base', 'magic',        30, 0.30],
     ['icraft_mana_inferno_iss',    'irons_spellbooks:spell_power',           'multiply_base', 'magic',        30, 0.30],
     // INT — XP gain stacks additively: +10% / +30% / +60%
     ['icraft_curious',             'puffish_attributes:experience',          'multiply_base', 'intelligence',  5, 0.10],

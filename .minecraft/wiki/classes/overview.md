@@ -156,9 +156,14 @@ Uses 9 vanilla origins + 4 custom origins = 13 total (no Mundane, no Human). The
 |------|--------|----------|
 | Compass of Return | 2.5% in cave/structure chests (T1), craftable T2 | Right-click teleports to last bed, 10min CD (`compass_of_return.js`) |
 
-### Magic Damage Sync
+### Magic damage and spell power
 
-`puffish_attributes:magic_damage` is set by Origins powers but not read by magic mods. The magic damage sync in `skill_effects.js` detects Archmage/Battlemage/Faefolk/Elf origins and pushes bonuses to both `ars_nouveau:spell_damage` and `irons_spellbooks:spell_power`.
+Two kinds of magic bonus, each counted once:
+
+- **Magic damage** (`puffish_attributes:magic_damage`): Arcane Supremacy (+50%), Faefolk (+30%), Elf (+5%) and the Sorcery tree's Magic Damage nodes. It multiplies every Iron's Spells hit you deal (all nine schools) and vanilla magic damage (harming potions). It does not reach Ars Nouveau spells. Its value reads as "NaN" in attribute lists; that is normal for this attribute, it is worked out per hit.
+- **Spell power** (`irons_spellbooks:spell_power`): Mana Attunement (+5% a tier) and the Magic aptitude skills (Mana Spark +5%, Mana Blaze +15%, Mana Inferno +30%). It multiplies an Iron's spell's own power, heals and shields included.
+
+Until 2026-10-17 a "magic damage sync" also copied the Origins bonuses onto spell power, and Mana Attunement and the three skills sat on both attributes, so an Iron's spell got each of those bonuses twice. That sync is gone.
 
 All power descriptions updated to match new implementations.
 

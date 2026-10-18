@@ -102,7 +102,6 @@ current T2 Blue Skies feels vs the T1 version before committing.
 - Artificial Construct iron eating + upgrade ladder
 - Phantom Undeath (EntityEvents.death cancel)
 - All class passives (Focus shield, Seasoned Traveler, Healing Aura, etc.)
-- Magic damage sync (puffish → ars_nouveau + irons_spellbooks)
 - Transmuted materials in recipes
 - See known-issues/tracker.md for full list
 
@@ -144,7 +143,7 @@ Items move here when implemented. See [Design Changelog](../design/changelog.md)
 - ~~Server distribution automation~~ → `iridescentserver.bat/.sh`, `sync_from_repo.bat/.sh`
 - ~~Origins expansion (4 races + 2 origins)~~ → Implemented 2026-03-19
 - ~~Class passive implementations~~ → All 10 classes functional 2026-03-19
-- ~~Magic damage sync~~ → `skill_effects.js` syncs to ars_nouveau + irons_spellbooks
+- ~~Magic damage sync~~ → retired 2026-10-17: Iron's Spells already takes Pufferfish's magic damage (its school damage types are `#neoforge:is_magic`), so the sync made each bonus count twice; it never wrote Ars Nouveau
 - ~~Phantom Undeath~~ → `phantom_undeath.js`
 - ~~Compass of Return~~ → `compass_of_return.js` + loot + recipe
 - ~~Transmuted materials~~ → retired: the 5 placeholder items never had recipes and were removed in October 2026 (transmutation is not in the game)

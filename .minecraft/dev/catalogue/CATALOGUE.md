@@ -71,7 +71,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 65 | 25 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
 | `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
-| `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 17 | 0 |
+| `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 16 | 0 |
 | `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 28 | 5 |
 | `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 43 | 43 |
 
@@ -858,7 +858,7 @@ own one-shot `global._*` flags.
 | `icraft.core` | `server:0_lib_core.js` | 65 scripts (25 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 10 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/loot_overhaul.js`, `server:loot/lootjs_overhaul.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
-| `icraft.origin` | `server:0_lib_origins.js` | 17 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
+| `icraft.origin` | `server:0_lib_origins.js` | 16 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
 | `icraft.registry` | `server:0_lib_registry.js` | _nobody_ |
 | `global.icraftBrokerLastDay` | `server:economy/relic_broker.js` (in a handler) | _nobody_ |
 | `global.icraftBrokerRestockTick` | `server:economy/relic_broker.js` | _nobody_ |
@@ -2072,7 +2072,7 @@ own one-shot `global._*` flags.
 - tick functions: `tick_skillEffects` (server, every 25, offset 0)
 - hurt handlers: `icraft.skill_effects.1` [attackerPlayer], `icraft.skill_effects.2` [victimPlayer]
 - features: `skill-craft-bonus`, `skill-material-save`
-- reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
+- reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `spawn_priest_tower.js`
 

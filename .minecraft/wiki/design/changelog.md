@@ -6,6 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026 — Magic bonuses count once (17 October)
+
+- **Each magic bonus counts once on Iron's spells.** Since the class system came alive on 10 October, an Iron's spell got several bonuses twice: Mana Attunement (+5 % a tier) and the Magic aptitude skills Mana Spark, Mana Blaze and Mana Inferno sat on both spell power and magic damage, and a "magic damage sync" copied Arcane Supremacy (+50 %), Faefolk (+30 %), Elf (+5 %) and a Battlemage +15 % onto spell power although Iron's spells already take magic damage. Mana Attunement and the three skills are spell power now, as their descriptions say; the Origins bonuses are magic damage, as theirs say; the sync is gone. An Archmage's firebolt at tier 4 now does about 2.2 times what a classless caster's does (it was about 3.4 times). Magic damage does not reach Ars Nouveau spells; it never did.
+
 ## October 2026 — Data fixes (17 October)
 
 - **"Random Spell Scroll" rewards give a scroll.** Five Practical Magic rewards named a loot table that did not exist and gave nothing; each gives one Iron's Spellbooks scroll now, bound to a random tier-1 spell the moment it lands in your inventory (as the Relic Broker's scrolls are).

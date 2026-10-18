@@ -1455,13 +1455,13 @@ Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powe
 | **Artificer** | +15% mining speed all tools (Crafting Mastery), +10% atkspd (Engineer's Efficiency), Resourceful (+10% bonus drops on ore mining, Speed I near crafting tables, +10% machine processing speed planned for Phase 2) | None — non-combat focus |
 | **Void Summoner** | +15% tamed/summon damage (Dark Pact), Shadow Cloak (+10% damage in darkness, −10% in bright light), Soul Tether (5% lifesteal from nearby mob deaths within 16 blocks, +10% bonus XP from minion kills), Expanded Mana (~1.9× mana pool) | −10% HP, **equipment HP halved** |
 
-#### Magic-damage attribute sync
+#### Magic damage and spell power (no sync)
 
-`puffish_attributes:magic_damage` is set by Origins powers (Archmage's Arcane Supremacy, Battlemage's Arcane Strikes, Faefolk race, Elf race) but is **not directly read by Iron's Spellbooks or Ars Nouveau**. The bridge in `kubejs/server_scripts/skill_effects.js` detects these classes/races and pushes the bonus to both `ars_nouveau:spell_damage` and `irons_spellbooks:spell_power` so the magic boost actually applies in-game.
+`puffish_attributes:magic_damage` is set by Origins powers (Archmage's Arcane Supremacy +50%, Faefolk +30%, Elf +5%; the Battlemage's Arcane Strikes is attack damage, not magic) and by the Sorcery tree. Pufferfish's Attributes applies it per hit, at the start of the damage, to every hit whose type is `minecraft:magic`, `minecraft:indirect_magic`, `#c:is_magic` or `#neoforge:is_magic`; Iron's Spellbooks tags all nine school damage types `#neoforge:is_magic`, so it multiplies every Iron's spell. Ars Nouveau's spell damage is tagged only `#forge:is_magic` and is not reached. (The attribute's own value reads NaN: a Pufferfish dynamic attribute.) A bridge in `skill_effects.js` that copied these bonuses onto `irons_spellbooks:spell_power`, believing magic mods ignore the attribute, made each of them count twice on Iron's spells; it was removed 2026-10-17 (it never wrote Ars Nouveau).
 
 #### Mana Attunement tier table (Archmage)
 
-Magic damage bonus from Mana Attunement, applied multiplicatively to all magic damage channels (`puffish_attributes:magic_damage`, `irons_spellbooks:spell_power`, `ars_nouveau:ars_nouveau.perk.spell_damage`):
+Spell power bonus from Mana Attunement (`irons_spellbooks:spell_power`, multiply_base; one channel since 2026-10-17: it was also put on `puffish_attributes:magic_damage`, so an Iron's spell got it twice, x1.3225 at T4):
 
 | Detected tier | Trigger dimension | Bonus |
 |:-:|---|:-:|
@@ -1472,7 +1472,7 @@ Magic damage bonus from Mana Attunement, applied multiplicatively to all magic d
 
 The dimensions and their tiers are the pack's dimension registry (the Otherside and the Abyss counted as T4 here until 2026-10-12; the stage-gate tier, 3, is the rule). The Ad Astra planets themselves are not on this list.
 
-Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). Combined with the +25% Arcane Supremacy base + 10% standing-still bonus + race/origin bonuses, peak Archmage burst at T4 multi-stacks well past 50% magic damage.
+Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). It multiplies with Arcane Supremacy's +50% magic damage (a separate multiplier, together with any race magic damage) and with the class's +25% spell power on magic hits (`class_attribute_bonuses.js` through `attribute_sync.js`). The "standing still for 3s grants +10% spell damage" of the Origins text above is not implemented by any script (observation 2026-10-17, decision list 121).
 
 ### K.3 Race tradeoffs
 
