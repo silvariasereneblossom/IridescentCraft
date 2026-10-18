@@ -1,10 +1,10 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:netherite_sword" },
-    "title": "Boss-Rush III - The Infernal Gauntlet",
-    "subtitle": "Clear 100% of the Tier 3 roster - Lucifer last",
+    "title": "Boss-Rush III: The Infernal Gauntlet",
+    "subtitle": "Clear 100% of the Tier 3 roster, Lucifer last",
     "description": [
-      "The Tier 3 boss-rush demands a COMPLETE clear - and Lucifer is the",
+      "The Tier 3 boss-rush demands a complete clear, and Lucifer is the",
       "final name on the list. Finishing the full roster auto-advances you",
       "to Tier 4.",
       "",
@@ -12,8 +12,8 @@
       "waits at the end of the Cardinal Sins' shrine chain; his kill counts",
       "like every other name on the roster.",
       "",
-      "The composite tracks the marquee fights (Cataclysm, Undergarden,",
-      "Deeper Darker, the Wither); the real denominator is the full roster.",
+      "The tasks track the marquee fights (Cataclysm, Undergarden, Deeper",
+      "Darker, the Wither); the real requirement is the full roster.",
       "",
       "§7Lucifer himself is the §cCapstones§7 group's finale."
     ],

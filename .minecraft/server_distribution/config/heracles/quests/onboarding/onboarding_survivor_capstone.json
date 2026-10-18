@@ -40,7 +40,7 @@
     "complete_all": {
       "type": "heracles:dummy",
       "value": "onboarding_survivor_capstone_check",
-      "description": "Heracles dep-chain check (auto-completes when all 11 prerequisites done)."
+      "description": "Completes on its own once all 11 earlier quests are done."
     }
   },
   "rewards": {

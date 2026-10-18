@@ -11,8 +11,8 @@
       "Reaching the End is the threshold of the endgame.",
       "",
       "§7The End Bastion structure is still being built; this capstone tracks",
-      "§7stepping into the End. Inside, the Dragon will not manifest until you",
-      "§7have explored the outer islands and proven yourself - see the finale."
+      "§7stepping into the End. Inside, the Dragon will not appear until you",
+      "§7have explored the outer islands and proven yourself (see the finale)."
     ],
     "groups": {
       "Capstones": { "position": [320, 60] }

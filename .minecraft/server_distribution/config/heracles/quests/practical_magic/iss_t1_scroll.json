@@ -8,7 +8,7 @@
     "subtitle": "Inscribe a Spell Scroll",
     "description": [
       "Spend ink at the Inscription Table to bind a spell into a \u00a76Scroll\u00a7r. A",
-      "scroll casts its spell once \u2014 your first taste of arcane power."
+      "scroll casts its spell once."
     ],
     "groups": {
       "Practical Magic": {

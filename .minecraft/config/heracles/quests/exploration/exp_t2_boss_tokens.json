@@ -1,12 +1,12 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "twilightforest:naga_trophy" },
-    "title": "Frontiers II - Hunt the Twilight Bosses",
+    "title": "Frontiers II: Hunt the Twilight Bosses",
     "subtitle": "First kills pay the biggest tokens",
     "description": [
-      "Each Tier 2 boss's FIRST kill grants a one-time bonus worth a large",
+      "Each Tier 2 boss's first kill grants a one-time bonus worth a large",
       "chunk of the pool (15 each at T2); repeat kills grant a smaller amount,",
-      "so the lane stays farmable. All minted automatically on the kill.",
+      "so the lane stays farmable. Tokens are minted automatically on the kill.",
       "",
       "Slay the gatekeepers of the Twilight Forest. Their kills also count",
       "toward the Tier 2 boss rush, the combat road to Tier 3.",

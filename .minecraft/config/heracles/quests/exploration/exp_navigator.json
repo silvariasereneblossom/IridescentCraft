@@ -9,7 +9,7 @@
       "any biome), the §bBoss Compass§r (track boss arenas), and the unified",
       "§bGrand Compass§r.",
       "",
-      "§7All four are craftable around Tier 1 — the Grand and Boss compasses just",
+      "§7All four are craftable around Tier 1; the Grand and Boss compasses just",
       "§7need a source gem. Reward: a burst of experience."
     ],
     "groups": { "Exploration": { "position": [0, 240] } }

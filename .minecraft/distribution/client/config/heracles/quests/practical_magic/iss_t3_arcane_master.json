@@ -7,10 +7,9 @@
     "title": "Iron's Spellbooks: Arcane Master",
     "subtitle": "Claim the masterwork of the craft",
     "description": [
-      "The mark of an Arcane Master is to hold the masterwork of the craft.",
-      "Gather any three of the four apex prizes \u2014 the Ancient Codex, a Mithril",
-      "Ingot, a Pyrium Ingot, and a Divine Pearl \u2014 to be named among the great",
-      "casters of Iridescent."
+      "An Arcane Master holds the masterwork of the craft. Gather any three of",
+      "the four apex prizes (the Ancient Codex, a Mithril Ingot, a Pyrium Ingot,",
+      "and a Divine Pearl) to be named among the great casters of Iridescent."
     ],
     "groups": {
       "Practical Magic": {

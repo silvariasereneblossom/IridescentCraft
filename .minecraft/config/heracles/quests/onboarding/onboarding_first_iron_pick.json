@@ -7,9 +7,9 @@
     "title": "Iron Tools",
     "subtitle": "Craft an iron pickaxe",
     "description": [
-      "An iron pickaxe mines diamonds and durable enough for serious work.",
+      "An iron pickaxe mines diamonds and is durable enough for serious work.",
       "",
-      "Craft one at a crafting table -- 3 iron ingots + 2 sticks."
+      "Craft one at a crafting table from 3 iron ingots and 2 sticks."
     ],
     "groups": {
       "Onboarding": {

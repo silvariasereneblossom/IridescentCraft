@@ -1,14 +1,14 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:diamond_sword" },
-    "title": "Boss-Rush II - The Twilight Gauntlet",
+    "title": "Boss-Rush II: The Twilight Gauntlet",
     "subtitle": "Clear 90% of the Tier 2 roster",
     "description": [
       "The Tier 2 boss-rush spans the Twilight Forest and Blue Skies bosses",
       "(Frostmaw included). Clearing 90% of the roster auto-advances you to Tier 3.",
       "",
-      "The composite below tracks four of the marquee fights; the real",
-      "auto-advance denominator is the full roster. Check it with",
+      "This quest asks for four of the marquee fights below; the real",
+      "auto-advance counts the full roster. Check it with",
       "§e/icraft codex bosses§r."
     ],
     "groups": {

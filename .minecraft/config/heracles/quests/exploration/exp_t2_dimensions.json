@@ -1,10 +1,10 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "twilightforest:twilight_portal_miniature_structure" },
-    "title": "Frontiers I - The Mid-Tier Dimensions",
+    "title": "Frontiers I: The Mid-Tier Dimensions",
     "subtitle": "Twilight Forest, Everbright, Everdawn",
     "description": [
-      "Stepping into a new dimension banks Exploration tokens automatically -",
+      "Stepping into a new dimension banks Exploration tokens automatically:",
       "20 the first time you arrive in each. The three Tier 2 frontiers are",
       "the Twilight Forest and Blue Skies' two realms, Everbright and Everdawn.",
       "",
@@ -13,7 +13,7 @@
       "§7throwing in a Codex Token I (a diamond works too). Anyone can",
       "§7light it; stepping through needs Tier 2.",
       "",
-      "Reach all three dimensions below. §7(Tokens land on arrival - this",
+      "Reach all three dimensions below. §7(Tokens land on arrival; this",
       "quest is just the checklist.)"
     ],
     "groups": {

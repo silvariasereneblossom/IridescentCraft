@@ -9,7 +9,8 @@
     "description": [
       "A pickaxe lets you break stone.",
       "",
-      "Open your inventory (E), arrange 3 planks across the top and 2 sticks down the middle of the crafting grid."
+      "Make a crafting table from 4 planks in your inventory (E), then place 3 planks",
+      "across the top of its grid and 2 sticks down the middle."
     ],
     "groups": {
       "Onboarding": {

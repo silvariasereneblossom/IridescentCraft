@@ -5,9 +5,9 @@
     "subtitle": "Master the Overworld's threats",
     "description": [
       "You've culled the common dead and felled your first boss. Prove it's no",
-      "fluke — put down a veteran's tally of the Overworld's worst.",
+      "fluke: put down a veteran's tally of the Overworld's worst.",
       "",
-      "Then take the fight upward: the §cBoss Rush§r awaits, and every tier has",
+      "Then take the fight upward. The §cBoss Rush§r awaits, and every tier has",
       "its own roster to break."
     ],
     "groups": { "Combat": { "position": [180, 200] } }

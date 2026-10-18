@@ -1,16 +1,16 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:iron_sword" },
-    "title": "Boss-Rush I - The Overworld Gauntlet",
+    "title": "Boss-Rush I: The Overworld Gauntlet",
     "subtitle": "Clear the Tier 1 roster",
     "description": [
       "The Tier 1 boss-rush. Clearing 80% of the full T1 boss roster",
-      "auto-advances you to Tier 2 - no tokens needed. Their kills also feed",
+      "auto-advances you to Tier 2, no tokens needed. Their kills also feed",
       "the pool.",
       "",
-      "The composite below tracks a few of the marquee overworld fights; the",
-      "real 80%-of-roster auto-advance is enforced by the engine across every",
-      "T1 boss. See the full count with §e/icraft codex bosses§r."
+      "The tasks below track a few of the marquee Overworld fights; the real",
+      "80%-of-roster auto-advance counts every T1 boss. See the full count with",
+      "§e/icraft codex bosses§r."
     ],
     "groups": {
       "Boss Rush": { "position": [0, 0] }

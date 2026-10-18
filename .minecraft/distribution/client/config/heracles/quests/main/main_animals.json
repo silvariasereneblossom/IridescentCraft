@@ -4,10 +4,10 @@
     "title": "The Birds and the Bees",
     "subtitle": "Breed a pair of animals",
     "description": [
-      "Lead two of the same animal together and feed them to breed. A renewable",
-      "herd means renewable food, wool, and leather.",
+      "Lead two animals of the same kind together and feed them so they breed. A",
+      "breeding herd is a renewable source of food, wool, and leather.",
       "",
-      "§7Cows, sheep, pigs, chickens — pick your livestock."
+      "§7Cows, sheep, pigs, chickens: pick your livestock."
     ],
     "groups": { "Main": { "position": [120, 0] } }
   },

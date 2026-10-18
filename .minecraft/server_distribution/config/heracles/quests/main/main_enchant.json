@@ -7,8 +7,8 @@
       "Build an enchanting table (it takes diamonds), surround it with bookshelves,",
       "and enchant your first piece of gear.",
       "",
-      "§7Apotheosis overhauls enchanting here — expect deeper enchants and the",
-      "§7affix system on your gear as you climb the tiers."
+      "§7Apotheosis overhauls enchanting here. As you climb the tiers, expect",
+      "§7deeper enchants and the affix system on your gear."
     ],
     "groups": { "The Frontier": { "position": [160, 120] } }
   },

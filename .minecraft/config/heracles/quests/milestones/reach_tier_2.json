@@ -1,14 +1,14 @@
 {
   "display": {
     "icon": { "type": "heracles:item", "item": "twilightforest:ironwood_ingot" },
-    "title": "Ascension I - Reach Tier 2",
+    "title": "Ascension I: Reach Tier 2",
     "subtitle": "500 tokens, or 80% of the T1 boss-rush",
     "description": [
-      "The first ascension. However you got here - banked tokens or boss-rush -",
+      "The first ascension. However you got here (banked tokens or boss-rush),",
       "the Codex recognizes your growth and opens Tier 2.",
       "",
       "This quest completes the moment the Codex engine grants you the Tier 2",
-      "stage. You do NOT submit anything here; the milestone tracks the",
+      "stage. You do not submit anything here; the milestone tracks the",
       "engine's decision.",
       "",
       "Tier 2 unlocks the mid-tier dimensions (the Twilight Forest and Blue",
