@@ -1451,7 +1451,7 @@ Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powe
 | **Paladin** | +3 armor / +1 toughness (Holy Armor), +10% KB resist, Healing Aura (allies in 8 blocks regen 0.5 HP/5s; self regens 1 HP/5s above 50% HP) | +10% HP — pure support tank |
 | **Vanguard** | +6 armor / +3 toughness (Fortress), +40% KB resist (Immovable), Guardian's Presence (Weakness I to mobs in 5 blocks), −15% damage dealt (Pacifist's Burden) | +20% HP — hardest tank in the pack |
 | **Ranger** | +15% speed, +10% atkspd (Swift), +20% projectile damage (Eagle Eye), Glass Cannon (−3 armor) | −20% HP, **equipment HP halved** |
-| **Archmage** | **+50% magic damage** (Arcane Supremacy), Mana Attunement: **mana pool runs at 2.5× baseline**, standing still for 3s grants +10% spell damage, melee damage reduced 25%, plus tier-scaling magic amp ticked every 10s (**T1: +0%, T2: +5%, T3: +10%, T4: +15%**), Frail Frame (−4 armor / −2 toughness). Mana-on-kill moved to Battlemage (cont. 16) — Archmage stays pure caster offense without a melee feedback loop. | −20% HP, **equipment HP halved** — the back-loaded glass nuke |
+| **Archmage** | **+50% magic damage** (Arcane Supremacy), **-50% melee damage** (Frail Melee), Mana Attunement: tier-scaling spell power ticked every 10s (**T1: +0%, T2: +5%, T3: +10%, T4: +15%**), Mana Reservoir: +150% max mana, and with the mage classes' 1.5x from `mana_pool_bonuses.js` a pool of **3.75× baseline** (375), Frail Frame (−28.6% armor / −20% toughness). No spell-kill mana and no standing-still bonus (the Origins text promised both until 2026-10-17); mana-on-kill moved to Battlemage (cont. 16). | −20% HP, **equipment HP halved** — the back-loaded glass nuke |
 | **Artificer** | +15% mining speed all tools (Crafting Mastery), +10% atkspd (Engineer's Efficiency), Resourceful (+10% bonus drops on ore mining, Speed I near crafting tables, +10% machine processing speed planned for Phase 2) | None — non-combat focus |
 | **Void Summoner** | +15% tamed/summon damage (Dark Pact), Shadow Cloak (+10% damage in darkness, −10% in bright light), Soul Tether (5% lifesteal from nearby mob deaths within 16 blocks, +10% bonus XP from minion kills), Expanded Mana (~1.9× mana pool) | −10% HP, **equipment HP halved** |
 
@@ -1472,7 +1472,7 @@ Spell power bonus from Mana Attunement (`irons_spellbooks:spell_power`, multiply
 
 The dimensions and their tiers are the pack's dimension registry (the Otherside and the Abyss counted as T4 here until 2026-10-12; the stage-gate tier, 3, is the rule). The Ad Astra planets themselves are not on this list.
 
-Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). It multiplies with Arcane Supremacy's +50% magic damage (a separate multiplier, together with any race magic damage) and with the class's +25% spell power on magic hits (`class_attribute_bonuses.js` through `attribute_sync.js`). The "standing still for 3s grants +10% spell damage" of the Origins text above is not implemented by any script (noted 2026-10-17).
+Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). It multiplies with Arcane Supremacy's +50% magic damage (a separate multiplier, together with any race magic damage) and with the class's +25% spell power on magic hits (`class_attribute_bonuses.js` through `attribute_sync.js`).
 
 ### K.3 Race tradeoffs
 

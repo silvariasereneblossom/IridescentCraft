@@ -9,6 +9,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 ## October 2026 — Magic bonuses count once (17 October)
 
 - **Each magic bonus counts once on Iron's spells.** Since the class system came alive on 10 October, an Iron's spell got several bonuses twice: Mana Attunement (+5 % a tier) and the Magic aptitude skills Mana Spark, Mana Blaze and Mana Inferno sat on both spell power and magic damage, and a "magic damage sync" copied Arcane Supremacy (+50 %), Faefolk (+30 %), Elf (+5 %) and a Battlemage +15 % onto spell power although Iron's spells already take magic damage. Mana Attunement and the three skills are spell power now, as their descriptions say; the Origins bonuses are magic damage, as theirs say; the sync is gone. An Archmage's firebolt at tier 4 now does about 2.2 times what a classless caster's does (it was about 3.4 times). Magic damage does not reach Ars Nouveau spells; it never did.
+- **The Archmage's texts on the Origins screen say what the class does.** Mana Attunement is +5 % spell power for each passive tier above the first (+15 % at Tier 4); there is no spell-kill mana and no standing-still bonus, and the melee malus is Frail Melee's -50 %. The mana pool is 3.75 times the baseline (Mana Reservoir's +150 % and the mage classes' 1.5x together: 375 instead of 100), not 2.5 times.
 
 ## October 2026 — Data fixes (17 October)
 

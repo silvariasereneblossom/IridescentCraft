@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "ca487ac0",
+    "generated_from":  "5e611274",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8668,7 +8668,7 @@
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "271d6329cbf83459fcfaea4fde6bc106e29ea8b3e50905d02ab09afcdb8c180a",
+                                                                 "sha256":  "c5ecc1341e6c0993897b0d80faa9b4cda46313b0d09c3995f083ccffdd5af34a",
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {

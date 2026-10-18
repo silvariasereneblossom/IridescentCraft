@@ -1,5 +1,5 @@
 {
-  "icraft.origin.archmage.description": "The pinnacle of arcane power, fragile as glass and twice as sharp. Archmages channel devastating magical force at the cost of nearly all physical resilience. Standing still focuses their power further, and spell kills fuel an endless cycle of destruction. Their mana pool runs at 2.5x the baseline, sustaining prolonged barrages.",
+  "icraft.origin.archmage.description": "The pinnacle of arcane power, fragile as glass and twice as sharp. Archmages channel devastating magical force at the cost of nearly all physical resilience: less health, halved equipment health, a thin frame and half the melee damage. Their spells grow stronger with every tier of world they reach, and their mana pool runs at 3.75x the baseline, sustaining prolonged barrages.",
   "icraft.origin.archmage.name": "Archmage",
   "icraft.origin.artificer.description": "Master of craft and industry. Artificers mine faster, extract more from every vein, and work with mechanical precision. Their power grows from the infrastructure they build — nearby crafting stations quicken their hands. No health penalty; their strength is their workshop.",
   "icraft.origin.artificer.name": "Artificer",
@@ -57,9 +57,9 @@
   "icraft.power.class.archmage.glass_frame.name": "Frail Frame",
   "icraft.power.class.archmage.hp_modifier.description": "Significantly reduced max HP (-20%). Equipment HP halved.",
   "icraft.power.class.archmage.hp_modifier.name": "Archmage Vitality",
-  "icraft.power.class.archmage.mana_attunement.description": "Mana pool runs at 2.5x the baseline. Spell kills restore mana. Standing still for 3 seconds grants +10% spell damage. Melee damage reduced by 25%.",
+  "icraft.power.class.archmage.mana_attunement.description": "+5% spell power for each passive tier above the first: +0% at Tier 1, +5% at Tier 2, +10% at Tier 3, +15% at Tier 4. Your passive tier is the highest tier of dimension you have entered, and it never goes down.",
   "icraft.power.class.archmage.mana_attunement.name": "Mana Attunement",
-  "icraft.power.class.archmage.mana_pool.description": "Mana pool runs at 2.5x baseline (+150% max mana on both ISS and Ars Nouveau).",
+  "icraft.power.class.archmage.mana_pool.description": "+150% max mana (2.5x the baseline). With the mage classes' own 1.5x bonus on top, your pool runs at 3.75x the baseline: 375 instead of 100.",
   "icraft.power.class.archmage.mana_pool.name": "Mana Reservoir",
   "icraft.power.class.artificer.crafting_mastery.description": "+15% mining speed for all tools.",
   "icraft.power.class.artificer.crafting_mastery.name": "Crafting Mastery",
