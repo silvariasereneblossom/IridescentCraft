@@ -1472,7 +1472,7 @@ Spell power bonus from Mana Attunement (`irons_spellbooks:spell_power`, multiply
 
 The dimensions and their tiers are the pack's dimension registry (the Otherside and the Abyss counted as T4 here until 2026-10-12; the stage-gate tier, 3, is the rule). The Ad Astra planets themselves are not on this list.
 
-Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). It multiplies with Arcane Supremacy's +50% magic damage (a separate multiplier, together with any race magic damage) and with the class's +25% spell power on magic hits (`class_attribute_bonuses.js` through `attribute_sync.js`). The "standing still for 3s grants +10% spell damage" of the Origins text above is not implemented by any script (observation 2026-10-17, decision list 121).
+Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). It multiplies with Arcane Supremacy's +50% magic damage (a separate multiplier, together with any race magic damage) and with the class's +25% spell power on magic hits (`class_attribute_bonuses.js` through `attribute_sync.js`). The "standing still for 3s grants +10% spell damage" of the Origins text above is not implemented by any script (noted 2026-10-17).
 
 ### K.3 Race tradeoffs
 
