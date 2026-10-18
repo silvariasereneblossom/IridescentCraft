@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 331,
-   "digest": "62e1b0390bdb1a1c",
+   "count": 328,
+   "digest": "35b00c9e1d06778d",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -235,14 +235,6 @@
     },
     {
      "id": "attributes/mana_pool_bonuses@PlayerEvents.loggedIn",
-     "script": "attributes/mana_pool_bonuses.js"
-    },
-    {
-     "id": "attributes/mana_pool_bonuses@PlayerEvents.loggedOut",
-     "script": "attributes/mana_pool_bonuses.js"
-    },
-    {
-     "id": "attributes/mana_pool_bonuses@PlayerEvents.respawned",
      "script": "attributes/mana_pool_bonuses.js"
     },
     {
@@ -1352,10 +1344,6 @@
     {
      "id": "tick_justlevelingSkills@tick.server",
      "script": "skills/justleveling_skills.js"
-    },
-    {
-     "id": "tick_manaPoolBonuses@tick.server",
-     "script": "attributes/mana_pool_bonuses.js"
     },
     {
      "id": "tick_masteryTax@tick.server",

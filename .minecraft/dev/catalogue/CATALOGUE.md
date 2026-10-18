@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 25 | 24 | 26 | 3 |
-| server | 163 | 332 | 241 | 27 |
+| server | 163 | 329 | 241 | 27 |
 | client | 14 | 9 | 0 | 0 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 331`, `startup: 24`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 328`, `startup: 24`).
 
 ## How to read it
 
@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 263. 256 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 262. 255 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -58,7 +58,7 @@ Structural, by the script that loads first:
 | `server:00_icraft_guard.js` | 1000 | 151 | `icraft.guard`, `icraft.lib`, `icraft.live` |
 | `server:0_lib_core.js` | 880 | 25 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
-| `server:0_tick_master.js` | 840 | 43 | `global.registerPlayerTick`, `global.registerServerTick` |
+| `server:0_tick_master.js` | 840 | 42 | `global.registerPlayerTick`, `global.registerServerTick` |
 | `client:00_icraft_guard.js` | 1000 | 10 | `icraft.guard`, `icraft.live` |
 
 ## Libraries
@@ -71,9 +71,9 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 65 | 25 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
 | `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
-| `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 16 | 0 |
+| `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 15 | 0 |
 | `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 28 | 5 |
-| `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 43 | 43 |
+| `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 42 | 42 |
 
 ## startup scripts: load order
 
@@ -130,7 +130,7 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 19 |  | `attributes/iss_school_to_ars_glyph.js` | `ForgeEventRegistry_aspg.registerSpellDamagePre` |
 | 20 |  | `attributes/iss_school_to_ars_spell.js` | `hurt` |
 | 21 |  | `attributes/mana_debug_command.js` | `ServerEvents.commandRegistry` |
-| 22 |  | `attributes/mana_pool_bonuses.js` | `PlayerEvents.loggedIn`, `PlayerEvents.loggedOut`, `PlayerEvents.respawned`, `tick.server` |
+| 22 |  | `attributes/mana_pool_bonuses.js` | `PlayerEvents.loggedIn` |
 | 23 |  | `bonfire/boss_arena_registry.js` |  |
 | 24 |  | `bonfire/boss_bonfire_system.js` | `tick.player` |
 | 25 |  | `bonfire/boss_compass_handler.js` | `ItemEvents.rightClicked`, `PlayerEvents.loggedOut`, `ServerEvents.commandRegistry`, `ServerEvents.recipes`, `tick.player` |
@@ -551,7 +551,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 24. `strip_infinity_ham.js`
 25. `zzz_icraft_live.js`
 
-**`PlayerEvents.loggedOut`** (19)
+**`PlayerEvents.loggedOut`** (18)
 
 1. `0_lib_aptitudes.js`
 2. `0_lib_origins.js`
@@ -559,34 +559,32 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 4. `affixes/affix_effects.js`
 5. `armor_weight.js`
 6. `attributes/attribute_sync.js`
-7. `attributes/mana_pool_bonuses.js`
-8. `bonfire/boss_compass_handler.js`
-9. `death_penalty.js`
-10. `idle_hunger_pause.js`
-11. `integration/dna_simple_staves_buffs.js`
-12. `liteminer_hunger_gate.js`
-13. `origins/spell_book_transfer.js`
-14. `origins/witherborn_slimebodied.js`
-15. `pregen/auto_chunky.js`
-16. `quests/onboarding_bridge.js`
-17. `respec/class_respec.js`
-18. `skills/justleveling_skills.js`
-19. `skills/mastery_tax.js`
+7. `bonfire/boss_compass_handler.js`
+8. `death_penalty.js`
+9. `idle_hunger_pause.js`
+10. `integration/dna_simple_staves_buffs.js`
+11. `liteminer_hunger_gate.js`
+12. `origins/spell_book_transfer.js`
+13. `origins/witherborn_slimebodied.js`
+14. `pregen/auto_chunky.js`
+15. `quests/onboarding_bridge.js`
+16. `respec/class_respec.js`
+17. `skills/justleveling_skills.js`
+18. `skills/mastery_tax.js`
 
-**`PlayerEvents.respawned`** (12)
+**`PlayerEvents.respawned`** (11)
 
 1. `0_lib_aptitudes.js`
 2. `0_lib_origins.js`
 3. `armor_weight.js`
-4. `attributes/mana_pool_bonuses.js`
-5. `endgame/ascension.js`
-6. `integration/dna_simple_staves_buffs.js`
-7. `origins/artificial_construct_progression.js`
-8. `origins/class_passives_phase6h.js`
-9. `origins/witch_of_ink_progression.js`
-10. `respawn_hunger.js`
-11. `skills/justleveling_skills.js`
-12. `skills/mastery_tax.js`
+4. `endgame/ascension.js`
+5. `integration/dna_simple_staves_buffs.js`
+6. `origins/artificial_construct_progression.js`
+7. `origins/class_passives_phase6h.js`
+8. `origins/witch_of_ink_progression.js`
+9. `respawn_hunger.js`
+10. `skills/justleveling_skills.js`
+11. `skills/mastery_tax.js`
 
 **`PlayerEvents.tick`** (1)
 
@@ -699,7 +697,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 18. `scaling/dimension_mechanics.js` as `tick_dragonsInfluence`
 19. `scaling/dimension_mechanics.js` as `tick_enhancedVoidCorruption`
 
-**`tick.server`** (45)
+**`tick.server`** (44)
 
 1. `abyss/abyss_armor_effects.js` as `tick_abyssArmorEffects`
 2. `abyss/abyss_ring_effects.js` as `tick_abyssRingEffects`
@@ -707,45 +705,44 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 4. `armor_weight.js` as `tick_armorWeight`
 5. `attributes/attribute_sync.js` as `tick_xpMultiplier`
 6. `attributes/class_attribute_bonuses.js` as `tick_classAttributeBonuses`
-7. `attributes/mana_pool_bonuses.js` as `tick_manaPoolBonuses`
-8. `class/equipment_hp_halving.js` as `tick_equipmentHpHalving`
-9. `class/equipment_hp_halving.js` as `tick_glassCannonTagCheck`
-10. `codex_delivery.js` as `tick_codexStarterCheck`
-11. `codex_delivery.js` as `tick_codexOriginDump`
-12. `codex_delivery.js` as `tick_codexChatProcessor`
-13. `codex_delivery.js` as `tick_codexBookSweep`
-14. `compat/terramity_virtue_altar.js` as `tick_virtueAltar`
-15. `economy/relic_broker.js` as `icraftBrokerRestockTick`
-16. `enchantments/enchant_effects.js` as `tick_enchantPeriodicEffects`
-17. `enchantments/enchant_effects.js` as `tick_enchantConvergence`
-18. `enchantments/enchant_effects.js` as `tick_enchantLunarStride`
-19. `end/dragon_exploration_gate.js` as `tick_dragonSummonCrystal`
-20. `endgame/ascension.js` as `tick_ascensionRefresh`
-21. `endgame/ascension.js` as `tick_ascensionChat`
-22. `food/hunger_management.js` as `tick_hungerManagement`
-23. `gates/milestone_detection.js` as `tick_milestoneTierEnsure`
-24. `idle_hunger_pause.js` as `tick_idleHungerPause`
-25. `integration/dna_simple_staves_buffs.js` as `tick_dna_simple_staves_buffs`
-26. `origins/battlemage_mana_shield.js` as `tick_battlemageManaShield`
-27. `origins/class_passives.js` as `tick_classPassives`
-28. `origins/origin_effects.js` as `tick_originEffectsAvianMerling`
-29. `origins/origin_effects.js` as `tick_revenantShadowStrike`
-30. `origins/phantom_undeath.js` as `tick_phantomUndeath`
-31. `origins/witch_of_ink_progression.js` as `tick_witchOfInkBuffs`
-32. `origins/witherborn_slimebodied.js` as `tick_witherbornSlimebodied`
-33. `quests/heracles_reconcile.js` as `tick_heraclesReconcileRecheck`
-34. `quests/heracles_reconcile.js` as `tick_heraclesReconcilePeriodic`
-35. `respec/class_respec.js` as `tick_skillRespec`
-36. `scaling/dimension_mechanics.js` as `tick_voidCorruptionCleanse`
-37. `skills/justleveling_skills.js` as `tick_justlevelingSkills`
-38. `skills/justleveling_skills.js` as `tick_aptitudeXpRefund`
-39. `skills/mastery_tax.js` as `tick_masteryTax`
-40. `skills/skill_effects.js` as `tick_skillEffects`
-41. `spawn_village_protection.js` as `tick_spawnVillageSweep`
-42. `sunlight_smite.js` as `tick_sunlightSmite`
-43. `tetra_terramity_perks.js` as `tick_terramityTetraPerks`
-44. `ultris_randomizer_janitor.js` as `tick_ultrisJanitor`
-45. `zzz_icraft_live.js` as `tick_icraftLive`
+7. `class/equipment_hp_halving.js` as `tick_equipmentHpHalving`
+8. `class/equipment_hp_halving.js` as `tick_glassCannonTagCheck`
+9. `codex_delivery.js` as `tick_codexStarterCheck`
+10. `codex_delivery.js` as `tick_codexOriginDump`
+11. `codex_delivery.js` as `tick_codexChatProcessor`
+12. `codex_delivery.js` as `tick_codexBookSweep`
+13. `compat/terramity_virtue_altar.js` as `tick_virtueAltar`
+14. `economy/relic_broker.js` as `icraftBrokerRestockTick`
+15. `enchantments/enchant_effects.js` as `tick_enchantPeriodicEffects`
+16. `enchantments/enchant_effects.js` as `tick_enchantConvergence`
+17. `enchantments/enchant_effects.js` as `tick_enchantLunarStride`
+18. `end/dragon_exploration_gate.js` as `tick_dragonSummonCrystal`
+19. `endgame/ascension.js` as `tick_ascensionRefresh`
+20. `endgame/ascension.js` as `tick_ascensionChat`
+21. `food/hunger_management.js` as `tick_hungerManagement`
+22. `gates/milestone_detection.js` as `tick_milestoneTierEnsure`
+23. `idle_hunger_pause.js` as `tick_idleHungerPause`
+24. `integration/dna_simple_staves_buffs.js` as `tick_dna_simple_staves_buffs`
+25. `origins/battlemage_mana_shield.js` as `tick_battlemageManaShield`
+26. `origins/class_passives.js` as `tick_classPassives`
+27. `origins/origin_effects.js` as `tick_originEffectsAvianMerling`
+28. `origins/origin_effects.js` as `tick_revenantShadowStrike`
+29. `origins/phantom_undeath.js` as `tick_phantomUndeath`
+30. `origins/witch_of_ink_progression.js` as `tick_witchOfInkBuffs`
+31. `origins/witherborn_slimebodied.js` as `tick_witherbornSlimebodied`
+32. `quests/heracles_reconcile.js` as `tick_heraclesReconcileRecheck`
+33. `quests/heracles_reconcile.js` as `tick_heraclesReconcilePeriodic`
+34. `respec/class_respec.js` as `tick_skillRespec`
+35. `scaling/dimension_mechanics.js` as `tick_voidCorruptionCleanse`
+36. `skills/justleveling_skills.js` as `tick_justlevelingSkills`
+37. `skills/justleveling_skills.js` as `tick_aptitudeXpRefund`
+38. `skills/mastery_tax.js` as `tick_masteryTax`
+39. `skills/skill_effects.js` as `tick_skillEffects`
+40. `spawn_village_protection.js` as `tick_spawnVillageSweep`
+41. `sunlight_smite.js` as `tick_sunlightSmite`
+42. `tetra_terramity_perks.js` as `tick_terramityTetraPerks`
+43. `ultris_randomizer_janitor.js` as `tick_ultrisJanitor`
+44. `zzz_icraft_live.js` as `tick_icraftLive`
 
 ### Hurt handlers (through the dispatcher of `0_lib_core.js`; listed in the order they RUN: the ones placed `first` in the order of the list `PLACED` of the library, the unplaced ones in the order they are registered, then, after every other entry of the Java registry (the handlers of the startup scripts), the ones placed `last`. `secondary` = also on a hit dealt through `core.dealDamage`; `cancelled` = also after an earlier handler cancelled the hit; `unchecked` = the amount it leaves is not checked)
 
@@ -858,7 +855,7 @@ own one-shot `global._*` flags.
 | `icraft.core` | `server:0_lib_core.js` | 65 scripts (25 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 10 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/loot_overhaul.js`, `server:loot/lootjs_overhaul.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
-| `icraft.origin` | `server:0_lib_origins.js` | 16 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:attributes/mana_pool_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, ... |
+| `icraft.origin` | `server:0_lib_origins.js` | 15 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, `server:origins/artificial_construct_progression.js`, ... |
 | `icraft.registry` | `server:0_lib_registry.js` | _nobody_ |
 | `global.icraftBrokerLastDay` | `server:economy/relic_broker.js` (in a handler) | _nobody_ |
 | `global.icraftBrokerRestockTick` | `server:economy/relic_broker.js` | _nobody_ |
@@ -873,7 +870,7 @@ own one-shot `global._*` flags.
 | `global.icraftSkipIssMob` | `server:0_iss_guard.js` | `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:scaling/mob_equipment.js` |
 | `global.playerTickFunctions` | `server:0_tick_master.js` | _nobody_ |
 | `global.registerPlayerTick` | `server:0_tick_master.js` | 13 scripts (13 while loading): `server:apotheosis_gem_repair.js`, `server:attributes/attribute_sync.js`, `server:bonfire/boss_bonfire_system.js`, `server:bonfire/boss_compass_handler.js`, `server:death_penalty.js`, `server:end/dragon_exploration_gate.js`, ... |
-| `global.registerServerTick` | `server:0_tick_master.js` | 35 scripts (35 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affixes/affix_effects.js`, `server:armor_weight.js`, `server:attributes/attribute_sync.js`, `server:attributes/class_attribute_bonuses.js`, ... |
+| `global.registerServerTick` | `server:0_tick_master.js` | 34 scripts (34 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affixes/affix_effects.js`, `server:armor_weight.js`, `server:attributes/attribute_sync.js`, `server:attributes/class_attribute_bonuses.js`, ... |
 | `global.serverTickFunctions` | `server:0_tick_master.js` | _nobody_ |
 
 ## startup scripts: one entry each
@@ -1180,9 +1177,8 @@ own one-shot `global._*` flags.
 ### `attributes/mana_pool_bonuses.js`
 
 - place 22 of 163; header: @events @file
-- events: `PlayerEvents.loggedIn`, `PlayerEvents.respawned`, `PlayerEvents.loggedOut`
-- tick functions: `tick_manaPoolBonuses` (server, every 100, offset 60)
-- reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
+- events: `PlayerEvents.loggedIn`
+- reads: `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `bonfire/boss_arena_registry.js`
 

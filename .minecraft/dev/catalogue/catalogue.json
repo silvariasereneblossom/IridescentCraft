@@ -2303,27 +2303,10 @@
        "kind": "guard",
        "group": "PlayerEvents.loggedIn",
        "name": "attributes/mana_pool_bonuses"
-      },
-      {
-       "kind": "guard",
-       "group": "PlayerEvents.respawned",
-       "name": "attributes/mana_pool_bonuses"
-      },
-      {
-       "kind": "guard",
-       "group": "PlayerEvents.loggedOut",
-       "name": "attributes/mana_pool_bonuses"
-      },
-      {
-       "kind": "tick",
-       "group": "tick.server",
-       "name": "tick_manaPoolBonuses",
-       "every": 100,
-       "offset": 60
       }
      ],
      "sections": 0,
-     "ownSlots": 1,
+     "ownSlots": 0,
      "names": 0,
      "reads": [
       {
@@ -2337,18 +2320,6 @@
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
-      },
-      {
-       "name": "icraft.origin",
-       "kind": "global",
-       "from": "0_lib_origins.js",
-       "when": "handler"
-      },
-      {
-       "name": "registerServerTick",
-       "kind": "global",
-       "from": "0_tick_master.js",
-       "when": "load"
       }
      ],
      "after": [
@@ -2357,14 +2328,6 @@
        "basis": "load",
        "on": [
         "icraft.guard"
-       ],
-       "held": "priority"
-      },
-      {
-       "script": "0_tick_master.js",
-       "basis": "load",
-       "on": [
-        "global.registerServerTick"
        ],
        "held": "priority"
       }
@@ -10813,11 +10776,6 @@
       "kind": "guard"
      },
      {
-      "script": "attributes/mana_pool_bonuses.js",
-      "name": "attributes/mana_pool_bonuses",
-      "kind": "guard"
-     },
-     {
       "script": "bonfire/boss_compass_handler.js",
       "name": "bonfire/boss_compass_handler",
       "kind": "guard"
@@ -10892,11 +10850,6 @@
      {
       "script": "armor_weight.js",
       "name": "armor_weight",
-      "kind": "guard"
-     },
-     {
-      "script": "attributes/mana_pool_bonuses.js",
-      "name": "attributes/mana_pool_bonuses",
       "kind": "guard"
      },
      {
@@ -11619,11 +11572,6 @@
      {
       "script": "attributes/class_attribute_bonuses.js",
       "name": "tick_classAttributeBonuses",
-      "kind": "tick"
-     },
-     {
-      "script": "attributes/mana_pool_bonuses.js",
-      "name": "tick_manaPoolBonuses",
       "kind": "tick"
      },
      {
@@ -12852,10 +12800,6 @@
      "when": "handler"
     },
     {
-     "script": "server:attributes/mana_pool_bonuses.js",
-     "when": "handler"
-    },
-    {
      "script": "server:class/equipment_hp_halving.js",
      "when": "handler"
     },
@@ -13220,10 +13164,6 @@
      "when": "load"
     },
     {
-     "script": "server:attributes/mana_pool_bonuses.js",
-     "when": "load"
-    },
-    {
      "script": "server:class/equipment_hp_halving.js",
      "when": "load"
     },
@@ -13462,7 +13402,6 @@
     "server:armor_weight.js",
     "server:attributes/attribute_commands.js",
     "server:attributes/class_attribute_bonuses.js",
-    "server:attributes/mana_pool_bonuses.js",
     "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
     "server:origins/artificial_construct_progression.js",
@@ -13535,7 +13474,6 @@
     "server:armor_weight.js",
     "server:attributes/attribute_sync.js",
     "server:attributes/class_attribute_bonuses.js",
-    "server:attributes/mana_pool_bonuses.js",
     "server:bonfire/boss_bonfire_system.js",
     "server:bonfire/boss_compass_handler.js",
     "server:class/equipment_hp_halving.js",
@@ -13572,7 +13510,7 @@
     "server:ultris_randomizer_janitor.js",
     "server:zzz_icraft_live.js"
    ],
-   "usersAtLoad": 43
+   "usersAtLoad": 42
   },
   "entity-mod": {
    "script": "server:loot/0_entity_id_validator.js",

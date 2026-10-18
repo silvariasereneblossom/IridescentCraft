@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5e611274",
+    "generated_from":  "f2a66b6b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "a0670af1df2cedcad51abbb0b8a3caa6e91793364bfd7fdd75ddbe22183bcd5c",
-                                                                  "size":  49386
+                                                                  "sha256":  "c0c36214f5476985fe3c73ee5e7e2bf6a5512f052552c66178ae345bc9757fbb",
+                                                                  "size":  49126
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "e1007218fc7807f504273ee8ba73639609dc56f75b95eda046125b861d8f998e",
@@ -7236,8 +7236,8 @@
                                                                                  "size":  6467
                                                                              },
                   "kubejs/server_scripts/attributes/mana_pool_bonuses.js":  {
-                                                                                "sha256":  "48a94688ac2616d2292ea64be4855d8e846a4acc1a3481e82d0d370003e81776",
-                                                                                "size":  8825
+                                                                                "sha256":  "649cff78fdd75f05733f111b26179437bf309049b800978490260e2e68e4c958",
+                                                                                "size":  5261
                                                                             },
                   "kubejs/server_scripts/bonfire/boss_arena_registry.js":  {
                                                                                "sha256":  "b586a950cbb24773b73c5b0f04a2bcd4b7bc0b38ed573aecadb3c32be1cdfbc7",

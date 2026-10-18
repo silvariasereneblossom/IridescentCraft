@@ -1,33 +1,26 @@
 // @file kubejs/server_scripts/attributes/mana_pool_bonuses.js
-// @events PlayerEvents.loggedIn, PlayerEvents.loggedOut, PlayerEvents.respawned, tick.server
+// @events PlayerEvents.loggedIn
 // =============================================================================
-// MANA POOL BONUSES (2026-05-15 v2) — flat 1.5x for the three magic classes
+// MANA POOL BONUSES -- now only the one-time scrub of legacy permanent modifiers
 // =============================================================================
-// Design intent: magic classes get a meaningful pool boost without the
-// layered complexity of the 2026-04-25 version (Global +25% + Archmage 2x +
-// Battlemage/VoidSummoner 1.5x). Single rule, single multiplier across
-// archmage / battlemage / void_summoner -> 1.5x ISS max_mana.
+// 2026-10-17 (the operator's ruling on decision list entry 129, "Drop the
+// script's x1.5"): this file no longer buffs the mage classes' pool. Its v2
+// (2026-05-15) put a transient x1.5 (multiply_total 0.5) on
+// irons_spellbooks:max_mana for archmage / battlemage / void_summoner, as the
+// "single rule, single multiplier" of the design. It was not the only one: each
+// of those classes has an Origins power on the same attribute (multiply_base
+// +1.5 Archmage "Mana Reservoir", +0.9 Battlemage / Void Summoner). Its class
+// check never worked until 2026-10 (an `execute if entity <name>[nbt=...]` that
+// never parsed), so for months the pools were the powers' alone; from 10-10 the
+// two multiplied: measured on a full pack with the real origins, Archmage 375
+// (3.75x), Battlemage and Void Summoner 285 (2.85x) from a base of 100. Without
+// it: 250 (2.5x), 190, 190, what the Origins texts say. The modifier was
+// transient, so the restart that deploys this takes it off everyone.
 //
-// Operation: MULTIPLY_TOTAL with amount 0.5 -> final = base * (1 + 0.5).
-// Applied to `irons_spellbooks:max_mana` only (the unified pool's canonical
-// attribute; Ars perk attributes are decorative since 2026-05-15).
-//
-// Persistence: TRANSIENT modifier (player.modifyAttribute -- remove + add
-// transient, keyed by the id string). The 2026-04-25 version used
-// addPermanentModifier and produced two cleanup-pass requirements when
-// reverted. Transient modifiers stay attached for the session but don't
-// write to NBT -- on logout they vanish, on login / the 5 s tick they are
-// re-applied. Reverting becomes 'delete the script'.
-//
-// CLASS DETECTION (2026-10): global.icraft.origin (0_lib_origins.js). The
-// inline `execute if entity <name>[nbt=...]` probe this file used never parsed
-// (selector brackets need an @-selector) -- production logged
-// "[mana_pool] <player> has no mage class" for an Archmage. The buff has
-// therefore never been applied before this fix.
-//
-// CLEANUP: the 8 legacy permanent-modifier UUIDs from the earlier
-// mana_pool_bonuses + mana_bridge generations are scrubbed ONCE per player
-// (persistentData flag) instead of on every tick for every player forever.
+// What stays: the 8 legacy PERMANENT modifiers of the 2026-04-25 version and of
+// mana_bridge (2026-05-14) are scrubbed ONCE per player, at login (persistentData
+// flag). They are saved in a player's NBT, so a player who has not logged in
+// since may still carry one.
 //
 // Memory: feedback_permanent_modifier_trap.md.
 // =============================================================================
@@ -38,69 +31,10 @@
     var ResourceLocation_mp = Java.loadClass('net.minecraft.resources.ResourceLocation')
     var ForgeRegistries_mp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
-    // ── Active buff: 1.5x ISS max_mana for magic classes (transient) ────────
-    var MANA_ATTR_ID = 'irons_spellbooks:max_mana'
-    var MAGE_CLASSES = ['archmage', 'battlemage', 'void_summoner']
-    var MAGE_MULT = 0.5  // MULTIPLY_TOTAL 0.5 -> 1.5x effective
-    var modifierId = function (cls) { return 'icraft.mana_pool.' + cls }
-
-    var manaAttrRl = ResourceLocation_mp.tryParse(MANA_ATTR_ID)
-    var manaAttr = manaAttrRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(manaAttrRl) : null
-
     // once per failing block per script load: the table and the wording of "once" are
     // global.icraft.core.warnOnce's (0_lib_core.js); this only adds the script's name
     var warnThrew = function (where, e) {
       global.icraft.core.warnOnce('attributes/mana_pool_bonuses:' + where, '[mana_pool] ' + where + ' threw: ' + e)
-    }
-
-    // 'archmage' | 'battlemage' | 'void_summoner' | null
-    var mageClassOf = function (player) {
-      var id = null
-      try { id = global.icraft.origin.get(player, 'class') } catch (e) { return null }
-      if (!id) return null
-      var bare = id.substring(id.indexOf(':') + 1)
-      return MAGE_CLASSES.indexOf(bare) >= 0 ? bare : null
-    }
-
-    // Which class modifier this script put on each player this session
-    // (uuid -> class). Only used to take the old one off after a respec.
-    var appliedClass = {}
-    // One-shot proof-of-apply log per (player, class).
-    var firstApplySeen = {}
-
-    var applyMageBuff = function (player) {
-      if (!manaAttr) return
-      var key = String(player.uuid.toString())
-      var cls = mageClassOf(player)
-      var prev = appliedClass.hasOwnProperty(key) ? appliedClass[key] : null
-
-      if (prev && prev !== cls) {
-        // Class changed (or was dropped): take the old class's modifier off.
-        try {
-          player.removeAttribute(MANA_ATTR_ID, modifierId(prev))
-        } catch (e) {
-          player.modifyAttribute(MANA_ATTR_ID, modifierId(prev), 0, 'multiply_total')
-        }
-        delete appliedClass[key]
-      }
-      if (!cls) return
-
-      // Idempotent upsert; also restores the modifier after a respawn rebuilt
-      // the player entity.
-      player.modifyAttribute(MANA_ATTR_ID, modifierId(cls), MAGE_MULT, 'multiply_total')
-      appliedClass[key] = cls
-
-      var diagKey = key + ':' + cls
-      if (!firstApplySeen[diagKey]) {
-        firstApplySeen[diagKey] = true
-        var preview = '?'
-        try {
-          var inst = player.getAttribute(manaAttr)
-          if (inst) preview = inst.getValue()
-        } catch (e) {}
-        console.log('[mana_pool] applied 1.5x ' + cls + ' buff to ' + player.username +
-          '; aggregated max_mana=' + preview)
-      }
     }
 
     // ── Cleanup pass: legacy UUIDs from prior generations ──────────────────
@@ -124,7 +58,7 @@
       'ars_nouveau:ars_nouveau.perk.max_mana',
       'ars_nouveau:ars_nouveau.perk.mana_regen'
     ]
-    // Parsed / resolved ONCE at load (was 32 UUID parses per player per tick).
+    // Parsed / resolved ONCE at load.
     var STALE_UUIDS = []
     STALE_UUID_STRINGS.forEach(function (s) {
       try { STALE_UUIDS.push(UUID_mp.fromString(s)) } catch (e) {}
@@ -157,26 +91,12 @@
       data.putBoolean(SCRUB_FLAG, true)
     }
 
-    var update = function (player) {
-      try { scrubStaleOnce(player) } catch (e) { warnThrew('legacy scrub', e) }
-      try { applyMageBuff(player) } catch (e) { warnThrew('applyMageBuff', e) }
-    }
-
-    // ── Tick + login wiring ────────────────────────────────────────────────
-    global.tick_manaPoolBonuses = function (event) {
-      event.server.players.forEach(update)
-    }
-    global.registerServerTick('tick_manaPoolBonuses', 100, 60)
-
-    PlayerEvents.loggedIn(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.loggedIn', function (event) { update(event.player) }))
-    PlayerEvents.respawned(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.respawned', function (event) { update(event.player) }))
-    PlayerEvents.loggedOut(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.loggedOut', function (event) {
-      try { delete appliedClass[String(event.player.uuid.toString())] } catch (e) {}
+    PlayerEvents.loggedIn(icraft.guard('attributes/mana_pool_bonuses', 'PlayerEvents.loggedIn', function (event) {
+      try { scrubStaleOnce(event.player) } catch (e) { warnThrew('legacy scrub', e) }
     }))
 
-    console.log('[IridescentCraft] mana_pool_bonuses v2 loaded')
-    console.log('  Mage classes (archmage / battlemage / void_summoner): 1.5x ISS max_mana (transient)')
-    console.log('  Cleanup: 8 legacy UUIDs across 4 attributes (once per player)')
+    console.log('[IridescentCraft] mana_pool_bonuses v3 loaded: no pool buff (the classes\' Origins powers set the pool)')
+    console.log('  Cleanup: 8 legacy UUIDs across 4 attributes (once per player, at login)')
   } catch (e) {
     console.warn('[IridescentCraft] mana_pool_bonuses bootstrap FAILED: ' + e)
   }
