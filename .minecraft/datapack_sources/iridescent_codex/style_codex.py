@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Put the Codex's page titles in italics, on the STAGED copy of the book only.
 
-build_codex.sh runs this on the staged data/ and assets/ book trees just before
+.minecraft/dev/codex/codex_jar.py runs this on the rendered data/ and assets/ book trees just before
 packing. The sources under data/ stay plain, so a new page gets the styling on
 the next build without anyone typing it.
 

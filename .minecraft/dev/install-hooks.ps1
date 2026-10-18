@@ -8,7 +8,9 @@
 # the mod intake gate (dev/mods/intake.py check: every mod has an intake record
 # and a new mod owes no decision), a one-line report of the difficulty mod's and
 # Apotheosis's own lists against the registries (dev/rosters/external_lists.py;
-# never blocks)
+# never blocks), the Codex gate (dev/codex/codex.py check: the committed
+# iridescent_codex_data.jar is what the registries, configs and scripts build
+# now, and the book's hand-written text does not contradict them)
 # and, when a pushed commit touches a kubejs script, the three script lints
 # (lint_kubejs_rhino.js, lint_kubejs_traps.js, lint_kubejs_scope.py; any flag
 # blocks), the engine test suite, and the script load-order and catalogue
@@ -60,6 +62,10 @@ $hookContent = @'
 #                                block; only when a pushed commit touches the mod set or the snapshot)
 #   +  validate_heracles_quests.py - the quest validator (its own block; only when a
 #                                pushed commit touches config/heracles/ in any distro)
+#   +  codex/codex.py check   - the Iridescent Codex against its sources: the committed jar is what the
+#                                registries, configs and scripts build now, the hand-written text does not
+#                                contradict them (its own block, blocking; only when a pushed commit touches
+#                                one of `codex.py inputs`)
 #   +  rosters/external_lists.py check --summary - the difficulty mod's and Apotheosis's own
 #                                boss and dimension lists against the registries (its own block;
 #                                prints one line, NEVER blocks; only when a pushed commit touches
@@ -349,6 +355,65 @@ EOF
             echo "[pre-push] Heracles quest validator FAILED (or could not run). Each ERROR names the"
             echo "  quest file and the field; the shape is in .minecraft/wiki/design/heracles-json-shape.md."
             echo "  Fix the quest in all three trees and re-push. Bypass: git push --no-verify"
+            exit 1
+        fi
+    fi
+fi
+
+# --- The Iridescent Codex against its sources (blocking; one self-contained block) ---
+# The Codex (datapack_sources/iridescent_codex) states the pack's facts: boss tiers, places and health, the
+# boss-rush shares, the token thresholds, dimension gates, death penalties, difficulty bands, unique weapons.
+# They are filled from the registries, the difficulty config and the scripts when the jar is built
+# (dev/codex/codex.py), so the jar the three distros carry must be what those sources build NOW.
+# `codex.py check` fails when the committed jar, a manifest or a marker is stale (run `codex.py release`),
+# when the hand-written text contradicts the registries (a typed fact, a boss under the wrong tier or at
+# the wrong place, an unknown id), or when a source cannot be read; each line names the page. Runs when a
+# pushed commit touches one of its inputs, as `codex.py inputs --regex` lists them (the book, the tools,
+# the registries, the configs and scripts it reads, the snapshot, the jars, the manifests, the markers).
+# About three seconds.
+# Self-contained: its own variables (CX_*), nothing from the other steps but PUSHED and DEV.
+CX_TOOL="$DEV/codex/codex.py"
+if [ -f "$CX_TOOL" ]; then
+    CX_ZERO=0000000000000000000000000000000000000000
+    CX_RUN=0
+    CX_PY=""
+    command -v python >/dev/null 2>&1 && CX_PY=python
+    [ -z "$PUSHED" ] && CX_RUN=1
+    CX_RE=""
+    [ -n "$CX_PY" ] && CX_RE="$("$CX_PY" -I -B "$CX_TOOL" inputs --regex < /dev/null 2>/dev/null | tr -d '\r')"
+    [ -z "$CX_RE" ] && CX_RUN=1
+    if [ $CX_RUN -eq 0 ]; then
+        while read -r _cx_lref cx_lsha _cx_rref cx_rsha; do
+            [ -z "$cx_lsha" ] && continue
+            [ "$cx_lsha" = "$CX_ZERO" ] && continue
+            if [ "$cx_rsha" != "$CX_ZERO" ] && git cat-file -e "$cx_rsha^{commit}" 2>/dev/null; then
+                cx_base="$cx_rsha"
+            else
+                cx_base="$(git merge-base "$cx_lsha" origin/main 2>/dev/null)"
+            fi
+            if [ -z "$cx_base" ]; then CX_RUN=1; break; fi
+            if git diff --name-only "$cx_base" "$cx_lsha" 2>/dev/null | grep -Eq "$CX_RE"; then
+                CX_RUN=1; break
+            fi
+        done <<EOF
+$PUSHED
+EOF
+    fi
+    if [ $CX_RUN -eq 1 ]; then
+        if [ -z "$CX_PY" ]; then
+            echo "[pre-push] python not found: the Codex gate could NOT run (dev/codex/codex.py check)"
+            exit 1
+        fi
+        cx_out="$("$CX_PY" -I -B "$CX_TOOL" check < /dev/null 2>&1)"
+        cx_rc=$?
+        if [ $cx_rc -eq 0 ]; then
+            printf '%s\n' "$cx_out" | grep -E '^\[codex\] OK' | tr -d '\r'
+        else
+            printf '%s\n' "$cx_out"
+            echo ""
+            echo "[pre-push] the Codex gate FAILED (exit $cx_rc). Each FAIL line names the page and what to change;"
+            echo "  a STALE jar: python .minecraft/dev/codex/codex.py release, commit what it lists, re-push."
+            echo "  How the book is kept current: .minecraft/dev/codex/README.md. Bypass: git push --no-verify"
             exit 1
         fi
     fi

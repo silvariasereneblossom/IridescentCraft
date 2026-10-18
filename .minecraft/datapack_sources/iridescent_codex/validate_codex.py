@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Validate the BUILT iridescent_codex_data.jar the way Patchouli 1.20.1-85 loads it.
 
-build_codex.sh runs this on the freshly packed jar BEFORE deploying it; exit 1
-aborts the deploy. Every rule below was read out of Patchouli-1.20.1-85-FORGE.jar
+.minecraft/dev/codex/codex.py runs this on the freshly built jar (`check`, and `release` BEFORE deploying it;
+exit 1 aborts the deploy). Every rule below was read out of Patchouli-1.20.1-85-FORGE.jar
 (CFR decompile, 2026-09-28) -- not assumed from older Patchouli docs:
 
 LOADING (client side, BookContentResourceListenerLoader)
@@ -536,7 +536,7 @@ def check_name_style(value, where, report):
 def check_title_style(title, where, book, report):
     """A drawn page title must carry exactly the italic code style_codex.py adds."""
     if not title.startswith(ITALIC):
-        report.error(where, "title is not italicised -- style_codex.py did not run on this jar (build with build_codex.sh)")
+        report.error(where, "title is not italicised -- style_codex.py did not run on this jar (build with .minecraft/dev/codex/codex.py)")
         return
     book.titles += 1
     if SECTION in title[len(ITALIC):]:

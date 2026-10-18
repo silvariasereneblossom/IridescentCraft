@@ -64,9 +64,14 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | `note` | free text | nobody |
 
 What an entry does NOT do, and still has to be done by hand: the boss's own drops (`loot/*_boss_drops.js`,
-`loot/unique_itemset_registry.js`, `loot/boss_refight_repair_floors.js`), quests, the Codex pages, the wiki, the
+`loot/unique_itemset_registry.js`, `loot/boss_refight_repair_floors.js`), quests, the wiki, the
 structure tag of a structure arena (`kubejs/data/icraft/tags/worldgen/structure/<arena key>.json`; the validator
 checks it), and the two lists outside the scripts (below).
+
+The Codex follows an entry by itself (since 2026-10-17: its roster pages, places, health, rush and tokens are
+filled from this file when the jar is built), once the boss has a name in `dev/codex/names.json`. After the
+edit: `python .minecraft/dev/codex/codex.py release`, and commit what it lists; the pre-push hook and CI fail
+until then and name the page (`dev/codex/README.md`).
 
 A flag that is forgotten is not silent: `validate.py` expects a named boss to be `boss` and `x3`, a miniboss to be
 `boss` (ruled 2026-10-12: minibosses are bosses; they keep their own health, without the mob-tier multiplier), a boss with a

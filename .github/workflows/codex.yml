@@ -1,0 +1,154 @@
+name: Codex gate
+
+# The Iridescent Codex (the Patchouli book, iridescent_codex_data.jar) states the pack's facts: boss tiers,
+# places and health, boss-rush shares, token thresholds, dimension gates, death penalties, difficulty bands,
+# unique weapons. They are filled from the boss and dimension registries, the difficulty config and the
+# scripts when the jar is built (.minecraft/dev/codex/codex.py; README.md there). Until 2026-10-17 every fact
+# was typed by hand and drifted with each content change.
+#
+# This runs the same check as the pre-push hook, for the pushes that did not go through it (another machine,
+# a hook that was never installed, --no-verify): the committed jar in the three distros, the three manifests
+# and the three markers are what the sources build now; the hand-written text names no wrong tier, place,
+# typed fact or unknown id; validate_codex.py passes. Then the tool's own tests: each defect planted in a
+# small pack in a temporary folder.
+#
+# The trigger paths are `codex.py inputs` (codex_test.py fails when they differ).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/config/icraft/registry/bosses.json'
+      - '.minecraft/kubejs/config/icraft/registry/dimensions.json'
+      - '.minecraft/config/iridescent_difficulty-common.toml'
+      - '.minecraft/kubejs/server_scripts/gates/codex_boss_rush.js'
+      - '.minecraft/kubejs/server_scripts/gates/codex_progression_engine.js'
+      - '.minecraft/kubejs/server_scripts/exploration/codex_exploration_kills.js'
+      - '.minecraft/kubejs/server_scripts/death_penalty.js'
+      - '.minecraft/kubejs/server_scripts/scaling/zz_boss_global_3x.js'
+      - '.minecraft/kubejs/server_scripts/loot/unique_itemset_registry.js'
+      - '.minecraft/kubejs/server_scripts/loot/loot_overhaul.js'
+      - '.minecraft/kubejs/server_scripts/loot/boss_unique_drops.js'
+      - '.minecraft/dev/codex/names.json'
+      - '.minecraft/dev/rosters/rosters.py'
+      - '.minecraft/datapack_sources/iridescent_codex/**'
+      - '.minecraft/dev/codex/**'
+      - '.minecraft/dev/registry/**'
+      - '.minecraft/config/defaultoptions/keybindings.txt'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/data/icraft/advancements/**'
+      - '.minecraft/mods/**'
+      - '.minecraft/config/paxi/**'
+      - '.minecraft/server_distribution/config/paxi/**'
+      - '.minecraft/distribution/client/config/paxi/**'
+      - '.minecraft/resourcepacks/**'
+      - '.minecraft/server_distribution/resourcepacks/**'
+      - '.minecraft/distribution/client/resourcepacks/**'
+      - '.minecraft/kubejs/assets/icraft/**'
+      - '.minecraft/server_distribution/kubejs/assets/icraft/**'
+      - '.minecraft/distribution/client/kubejs/assets/icraft/**'
+      - '.minecraft/server_distribution/mods/iridescent_codex_data.jar'
+      - '.minecraft/distribution/client/mods/iridescent_codex_data.jar'
+      - '.minecraft/custom_jars_manifest.json'
+      - '.minecraft/server_distribution/custom_jars_manifest.json'
+      - '.minecraft/distribution/client/custom_jars_manifest.json'
+      - '.minecraft/mods/.index/iridescent-codex.pw.toml'
+      - '.minecraft/server_distribution/mods/.index/iridescent-codex.pw.toml'
+      - '.minecraft/distribution/client/mods/.index/iridescent-codex.pw.toml'
+      - '.github/workflows/codex.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/config/icraft/registry/bosses.json'
+      - '.minecraft/kubejs/config/icraft/registry/dimensions.json'
+      - '.minecraft/config/iridescent_difficulty-common.toml'
+      - '.minecraft/kubejs/server_scripts/gates/codex_boss_rush.js'
+      - '.minecraft/kubejs/server_scripts/gates/codex_progression_engine.js'
+      - '.minecraft/kubejs/server_scripts/exploration/codex_exploration_kills.js'
+      - '.minecraft/kubejs/server_scripts/death_penalty.js'
+      - '.minecraft/kubejs/server_scripts/scaling/zz_boss_global_3x.js'
+      - '.minecraft/kubejs/server_scripts/loot/unique_itemset_registry.js'
+      - '.minecraft/kubejs/server_scripts/loot/loot_overhaul.js'
+      - '.minecraft/kubejs/server_scripts/loot/boss_unique_drops.js'
+      - '.minecraft/dev/codex/names.json'
+      - '.minecraft/dev/rosters/rosters.py'
+      - '.minecraft/datapack_sources/iridescent_codex/**'
+      - '.minecraft/dev/codex/**'
+      - '.minecraft/dev/registry/**'
+      - '.minecraft/config/defaultoptions/keybindings.txt'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/data/icraft/advancements/**'
+      - '.minecraft/mods/**'
+      - '.minecraft/config/paxi/**'
+      - '.minecraft/server_distribution/config/paxi/**'
+      - '.minecraft/distribution/client/config/paxi/**'
+      - '.minecraft/resourcepacks/**'
+      - '.minecraft/server_distribution/resourcepacks/**'
+      - '.minecraft/distribution/client/resourcepacks/**'
+      - '.minecraft/kubejs/assets/icraft/**'
+      - '.minecraft/server_distribution/kubejs/assets/icraft/**'
+      - '.minecraft/distribution/client/kubejs/assets/icraft/**'
+      - '.minecraft/server_distribution/mods/iridescent_codex_data.jar'
+      - '.minecraft/distribution/client/mods/iridescent_codex_data.jar'
+      - '.minecraft/custom_jars_manifest.json'
+      - '.minecraft/server_distribution/custom_jars_manifest.json'
+      - '.minecraft/distribution/client/custom_jars_manifest.json'
+      - '.minecraft/mods/.index/iridescent-codex.pw.toml'
+      - '.minecraft/server_distribution/mods/.index/iridescent-codex.pw.toml'
+      - '.minecraft/distribution/client/mods/.index/iridescent-codex.pw.toml'
+      - '.github/workflows/codex.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  codex:
+    name: codex.py check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      # What the gate and validate_codex.py read: the book source, the tools, the registries and the scripts
+      # and configs the facts come from, the registry snapshot, the committed jars of the three distros (the
+      # Codex jar, the jars the validator reads items and textures from), the manifests and markers, and
+      # every pack that could shadow the book.
+      - name: Checkout (book, tools, registries, scripts, configs, jars)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.github/workflows/codex.yml
+            /.minecraft/datapack_sources/iridescent_codex/
+            /.minecraft/dev/codex/
+            /.minecraft/dev/rosters/
+            /.minecraft/dev/registry/
+            /.minecraft/dev/install-hooks.ps1
+            /.minecraft/kubejs/
+            /.minecraft/config/
+            /.minecraft/mods/
+            /.minecraft/resourcepacks/
+            /.minecraft/custom_jars_manifest.json
+            /.minecraft/server_distribution/mods/
+            /.minecraft/server_distribution/config/paxi/
+            /.minecraft/server_distribution/kubejs/assets/
+            /.minecraft/server_distribution/resourcepacks/
+            /.minecraft/server_distribution/custom_jars_manifest.json
+            /.minecraft/distribution/client/mods/
+            /.minecraft/distribution/client/config/paxi/
+            /.minecraft/distribution/client/kubejs/assets/
+            /.minecraft/distribution/client/resourcepacks/
+            /.minecraft/distribution/client/custom_jars_manifest.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: The book, the jar, the manifests and the markers against their sources
+        run: python -I -B .minecraft/dev/codex/codex.py check
+
+      - name: The gate refuses each defect it exists to catch
+        if: always()
+        run: python -I -B .minecraft/dev/codex/codex_test.py
