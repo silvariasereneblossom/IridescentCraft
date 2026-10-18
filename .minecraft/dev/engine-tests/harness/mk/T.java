@@ -80,6 +80,16 @@ public class T {
     e.attrs.add(attr);
     e.mods.computeIfAbsent(attr, k -> new java.util.LinkedHashMap<>()).put(key, new double[]{amount, op});
   }
+  /** the modifiers on one attribute of an entity, "name op amount" with op 0 addition / 1 multiply_base / 2 multiply_total,
+   *  sorted, joined by "," ("" when none) */
+  public static String mods(W.Living e, String attr) {
+    java.util.Map<String, double[]> m = e.mods.get(attr);
+    if (m == null) return "";
+    java.util.List<String> out = new java.util.ArrayList<>();
+    for (java.util.Map.Entry<String, double[]> en : m.entrySet()) out.add(en.getKey() + " " + (int) en.getValue()[1] + " " + en.getValue()[0]);
+    java.util.Collections.sort(out);
+    return String.join(",", out);
+  }
   public static void block(W.Level l, int x, int y, int z, String id) { l.blocks.put(x + "," + y + "," + z, id); }
   public static String blockAt(W.Level l, int x, int y, int z) { String s = l.blocks.get(x + "," + y + "," + z); return s == null ? "minecraft:air" : s; }
   public static void drop(W.Level l, String block, String item) { l.dropTable.put(block, item); }

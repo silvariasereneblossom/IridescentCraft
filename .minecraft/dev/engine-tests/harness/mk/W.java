@@ -139,6 +139,9 @@ public class W {
         {"attributecore:dodge_chance", "0"},
         {"icraft:spell_power", "0"}, {"icraft:lifesteal", "0"}, {"icraft:dodge_chance", "0"},
         {"puffish_attributes:ranged_damage", "0"},
+        // a Pufferfish dynamic attribute: its default (and so its value) is NaN on the engine (full-pack probe
+        // 2026-10-17, internal dev/archmage-2026-10-17/); Pufferfish applies its modifiers to each magic hit instead
+        {"puffish_attributes:magic_damage", "NaN"},
         {"minecraft:generic.armor_toughness", "0"}, {"irons_spellbooks:max_mana", "100"},
         {"iridescent_reforging:damage_vs_undead", "0"}
       };
