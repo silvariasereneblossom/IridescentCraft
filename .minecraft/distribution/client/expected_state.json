@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "f2a66b6b",
+    "generated_from":  "f77744b3",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8708,7 +8708,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "e17f3a1ba1910fb532a3549c5f956787fe678bd8f98a88465703aa9cc5fc605e",
+                                                               "sha256":  "b629842dde0f445aa29e1042d2cafa01fe5a24bbc986cf2ee644481fe3c79961",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
@@ -8728,7 +8728,7 @@
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "dd6459cf00fc04f54d64313b78fcb19d5d99133745a6e0fc156a3ad18ebbee1a",
+                                                                 "sha256":  "ec1c4ef9816afa4427fb59f00bc839b0847d646a2771990f65a17e8311c6f307",
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {

@@ -41,7 +41,7 @@
     {
       "type": "patchouli:text",
       "title": "Mana vs Source",
-      "text": "Iron's uses $(bold)Mana$() (blue bar), Ars uses $(bold)Source$() (server-side pool). Both regenerate passively; T2 unlocks faster regen and higher caps.$(br2)$(bold)Mana pool baseline:$() magic classes get a flat $(item)1.5x$() max mana (Archmage, Battlemage, Void Summoner all identical). Non-mage classes use the base ISS pool — speccing into a magic class is the way to expand it.$(br2)$(bold)Next: upgrade your caster with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l).$()"
+      "text": "Iron's uses $(bold)Mana$() (blue bar), Ars uses $(bold)Source$() (server-side pool). Both regenerate passively; T2 unlocks faster regen and higher caps.$(br2)$(bold)Mana pool baseline:$() the magic classes' pools are bigger: $(item)2.5x$() for the Archmage, $(item)2x$() for the Elemental, the Blessed and the Corrupted, $(item)1.9x$() for the Battlemage and the Void Summoner. Non-mage classes use the base ISS pool — speccing into a magic class is the way to expand it.$(br2)$(bold)Next: upgrade your caster with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l).$()"
     }
   ]
 }

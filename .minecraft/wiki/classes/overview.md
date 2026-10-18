@@ -62,7 +62,7 @@ Each also carries generic `spell_power 1.40` plus per-mage identity stats (Eleme
 | Paladin | +3 armor/+1 toughness (Holy Armor), +10% KB resist, Healing Aura (0.5 HP/5s to allies in 8 blocks, 1 HP/5s self above 50%) | `class_passives.js` |
 | Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -15% damage (Damage Penalty), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |
 | Ranger | +15% speed, +10% atkspd, +20% projectile damage, -3 armor | — |
-| Archmage | +50% magic damage (Arcane Supremacy), -50% melee (Frail Melee), +5% spell power per passive tier above 1, T1:0%→T4:+15%* (Mana Attunement), mana pool 3.75x (Mana Reservoir +150% and the mage classes' 1.5x), -28.6% armor / -20% toughness (Frail Frame) | `class_passives.js` |
+| Archmage | +50% magic damage (Arcane Supremacy), -50% melee (Frail Melee), +5% spell power per passive tier above 1, T1:0%→T4:+15%* (Mana Attunement), mana pool 2.5x (Mana Reservoir +150%), -28.6% armor / -20% toughness (Frail Frame) | `class_passives.js` |
 | Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | — |
 | Void Summoner | +15% tamed damage (Dark Pact), +10% ATK in dark (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
 

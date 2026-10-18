@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)1.5x base$() (150 from default 100)$(br)$(bold)Armor Penalty:$() -28.6% armor, -20% toughness (final value) — a full-robe Archmage nets ~50% armor"
+      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)2.5x base$() (250 from default 100)$(br)$(bold)Armor Penalty:$() -28.6% armor, -20% toughness (final value) — a full-robe Archmage nets ~50% armor"
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Passives (cont.)",
-      "text": "$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -28.6% armor, -20% toughness (scales with your final value — can never zero a robe build); a full robe set nets ~50% armor. Halved equipment HP."
+      "text": "$(bold)Expanded Pool$() — Mana pool $(item)2.5x base$() (the largest: the Battlemage and the Void Summoner have 1.9x). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -28.6% armor, -20% toughness (scales with your final value — can never zero a robe build); a full robe set nets ~50% armor. Halved equipment HP."
     },
     {
       "type": "patchouli:text",
