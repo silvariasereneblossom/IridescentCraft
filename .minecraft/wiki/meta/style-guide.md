@@ -6,7 +6,7 @@ Writing conventions for IridescentCraft wiki pages.
 
 - Third person for documentation pages
 - Direct/imperative for procedures and checklists
-- Technical but accessible — spell out acronyms on first use per page
+- Technical but accessible: spell out acronyms on first use on each page
 
 ## Tense
 
@@ -27,13 +27,13 @@ Writing conventions for IridescentCraft wiki pages.
 
 ## Public vs. internal content
 
-**The public wiki carries player-facing summaries.** Detailed developer information — script paths, line numbers, root-cause forensics, internal cleanup/deny-list patterns, and local filesystem paths — stays in the private internal repository, not on these pages.
+The public wiki carries player-facing summaries. Detailed developer information (script paths, line numbers, root-cause forensics, internal cleanup/deny-list patterns, and local filesystem paths) stays in the private internal repository.
 
-When writing or editing a public page, keep the *what* and the *why* a player would care about; leave the *how it was diagnosed and fixed* to the private developer log. A page should read as documentation, not as a postmortem.
+When writing or editing a public page, keep what changed and why it matters to a player, and leave how it was diagnosed and fixed to the private developer log. A page should read as documentation; a postmortem belongs in that log.
 
 ## Design Document Updates
 
 When any design change is made:
 1. Update the relevant section in `design/master.md`
-2. Add a high-level, dated headline to `design/changelog.md` (the public changelog is a summary — the detailed development history is logged privately)
+2. Add a high-level, dated headline to `design/changelog.md` (the public changelog is a summary; the detailed development history is logged privately)
 3. Update implementation status in `home.md` if applicable

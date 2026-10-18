@@ -2,18 +2,18 @@
 
 ## Purpose
 
-Keep a PrismLauncher IridescentCraft instance in sync with the `main` branch automatically, so every launch picks up the latest configs, KubeJS scripts, datapacks, and mod metadata without the user needing to remember to run an updater.
+This protocol keeps a PrismLauncher IridescentCraft instance in sync with the `main` branch automatically. Every launch picks up the latest configs, KubeJS scripts, datapacks and mod metadata, and the user never has to remember to run an updater.
 
-PrismLauncher supports per-instance pre-launch commands under **Settings → Custom Commands → Pre-launch command**. The command runs before Minecraft starts; if it exits with a non-zero status, the launch aborts. Environment variables available:
+PrismLauncher has a per-instance pre-launch command under Settings → Custom Commands → Pre-launch command. It runs before Minecraft starts, and if it exits with a non-zero status the launch aborts. These environment variables are available:
 
-- `$INST_DIR` — instance root (contains `instance.cfg`, `mmc-pack.json`, `.minecraft`)
-- `$INST_MC_DIR` — the `.minecraft` directory
-- `$INST_JAVA` — Java path
-- `$INST_JAVA_ARGS` — JVM args
+- `$INST_DIR`: instance root (contains `instance.cfg`, `mmc-pack.json`, `.minecraft`)
+- `$INST_MC_DIR`: the `.minecraft` directory
+- `$INST_JAVA`: Java path
+- `$INST_JAVA_ARGS`: JVM args
 
 ## Two modes
 
-### Mode A — Dev / first-party (force-sync to `origin/main`)
+### Mode A: Dev / first-party (force-sync to `origin/main`)
 
 If your PrismLauncher instance *is* the git repo (GitHub Desktop keeps it synced), set the pre-launch command to the bundled hook:
 
@@ -21,37 +21,37 @@ If your PrismLauncher instance *is* the git repo (GitHub Desktop keeps it synced
 "$INST_MC_DIR/prism_prelaunch.bat"
 ```
 
-This hook **force-syncs** the instance to pushed `origin/main` (fetch + hard reset), not a plain `git pull`. A force-sync is used deliberately: a stray local commit or edit can make `git pull --ff-only` fail on every launch and then leave the instance **silently stale** for weeks, still carrying mods that `origin` has since removed (a registry mismatch that disconnects you on join). The hard reset can never get stuck — it discards any local divergence and mirrors pushed HEAD every launch.
+This hook force-syncs the instance to pushed `origin/main` (fetch + hard reset) instead of running a plain `git pull`. The force-sync is deliberate. A stray local commit or edit can make `git pull --ff-only` fail on every launch and leave the instance silently stale for weeks, still carrying mods that `origin` has since removed (a registry mismatch that disconnects you on join). The hard reset cannot get stuck: it discards any local divergence and mirrors pushed HEAD on every launch.
 
-Your worlds are safe: saves, logs, options, and other runtime state are untracked, so the reset never touches them. After syncing, the hook also reconciles the mod index, cleans up stale JARs, downloads any new ones, and re-wires the instance (see *Self-healing wiring* below).
+Your worlds are safe. Saves, logs, options and other runtime state are untracked, so the reset never touches them. After syncing, the hook also reconciles the mod index, cleans up stale JARs, downloads any new ones and re-wires the instance (see *Self-healing wiring* below).
 
-Pros: instant, no manual updater, picks up an update to the hook itself on the same launch.
+Pros: it is instant, needs no manual updater, and picks up an update to the hook itself on the same launch.
 
-Cons: requires the instance to be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. If git is not on PATH, the launch records a "git-missing" status and warns rather than syncing (see *Failure handling*).
+Cons: the instance must be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
 
-> The legacy bare `git -C "$INST_DIR" pull --ff-only` command is **superseded** — it is the exact wedge-prone seed that caused silent staleness. Instances still wired to it (or to the zip-path `sync_client.bat`) are auto-upgraded to `prism_prelaunch.bat` on the next launch by the self-healing wiring step.
+> The legacy bare `git -C "$INST_DIR" pull --ff-only` command is superseded: it is the seed that wedged and caused the silent staleness. On the next launch, the self-healing wiring step upgrades instances still wired to it (or to the zip-path `sync_client.bat`) to `prism_prelaunch.bat`.
 
-### Mode B — Tester / distribution (SHA-check sync script)
+### Mode B: Tester / distribution (SHA-check sync script)
 
-For testers using `distribution/client/install.ps1` — their instance is **not** a git clone, it's a copy of the packaged client. They use `sync_client.ps1` which:
+Testers install with `distribution/client/install.ps1`, so their instance is a copy of the packaged client, **not** a git clone. They use `sync_client.ps1`, which:
 
 1. Hits the GitHub API for the latest main commit SHA
-2. Compares against `.icraft_last_sha` in the instance root
-3. If they match, prints "Up to date" and exits fast (~200ms API call, no download)
-4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches/verifies the mod JARs (see *Mod fetching* below)
+2. Compares it against `.icraft_last_sha` in the instance root
+3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
+4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
-**Install location:** `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1`, and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR` during initial install. Users set the pre-launch command once.
+During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1` and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR`. Users set the pre-launch command once.
 
-Like Mode A, the zip-path sync now records a sync status that the diagnostic and the in-game warning can read, so a failed update is **visible** rather than silent (see *Failure handling*).
+Like Mode A, the zip-path sync records a sync status that the diagnostic and the in-game warning can read, so a failed update is visible instead of silent (see *Failure handling*).
 
-### Mod fetching — packwiz-installer (CurseForge API key required)
+### Mod fetching: packwiz-installer (CurseForge API key required)
 
-The mod-fetch step uses the official **packwiz-installer** (it reads the same `mods/.index/` metadata the pack already ships). CurseForge mods download through the **authenticated CurseForge API** instead of the old hand-shaped, unauthenticated `forgecdn` URLs that caused the recurring fresh-install "missing mods" flake. Two per-host prerequisites:
+The mod-fetch step uses the official packwiz-installer, which reads the same `mods/.index/` metadata the pack already ships. CurseForge mods download through the authenticated CurseForge API instead of the old hand-built, unauthenticated `forgecdn` URLs that caused the recurring "missing mods" flake on fresh installs. Each host needs two things:
 
-- **CurseForge API key.** Get a free key at [console.curseforge.com](https://console.curseforge.com/) → **API Keys**, then save just the key (one line) to **`$INST_MC_DIR/.icraft_cf_token`** (gitignored — the public repo never carries it; same pattern as the GitHub PAT). Set `CF_API_KEY` in the environment instead if you prefer.
-- **Java.** packwiz-installer is a Java program; the sync auto-detects PrismLauncher's bundled/configured Java (or system `java`).
+- A CurseForge API key. Get a free key at [console.curseforge.com](https://console.curseforge.com/) → API Keys, then save only the key (one line) to `$INST_MC_DIR/.icraft_cf_token`. The file is gitignored, so the public repo never carries it (the same pattern as the GitHub PAT). If you prefer, set `CF_API_KEY` in the environment instead.
+- Java. packwiz-installer is a Java program; the sync detects PrismLauncher's bundled or configured Java (or the system `java`) on its own.
 
-If **either** is missing, the sync **falls back to the legacy `download_mods.ps1`** so a tester is never bricked — but that's the flakier path, so place the key. The bootstrap jar is fed a flat pack generated from `mods/.index/` (`gen_pwpack.ps1`) each run, so the mod index can never drift, and jars install to `mods/` via `--pack-folder`. A path-independent **completeness gate** then verifies every indexed jar is on disk and re-flags any gap.
+If either is missing, the sync falls back to the legacy `download_mods.ps1`, so a tester is never left unable to play. That path is flakier, so place the key. Each run feeds the bootstrap jar a flat pack generated from `mods/.index/` (`gen_pwpack.ps1`), so the mod index cannot drift, and the jars install to `mods/` through `--pack-folder`. A completeness gate that does not depend on paths then verifies that every indexed jar is on disk and flags any gap again.
 
 **PrismLauncher pre-launch command (Windows):**
 
@@ -59,7 +59,7 @@ If **either** is missing, the sync **falls back to the legacy `download_mods.ps1
 powershell -ExecutionPolicy Bypass -File "%INST_MC_DIR%\sync_client.ps1"
 ```
 
-Or via the bat wrapper:
+Or through the bat wrapper:
 
 ```
 "%INST_MC_DIR%\sync_client.bat"
@@ -67,21 +67,21 @@ Or via the bat wrapper:
 
 ## Failure handling
 
-A sync hiccup never blocks play — the launch always proceeds even if the update couldn't be applied. But "launch anyway" used to mean "launch *silently* stale," which is how an instance can drift far behind without anyone noticing. The pre-launch hook is now **fail-visible**:
+A sync hiccup never blocks play: the launch always goes ahead, even when the update could not be applied. "Launch anyway" used to mean "launch *silently* stale," which is how an instance can drift far behind without anyone noticing. The pre-launch hook is now fail-visible:
 
 - It records the result of every launch's sync to a small status file in the instance (a per-launch sentinel, not committed to the repo). A successful sync clears it; a failure records *why* (offline/auth, git not on PATH, or sync blocked) and how far behind the instance is.
-- Failures also print an on-screen warning ("pushes are NOT arriving — tell Silvaria") in the pre-launch log, and an in-game warning surfaces so a stale launch is obvious from inside the game rather than passing silently.
-- Auth problems **fail fast**: the hook never hangs waiting for a credential prompt that can't be answered in the pre-launch context — it fails immediately, records the reason, and launches.
+- A failure also prints an on-screen warning ("pushes are NOT arriving. Tell Silvaria") in the pre-launch log, and a warning appears in game too, so a stale launch is obvious from inside the game.
+- Auth problems fail fast. The hook never hangs on a credential prompt that cannot be answered in the pre-launch context; it fails at once, records the reason and launches.
 
-This **supersedes** the old behavior where the script simply exited 0 with at most a yellow console line. "Continuing with existing files" is still the safe default on a network hiccup, but a failed sync is now recorded and surfaced, not swallowed.
+This replaces the old behavior, where the script simply exited 0 with at most a yellow console line. "Continuing with existing files" is still the safe default on a network hiccup, but a failed sync is now recorded and reported.
 
-For a full read-only check of a machine's sync setup, run `dev/diagnose_sync.ps1` — it reads the recorded sync status and reports a PASS/FAIL for each link in the chain (git on PATH, instance is a clone, launcher wiring, remote/auth). It changes nothing; it only diagnoses. Use it when an instance looks out of date.
+For a full read-only check of a machine's sync setup, run `dev/diagnose_sync.ps1`. It reads the recorded sync status and reports PASS or FAIL for each link in the chain (git on PATH, instance is a clone, launcher wiring, remote/auth), and it changes nothing. Use it when an instance looks out of date.
 
 ## Verifying it works
 
-After setting the pre-launch command, launch the instance once. PrismLauncher shows the output in the launch log (or a popup, depending on settings).
+After setting the pre-launch command, launch the instance once. PrismLauncher shows the output in the launch log (or in a popup, depending on settings).
 
-**Mode A (force-sync):** you should see the `[prism_prelaunch]` steps — fetch, the behind-count before sync, the hard reset, then the post-sync index reconcile, stale-JAR cleanup, mod downloads, and the wiring check:
+In Mode A (force-sync) you should see the `[prism_prelaunch]` steps: the fetch, the behind-count before the sync, the hard reset, then the post-sync index reconcile, the stale-JAR cleanup, the mod downloads and the wiring check:
 
 ```
 [prism_prelaunch] git fetch origin...
@@ -94,9 +94,9 @@ After setting the pre-launch command, launch the instance once. PrismLauncher sh
 [prism_prelaunch] wire instance.cfg (PreLaunch + PostExit hooks)...
 ```
 
-A non-zero behind-count followed by "instance now mirrors origin/main" means the update landed this launch. A warning that pushes are NOT arriving means the sync failed and the launch is running on existing files — check the recorded status with `dev/diagnose_sync.ps1`.
+A non-zero behind-count followed by "instance now mirrors origin/main" means the update landed on this launch. A warning that pushes are NOT arriving means the sync failed and the launch is running on the existing files; check the recorded status with `dev/diagnose_sync.ps1`.
 
-**Mode B (zip overlay):** you should see the `[IridescentCraft Sync]` lines instead:
+In Mode B (zip overlay) you should see the `[IridescentCraft Sync]` lines instead:
 
 ```
 [IridescentCraft Sync] Instance: C:\...\IridescentCraft\.minecraft
@@ -115,62 +115,62 @@ Or, when there are changes:
 
 ## What it does NOT sync
 
-These are preserved from the instance regardless of mode. In Mode B the overlay deliberately skips them; in Mode A they survive the hard reset because they're untracked or git-ignored, so the reset only rewrites tracked pack files and never your runtime state.
+The instance keeps these in either mode. In Mode B the overlay skips them on purpose; in Mode A they survive the hard reset because they are untracked or git-ignored, and the reset only rewrites tracked pack files, never your runtime state.
 
-- `world/` — save data
-- `logs/`, `crash-reports/` — runtime output
-- `backups/` — world backups
-- `libraries/` — Forge/Minecraft libraries
-- `mods/*.jar` — handled separately by `download_mods.ps1` (diff-aware)
-- `options.txt` — player keybinds and graphics preferences
-- `servers.dat` — server list
-- `usercache.json`, `whitelist.json`, etc. — server-only files that shouldn't exist on client anyway
+- `world/`: save data
+- `logs/`, `crash-reports/`: runtime output
+- `backups/`: world backups
+- `libraries/`: Forge/Minecraft libraries
+- `mods/*.jar`: handled separately by `download_mods.ps1` (diff-aware)
+- `options.txt`: player keybinds and graphics preferences
+- `servers.dat`: server list
+- `usercache.json`, `whitelist.json`, etc.: server-only files that shouldn't exist on a client anyway
 
 ## Your logs and crash reports
 
-They stay on your PC and are never committed to the pack repository: it is public, and a log or a crash report carries player names, chat and addresses. After each session the post-exit hook keeps a copy of the session's logs, and of any crash report it wrote, in `.minecraft/TesterLogs/<your account>/`; it no longer pushes anything. When you hit a problem, send those files (or `logs/latest.log` and the newest file in `crash-reports/`) to Silvaria privately, who files them in a private log repository.
+They stay on your PC and are never committed to the pack repository: it is public, and a log or a crash report carries player names, chat and addresses. After each session the post-exit hook keeps a copy of the session's logs, and of any crash report it wrote, in `.minecraft/TesterLogs/<your account>/`; it no longer pushes anything. When you hit a problem, send those files (or `logs/latest.log` and the newest file in `crash-reports/`) privately to Silvaria, who files them in a private log repository.
 
-Until 2026-10-15 the repository tracked a set of old logs and crash reports (so a Mode A sync put the tracked `logs/latest.log` back on every launch). The first Mode A sync after that removes every file at those tracked paths from the instance, including the previous session's `logs/latest.log`, `logs/debug.log` and KubeJS logs and the `TesterLogs/` copies; logs and crash reports under any other name stay. From then on the sync leaves all of them alone.
+Until 2026-10-15 the repository tracked a set of old logs and crash reports (so a Mode A sync put the tracked `logs/latest.log` back on every launch). The first Mode A sync after that date removes every file at those tracked paths from the instance, including the previous session's `logs/latest.log`, `logs/debug.log` and KubeJS logs and the `TesterLogs/` copies; logs and crash reports under any other name stay. From then on the sync leaves all of them alone.
 
 ## When to use which mode
 
-- **Silvaria's own dev instance:** Mode A (force-sync to `origin/main` via `prism_prelaunch.bat`). Fast, and the git history gives you rollback if something goes wrong
-- **Tester instances:** Mode B (sync_client.ps1). Handles the zip-download path cleanly, no git required
+- Silvaria's own dev instance: Mode A (force-sync to `origin/main` via `prism_prelaunch.bat`). It is fast, and the git history gives you a rollback if something goes wrong.
+- Tester instances: Mode B (sync_client.ps1). It handles the zip-download path cleanly and needs no git.
 
 ## Self-healing wiring
 
-PrismLauncher only honors a pre-launch command when the instance's launcher settings are wired correctly — and those settings can drift (a manual edit, an import, a launcher upgrade) and silently disable syncing. To make that self-correcting, the pre-launch hook re-checks and repairs the instance's launcher wiring on every launch:
+PrismLauncher honors a pre-launch command only when the instance's launcher settings are wired correctly, and those settings can drift (a manual edit, an import, a launcher upgrade) and silently disable syncing. To correct that, the pre-launch hook checks and repairs the instance's launcher wiring on every launch:
 
-- Asserts the launcher's "override commands" gate is on — without it, the pre-launch and post-exit commands are ignored entirely.
-- Upgrades the two known stale pre-launch seeds (the legacy bare `git pull --ff-only` and the zip-path `sync_client.bat`) to `prism_prelaunch.bat`. Any other custom command is left alone.
-- Uses the launcher's bundled portable Java instead of a hardcoded Java path, so the instance still launches after Java is moved or reinstalled, or when copied to a new machine.
+- It makes sure the launcher's "override commands" setting is on; without it, the pre-launch and post-exit commands are ignored entirely.
+- It upgrades the two known stale pre-launch seeds (the legacy bare `git pull --ff-only` and the zip-path `sync_client.bat`) to `prism_prelaunch.bat`. Any other custom command is left alone.
+- It uses the launcher's bundled portable Java instead of a hardcoded Java path, so the instance still launches after Java is moved or reinstalled, or after the instance is copied to a new machine.
 
-This heals on the **second and later** launches only — the very first launch still needs the one-time manual wiring (the hook can't run until it's wired as the pre-launch command). That one-time setup is documented in the new-machine setup guide.
+The repair only works on the second and later launches. The very first launch still needs the one-time manual wiring, because the hook cannot run until it is wired as the pre-launch command. The new-machine setup guide documents that one-time setup.
 
-## Bytecode-patched JARs — re-apply after mod updates
+## Bytecode-patched JARs: re-apply after mod updates
 
 <!-- Audit Phase 8.3 closure (FINDINGS #34) -->
 
-Two JARs in `mods/` are bytecode-patched. Updating either via packwiz/Modrinth/CurseForge replaces the patched binary with vanilla, silently breaking pack-internal balance.
+Two JARs in `mods/` are bytecode-patched. Updating either one through packwiz, Modrinth or CurseForge replaces the patched binary with the unpatched one and silently breaks the pack's internal balance.
 
-**Patched jars + what they do:**
+The patched jars and what the patches do:
 
 | JAR | Patch | Why |
 |-----|-------|-----|
 | `Patchouli-1.20.1-85-FORGE.jar` | `athrow → pop` in `Book.class` | Disables `use_resource_pack` enforcement so we can ship the codex without forcing the player's resource pack settings |
 | `ars_nouveau-1.20.1-4.12.7-all.jar` | `doApply → immediate return` in `DungeonLootEnhancerModifier.class` | Disables Ars Nouveau's chest loot injection so our curated chest pools aren't drowned in Ars items |
 
-Both patches require **`-noverify` JVM arg** because the patches create dead code paths the JVM verifier rejects (see CLAUDE.md "JVM Requirement: -noverify").
+Both patches need the `-noverify` JVM arg, because they create dead code paths that the JVM verifier rejects (see CLAUDE.md "JVM Requirement: -noverify").
 
 ### Re-apply checklist
 
 When updating either mod:
 
 1. **Don't merge the update** until you've decided whether to keep the patch
-2. Locate the original patched JAR in git history: `git log --all --oneline -- '.minecraft/mods/<jar>.jar'`
-3. Re-apply the bytecode patch on the new version using the same approach (asm-based class file edit, javap to verify the bytecode delta is what you expect)
+2. Find the original patched JAR in git history: `git log --all --oneline -- '.minecraft/mods/<jar>.jar'`
+3. Re-apply the bytecode patch to the new version the same way (an asm-based class file edit, with javap to confirm the bytecode delta is what you expect)
 4. Replace the unpatched JAR in all 3 distros (`mods/`, `server_distribution/mods/`, `distribution/client/mods/`)
-5. Update the version in `.pw.toml` if needed but DO NOT let packwiz re-download — the URL points to the unpatched upstream
-6. Test: launch the dev instance, confirm the patched behavior holds (Patchouli book still opens without resource pack enforcement; Ars chest loot doesn't auto-inject)
+5. Update the version in `.pw.toml` if needed, but DO NOT let packwiz re-download: the URL points to the unpatched upstream
+6. Test: launch the dev instance and confirm the patched behavior holds (the Patchouli book still opens without resource pack enforcement; Ars chest loot doesn't auto-inject)
 
-**Anti-pattern:** running `packwiz update <mod>` and forgetting either jar exists. Mitigation — these jars are listed in CLAUDE.md "Custom Bundled JARs" + this protocol; reviewers must check before merging mod updates.
+**Anti-pattern:** running `packwiz update <mod>` and forgetting that either jar exists. As a guard, both jars are listed in CLAUDE.md "Custom Bundled JARs" and in this protocol, and reviewers must check them before merging mod updates.

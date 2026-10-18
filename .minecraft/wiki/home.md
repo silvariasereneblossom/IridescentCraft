@@ -9,34 +9,34 @@ Living documentation for IridescentCraft, a progression-focused expert-lite Mine
 ### Design
 The canonical design reference for all modpack systems.
 
-- [Master Design Document](design/master.md) — Complete system specifications (Parts I–XVI; Part III = the token economy)
-- [Design Changelog](design/changelog.md) — Tracked changes to design across sessions
+- [Master Design Document](design/master.md): Complete system specifications (Parts I to XVI; Part III is the token economy)
+- [Design Changelog](design/changelog.md): Tracked changes to design across sessions
 
 ### Progression
-- [Progression Overview](progression/overview.md) — Tier system, dimension gates, unlock paths
+- [Progression Overview](progression/overview.md): Tier system, dimension gates, unlock paths
 
 ### Classes & Races
-- [Classes & Races Overview](classes/overview.md) — 10 classes, 11 races, 13 origins, glass cannon mechanics
+- [Classes & Races Overview](classes/overview.md): 10 classes, 11 races, 13 origins, glass cannon mechanics
 
 ### Systems
-- [Systems Overview](systems/overview.md) — Death penalty, scaling, enchantments, affixes, skills, loot, food
-- [Controls](systems/controls.md) — The pack's default keybind layout: every important function on its own working key
+- [Systems Overview](systems/overview.md): Death penalty, scaling, enchantments, affixes, skills, loot, food
+- [Controls](systems/controls.md): The pack's default keybind layout, with every important function on its own working key
 
 ### KubeJS & Technical
-- [KubeJS Overview](kubejs/overview.md) — Script reference, event compatibility, datapack loading
+- [KubeJS Overview](kubejs/overview.md): Script reference, event compatibility, datapack loading
 
 ### Mods
-- [Mod Overview](mods/overview.md) — Key mods by tier, config changes
+- [Mod Overview](mods/overview.md): Key mods by tier, config changes
 
 ### Known Issues
-- [Issue Tracker](known-issues/tracker.md) — Active bugs, testing needed, resolved
+- [Issue Tracker](known-issues/tracker.md): Active bugs, testing needed, resolved
 
 ### Roadmap
-- [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
+- [Planned Changes](roadmap/planned.md): Future features, improvements, and technical debt
 
 ### Meta
-- [Style Guide](meta/style-guide.md) — Writing conventions for wiki pages
-- [License](LICENSE.md) — Standard's Petty Software License v2.0
+- [Style Guide](meta/style-guide.md): Writing conventions for wiki pages
+- [License](LICENSE.md): Standard's Petty Software License v2.0
 
 ---
 
@@ -69,7 +69,7 @@ The canonical design reference for all modpack systems.
 | Cross-mod recipe audit | Implemented | Tier-breaking recipes blocked to preserve progression |
 | Mod config audit | Implemented | Mod balance configs aligned to design |
 | Config review pass | Implemented | Disenchanting, Table of XP, and DarkOrb T2-gated; Icarus T3; Aethersteel T4 |
-| Tetra integration | Implemented | 27 modded metal materials (T1–T4) |
+| Tetra integration | Implemented | 27 modded metal materials (T1 to T4) |
 | Serene Seasons documentation | Implemented | Patchouli Codex entry for seasonal farming |
 | Mekanism balance overhaul | Implemented | Generator nerfs, 2× RF costs, tool/armor removal; ERA-4 pass buffs fusion/fission output, disables radiation + meltdowns (force-shutdown), and T4-pins the fusion/antimatter/Digital-Miner/ultimate facilities |
 | Food system overhaul | Implemented | Faster hunger drain, reduced structure food, spawn protection |
@@ -85,7 +85,7 @@ The canonical design reference for all modpack systems.
 | Server distribution | Implemented | Dedicated server distribution with a unified launcher |
 | Vanilla Origins overhaul | Implemented | All 9 origins rebalanced; no lethal environmental effects; food preferences, not restrictions |
 | Race layer rebalance | Implemented | Race stat adjustments and functional effects |
-| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 total; 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied) — 13 total |
+| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin), 11 in total; 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied), 13 in total |
 | Class descriptions update | Implemented | Class descriptions match in-game power |
 | Codex expansion | Implemented | Build guide, Origins guide, and updated entries |
 | Tectonic terrain tuning | Implemented | Flatter vertical terrain |

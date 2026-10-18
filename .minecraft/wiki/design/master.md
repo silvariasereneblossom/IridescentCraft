@@ -1,7 +1,7 @@
-# IridescentCraft — Master Design Document
+# IridescentCraft: Master Design Document
 
-> **A progression-focused, expert-lite Minecraft 1.20.1 (Forge) modpack.**
-> Power-fantasy gameplay across four tiers, a four-lane progression-token economy (Engineering / Magic / Exploration / Combat) tracked by the Iridescent Codex, dual-path tech/magic progression, no-drop death with durability cost, and an endgame loop that rewards deep specialization.
+> A progression-focused, expert-lite Minecraft 1.20.1 (Forge) modpack.
+> Power-fantasy gameplay across four tiers, with a four-lane progression-token economy (Engineering / Magic / Exploration / Combat) tracked by the Iridescent Codex, dual-path tech/magic progression, no-drop death with a durability cost, and an endgame loop that rewards deep specialization.
 
 ---
 
@@ -9,9 +9,9 @@
 
 | | |
 |---|---|
-| **Purpose** | Canonical record of what the pack's systems are and *why*. Implementation-agnostic; no recipe lists, no drop rates. |
+| **Purpose** | The canonical record of what the pack's systems are and why. Implementation-agnostic: no recipe lists, no drop rates. |
 | **Audience** | Design contributors, advanced testers, mod authors building integrations. |
-| **Companion docs** | [`master-appendix.md`](master-appendix.md) — all numbers, tables, and registries. [`changelog.md`](changelog.md) — dated record of design changes. |
+| **Companion docs** | [`master-appendix.md`](master-appendix.md): all numbers, tables, and registries. [`changelog.md`](changelog.md): a dated record of design changes. |
 | **Editing rule** | When intent changes, update this doc and log the rationale in the changelog. Numerical changes go in the appendix. |
 
 The implementation status of every system lives in the [Home page status table](../home.md). Per-mod balance audit verdicts and private postmortems live in the contributor-only `IridescentCraft-internal` repo.
@@ -20,21 +20,21 @@ The implementation status of every system lives in the [Home page status table](
 
 ## Quick reference: terminology
 
-Recurring terms used throughout this document.
+Terms that recur throughout this document.
 
 | Term | Meaning |
 |------|---------|
-| **Tier (T1–T4)** | Player progression band. T1 = Overworld only; T2 = first dimensional; T3 = late-game mod content + Nether; T4 = endgame, End, Ad Astra. |
+| **Tier (T1 to T4)** | Player progression band. T1 = Overworld only; T2 = first dimensional; T3 = late-game mod content + Nether; T4 = endgame, End, Ad Astra. |
 | **AStages** | The progression mod that holds per-player tier flags. Items, dimensions, recipes, and ores all gate-check against the player's current stage. |
-| **Tetra** | Modular-item workbench framework. Used for the pack's modular weapons + tools (Tetra + `art_of_forging` + `adtetra` stack), Iridescent Modular Spells, and **Iridescent Reforging** (modular armor — armor extension that bridges Tetra's gap). The latter two ship together in the bundled `iridescent_tetra_expansion` jar. |
-| **Apotheosis** | Affix + reforging + gem socketing system. Adds Common→Mythic affix tiers, sigil-tier workstations, and elite "Apotheosis bosses." |
-| **Iridescent Codex** | The progression engine. Tracks the four-lane token economy, converts materials/reagents into tiered tokens, and tracks boss kills. Backed by Heracles (the quest mod) for v1; the Patchouli book is the documentation skin. See Part III + Part XII. |
-| **Progression token** | Physical, tiered item submitted to the Codex to advance a tier. Sourced from four lanes (Engineering / Magic / Exploration / Combat) into one combined pool. Replaces the former internal boss-kill counter. |
-| **ISS** | Iron's Spellbooks. The pack's primary spell-system mod; provides ink/rune/upgrade-orb reagents that are distributed across every dimension's bosses. |
+| **Tetra** | Modular-item workbench framework. The pack uses it for modular weapons and tools (the Tetra + `art_of_forging` + `adtetra` stack), Iridescent Modular Spells, and Iridescent Reforging (modular armor, an armor extension that fills Tetra's gap). The latter two ship together in the bundled `iridescent_tetra_expansion` jar. |
+| **Apotheosis** | Affix + reforging + gem socketing system. Adds Common to Mythic affix tiers, sigil-tier workstations, and elite "Apotheosis bosses." |
+| **Iridescent Codex** | The progression engine. It tracks the four-lane token economy, converts materials/reagents into tiered tokens, and tracks boss kills. Heracles (the quest mod) backs it for v1; the Patchouli book is the documentation skin. See Part III and Part XII. |
+| **Progression token** | A physical, tiered item submitted to the Codex to advance a tier. Tokens come from four lanes (Engineering / Magic / Exploration / Combat) into one combined pool. They replace the former internal boss-kill counter. |
+| **ISS** | Iron's Spellbooks. The pack's primary spell-system mod; it provides the ink/rune/upgrade-orb reagents that are spread across every dimension's bosses. |
 | **F&A** | Forbidden & Arcanus. T3 magic mod centered on the Hephaestus Forge. |
 | **Mythic Forge** | Custom T4 crafting station for unique endgame items (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown, MekaSuit Mk2). |
-| **Iridescent Modular Spells** | Custom Forge content mod that bridges Tetra's modular-item workbench to ISS and Ars Nouveau spell books. 15 modular variants. Ships inside the bundled `iridescent_tetra_expansion` jar (with Iridescent Reforging). |
-| **Token economy** | Tier-transition model. Advance a tier by reaching its **token threshold** (500 / 1000 / 2000, banked in one combined pool) *or* its **boss-rush %** (clear 80 / 90 / 100% of the tier's bosses). Four lanes feed the pool: Engineering / Magic / Exploration / Combat. See Part III. |
+| **Iridescent Modular Spells** | Custom Forge content mod that connects Tetra's modular-item workbench to ISS and Ars Nouveau spell books, with 15 modular variants. It ships inside the bundled `iridescent_tetra_expansion` jar (with Iridescent Reforging). |
+| **Token economy** | Tier-transition model. A player advances a tier by reaching its token threshold (500 / 1000 / 2000, banked in one combined pool) or its boss-rush % (clear 80 / 90 / 100% of the tier's bosses). Four lanes feed the pool: Engineering / Magic / Exploration / Combat. See Part III. |
 
 ---
 
@@ -65,29 +65,29 @@ Recurring terms used throughout this document.
 
 ### The pitch
 
-IridescentCraft is a power-fantasy modpack where players become absurdly powerful — but the world scales harder. Early-game is intentionally open and exploratory; gating tightens over four tiers, each unlocking new dimensions, new mod systems, and new equipment ceilings.
+IridescentCraft is a power-fantasy modpack where players become absurdly powerful, but the world scales harder. The early game is open and exploratory on purpose; gating tightens over four tiers, and each tier unlocks new dimensions, new mod systems, and new equipment ceilings.
 
-The pack is **expert-lite**: players automate, specialize, and hunt bosses for unique drops, but they are not asked to grind 80 hours of pre-progression bookkeeping to unlock the next tier. The goals are concrete: *the moment a Mage destabilizes a planet with stacked spell power; the moment a Tech player walks through Glacio in a MekaSuit Mk2; the moment a Hybrid annihilates the Ender Dragon with Voidheart Blade in one hand and a Phoenix artifact equipped.* The systems exist to make those moments **earned**.
+The pack is expert-lite: players automate, specialize, and hunt bosses for unique drops, but they are not asked to grind 80 hours of pre-progression bookkeeping to unlock the next tier. The goals are concrete: *the moment a Mage destabilizes a planet with stacked spell power; the moment a Tech player walks through Glacio in a MekaSuit Mk2; the moment a Hybrid annihilates the Ender Dragon with Voidheart Blade in one hand and a Phoenix artifact equipped.* The systems exist so that those moments are earned.
 
 ### Design pillars
 
-1. **Open early, gated late.** T1 is permissive — explore the Overworld, learn Create, play with starter spells. Each subsequent tier transition tightens. T2 unlocks dimensions, T3 unlocks late-game mod content, T4 unlocks cosmic-tier mods. The squeeze pulls the player toward decisions, not toward grind.
+1. **Open early, gated late.** T1 is permissive: explore the Overworld, learn Create, play with starter spells. Each tier transition after that is tighter. T2 unlocks dimensions, T3 unlocks late-game mod content, and T4 unlocks cosmic-tier mods. The squeeze is there to force decisions, not to add grind.
 
-2. **Four-lane progression.** Every tier transition is solvable through any single lane — Engineering, Magic, Exploration, or Combat — by banking enough progression tokens, or by clearing the tier's boss roster. Build a Create farm and submit the machines; cultivate Botania mana and submit the reagents; loot dimensions; hunt bosses — each lane reaches the threshold on its own, and hybrids mix freely. Specialization is supported, never punished. (See Part III.)
+2. **Four-lane progression.** Every tier transition can be solved through any single lane (Engineering, Magic, Exploration, or Combat) by banking enough progression tokens, or by clearing the tier's boss roster. Build a Create farm and submit the machines, cultivate Botania mana and submit the reagents, loot dimensions, or hunt bosses: each lane reaches the threshold on its own, and hybrids mix freely. Specialization is supported and never punished. (See Part III.)
 
-3. **Abundance of tools, not scarcity.** Gates are *when* you unlock things, not *whether*. Mid-tier curios have no lifetime caps; rare drops are not lottery-locked; tier-skip mechanics exist (transmutation, boss tier-peek) so players can sample next-tier power before unlocking it. The pack rewards engagement, not patience.
+3. **Abundance of tools, not scarcity.** Gates decide when you unlock things, not whether you can. Mid-tier curios have no lifetime caps, rare drops are not lottery-locked, and tier-skip mechanics exist (transmutation, boss tier-peek) so players can sample next-tier power before unlocking it. The pack rewards engagement over patience.
 
-4. **No-drop death, durability cost.** Inventory survives death — the penalty is durability damage to equipped gear and XP loss. The Soulbound enchantment is the high-cost end-game protection. Dying isn't catastrophic, but it isn't free.
+4. **No-drop death, durability cost.** Inventory survives death. The penalty is durability damage to equipped gear and XP loss. The Soulbound enchantment is the high-cost end-game protection. Dying isn't catastrophic, but it isn't free.
 
-5. **Power requires power.** Mob and boss scaling exceeds player scaling at every tier. By T4, the player *needs* god-tier gear — because the world is built to match it. This is the rationale behind absurd MekaSuit Mk2 stats and uncapped mage spell-power stacking: they exist because the Ender Guardian, Ancient Remnant, post-buff Ender Dragon, and Glacio mobs are built for them.
+5. **Power requires power.** Mob and boss scaling outpaces player scaling at every tier. By T4 the player needs god-tier gear, because the world is built to match it. That is why MekaSuit Mk2 stats are absurd and mage spell power stacks without a cap: the Ender Guardian, Ancient Remnant, post-buff Ender Dragon, and Glacio mobs are built for them.
 
-6. **Boss fights are the pinnacle.** The best weapons (Simply Swords uniques), the next-tier materials (Mahou reagents, ISS upgrade orbs, MekaSuit Mk2 components), and the rarest curios all come from bosses. Non-combat players can reach T4 through tech or magic alone, but the *highlight* gear comes from facing the bosses head-on.
+6. **Boss fights are the pinnacle.** The best weapons (Simply Swords uniques), the next-tier materials (Mahou reagents, ISS upgrade orbs, MekaSuit Mk2 components), and the rarest curios all come from bosses. Non-combat players can reach T4 through tech or magic alone, but the highlight gear comes from facing the bosses head-on.
 
-7. **Play your way.** Tech, magic, ranged, melee, summoner, hybrid — all valid paths to the endgame. The character system (10 classes × 11 races × 13 origins) encourages specialization, but no class is closed off from any tier. The Witch of Ink can build a Mekanism factory; the MekaSuit-clad Tech player can equip Tetra-modular spell books. Build identity is encouraged; build silos are not.
+7. **Play your way.** Tech, magic, ranged, melee, summoner and hybrid are all valid paths to the endgame. The character system (10 classes × 11 races × 13 origins) encourages specialization, but no class is closed off from any tier. The Witch of Ink can build a Mekanism factory, and the MekaSuit-clad Tech player can equip Tetra-modular spell books. Build identity is encouraged; build silos are not.
 
 ### What "expert-lite" means here
 
-Expert packs assume long pre-progression — hours of pre-mod minigames before the first real mod unlocks. IridescentCraft inverts that. Every mod is *available* from T1, but each is gated to a tier where its power level is appropriate. Players begin with Create, a starter spell book, and Botania saplings on day one. They will not unlock Mekanism until T3, but Mekanism's *role* is clear from the codex from day one.
+Expert packs assume a long pre-progression: hours of pre-mod minigames before the first real mod unlocks. IridescentCraft does the opposite. Every mod is available from T1, but each is gated to the tier where its power level fits. Players begin with Create, a starter spell book, and Botania saplings on day one. They will not unlock Mekanism until T3, but the codex makes Mekanism's role clear from day one.
 
 The pack keeps the systems readable while the unlock cadence stays dramatic.
 
@@ -97,51 +97,51 @@ The pack keeps the systems readable while the unlock cadence stays dramatic.
 
 The pack moves through four tiers. Each tier is a step-change in power, available content, and threat level.
 
-> **Implementation note.** Tier transitions are explicit: the player unlocks AStages stages `tier_2`, `tier_3`, `tier_4`. Items, recipes, dimensions, and ores all gate-check against the active stage.
+> Implementation note: tier transitions are explicit. The player unlocks the AStages stages `tier_2`, `tier_3`, `tier_4`. Items, recipes, dimensions, and ores all gate-check against the active stage.
 
-> **Design pillar — each tier feels complete.** A player who never moves
-> past T1 should still feel like they're playing a full, satisfying modpack.
-> Each tier ships with: a dedicated dimension or alt-loop, enough biome/mob/
+> Design pillar: each tier feels complete. A player who never moves
+> past T1 should still feel they are playing a full, satisfying modpack.
+> Each tier ships with a dedicated dimension or alt-loop, enough biome/mob/
 > structure variety to fill 20+ hours of exploration, a workable progression
 > ladder for both combat and magic builds, a complete cooking/farming layer,
 > and at least one major endgame-style hook (a chase item, a worthy boss,
-> a satisfying mid-tier capstone). Gates limit *content access between tiers*;
-> they don't reduce *quality within a tier*. The pack isn't a tutorial that
-> opens up at T4 — it's four overlapping modpacks stitched into a progression.
+> a satisfying mid-tier capstone). Gates limit content access between tiers;
+> they don't lower the quality within a tier. The pack is four overlapping
+> modpacks stitched into a progression, rather than a tutorial that opens up at T4.
 
 ### Tier identity
 
 | Tier | Identity | "Complete experience" composition | Player feel |
 |------|----------|-----------------------------------|-------------|
-| **T1** — Bronze Age Explorer | Overworld + Botania starter chain + Create kinetics + early ISS/Ars magic. Iron / copper / brass. (Post-alpha: Blue Skies as alt T1 dimension; see [Roadmap](../roadmap/planned.md).) | Overworld worldgen depth, Botania mana entry, Create early automation, starter spell scrolls, first village trades, Tetra modular weapons / wands / books, Apotheosis affix loop (common-rare). | *"I'm exploring and learning. Magic feels possible. Tech feels achievable."* |
-| **T2** — Enchanted Adventurer | Twilight Forest + Blue Skies' Everbright and Everdawn (until T1 move) — three dimensional alt-paths. First mechanized tech via Thermal Series. New combat addons: Simply Swords uniques, Apotheosis-tier elite mobs, themed boss drops. | Three dimensions with distinct progression curves, first dimensional bosses (Naga / Hydra / Lich / Frostmaw / etc.), Thermal Series mechanized intro (steam dynamos / pulverizers / induction smelters), Ars Nouveau source infrastructure, Manasteel + Steel + dimension-themed metals. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
-| **T3** — Empowered Slayer | Undergarden + Deeper Darker + Nether + Abyss. **The Mekanism tier** — most of the Mekanism progression chain (basic-to-intermediate factories, gas pipelines, fission/fusion prep). Diamond access. F&A Hephaestus Forge. Occultism spirit bindings. | Four mid-tier dimensions, Mekanism factories + Refined Storage networks, Terrasteel / Elementium / Enderium, Cataclysm boss line, Diamond/Netherite material chain unlocks, the affix Mythic ceiling. | *"I'm powerful. I'm scaling. I have a factory or a mage-lab or a death-set."* |
-| **T4** — God-Killer | The Aether (Deep Aether's biomes included) + the End + Ad Astra planets. **Full package** — Mekanism advanced (MekaSuit, fission, antimatter), Mahou Tsukai, RFTools Dimensions, Ascension cycles, Rifts. | Endgame dimensions (each with its own boss + chase items), MekaSuit Mk2 + Mahou Tsukai + Ascension loops, Gaia / Aethersteel / Primordial Essence, Mythic Forge, Ancient affix ceiling. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
+| **T1**: Bronze Age Explorer | Overworld + Botania starter chain + Create kinetics + early ISS/Ars magic. Iron / copper / brass. (Post-alpha: Blue Skies as alt T1 dimension; see [Roadmap](../roadmap/planned.md).) | Overworld worldgen depth, Botania mana entry, Create early automation, starter spell scrolls, first village trades, Tetra modular weapons / wands / books, Apotheosis affix loop (common-rare). | *"I'm exploring and learning. Magic feels possible. Tech feels achievable."* |
+| **T2**: Enchanted Adventurer | Twilight Forest + Blue Skies' Everbright and Everdawn (until T1 move): three dimensional alt-paths. First mechanized tech via Thermal Series. New combat addons: Simply Swords uniques, Apotheosis-tier elite mobs, themed boss drops. | Three dimensions with distinct progression curves, first dimensional bosses (Naga / Hydra / Lich / Frostmaw / etc.), Thermal Series mechanized intro (steam dynamos / pulverizers / induction smelters), Ars Nouveau source infrastructure, Manasteel + Steel + dimension-themed metals. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
+| **T3**: Empowered Slayer | Undergarden + Deeper Darker + Nether + Abyss. The Mekanism tier: most of the Mekanism progression chain (basic-to-intermediate factories, gas pipelines, fission/fusion prep). Diamond access. F&A Hephaestus Forge. Occultism spirit bindings. | Four mid-tier dimensions, Mekanism factories + Refined Storage networks, Terrasteel / Elementium / Enderium, Cataclysm boss line, Diamond/Netherite material chain unlocks, the affix Mythic ceiling. | *"I'm powerful. I'm scaling. I have a factory or a mage-lab or a death-set."* |
+| **T4**: God-Killer | The Aether (Deep Aether's biomes included) + the End + Ad Astra planets. Full package: Mekanism advanced (MekaSuit, fission, antimatter), Mahou Tsukai, RFTools Dimensions, Ascension cycles, Rifts. | Endgame dimensions (each with its own boss + chase items), MekaSuit Mk2 + Mahou Tsukai + Ascension loops, Gaia / Aethersteel / Primordial Essence, Mythic Forge, Ancient affix ceiling. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
 
 → Per-tier material lists and mod placements: [Appendix §A](master-appendix.md#a-tier-material-reference) and [§F](master-appendix.md#f-mod-roster-by-tier).
 
 ### What gating actually does
 
-Tier gating is enforced through **AStages** (per-player tier flags), **KubeJS** event hooks, and a small set of datapack overrides (`icraft_*_overrides`). In concrete terms:
+Tier gating is enforced through AStages (per-player tier flags), KubeJS event hooks, and a small set of datapack overrides (`icraft_*_overrides`). In concrete terms:
 
-- **Items** — tier-inappropriate items cannot be used (held, equipped, or consumed) until the stage is unlocked. A T2 player who finds an Awakening artifact via creative gift sees it inert until they reach T4.
-- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies' Everbright and Everdawn) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether, the Abyss) at T3; T4 dimensions (the Aether, End, the Ad Astra planets and each of their orbits) at T4. A dimension's tier is the tier of the way in: Iron's Spellbooks' pocket dimension is T4 because its spell cannot be cast before T4, and the Reality Marble is T4 because Mahou Tsukai is.
-- **Recipes** — tier-gated crafting. Workbenches, advanced materials, and boss-tier crafting stations check the player's stage.
-- **Ores** — visually replaced (with a vanilla equivalent) until the appropriate tier. The player sees stone instead of diamond ore until T3; holystone instead of aether_debris until T4.
+- Items: tier-inappropriate items cannot be used (held, equipped, or consumed) until the stage is unlocked. A T2 player who gets an Awakening artifact as a creative gift sees it inert until they reach T4.
+- Dimensions: locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies' Everbright and Everdawn) open at T2; T3 dimensions (Undergarden, Deeper Darker, Nether, the Abyss) at T3; T4 dimensions (the Aether, End, the Ad Astra planets and each of their orbits) at T4. A dimension's tier is the tier of the way in: Iron's Spellbooks' pocket dimension is T4 because its spell cannot be cast before T4, and the Reality Marble is T4 because Mahou Tsukai is.
+- Recipes: tier-gated crafting. Workbenches, advanced materials, and boss-tier crafting stations check the player's stage.
+- Ores: visually replaced with a vanilla equivalent until the appropriate tier. The player sees stone instead of diamond ore until T3, and holystone instead of aether_debris until T4.
 
-Tier transitions happen by banking that tier's token threshold (through any mix of the four lanes) or by clearing its boss roster (see Part III). Players are not required to work every lane; one is enough.
+Tier transitions happen by banking that tier's token threshold (through any mix of the four lanes) or by clearing its boss roster (see Part III). Players do not have to work every lane; one is enough.
 
 ### The escalation curve
 
 Three things scale together across all four tiers:
 
-- **Player power** — gear, spells, perks
-- **Mob threat** — HP, damage, behavior, equipment
-- **Content surface** — mods, structures, recipes
+- Player power: gear, spells, perks
+- Mob threat: HP, damage, behavior, equipment
+- Content surface: mods, structures, recipes
 
-Player power scales fastest in the early mid-game (T1 → T2 feels enormous because that's when specialization kicks in). Mob threat scales fastest in late-game (T3 → T4, where the `iridescent_difficulty` curves, Majrusz Master-stage elites, and progressive boss buffs compound).
+Player power scales fastest in the early mid-game (T1 → T2 feels enormous because that is when specialization kicks in). Mob threat scales fastest in the late game (T3 → T4, where the `iridescent_difficulty` curves, Majrusz Master-stage elites, and progressive boss buffs compound).
 
-> **Design intent.** Players feel powerful at every tier, but never trivialize the next one.
+> Design intent: players feel powerful at every tier, but never trivialize the next one.
 
 → Scaling factors and elite-mob rates: [Appendix §D](master-appendix.md#d-apotheosis-tables--scaling).
 
@@ -149,99 +149,99 @@ Player power scales fastest in the early mid-game (T1 → T2 feels enormous beca
 
 ## Part III — Progression: the Token Economy
 
-Tier progression runs on a **four-lane progression-token economy**, tracked by the **Iridescent Codex**. This is the pack's most distinctive structural decision — every other system follows from it. It supersedes the older "branching unlock / internal boss-kill counter" model, which described paths that were largely never built.
+Tier progression runs on a four-lane progression-token economy, tracked by the Iridescent Codex. This is the pack's most distinctive structural decision, and every other system follows from it. It supersedes the older "branching unlock / internal boss-kill counter" model, which described paths that were largely never built.
 
 ### The Codex is the engine
 
 The Iridescent Codex does three things:
 
-1. **Receives and tracks** tier progression via **physical, tiered tokens**.
-2. **Converts** specific material resources and magical reagents into tokens (each capped per resource).
-3. **Tracks boss kills** for the pure boss-rush route.
+1. It receives and tracks tier progression through physical, tiered tokens.
+2. It converts specific material resources and magical reagents into tokens (each capped per resource).
+3. It tracks boss kills for the pure boss-rush route.
 
-> **Build reality.** The Codex's documentation skin is a Patchouli book (`iridescent_codex_data.jar`, modId `icraft`). The *engine* is **Heracles** (the quest mod), which already does item-submission, kill-tracking, and stage-granting — the pragmatic v1 of "the Codex does it." A bespoke Codex-terminal block + GUI is a possible later migration. See Part XII.
+> Build reality: the Codex's documentation skin is a Patchouli book (`iridescent_codex_data.jar`, modId `icraft`). The engine is Heracles (the quest mod), which already handles item submission, kill tracking, and stage granting, making it the pragmatic v1 of "the Codex does it." A bespoke Codex-terminal block + GUI is a possible later migration. See Part XII.
 
 ### Two routes to advance
 
-Advance a tier by hitting **either** its **token threshold** *or* its **boss-rush %**:
+A player advances a tier by hitting either its token threshold or its boss-rush %:
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
-| T1 → T2 | **500** | 80% of T1 bosses (8 of 9) |
-| T2 → T3 | **1000** | 90% of T2 bosses (17 of 18) |
-| T3 → T4 | **2000** | 100% of T3 bosses (all 45, incl. Lucifer) |
-| T4 → finale | — | **defeat the Ender Dragon** (the pack finale; no gate: the Ad Astra planets open with T4) |
+| T1 → T2 | 500 | 80% of T1 bosses (8 of 9) |
+| T2 → T3 | 1000 | 90% of T2 bosses (17 of 18) |
+| T3 → T4 | 2000 | 100% of T3 bosses (all 45, incl. Lucifer) |
+| T4 → finale | none | defeat the Ender Dragon (the pack finale; no gate: the Ad Astra planets open with T4) |
 
-There is **one combined token pool**, fed by four lanes. The boss-rush denominator is the **per-tier boss roster** (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 9 / 18 / 45 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2, the Aether's three dungeon bosses to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.
+There is one combined token pool, fed by four lanes. The boss-rush denominator is the per-tier boss roster (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 9 / 18 / 45 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2, the Aether's three dungeon bosses to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.
 
-**The ladder is strict** (since October 2026). A tier is bought only with the tier below held: neither 1,000 tier-2 tokens nor a cleared tier-2 roster buys tier 3 for a player who has not reached tier 2. Kills made early still count once the tier below is held. Tier 1's tokens ask for nothing (every survival player holds tier 1).
+The ladder is strict (since October 2026). A tier can be bought only while the player holds the tier below: neither 1,000 tier-2 tokens nor a cleared tier-2 roster buys tier 3 for a player who has not reached tier 2. Kills made early still count once the tier below is held. Tier 1's tokens ask for nothing (every survival player holds tier 1).
 
 ### The four lanes
 
 | Lane | What it submits | Who it's for |
 |----------|--------------|--------------|
 | **Engineering** | Bulk metals + milestone machine blocks (Create @ T1, Thermal @ T2, Mekanism @ T3) | Engineers, factory builders |
-| **Magic** | Generation/cultivation/ritual reagents + apparatus — never spellcasting (Botania @ T1, Ars @ T2, advanced Botania + Occultism + F&A @ T3) | Mages, ritualists, cultivators |
+| **Magic** | Generation/cultivation/ritual reagents + apparatus, never spellcasting (Botania @ T1, Ars @ T2, advanced Botania + Occultism + F&A @ T3) | Mages, ritualists, cultivators |
 | **Exploration** | Miniboss/boss first-kill + repeat-kill tokens, non-overworld dimension entry, chest/barrel finds | Explorers, dimensional travelers |
-| **Combat** | Boss + miniboss kills (feed the pool *and* count toward boss-rush %) | Warriors, hunters, hybrid melee builds |
+| **Combat** | Boss + miniboss kills (they feed the pool and count toward boss-rush %) | Warriors, hunters, hybrid melee builds |
 
-Lanes mix freely; the combined pool serves hybrids. It is never *required* — each lane must reach the threshold on its own.
+Lanes mix freely, and the combined pool serves hybrids. Mixing is never required: each lane must reach the threshold on its own.
 
 ### Pure-path sufficiency
 
-**Each tier is reachable by a single pure playstyle.**
+Each tier is reachable by a single pure playstyle.
 
-- **Engineering** is **capped per material**, so its ceiling is Σ(all caps). After the **1/100 bulk-metal cut** plus high-value machine blocks, the named submissions sum to **~590 / 1200 / 2400** vs the **500 / 1000 / 2000** thresholds (~118–120%) — pure-engineering closes on named submissions alone. The conversion tables are the **complete** set: only listed materials/blocks grant tokens, there is no universal default and no unlisted long-tail, so each tier's total *is* the engineering ceiling.
-- **Magic** mirrors Engineering — capped *Reagents* (the "ore", e.g. `manasteel_ingot` / `source_gem` / `terrasteel_ingot`) plus low-cap, high-value *Apparatus* (the "machines", e.g. Runic Altar / Source Jars / Hephaestus Forge) — drawing only from the generation/cultivation/ritual side. Subtotals **~600 / 1250 / 2360**.
-- **Exploration** and **Combat** are farmable (boss repeat-kills, respawning chests/dimensions) → always *reachable*; the open question there is grind, not feasibility.
+- Engineering is capped per material, so its ceiling is Σ(all caps). After the 1/100 bulk-metal cut plus high-value machine blocks, the named submissions sum to ~590 / 1200 / 2400 against the 500 / 1000 / 2000 thresholds (~118 to 120%), so pure engineering closes on named submissions alone. The conversion tables are the complete set: only listed materials/blocks grant tokens, with no universal default and no unlisted long tail, so each tier's total is the engineering ceiling.
+- Magic mirrors Engineering: capped *Reagents* (the "ore", e.g. `manasteel_ingot` / `source_gem` / `terrasteel_ingot`) plus low-cap, high-value *Apparatus* (the "machines", e.g. Runic Altar / Source Jars / Hephaestus Forge), drawn only from the generation/cultivation/ritual side. Subtotals ~600 / 1250 / 2360.
+- Exploration and Combat are farmable (boss repeat-kills, respawning chests/dimensions), so they are always reachable; the open question there is grind, not feasibility.
 
-> **Ore-base curve is intentional.** Bulk metal contributes a rising share across T1/T2/T3 *by design* — higher tiers unlock ore multiplication (Mekanism 2–5×) + automation, so submission tracks the player's growing production capability. Milestone machines stay the required push *over the line* (ore alone never reaches threshold at any tier).
+> The ore-base curve is intentional. Bulk metal contributes a rising share across T1/T2/T3 by design: higher tiers unlock ore multiplication (Mekanism 2 to 5×) and automation, so submissions track the player's growing production capability. Milestone machines stay the required push over the line (ore alone never reaches the threshold at any tier).
 
 → Full conversion tables (per-resource caps + rates) for Engineering and Magic: [Appendix §A.7](master-appendix.md#a7-tier-unlock-options--the-token-economy).
 
-### Tiering prerequisites — recipe overrides (shipped)
+### Tiering prerequisites: recipe overrides (shipped)
 
-The token economies depend on a set of recipe overrides that un-gate "T1/T2" submissions secretly blocked by higher-tier materials/processes. All live in `kubejs/server_scripts/recipes/` across the three distro roots:
+The token economies depend on a set of recipe overrides that un-gate "T1/T2" submissions with hidden dependencies on higher-tier materials or processes. All of them live in `kubejs/server_scripts/recipes/` across the three distro roots:
 
-- **Blaze Burner → T1** (prefilled iron plates + campfire) — un-gates Create's entire heated half.
-- **Create steel bridge** (`create:mixing`, heated) — clean Create(T1) → steel → Thermal(T2), bypassing the coke→Pyrolyzer Nether dependency.
-- **Magma Crucible** `nether_bricks → bricks` — T3 → T2.
-- **Ars Enchanting Apparatus** `diamond → mana_diamond` — frees the Magic T2 chain from a diamond (T3) gate.
+- Blaze Burner → T1 (prefilled iron plates + campfire): un-gates Create's entire heated half.
+- Create steel bridge (`create:mixing`, heated): a clean Create (T1) → steel → Thermal (T2) route that bypasses the coke→Pyrolyzer Nether dependency.
+- Magma Crucible `nether_bricks → bricks`: T3 → T2.
+- Ars Enchanting Apparatus `diamond → mana_diamond`: frees the Magic T2 chain from a diamond (T3) gate.
 
 → Full ledger: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state).
 
-### Cross-tier material access — bend, not break
+### Cross-tier material access: bend, not break
 
-One mechanism lets a current-tier player access *small amounts* of next-tier material — sampling next-tier power without skipping the unlock:
+One mechanism lets a current-tier player get small amounts of next-tier material, so they can sample next-tier power without skipping the unlock:
 
-- **Boss tier-peek drops.** Current-tier bosses occasionally drop next-tier reagents at 5–15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires.
+- Boss tier-peek drops: current-tier bosses occasionally drop next-tier reagents, at 5 to 15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires.
 
-It preserves the gate (a player cannot fully outfit themselves in next-tier gear without unlocking) while rewarding investment. (A second mechanism, *transmutation* — expensive recipes turning current-tier materials into a little next-tier material — was designed but never became recipes; its placeholder items were removed in October 2026.)
+It preserves the gate (a player cannot fully outfit themselves in next-tier gear without unlocking it) while rewarding investment. (A second mechanism was designed but never became recipes: *transmutation*, expensive recipes turning current-tier materials into a little next-tier material. Its placeholder items were removed in October 2026.)
 
 → Recipe costs and tier-peek drop percentages: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state) and [§C](master-appendix.md#c-boss--loot-mapping).
 
 ### The T3 → T4 combat pinch + the End
 
-**Lucifer is the *combat* capstone of T3 → T4** — the final T3 boss in the 100% boss-rush clear. (A unique **Lucifer's Token**, a second combat door that would have let an explorer who banked their way up skip the rest of the roster, was never built and was retired from the design on 2026-10-17: his kill pays his kill tokens and the *Capstone: Lucifer* quest, and opens nothing.) Non-combat lanes skip him entirely: banking the 2000-token threshold via Engineering or Magic reaches T4 with no fight. So at T3 → T4 only, a truly combat-averse player has exactly one door — a non-combat lane. A deliberate endgame pinch-point. See Part X.
+Lucifer is the *combat* capstone of T3 → T4: the final T3 boss in the 100% boss-rush clear. (A unique Lucifer's Token, a second combat door that would have let an explorer who banked their way up skip the rest of the roster, was never built and was retired from the design on 2026-10-17: his kill pays his kill tokens and the *Capstone: Lucifer* quest, and opens nothing.) Non-combat lanes skip him entirely: banking the 2000-token threshold through Engineering or Magic reaches T4 with no fight. So at T3 → T4 only, a truly combat-averse player has exactly one door, a non-combat lane. The pinch point is deliberate. See Part X.
 
-**The End is reached with Eyes of Ender today.** Unlocking the End uses the *vanilla* process (stronghold + End Portal frames), with the Eyes of Ender staged at T4. **Planned (not built yet):** the **Eye of Ender is to be replaced by an "End Compass"**, crafted from **the Aether's materials** (a T4 dimension), which would direct the player to an **"End Bastion"**, so that the portal could not be targeted until the player has worked the Aether. **Defeating the Ender Dragon is the pack finale** (T4 is terminal — no further token gate). The Ad Astra planets were designed as the post-game beyond it; in the game they are T4 dimensions, reached by rocket with the T4 stage (no dragon kill is asked). See Part IV + Part X.
+The End is reached with Eyes of Ender today. Unlocking the End uses the vanilla process (stronghold + End Portal frames), with the Eyes of Ender staged at T4. **Planned (not built yet):** the Eye of Ender is to be replaced by an "End Compass", crafted from the Aether's materials (a T4 dimension), which would direct the player to an "End Bastion", so that the portal could not be targeted until the player has worked the Aether. Defeating the Ender Dragon is the pack finale (T4 is terminal, with no further token gate). The Ad Astra planets were designed as the post-game beyond it; in the game they are T4 dimensions, reached by rocket with the T4 stage (no dragon kill is asked). See Part IV and Part X.
 
 ---
 
 ## Part IV — Worlds & Dimensions
 
-The pack's dimensional layout is **the spine of the tier system**. Each tier opens a band of dimensions; each dimension carries its own difficulty, themes, and content surface.
+The pack's dimensional layout is the spine of the tier system. Each tier opens a band of dimensions, and each dimension carries its own difficulty, themes, and content surface.
 
-Two design choices distinguish IridescentCraft from base Minecraft:
+Two design choices set IridescentCraft apart from base Minecraft:
 
-- The **Nether is T3**, not T1/T2.
-- The **End is T4**, not the late-game finale of any tier.
+- The Nether is T3, not T1/T2.
+- The End is T4, not the late-game finale of any tier.
 
 Twilight Forest and Blue Skies (Everbright and Everdawn) occupy the T2 band as "first dimensional" content. The Aether (Deep Aether's biomes generate inside it) and the Ad Astra planets are T4 endgame, alongside the End.
 
 ### Dimension philosophy
 
-A dimension is not a place to grind — it is a content arc. Each dimension has a thematic identity, a primary boss line, and a unique mechanic that distinguishes its play feel.
+A dimension is a content arc, not a place to grind. Each one has a thematic identity, a primary boss line, and a unique mechanic that distinguishes its play feel.
 
 | Dimension | Tier | Boss line | Distinguishing mechanic |
 |-----------|:---:|-----------|-------------------------|
@@ -249,24 +249,24 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 | Blue Skies | T2 | Summoner / Alchemist / Starlit Crusher / Arachnarch | Everbright/Everdawn duality, elemental damage that bypasses armor |
 | Undergarden | T3 | Forgotten Guardian / Forgotten / Rotbeast | Hostile underground biome, attrition focus |
 | Deeper Darker | T3 | Sculk-themed | Oppressive darkness, stealth-required |
-| The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | Majrusz Master-stage scaling; Wither Skeletons function as mini-bosses |
-| The Abyss (TATOS) | T3 | Elder / Ice Knight / Nightblade / Soul Guard / The Roka / Guard | `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Oppressive darkness, corruption, fear aura, void whispers fire here via `dimension_mechanics.js`. Custom 8-ring `kubejs:ring_*` economy replaces theabyss's 30 stock rings (`abyss_boss_loot.js` + `abyss_ring_effects.js`); 7 elemental armor-set bonuses (`abyss_armor_effects.js`). |
-| The Aether | T4 (T2 until 2026-10-16) | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin-air, scarce holystone, flight rewarded |
-| Deep Aether (biomes inside the Aether, no dimension of its own) | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). The planned **End Compass** is to be crafted from the Aether's materials. |
-| The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached with Eyes of Ender, staged at T4 (a planned **End Compass → End Bastion** route would replace them); multi-zone scaling; Voidheart Blade Mythic Forge venue; the Dragon kill is the finale (it opens nothing further) |
-| Ad Astra (Moon, Mars, Mercury, Venus, Glacio, and the six orbits) | T4 | Per-planet | Reached by rocket: the rocket workbench is a T4 recipe and every planet and orbit has its own T4 gate (designed as the post-game after the Ender Dragon; since 2026-10-17 the design too: no dragon gate); 4-tier rocket gate; Glacio is the T4 endgame (MekaSuit Mk2 reagent) |
-| Iron's Spellbooks' pocket dimension, Mahou Tsukai's Reality Marble | T4 | — | Small personal dimensions: the Pocket Dimension spell cannot be cast before T4; the Reality Marble comes with Mahou Tsukai, a T4 mod |
-| Witch of Ink dimension *(planned origin-specific content surface; not yet a separate dimension in pack)* | T3+ (Origin-tied) | — | Origin-specific content surface |
+| The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | Majrusz Master-stage scaling; Wither Skeletons act as mini-bosses |
+| The Abyss (TATOS) | T3 | Elder / Ice Knight / Nightblade / Soul Guard / The Roka / Guard | `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Oppressive darkness, corruption, fear aura and void whispers fire here via `dimension_mechanics.js`. A custom 8-ring `kubejs:ring_*` economy replaces theabyss's 30 stock rings (`abyss_boss_loot.js` + `abyss_ring_effects.js`); 7 elemental armor-set bonuses (`abyss_armor_effects.js`). |
+| The Aether | T4 (T2 until 2026-10-16) | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin air, scarce holystone, flight rewarded |
+| Deep Aether (biomes inside the Aether, no dimension of its own) | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). The planned End Compass is to be crafted from the Aether's materials. |
+| The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached with Eyes of Ender, staged at T4 (a planned End Compass → End Bastion route would replace them); multi-zone scaling; Voidheart Blade Mythic Forge venue; the Dragon kill is the finale (it opens nothing further) |
+| Ad Astra (Moon, Mars, Mercury, Venus, Glacio, and the six orbits) | T4 | Per-planet | Reached by rocket: the rocket workbench is a T4 recipe and every planet and orbit has its own T4 gate (designed as the post-game after the Ender Dragon; since 2026-10-17 the design has no dragon gate either); 4-tier rocket gate; Glacio is the T4 endgame (MekaSuit Mk2 reagent) |
+| Iron's Spellbooks' pocket dimension, Mahou Tsukai's Reality Marble | T4 | none | Small personal dimensions: the Pocket Dimension spell cannot be cast before T4; the Reality Marble comes with Mahou Tsukai, a T4 mod |
+| Witch of Ink dimension *(planned origin-specific content surface; not yet a separate dimension in pack)* | T3+ (Origin-tied) | none | Origin-specific content surface |
 
-### Dimensional mechanics — per-dimension play-feel modifiers
+### Dimensional mechanics: per-dimension play-feel modifiers
 
-Beyond stat multipliers, each dimension has *scripted mechanics* that change how the player interacts with that space:
+Besides stat multipliers, each dimension has *scripted mechanics* that change how the player interacts with that space:
 
-- **Aether** (T4; Deep Aether's biomes included) — faster mobs, thin-air, vertigo, updrafts. Its mobs get Speed I, and its flyers Strength I as well; above Y 180 thin air brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player falling below Y 0 is caught once by an updraft (Slow Falling).
-- **Deeper Darker (Otherside)** — darkness empowerment + hexing. Sculk-mob night-vision/AI buffs at spawn; 15%-on-hit random debuff (slowness/weakness/mining-fatigue/blindness). Genuine Deeper-Darker flavor, fired via `dimension_mechanics.js`.
-- **The Abyss (TATOS)** — oppressive darkness, corruption, fear aura, void whispers. No held light + low light → mining-fatigue + slowness; periodic hunger ticks (corruption); Darkness near Abyss bosses (fear aura); Weakness below Y=20 (void whispers). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. (TATOS = "The Abyss: The Other Side"; installed, dim gated T3.)
-- **End** — multi-zone scaling. The dimension is divided into Outer Islands (T4 baseline), Deep End (T4-amplified), and Dragon's Domain (peak). Scaling factor doubles past a certain distance from spawn. Nine advancement overrides shape the End-progression flow.
-- **Ad Astra** — atmospheric pressure + cryogenic damage. Each planet has its own atmosphere; players need oxygen tanks (T4 entry equipment). Glacio adds cryogenic damage on top.
+- Aether (T4; Deep Aether's biomes included): faster mobs, thin air, vertigo, updrafts. Its mobs get Speed I, and its flyers Strength I as well. Above Y 180 thin air brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player falling below Y 0 is caught once by an updraft (Slow Falling).
+- Deeper Darker (Otherside): darkness empowerment + hexing. Sculk mobs get night-vision/AI buffs at spawn, and their hits carry a 15% chance of a random debuff (slowness/weakness/mining-fatigue/blindness). Genuine Deeper Darker flavor, fired via `dimension_mechanics.js`.
+- The Abyss (TATOS): oppressive darkness, corruption, fear aura, void whispers. No held light + low light → mining fatigue + slowness; periodic hunger ticks (corruption); Darkness near Abyss bosses (fear aura); Weakness below Y=20 (void whispers). It fires in `theabyss:the_abyss` via `dimension_mechanics.js`. (TATOS = "The Abyss: The Other Side"; installed, dim gated T3.)
+- End: multi-zone scaling. The dimension is divided into Outer Islands (T4 baseline), Deep End (T4-amplified), and Dragon's Domain (peak). The scaling factor doubles past a certain distance from spawn. Nine advancement overrides shape the End-progression flow.
+- Ad Astra: atmospheric pressure + cryogenic damage. Each planet has its own atmosphere, and players need oxygen tanks (T4 entry equipment). Glacio adds cryogenic damage on top.
 
 Each mechanic is implemented as a KubeJS server-tick handler with persistent player-data flags.
 
@@ -274,17 +274,17 @@ Each mechanic is implemented as a KubeJS server-tick handler with persistent pla
 
 ### Access mechanism
 
-Dimensions are gated through AStages dimension flags. A T2 player who attempts to enter the Nether sees the portal fail to ignite, with a chat message indicating insufficient access. Dimension entry items — Aether portal blocks, Blue Skies arc, Nether ignition — check stage flags before triggering. A Twilight Forest portal lights for anyone; stepping through it without Tier 2 is refused, as for every gated dimension.
+Dimensions are gated through AStages dimension flags. A T2 player who tries to enter the Nether sees the portal fail to ignite, with a chat message saying their access is insufficient. Dimension entry items (Aether portal blocks, the Blue Skies arc, Nether ignition) check stage flags before triggering. A Twilight Forest portal lights for anyone, but stepping through it without Tier 2 is refused, as for every gated dimension.
 
-> **Design note.** The Twilight Forest portal activator was changed from vanilla diamond to a T1 boss token. The pack's first dimension should not gate on diamond access, since diamonds are T3. Since 17 October 2026 the activator is the **Codex Token I** (the Tier 1 token from boss kills, chests and submissions), added to the mod's own diamond; the Tier 2 dimension gate, not the activator, keeps players below Tier 2 out. From April to October 2026 the activator was a legacy token nothing gave, and the portal could not be lit in survival.
+> Design note: the Twilight Forest portal activator was changed from vanilla diamond to a T1 boss token. The pack's first dimension should not gate on diamond access, since diamonds are T3. Since 17 October 2026 the activator is the Codex Token I (the Tier 1 token from boss kills, chests and submissions), added to the mod's own diamond; the Tier 2 dimension gate, not the activator, keeps players below Tier 2 out. From April to October 2026 the activator was a legacy token nothing gave, and the portal could not be lit in survival.
 
-> **The End's access is special (planned).** Today the vanilla stronghold + End Portal process is used as it is, with Eyes of Ender staged at T4. The plan: the **Eye of Ender is to be replaced by an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** structure (reusing the `boss_compass` waystone system). Players then could not even target the End portal until they have worked the Aether — the End would be genuinely *post*-Aether. The End Compass itself, its exact material bill and the End Bastion structure are build TBDs.
+> The End's access is special (planned). Today the vanilla stronghold + End Portal process is used as it is, with Eyes of Ender staged at T4. The plan is to replace the Eye of Ender with an "End Compass" crafted from the Aether's materials (a T4 dimension). The compass would direct the player to an "End Bastion" structure (reusing the `boss_compass` waystone system). Players then could not even target the End portal until they had worked the Aether, so the End would be genuinely *post*-Aether. The End Compass itself, its exact material bill and the End Bastion structure are build items still to be determined.
 
 ---
 
 ## Part V — Combat & Difficulty
 
-The pack's combat model is **player escalates, world escalates harder**. Both player power and mob threat scale across T1–T4, but mob threat scales more aggressively. By T4, an unbuffed player meets an unbuffed mob and loses; the player's job is to *be* buffed.
+The pack's combat model is *player escalates, world escalates harder*. Both player power and mob threat scale across T1 to T4, but mob threat scales more aggressively. By T4, an unbuffed player who meets an unbuffed mob loses; the player's job is to *be* buffed.
 
 ### What mob threat actually does
 
@@ -292,11 +292,11 @@ Threat scales along several axes, each controlled by a different system and tuna
 
 | Axis | System | What it does |
 |------|-----|--------------|
-| HP + damage (dimension) | **`iridescent_difficulty`** (bespoke, time-based) | Per-dimension multipliers that ramp linearly while the dimension is loaded, then freeze at a cap. The End uniquely uncaps after the Ender Dragon dies. Replaces the former ScalingMobs / Improved-Mobs-accumulator / Azukaar's stack. |
+| HP + damage (dimension) | `iridescent_difficulty` (bespoke, time-based) | Per-dimension multipliers that ramp linearly while the dimension is loaded, then freeze at a cap. The End alone uncaps after the Ender Dragon dies. It replaces the former ScalingMobs / Improved-Mobs-accumulator / Azukaar's stack. |
 | HP (static mob tier) | `mob_scaling_unified.js` tier-HP block | Flat per-category multipliers (basic 3× / mid 1.5× / elite 1.25×), composed on top of the dimension multiplier. |
-| Behavior + AI | Cataclysmic Combat / Difficult Caves | Enhanced AI: tool-use, block-breaking, coordination, cave-specific aggression. |
-| Elite-mob density | **Majrusz's Progressive Difficulty** | Three-stage (Normal / Expert / Master) elite-mob scaling, tied to progression milestones (Nether entry → Expert, Dragon kill → Master). Replaces the removed Champions Unofficial. (Majrusz's own per-mob *stat* scaling is config-disabled; `iridescent_difficulty` owns dimension stats.) |
-| Boss persistence | Per-kill scaling, per player (`boss_progressive.js`) | A boss is stronger for the players who have beaten it before: the highest kill count among the players within 64 blocks sets it, from +15% health at the 2nd fight to +150% from the 15th. Stacks on top of the dimension multiplier. Not the Wither, the Ender Dragon, the Warden or the Elder Guardian. |
+| Behavior + AI | Cataclysmic Combat / Difficult Caves | Enhanced AI: tool use, block breaking, coordination, cave-specific aggression. |
+| Elite-mob density | Majrusz's Progressive Difficulty | Three-stage (Normal / Expert / Master) elite-mob scaling, tied to progression milestones (Nether entry → Expert, Dragon kill → Master). It replaces the removed Champions Unofficial. (Majrusz's own per-mob *stat* scaling is disabled in its config; `iridescent_difficulty` owns dimension stats.) |
+| Boss persistence | Per-kill scaling, per player (`boss_progressive.js`) | A boss is stronger for the players who have beaten it before: the highest kill count among the players within 64 blocks sets the bonus, from +15% health at the 2nd fight to +150% from the 15th. It stacks on top of the dimension multiplier. The Wither, the Ender Dragon, the Warden and the Elder Guardian are exempt. |
 
 → Per-dimension multiplier tables + the time-based curve: [Appendix §D.4](master-appendix.md#d4-dimension-stat-multipliers-full) and [Progression Overview](../progression/overview.md#dimensional-progression).
 
@@ -304,79 +304,79 @@ Threat scales along several axes, each controlled by a different system and tuna
 
 Player power scales along four axes:
 
-- **Equipment** — Tetra-modular weapons, modular spell books, tiered armor sets (vanilla → mod-tier → boss-drop). See Part IX.
-- **Attribute baseline** — Origins, Races, and Classes provide innate stat modifiers. JustLevelingFork adds passive HP/damage scaling per character level.
-- **Skill investment** — Pufferfish's Skills offers six skill trees with command-reward effects, fed by XP investment.
-- **Consumable stack** — Spice of Life HP bonuses, Iron's Spellbooks elixirs, Apotheosis gem socketing, Relics charm leveling.
+- Equipment: Tetra-modular weapons, modular spell books, tiered armor sets (vanilla → mod-tier → boss-drop). See Part IX.
+- Attribute baseline: Origins, Races, and Classes provide innate stat modifiers. JustLevelingFork adds passive HP/damage scaling per character level.
+- Skill investment: Pufferfish's Skills has six skill trees with command-reward effects, fed by XP investment.
+- Consumable stack: Spice of Life HP bonuses, Iron's Spellbooks elixirs, Apotheosis gem socketing, Relics charm leveling.
 
-> **Design intent.** Player power is *uncapped* in several axes. Mage spell power stacks multiplicatively without ceiling. MekaSuit Mk2 stacks armor + utility modules without a hard cap. The world is built to match the stat ceiling, so "broken" builds are not broken — they are appropriate.
+> Design intent: player power is *uncapped* on several axes. Mage spell power stacks multiplicatively without a ceiling, and MekaSuit Mk2 stacks armor + utility modules without a hard cap. The world is built to match the stat ceiling, so "broken" builds are appropriate here.
 
 ### Bosses are the pinnacle
 
-Each tier has a roster of bosses that serve as the difficulty climax and loot peak of that tier:
+Each tier has a roster of bosses that are its difficulty climax and loot peak:
 
-- **T2 bosses** — Twilight (8) + Blue Skies (4) + Frostmaw (Everbright). Entry-tier challenge.
-- **T3 bosses** — Cataclysm (8) + Ignited Revenant + Wither + Stalker, capped by **Lucifer** (the T3 → T4 combat capstone). Mid-game peak.
-- **T4 bosses** — Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + the Aether's dungeon bosses (Slider / Valkyrie Queen / Sun Spirit). Endgame.
+- T2 bosses: Twilight (8) + Blue Skies (4) + Frostmaw (Everbright). The entry-tier challenge.
+- T3 bosses: Cataclysm (8) + Ignited Revenant + Wither + Stalker, capped by Lucifer (the T3 → T4 combat capstone). The mid-game peak.
+- T4 bosses: Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + the Aether's dungeon bosses (Slider / Valkyrie Queen / Sun Spirit). The endgame.
 
-Boss kills feed the **Combat lane** of the token economy and count toward the **boss-rush %** (Part III). The Codex (Heracles-backed) tracks kills per tier: clearing 80 / 90 / 100% of a tier's roster auto-advances the tier (only with the tier below held), and individual kills also drop physical tokens into the combined pool. Lucifer is the last boss of the T3 roster. **Lucifer is the combat capstone, not a universal gate** — non-combat lanes reach T4 by banking the 2000-token threshold and never fight him (see Part X). The former internal-counter-grants-tiers model is superseded: tokens are physical and Codex-tracked.
+Boss kills feed the Combat lane of the token economy and count toward the boss-rush % (Part III). The Codex (backed by Heracles) tracks kills per tier: clearing 80 / 90 / 100% of a tier's roster advances the tier automatically (only with the tier below held), and individual kills also drop physical tokens into the combined pool. Lucifer is the last boss of the T3 roster. He is the combat capstone, not a universal gate: non-combat lanes reach T4 by banking the 2000-token threshold and never fight him (see Part X). The former model, in which an internal counter granted tiers, is superseded: tokens are physical and tracked by the Codex.
 
 ### The "broken but not breakable" balance
 
-The pack accepts that some builds will be broken — that's the power-fantasy point. What it does not accept is broken-via-exploit. Every audit-driven gate (the five Mekanism processing-recipe blocks, the Botania Orechid datapack, the Occultism miner override, the Cataclysm boss-themed weapon allocations) closes a path that would let a low-tier player skip into broken-tier gear without earning it.
+The pack accepts that some builds will be broken; that is the point of a power fantasy. It does not accept builds broken through exploits. Every audit-driven gate (the five Mekanism processing-recipe blocks, the Botania Orechid datapack, the Occultism miner override, the Cataclysm boss-themed weapon allocations) closes a path that would let a low-tier player skip into broken-tier gear without earning it.
 
 → Running ledger: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state).
 
 ### Dimensional combat mechanics
 
-Beyond stat scaling, each dimension has its own **combat identity** — unique mob behaviors, environmental hazards, and play-feel modifiers that demand different strategies. Damage scales fastest, HP scales moderately. Combat in harder dimensions is *dangerous*; players must respect enemies, not just out-stat them.
+Besides stat scaling, each dimension has its own combat identity: unique mob behaviors, environmental hazards, and play-feel modifiers that call for different strategies. Damage scales fastest and HP moderately. Combat in harder dimensions is dangerous; players must respect enemies, not just out-stat them.
 
 Three principles guide the per-dimension design:
 
 1. **Enemies are lethal but killable.** A well-geared player tears through trash but respects elites and fears bosses.
-2. **Every dimension feels mechanically unique.** Not stat inflation alone — each dimension has combat behaviors and enemy mechanics that demand different strategies.
+2. **Every dimension feels mechanically unique.** Each dimension has combat behaviors and enemy mechanics that demand different strategies, beyond stat inflation.
 3. **Build diversity matters in combat.** A Berserker and a Vanguard fighting the same mob should have fundamentally different experiences, not just "faster" or "slower" versions of the same fight.
 
 #### Combat identity by dimension
 
-**T1 — Overworld: Learning Ground.** Vanilla mob behavior, no surprises. The baseline. Nighttime mob density rises. Full-moon nights spike spawn rate and elite-mob rate. Basic AI only — mobs do not use gear, do not break blocks, do not coordinate.
+**Overworld (T1): Learning Ground.** Vanilla mob behavior with no surprises; this is the baseline. Mob density rises at night, and full-moon nights spike the spawn rate and the elite-mob rate. Basic AI only: mobs do not use gear, break blocks, or coordinate.
 
-**T2 — Twilight Forest: The Dark Forest.** Dense canopy, ambushes from limited visibility. 15% of mobs spawn briefly invisible (Canopy Ambush). Boss arenas have a damage and regen aura on nearby mobs (Twilight Corruption — clear trash before pulling). Twilight-native mobs share aggro within 16 blocks (Pack Tactics). 20% of mobs equip dropped weapons. Environmental: thorn hedges damage on contact; permanent fog reduces visibility.
+**Twilight Forest (T2): The Dark Forest.** Dense canopy and ambushes out of limited visibility. 15% of mobs spawn briefly invisible (Canopy Ambush). Boss arenas put a damage and regen aura on nearby mobs (Twilight Corruption: clear trash before pulling). Twilight-native mobs share aggro within 16 blocks (Pack Tactics). 20% of mobs equip dropped weapons. Environment: thorn hedges damage on contact, and permanent fog reduces visibility.
 
-**T2 — Blue Skies: Elemental Gauntlet.** Two dimensions (Everbright / Everdawn) with elemental themes. 30% of mob damage is converted to elemental (fire / ice) — bypasses standard armor but is mitigated by elemental resistance enchants. Periodic elemental storms buff matching-element mobs for 2 minutes. Mobs at high altitude gain a small speed bonus. Ranged mobs prioritize high ground; melee mobs try to knock players off platform edges.
+**Blue Skies (T2): Elemental Gauntlet.** Two dimensions (Everbright / Everdawn) with elemental themes. 30% of mob damage is converted to elemental (fire / ice) damage, which bypasses standard armor but is mitigated by elemental resistance enchants. Periodic elemental storms buff matching-element mobs for 2 minutes. Mobs at high altitude gain a small speed bonus. Ranged mobs prioritize high ground; melee mobs try to knock players off platform edges.
 
-**T3 — The Undergarden: Toxic Attrition.** The environment drains the player. 25% of mob hits apply 5-second poison (scaled with dimension multiplier). Mobs have natural damage reduction that regenerates if not hit for 5 seconds (Fungal Armor — sustained aggression rewarded). Detection range extends to 24 blocks in darkness; light sources reduce it. Standing still 10+ seconds applies Weakness I (Decay Aura — keep moving).
+**The Undergarden (T3): Toxic Attrition.** The environment drains the player. 25% of mob hits apply a 5-second poison (scaled with the dimension multiplier). Mobs have natural damage reduction that regenerates if they are not hit for 5 seconds (Fungal Armor, which rewards sustained aggression). Detection range extends to 24 blocks in darkness; light sources reduce it. Standing still for 10+ seconds applies Weakness I (Decay Aura: keep moving).
 
-**T3 — Deeper Darker: Horror Survival.** Stealth matters. Sprinting, breaking blocks, and fighting generate "noise" extending mob aggro radius from 24 to 8 blocks when sneaking. Mobs near sculk gain damage and vibration detection through walls. Mobs in light-level-0 gain +20% all stats; light-level-7+ lose 10%. Below Y=-32, all entities take 1 damage / 30s (Rift Pressure). Mobs do not make warning sounds — no aggro growls before attacks.
+**Deeper Darker (T3): Horror Survival.** Stealth matters. Sprinting, breaking blocks, and fighting generate "noise" extending mob aggro radius from 24 to 8 blocks when sneaking. Mobs near sculk gain damage and detect vibrations through walls. Mobs at light level 0 gain +20% to all stats; at light level 7+ they lose 10%. Below Y=-32, all entities take 1 damage / 30s (Rift Pressure). Mobs make no warning sounds: there are no aggro growls before attacks.
 
-**T3 — The Nether: Relentless Aggression.** Permanent aggro from 20 blocks. 30% of melee damage is fire (bypasses armor; Heatward enchant mitigates). Killing Blazes has a 20% chance to spawn 2 smaller "Ember" adds. Mobs inside Nether Fortresses gain stat bonuses and resist knockback (set-piece encounters). Lava-adjacent mobs regenerate. Improved Mobs runs at maximum aggression: all mobs use found gear, piglins flank in 4–6 hunting parties, hoglins charge toward lava (intentional environmental kills).
+**The Nether (T3): Relentless Aggression.** Permanent aggro from 20 blocks. 30% of melee damage is fire (it bypasses armor; the Heatward enchant mitigates it). Killing Blazes has a 20% chance to spawn 2 smaller "Ember" adds. Mobs inside Nether Fortresses gain stat bonuses and resist knockback (set-piece encounters). Lava-adjacent mobs regenerate. Improved Mobs runs at maximum aggression: all mobs use found gear, piglins flank in hunting parties of 4 to 6, and hoglins charge toward lava (intentional environmental kills).
 
-**T3 — Deeper Darker (Otherside).** Darkness empowerment + hexing. Sculk mobs spawn with night-vision (darkness-empowered AI); 15%-on-hit chance of a random short debuff (slowness/weakness/mining-fatigue/blindness). Sculk-adjacent mob synergies, stealth-required.
+**Deeper Darker (Otherside, T3).** Darkness empowerment + hexing. Sculk mobs spawn with night-vision (darkness-empowered AI), and their hits have a 15% chance of a random short debuff (slowness/weakness/mining-fatigue/blindness). Sculk-adjacent mob synergies; stealth required.
 
-**T3 — The Abyss (TATOS).** Oppressive darkness mechanic — no held light + low light applies mining-fatigue + slowness; corruption ticks (periodic hunger); fear aura (Darkness within 16 blocks of Abyss bosses); void whispers (Weakness below Y=20). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. A custom `kubejs:ring_*` content surface (8 rings + 7 elemental armor sets + themed loot tables; see master-appendix §C.11) replaces theabyss's 30 stock rings. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
+**The Abyss (TATOS, T3).** An oppressive darkness mechanic: no held light + low light applies mining fatigue + slowness. Corruption ticks (periodic hunger); fear aura (Darkness within 16 blocks of Abyss bosses); void whispers (Weakness below Y=20). It fires in `theabyss:the_abyss` via `dimension_mechanics.js`. A custom `kubejs:ring_*` content surface (8 rings + 7 elemental armor sets + themed loot tables; see master-appendix §C.11) replaces theabyss's 30 stock rings. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 
-**T4 — The Aether: Aerial Warfare.** (T2 until 2026-10-16.) Vertical combat, narrow platforms, lethal falls. Its mobs move with Speed I, and its flyers also hit with Strength I. Thin air above Y 180 brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player who falls below Y 0 is caught once by an updraft (Slow Falling). 40% of mobs fly or hover. Cloud cover above Y>192 hides 10% of mobs until close range (soft ambush). Rare gravity wells halve fall damage but double knockback. Valkyrie-type mobs have parry mechanics — block frontal attacks periodically.
+**The Aether (T4): Aerial Warfare.** (T2 until 2026-10-16.) Vertical combat, narrow platforms, lethal falls. Its mobs move with Speed I, and its flyers also hit with Strength I. Thin air above Y 180 brings Weakness unless the armor carries Aether Acclimation; sprinting above Y 200 sometimes brings vertigo (nausea); a player who falls below Y 0 is caught once by an updraft (Slow Falling). 40% of mobs fly or hover. Cloud cover above Y>192 hides 10% of mobs until close range (soft ambush). Rare gravity wells halve fall damage but double knockback. Valkyrie-type mobs have parry mechanics and periodically block frontal attacks.
 
-**T4 — Deep Aether (its biomes, inside the Aether): Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Random wind shears push players and projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor adds stats, top floor has a mini-boss. Combo attacks (2–3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
+**Deep Aether (T4; its biomes, inside the Aether): Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Random wind shears push players and projectiles off course. 20% of mobs spawn with one-hit absorption shields (which rewards sustained combat over alpha strikes). Procedural Ascension Towers: each floor adds stats, and the top floor has a mini-boss. Combo attacks (2 to 3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), and allies that heal each other if not interrupted.
 
-**T4 — The End: The Crucible.** Three zones with escalating mechanics, each adding to the previous:
+**The End (T4): The Crucible.** Three zones with escalating mechanics, each adding to the one before:
 
-- *Outer Islands.* Mobs gain damage as the player approaches the void. 15% of attacks apply a 2–4 block teleport in a random direction (Ender Displacement). Shulkers fire in coordinated volleys.
-- *Deep End / End Cities.* Adds Void Corruption stacks (-2% HP / +3% damage per stack, max 10; leaving the End clears them). Killing Endermen has a 10% chance to teleport in 3–5 already-aggro'd Endermen. 10% of mobs phase through walls briefly.
-- *Dragon's Domain.* Adds a global stat bonus to all mobs while the Dragon is alive. Void Storms every 10 minutes deal sustained damage to all entities not under shelter. Reality Fracture reverses player controls for 2 seconds (purple-particle warning 1s before). Elite (Majrusz Master-stage) mobs in Dragon's Domain always roll their full Apotheosis affix complement.
+- *Outer Islands.* Mobs gain damage as the player approaches the void. 15% of attacks apply a 2 to 4 block teleport in a random direction (Ender Displacement). Shulkers fire in coordinated volleys.
+- *Deep End / End Cities.* Adds Void Corruption stacks (-2% HP / +3% damage per stack, max 10; leaving the End clears them). Killing Endermen has a 10% chance to teleport in 3 to 5 already-aggro'd Endermen. 10% of mobs briefly phase through walls.
+- *Dragon's Domain.* Adds a global stat bonus to all mobs while the Dragon is alive. Void Storms every 10 minutes deal sustained damage to all entities not under shelter. Reality Fracture reverses player controls for 2 seconds (with a purple-particle warning 1s before). Elite (Majrusz Master-stage) mobs in Dragon's Domain always roll their full Apotheosis affix complement.
 
-Peak AI aggression in the End (design intent, now driven by Cataclysmic Combat + KubeJS handlers rather than the removed Improved Mobs): all mobs use found gear and enchanted weapons; mobs break any block (including obsidian, slowly); ranged mobs suppress while melee flanks; multiplayer targets the weakest player; Endermen teleport behind for backstabs; elite mobs adapt to player behavior (kiters → mobs speed up; face-tankers → mobs spread out).
+Peak AI aggression in the End (design intent, now driven by Cataclysmic Combat + KubeJS handlers instead of the removed Improved Mobs): all mobs use found gear and enchanted weapons; mobs break any block (including obsidian, slowly); ranged mobs suppress while melee flanks; in multiplayer, mobs target the weakest player; Endermen teleport behind players for backstabs; elite mobs adapt to player behavior (kiters → mobs speed up; face-tankers → mobs spread out).
 
-**T4 — Ad Astra Planets.** Each planet has its own atmosphere and mechanics. Oxygen drain without a tank, atmospheric pressure damage, Glacio-specific cryogenic damage. Elite-mob density runs at its highest (Majrusz Master-stage) per planet, and the planets and orbits run the T4 difficulty curve (since October 2026; before, they were on no list and ran the T1 curve). Glacio is the T4 endgame.
+**Ad Astra Planets (T4).** Each planet has its own atmosphere and mechanics: oxygen drain without a tank, atmospheric pressure damage, and Glacio-specific cryogenic damage. Elite-mob density runs at its highest (Majrusz Master-stage) on every planet, and the planets and orbits run the T4 difficulty curve (since October 2026; before that they were on no list and ran the T1 curve). Glacio is the T4 endgame.
 
 #### Combat feel summary
 
 | Tier | Trash kill speed (avg build) | Player threat level | Combat feel |
 |------|-----------------------------:|---------------------|-------------|
-| 1 | 1–2 hits | Low (10+ hits to die) | Tutorial. Learn mechanics, get comfortable. |
-| 2 | 2–3 hits | Moderate (6–8 hits) | Engaging. Pay attention. Ambushes and elements start. |
-| 3 | 3–5 hits | High (4–6 hits) | Intense. Mechanics demand specific strategies. Poison, stealth, fire pressure. |
-| 4 | 4–8 hits (build-dependent) | Lethal (3–4 hits glass cannon) | Endgame. Every fight matters. Environmental + mob synergy. One mistake = death. |
+| 1 | 1 to 2 hits | Low (10+ hits to die) | Tutorial. Learn mechanics, get comfortable. |
+| 2 | 2 to 3 hits | Moderate (6 to 8 hits) | Engaging. Pay attention. Ambushes and elements start. |
+| 3 | 3 to 5 hits | High (4 to 6 hits) | Intense. Mechanics demand specific strategies. Poison, stealth, fire pressure. |
+| 4 | 4 to 8 hits (build-dependent) | Lethal (3 to 4 hits for a glass cannon) | Endgame. Every fight matters. Environmental + mob synergy. One mistake = death. |
 
 → Per-class HP/DPS estimates, kill-speed targets, full multiplier table, per-kill boss scaling, regular mob equipment percentages: [Appendix §D](master-appendix.md#d-apotheosis-tables--scaling).
 
@@ -384,40 +384,40 @@ Peak AI aggression in the End (design intent, now driven by Cataclysmic Combat +
 
 ## Part VI — Player Character
 
-The character creation flow is **three sequential prompts on first join**: Origin → Race → Class. This three-layer model creates more build identity than any two-layer system, while keeping each layer's choice readable.
+Character creation is three sequential prompts on first join: Origin → Race → Class. This three-layer model gives more build identity than any two-layer system, while each layer's choice stays readable.
 
 ### The three layers
 
 | Layer | Source | What it provides | Count |
 |-------|--------|------------------|------:|
-| **Origin** | Origins (Forge) + Iridescent Origins | Species fantasy with unique abilities and tradeoffs | **13** (9 vanilla rebalanced + 4 custom; **no Human, no Mundane**) |
-| **Race** | Iridescent Origins (Race layer) | Stat baseline and thematic flavor | **11** |
-| **Class** | Iridescent Classes | Combat role, HP tier, glass-cannon status; defines playstyle | **10** |
+| **Origin** | Origins (Forge) + Iridescent Origins | Species fantasy with unique abilities and tradeoffs | 13 (9 vanilla rebalanced + 4 custom; no Human, no Mundane) |
+| **Race** | Iridescent Origins (Race layer) | Stat baseline and thematic flavor | 11 |
+| **Class** | Iridescent Classes | Combat role, HP tier, glass-cannon status; defines playstyle | 10 |
 
 ### Why three layers
 
 A two-layer system (Origin + Class) collapses too many dimensions into one choice. Splitting Origin (species fantasy) from Race (stat baseline) and Class (combat role) gives:
 
-- **Build diversity.** A Faefolk Battlemage plays differently from a Demi-God Battlemage; a Berserker Witherborn plays differently from a Berserker Avian.
-- **Identity readability.** Each layer answers one question. *"What am I?"* (Origin), *"What am I made of?"* (Race), *"What do I do?"* (Class).
-- **Respec flexibility.** Respec only affects Class (combat role). Origin and Race are permanent. The cost of switching combat identity is bounded.
+- Build diversity: a Faefolk Battlemage plays differently from a Demi-God Battlemage, and a Berserker Witherborn plays differently from a Berserker Avian.
+- Identity readability: each layer answers one question. *"What am I?"* (Origin), *"What am I made of?"* (Race), *"What do I do?"* (Class).
+- Respec flexibility: respec only affects Class (combat role). Origin and Race are permanent, so the cost of switching combat identity is bounded.
 
 ### Custom origins
 
-Beyond the nine rebalanced vanilla origins, the pack ships four custom:
+Besides the nine rebalanced vanilla origins, the pack ships four custom ones:
 
-- **Witch of Ink** — passive hyperscaler (boss-kill counter; capstone Blessing of Penthesilea at 200 kills)
-- **Artificial Construct** — machine-themed tech bias (iron eating; 5-level iron-consumed ladder)
-- **Witherborn** — undead aesthetic + Wither immunity
-- **Slimebodied** — slime physics + bouncing combat
+- Witch of Ink: passive hyperscaler (boss-kill counter; capstone Blessing of Penthesilea at 200 kills)
+- Artificial Construct: machine-themed tech bias (iron eating; 5-level iron-consumed ladder)
+- Witherborn: undead aesthetic + Wither immunity
+- Slimebodied: slime physics + bouncing combat
 
 Each has its own progression hook and dimension tie-in. Values + capstone payouts live in [Appendix §K.4](master-appendix.md#k4-origin-system).
 
 ### Glass-cannon classes
 
-Several classes are explicitly **glass cannons** — high damage ceiling at the cost of survivability. The Mage classes (Archmage, Battlemage, Void Summoner) sit in this category: low base HP, high spell-power scaling, weak melee penalty. By T4, a Mage with a fully-built Voidheart Blade and three spell-power curios outdamages any tank class — but a single hit kills them.
+Several classes are explicitly glass cannons, with a high damage ceiling at the cost of survivability. The Mage classes (Archmage, Battlemage, Void Summoner) sit in this category: low base HP, high spell-power scaling, a weak melee penalty. By T4, a Mage with a fully built Voidheart Blade and three spell-power curios outdamages any tank class, but a single hit kills them.
 
-> **Design intent — the mage power curve.** Mages are intentionally back-loaded glass cannons: weak early, highest peaks late, uncapped multiplicative stat stacking. This creates the back-loaded power fantasy. The world's T4 threat ceiling is built to match it.
+> Design intent (the mage power curve): mages are back-loaded glass cannons on purpose, weak early, with the highest peaks late and uncapped multiplicative stat stacking. That makes the back-loaded power fantasy, and the world's T4 threat ceiling is built to match it.
 
 → Full Origin / Race / Class roster + ability tables: [Appendix §A.6](master-appendix.md#a6-character-layer-reference).
 
@@ -425,40 +425,40 @@ Several classes are explicitly **glass cannons** — high damage ceiling at the 
 
 The Class layer is the only character layer that modifies HP and damage percentages. Race traits stay in the secondary-stats lane (movement, hunger, environmental resistances). Origins provide species fantasy without flat HP/damage skews.
 
-> **Design rule.** Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
+> Design rule: Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
 
 | Archetype | Classes | HP modifier | Equipment HP | Damage modifier |
 |-----------|---------|------------:|:------------:|:---------------:|
 | Pure Tank | Vanguard | +20% | Normal | -15% all damage |
-| Tank/Support/Healer | Paladin | +10% | Normal | — |
-| Hybrid | Samurai, Battlemage, Wanderer | +5% | Normal | — |
-| Crafter | Artificer | 0% | Normal | — |
-| Melee DPS | Berserker | -5% | Normal | — |
-| Summoner | Void Summoner | -10% | Half | — |
-| Ranged DPS | Ranger | -20% | Half | — |
-| Offensive Caster | Archmage | -20% | Half | — |
+| Tank/Support/Healer | Paladin | +10% | Normal | none |
+| Hybrid | Samurai, Battlemage, Wanderer | +5% | Normal | none |
+| Crafter | Artificer | 0% | Normal | none |
+| Melee DPS | Berserker | -5% | Normal | none |
+| Summoner | Void Summoner | -10% | Half | none |
+| Ranged DPS | Ranger | -20% | Half | none |
+| Offensive Caster | Archmage | -20% | Half | none |
 
-**Half-equipment-HP** (Ranger, Archmage, Void Summoner) means equipment-sourced HP bonuses count at 50% effectiveness — Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is the mechanical implementation of the glass-cannon pillar: their damage ceiling is high; their HP ceiling is half.
+Half-equipment-HP (Ranger, Archmage, Void Summoner) means equipment-sourced HP bonuses count at 50% effectiveness: the Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is how the glass-cannon pillar is implemented mechanically: their damage ceiling is high and their HP ceiling is half.
 
-Vanguard's -15% damage penalty is the corresponding tank tradeoff: maximum survivability, weakest damage output. The Vanguard's role is to absorb hits, not deal them.
+Vanguard's -15% damage penalty is the matching tank tradeoff: maximum survivability, weakest damage output. The Vanguard's role is to absorb hits, not deal them.
 
 → Per-class weapon affinities and active/passive ability rosters: [Appendix §K](master-appendix.md#k-character-build-reference).
 
-### Race traits — mild tradeoffs
+### Race traits: mild tradeoffs
 
-Races provide innate traits with **mild tradeoffs** — less impactful than class choice. Permanent at character creation.
+Races provide innate traits with mild tradeoffs, less impactful than the class choice. A race is permanent from character creation.
 
-> **Race design principles.** Every race has 2–3 benefits and 1–2 drawbacks. Drawbacks are inconveniences, not crippling. Races do *not* duplicate class identities (no "warrior race" overlapping Berserker). Races do not modify HP%, damage%, or equipment effectiveness — those belong to the Class layer.
+> Race design principles: every race has 2 to 3 benefits and 1 to 2 drawbacks. Drawbacks are inconveniences, never crippling. Races do *not* duplicate class identities (no "warrior race" overlapping Berserker). Races do not modify HP%, damage%, or equipment effectiveness; those belong to the Class layer.
 
-What races *can* modify: movement speed (small, ±5–8%), hunger/saturation, vision (night/underwater), environmental resistances (fire/cold/fall), size (via Pehkui), resource interaction (mining/farming), social (villager prices, mob aggro).
+What races *can* modify: movement speed (small, ±5 to 8%), hunger/saturation, vision (night/underwater), environmental resistances (fire/cold/fall), size (via Pehkui), resource interaction (mining/farming), social (villager prices, mob aggro).
 
-The 11 race roster spans utility flavor (Human, Halfling), mobility specialists (Elf, Kirin, Fallen Angel), durability specialists (Dwarf, Demi-God, Ryu), and theme-driven races (Orc, Faefolk, Revenant). Each race has a "natural class pairing" but every race-class combination is viable.
+The 11 race roster spans utility flavor (Human, Halfling), mobility specialists (Elf, Kirin, Fallen Angel), durability specialists (Dwarf, Demi-God, Ryu), and theme-driven races (Orc, Faefolk, Revenant). Each race has a "natural class pairing", but every race-class combination is viable.
 
 → Full race trait tables: [Appendix §K.3](master-appendix.md#k3-race-tradeoffs).
 
-### Skill trees — six paths, deeper specialization
+### Skill trees: six paths, deeper specialization
 
-Pufferfish's Skills provides the third character layer. Six trees, each with its own XP track, each layered with a Trunk (shared first 8 nodes) → Branch A / Branch B (specialized paths) → Capstone (deep-investment payoff).
+Pufferfish's Skills provides the third character layer: six trees, each with its own XP track, and each built as a Trunk (shared first 8 nodes) → Branch A / Branch B (specialized paths) → Capstone (deep-investment payoff).
 
 | Tree | XP source | Trunk theme | Branch A | Branch B |
 |------|-----------|-------------|----------|----------|
@@ -469,24 +469,24 @@ Pufferfish's Skills provides the third character layer. Six trees, each with its
 | **Gathering** | Mining, chopping, harvesting, fishing | mining speed, breaking speed, crop yield, fortune | Mining + ore yield (Prospector's Path) | Farming + fishing (Harvester's Path) |
 | **Engineering** | Crafting, machine operation, smelting | crafting speed, material save, machine speed, durability | Crafting quality (Artificer's Path) | Machines + automation (Engineer's Path) |
 
-Each tree caps at **40 nodes** (~180 total across all six trees). A heavy endgame player reaches ~120–150 — enough for 2–3 deep trees plus 1–2 trunks. Forced prioritization is intentional.
+Each tree caps at 40 nodes (~180 total across all six trees). A heavy endgame player reaches ~120 to 150, enough for 2 to 3 deep trees plus 1 to 2 trunks. The forced prioritization is intentional.
 
-> **Generalist vs specialist.** Spread points across multiple trees for broad moderate bonuses (good for Wanderer, Battlemage, Samurai). Go deep into one tree for powerful focused bonuses + capstone abilities (good for Berserker, Archmage, Ranger). Neither is strictly better. The math is tuned so going deep gives ~+15–20% more effectiveness in your specialty versus spreading, while generalists get meaningful bonuses across multiple contexts.
+> Generalist vs specialist: spread points across multiple trees for broad, moderate bonuses (good for Wanderer, Battlemage, Samurai), or go deep into one tree for powerful focused bonuses + capstone abilities (good for Berserker, Archmage, Ranger). Neither is strictly better. The math is tuned so going deep gives ~+15 to 20% more effectiveness in your specialty than spreading, while generalists get meaningful bonuses across multiple contexts.
 
 #### Class → tree affinity
 
-Recommended primary tree per class. Players are not locked in — every class can invest in any tree — but class kits and weapon affinities make some pairings more efficient.
+The recommended primary tree per class. Players are not locked in (every class can invest in any tree), but class kits and weapon affinities make some pairings more efficient.
 
 | Class | Primary tree | Secondary | Reasoning |
 |-------|--------------|-----------|-----------|
 | Berserker | Warfare (Branch A) | Fortitude (Branch B) | Life-steal + sustain → unkillable in sustained fights |
 | Samurai | Warfare (Branch B) | Marksman (Branch A) | Crit scaling + ranged precision = Way of the Blade synergy |
 | Battlemage | Warfare (trunk) | Sorcery (Branch A) | Moderate melee + strong spells = Arcane Infusion fuel |
-| Wanderer | Any 3–4 trunks | — | Generalist wants broad moderate bonuses |
+| Wanderer | Any 3 to 4 trunks | none | A generalist wants broad, moderate bonuses |
 | Paladin | Fortitude (Branch A) | Sorcery (Branch B) | Tank HP + healing = Holy Aura + Lay on Hands |
-| Vanguard | Fortitude (Branch A) | Warfare (trunk) | Maximum HP + some melee to offset -15% damage penalty |
+| Vanguard | Fortitude (Branch A) | Warfare (trunk) | Maximum HP + some melee to offset the -15% damage penalty |
 | Ranger | Marksman (Branch A) | Gathering (trunk) | Max ranged damage + fortune for resource runs |
-| Archmage | Sorcery (Branch A) | Marksman (trunk) | Spell power deep + ranged passive utility |
+| Archmage | Sorcery (Branch A) | Marksman (trunk) | Deep spell power + ranged passive utility |
 | Artificer | Engineering (Branch A) | Gathering (Branch B) | Crafting quality + farming/fishing supply |
 | Void Summoner | Sorcery (Branch B) | Fortitude (Branch B) | Summoning depth + sustain to keep summons alive |
 
@@ -494,83 +494,83 @@ Recommended primary tree per class. Players are not locked in — every class ca
 
 | Layer | Respec? | Cost |
 |-------|---------|------|
-| **Origin** | No — permanent | — |
-| **Race** | No — permanent | — |
+| **Origin** | No, permanent | n/a |
+| **Race** | No, permanent | n/a |
 | **Class** | Yes, at the Class Altar | 1 tier-appropriate boss drop + 30 XP levels |
-| **Skill point** | Not available in the game (designed: per point, 5 levels) | — |
+| **Skill point** | Not available in the game (designed: per point, 5 levels) | n/a |
 
-Skill points are **not lost on death** and **not lost on class respec** — they're permanent growth. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). This creates interesting hybrid-build space without forcing a full skill reset every time the player tries a new class.
+Skill points are not lost on death or on class respec; they are permanent growth. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). This leaves room for hybrid builds without forcing a full skill reset every time the player tries a new class.
 
 ### Layered XP economy
 
-JustLevelingFork runs alongside the skill trees as a passive HP / damage / speed scaling per character level. Flat XP curve (~1000–2000 XP per level), tuned so leveling never feels like an XP sink. Happens naturally as the player plays — no investment decisions, just steady reward for engagement.
+JustLevelingFork runs alongside the skill trees as passive HP / damage / speed scaling per character level. It uses a flat XP curve (~1000 to 2000 XP per level), tuned so leveling never feels like an XP sink. Leveling happens as the player plays, with no investment decisions, as a steady reward for engagement.
 
-Both Pufferfish (active investment) and JustLevelingFork (passive scaling) run alongside vanilla XP and the Apotheosis enchanting economy. The skill trees use **per-tree XP pools** (melee kills feed Warfare, ranged kills feed Marksman, etc.), naturally guiding players toward trees matching their activity.
+Both Pufferfish (active investment) and JustLevelingFork (passive scaling) run alongside vanilla XP and the Apotheosis enchanting economy. The skill trees use per-tree XP pools (melee kills feed Warfare, ranged kills feed Marksman, etc.), which steers players toward the trees that match their activity.
 
 ---
 
 ## Part VII — Magic System
 
-Magic in IridescentCraft is *not one mod* — it is an interlocking economy across **six magic mods**, gated tier-by-tier, with cross-mod loot economy linking them.
+Magic in IridescentCraft is an interlocking economy across six magic mods, gated tier by tier and linked by a cross-mod loot economy.
 
 The progression chain:
 *Botania (T1 entry)* → *Ars Nouveau (T1 entry through T2 infrastructure)* → *Iron's Spellbooks (T1 starter through T4 endgame, modular)* → *Forbidden Arcanus (T3 chokepoint)* → *Occultism (T3 spirit-binding)* → *Mahou Tsukai (T4 endgame)*.
 
-> **Design intent.** Each tier surfaces new mods without retiring older ones. A T4 mage uses Botania mana flowers, Ars source jars, ISS modular books, F&A Hephaestus Forge, Occultism Marid miners, *and* Mahou rituals simultaneously.
+> Design intent: each tier brings in new mods without retiring older ones. A T4 mage uses Botania mana flowers, Ars source jars, ISS modular books, F&A Hephaestus Forge, Occultism Marid miners, *and* Mahou rituals at the same time.
 
-### Tier 1 — Magic entry
+### Tier 1: Magic entry
 
 **Botania.** Starter mana chain (Apothecary → Pure Daisy → entry-tier Mana Pool → Manaweave Cloth). Orechid is T1, restricted by datapack to non-tier-skipping ores.
 
-**Iron's Spellbooks.** Starter scrolls (random pre-rolled spells), copper spell book, six starter spell types (magic_missile, firebolt, magic_arrow, fang_strike, summon_vex, healing_word). Class-kit Mages start with two pre-NBT-baked scrolls. Village chest scrolls and Overworld T1 loot drop usable scrolls.
+**Iron's Spellbooks.** Starter scrolls (random pre-rolled spells), copper spell book, six starter spell types (magic_missile, firebolt, magic_arrow, fang_strike, summon_vex, healing_word). Class-kit Mages start with two pre-NBT-baked scrolls. Village chests and Overworld T1 loot drop usable scrolls.
 
-**Ars Nouveau.** The novice spell book is T1-craftable (book + iron tool — no Imbuement Chamber needed) and T1 form glyphs seed into chest loot. A new player can inscribe at a Scribes Table on day one.
+**Ars Nouveau.** The novice spell book is T1-craftable (book + iron tool; no Imbuement Chamber needed), and T1 form glyphs seed into chest loot. A new player can inscribe at a Scribes Table on day one.
 
-The cross-mod ink economy starts here: ISS common_ink and uncommon_ink drop from T1–T2 mobs, allowing early players to scribe simple spells.
+The cross-mod ink economy starts here: ISS common_ink and uncommon_ink drop from T1 and T2 mobs, so early players can scribe simple spells.
 
-### Tier 2 — Source infrastructure and mid-tier magic
+### Tier 2: Source infrastructure and mid-tier magic
 
-**Ars Nouveau (deep).** Imbuement Chamber, Arcane Core, ritual brazier, full source-network expansion. Apprentice spell book unlocks. Spell-crafting bench gates behind T2. T2 form glyphs (aoe, underfoot) and mobility/utility effect glyphs seed into Twilight / Blue Skies chest loot.
+**Ars Nouveau (deep).** Imbuement Chamber, Arcane Core, ritual brazier, full source-network expansion. The Apprentice spell book unlocks, and the spell-crafting bench is gated behind T2. T2 form glyphs (aoe, underfoot) and mobility/utility effect glyphs seed into Twilight / Blue Skies chest loot.
 
 **Botania.** Manasteel chain, Mana Spreader fundamentals, Runic Altar, mana diamond and mana pearl transmutation outputs.
 
 **Iron's Spellbooks.** rare_ink starts dropping; T2 boss runes (fire, ice, nature, protection) appear in T2 boss-drop loot files.
 
-### Tier 3 — Chokepoints and spirit binding
+### Tier 3: Chokepoints and spirit binding
 
 **Forbidden Arcanus.** Hephaestus Forge (T3-gated recipe). Arcane Crystal (T3-gated worldgen + ore replacement).
 
-> **Design note — per-item gating.** F&A is *not* blanket-mod-gated. Passive items (Aureal bottles, edelwood) leak into early game intentionally; per-item gating handles the progression-critical chain.
+> Design note (per-item gating): F&A is *not* gated as a whole mod. Passive items (Aureal bottles, edelwood) leak into the early game on purpose; per-item gating handles the progression-critical chain.
 
-**Occultism.** Foliot / Djinni / Afrit summon books, Books of Calling, Iesnium chain. The dimensional miner exploit is closed via the `icraft_occultism_overrides` datapack. Like F&A, Occultism is per-item gated — mod-blanket gating would block its passive items.
+**Occultism.** Foliot / Djinni / Afrit summon books, Books of Calling, Iesnium chain. The dimensional miner exploit is closed via the `icraft_occultism_overrides` datapack. Like F&A, Occultism is gated per item, because gating the whole mod would block its passive items.
 
-**Iron's Spellbooks.** epic_ink, T3 runes (blood, ender, cooldown), upgrade orbs (fire, ender, lightning) drop from Cataclysm + Stalwart Dungeons + custom-boss loot tables. T3 Diamond Spell Book (modular variant).
+**Iron's Spellbooks.** epic_ink, T3 runes (blood, ender, cooldown) and upgrade orbs (fire, ender, lightning) drop from Cataclysm + Stalwart Dungeons + custom-boss loot tables. T3 Diamond Spell Book (modular variant).
 
-### Tier 4 — Endgame magic
+### Tier 4: Endgame magic
 
 **Mahou Tsukai.** A T4 player-spell mod with no native mob drops. The pack injects Mahou reagents (attuned_emerald, fae_essence, attuned_diamond, kodoku) into T4 boss drops. Cataclysm Ender Guardian, vanilla Warden, and Ender Dragon all contribute Mahou reagents.
 
-> **Design note.** This is the cross-mod synergy peak — a Mage farming bosses is simultaneously progressing five magic mods.
+> Design note: this is the cross-mod synergy peak. A Mage farming bosses progresses five magic mods at once.
 
 **Iron's Spellbooks.** Netherite Spell Book + seven themed modular variants (Dragonskin, Druidic, Blaze, Evoker, Necronomicon, Villager, Rotten). Legendary ink drops from T4 bosses.
 
 **Botania.** Gaia Ingot, Gaia Block. The Voidheart Blade is forged from `awakened_lichblade` (Ancient Remnant T4 drop) at the Mythic Forge using gaia_ingot, icraft_rift_shard, void_fragment, and primordial_essence. The Gaia Guardian is the Botania T4 capstone.
 
-### Iridescent Modular Spells — native Tetra integration
+### Iridescent Modular Spells: native Tetra integration
 
-The pack's signature magic system is the **Iridescent Modular Spells mod** — a custom Forge content mod that bridges Tetra's modular-item workbench to Iron's Spellbooks and Ars Nouveau spell books.
+The pack's signature magic system is the Iridescent Modular Spells mod, a custom Forge content mod that connects Tetra's modular-item workbench to Iron's Spellbooks and Ars Nouveau spell books.
 
-Each modular book has 4 module slots (front_cover / back_cover / spine / pages for ISS; front_cover / back_cover / spine / dye for Ars). Each slot accepts Tetra material categories (metal, skin, bone, gem, fibre, fabric). Each contributes stat bonuses (max_mana, mana_regen, spell_power, cast_time_reduction, cooldown_reduction). Lining improvements (fabric / fibre / skin) layer on top.
+Each modular book has 4 module slots (front_cover / back_cover / spine / pages for ISS; front_cover / back_cover / spine / dye for Ars). A slot accepts Tetra material categories (metal, skin, bone, gem, fibre, fabric), and each one contributes stat bonuses (max_mana, mana_regen, spell_power, cast_time_reduction, cooldown_reduction). Lining improvements (fabric / fibre / skin) layer on top.
 
-**Intrinsic stat overlay.** Each book has a `BookKind` (COPPER, IRON, GOLD, DIAMOND, NETHERITE, DRAGONSKIN, DRUIDIC, BLAZE, EVOKER, NECRONOMICON, VILLAGER, ROTTEN — plus three Ars tiers: NOVICE, APPRENTICE, ARCHMAGE) which contributes a baseline stat profile. The Diamond Spell Book is +50 mana / +0.10 spell_power; the Necronomicon is +100 mana / +0.30 spell_power / +50% Necro school. These stack with module and lining bonuses — uncapped, per the mage power curve pillar.
+**Intrinsic stat overlay.** Each book has a `BookKind` (COPPER, IRON, GOLD, DIAMOND, NETHERITE, DRAGONSKIN, DRUIDIC, BLAZE, EVOKER, NECRONOMICON, VILLAGER, ROTTEN, plus three Ars tiers: NOVICE, APPRENTICE, ARCHMAGE) that contributes a baseline stat profile. The Diamond Spell Book is +50 mana / +0.10 spell_power; the Necronomicon is +100 mana / +0.30 spell_power / +50% Necro school. These stack with module and lining bonuses without a cap, per the mage power curve pillar.
 
-**Tetra replacement system.** Vanilla ISS / Ars spell books auto-convert to modular variants on the next inventory tick. No need to recipe-strip vanilla books or rewrite their loot tables — the conversion is transparent.
+**Tetra replacement system.** Vanilla ISS / Ars spell books convert to modular variants on the next inventory tick. The conversion is transparent, so vanilla books need no recipe stripping and their loot tables need no rewrite.
 
-**12 ISS variants + 3 Ars variants = 15 modular spell books total**, each tier-staged, each available via Tetra workbench crafting.
+12 ISS variants + 3 Ars variants = 15 modular spell books in total, each tier-staged and each craftable at the Tetra workbench.
 
-**Unified mana pool (2026-05-15).** ISS and Ars Nouveau share a single mana pool from the player's perspective. Ars's `IManaCap` is mixin-routed to the ISS `MagicData` pool: `getCurrentMana` / `getMaxMana` read from ISS, `removeMana` deducts from ISS at **half rate** (Ars's "reliable spammable" identity — a 50-cost Ars spell deducts 25 ISS mana), and the Ars HUD bar is hidden (ISS bar is canonical). Magic classes (Archmage / Battlemage / Void Summoner) get a flat **1.5× ISS max_mana** to support sustained casting. ISS school SP (`fire_spell_power`, `ice_spell_power`, etc.) also boost Ars elemental glyph damage via two-handler architecture (LivingHurtEvent for direct Ars damage types, SpellDamageEvent.Pre for glyph-school-tagged damage). ISS's built-in Apotheosis gems are buffed and integrated into the same gem ladder as native Apotheosis gems. See [Appendix §M](master-appendix.md#m-iss--ars-nouveau-cross-mod-integration).
+**Unified mana pool (2026-05-15).** From the player's side, ISS and Ars Nouveau share a single mana pool. Ars's `IManaCap` is mixin-routed to the ISS `MagicData` pool: `getCurrentMana` / `getMaxMana` read from ISS, `removeMana` deducts from ISS at half rate (Ars's "reliable spammable" identity: a 50-cost Ars spell deducts 25 ISS mana), and the Ars HUD bar is hidden (the ISS bar is canonical). Magic classes (Archmage / Battlemage / Void Summoner) get a flat 1.5× ISS max_mana to support sustained casting. ISS school SP (`fire_spell_power`, `ice_spell_power`, etc.) also boosts Ars elemental glyph damage through two handlers (LivingHurtEvent for direct Ars damage types, SpellDamageEvent.Pre for glyph-school-tagged damage). ISS's built-in Apotheosis gems are buffed and folded into the same gem ladder as native Apotheosis gems. See [Appendix §M](master-appendix.md#m-iss--ars-nouveau-cross-mod-integration).
 
-> **Future work.** Phase 7 design adds 6 elemental subclasses (Pyromancer / Cryomancer / Necromancer / Priest / Druid / Stormcaller) layered on top of the Mage classes. Each gives +50% to one school with a -10% melee malus (vs Archmage's -25%). Add-alongside, not replace. Implementation deferred.
+> Future work: the Phase 7 design adds 6 elemental subclasses (Pyromancer / Cryomancer / Necromancer / Priest / Druid / Stormcaller) on top of the Mage classes, added alongside them rather than replacing them. Each gives +50% to one school with a -10% melee malus (vs Archmage's -25%). Implementation is deferred.
 
 → Detailed stat profiles, slot definitions, lining attribute mappings: [Appendix §E](master-appendix.md#e-custom-items-registry).
 
@@ -578,60 +578,60 @@ Each modular book has 4 module slots (front_cover / back_cover / spine / pages f
 
 ## Part VIII — Tech System
 
-Tech in IridescentCraft is a **clean four-tier ladder**:
+Tech in IridescentCraft is a clean four-tier ladder:
 *Create (T1)* → *Thermal + Industrial Foregoing basic (T2)* → *Mekanism basic + Refined Storage + IF advanced (T3)* → *Mekanism advanced + RFTools + Ad Astra (T4)*.
 
-Each tier opens a new automation paradigm without retiring the previous. A T4 player runs Create kinetics for cosmetic processing, Thermal phytogenic insolators in greenhouses, Mekanism Digital Miners for resource generation, and Ad Astra rockets for planetary travel — all simultaneously.
+Each tier opens a new automation paradigm without retiring the previous one. A T4 player runs Create kinetics for cosmetic processing, Thermal phytogenic insolators in greenhouses, Mekanism Digital Miners for resource generation, and Ad Astra rockets for planetary travel, all at the same time.
 
-### Tier 1 — Create (kinetic automation)
+### Tier 1: Create (kinetic automation)
 
-Available immediately. Stress units, crushing wheels, mechanical mixers, deployers, encased fans. Pretty Pipes for early item logistics. Not gated by anything — the player's first power source.
+Available immediately: stress units, crushing wheels, mechanical mixers, deployers, encased fans, plus Pretty Pipes for early item logistics. Nothing gates it; it is the player's first power source.
 
-Crushing wheels run at ~1.5× ore processing rate. Create's whole feel is *engineering puzzles + visible mechanical motion* rather than *resource numbers go up*. The pack uses Create as the T1 baseline because it does not trivialize anything — it shapes how the player thinks about automation before higher-tier mods add raw throughput.
+Crushing wheels run at ~1.5× the ore processing rate. Create's whole feel is *engineering puzzles + visible mechanical motion* rather than *resource numbers go up*. The pack uses Create as the T1 baseline because it does not trivialize anything: it shapes how the player thinks about automation before higher-tier mods add raw throughput.
 
-### Tier 2 — Thermal Series + Industrial Foregoing (basic)
+### Tier 2: Thermal Series + Industrial Foregoing (basic)
 
-T2 stage unlocks Thermal Series (Phytogenic Insolator, Smelter, Pulverizer, basic Resonant cells) and IF basic (Block Placer, Block Breaker, basic mob interaction).
+The T2 stage unlocks Thermal Series (Phytogenic Insolator, Smelter, Pulverizer, basic Resonant cells) and IF basic (Block Placer, Block Breaker, basic mob interaction).
 
-Thermal Pulverizer is the **first 2× ore processing**, gating the player into RF power generation. Phytogenic Insolator handles automated farming including Botania flowers (cross-system synergy). IF basic provides the first non-Create item logistics that does not require kinetic stress.
+The Thermal Pulverizer is the first 2× ore processing, and it pulls the player into RF power generation. The Phytogenic Insolator handles automated farming, Botania flowers included (cross-system synergy). IF basic provides the first non-Create item logistics that need no kinetic stress.
 
-### Tier 3 — Mekanism (basic) + Refined Storage + Industrial Foregoing (advanced)
+### Tier 3: Mekanism (basic) + Refined Storage + Industrial Foregoing (advanced)
 
-T3 stage opens the major tech jump:
+The T3 stage opens the major tech jump:
 
-- **Mekanism basic** — up to 5× ore processing (Enrichment Chamber → Combiner chain), energy cubes, basic factories.
-- **Refined Storage** — digital storage (controller, grid, drives, crafters).
-- **IF advanced** — Laser Drill, Mob Crusher, the auto-mining stack.
+- Mekanism basic: up to 5× ore processing (Enrichment Chamber → Combiner chain), energy cubes, basic factories.
+- Refined Storage: digital storage (controller, grid, drives, crafters).
+- IF advanced: Laser Drill, Mob Crusher, the auto-mining stack.
 
-> **Cross-mod tier-skip blocks ship at T3 to prevent shortcut paths.** Mekanism Enriching/Combining/Purifying/Injecting are blocked from converting low-tier inputs to diamond/emerald/netherite_scrap. Create:mixing is blocked from converting copper to osmium ingot. The Botania Orechid datapack restricts diamond and ancient_debris Orechid weights to zero. The Occultism dimensional-miner override restricts Foliot / Djinni miners from producing T3+ ores — a previously open exploit vector.
+> Cross-mod tier-skip blocks ship at T3 to prevent shortcut paths. Mekanism Enriching/Combining/Purifying/Injecting are blocked from converting low-tier inputs to diamond/emerald/netherite_scrap. Create:mixing is blocked from converting copper to osmium ingot. The Botania Orechid datapack sets the diamond and ancient_debris Orechid weights to zero. The Occultism dimensional-miner override keeps Foliot / Djinni miners from producing T3+ ores, a previously open exploit vector.
 
-### Tier 4 — Mekanism (advanced) + RFTools Dimensions + Ad Astra
+### Tier 4: Mekanism (advanced) + RFTools Dimensions + Ad Astra
 
-T4 stage opens **Mekanism advanced** (Digital Miner, Fusion Reactor Controller, MekaTool, MekaSuit + 4 pieces, Antiprotonic Nucleosynthesizer, atomic_alloy, SPS — the advanced chain individually staged) and **RFTools Dimensions** (Dimension Builder, Dimension Editor, dimensional_shard_ore at T4 master only).
+The T4 stage opens Mekanism advanced (Digital Miner, Fusion Reactor Controller, MekaTool, MekaSuit + 4 pieces, Antiprotonic Nucleosynthesizer, atomic_alloy, SPS, with the advanced chain staged item by item) and RFTools Dimensions (Dimension Builder, Dimension Editor, dimensional_shard_ore at T4 master only).
 
-> **The advanced-power bargain.** Mekanism's machine energy costs are deliberately raised at the top end, so the *answer* to that cost is the reward chain itself: fusion and the SPS-to-antimatter run are the rich, rewarding power sources that make advanced Mekanism worth building — and antimatter doubles as the apex reagent that ties the tech endgame into the Mythic chain. Radiation and reactor meltdowns are **force-disabled** — the stance is dangerous-but-recoverable: top-tier reactors stay a build-and-tune challenge, not a save-erasing catastrophe.
+> The advanced-power bargain: Mekanism's machine energy costs are deliberately raised at the top end, so the *answer* to that cost is the reward chain itself. Fusion and the SPS-to-antimatter run are the rewarding power sources that make advanced Mekanism worth building, and antimatter doubles as the apex reagent that ties the tech endgame into the Mythic chain. Radiation and reactor meltdowns are force-disabled. The stance is dangerous but recoverable: top-tier reactors stay a build-and-tune challenge, not a save-erasing catastrophe.
 
-**Ad Astra** opens here too. The NASA Workbench is a T4 recipe (netherite ingots + Mekanism Steel Casing + a steel block; until October 2026 it asked for a retired T4 token that nothing gave, so no rocket could be built), and every planet and orbit has its own T4 gate. The 4-tier rocket progression gates each planet behind a tier-progression — the T4 Glacio rocket needs primordial_essence. Jet Suit recipes are stripped; MekaSuit fills that niche.
+Ad Astra opens here too. The NASA Workbench is a T4 recipe (netherite ingots + Mekanism Steel Casing + a steel block; until October 2026 it asked for a retired T4 token that nothing gave, so no rocket could be built), and every planet and orbit has its own T4 gate. The 4-tier rocket progression gates each planet behind a rocket tier, and the T4 Glacio rocket needs primordial_essence. Jet Suit recipes are stripped; MekaSuit fills that niche.
 
-### MekaSuit Mk2 — the endgame chain
+### MekaSuit Mk2: the endgame chain
 
-The pack's tech-endgame chain is **base MekaSuit (T4 entry-armor) → MekaSuit Mk2 (post-T4 ascension target)** via the Mythic Forge. Mk2 is a **per-piece in-place upgrade** — each MekaSuit piece is transformed individually, consuming that piece plus endgame reagents (Aethersteel, an Antimatter Pellet, Primordial Essence) and returning the same piece, upgraded.
+The pack's tech-endgame chain is base MekaSuit (T4 entry armor) → MekaSuit Mk2 (post-T4 ascension target), through the Mythic Forge. Mk2 is a per-piece, in-place upgrade: each MekaSuit piece is transformed on its own, consuming that piece plus endgame reagents (Aethersteel, an Antimatter Pellet, Primordial Essence) and returning the same piece, upgraded.
 
-> **Design intent.** This converts the natural Ad Astra "you've reached the last planet" moment into a tangible reward. Crucially, the upgrade is non-destructive: it preserves the piece's installed modules, stored energy, and enchantments, so the player keeps everything they invested in the base MekaSuit rather than rebuilding from scratch.
+> Design intent: this turns the natural Ad Astra "you've reached the last planet" moment into a tangible reward. The upgrade is non-destructive: it preserves the piece's installed modules, stored energy, and enchantments, so the player keeps everything they invested in the base MekaSuit instead of rebuilding from scratch.
 
 ### Planetary economy
 
-Each Ad Astra planet has a unique extracted-element economy. Moon Stone → Helium-3 + Titanium Dust. Mars Stone → Ferric Oxide + Cryogenic Crystal. Venus, Mercury, and Glacio each contribute their own. Recipes route through Create Crushing Wheels — the planetary loop reuses T1 infrastructure for T4-tier rewards.
+Each Ad Astra planet has a unique extracted-element economy. Moon Stone → Helium-3 + Titanium Dust. Mars Stone → Ferric Oxide + Cryogenic Crystal. Venus, Mercury, and Glacio each contribute their own. Recipes route through Create Crushing Wheels, so the planetary loop reuses T1 infrastructure for T4-tier rewards.
 
-### Refined Storage at T3 — dual-path recipes
+### Refined Storage at T3: dual-path recipes
 
-Refined Storage receives a special-case dual-path recipe model:
+Refined Storage gets a special-case dual-path recipe model:
 
-- **Tech path** uses Mekanism + Thermal materials.
-- **Magic path** uses Botania + Ars Nouveau materials.
-- **Hybrid bonus** — using both yields efficiency benefits.
+- The tech path uses Mekanism + Thermal materials.
+- The magic path uses Botania + Ars Nouveau materials.
+- Hybrid bonus: using both yields efficiency benefits.
 
-This is the pack's most-explicit cross-system synergy and the proof point for the dual-path pillar at the storage layer.
+This is the pack's most explicit cross-system synergy and the proof of the dual-path pillar at the storage layer.
 
 → Full stage list, cross-mod tier-skip block recipe IDs, Ad Astra rocket recipe matrix: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state) and [§G](master-appendix.md#g-stage-restrictions).
 
@@ -639,40 +639,40 @@ This is the pack's most-explicit cross-system synergy and the proof point for th
 
 ## Part IX — Equipment Systems
 
-Equipment is split into five sub-systems: weapons, armor, curios, modular spell books (covered in Part VII), and the modular-tools workbench. Each follows the same design instinct: **clean role separation between crafted and dropped**.
+Equipment is split into five sub-systems: weapons, armor, curios, modular spell books (covered in Part VII), and the modular-tools workbench. Each follows the same design instinct: a clean role separation between crafted and dropped gear.
 
-### Weapons — Tetra modular vs Simply Swords
+### Weapons: Tetra modular vs Simply Swords
 
-**Tetra modular** (the Tetra + `art_of_forging` + `adtetra` stack) is the primary crafted-weapon system: parts-based, customizable, scales with material tier. A T2 modular sword is a multi-part build (blade + hilt + guard) using T2 materials, honed at the workbench. T4 modular is the netherite-tier ceiling for crafted weapons. *(Older docs called this "Truly Modular"; that mod family is not in pack — the crafted-weapon role is filled by the Tetra stack. See [Appendix §F.5](master-appendix.md#f5-crosscutting--always-active).)*
+Tetra modular (the Tetra + `art_of_forging` + `adtetra` stack) is the primary crafted-weapon system: parts-based, customizable, and scaling with material tier. A T2 modular sword is a multi-part build (blade + hilt + guard) using T2 materials, honed at the workbench. T4 modular is the netherite-tier ceiling for crafted weapons. *(Older docs called this "Truly Modular"; that mod family is not in the pack, and the Tetra stack fills the crafted-weapon role. See [Appendix §F.5](master-appendix.md#f5-crosscutting--always-active).)*
 
-**Simply Swords** is the unique trophy-weapon system. **~42 named uniques, all boss-drop only.** Unique-weapon recipes are stripped. Each unique is allocated to a specific boss — Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc. ~31 are allocated (Mjolnir, Storm's Edge and Slumbering Lichblade joined them on 2026-10-16 as T2 drops of the Minoshroom, the Bellringer and the Mutant Enderman); the remaining ~11 are reserved for allocation against **Ultimate Bosses + Ultris + Brutal Bosses** content (all in pack) and are currently creative-only. <!-- TODO #47/#25: reallocate the reserved uniques against BB/UB/Ultris drops in a dedicated authoring pass. NovaBosses (originally co-listed) is NOT in pack. -->
+Simply Swords is the unique trophy-weapon system: ~42 named uniques, all boss-drop only. Unique-weapon recipes are stripped. Each unique is allocated to a specific boss (Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc.). ~31 are allocated (Mjolnir, Storm's Edge and Slumbering Lichblade joined them on 2026-10-16 as T2 drops of the Minoshroom, the Bellringer and the Mutant Enderman); the remaining ~11 are reserved for allocation against Ultimate Bosses + Ultris + Brutal Bosses content (all in pack) and are currently creative-only. <!-- TODO #47/#25: reallocate the reserved uniques against BB/UB/Ultris drops in a dedicated authoring pass. NovaBosses (originally co-listed) is NOT in pack. -->
 
-> **Design intent.** The split is clean: crafted weapons are deterministic (build it from materials, get it); trophy weapons are aspirational (kill the boss, get the unique). A Mage can ignore Simply Swords entirely; a Hunter can ignore the Tetra crafted weapons entirely. Both reach T4.
+> Design intent: the split is clean. Crafted weapons are deterministic (build it from materials, get it); trophy weapons are aspirational (kill the boss, get the unique). A Mage can ignore Simply Swords entirely, and a Hunter can ignore the Tetra crafted weapons entirely. Both reach T4.
 
 Other weapon sub-systems:
 
-- **Iron's Spellbooks** — staves and spell scrolls (T1–T4 progression).
-- **Cataclysm** — signature boss weapons from Cataclysm boss drops.
-- **Mahou Tsukai** — T4 ritual-cast weapons.
-- **Mekanism MekaTool** — T4 tech multitool.
-- **Too Many Bows** — 14 named EPIC bows allocated T2–T4 across chest pools.
-- **Better Combat** — passive animation/feel overhaul, always active.
-- **Apotheosis affixes** — modifier layer on top of any weapon.
+- Iron's Spellbooks: staves and spell scrolls (T1 to T4 progression).
+- Cataclysm: signature boss weapons from Cataclysm boss drops.
+- Mahou Tsukai: T4 ritual-cast weapons.
+- Mekanism MekaTool: T4 tech multitool.
+- Too Many Bows: 14 named EPIC bows allocated T2 to T4 across chest pools.
+- Better Combat: passive animation/feel overhaul, always active.
+- Apotheosis affixes: a modifier layer on top of any weapon.
 
-### Armor — vanilla, mod-tier, and boss-drop layers
+### Armor: vanilla, mod-tier, and boss-drop layers
 
-Armor follows the same crafted-vs-dropped split. Modular armor is governed by **Iridescent Reforging** (shipped in the bundled `iridescent_tetra_expansion` jar), a custom Tetra-armor extension that adds Tetra's modular framework to the armor slot. Players drop ANY armor (vanilla iron, ISS Cultist Hood, Aether Phoenix, Aquaculture Neptunium, etc.) into a Tetra workbench's input slot — it's replaced by a Reforged variant with default modules pre-installed. Specialized armor preserves identity (school spell power, set bonus, Apotheosis affixes, enchantments, Geckolib visual model) via an `ItemUpgradeRegistry` replacement hook that patches NBT after Tetra's swap. Vanilla armor gets the modular shape with an iron-tier default module. Honing + module upgrades happen at the same workbench. Boss-drop armor is mod-specific:
+Armor follows the same crafted-vs-dropped split. Modular armor comes from Iridescent Reforging (shipped in the bundled `iridescent_tetra_expansion` jar), a custom Tetra-armor extension that brings Tetra's modular framework to the armor slot. Players drop any armor (vanilla iron, ISS Cultist Hood, Aether Phoenix, Aquaculture Neptunium, etc.) into a Tetra workbench's input slot, and it is replaced by a Reforged variant with default modules pre-installed. Specialized armor keeps its identity (school spell power, set bonus, Apotheosis affixes, enchantments, Geckolib visual model) through an `ItemUpgradeRegistry` replacement hook that patches NBT after Tetra's swap. Vanilla armor gets the modular shape with an iron-tier default module. Honing and module upgrades happen at the same workbench. Boss-drop armor is mod-specific:
 
-- **Cataclysm** Ignitium / Cursium / Witherite armor sets — recipe-stripped, boss-drop only.
-- **Iron's Spellbooks** Pyromancer 4-piece — mob-drop.
+- Cataclysm Ignitium / Cursium / Witherite armor sets: recipe-stripped, boss-drop only.
+- Iron's Spellbooks Pyromancer 4-piece: mob drop.
 
-Iron Jetpacks are ungated from T1 — early flight is intentional. Mahou Tsukai defensive spells, MekaSuit Mk2, and the Mythic Forge endgame uniques (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) are T4 specific.
+Iron Jetpacks are ungated from T1; early flight is intentional. Mahou Tsukai defensive spells, MekaSuit Mk2, and the Mythic Forge endgame uniques (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) are T4 specific.
 
-> **Armor philosophy.** Layer types should not stack power. A T3 player picks *one* of: Refined Obsidian (Mekanism), Terrasteel (Botania), Diamond (vanilla), or boss-drop (Cataclysm Witherite / Cursium / Ignitium). The combinatorial space is wide enough that the choice itself is the build identity.
+> Armor philosophy: layer types should not stack power. A T3 player picks *one* of Refined Obsidian (Mekanism), Terrasteel (Botania), Diamond (vanilla), or boss-drop (Cataclysm Witherite / Cursium / Ignitium). The combinatorial space is wide enough that the choice itself is the build identity.
 
-### Curio system — equipping is never gated
+### Curio system: equipping is never gated
 
-**Curios drop from tier-appropriate chest loot tables**, distributed across 4 chest pools by dimension band:
+Curios drop from tier-appropriate chest loot tables, spread across 4 chest pools by dimension band:
 
 | Pool | Dimensions | Combined drop rate |
 |------|-----------|------------------:|
@@ -681,21 +681,21 @@ Iron Jetpacks are ungated from T1 — early flight is intentional. Mahou Tsukai 
 | T3 | Nether, Undergarden | ~14% |
 | T4 | End, Aether (Deep Aether's biomes included), Deeper Darker (Otherside) | ~16% |
 
-> **Design intent.** Players can always equip anything they find — there is no AStages restriction on curios. If a T1 player obtains an Awakening artifact via creative gift or boss tier-peek, they can equip it. Curio early access is rare enough not to break the gating, and rewards engagement.
+> Design intent: players can always equip anything they find; there is no AStages restriction on curios. If a T1 player gets an Awakening artifact through a creative gift or a boss tier-peek, they can equip it. Early curio access is rare enough not to break the gating, and it rewards engagement.
 
-The curio mod stack: Artifacts, More Artifacts, Relics, Celestial Artifacts, Elytra Slot. Each contributes a tier of items into the chest pools.
+The curio mod stack: Artifacts, More Artifacts, Relics, Celestial Artifacts, Elytra Slot. Each contributes a tier of items to the chest pools.
 
-**Fight-breaking curios** (fire/wither/poison immunities, flight-granting items) are restricted to T2+ chest pools. A T1 player cannot roll a fire-immunity ring from an Overworld dungeon. This is the only "soft gate" on curios, enforced by chest pool composition rather than item bans.
+Fight-breaking curios (fire/wither/poison immunities, flight-granting items) are restricted to T2+ chest pools. A T1 player cannot roll a fire-immunity ring from an Overworld dungeon. This is the only "soft gate" on curios, and chest pool composition enforces it, not item bans.
 
-**Relics has a leveling system.** Each Relic earns XP from use and unlocks tiered abilities. The XP investment cost acts as a natural soft-gate — early players cannot afford to max their best Relics; endgame players can.
+Relics has a leveling system: each Relic earns XP from use and unlocks tiered abilities. The XP investment cost acts as a natural soft gate. Early players cannot afford to max their best Relics; endgame players can.
 
-### Tetra modular workbench — connective tissue
+### Tetra modular workbench: connective tissue
 
-Tetra is the cross-cutting framework. **Nine mod-integrated material categories** are wired in: vanilla metals + 27 modded metals + 5 gems + skin / bone / fibre / wool natively from Tetra. The pack ships an `icraft_tetra_materials` datapack adding these. Players craft Tetra modular weapons, modular spell books, and modular tools all using the same workbench.
+Tetra is the cross-cutting framework. Nine mod-integrated material categories are wired in: vanilla metals + 27 modded metals + 5 gems + skin / bone / fibre / wool natively from Tetra. The pack ships an `icraft_tetra_materials` datapack that adds them. Players craft Tetra modular weapons, modular spell books, and modular tools at the same workbench.
 
-This is what makes the cross-mod material economy feel coherent. A diamond pickaxe head can hold a steel handle with a knightmetal accessory and a fiery cap; the player hones the result at the workbench, then improves it further with linings.
+This makes the cross-mod material economy feel coherent. A diamond pickaxe head can hold a steel handle with a knightmetal accessory and a fiery cap; the player hones the result at the workbench, then improves it further with linings.
 
-**Copper added as a low tier material (2026-05-14).** Copper variants now sit between leather and iron on every armor + wand + spell book module that accepts metals. Tetra's material.primary auto-scales copper's stats to ~80% of iron's without per-module authoring (copper.primary=4 vs iron.primary=5).
+**Copper added as a low tier material (2026-05-14).** Copper variants now sit between leather and iron on every armor + wand + spell book module that accepts metals. Tetra's material.primary scales copper's stats to ~80% of iron's automatically, without per-module authoring (copper.primary=4 vs iron.primary=5).
 
 **Honing system (2026-05-14).** Two parallel hone systems share the workbench infrastructure: wand multi-option (4 modules × 3 mutually-exclusive paths × 5 levels), and armor major-slot archetype-gated (4 archetypes × 4 pieces × 5 levels). See [Appendix §L](master-appendix.md#l-iridescent-reforging-honing-system).
 
@@ -705,78 +705,78 @@ This is what makes the cross-mod material economy feel coherent. A diamond picka
 
 ## Part X — Endgame Loops
 
-T4 is not the finish line — it is the **starting line for five interlocking endgame meta-loops**. Each loop generates progression for the others; players move between them naturally rather than picking one and stopping.
+T4 is the starting line for five interlocking endgame meta-loops, not the finish line. Each loop generates progression for the others, so players move between them instead of picking one and stopping.
 
 ### Crossing into T4: the combat pinch, the End, and the finale
 
 Three gates structure the T3 → T4 → post-game arc:
 
-1. **Lucifer — the T3 → T4 combat capstone.** Lucifer is the final boss of the T3 boss-rush (the 100% clear). A unique **Lucifer's Token** (a second combat door, for an explorer who banked their way up and then fights him) was never built and was retired from the design on 2026-10-17; no other route depends on him. He is the *combat* capstone, **not a universal gate** — a non-combat player reaches T4 by banking the 2000-token threshold via Engineering or Magic and never fights him. So at T3 → T4 *only*, a combat-averse player has exactly one door: a non-combat lane. A deliberate endgame pinch-point (wired as Lucifer's slot on the T3 roster).
+1. **Lucifer, the T3 → T4 combat capstone.** Lucifer is the final boss of the T3 boss-rush (the 100% clear). A unique Lucifer's Token (a second combat door, for an explorer who banked their way up and then fights him) was never built and was retired from the design on 2026-10-17; no other route depends on him. He is the *combat* capstone, not a universal gate: a non-combat player reaches T4 by banking the 2000-token threshold via Engineering or Magic and never fights him. So at T3 → T4 *only*, a combat-averse player has exactly one door: a non-combat lane. The pinch point is deliberate (wired as Lucifer's slot on the T3 roster).
 
-2. **The End — to be gated behind the Aether (planned).** Today the End uses the vanilla stronghold + End-Portal process with Eyes of Ender, staged at T4. The plan replaces the **Eye of Ender with an "End Compass"** crafted from **the Aether's materials** (a T4 dimension). The compass would direct the player to an **"End Bastion"** (reusing the `boss_compass` waystone system), so the End portal could not be targeted until the player has worked the Aether — the End would be genuinely *post*-Aether. *(Build TBDs: the End Compass itself, the End Bastion structure, the compass→structure mechanic, and the exact material bill.)*
+2. **The End, to be gated behind the Aether (planned).** Today the End uses the vanilla stronghold + End-Portal process with Eyes of Ender, staged at T4. The plan replaces the Eye of Ender with an "End Compass" crafted from the Aether's materials (a T4 dimension). The compass would direct the player to an "End Bastion" (reusing the `boss_compass` waystone system), so the End portal could not be targeted until the player has worked the Aether, and the End would be genuinely *post*-Aether. *(Build TBDs: the End Compass itself, the End Bastion structure, the compass→structure mechanic, and the exact material bill.)*
 
-3. **The Ender Dragon — the pack finale.** T4 is **terminal**: there is no further token gate. Defeating the Ender Dragon is the pack finale. The **Ad Astra** space tier was designed to open after it; since 2026-10-17 it does not, by design: the planets and orbits are T4 dimensions that ask only for the T4 stage and a rocket. (The End also uniquely uncaps its `iridescent_difficulty` curve once the Dragon dies — see Part V.) Killing the Ancient Remnant + completing the final quest chain is the "you beat the pack" trophy moment.
+3. **The Ender Dragon, the pack finale.** T4 is terminal: there is no further token gate. Defeating the Ender Dragon is the pack finale. The Ad Astra space tier was designed to open after it; since 2026-10-17 it does not, by design: the planets and orbits are T4 dimensions that ask only for the T4 stage and a rocket. (The End is also the only dimension that uncaps its `iridescent_difficulty` curve, once the Dragon dies; see Part V.) Killing the Ancient Remnant + completing the final quest chain is the "you beat the pack" trophy moment.
 
 ### The five loops
 
 | Loop | What it offers | Gates into |
 |------|----------------|------------|
 | 1. **Oblivion's Rift** | Procedural infinite dungeon. Floor depth scales loot quality. The pack's primary endgame activity. | Provides materials for Loop 2 (Mythic Gear). |
-| 2. **Mythic Gear Chase** | Vertical power with diminishing returns and a hard ceiling. Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown, MekaSuit Mk2, Mythic Catalysts I–V. | Lets the player push deeper into Loop 1. |
-| 3. **Build Diversity** | Horizontal replayability through class/build experimentation. Every class experiences the Rift differently — Berserker rushes trash, Vanguard pushes deeper floors, Void Summoner trivializes some floor modifiers but struggles with Silenced. | Different builds approach Loop 1 differently. |
-| 4. **The Compendium** | Collection, achievements, cosmetic chase. Massive completionist checklist — Bestiary, Boss Chronicle, Rift Records, Gear Collection. | Tracks all four other loops; long-tail completionist target. |
+| 2. **Mythic Gear Chase** | Vertical power with diminishing returns and a hard ceiling. Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown, MekaSuit Mk2, Mythic Catalysts I to V. | Lets the player push deeper into Loop 1. |
+| 3. **Build Diversity** | Horizontal replayability through class/build experimentation. Every class experiences the Rift differently: Berserker rushes trash, Vanguard pushes deeper floors, Void Summoner trivializes some floor modifiers but struggles with Silenced. | Different builds approach Loop 1 differently. |
+| 4. **The Compendium** | Collection, achievements, cosmetic chase. A massive completionist checklist: Bestiary, Boss Chronicle, Rift Records, Gear Collection. | Tracks all four other loops; long-tail completionist target. |
 | 5. **Creative Endgame** | Megabuilding with endgame-exclusive materials and tools. RFTools custom dimensions + Mythic Forge trophies + decorative endgame. | Uses resources from all other loops. |
 
-> **Soft endpoint.** Killing the Ancient Remnant (Cataclysm) + completing the final quest chain = "you beat the pack" — credits-equivalent moment, unique trophy, bragging rights. That's hour ~150–200. The next 200+ hours come from these five loops feeding into each other.
+> Soft endpoint: killing the Ancient Remnant (Cataclysm) and completing the final quest chain means "you beat the pack". It is the credits-equivalent moment, with a unique trophy and bragging rights, around hour 150 to 200. The next 200+ hours come from these five loops feeding into each other.
 
-### Loop 1 — Oblivion's Rift
+### Loop 1: Oblivion's Rift
 
 Rifts are the procedural-dungeon endgame. Each Rift run:
 
-1. Player crafts a **Rift Keystone** (T4 reagents: Dragon Heart + Void Essence + Gaia Ingot + Nether Star + Iridescent Rift Shard).
-2. The Keystone is consumed at a Rift Anchor block to enter a procedurally-generated dungeon (RFTools Dimensions backbone, structure datapacks fill the content).
-3. **Dungeon depth scales loot quality.** Deeper floors drop Iridescent Rift Shard, Void Fragment, and the rare Rift Core.
-4. **Rift floor modifiers** randomize each run — Silenced (no spells), Disarmed (no ranged), Thorned (reflect damage), Volatile (mob explosions on death), etc. Some modifiers hard-counter specific builds; others trivialize them.
+1. The player crafts a Rift Keystone (T4 reagents: Dragon Heart + Void Essence + Gaia Ingot + Nether Star + Iridescent Rift Shard).
+2. The Keystone is consumed at a Rift Anchor block to enter a procedurally generated dungeon (RFTools Dimensions is the backbone; structure datapacks fill the content).
+3. Dungeon depth scales loot quality. Deeper floors drop Iridescent Rift Shard, Void Fragment, and the rare Rift Core.
+4. Rift floor modifiers randomize each run: Silenced (no spells), Disarmed (no ranged), Thorned (reflect damage), Volatile (mob explosions on death), etc. Some modifiers hard-counter specific builds; others trivialize them.
 5. Death inside the Rift returns the player to base; the keystone is consumed regardless of completion.
 
-The **Void Coffer** (T4 craftable) allows banking items mid-Rift without losing them on death.
+The Void Coffer (T4 craftable) lets the player bank items mid-Rift without losing them on death.
 
 Compendium tracking captures every Rift-shard pickup, Rift Keystone craft, Rift Core acquisition, and Primordial Essence acquisition. Floor depth records feed into Loop 4.
 
-### Loop 2 — Mythic Gear Chase
+### Loop 2: Mythic Gear Chase
 
-The Mythic Forge is the **uniques-crafting endgame**. Crafted from Iridescent Rift Shard + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite, it serves as the workbench for six endgame products:
+The Mythic Forge is the uniques-crafting endgame. Crafted from Iridescent Rift Shard + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite, it is the workbench for six endgame products:
 
-1. **Mythic Catalysts I–V** — escalating power tokens used as "apply this Mythic effect to gear" reagents. The top two tiers (IV–V) require an **Antimatter Pellet** apex reagent, making the engineering endgame (the SPS-to-antimatter run) a hard gate on the highest Mythic catalysts — one of several deliberate antimatter sinks, alongside the per-piece MekaSuit Mk2 upgrade and a Codex pellet-to-token exchange (capped) that lets a pure tech player convert antimatter into progression tokens.
-2. **Mythic Reforge Token** — Apotheosis-style gear-modifier reset (3 Primordial Essences).
-3. **Voidheart Blade** (sword) — base: `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
-4. **Oblivion Aegis** (chestplate) — base: netherite chestplate. Death-delay protection.
-5. **Riftwalker Boots** — base: netherite boots. Teleport + speed.
-6. **Oblivion Crown** (helmet) — base: netherite helmet. Wallhack vision + first-strike bonus.
+1. Mythic Catalysts I to V: escalating power tokens used as "apply this Mythic effect to gear" reagents. The top two tiers (IV and V) require an Antimatter Pellet apex reagent, which makes the engineering endgame (the SPS-to-antimatter run) a hard gate on the highest Mythic catalysts. It is one of several deliberate antimatter sinks, alongside the per-piece MekaSuit Mk2 upgrade and a Codex pellet-to-token exchange (capped) that lets a pure tech player convert antimatter into progression tokens.
+2. Mythic Reforge Token: an Apotheosis-style gear-modifier reset (3 Primordial Essences).
+3. Voidheart Blade (sword): base `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
+4. Oblivion Aegis (chestplate): base netherite chestplate. Death-delay protection.
+5. Riftwalker Boots: base netherite boots. Teleport + speed.
+6. Oblivion Crown (helmet): base netherite helmet. Wallhack vision + first-strike bonus.
 
-All four Mythic Uniques use **Rift Blueprints** as a slot ingredient. Blueprints drop from Rift completions, integrating Loops 1 and 2.
+All four Mythic Uniques use Rift Blueprints as a slot ingredient. Blueprints drop from Rift completions, which ties Loops 1 and 2 together.
 
-### Loop 3 — Build Diversity
+### Loop 3: Build Diversity
 
-Endgame replayability comes from **respeccing class and re-running the Rift differently**. Each of the 10 classes experiences the Rift fundamentally differently:
+Endgame replayability comes from respeccing class and running the Rift again in a different way. Each of the 10 classes experiences the Rift very differently:
 
 - Berserker rushes through trash but struggles with kiting floor guardians.
 - Ranger handles floor guardians easily but gets overwhelmed by trash swarms.
-- Vanguard is slow but nearly unkillable — pushes deeper floors than DPS classes.
+- Vanguard is slow but nearly unkillable, and pushes deeper floors than DPS classes.
 - Void Summoner trivializes some floor modifiers (Thorned, Volatile) but struggles with Silenced.
 - Some Rift floor modifiers hard-counter specific builds (Silenced = bad for Archmage, Disarmed = bad for Ranger).
 
 The Compendium (Loop 4) includes class-specific Rift challenges that reward completing the same content with different builds.
 
-> **Why respec exists at endgame.** The Class Altar respec cost (1 boss drop + 30 levels) is sized for endgame players. Respeccing 5–6 times over a long playthrough is the intended cadence — the player tries Berserker, then Vanguard, then Void Summoner, each on a fresh Rift run.
+> Why respec exists at endgame: the Class Altar respec cost (1 boss drop + 30 levels) is sized for endgame players. The intended cadence is respeccing 5 to 6 times over a long playthrough: the player tries Berserker, then Vanguard, then Void Summoner, each on a fresh Rift run.
 
-### Loop 4 — The Compendium
+### Loop 4: The Compendium
 
-The Compendium is the **completionist endgame** — a massive in-game checklist tracking everything the player has accomplished. Implemented as a quest-book chapter + custom advancement triggers. **Not just a checklist** — every Compendium entry has a tangible reward: cosmetic, functional, or both.
+The Compendium is the completionist endgame: a massive in-game checklist of everything the player has accomplished, implemented as a quest-book chapter + custom advancement triggers. Every Compendium entry has a tangible reward: cosmetic, functional, or both.
 
 #### Compendium categories
 
-**Bestiary (enemy tracking).** Every unique enemy type tracked. ~80–100 mob types across all dimensions.
+**Bestiary (enemy tracking).** Every unique enemy type is tracked: ~80 to 100 mob types across all dimensions.
 
 | Milestone | Kills | Reward |
 |-----------|------:|--------|
@@ -785,9 +785,9 @@ The Compendium is the **completionist endgame** — a massive in-game checklist 
 | Expert | 100 | +5% damage vs this mob type (permanent passive) |
 | Master | 500 | +10% damage vs this mob type + cosmetic trophy item |
 
-A **Champion Bestiary** tracks affix combinations separately. Encountering every affix at least once unlocks "Champion Scholar" + the *Champion's Eye* curio (see Champion affixes from 16 blocks away).
+A Champion Bestiary tracks affix combinations separately. Encountering every affix at least once unlocks "Champion Scholar" + the *Champion's Eye* curio (see Champion affixes from 16 blocks away).
 
-**Boss Chronicle.** Tracks every boss killed and at what per-kill scaling (your own counts: `/icraft bosskills`).
+**Boss Chronicle.** Tracks every boss killed and the per-kill scaling it was killed at (your own counts: `/icraft bosskills`).
 
 | Milestone | Reward |
 |-----------|--------|
@@ -799,7 +799,7 @@ A **Champion Bestiary** tracks affix combinations separately. Encountering every
 | Kill every boss at 5th+ difficulty | *Veteran's Medal* curio (+3% all stats, +10% XP) |
 | Kill every boss at 10th+ difficulty | *Legend's Insignia* curio (+5% all stats, +15% XP, +10% loot) |
 
-**Rift Records.** Track deepest floor reached.
+**Rift Records.** Tracks the deepest floor reached.
 
 | Milestone | Reward |
 |-----------|--------|
@@ -811,7 +811,7 @@ A **Champion Bestiary** tracks affix combinations separately. Encountering every
 | Reach Floor 30 | Title: *The Unfathomable* + animated void armor cosmetic set |
 | Complete a run with every floor modifier active | Title: *Masochist* |
 
-**Gear Collection.** Track unique items discovered, equipped, and crafted.
+**Gear Collection.** Tracks the unique items discovered, equipped, and crafted.
 
 | Milestone | Reward |
 |-----------|--------|
@@ -821,27 +821,27 @@ A **Champion Bestiary** tracks affix combinations separately. Encountering every
 | Craft all 7 Mythic Unique items | Title: *Mythic Forgemaster* + Mythic Forge operates 50% faster |
 | Obtain a "perfect" affix item (max affixes, all Legendary) | Achievement entry |
 
-**100% Compendium completion** is the "true endgame" — estimated 400+ hours. Requires mastering every class, clearing deep Rift floors, killing every boss at high Progressive difficulty, collecting all Mythic items, and exploring everything.
+100% Compendium completion is the "true endgame", estimated at 400+ hours. It requires mastering every class, clearing deep Rift floors, killing every boss at high Progressive difficulty, collecting all Mythic items, and exploring everything.
 
-### Loop 5 — Creative Endgame
+### Loop 5: Creative Endgame
 
-T4 unlocks **RFTools Dimensions** — players can create custom dimensions with controlled biomes, terrain, and lighting. Custom dimension templates unlock via Compendium milestones.
+T4 unlocks RFTools Dimensions: players can create custom dimensions with controlled biomes, terrain, and lighting. Custom dimension templates unlock through Compendium milestones.
 
-- **Decorative trophies.** Compendium milestones unlock placeable trophy blocks: animated boss heads, glowing Rift floor markers, class mastery statues, dimensional trophies.
-- **Megabuilding materials.** Endgame-exclusive materials (Aethersteel blocks, Gaia Ingot blocks, planetary stones, ascension sigils) become decorative palette options.
-- **Ongoing engagement.** Maintaining a custom dimension costs RF — endgame megabuilders stay engaged with the tech systems.
+- Decorative trophies: Compendium milestones unlock placeable trophy blocks (animated boss heads, glowing Rift floor markers, class mastery statues, dimensional trophies).
+- Megabuilding materials: endgame-exclusive materials (Aethersteel blocks, Gaia Ingot blocks, planetary stones, ascension sigils) become decorative palette options.
+- Ongoing engagement: maintaining a custom dimension costs RF, so endgame megabuilders stay engaged with the tech systems.
 
-### Ascension — the prestige cycle
+### Ascension: the prestige cycle
 
-After T4 + Glacio + Mythic Forge endgame, the player can **ascend** — losing some progression but gaining permanent stat multipliers and access to ascension-only content.
+After T4, Glacio and the Mythic Forge endgame, the player can ascend: they lose some progression but gain permanent stat multipliers and access to ascension-only content.
 
-Ascension consumes Iridescent Rift Shard + Void Fragment + Gaia Ingot + Cataclysm Void Core + Cataclysm Monstrous Horn. **Five ascension levels** (A1–A5) are available. Mob HP and damage scale 1.2× per level (A5 = 2.0× HP, 2.0× damage on top of dimension multipliers). The pack's late-game endgame is *"how high can you ascend before the world breaks you?"*
+Ascension consumes Iridescent Rift Shard + Void Fragment + Gaia Ingot + Cataclysm Void Core + Cataclysm Monstrous Horn. Five ascension levels (A1 to A5) are available. Mob HP and damage scale 1.2× per level (A5 = 2.0× HP, 2.0× damage on top of dimension multipliers). The pack's late-game endgame is *"how high can you ascend before the world breaks you?"*
 
-> **Design intent — irreversibility.** Ascension is per-character and irreversible. No toggling on/off to farm easy content with A5 rewards. Stat bonuses are percentage-based, so they don't trivialize early content — they keep pace with scaling enemies.
+> Design intent (irreversibility): ascension is per-character and irreversible. There is no toggling it on and off to farm easy content with A5 rewards. Stat bonuses are percentage-based, so they keep pace with scaling enemies without trivializing early content.
 
-#### Ascension feature surface (design — partial implementation)
+#### Ascension feature surface (design: partial implementation)
 
-The Ascension system is designed to layer multiple difficulty + reward features on top of the base scaling. Some are shipped; others are deferred design.
+The Ascension system is designed to layer multiple difficulty + reward features on top of the base scaling. Some have shipped; the others are deferred design.
 
 | Feature | What it does | Status |
 |---------|--------------|--------|
@@ -849,14 +849,14 @@ The Ascension system is designed to layer multiple difficulty + reward features 
 | **Stat bonus per level** | Permanent +5% per stat per A-level, capped at A5 | Shipped |
 | **Ascension Sigils** | Curio item per A-level, occupies a curio slot, competes with other curios | Shipped |
 | **Nemesis System** | Mobs that kill the player gain a "nemesis" tag + stats; killing them grants bonus rewards | Future |
-| **Corrupted Champions** | At A2+, Champions roll for "Corrupted" status — extra affix + special loot table | Future |
+| **Corrupted Champions** | At A2+, Champions roll for "Corrupted" status: extra affix + special loot table | Future |
 | **Rift Echoes** | At A3+, 20% chance after a boss death spawns a shadow copy with reduced HP + 2 random Rift modifiers | Future |
 | **Night Raids** | At A4+, scheduled wave events every 3rd night | Future |
 | **Corruption Zones** | At A2+, scripted zones with area effects; A5 zones persist and expand | Future |
 | **Gauntlet Challenges** | Weekly-rotating quest set with KubeJS-driven rotation | Future |
 | **Oblivion Trial** | Special RFTools dimension with forced sequential floors, no Void Coffer banking, death = clear inventory | Future |
 
-> **Implementation note.** The "Future" features above ship as design specs but not as runtime systems yet. Each has a documented fallback simplification (e.g., Nemesis System → flat +XP bonus on death recovery; Corruption Zones → static pre-placed zones; Rift Echoes → flat % material drop chance from all bosses at A3+) that preserves the core value proposition without the full implementation.
+> Implementation note: the "Future" features above exist as design specs, not yet as runtime systems. Each has a documented fallback simplification (e.g., Nemesis System → flat +XP bonus on death recovery; Corruption Zones → static pre-placed zones; Rift Echoes → flat % material drop chance from all bosses at A3+) that keeps the core value without the full implementation.
 
 → Mythic Forge recipe matrix, ascension scaling formulas, Rift floor loot tables: [Appendix §E](master-appendix.md#e-custom-items-registry).
 
@@ -864,24 +864,24 @@ The Ascension system is designed to layer multiple difficulty + reward features 
 
 ## Part XI — Death & Penalty
 
-The pack's death model is **inventory-kept, durability-cost**. Players never lose items on death; the cost is durability damage to equipped armor and held weapon, scaled by the dimension where the death occurred.
+The pack's death model is inventory-kept, durability-cost. Players never lose items on death; the cost is durability damage to equipped armor and the held weapon, scaled by the dimension where the death happened.
 
 ### Why this model
 
 - Vanilla *drop everything* punishes dimensional exploration too harshly for a pack designed around 9 dimensions.
 - *Keep everything for free* undervalues death entirely.
 
-The middle path — **scaled durability damage** — keeps the player's gear in their inventory but takes a percentage hit that scales with dimension difficulty. A T1 Overworld death is a slap on the wrist (10% durability on iron = cheap repair). A T4 End death is significant (25% durability on netherite = expensive but capped repair).
+The middle path, scaled durability damage, keeps the player's gear in their inventory but takes a percentage hit that scales with dimension difficulty. A T1 Overworld death is a slap on the wrist (10% durability on iron = cheap repair). A T4 End death is significant (25% durability on netherite = expensive but capped repair).
 
-### Items don't break — they go inert
+### Items don't break: they go inert
 
-This is the Hytale-inspired twist. At 0 durability, items become **inert** (cannot deal damage, provide armor, or mine) but stay in the inventory with a "(Broken)" tooltip indicator. Repair restores them to functional gear.
+This is the Hytale-inspired twist. At 0 durability, items become inert (they cannot deal damage, provide armor, or mine) but stay in the inventory with a "(Broken)" tooltip indicator. Repair restores them to functional gear.
 
-> **Design intent.** This eliminates "I'm afraid to use my best gear" syndrome. The worst case is *"you have to repair before using"*, not *"you destroyed your gear."*
+> Design intent: this removes the "I'm afraid to use my best gear" syndrome. The worst case is *"you have to repair before using"*, not *"you destroyed your gear."*
 
 ### Soulbound enchantment
 
-Repurposed from Ensorcellation as the pack's **most valuable enchant**:
+Repurposed from Ensorcellation as the pack's most valuable enchant:
 
 | Level | Effect |
 |:----:|--------|
@@ -889,7 +889,7 @@ Repurposed from Ensorcellation as the pack's **most valuable enchant**:
 | **II** | 75% of death durability loss prevented |
 | **III** | 100% durability loss prevented + items cannot go inert from death |
 
-Treasure enchant; high Arcana required. Soulbound III completely negates the death penalty for that item — the endgame insurance policy.
+A treasure enchant that needs high Arcana. Soulbound III completely negates the death penalty for that item, which makes it the endgame insurance policy.
 
 → Per-dimension durability loss scale and repair-cost cap formula: [Appendix §D.5](master-appendix.md#d5-death-durability-loss-by-dimension).
 
@@ -897,21 +897,21 @@ Treasure enchant; high Arcana required. Soulbound III completely negates the dea
 
 ## Part XII — Quest System & Codex
 
-The pack ships two complementary systems sharing one identity: **Heracles** (the active quest tracker, and the **progression engine**) and the **Patchouli Codex** (lore + reference book, the documentation skin). Together they *are* the Iridescent Codex of Part III.
+The pack ships two complementary systems under one identity: Heracles (the active quest tracker, and the progression engine) and the Patchouli Codex (lore + reference book, the documentation skin). Together they *are* the Iridescent Codex of Part III.
 
-### Heracles — the progression engine
+### Heracles: the progression engine
 
-Heracles is no longer just a quest tracker; it is **the engine that runs the token economy** (Part III). Its item-submission, kill-tracking, and stage-granting handle three load-bearing roles:
+Besides tracking quests, Heracles is the engine that runs the token economy (Part III). Its item submission, kill tracking, and stage granting handle three load-bearing roles:
 
-1. **Token submission + tier advance (the gate).** Submitting Engineering / Magic / Exploration / Combat tokens banks them toward the tier threshold (500 / 1000 / 2000); reaching it grants the next AStages tier flag. This *is* the progression gate — Heracles token-submission is one of the two advance routes (the other is the boss-rush %). Earlier docs called the quest tree "NOT a progression gate"; under the locked framework, it is.
+1. **Token submission + tier advance (the gate).** Submitting Engineering / Magic / Exploration / Combat tokens banks them toward the tier threshold (500 / 1000 / 2000); reaching it grants the next AStages tier flag. This *is* the progression gate: Heracles token submission is one of the two advance routes (the other is the boss-rush %). Earlier docs called the quest tree "NOT a progression gate"; under the locked framework, it is.
 2. **Boss-rush tracking.** Heracles tracks per-tier boss kills for the boss-rush route (80 / 90 / 100% clear → auto-advance, only with the tier below held). Boss-hunting quests also gate side rewards (Mythic Catalyst recipes, the Riftwalker Boots schematic, etc.).
-3. **Discoverability + optional rewards.** The quest tree doubles as the player-facing index of pack content — every dimension, boss, and system gets a quest pointing at it — plus food-diversity, automation, and exploration completionism rewards.
+3. **Discoverability + optional rewards.** The quest tree doubles as the player-facing index of pack content (every dimension, boss, and system gets a quest pointing at it), and it adds food-diversity, automation, and exploration completionism rewards.
 
-> **Design intent.** The Patchouli Codex is the documentation skin; Heracles is the mechanism. A player still advances by *doing the things* (submitting materials, killing bosses) — Heracles is the surface that receives those submissions and grants the tier. This supersedes the older "quests are a purely optional parallel rail; a KubeJS counter auto-grants tiers" model: the token economy is the gate, and Heracles runs it. (The legacy `milestone_detection.js` single-kill / cumulative-10 / craft-one-item counter is retired; only its boss-kill tracking survives into the Combat lane.)
+> Design intent: the Patchouli Codex is the documentation skin; Heracles is the mechanism. A player still advances by *doing the things* (submitting materials, killing bosses), and Heracles is the surface that receives those submissions and grants the tier. This supersedes the older "quests are a purely optional parallel rail; a KubeJS counter auto-grants tiers" model: the token economy is the gate, and Heracles runs it. (The legacy `milestone_detection.js` single-kill / cumulative-10 / craft-one-item counter is retired; only its boss-kill tracking survives into the Combat lane.)
 
 ### Quest book chapter structure
 
-The book is organized as a **hub-and-spoke layout** with branching paths inside each tier chapter. Skill-point rewards are tuned so completing one full path per tier covers the player's needs; completing multiple paths grants bonus skill points.
+The book is organized as a hub-and-spoke layout with branching paths inside each tier chapter. Skill-point rewards are tuned so completing one full path per tier covers the player's needs; completing multiple paths grants bonus skill points.
 
 | Chapter | Status | Skill points (min → max) | Notes |
 |---------|--------|--------------------------|-------|
@@ -924,39 +924,39 @@ The book is organized as a **hub-and-spoke layout** with branching paths inside 
 | **Community** | Always visible | 0 | Server-wide buff observation quests; no individual reward |
 | **Prestige** | Locks until ascension unlocked | 0 | Ascension-specific tracking; bonuses are A-level perks, not skill points |
 
-**Total skill points from quests across all chapters: ~80–95.** Combined with mob-kill XP across the six skill trees, a heavy endgame player reaches ~120–150 total skill points (out of the ~180 theoretical maximum).
+Quests across all chapters give ~80 to 95 skill points in total. Combined with mob-kill XP across the six skill trees, a heavy endgame player reaches ~120 to 150 total skill points (out of the ~180 theoretical maximum).
 
 #### Path branching inside each chapter
 
-Each tier chapter follows the same **hub structure**:
+Each tier chapter follows the same hub structure:
 
-1. **Tier baseline gate** — central node, always must complete.
-2. **Forked Choice** (T2+) — split into 2–3 paths. Tech, Magic, Combat. Each path has 4–6 quests.
-3. **Pillar Choice** (T3+) — within a path, sub-choose specialization (e.g., the Magic path branches further into Botania-focus / Ars-focus / F&A-focus).
-4. **Mythic Choice** (T4) — endgame goal-set chosen by the player (e.g., "complete 3 Mythic Uniques" vs. "reach Rift Floor 20" vs. "kill every T4 boss at 10th+ difficulty").
-5. **Bonus quests** — completing additional paths beyond the player's primary grants extra skill points + loot boxes.
+1. Tier baseline gate: the central node, always required.
+2. Forked Choice (T2+): a split into 2 to 3 paths (Tech, Magic, Combat). Each path has 4 to 6 quests.
+3. Pillar Choice (T3+): within a path, the player picks a specialization (e.g., the Magic path branches further into Botania-focus / Ars-focus / F&A-focus).
+4. Mythic Choice (T4): an endgame goal set chosen by the player (e.g., "complete 3 Mythic Uniques" vs. "reach Rift Floor 20" vs. "kill every T4 boss at 10th+ difficulty").
+5. Bonus quests: completing additional paths beyond the player's primary one grants extra skill points + loot boxes.
 
 Locked chapters prevent overwhelm. A T1 player sees only the Welcome and Tier 1 chapters; the rest unlock as tiers complete.
 
-> **Anti-overwhelm design.** The quest book is a guide, not a cage. Each quest's description text teaches the player about the system being engaged with — the quest book doubles as documentation.
+> Anti-overwhelm design: the quest book is a guide, not a cage. Each quest's description teaches the player about the system it involves, so the quest book doubles as documentation.
 
 #### Prestige quest reset
 
-On ascension, all quest progress resets. Skill points already earned are tracked separately in Pufferfish's persistent data and are **not** affected by quest reset. The KubeJS prestige handler marks which quest-sourced skill points have been earned to prevent re-earning on subsequent ascensions.
+On ascension, all quest progress resets. Skill points already earned are tracked separately in Pufferfish's persistent data, and the quest reset does **not** affect them. The KubeJS prestige handler marks which quest-sourced skill points have been earned, so they cannot be earned again on later ascensions.
 
 ### Patchouli Codex
 
-Codex is the **lore and reference** layer. The pack ships a custom Patchouli content jar with eleven categories and 80+ entries:
+The Codex is the lore and reference layer. The pack ships a custom Patchouli content jar with eleven categories and 80+ entries:
 
-- **Choosing Your Build** — origin / race / class guide for new players.
-- **Origins Guide** — full 13-origin breakdown with abilities and tradeoffs.
-- **Classes** — 10-class combat-role guide.
-- **Champions / Enchantments / Affixes** — combat system reference.
-- **Tier System** — what each tier unlocks, kept in sync with this design doc.
-- **Mods Overview** — per-mod role and tier placement.
-- **Compendium milestones** — achievements and tracking notes.
+- Choosing Your Build: origin / race / class guide for new players.
+- Origins Guide: full 13-origin breakdown with abilities and tradeoffs.
+- Classes: 10-class combat-role guide.
+- Champions / Enchantments / Affixes: combat system reference.
+- Tier System: what each tier unlocks, kept in sync with this design doc.
+- Mods Overview: per-mod role and tier placement.
+- Compendium milestones: achievements and tracking notes.
 
-Codex entries are **advancement-gated** — entries about T4 content show only after the player has unlocked T4. This keeps the codex spoiler-light for early players while still serving as the canonical in-game reference.
+Codex entries are advancement-gated: entries about T4 content show only after the player has unlocked T4. This keeps the codex spoiler-light for early players while it still serves as the canonical in-game reference.
 
 The Patchouli jar carries a bytecode patch that disables resource-pack enforcement on the codex book.
 
@@ -966,20 +966,20 @@ The Patchouli jar carries a bytecode patch that disables resource-pack enforceme
 
 ## Part XIII — Loot Economy
 
-The pack's loot economy is the **most-distributed system** in the pack — 322 references to ISS alone, 88 entities with explicit LootJS rules, 4 dimension-banded chest pools, 10 boss-drop allocation files. This part summarizes the design intent; the exact tables live in the appendix.
+The loot economy is the most distributed system in the pack: 322 references to ISS alone, 88 entities with explicit LootJS rules, 4 dimension-banded chest pools, 10 boss-drop allocation files. This part summarizes the design intent; the exact tables live in the appendix.
 
 ### The cross-mod ink/rune economy
 
-The pack's most distinctive loot mechanic is the **Iron's Spellbooks ink / rune / upgrade-orb economy distributed across every boss tier**. Every dimension's bosses contribute reagents to the shared ISS ecosystem:
+The pack's most distinctive loot mechanic is the Iron's Spellbooks ink / rune / upgrade-orb economy, spread across every boss tier. Every dimension's bosses contribute reagents to the shared ISS ecosystem:
 
 | Tier | Reagents |
 |:----:|----------|
-| T1–T2 mobs | common_ink + uncommon_ink. Mostly Alex's Mobs and Twilight Forest mobs. |
+| T1 and T2 mobs | common_ink + uncommon_ink. Mostly Alex's Mobs and Twilight Forest mobs. |
 | T2 bosses | rare_ink + T2 runes (fire, ice, nature, protection) + tier-themed Simply Swords uniques. |
 | T3 bosses | epic_ink + T3 runes (blood, ender, cooldown, lightning) + upgrade orbs (fire, ender, lightning). |
 | T4 bosses | legendary_ink + Mahou reagents (attuned_emerald, attuned_diamond, fae_essence, kodoku). |
 
-Mahou Tsukai is the **connective-tissue beneficiary** — it has no native mob drops, so the pack injects Mahou reagents into other mods' bosses (Cataclysm Ender Guardian, vanilla Warden, Ender Dragon all contribute Mahou reagents). This makes Mahou a viable T4 magic mod for combat-focused players.
+Mahou Tsukai gains the most from this connective tissue: it has no native mob drops, so the pack injects Mahou reagents into other mods' bosses (Cataclysm Ender Guardian, vanilla Warden, Ender Dragon all contribute Mahou reagents). This makes Mahou a viable T4 magic mod for combat-focused players.
 
 ### The four chest pools
 
@@ -992,27 +992,27 @@ Curio, artifact, relic, and spell-book chest loot is distributed across 4 tier-b
 | T3 | Nether, Undergarden | ~14% | ~38 items |
 | T4 | End, Aether (Deep Aether's biomes included), Deeper Darker (Otherside) | ~16% | ~33 items |
 
-Per-tier rates increase modestly as the player progresses, signaling *you're getting better stuff*. Per-item rate is the combined rate divided by pool size — each individual item is roughly a 0.3–0.5% chance per chest. Rolls are independent per item.
+Per-tier rates rise modestly as the player progresses, signaling *you're getting better stuff*. The per-item rate is the combined rate divided by pool size, so each individual item is roughly a 0.3 to 0.5% chance per chest. Rolls are independent per item.
 
 ### Marquee structures: per-structure thematic pools
 
-Most structures pull purely from the four dimensional pools above. **Marquee structures** — high-profile, theme-coded landmarks the player travels to deliberately — receive an additional layer: a small (10–15 item) themed pool curated to match the structure's lore, layered on top of a reduced dimensional baseline.
+Most structures pull only from the four dimensional pools above. Marquee structures (high-profile, theme-coded landmarks the player travels to deliberately) get an additional layer: a small (10 to 15 item) themed pool curated to match the structure's lore, layered on top of a reduced dimensional baseline.
 
-Marquee chests receive the themed pool **layered on top of the dimensional baseline**. Themed pool rate is calibrated at ~70% of the tier rate (~7% T1, ~8.4% T2, ~9.8% T3, ~11.2% T4). Combined per-chest rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests remain at the tier rate (~10/12/14/16%). Players are rewarded for seeking out marquee landmarks with both more frequent drops AND more thematic drops, which fits the "player-intentional" design criterion. The themed pool dominates by *flavor* — curated, theme-coherent items — while the dimensional baseline contributes background variety.
+Marquee chests get the themed pool layered on top of the dimensional baseline. The themed pool rate is calibrated at ~70% of the tier rate (~7% T1, ~8.4% T2, ~9.8% T3, ~11.2% T4). The combined per-chest rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests stay at the tier rate (~10/12/14/16%). Players who seek out marquee landmarks are rewarded with drops that are both more frequent and more thematic, which fits the "player-intentional" design criterion. The themed pool dominates by *flavor* (curated, theme-coherent items), while the dimensional baseline adds background variety.
 
 Marquee status requires three criteria:
 
 1. **Distinct theme.** A coherent lore identity (magic / aquatic / sculk / piglin / fire / ancient / etc.) that maps to artifact-mod content.
-2. **Player-intentional.** Players seek the structure out; not generic ambient loot.
+2. **Player-intentional.** Players seek the structure out; it is not generic ambient loot.
 3. **Theme-appropriate inventory.** At least 8 artifacts in the catalog fit the theme.
 
-*Theme overrides act as flavor, not as power escalation.* Per-item rates inside the themed pool are calibrated so the combined per-chest rate still matches the dimensional target. A T1 marquee chest does not gate stronger artifacts than a generic T1 chest — it just gates *more theme-coherent* ones.
+*Theme overrides act as flavor, not as power escalation.* Per-item rates inside the themed pool are calibrated so the combined per-chest rate still matches the dimensional target. A T1 marquee chest does not gate stronger artifacts than a generic T1 chest, only *more theme-coherent* ones.
 
 The fight-breaking-curio soft gate from earlier in this part still applies: regardless of theme, T1/T2 marquee pools may not contain fight-breaking curios (fire/wither/poison immunities, flight-granting items). Those remain T2+/T4-only by composition.
 
-ISS spellbooks (`copper_spell_book`, `apprentice_spell_book` etc.) appear at **2% per marquee chest cap** — the starter kit already solves the "hard to start magic" onboarding problem that justified higher legacy rates. ISS scrolls are uncapped and remain a primary mage-progression vector.
+ISS spellbooks (`copper_spell_book`, `apprentice_spell_book` etc.) appear at a cap of 2% per marquee chest, because the starter kit already solves the "hard to start magic" onboarding problem that justified higher legacy rates. ISS scrolls are uncapped and remain a primary mage-progression vector.
 
-Cataclysm-themed structures are *intentionally not* in the marquee roster — Cataclysm boss drops (`cataclysm_boss_drops.js`) already cover Cataclysm flavor; marquee pools on top would be double-coverage.
+Cataclysm-themed structures are left out of the marquee roster on purpose: Cataclysm boss drops (`cataclysm_boss_drops.js`) already cover Cataclysm flavor, and marquee pools on top would double the coverage.
 
 → Marquee roster, theme definitions, and per-structure item lists: [Appendix §N](master-appendix.md#n-marquee-structures).
 
@@ -1035,13 +1035,13 @@ Boss-specific drops live in ten dedicated files under `kubejs/server_scripts/loo
 
 ### What's intentionally *not* in chest loot
 
-> **Boss-drop tier integrity.** The following items are recipe-stripped *and* not in any chest pool. They exist only as boss drops or via bespoke crafting.
+> Boss-drop tier integrity: the following items are recipe-stripped *and* absent from every chest pool. They exist only as boss drops or through bespoke crafting.
 
-- **Simply Swords uniques** — boss-drop only.
-- **Cataclysm boss-set armor** (Knight, Ignitium, Cursium, Witherite) — boss-only.
-- **MekaSuit Mk2 components** — Mythic Forge endgame only.
-- **Custom mythic uniques** (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) — Mythic Forge crafting only.
-- **Awakening artifacts** (rpgseteffects) — direct T4 boss drops only (the loot pouch table strips them at T2).
+- Simply Swords uniques: boss-drop only.
+- Cataclysm boss-set armor (Knight, Ignitium, Cursium, Witherite): boss-only.
+- MekaSuit Mk2 components: Mythic Forge endgame only.
+- Custom mythic uniques (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown): Mythic Forge crafting only.
+- Awakening artifacts (rpgseteffects): direct T4 boss drops only (the loot pouch table strips them at T2).
 
 → Full 88-entity boss → loot mapping with drop chances: [Appendix §C](master-appendix.md#c-boss--loot-mapping).
 
@@ -1049,7 +1049,7 @@ Boss-specific drops live in ten dedicated files under `kubejs/server_scripts/loo
 
 ## Part XIV — Storage, XP, Travel, Food
 
-Four smaller systems clustered together. Each has its own progression curve, but the curves are mostly orthogonal to the main tier system.
+Four smaller systems, grouped here. Each has its own progression curve, but the curves are mostly independent of the main tier system.
 
 ### Storage progression
 
@@ -1060,43 +1060,43 @@ Four smaller systems clustered together. Each has its own progression curve, but
 | **T3** | Refined Storage (digital), Sophisticated (diamond) | XNet, IF advanced |
 | **T4** | RS advanced (Infinity Booster, Extra Disks), Sophisticated (netherite) | Mekanism QIO, RFTools |
 
-EnderChests / EnderStorage are gated to T4 — cross-dimensional item transfer is endgame, not a starter convenience.
+EnderChests / EnderStorage are gated to T4: cross-dimensional item transfer is endgame, not a starter convenience.
 
 Flux Networks are ungated. Cross-dimensional RF is acceptable as a server-bootstrapping convenience.
 
 ### XP economy
 
-XP is **plentiful with many things to spend it on**.
+XP is plentiful, with many things to spend it on.
 
 **Sources.** Mob kills (dimension-multiplied), XP from Crops, boss kills, quest rewards, villager emerald-to-XP trades, cooking and crafting XP.
 
 **Sinks.** JustLevelingFork leveling, Pufferfish Skills investment, Apotheosis enchanting (flat-cost, not exponential), Relic leveling, anvil operations (Easy Anvils reduces but does not eliminate cost), Reforging.
 
-> **Design intent.** XP-accessibility mods (Tax Free Levels, Easy Anvils, Easy Magic, Table of Experience) are intentional. The sinks are what matter — players should always have something valuable to invest XP in.
+> Design intent: the XP-accessibility mods (Tax Free Levels, Easy Anvils, Easy Magic, Table of Experience) are intentional. The sinks are what matter: players should always have something worth investing XP in.
 
 ### Travel
 
-**Free teleportation philosophy.** Exploration should feel liberating, not punishing.
+Free teleportation philosophy: exploration should feel liberating, not punishing.
 
-- **Waystones.** Finding and activating is free in all dimensions. Crafting a new waystone is expensive at all tiers (rare custom boss drops). Waystone Towers generate naturally as a fast-travel network. Cross-dimensional teleport works freely between activated waystones.
-- **Iron Jetpacks.** T1 (low-tier), better with material tier. Early flight is intentional.
-- **Icarus.** T3-gated.
-- **Origins flight.** Ungated, intentional.
-- **Elytra Slot.** Available when an elytra is obtained (T4, naturally from the End).
+- Waystones: finding and activating them is free in all dimensions. Crafting a new waystone is expensive at all tiers (rare custom boss drops). Waystone Towers generate naturally as a fast-travel network. Cross-dimensional teleport works freely between activated waystones.
+- Iron Jetpacks: T1 (low-tier), better with material tier. Early flight is intentional.
+- Icarus: T3-gated.
+- Origins flight: ungated, intentional.
+- Elytra Slot: available when an elytra is obtained (T4, naturally from the End).
 
 ### Food and hunger
 
-**Food diversity is a major progression system.** Diversity = HP bonuses = survival in harder dimensions.
+Food diversity is a major progression system: diversity = HP bonuses = survival in harder dimensions.
 
 The mod stack: Hunger Overhaul (faster drain), Spice of Life: Carrot Edition (diverse-eating HP bonuses), Farmer's Delight + addons (complex cooking), Pam's HarvestCraft 2 (hundreds of crops), Cooking for Blockheads (kitchen multiblock), Brewin' and Chewin' (fermentation), Simple Farming, Sleep Hunger.
 
-> **Design intent — natural soft-gate.** All food and farming is ungated from T1 — no crop or recipe staging. Players who diversify gain Spice of Life HP bonuses; players who eat only steak struggle in T3+ dimensions due to missing HP bonuses. Best food diversity requires dimensional ingredients (Nether's Delight = T3, Alex's Delight = mid-tier). Cooking is a parallel progression that rewards engagement without hard-blocking.
+> Design intent (a natural soft gate): all food and farming is ungated from T1, with no crop or recipe staging. Players who diversify gain Spice of Life HP bonuses; players who eat only steak struggle in T3+ dimensions because they miss those HP bonuses. The best food diversity requires dimensional ingredients (Nether's Delight = T3, Alex's Delight = mid-tier). Cooking is a parallel progression that rewards engagement without hard-blocking.
 
 ---
 
 ## Part XV — Building & QoL
 
-Both **completely ungated from T1**. The pack's stance: building and QoL features should never feel restricted; they make the world more livable, not more powerful.
+Both are completely ungated from T1. The pack's stance: building and QoL features should never feel restricted, because they make the world more livable, not more powerful.
 
 **Building mods.** Chipped, Macaw's suite (Bridges, Fences, Furniture, Roofs, Trapdoors), Decorative Blocks, Decorative LGBT Wall Flags, Valhelsia Furniture, Domum Ornamentum, ConnectedTexturesMod, Connected Glass, chisels-and-bits, Structurize.
 
@@ -1108,9 +1108,9 @@ These mods support the pack's expert-lite identity: powerful tooling, low overhe
 
 ## Part XVI — Implementation Status
 
-For the live implementation status of every system in the pack, see the **Implementation Status table on [Home](../home.md)**. The table lists every major system, sub-system, and mod-integration with an *Implemented / In Progress / Planned* status flag.
+For the live implementation status of every system in the pack, see the Implementation Status table on [Home](../home.md). The table lists every major system, sub-system, and mod integration with an *Implemented / In Progress / Planned* status flag.
 
-> **Source-of-truth split.**
+> Source-of-truth split:
 > - The status table is authoritative for "what is shipped."
 > - This document is authoritative for "what is intended."
 > - The two stay loosely synchronized: when intent changes, this doc updates; when implementation changes, the status table updates and the changelog logs the change.
@@ -1121,4 +1121,4 @@ For per-mod balance audit verdicts (which mods are GREENLIT, LIGHT POLISH, MEDIU
 
 ## Appendix
 
-All numerical data, recipe state, drop tables, mod rosters, custom-item registries, KubeJS script index, and bytecode-patch references live in **[`master-appendix.md`](master-appendix.md)**.
+All numerical data, recipe state, drop tables, mod rosters, custom-item registries, KubeJS script index, and bytecode-patch references live in [`master-appendix.md`](master-appendix.md).

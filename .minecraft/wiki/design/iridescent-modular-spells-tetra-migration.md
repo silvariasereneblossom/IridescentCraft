@@ -1,17 +1,17 @@
-# Iridescent Modular Spells — Phase 6: Tetra Integration Migration
+# Iridescent Modular Spells, Phase 6: Tetra Integration Migration
 
-**Status**: 6A done; 6B in progress — 2026-04-26
-**Reason**: Tester directive — design intent was always Tetra-native (mirroring TSB on CurseForge for ISS books, plus Ars). Current Phases 1-5 use a parallel NBT slot system (`imodspells_slots`) which doesn't interface with the Tetra workbench.
+**Status**: 6A done; 6B in progress (2026-04-26)
+**Reason**: a tester directive. The design was always meant to be Tetra-native (mirroring TSB on CurseForge for ISS books, plus Ars). Phases 1-5 use a parallel NBT slot system (`imodspells_slots`) that doesn't work with the Tetra workbench.
 
-**License note**: TSB (Tetra Spell Books, by Inolia_Zaicek on CurseForge) is **All Rights Reserved**. The modpack ships as a public release, so Phase 6 is a license-clean reimplementation: we mirror TSB's *structure* (slot model, schema layout, ISS/Ars stat keys — all dictated by the Tetra/ISS/Ars APIs and uncopyrightable), but we author our own Java code, our own JSON values, and use our own textures. Decompiled TSB sources at `/tmp/tsb_probe` and `/tmp/tsb_decomp` are reference only.
+**License note**: TSB (Tetra Spell Books, by Inolia_Zaicek on CurseForge) is **All Rights Reserved**. The modpack ships as a public release, so Phase 6 is a license-clean reimplementation. It mirrors TSB's *structure* (the slot model, schema layout and ISS/Ars stat keys, all dictated by the Tetra/ISS/Ars APIs and not copyrightable), while the Java code, JSON values and textures are our own. Decompiled TSB sources at `/tmp/tsb_probe` and `/tmp/tsb_decomp` are reference only.
 
 ## Current state (Phase 1-5 baseline)
 
 - 8 modular books (5 ISS metal-cover + 3 Ars cloth-cover)
 - Slot system: `imodspells_slots` NBT key with `cover` + `pages` strings
-- Material installation: `AnvilModuleInstaller.java` — anvil pattern, consumes a stack to install
-- Stat aggregation: `AttributeApplier.java` — server-tick scan of held stack, sums per-material bonus map → applies AttributeModifier
-- Tetra workbench compatibility: NONE — books aren't recognized by Tetra UI
+- Material installation: `AnvilModuleInstaller.java`, an anvil pattern that consumes a stack to install
+- Stat aggregation: `AttributeApplier.java` scans the held stack every server tick, sums the per-material bonus map and applies an AttributeModifier
+- Tetra workbench compatibility: NONE; the Tetra UI doesn't recognize the books
 
 ## Target state (Phase 6 endpoint)
 
@@ -24,7 +24,7 @@
 
 ## Constraints
 
-- Cannot extend both `ISS.SpellBook` and `ItemModular` (Java single inheritance) → must implement `IModularItem` interface directly on our existing subclasses
+- A class cannot extend both `ISS.SpellBook` and `ItemModular` (Java has single inheritance), so our existing subclasses must implement the `IModularItem` interface directly
 - Same applies to `ArsSpellBook` for Ars side
 - Tetra hard-deps Geckolib + tetra-mutil; both already in libs/
 - Backwards compatibility for existing modular books in tester saves: NBT migration on read
@@ -43,31 +43,31 @@
 - ModularSpellBookItem + ModularArsSpellBookItem implement IModularItem
 - 12 abstract methods (per Tetra 6.12.0): `getItem`, `clearCaches`, `getMajorModuleKeys`, `getMinorModuleKeys`, `getRequiredModules`, `getHoneBase`, `getHoneIntegrityMultiplier`, `canGainHoneProgress`, `getAllSynergyData`, `getAttributeModifierCache`, `getEffectDataCache`, `getPropertyCache`
 - Slot keys (final, derived from TSB pattern, our namespace):
-  - ISS: `["iss_book/core", "iss_book/front_cover", "iss_book/back_cover", "iss_book/spine", "iss_book/pages"]` — 5 majors, no minors
-  - Ars: `["ars_book/front_cover", "ars_book/back_cover", "ars_book/dye", "ars_book/spine"]` — 4 majors, no minors
+  - ISS: `["iss_book/core", "iss_book/front_cover", "iss_book/back_cover", "iss_book/spine", "iss_book/pages"]`: 5 majors, no minors
+  - Ars: `["ars_book/front_cover", "ars_book/back_cover", "ars_book/dye", "ars_book/spine"]`: 4 majors, no minors
 - `getRequiredModules` returns empty array for now (so books work without modules, AttributeApplier stays authoritative through 6C)
-- `getHoneBase` 450, `getHoneIntegrityMultiplier` 200, `canGainHoneProgress` false (per TSB convention — non-tool items)
+- `getHoneBase` 450, `getHoneIntegrityMultiplier` 200, `canGainHoneProgress` false (TSB's convention for non-tool items)
 - 4 Guava caches per class (attribute / tool / effect / properties), 1000-entry / 5-min TTL
-- `appendHoverText` chains: super (vanilla/ISS/Ars draws spell list) → existing iridescent slot tooltip → Tetra `getTooltip` for module breakdown
+- `appendHoverText` chains: super (vanilla/ISS/Ars draws the spell list), then the existing iridescent slot tooltip, then Tetra `getTooltip` for the module breakdown
 - Books appear on Tetra workbench (UI recognizes them) but have no installed modules yet
 - AttributeApplier remains authoritative for stat bonuses (read from `imodspells_slots`)
 - **Commit target**: `Phase 6B: IModularItem skeleton — books appear in Tetra workbench`
 
 ### 6C: Module slot schemas + per-material modules
 Files under `src/main/resources/data/iridescent_modular_spells/tetra/`:
-- `modules/iss_book/core/iss_core.json` — 5 majors definition for the core slot, references custom material category `iridescent_modular_spells:iss_books/`
-- `modules/iss_book/{front_cover,back_cover,spine,pages}/base_*.json` — uses Tetra built-in mat tags `metal/ wood/ stone/ gem/ skin/ fabric/ fibre/ bone/`
-- `modules/ars_book/{front_cover,back_cover,spine,dye}/base_*.json` — same mat tag set
-- `schematics/...` — workbench install recipes mirroring `modules/`
-- `materials/iss_books/{copper,iron,gold,diamond,netherite}_spell_book.json` — per-base-book stat overrides (each entry's `material.items: [<iss_id>]` registers the ISS book as a core variant)
-- Stat values (start point — rebalance-able):
+- `modules/iss_book/core/iss_core.json`: the 5-majors definition for the core slot; references the custom material category `iridescent_modular_spells:iss_books/`
+- `modules/iss_book/{front_cover,back_cover,spine,pages}/base_*.json`: uses Tetra's built-in material tags `metal/ wood/ stone/ gem/ skin/ fabric/ fibre/ bone/`
+- `modules/ars_book/{front_cover,back_cover,spine,dye}/base_*.json`: the same material tag set
+- `schematics/...`: workbench install recipes mirroring `modules/`
+- `materials/iss_books/{copper,iron,gold,diamond,netherite}_spell_book.json`: per-base-book stat overrides (each entry's `material.items: [<iss_id>]` registers the ISS book as a core variant)
+- Stat values (a starting point, open to rebalancing):
   - `front_cover`: `**irons_spellbooks:spell_power = 0.005` (multiplied by Tetra material count)
   - `back_cover`: `irons_spellbooks:max_mana = 5` (flat) + `**mana_regen = 0.005`
   - `spine`: `**cooldown_reduction = 0.01`
   - `pages`: `**cast_time_reduction = 0.01` (tertiary)
   - Ars `front_cover`: `ars_nouveau:ars_nouveau.perk.mana_regen = 0.3`
   - Ars `back_cover`: `ars_nouveau:ars_nouveau.perk.max_mana = 3`
-- `**` prefix = multiplicative (Tetra convention); plain prefix = additive
+- A `**` prefix is multiplicative (Tetra convention); a plain prefix is additive
 - **Commit target**: `Phase 6C: module schemas + per-material variants`
 
 ### 6D: NBT migration + remove parallel system
@@ -77,11 +77,11 @@ Files under `src/main/resources/data/iridescent_modular_spells/tetra/`:
   - Clear old `imodspells_slots` key
 - Remove `AttributeApplier` (Tetra handles stat aggregation now)
 - Remove `AnvilModuleInstaller` (Tetra workbench replaces it)
-- Recipe revisions: shapeless `<base_book> + <cloth/leather>` → modular variant with default cover module pre-installed
+- Recipe revisions: shapeless `<base_book> + <cloth/leather>` gives the modular variant with the default cover module pre-installed
 - **Commit target**: `Phase 6D: NBT migration + remove imodspells_slots parallel system`
 
 ### 6E: Tooltips + codex update + tester polish
-- Tooltips: rely on Tetra's built-in module display (replace our manual tooltip in Phase 1)
+- Tooltips: rely on Tetra's built-in module display (replacing our manual tooltip from Phase 1)
 - Codex entry update: rewrite Modular Spell Books page to reflect Tetra workflow
 - Update CLAUDE.md notes about NBT migration
 - Test all 6 ISS materials × 5 books = 30 valid combos + all 4 Ars materials × 3 books = 12 combos
@@ -99,34 +99,34 @@ Files under `src/main/resources/data/iridescent_modular_spells/tetra/`:
 
 ## Risks / open questions
 
-- Tetra workbench UI may not handle non-tool items elegantly. The TSB mod (CurseForge) reportedly works, so it's possible — but visual quirks possible.
+- The Tetra workbench UI may not handle non-tool items cleanly. The TSB mod (CurseForge) reportedly works, so it is possible, though visual quirks are possible.
 - Stat translation: Tetra's stat keys (`damage`, `attackSpeed`, etc.) don't all map cleanly to spell-book bonuses (`max_mana`, `mana_regen`). May need custom stat keys + a stat→attribute bridge, similar to how Tetra integrates with attribute system.
 - Module visual: Tetra renders modules with overlay textures. Spell book covers may need texture authoring (or accept basic-tinted defaults).
 - Backwards compat for in-game stacks: if a tester has a Phase 1-5 modular book with `imodspells_slots`, the migration must run on next interaction without losing data.
 
 ## Out of scope for Phase 6
 
-- Custom Tetra schematics (no-recipe synthesis at workbench) — defer to Phase 7
-- Module enchantments via Tetra's improvement system — defer to Phase 7
-- Multi-slot modules (e.g., a single material affecting both cover + pages) — defer to Phase 7
+- Custom Tetra schematics (no-recipe synthesis at the workbench): deferred to Phase 7
+- Module enchantments via Tetra's improvement system: deferred to Phase 7
+- Multi-slot modules (e.g., a single material affecting both cover + pages): deferred to Phase 7
 
 ---
 
 ## 6C concrete plan (2026-04-26 finalized)
 
 ### Slot model (4 majors, no `core`)
-- ISS: `iss_book/{front_cover, back_cover, spine, pages}` — drop `iss_book/core` from `getMajorModuleKeys`. Each item is tier-locked at registration time, no in-place tier swap.
-- Ars: `ars_book/{front_cover, back_cover, spine, dye}` — already 4 majors.
+- ISS: `iss_book/{front_cover, back_cover, spine, pages}`; drop `iss_book/core` from `getMajorModuleKeys`. Each item is tier-locked at registration time, with no in-place tier swap.
+- Ars: `ars_book/{front_cover, back_cover, spine, dye}`, already 4 majors.
 
 ### Lining model (Tetra-canonical via improvement schematics)
-- Front/back covers each have **two install schematics**:
-  - **Main install** (`displayType: major`, `materialSlotCount: 1`): consumes a cover material from Tetra built-in categories (`skin/`, `metal/`, `bone/`, `gem/`).
-  - **Lining install** (`displayType: improvement`, `materialSlotCount: 1`): consumes a lining material; outcome routes by category to one of three improvement keys.
+- Front and back covers each have two install schematics:
+  - Main install (`displayType: major`, `materialSlotCount: 1`): consumes a cover material from Tetra built-in categories (`skin/`, `metal/`, `bone/`, `gem/`).
+  - Lining install (`displayType: improvement`, `materialSlotCount: 1`): consumes a lining material; outcome routes by category to one of three improvement keys.
 - 3 lining categories with thematic stat bonuses:
   - `fabric/` (wool, manaweave_cloth, sorcerer_robes, spell_cloth, silk) → **mana_regen** ("steady flow")
   - `fibre/` (paper, parchment) → **cast_time_reduction** ("quick page turns")
   - `skin/` (leather, rabbit_hide, vellum) → **max_mana** ("vessel volume")
-  - Magic-flavor cloths sit inside `fabric/` and get stronger numbers via Tetra's `count` multiplier — no separate stat type.
+  - Magic-flavor cloths sit inside `fabric/` and get stronger numbers through Tetra's `count` multiplier instead of a separate stat type.
 - Spine slot: 1-mat install only, no lining (cooldown_reduction).
 - Pages slot: 1-mat install only, no lining (cast_time_reduction).
 - Ars `dye` slot: cosmetic, no stat bonus (matches TSB pattern).
@@ -170,16 +170,16 @@ data/iridescent_modular_spells/tetra/
 ```
 
 ### Replacements
-Each replacement converts the vanilla ISS/Ars book → our modular variant on first inventory tick, pre-installing default modules so the book is functional out-of-box (cover=leather/main + paper/lining; back_cover=leather/main + paper/lining; spine=iron; pages=paper).
+Each replacement converts the vanilla ISS/Ars book into our modular variant on its first inventory tick and pre-installs default modules, so the book works out of the box (cover=leather/main + paper/lining; back_cover=leather/main + paper/lining; spine=iron; pages=paper).
 
 ### Java change in 6C
 Drop `iss_book/core` from `MAJOR_KEYS` in `ModularSpellBookItem.java`. No code change in `ModularArsSpellBookItem.java` (already 4 slots).
 
 ---
 
-## Phase 7 — Elemental Class Layer (deferred design, 2026-04-26 spec)
+## Phase 7: Elemental Class Layer (deferred design, 2026-04-26 spec)
 
-**Add alongside** existing 10 classes (don't replace Archmage).
+Add alongside the existing 10 classes (Archmage stays).
 
 | Class | Element | School bonus | Drawbacks vs Archmage |
 |---|---|---|---|
@@ -190,8 +190,8 @@ Drop `iss_book/core` from `MAJOR_KEYS` in `ModularSpellBookItem.java`. No code c
 | Druid | Nature | +50% nature_spell_power | -10% melee; passive friendliness with neutral mobs |
 | Stormcaller | Lightning | +50% lightning_spell_power | -10% melee |
 
-**Design intent**: Elementalists trade Archmage's broad +50-65% all-school magic for specialized +50% to ONE school, but with milder downsides. They're not stronger than Archmage on their school, but they're not glass cannons either. **No starter armor** (player request).
+**Design intent**: Elementalists trade Archmage's broad +50-65% all-school magic for +50% to ONE school, with milder downsides. On their own school they are no stronger than Archmage, and they are not glass cannons. **No starter armor** (player request).
 
-**Boss-drop integration**: Elemental classes synergize naturally with Phase 6F boss-drop books — a Pyromancer killing the ISS `fire_boss` to get the `blaze_spell_book` is the canon progression loop.
+**Boss-drop integration**: Elemental classes pair with the Phase 6F boss-drop books. A Pyromancer killing the ISS `fire_boss` to get the `blaze_spell_book` is the intended progression loop.
 
-**Out of scope for Phase 7 design pass**: starter kits, codex entries, AStages tier gates — those come once class JSONs exist.
+**Out of scope for Phase 7 design pass**: starter kits, codex entries, AStages tier gates. Those come once class JSONs exist.

@@ -1,12 +1,12 @@
 # Tetra Materials Reference (Pack-Wide)
 
-This is the canonical reference for every Tetra material currently in the IridescentCraft pack. It covers Tetra's built-in materials, the IridescentCraft datapack additions, the custom materials shipped by the unified `iridescent_tetra_expansion-1.0.0.jar` (which bundles the former `iridescent-reforging-mod` + `iridescent-modular-spells-mod` source repos and is the canonical deployed name post-2026-05-02), and the Tetra-extending compat addons.
+This is the canonical reference for every Tetra material in the IridescentCraft pack: Tetra's built-in materials, the pack's datapack additions, the custom materials in the unified `iridescent_tetra_expansion-1.0.0.jar`, and the compat addons that extend Tetra. The expansion jar bundles the former `iridescent-reforging-mod` and `iridescent-modular-spells-mod` source repos, and it has been the official deployed name since 2026-05-02.
 
-Use this doc when authoring per-material reforging variants, balancing module values, choosing repair items for new modules, or reasoning about which materials are duplicated across multiple sources.
+Use it when you author per-material reforging variants, balance module values, choose repair items for new modules, or need to know which materials more than one source registers.
 
-**Last full audit:** 2026-05-28. **Total catalogued material entries:** ~845 (by source, before dedupe). **Unique by category/key:** ~800 (49 cross-source duplicates).
+Last full audit: 2026-05-28. The catalogue holds ~845 material entries counted by source before dedupe, and ~800 unique by category/key (49 cross-source duplicates).
 
-> **2026-05-28 audit delta.** Fixed silent single-asterisk drop on 7 custom materials (`arcane_cloth`, `magebloom`, `paper`, `deathskin`, `rotten_leather`, `tf_arctic`, `tf_yeti`) — see [Section 5](#section-5---critical-tetra-finickyness-rules). Boosted `arcane_cloth` to T2 magical-cloth tier (was at bare minimum stats). Added missing [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar) covering `arcane_cloth`, `manaweave`, `spellbinding_cloth`, `magebloom` (none documented in the 2026-04-29 audit). **Rewrote Section 4** to reflect actual per-material variant architecture — the prior "plate modules accept only 5 materials" claim was based on the deprecated standalone `iridescent-reforging-mod/` source and contradicted the unified bundle's per-material variant model. Added [Section 5 — Critical Tetra Finickyness Rules](#section-5---critical-tetra-finickyness-rules). **Material per-tier-parity audit still pending** — see [Future work](#future-work--open-questions). The canonical hierarchy: T1 = iron/copper/brass; T2 = steel/manasteel/etc.; T3 = terrasteel/elementium/etc.; T4 = netherite + Terramity onyx; **T4 peak = Aethersteel** (pinnacle of crafted progression, sits below the Ad Astra postgame chain).
+> Changes in the 2026-05-28 audit: 7 custom materials (`arcane_cloth`, `magebloom`, `paper`, `deathskin`, `rotten_leather`, `tf_arctic`, `tf_yeti`) were silently dropping their single-asterisk attributes, and that is fixed (see [Section 5](#section-5---critical-tetra-finickyness-rules)). `arcane_cloth` went from bare-minimum stats up to the T2 magical-cloth tier. The new [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar) covers `arcane_cloth`, `manaweave`, `spellbinding_cloth` and `magebloom`, none of which the 2026-04-29 audit documented. Section 4 was rewritten to describe the real per-material variant architecture: its earlier claim that "plate modules accept only 5 materials" came from the deprecated standalone `iridescent-reforging-mod/` source and contradicted the unified bundle's per-material variant model. [Section 5 (Critical Tetra Finickyness Rules)](#section-5---critical-tetra-finickyness-rules) is new. The per-tier-parity audit of the materials is still pending (see [Future work](#future-work--open-questions)). The canonical hierarchy: T1 = iron/copper/brass; T2 = steel/manasteel/etc.; T3 = terrasteel/elementium/etc.; T4 = netherite + Terramity onyx; the T4 peak is Aethersteel, the top of crafted progression, which sits below the Ad Astra postgame chain.
 
 ---
 
@@ -25,7 +25,7 @@ Use this doc when authoring per-material reforging variants, balancing module va
 
 ## How Tetra material registration works
 
-A Tetra material is a JSON file at `data/<namespace>/tetra/materials/<category>/[<subdir>/]<file>.json`. Tetra's reload listener walks every datapack/jar's `data/tetra/materials/...` tree and registers each file as a material whose ID is `<namespace>:<category>/<key>`. The file's directory determines the **category** (used by module variant matchers like `tetra:metal/`, `tetra:fabric/`). The `key` field inside the JSON is the leaf identifier the variant matcher binds to (e.g. `"key": "iron"` -> matches `tetra:metal/iron`).
+A Tetra material is a JSON file at `data/<namespace>/tetra/materials/<category>/[<subdir>/]<file>.json`. Tetra's reload listener walks every datapack/jar's `data/tetra/materials/...` tree and registers each file as a material whose ID is `<namespace>:<category>/<key>`. The file's directory sets the category, which module variant matchers such as `tetra:metal/` and `tetra:fabric/` use. The `key` field inside the JSON is the leaf identifier the variant matcher binds to: `"key": "iron"` matches `tetra:metal/iron`.
 
 Standard fields:
 
@@ -43,17 +43,17 @@ Standard fields:
 | `material.items` or `material.tag` | items[] / tag | The repair / crafting source ingredient. Tag form is preferred for forge-tagged metals. |
 | `requiredTools.hammer_dig` | string | Minimum hammer tool tier to forge with this material in a Tetra workbench. |
 
-Modules accept materials via two patterns in their variant matchers:
-- **Exact match**: `"materials": ["tetra:metal/iron"]` - only iron qualifies.
-- **Category prefix**: `"materials": ["tetra:fabric/", "tetra:fibre/", "tetra:skin/"]` - any material in any of those categories qualifies (the trailing slash is the wildcard marker). Note that the **namespace prefix matters**: `tetra:fabric/` matches only Tetra-namespace fabrics, not `iridescent_reforging:fabric/...`. Cross-namespace use requires either a wildcard with no namespace or explicit listing.
+Modules accept materials through two patterns in their variant matchers:
+- Exact match: `"materials": ["tetra:metal/iron"]` accepts only iron.
+- Category prefix: `"materials": ["tetra:fabric/", "tetra:fibre/", "tetra:skin/"]` accepts any material in those categories (the trailing slash marks the wildcard). The namespace prefix matters: `tetra:fabric/` matches only Tetra-namespace fabrics, not `iridescent_reforging:fabric/...`. To use materials from another namespace, either use a wildcard with no namespace or list them explicitly.
 
-When two datapacks/mods register the same `<category>/<key>`, **last loaded wins**. Datapack load order is alphabetical by datapack name unless overridden. In practice the four Blue Skies materials (`charoite`, `diopside`, `horizonite`, etc.) are registered by both our datapack AND `txdacompat` / `dimasctetracompat` / `tetracelium`; see [Cross-source duplicate keys](#cross-source-duplicate-keys) for the full list and which version typically wins.
+When two datapacks or mods register the same `<category>/<key>`, the last one loaded wins. Datapacks load alphabetically by name unless something overrides the order. The four Blue Skies materials (`charoite`, `diopside`, `horizonite`, etc.), for example, are registered by our datapack and also by `txdacompat` / `dimasctetracompat` / `tetracelium`; [Cross-source duplicate keys](#cross-source-duplicate-keys) has the full list and which version usually wins.
 
 ---
 
 ## Section 1 - Tetra built-in materials
 
-From `tetra-1.20.1-6.12.0.jar` at `data/tetra/materials/`. **66 materials in 12 categories.** All keys live under namespace `tetra:`.
+From `tetra-1.20.1-6.12.0.jar` at `data/tetra/materials/`: 66 materials in 12 categories, all under the `tetra:` namespace.
 
 ### bone (1)
 
@@ -63,7 +63,7 @@ From `tetra-1.20.1-6.12.0.jar` at `data/tetra/materials/`. **66 materials in 12 
 
 ### fabric (16) - all wools
 
-All wool variants share identical stats. The base `wool` entry is tagged (`#minecraft:wool`); the colored variants pin to specific items.
+All wool variants have the same stats. The base `wool` entry uses the tag (`#minecraft:wool`); each colored variant names its own item.
 
 | Key | Primary | Sec | Tert | Dur | IC | IG | MC | Repair Item |
 |---|---|---|---|---|---|---|---|---|
@@ -132,7 +132,7 @@ Color list: `black, blue, brown, cyan, gray, green, light_blue, light_gray, lime
 
 ### socket (10)
 
-Sockets are zero-stat materials used for slotting gem/charm-like enhancements. Durability listed is socket lifetime (number of uses before consumption).
+Sockets are zero-stat materials for slotting gem- or charm-like enhancements. The durability shown is the socket's lifetime: the number of uses before it is consumed.
 
 | Key | Dur | IC | Eff | Repair / Source Item |
 |---|---|---|---|---|
@@ -177,15 +177,15 @@ Sockets are zero-stat materials used for slotting gem/charm-like enhancements. D
 
 ## Section 2 - IridescentCraft custom materials
 
-These materials are defined by IridescentCraft-authored sources and are unique to this pack.
+IridescentCraft's own sources define these materials, and they exist only in this pack.
 
 ### 2a. Datapack metals + gems (`icraft_tetra_materials`)
 
-The original 27 modded metal materials shipped via `global_packs/required_data/icraft_tetra_materials/` (datapack namespace `tetra:`). Expanded over time to add gems and skin variants (now 35 total: 28 metal, 5 gem, 2 skin).
+The datapack at `global_packs/required_data/icraft_tetra_materials/` (namespace `tetra:`) first shipped 27 modded metal materials. Gems and skin variants were added later, and it now has 35 in total: 28 metal, 5 gem, 2 skin.
 
 #### Master metal comparison table (sorted by tier)
 
-Vanilla reference values are included for comparison.
+Vanilla values are listed for comparison.
 
 | Tier | Material | Source Mod | Dur | Prim | Sec | Tert | Eff | Tool Level | Magic Cap | Tint | Repair Item |
 |---|---|---|---|---|---|---|---|---|---|---|---|
@@ -221,11 +221,11 @@ Vanilla reference values are included for comparison.
 | T4 | Iridium | Mekanism | 2200 | 8.0 | 4.0 | 4.0 | 10 | netherite | 100 | -- | `mekanism:ingot_iridium` |
 | T4 | Aethersteel | Aethersteel | 2500 | 8.5 | 3.2 | 4.5 | 11 | netherite | 100 | #7ad6e8 | `aethersteel:aethersteel_ingot` |
 
-> **Column notes:** Primary = main attack damage. Secondary = sweeping/off-hand damage. Tertiary = armor/blocking value. Tool Level = what blocks the tool can mine (iron < diamond < netherite). Magic Capacity = how many enchantment improvements the material can hold in Tetra's system.
+> Columns: Primary is the main attack damage, Secondary the sweeping/off-hand damage, Tertiary the armor/blocking value. Tool Level is what blocks the tool can mine (iron < diamond < netherite). Magic Capacity is how many enchantment improvements the material can hold in Tetra's system.
 
 #### Custom gems (`icraft_tetra_materials`)
 
-5 gem materials. The first four are themed onyx/sapphire/topaz/ruby gems for end-game crafting; `undergarden_utherium` ports Undergarden's purple gem into Tetra-compatible stats.
+5 gem materials. The first four are themed onyx, sapphire, topaz and ruby gems for end-game crafting; `undergarden_utherium` gives Undergarden's purple gem Tetra-compatible stats.
 
 | Key | Primary | Sec | Tert | Dur | MC | Eff | Tool Level | Repair / Source |
 |---|---|---|---|---|---|---|---|---|
@@ -235,7 +235,7 @@ Vanilla reference values are included for comparison.
 | `topaz` | 6.5 | 3.5 | 3.2 | 950 | 90 | 7.5 | diamond | (custom topaz item) |
 | `undergarden_utherium` | 6.2 | 3.8 | 3.2 | 600 | 120 | 7.5 | diamond | `undergarden:utherium` |
 
-> **Note:** `undergarden_utherium` is also defined by `undergardenpatch-1.4.2-1.20.1.jar` with stats `prim=6.5, dur=1279, mc=102, eff=8.5`. Datapack vs jar load order determines which wins; see [duplicate keys](#cross-source-duplicate-keys).
+> `undergarden_utherium` is also defined by `undergardenpatch-1.4.2-1.20.1.jar`, with stats `prim=6.5, dur=1279, mc=102, eff=8.5`. Which one wins depends on the load order of the datapack and the jar; see [duplicate keys](#cross-source-duplicate-keys).
 
 #### Custom skins (`icraft_tetra_materials`)
 
@@ -246,24 +246,24 @@ Vanilla reference values are included for comparison.
 
 ### 2b. Themed reforging materials (`iridescent_reforging:themed/*`)
 
-Eight themed materials under `data/tetra/materials/themed/*.json` (namespace `iridescent_reforging:`). These are zero-stat material wrappers (primary/secondary/tertiary all 1.0, durability 0) used purely as **selectors** for themed reforging variants in the helmet/visor, chestplate/chest_lining, leggings/belt, and boots/boot_lining modules. They have no standalone power; the bound module variants apply spell-power buffs.
+Eight themed materials under `data/tetra/materials/themed/*.json` (namespace `iridescent_reforging:`). They are zero-stat wrappers (primary/secondary/tertiary all 1.0, durability 0) whose only job is to select themed reforging variants in the helmet/visor, chestplate/chest_lining, leggings/belt and boots/boot_lining modules. A themed material has no power of its own; the module variants it binds to apply the spell-power buffs.
 
 | Key | Theme | Lining-Slot Buff Applied (per slot) |
 |---|---|---|
 | `themed/fire` | Fire | `irons_spellbooks:fire_spell_power` +0.05 |
 | `themed/ice` | Ice | `irons_spellbooks:ice_spell_power` +0.05 |
-| `themed/shadow` | Shadow | `irons_spellbooks:blood_spell_power` +0.05 (note: shadow shares blood SP) |
+| `themed/shadow` | Shadow | `irons_spellbooks:blood_spell_power` +0.05 (shadow shares blood SP) |
 | `themed/holy` | Holy | `irons_spellbooks:holy_spell_power` +0.05 |
 | `themed/lightning` | Lightning | `irons_spellbooks:lightning_spell_power` +0.05 |
 | `themed/nature` | Nature | `irons_spellbooks:mana_regen` +0.06 |
 | `themed/ender` | Ender | `irons_spellbooks:ender_spell_power` +0.05 |
 | `themed/blood` | Blood | `irons_spellbooks:blood_spell_power` +0.05 |
 
-> **Implementation note:** Themed materials only carry meaning when bound to one of the four `*_lining` / `belt` / `visor` modules in the reforging mod. They are not consumable and are not produced from any single ingredient - the conversion recipe sets the themed flag based on the magic_cloth variant used.
+> Themed materials only mean something when bound to one of the four `*_lining` / `belt` / `visor` modules in the reforging mod. They are not consumable and no single ingredient produces them: the conversion recipe sets the themed flag from the magic_cloth variant used.
 
 ### 2c. Spell-book materials (`iridescent-modular-spells-mod`)
 
-15 custom material entries used to back per-spellbook conversion recipes for Iron's Spells & Spellbooks (ISS) and Ars Nouveau (Ars) spell books. Located under `data/tetra/materials/{icraft_iss_books,icraft_ars_books}/`. These use **non-standard categories** (`icraft_iss_books`, `icraft_ars_books`) so they don't pollute Tetra's general matchers; the `iss_book` / `ars_book` modules in the same mod accept these explicitly.
+15 custom material entries that back the per-spellbook conversion recipes for Iron's Spells & Spellbooks (ISS) and Ars Nouveau (Ars) spell books, under `data/tetra/materials/{icraft_iss_books,icraft_ars_books}/`. Their categories (`icraft_iss_books`, `icraft_ars_books`) are non-standard so that Tetra's general matchers never pick them up; the `iss_book` / `ars_book` modules in the same mod accept them explicitly.
 
 | Category | Key | Magic Cap | Source Mod |
 |---|---|---|---|
@@ -283,11 +283,11 @@ Eight themed materials under `data/tetra/materials/themed/*.json` (namespace `ir
 | `icraft_ars_books` | `apprentice_spell_book` | 60 | Ars Nouveau |
 | `icraft_ars_books` | `archmage_spell_book` | 100 | Ars Nouveau |
 
-All other stats (primary/secondary/tertiary/durability/efficiency) are 0; books only matter for magic capacity scaling. The book module variants in `data/tetra/modules/{iss_book,ars_book}/*.json` apply max-mana / mana-regen / cast-time / spell-power / cooldown improvements.
+All other stats (primary/secondary/tertiary/durability/efficiency) are 0; a book material only sets magic capacity. The book module variants in `data/tetra/modules/{iss_book,ars_book}/*.json` apply the max-mana / mana-regen / cast-time / spell-power / cooldown improvements.
 
 ### 2d. Bundle-jar magical fabric + skin materials (`iridescent_tetra_expansion-1.0.0.jar`)
 
-Three magical fabric materials and one magical skin shipped by the unified bundle jar. **Registered under namespace `tetra:`** (path is `data/tetra/materials/<cat>/<key>.json` inside the jar, so the namespace == `tetra` not `iridescent_modular_spells`). They join the `tetra:fabric/` and `tetra:skin/` category pools alongside vanilla wool/leather/hide, so any module variant that targets `tetra:fabric/` or `tetra:skin/` (or an exact key in those categories) can use them.
+Three magical fabric materials and one magical skin from the unified bundle jar. They are registered under the `tetra:` namespace: the path inside the jar is `data/tetra/materials/<cat>/<key>.json`, so the namespace is `tetra`, not `iridescent_modular_spells`. They join the `tetra:fabric/` and `tetra:skin/` category pools next to vanilla wool, leather and hide, so any module variant that targets `tetra:fabric/` or `tetra:skin/` (or an exact key in those categories) can use them.
 
 | Cat | Key | Prim | Sec | Tert | Dur | iC | iG | MC | Repair Item | Attributes (post-2026-05-28 `**` fix) |
 |---|---|---|---|---|---|---|---|---|---|---|
@@ -296,35 +296,35 @@ Three magical fabric materials and one magical skin shipped by the unified bundl
 | fabric | `spellbinding_cloth` | 1 | 1 | 5 | 320 | 1 | 4 | 200 | `botania:spell_cloth` | -- (relies on tertiary + 200 MC) |
 | skin | `magebloom` | 0.6 | 4.5 | 1 | 90 | 1 | 3 | 130 | `ars_nouveau:magebloom_fiber` | `**spell_power 0.05` |
 
-> **Tier positioning.** `arcane_cloth` is the T2 magical-cloth entry tier (post-boost; was bare-minimum stats before 2026-05-28). `manaweave` is mid-tier Botania-flavored. `spellbinding_cloth` is upper-tier (MC 200 — between manaweave and ISS upstream `irons_spellbooks_arcane_cloth` MC 180). `magebloom` is a magic-skin from Ars Nouveau's magebloom fiber, themed as "tough but flexible high-magic skin substitute" — high secondary (4.5) reflects the spinning/weaving identity.
+> Tiers: `arcane_cloth` is the entry T2 magical cloth (it had bare-minimum stats until the 2026-05-28 boost). `manaweave` is mid-tier, with a Botania flavor. `spellbinding_cloth` is upper-tier (MC 200, between manaweave and the upstream ISS `irons_spellbooks_arcane_cloth` at MC 180). `magebloom` is a magic skin made from Ars Nouveau's magebloom fiber, themed as a "tough but flexible high-magic skin substitute"; its high secondary (4.5) fits the spinning/weaving identity.
 
-> **`**` prefix is non-negotiable.** All four use `**`-prefixed ISS percent attributes (MULTIPLY_TOTAL). Single-asterisk `*` (MULTIPLY_BASE) silently drops to 0 on ISS percent attrs in Tetra's `AttributeHelper.collapse()` when no ADDITION sibling exists. See [Section 5](#section-5---critical-tetra-finickyness-rules) for the full rule. Pre-2026-05-28, `arcane_cloth` + `magebloom` shipped with the broken `*` prefix and their magic bonuses were silently invisible in-game; fixed in the deployed jar via in-place JSON patch (jar isn't signed).
+> **The `**` prefix is required.** All four use `**`-prefixed ISS percent attributes (MULTIPLY_TOTAL). With a single asterisk `*` (MULTIPLY_BASE), Tetra's `AttributeHelper.collapse()` silently drops an ISS percent attribute to 0 when no ADDITION sibling exists. [Section 5](#section-5---critical-tetra-finickyness-rules) has the full rule. Before 2026-05-28, `arcane_cloth` and `magebloom` shipped with the broken `*` prefix and their magic bonuses never showed in game; the deployed jar was fixed with an in-place JSON patch (the jar isn't signed).
 
-> **ISS arcane_cloth (separate entry).** `irons_spellbooks` ships its own `arcane_cloth` material under namespace `tetra:` but with key prefix `irons_spellbooks_` (full key: `tetra:fabric/irons_spellbooks_arcane_cloth`). Stats: P=1, S=1, T=5, dur=300, MC=180, `**cooldown_reduction=0.15`. Coexists with our `tetra:fabric/arcane_cloth` (no key collision, different identifiers). See [Section 3.10](#310-irons_spellbooks-120131551jar-17-materials).
+> ISS has a separate arcane_cloth. `irons_spellbooks` ships its own `arcane_cloth` material under the `tetra:` namespace, with the key prefix `irons_spellbooks_` (full key: `tetra:fabric/irons_spellbooks_arcane_cloth`). Stats: P=1, S=1, T=5, dur=300, MC=180, `**cooldown_reduction=0.15`. The identifiers differ, so it coexists with our `tetra:fabric/arcane_cloth` without a key collision. See [Section 3.10](#310-irons_spellbooks-120131551jar-17-materials).
 
 ### 2e. Datapack-side magical attribute carriers (`icraft_tetra_materials`, post-2026-05-28)
 
-Five datapack materials carry `**`-prefixed ISS attributes for spell-tier flavor on top of their base stats:
+Five datapack materials add `**`-prefixed ISS attributes on top of their base stats, for spell-tier flavor:
 
 | Cat | Key | Attributes |
 |---|---|---|
 | fibre | `paper` | `**spell_power 0.05` |
-| skin | `deathskin` | `**mana_regen 0.025` + `iridescent_reforging:damage_vs_undead 0.05` (plain ADDITION on a custom Forge attr — renders cleanly per lesson 2026-05-13 #4) |
+| skin | `deathskin` | `**mana_regen 0.025` + `iridescent_reforging:damage_vs_undead 0.05` (plain ADDITION on a custom Forge attr, which renders cleanly per lesson 2026-05-13 #4) |
 | skin | `rotten_leather` | `**holy_spell_power 0.1` + `**mana_regen 0.05` + `**spell_power 0.15` |
 | skin | `tf_arctic` | `**ice_magic_resist 0.1` + `**spell_power 0.1` |
 | skin | `tf_yeti` | `**ice_magic_resist 0.12` + `**spell_power 0.1` |
 
-Pre-2026-05-28 these all shipped with single-asterisk and were silently invisible. The 2026-05-28 fix converted 8 attributes across 7 materials (including 2 in Section 2d) to `**`. Player-visible impact: every player lined-up with any of these was getting +0 magic stat contribution from the material attribute despite the file declaring the bonus.
+Before 2026-05-28 all of these shipped with a single asterisk, and their bonuses never showed. The 2026-05-28 fix converted 8 attributes across 7 materials (2 of them in Section 2d) to `**`. Until then, a player whose gear used any of these got +0 magic stat from the material attribute, although the file declared the bonus.
 
 ---
 
 ## Section 3 - Modded Tetra extensions
 
-These compat / addon mods register additional Tetra materials. Total: **711 modded extension materials** across 11 jars.
+These compat and addon mods register more Tetra materials: 711 in total across 11 jars.
 
 ### 3.1. tetranomicon-1.6.1-1.20.1.jar (497 materials)
 
-The dominant external source. Provides Tetra material registrations for nearly every modded ore / wood / vine in the pack. Coverage by category:
+The largest external source: it registers Tetra materials for nearly every modded ore, wood and vine in the pack. Coverage by category:
 
 | Category | Count | Notable mods covered |
 |---|---|---|
@@ -339,7 +339,7 @@ The dominant external source. Provides Tetra material registrations for nearly e
 | `stone` | 67 | ad_astra, betterend, blue_skies, create, deeperdarker, ms_*, quark, regions_unexplored, unearthed |
 | `wood` | 119 | atmospheric, autumnity, betterend, betternether, biomesoplenty, blue_skies, ecologics, environmental, ms_*, regions_unexplored, twilightforest, tropicraft |
 
-**Tetranomicon spotlight - top primary by category** (highlights for module balance reference):
+Tetranomicon's highest primary per category, for reference when balancing modules:
 
 | Category | Top Key | Prim | Sec | Tert | Dur | MC | Tool Level |
 |---|---|---|---|---|---|---|---|
@@ -355,15 +355,15 @@ The dominant external source. Provides Tetra material registrations for nearly e
 | skin | `ms_brown_bear_hide` / `ms_polar_bear_hide` | 6 | 3 | 1 | 200 | 105-120 | -- |
 | scale | `alexsmobs_straddlite` / `twilightforest_naga_scale` | 6 | -- | -- | 448 | 102-108 | -- |
 
-> **Tetranomicon introduces custom tool tiers** (`tetranomicon:tier_ten`, `tetranomicon:tier_eleven`, `tetra:maxed_forge_hammer`) used by its highest-end materials. These tiers are not equivalent to vanilla netherite; they require Tetra hammers fully upgraded. Iceandfire's dragonsteel materials and voidscape's astral_crystal sit at the absolute ceiling.
+> Tetranomicon adds custom tool tiers (`tetranomicon:tier_ten`, `tetranomicon:tier_eleven`, `tetra:maxed_forge_hammer`) for its highest-end materials. These tiers are not the same as vanilla netherite: they need fully upgraded Tetra hammers. Iceandfire's dragonsteel materials and voidscape's astral_crystal are at the very top.
 
-> **Tetranomicon has the FULL list of twilight forest, blue skies, undergarden, etc. modded metals** under its own keys (e.g. `tetranomicon`'s `twilightforest_knightmetal` vs our datapack's plain `knightmetal`). The two namespaces don't conflict because the keys differ. See [duplicate keys](#cross-source-duplicate-keys) for actual conflicts.
+> Tetranomicon registers the full list of Twilight Forest, Blue Skies, Undergarden and other modded metals under its own keys (for example `tetranomicon`'s `twilightforest_knightmetal` next to our datapack's plain `knightmetal`). The keys differ, so the two sets don't conflict; [duplicate keys](#cross-source-duplicate-keys) lists the real conflicts.
 
-The full per-key table for tetranomicon's 497 entries is too large to inline; inspect a specific material from the tetranomicon jar at `data/tetra/materials/<cat>/<key>.json`.
+Tetranomicon's 497 entries are too many for a per-key table here. To check one material, open `data/tetra/materials/<cat>/<key>.json` in the tetranomicon jar.
 
 ### 3.2. tetraextras-0.1.4-1.20.1.jar (41 materials)
 
-High-end netherite-tier metals plus a handful of fibre/scale/skin/wood/stone/gem additions. Many are absurdly powerful (intentional - tetraextras is designed for late-game progression beyond vanilla netherite).
+High-end netherite-tier metals plus a few fibre, scale, skin, wood, stone and gem additions. Many are extremely strong on purpose: tetraextras is built for late-game progression beyond vanilla netherite.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -405,12 +405,12 @@ High-end netherite-tier metals plus a handful of fibre/scale/skin/wood/stone/gem
 | fibre | `cloth` | 2.4 | 2.2 | 2.6 | 274 | 85 | 0 | -- |
 | wood | `azalea`, `blossom` | 3 | 1.7 | 6 | 59 | 90 | 2 | wood |
 
-> **Conflict:** tetraextras' `brass` (5.5/4/4.5/520) vs our datapack's `brass` (4.5/4/2.5/240). Last loaded wins.
-> **Conflict:** tetraextras overrides `amethyst` (gem) with iron tool level.
+> Conflicts: tetraextras' `brass` (5.5/4/4.5/520) and our datapack's `brass` (4.5/4/2.5/240) share a key, and the last one loaded wins.
+> tetraextras also overrides `amethyst` (gem) with an iron tool level.
 
 ### 3.3. tetracelium-1.20.1-1.3.1.jar (34 materials)
 
-Compat layer for Botania, Twilight Forest, Mekanism, AE2, Thermal, and gems-related mods. **Heavily overlapping with our datapack** - it ships its own `manasteel`, `terrasteel`, `elementium`, `ironwood`, `knightmetal`, `steeleaf`, `osmium`, `steel`, `fiery_ingot` (different key), `ruby`, `sapphire`, etc.
+Compat layer for Botania, Twilight Forest, Mekanism, AE2, Thermal and gem mods. It overlaps heavily with our datapack: it ships its own `manasteel`, `terrasteel`, `elementium`, `ironwood`, `knightmetal`, `steeleaf`, `osmium`, `steel`, `fiery_ingot` (a different key), `ruby`, `sapphire` and more.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -440,11 +440,11 @@ Compat layer for Botania, Twilight Forest, Mekanism, AE2, Thermal, and gems-rela
 | wood | `ancient_wood`, `livingwood`, `dreamwood` (Botania) | 3-4 | 1.7-2.5 | 6-7.5 | 60-150 | 102-120 | 2-4 | wood/gold |
 | wood | `baobab`, `maple`, `treated_wood` | 3-4.5 | 1.7-2.2 | 6-7.5 | 70-180 | 78-96 | 2-4 | wood/gold |
 
-> **Major conflict surface:** `manasteel`, `terrasteel`, `elementium`, `ironwood`, `knightmetal`, `steeleaf`, `osmium`, `steel`, `ruby`, `sapphire`. Tetracelium values differ significantly from our datapack values for the same keys. Datapack load order determines which wins. **In practice**, datapacks under `Paxi:required_data` load AFTER mod-jar datapacks, so our `icraft_tetra_materials` should override tetracelium for these shared keys; verify in-game with `/tetra debug material` if uncertain.
+> Most of the conflicts are here: `manasteel`, `terrasteel`, `elementium`, `ironwood`, `knightmetal`, `steeleaf`, `osmium`, `steel`, `ruby`, `sapphire`. For these keys tetracelium's values differ a lot from our datapack's, and datapack load order decides which wins. Datapacks under `Paxi:required_data` load after mod-jar datapacks, so in practice our `icraft_tetra_materials` should override tetracelium for the shared keys; if unsure, check in game with `/tetra debug material`.
 
 ### 3.4. aetheric_tetranomicon-1.2.0-1.20.1.jar (34 materials)
 
-Aether / Deep Aether / Aether Redux / Ancient Aether compat. Stats track the source mod's actual armor materials.
+Aether / Deep Aether / Aether Redux / Ancient Aether compat. Its stats follow the source mods' own armor materials.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -464,9 +464,9 @@ Aether / Deep Aether / Aether Redux / Ancient Aether compat. Stats track the sou
 | fibre | (4 entries: aether_redux_gilded_vine, aether_redux_golden_vine, deep_aether_sunroot_hanger, deep_aether_yagroot_vines) | 2-4 | 2.2-3.4 | 3-3.5 | 768-1024 | 24-120 | 0 | -- |
 | socket | `socket_aether_golden_amber`, `socket_aether_zanite`, `socket_deep_aether_skyjade` | 0 | 0 | 0 | 0-512 | 0 | 0-2 | -- |
 
-> **The pack overrides five of these (2026-10-16, the Aether moved to tier 4).** The table above is the jar's own values. In the
-> pack, netherite is the tier-4 floor and only Aethersteel sits above it, so the Aether family is lifted onto that floor
-> (each keeps its own perks; all are forged with a diamond hammer):
+> The pack overrides five of these (2026-10-16, when the Aether moved to tier 4). The table above shows the jar's own values. In the
+> pack, netherite is the tier-4 floor and only Aethersteel is above it, so the Aether family is raised to that floor
+> (each keeps its own perks, and all are forged with a diamond hammer):
 >
 > | Key | Prim | Dur | MC | Eff | Tool Level |
 > |---|---|---|---|---|---|
@@ -481,7 +481,7 @@ Aether / Deep Aether / Aether Redux / Ancient Aether compat. Stats track the sou
 
 ### 3.5. art_of_forging-1.8.4-1.20.1.jar (22 materials)
 
-Art of Forging is itself a Tetra extension mod that adds a forging mechanic; its materials reflect the new endgame metals it adds.
+Art of Forging is itself a Tetra extension that adds a forging mechanic; its materials cover the new endgame metals it adds.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -496,11 +496,11 @@ Art of Forging is itself a Tetra extension mod that adds a forging mechanic; its
 | reagent | (8: `blaze_powder`, `reagent_emerald`, `ghast_tear`, `glass`, `glowstone_dust`, `magma_cream`, `redstone_dust`, `shard_of_malice`) | 0 | 0 | 0 | 0 | 0 | 0 | -- |
 | socket | `fang_charm`, `socket_heart_of_ender`, `socket_shard_of_malice`, `sigil_of_eden`, `vobrite_crystal`, `socket_void_worm_eye` | 0 | 0 | 0 | 15-50 | 0 | 0 | -- |
 
-> **Reagents** are a category unique to Art of Forging - they are consumed by its forging recipes, not used as plate materials.
+> Reagents are a category only Art of Forging has: its forging recipes consume them, and they are not used as plate materials.
 
 ### 3.6. dimasctetracompat-1.20.1-1.5.0.0.jar (17 materials)
 
-Compat for "Dim Asc" (Dimensional Ascension Blue Skies). Overlaps heavily with `txdacompat` and our datapack on Blue Skies materials.
+Compat for "Dim Asc" (Dimensional Ascension Blue Skies). Its Blue Skies materials overlap heavily with `txdacompat` and our datapack.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -515,13 +515,13 @@ Compat for "Dim Asc" (Dimensional Ascension Blue Skies). Overlaps heavily with `
 | stone | `lunar_stone`, `turquoise_stone` | 4 | 3 | 0 | 131 | 90 | 4 | stone |
 | wood | `bluebright`, `comet`, `dusk`, `frostbright`, `lunar_wood`, `maple`, `starlit` | 3 | 1.3-2.2 | 6 | 45-131 | 90 | 2 | stone |
 
-> **Three-way conflict** on `charoite`, `diopside`, `horizonite`: our datapack vs `dimasctetracompat` vs `txdacompat`. All three define the same key with different stats. Confirm winner in-game.
+> `charoite`, `diopside` and `horizonite` conflict three ways: our datapack, `dimasctetracompat` and `txdacompat` each define the same key with different stats. Check the winner in game.
 >
-> **Diopside, settled (October 2026).** Tetra merges the two `diopside` files field by field with the pack's datapack last, so the pack's numbers win (the T2 row above: primary 5, durability 350). The pack's file named an item that does not exist, so nothing made the material until it was pointed at `blue_skies:diopside_gem`; a diopside blade now forges from the gem.
+> Diopside is settled (October 2026). Tetra merges the two `diopside` files field by field, with the pack's datapack last, so the pack's numbers win (the T2 row above: primary 5, durability 350). The pack's file named an item that does not exist, so nothing made the material until it was pointed at `blue_skies:diopside_gem`; a diopside blade now forges from the gem.
 
 ### 3.7. txdacompat-1.0.3-forge-1.20.1.jar (31 materials)
 
-Another Blue Skies / Tales from the Dim Ascended compat. Strong overlap with `tetranomicon` Blue Skies entries.
+Another Blue Skies / Tales from the Dim Ascended compat. It overlaps strongly with `tetranomicon`'s Blue Skies entries.
 
 | Cat | Sample keys | Top stats |
 |---|---|---|
@@ -532,11 +532,11 @@ Another Blue Skies / Tales from the Dim Ascended compat. Strong overlap with `te
 | wood | `blue_skies_bluebright`, `blue_skies_comet`, `blue_skies_dusk`, `blue_skies_frostbright`, `blue_skies_lunar_wood`, `blue_skies_maple`, `blue_skies_starlit_wood` | 3-3.5 prim, 59-100 dur |
 | socket | `socket_blue_skies_charoite`, `socket_blue_skies_diopside`, `socket_blue_skies_moonstone`, `socket_blue_skies_pyrope` | dur 512-714 |
 
-> **Total overlap with tetranomicon**: All 31 of these keys also appear in `tetranomicon`. With identical stats? No - they differ. See [duplicate keys](#cross-source-duplicate-keys).
+> All 31 of these keys also appear in `tetranomicon`, with different stats. See [duplicate keys](#cross-source-duplicate-keys).
 
 ### 3.8. undergardenpatch-1.4.2-1.20.1.jar (12 materials)
 
-Undergarden compat. **All four metals + utherium gem also exist in our datapack** under the same keys (`undergarden_*`).
+Undergarden compat. All four metals and the utherium gem also exist in our datapack under the same keys (`undergarden_*`).
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -548,7 +548,7 @@ Undergarden compat. **All four metals + utherium gem also exist in our datapack*
 | stone | `undergarden_depthrock`, `undergarden_shiverstone` | 4-4.2 | 3.5-4 | 0 | 180-250 | 90 | 4.5 | stone |
 | wood | `undergarden_grongle`, `undergarden_smogstem`, `undergarden_wigglewood` | 2.6-3 | 1.4-2.3 | 6-6.9 | 59-512 | 90-108 | 3-4 | wood/stone |
 
-> **Datapack vs jar conflict on all four metals + utherium**. Datapack values are generally more conservative (e.g. cloggrum dur 350 vs patch's 286). See [duplicate keys](#cross-source-duplicate-keys).
+> The datapack and the jar conflict on all four metals and utherium. The datapack values are generally more conservative (for example cloggrum durability 350 against the patch's 286). See [duplicate keys](#cross-source-duplicate-keys).
 
 ### 3.9. adtetra-2.1.0.jar (6 materials)
 
@@ -563,7 +563,7 @@ Ad Astra (space mod) compat.
 
 ### 3.10. irons_spellbooks-1.20.1-3.15.5.1.jar (17 materials)
 
-Iron's Spells & Spellbooks ships its own Tetra material registrations baked into its main jar (not via separate addon).
+Iron's Spells & Spellbooks registers its own Tetra materials inside its main jar, without a separate addon.
 
 | Cat | Key | Prim | Sec | Tert | Dur | MC | Eff | Tool Level |
 |---|---|---|---|---|---|---|---|---|
@@ -574,33 +574,33 @@ Iron's Spells & Spellbooks ships its own Tetra material registrations baked into
 | rod | `frosted_helve` | 3.7 | 1.9 | 1 | 56 | 152 | 0 | -- |
 | socket | 12 rune sockets (`irons_spellbooks_*_rune_socket` + `permafrost_shard`) | 0 | 0 | 0 | 0-256 | 0 | 0-5 | -- |
 
-> **High magic capacity is the theme** - arcane_cloth (180), frozen_bone (158), arcane_ingot (184), frosted_helve (152). These are intentionally above-average MC for spellbook synergy. The 12 rune sockets bind to specific schools.
+> These materials have high magic capacity: arcane_cloth (180), frozen_bone (158), arcane_ingot (184), frosted_helve (152), deliberately above average for spellbook synergy. The 12 rune sockets bind to specific schools.
 
 ### 3.11. Other tetra-related jars with no material datapacks
 
-- `[Forge1.20.1]TetraClip-1.0.6.jar` - tool-tier configuration mod, no materials
-- `tetra_re_enlarged-1.3.0.jar` - texture / size mod, no materials
-- `tetrasdelight-1.20.1-1.jar` - Farmer's Delight tool integration, no datapack materials (registers via Java)
-- `tetra_tables--mc1.20--1.1.jar` - workbench table block additions, no materials
+- `[Forge1.20.1]TetraClip-1.0.6.jar`: tool-tier configuration mod, no materials
+- `tetra_re_enlarged-1.3.0.jar`: texture / size mod, no materials
+- `tetrasdelight-1.20.1-1.jar`: Farmer's Delight tool integration, no datapack materials (registers via Java)
+- `tetra_tables--mc1.20--1.1.jar`: workbench table block additions, no materials
 
-> **Caveat:** Some addons may register materials via Java code instead of datapacks. Confirmed via grep: the four jars above contain no `data/tetra/materials/` paths in their archives. If gameplay shows materials missing from this catalog, decompile the suspect jar and search for `MaterialManager.register` calls.
+> Some addons may register materials in Java code instead of datapacks. A grep confirmed that the four jars above have no `data/tetra/materials/` paths in their archives. If a material shows up in game that this catalog lacks, decompile the suspect jar and search for `MaterialManager.register` calls.
 
 ---
 
 ## Section 4 - Reforging armor variant architecture
 
-> **2026-05-28 rewrite.** The previous version of this section described the deprecated standalone `iridescent-reforging-mod/` source's category-wildcard model (which claimed "plate modules accept only 5 materials"). After the 2026-05-02 bundle merge into `iridescent-tetra-expansion-mod/` (which ships as `iridescent_tetra_expansion-1.0.0.jar`), the actual architecture is fundamentally different: **per-material variants with explicit armor multipliers**, not category wildcards. The old version was stale by ~1 month.
+> Rewritten 2026-05-28. The previous version of this section described the category-wildcard model of the deprecated standalone `iridescent-reforging-mod/` source (which claimed "plate modules accept only 5 materials"). Since the 2026-05-02 bundle merge into `iridescent-tetra-expansion-mod/` (shipped as `iridescent_tetra_expansion-1.0.0.jar`), the architecture uses per-material variants with explicit armor multipliers instead of category wildcards. The old version was ~1 month out of date.
 
 ### 4.1 Actual architecture
 
-Each of the **52 armor modules** in the bundle source has **16-64 explicit per-material variants**, each binding ONE specific material to a unique stat extract. There is no `tetra:metal/` category wildcard; there is a `tetra:metal/copper` variant, a `tetra:metal/iron` variant, a `tetra:metal/aethersteel` variant, etc., each authored independently.
+Each of the 52 armor modules in the bundle source has 16-64 explicit per-material variants, and each variant binds one material to its own stat extract. There is no `tetra:metal/` category wildcard: there is a `tetra:metal/copper` variant, a `tetra:metal/iron` variant, a `tetra:metal/aethersteel` variant and so on, each written separately.
 
-The per-material variant pattern was put in place during Phase A of the Tetra-armor extension work (2026-04-30, ~25 commits) once the team understood Tetra's lookup chain: 3-segment variant keys break Tetra's template fallback for material-name substring extraction. The chosen mitigation was 2-segment variant keys (`<module>/<material>`) authored explicitly per material.
-**Total variants across all 52 modules: ~1500-2000.**
+The per-material pattern dates from Phase A of the Tetra armor extension work (2026-04-30, ~25 commits), after the team worked out Tetra's lookup chain: 3-segment variant keys break Tetra's template fallback, which extracts the material name as a substring of the key. The fix was 2-segment variant keys (`<module>/<material>`), written out for each material.
+Across all 52 modules there are ~1500-2000 variants in total.
 
 ### 4.2 The 4-archetype plate model
 
-Per `master-appendix.md` Section L.2, each armor piece (helmet / chestplate / leggings / boots) has **4 plate modules**, one per **archetype**. The honing system gates by archetype via synthetic `tetra:armor/<archetype>_hone/` improvement types declared on each major-slot module:
+According to `master-appendix.md` Section L.2, each armor piece (helmet / chestplate / leggings / boots) has 4 plate modules, one per archetype. Honing is restricted by archetype through synthetic `tetra:armor/<archetype>_hone/` improvement types declared on each major-slot module:
 
 | Archetype | Helmet | Chestplate | Leggings | Boots |
 |---|---|---|---|---|
@@ -610,7 +610,7 @@ Per `master-appendix.md` Section L.2, each armor piece (helmet / chestplate / le
 | **Mage / Vestment** | `vestment_crown` | `vestment_chest` | `vestment_leg_plate` | `vestment_boot_sole` |
 | **Mage / Runed** | `runed_crown` | `runed_chest` | `runed_leg_plate` | `runed_boot_sole` |
 
-Vestment and Runed are both sub-variants of the conceptual Mage archetype, sharing `tetra:armor/mage/` improvement gate and the `armor_mage_hone_*` hone chain. They differ in stat-axis emphasis:
+Vestment and Runed are both sub-variants of the Mage archetype. They share the `tetra:armor/mage/` improvement gate and the `armor_mage_hone_*` hone chain, and differ in which stats they weight:
 
 | Stat | Vestment | Runed |
 |---|---|---|
@@ -620,7 +620,7 @@ Vestment and Runed are both sub-variants of the conceptual Mage archetype, shari
 | `**irons_spellbooks:cooldown_reduction` | (none) | +5% per piece |
 | `minecraft:generic.armor` | Baseline | 1.25x Vestment |
 
-Both still bucket as the ROBE weight class in `armor_weight.js` (-armor / +mana_regen / +speed per-piece bonuses).
+Both still count as the ROBE weight class in `armor_weight.js` (per-piece -armor / +mana_regen / +speed bonuses).
 
 Stat priorities (also from L.2):
 
@@ -631,21 +631,21 @@ Stat priorities (also from L.2):
 | **Rogue** | Attack Damage | Arrow Damage | Movement Speed | Movement Speed |
 | **Mage** | Spell Power | Spell Power | Cooldown Reduction | Max Mana |
 
-The remaining 36 modules cover minor slots (linings, trim, crests, lacings, pauldrons, straps, etc.) — 9 per piece on average. They typically contribute small armor + flavor stats.
+The remaining 36 modules cover the minor slots (linings, trim, crests, lacings, pauldrons, straps, etc.), 9 per piece on average. They usually add a little armor plus flavor stats.
 
 ### 4.3 What `extract.primaryAttributes.X: N` actually does
 
-`MaterialVariantData.combine()` MULTIPLIES the variant's `primaryAttributes` value by the material's `primary` stat. So an iron variant of `basic_crown` with armor extract `1.429` yields `5 × 1.429 = 7.145` armor in-game. Copper (primary=4) with armor extract `1.429` yields `4 × 1.429 = 5.716` armor.
+`MaterialVariantData.combine()` multiplies the variant's `primaryAttributes` value by the material's `primary` stat. An iron variant of `basic_crown` with armor extract `1.429` therefore gives `5 × 1.429 = 7.145` armor in game, and copper (primary=4) with the same armor extract `1.429` gives `4 × 1.429 = 5.716` armor.
 
-This is also how copper auto-scales to ~80% of iron without per-module authoring (per master.md): both variants can use the same multiplier value (or different ones) and the material's primary determines the final number.
+This is also how copper scales to ~80% of iron without any per-module authoring (per master.md): both variants can use the same multiplier (or different ones), and the material's primary sets the final number.
 
-Stored variant primary-attribute values should be **pre-divided by the intended material's primary** to express the final armor number in a readable way. So if the intended in-game armor for an iron basic_crown is `7.145`, the stored multiplier is `7.145 / iron.primary (5) = 1.429`.
+Store each variant's primary-attribute value already divided by its intended material's primary, so the final armor number stays readable. If an iron basic_crown should give `7.145` armor in game, the stored multiplier is `7.145 / iron.primary (5) = 1.429`.
 
 ### 4.4 Currently-accepted materials per module type (sampled)
 
-The exact material set varies per module. Notable patterns:
+Each module accepts its own set of materials. The main patterns:
 
-**Plate modules (4 archetypes × 4 pieces = 16 modules)** — `basic_crown` (representative Balanced helmet) has 64 variants covering:
+Plate modules (4 archetypes × 4 pieces = 16 modules): `basic_crown`, a typical Balanced helmet, has 64 variants covering:
 - vanilla: copper, iron, gold, netherite, diamond, leather
 - 8 themed materials (fire/ice/shadow/holy/lightning/nature/ender/blood)
 - 27 datapack metals (steel, manasteel, aethersteel, iridium, etc.)
@@ -654,89 +654,89 @@ The exact material set varies per module. Notable patterns:
 - 1 bundle (arcane_ingot)
 - 1 each: tf_arctic, tf_yeti, bs_pyrope, tf_naga (cross-mod)
 
-**Lining-style modules (silk_lining, padded_lining, etc.)** — `silk_lining` has 16 variants — much narrower than plate. Covers vanilla copper/iron/gold/diamond/netherite/leather + 8 themed + deathskin + arcane_ingot. **Does NOT yet accept**: wool, the 3 bundle fabrics (arcane_cloth/manaweave/spellbinding_cloth), hide, rotten_leather, tf_*, magebloom, OR any of the 6 vanilla Tetra fibres + dozens of modded fibres. Adding fibre + fabric materials to lining modules is **deferred work** (see [Future work](#future-work--open-questions)).
+Lining-style modules (silk_lining, padded_lining, etc.): `silk_lining` has 16 variants, far fewer than a plate module. Its variants cover vanilla copper/iron/gold/diamond/netherite/leather, the 8 themed materials, deathskin and arcane_ingot. It does not yet accept wool, the 3 bundle fabrics (arcane_cloth/manaweave/spellbinding_cloth), hide, rotten_leather, tf_*, magebloom, or any of the 6 vanilla Tetra fibres and dozens of modded fibres. Adding fibre and fabric materials to the lining modules is deferred work (see [Future work](#future-work--open-questions)).
 
-**Plate-only modules (full_visor, goggles, agile_greaves, etc.)** — accept metal + themed only, narrower than the 4-archetype plate set.
+Plate-only modules (full_visor, goggles, agile_greaves, etc.) accept only metal and themed materials, a narrower set than the 4-archetype plate modules.
 
-**Bridge modules (cloth_strap, leather_strap, iron_lacing, chain_belt, etc.)** — mixed acceptance (metal + skin + sometimes fabric + themed).
+Bridge modules (cloth_strap, leather_strap, iron_lacing, chain_belt, etc.) accept a mix: metal, skin, sometimes fabric, and themed.
 
 ### 4.5 Known design issues (to be addressed in the per-tier-parity audit)
 
-1. **Vanilla > Modded inversion in many slots.** Iron's basic_crown variant carries armor multiplier `1.429` (so iron crown = 7.145 armor) while Aethersteel's variant carries `0.68` (so aethersteel crown = `8.5 × 0.68 = 5.78` armor). **This is backwards from design intent.** Per master.md and the user's 2026-05-28 confirmation, Aethersteel is the pinnacle of crafted pre-postgame progression and should give noticeably more armor than vanilla iron, not less. The Phase A authoring pass calibrated vanilla and the early-modded metals (iron, diamond, netherite) to higher multipliers than the bulk of the modded T2-T4 metals (whose multipliers cluster around 0.36-0.68). The fix is to rewrite the T3/T4 modded-metal variant multipliers to reflect the canonical tier hierarchy.
-2. **Every variant fails the "≥1 armor" floor per the 2026-05-28 user directive in lining-style modules.** silk_lining variants produce 0.11 - 0.46 armor depending on material. The floor rule requires every variant to yield material-primary × variant-armor ≥ 1.0. ~26 modules + ~500 variants are affected.
-3. **Lining modules accept far fewer materials than the spell-book design pattern implies.** The migration doc (`iridescent-modular-spells-tetra-migration.md` Phase 6C) defines fabric/fibre/skin as the canonical lining categories with differentiated stat themes (fabric → mana_regen, fibre → cast_time_reduction, skin → max_mana). Armor lining modules currently mostly don't accept fabric or fibre at all.
+1. Vanilla beats modded in many slots. Iron's basic_crown variant has armor multiplier `1.429` (an iron crown gives 7.145 armor), while Aethersteel's has `0.68` (an aethersteel crown gives `8.5 × 0.68 = 5.78` armor). That is backwards from the design intent: per master.md and the user's 2026-05-28 confirmation, Aethersteel is the top of crafted pre-postgame progression and should give noticeably more armor than vanilla iron. The Phase A authoring pass gave vanilla and the early-modded metals (iron, diamond, netherite) higher multipliers than most of the modded T2-T4 metals, whose multipliers cluster around 0.36-0.68. The fix is to rewrite the T3/T4 modded-metal variant multipliers to match the canonical tier hierarchy.
+2. In lining-style modules, every variant fails the "≥1 armor" floor set by the 2026-05-28 user directive. silk_lining variants give 0.11 to 0.46 armor depending on the material, while the floor requires material-primary × variant-armor ≥ 1.0 for every variant. ~26 modules and ~500 variants are affected.
+3. Lining modules accept far fewer materials than the spell-book design implies. The migration doc (`iridescent-modular-spells-tetra-migration.md` Phase 6C) makes fabric, fibre and skin the canonical lining categories, each with its own stat theme (fabric → mana_regen, fibre → cast_time_reduction, skin → max_mana). Most armor lining modules currently accept neither fabric nor fibre.
 
 ### 4.6 The per-tier-parity audit (planned, not yet shipped)
 
-The proper way to address (4.5) is **per-material variant rewrites at the tier-architecture level**, not wildcard inflation. The tooling for this is `iridescent-tetra-expansion-mod/tools/gen_per_material_variants.py` (existing — extended for the next pass). Input: a stat-tier matrix per material with intended in-game armor / max_mana / spell_power / etc. contribution per (material, archetype, piece) combo. Output: 1500-2000 variant blocks generated mechanically with verification via `tools/audit_modules.py`.
+The fix for the problems in 4.5 is to rewrite the per-material variants at the tier-architecture level instead of inflating wildcards. The tool is the existing `iridescent-tetra-expansion-mod/tools/gen_per_material_variants.py`, extended for the next pass. Its input is a stat-tier matrix giving each material's intended in-game armor / max_mana / spell_power / etc. contribution for every (material, archetype, piece) combination; its output is 1500-2000 generated variant blocks, verified with `tools/audit_modules.py`.
 
-This is its own focused half-day to full-day work item.
+It is a separate work item of half a day to a full day.
 
 ---
 
 ## Section 5 - Critical Tetra Finickyness Rules
 
-> **What this section is.** Tetra has zero behavioral documentation outside its bytecode, so each custom integration surfaces new gotchas. This section collects the **hard rules** distilled from those incidents so contributors can find them by wiki search. Each rule cites the incident date for context.
+> Tetra documents none of its behavior outside its bytecode, so every custom integration turns up new gotchas. This section collects the hard rules learned from those incidents so contributors can find them with a wiki search. Each rule gives the date of its incident.
 
 ### 5.1 ISS percent attributes MUST use `**` prefix (MULTIPLY_TOTAL), never `*` (MULTIPLY_BASE) [2026-05-14]
 
-Tetra's `AttributeHelper.collapse()` math drops MULTIPLY_BASE modifiers to 0 when no ADDITION sibling exists on the same attribute, silently making those stats invisible. Hard rule: any module variant, improvement file, or material `attributes` block targeting a percent attribute (`spell_power`, `mana_regen`, `cooldown_reduction`, `cast_time_reduction`, `spell_resist`, school SP, `summon_damage`, `max_mana` percent) gets `**` prefix. Audit script catches this; tester screenshots catch the residue.
+Tetra's `AttributeHelper.collapse()` drops a MULTIPLY_BASE modifier to 0 when the same attribute has no ADDITION sibling, so the stat silently disappears. The rule: every module variant, improvement file or material `attributes` block that targets a percent attribute (`spell_power`, `mana_regen`, `cooldown_reduction`, `cast_time_reduction`, `spell_resist`, school SP, `summon_damage`, `max_mana` percent) uses the `**` prefix. The audit script catches violations, and tester screenshots catch whatever it misses.
 
-Pre-2026-05-28, 7 custom materials shipped with broken `*` (see [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar)). All fixed.
+Before 2026-05-28, 7 custom materials shipped with the broken `*` (see [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar)); all of them are fixed.
 
 ### 5.2 Wildcard variant keys MUST end in `/` [2026-05-12]
 
-`MaterialVariantData.combine()` CONCATENATES `variant.key + material.key`. A variant with `key: "padded_lining/dd_warden"` (named, no trailing slash) combined with material `dd_warden` produces `padded_lining/dd_wardendd_warden` — doubled. Wildcard variant keys MUST end in `/` (e.g., `key: "padded_lining/"`) so combine produces clean `padded_lining/<material_key>`. Per-material override variants (with one material in the list, like `"materials": ["tetra:metal/iron"]`) use 2-segment keys WITHOUT trailing slash (e.g., `basic_crown/iron`).
+`MaterialVariantData.combine()` concatenates `variant.key + material.key`. A named variant with `key: "padded_lining/dd_warden"` (no trailing slash) combined with the material `dd_warden` produces the doubled `padded_lining/dd_wardendd_warden`. A wildcard variant key must end in `/` (e.g., `key: "padded_lining/"`) so that combine produces a clean `padded_lining/<material_key>`. Per-material override variants (one material in the list, like `"materials": ["tetra:metal/iron"]`) use 2-segment keys without a trailing slash (e.g., `basic_crown/iron`).
 
 ### 5.3 `magicCapacity` on every major variant gates BookEnchantSchematic [2026-05-06]
 
-`BookEnchantSchematic.lambda$isApplicableForSlot$4` reads `VariantData.magicCapacity` from the major module's variant. If unset (default 0), the workbench enchant schematic silently disappears from the slot's context menu. No warning logged. Every major-slot variant needs explicit `magicCapacity` set; audit script CHECK 5 catches missing values.
+`BookEnchantSchematic.lambda$isApplicableForSlot$4` reads `VariantData.magicCapacity` from the major module's variant. If it is unset (default 0), the workbench enchant schematic disappears from the slot's context menu, and no warning is logged. Every major-slot variant needs an explicit `magicCapacity`; audit script CHECK 5 catches missing values.
 
 ### 5.4 Variant cloning scrubs incidental attributes [2026-05-13]
 
-When authoring new material variants by copying a template, the template's incidental attributes leak through. Default policy: cloned variants get their `primaryAttributes` SCRUBBED to `{generic.armor, generic.armor_toughness, generic.knockback_resistance, etc.}` — drop all `irons_spellbooks:*` and `ars_nouveau:*` keys carried over from the source. Material-level attributes (in the material JSON's `attributes` block) carry the magic-bonus identity, not module-variant overrides. Audit script flags unexpected attributes on new-material variants.
+A new material variant copied from a template inherits the template's incidental attributes. The default policy scrubs a cloned variant's `primaryAttributes` down to `{generic.armor, generic.armor_toughness, generic.knockback_resistance, etc.}`: drop every `irons_spellbooks:*` and `ars_nouveau:*` key carried over from the source. A material's magic bonus belongs in its material-level attributes (the material JSON's `attributes` block), not in module-variant overrides. The audit script flags unexpected attributes on new-material variants.
 
 ### 5.5 Material reference path = file path, not `category` field [2026-05-12]
 
-The category prefix in `materials: ["tetra:metal/iron"]` MUST match the on-disk directory under `data/<ns>/materials/`, not the JSON file's `category` field. Mismatches fall through silently (the variant just doesn't apply). When adding a new material file, the reference path = the directory chain from `data/<ns>/materials/` to the JSON file (without `.json`).
+The category prefix in `materials: ["tetra:metal/iron"]` must match the directory on disk under `data/<ns>/materials/`, not the JSON file's `category` field. A mismatch fails silently: the variant just doesn't apply. For a new material file, the reference path is the directory chain from `data/<ns>/materials/` to the JSON file, without `.json`.
 
 ### 5.6 Bare `tetra.variant.<vk>` is the canonical lang form [2026-04-30]
 
-No `.name`, no `.prefix`, no `.description` suffixes on variant keys (those exist as optional overlays for special-named variants only). Tetra's `getName(moduleKey, variantKey)` lookup does bare lookup first; the template fallback path breaks on 3-segment keys anyway. For variant keys ending in `/`, author BOTH bare `tetra.variant.<vk>` (with material applied) AND trailing-slash `tetra.variant.<vk>/` (empty default).
+Variant keys take no `.name`, `.prefix` or `.description` suffix (those exist only as optional overlays for specially named variants). Tetra's `getName(moduleKey, variantKey)` tries the bare key first, and the template fallback path breaks on 3-segment keys anyway. For a variant key ending in `/`, write both the bare `tetra.variant.<vk>` (with the material applied) and the trailing-slash `tetra.variant.<vk>/` (empty default).
 
 ### 5.7 Schematic outcomes write `moduleVariant` verbatim to NBT [2026-04-30]
 
-`SchematicDefinition.applyOutcome` writes the `moduleVariant` field LITERALLY to NBT — no material auto-suffix. To get per-material variant keys at the workbench, EITHER enumerate each material as a separate outcome with the corresponding `moduleVariant` OR use trailing-slash wildcard + category-wildcard materials. `SchematicRegistry.expandMaterialOutcome` runs at load time, walks each material in the category, and creates one UniqueOutcomeDefinition per material via `source::combine` — the wildcard path is preferred over hand-authored per-material outcomes.
+`SchematicDefinition.applyOutcome` writes the `moduleVariant` field to NBT exactly as written, without adding a material suffix. To get per-material variant keys at the workbench, either list each material as a separate outcome with its own `moduleVariant`, or use a trailing-slash wildcard with category-wildcard materials. `SchematicRegistry.expandMaterialOutcome` runs at load time, walks each material in the category and creates one UniqueOutcomeDefinition per material via `source::combine`. Prefer the wildcard path to hand-written per-material outcomes.
 
 ### 5.8 `replace: true` required for swap-over-populated-slot [2026-05-06]
 
-`SchematicDefinition.replace` defaults to false. False-replace schematics are only applicable on EMPTY slots. To allow material swaps (cuirass → cuirass with different metal), `replace: true` is required on the install schematic. Tetra's basic_blade.json ships with `replace: true` for this reason.
+`SchematicDefinition.replace` defaults to false, and a schematic with replace false only applies to an empty slot. To allow material swaps (cuirass → cuirass in a different metal), the install schematic needs `replace: true`. Tetra's basic_blade.json ships with `replace: true` for this reason.
 
 ### 5.9 `variantData[0]` fallback MASKS NBT-mismatch bugs [2026-04-30 + 2026-05-02]
 
-When module's `getVariantData(stack)` reads NBT and finds no matching variant key, it falls back to `getDefaultData()` = `variantData[0]` (the catch-all variant). UI looks correct (catch-all lang label appears), but the stack uses the catch-all's stats, not the intended material's stats. **Never trust a visual smoke test alone** when migrating variant key shapes; spot-check stat aggregation with a tester screenshot.
+When a module's `getVariantData(stack)` reads the NBT and finds no matching variant key, it falls back to `getDefaultData()` = `variantData[0]`, the catch-all variant. The UI looks right (the catch-all's lang label appears), but the stack has the catch-all's stats instead of the intended material's. **Never trust a visual smoke test alone** when migrating variant key shapes; spot-check stat aggregation with a tester screenshot.
 
 ### 5.10 Cross-namespace `models[].location` doesn't work with `tetra:modular_loader` [2026-04-30]
 
-Tetra's `ItemLayerModel.bake()` registers atlas references at bake time. Pointing `models[].location` at sprites from another mod's namespace (e.g., `minecraft:item/iron_helmet` from a Tetra variant) blows up at first render of any block entity holding a previewable stack. For per-material inventory icons pointing at vanilla/source-mod sprites, use Forge `ItemProperties` + `overrides` instead.
+Tetra's `ItemLayerModel.bake()` registers atlas references at bake time. If a Tetra variant points `models[].location` at a sprite in another mod's namespace (e.g., `minecraft:item/iron_helmet`), it blows up the first time any block entity holding a previewable stack renders. For per-material inventory icons that use vanilla or source-mod sprites, use Forge `ItemProperties` + `overrides` instead.
 
 ### 5.11 Tetra identifiers must obey `[a-z0-9/._-]` [2026-04-26]
 
-Tetra item identifiers and schematic identifiers get composed into ResourceLocation paths. Colons (`:`) are NOT legal inside the path portion — they're the namespace/path separator. An identifier like `iridescent_modular_spells:iss_book` fails registration with `ResourceLocationException`. Use underscore-only: `iridescent_iss_book`.
+Tetra builds ResourceLocation paths from item and schematic identifiers. A colon (`:`) is not legal inside the path portion, because it separates namespace and path. An identifier like `iridescent_modular_spells:iss_book` fails registration with `ResourceLocationException`; use underscores only, as in `iridescent_iss_book`.
 
 ### 5.12 `AddReloadListenerEvent` is server-only [2026-05-06]
 
-The event fires only on the server's resource manager. In multiplayer with a remote dedicated server, the client never runs that listener and any registry it populates stays empty. For data that must be available on both sides (e.g., `SpecializedReplacementRegistry`, `SkinRegistry`), use `FMLCommonSetupEvent` to eagerly read JSON from the mod jar's classpath — fires on both client AND server.
+The event fires only on the server's resource manager. In multiplayer with a remote dedicated server, the client never runs that listener, so any registry it fills stays empty. For data both sides need (e.g., `SpecializedReplacementRegistry`, `SkinRegistry`), read the JSON eagerly from the mod jar's classpath in `FMLCommonSetupEvent`, which fires on both client and server.
 
 ### 5.13 Tetra MULTIPLY_BASE display rule (Section L.3 of master-appendix.md)
 
-Mirrored here for searchability: per-attribute display formatting for Tetra modular items depends on which Forge attribute operation is applied. Apothic Attributes' `IFormattableAttribute` interface controls percent-vs-flat rendering. ISS percent attributes must use `**` (MULTIPLY_TOTAL) to render as "+X%" through the post-collapse path; ADDITION on a base-1.0 ISS attribute also renders linearly but as ugly decimals.
+Copied here so a search finds it: how a Tetra modular item displays each attribute depends on which Forge attribute operation is applied. Apothic Attributes' `IFormattableAttribute` interface decides between percent and flat rendering. ISS percent attributes must use `**` (MULTIPLY_TOTAL) to render as "+X%" through the post-collapse path; ADDITION on a base-1.0 ISS attribute also renders linearly, but as ugly decimals.
 
 ---
 
 ## Cross-source duplicate keys
 
-49 `<category>/<key>` pairs are registered by 2+ sources. Last loaded wins; in IridescentCraft, datapack load order is alphabetical with `paxi` data anchors loading after vanilla and before mod datapacks - in practice we expect mod-jar datapacks to load first, then our `icraft_tetra_materials` datapack overrides on top. For the few cases where jar-vs-jar collide (no datapack involvement), Tetra's resolution depends on `ResourceManagerReloadListener` ordering, which is roughly mod load order.
+49 `<category>/<key>` pairs are registered by 2+ sources, and the last one loaded wins. In IridescentCraft, datapacks load alphabetically, with `paxi` data anchors loading after vanilla and before mod datapacks; in practice we expect the mod-jar datapacks to load first and our `icraft_tetra_materials` datapack to override them. In the few cases where two jars collide with no datapack involved, Tetra's result depends on `ResourceManagerReloadListener` ordering, which roughly follows mod load order.
 
 | Category / Key | Sources | Notes |
 |---|---|---|
@@ -790,21 +790,21 @@ Mirrored here for searchability: per-attribute display formatting for Tetra modu
 | `fibre/blue_skies_maple_vine` | tetranomicon, txdacompat | jar load order |
 | `fibre/blue_skies_starlit_vine` | tetranomicon, txdacompat | jar load order |
 
-**Action item:** for any of these where the IridescentCraft team has stat opinions, ship an override JSON in `icraft_tetra_materials` with the desired stats. Datapack overrides are more durable than relying on jar load order.
+To do: wherever the IridescentCraft team cares about the stats, ship an override JSON with the desired stats in `icraft_tetra_materials`. A datapack override holds up better than relying on jar load order.
 
 ---
 
 ## Design Notes (from existing custom-metal section)
 
-The metal progression follows these principles - retained from prior 191-line wiki version, refined here for the new context.
+The metal progression follows these principles, kept from the earlier 191-line wiki version and refined here.
 
-1. **Durability scales exponentially.** T1 starts around iron (240), T2 ranges 300-500, T3 jumps to 650-1400, T4 reaches 2200-2500. Tetraextras (insanium 200000) and tetranomicon (iceandfire dragonsteel 8000) blow past T4 for explicit late-game progression beyond our normal curve.
-2. **Primary damage scales linearly.** From 4.5 (T1 Brass) through 5.0-5.8 (T2), 6.0-7.0 (T3), to 8.5 (T4 Aethersteel). Tetraextras' insanium reaches 28 - intentionally outside our balance band.
-3. **Tool efficiency tracks tier boundaries.** T1 = 6, T2 = 6.5-8, T3 = 8-9.5, T4 = 10-11.
-4. **Magic capacity rewards specialization, not raw power.** The highest-MC materials in the pack are Iron's Spells arcane_ingot (184), tetraextras supremium/imperium (545), tetranomicon void_chitin (168) - all from external sources. Within our datapack, Elementium (150) leads, followed by Terrasteel (140), Dimlite (130), Manasteel (120). The highest-damage material (Aethersteel, 100) and the toughest physical material (Refined Obsidian, 76) intentionally have moderate-to-low MC.
-5. **Secondary damage favors support/utility metals.** Lumium (4.4), Signalum (4.2), Brass (4.0), Charoite (4.8) lead in secondary among our datapack metals.
-6. **Tertiary (armor) scales with physical toughness.** Aethersteel (4.5), Unorithe (4.5), Refined Obsidian (4.0), Iridium (4.0), Dimlite (5.5) lead our datapack. Fragile or magic-focused metals like Lumium (2.3) and Elementium (2.5) have the lowest values.
-7. **Integrity cost/gain scales with tier.** T1-T2 metals cost 2 integrity, T3 costs 3, T4 costs 4. Integrity gain follows similarly (5 at T1-T2, 6-7 at T2-T3, 8-10 at T4).
+1. Durability scales exponentially. T1 starts around iron (240), T2 ranges 300-500, T3 jumps to 650-1400 and T4 reaches 2200-2500. Tetraextras (insanium 200000) and tetranomicon (iceandfire dragonsteel 8000) go far past T4 on purpose, as late-game progression beyond our normal curve.
+2. Primary damage scales linearly: 4.5 (T1 Brass), 5.0-5.8 (T2), 6.0-7.0 (T3), up to 8.5 (T4 Aethersteel). Tetraextras' insanium reaches 28, deliberately outside our balance band.
+3. Tool efficiency follows the tier boundaries: T1 = 6, T2 = 6.5-8, T3 = 8-9.5, T4 = 10-11.
+4. Magic capacity rewards specialization. The highest-MC materials in the pack are Iron's Spells arcane_ingot (184), tetraextras supremium/imperium (545) and tetranomicon void_chitin (168), all from external sources. Within our datapack Elementium (150) leads, followed by Terrasteel (140), Dimlite (130) and Manasteel (120). The highest-damage material (Aethersteel, 100) and the toughest physical material (Refined Obsidian, 76) have moderate-to-low MC on purpose: raw power does not earn magic capacity.
+5. Secondary damage favors support and utility metals. Lumium (4.4), Signalum (4.2), Brass (4.0) and Charoite (4.8) lead our datapack metals in secondary.
+6. Tertiary (armor) scales with physical toughness. Aethersteel (4.5), Unorithe (4.5), Refined Obsidian (4.0), Iridium (4.0) and Dimlite (5.5) lead our datapack; fragile or magic-focused metals such as Lumium (2.3) and Elementium (2.5) have the lowest values.
+7. Integrity cost and gain scale with tier. T1-T2 metals cost 2 integrity, T3 costs 3, T4 costs 4. Integrity gain follows the same pattern (5 at T1-T2, 6-7 at T2-T3, 8-10 at T4).
 
 ---
 
@@ -826,33 +826,33 @@ The metal progression follows these principles - retained from prior 191-line wi
 | `txdacompat` | 31 | 6 | Tales from the Dim Ascended Blue Skies compat |
 | `undergardenpatch` | 12 | 5 | Undergarden compat (overlaps datapack metals) |
 | `adtetra` | 6 | 2 | Ad Astra compat |
-| **Total** | **835** | -- | 49 cross-source duplicate keys |
+| **Total** | 835 | -- | 49 cross-source duplicate keys |
 
 ---
 
 ## Future work / open questions
 
-- [ ] **Per-tier-parity audit** (highest-value next pass). Rewrite per-material variant armor multipliers across ~1500-2000 variants in 52 armor modules to reflect the canonical tier hierarchy: T1 (iron/copper/brass) baseline; T2 (steel/manasteel/etc.) parity; T3 (terrasteel/elementium/etc.) parity at diamond+; T4 (netherite + Terramity onyx); **T4 peak = Aethersteel** (pinnacle of crafted progression, sits below Ad Astra postgame). Current state has a **vanilla-vs-modded inversion** (iron crown gives more armor than aethersteel crown) which is backwards from design intent. Tool: extend `iridescent-tetra-expansion-mod/tools/gen_per_material_variants.py` with a stat-tier matrix and regenerate. Verification: `tools/audit_modules.py` + tester screenshot.
-- [ ] **≥1 armor floor across every (material, module) combination**. Per the 2026-05-28 user directive — the pack's difficulty is meaningfully above vanilla, so every material slot should contribute. Currently most lining-style modules produce <1 armor for every material. Bundled with the per-tier-parity audit above since the fixes are identical mechanics.
-- [ ] **Lining + bridge modules don't accept fabric or fibre**. Despite the master design (`master.md` Part VII + `iridescent-modular-spells-tetra-migration.md` Phase 6C) defining fabric/fibre/skin as the canonical lining categories with differentiated stat themes, the bundle's `silk_lining`, `padded_lining`, `silk_boot_lining`, `padded_boot_lining`, `fur_boot_lining`, `cushioned_heel`, `silk_lacing`, `sash`, `cloth_strap`, `cloth_cuisses` all reject wool/manaweave/spellbinding_cloth/arcane_cloth/all fibres today. Adding per-material variants for the lore-fitting fabric/fibre materials to these 10 lining modules is bundled with the per-tier-parity audit.
-- [ ] **Conflict resolution** for the 49 duplicate keys: decide which version is canonical and either (a) ship our own override in the datapack with intended stats, or (b) explicitly accept that the jar-load-order winner is fine. The Blue Skies key cluster (~25 dupes) is the highest-volume case.
-- [ ] **Tetranomicon full per-key dump** — this doc summarises tetranomicon by category; if module authoring needs per-key stats, decompile the jar or extend the audit script.
-- [ ] **Java-registered materials** — decompile `tetrasdelight`, `tetra_re_enlarged`, and `tetra_tables` if any user-visible Tetra material appears that this doc doesn't list. These three jars contain no datapack `tetra/materials/*.json` paths.
-- [ ] **Tool-tier requirements for forge hammers** — tetranomicon introduces `tetranomicon:tier_ten` and `tetranomicon:tier_eleven` plus `tetra:maxed_forge_hammer`. Document the upgrade path for these custom tiers in a separate progression-flow page.
-- [ ] **Per-spell-book magic capacity ramp** — currently 30/60/100/150 across copper -> netherite. Consider adding T0 (parchment) and T5 (archmage / necronomicon-tier sockets) for more granularity.
-- [ ] **Fix gradle build env on the Windows dev host** — `build_mod.sh` fails with `java.io.IOException: Unable to establish loopback connection` at `sun.nio.ch.UnixDomainSockets.connect0` (Java 17+ Windows NIO bug, unrelated to our code). Until resolved, expansion-jar changes require in-place jar patching (the jar isn't signed, just zip-of-JSON). Tracked as IridescentCraft task #39.
+- [ ] Per-tier-parity audit (the most valuable next pass). Rewrite the per-material variant armor multipliers across ~1500-2000 variants in 52 armor modules to match the canonical tier hierarchy: T1 (iron/copper/brass) baseline; T2 (steel/manasteel/etc.) parity; T3 (terrasteel/elementium/etc.) parity at diamond+; T4 (netherite + Terramity onyx); the T4 peak is Aethersteel (the top of crafted progression, below the Ad Astra postgame). Vanilla and modded are currently inverted (an iron crown gives more armor than an aethersteel crown), which is backwards from the design intent. Tool: extend `iridescent-tetra-expansion-mod/tools/gen_per_material_variants.py` with a stat-tier matrix and regenerate. Verification: `tools/audit_modules.py` plus a tester screenshot.
+- [ ] ≥1 armor floor for every (material, module) combination, per the 2026-05-28 user directive: the pack is noticeably harder than vanilla, so every material slot should contribute. Most lining-style modules currently give <1 armor for every material. This is bundled with the per-tier-parity audit above, since the fix uses the same mechanics.
+- [ ] Lining and bridge modules don't accept fabric or fibre. The master design (`master.md` Part VII + `iridescent-modular-spells-tetra-migration.md` Phase 6C) makes fabric, fibre and skin the canonical lining categories, each with its own stat theme, yet the bundle's `silk_lining`, `padded_lining`, `silk_boot_lining`, `padded_boot_lining`, `fur_boot_lining`, `cushioned_heel`, `silk_lacing`, `sash`, `cloth_strap` and `cloth_cuisses` all reject wool, manaweave, spellbinding_cloth, arcane_cloth and every fibre today. Adding per-material variants to these 10 lining modules for the fabric and fibre materials that fit the lore is bundled with the per-tier-parity audit.
+- [ ] Conflict resolution for the 49 duplicate keys: decide which version is canonical, then either (a) ship our own override with the intended stats in the datapack, or (b) explicitly accept that the jar-load-order winner is fine. The Blue Skies cluster (~25 duplicates) is the largest group.
+- [ ] Tetranomicon full per-key dump: this page summarises tetranomicon by category; if module authoring needs per-key stats, decompile the jar or extend the audit script.
+- [ ] Java-registered materials: if a Tetra material shows up in game that this page doesn't list, decompile `tetrasdelight`, `tetra_re_enlarged` and `tetra_tables`. These three jars have no datapack `tetra/materials/*.json` paths.
+- [ ] Tool-tier requirements for forge hammers: tetranomicon adds `tetranomicon:tier_ten` and `tetranomicon:tier_eleven` plus `tetra:maxed_forge_hammer`. Document the upgrade path for these custom tiers on a separate progression-flow page.
+- [ ] Per-spell-book magic capacity ramp: currently 30/60/100/150 from copper to netherite. Consider adding T0 (parchment) and T5 (archmage / necronomicon-tier sockets) for finer steps.
+- [ ] Fix the gradle build environment on the Windows dev host: `build_mod.sh` fails with `java.io.IOException: Unable to establish loopback connection` at `sun.nio.ch.UnixDomainSockets.connect0` (a Java 17+ Windows NIO bug, unrelated to our code). Until that is fixed, expansion-jar changes need in-place jar patching (the jar isn't signed; it is a zip of JSON). Tracked as IridescentCraft task #39.
 
 ---
 
 ## Method notes (for future audits)
 
-- Tetra's canonical material location is `data/<namespace>/materials/<category>/[<subdir>/]<key>.json` inside any datapack OR mod jar. The `<namespace>` is whatever dir sits right under `data/` — usually `tetra` since most contributors register into the `tetra:` namespace by convention, but any mod CAN register into its own namespace if it wants its materials to coexist under a different key prefix. In practice, `iridescent_tetra_expansion-1.0.0.jar`, ISS, Botania, etc. all drop files under `data/tetra/materials/<cat>/`, so they all share the `tetra:` namespace pool (last-loaded wins on conflicts).
-- Category is determined by the first directory under `materials/`; `key` is the JSON's `key` field (usually matches filename).
-- To re-run this audit on the Windows dev host: walk every jar in the server's live `mods/` directory (`Z:\Users\<user>\Desktop\IridescentCraft Dedicated Server\mods\` on the server VM, or wherever locally), extract `data/*/materials/{skin,fabric,fibre,metal,gem,bone,rod,scale,stone,wood,socket,misc}/*.json` from each, parse JSON, group by source/category/key. Reference Python audit walker at `C:\tmp\skin_fabric_audit.py` from the 2026-05-28 session (the path-translation gotcha there: Windows Python's `os.path.join` mixes slashes; convert input paths to native Windows backslashes upfront).
-- Modded jars sometimes register materials via Java code (not datapack); confirm with grep and decompile when materials appear in-game but not in this catalog.
-- Datapack JSONs in `global_packs/required_data/` ship via Paxi; their effective load order is AFTER mod jars but BEFORE world saves, so they override jar registrations of the same `<namespace>/<category>/<key>`.
-- The bundle source for the canonical custom materials lives at `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/materials/<cat>/<key>.json`. The datapack source for ours lives at `.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials/<cat>/<key>.json`. Always edit source-of-truth, not the deployed jar/zip — the deploy path rebuilds from source.
+- Tetra's canonical material location is `data/<namespace>/materials/<category>/[<subdir>/]<key>.json` inside any datapack or mod jar. The `<namespace>` is the directory directly under `data/`. It is usually `tetra`, since most contributors register into the `tetra:` namespace by convention, but any mod can register into its own namespace if it wants its materials under a different key prefix. In practice `iridescent_tetra_expansion-1.0.0.jar`, ISS, Botania and others all put their files under `data/tetra/materials/<cat>/`, so they share the `tetra:` namespace pool (on a conflict, the last one loaded wins).
+- The first directory under `materials/` sets the category; `key` is the JSON's `key` field (usually the same as the file name).
+- To re-run this audit on the Windows dev host, walk every jar in the server's live `mods/` directory (`Z:\Users\<user>\Desktop\IridescentCraft Dedicated Server\mods\` on the server VM, or the local equivalent), extract `data/*/materials/{skin,fabric,fibre,metal,gem,bone,rod,scale,stone,wood,socket,misc}/*.json` from each, parse the JSON and group by source/category/key. The 2026-05-28 session's Python audit walker is at `C:\tmp\skin_fabric_audit.py`. It has a path-translation gotcha: Windows Python's `os.path.join` mixes slashes, so convert input paths to native Windows backslashes first.
+- Modded jars sometimes register materials in Java code instead of a datapack; when a material appears in game but not in this catalog, confirm with grep and decompile.
+- Datapack JSONs in `global_packs/required_data/` ship through Paxi. They load after the mod jars but before world saves, so they override jar registrations of the same `<namespace>/<category>/<key>`.
+- The bundle source for the canonical custom materials is `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/materials/<cat>/<key>.json`, and the datapack source for ours is `.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials/<cat>/<key>.json`. Always edit the source of truth, not the deployed jar or zip: the deploy path rebuilds from source.
 
 ---
 
-*This doc is a snapshot. When new mods are added or the existing ones are updated, re-run the audit and refresh the section counts. Never trust the count without re-running.*
+*This page is a snapshot. When mods are added or updated, re-run the audit and refresh the section counts; don't trust a count that hasn't been re-run.*
