@@ -1,10 +1,10 @@
-=== IridescentCraft AStages — Distribution Package ===
+=== IridescentCraft AStages: Distribution Package ===
 
 This is the distribution-ready layout. Every folder here goes directly
 into the modpack instance root (.minecraft/ for Prism, or the instance
 folder for CurseForge).
 
-ZERO manual steps required for players — just install the pack.
+Players need no manual steps: installing the pack is enough.
 
 Folder breakdown:
   config/           Mod configuration files (ScalingMobs, Champions,
@@ -22,8 +22,8 @@ Folder breakdown:
   defaultconfigs/   Forge auto-copies these to world serverconfig/ on
                     new world creation (Champions ranks & affixes)
 
-NOTE FOR EXISTING WORLDS: If you're applying to an existing world,
-you'll also need to manually copy:
+NOTE FOR EXISTING WORLDS: to apply this to an existing world, also
+copy these by hand:
   - defaultconfigs/*.toml → saves/YourWorld/serverconfig/
   - global_packs/required_data/* → saves/YourWorld/datapacks/
 New worlds pick these up automatically.

@@ -10,9 +10,9 @@
 > a fine-grained one has not been tried.
 
 `push_crash_logs.{bat,sh}` and the native `icraft serve` post-exit
-flow auto-commit + auto-push server logs to the repo. Both require a
+flow commit and push server logs to the repo automatically. Both need a
 GitHub Personal Access Token to authenticate the push from the server
-box, since the box typically runs without an interactive credential
+box, because the box usually runs without an interactive credential
 helper.
 
 ## 1. Generate the PAT
@@ -27,21 +27,23 @@ GitHub.com → Settings → Developer settings → **Personal access tokens
 | Repository access | **Only select repositories** → `silvariasereneblossom/IridescentCraft` |
 | Repository permissions → Contents | **Read and write** |
 
-Generate, copy the `github_pat_...` string. You only see it once.
+Generate the token and copy the `github_pat_...` string. GitHub shows it
+only once.
 
 ## 2. Install on the server box
 
-Pick **one** of three options (precedence top to bottom):
+Pick **one** of the three options below (they take precedence in this
+order, top to bottom):
 
-### Option A — environment variable (recommended for service-mode)
+### Option A: environment variable (recommended for service-mode)
 
-Cleanest: never touches disk in plaintext.
+This is the cleanest option: the token never touches disk in plaintext.
 
 **Windows (interactive, persists across reboots):**
 ```cmd
 setx ICRAFT_GH_TOKEN "github_pat_xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 ```
-Restart any open cmd / PowerShell sessions to pick up the new env.
+Restart any open cmd / PowerShell sessions so they see the new variable.
 
 **Linux (systemd service):** add to the unit's `Environment=` line, or
 via a drop-in:
@@ -51,9 +53,9 @@ Environment="ICRAFT_GH_TOKEN=github_pat_xxx..."
 ```
 Then `systemctl daemon-reload && systemctl restart icraft`.
 
-### Option B — `.icraft_token` next to the running binary
+### Option B: `.icraft_token` next to the running binary
 
-Drop a file named `.icraft_token` in the same directory as
+Put a file named `.icraft_token` in the same directory as
 `icraft.exe` / `iridescentserver.bat`. One line, the PAT only, no
 trailing whitespace:
 ```
@@ -62,7 +64,7 @@ github_pat_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 The repo root `.gitignore` excludes any `.icraft_token` so it never
 gets committed.
 
-### Option C — `.icraft_token` in `cfg.server_dir`
+### Option C: `.icraft_token` in `cfg.server_dir`
 
 Same file format as Option B, but inside the modpack's
 `server_distribution/` directory. Useful if the launcher binary lives
@@ -70,9 +72,9 @@ elsewhere on the box.
 
 ## 3. Verify
 
-Run `push_crash_logs.bat` (no `--silent`) on the server box. It will
-echo the path it took and, if a PAT is wired, will show the actual git
-push output instead of swallowing errors. Successful push prints:
+Run `push_crash_logs.bat` (no `--silent`) on the server box. It echoes
+the path it took and, if a PAT is set up, shows the real git push
+output instead of hiding errors. A successful push prints:
 ```
 [postexit] Server logs pushed (via C:\path\to\repo)
 ```
@@ -81,13 +83,13 @@ If you see:
 ```
 [postexit] WARN: no PAT configured ...
 ```
-then none of A/B/C resolved a token. Check spelling of the env var,
-the file path, and whether the `.icraft_token` has trailing whitespace.
+then none of A/B/C resolved a token. Check the spelling of the
+environment variable, the file path, and whether `.icraft_token` has
+trailing whitespace.
 
-If you see a real `git push` error message (auth failure, network
-error, branch protection), the new versions of the scripts no longer
-redirect stderr to nul, so the actual problem will surface in the
-console for diagnosis.
+A real `git push` error message (auth failure, network error, branch
+protection) shows in the console, because the new versions of the
+scripts no longer redirect stderr to nul.
 
 ## 4. Rotation
 
@@ -100,8 +102,8 @@ update whichever location you used in step 2.
 
 Classic PATs grant repo-wide access to every repo the user owns.
 Fine-grained PATs scope to specific repos and specific permissions.
-For a server-box log-push, "Contents: write" on `IridescentCraft`
-alone is the minimum viable surface.
+For a server-box log push, "Contents: write" on `IridescentCraft`
+alone is the smallest grant that works.
 
 ## Why `http.extraHeader` instead of embedding the PAT in the URL
 

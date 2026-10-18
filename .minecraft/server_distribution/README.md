@@ -4,7 +4,7 @@ Standalone dedicated server distribution for the IridescentCraft Progression RPG
 
 Forge 1.20.1-47.4.6 | 420+ mods
 
-**This folder is fully self-contained.** Copy it to any machine, run the installer, and go.
+This folder is fully self-contained. Copy it to any machine and run the installer.
 
 ---
 
@@ -109,7 +109,7 @@ Settings usually chosen per server:
 | `view-distance` / `simulation-distance` | 8 / 6 if the machine has headroom |
 | `max-tick-time` | a number of milliseconds (for example 120000) switches the vanilla watchdog back on |
 
-(`server.properties.production`, an older template for such values, was removed in October 2026: nothing ever read it.)
+(`server.properties.production`, an older template for such values, was removed in October 2026 because nothing ever read it.)
 
 ### Whitelist, operators and bans
 
@@ -178,7 +178,7 @@ In the Minecraft client (with IridescentCraft modpack installed):
 - Ensure you have enough RAM allocated (minimum 8 GB)
 
 ### Mods failed to download during install
-- Re-run `server_install.bat` / `server_install.sh` — it skips already-downloaded mods
+- Re-run `server_install.bat` / `server_install.sh`; it skips mods it has already downloaded
 - CurseForge downloads may fail if their API is temporarily down; try again later
 - For persistent failures, manually download the mod from CurseForge/Modrinth
 
@@ -189,7 +189,7 @@ In the Minecraft client (with IridescentCraft modpack installed):
 - Pre-generate chunks with Chunky: `/chunky radius 3000` then `/chunky start`
 
 ### Players getting kicked for flying
-- Ensure `allow-flight=true` in server.properties (should be set by default)
+- Make sure `allow-flight=true` is set in server.properties (it is the pack default)
 
 ### Mods not matching / connection refused
 - Server and client must have the **exact same mod versions**
