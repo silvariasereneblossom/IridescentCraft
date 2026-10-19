@@ -13,6 +13,10 @@
 // entity.getItemBySlot (or anything that internally invokes it, like
 // entity.mainHandItem / entity.armorSlots / equipment introspection)
 // will take down the server when an ISS wizard spawns.
+// (Measured 2026-10-18 on a full-pack rig boot, decision list entry 9: the
+// archevoker's getItemBySlot throws the AbstractMethodError; the Cryomancer's
+// getMainHandItem and the Priest's getArmorSlots answered normally, and attribute
+// calls work on all five. The namespace skip stays: it is the cheap safe test.)
 //
 // This script (the FIRST EntityEvents.spawned handler of the pack: the priority line on top of this file):
 //

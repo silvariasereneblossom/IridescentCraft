@@ -54,6 +54,14 @@
 //   on them is proven safe (zz_boss_global_3x scales them in production). resId
 //   is resolved via the shared 0_iss_guard helper (handles entity.type's
 //   translation-key-form trap).
+//   MEASURED 2026-10-18 (full-pack rig boot, decision list entry 9): the premise is
+//   wrong for attribute calls. On all five casters getAttribute, addPermanentModifier,
+//   KubeJS modifyAttribute and getAttributeValue work; what throws the uncatchable
+//   AbstractMethodError is an item-slot read (ArchevokerEntity.getItemBySlot), and
+//   this handler makes none. The skip is KEPT: Ascension has never run (level 0),
+//   so dropping it would extend a feature that has never run; it is on the
+//   decision list (recommendation: drop it, so the casters scale like every other
+//   hostile once Ascension runs, as zz_boss_global_3x already does).
 //
 // SAVED WITH THE MOB (2026-10-12)
 //   Both modifiers go on through core.spawnBuff (0_lib_core.js, "spawn buffs")

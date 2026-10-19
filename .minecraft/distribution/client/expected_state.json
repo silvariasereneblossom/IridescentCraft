@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3d89906e",
+    "generated_from":  "abb588f8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7180,8 +7180,8 @@
                                                                    "size":  39180
                                                                },
                   "kubejs/server_scripts/0_iss_guard.js":  {
-                                                               "sha256":  "c6b910289e97f69940159f3708d078b62f0d4704612b2cb31e1857fbcf55124f",
-                                                               "size":  5834
+                                                               "sha256":  "c457fd8cf1b16a6c130f50c275ec38a4c2954eeaf8ec7ff28859d1a326d92216",
+                                                               "size":  6153
                                                            },
                   "kubejs/server_scripts/0_lib_aptitudes.js":  {
                                                                    "sha256":  "9ee476f26080f72dfeef9b9d60ec29982d405ad0e69fba38b4d637ff1aa9cb45",
@@ -7776,8 +7776,8 @@
                                                                                "size":  13097
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
-                                                                                "sha256":  "a447d9cc1e29a1140146590bcdac1c31b9bfea159f4cc3ab674543806fa176ad",
-                                                                                "size":  7782
+                                                                                "sha256":  "3dfaf6d3bca9e6682142385839c60c80aa3804e5cfbd055f45128e84ad5e41b9",
+                                                                                "size":  8435
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
                                                                              "sha256":  "b027082806e33b52ffddf195d2bcaab0ed43005a3d960452ef1f9297a7c199e7",
