@@ -385,6 +385,43 @@ Five datapack materials add `**`-prefixed ISS attributes on top of their base st
 
 Before 2026-05-28 all of these shipped with a single asterisk, and their bonuses never showed. The 2026-05-28 fix converted 8 attributes across 7 materials (2 of them in Section 2d) to `**`. Until then, a player whose gear used any of these got +0 magic stat from the material attribute, although the file declared the bonus.
 
+### 2g. Magic bonuses that are listed but do nothing (as of 2026-10-18)
+
+Twenty-eight materials list Iron's Spellbooks bonuses in the single-asterisk form, which the game ignores ([5.1](#51-iss-bonuses-on-materials--does-nothing--multiplies-per-module-2026-10-18)). In game they give **no** magic bonus from those lines. The "Applies" column is what does work; those values apply to every module made of the material and multiply.
+
+| Material | Listed, does nothing | Applies |
+|---|---|---|
+| Ancient Metal (the second one: the ingot makes the Cataclysm material) | cooldown reduction +4 %, spell power +12 % | max mana +8 % |
+| Brass | cooldown reduction +4 %, spell power +10 % | - |
+| Charoite | ender power +6 %, spell power +15 % | - |
+| Cloggrum | spell power +15 % | armor +4 % |
+| Deorum | holy power +8 %, spell power +25 % | - |
+| Diamond (the material converted mod armour uses) | spell power +25 % | - |
+| Elementium | spell power +6 % (a duplicate line) | spell power +6 % |
+| Enderium | ender power +10 %, spell power +30 % | - |
+| Fiery | fire resist +10 %, fire power +12 %, spell power +25 % | - |
+| Forgotten Metal | ender power +8 %, spell power +30 % | - |
+| Froststeel | ice power +12 %, spell power +25 % | - |
+| Garnite | fire power +6 %, spell power +15 % | - |
+| Horizonite | holy power +8 %, spell power +15 % | - |
+| Ironwood | nature power +8 %, spell power +15 % | - |
+| Knight metal (The Abyss) | spell power +25 % | armor +4 % |
+| Knightmetal | spell power +25 % | armor +5 % |
+| Lumium | holy power +8 %, spell power +15 % | - |
+| Manasteel | mana regen +4 % (a duplicate line), spell power +15 % | mana regen +4 % |
+| Osmium | mana regen +4 %, spell power +25 % | - |
+| Phantom | ender power +6 %, spell power +25 % | - |
+| Refined Obsidian | spell power +30 % | knockback resistance +0.05 |
+| Resonarium (Deeper & Darker) | ender power +8 %, spell power +20 % | - |
+| Signalum | lightning power +10 %, spell power +15 % | - |
+| Steel | spell power +15 % | armor +4 % |
+| Steeleaf | nature power +12 %, spell power +15 % | - |
+| Terrasteel | mana regen +5 %, spell power +25 % | max mana +10 % |
+| Unorithe | spell power +5 % | - |
+| Utherium | blood power +8 %, spell power +25 % | - |
+
+They stay off on purpose. Written in the working form, these bonuses would apply once per module and multiply: a converted Botania terrasteel set would give x35.5 spell power, and an enderium set with a sword would reach the spell power cap. The materials whose bonuses do apply multiply the same way (an aethersteel set gives x3.8 spell power, an iridium set x39). A design pass will size every material's magic bonus against Iron's Spellbooks' own armour; until then this table is what the game does.
+
 ---
 
 ## Section 3 - Modded Tetra extensions
@@ -748,11 +785,15 @@ It is a separate work item of half a day to a full day.
 
 > Tetra documents none of its behavior outside its bytecode, so every custom integration turns up new gotchas. This section collects the hard rules learned from those incidents so contributors can find them with a wiki search. Each rule gives the date of its incident.
 
-### 5.1 ISS percent attributes MUST use `**` prefix (MULTIPLY_TOTAL), never `*` (MULTIPLY_BASE) [2026-05-14]
+### 5.1 ISS bonuses on materials: `*` does nothing, `**` multiplies per module [2026-10-18]
 
-Tetra's `AttributeHelper.collapse()` drops a MULTIPLY_BASE modifier to 0 when the same attribute has no ADDITION sibling, so the stat silently disappears. The rule: every module variant, improvement file or material `attributes` block that targets a percent attribute (`spell_power`, `mana_regen`, `cooldown_reduction`, `cast_time_reduction`, `spell_resist`, school SP, `summon_damage`, `max_mana` percent) uses the `**` prefix. The audit script catches violations, and tester screenshots catch whatever it misses.
+Measured on a full-pack boot (2026-10-18):
+- **`*` (MULTIPLY_BASE) does nothing** unless the module adds the same attribute itself. Tetra's `AttributeHelper.collapse()` folds it into the module's own ADDITION; with none it multiplies 0. That is why the 28 materials of [2g](#2g-magic-bonuses-that-are-listed-but-do-nothing-as-of-2026-10-18) give nothing.
+- **`**` (MULTIPLY_TOTAL) applies once per module** made of the material. The item multiplies its modules and the player multiplies the items, so a material's +25 % becomes +144 % on a four-module piece and x35.5 on a full set.
+- **A plain key (ADDITION) adds**: a module +0.05, a 14-module set +0.7.
+- Tetra rounds every module's attribute amounts to 0.05 steps (x20, rounded, /20): 0.04 becomes 0.05, 0.06 becomes 0.05, and anything under 0.025 is lost.
 
-Before 2026-05-28, 7 custom materials shipped with the broken `*` (see [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar)); all of them are fixed.
+The 2026-05-14 rule ("always `**`") came from the wand modules of that day. Do not apply it to a material without measuring a full set: which form and size the materials' magic bonuses should use is open, for the design pass in 2g.
 
 ### 5.2 Wildcard variant keys MUST end in `/` [2026-05-12]
 
