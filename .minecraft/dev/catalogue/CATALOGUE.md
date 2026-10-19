@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 264. 257 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 263. 256 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -56,7 +56,7 @@ Structural, by the script that loads first:
 |---|---|---|---|
 | `startup:00_icraft_guard.js` | 1000 | 22 | `icraft.guard`, `icraft.handler`, `icraft.live` |
 | `server:00_icraft_guard.js` | 1000 | 151 | `icraft.guard`, `icraft.lib`, `icraft.live` |
-| `server:0_lib_core.js` | 880 | 26 | `icraft.core` |
+| `server:0_lib_core.js` | 880 | 25 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
 | `server:0_tick_master.js` | 840 | 42 | `global.registerPlayerTick`, `global.registerServerTick` |
 | `client:00_icraft_guard.js` | 1000 | 11 | `icraft.guard`, `icraft.live` |
@@ -68,9 +68,9 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | Library | Script | Priority | Sets | Scripts that read it | of them while loading |
 |---|---|---|---|---|---|
 | `aptitudes` | `server:0_lib_aptitudes.js` | 890 | `icraft.aptitude` | 3 | 0 |
-| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 65 | 26 |
+| `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 64 | 25 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
-| `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
+| `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 5 | 0 |
 | `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 15 | 0 |
 | `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 28 | 5 |
 | `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 42 | 42 |
@@ -857,7 +857,7 @@ own one-shot `global._*` flags.
 | `icraft.aptitude` | `server:0_lib_aptitudes.js` | `server:endgame/ascension.js`, `server:skills/justleveling_skills.js`, `server:skills/mastery_tax.js` |
 | `icraft.attr` | `server:attributes/attribute_sync.js` | `server:attributes/attribute_commands.js` |
 | `icraft.bosses` | `server:0_lib_registry.js` | 20 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
-| `icraft.core` | `server:0_lib_core.js` | 65 scripts (26 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
+| `icraft.core` | `server:0_lib_core.js` | 64 scripts (25 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 10 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/loot_overhaul.js`, `server:loot/lootjs_overhaul.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
 | `icraft.origin` | `server:0_lib_origins.js` | 15 scripts (0 while loading): `server:armor_weight.js`, `server:attributes/attribute_commands.js`, `server:attributes/class_attribute_bonuses.js`, `server:class/equipment_hp_halving.js`, `server:codex_delivery.js`, `server:origins/artificial_construct_progression.js`, ... |
@@ -867,7 +867,7 @@ own one-shot `global._*` flags.
 | `global.icraftBrokerRestockWarned` | `server:economy/relic_broker.js` (in a handler) | _nobody_ |
 | `global.icraftEntityIdOk` | `server:loot/0_entity_id_validator.js` | _nobody_ |
 | `global.icraftEntityMod` | `server:loot/0_entity_id_validator.js` | 20 scripts (0 while loading): `server:endgame/rift_mechanics.js`, `server:loot/abyss_boss_loot.js`, `server:loot/alexsmobs_drops.js`, `server:loot/blue_skies_drops.js`, `server:loot/boss_refight_repair_floors.js`, `server:loot/boss_unique_drops.js`, ... |
-| `global.icraftIsIssMob` | `server:0_iss_guard.js` | _nobody_ |
+| `global.icraftIsIssMob` | `server:0_iss_guard.js` | `server:loot/unique_tier_buff.js` |
 | `global.icraftIssResId` | `server:0_iss_guard.js` | `server:scaling/zz_ascension_scaling.js` |
 | `global.icraftLiveLines` | `client:zzz_icraft_live.js`, `server:zzz_icraft_live.js`, `startup:zzz_icraft_live.js` | _nobody_ |
 | `global.icraftRecipeRemovalsValidated` | `server:validate_recipe_removals.js` (in a handler) | _nobody_ |
@@ -1224,7 +1224,7 @@ own one-shot `global._*` flags.
 - place 28 of 163
 - events: `ServerEvents.loaded`
 - tick functions: `tick_equipmentHpHalving` (server, every 100, offset 60), `tick_glassCannonTagCheck` (server, every 100, offset 0)
-- reads: `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
+- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.origin` of `0_lib_origins.js`, `global.registerServerTick` of `0_tick_master.js` (load)
 
 ### `cleanup/strip_truly_modular_items.js`
 
@@ -1679,7 +1679,7 @@ own one-shot `global._*` flags.
 - events: `EntityEvents.spawned`
 - hurt handlers: `icraft.unique_tier_buff` [any, last, unchecked]
 - features: `unique-tier-buff`
-- reads: `global.ICRAFT_TIER_DMG_MULT` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
+- reads: `global.ICRAFT_TIER_DMG_MULT` of `loot/unique_itemset_registry.js`, `global.ICRAFT_UNIQUE_ITEMS` of `loot/unique_itemset_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`, `global.icraftIsIssMob` of `0_iss_guard.js`
 
 ### `loot/zzz_iss_scroll_tier_clamp.js`
 

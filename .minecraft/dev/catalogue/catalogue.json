@@ -2637,14 +2637,8 @@
      ],
      "sections": 0,
      "ownSlots": 2,
-     "names": 1,
+     "names": 0,
      "reads": [
-      {
-       "name": "icraft.core",
-       "kind": "global",
-       "from": "0_lib_core.js",
-       "when": "load"
-      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -2670,14 +2664,6 @@
        "basis": "load",
        "on": [
         "icraft.guard"
-       ],
-       "held": "priority"
-      },
-      {
-       "script": "0_lib_core.js",
-       "basis": "load",
-       "on": [
-        "icraft.core"
        ],
        "held": "priority"
       },
@@ -6094,6 +6080,12 @@
        "name": "icraft.live",
        "kind": "global",
        "from": "00_icraft_guard.js",
+       "when": "handler"
+      },
+      {
+       "name": "icraftIsIssMob",
+       "kind": "global",
+       "from": "0_iss_guard.js",
        "when": "handler"
       }
      ],
@@ -12574,10 +12566,6 @@
      "when": "handler"
     },
     {
-     "script": "server:class/equipment_hp_halving.js",
-     "when": "load"
-    },
-    {
      "script": "server:codex_delivery.js",
      "when": "handler"
     },
@@ -13057,6 +13045,12 @@
      "script": "server:0_iss_guard.js",
      "when": "load"
     }
+   ],
+   "readBy": [
+    {
+     "script": "server:loot/unique_tier_buff.js",
+     "when": "handler"
+    }
    ]
   },
   "icraftIssResId": {
@@ -13371,6 +13365,7 @@
    "users": [
     "server:affix_overworld_strip.js",
     "server:affix_skyshatter_mob_strip.js",
+    "server:loot/unique_tier_buff.js",
     "server:scaling/mob_equipment.js",
     "server:scaling/zz_ascension_scaling.js"
    ],
@@ -13408,7 +13403,6 @@
     "server:attributes/mana_pool_bonuses.js",
     "server:bonfire/boss_compass_handler.js",
     "server:cherry_spawn_biome.js",
-    "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
     "server:compat/disable_creeperlings.js",
     "server:compat/terramity_cave_gnome_cave_only.js",
@@ -13462,7 +13456,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 26
+   "usersAtLoad": 25
   },
   "origins": {
    "script": "server:0_lib_origins.js",
