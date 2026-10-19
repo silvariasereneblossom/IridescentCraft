@@ -6,17 +6,37 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Automation and crafting investment. Best for Artificer. The only tree in the pack with 0% attribute-based effects: 100% run as commands through KubeJS scoreboard hooks.$()$(br2)$(warn)Engineering tree effects depend on KubeJS (Phase 2).$() The nodes are visible and take points now; the bonuses switch on, retroactively, once the KubeJS bridge is built."
+      "text": "$(italic)Crafting and machine room investment. Best for Artificer.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone. Every node costs 1 point, the capstones too.$(br2)Tool Care and Repair Mastery are attributes. The other nodes act when you craft, or while you stand near a station or machine (next pages)."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Crafting Speed$(): automated crafters (Create, RS, IF) take less time. Manual crafting is always instant.$(br2)$(bold)Machine Efficiency$(): +% processing speed for Thermal, IF and Mekanism machines.$(br2)$(bold)RF Generation$(): +% RF output from every generator, up to +25% at max investment."
+      "title": "Near a Station",
+      "text": "A \"near\" effect looks at the blocks within 8 of you, one level up or down, every 10 seconds, or 30 for experience and fuel. Haste and Speed last 15 seconds.$(br2)$(bold)Stations:$() crafting table, anvil, smithing table, stonecutter, loom, cartography and fletching table, grindstone, mechanical crafter, deployer."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Resource Doubling Branch$(): +% chance that ore processing yields an extra ingot.$(br2)$(bold)Blueprint Memory Branch$(): cheaper anvil repairs, XP enchanting and Patchouli book recipe unlocks.$(br2)$(bold)Engineering Capstone$(): $(bold)Master Engineer$(). A passive pulse every 5 min makes all machines within a 16-block radius run at +50% speed for 60s."
+      "title": "Machines",
+      "text": "$(bold)Machines:$() furnaces, Thermal machines and many Mekanism and Create processing blocks.$(br2)$(bold)Generators:$() anything named generator, dynamo, solar panel, turbine or reactor, and Create's water wheel, windmill, hand crank, steam engine and flywheel.$(br2)$(bold)Enchanting stations:$() anvil, enchanting table, reforging station, grindstone, within 5 blocks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Trunk",
+      "text": "$(bold)Quick Hands$() I and II: Haste I and Speed I near a crafting station, Haste II with both$(br)$(bold)Resource Saver$() I and II: a 3% chance each to get a material back when you craft tools, armor, ingots or most parts, and of an extra drop when you break logs, planks, stone, bricks and other building blocks$(br)$(bold)Machine Efficiency$() I and II: Haste I near a machine, Speed I too with both$(br)$(bold)Tool Care$() I and II: anvil repairs cost 5% less each"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Artisan Branch",
+      "text": "$(bold)Master Touch$() I to IV: a 3%, 3%, 4% and 5% chance of an extra copy of what you craft (tools, armor, building pieces, Create, Mekanism and Thermal items)$(br)$(bold)Enchanting Insight$() I to III: 2, 5, then 7 experience points every 30 seconds near an enchanting station$(br)$(bold)Repair Mastery$() I and II: repairs 8% cheaper each$(br2)$(bold)Capstone: Grand Artificer$(), +5% copy chance, Insight up to 12 points, repairs 10% cheaper."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Machine Branch",
+      "text": "$(bold)Overclock$() I to IV: near machines, Haste II from I, Speed II from II, Haste III from III; IV adds nothing visible$(br)$(bold)Power Surge$() I to III: every 30 seconds near a generator, 1, 3, then 6 experience points (about twice that with five generators); Luck I from III$(br)$(bold)Fuel Efficiency$() I and II: every 30 seconds near a furnace, 1 coal, then 1 charcoal (2 with three furnaces); Fire Resistance from II"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Machine Branch, cont.",
+      "text": "$(bold)Capstone: Master Engineer$(), 9 experience points (up to 20) and Luck II near generators, and blaze powder in place of the fuel. Its machine bonus adds nothing past Overclock III.$(br2)Crafting rolls (Resource Saver, Master Touch) happen at most once every 2 seconds each, so a shift-click batch rolls once.$(br2)$(bold)Furnaces:$() furnace, blast furnace, smoker, smelter, encased fan."
     }
   ]
 }

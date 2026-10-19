@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Risk and Reward, cont.",
-      "text": "$(bold)Best race pairings:$()$(br)$(thing)Elf$(): +10% speed stacks with Swift for extreme mobility, and night vision keeps you safer in dungeons.$(br)$(thing)Halfling$(): a smaller hitbox and food efficiency for sustained kiting.$(br)$(thing)Human$(): no weaknesses, and +15% XP to reach glass cannon safety thresholds faster.$(br2)$(bold)Next: spec the Marksman tree ($(k:puffish_skills.open)) for Draw Speed.$()"
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Elf$(): +10% speed stacks with Swift for extreme mobility, and night vision keeps you safer in dungeons.$(br)$(thing)Halfling$(): a smaller hitbox and food efficiency for sustained kiting.$(br)$(thing)Human$(): no weaknesses, and +15% XP to reach glass cannon safety thresholds faster.$(br2)$(bold)Next: spec the Marksman tree ($(k:puffish_skills.open)) for ranged damage.$()"
     }
   ]
 }

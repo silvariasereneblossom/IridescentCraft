@@ -1,6 +1,6 @@
 {
   "name": "Skill Trees",
-  "description": "The six skill trees (Warfare, Marksman, Sorcery, Fortitude, Gathering, Engineering) and how you earn, spend, and refund their points.",
+  "description": "The six skill trees (Warfare, Marksman, Sorcery, Fortitude, Gathering, Engineering) and how you earn and spend their points.",
   "icon": "minecraft:experience_bottle",
   "sortnum": 4
 }

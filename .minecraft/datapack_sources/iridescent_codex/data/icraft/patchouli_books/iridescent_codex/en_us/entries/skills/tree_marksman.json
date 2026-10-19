@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ranged investment. Best for Ranger and Samurai.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone that costs 2 points.$(br2)Most nodes are attributes and apply at once. Hawk Eye catches up within 10 seconds; the execute, splash and refund nodes act on each hit."
+      "text": "$(italic)Ranged investment. Best for Ranger and Samurai.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone. Every node costs 1 point, the capstones too.$(br2)Most nodes are attributes and apply at once. Hawk Eye catches up within 10 seconds; the execute, splash and refund nodes act on each hit."
     },
     {
       "type": "patchouli:text",

@@ -6,17 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Resource investment. Best for Artificer, Halfling builds, or any player focused on automation setup.$()$(br2)Mining speed and luck apply the moment you take the node; crop yield and fishing bonuses trigger on the harvest itself."
+      "text": "$(italic)Resource investment. Best for Artificer, Halfling builds, or anyone who mines and farms by hand.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone. Every node costs 1 point, the capstones too.$(br2)Speed and luck apply at once. Drop chances roll when you break the block yourself."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Mining Speed$() (attributeslib:mining_speed): a percentage bonus to all block-breaking speed.$(br2)$(bold)Fortune Enhancement$(): raises your effective Fortune level for loot table rolls. It adds luck to the roll and leaves enchant levels alone.$(br2)$(bold)Crop Yield$(): a KubeJS harvest event gives a chance of bonus crop drops, scaling linearly to +50% at max investment."
+      "title": "Trunk",
+      "text": "$(bold)Efficient Miner$() I and II: +5% mining speed each$(br)$(bold)Sharp Axe$() I and II: +5% block breaking speed each, any block, any tool$(br)$(bold)Green Thumb$() I and II: a 5% chance each of one extra crop item when you break a crop, ripe or not. Wheat and beetroot give seeds.$(br)$(bold)Lucky Strike$() I and II: +0.3 luck each$(br2)Luck improves fishing and any loot roll that reads it. It does not add Fortune."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Prospector Branch$(): vein mining-style bonuses: sensing nearby ore and extra drops from ore processing.$(br2)$(bold)Naturalist Branch$(): fishing speed, bait efficiency and more mob loot.$(br2)$(bold)Gathering Capstone$(): $(bold)Master Gatherer$(). Gathering has a 10% chance of double yield, stacking with Fortune.$(br2)$(bold)Next: Mining Speed first.$()"
+      "title": "Prospector Branch",
+      "text": "$(bold)Deep Mining$() I to IV: +8%, +8%, +10% and +10% mining speed$(br)$(bold)Ore Sense$() I to III: +0.4, +0.4 and +0.5 luck$(br)$(bold)Yield Mastery$() I and II: a 5% chance each of one extra raw ore, gem or dust when you break an iron, copper, gold, coal, lapis, redstone, diamond, emerald, osmium, tin, lead, silver or nickel ore$(br2)$(bold)Capstone: Motherlode$(), +15% mining speed, +0.5 luck and +5% to the extra ore chance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Naturalist Branch",
+      "text": "$(bold)Bountiful Harvest$() I to IV: +8%, +8%, +10% and +10% to the extra crop chance$(br)$(bold)Fisher's Touch$() I and II: Lure on your fishing rod, next page$(br)$(bold)Animal Whisperer$() I and II: feeding a baby animal also ages it 2.5 seconds each$(br)$(bold)Green Magic$() I: bone meal sparkles, but its extra growth never happens$(br2)$(bold)Capstone: Nature's Bounty$(), +15% extra crop chance, one more Lure level, 2.5 more seconds per feeding."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fishing and Breeding",
+      "text": "Every 10 seconds, Fisher's Touch looks at the fishing rod in your main hand. If it has no Lure, it gets Lure I, Lure II with both nodes, or Lure III with Nature's Bounty too. The enchantment stays on the rod, and a rod that already has Lure keeps its level.$(br2)Animal Whisperer counts feeding with wheat, seeds, carrots, potatoes, beetroot, berries, bamboo, seagrass or hay."
     }
   ]
 }

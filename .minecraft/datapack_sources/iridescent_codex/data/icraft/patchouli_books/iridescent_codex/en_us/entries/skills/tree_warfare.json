@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Pure melee investment. Best for Berserker, Vanguard, Samurai and Paladin.$()$(br2)Every node is an attribute and applies the moment you take it.$(br2)The tree has 29 nodes: an 8-node trunk, then two branches of 11 and 10 nodes, each ending in a capstone that costs 2 points."
+      "text": "$(italic)Pure melee investment. Best for Berserker, Vanguard, Samurai and Paladin.$()$(br2)The tree has 29 nodes: an 8-node trunk, then two branches of 11 and 10 nodes, each ending in a capstone. Every node costs 1 point.$(br2)Most nodes apply the moment you take them. Bloodlust and Lethal Edge do nothing: nothing reads the score they raise."
     },
     {
       "type": "patchouli:text",
@@ -15,13 +15,13 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Life Steal Branch",
-      "text": "$(bold)Relentless Strikes$() I to III: +6% melee damage each$(br)$(bold)Bloodlust$() I to III: +1%, +2% and +2% life steal$(br)$(bold)Ferocity$() I and II: +6% attack speed each$(br)$(bold)Savage Blows$() I and II: +8% melee damage each$(br2)$(bold)Capstone: Unending Fury$(), +15% melee damage and +5% life steal."
+      "title": "Fury Branch",
+      "text": "$(bold)Relentless Strikes$() I to III: +6% melee damage each$(br)$(bold)Bloodlust$() I to III: no effect, whatever the tooltip says about life steal$(br)$(bold)Ferocity$() I and II: +6% attack speed each$(br)$(bold)Savage Blows$() I and II: +8% melee damage each$(br2)$(bold)Capstone: Unending Fury$(), +15% melee damage. Its life steal does nothing."
     },
     {
       "type": "patchouli:text",
-      "title": "Critical Branch",
-      "text": "$(bold)Precision$() I to III: +1 luck each$(br)$(bold)Sword Mastery$() I and II: +8% sword damage each$(br)$(bold)Axe Mastery$() I and II: +8% axe damage each$(br)$(bold)Lethal Edge$() I and II: +8% and +12% crit damage$(br2)$(bold)Capstone: Perfect Strike$(), +2 luck and +20% crit damage."
+      "title": "Weapon Branch",
+      "text": "$(bold)Precision$() I to III: +1 luck each$(br)$(bold)Sword Mastery$() I and II: +8% sword damage each$(br)$(bold)Axe Mastery$() I and II: +8% axe damage each$(br)$(bold)Lethal Edge$() I and II: no effect, whatever the tooltip says about crit damage$(br2)$(bold)Capstone: Perfect Strike$(), +2 luck. Its crit damage does nothing."
     }
   ]
 }

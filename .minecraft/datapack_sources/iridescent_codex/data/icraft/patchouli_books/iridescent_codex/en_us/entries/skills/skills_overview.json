@@ -6,19 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Press $(k:puffish_skills.open) to open the six skill trees, and plan before you spend. Skill points come from completing Heracles quests ($(k:heracles.open_quests)); grinding combat or XP earns none.$(br2)$(bold)Respeccing:$() each point refunded costs 5 XP levels. A full respec is possible but expensive."
+      "text": "Press $(k:puffish_skills.open) to open the six skill trees. Each tree has its own experience bar, and every level it gains is 1 point to spend in that tree.$(br2)There is no respec: a node you take stays taken, so plan before you spend."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Six Trees$()$(br)$(li)$(bold)Warfare$(): melee damage, weapon mastery, combat stats$(li)$(bold)Marksman$(): ranged damage, arrow handling, precision$(li)$(bold)Sorcery$(): spell power, mana, cast efficiency$(li)$(bold)Fortitude$(): HP, defense, regen, resistance$(li)$(bold)Gathering$(): mining, farming, fishing, luck$(li)$(bold)Engineering$(): crafting, machine bonuses, automation speed"
+      "title": "Earning Points",
+      "text": "Each kill gives Warfare, Marksman, Sorcery and Fortitude the experience the mob drops, all four at once, whatever you killed it with. Every block you break gives Gathering 1, and every craft gives Engineering 1.$(br2)The first level costs 50 experience. The cost climbs to 2,000 by level 27 and stays there; there is no level cap."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Point Budget$()$(br2)Finish every quest in every tier and you earn about $(bold)75 skill points$() in total. Each tree has 40 levels to invest in, so maxing all six would take $(bold)240 points$(). That is out of reach on purpose: you will have to specialize.$(br2)Pufferfish Unofficial Additions stops you grinding specific XP sources for points."
+      "title": "The Six Trees",
+      "text": "$(li)$(bold)Warfare$(): melee damage, attack speed, health, sword and axe damage$(li)$(bold)Marksman$(): ranged damage, resistance shred, executes, arrow refunds$(li)$(bold)Sorcery$(): magic damage and resistance, mana, healing, pets$(li)$(bold)Fortitude$(): health, damage resistance, healing, toughness$(li)$(bold)Gathering$(): mining speed, extra crops and ore, luck$(li)$(bold)Engineering$(): Haste near stations, crafting bonuses, cheaper repairs"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tree Structure$()$(br2)Each tree has:$(li)$(bold)8-node trunk$(): always open, with the base bonuses.$(li)$(bold)2 branches$(): specialized substyles that unlock after trunk nodes.$(li)$(bold)1 capstone$(): a strong late bonus for near-full investment.$(br2)Each fork is exclusive: you take one branch or the other.$(br2)$(bold)Next: press $(k:puffish_skills.open) and pick your class's tree.$()"
+      "title": "Point Budget",
+      "text": "Every node costs 1 point, the capstones too. A tree has 28 nodes (Warfare has 29), so filling one takes 28 levels, 23,770 experience (25,770 for Warfare).$(br2)A kill feeds all four combat trees, so they fill together. Gathering and Engineering fill only from breaking blocks and crafting."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tree Structure",
+      "text": "Each tree starts with an 8-node trunk, a single line from its first node. The last trunk node opens two branches of 10 nodes (Warfare's are 11 and 10), each ending in a capstone.$(br2)You can take both branches if you have the points.$(br2)$(bold)Next: press $(k:puffish_skills.open) and pick your class's tree.$()"
     }
   ]
 }

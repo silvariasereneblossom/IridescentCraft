@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Survival investment. Every class benefits; Vanguard and Paladin can't do without it.$()$(br2)HP, armor toughness, knockback resistance and healing received are attributes and apply immediately. All-resistance (flat % DR) and HP regen run on a KubeJS bridge script (implemented in Phase 1)."
+      "text": "$(italic)Survival investment. Every class benefits; Vanguard and Paladin can't do without it.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone. Every node costs 1 point, the capstones too.$(br2)Every node is an attribute and applies the moment you take it."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Max HP$(): raises base max HP. It does not interact with the half-equipment-HP rule for glass cannon classes.$(br2)$(bold)Armor Toughness$(): the standard armor toughness attribute, at its best against high-damage single hits.$(br2)$(bold)Healing Received$() (attributeslib:healing_received): a percentage bonus to every heal you receive."
+      "title": "Trunk",
+      "text": "$(bold)Constitution$() I and II: +4 max health (2 hearts) each$(br2)$(bold)Tough Skin$() I and II: +4% damage resistance each$(br2)$(bold)Regeneration$() I and II: +5% healing received each$(br2)$(bold)Steady Footing$() I and II: +15% knockback resistance each"
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Resilience Branch$(): all-resistance (flat DR %) from KubeJS, stacking with armor at diminishing returns.$(br2)$(bold)Regeneration Branch$(): passive HP regen through tick-based KubeJS healing, applied every 5 seconds.$(br2)$(bold)Fortitude Capstone$(): $(bold)Unbreakable Spirit$(). Once per combat encounter you survive a killing blow at 1 HP, on a 10 min cooldown."
+      "title": "Resilience Branch",
+      "text": "$(bold)Enduring Body$() I to IV: +6, +6, +8 and +8 max health (3, 3, 4 and 4 hearts)$(br)$(bold)Armor Mastery$() I to III: +1 armor toughness each$(br)$(bold)Elemental Resistance$() I and II: +4% damage resistance each, against every kind of damage$(br2)$(bold)Capstone: Unbreakable$(), +10 max health (5 hearts), +2 armor toughness and +6% damage resistance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Regeneration Branch",
+      "text": "$(bold)Recovery$() I to IV: +8%, +8%, +10% and +10% healing received$(br)$(bold)Natural Regen$() I to III: +5%, +5% and +10% natural regeneration, the healing a full food bar gives$(br)$(bold)Stamina$() I and II: +1 stamina each. A food point lasts 5 exhaustion instead of 4, then 6.$(br2)$(bold)Capstone: Undying$(), +15% healing received, +10% natural regeneration and +2 stamina."
     }
   ]
 }

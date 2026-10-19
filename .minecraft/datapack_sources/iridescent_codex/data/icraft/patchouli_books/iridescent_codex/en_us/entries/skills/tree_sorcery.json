@@ -6,17 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Magic investment. Best for Archmage, Battlemage and Void Summoner.$()$(br2)Spell power, mana pool and mana regen are Iron's Spellbooks attributes and apply immediately, and so do the cast duration reduction and summon damage bonuses. Buff duration extension needs KubeJS (Phase 2)."
+      "text": "$(italic)Magic investment. Best for Archmage, Battlemage and Void Summoner.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone. Every node costs 1 point, the capstones too.$(br2)The attribute nodes apply at once. Mana Flow, Spell Haste and Mana Efficiency take effect within 10 seconds."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Spell Power$(): the core trunk, through irons_spellbooks:spell_power, and a direct multiplier on all spell damage.$(br2)$(bold)Mana Mastery$(): more max mana and passive regen. It scales the Archmage's Mana Well passive.$(br2)$(bold)Cooldown Reduction$(): shorter spell cooldowns, through irons_spellbooks:cooldown_reduction."
+      "title": "Trunk",
+      "text": "$(bold)Arcane Power$() I and II: +5% magic damage each$(br2)$(bold)Mana Flow$() I and II: +3% mana regeneration each$(br2)$(bold)Spell Haste$() I and II: +3% cooldown reduction each. Casting itself is no faster.$(br2)$(bold)Arcane Shield$() I and II: +4% magic resistance each"
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Destruction Branch$(): spell penetration and raw damage, best for Archmage.$(br2)$(bold)Arcane Branch$(): mana efficiency and buff duration, best for a support-leaning Battlemage.$(br2)$(bold)Sorcery Capstone$(): $(bold)Arcane Attunement$(). After 10 consecutive spell kills, spells cost 0 mana for 8s, on a 120s cooldown."
+      "title": "Destruction Branch",
+      "text": "$(bold)Overwhelming Power$() I to IV: +6%, +8%, +8% and +10% magic damage$(br)$(bold)Arcane Penetration$() I to III: +4% magic resistance shred each$(br)$(bold)Mana Efficiency$() I and II: +2.5% spell power each. Spells cost the same mana.$(br2)$(bold)Capstone: Arcane Supremacy$(), +15% magic damage, +8% magic resistance shred and +2.5% spell power."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Support Branch",
+      "text": "$(bold)Restorative Touch$() I to III: +8% healing received each$(br)$(bold)Minion Mastery$() I to III: +8%, +8% and +10% damage by your tamed animals; Iron's Spellbooks summons get nothing$(br)$(bold)Soul Bond$() I: your tamed animals take 8% less damage$(br)$(bold)Extended Influence$() I and II: next page$(br2)$(bold)Capstone: Grand Enchantment$(), +12% healing received, +12% tamed animal damage and a stronger Extended Influence."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Extended Influence",
+      "text": "Every 5 seconds, each beneficial effect on you that has between 5 seconds and 5 minutes left is lengthened by a share of the time it has left: 2.5% with Extended Influence I, 5% with II, and 10% once you also have Grand Enchantment.$(br2)An effect is only lengthened when that share comes to more than a second."
     }
   ]
 }
