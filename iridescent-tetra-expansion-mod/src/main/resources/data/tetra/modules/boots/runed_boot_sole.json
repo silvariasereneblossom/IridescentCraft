@@ -18,10 +18,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.138,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.138
         },
         "integrity": 1.0,
         "glyph": {
@@ -37,6 +34,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -46,10 +48,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -65,6 +64,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -74,10 +78,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -93,6 +94,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -102,10 +108,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -121,6 +124,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -130,10 +138,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -149,6 +154,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -158,10 +168,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -177,6 +184,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -186,10 +198,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -205,6 +214,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -214,10 +228,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -233,6 +244,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -242,10 +258,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.1
         },
         "integrity": 1.0,
         "glyph": {
@@ -261,6 +274,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -270,10 +288,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.138,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.138
         },
         "integrity": 1.0,
         "glyph": {
@@ -289,6 +304,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -298,10 +318,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -317,6 +334,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -326,10 +348,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.263,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.263
         },
         "integrity": 1.0,
         "glyph": {
@@ -345,6 +364,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -354,10 +378,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -373,6 +394,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -382,10 +408,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -401,6 +424,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -410,10 +438,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -429,6 +454,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -438,10 +468,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -457,6 +484,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -466,10 +498,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -485,6 +514,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -494,10 +528,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -513,6 +544,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -522,10 +558,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -541,6 +574,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -550,10 +588,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -569,6 +604,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -578,10 +618,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -597,6 +634,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -606,10 +648,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -625,6 +664,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -634,10 +678,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -653,6 +694,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -662,10 +708,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -681,6 +724,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -690,10 +738,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -709,6 +754,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -718,10 +768,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -737,6 +784,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -746,10 +798,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -765,6 +814,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -774,10 +828,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -793,6 +844,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -802,10 +858,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -821,6 +874,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -830,10 +888,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.25
         },
         "integrity": 1.0,
         "glyph": {
@@ -849,6 +904,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -858,10 +918,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.1
         },
         "integrity": 1.0,
         "glyph": {
@@ -877,6 +934,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -886,10 +948,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.05,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "minecraft:generic.armor": 0.1
         },
         "integrity": 1.0,
         "glyph": {
@@ -905,6 +964,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -914,10 +978,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.12,
-          "irons_spellbooks:max_mana": 12.0,
-          "**irons_spellbooks:spell_power": 0.06,
-          "**irons_spellbooks:cooldown_reduction": 0.06
+          "minecraft:generic.armor": 0.12
         },
         "integrity": 1.0,
         "glyph": {
@@ -933,6 +994,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -942,10 +1008,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.15,
-          "irons_spellbooks:max_mana": 15.0,
-          "**irons_spellbooks:spell_power": 0.075,
-          "**irons_spellbooks:cooldown_reduction": 0.075
+          "minecraft:generic.armor": 0.15
         },
         "integrity": 1.0,
         "glyph": {
@@ -961,6 +1024,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -970,10 +1038,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.06,
-          "irons_spellbooks:max_mana": 6.0,
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03
+          "minecraft:generic.armor": 0.06
         },
         "integrity": 1.0,
         "glyph": {
@@ -989,6 +1054,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -998,10 +1068,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.08,
-          "irons_spellbooks:max_mana": 8.0,
-          "**irons_spellbooks:spell_power": 0.04,
-          "**irons_spellbooks:cooldown_reduction": 0.04
+          "minecraft:generic.armor": 0.08
         },
         "integrity": 1.0,
         "glyph": {
@@ -1017,6 +1084,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -1026,10 +1098,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.138,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.138
         },
         "integrity": 1.0,
         "glyph": {
@@ -1045,6 +1114,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -1054,10 +1128,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0166,
-          "irons_spellbooks:max_mana": 1.2,
-          "**irons_spellbooks:cooldown_reduction": 0.006,
-          "**irons_spellbooks:spell_power": 0.006
+          "minecraft:generic.armor": 0.0166
         },
         "integrity": 1.0,
         "glyph": {
@@ -1073,6 +1144,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -1082,10 +1158,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.138,
-          "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05,
-          "**irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.138
         },
         "integrity": 1.0,
         "glyph": {
@@ -1101,6 +1174,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -1110,10 +1188,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1325,
-          "irons_spellbooks:max_mana": 9.6,
-          "**irons_spellbooks:cooldown_reduction": 0.048,
-          "**irons_spellbooks:spell_power": 0.048
+          "minecraft:generic.armor": 0.1325
         },
         "integrity": 1.0,
         "glyph": {
@@ -1129,6 +1204,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     },
     {
@@ -1138,10 +1218,7 @@
       "key": "runed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1435,
-          "irons_spellbooks:max_mana": 10.4,
-          "**irons_spellbooks:cooldown_reduction": 0.052,
-          "**irons_spellbooks:spell_power": 0.052
+          "minecraft:generic.armor": 0.1435
         },
         "integrity": 1.0,
         "glyph": {
@@ -1157,6 +1234,11 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 10.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:cooldown_reduction": 0.05
       }
     }
   ]

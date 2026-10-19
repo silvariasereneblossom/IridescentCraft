@@ -27,6 +27,6 @@
     "hammer_dig": "minecraft:iron"
   },
   "attributes": {
-    "**minecraft:generic.armor": 0.05
+    "*minecraft:generic.armor": 0.05
   }
 }

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "272d15fa",
+    "generated_from":  "ff3b3a70",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4352,12 +4352,12 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "7e1f14ba6c8b719c7d5dc8098bd1f2d43d935563f618abd6c7807a4016312f1c",
-                                                                           "size":  57569
+                                                                           "sha256":  "c770cc53b4b8878fe60613a7a86e6228a7135c4f5f34572e07b63ddabde5a5c1",
+                                                                           "size":  57541
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
-                                                                           "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",
-                                                                           "size":  7489
+                                                                           "sha256":  "34f4b11f0df1c77fd3806b433b943d2bf2f7443c18afbbcb9ce53063a8aefe9c",
+                                                                           "size":  8314
                                                                        },
                   "config/paxi/datapacks/icraft_tower_overrides.zip":  {
                                                                            "sha256":  "27a697db5909f179aec70def8ee1c1f64de87ad053e75ea1495b6f0e253303e6",
@@ -8752,7 +8752,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "8b2a822dc71e8787c1a35cbd3970020ebe2a5777409e83c5c01e70154b2d59a6",
+                                                                         "sha256":  "3deafcc06f0233267eea8f9cc0f6615ae5e318c49b5efb4d7b7500aa6c4472c2",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

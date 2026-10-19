@@ -28,6 +28,6 @@
     "hammer_dig": "minecraft:diamond"
   },
   "attributes": {
-    "**minecraft:generic.armor": 0.04
+    "*minecraft:generic.armor": 0.04
   }
 }

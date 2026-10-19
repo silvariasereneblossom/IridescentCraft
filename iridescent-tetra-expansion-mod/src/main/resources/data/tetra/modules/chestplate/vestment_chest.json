@@ -18,10 +18,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.33,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.33
         },
         "integrity": 1.0,
         "glyph": {
@@ -37,6 +34,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -46,10 +47,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -65,6 +63,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -74,10 +76,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -93,6 +92,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -102,10 +105,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -121,6 +121,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -130,10 +134,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -149,6 +150,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -158,10 +163,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -177,6 +179,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -186,10 +192,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -205,6 +208,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -214,10 +221,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -233,6 +237,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -242,10 +250,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.15,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.15
         },
         "integrity": 1.0,
         "glyph": {
@@ -261,6 +266,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -270,10 +279,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.33,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.33
         },
         "integrity": 1.0,
         "glyph": {
@@ -289,6 +295,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -298,10 +308,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -317,6 +324,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -326,10 +337,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.63
         },
         "integrity": 1.0,
         "glyph": {
@@ -345,6 +353,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -354,10 +366,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -373,6 +382,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -382,10 +395,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -401,6 +411,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -410,10 +424,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -429,6 +440,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -438,10 +453,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -457,6 +469,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -466,10 +482,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -485,6 +498,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -494,10 +511,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -513,6 +527,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -522,10 +540,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -541,6 +556,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -550,10 +569,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -569,6 +585,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -578,10 +598,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -597,6 +614,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -606,10 +627,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -625,6 +643,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -634,10 +656,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -653,6 +672,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -662,10 +685,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -681,6 +701,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -690,10 +714,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -709,6 +730,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -718,10 +743,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -737,6 +759,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -746,10 +772,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -765,6 +788,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -774,10 +801,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -793,6 +817,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -802,10 +830,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -821,6 +846,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -830,10 +859,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {
@@ -849,6 +875,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -858,10 +888,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.15,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.15
         },
         "integrity": 1.0,
         "glyph": {
@@ -877,6 +904,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -886,10 +917,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.15,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.15
         },
         "integrity": 1.0,
         "glyph": {
@@ -905,6 +933,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -914,10 +946,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.18,
-          "irons_spellbooks:max_mana": 60.0,
-          "**irons_spellbooks:spell_power": 0.015,
-          "**irons_spellbooks:mana_regen": 0.06
+          "minecraft:generic.armor": 0.18
         },
         "integrity": 1.0,
         "glyph": {
@@ -933,6 +962,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -942,10 +975,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.225,
-          "irons_spellbooks:max_mana": 75.0,
-          "**irons_spellbooks:spell_power": 0.0188,
-          "**irons_spellbooks:mana_regen": 0.075
+          "minecraft:generic.armor": 0.225
         },
         "integrity": 1.0,
         "glyph": {
@@ -961,6 +991,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -970,10 +1004,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.09,
-          "irons_spellbooks:max_mana": 30.0,
-          "**irons_spellbooks:spell_power": 0.0075,
-          "**irons_spellbooks:mana_regen": 0.03
+          "minecraft:generic.armor": 0.09
         },
         "integrity": 1.0,
         "glyph": {
@@ -989,6 +1020,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -998,10 +1033,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.12,
-          "irons_spellbooks:max_mana": 40.0,
-          "**irons_spellbooks:spell_power": 0.01,
-          "**irons_spellbooks:mana_regen": 0.04
+          "minecraft:generic.armor": 0.12
         },
         "integrity": 1.0,
         "glyph": {
@@ -1017,6 +1049,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -1026,10 +1062,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.33,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.33
         },
         "integrity": 1.0,
         "glyph": {
@@ -1045,6 +1078,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -1054,10 +1091,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0396,
-          "irons_spellbooks:max_mana": 6.0,
-          "**irons_spellbooks:spell_power": 0.0015,
-          "**irons_spellbooks:mana_regen": 0.006
+          "minecraft:generic.armor": 0.0396
         },
         "integrity": 1.0,
         "glyph": {
@@ -1073,6 +1107,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -1082,10 +1120,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.33,
-          "irons_spellbooks:max_mana": 50.0,
-          "**irons_spellbooks:spell_power": 0.0125,
-          "**irons_spellbooks:mana_regen": 0.05
+          "minecraft:generic.armor": 0.33
         },
         "integrity": 1.0,
         "glyph": {
@@ -1101,6 +1136,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -1110,10 +1149,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3168,
-          "irons_spellbooks:max_mana": 48.0,
-          "**irons_spellbooks:spell_power": 0.012,
-          "**irons_spellbooks:mana_regen": 0.048
+          "minecraft:generic.armor": 0.3168
         },
         "integrity": 1.0,
         "glyph": {
@@ -1129,6 +1165,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     },
     {
@@ -1138,10 +1178,7 @@
       "key": "vestment_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3432,
-          "irons_spellbooks:max_mana": 52.0,
-          "**irons_spellbooks:spell_power": 0.013,
-          "**irons_spellbooks:mana_regen": 0.052
+          "minecraft:generic.armor": 0.3432
         },
         "integrity": 1.0,
         "glyph": {
@@ -1157,6 +1194,10 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 50.0,
+        "irons_spellbooks:mana_regen": 0.05
       }
     }
   ]

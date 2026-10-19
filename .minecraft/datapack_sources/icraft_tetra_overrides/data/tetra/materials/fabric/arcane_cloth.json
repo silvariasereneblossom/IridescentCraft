@@ -1,0 +1,34 @@
+{
+  "_comment": "icraft override at tetra:fabric/arcane_cloth (replace: true). Two jars define this path: the pack's expansion jar (key arcane_cloth, max mana +5 a module) and Iron's Spellbooks (key irons_spellbooks_arcane_cloth, **cooldown_reduction 0.15). Tetra merged them field by field and the attributes as a union, so a crafted 12-module arcane-cloth set had cooldown x5.35 (decision list 151). This file is the merged material as the rig read it on 2026-10-18 (probe tstar5 section B: key, stats, tints, textures, the ingredient, the cut requirement), with only the pack's own attribute line: ISS's cooldown is out of the band of decision 150 (a fabric set holds 12 modules: x1.6 at the 0.05 floor, ISS's best is x1.2).",
+  "replace": true,
+  "key": "arcane_cloth",
+  "category": "fabric",
+  "primary": 1,
+  "secondary": 1,
+  "tertiary": 5,
+  "durability": 250,
+  "integrityCost": 1,
+  "integrityGain": 4,
+  "magicCapacity": 160,
+  "toolLevel": 0,
+  "toolEfficiency": 0,
+  "tints": {
+    "glyph": "c8a8ff",
+    "texture": "c8a8ff"
+  },
+  "textures": [
+    "crude",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "irons_spellbooks:magic_cloth"
+    ]
+  },
+  "requiredTools": {
+    "cut": "minecraft:wood"
+  },
+  "attributes": {
+    "irons_spellbooks:max_mana": 5
+  }
+}

@@ -26,7 +26,5 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "attributes": {
-    "minecraft:generic.knockback_resistance": 0.05
-  }
+  "attributes": {}
 }
