@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "97915725",
+    "generated_from":  "728043a3",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3000,8 +3000,8 @@
                                                                                      "size":  1531
                                                                                  },
                   "config/heracles/quests/capstones/capstone_ender_dragon.json":  {
-                                                                                      "sha256":  "6fc4540213285219275785b922375b4c77a0855849de879e36fac7e30c279802",
-                                                                                      "size":  1744
+                                                                                      "sha256":  "d5ed2eb61ef169aef62a9c123ee71e4495ea782a57f25c69aa2c605bb0a03044",
+                                                                                      "size":  1765
                                                                                   },
                   "config/heracles/quests/capstones/capstone_lucifer.json":  {
                                                                                  "sha256":  "0593f2f739baef0c85f9b84080bf91975436c5d2cc0d4697aa2439b6d8ae86f8",
@@ -3116,8 +3116,8 @@
                                                                                  "size":  1251
                                                                              },
                   "config/heracles/quests/engineering/eng_t2_bank.json":  {
-                                                                              "sha256":  "ac3d931eac6446fadf9ba2523b3a60ad6c9ce40c77d05b5628f751b4a410c73a",
-                                                                              "size":  1282
+                                                                              "sha256":  "b5b64bf6ad949ce99ef4651b4533daefdc14e1835cf77aaa7a04d3205af94654",
+                                                                              "size":  1250
                                                                           },
                   "config/heracles/quests/engineering/eng_t2_cell.json":  {
                                                                               "sha256":  "486b2d384cddea2bc4474c62b35dfbf000d4322d24ef86322ea44c52dcae87c2",
@@ -3168,8 +3168,8 @@
                                                                                 "size":  1266
                                                                             },
                   "config/heracles/quests/engineering/eng_t3_bank.json":  {
-                                                                              "sha256":  "e52f5623cdb180adb44c263a550695974f702fee7d50bf2396e34dd4e2292d69",
-                                                                              "size":  1346
+                                                                              "sha256":  "b3cf79f63b9415736c25b0ee9a9fb0024c93771587c55c5a7b734f4a879c846e",
+                                                                              "size":  1314
                                                                           },
                   "config/heracles/quests/engineering/eng_t3_circuits.json":  {
                                                                                   "sha256":  "4b0b54e87aeb23e0ed346b8616332b94259045b13923ddada7f1a587dde477c5",
@@ -3180,12 +3180,12 @@
                                                                                     "size":  1157
                                                                                 },
                   "config/heracles/quests/engineering/eng_t3_crusher.json":  {
-                                                                                 "sha256":  "8d4e03f081280b5322428ce0078044997ec027cd24249fb097486567a0b47eeb",
-                                                                                 "size":  1127
+                                                                                 "sha256":  "04f814bba843dc9042ec62e1891e6b8e66681992ecfc5dc7dd85f6339a5d7f0c",
+                                                                                 "size":  1120
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_crystallizer.json":  {
-                                                                                      "sha256":  "17ed89b287385ac39f8b6c639f5178ecf0aea77fd9103cf0dbdfd3355a9eda63",
-                                                                                      "size":  1311
+                                                                                      "sha256":  "376287bb08ca491a90f5e30c9005dfe44fbd263081449d96c6aa353bb8b7fe14",
+                                                                                      "size":  1383
                                                                                   },
                   "config/heracles/quests/engineering/eng_t3_energized.json":  {
                                                                                    "sha256":  "cf8c30bb3cb8b624c4be9d91ea47a8338b33689737218f434af2fa8d4f189e37",
@@ -3212,16 +3212,16 @@
                                                                                  "size":  1267
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_injection.json":  {
-                                                                                   "sha256":  "125bc3bed10e4078fe4497c320a347772596404376173c7c9a23bd9e3d866285",
-                                                                                   "size":  1226
+                                                                                   "sha256":  "c95f794b432b9d1067c659fc02d0645c6352553882a803615c5a708e8184c4c5",
+                                                                                   "size":  1269
                                                                                },
                   "config/heracles/quests/engineering/eng_t3_orechain.json":  {
-                                                                                  "sha256":  "de7cf026809bdd99e596b5f71e58ed2e083a4772ff0660c1fcf3ad02a6d41e90",
-                                                                                  "size":  1557
+                                                                                  "sha256":  "393645b51055fd5551455549e41a6f5b9af85abacd3e36d9260404c85fe5af32",
+                                                                                  "size":  1595
                                                                               },
                   "config/heracles/quests/engineering/eng_t3_purification.json":  {
-                                                                                      "sha256":  "243244d1727d834eefe48123fd0fffa9856f6fed3609050755e8a0c4d3ad254e",
-                                                                                      "size":  1180
+                                                                                      "sha256":  "9d092ee9e55fdb8d4b370d39fcca898983cdb41d63a86541ad0ca408d7dbcc04",
+                                                                                      "size":  1209
                                                                                   },
                   "config/heracles/quests/engineering/eng_t3_unlock.json":  {
                                                                                 "sha256":  "645a2d1833861fa381c690cd790c9d4e0309ece4191cc848bc1e1615adf99545",
@@ -3320,12 +3320,12 @@
                                                                         "size":  1057
                                                                     },
                   "config/heracles/quests/main/main_diamond_armor.json":  {
-                                                                              "sha256":  "3bab36f9af2ee6a39ffe8ec3975bf739671a692663a4d042371c5480fc30ed08",
-                                                                              "size":  954
+                                                                              "sha256":  "ae427bf661b2361c56725beb1fffa807284c03a7b4efa99ca58642f4d25f963e",
+                                                                              "size":  982
                                                                           },
                   "config/heracles/quests/main/main_diamonds.json":  {
-                                                                         "sha256":  "07a38991275fd8b47ba275a330eddcabd6d0d90b680467c8360c31fc63221775",
-                                                                         "size":  1105
+                                                                         "sha256":  "6cbfa8d7bc9fd2c6b777f3f1b15898b8a155b0268a45e9d57d0c5c8d94326d7c",
+                                                                         "size":  1123
                                                                      },
                   "config/heracles/quests/main/main_enchant.json":  {
                                                                         "sha256":  "7ac753ca0a3def340f6a3916fea077773017b67bfb1963194f9d347567d01f1d",
@@ -3468,8 +3468,8 @@
                                                                                                     "size":  1208
                                                                                                 },
                   "config/heracles/quests/overworld_foundations/ovf_capstone.json":  {
-                                                                                         "sha256":  "db3689ff43fde41d9d13c29fb2e0608804e024c6f4b68d7fe2bb980aca90c687",
-                                                                                         "size":  3186
+                                                                                         "sha256":  "1e5c7b8ae8ade16085cfd38d458dea492c95d17d3e4f0fc04f93f73d38df5b6b",
+                                                                                         "size":  3150
                                                                                      },
                   "config/heracles/quests/overworld_foundations/ovf_create_andesite.json":  {
                                                                                                 "sha256":  "8c9a497f3248d15996e7ff2ee78c223544ee17016068e1ef42fd61526937865c",
@@ -3496,8 +3496,8 @@
                                                                                               "size":  1108
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_frostmaw.json":  {
-                                                                                                "sha256":  "60bed134e7d198ac6389b2318c840eb3533f07113ebf99a62b1d20df71271b31",
-                                                                                                "size":  1193
+                                                                                                "sha256":  "b49f7dc4adce93d6575a37ad6023b3e709509b162c39dc3b20722428b123288a",
+                                                                                                "size":  1208
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_sculptor.json":  {
                                                                                                 "sha256":  "38663a9dd2ee296156115ba166c3b700c7f8ab79faa49b8595b84df0cd3ec389",
@@ -3568,8 +3568,8 @@
                                                                                    "size":  1162
                                                                                },
                   "config/heracles/quests/practical_magic/iss_t2_arcane_anvil.json":  {
-                                                                                          "sha256":  "d346501ad8795e62c2a58ffb9a48243d69f3122e205bb9bc4d1d26a157aafdea",
-                                                                                          "size":  1088
+                                                                                          "sha256":  "e63e920fa10c5c3738e3854c94820d3573cdd34d145c0af202c0e4aa47dceb2e",
+                                                                                          "size":  1144
                                                                                       },
                   "config/heracles/quests/practical_magic/iss_t2_gold_book.json":  {
                                                                                        "sha256":  "a3e29b911c83e699542811298dd999b1a2749fcbd9551aabfc2ef6276104a22d",
@@ -3580,8 +3580,8 @@
                                                                                       "size":  1082
                                                                                   },
                   "config/heracles/quests/practical_magic/iss_t2_rune.json":  {
-                                                                                  "sha256":  "8221490b26ad7150b4abc12136dd891e9f1265011b0460a9ec152ac546d0e38b",
-                                                                                  "size":  1106
+                                                                                  "sha256":  "4778096c16a016098afbc924c18922cfc489a7361bd1b52c94a02c8dd7af1581",
+                                                                                  "size":  1197
                                                                               },
                   "config/heracles/quests/practical_magic/iss_t2_scroll_forge.json":  {
                                                                                           "sha256":  "136153587aa3a315ead38de0b3b7bf64e7bc8468607da58bf740490e66ab5487",

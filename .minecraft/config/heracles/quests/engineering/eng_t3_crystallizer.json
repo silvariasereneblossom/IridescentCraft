@@ -4,14 +4,15 @@
     "title": "T3: The Chemical Crystallizer",
     "subtitle": "5x ore, the final stage",
     "description": [
-      "The §bChemical Crystallizer§r closes the §b5x ore§r chain: it crystallizes",
-      "the processed slurry back into clean material, completing Enrichment ->",
-      "Purification -> Injection -> Crystallizer for the full five-ingot yield.",
+      "The §bChemical Crystallizer§r is the §b5x§r step. A Chemical Dissolution",
+      "Chamber dissolves ore in sulfuric acid, a Chemical Washer cleans the",
+      "slurry, and the Crystallizer makes five crystals from each ore. The",
+      "crystals then run the 4x line: injection, purification, crusher, enrichment.",
       "",
       "Build a Chemical Crystallizer to complete this quest and finish the chain the",
       "whole Engineering lane has climbed toward.",
       "",
-      "§7With all four machines you reach true 5x ore, the apex of T3 processing."
+      "§7With the full line you reach true 5x ore, the apex of T3 processing."
     ],
     "groups": { "Engineering": { "position": [2240, 480] } }
   },

@@ -7,8 +7,8 @@
     "title": "Iron's Spellbooks: The Arcane Anvil",
     "subtitle": "Build an Arcane Anvil",
     "description": [
-      "The \u00a76Arcane Anvil\u00a7r upgrades books, applies runes, and reforges caster",
-      "gear."
+      "The \u00a76Arcane Anvil\u00a7r adds spell slots to books, applies upgrade orbs",
+      "to gear, imbues weapons with spells and merges matching scrolls."
     ],
     "groups": {
       "Practical Magic": {

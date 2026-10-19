@@ -7,8 +7,9 @@
     "title": "Iron's Spellbooks: First Rune",
     "subtitle": "Forge a Rune",
     "description": [
-      "Runes socket permanent power into your gear. Carve a \u00a76Fire Rune\u00a7r and",
-      "etch it onto a book or weapon at the Arcane Anvil."
+      "Runes are crafting reagents. Craft a \u00a76Fire Rune\u00a7r, then ring an Empty",
+      "Upgrade Orb with eight of them to make a Fire Upgrade Orb. The Arcane",
+      "Anvil applies that orb to your gear for more fire spell power."
     ],
     "groups": {
       "Practical Magic": {

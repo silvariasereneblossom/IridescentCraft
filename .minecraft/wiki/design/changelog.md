@@ -13,6 +13,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **Tetra armor and wands.** The Runed schematics describe the Runed weave (they had the Vestment's text). Goggles add mana and spell power, the decorative trim adds armor, the wand cap has nothing for cast speed, and the wand's tier comes from honing. Some 25 small parts no longer promise effects they never had.
 - **The End.** The Dragon Summoning Crystal is used by holding it and sneaking at the fountain, and the texts now say so. The "End City" milestone is reached 1000 blocks out. A full-moon warning that never appeared is gone.
 - **The Codex submit message** names the lane you submitted to.
+- **Quests.** The Finale no longer says the Dragon unlocks Ad Astra (its planets open at Tier 4). The rune quests say runes make upgrade orbs, which the Arcane Anvil applies. The Mekanism ore quests give the real order, 2x to 5x, each step a machine in front of the last. Frostmaw's tip no longer suggests fire resistance (its breath freezes). The two diamond quests have their own names and say they complete when Tier 3 is granted, and two "provisional" notes are gone.
 
 ## October 2026: Unique weapons (18 October)
 

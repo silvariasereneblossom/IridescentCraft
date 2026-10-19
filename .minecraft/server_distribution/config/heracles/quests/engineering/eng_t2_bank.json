@@ -27,7 +27,7 @@
     }
   },
   "rewards": {
-    "tokens": { "type": "heracles:item", "title": "Codex Tokens II (PROVISIONAL: amount per draft)", "item": { "id": "icraft:progression_token_t2", "count": 40 } },
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens II", "item": { "id": "icraft:progression_token_t2", "count": 40 } },
     "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
   }
 }

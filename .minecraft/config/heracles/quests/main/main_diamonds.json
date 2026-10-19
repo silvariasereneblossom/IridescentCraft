@@ -2,13 +2,13 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:diamond" },
     "title": "A Diamond in the Rough",
-    "subtitle": "Mine your first diamonds",
+    "subtitle": "Diamonds open at Tier 3",
     "description": [
       "The classic milestone, but in IridescentCraft diamonds are a §9Tier 3§r",
       "material, held back from early worldgen and chests on purpose.",
       "",
-      "Once you've earned your way to Tier 3, dig deep (Y -59 to -50 is richest)",
-      "and bring home your first diamonds."
+      "This quest completes when the Codex grants you Tier 3. Then dig deep",
+      "(Y -59 to -50 is richest) and bring home your first diamonds."
     ],
     "groups": { "The Frontier": { "position": [0, 120] } }
   },
@@ -17,7 +17,7 @@
   "tasks": {
     "mine_diamond": {
       "type": "heracles:advancement",
-      "title": "Mine a diamond",
+      "title": "Reach Tier 3",
       "advancements": ["minecraft:story/mine_diamond"]
     }
   },

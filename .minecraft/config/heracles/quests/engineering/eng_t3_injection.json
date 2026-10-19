@@ -4,14 +4,14 @@
     "title": "T3: The Chemical Injection Chamber",
     "subtitle": "5x ore, stage three",
     "description": [
-      "The §bChemical Injection Chamber§r is stage three of the §b5x ore§r chain:",
-      "it injects a reactive gas to push ore yield past what purification alone",
-      "reaches.",
+      "The §bChemical Injection Chamber§r is the §b4x§r step: hydrogen chloride",
+      "turns one ore into four shards, which then go through the Purification",
+      "Chamber, the Crusher and the Enrichment Chamber.",
       "",
-      "Build a Chemical Injection Chamber to complete this quest. The chain is one",
-      "machine from the full 5x now.",
+      "Build a Chemical Injection Chamber to complete this quest. One more step",
+      "(dissolve, wash, crystallize) makes it 5x.",
       "",
-      "§7The third of the four machines in the 5x ore chain."
+      "§7The third of the four ore machines in this lane."
     ],
     "groups": { "Engineering": { "position": [2080, 480] } }
   },
