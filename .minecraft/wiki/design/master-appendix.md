@@ -329,7 +329,7 @@ Every `event.remove` and `event.shaped` (override) call in `kubejs/server_script
 
 ### B.3 `recipes/tier_skip.js`: transmutation (retired)
 
-The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is **not in the game**: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops are the remaining bend mechanism.
+The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is **not in the game**: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops, the other bend mechanism, are designed and not in the game (master Part II).
 
 The Rift Keystone recipe that lived in the same file (4 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`) is now in the Mythic Forge script (I.6), with other ingredients: one each of Void Essence, Dragon Heart, Gaia Ingot, Nether Star and Rift Shard.
 
@@ -944,14 +944,14 @@ All `kubejs:*` items, ~80 in total, by category. Source: `kubejs/startup_scripts
 - `kubejs:icraft_rift_shard`: primary endgame currency. Renamed from `kubejs:rift_shard` on 2026-04-27 to resolve a namespace collision with `too_many_bows:rift_shard`. The old ID is still registered as a deprecated alias for the migration window (~2 weeks). Migration script: `kubejs/server_scripts/migrations/rift_shard_rename.js`.
 - `kubejs:rift_shard`: deprecated alias (migration target).
 - `kubejs:void_fragment`: secondary endgame currency.
-- `kubejs:rift_keystone`: Rift entry item (consumed on Rift entry).
+- `kubejs:rift_keystone`: Rift entry item (consumed on Rift entry). Its recipe is closed until the Rift exists (2026-10-19).
 - `kubejs:rift_core`: rare Mythic Catalyst V reagent.
-- `kubejs:rift_blueprint`: Mythic unique recipe slot ingredient.
+- `kubejs:rift_blueprint`: Mythic unique recipe slot ingredient. Nothing drops it: the Rift is not built.
 - `kubejs:rift_gem`: Mythic Forge intermediate.
 - `kubejs:primordial_essence`: most expensive crafting reagent (Glacio rocket + Mythic catalysts III-V).
 - `kubejs:mythic_forge` (block-item): endgame crafting station.
-- `kubejs:mythic_catalyst_1` … `kubejs:mythic_catalyst_5`: escalating Mythic effect tokens.
-- `kubejs:mythic_reforge_token`: gear-modifier reset.
+- `kubejs:mythic_catalyst_1` … `kubejs:mythic_catalyst_5`: escalating Mythic effect tokens. They craft, but nothing applies them to gear yet; the Engineering capstone quest asks for a Catalyst V.
+- `kubejs:mythic_reforge_token`: gear-modifier reset. Its recipe is closed until the Rift exists.
 - `kubejs:void_coffer`: Rift-banking storage.
 - `kubejs:dragon_summoning_crystal`: Ender Dragon respawn reagent.
 
@@ -1338,7 +1338,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | Script | Role |
 |--------|------|
 | `rift_mechanics.js` | T4 boss Rift material drops (12 bosses) + End mob drops + persistentData tracking + Compendium milestones |
-| `mythic_forge.js` | Mythic Forge crafting station + 5 Mythic Catalysts + Reforge Token + 4 unique-item recipes (Voidheart/Aegis/Boots/Crown) |
+| `mythic_forge.js` | Mythic Forge crafting station + 5 Mythic Catalysts + Reforge Token + 4 unique-item recipes (Voidheart/Aegis/Boots/Crown); since 2026-10-19 the Keystone, Void Coffer, Reforge Token and unique recipes are closed until the Rift exists (`RIFT_BUILT`) |
 | `ascension.js` | 5-level prestige cycle + mob scaling + persistentData tracking |
 
 ### I.7 `attributes/`

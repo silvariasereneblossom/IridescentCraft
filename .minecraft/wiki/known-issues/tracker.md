@@ -65,7 +65,7 @@ Marquee structures are moving to per-structure themed loot pools (70% themed / 3
 In the past the game could launch on a stale pack with no warning when an update failed. The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately). A sync that did not complete is written to a status file in the instance, and since 2026-10-18 the game says so in chat when you join a world.
 
 ### Ad Astra (space dimensions): **In progress**
-The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). Loot and space enchantments are still in progress. The `planetary_loot` system has a known low-priority error that will clear once that work lands.
+The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). The space enchantments' books lie in chests on their planets, and since 2026-10-19 three levels across a set of armour stop a planet's hazard (they took 99% off before). The `planetary_loot` system has a known low-priority error that will clear once that work lands.
 
 ### ~72 custom items use placeholder art: **Open**
 About 72 custom items (progression tokens, boss materials, rings, end-game items, etc.) use tinted vanilla textures for now, as functional, color-coded placeholders. Proper pixel art is a pending polish task.

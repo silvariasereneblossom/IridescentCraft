@@ -32,7 +32,7 @@ Terms that recur throughout this document.
 | **Progression token** | A physical, tiered item submitted to the Codex to advance a tier. Tokens come from four lanes (Engineering / Magic / Exploration / Combat) into one combined pool. They replace the former internal boss-kill counter. |
 | **ISS** | Iron's Spellbooks. The pack's primary spell-system mod; it provides the ink/rune/upgrade-orb reagents that are spread across every dimension's bosses. |
 | **F&A** | Forbidden & Arcanus. T3 magic mod centered on the Hephaestus Forge. |
-| **Mythic Forge** | Custom T4 crafting station for unique endgame items (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown, MekaSuit Mk2). |
+| **Mythic Forge** | Custom T4 crafting ingredient for the five Mythic Catalysts. Its unique endgame items (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) wait for Oblivion's Rift, which is not built. |
 | **Iridescent Modular Spells** | Custom Forge content mod that connects Tetra's modular-item workbench to ISS and Ars Nouveau spell books, with 15 modular variants. It ships inside the bundled `iridescent_tetra_expansion` jar (with Iridescent Reforging). |
 | **Token economy** | Tier-transition model. A player advances a tier by reaching its token threshold (500 / 1000 / 2000, banked in one combined pool) or its boss-rush % (clear 80 / 90 / 100% of the tier's bosses). Four lanes feed the pool: Engineering / Magic / Exploration / Combat. See Part III. |
 
@@ -75,7 +75,7 @@ The pack is expert-lite: players automate, specialize, and hunt bosses for uniqu
 
 2. **Four-lane progression.** Every tier transition can be solved through any single lane (Engineering, Magic, Exploration, or Combat) by banking enough progression tokens, or by clearing the tier's boss roster. Build a Create farm and submit the machines, cultivate Botania mana and submit the reagents, loot dimensions, or hunt bosses: each lane reaches the threshold on its own, and hybrids mix freely. Specialization is supported and never punished. (See Part III.)
 
-3. **Abundance of tools, not scarcity.** Gates decide when you unlock things, not whether you can. Mid-tier curios have no lifetime caps, rare drops are not lottery-locked, and a tier-skip mechanic exists (boss tier-peek) so players can sample next-tier power before unlocking it. The pack rewards engagement over patience.
+3. **Abundance of tools, not scarcity.** Gates decide when you unlock things, not whether you can. Mid-tier curios have no lifetime caps, rare drops are not lottery-locked, and a tier-skip mechanic was designed (boss tier-peek, not in the game) so players could sample next-tier power before unlocking it. The pack rewards engagement over patience.
 
 4. **No-drop death, durability cost.** Inventory survives death. The penalty is durability damage to equipped gear and XP loss. The Soulbound enchantment is the high-cost end-game protection. Dying isn't catastrophic, but it isn't free.
 
@@ -214,11 +214,11 @@ The token economies depend on a set of recipe overrides that un-gate "T1/T2" sub
 
 One mechanism lets a current-tier player get small amounts of next-tier material, so they can sample next-tier power without skipping the unlock:
 
-- Boss tier-peek drops: current-tier bosses occasionally drop next-tier reagents, at 5 to 15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires. (Not in the game as of 2026-10-18: no boss drops a next-tier reagent, and the loot scripts strip ancient debris and netherite scrap from boss loot.)
+- Boss tier-peek drops: current-tier bosses occasionally drop next-tier reagents, at 5 to 15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires. (Not in the game, and left out for now (2026-10-19): no boss drops a next-tier reagent. The pack's tier stages stop a player from picking up an item of a tier they have not reached, so such a drop would stay on the ground, and steel is a Tier 2 material now.)
 
 It preserves the gate (a player cannot fully outfit themselves in next-tier gear without unlocking it) while rewarding investment. (A second mechanism was designed but never became recipes: *transmutation*, expensive recipes turning current-tier materials into a little next-tier material. Its placeholder items were removed in October 2026.)
 
-→ Recipe costs and tier-peek drop percentages: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state) and [§C](master-appendix.md#c-boss--loot-mapping).
+→ The tier-skip recipe state: [Appendix §B](master-appendix.md#b-tier-skip-recipe-state); boss drops: [§C](master-appendix.md#c-boss--loot-mapping).
 
 ### The T3 → T4 combat pinch + the End
 
@@ -423,11 +423,11 @@ Several classes are explicitly glass cannons, with a high damage ceiling at the 
 
 ### HP and equipment scaling
 
-The Class layer is the only character layer that modifies HP and damage percentages. Race traits stay in the secondary-stats lane (movement, hunger, environmental resistances). Origins provide species fantasy without flat HP/damage skews.
+The Class layer holds the largest HP and damage levers: the half-equipment-HP rule, the tank's armour and the mage classes' spell power (up to x2.5 in a school). Races change health and damage too, on a scale close to the classes': a race's max health runs from 16 to 28, a class's from 16 to 24 (measured on a full-pack boot, 2026-10-19). Origins provide species fantasy without flat HP/damage skews.
 
 > Design rule: Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
 
-> In the game (2026-10-18) eight of the eleven races change health or damage: Orc +20% health and +10% melee damage, Demi-God +8 health, Ryu +4 health and 25% less damage taken, Faefolk -15% health, +30% magic damage and -30% melee damage, Fallen Angel -4 health and +15% damage dealt, Kirin -2 health, Halfling -5% attack damage, Elf +5% magic damage. The rule above and the races disagree; [Appendix §K.3](master-appendix.md#k3-race-tradeoffs) has the full tables.
+> Nine of the eleven races change health or damage (health and damage dealt measured on a full-pack boot, 2026-10-19): Orc 24 health and +10% melee damage, Demi-God 28 health, Ryu 24 health and 25% less damage taken, Faefolk 17 health, +30% magic and -30% melee damage, Fallen Angel 16 health, +15% damage dealt and a permanent Strength I (+3 melee damage), Kirin 18 health (16 once the pack's own Nine Lives override loads; it does not yet), Halfling -5% melee damage, Elf +15% ranged and +5% magic damage, Revenant +20% melee damage in the dark and Weakness in sunlight without a helmet. Human and Dwarf (fire resistance only) change neither. Kept as built on recommendation (2026-10-19, for review): the traits are what makes each race, and the class layer still holds the larger levers (magic up to x2.5 against a race's x1.3). [Appendix §K.3](master-appendix.md#k3-race-tradeoffs) has the full tables.
 
 | Archetype | Classes | HP modifier | Equipment HP | Damage modifier |
 |-----------|---------|------------:|:------------:|:---------------:|
@@ -453,9 +453,9 @@ Vanguard's -30% melee damage penalty is the matching tank tradeoff: maximum surv
 
 Races provide innate traits with mild tradeoffs, less impactful than the class choice. A race is permanent from character creation.
 
-> Race design principles: every race has 2 to 3 benefits and 1 to 2 drawbacks. Drawbacks are inconveniences, never crippling. Races do *not* duplicate class identities (no "warrior race" overlapping Berserker). Races do not modify HP%, damage%, or equipment effectiveness; those belong to the Class layer.
+> Race design principles: every race has 2 to 3 benefits and 1 to 2 drawbacks. Drawbacks are inconveniences, never crippling. Races do *not* duplicate class identities (no "warrior race" overlapping Berserker). Races may change health and damage (see the note above); equipment effectiveness and the large school multipliers belong to the Class layer.
 
-What races *can* modify: movement speed (small, ±5 to 8%), hunger/saturation, vision (night/underwater), environmental resistances (fire/cold/fall), size (via Pehkui), resource interaction (mining/farming), social (villager prices, mob aggro).
+What races *can* modify: health and damage (as above), movement speed (small, ±5 to 8%), hunger/saturation, vision (night/underwater), environmental resistances (fire/cold/fall), size (via Pehkui), resource interaction (mining/farming), social (villager prices, mob aggro).
 
 The 11 race roster spans utility flavor (Human, Halfling), mobility specialists (Elf, Kirin, Fallen Angel), durability specialists (Dwarf, Demi-God, Ryu), and theme-driven races (Orc, Faefolk, Revenant). Each race has a "natural class pairing", but every race-class combination is viable.
 
@@ -744,7 +744,7 @@ Rifts are the procedural-dungeon endgame. Each Rift run:
 4. Rift floor modifiers randomize each run: Silenced (no spells), Disarmed (no ranged), Thorned (reflect damage), Volatile (mob explosions on death), etc. Some modifiers hard-counter specific builds; others trivialize them.
 5. Death inside the Rift returns the player to base; the keystone is consumed regardless of completion.
 
-The Void Coffer (T4 craftable) lets the player bank items mid-Rift without losing them on death.
+The Void Coffer lets the player bank items mid-Rift without losing them on death. (Not in the game: its recipe is closed until the Rift exists.)
 
 Compendium tracking captures every Rift-shard pickup, Rift Keystone craft, Rift Core acquisition, and Primordial Essence acquisition. Floor depth records feed into Loop 4.
 
@@ -753,13 +753,13 @@ Compendium tracking captures every Rift-shard pickup, Rift Keystone craft, Rift 
 The Mythic Forge is the uniques-crafting endgame. Crafted from Iridescent Rift Shard + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite, it is the workbench for six endgame products:
 
 1. Mythic Catalysts I to V: escalating power tokens used as "apply this Mythic effect to gear" reagents. The top two tiers (IV and V) require an Antimatter Pellet apex reagent, which makes the engineering endgame (the SPS-to-antimatter run) a hard gate on the highest Mythic catalysts. It is one of several deliberate antimatter sinks, alongside the per-piece MekaSuit Mk2 upgrade and a Codex pellet-to-token exchange (capped) that lets a pure tech player convert antimatter into progression tokens.
-2. Mythic Reforge Token: an Apotheosis-style gear-modifier reset (3 Primordial Essences).
+2. Mythic Reforge Token: an Apotheosis-style gear-modifier reset (3 Primordial Essences). (Not in the game: its recipe is closed until the Rift exists.)
 3. Voidheart Blade (sword): base `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
 4. Oblivion Aegis (chestplate): base netherite chestplate. Death-delay protection.
 5. Riftwalker Boots: base netherite boots. Teleport + speed.
 6. Oblivion Crown (helmet): base netherite helmet. Wallhack vision + first-strike bonus.
 
-All four Mythic Uniques use Rift Blueprints as a slot ingredient. Blueprints drop from Rift completions, which ties Loops 1 and 2 together. (As of 2026-10-18 the Rift is designed, not built: the `kubejs:rift_blueprint` item exists and the Mythic Forge recipes ask for it, but nothing drops it, so no Mythic Unique can be made yet.)
+All four Mythic Uniques use Rift Blueprints as a slot ingredient. Blueprints drop from Rift completions, which ties Loops 1 and 2 together. (Not in the game: the Rift is designed, not built, so nothing drops a Rift Blueprint. Since 2026-10-19 the four Unique recipes, the Rift Keystone, the Void Coffer and the Mythic Reforge Token are closed until the Rift exists; the Mythic Forge and the five catalysts still craft.)
 
 ### Loop 3: Build Diversity
 

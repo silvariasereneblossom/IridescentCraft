@@ -60,7 +60,7 @@ The canonical design reference for all modpack systems.
 | Engineering questline | Implemented | 14-quest Heracles engineering line (intro through T4 fusion/antimatter capstone) plus an Engineering Lane Codex category with 5 entries |
 | Patchouli Codex | Working | 14 categories, 113 entries (as of 2026-10-18), advancement-gated |
 | Book suppression | Working | Duplicate mod guidebooks suppressed |
-| Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
+| Endgame loops (Part VIII) | Partly | Rift Shards drop from late bosses and the Mythic Forge crafts the five catalysts; Oblivion's Rift and the Mythic Uniques are not built |
 | Prestige/Ascension (Part IX) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
 | Loot table overhaul | Implemented | 35+ structure mods, boss drops, tier tokens |
 | Villager trade rework | Implemented | Books removed, XP trades added |
