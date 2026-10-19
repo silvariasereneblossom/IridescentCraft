@@ -1,3 +1,0 @@
-#010 minecraft:forest
-#3DC minecraft:plains
-#51A minecraft:stony_shore
