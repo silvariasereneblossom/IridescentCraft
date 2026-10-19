@@ -18,6 +18,8 @@
 // EXCLUDED ITEMS (registered but deliberately NOT in any pool):
 //   polymerization / superpolymerization — dead crafting reagents (recipes gone)
 //   katana — upstream dead asset (never had an item)
+//   blackstone_heart — a curio with no effect (nothing in the fork or the pack
+//     reads it; its own name says "(Not Implemented)"); out of LSP_T3 2026-10-18
 //   flat_ice / solid_ice / molten_dirt / molten_stone / soul_light — blocks,
 //     placed-world only (cake.png is an upstream dead texture, no item); moja_cola
 //     folds into T1 as a flavor find.
@@ -118,7 +120,6 @@ LootJS.modifiers(icraft.guard('loot/lovely_pieces_loot', 'LootJS.modifiers', fun
     LootEntry.of('lovely_sparkle_pieces:super_magnetic_ring').withWeight(2),
     LootEntry.of('lovely_sparkle_pieces:ender_ring').withWeight(1),
     LootEntry.of('lovely_sparkle_pieces:inferno_ring').withWeight(1),
-    LootEntry.of('lovely_sparkle_pieces:blackstone_heart').withWeight(1),
     LootEntry.of('lovely_sparkle_pieces:blaze_core').withWeight(1),
     LootEntry.of('lovely_sparkle_pieces:capitalist_heat').withWeight(1),
     LootEntry.of('lovely_sparkle_pieces:wood_grain_quiver').withWeight(1),

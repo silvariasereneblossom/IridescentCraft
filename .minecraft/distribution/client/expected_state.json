@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "7453b9da",
+    "generated_from":  "3d89906e",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5880,8 +5880,8 @@
                                                                               "size":  372
                                                                           },
                   "kubejs/assets/lovely_sparkle_pieces/lang/en_us.json":  {
-                                                                              "sha256":  "68e56ff46e66d7b0ba74d89d6a66a0d54eadcfb0b8d3c17a74d0f0d01e20aad8",
-                                                                              "size":  714
+                                                                              "sha256":  "5f3d01313389580ceda4e718a94c73cf749162802f493a5a00341bfeafb95b7b",
+                                                                              "size":  791
                                                                           },
                   "kubejs/assets/modonomicon/lang/en_us.json":  {
                                                                     "sha256":  "5a1a72a57501f051468a4756de3faa65c11f35eef2010e40d3633b233c1453b5",
@@ -7516,8 +7516,8 @@
                                                                         "size":  196868
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
-                                                                           "sha256":  "b0d9c7335dc62413aa628a142f163dd199c849eaf6588e6d005b1b7550d4fc11",
-                                                                           "size":  14504
+                                                                           "sha256":  "f2cdb23a2f9c458b11c6339c28b2f7f93c5b052ce3a3656e166dd60b7451f427",
+                                                                           "size":  14594
                                                                        },
                   "kubejs/server_scripts/loot/mahou_synergy_drops.js":  {
                                                                             "sha256":  "8e8b66496e11de216f4c2179cab0062e6f5adb5a4d178ea72e62a24a3fec02e4",
