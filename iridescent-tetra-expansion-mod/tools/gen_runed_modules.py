@@ -25,7 +25,16 @@
 #   python3 tools/gen_runed_modules.py
 # =============================================================================
 import json
+import sys
 from pathlib import Path
+
+# 2026-10-18: a one-shot that has already run. Since then the Runed stats were set by
+# tools/set_mage_archetype_stats.py and the Runed texts were written by hand (this
+# script's gen_lang had copied Vestment's schematic descriptions onto Runed). Running
+# it again overwrites both, so it refuses unless asked in so many words.
+if __name__ == "__main__" and "--overwrite-runed" not in sys.argv:
+    sys.exit("gen_runed_modules.py: refused. It would overwrite the Runed modules, schematics and "
+             "lang with Vestment-derived values; pass --overwrite-runed to do that on purpose.")
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
 MODULES_DIR    = MOD_ROOT / "src" / "main" / "resources" / "data" / "tetra" / "modules"
