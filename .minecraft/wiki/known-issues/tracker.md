@@ -11,7 +11,7 @@ Status legend: **Open** · **Investigating** · **Mitigated** (worked around; sa
 ## Open / In-progress
 
 ### Some chests roll the pack's extra loot twice: **Open (design decision pending)**
-Forbidden & Arcanus adds its own items to End City treasure, bastion treasure, jungle temple, pillager outpost, dungeon and village weaponsmith chests in a way that runs the pack's loot rules a second time, so those chests can hold a second Codex token and other extras. The Ender Dragon had the same fault and drops each item once since 2026-10-19; the chests wait for a ruling, since their token rates change with the fix.
+Forbidden & Arcanus adds its own items to End City treasure, bastion treasure, jungle temple, pillager outpost, dungeon and village weaponsmith chests in a way that runs the pack's loot rules a second time, so those chests can hold a second Codex token and other extras. The Ender Dragon had the same fault; since 2026-10-19 it drops each item once. The chests wait for a ruling, because the fix changes their token rates.
 
 ### Kill quests: kills from before 2026-10-13 are not credited (**Known limitation**)
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
