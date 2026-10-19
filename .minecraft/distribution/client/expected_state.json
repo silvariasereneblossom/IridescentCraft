@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "00a4f331",
+    "generated_from":  "652cc48e",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5995,6 +5995,10 @@
                                                      "sha256":  "eb0bfaed60482e4e159ff4e2452cc098de57689f7cc82b4c9d9f112548173da6",
                                                      "size":  1005
                                                  },
+                  "kubejs/data/ad_astra/tags/items/space_resistant_armor.json":  {
+                                                                                     "sha256":  "ab1f297b89154fd86fe42790d56bb78c913ac09d6d14dfbbe8642220b31b3cc6",
+                                                                                     "size":  938
+                                                                                 },
                   "kubejs/data/ad_astra_more_structures/loot_tables/entities/mercury_boss.json":  {
                                                                                                       "sha256":  "402aaac363c82fec7aec2cc54259b41d739b4a0cb913c47636936ea507c2a6cd",
                                                                                                       "size":  1962

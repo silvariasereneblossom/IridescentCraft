@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "_comment": "The MekaSuit is the pack's space armour (Codex Space Suits page; designdocs/IridescentCraft_Ad_Astra_Integration.md: it fills the removed Jet Suit's role). Ad Astra 1.15.20 checks this tag before its oxygen tick (OxygenApiImpl.entityTick) and its temperature tick (TemperatureApiImpl.entityTick): a full set of it skips oxygen loss, heat and cold on every planet and orbit. Only those two read it (not the suit model, the dye mixin or SpaceSuitItem), so the MekaSuit is not treated as an Ad Astra suit anywhere else and needs no oxygen tank. The Mk2 is the same four items with an NBT marker, so it is covered too. Acid rain on Venus is exempted by entity type only and hits every suit. Operator ruling 2026-10-19 12:50 EDT: \"Make it a space suit\".",
+  "values": [
+    "mekanism:mekasuit_helmet",
+    "mekanism:mekasuit_bodyarmor",
+    "mekanism:mekasuit_pants",
+    "mekanism:mekasuit_boots"
+  ]
+}
