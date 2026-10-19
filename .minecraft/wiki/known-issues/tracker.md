@@ -10,9 +10,6 @@ Status legend: **Open** · **Investigating** · **Mitigated** (worked around; sa
 
 ## Open / In-progress
 
-### Some chests roll the pack's extra loot twice: **Open (design decision pending)**
-Forbidden & Arcanus adds its own items to End City treasure, bastion treasure, jungle temple, pillager outpost, dungeon and village weaponsmith chests in a way that runs the pack's loot rules a second time, so those chests can hold a second Codex token and other extras. The Ender Dragon had the same fault; since 2026-10-19 it drops each item once. The chests wait for a ruling, because the fix changes their token rates.
-
 ### Kill quests: kills from before 2026-10-13 are not credited (**Known limitation**)
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
@@ -153,6 +150,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - New: `/icraft armormods` dumps every live armor/toughness modifier on you, for precise bug reports.
 
 **Loot & chests**
+- Some chests rolled the pack's extra loot twice: Forbidden & Arcanus's additions to End City and bastion treasure, jungle temples, desert pyramids, underwater ruins, pillager outposts, dungeons and the three village smiths ran every other loot rule a second time, so those chests held about twice the Codex tokens, Tetra scrolls and darts their loot rules give. Since 19 October 2026 (chests opened from the next server restart) each rolls once, like the Ender Dragon's drops; village artifacts stay at about one chest in ten.
 - Stray high-tier drops were traced and fixed at the source: passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities are no longer equipped or scaled, and script-equipped mob gear no longer drops on death. (The diamond/ender-eye-on-spiders symptom was part of this and is resolved: it was intended modded entity loot, not a mystery injector.)
 - Two datapacks that had silently stopped loading (the stone-tag fixer and the infinite-ham blocker) are loading again; both had been rejected for a packaging error.
 - A LootJS strip rule that referenced a non-existent item id no longer errors.

@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Summons, chest loot and the tester sync (19 October)
+
+- **Dark Pact reaches every blow of an Iron's Spells summon.** The Void Summoner's +15 % reached tamed animals and raised skeletons' arrows only; summoned zombies, vexes, polar bears and Iron's summoned blades struck without it. They now hit 15 % harder too, on top of the Summoner's spell power their blows already carried: about 27 % above a classless player's summon, where it was 10 %.
+- **Chests roll Forbidden & Arcanus's extras once.** In End City and bastion treasure, jungle temples, desert pyramids, underwater ruins, pillager outposts, dungeons and the three village smiths, Forbidden & Arcanus's additions ran every other loot rule a second time. Those chests now hold about half the Codex tokens they did (End City treasure about 2.2 Codex Token III a chest instead of 4.5, bastion treasure 1.5 instead of 3.3, an Overworld structure chest about 0.5 Codex Token I instead of 1), half the Tetra scrolls in dungeons and darts in jungle temples, and village smith chests about 6 iron ingots instead of 10. Village artifacts stay at about one chest in ten. This applies to chests opened from the next server restart.
+- **Testers: the sync's unused second mod downloader is gone.** Mods have always arrived through the sync's own downloader; the packwiz-installer path it also carried never ran on a tester's instance and is removed with its two jars. Once a launch has updated the sync, it deletes those leftover files from the instance.
+
 ## October 2026: The MekaSuit is a space suit (19 October)
 
 - **A full MekaSuit counts as a space suit** on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, whether the suit is charged or not. Until now it gave no space protection at all, and a player in a full MekaSuit froze on the Moon and Mars.
