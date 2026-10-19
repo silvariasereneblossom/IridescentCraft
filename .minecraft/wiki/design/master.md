@@ -309,7 +309,7 @@ Player power scales along four axes:
 - Skill investment: Pufferfish's Skills has six skill trees with command-reward effects, fed by XP investment.
 - Consumable stack: Spice of Life HP bonuses, Iron's Spellbooks elixirs, Apotheosis gem socketing, Relics charm leveling.
 
-> Design intent: player power is *uncapped* on several axes. Mage spell power stacks multiplicatively without a ceiling, and MekaSuit Mk2 stacks armor + utility modules without a hard cap. The world is built to match the stat ceiling, so "broken" builds are appropriate here.
+> Design intent: player power is *uncapped* on several axes. Mage spell power stacks without a ceiling across classes, aptitudes, curios and consumables (Tetra gear is the exception: each piece of it is sized to Iron's Spellbooks' own, see the mage power curve below), and MekaSuit Mk2 stacks armor + utility modules without a hard cap. The world is built to match the stat ceiling, so "broken" builds are appropriate here.
 
 ### Bosses are the pinnacle
 
@@ -417,7 +417,7 @@ Each has its own progression hook and dimension tie-in. Values + capstone payout
 
 Several classes are explicitly glass cannons, with a high damage ceiling at the cost of survivability. Two of the Mage classes, Archmage and Void Summoner, sit in this category: low base HP, high spell-power scaling, a weak melee penalty. By T4, a Mage with a fully built Voidheart Blade and three spell-power curios outdamages any tank class, but a single hit kills them.
 
-> Design intent (the mage power curve): mages are back-loaded glass cannons on purpose, weak early, with the highest peaks late and uncapped multiplicative stat stacking. That makes the back-loaded power fantasy, and the world's T4 threat ceiling is built to match it.
+> Design intent (the mage power curve): mages are back-loaded glass cannons on purpose, weak early, with the highest peaks late. The peaks come from stacking classes, aptitudes, curios and consumables; Tetra gear is sized instead: a full set of Tetra armour, a modular wand and a modular book each stay within Iron's Spellbooks' own best of their kind, +15 % (decided 2026-10-19, [Appendix §L.3](master-appendix.md#l3-how-a-tetra-items-iss-bonus-is-written-rewritten-2026-10-19)). That makes the back-loaded power fantasy, and the world's T4 threat ceiling is built to match it.
 
 → Full Origin / Race / Class roster + ability tables: [Appendix §A.6](master-appendix.md#a6-character-layer-reference).
 
@@ -565,9 +565,9 @@ The cross-mod ink economy starts here: ISS common_ink and uncommon_ink drop from
 
 The pack's signature magic system is the Iridescent Modular Spells mod, a custom Forge content mod that connects Tetra's modular-item workbench to Iron's Spellbooks and Ars Nouveau spell books.
 
-Each modular book has 4 module slots (front_cover / back_cover / spine / pages for ISS; front_cover / back_cover / spine / dye for Ars). A slot accepts Tetra material categories (metal, skin, bone, gem, fibre, fabric), and each one contributes stat bonuses (max_mana, mana_regen, spell_power, cast_time_reduction, cooldown_reduction). Lining improvements (fabric / fibre / skin) layer on top.
+Each modular book has 4 module slots (front_cover / back_cover / spine / pages for ISS; front_cover / back_cover / spine / dye for Ars). A slot accepts Tetra material categories (metal, skin, bone, gem, fibre, fabric), and the modules add the same small bonus whatever they are made of (since 2026-10-19: back cover +20 max mana, spine +5 % cooldown reduction, or +5 % mana regen on an Ars book); a cover of a magic material adds that material's own bonus (+5 % a module). Lining improvements (fabric / fibre / skin) layer on top.
 
-**Intrinsic stat overlay.** Each book has a `BookKind` (COPPER, IRON, GOLD, DIAMOND, NETHERITE, DRAGONSKIN, DRUIDIC, BLAZE, EVOKER, NECRONOMICON, VILLAGER, ROTTEN, plus three Ars tiers: NOVICE, APPRENTICE, ARCHMAGE) that contributes a baseline stat profile. The Diamond Spell Book is +50 mana / +0.10 spell_power; the Necronomicon is +100 mana / +0.30 spell_power / +50% Necro school. These stack with module and lining bonuses without a cap, per the mage power curve pillar.
+**Intrinsic stat overlay.** Each book has a `BookKind` (COPPER, IRON, GOLD, DIAMOND, NETHERITE, DRAGONSKIN, DRUIDIC, BLAZE, EVOKER, NECRONOMICON, VILLAGER, ROTTEN, plus three Ars tiers: NOVICE, APPRENTICE, ARCHMAGE) that contributes a baseline stat profile. The Diamond Spell Book is +50 mana / +0.10 spell_power; the Necronomicon is +100 mana / +0.30 spell_power / +50% Necro school. These add to the module and lining bonuses; the book's kind sets its bonus, the modules do not grow with their material (2026-10-19).
 
 **Tetra replacement system.** Vanilla ISS / Ars spell books convert to modular variants on the next inventory tick. The conversion is transparent, so vanilla books need no recipe stripping and their loot tables need no rewrite.
 

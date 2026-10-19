@@ -1734,8 +1734,12 @@ Rules since 2026-10-19 (decisions 150 / 151, ruled by the operator):
   so it is +5 % of that, linear, and nothing on a sword.
 - **Vestment and runed plates:** plain keys in the variant's own `attributes`, the same for every material (vestment
   +50 mana, +0.05 regen; runed +10 mana, +0.05 spell power, +0.05 cooldown).
-- **Wand and book modules, improvements:** still `**`, scaled by the material's primary stat, so they still multiply
-  (a boss gem's wand x1.55 spell power, a gem book up to x1.77): not decided yet.
+- **Wand and book modules:** plain keys in the variant's own `attributes`, the same for every material (ruled
+  2026-10-19, decision 153): a wand +5 % spell power, +15 % mana regen, +15 % cooldown, +22.5 max mana (handle and core);
+  a book +20 max mana (back cover) and +5 % cooldown (ISS spine) or +5 % mana regen (Ars spine). A gem wand with its
+  material's own +20 % reads x1.25 spell power, within ISS's best staff +15 %. The book core keeps ISS's own book.
+- **Improvements (hones, linings):** still as authored, mostly small `**` values per level (a wand honed for spell power
+  on both handle and inlay x1.14 each at level 5): not part of the 2026-10-19 rulings.
 
 Display: Apothic Attributes shows a MULTIPLY_* modifier as "+X%" and an ADDITION as the number, so a plain key reads
 "+0.05 Fire Spell Power" in a tooltip; the Tetra workbench's Status bars print the percent.

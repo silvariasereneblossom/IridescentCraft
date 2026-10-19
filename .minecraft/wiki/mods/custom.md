@@ -65,7 +65,7 @@ Modular Spells is a modular spell book mod for both the ISS and the Ars Nouveau 
 2. `BookKind.intrinsicModifiers`: the Phase 6F overlay (e.g. dragonskin: +25% Ender and +50 max_mana on top of ISS's +10% Ender, for a +35% Ender baseline)
 3. `getAttributeModifiersCached`: Tetra slot/lining attributes from the installed modules
 
-The mage power curve is uncapped by design: mages are weak early and reach the highest peaks at T3-T4.
+The mage power curve is back-loaded by design: mages are weak early and reach the highest peaks at T3-T4. The Tetra modules of a book add a fixed bonus whatever they are made of (since 2026-10-19; [Tetra materials 2f](../systems/tetra-materials.md#2f-how-material-magic-bonuses-add-up-since-2026-10-19)).
 
 **Tetra slot model (4 majors per book, no `core` slot; items are tier-locked):**
 - ISS: `iss_book/{front_cover, back_cover, spine, pages}`

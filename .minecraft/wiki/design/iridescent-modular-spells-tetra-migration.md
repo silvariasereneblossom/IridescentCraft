@@ -61,6 +61,7 @@ Files under `src/main/resources/data/iridescent_modular_spells/tetra/`:
 - `schematics/...`: workbench install recipes mirroring `modules/`
 - `materials/iss_books/{copper,iron,gold,diamond,netherite}_spell_book.json`: per-base-book stat overrides (each entry's `material.items: [<iss_id>]` registers the ISS book as a core variant)
 - Stat values (a starting point, open to rebalancing):
+  - (superseded 2026-10-19, decision 153: the modules now carry fixed plain keys, the same for every material: back cover +20 max mana, spine +5 % cooldown or +5 % mana regen on an Ars book; see `systems/tetra-materials.md` 2f)
   - `front_cover`: `**irons_spellbooks:spell_power = 0.005` (multiplied by Tetra material count)
   - `back_cover`: `irons_spellbooks:max_mana = 5` (flat) + `**mana_regen = 0.005`
   - `spine`: `**cooldown_reduction = 0.01`

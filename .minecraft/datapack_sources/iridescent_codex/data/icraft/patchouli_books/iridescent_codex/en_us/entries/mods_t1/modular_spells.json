@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Install a cover and pages in your spell book. The pack's $(italic)Iridescent Modular Spells$() gives every ISS and Ars book two slots, $(bold)Cover$() and $(bold)Pages$(), whose materials give stacking bonuses: max mana, spell power, mana regen, cooldown reduction.$(br2)Casters start with a modular Copper book; the Archmage also gets a modular Novice."
+      "text": "Install a cover and pages in your spell book. The pack's $(italic)Iridescent Modular Spells$() gives every ISS and Ars book module slots: front and back $(bold)covers$(), a $(bold)spine$() and $(bold)pages$() (an Ars book has a dye instead). The book's tier sets its bonus; the modules add a small fixed one.$(br2)Casters start with a modular Copper book; the Archmage also gets a modular Novice."
     },
     {
       "type": "patchouli:text",
       "title": "ISS Tier (metal covers)",
-      "text": "$(item)Modular Copper$() (T1 entry): crafted from a copper book + leather (default).$(br)$(item)Modular Iron$() / $(item)Modular Gold$() (T2): iron / gold book + leather.$(br)$(item)Modular Diamond$() (T3): diamond book + leather.$(br)$(item)Modular Netherite$() (T4): netherite book + leather.$(br2)$(bold)Cover materials:$() leather (T1), copper, iron, gold, diamond, netherite (T4). The higher the tier, the bigger the bonus."
+      "text": "$(item)Modular Copper$() (T1 entry): crafted from a copper book + leather (default).$(br)$(item)Modular Iron$() / $(item)Modular Gold$() (T2): iron / gold book + leather.$(br)$(item)Modular Diamond$() (T3): diamond book + leather.$(br)$(item)Modular Netherite$() (T4): netherite book + leather.$(br2)$(bold)Cover materials:$() leather (T1), copper, iron, gold, diamond, netherite (T4). A higher tier gives more; a cover's own bonus does not change."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Slot bonuses",
-      "text": "$(bold)Cover$() has a 'max' bias: max mana, spell power.$(br)$(bold)Pages$() have a 'rate' bias: mana regen, cooldown reduction.$(br2)Bonuses add up across every book you carry in your main hand, offhand and curios. With a Diamond book in your main hand and an Apprentice book in a curio slot, the Ars max-mana bump from the cloth and the ISS spell-power bump from the diamond cover stack on you."
+      "text": "Whatever they are made of, the $(bold)back cover$() adds $(item)+20 max mana$() and the $(bold)spine$() $(item)+5% cooldown reduction$() ($(item)+5% mana regen$() on an Ars book). A cover of a magic material adds that material's own bonus: a ruby cover +5% spell power and +5% fire.$(br2)Bonuses add up across every book you carry in your main hand, offhand and curios."
     },
     {
       "type": "patchouli:text",

@@ -408,7 +408,7 @@ What a full set gives, measured on a full-pack boot (every material in [2g](#2g-
 
 Mixed materials add up the same way. A fire set of ruby plates or pauldrons, a fire boss metal and fire themed linings, or runed plates of themed fire, reaches fire power +80 % and spell power +25 %: x2.25 on a fire spell, where Iron's own Pyromancer set gives x1.68.
 
-Held items count too: a sword of the material carries its bonus on two modules (+10 %), a wand on four (+20 %), a modular spell book on its covers and spine (+10 to +15 %). The wand and book modules also carry spell power of their own, which grows with the material's primary stat and multiplies: a ruby wand x1.2 more, a boss gem's wand x1.55, a gem book x1.27 to x1.77. That part was not changed on 2026-10-19.
+Held items count too: a sword of the material carries its bonus on two modules (+10 %), a wand on four (+20 %), a modular spell book on the two to three modules that take it (+10 to +15 %). On top, the wand and the book's modules give a small fixed bonus of their own, the same whatever they are made of (since 2026-10-19): a wand +5 % spell power, +15 % mana regen, +15 % cooldown reduction and +22.5 max mana; a book +20 max mana and +5 % cooldown (an Ars book +5 % mana regen), besides its core, the Iron's Spellbooks book it was made from. Until then those grew with the material and multiplied. Measured, before and after: a ruby wand spell power x1.44 to x1.25 (fire x1.2 both), a boss gem's wand (bo_gaia) x1.86 to x1.25, a gem book x1.46 to x2.04 down to x1.21, a gem kit (set + wand + book) x3.3 to x3.8 down to x1.68.
 
 Before 2026-10-19 the bonuses multiplied once per module and once per piece: an aethersteel set gave spell power x3.8, an iridium set x39, a converted Ignitium set fire power x9.2, an onyx set with an onyx wand and book spell power x29.9; and 28 materials (enderium, deorum, knightmetal, the diamond of 26 converted mod sets, ...) listed bonuses that never applied at all.
 
@@ -904,7 +904,7 @@ Tetra rounds every module's attribute amounts to 0.05 steps (x20, rounded, /20),
 
 One exception uses the single `*` on purpose: a material's **armor** bonus (knightmetal, knight, steel, cloggrum: `*minecraft:generic.armor 0.05`, since 2026-10-19). Every armor module already adds armor of its own, so MULTIPLY_BASE folds into it: +5 % of that module's armor, linear, nothing on a sword. As `**` it multiplied once per module (a converted Knightmetal set's armor x2.18) and a knightmetal sword raised its holder's armor x1.1.
 
-The vestment and runed majors carry their mage stats as plain keys in the variant's own `attributes`, fixed per piece (see 4.2). The book and wand modules still carry `**` values scaled by the material's primary stat.
+The vestment and runed majors carry their mage stats as plain keys in the variant's own `attributes`, fixed per piece (see 4.2), and so do the wand and book modules since 2026-10-19 (`tools/set_wand_book_stats.py`). The improvements (hones, linings) keep their authored values.
 
 ### 5.2 Wildcard variant keys MUST end in `/` [2026-05-12]
 

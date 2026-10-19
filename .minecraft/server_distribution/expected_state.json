@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "a78e72c6",
+    "generated_from":  "613625f4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8636,7 +8636,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "bca96819550ea70ce92e4c736893ac17f01aac2662b42feb2dd3e5f38e6bee49",
+                                                               "sha256":  "013c12edef7f7e60dcdac402263366587ac9fac158caff9b84772f67bb829e9d",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
