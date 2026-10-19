@@ -11,6 +11,9 @@
 // KubeJS recipe API without needing a custom block/GUI.
 //
 // Pattern: Place Mythic Forge + materials in crafting grid → output
+// The Forge stays in the grid (keepIngredient): it is the station, not a
+// reagent. Until 2026-10-19 every catalyst craft used it up (decision list
+// 155 and 159, measured), so each catalyst also cost a new Forge.
 // =============================================================================
 
 ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes', event => {
@@ -114,7 +117,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
-    }).id('icraft:mythic_catalyst_1')
+    }).id('icraft:mythic_catalyst_1').keepIngredient('kubejs:mythic_forge')
     })
 
     // --- Mythic Catalyst II: 5 Shards (grid) + 4 Void Fragments ---
@@ -128,7 +131,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
-    }).id('icraft:mythic_catalyst_2')
+    }).id('icraft:mythic_catalyst_2').keepIngredient('kubejs:mythic_forge')
     })
 
     // --- Mythic Catalyst III: Shards + Fragments + 1 Primordial Essence ---
@@ -142,7 +145,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence'
-    }).id('icraft:mythic_catalyst_3')
+    }).id('icraft:mythic_catalyst_3').keepIngredient('kubejs:mythic_forge')
     })
 
     // --- Mythic Catalyst IV: Shards + Fragments + 2 Essences + 1 Antimatter ---
@@ -161,7 +164,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence',
         A: 'mekanism:pellet_antimatter'
-    }).id('icraft:mythic_catalyst_4')
+    }).id('icraft:mythic_catalyst_4').keepIngredient('kubejs:mythic_forge')
     })
 
     // --- Mythic Catalyst V: Shards + Fragments + Essences + Rift Core + Antimatter ---
@@ -182,7 +185,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence',
         C: 'kubejs:rift_core'
-    }).id('icraft:mythic_catalyst_5')
+    }).id('icraft:mythic_catalyst_5').keepIngredient('kubejs:mythic_forge')
     })
 
     // =========================================================================

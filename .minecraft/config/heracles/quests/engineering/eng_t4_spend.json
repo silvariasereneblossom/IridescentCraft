@@ -3,14 +3,15 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "kubejs:mythic_catalyst_5" },
     "title": "T4: Spend the Antimatter",
-    "subtitle": "Turn the apex output into apex gear",
+    "subtitle": "Turn the apex output into the top catalyst",
     "description": [
       "You built the apex reactor; now spend what it makes. Antimatter is the",
-      "hard reagent behind the pack's top-tier crafts: the §bMythic Catalyst V§r",
-      "(combat endgame) and the §bMekaSuit Mk2§r upgrade (tech-armor endgame).",
+      "hard reagent behind the pack's top crafts: the §bMythic Catalysts IV and V§r",
+      "and the §bMekaSuit Mk2§r upgrade.",
       "",
-      "Craft a §bMythic Catalyst V§r to complete this quest and close the loop:",
-      "engineering's apex output feeding the pack's apex gear."
+      "Craft a §bMythic Catalyst V§r at the Mythic Forge to complete this quest.",
+      "Nothing puts a catalyst on gear yet: that comes with Oblivion's Rift, which",
+      "is not built. To turn antimatter into gear, upgrade a MekaSuit piece to §bMk2§r."
     ],
     "groups": { "Engineering": { "position": [480, 640] } }
   },

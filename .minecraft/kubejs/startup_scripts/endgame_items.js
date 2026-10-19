@@ -63,7 +63,7 @@ StartupEvents.registry('item', icraft.guard('endgame_items', 'StartupEvents.regi
         .tooltip('§5An ancient forge resonating with Rift energy')
         .tooltip('§7Goes into a crafting grid with Rift materials')
         .tooltip('§7to make a Mythic Catalyst')
-        .tooltip('§8Each catalyst craft uses it up')
+        .tooltip('§8It stays in the grid: one Forge makes every catalyst')
         .maxStackSize(1)
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/iron_ingot' })

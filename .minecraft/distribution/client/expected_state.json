@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "c1a5c1cd",
+    "generated_from":  "78e14e92",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3260,8 +3260,8 @@
                                                                                 "size":  1266
                                                                             },
                   "config/heracles/quests/engineering/eng_t4_spend.json":  {
-                                                                               "sha256":  "022e98098fea7c51b94f0cc8b98bef286b3d41c0c5b098b648a906546d010815",
-                                                                               "size":  1844
+                                                                               "sha256":  "acd392f824fae64b2441b812a99449f381d08d87ecc877b357e3730374b54ac3",
+                                                                               "size":  1929
                                                                            },
                   "config/heracles/quests/engineering/eng_t4_sps.json":  {
                                                                              "sha256":  "7de286507bd776a4ea71be701de80e3ef661d2cb835e6b3175156372d8597998",
@@ -7284,8 +7284,8 @@
                                                                       "size":  19907
                                                                   },
                   "kubejs/server_scripts/class/equipment_hp_halving.js":  {
-                                                                              "sha256":  "696788967ec1c77cdaf58c0295dc340be983e0e3db0fe07afbf71fc20d331817",
-                                                                              "size":  5733
+                                                                              "sha256":  "445b9ad8f875ddfd3e7495803715b702cd400a94ae34405186af97f6096b1c94",
+                                                                              "size":  9218
                                                                           },
                   "kubejs/server_scripts/cleanup/strip_truly_modular_items.js":  {
                                                                                      "sha256":  "1e12c6bedd172b1e65c85f86379131869fd691bee525377a15b50b08a0fc0b02",
@@ -7352,8 +7352,8 @@
                                                                      "size":  20085
                                                                  },
                   "kubejs/server_scripts/endgame/mythic_forge.js":  {
-                                                                        "sha256":  "da9b230a41a3387775a9bd4046875bd4696adbf842c2ffde2f949b53fd3e596d",
-                                                                        "size":  13252
+                                                                        "sha256":  "10ae0ad600ea17fb0e8aa72946ce0affd05157ffd84fbe2fd29f4e40dbc53f9a",
+                                                                        "size":  13659
                                                                     },
                   "kubejs/server_scripts/endgame/rift_mechanics.js":  {
                                                                           "sha256":  "31283c697ee78847d04a06da7e6b2897b870ae3c816231d8ba438bfb4fd8bf30",
@@ -7876,8 +7876,8 @@
                                                                            "size":  16893
                                                                        },
                   "kubejs/startup_scripts/endgame_items.js":  {
-                                                                  "sha256":  "491349a743a64bb391e65ec6a03ffcecd1629c45002fc0b882a5d9f4756a604d",
-                                                                  "size":  13312
+                                                                  "sha256":  "74d50e99f3cfdc3734c2ba9962cdc612f17bc840d36716605b50c067606c3906",
+                                                                  "size":  13334
                                                               },
                   "kubejs/startup_scripts/example.js":  {
                                                             "sha256":  "395c96d3ddd178821db851f387e91560e606ea752177f66d2016f12bd0542b8f",

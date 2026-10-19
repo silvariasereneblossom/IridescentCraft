@@ -2640,16 +2640,22 @@
      "names": 0,
      "reads": [
       {
+       "name": "icraft.core",
+       "kind": "global",
+       "from": "0_lib_core.js",
+       "when": "load"
+      },
+      {
        "name": "icraft.guard",
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
       },
       {
-       "name": "icraft.origin",
+       "name": "icraft.lib",
        "kind": "global",
-       "from": "0_lib_origins.js",
-       "when": "handler"
+       "from": "00_icraft_guard.js",
+       "when": "load"
       },
       {
        "name": "registerServerTick",
@@ -2663,7 +2669,16 @@
        "script": "00_icraft_guard.js",
        "basis": "load",
        "on": [
-        "icraft.guard"
+        "icraft.guard",
+        "icraft.lib"
+       ],
+       "held": "priority"
+      },
+      {
+       "script": "0_lib_core.js",
+       "basis": "load",
+       "on": [
+        "icraft.core"
        ],
        "held": "priority"
       },
@@ -2675,6 +2690,10 @@
        ],
        "held": "priority"
       }
+     ],
+     "header": [
+      "events",
+      "file"
      ]
     },
     {
@@ -12546,6 +12565,10 @@
      "when": "handler"
     },
     {
+     "script": "server:class/equipment_hp_halving.js",
+     "when": "load"
+    },
+    {
      "script": "server:codex_delivery.js",
      "when": "handler"
     },
@@ -12837,10 +12860,6 @@
     },
     {
      "script": "server:attributes/class_attribute_bonuses.js",
-     "when": "handler"
-    },
-    {
-     "script": "server:class/equipment_hp_halving.js",
      "when": "handler"
     },
     {
@@ -13376,6 +13395,7 @@
     "server:attributes/mana_pool_bonuses.js",
     "server:bonfire/boss_compass_handler.js",
     "server:cherry_spawn_biome.js",
+    "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
     "server:compat/disable_creeperlings.js",
     "server:compat/terramity_cave_gnome_cave_only.js",
@@ -13429,7 +13449,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 25
+   "usersAtLoad": 26
   },
   "origins": {
    "script": "server:0_lib_origins.js",
@@ -13441,7 +13461,6 @@
     "server:armor_weight.js",
     "server:attributes/attribute_commands.js",
     "server:attributes/class_attribute_bonuses.js",
-    "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
     "server:origins/artificial_construct_progression.js",
     "server:origins/battlemage_arcane_cleave.js",

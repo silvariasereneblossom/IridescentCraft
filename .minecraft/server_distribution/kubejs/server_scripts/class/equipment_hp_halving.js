@@ -1,3 +1,5 @@
+// @file kubejs/server_scripts/class/equipment_hp_halving.js
+// @events ServerEvents.loaded, tick.server
 // =============================================================================
 // IridescentCraft — Equipment HP Halving (Glass Cannon Classes)
 // File: kubejs/server_scripts/class/equipment_hp_halving.js
@@ -7,85 +9,151 @@
 //   This means HP bonuses from armor, accessories, and enchantments
 //   are reduced by 50% for these classes.
 //
-// Implementation:
-//   Origins class powers already apply -20% base HP (Ranger/Archmage)
-//   and -10% (Void Summoner). Equipment HP halving is a SEPARATE
-//   mechanic that reduces the HP gained from equipment.
+// What counts as equipment (since 2026-10-19, decision list 159, on
+// recommendation, for review): the max health the worn and held items give
+// (the six vanilla slots; armour attributes, Apotheosis affixes and gems come
+// through the item's own modifier list), what the Curios slots give (the same,
+// through Curios), and the two pack modifiers that stand for gear: Vitality
+// (enchantments/enchant_effects.js) and Deeproot (affixes/affix_effects.js).
+// Half of that comes off. Nothing else does: race, class, levels, Spice of
+// Life, skill trees, Ascension and effects stay whole, as the class pages and
+// master-appendix A.6 say.
 //
-//   Approach: Every 5 seconds, check if player has a glass cannon class.
-//   If so, calculate their equipment HP bonus and apply a -50% modifier.
+// Until then the script took a fixed base (16; the Void Summoner 18) and
+// halved everything above it: a Demi-God's race health, level-up and Spice of
+// Life health went with the gear, and a race under 16 (Faefolk) kept its gear
+// whole. It also took off less than half: its -E/2 is an addition, which the
+// class's -20% scales again, so it removed 0.4 E. The penalty below is divided
+// by that scale, so exactly half the gear's health comes off.
 //
-//   Detection: Check the player's Origins class via persistent data or
-//   by checking for the class-specific power (hp_modifier with negative value).
+// The flag: the glass-cannon classes (ranger, archmage, void_summoner,
+// elemental) are the ones whose Origins power sets the scoreboard
+// icraft_glass_cannon; tick_glassCannonTagCheck (below) turns that score into
+// the persistent flag this tick reads.
 // =============================================================================
 
-// The glass-cannon classes (ranger, archmage, void_summoner, elemental) are the
-// ones whose Origins power sets the scoreboard icraft_glass_cannon; this file
-// reads that score. (A set of the four ids stood here and was asked by nothing;
-// removed 2026-10-18, decision list entry 17.)
+;(function () {
+if (!icraft.lib.need('core', 'class/equipment_hp_halving')) return
+var core = global.icraft.core
 
-// The player's Origins class id ("icraft:archmage" etc.) comes from the shared
-// cached resolver, global.icraft.origin (0_lib_origins.js). This file used to
-// carry its own copy of the player.nbt read, which serialised the whole player
-// (inventory, recipe book, every capability) for each glass-cannon player on
-// every pass.
+var MAX_HEALTH = 'minecraft:generic.max_health'
+var OWN = 'icraft_equip_hp_halving'
+// The pack's own gear modifiers, by the name modifyAttribute gives them
+var GEAR_NAMES = { icraft_vitality_bonus: true, icraft_deeproot: true }
 
-global.tick_equipmentHpHalving = (event) => {
-  event.server.players.forEach(player => {
-    if (player.spectator || player.creative) return
+var ArrayList = Java.loadClass('java.util.ArrayList')
+var EquipmentSlot = null
+var CuriosApi = null
+var SlotContext = null
+try { EquipmentSlot = Java.loadClass('net.minecraft.world.entity.EquipmentSlot') } catch (e) {
+  core.warnOnce('hp.halving.slots', '[equipment_hp_halving] EquipmentSlot could not be loaded (worn gear is not counted): ' + e)
+}
+try {
+  CuriosApi = Java.loadClass('top.theillusivec4.curios.api.CuriosApi')
+  SlotContext = Java.loadClass('top.theillusivec4.curios.api.SlotContext')
+} catch (e) {
+  CuriosApi = null
+  core.warnOnce('hp.halving.curios', '[equipment_hp_halving] the Curios API could not be loaded (curios are not counted): ' + e)
+}
 
-    // Check if player has a glass cannon class
-    let isGlassCannon = false
+var addIds = function (ids, modifiers) {
+  if (modifiers) modifiers.forEach(function (m) { ids[String(m.getId())] = true })
+}
 
-    try {
-      let data = player.persistentData
-      if (data.contains('icraft_glass_cannon')) {
-        isGlassCannon = data.getBoolean('icraft_glass_cannon')
-      } else {
-        isGlassCannon = false
+// The ids of the max-health modifiers the player's gear gives them
+var gearIds = function (player, attr) {
+  var ids = {}
+  if (EquipmentSlot) {
+    var slots = EquipmentSlot.values()
+    for (var i = 0; i < slots.length; i++) {
+      try {
+        var stack = player.getItemBySlot(slots[i])
+        if (stack && !stack.isEmpty()) addIds(ids, stack.getAttributeModifiers(slots[i]).get(attr))
+      } catch (e) {
+        core.warnOnce('hp.halving.slot', '[equipment_hp_halving] an equipment slot could not be read: ' + e)
       }
-    } catch(e) {}
-
-    // Always zero our modifier BEFORE measuring. Two bugs lived here
-    // (fixed 2026-06-12):
-    //  1. Feedback loop: maxHealth was read with our previous penalty
-    //     still applied, so the penalty fed back into its own input and
-    //     converged to -1/3 of equipment HP instead of the designed -1/2
-    //     (fixed point of p = -(E + p)/2 is p = -E/3).
-    //  2. Stale penalty: the modifier was only written when equipmentHP > 0,
-    //     so taking gear off (or losing the glass-cannon flag outside the
-    //     -1 trigger path) left the last penalty applied forever.
+    }
+  }
+  if (CuriosApi) {
     try {
-      player.modifyAttribute(
-        'minecraft:generic.max_health',
-        'icraft_equip_hp_halving',
-        0,
-        'addition'
-      )
-    } catch(e) {}
+      var handler = CuriosApi.getCuriosInventory(player).orElse(null)
+      if (handler) {
+        // getCurios() is an unmodifiable JDK map: iterating its own sets throws
+        // IllegalAccessException in Rhino (measured 2026-10-19), so the slot ids
+        // are copied into an ArrayList and each slot is asked for by id.
+        var slotIds = new ArrayList(handler.getCurios().keySet())
+        for (var k = 0; k < slotIds.size(); k++) {
+          var slotId = slotIds.get(k)
+          var stacksHandler = handler.getStacksHandler(slotId).orElse(null)
+          if (!stacksHandler) continue
+          var stacks = stacksHandler.getStacks()
+          for (var j = 0; j < stacks.getSlots(); j++) {
+            var curio = stacks.getStackInSlot(j)
+            if (!curio || curio.isEmpty()) continue
+            var found = handler.findCurio(slotId, j).orElse(null)
+            var ctx = found ? found.slotContext() : new SlotContext(slotId, player, j, false, true)
+            addIds(ids, CuriosApi.getAttributeModifiers(ctx, CuriosApi.getSlotUuid(ctx), curio).get(attr))
+          }
+        }
+      }
+    } catch (e) {
+      core.warnOnce('hp.halving.curio', '[equipment_hp_halving] the curio slots could not be read: ' + e)
+    }
+  }
+  return ids
+}
 
-    if (!isGlassCannon) return
+// The addition that takes half the gear's max health off. Vanilla's formula:
+// (base + additions) x (1 + sum of multiply_base) x product of (1 + multiply_total),
+// worked out once with every modifier and once without the gear's (this
+// script's own modifier left out of both).
+var halvingPenalty = function (player) {
+  var attr = core.attribute(MAX_HEALTH)
+  if (!attr) return 0
+  var inst = player.getAttribute(attr)
+  if (!inst) return 0
+  var ids = gearIds(player, attr)
+  var all = { add: 0, base: 0, total: 1 }
+  var rest = { add: 0, base: 0, total: 1 }
+  inst.getModifiers().forEach(function (m) {
+    var name = String(m.getName())
+    if (name === OWN) return
+    var gear = ids[String(m.getId())] === true || GEAR_NAMES[name] === true
+    var amount = core.finite(m.getAmount(), 0)
+    var op = String(m.getOperation()).toUpperCase()
+    var sums = gear ? [all] : [all, rest]
+    for (var k = 0; k < sums.length; k++) {
+      if (op === 'ADDITION') sums[k].add += amount
+      else if (op === 'MULTIPLY_BASE') sums[k].base += amount
+      else if (op === 'MULTIPLY_TOTAL') sums[k].total *= (1 + amount)
+    }
+  })
+  var base = core.finite(inst.getBaseValue(), 0)
+  var scale = (1 + all.base) * all.total
+  var gearHp = (base + all.add) * scale - (base + rest.add) * (1 + rest.base) * rest.total
+  if (!(gearHp > 0) || !(scale > 0)) return 0
+  return -(gearHp / 2) / scale
+}
 
-    // Class base HP after the Origins class power's HP modifier:
-    // Ranger/Archmage -20% -> 16, Void Summoner -10% -> 18.
-    let classId = null
-    try { classId = global.icraft.origin.get(player, 'class') } catch (e) {}
-    let baseHP = (classId === 'icraft:void_summoner') ? 18 : 16
-
-    // Penalty-free read now that our modifier is zeroed (the attribute
-    // recomputes lazily on read).
-    let equipmentHP = player.maxHealth - baseHP
-    if (equipmentHP > 0) {
-      let penalty = -(equipmentHP * 0.5)
-      player.modifyAttribute(
-        'minecraft:generic.max_health',
-        'icraft_equip_hp_halving',
-        penalty,
-        'addition'
-      )
+global.tick_equipmentHpHalving = function (event) {
+  event.server.players.forEach(function (player) {
+    if (player.spectator || player.creative) return
+    var penalty = 0
+    try {
+      var data = player.persistentData
+      if (data.contains('icraft_glass_cannon') && data.getBoolean('icraft_glass_cannon')) penalty = halvingPenalty(player)
+    } catch (e) {
+      penalty = 0
+      core.warnOnce('hp.halving.tick', '[equipment_hp_halving] the halving could not be worked out: ' + e)
+    }
+    try {
+      player.modifyAttribute(MAX_HEALTH, OWN, core.finite(penalty, 0), 'addition')
+    } catch (e) {
+      core.warnOnce('hp.halving.write', '[equipment_hp_halving] the halving modifier could not be written: ' + e)
     }
   })
 }
+})()
 global.registerServerTick('tick_equipmentHpHalving', 100, 60)
 
 
