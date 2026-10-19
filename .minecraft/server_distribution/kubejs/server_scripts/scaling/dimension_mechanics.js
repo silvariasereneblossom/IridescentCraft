@@ -43,9 +43,10 @@
 //   * The Abyss darkness check called getBrightness(pos) (no such overload).
 //   * Entity ids are read through core.entityId() (the `type` property is
 //     shadowed on some mod classes).
-// NOT revived: the Full Moon notice at the bottom (still reads `level.dayTime`
-// as a number). It announces "more numerous and aggressive" mobs, and nothing
-// in the pack implements that -- reported for a design call instead.
+// Retired 2026-10-18: the Full Moon notice (tick_fullMoonDetection). It read
+// `level.dayTime` (a method object, so the phase was NaN) and was never sent, and
+// it announced "more numerous and aggressive" mobs that nothing in the pack
+// implements. Git history holds it.
 //
 // Whole file is one IIFE (body left at column 0); nothing here is used by
 // another script.
@@ -520,29 +521,6 @@ global.tick_dimEnvironmentalHazards = (event) => {
   }
 }
 global.registerPlayerTick('tick_dimEnvironmentalHazards', 100, 0)
-
-
-// ─── Overworld: Full Moon Detection ───
-// Notifies players of full moon danger
-//
-// NOT LIVE, and deliberately left that way on 2026-10-10 (see the file header):
-// `level.dayTime` is vanilla's dayTime() METHOD object for scripts, so
-// lunarPhase is NaN and the notice has never been sent. Making it work is one
-// call (level.getDayTime()), but the line would then promise "more numerous
-// and aggressive" mobs that nothing implements, at a moment set by the
-// player's own age rather than by dusk (interval 24000 / offset 13000 on
-// player.age). That is a design call, not a repair.
-global.tick_fullMoonDetection = (event) => {
-  let player = event.player
-  if (!player || player.level.dimension !== 'minecraft:overworld') return
-
-  let dayTime = player.level.dayTime
-  let lunarPhase = Math.floor((dayTime / 24000) % 8)
-  if (lunarPhase === 0) {
-    player.tell('§c§lFull Moon Rising! §r§7Hostile mobs are more numerous and aggressive tonight.')
-  }
-}
-global.registerPlayerTick('tick_fullMoonDetection', 24000, 13000)
 
 
 // ─── Nether: Blaze Swarm (on kill) ───

@@ -129,7 +129,14 @@ T_run('codex submit: the bulk metals mint the tier the player is working towards
     'at tier 4 the iron is inert and a fixed-tier material still converts: 50 diamonds, one tier-3 token (' + cx_given(fourth) + '; ' + cx_row(fourth, [0, 1, 2]) + ')')
   A.clearTold(fourth)
   var again = Number(codexSubmit(fourth))
-  ok(again === 0 && cx_told(fourth, 'No eligible Engineering materials'), 'with only iron left a tier-4 player is told there is nothing eligible (returned ' + again + ')')
+  ok(again === 0 && cx_told(fourth, 'No eligible Engineering or Magic materials'), 'with only iron left a tier-4 player is told there is nothing eligible (returned ' + again + ')')
+  // The message names the lane asked for (it said "Engineering" on every lane until 2026-10-18).
+  A.clearTold(fourth)
+  codexSubmit(fourth, 'magic')
+  ok(cx_told(fourth, 'No eligible Magic materials') && !cx_told(fourth, 'Engineering'), '`submit magic` with nothing eligible names the Magic lane')
+  A.clearTold(fourth)
+  codexSubmit(fourth, 'engineering')
+  ok(cx_told(fourth, 'No eligible Engineering materials'), '`submit engineering` with nothing eligible names the Engineering lane')
 })
 
 T_run('codex balance: tokens in the main inventory, and the tier they buy', function () {

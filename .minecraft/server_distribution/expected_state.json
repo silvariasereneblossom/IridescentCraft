@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "757e59ad9b9f6a4d91db73d6e20a666dd6ffe9b9fa7f16bb3ecf5b462cf3109b",
-                                                                  "size":  49329
+                                                                  "sha256":  "9a5ee6341dfe516a40efeccd1c65ba814ce3d2005ddb0d0357613e2e601c1ffd",
+                                                                  "size":  49254
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "d571a9fcd7b4dcd3f12036163cfd352c7292efa2ef738786743f623e91999c62",
@@ -7324,8 +7324,8 @@
                                                                                 "size":  23816
                                                                             },
                   "kubejs/server_scripts/end/dragon_exploration_gate.js":  {
-                                                                               "sha256":  "ceec1e2b8e7d92fbb47ca34e8ec0dcca1edca10839a4ed9c929af14d9a7c274b",
-                                                                               "size":  17505
+                                                                               "sha256":  "7cf6b0c427800dc50f60ffe7191bb9e9975350ab6ee99d515061b023a43484f3",
+                                                                               "size":  17683
                                                                            },
                   "kubejs/server_scripts/endgame/ascension.js":  {
                                                                      "sha256":  "5fd5a67c522452c292bbc555ce8a00a256d04f36c95622a7ee5ee03b5e9f7dce",
@@ -7380,8 +7380,8 @@
                                                                          "size":  24198
                                                                      },
                   "kubejs/server_scripts/gates/codex_progression_engine.js":  {
-                                                                                  "sha256":  "6df29f43d35ccad00be6d361c9e460fc60e9ce67585b56a114e15caaee150ef2",
-                                                                                  "size":  43205
+                                                                                  "sha256":  "7e4f31f0e89b7034a082b19a05494aeda2ff573d9a6f27dff73feae2fe9790e8",
+                                                                                  "size":  43537
                                                                               },
                   "kubejs/server_scripts/gates/milestone_detection.js":  {
                                                                              "sha256":  "98f7ed4cfed3469b9dae5a02579c8136a6490ae017eb06a499fd2234ebd86494",
@@ -7744,8 +7744,8 @@
                                                                             "size":  11155
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
-                                                                               "sha256":  "d341a67a994c0e7d7aeb0b033b8e5328d8bcd790cc990452cf8a48b3e10fdb5c",
-                                                                               "size":  28372
+                                                                               "sha256":  "2ea42b492d484d816d30a5d72c5b1ad628084156fc688d1ee60bf74d6def9155",
+                                                                               "size":  27371
                                                                            },
                   "kubejs/server_scripts/scaling/mob_equipment.js":  {
                                                                          "sha256":  "a67d7f49a6e996cbf489ed38df29e4e264ee2f2ca3c0eb466d37ae7d543df4f5",
@@ -7840,8 +7840,8 @@
                                                                         "size":  6156
                                                                     },
                   "kubejs/startup_scripts/custom_items.js":  {
-                                                                 "sha256":  "56e2d2baf9ad141457087ddd88a0236faeb017cd6f86f46741662364eec32747",
-                                                                 "size":  17225
+                                                                 "sha256":  "d2dea1691429e092afc48f18f8f2c8dff246f2fad3d8d48cbd3dbcd2d7cdc2a7",
+                                                                 "size":  17280
                                                              },
                   "kubejs/startup_scripts/deathskin_undead_bonus.js":  {
                                                                            "sha256":  "e087a961eff611facd4e0b6e9abeb400c1d820ddefb3db105e60ceccd4c5abc1",

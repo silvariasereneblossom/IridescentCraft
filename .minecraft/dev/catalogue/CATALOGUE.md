@@ -10,11 +10,11 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
 | startup | 25 | 24 | 26 | 3 |
-| server | 163 | 330 | 241 | 27 |
+| server | 163 | 329 | 241 | 27 |
 | client | 15 | 10 | 0 | 1 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:sync_status_warning.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 329`, `startup: 24`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 328`, `startup: 24`).
 
 ## How to read it
 
@@ -676,7 +676,7 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 
 ### Tick functions (through the tick master, `0_tick_master.js`; each runs when `tick % every === offset`, in this order within a tick)
 
-**`tick.player`** (19)
+**`tick.player`** (18)
 
 1. `apotheosis_gem_repair.js` as `tick_apothGemRepair`
 2. `attributes/attribute_sync.js` as `tick_healingReceived`
@@ -694,9 +694,8 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 14. `regen_control.js` as `tick_regenControl`
 15. `respec/class_respec.js` as `tick_classRespecWatch`
 16. `scaling/dimension_mechanics.js` as `tick_dimEnvironmentalHazards`
-17. `scaling/dimension_mechanics.js` as `tick_fullMoonDetection`
-18. `scaling/dimension_mechanics.js` as `tick_dragonsInfluence`
-19. `scaling/dimension_mechanics.js` as `tick_enhancedVoidCorruption`
+17. `scaling/dimension_mechanics.js` as `tick_dragonsInfluence`
+18. `scaling/dimension_mechanics.js` as `tick_enhancedVoidCorruption`
 
 **`tick.server`** (44)
 
@@ -2016,7 +2015,7 @@ own one-shot `global._*` flags.
 
 - place 146 of 163; header: @events @file @registry
 - events: `EntityEvents.spawned`, `EntityEvents.hurt`, `EntityEvents.death`
-- tick functions: `tick_dimEnvironmentalHazards` (player, every 100, offset 0), `tick_fullMoonDetection` (player, every 24000, offset 13000), `tick_dragonsInfluence` (player, every 200, offset 0), `tick_enhancedVoidCorruption` (player, every 1200, offset 0), `tick_voidCorruptionCleanse` (server, every 20, offset 0)
+- tick functions: `tick_dimEnvironmentalHazards` (player, every 100, offset 0), `tick_dragonsInfluence` (player, every 200, offset 0), `tick_enhancedVoidCorruption` (player, every 1200, offset 0), `tick_voidCorruptionCleanse` (server, every 20, offset 0)
 - hurt handlers: `icraft.dimension_mechanics.blue_skies` [victimPlayer]
 - registries: bosses
 - reads: `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js` (load), `icraft.guard` of `00_icraft_guard.js` (load), `icraft.lib` of `00_icraft_guard.js` (load), `global.registerPlayerTick` of `0_tick_master.js` (load), `global.registerServerTick` of `0_tick_master.js` (load)

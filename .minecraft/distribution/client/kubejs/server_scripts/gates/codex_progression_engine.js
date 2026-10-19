@@ -412,12 +412,16 @@ function codexSubmit(player, lane) {
   }
 
   if (!grantedAny) {
+    // The lane asked for, by name; a bare `submit` scans every lane. The bulk
+    // metals (iron, copper, gold, redstone) are Engineering materials, so their
+    // hint is left off the Magic lane.
+    let laneName = lane ? lane.charAt(0).toUpperCase() + lane.slice(1) : 'Engineering or Magic'
     if (anyCapped) {
       player.tell(Text.gold('[Codex] ').append(Text.gray('Every eligible material you carry is already at its submission cap.')))
     } else if (anyEligible) {
-      player.tell(Text.gold('[Codex] ').append(Text.gray('Not enough of any single material to mint a token. (Bulk metals convert per 100; check /icraft codex balance.)')))
+      player.tell(Text.gold('[Codex] ').append(Text.gray('Not enough of any single material to mint a token.' + (lane === 'magic' ? '' : ' (Bulk metals convert per 100; check /icraft codex balance.)'))))
     } else {
-      player.tell(Text.gold('[Codex] ').append(Text.gray('No eligible Engineering materials in your inventory to submit.')))
+      player.tell(Text.gold('[Codex] ').append(Text.gray('No eligible ' + laneName + ' materials in your inventory to submit.')))
     }
     return 0
   }

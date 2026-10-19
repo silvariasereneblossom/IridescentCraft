@@ -8712,13 +8712,6 @@
       {
        "kind": "tick",
        "group": "tick.player",
-       "name": "tick_fullMoonDetection",
-       "every": 24000,
-       "offset": 13000
-      },
-      {
-       "kind": "tick",
-       "group": "tick.player",
        "name": "tick_dragonsInfluence",
        "every": 200,
        "offset": 0
@@ -8748,7 +8741,7 @@
      "registries": [
       "bosses"
      ],
-     "ownSlots": 5,
+     "ownSlots": 4,
      "names": 0,
      "reads": [
       {
@@ -11552,11 +11545,6 @@
      {
       "script": "scaling/dimension_mechanics.js",
       "name": "tick_dimEnvironmentalHazards",
-      "kind": "tick"
-     },
-     {
-      "script": "scaling/dimension_mechanics.js",
-      "name": "tick_fullMoonDetection",
       "kind": "tick"
      },
      {

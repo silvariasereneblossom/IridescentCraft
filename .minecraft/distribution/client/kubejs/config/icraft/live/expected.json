@@ -305,7 +305,6 @@
    "tick_enderianShift@tick.player": "origins/origin_effects.js",
    "tick_enhancedVoidCorruption@tick.player": "scaling/dimension_mechanics.js",
    "tick_equipmentHpHalving@tick.server": "class/equipment_hp_halving.js",
-   "tick_fullMoonDetection@tick.player": "scaling/dimension_mechanics.js",
    "tick_glassCannonTagCheck@tick.server": "class/equipment_hp_halving.js",
    "tick_healingReceived@tick.player": "attributes/attribute_sync.js",
    "tick_heraclesReconcilePeriodic@tick.server": "quests/heracles_reconcile.js",

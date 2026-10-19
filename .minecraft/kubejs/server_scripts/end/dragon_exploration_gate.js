@@ -60,12 +60,12 @@ function endGateNotify(endPlayers) {
         p.tell(Text.white(''))
         p.tell(Text.white('  Explore The End to unlock the Dragon fight:'))
         p.tell(Text.gray('  ○ Reach the outer End islands (500+ blocks out)'))
-        p.tell(Text.gray('  ○ Find an End City (1000+ blocks out)'))
+        p.tell(Text.gray('  ○ Travel 1000+ blocks out, where End Cities stand'))
         p.tell(Text.gray(`  ○ Slay ${END_SHULKER_KILLS} Shulkers`))
         p.tell(Text.gray(`  ○ Defeat ${END_ENDERMAN_KILLS} Endermen in The End`))
         p.tell(Text.white(''))
-        p.tell(Text.gray('  Then craft a §5Dragon Summoning Crystal§7 and'))
-        p.tell(Text.gray('  use it at the End Portal fountain.'))
+        p.tell(Text.gray('  Then craft a §5Dragon Summoning Crystal§7, hold it'))
+        p.tell(Text.gray('  and sneak at the End Portal fountain (0,0).'))
         p.tell(Text.darkPurple('═══════════════════════════════════════'))
         p.persistentData.putBoolean('icraft_end_notified', true)
       }
@@ -153,10 +153,10 @@ global.tick_endExplorationTracking = (event) => {
     checkEndExploration(player)
   }
 
-  // Milestone: End City vicinity (1000+ blocks from 0,0)
+  // Milestone: End City territory (1000+ blocks from 0,0; distance only, no structure check)
   if (!pdata.getBoolean('icraft_end_city') && distSq >= END_EXPLORE_CITY * END_EXPLORE_CITY) {
     pdata.putBoolean('icraft_end_city', true)
-    player.tell(Text.lightPurple('  ◆ End Exploration: End City territory discovered!'))
+    player.tell(Text.lightPurple('  ◆ End Exploration: End City territory reached (1000 blocks out)!'))
     player.server.runCommandSilent(
       `playsound minecraft:block.end_portal.spawn player ${player.username} ~ ~ ~ 0.5`
     )
@@ -233,9 +233,9 @@ function checkEndExploration(player) {
     player.tell(Text.gold('═══════════════════════════════════════'))
     player.tell(Text.gold('  ★ END EXPLORATION COMPLETE ★'))
     player.tell(Text.white('  You have proven yourself worthy.'))
-    player.tell(Text.gray('  Craft a §5Dragon Summoning Crystal§7 and'))
-    player.tell(Text.gray('  use it at the End Portal fountain (0,0)'))
-    player.tell(Text.gray('  to summon the Ender Dragon!'))
+    player.tell(Text.gray('  Craft a §5Dragon Summoning Crystal§7, hold it in'))
+    player.tell(Text.gray('  your main hand and sneak at the End Portal'))
+    player.tell(Text.gray('  fountain (0,0) to summon the Ender Dragon!'))
     player.tell(Text.gold('═══════════════════════════════════════'))
 
     player.server.runCommandSilent(
@@ -254,10 +254,10 @@ function checkEndExploration(player) {
 // DRAGON SUMMONING CRYSTAL — USE AT FOUNTAIN
 // =============================================================================
 
-// Detect right-click use of the crystal near 0,0 in The End
-// Uses inventoryChanged as a proxy — when the player holds the crystal and
-// is near the fountain, consume it and start the dragon fight.
-// Alternative: use ServerEvents.tick to check held item near position.
+// No right-click handler: a server poll every 40 ticks. A player in The End
+// who has finished exploration, holds the crystal in the MAIN hand, stands
+// within DRAGON_SUMMON_RADIUS of the fountain and is SNEAKING at the poll uses
+// it up and starts the fight. The texts say "hold it and sneak" for that reason.
 
 global.tick_dragonSummonCrystal = (event) => {
   event.server.players.forEach(player => {
@@ -367,7 +367,7 @@ PlayerEvents.inventoryChanged(icraft.guard('end/dragon_exploration_gate', 'Playe
 
   let pdata = player.persistentData
   if (pdata.getBoolean('icraft_end_explored')) {
-    player.tell(Text.lightPurple('  ◆ End Exploration: COMPLETE. Craft and use a Dragon Summoning Crystal!'))
+    player.tell(Text.lightPurple('  ◆ End Exploration: COMPLETE. Hold a Dragon Summoning Crystal and sneak at the fountain (0,0)!'))
     return
   }
 
@@ -379,7 +379,7 @@ PlayerEvents.inventoryChanged(icraft.guard('end/dragon_exploration_gate', 'Playe
 
   player.tell(Text.darkPurple('  ◆ End Exploration Progress:'))
   player.tell(Text.gray(`    ${outer ? '§a✓' : '§c○'} §7Outer Islands (500+ blocks from center)`))
-  player.tell(Text.gray(`    ${city ? '§a✓' : '§c○'} §7End City Territory (1000+ blocks)`))
+  player.tell(Text.gray(`    ${city ? '§a✓' : '§c○'} §7End City Territory (1000+ blocks from center)`))
   let shulkerKills = pdata.getInt('icraft_end_shulker_kills')
   player.tell(Text.gray(`    ${shulker ? '§a✓' : '§c○'} §7Slay Shulkers (${Math.min(shulkerKills, END_SHULKER_KILLS)}/${END_SHULKER_KILLS})`))
   player.tell(Text.gray(`    ${endermen ? '§a✓' : '§c○'} §7Defeat Endermen (${Math.min(kills, END_ENDERMAN_KILLS)}/${END_ENDERMAN_KILLS})`))
