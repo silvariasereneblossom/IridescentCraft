@@ -1,0 +1,26 @@
+{
+  "type": "irons_spellbooks:append_loot",
+  "conditions": [
+    {
+      "condition": "minecraft:inverted",
+      "term": {
+        "condition": "minecraft:match_tool",
+        "predicate": {
+          "enchantments": [
+            {
+              "enchantment": "minecraft:silk_touch",
+              "levels": {
+                "min": 2
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:blocks/spawner"
+    }
+  ],
+  "key": "forbidden_arcanus:blocks/additions/spawner_additions"
+}

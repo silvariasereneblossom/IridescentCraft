@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "4da86f49",
+    "generated_from":  "1a0dec5c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6423,10 +6423,18 @@
                                                                                                    "sha256":  "11453c4df241e0ae287b16bb05369b8e7e7b13277028e1d763990421bca644f4",
                                                                                                    "size":  630
                                                                                                },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/bat_additions.json":  {
+                                                                                          "sha256":  "dce4fd485a55a2427afee685f7c06ead75b792ab6ca8baf60f590150a0df82d4",
+                                                                                          "size":  233
+                                                                                      },
                   "kubejs/data/forbidden_arcanus/loot_modifiers/crimson_stone_addition.json":  {
                                                                                                    "sha256":  "01912d6f8e0833b64d693f7877a54fbe87481676caf6c4e0448c8e9be9908a51",
                                                                                                    "size":  251
                                                                                                },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/drowned_additions.json":  {
+                                                                                              "sha256":  "543d1197eddef67b4f99b2b7f7642e7cdb93dbd106b63fc82d385131d1c12068",
+                                                                                              "size":  370
+                                                                                          },
                   "kubejs/data/forbidden_arcanus/loot_modifiers/elementarium_addition.json":  {
                                                                                                   "sha256":  "45d584269ad967449abf44f3e1cf1890759171a4c8a49d3d0e30224cdd9c0270",
                                                                                                   "size":  735
@@ -6439,6 +6447,10 @@
                                                                                                    "sha256":  "7666596585e5bb37e697a1683ae3839384e0c430cd465fe0677fe25238f4e83a",
                                                                                                    "size":  251
                                                                                                },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/enderman_additions.json":  {
+                                                                                               "sha256":  "18b4951119d108e75f78ac1e3168e2770410122a123c31eccb610420cfcea33e",
+                                                                                               "size":  243
+                                                                                           },
                   "kubejs/data/forbidden_arcanus/loot_modifiers/maledictus_pact.json":  {
                                                                                             "sha256":  "7a70592b67a0834f353458e5316a4123b5762200005df84d231a5d8b1042d3af",
                                                                                             "size":  253
@@ -6447,6 +6459,18 @@
                                                                                                      "sha256":  "493fbb4c1fd76f2955126fcc7d942ab978c57c144dd5837af2a45304184f0433",
                                                                                                      "size":  251
                                                                                                  },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/spawner_additions.json":  {
+                                                                                              "sha256":  "ad573852a750cff6c82006cae4ad5aab1f1be167c60f699893055ae92afca1e6",
+                                                                                              "size":  581
+                                                                                          },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/squid_additions.json":  {
+                                                                                            "sha256":  "5fed81bfd8b627b654cbbe8bacde8f1b28475b55a9d3c80d1b8d8ad8a13c1caa",
+                                                                                            "size":  316
+                                                                                        },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/zombie_additions.json":  {
+                                                                                             "sha256":  "46a408a48d6708106e43f2ab3a965c62e0fa506856d5831136bb3e289c78f99d",
+                                                                                             "size":  368
+                                                                                         },
                   "kubejs/data/forge/loot_modifiers/global_loot_modifiers.json":  {
                                                                                       "sha256":  "26bfe32a9cfd700841860980530ca1b01d3f02966be36d273398cb49d5f64df0",
                                                                                       "size":  40

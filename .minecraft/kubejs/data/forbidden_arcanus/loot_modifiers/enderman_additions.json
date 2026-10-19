@@ -1,0 +1,10 @@
+{
+  "type": "irons_spellbooks:append_loot",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:entities/enderman"
+    }
+  ],
+  "key": "forbidden_arcanus:entities/additions/enderman_additions"
+}
