@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Cursed$(): $(warn)fire burns you 50% hotter and the Nether gives you Weakness$(), but you can fight through it.$(br2)$(bold)Next: pair with a glass-cannon class. The four extra hearts (about two once a glass cannon halves them) buy back what Archmage or Void Summoner gives up.$()"
+      "text": "$(bold)Cursed$(): $(warn)fire burns you 50% hotter and the Nether gives you Weakness$(), but you can fight through it.$(br2)$(bold)Next: pair with a glass-cannon class. The four extra hearts buy back what Archmage or Void Summoner gives up: only gear health is halved.$()"
     }
   ]
 }
