@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Plates",
-      "text": "$(bold)Plates$() (crown, chest plate, leg plate, boot sole) take a metal, a gem, a skin or a themed material. Their armor scales with the material: Tetra multiplies the module's armor by the material's primary stat.$(br2)The runed and vestment plates are the mage builds: less armor, plus max mana, spell power and cooldown or mana regen. The expansion has plate variants for 62 metals and more than 30 gems from the pack's mods."
+      "text": "$(bold)Plates$() (crown, chest plate, leg plate, boot sole) take a metal, a gem, a skin or a themed material. Their armor scales with the material: Tetra multiplies the module's armor by the material's primary stat.$(br2)The runed and vestment plates are the mage builds, with less armor. A vestment plate adds $(item)+50 max mana and +5% mana regen$(), a runed plate $(item)+10 max mana, +5% spell power and +5% cooldown reduction$(), whatever it is made of."
     },
     {
       "type": "patchouli:text",
@@ -31,12 +31,17 @@
     {
       "type": "patchouli:text",
       "title": "Themed Materials",
-      "text": "Any module can be made of a $(bold)themed material$() instead. Each themed module adds:$(br2)$(thing)Fire$() (Cinder Essence), $(thing)Ice$() (Frozen Bone), $(thing)Lightning$() (Lightning Bottle), $(thing)Holy$() (Divine Pearl), $(thing)Blood$() (Blood Vial): $(item)+10%$() to that school's spell power$(br2)$(thing)Ender$() (Ender Pearl), $(thing)Nature$() (Oak Sapling), $(thing)Shadow$() (Ghast Tear): $(item)+5%$() spell power in every school"
+      "text": "Any module can be made of a $(bold)themed material$() instead. Each themed module adds:$(br2)$(thing)Fire$() (Cinder Essence), $(thing)Ice$() (Frozen Bone), $(thing)Lightning$() (Lightning Bottle), $(thing)Holy$() (Divine Pearl), $(thing)Blood$() (Blood Vial): $(item)+5%$() to that school's spell power. A full set of one school is +80%.$(br2)$(thing)Ender$() (Ender Pearl), $(thing)Nature$() (Oak Sapling), $(thing)Shadow$() (Ghast Tear): looks only"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Material Bonuses",
+      "text": "Many materials carry a small magic bonus of their own: $(item)+5%$() for every module made of them, added up over the set.$(br2)$(thing)Many metals$(), boss metals among them: one school (a full set +70%).$(br)$(thing)Gems$(): spell power and their school, boss gems also its resist (+20% each over a set).$(br)$(thing)Aethersteel, Terrasteel$() and the Ender Guardian's metal: $(item)+10 max mana$() a module."
     },
     {
       "type": "patchouli:text",
       "title": "Stack Identity Bonuses",
-      "text": "Themed modules stack with a specialized skin's own attributes. A $(thing)Cultist Hood$() (skin: +5% blood spell power) with a $(thing)Blood visor$() (+10% blood) gives $(item)+15% blood spell power$() on the helmet.$(br2)A $(thing)Phoenix chestplate$() with a $(thing)Fire chest lining$() adds $(item)+10% fire spell power$() to the chestplate.$(br2)Mixing schools is allowed but usually wasteful. Match the skin's school."
+      "text": "Themed modules stack with a specialized skin's own attributes. A $(thing)Cultist Hood$() (skin: +5% blood spell power) with a $(thing)Blood visor$() (+5% blood) gives $(item)+10% blood spell power$() on the helmet.$(br2)A $(thing)Phoenix chestplate$() with a $(thing)Fire chest lining$() adds $(item)+5% fire spell power$() to the chestplate.$(br2)Mixing schools is allowed but usually wasteful. Match the skin's school."
     },
     {
       "type": "patchouli:text",
