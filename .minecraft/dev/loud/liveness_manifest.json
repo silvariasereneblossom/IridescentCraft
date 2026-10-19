@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 328,
-   "digest": "5a4ff8373ffbabbe",
+   "count": 329,
+   "digest": "329dadf922a41d08",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -43,6 +43,7 @@
     "economy/relic_broker@ServerEvents.recipes",
     "economy/relic_sink@ServerEvents.commandRegistry",
     "economy/relic_sink@ServerEvents.tags",
+    "economy/villager_trades@ServerEvents.loaded",
     "end/dragon_exploration_gate@ServerEvents.recipes",
     "endgame/ascension@ServerEvents.recipes",
     "endgame/mythic_forge@ServerEvents.recipes",
@@ -372,6 +373,10 @@
     {
      "id": "economy/relic_sink@ServerEvents.tags",
      "script": "economy/relic_sink.js"
+    },
+    {
+     "id": "economy/villager_trades@ServerEvents.loaded",
+     "script": "economy/villager_trades.js"
     },
     {
      "id": "enchantments/enchant_effects@BlockEvents.broken",
@@ -2660,6 +2665,10 @@
     {
      "name": "unique-tier-buff",
      "script": "loot/unique_tier_buff.js"
+    },
+    {
+     "name": "villager-trades-filtered",
+     "script": "economy/villager_trades.js"
     },
     {
      "name": "virtue-altar-missed",
