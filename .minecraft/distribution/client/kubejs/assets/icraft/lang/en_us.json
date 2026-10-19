@@ -50,7 +50,7 @@
   "enchantment.icraft.lunar_stride": "Lunar Stride",
   "enchantment.icraft.lunar_stride.desc": "On Ad Astra planets: grants Jump Boost and takes a third off fall damage per level. Levels on your armor pieces add up, and 3 stop it.",
   "enchantment.icraft.thermal_regulation": "Thermal Regulation",
-  "enchantment.icraft.thermal_regulation.desc": "Takes a third off the cold damage of Mars, Mercury's night and Glacio per level. Levels on your armor pieces add up, and 3 stop it.",
+  "enchantment.icraft.thermal_regulation.desc": "Takes a third off the cold damage of Mars, Mercury's night and Glacio per level. Levels on your armor pieces add up, and 3 stop it. It does not stop the freezing of the Moon and Mars without a full space suit.",
   "enchantment.icraft.pressure_shell": "Pressure Shell",
   "enchantment.icraft.pressure_shell.desc": "Reduces Venus acid-rain damage by 50%% per level.",
   "enchantment.icraft.void_adaptation": "Void Adaptation",

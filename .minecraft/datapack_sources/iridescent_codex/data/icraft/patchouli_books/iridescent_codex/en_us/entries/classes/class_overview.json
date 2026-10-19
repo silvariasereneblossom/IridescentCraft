@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Half Equipment HP Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$(), $(thing)Void Summoner$() and $(thing)Elemental$() get only 50% of every max HP bonus from equipment, including the Vitality enchant, HP affixes and armor attribute modifiers.$(br2)It $(italic)does not affect$() base HP, Spice of Life food HP or JustLevelingFork level-up HP. These glass cannons have a lower HP ceiling, but food diversity and leveling still pay off for them."
+      "text": "$(bold)Half Equipment HP Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$(), $(thing)Void Summoner$() and $(thing)Elemental$() get only 50% of every max HP bonus from equipment: armor and held items, curios, the Vitality enchant and HP affixes.$(br2)It $(italic)does not affect$() base HP, your race, Spice of Life food HP or level-up HP. These glass cannons have a lower HP ceiling, but food diversity and leveling still pay off for them."
     }
   ]
 }

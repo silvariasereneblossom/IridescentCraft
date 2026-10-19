@@ -26,12 +26,12 @@
     {
       "type": "patchouli:text",
       "title": "Utility",
-      "text": "$(bold)Magnetism$(): Item pickup radius$(br)$(bold)Last Stand$(): Burst damage when you nearly die$(br)$(bold)Vitality$(): Max HP boost$(br)$(bold)Phalanx$(): Group defense aura$(br)$(bold)Quick Draw$(): Draws the bow or crossbow you hold 15% faster a level$(br2)$(bold)Next: $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l); better shelves give better rolls.$()"
+      "text": "$(bold)Magnetism$(): Item pickup radius$(br)$(bold)Last Stand$(): a hit that would kill you leaves you at 1 HP instead, once every 5 minutes$(br)$(bold)Vitality$(): Max HP boost$(br)$(bold)Phalanx$(): 6% less damage a level while you block with a shield$(br)$(bold)Quick Draw$(): Draws the bow or crossbow you hold 15% faster a level$(br2)$(bold)Next: $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l); better shelves give better rolls.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Planet Enchants",
-      "text": "Chests on each Ad Astra planet hold its enchanted book: level I in 30% of them, level II in 10%.$(br2)$(bold)Lunar Stride$() (Moon): Jump Boost, and a third less fall damage a level.$(br)$(bold)Thermal Regulation$() (Mars): a third less of the planets' cold damage a level.$(br)$(bold)Pressure Shell$() (Venus): half the acid damage a level, and no slowdown at 2."
+      "text": "Chests on each Ad Astra planet hold its enchanted book: level I in 30% of them, level II in 10%.$(br2)$(bold)Lunar Stride$() (Moon): Jump Boost, and a third less fall damage a level.$(br)$(bold)Thermal Regulation$() (Mars): a third less of the planets' cold damage a level; only a space suit stops freezing.$(br)$(bold)Pressure Shell$() (Venus): half the acid damage a level, and no slowdown at 2."
     },
     {
       "type": "patchouli:text",

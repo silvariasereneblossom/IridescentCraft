@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "78e14e92",
+    "generated_from":  "e55cd8c4",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5860,8 +5860,8 @@
                                                             "size":  51
                                                         },
                   "kubejs/assets/icraft/lang/en_us.json":  {
-                                                               "sha256":  "3ee0054857a1664759eedd4d6dd122a2da4d995d983a4ddcd849d74d419c5220",
-                                                               "size":  12057
+                                                               "sha256":  "4df6e7515c00bcc78334581c8c4003b2ee5198f71767885f230f6c6b00a413b3",
+                                                               "size":  12135
                                                            },
                   "kubejs/assets/iridescent_modular_spells/lang/en_us.json":  {
                                                                                   "sha256":  "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
@@ -8636,7 +8636,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "013c12edef7f7e60dcdac402263366587ac9fac158caff9b84772f67bb829e9d",
+                                                               "sha256":  "a42b357916786bde401a17c94ada2b98e744f9eefc870a622e942ab43f57aaa3",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

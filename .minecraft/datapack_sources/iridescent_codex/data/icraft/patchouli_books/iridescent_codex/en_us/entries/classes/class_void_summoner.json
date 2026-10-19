@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Playstyle, cont.",
-      "text": "$(bold)Best race pairings:$()$(br)$(thing)Revenant$(): +20% attack damage in the dark on top of Shadow Cloak's +10%, and Resistance I at light level 4 or lower.$(br)$(thing)Demi-God$(): four extra hearts, halved like gear health to about two.$(br)$(thing)Faefolk$(): +30% magic damage reaches your Iron's summons too, since their hits count as your spell.$(br2)$(bold)Next: learn Summon Vex from your starter scroll.$()"
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Revenant$(): +20% attack damage in the dark on top of Shadow Cloak's +10%, and Resistance I at light level 4 or lower.$(br)$(thing)Demi-God$(): 40% more health (25.2 instead of 18), all of it kept: only gear health is halved.$(br)$(thing)Faefolk$(): +30% magic damage reaches your Iron's summons too, since their hits count as your spell.$(br2)$(bold)Next: learn Summon Vex from your starter scroll.$()"
     }
   ]
 }

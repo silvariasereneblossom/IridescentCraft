@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Glass Nuke, cont.",
-      "text": "$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): the purest glass nuke (the x2.07 build).$(br)$(thing)Elf$(): +5% magic damage and speed. A safer kit.$(br)$(thing)Demi-God$(): four extra hearts, halved like gear health to about two, which offsets the fragility."
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): the purest glass nuke (the x2.07 build).$(br)$(thing)Elf$(): +5% magic damage and speed. A safer kit.$(br)$(thing)Demi-God$(): 40% more health (22.4 instead of 16), all of it kept since only gear health is halved, which offsets the fragility."
     }
   ]
 }
