@@ -347,6 +347,16 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
     'simplyswords:runefused_gem',     'simplyswords:netherfused_gem'
   ].forEach(id => event.remove({ output: id }))
   event.remove({ id: 'simplyswords:runic_grimoire_recipe_shapeless' })
+  // 2026-10-18 (decision list entry 12, option (a), on recommendation): the
+  // remnant chain goes too. With the fused gems removed above, an Empowered
+  // Remnant (smelting any unique, recipe simplyswords:unique_melting) has one
+  // use left, the Contained Remnant (3 Empowered Remnants), and Simply Swords
+  // 1.56.0 turns a Contained Remnant in a player's inventory into a RANDOM
+  // unique weapon every 6,000 ticks (ServerPlayerEntityMixin, jar-read): three
+  // tier-1 uniques could become any unique, a path around the tier-gated boss
+  // drops. Both recipes are removed by id.
+  event.remove({ id: 'simplyswords:unique_melting' })
+  event.remove({ id: 'simplyswords:contained_remnant' })
   })
 
 

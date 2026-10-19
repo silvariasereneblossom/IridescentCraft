@@ -14,6 +14,10 @@
 // =============================================================================
 
 ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes', event => {
+  // The old kubejs:rift_shard (renamed 2026-04-27; its login migration is gone)
+  // crafts 1:1 into the current shard (decision list entry 14 (c), 2026-10-18).
+  event.shapeless('kubejs:icraft_rift_shard', ['kubejs:rift_shard']).id('icraft:rift_shard_from_old')
+
 
     // =========================================================================
     // SECTION 1: MYTHIC FORGE CRAFTING RECIPE

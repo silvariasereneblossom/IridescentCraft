@@ -19,13 +19,10 @@
 //   by checking for the class-specific power (hp_modifier with negative value).
 // =============================================================================
 
-// Glass cannon classes that get equipment HP halving
-const GLASS_CANNON_CLASSES = global.icraft.core.idSet([
-  'icraft:ranger',
-  'icraft:archmage',
-  'icraft:void_summoner',
-  'icraft:elemental'
-])
+// The glass-cannon classes (ranger, archmage, void_summoner, elemental) are the
+// ones whose Origins power sets the scoreboard icraft_glass_cannon; this file
+// reads that score. (A set of the four ids stood here and was asked by nothing;
+// removed 2026-10-18, decision list entry 17.)
 
 // The player's Origins class id ("icraft:archmage" etc.) comes from the shared
 // cached resolver, global.icraft.origin (0_lib_origins.js). This file used to

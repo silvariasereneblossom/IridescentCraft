@@ -40,6 +40,7 @@ RECIPE_REMOVED_NO_LOOT_SOURCE food_dedup_recipes.js thermal:amaranth  # duplicat
 ~RECIPE_REMOVED_NO_LOOT_SOURCE recipes/ad_astra_gating.js ad_astra:jet_suit*  # "Jet Suit: remove entirely"
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js terramity:basic_pistol  # Terramity guns and ammo: removed by design (Section I.1)
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js terramity:conductite_armor_boots  # Terramity armor sets: removed by design (I.2); loot strip added 2026-10-11
+RECIPE_REMOVED_NO_LOOT_SOURCE recipes/tier_gated_recipes.js simplyswords:contained_remnant  # removed by design 2026-10-18 (decision list entry 12): in a player's inventory it turns into a random unique weapon (Simply Swords' player mixin), a path around the tier-gated boss drops
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js terramity:nyxium  # ingot families, tools, blocks: removed by design (I.4)
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js mekanism:atomic_disassembler  # recipe id removed by design (J)
 RECIPE_REMOVED_NO_LOOT_SOURCE recipes/recipe_audit.js cataclysm:mechanical_fusion_anvil  # merged into void_forge / infernal_forge (J.3)

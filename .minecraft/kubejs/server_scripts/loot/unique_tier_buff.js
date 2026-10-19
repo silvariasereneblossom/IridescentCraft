@@ -32,6 +32,10 @@ try {
       if (!proj || !(proj instanceof ProjectileClass)) return
       var owner = proj.owner
       if (!owner) return
+      // An Iron's Spellbooks caster's slot accessors are abstract (0_iss_guard.js):
+      // its hands are never read here (decision list entry 16, 2026-10-18). A
+      // caster holds no unique bow, so no arrow loses its tag.
+      if (global.icraftIsIssMob && global.icraftIsIssMob(owner)) return
       var items = global.ICRAFT_UNIQUE_ITEMS
       if (!items) return
       var heldId = null

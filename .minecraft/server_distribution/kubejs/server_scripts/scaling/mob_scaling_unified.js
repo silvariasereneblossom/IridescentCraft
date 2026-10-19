@@ -247,8 +247,10 @@ const MID_TIER_MOBS = global.icraft.core.idSet([
   'irons_spellbooks:necromancer', 'irons_spellbooks:apothecarist',
   'irons_spellbooks:cryomancer', 'irons_spellbooks:pyromancer',
   'irons_spellbooks:priest', 'irons_spellbooks:archevoker', 'irons_spellbooks:keeper',
-  'theabyss:dark_skeleton', 'theabyss:dark_zombie',
-  'theabyss:soul_knight', 'theabyss:shadow_mage',
+  // 2026-10-18: four `theabyss:` ids stood here (dark_skeleton, dark_zombie,
+  // soul_knight, shadow_mage). None is an entity type of the installed The
+  // Abyss (dev/registry/entity_types.txt), so they matched nothing; removed,
+  // nothing changed. The Abyss's real hostiles are on no tier list.
   'cataclysm:kobolediator', 'cataclysm:deepling', 'cataclysm:deepling_brute',
   'cataclysm:deepling_priest', 'cataclysm:deepling_angler',
   'cataclysm:aptrgangr', 'cataclysm:lionfish', 'cataclysm:coralssus',

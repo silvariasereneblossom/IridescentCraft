@@ -8,32 +8,32 @@
 //   prepared dishes    -> Farmer's Delight (where it has one) else Pam HC2
 //   FD-addon dishes    -> the FD addon (Cultural, Delightful, etc.)
 //
-// Items here mirror food_dedup_jei_hide.js. Failure to find a recipe is
-// soft -- the e.remove call no-ops if the output doesn't have a recipe.
+// The list is the same as client_scripts/food_dedup_jei_hide.js (81 ids since
+// 2026-10-18: the twelve Thermal crop storage blocks added, five ids that are no
+// item removed; decision list entry 10). Keep the two lists equal. Failure to
+// find a recipe is soft -- the e.remove call no-ops if the output doesn't have a recipe.
 
 ServerEvents.recipes(icraft.guard('food_dedup_recipes', 'ServerEvents.recipes', event => {
   const dupeOutputs = [
     // -- Thermal Cultivation (canonical: Pam HC2) --
-    'thermal:amaranth',
-    'thermal:barley',
+    'thermal:amaranth', 'thermal:amaranth_block',
+    'thermal:barley', 'thermal:barley_block',
     'thermal:carrot_cake',
     'thermal:chocolate_cake',
     'thermal:cooked_corn', 'thermal:cooked_eggplant',
-    'thermal:corn',
-    'thermal:dough',
-    'thermal:eggplant',
-    'thermal:flax',
-    'thermal:flour',
-    'thermal:onion',
-    'thermal:peanut',
+    'thermal:corn', 'thermal:corn_block',
+    'thermal:eggplant', 'thermal:eggplant_block',
+    'thermal:flax', 'thermal:flax_block',
+    'thermal:onion', 'thermal:onion_block',
+    'thermal:peanut', 'thermal:peanut_block',
     'thermal:peanut_butter',
-    'thermal:radish',
-    'thermal:rice',
-    'thermal:spinach',
+    'thermal:radish', 'thermal:radish_block',
+    'thermal:rice', 'thermal:rice_block',
+    'thermal:spinach', 'thermal:spinach_block',
     'thermal:spring_salad',
-    'thermal:strawberry',
+    'thermal:strawberry', 'thermal:strawberry_block',
     'thermal:stuffed_pepper',
-    'thermal:tomato',
+    'thermal:tomato', 'thermal:tomato_block',
 
     // -- Blue Skies --
     'blue_skies:maple_sapling',
@@ -83,11 +83,8 @@ ServerEvents.recipes(icraft.guard('food_dedup_recipes', 'ServerEvents.recipes', 
     'culturaldelights:avocado_sapling',
     'culturaldelights:cucumber',
     'culturaldelights:cucumber_seeds',
-    'culturaldelights:cucumbers',
     'culturaldelights:eggplant',
     'culturaldelights:eggplant_seeds',
-    'culturaldelights:eggplants',
-    'culturaldelights:ginger',
     'culturaldelights:smoked_corn',
     'culturaldelights:smoked_eggplant',
     'culturaldelights:smoked_tomato',

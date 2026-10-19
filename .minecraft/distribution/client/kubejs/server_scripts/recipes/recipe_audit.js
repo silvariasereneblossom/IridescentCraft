@@ -258,6 +258,10 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     'terramity:antimatter_round', 'terramity:dimlite_round',
     'terramity:iridium_round', 'terramity:shadowflame_bullet',
     'terramity:suppressed_gold_round',
+    // 2026-10-18 (decision list entry 13): the three shells the jar can still
+    // craft, ammunition for guns that cannot be made (loot already strips them)
+    'terramity:steel_shell', 'terramity:daemonium_shotshells',
+    'terramity:hellspec_shotshells',
   ].forEach(id => event.remove({ output: id }))
 
   // I.2: Remove ALL Terramity armor set recipes

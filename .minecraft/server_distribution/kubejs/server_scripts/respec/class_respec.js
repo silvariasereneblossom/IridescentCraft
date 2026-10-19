@@ -8,7 +8,8 @@
 //   Race: Permanent. Cannot be changed.
 //   Class: Respec-able. Cost: 1 boss drop (tier-appropriate) + 30 XP levels.
 //          Can only respec at a specific crafted station (Class Altar).
-//   Skills: Respec individual points. 5 levels per point. (Handled by Pufferfish)
+//   Skills: no respec (see SKILL-POINT TRIGGER below; Pufferfish Skills 0.17.3
+//          resets a tree only by operator command).
 //
 // HOW THE ALTAR WORKS (icraft:class_altar, an item; hold it in the main hand
 // and a boss trophy in the offhand, then right-click):
@@ -63,15 +64,14 @@
   // How long (in 1 s polls) the new-class watch keeps doing fresh reads.
   var WATCH_POLLS = 600
 
-  // Boss materials + the three legacy progression tokens. All `kubejs:` items
-  // (startup_scripts/custom_items.js).
+  // Six boss materials. All `kubejs:` items (startup_scripts/custom_items.js).
+  // 2026-10-18 (decision list entry 14 (b), on recommendation): the three
+  // legacy progression tokens are no longer accepted (nothing in the pack
+  // gives them), and the hint below names the six instead of promising "any".
   var TROPHIES = [
     'kubejs:lich_soul', 'kubejs:harbinger_eye', 'kubejs:dragon_heart',
     'kubejs:dragon_scale', 'kubejs:nether_soul_fragment',
-    'kubejs:condensed_blaze_essence',
-    'kubejs:twilight_progression_token_t2',
-    'kubejs:dimensional_progression_token_t3',
-    'kubejs:reality_progression_token_t4'
+    'kubejs:condensed_blaze_essence'
   ]
   var IS_TROPHY = {}
   TROPHIES.forEach(function (id) { IS_TROPHY[id] = true })
@@ -225,7 +225,7 @@
     } catch (e2) { trophyId = '' }
     if (!IS_TROPHY.hasOwnProperty(trophyId)) {
       tell(player, TAG + '§7Hold the altar in your main hand and a boss trophy in your offhand to respec.')
-      tell(player, '§7(Any boss material or progression token works)')
+      tell(player, '§7(Lich Soul, Harbinger Eye, Dragon Heart, Dragon Scale, Nether Soul Fragment or Condensed Blaze Essence)')
       return
     }
 

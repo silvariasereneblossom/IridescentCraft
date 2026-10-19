@@ -268,15 +268,16 @@ StartupEvents.registry('item', icraft.guard('custom_items', 'StartupEvents.regis
 
     // 2026-04-27 (audit Phase 2.2): renamed to icraft_rift_shard to resolve
     // namespace collision with too_many_bows:rift_shard. Old kubejs:rift_shard
-    // remains registered for a transition window so any pre-update player
-    // inventories migrate cleanly via PlayerEvents.loggedIn handler in
-    // kubejs/server_scripts/migrations/rift_shard_rename.js. Once testers
-    // confirm migration ran (target: ~2 weeks), this old entry can be removed.
+    // stays registered (unregistering an item deletes the stacks players hold).
+    // The login migration that converted it was deleted on 2026-10-10, so since
+    // 2026-10-18 (decision list entry 14 (c)) the old shard crafts 1:1 into the
+    // current one (endgame/mythic_forge.js, recipe icraft:rift_shard_from_old)
+    // and its text says so.
     icraft.section('custom_items/endgame-materials', function () {
     event.create('kubejs:rift_shard')
-        .displayName('§7Rift Shard (deprecated — relog to convert)')
+        .displayName('§7Old Rift Shard')
         .tooltip('§dA fragment of torn reality')
-        .tooltip('§cDeprecated: relog to receive Iridescent Rift Shard')
+        .tooltip('§cOld item: craft it into an Iridescent Rift Shard')
         .maxStackSize(64)
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
