@@ -2,16 +2,21 @@
   "name": "Kirin",
   "icon": "minecraft:golden_horse_armor",
   "category": "icraft:classes",
-  "sortnum": 21,
+  "sortnum": 24,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Unrivaled Speed$(): the $(item)fastest sprint speed$() of any race.$(br2)$(bold)Wall Climbing$(): climb vertical surfaces like a spider.$(br2)$(bold)Cat Vision$(): see clearly in the dark.$(br2)$(bold)Fall Immunity$(): no fall damage."
+      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Unrivaled Speed$(): twice the base walking speed, and Speed II for 12s on demand (60s cooldown).$(br2)$(bold)Pounce$(): launch forward (25s cooldown)."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Sprint Jump$(): a stronger jump while sprinting.$(br2)$(bold)Fragile$(): $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Exhaustion$(): $(warn)constant movement burns food faster.$()$(br2)$(bold)Next: pair with Wanderer or Ranger and never stand still. Stillness is the only way you die.$()"
+      "text": "$(bold)Wall Climbing$(): climb vertical surfaces like a spider.$(br2)$(bold)Cat Vision$(): see clearly in the dark.$(br2)$(bold)Fall Immunity$(): no fall damage.$(br2)$(bold)Sprint Jump$(): a stronger jump while sprinting.$(br2)$(bold)Fragile$(): $(warn)-10% max HP$() (one heart less)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tradeoffs",
+      "text": "$(bold)Exhaustion$(): $(warn)constant movement burns food faster.$()$(br2)$(bold)Next: pair with Wanderer or Ranger and never stand still. Stillness is the only way you die.$()"
     }
   ]
 }

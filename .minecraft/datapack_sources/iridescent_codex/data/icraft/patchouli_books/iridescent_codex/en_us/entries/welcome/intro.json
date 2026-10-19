@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)First Steps$()$(br)$(li)Select a Race when prompted (or press $(k:origins.view_origin)), then a Class.$(li)Open your Skills menu ($(k:puffish_skills.open)).$(li)Open the Heracles quest book with $(k:heracles.open_quests). It guides you and tracks your progress.$(li)Find a waystone. They are your fast-travel network.$(br2)$(bold)Next: read $(l:icraft:welcome/first_hour)Your First Hour$(/l) if you haven't yet.$()"
+      "text": "$(bold)First Steps$()$(br)$(li)Choose your Origin, Race and Class when prompted ($(k:origins.view_origin) shows them again).$(li)Open your Skills menu ($(k:puffish_skills.open)).$(li)Open the Heracles quest book with $(k:heracles.open_quests). It guides you and tracks your progress.$(li)Find a waystone. They are your fast-travel network.$(br2)$(bold)Next: read $(l:icraft:welcome/first_hour)Your First Hour$(/l) if you haven't yet.$()"
     }
   ]
 }

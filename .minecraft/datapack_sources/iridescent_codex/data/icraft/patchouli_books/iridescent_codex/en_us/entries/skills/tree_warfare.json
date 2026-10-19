@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Pure melee investment. Best for Berserker, Vanguard, Samurai and Paladin.$()$(br2)Every node is attribute-based, so it applies immediately and needs no KubeJS."
+      "text": "$(italic)Pure melee investment. Best for Berserker, Vanguard, Samurai and Paladin.$()$(br2)Every node is an attribute and applies the moment you take it.$(br2)The tree has 29 nodes: an 8-node trunk, then two branches of 11 and 10 nodes, each ending in a capstone that costs 2 points."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Melee Damage$(): the core trunk. It raises base melee damage through Pufferfish's Attributes melee_damage attribute.$(br2)$(bold)Sword Mastery / Axe Mastery$(): Branch 1 or 2, an exclusive choice. Sword adds crit chance, Axe armor shred.$(br2)$(bold)Attack Speed$(): a mid-trunk node that raises the attack speed attribute. With the Orc racial it gives an extreme attack rate."
+      "title": "Trunk",
+      "text": "$(bold)Brute Force$() I and II: +5% melee damage each$(br2)$(bold)Iron Grip$() I and II: +5% attack speed each$(br2)$(bold)Thick Hide$() I and II: +4% melee resistance each$(br2)$(bold)Vigor$() I and II: +2 max health each"
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Tamed Damage / Tamed Resistance$(): dedicated nodes for summoner builds that increase damage dealt by and to your tamed and summoned entities.$(br2)$(bold)Warfare Capstone$(): $(bold)Berserker's Will$(), which needs 35+ Warfare nodes. Each kill gives +5% damage for 10s, stacking 5x."
+      "title": "Life Steal Branch",
+      "text": "$(bold)Relentless Strikes$() I to III: +6% melee damage each$(br)$(bold)Bloodlust$() I to III: +1%, +2% and +2% life steal$(br)$(bold)Ferocity$() I and II: +6% attack speed each$(br)$(bold)Savage Blows$() I and II: +8% melee damage each$(br2)$(bold)Capstone: Unending Fury$(), +15% melee damage and +5% life steal."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Critical Branch",
+      "text": "$(bold)Precision$() I to III: +1 luck each$(br)$(bold)Sword Mastery$() I and II: +8% sword damage each$(br)$(bold)Axe Mastery$() I and II: +8% axe damage each$(br)$(bold)Lethal Edge$() I and II: +8% and +12% crit damage$(br2)$(bold)Capstone: Perfect Strike$(), +2 luck and +20% crit damage."
     }
   ]
 }

@@ -16,12 +16,12 @@
     {
       "type": "patchouli:text",
       "title": "Five-Tier Skills",
-      "text": "Each aptitude has $(bold)5$() skill nodes, at levels $(bold)5 / 10 / 15 / 20 / 30$(), and each tier opens a new ability:$(br2)$(bold)5$(): small confidence-builder bonus$(br)$(bold)10$(): clear functional buff$(br)$(bold)15$(): build-defining bridge tier$(br)$(bold)20$(): high-signature ability$(br)$(bold)30$(): capstone, often triggered$(br2)Hover a node in the aptitude screen to see its exact effect."
+      "text": "Each aptitude has $(bold)5$() skill nodes, at levels $(bold)5 / 10 / 15 / 20 / 30$(), and each one opens a new ability. The level 30 node is the aptitude's capstone.$(br2)Hover a node in the aptitude screen to see its exact effect."
     },
     {
       "type": "patchouli:text",
       "title": "Always-On Passives",
-      "text": "Some aptitudes also have passives that scale with level, without buying a node:$(br2)$(bold)MAG$(): Spell Power (up to +16% spell damage at level 32) and Mana Regen (up to +32%)$(br)$(bold)INT$(): Attack Speed and Critical Chance (up to +25% at level 32, for melee, ranged and magic)$(br)$(bold)LCK$(): Luck and Critical Damage (pairs with INT's crit chance)$(br2)$(bold)Next: press $(k:justlevelingfork.open_aptitudes) and spend your banked points.$()"
+      "text": "Some aptitudes also have passives that scale with level, without buying a node:$(br2)$(bold)MAG$(): Spell Power (up to +16% spell damage at level 32) and Mana Regen (up to +32%)$(br)$(bold)INT$(): Attack Speed, and Critical Chance (up to +25% at level 32, for melee, ranged and magic)$(br)$(bold)LCK$(): Luck (up to +2) and Critical Damage (up to +25%)$(br2)$(bold)Next: press $(k:justlevelingfork.open_aptitudes) and spend your banked points.$()"
     }
   ]
 }

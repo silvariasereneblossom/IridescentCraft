@@ -1,0 +1,27 @@
+{
+  "name": "Corrupted",
+  "icon": "minecraft:wither_skeleton_skull",
+  "category": "icraft:classes",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Blood, ender and eldritch. Wear the enemy down and drink the damage back.$()$(br2)HP Modifier: -10%  |  Equipment HP: Full$(br)Mana Pool: $(item)2x base$() (200 from default 100)$(br)$(bold)Core Identity:$() +80% blood, ender and eldritch spell power, +40% on every magic hit, and 15% lifesteal on every hit."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Corrupted Triad$(): $(item)+80% blood, ender and eldritch spell power$(). The other six schools get no school bonus, and no Ars Nouveau school takes this one.$(br2)$(bold)Class stats$(): every magic hit you land deals +40% more, in any school. 15% of the damage you deal heals you, on every hit. You take 10% less magic damage and your spells cool down 8% faster."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Voidward",
+      "text": "$(bold)Armor Penetration$(): your hits deal more to armored targets, +1% for every 3 points of their natural armor (+10% against 30; what they wear does not count).$(br2)$(bold)Voidward$(): Iron's Spells of three schools hurt you less, $(item)fire, ice and lightning -30% each$(). $(warn)Holy spells hurt you 30% more$(): that is the Blessed's school.$(br2)Ars Nouveau's elemental spells ignore these resistances."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Playstyle",
+      "text": "Your starter kit: a modular copper spell book, Ray of Siphoning and Eldritch Blast scrolls, 2 Ender Pearls and 2 Common Ink.$(br2)On your three schools you out-damage the Archmage; on the other six the Archmage hits harder.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): +30% magic damage, so more to drink back.$(br)$(thing)Elf$(): +5% magic damage and 8% speed."
+    }
+  ]
+}

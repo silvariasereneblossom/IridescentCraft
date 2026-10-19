@@ -2,15 +2,20 @@
   "name": "Ryu",
   "icon": "minecraft:dragon_egg",
   "category": "icraft:classes",
-  "sortnum": 19,
+  "sortnum": 22,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Dragon-blooded and ancient. Resilient and imposing, the Ryu shrugs off damage and heals from food.$()$(br2)$(bold)Natural Protection$(): $(item)25% damage reduction$().$(br2)$(bold)Slow Fall$(): broken wings give slow fall, not true flight.$(br2)$(bold)Food Healing$(): eating food triggers accelerated healing."
+      "text": "$(italic)Dragon-blooded and ancient. Resilient and imposing, the Ryu shrugs off damage and heals from food.$()$(br2)$(bold)Dragon Scales$(): $(item)25% less damage$() from every source, and +4 max HP.$(br2)$(bold)Slow Fall$(): broken wings give slow fall, not true flight."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
+      "text": "$(bold)Draconic Vitality$(): while your food bar is at 18 or more, you heal 1 health every 2 seconds.$(br2)$(bold)Dragon's Sight$(): make every nearby creature glow (15s cooldown).$(br2)Poison, Slowness and Weakness wear off you within seconds (one of the three is cleared every second)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tradeoffs",
       "text": "$(bold)Meat Preference$(): $(warn)non-meat food gives less nourishment.$()$(br2)$(bold)Healing Potions$(): $(warn)only 50% effective.$() Your scaled hide resists potions.$(br2)$(bold)Next: stock cooked meat instead of potions. Your healing runs through your stomach.$()"
     }
   ]

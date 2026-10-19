@@ -39,6 +39,7 @@ words, or write a placeholder so the number follows the source from then on.
 | the token thresholds | `gates/codex_progression_engine.js` |
 | tokens per kill (boss first / repeat, miniboss), per first arrival, the token item | `exploration/codex_exploration_kills.js` |
 | every unique weapon: tier, kind, who drops it and how often | `loot/unique_itemset_registry.js` (+ `boss_unique_drops.js`'s chance), `loot/loot_overhaul.js` |
+| how many origins, races and classes there are | the Origins layers in `mods/iridescent_origins-*.jar` (`data/origins/origin_layers/`, the jar the game loads, not the mod's source folder); a datapack that defines a layer again fails the gate |
 | the names players read | `dev/codex/names.json` (the game's English names; the only hand-kept data here) |
 
 A script constant is found by a pattern that must match exactly once. A rewritten line makes the gate fail with the
@@ -57,6 +58,7 @@ The source is `.minecraft/datapack_sources/iridescent_codex/data/icraft/patchoul
 | `{{bosses mod=… tier=… rush=… kind=boss\|miniboss dim=… <format>}}` | `count` `word` `Word` `names` `Names` `list` |
 | `{{dims tier=… flag=… <format>}}` | `count` `word` `names` `Names` |
 | `{{uniques tier=… kind=sword\|bow dropped=yes\|no <format>}}` | `count` `word` `names` `list` `minchance` `maxchance` |
+| `{{layer <origin\|race\|class> <format>}}` | `count` `word` `Word`: "13", "thirteen", "Eleven" |
 | `{{const dimentry}}` | tokens for a first arrival |
 
 A generated page is written as `{"type": "icraft:generated", "generator": "<name>", ...}` and becomes as many text
@@ -114,7 +116,8 @@ tightest pages.
 3. every placeholder and generated page fills (a boss the registry no longer has is named with the page);
 4. the hand-written text (`codex_prose.py`):
    - **TYPED FACT**: a difficulty multiplier, a death penalty, a boss-rush share, a token threshold or a boss's health
-     typed as a number. The message names the placeholder to write.
+     typed as a number; the number of classes, races or origins (a digit, or a word from ten up, in a text, a title
+     or an entry name). The message names the placeholder to write.
    - **TIER**: a boss named under a tier it is not at. The tier a phrase speaks of is a tier word ("Tier 3", "T3",
      "T3+", "T3-T4") in its clause, else the heading before it on the line ("Tier 1 -- Gob ..."), else later in the
      same sentence, else the page title, else the entry name ("Tier 1 Bosses"). A boss passes when its tier, its

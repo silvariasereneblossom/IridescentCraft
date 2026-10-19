@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Passives (cont.)",
-      "text": "$(bold)Expanded Pool$(): a mana pool of $(item)2.5x base$(), the largest (the Battlemage and the Void Summoner have 1.9x). Enough for sustained barrages without running dry.$(br2)$(bold)Glass Frame$(): -28.6% armor and -20% toughness. The penalty scales with your final value, so it can never zero a robe build; a full robe set nets ~50% armor. Your equipment HP is halved."
+      "text": "$(bold)Expanded Pool$(): a mana pool of $(item)2.5x base$(), the largest (the Elemental, Blessed and Corrupted have 2x, the Battlemage and the Void Summoner 1.9x).$(br2)$(bold)Glass Frame$(): the armor penalty scales with your final value, so it never zeroes a robe build. Your equipment HP is halved.$(br2)$(bold)Class stats$(): every magic hit you land deals +25% more, and your mana refills faster."
     },
     {
       "type": "patchouli:text",

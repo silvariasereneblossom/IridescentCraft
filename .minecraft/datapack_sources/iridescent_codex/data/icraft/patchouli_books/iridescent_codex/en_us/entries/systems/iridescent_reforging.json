@@ -16,27 +16,27 @@
     {
       "type": "patchouli:text",
       "title": "Module Slots",
-      "text": "Each reforged piece has 2 slots, major + minor:$(br2)$(thing)Helmet$(): crown + visor$(br)$(thing)Chestplate$(): chest plate + chest lining$(br)$(thing)Leggings$(): leg plate + belt$(br)$(thing)Boots$(): boot sole + boot lining$(br2)Major slots take metals, and armor scales with the metal's tier. Minor slots take fabric, leather or fibre for generic utility, or a themed material for an identity bonus."
+      "text": "Each reforged piece has 4 slots: a plate and three minor slots.$(br2)$(thing)Helmet$(): crown, visor, strap, crest$(br)$(thing)Chestplate$(): chest plate, chest lining, trim, pauldrons$(br)$(thing)Leggings$(): leg plate, belt, cuisses, greaves$(br)$(thing)Boots$(): boot sole, heel, boot lining, lacing$(br2)Every slot offers several modules: five plate builds per piece, three of each minor."
     },
     {
       "type": "patchouli:text",
-      "title": "Major Slot Bonuses",
-      "text": "$(bold)Crown, chest plate, leg plate, boot sole:$() apply a metal and armor scales with its tier.$(br2)$(thing)iron$(): modest baseline$(br)$(thing)gold$(): low armor, more enchantability$(br)$(thing)diamond$(): solid mid-tier$(br)$(thing)netherite$(): top vanilla tier$(br2)Modded metals (manasteel, knightmetal, ignitium and friends) plug in automatically as their mods register them."
+      "title": "Plates",
+      "text": "$(bold)Plates$() (crown, chest plate, leg plate, boot sole) take a metal, a gem, a skin or a themed material. Their armor scales with the material: Tetra multiplies the module's armor by the material's primary stat.$(br2)The runed and vestment plates are the mage builds: less armor, plus max mana, spell power and cooldown or mana regen. The expansion has plate variants for 62 metals and more than 30 gems from the pack's mods."
     },
     {
       "type": "patchouli:text",
-      "title": "Minor Slots: Generic",
-      "text": "Apply $(thing)wool$(), $(thing)string$() or $(thing)leather$() for baseline utility:$(br2)$(thing)visor$(): +0.5 armor$(br)$(thing)chest lining$(): +5% mana regen$(br)$(thing)belt$(): +2% knockback resistance$(br)$(thing)boot lining$(): +0.2% movement speed$(br2)Generic materials are the cheap entry-level option. Upgrade to themed materials later for identity bonuses."
+      "title": "Minor Slots",
+      "text": "Minor modules add small extras and take metal, fabric or leather, depending on the module. A few examples:$(br2)$(thing)Chain strap, chain belt, iron lacing$(): knockback resistance$(br)$(thing)Silk lining$(): max mana and mana regen$(br)$(thing)Sash, cloth cuisses, silk lacing$(): max mana$(br)$(thing)Goggles$(): max mana and spell power$(br)$(thing)Gilded trim$(): luck"
     },
     {
       "type": "patchouli:text",
-      "title": "Minor Slots: Themed",
-      "text": "$(thing)Fire$(): blaze rod$(br)$(thing)Ice$(): blue ice$(br)$(thing)Shadow$(): ghast tear$(br)$(thing)Holy$(): glowstone dust$(br)$(thing)Lightning$(): redstone$(br)$(thing)Nature$(): sapling (mana regen instead of a school)$(br)$(thing)Ender$(): ender pearl$(br)$(thing)Blood$(): rotten flesh$(br2)Each of the 8 axes grants $(item)+5% school spell power$() (visor), $(item)+4%$() + mana regen (chest lining), $(item)+3%$() + KB resist (belt), $(item)+3%$() + speed (boot lining)."
+      "title": "Themed Materials",
+      "text": "Any module can be made of a $(bold)themed material$() instead. Each themed module adds:$(br2)$(thing)Fire$() (Cinder Essence), $(thing)Ice$() (Frozen Bone), $(thing)Lightning$() (Lightning Bottle), $(thing)Holy$() (Divine Pearl), $(thing)Blood$() (Blood Vial): $(item)+10%$() to that school's spell power$(br2)$(thing)Ender$() (Ender Pearl), $(thing)Nature$() (Oak Sapling), $(thing)Shadow$() (Ghast Tear): $(item)+5%$() spell power in every school"
     },
     {
       "type": "patchouli:text",
       "title": "Stack Identity Bonuses",
-      "text": "Themed minors stack with specialized skin attributes. $(thing)Cultist Hood$() (skin: +5% blood spell power) + $(thing)Shadow visor$() (+5% blood) = $(item)+10% blood spell power$() on the helmet.$(br2)A $(thing)Phoenix Robe$() with a $(thing)Fire lining$() adds $(item)+4% fire spell power$() and $(item)+4% mana regen$() to the chestplate.$(br2)Mixing axes is allowed but usually wasteful. Match the skin's axis."
+      "text": "Themed modules stack with a specialized skin's own attributes. A $(thing)Cultist Hood$() (skin: +5% blood spell power) with a $(thing)Blood visor$() (+10% blood) gives $(item)+15% blood spell power$() on the helmet.$(br2)A $(thing)Phoenix chestplate$() with a $(thing)Fire chest lining$() adds $(item)+10% fire spell power$() to the chestplate.$(br2)Mixing schools is allowed but usually wasteful. Match the skin's school."
     },
     {
       "type": "patchouli:text",

@@ -10,15 +10,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() The first magic combat you can get. Spell books and scrolls turn up in Overworld dungeons, and the Dead King, Fire Boss, and Citadel Keeper are this mod's T2 to T3 bosses.$(br2)$(bold)Battlemage synergy:$() Iron's Spellbooks is the Battlemage's main mod. The class's Mana Barrier and Arcane Infusion passives work directly with ISS mana."
+      "text": "$(bold)Role in the pack:$() The first magic combat you can get. Spell books and scrolls turn up in Overworld dungeons, and the Dead King, Fire Boss, and Citadel Keeper are this mod's T2 to T3 bosses.$(br2)$(bold)Battlemage synergy:$() Iron's Spellbooks is the Battlemage's main mod. Its Arcane Cleave spends ISS mana (10 a hit) to turn your spell power into sword damage."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not every school is open right away: you find the higher-level books in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They are {{boss irons_spellbooks:cryomancer tier}} minibosses: {{tier 3 each}} {{tier 3 token}} per kill, plus spell books.$(br2)$(bold)Keys:$() $(k:irons_spellbooks.spellbook_cast) casts, $(k:irons_spellbooks.spell_wheel) opens the spell wheel."
+      "text": "$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Evocation, Blood, Eldritch, Holy, Ender, Nature. Not every school is open right away: you find the higher-level books in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They are {{boss irons_spellbooks:cryomancer tier}} minibosses: {{tier 3 each}} {{tier 3 token}} per kill, plus spell books.$(br2)$(bold)Keys:$() $(k:irons_spellbooks.spellbook_cast) casts, $(k:irons_spellbooks.spell_wheel) opens the spell wheel."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Upgraded books:$() Caster classes start with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l), which take material pages and custom magic enchants.$(br2)$(bold)Next: work through $(l:icraft:mods_t1/early_magic)the Early Magic Tutorial$(/l), scroll to first cast in five steps.$()"
+      "text": "$(bold)Upgraded books:$() Caster classes start with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l), which take material pages and custom magic enchants.$(br2)$(bold)Next: work through $(l:icraft:mods_t1/early_magic)the Early Magic Tutorial$(/l), from scroll to first cast.$()"
     }
   ]
 }

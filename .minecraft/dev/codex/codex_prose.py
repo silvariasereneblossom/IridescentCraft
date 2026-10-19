@@ -3,8 +3,9 @@
 registry); generated pages are not read here (they are the registry too).
 
   TYPED FACT   a number the registries or scripts own, typed into the text: a difficulty multiplier, a death
-               penalty, a boss-rush share, a token threshold, a boss's health. Write the placeholder the message
-               names instead, and the number follows the source from then on.
+               penalty, a boss-rush share, a token threshold, a boss's health, the number of classes, races or
+               origins (a digit, or a word from ten up). Write the placeholder the message names instead, and the
+               number follows the source from then on.
   TIER         a boss named under a tier it is not at. The tier a phrase speaks of is a tier word ("Tier 3", "T3",
                "T3+", "T3-T4") in its clause (split at , ; and dashes outside parentheses), else the heading before
                it on the line ("Tier 1 -- Gob ..."), else later in the same sentence, else the page title, else the
@@ -36,6 +37,9 @@ class Finding(object):
 
 # ---- TYPED FACT -----------------------------------------------------------------------------------------------
 M = r'(?:\$\([^)]*\)\s*)*'          # any style macros between the words
+# a layer's size written as a word ("Eleven Races"); smaller numbers are left alone: "three classes" is a subset
+WORD_COUNTS = ('ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+               'nineteen', 'twenty')
 TYPED = [
     (re.compile(r'Difficulty:?\s*' + M + r'~?\d+(?:\.\d+)?x', re.I),
      'a typed difficulty multiplier: write {{dim <id> difficulty}} or {{tier <n> difficulty}} (the difficulty mod\'s band)'),
@@ -59,6 +63,9 @@ TYPED = [
      'a typed token threshold: write {{tier <n> threshold}} (codex_progression_engine.js)'),
     (re.compile(r'\d{1,3}(?:,\d{3})+\s+health|\b\d{3,}\s+health', re.I),
      'a typed boss health: write {{boss <id> health}} (bosses.json hp, with the x3)'),
+    (re.compile(r'(?<![\w,.])(?:\d+|' + '|'.join(w for w in WORD_COUNTS) + r')\s+' + M + r'(?:classes|races|origins)\b', re.I),
+     'a typed count of an Origins layer: write {{layer <class|race|origin> count}} (or word, Word): the '
+     'iridescent_origins jar\'s layers'),
 ]
 
 
@@ -321,8 +328,12 @@ def check_entry(names, ids, data, where):
             title = page.get('title') if isinstance(page.get('title'), str) else ''
             if isinstance(page.get('text'), str):
                 texts.append((pw, page['text'], title))
+    if isinstance(data.get('name'), str):
+        out += typed_facts(data['name'], where + ' name')
     for pw, raw, title in texts:
         out += typed_facts(raw, pw)
+        if title:
+            out += typed_facts(title, pw + ' title')
         try:
             filled = codex_render.fill(names.facts, raw, pw)
             title = codex_render.fill(names.facts, title, pw)

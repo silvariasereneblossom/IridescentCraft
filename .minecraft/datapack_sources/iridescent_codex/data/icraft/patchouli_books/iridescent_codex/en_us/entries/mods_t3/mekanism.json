@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)T3 access:$() The basic Mekanism machines (Enrichment Chamber, Purification Chamber, Crusher, Chemical Injection) unlock at T3, and Osmium is the T3 base material.$(br2)$(bold)Ore processing:$() The full Mekanism processing chain yields up to 5 ingots per ore. Building it is a major T3 engineering project."
+      "text": "$(bold)T3 access:$() The basic Mekanism machines (Enrichment Chamber, Purification Chamber, Crusher, Chemical Injection Chamber) unlock at T3, and Osmium is the T3 base material.$(br2)$(bold)Ore processing:$() The full Mekanism processing chain yields up to 5 ingots per ore. Building it is a major T3 engineering project."
     },
     {
       "type": "patchouli:text",

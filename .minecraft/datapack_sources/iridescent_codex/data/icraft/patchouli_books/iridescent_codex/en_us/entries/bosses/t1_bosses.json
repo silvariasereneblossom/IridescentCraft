@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Structure Bosses",
-      "text": "$(bold)Terramity$(): $(item)Gob, King of Gnomes$() (Court of Gnomes; summon him with an emerald) and $(item)Super Sniffer$() (Ancient Outcrop). Enchanter Merlin is a Tier 3 boss (the Nether's Chthonic Cathedral).$(br2)$(bold)Mowzie's Mobs$(): Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw is in Everbright instead (Tier 2)."
+      "text": "$(bold)Terramity$(): $(item)Gob, King of Gnomes$() ({{boss terramity:gob place}}; summon him with an emerald) and $(item)Super Sniffer$() (Ancient Outcrop). Enchanter Merlin is a Tier 3 boss (the Nether's Chthonic Cathedral).$(br2)$(bold)Mowzie's Mobs$(): Ferrous Wroughtnaut (underground chamber), Umvuthi (savanna), the Sculptor (mountain peaks), Naga (coastal cliffs). Frostmaw is in Everbright instead (Tier 2)."
     },
     {
       "type": "patchouli:text",

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Extreme cold$(): 2 HP of damage every 5 seconds$(br)• $(bold)Mining fatigue$() from the alien environment$(br)• Alien mobs that are fast, strong and resistant$(br2)$(bold)Champion Density$()$(br)Glacio has the pack's highest Champion spawn rate (25%), and a Champion here has a 60% chance to gain custom affixes. You will meet Commanding and Summoning champions often."
+      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Extreme cold$(): 2 HP of damage every 5 seconds$(br)• $(bold)Mining fatigue$() from the alien environment$(br)• Alien mobs that are fast, strong and resistant$(br2)$(bold)Alien Predators$()$(br)Every mob here has Speed II, Strength II and Resistance I on top of the Tier 4 strength."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Void Adaptation Enchantment$()$(br)Glacio mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Void Adaptation$() (max level 2). On armor, it:$(br)• Negates mining fatigue from alien environments$(br)• Makes you immune to alien debuffs$(br)• Removes Glacio's mining fatigue even at level 1$(br2)With Thermal Regulation for cold immunity, the two make Glacio survivable."
+      "text": "$(bold)Void Adaptation Enchantment$()$(br)Chests on Glacio hold books of $(bold)Void Adaptation$(): level I in 30% of them, level II in 10% (max level 2). On armor, even at level I, it removes Glacio's mining fatigue.$(br2)With Thermal Regulation for the cold, the two make Glacio survivable."
     },
     {
       "type": "patchouli:text",

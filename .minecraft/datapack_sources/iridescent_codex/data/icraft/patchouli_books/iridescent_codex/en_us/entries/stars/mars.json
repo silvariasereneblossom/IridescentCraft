@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$() ticks constantly without Frostward or cold protection$(br)• $(bold)Faster hunger drain$(): bring extra food or Golden Apples$(br)• Cold-themed mobs are adapted to the environment$(br2)Frostward is worth a lot here. Without it the cold damage never stops, and it adds up quickly."
+      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$(): 1 HP every 5 seconds unless your armor carries Thermal Regulation$(br)• $(bold)Hunger$() the whole time: bring extra food or Golden Apples$(br)• Mars mobs have Speed I$(br2)Thermal Regulation is worth a lot here. Without it the cold damage never stops, and it adds up quickly."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• Netherite Space Suit or MekaSuit$(br)• Frostward-enchanted armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
+      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• A Space Suit (the basic one already resists the cold)$(br)• Thermal Regulation on your armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Mars mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Thermal Regulation$() (max level 3). On armor, it:$(br)• Negates cold and heat damage from the environment, Glacio's extreme cold included$(br)• Cuts temperature damage by 33% per level$(br)• Fully negates Mars cold and Mercury cold at level 3$(br2)$(bold)Next: crush Mars Stone.$()"
+      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Chests on Mars hold books of $(bold)Thermal Regulation$(): level I in 30% of them, level II in 10% (max level 3).$(br2)On armor it cuts the cold damage of Mars, Mercury's night and Glacio by 33% a level. Levels on different pieces add up: 3 take 99% off, 4 stop it.$(br2)$(bold)Next: crush Mars Stone.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

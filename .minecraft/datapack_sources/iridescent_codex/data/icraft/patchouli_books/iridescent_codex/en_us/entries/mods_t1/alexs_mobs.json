@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Notable creatures:$() The $(bold)Void Worm$() (end boss), $(bold)Cachalot Whale$() (ocean), $(bold)Laviathan$() (sky), and $(bold)Murmur$() (underground) are boss-tier fights. Most creatures drop their own materials, used in Apotheosis gem crafting.$(br2)$(bold)In IridescentCraft:$() several Alex's Mobs creatures appear in boss loot tables and drop tokens."
+      "text": "$(bold)Notable creatures:$() The $(bold)Void Worm$() (end boss), $(bold)Cachalot Whale$() (ocean), $(bold)Laviathan$() (Nether lava), and $(bold)Murmur$() (underground) are boss-tier fights. Most creatures drop their own materials, used in Apotheosis gem crafting.$(br2)$(bold)In IridescentCraft:$() several Alex's Mobs creatures appear in boss loot tables and drop tokens."
     },
     {
       "type": "patchouli:crafting",

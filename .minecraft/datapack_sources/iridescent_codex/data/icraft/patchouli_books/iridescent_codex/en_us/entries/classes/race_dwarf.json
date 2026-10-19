@@ -2,16 +2,16 @@
   "name": "Dwarf",
   "icon": "minecraft:stone_pickaxe",
   "category": "icraft:classes",
-  "sortnum": 14,
+  "sortnum": 17,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Sturdy, slow and made for underground work. Dwarves excel in Tiers 1 and 2, when mining and forging dominate.$()$(br2)$(bold)Mining Speed$(): +25% on stone and ore, dropping to +15% outside the Overworld.$(br2)$(bold)Fire Resistance$(): permanent fire resistance IV. Lava does not burn you, and Blazes deal 40% less damage."
+      "text": "$(italic)Sturdy, slow and made for underground work. Dwarves excel in Tiers 1 and 2, when mining and forging dominate.$()$(br2)$(bold)Deep Delver$(): +15% mining speed.$(br2)$(bold)Forge-Hardened$(): fire damage is halved.$(br2)$(bold)Sturdy Build$(): +2 armor toughness."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Sturdy$(): +8% armor effectiveness from heavy armor (iron, steel, diamond and netherite only).$(br2)$(bold)Slow$(): -10% movement speed, permanently: the cost of being built like a boulder.$(br2)$(bold)Next: pair with Paladin or Artificer, then go strip a cave. Your +25% pick pays from minute one.$()"
+      "text": "$(bold)Miner's Appetite$(): every block you break gives you a moment of Saturation, which offsets the hunger mining costs.$(br2)$(bold)Short Legs$(): $(warn)-5% movement speed.$()$(br2)$(bold)Next: pair with Paladin or Artificer, then go strip a cave. Your +15% pick pays from minute one.$()"
     }
   ]
 }

@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the reference lives:$() In this pack the Codex replaces the mods' own guidebooks. Every glyph and apparatus recipe is in JEI; your first steps at T1 are in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot) and $(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first spell at a Scribes Table.$()"
+      "text": "$(bold)Where the reference lives:$() Ars Nouveau's own guide, the Worn Notebook, is craftable, and every glyph and apparatus recipe is in JEI; your first steps at T1 are in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot) and $(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first spell at a Scribes Table.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

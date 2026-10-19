@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Occultism's Dimensional Storage is the best personal storage you can get at T3. Void Summoner builds use Soul Gems, and rituals offer their own crafting routes for several T3 recipes.$(br2)$(bold)Void Summoner synergy:$() Occultism's summoned entities interact with the Void Summoner's Soul Tether and Death Harvest passives."
+      "text": "$(bold)Role in the pack:$() Occultism's Dimensional Storage is the best personal storage you can get at T3. Void Summoner builds use Soul Gems, and rituals offer their own crafting routes for several T3 recipes.$(br2)$(bold)Void Summoner synergy:$() Every death within 16 blocks heals a Void Summoner through Soul Tether, the kills of Occultism's summons included."
     },
     {
       "type": "patchouli:text",

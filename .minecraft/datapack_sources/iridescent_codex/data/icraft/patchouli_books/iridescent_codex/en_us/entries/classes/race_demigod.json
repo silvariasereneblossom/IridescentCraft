@@ -2,16 +2,16 @@
   "name": "Demi-God",
   "icon": "minecraft:nether_star",
   "category": "icraft:classes",
-  "sortnum": 18,
+  "sortnum": 21,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Divine Body$(): $(item)+40% max HP$() (8 extra hearts), the tankiest race.$(br2)$(bold)Divine Fury$(): gain Strength on command, on a 50s cooldown.$(br2)$(bold)Phase$(): pass through blocks for a moment."
+      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Divine Body$(): $(item)+40% max HP$() (4 extra hearts), the tankiest race.$(br2)$(bold)Divine Fury$(): gain Strength on command, on a 50s cooldown.$(br2)$(bold)Phase$(): pass through blocks for a moment."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Raw Diet$(): raw meat gives 2x nourishment, cooked meat 1.5x.$(br2)$(bold)Cursed$(): $(warn)fire burns you 50% hotter and the Nether sickens you$(), but you endure.$(br2)$(bold)Next: pair with a glass-cannon class. The +40% HP buys back what Archmage or Void Summoner gives up.$()"
+      "text": "$(bold)Raw Diet$(): raw meat gives 2x nourishment, cooked meat 1.5x.$(br2)$(bold)Cursed$(): $(warn)fire burns you 50% hotter and the Nether gives you Weakness$(), but you can fight through it.$(br2)$(bold)Next: pair with a glass-cannon class. The +40% HP buys back what Archmage or Void Summoner gives up.$()"
     }
   ]
 }

@@ -7,7 +7,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Rift Shards are the endgame currency. Farm them from Oblivion's Rift runs and Tier 4 boss kills to fund the $(bold)Mythic Gear Chase$(), the character improvement loop that comes after Tier 4.$(br2)$(bold)Rift Keystone$(): 5 Rift Shards plus a boss material. You need one to open an Oblivion's Rift portal."
+      "text": "Rift Shards are the endgame currency. The Ender Dragon, the Wither, the Warden and other late bosses drop them. Farm them to fund the $(bold)Mythic Gear Chase$(), the character improvement loop that comes after Tier 4.$(br2)$(bold)Rift Keystone$(): 5 Rift Shards plus a boss material. It is meant to open Oblivion's Rift, a dungeon that is designed but not in the game yet."
     },
     {
       "type": "patchouli:text",
@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Mythic V is the ceiling. Reaching it takes deep Rift farming: it is the long-term endgame loop, by design.$(br2)$(bold)Next: craft a Rift Keystone and run your first Rift.$()"
+      "text": "Mythic V is the ceiling. Reaching it takes long boss farming: it is the long-term endgame loop, by design.$(br2)$(bold)Next: farm Rift Shards from late bosses.$()"
     }
   ]
 }

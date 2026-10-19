@@ -136,8 +136,13 @@ BOOK = {
             {'type': 'icraft:generated', 'generator': 'dimension_glance', 'tier': 2},
             {'type': 'icraft:generated', 'generator': 'unique_list', 'tier': 2},
             {'type': 'icraft:generated', 'generator': 'rush_targets'},
+            {'type': 'patchouli:text', 'title': 'Classes', 'text': 'Pick one of {{layer class count}} classes '
+                                                                   '({{layer race word}} race, {{layer origin Word}} origins).'},
         ]},
 }
+# the Origins layers of the fixture's origins jar (mods/iridescent_origins-1.0.0.jar)
+LAYERS = {'origin': ['testmod:o1', 'testmod:o2'], 'race': ['testmod:r1'], 'class': ['testmod:c1', 'testmod:c2', 'testmod:c3']}
+ORIGINS_JAR = 'mods/iridescent_origins-1.0.0.jar'
 
 
 def write(path, content):
@@ -147,8 +152,17 @@ def write(path, content):
         f.write(content)
 
 
+def origins_jar(layers, replace=True):
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, 'w') as z:
+        for name, ids in layers.items():
+            z.writestr(cf.LAYER_DIR + name + '.json', json.dumps({'order': 0, 'replace': replace, 'enabled': True, 'origins': ids}))
+    return buf.getvalue()
+
+
 def make_fixture(root):
     mc = os.path.join(root, '.minecraft')
+    write(os.path.join(mc, ORIGINS_JAR), origins_jar(LAYERS))
     write(os.path.join(mc, cf.REGISTRY_BOSSES), json.dumps(BOSSES, indent=1))
     write(os.path.join(mc, cf.REGISTRY_DIMS), json.dumps(DIMS, indent=1))
     write(os.path.join(mc, cf.NAMES), json.dumps(NAMES, indent=1))
@@ -342,6 +356,39 @@ class CodexTest(unittest.TestCase):
         self.assertEqual(rc, 1, out)
         for words in ('"Difficulty: 7.0x"', '"Death Penalty: 22%"', '"Bank 500"', '"clear 80%"', '"3,000 health"'):
             self.assertIn(words, out)
+
+    def test_layer_counts_follow_the_origins_jar(self):
+        self.assertIn('Pick one of 3 classes (one race, Two origins).', self.page_text('progression/dims')[-1])
+        layers = dict(LAYERS, **{'class': LAYERS['class'] + ['testmod:c4']})
+        write(os.path.join(self.mc, ORIGINS_JAR), origins_jar(layers))
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('icraft:progression/dims page', out)
+        release(self.mc)
+        self.assertIn('Pick one of 4 classes', self.page_text('progression/dims')[-1])
+
+    def test_layer_that_does_not_replace_cannot_be_counted(self):
+        write(os.path.join(self.mc, ORIGINS_JAR), origins_jar(LAYERS, replace=False))
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('is not "replace": true', out)
+
+    def test_layer_defined_again_by_a_datapack_fails(self):
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, 'w') as z:
+            z.writestr(cf.LAYER_DIR + 'class.json', '{}')
+        write(os.path.join(self.mc, 'config', 'paxi', 'datapacks', 'shadow.zip'), buf.getvalue())
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('config/paxi/datapacks/shadow.zip defines an Origins layer again', out)
+
+    def test_prose_typed_layer_count(self):
+        self.set_text('There are 13 classes and Eleven Races; the three trinity classes cast.')
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('"13 classes": a typed count of an Origins layer', out)
+        self.assertIn('"Eleven Races": a typed count of an Origins layer', out)
+        self.assertNotIn('"three', out)
 
     def test_prose_unknown_id(self):
         self.set_text('Raises testmod:spell_power and testmod:spell_powr.')
@@ -549,6 +596,8 @@ class RealPackTest(unittest.TestCase):
         self.assertEqual(f.missing_names, [])
         self.assertEqual(f.stale_names, [])
         self.assertGreater(len(f.uniques), 0)
+        self.assertEqual(sorted(f.layers), ['class', 'origin', 'race'])
+        self.assertTrue(all(f.layers.values()))
 
     def test_hook_and_workflow_run_the_gate(self):
         root = os.path.dirname(REAL_MC)

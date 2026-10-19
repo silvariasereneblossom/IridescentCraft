@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() The Thermal Smeltery makes Steel Ingots efficiently. The Series also covers Energy, Dynamics (pipes and ducts) and Cultivation (farming machines).$(br2)$(bold)Ore processing:$() Ore doubling and tripling start at Tier 2. A Thermal Smeltery and Pulverizer setup yields 2 to 3 ingots per ore."
+      "text": "$(bold)Role in the pack:$() The Induction Smelter makes Steel Ingots efficiently. The Series also covers Energy, Dynamics (pipes and ducts) and Cultivation (farming machines).$(br2)$(bold)Ore processing:$() Ore doubling and tripling start at Tier 2. An Induction Smelter and Pulverizer setup yields 2 to 3 ingots per ore."
     },
     {
       "type": "patchouli:text",

@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Moon: Entry Point to Space$()$(br)Mobs: $(bold){{dim ad_astra:moon difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:moon death}}$()$(br2)Your first extraterrestrial destination: no oxygen, low gravity and a stark landscape of Moon Stone and Moon Sand. Moderate hostile mobs patrol the surface."
+      "text": "$(bold)The Moon: Entry Point to Space$()$(br)Mobs: $(bold){{dim ad_astra:moon difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:moon death}}$()$(br2)Your first extraterrestrial destination: no oxygen, low gravity and a stark landscape of Moon Stone and Moon Sand. Hostile mobs with Jump Boost II patrol the surface."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Low Gravity Combat$()$(br)The Moon's low gravity changes how fights go:$(br)• $(bold)Knockback is doubled$(): hits send you and mobs flying$(br)• $(bold)Fall damage is halved$(): you float down gently$(br)• Projectiles travel further$(br2)Melee builds have to keep closing the distance. Ranged builds do well here."
+      "text": "$(bold)Low Gravity Combat$()$(br)The Moon's low gravity changes how fights go:$(br)• $(bold)Knockback is doubled$(): hits send you and mobs flying$(br)• $(bold)Slow Falling$() the whole time: you float down and take no fall damage$(br)• Projectiles travel further$(br2)Melee builds have to keep closing the distance. Ranged builds do well here."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Lunar Stride Enchantment$()$(br)Moon mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Lunar Stride$() (max level 3). On armor, it:$(br)• Reduces fall damage by 33% per level$(br)• Grants Jump Boost on all planets$(br)• Negates fall damage entirely at level 3$(br2)Melee builds in low gravity need it."
+      "text": "$(bold)Lunar Stride Enchantment$()$(br)Chests on the Moon hold books of $(bold)Lunar Stride$(): level I in 30% of them, level II in 10% (max level 3). On armor, on any planet, it:$(br)• Reduces fall damage by 33% a level$(br)• Grants Jump Boost$(br)• Stops fall damage at 4 levels across your armor$(br2)Melee builds in low gravity need it."
     }
   ],
   "advancement": "icraft:stage_tier_4"

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Iron's Scrolls",
-      "text": "$(bold)Scrolls$() are one-shot items, each holding a single random, pre-rolled spell. Find them in village chests and Overworld loot chests (~2-3% per chest).$(br2)If your class is $(bold)Archmage$(), $(bold)Battlemage$(), or $(bold)Void Summoner$(), your starter kit comes with two scrolls of basic spells (magic missile, firebolt, magic arrow, fang strike, or summon vex, depending on class)."
+      "text": "$(bold)Scrolls$() are one-shot items, each holding a single random, pre-rolled spell. Find them in village chests and Overworld loot chests (~2-3% per chest).$(br2)The six magic classes (Archmage, Battlemage, Void Summoner, Elemental, Blessed, Corrupted) start with a kit of two scrolls of basic spells, which depend on the class."
     },
     {
       "type": "patchouli:text",
@@ -41,7 +41,7 @@
     {
       "type": "patchouli:text",
       "title": "Mana vs Source",
-      "text": "Iron's uses $(bold)Mana$() (the blue bar); Ars uses $(bold)Source$() (a server-side pool). Both regenerate on their own, and T2 unlocks faster regen and higher caps."
+      "text": "Iron's uses $(bold)Mana$() (the blue bar), and in this pack Ars Nouveau spells draw on the same pool, at half their cost. Ars's $(bold)Source$() powers its jars and machines, not your spells. Mana regenerates on its own, and T2 unlocks faster regen and higher caps."
     },
     {
       "type": "patchouli:text",

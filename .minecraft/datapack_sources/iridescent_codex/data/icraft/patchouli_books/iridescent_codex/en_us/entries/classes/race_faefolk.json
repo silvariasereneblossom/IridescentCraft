@@ -2,7 +2,7 @@
   "name": "Faefolk",
   "icon": "minecraft:pink_petals",
   "category": "icraft:classes",
-  "sortnum": 17,
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",

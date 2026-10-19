@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 1 and 2 Dimensions",
-      "text": "$(bold)Overworld$(): the baseline. Champions spawn at the standard rate.$(br2)$(bold)Twilight Forest$(): a persistent Darkness debuff underground. Bosses guard the progression: you cannot reach a later zone without defeating the bosses of the zones before it.$(br2)$(bold)Blue Skies$(): elemental damage ignores standard armor, so magic resistance (Sorcery tree) is worth more here than usual."
+      "text": "$(bold)Overworld$(): the baseline.$(br2)$(bold)Twilight Forest$(): a persistent Darkness debuff underground. Bosses guard the progression: you cannot reach a later zone without defeating the bosses of the zones before it.$(br2)$(bold)Blue Skies$(): elemental damage ignores standard armor, so magic resistance (Sorcery tree) is worth more here than usual."
     },
     {
       "type": "patchouli:text",

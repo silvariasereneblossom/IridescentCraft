@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "What It Means for You",
-      "text": "You cannot brute-force IridescentCraft with a stone sword. To keep pace, invest in your $(thing)class abilities$(), upgrade your $(thing)gear$() and use $(thing)buffs and enchantments$().$(br2)If a mob feels too tanky, you are probably undergeared for that dimension. Rushing one burns repair costs fast.$(br2)$(bold)Next: $(l:icraft:systems/dimension_mechanics)Dimension Mechanics$(/l), for the next zone's power level.$()"
+      "text": "You cannot brute-force IridescentCraft with a stone sword. To keep pace, invest in your $(thing)class abilities$(), upgrade your $(thing)gear$() and use $(thing)buffs and enchantments$().$(br2)If a mob feels too tanky, you are probably undergeared for that dimension. Rushing one burns repair costs fast.$(br2)$(bold)Next: $(l:icraft:systems/dimension_mechanics)Dimension Mechanics$(/l), for what each dimension changes.$()"
     }
   ]
 }

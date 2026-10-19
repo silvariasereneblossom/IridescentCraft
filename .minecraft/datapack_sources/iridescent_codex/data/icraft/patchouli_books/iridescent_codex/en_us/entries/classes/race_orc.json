@@ -2,16 +2,16 @@
   "name": "Orc",
   "icon": "minecraft:iron_axe",
   "category": "icraft:classes",
-  "sortnum": 15,
+  "sortnum": 18,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$()$(br2)$(bold)Ferocity$(): +12% attack speed. Pairs especially well with Berserker's Blood Fury.$(br2)$(bold)Knockback Mastery$(): +30% knockback dealt, so enemies you hit stagger further. Useful for crowd control."
+      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$()$(br2)$(bold)Orcish Endurance$(): +20% max HP.$(br2)$(bold)Orcish Strength$(): +10% melee damage.$(br2)$(bold)Battle Fury$(): +10% attack speed. Pairs especially well with Berserker's Blood Fury."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Hunger Drain$(): +35% food drain rate, the highest penalty in the pack. Always eat before fights.$(br2)$(bold)Brutish$(): immune to the Weakness potion effect, and Slowness lasts half as long on you.$(br2)$(bold)Next: pair with Berserker or Samurai and keep a food bar hotkeyed. You'll burn through it.$()"
+      "text": "$(bold)Bloodlust$(): the hungrier you are, the harder you hit: up to +20% attack damage on an empty food bar.$(br2)$(bold)Ravenous$(): $(warn)you burn food fast$() (extra exhaustion every 4 seconds). Always eat before fights.$(br2)$(bold)Next: pair with Berserker or Samurai and keep food hotkeyed. You'll burn through it.$()"
     }
   ]
 }

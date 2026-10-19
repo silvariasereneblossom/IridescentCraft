@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Enchantments$()$(br)Each planet's mobs have a 12% chance to drop an enchanted book of their own, which protects against that planet's hazards:$(br)• $(bold)Moon$(): Lunar Stride$(br)• $(bold)Mars$(): Thermal Regulation$(br)• $(bold)Mercury$(): Stellar Shield$(br)• $(bold)Venus$(): Pressure Shell$(br)• $(bold)Glacio$(): Void Adaptation$(br2)Collect them on the early planets to survive the later ones."
+      "text": "$(bold)Planetary Enchantments$()$(br)Chests on each planet hold enchanted books of its own enchantment, which protects against that planet's hazards:$(br)• $(bold)Moon$(): Lunar Stride$(br)• $(bold)Mars$(): Thermal Regulation$(br)• $(bold)Mercury$(): Stellar Shield$(br)• $(bold)Venus$(): Pressure Shell$(br)• $(bold)Glacio$(): Void Adaptation$(br2)Collect them on the early planets to survive the later ones."
     }
   ],
   "advancement": "icraft:stage_tier_4"

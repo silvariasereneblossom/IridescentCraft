@@ -2,16 +2,21 @@
   "name": "Fallen Angel",
   "icon": "minecraft:feather",
   "category": "icraft:classes",
-  "sortnum": 20,
+  "sortnum": 23,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Wrath$(): $(item)+15% damage from all sources$(), the highest racial damage bonus.$(br2)$(bold)Tattered Wings$(): slow fall, though not true flight."
+      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Lethal Grace$(): $(item)+15% on all damage you deal$(), the highest racial damage bonus.$(br2)$(bold)Bloodthirst$(): permanent Strength I.$(br2)$(bold)Tattered Wings$(): slow fall, though not true flight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Abilities",
+      "text": "$(bold)Dark Expulsion$(): dash forward and leave a withering cloud behind (25s cooldown).$(br2)$(bold)Wither Shot$(): fire a wither skull (3s cooldown).$(br2)$(bold)Dark Resilience$(): immune to Wither, Poison, Instant Damage and Nausea.$(br2)$(bold)Claustrophobia$(): $(warn)you slow down with a block right above your head.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Fragile$(): $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Meat Preference$(): you crave meat to fuel your war.$(br2)$(bold)Fire Vulnerability$(): $(warn)fire sears you deeper than most.$()$(br2)$(bold)Next: eat widely anyway. Spice of Life max-HP bonuses claw back your missing hearts.$()"
+      "text": "$(bold)Fragile$(): $(warn)-20% max HP$() (2 fewer hearts).$(br2)$(bold)Meat Preference$(): you crave meat to fuel your war.$(br2)$(bold)Fire Vulnerability$(): $(warn)fire sears you deeper than most.$()$(br2)$(bold)Next: eat widely anyway. Spice of Life max-HP bonuses claw back your missing hearts.$()"
     }
   ]
 }

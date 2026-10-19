@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Fusion Reactor:$() Makes enormous amounts of RF, enough to run a late-game Mekanism factory comfortably. Building one is a T4 capstone project.$(br2)$(bold)Antimatter:$() Made in the Particle Accelerator. You need it for the highest Mythic Forge catalysts and the MekaSuit Mk2 upgrade, and you can exchange it for Codex progression tokens."
+      "text": "$(bold)Fusion Reactor:$() Makes enormous amounts of RF, enough to run a late-game Mekanism factory comfortably. Building one is a T4 capstone project.$(br2)$(bold)Antimatter:$() Made in the Supercritical Phase Shifter (SPS). You need it for the highest Mythic Forge catalysts and the MekaSuit Mk2 upgrade, and you can exchange it for Codex progression tokens."
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your class sets your combat role: it changes your HP and weapon effectiveness, and gives you passive abilities and one active skill. Classes are an $(bold)Origins$() layer, separate from your Race.$(br2)There are $(bold)13 classes$(), all viable; none is the 'best', each suits a different playstyle. Ten have a page here (the Elemental, Blessed and Corrupted do not yet)."
+      "text": "Your class sets your combat role: it changes your HP and weapon effectiveness, and gives you passive abilities and one active skill. Classes are an $(bold)Origins$() layer, separate from your Race.$(br2)There are $(bold){{layer class count}} classes$(), all viable; none is the 'best', each suits a different playstyle. Each has a page in this chapter."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Half Equipment HP Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$() and $(thing)Void Summoner$() get only 50% of every max HP bonus from equipment, including the Vitality enchant, HP affixes and armor attribute modifiers.$(br2)It $(italic)does not affect$() base HP, Spice of Life food HP or JustLevelingFork level-up HP. These glass cannons have a lower HP ceiling, but food diversity and leveling still pay off for them."
+      "text": "$(bold)Half Equipment HP Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$(), $(thing)Void Summoner$() and $(thing)Elemental$() get only 50% of every max HP bonus from equipment, including the Vitality enchant, HP affixes and armor attribute modifiers.$(br2)It $(italic)does not affect$() base HP, Spice of Life food HP or JustLevelingFork level-up HP. These glass cannons have a lower HP ceiling, but food diversity and leveling still pay off for them."
     }
   ]
 }

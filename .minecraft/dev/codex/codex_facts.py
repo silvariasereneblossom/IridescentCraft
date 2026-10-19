@@ -18,17 +18,21 @@ Sources (paths relative to the .minecraft folder; INPUTS lists them for the pre-
   kubejs/server_scripts/loot/unique_itemset_registry.js        every unique weapon: its tier and kind; the bosses
                                                                boss_unique_drops.js gives one (addDrop), the chance
   kubejs/server_scripts/loot/loot_overhaul.js                  the other unique drops: boss, item, chance
+  mods/iridescent_origins-*.jar                                the Origins layers the game loads (origin, race,
+                                                               class): which origins each one offers
   dev/codex/names.json                                         the names players read, for every boss and dimension
 
 A script constant is found by a pattern that must match exactly once: a rewritten line is an error that names the
 file and the constant, never a silent default.
 """
+import glob
 import json
 import math
 import os
 import re
 import sys
 import tomllib
+import zipfile
 from collections import OrderedDict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -46,16 +50,25 @@ X3_SCRIPT = 'kubejs/server_scripts/scaling/zz_boss_global_3x.js'
 UNIQUE_SCRIPT = 'kubejs/server_scripts/loot/unique_itemset_registry.js'
 LOOT_SCRIPT = 'kubejs/server_scripts/loot/loot_overhaul.js'
 NAMES = 'dev/codex/names.json'
+# The Origins layers come from the pack's own origins jar (one file in mods/, any version); a datapack that defined a
+# layer again (a Paxi zip, KubeJS's data folder) would win over the jar in game, so one is an error, never ignored.
+ORIGINS_JAR = 'mods/iridescent_origins-*.jar'
+LAYER_DIR = 'data/origins/origin_layers/'
+LAYERS = ('origin', 'race', 'class')
+LAYER_SHADOWS = ('config/paxi/datapacks', 'kubejs/data/origins/origin_layers')
 
 # Every file the facts are read from. The pre-push hook and CI run the Codex gate when a pushed commit touches one
-# (codex.py inputs prints these together with the book source, the tools and the jar's copies).
+# (codex.py inputs prints these together with the book source, the tools and the jar's copies; the origins jar is
+# under mods/, which is an input already).
 INPUTS = (REGISTRY_BOSSES, REGISTRY_DIMS, DIFFICULTY, RUSH_SCRIPT, ENGINE_SCRIPT, KILLS_SCRIPT, DEATH_SCRIPT,
           X3_SCRIPT, UNIQUE_SCRIPT, LOOT_SCRIPT, 'kubejs/server_scripts/loot/boss_unique_drops.js', NAMES,
-          'dev/rosters/rosters.py')
+          'dev/rosters/rosters.py', 'kubejs/data/origins/')
 
 TIERS = (1, 2, 3, 4)
 ROMAN = {1: 'I', 2: 'II', 3: 'III', 4: 'IV'}
 WORDS = ('no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve')
+# the layers' sizes are words up to twenty ("thirteen classes"); the roster counts keep digits from 13 up
+LAYER_WORDS = WORDS + ('thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty')
 
 
 class FactError(Exception):
@@ -116,8 +129,8 @@ def fmt_names(names):
     return ', '.join(names[:-1]) + ' and ' + names[-1]
 
 
-def count_word(n):
-    return WORDS[n] if 0 <= n < len(WORDS) else str(n)
+def count_word(n, words=WORDS):
+    return words[n] if 0 <= n < len(words) else str(n)
 
 
 def tier_label(t):
@@ -324,10 +337,56 @@ def load(mc):
             rec = {'name': did}
         f.dims[did] = Dim(did, e, rec, f)
     f.uniques = load_uniques(mc, f, item_names, missing)
+    f.layers = load_layers(mc)
     f.missing_names = missing
     f.stale_names = sorted(set(boss_names) - set(f.registry.bosses) - set(f.registry.aliases)) + \
         sorted(set(dim_names) - set(f.registry.dims)) + sorted(set(item_names) - set(f.uniques))
     return f
+
+
+def load_layers(mc):
+    """layer name ('origin', 'race', 'class') -> the origin ids it offers, as the origins jar in mods/ defines them.
+    A layer the jar lacks, one that does not replace (another pack could add to it), one that is off, an entry that is
+    not a plain id, or a datapack that defines a layer again (it would win over the jar in game) is an error."""
+    jars = sorted(glob.glob(os.path.join(mc, ORIGINS_JAR)))
+    if len(jars) != 1:
+        raise FactError('%s: %d jars match; the Codex reads the Origins layers from the one the game loads'
+                        % (ORIGINS_JAR, len(jars)))
+    rel = os.path.relpath(jars[0], mc).replace(os.sep, '/')
+    out = OrderedDict()
+    try:
+        with zipfile.ZipFile(jars[0]) as z:
+            for layer in LAYERS:
+                name = LAYER_DIR + layer + '.json'
+                try:
+                    doc = json.loads(z.read(name).decode('utf-8-sig'))
+                except KeyError:
+                    raise FactError('%s: no %s' % (rel, name))
+                except ValueError as e:
+                    raise FactError('%s: %s is not valid JSON (%s)' % (rel, name, e))
+                if doc.get('replace') is not True or doc.get('enabled') is False:
+                    raise FactError('%s: %s is not "replace": true and enabled: the layer could offer origins this '
+                                    'file does not list' % (rel, name))
+                ids = doc.get('origins')
+                if not isinstance(ids, list) or not ids or not all(isinstance(i, str) for i in ids):
+                    raise FactError('%s: %s "origins" is not a list of origin ids (a conditional entry the Codex '
+                                    'cannot count)' % (rel, name))
+                out[layer] = list(ids)
+    except (OSError, zipfile.BadZipFile) as e:
+        raise FactError('%s: not readable (%s)' % (rel, e))
+    paxi, kjs = (os.path.join(mc, p) for p in LAYER_SHADOWS)
+    shadows = sorted(glob.glob(os.path.join(kjs, '*.json')))
+    for zp in sorted(glob.glob(os.path.join(paxi, '*.zip'))):
+        try:
+            with zipfile.ZipFile(zp) as z:
+                if any(n.startswith(LAYER_DIR) and n.endswith('.json') for n in z.namelist()):
+                    shadows.append(zp)
+        except (OSError, zipfile.BadZipFile):
+            continue
+    if shadows:
+        raise FactError('%s defines an Origins layer again, which wins over %s in game: the Codex reads the layers '
+                        'from the jar only' % (os.path.relpath(shadows[0], mc).replace(os.sep, '/'), rel))
+    return out
 
 
 UNIQUE_LINE = re.compile(r"^\s*'([a-z0-9_.-]+:[a-z0-9_/.-]+)'\s*:\s*\{\s*tier\s*:\s*([1-4])\s*,\s*kind\s*:\s*'(sword|bow)'\s*,"

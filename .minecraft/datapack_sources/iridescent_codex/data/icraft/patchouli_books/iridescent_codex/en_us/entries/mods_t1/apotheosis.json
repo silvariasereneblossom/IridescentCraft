@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No in-game guidebook.$() JEI tooltips and these Codex entries explain Apotheosis:$(br2)$(li)$(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l)$(li)$(l:icraft:systems/affixes)Apotheosis Affixes$(/l)$(li)$(l:icraft:loot/gems)Apotheosis Gems$(/l)$(br2)$(bold)Next: kill a glowing Champion mob and check its drops.$()"
+      "text": "$(bold)No in-game guidebook.$() JEI tooltips and these Codex entries explain Apotheosis:$(br2)$(li)$(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l)$(li)$(l:icraft:systems/affixes)Apotheosis Affixes$(/l)$(li)$(l:icraft:loot/gems)Apotheosis Gems$(/l)$(br2)$(bold)Next: kill a glowing Apotheosis boss and check its drops.$()"
     }
   ]
 }

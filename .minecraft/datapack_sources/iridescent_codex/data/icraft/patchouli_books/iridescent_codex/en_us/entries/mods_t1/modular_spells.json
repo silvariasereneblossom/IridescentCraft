@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier gates",
-      "text": "$(item)T1$(): Copper, Novice (start)$(br)$(item)T2$(): Iron, Gold, Apprentice$(br)$(item)T3$(): Diamond, Archmage$(br)$(item)T4$(): Netherite$(br2)Cover and pages materials follow their parent material's tier (a diamond cover needs T3, when diamond is obtainable at all).$(br2)$(bold)Next: check your starter book's tooltip. Its slots are already live.$()"
+      "text": "$(item)T1$(): Copper, Novice (start)$(br)$(item)T2$(): Iron, Gold, Apprentice$(br)$(item)T3$(): Diamond, Archmage$(br)$(item)T4$(): Netherite$(br2)Cover and pages materials follow their parent material's tier (a diamond cover needs T3, the tier at which diamond ore stops showing as plain stone).$(br2)$(bold)Next: check your starter book's tooltip. Its slots are already live.$()"
     }
   ]
 }

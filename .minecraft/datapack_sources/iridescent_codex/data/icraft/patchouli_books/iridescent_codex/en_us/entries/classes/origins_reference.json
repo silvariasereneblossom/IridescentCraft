@@ -1,5 +1,5 @@
 {
-  "name": "The 13 Origins",
+  "name": "The {{layer origin count}} Origins",
   "icon": "minecraft:nether_star",
   "category": "icraft:classes",
   "sortnum": -1,
@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "title": "Your Origin",
-      "text": "Pick a power set from the list that follows and lock it in at the Origins screen ($(k:origins.view_origin) shows yours any time).$(br2)$(item)No origin blocks any food type$(): dietary traits are only preferences.$(br2)$(item)Environmental effects cause discomfort$(), never death.$(br2)$(item)Phantoms never truly die$(): they enter Spectral Collapse."
+      "text": "Pick a power set from the list that follows and lock it in at the Origins screen ($(k:origins.view_origin) shows yours any time).$(br2)$(item)No origin blocks any food type$(): dietary traits are only preferences.$(br2)$(item)Environmental effects cause discomfort$(), never death.$(br2)$(item)Phantoms cheat death$(): they enter Spectral Collapse."
     },
     {
       "type": "patchouli:text",
@@ -17,17 +17,17 @@
     {
       "type": "patchouli:text",
       "title": "Origins (1/3), cont.",
-      "text": "$(bold)Enderian$(): teleports on a cooldown. Ender Shift gives +15% damage for 10s after each teleport. Water drains your strength.$(br2)$(bold)Elytrian$(): Elytra flight and a launch ability. It is the only origin with true flight."
+      "text": "$(bold)Enderian$(): teleports on a cooldown. Ender Shift gives +15% damage for 10s after each teleport. Water drains your strength.$(br2)$(bold)Elytrian$(): Elytra flight and a launch ability. It is the only origin with true flight.$(br2)$(bold)Feline$(): silent, always lands on its feet, night vision. -10% HP."
     },
     {
       "type": "patchouli:text",
       "title": "Origins (2/3)",
-      "text": "$(bold)Feline$(): silent, always lands on its feet, night vision. -20% HP.$(br2)$(bold)Merling$(): breathes underwater; sluggish after 5 min ashore.$(br2)$(bold)Phantom$(): phases through blocks; half health. $(warn)Never truly dies$(): it enters Spectral Collapse (a 5 min debuff).$(br2)$(bold)Shulk$(): natural armor, equipment death protection and +20% mining speed. Heavy metabolism."
+      "text": "$(bold)Merling$(): breathes underwater; sluggish after 5 min ashore.$(br2)$(bold)Phantom$(): phases through blocks; 3 fewer hearts. $(warn)Cheats death$(): at 0 health it stays at half a heart for 5 min of Spectral Collapse (weakened, slowed, Resistance II). A death in that time is real.$(br2)$(bold)Shulk$(): natural armor, 9 extra slots whose items stay with you when you die, and stone broken bare-handed. No shields; heavy metabolism."
     },
     {
       "type": "patchouli:text",
       "title": "Origins (3/3)",
-      "text": "$(bold)Witch of Ink$(): a passive hyperscaler with -20% HP, half food and a fire weakness. Boss kills raise your TOTAL damage (melee and magic), and 200 kills unlock Blessing of Penthesilea. $(thing)/icraft witch_status$()$(br2)$(bold)Artificial Construct$(): an iron golem. Eat iron for food and Regen III, and climb a 5-level forge ladder to the Iron Apotheosis capstone. $(thing)/icraft construct_status$()"
+      "text": "$(bold)Witch of Ink$(): a passive hyperscaler with -20% HP, half food and a fire weakness. Boss kills raise your TOTAL damage (melee and magic), and a count of 200 unlocks Blessing of Penthesilea. $(thing)/icraft witch_status$()$(br2)$(bold)Artificial Construct$(): an iron golem. Eat iron for food and Regen III, and climb a 5-level forge ladder to the Iron Apotheosis capstone. $(thing)/icraft construct_status$()"
     },
     {
       "type": "patchouli:text",
@@ -37,7 +37,7 @@
     {
       "type": "patchouli:text",
       "title": "Witch of Ink Tracker",
-      "text": "$(bold)Counter$() (max 200):$(br)  $(item)Apotheosis/Champions boss$(): +1$(br)  $(item)Dimensional boss$(): +10 (Wither, Dragon, Naga, Lich, etc.)$(br2)$(bold)Per point:$()$(br)  +0.1% TOTAL damage dealt (cap +20%)$(br)  -0.1% incoming damage (cap -20%)$(br2)$(thing)/icraft witch_status$() shows your live counter, current bonuses and capstone payout."
+      "text": "$(bold)Counter$() (max 200):$(br)  $(item)Apotheosis boss$(): +1$(br)  $(item)Dimensional boss$(): +10 (Wither, Dragon, Naga, Lich, etc.)$(br2)$(bold)Per point:$()$(br)  +0.1% TOTAL damage dealt (cap +20%)$(br)  -0.1% incoming damage (cap -20%)$(br2)$(thing)/icraft witch_status$() shows your live counter, current bonuses and capstone payout."
     },
     {
       "type": "patchouli:text",

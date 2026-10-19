@@ -7,12 +7,12 @@
     {
       "type": "patchouli:text",
       "title": "The 3-Layer System",
-      "text": "Pick three layers, in order:$(br)$(bold)1. Origin$(): your species, with flavor powers like flight, wall-climbing or fire immunity. 13 options: $(l:icraft:classes/origins_reference)The 13 Origins$(/l).$(br2)$(bold)2. Race$(): your people, with stat modifiers and thematic traits. 11 options. $(warn)Permanent.$()$(br2)$(bold)3. Class$(): your combat role. 13 options; respec at a Class Altar."
+      "text": "Pick three layers, in order:$(br)$(bold)1. Origin$(): your species, with flavor powers like flight, wall-climbing or fire immunity. {{layer origin count}} options: $(l:icraft:classes/origins_reference)The {{layer origin count}} Origins$(/l).$(br2)$(bold)2. Race$(): your people, with stat modifiers and thematic traits. {{layer race count}} options. $(warn)Permanent.$()$(br2)$(bold)3. Class$(): your combat role. {{layer class count}} options; respec at a Class Altar."
     },
     {
       "type": "patchouli:text",
       "title": "What to Pick If...",
-      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -30% melee damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race"
+      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Elemental$(), $(thing)Blessed$(), $(thing)Corrupted$(), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -30% melee damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race"
     },
     {
       "type": "patchouli:text",
@@ -37,7 +37,7 @@
     {
       "type": "patchouli:text",
       "title": "Your First Gear",
-      "text": "$(bold)Apotheosis Affixes$(): mob drops roll random affixes and gem sockets. Kill $(thing)Champions$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$(): craft one to customize weapons and tools, swapping handles, blades and guards by material."
+      "text": "$(bold)Apotheosis Affixes$(): mob drops roll random affixes and gem sockets. Kill $(thing)Apotheosis bosses$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$(): craft one to customize weapons and tools, swapping handles, blades and guards by material."
     },
     {
       "type": "patchouli:text",

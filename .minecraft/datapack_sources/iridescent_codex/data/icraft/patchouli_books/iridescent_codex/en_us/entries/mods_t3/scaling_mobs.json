@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Iridescent Difficulty$() applies per-dimension multipliers to mob HP, damage, speed and armor. The scaling is $(italic)time-based$(): a dimension ramps up the longer it stays loaded, then freezes at a cap. A T3 Nether mob is far deadlier than a T1 Overworld mob, and a base you've held for days is more dangerous than one you just entered. (The End uncaps after the Ender Dragon dies.)"
+      "text": "$(bold)Iridescent Difficulty$() applies per-dimension multipliers to mob HP, damage, speed and armor. The scaling is $(italic)time-based$(): a dimension ramps up the longer it stays loaded, then freezes at a cap. A T3 Nether mob is far deadlier than a T1 Overworld mob, and a dimension you have played in for days is more dangerous than one you just entered. (The End uncaps after the Ender Dragon dies.)"
     },
     {
       "type": "patchouli:text",

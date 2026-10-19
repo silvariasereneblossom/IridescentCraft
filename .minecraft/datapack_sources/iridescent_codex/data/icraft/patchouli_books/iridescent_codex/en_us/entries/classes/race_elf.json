@@ -2,16 +2,16 @@
   "name": "Elf",
   "icon": "minecraft:feather",
   "category": "icraft:classes",
-  "sortnum": 13,
+  "sortnum": 16,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Swift, graceful and hungry. Elves are the best mobile fighters but need more food management.$()$(br2)$(bold)Night Vision$(): permanent night vision in dim places, with no UI effect and a smooth shift from dark to light.$(br2)$(bold)Swift$(): permanent +10% movement speed. Pairs very well with Ranger, Samurai and Archmage."
+      "text": "$(italic)Swift, sharp-eyed and hungry. Elves are the best mobile fighters but need more food management.$()$(br2)$(bold)Eagle Eye$(): +15% ranged damage and +5% magic damage.$(br2)$(bold)Elven Grace$(): +8% movement speed. Pairs well with Ranger, Samurai and Archmage.$(br2)$(bold)Darkvision$(): permanent night vision."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Fragile$(): -8% armor effectiveness from all worn armor, the price of your speed.$(br2)$(bold)Hunger Penalty$(): +20% food drain rate. Elves have a fast metabolism.$(br2)$(bold)Next: carry varied food from day one. Your metabolism makes Spice of Life bonuses matter more.$()"
+      "text": "$(bold)Fragile Frame$(): $(warn)-10% armor toughness.$()$(br2)$(bold)Refined Palate$(): $(warn)you burn food faster$() (a little extra exhaustion every 10 seconds).$(br2)$(bold)Next: carry varied food from day one. Your metabolism makes Spice of Life bonuses matter more.$()"
     }
   ]
 }

@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Pressure Shell Enchantment$()$(br)Venus mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Pressure Shell$() (max level 2). On armor, it:$(br)• Reduces acid damage by 50% per level$(br)• Fully negates acid rain and pressure slowdown at level 2$(br)• Turns Venus from lethal into manageable$(br2)$(italic)Without Pressure Shell, keep your Venus trips very short.$()"
+      "text": "$(bold)Pressure Shell Enchantment$()$(br)Chests on Venus hold books of $(bold)Pressure Shell$(): level I in 30% of them, level II in 10% (max level 2). On armor, it:$(br)• Cuts the acid damage by 50% a level$(br)• Stops the acid and the slowdown at 2 levels across your armor$(br)• Turns Venus from lethal into manageable$(br2)$(italic)Without Pressure Shell, keep your Venus trips very short.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

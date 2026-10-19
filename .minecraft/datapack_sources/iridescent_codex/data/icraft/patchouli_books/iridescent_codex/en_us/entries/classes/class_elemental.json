@@ -1,0 +1,27 @@
+{
+  "name": "Elemental",
+  "icon": "minecraft:blaze_powder",
+  "category": "icraft:classes",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Fire, ice and lightning, and little else. No class hits harder on those three schools, and few are as fragile.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)2x base$() (200 from default 100)$(br)$(bold)Core Identity:$() +80% fire, ice and lightning spell power, +40% on every magic hit, and the best crits of any caster."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Elemental Triad$(): $(item)+80% fire, ice and lightning spell power$(). The other six schools get no school bonus. Ars Nouveau's fire, water and air damage gets the same +80%.$(br2)$(bold)Class stats$(): every magic hit you land deals +40% more, in any school. Your crit chance is 12% (base 5%) for 1.7x damage (base 1.5x), on spells and blades alike, and your mana refills a little faster."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Storm Ward",
+      "text": "$(bold)Storm Ward$(): Iron's Spells of two schools hurt you less, $(item)holy -30%$() and $(item)nature -20%$(). $(warn)Blood spells hurt you 25% more$(): that is the Corrupted's school.$(br2)Ars Nouveau's elemental spells ignore these resistances."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Playstyle",
+      "text": "Your starter kit: a modular copper spell book, Firebolt and Cone of Cold scrolls, 5 Source Gems and 2 Common Ink.$(br2)On your three schools you out-damage the Archmage; on the other six the Archmage hits harder.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): +30% magic damage on top.$(br)$(thing)Demi-God$(): +40% HP offsets the glass cannon."
+    }
+  ]
+}

@@ -2,16 +2,16 @@
   "name": "Human",
   "icon": "minecraft:player_head",
   "category": "icraft:classes",
-  "sortnum": 12,
+  "sortnum": 15,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)No tradeoffs and no standout strengths. The Human is the most flexible race: every class and playstyle is equally viable.$()$(br2)$(bold)Versatile$(): +1 bonus to whichever skill tree you invest in most (checked every 30 min), which rewards focused builds."
+      "text": "$(italic)No tradeoffs and no standout strengths: every class and playstyle suits the Human.$()$(br2)$(bold)Quick Learner$(): +10% XP from all sources, which adds up over long play sessions.$(br2)$(bold)Versatile$(): no special abilities and no weaknesses."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Quick Learner$(): +15% XP from all sources, which compounds a lot over long play sessions.$(br2)$(bold)Adaptable$(): change your secondary race trait at a Class Altar once every 24 IRL hours (a minor toggle only).$(br2)$(bold)Next: pair it with any class, or Wanderer if you're undecided: $(l:icraft:welcome/class_guide)Origin, Race & Class$(/l).$()"
+      "text": "$(bold)Next: pair it with any class, or Wanderer if you're undecided: $(l:icraft:welcome/class_guide)Origin, Race & Class$(/l).$()"
     }
   ]
 }

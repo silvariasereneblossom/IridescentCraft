@@ -12,6 +12,7 @@ PLACEHOLDERS, anywhere in a text, a title, a name, a description or the landing 
     {{dims <filter>... <format>}}     filters tier= flag= ; formats count word names Names
     {{uniques <filter>... <format>}}  filters tier= kind=sword|bow dropped=yes|no ; formats count word names list
                                       minchance maxchance (of the drops)
+    {{layer <origin|race|class> <format>}}   the origins an Origins layer offers; formats count word Word
     {{const <name>}}          dimentry (tokens for a first arrival)
 
 GENERATED PAGES: a page written as {"type": "icraft:generated", "generator": "<name>", ...} becomes one or more
@@ -249,13 +250,25 @@ def resolve(f, expr, where):
                 return cf.fmt_pct(min(chances) if args[-1] == 'minchance' else max(chances))
             return _list_format([u.name for u in items] if args[-1] not in ('count', 'word', 'Word') else items,
                                 args[-1], where)
+        if head == 'layer':
+            if len(args) != 2:
+                raise RenderError(where, '{{layer <origin|race|class> <format>}} takes two words, got "%s"' % expr)
+            if args[0] not in f.layers:
+                raise RenderError(where, 'unknown Origins layer "%s" (%s)' % (args[0], ', '.join(f.layers)))
+            n = len(f.layers[args[0]])
+            if args[1] == 'count':
+                return str(n)
+            if args[1] in ('word', 'Word'):
+                w = cf.count_word(n, cf.LAYER_WORDS)
+                return w[:1].upper() + w[1:] if args[1] == 'Word' else w
+            raise RenderError(where, 'unknown layer format "%s" (count word Word)' % args[1])
         if head == 'const':
             if args == ['dimentry']:
                 return str(f.dim_entry_bonus)
             raise RenderError(where, 'unknown constant "%s"' % ' '.join(args))
     except RenderError:
         raise
-    raise RenderError(where, 'unknown placeholder "{{%s}}" (boss, dim, tier, bosses, dims, const)' % expr)
+    raise RenderError(where, 'unknown placeholder "{{%s}}" (boss, dim, tier, bosses, dims, uniques, layer, const)' % expr)
 
 
 def fill(f, text, where):

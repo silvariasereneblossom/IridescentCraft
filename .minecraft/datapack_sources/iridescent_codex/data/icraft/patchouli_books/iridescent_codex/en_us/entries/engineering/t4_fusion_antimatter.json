@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Antimatter",
-      "text": "Fusion exists to feed the $(bold)Supercharged Particle Accelerator (SPS)$(), which turns polonium pellets and colossal amounts of RF into $(bold)Antimatter Pellets$(), the rarest engineering output. The SPS is the RF-hyperscaling sink the whole tree has been climbing toward."
+      "text": "Fusion exists to feed the $(bold)Supercritical Phase Shifter (SPS)$(), which turns polonium pellets and colossal amounts of RF into $(bold)Antimatter Pellets$(), the rarest engineering output. The SPS is the RF-hyperscaling sink the whole tree has been climbing toward."
     },
     {
       "type": "patchouli:text",

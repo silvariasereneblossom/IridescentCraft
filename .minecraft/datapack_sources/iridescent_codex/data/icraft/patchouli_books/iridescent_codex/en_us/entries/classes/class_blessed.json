@@ -1,0 +1,27 @@
+{
+  "name": "Blessed",
+  "icon": "minecraft:glistering_melon_slice",
+  "category": "icraft:classes",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Holy, nature and evocation. A caster built to last: more health than the other school mages, and stronger heals.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)Mana Pool: $(item)2x base$() (200 from default 100)$(br)$(bold)Core Identity:$() +80% holy, nature and evocation spell power, +40% on every magic hit, less magic damage taken and stronger heals."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Blessed Triad$(): $(item)+80% holy, nature and evocation spell power$(). The other six schools get no school bonus. Ars Nouveau's earth damage gets the same +80%.$(br2)$(bold)Class stats$(): every magic hit you land deals +40% more, in any school. You take 18% less magic damage. A heal that lands all at once (a potion of Healing, a healing spell) heals 30% more, and your mana refills faster."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Sanctified Ward",
+      "text": "$(bold)Sanctified Ward$(): Iron's Spells of two schools hurt you less, $(item)blood -35%$() and $(item)ender -25%$(). $(warn)Fire spells hurt you 20% more$(): that is the Elemental's school.$(br2)Ars Nouveau's elemental spells ignore these resistances."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Playstyle",
+      "text": "Your starter kit: a modular copper spell book, Heal and Wisp scrolls, 4 Source Gems and 2 Common Ink. Heal is a holy spell, so it takes your +80% too.$(br2)On your three schools you out-damage the Archmage; on the other six the Archmage hits harder.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): +30% magic damage.$(br)$(thing)Ryu$(): 25% less damage taken."
+    }
+  ]
+}

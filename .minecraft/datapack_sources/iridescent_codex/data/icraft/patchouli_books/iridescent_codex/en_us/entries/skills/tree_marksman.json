@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ranged investment. Best for Ranger and Samurai.$()$(br2)Arrow damage, draw speed and ammo efficiency apply the moment you take the node; ammo save and splash effects trigger on the shot itself."
+      "text": "$(italic)Ranged investment. Best for Ranger and Samurai.$()$(br2)28 nodes: an 8-node trunk, then two branches of 10, each ending in a capstone that costs 2 points.$(br2)Most nodes are attributes and apply at once. Hawk Eye catches up within 10 seconds; the execute, splash and refund nodes act on each hit."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Arrow Damage$(): the core trunk, through attributeslib:arrow_damage. It scales cleanly with the Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$(): shorter bow charge time. At max investment bows draw almost instantly.$(br2)$(bold)Precision Branch$(): less arrow spread and more effective range, ideal for long-range Ranger play."
+      "title": "Trunk",
+      "text": "$(bold)Steady Aim$() I and II: +5% ranged damage each$(br)$(bold)Quick Hands$() I and II: +5% attack speed each$(br)$(bold)Hawk Eye$() I and II: +3% ranged damage each$(br)$(bold)Nimble$() I and II: +4% movement speed each$(br2)Attack speed makes melee swings faster; it does not change how fast a bow draws."
     },
     {
       "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Barrage Branch$(): more arrows per shot (multishot-style) and a small AoE on impact.$(br2)$(bold)Marksman Capstone$(): $(bold)True Shot$(). Fully charged shots always crit, and crits deal +50% damage instead of the vanilla +50% crit.$(br2)$(bold)Next: take Draw Speed early; it changes how the bow feels in every fight.$()"
+      "title": "Sniper Branch",
+      "text": "$(bold)Steady Shot$() I to IV: +6%, +8%, +8% and +10% ranged damage$(br)$(bold)Penetration$() I to III: +4% ranged resistance shred each$(br)$(bold)Kill Shot$() I and II: +10% damage each against targets under 30% health, on any attack$(br2)$(bold)Capstone: Deadeye$(), +15% ranged damage and +8% ranged resistance shred."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Volley Branch",
+      "text": "$(bold)Rapid Fire$() I to IV: +6%, +6%, +8% and +8% attack speed$(br)$(bold)Arrow Conservation$() I to III: each a 5% chance to get an arrow back when a projectile hits$(br)$(bold)Scatter Shot$() I and II: each splashes 5% of a projectile's damage onto monsters within 3 blocks$(br2)$(bold)Capstone: Storm of Arrows$(), +15% attack speed and +10% to both the refund and the splash."
     }
   ]
 }

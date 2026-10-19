@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become both deadlier and harder to kill.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() +10% attack damage, +15% on every magic hit and a scaling Mana Shield."
+      "text": "$(italic)Where sword meets sorcery. Stack spell power and your blade hits harder too.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() +10% attack damage, +15% on every magic hit and a Mana Shield that never drops."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Strikes$(): +10% attack damage, and the class adds +15% to every magic hit.$(br2)$(bold)Spell Armor$(): +2 bonus armor from arcane wards.$(br2)$(bold)Mana Shield$(): Resistance at all times.$(br)  Base: $(item)Resistance I$() (20% less damage)$(br)  Faefolk: $(item)Resistance II$() (40%)$(br)Nothing else raises it."
+      "text": "$(bold)Arcane Strikes$(): +10% attack damage, and the class adds +15% to every magic hit and takes 15% less from magic.$(br2)$(bold)Spell Armor$(): +2 bonus armor from arcane wards.$(br2)$(bold)Mana Shield$(): Resistance at all times.$(br)  Base: $(item)Resistance I$() (20% less damage)$(br)  Faefolk: $(item)Resistance II$() (40%)$(br)Nothing else raises it."
     },
     {
       "type": "patchouli:text",

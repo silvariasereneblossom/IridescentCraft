@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Dual-path recipes:$() IridescentCraft adds a dual-path recipe system for RS components. The tech path uses Mekanism/Thermal materials and the magic path uses Botania/Ars Nouveau materials; the hybrid path (both) gives double yield.$(br2)$(bold)T4 upgrade:$() Advanced RS components (Disk Drives, Pattern Encoders for complex autocrafting) are T4 content. Basic storage is T3."
+      "text": "$(bold)Dual-path recipes:$() IridescentCraft adds a dual-path recipe system for RS components. The tech path uses Mekanism/Thermal materials and the magic path uses Botania/Ars Nouveau materials; the hybrid path (both) gives double yield.$(br2)$(bold)T4 upgrade:$() The whole mod opens at T3, Disk Drives and autocrafting included. Only the Infinity Card (endless wireless range) and the 256K and larger storage parts wait for T4."
     },
     {
       "type": "patchouli:text",
