@@ -1,0 +1,62 @@
+{
+  "about": [
+    "Skill points paid by quests: each listed quest, once a player has completed it in Heracles, adds its points to",
+    "one Pufferfish skill tree. Read by kubejs/server_scripts/skills/quest_skill_points.js, which keeps every online",
+    "player's points from the source icraft:quests equal to the sum over the quests they completed (so an edit here",
+    "reaches players who completed a quest before it, and a quest taken out takes its points back).",
+    "The design (wiki design/master.md, Quest book chapter structure) budgets about 80 to 95 points over the whole book;",
+    "this table pays 86: three onboarding quests 1 each (the design's Welcome chapter, 3), then each lane's tier",
+    "milestone pays the lane's tree, and the tier ascensions pay Fortitude. Added 2026-10-18 (the fact-pass fixes, on recommendation, for review).",
+    "Trees: warfare, marksman, sorcery, fortitude, gathering, engineering (the puffish_skills categories).",
+    "Strict JSON, no comments; a quest id is its file name under config/heracles/quests without .json."
+  ],
+  "schema": 1,
+  "source": "icraft:quests",
+  "quests": {
+    "onboarding_first_shelter": { "tree": "fortitude", "points": 1 },
+    "onboarding_first_kill": { "tree": "warfare", "points": 1 },
+    "onboarding_first_iron_pick": { "tree": "gathering", "points": 1 },
+    "main_journey_capstone": { "tree": "fortitude", "points": 2 },
+    "reach_tier_2": { "tree": "fortitude", "points": 3 },
+    "reach_tier_3": { "tree": "fortitude", "points": 3 },
+    "reach_tier_4": { "tree": "fortitude", "points": 3 },
+
+    "com_first_boss": { "tree": "warfare", "points": 1 },
+    "com_t1_rush": { "tree": "warfare", "points": 3 },
+    "com_t2_rush": { "tree": "warfare", "points": 4 },
+    "com_t3_rush": { "tree": "warfare", "points": 5 },
+    "capstone_lucifer": { "tree": "warfare", "points": 2 },
+
+    "main_archery": { "tree": "marksman", "points": 1 },
+    "com_kill_skeletons": { "tree": "marksman", "points": 1 },
+    "com_hunter_capstone": { "tree": "marksman", "points": 3 },
+    "com_apotheosis_boss": { "tree": "marksman", "points": 2 },
+    "com_champion": { "tree": "marksman", "points": 2 },
+    "capstone_ender_dragon": { "tree": "marksman", "points": 3 },
+    "capstone_ultimate_wither": { "tree": "marksman", "points": 2 },
+
+    "pm_capstone": { "tree": "sorcery", "points": 3 },
+    "iss_t1_first_book": { "tree": "sorcery", "points": 1 },
+    "iss_t2_gold_book": { "tree": "sorcery", "points": 2 },
+    "iss_t2_upgrade_orb": { "tree": "sorcery", "points": 2 },
+    "iss_t3_arcane_master": { "tree": "sorcery", "points": 4 },
+    "iss_t3_netherite_book": { "tree": "sorcery", "points": 2 },
+
+    "eng_t1_bank": { "tree": "engineering", "points": 3 },
+    "eng_t2_bank": { "tree": "engineering", "points": 4 },
+    "eng_t3_unlock": { "tree": "engineering", "points": 1 },
+    "eng_t3_bank": { "tree": "engineering", "points": 4 },
+    "eng_t4_fission": { "tree": "engineering", "points": 1 },
+    "eng_t4_sps": { "tree": "engineering", "points": 2 },
+
+    "main_settler": { "tree": "gathering", "points": 1 },
+    "main_diamonds": { "tree": "gathering", "points": 1 },
+    "main_farming": { "tree": "gathering", "points": 1 },
+    "main_fishing": { "tree": "gathering", "points": 1 },
+    "ovf_capstone": { "tree": "gathering", "points": 3 },
+    "exp_navigator": { "tree": "gathering", "points": 1 },
+    "exp_t2_dimensions": { "tree": "gathering", "points": 1 },
+    "exp_t3_deep_dimensions": { "tree": "gathering", "points": 2 },
+    "exp_t4_final_frontiers": { "tree": "gathering", "points": 3 }
+  }
+}

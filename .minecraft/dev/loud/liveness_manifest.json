@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 329,
-   "digest": "5172354e0c43adb0",
+   "count": 331,
+   "digest": "7f8abb5270f25b17",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -1126,6 +1126,10 @@
      "script": "skills/mastery_tax.js"
     },
     {
+     "id": "skills/quest_skill_points@PlayerEvents.loggedIn",
+     "script": "skills/quest_skill_points.js"
+    },
+    {
      "id": "skills/skill_effects#2@BlockEvents.broken",
      "script": "skills/skill_effects.js"
     },
@@ -1368,6 +1372,10 @@
     {
      "id": "tick_phantomUndeath@tick.server",
      "script": "origins/phantom_undeath.js"
+    },
+    {
+     "id": "tick_questSkillPoints@tick.server",
+     "script": "skills/quest_skill_points.js"
     },
     {
      "id": "tick_regenControl@tick.player",
@@ -2624,6 +2632,10 @@
     {
      "name": "quest-bridge",
      "script": "quests/onboarding_bridge.js"
+    },
+    {
+     "name": "quest-skill-points",
+     "script": "skills/quest_skill_points.js"
     },
     {
      "name": "relic-sink",

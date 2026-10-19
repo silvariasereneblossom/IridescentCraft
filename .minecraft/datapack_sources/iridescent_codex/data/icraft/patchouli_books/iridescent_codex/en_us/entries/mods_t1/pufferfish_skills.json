@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Opening:$() $(k:puffish_skills.open). The skill menu shows all six trees and how your points are spent.$(br2)$(bold)Point sources:$() kills feed the four combat trees with the experience the mob drops, breaking blocks feeds Gathering and crafting feeds Engineering. Each level is 1 point in that tree."
+      "text": "$(bold)Opening:$() $(k:puffish_skills.open). The skill menu shows all six trees and how your points are spent.$(br2)$(bold)Point sources:$() kills feed the four combat trees with the experience the mob drops, breaking blocks feeds Gathering and crafting feeds Engineering. Each level is 1 point in that tree, and 40 Heracles quests ($(k:heracles.open_quests)) pay 86 more, each into one tree."
     },
     {
       "type": "patchouli:text",

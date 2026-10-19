@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Rewards:$() Quests grant items and experience beyond what you need to progress. Skill points come from play: see $(l:icraft:mods_t1/pufferfish_skills)Pufferfish's Skills$(/l).$(br2)The $(bold)Submit$() buttons in the Engineering and Magic Crafting quest groups bank materials into progression tokens, the same as $(bold)/icraft codex submit$().$(br2)$(bold)Next: press $(k:heracles.open_quests) and clear your first quest group.$()"
+      "text": "$(bold)Rewards:$() Quests grant items and experience beyond what you need to progress, and 40 of them pay skill points for $(l:icraft:mods_t1/pufferfish_skills)Pufferfish's Skills$(/l): 86 over the book, each into one tree.$(br2)The $(bold)Submit$() buttons in the Engineering and Magic Crafting quest groups bank materials into progression tokens, the same as $(bold)/icraft codex submit$().$(br2)$(bold)Next: press $(k:heracles.open_quests) and clear your first quest group.$()"
     }
   ]
 }
