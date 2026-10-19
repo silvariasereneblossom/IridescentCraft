@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mercury: The Burning World$()$(br)Mobs: $(bold){{dim ad_astra:mercury difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:mercury death}}$()$(br2)Mercury is hot at every hour: without a full Netherite Space Suit, a Jet Suit or Fire Resistance, the planet burns you day and night. By day the sun also sets you on fire, by night the cold hurts."
+      "text": "$(bold)Mercury: The Burning World$()$(br)Mobs: $(bold){{dim ad_astra:mercury difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:mercury death}}$()$(br2)Mercury is hot at every hour: without a full Netherite Space Suit, a full MekaSuit or Fire Resistance, the planet burns you day and night. By day the sun also sets you on fire, by night the cold hurts."
     },
     {
       "type": "patchouli:text",

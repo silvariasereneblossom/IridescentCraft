@@ -164,7 +164,7 @@ ServerEvents.recipes(icraft.guard('recipes/ad_astra_gating', 'ServerEvents.recip
   // Helper: build the in-place Mk2 output from the consumed input piece.
   // - copy the input's full tag (modules/energy/enchants/affixes preserved)
   // - stamp the Mk2 marker
-  // - set pinnacle display Name + Lore (Mythic Forge identity)
+  // - set pinnacle display Name + Lore
   // Defined with `var ... = function` per Rhino reentrant-scope rule.
   icraft.section('recipes/ad_astra_gating/section-g-mekasuit-mk2-ultimate-armor', function () {
   var CompoundTag_mk2 = Java.loadClass('net.minecraft.nbt.CompoundTag')
@@ -184,7 +184,7 @@ ServerEvents.recipes(icraft.guard('recipes/ad_astra_gating', 'ServerEvents.recip
   }
   var LORE_LINES = [
     '{"text":"Pinnacle of the engineering line","color":"dark_aqua","italic":false}',
-    '{"text":"Forged at the Mythic Forge","color":"gray","italic":false}',
+    '{"text":"Upgraded with Aethersteel and antimatter","color":"gray","italic":false}',
     '{"text":"All installed modules, energy & enchants preserved","color":"dark_gray","italic":false}'
   ]
 
@@ -228,7 +228,9 @@ ServerEvents.recipes(icraft.guard('recipes/ad_astra_gating', 'ServerEvents.recip
     return result
   }
 
-  // Crafted at Mythic Forge: MekaSuit piece + Aethersteel + Glacio + Primordial.
+  // Crafted in a crafting table (plain shaped recipe; the Mythic Forge is not
+  // involved): MekaSuit piece + 4 Aethersteel + 1 Antimatter Pellet + 2 Primordial
+  // Essence. The lore said "Forged at the Mythic Forge" until 2026-10-19.
   // Output is the SAME mekanism piece; modifyResult restamps it in place.
   event.shaped('mekanism:mekasuit_helmet', [
     'AGA',

@@ -151,4 +151,4 @@ Items move here when implemented. See [Design Changelog](../design/changelog.md)
 - ~~Tier loot fix (Nether = T3)~~ → Corrected in lootjs_overhaul.js
 - ~~Iron's Spells loot tiering~~ → Spell books + inks scale T1-T4
 - ~~OfflineSkins~~ → Client-only mod for offline-mode servers
-- ~~MekaSuit Mk2 recipes~~ → Implemented 2026-06-06 as an in-place Mythic Forge upgrade of the real MekaSuit pieces (NBT preserved); the dead ingredient ID that had left them uncraftable was fixed at the same time
+- ~~MekaSuit Mk2 recipes~~ → Implemented 2026-06-06 as an in-place crafting-table upgrade of the real MekaSuit pieces (NBT preserved); the dead ingredient ID that had left them uncraftable was fixed at the same time

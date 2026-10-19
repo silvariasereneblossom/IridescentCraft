@@ -14,11 +14,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)MekaSuit$()$(br)Mekanism's power armor fills the Jet Suit's role: flight, space survival and modular upgrades. Already locked behind T4 Mekanism progression, it is your main space armor.$(br2)$(bold)MekaSuit Mk2$()$(br)The $(italic)best$() armor in the pack: a MekaSuit plus Aethersteel, Glacio materials and Primordial Essence. No other space armor accepts Apotheosis affixes, custom enchantments and socket gems."
+      "text": "$(bold)MekaSuit$()$(br)Your main space armor, behind T4 Mekanism. A full set needs no oxygen, and space's heat and cold don't touch you on any planet or orbit, charged or not.$(br2)$(bold)MekaSuit Mk2$()$(br)The $(italic)best$() armor in the pack: each piece upgraded at a crafting table with 4 Aethersteel, an Antimatter Pellet and 2 Primordial Essence. The only space armor that takes affixes, custom enchantments and gems."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit is not in the pack and has no recipe; the MekaSuit fits the progression better.$(br2)$(bold)Soulbound is Critical$()$(br)Death costs more out there: {{dim ad_astra:moon death}} of your gear's durability on the Moon, up to {{dim ad_astra:glacio death}} on Glacio. Soulbound III on your suit is close to mandatory.$(br2)$(bold)Next: the Moon.$() Its hazard is the lowest, and its Lunar Stride books make every later planet easier."
+      "text": "$(bold)Suits Are Not Enough$()$(br)Each planet has dangers of its own that no suit stops: the cold of Mars, of Mercury's night and of Glacio, the sun of Mercury's day, the acid of Venus. The planet enchantments (Thermal Regulation, Stellar Shield, Pressure Shell) protect you from them.$(br2)Ad Astra's Jet Suit is not in the pack."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Soulbound is Critical$()$(br)Death costs more out there: {{dim ad_astra:moon death}} of your gear's durability on the Moon, up to {{dim ad_astra:glacio death}} on Glacio. Soulbound III on your suit is close to mandatory.$(br2)$(bold)Next: the Moon.$() Its hazard is the lowest, and its Lunar Stride books make every later planet easier."
     }
   ],
   "advancement": "icraft:stage_tier_4"

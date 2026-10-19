@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What to Bring$()$(br)• Space suit with oxygen$(br)• Building materials for a temporary base$(br)• Oxygen Loader and an RF power source$(br)• Mining tools for Moon Stone$(br2)$(bold)What to Mine$()$(br)The $(bold)Tier 2 Rocket$() that takes you to Mars needs ores and materials only the Moon has. The structures on the lunar surface hold more loot."
+      "text": "$(bold)What to Bring$()$(br)• Space suit with oxygen, or a MekaSuit$(br)• Building materials for a temporary base$(br)• Oxygen Loader and an RF power source$(br)• Mining tools for Moon Stone$(br2)$(bold)What to Mine$()$(br)The $(bold)Tier 2 Rocket$() that takes you to Mars needs ores and materials only the Moon has. The structures on the lunar surface hold more loot."
     },
     {
       "type": "patchouli:text",

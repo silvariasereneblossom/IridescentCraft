@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "652cc48e",
+    "generated_from":  "b18a5735",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7680,8 +7680,8 @@
                                                                            "size":  5694
                                                                        },
                   "kubejs/server_scripts/recipes/ad_astra_gating.js":  {
-                                                                           "sha256":  "45f560e837c23e76dfb09a1b9b39e57a642922443d8ab802ef2c45a378970eed",
-                                                                           "size":  12532
+                                                                           "sha256":  "6b1449a28407d3bd5989e40cae939592aa4aca099415dc92a281f6d2434ecaa5",
+                                                                           "size":  12678
                                                                        },
                   "kubejs/server_scripts/recipes/boss_material_processing.js":  {
                                                                                     "sha256":  "22f8234379e1d340de6cb1455400fc16650f34a7798aad87987cc1efb063c2b8",
@@ -8648,7 +8648,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "15276241c7469c331b6b822b1610c9931eb356302308e1b0b60a84207f3b3e44",
+                                                               "sha256":  "d37249f55475e008b19319b40b120c4e45d086d29450960a78a13563a2ccbb32",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

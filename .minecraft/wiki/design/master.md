@@ -620,7 +620,7 @@ Ad Astra opens here too. The NASA Workbench is a T4 recipe (netherite ingots + M
 
 ### MekaSuit Mk2: the endgame chain
 
-The pack's tech-endgame chain is base MekaSuit (T4 entry armor) → MekaSuit Mk2 (post-T4 ascension target), through the Mythic Forge. Mk2 is a per-piece, in-place upgrade: each MekaSuit piece is transformed on its own, consuming that piece plus endgame reagents (Aethersteel, an Antimatter Pellet, Primordial Essence) and returning the same piece, upgraded.
+The pack's tech-endgame chain is base MekaSuit (T4 entry armor) → MekaSuit Mk2 (post-T4 ascension target), crafted at a crafting table. Mk2 is a per-piece, in-place upgrade: each MekaSuit piece is transformed on its own, consuming that piece plus endgame reagents (Aethersteel, an Antimatter Pellet, Primordial Essence) and returning the same piece, upgraded.
 
 > Design intent: this turns the natural Ad Astra "you've reached the last planet" moment into a tangible reward. The upgrade is non-destructive: it preserves the piece's installed modules, stored energy, and enchantments, so the player keeps everything they invested in the base MekaSuit instead of rebuilding from scratch.
 
@@ -1043,7 +1043,7 @@ Boss-specific drops live in ten dedicated files under `kubejs/server_scripts/loo
 
 - Simply Swords uniques: boss-drop only.
 - Cataclysm boss-set armor (Knight, Ignitium, Cursium, Witherite): boss-only.
-- MekaSuit Mk2 components: Mythic Forge endgame only.
+- MekaSuit Mk2: its Primordial Essence drops only from late bosses (the Ender Dragon, the Gaia Guardian, the Ancient Remnant, the Ender Guardian).
 - Custom mythic uniques (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown): Mythic Forge crafting only.
 - Awakening artifacts (rpgseteffects): direct T4 boss drops only (the loot pouch table strips them at T2).
 

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Apotheosis replaces vanilla enchanting. The enchanting table is still there, but the bookshelves around it decide how it behaves.$(br2)$(bold)Main difference:$() every enchanted book has been taken out of structure loot. You earn powerful enchants at the table instead of finding them in chests."
+      "text": "Apotheosis replaces vanilla enchanting. The enchanting table is still there, but the bookshelves around it decide how it behaves.$(br2)$(bold)Main difference:$() you earn powerful enchants at the table. Chests still hold enchanted books, but treasure enchants such as Mending are rare in them, and no villager sells a book."
     },
     {
       "type": "patchouli:text",

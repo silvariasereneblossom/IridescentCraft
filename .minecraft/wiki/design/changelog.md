@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: The MekaSuit is a space suit (19 October)
+
+- **A full MekaSuit counts as a space suit** on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, whether the suit is charged or not. Until now it gave no space protection at all, and a player in a full MekaSuit froze on the Moon and Mars.
+- **Each planet's own dangers still need the planet enchantments.** The cold of Mars, Mercury's night and Glacio, Mercury's sun and Venus's acid are not stopped by any suit; Thermal Regulation, Stellar Shield and Pressure Shell protect you from them.
+- **Texts.** The MekaSuit Mk2 is upgraded at a crafting table with Aethersteel, an Antimatter Pellet and Primordial Essence: the Codex and its lore no longer say it is forged at the Mythic Forge or needs Glacio materials. The Codex's enchanting page no longer says chests hold no enchanted books.
+
 ## October 2026: Villagers trade for convenience (19 October)
 
 - **No villager sells an enchanted book any more.** Librarians keep their other trades (paper, books, bookshelves, lanterns, glass, clocks, compasses, name tags). For enchants, use the enchanting table or the Relic Broker.

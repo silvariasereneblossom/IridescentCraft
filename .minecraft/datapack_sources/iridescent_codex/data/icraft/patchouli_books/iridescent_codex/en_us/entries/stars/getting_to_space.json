@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Oxygen$()$(br)Space has no oxygen. Fill your space suit at an $(bold)Oxygen Loader$() before launch, and carry oxygen tanks for longer stays. The Oxygen Loader needs a steady supply of RF.$(br2)$(bold)RF Requirements$()$(br)Every Ad Astra machine draws much more RF than it does by default. This is deliberate: bringing proper power infrastructure to space is part of the challenge."
+      "text": "$(bold)Oxygen$()$(br)Space has no oxygen. Fill your space suit at an $(bold)Oxygen Loader$() before launch, and carry oxygen tanks for longer stays (a full MekaSuit needs none). The Oxygen Loader needs a steady supply of RF.$(br2)$(bold)RF Requirements$()$(br)Every Ad Astra machine draws much more RF than it does by default. This is deliberate: bringing proper power infrastructure to space is part of the challenge."
     },
     {
       "type": "patchouli:text",

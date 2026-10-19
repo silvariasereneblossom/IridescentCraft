@@ -341,7 +341,7 @@ The Rift Keystone recipe that lived in the same file (4 `kubejs:icraft_rift_shar
 - Tier 3 Rocket → Venus/Mercury: + 2x aethersteel:aethersteel_ingot + ad_astra:mars_stone.
 - Tier 4 Rocket → Glacio: + kubejs:primordial_essence + ad_astra:venus_stone (most expensive single craft in the pack).
 - 4 Jet Suit pieces removed (MekaSuit replaces).
-- 4 MekaSuit Mk2 in-place upgrade recipes (helmet/chestplate/leggings/boots; SECTION G) at Mythic Forge: aethersteel:aethersteel_ingot + mekanism:pellet_antimatter (apex reagent, swapped in for ad_astra:glacio_stone in the 2026-06-06 antimatter-sink pass) + the player's existing `mekanism:mekasuit_*` piece + primordial_essence each. (The dead `kubejs:aethersteel_ingot` id was corrected to `aethersteel:aethersteel_ingot` x7 on 2026-06-06; the recipes had been uncraftable.)
+- 4 MekaSuit Mk2 in-place upgrade recipes (helmet/chestplate/leggings/boots; SECTION G), plain shaped crafting-table recipes (not the Mythic Forge): 4 aethersteel:aethersteel_ingot + mekanism:pellet_antimatter (apex reagent, swapped in for ad_astra:glacio_stone in the 2026-06-06 antimatter-sink pass) + the player's existing `mekanism:mekasuit_*` piece + 2 kubejs:primordial_essence each. (The dead `kubejs:aethersteel_ingot` id was corrected to `aethersteel:aethersteel_ingot` x7 on 2026-06-06; the recipes had been uncraftable.)
 
 ### B.5 `recipes/refined_storage_dualpath.js`: dual-path RS recipes
 
@@ -957,7 +957,7 @@ All `kubejs:*` items, ~80 in total, by category. Source: `kubejs/startup_scripts
 
 ### E.4 Mythic uniques (Mythic Forge crafted)
 
-- MekaSuit Mk2: the Mythic Forge upgrade is an in-place, per-piece transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the earlier `kubejs:mekasuit_mk2_*` shells were retired on 2026-06-06). Each piece is upgraded on its own. The craft consumes that one MekaSuit piece + Aethersteel + an Antimatter Pellet (`mekanism:pellet_antimatter`, the apex reagent, swapped in for Glacio Stone in the 2026-06-06 antimatter-sink pass) + Primordial Essence, and returns the same Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments and affixes all survive), plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker (`startup_scripts/mekasuit_mk2_stats.js`) adds a provisional pinnacle band over the native MekaSuit (additive only, no native nerf).
+- MekaSuit Mk2: the crafting-table upgrade is an in-place, per-piece transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the earlier `kubejs:mekasuit_mk2_*` shells were retired on 2026-06-06). Each piece is upgraded on its own. The craft consumes that one MekaSuit piece + Aethersteel + an Antimatter Pellet (`mekanism:pellet_antimatter`, the apex reagent, swapped in for Glacio Stone in the 2026-06-06 antimatter-sink pass) + Primordial Essence, and returns the same Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments and affixes all survive), plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker (`startup_scripts/mekasuit_mk2_stats.js`) adds a provisional pinnacle band over the native MekaSuit (additive only, no native nerf).
 - Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown: Mythic Forge outputs that are existing items (Awakened Lichblade / netherite armor) renamed with NBT, not fully custom items. `endgame/rift_mechanics.js` recognizes them by matching the NBT display.Name.
 
 ### E.5 Cross-mod alt-recipe outputs
@@ -1290,7 +1290,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor *(Section K live; TATOS in pack)*, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
 | `tier_gated_recipes.js` | Re-recipe overrides for tier-gated workstations (Hephaestus Forge T3, Meka-Tool T4, RFTools dim builders T4, etc.) + Section E Simply Swords removal list (43 entries post-audit-Phase-3.1) |
 | `tier_skip.js` | Retired on 2026-06-01 (B.3). The Rift Keystone recipe moved to the Mythic Forge script (I.6), and the boss-material conversions to a recipe script of their own |
-| `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes at Mythic Forge |
+| `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes (crafting table) |
 | `cooking_conversion.js` | 70 vanilla-recipe → Farmer's Delight cooking conversion |
 | `if_latex_rework.js` | HDPE / IF latex alternative pipeline |
 | `mek_biofuel_squeeze.js` | Biofuel production squeeze: all 101 stock `mekanism:crushing` → `mekanism:bio_fuel` recipes re-issued at `ceil(N / SQUEEZE_FACTOR)` (factor 4, provisional), floored at 1, so ethylene generation scales with automated farming |

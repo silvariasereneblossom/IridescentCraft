@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$(): 1 HP every 5 seconds unless your armor carries 3 levels of Thermal Regulation$(br)• $(bold)Hunger$() the whole time: bring extra food or Golden Apples$(br)• Mars mobs have Speed I$(br2)Without a full space suit you also freeze, 3 HP a second, and Thermal Regulation does not help against that."
+      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$(): 1 HP every 5 seconds unless your armor carries 3 levels of Thermal Regulation$(br)• $(bold)Hunger$() the whole time: bring extra food or Golden Apples$(br)• Mars mobs have Speed I$(br2)Without a full space suit or MekaSuit you also freeze, 3 HP a second, and Thermal Regulation does not help against that."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• A full Space Suit: it stops Ad Astra's own freezing$(br)• Thermal Regulation on your armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
+      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• A full Space Suit or MekaSuit$(br)• Thermal Regulation on your armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
     },
     {
       "type": "patchouli:text",

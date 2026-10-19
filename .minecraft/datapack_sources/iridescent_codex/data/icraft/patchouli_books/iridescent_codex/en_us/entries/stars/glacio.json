@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Why Come Here?$()$(br)Glacio has materials found nowhere else that the $(bold)MekaSuit Mk2$() needs. Together with Aethersteel and Primordial Essence (a chance drop of late bosses), they complete the strongest armor set in the game.$(br2)$(bold)Alien Ruins$()$(br)Crashed ships and technology caches hold loot found nowhere else, and Glacio gear may carry affixes specific to this dimension."
+      "text": "$(bold)Why Come Here?$()$(br)It is the last and hardest planet in the pack, with rock you can crush into materials found nowhere else. (The $(bold)MekaSuit Mk2$() needs nothing from here: its upgrade takes Aethersteel, antimatter and Primordial Essence.)$(br2)$(bold)Alien Ruins$()$(br)Crashed ships and technology caches hold loot found nowhere else, and Glacio gear may carry affixes specific to this dimension."
     },
     {
       "type": "patchouli:text",
