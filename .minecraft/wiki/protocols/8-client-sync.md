@@ -40,7 +40,7 @@ Testers install with `distribution/client/install.ps1`, so their instance is a c
 3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
 4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
-During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1`, `cleanup_stale_jars.ps1`, `gen_pwpack.ps1` and the two packwiz-installer jars into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
+During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1` and `cleanup_stale_jars.ps1` into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
 
 Like Mode A, the zip-path sync records a sync status that the diagnostic can read, so a failed update is visible instead of silent (see *Failure handling*).
 
@@ -48,7 +48,7 @@ Like Mode A, the zip-path sync records a sync status that the diagnostic can rea
 
 Every tester's sync downloads mods with `download_mods.ps1`, which reads `mods/.index/` directly and fetches each missing jar. A completeness gate that does not depend on paths then verifies that every indexed jar is on disk and flags any gap.
 
-The script also carries a packwiz-installer path (CurseForge through the authenticated API, a CurseForge key in `$INST_MC_DIR/.icraft_cf_token`, Java), but it runs only when the instance holds a `pack.toml`, and neither the installer nor the sync delivers one. That is deliberate for now: on the index a tester's instance carries, packwiz-installer stops before downloading anything (some metafiles carry no download url) and the sync has no fallback when it fails. The status file records the fallback as `packwiz-fallback:no-pack.toml`, which is not a failure.
+Until 2026-10-19 the sync script also carried a packwiz-installer path (Java, a CurseForge key in `$INST_MC_DIR/.icraft_cf_token`, a `pack.toml`). On testers' instances it did not run: neither the installer nor the sync delivered a `pack.toml`, and on the index a tester's instance carries packwiz-installer stopped before downloading anything. The path, its two jars and its generator are retired; `download_mods.ps1` is the one way mods arrive. Once an instance runs the new `sync_client.bat`, the sync removes the retired files an older install copied into it (`gen_pwpack.ps1`, `packwiz-installer-bootstrap.jar`, `packwiz-installer.jar`).
 
 The repository's top-level copies of the launcher scripts (`.minecraft/sync_client.ps1`, `.bat`, `download_mods.ps1`) are old and run nowhere: an instance's scripts come from `distribution/client/`. Since 2026-10-19 the sync never copies or deletes those top-level names in an instance.
 

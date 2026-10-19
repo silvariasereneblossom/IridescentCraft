@@ -34,10 +34,10 @@ REM missing locally - subsequent normal .new staging takes over for updates.
 REM
 REM sync_client.bat itself can't self-heal (it's the entrypoint). If the
 REM .bat is missing, the user must re-run install.ps1.
-REM gen_pwpack.ps1 + packwiz-installer-bootstrap.jar were added 2026-06-24 when the
-REM mod-fetch step switched from download_mods.ps1 to packwiz-installer (docket #109);
-REM without them sync_client.ps1 step 4b silently falls back to the legacy downloader.
-for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar packwiz-installer.jar) do (
+REM (2026-06-24 to 2026-10-19 this list also named the packwiz-installer path's
+REM generator and its two jars; that path is retired, decision list 170, and
+REM sync_client.ps1 removes those files once this bat no longer lists them.)
+for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1) do (
     if not exist "%SCRIPT_DIR%\%%S" (
         echo   [SELF-HEAL] %%S missing, fetching from main HEAD...
         powershell -ExecutionPolicy Bypass -Command ^
@@ -58,12 +58,13 @@ REM .ps1 files while they execute, and Windows file-locks block
 REM overwriting them mid-script. By staging downloads as .new and
 REM finalizing here BEFORE invoking the .ps1, we sidestep the lock.
 REM
-REM Quirk: this .bat itself can be staged as sync_client.bat.new, in
-REM which case the running shell is reading the OLD bat. We move-replace
-REM it anyway and the new content takes effect on the *next* invocation —
-REM not the current one. Acceptable: at most one launch's lag for bat
-REM updates.
-for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar packwiz-installer.jar) do (
+REM Quirk: this .bat itself can be staged as sync_client.bat.new. cmd.exe
+REM then reads the NEW file on from the byte where this loop ended in the
+REM old one: keep the bytes up to the end of this loop the same length
+REM (the REM line above the loop pads them), or cmd runs part of a line.
+REM (pad: the bytes up to the end of the loop below match the 2026-06-24 version)
+REM -----------------------------------------------------------------------------------
+for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1) do (
     if exist "%SCRIPT_DIR%\%%F.new" (
         echo   [STAGE] Applying staged update: %%F
         move /y "%SCRIPT_DIR%\%%F.new" "%SCRIPT_DIR%\%%F" >nul

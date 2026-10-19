@@ -72,71 +72,6 @@ function Write-SyncSentinel {
 }
 
 # =============================================================================
-# packwiz-installer mod-fetch helpers (the cutover from download_mods.ps1).
-# =============================================================================
-# Find a usable Java for packwiz-installer-bootstrap.jar. The bespoke downloader
-# needed NO Java; packwiz-installer does. Try, in order: the instance's configured
-# Java (instance.cfg), PrismLauncher's global cfg + auto-managed JREs, system `java`
-# on PATH, then JAVA_HOME. Prefer console java.exe over javaw.exe (we capture output).
-# Returns a java.exe path or $null (-> caller falls back to download_mods.ps1).
-function Find-JavaExe {
-    param([string]$InstDir)
-    $cands = New-Object System.Collections.Generic.List[string]
-    $add = {
-        param([string]$p)
-        if (-not $p) { return }
-        $p = $p.Trim().Trim('"').Trim()
-        if (-not $p) { return }
-        if ($p -match '(?i)javaw\.exe$') {
-            $j = $p -replace '(?i)javaw\.exe$', 'java.exe'
-            if (Test-Path $j) { $cands.Add($j); return }
-        }
-        $cands.Add($p)
-    }
-    if ($InstDir) {
-        $cfg = Join-Path $InstDir 'instance.cfg'
-        if (Test-Path $cfg) {
-            Get-Content $cfg | Where-Object { $_ -match '^JavaPath=' } | ForEach-Object { & $add ($_ -replace '^JavaPath=', '') }
-        }
-    }
-    foreach ($pd in @("$env:APPDATA\PrismLauncher", "$env:LOCALAPPDATA\PrismLauncher")) {
-        if (-not (Test-Path $pd)) { continue }
-        $gcfg = Join-Path $pd 'prismlauncher.cfg'
-        if (Test-Path $gcfg) {
-            Get-Content $gcfg | Where-Object { $_ -match '^JavaPath=' } | ForEach-Object { & $add ($_ -replace '^JavaPath=', '') }
-        }
-        $jdir = Join-Path $pd 'java'
-        if (Test-Path $jdir) {
-            Get-ChildItem $jdir -Directory -ErrorAction SilentlyContinue | ForEach-Object { & $add (Join-Path $_.FullName 'bin\java.exe') }
-        }
-    }
-    $sys = Get-Command java.exe -ErrorAction SilentlyContinue
-    if ($sys) { & $add $sys.Source }
-    if ($env:JAVA_HOME) { & $add (Join-Path $env:JAVA_HOME 'bin\java.exe') }
-    foreach ($c in $cands) { if ($c -and (Test-Path $c)) { return $c } }
-    return $null
-}
-
-# Read the CurseForge API key (packwiz-installer needs it for CF mods) from the
-# CF_API_KEY env var, else a gitignored .icraft_cf_token (instance root, then the
-# .minecraft). Same pattern as the GitHub PAT (.icraft_token): a PER-HOST secret the
-# PUBLIC repo never carries. Returns the key or $null.
-function Get-CFApiKey {
-    param([string]$InstanceMC, [string]$InstDir)
-    if ($env:CF_API_KEY) { return $env:CF_API_KEY.Trim() }
-    foreach ($d in @($InstDir, $InstanceMC)) {
-        if (-not $d) { continue }
-        $f = Join-Path $d '.icraft_cf_token'
-        if (Test-Path $f) {
-            $k = (Get-Content $f -Raw -ErrorAction SilentlyContinue)
-            if ($k) { $k = $k.Trim() }
-            if ($k) { return $k }
-        }
-    }
-    return $null
-}
-
-# =============================================================================
 # Expected-state deletion/repair pass (shared logic; pasted verbatim from
 # server_distribution/phase0_sync.ps1 - kept self-contained per distro root,
 # NOT dot-sourced).
@@ -446,10 +381,7 @@ if ($useDiff) {
         'distribution/client/sync_client.ps1',
         'distribution/client/sync_client.bat',
         'distribution/client/download_mods.ps1',
-        'distribution/client/cleanup_stale_jars.ps1',
-        'distribution/client/gen_pwpack.ps1',
-        'distribution/client/packwiz-installer-bootstrap.jar',
-        'distribution/client/packwiz-installer.jar'
+        'distribution/client/cleanup_stale_jars.ps1'
     )
     # Top-level launcher files of the repo's .minecraft/ (the git-clone copies) never
     # travel to an instance: its launcher scripts come from distribution/client/
@@ -660,7 +592,7 @@ if ($useDiff) {
     # phase0_sync.ps1 + iridescentserver.bat.
     $srcClientDir = Join-Path $srcRoot '.minecraft\distribution\client'
     if (Test-Path $srcClientDir) {
-        foreach ($scriptName in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1', 'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar')) {
+        foreach ($scriptName in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1')) {
             $srcScript = Join-Path $srcClientDir $scriptName
             $destScript = Join-Path $instanceMC $scriptName
             if (Test-Path $srcScript) {
@@ -754,93 +686,50 @@ if (Test-Path $cleanupScript) {
     }
 }
 
-# -- Step 4b: Fetch/verify mod JARs via packwiz-installer (replaces download_mods.ps1) --
-# [2026-10-19, measured] In practice every installer-made instance takes the FALLBACK
-# below: install.ps1 never copies pack.toml, and this script never delivers it. Do not
-# deliver it as things stand: on the instance's (root) index packwiz-installer stops
-# before any download (92 metafiles with an empty url; dev/mods/mod_index_sets.py,
-# consumer tester-packwiz) and this path has no fallback when the installer fails.
-# WHY the switch: the bespoke download_mods.ps1 hand-shaped UNAUTHENTICATED
-# edge.forgecdn.net URLs for CurseForge mods, which now 403/rate-limit -> the recurring
-# fresh-install "~19 mods missing" flake. packwiz-installer resolves CF via the
-# AUTHENTICATED CurseForge API (needs CF_API_KEY) and url-mode for everything else.
-# It installs each jar in the metafile's directory and does NOT strip .index, so we
-# feed it a generated FLAT pack (gen_pwpack.ps1: mods/.index/ -> <cache>/mods/<slug>.pw.toml)
-# and use --pack-folder=<instance> so jars land in mods/. The flat pack is regenerated
-# from the synced markers every run, so the index can't drift.
-# FALLBACK: if no Java OR no CF key OR a missing dependency, fall back to download_mods.ps1
-# so a tester is never bricked (it needs no Java/key). Fail-VISIBLE via the sentinel
-# either way. The completeness gate below is path-independent.
-$instDir  = if ($env:INST_DIR) { $env:INST_DIR } else { Split-Path $instanceMC -Parent }
+# -- Step 4b: Fetch/verify mod JARs with download_mods.ps1 --
+# download_mods.ps1 reads mods/.index/ and fetches every missing jar (no Java, no
+# key). It has fetched every tester's mods since June 2026. The packwiz-installer
+# path that sat here (Java, a CurseForge key and a pack.toml that neither the
+# installer nor this sync ever delivered) was retired on 2026-10-19 (decision list
+# 170, ruled by the operator: "Retire it"): on the instance's index it stopped
+# before any download. The completeness gate below checks the mods whatever
+# fetched them.
 $modsDir  = Join-Path $instanceMC 'mods'
 $indexDir = Join-Path $modsDir '.index'
 if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
-    $java      = Find-JavaExe -InstDir $instDir
-    $cfKey     = Get-CFApiKey -InstanceMC $instanceMC -InstDir $instDir
-    $genScript = Join-Path $instanceMC 'gen_pwpack.ps1'
-    $bootstrap = Join-Path $instanceMC 'packwiz-installer-bootstrap.jar'
-    # We SHIP packwiz-installer.jar (the inner jar) + run with --bootstrap-no-update so the
-    # bootstrap does NOT download/auto-update it at runtime. The auto-update path is fragile
-    # (network + cross-JVM launch) and surfaced as a "must be run through bootstrap" popup on
-    # a tester's box (2026-06-24); pinning the validated jar is deterministic + faster + offline.
-    $innerJar  = Join-Path $instanceMC 'packwiz-installer.jar'
-    $packToml  = Join-Path $instanceMC 'pack.toml'
-    $usePackwiz = $java -and $cfKey -and (Test-Path $genScript) -and (Test-Path $bootstrap) -and (Test-Path $innerJar) -and (Test-Path $packToml)
-
-    if ($usePackwiz) {
-        Write-Host "[IridescentCraft Sync] Fetching mods via packwiz-installer..." -ForegroundColor Cyan
-        Write-Host "[IridescentCraft Sync]   Java: $java" -ForegroundColor DarkGray
+    $downloadScript = Join-Path $instanceMC 'download_mods.ps1'
+    if ((-not (Test-Path $downloadScript)) -and $src) { $downloadScript = Join-Path $src 'distribution\client\download_mods.ps1' }
+    if (Test-Path $downloadScript) {
+        Write-Host "[IridescentCraft Sync] Fetching mods (download_mods.ps1)..." -ForegroundColor Cyan
         try {
-            $pwcache   = Join-Path $instanceMC '.pwcache'
-            & $genScript -IndexDir $indexDir -PackTemplate $packToml -OutDir $pwcache 2>&1 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
-            $env:CF_API_KEY = $cfKey
-            $cachePack = Join-Path $pwcache 'pack.toml'
-            # -Xss64m is REQUIRED: packwiz-installer's tomlj/ANTLR parser StackOverflows
-            # on the default ForkJoin-worker thread stack otherwise (0 mods, cryptic trace).
-            # --bootstrap-no-update + --bootstrap-main-jar pin the shipped inner jar (no runtime
-            # download). --pack-folder puts jars in mods/ (packwiz installs in the metafile's dir).
-            & $java '-Xss64m' '-jar' $bootstrap '--bootstrap-no-update' '--bootstrap-main-jar' $innerJar '-g' '-s' 'client' '--pack-folder' $instanceMC $cachePack 2>&1 |
-                ForEach-Object { Write-Host $_ }
-            $pwExit = $LASTEXITCODE
-            if ($null -ne $pwExit -and $pwExit -ne 0) {
-                Write-Host "[IridescentCraft Sync] packwiz-installer reported failures (exit $pwExit) -- some mods may be missing. Re-launch to retry." -ForegroundColor Red
-                Write-SyncSentinel -Ok $false -Reason "packwiz-failed:$pwExit" -Behind 0 -McDir $instanceMC
+            $dlOut = & $downloadScript -IndexDir $indexDir -ModsDir $modsDir 2>&1
+            $dlExit = $LASTEXITCODE
+            $dlOut | Where-Object { $_ -match 'Downloaded|Failed|^\s*\[' -or $_ -match '^\s{2}\S' } | Select-Object -Last 60 | ForEach-Object { Write-Host $_ }
+            if ($null -ne $dlExit -and $dlExit -ne 0) {
+                Write-Host "[IridescentCraft Sync] Mod download reported failures (exit $dlExit) -- dependency JARs may be missing. Re-launch to retry." -ForegroundColor Red
+                Write-SyncSentinel -Ok $false -Reason 'mod-download-failed' -Behind 0 -McDir $instanceMC
             }
         } catch {
-            Write-Host "[IridescentCraft Sync] packwiz-installer threw: $($_.Exception.Message)" -ForegroundColor Red
-            Write-SyncSentinel -Ok $false -Reason 'packwiz-error' -Behind 0 -McDir $instanceMC
-        } finally {
-            Remove-Item Env:\CF_API_KEY -ErrorAction SilentlyContinue
+            Write-Host "[IridescentCraft Sync] Mod download step threw: $($_.Exception.Message)" -ForegroundColor Red
+            Write-SyncSentinel -Ok $false -Reason 'mod-download-error' -Behind 0 -McDir $instanceMC
         }
-    } else {
-        # FALLBACK to the legacy downloader (no Java / no CF key / missing dependency).
-        # It hand-shapes forgecdn (the flaky leg) but needs no Java/key -> never bricks
-        # a tester. Fail-VISIBLE so the cause is diagnosable from the sentinel.
-        $why = @()
-        if (-not $java)  { $why += 'no-Java' }
-        if (-not $cfKey) { $why += 'no-CF-key' }
-        if (-not (Test-Path $genScript)) { $why += 'no-gen_pwpack' }
-        if (-not (Test-Path $bootstrap)) { $why += 'no-bootstrap-jar' }
-        if (-not (Test-Path $innerJar))  { $why += 'no-installer-jar' }
-        if (-not (Test-Path $packToml))  { $why += 'no-pack.toml' }
-        Write-Host "[IridescentCraft Sync] packwiz-installer unavailable ($($why -join ',')); using download_mods.ps1 fallback." -ForegroundColor Yellow
-        Write-SyncSentinel -Ok $false -Reason "packwiz-fallback:$($why -join ';')" -Behind 0 -McDir $instanceMC
-        $downloadScript = Join-Path $instanceMC 'download_mods.ps1'
-        if ((-not (Test-Path $downloadScript)) -and $src) { $downloadScript = Join-Path $src 'distribution\client\download_mods.ps1' }
-        if (Test-Path $downloadScript) {
-            try {
-                $dlOut = & $downloadScript -IndexDir $indexDir -ModsDir $modsDir 2>&1
-                $dlExit = $LASTEXITCODE
-                $dlOut | Where-Object { $_ -match 'Downloaded|Failed|^\s*\[' -or $_ -match '^\s{2}\S' } | Select-Object -Last 60 | ForEach-Object { Write-Host $_ }
-                if ($null -ne $dlExit -and $dlExit -ne 0) {
-                    Write-Host "[IridescentCraft Sync] Mod download reported failures (exit $dlExit) -- dependency JARs may be missing. Re-launch to retry." -ForegroundColor Red
-                    Write-SyncSentinel -Ok $false -Reason 'mod-download-failed' -Behind 0 -McDir $instanceMC
+    }
+
+    # The retired path's files, which installs from 2026-06-24 copied to the
+    # instance root, go once this instance's sync_client.bat no longer lists
+    # them: an older bat fetches a missing one back from main on every launch.
+    $batPath = Join-Path $instanceMC 'sync_client.bat'
+    if ((Test-Path -LiteralPath $batPath) -and -not (Select-String -LiteralPath $batPath -Pattern 'gen_pwpack.ps1 packwiz-installer-bootstrap.jar' -SimpleMatch -Quiet)) {
+        foreach ($old in @('gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar')) {
+            foreach ($oldPath in @((Join-Path $instanceMC $old), (Join-Path $instanceMC "$old.new"))) {
+                if (Test-Path -LiteralPath $oldPath) {
+                    Remove-Item -LiteralPath $oldPath -Force -ErrorAction SilentlyContinue
+                    Write-Host "[IridescentCraft Sync]   [retired] removed $(Split-Path $oldPath -Leaf)" -ForegroundColor DarkGray
                 }
-            } catch {
-                Write-Host "[IridescentCraft Sync] Mod download step threw: $($_.Exception.Message)" -ForegroundColor Red
-                Write-SyncSentinel -Ok $false -Reason 'mod-download-error' -Behind 0 -McDir $instanceMC
             }
         }
+        $pwcache = Join-Path $instanceMC '.pwcache'
+        if (Test-Path -LiteralPath $pwcache) { Remove-Item -LiteralPath $pwcache -Recurse -Force -ErrorAction SilentlyContinue }
     }
 
         # -- 2026-06-09 COMPLETENESS GATE (systemic net for the recurring

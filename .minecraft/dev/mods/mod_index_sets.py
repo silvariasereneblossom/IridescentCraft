@@ -12,9 +12,9 @@ own skip list, read from the scripts and launcher sources OF THE TREE BEING MODE
                       update_mods, cleanup_stale_jars over server_distribution/mods/.index
   dev-client          prism_prelaunch.bat: the tracked root index + the client-distro
                       overlay, cleanup_stale_jars.ps1, download_mods.ps1
-  tester-fallback     sync_client.ps1 on the root index, download_mods.ps1 path
-  tester-packwiz      sync_client.ps1 on the root index, packwiz-installer -s client
-                      (it stops before any download when one metafile is invalid)
+  tester-fallback     sync_client.ps1 on the root index, download_mods.ps1 (since
+                      2026-10-19 its only path: the packwiz-installer path, which
+                      stopped before any download on this index, is retired)
   tester-install      install.ps1: the first install, from the client distro's index
   legacy-windows      iridescentserver.bat: server_install.ps1, strip_client_mods.bat,
                       update_mods.ps1, cleanup_stale_jars.ps1
@@ -40,8 +40,6 @@ How far to trust it (checked 2026-10-12):
   - server-launcher reproduces the live server's own list of 429 jars, name for name
   - the PowerShell parsing is the model of the scripts' own statements: run side by
     side on all three indexes, they agree on every file name, side, mode, url and id
-  - tester-packwiz reproduces a real packwiz-installer run on the root index: the same
-    138 metafiles refused, in the same four classes
   - dev-client `keep` is exactly the 458 jars of the dev instance
 The launcher's TOML parser is modelled with Python's tomllib, not run.
 """
@@ -491,53 +489,6 @@ def ps_client(tree, universe, overlay):
     })
 
 
-def packwiz_problem(text):
-    d = parse_strict(text)
-    if d is None:
-        return "not valid TOML"
-    if d.get("side", "both") not in ("both", "client", "server"):
-        return "invalid side"
-    dl = d.get("download") or {}
-    if "url" in dl and not re.match(r"^https?://", str(dl.get("url"))):
-        return "url is not http(s)"
-    if not dl.get("hash"):
-        return "no hash"
-    if not dl.get("hash-format"):
-        return "no hash-format"
-    return None
-
-
-def tester_packwiz(tree, universe):
-    metas = tree.metafiles(".minecraft/mods/.index")
-    problems = {}
-    for m, t in metas.items():
-        pr = packwiz_problem(t)
-        if pr:
-            problems.setdefault(pr, []).append(m)
-    names = {}
-    for m, t in metas.items():
-        f = ps_fields(t)
-        if f:
-            names.setdefault(f["filename"], []).append(m)
-    dups = {n: ms for n, ms in names.items() if len(ms) > 1}
-    if problems:
-        return {"want": {}, "keep": [], "aborts": True,
-                "invalid_metafiles": sum(len(v) for v in problems.values()),
-                "problems": {k: len(v) for k, v in sorted(problems.items())},
-                "duplicate_jar_metafiles": dups,
-                "notes": ["packwiz-installer exits 1 before any download when a metafile is invalid; sync_client.ps1 has no fallback on that path"]}
-    want = {}
-    for m, t in metas.items():
-        d = parse_strict(t)
-        if d.get("side", "both") == "server":
-            continue
-        dl = d.get("download") or {}
-        cf = (d.get("update") or {}).get("curseforge") or {}
-        src = [dl["url"]] if dl.get("mode") == "url" else ["curseforge api project %s file %s" % (cf.get("project-id"), cf.get("file-id"))]
-        want[d["filename"]] = entry(src, t, m)
-    return {"want": dict(sorted(want.items())), "keep": sorted(want), "aborts": False, "duplicate_jar_metafiles": dups}
-
-
 def tester_install(tree, universe):
     metas = tree.metafiles(".minecraft/distribution/client/mods/.index")
     want = {}
@@ -672,7 +623,6 @@ CONSUMERS = [
     ("server-launcher", server_launcher),
     ("dev-client", lambda t, u: ps_client(t, u, overlay=True)),
     ("tester-fallback", lambda t, u: ps_client(t, u, overlay=False)),
-    ("tester-packwiz", tester_packwiz),
     ("tester-install", tester_install),
     ("legacy-windows", legacy_windows),
     ("legacy-linux", legacy_linux),

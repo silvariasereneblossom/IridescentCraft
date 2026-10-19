@@ -227,7 +227,7 @@ foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
 # Copy sync_client scripts into the instance so PrismLauncher's pre-launch
 # command can find them via $INST_MC_DIR. Users set the pre-launch command
 # in PrismLauncher manually — see wiki/protocols/8-client-sync.md
-foreach ($syncFile in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1', 'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar')) {
+foreach ($syncFile in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1')) {
     if (Test-Path "$distDir\$syncFile") {
         Copy-Item "$distDir\$syncFile" "$mcDir\$syncFile" -Force
         Write-Host "    $syncFile... OK"
@@ -370,11 +370,10 @@ Write-Host "  [5/5] Ready!" -ForegroundColor Green
 Write-Host ""
 
 # -- What the pre-launch sync does with mods --
-# [2026-10-19, measured] The pre-launch sync (sync_client.ps1) downloads mods with
-# download_mods.ps1. Its packwiz-installer path needs pack.toml in the instance, which
-# this installer does not copy (on purpose: on the instance's index packwiz-installer
-# stops before any download, dev/mods/mod_index_sets.py). A CurseForge key in
-# .icraft_cf_token is read only by that path, so the installer no longer asks for one.
+# The pre-launch sync (sync_client.ps1) downloads mods with download_mods.ps1, which
+# needs no Java and no key. Its packwiz-installer path (Java, a CurseForge key in
+# .icraft_cf_token, a pack.toml no installer delivered) was retired on 2026-10-19
+# (decision list 170).
 Write-Host "  ----------------------------------------------------------------" -ForegroundColor Cyan
 Write-Host "    The FIRST launch downloads every mod and runs a completeness check;" -ForegroundColor DarkGray
 Write-Host "    it may take a few minutes and will report any still-missing mods." -ForegroundColor DarkGray

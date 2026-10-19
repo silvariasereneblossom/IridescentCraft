@@ -106,7 +106,6 @@ for %%F in (
     custom_jars_manifest.json
     download_mods.ps1
     install.ps1
-    pack.toml
     sync_client.bat
     sync_client.ps1
     update_configs.bat

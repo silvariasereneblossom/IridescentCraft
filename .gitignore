@@ -165,24 +165,18 @@ yungs_*/
 !.minecraft/mods/class-artifacts-forge-*.jar
 !.minecraft/server_distribution/mods/class-artifacts-forge-*.jar
 !.minecraft/distribution/client/mods/class-artifacts-forge-*.jar
-# packwiz-installer jars (the official Java mod-fetcher, shipped to the client
-# instance) -- re-exempt from the blanket *.jar ignore so they commit. The inner
-# jar is pinned + run with --bootstrap-no-update (no fragile runtime auto-update).
-!.minecraft/distribution/client/packwiz-installer-bootstrap.jar
-!.minecraft/distribution/client/packwiz-installer.jar
 .claude/worktrees/
 
 # Per-host PAT for the auto log-push flow. Never commit.
 .icraft_token
 **/.icraft_token
 
-# CurseForge API key for packwiz-installer (CF mod downloads). Never commit --
-# the modpack repo is PUBLIC. Same pattern as .icraft_token (gitignored secret).
+# CurseForge API key the retired packwiz-installer path read (an instance may still
+# hold one). Never commit -- the modpack repo is PUBLIC. Same pattern as .icraft_token.
 .icraft_cf_token
 **/.icraft_cf_token
 
-# Dev-only downloaded tooling (packwiz CLI, packwiz-installer jars). The
-# bootstrap jar that ships to testers lives under distribution/client/, NOT here.
+# Dev-only downloaded tooling (the packwiz CLI).
 .minecraft/dev/bin/
 
 # Per-launch sync sentinel written by prism_prelaunch.bat (H2/F2) + its
