@@ -78,7 +78,12 @@ $denyList = @(
     'supermartijn642',   # removed - dep chain incompat
     'connectedglass',    # removed - SuperMartijn642 dep
     'trashcans',         # removed - SuperMartijn642 dep
-    'fastback'           # removed 2026-10-11 - git-based backups; never ran on the server (no git there). The server launcher backs the world up now
+    'fastback',           # removed 2026-10-11 - git-based backups; never ran on the server (no git there). The server launcher backs the world up now
+    'chunky-player-pause-', # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'tenshilib-',      # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'fancymenu_',      # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'konkrete_',       # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'melody_'         # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
 )
 
 # --- ALLOWLIST FALLBACK: custom jars not declared in packwiz mods/.index/.

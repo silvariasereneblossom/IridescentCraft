@@ -68,6 +68,11 @@ pub const DENY_LIST_PATTERNS: &[&str] = &[
     "connectedglass",  // removed — SuperMartijn642 dep
     "trashcans",       // removed — SuperMartijn642 dep
     "fastback",        // removed 2026-10-11 — needs git on the JVM's PATH, never ran on the server; see backup.rs
+    "chunky-player-pause-", // removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    "tenshilib-",      // removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    "fancymenu_",      // removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    "konkrete_",       // removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    "melody_",         // removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
 ];
 
 /// Custom-jar hash manifest filename, sat at the distro root (sibling of

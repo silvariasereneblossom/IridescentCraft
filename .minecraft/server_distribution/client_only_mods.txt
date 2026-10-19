@@ -45,12 +45,6 @@ Prism-1.20.1-forge-1.0.5.jar
 probejs-7.0.0-forge.jar
 rubidium-extra-0.5.4.4+mc1.20.1-build.131.jar
 Searchables-forge-1.20.1-1.0.3.jar
-tenshilib-1.20.1-1.7.6-forge.jar
 ToolStats-Forge-1.20.1-16.0.10.jar
 TravelersTitles-1.20-Forge-4.0.2.jar
 treasuredistance-1.20-1.2.jar
-
-# --- in the client distribution's index only ---
-fancymenu_forge_3.8.1_MC_1.20.1.jar
-konkrete_forge_1.8.0_MC_1.20-1.20.1.jar
-melody_forge_1.0.3_MC_1.20.1-1.20.4.jar

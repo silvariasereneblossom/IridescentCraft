@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "caceea60",
+    "generated_from":  "fca277aa",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8211,10 +8211,6 @@
                                                                                 "sha256":  "2d1ceafb1638857ed3f2d784397e4260388e23503f058996edb9b35ce5f37f89",
                                                                                 "size":  574
                                                                             },
-                  "mods/.index/chunky-player-pause.pw.toml":  {
-                                                                  "sha256":  "04673c463696788dfbba9cd299c30d8e2d9be5b439195467c0c6ec24605662ec",
-                                                                  "size":  989
-                                                              },
                   "mods/.index/chunky.pw.toml":  {
                                                      "sha256":  "245d4298be92e224b49a0539a429dc1dc51df03bc120e83427b54bf1aeb86ef8",
                                                      "size":  551

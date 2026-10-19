@@ -2,10 +2,7 @@
   "_comment": "Policy for dev/mods/mod_index.py: the facts about the mod index that a metafile cannot carry. The mods themselves, and which side each one installs on, live in .minecraft/mods/.index/*.pw.toml. After editing this file run `python .minecraft/dev/mods/mod_index.py generate`.",
 
   "client_distro_only": {
-    "_comment": "Metafiles kept by hand in distribution/client/mods/.index and in no other index. The dev client's prelaunch overlays them (reconcile_client_index.ps1); a tester's sync and the server never see them. Not part of the pack as delivered to testers. Removing them is the operator's call.",
-    "fancymenu.pw.toml": "FancyMenu: main-menu customisation, dev client only",
-    "konkrete.pw.toml": "Konkrete: library FancyMenu needs",
-    "melody.pw.toml": "Melody: library FancyMenu needs"
+    "_comment": "Metafiles kept by hand in distribution/client/mods/.index and in no other index. The dev client's prelaunch overlays them (reconcile_client_index.ps1); a tester's sync and the server never see them. Not part of the pack as delivered to testers. Removing them is the operator's call. None since 2026-10-18: FancyMenu and its libraries Konkrete and Melody were removed (no config/fancymenu existed, so FancyMenu customised nothing; operator 2026-10-18 23:05 EDT: \"FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib\")."
   },
 
   "client_distro_url_mode": {

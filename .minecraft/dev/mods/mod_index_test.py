@@ -184,7 +184,9 @@ def cases():
         sb.edit("iridescent-launcher/icraft-core/src/packwiz.rs", '"embeddium", "oculus",', '"embeddium", "oculus", "onlyinthelauncher",')
 
     def overlay_missing(sb):
-        os.remove(sb.path(CLIENT + "fancymenu.pw.toml"))
+        # the policy names an overlay metafile the client distro's index does not have (the list is empty since 2026-10-18)
+        sb.edit(".minecraft/dev/mods/mod_index.policy.json", '"client_distro_only": {',
+                '"client_distro_only": {\n    "gate-test-overlay.pw.toml": "planted",')
 
     return [
         ("a mod added to the root index only", root_only, "STALE  missing"),
