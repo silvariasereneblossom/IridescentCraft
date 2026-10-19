@@ -40,18 +40,17 @@ Testers install with `distribution/client/install.ps1`, so their instance is a c
 3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
 4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
-During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1` and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
+During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1`, `cleanup_stale_jars.ps1`, `gen_pwpack.ps1` and the two packwiz-installer jars into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
 
 Like Mode A, the zip-path sync records a sync status that the diagnostic can read, so a failed update is visible instead of silent (see *Failure handling*).
 
-### Mod fetching: packwiz-installer (CurseForge API key required)
+### Mod fetching: `download_mods.ps1`
 
-The mod-fetch step uses the official packwiz-installer, which reads the same `mods/.index/` metadata the pack already ships. CurseForge mods download through the authenticated CurseForge API instead of the old hand-built, unauthenticated `forgecdn` URLs that caused the recurring "missing mods" flake on fresh installs. Each host needs two things:
+Every tester's sync downloads mods with `download_mods.ps1`, which reads `mods/.index/` directly and fetches each missing jar. A completeness gate that does not depend on paths then verifies that every indexed jar is on disk and flags any gap.
 
-- A CurseForge API key. Get a free key at [console.curseforge.com](https://console.curseforge.com/) → API Keys, then save only the key (one line) to `$INST_MC_DIR/.icraft_cf_token`. The file is gitignored, so the public repo never carries it (the same pattern as the GitHub PAT). If you prefer, set `CF_API_KEY` in the environment instead.
-- Java. packwiz-installer is a Java program; the sync detects PrismLauncher's bundled or configured Java (or the system `java`) on its own.
+The script also carries a packwiz-installer path (CurseForge through the authenticated API, a CurseForge key in `$INST_MC_DIR/.icraft_cf_token`, Java), but it runs only when the instance holds a `pack.toml`, and neither the installer nor the sync delivers one. That is deliberate for now: on the index a tester's instance carries, packwiz-installer stops before downloading anything (some metafiles carry no download url) and the sync has no fallback when it fails. The status file records the fallback as `packwiz-fallback:no-pack.toml`, which is not a failure.
 
-If either is missing, the sync falls back to the legacy `download_mods.ps1`, so a tester is never left unable to play. That path is flakier, so place the key. Each run feeds the bootstrap jar a flat pack generated from `mods/.index/` (`gen_pwpack.ps1`), so the mod index cannot drift, and the jars install to `mods/` through `--pack-folder`. A completeness gate that does not depend on paths then verifies that every indexed jar is on disk and flags any gap again.
+The repository's top-level copies of the launcher scripts (`.minecraft/sync_client.ps1`, `.bat`, `download_mods.ps1`) are old and run nowhere: an instance's scripts come from `distribution/client/`. Since 2026-10-19 the sync never copies or deletes those top-level names in an instance.
 
 **PrismLauncher pre-launch command (Windows):**
 
@@ -121,7 +120,7 @@ The instance keeps these in either mode. In Mode B the overlay skips them on pur
 - `logs/`, `crash-reports/`: runtime output
 - `backups/`: world backups
 - `libraries/`: Forge/Minecraft libraries
-- `mods/*.jar`: handled separately by the mod-fetch step (packwiz-installer in Mode B, which falls back to `download_mods.ps1`, the downloader Mode A uses)
+- `mods/*.jar`: handled separately by the mod-fetch step (`download_mods.ps1` in both modes)
 - `options.txt`: player keybinds and graphics preferences
 - `servers.dat`: server list
 - `usercache.json`, `whitelist.json`, etc.: server-only files that shouldn't exist on a client anyway

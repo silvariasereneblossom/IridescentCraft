@@ -451,12 +451,23 @@ if ($useDiff) {
         'distribution/client/packwiz-installer-bootstrap.jar',
         'distribution/client/packwiz-installer.jar'
     )
+    # Top-level launcher files of the repo's .minecraft/ (the git-clone copies) never
+    # travel to an instance: its launcher scripts come from distribution/client/
+    # through the staging above. Until 2026-10-19 a change to the stale root
+    # sync_client.ps1 / .bat or download_mods.ps1 overwrote the instance's live copy
+    # in place, and removing one deleted it (the running bat included).
+    $rootLauncherFiles = @(
+        'sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1',
+        'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar', 'pack.toml',
+        'install.ps1', 'iridescentcraft.sh', 'update_configs.bat', 'update_configs.ps1', 'update_configs.sh'
+    )
     $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
     $synced = 0; $removed = 0; $staged = 0; $errors = 0
 
     foreach ($file in $compare.files) {
         if (-not $file.filename.StartsWith($prefix)) { continue }
         $relPath = $file.filename.Substring($prefix.Length)
+        if ($rootLauncherFiles -contains $relPath) { continue }
 
         # Skip excluded dirs
         $skip = $false
@@ -744,6 +755,11 @@ if (Test-Path $cleanupScript) {
 }
 
 # -- Step 4b: Fetch/verify mod JARs via packwiz-installer (replaces download_mods.ps1) --
+# [2026-10-19, measured] In practice every installer-made instance takes the FALLBACK
+# below: install.ps1 never copies pack.toml, and this script never delivers it. Do not
+# deliver it as things stand: on the instance's (root) index packwiz-installer stops
+# before any download (92 metafiles with an empty url; dev/mods/mod_index_sets.py,
+# consumer tester-packwiz) and this path has no fallback when the installer fails.
 # WHY the switch: the bespoke download_mods.ps1 hand-shaped UNAUTHENTICATED
 # edge.forgecdn.net URLs for CurseForge mods, which now 403/rate-limit -> the recurring
 # fresh-install "~19 mods missing" flake. packwiz-installer resolves CF via the
@@ -806,6 +822,7 @@ if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
         if (-not (Test-Path $genScript)) { $why += 'no-gen_pwpack' }
         if (-not (Test-Path $bootstrap)) { $why += 'no-bootstrap-jar' }
         if (-not (Test-Path $innerJar))  { $why += 'no-installer-jar' }
+        if (-not (Test-Path $packToml))  { $why += 'no-pack.toml' }
         Write-Host "[IridescentCraft Sync] packwiz-installer unavailable ($($why -join ',')); using download_mods.ps1 fallback." -ForegroundColor Yellow
         Write-SyncSentinel -Ok $false -Reason "packwiz-fallback:$($why -join ';')" -Behind 0 -McDir $instanceMC
         $downloadScript = Join-Path $instanceMC 'download_mods.ps1'

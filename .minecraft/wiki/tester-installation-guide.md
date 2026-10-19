@@ -47,7 +47,7 @@ Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need th
    - On the bootstrap path, that is the file you downloaded.
    - If you cloned or unzipped the repo, navigate to `.minecraft\distribution\client\iridescentcraft.bat`.
    - The script runs `install.ps1` (the copy next to it, or else the latest one from GitHub). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
-5. There is nothing to import: the installer starts PrismLauncher with the new instance in its list. It also asks you to save a free CurseForge API key, which the sync needs to download mods reliably; the Client Sync Protocol page linked below says where it goes.
+5. There is nothing to import: the installer starts PrismLauncher with the new instance in its list.
 6. Check that `-noverify` is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts `-noverify` there, and the sync adds it back if it goes missing. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
 7. First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.
 
