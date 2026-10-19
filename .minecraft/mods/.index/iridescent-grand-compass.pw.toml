@@ -3,7 +3,7 @@ name = 'Iridescent Grand Compass'
 side = 'both'
 
 [download]
-hash = '190022799a018b28de28a6d9b28fd3b66f931f03fdcf40b044c5b12612cec14f'
+hash = '044ea2a4d312c30e29f24ad00d699a0716286e341b96d7e0f8cf5849228414bc'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_grand_compass-1.0.0.jar'

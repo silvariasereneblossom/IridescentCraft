@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-10-18T20:40:11Z",
+    "generated_at":  "2026-10-18T20:58:08Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -28,24 +28,24 @@
                                                                "size":  16276
                                                            },
                  "iridescent_grand_compass-1.0.0.jar":  {
-                                                            "sha256":  "190022799a018b28de28a6d9b28fd3b66f931f03fdcf40b044c5b12612cec14f",
-                                                            "size":  25500
+                                                            "sha256":  "044ea2a4d312c30e29f24ad00d699a0716286e341b96d7e0f8cf5849228414bc",
+                                                            "size":  25494
                                                         },
                  "iridescent_origins-1.0.0.jar":  {
-                                                      "sha256":  "40b011cbe42eb74ed98fbd375d9bc772219fb5ff7cd09cefa9e4c07c015ac44d",
-                                                      "size":  103836
+                                                      "sha256":  "d822f935b213bbe329d6e0ee37b5b852af7b22231eeea35fe4d33020a33a38b5",
+                                                      "size":  103617
                                                   },
                  "iridescent_relics-1.0.0.jar":  {
-                                                     "sha256":  "4efa02a302c352f80133917fdfc7be2e80539aaee380369f0a590b8bfb53e2b0",
-                                                     "size":  52554
+                                                     "sha256":  "8ab8933c66547ac939117816a3eedb93b7fdd7e2f45c98bf583f4d38d5045b81",
+                                                     "size":  52533
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "2ff6b669e2db14811a5f50dc012da32efdc336b46903081d57068dec109e0516",
-                                                              "size":  1582720
+                                                              "sha256":  "85aa293a19d74990a7d14175b902e48b490d0344611d81bb583390a920ec828b",
+                                                              "size":  1582666
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
-                                                                 "sha256":  "d2e98783792e7f06c2cf8a3ac40ce14e4ff4372bc3aec769928c1c8eb3acc4bf",
-                                                                 "size":  483875
+                                                                 "sha256":  "c4a7819068a186dbb78e9e69883c8b9c0a83fcf3e55000ce7a5004064493904a",
+                                                                 "size":  483831
                                                              },
                  "linearxp-1.0.0-iridescent.1.jar":  {
                                                          "sha256":  "132944333b0d2fd02f061d41c928a754f46a92d41985f1e9047817e1837c1777",

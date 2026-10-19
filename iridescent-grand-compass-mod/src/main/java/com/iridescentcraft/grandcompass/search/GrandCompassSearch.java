@@ -176,7 +176,7 @@ public final class GrandCompassSearch {
             if (age < COOLDOWN_MS) {
                 long secs = Math.max(1L, (COOLDOWN_MS - age + 999L) / 1000L);
                 player.displayClientMessage(Component.literal(
-                        "§eGrand Compass §7— still recalibrating, try again in " + secs + "s"), true);
+                        "§eGrand Compass§7: still recalibrating, try again in " + secs + "s"), true);
                 return;
             }
         }
@@ -214,11 +214,11 @@ public final class GrandCompassSearch {
         tag.putBoolean(FOUND, true);
         tag.putInt(FOUND_X, x);
         tag.putInt(FOUND_Z, z);
-        player.displayClientMessage(Component.literal("§6Grand Compass §7— target located"), true);
+        player.displayClientMessage(Component.literal("§6Grand Compass§7: target located"), true);
     }
 
     private static void writeNotFound(ItemStack stack, Player player) {
         stack.getOrCreateTag().putBoolean(FOUND, false);
-        player.displayClientMessage(Component.literal("§cGrand Compass §7— nothing of that kind nearby"), true);
+        player.displayClientMessage(Component.literal("§cGrand Compass§7: nothing of that kind nearby"), true);
     }
 }

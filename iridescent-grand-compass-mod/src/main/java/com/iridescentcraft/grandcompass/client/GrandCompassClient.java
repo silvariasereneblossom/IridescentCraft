@@ -67,6 +67,6 @@ public final class GrandCompassClient {
         double ang = (Math.toDegrees(Math.atan2(-dx, dz)) + 360) % 360;
         String arrow = ARROWS[(int) Math.round(ang / 45.0) % 8];
         mc.player.displayClientMessage(
-            Component.literal("§6" + arrow + " §bGrand Compass §7— " + dist + "m"), true);
+            Component.literal("§6" + arrow + " §bGrand Compass§7: " + dist + "m"), true);
     }
 }

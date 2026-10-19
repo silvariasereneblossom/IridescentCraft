@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "69cc159f",
+    "generated_from":  "846ba4a2",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8660,7 +8660,7 @@
                                                                           "size":  383
                                                                       },
                   "mods/.index/iridescent-grand-compass.pw.toml":  {
-                                                                       "sha256":  "c60fbd77f8b9b06e52fb3a867432d710d840213d2afc8a0c663fc9544f7c2591",
+                                                                       "sha256":  "384a51099060b4ad8b6cbf7e2f75a082411b748ba9827463ffb51d0f03256573",
                                                                        "size":  374
                                                                    },
                   "mods/.index/iridescent-lovely-pieces.pw.toml":  {
@@ -8668,15 +8668,15 @@
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "deded2fd4de4832fdb4327159a6c65b74f36d01fbe33ca6902643c92111a69db",
+                                                                 "sha256":  "e7eb613a189c52eb545a8a948722b1c391775b68636db3fd77e256fd6492a46c",
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {
-                                                                "sha256":  "8e230857174ddcb4aa9c17777a8a58a10d0b5c99bc789d156155b9b9ce5cb068",
+                                                                "sha256":  "a2cf9cf6f695e37b91e53cf329e21694dbf3336351f22eb6334f4c4b5813a465",
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "a2ff0cae5e8a93ea21cf556c96a14024f68daad40b7594ff1e199e8181e99e07",
+                                                                         "sha256":  "fe163a77e65b3fa3ee9772c0bcd44d80bc86ed8e0e002e7c8ff868caecf2c934",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {
@@ -8736,7 +8736,7 @@
                                                                         "size":  576
                                                                     },
                   "mods/.index/justlevelingfork.pw.toml":  {
-                                                               "sha256":  "46f46d62b3e35cef18bfd0b0e5a3dd14f332048f85a639b93868f86b4ff457cc",
+                                                               "sha256":  "1b28ea358ec44c738281984c312fd924a2151d3f813b5d79abaf174ec0837813",
                                                                "size":  391
                                                            },
                   "mods/.index/keebszs-battletowers.pw.toml":  {
