@@ -1,5 +1,5 @@
 {
-  "commit": "abe017dcad2cdc53cde380732747862050c43811",
+  "commit": "9b068d799e8a4efb18b3eb084e0081d4f860e2a7",
   "entries": {
     "advancements.txt": 1982,
     "attributes.txt": 256,
@@ -19,8 +19,8 @@
     "loot_tables_rejected.txt": 10,
     "mixin_configs_applied.txt": 273,
     "mob_effects.txt": 425,
-    "mods.txt": 428,
-    "mods_recorded.tsv": 428,
+    "mods.txt": 413,
+    "mods_recorded.tsv": 413,
     "potions.txt": 152,
     "recipe_type_counts.tsv": 178,
     "recipe_types.txt": 190,
@@ -31,7 +31,7 @@
   },
   "forge": "1.20.1-47.4.6",
   "made_by": ".minecraft/dev/boot/boot.ps1 -Ref <commit> -WriteSnapshot (a full-pack offline server boot; see .minecraft/dev/boot/README.md)",
-  "mods": 428,
+  "mods": 413,
   "seed": "20261012",
   "tool_version": 2
 }
