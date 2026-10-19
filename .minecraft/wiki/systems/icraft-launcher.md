@@ -1,6 +1,6 @@
 # Iridescent Launcher (`icraft`)
 
-> **Status: EXPERIMENTAL.** It is shipped for early-adopter testing and is not yet the canonical launch path. The existing `iridescentserver.bat` chain still works and stays supported. Promote the launcher to canonical only after a sustained period of real-world testing on the dedicated server box.
+> **Status: in production.** The launcher's GUI runs the live dedicated server: it syncs the server to the pack before every start, restarts it on a schedule and after a crash, takes and checks the world backups, and holds the Customizer (regeneration and worldgen settings) and the access guard. The existing `iridescentserver.bat` chain still installs and starts a server on other hosts, but it has none of the launcher's start guards, so the live server is never started with it.
 
 The launcher is a single Rust binary that replaces the `.bat` / `.ps1` / `.sh` scripts under `.minecraft/server_distribution/`. It has a headless CLI for service-mode operation (NSSM, systemd) and an egui GUI with one button per subcommand and a live log pane.
 
@@ -35,7 +35,7 @@ The Rust workspace has three crates:
 - `icraft-cli`: the `icraft` binary, with clap-based subcommands; headless. NSSM, systemd and scheduled tasks use it.
 - `icraft-gui`: the `icraft-gui` binary. An eframe/egui window with one button per subcommand and a scrolling log pane fed by a custom `log` appender and an mpsc channel. It keeps the install dir between launches in eframe's storage and has a native folder picker on Windows (`rfd`).
 
-With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` on a Linux dev host produces only the CLI (about 3.8 MB). The GUI's eframe dependency tree is heavy (about 600-800 MB of target/), so it is meant to be built directly on the Windows server box, where disk space isn't constrained.
+With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` on a Linux dev host produces only the CLI (about 3.8 MB). The GUI's eframe dependency tree is heavy (about 600-800 MB of target/); CI builds it on a Windows runner and commits the exe to the repo after every change to the launcher's source.
 
 ## Capabilities
 
@@ -99,7 +99,7 @@ With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` 
 **GUI extras:**
 - A row of status badges: Forge present, EULA, mod count, last sync SHA, backup age
 - Color-coded log lines per level (red ERROR / orange WARN / blue INFO / gray DEBUG)
-- An "Update Launcher" button: it pulls a fresh `icraft-gui.exe` from the repo, applies it through the existing self-update flow, starts the new instance and exits cleanly. This is the Path A flow (the binary is committed to the repo); GitHub Releases and CI-built artifacts (Path B) are later polish.
+- An "Update Launcher" button: it pulls a fresh `icraft-gui.exe` from the repo, applies it through the existing self-update flow, starts the new instance and exits cleanly. This is the Path A flow (the binary is committed to the repo, where CI builds it); GitHub Releases (Path B) are later polish.
 
 ## Install + launch
 
@@ -130,20 +130,20 @@ nssm start IridescentCraft
 
 ## Roadmap
 
-- v0.6: replace the existing `iridescentserver.bat` with a 2-line shim (`icraft.exe serve`) once the launcher is promoted to canonical. The bats stay alongside as a fallback for one release.
+- v0.6: replace the existing `iridescentserver.bat` with a 2-line shim (`icraft.exe serve`). The bats stay alongside as a fallback for one release.
 - v0.7: GitHub Releases and a CI-built `icraft-gui.exe` (Path B); the GUI updates itself without operator intervention.
 - v0.8: port the client-side launcher scripts (PrismLauncher pre/post hooks). This is out of scope for now, and the client flow stays unchanged.
 - v0.9: port build_mod.sh (×7 mods), extract_mobdiag, validate_datapack_references and build_codex.
 
 For tracking, see the commit log under the `iridescent-launcher: ...` prefix. Lessons-learned entries on the implementation are in the internal repo.
 
-## Caveats while EXPERIMENTAL
+## Caveats
 
-- Not the canonical path yet. The existing `iridescentserver.bat` still works and is the supported flow until this section's status is upgraded.
-- The Windows GUI needs the Rust toolchain on the build host for the first build. After that, the `Update Launcher` button handles in-place upgrades.
+- The live server runs only under the launcher. The existing `iridescentserver.bat` still works for installing and starting a server elsewhere, but it does not put back a server's own settings or check its whitelist before a start: it starts the server with the pack's settings as they stand, whitelist off.
+- CI builds the Windows GUI, so no host needs the Rust toolchain. The `Update Launcher` button, and every Cycle, installs a new build in place.
 - Log auto-push needs a PAT; see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md). The launcher discovers the PAT the same way as the .bat path, from an env var or a file.
-- The first mod download is sequential, as in `server_install.ps1`. About 450 mods on a fresh install take about 10-20 minutes, depending on bandwidth. Parallel download through rayon is a v0.3.1 follow-up.
-- There is no worldgen, Chunky or pre-gen integration. The operator still runs those through `/chunky`; they are not represented in the launcher and are out of scope.
+- The first mod download is sequential, as in `server_install.ps1`. The server's 428 mods on a fresh install take about 10-20 minutes, depending on bandwidth. Parallel download through rayon is a v0.3.1 follow-up.
+- The launcher does not pre-generate terrain. Its worldgen pages (above) change settings and reset chunks, and a regeneration run only checks that no Chunky task is left unfinished; the operator still runs pre-generation through `/chunky`.
 
 ## Why bother
 

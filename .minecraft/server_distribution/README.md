@@ -2,7 +2,7 @@
 
 Standalone dedicated server distribution for the IridescentCraft Progression RPG Modpack.
 
-Forge 1.20.1-47.4.6 | 420+ mods
+Forge 1.20.1-47.4.6 | 428 mods on the server
 
 This folder is fully self-contained. Copy it to any machine and run the installer.
 
@@ -43,7 +43,7 @@ The install script will:
 - Skip client-only mods (rendering, UI, etc.)
 - Config, KubeJS, defaultconfigs, and global_packs are already included
 
-**First startup takes 5-15 minutes** with 420+ mods. Wait until you see:
+**First startup takes 5-15 minutes** with 428 mods. Wait until you see:
 ```
 [Server thread/INFO]: Done (XXX.XXXs)! For help, type "help"
 ```
@@ -74,7 +74,7 @@ The included `server.properties` holds the **pack defaults**. They suit a new or
 
 | Setting | Pack default | Why |
 |---------|--------------|-----|
-| max-tick-time | -1 | Vanilla tick watchdog off: a 420+ mod tick can run long. The launcher restarts a server that stops answering |
+| max-tick-time | -1 | Vanilla tick watchdog off: a 428-mod tick can run long. The launcher restarts a server that stops answering |
 | view-distance | 6 | Reduced for performance |
 | simulation-distance | 4 | Reduced for performance |
 | entity-broadcast-range-percentage | 65 | Reduced for performance |

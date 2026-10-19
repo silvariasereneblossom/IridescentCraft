@@ -117,7 +117,7 @@ World difficulty rises in three stages tied to progression milestones. This repl
 | Expert | T3 | Nether entry | +3.0 flat | +75% |
 | Master | T4 | Dragon kill | +5.0 flat | +155% |
 
-The flat damage bonus from `mobs_spawn_stronger` stacks on top of the per-dimension damage multiplier in `mob_scaling_unified.js`. The damage values were tuned on 2026-04-17 after testers reported one-shot deaths. The health bonus stays at its defaults: tester feedback on 2026-04-18 confirmed that the problem was incoming damage rather than how tanky mobs were.
+Both bonuses belong to `mobs_spawn_stronger`, which is switched off in the pack's config, so neither one reaches mobs: their health and damage come from the difficulty engine (below) and the tier HP in `mob_scaling_unified.js`. The damage values were tuned on 2026-04-17 after testers reported one-shot deaths. The health bonus stays at its defaults: tester feedback on 2026-04-18 confirmed that the problem was incoming damage rather than how tanky mobs were.
 
 ### Treasure Bags
 Majrusz's Progressive Difficulty has a treasure bag system. The bags for all 7 bosses and events were rewritten with tier-appropriate loot, and their contents scale with the current difficulty stage.
@@ -167,7 +167,7 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 
 | Tier | Dimensions | Combined Artifact Rate | Items |
 |------|-----------|----------------------|-------|
-| Village | Village chests | 8% | Curated village artifact pool |
+| Village | Village chests | ~14% | Curated village artifact pool |
 | T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
 | T2 | Twilight Forest, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
 | T3 | Nether, Undergarden, Deeper Darker (Otherside), The Abyss | 14% | Powerful offense artifacts + celestial items |
@@ -193,7 +193,7 @@ These mods ship as custom bytecode-patched JARs (on the custom JAR allowlist in 
 ### Other Loot Controls
 - Enchanted books: removed globally, re-added with `.enchantWithLevels()` at dimension-scaled rates
 - Diamond/netherite gear: stripped from T1/T2 chests
-- Village chests: cleaned up, with a curated 25-artifact pool at ~4% combined rate
+- Village chests: cleaned up, with a curated 15-item artifact pool, each item at 1% per chest (about 14% for at least one)
 - Clutter items (horse armor, spider eyes, rotten flesh, etc.): removed from structure chests
 - Food mods: stripped from chest loot so they cannot bypass the food/hunger system *(village chests are exempt: they get a thematic food and seed boost on top; see below)*
 
@@ -300,7 +300,7 @@ Serene Seasons adds seasonal crop growth. Crops die in winter unless grown in a 
 
 ## Azukaar's Fair Difficulty (REMOVED 2026-05-03)
 
-It was removed together with ScalingMobs and Improved Mobs when the custom `iridescent_difficulty` mod took over dimension scaling (see "Difficulty engine" above). Its stat scaling had already been zeroed, and its remaining behavior features (hunger nerf, night purge, no-sleep enforcement, respawn distance) are now covered by the dedicated mods for those mechanics (Hunger Overhaul, Sleep Hunger, etc.).
+It was removed together with ScalingMobs and Improved Mobs when the custom `iridescent_difficulty` mod took over dimension scaling (see "Difficulty engine" below). Its stat scaling had already been zeroed, and its remaining behavior features (hunger nerf, night purge, no-sleep enforcement, respawn distance) are now covered by the dedicated mods for those mechanics (Hunger Overhaul, Sleep Hunger, etc.).
 
 ## Mekanism Balance
 

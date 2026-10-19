@@ -87,7 +87,7 @@ Implemented features awaiting confirmation on a live world:
 
 - Aethersteel Tier-4 ore replacement (ore appears as holystone until the T4 unlock)
 - Undergarden metals in Tetra crafting
-- Custom origin powers: Witherborn wither-on-hit, Slimebodied food/damage-reduction, Orc bloodlust, Witch of Ink progression, Artificial Construct iron-eating, Phantom Undeath, Samurai focus, Wanderer traveler bonuses, Paladin healing aura, Vanguard guardian's presence, Archmage mana attunement, Void Summoner soul tether, Battlemage mana shield
+- Custom origin powers: Witherborn wither-on-hit, Slimebodied food/damage-reduction, Orc bloodlust, Witch of Ink progression, Artificial Construct iron-eating, Phantom Spectral Undeath, Samurai focus, Wanderer traveler bonuses, Paladin healing aura, Vanguard guardian's presence, Archmage mana attunement, Void Summoner soul tether, Battlemage mana shield
 - Magic bonuses on Iron's spells, each counted once (2026-10-17: the magic damage sync is gone; Mana Attunement and the Magic aptitude skills are spell power only). Magic damage does not reach Ars Nouveau spells
 - Compass of Return (bed tracking + cross-dimension teleport)
 - Iron's Spells loot tiering (spell books / inks by dimension tier)
@@ -167,7 +167,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 
 **Combat & mobs**
 - Players in full iron no longer get one-shot in the Overworld (difficulty damage retuned).
-- The skyward launch from skeleton/pillager arrows is fixed (a runaway Levitation affix).
+- Players are no longer launched skyward by a runaway Levitation effect: one above amplifier 5 is blocked on players. Its source is still being tracked down (see the open Levitation issue above).
 - Several boss and entity crashes (Necromancer, Archevoker, Cryomancer, Wandering Magician and other unique Iron's Spells armor) are fixed.
 - Mobs no longer break torches/doors/blocks at starter bases.
 - Blank "shot by ___" death messages are fixed.

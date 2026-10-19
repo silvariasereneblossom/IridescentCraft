@@ -20,9 +20,9 @@
 - 8-12GB RAM recommended (JVM args: -Xms4G -Xmx10G)
 
 ## What is IridescentCraft?
-A 420+ mod, progression-focused, expert-lite modpack with:
+A 458-mod, progression-focused, expert-lite modpack with:
 - 4-tier progression system (Bronze Age → God-Killer → Space)
-- 10 RPG classes, 7 races, 10 Origins
+- 13 RPG classes, 11 races, 13 Origins
 - 29 custom enchantments, 88 Apotheosis affixes
 - 27 Tetra modded materials
 - 5 Ad Astra planets (post-endgame)

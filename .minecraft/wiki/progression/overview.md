@@ -68,7 +68,7 @@ Incoming damage runs +30% hotter than the table. As of 2026-06-13, every tier ca
 
 Boss scaling stacks on top through per-kill scaling, per player (`boss_progressive.js`): a boss is stronger for the players near it who have beaten it before (the Wither, the Ender Dragon, the Warden and the Elder Guardian are not scaled). The static mob-tier HP (basic 3×, mid 1.5×, elite 1.25×) from `mob_scaling_unified.js` also combines with the dimension multiplier. Majrusz's Progressive Difficulty handles elite-mob density (the Elite Spawn % column; Master-stage scaling, replacing the removed Champions Unofficial).
 
-This replaces the previous flat-multiplier scaling, which compounded in unpredictable ways with ScalingMobs's per-player tracker, ImprovedMobs's per-tick accumulator, MajruszsDifficulty's game stages and Azukaars' fair-difficulty curve. All four are removed or disabled.
+This replaces the previous flat-multiplier scaling, which compounded in unpredictable ways with ScalingMobs's per-player tracker, ImprovedMobs's per-tick accumulator, MajruszsDifficulty's per-stage health and damage bonus and Azukaars' fair-difficulty curve. All four are removed or disabled (Majrusz's game stages themselves still run and switch on its other features).
 
 ## Staging Implementation
 

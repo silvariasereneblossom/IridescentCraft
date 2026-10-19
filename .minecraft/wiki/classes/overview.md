@@ -1,6 +1,6 @@
 # Classes, Races & Origins Overview
 
-Four layered character systems shape a player's build. The first three appear as prompts, one after another, on first join.
+Five layered character systems shape a player's build. The first three appear as prompts, one after another, on first join.
 
 ## Systems
 
@@ -57,11 +57,11 @@ Each also has a generic `spell_power 1.40`, per-mage identity stats (Elemental: 
 |-------|-------------|-----------------|
 | Berserker | +15% base melee (Brutal Strikes), +5% ATK/+1 armor (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP (Blood Fury) | - |
 | Samurai | +8% speed, +10% attack speed (Bushido), Focus (a movement shield up to 10% of max HP, 10 s to recharge after it breaks), Vorpal (Strength I at tier 1 up to Strength IV at tier 4, by passive tier*) | `class_passives.js` |
-| Battlemage | +15% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonuses), Arcane Cleave (+1 melee AD per 50% bonus spell power, costs 10 mana/hit), Mana Reaver (+15 mana per melee kill) | `battlemage_mana_shield.js`, `battlemage_arcane_cleave.js` |
+| Battlemage | +10% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I, Resistance II for a Faefolk), Arcane Cleave (+1 melee AD per 50% bonus spell power, costs 10 mana/hit), Mana Reaver (+15 mana per melee kill) | `battlemage_mana_shield.js`, `battlemage_arcane_cleave.js` |
 | Wanderer | +5% ATK/speed/atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP/+2.5% speed per dimension visited) | `class_passives.js` |
 | Paladin | +3 armor/+1 toughness (Holy Armor), +10% KB resist, Healing Aura (0.5 HP/5s to allies in 8 blocks, 1 HP/5s self above 50%) | `class_passives.js` |
 | Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -15% damage (Damage Penalty), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |
-| Ranger | +15% speed, +10% atkspd, +20% projectile damage, -3 armor | - |
+| Ranger | +15% speed, +10% atkspd, +20% projectile damage, -15% armor | - |
 | Archmage | +50% magic damage (Arcane Supremacy), -50% melee (Frail Melee), +5% spell power per passive tier above 1, T1:0%→T4:+15%* (Mana Attunement), mana pool 2.5x (Mana Reservoir +150%), -28.6% armor / -20% toughness (Frail Frame) | `class_passives.js` |
 | Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | - |
 | Void Summoner | +15% damage by tamed animals and Iron's Spells summons (Dark Pact), +10% melee damage in darkness, light level 9 or lower, no penalty in light (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
@@ -70,7 +70,7 @@ Each also has a generic `spell_power 1.40`, per-mage identity stats (Elemental: 
 
 ### Glass Cannon Mechanic
 
-Ranger, Archmage and Void Summoner have their equipment HP bonus halved. `equipment_hp_halving.js` enforces this with an attribute modifier, and the Origins class power JSONs tag these classes automatically through `glass_cannon_tag.json`.
+Ranger, Archmage, Void Summoner and Elemental have their equipment HP bonus halved. `equipment_hp_halving.js` enforces this with an attribute modifier, and the Origins class power JSONs tag these classes automatically through `glass_cannon_tag.json`.
 
 ### Class Respec
 
@@ -113,7 +113,7 @@ The 11 custom races are an Origins layer in the `icraft` namespace. Races give s
 | Race | Bonuses | Penalties |
 |------|---------|-----------|
 | Human | None | None (baseline) |
-| Elf | +15% ranged damage, +5% magic damage | - |
+| Elf | +15% ranged damage, +5% magic damage | -10% armor toughness, faster hunger drain |
 | Dwarf | Mining hunger halved | - |
 | Orc | +10% attack speed, +20% HP, +10% melee damage, Bloodlust (+20% damage scaling with hunger) | +50% hunger drain |
 | Halfling | +20% food efficiency | - |
@@ -143,9 +143,9 @@ Design philosophy: no environmental effect is lethal, food comes as preferences 
 | Enderian | Teleport, Ender Shift (+15% damage after teleport) | New Ender Shift power added |
 | Feline | Cat-like abilities, night vision | -20% HP added as tradeoff |
 | Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
-| Phantom | Phasing, invisibility, half health, Spectral Undeath | Sunlight burn→weakness+slowness. Never dies: locks to 0.5 hearts + 5min debuffs instead (`phantom_undeath.js`) |
+| Phantom | Phasing, invisibility, half health, Spectral Undeath | Sunlight burn→weakness+slowness. Cheats death: a lethal hit locks it to 0.5 hearts + 5min debuffs instead, and a death while they last is final (`phantom_undeath.js`) |
 | Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
-| Witch of Ink | Pure passive hyperscaler. 50% food reduction, 20% less HP, fire weakness. Boss-kill counter (max 200): Apotheosis/Champions +1, dimensional bosses +10. Per counter: +0.1% total damage (applied multiplicatively to final damage via LivingHurtEvent, so it affects melee, ranged and all magic) and +0.1 armor toughness ADD_VALUE. Caps at +20% damage / +20 toughness at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (final = 1.30× at cap), +15% SP-to-AD conversion (15% of `spell_power - 1.0` adds to outgoing damage), +15% max HP, permanent Haste I + Resistance I + Fire Resistance + Regeneration I (renewed every 2 minutes). All paint actives stripped 2026-03-30. Tracker: `/icraft witch_status`. | Custom origin. Hyperscaling fantasy: weak early, monster late (`witch_of_ink_progression.js`) |
+| Witch of Ink | Pure passive hyperscaler. 50% food reduction, 20% less HP, fire weakness. Boss-kill counter (max 200): Apotheosis bosses +1, dimensional bosses +10. Per counter: +0.1% total damage (applied multiplicatively to final damage via LivingHurtEvent, so it affects melee, ranged and all magic) and -0.1% damage taken. Caps at +20% damage / -20% damage taken at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (final = 1.30× at cap), +15% SP-to-AD conversion (15% of `spell_power - 1.0` adds to outgoing damage), +15% max HP, permanent Haste I + Resistance I + Fire Resistance + Regeneration I (renewed every 2 minutes). All paint actives stripped 2026-03-30. Tracker: `/icraft witch_status`. | Custom origin. Hyperscaling fantasy: weak early, monster late (`witch_of_ink_progression.js`) |
 | Artificial Construct | 25% food efficiency from normal food. Right-clicking an Iron Ingot eats 1 ingot for +1 food and Regen III for 10s; an Iron Block eats 1 block for +9 food, 4.5 saturation and Regen III. A counter of iron consumed unlocks 5 upgrade levels at thresholds 1000 / 2000 / 4000 / 8000 / 16000 iron. Per-level bonuses (cumulative on max_health and attack_damage as MULTIPLY_BASE; on armor and armor_toughness as ADD_VALUE × 4): +5% (L1) → +10% (L2) → +15% (L3) → +25% (L4) → +35% (L5). Capstone (Iron Apotheosis, unlocked at L5): an additional +25% HP MULTIPLY_BASE, +25% melee damage MULTIPLY_BASE and +1.0 armor toughness ADD_VALUE on top of the L5 totals. Tracker: `/icraft construct_status`. | Custom origin. Hyperscaling fantasy: back-loaded power curve (`artificial_construct_progression.js`) |
 | Witherborn | DOT melee fighter. Wither on hit, hunger-based damage penalty. | Custom origin. Decay-themed attacker with sustain tradeoff |
 | Slimebodied | Food management tank. 5% food efficiency, satiety damage reduction. | Custom origin. Tanky through food sustain mechanics |

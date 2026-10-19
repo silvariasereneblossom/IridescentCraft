@@ -4,7 +4,7 @@ Numerical reference, tables and lists for the [master design doc](master.md).
 
 > This appendix holds all the numbers: tier material lists, recipe state, boss-drop tables, Apotheosis rates, the custom item registry, the mod roster, the KubeJS script index and the datapack override index. The companion [`master.md`](master.md) holds design intent and system descriptions.
 >
-> Status: fully populated 2026-04-27. All 10 sections are reference content. The numbers match the implementation as of the end of the audit fix plan (commits aeff0891 to 11df1f71). The 8,370-line legacy master from before the rewrite has been removed; this appendix replaces it.
+> Status: fully populated 2026-04-27. All 14 sections (A to N) are reference content. The numbers match the implementation as of the end of the audit fix plan (commits aeff0891 to 11df1f71). The 8,370-line legacy master from before the rewrite has been removed; this appendix replaces it.
 
 ---
 
@@ -25,6 +25,7 @@ Numerical reference, tables and lists for the [master design doc](master.md).
 | K | [Character Build Reference](#k-character-build-reference) |
 | L | [Iridescent Reforging Honing System](#l-iridescent-reforging-honing-system) |
 | M | [ISS + Ars Nouveau Cross-Mod Integration](#m-iss--ars-nouveau-cross-mod-integration) |
+| N | [Marquee Structures](#n-marquee-structures) |
 
 ---
 
@@ -113,7 +114,7 @@ After the T4 unlock, post-Glacio content is the "endgame after the endgame": Myt
 
 11 races (Iridescent Origins): Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin.
 
-10 classes (Iridescent Classes): Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner.
+13 classes (Iridescent Classes): Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner, Elemental, Blessed, Corrupted.
 
 The stat tables and ability descriptions for each origin, race and class are in the JSON files under `kubejs/data/icraft/` and in the Patchouli codex (categories: Choosing Your Build / Origins Guide / Classes). This appendix does not repeat them; the codex is the authoritative reference for character creation choices.
 
@@ -288,12 +289,12 @@ Every `event.remove` and `event.shaped` (override) call in `kubejs/server_script
 - J.2: 4 Refined Obsidian armor pieces recipes removed.
 - J.3 (audit Phase 8.4, 2026-04-27): `cataclysm:mechanical_fusion_anvil` recipe removed (merged with `void_forge`/`infernal_forge`).
 
-**Section K (Theabyss rings + Arcane Workbench + boss armor)** *(LIVE: theabyss/TATOS is installed, so these strips fire. The 30 stock rings and the arcane workbench are removed so the 8 custom `kubejs:ring_*` curios are the only ring economy; the 5 boss-armor-set crafting recipes are removed so those sets are boss-drop-only, see §C.11)*:
+**Section K (Theabyss rings + Arcane Workbench + boss armor)** *(LIVE: theabyss/TATOS is installed, so these strips fire. The 30 stock rings and the arcane workbench are removed so the 8 custom `kubejs:ring_*` curios are the only ring economy; the Unorithe armor set's crafting recipes are removed so that set is boss-drop-only, see §C.11)*:
 - K.1: `event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })` (regex bulk strip).
 - K.2: Catch-all `event.remove({ output: /theabyss:ring_/ })` for shapeless/special.
 - K.3: 29-item individual ring removal list (belt-and-suspenders); audit Phase 3.2 fixed `ring_of_ghost` → `ring_of_ghosts` plural drift.
 - K.4: `theabyss:arcane_workbench` (ring crafting station) removed.
-- K.5: recipes removed for 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death), 20 pieces in total.
+- K.5: recipes removed for the boss-drop Unorithe armor set, 4 pieces. (The Knight, Ragnarok, Dragon and Death sets once listed here are not items in the installed mod.)
 
 **Section L (Blue Skies removals)**:
 - L.1: `blue_skies:dusk_arc/*` regex strip.
@@ -330,7 +331,7 @@ Every `event.remove` and `event.shaped` (override) call in `kubejs/server_script
 
 The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is **not in the game**: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops are the remaining bend mechanism.
 
-The Rift Keystone recipe that lived in the same file: 8 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`.
+The Rift Keystone recipe that lived in the same file (4 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`) is now in the Mythic Forge script (I.6), with other ingredients: one each of Void Essence, Dragon Heart, Gaia Ingot, Nether Star and Rift Shard.
 
 ### B.4 `recipes/ad_astra_gating.js`: rocket progression
 
@@ -366,7 +367,7 @@ Strips 17 IDs: 14 awakening artifact upgrade recipes + 3 intermediate materials 
 
 - `tier_gated_recipes.js`: 75 `event.remove` / `event.shaped` calls.
 - `recipe_audit.js`: 67 `event.remove` calls.
-- `tier_skip.js`: ~30 dual-path / transmutation recipes.
+- `tier_skip.js`: retired on 2026-06-01 (B.3), so no recipes.
 - `ad_astra_gating.js`: 9 recipes (4 rockets + workbench + 4 Mk2 pieces).
 - `class_artifacts_recipes.js`: 17 removals.
 - `refined_storage_dualpath.js`: ~15 RS dual-path recipes.
@@ -383,12 +384,12 @@ A summary of the boss-drop allocation across 10 boss-drop loot files. Drop chanc
 
 | Boss | Tier | Sustained drops (per kill) | First-kill guaranteed |
 |------|-----:|----------------------------|----------------------|
-| `irons_spellbooks:dead_king` | T4 | blood_staff @ 50% | necronomicon_spell_book |
+| `irons_spellbooks:dead_king` | T3 | blood_staff @ 50% | necronomicon_spell_book |
 | `irons_spellbooks:archevoker` | T3 | rare_ink + ender_rune | evoker_spell_book |
 | `irons_spellbooks:fire_boss` | T3 | epic_ink + fire_upgrade_orb | blaze_spell_book |
 | `irons_spellbooks:citadel_keeper` | T3 | keeper_flamberge @ 40% | none |
-| `irons_spellbooks:cryomancer` (mob) | T2 | ice_staff @ 15%, ice_rune @ 25% | none |
-| `irons_spellbooks:pyromancer` (mob) | T2 | pyromancer 4-piece armor @ 8-12%/piece + fire_rune @ 20% | none |
+| `irons_spellbooks:cryomancer` (mob) | T3 | ice_staff @ 15%, ice_rune @ 25% | none |
+| `irons_spellbooks:pyromancer` (mob) | T3 | pyromancer 4-piece armor @ 8-12%/piece + fire_rune @ 20% | none |
 | `irons_spellbooks:magehunter` (mob) | T3 | rare_ink @ 15% | magehunter weapon @ 30% |
 
 There are also mob-drop overrides for `aether:cockatrice` (lightning_rod 25%), `twilight:snow_queen` (ice_staff 50%), `twilight:alpha_yeti` (ice_staff 25%), `aether:valkyrie_queen` (magehunter 30%) and vanilla `phantom` during a thunderstorm (lightning_rod 5%).
@@ -432,7 +433,7 @@ All four BS bosses also drop `blue_skies:runic_arc` @ 5% (recipe-stripped per Se
 
 ### C.5 Aether bosses (`loot/loot_overhaul.js` Section 2 + `loot/dimensional_boss_drops.js`)
 
-Tier 4 since 2026-10-16 (Tier 2 before): their first-kill tokens are the tier-4 ones (tier-3 tokens, as for the End's bosses), and each of the three also drops 1-2 Rift Shards and a Void Fragment.
+Tier 4 since 2026-10-16 (Tier 2 before). As for the End's bosses, a first kill pays the tier-4 amount (25 tokens) in tier-3 tokens, since there is no tier-4 token. Each of the three also drops 1-2 Rift Shards and a Void Fragment.
 
 | Boss | Tier | Drops |
 |------|-----:|-------|
@@ -472,13 +473,13 @@ Cross-mod injection of Mahou reagents:
 ### C.10 Terramity non-gun melee (`loot/terramity_boss_drops.js`, audit Phase 4.1)
 
 7 non-gun EPIC weapons allocated to themed bosses:
-- `unholy_lance` → Dead King (T4 ISS undead) @ 10%
+- `unholy_lance` → Dead King (T3 ISS undead) @ 10%
 - `blasphemic_rapture` → Ignis (T3 fire) @ 10%
 - `davy_jones` → The Leviathan (T3-T4 ocean) @ 10%
 - `olympus` → Aether Slider (T4 storm; T2 until 2026-10-16) @ 5%
 - `divine_intervention` → Aether Sun Spirit (T4 holy; T2 until 2026-10-16) @ 10%
 - `planet_buster` → Ender Dragon (T4 cosmic) @ 15%
-- `kamehameha` → Ancient Remnant (T4 placeholder until Mythic Forge recipe) @ 5%
+- `kamehameha` → Ancient Remnant (T3; placeholder until Mythic Forge recipe) @ 5%
 
 ### C.10a Terramity ingot-family weapons + curios (`loot/terramity_structure_drops.js`, audit 2026-05-19)
 
@@ -692,8 +693,8 @@ functional and only blocked crafting/placement, so they were removed.
 
 The boss a gem comes from sets its tier:
 - T1-T2 bosses → Common / Uncommon gems.
-- T3 bosses (Cataclysm, F&A, Stalwart) → Rare / Epic gems.
-- T4 bosses (Ender Dragon, Gaia Guardian, Ancient Remnant, Wither) → Legendary / Mythic gems.
+- T3 bosses (Cataclysm, F&A, Stalwart, the Wither) → Rare / Epic gems.
+- T4 bosses (Ender Dragon, Gaia Guardian) → Legendary / Mythic gems.
 
 ### D.4 Dimension stat multipliers (full)
 
@@ -869,7 +870,7 @@ How long T4 fights should feel from each side. These are the design targets that
 | Paladin | 8-10 | 5-7 | 3-4 |
 | Vanguard | 10-14 | 7-9 | 4-6 |
 
-These numbers are design targets. Actual gameplay numbers will drift through the interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics and mob scaling. Expect at least 2-3 full tuning passes during playtesting; start at 80% of the designed values and tune up.
+These numbers are design targets. Actual gameplay numbers will drift through the interaction of 7+ gear-enhancement layers, 13 classes, dimension mechanics and mob scaling. Expect at least 2-3 full tuning passes during playtesting; start at 80% of the designed values and tune up.
 
 ### D.10 ~~Champion affix pool~~: REMOVED 2026-04-07
 
@@ -890,11 +891,11 @@ Design targets for how often mobs spawn with gear in each dimension. They were o
 | Tier 4 (End: outer/deep) | 70-80% | Netherite | 3-5 |
 | Tier 4 (End: Dragon's Domain) | 80% | Netherite + enchanted | 5+ |
 
-Champion mobs spawn one tier above the base for their dimension, plus a chance at affix-bearing gear (which drops on kill, so Champions are a source of affixed gear for players).
+Champion mobs used to spawn one tier above the base for their dimension, with a chance at affix-bearing gear that dropped on kill. Champions Unofficial was removed on 2026-04-07 (D.10), so there are no Champion mobs now.
 
 ### D.12 Implementation notes
 
-These targets drive the live difficulty stack, which is down from the original 7 layers (the Champions Unofficial layer was removed on 2026-04-07, and ScalingMobs / Improved Mobs were retired on 2026-05-03 in favor of the bespoke `iridescent_difficulty` mod):
+These targets drive the live difficulty stack. It still has 7 layers, but not the original 7 (the Champions Unofficial layer was removed on 2026-04-07, and ScalingMobs / Improved Mobs were retired on 2026-05-03 in favor of the bespoke `iridescent_difficulty` mod):
 
 1. `iridescent_difficulty`: time-based per-dimension HP / damage / armor multipliers (D.4), ramping to a per-tier cap; the End uncaps after the Ender Dragon. Replaces ScalingMobs, the Improved-Mobs accumulator and Azukaar's.
 2. `mob_scaling_unified.js` tier-HP block: static per-category HP (basic 3× / mid 1.5× / elite 1.25×), applied on top of the dimension multiplier.
@@ -906,7 +907,7 @@ These targets drive the live difficulty stack, which is down from the original 7
 
 The End's multi-zone implementation (Outer Islands / Deep End / Dragon's Domain) is in `kubejs/server_scripts/end/dragon_exploration_gate.js`, with biome-based scaling. Environmental hazard scripting (Void Corruption stacks, Void Storms, Reality Fracture; there are no Celestial Events) is in `kubejs/server_scripts/scaling/dimension_mechanics.js`.
 
-**Playtesting note:** all numbers in D.4-D.11 are theoretical. The interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics and mob scaling can only be balanced through repeated playtesting. Recommended testing approach:
+**Playtesting note:** all numbers in D.4-D.11 are theoretical. The interaction of 7+ gear-enhancement layers, 13 classes, dimension mechanics and mob scaling can only be balanced through repeated playtesting. Recommended testing approach:
 
 1. Test with a "standard" build (Samurai, mid-tier gear, moderate enchants) as the baseline.
 2. Test extremes: naked Archmage vs End mobs, full Vanguard vs Overworld mobs.
@@ -978,7 +979,7 @@ All `kubejs:*` items, ~80 in total, by category. Source: `kubejs/startup_scripts
 
 ### E.7 Custom Abyss-themed curio rings
 
-- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe`: 8 custom rings. theabyss/TATOS is in the pack; its 30 stock rings and arcane workbench are stripped (`recipe_audit.js` §K) and these 8 replace them. Live drop sources (theabyss chests + ice_knight/soul_guard/guard bosses) per C.11.
+- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe`: 8 custom rings. theabyss/TATOS is in the pack; its 30 stock rings and arcane workbench are stripped (`recipe_audit.js` §K) and these 8 replace them. Live drop sources: Abyss bosses only (Nightblade, The Roka, Elder, Ice Knight, Soul Guard, Guard), since The Abyss has no chest that rolls loot; per C.11.
 
 ### E.8 Misc
 
@@ -1005,7 +1006,7 @@ Each mod's tier placement, side label (per server_distribution `.pw.toml`) and c
 | Iron's Spellbooks | B | T1 starter scrolls + copper book |
 | Ars Nouveau | B | T1 novice book + Scribes Table (corrected 2026-04-24) |
 | Origins (Forge) + Iridescent Origins (`*`) | B | 13 origins; Iridescent Origins is custom JAR |
-| Iridescent Classes (in `iridescent_origins-1.0.0.jar`) | B | 10 classes |
+| Iridescent Classes (in `iridescent_origins-1.0.0.jar`) | B | 13 classes |
 | Iridescent Modular Spells (`*`) | B | Tetra integration mod (Phase 6); custom JAR |
 | Iridescent Biomes (`*`) | B | Custom Cherry biomes; custom JAR (TerraBlender region registration) |
 | Iridescent Codex Data (`*`) | B | Patchouli codex content; custom JAR (modId `icraft`) |
@@ -1132,7 +1133,7 @@ Per the "Custom Bundled JARs" section of CLAUDE.md. The allowlist is in `iridesc
 | JAR | Purpose | Bytecode-patched? |
 |-----|---------|:-----------------:|
 | `iridescent_codex_data.jar` | Patchouli codex content (modId `icraft`) | No |
-| `iridescent_origins-1.0.0.jar` | 13 origins / 11 races / 10 classes | No |
+| `iridescent_origins-1.0.0.jar` | 13 origins / 11 races / 13 classes | No |
 | `iridescent_biomes-1.0.0.jar` | TerraBlender region registration | No |
 | `iridescent_modular_spells-0.2.0.jar` | Tetra-integrated modular spell books (Phase 6) | No |
 | `mek_walkable_cables-1.0.1.jar` | Walkable Mekanism cables coremod | No |
@@ -1286,7 +1287,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 |--------|------|
 | `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor *(Section K live; TATOS in pack)*, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
 | `tier_gated_recipes.js` | Re-recipe overrides for tier-gated workstations (Hephaestus Forge T3, Meka-Tool T4, RFTools dim builders T4, etc.) + Section E Simply Swords removal list (43 entries post-audit-Phase-3.1) |
-| `tier_skip.js` | Cross-tier transmutation recipes (the "bend" mechanism) + Rift Keystone recipe + cross-mod dual-paths |
+| `tier_skip.js` | Retired on 2026-06-01 (B.3). The Rift Keystone recipe moved to the Mythic Forge script (I.6), and the boss-material conversions to a recipe script of their own |
 | `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes at Mythic Forge |
 | `cooking_conversion.js` | 70 vanilla-recipe → Farmer's Delight cooking conversion |
 | `if_latex_rework.js` | HDPE / IF latex alternative pipeline |
@@ -1312,7 +1313,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `dimensional_boss_drops.js` | 11 cross-dimensional bosses (Aether, Deep Aether, Undergarden, Mutant Monsters, Warden) |
 | `terramity_boss_drops.js` | Audit Phase 4.1. 7 non-gun terramity EPIC weapons allocated to themed bosses |
 | `fragment_core_drops.js` | Monster-gated `EntityEvents.death` handler dropping the rpgseteffects Fragment Core at 4% from hostile mobs only (`!entity.monster` skip; Ultris-excluded). Relocated from `lootjs_overhaul.js` §8.5 because LootJS `LootType.ENTITY` matched every entity loot table (passive animals included), leaking the drop onto pigs |
-| `abyss_boss_loot.js` | 7 custom replacement rings (4 chest + 3 boss) + 5 boss-drop armor sets |
+| `abyss_boss_loot.js` | 8 custom replacement rings (all boss drops) + the boss-drop Unorithe armor set |
 | `crop_seed_reduction.js` | Crop seed drop reduction (anti-spam) |
 | `planetary_loot.js` | Ad Astra planetary chest loot tuning |
 | `diagnose_mob_drops.js` | Diagnostic helper for tester reports |
@@ -1367,7 +1368,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `respec/class_respec.js` | `/icraft_respec` command: Class layer only (Origin/Race are permanent) |
 | `skills/skill_effects.js` | Pufferfish skill effect handlers + JustLevelingFork bridge |
 | `skills/justleveling_skills.js` | Magic skill tree integration |
-| `enchantments/enchant_effects.js` | 24 custom enchantment effect handlers |
+| `enchantments/enchant_effects.js` | Effect handlers for 25 of the 29 custom enchantments (Warp Shield, Thermal Regulation, Pressure Shell and Void Adaptation are handled in the dimension mechanics script, I.5) |
 | `affixes/affix_effects.js` | 65 event-driven Apotheosis affix handlers |
 | `food/hunger_management.js` | Hunger Overhaul integration |
 | `items/compass_of_return.js` | Compass-of-Return item behavior |
@@ -1387,7 +1388,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `custom_items.js` | ~50 kubejs:* item registrations (progression tokens, boss materials, intermediate alloys, custom Abyss-themed rings; see E.7) |
 | `endgame_items.js` | ~30 endgame kubejs:* registrations (rift_shard, void_fragment, primordial_essence, mythic_forge, mythic_catalysts, planetary materials). The former `kubejs:mekasuit_mk2_*` shell items were retired on 2026-06-06; Mk2 is now an in-place upgrade of the real `mekanism:mekasuit_*` piece (see E.4) |
 | `mekasuit_mk2_stats.js` | Startup. Additive pinnacle stat layer for MekaSuit Mk2 via `ItemAttributeRegistry`, applied only to a worn `mekanism:mekasuit_*` piece carrying the `icraft_mekasuit_mk2: 1b` NBT marker. Provisional +2 armor / +1 toughness / +0.05 knockback resistance per piece; never removes a native attribute |
-| `custom_enchantments.js` | 24 custom enchantment registrations |
+| `custom_enchantments.js` | 29 custom enchantment registrations |
 | `iridescent_codex.js` | Patchouli codex setup helpers |
 | `mekasuit_mk2_tooltip.js` *(client_scripts/)* | Marker-keyed tooltip: per-id `addAdvanced` line on `mekanism:mekasuit_*` stacks carrying the `icraft_mekasuit_mk2` NBT marker, independent of the recipe-set display Name/Lore |
 
@@ -1500,7 +1501,7 @@ Chosen permanently at character creation. Races have mild tradeoffs, compared wi
 
 | Origin | Theme | Progression hook |
 |--------|-------|------------------|
-| **Witch of Ink** | Pure passive hyperscaler: 50% food reduction, 20% less HP, fire weakness. Paint actives were stripped on 2026-03-30 (`58e4834c`); there is no painting consumption mechanic. | Boss-kill counter (max 200): Apotheosis/Champions bosses +1, dimensional bosses +10. Per counter: +0.1% TOTAL damage (multiplicative on final damage through LivingHurtEvent, so it affects melee, ranged and all magic) + 0.1 armor toughness (ADD_VALUE). Caps at +20% / +20 at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (1.30× at cap) + 15% Spell-Power-to-Attack-Damage conversion (`(SP - 1.0) × 0.15` extra MULTIPLY_BASE damage) + 15% max HP + permanent Haste I, Resistance I, Fire Resistance, Regeneration I (renewed every 2 min). Player command: `/icraft witch_status`. |
+| **Witch of Ink** | Pure passive hyperscaler: 50% food reduction, 20% less HP, fire weakness. Paint actives were stripped on 2026-03-30 (`58e4834c`); there is no painting consumption mechanic. | Boss-kill counter (max 200): Apotheosis bosses +1, dimensional bosses +10. Per counter: +0.1% TOTAL damage (multiplicative on final damage through LivingHurtEvent, so it affects melee, ranged and all magic) and -0.1% incoming damage (both applied in the mod jar on LivingHurtEvent). Caps at +20% / -20% at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (1.30× at cap) + 15% Spell-Power-to-Attack-Damage conversion (`(SP - 1.0) × 0.15` extra MULTIPLY_BASE damage) + 15% max HP + permanent Haste I, Resistance I, Fire Resistance, Regeneration I (renewed every 2 min). Player command: `/icraft witch_status`. |
 | **Artificial Construct** | Machine-themed tech bias: 25% food efficiency; eats iron ingots/blocks for sustenance (Regen III for 10 s on consume). | 5-level iron-consumed ladder at thresholds 1000 / 2000 / 4000 / 8000 / 16000. Per-level bonuses (cumulative MULTIPLY_BASE on max_health + attack_damage; ADD_VALUE × 4 on armor + armor_toughness): +5% (L1) → +10% (L2) → +15% (L3) → +25% (L4) → +35% (L5). Capstone (Iron Apotheosis, unlocked at L5): +25% MULTIPLY_BASE HP + +25% MULTIPLY_BASE melee damage + +1.0 ADD_VALUE armor toughness on top of the L5 totals. Player command: `/icraft construct_status`. |
 | **Witherborn** | Undead aesthetic + Wither immunity | Undead-aligned bonuses; pairs with Void Summoner |
 | **Slimebodied** | Slime physics + bouncing combat | Bouncy-mobility + slime-combo identity |
@@ -1627,7 +1628,7 @@ Wanderer is the only class without a clear primary tree, by design. The class is
 #### Death + skill interactions
 
 - Skill points are not lost on death. Skills are permanent growth and never at risk.
-- Skill points are not lost on a Class respec. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). Respeccing skills is a separate, additional cost.
+- Skill points are not lost on a Class respec. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). A skill-point respec is not available (K.8 above).
 
 This leaves room for hybrid builds without forcing a full reset on every class switch.
 
@@ -1757,22 +1758,26 @@ pool. `/2` was settled on after two playtest iterations:
 
 ### M.1a Magic class mana-pool boost
 
-`kubejs/server_scripts/attributes/mana_pool_bonuses.js` applies a flat
-MULTIPLY_TOTAL +0.5 (= 1.5× effective) to `irons_spellbooks:max_mana`
-for the three magic classes:
-- Archmage
-- Battlemage
-- Void Summoner
+Since 2026-10-17 the three magic classes' pools come from their Origins
+powers alone (multiply_base on `irons_spellbooks:max_mana`), from a base of 100:
+- Archmage: 250 (Mana Reservoir, +1.5)
+- Battlemage: 190 (+0.9)
+- Void Summoner: 190 (+0.9)
 
-It is applied with `addTransientModifier` (not `addPermanentModifier`), so the
-modifier stays attached for the session but is not saved in player
-NBT. Reverting the buff only means deleting the script, with no UUID-scrub pass
-needed. This is the lesson of the two earlier cleanup-after-revert cycles (legacy
+`kubejs/server_scripts/attributes/mana_pool_bonuses.js` no longer boosts them.
+From 2026-05-15 it put a transient MULTIPLY_TOTAL +0.5 (1.5×) on the same
+attribute for these classes. Its class check first worked in 2026-10, and from
+10-10 the two multiplied (Archmage 375, Battlemage and Void Summoner 285) until
+the script's x1.5 was dropped on 2026-10-17. The buff was applied with
+`addTransientModifier` (not `addPermanentModifier`), so it was never saved in
+player NBT, and the restart that deployed the change took it off everyone. This
+is the lesson of the two earlier cleanup-after-revert cycles (legacy
 `mana_pool_bonuses` 2026-04-25 and `mana_bridge` 2026-05-14).
 
-Cleanup of the legacy 8 UUIDs (4 from the 2026-04-25 layered pool buff +
-4 from the 2026-05-14 attribute-mirror bridge) keeps running in the
-same script until the alpha-tester roster has cycled through.
+What the script still does: it scrubs the legacy 8 UUIDs (4 from the
+2026-04-25 layered pool buff + 4 from the 2026-05-14 attribute-mirror bridge)
+once per player, at login, because those were permanent modifiers saved in
+player NBT.
 
 HUD: `ArsGuiManaHudMixin` injects on `GuiManaHUD.shouldDisplayBar` and
 always returns false. Otherwise the Ars bar would duplicate the ISS
@@ -1876,7 +1881,7 @@ Elemental gems → school spell power: 11 of Apotheosis's 21 gems have a clear e
 > The Path B fix (2026-05-18 afternoon) replaced Path A entirely:
 >
 > 1. A new `LootCategory.magic_weapon` is registered at runtime by `kubejs/startup_scripts/magic_weapon_category.js` via `LootCategory.register(null, "magic_weapon", predicate, [MAINHAND, OFFHAND])`. The predicate checks `ItemStack.is(TagKey<Item>(icraft:magic_weapon))`. `LootCategory.BY_ID` is `Collections.unmodifiableMap(BY_ID_INTERNAL)` per the jar's static init, so late additions via `register()` are visible to Apotheosis's gem-JSON codec at datapack-reload time (verified by bytecode inspection on Apotheosis-1.20.1-7.4.8.jar).
-> 2. The `#icraft:magic_weapon` item tag (`kubejs/data/icraft/tags/items/magic_weapon.json`) lists the 32 spellbook IDs that were previously aliased as `sword`. Tag membership controls LootCategory membership.
+> 2. The `#icraft:magic_weapon` item tag (`kubejs/data/icraft/tags/items/magic_weapon.json`) listed the 32 spellbook IDs that were previously aliased as `sword`; the same evening it was replaced by 26 wands and staves (see the scope note above). Tag membership controls LootCategory membership.
 > 3. All 11 gem overrides use `gem_class: { key: "magic_weapon", types: ["magic_weapon"] }` for the spell-power bonus. There is no collision, because no canonical gem references `magic_weapon`.
 > 4. The 4 multi_attribute merges (solar / lunar / guardian / blood_lord) were reverted to the canonical single-attribute form on `light_weapon`. Spell power lives on the new `magic_weapon` bonus instead.
 > 5. The 31 `|sword` lines in `config/apotheosis/adventure.cfg`'s `Equipment Type Overrides` were removed (spellbooks no longer need to be typed as swords).
@@ -1910,7 +1915,7 @@ Bonus scaling (MULTIPLY_TOTAL):
 
 The ratio is intentional: ISS school gems are universal (they work for any school the player casts), while Apotheosis elemental gems are specialized (locked to one school). A specialized gem is stronger; a universal gem is more flexible. The 2026-05-18 bump (commit pending) shifted the curve up, because the initial 5%/10%/.../80% collided with the ISS values at low rarities and defeated the specialization gradient.
 
-Existing gem bonuses (e.g., Solar's `fire_damage`, `gravity`, `step_height`) are unchanged from the canonical Apotheosis data. The spell-power bonus is purely additive, on a new `magic_weapon` LootCategory: socketing one of these gems into a sword gives the canonical bonus, and socketing it into a spellbook gives the spell-power bonus. Martial-only gems (ballast, brawlers, breach, combatant, samurai, slipstream, tyrannical, warlord, royalty) are untouched. Mageslayer is skipped by design (its anti-magic flavor points the other way).
+Existing gem bonuses (e.g., Solar's `fire_damage`, `gravity`, `step_height`) are unchanged from the canonical Apotheosis data. The spell-power bonus is purely additive, on a new `magic_weapon` LootCategory: socketing one of these gems into a sword gives the canonical bonus, and socketing it into a wand or staff (the items of the magic-weapon tag) gives the spell-power bonus. Martial-only gems (ballast, brawlers, breach, combatant, samurai, slipstream, warlord, royalty) are untouched. Mageslayer is skipped by design (its anti-magic flavor points the other way).
 
 `magic_weapon` LootCategory (Path B, 2026-05-18 afternoon): registered at runtime by `kubejs/startup_scripts/magic_weapon_category.js`. Membership: items in the `#icraft:magic_weapon` item tag. Slots: MAINHAND + OFFHAND. The startup script is idempotent (a re-run does nothing, through a `LootCategory.byId('magic_weapon') != null` guard).
 
@@ -1952,7 +1957,7 @@ The marquee-structure roster and each structure's themed pool, which pair with t
 
 ### N.1 Roster
 
-14 marquee structures across the four tiers. Each gets a themed pool set at ~70% of the tier's combined rate, layered on top of the dimensional baseline (which fires at the full tier rate everywhere, marquees included). The combined per-chest artifact rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests stay at the tier rate (~10/12/14/16%).
+15 marquee structures across the four tiers. Each gets a themed pool set at ~70% of the tier's combined rate, layered on top of the dimensional baseline (which fires at the full tier rate everywhere, marquees included). The combined per-chest artifact rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests stay at the tier rate (~10/12/14/16%).
 
 Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStructure`/`anyBiome` but not loot-table-based exclusion, so the strict model (reduce the dimensional pool at marquees only) can't be done cleanly without mapping structure IDs per marquee for every mod. The layered model is the practical alternative, and it also rewards intentional exploration with drops that are both more frequent and more thematic, which fits the player-intentional design criterion.
 
@@ -2183,7 +2188,7 @@ relics:shadow_glaive                   relics:space_dissector
 
 ### N.7 Notes
 
-- ISS spellbook cap (2%): `irons_spellbooks:copper_spell_book` (T1), `apprentice_spell_book` (T2) and `archmage_spell_book` (T3) appear in themed pools where they fit the lore, capped at 2% per chest. Per the rationale in master.md Part XIII, the starter kit handles the "hard to start magic" onboarding, so the higher legacy rates aren't justified.
+- ISS spellbook cap (2%): `irons_spellbooks:copper_spell_book` is added at 2% per chest to the T1 marquees where it fits the lore. The T2 and T3 pools carry Ars Nouveau's `apprentice_spell_book` and `archmage_spell_book` as ordinary pool entries, not under the cap. Per the rationale in master.md Part XIII, the starter kit handles the "hard to start magic" onboarding, so the higher legacy rates aren't justified.
 - ISS scrolls are uncapped and remain a main vector of mage progression. They appear in the T1 Magic and T1 Ancient / Eldritch pools for their tier.
 - Cataclysm structures are left out of this roster on purpose. Cataclysm boss drops carry the Cataclysm flavor, and marquee pools on top would cover it twice.
 - Tables marked TBD need packwiz/jar verification before the final code wiring: T4 Aether dungeon tables, T2 Blue Skies dungeon tables. The first implementation may cover TBD entries only in part. (Jar-verified 2026-10-11: the Lich Tower, Structory tower-top and Undergarden catacombs ids in the N.1 table.)

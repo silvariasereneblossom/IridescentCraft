@@ -29,20 +29,20 @@ Pros: it is instant, needs no manual updater, and picks up an update to the hook
 
 Cons: the instance must be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
 
-> The legacy bare `git -C "$INST_DIR" pull --ff-only` command is superseded: it is the seed that wedged and caused the silent staleness. On the next launch, the self-healing wiring step upgrades instances still wired to it (or to the zip-path `sync_client.bat`) to `prism_prelaunch.bat`.
+> The legacy bare `git -C "$INST_DIR" pull --ff-only` command is superseded: it is the seed that wedged and caused the silent staleness. On the next launch, the self-healing wiring step upgrades a git-clone instance still wired to it (or to the zip-path `sync_client.bat`, the Mode B hook, which is the wrong one for a clone) to `prism_prelaunch.bat`.
 
 ### Mode B: Tester / distribution (SHA-check sync script)
 
 Testers install with `distribution/client/install.ps1`, so their instance is a copy of the packaged client, **not** a git clone. They use `sync_client.ps1`, which:
 
 1. Hits the GitHub API for the latest main commit SHA
-2. Compares it against `.icraft_last_sha` in the instance root
+2. Compares it against `.icraft_last_sha` in the instance's .minecraft directory
 3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
 4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
-During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1` and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR`. Users set the pre-launch command once.
+During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1` and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
 
-Like Mode A, the zip-path sync records a sync status that the diagnostic and the in-game warning can read, so a failed update is visible instead of silent (see *Failure handling*).
+Like Mode A, the zip-path sync records a sync status that the diagnostic can read, so a failed update is visible instead of silent (see *Failure handling*).
 
 ### Mod fetching: packwiz-installer (CurseForge API key required)
 
@@ -59,7 +59,7 @@ If either is missing, the sync falls back to the legacy `download_mods.ps1`, so 
 powershell -ExecutionPolicy Bypass -File "%INST_MC_DIR%\sync_client.ps1"
 ```
 
-Or through the bat wrapper:
+Or through the bat wrapper, the preferred form: it is what the installer sets, and the sync rewrites the direct PowerShell command above to it, because only the bat can apply updates to the sync scripts:
 
 ```
 "%INST_MC_DIR%\sync_client.bat"
@@ -70,7 +70,7 @@ Or through the bat wrapper:
 A sync hiccup never blocks play: the launch always goes ahead, even when the update could not be applied. "Launch anyway" used to mean "launch *silently* stale," which is how an instance can drift far behind without anyone noticing. The pre-launch hook is now fail-visible:
 
 - It records the result of every launch's sync to a small status file in the instance (a per-launch sentinel, not committed to the repo). A successful sync clears it; a failure records *why* (offline/auth, git not on PATH, or sync blocked) and how far behind the instance is.
-- A failure also prints an on-screen warning ("pushes are NOT arriving. Tell Silvaria") in the pre-launch log, and a warning appears in game too, so a stale launch is obvious from inside the game.
+- A failure also prints an on-screen warning in the pre-launch log (in Mode A, "pushes are NOT arriving. Tell Silvaria"). Nothing warns inside the game: the status file is read by the diagnostic described below.
 - Auth problems fail fast. The hook never hangs on a credential prompt that cannot be answered in the pre-launch context; it fails at once, records the reason and launches.
 
 This replaces the old behavior, where the script simply exited 0 with at most a yellow console line. "Continuing with existing files" is still the safe default on a network hiccup, but a failed sync is now recorded and reported.
@@ -121,7 +121,7 @@ The instance keeps these in either mode. In Mode B the overlay skips them on pur
 - `logs/`, `crash-reports/`: runtime output
 - `backups/`: world backups
 - `libraries/`: Forge/Minecraft libraries
-- `mods/*.jar`: handled separately by `download_mods.ps1` (diff-aware)
+- `mods/*.jar`: handled separately by the mod-fetch step (packwiz-installer in Mode B, which falls back to `download_mods.ps1`, the downloader Mode A uses)
 - `options.txt`: player keybinds and graphics preferences
 - `servers.dat`: server list
 - `usercache.json`, `whitelist.json`, etc.: server-only files that shouldn't exist on a client anyway
@@ -142,7 +142,7 @@ Until 2026-10-15 the repository tracked a set of old logs and crash reports (so 
 PrismLauncher honors a pre-launch command only when the instance's launcher settings are wired correctly, and those settings can drift (a manual edit, an import, a launcher upgrade) and silently disable syncing. To correct that, the pre-launch hook checks and repairs the instance's launcher wiring on every launch:
 
 - It makes sure the launcher's "override commands" setting is on; without it, the pre-launch and post-exit commands are ignored entirely.
-- It upgrades the two known stale pre-launch seeds (the legacy bare `git pull --ff-only` and the zip-path `sync_client.bat`) to `prism_prelaunch.bat`. Any other custom command is left alone.
+- It upgrades the two known stale pre-launch seeds (the legacy bare `git pull --ff-only` and the zip-path `sync_client.bat`) to `prism_prelaunch.bat`. Any other custom command is left alone. This runs only in a git-clone instance: for a tester's Mode B instance the zip-path bat is the right hook, and the sync there repairs its own wiring.
 - It uses the launcher's bundled portable Java instead of a hardcoded Java path, so the instance still launches after Java is moved or reinstalled, or after the instance is copied to a new machine.
 
 The repair only works on the second and later launches. The very first launch still needs the one-time manual wiring, because the hook cannot run until it is wired as the pre-launch command. The new-machine setup guide documents that one-time setup.
@@ -170,7 +170,7 @@ When updating either mod:
 2. Find the original patched JAR in git history: `git log --all --oneline -- '.minecraft/mods/<jar>.jar'`
 3. Re-apply the bytecode patch to the new version the same way (an asm-based class file edit, with javap to confirm the bytecode delta is what you expect)
 4. Replace the unpatched JAR in all 3 distros (`mods/`, `server_distribution/mods/`, `distribution/client/mods/`)
-5. Update the version in `.pw.toml` if needed, but DO NOT let packwiz re-download: the URL points to the unpatched upstream
+5. Release it as one of the pack's own jars (both are listed in `custom_jars_manifest.json`): the custom-jar release regenerates the manifest and points the jar's `.pw.toml` at the committed patched copy, never at the unpatched upstream download. After a release under a new file name, `intake.py update <mod> <new jar>` moves the mod's intake record to it
 6. Test: launch the dev instance and confirm the patched behavior holds (the Patchouli book still opens without resource pack enforcement; Ars chest loot doesn't auto-inject)
 
-**Anti-pattern:** running `packwiz update <mod>` and forgetting that either jar exists. As a guard, both jars are listed in CLAUDE.md "Custom Bundled JARs" and in this protocol, and reviewers must check them before merging mod updates.
+**Anti-pattern:** running `packwiz update <mod>` and forgetting that either jar exists. As a guard, both jars are listed in CLAUDE.md "Custom Bundled JARs" and in this protocol, and the mod-intake tool refuses to move one of the pack's own jars to a new file name before the custom-jar release has done it.

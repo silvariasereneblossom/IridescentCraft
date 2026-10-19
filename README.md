@@ -1,6 +1,6 @@
 # IridescentCraft
 
-A 420-mod progression-focused Forge 1.20.1 modpack. It is in alpha and is being playtested by a small group.
+A 455-mod progression-focused Forge 1.20.1 modpack. It is in alpha and is being playtested by a small group.
 
 [Wiki / design docs](https://github.com/silvariasereneblossom/IridescentCraft/wiki) · [Known issues](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/known-issues/tracker.md) · [Changelog](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/design/changelog.md)
 
@@ -9,7 +9,7 @@ A 420-mod progression-focused Forge 1.20.1 modpack. It is in alpha and is being 
 1. Right-click **[`iridescentcraft.bat`](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat)**, choose *Save link as*, and save it to any folder you like (Desktop, Downloads, anywhere).
 2. Double-click the bat. It will:
    - Download and install PrismLauncher if you don't have it
-   - Create the IridescentCraft instance with all 420+ mods
+   - Create the IridescentCraft instance with all 458 mods
    - Configure the per-launch sync hook so your pack stays current automatically
    - Set the required JVM flags
 3. Open PrismLauncher, click IridescentCraft, then click Launch.
@@ -33,7 +33,7 @@ The test server has a whitelist. Before your first join, send the server operato
 ## What's in it
 
 - 4-tier progression (Bronze Age → God-Killer → Space) with stage-gated recipes and dimensions
-- 10 RPG classes, 11 custom races and 13 Origins, chosen in three prompts on first join
+- 13 RPG classes, 11 custom races and 13 Origins, chosen in three prompts on first join
 - A custom skill system (Pufferfish's Skills + Iridescent Aptitudes) with 28 hand-tuned skill nodes across 8 aptitudes
 - Modular armor (Iridescent Reforging): a Tetra-style modular armor framework that keeps a specialized armor's identity through reforging. It covers ~42 specialty armor sets (ISS robes, Aether, Twilight Forest, Cataclysm, Aquaculture, Botania, etc.)
 - Modular spellbooks (Iridescent Modular Spells): Tetra-modular Iron's Spellbooks and Ars Nouveau books with 5-level honing per slot

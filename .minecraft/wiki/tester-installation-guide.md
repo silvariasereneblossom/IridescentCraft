@@ -2,7 +2,7 @@
 
 This page takes a tester from nothing to a working install of the IridescentCraft alpha. It covers the client install and the dedicated server install, each on Windows and Linux, and the auto-update flow that keeps your install in sync with the `main` branch.
 
-The full pack is Forge 1.20.1-47.4.6, about 450 mods and about 3 GB on disk. The first mod download is slow (5 to 30 minutes depending on your connection); later launches are fast because the auto-sync only fetches what changed.
+The full pack is Forge 1.20.1-47.4.6, 455 mods (a client installs three more, 458 in all) and about 3 GB on disk. The first mod download is slow (5 to 30 minutes depending on your connection); later launches are fast because the auto-sync only fetches what changed.
 
 ---
 
@@ -10,7 +10,7 @@ The full pack is Forge 1.20.1-47.4.6, about 450 mods and about 3 GB on disk. The
 
 These are direct downloads from `main` (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else from GitHub (the Forge installer, mods, configs, datapacks). You do not need to extract a zip or run `git clone`.
 
-| Platform | Client (PrismLauncher .mrpack builder) | Server (full self-bootstrap) |
+| Platform | Client (PrismLauncher installer) | Server (full self-bootstrap) |
 |---|---|---|
 | Windows | [iridescentcraft.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat) | [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) |
 | Linux | [iridescentcraft.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh) | [iridescentserver.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh) |
@@ -29,7 +29,7 @@ The server scripts create a clean subfolder next to wherever you saved them (`Ir
 | Network | The first install downloads from GitHub, Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
 | Account | Microsoft Minecraft account (or Ely.by / offline for LAN testing only) |
 
-Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need the JVM `-noverify` flag. The server scripts add it for you; in PrismLauncher you add it once during setup (see the Windows and Linux client sections below).
+Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need the JVM `-noverify` flag. The server scripts add it for you, and so does the Windows client installer; on Linux you add it once in PrismLauncher during setup (see the client sections below).
 
 ---
 
@@ -46,12 +46,12 @@ Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need th
 4. Run the installer: double-click `iridescentcraft.bat`.
    - On the bootstrap path, that is the file you downloaded.
    - If you cloned or unzipped the repo, navigate to `.minecraft\distribution\client\iridescentcraft.bat`.
-   - The script downloads the latest `install.ps1` from GitHub, runs it, and writes a `.mrpack` file for PrismLauncher to import at `%TEMP%\IridescentCraft.mrpack` (it prints the path to the console).
-5. Import into PrismLauncher: Add Instance → Import from local file → select the `.mrpack`.
-6. Add `-noverify` to the JVM arguments: right-click the new instance → Edit Instance → Settings → Java → JVM arguments, and add `-noverify` to the existing list. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
-7. First launch: PrismLauncher downloads Forge and about 450 mods. Expect 10 to 20 minutes on the first run; later launches take seconds.
+   - The script runs `install.ps1` (the copy next to it, or else the latest one from GitHub). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
+5. There is nothing to import: the installer starts PrismLauncher with the new instance in its list. It also asks you to save a free CurseForge API key, which the sync needs to download mods reliably; the Client Sync Protocol page linked below says where it goes.
+6. Check that `-noverify` is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts `-noverify` there, and the sync adds it back if it goes missing. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
+7. First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.
 
-To auto-update on every launch, set the PrismLauncher pre-launch command to `"%INST_MC_DIR%\sync_client.bat"`. Each launch then syncs to the latest `main` commit, which typically takes under 1 second when you are up to date and about 30 seconds when there is a new commit. [[Client Sync Protocol]] has the details.
+The installer also sets the instance's pre-launch command, so every launch syncs to the latest `main` commit, which typically takes under 1 second when you are up to date and about 30 seconds when there is a new commit. If the command is ever missing (Edit Instance → Settings → Custom Commands), set it to `"%INST_MC_DIR%\sync_client.bat"`. [[Client Sync Protocol]] has the details.
 
 ### Path B: Manual install (if you don't use PrismLauncher)
 
@@ -86,7 +86,7 @@ chmod +x iridescentcraft.sh
 #    Import it in PrismLauncher: Add Instance → Import from local file
 ```
 
-After the import, follow steps 6 and 7 from the Windows guide above (add `-noverify`, set the pre-launch sync command). On Linux the pre-launch command is:
+After the import, add `-noverify` to the instance's JVM arguments as in step 6 of the Windows guide above: the Linux script builds a plain Modrinth pack, which cannot set JVM arguments. There is no Linux sync script yet, so a Linux install does not update itself; the pre-launch command below names a script the pack does not ship:
 
 ```
 bash "$INST_MC_DIR/sync_client.sh"
@@ -109,14 +109,14 @@ What happens automatically:
 1. Subfolder bootstrap: the first run creates `IridescentCraft Dedicated Server\` next to the bat, copies itself there and relaunches from there, so server files do not spill into Downloads or Desktop. The marker file `.icraft_server` flags the install location so later launches don't bootstrap again.
 2. Repo sync: `phase0_sync.ps1` is downloaded from GitHub if it is missing, then runs. On the first launch, with no `.icraft_last_sha` marker, it falls back to a full `main.zip` download (about 150 MB) and overlays all `server_distribution/` files into the install dir. Later launches diff-sync through the GitHub compare API (typically 5 to 10 seconds for a few changed files).
 3. Forge installer: downloads `forge-1.20.1-47.4.6-installer.jar` and runs `--installServer`.
-4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads about 370 server-side mods from Modrinth and the CurseForge CDN. Client-only mods (rendering, GUI, KubeJS Offline, Equipment Compare, etc.) are skipped through each mod's `side` field.
-5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (`-Xmx10G -Xms8G` G1GC tuning).
+4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, KubeJS Offline, Equipment Compare, etc.) are skipped through each mod's `side` field.
+5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (`-Xmx14G -Xms14G` G1GC tuning; the Linux script uses `-Xmx10G -Xms8G`).
 
-The first boot takes 5 to 15 minutes while about 420 mods initialize. Wait for `Done (XXX.XXXs)! For help, type "help"` in the console.
+The first boot takes 5 to 15 minutes while the server's 428 mods initialize. Wait for `Done (XXX.XXXs)! For help, type "help"` in the console.
 
 If the server state has drifted from the repo (rare), force a clean re-sync with `iridescentserver.bat -Force`. It deletes the `.icraft_last_sha` marker and downloads everything again.
 
-To tune RAM, edit the bat and change `-Xmx10G` (max heap) and `-Xms8G` (initial heap). On a 16 GB host, `-Xmx10G` is a good value; more than 12 GB rarely helps Minecraft.
+To tune RAM, edit the bat and change `-Xmx14G` (max heap) and `-Xms14G` (initial heap). The bat's own note asks for 12 GB plus about 2 GB per player online at once: 14 GB for one tester, 16 GB for two, 22 GB for five.
 
 ---
 
@@ -160,9 +160,9 @@ In the Minecraft client (with the modpack installed):
 
 If `sereneblossom.gay` doesn't resolve for you (DNS propagation, a custom resolver, etc.), ping me for the raw IP. The DNS record should work in 99% of cases.
 
-Client and server must be on the same `main` branch commit to be protocol compatible. The auto-sync flow takes care of this if you launch both within about 30 seconds of the latest push.
+Client and server must be on the same `main` branch commit to be protocol compatible. Your client syncs on every launch, but the test server takes a new commit only when it restarts (on its schedule, every 4 to 12 hours, or after a crash), so for a while after a push your client can be ahead of it.
 
-If you get "connection lost: invalid protocol", your client is on a different commit from the server. Launch the client once to trigger the auto-sync, then reconnect.
+If you get "connection lost: invalid protocol", your client is on a different commit from the server. Launch the client once to trigger the auto-sync, then reconnect. If your client is already on the newest commit, the server catches up at its next restart.
 
 ---
 
@@ -172,10 +172,10 @@ You almost never need to update by hand, because the client and the server both 
 
 | Component | Sync mechanism | Trigger |
 |---|---|---|
-| Client | `sync_client.ps1` / `sync_client.sh` | Every PrismLauncher launch (via the pre-launch command) |
+| Client | `sync_client.ps1` (Windows) / `sync_client.sh` (not shipped yet) | Every PrismLauncher launch (via the pre-launch command) |
 | Server | self-sync block in `iridescentserver.bat`/`.sh` | Every server launch |
 
-Both compare a stored `.icraft_last_sha` with the latest `main` commit SHA and download again only when the two differ. A network failure is skipped silently, and your install keeps working with the files it already has.
+Both compare a stored `.icraft_last_sha` with the latest `main` commit SHA and download again only when the two differ. A network failure does not stop the launch: the sync prints a warning and your install keeps working with the files it already has. The client sync also records the failure in a status file in the instance.
 
 For a forced full re-sync, see the `-Force` flag in the server section. On the client, delete `.icraft_last_sha` from the instance's `.minecraft` folder and relaunch.
 
@@ -195,7 +195,7 @@ When you hit a crash or unexpected behavior:
    - Whether server / client / both
 
    Issues are public too: leave the logs out of the issue and say that you sent them.
-3. If you are stuck, the in-game command `/icraft despawn <radius>` can clear nearby hostiles, which lets you recover before you report a crash caused by a mob.
+3. On a server where you are an operator, `/icraft despawn <radius>` clears nearby hostiles, which lets you recover before you report a crash caused by a mob. The command needs operator status (permission level 2), and the test server has no operators, so it does not work there.
 
 The dev usually debugs in this order: the latest crash report (in `crash-reports/`), then the head and tail of `latest.log`, then `kubejs-server.log` for KubeJS errors, then `debug.log` for class-load and resource-load issues.
 
@@ -211,7 +211,7 @@ The dev usually debugs in this order: the latest crash report (in `crash-reports
 | **Mod download fails midway** | Re-run the installer; it skips files it already downloaded. The CurseForge CDN is occasionally flaky, and one retry usually clears it. |
 | **First server boot stuck for >20 min** | Watch `logs/latest.log`: if the last line is `[modloading-worker]`, something is still working. Some configs (Ad Astra worldgen, Apotheosis affixes) generate large data on the first init. Wait it out unless you see a stack trace. |
 | **`Connection lost: invalid protocol` on join** | Client and server are on different commits. Relaunch the client to trigger the auto-sync, then reconnect. |
-| **Custom JARs missing after sync** | One of the in-house mods (`iridescent_modular_spells-X.X.X.jar`, `iridescent_origins-X.X.X.jar`, etc.) was treated as stale. Check that the version in `mods/` matches the one in the repo's `.gitignore` allowlist. If the repo bumped a version, the next sync handles it. |
+| **Custom JARs missing after sync** | One of the in-house mods (`iridescent_tetra_expansion-X.X.X.jar`, `iridescent_origins-X.X.X.jar`, etc.) was treated as stale. The sync removes a copy in `mods/` whose checksum differs from the pack's `custom_jars_manifest.json` and downloads the current one in the same run, so a jar still missing afterwards means that download failed: launch again and read the sync's lines in the launch log. If the repo bumped a version, the next sync handles it. |
 
 ---
 

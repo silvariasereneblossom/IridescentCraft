@@ -1,6 +1,6 @@
 # Mod Overview
 
-The pack's 415+ mods, sorted by function and by the tier at which each becomes available.
+The pack's 455 mods (as of 2026-10-18), sorted by function and by the tier at which each becomes available.
 
 ## Core Tech (Tiered)
 
@@ -86,7 +86,7 @@ Libraries/Dependencies: Majrusz Library, Amber
 
 Performance: ImmediatelyFast, Oculus, LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis
 
-Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer (ungated; the XP cost is the gate), Flux Networks, Iron Jetpacks (tiered by materials, single dynamic item ID with NBT), Table of Experience (T2-gated recipe), DarkOrb Orb of Origin (T2-gated recipe)
+Other: CC: Tweaked, Quark, Disenchanting (T1-gated recipe), Enchantment Transfer (ungated; the XP cost is the gate), Flux Networks, Iron Jetpacks (tiered by materials, single dynamic item ID with NBT), Table of Experience (T2-gated recipe), DarkOrb Orb of Origin (T2-gated recipe)
 
 ## Config Changes Made
 
@@ -151,7 +151,7 @@ These mods were in earlier builds and have since been dropped. Where a mod was r
 
 ## Custom Mods
 
-The pack ships custom-bundled jars (in-house source builds, bytecode-patched jars and utilities). They are tracked in the custom-JAR allowlist so the self-updater doesn't delete them. Highlights:
+The pack ships custom-bundled jars (in-house source builds, bytecode-patched jars and utilities). They are listed, each with its checksum, in the pack's custom-jar manifest, so the stale-jar cleanup keeps them and replaces a copy that does not match. Highlights:
 
 - iridescent_tetra_expansion-1.0.0.jar: bundles two `[[mods]]`, Iridescent Modular Spells (15 modular spell books, 12 ISS + 3 Ars, full Tetra workbench integration, BookKind intrinsic overlay, 4-slot model with lining improvements; blaze/evoker/necronomicon are first-kill drops from ISS bosses) and Iridescent Reforging (Tetra-armor extension). Item IDs keep their `iridescent_modular_spells:` / `iridescent_reforging:` namespaces; the full ID merge into a single `iridescent_tetra_expansion` namespace is deferred to the alpha→beta step. Built via `iridescent-tetra-expansion-mod/wsl-build.sh`.
 - iridescent_origins-1.0.0.jar: Origins/races/classes (3-prompt selection on first join).
@@ -164,6 +164,6 @@ The pack ships custom-bundled jars (in-house source builds, bytecode-patched jar
 
 ## Related Pages
 
-- [Master Design Document](../design/master.md): full mod list and tier assignments
+- [Master Design Document](../design/master.md): design intent and tier assignments (its appendix holds the mod roster by tier)
 - [Progression](../progression/overview.md): how tiers gate mod access
 - [Custom Mods](custom.md): in-house and bytecode-patched mod reference

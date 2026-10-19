@@ -1,6 +1,6 @@
 # Custom Mods
 
-These mods are built from source or bytecode-patched in-house. Packwiz manages none of them: they are committed directly to the repo and listed in the custom-JAR allowlist in both `iridescentserver.bat` and `sync_from_repo.bat`, so the self-updater doesn't delete them as stale.
+These mods are built from source or bytecode-patched in-house. They are committed directly to the repo, in `mods/` of all three distributions, and each has a packwiz metafile like any other mod (for all but OfflineSkins it downloads the committed copy). `custom_jars_manifest.json` lists every one of them with its SHA-256 and size, and the stale-jar cleanup keeps what it lists and replaces a copy whose checksum differs. (Older hand-kept lists of these jars remain in `sync_from_repo.bat` and, as a fallback, in the cleanup script; `iridescentserver.bat` no longer has one and runs that script.)
 
 **JVM flag requirement:** the two bytecode-patched mods (Patchouli, Ars Nouveau) create dead code paths that the verifier rejects, so the client and the server JVM args both need `-noverify`. The server has it built into `iridescentserver.bat`; on the client you add it by hand in PrismLauncher (Instance → Settings → Java → JVM arguments).
 
@@ -10,7 +10,7 @@ These mods are built from source or bytecode-patched in-house. Packwiz manages n
 
 ### iridescent_origins-1.0.0.jar
 
-The Origins / races / classes implementation. On first join the player answers three prompts in order: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (10 icraft). The jar implements the glass-cannon HP modifiers, the Faefolk armor weakness, Witch of Ink frailty, the Archmage glass frame and all the per-class power JSONs.
+The Origins / races / classes implementation. On first join the player answers three prompts in order: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (13 icraft). The jar implements the glass-cannon HP modifiers, the Faefolk armor weakness, Witch of Ink frailty, the Archmage glass frame and all the per-class power JSONs.
 
 **Source:** `iridescent-origins-mod/src/main/resources/data/icraft/origins/*.json`
 **Build:** `iridescent-origins-mod/build_mod.sh` (or jar surgery for content-only edits: extract the content of `iridescent_origins-1.0.0.jar` → edit → re-zip, with no Gradle rebuild).
@@ -33,7 +33,7 @@ The Patchouli Codex book, shipped as a javafml content mod with a minimal compil
 - Only `IridescentCodex.class` ends up in the final jar
 - `data/` mirrors to `assets/` automatically because `book.json` has `use_resource_pack: true`
 
-**Build:** `bash build_codex.sh` compiles, packs and deploys to all 3 distros. The jar filename stays `iridescent_codex_data.jar`, so the custom-JAR allowlists don't need updating on a rebuild.
+**Build:** `bash build_codex.sh` compiles, packs and deploys to all 3 distros. The jar filename stays `iridescent_codex_data.jar`, so a rebuild changes no file name anywhere; it still needs the custom-jar manifest regenerated, because the jar's checksum changes.
 
 ### iridescent_tetra_expansion-1.0.0.jar (Modular Spells + Reforging bundle)
 
@@ -103,7 +103,7 @@ A Mekanism coremod that makes cables walkable instead of letting players pass th
 
 ### zeta_racefix-1.0.0.jar
 
-Race selection fix for the Origins layer ordering bug.
+Race selection fix for the Origins layer ordering bug. The pack does not ship this jar: it is in no mod index, no mods folder and not in the custom-jar manifest (only old hand-kept lists in a few scripts still name it).
 
 ### offlineskins-1.20.1-v1.jar
 
@@ -142,7 +142,7 @@ So with 4 players, 2 active and 2 idle, the tick rate is 50%; with 7 players and
 - `/icraftdiff players`: three-state per-player status (`✓ active` / `◍ at-spawn` / `✗ idle`) with idle minutes
 
 **Source:** `iridescent-difficulty-mod/`
-**Build:** `./gradlew build` (ForgeGradle, no mixin)
+**Build:** `bash iridescent-difficulty-mod/wsl-build.sh` (ForgeGradle in WSL, no mixin; deploys to all 3 distros)
 **Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; vanilla bosses do not scale per kill), `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).
 
 ---
@@ -161,17 +161,17 @@ Bytecode-patched: `doApply→immediate return` in `DungeonLootEnhancerModifier.c
 
 ## Adding a new custom JAR
 
-1. Add the JAR to `mods/` in all three distributions (main, server_distribution, distribution/client)
-2. Add the filename to the `$customJars` array in `iridescentserver.bat` (stale cleanup section)
-3. Add the filename to the `$customJars` array in `sync_from_repo.bat` (stale cleanup section)
-4. Add the filename to `CUSTOM_JARS` in `update_mods.sh`
+1. Add the JAR to `mods/` in all three distributions (main, server_distribution, distribution/client) and commit the three copies (a mod with a `wsl-build.sh` deploys them itself; `mods/*.jar` is git-ignored, so the jars are force-added)
+2. Run `regen_custom_jars_manifest.ps1`: it writes the jar's SHA-256 and size into the three `custom_jars_manifest.json` files and points the jar's metafile at the committed copy (a new jar needs a line in `sync_custom_jar_markers.py` first)
+3. Regenerate the indexes and the two `expected_state.json` files, and commit them with the jar
+4. Give the mod an intake record with `intake.py`: the pre-push hook refuses a mod without one
 5. If it is bytecode-patched, add a `-noverify` requirement note here
 
-If the jar is mostly content (assets/data/lang) with no compiled changes, jar surgery (extract → edit → re-zip → keep the filename) avoids the Gradle rebuild and leaves the allowlist untouched.
+A rebuild under the same file name needs step 2 again (and the files it changes committed), because the jar's checksum changes. If the jar is mostly content (assets/data/lang) with no compiled changes, jar surgery (extract → edit → re-zip → keep the filename) avoids the Gradle rebuild and changes no file name, but it needs step 2 as well.
 
 ---
 
 ## Related
 
-- [Iridescent Modular Spells design doc](../design/iridescent-modular-spells.md)
-- [Mod overview](overview.md)
+- [Iridescent Modular Spells design doc](../design/iridescent-modular-spells-tetra-migration.md)
+- [Mod overview](../mods/overview.md)

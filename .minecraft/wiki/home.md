@@ -14,9 +14,10 @@ The canonical design reference for all modpack systems.
 
 ### Progression
 - [Progression Overview](progression/overview.md): Tier system, dimension gates, unlock paths
+- [Boss Catalog](design/boss-catalog.md): Every boss by tier, where to find it, and how hard it is to find
 
 ### Classes & Races
-- [Classes & Races Overview](classes/overview.md): 10 classes, 11 races, 13 origins, glass cannon mechanics
+- [Classes & Races Overview](classes/overview.md): 13 classes, 11 races, 13 origins, glass cannon mechanics
 
 ### Systems
 - [Systems Overview](systems/overview.md): Death penalty, scaling, enchantments, affixes, skills, loot, food
@@ -27,12 +28,10 @@ The canonical design reference for all modpack systems.
 
 ### Mods
 - [Mod Overview](mods/overview.md): Key mods by tier, config changes
+- [Mod List](Mod-List.md): Every mod in the pack, generated from the mod index
 
 ### Known Issues
 - [Issue Tracker](known-issues/tracker.md): Active bugs, testing needed, resolved
-
-### Roadmap
-- [Planned Changes](roadmap/planned.md): Future features, improvements, and technical debt
 
 ### Meta
 - [Style Guide](meta/style-guide.md): Writing conventions for wiki pages
@@ -49,17 +48,17 @@ The canonical design reference for all modpack systems.
 | Death penalty | Implemented | Custom on-death penalty |
 | Loot tables (LootJS) | Implemented | LootJS-driven custom loot tables |
 | Skill trees (Pufferfish) | Implemented | Skill-point investment trees |
-| Custom enchantments | Implemented | 24 custom enchantments |
+| Custom enchantments | Implemented | 29 custom enchantments |
 | Apotheosis affixes | Implemented | Custom gear affix system |
 | Difficulty engine (`iridescent_difficulty`) | Implemented | Time-based per-dimension mob scaling |
 | AStages derivative gating | Implemented | Diamond, netherite, and End derivatives gated behind progression |
-| Origin layer cleanup | Implemented | 3-prompt flow: Origin (13) → Race (11) → Class (10) |
+| Origin layer cleanup | Implemented | 3-prompt flow: Origin (13) → Race (11) → Class (13) |
 | Class respec | Implemented | Respec your class |
 | Equipment HP halving | Implemented | Glass-cannon: equipment max-HP bonuses halved |
 | Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat). Submitting, the token bank and the boss rush work since October 2026; a tier is bought only with the tier below held |
 | Heracles quest tree | In progress | Quest tree driving the token economy |
 | Engineering questline | Implemented | 14-quest Heracles engineering line (intro through T4 fusion/antimatter capstone) plus an Engineering Lane Codex category with 5 entries |
-| Patchouli Codex | Working | 11 categories, 80 entries, advancement-gated |
+| Patchouli Codex | Working | 14 categories, 113 entries (as of 2026-10-18), advancement-gated |
 | Book suppression | Working | Duplicate mod guidebooks suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
 | Prestige/Ascension (Part IX) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
