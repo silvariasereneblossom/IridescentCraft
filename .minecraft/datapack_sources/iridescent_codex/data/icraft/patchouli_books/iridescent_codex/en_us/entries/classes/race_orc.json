@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$()$(br2)$(bold)Ferocity$() — +12% attack speed. Pairs extremely well with Berserker's Blood Fury.$(br2)$(bold)Knockback Mastery$() — +30% knockback dealt. Enemies you hit stagger further. Useful for crowd control."
+      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$()$(br2)$(bold)Ferocity$(): +12% attack speed. Pairs especially well with Berserker's Blood Fury.$(br2)$(bold)Knockback Mastery$(): +30% knockback dealt, so enemies you hit stagger further. Useful for crowd control."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Hunger Drain$() — +35% food drain rate. The highest penalty in the pack. Always eat before fights.$(br2)$(bold)Brutish$() — Immunity to Weakness potion effect. Resistance to Slowness is halved in duration.$(br2)$(bold)Next: pair with Berserker or Samurai and keep a food bar hotkeyed — you'll burn through it.$()"
+      "text": "$(bold)Hunger Drain$(): +35% food drain rate, the highest penalty in the pack. Always eat before fights.$(br2)$(bold)Brutish$(): immune to the Weakness potion effect, and Slowness lasts half as long on you.$(br2)$(bold)Next: pair with Berserker or Samurai and keep a food bar hotkeyed. You'll burn through it.$()"
     }
   ]
 }

@@ -6,19 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fight bosses — the best weapons in the pack drop only from them, and every kill banks Combat-lane tokens.$(br2)Each tier has required progression bosses and optional trophy bosses. $(bold)Simply Swords unique weapons$() are boss-drop-only: the pack has {{uniques kind=sword count}} of them and {{uniques kind=bow count}} Too Many Bows bows, each matched to a boss ($(l:icraft:bosses/unique_weapons)Unique Weapons$(/l)). You cannot craft them, trade for them, or find them in chests."
+      "text": "The best weapons in the pack drop only from bosses, and every kill banks Combat-lane tokens. Each tier has required progression bosses and optional trophy ones.$(br2)$(bold)Simply Swords uniques$() are boss-drop-only: {{uniques kind=sword count}} swords, plus {{uniques kind=bow count}} Too Many Bows bows, each matched to a boss ($(l:icraft:bosses/unique_weapons)Unique Weapons$(/l)). None can be crafted, traded for or found in chests."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() — Swampjaw and the Bellringer ({{boss meetyourfight:swampjaw tier}} minibosses), Dame Fortuna and Rosalyne ({{boss meetyourfight:dame_fortuna tier}} bosses)$(li)$(bold)Mutant Monsters$() — Overworld + dimensional mutant variants$(li)$(bold)Terramity$() — Structure bosses from Tier 1 up$(li)$(bold)Cataclysm$() — T3–T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() — T4 optional superbosses$(li)$(bold)Stalwart Dungeons$() — T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$() — spellcaster bosses and minibosses, all {{boss irons_spellbooks:dead_king tier}}"
+      "text": "$(bold)Boss Mods Active$()$(br)$(li)$(bold)Brutal Bosses$(): structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$(): Swampjaw and the Bellringer ({{boss meetyourfight:swampjaw tier}} minibosses), Dame Fortuna and Rosalyne ({{boss meetyourfight:dame_fortuna tier}} bosses)$(li)$(bold)Mutant Monsters$(): Overworld and dimensional mutant variants$(li)$(bold)Terramity$(): structure bosses from Tier 1 up"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Progressive Bosses$()$(br2)This mod runs the Wither you summon. It does $(bold)not$() make a boss stronger each time it is killed: your first Wither and your tenth are the same fight.$(br2)A Wither built with $(bold)Corrupted Soul Sand$() is stronger than a plain one. The pack keeps one of those forms, the $(l:icraft:bosses/t4_bosses)Ultimate Wither$(/l): a Tier 4 challenge in the Nether."
+      "text": "$(li)$(bold)Cataclysm$(): T3 and T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$(): optional T4 superbosses$(li)$(bold)Stalwart Dungeons$(): T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$(): spellcaster bosses and minibosses, all {{boss irons_spellbooks:dead_king tier}}"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Per-kill scaling$()$(br2)Bosses remember who has beaten them. The first time a boss trades a hit with a player, it takes the $(bold)highest$() kill count of that boss among the players within 64 blocks, and keeps it for the whole fight.$(br2)Everyone within 64 blocks when it dies counts the kill. $(bold)/icraft bosskills$() shows your counts."
+      "text": "$(bold)Progressive Bosses$()$(br2)This mod runs the Wither you summon. It does $(bold)not$() make a boss stronger each time it is killed: your first Wither and your tenth are the same fight.$(br2)A Wither built with $(bold)Corrupted Soul Sand$() is stronger than a plain one. The pack keeps one of those forms, the $(l:icraft:bosses/t4_bosses)Ultimate Wither$(/l), as a Tier 4 challenge in the Nether."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Per-kill scaling$()$(br2)Bosses remember who has beaten them. The first time a boss trades a hit with a player, it takes the $(bold)highest$() kill count of that boss among the players within 64 blocks and keeps it for the whole fight.$(br2)Everyone within 64 blocks when it dies counts the kill. $(bold)/icraft bosskills$() shows your counts."
     },
     {
       "type": "patchouli:text",
@@ -26,7 +30,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy — every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2){{tier 1 rushpct}}$() / $(t3){{tier 2 rushpct}}$() / $(t4){{tier 3 rushpct}}$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting — not progression currency.$(br2)$(bold)Next: run /icraft codex bosses, then open $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l).$()"
+      "text": "$(bold)Bosses & Progression$()$(br2)Every boss kill banks Codex tokens in the $(bold)Combat$() lane, more at higher tiers. Kills also count toward the $(bold)boss rush$(): clear $(t2){{tier 1 rushpct}}$() / $(t3){{tier 2 rushpct}}$() / $(t4){{tier 3 rushpct}}$() of a tier's bosses to advance without banking any tokens.$(br2)Boss $(italic)materials$() drop too. They are crafting spoils, not progression currency.$(br2)$(bold)Next: $(l:icraft:bosses/t1_bosses)Tier 1 Bosses$(/l), then /icraft codex bosses.$()"
     },
     {
       "type": "icraft:generated",

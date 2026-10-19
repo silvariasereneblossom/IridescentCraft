@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Nodes",
-      "text": "$(bold)Mining Speed$() \u2014 attributeslib:mining_speed \u2014 percentage bonus to all block-breaking speed.$(br2)$(bold)Fortune Enhancement$() \u2014 Increases effective Fortune level for loot table rolls. Does not add enchant levels \u2014 it adds luck to the roll.$(br2)$(bold)Crop Yield$() \u2014 KubeJS harvest event: chance for bonus crop drops. Scales linearly to +50% at max investment."
+      "text": "$(bold)Mining Speed$() (attributeslib:mining_speed): a percentage bonus to all block-breaking speed.$(br2)$(bold)Fortune Enhancement$(): raises your effective Fortune level for loot table rolls. It adds luck to the roll and leaves enchant levels alone.$(br2)$(bold)Crop Yield$(): a KubeJS harvest event gives a chance of bonus crop drops, scaling linearly to +50% at max investment."
     },
     {
       "type": "patchouli:text",
       "title": "Nodes (cont.)",
-      "text": "$(bold)Prospector Branch$() \u2014 Vein mining-style bonuses: detecting ore proximity, bonus drops from ore processing.$(br2)$(bold)Naturalist Branch$() \u2014 Fishing speed, bait efficiency, mob loot quantity bonuses.$(br2)$(bold)Gathering Capstone$() \u2014 $(bold)Master Gatherer$() \u2014 All resource gathering has 10% chance to trigger double yield. Stacks with Fortune.$(br2)$(bold)Next: take Mining Speed first \u2014 it pays off on every block you break.$()"
+      "text": "$(bold)Prospector Branch$(): vein mining-style bonuses: sensing nearby ore and extra drops from ore processing.$(br2)$(bold)Naturalist Branch$(): fishing speed, bait efficiency and more mob loot.$(br2)$(bold)Gathering Capstone$(): $(bold)Master Gatherer$(). Gathering has a 10% chance of double yield, stacking with Fortune.$(br2)$(bold)Next: Mining Speed first.$()"
     }
   ]
 }

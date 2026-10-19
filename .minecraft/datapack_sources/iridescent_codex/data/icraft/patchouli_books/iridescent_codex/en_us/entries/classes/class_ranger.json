@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Mobile glass cannon. Maximum ranged damage. Paper-thin defenses. Don't get hit.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -15% armor (final value)"
+      "text": "$(italic)A mobile glass cannon with maximum ranged damage and paper-thin defenses. Don't get hit.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -15% armor (final value)"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Swift$() — +15% movement speed. The fastest class. Combined with +10% attack speed, the $(thing)Ranger$() is built for kiting and repositioning.$(br2)$(bold)Eagle Eye$() — +20% projectile damage. Arrows and thrown weapons hit significantly harder.$(br2)$(bold)Glass Cannon$() — Equipment HP bonuses from Vitality enchant, HP affixes, and armor attributes are halved. Base HP, Spice of Life food HP, and level-up HP are unaffected."
+      "text": "$(bold)Swift$(): +15% movement speed, the fastest class. With +10% attack speed on top, the $(thing)Ranger$() is built for kiting and repositioning.$(br2)$(bold)Eagle Eye$(): +20% projectile damage for arrows and thrown weapons.$(br2)$(bold)Glass Cannon$(): equipment HP (Vitality enchant, HP affixes, armor attributes) is halved; base HP, Spice of Life food HP and level-up HP are not."
     },
     {
       "type": "patchouli:text",
       "title": "Risk and Reward",
-      "text": "The $(thing)Ranger$() has the highest ranged DPS in the game but dies in 2-3 hits from endgame content. Positioning is everything.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks with Swift for extreme mobility. Night vision for dungeon safety.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency for sustained kiting.$(br)$(thing)Human$() — No weaknesses, +15% XP to reach glass cannon safety thresholds faster.$(br2)$(bold)Next: spec the Marksman tree ($(k:puffish_skills.open)) — Draw Speed changes everything.$()"
+      "text": "The $(thing)Ranger$() has the highest ranged DPS in the game but dies in 2-3 hits from endgame content. Positioning is everything."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Risk and Reward, cont.",
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Elf$(): +10% speed stacks with Swift for extreme mobility, and night vision keeps you safer in dungeons.$(br)$(thing)Halfling$(): a smaller hitbox and food efficiency for sustained kiting.$(br)$(thing)Human$(): no weaknesses, and +15% XP to reach glass cannon safety thresholds faster.$(br2)$(bold)Next: spec the Marksman tree ($(k:puffish_skills.open)) for Draw Speed.$()"
     }
   ]
 }

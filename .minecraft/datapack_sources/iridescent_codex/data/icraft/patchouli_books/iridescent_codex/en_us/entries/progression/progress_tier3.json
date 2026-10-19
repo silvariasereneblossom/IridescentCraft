@@ -1,5 +1,5 @@
 {
-  "name": "Reached: Tier 3 - Dominion",
+  "name": "Tier 3: Dominion",
   "icon": "undergarden:froststeel_ingot",
   "category": "icraft:progression",
   "sortnum": 9,
@@ -7,12 +7,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 3 reached.$() The deep dimensions answer.$(br2)$(li)$(bold)Dimensions:$() the Nether, the Undergarden, Deeper & Darker, the Abyss.$(li)$(bold)Tech:$() basic Mekanism, Refined Storage, advanced Industrial Foregoing.$(li)$(bold)Magic:$() Occultism, Forbidden & Arcanus.$(li)$(bold)Gear:$() full Diamond, Terrasteel, Enderium - Ancient Debris is now reachable."
+      "text": "$(bold)Tier 3 reached.$() The deep dimensions answer.$(br)$(li)$(bold)Dimensions:$() the Nether, the Undergarden, Deeper & Darker, the Abyss.$(li)$(bold)Tech:$() basic Mekanism, Refined Storage, advanced Industrial Foregoing.$(li)$(bold)Magic:$() Occultism, Forbidden & Arcanus.$(li)$(bold)Gear:$() full Diamond, Terrasteel, Enderium. Ancient Debris is now within reach."
     },
     {
       "type": "patchouli:text",
       "title": "What's Next",
-      "text": "Toward $(t4)Tier 4$(): bank $(t4){{tier 3 threshold}}$() tokens, or clear $(t4){{tier 3 rushpct}}$() of the Tier 3 bosses - ending with $(warn)Lucifer$(), the combat capstone.$(br2)$(note)The pinch:$() the boss-rush route demands Lucifer. A peaceful builder or cultivator just banks {{tier 3 threshold}} tokens and walks past him. Your choice."
+      "text": "To reach $(t4)Tier 4$(), bank $(t4){{tier 3 threshold}}$() tokens or clear $(t4){{tier 3 rushpct}}$() of the Tier 3 bosses, ending with $(warn)Lucifer$(), the combat capstone.$(br2)$(note)The pinch:$() the boss-rush route demands Lucifer. A peaceful builder or cultivator can bank {{tier 3 threshold}} tokens instead and walk past him."
     }
   ]
 }

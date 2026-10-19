@@ -6,22 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Fight Terramity's structure bosses from Tier 1 on — this is a boss and combat content mod, and {{bosses mod=terramity rush=1 word}} of its bosses are on your Tier 1 boss-rush roster.$(br2)It also brings guns (craft them at the Gunsmith Station), armor sets with active abilities, and the structures that hold it all."
+      "text": "Fight Terramity's structure bosses from Tier 1 on. It is a boss and combat content mod, and {{bosses mod=terramity rush=1 word}} of its bosses are on your Tier 1 boss-rush roster.$(br2)It also brings guns (craft them at the Gunsmith Station), armor sets with active abilities, and the structures that hold it all."
     },
     {
       "type": "patchouli:text",
       "title": "The Boss Ladder",
-      "text": "$(t1)Tier 1$() — $(bold)Gob, King of Gnomes$() (Court of Gnomes — his summon is re-priced to emeralds so a T1 player can afford the fight), $(bold)Super Sniffer$() (Ancient Outcrop).$(br2)$(t3)Tier 3$() — $(bold)Gatmancer$() (Chthonic Dungeon, the Nether); $(bold)Enchanter Merlin$() and $(bold)Sorceress Circe$() (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral, together); $(bold)Archmage Gundalf$() (appears when Circe falls).$(br)$(t4)Tier 4$() — $(bold)Thunker$() ({{boss terramity:thunker place}}, {{boss terramity:thunker dim}}), $(bold)Virtue$() (Prismatic Pond, the Aether)."
+      "text": "$(t1)Tier 1$(): $(bold)Gob, King of Gnomes$() (Court of Gnomes; his summon is re-priced to emeralds so a T1 player can afford the fight) and $(bold)Super Sniffer$() (Ancient Outcrop)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Boss Ladder, cont.",
+      "text": "$(t3)Tier 3$(): $(bold)Gatmancer$() (Chthonic Dungeon, the Nether); $(bold)Enchanter Merlin$() and $(bold)Sorceress Circe$() together (Occult Fabric on the Offering Pedestal in the Nether's Chthonic Cathedral); $(bold)Archmage Gundalf$() (appears when Circe falls).$(br2)$(t4)Tier 4$(): $(bold)Thunker$() ({{boss terramity:thunker place}}, {{boss terramity:thunker dim}}) and $(bold)Virtue$() (Prismatic Pond, the Aether)."
     },
     {
       "type": "patchouli:text",
       "title": "Virtue's Altar",
-      "text": "Virtue's altar is the $(bold)Prismatic Pond$(), a crystal pool on the Deep Aether islands of the Aether (the Boss Compass finds it).$(br2)Throw an $(bold)Unholy Lance$() (the Dead King's drop) into its prism solution: Virtue rises about ten seconds later. Thrown anywhere else, the lance calls nothing."
+      "text": "Virtue's altar is the $(bold)Prismatic Pond$(), a crystal pool on the Deep Aether islands of the Aether (the Boss Compass finds it).$(br2)Throw an $(bold)Unholy Lance$() (the Dead King's drop) into its prism solution and Virtue rises about ten seconds later. Thrown anywhere else, the lance calls nothing."
     },
     {
       "type": "patchouli:text",
       "title": "Gear & Abilities",
-      "text": "$(bold)Armor abilities$() live on the Numpad: $(k:terramity.armor_set_bonus_ability) set bonus, $(k:terramity.dash_ability) dash, $(k:terramity.slam) slam — see $(l:icraft:systems/keybinds)Keybinds$(/l).$(br2)$(bold)Void Mage and Exodium Warlock$() sets are robe-class mage armor under $(l:icraft:systems/armor_weight)Armor Weight$(/l).$(br2)Terramity structures also feed boss-material loot.$(br2)$(bold)Next: find the Court of Gnomes and summon Gob — the canonical first boss fight.$()"
+      "text": "$(bold)Armor abilities$() sit on the Numpad: $(k:terramity.armor_set_bonus_ability) set bonus, $(k:terramity.dash_ability) dash, $(k:terramity.slam) slam (see $(l:icraft:systems/keybinds)Keybinds$(/l)).$(br2)The $(bold)Void Mage and Exodium Warlock$() sets are robe-class mage armor under $(l:icraft:systems/armor_weight)Armor Weight$(/l). Terramity structures also hold boss-material loot.$(br2)$(bold)Next: summon Gob at the Court of Gnomes, the usual first boss.$()"
     }
   ]
 }

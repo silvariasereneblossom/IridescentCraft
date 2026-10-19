@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Choose carefully — your race is picked once at character creation and $(bold)cannot be changed.$()$(br2)Races modify secondary stats only; HP% and damage% belong to classes. The interaction between race and class is where build identity comes from — the same class played by two different races feels meaningfully different."
+      "text": "Choose carefully: you pick your race once, at character creation, and it $(bold)cannot be changed.$()$(br2)Races modify secondary stats only; HP% and damage% belong to classes. A build gets its identity from race and class together, so the same class played by two different races feels quite different."
     },
     {
       "type": "patchouli:text",
       "title": "The Eleven Races (1/2)",
-      "text": "$(li)$(bold)Human$() — Versatile. Fastest leveling.$(li)$(bold)Elf$() — Fast, fragile, night-adapted.$(li)$(bold)Dwarf$() — Slow, hardy, fire-resistant, mining mastery.$(li)$(bold)Orc$() — High attack speed, high hunger drain, brutal knockback.$(li)$(bold)Halfling$() — Lucky. Efficient. Small hitbox.$(li)$(bold)Faefolk$() — Nature-attuned. Iron weakness. Slow fall."
+      "text": "$(li)$(bold)Human$(): versatile, with the fastest leveling.$(li)$(bold)Elf$(): fast, fragile, night-adapted.$(li)$(bold)Dwarf$(): slow, hardy, fire-resistant, mining mastery.$(li)$(bold)Orc$(): high attack speed, hunger drain and knockback.$(li)$(bold)Halfling$(): lucky and efficient, with a small hitbox.$(li)$(bold)Faefolk$(): nature-attuned, slow fall, an iron weakness.$(li)$(bold)Revenant$(): undead, weak in sunlight, strong at night."
     },
     {
       "type": "patchouli:text",
       "title": "The Eleven Races (2/2)",
-      "text": "$(li)$(bold)Revenant$() — Undead. Sunlight weakness. Night power.$(li)$(bold)Demi-God$() — +40% HP, raw-meat healing, strength & phase abilities. Mild Nether weakness.$(li)$(bold)Ryu$() — Draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$() — +15% all damage, slow fall, dash. Fragile (−20% HP).$(li)$(bold)Kirin$() — Fast; wall-climb, sprint-jump, night vision. Fragile (−20% HP).$(br2)$(bold)Next: open the full page of every race you shortlisted — then lock one in for good.$()"
+      "text": "$(li)$(bold)Demi-God$(): +40% HP, raw-meat healing, strength and phase abilities. Mild Nether weakness.$(li)$(bold)Ryu$(): draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$(): +15% all damage, slow fall, dash. Fragile (-20% HP).$(li)$(bold)Kirin$(): fast; wall-climb, sprint-jump, night vision. Fragile (-20% HP).$(br2)$(bold)Next: read each race's own page.$()"
     }
   ]
 }

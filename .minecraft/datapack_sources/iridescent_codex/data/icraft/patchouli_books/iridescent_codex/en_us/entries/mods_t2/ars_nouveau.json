@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Build your own spells, glyph by glyph — Ars Nouveau is the Tier 2 magic mod: custom spell crafting, familiars, and magical automation."
+      "text": "Build your own spells, glyph by glyph. Ars Nouveau is the Tier 2 magic mod: custom spell crafting, familiars and magical automation."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Ars Nouveau is the Battlemage and Archmage's natural home at Tier 2. The glyph-based spell system allows building custom spells tailored to your class's strengths.$(br2)$(bold)Source generation:$() Ars Nouveau uses Source as its resource. Source Jars and Sourcelinks are the T2 mana automation backbone."
+      "text": "$(bold)Role in the pack:$() At Tier 2, Ars Nouveau is where the Battlemage and the Archmage feel at home. Its glyph-based spell system lets you build custom spells around your class's strengths.$(br2)$(bold)Source generation:$() Ars Nouveau runs on Source. Source Jars and Sourcelinks are the core of your T2 mana automation."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Faefolk synergy:$() +10% spell power from the Nature Magic racial. Ars Nouveau's nature-flavored spells benefit the most.$(br2)$(bold)What unlocks at T2:$() Full spellbook access, Bookwyrm familiar, Drygmy for mob farming, Whirlisprig for crop automation. These become available once you have T2 stage."
+      "text": "$(bold)Faefolk synergy:$() The Nature Magic racial gives +10% spell power, and Ars Nouveau's nature-flavored spells gain the most from it.$(br2)$(bold)What unlocks at T2:$() Full spellbook access, the Bookwyrm familiar, the Drygmy for mob farming and the Whirlisprig for crop automation."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the reference lives:$() this Codex replaces the individual mod guidebooks in this pack. Every glyph and apparatus recipe is in JEI; the T1 entry path is walked in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot) / $(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first custom spell at a Scribes Table.$()"
+      "text": "$(bold)Where the reference lives:$() In this pack the Codex replaces the mods' own guidebooks. Every glyph and apparatus recipe is in JEI; your first steps at T1 are in $(l:icraft:mods_t1/early_magic)Early Magic Tutorial$(/l).$(br2)$(bold)Keys:$() $(k:ars_nouveau.open_book) opens your spell book's editor; $(k:ars_nouveau.previous_slot) and $(k:ars_nouveau.next_slot) switch spell slots.$(br2)$(bold)Next: inscribe your first spell at a Scribes Table.$()"
     }
   ],
   "advancement": "icraft:stage_tier_2"

@@ -6,22 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)2.5x base$() (250 from default 100)$(br)$(bold)Armor Penalty:$() -28.6% armor, -20% toughness (final value) — a full-robe Archmage nets ~50% armor"
+      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)2.5x base$() (250 from default 100)$(br)$(bold)Armor Penalty:$() -28.6% armor, -20% toughness (final value); a full-robe Archmage nets ~50% armor"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Supremacy$() — $(item)+50% magic damage$(). Highest in the game. Every Iron's Spells school and vanilla magic; not Ars Nouveau's spells.$(br2)$(bold)Frail Melee$() — $(warn)-50% attack damage$().$(br2)$(bold)Mana Attunement$() — tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()"
+      "text": "$(bold)Arcane Supremacy$(): $(item)+50% magic damage$(), the highest in the game. It covers every Iron's Spells school and vanilla magic, but not Ars Nouveau's spells.$(br2)$(bold)Frail Melee$(): $(warn)-50% attack damage$().$(br2)$(bold)Mana Attunement$(): a Spell Power bonus that grows with your tier:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()"
     },
     {
       "type": "patchouli:text",
       "title": "Passives (cont.)",
-      "text": "$(bold)Expanded Pool$() — Mana pool $(item)2.5x base$() (the largest: the Battlemage and the Void Summoner have 1.9x). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -28.6% armor, -20% toughness (scales with your final value — can never zero a robe build); a full robe set nets ~50% armor. Halved equipment HP."
+      "text": "$(bold)Expanded Pool$(): a mana pool of $(item)2.5x base$(), the largest (the Battlemage and the Void Summoner have 1.9x). Enough for sustained barrages without running dry.$(br2)$(bold)Glass Frame$(): -28.6% armor and -20% toughness. The penalty scales with your final value, so it can never zero a robe build; a full robe set nets ~50% armor. Your equipment HP is halved."
     },
     {
       "type": "patchouli:text",
       "title": "Glass Nuke",
-      "text": "$(thing)Faefolk Archmage$() at T4 in full robes:$(br)  magic damage +80% (Supremacy 50, Faefolk 30) times spell power +15% (Mana Attunement T4) = $(item)x2.07$() on every Iron's spell, x2.59 with the Archmage's +25% on a magic hit$(br)  But: -35% HP, halved gear, ~half armor (full robes).$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() - Glass nuke supreme: the x2.07 above.$(br)$(thing)Elf$() - +5% magic damage + speed. Safer kit.$(br)$(thing)Demi-God$() - +40% HP offsets fragility."
+      "text": "A $(thing)Faefolk Archmage$() at T4 in full robes:$(br)  magic damage +80% (Supremacy 50, Faefolk 30) times spell power +15% (Mana Attunement T4) = $(item)x2.07$() on every Iron's spell, or x2.59 with the Archmage's +25% on a magic hit.$(br)  The cost: -35% HP, halved gear HP and ~half armor (full robes).$(br2)One hit kills you. One spell kills everything else."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Glass Nuke, cont.",
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): the purest glass nuke (the x2.07 build).$(br)$(thing)Elf$(): +5% magic damage and speed. A safer kit.$(br)$(thing)Demi-God$(): +40% HP offsets the fragility."
     }
   ]
 }

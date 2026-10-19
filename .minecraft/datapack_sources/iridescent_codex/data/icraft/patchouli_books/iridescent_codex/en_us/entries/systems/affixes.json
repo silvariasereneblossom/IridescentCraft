@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Chase affixed drops — the random modifiers on weapons and armor from mobs and bosses. $(thing)IridescentCraft$() adds $(bold)88 custom affix entries$() on top of Apotheosis's built-in pool, including 5 End-themed affixes exclusive to End dimension loot.$(br2)Affixes also provide $(bold)gem sockets$(). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
+      "text": "Chase affixed drops: mob and boss weapons and armor that roll random modifiers. $(thing)IridescentCraft$() adds $(bold)88 custom affix entries$() to Apotheosis's built-in pool, 5 of them End-themed and found only in End dimension loot.$(br2)Affixes also bring $(bold)gem sockets$(), more at higher rarity: see $(l:icraft:loot/gems)Apotheosis Gems$(/l)."
     },
     {
       "type": "patchouli:text",
       "title": "Affix Tiers",
-      "text": "$(bold)Common$() — Available $(t1)Tier 1$()+. Mild bonuses. 0-1 sockets.$(br)$(bold)Uncommon$() — Available $(t2)Tier 2$()+. Moderate bonuses. 1-2 sockets.$(br)$(bold)Rare$() — Available $(t2)Tier 2$()+. Strong bonuses. 2 sockets.$(br)$(bold)Epic$() — Available $(t3)Tier 3$()+. Very strong bonuses. 2-3 sockets.$(br)$(bold)Legendary$() — Available $(t4)Tier 4$(). Exceptional bonuses. 3-4 sockets.$(br)$(bold)Mythic$() — Post-endgame Rift infusion only. Maximum bonuses. 4 sockets."
+      "text": "$(bold)Common$() ($(t1)Tier 1$()+): mild bonuses, 0-1 sockets.$(br)$(bold)Uncommon$() ($(t2)Tier 2$()+): moderate bonuses, 1-2 sockets.$(br)$(bold)Rare$() ($(t2)Tier 2$()+): strong bonuses, 2 sockets.$(br)$(bold)Epic$() ($(t3)Tier 3$()+): very strong bonuses, 2-3 sockets.$(br)$(bold)Legendary$() ($(t4)Tier 4$()): exceptional bonuses, 3-4 sockets.$(br)$(bold)Mythic$() (post-endgame, Rift infusion only): maximum bonuses, 4 sockets."
     },
     {
       "type": "patchouli:text",
       "title": "Reforging",
-      "text": "$(thing)Apotheosis$()'s Reforging Station allows replacing an item's affixes with newly-rolled ones. $(thing)IridescentCraft$() adds three reforge token tiers that control the minimum affix quality:$(br2)$(bold)Basic Reforging Token$() — minimum Uncommon$(br)$(bold)Advanced Reforging Token$() — minimum Rare$(br)$(bold)Ultimate Reforging Token$() — minimum Epic$(br2)These reforging tokens are crafted from boss materials at the reforging stations. They are separate from progression tokens — see $(l:icraft:loot/token_system)Progression Tokens$(/l)."
+      "text": "The $(thing)Apotheosis$() Reforging Station rerolls an item's affixes. $(thing)IridescentCraft$() adds three reforge tokens, each with a minimum affix quality:$(br)$(bold)Basic Reforging Token$(): Uncommon$(br)$(bold)Advanced Reforging Token$(): Rare$(br)$(bold)Ultimate Reforging Token$(): Epic$(br2)Craft them from boss materials at the reforging stations. They are not $(l:icraft:loot/token_system)Progression Tokens$(/l)."
     },
     {
       "type": "patchouli:text",
       "title": "End-Themed Affixes",
-      "text": "The End rolls $(bold)5 exclusive affixes$() on its loot drops. They interact with the End's unique mechanics — Void Proximity damage scaling, Ender Displacement teleportation, and Void Corruption — and are among the most powerful in the game.$(br2)End affix gear pairs well with the $(bold)Voidward$() and $(bold)Warp Shield$() enchantments for maximum End survivability.$(br2)$(bold)Next: socket your best drop — $(l:icraft:loot/gems)Apotheosis Gems$(/l).$()"
+      "text": "End loot can roll $(bold)5 exclusive affixes$(). They work off the End's own mechanics (Void Proximity damage scaling, Ender Displacement teleportation, Void Corruption) and rank among the strongest in the game.$(br2)This gear pairs well with the $(bold)Voidward$() and $(bold)Warp Shield$() enchantments for End survival.$(br2)$(bold)Next: socket your best drop ($(l:icraft:loot/gems)Gems$(/l)).$()"
     }
   ]
 }

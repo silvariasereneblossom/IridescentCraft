@@ -6,32 +6,32 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Install a cover and pages in your spell book — the pack's $(italic)Iridescent Modular Spells$() gives every ISS and Ars book two configurable slots, $(bold)Cover$() and $(bold)Pages$(), whose materials grant stacking bonuses: max mana, spell power, mana regen, cooldown reduction.$(br2)Caster classes start with a modular Copper book; Archmage also starts with a modular Novice."
+      "text": "Install a cover and pages in your spell book. The pack's $(italic)Iridescent Modular Spells$() gives every ISS and Ars book two slots, $(bold)Cover$() and $(bold)Pages$(), whose materials give stacking bonuses: max mana, spell power, mana regen, cooldown reduction.$(br2)Casters start with a modular Copper book; the Archmage also gets a modular Novice."
     },
     {
       "type": "patchouli:text",
       "title": "ISS Tier (metal covers)",
-      "text": "$(item)Modular Copper$() — T1 entry. Crafted: copper book + leather (default).$(br2)$(item)Modular Iron$() / $(item)Modular Gold$() — T2. iron / gold book + leather.$(br2)$(item)Modular Diamond$() — T3. diamond book + leather.$(br2)$(item)Modular Netherite$() — T4. netherite book + leather.$(br2)$(bold)Cover materials:$() leather (T1), copper, iron, gold, diamond, netherite (T4). Higher tier = bigger bonus."
+      "text": "$(item)Modular Copper$() (T1 entry): crafted from a copper book + leather (default).$(br)$(item)Modular Iron$() / $(item)Modular Gold$() (T2): iron / gold book + leather.$(br)$(item)Modular Diamond$() (T3): diamond book + leather.$(br)$(item)Modular Netherite$() (T4): netherite book + leather.$(br2)$(bold)Cover materials:$() leather (T1), copper, iron, gold, diamond, netherite (T4). The higher the tier, the bigger the bonus."
     },
     {
       "type": "patchouli:text",
       "title": "Ars Tier (cloth covers)",
-      "text": "$(item)Modular Novice$() — T1. novice book + white wool (default).$(br2)$(item)Modular Apprentice$() — T2. apprentice book + white wool.$(br2)$(item)Modular Archmage$() — T3. archmage book + white wool.$(br2)$(bold)Cloth covers:$() $(item)white wool$() (T1) → $(item)manaweave cloth$() (T2 Botania) → $(item)sorcerer robes$() (T3 Ars) → $(item)spell cloth$() (T4 Botania endgame). Cloth bonuses target Ars max mana + spell damage."
+      "text": "$(item)Modular Novice$() (T1): novice book + white wool (default).$(br)$(item)Modular Apprentice$() (T2): apprentice book + white wool.$(br)$(item)Modular Archmage$() (T3): archmage book + white wool.$(br2)$(bold)Cloth covers:$() $(item)white wool$() (T1), then $(item)manaweave cloth$() (T2 Botania), $(item)sorcerer robes$() (T3 Ars) and $(item)spell cloth$() (T4 Botania endgame). Cloth bonuses go to Ars max mana and spell damage."
     },
     {
       "type": "patchouli:text",
       "title": "Slot bonuses",
-      "text": "$(bold)Cover$() = 'max' bias: max mana, spell power.$(br)$(bold)Pages$() = 'rate' bias: mana regen, cooldown reduction.$(br2)Bonuses sum across all books you carry — mainhand + offhand + curios. Hold a Diamond book in mainhand and an Apprentice book in curio: the Ars max-mana bump from cloth + the ISS spell-power bump from diamond cover stack on the same player."
+      "text": "$(bold)Cover$() has a 'max' bias: max mana, spell power.$(br)$(bold)Pages$() have a 'rate' bias: mana regen, cooldown reduction.$(br2)Bonuses add up across every book you carry in your main hand, offhand and curios. With a Diamond book in your main hand and an Apprentice book in a curio slot, the Ars max-mana bump from the cloth and the ISS spell-power bump from the diamond cover stack on you."
     },
     {
       "type": "patchouli:text",
       "title": "Custom enchants",
-      "text": "Modular books accept four book-exclusive enchants on the enchanting table:$(br2)$(item)Mana Capacity$() I-V — +5% max mana per level (both ISS + Ars).$(br)$(item)Mana Flow$() I-III — +5% mana regen per level.$(br)$(item)Arcane Edge$() I-III — +5% magic crit chance per level.$(br)$(item)Arcane Devastation$() I-III — +25% magic crit damage per level.$(br2)$(bold)Yes — magic CAN crit$() with these enchants installed."
+      "text": "Modular books take four book-exclusive enchants from the enchanting table:$(br2)$(item)Mana Capacity$() I-V: +5% max mana per level (ISS and Ars).$(br)$(item)Mana Flow$() I-III: +5% mana regen per level.$(br)$(item)Arcane Edge$() I-III: +5% magic crit chance per level.$(br)$(item)Arcane Devastation$() I-III: +25% magic crit damage per level.$(br2)$(bold)Magic can crit$() once these enchants are on the book."
     },
     {
       "type": "patchouli:text",
       "title": "Tier gates",
-      "text": "Modular books are tier-gated:$(br)$(item)T1$() — Copper, Novice (start)$(br)$(item)T2$() — Iron, Gold, Apprentice$(br)$(item)T3$() — Diamond, Archmage$(br)$(item)T4$() — Netherite$(br2)Cover/pages materials follow their parent material's tier (a diamond cover needs T3, when diamond is obtainable at all).$(br2)$(bold)Next: check your starter modular book's tooltip — its cover and pages slots are already live.$()"
+      "text": "$(item)T1$(): Copper, Novice (start)$(br)$(item)T2$(): Iron, Gold, Apprentice$(br)$(item)T3$(): Diamond, Archmage$(br)$(item)T4$(): Netherite$(br2)Cover and pages materials follow their parent material's tier (a diamond cover needs T3, when diamond is obtainable at all).$(br2)$(bold)Next: check your starter book's tooltip. Its slots are already live.$()"
     }
   ]
 }

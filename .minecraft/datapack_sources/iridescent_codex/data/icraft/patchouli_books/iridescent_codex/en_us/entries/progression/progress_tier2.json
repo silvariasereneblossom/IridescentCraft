@@ -1,5 +1,5 @@
 {
-  "name": "Reached: Tier 2 - Expansion",
+  "name": "Tier 2: Expansion",
   "icon": "aether:zanite_gemstone",
   "category": "icraft:progression",
   "sortnum": 8,
@@ -7,12 +7,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 2 reached.$() The mid-tier frontiers open to you.$(br2)$(li)$(bold)Dimensions:$() the Twilight Forest, Blue Skies (Everbright and Everdawn).$(li)$(bold)Tech:$() the Thermal Series, basic Industrial Foregoing.$(li)$(bold)Magic:$() Ars Nouveau.$(li)$(bold)Gear:$() Steel, Manasteel, Steeleaf, Fiery - and the first Simply Swords uniques, from Twilight bosses."
+      "text": "$(bold)Tier 2 reached.$() The mid-tier frontiers are open to you.$(br)$(li)$(bold)Dimensions:$() the Twilight Forest and Blue Skies (Everbright and Everdawn).$(li)$(bold)Tech:$() the Thermal Series and basic Industrial Foregoing.$(li)$(bold)Magic:$() Ars Nouveau.$(li)$(bold)Gear:$() Steel, Manasteel, Steeleaf and Fiery, plus the first Simply Swords uniques from Twilight bosses."
     },
     {
       "type": "patchouli:text",
       "title": "What's Next",
-      "text": "Toward $(t3)Tier 3$(): bank $(t3){{tier 2 threshold}}$() tokens, or clear $(t3){{tier 2 rushpct}}$() of the Tier 2 bosses.$(br2)Track it with $(l:icraft:progression/check_your_standing)Check Your Standing$(/l). $(note)Diamonds are still a Tier 3 material - not yet in worldgen or chests.$()"
+      "text": "To reach $(t3)Tier 3$(), bank $(t3){{tier 2 threshold}}$() tokens or clear $(t3){{tier 2 rushpct}}$() of the Tier 2 bosses.$(br2)Track it with $(l:icraft:progression/check_your_standing)Check Your Standing$(/l). $(note)Diamonds are still a Tier 3 material, not yet in worldgen or chests.$()"
     }
   ]
 }

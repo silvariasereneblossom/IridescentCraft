@@ -1,5 +1,5 @@
 {
-  "name": "Pick Your Origin, Race & Class",
+  "name": "Origin, Race & Class",
   "icon": "minecraft:diamond_sword",
   "category": "icraft:welcome",
   "sortnum": 1,
@@ -7,32 +7,42 @@
     {
       "type": "patchouli:text",
       "title": "The 3-Layer System",
-      "text": "You choose three layers, in order — and the middle one is permanent.$(br2)$(bold)1. Origin$() — your species. Flavor powers like flight, wall-climbing, or fire immunity. 13 options: $(l:icraft:classes/origins_reference)The 13 Origins$(/l).$(br2)$(bold)2. Race$() — your people. Stat modifiers and thematic traits. 11 options. $(warn)Permanent.$()$(br2)$(bold)3. Class$() — your combat role. 10 options, respec-able at a Class Altar."
+      "text": "Pick three layers, in order:$(br)$(bold)1. Origin$(): your species, with flavor powers like flight, wall-climbing or fire immunity. 13 options: $(l:icraft:classes/origins_reference)The 13 Origins$(/l).$(br2)$(bold)2. Race$(): your people, with stat modifiers and thematic traits. 11 options. $(warn)Permanent.$()$(br2)$(bold)3. Class$(): your combat role. 13 options; respec at a Class Altar."
     },
     {
       "type": "patchouli:text",
       "title": "What to Pick If...",
-      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -15% damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race"
+      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -30% melee damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race"
     },
     {
       "type": "patchouli:text",
       "title": "What to Pick If... (2)",
-      "text": "$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast, mobile), $(thing)Elf$() race$(br2)$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Don't know yet:$()$(br)$(thing)Wanderer$() class + $(thing)Human$() race. No penalties, bonus XP. Respec your class later once you know your playstyle."
+      "text": "$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast, mobile), $(thing)Elf$() race$(br2)$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Don't know yet:$()$(br)$(thing)Wanderer$() class + $(thing)Human$() race: no penalties, bonus XP. Respec once you know your playstyle."
     },
     {
       "type": "patchouli:text",
       "title": "Proven Combos",
-      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Fire synergy. Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility. Fly, kite, never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport, spell from range, glass nuke.$(br2)$(bold)Witch of Ink + Orc + Berserker$()$(br)Weak early, monster late. Hyperscaling melee.$(br2)$(italic)Remember: Race is permanent. Class can be changed. When in doubt: Human + Wanderer.$()"
+      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Fire synergy: the Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility: fly, kite and never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport and cast from range. A glass-cannon nuke."
     },
     {
       "type": "patchouli:text",
-      "title": "Getting Started with Magic",
-      "text": "Magic is available from $(t1)Tier 1$():$(br2)$(bold)Iron's Spells & Spellbooks$() — Craft a Copper Spell Book early (this pack ships $(l:icraft:mods_t1/modular_spells)Modular variants$(/l) that take upgrade pages). Find spell scrolls in dungeon chests and inscribe them to learn spells.$(br2)$(bold)Botania$() — Also $(t1)Tier 1$(). Mana flowers, mana pools, botanical tools.$(br2)$(bold)Ars Nouveau$() — $(t2)Tier 2$(). Custom spell crafting with glyphs."
+      "title": "Proven Combos, cont.",
+      "text": "$(bold)Witch of Ink + Orc + Berserker$()$(br)Weak early, a monster late: melee that hyperscales.$(br2)$(italic)Remember: race is permanent, class can be changed. When in doubt, Human + Wanderer.$()"
     },
     {
       "type": "patchouli:text",
-      "title": "Getting Your First Gear",
-      "text": "$(bold)Apotheosis Affixes$() — Mob drops roll random affixes and gem sockets. Kill $(thing)Champions$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$() — Craft one to customize weapons and tools, swapping handles, blades, and guards by material.$(br2)$(bold)Food Diversity$() — Spice of Life pays permanent max-HP bonuses for eating widely. Free health — collect food as you loot.$(br2)$(bold)Next: read $(l:icraft:welcome/three_commands)The Three Commands$(/l).$()"
+      "title": "Starting with Magic",
+      "text": "Magic starts at $(t1)Tier 1$().$(br2)$(bold)Iron's Spells & Spellbooks$(): craft a Copper Spell Book early (the pack's $(l:icraft:mods_t1/modular_spells)Modular variants$(/l) take upgrade pages). Inscribe spell scrolls from dungeon chests to learn them.$(br2)$(bold)Botania$(): also $(t1)Tier 1$(). Mana flowers, mana pools, botanical tools.$(br2)$(bold)Ars Nouveau$(): $(t2)Tier 2$(). Custom spell crafting with glyphs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Your First Gear",
+      "text": "$(bold)Apotheosis Affixes$(): mob drops roll random affixes and gem sockets. Kill $(thing)Champions$() (glowing mobs) for the best early gear.$(br2)$(bold)Tetra Workbench$(): craft one to customize weapons and tools, swapping handles, blades and guards by material."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Your First Gear, cont.",
+      "text": "$(bold)Food Diversity$(): Spice of Life pays permanent max-HP bonuses for eating widely. It is free health, so collect food as you loot.$(br2)$(bold)Next: read $(l:icraft:welcome/three_commands)The Three Commands$(/l).$()"
     }
   ]
 }

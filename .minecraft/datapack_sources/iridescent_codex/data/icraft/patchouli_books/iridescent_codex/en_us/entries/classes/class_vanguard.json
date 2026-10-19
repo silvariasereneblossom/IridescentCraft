@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The immovable object. Maximum survivability, reduced offense. Your presence alone weakens enemies.$()$(br2)HP Modifier: +20%  |  Equipment HP: Full$(br)$(bold)Damage Modifier:$() $(warn)-15% all damage dealt$()"
+      "text": "$(italic)The immovable object. Maximum survivability, reduced offense. Your presence alone weakens enemies.$()$(br2)HP Modifier: +20%  |  Equipment HP: Full$(br)$(bold)Damage Modifier:$() $(warn)-30% melee damage$() (arrows and spells unaffected)"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Fortress$() — +6 armor, +3 toughness. Highest defensive stats of any class.$(br2)$(bold)Immovable$() — +40% knockback resistance.$(br2)$(bold)Guardian's Presence$() — Hostile mobs within 5 blocks receive $(item)Weakness I$(). Your enemies deal less damage just by standing near you."
+      "text": "$(bold)Fortress$(): +6 armor and +3 toughness, the highest defensive stats of any class.$(br2)$(bold)Immovable$(): +40% knockback resistance.$(br2)$(bold)Guardian's Presence$(): hostile mobs within 5 blocks get $(item)Weakness I$(), so they deal less damage just by standing near you."
     },
     {
       "type": "patchouli:text",
       "title": "The Wall",
-      "text": "The -15% damage penalty is real. You kill slowly. But you $(bold)do not die$(). +20% HP, +6 armor, +3 toughness, Guardian's aura — built for group play.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() — +60% total HP. Unkillable.$(br)$(thing)Dwarf$() — Armor stacking + fire resistance.$(br)$(thing)Orc$() — Attack speed offsets -15% damage."
+      "text": "The -30% melee penalty is real and you kill slowly, but you $(bold)do not die$(). With +20% HP, +6 armor, +3 toughness and Guardian's aura, the Vanguard is built for group play.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): +60% total HP. Unkillable.$(br)$(thing)Dwarf$(): armor stacking and fire resistance.$(br)$(thing)Orc$(): attack speed offsets the -30% melee damage."
     }
   ]
 }

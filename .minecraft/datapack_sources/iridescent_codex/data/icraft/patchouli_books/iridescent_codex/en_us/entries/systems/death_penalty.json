@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Keep inventory is on.$() You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(). How much depends on where you die:$(br2)$(li){{dim minecraft:overworld Name}}: {{dim minecraft:overworld death}} of each item's durability$(li)Tier 2: {{tier 2 deathrange}}$(li)Tier 3: {{tier 3 deathrange}}$(li)Tier 4: {{tier 4 deathrange}}$(br2)Each dimension's own number: $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
+      "text": "$(bold)Keep inventory is on.$() You never lose items when you die, but death costs $(bold)equipment durability$(). How much depends on where you die:$(li){{dim minecraft:overworld Name}}: {{dim minecraft:overworld death}} of each item's durability$(li)Tier 2: {{tier 2 deathrange}}$(li)Tier 3: {{tier 3 deathrange}}$(li)Tier 4: {{tier 4 deathrange}}$(br2)Per-dimension numbers: $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Item Inertness$()$(br2)When an item reaches 0 durability it becomes $(bold)inert$(): it stays in your inventory, displays at 0 durability, but provides no stats or function. It cannot break further.$(br2)To restore an inert item: repair it at an anvil (costs materials + XP), or use a Mending enchant in future combat. Inert items are $(italic)not$() destroyed. No item is ever permanently lost to durability."
+      "text": "$(bold)Item Inertness$()$(br2)An item at 0 durability becomes $(bold)inert$(): it stays in your inventory and shows 0 durability, but gives no stats or function. It cannot break further.$(br2)To restore an inert item, repair it at an anvil (costs materials and XP) or use a Mending enchant in later combat. Inert items are $(italic)not$() destroyed, so durability never costs you an item for good."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Soulbound Enchantment$()$(br2)Soulbound (repurposed from Ensorcellation) is the ultimate insurance: items with Soulbound III are completely immune to the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$() — it cannot be obtained through an enchanting table. It drops only from high-tier structures and boss kills. It is rare by design.$(br2)$(bold)Soulbound I–II$() reduce durability loss (50% and 75% reduction respectively)."
+      "text": "$(bold)Soulbound Enchantment$()$(br2)Soulbound (repurposed from Ensorcellation) is the only true immunity: items with Soulbound III ignore the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$(), rare on purpose. No enchanting table offers it; it drops only from high-tier structures and boss kills.$(br2)$(bold)Soulbound I and II$() cut the loss by 50% and 75%."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Wanderer Class Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically.$(br2)$(bold)Next: hunt Soulbound in high-tier structures and boss drops — it's the only true immunity.$()"
+      "text": "$(bold)Wanderer Class Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that cuts all death durability loss by 25%. With Soulbound II as well, a Wanderer loses very little durability on death, even in the End.$(br2)$(bold)Artificer Ironclad$() also cuts combat durability loss by 25%. That covers wear during fights, not the death penalty.$(br2)$(bold)Next: hunt Soulbound.$()"
     }
   ]
 }

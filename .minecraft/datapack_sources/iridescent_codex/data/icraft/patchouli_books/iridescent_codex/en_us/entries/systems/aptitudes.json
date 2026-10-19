@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree — the pack's RPG leveling layer, $(thing)Iridescent Aptitudes$().$(br2)Eight aptitudes (STR, CON, DEX, DEF, MAG, INT, BLD, LCK) gain XP from gameplay actions matching their theme, and unlock skills and passives at threshold levels."
+      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree. $(thing)Iridescent Aptitudes$() is the pack's RPG leveling layer.$(br2)Each of the eight aptitudes (STR, CON, DEX, DEF, MAG, INT, BLD, LCK) gains XP from the gameplay actions that match its theme, and unlocks skills and passives at set levels."
     },
     {
       "type": "patchouli:text",
       "title": "Eight Aptitudes",
-      "text": "$(bold)STR$() Strength — melee damage, physical might$(br)$(bold)CON$() Constitution — HP, hunger, environment$(br)$(bold)DEX$() Dexterity — speed, agility, ranged$(br)$(bold)DEF$() Defense — armor, mitigation, knockback$(br)$(bold)MAG$() Magic — spell power, mana, magic offense$(br)$(bold)INT$() Intelligence — XP gain, knowledge, refunds$(br)$(bold)BLD$() Building — mining, reach, crafting refunds$(br)$(bold)LCK$() Luck — drop rates, jackpot procs"
+      "text": "$(bold)STR$() Strength: melee damage, physical might$(br)$(bold)CON$() Constitution: HP, hunger, environment$(br)$(bold)DEX$() Dexterity: speed, agility, ranged$(br)$(bold)DEF$() Defense: armor, mitigation, knockback$(br)$(bold)MAG$() Magic: spell power, mana, magic offense$(br)$(bold)INT$() Intelligence: XP gain, knowledge, refunds$(br)$(bold)BLD$() Building: mining, reach, crafting refunds$(br)$(bold)LCK$() Luck: drop rates, jackpot procs"
     },
     {
       "type": "patchouli:text",
-      "title": "Five-tier skills",
-      "text": "Each aptitude has $(bold)5$() skill nodes at levels $(bold)5 / 10 / 15 / 20 / 30$(). Each tier opens a new ability:$(br2)$(bold)5$() — small confidence-builder bonus$(br)$(bold)10$() — clear functional buff$(br)$(bold)15$() — bridge tier, build-defining$(br)$(bold)20$() — high-signature ability$(br)$(bold)30$() — capstone, often triggered$(br2)Browse each aptitude's five nodes in the aptitude screen itself — hover a node for its exact effect."
+      "title": "Five-Tier Skills",
+      "text": "Each aptitude has $(bold)5$() skill nodes, at levels $(bold)5 / 10 / 15 / 20 / 30$(), and each tier opens a new ability:$(br2)$(bold)5$(): small confidence-builder bonus$(br)$(bold)10$(): clear functional buff$(br)$(bold)15$(): build-defining bridge tier$(br)$(bold)20$(): high-signature ability$(br)$(bold)30$(): capstone, often triggered$(br2)Hover a node in the aptitude screen to see its exact effect."
     },
     {
       "type": "patchouli:text",
-      "title": "Always-on passives",
-      "text": "Some aptitudes also carry per-level passives that scale automatically, no node purchase needed:$(br2)$(bold)MAG$() — Spell Power (up to +16% spell damage at level 32) and Mana Regen (up to +32%)$(br)$(bold)INT$() — Attack Speed and Critical Chance (up to +25% at level 32 — applies to melee, ranged, AND magic)$(br)$(bold)LCK$() — Luck and Critical Damage, so crit chance and crit damage live on different aptitudes and pair naturally.$(br2)$(bold)Next: press $(k:justlevelingfork.open_aptitudes) and spend the points you've banked.$()"
+      "title": "Always-On Passives",
+      "text": "Some aptitudes also have passives that scale with level, without buying a node:$(br2)$(bold)MAG$(): Spell Power (up to +16% spell damage at level 32) and Mana Regen (up to +32%)$(br)$(bold)INT$(): Attack Speed and Critical Chance (up to +25% at level 32, for melee, ranged and magic)$(br)$(bold)LCK$(): Luck and Critical Damage (pairs with INT's crit chance)$(br2)$(bold)Next: press $(k:justlevelingfork.open_aptitudes) and spend your banked points.$()"
     }
   ]
 }

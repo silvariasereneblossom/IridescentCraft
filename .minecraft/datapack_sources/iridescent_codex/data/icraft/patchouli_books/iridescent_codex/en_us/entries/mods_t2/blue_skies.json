@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Pack magic resistance before you enter — Blue Skies' two T2 dimensions, Everbright (light/order) and Everdawn (dark/chaos), fight with elemental damage throughout."
+      "text": "Pack magic resistance before you go in. Blue Skies adds two T2 dimensions, the Everbright (light and order) and the Everdawn (dark and chaos), and both fight with elemental damage."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Elemental damage in Blue Skies bypasses standard armor. Magic resistance (Sorcery tree, Battlemage class) is more valuable here than raw armor stats.$(br2)$(bold)Bosses:$() Summoner, Alchemist, Starlit Crusher, and Arachnarch each drop a Simply Swords unique."
+      "text": "$(bold)Role in the pack:$() Elemental damage in Blue Skies goes through standard armor, so magic resistance (the Sorcery tree, the Battlemage class) is worth more here than raw armor stats.$(br2)$(bold)Bosses:$() The Summoner, the Alchemist, the Starlit Crusher and the Arachnarch each drop a Simply Swords unique."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)IridescentCraft notes:$() Blue Skies chest loot banks Exploration tokens at a slightly higher rate than Twilight Forest — the dimensions are dense, and looting them pays accordingly."
+      "text": "$(bold)IridescentCraft notes:$() Blue Skies chest loot banks Exploration tokens at a slightly higher rate than Twilight Forest's. The dimensions are dense, and looting them pays accordingly."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$() Blue Skies is exploration-driven. Both dimensions — the Everbright and the Everdawn — contain dungeon loot and boss encounters that guide you forward naturally. JEI covers all crafting recipes.$(br2)$(bold)Next: find a Gatekeeper's house in the Overworld — the Gatekeeper sells the keys to both dimensions' dungeons.$()"
+      "text": "$(bold)No guide book.$() You learn Blue Skies by exploring it: the dungeon loot and boss fights in both dimensions lead you on. JEI has every crafting recipe.$(br2)$(bold)Next: find a Gatekeeper's house in the Overworld.$() The Gatekeeper sells the keys to both dimensions' dungeons."
     }
   ],
   "advancement": "icraft:stage_tier_2"

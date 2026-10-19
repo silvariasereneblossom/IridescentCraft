@@ -6,42 +6,47 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Check your keys here, not on a wiki — every key on these pages renders live from your current bindings, so this list stays correct even after you rebind.$(br2)Out of the box, 420+ mods registered $(bold)339 keybinds$() with $(bold)161$() of them colliding. The pack ships curated defaults that resolve the worst conflicts so casters and martial classes don't fight their own keyboard."
+      "text": "Check your keys here rather than on a wiki. Every key on these pages renders live from your bindings and stays correct after you rebind.$(br2)Out of the box, 420+ mods registered $(bold)339 keybinds$(), $(bold)161$() of them colliding. The pack ships its own defaults that clear the worst conflicts, so casters and martial classes don't fight their own keyboard."
     },
     {
       "type": "patchouli:text",
       "title": "The Essentials",
-      "text": "$(bold)$(k:heracles.open_quests)$() — Quest log (Heracles)$(br)$(bold)$(k:puffish_skills.open)$() — Skill trees$(br)$(bold)$(k:justlevelingfork.open_aptitudes)$() — Aptitude tree$(br)$(bold)$(k:origins.view_origin)$() — View your origin$(br)$(bold)$(k:origins.primary_active)$() — Use origin primary power$(br)$(bold)$(k:curios.open.desc)$() — Curios (rings, charms)$(br)$(bold)$(k:inventory)$() — Inventory; the $(bold)Show Attributes$() button there opens your full stat readout"
+      "text": "$(bold)$(k:heracles.open_quests)$(): Quest log (Heracles)$(br)$(bold)$(k:puffish_skills.open)$(): Skill trees$(br)$(bold)$(k:justlevelingfork.open_aptitudes)$(): Aptitude tree$(br)$(bold)$(k:origins.view_origin)$(): View your origin$(br)$(bold)$(k:origins.primary_active)$(): Use origin primary power$(br)$(bold)$(k:curios.open.desc)$(): Curios (rings, charms)$(br)$(bold)$(k:inventory)$(): Inventory; its $(bold)Show Attributes$() button opens your full stat readout"
     },
     {
       "type": "patchouli:text",
       "title": "Caster Keys",
-      "text": "$(bold)Iron's Spellbooks:$()$(br)$(bold)$(k:irons_spellbooks.spellbook_cast)$() — Cast selected spell$(br)$(bold)$(k:irons_spellbooks.spell_wheel)$() — Spell wheel$(br)$(bold)$(k:irons_spellbooks.spell_bar_modifier)$() — Spell bar modifier$(br2)$(bold)Ars Nouveau:$()$(br)$(bold)$(k:ars_nouveau.open_book)$() — Open spell book$(br)$(bold)$(k:ars_nouveau.previous_slot)$() / $(bold)$(k:ars_nouveau.next_slot)$() — Previous / next spell slot"
+      "text": "$(bold)Iron's Spellbooks:$()$(br)$(bold)$(k:irons_spellbooks.spellbook_cast)$(): Cast selected spell$(br)$(bold)$(k:irons_spellbooks.spell_wheel)$(): Spell wheel$(br)$(bold)$(k:irons_spellbooks.spell_bar_modifier)$(): Spell bar modifier$(br2)$(bold)Ars Nouveau:$()$(br)$(bold)$(k:ars_nouveau.open_book)$(): Open spell book$(br)$(bold)$(k:ars_nouveau.previous_slot)$() / $(bold)$(k:ars_nouveau.next_slot)$(): Previous / next spell slot"
     },
     {
       "type": "patchouli:text",
       "title": "Gear & Travel",
-      "text": "$(bold)$(k:tetra.toolbelt.binding.access)$() — Tetra toolbelt quick access$(br)$(bold)$(k:tetra.toolbelt.binding.open)$() — Open toolbelt inventory$(br)$(bold)$(k:sophisticatedbackpacks.open_backpack)$() — Open backpack$(br)$(bold)$(k:journeymap.map_toggle_alt)$() — Fullscreen map$(br)$(bold)$(k:swapOffhand)$() — Swap offhand item"
+      "text": "$(bold)$(k:tetra.toolbelt.binding.access)$(): Tetra toolbelt quick access$(br)$(bold)$(k:tetra.toolbelt.binding.open)$(): Open toolbelt inventory$(br)$(bold)$(k:sophisticatedbackpacks.open_backpack)$(): Open backpack$(br)$(bold)$(k:journeymap.map_toggle_alt)$(): Fullscreen map$(br)$(bold)$(k:swapOffhand)$(): Swap offhand item"
     },
     {
       "type": "patchouli:text",
-      "title": "Armor Abilities → Numpad",
-      "text": "Armor set abilities all defaulted to caster keys — they're consolidated on the Numpad:$(br2)$(bold)Cataclysm:$() $(k:cataclysm.boots_ability) boots · $(k:cataclysm.helmet_ability) helmet · $(k:cataclysm.ability) generic · $(k:cataclysm.chestplate_ability) chestplate$(br)$(bold)MekaSuit:$() $(k:mekanism.head_mode) head · $(k:mekanism.feet_mode) feet · $(k:mekanism.chest_mode) chest · $(k:mekanism.legs_mode) legs$(br)$(bold)Ad Astra suit:$() $(k:ad_astra.toggle_suit_flight) toggle flight$(br)$(bold)Terramity armor:$() $(k:terramity.armor_set_bonus_ability) set bonus · $(k:terramity.dash_ability) dash · $(k:terramity.slam) slam"
+      "title": "Numpad Armor Abilities",
+      "text": "All armor set abilities defaulted to caster keys; the pack moved them to the Numpad:$(br2)$(bold)Cataclysm:$() $(k:cataclysm.boots_ability) boots · $(k:cataclysm.helmet_ability) helmet · $(k:cataclysm.ability) generic · $(k:cataclysm.chestplate_ability) chestplate$(br)$(bold)MekaSuit:$() $(k:mekanism.head_mode) head · $(k:mekanism.feet_mode) feet · $(k:mekanism.chest_mode) chest · $(k:mekanism.legs_mode) legs$(br)$(bold)Ad Astra suit:$() $(k:ad_astra.toggle_suit_flight) toggle flight$(br)$(bold)Terramity armor:$() $(k:terramity.armor_set_bonus_ability) set bonus · $(k:terramity.dash_ability) dash · $(k:terramity.slam) slam"
     },
     {
       "type": "patchouli:text",
-      "title": "Unbound By Design",
-      "text": "Some niche keybinds ship unbound to clear conflicts — they still work once you assign a key in the controls menu:$(br2)$(bold)Voice Chat$() — opt-in$(br)$(bold)AdHooks$() (grappling) — was hijacking mouse/Space/Shift/Ctrl$(br)$(bold)Occultism Backpack$() — use Sophisticated Backpacks instead$(br)$(bold)Deeper & Darker Transmit$(), $(bold)More Artifacts$() eyes, $(bold)Botania Corporea Request$() — niche$(br2)Mods that drifted onto the caster keys above were likewise unbound."
+      "title": "Unbound Keys",
+      "text": "Some niche keybinds ship unbound to clear conflicts. Each still works once you assign it a key in the controls menu:$(br2)$(bold)Voice Chat$(): opt-in$(br)$(bold)AdHooks$() (grappling): hijacked mouse/Space/Shift/Ctrl$(br)$(bold)Occultism Backpack$(): use Sophisticated Backpacks instead"
     },
     {
       "type": "patchouli:text",
-      "title": "Context-Scoped Overlaps",
-      "text": "Some keys appear on more than one ability $(italic)but only ever fire one at a time$() because the game is in different states:$(br2)$(bold)JEI keybinds$() — only with the JEI overlay up$(br)$(bold)JourneyMap fullscreen keys$() — only inside the map UI$(br)$(bold)Jade$() (numpad) — only when the tooltip is showing$(br)$(bold)Crafting Tweaks$() — only inside crafting screens$(br)$(bold)Trash Slot$() — only inside your inventory$(br2)These look like collisions in the controls menu but won't fight each other in play."
+      "title": "Unbound Keys, cont.",
+      "text": "$(bold)Deeper & Darker Transmit$(), $(bold)More Artifacts$() eyes, $(bold)Botania Corporea Request$(): niche$(br2)Mods that drifted onto the caster keys above were unbound too."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Overlaps by Context",
+      "text": "Some keys look like collisions in the controls menu $(italic)but only ever fire one at a time$(), each in a different game state:$(br2)$(bold)JEI keybinds$(): only with the JEI overlay up$(br)$(bold)JourneyMap fullscreen keys$(): only inside the map UI$(br)$(bold)Jade$() (numpad): only when the tooltip is showing$(br)$(bold)Crafting Tweaks$(): only inside crafting screens$(br)$(bold)Trash Slot$(): only inside your inventory"
     },
     {
       "type": "patchouli:text",
       "title": "Customizing",
-      "text": "The bundled defaults are a starting point, and your own changes survive pack updates — the pack only fills in defaults when $(thing)options.txt$() is freshly created.$(br2)$(bold)Next: open Options → Controls and type a mod's name in the search bar$() — it filters the list to just that mod's keys. Bind your favorites from the Unbound page while you're there."
+      "text": "The bundled defaults are a starting point. Your own changes survive pack updates, because the pack only fills in defaults when $(thing)options.txt$() is freshly created.$(br2)$(bold)Next: Options, then Controls.$() Type a mod's name in the search bar to filter the list to that mod's keys, and bind your favorites from the Unbound page while you're there."
     }
   ]
 }

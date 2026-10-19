@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Earn $(bold)progression tokens$(), bank them to your tier's threshold, and the Codex advances you — automatically.$(br2)Four $(bold)lanes$() earn tokens — Engineering, Magic, Exploration, and Combat — and they all feed $(bold)one combined pool$(). No lane is mandatory: any single one, played on its own, can reach the threshold. Hybrids mix freely."
+      "text": "Earn $(bold)progression tokens$(), bank them up to your tier's threshold, and the Codex advances you automatically.$(br2)Four $(bold)lanes$() earn tokens (Engineering, Magic, Exploration and Combat), and all of them feed $(bold)one combined pool$(). No lane is mandatory: any one of them, played on its own, can reach the threshold, and hybrids can mix them freely."
     },
     {
       "type": "patchouli:text",
       "title": "The Four Lanes",
-      "text": "$(li)$(bold)Engineering$() — submit bulk metals and milestone machines (Create, then Thermal, then Mekanism).$(li)$(bold)Magic$() — submit cultivation reagents and apparatus (Botania, Ars Nouveau, advanced rituals). Cultivation only, never spellcasting.$(li)$(bold)Exploration$() — tokens from entering new dimensions, looting chests, and kills.$(li)$(bold)Combat$() — tokens from boss and miniboss kills.$(br2)Pick the lane that fits how you play, or blend them."
+      "text": "$(li)$(bold)Engineering$(): submit bulk metals and milestone machines (Create, then Thermal, then Mekanism).$(li)$(bold)Magic$(): submit cultivation reagents and apparatus (Botania, Ars Nouveau, advanced rituals). Only cultivation counts, never spellcasting.$(li)$(bold)Exploration$(): tokens for entering new dimensions, looting chests and kills.$(li)$(bold)Combat$(): tokens for boss and miniboss kills."
     },
     {
       "type": "patchouli:text",
       "title": "Two Routes per Tier",
-      "text": "Advance by reaching $(bold)either$() target — whichever comes first:$(br2)$(li)$(bold)Tokens$() — bank the threshold: $(t2){{tier 1 threshold}}$() for Tier 2, $(t3){{tier 2 threshold}}$() for Tier 3, $(t4){{tier 3 threshold}}$() for Tier 4.$(li)$(bold)Boss Rush$() — clear a share of the tier's bosses: $(t2){{tier 1 rushpct}}$() for Tier 2, $(t3){{tier 2 rushpct}}$() for Tier 3, $(t4){{tier 3 rushpct}}$() for Tier 4.$(br2)Tier 4 is the final gate. Beyond it, the Ender Dragon is the finale — see $(l:icraft:progression/tier_unlock_checklist)Tier Targets$(/l)."
+      "text": "Reach $(bold)either$() target and you advance, whichever comes first:$(br)$(li)$(bold)Tokens$(): bank the threshold ($(t2){{tier 1 threshold}}$() for Tier 2, $(t3){{tier 2 threshold}}$() for Tier 3, $(t4){{tier 3 threshold}}$() for Tier 4).$(li)$(bold)Boss Rush$(): clear a share of the tier's bosses ($(t2){{tier 1 rushpct}}$() for Tier 2, $(t3){{tier 2 rushpct}}$() for Tier 3, $(t4){{tier 3 rushpct}}$() for Tier 4).$(br2)Tier 4 is the final gate. After it, the Ender Dragon is the finale (see $(l:icraft:progression/tier_unlock_checklist)Targets & Boss Rush$(/l))."
     },
     {
       "type": "patchouli:text",
       "title": "Submitting & Tracking",
-      "text": "The Codex converts your work into tokens and tracks your progress toward the next tier.$(br2)$(bold)To submit:$() run $(bold)/icraft codex submit$() — it scans your inventory and banks everything that counts (consuming those materials).$(br)$(bold)To check progress:$() run $(bold)/icraft codex balance$() — it shows your token total versus the threshold.$(br2)$(note)Tokens are physical items — Codex Token I, II, and III, one per tier transition.$()"
+      "text": "$(bold)To submit:$() run $(bold)/icraft codex submit$(). It scans your inventory and banks everything that counts, consuming those materials.$(br2)$(bold)To check progress:$() run $(bold)/icraft codex balance$() to see your token total against the threshold.$(br2)$(note)Tokens are physical items: Codex Token I, II and III, one per tier transition.$()"
     }
   ]
 }

@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become both deadlier and harder to kill.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() +10% attack damage, +15% on every magic hit, a scaling Mana Shield."
+      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become both deadlier and harder to kill.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() +10% attack damage, +15% on every magic hit and a scaling Mana Shield."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Strikes$() — +10% attack damage. The class adds +15% to every magic hit.$(br2)$(bold)Spell Armor$() — +2 bonus armor from arcane wards.$(br2)$(bold)Mana Shield$() — Resistance at all times:$(br)  Base: $(item)Resistance I$() (20% less damage)$(br)  Faefolk: $(item)Resistance II$() (40%)$(br)Nothing else raises it."
+      "text": "$(bold)Arcane Strikes$(): +10% attack damage, and the class adds +15% to every magic hit.$(br2)$(bold)Spell Armor$(): +2 bonus armor from arcane wards.$(br2)$(bold)Mana Shield$(): Resistance at all times.$(br)  Base: $(item)Resistance I$() (20% less damage)$(br)  Faefolk: $(item)Resistance II$() (40%)$(br)Nothing else raises it."
     },
     {
       "type": "patchouli:text",
       "title": "The Hybrid",
-      "text": "The only class where stacking Spell Power gear makes your sword hit harder (Arcane Cleave: +1 attack damage for every 50% bonus spell power, 10 mana a hit). Mana Shield does not scale with gear: Resistance I, or II for a Faefolk.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() - +40% HP cushion, no melee malus. The strongest pick.$(br)$(thing)Orc$() - +10% melee + attack speed = highest raw blade DPS.$(br)$(thing)Elf$() - +5% magic damage + speed for kiting."
+      "text": "This is the only class where stacking Spell Power gear makes your sword hit harder (Arcane Cleave: +1 attack damage for every 50% bonus spell power, at 10 mana a hit).$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): +40% HP, no melee malus. The strongest pick.$(br)$(thing)Orc$(): +10% melee and attack speed, for the highest raw blade DPS.$(br)$(thing)Elf$(): +5% magic damage and speed for kiting."
     },
     {
       "type": "patchouli:text",
       "title": "Offmeta",
-      "text": "$(thing)Faefolk$() - +30% magic damage and +10% mana regen for the spells, but Arcane Cleave reads spell power, not magic damage, and $(warn)-30% melee$() means raw blade strikes hit weakly. A skill-expression pick - high ceiling, painful floor."
+      "text": "$(thing)Faefolk$(): +30% magic damage and +10% mana regen for your spells. But Arcane Cleave reads spell power, not magic damage, and $(warn)-30% melee$() makes raw blade strikes weak. A skill-expression pick with a high ceiling and a painful floor."
     }
   ]
 }

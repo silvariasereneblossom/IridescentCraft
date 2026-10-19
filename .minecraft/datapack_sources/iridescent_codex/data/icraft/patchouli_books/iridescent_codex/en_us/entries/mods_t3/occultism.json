@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Draw your first pentacle — Occultism is the T3 ritual magic mod: demon summoning, soul extraction, a storage dimension, and ritual crafting."
+      "text": "Draw your first pentacle. Occultism is the T3 ritual magic mod: demon summoning, soul extraction, a storage dimension and ritual crafting."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Occultism's Dimensional Storage is the best personal storage solution in T3. Soul Gems are used in Void Summoner builds. Rituals provide unique crafting alternatives for several T3 recipes.$(br2)$(bold)Void Summoner synergy:$() Occultism's summoned entities interact with the Void Summoner's Soul Tether and Death Harvest passives."
+      "text": "$(bold)Role in the pack:$() Occultism's Dimensional Storage is the best personal storage you can get at T3. Void Summoner builds use Soul Gems, and rituals offer their own crafting routes for several T3 recipes.$(br2)$(bold)Void Summoner synergy:$() Occultism's summoned entities interact with the Void Summoner's Soul Tether and Death Harvest passives."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Key rituals:$() Golden Sacrifice (converts mob spawners), Possession ritual (entity capturing for dimensional storage), Summoning rituals for crafting assistants."
+      "text": "$(bold)Main rituals:$() The Golden Sacrifice converts mob spawners, the Possession ritual captures entities for dimensional storage, and Summoning rituals bring you crafting assistants."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Craft the Dictionary of Spirits$() for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems. If lost, the contents are also available via the in-game JEI integration.$(br2)$(bold)Next: the Dictionary's first ritual \u2014 summoning the Foliot Crusher \u2014 is the ideal entry project.$()"
+      "text": "$(bold)Craft the Dictionary of Spirits$() for the full Occultism reference: ritual circles, spirit summoning, djinn work orders and storage systems. If you lose it, the in-game JEI integration has the same contents.$(br2)$(bold)Next: summon the Foliot Crusher$(), the Dictionary's first ritual and the best project to start with."
     }
   ],
   "advancement": "icraft:stage_tier_3"

@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Step through the portal ready for a fight — the Twilight Forest is the primary T2 adventure dimension, and its seven bosses hold the first Simply Swords uniques.$(br2)$(bold)Portal:$() a pool of water ringed by grass with flowers on it, lit by throwing in a $(bold)Codex Token I$() (or a diamond)."
+      "text": "Step through the portal ready for a fight. The Twilight Forest is the main T2 adventure dimension, and its seven bosses hold the first Simply Swords uniques.$(br2)$(bold)Portal:$() a pool of water ringed by grass with flowers on it. Throw in a $(bold)Codex Token I$() (or a diamond) to light it."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Twilight Forest is the most content-dense T2 dimension. Seven bosses with unique weapons, a full progression path through the forest, and some of the best T2 loot tables.$(br2)$(bold)Boss order:$() The forest has an internal progression. You cannot reach late zones without defeating earlier bosses. Follow the magic map for the intended order."
+      "text": "$(bold)Role in the pack:$() Twilight Forest is the most content-dense T2 dimension: seven bosses with unique weapons, a full progression path through the forest, and some of the best T2 loot tables.$(br2)$(bold)Boss order:$() The forest has its own progression, and you cannot reach the late zones without beating the earlier bosses. Follow the magic map for the intended order."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)IridescentCraft notes:$() Twilight structure chests have had diamonds removed. Tokens and T2 materials replace them. The forest's original loot has been preserved otherwise \u2014 Steeleaf and Ironwood armor are valid T2 gear choices.$(br2)$(bold)Twilight materials:$() Steeleaf, Ironwood, Fiery, Knightmetal are all valid T2 gear materials."
+      "text": "$(bold)IridescentCraft notes:$() Twilight structure chests no longer hold diamonds; tokens and T2 materials take their place. Otherwise the forest's original loot is kept.$(br2)$(bold)Twilight materials:$() Steeleaf, Ironwood, Fiery and Knightmetal are all valid T2 gear materials."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$() Twilight Forest is largely self-guided \u2014 each biome leads naturally to the next boss. Craft the $(bold)Magic Map$() (recipe in JEI) to reveal the dimension layout and boss locations.$(br2)$(bold)Next: the Naga's courtyard \u2014 the forest's intended first fight: $(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l).$()"
+      "text": "$(bold)No guide book.$() Twilight Forest mostly guides itself: each biome leads to the next boss. Craft the $(bold)Magic Map$() (recipe in JEI) to see the dimension's layout and where the bosses are.$(br2)$(bold)Next: the Naga's courtyard$(), the forest's intended first fight ($(l:icraft:bosses/t2_bosses)Tier 2 Bosses$(/l))."
     }
   ],
   "advancement": "icraft:stage_tier_2"

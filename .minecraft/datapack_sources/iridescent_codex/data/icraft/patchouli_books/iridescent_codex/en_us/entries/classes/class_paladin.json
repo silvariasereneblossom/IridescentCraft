@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Tank and support. Self-sustaining with group utility. The 'I keep everyone alive' class.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and shields (bonus)"
+      "text": "$(italic)Tank and support: self-sustaining, with group utility. The 'I keep everyone alive' class.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and shields (bonus)"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Holy Armor$() — +3 armor, +1 toughness, +10% knockback resistance. The $(thing)Paladin$() is naturally tanky without sacrificing damage as heavily as the $(thing)Vanguard$().$(br2)$(bold)Divine Resilience$() — Shield blocking reduces incoming damage further. +15% effectiveness from all healing sources.$(br2)$(bold)Healing Aura$() — Nearby allies regenerate HP passively. The core group utility power."
+      "text": "$(bold)Holy Armor$(): +3 armor, +1 toughness, +10% knockback resistance. The $(thing)Paladin$() is tanky without giving up as much damage as the $(thing)Vanguard$().$(br2)$(bold)Divine Resilience$(): shield blocking cuts incoming damage further, and all healing sources are +15% more effective.$(br2)$(bold)Healing Aura$(): nearby allies regenerate HP passively, the class's core group utility."
     },
     {
       "type": "patchouli:text",
       "title": "Group Play",
-      "text": "The $(thing)Paladin$() is the only class specifically designed for multiplayer. Healing Aura makes nearby players significantly more durable, and the tanky stats let the $(thing)Paladin$() stand at the front.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — Fire resistance + heavy armor effectiveness = the ultimate frontliner.$(br)$(thing)Human$() — Versatile bonus adapts to any group role.$(br)$(thing)Orc$() — Attack speed lets you deal respectable damage while tanking.$(br2)$(bold)Next: invest the Fortitude tree ($(k:puffish_skills.open)) — it's built for you.$()"
+      "text": "The $(thing)Paladin$() is the only class designed for multiplayer. Healing Aura makes nearby players much more durable, and the tanky stats let the $(thing)Paladin$() hold the front."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Group Play, cont.",
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Dwarf$(): fire resistance and heavy armor effectiveness make the best frontliner.$(br)$(thing)Human$(): the Versatile bonus fits any group role.$(br)$(thing)Orc$(): attack speed keeps your damage respectable while you tank.$(br2)$(bold)Next: spend points in the Fortitude tree ($(k:puffish_skills.open)).$()"
     }
   ]
 }

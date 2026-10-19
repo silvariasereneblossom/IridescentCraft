@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Brutal Strikes$() — +15% melee damage with all weapons. Always active, unconditional.$(br2)$(bold)Blood Fury$() — Below 40% HP: +20% melee damage. The core risk/reward passive.$(br2)$(bold)Thick Skinned$() — +10% armor effectiveness. Rewards heavy armor.$(br2)$(bold)Battle Trance$() — +5% attack damage and +1 natural armor. Your constant fury hardens you."
+      "text": "$(bold)Brutal Strikes$(): +15% melee damage with every weapon, at all times.$(br2)$(bold)Blood Fury$(): +20% melee damage below 40% HP, the class's core risk and reward.$(br2)$(bold)Thick Skinned$(): +10% armor effectiveness, which rewards heavy armor.$(br2)$(bold)Battle Trance$(): +5% attack damage and +1 natural armor from your constant fury."
     },
     {
       "type": "patchouli:text",
       "title": "Playstyle",
-      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. Blood Fury + Brutal Strikes at low HP = devastating burst. Combined with Thick Skinned, you survive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$() — +10% melee stacks for +25% base.$(br)$(thing)Demi-God$() — +40% HP makes Blood Fury safer.$(br)$(thing)Dwarf$() — Fire resistance + armor stacking."
+      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. At low HP, Blood Fury and Brutal Strikes together give a huge burst, and Thick Skinned keeps you alive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$(): +10% melee, which stacks to +25% base.$(br)$(thing)Demi-God$(): +40% HP makes Blood Fury safer.$(br)$(thing)Dwarf$(): fire resistance and armor stacking."
     }
   ]
 }

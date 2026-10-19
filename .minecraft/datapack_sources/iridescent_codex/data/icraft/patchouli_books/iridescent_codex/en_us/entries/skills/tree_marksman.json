@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ranged investment. Best for Ranger, Samurai.$()$(br2)Arrow damage, draw speed, and ammo efficiency apply the moment you take the node; ammo save and splash effects trigger on the shot itself."
+      "text": "$(italic)Ranged investment. Best for Ranger and Samurai.$()$(br2)Arrow damage, draw speed and ammo efficiency apply the moment you take the node; ammo save and splash effects trigger on the shot itself."
     },
     {
       "type": "patchouli:text",
       "title": "Nodes",
-      "text": "$(bold)Arrow Damage$() \u2014 Core trunk via attributeslib:arrow_damage. Scales cleanly with Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$() \u2014 Reduces bow charge time. At max investment: bows are nearly instant draw.$(br2)$(bold)Precision Branch$() \u2014 Reduces arrow spread, increases effective range. Ideal for long-range Ranger play."
+      "text": "$(bold)Arrow Damage$(): the core trunk, through attributeslib:arrow_damage. It scales cleanly with the Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$(): shorter bow charge time. At max investment bows draw almost instantly.$(br2)$(bold)Precision Branch$(): less arrow spread and more effective range, ideal for long-range Ranger play."
     },
     {
       "type": "patchouli:text",
       "title": "Nodes (cont.)",
-      "text": "$(bold)Barrage Branch$() \u2014 Increases arrow count per shot (multishot-style) and adds small AoE on impact.$(br2)$(bold)Marksman Capstone$() \u2014 $(bold)True Shot$() \u2014 Fully charged shots always crit. Crits deal +50% damage instead of +50% vanilla crit.$(br2)$(bold)Next: take Draw Speed early \u2014 it changes how the bow feels in every fight.$()"
+      "text": "$(bold)Barrage Branch$(): more arrows per shot (multishot-style) and a small AoE on impact.$(br2)$(bold)Marksman Capstone$(): $(bold)True Shot$(). Fully charged shots always crit, and crits deal +50% damage instead of the vanilla +50% crit.$(br2)$(bold)Next: take Draw Speed early; it changes how the bow feels in every fight.$()"
     }
   ]
 }

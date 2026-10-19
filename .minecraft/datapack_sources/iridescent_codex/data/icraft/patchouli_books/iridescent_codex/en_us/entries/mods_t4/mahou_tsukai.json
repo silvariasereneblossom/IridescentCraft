@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Bring a Gaia Spirit Fragment and initiate yourself \u2014 Mahou Tsukai is the T4 magic system: body enhancement magic that integrates deeply with the class system."
+      "text": "Bring a Gaia Spirit Fragment and initiate yourself. Mahou Tsukai is the T4 magic system: body enhancement magic that ties closely into the class system."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Mahou Tsukai's spell system is the endgame magic path for Archmage and Battlemage. Enhancement magic (buffing self and others) and blade techniques (melee empowerment) are the primary systems.$(br2)$(bold)Initiation:$() Mahou Tsukai requires a Gaia Spirit Fragment (Botania Gaia Guardian drop) for initiation. This is the bridge between T3 and T4 magic."
+      "text": "$(bold)Role in the pack:$() Mahou Tsukai's spells are the endgame magic path for the Archmage and the Battlemage. Its primary systems are enhancement magic (buffing yourself and others) and blade techniques (melee empowerment).$(br2)$(bold)Initiation:$() You need a Gaia Spirit Fragment (dropped by Botania's Gaia Guardian) to initiate. It is the bridge between T3 and T4 magic."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Class synergy:$() Archmage's Arcane Mastery stacks with Mahou Tsukai's magic power system. The interaction at T4 Archmage + Mahou Tsukai investment is among the highest raw damage outputs in the pack."
+      "text": "$(bold)Class synergy:$() The Archmage's Arcane Mastery stacks with Mahou Tsukai's magic power system. A T4 Archmage invested in Mahou Tsukai has some of the highest raw damage output in the pack."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Craft the Mahou Tsukai Guidebook$() for the full reference \u2014 magic circle construction, spell research, and the Mahou stat system. Recipe in JEI.$(br2)$(bold)Next: kill the Gaia Guardian for your initiation fragment \u2014 $(l:icraft:bosses/t4_bosses)Tier 4 Bosses$(/l).$()"
+      "text": "$(bold)Craft the Mahou Tsukai Guidebook$() (recipe in JEI) for the full reference: magic circle construction, spell research and the Mahou stat system.$(br2)$(bold)Next: kill the Gaia Guardian$() for your initiation fragment ($(l:icraft:bosses/t4_bosses)Tier 4 Bosses$(/l))."
     }
   ],
   "advancement": "icraft:stage_tier_4"

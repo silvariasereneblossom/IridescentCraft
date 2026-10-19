@@ -6,22 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Read this before you step through any portal \u2014 every dimension carries unique mechanical modifiers on top of mob scaling, and entering unprepared is the most reliable way to die here."
+      "text": "Read this before you step through any portal. Every dimension has its own mechanical modifiers on top of mob scaling, and walking in unprepared is the most reliable way to die here."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 1\u20132 Dimensions",
-      "text": "$(bold)Overworld$() \u2014 Baseline. Champions spawn at standard rate.$(br2)$(bold)Twilight Forest$() \u2014 Persistent Darkness debuff underground. Boss-guarded progression \u2014 you cannot reach later zones without defeating previous zone bosses.$(br2)$(bold)Blue Skies$() \u2014 Elemental damage ignores standard armor. Magic resistance (Sorcery tree) is unusually valuable here."
+      "title": "Tier 1 and 2 Dimensions",
+      "text": "$(bold)Overworld$(): the baseline. Champions spawn at the standard rate.$(br2)$(bold)Twilight Forest$(): a persistent Darkness debuff underground. Bosses guard the progression: you cannot reach a later zone without defeating the bosses of the zones before it.$(br2)$(bold)Blue Skies$(): elemental damage ignores standard armor, so magic resistance (Sorcery tree) is worth more here than usual."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 3 Dimensions",
-      "text": "$(bold)Undergarden$() \u2014 Constant Poison I. All mobs inflict Wither on hit (1s duration). Healing items 25% less effective.$(br2)$(bold)Deeper & Darker$() \u2014 Noise detection mechanic (KubeJS). Mob aggro radius scales with your armor sound. Sprint-walking in full iron is very loud.$(br2)$(bold)Nether$() \u2014 All mobs start aggro'd. No ambient neutral mobs. Lava damage increased 50%."
+      "text": "$(bold)Undergarden$(): constant Poison I. Every mob inflicts Wither on hit (1s). Healing items are 25% less effective.$(br2)$(bold)Deeper & Darker$(): noise detection (KubeJS). Mob aggro radius scales with your armor's sound; sprint-walking in full iron is very loud.$(br2)$(bold)Nether$(): every mob starts aggro'd, there are no ambient neutral mobs, and lava deals 50% more damage."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 4 Dimensions",
-      "text": "$(bold)The Aether$() (Deep Aether's biomes included) \u2014 thin air above y 180 (Weakness, unless your armour carries Aether Acclimation); vertigo when sprinting above y 200; one updraft slows a fall into the void. Its mobs move fast.$(br2)$(bold)The End$() \u2014 Three escalating zones. Outer Islands: manageable. Deep End: elite mobs, Void environmental damage. Dragon's Domain: the endgame. Ender Dragon scales progressively with each kill.$(br2)$(bold)Next: gear for the specific hazard \u2014 $(l:icraft:systems/enchantments)Custom Enchantments$(/l) has a counter for most of these.$()"
+      "text": "$(bold)The Aether$() (Deep Aether's biomes included): thin air above y 180 brings Weakness unless your armour carries Aether Acclimation. Sprinting above y 200 brings vertigo, and one updraft slows a fall into the void. Its mobs move fast."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 4 Dimensions, cont.",
+      "text": "$(bold)The End$(): three escalating zones. The Outer Islands are manageable. The Deep End has elite mobs and Void environmental damage. Dragon's Domain is the endgame, and the Ender Dragon scales up with each kill.$(br2)$(bold)Next: $(l:icraft:systems/enchantments)Custom Enchantments$(/l) has a counter for most of these.$()"
     }
   ]
 }

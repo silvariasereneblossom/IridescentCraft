@@ -6,6 +6,7 @@
     python .minecraft/dev/codex/codex.py release    # build the jar, validate, deploy x3, manifests, expected_state
     python .minecraft/dev/codex/codex.py diff       # what a release would change, page by page
     python .minecraft/dev/codex/codex.py facts      # the facts the book states, as the sources say them
+    python .minecraft/dev/codex/codex.py fit [--show <page>] [--tight <n>]   # how each page fits (codex_fit.py)
     python .minecraft/dev/codex/codex.py inputs [--regex]   # the files the gate reads (the hook and CI use it)
     python .minecraft/dev/codex/codex.py build --out <file> # the jar, written somewhere else
 
@@ -15,6 +16,8 @@ What `check` fails on (each line names the page and what to run or change):
   3. a placeholder or a generated page that cannot be filled (a boss the registry no longer has, an unknown field);
   4. the hand-written text: a typed fact, a boss under the wrong tier, a boss at the wrong place, an unknown id
      (codex_prose.py);
+  4b. a page whose text does not fit (Patchouli would shrink it) or runs into the landing page's buttons and progress
+     bar, a title wider than its page, a character the game's font has no glyph for (codex_fit.py; `fit` shows it);
   5. the committed jar (three distros) is not what the sources build now: STALE, run `release`;
   6. the three custom_jars_manifest.json or the three packwiz markers do not carry the jar's hash;
   7. validate_codex.py (Patchouli's load rules) fails on the jar the sources build.
@@ -36,6 +39,7 @@ sys.dont_write_bytecode = True
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import codex_facts as cf      # noqa: E402
+import codex_fit as cfit      # noqa: E402
 import codex_jar as cj        # noqa: E402
 import codex_prose as cp      # noqa: E402
 import codex_render as cr     # noqa: E402
@@ -264,6 +268,27 @@ def validate(mc, jar):
     return r.returncode == 0, (r.stdout + r.stderr).strip().splitlines()
 
 
+def fit_all(mc, files, report):
+    """codex_fit on the built book: a FAIL line for each page, landing or title that does not fit"""
+    try:
+        bf = cfit.check(files, mc)
+    except cfit.FitError as e:
+        report.fail('the page-fit check could not run: %s' % e)
+        return None
+    for f in bf.findings:
+        hint = {'overflow': 'shorten it, split it into a following page, or move text to another entry',
+                'width': 'shorten it', 'glyph': 'use another character',
+                'error': 'close what it opens'}.get(f.kind, '')
+        report.fail('FIT %s: %s.' % (f, hint))
+    if bf.findings:
+        report.lines.append('        see a page line by line: python %s fit --show "<the name before the colon>"' % TOOL)
+    else:
+        tight = sorted(bf.areas, key=lambda a: a.spare)[:3]
+        report.note('every page fits (%d text areas, measured as Patchouli lays them out; tightest: %s)'
+                    % (len(bf.areas), ', '.join('%s %d/%d lines' % (a.where, a.used, a.capacity) for a in tight)))
+    return bf
+
+
 def gather(mc, report, with_prose=True):
     try:
         facts = cf.load(mc)
@@ -280,6 +305,8 @@ def gather(mc, report, with_prose=True):
         n = prose_all(mc, facts, report)
         if not n:
             report.note('the hand-written text names no wrong tier, place, typed fact or unknown id')
+        if files is not None:
+            fit_all(mc, files, report)
     return facts, files
 
 
@@ -406,6 +433,41 @@ def cmd_facts(args):
     return 0
 
 
+def cmd_fit(args):
+    """every text area with the lines it takes and holds; --show a page line by line"""
+    report = Report()
+    facts, files = gather(args.mc, report, with_prose=False)
+    if files is None:
+        print('\n'.join(report.lines))
+        return 1
+    bf = cfit.check(files, args.mc)
+    if args.show:
+        hits = [a for a in bf.areas if args.show in a.where]
+        widths = [f for f in bf.findings if f.kind != 'overflow' and args.show in f.where]
+        if not hits and not widths:
+            print('[codex] no page matches "%s" (the names are "icraft:<entry> page <n>", "book.json landing text", '
+                  '"category icraft:<id> description")' % args.show)
+            return 1
+        for a in hits:
+            print('%s: %d of %d lines (%s)' % (a.where, a.used, a.capacity, a.label))
+            for i, line in enumerate(a.layout.line_texts()):
+                mark = '  <-- past the limit' if i >= a.capacity else ''
+                print('  %2d  y %3d  |%s|%s' % (i + 1, a.top + cfit.LINE_HEIGHT * i, line, mark))
+        for f in widths:
+            print('FIT %s' % f)
+        return 1 if any(a.overflows for a in hits) or widths else 0
+    areas = sorted(bf.areas, key=lambda a: (a.spare, a.where))
+    print('[codex] %d text areas; %d do not fit' % (len(areas), sum(1 for a in areas if a.overflows)))
+    for a in areas[:args.tight]:
+        print('  %+3d  %2d/%2d  %s' % (a.spare, a.used, a.capacity, a.where))
+    for f in bf.findings:
+        if f.kind != 'overflow':
+            print('  FIT %s' % f)
+    for n in bf.ctx.notes:
+        print('  note: %s' % n)
+    return 1 if bf.findings else 0
+
+
 def cmd_inputs(args):
     if args.regex:
         print(input_regex())
@@ -442,6 +504,9 @@ def main(argv=None):
     r.add_argument('--jar-only', action='store_true', help='write the three jars only (no manifests, markers, expected_state)')
     sub.add_parser('diff')
     sub.add_parser('facts')
+    ft = sub.add_parser('fit')
+    ft.add_argument('--show', help='print the pages whose name contains this, line by line')
+    ft.add_argument('--tight', type=int, default=20, help='list this many of the tightest areas (default 20)')
     i = sub.add_parser('inputs')
     i.add_argument('--regex', action='store_true')
     b = sub.add_parser('build')
@@ -450,8 +515,8 @@ def main(argv=None):
     args.mc = os.path.abspath(args.mc)
     try:
         return {'check': cmd_check, 'release': cmd_release, 'diff': cmd_diff, 'facts': cmd_facts,
-                'inputs': cmd_inputs, 'build': cmd_build}[args.cmd](args)
-    except (cf.FactError, cj.BuildError) as e:
+                'fit': cmd_fit, 'inputs': cmd_inputs, 'build': cmd_build}[args.cmd](args)
+    except (cf.FactError, cj.BuildError, cfit.FitError) as e:
         print('[codex] could not run: %s' % e)
         return 2
 

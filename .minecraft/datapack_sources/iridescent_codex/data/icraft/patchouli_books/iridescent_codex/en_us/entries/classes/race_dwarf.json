@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Sturdy, slow, and made for underground work. Dwarves excel at Tier 1–2 play when mining and forging dominate.$()$(br2)$(bold)Mining Speed$() — +25% mining speed on stone and ore. Reduces to +15% in non-Overworld dimensions.$(br2)$(bold)Fire Resistance$() — Permanent fire resistance IV. Lava does not burn you. Blazes deal 40% less damage."
+      "text": "$(italic)Sturdy, slow and made for underground work. Dwarves excel in Tiers 1 and 2, when mining and forging dominate.$()$(br2)$(bold)Mining Speed$(): +25% on stone and ore, dropping to +15% outside the Overworld.$(br2)$(bold)Fire Resistance$(): permanent fire resistance IV. Lava does not burn you, and Blazes deal 40% less damage."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Sturdy$() — +8% armor effectiveness from heavy armor (iron, steel, diamond, netherite only).$(br2)$(bold)Slow$() — -10% movement speed permanently. The cost of being built like a boulder.$(br2)$(bold)Next: pair with Paladin or Artificer, then go strip a cave — your +25% pick pays from minute one.$()"
+      "text": "$(bold)Sturdy$(): +8% armor effectiveness from heavy armor (iron, steel, diamond and netherite only).$(br2)$(bold)Slow$(): -10% movement speed, permanently: the cost of being built like a boulder.$(br2)$(bold)Next: pair with Paladin or Artificer, then go strip a cave. Your +25% pick pays from minute one.$()"
     }
   ]
 }

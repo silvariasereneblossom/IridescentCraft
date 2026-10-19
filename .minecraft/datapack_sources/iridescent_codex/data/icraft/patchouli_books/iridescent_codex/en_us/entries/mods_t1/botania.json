@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Plant a Pure Daisy and start generating mana — Botania is the Tier 1 magic-cultivation mod, and the Magic lane's first token source."
+      "text": "Plant a Pure Daisy and start generating mana. Botania is the Tier 1 magic-cultivation mod and the Magic lane's first token source."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid is datapack-restricted so it cannot tier-skip: Diamond, Osmium, and Ancient Debris are disabled, so it yields only lower-tier ores.$(br2)$(bold)Key IridescentCraft interactions:$() Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). Mana reagents and apparatus bank Magic-lane tokens via $(bold)/icraft codex submit$()."
+      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. A datapack keeps Botania's Orechid from skipping tiers: Diamond, Osmium, and Ancient Debris are disabled, so it yields only lower-tier ores.$(br2)$(bold)In IridescentCraft:$() Faefolk's Nature Magic racial gives Botania mana tools +15% effectiveness. Submit mana reagents and apparatus with $(bold)/icraft codex submit$() to bank Magic-lane tokens."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack — crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1–T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. $(l:icraft:bosses/boss_overview)Scales with your kills$(/l)."
+      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack, so you need T3 unlocked to craft them. Manasteel and Mana Pearl are the ceiling for T1 and T2.$(br2)$(bold)Gaia Guardian:$() The summoned Botania capstone, T4 content. It drops the Magiblade unique weapon (20%) and Gaia Spirit Fragments, and $(l:icraft:bosses/boss_overview)scales with your kills$(/l)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the documentation lives:$() this Codex replaces the individual mod guidebooks in this pack. Every Botania recipe is in JEI, and the flower and ritual mechanics you need for progression are covered in the $(l:icraft:progression/tier_gates)Magic lane$(/l) pages.$(br2)$(bold)Next: Pure Daisy → livingwood → your first mana spreader and pool.$()"
+      "text": "$(bold)Where to read up:$() This Codex replaces the mod guidebooks in this pack. Every Botania recipe is in JEI, and the $(l:icraft:progression/tier_gates)Magic lane$(/l) pages cover the flower and ritual mechanics you need to progress.$(br2)$(bold)Next: Pure Daisy to livingwood, then your first mana spreader and pool.$()"
     }
   ]
 }

@@ -8,6 +8,7 @@ and a gate (pre-push hook and CI) fails while the committed jar is not what thos
 python .minecraft/dev/codex/codex.py check      # the gate: exit 0 current, 1 stale or wrong, 2 could not run
 python .minecraft/dev/codex/codex.py release    # build, validate, deploy x3, manifests + markers, expected_state
 python .minecraft/dev/codex/codex.py diff       # what a release would change, page by page
+python .minecraft/dev/codex/codex.py fit [--show "icraft:<entry>"]   # how every page fits; one entry line by line
 python .minecraft/dev/codex/codex.py facts      # the facts as the sources say them
 python .minecraft/dev/codex/codex_test.py       # the tests (CI: .github/workflows/codex.yml)
 ```
@@ -68,8 +69,42 @@ pages as it needs (continuations titled "..., cont."):
 | `dimension_glance` `{"tier": n}` | the tier's dimensions: gate, death penalty; the difficulty band |
 | `unique_list` `{"tier": n}` | the tier's unique weapons by the boss that drops each, with the chance; the ones no boss drops yet |
 
-Generated pages are sized with the uniform font's widths (`book.json` `use_blocky_font: false`), 14 lines to a page:
-on the safe side of the 16 a page holds. The hand-written pages measure 15 lines at the median (`codex_render.count_lines`).
+Generated pages are laid out with the fit model below and keep one line free (the registries change what they say):
+13 lines when the run starts on the entry's first page, 15 under a page title.
+
+## Does every page fit? (`codex_fit.py`)
+
+A page whose text is longer than the page does not run off it in this pack: `config/patchouli-client.toml` sets
+`textOverflowMode = "RESIZE"`, so Patchouli shrinks the whole page until it fits, silently. The landing page has no such
+rescue: its text runs into the history and resize buttons and the "Unlock Progress:" bar (2026-10-18, the operator's
+screenshot). `codex.py check` (and so the hook and CI) fails on both, and on a title wider than its page.
+
+The check is a MODEL of Patchouli 1.20.1-85, not a client. Every number in it was read out of the jars (javap and
+Vineflower, 2026-10-18), the glyph widths out of the game's font files:
+
+| What | Rule |
+|---|---|
+| font | `use_blocky_font: false` means `minecraft:uniform`: unifont glyphs, most letters 4 px, a space 4, bold +0.5 a glyph (+1 a space). Widths in `codex_fonts.json`, written by `gen_font_widths.py` from the 1.20.1 client jar and its asset store; titles and entry names are drawn in `minecraft:default` (the bitmap font) |
+| line | 116 px wide, 9 px a line. A span's width is the font's width of its text, rounded up. A line that overflows breaks at Java's line `BreakIterator` (ported in `java_line_breaks`) before the first character that does not fit, measuring that span one character at a time, each rounded up and +1 for bold: bold text wraps early |
+| codes | the book's macros, `$(br)` `$(br2)`, `$(li)` (a bullet indented 4 px a level, then a space), bold, colours (a `$(#rgb)` keeps bold; a section-sign colour inside a string clears it), links (keep the style around them), `$(k:...)` (the key the Default Options seed binds), `$(playername)` (16 characters) |
+| pages | a page fits while its last line's top is at or above 147. Text starts at 22 on an entry's first page (under its name), 12 under a page title, -4 untitled, 40 under a spotlight item, 59 under one crafting recipe: 14, 16, 17, 12 and 10 lines |
+| landing | text from x 15, y 43; the button row at y 118, "Unlock Progress:" at 135, the bar at 144: 8 lines |
+| category | the description from y 40, above the progress label at 135: 10 lines |
+| widths | a page title, an entry name (its first page's header) and a category name within 122 px in the default font (centred, that keeps the ink on the paper of `book_brown.png` on either page); an entry name within 99 px in the book font (the chapter list draws it at x + 12 and the unread marker at x + 111) |
+
+How it is known to be right: it reproduces, line for line, the landing page and a category page in the operator's
+screenshots of 2026-10-18 (codex_test.py keeps both); its break rules come from the JDK's own rule source
+(`sun/text/resources/BreakIteratorRules.java`, "LineBreakRules") and match the JDK 17 iterator on every paragraph of the
+book and on 9,000 generated strings but one (an apostrophe or dollar sign right before a no-break space);
+`jdk_line_breaks.java` records the JDK's answer for a list of strings (codex_test.py keeps a sample).
+
+What it cannot see: a player who rebinds a key (`$(k:...)` prints their key, not the seed's), a resource pack that
+replaces the fonts (none does today: TATOS ships a `font/default.json` the game rejects, "Unknown element name:
+legacy_unicode"), a page type it does not model (it says so and stops).
+
+`python .minecraft/dev/codex/codex.py fit --show "icraft:<category>/<entry>"` prints an entry's pages as the game
+lays them out, with "<-- past the limit" where a line does not fit, then any title too wide. Without `--show` it lists the
+tightest pages.
 
 ## What the gate checks (`codex.py check`)
 
@@ -88,6 +123,8 @@ on the safe side of the 16 a page holds. The hand-written pages measure 15 lines
    - **PLACE**: a boss name followed by a parenthesis naming a place that is not its arena: "Thunker (Chthonic
      Cathedral)".
    - **ID**: a namespaced id the game does not register (`dev/registry`), for the namespaces the snapshot knows.
+4b. every page fits (`codex_fit.py`, above): a `FIT` line names the page, the lines it takes and holds; a title or name
+   too wide; a character the game's font has no glyph for.
 5. the three committed jars are byte for byte what the sources build (`STALE` otherwise, with the pages that differ);
 6. the three manifests and the three markers carry the jar's hash;
 7. `validate_codex.py` passes on the built jar (Patchouli's load rules, links, items, keybinds, textures).
@@ -113,7 +150,11 @@ in game. The release is one command and the gate makes it impossible to forget, 
 |---|---|
 | `codex.py` | the command line: check, release, diff, facts, inputs, build |
 | `codex_facts.py` | the facts model, read from the sources |
-| `codex_render.py` | placeholders, generators, the page-fit estimate |
+| `codex_render.py` | placeholders, generators, their pagination |
+| `codex_fit.py` | the model of Patchouli's layout: does every page fit |
+| `codex_fonts.json` | the glyph advances of the game's fonts and the key names (generated) |
+| `gen_font_widths.py` | writes `codex_fonts.json` from the client jar and its asset store |
+| `jdk_line_breaks.java` | records the JDK's line boundaries, to check `codex_fit`'s port against |
 | `codex_prose.py` | the checks of the hand-written text |
 | `codex_jar.py` | the deterministic jar |
 | `names.json` | the names players read; the words the prose check recognises |

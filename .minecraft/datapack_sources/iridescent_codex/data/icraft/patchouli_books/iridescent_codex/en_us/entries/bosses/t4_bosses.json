@@ -6,23 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Finish your Tier 4 set before stepping into these arenas — this is the hardest content in the pack. The Aether, the End and the Ultimate Wither all punish under-preparation."
+      "text": "Finish your Tier 4 set before you step into these arenas. This is the hardest content in the pack, and the Aether, the End and the Ultimate Wither all punish under-preparation."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Ender Dragon$() — Drops: $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25% — highest in the pack), Dragon Heart, Dragon Scale.$(br2)$(bold)The Aether's dungeon bosses$() — the Slider (Bronze Dungeon): $(l:icraft:bosses/unique_weapons)Thunderbrand$(/l); the Valkyrie Queen (Silver): $(l:icraft:bosses/unique_weapons)Caelestis$(/l); the Sun Spirit (Gold): $(l:icraft:bosses/unique_weapons)Sunfire$(/l) and the Sunfeather Charm relic. Each also drops Rift Shards.$(br2)$(bold)Botania Gaia Guardian$() — Summoned Botania capstone. Drops: $(l:icraft:bosses/unique_weapons)Magiblade$(/l) (20%), Gaia Spirit Fragment. $(l:icraft:bosses/boss_overview)Scales with your kills$(/l)."
+      "text": "$(bold)Ender Dragon$() drops $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25%, the highest in the pack), Dragon Heart and Dragon Scale.$(br2)$(bold)The Aether's dungeon bosses$(): the Slider (Bronze Dungeon) drops $(l:icraft:bosses/unique_weapons)Thunderbrand$(/l), the Valkyrie Queen (Silver) $(l:icraft:bosses/unique_weapons)Caelestis$(/l), the Sun Spirit (Gold) $(l:icraft:bosses/unique_weapons)Sunfire$(/l) and the Sunfeather Charm relic. Each also drops Rift Shards."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Ultimate Wither$() (optional) — the strongest Wither; it only forms in the Nether.$(br2)Craft $(bold)Corrupted Soul Sand$() (soul sand or soul soil + 3 Nether Stars, Tier 4). Build the Wither's T with it in the centre of the arms, then set the three skulls. Elsewhere the corruption is refused and your blocks stay."
+      "text": "$(bold)Botania Gaia Guardian$(), the summoned Botania capstone, drops $(l:icraft:bosses/unique_weapons)Magiblade$(/l) (20%) and Gaia Spirit Fragment. It $(l:icraft:bosses/boss_overview)scales with your kills$(/l)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Ultimate Wither$(), the fight$(br2){{boss minecraft:wither health@3}} health, heavy armour, skull storms, charges and minions.$(br2)Drops 5 Nether Stars, 2 Netherite Upgrade templates and 3,000 experience, with the Wither's usual spoils. Fought by two or more players, it drops a plain Wither's loot bag for each player instead.$(br2)Quest: $(italic)Challenge: The Ultimate Wither$()."
+      "text": "$(bold)The Ultimate Wither$() (optional) is the strongest Wither, and it only forms in the Nether.$(br2)Craft $(bold)Corrupted Soul Sand$() (soul sand or soul soil + 3 Nether Stars, Tier 4). Build the Wither's T with it in the centre of the arms, then set the three skulls. Anywhere else the corruption is refused and your blocks stay as they are."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Aether's apex$() — the Eye of the Storm (Brass Dungeon). Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), T4 boss materials.$(br2)$(bold)The Warden$() — the Deep Dark. Drops $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) and the Spectral Whisper bow.$(br2)$(bold)Next: start with the Ender Dragon — best unique odds in the pack, and Terramity's Virtue (called at its Prismatic Pond, in the Aether) waits beyond.$()"
+      "text": "$(bold)Ultimate Wither$(): the fight$(br2){{boss minecraft:wither health@3}} health, heavy armour, skull storms, charges and minions.$(br2)Drops 5 Nether Stars, 2 Netherite Upgrade templates and 3,000 experience, plus the Wither's usual spoils. With two or more players, it drops a plain Wither's loot bag for each player instead.$(br2)Quest: $(italic)Challenge: The Ultimate Wither$()."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)The Aether's apex$(): the Eye of the Storm (Brass Dungeon). Drops $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%) and T4 boss materials.$(br2)$(bold)The Warden$() (the Deep Dark) drops $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) and the Spectral Whisper bow.$(br2)Beyond these waits Terramity's Virtue, called at its Prismatic Pond in the Aether.$(br2)$(bold)Next: start with the Ender Dragon.$()"
     },
     {
       "type": "icraft:generated",

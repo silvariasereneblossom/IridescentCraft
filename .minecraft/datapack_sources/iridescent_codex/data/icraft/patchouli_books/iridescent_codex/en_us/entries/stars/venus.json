@@ -6,23 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Venus — The Acid World$()$(br)Mobs: $(bold){{dim ad_astra:venus difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:venus death}}$()$(br2)The most hostile inner planet. Venus's crushing pressure and acid atmosphere make every moment on the surface a fight for survival. Mobs here are pressure-adapted and acid-resistant."
+      "text": "$(bold)Venus: The Acid World$()$(br)Mobs: $(bold){{dim ad_astra:venus difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:venus death}}$()$(br2)The most hostile inner planet. Crushing pressure and an acid atmosphere wear you down every moment you spend on the surface, and the mobs here are pressure-adapted and acid-resistant."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Acid rain$() deals continuous damage — no escape on the surface$(br)• $(bold)Crushing pressure$() reduces movement speed significantly$(br)• Acid-resistant mobs gain Resistance and Strength$(br2)Venus is designed for short, intense expeditions. Get in, mine what you need, get out. Extended stays will drain your resources rapidly."
+      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Acid rain$() deals continuous damage everywhere on the surface$(br)• $(bold)Crushing pressure$() slows your movement a lot$(br)• Acid-resistant mobs gain Resistance and Strength$(br2)Venus is designed for short, intense trips: get in, mine what you need and get out. Long stays drain your resources fast."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Purpose$()$(br)Venus contains high-value ores required for the $(bold)Tier 4 Rocket$() to reach Glacio — the true endgame destination.$(br2)$(bold)Structures$()$(br)Floating cloud structures above the acid layer and deep surface bunkers contain unique loot. The floating structures are safer to explore but harder to reach."
+      "text": "$(bold)Purpose$()$(br)Venus has the high-value ores the $(bold)Tier 4 Rocket$() needs to reach Glacio, the endgame destination.$(br2)$(bold)Structures$()$(br)Floating cloud structures above the acid layer and deep surface bunkers hold unique loot. The floating ones are safer to explore but harder to reach."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Rock Extraction$()$(br)Crush $(bold)Venus Stone$() in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)• $(bold)Sulfuric Compound$() (25%) — corrosion-resistant alloys$(br)• $(bold)Pressure Crystal$() (15%) — pressure-resistant tech$(br)• Quartz (40%)"
+      "text": "$(bold)Planetary Rock Extraction$()$(br)Crush $(bold)Venus Stone$() in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)• $(bold)Sulfuric Compound$() (25%): corrosion-resistant alloys$(br)• $(bold)Pressure Crystal$() (15%): pressure-resistant tech$(br)• Quartz (40%)"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Pressure Shell Enchantment$()$(br)Venus mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Pressure Shell$() (max level 2). This armor enchantment:$(br)• Each level reduces acid damage by 50%$(br)• At level 2, fully negates acid rain and pressure slowdown$(br)• Transforms Venus from lethal to manageable$(br2)$(italic)Without Pressure Shell, Venus expeditions must be very short.$()"
+      "text": "$(bold)Pressure Shell Enchantment$()$(br)Venus mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Pressure Shell$() (max level 2). On armor, it:$(br)• Reduces acid damage by 50% per level$(br)• Fully negates acid rain and pressure slowdown at level 2$(br)• Turns Venus from lethal into manageable$(br2)$(italic)Without Pressure Shell, keep your Venus trips very short.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

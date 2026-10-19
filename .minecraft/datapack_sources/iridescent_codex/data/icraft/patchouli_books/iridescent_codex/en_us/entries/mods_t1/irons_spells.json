@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Loot a spell scroll, craft a spell book, inscribe, cast — Iron's Spellbooks is magic combat from your very first dungeon."
+      "text": "Loot a spell scroll, craft a spell book, inscribe, cast. Iron's Spellbooks gives you magic combat from your first dungeon on."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() First-available magic combat. Spell books and scrolls turn up in Overworld dungeons. The Dead King, Fire Boss, and Citadel Keeper are T2–T3 boss encounters from this mod.$(br2)$(bold)Battlemage synergy:$() Iron's Spellbooks is the primary mod for the Battlemage class. Mana Barrier and Arcane Infusion passives directly interact with ISS mana."
+      "text": "$(bold)Role in the pack:$() The first magic combat you can get. Spell books and scrolls turn up in Overworld dungeons, and the Dead King, Fire Boss, and Citadel Keeper are this mod's T2 to T3 bosses.$(br2)$(bold)Battlemage synergy:$() Iron's Spellbooks is the Battlemage's main mod. The class's Mana Barrier and Arcane Infusion passives work directly with ISS mana."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not all schools are immediately accessible — higher-level books require finding them in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They are {{boss irons_spellbooks:cryomancer tier}} minibosses: {{tier 3 each}} {{tier 3 token}} on every kill, and spell books.$(br2)$(bold)Keys:$() $(k:irons_spellbooks.spellbook_cast) casts, $(k:irons_spellbooks.spell_wheel) opens the spell wheel."
+      "text": "$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not every school is open right away: you find the higher-level books in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They are {{boss irons_spellbooks:cryomancer tier}} minibosses: {{tier 3 each}} {{tier 3 token}} per kill, plus spell books.$(br2)$(bold)Keys:$() $(k:irons_spellbooks.spellbook_cast) casts, $(k:irons_spellbooks.spell_wheel) opens the spell wheel."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)This pack upgrades the spell books themselves:$() caster classes start with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l) that take material pages and custom magic enchants.$(br2)$(bold)Next: work through $(l:icraft:mods_t1/early_magic)the Early Magic Tutorial$(/l) — scroll to first cast in five steps.$()"
+      "text": "$(bold)Upgraded books:$() Caster classes start with $(l:icraft:mods_t1/modular_spells)Modular Spell Books$(/l), which take material pages and custom magic enchants.$(br2)$(bold)Next: work through $(l:icraft:mods_t1/early_magic)the Early Magic Tutorial$(/l), scroll to first cast in five steps.$()"
     }
   ]
 }

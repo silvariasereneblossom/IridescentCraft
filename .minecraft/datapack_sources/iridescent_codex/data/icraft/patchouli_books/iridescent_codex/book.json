@@ -1,6 +1,6 @@
 {
   "name": "The Iridescent Codex",
-  "landing_text": "$(bold)New here? Open $(l:icraft:welcome/first_hour)Your First Hour$(/l).$()$(br2)You climb four tiers on banked tokens. Four lanes earn them — build, cast, explore, or fight — and any one lane alone is enough.$(br2)$(note)Quest log: $(k:heracles.open_quests). Chapters unlock as you tier up.$()",
+  "landing_text": "$(bold)New here? Open $(l:icraft:welcome/first_hour)Your First Hour$(/l).$()$(br2)You climb four tiers on banked tokens. Build, cast, explore or fight: one lane earns enough.$(br)$(note)Quest log: $(k:heracles.open_quests). Chapters unlock as you tier up.$()",
   "subtitle": "Progression · Systems · Lore",
   "creative_tab": "misc",
   "model": "patchouli:book_brown",

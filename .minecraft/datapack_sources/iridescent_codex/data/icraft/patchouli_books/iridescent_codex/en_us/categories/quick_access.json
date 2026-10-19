@@ -1,6 +1,6 @@
 {
   "name": "Quick Access",
-  "description": "Two one-page shortcuts for returning players: the exact key and button that open your full attribute readout (Apothic Attributes) and your aptitude tree (Iridescent Aptitudes).",
+  "description": "Two one-page shortcuts for returning players: the key and button that open your attribute readout (Apothic Attributes) and your aptitude tree (Iridescent Aptitudes).",
   "icon": "minecraft:spyglass",
   "sortnum": -1
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Reached: Tier 4 - Ascension",
+  "name": "Tier 4: Ascension",
   "icon": "deep_aether:stratus_ingot",
   "category": "icraft:progression",
   "sortnum": 10,
@@ -7,12 +7,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 4 reached.$() The top of the ladder.$(br2)$(li)$(bold)Dimensions:$() the Aether (Deep Aether's biomes included), and beyond it The End.$(li)$(bold)Tech:$() advanced Mekanism, RFTools Dimensions.$(li)$(bold)Magic:$() Mahou Tsukai.$(li)$(bold)Gear:$() Netherite, Gaia, Antimatter, Atomic Alloy.$(br2)There is no token gate beyond here."
+      "text": "$(bold)Tier 4 reached.$() This is the top of the ladder, with no token gate past it.$(br)$(li)$(bold)Dimensions:$() the Aether (Deep Aether's biomes included) and, beyond it, the End.$(li)$(bold)Tech:$() advanced Mekanism, RFTools Dimensions.$(li)$(bold)Magic:$() Mahou Tsukai.$(li)$(bold)Gear:$() Netherite, Gaia, Antimatter, Atomic Alloy."
     },
     {
       "type": "patchouli:text",
       "title": "The Finale",
-      "text": "Eyes of Ender lead you to The End - see $(l:icraft:progression/dimensions)Dimensional Progression$(/l). Defeat the $(t4)Ender Dragon$() to win. The Ad Astra planets are open to you now too: a rocket, no dragon kill.$(br2)Your surplus tokens now have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
+      "text": "Eyes of Ender lead you to the End (see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)). Defeat the $(t4)Ender Dragon$() to win. The Ad Astra planets are open to you now too; you reach them by rocket, without killing the dragon first.$(br2)Your surplus tokens also have a new use: the $(l:icraft:progression/token_exchange)Token Exchange$(/l) turns them into experience."
     }
   ]
 }

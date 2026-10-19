@@ -7,29 +7,29 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Okay, What Should I Do First?$()$(br2)Loot the spawn village — the chests hold tools, food, and spell scrolls.$(br2)Then hit nearby structures for more treasure, mod starter items, and $(l:icraft:loot/gems)Apotheosis gems$(/l) you'll socket later.$(br2)Comfortable? Move out and start a permanent base beyond the spawn zone."
+      "text": "$(bold)Okay, What Do I Do First?$()$(br2)Loot the spawn village: its chests hold tools, food and spell scrolls. Then hit nearby structures for more treasure, mod starter items and $(l:icraft:loot/gems)Apotheosis gems$(/l) to socket later.$(br2)Comfortable? Move out and start a permanent base beyond the spawn zone."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Key Early Decisions$()$(br2)$(li)$(bold)Pick your Origin, Race, and Class$() — the most impactful choice you'll make: $(l:icraft:welcome/class_guide)Pick Your Origin, Race & Class$(/l).$(li)$(bold)Eat varied food.$() Hunger drains faster than vanilla, and food diversity pays permanent max-HP bonuses via Spice of Life.$(li)$(bold)Learn the core keys:$() $(k:origins.view_origin) shows your origin, $(k:puffish_skills.open) opens skills, $(k:irons_spellbooks.spell_wheel) is the spell wheel. Full list: $(l:icraft:systems/keybinds)Keybinds$(/l)."
+      "text": "$(bold)Key Early Decisions$()$(br)$(li)$(bold)Pick your Origin, Race and Class$(), the biggest choice you'll make: $(l:icraft:welcome/class_guide)Origin, Race & Class$(/l).$(li)$(bold)Eat varied food.$() Hunger drains faster than vanilla, and food diversity pays permanent max-HP bonuses via Spice of Life.$(li)$(bold)Learn the core keys:$() $(k:origins.view_origin) shows your origin, $(k:puffish_skills.open) opens skills, $(k:irons_spellbooks.spell_wheel) is the spell wheel. Full list: $(l:icraft:systems/keybinds)Keybinds$(/l)."
     },
     {
       "type": "patchouli:text",
       "title": "Your Quest Log",
-      "text": "Press $(k:heracles.open_quests) to open the Heracles quest book — it is your checklist.$(br2)It tracks tier milestones, lane quests, and the boss rush. The Codex explains $(italic)why$(); the quest log tracks $(italic)where you are$().$(br2)The Engineering and Magic Crafting quest groups have $(bold)Submit$() buttons that bank carried materials into progression tokens with one click."
+      "text": "Press $(k:heracles.open_quests) to open the Heracles quest book, your checklist.$(br2)It tracks tier milestones, lane quests and the boss rush. The Codex explains $(italic)why$(); the quest log tracks $(italic)where you are$().$(br2)The Engineering and Magic Crafting quest groups have $(bold)Submit$() buttons that bank carried materials into progression tokens with one click."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Useful Tips$()$(br2)$(li)$(bold)Don't rush enchanting.$() Apotheosis reworks it completely — better bookshelves unlock better enchants.$(li)$(bold)Don't hunt diamonds in chests.$() They've been removed from Overworld structure loot; diamonds are a Tier 3 material.$(li)$(bold)Bank tokens as you go.$() Structures, new dimensions, and boss kills all earn Codex tokens — run $(bold)/icraft codex submit$() to bank materials."
+      "text": "$(bold)Useful Tips$()$(br)$(li)$(bold)Don't rush enchanting.$() Apotheosis reworks it completely: better bookshelves unlock better enchants.$(li)$(bold)Don't hunt diamonds in chests.$() They are gone from Overworld structure loot; diamonds are a Tier 3 material.$(li)$(bold)Bank tokens as you go.$() Structures, new dimensions and boss kills all earn Codex tokens. To bank materials, run $(bold)/icraft codex submit$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What To Ignore For Now$()$(br2)$(li)The $(bold)Nether$() — it's Tier 3. The portal won't activate until you're ready.$(li)The $(bold)End$() — it's Tier 4.$(li)$(bold)Twilight Forest$() — Tier 2. You can enter, but mobs will hurt.$(li)$(bold)Refined Storage$() — Tier 3.$(li)$(bold)Mekanism$() — Tier 3–4.$(br2)This doesn't mean you can't look. It means the pack is balanced around those tiers."
+      "text": "$(bold)What To Ignore For Now$()$(br)$(li)The $(bold)Nether$(): Tier 3. The portal won't activate until you're ready.$(li)The $(bold)End$(): Tier 4.$(li)$(bold)Twilight Forest$(): Tier 2. You can enter, but mobs will hurt.$(li)$(bold)Refined Storage$(): Tier 3.$(li)$(bold)Mekanism$(): Tier 3 to 4.$(br2)You can still look; the pack is just balanced around those tiers."
     },
     {
       "type": "patchouli:text",
       "title": "Waystones",
-      "text": "Waystones generate naturally in all dimensions. They're your free fast-travel network — activating one registers it permanently, and teleporting between them costs nothing.$(br2)Crafting a waystone is intentionally expensive (rare boss materials); natural generation handles your travel needs.$(br2)$(bold)Next: open $(l:icraft:welcome/class_guide)Pick Your Origin, Race & Class$(/l) and lock in your build.$()"
+      "text": "Waystones generate naturally in all dimensions and form a free fast-travel network: activating one registers it permanently, and teleporting between them costs nothing.$(br2)Crafting one is expensive on purpose (rare boss materials); the natural ones cover your travel needs.$(br2)$(bold)Next: open $(l:icraft:welcome/class_guide)Origin, Race & Class$(/l) and lock in your build.$()"
     }
   ]
 }

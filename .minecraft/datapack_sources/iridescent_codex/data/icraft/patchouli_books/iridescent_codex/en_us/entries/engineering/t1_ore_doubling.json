@@ -1,17 +1,17 @@
 {
-  "name": "T1: Ore Doubling (Create)",
+  "name": "T1: Ore Doubling",
   "icon": "create:crushing_wheel",
   "category": "icraft:engineering",
   "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Build a $(bold)Crushing Wheel$() pair — one ore in, two ingots out. That's $(t1)Tier 1$() engineering's first payoff, and it's all $(bold)Create$().$(br2)Set up rotational power (water wheel or hand crank), build a Mechanical Press for plates, then the Crushing Wheel pair for the 2x step."
+      "text": "Build a $(bold)Crushing Wheel$() pair and one ore comes out as two ingots. That is the first payoff of $(t1)Tier 1$() engineering, and it is all $(bold)Create$().$(br2)Set up rotational power (a water wheel or hand crank), build a Mechanical Press for plates, then the Crushing Wheel pair for the 2x step."
     },
     {
       "type": "patchouli:text",
-      "title": "Banking T1 tokens",
-      "text": "Brass is the Tier 1 ceiling material and a bread-and-butter submission. Machine blocks mint the most: a $(bold)Crushing Wheel$() banks $(t1)25$() tokens, a $(bold)Mechanical Press$() $(t1)20$() (cap 2 each).$(br2)Bank $(t1){{tier 1 threshold}}$() total to ascend to $(t2)Tier 2$(). See the full Create writeup in $(l:icraft:mods_t1/create)Create$(/l)."
+      "title": "Banking T1 Tokens",
+      "text": "Brass is the Tier 1 ceiling material and a bread-and-butter submission. Machine blocks mint the most: a $(bold)Crushing Wheel$() banks $(t1)25$() tokens and a $(bold)Mechanical Press$() $(t1)20$() (capped at 2 each).$(br2)Bank $(t1){{tier 1 threshold}}$() in total to ascend to $(t2)Tier 2$(). The full Create writeup is in $(l:icraft:mods_t1/create)Create$(/l)."
     }
   ]
 }

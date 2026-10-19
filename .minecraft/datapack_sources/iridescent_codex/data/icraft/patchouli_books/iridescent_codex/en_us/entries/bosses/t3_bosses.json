@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Gear to full diamond minimum — Terrasteel or Enderium recommended — before touching Tier 3 bosses, the most varied roster in the pack: Meet Your Fight superbosses, Cataclysm ultra-bosses, the Cardinal Sins ladder and the Wither.$(br2)The Cardinal Sins end in $(bold)Lucifer$(), the Tier 3 combat capstone and the last name on its boss rush: clearing all of it opens Tier 4."
+      "text": "Gear to full diamond at least (Terrasteel or Enderium recommended) before you face Tier 3, the most varied boss roster in the pack: Meet Your Fight superbosses, Cataclysm ultra-bosses, the Cardinal Sins ladder and the Wither.$(br2)The ladder ends in $(bold)Lucifer$(), the Tier 3 combat capstone, last on its boss rush. Clearing all of it opens Tier 4."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Cardinal Sins$()$(br)The seven sins and Drakara have their arenas in $(bold)the Abyss$(); Lucifer's is in $(bold)the Nether$(). The Boss Compass finds each one.$(br2)Every shrine takes the previous sin's Soul Orb and works once: Sloth → Gluttony → Lust → Greed → Envy → Wrath → Pride → Lucifer's Atrocity Shrine. Drakara needs no shrine: it waits in its arena, underground."
+      "text": "$(bold)The Cardinal Sins$()$(br)The seven sins and Drakara have their arenas in $(bold)the Abyss$(); Lucifer's is in $(bold)the Nether$(). The Boss Compass finds each one.$(br2)Every shrine takes the previous sin's Soul Orb and works once, in this order: Sloth, Gluttony, Lust, Greed, Envy, Wrath, Pride, then Lucifer's Atrocity Shrine. Drakara needs no shrine: it waits in its arena, underground."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Soul Orbs$()$(br)Sloth's Malevolichite Shrine takes a $(bold)Soulweaver Orb$(): 8 Malevolichite around an Eye of Ender. Malevolichite Ore sits in the floating pillars of the Overworld's Forgotten Forest.$(br2)Every other orb: an Eye of Ender and the Essence the previous sin drops, at a smithing table with no template."
+      "text": "$(bold)Soul Orbs$()$(br)Sloth's Malevolichite Shrine takes a $(bold)Soulweaver Orb$(): 8 Malevolichite around an Eye of Ender. Malevolichite Ore sits in the floating pillars of the Overworld's Forgotten Forest.$(br2)Every other orb takes an Eye of Ender and the Essence the previous sin drops, at a smithing table with no template."
     },
     {
       "type": "patchouli:text",
@@ -26,11 +26,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Wither$() — Drops: 2 Nether Stars, Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, often an Advanced Reforging Token, $(l:icraft:bosses/unique_weapons)Soulkeeper$(/l) (15%). Your first Wither also drops the Dormant Relic. With two or more players near, it drops a loot bag of those spoils for each player instead."
+      "text": "$(bold)Wither$()$(br)Drops: 2 Nether Stars, Wither Bones, 2 Runic Tablets, 3 Rift Shards, a Void Fragment, often an Advanced Reforging Token, $(l:icraft:bosses/unique_weapons)Soulkeeper$(/l) (15%). Your first Wither also drops the Dormant Relic. With two or more players near, it drops a loot bag of those spoils for each player instead."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Cataclysm Bosses$()$(br){{bosses mod=cataclysm tier=3 kind=boss Names}}: {{bosses mod=cataclysm tier=3 kind=boss word}} bosses in massive Cataclysm structures, most with a unique weapon and a boss material. The hardest T3 content.$(br2)$(bold)Stalwart Dungeons$() — the Shelterer, the Nether Keeper and the Awful Ghast guard its dungeons."
+      "text": "$(bold)Cataclysm Bosses$()$(br){{bosses mod=cataclysm tier=3 kind=boss Names}}: {{bosses mod=cataclysm tier=3 kind=boss word}} bosses in massive Cataclysm structures and the hardest T3 content. Most drop a unique weapon and a boss material.$(br2)$(bold)Stalwart Dungeons$(): the Shelterer, the Nether Keeper and the Awful Ghast guard its dungeons."
     },
     {
       "type": "icraft:generated",

@@ -6,32 +6,32 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Watch for pack leaders, Blood Moons, and treasure bags \u2014 the world escalates through three difficulty stages as you advance, and each stage adds mechanics like these.$(br2)Deadlier, but also more rewarding. This is not optional: the world $(italic)will$() become harder as you progress."
+      "text": "Watch for pack leaders, Blood Moons, and treasure bags. The world escalates through three difficulty stages as you advance. Each stage adds mechanics like these and is deadlier, but also more rewarding.$(br2)You cannot opt out. The world $(italic)will$() become harder as you progress."
     },
     {
       "type": "patchouli:text",
       "title": "Difficulty Stages",
-      "text": "$(bold)Normal (T1\u2013T2)$() \u2014 From world start. Standard mob behavior. Mobs have base HP scaling and spawn in basic patterns.$(br2)$(bold)Expert (T3)$() \u2014 Triggered by entering the Nether. Mobs gain new abilities, spawn in larger groups, and elite encounters become more frequent.$(br2)$(bold)Master (T4)$() \u2014 Triggered by killing the Ender Dragon. The world is fully hostile. Every encounter is a real fight."
+      "text": "$(bold)Normal (T1-T2)$(): from world start. Standard mob behavior: mobs have base HP scaling and spawn in basic patterns.$(br2)$(bold)Expert (T3)$(): starts when you enter the Nether. Mobs gain new abilities and spawn in larger groups, and elite encounters come more often.$(br2)$(bold)Master (T4)$(): starts when you kill the Ender Dragon. The world is fully hostile. Every encounter is a real fight."
     },
     {
       "type": "patchouli:text",
       "title": "Mob Groups",
-      "text": "Mobs can spawn in $(thing)leader/follower packs$(). A leader mob spawns with a small squad of followers that coordinate attacks. Leaders are visually distinct and significantly stronger than their followers.$(br2)Pack behavior means you cannot safely ignore trash mobs \u2014 they are backed by something dangerous. Crowd control and AoE become essential as difficulty scales."
+      "text": "Mobs can spawn in $(thing)leader/follower packs$(): a leader mob with a small squad of followers that coordinate their attacks. Leaders look different from their followers and are much stronger.$(br2)Because of packs, you cannot safely ignore trash mobs: something dangerous is backing them. Crowd control and AoE become essential as difficulty scales."
     },
     {
       "type": "patchouli:text",
-      "title": "Blood Moon & Undead Army",
-      "text": "$(bold)Blood Moon$() events occur randomly at nightfall. During a Blood Moon, mob spawn rates are dramatically increased and mobs are more aggressive. Staying indoors is a valid strategy. Fighting through one is very profitable.$(br2)$(bold)Undead Army$() raids can target your base. Waves of undead assault your position with increasing intensity. Defending successfully yields strong rewards. Failing means a lot of cleanup."
+      "title": "Blood Moon & Raids",
+      "text": "A $(bold)Blood Moon$() can start at random at nightfall. While it lasts, mobs spawn far more often and are more aggressive. You can wait it out indoors, or fight through it for a big payout.$(br2)$(bold)Undead Army$() raids can target your base, sending waves of undead at your position, each stronger than the last. Defend it and the rewards are strong; fail and you have a lot of cleanup."
     },
     {
       "type": "patchouli:text",
       "title": "Treasure Bags",
-      "text": "Boss kills award $(thing)treasure bags$() \u2014 right-click loot containers with per-player drops. Every player who participates in a boss kill receives their own treasure bag, so group play is never punished.$(br2)Treasure bag contents scale with the difficulty stage and the boss tier. They are one of the best sources of progression materials and rare items."
+      "text": "Boss kills award $(thing)treasure bags$(): loot containers you right-click, with drops rolled per player. Everyone who takes part in a boss kill gets their own bag, so group play is never punished.$(br2)What a bag holds scales with the difficulty stage and the boss tier. Bags are one of the best sources of progression materials and rare items."
     },
     {
       "type": "patchouli:text",
       "title": "Bleeding Effect",
-      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(bold)Always carry bandages.$() Bleeding in a mob pack without a cure is how most deaths happen."
+      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you: damage over time that ignores armor, and a real threat in long fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, cure it instantly), a $(thing)Milk Bucket$() (clears all effects), or a $(thing)Golden Apple$() (clears bleeding and gives regen).$(br2)$(bold)Always carry bandages.$() Most deaths happen while bleeding in a mob pack with no cure on hand."
     }
   ]
 }

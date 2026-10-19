@@ -8,7 +8,7 @@
     {
       "type": "patchouli:text",
       "title": "Open Your Aptitudes",
-      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree.$(br2)Spend earned points on the Strength, Constitution, Agility, and Intelligence paths, or browse the passive perks each level unlocks.$(br2)How points are earned and what each path pays out: $(l:icraft:systems/aptitudes)Aptitudes$(/l).$(br2)$(note)Provided by Iridescent Aptitudes.$()"
+      "text": "Press $(k:justlevelingfork.open_aptitudes) to open your aptitude tree. Spend the points you have earned on the Strength, Constitution, Agility and Intelligence paths, or browse the passive perks each level unlocks.$(br2)How you earn points and what each path pays out: $(l:icraft:systems/aptitudes)Aptitudes$(/l).$(br2)$(note)Provided by Iridescent Aptitudes.$()"
     }
   ]
 }

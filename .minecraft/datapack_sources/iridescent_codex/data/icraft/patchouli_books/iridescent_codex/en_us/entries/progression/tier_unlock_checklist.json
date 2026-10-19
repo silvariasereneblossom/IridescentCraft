@@ -1,32 +1,32 @@
 {
-  "name": "Tier Targets & the Boss Rush",
+  "name": "Targets & Boss Rush",
   "icon": "icraft:progression_token_t3",
   "category": "icraft:progression",
   "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hit $(bold)either$() target and you advance — bank the token threshold, or clear the boss-rush share (see $(l:icraft:progression/tier_gates)How You Advance$(/l)). This entry lists the targets tier by tier.$(br2)Check your standing any time with $(bold)/icraft codex balance$()."
+      "text": "Hit $(bold)either$() target and you advance: bank the token threshold, or clear the boss-rush share (see $(l:icraft:progression/tier_gates)How You Advance$(/l)).$(br2)Check your standing any time with $(bold)/icraft codex balance$()."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 1 → Tier 2",
-      "text": "$(li)$(bold)Tokens:$() bank $(t2){{tier 1 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t2){{tier 1 rushpct}}$() of the {{tier 1 rushsize}} Tier 1 bosses ({{tier 1 rushneed}} kills).$(br2)Earn however you like — build Create machines, cultivate Botania mana, loot structures, or hunt Overworld bosses. Every lane feeds the same pool."
+      "title": "Tier 1 to Tier 2",
+      "text": "$(li)$(bold)Tokens:$() bank $(t2){{tier 1 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t2){{tier 1 rushpct}}$() of the {{tier 1 rushsize}} Tier 1 bosses ({{tier 1 rushneed}} kills).$(br2)Earn tokens however you like: build Create machines, cultivate Botania mana, loot structures or hunt Overworld bosses. Every lane feeds the same pool."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 2 → Tier 3",
-      "text": "$(li)$(bold)Tokens:$() bank $(t3){{tier 2 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t3){{tier 2 rushpct}}$() of the {{tier 2 rushsize}} Tier 2 bosses ({{tier 2 rushneed}} kills), most of them in the Twilight Forest and Blue Skies.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
+      "title": "Tier 2 to Tier 3",
+      "text": "$(li)$(bold)Tokens:$() bank $(t3){{tier 2 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t3){{tier 2 rushpct}}$() of the {{tier 2 rushsize}} Tier 2 bosses ({{tier 2 rushneed}} kills), most of them in the Twilight Forest and Blue Skies.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot and dimensional bosses all count toward it."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 3 → Tier 4",
-      "text": "$(li)$(bold)Tokens:$() bank $(t4){{tier 3 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t4){{tier 3 rushpct}}$() of the {{tier 3 rushsize}} Tier 3 bosses — Nether, Undergarden, Deeper Dark, and the Abyss — finishing with $(bold)Lucifer$().$(br2)$(warn)The combat pinch:$() the boss-rush route to T4 ends at Lucifer, the combat capstone. A combat-averse player simply banks {{tier 3 threshold}} tokens instead and never has to fight him."
+      "title": "Tier 3 to Tier 4",
+      "text": "$(li)$(bold)Tokens:$() bank $(t4){{tier 3 threshold}}$().$(li)$(bold)Boss Rush:$() clear $(t4){{tier 3 rushpct}}$() of the {{tier 3 rushsize}} Tier 3 bosses (Nether, Undergarden, Deeper Dark and the Abyss), finishing with $(bold)Lucifer$().$(br2)$(warn)The combat pinch:$() the boss-rush route to T4 ends at Lucifer, the combat capstone. A combat-averse player can bank {{tier 3 threshold}} tokens instead and never fight him."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 4 — the finale",
-      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)Tier 4 opens the Ad Astra planets (by rocket) and the End; the $(t4)Ender Dragon$() is the finale, not a gate. Eyes of Ender lead you to the End — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
+      "title": "Tier 4: The Finale",
+      "text": "Tier 4 has $(bold)no token gate$(): it is the top of the ladder.$(br2)Tier 4 opens the Ad Astra planets (by rocket) and the End. The $(t4)Ender Dragon$() is the finale, not a gate. Eyes of Ender lead you to the End (see $(l:icraft:progression/dimensions)Dimensional Progression$(/l))."
     }
   ]
 }

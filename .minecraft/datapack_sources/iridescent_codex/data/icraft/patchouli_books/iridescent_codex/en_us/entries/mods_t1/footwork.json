@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Move like your life depends on it — Footwork adds dodging, strafing, and positional combat mechanics that reward active movement in every fight."
+      "text": "Move like your life depends on it. Footwork adds dodging, strafing, and positional combat mechanics that reward you for moving in every fight."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Footwork is available from T1 and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown — positioning and timing matter.$(br2)$(bold)Class synergy:$() Ranger and Samurai classes benefit most from Footwork's mobility options. Berserker and Vanguard can use it defensively to close gaps or disengage."
+      "text": "$(bold)Role in the pack:$() Footwork is available from T1 and changes how every fight plays. A dodge roll costs stamina and has a cooldown, so positioning and timing matter.$(br2)$(bold)Class synergy:$() The Ranger and Samurai get the most out of Footwork's mobility. The Berserker and Vanguard can use it defensively, to close gaps or disengage."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the reference lives:$() each Footwork move is described on its item tooltip, and the mechanics are listed in JEI.$(br2)$(bold)Next: practice the dodge roll on a zombie before you need it on a boss.$()"
+      "text": "$(bold)Reference:$() Each Footwork move is described in its item tooltip, and JEI lists the mechanics.$(br2)$(bold)Next: practice the dodge roll on a zombie before you need it on a boss.$()"
     }
   ]
 }

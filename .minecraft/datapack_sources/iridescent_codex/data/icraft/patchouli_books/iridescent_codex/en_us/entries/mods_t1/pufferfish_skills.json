@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Press $(k:puffish_skills.open) and start planning your tree — six skill trees, 40 levels each, 75 earnable points."
+      "text": "Press $(k:puffish_skills.open) and start planning your tree: six skill trees, 40 levels each, and 75 points to earn."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Opening:$() $(k:puffish_skills.open). The skill menu shows all six trees and your current point allocation.$(br2)$(bold)Point sources:$() completing Heracles quests ($(k:heracles.open_quests)). No XP-for-points — anti-farming by design."
+      "text": "$(bold)Opening:$() $(k:puffish_skills.open). The skill menu shows all six trees and how your points are spent.$(br2)$(bold)Point sources:$() You earn points by completing Heracles quests ($(k:heracles.open_quests)). XP never buys points; that is deliberate, so points cannot be farmed."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Respec:$() 5 XP levels per point refunded. A full respec of 75 points costs 375 levels — expensive but possible at endgame. Partial respecs (single tree) are more affordable.$(br2)$(bold)Next: browse the six trees in $(l:icraft:skills/skills_overview)Skill Trees — Overview$(/l) before you spend your first point.$()"
+      "text": "$(bold)Respec:$() Each refunded point costs 5 XP levels. A full respec of 75 points costs 375 levels, expensive but possible at endgame. Respeccing a single tree costs less.$(br2)$(bold)Next: browse the six trees in $(l:icraft:skills/skills_overview)the skill tree overview$(/l) before you spend your first point.$()"
     }
   ]
 }

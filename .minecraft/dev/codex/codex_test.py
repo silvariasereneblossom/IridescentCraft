@@ -24,6 +24,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import codex           # noqa: E402
 import codex_facts as cf   # noqa: E402
+import codex_fit as cfit   # noqa: E402
 import codex_jar as cj     # noqa: E402
 import codex_render as cr  # noqa: E402
 
@@ -371,14 +372,173 @@ class CodexTest(unittest.TestCase):
 
     # ---- page fit -----------------------------------------------------------------------------------------
     def test_generated_pages_fit_and_continue(self):
-        f = cf.load(self.mc)
         blocks = ['$(li)$(bold)Boss number %d$(): a place, the Overworld; 1,000 health.' % i for i in range(30)]
-        pages = cr.paginate('Long Roster', 'Intro text.', blocks)
+        pages = cr.paginate('Long Roster', 'Intro text.', blocks, mc=self.mc)
         self.assertGreater(len(pages), 2)
-        self.assertTrue(all(cr.count_lines(p['text']) <= cr.LINES_PER_PAGE for p in pages))
+        self.assertTrue(all(cr.count_lines(p['text'], self.mc) <= cr.page_room(False) for p in pages))
         self.assertEqual(pages[1]['title'], 'Long Roster, cont.')
         self.assertEqual(sum(p['text'].count('Boss number') for p in pages), 30)
-        del f
+        first = cr.paginate('Long Roster', 'Intro text.', blocks, first_page=True, mc=self.mc)
+        self.assertLessEqual(cr.count_lines(first[0]['text'], self.mc), cr.page_room(True))
+        self.assertLess(cr.page_room(True), cr.page_room(False))      # under the entry name: two lines fewer
+
+    def test_generated_continuation_title_stays_on_the_page(self):
+        self.assertEqual(cr.continued('Tier 3 at a Glance', 1), 'Tier 3 at a Glance, cont.')
+        long_title = 'Every Boss of the Fourth Tier'
+        self.assertFalse(cfit.title_fits(long_title + ', cont.'))
+        self.assertTrue(cfit.title_fits(cr.continued(long_title, 1)) or cr.continued(long_title, 1) == long_title)
+
+    def test_fit_fresh_fixture_fits(self):
+        rc, out = self.check()
+        self.assertEqual(rc, 0, out)
+        self.assertIn('every page fits', out)
+
+    def test_fit_overflowing_text_page_fails(self):
+        long_text = ' '.join(['Every sentence on this page adds another line of plain text.'] * 12)
+        edit_json(self.mc, os.path.join(cj.SOURCE, cj.BOOK, 'en_us/entries/progression/dims.json'),
+                  lambda d: d['pages'][0].update({'text': long_text}))
+        release(self.mc)
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('FIT icraft:progression/dims page 1:', out)
+        self.assertIn('which holds 14', out)                         # the entry's first page, under its name
+        self.assertIn('fit --show', out)
+
+    def test_fit_landing_text_reaching_the_bar_fails(self):
+        landing = 'Climb to $(t2)Tier 2$().' + '$(br2)Another paragraph of the landing page.' * 4
+        edit_json(self.mc, os.path.join(cj.SOURCE, cj.BOOK, 'book.json'), lambda d: d.update({'landing_text': landing}))
+        release(self.mc)
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertRegex(out, r'FIT book\.json landing text: 13 lines on the landing page \(the button row')
+        self.assertIn('which holds 8', out)
+
+    def test_fit_long_placeholder_fails(self):
+        # the source page is short; the name the registry gives it is not
+        name = 'Gob, ' + ', '.join('Lord of the Seventh Gnome Court of the Deep Ring %d' % i for i in range(12))
+        edit_json(self.mc, cf.NAMES, lambda d: d['bosses']['testmod:gob'].update({'name': name}))
+        release(self.mc)
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('FIT icraft:bosses/t1_bosses page 1:', out)
+
+    def test_fit_title_wider_than_the_page_fails(self):
+        edit_json(self.mc, os.path.join(cj.SOURCE, cj.BOOK, 'en_us/entries/progression/dims.json'),
+                  lambda d: d['pages'][0].update({'title': 'A Title Far Too Wide For Any Page'}))
+        release(self.mc)
+        rc, out = self.check()
+        self.assertEqual(rc, 1, out)
+        self.assertIn('FIT icraft:progression/dims page 1 title: "A Title Far Too Wide For Any Page"', out)
+
+    def test_fit_command_shows_a_page(self):
+        rc, out = run(self.mc, 'fit', '--show', 'icraft:bosses/t1_bosses page 1')
+        self.assertEqual(rc, 0, out)
+        self.assertIn('icraft:bosses/t1_bosses page 1:', out)
+        self.assertIn('y  22', out)
+
+
+SUB = {'<EM>': chr(0x2014), '<EN>': chr(0x2013), '<NBSP>': chr(0xa0), '<SHY>': chr(0xad), '<SECT>': chr(0xa7),
+       '<BULLET>': chr(0x2022)}
+
+
+def u(s):
+    for k, v in SUB.items():
+        s = s.replace(k, v)
+    return s
+
+
+# the boundaries the JDK 17 line BreakIterator gives (recorded 2026-10-18 with BreakIterator.getLineInstance(new
+# Locale("en_us")), the call Patchouli makes); codex_fit.java_line_breaks must give the same
+JDK_LINE_BREAKS = [
+    ("Hello world, this is a test.", [0, 6, 13, 18, 21, 23, 28]),
+    ("build-up and T3-T4 or T3+ x", [0, 6, 9, 13, 16, 19, 22, 26, 27]),
+    ("a <EM> b<EM>c", [0, 2, 4, 6, 7]),
+    ("(note) [x] {y}", [0, 7, 11, 14]),
+    ("50% 1,000 3.5x +30% 6x-10x", [0, 4, 10, 13, 15, 20, 23, 26]),
+    ("<SECT>0<BULLET> item text", [0, 4, 9, 13]),
+    ("end. Next", [0, 5, 9]),
+    ("foo/bar and/or", [0, 8, 14]),
+    ("it's \"quoted\" text", [0, 5, 14, 18]),
+    ("e.g. this", [0, 2, 5, 9]),
+    ("a  b", [0, 3, 4]),
+    ("word:next; semi", [0, 5, 11, 15]),
+    ("x!'y and !$x", [0, 5, 9, 12]),
+    ("Tier 1 -- Gob", [0, 5, 7, 10, 13]),
+    ("1<EN>2 and I<EN>II", [0, 2, 4, 8, 10, 12]),
+    ("keep<NBSP>together here", [0, 14, 18]),
+    ("x;'t A;'t", [0, 5, 9]),
+    ("F\"x and \"q\"", [0, 2, 4, 8, 11]),
+    ("{c}x and x{c}", [0, 3, 5, 9, 10, 13]),
+    ("$5 and 5$ and $x", [0, 3, 7, 10, 14, 16]),
+    ("x<SHY>y soft", [0, 2, 4, 8]),
+    ("call() then (x)y", [0, 6, 7, 12, 15, 16]),
+    ("50/50 odds, 1.5x, 12% to 14%", [0, 6, 12, 15, 18, 22, 25, 28]),
+    ("Codex Token III: 1,000.", [0, 6, 12, 17, 23]),
+    ("(T3+) \"Tier 2\" '(a)' x:y", [0, 6, 12, 15, 21, 23, 24]),
+    ("A<EM>B, a <EM> b, 3<EN>4", [0, 2, 5, 7, 9, 12, 14, 15]),
+]
+
+# two pages as the game drew them (the operator's screenshots, 2026-10-18 18:50, client 1.20.1, Patchouli 85)
+SEEN_LANDING_TEXT = ('$(bold)New here? Open $(l:icraft:welcome/first_hour)Your First Hour$(/l).$()$(br2)You climb four '
+                     'tiers on banked tokens. Four lanes earn them <EM> build, cast, explore, or fight <EM> and any one '
+                     'lane alone is enough.$(br2)$(note)Quest log: $(k:heracles.open_quests). Chapters unlock as you '
+                     'tier up.$()')
+SEEN_LANDING_LINES = ['New here? Open Your', 'First Hour.', '', 'You climb four tiers on banked',
+                      'tokens. Four lanes earn them <EM>', 'build, cast, explore, or fight <EM>', 'and any one lane alone is',
+                      'enough.', '', 'Quest log: U. Chapters unlock', 'as you tier up.']
+SEEN_CATEGORY_TEXT = ('New here? Read this chapter in order. Your first hour, your character choice, and the three commands '
+                      'that run your progression.')
+SEEN_CATEGORY_LINES = ['New here? Read this chapter in', 'order. Your first hour, your', 'character choice, and the',
+                       'three commands that run your', 'progression.']
+
+
+class FitModelTest(unittest.TestCase):
+    """codex_fit against what the game does: recorded JDK boundaries, two pages seen in game, the glyph widths"""
+
+    def ctx(self):
+        c = cfit.Context(macros={'$(note)': '$(#666666)'}, keybinds={'key.heracles.open_quests': 'key.keyboard.u'})
+        return c
+
+    def lines(self, text, top, limit):
+        a = cfit.PageFit('test', u(text), top, limit, self.ctx(), 'test')
+        return a, [l.rstrip() for l in a.layout.line_texts()]
+
+    def test_line_breaks_match_the_jdk(self):
+        for text, want in JDK_LINE_BREAKS:
+            self.assertEqual(cfit.java_line_breaks(u(text)), want, text)
+
+    def test_the_landing_page_as_seen_in_game(self):
+        a, got = self.lines(SEEN_LANDING_TEXT, cfit.LANDING['top'], cfit.LANDING['limit'])
+        self.assertEqual(got, [u(x) for x in SEEN_LANDING_LINES])
+        self.assertEqual(a.capacity, 8)
+        self.assertTrue(a.overflows)                    # "Quest log" ran into the buttons and the progress label
+
+    def test_a_category_page_as_seen_in_game(self):
+        a, got = self.lines(SEEN_CATEGORY_TEXT, cfit.CATEGORY['top'], cfit.CATEGORY['limit'])
+        self.assertEqual(got, SEEN_CATEGORY_LINES)
+        self.assertEqual(a.capacity, 10)
+
+    def test_glyph_widths_from_the_game_font(self):
+        f = cfit.fonts()
+        self.assertEqual([f['uniform'].width(c) for c in ('a', 'i', ' ', 'm')], [4, 3, 4, 4])
+        self.assertEqual(f['uniform'].width('aa', bold=True), 9)            # +0.5 a glyph, rounded up once
+        self.assertEqual(f['uniform'].width(' ', bold=True), 5)             # a space +1
+        self.assertEqual(f['uniform'].width(u('<SECT>0<BULLET>')), 3)       # a section code has no width
+        self.assertEqual(f['default'].width('a'), 6)                       # titles: the bitmap font
+
+    def test_bold_wraps_early(self):
+        words = 'Read each chapter in order'
+        plain, bold = self.lines(words, 12, cfit.PAGE_LIMIT)[1], self.lines('$(bold)%s$()' % words, 12, cfit.PAGE_LIMIT)[1]
+        self.assertEqual(len(plain), 1)
+        self.assertEqual(len(bold), 2)
+
+    def test_list_items_start_lines(self):
+        a, got = self.lines('Intro.$(li)one$(li)two', 12, cfit.PAGE_LIMIT)
+        self.assertEqual(got, ['Intro.', u('<BULLET>one'), u('<BULLET>two')])
+
+    def test_capacities(self):
+        self.assertEqual([cfit.capacity(t, cfit.PAGE_LIMIT) for t in (22, 12, -4, 40, 59)], [14, 16, 17, 12, 10])
+        self.assertEqual(cfit.capacity(cfit.LANDING['top'], cfit.LANDING['limit']), 8)
 
 
 class RealPackTest(unittest.TestCase):

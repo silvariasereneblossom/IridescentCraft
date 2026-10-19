@@ -6,32 +6,37 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hunt for $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools — 24 general-purpose ones in enchanting and loot, plus 5 planetary enchantments exclusive to Ad Astra planet mob drops.$(br2)All of them are real enchantments and work with every Apotheosis system."
+      "text": "Hunt for $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools: 24 general-purpose ones from enchanting and loot, plus 5 planetary ones that only Ad Astra planet mobs drop.$(br2)All of them are real enchantments and work with every Apotheosis system."
     },
     {
       "type": "patchouli:text",
       "title": "Dimensional Survival",
-      "text": "$(bold)Heatward$() — Fire/lava resistance scaling with level$(br)$(bold)Voidward$() — Void damage reduction$(br)$(bold)Depthstrider$() — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$() — Thin-air resistance high in the Aether (Tier 4)$(br)$(bold)Warp Shield$() — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$()+ dimensional content.$()"
+      "text": "$(bold)Heatward$(): Fire/lava resistance, scaling with level$(br)$(bold)Voidward$(): Void damage reduction$(br)$(bold)Depthstrider$(): Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$(): Thin-air resistance high in the Aether (Tier 4)$(br)$(bold)Warp Shield$(): Teleportation effect resistance$(br2)$(italic)You need these for $(t3)Tier 3$()+ dimensional content.$()"
     },
     {
       "type": "patchouli:text",
-      "title": "Resource & Combat Enchants",
-      "text": "$(bold)Prospector$() — Passive ore detection$(br)$(bold)Lumberjack$() — Tree-felling radius$(br)$(bold)Reaping$() — Auto-replant on harvest$(br2)$(bold)Momentum$() — Movement-speed-scales damage$(br)$(bold)Adrenaline$() — Low-HP damage boost$(br)$(bold)Titan Slayer$() — Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$() — AoE slow/weaken on hit$(br)$(bold)Adaptive$() — Resistance to most-recently-received damage type"
+      "title": "Resource & Combat",
+      "text": "$(bold)Prospector$(): Passive ore detection$(br)$(bold)Lumberjack$(): Tree-felling area$(br)$(bold)Reaping$(): Replants on harvest$(br2)$(bold)Momentum$(): Damage scales with movement speed$(br)$(bold)Adrenaline$(): Low-HP damage boost$(br)$(bold)Titan Slayer$(): Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$(): AoE slow/weaken on hit$(br)$(bold)Adaptive$(): Resists the damage type that last hit you"
     },
     {
       "type": "patchouli:text",
-      "title": "Anti-Boss & Path Synergy",
-      "text": "$(bold)Boss Ward$() — Damage reduction from boss entities$(br)$(bold)Steadfast$() — Knockback immunity$(br)$(bold)Nemesis$() — Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$() — Spells power up weapon$(br)$(bold)RF Capacitance$() — Stored RF boosts damage$(br)$(bold)Convergence$() — Bonus when tech+magic gear worn together"
+      "title": "Boss & Path Synergy",
+      "text": "$(bold)Boss Ward$(): Less damage from boss entities$(br)$(bold)Steadfast$(): Knockback immunity$(br)$(bold)Nemesis$(): Tracks kills; bonus damage against bosses you have fought before$(br2)$(bold)Mana Temper$(): Your spells power up the weapon$(br)$(bold)RF Capacitance$(): Stored RF boosts damage$(br)$(bold)Convergence$(): A bonus when you wear tech and magic gear together"
     },
     {
       "type": "patchouli:text",
       "title": "Utility",
-      "text": "$(bold)Magnetism$() — Item pickup radius$(br)$(bold)Last Stand$() — On near-death: burst damage$(br)$(bold)Vitality$() — Max HP boost$(br)$(bold)Phalanx$() — Group defense aura$(br)$(bold)Quick Draw$() — Offhand swap speed$(br2)$(bold)Next: check your enchanting setup against $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l) — better shelves, better rolls.$()"
+      "text": "$(bold)Magnetism$(): Item pickup radius$(br)$(bold)Last Stand$(): Burst damage when you nearly die$(br)$(bold)Vitality$(): Max HP boost$(br)$(bold)Phalanx$(): Group defense aura$(br)$(bold)Quick Draw$(): Faster offhand swaps$(br2)$(bold)Next: $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l); better shelves give better rolls.$()"
     },
     {
       "type": "patchouli:text",
-      "title": "Planetary Enchantments (Ad Astra)",
-      "text": "Five enchantments exclusive to Ad Astra planets. Each planet's mobs have a 12% chance to drop their enchanted book:$(br2)$(bold)Lunar Stride$() — Moon. Reduces low-gravity movement penalties.$(br)$(bold)Thermal Regulation$() — Mars. Negates cold and heat environmental damage.$(br)$(bold)Pressure Shell$() — Venus. Reduces acid damage and pressure slowdown.$(br)$(bold)Void Adaptation$() — Glacio. Negates alien debuffs and mining fatigue.$(br)$(bold)Stellar Shield$() — Mercury. Solar radiation and fire resistance on planets.$(br2)$(bold)Collect these on early planets to survive later ones.$()"
+      "title": "Planet Enchants",
+      "text": "Each Ad Astra planet's mobs have a 12% chance to drop that planet's enchanted book:$(br2)$(bold)Lunar Stride$() (Moon): Reduces low-gravity movement penalties.$(br)$(bold)Thermal Regulation$() (Mars): Negates cold and heat environmental damage.$(br)$(bold)Pressure Shell$() (Venus): Reduces acid damage and pressure slowdown."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Planet Enchants, cont.",
+      "text": "$(bold)Void Adaptation$() (Glacio): Negates alien debuffs and mining fatigue.$(br)$(bold)Stellar Shield$() (Mercury): Solar radiation and fire resistance on planets.$(br2)$(bold)Collect these on early planets to survive later ones.$()"
     }
   ]
 }

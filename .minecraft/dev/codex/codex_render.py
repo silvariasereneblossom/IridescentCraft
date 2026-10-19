@@ -28,6 +28,7 @@ import re
 from collections import OrderedDict
 
 import codex_facts as cf
+import codex_fit
 
 PLACEHOLDER = re.compile(r'\{\{\s*([^{}]*?)\s*\}\}')
 GENERATED_TYPE = 'icraft:generated'
@@ -266,71 +267,38 @@ def fill(f, text, where):
     return out
 
 
-# ---- how much fits on a page (vanilla font advances; Patchouli 1.20.1-85 page geometry) -------------------------
-# book.json has "use_blocky_font": false, so Patchouli draws the text in Minecraft's uniform (unicode) font, about
-# three quarters of the vanilla font's width. The advances below are rounded UP from that font's glyph sizes.
-WIDTH = {' ': 3.5, '!': 2, "'": 2, ',': 2, '.': 2, ':': 2, ';': 2, '|': 2, 'i': 2, 'l': 2.5, 'I': 3,
-         '"': 3.5, '(': 3.5, ')': 3.5, '*': 3.5, '[': 3.5, ']': 3.5, '`': 3, '{': 3.5, '}': 3.5, 'f': 3.5, 't': 3.5,
-         'm': 6, 'w': 6, 'M': 6, 'W': 6, '@': 6.5, '~': 6}
-PAGE_WIDTH = 116            # GuiBook.PAGE_WIDTH
-LIST_INDENT = 10            # a $(li) item's text starts after the bullet
-LINES_PER_PAGE = 14         # a titled page that is not an entry's first: 156 px high, text from y 12, 9 px a line
-MACRO = re.compile(r'\$\(([^)]*)\)')
+# ---- how much fits on a page (codex_fit: Patchouli 1.20.1-85's layout, the game's glyph widths) ---------------
+# A generated page is laid out with the same model as the check that every page fits, and keeps one line free: the
+# registries change what it says between releases. The first page of a run holds 14 lines when it is the entry's first
+# page (under the entry name) and 16 under its own title; a continuation page is titled, 16.
+GENERATED_MARGIN = 1
 
 
-def char_width(c, bold):
-    if c in WIDTH:
-        w = WIDTH[c]
-    elif ord(c) < 128:
-        w = 5 if (c.isupper() or c.isdigit()) else 4.5
-    else:
-        w = 6
-    return w + (0.5 if bold and c != ' ' else 0)
+def count_lines(text, mc=None):
+    """the lines a page text takes (codex_fit's model of Patchouli's layout, with the book's macros)"""
+    return codex_fit.lines(text, codex_fit.book_context(mc or codex_fit.REPO_MC))
 
 
-def count_lines(text):
-    """Lines the text takes on a page (word wrap at the page width). An estimate on the safe side."""
-    lines, x, bold, indent = 1, 0, False, 0
-    pos = 0
-    words = []
-    for m in MACRO.finditer(text):
-        words.append(('t', text[pos:m.start()]))
-        words.append(('m', m.group(1)))
-        pos = m.end()
-    words.append(('t', text[pos:]))
-    for kind, val in words:
-        if kind == 'm':
-            if val == 'br':
-                lines, x = lines + 1, indent
-            elif val in ('br2', '2br', 'p'):
-                lines, x, indent = lines + 2, 0, 0
-            elif re.fullmatch(r'li\d?', val):
-                lines, indent = lines + (1 if x or lines > 1 else 0), LIST_INDENT
-                x = indent
-            elif val == 'bold':
-                bold = True
-            elif val in ('', 'reset', 'clear'):
-                bold = False
-            continue
-        for i, word in enumerate(re.split(r'(\s+)', val)):
-            if not word:
-                continue
-            w = sum(char_width(c, bold) for c in word)
-            if word.isspace():
-                x += w
-                continue
-            if x + w > PAGE_WIDTH and x > indent:
-                lines, x = lines + 1, indent
-            x += w
-    return lines
+def page_room(first_page):
+    """the lines a generated page may take"""
+    return codex_fit.capacity(22 if first_page else 12, codex_fit.PAGE_LIMIT) - GENERATED_MARGIN
 
 
-def paginate(title, intro, blocks, lines_per_page=LINES_PER_PAGE):
+def continued(title, n):
+    """the title of the n-th continuation page (n from 1): "<title>, cont." when the page header holds it"""
+    for t in ('%s, cont.' % title, '%s (%d)' % (title, n + 1)):
+        if codex_fit.title_fits(t):
+            return t
+    return title
+
+
+def paginate(title, intro, blocks, first_page=False, mc=None):
     """Text pages: the intro, then the blocks, as many to a page as fit. Continuation pages repeat the title."""
     pages, cur = [], intro
     for b in blocks:
         trial = cur + b if cur else b.replace('$(br2)', '', 1) if b.startswith('$(br2)') else b
-        if cur and count_lines(trial) > lines_per_page:
+        room = page_room(first_page and not pages)
+        if cur and count_lines(trial, mc) > room:
             pages.append(cur)
             cur = b[len('$(br2)'):] if b.startswith('$(br2)') else b
         else:
@@ -339,7 +307,7 @@ def paginate(title, intro, blocks, lines_per_page=LINES_PER_PAGE):
         pages.append(cur)
     out = []
     for i, text in enumerate(pages):
-        t = title if i == 0 else '%s, cont.' % title
+        t = title if i == 0 else continued(title, i)
         out.append(OrderedDict([('type', 'patchouli:text'), ('title', t), ('text', text)]))
     return out
 
@@ -361,7 +329,7 @@ def _boss_line(f, b, roster_tier):
     return '$(li)' + name + (': ' + '; '.join(bits) if bits else '') + '.'
 
 
-def gen_boss_roster(f, spec, where):
+def gen_boss_roster(f, spec, where, first_page=False):
     t = _tier_arg(where, spec.get('tier'))
     bosses = [b for b in f.bosses.values() if b.counted and b.tier == t]
     named = [b for b in bosses if b.kind == 'named']
@@ -380,10 +348,10 @@ def gen_boss_roster(f, spec, where):
     if other:
         blocks.append('$(br2)$(bold)Also on the boss rush$()')
         blocks += [_boss_line(f, b, t) for b in other]
-    return paginate(spec.get('title') or '%s Roster' % cf.tier_label(t), intro, blocks)
+    return paginate(spec.get('title') or '%s Roster' % cf.tier_label(t), intro, blocks, first_page, f.mc)
 
 
-def gen_rush_targets(f, spec, where):
+def gen_rush_targets(f, spec, where, first_page=False):
     blocks = []
     for t in sorted(f.rush_pct):
         size, need = len(f.rush_roster(t)), f.rush_need(t)
@@ -393,10 +361,11 @@ def gen_rush_targets(f, spec, where):
                       % (t + 1, cf.tier_label(t), t + 1, 'all' if need == size else str(need), size,
                          cf.fmt_pct(f.rush_pct[t])))
     intro = 'Clear a share of a tier\'s boss rush and you advance, tokens or not. A boss counts once.'
-    return paginate(spec.get('title') or 'Boss Rush Targets', intro, ['$(br)'] + blocks if blocks else [])
+    return paginate(spec.get('title') or 'Boss Rush Targets', intro, ['$(br)'] + blocks if blocks else [],
+                    first_page, f.mc)
 
 
-def gen_dimension_glance(f, spec, where):
+def gen_dimension_glance(f, spec, where, first_page=False):
     t = _tier_arg(where, spec.get('tier'))
     diff = f.difficulty[t]
     intro = ('Mobs start at %s and reach %s after %g hours of play there, with %s damage on top.'
@@ -411,10 +380,10 @@ def gen_dimension_glance(f, spec, where):
                                                                                else 'no lock of its own')
         blocks.append('$(li)$(bold)%s$(): %s; death costs %s durability.'
                       % (d.name[:1].upper() + d.name[1:], gate, cf.fmt_pct(d.death)))
-    return paginate(spec.get('title') or '%s at a Glance' % cf.tier_label(t), intro, blocks)
+    return paginate(spec.get('title') or '%s at a Glance' % cf.tier_label(t), intro, blocks, first_page, f.mc)
 
 
-def gen_unique_list(f, spec, where):
+def gen_unique_list(f, spec, where, first_page=False):
     t = _tier_arg(where, spec.get('tier'))
     mine = [u for u in f.uniques.values() if u.tier == t]
     swords = sum(1 for u in mine if u.kind == 'sword')
@@ -438,7 +407,7 @@ def gen_unique_list(f, spec, where):
     loose = [u.name for u in mine if not u.drops]
     if loose:
         blocks.append('$(br2)Dropped by no boss yet: %s.' % cf.fmt_names(loose))
-    return paginate(spec.get('title') or '%s Uniques' % cf.tier_label(t), intro, blocks)
+    return paginate(spec.get('title') or '%s Uniques' % cf.tier_label(t), intro, blocks, first_page, f.mc)
 
 
 GENERATORS = {'boss_roster': gen_boss_roster, 'rush_targets': gen_rush_targets,
@@ -458,7 +427,7 @@ def render_entry(f, data, where):
                     gen = GENERATORS.get(page.get('generator'))
                     if gen is None:
                         raise RenderError(pw, 'unknown generator "%s" (%s)' % (page.get('generator'), ', '.join(sorted(GENERATORS))))
-                    made = gen(f, page, pw)
+                    made = gen(f, page, pw, first_page=not pages)
                     for j, p in enumerate(made):
                         if j == 0 and 'anchor' in page:
                             p['anchor'] = page['anchor']

@@ -6,16 +6,16 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hunt, tame, and harvest your way through 80+ new creatures — from bald eagles and grizzly bears to void worms and laviathans. Most are passive or neutral, but several are powerful hunters."
+      "text": "Hunt, tame, and harvest your way through 80+ new creatures, from bald eagles and grizzly bears to void worms and laviathans. Most are passive or neutral, but several are dangerous hunters."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Notable creatures:$() The $(bold)Void Worm$() (end boss), $(bold)Cachalot Whale$() (ocean), $(bold)Laviathan$() (sky), and $(bold)Murmur$() (underground) are boss-tier encounters. Most creatures drop unique materials used in Apotheosis gem crafting.$(br2)$(bold)IridescentCraft interactions:$() Several Alex's Mobs creatures appear in boss loot tables and drop tokens."
+      "text": "$(bold)Notable creatures:$() The $(bold)Void Worm$() (end boss), $(bold)Cachalot Whale$() (ocean), $(bold)Laviathan$() (sky), and $(bold)Murmur$() (underground) are boss-tier fights. Most creatures drop their own materials, used in Apotheosis gem crafting.$(br2)$(bold)In IridescentCraft:$() several Alex's Mobs creatures appear in boss loot tables and drop tokens."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "alexsmobs:animal_dictionary",
-      "text": "$(bold)Craft the Animal Dictionary$() for a full bestiary — every creature, its drops, its habitat, and any tameable/rideable behavior."
+      "text": "$(bold)Craft the Animal Dictionary$() for a full bestiary: every creature, its drops, its habitat, and whether you can tame or ride it."
     }
   ]
 }

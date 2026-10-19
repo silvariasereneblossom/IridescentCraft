@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Craft a Rift Keystone and open your first Rift \u2014 RFTools Dimensions powers Oblivion's Rift, the pack's procedural endgame loop."
+      "text": "Craft a Rift Keystone and open your first Rift. RFTools Dimensions powers Oblivion's Rift, the pack's procedural endgame loop."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Oblivion's Rift (the primary endgame loop) uses RFTools Dimensions to generate procedural dungeon dimensions. Each Rift run is a unique dimension.$(br2)$(bold)Rift Keystone:$() Required to open a Rift portal. Crafted from Rift Shards (endgame currency) + boss materials."
+      "text": "$(bold)Role in the pack:$() Oblivion's Rift uses RFTools Dimensions to generate procedural dungeon dimensions, and every Rift run is a dimension of its own.$(br2)$(bold)Rift Keystone:$() You need one to open a Rift portal. It is crafted from Rift Shards (the endgame currency) and boss materials."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Dimension safety:$() Rift dimensions are single-use and collapse after the run timer expires. You will be ejected if you don't exit in time. Bring a warp scroll."
+      "text": "$(bold)Dimension safety:$() A Rift dimension is single-use and collapses when the run timer expires. If you have not left by then, you are ejected. Bring a warp scroll."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(). The Dimension Builder and Dimlet system are the core loop \u2014 craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder.$(br2)$(bold)Next: bank Rift Shards \u2014 $(l:icraft:loot/rift_economy)Rift Shards & Endgame Economy$(/l).$()"
+      "text": "$(bold)No book needed.$() RFTools Dimensions is documented in JEI and on the $(bold)RFTools wiki$(). The core loop is the Dimension Builder and the Dimlet system: craft Dimlets to set a dimension's properties, insert them into a Dimension Tab and power the builder.$(br2)$(bold)Next: bank Rift Shards$() ($(l:icraft:loot/rift_economy)Rift Shard Economy$(/l))."
     }
   ],
   "advancement": "icraft:stage_tier_4"

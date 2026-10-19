@@ -6,17 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A puppet master who commands from the shadows. Your servants fight, and their violence feeds your power.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() Empowered minions + lifesteal."
+      "text": "$(italic)A puppet master who commands from the shadows. Your servants fight, and their violence feeds your power.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)1.9x base$() (190 from default 100)$(br)$(bold)Core Identity:$() Empowered minions and lifesteal."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Dark Pact$() — Your tamed animals and your Iron's Spells summons deal $(item)+15% damage$(). Your army hits harder.$(br2)$(bold)Soul Tether$() — Every death within 16 blocks, by any hand: you heal $(item)5% of its max health$() (up to 2 health) and gain $(item)1 XP$(). Your servants feed you.$(br2)$(bold)Shadow Cloak$() — +10% melee damage in darkness (light level 9 or lower); no penalty in light. Caves and night are your domain."
+      "text": "$(bold)Dark Pact$(): your tamed animals and your Iron's Spells summons deal $(item)+15% damage$().$(br2)$(bold)Soul Tether$(): whenever something dies within 16 blocks, by any hand, you heal $(item)5% of its max health$() (up to 2 health) and gain $(item)1 XP$().$(br2)$(bold)Shadow Cloak$(): +10% melee damage in darkness (light level 9 or lower), and no penalty in light. Caves and night are your domain."
     },
     {
       "type": "patchouli:text",
-      "title": "Summoner Playstyle",
-      "text": "Pairs best with Occultism summoning (T3) and Iron's Spells summon spells. Your personal combat is weak — your minions are your weapon. Soul Tether keeps you alive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — +20% in darkness + Shadow Cloak.$(br)$(thing)Demi-God$() — +40% HP offsets glass cannon.$(br)$(thing)Faefolk$() — Magic bonuses enhance summons.$(br2)$(bold)Next: learn Summon Vex from your starter scroll — your first servant.$()"
+      "title": "Playstyle",
+      "text": "The class pairs best with Occultism summoning (T3) and Iron's Spells summon spells. Your own combat is weak, so your minions are your weapon, and Soul Tether keeps you alive."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Playstyle, cont.",
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Revenant$(): +20% in darkness on top of Shadow Cloak.$(br)$(thing)Demi-God$(): +40% HP offsets the glass cannon.$(br)$(thing)Faefolk$(): magic bonuses strengthen summons.$(br2)$(bold)Next: learn Summon Vex from your starter scroll.$()"
     }
   ]
 }

@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Smelt your first Steel — Thermal is the Tier 2 tech mod, and Steel is the T2 baseline the Engineering lane runs on."
+      "text": "Smelt your first Steel. Thermal is the Tier 2 tech mod, and Steel is the T2 baseline the Engineering lane runs on."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Steel is the T2 baseline material. Thermal Smeltery produces Steel Ingots efficiently. The Series covers Energy, Dynamics (pipes/ducts), and Cultivation (farming machines).$(br2)$(bold)Ore processing:$() Tier 2 marks the start of ore doubling and tripling. A Thermal Smeltery + Pulverizer setup yields 2\u20133 ingots per ore."
+      "text": "$(bold)Role in the pack:$() The Thermal Smeltery makes Steel Ingots efficiently. The Series also covers Energy, Dynamics (pipes and ducts) and Cultivation (farming machines).$(br2)$(bold)Ore processing:$() Ore doubling and tripling start at Tier 2. A Thermal Smeltery and Pulverizer setup yields 2 to 3 ingots per ore."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Material relevance:$() Signalum, Lumium, and Enderium are Tier 2\u20133 Thermal alloys. Enderium is a T3 material in this pack.$(br2)$(bold)Artificer synergy:$() Efficient Engineering passive boosts all Thermal machine speeds. A T2 Artificer with good Skill investment is significantly ahead on material production."
+      "text": "$(bold)Material relevance:$() Signalum, Lumium and Enderium are Thermal's Tier 2 to 3 alloys; in this pack Enderium is a T3 material.$(br2)$(bold)Artificer synergy:$() The Efficient Engineering passive speeds up every Thermal machine. A T2 Artificer with a good Skill investment is well ahead on material production."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Thermal Series is fully documented in JEI \u2014 every machine recipe, augment slot, and component is listed.$(br2)$(bold)Next: build a Pulverizer + Redstone Furnace pair and start doubling ore \u2014 $(l:icraft:engineering/t2_infrastructure)T2: Infrastructure$(/l) walks the build order.$()"
+      "text": "$(bold)No book needed.$() JEI lists every Thermal Series machine recipe, augment slot and component.$(br2)$(bold)Next: start doubling ore$() with a Pulverizer and Redstone Furnace pair. $(l:icraft:engineering/t2_infrastructure)T2: Infrastructure$(/l) walks the build order."
     }
   ],
   "advancement": "icraft:stage_tier_2"

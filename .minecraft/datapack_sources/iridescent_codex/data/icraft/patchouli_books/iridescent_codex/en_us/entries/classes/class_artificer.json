@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The builder and engineer. No combat tradeoffs - average fighter. Power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties; crafted items benefit from bonuses"
+      "text": "$(italic)The builder and engineer. An average fighter with no combat tradeoffs, whose power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties; crafted items benefit from bonuses"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Crafting Mastery$() — +15% mining speed. +10% attack speed baseline. Nearby crafting tables grant Speed I.$(br2)$(bold)Engineer Speed$() — +10% bonus ore drops from mining. Infrastructure-focused power that compounds over time.$(br2)$(bold)Resourceful$() — Power comes from building, not fighting. The $(thing)Artificer$() rewards time spent on infrastructure."
+      "text": "$(bold)Crafting Mastery$(): +15% mining speed and a baseline +10% attack speed. Nearby crafting tables give you Speed I.$(br2)$(bold)Engineer Speed$(): +10% bonus ore drops from mining, infrastructure power that compounds over time.$(br2)$(bold)Resourceful$(): as an $(thing)Artificer$() you draw your power from building, and time spent on infrastructure pays off."
     },
     {
       "type": "patchouli:text",
       "title": "The Builder's Path",
-      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. Average at fighting but excels at everything else. If you want to focus on building, crafting, and automation rather than combat, this is your class."
+      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. It is an average fighter and excels at everything else. If you would rather spend your time on building, crafting and automation than on combat, this is your class."
     },
     {
       "type": "patchouli:text",
       "title": "Race Pairings",
-      "text": "$(thing)Dwarf$() — +25% mining speed stacks with Crafting Mastery. Fire resistance for Nether resource runs.$(br2)$(thing)Halfling$() — Food efficiency + ore bonus = maximum resource gathering.$(br2)$(thing)Human$() — +15% XP and Versatile bonus for jack-of-all-trades building."
+      "text": "$(thing)Dwarf$(): +25% mining speed that stacks with Crafting Mastery, and fire resistance for Nether resource runs.$(br2)$(thing)Halfling$(): food efficiency plus the ore bonus, for maximum resource gathering.$(br2)$(thing)Human$(): +15% XP and the Versatile bonus, for jack-of-all-trades building."
     }
   ]
 }

@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Expect to become absurdly powerful — and expect the world to scale harder to match. That is the whole deal.$(br2)IridescentCraft is a progression-focused, expert-lite modpack for Minecraft 1.20.1 (Forge). You start in a familiar Overworld. You end fighting gods in shattered dimensions with gear forged from the bones of things that should not exist."
+      "text": "Expect to become very powerful, and expect the world to scale harder to match.$(br2)IridescentCraft is a progression-focused, expert-lite modpack for Minecraft 1.20.1 (Forge). You start in a familiar Overworld. You end fighting gods in shattered dimensions with gear forged from the bones of things that should not exist."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Design Pillars$()$(br2)$(li)Open early game. Progressive gates. Earned power.$(li)Every gate is solvable via tech, magic, or hybrid — your choice.$(li)Gates are $(italic)when$() you unlock things, not $(italic)whether.$()$(li)Bosses are the pinnacle. The best weapons come from them.$(li)Dying is a cost, not a catastrophe.$(li)Play your way. No mandatory path."
+      "text": "$(bold)Design Pillars$()$(br)$(li)The early game is open; gates come in stages, and power is earned.$(li)Every gate can be solved with tech, magic or a hybrid: your choice.$(li)Gates set $(italic)when$() you unlock things, not $(italic)whether.$()$(li)Bosses are the pinnacle and drop the best weapons.$(li)Dying is a cost, not a catastrophe.$(li)Play your way; there is no mandatory path."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What Makes This Different$()$(br2)You will not find diamonds in Overworld chests. The Nether is Tier 3 content. The End requires Tier 4 preparation.$(br2)Mobs scale by dimension — not just by number, but by behavior, abilities, and environmental mechanics. A Tier 1 zombie and a Tier 4 End zombie are categorically different threats.$(br2)This book is your guide to all of it."
+      "text": "$(bold)What Makes This Different$()$(br2)You will not find diamonds in Overworld chests. The Nether is Tier 3 content, and the End requires Tier 4 preparation.$(br2)Mobs scale by dimension in more than raw numbers: their behavior, abilities and environmental mechanics change too. A Tier 1 zombie and a Tier 4 End zombie are different kinds of threat."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)First Steps$()$(br2)$(li)Select a Race when prompted (or press $(k:origins.view_origin)), then a Class.$(li)Open your Skills menu — $(k:puffish_skills.open).$(li)Open the Heracles quest book — $(k:heracles.open_quests). It guides you and tracks your progress.$(li)Find a waystone — they are your fast-travel network.$(br2)$(bold)Next: work through $(l:icraft:welcome/first_hour)Your First Hour$(/l) if you haven't yet.$()"
+      "text": "$(bold)First Steps$()$(br)$(li)Select a Race when prompted (or press $(k:origins.view_origin)), then a Class.$(li)Open your Skills menu ($(k:puffish_skills.open)).$(li)Open the Heracles quest book with $(k:heracles.open_quests). It guides you and tracks your progress.$(li)Find a waystone. They are your fast-travel network.$(br2)$(bold)Next: read $(l:icraft:welcome/first_hour)Your First Hour$(/l) if you haven't yet.$()"
     }
   ]
 }

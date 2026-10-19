@@ -6,28 +6,28 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where a thing lives sets its tier.$()$(br2)A boss or structure's tier is decided by the dimension it generates in — not by how hard it is. This is $(bold)location-based tiering$():$(br)$(li)$(t1)T1$() — the Overworld$(li)$(t2)T2$() — Twilight Forest, Blue Skies$(li)$(t3)T3$() — Nether and deep dimensions$(li)$(t4)T4$() — the Aether, the End and endgame dimensions"
+      "text": "$(bold)Where a thing lives sets its tier.$()$(br2)A boss or structure gets the tier of the dimension it generates in, however hard it is: $(bold)location-based tiering$().$(li)$(t1)T1$(): the Overworld$(li)$(t2)T2$(): Twilight Forest, Blue Skies$(li)$(t3)T3$(): Nether and deep dimensions$(li)$(t4)T4$(): the Aether, the End and endgame dimensions"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Two big departures from vanilla:$()$(br2)The $(bold)Nether is Tier 3$() content. The $(bold)End is Tier 4$() content.$(br2)Both are far deadlier here than vanilla. The Nether stays sealed until you reach Tier 3 — a portal won't ignite before then. The End has its own Tier 4 key (see the last page)."
+      "text": "$(bold)Two big departures from vanilla:$()$(br2)The $(bold)Nether is Tier 3$() content and the $(bold)End is Tier 4$() content.$(br2)Both are far deadlier here than in vanilla. The Nether stays sealed until you reach Tier 3: a portal won't ignite before then. The End has its own Tier 4 key (see Reaching the End)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 2 Dimensions$()$(br2)$(bold)Twilight Forest$() — Dense, dark, ambush-heavy. Bosses guard progression. Its portal (a flower-ringed pool) is lit with a $(bold)Codex Token I$(); stepping through needs Tier 2.$(br2)$(bold)Blue Skies$() (Everbright + Everdawn) — Elemental combat. Mobs deal elemental damage that bypasses standard armor."
+      "text": "$(bold)Tier 2 Dimensions$()$(br2)$(bold)Twilight Forest$(): dense, dark and full of ambushes, with bosses guarding progression. Its portal (a flower-ringed pool) is lit with a $(bold)Codex Token I$(); stepping through needs Tier 2.$(br2)$(bold)Blue Skies$() (Everbright and Everdawn): elemental combat. Its mobs deal elemental damage that bypasses standard armor."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 3 Dimensions$()$(br2)$(bold)The Undergarden$() — Toxic attrition. Constant poison pressure. Survival builds matter.$(br2)$(bold)Deeper and Darker$() — Horror survival. Noise attracts mobs. Sculk mechanics. Stealth has value.$(br2)$(bold)The Nether$() — Relentless aggression. Everything is permanently aggro. Piglins hunt in packs.$(br2)$(bold)The Abyss: The Other Side$() — Optional Tier 3 dimension."
+      "text": "$(bold)Tier 3 Dimensions$()$(br2)$(bold)The Undergarden$(): toxic attrition from constant poison. Survival builds matter.$(br2)$(bold)Deeper and Darker$(): horror survival and sculk mechanics. Noise draws mobs; stealth pays.$(br2)$(bold)The Nether$(): relentless. Everything is always aggro and Piglins hunt in packs.$(br2)$(bold)The Abyss: The Other Side$(), optional at Tier 3."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 4 Dimensions$()$(br2)$(bold)The Aether$() — Aerial warfare on floating islands, Deep Aether's biomes among them. Thin air up high, fast mobs, falling is lethal. Ranged builds shine here.$(br2)$(bold)The End$() — Three escalating zones: Outer Islands → Deep End / End Cities → Dragon's Domain. The End is designed to kill you. $(italic)Prepare accordingly.$()"
+      "text": "$(bold)Tier 4 Dimensions$()$(br2)$(bold)The Aether$(): aerial warfare on floating islands, Deep Aether's biomes among them. The air is thin up high, the mobs are fast and a fall is lethal. Ranged builds shine here.$(br2)$(bold)The End$(): three zones that escalate from the Outer Islands to the Deep End and End Cities, then the Dragon's Domain. The End is designed to kill you. $(italic)Prepare accordingly.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Reaching the End",
-      "text": "The vanilla stronghold-and-portal process applies: Eyes of Ender (a Tier 4 item here) lead you to the portal.$(br2)$(italic)Planned, not in the game yet:$() an $(bold)End Compass$() crafted from the $(bold)Aether$()'s materials, pointing to an $(bold)End Bastion$().$(br2)$(bold)The finale:$() defeating the $(t4)Ender Dragon$(). The Ad Astra planets do not wait for it: they are Tier 4 dimensions, reached by rocket."
+      "text": "The vanilla stronghold and portal still apply: Eyes of Ender (a Tier 4 item here) lead you to the portal.$(br2)$(italic)Planned, not in the game yet:$() an $(bold)End Compass$() crafted from the $(bold)Aether$()'s materials, pointing to an $(bold)End Bastion$().$(br2)$(bold)The finale:$() defeating the $(t4)Ender Dragon$(). The Ad Astra planets don't wait for it: they are Tier 4 dimensions, reached by rocket."
     },
     {
       "type": "icraft:generated",

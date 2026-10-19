@@ -8,7 +8,7 @@
     {
       "type": "patchouli:text",
       "title": "Check Your Stats",
-      "text": "Open your inventory ($(k:inventory)) and click the $(bold)Show Attributes$() button next to your character model.$(br2)The panel lists every number on you — armor, toughness, knockback resist, spell power, mana, cooldowns — and hovering a line breaks it down into base value and modifiers.$(br2)$(note)Provided by Apothic Attributes.$()"
+      "text": "Open your inventory ($(k:inventory)) and click the $(bold)Show Attributes$() button next to your character model.$(br2)The panel lists every number on you (armor, toughness, knockback resist, spell power, mana, cooldowns). Hover a line to see it broken down into base value and modifiers.$(br2)$(note)Provided by Apothic Attributes.$()"
     }
   ]
 }

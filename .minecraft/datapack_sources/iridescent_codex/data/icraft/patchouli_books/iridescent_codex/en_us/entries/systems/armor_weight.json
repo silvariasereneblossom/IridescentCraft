@@ -6,42 +6,47 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Weigh your armor before you build a kit — every piece is $(bold)robe$(), $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(), and the class shifts your mana regen, speed, and armor.$(br2)Effects scale with the count of equipped pieces, so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
+      "text": "Weigh your armor before you build a kit. Every piece is $(bold)robe$(), $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(), and its class shifts your mana regen, speed, and armor.$(br2)Effects scale per piece worn, so a hybrid kit (two heavy, two light) lands proportionally between the extremes. Untagged armor counts as medium (no effect)."
     },
     {
       "type": "patchouli:text",
       "title": "Robe & Light",
-      "text": "$(5)Robe$() — true mage gear:$(br)$(li2)+0.10$() mana regen$(br)$(li2)+1.5%$() movement speed$(br)$(li2)-7.5%$() base armor$(br)$(li2)-10%$() armor toughness$(br2)$(t1)Light$() — rogue/agile cloth + leather:$(br)$(li2)+0.05$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness"
+      "text": "$(5)Robe$() is true mage gear:$(li2)+0.10$() mana regen$(li2)+1.5%$() movement speed$(li2)-7.5%$() base armor$(li2)-10%$() armor toughness$(br2)$(t1)Light$() is rogue and agile cloth and leather:$(li2)+0.05$() mana regen$(li2)+5%$() movement speed$(li2)-5%$() base armor$(li2)-7.5%$() armor toughness"
     },
     {
       "type": "patchouli:text",
       "title": "Heavy",
-      "text": "$(t3)Heavy$() — diamond, netherite, plate:$(br)$(li2)-0.05$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+5%$() base armor$(br2)Medium (everything untagged) carries no modifiers at all — it is the neutral baseline the other classes trade against."
+      "text": "$(t3)Heavy$() is diamond, netherite, and plate:$(li2)-0.05$() mana regen$(li2)-5%$() movement speed$(li2)+5%$() base armor$(br2)Medium (everything untagged) has no modifiers at all. It is the neutral baseline the other classes trade against."
     },
     {
       "type": "patchouli:text",
-      "title": "Robe set bonus",
-      "text": "Wearing $(bold)4 robe pieces$() unlocks the $(5)True Mage$() set bonus: an additional $(li2)+0.5$() mana regen on top of the per-piece total.$(br2)Final 4/4 robe: $(li2)+0.9$() mana regen, $(li2)+6%$() speed, $(li2)-30%$() armor, $(li2)-40%$() toughness.$(br2)This is the payoff for committing to a real caster build instead of mixing in plate. Robes are deliberately the most fragile tier - the bonus has to be worth it."
+      "title": "Robe Set Bonus",
+      "text": "$(bold)4 robe pieces$() unlock the $(5)True Mage$() set bonus, on top of the per-piece total:$(li2)+0.5$() mana regen$(br2)Final 4/4 robe totals:$(li2)+0.9$() mana regen$(li2)+6%$() speed$(li2)-30%$() armor$(li2)-40%$() toughness$(br2)The bonus rewards a pure caster build. Robes are the most fragile tier on purpose, so it has to be worth it."
     },
     {
       "type": "patchouli:text",
-      "title": "Full-kit extremes",
-      "text": "$(bold)4 robe$(): +0.9 mana, +6% speed, -30% armor, -40% toughness$(br2)$(bold)4 light$(): +0.20 mana, +20% speed, -20% armor, -30% toughness$(br2)$(bold)4 heavy$(): -0.20 mana, -20% speed, +20% armor, no toughness change$(br2)$(warn)Robes are doubly fragile.$() Toughness penalty stacks asymmetrically - heavy doesn't add toughness back. Diamond/netherite already carry high native toughness; the system amplifies the gap rather than re-dosing it."
+      "title": "Full-Kit Extremes",
+      "text": "$(bold)4 robe$(): +0.9 mana, +6% speed, -30% armor, -40% toughness$(br)$(bold)4 light$(): +0.20 mana, +20% speed, -20% armor, -30% toughness$(br)$(bold)4 heavy$(): -0.20 mana, -20% speed, +20% armor, no toughness change$(br2)$(warn)Robes are doubly fragile.$() They lose toughness while heavy armor gains none, and diamond and netherite already have high native toughness, so the gap only widens."
     },
     {
       "type": "patchouli:text",
-      "title": "What's tagged Robe & Light",
-      "text": "$(5)Robe$() — Iron's Spellbooks class robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Wandering Magician, Archevoker, Netherite Battlemage), Botania manaweave, Terramity void mage + exodium warlock sets, and Iridescent Reforging mage majors (vestments).$(br2)$(t1)Light$() — cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin), and Iridescent Reforging light/scaled majors."
+      "title": "Robe & Light Gear",
+      "text": "$(5)Robe$(): Iron's Spellbooks class robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Wandering Magician, Archevoker, Netherite Battlemage), Botania manaweave, Terramity void mage + exodium warlock sets, and Iridescent Reforging mage majors (vestments).$(br)$(t1)Light$(): cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin), and Iridescent Reforging light/scaled majors."
     },
     {
       "type": "patchouli:text",
-      "title": "What's tagged Heavy",
-      "text": "$(t3)Heavy$() — vanilla diamond + netherite, Aether obsidian/phoenix/valkyrie/gravitite, Aquaculture neptunium, Botania terrasteel, Cataclysm ignitium, Forbidden & Arcanus draco arcanus + tyr, Twilight Forest fiery + knightmetal, Undergarden froststeel + utherium, and more.$(br2)Everything else (vanilla iron + gold, mid-tier modded metals) is medium.$(br2)Reforged armor is classed dynamically — the installed major module decides the tier, so a vestment crown counts as robe regardless of material."
+      "title": "Heavy Gear",
+      "text": "$(t3)Heavy$(): vanilla diamond and netherite, Aether obsidian, phoenix, valkyrie and gravitite, Aquaculture neptunium, Botania terrasteel, Cataclysm ignitium, Forbidden & Arcanus draco arcanus and tyr, Twilight Forest fiery and knightmetal, Undergarden froststeel and utherium, and more."
     },
     {
       "type": "patchouli:text",
-      "title": "Checking your totals",
-      "text": "Weight modifiers stack additively per slot and re-apply the moment you swap a piece. They sit on top of base armor stats, Apotheosis affixes, and every other attribute source.$(br2)$(bold)Next: open your inventory ($(k:inventory)) and click Show Attributes$() — the armor, toughness, speed, and mana lines show exactly what your current kit adds up to."
+      "title": "Heavy Gear, cont.",
+      "text": "Everything else (vanilla iron and gold, mid-tier modded metals) is medium.$(br2)Reforged armor takes its class from the installed major module, whatever the material: a vestment crown counts as robe."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Checking Your Totals",
+      "text": "Weight modifiers add up slot by slot and re-apply as soon as you swap a piece. They stack on top of base armor stats, Apotheosis affixes, and every other attribute source.$(br2)$(bold)Next: open your inventory ($(k:inventory)) and click Show Attributes.$() The armor, toughness, speed, and mana lines show what your current kit adds up to."
     }
   ]
 }

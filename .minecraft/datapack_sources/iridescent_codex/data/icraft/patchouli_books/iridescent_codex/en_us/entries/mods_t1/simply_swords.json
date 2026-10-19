@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hunt bosses for the 42 unique named weapons — in IridescentCraft, every Simply Swords unique is boss-drop-only."
+      "text": "Hunt bosses for the 42 unique named weapons. In IridescentCraft, every Simply Swords unique drops only from a boss."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Simply Swords weapons are the best weapons available. Every unique is assigned to a specific boss with a specific drop chance. They are trophies as much as they are tools.$(br2)$(bold)Weapon types:$() Greatswords, Longswords, Katanas, Spears, Staffs, Warglaives, Scythes, Sabres, and more."
+      "text": "$(bold)Role in the pack:$() Simply Swords weapons are the best weapons available. Each unique belongs to one specific boss, with its own drop chance, and is as much a trophy as a tool.$(br2)$(bold)Weapon types:$() Greatswords, Longswords, Katanas, Spears, Staffs, Warglaives, Scythes, Sabres, and more."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)How to get them:$() Kill the matching boss. Drop chances range from 8% (rarest) to 25% (Ender Dragon). There are no other sources.$(br2)$(bold)Enchanting compatibility:$() All Simply Swords uniques are fully compatible with Apotheosis enchanting and affix reforging. A unique weapon with Legendary affixes and max enchants is the endgame weapon ceiling."
+      "text": "$(bold)How to get them:$() Kill the matching boss; there is no other source. Drop chances range from 8% (rarest) to 25% (Ender Dragon).$(br2)$(bold)Enchanting compatibility:$() Every Simply Swords unique works with Apotheosis enchanting and affix reforging. A unique with Legendary affixes and max enchants is the endgame weapon ceiling."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where the reference lives:$() each unique carries its own tooltip, the standard weapons are all in JEI, and the full boss-to-weapon map is this Codex's $(l:icraft:bosses/unique_weapons)Simply Swords Unique Weapons$(/l) entry.$(br2)$(bold)Next: pick a target boss from that list and go earn your first unique.$()"
+      "text": "$(bold)Reference:$() Each unique has its own tooltip, JEI lists all the standard weapons, and the Codex's $(l:icraft:bosses/unique_weapons)Unique Weapons$(/l) entry maps every boss to its weapon.$(br2)$(bold)Next: pick a target boss from that list and earn your first unique.$()"
     }
   ]
 }
