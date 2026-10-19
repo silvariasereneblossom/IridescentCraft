@@ -1415,7 +1415,7 @@ The full numbers for the character system (Origin / Race / Class / Skills), comp
 | Battlemage | Melee/Magic Hybrid | +5% | Normal | none | Arcane Infusion (melee + spells) |
 | Wanderer | Hybrid Multiclass | +5% | Normal | none | Broad-bonus generalist |
 | Paladin | Tank/Support/Healer | +10% | Normal | none | Holy Aura + Lay on Hands |
-| **Vanguard** | Pure Tank | +20% | Normal | -15% all damage | Pure damage-soak role |
+| **Vanguard** | Pure Tank | +20% | Normal | -30% melee damage | Pure damage-soak role |
 | **Ranger** | Ranged DPS | -20% | Half | none | Glass cannon |
 | **Archmage** | Offensive Caster | -20% | Half | none | Glass cannon |
 | Artificer | Crafter / Non-combat | 0% | Normal | none | Crafting + machine specialist |
@@ -1450,7 +1450,7 @@ Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powe
 | **Battlemage** | +10% melee (Arcane Strikes), +15% on every magic hit (the class spell power), +2 armor (Spell Armor), Mana Shield (Resistance I; Resistance II for a Faefolk; gear does not raise it), 1.9× mana pool (190), Arcane Cleave (+1 melee AD per 50% bonus spell power, 10 mana/hit; turns caster damage into hybrid weapon damage) and Mana Reaver (+15 mana per melee kill; sustains the cleave loop in multi-mob fights). Handled by `battlemage_mana_shield.js` + `battlemage_arcane_cleave.js`. | +5% HP |
 | **Wanderer** | +5% ATK / speed / atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP and +2.5% speed per unique dimension visited, ticks via `class_passives.js`) | +5% HP |
 | **Paladin** | +3 armor / +1 toughness (Holy Armor), +10% KB resist, Healing Aura (allies in 8 blocks regen 0.5 HP/5s; self regens 1 HP/5s above 50% HP) | +10% HP; pure support tank |
-| **Vanguard** | +6 armor / +3 toughness (Fortress), +40% KB resist (Immovable), Guardian's Presence (Weakness I to mobs in 5 blocks), −15% damage dealt (Pacifist's Burden) | +20% HP; hardest tank in the pack |
+| **Vanguard** | +6 armor / +3 toughness (Fortress), +40% KB resist (Immovable), Guardian's Presence (Weakness I to mobs in 5 blocks), −30% melee damage dealt (Pacifist's Burden) | +20% HP; hardest tank in the pack |
 | **Ranger** | +15% speed, +10% atkspd (Swift), +20% projectile damage (Eagle Eye), Glass Cannon (−3 armor) | −20% HP, equipment HP halved |
 | **Archmage** | +50% magic damage (Arcane Supremacy), -50% melee damage (Frail Melee), Mana Attunement: tier-scaling spell power ticked every 10s (T1: +0%, T2: +5%, T3: +10%, T4: +15%), Mana Reservoir: +150% max mana, a pool of 2.5× baseline (250; `mana_pool_bonuses.js` multiplied it by 1.5 more from 2026-10-10 to 10-17), Frail Frame (−28.6% armor / −20% toughness). No spell-kill mana and no standing-still bonus (the Origins text promised both until 2026-10-17); mana-on-kill moved to Battlemage (cont. 16). | −20% HP, equipment HP halved; the back-loaded glass nuke |
 | **Artificer** | +15% mining speed all tools (Crafting Mastery), +10% atkspd (Engineer's Efficiency), Resourceful (+10% bonus drops on ore mining, Speed I near crafting tables, +10% machine processing speed planned for Phase 2) | None (non-combat focus) |
@@ -1608,7 +1608,7 @@ Players can invest in the Trunk without committing to a Branch, but the Branches
 | Battlemage | Warfare (trunk) | Sorcery (Branch A: Destruction) | none | Moderate melee + strong spells = Arcane Infusion fuel |
 | Wanderer | Any trunk × 3 to 4 | none | none | Generalist wants broad moderate bonuses |
 | Paladin | Fortitude (Branch A: Iron Wall) | Sorcery (Branch B: Enchanter's) | none | Tank HP + healing effectiveness = Holy Aura + Lay on Hands |
-| Vanguard | Fortitude (Branch A: Iron Wall) | Warfare (trunk) | none | Maximum HP + some melee to offset the -15% damage penalty |
+| Vanguard | Fortitude (Branch A: Iron Wall) | Warfare (trunk) | none | Maximum HP + some melee to offset the -30% melee damage penalty |
 | Ranger | Marksman (Branch A: Sniper's) | Gathering (trunk) | none | Max ranged damage + fortune for resource runs |
 | Archmage | Sorcery (Branch A: Destruction) | Marksman (trunk) | none | Deep spell power + ranged utility |
 | Artificer | Engineering (Branch A: Artificer's) | Gathering (Branch B: Harvester's) | none | Crafting quality + farming/fishing supply |

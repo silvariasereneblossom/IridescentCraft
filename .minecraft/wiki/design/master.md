@@ -429,7 +429,7 @@ The Class layer is the only character layer that modifies HP and damage percenta
 
 | Archetype | Classes | HP modifier | Equipment HP | Damage modifier |
 |-----------|---------|------------:|:------------:|:---------------:|
-| Pure Tank | Vanguard | +20% | Normal | -30% all damage |
+| Pure Tank | Vanguard | +20% | Normal | -30% melee damage |
 | Tank/Support/Healer | Paladin | +10% | Normal | none |
 | Hybrid | Samurai, Battlemage, Wanderer | +5% | Normal | none |
 | Crafter | Artificer | 0% | Normal | none |
@@ -440,7 +440,7 @@ The Class layer is the only character layer that modifies HP and damage percenta
 
 Half-equipment-HP (Ranger, Archmage, Void Summoner) means equipment-sourced HP bonuses count at 50% effectiveness: the Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is how the glass-cannon pillar is implemented mechanically: their damage ceiling is high and their HP ceiling is half.
 
-Vanguard's -30% damage penalty is the matching tank tradeoff: maximum survivability, weakest damage output. The Vanguard's role is to absorb hits, not deal them.
+Vanguard's -30% melee damage penalty is the matching tank tradeoff: maximum survivability, weakest melee damage. Arrows, magic and spells are not reduced. The Vanguard's role is to absorb hits, not deal them.
 
 → Per-class weapon affinities and active/passive ability rosters: [Appendix §K](master-appendix.md#k-character-build-reference).
 
@@ -484,7 +484,7 @@ The recommended primary tree per class. Players are not locked in (every class c
 | Battlemage | Warfare (trunk) | Sorcery (Branch A) | Moderate melee + strong spells = Arcane Infusion fuel |
 | Wanderer | Any 3 to 4 trunks | none | A generalist wants broad, moderate bonuses |
 | Paladin | Fortitude (Branch A) | Sorcery (Branch B) | Tank HP + healing = Holy Aura + Lay on Hands |
-| Vanguard | Fortitude (Branch A) | Warfare (trunk) | Maximum HP + some melee to offset the -30% damage penalty |
+| Vanguard | Fortitude (Branch A) | Warfare (trunk) | Maximum HP + some melee to offset the -30% melee damage penalty |
 | Ranger | Marksman (Branch A) | Gathering (trunk) | Max ranged damage + fortune for resource runs |
 | Archmage | Sorcery (Branch A) | Marksman (trunk) | Deep spell power + ranged passive utility |
 | Artificer | Engineering (Branch A) | Gathering (Branch B) | Crafting quality + farming/fishing supply |
