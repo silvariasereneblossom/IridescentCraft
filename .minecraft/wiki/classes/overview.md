@@ -55,7 +55,7 @@ Each also has a generic `spell_power 1.40`, per-mage identity stats (Elemental: 
 
 | Class | Key Passives | KubeJS Mechanic |
 |-------|-------------|-----------------|
-| Berserker | +15% base melee (Brutal Strikes), +5% ATK/+1 armor (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP (Blood Fury) | - |
+| Berserker | +15% damage with an axe, -40% with a bow or crossbow, -30% with a spell book (Brutal Strikes), +5% melee damage and +1 armor after 10 s of landing hits (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP and +40% below 20% (Blood Fury) | - |
 | Samurai | +8% speed, +10% attack speed (Bushido), Focus (a movement shield up to 10% of max HP, 10 s to recharge after it breaks), Vorpal (Strength I at tier 1 up to Strength IV at tier 4, by passive tier*) | `class_passives.js` |
 | Battlemage | +10% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I, Resistance II for a Faefolk), Arcane Cleave (+1 melee AD per 50% bonus spell power, costs 10 mana/hit), Mana Reaver (+15 mana per melee kill) | `battlemage_mana_shield.js`, `battlemage_arcane_cleave.js` |
 | Wanderer | +5% ATK/speed/atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP/+2.5% speed per dimension visited) | `class_passives.js` |
@@ -64,7 +64,7 @@ Each also has a generic `spell_power 1.40`, per-mage identity stats (Elemental: 
 | Ranger | +15% speed, +10% atkspd, +20% projectile damage, -15% armor | - |
 | Archmage | +50% magic damage (Arcane Supremacy), -50% melee (Frail Melee), +5% spell power per passive tier above 1, T1:0%→T4:+15%* (Mana Attunement), mana pool 2.5x (Mana Reservoir +150%), -28.6% armor / -20% toughness (Frail Frame) | `class_passives.js` |
 | Artificer | +15% mining, +10% atkspd, Speed I near crafting tables | - |
-| Void Summoner | +15% damage by tamed animals and Iron's Spells summons (Dark Pact), +10% melee damage in darkness, light level 9 or lower, no penalty in light (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
+| Void Summoner | +15% damage by tamed animals and by the arrows of raised skeletons (Dark Pact; the other Iron's summons hit as the Summoner's spells and get its spell power instead), +10% melee damage in darkness, light level 9 or lower, no penalty in light (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
 
 \* Passive tier is the highest tier of dimension the player has entered, and it never goes down: Tier 2 for the Twilight Forest, Everbright and Everdawn; Tier 3 for the Nether, the Undergarden, the Otherside, the Abyss and its Frost World; Tier 4 for the End, the Aether, the five Ad Astra planets and their six orbits, and the Reality Marble. The Overworld and the two pocket dimensions do not raise it. It is separate from the Codex tier you buy with tokens (as of 2026-10-17).
 
@@ -119,10 +119,10 @@ The 11 custom races are an Origins layer in the `icraft` namespace. Races give s
 | Halfling | +1 luck, +20% hunger and saturation from food | -5% attack damage |
 | Faefolk | +30% magic damage, +10% mana regen, +10% speed, slow fall | -30% melee damage, -50% armor toughness when wearing any non-light armor (full robes bypass), -15% HP |
 | Revenant | +20% attack damage at light level 9 or lower or in the Abyss, Resistance I at light level 4 or lower or in the Abyss, night vision | Weakness and Slowness in sunlight without a helmet, 20% less from food |
-| Demi-God | +40% HP (4 hearts), 2x nourishment from raw meat, strength ability, phase ability | Fire damage 1.5x, Weakness in the Nether |
-| Ryu | 25% damage reduction, +4 max HP, slow fall, heals while well fed, clears Poison, Slowness and Weakness within seconds, Dragon's Sight (nearby creatures glow) | Meat preference, healing potions half as effective |
-| Fallen Angel | +15% all damage, permanent Strength I, slow fall, a dash (Dark Expulsion), a wither-skull shot, immune to Wither, Poison, Instant Damage and Nausea | -20% HP (2 hearts), non-meat food gives half, slowed with a block right above the head, extra fire damage |
-| Kirin | +0.1 movement speed (twice the base), wall climbing, sprint jump, cat vision, Speed II for 12 s on a 60 s cooldown, a pounce | -10% HP (1 heart), faster hunger |
+| Demi-God | +8 max health (4 hearts), Speed II outside the Nether, 2x nourishment from raw meat and fish, strength ability, phase ability | Fire damage 1.5x, Weakness in the Nether |
+| Ryu | 25% damage reduction, +4 max HP, slow fall, heals while well fed, clears Poison, Slowness and Weakness within seconds, Dragon's Sight (nearby creatures glow) | Meat preference, every heal halved while Regeneration is on |
+| Fallen Angel | +15% all damage, permanent Strength I and Haste I, slow fall, mines stone by hand, a dash (Dark Expulsion), a wither-skull shot, immune to Wither, Poison, Instant Damage and Nausea | -20% HP (2 hearts), non-meat food gives half, slowed with a block right above the head, extra fire damage, glows at all times |
+| Kirin | +0.15 movement speed (2.5 times the base), wall climbing, sprint jump, cat vision, Speed II for 12 s on a 60 s cooldown, a pounce | -10% HP (1 heart), faster hunger |
 
 Notable fixes: the Orc knockback double-apply bug is fixed, Halfling food efficiency now works, and the Revenant healing penalty now works.
 

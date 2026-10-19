@@ -21,7 +21,7 @@ Tier progression runs on one combined pool of physical, tiered progression token
 |---|---:|---:|
 | T1 → T2 | 500 | 80% of T1 bosses (8 of 9) |
 | T2 → T3 | 1000 | 90% of T2 bosses (17 of 18) |
-| T3 → T4 | 2000 | 100% of T3 bosses (all 45, incl. Lucifer) |
+| T3 → T4 | 2000 | 100% of T3 bosses (all 44, incl. Lucifer) |
 | T4 → finale | - | defeat the Ender Dragon (the pack finale; no gate: the Ad Astra planets open with T4) |
 
 One tier at a time: you can buy a tier only while you hold the tier below it. Tokens of a higher tier, or a cleared roster of a higher tier, do nothing until you have reached the tier below; kills still count and are credited once you get there. `/icraft codex balance` and `/icraft codex bosses` say which tier comes first.

@@ -169,7 +169,7 @@ A player advances a tier by hitting either its token threshold or its boss-rush 
 |---|---:|---:|
 | T1 → T2 | 500 | 80% of T1 bosses (8 of 9) |
 | T2 → T3 | 1000 | 90% of T2 bosses (17 of 18) |
-| T3 → T4 | 2000 | 100% of T3 bosses (all 45, incl. Lucifer) |
+| T3 → T4 | 2000 | 100% of T3 bosses (all 44, incl. Lucifer) |
 | T4 → finale | none | defeat the Ender Dragon (the pack finale; no gate: the Ad Astra planets open with T4) |
 
 There is one combined token pool, fed by four lanes. The boss-rush denominator is the per-tier boss roster (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 9 / 18 / 45 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2, the Aether's three dungeon bosses to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.

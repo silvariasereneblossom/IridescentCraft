@@ -1022,13 +1022,13 @@ To do: wherever the IridescentCraft team cares about the stats, ship an override
 
 The metal progression follows these principles, kept from the earlier 191-line wiki version and refined here.
 
-1. Durability scales exponentially. T1 starts around iron (240), T2 ranges 300-750, T3 jumps to 650-1400 and T4 reaches 2200-2500. Tetraextras (insanium 200000) and tetranomicon (iceandfire dragonsteel 8000) go far past T4 on purpose, as late-game progression beyond our normal curve.
-2. Primary damage scales linearly: 4.5 (T1 Brass), 4.8-6.5 (T2), 6.0-7.0 (T3), up to 8.5 (T4 Aethersteel). Tetraextras' insanium reaches 28, deliberately outside our balance band.
+1. Durability climbs with the hammer a metal needs. The gold- and stone-hammer metals sit at 240-400, the iron-hammer metals at 300-1000 (Refined Obsidian tops them), the diamond-hammer metals at 750-1200, and Aethersteel at 2500. The far higher numbers in two add-on jars never load: tetraextras' insanium (200,000) needs Mystical Agradditions and tetranomicon's dragonsteel (8,000) needs Ice and Fire, and the pack carries neither.
+2. Primary damage runs from 4.5 (Brass) to 7.0 (Refined Obsidian and Unorithe), then 8.5 for Aethersteel. Insanium's 28 is one of the materials above that never load.
 3. Tool efficiency follows the tier boundaries: T1 = 6, T2 = 6.5-8.5, T3 = 8-9.5, T4 = 10-11.
 4. Magic capacity rises with damage. Among the 27 metals of the master table, Aethersteel has both the highest primary damage (8.5) and the highest magic capacity (210). Elementium (175), Enderium (170) and Fiery (165) follow, and Brass has the lowest (85); Terrasteel has 155, Manasteel and Refined Obsidian 150, Dimlite 130. The datapack's boss materials (the prefixed ones, such as cm_ancient_metal and vn_warden) go up to 220. Outside our datapack, the highest values that load are Art of Forging's eerie shard (300) and tetraextras' neptunium ingot (235); Iron's Spells' arcane ingot has 184 and tetranomicon's void chitin 168. Tetraextras' supremium and imperium (545) need Mystical Agriculture, which the pack does not include, so they never load.
 5. Secondary damage is highest on The Abyss's metals. Unorithe (6.5), Knight (6.0), Phantom (5.5) and Garnite (5.0) lead our datapack's metals, with Forbidden & Arcanus's Deorum (5.5) and Blue Skies' Horizonite (5.0). Charoite (4.8), Lumium (4.4), Signalum (4.2) and Brass (4.0) come next. The boss materials all sit between 3.2 and 3.8.
-6. Tertiary (armor) scales with physical toughness. Aethersteel (4.5), Unorithe (4.5), Refined Obsidian (4.0), Iridium (4.0) and Dimlite (5.5) lead our datapack; fragile or magic-focused metals such as Lumium (2.3) and Elementium (2.5) have the lowest values.
-7. Integrity cost and gain scale with tier. T1-T2 metals cost 2 integrity, T3 costs 3, T4 costs 4. Integrity gain follows the same pattern (5 at T1-T2, 6-7 at T2-T3, 8-10 at T4).
+6. Tertiary (armor) is highest on Aethersteel and Unorithe (4.5), then Dimlite, Refined Obsidian and Knight (4.0); Iridium has 3.5. Lumium (2.3) is the lowest, with Brass, Signalum, Elementium and Cloggrum at 2.5.
+7. Integrity cost is 2 for most metals (Osmium included, at 650 durability), 3 for nine heavier ones (Deorum, Phantom, Elementium, Terrasteel, Enderium, Forgotten Metal, Refined Obsidian, Iridium, Knight) and 4 for Unorithe and Aethersteel. Integrity gain runs from 3 (Brass, Lumium, Signalum, Charoite, Manasteel) through 5-7 for most metals to 8 (Deorum, Knight), 9 (Refined Obsidian) and 12 (Aethersteel), roughly with durability.
 
 ---
 

@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Boss loot and the Codex's class pages (19 October)
+
+- **The Ender Dragon's drops land once.** One of Forbidden & Arcanus's dragon drops rolled every other drop rule a second time, so a kill gave two Dragon Hearts, two stacks of artifact pouches, double Rift shards and Iron's Spellbooks' dragon loot, and 1.1 Ultimate Reforging Tokens a kill instead of the designed 0.6. Each now drops once; Forbidden & Arcanus's own dragon drops are unchanged.
+- **The Ancient Remnant drops artifact pouches and Awakenings** like the other tier-4 bosses: two pouches a kill and about a 9 % chance at an Awakening.
+- **The Baby Leviathan is off the Tier 3 boss rush.** It only hatches from the Leviathan's egg, as a pet, so clearing 100 % of the rush meant hatching one and killing it. The rush now counts 44 bosses, and killing one pays no boss tokens.
+- **The Codex's class and race pages say what the game does.** The Berserker's +15 % is with axes (bows and spell books hit weaker); the Artificer has no ore bonus; the Paladin has no shield or sword bonus and heals 25 % more from potions and spells; a Void Summoner's Dark Pact reaches tamed animals and raised skeletons' arrows, while other Iron's summons strike with the Summoner's spell power. The Demi-God has four extra hearts and Speed II outside the Nether (cooked meat is not boosted), the Kirin runs at 2.5 times the base speed, the Ryu's healing is halved only while Regeneration is on, and the Fallen Angel has Haste I and glows. The enchantment page lists Primal Force, and Crowd Control counts nearby hostiles.
+
 ## October 2026: Glass cannons, the Mythic Forge and planet cold (19 October)
 
 - **Glass cannons halve only their gear's health.** The Ranger, Archmage, Void Summoner and Elemental get half the max health their armor, held items, curios, Vitality and HP affixes give, as the class pages say. Until now the game halved everything above a fixed base: a Demi-God Archmage with no gear had 19.8 health instead of 22.4, and Spice of Life, level-up, Health Boost and Ascension health were halved too, while a Faefolk or Fallen Angel kept all of its gear's health. Gear also lost 40 % of its health instead of half: an Archmage with a +4 chestplate has 17.6 health now, not 17.9.
