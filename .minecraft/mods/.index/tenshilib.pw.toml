@@ -1,6 +1,6 @@
 filename = 'tenshilib-1.20.1-1.7.6-forge.jar'
 name = 'TenshiLib'
-side = 'both'
+side = 'client'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'

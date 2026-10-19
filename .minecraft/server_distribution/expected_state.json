@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "d93bf65e",
+    "generated_from":  "9a4fe7db",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7995,10 +7995,6 @@
                                                     "sha256":  "7cc0ee962f89ff4e59e4cfe430dcdb1f1e46ce57f4f0cb1f36817e36940d735d",
                                                     "size":  624
                                                 },
-                  "mods/.index/ambientsounds.pw.toml":  {
-                                                            "sha256":  "92a71ad8de80aaccbc463302531f48365ac365325d965bdfc28d2547cbfd404f",
-                                                            "size":  574
-                                                        },
                   "mods/.index/animal_feeding_trough.pw.toml":  {
                                                                     "sha256":  "7e4ceb7bbb6171c4d56b29b4d57132ec50b4070f2d18a53a3932d241317da8b1",
                                                                     "size":  582
@@ -8083,18 +8079,10 @@
                                                        "sha256":  "7bd6242753c338ff16166e1162c60c05b7fc937e342782c71055ab704ab25a28",
                                                        "size":  380
                                                    },
-                  "mods/.index/badoptimizations.pw.toml":  {
-                                                               "sha256":  "eb26c4c26b7f627547c963f24a5dd1aabe846cf382df8407abb6d31f72f93519",
-                                                               "size":  563
-                                                           },
                   "mods/.index/balm.pw.toml":  {
                                                    "sha256":  "194d4e28a0ca716ee20a90327d755bdcce900355e1b167ed3e61d5392f9cc113",
                                                    "size":  548
                                                },
-                  "mods/.index/beautiful-enchanted-books-mod-edition.pw.toml":  {
-                                                                                    "sha256":  "948c8a5a797883afaf9ddae6a14a81333be14c1e4d1bef3fd3ca706de43fcf47",
-                                                                                    "size":  548
-                                                                                },
                   "mods/.index/better-combat.pw.toml":  {
                                                             "sha256":  "a6d6b1221f0d2aad70c483f3fa32870d2da125fe3e08ef5ef99ff258578f64f0",
                                                             "size":  576
@@ -8271,10 +8259,6 @@
                                                                            "sha256":  "aa948a647179a774125968ec59fa9e7f1bb16becaa249c671d3ccde992bd4e99",
                                                                            "size":  611
                                                                        },
-                  "mods/.index/configured.pw.toml":  {
-                                                         "sha256":  "de94db58493e8cb9f71c4df0a57e37dfc73aca51c32acb07ccd89adae8e99c8d",
-                                                         "size":  382
-                                                     },
                   "mods/.index/connectivity.pw.toml":  {
                                                            "sha256":  "1c626c80dce78e36f0d4ffbad52d442c7fd6e9a22edcdde1cd1eebb2c096a60e",
                                                            "size":  394
@@ -8287,10 +8271,6 @@
                                                         "sha256":  "1e057ddee98a2e0f235ba3413c3cb68cef3220c7cc0b465089e3cbda3e1041e6",
                                                         "size":  555
                                                     },
-                  "mods/.index/controlling.pw.toml":  {
-                                                          "sha256":  "c9c90f3cae53d3abb92caf27625c24dca6b02f0a97d61ac9400c598768c3b4fe",
-                                                          "size":  553
-                                                      },
                   "mods/.index/cooking-for-blockheads.pw.toml":  {
                                                                      "sha256":  "b0ff5cd0d1d4fc3176f4670c5ff7fd4d46ad796294036d7b5fee7f60b2117e1d",
                                                                      "size":  590
@@ -8459,10 +8439,6 @@
                                                           "sha256":  "94aaca78cb429a89f5348cc0f4d26608e47e75ff274f8a45e1ebdba5b4cc8f24",
                                                           "size":  559
                                                       },
-                  "mods/.index/enchantment-descriptions.pw.toml":  {
-                                                                       "sha256":  "7603d5a8eaa8d7e9f17c5f6145523543a2910d8a6967d192680903a4bceb9bda",
-                                                                       "size":  590
-                                                                   },
                   "mods/.index/enchantment-level-cap-indicator.pw.toml":  {
                                                                               "sha256":  "ae22f943304988fb1a5f9f9192626f6d8f09358f1b0ae291b74d7f352ceb9e2a",
                                                                               "size":  620
@@ -8499,10 +8475,6 @@
                                                              "sha256":  "84542c4845f74993f62587368bed3c3363feade6b1c4220411bdcf772d547fa7",
                                                              "size":  566
                                                          },
-                  "mods/.index/entity-model-features.pw.toml":  {
-                                                                    "sha256":  "e496ec3e528afb6400983e90f4d90735ee72ecc3c44f738e53c98a6887d6eb2f",
-                                                                    "size":  675
-                                                                },
                   "mods/.index/epic-dungeons-a-roguelike-minecraft.pw.toml":  {
                                                                                   "sha256":  "82229d3aa7bfac8675f3c9effcf08748c3efea2448f2d6a9504a071499978483",
                                                                                   "size":  647
@@ -8727,10 +8699,6 @@
                                                             "sha256":  "97ed5e7825629bcc740c24b1f70b6100814fe765ab9abe78971953c5e87325c8",
                                                             "size":  559
                                                         },
-                  "mods/.index/just-enough-mekanism-multiblocks.pw.toml":  {
-                                                                               "sha256":  "527a9d71c50287949506b061cb6a00019e55d510b117a0e78da46a6aedafcfa0",
-                                                                               "size":  463
-                                                                           },
                   "mods/.index/just-enough-resources-jer.pw.toml":  {
                                                                         "sha256":  "5a52bec01f7e367dd3d7646663048034364dc6e86d9523582f8598bf265698f9",
                                                                         "size":  576
@@ -9055,10 +9023,6 @@
                                                              "sha256":  "4f15971616ec205653b921f7f5656539112278534fbfa43b01432e3f1b243303",
                                                              "size":  556
                                                          },
-                  "mods/.index/overflowing-bars.pw.toml":  {
-                                                               "sha256":  "d3468e2c394d2dd833a0bf6be021685a78744147e41722f6715fa23b0d0ae099",
-                                                               "size":  566
-                                                           },
                   "mods/.index/overloaded-armor-bar.pw.toml":  {
                                                                    "sha256":  "f831b70b9d3891de76e112b646ad06ad0a99f090831ecb9f7594654daf2c5e48",
                                                                    "size":  390
@@ -9231,10 +9195,6 @@
                                                                 "sha256":  "2c841dbfab127c5a90968c3cf74a3bb94df5c98e6268a05ae30702c65f7e8e50",
                                                                 "size":  567
                                                             },
-                  "mods/.index/searchables.pw.toml":  {
-                                                          "sha256":  "41422c493d948ccd3cd11b10ec685c628936202632918fc77d2d45eb93fd5a2b",
-                                                          "size":  551
-                                                      },
                   "mods/.index/sebastrnlib.pw.toml":  {
                                                           "sha256":  "c30eb20d544e4c27b38c4da30659f476b989c1bda4554615c31cf9bd671a0190",
                                                           "size":  526
@@ -9327,10 +9287,6 @@
                                                                 "sha256":  "8260759154d17b795d8e835cee030ffb92277ae2b16a7f4cc78dce0a5c8951c6",
                                                                 "size":  557
                                                             },
-                  "mods/.index/stitch.pw.toml":  {
-                                                     "sha256":  "842c72d458db4d7efe45b71b7da03811001424752d94329bd491317ab36e6c73",
-                                                     "size":  554
-                                                 },
                   "mods/.index/storage-drawers.pw.toml":  {
                                                               "sha256":  "5b368804ab045b315003a3179abfe41c974878ca8dca12a4e65a99e5a5186c88",
                                                               "size":  577
@@ -9371,10 +9327,6 @@
                                                        "sha256":  "2f8590d73ade34c816d165eef423a05747296b9b6325ce373f423c96dff11e84",
                                                        "size":  543
                                                    },
-                  "mods/.index/tenshilib.pw.toml":  {
-                                                        "sha256":  "2df73dda48f3c8404e89256ab2d50244ecc9227ecb47164815f52a3c72732c24",
-                                                        "size":  544
-                                                    },
                   "mods/.index/terrablender.pw.toml":  {
                                                            "sha256":  "ec6914aeaffd93dc7ccbeb4dfee807617902728f0f7a90c2fd51f0e01c824412",
                                                            "size":  557
@@ -9467,10 +9419,6 @@
                                                             "sha256":  "56490004efcd2a7939470ced492ef2a89f3bc132219927a891a8ceb2ef477d05",
                                                             "size":  542
                                                         },
-                  "mods/.index/tool-stats.pw.toml":  {
-                                                         "sha256":  "eda2833691a19b7995b40b1ddd03da2a1939ca17db1ca20aa18cff9902c8ea2b",
-                                                         "size":  548
-                                                     },
                   "mods/.index/torchmaster.pw.toml":  {
                                                           "sha256":  "0265fc7f6f2b9a0745e5dc6db38a7c18aa63faa272c42e57b61491dc25d2e4e4",
                                                           "size":  539
@@ -9483,14 +9431,6 @@
                                                         "sha256":  "85ddb55f021824514b2ecdeb06f2be9491afba5967b610fd8635edccae271b1f",
                                                         "size":  547
                                                     },
-                  "mods/.index/travelers-titles.pw.toml":  {
-                                                               "sha256":  "b1dd3f004381df4cdaa1ae7bb350bce534df0a08094e0a343a9f2497e9bd6fa5",
-                                                               "size":  568
-                                                           },
-                  "mods/.index/treasuredistance.pw.toml":  {
-                                                               "sha256":  "1d1be526150b672728f0dd14c44a862cd7d8bcd74ce98d98592cf54444b9470d",
-                                                               "size":  417
-                                                           },
                   "mods/.index/twilight-aether.pw.toml":  {
                                                               "sha256":  "271ff5676b02619144f9018797bba8d74ddd7ea567aba2d248739a85d482e66b",
                                                               "size":  549

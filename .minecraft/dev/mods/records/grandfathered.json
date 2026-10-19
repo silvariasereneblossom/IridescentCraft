@@ -2829,7 +2829,7 @@
    "name": "AmbientSounds",
    "jar": "AmbientSounds_FORGE_v6.3.4_mc1.20.1.jar",
    "hash": "sha512:ae49643430fd3d8b2efd295db912c79eb557b470c99cfa0d3cb38fa27cf5fa42b7db20bd85c877469db3bae000c11329e94adf44da60438c36c95a296e1bc49b",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "ambientsounds"
    ],
@@ -2857,7 +2857,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: declares itself client-only (fabric.mod.json environment=client, both mixins client); no mod depends on it; no network channel; no pack script names it. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "AmbientSounds_FORGE_v6.3.4_mc1.20.1.jar: loader forge; mixins common/client/server 0/2/0; 7 of 64 classes name client packages",
@@ -3376,7 +3380,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: its server half syncs exhaustion and saturation (channel appleskin:sync); vanilla resends saturation only when health or food changes, so a client on a server without it shows stale values: the client side would not match. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "appleskin-forge-mc1.20.1-2.5.1.jar: loader forge; mixins common/client/server 0/0/0; 6 of 29 classes name client packages",
@@ -5248,7 +5256,7 @@
    "name": "BadOptimizations",
    "jar": "BadOptimizations-2.4.1-1.20.1.jar",
    "hash": "sha512:5e02d9c5a5bc3dccfccbfac4809cda4eb755c015060063b696e92568e0be3d8354a01f6ac5dae99bd27111b7e20bb680512287119459ad069dcf3e7d17cace0f",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "badoptimizations"
    ],
@@ -5282,7 +5290,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: declares itself client-only (fabric.mod.json environment=client, all 48 mixins client); no dependent; no network channel. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "BadOptimizations-2.4.1-1.20.1.jar: loader forge; mixins common/client/server 0/48/0; 11 of 95 classes name client packages",
@@ -5299,7 +5311,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "nested keep: MixinExtras (Forge 0.3.2 and Fabric 0.2.2), mixin libraries; the newest MixinExtras of the pack wins. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "forge-mixinextras-forge-0.3.2.jar: mods mixinextras",
       "fabric-mixinextras-fabric-0.2.2.jar: mods com_github_llamalad7_mixinextras; fabric-via-connector"
@@ -5444,7 +5460,7 @@
    "name": "Beautiful Enchanted Books",
    "jar": "BEB-Forge-1.20.1-6.0.0.jar",
    "hash": "sha512:4912af061e28abbabe54aa38025a8748c00b6cf1a0f3ab9dab35f6afec3fd9c3f92e7d0d15228bc35ba9e4fbd4aef0abfe7ef6f97652586382e973080759477a",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "beb"
    ],
@@ -5476,7 +5492,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: item textures only: 3 client mixins; no dependent, no network channel, registers nothing. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "BEB-Forge-1.20.1-6.0.0.jar: loader forge; mixins common/client/server 0/3/0; 3 of 10 classes name client packages",
@@ -5492,7 +5512,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "nested keep: MixinExtras 0.3.5, a mixin library; the newest of the pack wins. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mixinextras-forge-0.3.5.jar: mods mixinextras"
      ],
@@ -10481,7 +10505,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: mandatory BOTH dependency of Ender Storage. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "CodeChickenLib-1.20.1-4.4.0.516-universal.jar: loader forge; mixins common/client/server 0/4/0; 108 of 704 classes name client packages",
@@ -10984,7 +11012,7 @@
    "name": "Configured",
    "jar": "configured-forge-1.20.1-2.2.3.jar",
    "hash": "sha1:065c2d287a52f52fc8d33d780192325ee6f4b6ae",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "configured"
    ],
@@ -11012,7 +11040,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: config screens. Its server half only serves operators who edit server configs remotely (the live server has no operators); its channel configured:play accepts any server version, ABSENT included (javap: both predicates return true); no mandatory dependent (Iceberg, Moonlight and Supplementaries name it only in compat code). Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "configured-forge-1.20.1-2.2.3.jar: loader forge; mixins common/client/server 0/2/0; 47 of 120 classes name client packages",
@@ -11398,7 +11430,7 @@
    "name": "Controlling",
    "jar": "Controlling-forge-1.20.1-12.0.2.jar",
    "hash": "sha512:3945bf3f6d843957f13584dfc70bede253d1e48f0dcb96f647fbcc6fcd3d1748a0dd9c6ca5c882e07a41f98eb84057934f51e43ab6023ed0a19695de2e6fe9f5",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "controlling"
    ],
@@ -11426,7 +11458,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: key-binding search screen: client mixins only; its dependency Searchables is declared CLIENT and moves with it; no dependent, no channel. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "Controlling-forge-1.20.1-12.0.2.jar: loader forge; mixins common/client/server 0/5/0; 20 of 39 classes name client packages",
@@ -15792,7 +15828,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: content the server owns: 9 structures in 7 sets, 6 items, 2 entity types, 22 loot tables. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "dungeons_plus-1.20.1-1.5.0.jar: loader forge; mixins common/client/server 0/1/0; 8 of 103 classes name client packages",
@@ -15806,7 +15846,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "tier-gate loot-only: its gear (frosted cowl, leviathan blade, soul cannon, warped axe) has no recipe: it comes only from its structure chests, whose tables are the pack's overrides (icraft_loot_overrides.zip) and roll by dimension (loot:chests tiered); the 2 granite ores smelt to iron and gold. That is the pack today: nothing to apply. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "6 registered items (dev/registry @59ee40da); 6 item language keys, 4 recipes"
      ],
@@ -15833,7 +15877,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "armor-class default: one helmet (the frosted cowl) and no set: medium, no effect. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "ArmorItem classes: 1; 0 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -15842,7 +15890,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "weapon-class default: the leviathan blade and the warped axe are what their Java class says (sword, axe). Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "weapon classes: SwordItem 1, AxeItem 1"
      ],
@@ -15854,7 +15906,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "apotheosis default: its gear gets affixes by its item class. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "gear classes: ArmorItem 1, SwordItem 1, AxeItem 1"
      ],
@@ -15880,7 +15936,11 @@
     {
      "key": "worldgen",
      "surface": "worldgen",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "worldgen keep: structure spacing at the mod's defaults (20 to 36 chunks); no complaint on record. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "structure set dungeons_plus:end_ruins: spacing 27, separation None",
       "structure set dungeons_plus:leviathan: spacing 36, separation None",
@@ -15895,7 +15955,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "codex default: generated mod list only. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mod ids: dungeons_plus"
      ],
@@ -16175,7 +16239,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: mandatory BOTH dependency of Extra Storage. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "EdivadLib-1.20.1-2.0.1.jar: loader forge; mixins common/client/server 0/0/0; 5 of 7 classes name client packages",
@@ -16397,7 +16465,7 @@
    "name": "EnchantmentDescriptions",
    "jar": "EnchantmentDescriptions-Forge-1.20.1-17.1.21.jar",
    "hash": "sha512:5581f7d706809f079bb1847637c8ce8f9abbf0102c647960b54908e0080387702fdaedb31c87ec1e30f729051e3f7194d6ca33e3016a033bc794981b492def5e",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "enchdesc"
    ],
@@ -16425,7 +16493,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: tooltip text only; its dependency Bookshelf is declared CLIENT (Bookshelf stays on both); no dependent, no channel. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "EnchantmentDescriptions-Forge-1.20.1-17.1.21.jar: loader forge; mixins common/client/server 0/0/0; 2 of 6 classes name client packages",
@@ -17336,7 +17408,7 @@
    "name": "Entity Model Features",
    "jar": "entity_model_features_1.20.1-forge-3.0.17.jar",
    "hash": "sha512:31ef2b446b059bceb663989910928f34bda2513b753583f1306ce79bf62979eec38b9bf2dee96f72e088fee29a709dd64e217a02598e612810aee067c05413b8",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "entity_model_features"
    ],
@@ -17368,7 +17440,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: entity model renderer: 58 client mixins; its dependency Entity Texture Features is already client-only; no dependent, no channel. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "entity_model_features_1.20.1-forge-3.0.17.jar: loader forge; mixins common/client/server 0/58/0; 56 of 213 classes name client packages",
@@ -17384,7 +17460,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "nested keep: MixinExtras 0.4.1, a mixin library; the newest of the pack wins. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mixinextras-forge-0.4.1.jar: mods mixinextras"
      ],
@@ -19452,7 +19532,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: the container search runs on the server (3 C2S receivers through Architectury networking, logged by the live server): without the server half the client's key finds nothing. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "findme-3.2.3-forge.jar: loader forge; mixins common/client/server 0/2/0; 5 of 22 classes name client packages",
@@ -20447,7 +20531,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: mandatory BOTH dependency of 12 mods (Ars Nouveau, Iron's Spells, Iron's Patreon Library, Mowzie's Mobs, Occultism, Naturalist, Creeper Overhaul, Pride Moths, the pack's Tetra expansion ...), optional of 7 more. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "geckolib-forge-1.20.1-4.8.3.jar: loader forge; mixins common/client/server 0/1/0; 43 of 261 classes name client packages",
@@ -20462,7 +20550,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "tier-gate default: registers no item (0 in the registry): nothing to gate. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "0 registered items (dev/registry @59ee40da); 17 item language keys, 0 recipes"
      ],
@@ -20474,7 +20566,11 @@
     {
      "key": "armor-class",
      "surface": "armor-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "armor-class default: its 2 ArmorItem classes are base classes for other mods; it registers no armor. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "ArmorItem classes: 2; 0 registered items named like armor pieces (dev/registry @59ee40da)"
      ],
@@ -20483,7 +20579,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "apotheosis default: no gear of its own. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "gear classes: ArmorItem 2"
      ],
@@ -20495,7 +20595,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "codex default: a library: generated mod list only. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mod ids: geckolib"
      ],
@@ -23720,7 +23824,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: mandatory BOTH dependency of Jade Addons; its server half sends the block and entity data its tooltips show (inventories, progress); Delightful and Corpse name it. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "Jade-1.20.1-Forge-11.13.2.jar: loader forge; mixins common/client/server 0/2/0; 57 of 242 classes name client packages",
@@ -24119,7 +24227,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: its server half (channel journeymap, 'Loading JourneyMap Forge Configs' in the live log) sends the world id and the server's map settings; clients key their saved maps to that id, so removing it could orphan the players' maps: the client side would not match. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "journeymap-1.20.1-5.10.3-forge.jar: loader forge; mixins common/client/server 0/3/0; 202 of 2382 classes name client packages",
@@ -24147,7 +24259,11 @@
     {
      "key": "config",
      "surface": "config",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "config default: no value of it is set by the pack; server and clients keep their own defaults. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "journeymap-1.20.1-5.10.3-forge.jar: a Forge config spec, types CLIENT, SERVER"
      ],
@@ -24452,7 +24568,7 @@
    "name": "Just Enough Mekanism Multiblocks",
    "jar": "JustEnoughMekanismMultiblocks-1.20.1-4.17.jar",
    "hash": "sha1:9dbac4bf58a12d6a0c3a09b2bae447f2345f1c3a",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "jei_mekanism_multiblocks"
    ],
@@ -24480,7 +24596,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: JEI categories for Mekanism multiblocks: client mixins only; no channel, no dependent, registers nothing. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "JustEnoughMekanismMultiblocks-1.20.1-4.17.jar: loader forge; mixins common/client/server 0/4/0; 19 of 70 classes name client packages",
@@ -32135,7 +32255,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: registers the compass item and the biome search runs on the server; mandatory BOTH dependency of iridescent_grand_compass. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "NaturesCompass-1.20.1-1.11.2-forge.jar: loader forge; mixins common/client/server 0/0/0; 18 of 32 classes name client packages",
@@ -32149,7 +32273,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "tier-gate default: the compass is the starting exploration tool (a quest names it) and the base of the pack's Grand Compass: tier 1. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "1 registered items (dev/registry @59ee40da); 1 item language keys, 1 recipes"
      ],
@@ -34101,7 +34229,7 @@
    "name": "Overflowing Bars",
    "jar": "OverflowingBars-v8.0.1-1.20.1-Forge.jar",
    "hash": "sha512:4854cac7069e1140dd9b567e04414c0acc865f66433b7c8cb79269e4c1a20c38f30b2d393e9920ff7f9c732fdf01408a22b07f5d1532756623072470dfc24248",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "overflowingbars"
    ],
@@ -34129,7 +34257,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: HUD bars: displayTest IGNORE_ALL_VERSION, client mixins only; no channel, no dependent (Puzzles Lib stays on both). Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "OverflowingBars-v8.0.1-1.20.1-Forge.jar: loader forge; mixins common/client/server 0/2/0; 7 of 19 classes name client packages",
@@ -35358,7 +35490,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: mandatory BOTH dependency of Better Combat and Iron's Spells. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "player-animation-lib-forge-1.0.2-rc1+1.20.jar: loader forge; mixins common/client/server 0/14/0; 11 of 115 classes name client packages",
@@ -39179,7 +39315,7 @@
    "name": "Searchables",
    "jar": "Searchables-forge-1.20.1-1.0.3.jar",
    "hash": "sha512:185617d6d446f3d4ef6c7d5c6ee4e2fb731a89f7495157313b21292ec6b8e3dbcc10c0379ab49ecb2d0c64d0a78df74750d7f7336d5e6c43516a7c92f278c0a2",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "searchables"
    ],
@@ -39207,7 +39343,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: search-box library: its only dependent, Controlling, declares it CLIENT and moves to client too; no channel. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "Searchables-forge-1.20.1-1.0.3.jar: loader forge; mixins common/client/server 0/1/0; 2 of 41 classes name client packages",
@@ -41613,7 +41753,7 @@
    "name": "Stitch (formerly Athena)",
    "jar": "athena-forge-1.20.1-3.1.2.jar",
    "hash": "sha512:5a71a1c220eafbfbdb570fa204454352b48d55f238db1a5b398a8c40f6b0fbd8c09a2f6c10def330abdf3daadaa24dfa52471f8de931a93fd99dc7d85b60960b",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "athena"
    ],
@@ -41641,7 +41781,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: Athena (connected textures): its only dependent, Chipped, declares it CLIENT and names it only in its client package (FakeLevelImpl); no channel, registers nothing. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "athena-forge-1.20.1-3.1.2.jar: loader forge; mixins common/client/server 0/2/0; 17 of 52 classes name client packages",
@@ -42895,7 +43039,7 @@
    "name": "TenshiLib",
    "jar": "tenshilib-1.20.1-1.7.6-forge.jar",
    "hash": "sha512:492f11b0a999af306f07b363d8edfad9849ce7294e2609755eee906d1502b00feebd4304c6cd9bfe1a85ffbda0de5b6224a37693c4eb4b42ae664d61a23d8666",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "tenshilib"
    ],
@@ -42923,7 +43067,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: a library nothing in the pack uses: no jar names its classes (all 458 scanned, nested included) and none declares it. On the server its only work is a Patreon sync at EntityJoinLevelEvent (the probe-rig FakePlayer trap); its channel tenshilib:packets accepts any server version, ABSENT included (javap). Removing it from the pack is the operator's call (reported, not done). Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "tenshilib-1.20.1-1.7.6-forge.jar: loader forge; mixins common/client/server 0/13/0; 42 of 192 classes name client packages",
@@ -46429,7 +46577,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: content the server owns: 43 registered items (34 bows, the pack's boss-exclusive trophy bows of unique_itemset_registry.js). Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "too_many_bows-forge-4.0.1.jar: loader forge; mixins common/client/server 2/0/0; 62 of 123 classes name client packages",
@@ -46446,7 +46598,11 @@
     {
      "key": "nested",
      "surface": "nested",
-     "status": "owed",
+     "status": "decided",
+     "answer": "keep",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "nested keep: MixinExtras 0.2.0, a mixin library (the newest MixinExtras of the pack wins). Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mixinextras-forge-0.2.0.jar: mods mixinextras"
      ],
@@ -46455,7 +46611,11 @@
     {
      "key": "tier-gate",
      "surface": "tier-gate",
-     "status": "owed",
+     "status": "decided",
+     "answer": "loot-only",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "tier-gate loot-only: the operator's 2026-06-03 ruling, already in the pack: all 34 bows are boss-exclusive trophy drops tiered across the 4 tiers by their boss (unique_itemset_registry.js, boss_unique_drops.js), its own chest loot is off (config/too_many_bows.json: the four *LootEnabled false) and 13 of its 17 recipes are not registered. Nothing to apply. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "43 registered items (dev/registry @59ee40da); 51 item language keys, 17 recipes"
      ],
@@ -46467,7 +46627,11 @@
     {
      "key": "weapon-class",
      "surface": "weapon-class",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "weapon-class default: 33 BowItem: ranged by Java class. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "weapon classes: BowItem 33"
      ],
@@ -46479,7 +46643,11 @@
     {
      "key": "apotheosis",
      "surface": "apotheosis",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "apotheosis default: bows get bow affixes by class; its 6 curio items get none. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "gear classes: BowItem 33; curio item classes: 6",
       "5 enchantments (lootable and tradeable unless the pack says otherwise): level:1, level:2, level:3, too_many_bows:ricochet, too_many_bows:spectral"
@@ -46492,7 +46660,11 @@
     {
      "key": "shared-data",
      "surface": "shared-data",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "shared-data default: its data/trinkets tags are for the Fabric Trinkets mod, which the pack does not have: inert. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "data under a namespace that is no mod id: trinkets (a pack rule keyed on the mod id misses it)"
      ],
@@ -46501,7 +46673,11 @@
     {
      "key": "codex",
      "surface": "codex",
-     "status": "owed",
+     "status": "decided",
+     "answer": "default",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "codex default: generated mod list only; the bows are named by the unique-itemset scripts. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "evidence": [
       "mod ids: too_many_bows"
      ],
@@ -46531,7 +46707,7 @@
    "name": "ToolStats",
    "jar": "ToolStats-Forge-1.20.1-16.0.10.jar",
    "hash": "sha512:b8287e85d095a7c8cb664ad7950febe2692029b1471b1af0ab946d4c32ad7904e74dec7ab5733fa51762cd1a354e91128f5eb083ef1fbd590583877d00f96260",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "toolstats"
    ],
@@ -46559,7 +46735,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: tooltip text: displayTest IGNORE_ALL_VERSION; its dependency Bookshelf is declared CLIENT; no channel, no dependent. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "ToolStats-Forge-1.20.1-16.0.10.jar: loader forge; mixins common/client/server 0/0/0; 1 of 4 classes name client packages",
@@ -46883,7 +47063,7 @@
    "name": "Traveler's Titles",
    "jar": "TravelersTitles-1.20-Forge-4.0.2.jar",
    "hash": "sha512:7cafbfc39305f3e384468db674e350118950201ba4d22b66ed95516a335aaad04765ae1e693b223c6c5beba404fc7411e9f78b4f962d7d9e51407b55233375a4",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "travelerstitles"
    ],
@@ -46911,7 +47091,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: biome and dimension title HUD: client mixins only; no channel, no dependent (YUNG's API stays on both). Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "TravelersTitles-1.20-Forge-4.0.2.jar: loader forge; mixins common/client/server 0/4/0; 2 of 35 classes name client packages",
@@ -46962,7 +47146,7 @@
    "name": "Better Treasure Map",
    "jar": "treasuredistance-1.20-1.2.jar",
    "hash": "sha1:736d49f14ee48422f6209807c5285e787355d785",
-   "side": "both",
+   "side": "client",
    "mod_ids": [
     "treasuredistance"
    ],
@@ -46990,7 +47174,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "client",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side client: one client mixin into MapRenderer (2 classes in all); no channel, no dependent. Client only: the full-pack server boot of this change without it is compared with origin/main (boot.ps1 -Compare origin/main, 0 regressions required); clients keep it. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "treasuredistance-1.20-1.2.jar: loader forge; mixins common/client/server 0/1/0; 1 of 2 classes name client packages",
@@ -49159,7 +49347,11 @@
     {
      "key": "side",
      "surface": "side",
-     "status": "owed",
+     "status": "decided",
+     "answer": "both",
+     "by": "session on operator rule",
+     "on": "2026-10-18",
+     "note": "side both: Just Leveling Fork (the pack's fork) runs its COMMON config through YACL's ConfigClassHandler on the server (HandlerCommonConfig, HandlerLockItemsConfig, capabilities, commands, config sync; javap), although its mods.toml declares the dependency CLIENT: a server without YACL cannot load it. Kept on both: when in doubt, both. Recorded on the operator's word of 2026-10-18 21:25 EDT, 'Okay let's chip on all open questions', and the standing rule 'implement recommendations, then we review after'.",
      "ask": "it leans client-only and the index delivers it to the server: both (a library the server needs) or client",
      "evidence": [
       "yet_another_config_lib_v3-3.6.6+1.20.1-forge.jar: loader forge; mixins common/client/server 0/6/0; 49 of 344 classes name client packages",
