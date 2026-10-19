@@ -62,8 +62,8 @@
    "owner": "kubejs/server_scripts/0_tick_master.js",
    "log": "kubejs/server.log",
    "pattern": "0_tick_master\\.js#\\d+: \\[TickMaster\\] Registered (\\d+) player tick functions",
-   "min": 19,
-   "note": "floor = the count on 2026-10-11",
+   "min": 18,
+   "note": "floor = the count on 2026-10-18 (19 on 2026-10-11; tick_fullMoonDetection retired 2026-10-18)",
    "proves": "own-check",
    "why": "checks more than presence: a count below `min` means something stopped registering; and it is printed inside the handler of ServerEvents.loaded"
   },
