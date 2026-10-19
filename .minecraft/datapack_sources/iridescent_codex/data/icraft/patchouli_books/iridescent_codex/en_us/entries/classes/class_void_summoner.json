@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Dark Pact$(): your tamed animals and your Iron's Spells summons deal $(item)+15% damage$().$(br2)$(bold)Soul Tether$(): whenever something dies within 16 blocks, by any hand, you heal $(item)5% of its max health$() (up to 2 health) and gain $(item)1 XP$().$(br2)$(bold)Shadow Cloak$(): +10% melee damage in darkness (light level 9 or lower), and no penalty in light. Caves and night are your domain."
+      "text": "$(bold)Dark Pact$(): your tamed animals and raised skeletons' arrows deal $(item)+15% damage$(). Other Iron's summons hit as your spells, with your spell power.$(br2)$(bold)Soul Tether$(): whenever something dies within 16 blocks, by any hand, you heal $(item)5% of its max health$() (up to 2 health) and gain $(item)1 XP$().$(br2)$(bold)Shadow Cloak$(): +10% melee damage in darkness (light level 9 or lower), and no penalty in light."
     },
     {
       "type": "patchouli:text",

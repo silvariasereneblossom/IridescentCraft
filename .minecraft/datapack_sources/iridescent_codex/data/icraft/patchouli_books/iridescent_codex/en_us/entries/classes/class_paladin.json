@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Tank and support: self-sustaining, with group utility. The 'I keep everyone alive' class.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and shields (bonus)"
+      "text": "$(italic)Tank and support: self-sustaining, with group utility. The 'I keep everyone alive' class.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() none, and no weapon penalties"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Holy Armor$(): +3 armor, +1 toughness, +10% knockback resistance. The $(thing)Paladin$() is tanky without giving up as much damage as the $(thing)Vanguard$().$(br2)$(bold)Divine Resilience$(): shield blocking cuts incoming damage further, and all healing sources are +15% more effective.$(br2)$(bold)Healing Aura$(): nearby allies regenerate HP passively, the class's core group utility."
+      "text": "$(bold)Holy Armor$(): +3 armor and +1 toughness. The $(thing)Paladin$() is tanky without giving up as much damage as the $(thing)Vanguard$().$(br2)$(bold)Divine Resilience$(): +10% knockback resistance. Potions, golden apples and healing spells mend you 25% more.$(br2)$(bold)Healing Aura$(): every 5 seconds you heal 1 health while above half health, and other players within 8 blocks heal half a point."
     },
     {
       "type": "patchouli:text",
       "title": "Group Play",
-      "text": "The $(thing)Paladin$() is the only class designed for multiplayer. Healing Aura makes nearby players much more durable, and the tanky stats let the $(thing)Paladin$() hold the front."
+      "text": "The $(thing)Paladin$() is the only class designed for multiplayer. Healing Aura keeps topping up the players around you, and the tanky stats let the $(thing)Paladin$() hold the front."
     },
     {
       "type": "patchouli:text",

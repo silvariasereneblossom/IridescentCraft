@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Tradeoffs",
-      "text": "$(bold)Meat Preference$(): $(warn)non-meat food gives less nourishment.$()$(br2)$(bold)Healing Potions$(): $(warn)only 50% effective.$() Your scaled hide resists potions.$(br2)$(bold)Next: stock cooked meat instead of potions. Your healing runs through your stomach.$()"
+      "text": "$(bold)Meat Preference$(): $(warn)non-meat food gives less nourishment.$()$(br2)$(bold)Potion Resistance$(): $(warn)while Regeneration is on you, every heal is halved$(), your own included. Without it, potions heal in full.$(br2)$(bold)Next: skip Regeneration and eat well. Your healing runs through your stomach.$()"
     }
   ]
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Lethal Grace$(): $(item)+15% on all damage you deal$(), the highest racial damage bonus.$(br2)$(bold)Bloodthirst$(): permanent Strength I.$(br2)$(bold)Tattered Wings$(): slow fall, though not true flight."
+      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Lethal Grace$(): $(item)+15% on all damage you deal$(), the highest racial damage bonus.$(br2)$(bold)Bloodthirst$(): permanent Strength I, and permanent Haste I.$(br2)$(bold)Tattered Wings$(): slow fall, though not true flight."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Fragile$(): $(warn)-20% max HP$() (2 fewer hearts).$(br2)$(bold)Meat Preference$(): you crave meat to fuel your war.$(br2)$(bold)Fire Vulnerability$(): $(warn)fire sears you deeper than most.$()$(br2)$(bold)Next: eat widely anyway. Spice of Life max-HP bonuses claw back your missing hearts.$()"
+      "text": "$(bold)Fragile$(): $(warn)-20% max HP$() (2 fewer hearts).$(br2)$(bold)Meat Preference$(): food that is not meat feeds you half as much.$(br2)$(bold)Fire Vulnerability$(): $(warn)fire and lava hit you for 2 more a hit.$()$(br2)You glow at all times, and mine stone by hand.$(br2)$(bold)Next: eat widely. Spice of Life hearts make up the two you lack.$()"
     }
   ]
 }

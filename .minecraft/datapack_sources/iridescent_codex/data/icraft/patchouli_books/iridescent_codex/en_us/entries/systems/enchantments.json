@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Resource & Combat",
-      "text": "$(bold)Prospector$(): Passive ore detection$(br)$(bold)Lumberjack$(): Tree-felling area$(br)$(bold)Reaping$(): Replants on harvest$(br2)$(bold)Momentum$(): Damage scales with movement speed$(br)$(bold)Adrenaline$(): Low-HP damage boost$(br)$(bold)Titan Slayer$(): Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$(): AoE slow/weaken on hit$(br)$(bold)Adaptive$(): Resists the damage type that last hit you"
+      "text": "$(bold)Prospector$(): Passive ore detection$(br)$(bold)Lumberjack$(): Tree-felling area$(br2)$(bold)Momentum$(): Damage scales with movement speed$(br)$(bold)Adrenaline$(): Low-HP damage boost$(br)$(bold)Titan Slayer$(): Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$(): +5% damage a level per extra hostile nearby$(br)$(bold)Adaptive$(): Resists the damage type that last hit you$(br)$(bold)Primal Force$(): +3% damage a level per 5 food saturation"
     },
     {
       "type": "patchouli:text",

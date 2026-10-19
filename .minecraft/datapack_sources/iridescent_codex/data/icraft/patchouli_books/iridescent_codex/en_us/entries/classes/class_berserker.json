@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A whirlwind of steel and fury. Raw melee power that scales harder the closer you are to death.$()$(br2)HP Modifier: -5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() +15% base melee damage on all weapons."
+      "text": "$(italic)A whirlwind of steel and fury. Raw melee power that scales harder the closer you are to death.$()$(br2)HP Modifier: -5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() +15% damage with an axe; bows and spell books hit weaker."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Brutal Strikes$(): +15% melee damage with every weapon, at all times.$(br2)$(bold)Blood Fury$(): +20% melee damage below 40% HP, the class's core risk and reward.$(br2)$(bold)Thick Skinned$(): +10% armor effectiveness, which rewards heavy armor.$(br2)$(bold)Battle Trance$(): +5% attack damage and +1 natural armor from your constant fury."
+      "text": "$(bold)Brutal Strikes$(): +15% damage with an axe in hand; -40% with a bow or crossbow, -30% with a spell book.$(br2)$(bold)Blood Fury$(): +20% melee damage below 40% HP, +40% below 20%.$(br2)$(bold)Thick Skinned$(): +10% armor effectiveness, which rewards heavy armor.$(br2)$(bold)Battle Trance$(): 10 seconds of landing hits give +5% melee damage and +1 armor."
     },
     {
       "type": "patchouli:text",
       "title": "Playstyle",
-      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. At low HP, Blood Fury and Brutal Strikes together give a huge burst, and Thick Skinned keeps you alive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$(): +10% melee damage, which adds to Brutal Strikes, and +20% HP.$(br)$(thing)Demi-God$(): four extra hearts make Blood Fury safer.$(br)$(thing)Dwarf$(): half damage from fire and +2 armor toughness."
+      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. At low HP with an axe, Blood Fury and Brutal Strikes together give a huge burst, and Thick Skinned keeps you alive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$(): +10% melee damage, which adds to Brutal Strikes, and +20% HP.$(br)$(thing)Demi-God$(): four extra hearts make Blood Fury safer.$(br)$(thing)Dwarf$(): half damage from fire and +2 armor toughness."
     }
   ]
 }

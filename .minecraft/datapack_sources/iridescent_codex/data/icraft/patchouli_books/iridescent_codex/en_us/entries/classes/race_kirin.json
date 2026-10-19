@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Unrivaled Speed$(): twice the base walking speed, and Speed II for 12s on demand (60s cooldown).$(br2)$(bold)Pounce$(): launch forward (25s cooldown)."
+      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Unrivaled Speed$(): two and a half times the base walking speed, always, and Speed II for 12s on demand (60s cooldown).$(br2)$(bold)Pounce$(): launch forward (25s cooldown)."
     },
     {
       "type": "patchouli:text",

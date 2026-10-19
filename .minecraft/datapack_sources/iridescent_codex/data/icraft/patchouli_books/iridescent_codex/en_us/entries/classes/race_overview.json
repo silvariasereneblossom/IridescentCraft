@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The {{layer race Word}} Races (2/2)",
-      "text": "$(li)$(bold)Demi-God$(): +40% HP, a raw-meat diet, strength and phasing. Weak in the Nether.$(li)$(bold)Ryu$(): draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$(): +15% all damage, slow fall, dash. Fragile (-20% HP).$(li)$(bold)Kirin$(): fast; wall-climb, sprint-jump, night vision. Fragile (-10% HP).$(br2)$(bold)Next: read each race's own page.$()"
+      "text": "$(li)$(bold)Demi-God$(): +8 HP, Speed II, raw meat, strength and phasing. Weak in the Nether.$(li)$(bold)Ryu$(): draconic. 25% damage reduction, slow fall, clears debuffs.$(li)$(bold)Fallen Angel$(): +15% all damage, slow fall, dash. Fragile (-20% HP).$(li)$(bold)Kirin$(): fast; wall-climb, sprint-jump, night vision. Fragile (-10% HP).$(br2)$(bold)Next: read each race's own page.$()"
     }
   ]
 }

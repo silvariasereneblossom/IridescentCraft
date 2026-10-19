@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t3)Tier 3$() unlocks $(bold)Mekanism$(): osmium ore stops showing as plain stone, and the full machine roster opens. Its keystone reward is $(bold)5x ore$(): a four-stage chain turns one ore into five ingots' worth of output. In order, the stages are $(bold)Enrichment, Purification, Injection, Crystallization$()."
+      "text": "$(t3)Tier 3$() unlocks $(bold)Mekanism$(): osmium ore stops showing as plain stone, and the full machine roster opens. Its keystone reward is $(bold)5x ore$(), reached one machine at a time, each set in front of the last: the $(bold)Enrichment Chamber$() doubles ore, the $(bold)Purification Chamber$() makes it 3x, the $(bold)Chemical Injection Chamber$() 4x, and the $(bold)Chemical Crystallizer$() line 5x."
     },
     {
       "type": "patchouli:text",

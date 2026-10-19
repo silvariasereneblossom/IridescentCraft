@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Formerly living; undead mechanics apply. The pack's most punishing race in daylight and its most powerful in the dark.$()$(br2)$(bold)Dark Power$(): +20% attack damage at light level 9 or lower and anywhere in the Abyss.$(br2)$(bold)Night Vision$(): permanent. By day you see just as a Human does."
+      "text": "$(italic)Formerly living; undead mechanics apply. The pack's most punishing race in daylight and its most powerful in the dark.$()$(br2)$(bold)Shadow Strike$(): +20% melee damage at light level 9 or lower and anywhere in the Abyss.$(br2)$(bold)Deathless Eyes$(): permanent night vision. By day you see just as a Human does."
     },
     {
       "type": "patchouli:text",
       "title": "Traits (cont.)",
-      "text": "$(bold)Shadow Strike$(): at light level 4 or lower, or in the Abyss, you also have Resistance I.$(br2)$(bold)Sunlight Weakness$(): in direct sunlight with no helmet you get Weakness and Slowness. A helmet or shade stops it, so plan around it.$(br2)$(bold)Healing Penalty$(): food gives you 20% less hunger and saturation.$(br2)$(bold)Next: keep a helmet on from your first day.$()"
+      "text": "$(bold)Shadow Strike$(), deeper: at light level 4 or lower, or in the Abyss, you also have Resistance I.$(br2)$(bold)Sunlight Weakness$(): in direct sunlight with no helmet you get Weakness and Slowness. A helmet or shade stops it, so plan around it.$(br2)$(bold)Cursed Flesh$(): food feeds you 20% less.$(br2)$(bold)Next: keep a helmet on from your first day.$()"
     }
   ]
 }

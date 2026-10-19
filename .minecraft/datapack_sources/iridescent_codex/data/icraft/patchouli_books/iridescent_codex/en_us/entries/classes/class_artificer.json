@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The builder and engineer. An average fighter with no combat tradeoffs, whose power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties; crafted items benefit from bonuses"
+      "text": "$(italic)The builder and engineer. An average fighter with no combat tradeoffs, whose power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() none, and no weapon penalties"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Crafting Mastery$(): +15% mining speed and a baseline +10% attack speed. Nearby crafting tables give you Speed I.$(br2)$(bold)Engineer Speed$(): +10% bonus ore drops from mining, infrastructure power that compounds over time.$(br2)$(bold)Resourceful$(): as an $(thing)Artificer$() you draw your power from building, and time spent on infrastructure pays off."
+      "text": "$(bold)Crafting Mastery$(): +15% mining speed with every tool.$(br2)$(bold)Engineer's Efficiency$(): +10% attack speed.$(br2)$(bold)Resourceful$(): a crafting table within 4 blocks gives you Speed I (+20% movement speed).$(br2)Ores drop as they do for anyone: no class gets bonus ore."
     },
     {
       "type": "patchouli:text",
