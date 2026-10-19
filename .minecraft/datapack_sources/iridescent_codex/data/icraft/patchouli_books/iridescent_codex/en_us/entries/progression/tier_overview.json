@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 2: Expansion",
-      "text": "$(bold)Material tier:$() Steel, Manasteel, Steeleaf, Ironwood, Fiery$(br)$(bold)Dimensions:$() {{tier 2 Dims}}$(br)$(bold)Tech:$() Thermal Series, Industrial Foregoing (basic)$(br)$(bold)Magic:$() Ars Nouveau$(br)$(bold)Notable:$() The first Simply Swords uniques drop from Twilight bosses. Diamonds stay at Tier 3."
+      "text": "$(bold)Material tier:$() Steel, Manasteel, Steeleaf, Ironwood, Fiery$(br)$(bold)Dimensions:$() {{tier 2 Dims}}$(br)$(bold)Tech:$() Thermal Series, Industrial Foregoing (basic)$(br)$(bold)Magic:$() Ars Nouveau$(br)$(bold)Notable:$() Twilight bosses drop Simply Swords uniques; the first ones come from Tier 1 bosses. Diamonds stay at Tier 3."
     },
     {
       "type": "patchouli:text",

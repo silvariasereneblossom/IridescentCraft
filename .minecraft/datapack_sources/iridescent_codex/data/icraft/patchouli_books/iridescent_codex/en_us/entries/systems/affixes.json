@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Affix Tiers",
-      "text": "$(bold)Common$() ($(t1)Tier 1$()+): mild bonuses, 0-1 sockets.$(br)$(bold)Uncommon$() ($(t2)Tier 2$()+): moderate bonuses, 1-2 sockets.$(br)$(bold)Rare$() ($(t2)Tier 2$()+): strong bonuses, 2 sockets.$(br)$(bold)Epic$() ($(t3)Tier 3$()+): very strong bonuses, 2-3 sockets.$(br)$(bold)Legendary$() ($(t4)Tier 4$()): exceptional bonuses, 3-4 sockets.$(br)$(bold)Mythic$() (post-endgame, Rift infusion only): maximum bonuses, 4 sockets."
+      "text": "$(bold)Common$() ($(t1)Tier 1$()+): mild bonuses, no sockets.$(br)$(bold)Uncommon$() ($(t1)Tier 1$()+): up to 1 socket.$(br)$(bold)Rare$() ($(t1)Tier 1$()+): up to 2 sockets.$(br)$(bold)Epic$() ($(t2)Tier 2$()+): 1 to 3 sockets.$(br)$(bold)Mythic$() ($(t3)Tier 3$()+): 1 to 3 sockets, more abilities.$(br)$(bold)Ancient$() ($(t4)Tier 4$()): 1 to 5 sockets and an ancient affix."
     },
     {
       "type": "patchouli:text",

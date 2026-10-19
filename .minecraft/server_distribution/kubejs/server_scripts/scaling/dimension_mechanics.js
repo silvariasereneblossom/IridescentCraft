@@ -67,6 +67,12 @@ var getArmorEnchTotalLocal = function (entity, enchId) {
   return core.armorEnchTotal(entity, enchId)
 }
 
+// Thermal Regulation and Stellar Shield take a third of their hazard off per
+// level, the four armour pieces added up: three levels negate it (one piece at
+// III, or I on three pieces). Until 2026-10-19 a level was 0.33, so three levels
+// left 1% of the cold and Mercury still set you on fire (design-gaps chip).
+var thirds = function (levels) { return Math.min(levels / 3, 1.0) }
+
 // An environmental hit that goes through every normal damage handler.
 var hazardDamage = function (player, kind, amount) {
   if (!(amount > 0)) return
@@ -456,10 +462,10 @@ global.tick_dimEnvironmentalHazards = (event) => {
   }
 
   // ── Mars: Cold damage ticks, faster hunger drain ──
-  // Thermal Regulation negates cold damage; each level reduces by 33%
+  // Thermal Regulation takes a third of the cold off per level (thirds, above)
   if (dim === 'ad_astra:mars') {
     let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
-    let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+    let coldReduction = thirds(thermalReg)
     if (coldReduction < 1.0) {
       // Cold damage: 1 HP every 5 seconds, reduced by Thermal Regulation
       hazardDamage(player, 'freeze', 1.0 * (1.0 - coldReduction))
@@ -475,14 +481,14 @@ global.tick_dimEnvironmentalHazards = (event) => {
     if (dayTime >= 0 && dayTime < 12000) {
       // Day (sun side): fire damage — Stellar Shield negates
       let stellarShield = getArmorEnchTotalLocal(player, 'icraft:stellar_shield')
-      let fireReduction = Math.min(stellarShield * 0.33, 1.0)
+      let fireReduction = thirds(stellarShield)
       if (fireReduction < 1.0) {
         player.setSecondsOnFire(3)
       }
     } else {
       // Night (dark side): freeze damage — Thermal Regulation negates
       let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
-      let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+      let coldReduction = thirds(thermalReg)
       if (coldReduction < 1.0) {
         hazardDamage(player, 'freeze', 1.5 * (1.0 - coldReduction))
       }
@@ -508,7 +514,7 @@ global.tick_dimEnvironmentalHazards = (event) => {
   // Void Adaptation negates mining fatigue; Thermal Regulation reduces cold
   if (dim === 'ad_astra:glacio') {
     let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
-    let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+    let coldReduction = thirds(thermalReg)
     if (coldReduction < 1.0) {
       // Extreme cold: 2 HP per tick cycle
       hazardDamage(player, 'freeze', 2.0 * (1.0 - coldReduction))

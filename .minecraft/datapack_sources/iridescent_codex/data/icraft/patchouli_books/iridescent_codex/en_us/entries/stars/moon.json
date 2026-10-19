@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Lunar Stride Enchantment$()$(br)Chests on the Moon hold books of $(bold)Lunar Stride$(): level I in 30% of them, level II in 10% (max level 3). On armor, on any planet, it:$(br)• Reduces fall damage by 33% a level$(br)• Grants Jump Boost$(br)• Stops fall damage at 4 levels across your armor$(br2)Melee builds in low gravity need it."
+      "text": "$(bold)Lunar Stride Enchantment$()$(br)Chests on the Moon hold books of $(bold)Lunar Stride$(): level I in 30% of them, level II in 10% (max level 3). On armor, on any planet, it:$(br)• Takes a third of fall damage off per level$(br)• Grants Jump Boost$(br)• Stops fall damage at 3 levels across your armor$(br2)Melee builds in low gravity need it."
     }
   ],
   "advancement": "icraft:stage_tier_4"

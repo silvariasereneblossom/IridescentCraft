@@ -459,13 +459,16 @@ global.tick_enchantPeriodicEffects = function (event) {
   // ── Every 2 seconds: Quick Draw (bow draw speed) ──
   if (tick % 40 === 35) {
     eachPlayer(event, 'quick_draw', function (player) {
-      // Attack speed bonus as proxy for draw speed, only while a bow is held
+      // Apothic's draw speed while a bow or crossbow is held. Until 2026-10-19 this
+      // gave attack speed "as a proxy", which does not change how fast a bow draws
+      // (design-gaps chip, measured on the rig). Apothic's handler reaches every
+      // ProjectileWeaponItem and the trident, not Tetra's modular bows.
       var value = 0
       var held = player.mainHandItem
       if (held && !held.isEmpty() && String(held.id).indexOf('bow') >= 0) {
         value = core.enchLevel(held, 'icraft:quick_draw') * 0.15
       }
-      setMod(player, 'minecraft:generic.attack_speed', 'icraft_quick_draw', value, 'multiply_base')
+      setMod(player, 'attributeslib:draw_speed', 'icraft_quick_draw', value, 'multiply_base')
     })
   }
 
@@ -537,22 +540,24 @@ global.registerServerTick('tick_enchantLunarStride', 40, 15)
 
 // ── Lunar Stride + Stellar Shield (DamageModifierRegistry) ─────────────
 
-// Lunar Stride: Fall damage reduction (33% per level)
+// Lunar Stride: a third less fall damage per level, the armour pieces added up
+// (three levels stop it; 0.33 a level until 2026-10-19 left 1%)
 core.onHurt('icraft.enchants.lunar_stride', function (event, ctx) {
   var player = ctx.victim
   if (!core.isFall(ctx.source)) return
   if (!PLANETS[dimOf(player)]) return
   var lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
-  if (lunar > 0) event.amount = event.amount * (1.0 - Math.min(lunar * 0.33, 1.0))
+  if (lunar > 0) event.amount = event.amount * (1.0 - Math.min(lunar / 3, 1.0))
 }, 'victimPlayer')
 
-// Stellar Shield: Fire resistance on planets (33% per level)
+// Stellar Shield: a third less fire damage on planets per level, the armour
+// pieces added up (three levels stop it; 0.33 a level until 2026-10-19 left 1%)
 core.onHurt('icraft.enchants.stellar_shield', function (event, ctx) {
   var player = ctx.victim
   if (!PLANETS[dimOf(player)]) return
   if (!core.isFire(ctx.source)) return
   var stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
-  if (stellar > 0) event.amount = event.amount * (1.0 - Math.min(stellar * 0.33, 1.0))
+  if (stellar > 0) event.amount = event.amount * (1.0 - Math.min(stellar / 3, 1.0))
 }, 'victimPlayer')
 
 console.log('[IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects')

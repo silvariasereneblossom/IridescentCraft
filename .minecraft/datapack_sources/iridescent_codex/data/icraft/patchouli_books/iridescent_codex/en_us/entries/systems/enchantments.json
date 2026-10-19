@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Hunt for $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools: 24 general-purpose ones from enchanting and loot, plus 5 planetary ones that only Ad Astra planet mobs drop.$(br2)All of them are real enchantments and work with every Apotheosis system."
+      "text": "Hunt for $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools: 24 general-purpose ones from enchanting and loot, plus 5 planetary ones whose books lie in chests on their planet.$(br2)All of them are real enchantments and work with every Apotheosis system."
     },
     {
       "type": "patchouli:text",
@@ -26,17 +26,17 @@
     {
       "type": "patchouli:text",
       "title": "Utility",
-      "text": "$(bold)Magnetism$(): Item pickup radius$(br)$(bold)Last Stand$(): Burst damage when you nearly die$(br)$(bold)Vitality$(): Max HP boost$(br)$(bold)Phalanx$(): Group defense aura$(br)$(bold)Quick Draw$(): Faster offhand swaps$(br2)$(bold)Next: $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l); better shelves give better rolls.$()"
+      "text": "$(bold)Magnetism$(): Item pickup radius$(br)$(bold)Last Stand$(): Burst damage when you nearly die$(br)$(bold)Vitality$(): Max HP boost$(br)$(bold)Phalanx$(): Group defense aura$(br)$(bold)Quick Draw$(): Draws the bow or crossbow you hold 15% faster a level$(br2)$(bold)Next: $(l:icraft:systems/apotheosis_enchanting)Apotheosis Enchanting$(/l); better shelves give better rolls.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Planet Enchants",
-      "text": "Each Ad Astra planet's mobs have a 12% chance to drop that planet's enchanted book:$(br2)$(bold)Lunar Stride$() (Moon): Reduces low-gravity movement penalties.$(br)$(bold)Thermal Regulation$() (Mars): Negates cold and heat environmental damage.$(br)$(bold)Pressure Shell$() (Venus): Reduces acid damage and pressure slowdown."
+      "text": "Chests on each Ad Astra planet hold its enchanted book: level I in 30% of them, level II in 10%.$(br2)$(bold)Lunar Stride$() (Moon): Jump Boost, and a third less fall damage a level.$(br)$(bold)Thermal Regulation$() (Mars): a third less of the planets' cold damage a level.$(br)$(bold)Pressure Shell$() (Venus): half the acid damage a level, and no slowdown at 2."
     },
     {
       "type": "patchouli:text",
       "title": "Planet Enchants, cont.",
-      "text": "$(bold)Void Adaptation$() (Glacio): Negates alien debuffs and mining fatigue.$(br)$(bold)Stellar Shield$() (Mercury): Solar radiation and fire resistance on planets.$(br2)$(bold)Collect these on early planets to survive later ones.$()"
+      "text": "$(bold)Void Adaptation$() (Glacio): removes Glacio's mining fatigue.$(br)$(bold)Stellar Shield$() (Mercury): a third less fire damage a level on planets.$(br2)Levels on different armor pieces add up, and 3 stop the hazard.$(br2)$(bold)Collect these on early planets to survive later ones.$()"
     }
   ]
 }

@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Trunk",
-      "text": "$(bold)Steady Aim$() I and II: +5% ranged damage each$(br)$(bold)Quick Hands$() I and II: +5% attack speed each$(br)$(bold)Hawk Eye$() I and II: +3% ranged damage each$(br)$(bold)Nimble$() I and II: +4% movement speed each$(br2)Attack speed makes melee swings faster; it does not change how fast a bow draws."
+      "text": "$(bold)Steady Aim$() I and II: +5% ranged damage each$(br)$(bold)Quick Hands$() I and II: +5% draw speed each$(br)$(bold)Hawk Eye$() I and II: +3% ranged damage each$(br)$(bold)Nimble$() I and II: +4% movement speed each$(br2)Draw speed works on bows, crossbows and tridents, not on Tetra's modular bows. With all seven draw nodes a bow draws fully in 13 or 14 ticks instead of 20."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Volley Branch",
-      "text": "$(bold)Rapid Fire$() I to IV: +6%, +6%, +8% and +8% attack speed$(br)$(bold)Arrow Conservation$() I to III: each a 5% chance to get an arrow back when a projectile hits$(br)$(bold)Scatter Shot$() I and II: each splashes 5% of a projectile's damage onto monsters within 3 blocks$(br2)$(bold)Capstone: Storm of Arrows$(), +15% attack speed and +10% to both the refund and the splash."
+      "text": "$(bold)Rapid Fire$() I to IV: +6%, +6%, +8% and +8% draw speed$(br)$(bold)Arrow Conservation$() I to III: each a 5% chance to get an arrow back when a projectile hits$(br)$(bold)Scatter Shot$() I and II: each splashes 5% of a projectile's damage onto monsters within 3 blocks$(br2)$(bold)Capstone: Storm of Arrows$(), +15% draw speed and +10% to both the refund and the splash."
     }
   ]
 }

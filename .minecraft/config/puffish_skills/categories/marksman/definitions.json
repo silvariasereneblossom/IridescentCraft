@@ -51,13 +51,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.05,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+5% Attack Speed"
+    "description": "+5% Draw Speed"
   },
   "quick_hands_2": {
     "title": "Quick Hands II",
@@ -71,13 +71,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.05,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+5% Attack Speed"
+    "description": "+5% Draw Speed"
   },
   "hawk_eye_1": {
     "title": "Hawk Eye I",
@@ -371,13 +371,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.06,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+6% Attack Speed"
+    "description": "+6% Draw Speed"
   },
   "arrow_conserv_1": {
     "title": "Arrow Conservation I",
@@ -409,13 +409,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.06,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+6% Attack Speed"
+    "description": "+6% Draw Speed"
   },
   "scatter_shot_1": {
     "title": "Scatter Shot I",
@@ -465,13 +465,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.08,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+8% Attack Speed"
+    "description": "+8% Draw Speed"
   },
   "scatter_shot_2": {
     "title": "Scatter Shot II",
@@ -521,13 +521,13 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.08,
           "operation": "multiply_base"
         }
       }
     ],
-    "description": "+8% Attack Speed"
+    "description": "+8% Draw Speed"
   },
   "storm_of_arrows": {
     "title": "Storm of Arrows",
@@ -541,7 +541,7 @@
       {
         "type": "puffish_skills:attribute",
         "data": {
-          "attribute": "minecraft:generic.attack_speed",
+          "attribute": "attributeslib:draw_speed",
           "value": 0.15,
           "operation": "multiply_base"
         }
@@ -559,6 +559,6 @@
         }
       }
     ],
-    "description": "+15% Attack Speed, Chance to save ammo, Projectile splash damage"
+    "description": "+15% Draw Speed, Chance to save ammo, Projectile splash damage"
   }
 }

@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$(): 1 HP every 5 seconds unless your armor carries Thermal Regulation$(br)• $(bold)Hunger$() the whole time: bring extra food or Golden Apples$(br)• Mars mobs have Speed I$(br2)Thermal Regulation is worth a lot here. Without it the cold damage never stops, and it adds up quickly."
+      "text": "$(bold)Environmental Hazards$()$(br)• $(bold)Cold damage$(): 1 HP every 5 seconds unless your armor carries 3 levels of Thermal Regulation$(br)• $(bold)Hunger$() the whole time: bring extra food or Golden Apples$(br)• Mars mobs have Speed I$(br2)Thermal Regulation is worth a lot here. Without it the cold damage never stops, and it adds up quickly."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• A Space Suit (the basic one already resists the cold)$(br)• Thermal Regulation on your armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
+      "text": "$(bold)Purpose$()$(br)Mars has the ores and materials the $(bold)Tier 3 Rocket$() needs to reach Venus and Mercury, Cryogenic Crystals among them. The Martian ruins and underground facilities hold rare loot.$(br2)$(bold)Recommended Gear$()$(br)• A full Space Suit: it stops Ad Astra's own freezing$(br)• Thermal Regulation on your armor$(br)• High-saturation food supply$(br)• Working RF power for oxygen production"
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Chests on Mars hold books of $(bold)Thermal Regulation$(): level I in 30% of them, level II in 10% (max level 3).$(br2)On armor it cuts the cold damage of Mars, Mercury's night and Glacio by 33% a level. Levels on different pieces add up: 3 take 99% off, 4 stop it.$(br2)$(bold)Next: crush Mars Stone.$()"
+      "text": "$(bold)Thermal Regulation Enchantment$()$(br)Chests on Mars hold books of $(bold)Thermal Regulation$(): level I in 30% of them, level II in 10% (max level 3).$(br2)On armor it takes a third of the cold damage of Mars, Mercury's night and Glacio off per level. Levels on different pieces add up: 3 stop it.$(br2)$(bold)Next: crush Mars Stone.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

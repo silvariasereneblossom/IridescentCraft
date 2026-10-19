@@ -3,7 +3,7 @@ name = 'Iridescent Codex'
 side = 'both'
 
 [download]
-hash = '43f73d6c12908d9a407884d2938e24520c8472271dff604ade57091476167d70'
+hash = 'bfcac3080cdaa678a0be864285a2a8cba05da118d251f54e88281fb8b0e539b3'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_codex_data.jar'

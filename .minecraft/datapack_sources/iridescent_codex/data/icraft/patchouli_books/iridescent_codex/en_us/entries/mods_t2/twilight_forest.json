@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Step through the portal ready for a fight. The Twilight Forest is the main T2 adventure dimension, and its seven bosses hold the first Simply Swords uniques.$(br2)$(bold)Portal:$() a pool of water ringed by grass with flowers on it. Throw in a $(bold)Codex Token I$() (or a diamond) to light it."
+      "text": "Step through the portal ready for a fight. The Twilight Forest is the main T2 adventure dimension, and its bosses drop Simply Swords uniques.$(br2)$(bold)Portal:$() a pool of water ringed by grass with flowers on it. Throw in a $(bold)Codex Token I$() (or a diamond) to light it."
     },
     {
       "type": "patchouli:text",

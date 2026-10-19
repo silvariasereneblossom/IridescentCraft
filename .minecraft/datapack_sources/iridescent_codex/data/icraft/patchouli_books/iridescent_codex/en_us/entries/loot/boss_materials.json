@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Save every boss material you loot. These boss-only crafting components go into:$(li)Waystone construction (expensive by design)$(li)Class Altar construction$(li)Tier 4 advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike progression tokens, boss materials are $(italic)spoils$(), not currency, and no boss's material can replace another's."
+      "text": "Save every boss material you loot. These boss-only crafting components go into:$(li)Waystone construction (expensive by design)$(li)Class Altar construction$(li)Tier 4 advanced recipes$(li)the Mythic Catalysts (endgame)$(br2)Unlike progression tokens, boss materials are $(italic)spoils$(), not currency, and no boss's material can replace another's."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "T4 Boss Materials",
-      "text": "$(bold)Dragon Heart$(): from the Ender Dragon, for top recipes and as the Mythic infusion base.$(br2)$(bold)Dragon Scale$(): from the Ender Dragon, for Tier 4 armor crafting.$(br2)$(bold)Void Essence$(): a rare Enderman drop, for Void Summoner builds.$(br2)$(bold)Gaia Spirit Fragment$(): from Botania's Gaia Guardian, needed for Mahou Tsukai initiation."
+      "text": "$(bold)Dragon Heart$(): from the Ender Dragon, for the Rift Keystone once Oblivion's Rift is built.$(br2)$(bold)Dragon Scale$(): from the Ender Dragon, for Tier 4 armor crafting.$(br2)$(bold)Void Essence$(): a rare Enderman drop, for Void Summoner builds.$(br2)$(bold)Gaia Spirit Fragment$(): from Botania's Gaia Guardian, needed for Mahou Tsukai initiation."
     }
   ]
 }

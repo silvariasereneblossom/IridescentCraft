@@ -7,7 +7,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 2 reached.$() The mid-tier frontiers are open to you.$(br)$(li)$(bold)Dimensions:$() the Twilight Forest and Blue Skies (Everbright and Everdawn).$(li)$(bold)Tech:$() the Thermal Series and basic Industrial Foregoing.$(li)$(bold)Magic:$() Ars Nouveau.$(li)$(bold)Gear:$() Steel, Manasteel, Steeleaf and Fiery, plus the first Simply Swords uniques from Twilight bosses."
+      "text": "$(bold)Tier 2 reached.$() The mid-tier frontiers are open to you.$(br)$(li)$(bold)Dimensions:$() the Twilight Forest and Blue Skies (Everbright and Everdawn).$(li)$(bold)Tech:$() the Thermal Series and basic Industrial Foregoing.$(li)$(bold)Magic:$() Ars Nouveau.$(li)$(bold)Gear:$() Steel, Manasteel, Steeleaf and Fiery, plus Simply Swords uniques from Twilight bosses (the first ones drop from Tier 1 bosses)."
     },
     {
       "type": "patchouli:text",

@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mercury: The Burning World$()$(br)Mobs: $(bold){{dim ad_astra:mercury difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:mercury death}}$()$(br2)Mercury's hazard follows the clock, and no hour is safe: by day the sun sets you on fire, by night the cold hurts."
+      "text": "$(bold)Mercury: The Burning World$()$(br)Mobs: $(bold){{dim ad_astra:mercury difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:mercury death}}$()$(br2)Mercury is hot at every hour: without a full Netherite Space Suit, a Jet Suit or Fire Resistance, the planet burns you day and night. By day the sun also sets you on fire, by night the cold hurts."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Day and Night$()$(br)$(bold)Day:$() the sun sets you on fire every 5 seconds. Stellar Shield cuts fire damage by 33% a level; Heatward takes off another 8% a level.$(br2)$(bold)Night:$() 1.5 HP of cold damage every 5 seconds, cut by Thermal Regulation as on Mars.$(br2)Carry $(italic)both$() enchantments. Mercury's mobs have Fire Resistance."
+      "text": "$(bold)Day and Night$()$(br)$(bold)Day:$() the sun sets you on fire every 5 seconds unless your armor carries 3 levels of Stellar Shield. Each level takes a third of fire damage off; Heatward takes off another 8% a level.$(br2)$(bold)Night:$() 1.5 HP of cold damage every 5 seconds, cut by Thermal Regulation as on Mars.$(br2)Carry $(italic)both$() enchantments. Mercury's mobs have Fire Resistance."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Stellar Shield Enchantment$()$(br)Chests on Mercury hold books of $(bold)Stellar Shield$(): level I in 30% of them, level II in 10% (max level 3).$(br2)On armor it cuts fire damage on every planet by 33% a level. Levels on different pieces add up: 3 take 99% off. With Thermal Regulation, it covers all of Mercury.$(br2)$(bold)Next: Venus, where only Pressure Shell helps.$()"
+      "text": "$(bold)Stellar Shield Enchantment$()$(br)Chests on Mercury hold books of $(bold)Stellar Shield$(): level I in 30% of them, level II in 10% (max level 3).$(br2)On armor it takes a third of fire damage off per level on every planet. Levels on different pieces add up: 3 stop it, and the sun no longer sets you on fire. With Thermal Regulation, it covers all of Mercury.$(br2)$(bold)Next: Venus.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

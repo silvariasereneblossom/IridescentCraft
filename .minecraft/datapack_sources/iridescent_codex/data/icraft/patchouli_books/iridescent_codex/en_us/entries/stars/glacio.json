@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Glacio: The Final Frontier$()$(br)Mobs: $(bold){{dim ad_astra:glacio difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:glacio death}}$()$(br2)A world in the Proxima Centauri system: alien biomes, extreme cold and the most dangerous creatures you will face. Glacio is harder than the End and harder than Oblivion's Rift. The pack ends here."
+      "text": "$(bold)Glacio: The Final Frontier$()$(br)Mobs: $(bold){{dim ad_astra:glacio difficulty}}$() the vanilla strength, like every Tier 4 world$(br)Death penalty: $(bold){{dim ad_astra:glacio death}}$()$(br2)A world in the Proxima Centauri system: alien biomes, extreme cold and the most dangerous creatures you will face. Glacio is harder than the End. The pack ends here."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Why Come Here?$()$(br)Glacio has materials found nowhere else that the $(bold)MekaSuit Mk2$() needs. Together with Aethersteel and Primordial Essence from Oblivion's Rift, they complete the strongest armor set in the game.$(br2)$(bold)Alien Ruins$()$(br)Crashed ships and technology caches hold loot found nowhere else, and Glacio gear may carry affixes specific to this dimension."
+      "text": "$(bold)Why Come Here?$()$(br)Glacio has materials found nowhere else that the $(bold)MekaSuit Mk2$() needs. Together with Aethersteel and Primordial Essence (a chance drop of late bosses), they complete the strongest armor set in the game.$(br2)$(bold)Alien Ruins$()$(br)Crashed ships and technology caches hold loot found nowhere else, and Glacio gear may carry affixes specific to this dimension."
     },
     {
       "type": "patchouli:text",

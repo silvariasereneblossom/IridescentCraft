@@ -40,12 +40,24 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
     })
 
     // =========================================================================
+    // CLOSED UNTIL OBLIVION'S RIFT EXISTS (2026-10-19, design-gaps chip, on
+    // recommendation, for review): the Rift Keystone (section 2), the Void Coffer
+    // (3), the Mythic Reforge Token (5) and the four Mythic Unique recipes (7).
+    // Nothing in the game uses the first three, and every Unique needs a Rift
+    // Blueprint, which only the Rift's floors were to drop. The items stay
+    // registered, so a player who holds one keeps it. Set this to true when the
+    // Rift is built. The Mythic Forge and the five catalysts stay (the
+    // Engineering capstone quest asks for a Mythic Catalyst V).
+    // =========================================================================
+    var RIFT_BUILT = false
+
+    // =========================================================================
     // SECTION 2: RIFT KEYSTONE RECIPE
     // Entry item for Oblivion's Rift — consumed on entry
     // Dragon Heart + Void Essence + Gaia Ingot + Nether Star
     // =========================================================================
 
-    icraft.section('endgame/mythic_forge/section-2-rift-keystone-recipe', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/section-2-rift-keystone-recipe', function () {
     event.shaped('kubejs:rift_keystone', [
         ' V ',
         'DGN',
@@ -64,7 +76,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
     // Banking item for Rift runs
     // =========================================================================
 
-    icraft.section('endgame/mythic_forge/section-3-void-coffer-recipe', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/section-3-void-coffer-recipe', function () {
     event.shaped('kubejs:void_coffer', [
         'OEO',
         'VCV',
@@ -179,7 +191,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
     // (Levels cost handled via command/advancement, not recipe)
     // =========================================================================
 
-    icraft.section('endgame/mythic_forge/section-5-mythic-reforge-token', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/section-5-mythic-reforge-token', function () {
     event.shapeless('kubejs:mythic_reforge_token', [
         'kubejs:mythic_forge',
         'kubejs:primordial_essence',
@@ -214,7 +226,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
 
     // --- Voidheart Blade: On-kill damage stacking sword ---
     // Base: Simply Swords awakened_lichblade (thematic fit)
-    icraft.section('endgame/mythic_forge/voidheart-blade-on-kill-damage-stacking', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/voidheart-blade-on-kill-damage-stacking', function () {
     event.shaped(
         Item.of('simplyswords:awakened_lichblade')
             .withName('§5Voidheart Blade')
@@ -233,7 +245,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
 
     // --- Oblivion Aegis: Death-delay chestplate ---
     // Base: netherite chestplate with high protection
-    icraft.section('endgame/mythic_forge/oblivion-aegis-death-delay-chestplate', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/oblivion-aegis-death-delay-chestplate', function () {
     event.shaped(
         Item.of('minecraft:netherite_chestplate')
             .withName('§5Oblivion Aegis')
@@ -254,7 +266,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
 
     // --- Riftwalker Boots: Teleport + speed boots ---
     // Base: netherite boots
-    icraft.section('endgame/mythic_forge/riftwalker-boots-teleport-speed-boots', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/riftwalker-boots-teleport-speed-boots', function () {
     event.shaped(
         Item.of('minecraft:netherite_boots')
             .withName('§5Riftwalker Boots')
@@ -275,7 +287,7 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
 
     // --- Oblivion Crown: Wallhack vision + first-strike helmet ---
     // Base: netherite helmet
-    icraft.section('endgame/mythic_forge/oblivion-crown-wallhack-vision-first-strike', function () {
+    if (RIFT_BUILT) icraft.section('endgame/mythic_forge/oblivion-crown-wallhack-vision-first-strike', function () {
     event.shaped(
         Item.of('minecraft:netherite_helmet')
             .withName('§5Oblivion Crown')
@@ -291,13 +303,8 @@ ServerEvents.recipes(icraft.guard('endgame/mythic_forge', 'ServerEvents.recipes'
         M: 'kubejs:mythic_forge',
         R: 'kubejs:rift_core'
     }).id('icraft:mythic_oblivion_crown')
-
-    console.log('[IridescentCraft] Mythic Forge recipes loaded')
-    console.log('  - Mythic Forge crafting recipe')
-    console.log('  - Rift Keystone entry item recipe')
-    console.log('  - Void Coffer banking item recipe')
-    console.log('  - Mythic Catalysts I-V')
-    console.log('  - Mythic Reforge Token')
-    console.log('  - 4 Mythic Unique item recipes (Blueprint)')
     })
+
+    console.log('[IridescentCraft] Mythic Forge recipes loaded: the Forge and Mythic Catalysts I-V' +
+        (RIFT_BUILT ? ', the Rift Keystone, Void Coffer, Reforge Token and 4 Mythic Uniques' : ' (the Rift recipes are closed until the Rift exists)'))
 }))

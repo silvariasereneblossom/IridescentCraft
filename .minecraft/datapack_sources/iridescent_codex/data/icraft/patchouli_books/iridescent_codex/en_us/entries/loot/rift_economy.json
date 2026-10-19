@@ -7,15 +7,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Rift Shards are the endgame currency. The Ender Dragon, the Wither, the Warden and other late bosses drop them. Farm them to fund the $(bold)Mythic Gear Chase$(), the character improvement loop that comes after Tier 4.$(br2)$(bold)Rift Keystone$(): 5 Rift Shards plus a boss material. It is meant to open Oblivion's Rift, a dungeon that is designed but not in the game yet."
+      "text": "Rift Shards and Void Fragments drop from late bosses: the Ender Dragon, the Wither, the Warden, the Gaia Guardian, the Aether's dungeon bosses and most of Cataclysm's.$(br2)They go into the $(bold)Mythic Forge$() and its five $(bold)Mythic Catalysts$(). The Engineering capstone quest asks for a Catalyst V, which also takes Antimatter and a Rift Core (5% from the Ancient Remnant)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mythic Infusion$()$(br2)Mythic infusion raises a Legendary item to Mythic tier (Mythic I to V). Each Mythic level:$(br)$(li)raises every existing affix value by ~15%$(li)adds one more socket$(li)unlocks a visual effect on the item"
+      "text": "$(bold)Not in the game yet$()$(br2)$(bold)Oblivion's Rift$(), the dungeon these materials were made for, is designed but not built. Until it is, nothing crafts the Rift Keystone, the Void Coffer, the Mythic Reforge Token or the four Mythic Uniques, and a catalyst cannot be put on gear: Mythic infusion comes with the Rift."
     },
     {
       "type": "patchouli:text",
-      "text": "Mythic V is the ceiling. Reaching it takes long boss farming: it is the long-term endgame loop, by design.$(br2)$(bold)Next: farm Rift Shards from late bosses.$()"
+      "text": "Shards keep. The Rift's recipes are written and stay closed until the Rift is built.$(br2)$(bold)Next: farm Rift Shards from late bosses.$()"
     }
   ]
 }

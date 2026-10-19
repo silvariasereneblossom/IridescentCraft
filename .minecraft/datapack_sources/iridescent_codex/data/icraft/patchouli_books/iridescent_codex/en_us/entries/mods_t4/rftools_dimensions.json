@@ -6,15 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Craft a Rift Keystone and open your first Rift. RFTools Dimensions powers Oblivion's Rift, the pack's procedural endgame loop."
+      "text": "RFTools Dimensions builds dimensions to your own design out of Dimlets. The pack's design puts Oblivion's Rift, a procedural endgame dungeon, on top of it. The Rift is not in the game yet."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Oblivion's Rift uses RFTools Dimensions to generate procedural dungeon dimensions, and every Rift run is a dimension of its own.$(br2)$(bold)Rift Keystone:$() You need one to open a Rift portal. It is crafted from Rift Shards (the endgame currency) and boss materials."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Dimension safety:$() A Rift dimension is single-use and collapses when the run timer expires. If you have not left by then, you are ejected. Bring a warp scroll."
+      "text": "$(bold)Role in the pack:$() every Rift run was to be a dimension of its own, opened with a $(bold)Rift Keystone$(). Neither is built, and the keystone has no recipe until the Rift exists. What you can build today is RFTools Dimensions itself."
     },
     {
       "type": "patchouli:text",

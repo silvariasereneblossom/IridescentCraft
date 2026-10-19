@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "abb588f8",
+    "generated_from":  "78525dcd",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4536,8 +4536,8 @@
                                                                                      "size":  1309
                                                                                  },
                   "config/puffish_skills/categories/marksman/definitions.json":  {
-                                                                                     "sha256":  "232cf5c9427c63d23f16100c855ab552f49459011d569d74d6ad0321255764eb",
-                                                                                     "size":  12237
+                                                                                     "sha256":  "36f29111b1398d67a3cbba47dc1546e24649d7cb94be46058e9982b6f61fa376",
+                                                                                     "size":  12181
                                                                                  },
                   "config/puffish_skills/categories/marksman/experience.json":  {
                                                                                     "sha256":  "1318df00950545be85efca2bb5768af2be0bc6cfd8ba3e29e542c5860928884e",
@@ -5860,8 +5860,8 @@
                                                             "size":  51
                                                         },
                   "kubejs/assets/icraft/lang/en_us.json":  {
-                                                               "sha256":  "3c35c38b89458867a2fc8d9d27bdf9abb5798db56ac7fef3ade6597cfc8c884e",
-                                                               "size":  11868
+                                                               "sha256":  "3ee0054857a1664759eedd4d6dd122a2da4d995d983a4ddcd849d74d419c5220",
+                                                               "size":  12057
                                                            },
                   "kubejs/assets/iridescent_modular_spells/lang/en_us.json":  {
                                                                                   "sha256":  "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
@@ -7336,8 +7336,8 @@
                                                                       "size":  19759
                                                                   },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
-                                                                                "sha256":  "ed06c655e6341632c548921ccf984cffe910ac1aafb2f7e07503254b4875fdac",
-                                                                                "size":  23816
+                                                                                "sha256":  "4e79abcf3aafe8af7c7025f21af80f845c521d60fd017c6aada5d4009a788a79",
+                                                                                "size":  24236
                                                                             },
                   "kubejs/server_scripts/end/dragon_exploration_gate.js":  {
                                                                                "sha256":  "7cf6b0c427800dc50f60ffe7191bb9e9975350ab6ee99d515061b023a43484f3",
@@ -7348,8 +7348,8 @@
                                                                      "size":  20085
                                                                  },
                   "kubejs/server_scripts/endgame/mythic_forge.js":  {
-                                                                        "sha256":  "d4000248c8247600bfea116e5d6b58846a364eb72207a9c21b2032e8052b56f1",
-                                                                        "size":  12461
+                                                                        "sha256":  "da9b230a41a3387775a9bd4046875bd4696adbf842c2ffde2f949b53fd3e596d",
+                                                                        "size":  13252
                                                                     },
                   "kubejs/server_scripts/endgame/rift_mechanics.js":  {
                                                                           "sha256":  "31283c697ee78847d04a06da7e6b2897b870ae3c816231d8ba438bfb4fd8bf30",
@@ -7760,8 +7760,8 @@
                                                                             "size":  11155
                                                                         },
                   "kubejs/server_scripts/scaling/dimension_mechanics.js":  {
-                                                                               "sha256":  "2ea42b492d484d816d30a5d72c5b1ad628084156fc688d1ee60bf74d6def9155",
-                                                                               "size":  27371
+                                                                               "sha256":  "91025ff39596452afe88a9081b29bacb2c8dc85d74f23e2e906b5dd1f2ae6878",
+                                                                               "size":  27710
                                                                            },
                   "kubejs/server_scripts/scaling/mob_equipment.js":  {
                                                                          "sha256":  "a67d7f49a6e996cbf489ed38df29e4e264ee2f2ca3c0eb466d37ae7d543df4f5",
@@ -7856,8 +7856,8 @@
                                                                         "size":  6156
                                                                     },
                   "kubejs/startup_scripts/custom_items.js":  {
-                                                                 "sha256":  "bc4beb95e1b1fd3c05028e88fa0e922744ad1ab6fd635e5f8c5ca9c5ce275ab3",
-                                                                 "size":  17298
+                                                                 "sha256":  "9f4bae2facd2d7198f440b041261ebb45f3fca8ecd5ed8c9a221f9c425c79e28",
+                                                                 "size":  17368
                                                              },
                   "kubejs/startup_scripts/deathskin_undead_bonus.js":  {
                                                                            "sha256":  "e087a961eff611facd4e0b6e9abeb400c1d820ddefb3db105e60ceccd4c5abc1",
@@ -7872,8 +7872,8 @@
                                                                            "size":  16893
                                                                        },
                   "kubejs/startup_scripts/endgame_items.js":  {
-                                                                  "sha256":  "cc5c001d6a56acd233287d570acd87c4e48b18124c6a8411ad378d05885ed55d",
-                                                                  "size":  13233
+                                                                  "sha256":  "491349a743a64bb391e65ec6a03ffcecd1629c45002fc0b882a5d9f4756a604d",
+                                                                  "size":  13312
                                                               },
                   "kubejs/startup_scripts/example.js":  {
                                                             "sha256":  "395c96d3ddd178821db851f387e91560e606ea752177f66d2016f12bd0542b8f",
@@ -8636,7 +8636,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "16312261b1dbeb65e06cf4b448fa8b2be2e88329bb12261f09dc430c9aa88271",
+                                                               "sha256":  "73ab959e4b0cc4cbc3c71272dcb1380cf31a999d10e2a5abdef8188c432c5026",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
