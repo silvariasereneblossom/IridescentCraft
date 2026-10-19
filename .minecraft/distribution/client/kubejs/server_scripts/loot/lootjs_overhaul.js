@@ -3484,10 +3484,26 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // Shattered (tier 3 in the boss registry since 2026-10-12/13; this list dates
   // from 2026-04-11, when they counted as tier 4) keep their two pouches and lose
   // the Awakening rolls.
+  //
+  // [2026-10-19, the leftovers chip, on recommendation, for review] The Ancient
+  // Remnant is tier 4 since 2026-10-18 (its loot was tier-4 grade): it joins the
+  // list, two pouches and the Awakening rolls a kill like the other three. Measured
+  // before: 0 pouches and 0 Awakenings in 200 kill rolls. The other tier-4 bosses
+  // are not on this list (decision list, the leftovers entries).
+  //
+  // The Ender Dragon's adds here and in every other loot script used to land TWICE
+  // a kill: Forbidden & Arcanus's dragon modifier (valhelsia_core:append_loot)
+  // rolls its add-on table through LootTable.getRandomItems, which runs every
+  // loot modifier, this pack's LootJS rules included, again with the dragon's
+  // table id. kubejs/data/forbidden_arcanus/loot_modifiers/ender_dragon_additions.json
+  // gives that modifier Iron's Spells' append_loot type, which rolls the same table
+  // raw: F&A's dragon items stay, the second pass goes (2026-10-19, measured 200
+  // kill rolls before / after).
   var t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
-    'aether:entities/slider'              // [2026-10-16] from the T2 list: the Slider is tier 4
+    'aether:entities/slider',             // [2026-10-16] from the T2 list: the Slider is tier 4
+    'cataclysm:entities/ancient_remnant'  // [2026-10-19] tier 4 since 2026-10-18
     // ('alexscaves:entities/watcher' removed 2026-10-10 — Alex's Caves is not installed)
   ]
   var t3TwoPouchBossTables = [

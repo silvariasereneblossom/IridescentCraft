@@ -23,7 +23,8 @@
     "ars_nouveau:wilden_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS): x3 and a boss-rush slot, `boss` since the ruling of 2026-10-12, no kill tokens (ruled: on no kill roster)",
     "theabyss:nightblade_boss": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
     "theabyss:the_roka": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
-    "theabyss:elder": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not"
+    "theabyss:elder": "a true boss the named roster omits (the old BOSS_3X_EXTRAS); open: named or not",
+    "cataclysm:the_baby_leviathan": "decision list (the leftovers chip, 2026-10-19, on recommendation, for review): a pet hatched from the Leviathan's Abyssal Egg, off the boss rush and both kill rosters; `boss`, `x3` and `perKill` kept so a hatched pet's health does not change"
   },
 
   "boss-not-on-kill-roster": {
@@ -39,7 +40,8 @@
     "irons_spellbooks:magehunter_vindicator": "ruled 2026-10-12: `boss`, stays `unlisted`: no tokens, not on a boss-rush roster (tier 3 stays 43). Since ruling 24 (2026-10-14) it reaches play: the game hands it out as a minecraft:vindicator and `seenAs` recognises it (see its note)",
     "cardinal_sins:sinofenvyphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92",
     "cardinal_sins:sinofpridephase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92",
-    "cardinal_sins:sinofwrathphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92"
+    "cardinal_sins:sinofwrathphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92",
+    "cataclysm:the_baby_leviathan": "see x3-not-named"
   },
 
   "named-not-in-rush": {},

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e55cd8c4",
+    "generated_from":  "124ff9a0",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49254
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "b4572028855c690e0ab8f286002d017bf95c4227ff4896d2bf424ea0a3c303f7",
-                                                                    "size":  31108
+                                                                    "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
+                                                                    "size":  31543
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "4d4be9dca6fd81fb51c3df0e2156f4a25374262aca4a067f495f95f3d7f26690",
@@ -6415,6 +6415,10 @@
                                                                                                                         "sha256":  "2ed3da619c454964b6258c3b6132b245ec12d43536996d4aa68d7a9e90073c51",
                                                                                                                         "size":  271
                                                                                                                     },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/ender_dragon_additions.json":  {
+                                                                                                   "sha256":  "7666596585e5bb37e697a1683ae3839384e0c430cd465fe0677fe25238f4e83a",
+                                                                                                   "size":  251
+                                                                                               },
                   "kubejs/data/forge/loot_modifiers/global_loot_modifiers.json":  {
                                                                                       "sha256":  "26bfe32a9cfd700841860980530ca1b01d3f02966be36d273398cb49d5f64df0",
                                                                                       "size":  40
@@ -7508,8 +7512,8 @@
                                                                       "size":  44082
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "a3c3ea219029297c4278ec22beb23eca4559bf43b68ef739f1e0af9669076657",
-                                                                        "size":  196868
+                                                                        "sha256":  "277edc2d6df7e9ef995baa5c4e397a162d41cf44ad7d0ea39f358785792b8f89",
+                                                                        "size":  197967
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "f2cdb23a2f9c458b11c6339c28b2f7f93c5b052ce3a3656e166dd60b7451f427",
@@ -8636,7 +8640,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "a42b357916786bde401a17c94ada2b98e744f9eefc870a622e942ab43f57aaa3",
+                                                               "sha256":  "9ed6b0f4f42c6397b7a552995cb914b6cac7c576e7f12cedb4ace4213f98b9c1",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
