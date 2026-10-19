@@ -6,6 +6,14 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: In-game texts say what the game does (18 October)
+
+- **Origins texts.** The Revenant takes 20 % less damage in deep darkness (Resistance I), not 30 %. The Artificer's Resourceful is Speed I (+20 %) near a crafting table; the ore bonus and faster machines it promised were never built. The Ranger's +20 % ranged damage, the Berserker's Battle Trance (+5 % melee, +1 armor) and the Vanguard's Guardian's Presence (Weakness I on nearby mobs) read as they work, and the Paladin's text names its +25 % healing instead of a shield bonus it never had. The trinity mages' pools are +100 % Iron's mana; the Elemental's HP ties the Archmage's.
+- **Enchantments and aptitudes.** Primal Force tops out at +12 % a level (saturation stops at 20); Crowd Control counts the hostiles beyond the first. Arcane Efficiency and Materials Science give back a quarter of the levels while the menu is open; Brutal Slash adds up to +5 % against armored mobs.
+- **Tetra armor and wands.** The Runed schematics describe the Runed weave (they had the Vestment's text). Goggles add mana and spell power, the decorative trim adds armor, the wand cap has nothing for cast speed, and the wand's tier comes from honing. Some 25 small parts no longer promise effects they never had.
+- **The End.** The Dragon Summoning Crystal is used by holding it and sneaking at the fountain, and the texts now say so. The "End City" milestone is reached 1000 blocks out. A full-moon warning that never appeared is gone.
+- **The Codex submit message** names the lane you submitted to.
+
 ## October 2026: Unique weapons (18 October)
 
 - **Every Simply Swords unique drops from a boss.** Five tier-4 swords that no boss dropped, and that could not be crafted or found, now drop at 15 % a kill: Magiscythe and Magispear from Virtue, Wickpiercer from Lucifer, Harbinger from the Ender Golem, the Watching Warglaive from the Void Worm.

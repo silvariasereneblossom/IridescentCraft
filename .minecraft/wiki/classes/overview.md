@@ -63,7 +63,7 @@ Each also has a generic `spell_power 1.40`, per-mage identity stats (Elemental: 
 | Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -30% melee damage (Pacifist's Burden), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |
 | Ranger | +15% speed, +10% atkspd, +20% projectile damage, -15% armor | - |
 | Archmage | +50% magic damage (Arcane Supremacy), -50% melee (Frail Melee), +5% spell power per passive tier above 1, T1:0%→T4:+15%* (Mana Attunement), mana pool 2.5x (Mana Reservoir +150%), -28.6% armor / -20% toughness (Frail Frame) | `class_passives.js` |
-| Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | - |
+| Artificer | +15% mining, +10% atkspd, Speed I near crafting tables | - |
 | Void Summoner | +15% damage by tamed animals and Iron's Spells summons (Dark Pact), +10% melee damage in darkness, light level 9 or lower, no penalty in light (Shadow Cloak), Soul Tether (each mob that dies within 16 blocks heals you 5% of its max health, up to 1 heart, and gives +1 XP) | `class_passives.js` |
 
 \* Passive tier is the highest tier of dimension the player has entered, and it never goes down: Tier 2 for the Twilight Forest, Everbright and Everdawn; Tier 3 for the Nether, the Undergarden, the Otherside, the Abyss and its Frost World; Tier 4 for the End, the Aether, the five Ad Astra planets and their six orbits, and the Reality Marble. The Overworld and the two pocket dimensions do not raise it. It is separate from the Codex tier you buy with tokens (as of 2026-10-17).
