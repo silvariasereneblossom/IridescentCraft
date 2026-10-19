@@ -439,12 +439,17 @@ signature, the checker's findings. What differed:
   Overworld biomes and three the other way round: both boots of one commit had the first order; a boot of the next
   commit (scripts and quests only) and two boots of trees with a change that touches neither feature had the second.
   Every other list of the 26 dimensions was the same in all five. Tectonic adds the two with two Lithostitched
-  `add_features` modifiers. **Why their order moves was not found.** Ruled out from the bytecode: the game lists a
-  registry's entries in the order they were registered and lists data files sorted by id, and Lithostitched walks its
-  modifiers in that order. Within one boot the order is the same in every biome, so this closes no loop; it does
-  mean new chunks are decorated with those two features in another order after such a boot. The diff reports it as
-  ONE line (`110 list(s) of step vegetal_decoration, the same features only: ... changed places`): with nothing else
-  changed in those lists, it is not a change of the tree under test.
+  `add_features` modifiers (`tectonic:river_lichen`, `tectonic:river_lanterns`). **Why their order moves** (found
+  2026-10-18 in the bytecode of Lithostitched 1.4.11 and the 1.20.1 server): `ServerLifecycleHooksMixin` hands its
+  modifiers to Forge by walking `registry.entrySet()` into `Collectors.toSet()`, a `HashSet` of the entries, and
+  Forge applies them in that set's order. An entry's hash includes its `ResourceKey`'s, and `ResourceKey` does not
+  override `hashCode` (an identity hash, new in every JVM), so the two modifiers come out in either order from one
+  boot to the next. (The 2026-10-13 text said Lithostitched walks the registry in registration order; it does not.)
+  Within one boot the order is the same in every biome, so this closes no loop; it does mean new chunks are
+  decorated with those two features in another order after such a boot. The diff reports it as ONE line (`110
+  list(s) of step vegetal_decoration, the same features only: ... changed places`): with nothing else changed in
+  those lists, it is not a change of the tree under test. Any other pair of Lithostitched modifiers that adds to the
+  same step of the same biomes would move the same way.
 
 A new WARN signature of `latest.log` is reported and never counted as a regression.
 

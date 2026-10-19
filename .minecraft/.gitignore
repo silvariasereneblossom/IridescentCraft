@@ -80,8 +80,8 @@ kubejs/server_scripts/example.js
 kubejs/server_scripts/gates/dimension_gates.js.disabled
 kubejs/server_scripts/gates/item_gates.js.disabled
 kubejs/server_scripts/loot/DEPRECATED_loot_overhaul.txt
-kubejs/server_scripts/scaling/boss_hp.js
-kubejs/server_scripts/scaling/boss_progressive.js
+# (scaling/boss_hp.js and scaling/boss_progressive.js stood here until 2026-10-18:
+# both are live, tracked scripts, and per-kill scaling has run since 2026-10-15.)
 
 # Journeymap cache
 journeymap/data/
