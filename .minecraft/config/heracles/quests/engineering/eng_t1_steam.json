@@ -8,10 +8,10 @@
       "on a heated §bBoiler§r (a Blaze Burner under a water tank) is the dense",
       "power source that runs a serious factory.",
       "",
-      "Build a Steam Engine to complete this beat. Scale the boiler's heat and",
+      "Build a Steam Engine to complete this quest. Scale the boiler's heat and",
       "water to push far more stress than any wheel.",
       "",
-      "§7Steam Engines bank §e25§7 Engineering tokens each - tied for the richest",
+      "§7Steam Engines bank §e25§7 Engineering tokens each, tied for the richest",
       "§7Tier 1 machine submission."
     ],
     "groups": { "Engineering": { "position": [640, 0] } }

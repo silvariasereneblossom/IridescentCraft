@@ -9,10 +9,10 @@
       "into a §bPressurized Reaction Chamber§r to brew ethylene, then burn it in a",
       "§bGas-Burning Generator§r.",
       "",
-      "Build a §bPressurized Reaction Chamber§r to complete this beat. Automated",
-      "farming is effectively required to keep the loop fed - that is by design.",
+      "Build a §bPressurized Reaction Chamber§r to complete this quest. Automated",
+      "farming is effectively required to keep the loop fed, by design.",
       "",
-      "§7Gas-Burning Generator §e100§7 tokens - the single richest T3 submission."
+      "§7Gas-Burning Generator §e100§7 tokens, the single richest T3 submission."
     ],
     "groups": { "Engineering": { "position": [320, 480] } }
   },

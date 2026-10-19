@@ -6,7 +6,7 @@
     "description": [
       "Apotheosis overhauls enchanting and adds the affix + gem-socket system.",
       "The §dSigil of Socketing§r is the craftable tool that opens a gem socket on a",
-      "piece of gear — then drop a cut gem into that socket for a permanent bonus.",
+      "piece of gear. Drop a cut gem into that socket for a permanent bonus.",
       "",
       "§7Affixed and socketed gear is how you push past the tiers' rising danger."
     ],

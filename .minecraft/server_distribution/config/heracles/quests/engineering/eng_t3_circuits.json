@@ -4,14 +4,14 @@
     "title": "T3: Control Circuits",
     "subtitle": "Basic to Ultimate",
     "description": [
-      "§bControl Circuits§r are Mekanism's tiered brains - §bBasic§r (osmium +",
+      "§bControl Circuits§r are Mekanism's tiered brains: §bBasic§r (osmium +",
       "redstone), then §bAdvanced§r, §bElite§r, and §bUltimate§r, each built on the",
       "alloy below it. Higher machines, factories, and upgrades all demand them.",
       "",
-      "Craft a stock of §bBasic Control Circuits§r to complete this beat, then",
+      "Craft a stock of §bBasic Control Circuits§r to complete this quest, then",
       "climb the ladder as your alloys allow.",
       "",
-      "§7Circuits gate every advanced Mekanism craft - make them in bulk."
+      "§7Circuits gate every advanced Mekanism craft, so make them in bulk."
     ],
     "groups": { "Engineering": { "position": [960, 480] } }
   },

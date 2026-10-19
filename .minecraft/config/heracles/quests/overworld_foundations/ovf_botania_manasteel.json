@@ -4,11 +4,11 @@
     "title": "Botania: The Manasteel Age",
     "subtitle": "Smelt mana into metal",
     "description": [
-      "Drop iron into a charged §aMana Pool§r and it transmutes into §bManasteel§r —",
-      "Botania's first magical metal, the stock for tools, armour, and the apparatus",
-      "that follows. Build a working stock of it.",
+      "Drop iron into a charged §aMana Pool§r and it transmutes into §bManasteel§r,",
+      "Botania's first magical metal and the stock for tools, armour, and the",
+      "apparatus that follows. Build a working stock of it.",
       "",
-      "§7Manasteel is the Magic lane's iron: the foundation everything else is built on."
+      "§7Manasteel is the Magic lane's iron: most of what follows is built from it."
     ],
     "groups": { "Overworld Foundations": { "position": [640, 80] } }
   },

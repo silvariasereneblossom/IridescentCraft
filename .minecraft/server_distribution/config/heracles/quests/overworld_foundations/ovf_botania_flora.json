@@ -4,11 +4,11 @@
     "title": "Botania: First Generating Flora",
     "subtitle": "Grow an Endoflame",
     "description": [
-      "Mana doesn't appear on its own — a §agenerating flower§r makes it. The",
+      "Mana doesn't appear on its own; a §agenerating flower§r makes it. The",
       "§6Endoflame§r is the classic first choice: set it beside burnable fuel and it",
       "pours mana into a nearby Spreader and Pool.",
       "",
-      "§7Generating flora are the renewable heart of every Botania mana economy."
+      "§7Generating flora are the renewable source of all Botania mana."
     ],
     "groups": { "Overworld Foundations": { "position": [320, 80] } }
   },

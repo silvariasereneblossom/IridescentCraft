@@ -4,15 +4,15 @@
     "title": "T4: Make Antimatter",
     "subtitle": "Build the SPS, produce your first pellet",
     "description": [
-      "The §bSupercharged Particle Accelerator (SPS)§r is the apex of the",
+      "The §bSupercritical Phase Shifter (SPS)§r is the apex of the",
       "Engineering lane: feed it polonium pellets and the colossal RF your fusion",
-      "reactor makes, and it produces §bAntimatter Pellets§r - the rarest",
+      "reactor makes, and it produces §bAntimatter Pellets§r, the rarest",
       "engineering output in the pack.",
       "",
-      "Build the SPS multiblock (§bSPS Casing§r, §bSPS Port§r, §bSupercharged",
-      "Coil§r) and run it until you hold your first §bAntimatter Pellet§r.",
+      "Build the SPS multiblock (§bSPS Casing§r, §bSPS Port§r,",
+      "§bSupercharged Coil§r) and run it until you hold your first §bAntimatter Pellet§r.",
       "",
-      "§7The SPS is the largest sustained energy draw you can build - it is the",
+      "§7The SPS is the largest sustained energy draw you can build: the",
       "RF-hyperscaling sink the whole tech tree was climbing toward."
     ],
     "groups": { "Engineering": { "position": [320, 640] } }

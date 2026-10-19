@@ -8,11 +8,11 @@
       "progression tokens, each capped per material.",
       "",
       "Click §eSubmit§r below to bank every eligible Engineering material you are",
-      "carrying — Create / Thermal / Mekanism metals, alloys, and machine blocks,",
+      "carrying: Create, Thermal, and Mekanism metals, alloys, and machine blocks,",
       "plus bulk iron, copper, gold, and redstone.",
       "",
       "§7Items are consumed only when banked (never before), and only up to each",
-      "§7material's cap — nothing is ever lost. Repeat any time.",
+      "§7material's cap, so nothing is ever lost. Repeat any time.",
       "",
       "§7Bulk metals mint your current tier's token. See /icraft codex balance."
     ],

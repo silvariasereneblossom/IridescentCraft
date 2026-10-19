@@ -4,11 +4,11 @@
     "title": "Create: The Mechanical Mixer",
     "subtitle": "Automate alloying",
     "description": [
-      "The §bMechanical Mixer§r takes the brass age further — it combines ingredients",
-      "over a Basin to brew alloys and compounds at speed, the heart of any serious",
-      "Create line. Pair it with a Blaze Burner for heated mixing.",
+      "The §bMechanical Mixer§r takes the brass age further: it combines ingredients",
+      "over a Basin to make alloys and compounds at speed, and it sits at the heart",
+      "of any serious Create line. Pair it with a Blaze Burner for heated mixing.",
       "",
-      "§7Mixers, presses, and basins are the engine room of the Engineering lane."
+      "§7Mixers, presses, and basins do most of the Engineering lane's work."
     ],
     "groups": { "Overworld Foundations": { "position": [480, 0] } }
   },

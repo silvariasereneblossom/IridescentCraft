@@ -7,10 +7,11 @@
       "Machines past Tier 1 run on §bRedstone Flux§r. Build a generator and a",
       "buffer so your smelting line never starves.",
       "",
-      "Build a §bStirling§r or §bMagmatic Dynamo§r for power, and a §bRedstone",
-      "Flux Cell§r to bank it. Having a dynamo in hand completes this beat.",
+      "Build a §bStirling§r or §bMagmatic Dynamo§r for power, and a",
+      "§bRedstone Flux Cell§r to bank it. Having a Stirling Dynamo in hand",
+      "completes this quest.",
       "",
-      "§7Power infrastructure is the backbone of every later tier - the Mekanism",
+      "§7Every later tier runs on power infrastructure: the Mekanism",
       "5x chain and the T4 reactors all draw from a grid you start building here."
     ],
     "groups": { "Engineering": { "position": [160, 320] } }

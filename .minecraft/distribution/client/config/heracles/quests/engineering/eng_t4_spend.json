@@ -5,11 +5,11 @@
     "title": "T4: Spend the Antimatter",
     "subtitle": "Turn the apex output into apex gear",
     "description": [
-      "You built the apex reactor - now spend what it makes. Antimatter is the",
+      "You built the apex reactor; now spend what it makes. Antimatter is the",
       "hard reagent behind the pack's top-tier crafts: the §bMythic Catalyst V§r",
       "(combat endgame) and the §bMekaSuit Mk2§r upgrade (tech-armor endgame).",
       "",
-      "Craft a §bMythic Catalyst V§r to complete this beat and close the loop:",
+      "Craft a §bMythic Catalyst V§r to complete this quest and close the loop:",
       "engineering's apex output feeding the pack's apex gear."
     ],
     "groups": { "Engineering": { "position": [480, 640] } }
@@ -30,7 +30,7 @@
     "capstone_broadcast": {
       "type": "heracles:command",
       "title": "Glory",
-      "command": "tellraw @a [{\"text\":\"[Iridescent] \",\"color\":\"light_purple\"},{\"selector\":\"@s\",\"color\":\"aqua\"},{\"text\":\" has mastered the Engineering lane - from ore doubling to antimatter.\",\"color\":\"gold\"}]"
+      "command": "tellraw @a [{\"text\":\"[Iridescent] \",\"color\":\"light_purple\"},{\"selector\":\"@s\",\"color\":\"aqua\"},{\"text\":\" has mastered the Engineering lane, from ore doubling to antimatter.\",\"color\":\"gold\"}]"
     },
     "xp_burst": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 25 }
   }

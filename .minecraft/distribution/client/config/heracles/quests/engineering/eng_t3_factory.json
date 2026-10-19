@@ -4,12 +4,12 @@
     "title": "T3: The Smelting Factory",
     "subtitle": "Parallel processing",
     "description": [
-      "A §bFactory§r runs several operations in parallel - a Basic §bSmelting",
-      "Factory§r smelts three stacks at once, and Advanced, Elite, and Ultimate",
-      "factories widen from there. The leap from single machines to real",
-      "throughput.",
+      "A §bFactory§r runs several operations in parallel: a Basic",
+      "§bSmelting Factory§r smelts three stacks at once, and Advanced, Elite, and",
+      "Ultimate factories widen from there. It is the leap from single machines",
+      "to real throughput.",
       "",
-      "Build a Basic Smelting Factory to complete this beat. Factories need Control",
+      "Build a Basic Smelting Factory to complete this quest. Factories need Control",
       "Circuits, so your circuit line has to be running.",
       "",
       "§7Basic Factories bank §e80§7 Engineering tokens each (cap 2)."

@@ -4,14 +4,14 @@
     "title": "T4: The Fusion Reactor",
     "subtitle": "The capstone power project",
     "description": [
-      "The §bFusion Reactor§r is the Tier 4 power capstone - enormous, sustained RF",
-      "that comfortably runs a late-game factory and, crucially, the §bSPS§r.",
+      "The §bFusion Reactor§r is the Tier 4 power capstone: enormous, sustained RF",
+      "that comfortably runs a late-game factory and, above all, the §bSPS§r.",
       "",
       "Build the reactor frame around a §bFusion Reactor Controller§r and ignite it",
-      "with a Hohlraum of D-T fuel. Holding the controller completes this beat.",
+      "with a Hohlraum of D-T fuel. Holding the controller completes this quest.",
       "",
       "§7This is the single biggest RF source in the pack. You build it because the",
-      "next beat - antimatter - needs the draw only fusion can sustain."
+      "next quest, antimatter, needs the draw only fusion can sustain."
     ],
     "groups": { "Engineering": { "position": [160, 640] } }
   },

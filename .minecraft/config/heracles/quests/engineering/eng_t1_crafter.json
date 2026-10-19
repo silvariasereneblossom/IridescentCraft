@@ -4,11 +4,11 @@
     "title": "T1: The Mechanical Crafter",
     "subtitle": "An automated crafting grid",
     "description": [
-      "The §bMechanical Crafter§r array assembles a crafting recipe automatically",
-      "- lay the grid, point the arrows inward, and feed components to mass-produce",
+      "The §bMechanical Crafter§r array assembles a crafting recipe automatically:",
+      "lay the grid, point the arrows inward, and feed components to mass-produce",
       "anything, including Create's own machines.",
       "",
-      "Build a Mechanical Crafter to complete this beat. They work in arrays, so",
+      "Build a Mechanical Crafter to complete this quest. They work in arrays, so",
       "craft a few; each one needs brass.",
       "",
       "§7Mechanical Crafters bank §e10§7 Engineering tokens each (cap 4)."

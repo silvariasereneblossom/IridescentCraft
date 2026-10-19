@@ -4,11 +4,11 @@
     "title": "Create: The Brass Age",
     "subtitle": "Produce Brass",
     "description": [
-      "Brass unlocks Create's advanced tier — Mechanical Arms, Deployers, the",
+      "Brass unlocks Create's advanced tier: Mechanical Arms, Deployers, the",
       "Mechanical Crafter array. Smelt zinc + copper in a heated mixer (the Blaze",
       "Burner is pre-fuelled to Tier 1 here) to pour your first brass.",
       "",
-      "§7Andesite Alloy and brass are bread-and-butter Engineering tokens."
+      "§7Andesite Alloy and brass are steady Engineering tokens."
     ],
     "groups": { "Overworld Foundations": { "position": [320, 0] } }
   },

@@ -4,14 +4,14 @@
     "title": "T2: Machine Augments",
     "subtitle": "Tune your machines",
     "description": [
-      "§bAugments§r slot into Thermal machines and dynamos to retune them - more",
+      "§bAugments§r slot into Thermal machines and dynamos to retune them: more",
       "speed, better efficiency, secondary-output boosts, wider tanks. The same",
       "Pulverizer can be specced a dozen ways.",
       "",
-      "Craft a §bFlux Linkage Amplifier§r (a speed augment) to complete this beat,",
+      "Craft a §bFlux Linkage Amplifier§r (a speed augment) to complete this quest,",
       "then drop it into a machine to feel the difference.",
       "",
-      "§7Augments are how Thermal scales - the late tier is all about the right mix."
+      "§7Augments are how Thermal scales; the late tier is all about the right mix."
     ],
     "groups": { "Engineering": { "position": [1920, 320] } }
   },

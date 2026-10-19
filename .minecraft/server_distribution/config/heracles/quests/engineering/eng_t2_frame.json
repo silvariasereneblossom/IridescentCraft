@@ -8,10 +8,10 @@
       "frame plus a function block becomes a Pulverizer, a Smelter, a Furnace, and",
       "the rest of the roster.",
       "",
-      "Craft a Machine Frame to complete this beat - even the §bInduction Smelter§r",
+      "Craft a Machine Frame to complete this quest. Even the §bInduction Smelter§r",
       "you just built is a frame at heart.",
       "",
-      "§7Frames are the gateway to the entire Thermal Tier 2 roster."
+      "§7Every machine in the Thermal Tier 2 roster starts from a frame."
     ],
     "groups": { "Engineering": { "position": [480, 320] } }
   },

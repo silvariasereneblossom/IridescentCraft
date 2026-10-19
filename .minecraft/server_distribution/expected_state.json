@@ -3060,188 +3060,188 @@
                                                                          "size":  2402
                                                                      },
                   "config/heracles/quests/engineering/eng_intro.json":  {
-                                                                            "sha256":  "8dcde72d18b9fcdda635c0a8dfe3d029ac04b6053b8543fd6f08f856e5eddcf4",
-                                                                            "size":  1370
+                                                                            "sha256":  "d3a396d865e5839447a8b7ea7a8e27928707f7eece6a745a2f491c9989cdd33a",
+                                                                            "size":  1391
                                                                         },
                   "config/heracles/quests/engineering/eng_submit.json":  {
-                                                                             "sha256":  "8419acd4e152f83c63e6cdd0480b77e51dfd756d8fdcae8dbc8c1a54202633a2",
-                                                                             "size":  1474
+                                                                             "sha256":  "934b781e5a1f15d260f4a9dd91a59dfe0c17da9209fc661ac856db08e1ce4102",
+                                                                             "size":  1473
                                                                          },
                   "config/heracles/quests/engineering/eng_t1_bank.json":  {
-                                                                              "sha256":  "52c5a310696a6b4ce781f904d24cbb79d49d7962ae1c353a0f11028e30106b68",
-                                                                              "size":  1514
+                                                                              "sha256":  "416587caedc1c6df0136d73408afecc8d2db5b606e84c048442b6ead08bb3fbc",
+                                                                              "size":  1513
                                                                           },
                   "config/heracles/quests/engineering/eng_t1_crafter.json":  {
-                                                                                 "sha256":  "ef9a7d5382872a1320caf0c19216b30dedcfb044fc8843617dc19cd5bd04fb81",
+                                                                                 "sha256":  "6e46ffce988dcd396d2d2184d73435eb28b14b82d58840323293c97bfc7ae4d4",
                                                                                  "size":  1254
                                                                              },
                   "config/heracles/quests/engineering/eng_t1_crushing.json":  {
-                                                                                  "sha256":  "0cef981c420431762687520b0219bd112b902d0ff78d87c5933044103641e694",
-                                                                                  "size":  1399
+                                                                                  "sha256":  "d403f800ed2d002882382fe3e91f44fbf7c4d34f93f6520115a80ca5d78b78a5",
+                                                                                  "size":  1388
                                                                               },
                   "config/heracles/quests/engineering/eng_t1_deployer.json":  {
-                                                                                  "sha256":  "15ddfdf2750756e152e882f089715e3c3ce38ed57abf70e252d69bedbdc1ef3c",
+                                                                                  "sha256":  "0b999db1292a93083f5f3109635ebc685c7fe21b1fba55a5a71de5c8ae3e88eb",
                                                                                   "size":  1185
                                                                               },
                   "config/heracles/quests/engineering/eng_t1_drill.json":  {
-                                                                               "sha256":  "b577105e19d376e2e34a342ef2fb8bf7cc7b63a67116208fb196901b457e917f",
+                                                                               "sha256":  "f4d4c7f5c39eeb323bb20f3509939c1ca9bac0b5c0901cd05af898aa5e0fea5f",
                                                                                "size":  1196
                                                                            },
                   "config/heracles/quests/engineering/eng_t1_millstone.json":  {
-                                                                                   "sha256":  "0b926c1899e2e5702667a6ec00511573de6a998a47cb2cc64a13459f71725554",
-                                                                                   "size":  1190
+                                                                                   "sha256":  "989dcdaa0aa24c4e21e772d8df2c4ad2963370cd7f2d7c2ddca246c494cd54f2",
+                                                                                   "size":  1191
                                                                                },
                   "config/heracles/quests/engineering/eng_t1_parts.json":  {
-                                                                               "sha256":  "ba8c619f226686563f78a475f955ee723c2ea3601250bbeccb3f6c547bdca689",
-                                                                               "size":  1267
+                                                                               "sha256":  "4770decd9261823ae01289f6803f218f56539b1576b57d1f5d7dc1e0cfd038d5",
+                                                                               "size":  1276
                                                                            },
                   "config/heracles/quests/engineering/eng_t1_saw.json":  {
-                                                                             "sha256":  "b4843fcc893982d0b8525b31705957dbaa744b366d9439d038d4ac5c01d5c087",
-                                                                             "size":  1155
+                                                                             "sha256":  "cbc325ffc87a96a3a398ad44a52086a76adefce89c019644ba5b26cf6154e141",
+                                                                             "size":  1162
                                                                          },
                   "config/heracles/quests/engineering/eng_t1_steam.json":  {
-                                                                               "sha256":  "6d8074a5570c9678c97a73647201f884007dbaa670a199c4a2252410f7254cc3",
+                                                                               "sha256":  "685f8c88ad9a29a7283cef3ca0968195701f6d7febdbea0e7067a5b38cb29819",
                                                                                "size":  1263
                                                                            },
                   "config/heracles/quests/engineering/eng_t1_waterwheel.json":  {
-                                                                                    "sha256":  "431a4d890d2e40f64823c60a7917e0e8a6cd865ac8242e681422c2e166d2f6db",
-                                                                                    "size":  1192
+                                                                                    "sha256":  "70f32d3c0e29d8c86a5e19254023347e3365d97d0f21ddeb7ddde755eb02195c",
+                                                                                    "size":  1193
                                                                                 },
                   "config/heracles/quests/engineering/eng_t1_windmill.json":  {
-                                                                                  "sha256":  "b5fd721a0ac2c1cf26f7f27f8daf60d0ae63646b0bfd146163f97fa2c400d4c8",
-                                                                                  "size":  1221
+                                                                                  "sha256":  "949dfdc5681d27c740f8e1751a5edf2a6e9f447273bd9dac25d594b0af82687b",
+                                                                                  "size":  1222
                                                                               },
                   "config/heracles/quests/engineering/eng_t2_augment.json":  {
-                                                                                 "sha256":  "085323b092e0ed42256ad7761d2d849a3163f1894f7cbf6641f36e8b4251d544",
-                                                                                 "size":  1252
+                                                                                 "sha256":  "a61ecfd3a5abe11fdacf2612cf3eca173de3bedac2b9f294571d1fc755d45c50",
+                                                                                 "size":  1251
                                                                              },
                   "config/heracles/quests/engineering/eng_t2_bank.json":  {
                                                                               "sha256":  "ac3d931eac6446fadf9ba2523b3a60ad6c9ce40c77d05b5628f751b4a410c73a",
                                                                               "size":  1282
                                                                           },
                   "config/heracles/quests/engineering/eng_t2_cell.json":  {
-                                                                              "sha256":  "735d7a13d1514d1604b30679751a9a0a79757588890528f6b5f235a9c7748c30",
+                                                                              "sha256":  "486b2d384cddea2bc4474c62b35dfbf000d4322d24ef86322ea44c52dcae87c2",
                                                                               "size":  1158
                                                                           },
                   "config/heracles/quests/engineering/eng_t2_crucible.json":  {
-                                                                                  "sha256":  "bd2ed64579d17a428faaff37edfebc73b532972e59c31aa904b2dfb46a14c44e",
+                                                                                  "sha256":  "a71ee33d4775896e1eb1ac189591c4e1ed74c520e104d79d249e5650b9b7be27",
                                                                                   "size":  1093
                                                                               },
                   "config/heracles/quests/engineering/eng_t2_frame.json":  {
-                                                                               "sha256":  "013520590d9dbf35c59b3014428ba8df4c1afd6bc18c37e4eb0d05e7378e8720",
-                                                                               "size":  1216
+                                                                               "sha256":  "a1acfb04e09bc926602ed5f19fc63a650030e50f5b43d630ae8e222e4841ee06",
+                                                                               "size":  1220
                                                                            },
                   "config/heracles/quests/engineering/eng_t2_furnace.json":  {
-                                                                                 "sha256":  "d754dd7bc9a1a72cd244f55997e924618597482371a2b5e30461439a6058c602",
+                                                                                 "sha256":  "64ddc48a0788ab3e6b08e2d9a0659ba80f9779c343f8065190c9f64fb89bf1df",
                                                                                  "size":  1112
                                                                              },
                   "config/heracles/quests/engineering/eng_t2_magmatic.json":  {
-                                                                                  "sha256":  "929b24ff36fbb141f1ae826d36605245afc29c73fa7d760bbb1a1d8e82bb47fb",
+                                                                                  "sha256":  "485bed1cfc1965772ea931c6a86728f1e7e9ba5d95b05f2de34de0a512f9f3f7",
                                                                                   "size":  1155
                                                                               },
                   "config/heracles/quests/engineering/eng_t2_power.json":  {
-                                                                               "sha256":  "a4255360dafe745305df7b010252e9eaaa104882b46281b8b0a84b0a52aa697f",
-                                                                               "size":  1271
+                                                                               "sha256":  "434c826c4ab64426179ebb7c5b4f7e46ec3f0ee818d41d2bb0a17f71ec0ce57c",
+                                                                               "size":  1278
                                                                            },
                   "config/heracles/quests/engineering/eng_t2_pulverizer.json":  {
-                                                                                    "sha256":  "499bb5e8bc24278135c34f267132381ba23b33fe93e2f806c74a8795646b76aa",
+                                                                                    "sha256":  "1672e993987e5015aa5066679f28b338fa0389ae57d410eb1d00de2e6be1e476",
                                                                                     "size":  1166
                                                                                 },
                   "config/heracles/quests/engineering/eng_t2_sawmill.json":  {
-                                                                                 "sha256":  "49328c2d8c4204f75fdeff7bf99565d0c950b053c8be6f65fe8ae01e4a6a6c4c",
+                                                                                 "sha256":  "0ce0eaef9177a85ae2cc162d68caebb890537c531e08bae6ed036f5f99a2f175",
                                                                                  "size":  1032
                                                                              },
                   "config/heracles/quests/engineering/eng_t2_separator.json":  {
-                                                                                   "sha256":  "660f025115e9c1c86199ec8ba98ab6ae53f32f776682ac1df00fc5b2f11f2868",
+                                                                                   "sha256":  "350ede7495e336b644fbd3c3cd220e664042254fba8c39dccffa932159176efb",
                                                                                    "size":  1150
                                                                                },
                   "config/heracles/quests/engineering/eng_t2_servo.json":  {
-                                                                               "sha256":  "cc6680185ac5a8516c0a9c0d4a5ba12998f835b10d89fc1a7270af69bfb716ca",
+                                                                               "sha256":  "fd89b111625d75a210a2866df039304c937883273aae5a71c3ecd3f2c3aa2814",
                                                                                "size":  1194
                                                                            },
                   "config/heracles/quests/engineering/eng_t2_smelter.json":  {
-                                                                                 "sha256":  "70b1c76fed15c0e397a03cfc90a1d8198acdd7741f5e1766e15cb6787755d14b",
-                                                                                 "size":  1413
+                                                                                 "sha256":  "f354b7d5124d32977bde17d8f707e81a5fdbe51014dc9751a8eae1c1f5375cd3",
+                                                                                 "size":  1417
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_alloys.json":  {
-                                                                                "sha256":  "1bf6f2be22102bd3a4838dae9ad76b659f25b3468487dc171b50a29ed070e5ee",
+                                                                                "sha256":  "745b3256c72949f808d0178ac0d784f0d5cc87e0ef4cb47b6336c9ee159b1ca4",
                                                                                 "size":  1266
                                                                             },
                   "config/heracles/quests/engineering/eng_t3_bank.json":  {
-                                                                              "sha256":  "41eba388a0a673d4de60235b8e91a6ec87452efa1b88b78cf1dbc0b56371aaf8",
-                                                                              "size":  1347
+                                                                              "sha256":  "e52f5623cdb180adb44c263a550695974f702fee7d50bf2396e34dd4e2292d69",
+                                                                              "size":  1346
                                                                           },
                   "config/heracles/quests/engineering/eng_t3_circuits.json":  {
-                                                                                  "sha256":  "f5f9537b4403c847cb6d96fc1c592369fb810f76e6b6ddea2a31a333cf8fca15",
-                                                                                  "size":  1279
+                                                                                  "sha256":  "4b0b54e87aeb23e0ed346b8616332b94259045b13923ddada7f1a587dde477c5",
+                                                                                  "size":  1281
                                                                               },
                   "config/heracles/quests/engineering/eng_t3_compressor.json":  {
-                                                                                    "sha256":  "0d292cf94c85fbccacaf8241d59fc0b1bfce638285b74c20ba39558da3fe037b",
+                                                                                    "sha256":  "8867977d09733615076da41c86f4f836214b7b15dc9e8ca8152f76103932a0f9",
                                                                                     "size":  1157
                                                                                 },
                   "config/heracles/quests/engineering/eng_t3_crusher.json":  {
-                                                                                 "sha256":  "da2eb66ebd40db4e615752ee2dc430a011237da3459f4c03b4cbbbc837cb1e4a",
+                                                                                 "sha256":  "8d4e03f081280b5322428ce0078044997ec027cd24249fb097486567a0b47eeb",
                                                                                  "size":  1127
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_crystallizer.json":  {
-                                                                                      "sha256":  "7dd935d14f1914a5eb8be7e1a803f2809aa9a3f0399284532ecf80e205e4e553",
-                                                                                      "size":  1312
+                                                                                      "sha256":  "17ed89b287385ac39f8b6c639f5178ecf0aea77fd9103cf0dbdfd3355a9eda63",
+                                                                                      "size":  1311
                                                                                   },
                   "config/heracles/quests/engineering/eng_t3_energized.json":  {
-                                                                                   "sha256":  "c7dcd8df1c039f95b0c2ee97797b72cdeb87b3b6ba700436a9b9ef9f000d9e95",
+                                                                                   "sha256":  "cf8c30bb3cb8b624c4be9d91ea47a8338b33689737218f434af2fa8d4f189e37",
                                                                                    "size":  1122
                                                                                },
                   "config/heracles/quests/engineering/eng_t3_energycube.json":  {
-                                                                                    "sha256":  "550abb2cc690dcc9628d398fe8e343eaa1d93466ec62942f8b9c8129cf3ccbaf",
+                                                                                    "sha256":  "c08e0d516c84524b156b91926716d98901945e2ce94a2462a5e4066f5730ceda",
                                                                                     "size":  1141
                                                                                 },
                   "config/heracles/quests/engineering/eng_t3_ethylene.json":  {
-                                                                                  "sha256":  "a1702af99cffa16b4f71754ecff93ea8f9d2c7cd5b3a45ae4d72a3beece6d7af",
-                                                                                  "size":  1390
+                                                                                  "sha256":  "782ea8fc4c55d16596e9b63e598b7b72c33123eff6b787494c1c6c7838f7302e",
+                                                                                  "size":  1381
                                                                               },
                   "config/heracles/quests/engineering/eng_t3_factory.json":  {
-                                                                                 "sha256":  "29e8b6ae7bad8c0a4a975055448d1ae387a6c4c96940c470bb78a585b19993b1",
-                                                                                 "size":  1306
+                                                                                 "sha256":  "95d43ba6c21f857fe9154fc8f3677dc2cd55c8d3fdf7b278e3941512eedfb0bd",
+                                                                                 "size":  1312
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_gbg.json":  {
-                                                                             "sha256":  "c4a5b376158512f8ed2f0c228c224fd0ffd36b63bf280c917fd1dab7f682a92a",
-                                                                             "size":  1305
+                                                                             "sha256":  "57615b5fab483ad572366a82fb087aa824c7bb830bbd73a5d15cc537837c2f7e",
+                                                                             "size":  1304
                                                                          },
                   "config/heracles/quests/engineering/eng_t3_infuser.json":  {
-                                                                                 "sha256":  "4e39e64a03ae534a6ca79066d5cd48a546f6c86d14f98d4481e183c55095366b",
+                                                                                 "sha256":  "d92c6f8f919ae76176e219dab298630eba76f56a533d58b766ac84d9f6ef9c29",
                                                                                  "size":  1267
                                                                              },
                   "config/heracles/quests/engineering/eng_t3_injection.json":  {
-                                                                                   "sha256":  "4f69e652eca0a20036d78713ddc3a025595c5ef6fe059a2a12708bfed5d4984c",
+                                                                                   "sha256":  "125bc3bed10e4078fe4497c320a347772596404376173c7c9a23bd9e3d866285",
                                                                                    "size":  1226
                                                                                },
                   "config/heracles/quests/engineering/eng_t3_orechain.json":  {
-                                                                                  "sha256":  "4173502d3c266c299a8e6c36e33466209d92469151137d18a79157312453da3f",
-                                                                                  "size":  1562
+                                                                                  "sha256":  "de7cf026809bdd99e596b5f71e58ed2e083a4772ff0660c1fcf3ad02a6d41e90",
+                                                                                  "size":  1557
                                                                               },
                   "config/heracles/quests/engineering/eng_t3_purification.json":  {
-                                                                                      "sha256":  "f434f2ae9b3a2ebae53940a8e795aa5ff101069d439eeec1328a3b1893945d17",
+                                                                                      "sha256":  "243244d1727d834eefe48123fd0fffa9856f6fed3609050755e8a0c4d3ad254e",
                                                                                       "size":  1180
                                                                                   },
                   "config/heracles/quests/engineering/eng_t3_unlock.json":  {
-                                                                                "sha256":  "b5c46b77caabef5fa4afd4ccb61718cd0ff4dfbc845af6b2713159c037457a58",
+                                                                                "sha256":  "645a2d1833861fa381c690cd790c9d4e0309ece4191cc848bc1e1615adf99545",
                                                                                 "size":  1289
                                                                             },
                   "config/heracles/quests/engineering/eng_t4_fission.json":  {
-                                                                                 "sha256":  "f2a118ccbe31b5e7f6c6cfd4540f34f81158c2ca0d2251a6481c7f69ced02c57",
-                                                                                 "size":  1280
+                                                                                 "sha256":  "1206c6f3d56784f44d49d59d40b3cac0c41d9ab4709c548f8082222c40583eb9",
+                                                                                 "size":  1281
                                                                              },
                   "config/heracles/quests/engineering/eng_t4_fusion.json":  {
-                                                                                "sha256":  "a261d2834286f8062945f78626b60810182a786ce853e5baf404e7fb0b48a661",
-                                                                                "size":  1267
+                                                                                "sha256":  "97bbf3fd159b934b552a7633e8018431e07693ec6ba6833b6db5b71811992da2",
+                                                                                "size":  1266
                                                                             },
                   "config/heracles/quests/engineering/eng_t4_spend.json":  {
-                                                                               "sha256":  "778516f3946230f970e4a04b87b42935bcbdfa19d9f4ab69706fe0fd241a95ae",
-                                                                               "size":  1845
+                                                                               "sha256":  "022e98098fea7c51b94f0cc8b98bef286b3d41c0c5b098b648a906546d010815",
+                                                                               "size":  1844
                                                                            },
                   "config/heracles/quests/engineering/eng_t4_sps.json":  {
-                                                                             "sha256":  "5845c7290db41eeffb2ed1b7c348308f315497aed730d6a7f8f1204fa03396c2",
-                                                                             "size":  1326
+                                                                             "sha256":  "7de286507bd776a4ea71be701de80e3ef661d2cb835e6b3175156372d8597998",
+                                                                             "size":  1312
                                                                          },
                   "config/heracles/quests/exploration/exp_navigator.json":  {
                                                                                 "sha256":  "54a39792444e7cf359a0e02e1f5891af0c101a3c636459ba735a25386beebe1b",
@@ -3428,120 +3428,120 @@
                                                                                               "size":  1596
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_alexsmobs.json":  {
-                                                                                          "sha256":  "489a62cccd14a05c7f3c895fb4891dd7cb15886cbd8e82074f7be637d9100ff9",
-                                                                                          "size":  1066
+                                                                                          "sha256":  "2ee3066f3c47a56af185848ec1ebe6c157966d27ee0d28e43dc318a7f8cb9dda",
+                                                                                          "size":  1065
                                                                                       },
                   "config/heracles/quests/overworld_foundations/ovf_alexsmobs_harvest.json":  {
-                                                                                                  "sha256":  "5a1f6d1f19be06fec130de6383679c4bf702465a50c53745bca99942780d61e7",
-                                                                                                  "size":  1110
+                                                                                                  "sha256":  "1bb36179ec798614f4634ab0ca5fd50e8a8c81ebf0bbd906ec01a1f92d838db8",
+                                                                                                  "size":  1112
                                                                                               },
                   "config/heracles/quests/overworld_foundations/ovf_apotheosis_gem.json":  {
-                                                                                               "sha256":  "52a2e541c6fc070884db91020e9877a94b27403f7d7a3152667dd40db8d49254",
-                                                                                               "size":  1119
+                                                                                               "sha256":  "e96d03cf8c17ddd04648b7ae3441b2607523c4b72021ff1efcab0dee20192983",
+                                                                                               "size":  1111
                                                                                            },
                   "config/heracles/quests/overworld_foundations/ovf_apotheosis_salvage.json":  {
-                                                                                                   "sha256":  "79dad70c75c91de0ef2122032cd21efe5fc58cd605221adef3b30695f2144060",
-                                                                                                   "size":  1269
+                                                                                                   "sha256":  "97ee29aade8f7ab860671d9c3eb0d6bfd1be713ccce9b2eb0dad26db933a959d",
+                                                                                                   "size":  1258
                                                                                                },
                   "config/heracles/quests/overworld_foundations/ovf_apotheosis_socket_gem.json":  {
-                                                                                                      "sha256":  "f1b176897bd96222b9ac6c3ae4eb062f614d42b5280b0ce72df4d68f04c2e964",
-                                                                                                      "size":  1126
+                                                                                                      "sha256":  "8ddcad138d2b11504dfdd9b14538f8185e1b04e1de4e795ba8937556023d768c",
+                                                                                                      "size":  1123
                                                                                                   },
                   "config/heracles/quests/overworld_foundations/ovf_botania_apothecary.json":  {
-                                                                                                   "sha256":  "99748ee46f6b415943aacd19a8aa575ab5078e834e42aa75ac71343df6295337",
-                                                                                                   "size":  1143
+                                                                                                   "sha256":  "2ccfe3df097d55a8bee8eb1423f72fc184dc70104a65d133963149452d6a3252",
+                                                                                                   "size":  1139
                                                                                                },
                   "config/heracles/quests/overworld_foundations/ovf_botania_flora.json":  {
-                                                                                              "sha256":  "a4be418ae6a42073021965826cff098a58e20b38d8585831e4797a09f76164f1",
-                                                                                              "size":  1096
+                                                                                              "sha256":  "7dd462ab3adba0bc951c82ca1afde896cb280feff13e68ffbaccbb4fe1d5df9a",
+                                                                                              "size":  1084
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_botania_manasteel.json":  {
-                                                                                                  "sha256":  "3cf23fdc87da8608cc66a8e5cf94d8449e9deb3edea89a2843233141d9ed6da6",
-                                                                                                  "size":  1244
+                                                                                                  "sha256":  "dc43231b142a6be5378dc340401e73245d4daead5b7c745936201f7e0c6e7ab0",
+                                                                                                  "size":  1239
                                                                                               },
                   "config/heracles/quests/overworld_foundations/ovf_botania_pool.json":  {
-                                                                                             "sha256":  "72260bd995e15e0cbc1db534e310da42bcdf679dca57f9ea4c96b5e1982eaa6e",
-                                                                                             "size":  1157
+                                                                                             "sha256":  "ba48838c44787eebaa0655296561838aa94a3717c2bec4c98350d3f45a101451",
+                                                                                             "size":  1153
                                                                                          },
                   "config/heracles/quests/overworld_foundations/ovf_botania_runic_altar.json":  {
-                                                                                                    "sha256":  "b8ce67f23f6c0e8a8078da2b1a66a9d219d8f4e20ca877e102f3223d63573b84",
-                                                                                                    "size":  1219
+                                                                                                    "sha256":  "dcd178832d7fdc11a23a4d49e307cbd354f819577ebe0cc847b1db4620b66bdb",
+                                                                                                    "size":  1208
                                                                                                 },
                   "config/heracles/quests/overworld_foundations/ovf_capstone.json":  {
-                                                                                         "sha256":  "afda76321a011dd3f63915e9ed83bfcea489137a873e8bcca329f99fa3528068",
-                                                                                         "size":  3187
+                                                                                         "sha256":  "db3689ff43fde41d9d13c29fb2e0608804e024c6f4b68d7fe2bb980aca90c687",
+                                                                                         "size":  3186
                                                                                      },
                   "config/heracles/quests/overworld_foundations/ovf_create_andesite.json":  {
-                                                                                                "sha256":  "fa591a4430808046abd776f37c8334035d03dcc3d37c8a6eea9cda7e0cc3cf06",
-                                                                                                "size":  1141
+                                                                                                "sha256":  "8c9a497f3248d15996e7ff2ee78c223544ee17016068e1ef42fd61526937865c",
+                                                                                                "size":  1138
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_create_brass.json":  {
-                                                                                             "sha256":  "cca76abc078d4787f4d2529d17ccc93f7b5b120b9c9d485cb44a94b141cb7caa",
-                                                                                             "size":  1013
+                                                                                             "sha256":  "1331b07045897be6935b99a4e790dfe52f944ec0c2de95e68013e66cfdb38298",
+                                                                                             "size":  1000
                                                                                          },
                   "config/heracles/quests/overworld_foundations/ovf_create_mixer.json":  {
-                                                                                             "sha256":  "5b97a6c137797a055d8d1a674f5dd42a3d2775d09170fc2d45ed7a4153d42caf",
-                                                                                             "size":  1261
+                                                                                             "sha256":  "627072ad84d7c998e14b193331329c4643a28d9db59079b1c4b62f53596a97a0",
+                                                                                             "size":  1268
                                                                                          },
                   "config/heracles/quests/overworld_foundations/ovf_create_precision.json":  {
-                                                                                                 "sha256":  "f102c1edfa3c3afeda9ab09c8dbc510f16862825fe443280ff9e124604ea6809",
-                                                                                                 "size":  1101
+                                                                                                 "sha256":  "bdd6080220d5011bd0112a45878719a00ae26a3a7d0cb0c8806e4842e29906b5",
+                                                                                                 "size":  1015
                                                                                              },
                   "config/heracles/quests/overworld_foundations/ovf_create_press.json":  {
-                                                                                             "sha256":  "d5aadadddf971a0ca202ad18484423931bf78760ac696f9af2fa5b16c3b8141d",
-                                                                                             "size":  1211
+                                                                                             "sha256":  "1f0472c3e414358f98652b76b7ab60eb5d5938d69f84b65d547445fcb815640c",
+                                                                                             "size":  1207
                                                                                          },
                   "config/heracles/quests/overworld_foundations/ovf_iss_spellbook.json":  {
-                                                                                              "sha256":  "efcadf3445c1c1a059c4a0500c22b13b8499f083e4aeb12ad57a229e5530a425",
+                                                                                              "sha256":  "578393c985273a8831c2708a0aeb9c2b5d7d1f1c0cae8d16a5ecc171a265d377",
                                                                                               "size":  1108
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_frostmaw.json":  {
-                                                                                                "sha256":  "b45402c201e1f936822868a50507bac05f1a45b1d9ff8ce6a1e933e3b69a2c67",
-                                                                                                "size":  1218
+                                                                                                "sha256":  "60bed134e7d198ac6389b2318c840eb3533f07113ebf99a62b1d20df71271b31",
+                                                                                                "size":  1193
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_sculptor.json":  {
-                                                                                                "sha256":  "68883bf9c2c36d1d40ddaf69bdd9da6afa5203990da9cb56ec50269c8fa4e75a",
-                                                                                                "size":  1265
+                                                                                                "sha256":  "38663a9dd2ee296156115ba166c3b700c7f8ab79faa49b8595b84df0cd3ec389",
+                                                                                                "size":  1251
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_umvuthi.json":  {
                                                                                                "sha256":  "ce8f295ec99e96c6da00142490245745aa4f12f59943598b523da3c54a5324f7",
                                                                                                "size":  1189
                                                                                            },
                   "config/heracles/quests/overworld_foundations/ovf_mowzie_wroughtnaut.json":  {
-                                                                                                   "sha256":  "abddfd2ca8c42a593d31ff2c87a4fb185f78f188e932988528da34bb87679576",
-                                                                                                   "size":  1261
+                                                                                                   "sha256":  "f86553b35ae65a7685229ca1e3b32d798b19debf1fdfd3c6c2a21cf8ed3a8028",
+                                                                                                   "size":  1259
                                                                                                },
                   "config/heracles/quests/overworld_foundations/ovf_mutant_slayer.json":  {
-                                                                                              "sha256":  "de2d2f2fabc3dd068a4feec914cbac8588c25b006921138541c5f5b4caf3358b",
-                                                                                              "size":  1642
+                                                                                              "sha256":  "79cdb33384b016a7966a60e0035c02b0a1b51b1692375124bdfdcfb35ff95ab1",
+                                                                                              "size":  1639
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_simplyswords.json":  {
-                                                                                             "sha256":  "024ede630a855ced377c2a674e71650354a9f2f2be4fa3630287aaee769f7650",
-                                                                                             "size":  1989
+                                                                                             "sha256":  "ac0a89c25aa0d3403775883da438a5193a641ef613655b596e8a950137be94a8",
+                                                                                             "size":  1987
                                                                                          },
                   "config/heracles/quests/overworld_foundations/ovf_terramity_gems.json":  {
-                                                                                               "sha256":  "fe97b4e22e88f76fedede3443b56d9b00e5cfff2e6ff8ce616db40ab1ea5fd16",
-                                                                                               "size":  1138
+                                                                                               "sha256":  "96a5e4f807ca47207a98506e0bc9ccd41e40ebad5519ffa907a97a2925102cb0",
+                                                                                               "size":  1133
                                                                                            },
                   "config/heracles/quests/overworld_foundations/ovf_terramity_gob.json":  {
-                                                                                              "sha256":  "c99181bbd7141fb71d2dad63dee86e5d53050437967ef9dd54f5d9828d65cdce",
-                                                                                              "size":  1081
+                                                                                              "sha256":  "7f50710bb9acb50b301ba730ec63bc60374cdd4af5bdaba9727f5b159dfa89a5",
+                                                                                              "size":  1078
                                                                                           },
                   "config/heracles/quests/overworld_foundations/ovf_terramity_sniffer.json":  {
-                                                                                                  "sha256":  "8d6bf76695ec9f10f67d03493b6aa65a16b62ea55c19f6377fe0512e39576ae8",
-                                                                                                  "size":  1082
+                                                                                                  "sha256":  "0ae90182cb3af82703479381043f32ffb3744675612dc681bf6ca5c0bfe76e55",
+                                                                                                  "size":  993
                                                                                               },
                   "config/heracles/quests/overworld_foundations/ovf_tetra_forge.json":  {
-                                                                                            "sha256":  "6b571b99ab63ea5e399c6efb37ac46583b80f07ef50b5bccf6eaf1177c3ccc47",
-                                                                                            "size":  1358
+                                                                                            "sha256":  "fae28ef77f4d22e9b35751bb5b1f905ba4c50b5e99c55f0ae32b0adbb60e78e5",
+                                                                                            "size":  1352
                                                                                         },
                   "config/heracles/quests/overworld_foundations/ovf_tetra_workbench.json":  {
-                                                                                                "sha256":  "89c405449a816f41d644bad65f15deb972c422510c22a6928c85334fde18a65f",
-                                                                                                "size":  1230
+                                                                                                "sha256":  "6a69d33c6ed7137b8b0158564ef1e19a43ec63fe04b9ab47e4c7a186fb9ab730",
+                                                                                                "size":  1227
                                                                                             },
                   "config/heracles/quests/overworld_foundations/ovf_waystones.json":  {
-                                                                                          "sha256":  "db9d9d2092a5a4f0dcef66352974d6356316568eb95e3b1f51b5a7994d0c7d7c",
-                                                                                          "size":  1235
+                                                                                          "sha256":  "6cd8f067884e045c191c7343bcecda21719b884e1fa0f0bdcc4eb1ca7edc3b01",
+                                                                                          "size":  1232
                                                                                       },
                   "config/heracles/quests/practical_magic/iss_t1_arcane_ingot.json":  {
                                                                                           "sha256":  "52ebb30a873f01fb0b6548f4666e026e142d1b2b197807956d639d6ae685f039",

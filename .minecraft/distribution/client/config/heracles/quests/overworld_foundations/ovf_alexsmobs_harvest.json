@@ -5,10 +5,10 @@
     "subtitle": "Gather creature drops",
     "description": [
       "The Animal Dictionary points the way; now go put it to use. Hunt the coasts",
-      "and waters for §2Lobster Tails§r — one of the many drops Alex's creatures give",
+      "and waters for §2Lobster Tails§r, one of the many drops Alex's creatures give",
       "up for food, brewing, and crafting.",
       "",
-      "§7Every biome hides creatures whose drops feed the tiers above."
+      "§7Every biome has creatures whose drops are used in the tiers above."
     ],
     "groups": { "Overworld Foundations": { "position": [640, 240] } }
   },

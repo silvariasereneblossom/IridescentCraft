@@ -6,9 +6,9 @@
     "description": [
       "Atop a remote peak waits the §8Sculptor§r, an ancient being who tests",
       "challengers across a gauntlet of stone trials before the duel itself. Pass his",
-      "trials, then defeat him to claim mastery of the peak.",
+      "trials, then defeat him to claim the peak.",
       "",
-      "§7The most demanding of the Tier 1 overworld bosses — patience and footwork win."
+      "§7The most demanding of the Tier 1 overworld bosses: patience and footwork win."
     ],
     "groups": { "Overworld Foundations": { "position": [160, 400] } }
   },

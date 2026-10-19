@@ -4,14 +4,14 @@
     "title": "T3: The Gas-Burning Generator",
     "subtitle": "Burn your ethylene",
     "description": [
-      "The §bGas-Burning Generator§r turns combustible gases into massive RF - fed",
+      "The §bGas-Burning Generator§r turns combustible gases into massive RF. Fed",
       "the §bethylene§r you brewed in the Pressurized Reaction Chamber, it is the",
       "scalable power answer for the whole Mekanism tier.",
       "",
-      "Build a Gas-Burning Generator to complete this beat and close your T3 power",
+      "Build a Gas-Burning Generator to complete this quest and close your T3 power",
       "loop.",
       "",
-      "§7Gas-Burning Generators bank §e100§7 tokens each - the single richest",
+      "§7Gas-Burning Generators bank §e100§7 tokens each, the single richest",
       "§7Engineering submission in the pack."
     ],
     "groups": { "Engineering": { "position": [2400, 480] } }

@@ -9,10 +9,10 @@
       "is the start of the polonium -> antimatter road.",
       "",
       "Assemble §bFission Reactor Casing§r (with ports and a logic adapter) into a",
-      "reactor multiblock. Holding a casing block completes this beat.",
+      "reactor multiblock. Holding a casing block completes this quest.",
       "",
-      "§7Handle fission carefully - a melted reactor is catastrophic. The waste",
-      "feeds the SPS chain two beats from now."
+      "§7Handle fission carefully: a melted reactor is catastrophic. The waste",
+      "feeds the SPS chain two quests from now."
     ],
     "groups": { "Engineering": { "position": [0, 640] } }
   },

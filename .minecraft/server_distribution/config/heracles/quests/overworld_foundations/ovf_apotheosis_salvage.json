@@ -5,10 +5,10 @@
     "subtitle": "Break gear down for parts",
     "description": [
       "Not every affixed drop is worth keeping. The §dSalvaging Table§r breaks unwanted",
-      "magic gear back into §7materials§r and §dgem dust§r — the reagents that fund",
+      "magic gear back into §7materials§r and §dgem dust§r, the reagents that pay for",
       "rerolling and upgrading the gear you do want.",
       "",
-      "§7Salvage keeps the affix economy flowing instead of clogging your chests."
+      "§7Salvaging also keeps unwanted gear from clogging your chests."
     ],
     "groups": { "Overworld Foundations": { "position": [640, 160] } }
   },

@@ -4,11 +4,9 @@
     "title": "Create: Precision Mechanism",
     "subtitle": "Forge an automation core",
     "description": [
-      "The §bPrecision Mechanism§r is Create's automation keystone — cogs, a golden",
+      "The §bPrecision Mechanism§r is Create's automation keystone: cogs, a golden",
       "sheet, and an iron nugget, assembled in a press chain. Every Mechanical Arm,",
-      "Deployer, and Crafter needs one.",
-      "",
-      "§7Building one proves your Create line can make its own brain."
+      "Deployer, and Crafter needs one."
     ],
     "groups": { "Overworld Foundations": { "position": [640, 0] } }
   },

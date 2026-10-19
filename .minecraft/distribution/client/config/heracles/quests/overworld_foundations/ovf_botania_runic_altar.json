@@ -5,10 +5,10 @@
     "subtitle": "Craft your first runes",
     "description": [
       "The §aRunic Altar§r is Botania's mana-powered crafting station. Feed it",
-      "manasteel and reagents and it inscribes §druns§r — the elemental keys to",
+      "manasteel and reagents and it inscribes §drunes§r, the elemental keys to",
       "advanced flowers, apparatus, and the road toward Terrasteel.",
       "",
-      "§7Runes are the deep currency of the Magic lane's mid-game."
+      "§7Runes are a staple of the Magic lane's mid-game."
     ],
     "groups": { "Overworld Foundations": { "position": [480, 80] } }
   },

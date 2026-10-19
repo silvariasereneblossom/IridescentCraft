@@ -8,7 +8,7 @@
       "harvesting. Craft an §2Animal Dictionary§r to track them, then go collect",
       "from the wildlife around you.",
       "",
-      "§7Many of their drops feed crafting and combat economies across the tiers."
+      "§7Many of their drops are crafting and combat materials across the tiers."
     ],
     "groups": { "Overworld Foundations": { "position": [480, 240] } }
   },
