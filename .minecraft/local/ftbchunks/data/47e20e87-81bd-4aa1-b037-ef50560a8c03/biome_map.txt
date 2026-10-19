@@ -1,3 +1,0 @@
-#646 biomesoplenty:dune_beach
-#4F1 minecraft:ocean
-#4FE biomesoplenty:prairie
