@@ -58,10 +58,13 @@ LootJS.modifiers(icraft.guard('loot/boss_arena_material_tease', 'LootJS.modifier
   tease('blue_skies:chests/blinding_dungeon/prison_chest_everdawn', 'blue_skies:spider_webbing', 0.12, T2, 0.05)
 
   // ---- T3 ----
-  // cm_monstrosity (Netherite Monstrosity) -> lava_power_cell  (burning_arena = acropolis_treasure)
-  tease('cataclysm:chests/acropolis_treasure', 'cataclysm:lava_power_cell', 0.10, T3, 0.05)
-  // cm_scylla (Scylla) -> lacrima
-  tease('cataclysm:chests/frosted_prison_treasure', 'cataclysm:lacrima', 0.12, T3, 0.05)
+  // cm_scylla (Scylla) -> lacrima, in the Acropolis (her structure).
+  // [2026-10-18, fact-pass fixes, on recommendation, for review] The two Cataclysm teases followed arena
+  // rows the jar contradicts: Scylla's lacrima sat in the Frosted Prison's table (Maledictus's structure)
+  // and the Netherite Monstrosity's lava_power_cell in the Acropolis's (Scylla's), under the note
+  // "burning_arena = acropolis_treasure". The Monstrosity lives in the Soul Forge (soul_black_smith), which
+  // has no chest table, so its material has no tease (the header's rule for such arenas).
+  tease('cataclysm:chests/acropolis_treasure', 'cataclysm:lacrima', 0.12, T3, 0.05)
   // iss_tyros / iss_archevoker: the ISS material tease (cinder_essence / arcane_essence) was MOVED
   // to zz_iss_arena_enrichment.js on 2026-06-14 — those irons_spellbooks: items are eaten by
   // lootjs_overhaul's LootType.CHEST ISS strip when added here (this file loads BEFORE lootjs_overhaul,
@@ -86,5 +89,5 @@ LootJS.modifiers(icraft.guard('loot/boss_arena_material_tease', 'LootJS.modifier
   // da_eots (Eye of the Storm) -> squall_plate
   tease('deep_aether:chests/dungeon/brass/brass_dungeon_loot', 'deep_aether:squall_plate', 0.08, T3, 0.04)
 
-  console.log('[boss_arena_material_tease] registered 13 arena material teases, 12 with a tier token (icraft #58 Piece B)')
+  console.log('[boss_arena_material_tease] registered 12 arena material teases, 11 with a tier token (icraft #58 Piece B)')
 }))

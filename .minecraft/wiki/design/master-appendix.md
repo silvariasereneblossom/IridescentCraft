@@ -406,7 +406,7 @@ There are also mob-drop overrides for `aether:cockatrice` (lightning_rod 25%), `
 | `cataclysm:the_harbinger` | T3-T4 | epic_ink + ender_rune + ender_upgrade_orb + simplyswords:shadowsting |
 | `cataclysm:ender_guardian` | T4 | epic_ink + legendary_ink + ender_rune + ender_upgrade_orb + netherite_spell_book @ 10% + simplyswords:arcanethyst |
 | `cataclysm:maledictus` | T3 | rare_ink + ender_rune + simplyswords:twisted_blade |
-| `cataclysm:ancient_remnant` | T3-T4 | rare_ink + blood_rune + simplyswords:awakened_lichblade |
+| `cataclysm:ancient_remnant` | T4 | rare_ink + blood_rune + simplyswords:awakened_lichblade |
 | `cataclysm:the_leviathan` | T3-T4 | rare_ink + ice_rune + diamond_spell_book @ 10% + simplyswords:livyatan |
 | `cataclysm:coralssus` | T3 | uncommon_ink + nature_rune |
 
@@ -482,7 +482,7 @@ Cross-mod injection of Mahou reagents:
 - `olympus` → Aether Slider (T4 storm; T2 until 2026-10-16) @ 5%
 - `divine_intervention` → Aether Sun Spirit (T4 holy; T2 until 2026-10-16) @ 10%
 - `planet_buster` → Ender Dragon (T4 cosmic) @ 15%
-- `kamehameha` → Ancient Remnant (T3; placeholder until Mythic Forge recipe) @ 5%
+- `kamehameha` → Ancient Remnant (T4; placeholder until Mythic Forge recipe) @ 5%
 
 ### C.10a Terramity ingot-family weapons + curios (`loot/terramity_structure_drops.js`, audit 2026-05-19)
 
@@ -774,8 +774,8 @@ designed health still grow with the curve. **From fight 15** is the cap of per-k
 | Netherite Monstrosity | 3 | 900 | 2,700 | 6,750 |
 | Ignis | 3 | 1,000 | 3,000 | 7,500 |
 | Meet Your Fight (Dame Fortuna / Rosalyne) | 3 | 700-800 | 2,100-2,400 | 5,250-6,000 |
-| Ancient Remnant | 3 | 2,500 | 7,500 | 18,750 |
 | Ignited Revenant | 4 | 1,000 | 3,000 | 7,500 |
+| Ancient Remnant (tier 3 until 2026-10-18) | 4 | 2,500 | 7,500 | 18,750 |
 | Slider (Aether, Bronze Dungeon; T2 with 400 until 2026-10-16) | 4 | 1,000 | 3,000 | 7,500 |
 | Valkyrie Queen (Aether, Silver Dungeon; T2 with 550 until 2026-10-16) | 4 | 1,200 | 3,600 | 9,000 |
 | Sun Spirit (Aether, Gold Dungeon; T2 with 500 until 2026-10-16) | 4 | 1,200 | 3,600 | 9,000 |

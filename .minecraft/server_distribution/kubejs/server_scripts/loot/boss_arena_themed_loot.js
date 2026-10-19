@@ -41,7 +41,7 @@ LootJS.modifiers(icraft.guard('loot/boss_arena_themed_loot', 'LootJS.modifiers',
   // ISS Pyromancer Tower (Echo of Tyros, overworld) — gunpowder in burnt_chest.
   event.addLootTableModifier('irons_spellbooks:chests/pyromancer_tower/burnt_chest')
     .removeLoot('minecraft:gunpowder')
-  // Cataclysm Frosted Prison (Scylla, overworld) — heavy diamond-gear treasure.
+  // Cataclysm Frosted Prison (Maledictus, overworld) — heavy diamond-gear treasure.
   scrubDiamonds('cataclysm:chests/frosted_prison_treasure')
 
   console.log('[boss_arena_themed_loot] scrubbed overworld diamonds/gunpowder from ISS catacombs/evoker_fort/pyromancer + cataclysm frosted_prison (ISS enrichment moved to zz_iss_arena_enrichment.js)')

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5132477c",
+    "generated_from":  "0b071ed9",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49206
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "3f876fd80186240c200941734e898550e884eb9de540839ee51ec7e7cb228394",
-                                                                    "size":  31158
+                                                                    "sha256":  "d571a9fcd7b4dcd3f12036163cfd352c7292efa2ef738786743f623e91999c62",
+                                                                    "size":  31653
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "bea95fb525032cdad75d6d40bbf5fbede6d8dfbbc1928a3b676cf13858338a08",
@@ -6587,25 +6587,29 @@
                                                                                               "sha256":  "a1f3de5bf65a87766e3fff9a1dbd0b77b3ed9b4226d1ad41424d88fc12e140f9",
                                                                                               "size":  120
                                                                                           },
+                  "kubejs/data/icraft/tags/worldgen/structure/cataclysm_ancient_remnant.json":  {
+                                                                                                    "sha256":  "6cd18f5f7173eaaf3d0edfdf786e1c12d1becfab997cb34113f93187be180101",
+                                                                                                    "size":  102
+                                                                                                },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_ender_guardian.json":  {
                                                                                                    "sha256":  "e939818305e8b7a1e375bfb393aae1703bef2e303a96dd50e76f76f1f24c5909",
                                                                                                    "size":  102
                                                                                                },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_ignis.json":  {
-                                                                                          "sha256":  "4ea254345b520081526b490688d4eb7335b2fcd25295109cfb25b028b6c8e570",
-                                                                                          "size":  104
+                                                                                          "sha256":  "a6c470eee0bcf5e63654e609b19576f56d814a8cf80cbcd072ea4a35d9118055",
+                                                                                          "size":  101
                                                                                       },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_maledictus.json":  {
-                                                                                               "sha256":  "6cd18f5f7173eaaf3d0edfdf786e1c12d1becfab997cb34113f93187be180101",
+                                                                                               "sha256":  "07eb4d9d4d3dc1896e12fb296cc5ac3ae8bdae4fd42ba43f5606fb986018af10",
                                                                                                "size":  102
                                                                                            },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_netherite_monstrosity.json":  {
-                                                                                                          "sha256":  "a6c470eee0bcf5e63654e609b19576f56d814a8cf80cbcd072ea4a35d9118055",
-                                                                                                          "size":  101
+                                                                                                          "sha256":  "4ea254345b520081526b490688d4eb7335b2fcd25295109cfb25b028b6c8e570",
+                                                                                                          "size":  104
                                                                                                       },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_scylla.json":  {
-                                                                                           "sha256":  "07eb4d9d4d3dc1896e12fb296cc5ac3ae8bdae4fd42ba43f5606fb986018af10",
-                                                                                           "size":  102
+                                                                                           "sha256":  "7987cac2c699cc1ee3d42884a24462cd2928fd279d8756a84d52a169d0693227",
+                                                                                           "size":  97
                                                                                        },
                   "kubejs/data/icraft/tags/worldgen/structure/cataclysm_the_harbinger.json":  {
                                                                                                   "sha256":  "4110cb7efd562b11666e2fd9b5ffae50245bd652dcdb1e2c679f0061436bcf2e",
@@ -7436,12 +7440,12 @@
                                                                          "size":  2627
                                                                      },
                   "kubejs/server_scripts/loot/boss_arena_material_tease.js":  {
-                                                                                  "sha256":  "2cb04231afd0729563ad574f4bb4a2549e13ace9f233585dcccfa4c2096f1c18",
-                                                                                  "size":  5692
+                                                                                  "sha256":  "22bdc9019df8c7418bc3735b7ceee27ba796933604b89db6a35c2bcd9596d49a",
+                                                                                  "size":  6041
                                                                               },
                   "kubejs/server_scripts/loot/boss_arena_themed_loot.js":  {
-                                                                               "sha256":  "62c4fe5f7319a873b530fc482a88729363e68e15e24466b72f7510f77aba3402",
-                                                                               "size":  2824
+                                                                               "sha256":  "eaf605ced8e34d11bd109de3c815e37b4cf9538180b1fc787fc89d02c0be713d",
+                                                                               "size":  2828
                                                                            },
                   "kubejs/server_scripts/loot/boss_refight_repair_floors.js":  {
                                                                                    "sha256":  "85b58443abb808cb7dc3ca10b7b1c8d726a17ebe71705d69f00c89ea34c225ee",
@@ -7544,8 +7548,8 @@
                                                                          "size":  6274
                                                                      },
                   "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
-                                                                                "sha256":  "46acb86f515c9fb19deeff6ca80a50ea84e8f69223088bfddc352a3742117e42",
-                                                                                "size":  7143
+                                                                                "sha256":  "2264d0c442beaaf8838906fc233547a065915eeb0b393276ae461e1435dc8985",
+                                                                                "size":  7147
                                                                             },
                   "kubejs/server_scripts/loot/zz_pack_enchanted_books.js":  {
                                                                                 "sha256":  "e40315cdfd61ebfbf6de1401aad1dc0ac9e4f79ab14cd3fe90acc5f86bd9311b",
@@ -8616,7 +8620,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "0787fd230d19e4bf376cd48b6adab24015a1edc069453c5aa3d496a625e77fa7",
+                                                               "sha256":  "cc7c9ac1d15c2d22ef97152f604d5a21109dd4ef68900ec70cd2959410d907af",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

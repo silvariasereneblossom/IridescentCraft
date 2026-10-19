@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    { "id": "cataclysm:cursed_pyramid", "required": false }
+    { "id": "cataclysm:frosted_prison", "required": false }
   ]
 }

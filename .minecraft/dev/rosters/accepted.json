@@ -42,9 +42,7 @@
     "cardinal_sins:sinofwrathphase_1": "decision entry 95, the operator's ruling 2026-10-16 (\"Boss only\"): `boss` (core.isBoss: no Vorpal beheading, the boss rules of affixes / enchants / skills; no mob-tier health), stays `unlisted` and `phaseOf` the Sin: no x3, no tokens, no rush slot of its own; per-kill since entry 92"
   },
 
-  "named-not-in-rush": {
-    "cataclysm:ancient_remnant": "named (tier 3 by its first listing, tier 4 by its second) and on no boss-rush roster; open"
-  },
+  "named-not-in-rush": {},
 
   "miniboss-not-in-rush": {
     "twilightforest:adherent": "pays miniboss tokens, not on the tier-2 boss-rush roster; open: the roster is ruled at 11 / 20 / 43",

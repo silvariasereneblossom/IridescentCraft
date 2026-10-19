@@ -1,6 +1,6 @@
 {
   "replace": false,
   "values": [
-    { "id": "cataclysm:frosted_prison", "required": false }
+    { "id": "cataclysm:acropolis", "required": false }
   ]
 }

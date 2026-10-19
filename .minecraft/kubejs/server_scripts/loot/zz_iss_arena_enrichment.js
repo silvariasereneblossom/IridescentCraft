@@ -82,7 +82,7 @@ LootJS.modifiers(icraft.guard('loot/zz_iss_arena_enrichment', 'LootJS.modifiers'
     .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').limitCount([1, 2]).when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of(T3).when(c => c.randomChance(0.05)))
 
-  // ---- Cataclysm frosted_prison (Scylla, overworld) — frost-magic backfill ----
+  // ---- Cataclysm frosted_prison (Maledictus, overworld) — frost-magic backfill ----
   event.addLootTableModifier('cataclysm:chests/frosted_prison_treasure')
     .addLoot(LootEntry.of('irons_spellbooks:ice_rune').when(c => c.randomChance(0.18)))
     .addLoot(LootEntry.of('irons_spellbooks:ice_upgrade_orb').when(c => c.randomChance(0.10)))
