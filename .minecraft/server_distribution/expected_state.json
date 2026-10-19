@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "1a0dec5c",
+    "generated_from":  "78ad96a0",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6419,6 +6419,10 @@
                                                                                                                         "sha256":  "2ed3da619c454964b6258c3b6132b245ec12d43536996d4aa68d7a9e90073c51",
                                                                                                                         "size":  271
                                                                                                                     },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/abandoned_mineshaft_additions.json":  {
+                                                                                                          "sha256":  "873e76a2f1723ac120d606a3e2c8186422371e2f33714e33c6a927a371bf5802",
+                                                                                                          "size":  261
+                                                                                                      },
                   "kubejs/data/forbidden_arcanus/loot_modifiers/artisan_relic_addition.json":  {
                                                                                                    "sha256":  "11453c4df241e0ae287b16bb05369b8e7e7b13277028e1d763990421bca644f4",
                                                                                                    "size":  630
@@ -7223,6 +7227,10 @@
                                                                                       "sha256":  "45f96edb7df9565a55ae91d2391bfb155c827cb606fe9808f7b6841e3065da05",
                                                                                       "size":  76
                                                                                   },
+                  "kubejs/data/valhelsia_structures/loot_modifiers/jar_treasure.json":  {
+                                                                                            "sha256":  "8185925edefb915bd2bf40ecee61b10898354a8c0da2ba8fe288bd233f0c377e",
+                                                                                            "size":  283
+                                                                                        },
                   "kubejs/jsconfig.json":  {
                                                "sha256":  "121ec9d7902090c050b096aa83792aeb7580946392785f5bae5f8e4bc6dbcce4",
                                                "size":  309
