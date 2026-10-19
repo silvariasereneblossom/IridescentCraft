@@ -316,9 +316,9 @@
  "skill.justlevelingfork.limit_breaker.description" : "0.5%% chance to multiply mining output by 5x.",
 
  "skill.justlevelingfork.curious.description" : "Knowledge comes faster. +10%% XP gain from all sources.",
- "skill.justlevelingfork.arcane_efficiency.description" : "Enchanting costs 25%% less XP (refunded when you spend XP near an enchanting table).",
+ "skill.justlevelingfork.arcane_efficiency.description" : "Enchanting costs 25%% less XP: a quarter of the levels spent comes back while the menu stays open.",
  "skill.justlevelingfork.insight.description" : "Deeper understanding. +20%% XP gain (stacks with Curious and Enlightenment).",
- "skill.justlevelingfork.materials_science.description" : "Anvil repairs cost 25%% less XP (refunded when you spend XP near an anvil).",
+ "skill.justlevelingfork.materials_science.description" : "Anvil work costs 25%% less XP: a quarter of the levels spent comes back while the anvil menu stays open.",
  "skill.justlevelingfork.enlightenment.description" : "Capstone of the Intelligence line. +30%% XP gain.",
  "skill.justlevelingfork.mana_spark.description" : "The first stirring of magic. +20 max mana and +5%% spell power.",
  "skill.justlevelingfork.conservation_of_magic.description" : "Spells flow with practiced economy. +15%% mana regeneration (approximates reduced spell cost).",
@@ -327,7 +327,7 @@
  "skill.justlevelingfork.mana_inferno.description" : "Capstone of the Magic line. +30%% spell power.",
 
  "skill.justlevelingfork.might.description" : "+1.5 attack damage and +5%% maximum health.",
- "skill.justlevelingfork.brutal_slash.description" : "+10%% melee damage and ignores roughly 10%% of the target's armor.",
+ "skill.justlevelingfork.brutal_slash.description" : "+10%% melee damage, and up to +5%% more on armored mobs (+0.4%% per armor point; not players).",
  "skill.justlevelingfork.cleave.description" : "The first strike of a fight deals +20%% damage (resets 5s after combat ends).",
  "skill.justlevelingfork.hemorrhage.description" : "Melee hits inflict Wither for 4 seconds.",
  "skill.justlevelingfork.true_strength.description" : "Melee hits instantly execute non-boss enemies below 5%% health.",

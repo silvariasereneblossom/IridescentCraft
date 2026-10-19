@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3c729502",
+    "generated_from":  "9dc7bb0c",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5860,8 +5860,8 @@
                                                             "size":  51
                                                         },
                   "kubejs/assets/icraft/lang/en_us.json":  {
-                                                               "sha256":  "1a3ca26329764eb29aa82a9ed93e01965332a0a2b2b68f13d16a5dcff6db32b1",
-                                                               "size":  11816
+                                                               "sha256":  "3c35c38b89458867a2fc8d9d27bdf9abb5798db56ac7fef3ade6597cfc8c884e",
+                                                               "size":  11868
                                                            },
                   "kubejs/assets/iridescent_modular_spells/lang/en_us.json":  {
                                                                                   "sha256":  "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
@@ -5896,8 +5896,8 @@
                                                                     "size":  251
                                                                 },
                   "kubejs/assets/origins/lang/en_us.json":  {
-                                                                "sha256":  "47ab666dabe370e98bd6c7535bce432d29d6e6f240d81c60612d823aa7856b2d",
-                                                                "size":  8534
+                                                                "sha256":  "3983fa59d00a86c1f10237e116f591995cec36b344d36e8c9fa19923005ba248",
+                                                                "size":  5648
                                                             },
                   "kubejs/assets/pamhc2trees/lang/en_us.json":  {
                                                                     "sha256":  "9bb0c762f67522f8c70a4d549de06219ff238f5b2f3643cd5705f95da081440b",
@@ -8640,7 +8640,7 @@
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "8d0a170fe809c23ec52b9b1366ecab18869d66e692fd3104ae7f356fdfc34aa3",
+                                                                 "sha256":  "0f00beab4fc1cbd8e3923ce12a8c9c859c00ed4e436e2ebc8d85dd038ca0cd19",
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {
@@ -8704,7 +8704,7 @@
                                                                         "size":  576
                                                                     },
                   "mods/.index/justlevelingfork.pw.toml":  {
-                                                               "sha256":  "1b28ea358ec44c738281984c312fd924a2151d3f813b5d79abaf174ec0837813",
+                                                               "sha256":  "1bc5c96c84b75992bf688614b5859690cbcfe522c953fab0accbf85da788e50a",
                                                                "size":  391
                                                            },
                   "mods/.index/keebszs-battletowers.pw.toml":  {

@@ -3,7 +3,7 @@ name = 'Just Leveling Fork (Iridescent)'
 side = 'both'
 
 [download]
-hash = 'c4a7819068a186dbb78e9e69883c8b9c0a83fcf3e55000ce7a5004064493904a'
+hash = '18dd16a2e39c53250a19c92d167ee76f7856bb9d7119b33fd6d0ab40df71ed27'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/justlevelingfork-1.2.1-iridescent.1.jar'

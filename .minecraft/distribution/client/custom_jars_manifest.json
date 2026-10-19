@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-10-19T02:11:18Z",
+    "generated_at":  "2026-10-19T02:51:12Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -32,8 +32,8 @@
                                                             "size":  25494
                                                         },
                  "iridescent_origins-1.0.0.jar":  {
-                                                      "sha256":  "92fc92294eab1a211d4ef26fe37971bd462d552c8a41ba6c200802b6bddf433b",
-                                                      "size":  103616
+                                                      "sha256":  "4fd178ff8e1f87aa0223a51c99b8b9f804db940397ab53aad9f660d845f772e7",
+                                                      "size":  103503
                                                   },
                  "iridescent_relics-1.0.0.jar":  {
                                                      "sha256":  "8ab8933c66547ac939117816a3eedb93b7fdd7e2f45c98bf583f4d38d5045b81",
@@ -44,8 +44,8 @@
                                                               "size":  1582666
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
-                                                                 "sha256":  "c4a7819068a186dbb78e9e69883c8b9c0a83fcf3e55000ce7a5004064493904a",
-                                                                 "size":  483831
+                                                                 "sha256":  "18dd16a2e39c53250a19c92d167ee76f7856bb9d7119b33fd6d0ab40df71ed27",
+                                                                 "size":  483854
                                                              },
                  "linearxp-1.0.0-iridescent.1.jar":  {
                                                          "sha256":  "132944333b0d2fd02f061d41c928a754f46a92d41985f1e9047817e1837c1777",

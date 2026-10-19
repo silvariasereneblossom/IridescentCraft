@@ -49,24 +49,5 @@
 
   "layer.origins.gender.name": "Gender",
   "layer.origins.gender.gui_title.choose_origin": "Choose Your Gender",
-  "layer.origins.gender.gui_title.view_origin": "Your Gender",
-
-  "origin.icraft.demi_god.name": "Demi-God",
-  "origin.icraft.demi_god.description": "Scion of a forgotten god, the Demi-God towers over mortal limits with +40% health and the power to phase through matter. Divine Fury grants Strength on command. Raw meat nourishes them twice as much as usual, cooked meat one and a half times as much. Fire burns them 50% hotter, and the Nether sickens their divine blood, though they can fight through it.",
-  "origin.icraft.ryu.name": "Ryu",
-  "origin.icraft.ryu.description": "Dragon-blooded and ancient, the Ryu shrugs off 25% of all damage and heals rapidly from hearty meals. Broken wings grant slow fall rather than true flight. Their draconic stomach rejects anything that isn't meat, and healing potions are only half as potent on their scaled hide.",
-  "origin.icraft.fallen_angel.name": "Fallen Angel",
-  "origin.icraft.fallen_angel.description": "A celestial being cast from grace, frail but deadly. All attacks deal 15% bonus damage, though their broken body holds 20% less health. Tattered wings slow their descent, and they crave meat to fuel their war against creation. Fire sears them deeper than most.",
-  "origin.icraft.kirin.name": "Kirin",
-  "origin.icraft.kirin.description": "A mythical beast built for speed. Kirin scale walls like spiders, see in the dark, and sprint faster than any other race. Their lithe frames hold 20% less health, and all that running burns through food quickly.",
-  "origin.icraft.witch_of_ink.name": "Witch of Ink",
-  "origin.icraft.witch_of_ink.description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste.",
-  "origin.icraft.artificial_construct.name": "Artificial Construct",
-  "origin.icraft.artificial_construct.description": "An iron golem given life. Food gives 25% nourishment; eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage.",
-
-  "origin.icraft.witherborn.name": "Witherborn",
-  "origin.icraft.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets, even bosses that are normally immune. Hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment, and hunger drains 50% faster. Keep eating or wither away.",
-
-  "origin.icraft.slimebodied.name": "Slimebodied",
-  "origin.icraft.slimebodied.description": "An amorphous being of living gel. Food provides only 5% nourishment, but hunger drains at 25% of the normal rate and never while idle. Well-fed slimes gain up to 25% damage reduction. 10-second cooldown between meals. 75% base health, -50% armor toughness. Satiety never drops below 25%. Invest in high-quality food."
+  "layer.origins.gender.gui_title.view_origin": "Your Gender"
 }
