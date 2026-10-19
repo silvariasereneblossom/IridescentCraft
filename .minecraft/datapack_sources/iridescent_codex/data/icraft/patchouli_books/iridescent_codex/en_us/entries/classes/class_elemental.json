@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Playstyle",
-      "text": "Your starter kit: a modular copper spell book, Firebolt and Cone of Cold scrolls, 5 Source Gems and 2 Common Ink.$(br2)On your three schools you out-damage the Archmage; on the other six the Archmage hits harder.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): +30% magic damage on top.$(br)$(thing)Demi-God$(): +40% HP offsets the glass cannon."
+      "text": "Your starter kit: a modular copper spell book, Firebolt and Cone of Cold scrolls, 5 Source Gems and 2 Common Ink.$(br2)On your three schools you out-damage the Archmage; on the other six the Archmage hits harder.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$(): +30% magic damage on top.$(br)$(thing)Demi-God$(): four extra hearts, halved like gear health to about two."
     }
   ]
 }

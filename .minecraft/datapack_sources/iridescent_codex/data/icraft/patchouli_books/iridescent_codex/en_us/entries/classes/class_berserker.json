@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Playstyle",
-      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. At low HP, Blood Fury and Brutal Strikes together give a huge burst, and Thick Skinned keeps you alive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$(): +10% melee, which stacks to +25% base.$(br)$(thing)Demi-God$(): +40% HP makes Blood Fury safer.$(br)$(thing)Dwarf$(): fire resistance and armor stacking."
+      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. At low HP, Blood Fury and Brutal Strikes together give a huge burst, and Thick Skinned keeps you alive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$(): +10% melee damage, which adds to Brutal Strikes, and +20% HP.$(br)$(thing)Demi-God$(): four extra hearts make Blood Fury safer.$(br)$(thing)Dwarf$(): half damage from fire and +2 armor toughness."
     }
   ]
 }

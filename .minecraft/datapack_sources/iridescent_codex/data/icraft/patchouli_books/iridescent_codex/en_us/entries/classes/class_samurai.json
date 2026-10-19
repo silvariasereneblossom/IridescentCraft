@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Vorpal Scaling",
-      "text": "Vorpal by progression tier:$(br)$(bold)T1:$() Vorpal I  |  $(bold)T2:$() Vorpal II$(br)$(bold)T3:$() Vorpal III  |  $(bold)T4:$() Vorpal IV+$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$(): speed, so the shield builds fast.$(br)$(thing)Kirin$(): maximum mobility and wall climbing.$(br)$(thing)Fallen Angel$(): +15% damage on top of Vorpal is lethal."
+      "text": "Vorpal by progression tier:$(br)$(bold)T1:$() Vorpal I  |  $(bold)T2:$() Vorpal II$(br)$(bold)T3:$() Vorpal III  |  $(bold)T4:$() Vorpal IV+$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$(): speed, so the shield builds fast.$(br)$(thing)Kirin$(): maximum mobility and wall climbing.$(br)$(thing)Fallen Angel$(): +15% on all damage stacks with Vorpal and is lethal. Bloodthirst's Strength I adds nothing, since Vorpal is already Strength."
     }
   ]
 }

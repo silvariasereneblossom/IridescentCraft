@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The Wall",
-      "text": "The -30% melee penalty is real and you kill slowly, but you $(bold)do not die$(). With +20% HP, +6 armor, +3 toughness and Guardian's aura, the Vanguard is built for group play.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): +60% total HP. Unkillable.$(br)$(thing)Dwarf$(): armor stacking and fire resistance.$(br)$(thing)Orc$(): attack speed offsets the -30% melee damage."
+      "text": "The -30% melee penalty is real and you kill slowly, but you $(bold)do not die$(). With +20% HP, +6 armor, +3 toughness and Guardian's aura, the Vanguard is built for group play.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): four extra hearts, and your +20% HP applies to them too.$(br)$(thing)Dwarf$(): +2 armor toughness and half damage from fire.$(br)$(thing)Orc$(): +10% melee damage brings your -30% to -20%, plus +10% attack speed and +20% HP."
     }
   ]
 }

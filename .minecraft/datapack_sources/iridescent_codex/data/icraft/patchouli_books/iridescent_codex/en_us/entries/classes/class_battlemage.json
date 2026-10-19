@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The Hybrid",
-      "text": "This is the only class where stacking Spell Power gear makes your sword hit harder (Arcane Cleave: +1 attack damage for every 50% bonus spell power, at 10 mana a hit).$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): +40% HP, no melee malus. The strongest pick.$(br)$(thing)Orc$(): +10% melee and attack speed, for the highest raw blade DPS.$(br)$(thing)Elf$(): +5% magic damage and speed for kiting."
+      "text": "This is the only class where stacking Spell Power gear makes your sword hit harder (Arcane Cleave: +1 attack damage for every 50% bonus spell power, at 10 mana a hit).$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$(): four extra hearts and Strength on demand. The strongest pick.$(br)$(thing)Orc$(): +10% melee damage and attack speed, up to +20% more when hungry.$(br)$(thing)Elf$(): +5% magic damage and speed for kiting."
     },
     {
       "type": "patchouli:text",

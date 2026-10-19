@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Group Play, cont.",
-      "text": "$(bold)Best race pairings:$()$(br)$(thing)Dwarf$(): fire resistance and heavy armor effectiveness make the best frontliner.$(br)$(thing)Human$(): the Versatile bonus fits any group role.$(br)$(thing)Orc$(): attack speed keeps your damage respectable while you tank.$(br2)$(bold)Next: spend points in the Fortitude tree ($(k:puffish_skills.open)).$()"
+      "text": "$(bold)Best race pairings:$()$(br)$(thing)Dwarf$(): half damage from fire and +2 armor toughness make a sturdy frontliner.$(br)$(thing)Human$(): +10% XP and no weaknesses, so any group role fits.$(br)$(thing)Orc$(): +20% HP to tank with, and +10% attack speed keeps your damage respectable.$(br2)$(bold)Next: spend points in the Fortitude tree ($(k:puffish_skills.open)).$()"
     }
   ]
 }

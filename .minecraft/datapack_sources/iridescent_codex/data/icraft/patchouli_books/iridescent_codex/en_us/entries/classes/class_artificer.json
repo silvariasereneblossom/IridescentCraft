@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Race Pairings",
-      "text": "$(thing)Dwarf$(): +25% mining speed that stacks with Crafting Mastery, and fire resistance for Nether resource runs.$(br2)$(thing)Halfling$(): food efficiency plus the ore bonus, for maximum resource gathering.$(br2)$(thing)Human$(): +15% XP and the Versatile bonus, for jack-of-all-trades building."
+      "text": "$(thing)Dwarf$(): +15% mining speed, which adds to Crafting Mastery's +15%, and half damage from fire on Nether resource runs.$(br2)$(thing)Halfling$(): food goes 20% further and +1 luck improves your loot rolls, for long gathering trips.$(br2)$(thing)Human$(): +10% XP and no weaknesses, for jack-of-all-trades building."
     }
   ]
 }
