@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b18a5735",
+    "generated_from":  "e8a17f34",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7628,8 +7628,8 @@
                                                                                   "size":  2814
                                                                               },
                   "kubejs/server_scripts/origins/class_passives.js":  {
-                                                                          "sha256":  "d24c7c1c433ba073de18e9c920b634fca6a6e5d8a88d51ac9ff6a8b9ec186f1b",
-                                                                          "size":  17669
+                                                                          "sha256":  "0c4b1bc38d107c3d991c6ba4fa6fb757304add08c1e52b353a8b36e5fc446af7",
+                                                                          "size":  18236
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
                                                                                   "sha256":  "ee8a0e63297374c337b03e1fcc6a3b43d96f6d9122c66a80bfae87eb14a859d7",

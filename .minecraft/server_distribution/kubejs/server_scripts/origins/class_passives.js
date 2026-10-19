@@ -355,6 +355,12 @@
   // summoned". This handler gives a Void Summoner's Iron's summon the same +15%
   // (2026-10-17, decision list 130, implemented on recommendation, for review).
   // A tamed animal is not an IMagicSummon: Pufferfish alone handles it, once.
+  // A summon's own swing (Utils.doMeleeAttack with the spell's damage source)
+  // names the summon as the DIRECT entity and the summoner as the attacker, so
+  // until 2026-10-19 only arrows (attacker = the raised skeleton) got the bonus.
+  // The summon is now the attacker or, failing that, the direct entity: one
+  // multiplication either way (decision list 162, ruled by the operator
+  // 2026-10-19: "Fix it, all summon hits +15%").
   var IMagicSummon_cp = null
   try {
     IMagicSummon_cp = Java.loadClass('io.redspace.ironsspellbooks.entity.mobs.IMagicSummon')
@@ -365,7 +371,10 @@
   if (IMagicSummon_cp !== null && icraft.lib.need('core', 'origins/class_passives')) {
     global.icraft.core.onHurt('icraft.class_passives.dark_pact_summons', function (event, ctx) {
       var summon = ctx.attacker
-      if (!summon || !(summon instanceof IMagicSummon_cp)) return
+      if (!summon || !(summon instanceof IMagicSummon_cp)) {
+        summon = global.icraft.core.direct(ctx.source)
+        if (!summon || !(summon instanceof IMagicSummon_cp)) return
+      }
       var summoner = summon.getSummoner()
       if (!summoner || !summoner.player || getClass(summoner) !== 'void_summoner') return
       event.amount = event.amount * DARK_PACT_SUMMON_MULT

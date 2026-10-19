@@ -215,6 +215,39 @@ T_run('Dark Pact reaches an Iron\'s Spells summon of a Void Summoner (decision l
   near(MB_hitBy(wolf, 10), 10, 'a Void Summoner\'s tamed wolf: the handler adds nothing (Pufferfish\'s +15% is not counted twice)')
 })
 
+// A summon's own swing (Utils.doMeleeAttack with the spell's SpellDamageSource, irons_spellbooks 3.15.5.1) names the
+// summon as the DIRECT entity and the summoner as the entity, its type the spell's school; a raised skeleton's arrow
+// (vanilla performRangedAttack) names the arrow as direct and the skeleton as the entity. Measured on a full-pack
+// server 2026-10-19 (internal dev/leftovers-2026-10-19/, decision list entry 162): until the fix only the arrow
+// got Dark Pact. The mock knows two of Iron's nine school types; every one of them reads as magic to the scripts
+// (core.isMagic: "magic" in the type), so the swings here go out as ice_magic (the polar bear's own school; the
+// zombie's is blood, the vex's evocation).
+var MB_hitFrom = function (typeId, entity, direct, amount) {
+  var z = T_mob('minecraft:zombie', 'minecraft:overworld', 2.5, 200, 0.5, 1000)
+  T_rand(0.999)
+  var ev = T_fireHurt(z, T.source(typeId, entity, direct), amount)
+  T_rand()
+  return Number(ev.getAmount())
+}
+T_run('Dark Pact reaches a summon\'s own swing, and a raised skeleton\'s arrow once (decision list entry 162, ruled 2026-10-19)', function () {
+  var vs = MB_player({ cls: 'icraft:void_summoner' }), none = MB_player({})
+  var summon = function (owner, id) { var s = new MB_MagicSummon(id || 'irons_spellbooks:summoned_zombie', T_level('minecraft:overworld'), 1.5, 200, 0.5); if (owner) s.setSummoner(owner); return s }
+  near(MB_hitFrom('irons_spellbooks:ice_magic', vs, summon(vs), 10), 11.5, 'a Void Summoner\'s summoned zombie swings (direct the summon, entity the summoner): 10 lands as 11.5')
+  near(MB_hitFrom('irons_spellbooks:ice_magic', vs, summon(vs, 'irons_spellbooks:summoned_vex'), 10), 11.5, '... a summoned vex: 11.5')
+  near(MB_hitFrom('irons_spellbooks:ice_magic', vs, summon(vs, 'irons_spellbooks:summoned_polar_bear'), 10), 11.5, '... a summoned polar bear: 11.5')
+  near(MB_hitFrom('irons_spellbooks:ice_magic', none, summon(none), 10), 10, 'a classless player\'s summon swings: 10')
+  var sk = summon(vs, 'irons_spellbooks:summoned_skeleton')
+  var arrow = new MEntity('minecraft:arrow', T_level('minecraft:overworld'), 1.5, 200, 0.5)
+  near(MB_hitFrom('minecraft:arrow', sk, arrow, 10), 11.5, 'a Void Summoner\'s raised skeleton\'s arrow (entity the skeleton, direct the arrow): 11.5, once')
+  var both = summon(vs)
+  near(MB_hitFrom('minecraft:mob_attack', both, both, 10), 11.5, 'a hit that names the summon as entity AND direct: 11.5, once')
+  // with the class's spell power (class_attribute_bonuses.js: 1.10 for the Void Summoner), as the server measured it:
+  // the swing is the summoner's spell hit, so attribute_sync.js puts it through the summoner's spell power too
+  MB_allTicks()
+  near(MB_hitFrom('irons_spellbooks:ice_magic', vs, summon(vs), 10), 12.65, 'after the class ticks: the swing x1.10 (spell power) x1.15 (Dark Pact) = 12.65')
+  near(MB_hitFrom('minecraft:arrow', sk, arrow, 10), 11.5, '... the skeleton\'s arrow stays 11.5 (the skeleton is the attacker: no player spell power)')
+})
+
 T_run('Soul Tether: a death within 16 blocks heals 5% of the mob\'s max health (up to 2) and gives 1 XP', function () {
   var at = 5000.5
   var vs = T_newPlayer('mbtether', 'minecraft:overworld', at, 64, 0.5)

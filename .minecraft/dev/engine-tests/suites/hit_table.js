@@ -184,6 +184,32 @@ T_run('the order every handler runs in is the order the Java registry walked the
   HT_row('class-passives.wanderer.sword.primary', passive('wanderer', function (p) { return HT_post(HT_zombie(), melee(p), 10) }, { hand: HT_sword('minecraft:iron_sword', 250, 0, false) }))
   HT_row('class-passives.wanderer.fist.primary', passive('wanderer', function (p) { return HT_post(HT_zombie(), melee(p), 10) }))
 
+  // -- origins/class_passives: the Void Summoner's Dark Pact on an Iron's Spells summon (on the dispatcher since it
+  //    was written, decision list entry 130; rows added with ruling 162, 2026-10-19). A summon's own swing
+  //    (Utils.doMeleeAttack, the spell's SpellDamageSource) is the summon direct and the SUMMONER the entity, its type
+  //    the spell's school (the mock has ice_magic; every Iron's school reads as magic); a raised skeleton's arrow is
+  //    the arrow direct and the skeleton the entity. VS_SP is the class's spell power as class_attribute_bonuses.js
+  //    keeps it (1.10): the swing is the summoner's spell hit, so attribute_sync.js multiplies it too.
+  var MSummon = __host.loadClass('mk.W$MagicSummon')
+  var VS = { cls: 'icraft:void_summoner' }
+  var summonOf = function (p, id) { var s = new MSummon(id, p.level, 1.5, 200, 0.5); s.setSummoner(p); return s }
+  var swingOf = function (p, id) { return new MSource('irons_spellbooks:ice_magic', p, summonOf(p, id)) }
+  var withSP = function (p) { p.persistentData.putDouble('icraft_spell_power', 1.1); return p }
+  HT_row('dark-pact.void-summoner.zombie-swing.primary', function () { return HT_post(HT_zombie(), swingOf(HT_player(VS), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.void-summoner.zombie-swing.primary.real', function () { return HT_real(HT_zombie(), swingOf(HT_player(VS), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.void-summoner.vex-swing.primary', function () { return HT_post(HT_zombie(), swingOf(HT_player(VS), 'irons_spellbooks:summoned_vex'), 10) })
+  HT_row('dark-pact.void-summoner.polar-bear-swing.primary', function () { return HT_post(HT_zombie(), swingOf(HT_player(VS), 'irons_spellbooks:summoned_polar_bear'), 10) })
+  HT_row('dark-pact.void-summoner.zombie-swing.class-spell-power.primary', function () { return HT_post(HT_zombie(), swingOf(withSP(HT_player(VS)), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.void-summoner.zombie-swing.secondary', function () { return HT_secondaryFrom(HT_zombie(), swingOf(HT_player(VS), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.void-summoner.skeleton-arrow.primary', function () {
+    var p = HT_player(VS), sk = summonOf(p, 'irons_spellbooks:summoned_skeleton')
+    return HT_post(HT_zombie(), HT_src.arrow(new MEntity('minecraft:arrow', p.level, 1, 200, 0.5), sk), 10)
+  })
+  HT_row('dark-pact.void-summoner.summon-both.primary', function () { var s = summonOf(HT_player(VS), 'irons_spellbooks:summoned_zombie'); return HT_post(HT_zombie(), HT_src.mob(s), 10) })
+  HT_row('dark-pact.classless.zombie-swing.primary', function () { return HT_post(HT_zombie(), swingOf(HT_player({}), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.other-class.zombie-swing.primary', function () { return HT_post(HT_zombie(), swingOf(HT_player({ cls: 'icraft:archmage' }), 'irons_spellbooks:summoned_zombie'), 10) })
+  HT_row('dark-pact.void-summoner.own-melee.primary', function () { return HT_post(HT_zombie(), melee(HT_player(VS)), 10) })
+
   // -- loot/tmb_plain_bow_effects (LATE)
   var bow = function (bowId, drive, health) {
     return function () {

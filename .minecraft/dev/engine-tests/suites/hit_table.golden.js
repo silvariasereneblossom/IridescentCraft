@@ -8,6 +8,7 @@
 //   ruling 14 (2026-10-14, decision list entry 69): the KubeJS armour clamp removed (the Java clamp holds armour at max - 1); the armour rows: a hit no longer sets the chestplate's damage in advance nor tags it in the scripts
 //   the Aether to tier 4 (ruled 2026-10-15/16, scope section 7.1): Aether's Call is a tier-4 unique, its arrow x1.40 instead of x1.20; the aethers-call primary row (6 -> 8.4, was 7.2)
 //   the Cyroheart Bow tier 2 with Frostmaw (2026-10-18, decision list entry 134, on recommendation): its arrow x1.20 instead of x1.10; the cyroheart-bow primary row (6 -> 7.2, was 6.6)
+//   ruling 162 (2026-10-19, decision list entry 162): Dark Pact reaches a summon's own swing; 11 dark-pact rows added (on the scripts before it the zombie / vex / polar bear swing rows were 10 and the class-spell-power row 11; the arrow, both-named, classless, other-class, own-melee and secondary rows were what they are)
 var HT_GOLDEN = [
   ["plain.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
   ["plain.primary.real", "real hit of 10: attack() true, health 20 -> 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
@@ -76,6 +77,17 @@ var HT_GOLDEN = [
   ["class-passives.berserker.broken-sword.primary", "posted 10 -> handed back 0 | [minecraft:zombie <- player] core:10>0 CANCELLED | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick absent, wanderer_wpn_sword absent, wanderer_wpn_fist absent"],
   ["class-passives.wanderer.sword.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount) | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick absent, wanderer_wpn_sword now, wanderer_wpn_fist absent"],
   ["class-passives.wanderer.fist.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount) | attacker: berserker_lastHitTick absent, samurai_firstStrikeTick absent, wanderer_wpn_sword absent, wanderer_wpn_fist now"],
+  ["dark-pact.void-summoner.zombie-swing.primary", "posted 10 -> handed back 11.5 | [minecraft:zombie <- irons_spellbooks.ice_magic] core:10>11.5"],
+  ["dark-pact.void-summoner.zombie-swing.primary.real", "real hit of 10: attack() true, health 20 -> 8.5 | [minecraft:zombie <- irons_spellbooks.ice_magic] core:10>11.5"],
+  ["dark-pact.void-summoner.vex-swing.primary", "posted 10 -> handed back 11.5 | [minecraft:zombie <- irons_spellbooks.ice_magic] core:10>11.5"],
+  ["dark-pact.void-summoner.polar-bear-swing.primary", "posted 10 -> handed back 11.5 | [minecraft:zombie <- irons_spellbooks.ice_magic] core:10>11.5"],
+  ["dark-pact.void-summoner.zombie-swing.class-spell-power.primary", "posted 10 -> handed back 12.649999618530273 | [minecraft:zombie <- irons_spellbooks.ice_magic] core:10>12.649999618530273"],
+  ["dark-pact.void-summoner.zombie-swing.secondary", "secondary hit of 10 (dealDamageFrom, the source of the first hit): true, health 20 -> 10 | [minecraft:zombie <- irons_spellbooks.ice_magic] (no handler changed the amount)"],
+  ["dark-pact.void-summoner.skeleton-arrow.primary", "posted 10 -> handed back 11.5 | [minecraft:zombie <- arrow] core:10>11.5"],
+  ["dark-pact.void-summoner.summon-both.primary", "posted 10 -> handed back 11.5 | [minecraft:zombie <- mob] core:10>11.5"],
+  ["dark-pact.classless.zombie-swing.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- irons_spellbooks.ice_magic] (no handler changed the amount)"],
+  ["dark-pact.other-class.zombie-swing.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- irons_spellbooks.ice_magic] (no handler changed the amount)"],
+  ["dark-pact.void-summoner.own-melee.primary", "posted 10 -> handed back 10 | [minecraft:zombie <- player] (no handler changed the amount)"],
   ["bow-effects.dark-bow.primary", "posted 6 -> handed back 6.599999904632568 | [minecraft:zombie <- arrow] unique_tier_buff:6>6.599999904632568 | victim: blindness yes, weakness yes, levitation no, wither no, slowness no, fire 0, frozen 0"],
   ["bow-effects.dark-bow.secondary", "secondary hit of 6 (dealDamageFrom, the source of the first hit): true, health 20 -> 14 | [minecraft:zombie <- arrow] (no handler changed the amount) | victim: blindness no, weakness no, levitation no, wither no, slowness no, fire 0, frozen 0"],
   ["bow-effects.cyroheart-bow.primary", "posted 6 -> handed back 7.199999809265137 | [minecraft:zombie <- arrow] unique_tier_buff:6>7.199999809265137 | victim: blindness no, weakness no, levitation no, wither no, slowness yes, fire 0, frozen 120"],
