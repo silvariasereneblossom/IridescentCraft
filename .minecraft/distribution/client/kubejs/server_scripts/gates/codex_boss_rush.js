@@ -370,7 +370,7 @@ EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', e
       // ladder); the kills stay counted for when the stage is held.
       player.tell(Text.gold('[Boss Rush] ')
         .append(Text.white(bossName))
-        .append(Text.gray(' defeated — Tier ' + tier + ': '))
+        .append(Text.gray(' defeated. Tier ' + tier + ': '))
         .append(Text.aqua(newCount + '/' + total))
         .append(Text.yellow('  ✖ unlock ' + below + ' first, then /icraft codex bosses')))
     } else if (newCount >= need) {
@@ -379,7 +379,7 @@ EntityEvents.death(icraft.guard('gates/codex_boss_rush', 'EntityEvents.death', e
       // Progress nudge (mirrors milestone_detection.js's per-kill tell style).
       player.tell(Text.gold('[Boss Rush] ')
         .append(Text.white(bossName))
-        .append(Text.gray(' defeated — Tier ' + tier + ': '))
+        .append(Text.gray(' defeated. Tier ' + tier + ': '))
         .append(Text.aqua(newCount + '/' + total))
         .append(Text.gray(' (need ' + need + ' = ' + pctTxt + '%)')))
     }
@@ -418,7 +418,7 @@ function brReport(player) {
     else line = line.append(Text.gray('  (' + (need - cleared) + ' more)'))
     player.tell(line)
   }
-  player.tell(Text.gray('  T3 100% includes ').append(Text.red('Lucifer')).append(Text.gray(' — the combat T3→T4 route.')))
+  player.tell(Text.gray('  T3 100% includes ').append(Text.red('Lucifer')).append(Text.gray(' (the combat T3→T4 route).')))
   player.tell(Text.gold('═══════════════════════'))
 
   // A pure-display call may reveal the player already qualifies (e.g. roster

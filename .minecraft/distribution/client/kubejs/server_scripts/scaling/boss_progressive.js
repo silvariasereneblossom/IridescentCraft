@@ -188,8 +188,8 @@ function pkReport(player) {
       shown++
     }
   }
-  if (shown === 0) player.tell(Text.gray('  No boss kills counted yet. Every boss you help kill counts, within 64 blocks.'))
-  player.tell(Text.gray('  The most kills among the players near a boss sets it, the first time it trades a hit.'))
+  if (shown === 0) player.tell(Text.gray('  No boss kills counted yet. Every boss you help kill within 64 blocks counts.'))
+  player.tell(Text.gray('  The strength of a boss is set by the highest kill count among the players near it, the first time it trades a hit.'))
   return 1
 }
 

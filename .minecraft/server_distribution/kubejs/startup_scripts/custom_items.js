@@ -275,7 +275,7 @@ StartupEvents.registry('item', icraft.guard('custom_items', 'StartupEvents.regis
     event.create('kubejs:rift_shard')
         .displayName('§7Rift Shard (deprecated — relog to convert)')
         .tooltip('§dA fragment of torn reality')
-        .tooltip('§cDeprecated — relog to receive Iridescent Rift Shard')
+        .tooltip('§cDeprecated: relog to receive Iridescent Rift Shard')
         .maxStackSize(64)
         .rarity('epic')
         .textureJson({ layer0: 'minecraft:item/amethyst_shard' })

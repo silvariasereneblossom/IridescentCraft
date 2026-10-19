@@ -54,9 +54,9 @@ function endGateNotify(endPlayers) {
     endPlayers.forEach(p => {
       if (!p.persistentData.getBoolean('icraft_end_notified')) {
         p.tell(Text.darkPurple('═══════════════════════════════════════'))
-        p.tell(Text.darkPurple('  ◆ THE END — EXPLORATION REQUIRED ◆'))
+        p.tell(Text.darkPurple('  ◆ THE END: EXPLORATION REQUIRED ◆'))
         p.tell(Text.gray('  The Dragon senses your presence but will not'))
-        p.tell(Text.gray('  manifest until you have proven yourself.'))
+        p.tell(Text.gray('  appear until you have proven yourself.'))
         p.tell(Text.white(''))
         p.tell(Text.white('  Explore The End to unlock the Dragon fight:'))
         p.tell(Text.gray('  ○ Reach the outer End islands (500+ blocks out)'))
@@ -282,7 +282,7 @@ global.tick_dragonSummonCrystal = (event) => {
     player.tell(Text.gold('═══════════════════════════════════════'))
     player.tell(Text.gold('  ★ THE DRAGON AWAKENS ★'))
     player.tell(Text.white('  The End shudders as ancient power stirs...'))
-    player.tell(Text.gray('  Prepare yourself for the ultimate battle!'))
+    player.tell(Text.gray('  Prepare yourself for the fight!'))
     player.tell(Text.gold('═══════════════════════════════════════'))
 
     player.server.tell(
@@ -367,7 +367,7 @@ PlayerEvents.inventoryChanged(icraft.guard('end/dragon_exploration_gate', 'Playe
 
   let pdata = player.persistentData
   if (pdata.getBoolean('icraft_end_explored')) {
-    player.tell(Text.lightPurple('  ◆ End Exploration: COMPLETE — Craft and use a Dragon Summoning Crystal!'))
+    player.tell(Text.lightPurple('  ◆ End Exploration: COMPLETE. Craft and use a Dragon Summoning Crystal!'))
     return
   }
 

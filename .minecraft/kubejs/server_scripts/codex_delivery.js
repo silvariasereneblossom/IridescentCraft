@@ -322,7 +322,7 @@
     try {
       player.tell('\u00a76[Starter Kit]\u00a7r Your ' + displayName(className) +
         ' starter kit was missing its spell book' + (books > 1 ? 's' : '') +
-        (stacks.length > books ? ' and scrolls' : '') + ' \u2014 they have been added to your inventory.')
+        (stacks.length > books ? ' and scrolls' : '') + '. They have been added to your inventory.')
     } catch (e2) {
       warnAbout('starter kit top-up message', e2)
     }
@@ -347,7 +347,7 @@
     if (result === 'already') {
       player.tell('\u00a7e[Starter Kit]\u00a7r You have already received the ' + displayName(classOf(player)) + ' starter kit.')
     } else if (result === 'not-magic') {
-      player.tell('\u00a7e[Starter Kit]\u00a7r Detected class: \u00a7b' + classOf(player) + '\u00a7r (not a magic class — no catalyst starter kit for this class).')
+      player.tell('\u00a7e[Starter Kit]\u00a7r Detected class: \u00a7b' + classOf(player) + '\u00a7r (not a magic class, so there is no catalyst starter kit for it).')
     } else if (result === 'no-class') {
       player.tell('\u00a7c[Starter Kit]\u00a7r No class detected yet. Pick a class first; /icraftorigindump shows what Origins has recorded.')
     }

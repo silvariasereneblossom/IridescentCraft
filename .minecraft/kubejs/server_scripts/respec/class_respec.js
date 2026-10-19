@@ -210,7 +210,7 @@
       var again = readClass(player, true)
       if (again.known && again.id === null) {
         try { player.server.runCommandSilent('origin gui ' + player.username + ' ' + CLASS_LAYER) } catch (e) {}
-        tell(player, TAG + '§7You are already choosing a class — pick one in the class screen. (No extra cost.)')
+        tell(player, TAG + '§7You are already choosing a class: pick one in the class screen. (No extra cost.)')
         return
       }
       clearPending(key)   // the class arrived between two polls
@@ -246,7 +246,7 @@
 
     // 2-3. reset + confirm. Nothing has been consumed up to here.
     if (!resetClassLayer(player)) {
-      tell(player, TAG + '§cThe altar could not reset your class. Nothing was consumed — please tell an admin.')
+      tell(player, TAG + '§cThe altar could not reset your class. Nothing was consumed. Please tell an admin.')
       return
     }
 

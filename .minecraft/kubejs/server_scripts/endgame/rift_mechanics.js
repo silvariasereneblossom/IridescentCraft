@@ -201,13 +201,13 @@ ItemEvents.pickedUp(icraft.guard('endgame/rift_mechanics', 'ItemEvents.pickedUp'
 
         // Compendium milestones — one chat line as each threshold is crossed
         if (newTotal >= 10 && current < 10) {
-            player.tell('§d[Compendium] §7Rift Collector — Earned 10 Rift Shards')
+            player.tell('§d[Compendium] §7Rift Collector: Earned 10 Rift Shards')
         }
         if (newTotal >= 50 && current < 50) {
-            player.tell('§d[Compendium] §7Rift Hoarder — Earned 50 Rift Shards')
+            player.tell('§d[Compendium] §7Rift Hoarder: Earned 50 Rift Shards')
         }
         if (newTotal >= 250 && current < 250) {
-            player.tell('§d[Compendium] §5Rift Master — Earned 250 Rift Shards')
+            player.tell('§d[Compendium] §5Rift Master: Earned 250 Rift Shards')
         }
     } catch (e) {
         console.warn('[rift_mechanics] shard pickup tracking threw: ' + e)
@@ -229,10 +229,10 @@ ItemEvents.crafted(icraft.guard('endgame/rift_mechanics', 'ItemEvents.crafted', 
         data.putInt('mythic_items_crafted', crafted)
 
         if (crafted >= 1 && before < 1) {
-            player.tell('§d[Compendium] §7Mythic Initiate — Crafted your first Mythic Catalyst')
+            player.tell('§d[Compendium] §7Mythic Initiate: Crafted your first Mythic Catalyst')
         }
         if (crafted >= 5 && before < 5) {
-            player.tell('§d[Compendium] §5Mythic Artisan — Crafted 5 Mythic Catalysts')
+            player.tell('§d[Compendium] §5Mythic Artisan: Crafted 5 Mythic Catalysts')
         }
     } catch (e) {
         console.warn('[rift_mechanics] catalyst craft tracking threw: ' + e)
@@ -250,7 +250,7 @@ PlayerEvents.inventoryChanged(icraft.guard('endgame/rift_mechanics', 'PlayerEven
         let data = player.persistentData
         if (!data.getBoolean('rift_keystone_crafted')) {
             data.putBoolean('rift_keystone_crafted', true)
-            player.tell('§d[Compendium] §7Rift Pioneer — Crafted your first Rift Keystone')
+            player.tell('§d[Compendium] §7Rift Pioneer: Crafted your first Rift Keystone')
         }
     }
 
@@ -259,7 +259,7 @@ PlayerEvents.inventoryChanged(icraft.guard('endgame/rift_mechanics', 'PlayerEven
         let data = player.persistentData
         if (!data.getBoolean('rift_core_obtained')) {
             data.putBoolean('rift_core_obtained', true)
-            player.tell('§d[Compendium] §5Core of the Rift — Obtained a Rift Core')
+            player.tell('§d[Compendium] §5Core of the Rift: Obtained a Rift Core')
         }
     }
 
@@ -268,7 +268,7 @@ PlayerEvents.inventoryChanged(icraft.guard('endgame/rift_mechanics', 'PlayerEven
         let data = player.persistentData
         if (!data.getBoolean('primordial_obtained')) {
             data.putBoolean('primordial_obtained', true)
-            player.tell('§d[Compendium] §7Primordial Touch — Obtained Primordial Essence')
+            player.tell('§d[Compendium] §7Primordial Touch: Obtained Primordial Essence')
         }
     }
 }))

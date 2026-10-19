@@ -458,7 +458,7 @@ function showTargetMenu(player) {
         return
     }
 
-    player.tell(Text.aqua("═══ Boss Compass — choose a target (Tier " + tier + " and below) ═══"))
+    player.tell(Text.aqua("═══ Boss Compass: choose a target (Tier " + tier + " and below) ═══"))
     player.tell(Text.darkGray("‹ click a boss name to track it ›"))
     var lastTier = 0
     // RHINO: every per-row value is a `var`. As loop-body `const`s they kept the
@@ -474,7 +474,7 @@ function showTargetMenu(player) {
         var anchor = meta.structure || meta.signatureBlock
         var verb = isSummon ? "» summon info" : "» track"
         var hover = isSummon
-            ? Text.gray(meta.display + " — no compass anchor; click for the summon route")
+            ? Text.gray(meta.display + ": no compass anchor; click for the summon route")
             : Text.gray("Locate " + meta.display + "'s arena ("
                 + (anchor || "?") + ")")
         // The whole [Boss Name] is the click target, styled as an underlined link so it
@@ -526,7 +526,7 @@ function applyTarget(player, boss_id, posLabel) {
         if (meta.dimension) {
             player.tell(Text.gray("  Arena generates in ")
                 .append(Text.aqua(meta.dimension))
-                .append(Text.gray(" — explore there, or test-spawn the boss:")))
+                .append(Text.gray(". Explore there, or test-spawn the boss:")))
         }
         if (meta.summonEntity) {
             player.tell(Text.darkAqua("  /summon " + meta.summonEntity)
@@ -548,7 +548,7 @@ function applyTarget(player, boss_id, posLabel) {
                 .append(Text.gold(anchor))
                 .append(Text.yellow(") generates in "))
                 .append(Text.aqua(meta.dimension))
-                .append(Text.yellow(" — travel there, then re-target." + posTag)))
+                .append(Text.yellow(". Travel there, then re-target." + posTag)))
         } else if (meta.locator === "block") {
             // Block scan only sees loaded chunks, so "not found" usually means
             // "not close enough yet" rather than "doesn't exist here".
@@ -556,7 +556,7 @@ function applyTarget(player, boss_id, posLabel) {
                 .append(Text.gold(meta.display))
                 .append(Text.yellow(" arena in range. Explore "))
                 .append(Text.aqua(meta.dimension || "the area"))
-                .append(Text.yellow(" — the compass locks on once you're near it." + posTag)))
+                .append(Text.yellow(". The compass locks on once you're near it." + posTag)))
             if (meta.summonEntity) {
                 player.tell(Text.darkGray("  (test-spawn: ")
                     .append(Text.darkAqua("/summon " + meta.summonEntity)
@@ -574,7 +574,7 @@ function applyTarget(player, boss_id, posLabel) {
     var dir = getCompassDirection(player, spawn)
     player.tell(Text.green("Compass locked on ")
         .append(Text.gold(meta.display).bold(true))
-        .append(Text.green(" — " + dist + " blocks " + dir + "." + posTag)))
+        .append(Text.green(": " + dist + " blocks " + dir + "." + posTag)))
     if (meta.ritual) {
         player.tell(Text.darkAqua("  ⚑ " + meta.ritual))
     }
@@ -661,12 +661,12 @@ global.tick_bossCompassHud = function (event) {
 
     var msg = null
     if (!inTargetDimension(player, target)) {
-        msg = Text.yellow("✦ " + label + " — in " + target.dim)
+        msg = Text.yellow("✦ " + label + ", in " + target.dim)
     } else {
         var dist = getDistance(player, target.pos)
         var arrow = getCompassArrow(player, target.pos)
         msg = Text.gold(arrow + " ").append(Text.aqua(label))
-            .append(Text.gray(" — " + dist + "m"))
+            .append(Text.gray(": " + dist + "m"))
     }
     // displayClientMessage(Component, true) renders on the action bar (above
     // the hotbar). `msg` is already a MutableComponent (Text.* returns one), so

@@ -23,7 +23,7 @@ function brokenTooltipHandler(stack, advanced, text) {
   if (!stack.nbt) return
   if (!stack.nbt.getBoolean('icraft_broken')) return
   text.add(1, Text.red(Text.of('✘ BROKEN').bold()))
-  text.add(2, Text.gray('Repair at an anvil to restore functionality'))
+  text.add(2, Text.gray('Repair it at an anvil to use it again'))
 }
 
 ItemEvents.tooltip(icraft.guard('broken_tooltip', 'ItemEvents.tooltip', event => {

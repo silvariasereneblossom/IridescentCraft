@@ -223,7 +223,7 @@ function relicSubmit(player, confirm) {
   const ids = Object.keys(found)
 
   if (ids.length === 0) {
-    player.tell(Text.gold('[Relics] ').append(Text.gray('No surplus relics or curios in your inventory to convert. (Worn relics are safe -- only your backpack is scanned.)')))
+    player.tell(Text.gold('[Relics] ').append(Text.gray('No surplus relics or curios in your inventory to convert. (Worn relics are safe: only your backpack is scanned.)')))
     return 0
   }
 
@@ -247,7 +247,7 @@ function relicSubmit(player, confirm) {
 
   // ---- PREVIEW ----
   if (!confirm) {
-    player.tell(Text.gold('═══ Relic Sink — preview ═══'))
+    player.tell(Text.gold('═══ Relic Sink: preview ═══'))
     lines.forEach(l => {
       let line = Text.gray('  ' + l.n + '× ').append(Text.white(l.name))
         .append(Text.gray(' → ')).append(Text.aqua('+' + l.essence + ' essence'))

@@ -236,7 +236,7 @@ function brokerOpen(player) {
     player.tell(Text.gold('[Relic Broker] ').append(Text.gray('Purchases left today: '))
       .append(remaining > 0
         ? Text.aqua(remaining + '/' + BROKER_DAILY_CAP)
-        : Text.red('0/' + BROKER_DAILY_CAP + ' — restocks at dawn')))
+        : Text.red('0/' + BROKER_DAILY_CAP + ' (restocks at dawn)')))
     var offers = brokerBuildOffers(player, day)
     $RelicBroker.open(player, offers, null, BROKER_DAILY_CAP) // null title -> jar default "Relic Broker"
   } catch (e) {
@@ -276,7 +276,7 @@ global.icraftBrokerRestockTick = function (event) {
     if (global.icraftBrokerLastDay === undefined) { global.icraftBrokerLastDay = day; return }
     if (day !== global.icraftBrokerLastDay) {
       global.icraftBrokerLastDay = day
-      server.tell(Text.gold('☼ The Relic Broker has restocked — new rotating stock, and your daily trades are refreshed.'))
+      server.tell(Text.gold('☼ The Relic Broker has restocked: new rotating stock, and your daily trades are refreshed.'))
     }
   } catch (e) {
     if (!global.icraftBrokerRestockWarned) {

@@ -2,11 +2,11 @@
   "origin.origins.arachnid.description": "Born of spider blood, Arachnids scale walls with ease and spin webs to ensnare their prey. Their predatory metabolism craves meat, though they can stomach anything in a pinch.",
   "origin.origins.avian.description": "Graceful sky-dwellers who thrive at high altitudes. The higher they climb, the faster and more agile they become. Their delicate digestion favors plants and grains over heavy meats.",
   "origin.origins.blazeborn.description": "Late descendants of the Blaze, Blazeborn walk through fire and lava unscathed. Their inner flame fuels a kinship with the Nether, but contact with water dampens their power and slows them to a crawl.",
-  "origin.origins.enderian.description": "Children of the Ender Dragon, Enderians slip between spaces with a thought. Each teleport leaves them surging with void energy, amplifying their strikes. Water is anathema to their nature, draining their strength on contact.",
+  "origin.origins.enderian.description": "Children of the Ender Dragon, Enderians slip between spaces with a thought. Each teleport leaves them surging with void energy, and their strikes hit harder for it. They cannot abide water, which drains their strength on contact.",
   "origin.origins.merling.description": "Natural inhabitants of the deep, Merlings breathe and thrive beneath the waves. On land they function well enough, but staying dry too long leaves them sluggish and gasping.",
-  "origin.origins.phantom.description": "Half-human, half-phantom, these spectral beings can phase through solid blocks at will. Their ghostly nature halves their vitality, and direct sunlight saps what remains. Phantoms never truly die \u2014 at the brink of death, their form collapses into a weakened spectral state for 5 minutes instead.",
-  "origin.origins.shulk.description": "Kin to the Shulker, their hardened shell provides natural armor and cushions their equipment against the ravages of death. Powerful arms let them mine faster, though their heavy frames demand more sustenance.",
-  "origin.origins.feline.description": "Cat-like and nimble, Felines move in silence and always land on their feet. Their natural dexterity is unmatched, but their light frames leave them with 20% less health than sturdier folk.",
+  "origin.origins.phantom.description": "Half-human, half-phantom, these spectral beings can phase through solid blocks at will. Their ghostly nature halves their vitality, and direct sunlight saps what remains. Phantoms never truly die: at the brink of death, their form collapses into a weakened spectral state for 5 minutes instead.",
+  "origin.origins.shulk.description": "Kin to the Shulker, the Shulk have a hardened shell that provides natural armor and spares their equipment some wear when they die. Powerful arms let them mine faster, though their heavy frames demand more sustenance.",
+  "origin.origins.feline.description": "Cat-like and nimble, Felines move in silence and always land on their feet. For all their dexterity, their light frames leave them with 20% less health than sturdier folk.",
   "origin.origins.human.name": "Mundane",
   "origin.origins.human.description": "An ordinary soul with no innate gifts or curses. The balanced choice for those who prefer to let their Race and Class define them entirely.",
 
@@ -52,21 +52,21 @@
   "layer.origins.gender.gui_title.view_origin": "Your Gender",
 
   "origin.icraft.demi_god.name": "Demi-God",
-  "origin.icraft.demi_god.description": "Scion of a forgotten god, the Demi-God towers over mortal limits with +40% health and the power to phase through matter. Divine Fury grants Strength on command. Raw meat sustains them doubly, cooked meat half again more. Fire burns them 50% hotter, and the Nether sickens their divine blood \u2014 but they endure.",
+  "origin.icraft.demi_god.description": "Scion of a forgotten god, the Demi-God towers over mortal limits with +40% health and the power to phase through matter. Divine Fury grants Strength on command. Raw meat nourishes them twice as much as usual, cooked meat one and a half times as much. Fire burns them 50% hotter, and the Nether sickens their divine blood, though they can fight through it.",
   "origin.icraft.ryu.name": "Ryu",
   "origin.icraft.ryu.description": "Dragon-blooded and ancient, the Ryu shrugs off 25% of all damage and heals rapidly from hearty meals. Broken wings grant slow fall rather than true flight. Their draconic stomach rejects anything that isn't meat, and healing potions are only half as potent on their scaled hide.",
   "origin.icraft.fallen_angel.name": "Fallen Angel",
-  "origin.icraft.fallen_angel.description": "A celestial being cast from grace, frail but devastatingly lethal. All attacks deal 15% bonus damage, though their broken body holds 20% less health. Tattered wings slow their descent, and they crave meat to fuel their war against creation. Fire sears them deeper than most.",
+  "origin.icraft.fallen_angel.description": "A celestial being cast from grace, frail but deadly. All attacks deal 15% bonus damage, though their broken body holds 20% less health. Tattered wings slow their descent, and they crave meat to fuel their war against creation. Fire sears them deeper than most.",
   "origin.icraft.kirin.name": "Kirin",
-  "origin.icraft.kirin.description": "A mythical beast of impossible speed. Kirin scale walls like spiders, see in the dark, and sprint faster than any other race. Their lithe frames hold 20% less health, and the relentless pace of their movement burns through food quickly.",
+  "origin.icraft.kirin.description": "A mythical beast built for speed. Kirin scale walls like spiders, see in the dark, and sprint faster than any other race. Their lithe frames hold 20% less health, and all that running burns through food quickly.",
   "origin.icraft.witch_of_ink.name": "Witch of Ink",
   "origin.icraft.witch_of_ink.description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste.",
   "origin.icraft.artificial_construct.name": "Artificial Construct",
-  "origin.icraft.artificial_construct.description": "An iron golem given life. Food gives 25% nourishment \u2014 eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage.",
+  "origin.icraft.artificial_construct.description": "An iron golem given life. Food gives 25% nourishment; eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage.",
 
   "origin.icraft.witherborn.name": "Witherborn",
-  "origin.icraft.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets \u2014 even bosses normally immune. But hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment and drains 50% faster. Keep eating or wither away.",
+  "origin.icraft.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets, even bosses that are normally immune. Hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment, and hunger drains 50% faster. Keep eating or wither away.",
 
   "origin.icraft.slimebodied.name": "Slimebodied",
-  "origin.icraft.slimebodied.description": "An amorphous being of living gel. Food provides only 5% nourishment, but hunger drains at 25% normal rate and never while idle. Well-fed slimes gain up to 25% damage reduction. 10-second cooldown between meals. 75% base health, -50% armor toughness. Satiety never drops below 25%. Invest in high-quality food."
+  "origin.icraft.slimebodied.description": "An amorphous being of living gel. Food provides only 5% nourishment, but hunger drains at 25% of the normal rate and never while idle. Well-fed slimes gain up to 25% damage reduction. 10-second cooldown between meals. 75% base health, -50% armor toughness. Satiety never drops below 25%. Invest in high-quality food."
 }

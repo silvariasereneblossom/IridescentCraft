@@ -41,7 +41,7 @@ try {
   // ── Witch status ───────────────────────────────────────────────────────
   var dumpWitchStatus = function(sp) {
     if (!isOriginType(sp, 'witch_of_ink')) {
-      sp.tell('§7You are not a Witch of Ink. Progression tracker has no data to display.')
+      sp.tell('§7You are not a Witch of Ink, so this tracker has nothing to show.')
       return
     }
     let data = sp.persistentData
@@ -73,7 +73,7 @@ try {
       sp.tell('§7  §lEffective total damage: §a+' + Math.round(totalDmg * 1000) / 10 + '%')
       sp.tell('§7  Passive: +15% HP, Haste I, Resistance I, Fire Resist, Regen I')
     } else if (count >= 200) {
-      sp.tell('§e(Capstone trigger pending -- relog or kill another boss to apply.)')
+      sp.tell('§e(Capstone pending: relog or kill another boss to apply it.)')
     } else {
       sp.tell('§7Capstone Blessing of Penthesilea at §f200§7 (need §f' + (200 - count) + '§7 more counter)')
     }
@@ -82,7 +82,7 @@ try {
   // ── Construct status ───────────────────────────────────────────────────
   var dumpConstructStatus = function(sp) {
     if (!isOriginType(sp, 'artificial_construct')) {
-      sp.tell('§7You are not an Artificial Construct. Progression tracker has no data to display.')
+      sp.tell('§7You are not an Artificial Construct, so this tracker has nothing to show.')
       return
     }
     let data = sp.persistentData
@@ -115,7 +115,7 @@ try {
       sp.tell('§7  +25% melee damage (total melee: §a+' + Math.round((cumulativeAt(5) + 0.25) * 100) + '%§7)')
       sp.tell('§7  +1 armor toughness (total toughness: §a+' + (cumulativeAt(5) * 4 + 1).toFixed(1) + '§7)')
     } else if (level >= 5) {
-      sp.tell('§e(Capstone trigger pending -- eat one more iron to apply.)')
+      sp.tell('§e(Capstone pending: eat one more iron to apply it.)')
     } else {
       sp.tell('§7Iron Apotheosis capstone unlocks at L5.')
     }

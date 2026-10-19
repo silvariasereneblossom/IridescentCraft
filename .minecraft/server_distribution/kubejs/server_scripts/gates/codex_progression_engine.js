@@ -424,7 +424,7 @@ function codexSubmit(player, lane) {
 
   // liveness: a submission scanned the inventory, took materials and granted tokens
   icraft.live.fired('codex-submit')
-  player.tell(Text.gold('═══ Codex Submission' + (lane ? ' — ' + lane.charAt(0).toUpperCase() + lane.slice(1) : '') + ' ═══'))
+  player.tell(Text.gold('═══ Codex Submission' + (lane ? ': ' + lane.charAt(0).toUpperCase() + lane.slice(1) : '') + ' ═══'))
   lines.forEach(l => {
     player.tell(Text.gray('  ' + l.consumed + '× ').append(Text.white(l.name))
       .append(Text.gray(' → ')).append(Text.aqua('+' + l.tokens + ' T' + l.tier + ' token' + (l.tokens === 1 ? '' : 's'))))
@@ -465,13 +465,13 @@ function codexBalance(player) {
       .append(colour(held[t] + ' / ' + c.threshold))
     if (has) line = line.append(Text.green('  ✔ ' + c.grantsStage + ' already unlocked'))
     else if (meets && blocked) line = line.append(Text.yellow('  ✖ unlock ' + below + ' first'))
-    else if (meets) line = line.append(Text.aqua('  ★ threshold met — advancing!'))
+    else if (meets) line = line.append(Text.aqua('  ★ threshold met, advancing!'))
     player.tell(line)
   }
   // Which tier bulk metals (iron/copper/gold/redstone) currently mint toward.
   const curTier = codexCurrentTier(player)
   if (curTier === 0) {
-    player.tell(Text.gray('  Bulk metals: ').append(Text.green('all tiers cleared (T4) — no longer minting')))
+    player.tell(Text.gray('  Bulk metals: ').append(Text.green('all tiers cleared (T4), no longer minting')))
   } else {
     player.tell(Text.gray('  Bulk metals mint: ').append(Text.aqua('Tier ' + curTier + ' tokens')).append(Text.gray(' (current transition)')))
   }
@@ -615,7 +615,7 @@ function codexExchange(player, tier, amountArg) {
 function codexExchangeHelp(player) {
   player.tell(Text.gold('═══ Codex Exchange ═══'))
   if (!AStages.playerHasStage('tier_4', player)) {
-    player.tell(Text.gray('  Unlocks at ').append(Text.yellow('Tier 4')).append(Text.gray(' — converts banked tokens → vanilla XP.')))
+    player.tell(Text.gray('  Unlocks at ').append(Text.yellow('Tier 4')).append(Text.gray('. Converts banked tokens → vanilla XP.')))
   } else {
     player.tell(Text.gray('  Convert banked tokens → vanilla XP (Aptitude leveling, enchanting, anvil repairs).'))
   }

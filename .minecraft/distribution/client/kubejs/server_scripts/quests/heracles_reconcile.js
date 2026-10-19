@@ -467,7 +467,7 @@ function reconcileAll(player, verbose) {
   }
   if (did > 0) {
     player.tell(Text.gold('[Quests] ').append(Text.gray(
-      'Synced ' + did + ' quest' + (did === 1 ? '' : 's') + ' you had already earned — claim their rewards in the book.')))
+      'Synced ' + did + ' quest' + (did === 1 ? '' : 's') + ' you had already earned. Claim their rewards in the book.')))
     console.log('[heracles_reconcile] reconciled ' + did + ' quest(s) for ' + player.username +
       ': ' + report.filter(r => !/already|not-yet/.test(r[1])).map(r => r[0]).join(', '))
   }

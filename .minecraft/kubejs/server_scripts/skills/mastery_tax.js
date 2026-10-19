@@ -100,8 +100,8 @@
                   : invested <= 96 ? ' §6(Mastery Tax: heavy)'
                   : ' §c(Mastery Tax: extreme)'
     player.tell('§7[Mastery] §fAptitude level ' + invested + '/' + (MAX_TOTAL - BASELINE) + tierLabel +
-      ' §7— §f' + drained + ' bonus XP drained' +
-      (drained < totalTax ? ' §7(of ' + totalTax + ' — that was all you had)' : ''))
+      ' §7· §f' + drained + ' bonus XP drained' +
+      (drained < totalTax ? ' §7(of ' + totalTax + '; that was all you had)' : ''))
   }
 
   var onTick = function (event) {
