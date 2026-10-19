@@ -1,0 +1,10 @@
+{
+  "type": "irons_spellbooks:append_loot",
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/simple_dungeon"
+    }
+  ],
+  "key": "forbidden_arcanus:chests/additions/simple_dungeon_additions"
+}

@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "e8a17f34",
+    "generated_from":  "a6131be8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6423,10 +6423,34 @@
                                                                                                                         "sha256":  "2ed3da619c454964b6258c3b6132b245ec12d43536996d4aa68d7a9e90073c51",
                                                                                                                         "size":  271
                                                                                                                     },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/artisan_relic_addition.json":  {
+                                                                                                   "sha256":  "11453c4df241e0ae287b16bb05369b8e7e7b13277028e1d763990421bca644f4",
+                                                                                                   "size":  630
+                                                                                               },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/crimson_stone_addition.json":  {
+                                                                                                   "sha256":  "01912d6f8e0833b64d693f7877a54fbe87481676caf6c4e0448c8e9be9908a51",
+                                                                                                   "size":  251
+                                                                                               },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/elementarium_addition.json":  {
+                                                                                                  "sha256":  "45d584269ad967449abf44f3e1cf1890759171a4c8a49d3d0e30224cdd9c0270",
+                                                                                                  "size":  735
+                                                                                              },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/end_city_treasure_additions.json":  {
+                                                                                                        "sha256":  "c72fbc112588010d6ef1de02084bd49ffac0f60c94fbd4298ff516b0b7ad6750",
+                                                                                                        "size":  257
+                                                                                                    },
                   "kubejs/data/forbidden_arcanus/loot_modifiers/ender_dragon_additions.json":  {
                                                                                                    "sha256":  "7666596585e5bb37e697a1683ae3839384e0c430cd465fe0677fe25238f4e83a",
                                                                                                    "size":  251
                                                                                                },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/maledictus_pact.json":  {
+                                                                                            "sha256":  "7a70592b67a0834f353458e5316a4123b5762200005df84d231a5d8b1042d3af",
+                                                                                            "size":  253
+                                                                                        },
+                  "kubejs/data/forbidden_arcanus/loot_modifiers/simple_dungeon_additions.json":  {
+                                                                                                     "sha256":  "493fbb4c1fd76f2955126fcc7d942ab978c57c144dd5837af2a45304184f0433",
+                                                                                                     "size":  251
+                                                                                                 },
                   "kubejs/data/forge/loot_modifiers/global_loot_modifiers.json":  {
                                                                                       "sha256":  "26bfe32a9cfd700841860980530ca1b01d3f02966be36d273398cb49d5f64df0",
                                                                                       "size":  40
