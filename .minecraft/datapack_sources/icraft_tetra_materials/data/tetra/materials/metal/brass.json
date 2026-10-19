@@ -27,8 +27,5 @@
   "requiredTools": {
     "hammer_dig": "minecraft:gold"
   },
-  "attributes": {
-    "*irons_spellbooks:cooldown_reduction": 0.04,
-    "*irons_spellbooks:spell_power": 0.1
-  }
+  "attributes": {}
 }

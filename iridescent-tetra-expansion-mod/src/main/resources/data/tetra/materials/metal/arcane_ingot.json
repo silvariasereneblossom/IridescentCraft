@@ -20,8 +20,5 @@
       "irons_spellbooks:arcane_ingot"
     ]
   },
-  "attributes": {
-    "**irons_spellbooks:spell_power": 0.05,
-    "**irons_spellbooks:mana_regen": 0.05
-  }
+  "attributes": {}
 }

@@ -28,7 +28,6 @@
     "hammer_dig": 7
   },
   "attributes": {
-    "**irons_spellbooks:spell_power": 0.1,
-    "**irons_spellbooks:max_mana": 0.1
+    "irons_spellbooks:max_mana": 10
   }
 }

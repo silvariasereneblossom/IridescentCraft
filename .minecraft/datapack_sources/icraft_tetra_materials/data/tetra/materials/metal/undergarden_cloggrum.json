@@ -27,7 +27,6 @@
     "hammer_dig": "minecraft:stone"
   },
   "attributes": {
-    "**minecraft:generic.armor": 0.04,
-    "*irons_spellbooks:spell_power": 0.15
+    "**minecraft:generic.armor": 0.04
   }
 }

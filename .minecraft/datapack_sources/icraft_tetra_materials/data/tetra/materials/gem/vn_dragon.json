@@ -28,8 +28,8 @@
     "hammer_dig": "minecraft:diamond"
   },
   "attributes": {
-    "**irons_spellbooks:ender_spell_power": 0.15,
-    "**irons_spellbooks:ender_magic_resist": 0.1,
-    "**irons_spellbooks:spell_power": 0.12
+    "irons_spellbooks:ender_spell_power": 0.05,
+    "irons_spellbooks:ender_magic_resist": 0.05,
+    "irons_spellbooks:spell_power": 0.05
   }
 }

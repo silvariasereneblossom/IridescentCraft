@@ -18,7 +18,5 @@
       "minecraft:ender_pearl"
     ]
   },
-  "attributes": {
-    "**irons_spellbooks:spell_power": 0.05
-  }
+  "attributes": {}
 }

@@ -23,7 +23,5 @@
       "minecraft:diamond"
     ]
   },
-  "attributes": {
-    "*irons_spellbooks:spell_power": 0.25
-  }
+  "attributes": {}
 }

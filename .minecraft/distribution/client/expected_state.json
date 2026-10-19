@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "78525dcd",
+    "generated_from":  "272d15fa",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4352,8 +4352,8 @@
                                                                                "size":  11065
                                                                            },
                   "config/paxi/datapacks/icraft_tetra_materials.zip":  {
-                                                                           "sha256":  "a44fa78e0ce73543682d6a893b79587c7464e5bf7ccbc82ae56505b3f07389dd",
-                                                                           "size":  59000
+                                                                           "sha256":  "7e1f14ba6c8b719c7d5dc8098bd1f2d43d935563f618abd6c7807a4016312f1c",
+                                                                           "size":  57569
                                                                        },
                   "config/paxi/datapacks/icraft_tetra_overrides.zip":  {
                                                                            "sha256":  "3765f49bf0f0b02d02ca184923a75a016f6896680c24d304d4fded14e0c8e10f",
@@ -7156,8 +7156,8 @@
                                                                                             "size":  668
                                                                                         },
                   "kubejs/data/tetra/materials/metal/ancient_metal.json":  {
-                                                                               "sha256":  "ee75886ac6e2ebc7439be20f43567429578fc6a186f0a9b41e8f5df2ab6daf7b",
-                                                                               "size":  1206
+                                                                               "sha256":  "09b4d0cca97b8f12b2915a1f87bba7d52fb6214b869f315355784f3adf90ff35",
+                                                                               "size":  1199
                                                                            },
                   "kubejs/data/theabyss/loot_tables/entities/end_spider.json":  {
                                                                                     "sha256":  "1955c3dd6ae6262eafdbacdf825567a247dc2709ac60da2e5e2e8d9f667e83b1",
@@ -8752,7 +8752,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "41bdcfc6dadd00f441007e9b2f8a4b782475cf33572145ad1ac7908d7e1bb737",
+                                                                         "sha256":  "8b2a822dc71e8787c1a35cbd3970020ebe2a5777409e83c5c01e70154b2d59a6",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

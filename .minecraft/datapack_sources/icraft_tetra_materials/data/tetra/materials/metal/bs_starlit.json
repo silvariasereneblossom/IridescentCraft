@@ -32,8 +32,6 @@
     }
   ],
   "attributes": {
-    "**irons_spellbooks:ender_spell_power": 0.12,
-    "**irons_spellbooks:ender_magic_resist": 0.07,
-    "**irons_spellbooks:spell_power": 0.09
+    "irons_spellbooks:ender_spell_power": 0.05
   }
 }
