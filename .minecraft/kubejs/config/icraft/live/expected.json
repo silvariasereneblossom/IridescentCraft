@@ -741,12 +741,15 @@
    "jei_hiding@JEIEvents.hideItems": "jei_hiding.js",
    "mekasuit_mk2_tooltip@ItemEvents.tooltip": "mekasuit_mk2_tooltip.js",
    "reforged_armor_enchant_tooltip@ItemEvents.tooltip": "reforged_armor_enchant_tooltip.js",
+   "sync_status_warning@ClientEvents.loggedIn": "sync_status_warning.js",
    "terramity_unholy_lance_tooltip@ItemEvents.tooltip": "terramity_unholy_lance_tooltip.js"
   },
   "optional": [],
   "late": [],
   "sections": {},
-  "features": {},
+  "features": {
+   "sync-status-warning": "sync_status_warning.js"
+  },
   "libraries": {}
  }
 }

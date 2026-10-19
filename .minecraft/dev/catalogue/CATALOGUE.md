@@ -11,9 +11,9 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 |---|---|---|---|---|
 | startup | 25 | 24 | 26 | 3 |
 | server | 164 | 332 | 241 | 28 |
-| client | 14 | 9 | 0 | 0 |
+| client | 15 | 10 | 0 | 1 |
 
-The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
+The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:sync_status_warning.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
 dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 331`, `startup: 24`).
 
 ## How to read it
@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 266. 259 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 267. 260 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -59,7 +59,7 @@ Structural, by the script that loads first:
 | `server:0_lib_core.js` | 880 | 27 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
 | `server:0_tick_master.js` | 840 | 43 | `global.registerPlayerTick`, `global.registerServerTick` |
-| `client:00_icraft_guard.js` | 1000 | 10 | `icraft.guard`, `icraft.live` |
+| `client:00_icraft_guard.js` | 1000 | 11 | `icraft.guard`, `icraft.live` |
 
 ## Libraries
 
@@ -290,8 +290,9 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 10 |  | `mekasuit_mk2_tooltip.js` | `ItemEvents.tooltip` |
 | 11 |  | `predicates.js` |  |
 | 12 |  | `reforged_armor_enchant_tooltip.js` | `ItemEvents.tooltip` |
-| 13 |  | `terramity_unholy_lance_tooltip.js` | `ItemEvents.tooltip` |
-| 14 | -1000 | `zzz_icraft_live.js` |  |
+| 13 |  | `sync_status_warning.js` | `ClientEvents.loggedIn` |
+| 14 |  | `terramity_unholy_lance_tooltip.js` | `ItemEvents.tooltip` |
+| 15 | -1000 | `zzz_icraft_live.js` |  |
 
 ## startup scripts: every event, its handlers in the order they run
 
@@ -820,6 +821,10 @@ When one of the targets fires, its handlers (3 of the list) run before the untar
 ## client scripts: every event, its handlers in the order they run
 
 ### Events (handlers through `icraft.guard`)
+
+**`ClientEvents.loggedIn`** (1)
+
+1. `sync_status_warning.js`
 
 **`ItemEvents.tooltip`** (7)
 
@@ -2155,77 +2160,84 @@ own one-shot `global._*` flags.
 
 ### `00_icraft_guard.js`
 
-- place 1 of 14, priority 1000
+- place 1 of 15, priority 1000
 
 ### `armor_weight_tooltip.js`
 
-- place 2 of 14
+- place 2 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `attribute_tooltips.js`
 
-- place 3 of 14; not in server_distribution/kubejs
+- place 3 of 15; not in server_distribution/kubejs
 
 ### `broken_tooltip.js`
 
-- place 4 of 14
+- place 4 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `dna_simple_staves_tooltip.js`
 
-- place 5 of 14
+- place 5 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `enchanted_book_tooltip_fix.js`
 
-- place 6 of 14
+- place 6 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `example.js`
 
-- place 7 of 14
+- place 7 of 15
 
 ### `food_dedup_jei_hide.js`
 
-- place 8 of 14
+- place 8 of 15
 - events: `JEIEvents.hideItems`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `jei_hiding.js`
 
-- place 9 of 14
+- place 9 of 15
 - events: `JEIEvents.hideItems`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `mekasuit_mk2_tooltip.js`
 
-- place 10 of 14
+- place 10 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `predicates.js`
 
-- place 11 of 14
+- place 11 of 15
 
 ### `reforged_armor_enchant_tooltip.js`
 
-- place 12 of 14
+- place 12 of 15
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
+### `sync_status_warning.js`
+
+- place 13 of 15; header: @events @file @live; not in server_distribution/kubejs
+- events: `ClientEvents.loggedIn`
+- features: `sync-status-warning`
+- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
+
 ### `terramity_unholy_lance_tooltip.js`
 
-- place 13 of 14; header: @events @file; not in server_distribution/kubejs
+- place 14 of 15; header: @events @file; not in server_distribution/kubejs
 - events: `ItemEvents.tooltip`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `zzz_icraft_live.js`
 
-- place 14 of 14, priority -1000
+- place 15 of 15, priority -1000
 - sets: `global.icraftLiveLines`
 - reads: `icraft.live` of `00_icraft_guard.js` (load)
 

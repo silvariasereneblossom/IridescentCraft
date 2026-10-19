@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "27d547bc",
+    "generated_from":  "1be277b8",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5955,6 +5955,10 @@
                                                                                   "sha256":  "2a5a4f7fa88b05e929302c64757480f4c2ae7ff3b7f3a4d060e6b2905a45afdb",
                                                                                   "size":  3899
                                                                               },
+                  "kubejs/client_scripts/sync_status_warning.js":  {
+                                                                       "sha256":  "4c8d3af50ba6d552d9ff49a8d781a7c903aea747464ee4bd1bcf069e89c4e90b",
+                                                                       "size":  2544
+                                                                   },
                   "kubejs/client_scripts/terramity_unholy_lance_tooltip.js":  {
                                                                                   "sha256":  "4d74a17bb6902a3b7b2948a62226b9245f66520c731cef5919932d3b355a0706",
                                                                                   "size":  1450
@@ -5972,8 +5976,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "e260fa5ce4ba9446308fcbba29c665f9c0a38f70c66f7a5f65b1a8e1f9f01b67",
-                                                                  "size":  49416
+                                                                  "sha256":  "ff33d22e7cf19061c707858e06de0bb75a383b98caba6c0e1a86df118a196227",
+                                                                  "size":  49544
                                                               },
                   "kubejs/config/icraft/quest_skill_points.json":  {
                                                                        "sha256":  "1b98001a68d32bf7474aab46717cf14b80e67810001df4640f0c14286588d997",

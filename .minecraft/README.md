@@ -1,17 +1,14 @@
 # IridescentCraft: Client Distribution
 
-## Installation (PrismLauncher)
-1. Download and extract this folder
-2. In PrismLauncher: Add Instance → Import from Folder
-3. Point to this extracted folder
-4. PrismLauncher will download all mods automatically from the .index metadata
-5. Launch and play
+## Installation
+Run `iridescentcraft.bat` (Windows) or `iridescentcraft.sh` (Linux) from this folder; the
+[Tester Installation Guide](https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tester-Installation-Guide)
+has the steps. On Windows the installer creates the PrismLauncher instance (downloading a portable PrismLauncher if
+it finds none) and sets the pre-launch sync; on Linux the script builds a Modrinth pack for PrismLauncher to import.
 
-## Installation (Manual)
-1. Install Forge 1.20.1-47.4.6
-2. Copy the `mods/` folder contents to your instance mods/
-3. Copy `config/`, `defaultconfigs/`, `kubejs/`, `global_packs/` to your instance
-4. Launch
+Importing or copying this folder by hand does not work: `mods/` holds only the pack's own jars and the mod index
+(`mods/.index/`), and PrismLauncher does not read that index. The third-party mods come from the installer and the
+pre-launch sync.
 
 ## Requirements
 - Minecraft 1.20.1

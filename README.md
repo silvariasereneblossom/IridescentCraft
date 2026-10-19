@@ -23,12 +23,9 @@ The test server has a whitelist. Before your first join, send the server operato
 - **"You are not white-listed on this server!"** means your name is not on the list yet, or it was entered with different capitals. Send the operator the name exactly as the game shows it.
 - If you change your in-game name, you have to be added again under the new one.
 
-## Install (manual / advanced)
+## Install without the installer
 
-1. Install Forge 1.20.1-47.4.6 + Java 17.
-2. Clone or download the repo.
-3. Copy the `.minecraft/mods/`, `.minecraft/config/`, `.minecraft/defaultconfigs/`, `.minecraft/kubejs/`, `.minecraft/global_packs/` folders into your instance's `.minecraft`.
-4. Launch with JVM args including `-noverify` (required for the bytecode-patched Patchouli + Ars Nouveau jars).
+Not supported. The repo's `mods/` folders hold the pack's own jars and the mod index (`mods/.index/`), not the third-party mods: the installer and the pre-launch sync download those. Use the installer above. The [Tester Installation Guide](https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tester-Installation-Guide) covers Windows and Linux.
 
 ## What's in it
 

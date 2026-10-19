@@ -61,8 +61,8 @@ Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) a
 ### Structure loot is migrating to themed pools: **In progress**
 Marquee structures are moving to per-structure themed loot pools (70% themed / 30% baseline). A few structures have partial coverage until their loot-table IDs are verified.
 
-### Tester pack-sync / log push may fail silently if shared credentials lapse: **Investigating**
-The launcher updates the pack and pushes tester logs over a shared access token. If that token expires or is missing, the update or push can fail without an obvious symptom, and in the past the game then launched on a stale pack with no warning. The launcher now fails visibly (it shows an in-game warning and writes a marker when a sync did not complete), and the operator is checking the credential state.
+### Tester pack-sync may fail without an obvious symptom: **Resolved**
+In the past the game could launch on a stale pack with no warning when an update failed. The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately). A sync that did not complete is written to a status file in the instance, and since 2026-10-18 the game says so in chat when you join a world.
 
 ### Ad Astra (space dimensions): **In progress**
 The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). Loot and space enchantments are still in progress. The `planetary_loot` system has a known low-priority error that will clear once that work lands.
@@ -194,7 +194,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - The FTB suite, Champions Unofficial, Truly Modular, PacketFixer and the old scaling mods are removed and replaced (see [Mod Overview](../mods/overview.md#removed-mods)).
 - Several client-only mods that crashed the dedicated server were identified and handled.
 - The launcher's cleanup pass now catches tester-sync drift (stale or mismatched custom jars) automatically.
-- When a pack update fails, the launcher no longer starts silently on a stale pack: it shows an in-game warning and writes a sync marker. A new-machine setup guide documents the correct install layout.
+- When a pack update fails, the pre-launch sync no longer starts silently on a stale pack: it writes a sync marker, and since 2026-10-18 the game says so in chat when you join a world. A new-machine setup guide documents the correct install layout.
 - A periodic janitor sweeps up stray marker items left behind by the boss-wave randomizer.
 
 ---

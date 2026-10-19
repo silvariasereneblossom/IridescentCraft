@@ -51,14 +51,11 @@ Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need th
 6. Check that `-noverify` is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts `-noverify` there, and the sync adds it back if it goes missing. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
 7. First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.
 
-The installer also sets the instance's pre-launch command, so every launch syncs to the latest `main` commit, which typically takes under 1 second when you are up to date and about 30 seconds when there is a new commit. If the command is ever missing (Edit Instance → Settings → Custom Commands), set it to `"%INST_MC_DIR%\sync_client.bat"`. [[Client Sync Protocol]] has the details.
+The installer also sets the instance's pre-launch command, so every launch syncs to the latest `main` commit, which typically takes under 1 second when you are up to date and about 30 seconds when there is a new commit. If the command is ever missing (Edit Instance → Settings → Custom Commands), set it to `cmd.exe /c "$INST_MC_DIR/sync_client.bat"`, the command the installer writes. [[Client Sync Protocol]] has the details.
 
-### Path B: Manual install (if you don't use PrismLauncher)
+### Without PrismLauncher: not supported
 
-1. Install Forge 1.20.1-47.4.6 directly into a vanilla `.minecraft` instance.
-2. Copy the contents of `.minecraft/distribution/client/{mods, config, kubejs, defaultconfigs, global_packs, resourcepacks}/` into your `.minecraft` folder.
-3. Add `-noverify` to your launcher's JVM args.
-4. Path B has no auto-update: after each `git pull` you have to copy the directories again by hand to stay in sync.
+Copying `.minecraft/distribution/client/` into a vanilla `.minecraft` does not give a working install. That folder holds the pack's configs, scripts, datapacks and its own 16 jars, but none of the third-party mods: those are listed in `mods/.index/` and downloaded by the installer and the pre-launch sync, which need PrismLauncher. Use Path A; if you have no PrismLauncher, the installer downloads a portable one for you.
 
 ---
 
@@ -82,15 +79,14 @@ cd IridescentCraft/.minecraft/distribution/client
 chmod +x iridescentcraft.sh
 ./iridescentcraft.sh
 
-# 3. The script builds /tmp/IridescentCraft.mrpack
-#    Import it in PrismLauncher: Add Instance → Import from local file
+# 3. The script saves IridescentCraft.mrpack to your Desktop (or a path
+#    you pick) and opens PrismLauncher's import dialog with it; it
+#    downloads the PrismLauncher AppImage first if it finds none.
 ```
 
-After the import, add `-noverify` to the instance's JVM arguments as in step 6 of the Windows guide above: the Linux script builds a plain Modrinth pack, which cannot set JVM arguments. There is no Linux sync script yet, so a Linux install does not update itself; the pre-launch command below names a script the pack does not ship:
+After the import, add `-noverify` to the instance's JVM arguments as in step 6 of the Windows guide above: the Linux script builds a plain Modrinth pack, which cannot set JVM arguments.
 
-```
-bash "$INST_MC_DIR/sync_client.sh"
-```
+A Linux install does not update itself: the pack has no Linux pre-launch sync, so leave the instance's pre-launch command empty. To update, run `iridescentcraft.sh` again and import the new pack. `update_configs.sh` copies the configs and scripts only, never the mods.
 
 The `iridescentcraft.sh` script looks for `mods/.index/` in its current directory. If it is not there (for example, you ran it from outside the repo), the script downloads the repo zip from GitHub to `/tmp/IridescentCraft-repo-extract/` and uses that as the source.
 
@@ -172,10 +168,10 @@ You almost never need to update by hand, because the client and the server both 
 
 | Component | Sync mechanism | Trigger |
 |---|---|---|
-| Client | `sync_client.ps1` (Windows) / `sync_client.sh` (not shipped yet) | Every PrismLauncher launch (via the pre-launch command) |
+| Client | `sync_client.bat`, which runs `sync_client.ps1` (Windows; an instance that is a git clone uses `prism_prelaunch.bat`). Linux: none | Every PrismLauncher launch (via the pre-launch command) |
 | Server | self-sync block in `iridescentserver.bat`/`.sh` | Every server launch |
 
-Both compare a stored `.icraft_last_sha` with the latest `main` commit SHA and download again only when the two differ. A network failure does not stop the launch: the sync prints a warning and your install keeps working with the files it already has. The client sync also records the failure in a status file in the instance.
+Both compare a stored `.icraft_last_sha` with the latest `main` commit SHA and download again only when the two differ. A network failure does not stop the launch: the sync prints a warning and your install keeps working with the files it already has. The client sync also records the failure in a status file in the instance, and when you join a world the game says in chat that the pack did not update.
 
 For a forced full re-sync, see the `-Force` flag in the server section. On the client, delete `.icraft_last_sha` from the instance's `.minecraft` folder and relaunch.
 
@@ -187,7 +183,7 @@ For a forced full re-sync, see the `-Force` flag in the server section. On the c
 
 When you hit a crash or unexpected behavior:
 
-1. Send your logs to Silvaria privately (a direct message, not a public channel): `logs/latest.log` and the newest file in `crash-reports/` from your instance's `.minecraft` folder, or the copy of your last session that the post-exit hook keeps in `.minecraft/TesterLogs/<your account>/`. **Never commit or push them to the repository**: it is public, and a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its `.gitignore`), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.
+1. Send your logs to Silvaria privately (a direct message, not a public channel): `logs/latest.log` and the newest file in `crash-reports/` from your instance's `.minecraft` folder. (An instance that is a git clone also keeps a copy of your last session in `.minecraft/TesterLogs/<your account>/`; an instance the installer made does not.) **Never commit or push them to the repository**: it is public, and a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its `.gitignore`), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.
 2. File a GitHub issue at [https://github.com/silvariasereneblossom/IridescentCraft/issues](https://github.com/silvariasereneblossom/IridescentCraft/issues) with:
    - Symptom (what you expected vs. what happened)
    - Repro steps if reproducible

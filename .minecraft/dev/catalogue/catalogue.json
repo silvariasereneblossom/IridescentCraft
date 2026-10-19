@@ -11900,7 +11900,7 @@
    }
   },
   "client": {
-   "count": 14,
+   "count": 15,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -12202,8 +12202,58 @@
      ]
     },
     {
-     "path": "terramity_unholy_lance_tooltip.js",
+     "path": "sync_status_warning.js",
      "place": 13,
+     "priority": 0,
+     "notIn": [
+      "server_distribution/kubejs"
+     ],
+     "registers": [
+      {
+       "kind": "guard",
+       "group": "ClientEvents.loggedIn",
+       "name": "sync_status_warning"
+      }
+     ],
+     "sections": 0,
+     "features": [
+      "sync-status-warning"
+     ],
+     "ownSlots": 0,
+     "names": 0,
+     "reads": [
+      {
+       "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.live",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "handler"
+      }
+     ],
+     "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.guard"
+       ],
+       "held": "priority"
+      }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
+     ]
+    },
+    {
+     "path": "terramity_unholy_lance_tooltip.js",
+     "place": 14,
      "priority": 0,
      "notIn": [
       "server_distribution/kubejs"
@@ -12243,7 +12293,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 14,
+     "place": 15,
      "priority": -1000,
      "sections": 0,
      "sets": [
@@ -12272,6 +12322,13 @@
     }
    ],
    "events": {
+    "ClientEvents.loggedIn": [
+     {
+      "script": "sync_status_warning.js",
+      "name": "sync_status_warning",
+      "kind": "guard"
+     }
+    ],
     "ItemEvents.tooltip": [
      {
       "script": "armor_weight_tooltip.js",

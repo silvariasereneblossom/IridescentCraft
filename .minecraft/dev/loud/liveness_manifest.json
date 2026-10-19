@@ -1568,8 +1568,8 @@
   "client": {
    "log": "kubejs/client.log",
    "tree": "distribution/client/kubejs/client_scripts",
-   "count": 9,
-   "digest": "0accccd57cd8defd",
+   "count": 10,
+   "digest": "39971fd8068ce93e",
    "late": [],
    "at_boot": [],
    "registrations": [
@@ -1604,6 +1604,10 @@
     {
      "id": "reforged_armor_enchant_tooltip@ItemEvents.tooltip",
      "script": "reforged_armor_enchant_tooltip.js"
+    },
+    {
+     "id": "sync_status_warning@ClientEvents.loggedIn",
+     "script": "sync_status_warning.js"
     },
     {
      "id": "terramity_unholy_lance_tooltip@ItemEvents.tooltip",
@@ -2819,7 +2823,12 @@
   },
   "client": {
    "sections": [],
-   "features": []
+   "features": [
+    {
+     "name": "sync-status-warning",
+     "script": "sync_status_warning.js"
+    }
+   ]
   }
  },
  "entries": [
