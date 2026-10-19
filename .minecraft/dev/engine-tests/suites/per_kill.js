@@ -68,7 +68,7 @@ check('P1 the Wither (both ids), the Ender Dragon, the Warden and a zombie are n
   pkBossId(__host.living('minecraft:wither', 300, L0)) === null && pkBossId(__host.living('progressivebosses:wither', 300, L0)) === null &&
   pkBossId(__host.living('minecraft:ender_dragon', 200, L0)) === null && pkBossId(__host.living('minecraft:warden', 500, L0)) === null &&
   pkBossId(__host.living('minecraft:zombie', 20, L0)) === null)
-check('P1 78 registered bosses carry the flag (the 53 of April, the 22 named, the 3 Cardinal Sins first phases), 82 entries with the 4 absent ones', global.icraft.bosses.ids('perKill').length === 82)
+check('P1 78 registered bosses carry the flag (the 53 of April, the 22 named, the 3 Cardinal Sins first phases), 80 entries with the 2 absent ones that stay (ub:sorcerer, ub:storm: the Codex reads them)', global.icraft.bosses.ids('perKill').length === 80)
 
 __host.print('P2  the curve: fight n is the row "kill n"')
 function row(f) { var s = pkScale(f); return s.hp + '/' + s.dmg + '/' + s.spd }

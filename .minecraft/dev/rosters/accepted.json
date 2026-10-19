@@ -2,14 +2,14 @@
   "about": "Where the registries deviate from what dev/rosters/validate.py expects, id by id, with the reason. Every line is a place where the scripts disagreed before the registries existed (2026-10-13): the registry reproduces it exactly and nobody has ruled on it, unless the reason says it is deliberate. validate.py fails on a deviation that is not listed here, and on a line here that no longer deviates. To accept a new one: add `id: reason` under its rule.",
 
   "hp-not-x3": {
-    "mutantmonsters:mutant_zombie": "miniboss: the x3 is for trophy bosses (the boundary written in scaling/zz_boss_global_3x.js); open: add some minibosses to the x3",
+    "mutantmonsters:mutant_zombie": "decision list entry 3, 2026-10-18, on recommendation (for review): leave. Miniboss: the x3 is for trophy bosses (the boundary written in scaling/zz_boss_global_3x.js)",
     "mutantmonsters:mutant_skeleton": "miniboss: see mutant_zombie",
     "mutantmonsters:mutant_creeper": "miniboss: see mutant_zombie",
     "mutantmonsters:mutant_enderman": "miniboss: see mutant_zombie",
     "meetyourfight:swampjaw": "miniboss: see mutant_zombie",
     "meetyourfight:bellringer": "miniboss: see mutant_zombie",
     "deeperdarker:shriek_worm": "miniboss: see mutant_zombie",
-    "deeperdarker:sculk_centipede": "on no kill roster, designed health 650, no x3: see mutant_zombie; open: should it pay miniboss tokens",
+    "deeperdarker:sculk_centipede": "decision list entry 3 and 24, 2026-10-18, on recommendation (for review): leave: no tokens (a token source wants its spawn rate measured first). On no kill roster, designed health 650, no x3: see mutant_zombie",
     "stalwart_dungeons:shelterer": "miniboss: see mutant_zombie",
     "stalwart_dungeons:nether_keeper": "miniboss: see mutant_zombie",
     "stalwart_dungeons:awful_ghast": "miniboss: see mutant_zombie",
@@ -27,11 +27,11 @@
   },
 
   "boss-not-on-kill-roster": {
-    "minecraft:elder_guardian": "`boss` for core.isBoss and the mob-tier exclusion, on no kill roster, no x3, no designed health; open",
+    "minecraft:elder_guardian": "decision list entry 24, 2026-10-18, on recommendation (for review): leave. `boss` for core.isBoss and the mob-tier exclusion, on no kill roster, no x3, no designed health",
     "majestic_menaces:teikoku_senshi": "see x3-not-named",
     "deeperdarker:sculk_centipede": "see hp-not-x3",
-    "theabyss:soul_guard": "`boss` and an Abyss boss, on no kill roster, no x3, no designed health; open",
-    "theabyss:ice_knight": "`boss` and an Abyss boss, on no kill roster, no x3, no designed health; open",
+    "theabyss:soul_guard": "decision list entry 24, 2026-10-18, on recommendation (for review): leave. `boss` and an Abyss boss, on no kill roster, no x3, no designed health",
+    "theabyss:ice_knight": "decision list entry 24, 2026-10-18, on recommendation (for review): leave. `boss` and an Abyss boss, on no kill roster, no x3, no designed health",
     "theabyss:nightblade_boss": "see x3-not-named",
     "theabyss:the_roka": "see x3-not-named",
     "theabyss:elder": "see x3-not-named",
@@ -45,42 +45,33 @@
   "named-not-in-rush": {},
 
   "miniboss-not-in-rush": {
-    "twilightforest:adherent": "pays miniboss tokens, not on the tier-2 boss-rush roster; open: the roster is ruled at 11 / 20 / 43",
+    "twilightforest:adherent": "decision list entry 26, 2026-10-18, on recommendation (for review): leave: pays miniboss tokens, not on the tier-2 boss-rush roster; the roster sizes are ruled at 11 / 20 / 43",
     "twilightforest:harbinger_cube": "see adherent",
     "terramity:gundalf": "tier 3 since 2026-10-16 (on recommendation, for review: met only at the Nether's Chthonic Cathedral, after Sorceress Circe falls); off the tier-3 roster as it was off the tier-2 one: his fight comes with Circe's, who is on it (decision list 107)",
     "terramity:trial_guardian": "see adherent",
     "terramity:ultra_sniffer": "see adherent",
-    "deeperdarker:shriek_worm": "pays miniboss tokens, not on the tier-3 boss-rush roster; open",
+    "deeperdarker:shriek_worm": "decision list entry 26, 2026-10-18, on recommendation (for review): leave: pays miniboss tokens, not on the tier-3 boss-rush roster (ruled at 43)",
     "cataclysm:amethyst_crab": "operator 2026-10-14 (ruling 18): miniboss, tier 3, off the boss-rush roster (\"miniboss, tier 3 (Recommended)\", like Coralssus but not on the roster)",
     "mca:grim_reaper": "operator 2026-10-14 (ruling 18): miniboss, tier 1, off the boss-rush roster (an optional summon of MCA's ritual)"
   },
 
   "rush-tier": {
     "cardinal_sins:lucifer": "deliberate: a tier-4 named boss on the TIER-3 roster, the capstone whose kill completes the tier-3 rush",
-    "cataclysm:ignited_revenant": "named at tier 4, on the tier-3 boss-rush roster (the boss catalog places it at tier 3); open: which tier"
+    "cataclysm:ignited_revenant": "decision list entry 25, 2026-10-18, on recommendation (for review): leave: named at tier 4 (tier-4 tokens), on the tier-3 boss-rush roster. The catalog was reconciled with the registry on 2026-10-16 (T4, rush T3), so the \"two of three sources say 3\" of the entry no longer holds"
   },
 
   "arena-tier": {
     "cardinal_sins:lucifer": "the Boss Compass shows the arena at tier 3 (the capstone of the tier-3 rush); the kill pays tier-4 tokens"
   },
 
-  "vorpal-lists": {
-    "twilightforest:knight_phantom": "on Arcane Vorpal's blocklist only. No effect today: both handlers also ask core.isBoss, and it is `boss`. Open: one list",
-    "twilightforest:snow_queen": "see knight_phantom",
-    "twilightforest:minoshroom": "see knight_phantom",
-    "cataclysm:maledictus": "see knight_phantom",
-    "cataclysm:ancient_remnant": "see knight_phantom"
-  },
-
   "dim-no-stage-gate": {
-    "theabyss:frost_world": "tier 3 for the class passives only; no stage gate (reachable from the gated Abyss); open",
+    "theabyss:frost_world": "decision list entry 30, 2026-10-18, on recommendation (for review): no stage gate of its own; it is reached only from the gated Abyss (a gate is one per dimension)",
     "mahoutsukai:reality_marble": "operator 2026-10-14 (ruling 17): no stage gate needed: the whole mod is stage-locked at tier 4 and its scroll, the only way in, is refused without tier_4 (measured on a full-pack boot)",
     "irons_spellbooks:pocket_dimension": "operator 2026-10-14 (ruling 17): no stage gate (ruled \"No passives there\" instead); reached only by casting the Pocket Dimension spell. The spell can be learned before tier 4 (Ancient City echo shards): reported, not gated",
     "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today (the Ring of Pocket Box has no recipe or loot); its gate comes with the ruled follow-up (ring restored at tier 2, custom dimension)"
   },
 
   "dim-not-in-loot": {
-    "theabyss:frost_world": "in no loot rule; open",
     "ad_astra:moon": "the planets have their own loot rules (loot/planetary_loot.js), not the tier-4 group, which is the End alone",
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
@@ -103,8 +94,8 @@
   },
 
   "dim-no-exploration": {
-    "theabyss:frost_world": "no first-arrival bonus; open",
-    "ad_astra:moon": "no first-arrival bonus for the planets; open",
+    "theabyss:frost_world": "decision list entry 30, 2026-10-18, on recommendation (for review): no first-arrival bonus of its own (the Abyss pays one; a second key would pay twice)",
+    "ad_astra:moon": "decision list entry 30, 2026-10-18, on recommendation (for review): leave: no first-arrival bonus for the planets (their stage gate already needs tier 4, so a progression bonus there advances nothing)",
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
@@ -121,8 +112,7 @@
   },
 
   "dim-no-mob-equipment": {
-    "theabyss:frost_world": "no gear roll for its mobs; open",
-    "ad_astra:moon": "no gear roll for planet mobs; open",
+    "ad_astra:moon": "decision list entry 30, 2026-10-18, on recommendation (for review): leave: no gear roll for planet mobs (their own loot script and death penalties stand)",
     "ad_astra:mars": "see moon",
     "ad_astra:mercury": "see moon",
     "ad_astra:venus": "see moon",
@@ -139,7 +129,6 @@
   },
 
   "dim-no-death-penalty": {
-    "theabyss:frost_world": "takes the default 15% (the Abyss itself is 18%); open",
     "theabyss:pocket_dimension": "operator 2026-10-14 (ruling 17): no way in today; takes the default 15% until the custom-dimension follow-up sets one"
   }
 }

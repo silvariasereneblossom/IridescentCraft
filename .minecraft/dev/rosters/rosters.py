@@ -19,7 +19,7 @@ DIM_FILE = 'dimensions.json'
 SCHEMA = 1
 
 BOSS_KINDS = ('named', 'miniboss', 'unlisted')
-BOSS_FLAGS = ('boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster')
+BOSS_FLAGS = ('boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'caster')
 BOSS_KEYS = ('tier', 'kind', 'hp', 'levelHp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note')
 SEEN_AS_KEYS = ('type', 'class', 'baseHealth', 'mainHand')   # a boss the game hands out under ANOTHER entity type
 ALIAS_KEYS = ('sameAs', 'note')     # an entry with `sameAs` is a second entity id of another entry, and nothing else
@@ -64,8 +64,6 @@ BOSS_SYSTEMS = OrderedDict([
     ('arena',          (_value('arena'),       'bonfire/boss_arena_registry.js: Boss Compass and bonfire')),
     ('witchInk',       (_flag('witchInk'),     'origins/witch_of_ink_progression.js: +10 on the kill counter')),
     ('abyssBoss',      (_flag('abyssBoss'),    'scaling/dimension_mechanics.js: The Abyss boss rules')),
-    ('vorpalMelee',    (_flag('vorpalMelee'),  'startup enchants/vorpal_rework.js: never beheaded')),
-    ('vorpalArcane',   (_flag('vorpalArcane'), 'startup enchants/icraft_magic_enchants.js: never beheaded')),
     ('caster',         (_flag('caster'),       'the five spawn scripts that must not touch these spellcasters')),
 ])
 

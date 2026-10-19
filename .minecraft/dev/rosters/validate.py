@@ -47,8 +47,6 @@ BOSS_RULES = OrderedDict([
     ('miniboss-not-in-rush',  'a miniboss of tier 1-3 is on a boss-rush roster'),
     ('rush-tier',             'the boss-rush roster of an entry is its tier'),
     ('arena-tier',            'the tier of an arena is the tier of its boss'),
-    ('vorpal-lists',          'the two Vorpal blocklists hold the same ids'),
-    ('vorpal-not-boss',       'an id on a Vorpal blocklist has the flag `boss`'),
 ])
 DIM_RULES = OrderedDict([
     ('dim-no-stage-gate',     'a dimension of tier 2-4 has a stage gate'),
@@ -373,10 +371,6 @@ def deviations(reg):
             out['rush-tier'].append(i)
         if isinstance(e.get('arena'), dict) and e['arena'].get('tier') != tier:
             out['arena-tier'].append(i)
-        if ('vorpalMelee' in fl) != ('vorpalArcane' in fl):
-            out['vorpal-lists'].append(i)
-        if ('vorpalMelee' in fl or 'vorpalArcane' in fl) and 'boss' not in fl:
-            out['vorpal-not-boss'].append(i)
     for i, e in reg.dims.items():
         if not isinstance(e, dict):
             continue

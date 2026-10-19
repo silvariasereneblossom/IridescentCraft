@@ -83,7 +83,7 @@
 // dev/engine-tests holds the two to each other, id by id):
 //   bosses  isBoss, tierHpExcluded (flag boss) . hp . x3 . x3DamageSkip . perKill .
 //           tokensNamed, tokensMiniboss (kind + tier) . rush . phase (phaseOf) .
-//           relic . arena . witchInk . abyssBoss . vorpalMelee . vorpalArcane . caster
+//           relic . arena . witchInk . abyssBoss . caster
 //   dims    stageGate . exploration . mobEquipment . deathPenalty .
 //           classPassives, loot (flag: the value is the dimension's tier)
 //
@@ -144,8 +144,6 @@
     arena: value('arena'),
     witchInk: flag('witchInk'),
     abyssBoss: flag('abyssBoss'),
-    vorpalMelee: flag('vorpalMelee'),
-    vorpalArcane: flag('vorpalArcane'),
     caster: flag('caster')
   }
   var DIM_SYSTEMS = {
@@ -158,7 +156,7 @@
   }
 
   var BOSS_KINDS = ['named', 'miniboss', 'unlisted']
-  var BOSS_FLAGS = ['boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'vorpalMelee', 'vorpalArcane', 'caster']
+  var BOSS_FLAGS = ['boss', 'x3', 'x3DamageSkip', 'perKill', 'witchInk', 'abyssBoss', 'caster']
   var BOSS_KEYS = ['tier', 'kind', 'hp', 'levelHp', 'flags', 'rush', 'phaseOf', 'relic', 'arena', 'seenAs', 'absent', 'note']
   var SEEN_AS_KEYS = ['type', 'class', 'baseHealth', 'mainHand']
   var ALIAS_KEYS = ['sameAs', 'note']       // an entry with `sameAs` is a second id of another entry and nothing else

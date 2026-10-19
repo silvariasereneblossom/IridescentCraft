@@ -54,9 +54,8 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 | `phaseOf` | a kill of this entity is credited to that boss in the boss rush | same |
 | `relic` | `{ item, chance, looting }`: the relic it drops | `relic_boss_drops.js` |
 | `arena` | the Boss Compass / bonfire row: `key`, `display`, `tier`, `dimension`, `structure` or `signatureBlock` (+ `locator`), `waystone`, optional `ritual`, `summonEntity` | `bonfire/boss_arena_registry.js` |
-| flag `witchInk` | +10 on the Witch of Ink kill counter | `origins/witch_of_ink_progression.js` |
+| flag `witchInk` | +10 on the Witch of Ink kill counter (every `named` boss carries it since 2026-10-18) | `origins/witch_of_ink_progression.js` |
 | flag `abyssBoss` | The Abyss boss rules | `scaling/dimension_mechanics.js` |
-| flags `vorpalMelee`, `vorpalArcane` | never beheaded (a `boss` is spared anyway) | the two startup scripts in `enchants/` |
 | flag `caster` | the five spellcasters the spawn scripts must not touch | five spawn scripts |
 | `absent` | the reason an entry is kept although its id is NOT a registered entity type | the validator |
 | `sameAs` | this id is a second entity id of that boss (see below); the entry carries nothing else | the reader: every question, `canon`, `entityIds` |
@@ -240,7 +239,7 @@ icraft.dims.inTier(2, 'loot')   .inTiers([1, 2], 'loot')   .ids('stageGate')
   problem (an unknown key or flag, a missing tier) is refused whole.
 - A system name that does not exist throws.
 - The systems: `isBoss`, `tierHpExcluded`, `hp`, `x3`, `x3DamageSkip`, `perKill`, `tokensNamed`, `tokensMiniboss`,
-  `rush`, `phase`, `relic`, `arena`, `witchInk`, `abyssBoss`, `vorpalMelee`, `vorpalArcane`, `caster`; for
+  `rush`, `phase`, `relic`, `arena`, `witchInk`, `abyssBoss`, `caster`; for
   dimensions `stageGate`, `exploration`, `mobEquipment`, `deathPenalty`, `classPassives`, `loot`.
 - Startup-script HANDLERS may ask through `global.icraft.bosses` (the map `global` is shared by all script
   types); a startup or client script that is still loading runs before the server scripts and reads the file

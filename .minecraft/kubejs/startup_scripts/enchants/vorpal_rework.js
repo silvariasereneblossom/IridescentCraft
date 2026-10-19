@@ -201,8 +201,10 @@ try {
   // swing), so an arrow or a spell cast while holding the sword does not
   // behead -- that is Arcane Vorpal's job.
 
-  // Boss blocklist: the flag `vorpalMelee` of the boss registry (ten ids stood
-  // here until 2026-10-13); see isBossVictim below.
+  // Boss blocklist: the flag `boss` of the boss registry; see isBossVictim
+  // below. (Ten ids stood here until 2026-10-13, then the registry flag
+  // `vorpalMelee`, held only by `boss` entries; that flag went 2026-10-18,
+  // decision list entry 6: nothing changed.)
 
   // Registry id of an entity ('minecraft:zombie'), '' when unknown.
   // getType() = KubeJS's id string; getEntityType() = the vanilla EntityType.
@@ -218,9 +220,8 @@ try {
   }
 
   // "Don't behead bosses": an id is spared when its entry in the boss registry
-  // (kubejs/config/icraft/registry/bosses.json) carries the flag `vorpalMelee`
-  // (this enchant's own blocklist) or the flag `boss` (what core.isBoss
-  // answers). The registry is read through global.icraft.bosses
+  // (kubejs/config/icraft/registry/bosses.json) carries the flag `boss` (what
+  // core.isBoss answers). The registry is read through global.icraft.bosses
   // (server_scripts/0_lib_registry.js): `global` is shared by all script types
   // and the server scripts are loaded whenever a world is running.
   // If the registry is not there this THROWS, into the handler's own catch
@@ -229,7 +230,7 @@ try {
   var isBossVictim = function(victimId) {
     var roster = global.icraft ? global.icraft.bosses : null
     if (!roster) throw new Error('the boss registry (icraft.bosses) is not loaded')
-    return roster.has(victimId, 'vorpalMelee') || roster.is(victimId)
+    return roster.is(victimId)
   }
 
   var decapWarned = false

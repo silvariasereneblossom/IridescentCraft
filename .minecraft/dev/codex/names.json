@@ -121,12 +121,9 @@
     "minecraft:warden": {"name": "Warden", "match": ["the Warden", "Warden"]},
     "botania:doppleganger": {"name": "Guardian of Gaia", "match": ["Guardian of Gaia", "Gaia Guardian"]},
     "alexsmobs:void_worm": {"name": "Void Worm", "match": ["Void Worm"]},
-    "cataclysm:void_blossom": {"name": "Void Blossom", "match": []},
     "cataclysm:amethyst_crab": {"name": "Amethyst Crab", "match": ["Amethyst Crab"]},
-    "keebsz:tower_guardian": {"name": "Tower Guardian", "match": []},
     "ub:sorcerer": {"name": "Sorcerer", "match": []},
     "ub:storm": {"name": "Storm", "match": []},
-    "theabyss:abyssal_guardian": {"name": "Abyssal Guardian", "match": []},
     "mca:grim_reaper": {"name": "Grim Reaper", "match": ["Grim Reaper"]}
   },
   "dimensions": {
