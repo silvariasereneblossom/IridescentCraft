@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "1be277b8",
+    "generated_from":  "7b421c84",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,13 +5976,9 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "ff33d22e7cf19061c707858e06de0bb75a383b98caba6c0e1a86df118a196227",
-                                                                  "size":  49544
+                                                                  "sha256":  "757e59ad9b9f6a4d91db73d6e20a666dd6ffe9b9fa7f16bb3ecf5b462cf3109b",
+                                                                  "size":  49329
                                                               },
-                  "kubejs/config/icraft/quest_skill_points.json":  {
-                                                                       "sha256":  "1b98001a68d32bf7474aab46717cf14b80e67810001df4640f0c14286588d997",
-                                                                       "size":  3590
-                                                                   },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "d571a9fcd7b4dcd3f12036163cfd352c7292efa2ef738786743f623e91999c62",
                                                                     "size":  31653
@@ -7779,10 +7775,6 @@
                                                                       "sha256":  "e0ed7e7e8e13809a90cd2756cd04b2dad9b3495d87596a6aacf638bda9e190ec",
                                                                       "size":  7130
                                                                   },
-                  "kubejs/server_scripts/skills/quest_skill_points.js":  {
-                                                                             "sha256":  "d521f453e84b6b987b733ebb8c6a9fcc327f565f169e19acdbf47ed3b3839525",
-                                                                             "size":  6483
-                                                                         },
                   "kubejs/server_scripts/skills/skill_effects.js":  {
                                                                         "sha256":  "a992137c495c23bd1b7cd321546fcdd757ea60c477d6d63d7cdc00ab21d281a4",
                                                                         "size":  37599
@@ -8716,7 +8708,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "0cd8771eaca0830aa4a183f758ac133ca595e83cc210f57077a3bb5da1dafbff",
+                                                               "sha256":  "99580d322e021acf0db52032df2adfaaf4ad3369f944d5e4f7cff65d8a28e368",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

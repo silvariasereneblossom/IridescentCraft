@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Press $(k:puffish_skills.open) to open the six skill trees. Each tree has its own experience bar, and every level it gains is 1 point to spend in that tree. Quests pay more: 40 of them add 86 points over the book, each into one tree.$(br2)There is no respec: a node you take stays taken, so plan before you spend."
+      "text": "Press $(k:puffish_skills.open) to open the six skill trees. Each tree has its own experience bar, and every level it gains is 1 point to spend in that tree.$(br2)There is no respec: a node you take stays taken, so plan before you spend."
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Point Budget",
-      "text": "Every node costs 1 point, the capstones too. A tree has 28 nodes (Warfare has 29), so filling one from levels alone takes 28 levels, 23,770 experience (25,770 for Warfare).$(br2)A kill feeds all four combat trees, so they fill together. Gathering and Engineering fill only from breaking blocks and crafting."
+      "text": "Every node costs 1 point, the capstones too. A tree has 28 nodes (Warfare has 29), so filling one takes 28 levels, 23,770 experience (25,770 for Warfare).$(br2)A kill feeds all four combat trees, so they fill together. Gathering and Engineering fill only from breaking blocks and crafting."
     },
     {
       "type": "patchouli:text",

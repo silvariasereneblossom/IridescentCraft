@@ -1513,20 +1513,20 @@ Chosen permanently at character creation. Races have mild tradeoffs, compared wi
 
 ### K.5 Skill tree framework
 
-Pufferfish's Skills: six trees with 169 nodes in all (Warfare 29, the others 28), one point a node. A tree's points come from two sources, each kept apart in Pufferfish: its own levels (one point a level) and the quests (`kubejs/config/icraft/quest_skill_points.json`, since 2026-10-18).
+Pufferfish's Skills: six trees, each capped at level 40, with ~180 nodes in total.
 
-| Tree | Levels from (in the game) | Quest points |
-|------|---------------------------|:------------:|
-| **Warfare** | every mob kill: the experience the mob drops | 16 |
-| **Marksman** | every mob kill (the same experience) | 14 |
-| **Sorcery** | every mob kill (the same experience) | 14 |
-| **Fortitude** | every mob kill (the same experience) | 12 |
-| **Gathering** | mining blocks | 15 |
-| **Engineering** | crafting items | 15 |
+| Tree | XP source | Per-level points | Level cap |
+|------|-----------|:----------------:|:---------:|
+| **Warfare** | Melee kills | 1 | 40 |
+| **Marksman** | Ranged kills (bow / crossbow / thrown) | 1 | 40 |
+| **Sorcery** | Spell casts (ISS, Ars, Mahou) + magic kills | 1 | 40 |
+| **Fortitude** | Damage taken (XP scales with damage amount) | 1 | 40 |
+| **Gathering** | Mining ore, chopping logs, harvesting crops, fishing | 1 | 40 |
+| **Engineering** | Crafting, operating machines, smelting | 1 | 40 |
 
-Experience per level: 50 for level 1, then 75, 100, 130 ... 1,950 for level 26, and 2,000 for every level after; there is no level cap. A 28-node tree takes 23,770 experience to fill from levels alone, a 29-node tree 25,770.
+XP curve per tree: 50 XP for level 1, ~500 XP by level 25, ~2000 XP by level 40.
 
-The design gave each tree its own activity (melee kills Warfare, ranged kills Marksman, spell casts and magic kills Sorcery, damage taken Fortitude, ore, logs, crops and fishing Gathering, crafting, machines and smelting Engineering), a level cap of 40, and Pufferfish's Unofficial Additions against farming. The game feeds the four combat trees from every kill alike, has no cap, and does not ship that mod.
+Anti-farming: Pufferfish's Unofficial Additions reduces the XP from repeated identical actions over time (killing the same mob type again and again gives less XP per kill each time), which encourages variety.
 
 #### Tree layout
 

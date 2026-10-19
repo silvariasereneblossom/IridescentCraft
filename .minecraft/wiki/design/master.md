@@ -510,7 +510,7 @@ Skill points are not lost on death or on class respec; they are permanent growth
 
 JustLevelingFork runs alongside the skill trees as passive HP / damage / speed scaling per character level. It uses a flat XP curve (~1000 to 2000 XP per level), tuned so leveling never feels like an XP sink. Leveling happens as the player plays, with no investment decisions, as a steady reward for engagement.
 
-Both Pufferfish (active investment) and JustLevelingFork (passive scaling) run alongside vanilla XP and the Apotheosis enchanting economy. The skill trees keep per-tree XP pools: in the game every kill feeds the four combat trees (Warfare, Marksman, Sorcery, Fortitude) alike, mining feeds Gathering and crafting feeds Engineering (the design's split by activity, melee kills to Warfare and ranged kills to Marksman, is not built). The quests then pay points into the tree of their lane.
+Both Pufferfish (active investment) and JustLevelingFork (passive scaling) run alongside vanilla XP and the Apotheosis enchanting economy. The skill trees use per-tree XP pools (melee kills feed Warfare, ranged kills feed Marksman, etc.), which steers players toward the trees that match their activity.
 
 ---
 
@@ -929,7 +929,7 @@ The book is organized as a hub-and-spoke layout with branching paths inside each
 | **Community** | Always visible | 0 | Server-wide buff observation quests; no individual reward |
 | **Prestige** | Locks until ascension unlocked | 0 | Ascension-specific tracking; bonuses are A-level perks, not skill points |
 
-Quests across all chapters are designed to give ~80 to 95 skill points in total. In the game (since 2026-10-18) 40 quests pay 86, each into one tree: three onboarding quests 1 each, then each lane's tier milestones into the lane's tree (the boss rushes into Warfare, the Engineering banks into Engineering, the magic milestones into Sorcery, the Frontiers into Gathering) and the tier ascensions into Fortitude. The points are counted from the quests a player has completed, so a quest finished before then pays too. Combined with mob-kill XP across the six skill trees, a heavy endgame player reaches ~120 to 150 total skill points (the six trees hold 169 nodes, one point each).
+Quests across all chapters are designed to give ~80 to 95 skill points in total; in the game no quest gives skill points yet (quest rewards are items, XP and commands). Combined with mob-kill XP across the six skill trees, a heavy endgame player reaches ~120 to 150 total skill points (the six trees hold 169 nodes, one point each).
 
 #### Path branching inside each chapter
 

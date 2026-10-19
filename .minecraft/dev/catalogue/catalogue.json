@@ -1018,7 +1018,7 @@
    }
   },
   "server": {
-   "count": 164,
+   "count": 163,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -9331,103 +9331,8 @@
      ]
     },
     {
-     "path": "skills/quest_skill_points.js",
-     "place": 153,
-     "priority": 0,
-     "registers": [
-      {
-       "kind": "guard",
-       "group": "PlayerEvents.loggedIn",
-       "name": "skills/quest_skill_points"
-      },
-      {
-       "kind": "tick",
-       "group": "tick.server",
-       "name": "tick_questSkillPoints",
-       "every": 600,
-       "offset": 37
-      }
-     ],
-     "sections": 0,
-     "features": [
-      "quest-skill-points"
-     ],
-     "ownSlots": 0,
-     "names": 0,
-     "reads": [
-      {
-       "name": "icraft.core",
-       "kind": "global",
-       "from": "0_lib_core.js",
-       "when": "load"
-      },
-      {
-       "name": "icraft.guard",
-       "kind": "global",
-       "from": "00_icraft_guard.js",
-       "when": "load"
-      },
-      {
-       "name": "icraft.heracles",
-       "kind": "global",
-       "from": "quests/heracles_reconcile.js",
-       "when": "handler"
-      },
-      {
-       "name": "icraft.lib",
-       "kind": "global",
-       "from": "00_icraft_guard.js",
-       "when": "load"
-      },
-      {
-       "name": "icraft.live",
-       "kind": "global",
-       "from": "00_icraft_guard.js",
-       "when": "handler"
-      },
-      {
-       "name": "registerServerTick",
-       "kind": "global",
-       "from": "0_tick_master.js",
-       "when": "load"
-      }
-     ],
-     "after": [
-      {
-       "script": "00_icraft_guard.js",
-       "basis": "load",
-       "on": [
-        "icraft.guard",
-        "icraft.lib"
-       ],
-       "held": "priority"
-      },
-      {
-       "script": "0_lib_core.js",
-       "basis": "load",
-       "on": [
-        "icraft.core"
-       ],
-       "held": "priority"
-      },
-      {
-       "script": "0_tick_master.js",
-       "basis": "load",
-       "on": [
-        "global.registerServerTick"
-       ],
-       "held": "priority"
-      }
-     ],
-     "header": [
-      "events",
-      "file",
-      "live"
-     ]
-    },
-    {
      "path": "skills/skill_effects.js",
-     "place": 154,
+     "place": 153,
      "priority": 0,
      "registers": [
       {
@@ -9554,7 +9459,7 @@
     },
     {
      "path": "spawn_priest_tower.js",
-     "place": 155,
+     "place": 154,
      "priority": 0,
      "registers": [
       {
@@ -9587,7 +9492,7 @@
     },
     {
      "path": "spawn_protection.js",
-     "place": 156,
+     "place": 155,
      "priority": 0,
      "registers": [
       {
@@ -9625,7 +9530,7 @@
     },
     {
      "path": "spawn_village_protection.js",
-     "place": 157,
+     "place": 156,
      "priority": 0,
      "registers": [
       {
@@ -9703,7 +9608,7 @@
     },
     {
      "path": "strip_anomalous_drops.js",
-     "place": 158,
+     "place": 157,
      "priority": 0,
      "registers": [
       {
@@ -9730,7 +9635,7 @@
     },
     {
      "path": "strip_infinity_ham.js",
-     "place": 159,
+     "place": 158,
      "priority": 0,
      "registers": [
       {
@@ -9768,7 +9673,7 @@
     },
     {
      "path": "sunlight_smite.js",
-     "place": 160,
+     "place": 159,
      "priority": 0,
      "registers": [
       {
@@ -9827,7 +9732,7 @@
     },
     {
      "path": "tetra_terramity_perks.js",
-     "place": 161,
+     "place": 160,
      "priority": 0,
      "registers": [
       {
@@ -9900,7 +9805,7 @@
     },
     {
      "path": "ultris_randomizer_janitor.js",
-     "place": 162,
+     "place": 161,
      "priority": 0,
      "registers": [
       {
@@ -9945,7 +9850,7 @@
     },
     {
      "path": "validate_recipe_removals.js",
-     "place": 163,
+     "place": 162,
      "priority": 0,
      "notIn": [
       "server_distribution/kubejs",
@@ -9985,7 +9890,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 164,
+     "place": 163,
      "priority": -1000,
      "registers": [
       {
@@ -10847,11 +10752,6 @@
      {
       "script": "skills/mastery_tax.js",
       "name": "skills/mastery_tax",
-      "kind": "guard"
-     },
-     {
-      "script": "skills/quest_skill_points.js",
-      "name": "skills/quest_skill_points",
       "kind": "guard"
      },
      {
@@ -11862,11 +11762,6 @@
       "kind": "tick"
      },
      {
-      "script": "skills/quest_skill_points.js",
-      "name": "tick_questSkillPoints",
-      "kind": "tick"
-     },
-     {
       "script": "skills/skill_effects.js",
       "name": "tick_skillEffects",
       "kind": "tick"
@@ -12867,10 +12762,6 @@
      "when": "handler"
     },
     {
-     "script": "server:skills/quest_skill_points.js",
-     "when": "load"
-    },
-    {
      "script": "server:skills/skill_effects.js",
      "when": "load"
     },
@@ -12968,10 +12859,6 @@
    "readBy": [
     {
      "script": "server:quests/onboarding_bridge.js",
-     "when": "handler"
-    },
-    {
-     "script": "server:skills/quest_skill_points.js",
      "when": "handler"
     }
    ]
@@ -13449,10 +13336,6 @@
      "when": "load"
     },
     {
-     "script": "server:skills/quest_skill_points.js",
-     "when": "load"
-    },
-    {
      "script": "server:skills/skill_effects.js",
      "when": "load"
     },
@@ -13581,7 +13464,6 @@
     "server:scaling/zz_boss_global_3x.js",
     "server:skills/justleveling_skills.js",
     "server:skills/mastery_tax.js",
-    "server:skills/quest_skill_points.js",
     "server:skills/skill_effects.js",
     "server:spawn_village_protection.js",
     "server:strip_anomalous_drops.js",
@@ -13592,7 +13474,7 @@
     "startup:enchants/icraft_magic_enchants.js",
     "startup:enchants/vorpal_rework.js"
    ],
-   "usersAtLoad": 27
+   "usersAtLoad": 26
   },
   "origins": {
    "script": "server:0_lib_origins.js",
@@ -13705,7 +13587,6 @@
     "server:scaling/dimension_mechanics.js",
     "server:skills/justleveling_skills.js",
     "server:skills/mastery_tax.js",
-    "server:skills/quest_skill_points.js",
     "server:skills/skill_effects.js",
     "server:spawn_village_protection.js",
     "server:sunlight_smite.js",
@@ -13713,7 +13594,7 @@
     "server:ultris_randomizer_janitor.js",
     "server:zzz_icraft_live.js"
    ],
-   "usersAtLoad": 43
+   "usersAtLoad": 42
   },
   "entity-mod": {
    "script": "server:loot/0_entity_id_validator.js",
