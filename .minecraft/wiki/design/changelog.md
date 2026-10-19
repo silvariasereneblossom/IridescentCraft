@@ -6,6 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Mob drops roll Forbidden & Arcanus's extras once (19 October)
+
+- **Endermen, bats, squid, zombies, drowned and spawners roll Forbidden & Arcanus's extras once.** When Forbidden & Arcanus added its own drop (ender pearl fragments, bat wings, tentacles, zombie arms, spawner scrap), it ran every other loot rule a second time, as it did in chests until earlier the same day. An enderman killed in the End now drops a Codex Token III about one kill in twenty, the rate its loot rule gives (it was one in ten), and endermen anywhere drop half the RFTools Dimensions lost knowledge and dimlets they did (lost knowledge about one kill in eight instead of one in four). Forbidden & Arcanus's own drops are unchanged, and bats, squid, zombies, drowned and spawners drop what they did. This applies from the next server restart.
+
 ## October 2026: Summons, chest loot and the tester sync (19 October)
 
 - **Dark Pact reaches every blow of an Iron's Spells summon.** The Void Summoner's +15 % reached tamed animals and raised skeletons' arrows only; summoned zombies, vexes, polar bears and Iron's summoned blades struck without it. They now hit 15 % harder too, on top of the Summoner's spell power their blows already carried: about 27 % above a classless player's summon, where it was 10 %.
