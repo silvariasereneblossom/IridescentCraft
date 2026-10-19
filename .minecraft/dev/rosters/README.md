@@ -66,7 +66,9 @@ One entry in `bosses.json`, next to related entries (the order of the file is th
 What an entry does NOT do, and still has to be done by hand: the boss's own drops (`loot/*_boss_drops.js`,
 `loot/unique_itemset_registry.js`, `loot/boss_refight_repair_floors.js`), quests, the wiki, the
 structure tag of a structure arena (`kubejs/data/icraft/tags/worldgen/structure/<arena key>.json`; the validator
-checks it), and the two lists outside the scripts (below).
+checks it), and the two lists outside the scripts (below). A boss whose `tier` changes takes its uniques along: a
+unique's tier in `unique_itemset_registry.js` is the tier of the boss that drops it (its damage buff reads that
+tier; Frostmaw's bow stayed tier 1 for two days after Frostmaw went to tier 2, decision list entry 134).
 
 The Codex follows an entry by itself (since 2026-10-17: its roster pages, places, health, rush and tokens are
 filled from this file when the jar is built), once the boss has a name in `dev/codex/names.json`. After the

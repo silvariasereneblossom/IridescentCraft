@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The Aether's apex$(): the Eye of the Storm (Brass Dungeon). Drops $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%) and T4 boss materials.$(br2)$(bold)The Warden$() (the Deep Dark) drops $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) and the Spectral Whisper bow.$(br2)Beyond these waits Terramity's Virtue, called at its Prismatic Pond in the Aether.$(br2)$(bold)Next: start with the Ender Dragon.$()"
+      "text": "$(bold)The Aether's apex$(): the Eye of the Storm (Brass Dungeon). Drops $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%) and T4 boss materials.$(br2)$(bold)The Warden$() (the Deep Dark) drops $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) and the Spectral Whisper bow.$(br2)Beyond these waits Terramity's Virtue, called at its Prismatic Pond in the Aether. It drops $(l:icraft:bosses/unique_weapons)Magiscythe$(/l) and $(l:icraft:bosses/unique_weapons)Magispear$(/l).$(br2)$(bold)Next: start with the Ender Dragon.$()"
     },
     {
       "type": "icraft:generated",

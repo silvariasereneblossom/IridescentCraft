@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Unique weapons (18 October)
+
+- **Every Simply Swords unique drops from a boss.** Five tier-4 swords that no boss dropped, and that could not be crafted or found, now drop at 15 % a kill: Magiscythe and Magispear from Virtue, Wickpiercer from Lucifer, Harbinger from the Ender Golem, the Watching Warglaive from the Void Worm.
+- **Frostmaw's Cyroheart Bow is a Tier 2 unique**, like Frostmaw since it moved to Everbright. Its arrows deal +20 % instead of +10 %; the drop is unchanged.
+- **Three uniques that never existed are off the lists.** Twilight (Mowzie's Naga), Enchanted Estoc (Enchanter Merlin) and Dreadtide are names the installed Simply Swords does not make into items, so those two bosses never dropped anything for them. The pack has 42 unique swords and 34 bows.
+- **The Ultimate Bosses have a tier in the Codex**: the Storm (five Phantom Membranes) Tier 1, the Sorcerer (a Nether Star) Tier 3, both called inside the mod's towers on Overworld hills.
+
 ## October 2026: Magic bonuses count once (17 October)
 
 - **Each magic bonus counts once on Iron's spells.** Since the class system started working on 10 October, an Iron's spell got several bonuses twice. Mana Attunement (+5 % a tier) and the Magic aptitude skills Mana Spark, Mana Blaze and Mana Inferno sat on both spell power and magic damage, and a "magic damage sync" copied Arcane Supremacy (+50 %), Faefolk (+30 %), Elf (+5 %) and a Battlemage +15 % onto spell power, although Iron's spells already take magic damage. Mana Attunement and the three skills are now spell power, as their descriptions say, and the Origins bonuses are magic damage, as theirs say. The sync is gone. An Archmage's firebolt at tier 4 now does about 2.2 times what a classless caster's does (it was about 3.4 times). Magic damage does not reach Ars Nouveau spells; it never did.

@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)Cataclysm$(): T3 and T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$(): optional T4 superbosses$(li)$(bold)Stalwart Dungeons$(): T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$(): spellcaster bosses and minibosses, all {{boss irons_spellbooks:dead_king tier}}"
+      "text": "$(li)$(bold)Cataclysm$(): T3 and T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$(): optional superbosses called inside its towers on Overworld hills: the Storm (five Phantom Membranes, {{boss ub:storm tier}}), the Sorcerer (a Nether Star, {{boss ub:sorcerer tier}}), the Lost Angel (Dragon's Breath)$(li)$(bold)Stalwart Dungeons$(): T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$(): spellcaster bosses and minibosses, all {{boss irons_spellbooks:dead_king tier}}"
     },
     {
       "type": "patchouli:text",

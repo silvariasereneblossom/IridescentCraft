@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "fca277aa",
+    "generated_from":  "de313562",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                                   "size":  49206
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
-                                                                    "sha256":  "e1007218fc7807f504273ee8ba73639609dc56f75b95eda046125b861d8f998e",
-                                                                    "size":  30183
+                                                                    "sha256":  "3f876fd80186240c200941734e898550e884eb9de540839ee51ec7e7cb228394",
+                                                                    "size":  31158
                                                                 },
                   "kubejs/config/icraft/registry/dimensions.json":  {
                                                                         "sha256":  "bea95fb525032cdad75d6d40bbf5fbede6d8dfbbc1928a3b676cf13858338a08",
@@ -7536,8 +7536,8 @@
                                                                             "size":  3894
                                                                         },
                   "kubejs/server_scripts/loot/unique_itemset_registry.js":  {
-                                                                                "sha256":  "d6c4428a91d0efc4b75ea1fb8eef92927a83814659bf848d8bfdfb968ba12c46",
-                                                                                "size":  14767
+                                                                                "sha256":  "12eda29294aab028181a02208805b8d1bf2710f1a958195d91b4cf5525899cf8",
+                                                                                "size":  16106
                                                                             },
                   "kubejs/server_scripts/loot/unique_tier_buff.js":  {
                                                                          "sha256":  "c90f069a3c2b2d8b049e0c0d95caec288b7d2ee4e01a8640e50c87616f5bc695",
@@ -7708,8 +7708,8 @@
                                                                                  "size":  1548
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "090cc54480c895b3dba16e26abe5781e1a7b1fb80427d3f7a4e8c2c3978af4b2",
-                                                                              "size":  35234
+                                                                              "sha256":  "a19443b62cc2ddc3ac9bf20ee899a218514e0f837fc5b52e2c9904f42ff21867",
+                                                                              "size":  35162
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "5ca4bcc435042ab860530412a6fd17a7a3652c3945a4f98411b2daa06056518e",
@@ -8700,7 +8700,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "f1514772d616d7261d3834e694065da1b4fac84fcc37b6b57e714e338ee0b4a5",
+                                                               "sha256":  "74975b2efbce9082b5ba327c54d1a24aed539ccb815c0a251acf28d62b4da947",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

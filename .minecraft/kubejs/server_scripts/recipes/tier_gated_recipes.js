@@ -296,20 +296,20 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
     'simplyswords:arcanethyst',        // Ender Guardian
     'simplyswords:awakened_lichblade', // Ancient Remnant (was missing)
     'simplyswords:stormbringer',       // Warden
-    'simplyswords:watching_warglaive', // Void Blossom
-    // === Unassigned reserves (locked-in decision 4 — creative-only until ===
-    // === assigned to a future boss; see loot_overhaul.js Section 8) ===
-    'simplyswords:harbinger',          // unassigned (+3.0 dmg, T2-T3 baseline)
-    'simplyswords:hearthflame',        // unassigned (+8.0 dmg, T4 endgame)
-    'simplyswords:magiscythe',         // unassigned (+4.0 dmg, T3)
-    'simplyswords:magispear',          // unassigned (+4.0 dmg, T3)
-    'simplyswords:ribboncleaver',      // unassigned (+7.0 dmg, T3-T4)
-    'simplyswords:slumbering_lichblade', // unassigned — entry to lichblade chain
-    'simplyswords:wickpiercer',        // unassigned (+4.0 dmg, T3)
-    'simplyswords:mjolnir',            // unassigned (in list pre-3.1; preserved)
-    'simplyswords:storms_edge',        // unassigned
-    'simplyswords:sword_on_a_stick',   // unassigned
-    'simplyswords:watcher_claymore',   // unassigned
+    'simplyswords:watching_warglaive', // Void Worm (since 2026-10-18; was the uninstalled Void Blossom)
+    // === The former reserves (locked-in decision 4): every one has a boss ===
+    // === since 2026-10-18; who drops each: unique_itemset_registry.js  ===
+    'simplyswords:harbinger',          // Ender Golem (T4)
+    'simplyswords:hearthflame',        // Umvuthi (T1)
+    'simplyswords:magiscythe',         // Virtue (T4)
+    'simplyswords:magispear',          // Virtue (T4)
+    'simplyswords:ribboncleaver',      // Sculptor (T1)
+    'simplyswords:slumbering_lichblade', // Mutant Enderman (T2)
+    'simplyswords:wickpiercer',        // Lucifer (T4)
+    'simplyswords:mjolnir',            // Minoshroom (T2)
+    'simplyswords:storms_edge',        // Bellringer (T2)
+    'simplyswords:sword_on_a_stick',   // Gob (T1)
+    'simplyswords:watcher_claymore',   // Ferrous Wroughtnaut (T1)
     // === Relic entry (boss-gated; recipe removal is belt-and-suspenders) ===
     'simplyswords:dormant_relic'
   ].forEach(id => event.remove({ output: id }))

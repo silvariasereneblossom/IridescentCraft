@@ -610,7 +610,7 @@ These boss mods are in the modlist but not yet listed in the dedicated `*_drops.
 
 **Mutant Monsters.** Variants of the vanilla zombie, skeleton, creeper and enderman with enhanced AI and drops. `mutant_monsters_no_griefing.js` suppresses their block breaking, because the mutant zombie's pillar-up and the mutant creeper's charged explosion bypass the mobGriefing=false defaults. Their drops are wired through `dimensional_boss_drops.js`.
 
-**Ultimate Bosses.** In the pack (`ultimate-bosses-1.0.4.jar`) but not yet listed in the dedicated `*_drops.js` files. Its T4 loot and Rift materials are still to be allocated from the Simply Swords reserve (14 weapons until 2026-10-16, when Mjolnir, Storm's Edge and Slumbering Lichblade went to T2 bosses).
+**Ultimate Bosses.** In the pack (`ultimate-bosses-1.0.4.jar`). Its bosses are called inside its towers on Overworld hills and mountains: the Storm with five Phantom Membranes (Tier 1), the Sorcerer with a Nether Star (Tier 3), the Lost Angel with Dragon's Breath; a fourth, the Eye, appears beside Blazes. They keep the mod's own drops and are not part of the pack's boss systems (no kill tokens, no boss rush, no boss scaling). The Simply Swords reserve once meant for them was given to other bosses on 2026-10-18.
 
 #### Loot config priorities
 
@@ -619,7 +619,7 @@ Boss-mod loot tables should be configured in this order during implementation:
 1. Brutal Bosses datapacks: override the default loot tables; tier 1 → vanilla materials + small XP; tier 4 → netherite scraps + a Rare-Epic Apotheosis affix item; never Simply Swords uniques.
 2. Ultris: not possible with per-entity loot rules, because its bosses are vanilla mobs (see above). Any Ultris loot would have to key on the mod's own entity tags.
 3. Cardinal Sins: allocate the sins/Lucifer/Drakara ladder (T3; Lucifer carries the Cursed Sigil of Pride relic and no tier token, since the designed Lucifer's Token is not in the game). Verify that no drop bypasses tier gating.
-4. Ultimate Bosses: assign T4 loot + Rift materials.
+4. Ultimate Bosses: their own loot; whether the pack's boss systems should take them in is an open design question (2026-10-18).
 5. Cataclysm-Apotheosis integration: *verify the source. The #47 cleanup audit found no `cataclysm*apoth*` jar in the live mods folder; the integration may come from `cataclysm_ut` or something similar. Needs operator confirmation.*
 
 ### C.13 Simply Swords unique-count audit

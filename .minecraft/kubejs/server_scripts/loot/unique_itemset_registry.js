@@ -28,6 +28,12 @@
 // bows, no arcforge) — a model in the jar is not proof of an item. The entry was
 // the "Invalid ingredient for filter: too_many_bows:arcforge" boot warning and
 // an empty drop on Enchanter Merlin.
+// [2026-10-18] The same for three Simply Swords ids, removed: `simplyswords:twilight`
+// (Mowzie's Naga), `simplyswords:magic_estoc` (Enchanter Merlin) and
+// `simplyswords:dreadtide`. Simply Swords 1.56.0 ships their names and configs but
+// registers none of them (Dreadtide only beside Eldritch End, not in the pack); a
+// LootJS entry of an id that is no item adds nothing, without a warning, so those
+// two bosses had dropped nothing for them. dev/registry/items.txt is the list.
 // =============================================================================
 
 global.ICRAFT_TIER_DMG_MULT = { 1: 1.10, 2: 1.20, 3: 1.30, 4: 1.40 }
@@ -50,7 +56,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:hearthflame':      { tier: 1, kind: 'sword', boss: 'mowziesmobs:umvuthi',           addDrop: true },
   'simplyswords:watcher_claymore': { tier: 1, kind: 'sword', boss: 'mowziesmobs:ferrous_wroughtnaut',addDrop: true },
   'simplyswords:ribboncleaver':    { tier: 1, kind: 'sword', boss: 'mowziesmobs:sculptor',          addDrop: true },
-  'simplyswords:twilight':         { tier: 1, kind: 'sword', boss: 'mowziesmobs:naga',              addDrop: true },
+  // ('simplyswords:twilight' on mowziesmobs:naga removed 2026-10-18 — not a registered item, see header)
 
   // ---- T2 (EXISTING drops in loot_overhaul.js §1 — tier recorded for buff) ----
   'simplyswords:tempest':          { tier: 2, kind: 'sword', boss: 'twilightforest:naga',           addDrop: false },
@@ -72,9 +78,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:slumbering_lichblade': { tier: 2, kind: 'sword', boss: 'mutantmonsters:mutant_enderman', addDrop: true },
 
   // ---- T3 (EXISTING drops / reserved — tier recorded for buff) ----
-  // [2026-10-16] Magic Estoc tier 3 with Enchanter Merlin (tier 1 -> 3, on recommendation, for review: Merlin is
-  // summoned only at the Nether's Chthonic Cathedral, with Sorceress Circe)
-  'simplyswords:magic_estoc':      { tier: 3, kind: 'sword', boss: 'terramity:enchanter_merlin',    addDrop: true },
+  // ('simplyswords:magic_estoc' on terramity:enchanter_merlin removed 2026-10-18 — not a registered item, see header)
   'simplyswords:brimstone_claymore':{ tier: 3, kind: 'sword', boss: 'cataclysm:netherite_monstrosity', addDrop: false },
   'simplyswords:molten_edge':      { tier: 3, kind: 'sword', boss: 'cataclysm:ignis',               addDrop: false },
   'simplyswords:shadowsting':      { tier: 3, kind: 'sword', boss: 'cataclysm:the_harbinger',       addDrop: false },
@@ -82,8 +86,10 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:twisted_blade':    { tier: 3, kind: 'sword', boss: 'cataclysm:maledictus',          addDrop: false },
   'simplyswords:bramblethorn':     { tier: 3, kind: 'sword', boss: 'undergarden:forgotten_guardian',addDrop: false },
   'simplyswords:soulstealer':      { tier: 3, kind: 'sword', boss: 'deeperdarker:stalker',          addDrop: false },
-  'simplyswords:soulpyre':         { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:soulkeeper':       { tier: 3, kind: 'sword', boss: null,                            addDrop: false },
+  // [2026-10-18] `boss` names the boss loot_overhaul.js drops it from (it said null; documentation only, no script
+  // reads `boss` when addDrop is false)
+  'simplyswords:soulpyre':         { tier: 3, kind: 'sword', boss: 'deeperdarker:shattered',        addDrop: false },
+  'simplyswords:soulkeeper':       { tier: 3, kind: 'sword', boss: 'minecraft:wither',              addDrop: false },
   // (mjolnir, storms_edge, slumbering_lichblade: T2 above since 2026-10-16)
 
   // ---- T4 (EXISTING drops / reserved — tier recorded for buff) ----
@@ -95,18 +101,24 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'simplyswords:thunderbrand':     { tier: 4, kind: 'sword', boss: 'aether:slider',                 addDrop: false },
   'simplyswords:caelestis':        { tier: 4, kind: 'sword', boss: 'aether:valkyrie_queen',         addDrop: false },
   'simplyswords:sunfire':          { tier: 4, kind: 'sword', boss: 'aether:sun_spirit',             addDrop: false },
-  'simplyswords:emberlash':        { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
+  // [2026-10-18] `boss` names the boss loot_overhaul.js drops it from (it said null; documentation only)
+  'simplyswords:emberlash':        { tier: 4, kind: 'sword', boss: 'cataclysm:ignited_revenant',    addDrop: false },
   'simplyswords:waking_lichblade': { tier: 4, kind: 'sword', boss: 'minecraft:ender_dragon',        addDrop: false },
   'simplyswords:awakened_lichblade':{ tier: 4, kind: 'sword', boss: 'cataclysm:ancient_remnant',    addDrop: false },
   'simplyswords:magiblade':        { tier: 4, kind: 'sword', boss: 'botania:doppleganger',          addDrop: false },
   'simplyswords:arcanethyst':      { tier: 4, kind: 'sword', boss: 'cataclysm:ender_guardian',      addDrop: false },
   'simplyswords:stormbringer':     { tier: 4, kind: 'sword', boss: 'minecraft:warden',              addDrop: false },
-  'simplyswords:watching_warglaive':{ tier: 4, kind: 'sword', boss: null,                           addDrop: false },
-  'simplyswords:magiscythe':       { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:magispear':        { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:harbinger':        { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:dreadtide':        { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
-  'simplyswords:wickpiercer':      { tier: 4, kind: 'sword', boss: null,                            addDrop: false },
+  // [2026-10-18] the five tier-4 swords that dropped from no boss (their recipes are removed, the @simplyswords chest
+  // strip takes them out of chests, so a player could not get one) go to the tier-4 bosses that had no unique and are
+  // met only at tier 4: Virtue two, Lucifer (his kill opens tier 4), the End's Ender Golem and Void Worm one each (on
+  // recommendation, for review). NEW drops (addDrop:true, boss_unique_drops.js, ICRAFT_UNIQUE_DROP_CHANCE).
+  // Uvogre and Duskrok (tier-4 minibosses with none) were passed over: they also spawn in the Overworld.
+  // ('simplyswords:dreadtide', the sixth, removed — not a registered item, see header)
+  'simplyswords:watching_warglaive':{ tier: 4, kind: 'sword', boss: 'alexsmobs:void_worm',          addDrop: true },
+  'simplyswords:magiscythe':       { tier: 4, kind: 'sword', boss: 'terramity:virtue',              addDrop: true },
+  'simplyswords:magispear':        { tier: 4, kind: 'sword', boss: 'terramity:virtue',              addDrop: true },
+  'simplyswords:harbinger':        { tier: 4, kind: 'sword', boss: 'cataclysm:ender_golem',         addDrop: true },
+  'simplyswords:wickpiercer':      { tier: 4, kind: 'sword', boss: 'cardinal_sins:lucifer',         addDrop: true },
 
   // ===========================================================================
   // TOO MANY BOWS (ranged) — buff applies to the fired arrow (tagged at spawn).
@@ -118,7 +130,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:dark_bow':        { tier: 1, kind: 'bow', boss: 'terramity:gob',                   addDrop: true },
   'too_many_bows:torchbearer':     { tier: 1, kind: 'bow', boss: 'mowziesmobs:ferrous_wroughtnaut', addDrop: true },
   'too_many_bows:flame_bow':       { tier: 1, kind: 'bow', boss: 'mowziesmobs:umvuthi',             addDrop: true },
-  'too_many_bows:cyroheart_bow':   { tier: 1, kind: 'bow', boss: 'mowziesmobs:frostmaw',            addDrop: true },
+  // (cyroheart_bow: T2 below since 2026-10-18, with Frostmaw)
   'too_many_bows:emerald_sage_bow':{ tier: 1, kind: 'bow', boss: 'mowziesmobs:sculptor',            addDrop: true },
   // ('too_many_bows:arcforge' on terramity:enchanter_merlin removed — not a registered item, see header)
   'too_many_bows:verdant_viper':   { tier: 1, kind: 'bow', boss: 'mowziesmobs:naga',                addDrop: true },
@@ -133,6 +145,9 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:burnt_relic':     { tier: 2, kind: 'bow', boss: 'twilightforest:hydra',            addDrop: true },
   'too_many_bows:vitality_weaver': { tier: 2, kind: 'bow', boss: 'blue_skies:summoner',             addDrop: true },
   'too_many_bows:webstring':       { tier: 2, kind: 'bow', boss: 'blue_skies:arachnarch',           addDrop: true },
+  // [2026-10-18] Cyroheart Bow tier 2 with Frostmaw (tier 1 -> 2, on recommendation, for review: Frostmaw moved to
+  // Everbright at tier 2 on 2026-10-16 and its bow stayed tier 1)
+  'too_many_bows:cyroheart_bow':   { tier: 2, kind: 'bow', boss: 'mowziesmobs:frostmaw',            addDrop: true },
 
   // ---- T3 ----
   // [2026-10-16] Astral Bound tier 3 with Sorceress Circe (tier 4 -> 3, on recommendation, for review: met at the
