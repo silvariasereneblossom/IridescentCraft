@@ -6,6 +6,8 @@ Use it when you author per-material reforging variants, balance module values, c
 
 Last full audit: 2026-05-28. As of 2026-10-18 the pack ships 913 material files counted by source before dedupe (12 mod jars and 2 Paxi zips), 854 of them unique by file path (59 cross-source duplicates).
 
+> Changes on 2026-10-19: every magic bonus on a pack material was re-sized to Iron's Spellbooks' own armour: +5 % a module, added, and only where a full set stays within ISS's best (see [2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19), [2g](#2g-what-each-pack-material-gives-since-2026-10-19) and [5.1](#51-a-materials-iss-bonus-is-a-plain-key-005-a-module-2026-10-18)). Until then 28 materials carried bonuses that never applied and the others multiplied once per module and once per piece. The same day the vestment and runed plates got fixed mage stats (4.2), arcane cloth lost Iron's Spellbooks' hidden cooldown bonus (2d), and four metals' armour bonus became linear (5.1).
+
 > Changes in the 2026-05-28 audit: 7 custom materials (`arcane_cloth`, `magebloom`, `paper`, `deathskin`, `rotten_leather`, `tf_arctic`, `tf_yeti`) were silently dropping their single-asterisk attributes, and that is fixed (see [Section 5](#section-5---critical-tetra-finickyness-rules)). `arcane_cloth` went from bare-minimum stats up to the T2 magical-cloth tier. The new [Section 2d](#2d-bundle-jar-magical-fabric--skin-materials-iridescent_tetra_expansion-100jar) covers `arcane_cloth`, `manaweave`, `spellbinding_cloth` and `magebloom`, none of which the 2026-04-29 audit documented. Section 4 was rewritten to describe the real per-material variant architecture: its earlier claim that "plate modules accept only 5 materials" came from the deprecated standalone `iridescent-reforging-mod/` source and contradicted the unified bundle's per-material variant model. [Section 5 (Critical Tetra Finickyness Rules)](#section-5---critical-tetra-finickyness-rules) is new. The per-tier-parity audit of the materials is still pending (see [Future work](#future-work--open-questions)). The canonical hierarchy: T1 = iron/copper/brass; T2 = steel/manasteel/etc.; T3 = terrasteel/elementium/etc.; T4 = netherite + Terramity onyx; the T4 peak is Aethersteel, the top of crafted progression, which sits below the Ad Astra postgame chain.
 
 ---
@@ -317,18 +319,20 @@ These change only the primary value and magic capacity of the vanilla materials:
 
 ### 2b. Themed reforging materials (`tetra:themed/*`)
 
-Eight themed materials in the expansion jar, under `data/tetra/materials/themed/` (namespace `tetra:`, so `tetra:themed/<key>`). Each uses one item as its material and carries its own spell-power attribute, which a module made of it adds to the armour piece. Every one of the jar's 56 armour modules has a themed variant.
+Eight themed materials in the expansion jar, under `data/tetra/materials/themed/` (namespace `tetra:`, so `tetra:themed/<key>`). Each uses one item as its material; its stats are minimal (primary / secondary / tertiary 1, durability 0). Every one of the jar's 56 armour modules has a themed variant, which adds a little armour; the school bonus comes from the material itself, once per module made of it (see [2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19)).
 
-| Key | Item | Attributes |
+| Key | Item | Bonus per module (since 2026-10-19) |
 |---|---|---|
-| `themed/blood` | `irons_spellbooks:blood_vial` | `**irons_spellbooks:blood_spell_power` 0.1 |
-| `themed/ender` | `minecraft:ender_pearl` | `**irons_spellbooks:spell_power` 0.05 |
-| `themed/fire` | `irons_spellbooks:cinder_essence` | `**irons_spellbooks:fire_spell_power` 0.1 |
-| `themed/holy` | `irons_spellbooks:divine_pearl` | `**irons_spellbooks:holy_spell_power` 0.1 |
-| `themed/ice` | `irons_spellbooks:frozen_bone` | `**irons_spellbooks:ice_spell_power` 0.1 |
-| `themed/lightning` | `irons_spellbooks:lightning_bottle` | `**irons_spellbooks:lightning_spell_power` 0.1 |
-| `themed/nature` | `minecraft:oak_sapling` | `**irons_spellbooks:spell_power` 0.05 |
-| `themed/shadow` | `minecraft:ghast_tear` | `**irons_spellbooks:spell_power` 0.05 |
+| `themed/blood` | `irons_spellbooks:blood_vial` | blood spell power +5 % |
+| `themed/fire` | `irons_spellbooks:cinder_essence` | fire spell power +5 % |
+| `themed/holy` | `irons_spellbooks:divine_pearl` | holy spell power +5 % |
+| `themed/ice` | `irons_spellbooks:frozen_bone` | ice spell power +5 % |
+| `themed/lightning` | `irons_spellbooks:lightning_bottle` | lightning spell power +5 % |
+| `themed/ender` | `minecraft:ender_pearl` | none (looks only) |
+| `themed/nature` | `minecraft:oak_sapling` | none (looks only) |
+| `themed/shadow` | `minecraft:ghast_tear` | none (looks only) |
+
+> A full set of one school's themed material (16 modules) gives +80 % to that school. Shadow, ender and nature carried spell power for every school, which over 16 modules would beat Iron's Spellbooks' best mage set, so since 2026-10-19 they carry no magic bonus. Before that date fire, ice, holy, lightning and blood gave +10 % a module, multiplied over the modules (a full fire set x4.6 fire power), and the other three +5 % a module, multiplied (x2.18).
 
 ### 2c. Spell-book materials (`iridescent-modular-spells-mod`)
 
@@ -358,69 +362,170 @@ All other stats (primary/secondary/tertiary/durability/efficiency) are 0. Each b
 
 Three magical fabric materials and one magical skin from the unified bundle jar. They are registered under the `tetra:` namespace: the path inside the jar is `data/tetra/materials/<cat>/<key>.json`, so the namespace is `tetra`, not `iridescent_modular_spells`. They join the `tetra:fabric/` and `tetra:skin/` category pools next to vanilla wool, leather and hide, so any module variant that targets `tetra:fabric/` or `tetra:skin/` (or an exact key in those categories) can use them.
 
-| Cat | Key | Prim | Sec | Tert | Dur | iC | iG | MC | Repair Item | Attributes (post-2026-05-28 `**` fix) |
+| Cat | Key | Prim | Sec | Tert | Dur | iC | iG | MC | Repair Item | Magic bonus per module (since 2026-10-19) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| fabric | `arcane_cloth` | 1 | 1 | 5 | 250 | 1 | 4 | 160 | `irons_spellbooks:magic_cloth` | `**mana_regen 0.05` + `**max_mana 0.05` + `**spell_power 0.025` |
+| fabric | `arcane_cloth` | 1 | 1 | 5 | 250 | 1 | 4 | 160 | `irons_spellbooks:magic_cloth` | max mana +5 |
 | fabric | `manaweave` | 1 | 1 | 5 | 240 | 1 | 4 | 150 | `botania:manaweave_cloth` | -- (relies on tertiary stat) |
 | fabric | `spellbinding_cloth` | 1 | 1 | 5 | 320 | 1 | 4 | 200 | `botania:spell_cloth` | -- (relies on tertiary + 200 MC) |
-| skin | `magebloom` | 0.6 | 4.5 | 1 | 90 | 1 | 3 | 130 | `ars_nouveau:magebloom_fiber` | `**spell_power 0.05` |
+| skin | `magebloom` | 0.6 | 4.5 | 1 | 90 | 1 | 3 | 130 | `ars_nouveau:magebloom_fiber` | none |
 
 > Tiers: `arcane_cloth` is the entry T2 magical cloth (it had bare-minimum stats until the 2026-05-28 boost). `manaweave` is mid-tier, with a Botania flavor. `spellbinding_cloth` is upper-tier (MC 200, above both manaweave at MC 150 and the upstream ISS `irons_spellbooks_arcane_cloth` at MC 180). `magebloom` is a magic skin made from Ars Nouveau's magebloom fiber, themed as a "tough but flexible high-magic skin substitute"; its high secondary (4.5) fits the spinning/weaving identity.
 
-> **The `**` prefix is required.** All four use `**`-prefixed ISS percent attributes (MULTIPLY_TOTAL). With a single asterisk `*` (MULTIPLY_BASE), Tetra's `AttributeHelper.collapse()` silently drops an ISS percent attribute to 0 when no ADDITION sibling exists. [Section 5](#section-5---critical-tetra-finickyness-rules) has the full rule. Before 2026-05-28, `arcane_cloth` and `magebloom` shipped with the broken `*` prefix and their magic bonuses never showed in game; the deployed jar was fixed with an in-place JSON patch (the jar isn't signed).
+> **How a material's magic bonus is written** is in [2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19) and [5.1](#51-a-materials-iss-bonus-is-a-plain-key-005-a-module-2026-10-18). Until 2026-10-19 arcane cloth gave mana regen, max mana and spell power, and magebloom spell power, each multiplied once per module; across the 12 fabric or 11 skin modules of a full set that beat Iron's Spellbooks' best mage set, so magebloom keeps no magic bonus and arcane cloth keeps flat max mana.
 
-> ISS has a separate arcane_cloth. `irons_spellbooks` ships its own `arcane_cloth` material under the `tetra:` namespace, with the key prefix `irons_spellbooks_` (full key: `tetra:fabric/irons_spellbooks_arcane_cloth`). Stats: P=1, S=1, T=5, dur=300, MC=180, `**cooldown_reduction=0.15`. The identifiers differ, so it coexists with our `tetra:fabric/arcane_cloth` without a key collision. See [Section 3.10](#310-irons_spellbooks-1201-31551jar-17-materials).
+> ISS ships its own arcane cloth at the SAME path, `data/tetra/materials/fabric/arcane_cloth.json` (its `key` field is `irons_spellbooks_arcane_cloth`, but Tetra names a material by its path, so both files are `tetra:fabric/arcane_cloth`). Tetra merged the two field by field and their attributes as a union: ISS's `**cooldown_reduction 0.15` sat under ours, and a full arcane-cloth set had x5.35 cooldown reduction. Since 2026-10-19 a `replace: true` override in `icraft_tetra_overrides` holds the material as the game had merged it (durability 250, magic capacity 160, the crude texture, the cut requirement) with only our +5 max mana a module. See [Section 3.10](#310-irons_spellbooks-1201-31551jar-17-materials).
 
 ### 2e. Datapack-side magical attribute carriers (`icraft_tetra_materials`, post-2026-05-28)
 
-Five datapack materials add `**`-prefixed ISS attributes on top of their base stats, for spell-tier flavor:
+Five datapack materials carry magic attributes on top of their base stats, for spell-tier flavor (values since 2026-10-19, per module):
 
 | Cat | Key | Attributes |
 |---|---|---|
-| fibre | `paper` | `**spell_power 0.05` |
-| skin | `deathskin` | `**mana_regen 0.025` + `iridescent_reforging:damage_vs_undead 0.05` (plain ADDITION on a custom Forge attr, which renders cleanly per lesson 2026-05-13 #4) |
-| skin | `rotten_leather` | `**holy_spell_power 0.1` + `**mana_regen 0.05` + `**spell_power 0.15` |
-| skin | `tf_arctic` | `**ice_magic_resist 0.1` + `**spell_power 0.1` |
-| skin | `tf_yeti` | `**ice_magic_resist 0.12` + `**spell_power 0.1` |
+| fibre | `paper` | spell power +5 % |
+| skin | `deathskin` | `iridescent_reforging:damage_vs_undead` 0.05 (its mana regen is gone: 11 skin modules a set beat Iron's best) |
+| skin | `rotten_leather` | holy spell power +5 % (its spell power and mana regen are gone) |
+| skin | `tf_arctic` | none (a converted Arctic set fills 16 modules: its spell power and ice resist are gone) |
+| skin | `tf_yeti` | none (the same, for the Yeti set) |
 
-Before 2026-05-28 all of these shipped with a single asterisk, and their bonuses never showed. The 2026-05-28 fix converted 8 attributes across 7 materials (2 of them in Section 2d) to `**`. Until then, a player whose gear used any of these got +0 magic stat from the material attribute, although the file declared the bonus.
+Most of the pack's other materials carry magic bonuses too (boss materials, the Terramity gems, the modded metals); [2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19) gives the rule they all follow.
 
-### 2g. Magic bonuses that are listed but do nothing (as of 2026-10-18)
+### 2f. How material magic bonuses add up (since 2026-10-19)
 
-Twenty-eight materials list Iron's Spellbooks bonuses in the single-asterisk form, which the game ignores ([5.1](#51-iss-bonuses-on-materials--does-nothing--multiplies-per-module-2026-10-18)). In game they give **no** magic bonus from those lines. The "Applies" column is what does work; those values apply to every module made of the material and multiply.
+A material's attributes apply once to every module made of it, and an item adds up its modules. Tetra also rounds each module's amount to 0.05, so the smallest magic bonus a material can give is 5 % a module. A full armour set holds up to 14 modules of one metal at the workbench (linings take cloth or skin), 4 or 5 of a gem (the four plates and the pauldrons), up to 11 of a skin, 12 of a cloth, 16 of a themed material, and 16 of the material a mod's armour converts into at the Tetra workbench (all four modules of every piece).
 
-| Material | Listed, does nothing | Applies |
+Every magic bonus on a pack material is therefore +5 % a module, added (not multiplied), and a material keeps a bonus only if a full set of it stays within what Iron's Spellbooks' own armour gives, with 15 % of slack for the 5 % steps:
+
+| Bonus | Iron's Spellbooks' best | Kept on |
 |---|---|---|
-| Ancient Metal (the second one: the ingot makes the Cataclysm material) | cooldown reduction +4 %, spell power +12 % | max mana +8 % |
-| Brass | cooldown reduction +4 %, spell power +10 % | - |
-| Charoite | ender power +6 %, spell power +15 % | - |
-| Cloggrum | spell power +15 % | armor +4 % |
-| Deorum | holy power +8 %, spell power +25 % | - |
-| Diamond (the material converted mod armour uses) | spell power +25 % | - |
-| Elementium | spell power +6 % (a duplicate line) | spell power +6 % |
-| Enderium | ender power +10 %, spell power +30 % | - |
-| Fiery | fire resist +10 %, fire power +12 %, spell power +25 % | - |
-| Forgotten Metal | ender power +8 %, spell power +30 % | - |
-| Froststeel | ice power +12 %, spell power +25 % | - |
-| Garnite | fire power +6 %, spell power +15 % | - |
-| Horizonite | holy power +8 %, spell power +15 % | - |
-| Ironwood | nature power +8 %, spell power +15 % | - |
-| Knight metal (The Abyss) | spell power +25 % | armor +4 % |
-| Knightmetal | spell power +25 % | armor +5 % |
-| Lumium | holy power +8 %, spell power +15 % | - |
-| Manasteel | mana regen +4 % (a duplicate line), spell power +15 % | mana regen +4 % |
-| Osmium | mana regen +4 %, spell power +25 % | - |
-| Phantom | ender power +6 %, spell power +25 % | - |
-| Refined Obsidian | spell power +30 % | knockback resistance +0.05 |
-| Resonarium (Deeper & Darker) | ender power +8 %, spell power +20 % | - |
-| Signalum | lightning power +10 %, spell power +15 % | - |
-| Steel | spell power +15 % | armor +4 % |
-| Steeleaf | nature power +12 %, spell power +15 % | - |
-| Terrasteel | mana regen +5 %, spell power +25 % | max mana +10 % |
-| Unorithe | spell power +5 % | - |
-| Utherium | blood power +8 %, spell power +25 % | - |
+| School spell power (fire, ice, ...) | a school set: x1.68 on its school | every material that has one |
+| Spell power (all schools) | its best set: x1.25 | gems (4 or 5 modules a set), paper |
+| Mana regen | the Tarnished Crown: +25 % | none (only metals and skins had it, and they fill too many modules) |
+| Cooldown reduction | its best staff: +20 % | none (the metals that listed it fill 14 modules; arcane cloth's came from Iron's Spellbooks' own file) |
+| School resist | its rings: +15 % | gems |
+| Max mana | a set: +500 to +600 | flat points: +10 a module on aethersteel, terrasteel and the Ender Guardian material, +5 on dimlite and arcane cloth |
 
-They stay off on purpose. Written in the working form, these bonuses would apply once per module and multiply: a converted Botania terrasteel set would give x35.5 spell power, and an enderium set with a sword would reach the spell power cap. The materials whose bonuses do apply multiply the same way (an aethersteel set gives x3.8 spell power, an iridium set x39). A design pass will size every material's magic bonus against Iron's Spellbooks' own armour; until then this table is what the game does.
+What a full set gives, measured on a full-pack boot (every material in [2g](#2g-what-each-pack-material-gives-since-2026-10-19)): a metal with a school bonus +70 % to that school, +80 % from a converted mod set (Fiery, Froststeel, Ironwood, Resonarium, Horizonite; Ignitium too, whose armour skin adds its own fire); a gem set +20 % for each of its bonuses (+25 % with gem pauldrons); a themed set +80 % to its school; a rotten leather set +40 % holy (+55 % with every module that takes a skin); aethersteel, terrasteel and the Ender Guardian material +140 max mana a crafted set.
+
+Mixed materials add up the same way. A fire set of ruby plates or pauldrons, a fire boss metal and fire themed linings, or runed plates of themed fire, reaches fire power +80 % and spell power +25 %: x2.25 on a fire spell, where Iron's own Pyromancer set gives x1.68.
+
+Held items count too: a sword of the material carries its bonus on two modules (+10 %), a wand on four (+20 %), a modular spell book on its covers and spine (+10 to +15 %). The wand and book modules also carry spell power of their own, which grows with the material's primary stat and multiplies: a ruby wand x1.2 more, a boss gem's wand x1.55, a gem book x1.27 to x1.77. That part was not changed on 2026-10-19.
+
+Before 2026-10-19 the bonuses multiplied once per module and once per piece: an aethersteel set gave spell power x3.8, an iridium set x39, a converted Ignitium set fire power x9.2, an onyx set with an onyx wand and book spell power x29.9; and 28 materials (enderium, deorum, knightmetal, the diamond of 26 converted mod sets, ...) listed bonuses that never applied at all.
+
+**The tooltip shows a plain bonus as a number, not a percent.** Apothic Attributes prints an addition as it is, so a converted Fiery chestplate reads "+0.2 Fire Spell Power": that is +20 % (the base is 1). Iron's Spellbooks' own armour uses the other form and reads "+10 %". The Tetra workbench's Status bars show both as percents.
+
+### 2g. What each pack material gives (since 2026-10-19)
+
+Every pack material that lists an Iron's Spellbooks bonus, as the game loads it on 2026-10-19. **A module** is what one module made of the material carries. **Full set** is a whole set of it: the crafted set has every module of the iron-shaped set that takes the material made of it (the count in brackets; other module choices hold one more gem or a few more skin modules), the converted set is the mod's own four pieces through the Tetra workbench. **Before** is the same set in the game before 2026-10-19. Measured on a stand-in on a full-pack boot for every bonus it reads (spell power, the fire, ice, holy, nature, ender and eldritch powers and resists, mana regen, cooldown, max mana); the lightning, blood and evocation lines are the module values added up the same way.
+
+| Kind | Material | A module | Full set | Before (full set) |
+|---|---|---|---|---|
+| bone | `tf_naga` | nature power +5 % | nature power +20 % (4 modules); converted set: nature power +40 % | nature power +46 %, spell power +75 %; converted set: nature power +114 %, spell power x3.06 |
+| fabric | `arcane_cloth` | max mana +5 | max mana +60 (12 modules) | cooldown reduction x5.35, mana regen +80 %, max mana x1.8 |
+| fibre | `paper` | spell power +5 % | no module of the crafted plate set takes it | - |
+| gem | `bm_frostmaw` | ice resist +5 %, ice power +5 %, spell power +5 % | ice resist +20 %, ice power +20 %, spell power +20 % (4 modules) | ice resist +22 %, ice power +46 %, spell power +46 % |
+| gem | `bm_mnaga` | nature resist +5 %, nature power +5 %, spell power +5 % | nature resist +20 %, nature power +20 %, spell power +20 % (4 modules) | nature resist +22 %, nature power +46 %, spell power +46 % |
+| gem | `bm_sculptor` | nature resist +5 %, nature power +5 %, spell power +5 % | nature resist +20 %, nature power +20 %, spell power +20 % (4 modules) | nature resist +22 %, nature power +46 %, spell power +46 % |
+| gem | `bm_sniffer` | nature resist +5 %, nature power +5 %, spell power +5 % | nature resist +20 %, nature power +20 %, spell power +20 % (4 modules) | nature resist +22 %, nature power +46 %, spell power +46 % |
+| gem | `bo_gaia` | holy resist +5 %, holy power +5 %, spell power +5 % | holy resist +20 %, holy power +20 %, spell power +20 % (4 modules) | holy resist +46 %, holy power +75 %, spell power +46 % |
+| gem | `bs_arachnarch` | nature resist +5 %, nature power +5 %, spell power +5 % | nature resist +20 %, nature power +20 %, spell power +20 % (4 modules) | nature resist +22 %, nature power +46 %, spell power +46 % |
+| gem | `bs_summoner` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +22 %, ender power +46 %, spell power +46 % |
+| gem | `cm_scylla` | ice resist +5 %, ice power +5 %, spell power +5 % | ice resist +20 %, ice power +20 %, spell power +20 % (4 modules) | ice resist +46 %, ice power +46 %, spell power +46 % |
+| gem | `cs_envy` | nature resist +5 %, nature power +5 %, spell power +5 % | nature resist +20 %, nature power +20 %, spell power +20 % (4 modules) | nature resist +46 %, nature power +46 %, spell power +46 % |
+| gem | `cs_gluttony` | ice resist +5 %, ice power +5 %, spell power +5 % | ice resist +20 %, ice power +20 %, spell power +20 % (4 modules) | ice resist +46 %, ice power +46 %, spell power +46 % |
+| gem | `cs_greed` | eldritch resist +5 %, eldritch power +5 %, spell power +5 % | eldritch resist +20 %, eldritch power +20 %, spell power +20 % (4 modules) | eldritch resist +46 %, eldritch power +46 %, spell power +46 % |
+| gem | `cs_lust` | blood resist +5 %, blood power +5 %, spell power +5 % | blood resist +20 %, blood power +20 %, spell power +20 % (4 modules) | blood resist +46 %, blood power +46 %, spell power +46 % |
+| gem | `cs_pride` | holy resist +5 %, holy power +5 %, spell power +5 % | holy resist +20 %, holy power +20 %, spell power +20 % (4 modules) | holy resist +46 %, holy power +46 %, spell power +46 % |
+| gem | `cs_sloth` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +46 %, ender power +46 %, spell power +46 % |
+| gem | `cs_wrath` | fire resist +5 %, fire power +5 %, spell power +5 % | fire resist +20 %, fire power +20 %, spell power +20 % (4 modules) | fire resist +46 %, fire power +46 %, spell power +46 % |
+| gem | `dd_resonarium` | ender power +5 % | ender power +20 % (4 modules); converted set: ender power +80 % | nothing; converted set: nothing |
+| gem | `dd_stalker` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +46 %, ender power +46 %, spell power +46 % |
+| gem | `diamond_no_t` | none | nothing (4 modules); converted set: nothing | nothing; converted set: nothing |
+| gem | `iss_archevoker` | evocation resist +5 %, evocation power +5 %, spell power +5 % | evocation resist +20 %, evocation power +20 %, spell power +20 % (4 modules) | evocation resist +46 %, evocation power +46 %, spell power +46 % |
+| gem | `iss_tyros` | fire resist +5 %, fire power +5 %, spell power +5 % | fire resist +20 %, fire power +20 %, spell power +20 % (4 modules) | fire resist +46 %, fire power +46 %, spell power +46 % |
+| gem | `onyx` | ender power +5 %, spell power +5 % | ender power +20 %, spell power +20 % (4 modules) | ender power +46 %, spell power +186 % |
+| gem | `ruby` | fire power +5 %, spell power +5 % | fire power +20 %, spell power +20 % (4 modules) | fire power +46 %, spell power +186 % |
+| gem | `sapphire` | ice power +5 %, spell power +5 % | ice power +20 %, spell power +20 % (4 modules) | ice power +46 %, spell power +144 % |
+| gem | `tf_lich` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +22 %, ender power +46 %, spell power +46 % |
+| gem | `tf_snowqueen` | ice resist +5 %, ice power +5 %, spell power +5 % | ice resist +20 %, ice power +20 %, spell power +20 % (4 modules) | ice resist +22 %, ice power +46 %, spell power +46 % |
+| gem | `tf_urghast` | fire resist +5 %, fire power +5 %, spell power +5 % | fire resist +20 %, fire power +20 %, spell power +20 % (4 modules) | fire resist +22 %, fire power +46 %, spell power +46 % |
+| gem | `tm_circe` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +46 %, ender power +46 %, spell power +46 % |
+| gem | `tm_gatmancer` | eldritch resist +5 %, eldritch power +5 %, spell power +5 % | eldritch resist +20 %, eldritch power +20 %, spell power +20 % (4 modules) | eldritch resist +46 %, eldritch power +46 %, spell power +46 % |
+| gem | `tm_thunker` | lightning resist +5 %, lightning power +5 %, spell power +5 % | lightning resist +20 %, lightning power +20 %, spell power +20 % (4 modules) | lightning resist +46 %, lightning power +75 %, spell power +46 % |
+| gem | `tm_virtue` | holy resist +5 %, holy power +5 %, spell power +5 % | holy resist +20 %, holy power +20 %, spell power +20 % (4 modules) | holy resist +46 %, holy power +75 %, spell power +46 % |
+| gem | `topaz` | lightning power +5 %, spell power +5 % | lightning power +20 %, spell power +20 % (4 modules) | lightning power +46 %, spell power +144 % |
+| gem | `undergarden_utherium` | blood power +5 %, spell power +5 % | blood power +20 %, spell power +20 % (4 modules) | nothing |
+| gem | `vn_dragon` | ender resist +5 %, ender power +5 %, spell power +5 % | ender resist +20 %, ender power +20 %, spell power +20 % (4 modules) | ender resist +46 %, ender power +75 %, spell power +46 % |
+| metal | `ae_slider` | eldritch power +5 % | eldritch power +70 % (14 modules) | eldritch resist x3.8, eldritch power x7.08, spell power x3.8 |
+| metal | `ae_sunspirit` | holy power +5 % | holy power +70 % (14 modules) | holy resist x3.8, holy power x7.08, spell power x3.8 |
+| metal | `ae_valkyrie` | holy power +5 % | holy power +70 % (14 modules) | holy resist x3.8, holy power x7.08, spell power x3.8 |
+| metal | `aethersteel` | max mana +10 | max mana +140 (14 modules) | max mana x3.8, spell power x3.8 |
+| metal | `ancient_metal` | cooldown reduction +5 %, max mana +8, spell power +5 % | no module of the crafted plate set takes it | - |
+| metal | `arcane_ingot` | none | nothing (14 modules) | mana regen +98 %, spell power +98 % |
+| metal | `bm_gob` | holy power +5 % | holy power +70 % (14 modules) | holy resist +98 %, holy power x3.8, spell power x3.8 |
+| metal | `bm_umvuthi` | holy power +5 % | holy power +70 % (14 modules) | holy resist +98 %, holy power x3.8, spell power x3.8 |
+| metal | `bm_wroughtnaut` | eldritch power +5 % | eldritch power +70 % (14 modules) | eldritch resist +98 %, eldritch power x3.8, spell power x3.8 |
+| metal | `brass` | none | nothing (14 modules) | nothing |
+| metal | `bs_alchemist` | nature power +5 % | nature power +70 % (14 modules) | nature resist +98 %, nature power x3.8, spell power x3.8 |
+| metal | `bs_starlit` | ender power +5 % | ender power +70 % (14 modules) | ender resist +98 %, ender power x3.8, spell power x3.8 |
+| metal | `charoite` | ender power +5 % | ender power +70 % (14 modules) | nothing |
+| metal | `cm_ancient_metal` | eldritch power +5 % | eldritch power +70 % (14 modules) | eldritch resist x3.8, eldritch power x7.08, spell power x3.8 |
+| metal | `cm_cursium` | blood power +5 %, ender power +5 % | blood power +70 %, ender power +70 % (14 modules) | blood power x3.8, ender power x3.8, spell power x3.8 |
+| metal | `cm_ender_guard` | ender power +5 %, max mana +10 | ender power +70 %, max mana +140 (14 modules) | ender power x7.08, max mana x3.8, spell power x3.8 |
+| metal | `cm_ignitium` | fire power +5 % | fire power +70 % (14 modules); converted set: fire power +80 % (the armour skin adds its own; measured: fire x3.6, fire res x2, mana +400) | fire resist x3.8, fire power x3.8, spell power x3.8; converted set: fire resist x4.59, fire power x4.59, spell power x4.59 (the armour skin adds its own; measured: sp x4.595, fire x9.19, fire res x9.19, mana +400) |
+| metal | `cm_leviathan` | ice power +5 % | ice power +70 % (14 modules) | ice resist x3.8, ice power x3.8, spell power x3.8 |
+| metal | `cm_monstrosity` | fire power +5 % | fire power +70 % (14 modules) | fire resist x3.8, fire power x3.8, spell power x3.8 |
+| metal | `cm_witherite` | blood power +5 %, ender power +5 % | blood power +70 %, ender power +70 % (14 modules) | blood power x3.8, ender power x3.8, spell power x3.8 |
+| metal | `cs_drakara` | fire power +5 % | fire power +70 % (14 modules) | fire resist x3.8, fire power x3.8, spell power x3.8 |
+| metal | `da_eots` | lightning power +5 % | lightning power +70 % (14 modules) | lightning resist x3.8, lightning power x7.08, spell power x3.8 |
+| metal | `deorum` | holy power +5 % | holy power +70 % (14 modules) | nothing |
+| metal | `dimlite` | holy power +5 %, max mana +5 | holy power +70 %, max mana +70 (14 modules) | holy power +98 %, max mana x1.98, spell power x22.7 |
+| metal | `elementium` | none | nothing (14 modules) | spell power +98 % |
+| metal | `enderium` | ender power +5 % | ender power +70 % (14 modules) | nothing |
+| metal | `fiery` | fire power +5 % | fire power +70 % (14 modules); converted set: fire power +80 % | nothing; converted set: nothing |
+| metal | `garnite` | fire power +5 % | fire power +70 % (14 modules) | nothing |
+| metal | `horizonite` | holy power +5 % | holy power +70 % (14 modules); converted set: holy power +80 % | nothing; converted set: nothing |
+| metal | `iridium` | none | nothing (14 modules) | spell power x39.4 |
+| metal | `ironwood` | nature power +5 % | nature power +70 % (14 modules); converted set: nature power +80 % | nothing; converted set: nothing |
+| metal | `iss_citadel` | fire power +5 % | fire power +70 % (14 modules) | fire resist x3.8, fire power x3.8, spell power x3.8 |
+| metal | `iss_deadking` | blood power +5 % | blood power +70 % (14 modules) | blood resist x3.8, blood power x3.8, spell power x3.8 |
+| metal | `iss_magehunter` | eldritch power +5 % | eldritch power +70 % (14 modules) | eldritch resist x3.8, eldritch power x3.8, spell power x3.8 |
+| metal | `knight` | armor +4 % of the module's own | nothing (14 modules) | nothing |
+| metal | `knightmetal` | armor +5 % of the module's own | nothing (14 modules); converted set: nothing | nothing; converted set: nothing |
+| metal | `lumium` | holy power +5 % | holy power +70 % (14 modules) | nothing |
+| metal | `manasteel` | none | nothing (14 modules) | mana regen +98 % |
+| metal | `osmium` | none | nothing (14 modules) | nothing |
+| metal | `phantom` | ender power +5 % | ender power +70 % (14 modules) | nothing |
+| metal | `refined_obsidian` | none | nothing (14 modules) | nothing |
+| metal | `signalum` | lightning power +5 % | lightning power +70 % (14 modules) | nothing |
+| metal | `steel` | armor +4 % of the module's own | nothing (14 modules) | nothing |
+| metal | `steeleaf` | nature power +5 % | nature power +70 % (14 modules); converted set: nature power +80 % | nothing; converted set: nothing |
+| metal | `stratus` | none | nothing (14 modules) | mana regen x3.8, spell power x3.8 |
+| metal | `terrasteel` | max mana +10 | max mana +140 (14 modules) | max mana x3.8 |
+| metal | `tf_hydra` | fire power +5 % | fire power +70 % (14 modules) | fire resist +98 %, fire power x3.8, spell power x3.8 |
+| metal | `tf_knightphantom` | lightning power +5 % | lightning power +70 % (14 modules) | lightning resist +98 %, lightning power x3.8, spell power x3.8 |
+| metal | `tf_minoshroom` | nature power +5 % | nature power +70 % (14 modules) | nature resist +98 %, nature power x3.8, spell power x3.8 |
+| metal | `ug_forgotten_guardian` | ender power +5 % | ender power +70 % (14 modules) | ender resist x3.8, ender power x3.8, spell power x3.8 |
+| metal | `undergarden_cloggrum` | armor +4 % of the module's own | nothing (14 modules); converted set: nothing | nothing; converted set: nothing |
+| metal | `undergarden_forgotten_metal` | ender power +5 % | ender power +70 % (14 modules) | nothing |
+| metal | `undergarden_froststeel` | ice power +5 % | ice power +70 % (14 modules); converted set: ice power +80 % | nothing; converted set: nothing |
+| metal | `unorithe` | none | nothing (14 modules) | nothing |
+| metal | `vn_warden` | ender power +5 % | ender power +70 % (14 modules) | ender resist x3.8, ender power x7.08, spell power x3.8 |
+| skin | `deathskin` | iridescent_reforging:damage_vs_undead +0.05 | nothing (11 modules) | nothing |
+| skin | `magebloom` | none | nothing (8 modules) | spell power +48 % |
+| skin | `rotten_leather` | holy power +5 % | holy power +40 % (8 modules) | holy power +114 %, mana regen +48 %, spell power x3.06 |
+| skin | `tf_arctic` | none | nothing (11 modules); converted set: nothing | ice resist +185 %, spell power +185 %; converted set: ice resist x4.59, spell power x4.59 |
+| skin | `tf_yeti` | none | nothing (11 modules); converted set: nothing | ice resist +185 %, spell power +185 %; converted set: ice resist x4.59, spell power x4.59 |
+| themed | `blood` | blood power +5 % | blood power +80 % (16 modules) | blood power x4.59 |
+| themed | `ender` | none | nothing (16 modules) | spell power +118 % |
+| themed | `fire` | fire power +5 % | fire power +80 % (16 modules) | fire power x4.59 |
+| themed | `holy` | holy power +5 % | holy power +80 % (16 modules) | holy power x4.59 |
+| themed | `ice` | ice power +5 % | ice power +80 % (16 modules) | ice power x4.59 |
+| themed | `lightning` | lightning power +5 % | lightning power +80 % (16 modules) | lightning power x4.59 |
+| themed | `nature` | none | nothing (16 modules) | spell power +118 % |
+| themed | `shadow` | none | nothing (16 modules) | spell power +118 % |
+
+`paper` fits no plate of the iron-shaped set, but a vestment or runed plate of paper adds its +5 % (a paper vestment set +20 % spell power). `ancient_metal` (the KubeJS one) is never made: the Cataclysm material `cm_ancient_metal` takes the ancient metal ingot first. Twenty-eight of these materials (enderium, deorum, charoite, the converted Fiery, Ironwood, Resonarium, Froststeel and Horizonite, ...) listed bonuses before 2026-10-19 that did nothing: their "Before" reads "nothing".
 
 ---
 
@@ -718,13 +823,16 @@ Each armor piece (helmet / chestplate / leggings / boots) has 5 plate modules fo
 
 Vestment and Runed are both sub-variants of the Mage archetype. They share the `tetra:armor/mage/` improvement gate and the `armor_mage_hone_*` hone chain, and differ in which stats they weight:
 
-| Stat | Vestment | Runed |
+| Stat (a piece) | Vestment | Runed |
 |---|---|---|
 | Identity | Cloth-wrapped caster, sustain/regen | Rune-inscribed gear, raw power |
-| `irons_spellbooks:max_mana` | Baseline | 0.5x Vestment |
-| `**irons_spellbooks:spell_power` | Baseline | 2.0x Vestment |
-| `**irons_spellbooks:cooldown_reduction` | (none) | +5% per piece |
+| Max mana | +50 | +10 |
+| Spell power | none | +5 % |
+| Mana regen | +5 % | none |
+| Cooldown reduction | none | +5 % |
 | `minecraft:generic.armor` | Baseline | 1.25x Vestment |
+
+The mage stats are fixed per piece and add up (since 2026-10-19): a full vestment set gives +200 mana and +20 % mana regen, a runed set +40 mana, +20 % spell power and +20 % cooldown reduction, whatever cloth or skin it is made of; the material's own bonus ([2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19)) comes on top. Before, the stats were multiplied by the material's primary stat and the pieces multiplied each other: a leather runed set (leather's primary is 5) gave x2.44 spell power and cooldown, a leather vestment set x2.44 mana regen and +1,000 mana.
 
 Both still count as the ROBE weight class in `armor_weight.js` (per-piece -armor / +mana_regen / +speed bonuses).
 
@@ -785,15 +893,18 @@ It is a separate work item of half a day to a full day.
 
 > Tetra documents none of its behavior outside its bytecode, so every custom integration turns up new gotchas. This section collects the hard rules learned from those incidents so contributors can find them with a wiki search. Each rule gives the date of its incident.
 
-### 5.1 ISS bonuses on materials: `*` does nothing, `**` multiplies per module [2026-10-18]
+### 5.1 A material's ISS bonus is a plain key, 0.05 a module [2026-10-18]
 
-Measured on a full-pack boot (2026-10-18):
-- **`*` (MULTIPLY_BASE) does nothing** unless the module adds the same attribute itself. Tetra's `AttributeHelper.collapse()` folds it into the module's own ADDITION; with none it multiplies 0. That is why the 28 materials of [2g](#2g-magic-bonuses-that-are-listed-but-do-nothing-as-of-2026-10-18) give nothing.
-- **`**` (MULTIPLY_TOTAL) applies once per module** made of the material. The item multiplies its modules and the player multiplies the items, so a material's +25 % becomes +144 % on a four-module piece and x35.5 on a full set.
-- **A plain key (ADDITION) adds**: a module +0.05, a 14-module set +0.7.
-- Tetra rounds every module's attribute amounts to 0.05 steps (x20, rounded, /20): 0.04 becomes 0.05, 0.06 becomes 0.05, and anything under 0.025 is lost.
+Three forms, three behaviours, all measured on a full-pack boot:
+- **`*` (MULTIPLY_BASE) is dead.** Tetra's `AttributeHelper.collapse()` folds it into the module's own ADDITION of the same attribute; with none it multiplies 0 and the stat disappears.
+- **`**` (MULTIPLY_TOTAL) compounds.** It is applied once per module made of the material, the item multiplies its modules, and the player multiplies the items: a `**spell_power 0.25` material on a four-module converted piece is +144 %, on a converted set x35.5.
+- **A plain key (ADDITION) adds.** A module +0.05, a full set of 14 modules +0.7 (x1.7). This is the form for every ISS bonus on a pack material, sized by [2f](#2f-how-material-magic-bonuses-add-up-since-2026-10-19).
 
-The 2026-05-14 rule ("always `**`") came from the wand modules of that day. Do not apply it to a material without measuring a full set: which form and size the materials' magic bonuses should use is open, for the design pass in 2g.
+Tetra rounds every module's attribute amounts to 0.05 steps (x20, rounded, /20), so 0.04 becomes 0.05, 0.06 becomes 0.05 and anything under 0.025 is lost. A plain key on an Iron's Spellbooks attribute shows in the tooltip as a number ("+0.05 Fire Spell Power"), because Apothic Attributes formats an addition flat (measured, `IFormattableAttribute.toComponent`); the workbench Status bars print a percent. The 2026-05-14 rule ("always `**`") applied to the wand modules of that day; on materials it made the bonuses compound.
+
+One exception uses the single `*` on purpose: a material's **armor** bonus (knightmetal, knight, steel, cloggrum: `*minecraft:generic.armor 0.05`, since 2026-10-19). Every armor module already adds armor of its own, so MULTIPLY_BASE folds into it: +5 % of that module's armor, linear, nothing on a sword. As `**` it multiplied once per module (a converted Knightmetal set's armor x2.18) and a knightmetal sword raised its holder's armor x1.1.
+
+The vestment and runed majors carry their mage stats as plain keys in the variant's own `attributes`, fixed per piece (see 4.2). The book and wand modules still carry `**` values scaled by the material's primary stat.
 
 ### 5.2 Wildcard variant keys MUST end in `/` [2026-05-12]
 
@@ -839,9 +950,9 @@ Tetra builds ResourceLocation paths from item and schematic identifiers. A colon
 
 The event fires only on the server's resource manager. In multiplayer with a remote dedicated server, the client never runs that listener, so any registry it fills stays empty. For data both sides need (e.g., `SpecializedReplacementRegistry`, `SkinRegistry`), read the JSON eagerly from the mod jar's classpath in `FMLCommonSetupEvent`, which fires on both client and server.
 
-### 5.13 Tetra MULTIPLY_BASE display rule (Section L.3 of master-appendix.md)
+### 5.13 How an ISS bonus displays (Section L.3 of master-appendix.md) [rewritten 2026-10-19]
 
-Copied here so a search finds it: how a Tetra modular item displays each attribute depends on which Forge attribute operation is applied. Apothic Attributes' `IFormattableAttribute` interface decides between percent and flat rendering. ISS percent attributes must use `**` (MULTIPLY_TOTAL) to render as "+X%" through the post-collapse path; ADDITION on a base-1.0 ISS attribute also renders linearly, but as ugly decimals.
+Copied here so a search finds it: Apothic Attributes' `IFormattableAttribute` decides how a modifier reads. A MULTIPLY_BASE or MULTIPLY_TOTAL modifier reads "+X%"; an ADDITION reads as the number, so the pack's plain-key material bonuses read "+0.05 Fire Spell Power" (measured on a full-pack boot: `attributeslib.value.flat`). The Tetra workbench's Status bars print every ISS bar as a percent. Which form to write is [5.1](#51-a-materials-iss-bonus-is-a-plain-key-005-a-module-2026-10-18), not the display: `**` compounds per module.
 
 ---
 

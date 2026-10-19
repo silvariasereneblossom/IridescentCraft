@@ -1716,21 +1716,34 @@ hone schematic gates by archetype.
 
 5 levels each, with the same tool gate ladder as the wand. Total: 4 × 4 × 5 = 80 schematics + 16 improvement files.
 
-### L.3 Tetra MULTIPLY_BASE display rule
+### L.3 How a Tetra item's ISS bonus is written (rewritten 2026-10-19)
 
-**ISS percent attributes on Tetra modular items MUST use the `**` prefix
-(MULTIPLY_TOTAL)**, not `*` (MULTIPLY_BASE). Tetra's `AttributeHelper.collapse()`
-math drops MULTIPLY_BASE modifiers to 0 when no ADDITION sibling exists on the
-same attribute, so those stats silently disappear from tooltips.
+Three forms, measured on a full-pack boot:
+- `*` (MULTIPLY_BASE) is dead on an ISS attribute: Tetra's `AttributeHelper.collapse()` folds it into the module's own
+  ADDITION of the same attribute, and modules add none.
+- `**` (MULTIPLY_TOTAL) compounds: it applies once per module, the item multiplies its modules and the player multiplies
+  the items (a material at 0.25 on a converted set: x35.5).
+- A plain key (ADDITION) adds: +0.05 a module is +5 % (the attributes' base is 1). Tetra rounds every module's amount
+  to 0.05 steps.
 
-Hard rule: any new module variant or improvement file targeting a percent
-attribute (spell_power, mana_regen, cooldown_reduction, cast_time_reduction,
-spell_resist, school SP, summon_damage) gets the `**` prefix.
+Rules since 2026-10-19 (decisions 150 / 151, ruled by the operator):
+- **Materials:** a plain key, +0.05 a module, kept only where a full set of the material stays within Iron's
+  Spellbooks' own best for that kind, +15 % for the 0.05 steps (a school set x1.68 on its school, the best generic set
+  x1.25, regen x1.25, cooldown x1.2, resists x1.15; max mana as flat points within +600). The one `*` kept on purpose
+  is `*minecraft:generic.armor` on knightmetal, knight, steel and cloggrum: every armour module adds armour of its own,
+  so it is +5 % of that, linear, and nothing on a sword.
+- **Vestment and runed plates:** plain keys in the variant's own `attributes`, the same for every material (vestment
+  +50 mana, +0.05 regen; runed +10 mana, +0.05 spell power, +0.05 cooldown).
+- **Wand and book modules, improvements:** still `**`, scaled by the material's primary stat, so they still multiply
+  (a boss gem's wand x1.55 spell power, a gem book up to x1.77): not decided yet.
 
-Stacking effect: MULTIPLY_TOTAL compounds across modules (MULTIPLY_BASE is close to
-additive). At small per-module values (5-10%) the difference is < 5%;
-at high stacks it compounds noticeably. This matches the mage glass-cannon
-design intent of uncapped multiplicative stacking.
+Display: Apothic Attributes shows a MULTIPLY_* modifier as "+X%" and an ADDITION as the number, so a plain key reads
+"+0.05 Fire Spell Power" in a tooltip; the Tetra workbench's Status bars print the percent.
+
+The 2026-05 rule ("every percent attribute gets `**`; uncapped multiplicative stacking is the mage glass-cannon
+intent") no longer applies to materials or the mage plates: a full set of Tetra gear is sized to Iron's Spellbooks'
+own armour. The classes', aptitudes' and curios' multipliers ([master.md, mage power curve](master.md#glass-cannon-classes))
+are not changed by this.
 
 ---
 
