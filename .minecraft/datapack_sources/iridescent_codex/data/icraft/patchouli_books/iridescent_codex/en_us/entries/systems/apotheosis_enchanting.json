@@ -18,6 +18,10 @@
     },
     {
       "type": "patchouli:text",
+      "text": "$(bold)Villagers Sell No Books$()$(br2)No villager sells an enchanted book, and no villager or wandering trader sells diamonds or diamond gear. Emeralds buy convenience: food, building blocks, light, iron tools and armor, and XP bottles from a journeyman cleric on.$(br2)For enchants, use the table or the $(l:icraft:loot/relic_economy)Relic Broker$(/l). A villager keeps the trades it already offers."
+    },
+    {
+      "type": "patchouli:text",
       "text": "$(bold)Anvil cap removed:$() Apotheosis removes the vanilla 'Too Expensive' cap, so you can combine and repair items as many times as you need. XP costs rise but never become impossible.$(br2)$(bold)Next: upgrade your bookshelves.$()"
     }
   ]

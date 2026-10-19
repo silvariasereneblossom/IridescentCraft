@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "3dbdbc35",
+    "generated_from":  "00a4f331",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3420,8 +3420,8 @@
                                                                                        "size":  1008
                                                                                    },
                   "config/heracles/quests/onboarding/onboarding_first_villager_trade.json":  {
-                                                                                                 "sha256":  "def76df1998b89b9a63bef6fa7ef1439f6697c4b2550e748b81fa252aa402273",
-                                                                                                 "size":  982
+                                                                                                 "sha256":  "7065c97c6d6daff2cf81940339b3e7e4e17ab14ea776a4a753e1527aff20797b",
+                                                                                                 "size":  1214
                                                                                              },
                   "config/heracles/quests/onboarding/onboarding_survivor_capstone.json":  {
                                                                                               "sha256":  "9f374627dea5832d1a8a90c99d76eb80814f94dab2708f4edcac0efd492fb4c7",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "9a5ee6341dfe516a40efeccd1c65ba814ce3d2005ddb0d0357613e2e601c1ffd",
-                                                                  "size":  49254
+                                                                  "sha256":  "cdf84c5f7a4ee6b432db378dafda2eae74be65d095da8b2ba41868936ab3de33",
+                                                                  "size":  49395
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
@@ -7339,6 +7339,10 @@
                                                                       "sha256":  "b6ee5d999e39111b67331f7554b31711483a8bbf2cc7018340b88adb71e571a3",
                                                                       "size":  19759
                                                                   },
+                  "kubejs/server_scripts/economy/villager_trades.js":  {
+                                                                           "sha256":  "ebf0455c5cf9593349242345ec9e5d98e7501496ade13cd0c408e010ab6de0d0",
+                                                                           "size":  12085
+                                                                       },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
                                                                                 "sha256":  "4e79abcf3aafe8af7c7025f21af80f845c521d60fd017c6aada5d4009a788a79",
                                                                                 "size":  24236
@@ -8640,7 +8644,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "5a70118f05dce11267928bb282af468aa6221db4cf036017804dbf509deb53cd",
+                                                               "sha256":  "15276241c7469c331b6b822b1610c9931eb356302308e1b0b60a84207f3b3e44",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {

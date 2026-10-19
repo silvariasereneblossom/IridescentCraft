@@ -6,6 +6,14 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Villagers trade for convenience (19 October)
+
+- **No villager sells an enchanted book any more.** Librarians keep their other trades (paper, books, bookshelves, lanterns, glass, clocks, compasses, name tags). For enchants, use the enchanting table or the Relic Broker.
+- **No villager or wandering trader sells diamonds, or diamond and netherite gear.** Diamonds are a Tier 3 material. Until now expert and master smiths sold enchanted diamond armor, tools and weapons for emeralds, MCA's adventurers sold diamonds, and wandering traders sold a diamond for 3 emeralds and, as rare trades, diamond gear with Mending and very high enchant levels. The smith levels that sold diamond gear sell a convenience item instead: horse armor from the armorer (iron at expert, gold at master), an anvil from a master toolsmith, a shield from a master weaponsmith. Smiths still buy your diamonds for emeralds. MCA's adventurers no longer sell an enchanted golden apple, which tier-1 chests do not hold either.
+- **Nothing a later tier holds back is for sale.** Wandering traders sold a beacon for 25 emeralds and eyes of ender for 2, and master masons sold quartz blocks (beacons and quartz are Tier 3, eyes of ender Tier 4). Master masons sell calcite instead, 4 for an emerald.
+- **Clerics sell XP bottles earlier:** 6 emeralds a bottle at journeyman and 4 at expert, 8 bottles a restock each. The master's bottle for 3 emeralds is unchanged.
+- **A villager keeps the trades it already offers.** Only trades it gets from now on (a new villager, or one that levels up) follow these rules, so a librarian who already sells an enchanted book keeps selling it. This applies from the server restart after it lands.
+
 ## October 2026: Boss loot and the Codex's class pages (19 October)
 
 - **The Ender Dragon's drops land once.** One of Forbidden & Arcanus's dragon drops rolled every other drop rule a second time, so a kill gave two Dragon Hearts, two stacks of artifact pouches, double Rift shards and Iron's Spellbooks' dragon loot, and 1.1 Ultimate Reforging Tokens a kill instead of the designed 0.6. Each now drops once; Forbidden & Arcanus's own dragon drops are unchanged.

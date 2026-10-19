@@ -63,7 +63,7 @@ The canonical design reference for all modpack systems.
 | Endgame loops (Part VIII) | Partly | Rift Shards drop from late bosses and the Mythic Forge crafts the five catalysts; Oblivion's Rift and the Mythic Uniques are not built |
 | Prestige/Ascension (Part IX) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
 | Loot table overhaul | Implemented | 35+ structure mods, boss drops, tier tokens |
-| Villager trade rework | Implemented | Books removed, XP trades added |
+| Villager trade rework | Implemented (October 2026) | No villager sells enchanted books or diamond / netherite gear; clerics sell XP bottles from journeyman; a villager keeps the trades it already offers |
 | Waystone recipes | Implemented | Boss-drop gated crafting |
 | Cross-mod recipe audit | Implemented | Tier-breaking recipes blocked to preserve progression |
 | Mod config audit | Implemented | Mod balance configs aligned to design |

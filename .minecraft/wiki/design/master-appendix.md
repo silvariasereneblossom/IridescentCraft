@@ -1273,7 +1273,6 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `tetra_terramity_perks.js` | Server-tick perk hook for Tetra-Terramity integration |
 | `ultris_randomizer_janitor.js` | Janitor sweep for stranded Ultris RNG-paper marker items (`{UltrisRandomizerItem:1}` paper that the datapack's same-tick read-then-kill missed under load), preventing them from leaking into the player loot stream |
 | `validate_recipe_removals.js` | Audit Phase 3.3. Server-start validator: scans the REMOVAL_TARGETS list against the live item registry and logs warnings for stale IDs |
-| `villager_trades.js.disabled` | Villager trade rework (currently disabled; incorporated elsewhere) |
 
 ### I.2 `gates/`
 
@@ -1363,7 +1362,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `witch_of_ink_progression.js` | Witch of Ink origin progression |
 | `witherborn_slimebodied.js` | Witherborn + Slimebodied custom origins |
 
-### I.9 `class/`, `respec/`, `skills/`, `enchantments/`, `affixes/`, `food/`, `items/`, `pregen/`, `tags/`, `compat/`, `migrations/`, `abyss/`, `end/`
+### I.9 `class/`, `respec/`, `skills/`, `economy/`, `enchantments/`, `affixes/`, `food/`, `items/`, `pregen/`, `tags/`, `compat/`, `migrations/`, `abyss/`, `end/`
 
 | Script | Role |
 |--------|------|
@@ -1371,6 +1370,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `respec/class_respec.js` | `/icraft_respec` command: Class layer only (Origin/Race are permanent) |
 | `skills/skill_effects.js` | Pufferfish skill effect handlers + JustLevelingFork bridge |
 | `skills/justleveling_skills.js` | Magic skill tree integration |
+| `economy/villager_trades.js` | The villager rework (October 2026): at server start it drops every villager and wandering-trader trade whose offer is an enchanted book, diamond / netherite gear, quartz, a beacon, an eye of ender or an enchanted golden apple, and adds horse armor, an anvil and a shield to the smith levels that sold diamond gear, calcite to the master mason and two XP bottle trades to the cleric. A villager keeps the offers it already has |
 | `enchantments/enchant_effects.js` | Effect handlers for 25 of the 29 custom enchantments (Warp Shield, Thermal Regulation, Pressure Shell and Void Adaptation are handled in the dimension mechanics script, I.5) |
 | `affixes/affix_effects.js` | 65 event-driven Apotheosis affix handlers |
 | `food/hunger_management.js` | Hunger Overhaul integration |
