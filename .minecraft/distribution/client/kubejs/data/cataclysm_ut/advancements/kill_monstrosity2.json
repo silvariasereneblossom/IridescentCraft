@@ -1,0 +1,8 @@
+{
+  "__comment": "IridescentCraft override (2026-10-18; decision sheet 2026-10-11 row G16, the recommended trim). The add-on's own copy asks for a kill of cataclysm:old_netherite_monstrosity, an entity the installed Cataclysm does not register, so it never loaded. This copy loads, has no display (no tab, no toast) and can never be granted: the same as before, without an ERROR line at every boot.",
+  "criteria": {
+    "never": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
