@@ -1367,7 +1367,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 
 | Script | Role |
 |--------|------|
-| `class/equipment_hp_halving.js` | Class HP-halving when wearing wrong equipment type |
+| `class/equipment_hp_halving.js` | Half-equipment-HP for the four glass cannons: half the max health their worn and held items, curios, Vitality and Deeproot give comes off (since 2026-10-19 nothing else; before, everything above a fixed base) |
 | `respec/class_respec.js` | `/icraft_respec` command: Class layer only (Origin/Race are permanent) |
 | `skills/skill_effects.js` | Pufferfish skill effect handlers + JustLevelingFork bridge |
 | `skills/justleveling_skills.js` | Magic skill tree integration |
@@ -1426,7 +1426,7 @@ The full numbers for the character system (Origin / Race / Class / Skills), comp
 
 #### Half-equipment-HP explanation
 
-Ranger, Archmage and Void Summoner get 50% effectiveness from all equipment-sourced max HP bonuses:
+Ranger, Archmage, Void Summoner and Elemental get 50% effectiveness from all equipment-sourced max HP bonuses:
 - Vitality enchantment (half HP per level)
 - Max HP affixes (Hearty, Vigorous, Vital; half value)
 - Curio HP bonuses (half value)
@@ -1665,7 +1665,7 @@ and so on. Token and dimension together form the gate; workstation crafting is f
 - Class attribute modifiers: through Apothic Attributes.
 - Class active abilities: Origins power system (cooldown-based keybind).
 - Class weapon affinities: Origins item-conditional attribute modifiers ("when holding item with tag X").
-- Half-equipment-HP: overrides max_health attribute contributions from equipment slots with a 0.5 multiplier for affected classes.
+- Half-equipment-HP: half the max_health that equipment slots, curio slots and the Vitality and Deeproot modifiers contribute comes off for the affected classes (one addition, sized so that exactly half goes).
 - Race system: a separate Origins layer (Iridescent Origins).
 - Race environmental effects: Origins conditions.
 - Race size modification: Pehkui integration where applicable.

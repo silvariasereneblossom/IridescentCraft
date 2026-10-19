@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Glass cannons, the Mythic Forge and planet cold (19 October)
+
+- **Glass cannons halve only their gear's health.** The Ranger, Archmage, Void Summoner and Elemental get half the max health their armor, held items, curios, Vitality and HP affixes give, as the class pages say. Until now the game halved everything above a fixed base: a Demi-God Archmage with no gear had 19.8 health instead of 22.4, and Spice of Life, level-up, Health Boost and Ascension health were halved too, while a Faefolk or Fallen Angel kept all of its gear's health. Gear also lost 40 % of its health instead of half: an Archmage with a +4 chestplate has 17.6 health now, not 17.9.
+- **The Mythic Forge stays in the crafting grid.** It is the station for the five Mythic Catalysts; until now every catalyst craft used it up, so each catalyst also cost a new Forge.
+- **Texts.** The Engineering capstone quest no longer says a Mythic Catalyst V turns antimatter into gear: nothing applies a catalyst yet, and the MekaSuit Mk2 upgrade is where antimatter becomes gear. Thermal Regulation's text and the Codex say it covers the slow cold of Mars, Mercury's night and Glacio, not the freezing of the Moon and Mars without a full space suit (3 health a second, which only the suit stops). The Codex enchantment page describes Phalanx (6 % less damage a level while you block with a shield) and Last Stand (a killing hit leaves you at 1 health, once every 5 minutes) as they work. The design notes list the origins that start with less health: Arachnid and Phantom 14, Slimebodied 15, Witch of Ink 16, Feline 18.
+
 ## October 2026: Tetra materials' magic bonuses sized to Iron's Spellbooks (19 October)
 
 - **Every magic bonus a Tetra material gives is +5 % a module, added up.** A material's bonus applies to each module made of it. Until now most of them multiplied once per module and once per piece: an aethersteel set gave x3.8 spell power, an iridium set x39, a converted Ignitium set x9 fire power, and an onyx set with an onyx wand and book x30 spell power. Twenty-eight others (enderium, deorum, knightmetal, the diamond in 26 converted mod armour sets, and more) gave nothing at all, although their files listed bonuses.

@@ -136,19 +136,19 @@ Design philosophy: no environmental effect is lethal, food comes as preferences 
 
 | Origin | Key Powers | Changes from Vanilla |
 |--------|-----------|---------------------|
-| Arachnid | Wall climbing, cobweb immunity | Unchanged |
+| Arachnid | Wall climbing, cobweb immunity, Fragile: 3 fewer hearts (14 health) | Unchanged |
 | Avian | Sky Affinity: altitude buffs at Y=80 and Y=150 | "Fresh air" replaced with Sky Affinity |
 | Blazeborn | Fire immunity, Nether Affinity (+10/20% damage in Nether) | Water damage→discomfort, Nether Spawn→Nether Affinity |
 | Elytrian | Elytra flight, launch ability | Unchanged |
 | Enderian | Teleport, Ender Shift (+15% damage after teleport) | New Ender Shift power added |
-| Feline | Cat-like abilities, night vision | -10% HP (1 heart) |
+| Feline | Cat-like abilities, night vision | Nine Lives: 1 heart less (18 health). The pack's own -20% version is written but does not load yet |
 | Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
 | Phantom | Phasing, invisibility, 3 fewer hearts, Spectral Undeath | Sunlight burn→weakness+slowness. Cheats death: a lethal hit locks it to 0.5 hearts + 5min debuffs instead, and a death while they last is final (`phantom_undeath.js`) |
 | Shulk | Hoarder (9 extra inventory slots whose items are kept on death), natural armor, breaks natural stone without a pickaxe | Cannot hold a shield; large appetite |
 | Witch of Ink | Pure passive hyperscaler. 50% food reduction, 20% less HP, fire weakness. Boss-kill counter (max 200): Apotheosis bosses +1, dimensional bosses +10. Per counter: +0.1% total damage (applied multiplicatively to final damage via LivingHurtEvent, so it affects melee, ranged and all magic) and -0.1% damage taken. Caps at +20% damage / -20% damage taken at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (final = 1.30× at cap), +15% SP-to-AD conversion (15% of `spell_power - 1.0` adds to outgoing damage), +15% max HP, permanent Haste I + Resistance I + Fire Resistance + Regeneration I (renewed every 2 minutes). All paint actives stripped 2026-03-30. Tracker: `/icraft witch_status`. | Custom origin. Hyperscaling fantasy: weak early, monster late (`witch_of_ink_progression.js`) |
 | Artificial Construct | 25% food efficiency from normal food. Right-clicking an Iron Ingot eats 1 ingot for +1 food and Regen III for 10s; an Iron Block eats 1 block for +9 food, 4.5 saturation and Regen III. A counter of iron consumed unlocks 5 upgrade levels at thresholds 1000 / 2000 / 4000 / 8000 / 16000 iron. Per-level bonuses (cumulative on max_health and attack_damage as MULTIPLY_BASE; on armor and armor_toughness as ADD_VALUE × 4): +5% (L1) → +10% (L2) → +15% (L3) → +25% (L4) → +35% (L5). Capstone (Iron Apotheosis, unlocked at L5): an additional +25% HP MULTIPLY_BASE, +25% melee damage MULTIPLY_BASE and +1.0 armor toughness ADD_VALUE on top of the L5 totals. Tracker: `/icraft construct_status`. | Custom origin. Hyperscaling fantasy: back-loaded power curve (`artificial_construct_progression.js`) |
 | Witherborn | DOT melee fighter. Wither on hit, hunger-based damage penalty. | Custom origin. Decay-themed attacker with sustain tradeoff |
-| Slimebodied | Food management tank. 5% food efficiency, satiety damage reduction. | Custom origin. Tanky through food sustain mechanics |
+| Slimebodied | Food management tank. 5% food efficiency, satiety damage reduction, 25% less max health (15). | Custom origin. Tanky through food sustain mechanics |
 
 ### Custom Items
 

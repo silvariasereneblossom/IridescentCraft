@@ -32,7 +32,7 @@ Terms that recur throughout this document.
 | **Progression token** | A physical, tiered item submitted to the Codex to advance a tier. Tokens come from four lanes (Engineering / Magic / Exploration / Combat) into one combined pool. They replace the former internal boss-kill counter. |
 | **ISS** | Iron's Spellbooks. The pack's primary spell-system mod; it provides the ink/rune/upgrade-orb reagents that are spread across every dimension's bosses. |
 | **F&A** | Forbidden & Arcanus. T3 magic mod centered on the Hephaestus Forge. |
-| **Mythic Forge** | Custom T4 crafting ingredient for the five Mythic Catalysts. Its unique endgame items (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) wait for Oblivion's Rift, which is not built. |
+| **Mythic Forge** | Custom T4 crafting station for the five Mythic Catalysts: it goes into the grid and stays there. Its unique endgame items (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) wait for Oblivion's Rift, which is not built. |
 | **Iridescent Modular Spells** | Custom Forge content mod that connects Tetra's modular-item workbench to ISS and Ars Nouveau spell books, with 15 modular variants. It ships inside the bundled `iridescent_tetra_expansion` jar (with Iridescent Reforging). |
 | **Token economy** | Tier-transition model. A player advances a tier by reaching its token threshold (500 / 1000 / 2000, banked in one combined pool) or its boss-rush % (clear 80 / 90 / 100% of the tier's bosses). Four lanes feed the pool: Engineering / Magic / Exploration / Combat. See Part III. |
 
@@ -423,7 +423,7 @@ Several classes are explicitly glass cannons, with a high damage ceiling at the 
 
 ### HP and equipment scaling
 
-The Class layer holds the largest HP and damage levers: the half-equipment-HP rule, the tank's armour and the mage classes' spell power (up to x2.5 in a school). Races change health and damage too, on a scale close to the classes': a race's max health runs from 16 to 28, a class's from 16 to 24 (measured on a full-pack boot, 2026-10-19). Origins provide species fantasy without flat HP/damage skews.
+The Class layer holds the largest HP and damage levers: the half-equipment-HP rule, the tank's armour and the mage classes' spell power (up to x2.5 in a school). Races change health and damage too, on a scale close to the classes': a race's max health runs from 16 to 28, a class's from 16 to 24 (measured on a full-pack boot, 2026-10-19). Origins are species fantasy first, but five of the thirteen start with less health (measured on a full-pack boot, 2026-10-19): Arachnid and Phantom 14 (Fragile, -6), Slimebodied 15 (-25%), Witch of Ink 16 (-4) and Feline 18 (Nine Lives, -2; the pack's own Nine Lives override, -20% or 16 health, is written but does not load yet). Shulk and Artificial Construct add armour (+8, +4). No origin changes an ordinary hit (a melee hit, an arrow and a level-1 Firebolt measured the same as with no origin). Two grow with play, by their scripts: the Artificial Construct gains health and damage as it eats iron, the Witch of Ink +15% health at its 200-kill capstone.
 
 > Design rule: Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
 

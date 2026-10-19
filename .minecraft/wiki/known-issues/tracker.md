@@ -25,6 +25,9 @@ text) or a gem stops working entirely, report it right away: those are loader-le
 failures, not balance issues.
 
 
+### The MekaSuit does not stop Ad Astra's freezing on the Moon and Mars: **Open (design decision pending)**
+Without a full Ad Astra space suit you freeze on the Moon and Mars, 3 health a second. A full MekaSuit does not count as one (measured 2026-10-19), although the Codex calls it your main space armor. Until this is decided, wear Ad Astra's own suit on those two planets. Thermal Regulation does not stop that freezing either; it covers the slower cold of Mars, Mercury's night and Glacio.
+
 ### Server can lag (low TPS) under heavy load: **Mitigated**
 On a full server with many players and active mobs, the tick rate could drop and feel laggy to the lowest-ping player. Raising the server heap and turning off some per-spawn diagnostic logging mitigates it; a full fix waits on more RAM for the server host.
 
