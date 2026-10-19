@@ -13,12 +13,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -33,6 +28,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -41,12 +42,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.5,
-          "**irons_spellbooks:spell_power": 0.025,
-          "**irons_spellbooks:mana_regen": 0.025,
-          "**irons_spellbooks:cooldown_reduction": 0.025
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -61,6 +57,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -69,12 +71,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.0,
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:mana_regen": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -89,6 +86,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -97,12 +100,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.0,
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:mana_regen": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -117,6 +115,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -125,12 +129,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6.667,
-          "**irons_spellbooks:spell_power": 0.0667,
-          "**irons_spellbooks:mana_regen": 0.0667,
-          "**irons_spellbooks:cooldown_reduction": 0.0667
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -145,6 +144,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -153,12 +158,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.167,
-          "**irons_spellbooks:spell_power": 0.0417,
-          "**irons_spellbooks:mana_regen": 0.0417,
-          "**irons_spellbooks:cooldown_reduction": 0.0417
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -173,6 +173,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -181,12 +187,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.144,
-          "**irons_spellbooks:spell_power": 0.0414,
-          "**irons_spellbooks:mana_regen": 0.0414,
-          "**irons_spellbooks:cooldown_reduction": 0.0414
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -201,6 +202,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -209,12 +216,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.118,
-          "**irons_spellbooks:spell_power": 0.0412,
-          "**irons_spellbooks:mana_regen": 0.0412,
-          "**irons_spellbooks:cooldown_reduction": 0.0412
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -229,6 +231,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -237,12 +245,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.4725,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -257,6 +260,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -265,12 +274,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -285,6 +289,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -293,12 +303,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -313,6 +318,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -321,12 +332,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -341,6 +347,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -349,12 +361,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -369,6 +376,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -377,12 +390,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6.2505,
-          "**irons_spellbooks:spell_power": 0.0625,
-          "**irons_spellbooks:mana_regen": 0.0625,
-          "**irons_spellbooks:cooldown_reduction": 0.0625
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -397,6 +405,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -405,12 +419,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -425,6 +434,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -433,12 +448,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.4725,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -453,6 +463,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -461,12 +477,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -481,6 +492,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -489,12 +506,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -509,6 +521,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -517,12 +535,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -537,6 +550,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -545,12 +564,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -565,6 +579,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -573,12 +593,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -593,6 +608,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -601,12 +622,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -621,6 +637,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -629,12 +651,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -649,6 +666,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -657,12 +680,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -677,6 +695,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -685,12 +709,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -705,6 +724,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -713,12 +738,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.7503,
-          "**irons_spellbooks:spell_power": 0.0375,
-          "**irons_spellbooks:mana_regen": 0.0375,
-          "**irons_spellbooks:cooldown_reduction": 0.0375
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -733,6 +753,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -741,12 +767,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -761,6 +782,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -769,12 +796,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.7503,
-          "**irons_spellbooks:spell_power": 0.0375,
-          "**irons_spellbooks:mana_regen": 0.0375,
-          "**irons_spellbooks:cooldown_reduction": 0.0375
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -789,6 +811,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -797,12 +825,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.4725,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -817,6 +840,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -825,12 +854,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -845,6 +869,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -853,12 +883,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -873,6 +898,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -881,12 +912,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -901,6 +927,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -909,12 +941,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.2088,
-          "**irons_spellbooks:spell_power": 0.0521,
-          "**irons_spellbooks:mana_regen": 0.0521,
-          "**irons_spellbooks:cooldown_reduction": 0.0521
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -929,6 +956,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -937,12 +970,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -957,6 +985,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -965,12 +999,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -985,6 +1014,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -993,12 +1028,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1013,6 +1043,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1021,12 +1057,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1041,6 +1072,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1049,12 +1086,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.5837,
-          "**irons_spellbooks:spell_power": 0.0459,
-          "**irons_spellbooks:mana_regen": 0.0459,
-          "**irons_spellbooks:cooldown_reduction": 0.0459
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1069,6 +1101,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1077,12 +1115,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0576,
-          "**irons_spellbooks:mana_regen": 0.0576,
-          "**irons_spellbooks:cooldown_reduction": 0.0576
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1097,6 +1130,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1105,12 +1144,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.7644,
-          "**irons_spellbooks:spell_power": 0.0577,
-          "**irons_spellbooks:mana_regen": 0.0577,
-          "**irons_spellbooks:cooldown_reduction": 0.0577
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1125,6 +1159,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1133,12 +1173,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6.2505,
-          "**irons_spellbooks:spell_power": 0.0625,
-          "**irons_spellbooks:mana_regen": 0.0625,
-          "**irons_spellbooks:cooldown_reduction": 0.0625
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1153,6 +1188,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1161,12 +1202,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6.2505,
-          "**irons_spellbooks:spell_power": 0.0625,
-          "**irons_spellbooks:mana_regen": 0.0625,
-          "**irons_spellbooks:cooldown_reduction": 0.0625
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1181,6 +1217,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1189,12 +1231,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.8197,
-          "**irons_spellbooks:spell_power": 0.0382,
-          "**irons_spellbooks:mana_regen": 0.0382,
-          "**irons_spellbooks:cooldown_reduction": 0.0382
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1209,6 +1246,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1217,12 +1260,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.3059,
-          "**irons_spellbooks:spell_power": 0.0431,
-          "**irons_spellbooks:mana_regen": 0.0431,
-          "**irons_spellbooks:cooldown_reduction": 0.0431
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1237,6 +1275,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1245,12 +1289,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6.2505,
-          "**irons_spellbooks:spell_power": 0.0625,
-          "**irons_spellbooks:mana_regen": 0.0625,
-          "**irons_spellbooks:cooldown_reduction": 0.0625
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1265,6 +1304,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1273,12 +1318,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.16,
-          "**irons_spellbooks:spell_power": 0.0516,
-          "**irons_spellbooks:mana_regen": 0.0516,
-          "**irons_spellbooks:cooldown_reduction": 0.0516
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1293,6 +1333,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1301,12 +1347,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.28,
-          "**irons_spellbooks:spell_power": 0.0528,
-          "**irons_spellbooks:mana_regen": 0.0528,
-          "**irons_spellbooks:cooldown_reduction": 0.0528
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1321,6 +1362,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1329,12 +1376,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.28,
-          "**irons_spellbooks:spell_power": 0.0528,
-          "**irons_spellbooks:mana_regen": 0.0528,
-          "**irons_spellbooks:cooldown_reduction": 0.0528
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1349,6 +1391,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1357,12 +1405,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.1,
-          "**irons_spellbooks:spell_power": 0.021,
-          "**irons_spellbooks:mana_regen": 0.021,
-          "**irons_spellbooks:cooldown_reduction": 0.021
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1377,6 +1420,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1385,12 +1434,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1405,6 +1449,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1413,12 +1463,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1433,6 +1478,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1441,12 +1492,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1461,6 +1507,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1469,12 +1521,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.7,
-          "**irons_spellbooks:spell_power": 0.027,
-          "**irons_spellbooks:mana_regen": 0.027,
-          "**irons_spellbooks:cooldown_reduction": 0.027
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1489,6 +1536,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1497,12 +1550,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1517,6 +1565,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1525,12 +1579,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1545,6 +1594,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1553,12 +1608,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.12,
-          "**irons_spellbooks:spell_power": 0.0312,
-          "**irons_spellbooks:mana_regen": 0.0312,
-          "**irons_spellbooks:cooldown_reduction": 0.0312
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1573,6 +1623,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1581,12 +1637,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.4,
-          "**irons_spellbooks:spell_power": 0.054,
-          "**irons_spellbooks:mana_regen": 0.054,
-          "**irons_spellbooks:cooldown_reduction": 0.054
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1601,6 +1652,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1609,12 +1666,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.04,
-          "**irons_spellbooks:spell_power": 0.0504,
-          "**irons_spellbooks:mana_regen": 0.0504,
-          "**irons_spellbooks:cooldown_reduction": 0.0504
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1629,6 +1681,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1637,12 +1695,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.4,
-          "**irons_spellbooks:spell_power": 0.054,
-          "**irons_spellbooks:mana_regen": 0.054,
-          "**irons_spellbooks:cooldown_reduction": 0.054
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1657,6 +1710,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1665,12 +1724,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.92,
-          "**irons_spellbooks:spell_power": 0.0492,
-          "**irons_spellbooks:mana_regen": 0.0492,
-          "**irons_spellbooks:cooldown_reduction": 0.0492
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1685,6 +1739,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1693,12 +1753,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1713,6 +1768,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1721,12 +1782,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1741,6 +1797,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1749,12 +1811,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.16,
-          "**irons_spellbooks:spell_power": 0.0516,
-          "**irons_spellbooks:mana_regen": 0.0516,
-          "**irons_spellbooks:cooldown_reduction": 0.0516
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1769,6 +1826,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1777,12 +1840,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1797,6 +1855,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1805,12 +1869,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.4,
-          "**irons_spellbooks:spell_power": 0.054,
-          "**irons_spellbooks:mana_regen": 0.054,
-          "**irons_spellbooks:cooldown_reduction": 0.054
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1825,6 +1884,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1833,12 +1898,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.72,
-          "**irons_spellbooks:spell_power": 0.0372,
-          "**irons_spellbooks:mana_regen": 0.0372,
-          "**irons_spellbooks:cooldown_reduction": 0.0372
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1853,6 +1913,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1861,12 +1927,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.6,
-          "**irons_spellbooks:spell_power": 0.036,
-          "**irons_spellbooks:mana_regen": 0.036,
-          "**irons_spellbooks:cooldown_reduction": 0.036
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1881,6 +1942,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1889,12 +1956,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.12,
-          "**irons_spellbooks:spell_power": 0.0312,
-          "**irons_spellbooks:mana_regen": 0.0312,
-          "**irons_spellbooks:cooldown_reduction": 0.0312
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1909,6 +1971,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1917,12 +1985,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.72,
-          "**irons_spellbooks:spell_power": 0.0372,
-          "**irons_spellbooks:mana_regen": 0.0372,
-          "**irons_spellbooks:cooldown_reduction": 0.0372
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1937,6 +2000,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1945,12 +2014,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.08,
-          "**irons_spellbooks:spell_power": 0.0408,
-          "**irons_spellbooks:mana_regen": 0.0408,
-          "**irons_spellbooks:cooldown_reduction": 0.0408
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1965,6 +2029,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -1973,12 +2043,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.84,
-          "**irons_spellbooks:spell_power": 0.0384,
-          "**irons_spellbooks:mana_regen": 0.0384,
-          "**irons_spellbooks:cooldown_reduction": 0.0384
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1993,6 +2058,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2001,12 +2072,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.12,
-          "**irons_spellbooks:spell_power": 0.0312,
-          "**irons_spellbooks:mana_regen": 0.0312,
-          "**irons_spellbooks:cooldown_reduction": 0.0312
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2021,6 +2087,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2029,12 +2101,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2049,6 +2116,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2057,12 +2130,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.48,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2077,6 +2145,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2085,12 +2159,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2105,6 +2174,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2113,12 +2188,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2133,6 +2203,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2141,12 +2217,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.9,
-          "**irons_spellbooks:spell_power": 0.039,
-          "**irons_spellbooks:mana_regen": 0.039,
-          "**irons_spellbooks:cooldown_reduction": 0.039
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2161,6 +2232,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2169,12 +2246,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.0,
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:mana_regen": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2189,6 +2261,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2197,12 +2275,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2217,6 +2290,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2225,12 +2304,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2245,6 +2319,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2253,12 +2333,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2273,6 +2348,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2281,12 +2362,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.9,
-          "**irons_spellbooks:spell_power": 0.039,
-          "**irons_spellbooks:mana_regen": 0.039,
-          "**irons_spellbooks:cooldown_reduction": 0.039
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2301,6 +2377,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2309,12 +2391,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.36,
-          "**irons_spellbooks:spell_power": 0.0336,
-          "**irons_spellbooks:mana_regen": 0.0336,
-          "**irons_spellbooks:cooldown_reduction": 0.0336
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2329,6 +2406,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2337,12 +2420,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.88,
-          "**irons_spellbooks:spell_power": 0.0288,
-          "**irons_spellbooks:mana_regen": 0.0288,
-          "**irons_spellbooks:cooldown_reduction": 0.0288
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2357,6 +2435,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2365,12 +2449,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.12,
-          "**irons_spellbooks:spell_power": 0.0312,
-          "**irons_spellbooks:mana_regen": 0.0312,
-          "**irons_spellbooks:cooldown_reduction": 0.0312
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2385,6 +2464,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2393,12 +2478,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.6,
-          "**irons_spellbooks:spell_power": 0.036,
-          "**irons_spellbooks:mana_regen": 0.036,
-          "**irons_spellbooks:cooldown_reduction": 0.036
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2413,6 +2493,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2421,12 +2507,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.6,
-          "**irons_spellbooks:spell_power": 0.036,
-          "**irons_spellbooks:mana_regen": 0.036,
-          "**irons_spellbooks:cooldown_reduction": 0.036
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2441,6 +2522,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2449,12 +2536,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.2,
-          "**irons_spellbooks:spell_power": 0.042,
-          "**irons_spellbooks:mana_regen": 0.042,
-          "**irons_spellbooks:cooldown_reduction": 0.042
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2469,6 +2551,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2477,12 +2565,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.0,
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:mana_regen": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2497,6 +2580,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2505,12 +2594,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2525,6 +2609,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2533,12 +2623,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.18,
-          "**irons_spellbooks:spell_power": 0.0318,
-          "**irons_spellbooks:mana_regen": 0.0318,
-          "**irons_spellbooks:cooldown_reduction": 0.0318
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2553,6 +2638,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2561,12 +2652,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.04,
-          "**irons_spellbooks:spell_power": 0.0504,
-          "**irons_spellbooks:mana_regen": 0.0504,
-          "**irons_spellbooks:cooldown_reduction": 0.0504
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2581,6 +2667,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2589,12 +2681,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.9,
-          "**irons_spellbooks:spell_power": 0.039,
-          "**irons_spellbooks:mana_regen": 0.039,
-          "**irons_spellbooks:cooldown_reduction": 0.039
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2609,6 +2696,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2617,12 +2710,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2637,6 +2725,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2645,12 +2739,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2665,6 +2754,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2673,12 +2768,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.96,
-          "**irons_spellbooks:spell_power": 0.0396,
-          "**irons_spellbooks:mana_regen": 0.0396,
-          "**irons_spellbooks:cooldown_reduction": 0.0396
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2693,6 +2783,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2701,12 +2797,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.98,
-          "**irons_spellbooks:spell_power": 0.0498,
-          "**irons_spellbooks:mana_regen": 0.0498,
-          "**irons_spellbooks:cooldown_reduction": 0.0498
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2721,6 +2812,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2729,12 +2826,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.3,
-          "**irons_spellbooks:spell_power": 0.033,
-          "**irons_spellbooks:mana_regen": 0.033,
-          "**irons_spellbooks:cooldown_reduction": 0.033
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2749,6 +2841,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2757,12 +2855,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.08,
-          "**irons_spellbooks:spell_power": 0.0408,
-          "**irons_spellbooks:mana_regen": 0.0408,
-          "**irons_spellbooks:cooldown_reduction": 0.0408
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2777,6 +2870,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2785,12 +2884,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.48,
-          "**irons_spellbooks:spell_power": 0.0348,
-          "**irons_spellbooks:mana_regen": 0.0348,
-          "**irons_spellbooks:cooldown_reduction": 0.0348
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2805,6 +2899,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2813,12 +2913,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4.2,
-          "**irons_spellbooks:spell_power": 0.042,
-          "**irons_spellbooks:mana_regen": 0.042,
-          "**irons_spellbooks:cooldown_reduction": 0.042
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2833,6 +2928,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2841,12 +2942,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.4,
-          "**irons_spellbooks:spell_power": 0.054,
-          "**irons_spellbooks:mana_regen": 0.054,
-          "**irons_spellbooks:cooldown_reduction": 0.054
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2861,6 +2957,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2869,12 +2971,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.5,
-          "**irons_spellbooks:spell_power": 0.025,
-          "**irons_spellbooks:mana_regen": 0.025,
-          "**irons_spellbooks:cooldown_reduction": 0.025
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2889,6 +2986,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2897,12 +3000,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8125,
-          "**irons_spellbooks:spell_power": 0.0281,
-          "**irons_spellbooks:mana_regen": 0.0281,
-          "**irons_spellbooks:cooldown_reduction": 0.0281
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2917,6 +3015,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2925,12 +3029,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.5,
-          "**irons_spellbooks:spell_power": 0.025,
-          "**irons_spellbooks:mana_regen": 0.025,
-          "**irons_spellbooks:cooldown_reduction": 0.025
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2945,6 +3044,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2953,12 +3058,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.125,
-          "**irons_spellbooks:spell_power": 0.0312,
-          "**irons_spellbooks:mana_regen": 0.0312,
-          "**irons_spellbooks:cooldown_reduction": 0.0312
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2973,6 +3073,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -2981,12 +3087,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.5,
-          "**irons_spellbooks:spell_power": 0.025,
-          "**irons_spellbooks:mana_regen": 0.025,
-          "**irons_spellbooks:cooldown_reduction": 0.025
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3001,6 +3102,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3009,12 +3116,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.75,
-          "**irons_spellbooks:spell_power": 0.0375,
-          "**irons_spellbooks:mana_regen": 0.0375,
-          "**irons_spellbooks:cooldown_reduction": 0.0375
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3029,6 +3131,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3037,12 +3145,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3057,6 +3160,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3065,12 +3174,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3085,6 +3189,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3093,12 +3203,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9448,
-          "**irons_spellbooks:spell_power": 0.0195,
-          "**irons_spellbooks:mana_regen": 0.0195,
-          "**irons_spellbooks:cooldown_reduction": 0.0195
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3113,6 +3218,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3121,12 +3232,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2227,
-          "**irons_spellbooks:spell_power": 0.0223,
-          "**irons_spellbooks:mana_regen": 0.0223,
-          "**irons_spellbooks:cooldown_reduction": 0.0223
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3141,6 +3247,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3149,12 +3261,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3169,6 +3276,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3177,12 +3290,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3197,6 +3305,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3205,12 +3319,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3225,6 +3334,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     },
     {
@@ -3233,12 +3348,7 @@
       ],
       "key": "basic_handle/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.667,
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167
-        },
+        "primaryAttributes": {},
         "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -3253,6 +3363,12 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 15.0,
+        "irons_spellbooks:spell_power": 0.05,
+        "irons_spellbooks:mana_regen": 0.15,
+        "irons_spellbooks:cooldown_reduction": 0.15
       }
     }
   ]

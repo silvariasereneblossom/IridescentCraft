@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "00869969",
+    "generated_from":  "a78e72c6",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8752,7 +8752,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "3deafcc06f0233267eea8f9cc0f6615ae5e318c49b5efb4d7b7500aa6c4472c2",
+                                                                         "sha256":  "f6495e2a6fc3a2a9830d1e48d3e6f4441d69eff1f62345ae2afb764f0039c0ac",
                                                                          "size":  380
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {

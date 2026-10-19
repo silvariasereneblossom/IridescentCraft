@@ -13,9 +13,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -30,6 +28,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -38,9 +39,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.25
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -55,6 +54,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -63,9 +65,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.5
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -80,6 +80,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -88,9 +91,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.5
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -105,6 +106,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -113,9 +117,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.333
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -130,6 +132,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -138,9 +143,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.083
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -155,6 +158,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -163,9 +169,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.072
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -180,6 +184,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -188,9 +195,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.059
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -205,6 +210,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -213,9 +221,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.7358
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -230,6 +236,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -238,9 +247,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -255,6 +262,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -263,9 +273,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -280,6 +288,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -288,9 +299,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -305,6 +314,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -313,9 +325,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -330,6 +340,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -338,9 +351,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.1245
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -355,6 +366,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -363,9 +377,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -380,6 +392,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -388,9 +403,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.7358
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -405,6 +418,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -413,9 +429,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -430,6 +444,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -438,9 +455,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -455,6 +470,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -463,9 +481,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -480,6 +496,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -488,9 +507,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -505,6 +522,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -513,9 +533,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -530,6 +548,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -538,9 +559,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -555,6 +574,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -563,9 +585,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -580,6 +600,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -588,9 +611,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -605,6 +626,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -613,9 +637,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -630,6 +652,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -638,9 +663,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.8747
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -655,6 +678,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -663,9 +689,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -680,6 +704,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -688,9 +715,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.8747
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -705,6 +730,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -713,9 +741,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.7358
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -730,6 +756,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -738,9 +767,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -755,6 +782,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -763,9 +793,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -780,6 +808,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -788,9 +819,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -805,6 +834,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -813,9 +845,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.6038
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -830,6 +860,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -838,9 +871,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -855,6 +886,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -863,9 +897,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -880,6 +912,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -888,9 +923,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -905,6 +938,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -913,9 +949,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -930,6 +964,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -938,9 +975,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.2913
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -955,6 +990,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -963,9 +1001,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -980,6 +1016,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -988,9 +1027,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.8815
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1005,6 +1042,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1013,9 +1053,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.1245
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1030,6 +1068,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1038,9 +1079,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.1245
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1055,6 +1094,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1063,9 +1105,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.9094
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1080,6 +1120,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1088,9 +1131,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.1524
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1105,6 +1146,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1113,9 +1157,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3.1245
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1130,6 +1172,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1138,9 +1183,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.58
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1155,6 +1198,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1163,9 +1209,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.64
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1180,6 +1224,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1188,9 +1235,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.64
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1205,6 +1250,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1213,9 +1261,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.05
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1230,6 +1276,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1238,9 +1287,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1255,6 +1302,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1263,9 +1313,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1280,6 +1328,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1288,9 +1339,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1305,6 +1354,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1313,9 +1365,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.35
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1330,6 +1380,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1338,9 +1391,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1355,6 +1406,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1363,9 +1417,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1380,6 +1432,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1388,9 +1443,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.56
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1405,6 +1458,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1413,9 +1469,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.7
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1430,6 +1484,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1438,9 +1495,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.52
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1455,6 +1510,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1463,9 +1521,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.7
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1480,6 +1536,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1488,9 +1547,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.46
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1505,6 +1562,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1513,9 +1573,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1530,6 +1588,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1538,9 +1599,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1555,6 +1614,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1563,9 +1625,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.58
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1580,6 +1640,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1588,9 +1651,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1605,6 +1666,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1613,9 +1677,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.7
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1630,6 +1692,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1638,9 +1703,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.86
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1655,6 +1718,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1663,9 +1729,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.8
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1680,6 +1744,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1688,9 +1755,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.56
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1705,6 +1770,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1713,9 +1781,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.86
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1730,6 +1796,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1738,9 +1807,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.04
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1755,6 +1822,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1763,9 +1833,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.92
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1780,6 +1848,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1788,9 +1859,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.56
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1805,6 +1874,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1813,9 +1885,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1830,6 +1900,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1838,9 +1911,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.74
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1855,6 +1926,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1863,9 +1937,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1880,6 +1952,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1888,9 +1963,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1905,6 +1978,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1913,9 +1989,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.95
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1930,6 +2004,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1938,9 +2015,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.5
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1955,6 +2030,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1963,9 +2041,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -1980,6 +2056,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -1988,9 +2067,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2005,6 +2082,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2013,9 +2093,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2030,6 +2108,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2038,9 +2119,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.95
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2055,6 +2134,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2063,9 +2145,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.68
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2080,6 +2160,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2088,9 +2171,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.44
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2105,6 +2186,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2113,9 +2197,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.56
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2130,6 +2212,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2138,9 +2223,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.8
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2155,6 +2238,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2163,9 +2249,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.8
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2180,6 +2264,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2188,9 +2275,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.1
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2205,6 +2290,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2213,9 +2301,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.5
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2230,6 +2316,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2238,9 +2327,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2255,6 +2342,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2263,9 +2353,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.59
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2280,6 +2368,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2288,9 +2379,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.52
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2305,6 +2394,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2313,9 +2405,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.95
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2330,6 +2420,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2338,9 +2431,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2355,6 +2446,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2363,9 +2457,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2380,6 +2472,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2388,9 +2483,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.98
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2405,6 +2498,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2413,9 +2509,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.49
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2430,6 +2524,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2438,9 +2535,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.65
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2455,6 +2550,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2463,9 +2561,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.04
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2480,6 +2576,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2488,9 +2587,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.74
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2505,6 +2602,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2513,9 +2613,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.1
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2530,6 +2628,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2538,9 +2639,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.7
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2555,6 +2654,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2563,9 +2665,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.25
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2580,6 +2680,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2588,9 +2691,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.4062
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2605,6 +2706,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2613,9 +2717,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.25
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2630,6 +2732,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2638,9 +2743,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.5625
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2655,6 +2758,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2663,9 +2769,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.25
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2680,6 +2784,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2688,9 +2795,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.875
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2705,6 +2810,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2713,9 +2821,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2730,6 +2836,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2738,9 +2847,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2755,6 +2862,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2763,9 +2873,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.9718
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2780,6 +2888,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2788,9 +2899,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 1.1107
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2805,6 +2914,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2813,9 +2925,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2830,6 +2940,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2838,9 +2951,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2855,6 +2966,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2863,9 +2977,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2880,6 +2992,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     },
     {
@@ -2888,9 +3003,7 @@
       ],
       "key": "basic_core/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 0.833
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -2905,6 +3018,9 @@
       },
       "aspects": {
         "icraft_magic_weapon": 2
+      },
+      "attributes": {
+        "irons_spellbooks:max_mana": 7.5
       }
     }
   ]

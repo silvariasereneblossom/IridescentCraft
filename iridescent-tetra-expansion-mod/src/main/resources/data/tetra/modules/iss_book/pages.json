@@ -33,9 +33,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.01
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -143,9 +141,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0093
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -165,9 +161,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0093
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -187,9 +181,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.01
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -209,9 +201,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.01
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -231,9 +221,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0096
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -253,9 +241,7 @@
       ],
       "key": "pages/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.0122
-        },
+        "primaryAttributes": {},
         "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
