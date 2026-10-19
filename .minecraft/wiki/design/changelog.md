@@ -6,9 +6,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
-## October 2026: Mob drops roll Forbidden & Arcanus's extras once (19 October)
+## October 2026: Mob drops and the last chests roll their extras once (19 October)
 
 - **Endermen, bats, squid, zombies, drowned and spawners roll Forbidden & Arcanus's extras once.** When Forbidden & Arcanus added its own drop (ender pearl fragments, bat wings, tentacles, zombie arms, spawner scrap), it ran every other loot rule a second time, as it did in chests until earlier the same day. An enderman killed in the End now drops a Codex Token III about one kill in twenty, the rate its loot rule gives (it was one in ten), and endermen anywhere drop half the RFTools Dimensions lost knowledge and dimlets they did (lost knowledge about one kill in eight instead of one in four). Forbidden & Arcanus's own drops are unchanged, and bats, squid, zombies, drowned and spawners drop what they did. This applies from the next server restart.
+- **Abandoned mineshaft chests roll Forbidden & Arcanus's extras once too.** They were the last chests that ran every loot rule a second time: a mineshaft chest now holds about half a Codex Token I instead of one, and half the artifacts, treasure fragments, backpacks and music sheets it did, matching the other structure chests. Forbidden & Arcanus's own items in them are unchanged. Valhelsia Structures' treasure jars got the same fix; their second roll added nothing, so a broken treasure jar gives what it did.
 
 ## October 2026: Summons, chest loot and the tester sync (19 October)
 

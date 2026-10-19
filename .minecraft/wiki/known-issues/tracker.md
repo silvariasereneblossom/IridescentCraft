@@ -10,9 +10,6 @@ Status legend: **Open** · **Investigating** · **Mitigated** (worked around; sa
 
 ## Open / In-progress
 
-### Abandoned mineshaft chests roll the pack's extra loot twice: **Open (design decision pending)**
-Forbidden & Arcanus's addition to abandoned mineshaft chests runs the pack's loot rules a second time, so a mineshaft chest holds about one Codex Token I where its loot rules give about half that. The other chests, the Ender Dragon and Forbidden & Arcanus's mob drops roll once since 19 October 2026; the mineshaft waits for a ruling, because the fix changes its token rate.
-
 ### Kill quests: kills from before 2026-10-13 are not credited (**Known limitation**)
 Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, *Capstone: Lucifer* and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.
 
@@ -155,6 +152,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 **Loot & chests**
 - Some chests rolled the pack's extra loot twice: Forbidden & Arcanus's additions to End City and bastion treasure, jungle temples, desert pyramids, underwater ruins, pillager outposts, dungeons and the three village smiths ran every other loot rule a second time, so those chests held about twice the Codex tokens, Tetra scrolls and darts their loot rules give. Since 19 October 2026 (chests opened from the next server restart) each rolls once, like the Ender Dragon's drops; village artifacts stay at about one chest in ten.
 - Endermen rolled the pack's loot rules twice whenever Forbidden & Arcanus added its ender pearl fragments: in the End they dropped a Codex Token III about one kill in ten instead of one in twenty, and everywhere twice the RFTools Dimensions lost knowledge and dimlets. Since 19 October 2026 (from the next server restart) each kill rolls once; the same fix covers Forbidden & Arcanus's bat, squid, zombie, drowned and spawner drops, which change nothing you would notice.
+- Abandoned mineshaft chests rolled the pack's extra loot twice the same way: about one Codex Token I a chest where their loot rules give half that, and twice the artifacts, treasure fragments and backpacks. Since 19 October 2026 (chests opened from the next server restart) they roll once, like the other chests. Valhelsia Structures' treasure jars got the same fix; their second roll added nothing, so a broken treasure jar gives what it did.
 - Stray high-tier drops were traced and fixed at the source: passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities are no longer equipped or scaled, and script-equipped mob gear no longer drops on death. (The diamond/ender-eye-on-spiders symptom was part of this and is resolved: it was intended modded entity loot, not a mystery injector.)
 - Two datapacks that had silently stopped loading (the stone-tag fixer and the infinite-ham blocker) are loading again; both had been rejected for a packaging error.
 - A LootJS strip rule that referenced a non-existent item id no longer errors.
