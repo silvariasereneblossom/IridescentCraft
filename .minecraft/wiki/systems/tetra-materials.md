@@ -25,7 +25,7 @@ Last full audit: 2026-05-28. As of 2026-10-18 the pack ships 913 material files 
 
 ## How Tetra material registration works
 
-A Tetra material is a JSON file at `data/<namespace>/tetra/materials/<category>/[<subdir>/]<file>.json`. Tetra's reload listener walks every datapack/jar's `data/tetra/materials/...` tree and registers each file as a material whose ID is `<namespace>:<category>/<key>`. The file's directory sets the category, which module variant matchers such as `tetra:metal/` and `tetra:fabric/` use. The `key` field inside the JSON is the leaf identifier the variant matcher binds to: `"key": "iron"` matches `tetra:metal/iron`.
+A Tetra material is a JSON file at `data/<namespace>/materials/<category>/[<subdir>/]<file>.json`. Tetra's reload listener walks every datapack/jar's `data/<namespace>/materials/...` tree (in this pack nearly always `data/tetra/materials/...`) and registers each file as a material whose ID is `<namespace>:<category>/<key>`. The file's directory sets the category, which module variant matchers such as `tetra:metal/` and `tetra:fabric/` use. The `key` field inside the JSON is the leaf identifier the variant matcher binds to: `"key": "iron"` matches `tetra:metal/iron`.
 
 Standard fields:
 
@@ -181,109 +181,178 @@ IridescentCraft's own sources define these materials, and they exist only in thi
 
 ### 2a. Datapack metals + gems (`icraft_tetra_materials`)
 
-The datapack at `global_packs/required_data/icraft_tetra_materials/` (namespace `tetra:`; Paxi now loads it from config/paxi/datapacks/icraft_tetra_materials.zip) first shipped 27 modded metal materials. Gems, skins and other materials were added later, and as of 2026-10-18 it has 101 in total: 59 metal, 36 gem, 4 skin, 1 bone, 1 fibre.
+The datapack's source is `.minecraft/datapack_sources/icraft_tetra_materials/` (namespace `tetra:`); Paxi loads it from `config/paxi/datapacks/icraft_tetra_materials.zip`. It first shipped 27 modded metal materials. Gems, skins and other materials were added later, and as of 2026-10-18 it has 101 in total: 59 metal, 36 gem, 4 skin, 1 bone, 1 fibre.
 
-#### Master metal comparison table (sorted by tier)
+Every number in the tables below is read from the zip the game loads (2026-10-18). **Hammer** is the hammer head a Tetra workbench needs to forge the material (`requiredTools.hammer_dig`; "-" means any head). **Gate** is the stage that locks the material's repair item in game (AStages, `astages_restrictions.js`): "T3 (mod)" when the whole mod is staged, "none" when no stage locks the item (it may still come only from a gated dimension). A material has no tier of its own beyond these two: Dimlite and Iridium, for example, come from Terramity (not Mekanism) and no stage locks them.
 
-Vanilla values are listed for comparison.
+#### Metals (27)
 
-| Tier | Material | Source Mod | Dur | Prim | Sec | Tert | Eff | Tool Level | Magic Cap | Tint | Repair Item |
+| Key | Source | Dur | Prim | Sec | Tert | Eff | Tool Level | Hammer | Magic Cap | Gate | Repair Item |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| -- | *Iron (vanilla ref)* | *Vanilla* | *250* | *5.0* | *3.8* | *3.0* | *6.0* | *iron* | *84* | -- | *iron_ingot* |
-| T1 | Brass | Create | 240 | 4.5 | 4.0 | 2.5 | 6 | iron | 80 | #c4963a | `create:brass_ingot` |
-| -- | *Diamond (vanilla ref)* | *Vanilla* | *1561* | *6.0* | *2.9* | *0* | *8.0* | *diamond* | *60* | -- | *diamond* |
-| T2 | Ironwood | Twilight Forest | 340 | 5.0 | 3.6 | 3.0 | 6.5 | iron | 96 | #6b4e35 | `twilightforest:ironwood_ingot` |
-| T2 | Signalum | Thermal | 300 | 5.0 | 4.2 | 2.5 | 7.5 | diamond | 96 | #d84b20 | `thermal:signalum_ingot` |
-| T2 | Manasteel | Botania | 350 | 5.2 | 3.6 | 2.8 | 7 | diamond | 120 | #4a90c4 | `botania:manasteel_ingot` |
-| T2 | Steeleaf | Twilight Forest | 380 | 5.3 | 3.8 | 3.0 | 7 | diamond | 90 | #3a7a2c | `twilightforest:steeleaf_ingot` |
-| T2 | Steel | Thermal | 400 | 5.5 | 3.5 | 3.2 | 7 | diamond | 72 | #8a8a8a | `thermal:steel_ingot` |
-| T2 | Knightmetal | Twilight Forest | 500 | 5.6 | 3.2 | 3.5 | 7.5 | diamond | 78 | #c4b57a | `twilightforest:knightmetal_ingot` |
-| T2 | Fiery | Twilight Forest | 460 | 5.8 | 3.4 | 3.2 | 7.5 | diamond | 86 | #d45a10 | `twilightforest:fiery_ingot` |
-| T2 | Lumium | Thermal | 320 | 4.8 | 4.4 | 2.3 | 7.5 | diamond | 100 | #f5e16f | `thermal:lumium_ingot` |
-| T2 | Diopside | Blue Skies | 350 | 5.0 | 4.5 | 3.0 | 8.0 | iron | 60 | #2d8f4e | `blue_skies:diopside_gem` |
-| T2 | Charoite | Blue Skies | 400 | 5.2 | 4.8 | 3.0 | 7.0 | iron | 100 | #7b2d8f | `blue_skies:charoite` |
-| T2 | Horizonite | Blue Skies | 450 | 5.5 | 5.0 | 3.5 | 7.5 | diamond | 70 | #c4761a | `blue_skies:horizonite_ingot` |
-| T2 | Garnite | Forbidden & Arcanus | 400 | 5.5 | 5.0 | 3.0 | 7.5 | diamond | 70 | -- | `forbidden_arcanus:dragon_scale` |
-| T2 | Phantom | Forbidden & Arcanus | 600 | 6.0 | 5.5 | 3.5 | 8 | diamond | 95 | -- | `forbidden_arcanus:reinforced_deorum` |
-| T2 | Deorum | Forbidden & Arcanus | 700 | 6.0 | 5.5 | 3.5 | 8 | diamond | 110 | -- | `forbidden_arcanus:deorum_ingot` |
-| T2 | Knight | Forbidden & Arcanus | 750 | 6.5 | 6.0 | 4.0 | 8.5 | diamond | 85 | -- | (TYR-tier) |
-| T2 | Cloggrum | Undergarden | 350 | 5.5 | 3.0 | 2.5 | 6.5 | iron | 50 | -- | `undergarden:cloggrum_ingot` |
-| T2 | Froststeel | Undergarden | 450 | 5.8 | 3.5 | 2.8 | 7 | diamond | 75 | -- | `undergarden:froststeel_ingot` |
-| T3 | Osmium | Mekanism | 650 | 6.0 | 3.2 | 3.2 | 8 | diamond | 88 | #8eadb5 | `mekanism:ingot_osmium` |
-| T3 | Forgotten Metal | Undergarden | 800 | 6.8 | 4.2 | 3.5 | 8.0 | diamond | 60 | -- | `undergarden:forgotten_ingot` |
-| T3 | Elementium | Botania | 720 | 6.2 | 3.4 | 2.5 | 8.5 | diamond | 150 | #e565c9 | `botania:elementium_ingot` |
-| T3 | Terrasteel | Botania | 800 | 6.5 | 3.0 | 3.0 | 9 | diamond | 140 | #3dba4e | `botania:terrasteel_ingot` |
-| T3 | Enderium | Thermal | 900 | 6.8 | 3.0 | 3.5 | 9.5 | netherite | 110 | #1a6b6b | `thermal:enderium_ingot` |
-| T3 | Refined Obsidian | Mekanism | 1000 | 7.0 | 2.8 | 4.0 | 9 | netherite | 76 | #5c3b8e | `mekanism:ingot_refined_obsidian` |
-| T3 | Unorithe | Forbidden & Arcanus | 1200 | 7.0 | 6.5 | 4.5 | 9.5 | netherite | 90 | -- | (Tyr / endgame F&A) |
-| T3 | Dimlite | Mekanism | 1400 | 6.5 | 3.0 | 5.5 | 8 | diamond | 130 | -- | -- |
-| -- | *Netherite (vanilla ref)* | *Vanilla* | *2031* | *7.24* | *2.9* | *3.5* | *9.0* | *netherite* | *90* | -- | *netherite_ingot* |
-| T4 | Iridium | Mekanism | 2200 | 8.0 | 4.0 | 4.0 | 10 | netherite | 100 | -- | `mekanism:ingot_iridium` |
-| T4 | Aethersteel | Aethersteel | 2500 | 8.5 | 3.2 | 4.5 | 11 | netherite | 100 | #7ad6e8 | `aethersteel:aethersteel_ingot` |
+| `undergarden_cloggrum` | Undergarden | 350 | 5.5 | 3 | 2.5 | 6.5 | iron | stone | 90 | none | `undergarden:cloggrum_ingot` |
+| `brass` | Create | 240 | 4.5 | 4 | 2.5 | 6 | iron | gold | 85 | none | `create:brass_ingot` |
+| `lumium` | Thermal | 320 | 4.8 | 4.4 | 2.3 | 7.5 | diamond | iron | 130 | T2 | `thermal:lumium_ingot` |
+| `ironwood` | Twilight Forest | 340 | 5 | 3.6 | 3 | 6.5 | iron | iron | 95 | none | `twilightforest:ironwood_ingot` |
+| `signalum` | Thermal | 300 | 5 | 4.2 | 2.5 | 7.5 | diamond | iron | 130 | T2 | `thermal:signalum_ingot` |
+| `charoite` | Blue Skies | 400 | 5.2 | 4.8 | 3 | 7 | iron | gold | 160 | none | `blue_skies:charoite` |
+| `dimlite` | Terramity | 400 | 5.2 | 3 | 4 | 7 | iron | iron | 130 | none | `terramity:dimlite_ingot` |
+| `manasteel` | Botania | 350 | 5.2 | 3.6 | 2.8 | 7 | diamond | iron | 150 | T2 | `botania:manasteel_ingot` |
+| `steeleaf` | Twilight Forest | 380 | 5.3 | 3.8 | 3 | 7 | diamond | iron | 110 | none | `twilightforest:steeleaf_ingot` |
+| `garnite` | The Abyss | 400 | 5.5 | 5 | 3 | 7.5 | diamond | iron | 100 | none | `theabyss:garnite_ingot` |
+| `horizonite` | Blue Skies | 450 | 5.5 | 5 | 3.5 | 7.5 | diamond | iron | 105 | none | `blue_skies:horizonite_ingot` |
+| `steel` | Thermal | 400 | 5.5 | 3.5 | 3.2 | 7 | diamond | iron | 90 | T2 | `thermal:steel_ingot` |
+| `knightmetal` | Twilight Forest | 500 | 5.6 | 3.2 | 3.5 | 7.5 | diamond | iron | 95 | none | `twilightforest:knightmetal_ingot` |
+| `fiery` | Twilight Forest | 460 | 5.8 | 3.4 | 3.2 | 7.5 | diamond | iron | 165 | none | `twilightforest:fiery_ingot` |
+| `undergarden_froststeel` | Undergarden | 450 | 5.8 | 3.5 | 2.8 | 7 | diamond | iron | 105 | none | `undergarden:froststeel_ingot` |
+| `deorum` | Forbidden & Arcanus | 700 | 6 | 5.5 | 3.5 | 8 | diamond | iron | 155 | none | `forbidden_arcanus:deorum_ingot` |
+| `osmium` | Mekanism | 650 | 6 | 3.2 | 3.2 | 8 | diamond | iron | 110 | T3 (mod) | `mekanism:ingot_osmium` |
+| `phantom` | The Abyss | 600 | 6 | 5.5 | 3.5 | 8 | diamond | iron | 145 | none | `theabyss:phantom_ingot` |
+| `elementium` | Botania | 720 | 6.2 | 3.4 | 2.5 | 8.5 | diamond | iron | 175 | T3 | `botania:elementium_ingot` |
+| `terrasteel` | Botania | 800 | 6.5 | 3 | 3 | 9 | diamond | iron | 155 | T3 | `botania:terrasteel_ingot` |
+| `enderium` | Thermal | 900 | 6.8 | 3 | 3.5 | 9.5 | netherite | iron | 170 | T3 | `thermal:enderium_ingot` |
+| `undergarden_forgotten_metal` | Undergarden | 800 | 6.8 | 4.2 | 3.5 | 8 | diamond | iron | 150 | none | `undergarden:forgotten_ingot` |
+| `refined_obsidian` | Mekanism | 1000 | 7 | 2.8 | 4 | 9 | netherite | iron | 150 | T3 (mod) | `mekanism:ingot_refined_obsidian` |
+| `iridium` | Terramity | 900 | 6.5 | 3.5 | 3.5 | 8.5 | diamond | diamond | 160 | none | `terramity:iridium` |
+| `knight` | The Abyss | 750 | 6.5 | 6 | 4 | 8.5 | diamond | diamond | 145 | none | `theabyss:knight_ingot` |
+| `unorithe` | The Abyss | 1200 | 7 | 6.5 | 4.5 | 9.5 | netherite | diamond | 140 | none | `theabyss:unorithe_ingot` |
+| `aethersteel` | Aethersteel | 2500 | 8.5 | 3.2 | 4.5 | 11 | netherite | 7 | 210 | T4 | `aethersteel:aethersteel_ingot` |
 
-> Columns: Primary is the main attack damage, Secondary the sweeping/off-hand damage, Tertiary the armor/blocking value. Tool Level is what blocks the tool can mine (iron < diamond < netherite). Magic Capacity is how many enchantment improvements the material can hold in Tetra's system.
+> Columns: Primary is the main attack damage, Secondary the sweeping/off-hand damage, Tertiary the armor/blocking value. Tool Level is what blocks the tool can mine (iron < diamond < netherite). Magic Capacity is how many enchantment improvements the material can hold in Tetra's system. Rows are sorted by hammer, then primary.
 
-#### Custom gems (`icraft_tetra_materials`)
+#### Gems (7)
 
-5 gem materials. The first four are themed onyx, sapphire, topaz and ruby gems for end-game crafting; `undergarden_utherium` gives Undergarden's purple gem Tetra-compatible stats.
+| Key | Source | Dur | Prim | Sec | Tert | Eff | Tool Level | Hammer | Magic Cap | Gate | Repair Item |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `diamond_no_t` | Vanilla | 380 | 5.4 | 3.8 | 3 | 6 | iron | - | 130 | T3 | `minecraft:diamond` |
+| `diopside` | Blue Skies | 350 | 5 | 4.5 | 3 | 8 | iron | gold | 90 | none | `blue_skies:diopside_gem` |
+| `ruby` | Terramity | 600 | 5.5 | 3.5 | 3 | 7 | iron | iron | 125 | none | `terramity:ruby` |
+| `sapphire` | Terramity | 600 | 5.5 | 3.5 | 3 | 7 | iron | iron | 125 | none | `terramity:sapphire` |
+| `topaz` | Terramity | 600 | 5.5 | 3.5 | 3 | 7 | iron | iron | 125 | none | `terramity:topaz` |
+| `undergarden_utherium` | Undergarden | 600 | 6.2 | 3.8 | 3.2 | 7.5 | diamond | iron | 140 | none | `undergarden:utherium_crystal` |
+| `onyx` | Terramity | 1500 | 7.5 | 3.5 | 4 | 9 | netherite | netherite | 165 | none | `terramity:onyx` |
 
-| Key | Primary | Sec | Tert | Dur | MC | Eff | Tool Level | Repair / Source |
-|---|---|---|---|---|---|---|---|---|
-| `onyx` | 7.5 | 3.5 | 4.0 | 1500 | 110 | 9 | netherite | (custom onyx item) |
-| `ruby` | 7.0 | 3.0 | 3.5 | 1000 | 90 | 7.5 | diamond | (custom ruby item) |
-| `sapphire` | 6.5 | 3.5 | 3.0 | 1000 | 90 | 7.5 | diamond | (custom sapphire item) |
-| `topaz` | 6.5 | 3.5 | 3.2 | 950 | 90 | 7.5 | diamond | (custom topaz item) |
-| `undergarden_utherium` | 6.2 | 3.8 | 3.2 | 600 | 120 | 7.5 | diamond | `undergarden:utherium` |
+#### Skins, bone and fibre (5)
 
-> `undergarden_utherium` is also defined by `undergardenpatch-1.4.2-1.20.1.jar`, with stats `prim=6.5, dur=1279, mc=102, eff=8.5`. Which one wins depends on the load order of the datapack and the jar; see [duplicate keys](#cross-source-duplicate-keys).
+| Key | Source | Dur | Prim | Sec | Tert | Eff | Tool Level | Hammer | Magic Cap | Gate | Repair Item |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `paper` | Vanilla | 80 | 1 | 0.5 | 2 | 0 | 0 | - | 90 | none | `minecraft:paper` |
+| `deathskin` | Vanilla | 80 | 3 | 1 | 1 | 0 | 0 | - | 80 | none | `minecraft:rotten_flesh` |
+| `tf_arctic` | Twilight Forest | 220 | 4.8 | 3.8 | 3 | 6 | iron | - | 100 | none | `twilightforest:arctic_fur` |
+| `rotten_leather` | Forbidden & Arcanus | 180 | 5 | 2 | 1 | 0 | 0 | - | 100 | none | `forbidden_arcanus:rotten_leather` |
+| `tf_yeti` | Twilight Forest | 340 | 5.2 | 3.8 | 3 | 6 | iron | - | 110 | none | `twilightforest:alpha_yeti_fur` |
 
-#### Custom skins (`icraft_tetra_materials`)
+#### Boss and trophy materials (58)
 
-| Key | Primary | Sec | Tert | Dur | MC | Repair Item |
-|---|---|---|---|---|---|---|
-| `rotten_flesh` | 3 | 1 | 1 | 80 | 70 | `minecraft:rotten_flesh` |
-| `rotten_leather` | 5 | 2 | 1 | 180 | 110 | (custom rotten_leather) |
+Each is made from one boss's drop or trophy (the repair item); a `disable:this` repair item means the material cannot be repaired or crafted.
 
-### 2b. Themed reforging materials (`iridescent_reforging:themed/*`)
+| Key (category) | Source | Dur | Prim | Sec | Tert | Eff | Tool Level | Hammer | Magic Cap | Gate | Repair Item |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| `bs_pyrope` (gem) | - | 280 | 5 | 3.8 | 3 | 6 | iron | - | 145 | - | `disable:this` |
+| `fa_mortem` (metal) | - | 300 | 5.2 | 3.8 | 3 | 6 | iron | - | 160 | - | `disable:this` |
+| `dd_resonarium` (gem) | Deeper & Darker | 360 | 5.4 | 3.8 | 3 | 6 | iron | - | 165 | none | `deeperdarker:resonarium` |
+| `bm_gob` (metal) | Terramity | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `terramity:gobs_gilded_hat_helmet` |
+| `bm_mnaga` (gem) | Mowzie's Mobs | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `mowziesmobs:naga_fang` |
+| `bm_sculptor` (gem) | Mowzie's Mobs | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `mowziesmobs:sculptor_staff` |
+| `bm_sniffer` (gem) | Terramity | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `terramity:gaianite_cluster` |
+| `bm_umvuthi` (metal) | Mowzie's Mobs | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `mowziesmobs:sol_visage` |
+| `bm_wroughtnaut` (metal) | Mowzie's Mobs | 360 | 5.5 | 3.2 | 3.2 | 6 | iron | - | 120 | none | `mowziesmobs:wrought_helmet` |
+| `tf_naga` (bone) | Twilight Forest | 400 | 5.6 | 3.8 | 3 | 6 | iron | - | 105 | none | `twilightforest:naga_scale` |
+| `dd_warden` (metal) | - | 540 | 6.2 | 3.8 | 3 | 6 | iron | - | 120 | - | `disable:this` |
+| `fa_draco_arcanus` (metal) | - | 580 | 6.4 | 3.8 | 3 | 6 | iron | - | 175 | - | `disable:this` |
+| `bm_frostmaw` (gem) | Mowzie's Mobs | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `mowziesmobs:ice_crystal` |
+| `bs_alchemist` (metal) | Blue Skies | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `blue_skies:ventium_ingot` |
+| `bs_arachnarch` (gem) | Blue Skies | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `blue_skies:spider_webbing` |
+| `bs_starlit` (metal) | Blue Skies | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `blue_skies:falsite_ingot` |
+| `bs_summoner` (gem) | Blue Skies | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `blue_skies:soul_fragment` |
+| `fa_tyr` (metal) | - | 620 | 6.6 | 3.8 | 3 | 6 | iron | - | 155 | - | `disable:this` |
+| `tf_hydra` (metal) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:fiery_blood` |
+| `tf_knightphantom` (metal) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:knightmetal_ring` |
+| `tf_lich` (gem) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:lich_trophy` |
+| `tf_minoshroom` (metal) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:minoshroom_trophy` |
+| `tf_snowqueen` (gem) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:snow_queen_trophy` |
+| `tf_urghast` (gem) | Twilight Forest | 540 | 6.6 | 3.4 | 3.6 | 7 | iron | - | 145 | none | `twilightforest:fiery_tears` |
+| `cm_ignitium` (metal) | Cataclysm | 950 | 8.2 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cataclysm:ignitium_ingot` |
+| `cm_leviathan` (metal) | Cataclysm | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cataclysm:abyssal_egg` |
+| `cm_monstrosity` (metal) | Cataclysm | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cataclysm:lava_power_cell` |
+| `cm_scylla` (gem) | Cataclysm | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cataclysm:lacrima` |
+| `cs_drakara` (metal) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:dragongreatsword` |
+| `cs_envy` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofenvy` |
+| `cs_gluttony` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofgluttony` |
+| `cs_greed` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofgreed` |
+| `cs_lust` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceoflust` |
+| `cs_pride` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofpride` |
+| `cs_sloth` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofsloth` |
+| `cs_wrath` (gem) | Cardinal Sins | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `cardinal_sins:essenceofwrath` |
+| `dd_stalker` (gem) | Deeper & Darker | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `deeperdarker:soul_crystal` |
+| `iss_archevoker` (gem) | Iron's Spells | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `irons_spellbooks:arcane_essence` |
+| `iss_citadel` (metal) | Iron's Spells | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `irons_spellbooks:keeper_flamberge` |
+| `iss_deadking` (metal) | Iron's Spells | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `irons_spellbooks:blood_staff` |
+| `iss_magehunter` (metal) | Iron's Spells | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `irons_spellbooks:magehunter` |
+| `iss_tyros` (gem) | Iron's Spells | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `irons_spellbooks:cinder_essence` |
+| `tm_circe` (gem) | Terramity | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `terramity:malediction_bracelets` |
+| `tm_gatmancer` (gem) | Terramity | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `terramity:occult_fabric` |
+| `ug_forgotten_guardian` (metal) | Undergarden | 920 | 8.3 | 3.6 | 3.8 | 9 | netherite | diamond | 200 | none | `undergarden:forgotten_nugget` |
+| `cm_cursium` (metal) | Cataclysm | 900 | 8.4 | 3.4 | 4 | 9 | netherite | diamond | 200 | none | `cataclysm:cursium_ingot` |
+| `ae_slider` (metal) | The Aether | 1200 | 8.6 | 3.4 | 3.6 | 10 | netherite | diamond | 200 | none | `aether:carved_stone` |
+| `cm_witherite` (metal) | Cataclysm | 1000 | 8.6 | 3.2 | 4.2 | 9 | netherite | diamond | 200 | none | `cataclysm:witherite_ingot` |
+| `ae_sunspirit` (metal) | The Aether | 1260 | 8.8 | 3.4 | 3.6 | 10 | netherite | diamond | 210 | none | `aether:sun_altar` |
+| `ae_valkyrie` (metal) | The Aether | 1260 | 8.8 | 3.4 | 3.6 | 10 | netherite | diamond | 210 | none | `aether:victory_medal` |
+| `bo_gaia` (gem) | Botania | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `botania:life_essence` |
+| `cm_ancient_metal` (metal) | Cataclysm | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `cataclysm:ancient_metal_ingot` |
+| `cm_ender_guard` (metal) | Cataclysm | 1300 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `cataclysm:gauntlet_of_guard` |
+| `da_eots` (metal) | Deep Aether | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `deep_aether:squall_plate` |
+| `tm_thunker` (gem) | Terramity | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `terramity:chthonic_crystal` |
+| `tm_virtue` (gem) | Terramity | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `terramity:angel_feather` |
+| `vn_dragon` (gem) | Vanilla | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `minecraft:dragon_breath` |
+| `vn_warden` (metal) | Vanilla | 1320 | 9 | 3.4 | 4.5 | 10 | netherite | diamond | 220 | none | `minecraft:echo_shard` |
 
-Eight themed materials under `data/tetra/materials/themed/*.json` (namespace `iridescent_reforging:`). They are zero-stat wrappers (primary/secondary/tertiary all 1.0, durability 0) whose only job is to select themed reforging variants in the helmet/visor, chestplate/chest_lining, leggings/belt and boots/boot_lining modules. A themed material has no power of its own; the module variants it binds to apply the spell-power buffs.
+#### Partial overrides of Tetra's own materials
 
-| Key | Theme | Lining-Slot Buff Applied (per slot) |
+These change only the primary value and magic capacity of the vanilla materials:
+
+- `gem/diamond`: primary 6, magic capacity 130
+- `metal/gold`: primary 3, magic capacity 165
+- `metal/iron`: primary 5, magic capacity 84
+- `metal/netherite`: primary 7.24, magic capacity 155
+
+### 2b. Themed reforging materials (`tetra:themed/*`)
+
+Eight themed materials in the expansion jar, under `data/tetra/materials/themed/` (namespace `tetra:`, so `tetra:themed/<key>`). Each uses one item as its material and carries its own spell-power attribute, which a module made of it adds to the armour piece. Every one of the jar's 56 armour modules has a themed variant.
+
+| Key | Item | Attributes |
 |---|---|---|
-| `themed/fire` | Fire | `irons_spellbooks:fire_spell_power` +0.05 |
-| `themed/ice` | Ice | `irons_spellbooks:ice_spell_power` +0.05 |
-| `themed/shadow` | Shadow | `irons_spellbooks:blood_spell_power` +0.05 (shadow shares blood SP) |
-| `themed/holy` | Holy | `irons_spellbooks:holy_spell_power` +0.05 |
-| `themed/lightning` | Lightning | `irons_spellbooks:lightning_spell_power` +0.05 |
-| `themed/nature` | Nature | `irons_spellbooks:mana_regen` +0.06 |
-| `themed/ender` | Ender | `irons_spellbooks:ender_spell_power` +0.05 |
-| `themed/blood` | Blood | `irons_spellbooks:blood_spell_power` +0.05 |
-
-> Themed materials only mean something when bound to one of the four `*_lining` / `belt` / `visor` modules in the reforging mod. They are not consumable and no single ingredient produces them: the conversion recipe sets the themed flag from the magic_cloth variant used.
+| `themed/blood` | `irons_spellbooks:blood_vial` | `**irons_spellbooks:blood_spell_power` 0.1 |
+| `themed/ender` | `minecraft:ender_pearl` | `**irons_spellbooks:spell_power` 0.05 |
+| `themed/fire` | `irons_spellbooks:cinder_essence` | `**irons_spellbooks:fire_spell_power` 0.1 |
+| `themed/holy` | `irons_spellbooks:divine_pearl` | `**irons_spellbooks:holy_spell_power` 0.1 |
+| `themed/ice` | `irons_spellbooks:frozen_bone` | `**irons_spellbooks:ice_spell_power` 0.1 |
+| `themed/lightning` | `irons_spellbooks:lightning_bottle` | `**irons_spellbooks:lightning_spell_power` 0.1 |
+| `themed/nature` | `minecraft:oak_sapling` | `**irons_spellbooks:spell_power` 0.05 |
+| `themed/shadow` | `minecraft:ghast_tear` | `**irons_spellbooks:spell_power` 0.05 |
 
 ### 2c. Spell-book materials (`iridescent-modular-spells-mod`)
 
 15 custom material entries that back the per-spellbook conversion recipes for Iron's Spells & Spellbooks (ISS) and Ars Nouveau (Ars) spell books, under `data/tetra/materials/{icraft_iss_books,icraft_ars_books}/`. Their categories (`icraft_iss_books`, `icraft_ars_books`) are non-standard so that Tetra's general matchers never pick them up; the `iss_book` / `ars_book` modules in the same mod accept them explicitly.
 
-| Category | Key | Magic Cap | Source Mod |
+| Category | Key | Magic Cap | Attributes |
 |---|---|---|---|
-| `icraft_iss_books` | `copper_spell_book` | 30 | Iron's Spells |
-| `icraft_iss_books` | `iron_spell_book` | 60 | Iron's Spells |
-| `icraft_iss_books` | `gold_spell_book` | 60 | Iron's Spells |
-| `icraft_iss_books` | `druidic_spell_book` | 60 | Iron's Spells |
-| `icraft_iss_books` | `villager_spell_book` | 60 | Iron's Spells |
-| `icraft_iss_books` | `rotten_spell_book` | 60 | Iron's Spells |
-| `icraft_iss_books` | `evoker_spell_book` | 100 | Iron's Spells |
-| `icraft_iss_books` | `blaze_spell_book` | 100 | Iron's Spells |
-| `icraft_iss_books` | `diamond_spell_book` | 100 | Iron's Spells |
-| `icraft_iss_books` | `dragonskin_spell_book` | 100 | Iron's Spells |
-| `icraft_iss_books` | `netherite_spell_book` | 150 | Iron's Spells |
-| `icraft_iss_books` | `necronomicon_spell_book` | 150 | Iron's Spells (Necronomicon) |
-| `icraft_ars_books` | `novice_spell_book` | 30 | Ars Nouveau |
-| `icraft_ars_books` | `apprentice_spell_book` | 60 | Ars Nouveau |
-| `icraft_ars_books` | `archmage_spell_book` | 100 | Ars Nouveau |
+| `icraft_ars_books` | `apprentice_spell_book` | 95 | `**irons_spellbooks:spell_power` 0.1 |
+| `icraft_ars_books` | `archmage_spell_book` | 155 | `**irons_spellbooks:spell_power` 0.2, `**irons_spellbooks:max_mana` 0.15 |
+| `icraft_ars_books` | `novice_spell_book` | 70 | `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `blaze_spell_book` | 145 | `**irons_spellbooks:fire_spell_power` 0.25, `irons_spellbooks:max_mana` 50, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `copper_spell_book` | 95 | `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `diamond_spell_book` | 130 | `**irons_spellbooks:spell_power` 0.1, `irons_spellbooks:max_mana` 50, `**irons_spellbooks:cooldown_reduction` 0.05 |
+| `icraft_iss_books` | `dragonskin_spell_book` | 155 | `**irons_spellbooks:ender_spell_power` 0.25, `irons_spellbooks:max_mana` 50, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `druidic_spell_book` | 150 | `**irons_spellbooks:nature_spell_power` 0.2, `irons_spellbooks:max_mana` 25, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `evoker_spell_book` | 160 | `**irons_spellbooks:evocation_spell_power` 0.25, `**irons_spellbooks:summon_damage` 0.1, `irons_spellbooks:max_mana` 50, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `gold_spell_book` | 165 | `irons_spellbooks:max_mana` 25, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `iron_spell_book` | 84 | `**irons_spellbooks:spell_power` 0.05, `irons_spellbooks:max_mana` 25 |
+| `icraft_iss_books` | `necronomicon_spell_book` | 165 | `**irons_spellbooks:blood_spell_power` 0.3, `**irons_spellbooks:eldritch_spell_power` 0.3, `**irons_spellbooks:cooldown_reduction` 0.1, `**irons_spellbooks:spell_power` 0.05 |
+| `icraft_iss_books` | `netherite_spell_book` | 155 | `**irons_spellbooks:spell_power` 0.15, `irons_spellbooks:max_mana` 100 |
+| `icraft_iss_books` | `rotten_spell_book` | 100 | `**irons_spellbooks:spell_power` 0.15 |
+| `icraft_iss_books` | `villager_spell_book` | 90 | `**irons_spellbooks:cast_time_reduction` 0.15, `**irons_spellbooks:holy_spell_power` 0.15, `irons_spellbooks:max_mana` 25, `**irons_spellbooks:spell_power` 0.05 |
 
-All other stats (primary/secondary/tertiary/durability/efficiency) are 0; a book material only sets magic capacity. The book module variants in `data/tetra/modules/{iss_book,ars_book}/*.json` apply the max-mana / mana-regen / cast-time / spell-power / cooldown improvements.
+All other stats (primary/secondary/tertiary/durability/efficiency) are 0. Each book material carries the attributes above, and the book module variants in `data/tetra/modules/{iss_book,ars_book}/*.json` apply the max-mana / mana-regen / cast-time / spell-power / cooldown improvements.
 
 ### 2d. Bundle-jar magical fabric + skin materials (`iridescent_tetra_expansion-1.0.0.jar`)
 
@@ -853,7 +922,7 @@ The metal progression follows these principles, kept from the earlier 191-line w
 - The first directory under `materials/` sets the category; `key` is the JSON's `key` field (usually the same as the file name).
 - To re-run this audit on the Windows dev host, walk every jar in the server's live `mods/` directory (`Z:\Users\<user>\Desktop\IridescentCraft Dedicated Server\mods\` on the server VM, or the local equivalent), extract `data/*/materials/{skin,fabric,fibre,metal,gem,bone,rod,scale,stone,wood,socket,misc}/*.json` from each, parse the JSON and group by source/category/key. The 2026-05-28 session's Python audit walker is at `C:\tmp\skin_fabric_audit.py`. It has a path-translation gotcha: Windows Python's `os.path.join` mixes slashes, so convert input paths to native Windows backslashes first.
 - Modded jars sometimes register materials in Java code instead of a datapack; when a material appears in game but not in this catalog, confirm with grep and decompile.
-- Datapack JSONs in `global_packs/required_data/` (today the zips in config/paxi/datapacks/) ship through Paxi. They load after the mod jars but before world saves, so they override jar registrations of the same `<namespace>/<category>/<key>`.
+- Datapack JSONs ship through Paxi as the zips in `config/paxi/datapacks/` (built from `.minecraft/datapack_sources/`). They load after the mod jars but before world saves, so they override jar registrations of the same `<namespace>/<category>/<key>`.
 - The bundle source for the canonical custom materials is `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/materials/<cat>/<key>.json`, and the datapack source for ours is `.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials/<cat>/<key>.json`. Always edit the source of truth, not the deployed jar or zip: the deploy path rebuilds from source.
 
 ---

@@ -131,7 +131,7 @@ nssm start IridescentCraft
 ## Roadmap
 
 - v0.6: replace the existing `iridescentserver.bat` with a 2-line shim (`icraft.exe serve`). The bats stay alongside as a fallback for one release.
-- v0.7: GitHub Releases and a CI-built `icraft-gui.exe` (Path B); the GUI updates itself without operator intervention.
+- v0.7, shipped without GitHub Releases: CI (`build-icraft-gui.yml`) builds `icraft-gui.exe` and commits it, with its sha256, into `server_distribution`, and the launcher's update step applies staged `.new` copies of its own files and relaunches, with no operator step.
 - v0.8: port the client-side launcher scripts (PrismLauncher pre/post hooks). This is out of scope for now, and the client flow stays unchanged.
 - v0.9: port build_mod.sh (×7 mods), extract_mobdiag, validate_datapack_references and build_codex.
 

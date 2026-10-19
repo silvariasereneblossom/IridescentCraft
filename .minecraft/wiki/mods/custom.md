@@ -13,14 +13,14 @@ These mods are built from source or bytecode-patched in-house. They are committe
 The Origins / races / classes implementation. On first join the player answers three prompts in order: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (13 icraft). The jar implements the glass-cannon HP modifiers, the Faefolk armor weakness, Witch of Ink frailty, the Archmage glass frame and all the per-class power JSONs.
 
 **Source:** `iridescent-origins-mod/src/main/resources/data/icraft/origins/*.json`
-**Build:** `iridescent-origins-mod/build_mod.sh` (or jar surgery for content-only edits: extract the content of `iridescent_origins-1.0.0.jar` → edit → re-zip, with no Gradle rebuild).
+**Build:** `bash ./build_mod.sh` in `iridescent-origins-mod/`, run in WSL (about 40 s; it builds the jar and deploys it to the three distros). Or jar surgery for content-only edits (extract the content of `iridescent_origins-1.0.0.jar`, edit it, re-zip it), with no Gradle rebuild.
 
 ### iridescent_biomes-1.0.0.jar
 
 Custom TerraBlender region registration for `iridescent_biomes:cherry_river_valley` and `iridescent_biomes:cherry_mountains`. TerraBlender 3.x on 1.20.1 needs the region registered on the Java side through explicit `Climate.ParameterPoints`, because datapacks alone can't assign parameter points. The biome JSONs, the `is_overworld` and `is_mountain` tags and the lang entries ship inside the jar under `data/iridescent_biomes/...` (the biome namespace MUST match the modId).
 
 **Source:** `iridescent-biomes-mod/src/main/...`
-**Build:** `./gradlew build` from `iridescent-biomes-mod/` (ForgeGradle toolchain).
+**Build:** `bash ./build_mod.sh` in `iridescent-biomes-mod/`, run in WSL like the origins build (ForgeGradle; host Gradle no longer works, and this build has not been run since).
 **Caveat:** if you delete this jar, the biomes stop spawning but stay registered (Nature's Compass shows them with an empty Dimension).
 
 ### iridescent_codex_data.jar
@@ -33,7 +33,7 @@ The Patchouli Codex book, shipped as a javafml content mod with a minimal compil
 - Only `IridescentCodex.class` ends up in the final jar
 - `data/` mirrors to `assets/` automatically because `book.json` has `use_resource_pack: true`
 
-**Build:** `bash build_codex.sh` compiles, packs and deploys to all 3 distros. The jar filename stays `iridescent_codex_data.jar`, so a rebuild changes no file name anywhere; it still needs the custom-jar manifest regenerated, because the jar's checksum changes.
+**Build:** `python .minecraft/dev/codex/codex.py release` builds the jar from the book source (filling its facts from the registries and scripts), checks that every page fits, and writes the three distros, the three manifests and markers and `expected_state.json`; commit what it lists. `build_codex.sh` is needed only when the Java class changes. The pre-push hook and CI fail while the committed jar is stale (`.minecraft/dev/codex/README.md`).
 
 ### iridescent_tetra_expansion-1.0.0.jar (Modular Spells + Reforging bundle)
 
@@ -145,6 +145,50 @@ So with 4 players, 2 active and 2 idle, the tick rate is 50%; with 7 players and
 **Build:** `bash iridescent-difficulty-mod/wsl-build.sh` (ForgeGradle in WSL, no mixin; deploys to all 3 distros)
 **Stacks on top of (not replaced):** per-kill boss scaling, per player (`boss_progressive.js`; vanilla bosses do not scale per kill), `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).
 
+### iridescent_relics-1.0.0.jar
+
+The pack's relics: boss-reward artifacts (the Relic of the Remnant and others), built as an addon of the Relics framework with its leveling, ability and style system.
+
+**Source:** `iridescent-relics-mod/`
+**Build:** `bash iridescent-relics-mod/wsl-build.sh`
+
+### iridescent_grand_compass-1.0.0.jar
+
+One gold Grand Compass that finds boss arenas, structures (through Explorer's Compass) and biomes (through Nature's Compass), opening those mods' own search screens.
+
+**Source:** `iridescent-grand-compass-mod/`
+**Build:** `bash iridescent-grand-compass-mod/wsl-build.sh`
+
+### iridescent_durability_clamp-0.1.0.jar
+
+A mixin mod: an item never breaks from durability damage. `ItemStack.hurtAndBreak` is clamped so the item stops one point short of breaking, the pattern Tetra uses for its own items, applied to every item that takes damage the vanilla way. `kubejs/server_scripts/death_penalty.js` decides what an item at that point can still do.
+
+**Source:** `iridescent-durability-clamp/`
+**Build:** `bash iridescent-durability-clamp/wsl-build.sh`
+
+## Managed forks (upstream source, our changes)
+
+### justlevelingfork-1.2.1-iridescent.1.jar (Iridescent Aptitudes)
+
+A fork of JustLeveling-Fork (Apache 2.0): the aptitude and skill leveling system. The pack's version remaps passives (Magic Resist to DEF, Beneficial Effect to INT), strips the mod's own skill effects (KubeJS handles the gameplay) and sets skill thresholds at levels 5, 10, 15, 20 and 30. The modid stays `justlevelingfork`, so saved aptitude data carries over.
+
+**Source:** `iridescent-aptitudes-mod/`
+**Build:** `bash iridescent-aptitudes-mod/wsl-build.sh`
+
+### linearxp-1.0.0-iridescent.1.jar (Linear Experience)
+
+A fork of Linear Experience, which replaces vanilla's experience curve with configurable calculation modes.
+
+**Source:** `linear-experience-mod/`
+**Build:** `bash linear-experience-mod/wsl-build.sh`
+
+### lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar (Iridescent Lovely Pieces)
+
+A fork of Lovely Sparkle Pieces (its 1.20.1 Forge branch, used with the author's permission for non-commercial modpacks): about 60 Curios accessories and the Gambler set bonus. The modid stays `lovely_sparkle_pieces`. The pack's changes fix a damage attribute that zeroed melee damage without one of its curios, turn off the Blasphemous Contract's automatic grant, make the Adventurer's Belt modifiers temporary, remove the client-FPS-based item, the heart-rate HUD and the damage-number particles, and remove every crafting recipe: the items come only from the pack's loot.
+
+**Source:** `iridescent-lovely-pieces-mod/`
+**Build:** `bash iridescent-lovely-pieces-mod/wsl-build.sh`
+
 ---
 
 ## Bytecode-patched mods (not in-house source)
@@ -152,6 +196,10 @@ So with 4 players, 2 active and 2 idle, the tick rate is 50%; with 7 players and
 ### Patchouli-1.20.1-85-FORGE.jar
 
 Bytecode-patched: `athrow→pop` in `Book.class` disables the `use_resource_pack` enforcement, which crashes when the book.json's resource pack flag conflicts with our pack setup. Without the patch, the codex book throws on registration.
+
+### class-artifacts-forge-2.0.5.jar (Epic RPG: Class Artifacts)
+
+Bytecode-patched: the inventory "Sets" button moves from its hardcoded place on top of the vanilla recipe-book button to just right of it, re-anchored every frame.
 
 ### ars_nouveau-1.20.1-4.12.7-all.jar
 

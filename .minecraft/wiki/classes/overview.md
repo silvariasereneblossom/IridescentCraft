@@ -112,17 +112,17 @@ The 11 custom races are an Origins layer in the `icraft` namespace. Races give s
 
 | Race | Bonuses | Penalties |
 |------|---------|-----------|
-| Human | None | None (baseline) |
+| Human | +10% XP from all sources | None (baseline) |
 | Elf | +15% ranged damage, +5% magic damage | -10% armor toughness, faster hunger drain |
-| Dwarf | Mining hunger halved | - |
+| Dwarf | +15% mining speed, +2 armor toughness, fire damage halved, mining hunger offset by Saturation | -5% movement speed |
 | Orc | +10% attack speed, +20% HP, +10% melee damage, Bloodlust (+20% damage scaling with hunger) | +50% hunger drain |
-| Halfling | +20% food efficiency | - |
+| Halfling | +1 luck, +20% hunger and saturation from food | -5% attack damage |
 | Faefolk | +30% magic damage, +10% mana regen, +10% speed, slow fall | -30% melee damage, -50% armor toughness when wearing any non-light armor (full robes bypass), -15% HP |
-| Revenant | +20% damage + Resistance I in darkness/Abyss, Night Vision 1.1 | Weakness+slowness in sunlight, -20% healing |
-| Demi-God | +40% HP (8 hearts), 2x raw meat healing, strength ability, phase ability, fire damage 1.5x | Mild Nether weakness |
-| Ryu | 25% damage reduction, slow fall, draconic food healing, sparkles, clears debuffs | Meat preference |
-| Fallen Angel | +15% all damage, slow fall, velocity dash, translucent | -20% HP (4 hearts), meat preference |
-| Kirin | +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost | -20% HP (4 hearts) |
+| Revenant | +20% attack damage at light level 9 or lower or in the Abyss, Resistance I at light level 4 or lower or in the Abyss, night vision | Weakness and Slowness in sunlight without a helmet, 20% less from food |
+| Demi-God | +40% HP (4 hearts), 2x nourishment from raw meat, strength ability, phase ability | Fire damage 1.5x, Weakness in the Nether |
+| Ryu | 25% damage reduction, +4 max HP, slow fall, heals while well fed, clears Poison, Slowness and Weakness within seconds, Dragon's Sight (nearby creatures glow) | Meat preference, healing potions half as effective |
+| Fallen Angel | +15% all damage, permanent Strength I, slow fall, a dash (Dark Expulsion), a wither-skull shot, immune to Wither, Poison, Instant Damage and Nausea | -20% HP (2 hearts), non-meat food gives half, slowed with a block right above the head, extra fire damage |
+| Kirin | +0.1 movement speed (twice the base), wall climbing, sprint jump, cat vision, Speed II for 12 s on a 60 s cooldown, a pounce | -10% HP (1 heart), faster hunger |
 
 Notable fixes: the Orc knockback double-apply bug is fixed, Halfling food efficiency now works, and the Revenant healing penalty now works.
 
@@ -141,10 +141,10 @@ Design philosophy: no environmental effect is lethal, food comes as preferences 
 | Blazeborn | Fire immunity, Nether Affinity (+10/20% damage in Nether) | Water damage→discomfort, Nether Spawn→Nether Affinity |
 | Elytrian | Elytra flight, launch ability | Unchanged |
 | Enderian | Teleport, Ender Shift (+15% damage after teleport) | New Ender Shift power added |
-| Feline | Cat-like abilities, night vision | -20% HP added as tradeoff |
+| Feline | Cat-like abilities, night vision | -10% HP (1 heart) |
 | Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
-| Phantom | Phasing, invisibility, half health, Spectral Undeath | Sunlight burn→weakness+slowness. Cheats death: a lethal hit locks it to 0.5 hearts + 5min debuffs instead, and a death while they last is final (`phantom_undeath.js`) |
-| Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
+| Phantom | Phasing, invisibility, 3 fewer hearts, Spectral Undeath | Sunlight burn→weakness+slowness. Cheats death: a lethal hit locks it to 0.5 hearts + 5min debuffs instead, and a death while they last is final (`phantom_undeath.js`) |
+| Shulk | Hoarder (9 extra inventory slots whose items are kept on death), natural armor, breaks natural stone without a pickaxe | Cannot hold a shield; large appetite |
 | Witch of Ink | Pure passive hyperscaler. 50% food reduction, 20% less HP, fire weakness. Boss-kill counter (max 200): Apotheosis bosses +1, dimensional bosses +10. Per counter: +0.1% total damage (applied multiplicatively to final damage via LivingHurtEvent, so it affects melee, ranged and all magic) and -0.1% damage taken. Caps at +20% damage / -20% damage taken at counter=200. Capstone (Blessing of Penthesilea, at 200): +10% additive total damage (final = 1.30× at cap), +15% SP-to-AD conversion (15% of `spell_power - 1.0` adds to outgoing damage), +15% max HP, permanent Haste I + Resistance I + Fire Resistance + Regeneration I (renewed every 2 minutes). All paint actives stripped 2026-03-30. Tracker: `/icraft witch_status`. | Custom origin. Hyperscaling fantasy: weak early, monster late (`witch_of_ink_progression.js`) |
 | Artificial Construct | 25% food efficiency from normal food. Right-clicking an Iron Ingot eats 1 ingot for +1 food and Regen III for 10s; an Iron Block eats 1 block for +9 food, 4.5 saturation and Regen III. A counter of iron consumed unlocks 5 upgrade levels at thresholds 1000 / 2000 / 4000 / 8000 / 16000 iron. Per-level bonuses (cumulative on max_health and attack_damage as MULTIPLY_BASE; on armor and armor_toughness as ADD_VALUE × 4): +5% (L1) → +10% (L2) → +15% (L3) → +25% (L4) → +35% (L5). Capstone (Iron Apotheosis, unlocked at L5): an additional +25% HP MULTIPLY_BASE, +25% melee damage MULTIPLY_BASE and +1.0 armor toughness ADD_VALUE on top of the L5 totals. Tracker: `/icraft construct_status`. | Custom origin. Hyperscaling fantasy: back-loaded power curve (`artificial_construct_progression.js`) |
 | Witherborn | DOT melee fighter. Wither on hit, hunger-based damage penalty. | Custom origin. Decay-themed attacker with sustain tradeoff |

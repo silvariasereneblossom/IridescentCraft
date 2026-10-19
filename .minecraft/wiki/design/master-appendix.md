@@ -365,14 +365,17 @@ Strips 17 IDs: 14 awakening artifact upgrade recipes + 3 intermediate materials 
 
 ### B.9 Counts
 
-- `tier_gated_recipes.js`: 75 `event.remove` / `event.shaped` calls.
-- `recipe_audit.js`: 67 `event.remove` calls.
-- `tier_skip.js`: retired on 2026-06-01 (B.3), so no recipes.
-- `ad_astra_gating.js`: 9 recipes (4 rockets + workbench + 4 Mk2 pieces).
-- `class_artifacts_recipes.js`: 17 removals.
-- `refined_storage_dualpath.js`: ~15 RS dual-path recipes.
+Call sites in the scripts as of 2026-10-18 (comments excluded; a removal inside a loop counts once per id it removes):
 
-Total recipe-state ledger: ~200 calls, validated against the JEI registry by `validate_recipe_removals.js` at server start.
+- `tier_gated_recipes.js`: 93 calls (55 `event.remove`, 35 `event.shaped` / `event.shapeless`, 3 custom recipes).
+- `recipe_audit.js`: 65 calls (64 `event.remove`, 1 `event.shaped`).
+- `tier_skip.js`: retired on 2026-06-01 (B.3), so no recipes.
+- `ad_astra_gating.js`: 18 calls: 9 removals and 9 recipes (4 rockets + workbench + 4 Mk2 pieces).
+- `class_artifacts_recipes.js`: 17 removals.
+- `refined_storage_dualpath.js`: 39 calls (34 dual-path and hybrid recipes, 5 removals).
+- `planetary_extraction.js`: 9 calls (8 crushing and pulverizing recipes, 1 removal).
+
+Total recipe-state ledger: about 240 calls, validated against the JEI registry by `validate_recipe_removals.js` at server start.
 
 ---
 
@@ -1477,21 +1480,21 @@ The tier is detected from the highest-tier dimension the player has visited and 
 
 ### K.3 Race tradeoffs
 
-Chosen permanently at character creation. Races have mild tradeoffs, compared with the strong tradeoffs of classes.
+Chosen permanently at character creation. Races have mild tradeoffs, compared with the strong tradeoffs of classes. The benefits and drawbacks below are the powers in `iridescent_origins-1.0.0.jar` (2026-10-18).
 
 | Race | Benefits | Drawbacks | Natural pairing |
 |------|----------|-----------|-----------------|
-| Human | +10% XP gain, neutral villager prices, no environmental weaknesses | None (the "default" race) | Anything (versatile) |
-| Elf | Night vision, +8% movement, +15% bow accuracy | -10% hunger efficiency, -1 armor toughness | Ranger, Archmage |
-| Dwarf | +15% mining speed, +10% armor toughness, 50% fire resistance | -5% movement, -8% jump height | Vanguard, Artificer |
-| Orc | +10% melee knockback, +5% attack speed, intimidation aura | +15% hunger drain, -10% villager prices | Berserker |
-| Halfling | +20% food efficiency, +10% luck, smaller hitbox (Pehkui) | -10% melee reach, -5% attack damage flat | Wanderer, Ranger |
-| Revenant (Undead) | No hunger, night vision, +10% damage in darkness | Sunlight damage (1 HP/5s without helmet), -20% potion healing, +25% Smite damage taken | Void Summoner |
+| Human | +10% XP from all sources | None (the "default" race) | Anything (versatile) |
+| Elf | Night vision, +8% movement speed, +15% ranged damage, +5% magic damage | -10% armor toughness, extra hunger (a little exhaustion every 10 s) | Ranger, Archmage |
+| Dwarf | +15% mining speed, +2 armor toughness, fire damage halved, a moment of Saturation on each block broken | -5% movement speed | Vanguard, Artificer |
+| Orc | +20% max health, +10% melee damage, +10% attack speed, Bloodlust (up to +20% attack damage as hunger drops) | Extra hunger (exhaustion every 4 s) | Berserker |
+| Halfling | +1 luck, +20% hunger and saturation from food | -5% attack damage | Wanderer, Ranger |
+| Revenant (Undead) | Night vision, +20% attack damage at light level 9 or lower or in the Abyss, Resistance I at light level 4 or lower or in the Abyss | Weakness and Slowness in direct sunlight without a helmet, 20% less from food | Void Summoner |
 | Faefolk | Slow fall (passive), Nature's Blessing (+30% magic damage, +10% mana regen), Fae Swiftness (+10% speed) | Frail Strikes (-30% melee damage), Ethereal Form (-50% armor toughness on Med/Heavy armor; 4/4 light robes bypass it), Fae Fragility (-15% max HP) | Archmage (best fit: pure caster, full robes); offmeta Battlemage (Arcane Cleave converts spell power to AD, partly offsetting the melee malus) |
-| Demi-God | +40% HP (8 hearts), 2× raw meat healing, strength + phase abilities, fire damage 1.5× | Mild Nether weakness | Berserker, Vanguard, Paladin |
-| Ryu | 25% damage reduction, slow fall, draconic food healing, debuff cleanse | Meat preference | Paladin, Vanguard, Wanderer |
-| Fallen Angel | +15% all damage, slow fall, velocity dash | -20% HP (4 hearts), meat preference | Ranger, Archmage, Samurai |
-| Kirin | +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost | -20% HP (4 hearts) | Ranger, Wanderer, Samurai |
+| Demi-God | +40% HP (4 hearts), 2× nourishment from raw meat, strength + phase abilities | Fire damage 1.5×, Weakness in the Nether | Berserker, Vanguard, Paladin |
+| Ryu | 25% less damage taken, +4 max health, slow fall, heals 1 health every 2 s while the food bar is at 18 or more, Poison, Slowness and Weakness cleared within seconds, Dragon's Sight (nearby creatures glow, 15 s cooldown) | Non-meat food gives half, healing potions half as effective | Paladin, Vanguard, Wanderer |
+| Fallen Angel | +15% all damage, permanent Strength I, slow fall, velocity dash | -20% HP (2 hearts), meat preference | Ranger, Archmage, Samurai |
+| Kirin | +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost | -10% HP (1 heart) | Ranger, Wanderer, Samurai |
 
 ### K.4 Origin notes
 

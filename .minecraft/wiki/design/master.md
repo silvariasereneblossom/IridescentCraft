@@ -214,7 +214,7 @@ The token economies depend on a set of recipe overrides that un-gate "T1/T2" sub
 
 One mechanism lets a current-tier player get small amounts of next-tier material, so they can sample next-tier power without skipping the unlock:
 
-- Boss tier-peek drops: current-tier bosses occasionally drop next-tier reagents, at 5 to 15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires.
+- Boss tier-peek drops: current-tier bosses occasionally drop next-tier reagents, at 5 to 15% rates. Twilight bosses can drop osmium or steel; Cataclysm T3 bosses can drop ancient_debris fragments. This rewards combat-focused players for engaging bosses harder than the tier requires. (Not in the game as of 2026-10-18: no boss drops a next-tier reagent, and the loot scripts strip ancient debris and netherite scrap from boss loot.)
 
 It preserves the gate (a player cannot fully outfit themselves in next-tier gear without unlocking it) while rewarding investment. (A second mechanism was designed but never became recipes: *transmutation*, expensive recipes turning current-tier materials into a little next-tier material. Its placeholder items were removed in October 2026.)
 
@@ -427,6 +427,8 @@ The Class layer is the only character layer that modifies HP and damage percenta
 
 > Design rule: Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
 
+> In the game (2026-10-18) eight of the eleven races change health or damage: Orc +20% health and +10% melee damage, Demi-God +8 health, Ryu +4 health and 25% less damage taken, Faefolk -15% health, +30% magic damage and -30% melee damage, Fallen Angel -4 health and +15% damage dealt, Kirin -2 health, Halfling -5% attack damage, Elf +5% magic damage. The rule above and the races disagree; [Appendix §K.3](master-appendix.md#k3-race-tradeoffs) has the full tables.
+
 | Archetype | Classes | HP modifier | Equipment HP | Damage modifier |
 |-----------|---------|------------:|:------------:|:---------------:|
 | Pure Tank | Vanguard | +20% | Normal | -30% melee damage |
@@ -437,8 +439,11 @@ The Class layer is the only character layer that modifies HP and damage percenta
 | Summoner | Void Summoner | -10% | Half | none |
 | Ranged DPS | Ranger | -20% | Half | none |
 | Offensive Caster | Archmage | -20% | Half | -50% melee |
+| School specialist (burst) | Elemental | -20% | Half | none |
+| School specialist (sustain) | Blessed | +10% | Normal | none |
+| School specialist (attrition) | Corrupted | -10% | Normal | none |
 
-Half-equipment-HP (Ranger, Archmage, Void Summoner) means equipment-sourced HP bonuses count at 50% effectiveness: the Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is how the glass-cannon pillar is implemented mechanically: their damage ceiling is high and their HP ceiling is half.
+Half-equipment-HP (Ranger, Archmage, Void Summoner, Elemental) means equipment-sourced HP bonuses count at 50% effectiveness: the Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is how the glass-cannon pillar is implemented mechanically: their damage ceiling is high and their HP ceiling is half.
 
 Vanguard's -30% melee damage penalty is the matching tank tradeoff: maximum survivability, weakest melee damage. Arrows, magic and spells are not reduced. The Vanguard's role is to absorb hits, not deal them.
 
@@ -568,7 +573,7 @@ Each modular book has 4 module slots (front_cover / back_cover / spine / pages f
 
 12 ISS variants + 3 Ars variants = 15 modular spell books in total, each tier-staged and each craftable at the Tetra workbench.
 
-**Unified mana pool (2026-05-15).** From the player's side, ISS and Ars Nouveau share a single mana pool. Ars's `IManaCap` is mixin-routed to the ISS `MagicData` pool: `getCurrentMana` / `getMaxMana` read from ISS, `removeMana` deducts from ISS at half rate (Ars's "reliable spammable" identity: a 50-cost Ars spell deducts 25 ISS mana), and the Ars HUD bar is hidden (the ISS bar is canonical). Magic classes get a larger ISS max_mana from their Origins powers to support sustained casting: from a base of 100, Archmage 250, Battlemage 190, Void Summoner 190. ISS school SP (`fire_spell_power`, `ice_spell_power`, etc.) also boosts Ars elemental glyph damage through two handlers (LivingHurtEvent for direct Ars damage types, SpellDamageEvent.Pre for glyph-school-tagged damage). ISS's built-in Apotheosis gems are buffed and folded into the same gem ladder as native Apotheosis gems. See [Appendix §M](master-appendix.md#m-iss--ars-nouveau-cross-mod-integration).
+**Unified mana pool (2026-05-15).** From the player's side, ISS and Ars Nouveau share a single mana pool. Ars's `IManaCap` is mixin-routed to the ISS `MagicData` pool: `getCurrentMana` / `getMaxMana` read from ISS, `removeMana` deducts from ISS at half rate (Ars's "reliable spammable" identity: a 50-cost Ars spell deducts 25 ISS mana), and the Ars HUD bar is hidden (the ISS bar is canonical). Magic classes get a larger ISS max_mana from their Origins powers to support sustained casting: from a base of 100, Archmage 250, Elemental, Blessed and Corrupted 200, Battlemage 190, Void Summoner 190. ISS school SP (`fire_spell_power`, `ice_spell_power`, etc.) also boosts Ars elemental glyph damage through two handlers (LivingHurtEvent for direct Ars damage types, SpellDamageEvent.Pre for glyph-school-tagged damage). ISS's built-in Apotheosis gems are buffed and folded into the same gem ladder as native Apotheosis gems. See [Appendix §M](master-appendix.md#m-iss--ars-nouveau-cross-mod-integration).
 
 > Future work: the Phase 7 design adds 6 elemental subclasses (Pyromancer / Cryomancer / Necromancer / Priest / Druid / Stormcaller) on top of the Mage classes, added alongside them rather than replacing them. Each gives +50% to one school with a -10% melee malus (vs Archmage's -50%). Implementation is deferred.
 
@@ -754,7 +759,7 @@ The Mythic Forge is the uniques-crafting endgame. Crafted from Iridescent Rift S
 5. Riftwalker Boots: base netherite boots. Teleport + speed.
 6. Oblivion Crown (helmet): base netherite helmet. Wallhack vision + first-strike bonus.
 
-All four Mythic Uniques use Rift Blueprints as a slot ingredient. Blueprints drop from Rift completions, which ties Loops 1 and 2 together.
+All four Mythic Uniques use Rift Blueprints as a slot ingredient. Blueprints drop from Rift completions, which ties Loops 1 and 2 together. (As of 2026-10-18 the Rift is designed, not built: the `kubejs:rift_blueprint` item exists and the Mythic Forge recipes ask for it, but nothing drops it, so no Mythic Unique can be made yet.)
 
 ### Loop 3: Build Diversity
 
