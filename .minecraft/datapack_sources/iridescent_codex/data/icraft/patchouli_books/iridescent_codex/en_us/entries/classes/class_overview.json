@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Three Layers of Identity$()$(br2)$(bold)Race$(): what you are. Innate traits with mild tradeoffs. Permanent.$(br)$(bold)Class$(): what you do. Combat role, HP modifier, weapon affinities and an active ability. You can respec it.$(br)$(bold)Skills$(): how you invest. Bonuses that add up across six trees. A respec costs 5 levels per point."
+      "text": "$(bold)Three Layers of Identity$()$(br2)$(bold)Race$(): what you are. Innate traits with mild tradeoffs. Permanent.$(br)$(bold)Class$(): what you do. Combat role, HP modifier, weapon affinities and an active ability. You can respec it.$(br)$(bold)Skills$(): how you invest. Bonuses that add up across six trees. Spent points cannot be taken back."
     },
     {
       "type": "patchouli:text",

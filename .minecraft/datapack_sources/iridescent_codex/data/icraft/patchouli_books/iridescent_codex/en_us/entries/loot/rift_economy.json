@@ -1,6 +1,6 @@
 {
   "name": "Rift Shard Economy",
-  "icon": "kubejs:rift_shard",
+  "icon": "kubejs:icraft_rift_shard",
   "category": "icraft:loot",
   "sortnum": 3,
   "advancement": "icraft:stage_tier_4",
