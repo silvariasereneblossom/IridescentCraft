@@ -74,7 +74,7 @@ the loot audit prints both. Bump `SCANNER_VERSION` when a unit's content changes
 | File | What it is |
 |---|---|
 | `mod_index.py` | The generator and the gate. Source: `.minecraft/mods/.index` (one metafile per mod) and `mod_index.policy.json`. `generate` writes the server index, the client distribution's index, `client_only_mods.txt` and the skip lists inside the server scripts. `check` is the pre-push block and the GitHub Action. |
-| `mod_index.policy.json` | The facts a metafile cannot carry: the three metafiles that exist only in the client distribution's index, the two CurseForge mods pinned to a CDN url there, and the name patterns of retired mods a server must never keep. |
+| `mod_index.policy.json` | The facts a metafile cannot carry: the metafiles that exist only in the client distribution's index (none since 2026-10-18, when FancyMenu, Konkrete and Melody left), the two CurseForge mods pinned to a CDN url there, and the name patterns of retired mods a server must never keep. |
 | `mod_index_sets.py` | Which jars every consumer of the indexes would install and keep (server launcher, dev client, tester client, the legacy scripts), each modelled from its own code. Run it before and after any change to an index and `diff` the two. |
 | `mod_index_test.py` | Plants each past failure in a temporary copy and requires `check` to refuse it. |
 
