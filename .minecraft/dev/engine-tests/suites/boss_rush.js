@@ -9,7 +9,8 @@
 // Brigadier tree the script registers, built here from a small stand-in of
 // Commands.literal (then / requires / executes) and run through its own `executes`.
 // The rosters are the boss registry's (kubejs/config/icraft/registry/bosses.json,
-// key `rush`): 9 / 18 / 45 bosses, 8 / 17 / 45 needed (11 / 20 / 43 and 9 / 18 / 43
+// key `rush`): 9 / 18 / 44 bosses, 8 / 17 / 44 needed (45 at tier 3 until 2026-10-19, when the
+// Baby Leviathan, a pet, left it; 11 / 20 / 43 and 9 / 18 / 43
 // until 2026-10-16: the Aether's three bosses left the tier-2 roster, Frostmaw moved
 // from tier 1 to tier 2; then 10 / 18 / 43 and 8 / 17 / 43 until the Chthonic Cathedral's
 // Merlin left tier 1 and he and Sorceress Circe joined the tier-3 roster, the same day).
@@ -70,9 +71,9 @@ var br_report = function (p) {
 
 T_run('boss rush: loads', function () {
   ok(T_LOAD_ERRORS.length === 0, 'the libraries and the rush load: ' + T_LOAD_ERRORS.join(' / '))
-  ok(BR[1].length === 9 && BR[2].length === 18 && BR[3].length === 45, 'the rosters from the registry: 9 / 18 / 45 (' + BR[1].length + ' / ' + BR[2].length + ' / ' + BR[3].length + ')')
+  ok(BR[1].length === 9 && BR[2].length === 18 && BR[3].length === 44, 'the rosters from the registry: 9 / 18 / 44 (' + BR[1].length + ' / ' + BR[2].length + ' / ' + BR[3].length + ')')
   var line = T_LOG.info.join('\n')
-  ok(line.indexOf('T1→T2 80% of 9 | T2→T3 90% of 18 | T3→T4 100% of 45') >= 0, 'the load line names the three thresholds')
+  ok(line.indexOf('T1→T2 80% of 9 | T2→T3 90% of 18 | T3→T4 100% of 44') >= 0, 'the load line names the three thresholds')
   var node = br_bossesNode()
   ok(node !== null && typeof node.exec === 'function' && node.req({ hasPermission: function (n) { return n === 0 } }) === true,
     '/icraft codex bosses is registered for every player (permission 0)')
@@ -150,16 +151,16 @@ T_run('boss rush: a stage below from another route is honoured at the next repor
 })
 
 T_run('boss rush: no tier 4 without tier 3', function () {
-  // until 2026-10-15 a tier-2 player who killed all 43 tier-3 bosses got tier_4 (tier_3 marked; 45 since 2026-10-16)
+  // until 2026-10-15 a tier-2 player who killed all 43 tier-3 bosses got tier_4 (tier_3 marked; 45 since 2026-10-16, 44 since 2026-10-19: the Baby Leviathan, a pet, is off)
   var p = T_newPlayer('Summit').t_stage('tier_1').t_stage('tier_2')
-  br_killN(p, 3, 45)
-  ok(!br_has(p, 'tier_4') && !br_has(p, 'tier_3') && br_saved(p, 3).length === 45, 'all 45 tier-3 bosses and no tier_3: no tier_4, the 45 kept')
-  ok(br_told(p, '45/45') && br_told(p, 'unlock tier_3 first'), 'the 45th kill tells the player to unlock tier_3 first')
+  br_killN(p, 3, 44)
+  ok(!br_has(p, 'tier_4') && !br_has(p, 'tier_3') && br_saved(p, 3).length === 44, 'all 44 tier-3 bosses and no tier_3: no tier_4, the 44 kept')
+  ok(br_told(p, '44/44') && br_told(p, 'unlock tier_3 first'), 'the 44th kill tells the player to unlock tier_3 first')
   var q = T_newPlayer('Summit2').t_stage('tier_1').t_stage('tier_2').t_stage('tier_3')
-  br_killN(q, 3, 44)
-  ok(!br_has(q, 'tier_4') && br_told(q, '44/45'), 'with tier_3 held: 44 of 45 is not enough (100 %)')
-  br_kill(q, BR[3][44])
-  ok(br_has(q, 'tier_4') && br_told(q, 'TIER 4 UNLOCKED'), 'the 45th grants tier_4')
+  br_killN(q, 3, 43)
+  ok(!br_has(q, 'tier_4') && br_told(q, '43/44'), 'with tier_3 held: 43 of 44 is not enough (100 %)')
+  br_kill(q, BR[3][43])
+  ok(br_has(q, 'tier_4') && br_told(q, 'TIER 4 UNLOCKED'), 'the 44th grants tier_4')
 })
 
 T_run('boss rush: the report and the handlers ran clean', function () {
