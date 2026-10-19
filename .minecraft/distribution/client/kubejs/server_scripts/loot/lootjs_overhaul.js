@@ -559,9 +559,11 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     .addLootTypeModifier(LootType.CHEST)
     // NOTE: we don't `removeLoot('@artifacts')` here — but NOT for the old
     // "persistent filter" reason (per the mechanic note above, a strip here would
-    // run BEFORE our tiered re-adds and would not eat them). The base Artifacts mod
-    // governs its own injection via a GLM whitelist (replace:true), so that GLM is
-    // the control surface; a blanket LootJS strip here is just unnecessary.
+    // run BEFORE our tiered re-adds and would not eat them). The Artifacts mod's
+    // own chest loot modifiers are meant to fire outside villages (they were on
+    // the allowlist of the old replace:true list; since 2026-05-10 the pack's
+    // global_loot_modifiers.json is replace:false and every mod's modifier fires,
+    // LootJS running after all of them), so a blanket strip here is unnecessary.
     // Village-specific sanitization handles village chests separately.
     .removeLoot('@ars_nouveau')
     .removeLoot(ItemFilter.custom(stripISSExceptScroll))  // was '@irons_spellbooks' — scrolls now exempt (see note above)
@@ -1620,9 +1622,9 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.05)))
     modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.05)))
 
-    // Artifacts injection: now active as of 2026-04-26 (added all chest GLMs
-    // to global_loot_modifiers.json allowlist; was previously suppressed by
-    // replace:true even though comment claimed it was working).
+    // Artifacts injection: active since 2026-04-26 (its chest GLMs were added
+    // to the then replace:true allowlist); since 2026-05-10 the list is
+    // replace:false and every mod's GLM fires.
   })
   })
 
@@ -2594,15 +2596,13 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     ])
   })
 
-  // Flat ~4% curated artifact roll across all village chests.
+  // Curated artifact roll across all village chests: 10 % of chests get at least
+  // one item of this pool (VILLAGE_ARTIFACT_RATE, applied in the
+  // 'village-artifact-pool' section below).
   // Replaces the stacked artifacts:inject/chests/village/* + celestial_artifacts
   // village GLMs that were producing 25-30% artifact rates with multiple items
   // per chest. Excluded: plastic_drinking_hat, novelty_drinking_hat (user dislike),
   // and "the horse one" (pending user identification).
-  //
-  // Per-chest rate math: 25 items × 0.16% each = ~4% any-artifact rate.
-  // Independent rolls mean technically a chest COULD spawn two artifacts, but
-  // the probability is ~0.08% per chest — rare enough to ignore.
   // Village-only artifact pool: combat/utility focused, curated mid-tier set.
   // 2026-04-21: removed `artifacts:cloud_in_a_bottle` — it was also in
   // artifactT1Pool (Overworld broadcast), so it had two independent sources
@@ -2625,8 +2625,9 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     // [2026-06-06] mage slate (operator directive): the pool skewed martial/utility.
     // ISS/Ars namespaces bypass the nonCuratedArtifactFilter strips by design and
     // ship their own lang. All verified ungated at T1 (appendix A.1 blesses ISS+Ars
-    // mage entry). Pool auto-normalizes (0.10/length) so combined village artifact
-    // supply stays ~10% - these redistribute, not inflate (mage ~35% of rolls).
+    // mage entry). The per-item chance follows the pool's length, so combined
+    // village artifact supply stays 10% - these redistribute, not inflate (mage
+    // ~35% of rolls). [2026-10-18: until today it did not; see the pool section.]
     'irons_spellbooks:mana_ring',
     'irons_spellbooks:cooldown_ring',
     'irons_spellbooks:cast_time_ring',
@@ -2637,9 +2638,9 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
     //  still works: its spell-cost discount applies to the shared pool.)
     'ars_nouveau:ring_of_lesser_discount'
   ])
-  icraft.section('loot/lootjs_overhaul/section-6-village-chest-loot-restrictions-2', function () {
-  var villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
-  })
+  // The share of village chests with at least one item of the pool: 10 %, the
+  // overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19).
+  var VILLAGE_ARTIFACT_RATE = 0.10
 
   // Modded village chest patterns — CTOV, VillagesAndPillages, etc. generate
   // their own custom villages whose loot tables aren't in the vanilla list.
@@ -2754,16 +2755,16 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // villageArtifactPool (curated). Strip it from villages unconditionally
   // and let the village's own addWeightedLoot roll be its only source.
   //
-  // IMPORTANT: do NOT add artifactT2Pool/T3/T4 items to this strip set.
-  // villageArtifactPool contains items that are BOTH T2+ broadcast entries
-  // (power_glove, cross_necklace, panic_necklace, etc.) AND village-curated.
-  // A strip including those would also strip the village pool's own rolls,
-  // because removeLoot on a table applies after addWeightedLoot too.
+  // (An older note here said a strip of the curated ids would also eat the
+  // village pool's own rolls, "because removeLoot on a table applies after
+  // addWeightedLoot too". It does not: LootJS runs its strips and adds in
+  // registration order, once (failure-modes: LootJS removeLoot is
+  // registration-order), and this section is registered before the pool
+  // section. Since 2026-10-18 the strip takes every artifact; the boot check
+  // that day measured the pool's own rate after it.)
   icraft.section('loot/lootjs_overhaul/predicate-catch-all-strip-any-artifact-that', function () {
   var t1BroadcastItemSet = {}
   artifactT1Pool.forEach(function(id) { t1BroadcastItemSet[id] = true })
-  var villageArtifactWhitelistSet = {}
-  villageArtifactPool.forEach(function(id) { villageArtifactWhitelistSet[id] = true })
   var nonCuratedArtifactFilter = function(stack) {
     try {
       if (!stack || stack.isEmpty()) return false
@@ -2777,17 +2778,24 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
       // and are always wrong for villages (villages get their own pool).
       // Eliminates the cloud_in_a_bottle double-stack.
       if (t1BroadcastItemSet[id]) return true
-      // Strip 2: any artifact/relic item from a namespace we care about that
-      // isn't one of our curated items. Use an explicit whitelist of what
-      // villages ARE allowed to produce (villageArtifactPool), so uncurated
-      // mod artifacts get stripped while curated T2+ items pass through.
+      // Strip 2: every artifact/relic item, curated or not. The village pool
+      // section below is registered after this strip and adds the curated
+      // items afterwards (LootJS strips are one-shot in registration order), so
+      // the pool is a village chest's only artifact source.
+      // [2026-10-18, the fact-pass fixes, on recommendation, for review] Until
+      // today the curated ids passed this strip, and other mods' loot modifiers
+      // add them too (every mod's modifier fires: global_loot_modifiers.json has
+      // been replace:false since 2026-05-10). Measured on a full-pack boot: the
+      // Relics mod's relic_loot modifier, which also places the Artifacts items
+      // it treats as relics, changed 19 of 40 plains-house rolls; a village-pool
+      // item came in 17.6 % of plains and taiga house chests and 29.8 % of
+      // weaponsmith chests (2,000 rolls a table), 9.8 to 10 % after this strip.
       var isArtifactNs = (
         id.indexOf('artifacts:') === 0 ||
         id.indexOf('relics:') === 0 ||
         id.indexOf('celestial_artifacts:') === 0
       )
-      if (!isArtifactNs) return false
-      return !villageArtifactWhitelistSet[id]
+      return isArtifactNs
     } catch (e) { return false }
   }
   villageChests.forEach(function(table) {
@@ -2810,8 +2818,15 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // matching the intended target. This is the same pattern the enchanted
   // book adds at lines 181-222 use reliably (those consistently fire at
   // 7.5%/10%/12.5%/15% per tester reports).
+  //
+  // [2026-10-18, fact-pass fixes, on recommendation, for review] The chance is
+  // now computed from the pool: 1 - (1 - VILLAGE_ARTIFACT_RATE)^(1/n) per item,
+  // so that 10 % of chests get at least one. The pool grew to 15 items on
+  // 2026-06-06 (the mage slate, "redistribute, not inflate") while the chance
+  // stayed 1 % per item: 1 - 0.99^15 = 14 %. The normalising variable written
+  // then (0.10 / length) sat in a section of its own and was never read.
   icraft.section('loot/lootjs_overhaul/village-artifact-pool', function () {
-  var villageArtifactPerItem = 0.01
+  var villageArtifactPerItem = 1 - Math.pow(1 - VILLAGE_ARTIFACT_RATE, 1 / villageArtifactPool.length)
   villageChests.forEach(function(table) {
     var vMod = event.addLootTableModifier(table)
     villageArtifactPool.forEach(function(id) {
@@ -3323,9 +3338,15 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // =========================================================================
   // SECTION 8.5: EPIC RPG CLASS ARTIFACTS — DROPS-ONLY INJECTION
   // =========================================================================
-  // The mod's native loot injection GLMs (overworld/nether/end/treasure) are
-  // blocked by our "replace": true in global_loot_modifiers.json — we don't
-  // whitelist rpgseteffects:loot_injection/*, so they never fire.
+  // The mod's own chest injection is not a global loot modifier: its
+  // Overworld / Nether / End LootInjection classes add a pool (25 / 30 / 40 %)
+  // to 22 vanilla chest tables at LootTableLoadEvent, which Forge fires only for
+  // tables no datapack overrides. This comment used to say a replace:true
+  // global_loot_modifiers.json blocked it; that file has been replace:false
+  // since 2026-05-10 and never governed this injection (2026-05-10 audit). The
+  // boot check of 2026-10-18 measured it in every injected table the pack does
+  // not override: mostly Fragment Cores, some relics, in 5 to 15 of 40 chests
+  // (bastions and End cities the most); the strip just below removes it.
   //
   // Re-add drops via LootJS with controlled rates + tier gating:
   //   - Fragment Core: 4% from any hostile mob death (basic resource)
@@ -3343,6 +3364,23 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // NOT by MobCategory/Monster, so it injected fragment_core into EVERY
   // entities/* table including pigs/cows/sheep (4% passive-mob leak). The
   // monster-gated reimplementation lives in fragment_core_drops.js.
+
+  // [2026-10-18, the fact-pass fixes, on recommendation, for review] The native
+  // injection's tables, from the class-artifacts jar (Overworld / Nether / End
+  // LootInjection). A one-shot strip registered BEFORE the re-adds below, so it
+  // removes only what the table itself rolled (the injected pool).
+  // The last id is CTOV's alias of the outpost table: LootJS sees only the
+  // alias id of a chest that rolls it (dev/loot_audit/alias_tables.json).
+  icraft.section('loot/lootjs_overhaul/class-artifacts-native-injection-strip', function () {
+  var classArtifactInjectedTables = ['abandoned_mineshaft', 'desert_pyramid', 'igloo_chest', 'jungle_temple',
+    'pillager_outpost', 'ruined_portal', 'shipwreck_map', 'shipwreck_supply', 'shipwreck_treasure', 'simple_dungeon',
+    'stronghold_corridor', 'stronghold_crossing', 'stronghold_library', 'underwater_ruin_big', 'underwater_ruin_small',
+    'woodland_mansion', 'bastion_bridge', 'bastion_hoglin_stable', 'bastion_other', 'bastion_treasure', 'nether_bridge',
+    'end_city_treasure'].map(function (t) { return 'minecraft:chests/' + t }).concat(['ctov:pillager_outpost/halloween/tower'])
+  classArtifactInjectedTables.forEach(function (id) {
+    event.addLootTableModifier(id).removeLoot('@rpgseteffects')
+  })
+  })
 
   // T1 Overworld chest relics (utility-focused — movement, minor passives)
   icraft.section('loot/lootjs_overhaul/moved-to-server-scripts-loot-fragment-core', function () {
@@ -3438,14 +3476,29 @@ LootJS.modifiers(icraft.guard('loot/lootjs_overhaul', 'LootJS.modifiers', event 
   // PLUS direct awakening rolls — 0.7% per awakening per boss, 14 awakenings
   // = ~9.3% combined any-awakening chance per T4 boss kill. Half of what a
   // pouch-embedded-awakening model would have given, per user tuning.
+  //
+  // [2026-10-18, the fact-pass fixes, on recommendation, for review] The
+  // Awakening artifacts are staged at tier_4 (gates/astages_restrictions.js), and
+  // an AStages item restriction also refuses the pickup: an Awakening dropped by
+  // a tier-3 boss lay on the ground for a tier-3 player. The Harbinger and the
+  // Shattered (tier 3 in the boss registry since 2026-10-12/13; this list dates
+  // from 2026-04-11, when they counted as tier 4) keep their two pouches and lose
+  // the Awakening rolls.
   var t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
-    'cataclysm:entities/the_harbinger',   // [2026-10-10] was cataclysm:entities/harbinger — no such table; the entity is cataclysm:the_harbinger
-    'deeperdarker:entities/shattered',
     'aether:entities/slider'              // [2026-10-16] from the T2 list: the Slider is tier 4
     // ('alexscaves:entities/watcher' removed 2026-10-10 — Alex's Caves is not installed)
   ]
+  var t3TwoPouchBossTables = [
+    'cataclysm:entities/the_harbinger',   // [2026-10-10] was cataclysm:entities/harbinger — no such table; the entity is cataclysm:the_harbinger
+    'deeperdarker:entities/shattered'
+  ]
+  t3TwoPouchBossTables.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch').limitCount([2, 2]))
+  })
   var awakeningPool = [
     'rpgseteffects:altharion_awakening_artifact',
     'rpgseteffects:blade_dancer_awakening_artifact',

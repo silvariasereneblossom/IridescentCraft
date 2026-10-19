@@ -6,7 +6,15 @@
 // File: kubejs/server_scripts/scaling/mob_scaling_unified.js
 //
 // Applies static per-mob-type tier HP:
-//   basic 3x, mid 1.5x, champion 1.25x, boss 1x
+//   basic 3x, mid 1.5x, boss 1x
+//
+// THE ELITE (CHAMPION) TIER IS GONE (2026-10-18, fact-pass fixes, on
+//   recommendation, for review). A mob carrying the Champions mod's `champion`
+//   NBT key got 1.25x here instead of 3x (Champions added its own health). The
+//   mod left the pack on 2026-04-07; a scan of every jar of the pack found no
+//   other class that writes that key (Brutal Bosses' ChampionsCompat runs only
+//   with Champions present), so no mob had matched since. The test also read
+//   the mob's full NBT on every hostile spawn. Removed.
 //
 // Dimension scaling MOVED to iridescent_difficulty mod (Java). The mod
 // provides time-based per-dimension scaling that COMPOSES with this
@@ -136,7 +144,7 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
     // and config/iridescent_difficulty-common.toml for the new defaults.
     //
     // What remains in this script:
-    //  - Mob Tier HP (basic/mid/champion/boss) — static per-mob-type rule
+    //  - Mob Tier HP (basic/mid/boss) — static per-mob-type rule
     //    that's intended to compose with the new dimension scaling, not
     //    duplicate it.
 
@@ -160,25 +168,11 @@ EntityEvents.spawned(icraft.guard('scaling/mob_scaling_unified', 'EntityEvents.s
 
 // ── Mob Tier Classification ──
 function getMobTierMultiplier(entity, type) {
-  if (isChampion(entity)) return 1.25
   if (BASIC_MOBS.has(type)) return 3.0
   if (MID_TIER_MOBS.has(type)) return 1.5
   if (entity.monster) return 3.0
   if (isHostileMod(type)) return 1.5
   return 1.0
-}
-
-// ── Champion Detection ──
-function isChampion(entity) {
-  try {
-    let nbt = entity.fullNBT
-    if (nbt && nbt.contains && nbt.contains('champion')) return true
-    if (nbt && nbt.contains('ForgeData')) {
-      let forgeData = nbt.getCompound('ForgeData')
-      if (forgeData.contains('champion')) return true
-    }
-  } catch (e) {}
-  return false
 }
 
 // ── Modded hostiles that don't extend Monster ──

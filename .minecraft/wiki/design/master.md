@@ -675,7 +675,7 @@ Iron Jetpacks are ungated from T1; early flight is intentional. Mahou Tsukai def
 
 > Armor philosophy: layer types should not stack power. A T3 player picks *one* of Refined Obsidian (Mekanism), Terrasteel (Botania), Diamond (vanilla), or boss-drop (Cataclysm Witherite / Cursium / Ignitium). The combinatorial space is wide enough that the choice itself is the build identity.
 
-### Curio system: equipping is never gated
+### Curio system: equipping is gated for one set only
 
 Curios drop from tier-appropriate chest loot tables, spread across 4 chest pools by dimension band:
 
@@ -686,7 +686,7 @@ Curios drop from tier-appropriate chest loot tables, spread across 4 chest pools
 | T3 | Nether, Undergarden, Deeper Darker (Otherside), the Abyss | ~14% |
 | T4 | End, Aether (Deep Aether's biomes included) | ~16% |
 
-> Design intent: players can always equip anything they find; there is no AStages restriction on curios. If a T1 player gets an Awakening artifact through a creative gift or a boss tier-peek, they can equip it. Early curio access is rare enough not to break the gating, and it rewards engagement.
+> Design intent: players can equip almost anything they find; early curio access is rare enough not to break the gating, and it rewards engagement. The one exception is the Class Artifacts set: its 14 class artifacts and the Artifact Piece Pouch are staged at T2 and their 14 Awakening variants at T4 (a decision of April 2026, against early lottery wins). A player without the stage cannot pick one up, carry it or equip it, so they drop only from bosses of their tier: pouches from T2 and T3 bosses, Awakening artifacts from T4 bosses.
 
 The curio mod stack: Artifacts, More Artifacts, Relics, Celestial Artifacts, Elytra Slot. Each contributes a tier of items to the chest pools.
 

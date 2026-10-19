@@ -722,7 +722,7 @@ Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 | End: Dragon's Domain | 4 | 10.0 | 12.0 | 1.20 | 5.0 | 80% netherite + enchanted | Dragon influence |
 | Ad Astra (any planet) | 4 | 5.0-7.0 | 5.0-7.0 | 1.15-1.18 | 3.0-4.0 | 60-75% | Per-planet atmospheric |
 
-Implementation: the dimension multipliers come from the `iridescent_difficulty` mod (time-based, see the engine note above); the static mob-tier HP block (basic 3× / mid 1.5× / elite 1.25×) stays in `kubejs/server_scripts/scaling/mob_scaling_unified.js` and stacks on top.
+Implementation: the dimension multipliers come from the `iridescent_difficulty` mod (time-based, see the engine note above); the static mob-tier HP block (basic 3× / mid 1.5×) stays in `kubejs/server_scripts/scaling/mob_scaling_unified.js` and stacks on top. Its third tier, elite 1.25× for a mob carrying the Champions mod's `champion` tag, never matched after Champions left the pack and was removed on 2026-10-18.
 
 Since Champions Unofficial was removed on 2026-04-07, Majrusz's Progressive Difficulty (Master-stage scaling) handles per-dimension elite-mob density. (Majrusz's own per-mob *stat* scaling is disabled in its config, because `iridescent_difficulty` owns dimension stats.) Per-mob affix layering still comes from Apotheosis adventure affixes (D.1).
 
@@ -901,7 +901,7 @@ Champion mobs used to spawn one tier above the base for their dimension, with a 
 These targets drive the live difficulty stack. It still has 7 layers, but not the original 7 (the Champions Unofficial layer was removed on 2026-04-07, and ScalingMobs / Improved Mobs were retired on 2026-05-03 in favor of the bespoke `iridescent_difficulty` mod):
 
 1. `iridescent_difficulty`: time-based per-dimension HP / damage / armor multipliers (D.4), ramping to a per-tier cap; the End uncaps after the Ender Dragon. Replaces ScalingMobs, the Improved-Mobs accumulator and Azukaar's.
-2. `mob_scaling_unified.js` tier-HP block: static per-category HP (basic 3× / mid 1.5× / elite 1.25×), applied on top of the dimension multiplier.
+2. `mob_scaling_unified.js` tier-HP block: static per-category HP (basic 3× / mid 1.5×), applied on top of the dimension multiplier.
 3. Majrusz's Progressive Difficulty: per-dimension elite-mob density through Master-stage scaling (replaces the former Champions Unofficial layer; Majrusz's own stat scaling is disabled in its config).
 4. Per-kill boss scaling, per player (`boss_progressive.js`): each boss is stronger for players who have beaten it before (D.6). Progressive Bosses runs the Wither and does not scale per kill.
 5. KubeJS mob event handlers: dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire); environmental hazards in `scaling/dimension_mechanics.js`.
@@ -1326,7 +1326,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 
 | Script | Role |
 |--------|------|
-| `mob_scaling_unified.js` | Static mob-tier HP block (basic 3× / mid 1.5× / elite 1.25×) that stacks on top of the `iridescent_difficulty` mod's dimension multipliers. (The former Champions-dependent dimension-scaling block was retired on 2026-05-03, when `iridescent_difficulty` took over dimension stats.) |
+| `mob_scaling_unified.js` | Static mob-tier HP block (basic 3× / mid 1.5×) that stacks on top of the `iridescent_difficulty` mod's dimension multipliers. (The former Champions-dependent dimension-scaling block was retired on 2026-05-03, when `iridescent_difficulty` took over dimension stats.) |
 | `boss_hp.js` | Per-boss HP base values (table in Section D.6) |
 | `boss_progressive.js` | Per-kill boss scaling, per player (D.6) |
 | `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside darkness-empowerment/hexing, theabyss oppressive-darkness/corruption/fear-aura/void-whispers, End multi-zone, Ad Astra atmospheric) |

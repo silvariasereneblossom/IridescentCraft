@@ -2124,10 +2124,6 @@
      "of": "loot/lootjs_overhaul@LootJS.modifiers"
     },
     {
-     "name": "loot/lootjs_overhaul/section-6-village-chest-loot-restrictions-2",
-     "of": "loot/lootjs_overhaul@LootJS.modifiers"
-    },
-    {
      "name": "loot/lootjs_overhaul/village-chest-sanitization",
      "of": "loot/lootjs_overhaul@LootJS.modifiers"
     },
@@ -2173,6 +2169,10 @@
     },
     {
      "name": "loot/lootjs_overhaul/section-8b-boosted-magic-materials-in",
+     "of": "loot/lootjs_overhaul@LootJS.modifiers"
+    },
+    {
+     "name": "loot/lootjs_overhaul/class-artifacts-native-injection-strip",
      "of": "loot/lootjs_overhaul@LootJS.modifiers"
     },
     {

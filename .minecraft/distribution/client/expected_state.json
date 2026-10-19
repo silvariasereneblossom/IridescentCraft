@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "0b071ed9",
+    "generated_from":  "3e4dffa5",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "25f377e9fe4cb5d4f49934cb397612798e91abf317742dc5fdccfcb0ecf753df",
-                                                                  "size":  49206
+                                                                  "sha256":  "d7b1fab8bd2675d0dd93f75d83a3399f75b3a8f2ac08292626c2caa6355066ea",
+                                                                  "size":  49201
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "d571a9fcd7b4dcd3f12036163cfd352c7292efa2ef738786743f623e91999c62",
@@ -7492,8 +7492,8 @@
                                                                       "size":  44082
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "1bc0b0073d79877d02193e216797a88219d7edf14c9fa960dfa0a1e0f6c6d430",
-                                                                        "size":  193233
+                                                                        "sha256":  "a3c3ea219029297c4278ec22beb23eca4559bf43b68ef739f1e0af9669076657",
+                                                                        "size":  196868
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "b0d9c7335dc62413aa628a142f163dd199c849eaf6588e6d005b1b7550d4fc11",
@@ -7752,8 +7752,8 @@
                                                                          "size":  9972
                                                                      },
                   "kubejs/server_scripts/scaling/mob_scaling_unified.js":  {
-                                                                               "sha256":  "fda41104c7d351567fbfed868cb3b6719e394eab49ffdb9be40a68c240e76de1",
-                                                                               "size":  12796
+                                                                               "sha256":  "0acd9561fce34d55098e565824a5bd526e7b5b17fdd06d7b7bcdea967b3a8a09",
+                                                                               "size":  12898
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
                                                                                 "sha256":  "a447d9cc1e29a1140146590bcdac1c31b9bfea159f4cc3ab674543806fa176ad",

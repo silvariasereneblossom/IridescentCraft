@@ -142,16 +142,12 @@ Majrusz's Progressive Difficulty has a treasure bag system. The bags for all 7 b
 
 The pack controls all chest loot through several layers in `lootjs_overhaul.js`:
 
-### Layer 1: GLM Whitelist (global_loot_modifiers.json)
-With `"replace": true`, only whitelisted GLM entries fire, and every unlisted mod GLM (`rpgseteffects:loot_injection/*` included) is inert. The whitelisted mods:
-- `artifacts:` has 18 chest injections, 5 archaeology, 2 entity drops and 1 utility (pickaxe heater smelting)
-- `celestial_artifacts:` has 8 chest injections, 11 entity drops and 5 fishing boxes
-- `relics:` has a single `relic_loot` GLM
-- `irons_spellbooks:` has 5 entity drops and 8 chest loot modifiers
-- `alexsmobs:` has 4 entries (ancient_dart, banana_drop, blossom_drop, pigshoes)
-- `tetra:` has 1 entry (bartering_additions)
+### Layer 1: Mod loot modifiers (global_loot_modifiers.json)
+The pack's `global_loot_modifiers.json` is `"replace": false` with no entries, so every mod's own global loot modifier fires (Forge merges that list across every pack, and it has been this way since May 2026; until then a `"replace": true` allowlist switched off every modifier it did not name, Farmer's Delight's, Thermal's and the Aether's among them). Suppression is targeted instead:
+- shadow files in the `icraft_loot_overrides` datapack switch off Celestial Artifacts' nine chest modifiers and Iron's Spellbooks' eight chest modifiers;
+- LootJS, which runs after every mod's modifier, strips what a curated pool replaces: every artifact in village chests (the Relics mod's modifier, for one, adds the Artifacts items it treats as relics), and the Class Artifacts mod's own chest injection. That injection is not a loot modifier: the mod adds a pool to 22 vanilla chest tables as they load, and the pack's own relic pools (26 relics by tier) replace it.
 
-The global LootJS strip for `@artifacts`, `@celestial_artifacts` and `@relics` was removed because of the persistent filter issue: `removeLoot(@namespace)` also catches items that earlier modifiers re-added in the same LootJS evaluation pass, so it stripped the tiered re-injections right after they were added. These mods now rely on the GLM whitelist to control their injection rates.
+LootJS runs its strips and adds once per roll, in the order they are registered: a strip removes what was rolled before it, never what a later rule adds. So a namespace strip placed before the tiered re-injections does not eat them.
 
 ### Layer 2: Bytecode Patches
 - Ars Nouveau: bytecode-patched to disable `dungeon_loot` GLM injection at the class level. A `dungeon_loot.json` override with 0% chances, deployed through Paxi and KubeJS, backs this up.
@@ -167,7 +163,7 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 
 | Tier | Dimensions | Combined Artifact Rate | Items |
 |------|-----------|----------------------|-------|
-| Village | Village chests | ~14% | Curated village artifact pool |
+| Village | Village chests | 10% | Curated village artifact pool |
 | T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
 | T2 | Twilight Forest, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
 | T3 | Nether, Undergarden, Deeper Darker (Otherside), The Abyss | 14% | Powerful offense artifacts + celestial items |
@@ -193,7 +189,7 @@ These mods ship as custom bytecode-patched JARs (on the custom JAR allowlist in 
 ### Other Loot Controls
 - Enchanted books: removed globally, re-added with `.enchantWithLevels()` at dimension-scaled rates
 - Diamond/netherite gear: stripped from T1/T2 chests
-- Village chests: cleaned up, with a curated 15-item artifact pool, each item at 1% per chest (about 14% for at least one)
+- Village chests: cleaned up, with a curated 15-item artifact pool: 10% of chests get at least one (each item about 0.7%). Every other artifact is stripped from them first, whichever mod added it.
 - Clutter items (horse armor, spider eyes, rotten flesh, etc.): removed from structure chests
 - Food mods: stripped from chest loot so they cannot bypass the food/hunger system *(village chests are exempt: they get a thematic food and seed boost on top; see below)*
 
