@@ -70,9 +70,9 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | `aptitudes` | `server:0_lib_aptitudes.js` | 890 | `icraft.aptitude` | 3 | 0 |
 | `core` | `server:0_lib_core.js` | 880 | `icraft.core` | 64 | 25 |
 | `entity-mod` | `server:loot/0_entity_id_validator.js` | 0 | `global.icraftEntityIdOk`, `global.icraftEntityMod` | 20 | 0 |
-| `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 5 | 0 |
+| `iss-guard` | `server:0_iss_guard.js` | 900 | `global.ICRAFT_ISS_NS`, `global.icraftIsIssMob`, `global.icraftIssResId`, `global.icraftSkipIssMob` | 4 | 0 |
 | `origins` | `server:0_lib_origins.js` | 870 | `icraft.origin` | 15 | 0 |
-| `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 28 | 5 |
+| `registry` | `server:0_lib_registry.js` | 860 | `icraft.bosses`, `icraft.dims`, `icraft.registry` | 27 | 5 |
 | `ticks` | `server:0_tick_master.js` | 840 | `global.playerTickFunctions`, `global.registerPlayerTick`, `global.registerServerTick`, `global.serverTickFunctions` | 42 | 42 |
 
 ## startup scripts: load order
@@ -856,7 +856,7 @@ own one-shot `global._*` flags.
 | `global.ICRAFT_UNIQUE_ITEMS` | `server:loot/unique_itemset_registry.js` | `server:loot/boss_unique_drops.js`, `server:loot/unique_tier_buff.js` |
 | `icraft.aptitude` | `server:0_lib_aptitudes.js` | `server:endgame/ascension.js`, `server:skills/justleveling_skills.js`, `server:skills/mastery_tax.js` |
 | `icraft.attr` | `server:attributes/attribute_sync.js` | `server:attributes/attribute_commands.js` |
-| `icraft.bosses` | `server:0_lib_registry.js` | 20 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
+| `icraft.bosses` | `server:0_lib_registry.js` | 19 scripts (4 while loading): `server:0_lib_core.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:bonfire/boss_arena_registry.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/codex_boss_rush.js`, ... |
 | `icraft.core` | `server:0_lib_core.js` | 64 scripts (25 while loading): `server:abyss/abyss_armor_effects.js`, `server:abyss/abyss_ring_effects.js`, `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:affixes/affix_effects.js`, `server:apotheosis_gem_repair.js`, ... |
 | `icraft.dims` | `server:0_lib_registry.js` | 10 scripts (2 while loading): `server:death_penalty.js`, `server:exploration/codex_exploration_kills.js`, `server:gates/astages_restrictions.js`, `server:loot/codex_exploration_drops.js`, `server:loot/loot_overhaul.js`, `server:loot/lootjs_overhaul.js`, ... |
 | `icraft.heracles` | `server:quests/heracles_reconcile.js` | `server:quests/onboarding_bridge.js` |
@@ -868,7 +868,7 @@ own one-shot `global._*` flags.
 | `global.icraftEntityIdOk` | `server:loot/0_entity_id_validator.js` | _nobody_ |
 | `global.icraftEntityMod` | `server:loot/0_entity_id_validator.js` | 20 scripts (0 while loading): `server:endgame/rift_mechanics.js`, `server:loot/abyss_boss_loot.js`, `server:loot/alexsmobs_drops.js`, `server:loot/blue_skies_drops.js`, `server:loot/boss_refight_repair_floors.js`, `server:loot/boss_unique_drops.js`, ... |
 | `global.icraftIsIssMob` | `server:0_iss_guard.js` | `server:loot/unique_tier_buff.js` |
-| `global.icraftIssResId` | `server:0_iss_guard.js` | `server:scaling/zz_ascension_scaling.js` |
+| `global.icraftIssResId` | `server:0_iss_guard.js` | _nobody_ |
 | `global.icraftLiveLines` | `client:zzz_icraft_live.js`, `server:zzz_icraft_live.js`, `startup:zzz_icraft_live.js` | _nobody_ |
 | `global.icraftRecipeRemovalsValidated` | `server:validate_recipe_removals.js` (in a handler) | _nobody_ |
 | `global.icraftRelicEssenceValue` | `server:economy/relic_sink.js` | `server:economy/relic_broker.js` |
@@ -2036,10 +2036,9 @@ own one-shot `global._*` flags.
 
 ### `scaling/zz_ascension_scaling.js`
 
-- place 149 of 163; header: @after @events @file @registry
+- place 149 of 163; header: @after @events @file
 - events: `EntityEvents.spawned`
-- registries: bosses
-- reads: `global.ICRAFT_ASCENSION` of `endgame/ascension.js`, `icraft.bosses` of `0_lib_registry.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load), `global.icraftIssResId` of `0_iss_guard.js`
+- reads: `global.ICRAFT_ASCENSION` of `endgame/ascension.js`, `icraft.core` of `0_lib_core.js`, `icraft.guard` of `00_icraft_guard.js` (load)
 - must load after: `scaling/boss_hp.js` (declared: boss_hp works out its ratio from the maximum health at spawn: the ascension multiplier must not be on the mob yet)
 
 ### `scaling/zz_boss_global_3x.js`

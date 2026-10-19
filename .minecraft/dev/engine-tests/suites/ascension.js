@@ -130,7 +130,7 @@ T_run('mob scaling at level 3', function () {
   near(mod(boss, 'minecraft:generic.max_health', 'icraft_asc_hp'), 0.75, 'a non-Monster cataclysm mob is scaled by namespace')
   var necro = T_mob('irons_spellbooks:necromancer', 'minecraft:overworld', 0, 64, 0, 40)
   spawn(necro)
-  ok(mod(necro, 'minecraft:generic.max_health', 'icraft_asc_hp') === null, 'the crash-prone ISS casters are skipped')
+  near(mod(necro, 'minecraft:generic.max_health', 'icraft_asc_hp'), 0.75, 'an ISS caster scales like any hostile (decision 160, measured safe on a full-pack boot)')
   spawn(steve)
   ok(mod(steve, 'minecraft:generic.max_health', 'icraft_asc_hp') === null, 'players are not mob-scaled')
 })

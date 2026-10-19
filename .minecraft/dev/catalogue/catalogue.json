@@ -8946,9 +8946,6 @@
       }
      ],
      "sections": 0,
-     "registries": [
-      "bosses"
-     ],
      "ownSlots": 0,
      "names": 1,
      "reads": [
@@ -8956,12 +8953,6 @@
        "name": "ICRAFT_ASCENSION",
        "kind": "global",
        "from": "endgame/ascension.js",
-       "when": "handler"
-      },
-      {
-       "name": "icraft.bosses",
-       "kind": "global",
-       "from": "0_lib_registry.js",
        "when": "handler"
       },
       {
@@ -8975,12 +8966,6 @@
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "load"
-      },
-      {
-       "name": "icraftIssResId",
-       "kind": "global",
-       "from": "0_iss_guard.js",
-       "when": "handler"
       }
      ],
      "after": [
@@ -9006,8 +8991,7 @@
      "header": [
       "after",
       "events",
-      "file",
-      "registry"
+      "file"
      ]
     },
     {
@@ -12488,10 +12472,6 @@
      "when": "handler"
     },
     {
-     "script": "server:scaling/zz_ascension_scaling.js",
-     "when": "handler"
-    },
-    {
      "script": "server:scaling/zz_boss_global_3x.js",
      "when": "handler"
     },
@@ -13059,12 +13039,6 @@
      "script": "server:0_iss_guard.js",
      "when": "load"
     }
-   ],
-   "readBy": [
-    {
-     "script": "server:scaling/zz_ascension_scaling.js",
-     "when": "handler"
-    }
    ]
   },
   "icraftLiveLines": {
@@ -13366,8 +13340,7 @@
     "server:affix_overworld_strip.js",
     "server:affix_skyshatter_mob_strip.js",
     "server:loot/unique_tier_buff.js",
-    "server:scaling/mob_equipment.js",
-    "server:scaling/zz_ascension_scaling.js"
+    "server:scaling/mob_equipment.js"
    ],
    "usersAtLoad": 0
   },
@@ -13515,7 +13488,6 @@
     "server:scaling/dimension_mechanics.js",
     "server:scaling/mob_equipment.js",
     "server:scaling/mob_scaling_unified.js",
-    "server:scaling/zz_ascension_scaling.js",
     "server:scaling/zz_boss_global_3x.js",
     "server:spawn_village_protection.js",
     "startup:enchants/icraft_magic_enchants.js",

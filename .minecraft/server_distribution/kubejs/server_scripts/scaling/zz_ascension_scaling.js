@@ -1,6 +1,5 @@
 // @file kubejs/server_scripts/scaling/zz_ascension_scaling.js
 // @events EntityEvents.spawned
-// @registry bosses
 // @after scaling/boss_hp.js  boss_hp works out its ratio from the maximum health at spawn: the ascension multiplier must not be on the mob yet
 // =============================================================================
 // IridescentCraft — Ascension Mob Scaling (relocated on-spawn handler)
@@ -41,27 +40,20 @@
 //   dev/lessons-learned.md (2026-06-27, which flagged THIS handler as the next
 //   instance of the class to fix).
 //
-// ISS CRASH GUARD (bundled — pre-existing latent crash closed during the move)
-//   The original handler's hostile set includes the irons_spellbooks: namespace,
-//   so at ascension > 0 it would call modifyAttribute on the ISS
-//   AbstractSpellCastingMob casters (necromancer / archevoker / cryomancer /
-//   pyromancer / priest) — whose abstract slot methods throw AbstractMethodError
-//   (UNCATCHABLE by Rhino try/catch) → SERVER CRASH. We skip exactly those 5
-//   before any attribute access (same precise exclude as zz_boss_global_3x.js
-//   BOSS_3X_EXCLUDES / mob_scaling_unified.js BROKEN_ENTITIES; since 2026-10-13
-//   the flag `caster` of the boss registry, one list for all five scripts). The safe ISS
-//   bosses (dead_king / fire_boss / citadel_keeper) still scale — modifyAttribute
-//   on them is proven safe (zz_boss_global_3x scales them in production). resId
-//   is resolved via the shared 0_iss_guard helper (handles entity.type's
-//   translation-key-form trap).
-//   MEASURED 2026-10-18 (full-pack rig boot, decision list entry 9): the premise is
-//   wrong for attribute calls. On all five casters getAttribute, addPermanentModifier,
-//   KubeJS modifyAttribute and getAttributeValue work; what throws the uncatchable
-//   AbstractMethodError is an item-slot read (ArchevokerEntity.getItemBySlot), and
-//   this handler makes none. The skip is KEPT: Ascension has never run (level 0),
-//   so dropping it would extend a feature that has never run; it is on the
-//   decision list (recommendation: drop it, so the casters scale like every other
-//   hostile once Ascension runs, as zz_boss_global_3x already does).
+// THE FIVE ISS CASTERS (necromancer / archevoker / cryomancer / pyromancer / priest)
+//   Until 2026-10-19 this handler skipped them (the registry flag `caster`): the belief
+//   was that any attribute call on these AbstractSpellCastingMob classes throws an
+//   AbstractMethodError no script catch sees. Measured on full-pack rig boots, it
+//   does not (decision list entry 9, 2026-10-18): attribute calls work on all five;
+//   what throws is an item-slot read (ArchevokerEntity.getItemBySlot), and this
+//   handler makes none. DECISION 160 (2026-10-19, the operator: "Drop the skip
+//   (Recommended)"): the skip is gone, after a probe ran this WHOLE handler on all
+//   five at ascension 3 (core.spawnBuff's persistent flag, the two saved modifiers,
+//   health(), done(), entity.monster, core.entityId), saved and reloaded each through
+//   NBT and through a chunk unload and load: every caster scaled (hp x1.75, damage
+//   x1.6, healed to full, flag 2), kept the buff once through both reloads, and the
+//   server ran on with no error. The registry flag `caster` and the other four spawn
+//   scripts' guards stay: they read equipment.
 //
 // SAVED WITH THE MOB (2026-10-12)
 //   Both modifiers go on through core.spawnBuff (0_lib_core.js, "spawn buffs")
@@ -70,28 +62,17 @@
 //   save/load while the 'icraft_asc_scaled' flag stayed (it never bit: the
 //   ascension level has never been above 0). Flag 1 = scaled by the old code,
 //   scaled again on load at the level of that moment, share of health kept;
-//   flag 2 = saved with the mob, nothing to do. The five casters above are
-//   still skipped before anything here touches them.
+//   flag 2 = saved with the mob, nothing to do.
 // =============================================================================
 
-// The five Iron's Spellbooks casters these spawn scripts must not touch are the
-// entries of the boss registry (kubejs/config/icraft/registry/bosses.json) with
-// the flag `caster`: icraft.bosses.has(id, 'caster'). Until 2026-10-13 the five
-// ids stood here, and in four other scripts, each "kept in sync" by hand.
-// The reason is unchanged: on these classes an item-slot or NBT access throws a
-// java.lang.Error (AbstractMethodError), which no script catch sees, so the
-// test has to come BEFORE any such access.
+// (The four other spawn scripts still skip the registry flag `caster` before any
+// item-slot access: on these classes that is the java.lang.Error no script catch
+// sees. This handler reads no equipment; see the header.)
 
 EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living) return
   if (entity.player) return
-
-  // Skip the crash-prone ISS casters BEFORE any attribute access (see header).
-  // resId via the shared 0_iss_guard resolver (safe static registry lookup even
-  // on the broken entities); fail-open to '' if the helper is somehow absent.
-  let resId = global.icraftIssResId ? global.icraftIssResId(entity) : ''
-  if (icraft.bosses.has(resId, 'caster')) return
 
   // Scale all hostile mobs AND bosses (ascension affects everything).
   // (the id through core.entityId since 2026-10-13: the same text as `entity.type` for every entity type but the 15
@@ -142,8 +123,8 @@ EntityEvents.spawned(icraft.guard('scaling/zz_ascension_scaling', 'EntityEvents.
 }))
 
 // Modded hostile mobs that may not extend Monster class. Moved VERBATIM from
-// endgame/ascension.js — preserves the original ascension scaling set (the 5
-// broken irons_spellbooks: casters are filtered out above, before this runs).
+// endgame/ascension.js — preserves the original ascension scaling set (the five
+// irons_spellbooks: casters included since decision 160, 2026-10-19).
 function isHostileModdedAsc(type) {
   return type.startsWith('cataclysm:') ||
          type.startsWith('meetyourfight:') ||
@@ -154,4 +135,4 @@ function isHostileModdedAsc(type) {
          type.startsWith('majestic_menaces:')
 }
 
-console.log('[iridescent/ascension] mob-scaling spawn handler loaded (runs after boss_hp; ISS-caster crash-guarded)')
+console.log('[iridescent/ascension] mob-scaling spawn handler loaded (runs after boss_hp)')

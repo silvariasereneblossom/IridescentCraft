@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "6c2dc0af",
+    "generated_from":  "c1a5c1cd",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7776,8 +7776,8 @@
                                                                                "size":  13097
                                                                            },
                   "kubejs/server_scripts/scaling/zz_ascension_scaling.js":  {
-                                                                                "sha256":  "3dfaf6d3bca9e6682142385839c60c80aa3804e5cfbd055f45128e84ad5e41b9",
-                                                                                "size":  8435
+                                                                                "sha256":  "a0fa1f67c2d6c5a1a3d43b1d00ff4f4467d1236e900e81f25365137d1142c292",
+                                                                                "size":  7142
                                                                             },
                   "kubejs/server_scripts/scaling/zz_boss_global_3x.js":  {
                                                                              "sha256":  "b027082806e33b52ffddf195d2bcaab0ed43005a3d960452ef1f9297a7c199e7",

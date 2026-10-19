@@ -160,10 +160,12 @@ check('S11 zombie 20*3*1.5 = 90, dmg 3.75, bit-identical to the old scripts', ne
 check('S11 saved, flag 2', !has(az.mods(HP), '*') && !has(az.mods(DMG), '*') && flagIs(az, 'icraft_asc_scaled', 2))
 var az2 = join(azo.reload())
 check('S11 legacy ascension mob repaired', sameNumbers(az2, az), 'max=' + az2.rawMax())
+// Decision 160 (2026-10-19): attribute and health calls on the five casters were measured safe on a full-pack rig
+// boot (an item-slot read is what throws), so zz_ascension_scaling scales them; the other spawn scripts still skip
+// them (the registry flag `caster`) and only add nothing.
 var priest = __host.living('irons_spellbooks:priest', 30, L)
-priest.untouchable = true     // any attribute / health call on it throws AbstractMethodError
 join(priest)
-check('S11 an excluded caster is never touched (only the iss-guard flag)', String(priest.flags()) === 'icraft_iss_skip=1b', 'flags=' + priest.flags())
+check('S11 an excluded caster gets the ascension buff and nothing else: 30*1.5 = 45, saved (flag 2), plus the iss-guard flag', near(priest.rawMax(), 45) && flagIs(priest, 'icraft_asc_scaled', 2) && String(priest.flags()).indexOf('icraft_iss_skip=1b') >= 0 && String(priest.flags()).split(' ').length === 2, 'max=' + priest.rawMax() + ' flags=' + priest.flags())
 setAscension(0); oldSetAscension(0)
 
 __host.print('S12 core.attrValueWithout against vanilla\'s own calculation')
