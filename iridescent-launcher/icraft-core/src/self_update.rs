@@ -149,9 +149,11 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
                     let _ = fs::rename(&backup, &exe);
                     return Err(anyhow::anyhow!("rename .new -> live: {e}"));
                 }
-                // Direct path succeeded; spawn the new binary now.
+                // Direct path succeeded; spawn the new binary now, with this
+                // process's own arguments (a boot instance stays one).
                 log::info!("[self-update] spawning new instance: {}", exe.display());
                 std::process::Command::new(&exe)
+                    .args(std::env::args_os().skip(1))
                     .current_dir(&cfg.server_dir)
                     .spawn()?;
                 return Ok(true);
@@ -176,6 +178,7 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
         // Spawn the new binary as a detached child. Caller exits.
         log::info!("[self-update] spawning new instance: {}", exe.display());
         std::process::Command::new(&exe)
+            .args(std::env::args_os().skip(1))
             .current_dir(&cfg.server_dir)
             .spawn()?;
         Ok(true)
@@ -201,6 +204,8 @@ fn spawn_update_stub_windows(live: &std::path::Path, staged: &std::path::Path) -
     let live_str = live.display().to_string();
     let staged_str = staged.display().to_string();
     let backup_str = backup.display().to_string();
+    let args: Vec<String> = std::env::args_os().skip(1).map(|a| a.to_string_lossy().into_owned()).collect();
+    let args_str = cmd_quoted_args(&args);
 
     let stub_path = std::env::temp_dir().join(format!("icraft-gui-update-{pid}.cmd"));
     let script = format!(
@@ -228,7 +233,7 @@ fn spawn_update_stub_windows(live: &std::path::Path, staged: &std::path::Path) -
            move /Y \"{backup_str}\" \"{live_str}\" >nul\r\n\
            exit /b 1\r\n\
          )\r\n\
-         start \"\" \"{live_str}\"\r\n\
+         start \"\" \"{live_str}\"{args_str}\r\n\
          (goto) 2>nul & del \"%~f0\"\r\n",
     );
     fs::write(&stub_path, script)
@@ -241,6 +246,13 @@ fn spawn_update_stub_windows(live: &std::path::Path, staged: &std::path::Path) -
         .spawn()
         .map_err(|e| anyhow::anyhow!("spawning stub: {e}"))?;
     Ok(())
+}
+
+/// The relaunched binary's arguments for the stub's `start` line: each one
+/// quoted, with a space in front (empty for none). A quote inside an argument
+/// cannot be passed through cmd, so it is dropped; ours never have one.
+pub fn cmd_quoted_args(args: &[String]) -> String {
+    args.iter().map(|a| format!(" \"{}\"", a.replace('"', ""))).collect()
 }
 
 // =============================================================================
@@ -333,6 +345,12 @@ pub fn set_cycle_resume(cfg: &ServerConfig) {
     if let Err(e) = fs::write(&p, b"1") {
         log::warn!("[cycle] could not write resume sentinel {}: {e}", p.display());
     }
+}
+
+/// The Cycle-resume sentinel is there (a launcher replaced itself mid-Cycle and
+/// its successor has not taken over yet). Reads only.
+pub fn cycle_resume_pending(cfg: &ServerConfig) -> bool {
+    cycle_resume_marker(cfg).exists()
 }
 
 /// Consume the Cycle-resume sentinel: returns true (and deletes it) if present.
@@ -884,4 +902,17 @@ fn find_built_exe(target_dir: &Path, name: &str) -> Option<PathBuf> {
         }
     }
     newest.map(|(_, p)| p)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn a_relaunch_through_the_stub_keeps_the_boot_arguments() {
+        assert_eq!(cmd_quoted_args(&[]), "");
+        let boot = vec!["--boot".to_string(), r"C:\Users\op\Desktop\IridescentCraft Dedicated Server".to_string()];
+        assert_eq!(cmd_quoted_args(&boot), r#" "--boot" "C:\Users\op\Desktop\IridescentCraft Dedicated Server""#);
+        assert_eq!(cmd_quoted_args(&[r#"say "hi""#.to_string()]), r#" "say hi""#);
+    }
 }

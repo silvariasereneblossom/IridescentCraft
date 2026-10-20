@@ -207,6 +207,21 @@ enum Cmd {
 
     /// Audit Windows firewall rule for the icraft port. No-op on Linux.
     FirewallAudit,
+
+    /// The "Start at boot" Task Scheduler task (the window's box on the
+    /// Server tab does the same): `status` (exit 0 = registered for this
+    /// launcher and folder, 1 = not, 2 = another task is there), `register`,
+    /// `remove`, `xml` (print what `register` would register), `line` (the same
+    /// task as one PowerShell line, for an elevated PowerShell at the box),
+    /// `register-elevated` (what the window does when Windows refuses: the GUI
+    /// exe's registration helper run as administrator, after a UAC prompt).
+    BootTask {
+        #[arg(value_parser = ["status", "register", "remove", "xml", "line", "register-elevated"])]
+        action: String,
+        /// The launcher the task starts (default: icraft-gui.exe in --server-dir).
+        #[arg(long)]
+        exe: Option<PathBuf>,
+    },
 }
 
 #[derive(Subcommand, Debug)]
@@ -449,6 +464,50 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
         Cmd::FirewallAudit => {
             print!("{}", firewall::audit()?);
             Ok(0)
+        }
+        Cmd::BootTask { action, exe } => {
+            use icraft_core::autostart::{self as a, Registered};
+            let exe = exe.clone().unwrap_or_else(|| cfg.server_dir.join("icraft-gui.exe"));
+            match action.as_str() {
+                "xml" => {
+                    print!("{}", a::task_xml(&exe, &cfg.server_dir, &a::current_user().unwrap_or_default(), a::current_user_sid().as_deref()));
+                    Ok(0)
+                }
+                "line" => {
+                    println!("{}", a::powershell_line(&exe, &cfg.server_dir));
+                    Ok(0)
+                }
+                "register-elevated" => {
+                    let args = vec![a::BOOT_TASK_ARG.to_string(), "register".to_string(), cfg.server_dir.display().to_string()];
+                    let code = a::run_elevated(&exe, &args)?;
+                    println!("the registration helper run as administrator exited {code}");
+                    Ok(if code == 0 { 0 } else { 1 })
+                }
+                "register" => {
+                    a::register(&exe, &cfg.server_dir)?;
+                    println!("registered '{}': {} {}", a::TASK_NAME, exe.display(), a::boot_arguments(&cfg.server_dir));
+                    Ok(0)
+                }
+                "remove" => {
+                    a::unregister()?;
+                    println!("no task '{}' now", a::TASK_NAME);
+                    Ok(0)
+                }
+                _ => Ok(match a::status(&exe, &cfg.server_dir)? {
+                    Registered::Yes => {
+                        println!("registered: '{}' starts {} {}", a::TASK_NAME, exe.display(), a::boot_arguments(&cfg.server_dir));
+                        0
+                    }
+                    Registered::No => {
+                        println!("not registered: no task '{}'", a::TASK_NAME);
+                        1
+                    }
+                    Registered::Differs(why) => {
+                        println!("a task '{}' is there, but {why}", a::TASK_NAME);
+                        2
+                    }
+                }),
+            }
         }
     }
 }

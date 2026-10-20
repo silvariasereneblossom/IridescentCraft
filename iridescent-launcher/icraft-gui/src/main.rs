@@ -56,6 +56,17 @@ fn main() -> Result<(), eframe::Error> {
     if let Ok(exe) = std::env::current_exe() {
         let _ = std::fs::remove_file(exe.with_extension("exe.old"));
     }
+    // `--boot-task register|remove <folder>`: the window's registration helper,
+    // run as administrator after a UAC prompt (see "Start at boot").
+    if let Some((action, dir)) = icraft_core::autostart::boot_task_from_args(std::env::args_os().skip(1)) {
+        std::process::exit(run_boot_task_helper(&action, &dir));
+    }
+    // `--boot <server folder>`: the boot instance the "Start at boot" task
+    // starts (no window; see "The boot instance"). Without it: the window.
+    if let Some(dir) = icraft_core::autostart::boot_dir_from_args(std::env::args_os().skip(1), || std::env::current_dir().ok()) {
+        run_boot(dir);
+        return Ok(());
+    }
     // Mesa3D software-OpenGL hints. When the server VM has no GPU
     // passthrough (RDP basic display driver, headless KVM, etc.), we
     // drop Mesa's `opengl32.dll` + `libgallium_wgl.dll` next to this
@@ -245,9 +256,18 @@ impl log::Log for ChannelLogger {
     fn enabled(&self, m: &log::Metadata) -> bool { m.level() <= self.level }
     fn log(&self, record: &log::Record) {
         if !self.enabled(record.metadata()) { return; }
-        let line = format!("[{:>5}] {}", record.level(), record.args());
-        if let Some(bus) = LOG_BUS.get() {
-            let _ = bus.sender.lock().unwrap().send(line.clone());
+        let message = record.args().to_string();
+        let line = format!("[{:>5}] {message}", record.level());
+        // logs\launcher.log, once this launcher runs the server folder: its
+        // own lines only (the game's are in latest.log). See launcher_log.rs.
+        if !icraft_core::launcher_log::is_game_output(&message) {
+            LAUNCHER_LOG.write_line(&line);
+        }
+        // The boot instance has no window to drain the channel into.
+        if !WINDOWLESS.load(Ordering::Relaxed) {
+            if let Some(bus) = LOG_BUS.get() {
+                let _ = bus.sender.lock().unwrap().send(line.clone());
+            }
         }
         // Something new to show: the repaint pump paints it (see "Repaints").
         LOG_DIRTY.store(true, Ordering::Release);
@@ -256,6 +276,11 @@ impl log::Log for ChannelLogger {
     }
     fn flush(&self) {}
 }
+
+/// `logs\launcher.log` of the server folder this launcher runs.
+static LAUNCHER_LOG: icraft_core::launcher_log::LauncherLog = icraft_core::launcher_log::LauncherLog::new();
+/// The boot instance: no window, no log pane.
+static WINDOWLESS: AtomicBool = AtomicBool::new(false);
 
 fn install_log_router() {
     let (tx, rx) = channel::<String>();
@@ -359,13 +384,6 @@ struct IcraftApp {
     /// fresh "serve" task to bring the server back up. Cleared on
     /// pickup so a second cycle requires another button press.
     pending_restart: bool,
-    /// Set in `new()` when the Cycle-resume sentinel is found on startup
-    /// (the previous instance relaunched itself mid-Cycle to apply a
-    /// newer launcher binary). On the first update() tick this auto-spawns
-    /// the cycle-restart worker so the server still ends up started after
-    /// the self-update — i.e. the post-relaunch path completes the Cycle.
-    /// One-shot: cleared on pickup.
-    resume_cycle_pending: bool,
     /// Wall-clock of the last *successful* remote-HEAD fetch, stamped by
     /// the background thread. Drives the "(stale)" badge state: a remote
     /// SHA we haven't re-confirmed recently must NOT render green
@@ -390,6 +408,8 @@ struct IcraftApp {
     customizer: customizer::Customizer,
     /// Set by a preview: where the action panel should be scrolled to.
     forced_scroll: Option<f32>,
+    /// What this window shows while another launcher runs the folder.
+    viewer: Viewer,
     /// `Some` when started with ICRAFT_GUI_PREVIEW (see "Preview mode").
     preview: Option<Preview>,
 }
@@ -816,10 +836,18 @@ fn request_facts(dir: &std::path::Path, body: &str) -> icraft_core::restart_poli
 
 /// The way back after GAVE UP, from a request: the same supervised Cycle
 /// (sync + start) as the Cycle button with nothing running, the heartbeat
-/// armed again. Runs without the window (its frames stop while nobody looks
-/// at the box), which adopts the task at its next frame.
+/// armed again.
 fn start_after_gave_up(dir: PathBuf, body: &str) {
     log::warn!("[scheduled] the heartbeat had given up; request '{body}' starts the server again (sync + start)");
+    start_cycle_unattended(dir, "start after GAVE UP");
+}
+
+/// A supervised Cycle (sync + start) that no click started: after GAVE UP,
+/// at boot, after a launcher self-update, after a takeover. Runs without the
+/// window (its frames stop while nobody looks at the box, and the boot
+/// instance has none), which adopts the task at its next frame; the boot
+/// instance adopts it in its own loop.
+fn start_cycle_unattended(dir: PathBuf, what: &'static str) {
     arm_supervisor();
     TASK_BUSY.store(true, Ordering::SeqCst);
     // Held while the thread is made, so a frame can never see neither the
@@ -827,10 +855,10 @@ fn start_after_gave_up(dir: PathBuf, body: &str) {
     let mut slot = ADOPT_TASK.lock().unwrap();
     *slot = Some(std::thread::spawn(move || {
         let _busy = TaskBusy;
-        log::info!("== start after GAVE UP starting ==");
+        log::info!("== {what} starting ==");
         match supervise(ServerConfig::from_path(dir), true) {
-            Ok(_) => log::info!("== start after GAVE UP done =="),
-            Err(e) => log::error!("== start after GAVE UP FAILED: {e:#} =="),
+            Ok(_) => log::info!("== {what} done =="),
+            Err(e) => log::error!("== {what} FAILED: {e:#} =="),
         }
     }));
 }
@@ -886,6 +914,11 @@ fn cycle_blocker() -> Option<String> {
 /// [`stop_for_cycle`]). Announces at `lead`, then again at the 60 s and 10 s
 /// marks inside it. False = abandoned, nothing was stopped.
 fn warned_cycle(tag: &str, what: &str, lead: Duration) -> bool {
+    warned_then(tag, what, lead, stop_for_cycle)
+}
+
+/// The countdown of [`warned_cycle`], then `stop` (a Cycle's, or a takeover's).
+fn warned_then(tag: &str, what: &str, lead: Duration, stop: fn(&str) -> bool) -> bool {
     if RESTART_COUNTDOWN.swap(true, Ordering::SeqCst) {
         log::info!("[{tag}] another restart countdown is already running -- skipped");
         return false;
@@ -910,7 +943,7 @@ fn warned_cycle(tag: &str, what: &str, lead: Duration) -> bool {
             break;
         }
     }
-    let stopping = counted_down && stop_for_cycle(tag);
+    let stopping = counted_down && stop(tag);
     RESTART_COUNTDOWN.store(false, Ordering::SeqCst);
     stopping
 }
@@ -1214,6 +1247,8 @@ fn spawn_cycle_watchdog() {
         let mut jvm_down_since_unix = launched;
         let mut frames_before = FRAMES.load(Ordering::Relaxed);
         let mut counted_at = Instant::now();
+        let mode = if WINDOWLESS.load(Ordering::SeqCst) { icraft_core::instance::MODE_BOOT } else { icraft_core::instance::MODE_WINDOW };
+        let session = icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string());
         loop {
             std::thread::sleep(STATUS_TICK);
             let now = current_phase();
@@ -1261,6 +1296,8 @@ fn spawn_cycle_watchdog() {
                  written={written_local}\n\
                  launcher_pid={pid}\n\
                  launcher_started_unix={launched}\n\
+                 launcher_mode={mode}\n\
+                 session_id={session}\n\
                  supervised={supervised}\n\
                  server_state={state:?}\n\
                  phase={phase_name}\n\
@@ -1292,6 +1329,508 @@ fn spawn_cycle_watchdog() {
     });
 }
 
+// =============================================================================
+// One launcher per server folder -- the window's side
+// =============================================================================
+//
+// The launcher that runs the server holds icraft_core::instance::LOCK_FILE in
+// its folder (see instance.rs for why). A window that finds it held -- the
+// boot instance runs the server, or another window does -- runs none of the
+// threads that act on the server (request watchers, restart policy,
+// heartbeat probe, status file) and shows the holder's status file and log
+// instead, with three things it can still do: ask for a Cycle and a backup
+// through their request files, and take the server over. It keeps trying the
+// lock: when the holder goes (it was asked to, it was replaced by a
+// self-update, it died), this window becomes the one that runs the folder.
+
+#[derive(Clone)]
+enum Role {
+    /// Not known yet (the first few seconds, or a preview).
+    Deciding,
+    /// This window runs the server folder.
+    Owner,
+    /// Another launcher does (`None`: its lock file could not be read).
+    Viewer(Option<icraft_core::instance::Holder>),
+}
+
+static ROLE: Mutex<Role> = Mutex::new(Role::Deciding);
+/// Held for as long as this process runs the folder.
+static OWNER_LOCK: Mutex<Option<icraft_core::instance::InstanceLock>> = Mutex::new(None);
+/// This window asked the boot instance to let go: start the server once it has.
+static TAKEOVER_ASKED: AtomicBool = AtomicBool::new(false);
+/// How long a window waits for the lock before it shows itself as a viewer:
+/// a self-update starts the new window half a second before the old one exits.
+const OWNER_FIRST_WAIT: Duration = Duration::from_secs(5);
+const OWNER_RETRY: Duration = Duration::from_secs(2);
+/// A folder found free that this window did not ask for is taken only once it
+/// has stayed free this long: longer than a boot instance's successor waits
+/// for it (BOOT_LOCK_WAIT), so a self-update never loses the folder to a window.
+const HOLDER_GONE_AFTER: Duration = Duration::from_secs(45);
+
+fn role() -> Role {
+    ROLE.lock().unwrap().clone()
+}
+
+/// The threads that act on the server folder: only the launcher that runs it
+/// starts them (once).
+fn spawn_owner_threads() {
+    spawn_listener_probe();
+    spawn_cycle_request_watcher();
+    spawn_backup_request_watcher();
+    spawn_regen_request_watcher();
+    spawn_restart_policy();
+    spawn_cycle_watchdog();
+}
+
+/// Started once in `IcraftApp::new` (not in a preview).
+///
+/// A free folder is this window's at once when nothing else was running it
+/// (the usual start, or this window's own self-update relaunch), or when this
+/// window asked to take the server over. Otherwise the holder may be replacing
+/// itself: a boot instance's self-update leaves the folder free for a moment
+/// (the lock file still names it, and the Cycle-resume sentinel is there) and
+/// its successor takes it back. Then the window lets go at once and takes the
+/// folder only once it has stayed free for HOLDER_GONE_AFTER (the holder died).
+fn spawn_lock_taker(dir: PathBuf) {
+    use icraft_core::instance::{self, Acquired, Holder, MODE_WINDOW};
+    std::thread::spawn(move || {
+        let me = Holder::me(MODE_WINDOW);
+        let cfg = ServerConfig::from_path(&dir);
+        let mut first = true;
+        let mut told = false;
+        let mut free_since: Option<Instant> = None;
+        loop {
+            // Read before trying: the file names its last holder even once free.
+            let last = instance::read_holder(&dir);
+            let boot_relaunching = last.as_ref().is_some_and(|h| h.is_boot())
+                && icraft_core::self_update::cycle_resume_pending(&cfg);
+            let got = if first {
+                instance::acquire_within(&dir, &me, OWNER_FIRST_WAIT)
+            } else {
+                instance::try_acquire(&dir, &me)
+            };
+            first = false;
+            match got {
+                Ok(Acquired::Ours(lock)) => {
+                    let viewing = matches!(role(), Role::Viewer(_));
+                    let gone = free_since.is_some_and(|t| t.elapsed() >= HOLDER_GONE_AFTER);
+                    if TAKEOVER_ASKED.load(Ordering::SeqCst) || (!viewing && !boot_relaunching) || gone {
+                        if gone && !TAKEOVER_ASKED.load(Ordering::SeqCst) {
+                            log::warn!(
+                                "[instance] the launcher that ran this server folder has gone (free for {} s): this window runs it now",
+                                HOLDER_GONE_AFTER.as_secs()
+                            );
+                        }
+                        *OWNER_LOCK.lock().unwrap() = Some(lock);
+                        become_owner(&dir);
+                        return;
+                    }
+                    // Not ours yet: give it back at once (the successor retries every 250 ms).
+                    drop(lock);
+                    if free_since.is_none() {
+                        free_since = Some(Instant::now());
+                    }
+                    if !viewing {
+                        *ROLE.lock().unwrap() = Role::Viewer(last);
+                        LOG_DIRTY.store(true, Ordering::Release);
+                    }
+                }
+                Ok(Acquired::Theirs(holder)) => {
+                    free_since = None;
+                    if !told {
+                        log::info!(
+                            "[instance] {} runs this server folder: this window shows it, and can take the server over (Server tab)",
+                            holder.as_ref().map_or("another launcher".to_string(), |h| h.describe())
+                        );
+                        told = true;
+                    }
+                    *ROLE.lock().unwrap() = Role::Viewer(holder);
+                    LOG_DIRTY.store(true, Ordering::Release);
+                }
+                Err(e) => {
+                    log::warn!("[instance] the launcher lock in {} could not be taken ({e}): running without it", dir.display());
+                    become_owner(&dir);
+                    return;
+                }
+            }
+            std::thread::sleep(OWNER_RETRY);
+        }
+    });
+}
+
+/// This window runs the folder now: its log file, its threads, and a start if
+/// one is owed (a Cycle a self-update relaunch left half done, or a takeover).
+fn become_owner(dir: &Path) {
+    if let Err(e) = LAUNCHER_LOG.open(dir) {
+        log::warn!("[instance] logs\\launcher.log could not be opened ({e}): this launcher's lines stay in the window only");
+    }
+    *ROLE.lock().unwrap() = Role::Owner;
+    LOG_DIRTY.store(true, Ordering::Release);
+    log::info!(
+        "[instance] this window runs the server folder (pid {}, Windows session {})",
+        std::process::id(),
+        icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string())
+    );
+    spawn_owner_threads();
+    let cfg = ServerConfig::from_path(dir);
+    // Logs a previous instance staged but never pushed (it was replaced
+    // mid-Cycle by a launcher self-update, or closed): queue them.
+    icraft_core::logpush::resume_pending(&cfg);
+    // If the previous instance relaunched itself mid-Cycle to apply a newer
+    // launcher binary, it left the resume sentinel next to the install.
+    let resume = icraft_core::self_update::take_cycle_resume(&cfg);
+    if TAKEOVER_ASKED.swap(false, Ordering::SeqCst) {
+        log::info!("[instance] the boot instance let go of the server folder: taking the server over (sync + start)");
+        start_cycle_unattended(dir.to_path_buf(), "takeover: sync + start");
+    } else if resume {
+        log::info!("[cycle] resuming Cycle after launcher self-update -- sync + start");
+        start_cycle_unattended(dir.to_path_buf(), "cycle-restart");
+    }
+}
+
+// =============================================================================
+// The boot instance -- `icraft-gui.exe --boot <server folder>`, no window
+// =============================================================================
+//
+// What the "Start at boot" task starts when Windows starts (icraft_core::
+// autostart): session 0, nobody logged on, no desktop anyone can see. A
+// window there would be drawn for nobody (Mesa's software renderer still pays
+// for every frame) and could never be clicked, so there is none. Everything
+// that keeps the server up already runs on threads of its own -- the
+// supervisor and both heartbeat detectors, the Cycle / backup / regen request
+// watchers, the uptime restart policy, the watchdog and its status file -- so
+// the boot instance starts those, then the same supervised Cycle (sync +
+// self-update + start) the Cycle button runs, and waits. A launcher
+// self-update relaunches it with the same arguments, so it stays a boot
+// instance. Its log is logs\launcher.log.
+//
+// It ends in one way: a window asks to take the server over
+// (TAKEOVER_REQUEST_FILE). The boot instance then stops the server like a
+// Cycle does, does not restart it, writes its answer, lets go of the server
+// folder and exits; the window starts its own Cycle.
+
+const BOOT_TICK: Duration = Duration::from_secs(2);
+/// A boot instance a self-update just started waits this long for its
+/// predecessor to let go of the folder.
+const BOOT_LOCK_WAIT: Duration = Duration::from_secs(30);
+/// A takeover is under way: the server is being stopped for it.
+static HANDOVER: AtomicBool = AtomicBool::new(false);
+
+fn run_boot(dir: PathBuf) {
+    use icraft_core::autostart::{TakeoverVerdict, TAKEOVER_RESULT_FILE};
+    use icraft_core::instance::{self, Acquired, Holder, MODE_BOOT};
+    WINDOWLESS.store(true, Ordering::SeqCst);
+    let opened = LAUNCHER_LOG.open(&dir);
+    log::info!(
+        "[boot] boot instance starting: pid {}, Windows session {}, server folder {}",
+        std::process::id(),
+        icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string()),
+        dir.display()
+    );
+    if let Err(e) = opened {
+        // Nobody will read this (there is no file and no window), but stderr.
+        log::error!("[boot] logs\\launcher.log could not be opened: {e}");
+    }
+    if !dir.join("server.properties").is_file() {
+        log::error!("[boot] {} has no server.properties: not a server folder, nothing started", dir.display());
+        return;
+    }
+    let lock = match instance::acquire_within(&dir, &Holder::me(MODE_BOOT), BOOT_LOCK_WAIT) {
+        Ok(Acquired::Ours(lock)) => Some(lock),
+        Ok(Acquired::Theirs(holder)) => {
+            log::info!(
+                "[boot] {} already runs this server folder: the boot instance has nothing to do and exits",
+                holder.map_or("another launcher".to_string(), |h| h.describe())
+            );
+            return;
+        }
+        Err(e) => {
+            log::warn!("[boot] the launcher lock could not be taken ({e}): running without it");
+            None
+        }
+    };
+    *ROLE.lock().unwrap() = Role::Owner;
+    *APP_SERVER_DIR.lock().unwrap() = Some(dir.clone());
+    // Unattended: the heartbeat always restarts a crashed server here.
+    SUPERVISOR.auto_restart.store(true, Ordering::SeqCst);
+    spawn_owner_threads();
+    let cfg = ServerConfig::from_path(&dir);
+    // The account's profile is loaded for an S4U logon, so the token the window
+    // saved is found the same way (the path only, never the token).
+    let token = match icraft_core::crash::pat_status(&cfg) {
+        icraft_core::crash::PatStatus::EnvVar => "the ICRAFT_GH_TOKEN environment variable".to_string(),
+        icraft_core::crash::PatStatus::FileInAppData(p)
+        | icraft_core::crash::PatStatus::FileNextToExe(p)
+        | icraft_core::crash::PatStatus::FileInServerDir(p) => p.display().to_string(),
+        icraft_core::crash::PatStatus::None => "none found (the sync runs unauthenticated, the log push waits)".to_string(),
+    };
+    log::info!("[boot] GitHub token: {token}");
+    icraft_core::logpush::resume_pending(&cfg);
+    // A boot always runs the Cycle; a sentinel left by a self-update (this
+    // instance's predecessor) is consumed so no later window resumes it again.
+    if icraft_core::self_update::take_cycle_resume(&cfg) {
+        log::info!("[boot] continuing the Cycle the previous boot instance began before its self-update");
+    }
+    start_cycle_unattended(dir.clone(), "boot: Cycle (sync + self-update + start)");
+
+    let mut task: Option<JoinHandle<()>> = None;
+    loop {
+        std::thread::sleep(BOOT_TICK);
+        // Every unattended start (this one, a request's after GAVE UP) is
+        // this instance's own task.
+        if let Some(h) = ADOPT_TASK.lock().unwrap().take() {
+            task = Some(h);
+        }
+        let alive = task.as_ref().is_some_and(|h| !h.is_finished());
+        if HANDOVER.load(Ordering::SeqCst) {
+            // The stop is under way: wait for the supervised run to end.
+            if !alive && !SUPERVISOR.running.load(Ordering::SeqCst) {
+                break;
+            }
+            continue;
+        }
+        match poll_takeover(&dir, alive) {
+            Some(TakeoverVerdict::Now) => break,
+            Some(TakeoverVerdict::AfterStop) => {
+                HANDOVER.store(true, Ordering::SeqCst);
+                let d = dir.clone();
+                std::thread::spawn(move || handover_stop(&d));
+            }
+            Some(TakeoverVerdict::Refused(_)) | None => {}
+        }
+    }
+    log::info!("[boot] the boot instance lets go of the server folder and exits: a launcher window takes the server over");
+    let _ = std::fs::write(
+        dir.join(TAKEOVER_RESULT_FILE),
+        format!("{} released: the boot instance has let go of the server folder and exited\n", unix_now()),
+    );
+    drop(lock);
+}
+
+/// A takeover request, if one is there: read, removed, answered.
+fn poll_takeover(dir: &Path, task_alive: bool) -> Option<icraft_core::autostart::TakeoverVerdict> {
+    use icraft_core::autostart::{self as a, TakeoverFacts};
+    let path = dir.join(a::TAKEOVER_REQUEST_FILE);
+    let body = std::fs::read_to_string(&path).ok()?;
+    let _ = std::fs::remove_file(&path);
+    let body = body.trim().to_string();
+    let facts = TakeoverFacts {
+        age_secs: a::request_age(&body, unix_now()),
+        supervising: SUPERVISOR.running.load(Ordering::SeqCst),
+        cycle_blocker: cycle_blocker(),
+        busy: task_alive || TASK_BUSY.load(Ordering::SeqCst),
+    };
+    let verdict = a::takeover_verdict(&facts);
+    let answer = verdict.answer();
+    log::info!("[boot] takeover request '{body}': {answer}");
+    let _ = std::fs::write(dir.join(a::TAKEOVER_RESULT_FILE), format!("{} {answer}\n", unix_now()));
+    Some(verdict)
+}
+
+/// Stop the server for a takeover: at once when nobody is on, else after the
+/// Cycle's countdown. The supervisor does not restart it (an operator stop).
+fn handover_stop(dir: &Path) {
+    let players = icraft_core::run::query_player_count(LIST_REPLY_TIMEOUT);
+    let stopping = if players == Some(0) {
+        stop_for_handover("takeover")
+    } else {
+        warned_then("takeover", "Server restart", CYCLE_WARN_LEAD, stop_for_handover)
+    };
+    if !stopping {
+        HANDOVER.store(false, Ordering::SeqCst);
+        log::warn!("[boot] the takeover stop did not happen (the server went down, was stopped, or the stop failed): still running the server");
+        let _ = std::fs::write(
+            dir.join(icraft_core::autostart::TAKEOVER_RESULT_FILE),
+            format!("{} failed: the server could not be stopped for the takeover; the boot instance still runs it -- ask again\n", unix_now()),
+        );
+    }
+}
+
+fn stop_for_handover(tag: &str) -> bool {
+    log::info!("[{tag}] stopping (save grace {SCHEDULED_STOP_GRACE_SECS}s); no restart: a launcher window takes the server over");
+    mark_operator_stop();
+    if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
+        clear_stale_operator_stop();
+        log::warn!("[{tag}] stop failed: {e}");
+        return false;
+    }
+    true
+}
+
+// =============================================================================
+// Start at boot -- the window's box for the Task Scheduler task
+// =============================================================================
+
+#[derive(Clone)]
+enum BootTask {
+    /// Not asked yet.
+    Unknown,
+    /// A query, a registration or a removal is running (the box shows this).
+    Working(bool),
+    Known(icraft_core::autostart::Registered),
+    Failed(String),
+}
+
+static BOOT_TASK: Mutex<BootTask> = Mutex::new(BootTask::Unknown);
+
+/// What Task Scheduler has, for this launcher and folder (on a thread:
+/// schtasks takes a moment).
+fn refresh_boot_task(dir: PathBuf) {
+    {
+        let mut t = BOOT_TASK.lock().unwrap();
+        let on = matches!(*t, BootTask::Known(icraft_core::autostart::Registered::Yes) | BootTask::Working(true));
+        *t = BootTask::Working(on);
+    }
+    std::thread::spawn(move || {
+        let state = match std::env::current_exe() {
+            Ok(exe) => match icraft_core::autostart::status(&exe, &dir) {
+                Ok(r) => BootTask::Known(r),
+                Err(e) => BootTask::Failed(format!("{e:#}")),
+            },
+            Err(e) => BootTask::Failed(format!("this launcher's own path is unknown: {e}")),
+        };
+        *BOOT_TASK.lock().unwrap() = state;
+        LOG_DIRTY.store(true, Ordering::Release);
+    });
+}
+
+/// Register (`on`) or delete the task, then read it back.
+fn set_boot_task(on: bool, dir: PathBuf) {
+    use icraft_core::autostart as a;
+    *BOOT_TASK.lock().unwrap() = BootTask::Working(on);
+    std::thread::spawn(move || {
+        let exe = match std::env::current_exe() {
+            Ok(exe) => exe,
+            Err(e) => {
+                *BOOT_TASK.lock().unwrap() = BootTask::Failed(format!("this launcher's own path is unknown: {e}"));
+                return;
+            }
+        };
+        let what = if on { "registering the task" } else { "removing the task" };
+        let mut done = if on { a::register(&exe, &dir) } else { a::unregister() };
+        // Task Scheduler refuses an S4U registration from an unelevated token
+        // (measured on Server 2025): ask Windows for administrator approval and
+        // let a copy of this launcher, run as administrator, do it.
+        if done.as_ref().is_err_and(|e| format!("{e:#}").to_lowercase().contains("denied")) {
+            log::warn!(
+                "[boot-task] Windows refused ({}): asking for administrator approval -- answer the Windows prompt \
+                 (User Account Control; it may be flashing on the taskbar)",
+                done.as_ref().err().map(|e| format!("{e:#}")).unwrap_or_default()
+            );
+            let args = vec![a::BOOT_TASK_ARG.to_string(), if on { "register" } else { "remove" }.to_string(), dir.display().to_string()];
+            let elevated = a::run_elevated(&exe, &args);
+            // The helper writes to logs\launcher.log, not to this window.
+            if let Some(said) = icraft_core::launcher_log::tail(&dir, 40, 64 * 1024)
+                .into_iter()
+                .filter(|l| l.contains("(as administrator)"))
+                .last()
+            {
+                log::info!("[boot-task] the helper run as administrator: {said}");
+            }
+            done = match elevated {
+                Ok(0) => Ok(()),
+                Ok(a::ERROR_CANCELLED) => Err(anyhow::anyhow!("the administrator approval was declined (or could not be shown)")),
+                Ok(code) => Err(anyhow::anyhow!("the helper run as administrator failed (exit {code}; logs\\launcher.log has its line)")),
+                Err(e) => Err(e),
+            };
+        }
+        match done {
+            Ok(()) if on => log::info!(
+                "[boot-task] registered '{}': at every Windows start, {} {} runs as {} (S4U: nobody logged on, no password stored)",
+                a::TASK_NAME,
+                exe.display(),
+                a::boot_arguments(&dir),
+                a::current_user().unwrap_or_default()
+            ),
+            Ok(()) => log::info!("[boot-task] removed '{}': nothing starts the launcher at boot now", a::TASK_NAME),
+            Err(e) => {
+                log::error!("[boot-task] {what} failed: {e:#}");
+                if on {
+                    log::error!("[boot-task] the same task from an elevated PowerShell at the box (one line):");
+                    log::error!("{}", a::powershell_line(&exe, &dir));
+                }
+            }
+        }
+        let state = match a::status(&exe, &dir) {
+            Ok(r) => BootTask::Known(r),
+            Err(e) => BootTask::Failed(format!("{e:#}")),
+        };
+        *BOOT_TASK.lock().unwrap() = state;
+        LOG_DIRTY.store(true, Ordering::Release);
+    });
+}
+
+/// `icraft-gui.exe --boot-task register|remove <folder>`: what the window runs
+/// as administrator when Windows refuses it the task. No window; its lines go
+/// to the folder's logs\launcher.log (the window shows that file's lines only
+/// once it is the viewer, so it says what came back). 0 = done.
+fn run_boot_task_helper(action: &str, dir: &Path) -> i32 {
+    use icraft_core::autostart as a;
+    WINDOWLESS.store(true, Ordering::SeqCst);
+    let _ = LAUNCHER_LOG.open(dir);
+    let exe = match std::env::current_exe() {
+        Ok(exe) => exe,
+        Err(e) => {
+            log::error!("[boot-task] (as administrator) this launcher's own path is unknown: {e}");
+            return 1;
+        }
+    };
+    let done = if action == "register" { a::register(&exe, dir) } else { a::unregister() };
+    match done {
+        Ok(()) => {
+            log::info!("[boot-task] (as administrator) {action}: done, '{}'", a::TASK_NAME);
+            0
+        }
+        Err(e) => {
+            log::error!("[boot-task] (as administrator) {action} failed: {e:#}");
+            1
+        }
+    }
+}
+
+/// What a window shows of the launcher that runs the folder: its status file
+/// (key=value lines), its log's tail, and the answer to a takeover.
+#[derive(Default)]
+struct Viewer {
+    status: Vec<(String, String)>,
+    log: Vec<String>,
+    takeover_answer: String,
+    read_at: Option<Instant>,
+    /// First click on "Take over here": a second within 10 s sends it.
+    armed_at: Option<Instant>,
+}
+
+const VIEWER_REFRESH: Duration = Duration::from_secs(5);
+
+impl Viewer {
+    fn refresh(&mut self, dir: &Path) {
+        self.read_at = Some(Instant::now());
+        self.status = std::fs::read_to_string(dir.join(STATUS_FILE))
+            .unwrap_or_default()
+            .lines()
+            .filter(|l| !l.starts_with('#'))
+            .filter_map(|l| l.split_once('=').map(|(k, v)| (k.trim().to_string(), v.trim().to_string())))
+            .collect();
+        self.log = icraft_core::launcher_log::tail(dir, 400, 256 * 1024);
+        self.takeover_answer = std::fs::read_to_string(dir.join(icraft_core::autostart::TAKEOVER_RESULT_FILE))
+            .unwrap_or_default()
+            .trim()
+            .to_string();
+        // Refused or failed: nothing will let go, so nothing to start.
+        let answer = self.takeover_answer.split_once(' ').map_or("", |(_, a)| a);
+        if TAKEOVER_ASKED.load(Ordering::SeqCst)
+            && (answer.starts_with("skipped") || answer.starts_with("rejected") || answer.starts_with("failed"))
+        {
+            TAKEOVER_ASKED.store(false, Ordering::SeqCst);
+            log::warn!("[instance] the boot instance did not let go: {answer}");
+        }
+    }
+
+    fn get(&self, key: &str) -> &str {
+        self.status.iter().find(|(k, _)| k == key).map_or("", |(_, v)| v.as_str())
+    }
+}
+
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>, preview: Option<Preview>) -> Self {
         // Force a dark, near-black background so the trans-flag heading
@@ -1313,26 +1852,28 @@ impl IcraftApp {
             cc.storage.and_then(|s| eframe::get_value(s, KEY_SERVER_DIR)).unwrap_or_default()
         };
         SUPERVISOR.auto_restart.store(persisted.auto_restart.unwrap_or(true), Ordering::SeqCst);
-        if preview.is_none() {
-            spawn_listener_probe();
-            spawn_cycle_request_watcher();
-            spawn_backup_request_watcher();
-            spawn_regen_request_watcher();
-            spawn_restart_policy();
-            spawn_cycle_watchdog();
-            spawn_repaint_pump(cc.egui_ctx.clone());
-        }
         let server_dir = match &preview {
             Some(p) => p.dir.clone(),
             None => persisted.server_dir
                 .map(PathBuf::from)
                 .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from("."))),
         };
-        // If the previous instance relaunched itself mid-Cycle to apply a newer
-        // launcher binary, it left the resume sentinel next to the install.
-        // Consume it now so the first update() tick continues the Cycle.
-        let resume_cycle_pending = preview.is_none()
-            && icraft_core::self_update::take_cycle_resume(&ServerConfig::from_path(&server_dir));
+        if preview.is_none() {
+            spawn_repaint_pump(cc.egui_ctx.clone());
+            // Runs the folder (and starts the threads that act on it, see
+            // become_owner) or shows the launcher that does.
+            spawn_lock_taker(server_dir.clone());
+        } else if std::env::var_os("ICRAFT_GUI_PREVIEW_VIEWER").is_some() {
+            // A preview of the window another launcher's lock leaves it in.
+            let started = unix_now().saturating_sub(3 * 3600 + 300);
+            *ROLE.lock().unwrap() = Role::Viewer(Some(icraft_core::instance::Holder {
+                pid: 4242,
+                mode: icraft_core::instance::MODE_BOOT.to_string(),
+                started_unix: started,
+            }));
+        } else {
+            *ROLE.lock().unwrap() = Role::Owner;
+        }
         let mut customizer = customizer::Customizer::new();
         customizer.expand_all = preview.as_ref().map_or(false, |p| p.expand);
         let mut app = Self {
@@ -1348,7 +1889,6 @@ impl IcraftApp {
             remote_fetching: Arc::new(AtomicBool::new(false)),
             last_status_refresh: None,
             pending_restart: false,
-            resume_cycle_pending,
             remote_fetched_at: Arc::new(Mutex::new(None)),
             last_remote_poll: None,
             backup: icraft_core::backup::Status::default(),
@@ -1357,14 +1897,12 @@ impl IcraftApp {
             tab: preview.as_ref().map_or(Tab::Server, |p| p.tab),
             customizer,
             forced_scroll: None,
+            viewer: Viewer::default(),
             preview,
         };
         app.refresh_status();
         if app.preview.is_none() {
             app.kick_remote_refresh();
-            // Logs a previous instance staged but never pushed (it was replaced
-            // mid-Cycle by a launcher self-update, or closed): queue them.
-            icraft_core::logpush::resume_pending(&app.server_cfg());
         }
         app
     }
@@ -1614,14 +2152,16 @@ impl eframe::App for IcraftApp {
             ctx.request_repaint_after(Duration::from_millis(1000));
         }
 
-        // Resume-after-self-update: the previous instance relaunched mid-Cycle
-        // to apply a newer launcher binary and left the resume sentinel (taken
-        // in new()). Now that we're up and idle, continue the Cycle so the
-        // server still ends up started. One-shot.
-        if self.resume_cycle_pending && !self.task_running() {
-            self.resume_cycle_pending = false;
-            log::info!("[cycle] resuming Cycle after launcher self-update -- sync + start");
-            self.spawn_cycle_restart();
+        // (Resume-after-self-update and the start after a takeover are started
+        // by become_owner, without a frame, and adopted above.)
+
+        // Another launcher runs the folder: read what it says, now and then.
+        let viewing = matches!(role(), Role::Viewer(_));
+        if viewing {
+            if self.viewer.read_at.map_or(true, |t| t.elapsed() >= VIEWER_REFRESH) {
+                self.viewer.refresh(&self.server_dir);
+            }
+            ctx.request_repaint_after(VIEWER_REFRESH);
         }
 
         // Tick faster while a remote-sha fetch is in flight so the
@@ -1654,7 +2194,11 @@ impl eframe::App for IcraftApp {
 
         egui::TopBottomPanel::top("status").show(ctx, |ui| {
             ui.add_space(2.0);
-            self.draw_status_badges(ui);
+            if viewing {
+                self.draw_viewer_badges(ui);
+            } else {
+                self.draw_status_badges(ui);
+            }
             ui.add_space(4.0);
         });
 
@@ -1692,12 +2236,25 @@ impl eframe::App for IcraftApp {
             if let Some(offset) = self.forced_scroll.take() {
                 area = area.vertical_scroll_offset(offset);
             }
-            area.show(ui, |ui| match self.tab {
-                Tab::Server => self.draw_action_buttons(ui),
-                Tab::Customizer => {
+            area.show(ui, |ui| match (self.tab, role()) {
+                (Tab::Server, Role::Owner) => self.draw_action_buttons(ui),
+                (Tab::Server, Role::Viewer(holder)) => self.draw_viewer(ui, holder.as_ref()),
+                (_, Role::Deciding) => {
+                    ui.add_space(8.0);
+                    ui.label("Checking whether another launcher runs this server folder...");
+                }
+                (Tab::Customizer, Role::Owner) => {
                     if self.customizer.ui(ui, &self.server_dir, &self.backup) {
                         self.request_backup_now();
                     }
+                }
+                (Tab::Customizer, Role::Viewer(_)) => {
+                    ui.add_space(8.0);
+                    ui.label(
+                        "Another launcher runs this server folder. The Customizer works on the world and the server's \
+                         own settings, so it is open only in the launcher that runs the server: take the server over \
+                         on the Server tab first. (\"Back up now\" is on the Server tab here.)",
+                    );
                 }
             });
         });
@@ -2114,6 +2671,7 @@ impl IcraftApp {
             SUPERVISOR.auto_restart.store(auto_restart, Ordering::SeqCst);
             log::info!("[heartbeat] auto-restart {}", if auto_restart { "ON" } else { "OFF" });
         }
+        self.draw_boot_task(ui);
 
         ui.add_space(6.0);
         ui.label(egui::RichText::new(
@@ -2392,6 +2950,158 @@ impl IcraftApp {
         }
     }
 
+    /// The "Start at boot" box (Server tab; also shown while viewing).
+    fn draw_boot_task(&mut self, ui: &mut egui::Ui) {
+        use icraft_core::autostart::{self as a, Registered};
+        if self.preview.is_none() && matches!(*BOOT_TASK.lock().unwrap(), BootTask::Unknown) {
+            refresh_boot_task(self.server_dir.clone());
+        }
+        let state = BOOT_TASK.lock().unwrap().clone();
+        let (mut on, working) = match &state {
+            BootTask::Known(Registered::Yes) => (true, false),
+            BootTask::Working(on) => (*on, true),
+            _ => (false, false),
+        };
+        let enabled = !working && self.preview.is_none();
+        let resp = ui
+            .add_enabled(
+                enabled,
+                egui::Checkbox::new(
+                    &mut on,
+                    "Start at boot: when Windows starts, start this launcher without its window and run Cycle (nobody has to log on; no password is stored)",
+                ),
+            )
+            .on_hover_text(format!(
+                "Registers the Task Scheduler task '{}' for this launcher and this folder: at every Windows start (after a minute) it runs \
+                 icraft-gui.exe --boot as your account, with nobody logged on (S4U: no password stored, least privilege). \
+                 A window opened later shows that boot instance and can take the server over. Untick to delete the task.",
+                a::TASK_NAME
+            ));
+        if resp.changed() {
+            set_boot_task(on, self.server_dir.clone());
+        }
+        let (text, color) = match &state {
+            _ if self.preview.is_some() => ("(Task Scheduler is not read in a preview)".to_string(), BADGE_AMBER),
+            BootTask::Unknown | BootTask::Working(_) => ("checking Task Scheduler...".to_string(), BADGE_AMBER),
+            BootTask::Known(Registered::Yes) => (format!("on: the task '{}' starts this launcher at every Windows start", a::TASK_NAME), BADGE_GREEN),
+            BootTask::Known(Registered::No) => (
+                "off: nothing starts the launcher when Windows starts -- after a reboot the server stays down until someone logs on and starts it".to_string(),
+                BADGE_AMBER,
+            ),
+            BootTask::Known(Registered::Differs(why)) => (
+                format!("a task '{}' is there, but {why}: tick the box to replace it with this launcher's", a::TASK_NAME),
+                BADGE_AMBER,
+            ),
+            BootTask::Failed(e) => (format!("Task Scheduler could not be read: {e}"), BADGE_RED),
+        };
+        ui.label(egui::RichText::new(text).small().color(color));
+    }
+
+    /// The badges row while another launcher runs the folder: what its status
+    /// file says (it rewrites the file every 15 s).
+    fn draw_viewer_badges(&self, ui: &mut egui::Ui) {
+        let v = &self.viewer;
+        ui.horizontal_wrapped(|ui| {
+            let state = v.get("server_state");
+            if state.is_empty() {
+                badge(ui, "Server", false, "(no status file from the launcher that runs it)");
+                return;
+            }
+            badge(ui, "Server", state == "Started", &format!("{state} -- {}", v.get("phase")));
+            let written: u64 = v.get("written_unix").parse().unwrap_or(0);
+            let age = unix_now().saturating_sub(written);
+            if age > 180 {
+                badge(ui, "Status", false, &format!("{} old: that launcher is closed or hung", icraft_core::instance::span(age)));
+            }
+            let hb = v.get("heartbeat");
+            badge(ui, "Heartbeat", !hb.starts_with("GAVE UP") && !hb.starts_with("DOWN"), if hb.is_empty() { "armed" } else { hb });
+            if !v.get("stuck").is_empty() {
+                badge(ui, "Cycle", false, v.get("stuck"));
+            }
+            let who = match v.get("launcher_mode") {
+                icraft_core::instance::MODE_BOOT => "the boot instance (no window)",
+                icraft_core::instance::MODE_WINDOW => "a launcher window",
+                _ => "another launcher",
+            };
+            badge_colored(
+                ui,
+                "Run by",
+                BADGE_AMBER,
+                &format!("{who}, pid {}, Windows session {}", v.get("launcher_pid"), v.get("session_id")),
+            );
+        });
+    }
+
+    /// The Server tab while another launcher runs the folder.
+    fn draw_viewer(&mut self, ui: &mut egui::Ui, holder: Option<&icraft_core::instance::Holder>) {
+        use icraft_core::autostart as a;
+        ui.add_space(4.0);
+        ui.heading("Another launcher runs this server");
+        let who = holder.map_or("Another launcher".to_string(), |h| {
+            let d = h.describe();
+            let mut c = d.chars();
+            c.next().map_or(d.clone(), |f| f.to_uppercase().collect::<String>() + c.as_str())
+        });
+        ui.label(format!(
+            "{who} holds this server folder, so this window does not run the server: two launchers on one folder would \
+             each sync files, restart the server and start a JVM on the same world."
+        ));
+        if holder.is_some_and(|h| h.is_boot()) {
+            ui.label(egui::RichText::new(
+                "The boot instance is what the Start-at-boot task started when Windows started. It runs the server exactly as \
+                 this window would (the same Cycle, heartbeat, restart policy, backups and request files), without a window. \
+                 Its log is below (logs\\launcher.log); the game's own log is logs\\latest.log.",
+            ).small().weak());
+        }
+        ui.add_space(6.0);
+        ui.horizontal_wrapped(|ui| {
+            if ui.add(egui::Button::new("Cycle (ask it)").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                let body = format!("{} gui-viewer\n", unix_now());
+                match std::fs::write(self.server_dir.join(CYCLE_REQUEST_FILE), body) {
+                    Ok(()) => log::info!("[viewer] asked the launcher that runs the server for a Cycle (it answers within ~10 s)"),
+                    Err(e) => log::warn!("[viewer] could not write the Cycle request: {e}"),
+                }
+                self.viewer.read_at = None;
+            }
+            if ui.add(egui::Button::new("Back up now (ask it)").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                match icraft_core::backup::write_request(&self.server_dir, "gui-viewer") {
+                    Ok(()) => log::info!("[viewer] asked for a pinned backup (taken at once with the server down, else at the next Cycle)"),
+                    Err(e) => log::warn!("[viewer] could not write the backup request: {e}"),
+                }
+            }
+            let armed = self.viewer.armed_at.is_some_and(|t| t.elapsed() < Duration::from_secs(10));
+            let waiting = TAKEOVER_ASKED.load(Ordering::SeqCst);
+            let label = if waiting { "Waiting for it to let go..." } else if armed { "Click again to take over" } else { "Take over here" };
+            if ui.add_enabled(!waiting, egui::Button::new(label).min_size(egui::vec2(180.0, 28.0))).clicked() {
+                if armed {
+                    self.viewer.armed_at = None;
+                    match a::write_takeover_request(&self.server_dir, &format!("window pid {}", std::process::id()), unix_now()) {
+                        Ok(()) => {
+                            TAKEOVER_ASKED.store(true, Ordering::SeqCst);
+                            log::info!("[viewer] asked the launcher that runs the server to let go: this window starts it once it has");
+                        }
+                        Err(e) => log::warn!("[viewer] could not write the takeover request: {e}"),
+                    }
+                    self.viewer.read_at = None;
+                } else {
+                    self.viewer.armed_at = Some(Instant::now());
+                }
+            }
+        });
+        ui.label(egui::RichText::new(
+            "Take over here: the other launcher stops the server (a 60 s in-game countdown when players are on) and exits, then \
+             this window syncs and starts it -- about five minutes down in all. Needed for the console, Stop and the Customizer. \
+             Keep this window open until the server is back up: once it runs the server, closing this window or signing out \
+             stops it, and nothing starts it again until the next Windows start (or run the task by hand: \
+             schtasks /Run /TN \"IridescentCraft launcher at boot\").",
+        ).small().weak());
+        if !self.viewer.takeover_answer.is_empty() {
+            ui.label(format!("Last answer to a takeover: {}", self.viewer.takeover_answer));
+        }
+        ui.add_space(8.0);
+        self.draw_boot_task(ui);
+    }
+
     fn draw_log_pane(&self, ui: &mut egui::Ui) {
         // Virtualized rendering: ScrollArea::show_rows lays out only
         // the rows currently in the viewport (typically ~30) instead
@@ -2403,7 +3113,10 @@ impl IcraftApp {
         // (real bug, 2026-05-09: tester saw hang at YACL deserialize
         // line while server kept booting fine in the background).
         let row_height = ui.text_style_height(&egui::TextStyle::Body);
-        let total = self.log_lines.len();
+        // While another launcher runs the folder: the tail of its
+        // logs\launcher.log (lines with a time in front), not this window's.
+        let viewing = matches!(role(), Role::Viewer(_));
+        let total = if viewing { self.viewer.log.len() } else { self.log_lines.len() };
         egui::ScrollArea::vertical()
             .stick_to_bottom(true)
             .auto_shrink([false, false])
@@ -2412,12 +3125,18 @@ impl IcraftApp {
                     // VecDeque random access is O(1) when both halves
                     // of the ring fit (always, for our sizes); .get
                     // is the safe lookup that returns Option.
-                    let Some(line) = self.log_lines.get(i) else { continue };
-                    let color = if line.starts_with("[ERROR")        { egui::Color32::from_rgb(244, 102, 102) }
-                               else if line.starts_with("[ WARN")    { egui::Color32::from_rgb(244, 199, 102) }
-                               else if line.starts_with("[ INFO")    { egui::Color32::from_rgb(180, 220, 255) }
-                               else if line.starts_with("[DEBUG")    { egui::Color32::from_rgb(140, 140, 140) }
-                               else                                  { egui::Color32::LIGHT_GRAY };
+                    let line = if viewing { self.viewer.log.get(i) } else { self.log_lines.get(i) };
+                    let Some(line) = line else { continue };
+                    let level = match line.as_bytes() {
+                        // "2026-10-20 08:12:03 [ INFO] ..." from launcher.log
+                        [_, _, _, _, b'-', ..] if line.len() > 20 && line.is_char_boundary(20) => &line[20..],
+                        _ => line.as_str(),
+                    };
+                    let color = if level.starts_with("[ERROR")        { egui::Color32::from_rgb(244, 102, 102) }
+                               else if level.starts_with("[ WARN")    { egui::Color32::from_rgb(244, 199, 102) }
+                               else if level.starts_with("[ INFO")    { egui::Color32::from_rgb(180, 220, 255) }
+                               else if level.starts_with("[DEBUG")    { egui::Color32::from_rgb(140, 140, 140) }
+                               else                                   { egui::Color32::LIGHT_GRAY };
                     ui.colored_label(color, line);
                 }
             });

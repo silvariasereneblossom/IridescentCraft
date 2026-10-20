@@ -19,6 +19,11 @@
 //!   - [`firewall`]  — Windows firewall audit
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
 //!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
+//!   - [`autostart`] — "Start at boot": the Task Scheduler task that starts the
+//!     launcher without its window when Windows starts (nobody logged on), and
+//!     the request a window uses to take the server over from it
+//!   - [`instance`]  — one launcher per server folder (a lock file held open)
+//!   - [`launcher_log`] — `logs\launcher.log`, the launcher's own lines on disk
 //!
 //! Server Customizer, the world (on demand only -- none of this is called from
 //! [`serve`] or a Cycle):
@@ -52,6 +57,7 @@
 //! provides the trans-flag-colored banner used at startup.
 
 pub mod anvil;
+pub mod autostart;
 pub mod backup;
 pub mod banner;
 pub mod cfgedit;
@@ -65,6 +71,8 @@ pub mod git;
 pub mod github;
 pub mod http;
 pub mod install;
+pub mod instance;
+pub mod launcher_log;
 pub mod logpush;
 pub mod mods;
 pub mod nbt;

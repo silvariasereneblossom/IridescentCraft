@@ -497,6 +497,13 @@ function Get-LauncherLiveness {
     if ($push) {
         $r.Notes.Add("log push: $push") | Out-Null
     }
+    # Since 2026-10-20: which launcher runs the server. 'boot' = the instance the
+    # "Start at boot" task started at Windows start (no window, session 0).
+    $mode = [string]$st['launcher_mode']
+    if ($mode) {
+        $what = if ($mode -eq 'boot') { 'the boot instance (no window; started by the Start-at-boot task)' } else { 'a launcher window' }
+        $r.Notes.Add("run by ${what}: pid $($st['launcher_pid']), Windows session $($st['session_id'])") | Out-Null
+    }
     $fpm = & $num 'frames_per_min'
     if ($fpm -gt 120) {
         $r.Notes.Add("the launcher window paints $fpm frames a minute: it is repainting continuously (a full core on the server's software renderer)") | Out-Null
