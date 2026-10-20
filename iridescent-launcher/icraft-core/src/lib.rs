@@ -24,6 +24,8 @@
 //!     the request a window uses to take the server over from it
 //!   - [`instance`]  — one launcher per server folder (a lock file held open)
 //!   - [`launcher_log`] — `logs\launcher.log`, the launcher's own lines on disk
+//!   - [`token`]     — the boot instance's rights: a restricted copy of its own
+//!     token (Administrators deny-only, medium integrity), as the window has
 //!
 //! Server Customizer, the world (on demand only -- none of this is called from
 //! [`serve`] or a Cycle):
@@ -86,6 +88,7 @@ pub mod restart_policy;
 pub mod run;
 pub mod self_update;
 pub mod sync;
+pub mod token;
 pub mod tools;
 pub mod worlddata;
 pub mod worldgen;

@@ -502,7 +502,12 @@ function Get-LauncherLiveness {
     $mode = [string]$st['launcher_mode']
     if ($mode) {
         $what = if ($mode -eq 'boot') { 'the boot instance (no window; started by the Start-at-boot task)' } else { 'a launcher window' }
-        $r.Notes.Add("run by ${what}: pid $($st['launcher_pid']), Windows session $($st['session_id'])") | Out-Null
+        $tok = if ($st['token']) { ", token: $($st['token'])" } else { '' }
+        $r.Notes.Add("run by ${what}: pid $($st['launcher_pid']), Windows session $($st['session_id'])$tok") | Out-Null
+        # Decision 177 (b): the boot instance runs with the window's rights, never a full administrator's.
+        if ($mode -eq 'boot' -and $st['token'] -and [string]$st['token'] -notmatch '^(low|medium), ') {
+            $r.Notes.Add("the boot instance's token is NOT restricted ($($st['token'])): it should read 'medium, Administrators deny-only' (decision 177 (b))") | Out-Null
+        }
     }
     $fpm = & $num 'frames_per_min'
     if ($fpm -gt 120) {
@@ -727,7 +732,7 @@ if ($live.State -eq 'GREEN')  { $liveColor = 'Green' }
 if ($live.State -eq 'YELLOW') { $liveColor = 'Yellow' }
 if ($live.State -eq 'RED')    { $liveColor = 'Red' }
 Write-Host ("  {0}: {1}" -f $(if ($live.State -eq 'NONE') { 'NOT JUDGED' } else { $live.State }), $live.Line) -ForegroundColor $liveColor
-foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -match 'FAILED|continuously') { 'Yellow' } else { 'DarkGray' }) }
+foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -match 'FAILED|continuously|NOT restricted') { 'Yellow' } else { 'DarkGray' }) }
 if ($IsVerbose -and $live.State -eq 'RED') {
     Write-Host "    cause: the launcher is alive and the server is not. List the launcher's CHILD processes on the box (name, pid, start time, CPU - never command lines) twice, a minute apart: a child with an old start time and no CPU is what it is waiting on. logs\restart_policy.log has the stop time and any WATCHDOG line. See deployment guide section 14." -ForegroundColor DarkYellow
 }

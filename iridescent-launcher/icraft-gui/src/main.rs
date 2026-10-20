@@ -1249,6 +1249,9 @@ fn spawn_cycle_watchdog() {
         let mut counted_at = Instant::now();
         let mode = if WINDOWLESS.load(Ordering::SeqCst) { icraft_core::instance::MODE_BOOT } else { icraft_core::instance::MODE_WINDOW };
         let session = icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string());
+        // What this process may do (decision 177 (b)): the boot instance's token
+        // must read like the window's, "medium, Administrators deny-only".
+        let token = icraft_core::token::current().map_or_else(|e| format!("unknown ({e})"), |t| t.short());
         loop {
             std::thread::sleep(STATUS_TICK);
             let now = current_phase();
@@ -1298,6 +1301,7 @@ fn spawn_cycle_watchdog() {
                  launcher_started_unix={launched}\n\
                  launcher_mode={mode}\n\
                  session_id={session}\n\
+                 token={token}\n\
                  supervised={supervised}\n\
                  server_state={state:?}\n\
                  phase={phase_name}\n\
@@ -1520,6 +1524,9 @@ fn run_boot(dir: PathBuf) {
     use icraft_core::autostart::{TakeoverVerdict, TAKEOVER_RESULT_FILE};
     use icraft_core::instance::{self, Acquired, Holder, MODE_BOOT};
     WINDOWLESS.store(true, Ordering::SeqCst);
+    // Decision 177 (b): before anything touches the server folder, give up the
+    // full administrator rights an S4U task's logon carries.
+    let Some(rights) = boot_rights(&dir) else { return };
     let opened = LAUNCHER_LOG.open(&dir);
     log::info!(
         "[boot] boot instance starting: pid {}, Windows session {}, server folder {}",
@@ -1527,6 +1534,7 @@ fn run_boot(dir: PathBuf) {
         icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string()),
         dir.display()
     );
+    log::info!("[boot] token: {rights}");
     if let Err(e) = opened {
         // Nobody will read this (there is no file and no window), but stderr.
         log::error!("[boot] logs\\launcher.log could not be opened: {e}");
@@ -1605,6 +1613,54 @@ fn run_boot(dir: PathBuf) {
         format!("{} released: the boot instance has let go of the server folder and exited\n", unix_now()),
     );
     drop(lock);
+}
+
+/// Set in the process the restricted restart started: the pid that started it.
+/// A self-update relaunch inherits it with the token.
+const RESTRICTED_MARKER: &str = "ICRAFT_BOOT_RESTRICTED";
+
+/// The boot instance's rights, settled before it touches the server folder
+/// (decision 177 (b); icraft_core::token). `Some(what the token is)`: carry
+/// on. `None`: this process is done -- it started its restricted self, or it
+/// could not, and then it does not run the server with full administrator
+/// rights (the reason goes to logs\launcher.log, the one write it makes).
+fn boot_rights(dir: &Path) -> Option<String> {
+    use icraft_core::token;
+    if !cfg!(windows) {
+        return Some("not checked (not Windows)".to_string());
+    }
+    let refuse = |why: String| -> Option<String> {
+        if LAUNCHER_LOG.open(dir).is_ok() {
+            log::error!(
+                "[boot] {why} -- the boot instance does not run the server with full administrator rights \
+                 (decision 177 (b)); start the launcher at the box"
+            );
+        }
+        None
+    };
+    let me = match token::current() {
+        Ok(me) => me,
+        Err(e) => return refuse(format!("its own token could not be read: {e:#}")),
+    };
+    if !me.has_admin_rights() {
+        let how = std::env::var(RESTRICTED_MARKER)
+            .map_or(String::new(), |pid| format!("restricted (restarted so by pid {pid}): "));
+        return Some(format!("{how}{}", me.describe()));
+    }
+    if std::env::var_os(RESTRICTED_MARKER).is_some() {
+        return refuse(format!("the restricted restart did not take: this process still has {}", me.describe()));
+    }
+    std::env::set_var(RESTRICTED_MARKER, std::process::id().to_string());
+    let exe = match std::env::current_exe() {
+        Ok(exe) => exe,
+        Err(e) => return refuse(format!("this launcher's own path is unknown: {e}")),
+    };
+    let args: Vec<std::ffi::OsString> = std::env::args_os().skip(1).collect();
+    match token::spawn_restricted(&exe, &args, dir) {
+        // The restricted process carries on; this one has nothing more to do.
+        Ok(_) => None,
+        Err(e) => refuse(format!("it could not restart itself under a restricted token ({e:#}); it had {}", me.describe())),
+    }
 }
 
 /// A takeover request, if one is there: read, removed, answered.
