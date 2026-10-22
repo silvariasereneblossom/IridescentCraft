@@ -256,18 +256,10 @@ function registerStageRestrictions() {
 
   // -- Individual item restrictions --
   stageItems('tier_3', [
-    // Quartz — overworld_quartz mod injects nether_quartz into overworld;
-    // 2026-04-26 user directive: quartz comes from Nether (T3) only. Stripped
-    // overworld_quartz biome injection via icraft_worldgen_overrides datapack
-    // and gating items here so vanilla nether_quartz_ore + quartz blocks
-    // require T3 stage.
-    'minecraft:nether_quartz_ore', 'minecraft:quartz',
-    'minecraft:quartz_block', 'minecraft:smooth_quartz',
-    'minecraft:chiseled_quartz_block', 'minecraft:quartz_pillar',
-    'minecraft:quartz_bricks',
-    'minecraft:quartz_stairs', 'minecraft:quartz_slab',
-    'minecraft:smooth_quartz_stairs', 'minecraft:smooth_quartz_slab',
-    'overworld_quartz:overworld_quartz_ore', 'overworld_quartz:deepslate_quartz_ore',
+    // (Quartz, its blocks and the three quartz ores are tier 1 since
+    // 2026-10-22, operator: "we need Quartz to be Tier 1 and visible because
+    // it's a Create recipe dependency". Overworld Quartz generates it in the
+    // Overworld again. They were tier 3 here from 2026-04-26.)
     // Diamond raw + derivatives
     'minecraft:diamond', 'minecraft:diamond_block',
     'minecraft:diamond_sword', 'minecraft:diamond_pickaxe',

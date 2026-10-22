@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "78ad96a0",
+    "generated_from":  "8ab87a07",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4352,8 +4352,8 @@
                                                                         "size":  5936
                                                                     },
                   "config/paxi/datapacks/icraft_occultism_overrides.zip":  {
-                                                                               "sha256":  "326854e3719509b736b98a751f675429942c39871426488478b7e5ea5bbf740f",
-                                                                               "size":  4218
+                                                                               "sha256":  "8270cf51b620dfdc1d350bb1a29b694277b7f8490c8e3952d74e2f67dcafd80f",
+                                                                               "size":  3813
                                                                            },
                   "config/paxi/datapacks/icraft_origins_overrides.zip":  {
                                                                              "sha256":  "7003aa24c738600d171c04d00907531335c4840049c872e954417c435c57f8b9",
@@ -4384,8 +4384,8 @@
                                                                            "size":  2002
                                                                        },
                   "config/paxi/datapacks/icraft_worldgen_overrides.zip":  {
-                                                                              "sha256":  "64dbf54497c9765e4812757b5d4153b9f561df61dc602d8f66d33fe73e7b6590",
-                                                                              "size":  7029
+                                                                              "sha256":  "b468e50dde91ae23e0d76c465836033aad1f51153dc435186a0bbafdc37e5102",
+                                                                              "size":  6789
                                                                           },
                   "config/paxi/datapacks/keepinventory_datapack.zip":  {
                                                                            "sha256":  "b27d333d9b9e7891475ad05fd1fdd691612d4f2a0cd8e95985d7bc362ded3d68",
@@ -7400,8 +7400,8 @@
                                                                       "size":  19759
                                                                   },
                   "kubejs/server_scripts/economy/villager_trades.js":  {
-                                                                           "sha256":  "ebf0455c5cf9593349242345ec9e5d98e7501496ade13cd0c408e010ab6de0d0",
-                                                                           "size":  12085
+                                                                           "sha256":  "f7b13c7f442ec67845f455548df7a67cea270b27079d4041b8094eaeaae3fd91",
+                                                                           "size":  11642
                                                                        },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
                                                                                 "sha256":  "4e79abcf3aafe8af7c7025f21af80f845c521d60fd017c6aada5d4009a788a79",
@@ -7456,8 +7456,8 @@
                                                                       "size":  4038
                                                                   },
                   "kubejs/server_scripts/gates/astages_restrictions.js":  {
-                                                                              "sha256":  "2befcf0abc27d8f988bab62e03f1d9486f5cdd3bcc0c6d1ce6bbab7200eeb245",
-                                                                              "size":  31933
+                                                                              "sha256":  "f6376dc6ebfa47ba0b093cb86490a2e55287db19cce8baf2f0b03e7657423234",
+                                                                              "size":  31468
                                                                           },
                   "kubejs/server_scripts/gates/codex_boss_rush.js":  {
                                                                          "sha256":  "fb426a60e895a36b825ab01b8077a0d9c1db0302f9e20f47a672681c608b7917",
@@ -7776,8 +7776,8 @@
                                                                                   "size":  2420
                                                                               },
                   "kubejs/server_scripts/recipes/recipe_audit.js":  {
-                                                                        "sha256":  "99983323fa14f63e42cf6ba738eecb3dfc78295422f4bcf12a46535c9fb22f6a",
-                                                                        "size":  29317
+                                                                        "sha256":  "b1c1cb296c71dc40d048513f8840948b896ecb39df4c7a76d40a0cf6dfc6fd3d",
+                                                                        "size":  29411
                                                                     },
                   "kubejs/server_scripts/recipes/refined_storage_dualpath.js":  {
                                                                                     "sha256":  "9b8212c221bfe320900e3e92ccc7d0d28a10841062dd193a28229ec98ce2c307",
@@ -7796,8 +7796,8 @@
                                                                                  "size":  1548
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "f25511d420853be44eeb610e84af1b023059cb0eb153432c8127da0db6d4bd85",
-                                                                              "size":  35864
+                                                                              "sha256":  "a1e7ad47bee31568cc7d162ea950c9dd3716861cbc1b43732118d330278f168e",
+                                                                              "size":  35927
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
                                                                             "sha256":  "5ca4bcc435042ab860530412a6fd17a7a3652c3945a4f98411b2daa06056518e",

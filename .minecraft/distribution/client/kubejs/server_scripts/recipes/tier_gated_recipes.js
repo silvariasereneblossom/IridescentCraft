@@ -559,7 +559,8 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
 
   // ═══ SECTION I.7: ARS APPRENTICE SPELL BOOK → T2 ═══
   // Vanilla Ars Nouveau apprentice_spell_book_upgrade required diamonds (×3),
-  // blaze rods (×2), quartz blocks (×2) — all T3 materials. The apprentice
+  // blaze rods (×2), quartz blocks (×2) — all T3 materials (quartz is tier 1
+  // since 2026-10-22; the source gems stay). The apprentice
   // book itself is a T2 workstation entry per master-appendix A.2, so the
   // recipe gating contradicted its tier.
   // Re-tiered to T2-appropriate ingredients:

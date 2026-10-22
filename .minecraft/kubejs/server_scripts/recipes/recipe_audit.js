@@ -140,9 +140,11 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // E.4: Occultism Ritual — dimensional miners that bypass ore removal.
   // Handled via the icraft_occultism_overrides datapack:
   //   datapack_sources/icraft_occultism_overrides/data/occultism/recipes/miner/ores/
-  // Restricts diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/
-  // xpetrified_ore from the `ores` ingredient tag (Foliot+ accessible) to the
-  // `deeps` tag (T3+ Afrit/Marid only). Dimensional_shard_ore is gated to
+  // Restricts diamond/emerald/arcane_crystal/osmium/nether_gold/xpetrified_ore
+  // from the `ores` ingredient tag (Foliot+ accessible) to the `deeps` tag
+  // (T3+ Afrit/Marid only); nether_quartz_ore is back on Occultism's own
+  // `ores` entry since quartz became tier 1 (2026-10-22).
+  // Dimensional_shard_ore is gated to
   // `master` (T4 Marid only). This closes the audit's P0 finding from
   // 2026-04-27 — without this datapack a Foliot Miner could produce diamond
   // (weight 218) without any tier gating. See audits/occultism.md in the

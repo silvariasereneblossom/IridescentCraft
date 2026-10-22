@@ -24,8 +24,8 @@
 // stand-in villager (never added to the world) and drops the listing when an
 // offer's result is banned (BANNED below). It does not clear a level: the
 // other trades of the level stay, MCA's included. ADD puts a convenience
-// trade into each smith level that sold diamond gear and the master mason's
-// (quartz), and two XP bottle trades on the cleric. Map listings and Iron's
+// trade into each smith level that sold diamond gear, and two XP bottle
+// trades on the cleric. Map listings and Iron's
 // Spellbooks' random curio are not asked (below); Apotheosis's affix trades
 // are judged by the items of their loot entries.
 //
@@ -36,10 +36,12 @@
 //
 // Choices made on recommendation, for review (decision list, internal
 // design-evolution 2026-10-19): what is banned; the refills in ADD and their
-// prices; the cleric's two XP bottle trades (capped at 8 uses); quartz, the
-// beacon, the eye of ender and the enchanted golden apple on the ban list;
-// enchanted iron tools, bows, crossbows and fishing rods stay (their enchants
-// are not treasure; no Mending).
+// prices; the cleric's two XP bottle trades (capped at 8 uses); the beacon,
+// the eye of ender and the enchanted golden apple on the ban list; enchanted
+// iron tools, bows, crossbows and fishing rods stay (their enchants are not
+// treasure; no Mending). Quartz left the ban list on 2026-10-22 when it
+// became tier 1 (the master mason sells it again, and the calcite trade that
+// stood in for it is gone).
 // =============================================================================
 
 ;(function () {
@@ -52,9 +54,8 @@
   // Diamond and netherite gear, and the materials themselves: tier 3 and 4
   // items (gates/astages_restrictions.js). The other tier-gated items the rig
   // found on sale (every result of every table checked against that file on
-  // 2026-10-19): quartz blocks (the master mason; quartz is tier 3), a beacon
-  // (the wandering trader, 25 emeralds; tier 3) and eyes of ender (the
-  // wandering trader, 2 emeralds; tier 4). The enchanted golden apple: the loot
+  // 2026-10-19): a beacon (the wandering trader, 25 emeralds; tier 3) and eyes
+  // of ender (the wandering trader, 2 emeralds; tier 4). The enchanted golden apple: the loot
   // overhaul strips it from tier-1 chests with the diamond gear (MCA's
   // adventurer sells one for 32 emeralds). A diamond a player SELLS to a
   // villager (a cost) is not touched.
@@ -69,14 +70,11 @@
     'minecraft:netherite_shovel', 'minecraft:netherite_hoe',
     'minecraft:netherite_helmet', 'minecraft:netherite_chestplate',
     'minecraft:netherite_leggings', 'minecraft:netherite_boots',
-    'minecraft:quartz', 'minecraft:quartz_block', 'minecraft:smooth_quartz', 'minecraft:chiseled_quartz_block',
-    'minecraft:quartz_pillar', 'minecraft:quartz_bricks', 'minecraft:quartz_stairs', 'minecraft:quartz_slab',
-    'minecraft:smooth_quartz_stairs', 'minecraft:smooth_quartz_slab',
     'minecraft:beacon', 'minecraft:ender_eye',
     'minecraft:enchanted_golden_apple'
   ])
 
-  // ---- convenience trades added: the levels that sold diamond gear or quartz, the cleric's XP ----
+  // ---- convenience trades added: the levels that sold diamond gear, the cleric's XP ----
   // profession -> level -> [emeralds, item, count, max uses, villager xp]
   var ADD = {
     'minecraft:armorer': {
@@ -88,11 +86,6 @@
     },
     'minecraft:weaponsmith': {
       5: [[5, 'minecraft:shield', 1, 12, 30]]
-    },
-    // the master mason sold quartz blocks and pillars (tier 3): a white
-    // Overworld stone in their place
-    'minecraft:mason': {
-      5: [[1, 'minecraft:calcite', 4, 12, 30]]
     },
     // XP for emeralds before the master level (vanilla's master cleric sells
     // a bottle for 3); dearer, and 8 a restock.
@@ -222,7 +215,7 @@
     while (wander.hasNext()) filterLevel(wander.next(), trader, 'minecraft:wandering_trader', null, totals)
     trader.discard()
     console.info('[villager_trades] removed ' + (totals.book + totals.item) + ' listings (' + totals.book + ' enchanted books, ' +
-      totals.item + ' tier items: diamond, netherite, quartz, beacon, eye of ender, notch apple), added ' + totals.added + ', in ' + (Date.now() - started) + ' ms: ' + totals.lines.join('; '))
+      totals.item + ' tier items: diamond, netherite, beacon, eye of ender, notch apple), added ' + totals.added + ', in ' + (Date.now() - started) + ' ms: ' + totals.lines.join('; '))
     icraft.live.fired('villager-trades-filtered')
   }))
 })()
