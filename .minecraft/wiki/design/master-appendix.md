@@ -1172,7 +1172,7 @@ Taken directly from `kubejs/server_scripts/gates/astages_restrictions.js` when t
 **Mod blanket gates**: `mekanism`, `mekanismgenerators`, `refinedstorage`, `extrastorage`, `extradisks`, `rsrequestify`, `xnet`.
 
 **Items** (~50 entries):
-- Quartz chain: `nether_quartz_ore`, `quartz`, `quartz_block`, smooth/chiseled/pillar/bricks variants, stairs/slab + smooth equivalents, `overworld_quartz:overworld_quartz_ore`, `overworld_quartz:deepslate_quartz_ore`.
+- (The quartz chain, `nether_quartz_ore`, `quartz`, its blocks and the two `overworld_quartz` ores, left this list on 2026-10-22: quartz is tier 1 because Create needs it.)
 - Diamond chain: `diamond`, `diamond_block`, 4-piece diamond armor, 4-piece diamond tools + diamond_horse_armor, `diamond_ore`, `deepslate_diamond_ore`, `enchanting_table`.
 - Nether: `ancient_debris`, `respawn_anchor`.
 - Ars Nouveau T3: `archmage_spell_book`, `imbuement_chamber`.
@@ -1229,14 +1229,14 @@ Validated by `tools/validate_datapack_references.sh`. Each entry is a Paxi datap
 | `icraft_botania_overrides` | Orechid weight overrides: diamond/deepslate-diamond/ancient-debris/osmium/deepslate-osmium set to 0 | Tier-skip prevention |
 | `icraft_dungeon_crawl_overrides` | Dungeon Crawl tier alignment | Loot tier consistency |
 | `icraft_loot_overrides` | Global loot table overrides (incl. the Supplementaries ash_blacklist that keeps passive mobs out of ash drops, since the mod's own config toggle is dead code) | Misc loot tuning |
-| `icraft_occultism_overrides` | Audit Phase 1 (2026-04-27). 8 miner-recipe overrides: diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/xpetrified_ore moved from the `ores` tag (any miner) to the `deeps` tag (T3+ Afrit/Marid), and dimensional_shard_ore restricted to `master` (T4 Marid only). | P0 fix |
+| `icraft_occultism_overrides` | Audit Phase 1 (2026-04-27). 7 miner-recipe overrides: diamond/emerald/arcane_crystal/osmium/nether_gold/xpetrified_ore moved from the `ores` tag (any miner) to the `deeps` tag (T3+ Afrit/Marid), and dimensional_shard_ore restricted to `master` (T4 Marid only). Nether quartz ore went back to Occultism's own `ores` entry on 2026-10-22 (quartz is tier 1). | P0 fix |
 | `icraft_progdiff_overrides` | Progressive Difficulty tuning | Difficulty consistency |
 | `icraft_skills` | Pufferfish's Skills tree definitions | 6 skill trees |
 | `icraft_terramity_overrides` | Terramity gem ore biome injection (sapphire/topaz/iridium/gaianite into Aether/Twilight/BS) | T2 ore distribution |
 | `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm / blue_skies / Undergarden / F&A / theabyss metals; the 4 theabyss entries, garnite / knight / phantom / unorithe, are live because the mod is in the pack) | T2-T4 Tetra entries |
 | `icraft_tetra_overrides` | Tetra material stat tweaks | Balance |
 | `icraft_tower_overrides` | Towers of the Wild + Apotheosis tome-tower spawn frequency (post-2026-06-06 worldgen rebalance: TOTW `regular` spacing 28 / separation 20; Apoth `tower_main`/`tower_leaf`/`tower_sand`/`tower_spruce` spacing 24 / separation 14-16) | Worldgen tuning |
-| `icraft_worldgen_overrides` | Vanilla iron/copper + modded zinc/nickel/silver/lead distribution | Worldgen base |
+| `icraft_worldgen_overrides` | Vanilla iron/copper + modded zinc/nickel/silver/lead distribution. (It also switched off Overworld Quartz's ore from 2026-04-26 to 2026-10-22; the mod's own rate applies now.) | Worldgen base |
 
 3rd-party datapacks loaded through Paxi without modification: `ScalingHealth_NoCrystalDrops_AllVanilla`, `Towers_Of_The_Wild_Reworked` + `_v4.2.1_Waystone`, `fix_stone_tags` (revived 2026-06-06), `keepinventory_datapack`. (`infinity_ham_blocker` was deleted on 2026-06-06; the Infinity Ham kill-switch is now config + JEI hide + a strip script instead of a datapack.)
 
@@ -1370,7 +1370,7 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `respec/class_respec.js` | `/icraft_respec` command: Class layer only (Origin/Race are permanent) |
 | `skills/skill_effects.js` | Pufferfish skill effect handlers + JustLevelingFork bridge |
 | `skills/justleveling_skills.js` | Magic skill tree integration |
-| `economy/villager_trades.js` | The villager rework (October 2026): at server start it drops every villager and wandering-trader trade whose offer is an enchanted book, diamond / netherite gear, quartz, a beacon, an eye of ender or an enchanted golden apple, and adds horse armor, an anvil and a shield to the smith levels that sold diamond gear, calcite to the master mason and two XP bottle trades to the cleric. A villager keeps the offers it already has |
+| `economy/villager_trades.js` | The villager rework (October 2026): at server start it drops every villager and wandering-trader trade whose offer is an enchanted book, diamond / netherite gear, a beacon, an eye of ender or an enchanted golden apple, and adds horse armor, an anvil and a shield to the smith levels that sold diamond gear and two XP bottle trades to the cleric. (Quartz was on the list, with calcite for the master mason, until 2026-10-22.) A villager keeps the offers it already has |
 | `enchantments/enchant_effects.js` | Effect handlers for 25 of the 29 custom enchantments (Warp Shield, Thermal Regulation, Pressure Shell and Void Adaptation are handled in the dimension mechanics script, I.5) |
 | `affixes/affix_effects.js` | 65 event-driven Apotheosis affix handlers |
 | `food/hunger_management.js` | Hunger Overhaul integration |

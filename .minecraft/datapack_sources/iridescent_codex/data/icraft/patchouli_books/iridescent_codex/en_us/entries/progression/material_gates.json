@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 1 Materials$()$(br2)Iron · Copper · Brass (Create) · Tin · Bronze$(br2)$(bold)What's absent:$() diamonds, cut from all Overworld worldgen and structure chests. Steel needs the Thermal Series (Tier 2) and Netherite the Nether (Tier 3), so your Tier 1 ceiling is a bronze or brass weapon/armor set with Common Apotheosis affixes."
+      "text": "$(bold)Tier 1 Materials$()$(br2)Iron · Copper · Brass (Create) · Tin · Bronze · Quartz$(br2)$(bold)What's absent:$() diamonds, cut from all Overworld worldgen and structure chests. Steel needs the Thermal Series (Tier 2) and Netherite the Nether (Tier 3), so your Tier 1 ceiling is a bronze or brass weapon/armor set with Common Apotheosis affixes."
     },
     {
       "type": "patchouli:text",

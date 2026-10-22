@@ -11,7 +11,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 1: Foundations",
-      "text": "$(bold)Material tier:$() Iron, Copper, Brass, Tin, Bronze$(br)$(bold)Dimensions:$() {{tier 1 Dims}} only$(br)$(bold)Tech:$() Create$(br)$(bold)Magic:$() Botania, Iron's Spells$(br)$(bold)Notable:$() Diamonds are left out of Overworld chests and worldgen on purpose. Apotheosis affixes are Common-tier only."
+      "text": "$(bold)Material tier:$() Iron, Copper, Brass, Tin, Bronze, Quartz$(br)$(bold)Dimensions:$() {{tier 1 Dims}} only$(br)$(bold)Tech:$() Create$(br)$(bold)Magic:$() Botania, Iron's Spells$(br)$(bold)Notable:$() Diamonds are left out of Overworld chests and worldgen on purpose. Apotheosis affixes are Common-tier only."
     },
     {
       "type": "patchouli:text",

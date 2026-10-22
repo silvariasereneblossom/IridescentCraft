@@ -269,8 +269,9 @@ Spice of Life: Carrot Edition rewards a varied diet with HP bonuses. Food is ung
 Villagers (MCA's villagers in this pack) trade emeralds for convenience: food, building blocks, light, iron tools and armor, maps and name tags. Enchanting belongs to the enchanting table and the Relic Broker, and gear to the tier ladder, so since October 2026:
 
 - No villager sells an enchanted book. Before, librarians did, Mending included.
-- No villager or wandering trader sells diamond or netherite gear, diamonds and netherite themselves, quartz, a beacon, eyes of ender or an enchanted golden apple. Before, expert and master smiths sold enchanted diamond gear, wandering traders sold diamonds and, as rare trades, diamond gear with Mending, MCA's adventurers sold diamonds and enchanted golden apples, wandering traders a beacon and eyes of ender, master masons quartz. Smiths still buy diamonds for emeralds.
-- The smith levels that sold diamond gear sell horse armor (armorer: iron at expert, gold at master), an anvil (master toolsmith) and a shield (master weaponsmith); the master mason sells calcite (4 for an emerald) instead of quartz.
+- No villager or wandering trader sells diamond or netherite gear, diamonds and netherite themselves, a beacon, eyes of ender or an enchanted golden apple. Before, expert and master smiths sold enchanted diamond gear, wandering traders sold diamonds and, as rare trades, diamond gear with Mending, MCA's adventurers sold diamonds and enchanted golden apples, wandering traders a beacon and eyes of ender. Smiths still buy diamonds for emeralds.
+- The smith levels that sold diamond gear sell horse armor (armorer: iron at expert, gold at master), an anvil (master toolsmith) and a shield (master weaponsmith).
+- Master masons sell quartz blocks and pillars again since 22 October 2026, when quartz became a Tier 1 material. From 19 to 22 October they sold calcite instead; a mason that got the calcite trade keeps it.
 - Clerics sell an XP bottle for 6 emeralds at journeyman and 4 at expert, 8 a restock, besides the master's bottle for 3.
 - A villager keeps the trades it already offers. Only the trades it gets from now on, as a new villager or on a level-up, follow these rules.
 

@@ -25,6 +25,9 @@ text) or a gem stops working entirely, report it right away: those are loader-le
 failures, not balance issues.
 
 
+### Create's electron tube needed Tier 3 quartz: **Fixed (22 October 2026)**
+Quartz was a Tier 3 item, so a Tier 1 player could not craft rose quartz, electron tubes or the Create machines made with them. Quartz is Tier 1 now and its ore generates in the Overworld again, but only in chunks generated from 22 October on: explore new land to find it.
+
 ### The MekaSuit did not stop Ad Astra's freezing on the Moon and Mars: **Fixed (19 October 2026)**
 A full MekaSuit now counts as a space suit on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, charged or not. Each planet's own dangers (the cold of Mars, Mercury's night and Glacio, Mercury's sun, Venus's acid) still need the planet enchantments: Thermal Regulation, Stellar Shield and Pressure Shell.
 

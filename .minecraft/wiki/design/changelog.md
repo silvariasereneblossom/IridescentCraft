@@ -6,6 +6,13 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Quartz is a Tier 1 material (22 October)
+
+- **Quartz is Tier 1.** Quartz, its blocks (smooth, chiseled, pillar, bricks, stairs and slabs) and the quartz ores can be used and crafted from the start, and JEI shows them. Since April they were Tier 3, which also locked Create's rose quartz and with it the electron tube, so a Tier 1 player could not build a Deployer, a Mechanical Crafter, brass funnels and tunnels, smart chutes, or the other Create machines that take an electron tube. All of them can be built at Tier 1 now.
+- **Quartz ore generates in the Overworld again**, in stone and in deepslate, at every height. A freshly generated chunk holds about 120 quartz ore blocks, more under mountains and fewer under the sea. Only chunks generated from now on have it: land that is already explored has none, so look for it in new land. The Nether still opens at Tier 3.
+- **Master masons sell quartz blocks and pillars again**, 1 emerald each, and buy quartz from expert level as before. The calcite trade that replaced them on 19 October is gone. A mason keeps the trades it already offers, calcite included.
+- **Occultism's miners** can bring up nether quartz ore from the first miner spirit, as in Occultism itself. Since April only the Afrit and Marid could.
+
 ## October 2026: Mob drops and the last chests roll their extras once (19 October)
 
 - **Endermen, bats, squid, zombies, drowned and spawners roll Forbidden & Arcanus's extras once.** When Forbidden & Arcanus added its own drop (ender pearl fragments, bat wings, tentacles, zombie arms, spawner scrap), it ran every other loot rule a second time, as it did in chests until earlier the same day. An enderman killed in the End now drops a Codex Token III about one kill in twenty, the rate its loot rule gives (it was one in ten), and endermen anywhere drop half the RFTools Dimensions lost knowledge and dimlets they did (lost knowledge about one kill in eight instead of one in four). Forbidden & Arcanus's own drops are unchanged, and bats, squid, zombies, drowned and spawners drop what they did. This applies from the next server restart.

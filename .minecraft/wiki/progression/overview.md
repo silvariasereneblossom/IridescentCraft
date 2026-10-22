@@ -83,9 +83,9 @@ The gates survive a `/reload` (until October 2026 a reload switched them off unt
 
 ## Material Progression
 
-- Tier 1: Iron, Copper, Brass, Tin, Bronze. No diamonds.
+- Tier 1: Iron, Copper, Brass, Tin, Bronze, Quartz. No diamonds. Quartz ore (Overworld Quartz's stone and deepslate ores) generates in the Overworld, in chunks generated since 22 October 2026; Create needs quartz for rose quartz and electron tubes.
 - Tier 2: Steel, Manasteel, Signalum, Lumium, Steeleaf, Ironwood, Fiery. Limited diamonds. Plus Terramity sapphire / topaz / ruby / dimlite / gaianite (T2 dim-bound; see below).
-- Tier 3: Full diamond, Terrasteel, Elementium, Enderium, Osmium, Refined Obsidian, Ancient Debris. Plus Terramity iridium / profaned / iridescent, and vanilla quartz (the overworld_quartz mod's injection is turned off; quartz comes from the Nether only).
+- Tier 3: Full diamond, Terrasteel, Elementium, Enderium, Osmium, Refined Obsidian, Ancient Debris. Plus Terramity iridium / profaned / iridescent. (Quartz was Tier 3 and Nether-only from April to 22 October 2026.)
 - Tier 4: Netherite, Gaia Ingots, Dragon materials, Antimatter, Atomic Alloy. Plus Terramity onyx (End-only).
 
 ## Terramity ore tier-dim mapping (2026-04-26)
