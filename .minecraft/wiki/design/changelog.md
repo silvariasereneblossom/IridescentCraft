@@ -8,9 +8,10 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ## October 2026: Iron, coal, copper and quartz ore are half as common in new land (22 October)
 
-- **Newly generated Overworld land holds about half the iron, coal, copper and quartz ore it did.** Each of these ores now tries half as many veins in a chunk. A vein is as big as before and sits at the same heights and in the same biomes, so a vein you find is as rich as ever; there are half as many of them. A new chunk holds about 60 quartz ore blocks instead of about 120. The raw iron and raw copper blocks inside iron and copper veins, and the coal blocks inside coal veins, are halved with them.
+- **Newly generated Overworld land holds half the iron, coal, copper and quartz ore it did.** Each of these ores now tries fewer veins in a chunk, tuned so that a new chunk holds half the ore (measured over several hundred chunks). A vein is as big as before and sits at the same heights and in the same biomes, so a vein you find is as rich as ever; there are fewer of them. A new chunk holds about 58 quartz ore blocks instead of about 115. The raw iron and raw copper blocks inside iron and copper veins, and the coal blocks inside coal veins, are halved with them.
+- **Large Ore Deposits' big iron, coal and copper lodes are half as frequent**: about one lode in 2,000, 1,600 and 2,900 chunks instead of one in 1,000, 800 and 1,450. A lode is as big as before, and the flowers above it still mark it. The other lodes (gold, diamond, the modded metals) are unchanged.
 - **Only new land changes.** Chunks that are already generated keep the ore they have. When part of the world is regenerated, the regenerated land gets the new amounts as well.
-- **Other ores are unchanged**: gold, diamond, redstone, lapis, emerald, zinc, the Thermal and Mekanism ores, and everything in the Nether. With fewer iron and copper veins in the stone they turn up a little more often in new land (up to about 15 % more), because the veins that used to fill that stone are gone.
+- **Other ores are unchanged**: gold, diamond, redstone, lapis, emerald, zinc, the Thermal and Mekanism ores, and everything in the Nether. With fewer iron and copper veins in the stone they turn up a little more often in new land (up to about a fifth more), because the veins that used to fill that stone are gone.
 
 ## October 2026: Quartz is a Tier 1 material (22 October)
 

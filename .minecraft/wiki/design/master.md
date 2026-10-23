@@ -204,7 +204,7 @@ Each tier is reachable by a single pure playstyle.
 The token economies depend on a set of recipe overrides that un-gate "T1/T2" submissions with hidden dependencies on higher-tier materials or processes. All of them live in `kubejs/server_scripts/recipes/` across the three distro roots:
 
 - Blaze Burner → T1 (prefilled iron plates + campfire): un-gates Create's entire heated half.
-- Quartz → T1 (2026-10-22): quartz, its blocks and the quartz ores carry no stage, and Overworld Quartz's ore generates in the Overworld again, at half the mod's rate since the same evening (about 60 ore blocks a chunk). Create needs quartz for rose quartz and electron tubes. The Nether stays T3.
+- Quartz → T1 (2026-10-22): quartz, its blocks and the quartz ores carry no stage, and Overworld Quartz's ore generates in the Overworld again, tuned the same evening to half the mod's ore (about 58 ore blocks a chunk). Create needs quartz for rose quartz and electron tubes. The Nether stays T3.
 - Create steel bridge (`create:mixing`, heated): a clean Create (T1) → steel → Thermal (T2) route that bypasses the coke→Pyrolyzer Nether dependency.
 - Magma Crucible `nether_bricks → bricks`: T3 → T2.
 - Ars Enchanting Apparatus `diamond → mana_diamond`: frees the Magic T2 chain from a diamond (T3) gate.
