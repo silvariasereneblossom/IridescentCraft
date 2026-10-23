@@ -92,29 +92,42 @@ pub fn relaunch(cfg: &ServerConfig) -> Result<i32> {
 /// modpack tree if the user prefers. We check both locations for the
 /// `.new` files and apply whichever is present.
 pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
-    use std::fs;
+    apply_and_relaunch(cfg, false)
+}
+
+/// [`apply_and_relaunch_gui`] for a build that updates itself from a channel
+/// of its own (`icraft-gui`'s extension point): only a `.new` beside the
+/// running exe is applied, never the launcher the pack's sync stages in the
+/// server folder.
+pub fn apply_and_relaunch_gui_beside_exe(cfg: &ServerConfig) -> Result<bool> {
+    apply_and_relaunch(cfg, true)
+}
+
+/// The staged `<exe>.new` for the binary at `exe`: beside it, or (unless
+/// `beside_only`) the one the sync drops into `server_dir`. Two candidate
+/// locations because the sync flow drops .new files into server_dir; if the
+/// GUI binary itself sits there too, both paths point at the same file.
+fn staged_for(exe: &Path, server_dir: &Path, beside_only: bool) -> Option<PathBuf> {
+    let exe_name = exe.file_name().and_then(|n| n.to_str())?;
+    let here = exe.with_file_name(format!("{exe_name}.new"));
+    if here.exists() {
+        return Some(here);
+    }
+    if beside_only {
+        return None;
+    }
+    let there = server_dir.join(format!("{exe_name}.new"));
+    (there.exists() && there != exe.with_file_name(exe_name)).then_some(there)
+}
+
+fn apply_and_relaunch(cfg: &ServerConfig, beside_only: bool) -> Result<bool> {
     let exe = std::env::current_exe()?;
     let exe_name = exe.file_name()
         .and_then(|n| n.to_str())
         .ok_or_else(|| anyhow::anyhow!("current_exe has no filename: {}", exe.display()))?
         .to_string();
 
-    // Two candidate `.new` locations: (1) next to the running binary,
-    // (2) inside the modpack server_dir. The sync flow drops .new
-    // files into server_dir; if the GUI binary itself sits there too,
-    // both paths point at the same file.
-    let here = exe.with_file_name(format!("{exe_name}.new"));
-    let there = cfg.server_dir.join(format!("{exe_name}.new"));
-
-    let staged = if here.exists() {
-        Some(here)
-    } else if there.exists() && there != exe.with_file_name(&exe_name) {
-        Some(there)
-    } else {
-        None
-    };
-
-    let Some(staged) = staged else {
+    let Some(staged) = staged_for(&exe, &cfg.server_dir, beside_only) else {
         log::info!("[self-update] no {exe_name}.new staged; nothing to apply");
         return Ok(false);
     };
@@ -273,8 +286,19 @@ pub fn cmd_quoted_args(args: &[String]) -> String {
 /// binary forever. When the staged copy is identical we drop it and report
 /// false, so the Cycle proceeds straight to starting the server.
 pub fn gui_update_staged(cfg: &ServerConfig) -> bool {
-    let Some(staged) = staged_gui_new(cfg) else { return false };
+    update_staged(cfg, false)
+}
+
+/// [`gui_update_staged`] for a build that updates itself from a channel of
+/// its own: only a `.new` beside the running exe counts (see
+/// [`apply_and_relaunch_gui_beside_exe`]).
+pub fn gui_update_staged_beside_exe(cfg: &ServerConfig) -> bool {
+    update_staged(cfg, true)
+}
+
+fn update_staged(cfg: &ServerConfig, beside_only: bool) -> bool {
     let Ok(exe) = std::env::current_exe() else { return false };
+    let Some(staged) = staged_for(&exe, &cfg.server_dir, beside_only) else { return false };
     match exe_differs(&staged, &exe) {
         Ok(true) => true,
         Ok(false) => {
@@ -291,24 +315,6 @@ pub fn gui_update_staged(cfg: &ServerConfig) -> bool {
         // will make the final call.
         Err(_) => true,
     }
-}
-
-/// Locate a staged `<exe>.new` for the running GUI binary, checking both
-/// candidate locations: next to the running exe, and inside `cfg.server_dir`
-/// (where `github_diff`'s diff/full-zip staging drops it). Mirrors the
-/// detection inside [`apply_and_relaunch_gui`].
-fn staged_gui_new(cfg: &ServerConfig) -> Option<PathBuf> {
-    let exe = std::env::current_exe().ok()?;
-    let exe_name = exe.file_name().and_then(|n| n.to_str()).map(str::to_owned)?;
-    let here = exe.with_file_name(format!("{exe_name}.new"));
-    if here.exists() {
-        return Some(here);
-    }
-    let there = cfg.server_dir.join(format!("{exe_name}.new"));
-    if there.exists() && there != exe.with_file_name(&exe_name) {
-        return Some(there);
-    }
-    None
 }
 
 /// True if files `a` and `b` differ. Cheap length check first (skips the read
@@ -914,5 +920,36 @@ mod tests {
         let boot = vec!["--boot".to_string(), r"C:\Users\op\Desktop\IridescentCraft Dedicated Server".to_string()];
         assert_eq!(cmd_quoted_args(&boot), r#" "--boot" "C:\Users\op\Desktop\IridescentCraft Dedicated Server""#);
         assert_eq!(cmd_quoted_args(&[r#"say "hi""#.to_string()]), r#" "say hi""#);
+    }
+
+    #[test]
+    fn a_build_with_its_own_updates_never_takes_the_launcher_staged_in_the_server_folder() {
+        let root = std::env::temp_dir().join(format!("icraft-staged-for-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&root);
+        let own = root.join("own launcher");
+        let server = root.join("server");
+        fs::create_dir_all(&own).unwrap();
+        fs::create_dir_all(&server).unwrap();
+        let exe = own.join("icraft-gui.exe");
+        fs::write(&exe, b"running").unwrap();
+
+        // The pack's sync staged its launcher in the server folder.
+        let packs = server.join("icraft-gui.exe.new");
+        fs::write(&packs, b"the pack's launcher").unwrap();
+        assert_eq!(staged_for(&exe, &server, false), Some(packs.clone()));
+        assert_eq!(staged_for(&exe, &server, true), None);
+
+        // The build's own update, beside its exe, wins in both modes.
+        let beside = own.join("icraft-gui.exe.new");
+        fs::write(&beside, b"own update").unwrap();
+        assert_eq!(staged_for(&exe, &server, false), Some(beside.clone()));
+        assert_eq!(staged_for(&exe, &server, true), Some(beside));
+
+        // An exe that runs from the server folder: both candidates are one file.
+        let in_server = server.join("icraft-gui.exe");
+        fs::write(&in_server, b"running").unwrap();
+        assert_eq!(staged_for(&in_server, &server, false), Some(packs.clone()));
+        assert_eq!(staged_for(&in_server, &server, true), Some(packs));
+        let _ = fs::remove_dir_all(&root);
     }
 }

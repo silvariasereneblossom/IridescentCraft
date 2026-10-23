@@ -5,6 +5,12 @@ edition.workspace = true
 license.workspace = true
 description = "IridescentCraft server launcher - GUI shell"
 
+# A library (the launcher, `run(extension)`) and the launcher's own binary.
+# A build that embeds the launcher depends on the library (see src/ext.rs).
+[lib]
+name = "icraft_gui"
+path = "src/lib.rs"
+
 [[bin]]
 name = "icraft-gui"
 path = "src/main.rs"
