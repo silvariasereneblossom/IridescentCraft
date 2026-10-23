@@ -32,4 +32,6 @@ flate2 = "1"
 # Windows targets; Linux/macOS builds don't compile or download this.
 [target.'cfg(windows)'.dependencies]
 # Win32_System_RemoteDesktop: ProcessIdToSessionId (autostart::session_id).
-windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_RemoteDesktop"] }
+# Win32_System_RestartManager + Win32_System_Threading: which process has the
+# world or the game log open, and the clean stop of one (world_lock.rs).
+windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_RemoteDesktop", "Win32_System_RestartManager", "Win32_System_Threading"] }

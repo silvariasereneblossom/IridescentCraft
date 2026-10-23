@@ -100,6 +100,8 @@ icraft settings start-check                                            would the
 
 **The launcher refuses to start a server whose access settings it could not restore.** Once `white-list`, `enforce-whitelist` or `online-mode` is switched on through the override list, the launcher checks `server.properties` before every start. If the value is not there (the file could not be written, the key is gone, or the override list itself is unreadable), no server is started: the reason is written to `.icraft_start_refused` in the server folder and to the launcher's log, and the launcher's automatic restart attempts try again. Put the value right, then press **Cycle**.
 
+**One server per world.** The launcher never starts a server on a world that another server has open, for example one that an earlier launcher left running. It names that process in its log, in `.icraft_start_refused` and on its Server tab, which offers **Stop it cleanly**: that server is sent Ctrl+C, saves the world and exits, and the launcher then starts the server itself. Closing the launcher's window while it runs the server stops the server first (the window asks).
+
 Settings usually chosen per server:
 
 | Setting | Options |

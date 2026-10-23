@@ -594,7 +594,7 @@ impl Drop for RunningFlag {
 ///
 /// Asked three times, half a second apart: a virus scanner can hold the file
 /// for an instant, a server holds it for as long as it runs.
-fn world_open_elsewhere(world_dir: &Path) -> bool {
+pub(crate) fn world_open_elsewhere(world_dir: &Path) -> bool {
     for attempt in 0..3 {
         if attempt > 0 {
             std::thread::sleep(Duration::from_millis(500));
@@ -606,10 +606,12 @@ fn world_open_elsewhere(world_dir: &Path) -> bool {
     true
 }
 
-/// The same question for the other writer that must stay out while a server
-/// runs: the config override layer ([`crate::overrides`]).
+/// The same question for the other writers that must stay out while a server
+/// runs: the config override layer ([`crate::overrides`]) and a regeneration.
+/// Since 2026-10-23 it also counts a JVM that has the game log open and has
+/// not loaded the world yet (see [`crate::world_lock::find`]).
 pub fn world_in_use(cfg: &ServerConfig) -> bool {
-    world_open_elsewhere(&cfg.world_dir())
+    crate::world_lock::find(cfg).is_some()
 }
 
 #[cfg(windows)]

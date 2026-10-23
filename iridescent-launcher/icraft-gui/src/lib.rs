@@ -52,6 +52,12 @@ enum Tab {
 /// `extension` is what a build that embeds the launcher adds
 /// ([`ext::none`] for the launcher itself).
 pub fn run(extension: Box<dyn ext::Extension>) -> Result<(), eframe::Error> {
+    // `--stop-server-process <pid>`: the helper of the clean stop of a server
+    // this launcher did not start (see "Another server on this world"). It
+    // joins that server's console, sends Ctrl+C and exits: no window.
+    if let Some(pid) = icraft_core::world_lock::helper_pid_from_args(std::env::args_os().skip(1)) {
+        std::process::exit(icraft_core::world_lock::ctrl_c_helper(pid));
+    }
     ext::install(extension);
     install_log_router();
     // No-op when launched as a GUI subsystem app (no console attached),
@@ -154,6 +160,8 @@ pub fn run(extension: Box<dyn ext::Extension>) -> Result<(), eframe::Error> {
 //   ICRAFT_GUI_PREVIEW_SCROLL=0,700,1400       one PNG per scroll offset
 //   ICRAFT_GUI_PREVIEW_EXPAND=1                every collapsible section open
 //   ICRAFT_GUI_PREVIEW_SIZE=1000x900           window size
+//   ICRAFT_GUI_PREVIEW_DIALOG=close            the close question (also: stopping, other-server,
+//                                              other-server-stopping, other-server-failed)
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum PreviewPhase {
@@ -173,6 +181,9 @@ struct Preview {
     worldgen: Option<(Option<String>, Option<String>)>,
     /// The Regenerate page.
     regenerate: bool,
+    /// ICRAFT_GUI_PREVIEW_DIALOG: close | stopping | other-server |
+    /// other-server-stopping | other-server-failed.
+    dialog: Option<String>,
     scrolls: Vec<f32>,
     expand: bool,
     phase: PreviewPhase,
@@ -208,6 +219,7 @@ impl Preview {
             worldgen: (var("ICRAFT_GUI_PREVIEW_PAGE").as_deref() == Some("worldgen"))
                 .then(|| (var("ICRAFT_GUI_PREVIEW_FILE"), var("ICRAFT_GUI_PREVIEW_EDIT"))),
             regenerate: var("ICRAFT_GUI_PREVIEW_PAGE").as_deref() == Some("regenerate"),
+            dialog: var("ICRAFT_GUI_PREVIEW_DIALOG"),
             scrolls,
             expand: var("ICRAFT_GUI_PREVIEW_EXPAND").is_some(),
             phase: PreviewPhase::Start,
@@ -424,6 +436,14 @@ struct IcraftApp {
     forced_scroll: Option<f32>,
     /// What this window shows while another launcher runs the folder.
     viewer: Viewer,
+    /// The window's close (see "Closing the window").
+    close: CloseState,
+    /// The close dialog's default button takes the keyboard once.
+    close_focus: bool,
+    /// First click on "Stop it cleanly" / "End it now" (another server on
+    /// this world): a second within 10 s does it.
+    other_armed_at: Option<Instant>,
+    other_end_armed_at: Option<Instant>,
     /// `Some` when started with ICRAFT_GUI_PREVIEW (see "Preview mode").
     preview: Option<Preview>,
 }
@@ -574,6 +594,11 @@ fn serve_once(c: &ServerConfig) -> anyhow::Result<i32> {
 /// only runs once the previous JVM has fully exited.
 fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
     // === Cycle step 2: self-update launcher + FULLY sync content ===
+    // Another server on this world (one an earlier launcher left running), or
+    // this window closing: no sync under that server, and no start.
+    if let Err(why) = icraft_core::run::may_start(c) {
+        anyhow::bail!("the server was not started: {why}");
+    }
     log::info!("[cycle] step 2: self-update launcher + sync content");
     set_cycle_step("cycle: content sync from GitHub");
     // 2a. Content sync. Stages icraft-gui.exe.new if the repo's launcher
@@ -608,8 +633,7 @@ fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
         match applied {
             Ok(true) => {
                 log::info!("[cycle] new GUI spawned -- exiting current process to release the exe lock");
-                std::thread::sleep(std::time::Duration::from_millis(500));
-                std::process::exit(0);
+                exit_for_successor("cycle");
             }
             Ok(false) => {
                 // Nothing actually swapped (race / .new vanished).
@@ -656,6 +680,11 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
         icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
         log::info!("[run] *** all post-exit hooks complete -- ready ***");
 
+        // The launcher is closing (its window was closed): no restart of any kind.
+        if let Some(why) = icraft_core::run::launches_closed() {
+            log::info!("[heartbeat] {why}: not restarting");
+            return r.map(|_| ());
+        }
         let operator = SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst);
         let hang = SUPERVISOR.hang_kill.swap(false, Ordering::SeqCst);
         if SUPERVISOR.cycle_requested.swap(false, Ordering::SeqCst) {
@@ -712,7 +741,7 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
         set_cycle_step("auto-restart backoff");
         let deadline = Instant::now() + delay;
         while Instant::now() < deadline {
-            if SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst) {
+            if SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst) || icraft_core::run::launches_closed().is_some() {
                 log::info!("[heartbeat] auto-restart cancelled by operator");
                 set_heartbeat_status("");
                 return Ok(());
@@ -1338,6 +1367,7 @@ fn spawn_cycle_watchdog() {
                  stuck={stuck}\n\
                  heartbeat={heartbeat}\n\
                  log_push={push}\n\
+                 other_server={other}\n\
                  frames_per_min={frames_per_min:.0}\n",
                 tick = STATUS_TICK.as_secs(),
                 written = unix_now(),
@@ -1350,6 +1380,7 @@ fn spawn_cycle_watchdog() {
                 stuck = one_line(&CYCLE_STUCK.lock().unwrap()),
                 heartbeat = one_line(&SUPERVISOR.status.lock().unwrap()),
                 push = one_line(&icraft_core::logpush::state().label()),
+                other = one_line(&other_server().map(|h| h.describe()).unwrap_or_default()),
             );
             // Whole or not at all: the reader must never see half a file.
             let tmp = dir.join(format!("{STATUS_FILE}.tmp"));
@@ -1358,6 +1389,222 @@ fn spawn_cycle_watchdog() {
             }
         }
     });
+}
+
+/// This process ends here: a launcher it just started (a self-update) takes
+/// over. A JVM of its own never outlives it (2026-10-22): every caller runs
+/// with the server stopped, so this only waits if one somehow still runs.
+fn exit_for_successor(what: &str) -> ! {
+    if icraft_core::run::stop_before_exit(what, SCHEDULED_STOP_GRACE_SECS) {
+        log::error!("[{what}] this launcher's server was still running at its exit: it is stopped first");
+        let deadline = Instant::now() + Duration::from_secs(SCHEDULED_STOP_GRACE_SECS + 30);
+        while icraft_core::run::jvm_active() && Instant::now() < deadline {
+            std::thread::sleep(Duration::from_millis(250));
+        }
+    }
+    // A moment for the last log lines.
+    std::thread::sleep(Duration::from_millis(500));
+    std::process::exit(0);
+}
+
+// =============================================================================
+// Closing the window
+// =============================================================================
+//
+// 2026-10-22: the public launcher's window was closed while its server ran, and
+// the JVM went on alone (Windows does not end a child with its parent). Now a
+// close (the X, Alt+F4, the taskbar) of the window that runs the server asks
+// first, and its default answer stops the server: `stop`, the Cycle's save
+// grace, then the kill; the window closes once the run has finished. The other
+// answer keeps the window open: there is no "close and leave it running". A
+// viewer (another launcher runs the server) closes at once and touches
+// nothing, and so does a window that runs no server. A window that is killed
+// outright still leaves its JVM behind; the next launcher finds it ("Another
+// server on this world").
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum CloseState {
+    Open,
+    /// The question is on screen.
+    Asking,
+    /// "Stop the server and close" was chosen then.
+    Stopping(Instant),
+    /// Nothing is left running: the close goes through.
+    Closing,
+}
+
+// =============================================================================
+// Another server on this world -- one this launcher did not start
+// =============================================================================
+//
+// 2026-10-22: a window closed while its server ran left that JVM running with
+// nobody holding its console, and the next launcher started a second JVM on
+// the same world. The launcher that runs the folder now looks, while it runs
+// no server of its own, for a process that has the world or the game log open
+// (icraft_core::world_lock). Found: said once in capitals, written to the
+// status file (`other_server=`) and shown on the Server tab, and every start
+// is refused until it is gone. The way out on the Server tab: "Stop it
+// cleanly" (Ctrl+C to its console: the game saves every level and player and
+// exits), after which this launcher starts the server; if its own stop hangs,
+// "End it now".
+
+const OTHER_SERVER_POLL: Duration = Duration::from_secs(15);
+
+/// What the last look found.
+static OTHER_SERVER: Mutex<Option<icraft_core::world_lock::Held>> = Mutex::new(None);
+
+/// The Server tab's stop of that server.
+#[derive(Clone)]
+enum OtherStop {
+    Idle,
+    /// Ctrl+C was sent then; waiting for it to save and exit.
+    Stopping(Instant),
+    /// It is gone; what happened.
+    Done(String),
+    /// What went wrong. "End it now" is what is left.
+    Failed(String),
+}
+
+static OTHER_STOP: Mutex<OtherStop> = Mutex::new(OtherStop::Idle);
+
+fn other_server() -> Option<icraft_core::world_lock::Held> {
+    OTHER_SERVER.lock().unwrap().clone()
+}
+
+/// Look now, and say so when the answer changes.
+fn check_other_server(dir: &Path) {
+    let found = icraft_core::world_lock::find_foreign(&ServerConfig::from_path(dir));
+    let mut slot = OTHER_SERVER.lock().unwrap();
+    match (slot.is_some(), &found) {
+        (false, Some(held)) => {
+            let way_out = if WINDOWLESS.load(Ordering::SeqCst) {
+                "A launcher window (Server tab) can stop it cleanly."
+            } else {
+                "Server tab: \"Stop it cleanly\" (it saves the world and exits), then the server starts here."
+            };
+            log::error!(
+                "[other-server] !!! ANOTHER SERVER HAS THIS WORLD OPEN, and this launcher did not start it: {}. Nothing \
+                 reaches it from here: no restarts, no backups, no Stop, and no second server is started on this world \
+                 while it runs. The usual cause: a launcher that was closed or ended while its server ran. {way_out}",
+                held.describe()
+            );
+        }
+        (true, None) => log::info!("[other-server] the other server has gone: the world is free"),
+        _ => {}
+    }
+    *slot = found;
+    LOG_DIRTY.store(true, Ordering::Release);
+}
+
+/// Started once by the launcher that runs the folder (spawn_owner_threads).
+fn spawn_other_server_watch(dir: PathBuf) {
+    std::thread::spawn(move || loop {
+        if icraft_core::run::jvm_active() {
+            // This launcher's own server got past the start guard: whatever
+            // had the world before has gone.
+            if OTHER_SERVER.lock().unwrap().take().is_some() {
+                log::info!("[other-server] the other server has gone: this launcher runs the server now");
+            }
+            *OTHER_STOP.lock().unwrap() = OtherStop::Idle;
+        } else if !SUPERVISOR.server_live.load(Ordering::SeqCst)
+            && !matches!(*OTHER_STOP.lock().unwrap(), OtherStop::Stopping(_))
+        {
+            // Only while this launcher runs no server: during its own run
+            // (its sync, its launch) the start guard answers.
+            check_other_server(&dir);
+        }
+        std::thread::sleep(OTHER_SERVER_POLL);
+    });
+}
+
+/// "Stop it cleanly": Ctrl+C to that server's console (a helper process: this
+/// launcher's own exe with `--stop-server-process`), a wait for it to save and
+/// exit, then the server is started here.
+fn stop_other_server(dir: PathBuf, target: icraft_core::world_lock::OtherProcess) {
+    use icraft_core::world_lock::{self as wl, StopOutcome};
+    *OTHER_STOP.lock().unwrap() = OtherStop::Stopping(Instant::now());
+    log::warn!(
+        "[other-server] stopping {} cleanly: Ctrl+C to its console, then the game saves every level and player and exits \
+         (allowed {} min)",
+        target.label(),
+        wl::STOP_GRACE.as_secs() / 60
+    );
+    std::thread::spawn(move || {
+        let exe = match std::env::current_exe() {
+            Ok(exe) => exe,
+            Err(e) => {
+                *OTHER_STOP.lock().unwrap() = OtherStop::Failed(format!("this launcher's own path is unknown ({e}), so its helper cannot run"));
+                return;
+            }
+        };
+        let helper = move |pid: u32| {
+            let mut cmd = std::process::Command::new(&exe);
+            cmd.arg(wl::STOP_HELPER_ARG).arg(pid.to_string());
+            cmd
+        };
+        let said = AtomicU64::new(0);
+        let progress = |waited: Duration| {
+            let step = waited.as_secs() / 30;
+            if step > said.swap(step, Ordering::SeqCst) {
+                log::info!("[other-server] still stopping after {} s (saving the world)", waited.as_secs());
+            }
+        };
+        let outcome = wl::stop_other(&target, &helper, wl::STOP_GRACE, &progress);
+        let done = |how: String| {
+            log::info!("[other-server] {how}: the world is free; this launcher starts the server (Cycle)");
+            *OTHER_SERVER.lock().unwrap() = None;
+            *OTHER_STOP.lock().unwrap() = OtherStop::Done(format!("{how}. This launcher starts the server now (Cycle)."));
+            start_here_after_other(dir.clone());
+        };
+        match outcome {
+            StopOutcome::Stopped { secs } => done(format!("{} stopped {secs} s after Ctrl+C", target.label())),
+            StopOutcome::Gone => done(format!("{} had already exited", target.label())),
+            StopOutcome::StillRunning { secs } => {
+                let why = format!("it is still running {secs} s after Ctrl+C: its own stop seems stuck (or it is still saving a very large world)");
+                log::error!("[other-server] !!! {why}");
+                *OTHER_STOP.lock().unwrap() = OtherStop::Failed(why);
+            }
+            StopOutcome::NotSent(why) => {
+                log::error!("[other-server] !!! it could not be asked to stop: {why}");
+                *OTHER_STOP.lock().unwrap() = OtherStop::Failed(format!("it could not be asked to stop: {why}"));
+            }
+        }
+        LOG_DIRTY.store(true, Ordering::Release);
+    });
+}
+
+/// "End it now": TerminateProcess, no save. The server is not started
+/// afterwards on its own: the operator presses Cycle.
+fn end_other_server(target: icraft_core::world_lock::OtherProcess) {
+    log::warn!("[other-server] ending {} now, without a save (what changed since its last autosave is lost)", target.label());
+    std::thread::spawn(move || {
+        match icraft_core::world_lock::end_other(&target) {
+            Ok(()) => {
+                log::warn!("[other-server] {} was ended. Press Cycle to start the server here", target.label());
+                *OTHER_SERVER.lock().unwrap() = None;
+                *OTHER_STOP.lock().unwrap() = OtherStop::Done("It was ended without a save. Press Cycle to start the server here.".to_string());
+            }
+            Err(e) => {
+                log::error!("[other-server] !!! it could not be ended: {e}");
+                *OTHER_STOP.lock().unwrap() = OtherStop::Failed(format!("it could not be ended: {e}"));
+            }
+        }
+        LOG_DIRTY.store(true, Ordering::Release);
+    });
+}
+
+/// The start once the other server is gone: a supervised run waiting in its
+/// auto-restart backoff goes now; with nothing running, a Cycle.
+fn start_here_after_other(dir: PathBuf) {
+    if SUPERVISOR.running.load(Ordering::SeqCst) {
+        SUPERVISOR.restarts.lock().unwrap().clear();
+        set_heartbeat_status("");
+        SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
+    } else if TASK_BUSY.load(Ordering::SeqCst) || ADOPT_TASK.lock().unwrap().is_some() {
+        log::info!("[other-server] another task is running: press Cycle once it is done");
+    } else {
+        start_cycle_unattended(dir, "start after stopping the other server");
+    }
 }
 
 // =============================================================================
@@ -1405,6 +1652,7 @@ fn role() -> Role {
 /// The threads that act on the server folder: only the launcher that runs it
 /// starts them (once). Then the extension's own (`Extension::on_owner`).
 fn spawn_owner_threads(dir: &Path) {
+    spawn_other_server_watch(dir.to_path_buf());
     spawn_listener_probe();
     spawn_cycle_request_watcher();
     spawn_backup_request_watcher();
@@ -1982,6 +2230,10 @@ impl IcraftApp {
             customizer,
             forced_scroll: None,
             viewer: Viewer::default(),
+            close: CloseState::Open,
+            close_focus: false,
+            other_armed_at: None,
+            other_end_armed_at: None,
             preview,
         };
         app.refresh_status();
@@ -2155,6 +2407,7 @@ impl eframe::App for IcraftApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         FRAMES.fetch_add(1, Ordering::Relaxed);
         self.preview_tick(ctx);
+        self.handle_close(ctx);
         // Drain log buffer + check task completion every frame.
         self.drain_log();
         // A start the request watcher made (after GAVE UP) becomes this
@@ -2353,7 +2606,301 @@ impl eframe::App for IcraftApp {
                 }
             });
         });
+        self.draw_close_dialog(ctx);
     }
+}
+
+impl IcraftApp {
+    /// Every frame, first: a close of the window (see "Closing the window"),
+    /// and the close itself once the server it ran has stopped.
+    fn handle_close(&mut self, ctx: &egui::Context) {
+        if self.preview.is_some() || self.close == CloseState::Closing {
+            return;
+        }
+        let requested = ctx.input(|i| i.viewport().close_requested());
+        match self.close {
+            CloseState::Stopping(_) => {
+                if requested {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                }
+                // A Cycle that was waiting for the stop must not run now.
+                self.pending_restart = false;
+                SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+                if !icraft_core::run::jvm_active() && !self.busy_for_close() {
+                    log::info!("[close] the server has stopped and nothing else runs: the window closes");
+                    self.close = CloseState::Closing;
+                    ctx.send_viewport_cmd(egui::ViewportCommand::Close);
+                } else {
+                    ctx.request_repaint_after(Duration::from_millis(500));
+                }
+            }
+            CloseState::Asking => {
+                if requested {
+                    ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                }
+            }
+            CloseState::Open | CloseState::Closing => {
+                if !requested {
+                    return;
+                }
+                let runs_folder = matches!(role(), Role::Owner);
+                match icraft_core::world_lock::close_verdict(runs_folder, icraft_core::run::jvm_active(), self.busy_for_close()) {
+                    icraft_core::world_lock::CloseVerdict::Close => {
+                        log::info!(
+                            "[close] window closed ({})",
+                            if runs_folder { "it ran no server" } else { "a viewer: the launcher that runs the server is not touched" }
+                        );
+                        self.close = CloseState::Closing;
+                    }
+                    icraft_core::world_lock::CloseVerdict::StopFirst => {
+                        ctx.send_viewport_cmd(egui::ViewportCommand::CancelClose);
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Minimized(false));
+                        ctx.send_viewport_cmd(egui::ViewportCommand::Focus);
+                        log::warn!(
+                            "[close] the window was asked to close while it runs the server: asking first \
+                             (Stop the server and close / Keep the window open)"
+                        );
+                        self.close = CloseState::Asking;
+                        self.close_focus = true;
+                    }
+                }
+            }
+        }
+    }
+
+    /// A run or a task is under way (it may be about to start a JVM).
+    fn busy_for_close(&self) -> bool {
+        self.task_running() || SUPERVISOR.running.load(Ordering::SeqCst) || TASK_BUSY.load(Ordering::SeqCst)
+    }
+
+    /// "Stop the server and close".
+    fn close_after_stop(&mut self) {
+        log::warn!(
+            "[close] Stop the server and close: no server is started from this window any more; the running one is stopped \
+             (save grace {SCHEDULED_STOP_GRACE_SECS} s, then the kill), then the window closes"
+        );
+        mark_operator_stop();
+        if !icraft_core::run::stop_before_exit("its window was closed", SCHEDULED_STOP_GRACE_SECS) {
+            log::info!("[close] no JVM yet: the start under way is refused, then the window closes");
+        }
+        self.close = CloseState::Stopping(Instant::now());
+    }
+
+    fn draw_close_dialog(&mut self, ctx: &egui::Context) {
+        match self.close {
+            CloseState::Asking => {
+                let jvm = icraft_core::run::jvm_active();
+                let mut focus = self.close_focus;
+                // Some(true): stop and close; Some(false): keep the window open.
+                let mut answer: Option<bool> = None;
+                egui::Window::new("Close the launcher?")
+                    .collapsible(false)
+                    .resizable(false)
+                    .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+                    .show(ctx, |ui| {
+                        ui.set_max_width(470.0);
+                        ui.label(if jvm {
+                            "The server is running, and this window is what looks after it. Closed now, it would leave the \
+                             server running on its own: no restarts, no backups, and no way to stop it from any launcher \
+                             window (on 2026-10-22 that put two servers on one world)."
+                        } else {
+                            "A start is under way (sync or launch). Closed now, it could leave a server running on its own."
+                        });
+                        ui.add_space(4.0);
+                        ui.label(
+                            egui::RichText::new(if jvm {
+                                "So the server is stopped first: it saves the world and exits (up to 2 min; players are \
+                                 disconnected), then the window closes."
+                            } else {
+                                "So nothing is started any more: the window closes once the step under way has finished."
+                            })
+                            .small(),
+                        );
+                        ui.add_space(8.0);
+                        ui.horizontal(|ui| {
+                            let stop = ui.add(
+                                egui::Button::new(
+                                    egui::RichText::new(if jvm { "Stop the server and close" } else { "Stop the start and close" }).strong(),
+                                )
+                                .min_size(egui::vec2(210.0, 30.0)),
+                            );
+                            if focus {
+                                stop.request_focus();
+                                focus = false;
+                            }
+                            let keep = ui.add(egui::Button::new("Keep the window open").min_size(egui::vec2(170.0, 30.0)));
+                            if stop.clicked() {
+                                answer = Some(true);
+                            } else if keep.clicked() || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
+                                answer = Some(false);
+                            }
+                        });
+                    });
+                self.close_focus = focus;
+                match answer {
+                    Some(true) => self.close_after_stop(),
+                    Some(false) => {
+                        log::info!("[close] Keep the window open: nothing was stopped");
+                        self.close = CloseState::Open;
+                    }
+                    None => {}
+                }
+            }
+            CloseState::Stopping(since) => {
+                egui::Window::new("Stopping the server, then closing")
+                    .collapsible(false)
+                    .resizable(false)
+                    .anchor(egui::Align2::CENTER_CENTER, [0.0, 0.0])
+                    .show(ctx, |ui| {
+                        ui.set_max_width(470.0);
+                        ui.horizontal(|ui| {
+                            ui.spinner();
+                            let what = if icraft_core::run::jvm_active() {
+                                format!("the server is stopping ({:?})", icraft_core::run::server_state())
+                            } else {
+                                "the server has exited; the run is finishing (logs staged)".to_string()
+                            };
+                            ui.label(format!("{} s: {what}", since.elapsed().as_secs()));
+                        });
+                        ui.label(
+                            egui::RichText::new(format!(
+                                "The window closes by itself once the server has exited. A server that has not stopped after \
+                                 {SCHEDULED_STOP_GRACE_SECS} s is ended."
+                            ))
+                            .small(),
+                        );
+                    });
+                ctx.request_repaint_after(Duration::from_millis(500));
+            }
+            CloseState::Open | CloseState::Closing => {}
+        }
+    }
+
+    /// The Server tab's panel for a server this launcher did not start (see
+    /// "Another server on this world").
+    fn draw_other_server(&mut self, ui: &mut egui::Ui) {
+        let stop = OTHER_STOP.lock().unwrap().clone();
+        let Some(held) = other_server() else {
+            if let OtherStop::Done(how) = stop {
+                ui.label(egui::RichText::new(how).color(BADGE_GREEN));
+                ui.add_space(6.0);
+            }
+            return;
+        };
+        let red = egui::Color32::from_rgb(244, 102, 102);
+        egui::Frame::group(ui.style()).stroke(egui::Stroke::new(1.5, red)).show(ui, |ui| {
+            ui.label(egui::RichText::new("Another server has this world open").strong().color(red));
+            ui.label(held.describe());
+            ui.label(
+                egui::RichText::new(
+                    "This launcher did not start it, so nothing reaches it from here: no restarts, no backups, no Stop, and \
+                     no second server is started on this world while it runs (Serve and Cycle are refused). The usual \
+                     cause: a launcher that was closed or ended while its server ran.",
+                )
+                .small(),
+            );
+            ui.add_space(4.0);
+            let armed = |at: Option<Instant>| at.is_some_and(|t| t.elapsed() < Duration::from_secs(10));
+            match (&stop, held.server().cloned()) {
+                (OtherStop::Stopping(since), _) => {
+                    ui.horizontal(|ui| {
+                        ui.spinner();
+                        ui.label(format!("Asked it to stop {} s ago: it is saving the world and exiting...", since.elapsed().as_secs()));
+                    });
+                    ui.ctx().request_repaint_after(Duration::from_secs(1));
+                }
+                (_, None) => {
+                    ui.label(
+                        "No Java process could be named as what holds the world, so it cannot be stopped from here. At the \
+                         box: Resource Monitor, CPU tab, Associated Handles, search for session.lock.",
+                    );
+                }
+                (OtherStop::Failed(why), Some(target)) => {
+                    ui.label(egui::RichText::new(why.as_str()).color(red));
+                    ui.horizontal_wrapped(|ui| {
+                        let end_armed = armed(self.other_end_armed_at);
+                        let label = if end_armed {
+                            "Click again: end it now, without a save"
+                        } else {
+                            "End it now (what changed since its last autosave is lost)"
+                        };
+                        if ui.add(egui::Button::new(label).min_size(egui::vec2(220.0, 28.0))).clicked() {
+                            if end_armed {
+                                self.other_end_armed_at = None;
+                                end_other_server(target.clone());
+                            } else {
+                                self.other_end_armed_at = Some(Instant::now());
+                            }
+                        }
+                        if ui.add(egui::Button::new("Ask it to stop again").min_size(egui::vec2(160.0, 28.0))).clicked() {
+                            stop_other_server(self.server_dir.clone(), target.clone());
+                        }
+                    });
+                }
+                (_, Some(target)) => {
+                    let stop_armed = armed(self.other_armed_at);
+                    let label = if stop_armed {
+                        "Click again: stop it cleanly, then start the server here"
+                    } else {
+                        "Stop it cleanly (it saves the world), then start the server here"
+                    };
+                    if ui.add(egui::Button::new(label).min_size(egui::vec2(300.0, 28.0))).clicked() {
+                        if stop_armed {
+                            self.other_armed_at = None;
+                            stop_other_server(self.server_dir.clone(), target);
+                        } else {
+                            self.other_armed_at = Some(Instant::now());
+                        }
+                    }
+                    ui.label(
+                        egui::RichText::new(
+                            "Sends it Ctrl+C, the way a server in a console window is stopped: the game saves every level and \
+                             every player, then exits (allowed 5 min). No RCON needed. Players on it are disconnected.",
+                        )
+                        .small()
+                        .weak(),
+                    );
+                }
+            }
+        });
+        ui.add_space(8.0);
+    }
+
+}
+
+/// A preview of the close question (returned) or the other-server panel (see
+/// "Preview mode").
+fn preview_dialog(dialog: &str) -> Option<CloseState> {
+    use icraft_core::world_lock::{Held, OtherProcess};
+    let ago = |secs: u64| Instant::now().checked_sub(Duration::from_secs(secs)).unwrap_or_else(Instant::now);
+    // A JVM that started 6 h 31 min ago, as a FILETIME.
+    let created = (unix_now().saturating_sub(6 * 3600 + 31 * 60)) * 10_000_000 + 116_444_736_000_000_000;
+    let held = Held {
+        world_open: true,
+        by: vec![OtherProcess {
+            pid: 1844,
+            image: "java.exe".to_string(),
+            created,
+            holds: vec!["session.lock".to_string(), "latest.log".to_string()],
+        }],
+    };
+    match dialog {
+        "close" => return Some(CloseState::Asking),
+        "stopping" => return Some(CloseState::Stopping(ago(37))),
+        "other-server" => *OTHER_SERVER.lock().unwrap() = Some(held),
+        "other-server-stopping" => {
+            *OTHER_SERVER.lock().unwrap() = Some(held);
+            *OTHER_STOP.lock().unwrap() = OtherStop::Stopping(ago(42));
+        }
+        "other-server-failed" => {
+            *OTHER_SERVER.lock().unwrap() = Some(held);
+            *OTHER_STOP.lock().unwrap() = OtherStop::Failed(
+                "it is still running 300 s after Ctrl+C: its own stop seems stuck (or it is still saving a very large world)".to_string(),
+            );
+        }
+        other => log::warn!("[preview] unknown ICRAFT_GUI_PREVIEW_DIALOG '{other}'"),
+    }
+    None
 }
 
 impl IcraftApp {
@@ -2418,6 +2965,12 @@ impl IcraftApp {
                     }
                     if p.regenerate {
                         self.customizer.show_regenerate();
+                    }
+                    if let Some(dialog) = p.dialog.clone() {
+                        if let Some(close) = preview_dialog(&dialog) {
+                            self.close = close;
+                            self.close_focus = true;
+                        }
                     }
                     if let Some(scope) = p.run.clone() {
                         match self.customizer.set_scope(&scope) {
@@ -2650,6 +3203,7 @@ impl IcraftApp {
         let busy = self.task_running();
         let cfg = self.server_cfg();
         ui.add_space(4.0);
+        self.draw_other_server(ui);
 
         ui.heading("Server lifecycle");
         ui.horizontal_wrapped(|ui| {
@@ -2801,8 +3355,7 @@ impl IcraftApp {
                 self.spawn("sync", move |c| {
                     if icraft_core::self_update::sync_apply_gui(&c)? {
                         log::info!("[sync] new GUI spawned -- exiting current process");
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-                        std::process::exit(0);
+                        exit_for_successor("sync");
                     }
                     Ok(())
                 });
@@ -2833,8 +3386,7 @@ impl IcraftApp {
                     let _ = icraft_core::self_update::apply_staged(&c)?;
                     if icraft_core::self_update::pull_repo_binary_apply_gui(&c)? {
                         log::info!("[self-update] new GUI spawned -- exiting current process");
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-                        std::process::exit(0);
+                        exit_for_successor("self-update");
                     }
                     Ok(())
                 });
@@ -2848,10 +3400,7 @@ impl IcraftApp {
                     icraft_core::sync::github_diff(&c, false)?;
                     if icraft_core::self_update::apply_and_relaunch_gui(&c)? {
                         log::info!("[update] new instance spawned -- exiting current GUI");
-                        // Brief pause so the log line flushes via the
-                        // GUI before we kill the process.
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-                        std::process::exit(0);
+                        exit_for_successor("update");
                     }
                     Ok(())
                 });
@@ -2869,8 +3418,7 @@ impl IcraftApp {
                 self.spawn("rebuild-gui", move |c| {
                     if icraft_core::self_update::pull_build_apply_gui(&c)? {
                         log::info!("[rebuild] new GUI spawned -- exiting");
-                        std::thread::sleep(std::time::Duration::from_millis(500));
-                        std::process::exit(0);
+                        exit_for_successor("rebuild");
                     }
                     Ok(())
                 });
@@ -3121,6 +3669,9 @@ impl IcraftApp {
             if !v.get("stuck").is_empty() {
                 badge(ui, "Cycle", false, v.get("stuck"));
             }
+            if !v.get("other_server").is_empty() {
+                badge(ui, "World", false, "another server has it open (Server tab)");
+            }
             let who = match v.get("launcher_mode") {
                 icraft_core::instance::MODE_BOOT => "the boot instance (no window)",
                 icraft_core::instance::MODE_WINDOW => "a launcher window",
@@ -3150,6 +3701,16 @@ impl IcraftApp {
             "{who} holds this server folder, so this window does not run the server: two launchers on one folder would \
              each sync files, restart the server and start a JVM on the same world."
         ));
+        let other = self.viewer.get("other_server").to_string();
+        if !other.is_empty() {
+            ui.label(
+                egui::RichText::new(format!(
+                    "That launcher reports another server on this world, one it did not start: {other}. No server is started \
+                     while it runs. Take the server over here, then stop it cleanly from this window."
+                ))
+                .color(BADGE_RED),
+            );
+        }
         if holder.is_some_and(|h| h.is_boot()) {
             ui.label(egui::RichText::new(
                 "The boot instance is what the Start-at-boot task started when Windows started. It runs the server exactly as \
@@ -3195,8 +3756,8 @@ impl IcraftApp {
         ui.label(egui::RichText::new(
             "Take over here: the other launcher stops the server (a 60 s in-game countdown when players are on) and exits, then \
              this window syncs and starts it -- about five minutes down in all. Needed for the console, Stop and the Customizer. \
-             Keep this window open until the server is back up: once it runs the server, closing this window or signing out \
-             stops it, and nothing starts it again until the next Windows start (or run the task by hand: \
+             Keep this window open until the server is back up: once it runs the server, closing this window stops it (the \
+             window asks first), and nothing starts it again until the next Windows start (or run the task by hand: \
              schtasks /Run /TN \"IridescentCraft launcher at boot\").",
         ).small().weak());
         if !self.viewer.takeover_answer.is_empty() {

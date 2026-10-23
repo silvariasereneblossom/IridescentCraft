@@ -26,6 +26,9 @@
 //!   - [`launcher_log`] — `logs\launcher.log`, the launcher's own lines on disk
 //!   - [`token`]     — the boot instance's rights: a restricted copy of its own
 //!     token (Administrators deny-only, medium integrity), as the window has
+//!   - [`world_lock`] — one server per world: no start while another process
+//!     has the world or its game log open (a server an earlier launcher left
+//!     running), and the clean stop of such a server without RCON
 //!
 //! Server Customizer, the world (on demand only -- none of this is called from
 //! [`serve`] or a Cycle):
@@ -91,6 +94,7 @@ pub mod sync;
 pub mod token;
 pub mod tools;
 pub mod worlddata;
+pub mod world_lock;
 pub mod worldgen;
 
 use anyhow::Result;
@@ -140,6 +144,12 @@ impl Default for ServeOptions {
 
 pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     banner::startup_banner();
+
+    // One server per world (world_lock.rs): with another server on this world
+    // nothing is started, and nothing is synced either -- a sync would rewrite
+    // files under that server. Nor while this launcher is closing. The launch
+    // gate checks both again right before the spawn.
+    run::may_start(cfg).map_err(|why| anyhow::anyhow!("the server was not started: {why}"))?;
 
     // Phase 0: incremental GitHub sync (compare API + raw fetches).
     // Phase -1 used to do a separate Z: drive mirror copy here. After

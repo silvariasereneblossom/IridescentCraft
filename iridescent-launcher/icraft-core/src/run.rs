@@ -125,6 +125,14 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     cmd.arg(format!("@{}", argfile.display()));
     cmd.arg("nogui");
 
+    log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
+    run_jvm(cfg, cmd, opts, pipe_output)
+}
+
+/// Start `cmd` (the JVM) behind the start guards and supervise it until it
+/// exits. Apart from [`launch_server_inner`] so a test can run a stand-in
+/// through exactly the same gate, guards and stop path.
+fn run_jvm(cfg: &ServerConfig, mut cmd: Command, opts: WatchdogOptions, pipe_output: bool) -> Result<i32> {
     // Stdin always piped so the watchdog (soft kick) and the GUI's
     // console-input panel can write into Java. Stdout/stderr piping
     // is per-caller: GUI pipes -> log::info!, CLI inherits so operator
@@ -147,11 +155,23 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
         cmd.stdout(Stdio::inherit()).stderr(Stdio::inherit());
     }
 
-    log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     // A requested world backup may be zipping the world right now: wait for
     // it, and keep backups out until the PID is published so none can start in
     // the gap (see backup.rs).
     let backup_guard = crate::backup::launch_guard();
+    // This launcher is ending (its window was closed): it starts no JVM it
+    // would leave behind.
+    if let Some(why) = launches_closed() {
+        anyhow::bail!("the server was not started: {why}");
+    }
+    // One server per world (world_lock.rs; the two JVMs of 2026-10-22): no
+    // JVM while another process has this world or its game log open, be it a
+    // server an earlier launcher left running or anything else. Checked here,
+    // right before the spawn, because every start path ends here: Serve,
+    // Cycle, the boot instance, a heartbeat restart, Run only, the CLI.
+    if let Err(why) = crate::world_lock::start_guard(cfg) {
+        anyhow::bail!("the server was not started: {why}");
+    }
     // A world regeneration that was cut off half-way leaves a marker file: no
     // JVM on a world that is half reset (regen/exec.rs). The run itself holds
     // the gate just taken, so a launch never meets one in flight; this is for
@@ -182,6 +202,7 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     if let Err(why) = crate::overrides::start_guard(cfg) {
         anyhow::bail!("the server was not started: {why}");
     }
+    let_children_take_ctrl_c();
     let mut child = cmd.spawn().context("spawning java")?;
     *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
     drop(backup_guard);
@@ -522,6 +543,62 @@ static ACTIVE_CHILD_PID: Mutex<Option<u32>> = Mutex::new(None);
 /// A JVM launched by this process is alive (from spawn until it has exited).
 pub fn jvm_active() -> bool {
     ACTIVE_CHILD_PID.lock().unwrap().is_some()
+}
+
+/// The pid of that JVM.
+pub fn active_pid() -> Option<u32> {
+    *ACTIVE_CHILD_PID.lock().unwrap()
+}
+
+/// A process that was started with Ctrl+C ignored passes that on to every
+/// process it starts. A JVM that ignores Ctrl+C cannot be stopped cleanly once
+/// its launcher is gone (world_lock.rs), so before a JVM is started this
+/// process takes Ctrl+C again, and its children with it. The window and the
+/// boot instance have no console, so nothing ever sends them one.
+pub fn let_children_take_ctrl_c() {
+    #[cfg(windows)]
+    {
+        // SAFETY: no handler pointer: this only clears the process's
+        // "ignore Ctrl+C" attribute.
+        unsafe { windows_sys::Win32::System::Console::SetConsoleCtrlHandler(None, 0) };
+    }
+}
+
+/// Set once this process is ending: it starts no JVM after that.
+static LAUNCHES_CLOSED: Mutex<Option<String>> = Mutex::new(None);
+
+/// Why this process starts no more JVMs, if it does not.
+pub fn launches_closed() -> Option<String> {
+    LAUNCHES_CLOSED.lock().unwrap().clone()
+}
+
+/// Before a start's first step (a Cycle's sync, `serve`): `Err` = no start.
+/// This process is not ending, and no other server has the world open
+/// ([`crate::world_lock::start_guard`], which leaves the refusal file).
+pub fn may_start(cfg: &ServerConfig) -> Result<(), String> {
+    if let Some(why) = launches_closed() {
+        return Err(why);
+    }
+    crate::world_lock::start_guard(cfg)
+}
+
+/// What a launcher that is about to end does first (its window was closed,
+/// 2026-10-22): no JVM is started by this process any more, and the one it
+/// runs, if any, is stopped as a Cycle stops it (`stop`, `grace_secs` to save,
+/// then the kill). Returns at once; true = a JVM was running and is being
+/// stopped. The process may end once [`jvm_active`] is false and the run that
+/// supervised the JVM has finished (its post-exit hooks stage the logs).
+pub fn stop_before_exit(why: &str, grace_secs: u64) -> bool {
+    *LAUNCHES_CLOSED.lock().unwrap() = Some(format!("the launcher is closing ({why})"));
+    if !jvm_active() {
+        return false;
+    }
+    log::info!("[run] the launcher is closing ({why}): stopping its server first");
+    match stop_with_escalation(grace_secs, 10) {
+        Ok(()) => true,
+        // It exited in between.
+        Err(_) => jvm_active(),
+    }
 }
 
 /// Coarse-grained server lifecycle state, derived from key markers in
@@ -1074,6 +1151,109 @@ mod tests {
         assert!(!jvm_active());
         assert!(dir.join(crate::overrides::REFUSED_FILE).exists());
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// Run `scenario` (an ignored test of this module) in a process of its
+    /// own: `jvm_active` and the closed launches are process-wide state that
+    /// other tests read.
+    #[cfg(windows)]
+    fn run_scenario(scenario: &str, dir: &std::path::Path) -> std::process::Child {
+        std::process::Command::new(std::env::current_exe().unwrap())
+            .args(["--exact", scenario, "--ignored", "--nocapture", "--test-threads=1"])
+            .env("ICRAFT_RUN_SCENARIO", dir)
+            .stdin(Stdio::null())
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .unwrap()
+    }
+
+    /// The window is closed while its server runs (a stand-in JVM, started
+    /// through the same gate, guards and stdin as java): the launcher stops it
+    /// first (`stop`, the save, the exit) and starts no JVM after.
+    #[cfg(windows)]
+    #[test]
+    fn a_closing_launcher_stops_its_server_first_and_starts_none_after() {
+        let dir = crate::world_lock::tests::scratch("close");
+        let out = run_scenario("run::tests::close_scenario", &dir).wait_with_output().unwrap();
+        let said = format!("{}{}", String::from_utf8_lossy(&out.stdout), String::from_utf8_lossy(&out.stderr));
+        assert!(out.status.success(), "{said}");
+        assert_eq!(fs::read_to_string(dir.join("scenario-result")).unwrap_or_default(), "ok", "{said}");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[ignore = "run in a process of its own by a_closing_launcher_stops_its_server_first_and_starts_none_after"]
+    fn close_scenario() {
+        use crate::world_lock::tests::{fake_jvm_command, test_exe_as, wait_for};
+        let Some(dir) = std::env::var_os("ICRAFT_RUN_SCENARIO").map(PathBuf::from) else { return };
+        let cfg = ServerConfig::from_path(&dir);
+        let java = test_exe_as(&dir, "java.exe");
+        let cmd = fake_jvm_command(&java, &dir, "lock+log", "save");
+        let run_cfg = cfg.clone();
+        let run = thread::spawn(move || run_jvm(&run_cfg, cmd, no_watchdog(), true));
+        assert!(wait_for(&dir.join("fake-ready"), Duration::from_secs(30)), "the stand-in did not start");
+        assert!(jvm_active());
+        assert_eq!(crate::world_lock::find_foreign(&cfg), None, "its own server is not another one");
+
+        assert!(stop_before_exit("test: the window was closed", 30));
+        assert_eq!(run.join().unwrap().unwrap(), 0);
+        assert!(dir.join("fake-stopped").exists(), "the stand-in was not sent `stop`");
+        assert!(!jvm_active());
+        assert_eq!(crate::world_lock::find(&cfg), None, "something still has the world open");
+
+        fs::remove_file(dir.join("fake-ready")).unwrap();
+        let again = run_jvm(&cfg, fake_jvm_command(&java, &dir, "lock+log", "save"), no_watchdog(), true).unwrap_err();
+        assert!(format!("{again:#}").contains("the launcher is closing"), "{again:#}");
+        assert!(!wait_for(&dir.join("fake-ready"), Duration::from_secs(2)), "a JVM was started after the close");
+        fs::write(dir.join("scenario-result"), "ok").unwrap();
+    }
+
+    /// 2026-10-22 end to end: a launcher runs a server and is killed; the
+    /// server lives on, orphaned. Another launcher refuses to start a second
+    /// one, names it, and stops it cleanly (Ctrl+C: the save, the exit).
+    #[cfg(windows)]
+    #[test]
+    fn an_orphaned_server_is_refused_a_twin_and_stopped_cleanly() {
+        use crate::world_lock::{self as wl, tests::{helper_command, wait_for}};
+        let dir = wl::tests::scratch("orphan");
+        let cfg = ServerConfig::from_path(&dir);
+        let mut launcher = run_scenario("run::tests::launcher_scenario", &dir);
+        assert!(wait_for(&dir.join("launcher-ready"), Duration::from_secs(60)), "the first launcher did not start its server");
+        let jvm: u32 = fs::read_to_string(dir.join("fake-ready")).unwrap().trim().parse().unwrap();
+        launcher.kill().unwrap(); // the window closed the 2026-10-22 way: no stop
+        let _ = launcher.wait();
+
+        let held = wl::find_foreign(&cfg).expect("the orphan still has the world open");
+        let orphan = held.server().expect("named as a JVM").clone();
+        assert_eq!(orphan.pid, jvm);
+        let why = wl::start_guard(&cfg).unwrap_err();
+        assert!(why.contains(&format!("pid {jvm}")), "{why}");
+        assert!(dir.join(crate::overrides::REFUSED_FILE).exists());
+
+        let outcome = wl::stop_other(&orphan, &helper_command, Duration::from_secs(30), &|_| {});
+        assert!(matches!(outcome, wl::StopOutcome::Stopped { .. }), "{outcome:?}");
+        assert!(dir.join("fake-saved").exists(), "it did not save on the way out");
+        assert_eq!(wl::find(&cfg), None);
+        assert_eq!(wl::start_guard(&cfg), Ok(()));
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    #[ignore = "run in a process of its own by an_orphaned_server_is_refused_a_twin_and_stopped_cleanly"]
+    fn launcher_scenario() {
+        use crate::world_lock::tests::{fake_jvm_command, test_exe_as, wait_for};
+        let Some(dir) = std::env::var_os("ICRAFT_RUN_SCENARIO").map(PathBuf::from) else { return };
+        let cfg = ServerConfig::from_path(&dir);
+        let java = test_exe_as(&dir, "java.exe");
+        let cmd = fake_jvm_command(&java, &dir, "lock+log", "save");
+        let ready = dir.clone();
+        thread::spawn(move || {
+            if wait_for(&ready.join("fake-ready"), Duration::from_secs(30)) && jvm_active() {
+                let _ = fs::write(ready.join("launcher-ready"), "up");
+            }
+        });
+        let _ = run_jvm(&cfg, cmd, no_watchdog(), true);
     }
 
     /// The lines as the server printed them in the rig (2026-10-15: a bare

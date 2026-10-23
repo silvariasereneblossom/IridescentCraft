@@ -86,9 +86,11 @@
 #      says whether names are authenticated (online-mode). RED as well when
 #      the launcher has REFUSED to start the server (.icraft_start_refused),
 #      with the advice for its cause: a world regeneration left unfinished
-#      (roll it back at the box; no remote request starts it), or a whitelist
+#      (roll it back at the box; no remote request starts it), a whitelist
 #      or online-mode switch of this server that could not be put back (fix
-#      it, then Cycle, or request_cycle.ps1 once the heartbeat has given up).
+#      it, then Cycle, or request_cycle.ps1 once the heartbeat has given up),
+#      or another server JVM that has the world open (one an earlier launcher
+#      left running: stop it from the launcher window, Server tab).
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -524,6 +526,12 @@ function Get-LauncherLiveness {
         $r.Line = ("the launcher has not rewritten its status for {0} (last: {1}, server {2}). It is closed or hung, or the box is off; this tool cannot tell from the share whether the server is up." -f (& $span $written), $st['written'], $st['server_state'])
         return $r
     }
+    # Since 2026-10-23 the launcher names a server JVM it did not start that has
+    # the world open (other_server=): such a server can be up and serving while
+    # this launcher's own state reads down.
+    if ($st['other_server']) {
+        $r.Notes.Add("the launcher reports ANOTHER SERVER on this world, one it did not start (nothing supervises it): $($st['other_server'])") | Out-Null
+    }
     $phase = [string]$st['phase']
     $why = "phase: $phase"
     if ($st['heartbeat']) { $why += "; heartbeat: $($st['heartbeat'])" }
@@ -581,11 +589,13 @@ function Get-AccessPosture {
     param([string]$Root, [bool]$Public)
     $r = [pscustomobject]@{ State = 'GREEN'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]); Refused = $false; Cause = $null }
     # The launcher's start guards leave this file when they refuse a start, with
-    # the reason. Two causes, with different fixes (operator ruling 20, sheet
-    # G19): a world regeneration left unfinished (checked first; every start,
-    # remote or at the box, is refused until it is rolled back), or a whitelist /
-    # online-mode switch this server turned on that could not be put back. It is
-    # removed by the next start the launcher allows.
+    # the reason. Three causes, with different fixes: another server JVM has the
+    # world open (since 2026-10-23: one an earlier launcher left running; no
+    # second server is started on the same world), a world regeneration left
+    # unfinished (operator ruling 20, sheet G19; every start, remote or at the
+    # box, is refused until it is rolled back), or a whitelist / online-mode
+    # switch this server turned on that could not be put back. It is removed by
+    # the next start the launcher allows.
     $refusedPath = Join-Path $Root '.icraft_start_refused'
     if (Test-Path -LiteralPath $refusedPath) {
         $why = '(no reason in the file)'; $when = '?'
@@ -596,7 +606,11 @@ function Get-AccessPosture {
         $r.State = 'RED'
         $r.Refused = $true
         $r.Line = "THE LAUNCHER REFUSED TO START THE SERVER ($when): $why"
-        if ($why -like 'a world regeneration was left unfinished*' -or (Test-Path -LiteralPath (Join-Path $Root '.icraft_regen_in_progress'))) {
+        if ($why -like 'another server already has this world open*' -or $why -like 'this launcher already runs a server JVM*') {
+            $r.Cause = 'world'
+            $r.Notes.Add('The server is not started ON PURPOSE: another server JVM has this world open, most likely one an earlier launcher left running when its window was closed or it ended. A second server is never started on the same world. That other server may still be serving players, with nothing supervising it (no restarts, no backups).') | Out-Null
+            $r.Notes.Add('At the box: the launcher window, Server tab, "Stop it cleanly" (Ctrl+C to that server: it saves the world and exits, then the launcher starts the server). The process is named above and in the status file (other_server=). Do not start a second launcher over WinRM for this.') | Out-Null
+        } elseif ($why -like 'a world regeneration was left unfinished*' -or (Test-Path -LiteralPath (Join-Path $Root '.icraft_regen_in_progress'))) {
             $r.Cause = 'regen'
             $r.Notes.Add('The server is down ON PURPOSE: a world regeneration run (or its rollback) did not finish, so part of the world may be reset and part not. Every start is refused until it is rolled back, a remote request included.') | Out-Null
             $r.Notes.Add('At the box: Customizer -> Regenerate -> Roll back on the run marked "This run did not finish" (type its code), then press Cycle. Never delete .icraft_regen_in_progress to get the server going. Deployment guide section 16f.') | Out-Null
@@ -956,6 +970,8 @@ if (-not $realDrift) {
             Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
             if ($access.Refused -and $access.Cause -eq 'regen') {
                 Write-Host "    -> down because a regeneration is unfinished: roll it back at the box (Customizer -> Regenerate -> Roll back), then Cycle. Deployment guide section 16f." -ForegroundColor Yellow
+            } elseif ($access.Refused -and $access.Cause -eq 'world') {
+                Write-Host "    -> not started because another server JVM has the world open (left running by an earlier launcher?). At the box: launcher window, Server tab, 'Stop it cleanly'." -ForegroundColor Yellow
             } elseif ($access.Refused) {
                 Write-Host "    -> down because an access switch could not be put back: fix it on the server, then Cycle at the box, or request_cycle.ps1 once the heartbeat has given up. Deployment guide section 15j." -ForegroundColor Yellow
             }
@@ -978,6 +994,8 @@ if (-not $realDrift) {
         Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
         if ($access.Refused -and $access.Cause -eq 'regen') {
             Write-Host "    -> the server was NOT started on a half-reset world. Roll the run back at the box (Customizer -> Regenerate -> Roll back), then Cycle; no remote request starts it before that. Deployment guide section 16f." -ForegroundColor Yellow
+        } elseif ($access.Refused -and $access.Cause -eq 'world') {
+            Write-Host "    -> no second server was started on a world another server JVM has open. At the box: launcher window, Server tab, 'Stop it cleanly' (it saves the world and exits; then the launcher starts the server)." -ForegroundColor Yellow
         } elseif ($access.Refused) {
             Write-Host "    -> the server was NOT started, rather than started open. Fix the cause on the server, then press Cycle in the launcher; once the heartbeat has given up, request_cycle.ps1 over remoting starts it again (launcher of 2026-10-15 or later). Deployment guide section 15j." -ForegroundColor Yellow
         } else {
