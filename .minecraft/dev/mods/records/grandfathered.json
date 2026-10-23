@@ -25813,10 +25813,10 @@
      "key": "worldgen",
      "surface": "worldgen",
      "status": "decided",
-     "answer": "default",
+     "answer": "retune",
      "by": "operator",
-     "on": "2026-10-14",
-     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16, 'Split': --defaults with a note for the mods that owe only defaults and add no dimension or boss and ask no loot or duplicates question)",
+     "on": "2026-10-22",
+     "note": "Operator, planning chat ~22:55 EDT 2026-10-22: the iron, coal and copper lodes 'Halve them too', and 'Record them (Recommended)'. I:rarity doubled in config/adlods/Deposits/{iron,coal,copper}.cfg in all three distros (2040 / 1632 / 2904 chunks a lode); the other lodes unchanged (decision 184).",
      "evidence": [
       "biome modifiers: 1 adlods:deposit_generator, 1 adlods:feature_disabler, 1 adlods:geode_generator, 1 adlods:vanilla_controller",
       "worldgen files: 4 configured_feature"
@@ -25891,10 +25891,10 @@
      "key": "worldgen",
      "surface": "worldgen",
      "status": "decided",
-     "answer": "default",
+     "answer": "retune",
      "by": "operator",
-     "on": "2026-10-14",
-     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16, 'Split': --defaults with a note for the mods that owe only defaults and add no dimension or boss and ask no loot or duplicates question)",
+     "on": "2026-10-22",
+     "note": "Operator, planning chat ~18:20 EDT 2026-10-22: 'We need to lower the iron/coal/copper/ rate by half as well'; ~22:55 EDT: 'Tune to exactly half' and 'Record them (Recommended)'. The mod's vein shapes stay; the pack's icraft_worldgen_overrides overrides its iron, coal and copper placed features with fewer veins, measured at half the pre-2026-10-22 ore a chunk (decisions 182 and 184).",
      "evidence": [
       "worldgen files: 18 configured_feature, 23 placed_feature"
      ],
@@ -34150,10 +34150,10 @@
      "key": "worldgen",
      "surface": "worldgen",
      "status": "decided",
-     "answer": "default",
+     "answer": "retune",
      "by": "operator",
-     "on": "2026-10-15",
-     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16), extended in the intake chip's chat on 2026-10-15 to the mods whose loot or duplicates question was answered by hand: 'Accept defaults (Recommended)'",
+     "on": "2026-10-22",
+     "note": "Operator, planning chat ~18:20 EDT 2026-10-22: 'Halve it (~60)'; ~22:55 EDT: 'Tune to exactly half' and 'Record them (Recommended)'. The pack's icraft_worldgen_overrides holds overworld_quartz:ore_overworld_quartz at 13 or 14 veins a chunk (mean 13.5; the mod's 30), measured at half the mod's ore (decisions 182 and 184).",
      "evidence": [
       "biome modifiers: 1 forge:add_features",
       "worldgen files: 1 configured_feature, 1 placed_feature"
