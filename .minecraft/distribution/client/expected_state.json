@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "5798fe62",
+    "generated_from":  "63d7eeec",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4364,8 +4364,8 @@
                                                                            "size":  2002
                                                                        },
                   "config/paxi/datapacks/icraft_worldgen_overrides.zip":  {
-                                                                              "sha256":  "b468e50dde91ae23e0d76c465836033aad1f51153dc435186a0bbafdc37e5102",
-                                                                              "size":  6789
+                                                                              "sha256":  "8e901a6b7110986badf3ffabf8ff5bdd381626228ddca5da3275c6f5f71643b0",
+                                                                              "size":  8182
                                                                           },
                   "config/paxi/datapacks/keepinventory_datapack.zip":  {
                                                                            "sha256":  "b27d333d9b9e7891475ad05fd1fdd691612d4f2a0cd8e95985d7bc362ded3d68",
