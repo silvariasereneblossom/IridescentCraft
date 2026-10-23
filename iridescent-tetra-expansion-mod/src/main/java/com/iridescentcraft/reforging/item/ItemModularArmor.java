@@ -164,6 +164,11 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
      * stacks. Acceptable: the alternative is a hard crash on every
      * armor hit while Aetheric is installed.
      *
+     * Since 2026-10-22 Aetheric's listener no longer throws:
+     * VeridiumDurabilityCastMixin returns early for a stack that is not
+     * a concrete ModularItem. The catch stays as the backstop for any
+     * other listener with the same cast.
+     *
      * If/when we move to a transformation-service-level mixin or
      * Sinytra-Connector pre-launch hook, this can revert to a plain
      * damageItemImpl(...) call.

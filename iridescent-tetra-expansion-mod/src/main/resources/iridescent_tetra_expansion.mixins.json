@@ -9,7 +9,8 @@
     "CropBlockCoFHReplantMixin",
     "ArsManaCapMixin",
     "ProtectionFlatArmorMixin",
-    "MagicProtectionHalveMixin"
+    "MagicProtectionHalveMixin",
+    "VeridiumDurabilityCastMixin"
   ],
   "client": [
     "GuiModuleSlotSubheadingMixin",

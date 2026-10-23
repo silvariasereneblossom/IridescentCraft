@@ -25,11 +25,16 @@ import se.mickelus.tetra.event.ModularItemDamageEvent;
  * non-crashing but used to log one WARN + one Forge-bus ERROR per
  * hit, which is on the order of every melee swing or armor hit.
  *
- * This helper de-dupes: the first occurrence per (context, cce
- * message) pair logs at WARN; subsequent occurrences drop to DEBUG.
- * The cce message embeds source+target class names, so a different
- * misbehaving listener with a different cast still gets a first
- * WARN without flooding.
+ * This helper de-dupes OUR line only: the first occurrence per
+ * (context, cce message) pair logs at WARN; subsequent occurrences
+ * drop to DEBUG. The cce message embeds source+target class names, so
+ * a different misbehaving listener with a different cast still gets a
+ * first WARN without flooding. The Forge bus logs its own ERROR with
+ * the full stack before it rethrows, on every throwing post, and the
+ * listeners after the throwing one are skipped: the catch is a
+ * backstop, not a fix. Aetheric's cast has its type check in
+ * VeridiumDurabilityCastMixin (2026-10-22); a new casting listener
+ * needs the same.
  */
 public final class ModularDamageBus {
 
