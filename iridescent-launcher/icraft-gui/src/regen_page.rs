@@ -22,7 +22,7 @@ use eframe::egui::{self, RichText};
 use icraft_core::backup;
 use icraft_core::config::ServerConfig;
 use icraft_core::regen::exec::{self, Approval, HoldingEntry, Mark, Outcome, Preflight, Pregen};
-use icraft_core::regen::{self, RunEntry};
+use icraft_core::regen::{self, fidelity, RunEntry};
 
 use crate::customizer::{mono_line, open_path, section, BAD, GOOD, WARN};
 
@@ -64,6 +64,9 @@ pub struct RegenPage {
     /// How the last run, backup or rollback ended: (went well, what to show).
     result: Option<(bool, String)>,
     holdings: Vec<HoldingEntry>,
+    /// Per holding folder: the fidelity harness's verdict (holds, its line)
+    /// and its report after the first start, read at each scan.
+    harness: Vec<(Option<(bool, String)>, Option<String>)>,
     rollback_typed: String,
     /// Set by a preview: check the newest dry-run once the folder is loaded.
     want_check: bool,
@@ -84,6 +87,7 @@ impl RegenPage {
             busy: None,
             result: None,
             holdings: Vec::new(),
+            harness: Vec::new(),
             rollback_typed: String::new(),
             want_check: false,
             expand_all: false,
@@ -127,6 +131,14 @@ impl RegenPage {
             self.typed.clear();
         }
         self.holdings = exec::holdings(server_dir);
+        self.harness = self
+            .holdings
+            .iter()
+            .map(|h| {
+                let verdict = fidelity::load(&h.dir).map(|r| (r.verdict.holds(), r.verdict.line()));
+                (verdict, fidelity::load_after_boot(&h.dir).map(|r| r.line))
+            })
+            .collect();
         self.last_scan = Some(Instant::now());
     }
 
@@ -433,7 +445,7 @@ impl RegenPage {
             } else if !matches {
                 ui.weak("The code is the first eight characters of the plan's sha256, shown in step 1.");
             } else {
-                ui.colored_label(WARN, "This resets the chunks. The run checks everything again first.");
+                ui.colored_label(WARN, "This resets the chunks. The run checks everything again first, and the fidelity harness checks the world on its own before and after; its verdict is on the done line and under 'Holding folders' below.");
             }
         });
         ui.label(RichText::new("Afterwards nothing is pregenerated: the reset chunks are generated when a player first goes there. Pregenerating them is switched off in this build.").small().weak());
@@ -469,7 +481,7 @@ impl RegenPage {
         let idle = self.busy.is_none();
         let mut undo: Option<PathBuf> = None;
         let newest = self.holdings.first().map(|h| h.name.clone());
-        for held in &self.holdings {
+        for (index, held) in self.holdings.iter().enumerate() {
             let Some(record) = &held.record else {
                 mono_line(ui, &format!("{}   {}   (no readable record)", held.name, backup::fmt_bytes(held.bytes)));
                 continue;
@@ -483,6 +495,21 @@ impl RegenPage {
                 regen::num(record.chunks_kept),
                 record.backup_file
             ));
+            if let Some((verdict, after_boot)) = self.harness.get(index) {
+                match verdict {
+                    Some((holds, line)) => {
+                        ui.add(egui::Label::new(RichText::new(line.as_str()).small().color(if *holds { GOOD } else { BAD })).wrap(true));
+                    }
+                    None => {
+                        ui.label(RichText::new("No fidelity harness verdict in this folder (a run from before the harness, or one cut off).").small().weak());
+                    }
+                }
+                if let Some(line) = after_boot {
+                    ui.add(egui::Label::new(RichText::new(line.as_str()).small()).wrap(true));
+                } else if verdict.as_ref().is_some_and(|(holds, _)| *holds) && record.state == "complete" {
+                    ui.label(RichText::new("After the first start on this world the launcher adds the harness's report on it here (kept chunks, chunks the server saved again, seams).").small().weak());
+                }
+            }
             let can_undo = matches!(record.state.as_str(), "complete" | "started");
             if Some(&held.name) == newest.as_ref() && can_undo {
                 let code: String = record.plan_hash.chars().take(exec::APPROVAL_CHARS).collect();

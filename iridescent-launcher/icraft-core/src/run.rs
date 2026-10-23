@@ -160,6 +160,13 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     if let Err(why) = crate::regen::exec::start_guard(cfg) {
         anyhow::bail!("the server was not started: {why}");
     }
+    // After a regeneration, the first start once a server has run on the
+    // result: the fidelity harness's report on the world (F8). Reads only,
+    // once per run, and never stops a start. Without a holding folder it is
+    // one directory listing.
+    if let Ok(Some(line)) = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| crate::regen::fidelity::after_first_start(cfg))) {
+        log::info!("[regen] {line}");
+    }
     // This server's own config values (Server Customizer): put them back into
     // the files a sync may just have rewritten, before the JVM reads them. Every
     // entry point comes through here, so "Run only" is covered too. Nothing

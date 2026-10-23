@@ -56,6 +56,7 @@ use crate::restart_policy::fmt_span;
 use crate::worlddata::{self, BlockPos, ClaimOwner, LevelInfo, Player, Waystone};
 
 pub mod exec;
+pub mod fidelity;
 
 /// `<unix-secs> <reason> [key=value ...]`: run a report now. Keys: `scope`,
 /// `dims`, `png`, and any setting of [`protection::POLICY_FILE`].

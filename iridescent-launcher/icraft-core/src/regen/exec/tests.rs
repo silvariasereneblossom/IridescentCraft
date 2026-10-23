@@ -787,3 +787,211 @@ fn the_command_line_runs_only_on_a_marked_scratch_copy() {
     fs::write(sv.root.join(".icraft_launcher_status"), "written_unix=1\n").unwrap();
     assert!(sandbox_check(&sv.cfg).unwrap_err().contains("is being served"));
 }
+
+// =============================================================================
+// The fidelity harness, wired into the run (regen/fidelity.rs)
+// =============================================================================
+
+/// A chunk written at the end of a region file, its header entry pointing at
+/// it: what a server does when it saves a chunk that no longer fits, or
+/// generates one.
+fn put_chunk(bytes: &mut Vec<u8>, pos: ChunkPos, data: &[u8]) {
+    let sector = anvil::SECTOR_BYTES;
+    let offset = bytes.len().div_ceil(sector);
+    bytes.resize(offset * sector, 0);
+    bytes.extend_from_slice(&(data.len() as u32 + 1).to_be_bytes());
+    bytes.push(2);
+    bytes.extend_from_slice(data);
+    bytes.resize(bytes.len().div_ceil(sector) * sector, 0);
+    let count = bytes.len() / sector - offset;
+    let at = usize::from(anvil::slot_index(pos)) * 4;
+    bytes[at..at + 4].copy_from_slice(&(((offset as u32) << 8) | count as u32).to_be_bytes());
+}
+
+fn harness_check(record: &fidelity::Record, id: &str) -> fidelity::Check {
+    record.verdict.checks.iter().find(|c| c.id == id).cloned().unwrap_or_else(|| panic!("no {id} in the verdict"))
+}
+
+#[test]
+fn the_fidelity_harness_holds_on_a_run_and_keeps_its_verdict() {
+    let sv = Server::new();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+
+    // The check of the plan runs the harness's self-test and its record, and says so.
+    let look = preflight(&sv.cfg, &run_dir).unwrap();
+    assert!(look.ready(), "{:?}", look.stops());
+    let ok = |needle: &str| look.lines.iter().any(|l| l.mark == Mark::Ok && l.text.contains(needle));
+    assert!(
+        ok("Fidelity harness self-test: 11 of 11 planted violation(s) caught on a fixture with one real region file of this world; with nothing planted it holds"),
+        "{:#?}",
+        look.lines
+    );
+    assert!(ok("Fidelity harness, before the changes:") && ok("F3 0 of 431 planned chunk(s) protected"), "{:#?}", look.lines);
+
+    let report = done(sv.run(&run_dir, &hash));
+    let line = report.fidelity.clone();
+    assert!(line.starts_with("fidelity harness HOLDS: F1 17 / 1 / 1 kept chunk record(s) identical (region / entities / poi)"), "{line}");
+    for part in ["F2 430 / 2 / 1 reset chunk record(s) gone", "F3 0 of 431 planned chunk(s) protected", "F4 0 new defect(s)", "F6 4 of 4 store(s) exact", "F7 11 of 11 planted violation(s) caught"] {
+        assert!(line.contains(part), "{part} -- {line}");
+    }
+    assert!(report.line().contains(&line));
+    let log = sv.log();
+    assert!(log.contains("fidelity harness HOLDS") && log.contains("fidelity harness self-test: 11 of 11"), "{log}");
+    assert!(!log.contains(PLAYER_NAME) && !log.contains(PLAYER));
+
+    // The verdict, in the holding folder, check by check.
+    let held = sv.holding();
+    let record = fidelity::load(&held.dir).expect("fidelity.json in the holding folder");
+    assert!(record.verdict.holds());
+    assert_eq!(record.verdict.plan_hash, hash);
+    assert_eq!(record.plan_author, "operator (dry-run)");
+    let states: Vec<(String, String)> = record.verdict.checks.iter().map(|c| (c.id.clone(), c.state.clone())).collect();
+    let want: Vec<(String, String)> = [("F1", "holds"), ("F2", "holds"), ("F3", "holds"), ("F4", "holds"), ("F5", "holds"), ("F6", "holds"), ("F7", "holds"), ("F8", "pending"), ("F9", "CI")]
+        .iter()
+        .map(|(a, b)| (a.to_string(), b.to_string()))
+        .collect();
+    assert_eq!(states, want);
+    let f6 = harness_check(&record, "F6");
+    for store in [
+        "data/waystones.dat: 2 of 3 waystone entries removed",
+        "data/large_ore_deposits.dat: 2 of 3 deposit records removed",
+        "data/mca_villages.dat: 1 of 3 village records removed",
+        "data/mca_graveyard.dat: 2 of 3 grave chunk entries removed",
+    ] {
+        assert!(f6.counts.iter().any(|c| c.starts_with(store)), "{store}: {:?}", f6.counts);
+    }
+    assert_eq!(record.verdict.self_test.plants.len(), 11);
+    assert!(record.verdict.self_test.plants.iter().all(|p| p.caught));
+    assert!(record.verdict.self_test.real_file.starts_with("region/r.-1.-1.mca (2 chunks"), "{}", record.verdict.self_test.real_file);
+    // Every chunk record that stayed, for the report after the first start.
+    let kept = fs::read_to_string(held.dir.join("fidelity-kept.tsv")).unwrap();
+    assert_eq!(kept.lines().filter(|l| !l.starts_with('#')).count(), 17 + 1 + 1);
+    // The harness wrote nothing into the world: the rollback is as exact as before.
+    assert!(rollback(&sv.cfg, &held.dir, &hash[..8], "test").unwrap().contains("14 file(s) put back"));
+}
+
+#[test]
+fn a_run_is_refused_when_the_harness_cannot_catch_a_planted_violation() {
+    let sv = Server::new();
+    let before = sv.snapshot();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    // The store check stubbed to "holds": the two plants in the stores get through.
+    fidelity::blind_for_test(&["F6"]);
+    let why = refused(sv.run(&run_dir, &hash));
+    let look = preflight(&sv.cfg, &run_dir).unwrap();
+    fidelity::blind_for_test(&[]);
+    assert!(why.contains("could not catch a planted violation"), "{why}");
+    assert!(why.contains("not caught: a kept waystone removed from the store, a reset chunk's waystone left in the store"), "{why}");
+    assert!(!look.ready() && look.stops().iter().any(|s| s.contains("cannot vouch for a run")), "{:?}", look.stops());
+    // Nothing touched: no backup, no holding folder.
+    assert_eq!(sv.snapshot(), before);
+    assert_eq!(sv.manual_backups(), 0);
+    assert!(holdings(&sv.root).is_empty());
+    // What it found is in the dry-run's folder.
+    let record = fidelity::load(&run_dir).expect("fidelity.json in the dry-run's folder");
+    assert!(!record.verdict.holds());
+    let missed: Vec<&str> = record.verdict.self_test.plants.iter().filter(|p| !p.caught).map(|p| p.invariant.as_str()).collect();
+    assert_eq!(missed, vec!["F6", "F6"]);
+    assert_eq!(harness_check(&record, "F7").state, "FAIL");
+    // The harness whole again: the same approval runs.
+    assert!(done(sv.run(&run_dir, &hash)).fidelity.starts_with("fidelity harness HOLDS"));
+}
+
+#[test]
+fn what_the_harness_finds_after_the_changes_puts_everything_back() {
+    let sv = Server::new();
+    let before = sv.snapshot();
+    let images = sv.chunk_images();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    // After the run's own check, something writes the waystone store back as
+    // it was: the run's check does not look again, the harness does.
+    let original = fs::read(sv.world().join("data").join("waystones.dat")).unwrap();
+    fidelity::TAMPER.with(|t| *t.borrow_mut() = Some(Box::new(move |world: &Path| fs::write(world.join("data").join("waystones.dat"), &original).unwrap())));
+    let outcome = sv.run(&run_dir, &hash);
+    fidelity::TAMPER.with(|t| *t.borrow_mut() = None);
+    let (why, restored, holding) = match outcome {
+        Outcome::Failed { why, restored, holding } => (why, restored, holding),
+        other => panic!("{}", other.line()),
+    };
+    assert!(why.contains("fidelity harness FAIL") && why.contains("F6 3 of 4 store(s) exact, 1 finding(s)"), "{why}");
+    assert_eq!(restored, Ok(()));
+    assert_eq!(sv.snapshot(), before);
+    assert_eq!(sv.chunk_images(), images);
+    assert!(!sv.root.join(MARKER_FILE).exists());
+    assert_eq!(load_holding(&holding).unwrap().state, "failed");
+    let record = fidelity::load(&holding).unwrap();
+    assert!(!record.verdict.holds());
+    let f6 = harness_check(&record, "F6");
+    assert_eq!(f6.state, "FAIL");
+    assert!(
+        f6.findings[0].starts_with("data/waystones.dat: not its original minus exactly the 2 waystone entries of reset chunks (expected 1 to stay, found 3)"),
+        "{:?}",
+        f6.findings
+    );
+    for id in ["F1", "F2", "F3", "F4", "F5"] {
+        assert_eq!(harness_check(&record, id).state, "holds", "{id}");
+    }
+    assert!(sv.log().contains("fidelity harness FAIL"));
+}
+
+#[test]
+fn the_plans_author_changes_nothing_about_the_gates() {
+    let mut seen: Vec<(String, String)> = Vec::new();
+    for author in ["operator", "model:claude-opus-5-5"] {
+        let sv = Server::new();
+        let (run_dir, hash) = sv.dry_run("scope=all");
+        // A label in the plan file; the plan's hash does not cover it.
+        let path = run_dir.join(PLAN_FILE);
+        let mut plan: serde_json::Value = serde_json::from_slice(&fs::read(&path).unwrap()).unwrap();
+        plan["author"] = serde_json::Value::String(author.to_string());
+        fs::write(&path, serde_json::to_vec_pretty(&plan).unwrap()).unwrap();
+        assert!(preflight(&sv.cfg, &run_dir).unwrap().ready());
+        let report = done(sv.run(&run_dir, &hash));
+        let record = fidelity::load(&sv.holding().dir).unwrap();
+        assert_eq!(record.plan_author, author);
+        seen.push((serde_json::to_string(&record.verdict).unwrap(), report.fidelity));
+    }
+    assert_eq!(seen[0].0, seen[1].0, "one plan under two labels: the verdicts are not byte-identical");
+    assert_eq!(seen[0].1, seen[1].1);
+}
+
+#[test]
+fn a_defect_already_in_a_region_file_is_reported_and_not_blamed_on_the_run() {
+    let sv = Server::new();
+    // r.4.4: (130,130) to be reset, and (131,130), which does not read: kept
+    // (the unreadable layer), damaged before the run and after it.
+    let region = sv.world().join("region");
+    fs::write(region.join("r.4.4.mca"), region_bytes(4, 4, &[((130, 130), 2, chunk_nbt((130, 130), 0)), ((131, 130), 2, b"this is not zlib".to_vec())])).unwrap();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    let report = done(sv.run(&run_dir, &hash));
+    assert!(report.fidelity.contains("F4 0 new defect(s)") && report.fidelity.contains("(1 already there before)"), "{}", report.fidelity);
+    let record = fidelity::load(&sv.holding().dir).unwrap();
+    let f4 = harness_check(&record, "F4");
+    assert!(f4.counts.iter().any(|c| c == "1 defect(s) were already there before the run (not the run's)"), "{:?}", f4.counts);
+}
+
+#[test]
+fn after_the_first_start_the_harness_reports_on_the_world() {
+    let sv = Server::new();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    done(sv.run(&run_dir, &hash));
+    // No server has run on it yet: nothing to say.
+    assert_eq!(fidelity::after_first_start(&sv.cfg), None);
+    // A server ran: it saved the bed chunk again, generated a reset position
+    // next to the bed area, and wrote its level data.
+    let world = sv.world();
+    let path = world.join("region").join("r.0.0.mca");
+    let mut bytes = fs::read(&path).unwrap();
+    put_chunk(&mut bytes, (12, 12), &chunk_nbt((12, 12), 100_600));
+    put_chunk(&mut bytes, (10, 12), &chunk_nbt((10, 12), 0));
+    fs::write(&path, &bytes).unwrap();
+    fs::write(world.join("level.dat_old"), b"a server ran").unwrap();
+    let line = fidelity::after_first_start(&sv.cfg).expect("a report");
+    assert!(line.contains("19 kept chunk record(s): 18 unchanged, 1 saved again by the server, 0 gone, 0 unreadable"), "{line}");
+    assert!(line.contains("1 of 431 reset position(s) generated again"), "{line}");
+    let report = fidelity::load_after_boot(&sv.holding().dir).unwrap();
+    assert!(report.seam_sample.iter().any(|s| s.contains("kept (11, 12) parses, reset (10, 12) generated again and parses")), "{:?}", report.seam_sample);
+    assert!(report.findings.is_empty(), "{:?}", report.findings);
+    // Once per run.
+    assert_eq!(fidelity::after_first_start(&sv.cfg), None);
+}

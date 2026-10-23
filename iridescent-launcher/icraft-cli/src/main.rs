@@ -180,6 +180,43 @@ enum Cmd {
         approve: String,
     },
 
+    /// The fidelity harness's planted-violation self-test against a dry-run's
+    /// plan: a fixture world in the temp folder (with a copy of one region
+    /// file of this world), a correct run carried out on it, then each
+    /// violation planted in turn, each of which the harness has to catch.
+    /// Reads the world only. Exit 0 = every plant caught, 2 = not.
+    RegenSelftest {
+        /// The dry-run: a folder name under <server-dir>/regen-reports, or a path.
+        #[arg(long)]
+        run: String,
+    },
+
+    /// The fidelity harness on this server's world against an untouched copy
+    /// of that world as it was before a run: the harness's record is taken of
+    /// the copy, then this world is held against it and against the dry-run's
+    /// plan (F1 to F6). Reads both. For proving the harness on scratch copies,
+    /// planted violations included. Exit 0 = HOLDS, 2 = FAIL, 1 = no answer.
+    RegenVerify {
+        /// The dry-run whose plan was carried out: a folder name under
+        /// <server-dir>/regen-reports, or a path.
+        #[arg(long)]
+        run: String,
+        /// The world folder as it was before the run (a copy of it).
+        #[arg(long)]
+        before: PathBuf,
+    },
+
+    /// The fidelity harness's report on a regenerated world once a server has
+    /// run on it: kept chunks, chunks saved again, reset positions generated
+    /// again, seams. Written into the run's holding folder; reads the world
+    /// only. (The launcher writes it by itself at the first start after a
+    /// server ran on the result.)
+    RegenAfterBoot {
+        /// A folder name under <server-dir>/regen-holding. Default: the newest.
+        #[arg(long)]
+        holding: Option<String>,
+    },
+
     /// Undo a regeneration from its holding folder (scratch copies only, as
     /// regen-execute). Exact for as long as the world has not changed since
     /// the run.
@@ -427,6 +464,58 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 regen::exec::Outcome::Refused(_) => 2,
                 regen::exec::Outcome::Failed { .. } => 1,
             })
+        }
+        Cmd::RegenSelftest { run } => match regen::fidelity::Plan::load(&run_dir(cfg, run)) {
+            Ok(plan) => {
+                let test = regen::fidelity::self_test(&cfg.world_dir(), &plan);
+                println!("real region file  {}", test.real_file);
+                println!("nothing planted   {}", test.control);
+                for p in &test.plants {
+                    println!("[{}] {} ({}): {}", if p.caught { "caught" } else { "MISSED" }, p.name, p.invariant, p.said);
+                }
+                if !test.error.is_empty() {
+                    println!("error: {}", test.error);
+                }
+                println!("{} ({:.1} s)", test.line(), test.seconds);
+                Ok(if test.passed() { 0 } else { 2 })
+            }
+            Err(why) => {
+                eprintln!("regen-selftest FAILED: {why}");
+                Ok(1)
+            }
+        },
+        Cmd::RegenVerify { run, before } => {
+            let looked = regen::fidelity::Plan::load(&run_dir(cfg, run)).and_then(|plan| regen::fidelity::before(before, &plan).map(|record| (plan, record)));
+            match looked {
+                Ok((plan, record)) => {
+                    println!("{}", record.line());
+                    let checked = regen::fidelity::after(&cfg.world_dir(), &plan, &record, None);
+                    for check in &checked.verdict.checks {
+                        println!("{} {} [{}]: {}", check.id, check.name, check.state, check.summary);
+                        for finding in &check.findings {
+                            println!("    {finding}");
+                        }
+                    }
+                    println!("{}", checked.verdict.line());
+                    Ok(if checked.verdict.holds() { 0 } else { 2 })
+                }
+                Err(why) => {
+                    eprintln!("regen-verify FAILED: {why}");
+                    Ok(1)
+                }
+            }
+        }
+        Cmd::RegenAfterBoot { holding } => {
+            let dir = match holding {
+                Some(name) => Some(cfg.server_dir.join(regen::exec::HOLDING_DIR).join(name)),
+                None => regen::exec::holdings(&cfg.server_dir).into_iter().next().map(|h| h.dir),
+            };
+            let Some(dir) = dir else {
+                eprintln!("regen-after-boot: there is no holding folder under {}", cfg.server_dir.join(regen::exec::HOLDING_DIR).display());
+                return Ok(2);
+            };
+            println!("{}", regen::fidelity::write_after_boot(&cfg.world_dir(), &dir));
+            Ok(0)
         }
         Cmd::RegenRollback { holding, approve } => {
             let how = match regen::exec::sandbox_check(cfg) {

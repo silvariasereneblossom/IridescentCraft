@@ -28,6 +28,13 @@
 //!      a claim or a train track in the target set, mod data that does not
 //!      read, a pregeneration that would start by itself afterwards ([`Line`]s
 //!      marked [`Mark::Stop`]).
+//!   3a. **The fidelity harness, before** ([`super::fidelity`], code that
+//!      shares no reader with this file): its self-test (a violation of each
+//!      kind planted in a fixture world in the temp folder, every one of
+//!      which it has to catch), its own record of the world as it stands, and
+//!      the plan against the protection map as derived now. If it cannot
+//!      catch a planted violation, or the plan names a protected chunk,
+//!      nothing is done.
 //!   4. **A pinned backup of the world exactly as it stands**, verified
 //!      ([`backup::pinned_of_current_world`]). No backup, no run.
 //!   5. **The changes**, each one recorded first in the holding folder
@@ -47,6 +54,13 @@
 //!   7. **Record** the run in `<world>/.icraft_world.json` (`regenerations`),
 //!      next to the override layer's `config_changes`, so a later run can say
 //!      which chunks predate which worldgen change.
+//!   7a. **The fidelity harness, after**: the world read again by the
+//!      harness's own reader and held against its record and the plan (every
+//!      chunk the plan does not name byte-identical, every chunk it names
+//!      gone, the region files it touched sound, every other file unchanged,
+//!      the stores reconciled exactly). Its verdict goes into the holding
+//!      folder (`fidelity.json`) and onto the run's done line; a FAIL puts
+//!      everything back, as a failure in step 6 does.
 //!
 //! The holding folder is the way back: [`rollback`] returns every file to
 //! where it was and checks each against the SHA-256 taken before it moved. It
@@ -84,7 +98,7 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 
-use super::{analyse, num, plan_hash, Analysis, DimResult, Fate, RunSpec, Scope, PLAN_FILE, PLAN_VERSION};
+use super::{analyse, fidelity, num, plan_hash, Analysis, DimResult, Fate, RunSpec, Scope, PLAN_FILE, PLAN_VERSION};
 use crate::anvil::{self, ChunkPos, Store, OVERWORLD};
 use crate::backup;
 use crate::config::ServerConfig;
@@ -251,13 +265,16 @@ pub struct Report {
     pub backup_reused: bool,
     /// The holding folder, relative to the server dir.
     pub holding: String,
+    /// The fidelity harness's verdict, one line ([`fidelity::Verdict::line`]).
+    pub fidelity: String,
     pub elapsed_secs: f64,
 }
 
 impl Report {
     /// One line for the log and the command line. Counts and hashes only.
     pub fn line(&self) -> String {
-        format!(
+        let harness = if self.fidelity.is_empty() { String::new() } else { format!(". {}", self.fidelity) };
+        let done = format!(
             "done: scope {}: {} chunk(s) reset, {} kept; region files moved whole {}/{}/{} (region/entities/poi), rewritten {}/{}/{}, {} moved to {}; backup {} (sha256 {}{}); plan sha256 {} ({:.1} s)",
             self.scope,
             num(self.chunks_reset),
@@ -275,7 +292,8 @@ impl Report {
             if self.backup_reused { ", taken earlier of this same world" } else { "" },
             &self.plan_hash[..self.plan_hash.len().min(16)],
             self.elapsed_secs
-        )
+        );
+        format!("{done}{harness}")
     }
 }
 
@@ -1249,6 +1267,41 @@ fn fresh_dry_run(cfg: &ServerConfig, plan: &ApprovedPlan) -> Option<String> {
     }
 }
 
+fn sentence(text: String) -> String {
+    let mut chars = text.chars();
+    match chars.next() {
+        Some(first) => first.to_uppercase().chain(chars).collect(),
+        None => text,
+    }
+}
+
+/// What the fidelity harness says of a plan before a run: its self-test, and
+/// (with the server stopped, when what is on disk is what a run would meet)
+/// the plan against the protection map as it derives it now.
+fn fidelity_lines(cfg: &ServerConfig, plan: &ApprovedPlan, running: bool) -> Vec<Line> {
+    let mut out = Vec::new();
+    let checked = fidelity::Plan::of(plan, &fidelity::author_label(&plan.run_dir));
+    let world = cfg.world_dir();
+    let test = fidelity::self_test(&world, &checked);
+    out.push(if test.passed() {
+        line(Mark::Ok, format!("{}. The run repeats it before it begins.", sentence(test.line())))
+    } else {
+        line(Mark::Stop, format!("{}. A harness that cannot catch a planted violation cannot vouch for a run, so the run is refused.", sentence(test.line())))
+    });
+    if running {
+        out.push(line(Mark::Note, "The fidelity harness holds the plan against the protection map, and records the world chunk by chunk, once the server is stopped."));
+        return out;
+    }
+    out.push(match fidelity::before(&world, &checked) {
+        Ok(before) => match before.refusal() {
+            None => line(Mark::Ok, format!("{}. After the changes it reads the world again and holds it against this record; a FAIL puts everything back.", sentence(before.line()))),
+            Some(why) => line(Mark::Stop, sentence(why)),
+        },
+        Err(why) => line(Mark::Stop, format!("The fidelity harness cannot read what it needs, so it cannot vouch for a run: {why}")),
+    });
+    out
+}
+
 /// Look a dry-run's plan over against the world as it is now. Reads only, and
 /// is safe while the server runs (then it says so: a run needs it stopped).
 /// If the plan has changed, a fresh dry-run is written and named.
@@ -1259,7 +1312,8 @@ pub fn preflight(cfg: &ServerConfig, run_dir: &Path) -> Result<Preflight, String
         return Err(format!("the plan was made for the world '{}', and this server's world is '{}'", plan.level_name, a.level_name));
     }
     let mut lines = Vec::new();
-    if crate::run::jvm_active() || backup::world_in_use(cfg) {
+    let running = crate::run::jvm_active() || backup::world_in_use(cfg);
+    if running {
         lines.push(line(Mark::Stop, "The server is running. Stop it first (Server tab: Stop, and wait for 'idle'): a regeneration needs the world closed, and what is on disk now may be one autosave behind."));
     } else {
         lines.push(line(Mark::Ok, "The server is stopped and nothing has the world open."));
@@ -1269,6 +1323,7 @@ pub fn preflight(cfg: &ServerConfig, run_dir: &Path) -> Result<Preflight, String
     }
     let inspection = inspect(cfg, &a, Pregen::Off);
     lines.extend(inspection.lines);
+    lines.extend(fidelity_lines(cfg, &plan, running));
     lines.push(match backup::pinned_candidate(cfg) {
         Some(entry) => line(Mark::Ok, format!(
             "Backup: {} (sha256 {}) is a pinned backup of the world exactly as it is now. The run verifies it again and uses it.",
@@ -1912,6 +1967,34 @@ fn execute_inner(cfg: &ServerConfig, approval: &Approval) -> Outcome {
         return refused(stops.join(" | "));
     }
 
+    // 3a. The fidelity harness. It has to catch every violation planted in
+    // its fixture; then the plan has to stand against the protection map as
+    // the harness derives it now. Its record of the world, taken here, is what
+    // the changes are held against afterwards (step 7a).
+    let checked_plan = fidelity::Plan::of(&plan, &fidelity::author_label(&plan.run_dir));
+    let world = cfg.world_dir();
+    audit(dir, log::Level::Info, "fidelity harness: its self-test (a violation of each kind planted in a fixture world in the temp folder)");
+    let self_test = fidelity::self_test(&world, &checked_plan);
+    if !self_test.passed() {
+        let _ = fidelity::save_refusal(&plan.run_dir, &checked_plan, &self_test, None);
+        return refused(format!(
+            "{}: the harness could not catch a planted violation, so it cannot vouch for a run (details in {}/{})",
+            self_test.line(),
+            plan.run_name,
+            fidelity::FIDELITY_FILE
+        ));
+    }
+    audit(dir, log::Level::Info, &self_test.line());
+    let harness = match fidelity::before(&world, &checked_plan) {
+        Ok(before) => before,
+        Err(why) => return refused(format!("the fidelity harness could not read what it needs, so it cannot vouch for a run: {why}")),
+    };
+    if let Some(why) = harness.refusal() {
+        let _ = fidelity::save_refusal(&plan.run_dir, &checked_plan, &self_test, Some(&harness));
+        return refused(why);
+    }
+    audit(dir, log::Level::Info, &harness.line());
+
     // 4. The backup.
     audit(dir, log::Level::Info, "taking, or finding, a pinned backup of the world exactly as it is");
     let pinned = match backup::pinned_of_current_world(&gate, cfg, &format!("pre-regen {}", &plan.hash[..APPROVAL_CHARS])) {
@@ -2003,6 +2086,21 @@ fn execute_inner(cfg: &ServerConfig, approval: &Approval) -> Outcome {
         let restored = back_out(cfg, &holding, &mut prepared.record, &why);
         return Outcome::Failed { why, restored, holding };
     }
+
+    // 7a. The fidelity harness, after. What it finds puts the world back.
+    audit(dir, log::Level::Info, "fidelity harness: reading the world again with its own reader");
+    let checked = fidelity::after(&world, &checked_plan, &harness, Some(&self_test));
+    if let Err(why) = checked.save(&holding, &checked_plan, self_test.seconds, harness.seconds) {
+        audit(dir, log::Level::Warn, &format!("the harness's verdict could not be kept in the holding folder: {why}"));
+    }
+    let holds = checked.verdict.holds();
+    audit(dir, if holds { log::Level::Info } else { log::Level::Error }, &checked.verdict.line());
+    if !holds {
+        let why = format!("{} (the findings are in {}/{})", checked.verdict.line(), report.holding, fidelity::FIDELITY_FILE);
+        let restored = back_out(cfg, &holding, &mut prepared.record, &why);
+        return Outcome::Failed { why, restored, holding };
+    }
+    report.fidelity = checked.verdict.line();
 
     prepared.record.state = "complete".to_string();
     prepared.record.finished_utc = utc_now();
