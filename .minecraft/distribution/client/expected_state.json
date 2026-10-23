@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "63d7eeec",
+    "generated_from":  "aafb588d",
     "roots":  [
                   "kubejs",
                   "config",
@@ -349,15 +349,15 @@
                                                                     "size":  7932
                                                                 },
                   "config/adlods/Deposits/coal.cfg":  {
-                                                          "sha256":  "a458d6fe2ec8f7cfd481e1fd177b0feca70e0e06e5d6a76be78613912aa76593",
-                                                          "size":  8194
+                                                          "sha256":  "efc5f982b2f33ba1caa8d30cbadb63cf67e9ec8488203de0df83ad1101dd10f4",
+                                                          "size":  8195
                                                       },
                   "config/adlods/Deposits/cobalt.cfg":  {
                                                             "sha256":  "d656d7cc4d56cd0edfc8f0e0fc701d726ce8d264a0657384a907b755d9f37d9b",
                                                             "size":  8143
                                                         },
                   "config/adlods/Deposits/copper.cfg":  {
-                                                            "sha256":  "a6dcf47d462e8cffcf1e32fec7ef9f50247a14d0bfb6f432a78abb730e41e24e",
+                                                            "sha256":  "a064e15757ad4cf0f7123e604e89527d5e6a2ef6756039988f03b40ae8dae198",
                                                             "size":  8206
                                                         },
                   "config/adlods/Deposits/diamond.cfg":  {
@@ -381,7 +381,7 @@
                                                              "size":  8126
                                                          },
                   "config/adlods/Deposits/iron.cfg":  {
-                                                          "sha256":  "0c2ea4bad1a7a506da46cc34129e807cf9d7faf34f4f15ef8c9dcc0b125ae9f6",
+                                                          "sha256":  "a554bd865a27fbee20068c3982b0b91e0a49b5a3efa99e88abaa0c76c1e46e44",
                                                           "size":  8184
                                                       },
                   "config/adlods/Deposits/lapis.cfg":  {
@@ -4364,8 +4364,8 @@
                                                                            "size":  2002
                                                                        },
                   "config/paxi/datapacks/icraft_worldgen_overrides.zip":  {
-                                                                              "sha256":  "8e901a6b7110986badf3ffabf8ff5bdd381626228ddca5da3275c6f5f71643b0",
-                                                                              "size":  8182
+                                                                              "sha256":  "bf7ce3599f3e19332a673b56ffd5703abb5e94dda3df6b372a1ceb170e3a1918",
+                                                                              "size":  8187
                                                                           },
                   "config/paxi/datapacks/keepinventory_datapack.zip":  {
                                                                            "sha256":  "b27d333d9b9e7891475ad05fd1fdd691612d4f2a0cd8e95985d7bc362ded3d68",
