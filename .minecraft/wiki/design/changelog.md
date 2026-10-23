@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Iron, coal, copper and quartz ore are half as common in new land (22 October)
+
+- **Newly generated Overworld land holds about half the iron, coal, copper and quartz ore it did.** Each of these ores now tries half as many veins in a chunk. A vein is as big as before and sits at the same heights and in the same biomes, so a vein you find is as rich as ever; there are half as many of them. A new chunk holds about 60 quartz ore blocks instead of about 120. The raw iron and raw copper blocks inside iron and copper veins, and the coal blocks inside coal veins, are halved with them.
+- **Only new land changes.** Chunks that are already generated keep the ore they have. When part of the world is regenerated, the regenerated land gets the new amounts as well.
+- **Other ores are unchanged**: gold, diamond, redstone, lapis, emerald, zinc, the Thermal and Mekanism ores, and everything in the Nether. With fewer iron and copper veins in the stone they turn up a little more often in new land (up to about 15 % more), because the veins that used to fill that stone are gone.
+
 ## October 2026: Quartz is a Tier 1 material (22 October)
 
 - **Quartz is Tier 1.** Quartz, its blocks (smooth, chiseled, pillar, bricks, stairs and slabs) and the quartz ores can be used and crafted from the start, and JEI shows them. Since April they were Tier 3, which also locked Create's rose quartz and with it the electron tube, so a Tier 1 player could not build a Deployer, a Mechanical Crafter, brass funnels and tunnels, smart chutes, or the other Create machines that take an electron tube. All of them can be built at Tier 1 now.
