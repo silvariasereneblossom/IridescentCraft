@@ -7,6 +7,7 @@
 //! | Layer | What it keeps | Default |
 //! |---|---|---|
 //! | bed | each player's respawn chunk and the chunks around it | radius 1 = 3x3 |
+//! | logout | the chunk each player logged out in and the chunks around it, in that dimension | radius 1 = 3x3 |
 //! | claim | every chunk claimed in Open Parties and Claims, server and expired claims included | on |
 //! | spawn | the square of chunks within N blocks of world spawn (overworld) | 128 blocks |
 //! | waystone | chunks holding a waystone a player has activated or placed | `used` |
@@ -33,6 +34,14 @@
 //!     world, 3 of them placed by a player and 12 activated by anyone. Keeping
 //!     all of them (`waystones=all`, still available) leaves 200 single-chunk
 //!     islands of old terrain; keeping the ones players use does not.
+//!   - **Logout spots 3x3** (operator ruling 2026-10-22, backlog G5: "Each
+//!     player's logout chunk and the 3x3 around it are kept automatically").
+//!     A player who logged out in reset terrain would come back inside fresh
+//!     terrain, possibly inside stone. Until this layer the run was refused
+//!     for it, which cost a new dry-run and a new code at the box; the
+//!     refusal stays in `regen::exec` as the backstop (the layer off, or an
+//!     `unprotect` box over the spot). The position is the player file's
+//!     `Pos` and `Dimension`, read for nothing else: the layer names no one.
 //!
 //! Settings come from the defaults, then [`POLICY_FILE`] next to
 //! server.properties (untracked, like `.icraft_restart_policy`), then the
@@ -50,6 +59,7 @@ use crate::worlddata::{ClaimOwner, LevelInfo, Player, Waystone};
 ///
 /// ```text
 /// bed_radius=1              # chunks around each bed chunk (1 = 3x3) | off
+/// logout_radius=1           # chunks around each logout chunk (1 = 3x3) | off
 /// claims=on                 # on | off
 /// spawn_radius_blocks=128   # blocks around world spawn | off
 /// waystones=used            # used (activated or placed by a player) | all | off
@@ -66,6 +76,8 @@ pub const POLICY_FILE: &str = ".icraft_regen_policy";
 
 /// Bed chunk + its 8 neighbours (operator decision 2026-10-11).
 pub const BED_RADIUS: u32 = 1;
+/// Logout chunk + its 8 neighbours (operator ruling 2026-10-22, G5).
+pub const LOGOUT_RADIUS: u32 = 1;
 /// Operator decision 2026-10-11: see the module docs.
 pub const SPAWN_RADIUS_BLOCKS: u32 = 128;
 /// Operator decision 2026-10-11: see the module docs.
@@ -85,6 +97,7 @@ const MAX_SPAWN_RADIUS_BLOCKS: u32 = 4096;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Layer {
     Bed,
+    Logout,
     Claim,
     Spawn,
     Waystone,
@@ -94,8 +107,18 @@ pub enum Layer {
 }
 
 impl Layer {
-    pub const ALL: [Layer; 7] =
-        [Layer::Bed, Layer::Claim, Layer::Spawn, Layer::Waystone, Layer::LivedIn, Layer::Manual, Layer::Unreadable];
+    /// One bit each in a `u8`: eight is all there is room for.
+    pub const COUNT: usize = 8;
+    pub const ALL: [Layer; Layer::COUNT] = [
+        Layer::Bed,
+        Layer::Logout,
+        Layer::Claim,
+        Layer::Spawn,
+        Layer::Waystone,
+        Layer::LivedIn,
+        Layer::Manual,
+        Layer::Unreadable,
+    ];
 
     pub fn bit(self) -> u8 {
         1 << (self as u8)
@@ -104,6 +127,7 @@ impl Layer {
     pub fn name(self) -> &'static str {
         match self {
             Layer::Bed => "bed",
+            Layer::Logout => "logout",
             Layer::Claim => "claim",
             Layer::Spawn => "spawn",
             Layer::Waystone => "waystone",
@@ -204,6 +228,8 @@ impl std::fmt::Display for ChunkBox {
 pub struct Settings {
     /// Chunks around each bed chunk. `None` = the layer is off.
     pub bed_radius: Option<u32>,
+    /// Chunks around each logout chunk. `None` = the layer is off.
+    pub logout_radius: Option<u32>,
     pub claims: bool,
     /// Blocks around world spawn. `None` = the layer is off.
     pub spawn_radius_blocks: Option<u32>,
@@ -220,6 +246,7 @@ impl Default for Settings {
     fn default() -> Self {
         Settings {
             bed_radius: Some(BED_RADIUS),
+            logout_radius: Some(LOGOUT_RADIUS),
             claims: true,
             spawn_radius_blocks: Some(SPAWN_RADIUS_BLOCKS),
             waystones: WaystoneMode::Used,
@@ -270,6 +297,9 @@ impl Settings {
         match key.as_str() {
             "bed_radius" => {
                 self.bed_radius = number_or_off(&key, &lower, u64::from(MAX_RADIUS_CHUNKS))?.map(|n| n as u32);
+            }
+            "logout_radius" => {
+                self.logout_radius = number_or_off(&key, &lower, u64::from(MAX_RADIUS_CHUNKS))?.map(|n| n as u32);
             }
             "claims" => {
                 self.claims = match lower.as_str() {
@@ -368,6 +398,7 @@ impl Settings {
         let claims = if self.claims { "on" } else { "off" };
         let mut out = vec![
             ("bed_radius".to_string(), or_off(self.bed_radius.map(u64::from))),
+            ("logout_radius".to_string(), or_off(self.logout_radius.map(u64::from))),
             ("claims".to_string(), claims.to_string()),
             ("spawn_radius_blocks".to_string(), or_off(self.spawn_radius_blocks.map(u64::from))),
             ("waystones".to_string(), self.waystones.keyword().to_string()),
@@ -396,6 +427,12 @@ impl Settings {
                 "bed_radius",
                 self.bed_radius.map_or("off".to_string(), |r| format!("{r} chunk(s): {0}x{0} around each bed chunk", 2 * r + 1)),
                 self.bed_radius == d.bed_radius,
+            ),
+            (
+                "logout_radius",
+                self.logout_radius
+                    .map_or("off".to_string(), |r| format!("{r} chunk(s): {0}x{0} around each player's logout chunk", 2 * r + 1)),
+                self.logout_radius == d.logout_radius,
             ),
             ("claims", if self.claims { "on" } else { "off" }.to_string(), self.claims == d.claims),
             (
@@ -532,6 +569,14 @@ pub fn build(dim: &str, sources: &Sources, settings: &Settings, scan: &Dimension
         }
     }
 
+    // Where each player logged out, in the dimension they were in then. No
+    // `why`: the layer says what it is, and it names no one.
+    if let Some(radius) = settings.logout_radius {
+        for (_, pos) in sources.players.iter().filter_map(|p| p.last_pos.as_ref()).filter(|(d, _)| d == dim) {
+            add_square(&mut chunks, pos.chunk(), radius, Layer::Logout, None);
+        }
+    }
+
     if settings.claims {
         for owner in sources.claims {
             let why = format!("claim: {}", owner.label());
@@ -627,9 +672,16 @@ mod tests {
         }
     }
 
+    /// `player(..)` who logged out at block `(x, z)` of `dim`.
+    fn logged_out(mut p: Player, dim: &str, at: (i32, i32)) -> Player {
+        p.last_pos = Some((dim.to_string(), BlockPos { x: at.0, y: 64, z: at.1 }));
+        p
+    }
+
     fn only(layer: Layer) -> Settings {
         let mut s = Settings {
             bed_radius: None,
+            logout_radius: None,
             claims: false,
             spawn_radius_blocks: None,
             waystones: WaystoneMode::Off,
@@ -638,6 +690,7 @@ mod tests {
         };
         match layer {
             Layer::Bed => s.bed_radius = Some(1),
+            Layer::Logout => s.logout_radius = Some(1),
             Layer::Claim => s.claims = true,
             Layer::Spawn => s.spawn_radius_blocks = Some(128),
             Layer::Waystone => s.waystones = WaystoneMode::Used,
@@ -651,14 +704,18 @@ mod tests {
     fn the_defaults_are_the_operators_decisions_and_the_flagged_proposals() {
         let s = Settings::default();
         assert_eq!(s.bed_radius, Some(1));
+        assert_eq!(s.logout_radius, Some(1), "G5, ruled 2026-10-22: the logout chunk and the 3x3 around it");
         assert!(s.claims);
         assert_eq!(s.spawn_radius_blocks, Some(128));
         assert_eq!(s.waystones, WaystoneMode::Used);
         assert_eq!(s.inhabited_min_ticks, Some(12_000));
         assert!(s.protect.is_empty() && s.unprotect.is_empty());
         assert!(s.describe().iter().all(|(_, _, is_default)| *is_default));
-        assert_eq!(Layer::ALL.iter().map(|l| l.bit()).sum::<u8>(), 127);
+        // Every layer has its own bit, and together they fill the u8.
+        assert_eq!(Layer::ALL.iter().map(|l| u32::from(l.bit())).sum::<u32>(), 255);
+        assert_eq!(Layer::ALL.len(), Layer::COUNT);
         assert_eq!(layer_names(Layer::Bed.bit() | Layer::LivedIn.bit() | Layer::Spawn.bit()), "bed+spawn+lived-in");
+        assert_eq!(layer_names(Layer::Logout.bit() | Layer::Bed.bit() | Layer::Unreadable.bit()), "bed+logout+unreadable");
         assert_eq!((fmt_ticks(800), fmt_ticks(12_000), fmt_ticks(6_166_097)), ("40 s".to_string(), "10.0 min".to_string(), "85.6 h".to_string()));
     }
 
@@ -668,6 +725,7 @@ mod tests {
         s.apply_policy(
             "\u{feff}# regen policy\r\n\
              bed_radius = 2\r\n\
+             logout_radius=Off\r\n\
              claims=OFF   # for a test\r\n\
              spawn_radius_blocks=off\n\
              waystones=Activated\n\
@@ -684,6 +742,7 @@ mod tests {
         )
         .unwrap();
         assert_eq!(s.bed_radius, Some(2));
+        assert_eq!(s.logout_radius, None);
         assert!(!s.claims);
         assert_eq!(s.spawn_radius_blocks, None);
         assert_eq!(s.waystones, WaystoneMode::Used, "the first build's name for the mode still reads");
@@ -710,7 +769,8 @@ mod tests {
         let mut s = Settings::default();
         s.set("inhabited_min_ticks", "off").unwrap();
         s.set("bed_radius", "off").unwrap();
-        assert_eq!((s.inhabited_min_ticks, s.bed_radius), (None, None));
+        s.set("logout_radius", "3").unwrap();
+        assert_eq!((s.inhabited_min_ticks, s.bed_radius, s.logout_radius), (None, None, Some(3)));
         let mut again = Settings::default();
         for (key, value) in s.to_pairs() {
             again.set(&key, &value).unwrap();
@@ -725,6 +785,9 @@ mod tests {
             "bed_radius=two",
             "bed_radius=-1",
             "bed_radius=65",
+            "logout_radius=65",
+            "logout_radius=near",
+            "logout=on",
             "spawn_radius_blocks=999999",
             "claims=maybe",
             "waystones=some",
@@ -817,6 +880,64 @@ mod tests {
         let nether = build(NETHER, &sources, &only(Layer::Bed), &scan);
         assert_eq!(nether.chunks.len(), 9);
         assert!(nether.is_protected((0, 0)) && nether.is_protected((-1, -1)) && !nether.is_protected((2, 2)));
+    }
+
+    #[test]
+    fn the_logout_layer_is_the_logout_chunk_and_its_neighbours_in_that_dimension() {
+        let players = [
+            // Logged out in the frame, far from their bed: block (88, 90) = chunk (5, 5).
+            logged_out(player("Player_One", Some((OVERWORLD, (200, 200))), &[]), OVERWORLD, (88, 90)),
+            // At negative coordinates, on a chunk border: block (-1, -16) = chunk (-1, -1).
+            logged_out(player("Player_Two", None, &[]), OVERWORLD, (-1, -16)),
+            // In the Nether, at the same chunk numbers as Player_One.
+            logged_out(player("Player_Three", None, &[]), NETHER, (80, 95)),
+            // A file with no position: nothing to keep for them.
+            player("Player_Four", None, &[]),
+        ];
+        let lv = level((0, 0));
+        let sources = Sources { level: &lv, players: &players, claims: &[], waystones: &[] };
+        let scan = DimensionScan::default();
+
+        let over = build(OVERWORLD, &sources, &only(Layer::Logout), &scan);
+        assert_eq!(over.chunks.len(), 18);
+        for centre in [(5, 5), (-1, -1)] {
+            for dx in -1..=1 {
+                for dz in -1..=1 {
+                    assert_eq!(over.layers_at((centre.0 + dx, centre.1 + dz)), Layer::Logout.bit());
+                }
+            }
+        }
+        assert!(!over.is_protected((7, 5)) && !over.is_protected((5, 3)) && !over.is_protected((1, -1)));
+        assert!(over.chunks.values().all(|p| p.why.is_empty()), "the layer names no one");
+        assert!(!over.is_protected((12, 12)), "the bed is the bed layer's, not this one's");
+
+        // Another dimension's logout protects that dimension only.
+        let nether = build(NETHER, &sources, &only(Layer::Logout), &scan);
+        let square: BTreeSet<ChunkPos> = (4..=6).flat_map(|x| (4..=6).map(move |z| (x, z))).collect();
+        assert_eq!(nether.chunks.keys().copied().collect::<BTreeSet<ChunkPos>>(), square);
+        assert_eq!(build("minecraft:the_end", &sources, &only(Layer::Logout), &scan).chunks.len(), 0);
+
+        // The radius is the operator's; off is off.
+        let mut s = only(Layer::Logout);
+        s.logout_radius = Some(0);
+        assert_eq!(build(OVERWORLD, &sources, &s, &scan).chunks.keys().copied().collect::<Vec<_>>(), vec![(-1, -1), (5, 5)]);
+        s.logout_radius = Some(2);
+        assert_eq!(build(OVERWORLD, &sources, &s, &scan).chunks.len(), 50);
+        s.logout_radius = None;
+        assert!(build(OVERWORLD, &sources, &s, &scan).chunks.is_empty());
+
+        // With every layer at its default the logout square adds to the bed's, and an
+        // unprotect box still wins over it (the run's own refusal is the backstop then).
+        let mut s = Settings::default();
+        s.spawn_radius_blocks = None;
+        let map = build(OVERWORLD, &sources, &s, &scan);
+        assert_eq!(map.chunks.len(), 9 + 18);
+        assert_eq!(layer_names(map.layers_at((12, 12))), "bed");
+        assert_eq!(layer_names(map.layers_at((5, 5))), "logout");
+        s.set("unprotect", "5,5").unwrap();
+        let map = build(OVERWORLD, &sources, &s, &scan);
+        assert!(!map.is_protected((5, 5)) && map.is_protected((5, 6)));
+        assert_eq!(layer_names(map.overridden[&(5, 5)].layers), "logout");
     }
 
     #[test]

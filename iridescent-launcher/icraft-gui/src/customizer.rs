@@ -108,6 +108,8 @@ pub struct Customizer {
 
     bed_on: bool,
     bed_radius: u32,
+    logout_on: bool,
+    logout_radius: u32,
     claims: bool,
     spawn_on: bool,
     spawn_radius: u32,
@@ -154,6 +156,8 @@ impl Customizer {
             dims: Vec::new(),
             bed_on: true,
             bed_radius: 0,
+            logout_on: true,
+            logout_radius: 0,
             claims: true,
             spawn_on: true,
             spawn_radius: 0,
@@ -236,6 +240,8 @@ impl Customizer {
         let d = Settings::default();
         self.bed_on = s.bed_radius.is_some();
         self.bed_radius = s.bed_radius.or(d.bed_radius).unwrap_or(1);
+        self.logout_on = s.logout_radius.is_some();
+        self.logout_radius = s.logout_radius.or(d.logout_radius).unwrap_or(1);
         self.claims = s.claims;
         self.spawn_on = s.spawn_radius_blocks.is_some();
         self.spawn_radius = s.spawn_radius_blocks.or(d.spawn_radius_blocks).unwrap_or(128);
@@ -253,6 +259,7 @@ impl Customizer {
     fn settings(&self) -> Result<Settings, String> {
         let settings = Settings {
             bed_radius: self.bed_on.then_some(self.bed_radius),
+            logout_radius: self.logout_on.then_some(self.logout_radius),
             claims: self.claims,
             spawn_radius_blocks: self.spawn_on.then_some(self.spawn_radius),
             waystones: self.waystones,
@@ -530,6 +537,11 @@ impl Customizer {
             ui.checkbox(&mut self.bed_on, "Beds: each player's bed chunk and");
             ui.add_enabled(self.bed_on, egui::DragValue::new(&mut self.bed_radius).clamp_range(0..=64));
             ui.label(format!("chunks around it ({0}x{0})", 2 * self.bed_radius + 1));
+        });
+        ui.horizontal_wrapped(|ui| {
+            ui.checkbox(&mut self.logout_on, "Logout spots: the chunk each player logged out in and");
+            ui.add_enabled(self.logout_on, egui::DragValue::new(&mut self.logout_radius).clamp_range(0..=64));
+            ui.label(format!("chunks around it ({0}x{0}), in that dimension", 2 * self.logout_radius + 1));
         });
         ui.checkbox(&mut self.claims, "Claims: every chunk claimed in Open Parties and Claims");
         ui.horizontal_wrapped(|ui| {
@@ -884,6 +896,15 @@ fn dimension_ui(ui: &mut egui::Ui, expand: bool, d: &DimView, shown: &Shown) {
                     ui.end_row();
                 }
             });
+            // What a layer was built from, where it says (the logout layer's counts).
+            for l in d.layers.iter().filter(|l| !l.note.is_empty()) {
+                let text = format!("{}: {}", l.name, l.note);
+                if l.note.contains("UNKNOWN") {
+                    ui.colored_label(WARN, text);
+                } else {
+                    ui.weak(text);
+                }
+            }
         });
         ui.add_space(24.0);
         ui.vertical(|ui| {

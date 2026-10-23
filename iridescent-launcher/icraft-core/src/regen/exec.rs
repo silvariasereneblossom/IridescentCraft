@@ -24,9 +24,10 @@
 //!      difference is shown, a fresh dry-run is written, and the operator has
 //!      to look at THAT one and approve ITS hash ([`Outcome::PlanChanged`]).
 //!   3. **Refuse** on anything the run cannot answer for: a player whose logout
-//!      position is in a chunk to be reset, a claim or a train track in the
-//!      target set, mod data that does not read, a pregeneration that would
-//!      start by itself afterwards ([`Line`]s marked [`Mark::Stop`]).
+//!      position is in a chunk to be reset, a player file that does not read,
+//!      a claim or a train track in the target set, mod data that does not
+//!      read, a pregeneration that would start by itself afterwards ([`Line`]s
+//!      marked [`Mark::Stop`]).
 //!   4. **A pinned backup of the world exactly as it stands**, verified
 //!      ([`backup::pinned_of_current_world`]). No backup, no run.
 //!   5. **The changes**, each one recorded first in the holding folder
@@ -561,13 +562,22 @@ fn short(uuid: &str) -> &str {
 /// target set. Each is something only the operator can settle, by keeping the
 /// chunk or by changing what stands in it, and then making a new dry-run.
 ///
-/// (A player's logout position: if this is ever to keep the chunk by itself
-/// instead of refusing, the place is a layer in `protection`, so that the
-/// dry-run shows it. The plan then has no such chunk and this never fires.)
+/// (A player's logout position: the `logout` layer of `protection` keeps that
+/// chunk and the 3x3 around it by default (G5, 2026-10-22), so the dry-run
+/// shows it and the plan has no such chunk. This refusal stays as the
+/// backstop: the layer switched off, or an `unprotect` box over the spot.)
 fn target_stops(a: &Analysis) -> Vec<String> {
     let mut out = Vec::new();
     if a.total_targets() == 0 {
         out.push("The plan regenerates no chunk: there is nothing to do.".to_string());
+    }
+    // By number only: the files are named by their player's UUID.
+    for u in &a.unreadable_players {
+        out.push(format!(
+            "Player file #{} of {} in playerdata/ (sorted by file name) does not read, and neither does its .dat_old: that player's bed and logout spot are unknown, so nothing can keep them. Put the file back from a world backup (each holds playerdata/) with the server stopped, then make a new dry-run.",
+            a.file_no(&u.uuid),
+            a.player_files()
+        ));
     }
     for (index, p) in a.players.iter().enumerate() {
         if let Some((dim, pos)) = &p.last_pos {

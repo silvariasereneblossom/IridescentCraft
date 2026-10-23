@@ -316,8 +316,8 @@ struct DimStats {
     protected_on_disk: usize,
     protected_not_on_disk: usize,
     /// Per [`Layer::ALL`]: chunks on disk the layer keeps / keeps alone.
-    layer: [usize; 7],
-    layer_alone: [usize; 7],
+    layer: [usize; Layer::COUNT],
+    layer_alone: [usize; Layer::COUNT],
     selected: usize,
     kept_in_scope: usize,
     targets: usize,
@@ -328,8 +328,8 @@ struct DimStats {
 impl DimResult {
     fn stats(&self) -> DimStats {
         let on_disk: Vec<ChunkPos> = self.scan.chunks.keys().copied().collect();
-        let mut layer = [0usize; 7];
-        let mut layer_alone = [0usize; 7];
+        let mut layer = [0usize; Layer::COUNT];
+        let mut layer_alone = [0usize; Layer::COUNT];
         let mut protected_on_disk = 0;
         for pos in &on_disk {
             let bits = self.protection.layers_at(*pos);
@@ -401,6 +401,9 @@ struct Analysis {
     settings_from_caller: bool,
     level: LevelInfo,
     players: Vec<Player>,
+    /// Player files that do not read, `.dat_old` included: bed and logout
+    /// spot unknown. Reported by number, never by name or UUID.
+    unreadable_players: Vec<worlddata::UnreadablePlayer>,
     claims: Option<Vec<ClaimOwner>>,
     waystones: Option<Vec<Waystone>>,
     all_dims: Vec<Dimension>,
@@ -456,6 +459,20 @@ impl Analysis {
         self.dims.iter().map(|d| d.targets.len()).sum()
     }
 
+    /// Every file in `playerdata/`, read or not.
+    fn player_files(&self) -> usize {
+        self.players.len() + self.unreadable_players.len()
+    }
+
+    /// A player file's number among all of them sorted by file name, from 1:
+    /// how a line points at a file without naming anyone.
+    fn file_no(&self, uuid: &str) -> usize {
+        let mut all: Vec<&str> =
+            self.players.iter().map(|p| p.uuid.as_str()).chain(self.unreadable_players.iter().map(|u| u.uuid.as_str())).collect();
+        all.sort_unstable();
+        all.iter().position(|u| *u == uuid).map_or(0, |i| i + 1)
+    }
+
     fn server_probably_running(&self) -> bool {
         self.last_save.is_some_and(|age| age < RECENT_SAVE)
     }
@@ -488,7 +505,7 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
         notes.push("level.dat did not read; world spawn comes from level.dat_old".to_string());
     }
     let names = worlddata::read_usercache(&server_dir);
-    let mut players = worlddata::read_players(&world, &names)?;
+    let worlddata::PlayerFiles { mut players, unreadable: unreadable_players } = worlddata::read_players(&world, &names);
     let claims = match worlddata::read_claims(&world) {
         Ok(c) => c,
         Err(e) if !settings.claims => {
@@ -540,6 +557,7 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
         settings_from_caller: spec.settings.is_some(),
         level,
         players,
+        unreadable_players,
         claims,
         waystones,
         all_dims,
@@ -635,6 +653,24 @@ fn collect_warnings(a: &mut Analysis) {
                     p.label()
                 ));
             }
+        }
+    }
+    // What the bed and logout layers cannot see. By file number only: these
+    // lines name no one (the files are named by UUID).
+    let files = a.player_files();
+    for u in &a.unreadable_players {
+        warn(&mut out, "player-file-unreadable", "", None, None, format!(
+            "player file #{} of {files} in playerdata/ (sorted by file name) does not read, and neither does its .dat_old ({}): this player's bed and logout spot are unknown, so neither the bed layer nor the logout layer keeps anything for them. A regeneration is refused until the file reads.",
+            a.file_no(&u.uuid),
+            u.why
+        ));
+    }
+    if a.settings.logout_radius.is_some() {
+        for p in a.players.iter().filter(|p| p.last_pos.is_none()) {
+            warn(&mut out, "logout-unknown", "", None, None, format!(
+                "player file #{} of {files} in playerdata/ reads but holds no position (Pos): the logout layer keeps nothing for this player",
+                a.file_no(&p.uuid)
+            ));
         }
     }
 
@@ -754,14 +790,16 @@ fn activated_by<'p>(players: &'p [Player], uid: &str) -> Vec<&'p str> {
 }
 
 /// Warning kinds in the order the report lists them, with their headings.
-const WARNING_KINDS: [(&str, &str, usize); 15] = [
+const WARNING_KINDS: [(&str, &str, usize); 17] = [
     ("server-running", "The server is probably running", 5),
+    ("player-file-unreadable", "Player files that do NOT read (their bed and logout spot are unknown)", 20),
     ("mod-data-unreadable", "Mod data that could NOT be checked", 20),
     ("unprotect-overrides-a-layer", "Protection removed by an unprotect= line in the policy file", 40),
     ("unreadable-chunk", "Chunks whose terrain data could not be read", 40),
     ("files-changed-during-scan", "Region files the server wrote to during the scan", 10),
     ("lived-in-not-protected", "Lived-in chunks that are NOT protected (they would be regenerated)", 40),
     ("logout-position-in-target", "Players who logged out in a chunk that would be regenerated", 40),
+    ("logout-unknown", "Players whose logout spot is unknown (the logout layer keeps nothing for them)", 20),
     ("claim-in-target", "Claimed chunks that would be regenerated", 40),
     ("waystone-in-target", "Waystones in chunks that would be regenerated", 40),
     ("create-track-in-target", "Create train track in chunks that would be regenerated", 40),
@@ -909,6 +947,10 @@ pub struct LayerRow {
     pub kept: usize,
     /// Of those, the ones no other layer keeps.
     pub alone: usize,
+    /// What the layer was built from, when that is worth a line (the logout
+    /// layer: how many players logged out here, and how many spots are
+    /// unknown). Counts only.
+    pub note: String,
 }
 
 /// A count of region files, per chunk folder.
@@ -1105,7 +1147,7 @@ fn dim_view(a: &Analysis, d: &DimResult, map: Option<MapInfo>) -> DimView {
         layers: Layer::ALL
             .iter()
             .enumerate()
-            .map(|(i, l)| LayerRow { name: l.name().to_string(), kept: s.layer[i], alone: s.layer_alone[i] })
+            .map(|(i, l)| LayerRow { name: l.name().to_string(), kept: s.layer[i], alone: s.layer_alone[i], note: layer_note(a, &d.dim.id, *l) })
             .collect(),
         selected: s.selected,
         kept_in_scope: s.kept_in_scope,
@@ -1136,6 +1178,23 @@ fn dim_view(a: &Analysis, d: &DimResult, map: Option<MapInfo>) -> DimView {
         longest_ticks: times.iter().copied().max().unwrap_or(0),
         map,
     }
+}
+
+/// [`LayerRow::note`].
+fn layer_note(a: &Analysis, dim: &str, layer: Layer) -> String {
+    if layer != Layer::Logout {
+        return String::new();
+    }
+    if a.settings.logout_radius.is_none() {
+        return "the layer is off".to_string();
+    }
+    let here = a.players.iter().filter(|p| p.last_pos.as_ref().is_some_and(|(d, _)| d == dim)).count();
+    let unknown = a.players.iter().filter(|p| p.last_pos.is_none()).count() + a.unreadable_players.len();
+    let mut note = format!("{here} of {} player file(s) logged out in this dimension", a.player_files());
+    if unknown > 0 {
+        note.push_str(&format!("; {unknown} logout spot(s) UNKNOWN, see the warnings"));
+    }
+    note
 }
 
 fn player_view(a: &Analysis, p: &Player, around: u32) -> PlayerView {
@@ -1360,7 +1419,7 @@ fn report_text(v: &RunView) -> String {
     }
     wl!(out, "  The defaults are the operator's decisions of 2026-10-11: beds 3x3, claims, {} blocks around world", protection::SPAWN_RADIUS_BLOCKS);
     wl!(out, "  spawn, waystones a player has activated or placed, and lived-in from {} ticks (ten minutes", num(protection::INHABITED_MIN_TICKS as usize));
-    wl!(out, "  with a player within 128 blocks).");
+    wl!(out, "  with a player within 128 blocks). Logout spots 3x3: the operator's ruling of 2026-10-22.");
 
     heading(&mut out, "DIMENSIONS FOUND");
     wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}", "id", "folder", "region", "entities", "poi");
@@ -1383,7 +1442,8 @@ fn report_text(v: &RunView) -> String {
         };
         wl!(out, "  protected               {:>9}   kept whatever the scope{not_generated}", num(d.protected));
         for l in &d.layers {
-            wl!(out, "    {:<10}            {:>9}   only this layer: {}", l.name, num(l.kept), num(l.alone));
+            let note = if l.note.is_empty() { String::new() } else { format!("   ({})", l.note) };
+            wl!(out, "    {:<10}            {:>9}   only this layer: {}{note}", l.name, num(l.kept), num(l.alone));
         }
         wl!(out, "  selected by the scope   {:>9}", num(d.selected));
         wl!(out, "    kept (protected)      {:>9}", num(d.kept_in_scope));
@@ -1456,7 +1516,7 @@ fn report_text(v: &RunView) -> String {
     for f in &v.files {
         wl!(out, "  {f}");
     }
-    wl!(out, "  Map colours: white bed, purple claim, blue manual, yellow spawn, cyan waystone, green lived-in,");
+    wl!(out, "  Map colours: white bed, pink logout, purple claim, blue manual, yellow spawn, cyan waystone, green lived-in,");
     wl!(out, "  magenta unreadable, ORANGE = would be regenerated, grey = on disk and untouched. North is up;");
     wl!(out, "  faint lines mark region files (32 chunks).");
     wl!(out);
@@ -1472,7 +1532,7 @@ struct Tally {
     kept: usize,
     regenerate: usize,
     untouched: usize,
-    layer: [usize; 7],
+    layer: [usize; Layer::COUNT],
 }
 
 impl Tally {
@@ -1582,7 +1642,7 @@ fn warnings_csv(a: &Analysis) -> String {
 }
 
 /// The map's colours. A pixel holds an index into this.
-const MAP_PALETTE: [[u8; 3]; 11] = [
+const MAP_PALETTE: [[u8; 3]; 12] = [
     [16, 16, 20],    // 0 nothing on disk
     [28, 28, 38],    // 1 region-file grid line
     [72, 72, 84],    // 2 on disk, untouched
@@ -1594,12 +1654,14 @@ const MAP_PALETTE: [[u8; 3]; 11] = [
     [185, 95, 215],  // 8 claim
     [255, 255, 255], // 9 bed
     [255, 0, 255],   // 10 unreadable
+    [250, 160, 185], // 11 logout
 ];
 
 /// What the map's colours mean, for a legend. A chunk kept by several layers
 /// is drawn in the colour of the first of them in this order.
-pub const MAP_LEGEND: [(&str, [u8; 3]); 9] = [
+pub const MAP_LEGEND: [(&str, [u8; 3]); 10] = [
     ("bed", MAP_PALETTE[9]),
+    ("logout", MAP_PALETTE[11]),
     ("claim", MAP_PALETTE[8]),
     ("manual", MAP_PALETTE[7]),
     ("spawn", MAP_PALETTE[6]),
@@ -1618,6 +1680,8 @@ fn map_colour(d: &DimResult, pos: ChunkPos) -> u8 {
     let has = |l: Layer| bits & l.bit() != 0;
     if has(Layer::Bed) {
         9
+    } else if has(Layer::Logout) {
+        11
     } else if has(Layer::Claim) {
         8
     } else if has(Layer::Manual) {
@@ -2091,10 +2155,12 @@ mod tests {
             Fixture { cfg: ServerConfig::from_path(&root), root }
         }
 
+        /// The tests' own settings come first, so a test's tokens win over them.
+        /// The logout layer (G5) is off here: the counts below were worked out
+        /// without it, and it has its own test that switches it back on
+        /// (`the_logout_layer_keeps_where_players_logged_out`).
         fn spec(&self, tokens: &str) -> RunSpec {
-            let mut spec = RunSpec::parse_tokens(tokens.split_whitespace()).unwrap();
-            spec.set("spawn_radius_blocks", "16").unwrap();
-            spec
+            RunSpec::parse_tokens(["spawn_radius_blocks=16", "logout_radius=off"].into_iter().chain(tokens.split_whitespace())).unwrap()
         }
 
         fn run(&self, tokens: &str) -> Summary {
@@ -2255,8 +2321,11 @@ mod tests {
         for pair in plan["settings"].as_array().unwrap() {
             again.set(pair[0].as_str().unwrap(), pair[1].as_str().unwrap()).unwrap();
         }
-        assert_eq!(again.spawn_radius_blocks, Some(16));
-        assert_eq!(Settings { spawn_radius_blocks: Some(protection::SPAWN_RADIUS_BLOCKS), ..again }, Settings::default());
+        assert_eq!((again.spawn_radius_blocks, again.logout_radius), (Some(16), None));
+        assert_eq!(
+            Settings { spawn_radius_blocks: Some(protection::SPAWN_RADIUS_BLOCKS), logout_radius: Some(protection::LOGOUT_RADIUS), ..again },
+            Settings::default()
+        );
 
         // The report says the same, and the per-chunk CSV agrees with the plan.
         assert!(flat(&s.report).contains("TO REGENERATE 428"), "{}", s.report);
@@ -2317,11 +2386,12 @@ mod tests {
             let (px, py) = ((i64::from(chunk.0) - map.origin_x) * 2, (i64::from(chunk.1) - map.origin_z) * 2);
             image.palette[usize::from(image.pixels[(py * i64::from(map.width) + px) as usize])]
         };
-        assert_eq!(colour_at((5, 5)), MAP_LEGEND[7].1, "a target is orange");
+        assert_eq!(colour_at((5, 5)), MAP_LEGEND[8].1, "a target is orange");
         assert_eq!(colour_at((12, 12)), MAP_LEGEND[0].1, "the bed chunk is white");
-        assert_eq!(colour_at((18, 18)), MAP_LEGEND[4].1, "the waystone is cyan");
+        assert_eq!(colour_at((18, 18)), MAP_LEGEND[5].1, "the waystone is cyan");
         assert_eq!(colour_at((50, 50)), [16, 16, 20], "nothing on disk there");
-        assert_eq!(MAP_LEGEND[7].0, "WOULD BE REGENERATED");
+        assert_eq!(MAP_LEGEND[8].0, "WOULD BE REGENERATED");
+        assert_eq!(layer("logout"), (0, 0), "off in this fixture");
 
         // The run is listed, newest first.
         let runs = list_runs(&fx.root);
@@ -2423,7 +2493,9 @@ mod tests {
         let spec = RunSpec { scope: Scope::All, settings: Some(on_screen.clone()), ..RunSpec::default() };
         assert_eq!(spec.tokens(), "scope=all dims=minecraft:overworld settings=window");
         let s = run(&fx.cfg, &spec).unwrap();
-        assert_eq!((s.protected, s.targets), (16, 429)); // the waystone chunk is no longer kept
+        // The waystone chunk is no longer kept; the logout layer is on (the window's
+        // settings are the defaults) and keeps Player_One's 3x3 around chunk (5,5).
+        assert_eq!((s.protected, s.targets), (16 + 9, 429 - 9));
         assert!(s.view.policy_file.starts_with("not consulted"), "{}", s.view.policy_file);
         let plan = fx.plan(&s);
         assert!(plan["settings_source"].as_str().unwrap().starts_with("the launcher window"));
@@ -2433,6 +2505,111 @@ mod tests {
             again.set(pair[0].as_str().unwrap(), pair[1].as_str().unwrap()).unwrap();
         }
         assert_eq!(again, on_screen);
+    }
+
+    #[test]
+    fn the_logout_layer_keeps_where_players_logged_out() {
+        // G5 (ruled 2026-10-22): on by default, the logout chunk and the 3x3 around it.
+        // This run uses the defaults, not the fixture's `spec` (which turns the layer off).
+        let fx = Fixture::new();
+        let world = fx.root.join("testworld");
+        write_region(&world.join("DIM-1"), Store::Region, 0, 0, &[((0, 0), 0), ((1, 1), 0), ((5, 5), 0), ((9, 9), 0)]);
+        // Player_Three: bed in the Nether at chunk (0,0) as before, logged out in the Nether at chunk (8,8).
+        write_player(&world, P3, &player_nbt(Some((NETHER, (8, 64, 8))), (NETHER, (129.5, 70.0, 129.5)), &[]));
+        let spec = RunSpec::parse_tokens(["scope=all", "dims=all", "spawn_radius_blocks=16"]).unwrap();
+        let before = fx.world_state();
+        let s = run(&fx.cfg, &spec).unwrap();
+
+        // Overworld: the 17 of the fixture, plus Player_One's 3x3 around chunk (5,5) (Player_Two's,
+        // around (0,0), is spawn already). Nether: the bed's (0,0) and (1,1), and the logout's (9,9).
+        assert_eq!((s.on_disk, s.protected, s.targets), (445 + 4, 17 + 9 + 3, 428 - 9 + 1));
+        let plan = fx.plan(&s);
+        let over = plan_chunks(&plan, OVERWORLD);
+        for x in 4..=6 {
+            for z in 4..=6 {
+                assert!(!over.contains(&(x, z)), "({x},{z}) is in Player_One's logout square");
+            }
+        }
+        assert!(over.contains(&(3, 5)) && over.contains(&(7, 5)) && over.contains(&(5, 7)));
+        // A Nether logout keeps Nether chunks only: the same numbers in the overworld are reset.
+        assert!(over.contains(&(8, 8)) && over.contains(&(9, 9)));
+        assert_eq!(plan_chunks(&plan, NETHER), BTreeSet::from([(5, 5)]));
+        assert_eq!(plan_hash("testworld", [(OVERWORLD, &over), (NETHER, &plan_chunks(&plan, NETHER))]), s.plan_hash);
+
+        // Reported on its own: a row of the layer table per dimension, with what it was built from.
+        let warnings = fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap();
+        let of = |w: &str, kind: &str| w.lines().filter(|l| l.starts_with(&format!("{kind},"))).count();
+        assert_eq!(of(&warnings, "logout-position-in-target"), 0, "nobody logged out in a chunk to be reset any more");
+        assert_eq!(of(&warnings, "logout-unknown") + of(&warnings, "player-file-unreadable"), 0);
+        let row = |view: &RunView, dim: &str| {
+            let d = view.dimensions.iter().find(|d| d.id == dim).unwrap();
+            let l = d.layers.iter().find(|l| l.name == "logout").unwrap();
+            (l.kept, l.alone, l.note.clone())
+        };
+        assert_eq!(row(&s.view, OVERWORLD), (9 + 5, 9, "2 of 3 player file(s) logged out in this dimension".to_string()));
+        assert_eq!(row(&s.view, NETHER), (1, 1, "1 of 3 player file(s) logged out in this dimension".to_string()));
+        assert!(flat(&s.report).contains("logout 14 only this layer: 9 (2 of 3 player file(s) logged out in this dimension)"), "{}", s.report);
+        assert!(flat(&s.report).contains("logout_radius 1 chunk(s): 3x3 around each player's logout chunk "), "{}", s.report);
+        assert!(!flat(&s.report).contains("logout chunk [not the default]"), "{}", s.report);
+        assert!(s.view.players[0].lines.iter().any(|l| l == "logged out   block 88, 64, 90 in minecraft:overworld = chunk (5, 5): kept (logout)"), "{:?}", s.view.players[0].lines);
+        assert_eq!(load_view(&s.out_dir).unwrap(), s.view);
+        // The layer names no one: no reason in the CSV, and the map has a colour for it.
+        let csv = fs::read_to_string(s.out_dir.join("chunks.csv")).unwrap();
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,5,5,80,80,r.0.0.mca,1,0,0,0,1,logout,,1,keep"), "{csv}");
+        assert!(csv.lines().any(|l| l == "minecraft:the_nether,9,9,144,144,r.0.0.mca,1,0,0,0,1,logout,,1,keep"), "{csv}");
+        assert_eq!(MAP_LEGEND[1].0, "logout");
+        let map = s.view.dimensions.iter().find(|d| d.id == OVERWORLD).unwrap().map.clone().unwrap();
+        let image = crate::png::decode_indexed(&fs::read(s.out_dir.join(&map.file)).unwrap()).unwrap();
+        let (px, py) = ((5 - map.origin_x) * 2, (5 - map.origin_z) * 2);
+        assert_eq!(image.palette[usize::from(image.pixels[(py * i64::from(map.width) + px) as usize])], MAP_LEGEND[1].1);
+
+        // A player file that does not read, .dat_old included, is a warning and not a failed
+        // run; the layer still keeps the others' spots and says what it could not see.
+        fs::write(world.join("playerdata").join(format!("{P2}.dat")), b"\x1f\x8b\x08 torn").unwrap();
+        // And a file that reads but holds no position (Player_Three's, keeping the Nether bed).
+        let mut no_pos = player_nbt(Some((NETHER, (8, 64, 8))), (NETHER, (0.0, 0.0, 0.0)), &[]);
+        if let crate::nbt::Value::Compound(map) = &mut no_pos {
+            assert!(map.remove("Pos").is_some());
+        }
+        write_player(&world, P3, &no_pos);
+        let s = run(&fx.cfg, &spec).unwrap();
+        // Player_Two's spot was spawn's anyway; Player_Three's Nether (9,9) is now reset.
+        assert_eq!((s.protected, s.targets), (17 + 9 + 2, 428 - 9 + 2));
+        assert!(!plan_chunks(&fx.plan(&s), OVERWORLD).contains(&(5, 5)), "Player_One's square is still kept");
+        assert_eq!(plan_chunks(&fx.plan(&s), NETHER), BTreeSet::from([(5, 5), (9, 9)]));
+        let warnings = fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap();
+        assert_eq!(of(&warnings, "player-file-unreadable"), 1);
+        assert_eq!(of(&warnings, "logout-unknown"), 1);
+        assert!(warnings.contains("player file #2 of 3 in playerdata/ (sorted by file name) does not read, and neither does its .dat_old"), "{warnings}");
+        assert!(warnings.contains("player file #3 of 3 in playerdata/ reads but holds no position (Pos)"), "{warnings}");
+        assert_eq!(
+            row(&s.view, OVERWORLD).2,
+            "1 of 3 player file(s) logged out in this dimension; 2 logout spot(s) UNKNOWN, see the warnings"
+        );
+        assert!(s.view.warning_groups.iter().any(|g| g.kind == "player-file-unreadable" && g.count == 1));
+        // Nothing written names the unreadable file's player.
+        for file in ["report.txt", "warnings.csv", "chunks.csv", SUMMARY_FILE, PLAN_FILE] {
+            let body = fs::read_to_string(s.out_dir.join(file)).unwrap();
+            assert!(!body.contains(P2) && !body.contains("Player_Two"), "{file}");
+        }
+        assert_eq!(s.view.players.len(), 2);
+
+        // Switched off, the layer keeps nothing, and the old warning is back for Player_One.
+        let mut off = spec.clone();
+        off.set("logout_radius", "off").unwrap();
+        let s = run(&fx.cfg, &off).unwrap();
+        assert!(plan_chunks(&fx.plan(&s), OVERWORLD).contains(&(5, 5)));
+        let warnings = fs::read_to_string(s.out_dir.join("warnings.csv")).unwrap();
+        assert_eq!(of(&warnings, "logout-position-in-target"), 1);
+        assert_eq!(of(&warnings, "logout-unknown"), 0, "nothing to say about a layer that is off");
+        assert_eq!(row(&s.view, OVERWORLD), (0, 0, "the layer is off".to_string()));
+        assert!(flat(&s.report).contains("logout_radius off [not the default]"), "{}", s.report);
+
+        assert_eq!(
+            fx.world_state().into_iter().filter(|(p, _, _)| !p.starts_with(world.join("playerdata"))).collect::<Vec<_>>(),
+            before.into_iter().filter(|(p, _, _)| !p.starts_with(world.join("playerdata"))).collect::<Vec<_>>(),
+            "nothing but the files this test wrote changed"
+        );
     }
 
     #[test]
@@ -2575,7 +2752,9 @@ mod tests {
         assert!(!fx.root.join(REQUEST_FILE).exists());
         let (when, answer) = last_answer(&fx.root).unwrap();
         assert!(when > 1_700_000_000);
-        assert!(answer.starts_with("done: scope ring:3: 39 of 445 chunk(s) on disk would be regenerated, 17 protected"), "{answer}");
+        // A request runs on the defaults: the logout layer is on, and keeps Player_One's
+        // 3x3 around chunk (5,5) on top of the fixture's 17 (outside the ring either way).
+        assert!(answer.starts_with("done: scope ring:3: 39 of 445 chunk(s) on disk would be regenerated, 26 protected"), "{answer}");
         let log = fs::read_to_string(fx.root.join("logs").join(LOG_FILE)).unwrap();
         assert!(log.contains("request 'pre-rebalance': scope=ring:3") && log.contains("nothing was modified"), "{log}");
 

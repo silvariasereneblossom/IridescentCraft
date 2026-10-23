@@ -86,6 +86,12 @@ pub fn uuid_version(uuid: &str) -> Option<u32> {
 /// Read and parse an NBT file. `Ok(None)` = the file is not there. Tried a few
 /// times, so a file caught in the instant the server replaces it still reads.
 pub fn read_nbt(path: &Path) -> Result<Option<Value>, String> {
+    read_nbt_bare(path).map_err(|e| format!("{}: {e}", path.display()))
+}
+
+/// [`read_nbt`] with the reason alone, for a file whose name is not to be
+/// shown (a player file is named by its player's UUID).
+fn read_nbt_bare(path: &Path) -> Result<Option<Value>, String> {
     let mut last = String::new();
     for attempt in 0..READ_ATTEMPTS {
         if attempt > 0 {
@@ -100,7 +106,7 @@ pub fn read_nbt(path: &Path) -> Result<Option<Value>, String> {
             },
         }
     }
-    Err(format!("{}: {last}", path.display()))
+    Err(last)
 }
 
 /// `SavedData` files wrap their content in a `data` compound.
@@ -264,10 +270,31 @@ fn player_from(uuid: &str, root: &Value) -> Player {
     Player { uuid: uuid.to_string(), name: None, bed, last_pos, waystones, from_old: false }
 }
 
+/// A player file that does not read, and whose `.dat_old` does not either.
+#[derive(Debug, Clone, PartialEq)]
+pub struct UnreadablePlayer {
+    /// The file's name without `.dat`: for finding the file, never for showing.
+    pub uuid: String,
+    /// Why neither copy reads, with no file name in it.
+    pub why: String,
+}
+
+/// What `playerdata/` holds.
+#[derive(Debug, Clone, Default, PartialEq)]
+pub struct PlayerFiles {
+    /// Sorted by UUID.
+    pub players: Vec<Player>,
+    /// Sorted by UUID.
+    pub unreadable: Vec<UnreadablePlayer>,
+}
+
 /// Every player with a file in `playerdata/`, sorted by UUID. A `.dat` that
-/// does not read falls back to its `.dat_old`; if that fails too the whole
-/// read is an error, because a player whose bed is unknown cannot be protected.
-pub fn read_players(world: &Path, names: &BTreeMap<String, String>) -> Result<Vec<Player>, String> {
+/// does not read falls back to its `.dat_old`. One whose `.dat_old` does not
+/// read either is not a player here but an [`UnreadablePlayer`]: their bed and
+/// their logout spot are unknown, and a player whose bed is unknown cannot be
+/// protected. So the caller has to say so, never treat them as having none:
+/// the dry-run warns, and a regeneration is refused while one is there.
+pub fn read_players(world: &Path, names: &BTreeMap<String, String>) -> PlayerFiles {
     let dir = world.join("playerdata");
     let mut uuids: Vec<String> = Vec::new();
     for entry in std::fs::read_dir(&dir).into_iter().flatten().filter_map(|e| e.ok()) {
@@ -279,25 +306,32 @@ pub fn read_players(world: &Path, names: &BTreeMap<String, String>) -> Result<Ve
         }
     }
     uuids.sort();
-    let mut players = Vec::new();
+    let mut files = PlayerFiles::default();
     for uuid in uuids {
-        let mut player = match read_nbt(&dir.join(format!("{uuid}.dat"))) {
+        let mut player = match read_nbt_bare(&dir.join(format!("{uuid}.dat"))) {
             Ok(Some(root)) => player_from(&uuid, &root),
             other => {
                 let why = match other {
                     Err(e) => e,
-                    _ => format!("{uuid}.dat vanished while it was being read"),
+                    _ => "it vanished while it was being read".to_string(),
                 };
-                match read_nbt(&dir.join(format!("{uuid}.dat_old"))) {
+                match read_nbt_bare(&dir.join(format!("{uuid}.dat_old"))) {
                     Ok(Some(root)) => Player { from_old: true, ..player_from(&uuid, &root) },
-                    _ => return Err(format!("player data does not read, and neither does its .dat_old ({why})")),
+                    old => {
+                        let old = match old {
+                            Err(e) => e,
+                            _ => "there is none".to_string(),
+                        };
+                        files.unreadable.push(UnreadablePlayer { uuid, why: format!(".dat: {why}; .dat_old: {old}") });
+                        continue;
+                    }
                 }
             }
         };
         player.name = names.get(&uuid).cloned();
-        players.push(player);
+        files.players.push(player);
     }
-    Ok(players)
+    files
 }
 
 // =============================================================================
@@ -742,7 +776,7 @@ mod tests {
     #[test]
     fn players_beds_positions_and_waystones() {
         let world = temp_world();
-        assert_eq!(read_players(&world, &BTreeMap::new()), Ok(vec![])); // no playerdata folder
+        assert_eq!(read_players(&world, &BTreeMap::new()), PlayerFiles::default()); // no playerdata folder
         let way = "4ffd3f52-e39d-469d-a935-3497b58ac3cd";
         write_player(&world, P1, &player_nbt(Some((OVERWORLD, (687, 67, 1080))), (OVERWORLD, (656.9, 65.0, 863.1)), &[way]));
         // No bed, standing in the Nether at negative coordinates.
@@ -753,7 +787,9 @@ mod tests {
         fs::write(world.join("playerdata").join("notes.dat"), b"x").unwrap();
 
         let names: BTreeMap<String, String> = [(P1.to_string(), "Player_One".to_string())].into();
-        let players = read_players(&world, &names).unwrap();
+        let files = read_players(&world, &names);
+        assert!(files.unreadable.is_empty());
+        let players = files.players;
         assert_eq!(players.len(), 2);
         let p1 = &players[0];
         assert_eq!(p1.label(), "Player_One");
@@ -770,12 +806,21 @@ mod tests {
         let good = fs::read(world.join("playerdata").join(format!("{P1}.dat"))).unwrap();
         fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), &good).unwrap();
         fs::write(world.join("playerdata").join(format!("{P1}.dat")), b"").unwrap();
-        let players = read_players(&world, &names).unwrap();
+        let players = read_players(&world, &names).players;
         assert!(players[0].from_old);
         assert_eq!(players[0].bed.as_ref().unwrap().pos.chunk(), (42, 67));
-        // ...and with neither, the read fails rather than lose a player's bed.
-        fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), b"").unwrap();
-        assert!(read_players(&world, &names).is_err());
+        assert_eq!(players[0].last_pos.as_ref().map(|(_, p)| p.chunk()), Some((41, 53)), "the logout spot of the older save");
+        // ...and with neither, that file is set apart, with why and without its name,
+        // while every other player still reads.
+        fs::write(world.join("playerdata").join(format!("{P1}.dat_old")), b"\x1f\x8b\x08 torn").unwrap();
+        let files = read_players(&world, &names);
+        assert_eq!(files.players.len(), 1);
+        assert_eq!(files.players[0].uuid, P3);
+        assert_eq!(files.unreadable.len(), 1);
+        assert_eq!(files.unreadable[0].uuid, P1);
+        let why = &files.unreadable[0].why;
+        assert!(why.starts_with(".dat: ") && why.contains("; .dat_old: "), "{why}");
+        assert!(!why.contains(P1) && !why.contains("playerdata"), "{why}");
         let _ = fs::remove_dir_all(&world);
     }
 

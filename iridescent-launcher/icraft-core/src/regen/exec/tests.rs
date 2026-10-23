@@ -578,10 +578,15 @@ fn what_the_run_cannot_answer_for_refuses_it() {
     let sv = Server::new();
     let world = sv.world();
 
-    // A player who logged out in a chunk that is to be reset.
+    // A player who logged out in a chunk that is to be reset. The logout layer keeps
+    // that chunk and the 3x3 around it by default (G5); with the layer off, this
+    // refusal is the backstop.
     write_player(&world, PLAYER, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (88.5, 64.0, 90.5)), &[]));
     let before = sv.snapshot();
-    let (run_dir, hash) = sv.dry_run("scope=all");
+    let (run_dir, _) = sv.dry_run("scope=all");
+    assert!(preflight(&sv.cfg, &run_dir).unwrap().ready(), "the logout layer keeps chunk (5, 5)");
+    assert!(!load_plan(&run_dir).unwrap().chunks[OVERWORLD].contains(&(5, 5)));
+    let (run_dir, hash) = sv.dry_run("scope=all logout_radius=off");
     let why = refused(sv.run(&run_dir, &hash));
     assert!(why.contains("Player file #1 (playerdata/0e0c6371...) logged out in chunk (5, 5)"), "{why}");
     assert!(!why.contains(PLAYER_NAME) && !why.contains(PLAYER), "{why}");
@@ -590,7 +595,7 @@ fn what_the_run_cannot_answer_for_refuses_it() {
     assert!(look.same_plan && !look.ready());
     assert_eq!(look.stops().len(), 1);
     // Keeping the chunk settles it.
-    let (run_dir, hash) = sv.dry_run("scope=all protect=5,5");
+    let (run_dir, hash) = sv.dry_run("scope=all logout_radius=off protect=5,5");
     assert!(preflight(&sv.cfg, &run_dir).unwrap().ready());
     write_player(&world, PLAYER, &player_nbt(Some((OVERWORLD, (200, 64, 200))), (OVERWORLD, (200.5, 64.0, 200.5)), &[]));
     let _ = (run_dir, hash);
@@ -633,6 +638,18 @@ fn what_the_run_cannot_answer_for_refuses_it() {
     let (run_dir, hash) = sv.dry_run("scope=all");
     assert!(refused(sv.run(&run_dir, &hash)).contains("Mod data could not be read"));
     fs::write(&ore, &good).unwrap();
+
+    // A player file that does not read, .dat_old included: the dry-run finishes (with a
+    // warning), and the run is refused, by file number and naming no one.
+    let file = world.join("playerdata").join(format!("{PLAYER}.dat"));
+    let good = fs::read(&file).unwrap();
+    fs::write(&file, b"\x1f\x8b\x08 torn").unwrap();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    let why = refused(sv.run(&run_dir, &hash));
+    assert!(why.contains("Player file #1 of 1 in playerdata/ (sorted by file name) does not read"), "{why}");
+    assert!(!why.contains(&PLAYER[..8]) && !why.contains(PLAYER_NAME), "{why}");
+    assert!(!sv.log().contains(PLAYER) && !sv.log().contains(PLAYER_NAME));
+    fs::write(&file, &good).unwrap();
 
     // A plan that resets nothing.
     let (run_dir, hash) = sv.dry_run("scope=report");
