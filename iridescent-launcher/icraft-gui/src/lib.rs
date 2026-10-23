@@ -3280,7 +3280,16 @@ impl IcraftApp {
             // watchdog), set pending_restart, and let update()'s task-finished
             // handler run spawn_cycle_restart. Nothing running: go now.
             if ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                if SUPERVISOR.running.load(Ordering::SeqCst) {
+                // A press while a Cycle is already under way is the same Cycle
+                // (2026-10-23: two presses 2 s apart sent two stops).
+                let ignored = icraft_core::restart_policy::cycle_press_ignored(
+                    SUPERVISOR.running.load(Ordering::SeqCst) && SUPERVISOR.cycle_requested.load(Ordering::SeqCst),
+                    RESTART_COUNTDOWN.load(Ordering::SeqCst),
+                    self.pending_restart,
+                );
+                if let Some(why) = ignored {
+                    log::info!("[cycle] Cycle pressed again: {why}; this press changes nothing");
+                } else if SUPERVISOR.running.load(Ordering::SeqCst) {
                     // A manual Cycle re-arms a heartbeat that gave up.
                     SUPERVISOR.restarts.lock().unwrap().clear();
                     set_heartbeat_status("");

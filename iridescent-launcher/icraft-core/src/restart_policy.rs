@@ -279,6 +279,25 @@ pub fn request_verdict(f: &RequestFacts) -> RequestVerdict {
     RequestVerdict::Refused(format!("skipped: {why}"))
 }
 
+/// The Cycle button pressed while a Cycle is already under way changes
+/// nothing. 2026-10-23 11:46 EDT: pressed twice, 2 s apart, at the box, on a
+/// server still starting after a self-update; each press sent its own `stop`
+/// and its own kill escalation to the same JVM (and a press during a scheduled
+/// Cycle's 120 s save grace would have cut it to 30 s). `None`: this press goes
+/// ahead. `cycle_under_way`: a supervised run has a Cycle asked for (only while
+/// one runs: a flag left behind must never swallow every later press).
+pub fn cycle_press_ignored(cycle_under_way: bool, countdown: bool, waiting_for_task: bool) -> Option<&'static str> {
+    if cycle_under_way {
+        Some("a Cycle is already under way (the server is being stopped for it)")
+    } else if countdown {
+        Some("a warned restart countdown is already running")
+    } else if waiting_for_task {
+        Some("a Cycle already waits for the running task to end")
+    } else {
+        None
+    }
+}
+
 /// `3h07m` / `12m` / `45s` -- for log lines.
 pub fn fmt_span(d: Duration) -> String {
     let s = d.as_secs();
@@ -382,6 +401,16 @@ mod tests {
         assert_eq!(request_verdict(&RequestFacts { age_secs: Some(601), ..gave_up.clone() }), RequestVerdict::Refused("skipped: stale request (601s old)".to_string()));
         assert_eq!(request_verdict(&RequestFacts { age_secs: Some(600), ..up.clone() }), RequestVerdict::Cycle);
         assert_eq!(request_verdict(&RequestFacts { age_secs: None, ..gave_up }), RequestVerdict::Refused("rejected: no timestamp in the request".to_string()));
+    }
+
+    #[test]
+    fn a_second_cycle_press_while_one_is_under_way_changes_nothing() {
+        assert_eq!(cycle_press_ignored(false, false, false), None);
+        // 11:46:43 sets the Cycle going; 11:46:45 is the same Cycle.
+        assert!(cycle_press_ignored(true, false, false).unwrap().contains("already under way"));
+        // A scheduled Cycle counting down (or saving), and a Cycle waiting for a task.
+        assert!(cycle_press_ignored(false, true, false).unwrap().contains("countdown"));
+        assert!(cycle_press_ignored(false, false, true).unwrap().contains("waits for the running task"));
     }
 
     #[test]
