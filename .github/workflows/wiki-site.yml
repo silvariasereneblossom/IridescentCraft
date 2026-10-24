@@ -1,0 +1,88 @@
+name: Wiki site (GitHub Pages)
+
+# Builds the public site at https://silvariasereneblossom.github.io/IridescentCraft/
+# from the GitHub wiki: the Tester Installation Guide as the front page plus
+# the player-facing wiki pages listed in site/pages.json. Generator, page list
+# and link checker live in site/ (Python standard library only).
+#
+# One-time setup: Settings -> Pages -> Source = "GitHub Actions"
+# (or: gh api -X POST repos/silvariasereneblossom/IridescentCraft/pages -f build_type=workflow).
+#
+# Triggers:
+#   - gollum: a page edited on the wiki web UI
+#   - workflow_run "Sync wiki": the wiki is regenerated from .minecraft/wiki/ by
+#     sync-wiki.yml, whose git push to the wiki does not raise a gollum event
+#   - push to main touching site/** or this file; a daily schedule; manual dispatch
+#   - pull_request touching site/**: build + link check only, never deploys
+
+on:
+  gollum:
+  workflow_run:
+    workflows: ["Sync wiki"]
+    types: [completed]
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - '.github/workflows/wiki-site.yml'
+  pull_request:
+    paths:
+      - 'site/**'
+      - '.github/workflows/wiki-site.yml'
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: wiki-site-${{ github.event_name == 'pull_request' && github.ref || 'deploy' }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    # After "Sync wiki", only rebuild when that sync succeeded.
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    steps:
+      - name: Checkout the generator
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            site
+            .minecraft/tools/wiki-sync-manifest.json
+          sparse-checkout-cone-mode: false
+
+      - name: Clone the wiki
+        run: git clone --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
+
+      # A link that matches no wiki page is rendered as plain text and listed
+      # in the job summary; it does not fail the build (add --strict for that).
+      - name: Build the site
+        run: python3 site/build.py --wiki wiki --out site/_build --report "$GITHUB_STEP_SUMMARY"
+
+      - name: Check links
+        run: python3 site/linkcheck.py site/_build
+
+      - name: Upload the Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/_build
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
