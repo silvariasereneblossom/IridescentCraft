@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 329,
-   "digest": "329dadf922a41d08",
+   "count": 330,
+   "digest": "2bde0efc40ea3edf",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -48,6 +48,7 @@
     "endgame/ascension@ServerEvents.recipes",
     "endgame/mythic_forge@ServerEvents.recipes",
     "endgame/rift_mechanics@LootJS.modifiers",
+    "fix_cataclysm_ut_boss_tag@ServerEvents.tags",
     "fix_stone_tags@ServerEvents.tags",
     "fix_venus_sandstone_tag@ServerEvents.tags",
     "food_dedup_recipes@ServerEvents.recipes",
@@ -449,6 +450,10 @@
     {
      "id": "exploration/codex_exploration_kills@EntityEvents.death",
      "script": "exploration/codex_exploration_kills.js"
+    },
+    {
+     "id": "fix_cataclysm_ut_boss_tag@ServerEvents.tags",
+     "script": "fix_cataclysm_ut_boss_tag.js"
     },
     {
      "id": "fix_empty_display_name@EntityEvents.spawned",

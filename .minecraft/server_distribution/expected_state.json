@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "8911a744",
+    "generated_from":  "34d052a9",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5972,8 +5972,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "cdf84c5f7a4ee6b432db378dafda2eae74be65d095da8b2ba41868936ab3de33",
-                                                                  "size":  49395
+                                                                  "sha256":  "3d801be9925e339c6dcf27e823f0698bdf0d3b6d27750dee01654dbe41442960",
+                                                                  "size":  49477
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
@@ -7435,6 +7435,10 @@
                                                                                        "sha256":  "9b9a6c03213add853b6028d3f80942b1cf4fec6f315860064516d03dd96d9d7f",
                                                                                        "size":  11748
                                                                                    },
+                  "kubejs/server_scripts/fix_cataclysm_ut_boss_tag.js":  {
+                                                                             "sha256":  "7fd9aab07d79736a72bac1603dd8d136c5aa3660691f5c224b0358c12c3b789c",
+                                                                             "size":  1629
+                                                                         },
                   "kubejs/server_scripts/fix_empty_display_name.js":  {
                                                                           "sha256":  "1daa72720184493ce5b2a2deed6ae1247de93177874eb7753e1e7049e3a5dbb7",
                                                                           "size":  3351

@@ -89,6 +89,7 @@
    "endgame/rift_mechanics@PlayerEvents.inventoryChanged": "endgame/rift_mechanics.js",
    "endgame/rift_mechanics@PlayerEvents.loggedIn": "endgame/rift_mechanics.js",
    "exploration/codex_exploration_kills@EntityEvents.death": "exploration/codex_exploration_kills.js",
+   "fix_cataclysm_ut_boss_tag@ServerEvents.tags": "fix_cataclysm_ut_boss_tag.js",
    "fix_empty_display_name@EntityEvents.spawned": "fix_empty_display_name.js",
    "fix_stone_tags@ServerEvents.tags": "fix_stone_tags.js",
    "fix_venus_sandstone_tag@ServerEvents.tags": "fix_venus_sandstone_tag.js",
