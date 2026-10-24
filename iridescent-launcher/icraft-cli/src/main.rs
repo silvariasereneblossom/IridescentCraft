@@ -347,6 +347,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
 
     match cmd {
         Cmd::Serve { force_sync, boot_timeout, idle_timeout } => {
+            started_by::record(started_by::Action::Serve, &started_by::Source::Cli);
             let code = icraft_core::serve(cfg, ServeOptions {
                 force_sync: *force_sync,
                 headless: false,

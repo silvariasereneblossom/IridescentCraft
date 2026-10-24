@@ -511,6 +511,28 @@ function Get-LauncherLiveness {
             $r.Notes.Add("the boot instance's token is NOT restricted ($($st['token'])): it should read 'medium, Administrators deny-only' (decision 177 (b))") | Out-Null
         }
     }
+    # Since 2026-10-24: what started the last Cycle, Stop and Serve, as the
+    # launcher's [started-by] lines say it: a control (with mouse or keyboard,
+    # hardware or INJECTED input, and the Windows session), the restart policy,
+    # a request file, the heartbeat, the boot instance, a self-update resume...
+    # Each value is '<unix seconds> <text>'; the times below are this PC's.
+    if ($st.ContainsKey('last_cycle_by')) {
+        foreach ($k in @(@('last_cycle_by', 'Cycle'), @('last_stop_by', 'Stop'), @('last_serve_by', 'Serve'))) {
+            $v = [string]$st[$k[0]]
+            $at = [int64]0
+            $parts = $v -split ' ', 2
+            if (-not $v) {
+                $r.Notes.Add("last $($k[1]): none recorded") | Out-Null
+            } elseif ($parts.Count -eq 2 -and [int64]::TryParse($parts[0], [ref]$at) -and $at -gt 0) {
+                $when = [DateTimeOffset]::FromUnixTimeSeconds($at).ToLocalTime().ToString('yyyy-MM-dd HH:mm')
+                $r.Notes.Add("last $($k[1]) ($when, $(& $span $at) ago), started by: $($parts[1])") | Out-Null
+            } else {
+                $r.Notes.Add("last $($k[1]), started by: $v") | Out-Null
+            }
+        }
+    } elseif ($mode) {
+        $r.Notes.Add('the launcher does not say what started its Cycles (its status file has no last_cycle_by=: a build older than the Cycle-source logging)') | Out-Null
+    }
     $fpm = & $num 'frames_per_min'
     if ($fpm -gt 120) {
         $r.Notes.Add("the launcher window paints $fpm frames a minute: it is repainting continuously (a full core on the server's software renderer)") | Out-Null
@@ -746,7 +768,7 @@ if ($live.State -eq 'GREEN')  { $liveColor = 'Green' }
 if ($live.State -eq 'YELLOW') { $liveColor = 'Yellow' }
 if ($live.State -eq 'RED')    { $liveColor = 'Red' }
 Write-Host ("  {0}: {1}" -f $(if ($live.State -eq 'NONE') { 'NOT JUDGED' } else { $live.State }), $live.Line) -ForegroundColor $liveColor
-foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -match 'FAILED|continuously|NOT restricted') { 'Yellow' } else { 'DarkGray' }) }
+foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -cmatch 'FAILED|continuously|NOT restricted|INJECTED') { 'Yellow' } else { 'DarkGray' }) }
 if ($IsVerbose -and $live.State -eq 'RED') {
     Write-Host "    cause: the launcher is alive and the server is not. List the launcher's CHILD processes on the box (name, pid, start time, CPU - never command lines) twice, a minute apart: a child with an old start time and no CPU is what it is waiting on. logs\restart_policy.log has the stop time and any WATCHDOG line. See deployment guide section 14." -ForegroundColor DarkYellow
 }

@@ -95,6 +95,12 @@ jobs:
         working-directory: iridescent-launcher
         run: cargo build -p icraft-gui --release
 
+      # The window's own tests (since 2026-10-24: the [started-by] tagging of
+      # its controls, an egui button driven by raw input). Headless: no window.
+      - name: Test icraft-gui
+        working-directory: iridescent-launcher
+        run: cargo test --release -p icraft-gui
+
       # Not committed to the repo and not deployed: an Actions-UI download for
       # running the launcher's phases by hand (`icraft backup --server-dir ...`
       # is how the world backup was exercised before it shipped).

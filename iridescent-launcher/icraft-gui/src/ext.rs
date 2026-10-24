@@ -18,10 +18,26 @@
 //!   - update itself from a channel of its own ([`Extension::own_updates`]):
 //!     the Cycle then applies only a `.new` staged beside the running exe,
 //!     never the launcher the pack's sync stages in the server folder, and
-//!     the window hides its launcher update buttons.
+//!     the window hides its launcher update buttons;
+//!   - ask for a Cycle from a control of its own, named in the launcher's
+//!     `[started-by]` line ([`ask_for_cycle`]).
 
 use std::path::Path;
 use std::sync::OnceLock;
+
+/// Ask the launcher that runs `server_dir` for a Cycle from a control of the
+/// extension: through the request file, the same warned Cycle as
+/// request_cycle.ps1's and a viewer's "Cycle (ask it)". `control` names it
+/// ("AI tab: Cycle now to apply it"), `response` is its egui response: the
+/// request carries both, with how it was pressed (mouse or keyboard, hardware
+/// or injected input, the Windows session), and the `[started-by]` line of the
+/// launcher that answers repeats them (icraft_core::started_by). `reason` is
+/// the request's reason, as request_cycle.ps1's `-Reason`.
+pub fn ask_for_cycle(server_dir: &Path, reason: &str, control: &str, response: &egui::Response) -> std::io::Result<()> {
+    let press = crate::press_of(response);
+    let by = icraft_core::started_by::Source::Control { control: control.to_string(), press }.describe();
+    crate::write_cycle_request(server_dir, reason, &by)
+}
 
 /// Where a tab or panel is drawn.
 pub struct Here<'a> {

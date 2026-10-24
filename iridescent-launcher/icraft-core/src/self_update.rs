@@ -345,10 +345,11 @@ fn cycle_resume_marker(cfg: &ServerConfig) -> PathBuf {
 }
 
 /// Arm the Cycle-resume sentinel (call right before relaunching for a launcher
-/// self-update mid-Cycle).
-pub fn set_cycle_resume(cfg: &ServerConfig) {
+/// self-update mid-Cycle). It holds what started that Cycle (`by`, see
+/// started_by.rs), so the successor's `[started-by]` line names it too.
+pub fn set_cycle_resume(cfg: &ServerConfig, by: &str) {
     let p = cycle_resume_marker(cfg);
-    if let Err(e) = fs::write(&p, b"1") {
+    if let Err(e) = fs::write(&p, crate::started_by::clean_line(by)) {
         log::warn!("[cycle] could not write resume sentinel {}: {e}", p.display());
     }
 }
@@ -359,18 +360,26 @@ pub fn cycle_resume_pending(cfg: &ServerConfig) -> bool {
     cycle_resume_marker(cfg).exists()
 }
 
-/// Consume the Cycle-resume sentinel: returns true (and deletes it) if present.
-/// Called on GUI startup to decide whether to auto-resume the Cycle after a
-/// self-update relaunch.
-pub fn take_cycle_resume(cfg: &ServerConfig) -> bool {
+/// Consume the Cycle-resume sentinel: `Some(what started that Cycle)` (and
+/// deletes it) if present; "" when a launcher before 2026-10-24 wrote it (its
+/// sentinel holds "1"). Called on GUI startup to decide whether to auto-resume
+/// the Cycle after a self-update relaunch.
+pub fn take_cycle_resume(cfg: &ServerConfig) -> Option<String> {
     let p = cycle_resume_marker(cfg);
     if p.exists() {
+        let by = fs::read_to_string(&p).unwrap_or_default();
         let _ = fs::remove_file(&p);
         log::info!("[cycle] resume sentinel found -- continuing the Cycle (sync + start) after self-update");
-        true
+        Some(resume_by(&by))
     } else {
-        false
+        None
     }
+}
+
+/// What a sentinel's content says started the Cycle ("" = not recorded).
+fn resume_by(content: &str) -> String {
+    let by = crate::started_by::clean_line(content);
+    if by == "1" { String::new() } else { by }
 }
 
 /// One-button sync: auto-route between the dev path (pull source +
@@ -951,5 +960,22 @@ mod tests {
         assert_eq!(staged_for(&in_server, &server, false), Some(packs.clone()));
         assert_eq!(staged_for(&in_server, &server, true), Some(packs));
         let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn the_resume_sentinel_carries_what_started_the_cycle() {
+        let dir = std::env::temp_dir().join(format!("icraft-resume-by-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let cfg = ServerConfig::from_path(&dir);
+        assert_eq!(take_cycle_resume(&cfg), None);
+        set_cycle_resume(&cfg, "the restart policy: an empty server past its uptime\r\n(up 4h00m)");
+        assert!(cycle_resume_pending(&cfg));
+        assert_eq!(take_cycle_resume(&cfg).as_deref(), Some("the restart policy: an empty server past its uptime (up 4h00m)"));
+        assert!(!cycle_resume_pending(&cfg));
+        // A launcher before 2026-10-24 wrote "1": present, source not recorded.
+        fs::write(dir.join(".icraft_cycle_resume"), b"1").unwrap();
+        assert_eq!(take_cycle_resume(&cfg).as_deref(), Some(""));
+        let _ = fs::remove_dir_all(&dir);
     }
 }

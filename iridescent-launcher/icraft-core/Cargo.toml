@@ -34,4 +34,7 @@ flate2 = "1"
 # Win32_System_RemoteDesktop: ProcessIdToSessionId (autostart::session_id).
 # Win32_System_RestartManager + Win32_System_Threading: which process has the
 # world or the game log open, and the clean stop of one (world_lock.rs).
-windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_RemoteDesktop", "Win32_System_RestartManager", "Win32_System_Threading"] }
+# Win32_UI_WindowsAndMessaging + Win32_UI_Input: where the input message of a
+# press came from, hardware or injected (started_by.rs); _KeyboardAndMouse and
+# Win32_System_LibraryLoader for its tests (a real window, a SendInput click).
+windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_Foundation", "Win32_Storage_FileSystem", "Win32_System_RemoteDesktop", "Win32_System_RestartManager", "Win32_System_Threading", "Win32_UI_WindowsAndMessaging", "Win32_UI_Input", "Win32_UI_Input_KeyboardAndMouse", "Win32_System_LibraryLoader"] }

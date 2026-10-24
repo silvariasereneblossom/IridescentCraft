@@ -18,6 +18,8 @@
 //!   - [`diagnose`]  — diagnostic dump
 //!   - [`firewall`]  — Windows firewall audit
 //!   - [`restart_policy`] — uptime restarts (4 h empty / 12 h with players)
+//!   - [`started_by`] — what started each Cycle, Stop and Serve (the control,
+//!     the policy, a request...): one `[started-by]` line, and the status file
 //!   - [`backup`]    — world backups in the stopped window (every 12 h, keep 2)
 //!   - [`autostart`] — "Start at boot": the Task Scheduler task that starts the
 //!     launcher without its window when Windows starts (nobody logged on), and
@@ -90,6 +92,7 @@ pub mod regen;
 pub mod restart_policy;
 pub mod run;
 pub mod self_update;
+pub mod started_by;
 pub mod sync;
 pub mod token;
 pub mod tools;

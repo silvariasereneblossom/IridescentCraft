@@ -22,6 +22,7 @@ use std::time::{Duration, Instant};
 
 use eframe::egui;
 use icraft_core::config::ServerConfig;
+use icraft_core::started_by::{self, Action, Device, Press, Source};
 
 mod customizer;
 pub mod ext;
@@ -468,6 +469,131 @@ const REMOTE_POLL_INTERVAL: Duration = Duration::from_secs(180);
 const REMOTE_STALE_AFTER: Duration = Duration::from_secs(300);
 
 // =============================================================================
+// What started it -- the window's controls
+// =============================================================================
+//
+// Every Cycle, Stop and Serve logs one `[started-by]` line and lands in the
+// status file (icraft_core::started_by, which says why: 2026-10-23, three
+// Cycles nobody could place). A control of this window records itself by its
+// name below, with how it was pressed: mouse or keyboard as egui saw it,
+// hardware or injected input as Windows saw it, and this process's Windows
+// session. The other ways in (the restart policy, a request file, the
+// heartbeat, the boot instance, a self-update resume, a takeover) record
+// themselves where they start.
+
+/// Every control that starts a Cycle, a Stop or a Serve.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Control {
+    Serve,
+    RunOnly,
+    Stop,
+    Kill,
+    ForceKill,
+    Cycle,
+    ConsoleStop,
+    CloseStop,
+    OtherStopCleanly,
+    OtherStopAgain,
+    OtherEndNow,
+    OtherStartAfter,
+    ViewerCycle,
+    ViewerTakeOver,
+}
+
+impl Control {
+    #[cfg(test)]
+    const ALL: [Control; 14] = [
+        Control::Serve,
+        Control::RunOnly,
+        Control::Stop,
+        Control::Kill,
+        Control::ForceKill,
+        Control::Cycle,
+        Control::ConsoleStop,
+        Control::CloseStop,
+        Control::OtherStopCleanly,
+        Control::OtherStopAgain,
+        Control::OtherEndNow,
+        Control::OtherStartAfter,
+        Control::ViewerCycle,
+        Control::ViewerTakeOver,
+    ];
+
+    /// Its name in the `[started-by]` line.
+    fn name(self) -> &'static str {
+        match self {
+            Control::Serve => "Server tab: Serve (full) button",
+            Control::RunOnly => "Server tab: Run only button (no sync, not supervised)",
+            Control::Stop => "Server tab: Stop button",
+            Control::Kill => "Server tab: Kill button",
+            Control::ForceKill => "Server tab: Force kill button",
+            Control::Cycle => "Server tab: Cycle button",
+            Control::ConsoleStop => "Server tab: `stop` sent from the console box",
+            Control::CloseStop => "the close dialog: Stop the server and close",
+            Control::OtherStopCleanly => "another server on this world: Stop it cleanly",
+            Control::OtherStopAgain => "another server on this world: Ask it to stop again",
+            Control::OtherEndNow => "another server on this world: End it now",
+            Control::OtherStartAfter => "another server on this world: the start here once it had gone (Stop it cleanly)",
+            Control::ViewerCycle => "a viewer window: Cycle (ask it)",
+            Control::ViewerTakeOver => "a viewer window: Take over here",
+        }
+    }
+
+    fn action(self) -> Action {
+        match self {
+            Control::Serve | Control::RunOnly => Action::Serve,
+            Control::Cycle | Control::OtherStartAfter | Control::ViewerCycle | Control::ViewerTakeOver => Action::Cycle,
+            Control::Stop
+            | Control::Kill
+            | Control::ForceKill
+            | Control::ConsoleStop
+            | Control::CloseStop
+            | Control::OtherStopCleanly
+            | Control::OtherStopAgain
+            | Control::OtherEndNow => Action::Stop,
+        }
+    }
+
+    fn source(self, press: &Press) -> Source {
+        Source::Control { control: self.name().to_string(), press: press.clone() }
+    }
+
+    /// THE line. (A viewer's controls are recorded by the launcher their
+    /// request reaches, which runs the server: see `write_cycle_request`.)
+    fn record(self, press: &Press) {
+        started_by::record(self.action(), &self.source(press));
+    }
+}
+
+/// How egui says a control was pressed: a click, or Enter / Space on the
+/// focused control (this build has no AccessKit, the only other way egui
+/// presses a button).
+fn press_device(resp: &egui::Response) -> Device {
+    if resp.clicked_by(egui::PointerButton::Primary) {
+        Device::Mouse
+    } else if resp.clicked() {
+        Device::Keyboard
+    } else {
+        Device::Unknown
+    }
+}
+
+/// The press of a control egui just reported clicked.
+fn press_of(resp: &egui::Response) -> Press {
+    Press::now(press_device(resp))
+}
+
+/// This window's Win32 handle, for the input watch. (raw-window-handle comes
+/// through eframe's wgpu re-export: no crate of its own in the build.)
+fn window_hwnd(frame: &eframe::Frame) -> Option<isize> {
+    use eframe::wgpu::rwh::{HasWindowHandle, RawWindowHandle};
+    match frame.window_handle().ok()?.as_raw() {
+        RawWindowHandle::Win32(h) => Some(h.hwnd.get()),
+        _ => None,
+    }
+}
+
+// =============================================================================
 // Heartbeat -- auto-Cycle when the server crashes or stops answering
 // =============================================================================
 //
@@ -624,7 +750,8 @@ fn cycle_once(c: &ServerConfig) -> anyhow::Result<i32> {
     if staged {
         set_cycle_step("cycle: launcher self-update");
         log::info!("[cycle] newer launcher staged -- applying + relaunching; the new instance resumes the Cycle");
-        icraft_core::self_update::set_cycle_resume(c);
+        let by = started_by::last(Action::Cycle).map(|(_, by)| by).unwrap_or_default();
+        icraft_core::self_update::set_cycle_resume(c, &by);
         let applied = if own {
             icraft_core::self_update::apply_and_relaunch_gui_beside_exe(c)
         } else {
@@ -694,6 +821,10 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
         }
         let why = match &r {
             Ok(0) if !hang => {
+                // Nobody here asked for it: the game stopped itself.
+                if !operator {
+                    started_by::record(Action::Stop, &Source::Game);
+                }
                 log::info!("[heartbeat] server stopped cleanly (exit 0) -- not restarting");
                 return Ok(());
             }
@@ -740,6 +871,9 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
         set_heartbeat_status(format!("restarting in {}s (#{attempt}/{MAX_AUTO_RESTARTS})", delay.as_secs()));
         set_cycle_step("auto-restart backoff");
         let deadline = Instant::now() + delay;
+        // A Cycle asked for during the wait (the button, the orphan panel) has
+        // recorded what started it; the heartbeat records only its own.
+        let mut asked = false;
         while Instant::now() < deadline {
             if SUPERVISOR.operator_stop.swap(false, Ordering::SeqCst) || icraft_core::run::launches_closed().is_some() {
                 log::info!("[heartbeat] auto-restart cancelled by operator");
@@ -747,9 +881,13 @@ fn supervise_loop(c: &ServerConfig, first_is_cycle: bool) -> anyhow::Result<()> 
                 return Ok(());
             }
             if SUPERVISOR.cycle_requested.swap(false, Ordering::SeqCst) {
+                asked = true;
                 break; // Cycle clicked during the wait: go now
             }
             std::thread::sleep(Duration::from_millis(250));
+        }
+        if !asked {
+            started_by::record(Action::Cycle, &Source::Heartbeat { why: format!("auto-Cycle #{attempt}/{MAX_AUTO_RESTARTS} after {why}") });
         }
         set_heartbeat_status(format!("auto-Cycle #{attempt} running"));
         cycle = true;
@@ -796,6 +934,9 @@ fn spawn_listener_probe() {
                     (PROBE_INTERVAL * fails).as_secs()
                 );
                 SUPERVISOR.hang_kill.store(true, Ordering::SeqCst);
+                started_by::record(Action::Stop, &Source::Heartbeat {
+                    why: format!("no listener on {addr} for ~{} s: the forced stop of a server that stopped answering", (PROBE_INTERVAL * fails).as_secs()),
+                });
                 if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
                     log::warn!("[heartbeat] forced stop failed: {e}");
                 }
@@ -869,12 +1010,25 @@ fn spawn_cycle_request_watcher() {
         let _ = std::fs::write(dir.join(CYCLE_RESULT_FILE), format!("{} {answer}\n", unix_now()));
         match verdict {
             RequestVerdict::Cycle => {
+                started_by::record(Action::Cycle, &Source::request(&body, false));
                 warned_cycle("scheduled", "Server restart", CYCLE_WARN_LEAD);
             }
-            RequestVerdict::StartAfterGaveUp => start_after_gave_up(dir, &body),
+            RequestVerdict::StartAfterGaveUp => {
+                started_by::record(Action::Cycle, &Source::request(&body, true));
+                start_after_gave_up(dir, &body);
+            }
             RequestVerdict::Refused(_) => {}
         }
     });
+}
+
+/// Ask the launcher that runs `dir` for a Cycle through the request file, as
+/// request_cycle.ps1 does, naming the control that asked (`by`: its
+/// `[started-by]` text, which the launcher that answers repeats). A viewer
+/// window and an extension's tab ask this way.
+fn write_cycle_request(dir: &Path, reason: &str, by: &str) -> std::io::Result<()> {
+    let _ = std::fs::remove_file(dir.join(CYCLE_RESULT_FILE));
+    std::fs::write(dir.join(CYCLE_REQUEST_FILE), started_by::request_body(unix_now(), reason, by))
 }
 
 /// What the request rules (`restart_policy::request_verdict`) need to know.
@@ -1213,6 +1367,7 @@ fn spawn_restart_policy() {
                 rp::audit(&dir, &format!("restart due, but held this round: {why}"));
                 continue;
             }
+            started_by::record(Action::Cycle, &Source::policy(decision, &policy, uptime, empty_for, &seen));
             let stopping = if decision == Decision::RestartBusy {
                 rp::audit(&dir, &format!(
                     "ACTION: Cycle after a {} in-game countdown (up {}, players {seen})",
@@ -1368,6 +1523,7 @@ fn spawn_cycle_watchdog() {
                  heartbeat={heartbeat}\n\
                  log_push={push}\n\
                  other_server={other}\n\
+                 {last_by}\
                  frames_per_min={frames_per_min:.0}\n",
                 tick = STATUS_TICK.as_secs(),
                 written = unix_now(),
@@ -1381,6 +1537,8 @@ fn spawn_cycle_watchdog() {
                 heartbeat = one_line(&SUPERVISOR.status.lock().unwrap()),
                 push = one_line(&icraft_core::logpush::state().label()),
                 other = one_line(&other_server().map(|h| h.describe()).unwrap_or_default()),
+                // last_cycle_by=, last_stop_by=, last_serve_by= (started_by.rs).
+                last_by = started_by::status_lines(),
             );
             // Whole or not at all: the reader must never see half a file.
             let tmp = dir.join(format!("{STATUS_FILE}.tmp"));
@@ -1396,6 +1554,7 @@ fn spawn_cycle_watchdog() {
 /// with the server stopped, so this only waits if one somehow still runs.
 fn exit_for_successor(what: &str) -> ! {
     if icraft_core::run::stop_before_exit(what, SCHEDULED_STOP_GRACE_SECS) {
+        started_by::record(Action::Stop, &Source::LauncherExit { what: what.to_string() });
         log::error!("[{what}] this launcher's server was still running at its exit: it is stopped first");
         let deadline = Instant::now() + Duration::from_secs(SCHEDULED_STOP_GRACE_SECS + 30);
         while icraft_core::run::jvm_active() && Instant::now() < deadline {
@@ -1519,9 +1678,12 @@ fn spawn_other_server_watch(dir: PathBuf) {
 
 /// "Stop it cleanly": Ctrl+C to that server's console (a helper process: this
 /// launcher's own exe with `--stop-server-process`), a wait for it to save and
-/// exit, then the server is started here.
-fn stop_other_server(dir: PathBuf, target: icraft_core::world_lock::OtherProcess) {
+/// exit, then the server is started here. `control`: Stop it cleanly, or Ask
+/// it to stop again; `press`: how it was pressed (the start once the other
+/// server has gone is recorded with the same press).
+fn stop_other_server(dir: PathBuf, target: icraft_core::world_lock::OtherProcess, control: Control, press: Press) {
     use icraft_core::world_lock::{self as wl, StopOutcome};
+    control.record(&press);
     *OTHER_STOP.lock().unwrap() = OtherStop::Stopping(Instant::now());
     log::warn!(
         "[other-server] stopping {} cleanly: Ctrl+C to its console, then the game saves every level and player and exits \
@@ -1554,7 +1716,7 @@ fn stop_other_server(dir: PathBuf, target: icraft_core::world_lock::OtherProcess
             log::info!("[other-server] {how}: the world is free; this launcher starts the server (Cycle)");
             *OTHER_SERVER.lock().unwrap() = None;
             *OTHER_STOP.lock().unwrap() = OtherStop::Done(format!("{how}. This launcher starts the server now (Cycle)."));
-            start_here_after_other(dir.clone());
+            start_here_after_other(dir.clone(), &press);
         };
         match outcome {
             StopOutcome::Stopped { secs } => done(format!("{} stopped {secs} s after Ctrl+C", target.label())),
@@ -1575,7 +1737,8 @@ fn stop_other_server(dir: PathBuf, target: icraft_core::world_lock::OtherProcess
 
 /// "End it now": TerminateProcess, no save. The server is not started
 /// afterwards on its own: the operator presses Cycle.
-fn end_other_server(target: icraft_core::world_lock::OtherProcess) {
+fn end_other_server(target: icraft_core::world_lock::OtherProcess, press: Press) {
+    Control::OtherEndNow.record(&press);
     log::warn!("[other-server] ending {} now, without a save (what changed since its last autosave is lost)", target.label());
     std::thread::spawn(move || {
         match icraft_core::world_lock::end_other(&target) {
@@ -1595,14 +1758,16 @@ fn end_other_server(target: icraft_core::world_lock::OtherProcess) {
 
 /// The start once the other server is gone: a supervised run waiting in its
 /// auto-restart backoff goes now; with nothing running, a Cycle.
-fn start_here_after_other(dir: PathBuf) {
+fn start_here_after_other(dir: PathBuf, press: &Press) {
     if SUPERVISOR.running.load(Ordering::SeqCst) {
+        Control::OtherStartAfter.record(press);
         SUPERVISOR.restarts.lock().unwrap().clear();
         set_heartbeat_status("");
         SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
     } else if TASK_BUSY.load(Ordering::SeqCst) || ADOPT_TASK.lock().unwrap().is_some() {
         log::info!("[other-server] another task is running: press Cycle once it is done");
     } else {
+        Control::OtherStartAfter.record(press);
         start_cycle_unattended(dir, "start after stopping the other server");
     }
 }
@@ -1636,6 +1801,8 @@ static ROLE: Mutex<Role> = Mutex::new(Role::Deciding);
 static OWNER_LOCK: Mutex<Option<icraft_core::instance::InstanceLock>> = Mutex::new(None);
 /// This window asked the boot instance to let go: start the server once it has.
 static TAKEOVER_ASKED: AtomicBool = AtomicBool::new(false);
+/// How "Take over here" was pressed, for the takeover's `[started-by]` line.
+static TAKEOVER_BY: Mutex<String> = Mutex::new(String::new());
 /// How long a window waits for the lock before it shows itself as a viewer:
 /// a self-update starts the new window half a second before the old one exits.
 const OWNER_FIRST_WAIT: Duration = Duration::from_secs(5);
@@ -1751,6 +1918,9 @@ fn become_owner(dir: &Path) {
         std::process::id(),
         icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string())
     );
+    // What started the last Cycle, Stop and Serve, as the launcher before this
+    // one wrote it: the status file keeps saying it until this one records its own.
+    started_by::restore(&std::fs::read_to_string(dir.join(STATUS_FILE)).unwrap_or_default());
     spawn_owner_threads(dir);
     let cfg = ServerConfig::from_path(dir);
     // Logs a previous instance staged but never pushed (it was replaced
@@ -1761,9 +1931,12 @@ fn become_owner(dir: &Path) {
     let resume = icraft_core::self_update::take_cycle_resume(&cfg);
     if TAKEOVER_ASKED.swap(false, Ordering::SeqCst) {
         log::info!("[instance] the boot instance let go of the server folder: taking the server over (sync + start)");
+        let asked = std::mem::take(&mut *TAKEOVER_BY.lock().unwrap());
+        started_by::record(Action::Cycle, &Source::Takeover { asked });
         start_cycle_unattended(dir.to_path_buf(), "takeover: sync + start");
-    } else if resume {
+    } else if let Some(first) = resume {
         log::info!("[cycle] resuming Cycle after launcher self-update -- sync + start");
+        started_by::record(Action::Cycle, &Source::SelfUpdateResume { first });
         start_cycle_unattended(dir.to_path_buf(), "cycle-restart");
     }
 }
@@ -1837,6 +2010,7 @@ fn run_boot(dir: PathBuf) {
     *APP_SERVER_DIR.lock().unwrap() = Some(dir.clone());
     // Unattended: the heartbeat always restarts a crashed server here.
     SUPERVISOR.auto_restart.store(true, Ordering::SeqCst);
+    started_by::restore(&std::fs::read_to_string(dir.join(STATUS_FILE)).unwrap_or_default());
     spawn_owner_threads(&dir);
     let cfg = ServerConfig::from_path(&dir);
     // The account's profile is loaded for an S4U logon, so the token the window
@@ -1852,8 +2026,11 @@ fn run_boot(dir: PathBuf) {
     icraft_core::logpush::resume_pending(&cfg);
     // A boot always runs the Cycle; a sentinel left by a self-update (this
     // instance's predecessor) is consumed so no later window resumes it again.
-    if icraft_core::self_update::take_cycle_resume(&cfg) {
+    if let Some(first) = icraft_core::self_update::take_cycle_resume(&cfg) {
         log::info!("[boot] continuing the Cycle the previous boot instance began before its self-update");
+        started_by::record(Action::Cycle, &Source::SelfUpdateResume { first });
+    } else {
+        started_by::record(Action::Cycle, &Source::BootInstance);
     }
     start_cycle_unattended(dir.clone(), "boot: Cycle (sync + self-update + start)");
 
@@ -1874,13 +2051,13 @@ fn run_boot(dir: PathBuf) {
             continue;
         }
         match poll_takeover(&dir, alive) {
-            Some(TakeoverVerdict::Now) => break,
-            Some(TakeoverVerdict::AfterStop) => {
+            Some((TakeoverVerdict::Now, _)) => break,
+            Some((TakeoverVerdict::AfterStop, body)) => {
                 HANDOVER.store(true, Ordering::SeqCst);
                 let d = dir.clone();
-                std::thread::spawn(move || handover_stop(&d));
+                std::thread::spawn(move || handover_stop(&d, &body));
             }
-            Some(TakeoverVerdict::Refused(_)) | None => {}
+            Some((TakeoverVerdict::Refused(_), _)) | None => {}
         }
     }
     log::info!("[boot] the boot instance lets go of the server folder and exits: a launcher window takes the server over");
@@ -1939,8 +2116,8 @@ fn boot_rights(dir: &Path) -> Option<String> {
     }
 }
 
-/// A takeover request, if one is there: read, removed, answered.
-fn poll_takeover(dir: &Path, task_alive: bool) -> Option<icraft_core::autostart::TakeoverVerdict> {
+/// A takeover request, if one is there: read, removed, answered. With what it said.
+fn poll_takeover(dir: &Path, task_alive: bool) -> Option<(icraft_core::autostart::TakeoverVerdict, String)> {
     use icraft_core::autostart::{self as a, TakeoverFacts};
     let path = dir.join(a::TAKEOVER_REQUEST_FILE);
     let body = std::fs::read_to_string(&path).ok()?;
@@ -1956,12 +2133,14 @@ fn poll_takeover(dir: &Path, task_alive: bool) -> Option<icraft_core::autostart:
     let answer = verdict.answer();
     log::info!("[boot] takeover request '{body}': {answer}");
     let _ = std::fs::write(dir.join(a::TAKEOVER_RESULT_FILE), format!("{} {answer}\n", unix_now()));
-    Some(verdict)
+    Some((verdict, body))
 }
 
 /// Stop the server for a takeover: at once when nobody is on, else after the
 /// Cycle's countdown. The supervisor does not restart it (an operator stop).
-fn handover_stop(dir: &Path) {
+/// `body`: what the request said (which window, and how it was pressed).
+fn handover_stop(dir: &Path, body: &str) {
+    started_by::record(Action::Stop, &Source::TakeoverRequest { body: started_by::clean(body) });
     let players = icraft_core::run::query_player_count(LIST_REPLY_TIMEOUT);
     let stopping = if players == Some(0) {
         stop_for_handover("takeover")
@@ -2404,17 +2583,25 @@ impl eframe::App for IcraftApp {
         eframe::set_value(storage, KEY_SERVER_DIR, &p);
     }
 
-    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         FRAMES.fetch_add(1, Ordering::Relaxed);
+        // Where Windows says each press came from (started_by.rs): from this
+        // window's own thread, on this window. A preview is pressed by nobody.
+        if self.preview.is_none() {
+            if let Some(hwnd) = window_hwnd(frame) {
+                started_by::watch_window(hwnd);
+            }
+        }
         self.preview_tick(ctx);
         self.handle_close(ctx);
         // Drain log buffer + check task completion every frame.
         self.drain_log();
-        // A start the request watcher made (after GAVE UP) becomes this
-        // window's running task: Stop, Cycle and the rest see it as their own.
+        // A start that no click of this window made (a request after GAVE UP,
+        // the resume after a self-update, a takeover) becomes this window's
+        // running task: Stop, Cycle and the rest see it as their own.
         if self.running_task.is_none() {
             if let Some(h) = ADOPT_TASK.lock().unwrap().take() {
-                log::info!("[scheduled] the window takes over the start made by a request");
+                log::info!("[scheduled] the window takes over the start it did not click (a request, a self-update resume or a takeover)");
                 self.running_task = Some(h);
             }
         }
@@ -2674,7 +2861,8 @@ impl IcraftApp {
     }
 
     /// "Stop the server and close".
-    fn close_after_stop(&mut self) {
+    fn close_after_stop(&mut self, press: &Press) {
+        Control::CloseStop.record(press);
         log::warn!(
             "[close] Stop the server and close: no server is started from this window any more; the running one is stopped \
              (save grace {SCHEDULED_STOP_GRACE_SECS} s, then the kill), then the window closes"
@@ -2691,8 +2879,8 @@ impl IcraftApp {
             CloseState::Asking => {
                 let jvm = icraft_core::run::jvm_active();
                 let mut focus = self.close_focus;
-                // Some(true): stop and close; Some(false): keep the window open.
-                let mut answer: Option<bool> = None;
+                // Some(press): stop and close (so pressed); Some(None): keep the window open.
+                let mut answer: Option<Option<Press>> = None;
                 egui::Window::new("Close the launcher?")
                     .collapsible(false)
                     .resizable(false)
@@ -2730,16 +2918,16 @@ impl IcraftApp {
                             }
                             let keep = ui.add(egui::Button::new("Keep the window open").min_size(egui::vec2(170.0, 30.0)));
                             if stop.clicked() {
-                                answer = Some(true);
+                                answer = Some(Some(press_of(&stop)));
                             } else if keep.clicked() || ui.input(|i| i.key_pressed(egui::Key::Escape)) {
-                                answer = Some(false);
+                                answer = Some(None);
                             }
                         });
                     });
                 self.close_focus = focus;
                 match answer {
-                    Some(true) => self.close_after_stop(),
-                    Some(false) => {
+                    Some(Some(press)) => self.close_after_stop(&press),
+                    Some(None) => {
                         log::info!("[close] Keep the window open: nothing was stopped");
                         self.close = CloseState::Open;
                     }
@@ -2824,16 +3012,18 @@ impl IcraftApp {
                         } else {
                             "End it now (what changed since its last autosave is lost)"
                         };
-                        if ui.add(egui::Button::new(label).min_size(egui::vec2(220.0, 28.0))).clicked() {
+                        let end = ui.add(egui::Button::new(label).min_size(egui::vec2(220.0, 28.0)));
+                        if end.clicked() {
                             if end_armed {
                                 self.other_end_armed_at = None;
-                                end_other_server(target.clone());
+                                end_other_server(target.clone(), press_of(&end));
                             } else {
                                 self.other_end_armed_at = Some(Instant::now());
                             }
                         }
-                        if ui.add(egui::Button::new("Ask it to stop again").min_size(egui::vec2(160.0, 28.0))).clicked() {
-                            stop_other_server(self.server_dir.clone(), target.clone());
+                        let again = ui.add(egui::Button::new("Ask it to stop again").min_size(egui::vec2(160.0, 28.0)));
+                        if again.clicked() {
+                            stop_other_server(self.server_dir.clone(), target.clone(), Control::OtherStopAgain, press_of(&again));
                         }
                     });
                 }
@@ -2844,10 +3034,11 @@ impl IcraftApp {
                     } else {
                         "Stop it cleanly (it saves the world), then start the server here"
                     };
-                    if ui.add(egui::Button::new(label).min_size(egui::vec2(300.0, 28.0))).clicked() {
+                    let stop = ui.add(egui::Button::new(label).min_size(egui::vec2(300.0, 28.0)));
+                    if stop.clicked() {
                         if stop_armed {
                             self.other_armed_at = None;
-                            stop_other_server(self.server_dir.clone(), target);
+                            stop_other_server(self.server_dir.clone(), target, Control::OtherStopCleanly, press_of(&stop));
                         } else {
                             self.other_armed_at = Some(Instant::now());
                         }
@@ -3207,12 +3398,16 @@ impl IcraftApp {
 
         ui.heading("Server lifecycle");
         ui.horizontal_wrapped(|ui| {
-            if action_btn(ui, "Serve (full)", busy).clicked() {
+            let serve = action_btn(ui, "Serve (full)", busy);
+            if serve.clicked() {
+                Control::Serve.record(&press_of(&serve));
                 // Supervised: the heartbeat auto-Cycles it if it crashes.
                 self.spawn_supervised("serve", false);
             }
             // Run only = bare JVM launch for debugging: NOT supervised.
-            if action_btn(ui, "Run only", busy).clicked() {
+            let run_only = action_btn(ui, "Run only", busy);
+            if run_only.clicked() {
+                Control::RunOnly.record(&press_of(&run_only));
                 self.spawn("run", move |c| {
                     let result = icraft_core::run::launch_server_piped(&c, false);
                     // Nothing restarts a run-only server: stage, and push now
@@ -3229,7 +3424,9 @@ impl IcraftApp {
             // Stop / Kill / Force kill are intentionally NOT gated on
             // `busy` -- they have to be clickable while a "serve" task
             // is running, which is exactly when `busy` is true.
-            if ui.add(egui::Button::new("Stop").min_size(egui::vec2(140.0, 28.0))).clicked() {
+            let stop = ui.add(egui::Button::new("Stop").min_size(egui::vec2(140.0, 28.0)));
+            if stop.clicked() {
+                Control::Stop.record(&press_of(&stop));
                 // Sends `stop` via stdin (operator command -- normal
                 // shutdown path: Forge prints "Stopping the server",
                 // unloads worlds, saves chunks, exits clean), then
@@ -3246,7 +3443,9 @@ impl IcraftApp {
                     log::warn!("[lifecycle] stop failed: {e}");
                 }
             }
-            if ui.add(egui::Button::new("Kill").min_size(egui::vec2(140.0, 28.0))).clicked() {
+            let kill = ui.add(egui::Button::new("Kill").min_size(egui::vec2(140.0, 28.0)));
+            if kill.clicked() {
+                Control::Kill.record(&press_of(&kill));
                 // Graceful kill bypassing the auto-escalate watchdog.
                 // Unix: SIGTERM (JVM shutdown hooks fire, worlds
                 // flush). Windows: writes `stop` to stdin, waits 5s,
@@ -3260,7 +3459,9 @@ impl IcraftApp {
                     log::warn!("[lifecycle] kill failed: {e}");
                 }
             }
-            if ui.add(egui::Button::new("Force kill").min_size(egui::vec2(140.0, 28.0))).clicked() {
+            let force_kill = ui.add(egui::Button::new("Force kill").min_size(egui::vec2(140.0, 28.0)));
+            if force_kill.clicked() {
+                Control::ForceKill.record(&press_of(&force_kill));
                 // Last resort: SIGKILL / taskkill /F /T. Process dies
                 // immediately. World saves NOT flushed -- chunks since
                 // last autosave are lost. Use only when graceful Kill
@@ -3279,7 +3480,9 @@ impl IcraftApp {
             // path -- stop_with_escalation (Stop's 30s grace + 10s force-kill
             // watchdog), set pending_restart, and let update()'s task-finished
             // handler run spawn_cycle_restart. Nothing running: go now.
-            if ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0))).clicked() {
+            let cycle = ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0)));
+            if cycle.clicked() {
+                let press = press_of(&cycle);
                 // A press while a Cycle is already under way is the same Cycle
                 // (2026-10-23: two presses 2 s apart sent two stops).
                 let ignored = icraft_core::restart_policy::cycle_press_ignored(
@@ -3288,33 +3491,12 @@ impl IcraftApp {
                     self.pending_restart,
                 );
                 if let Some(why) = ignored {
-                    log::info!("[cycle] Cycle pressed again: {why}; this press changes nothing");
-                } else if SUPERVISOR.running.load(Ordering::SeqCst) {
-                    // A manual Cycle re-arms a heartbeat that gave up.
-                    SUPERVISOR.restarts.lock().unwrap().clear();
-                    set_heartbeat_status("");
-                    SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
-                    if SUPERVISOR.server_live.load(Ordering::SeqCst) {
-                        log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
-                        if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
-                            // No JVM yet (still in the sync/launch phase): it is
-                            // already coming up fresh -- don't leave a stale flag
-                            // that would turn a later Stop into a restart.
-                            SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
-                            log::warn!("[cycle] {e} -- server is still starting (sync/launch phase); Cycle ignored");
-                        }
-                    } else {
-                        log::info!("[cycle] auto-restart backoff in progress -- restarting now");
-                    }
-                } else if self.task_running() {
-                    log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
-                    if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
-                        log::warn!("[cycle] stop failed: {e}");
-                    }
-                    self.pending_restart = true;
+                    // Starts nothing, so no `[started-by]` line; but how it was
+                    // pressed is said all the same (the 11:46 double press).
+                    log::info!("[cycle] Cycle pressed again ({}): {why}; this press changes nothing", press.describe());
                 } else {
-                    log::info!("[cycle] no server running -- self-update + sync + start");
-                    self.spawn_cycle_restart();
+                    Control::Cycle.record(&press);
+                    self.cycle_from_button();
                 }
             }
             if action_btn(ui, "Accept EULA", busy).clicked() {
@@ -3565,9 +3747,11 @@ impl IcraftApp {
                     .hint_text("free-form command, OR username for op/ban/kick/...")
             );
             let enter = resp.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter));
-            if ui.button("Send").clicked() || enter {
+            let send = ui.button("Send");
+            if send.clicked() || enter {
                 if !self.console_input.trim().is_empty() {
-                    send_console(&self.console_input);
+                    let device = if send.clicked() { press_device(&send) } else { Device::Keyboard };
+                    send_console_pressed(&self.console_input, || Press::now(device));
                     self.console_input.clear();
                 }
             }
@@ -3607,6 +3791,38 @@ impl IcraftApp {
             // is. That kept one core busy around the clock on the server's
             // software renderer (see "Repaints").
             ui.label(egui::RichText::new("Task running...").weak());
+        }
+    }
+
+    /// The Cycle button's work, once the press is not one more press of a
+    /// Cycle already under way (it has recorded what started it).
+    fn cycle_from_button(&mut self) {
+        if SUPERVISOR.running.load(Ordering::SeqCst) {
+            // A manual Cycle re-arms a heartbeat that gave up.
+            SUPERVISOR.restarts.lock().unwrap().clear();
+            set_heartbeat_status("");
+            SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
+            if SUPERVISOR.server_live.load(Ordering::SeqCst) {
+                log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
+                if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                    // No JVM yet (still in the sync/launch phase): it is
+                    // already coming up fresh -- don't leave a stale flag
+                    // that would turn a later Stop into a restart.
+                    SUPERVISOR.cycle_requested.store(false, Ordering::SeqCst);
+                    log::warn!("[cycle] {e} -- server is still starting (sync/launch phase); Cycle ignored");
+                }
+            } else {
+                log::info!("[cycle] auto-restart backoff in progress -- restarting now");
+            }
+        } else if self.task_running() {
+            log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
+            if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                log::warn!("[cycle] stop failed: {e}");
+            }
+            self.pending_restart = true;
+        } else {
+            log::info!("[cycle] no server running -- self-update + sync + start");
+            self.spawn_cycle_restart();
         }
     }
 
@@ -3729,9 +3945,11 @@ impl IcraftApp {
         }
         ui.add_space(6.0);
         ui.horizontal_wrapped(|ui| {
-            if ui.add(egui::Button::new("Cycle (ask it)").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                let body = format!("{} gui-viewer\n", unix_now());
-                match std::fs::write(self.server_dir.join(CYCLE_REQUEST_FILE), body) {
+            let cycle = ui.add(egui::Button::new("Cycle (ask it)").min_size(egui::vec2(140.0, 28.0)));
+            if cycle.clicked() {
+                // The launcher that runs the server records it, with this press.
+                let by = Control::ViewerCycle.source(&press_of(&cycle)).describe();
+                match write_cycle_request(&self.server_dir, "gui-viewer", &by) {
                     Ok(()) => log::info!("[viewer] asked the launcher that runs the server for a Cycle (it answers within ~10 s)"),
                     Err(e) => log::warn!("[viewer] could not write the Cycle request: {e}"),
                 }
@@ -3746,10 +3964,15 @@ impl IcraftApp {
             let armed = self.viewer.armed_at.is_some_and(|t| t.elapsed() < Duration::from_secs(10));
             let waiting = TAKEOVER_ASKED.load(Ordering::SeqCst);
             let label = if waiting { "Waiting for it to let go..." } else if armed { "Click again to take over" } else { "Take over here" };
-            if ui.add_enabled(!waiting, egui::Button::new(label).min_size(egui::vec2(180.0, 28.0))).clicked() {
+            let take = ui.add_enabled(!waiting, egui::Button::new(label).min_size(egui::vec2(180.0, 28.0)));
+            if take.clicked() {
                 if armed {
                     self.viewer.armed_at = None;
-                    match a::write_takeover_request(&self.server_dir, &format!("window pid {}", std::process::id()), unix_now()) {
+                    // Both ends record it: the boot instance's stop names this
+                    // request, and this window's Cycle names this press.
+                    let by = Control::ViewerTakeOver.source(&press_of(&take)).describe();
+                    *TAKEOVER_BY.lock().unwrap() = by.clone();
+                    match a::write_takeover_request(&self.server_dir, &format!("window pid {}: {by}", std::process::id()), unix_now()) {
                         Ok(()) => {
                             TAKEOVER_ASKED.store(true, Ordering::SeqCst);
                             log::info!("[viewer] asked the launcher that runs the server to let go: this window starts it once it has");
@@ -3905,11 +4128,18 @@ fn draw_colored_title(ui: &mut egui::Ui) {
 /// the "no server running" case gracefully -- operator just sees a
 /// warn line, no crash.
 fn send_console(line: &str) {
+    send_console_pressed(line, || Press::now(Device::Unknown));
+}
+
+/// [`send_console`] for the console box: a `stop` records what started it
+/// (`press`: how it was sent, read only then).
+fn send_console_pressed(line: &str, press: impl FnOnce() -> Press) {
     let line = line.trim();
     if line.is_empty() { return; }
     // A typed `stop` is operator intent -- the heartbeat must not restart it.
     let is_stop = line.trim_start_matches('/').eq_ignore_ascii_case("stop");
     if is_stop {
+        Control::ConsoleStop.record(&press());
         mark_operator_stop();
     }
     log::info!("[console] >> {line}");
@@ -3927,4 +4157,149 @@ fn list_jars(p: &Path) -> usize {
           .filter(|e| e.path().extension().and_then(|s| s.to_str()) == Some("jar"))
           .count()
     ).unwrap_or(0)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// started_by's last-of-each table is one per process.
+    static SERIAL: Mutex<()> = Mutex::new(());
+
+    #[test]
+    fn every_control_says_where_it_is_and_what_it_starts() {
+        let mut names = std::collections::HashSet::new();
+        for c in Control::ALL {
+            assert!(names.insert(c.name()), "two controls are named {:?}", c.name());
+            let place = ["Server tab: ", "the close dialog: ", "another server on this world: ", "a viewer window: "];
+            assert!(place.iter().any(|p| c.name().starts_with(p)), "{:?} does not say where it is", c.name());
+        }
+        let want = [
+            (Control::Serve, Action::Serve),
+            (Control::RunOnly, Action::Serve),
+            (Control::Stop, Action::Stop),
+            (Control::Kill, Action::Stop),
+            (Control::ForceKill, Action::Stop),
+            (Control::Cycle, Action::Cycle),
+            (Control::ConsoleStop, Action::Stop),
+            (Control::CloseStop, Action::Stop),
+            (Control::OtherStopCleanly, Action::Stop),
+            (Control::OtherStopAgain, Action::Stop),
+            (Control::OtherEndNow, Action::Stop),
+            (Control::OtherStartAfter, Action::Cycle),
+            (Control::ViewerCycle, Action::Cycle),
+            (Control::ViewerTakeOver, Action::Cycle),
+        ];
+        assert_eq!(want.len(), Control::ALL.len());
+        for (c, a) in want {
+            assert_eq!(c.action(), a, "{c:?}");
+        }
+    }
+
+    /// One frame of a window holding one of the launcher's buttons; the
+    /// button's response.
+    fn frame(ctx: &egui::Context, events: Vec<egui::Event>, focus: bool) -> egui::Response {
+        let raw = egui::RawInput {
+            screen_rect: Some(egui::Rect::from_min_size(egui::Pos2::ZERO, egui::vec2(400.0, 300.0))),
+            events,
+            ..Default::default()
+        };
+        let mut out = None;
+        let _ = ctx.run(raw, |ctx| {
+            egui::CentralPanel::default().show(ctx, |ui| {
+                let r = action_btn(ui, "Cycle", false);
+                if focus {
+                    r.request_focus();
+                }
+                out = Some(r);
+            });
+        });
+        out.unwrap()
+    }
+
+    /// The path a click takes from egui to the `[started-by]` line: a real egui
+    /// button, clicked with the mouse and pressed with Enter, read the way the
+    /// window's handlers read it. (No Windows window is watched here, so the
+    /// line says no input message was seen.)
+    #[test]
+    fn a_click_and_an_enter_on_a_button_reach_the_line_as_mouse_and_keyboard() {
+        let _g = SERIAL.lock().unwrap_or_else(|e| e.into_inner());
+        let ctx = egui::Context::default();
+        let at = frame(&ctx, vec![], false).rect.center();
+        frame(&ctx, vec![egui::Event::PointerMoved(at)], false);
+        let button = |pressed| egui::Event::PointerButton {
+            pos: at,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers: egui::Modifiers::default(),
+        };
+        assert!(!frame(&ctx, vec![button(true)], false).clicked());
+        let clicked = frame(&ctx, vec![button(false)], false);
+        assert!(clicked.clicked());
+        assert_eq!(press_device(&clicked), Device::Mouse);
+        Control::Cycle.record(&press_of(&clicked));
+        let (_, line) = started_by::last(Action::Cycle).unwrap();
+        assert!(line.starts_with("Server tab: Cycle button -- mouse click; "), "{line}");
+        if cfg!(windows) {
+            assert!(line.contains("no Windows input message seen for this press; Windows session "), "{line}");
+        }
+
+        // Enter on the focused button: egui's "fake" click, no pointer.
+        let ctx = egui::Context::default();
+        frame(&ctx, vec![], true);
+        let enter = egui::Event::Key {
+            key: egui::Key::Enter,
+            physical_key: None,
+            pressed: true,
+            repeat: false,
+            modifiers: egui::Modifiers::default(),
+        };
+        let pressed = frame(&ctx, vec![enter], false);
+        assert!(pressed.clicked());
+        assert_eq!(press_device(&pressed), Device::Keyboard);
+        Control::Stop.record(&press_of(&pressed));
+        let (_, line) = started_by::last(Action::Stop).unwrap();
+        assert!(line.starts_with("Server tab: Stop button -- keyboard (Enter or Space on the focused control); "), "{line}");
+    }
+
+    /// A viewer's "Cycle (ask it)" and an extension's control ask through the
+    /// request file; what they write is what the launcher that runs the server
+    /// puts in its line.
+    #[test]
+    fn a_cycle_asked_for_through_the_request_file_names_the_control() {
+        let _g = SERIAL.lock().unwrap_or_else(|e| e.into_inner());
+        let dir = std::env::temp_dir().join(format!("icraft-gui-request-by-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        std::fs::write(dir.join(CYCLE_RESULT_FILE), "1 accepted\n").unwrap();
+
+        let ctx = egui::Context::default();
+        let at = frame(&ctx, vec![], false).rect.center();
+        let button = |pressed| egui::Event::PointerButton {
+            pos: at,
+            button: egui::PointerButton::Primary,
+            pressed,
+            modifiers: egui::Modifiers::default(),
+        };
+        frame(&ctx, vec![egui::Event::PointerMoved(at), button(true)], false);
+        let clicked = frame(&ctx, vec![button(false)], false);
+        ext::ask_for_cycle(&dir, "internal launcher update", "AI tab: Cycle now to apply it", &clicked).unwrap();
+        assert!(!dir.join(CYCLE_RESULT_FILE).exists(), "the old answer was left for the asker to misread");
+        let body = std::fs::read_to_string(dir.join(CYCLE_REQUEST_FILE)).unwrap();
+        // The request rules read the stamp as before.
+        let facts = request_facts(&dir, body.trim());
+        assert!(facts.age_secs.is_some_and(|a| a < 60), "{body}");
+        let line = Source::request(&body, false).describe();
+        assert!(
+            line.starts_with("a request file (.icraft_cycle_request), reason 'internal launcher update', written by AI tab: Cycle now to apply it -- mouse click; "),
+            "{line}"
+        );
+
+        let by = Control::ViewerCycle.source(&press_of(&clicked)).describe();
+        write_cycle_request(&dir, "gui-viewer", &by).unwrap();
+        let body = std::fs::read_to_string(dir.join(CYCLE_REQUEST_FILE)).unwrap();
+        let line = Source::request(&body, false).describe();
+        assert!(line.contains("reason 'gui-viewer', written by a viewer window: Cycle (ask it) -- mouse click; "), "{line}");
+        let _ = std::fs::remove_dir_all(&dir);
+    }
 }
