@@ -298,7 +298,11 @@ What it does not show:
   never edited for the rig.
 
 A known defect of the pack (the baseline's `defects` list) is reported and does not fail the gate; anything the
-baselines do not list does (exit 1).
+baselines do not list does (exit 1). Since 2026-10-24 (baseline version 2, `dev/loud/README.md`) a known defect
+printed as recorded is a line the checker lists (`KNOWN UNCHANGED`), and one that grew, changed its wording or moved
+to another log is an AMBER finding (`defect-grew:` ...) that fails the gate like any other; it is no regression in a
+`-Diff` unless it is RED. The composed baseline takes the version of the tree under test, so an old commit's
+defects keep the old rule.
 
 The checker's ARMED line is the exact comparison: `registrations server N/N, startup M/M` means the digest the game
 printed (`[icraft.live] ARMED <type>: ... digest ...`) is the one `dev/loud/gen_liveness.js` computed from the scripts
@@ -318,7 +322,7 @@ The rig is a fresh world on Linux with nobody online; the live server is Windows
 |---|---|
 | Six accepted signatures are not printed: the Patreon-library network failures | They depend on the network at that minute; the live baseline marks them `runtime` |
 | The Crust defect (`Failed first-time loading of config file config\Crust\default_game_rules.toml`) is not printed | Crust reads the pack's copy without error and then saves it in a form it cannot read back. The failure appears at the SECOND boot of the same folder; the rig always boots a pristine copy |
-| The `cataclysm_ut:kill_monstrosity2` advancement defect is printed with another ending | The line lists the valid entity types. In a fresh world they come in registration order; on the live world Forge has re-read the ids from `level.dat`. `rig_baseline.json` lists the rig's wording as the same defect |
+| The `cataclysm_ut:kill_monstrosity2` advancement defect is printed with another ending | The line lists the valid entity types. In a fresh world they come in registration order; on the live world Forge has re-read the ids from `level.dat`. `rig_baseline.json` listed the rig's wording as the same defect until 2026-10-24 (the G16 trim `7453b9da` made the advancement an empty copy; both entries are gone) |
 | A path in a log line has `/` where the live server prints `\` | Linux. No signature of either baseline depends on it today except the Crust one above |
 | Server-local settings are not applied | The live server puts its override list (`.icraft_config_overrides.json`: worldgen settings, access settings) back before every start. The rig boots the pack's defaults |
 | No Chunky pregeneration | See "Traps" |

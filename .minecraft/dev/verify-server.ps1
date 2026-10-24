@@ -50,8 +50,10 @@
 #      the commit the server is ON (it is versioned with the scripts), or from
 #      origin/main when that commit predates it. Nothing is written to the box.
 #      Lines of latest.log (ERROR) and of the KubeJS log (WARN) that are not in
-#      dev\loud\baseline.json, and the known defects listed there, are AMBER:
-#      printed, with no effect on the exit code. Everything else it finds is RED.
+#      dev\loud\baseline.json, and a known defect listed there that grew or
+#      changed, are AMBER: printed, with no effect on the exit code (a known
+#      defect printed as recorded is listed, KNOWN UNCHANGED, and is no finding).
+#      Everything else it finds is RED.
 #   5. Local config overrides - informational, never changes the exit code. The
 #      server's .icraft_config_overrides.json (launcher Customizer tab, or
 #      `icraft settings`) lists config values the operator set ON THE SERVER on

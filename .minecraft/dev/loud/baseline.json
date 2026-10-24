@@ -1,10 +1,10 @@
 {
-  "version": 1,
+  "version": 2,
   "about": [
-    "Baseline of the loud-failure watcher (loud-check.ps1, check 5): ERROR / FATAL lines of latest.log and WARN lines of the KubeJS logs that were looked at and accepted.",
+    "Baseline of the loud-failure watcher (loud-check.ps1, check 5): ERROR / FATAL lines of latest.log and WARN lines of the KubeJS logs that were looked at and accepted. The format: README.md next to this file.",
     "A line whose signature is not here is reported as NEW; an accepted one seen three times as often as its `count` is reported too. KubeJS ERROR lines, handler aborts and summary errors are never baselined.",
     "`signatures`: accepted, each with the reason and the date. A baseline hides what was broken the day it was taken, so the reason says what the line is, not that it is fine.",
-    "`defects`: reviewed and deliberately NOT accepted. They stay findings (KNOWN DEFECT) until they are fixed; when one is fixed its entry is deleted. Do not move one into `signatures` to quiet the report.",
+    "`defects`: reviewed and NOT accepted, a defect waiting for its fix. Each has `log`, `sig`, `what`, `listed`, `count` (the most one boot prints it) and `family` (the first characters of `sig` that stay when its wording changes, 16 or more). The operator's rule of 2026-10-24: \"A known defect whose line and count stay the same from boot to boot is accepted automatically and listed once; one that changes or grows comes back as a finding.\" Printed as recorded or fewer times: listed once (KNOWN UNCHANGED / KNOWN FEWER), not a finding. More times than `count` (per load pass), its family with other words, or in another log: an AMBER finding that names the change. When one is fixed its entry is deleted. Do not move one into `signatures` to quiet a change.",
     "A signature is the line without clock, thread, numbers of two or more digits, addresses and ids, cut at 200 characters. No entry may carry a player name, a chat line or an address: this file is public.",
     "Add an entry only after reading the line. `loud-check.ps1 -LogsDir <logs> -ProposeBaseline <file>` writes the current list with reason and date empty.",
     "STALE: an entry of either list whose line is absent from two complete boots in a row (the boot checked and the one before it, read from the rotated logs) is reported as `STALE DEFECT` / `STALE ACCEPTED`: delete it. One boot without the line is not enough: a fix can hold for a single boot (the Crust entry). A stale entry is a report line, never a finding.",

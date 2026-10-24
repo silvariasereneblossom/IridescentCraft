@@ -1721,8 +1721,9 @@ def compose_check(result_dir, src_root, scripts_in_tree, label):
         k = (e['log'], e['sig'])
         if k not in sig:
             defects.setdefault(k, e)
+    # the tree's version: it says which rule its defects are judged by (2: quiet while unchanged, since 2026-10-24)
     write_json(os.path.join(out, 'baseline.json'), {
-        'version': 1, 'about': ['Composed by icboot.py for one run: the baseline of the tree under test plus rig_baseline.json. Not a file to edit.'],
+        'version': base.get('version') or 1, 'about': ['Composed by icboot.py for one run: the baseline of the tree under test plus rig_baseline.json. Not a file to edit.'],
         'signatures': list(sig.values()), 'defects': list(defects.values())})
 
     man = read_json(pick('liveness_manifest.json'))
@@ -1753,20 +1754,26 @@ def compose_check(result_dir, src_root, scripts_in_tree, label):
 RX_FINDING = re.compile(r'^\s{2}(RED|AMBER)\s+(\S+)\s+(\S+)\s*$')
 
 
+RX_KNOWN = re.compile(r'^\s{2}KNOWN\s+(UNCHANGED|FEWER)\s+(\S+)\s*$')
+
+
 def parse_check(text):
-    """loud-check.ps1's console report: findings and the last line."""
-    findings, lines = [], text.replace('\r', '').split('\n')
+    """loud-check.ps1's console report: findings, the known defects it listed (not findings), and the last line."""
+    findings, known, lines = [], [], text.replace('\r', '').split('\n')
     for i, l in enumerate(lines):
         m = RX_FINDING.match(l)
         if m:
             detail = lines[i + 1].strip() if i + 1 < len(lines) else ''
             findings.append({'sev': m.group(1), 'kind': m.group(2), 'id': m.group(3), 'detail': detail})
+        m = RX_KNOWN.match(l)
+        if m:
+            known.append({'state': m.group(1), 'id': m.group(2)})
     verdict = None
     for l in lines:
         m = re.match(r'^\[loud-check\] (GREEN|AMBER|RED) - (.*)\(exit (\d)\)\s*$', l)
         if m:
             verdict = {'worst': m.group(1), 'tail': m.group(2).strip(), 'exit': int(m.group(3))}
-    return findings, verdict
+    return findings, known, verdict
 
 
 # -----------------------------------------------------------------------------
@@ -1997,16 +2004,18 @@ def cmd_finish(req):
     if os.path.isfile(txt):
         raw = open(txt, 'rb').read()
         text = raw.decode('utf-16') if raw[:2] in (b'\xff\xfe', b'\xfe\xff') else raw.decode('utf-8-sig', 'replace')
-        findings, verdict = parse_check(text)
-        check = {'ran': verdict is not None, 'findings': findings, 'verdict': verdict}
+        findings, listed, verdict = parse_check(text)
+        check = {'ran': verdict is not None, 'findings': findings, 'known': listed, 'verdict': verdict}
         if verdict is None:
             result['problems'].append('the boot-log checker did not report a verdict: see loud-check.txt')
     elif not req.get('no_check'):
         result['problems'].append('the boot-log checker was not run')
     result['check'] = check
     boot = result.get('boot') or {}
+    # A known defect does not fail the gate: in a version 1 baseline it is a `defect:` finding, in version 2 a line the
+    # checker lists (KNOWN UNCHANGED / FEWER). One that grew or changed (`defect-grew:` ...) is a finding like any other.
     new = [f for f in check.get('findings', []) if not (f['kind'] == 'NEW' and f['id'].startswith('defect:'))]
-    known = [f for f in check.get('findings', []) if f['kind'] == 'NEW' and f['id'].startswith('defect:')]
+    known = [f for f in check.get('findings', []) if f['kind'] == 'NEW' and f['id'].startswith('defect:')] + check.get('known', [])
     if not boot.get('clean_stop'):
         verdict, code = 'BOOT FAILED', EXIT_BOOT
     elif new or result['problems']:

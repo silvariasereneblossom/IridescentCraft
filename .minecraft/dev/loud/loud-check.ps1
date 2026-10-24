@@ -76,10 +76,24 @@
 #      nobody has looked at yet, and accepted ones seen 3x as often as accepted
 #      (per load pass: a /reload prints every load-time line again). WARN lines
 #      of latest.log are NOT in the tier (several hundred a boot, not triaged).
-#      The baseline has two lists:
+#      The baseline has two lists (README.md next to this script: the format):
 #        signatures  accepted, each with a reason and the date;
-#        defects     reviewed and deliberately NOT accepted: they stay findings
-#                    (KNOWN DEFECT) until fixed, then the entry is deleted.
+#        defects     reviewed and NOT accepted: a defect waiting for its fix. Each
+#                    carries its line (`sig`), how often one boot prints it
+#                    (`count`) and the start of the line that stays when its
+#                    wording changes (`family`). Operator's rule, 2026-10-24: "A
+#                    known defect whose line and count stay the same from boot to
+#                    boot is accepted automatically and listed once; one that
+#                    changes or grows comes back as a finding." So:
+#          printed as recorded       KNOWN UNCHANGED, listed once; not a finding
+#                                    (GREEN stays GREEN, no exit code, not written)
+#          printed fewer times       KNOWN FEWER, listed the same way: fewer is not
+#                                    a new failure (a line that is gone is check 6)
+#          printed more times        defect-grew:, AMBER (per load pass, as below)
+#          its family, other words   defect-changed:, AMBER, names both wordings
+#          in a log not recorded     defect-moved:, AMBER, names both logs
+#                    A version 1 baseline (no `count` / `family`, before 2026-10-24)
+#                    keeps the old rule: every listed defect is a finding (defect:).
 #      A baseline hides what was broken the day it was taken, so nothing gets in
 #      without being read: -ProposeBaseline <file> writes the current list with
 #      reason and date empty, and such a file is refused. -NoBaseline switches
@@ -152,11 +166,12 @@
 #
 # Finding kinds: ERROR (failure line / pattern), MISSING (liveness), STALE (script
 # on the box, not in the tree), NEW (signature not in the baseline, a known
-# defect that is not fixed, or a registration that is not in the manifest;
+# defect that changed or grew, or a registration that is not in the manifest;
 # severity AMBER), CHECK-FAILED.
 # Not a finding: what check 3b prints (FIRED, NOT RUN, HISTORY, NEVER), except `notfired:`.
-# Not a finding: `STALE DEFECT` / `STALE ACCEPTED` (check 6), printed after the
-# findings; the last line of the report carries their count.
+# Not a finding: `KNOWN UNCHANGED` / `KNOWN FEWER` (check 5) and `STALE DEFECT` /
+# `STALE ACCEPTED` (check 6), printed after the findings; the last line of the
+# report carries their counts.
 # The launcher will own the on-box watcher; this script is its reference and the
 # post-deploy check (verify-server.ps1). ASCII only: Windows PowerShell 5.1 reads a
 # BOM-less script as ANSI.
@@ -205,6 +220,8 @@ $evaluated  = New-Object 'System.Collections.Generic.HashSet[string]'   # "<fami
 $notRun     = New-Object System.Collections.Generic.List[string]
 $info       = New-Object System.Collections.Generic.List[string]
 $staleEntries = New-Object System.Collections.Generic.List[object]   # check 6: reported, never a finding
+$knownRows    = New-Object System.Collections.Generic.List[object]   # check 5: known defects printed and not changed, reported, never a finding
+$MinFamily    = 16       # a defect's `family` is at least this many characters of its signature
 $firedReport  = New-Object System.Collections.Generic.List[object]   # check 3b: reported, never a finding ({ head, text, rows })
 if ($StaleBoots -lt 1) { $StaleBoots = 1 }
 if ($FiredBoots -lt 0) { $FiredBoots = 0 }
@@ -236,6 +253,9 @@ function Get-Family {
         'new'              { return 'new' }
         'grew'             { return 'new' }
         'defect'           { return 'new' }
+        'defect-grew'      { return 'new' }
+        'defect-changed'   { return 'new' }
+        'defect-moved'     { return 'new' }
         default            { return 'check' }
     }
 }
@@ -1071,7 +1091,7 @@ function Invoke-Check {
                 $rowsOut.Add('    {"log":' + (ConvertTo-JsonString $src) + ',"sig":' + (ConvertTo-JsonString $sig) + ',"count":' + $observed[$src].counts[$sig] + $rt + ',"reason":"","accepted":""}')
             }
         }
-        [System.IO.File]::WriteAllText($ProposeBaseline, "{`n  `"version`": 1,`n  `"signatures`": [`n" + ($rowsOut -join ",`n") + "`n  ]`n}`n", $Utf8NoBom)
+        [System.IO.File]::WriteAllText($ProposeBaseline, "{`n  `"version`": 2,`n  `"signatures`": [`n" + ($rowsOut -join ",`n") + "`n  ]`n}`n", $Utf8NoBom)
         $info.Add("$($rowsOut.Count) signatures of this boot (latest.log ERROR, KubeJS WARN) written to $ProposeBaseline (give each a reason and a date, or leave it out; read it for names before committing); $marked first printed after Done are marked `"runtime`": true")
     }
     if ($NoBaseline -and -not $Baseline) {
@@ -1082,23 +1102,36 @@ function Invoke-Check {
         $bl = $null
         $known   = New-Object 'System.Collections.Generic.Dictionary[string,object]'
         $defects = New-Object 'System.Collections.Generic.Dictionary[string,object]'
+        $defectOrder = New-Object System.Collections.Generic.List[object]     # as listed: a family shared by two defects goes to the first
+        $blVersion = 1
         try {
             if (-not (Test-Path -LiteralPath $blPath -PathType Leaf)) { throw "not found: $blPath" }
             $bl = [System.IO.File]::ReadAllText($blPath, [System.Text.Encoding]::UTF8) | ConvertFrom-Json
+            if ($bl.PSObject.Properties['version'] -and $null -ne $bl.version) {
+                if (-not [int]::TryParse([string]$bl.version, [ref]$blVersion) -or $blVersion -lt 1 -or $blVersion -gt 2) { throw ('version ' + [string]$bl.version + ' is not one this checker reads (1 or 2)') }
+            }
             foreach ($b in @($bl.signatures)) {
                 if ($null -eq $b) { continue }
                 if (-not $b.log -or -not $b.sig) { throw 'a baseline entry lacks log / sig' }
                 if (-not $b.reason -or -not ([string]$b.reason).Trim() -or -not $b.accepted) { throw ("baseline entry without a reason and an accepted date: " + [string]$b.sig) }
                 $known[[string]$b.log + '|' + [string]$b.sig] = $b
             }
-            # reviewed and deliberately NOT accepted: a defect stays a finding until it is fixed
+            # reviewed and NOT accepted. Version 2: quiet while printed as recorded (its line and count), a finding when
+            # it changes or grows (operator's rule 2026-10-24). Version 1: a finding until it is fixed.
             if ($bl.PSObject.Properties['defects']) {
                 foreach ($b in @($bl.defects)) {
                     if ($null -eq $b) { continue }
                     if (-not $b.log -or -not $b.sig -or -not $b.what) { throw 'a defects entry lacks log / sig / what' }
                     $k = [string]$b.log + '|' + [string]$b.sig
                     if ($known.ContainsKey($k)) { throw ('a signature is both baselined and listed as a defect: ' + [string]$b.sig) }
+                    if ($blVersion -ge 2) {
+                        $c = 0
+                        if (-not $b.PSObject.Properties['count'] -or -not [int]::TryParse([string]$b.count, [ref]$c) -or $c -lt 1) { throw ('a defects entry without its count (the most one boot prints it, 1 or more): ' + [string]$b.sig) }
+                        $fam = [string]$b.family
+                        if ($fam.Length -lt $MinFamily -or -not ([string]$b.sig).StartsWith($fam, [System.StringComparison]::Ordinal)) { throw ("a defects entry whose family is not the first $MinFamily or more characters of its sig: " + [string]$b.sig) }
+                    }
                     $defects[$k] = $b
+                    $defectOrder.Add($b)
                 }
             }
         } catch {
@@ -1119,11 +1152,42 @@ function Invoke-Check {
                 $shown = 0; $rest = 0; $grown = 0; $grownRest = 0
                 foreach ($sig in $order) {
                     $key = $src + '|' + $sig
-                    if ($defects.ContainsKey($key)) {
+                    if ($defects.ContainsKey($key) -and $blVersion -lt 2) {
                         Add-Finding 'NEW' 'AMBER' ('defect:' + (Get-Hash8 $key)) $src ('KNOWN DEFECT, reviewed and not baselined (' + [string]$defects[$key].what + '), x' + $obs[$sig] + ': ' + $sig)
+                    } elseif ($defects.ContainsKey($key)) {
+                        # Printed as recorded: listed once, not a finding. Per load pass like the growth rule below (a
+                        # /reload prints a load-time line again, or not). Fewer is not a new failure: listed as FEWER.
+                        $d = $defects[$key]; $rec = [int]$d.count; $n = $obs[$sig]
+                        if ($n -gt $rec * $passes) {
+                            $per = ''
+                            if ($passes -gt 1) { $per = " in $passes load passes (up to x$($rec * $passes) is as recorded)" }
+                            Add-Finding 'NEW' 'AMBER' ('defect-grew:' + (Get-Hash8 $key)) $src ('KNOWN DEFECT GREW (' + [string]$d.what + "): recorded x$rec, now x$n$per" + ': ' + $sig)
+                        } else {
+                            $state = 'UNCHANGED'
+                            if ($n -lt $rec) { $state = 'FEWER' }
+                            $knownRows.Add([pscustomobject]@{ id = ('defect:' + (Get-Hash8 $key)); state = $state; src = $src; sig = $sig; n = $n; rec = $rec; what = [string]$d.what })
+                        }
                     } elseif (-not $known.ContainsKey($key)) {
-                        if ($shown -lt $MaxPerFamily) { $shown++; Add-Finding 'NEW' 'AMBER' ('new:' + (Get-Hash8 $key)) $src ('not in the baseline, x' + $obs[$sig] + ': ' + $sig) }
-                        else { $rest++ }
+                        # Not in the baseline. A known defect's line with other words (its family), or in another log
+                        # than the one recorded, is that defect changing: named as such. The longest family wins.
+                        $fd = $null
+                        if ($blVersion -ge 2) {
+                            foreach ($d in $defectOrder) {
+                                $fam = [string]$d.family
+                                if ($sig.StartsWith($fam, [System.StringComparison]::Ordinal) -and ($null -eq $fd -or $fam.Length -gt ([string]$fd.family).Length)) { $fd = $d }
+                            }
+                        }
+                        if ($shown -ge $MaxPerFamily) { $rest++ }
+                        elseif ($null -eq $fd) { $shown++; Add-Finding 'NEW' 'AMBER' ('new:' + (Get-Hash8 $key)) $src ('not in the baseline, x' + $obs[$sig] + ': ' + $sig) }
+                        elseif ([string]$fd.log -eq $src) {
+                            $shown++
+                            Add-Finding 'NEW' 'AMBER' ('defect-changed:' + (Get-Hash8 $key)) $src ('KNOWN DEFECT, WORDING CHANGED (' + [string]$fd.what + '): recorded as "' + [string]$fd.sig + '", now x' + $obs[$sig] + ': ' + $sig)
+                        } else {
+                            $shown++
+                            $also = ''
+                            if ([string]$fd.sig -cne $sig) { $also = ' with other words ("' + [string]$fd.sig + '")' }
+                            Add-Finding 'NEW' 'AMBER' ('defect-moved:' + (Get-Hash8 $key)) $src ('KNOWN DEFECT IN ANOTHER LOG (' + [string]$fd.what + '): recorded in ' + [string]$fd.log + $also + ', now in ' + $src + ' x' + $obs[$sig] + ': ' + $sig)
+                        }
                     } else {
                         $was = 1
                         if ($known[$key].PSObject.Properties['count'] -and [int]$known[$key].count -gt 0) { $was = [int]$known[$key].count }
@@ -1136,7 +1200,7 @@ function Invoke-Check {
                 if ($rest -gt 0) { Add-Finding 'NEW' 'AMBER' ("new:more:$src") $src ("$rest more signatures not in the baseline, not listed one by one") }
                 if ($grownRest -gt 0) { Add-Finding 'NEW' 'AMBER' ("grew:more:$src") $src ("$grownRest more baselined signatures at 3x their accepted count, not listed one by one") }
             }
-            $script:baselineText = "$($known.Count) signatures accepted, $($defects.Count) listed as defects"
+            $script:baselineText = "$($known.Count) signatures accepted, $($defects.Count) listed as defects (baseline version $blVersion)"
 
             # ---- 6. STALE baseline entries: listed, and the line is no longer printed ----
             # Reported, never a finding: it says the LIST is out of date, not that the boot is broken.
@@ -1311,6 +1375,7 @@ function Get-Verdict {
     if ($script:armedText) { $s += '; armed ' + $script:armedText }
     $s += '; sources ' + ($script:srcList -join ',')
     if ($notRun.Count) { $s += '; not run: ' + (($notRun | ForEach-Object { $_.Split('(')[0].Trim() }) -join ', ') }
+    if ($knownRows.Count) { $s += '; known defects unchanged: ' + $knownRows.Count }          # not findings: not in `worst`, not in `open`
     if ($staleEntries.Count) { $s += '; stale baseline entries: ' + $staleEntries.Count }      # not findings: not in `worst`, not in `open`
     return [pscustomobject]@{ worst = $w; kinds = $kinds; summary = ($s -replace '[\r\n]+', ' ') }
 }
@@ -1370,6 +1435,20 @@ if (-not $Quiet) {
         Write-Host ("  {0,-5} {1,-12} {2}" -f $f.sev, $f.kind, $f.id) -ForegroundColor $color
         Write-Host ("        {0}{1}" -f $where, $d) -ForegroundColor DarkGray
     }
+    if ($knownRows.Count -gt 0) {
+        # check 5: known defects printed as recorded, each listed once. Same shape as a finding line, with KNOWN where
+        # the severity stands: none of it is a finding (operator's rule 2026-10-24).
+        $fewer = @($knownRows | Where-Object { $_.state -eq 'FEWER' }).Count
+        $t = "$($knownRows.Count) known defect(s) printed and not changed: accepted while the line stays as recorded and its count does not grow; a changed wording, a higher count or another log is a finding"
+        if ($fewer -gt 0) { $t += "; $fewer printed fewer times than recorded (its count can be lowered)" }
+        Write-Host ("[loud-check] KNOWN   : {0}:" -f $t) -ForegroundColor DarkCyan
+        foreach ($e in @($knownRows | Sort-Object id)) {
+            Write-Host ("  {0,-5} {1,-12} {2}" -f 'KNOWN', $e.state, $e.id) -ForegroundColor DarkCyan
+            $w = $e.what
+            if ($w.Length -gt 100) { $w = $w.Substring(0, 100) + '...' }
+            Write-Host ("        [{0}] x{1}, recorded x{2} ({3}): {4}" -f $e.src, $e.n, $e.rec, $w, $e.sig) -ForegroundColor DarkGray
+        }
+    }
     if ($staleEntries.Count -gt 0) {
         # check 6: the list is out of date. Same shape as a finding line, with STALE where the severity stands.
         Write-Host ("[loud-check] STALE   : {0}:" -f $script:staleText) -ForegroundColor Cyan
@@ -1390,6 +1469,8 @@ if ($v.worst -eq 'RED')   { $verdictColor = 'Red' }
 $tail = 'nothing found'
 if ($open.Count -gt 0) { $tail = $v.kinds }
 if ($failed.Count -gt 0 -and $real.Count -eq 0) { $tail = 'COULD NOT CHECK: ' + $v.kinds }
+if ($knownRows.Count -eq 1) { $tail += '; 1 known defect listed, unchanged' }
+elseif ($knownRows.Count -gt 1) { $tail += "; $($knownRows.Count) known defects listed, unchanged" }
 if ($staleEntries.Count -eq 1) { $tail += '; 1 stale baseline entry to prune' }
 elseif ($staleEntries.Count -gt 1) { $tail += "; $($staleEntries.Count) stale baseline entries to prune" }
 if ($notRun.Count -gt 0) { $tail += " ($($notRun.Count) check not run, see above)" }

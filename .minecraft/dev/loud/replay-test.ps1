@@ -19,6 +19,11 @@
 #            a signature missing from a baseline). Each must produce exactly its
 #            finding. The replay alone would not prove these: the bad boots are RED
 #            for their ERROR lines whatever the liveness tiers do.
+#            Then KNOWN DEFECTS (baseline version 2, the operator's rule of
+#            2026-10-24): a planted defect printed as recorded, or fewer times, is
+#            listed once and changes nothing (GREEN, exit 0, nothing written); printed
+#            more often (per load pass), with other words or in another log it is an
+#            AMBER finding that names the change; a version 1 file keeps the old rule.
 #            Then STALE baseline entries (check 6): entries whose line is gone, with
 #            earlier boots written next to the log as rotated files. Stale only after
 #            two complete boots without the line; never on a short or partial log;
@@ -374,18 +379,101 @@ $once = [System.IO.File]::ReadAllText($kjs)
 $rl = Invoke-Checker @('-LogsDir', $caseReload, '-Sources', 'kubejs/server.log', '-Baseline', (Join-Path $WorkDir 'full-baseline.json'))
 Assert-That ($rl.Exit -eq 0 -and @(Get-Ids $rl).Count -eq 0 -and @($rl.Out | Where-Object { $_ -match '3 script load passes' }).Count -eq 1) 'the KubeJS log of a server reloaded twice (every line three times) -> nothing grew, the report says 3 load passes'
 
+# KNOWN DEFECTS, baseline version 2 (operator's rule 2026-10-24: "A known defect whose line and count stay the same from
+# boot to boot is accepted automatically and listed once; one that changes or grows comes back as a finding."). The
+# healthy boot's own list, all accepted, plus a defect planted as a line of its own: printed as recorded it is listed
+# once and changes nothing; printed more often, with other words or in another log it is an AMBER finding.
+function Get-Id8 {        # the id the checker gives "<log>|<sig>", computed here and not asked of the checker
+    param([string]$Text)
+    $sha1 = [System.Security.Cryptography.SHA1]::Create()
+    try { $b = $sha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Text)) } finally { $sha1.Dispose() }
+    return ('{0:x2}{1:x2}{2:x2}{3:x2}' -f $b[0], $b[1], $b[2], $b[3])
+}
+function Write-BaselineV2 {
+    param([string]$Path, [string[]]$Rows, $Defects, [int]$Version = 2)
+    $filled = @($Rows | ForEach-Object { $_.TrimEnd(',').Replace('"reason":"","accepted":""', '"reason":"test fixture","accepted":"2026-10-11"') })
+    $def = @($Defects | Where-Object { $_ } | ForEach-Object { $_ | ConvertTo-Json -Compress })
+    [System.IO.File]::WriteAllText($Path, '{"version":' + $Version + ',"signatures":[' + "`n" + ($filled -join ",`n") + "`n" + '],"defects":[' + "`n" + ($def -join ",`n") + "`n]}", $Utf8)
+    return $Path
+}
+function Get-KnownIds {   # known defects listed by a report run: "  KNOWN UNCHANGED   defect:<id>"
+    param($Run)
+    return @($Run.Out | ForEach-Object { $m = [regex]::Match($_, '^\s+KNOWN\s+(UNCHANGED|FEWER)\s+(\S+)\s*$'); if ($m.Success) { $m.Groups[1].Value + ' ' + $m.Groups[2].Value } })
+}
+function Test-Known {
+    param([string]$Name, [string]$Logs, [string[]]$Extra, [int]$Exit, [string[]]$Expect, [string[]]$Known, [string[]]$Say)
+    $r = Invoke-Checker (@('-LogsDir', $Logs) + $Extra)
+    $ids = (@(Get-Ids $r | Sort-Object) -join ' | ');        $wantIds = (@($Expect | Sort-Object) -join ' | ')
+    $kn  = (@(Get-KnownIds $r | Sort-Object) -join ' | ');   $wantKn  = (@($Known | Sort-Object) -join ' | ')
+    $unsaid = @($Say | Where-Object { $rx = $_; @($r.Out | Where-Object { $_ -match $rx }).Count -eq 0 })
+    $ok = ($r.Exit -eq $Exit) -and ($ids -eq $wantIds) -and ($kn -eq $wantKn) -and ($unsaid.Count -eq 0)
+    $text = "$Name -> exit $Exit, findings: " + $(if ($wantIds) { $wantIds } else { '(none)' }) + '; known: ' + $(if ($wantKn) { $wantKn } else { '(none)' })
+    if (-not $ok) { $text += "   GOT exit $($r.Exit), findings: $ids; known: $kn" + $(if ($unsaid.Count) { '; the report does not say: ' + ($unsaid -join ' ;; ') } else { '' }) }
+    Assert-That $ok $text
+}
+$kdSig  = 'WARN planted: a known defect that its fix is waiting for'
+$kdLine = '[00:00:00] [WARN] planted: a known defect that its fix is waiting for'
+$kdFam  = 'WARN planted: a known defect'
+$kdId   = 'defect:' + (Get-Id8 "kubejs/server.log|$kdSig")
+function New-Defect { param([string]$Log = 'kubejs/server.log', [string]$Sig = $kdSig, $Count = 1, [string]$Family = $kdFam) $d = [ordered]@{ log = $Log; sig = $Sig; what = 'planted defect'; listed = '2026-10-24' }; if ($null -ne $Count) { $d.count = $Count }; if ($Family) { $d.family = $Family }; return $d }
+# the planted line after each load summary of a KubeJS log, $Times times
+function New-DefectCase {
+    param([string]$Name, [string]$Log = 'kubejs/server.log', [string]$Line = $kdLine, [int]$Times = 1)
+    $kind = $Log.Substring(7, $Log.Length - 11)       # kubejs/<kind>.log
+    return (New-Case $Name $Log ({ param($l) $l; if ($l -match ('Loaded \d+/\d+ KubeJS ' + $kind + ' scripts')) { for ($i = 0; $i -lt $Times; $i++) { $Line } } }.GetNewClosure()))
+}
+$kdOnce = New-DefectCase 'kd-once'
+$kdBl   = Write-BaselineV2 (Join-Path $WorkDir 'kd-stable.json') $propRows @((New-Defect))
+Test-Known 'v2: a known defect printed as recorded (x1) -> listed once, not a finding, GREEN, exit 0' $kdOnce @('-Baseline', $kdBl) 0 @() @("UNCHANGED $kdId") @(
+    'KNOWN   : 1 known defect\(s\) printed and not changed', ('\[kubejs/server\.log\] x1, recorded x1 \(planted defect\): ' + [regex]::Escape($kdSig)), 'GREEN - nothing found; 1 known defect listed, unchanged')
+$kdRun = Invoke-Checker @('-LogsDir', $kdOnce, '-Baseline', $kdBl)
+Assert-That (@($kdRun.Out | Where-Object { $_.Contains($kdSig) }).Count -eq 1) '   listed once: its line is in the report one time'
+$kdFind = Join-Path $WorkDir 'kd-findings.jsonl'; $kdStat = Join-Path $WorkDir 'kd-status'
+$kdW = Invoke-Checker @('-LogsDir', $kdOnce, '-Baseline', $kdBl, '-Write', '-FindingsPath', $kdFind, '-StatusPath', $kdStat, '-Quiet')
+$kdS = Read-Status $kdStat
+Assert-That ($kdW.Exit -eq 0 -and $kdW.Out.Count -eq 1 -and $kdS['worst'] -eq 'GREEN' -and $kdS['open'] -eq '0' -and $kdS['summary'] -match 'known defects unchanged: 1' -and -not (Test-Path -LiteralPath $kdFind)) '   -Write: worst=GREEN, open=0, nothing in the findings log; the status summary carries the count'
+Test-Known 'v2: recorded x2, printed x1 -> FEWER, listed once, not a finding' $kdOnce @('-Baseline', (Write-BaselineV2 (Join-Path $WorkDir 'kd-fewer.json') $propRows @((New-Defect -Count 2)))) 0 @() @("FEWER $kdId") @('1 printed fewer times than recorded')
+$kdTwice = New-DefectCase 'kd-twice' -Times 2
+Test-Known 'v2: recorded x1, printed x2 (it grew) -> a finding, AMBER, exit 1, naming the counts' $kdTwice @('-Baseline', $kdBl) 1 @('NEW defect-grew:' + (Get-Id8 "kubejs/server.log|$kdSig")) @() @(
+    'KNOWN DEFECT GREW \(planted defect\): recorded x1, now x2', '\] AMBER - 1 NEW')
+Test-Known '   recorded x2, printed x2 -> as recorded again' $kdTwice @('-Baseline', (Write-BaselineV2 (Join-Path $WorkDir 'kd-two.json') $propRows @((New-Defect -Count 2)))) 0 @() @("UNCHANGED $kdId") @()
+$kdReload = New-DefectCase 'kd-reload'
+$kdk = Join-Path (Join-Path $kdReload 'kubejs') 'server.log'
+$kdOnceText = [System.IO.File]::ReadAllText($kdk)
+[System.IO.File]::WriteAllText($kdk, $kdOnceText + $kdOnceText + $kdOnceText, $Utf8)
+Test-Known 'v2: a server reloaded twice prints it x3 in 3 load passes -> as recorded (per load pass), not grown' $kdReload @('-Sources', 'kubejs/server.log', '-Baseline', $kdBl) 0 @() @("UNCHANGED $kdId") @('3 script load passes')
+[System.IO.File]::WriteAllText($kdk, $kdOnceText + $kdOnceText + $kdOnceText + ($kdLine + "`n"), $Utf8)
+Test-Known '   x4 in 3 load passes -> grew, and the finding says so' $kdReload @('-Sources', 'kubejs/server.log', '-Baseline', $kdBl) 1 @('NEW defect-grew:' + (Get-Id8 "kubejs/server.log|$kdSig")) @() @('recorded x1, now x4 in 3 load passes \(up to x3 is as recorded\)')
+$kdOther = 'WARN planted: a known defect, now worded otherwise'
+Test-Known 'v2: its family with other words -> a finding naming both wordings (and the recorded line is not printed, so not listed)' (New-DefectCase 'kd-words' -Line ('[00:00:00] [WARN] ' + $kdOther.Substring(5))) @('-Baseline', $kdBl) 1 @('NEW defect-changed:' + (Get-Id8 "kubejs/server.log|$kdOther")) @() @(
+    ('KNOWN DEFECT, WORDING CHANGED \(planted defect\): recorded as "' + [regex]::Escape($kdSig) + '", now x1: ' + [regex]::Escape($kdOther)))
+Test-Known 'v2: its line in another log than recorded -> a finding naming both logs' (New-DefectCase 'kd-moved' -Log 'kubejs/startup.log') @('-Baseline', $kdBl) 1 @('NEW defect-moved:' + (Get-Id8 "kubejs/startup.log|$kdSig")) @() @(
+    'KNOWN DEFECT IN ANOTHER LOG \(planted defect\): recorded in kubejs/server\.log, now in kubejs/startup\.log x1')
+# a line printed at load in latest.log, as the Crust line was: the same rule
+$kdLatestSig = 'ERROR [planted/]: a known defect of latest.log'
+$kdLatest = New-Case 'kd-latest' 'latest.log' { param($l) $l; if ($l -match 'Done \(\d+\.\d+s\)!') { $l.Substring(0, $l.IndexOf(']') + 1) + ' [main/ERROR] [planted/]: a known defect of latest.log' } }
+$kdLatestBl = Write-BaselineV2 (Join-Path $WorkDir 'kd-latest.json') $propRows @((New-Defect -Log 'latest.log' -Sig $kdLatestSig -Family 'ERROR [planted/]: a known'))
+Test-Known 'v2: a latest.log defect printed as recorded -> listed once, GREEN' $kdLatest @('-Baseline', $kdLatestBl) 0 @() @('UNCHANGED defect:' + (Get-Id8 "latest.log|$kdLatestSig")) @()
+# a family is for lines in neither list: accepted lines that start the same way stay accepted
+if ($single.Count -eq 1) {
+    $wideFam = ([regex]::Match($single[0], '"sig":"((?:[^"\\]|\\.){24})').Groups[1].Value -replace '\\(.)', '$1')
+    Test-Known 'v2: a defect whose family is the start of accepted lines, not printed -> the accepted lines are not its changes' $caseLogs @('-Baseline', (Write-BaselineV2 (Join-Path $WorkDir 'kd-wide.json') $propRows @((New-Defect -Sig ($wideFam + ' planted, never printed') -Family $wideFam)))) 0 @() @() @()
+} else { Assert-That $false 'family rule: no KubeJS signature of count 1 in this boot to exercise it with' }
+# the format: a version 2 defect needs its count and a family; a version the checker does not know is refused
+foreach ($bad in @(@('no count', (New-Defect -Count $null)), @('count 0', (New-Defect -Count 0)), @('no family', (New-Defect -Family '')), @('a family under 16 characters', (New-Defect -Family 'WARN planted')), @('a family that is not the start of its sig', (New-Defect -Family 'WARN planted: another defect')))) {
+    $r = Invoke-Checker @('-LogsDir', $kdOnce, '-Baseline', (Write-BaselineV2 (Join-Path $WorkDir ('kd-bad-' + $bad[0].Replace(' ', '-') + '.json')) $propRows @($bad[1])))
+    Assert-That ($r.Exit -eq 2 -and (@(Get-Ids $r) -join '|') -eq 'CHECK-FAILED check:baseline') ("v2: a defect with $($bad[0]) -> the baseline is refused (exit 2, CHECK-FAILED check:baseline)")
+}
+$r = Invoke-Checker @('-LogsDir', $kdOnce, '-Baseline', (Write-BaselineV2 (Join-Path $WorkDir 'kd-v3.json') $propRows @((New-Defect)) -Version 3))
+Assert-That ($r.Exit -eq 2 -and (@(Get-Ids $r) -join '|') -eq 'CHECK-FAILED check:baseline') 'a baseline of version 3 -> refused, not read with the wrong rule'
+Test-Known 'version 1 (before the rule): the same defect printed as recorded is a finding, as it was' $kdOnce @('-Baseline', (Write-BaselineV2 (Join-Path $WorkDir 'kd-v1.json') $propRows @((New-Defect -Count $null -Family '')) -Version 1)) 1 @("NEW $kdId") @() @('KNOWN DEFECT, reviewed and not baselined \(planted defect\)')
+
 # STALE baseline entries (check 6). The baseline is the healthy boot's own list plus four entries for lines it does not
 # print: a defect, an accepted latest.log line, an accepted line marked "runtime", an accepted KubeJS line. Earlier boots
 # are the healthy boot again with its clock moved back by whole days, written next to latest.log as rotated logs.
 function Get-StaleIds {   # entries reported stale by a report run: "  STALE DEFECT   defect:<id>"
     param($Run)
     return @($Run.Out | ForEach-Object { $m = [regex]::Match($_, '^\s+STALE\s+(DEFECT|ACCEPTED)\s+(\S+)\s*$'); if ($m.Success) { $m.Groups[1].Value + ' ' + $m.Groups[2].Value } })
-}
-function Get-Id8 {        # the id the checker gives "<log>|<sig>", computed here and not asked of the checker
-    param([string]$Text)
-    $sha1 = [System.Security.Cryptography.SHA1]::Create()
-    try { $b = $sha1.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Text)) } finally { $sha1.Dispose() }
-    return ('{0:x2}{1:x2}{2:x2}{3:x2}' -f $b[0], $b[1], $b[2], $b[3])
 }
 function Test-Stale {
     param([string]$Name, [string]$Logs, [string[]]$Extra, [int]$Exit, [string[]]$Expect, [string[]]$Stale, [string[]]$Say)
