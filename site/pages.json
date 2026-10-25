@@ -1,5 +1,5 @@
 {
-  "_comment": "Which wiki pages the public site publishes. The pages are the wiki pages the wiki sync makes from .minecraft/wiki/ (source_manifest: its files and link conversions); 'sidebar' is the wiki-only navigation page, kept here. 'include' is the whole list: add or remove one line to publish or unpublish a page. A page that is not listed is not published (a new page stays off the site until it is added here). A link from a published page to an unpublished one goes to that page on the GitHub wiki ('excluded_links': 'wiki') or is shown as plain text ('text'). 'site_url' is where the site is served (canonical and Open Graph URLs; its path is the base path the 404 page uses). Build: python site/build.py --source",
+  "_comment": "Which wiki pages the public site publishes. The pages are the wiki pages the wiki sync makes from .minecraft/wiki/ (source_manifest: its files and link conversions); 'sidebar' is the wiki-only navigation page, kept here. 'include' is the whole list: add or remove one line to publish or unpublish a page. A page that is not listed is not published (a new page stays off the site until it is added here). A link from a published page to an unpublished one goes to that page on the GitHub wiki ('excluded_links': 'wiki') or is shown as plain text ('text'). 'github_links': false leaves out every link into the GitHub repository and its wiki (the 'Elsewhere' links, 'View on the GitHub wiki' and 'Edit on GitHub' in each footer, links to unpublished pages and to repository files, which are then plain text): the repository is private, so they would answer 404 to every visitor. 'site_url' is where the site is served (canonical and Open Graph URLs; its path is the base path the 404 page uses). Build: python site/build.py --source",
 
   "site_title": "IridescentCraft",
   "tagline": "Tester guide & wiki",
@@ -7,6 +7,7 @@
   "site_url": "https://iridescentcraft.sereneblossom.gay/",
   "index_page": "Tester-Installation-Guide",
   "excluded_links": "wiki",
+  "github_links": false,
   "source_manifest": ".minecraft/tools/wiki-sync-manifest.json",
   "sidebar": "site/wiki-sidebar.md",
 
