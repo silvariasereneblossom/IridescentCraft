@@ -28,6 +28,7 @@
 //! run's files are read once when it is picked, never per frame, and the long
 //! report is laid out row by row.
 
+use std::collections::BTreeSet;
 use std::path::{Path, PathBuf};
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
@@ -204,8 +205,16 @@ pub struct Customizer {
 
     bed_on: bool,
     bed_radius: u32,
+    /// The bed layer keeps only the players ticked in `bed_who` (UUIDs, or a
+    /// name a policy file gave).
+    bed_only: bool,
+    bed_who: BTreeSet<String>,
     logout_on: bool,
     logout_radius: u32,
+    logout_only: bool,
+    logout_who: BTreeSet<String>,
+    /// The world's players: UUID and name ([`regen::player_choices`]).
+    players: Vec<(String, String)>,
     claims: bool,
     spawn_on: bool,
     spawn_radius: u32,
@@ -253,8 +262,13 @@ impl Customizer {
             dims: Vec::new(),
             bed_on: true,
             bed_radius: 0,
+            bed_only: false,
+            bed_who: BTreeSet::new(),
             logout_on: true,
             logout_radius: 0,
+            logout_only: false,
+            logout_who: BTreeSet::new(),
+            players: Vec::new(),
             claims: true,
             spawn_on: true,
             spawn_radius: 0,
@@ -338,8 +352,12 @@ impl Customizer {
         let d = Settings::default();
         self.bed_on = s.bed_radius.is_some();
         self.bed_radius = s.bed_radius.or(d.bed_radius).unwrap_or(1);
+        self.bed_only = !s.bed_players.is_empty();
+        self.bed_who = s.bed_players.iter().cloned().collect();
         self.logout_on = s.logout_radius.is_some();
         self.logout_radius = s.logout_radius.or(d.logout_radius).unwrap_or(1);
+        self.logout_only = !s.logout_players.is_empty();
+        self.logout_who = s.logout_players.iter().cloned().collect();
         self.claims = s.claims;
         self.spawn_on = s.spawn_radius_blocks.is_some();
         self.spawn_radius = s.spawn_radius_blocks.or(d.spawn_radius_blocks).unwrap_or(128);
@@ -355,9 +373,20 @@ impl Customizer {
 
     /// The settings on screen, or what is wrong with them.
     fn settings(&self) -> Result<Settings, String> {
+        let who = |only: bool, who: &BTreeSet<String>, layer: &str| -> Result<Vec<String>, String> {
+            if !only {
+                return Ok(Vec::new());
+            }
+            if who.is_empty() {
+                return Err(format!("{layer}: tick at least one player, or untick 'only these players'."));
+            }
+            Ok(who.iter().cloned().collect())
+        };
         let settings = Settings {
             bed_radius: self.bed_on.then_some(self.bed_radius),
+            bed_players: if self.bed_on { who(self.bed_only, &self.bed_who, "Beds")? } else { Vec::new() },
             logout_radius: self.logout_on.then_some(self.logout_radius),
+            logout_players: if self.logout_on { who(self.logout_only, &self.logout_who, "Logout spots")? } else { Vec::new() },
             claims: self.claims,
             spawn_radius_blocks: self.spawn_on.then_some(self.spawn_radius),
             waystones: self.waystones,
@@ -408,6 +437,10 @@ impl Customizer {
                 DimChoice { id, hint, on }
             })
             .collect();
+    }
+
+    fn rescan_players(&mut self, server_dir: &Path) {
+        self.players = regen::player_choices(&ServerConfig::from_path(server_dir));
     }
 
     fn rescan_runs(&mut self, server_dir: &Path) {
@@ -475,6 +508,7 @@ impl Customizer {
             self.loaded_for = Some(server_dir.to_path_buf());
             self.dims.clear();
             self.rescan_dimensions(server_dir);
+            self.rescan_players(server_dir);
             self.reload_policy(server_dir);
             self.rescan_runs(server_dir);
             self.note.clear();
@@ -622,6 +656,7 @@ impl Customizer {
         });
         if rescan {
             self.rescan_dimensions(server_dir);
+            self.rescan_players(server_dir);
         }
 
         ui.add_space(6.0);
@@ -638,11 +673,26 @@ impl Customizer {
             ui.add_enabled(self.bed_on, egui::DragValue::new(&mut self.bed_radius).clamp_range(0..=64));
             ui.label(format!("chunks around it ({0}x{0})", 2 * self.bed_radius + 1));
         });
+        if self.bed_on {
+            players_ui(ui, "bed", &self.players, &mut self.bed_only, &mut self.bed_who);
+        }
         ui.horizontal_wrapped(|ui| {
             ui.checkbox(&mut self.logout_on, "Logout spots: the chunk each player logged out in and");
             ui.add_enabled(self.logout_on, egui::DragValue::new(&mut self.logout_radius).clamp_range(0..=64));
             ui.label(format!("chunks around it ({0}x{0}), in that dimension", 2 * self.logout_radius + 1));
         });
+        if self.logout_on {
+            players_ui(ui, "logout", &self.players, &mut self.logout_only, &mut self.logout_who);
+            if self.logout_only {
+                ui.horizontal_wrapped(|ui| {
+                    ui.add_space(24.0);
+                    ui.weak(
+                        "A player left out whose logout chunk would be regenerated stops the run (they would log in inside fresh terrain): \
+                         keep that chunk with an Always-keep box, or have them log in and move first.",
+                    );
+                });
+            }
+        }
         ui.checkbox(&mut self.claims, "Claims: every chunk claimed in Open Parties and Claims");
         ui.horizontal_wrapped(|ui| {
             ui.checkbox(&mut self.spawn_on, "World spawn: everything within");
@@ -796,6 +846,35 @@ impl Customizer {
 // =============================================================================
 // Drawing a run
 // =============================================================================
+
+/// "only these players:" under a per-player layer, with a box per player of
+/// the world. `who` holds UUIDs; a name a policy file gave ticks its player too.
+fn players_ui(ui: &mut egui::Ui, layer: &str, players: &[(String, String)], only: &mut bool, who: &mut BTreeSet<String>) {
+    ui.horizontal_wrapped(|ui| {
+        ui.add_space(24.0);
+        ui.checkbox(only, "only these players:").on_hover_text(format!("Off: every player's {layer}. On: only the players ticked here."));
+        if !*only {
+            return;
+        }
+        if players.is_empty() {
+            ui.weak("(no player files in this world)");
+        }
+        for (uuid, name) in players {
+            let named = |w: &String| w.eq_ignore_ascii_case(uuid) || w.eq_ignore_ascii_case(name);
+            let mut on = who.iter().any(named);
+            if ui.checkbox(&mut on, name.as_str()).on_hover_text(uuid.as_str()).changed() {
+                who.retain(|w| !named(w));
+                if on {
+                    who.insert(uuid.clone());
+                }
+            }
+        }
+        // Left by a policy file and no player of this world: the dry-run says so.
+        for stray in who.iter().filter(|w| !players.iter().any(|(u, n)| w.eq_ignore_ascii_case(u) || w.eq_ignore_ascii_case(n))) {
+            ui.colored_label(BAD, format!("'{stray}' is no player of this world"));
+        }
+    });
+}
 
 /// A collapsible section. `expand_all` forces it open.
 pub(crate) fn section(ui: &mut egui::Ui, expand_all: bool, id: &str, title: impl Into<egui::WidgetText>, open: bool, body: impl FnOnce(&mut egui::Ui)) {

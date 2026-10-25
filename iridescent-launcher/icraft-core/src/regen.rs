@@ -639,6 +639,9 @@ fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> R
             p.name = owners.iter().find(|o| o.uuid == p.uuid && !o.name.is_empty()).map(|o| o.name.clone());
         }
     }
+    // Whose bed / logout spot: names become UUIDs here, so the plan records
+    // UUIDs and the fidelity harness (which reads no names) builds the same map.
+    settings.resolve_players(&players)?;
     let waystones = match worlddata::read_waystones(&world) {
         Ok(w) => w,
         Err(e) if settings.waystones == WaystoneMode::Off => {
@@ -1401,19 +1404,31 @@ fn structures_view(d: &DimResult) -> StructuresView {
 
 /// [`LayerRow::note`].
 fn layer_note(a: &Analysis, dim: &str, layer: Layer) -> String {
-    if layer != Layer::Logout {
-        return String::new();
+    // Whose: the players a per-player list keeps (local labels: report.txt and
+    // summary.json stay on the server, and already name every player).
+    let whose = |list: &[String]| {
+        let names: Vec<&str> = a.players.iter().filter(|p| list.contains(&p.uuid)).map(|p| p.label()).collect();
+        format!("only {} of {} player(s): {}", names.len(), a.player_files(), names.join(", "))
+    };
+    match layer {
+        Layer::Bed if a.settings.bed_radius.is_some() && !a.settings.bed_players.is_empty() => whose(&a.settings.bed_players),
+        Layer::Logout => {
+            if a.settings.logout_radius.is_none() {
+                return "the layer is off".to_string();
+            }
+            let here = a.players.iter().filter(|p| p.last_pos.as_ref().is_some_and(|(d, _)| d == dim)).count();
+            let unknown = a.players.iter().filter(|p| p.last_pos.is_none()).count() + a.unreadable_players.len();
+            let mut note = format!("{here} of {} player file(s) logged out in this dimension", a.player_files());
+            if !a.settings.logout_players.is_empty() {
+                note.push_str(&format!("; {}", whose(&a.settings.logout_players)));
+            }
+            if unknown > 0 {
+                note.push_str(&format!("; {unknown} logout spot(s) UNKNOWN, see the warnings"));
+            }
+            note
+        }
+        _ => String::new(),
     }
-    if a.settings.logout_radius.is_none() {
-        return "the layer is off".to_string();
-    }
-    let here = a.players.iter().filter(|p| p.last_pos.as_ref().is_some_and(|(d, _)| d == dim)).count();
-    let unknown = a.players.iter().filter(|p| p.last_pos.is_none()).count() + a.unreadable_players.len();
-    let mut note = format!("{here} of {} player file(s) logged out in this dimension", a.player_files());
-    if unknown > 0 {
-        note.push_str(&format!("; {unknown} logout spot(s) UNKNOWN, see the warnings"));
-    }
-    note
 }
 
 fn player_view(a: &Analysis, p: &Player, around: u32) -> PlayerView {
@@ -2280,6 +2295,16 @@ pub fn load_view(run_dir: &Path) -> Result<RunView, String> {
         return Err(format!("{SUMMARY_FILE}: written by a newer launcher (format '{}' v{})", view.format, view.version));
     }
     Ok(view)
+}
+
+/// The players of the world, for a picker: UUID and name (the UUID when the
+/// name is not known), by name.
+pub fn player_choices(cfg: &ServerConfig) -> Vec<(String, String)> {
+    let names = worlddata::read_usercache(&cfg.server_dir);
+    let mut out: Vec<(String, String)> =
+        worlddata::read_players(&cfg.world_dir(), &names).players.into_iter().map(|p| (p.uuid.clone(), p.label().to_string())).collect();
+    out.sort_by(|a, b| a.1.to_ascii_lowercase().cmp(&b.1.to_ascii_lowercase()));
+    out
 }
 
 /// The dimensions that hold chunks, for a picker: id, and what is there.
@@ -3401,6 +3426,39 @@ mod tests {
         assert_eq!(chunk_of(65, -1, true), Ok((65, -1)));
         assert!(chunk_of(i64::MAX, 0, true).is_err());
         assert_eq!(f.world_state(), before, "chunk-info writes nothing in the world");
+    }
+
+    #[test]
+    fn a_per_player_bed_list_keeps_those_beds_only_and_the_harness_agrees() {
+        let f = Fixture::new();
+        // Player_Three's bed is in the Nether, which has no chunks: with only
+        // Player_Three on the list, no overworld bed is kept.
+        let s = f.run("scope=all bed_players=player_three");
+        let chunks = s.out_dir.join("chunks.csv");
+        let row = |x: i32, z: i32| csv_row(&chunks, &[("chunk_x", &x.to_string()), ("chunk_z", &z.to_string())]).unwrap().unwrap();
+        assert_eq!(row(11, 11)["action"], "regenerate", "Player_One's bed square");
+        assert_eq!((row(12, 12)["action"].as_str(), row(12, 12)["layers"].as_str()), ("keep", "lived-in"), "kept by the lived-in layer alone");
+        let plan = f.plan(&s);
+        assert!(plan["settings"].as_array().unwrap().iter().any(|p| p[0] == "bed_players" && p[1] == P3), "the plan records the UUID: {}", plan["settings"]);
+        assert!(flat(&s.report).contains("only 1 of 3 player(s): Player_Three"), "{}", s.report);
+        // Every player's: the square is kept.
+        let all = f.run("scope=all");
+        let all_chunks = all.out_dir.join("chunks.csv");
+        assert_eq!(csv_row(&all_chunks, &[("chunk_x", "11"), ("chunk_z", "11")]).unwrap().unwrap()["action"], "keep");
+
+        // The harness builds its map from the plan's own settings, and agrees.
+        let world = f.root.join("testworld");
+        let fplan = fidelity::Plan::load(&s.out_dir).unwrap();
+        assert_eq!(fplan.settings.bed_players, [P3]);
+        assert_eq!(fidelity::before(&world, &fplan).unwrap().refusal(), None);
+        // Told it was every player's bed, it catches the plan resetting Player_One's.
+        let mut wrong = fplan.clone();
+        wrong.settings.bed_players.clear();
+        assert!(fidelity::before(&world, &wrong).unwrap().refusal().is_some());
+
+        // A name that is no player of the world fails the dry-run.
+        let typo = run(&f.cfg, &f.spec("scope=all bed_players=Nobody")).unwrap_err();
+        assert!(typo.contains("no player file is 'Nobody'"), "{typo}");
     }
 
     #[test]

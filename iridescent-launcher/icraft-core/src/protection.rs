@@ -59,7 +59,9 @@ use crate::worlddata::{ClaimOwner, LevelInfo, Player, Waystone};
 ///
 /// ```text
 /// bed_radius=1              # chunks around each bed chunk (1 = 3x3) | off
+/// bed_players=all           # whose beds: all, or player names / UUIDs, comma-separated
 /// logout_radius=1           # chunks around each logout chunk (1 = 3x3) | off
+/// logout_players=all        # whose logout spots: all, or names / UUIDs
 /// claims=on                 # on | off
 /// spawn_radius_blocks=128   # blocks around world spawn | off
 /// waystones=used            # used (activated or placed by a player) | all | off
@@ -228,8 +230,19 @@ impl std::fmt::Display for ChunkBox {
 pub struct Settings {
     /// Chunks around each bed chunk. `None` = the layer is off.
     pub bed_radius: Option<u32>,
+    /// Whose beds the bed layer keeps. Empty = every player's (the default).
+    /// As read: player names or UUIDs; the analysis turns names into UUIDs
+    /// ([`Settings::resolve_players`]) before anything is built from it, so a
+    /// plan records UUIDs (operator, 2026-10-24: "preserve spawns tied to
+    /// player and logout spots tied to player").
+    pub bed_players: Vec<String>,
     /// Chunks around each logout chunk. `None` = the layer is off.
     pub logout_radius: Option<u32>,
+    /// Whose logout spots the logout layer keeps. Empty = every player's.
+    /// As `bed_players`. A player left out whose logout chunk is reset still
+    /// stops a regeneration (`regen::exec`): they would log in inside fresh
+    /// terrain.
+    pub logout_players: Vec<String>,
     pub claims: bool,
     /// Blocks around world spawn. `None` = the layer is off.
     pub spawn_radius_blocks: Option<u32>,
@@ -246,7 +259,9 @@ impl Default for Settings {
     fn default() -> Self {
         Settings {
             bed_radius: Some(BED_RADIUS),
+            bed_players: Vec::new(),
             logout_radius: Some(LOGOUT_RADIUS),
+            logout_players: Vec::new(),
             claims: true,
             spawn_radius_blocks: Some(SPAWN_RADIUS_BLOCKS),
             waystones: WaystoneMode::Used,
@@ -280,6 +295,44 @@ fn number(key: &str, value: &str, max: u64) -> Result<u64, String> {
     Ok(n)
 }
 
+/// `all` (or nothing): every player. Otherwise names or UUIDs, comma-separated;
+/// a UUID is kept in lowercase, a name as written.
+fn player_list(value: &str) -> Vec<String> {
+    if value.eq_ignore_ascii_case("all") {
+        return Vec::new();
+    }
+    let mut out: Vec<String> = Vec::new();
+    for entry in value.split(',').map(str::trim).filter(|e| !e.is_empty()) {
+        let entry = if crate::worlddata::is_uuid(entry) { entry.to_ascii_lowercase() } else { entry.to_string() };
+        if !out.iter().any(|e| e.eq_ignore_ascii_case(&entry)) {
+            out.push(entry);
+        }
+    }
+    out
+}
+
+/// [`Settings::resolve_players`] for one list.
+fn resolve_list(key: &str, list: &[String], players: &[Player]) -> Result<Vec<String>, String> {
+    let mut out: Vec<String> = Vec::new();
+    for entry in list {
+        let found = players.iter().find(|p| p.uuid.eq_ignore_ascii_case(entry) || p.name.as_deref().is_some_and(|n| n.eq_ignore_ascii_case(entry)));
+        match found {
+            Some(p) => {
+                if !out.contains(&p.uuid) {
+                    out.push(p.uuid.clone());
+                }
+            }
+            None => {
+                let mut known: Vec<&str> = players.iter().map(|p| p.label()).collect();
+                known.sort_unstable();
+                return Err(format!("{key}: no player file is '{entry}' (the players of this world: {})", known.join(", ")));
+            }
+        }
+    }
+    out.sort();
+    Ok(out)
+}
+
 fn number_or_off(key: &str, value: &str, max: u64) -> Result<Option<u64>, String> {
     if value == "off" {
         return Ok(None);
@@ -301,6 +354,8 @@ impl Settings {
             "logout_radius" => {
                 self.logout_radius = number_or_off(&key, &lower, u64::from(MAX_RADIUS_CHUNKS))?.map(|n| n as u32);
             }
+            "bed_players" => self.bed_players = player_list(value),
+            "logout_players" => self.logout_players = player_list(value),
             "claims" => {
                 self.claims = match lower.as_str() {
                     "on" => true,
@@ -381,6 +436,25 @@ impl Settings {
         std::fs::write(server_dir.join(POLICY_FILE), self.to_policy_text())
     }
 
+    /// Names in `bed_players` / `logout_players` turned into the UUIDs of these
+    /// player files (sorted). `Err` names an entry that is no player of the
+    /// world: a layer that silently kept nobody's bed would be worse.
+    pub fn resolve_players(&mut self, players: &[Player]) -> Result<(), String> {
+        self.bed_players = resolve_list("bed_players", &self.bed_players, players)?;
+        self.logout_players = resolve_list("logout_players", &self.logout_players, players)?;
+        Ok(())
+    }
+
+    /// Does the bed layer keep this player's bed? The logout layer this
+    /// player's logout spot? (An empty list is every player.)
+    pub fn keeps_bed_of(&self, uuid: &str) -> bool {
+        self.bed_players.is_empty() || self.bed_players.iter().any(|u| u.eq_ignore_ascii_case(uuid))
+    }
+
+    pub fn keeps_logout_of(&self, uuid: &str) -> bool {
+        self.logout_players.is_empty() || self.logout_players.iter().any(|u| u.eq_ignore_ascii_case(uuid))
+    }
+
     /// A chunk cannot be on both manual lists: which one was meant?
     pub fn validate(&self) -> Result<(), String> {
         for keep in &self.protect {
@@ -406,6 +480,13 @@ impl Settings {
             ("inhabited_min_ticks".to_string(), or_off(self.inhabited_min_ticks)),
             ("inhabited_warn_ticks".to_string(), self.inhabited_warn_ticks.to_string()),
         ];
+        // Only when set: a plan or policy of every player reads as before.
+        if !self.bed_players.is_empty() {
+            out.push(("bed_players".to_string(), self.bed_players.join(",")));
+        }
+        if !self.logout_players.is_empty() {
+            out.push(("logout_players".to_string(), self.logout_players.join(",")));
+        }
         out.extend(self.protect.iter().map(|b| ("protect".to_string(), b.to_string())));
         out.extend(self.unprotect.iter().map(|b| ("unprotect".to_string(), b.to_string())));
         out
@@ -422,18 +503,21 @@ impl Settings {
                 b.iter().map(ChunkBox::to_string).collect::<Vec<_>>().join("  ")
             }
         };
+        let players = |p: &[String]| if p.is_empty() { "every player".to_string() } else { format!("only {}", p.join(", ")) };
         vec![
             (
                 "bed_radius",
                 self.bed_radius.map_or("off".to_string(), |r| format!("{r} chunk(s): {0}x{0} around each bed chunk", 2 * r + 1)),
                 self.bed_radius == d.bed_radius,
             ),
+            ("bed_players", players(&self.bed_players), self.bed_players.is_empty()),
             (
                 "logout_radius",
                 self.logout_radius
                     .map_or("off".to_string(), |r| format!("{r} chunk(s): {0}x{0} around each player's logout chunk", 2 * r + 1)),
                 self.logout_radius == d.logout_radius,
             ),
+            ("logout_players", players(&self.logout_players), self.logout_players.is_empty()),
             ("claims", if self.claims { "on" } else { "off" }.to_string(), self.claims == d.claims),
             (
                 "spawn_radius_blocks",
@@ -562,7 +646,7 @@ pub fn build(dim: &str, sources: &Sources, settings: &Settings, scan: &Dimension
     let mut chunks: BTreeMap<ChunkPos, Protected> = BTreeMap::new();
 
     if let Some(radius) = settings.bed_radius {
-        for player in sources.players {
+        for player in sources.players.iter().filter(|p| settings.keeps_bed_of(&p.uuid)) {
             if let Some(bed) = player.bed.as_ref().filter(|b| b.dim == dim) {
                 add_square(&mut chunks, bed.pos.chunk(), radius, Layer::Bed, Some(&format!("bed of {}", player.label())));
             }
@@ -572,7 +656,8 @@ pub fn build(dim: &str, sources: &Sources, settings: &Settings, scan: &Dimension
     // Where each player logged out, in the dimension they were in then. No
     // `why`: the layer says what it is, and it names no one.
     if let Some(radius) = settings.logout_radius {
-        for (_, pos) in sources.players.iter().filter_map(|p| p.last_pos.as_ref()).filter(|(d, _)| d == dim) {
+        let whose = sources.players.iter().filter(|p| settings.keeps_logout_of(&p.uuid));
+        for (_, pos) in whose.filter_map(|p| p.last_pos.as_ref()).filter(|(d, _)| d == dim) {
             add_square(&mut chunks, pos.chunk(), radius, Layer::Logout, None);
         }
     }
@@ -880,6 +965,56 @@ mod tests {
         let nether = build(NETHER, &sources, &only(Layer::Bed), &scan);
         assert_eq!(nether.chunks.len(), 9);
         assert!(nether.is_protected((0, 0)) && nether.is_protected((-1, -1)) && !nether.is_protected((2, 2)));
+    }
+
+    #[test]
+    fn the_bed_and_logout_layers_can_keep_only_some_players() {
+        let players = [
+            logged_out(player("Player_One", Some((OVERWORLD, (687, 1080))), &[]), OVERWORLD, (88, 90)),
+            logged_out(player("Player_Two", Some((OVERWORLD, (622, 1081))), &[]), OVERWORLD, (-1, -16)),
+            player("Player_Three", Some((OVERWORLD, (724, 780))), &[]),
+        ];
+        let lv = level((0, 0));
+        let sources = Sources { level: &lv, players: &players, claims: &[], waystones: &[] };
+        let scan = DimensionScan::default();
+
+        // As a policy file or the command line writes it: names in any case, or UUIDs.
+        let mut s = only(Layer::Bed);
+        s.logout_radius = Some(0);
+        s.set("bed_players", "player_one, Player_Three, PLAYER_ONE").unwrap();
+        s.set("logout_players", "uuid-of-Player_Two").unwrap();
+        assert_eq!(s.bed_players, ["player_one", "Player_Three"]);
+        s.resolve_players(&players).unwrap();
+        assert_eq!(s.bed_players, ["uuid-of-Player_One", "uuid-of-Player_Three"]);
+        assert_eq!(s.logout_players, ["uuid-of-Player_Two"]);
+
+        let map = build(OVERWORLD, &sources, &s, &scan);
+        assert!(map.is_protected((42, 67)) && map.is_protected((45, 48)), "Player_One's and Player_Three's beds");
+        assert!(!map.is_protected((38, 67)), "Player_Two's bed is not on the list");
+        assert_eq!(map.layers_at((-1, -1)), Layer::Logout.bit(), "Player_Two's logout chunk");
+        assert!(!map.is_protected((5, 5)), "Player_One's logout spot is not on the list");
+        assert_eq!(map.chunks.len(), 9 + 9 + 1);
+
+        // A plan records the UUIDs, and they read back as they were.
+        let pairs = s.to_pairs();
+        assert!(pairs.contains(&("bed_players".to_string(), "uuid-of-Player_One,uuid-of-Player_Three".to_string())), "{pairs:?}");
+        let mut again = Settings::default();
+        for (k, v) in &pairs {
+            again.set(k, v).unwrap();
+        }
+        assert_eq!(again, s);
+        // `all` is every player again; settings of every player write no such line.
+        s.set("bed_players", "all").unwrap();
+        assert!(s.bed_players.is_empty() && s.keeps_bed_of("anyone"));
+        assert!(!Settings::default().to_pairs().iter().any(|(k, _)| k.ends_with("_players")));
+        let uuid = "0E0C6371-8599-3A43-A117-30CB7E62C579";
+        s.set("logout_players", uuid).unwrap();
+        assert_eq!(s.logout_players, [uuid.to_ascii_lowercase()], "a UUID is kept in lowercase");
+        // A name that is no player of the world is refused, not quietly nobody's bed.
+        let mut typo = Settings::default();
+        typo.set("bed_players", "Player_0ne").unwrap();
+        let err = typo.resolve_players(&players).unwrap_err();
+        assert!(err.contains("no player file is 'Player_0ne'") && err.contains("Player_Two"), "{err}");
     }
 
     #[test]
