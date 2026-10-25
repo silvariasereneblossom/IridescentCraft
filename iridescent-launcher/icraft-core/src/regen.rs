@@ -474,6 +474,32 @@ fn structures_of(scan: &DimensionScan) -> Vec<Structure> {
     found.into_values().collect()
 }
 
+/// Every structure of a dimension with the chunks on disk that hold it
+/// (exactly as the dry-run counts them: the start chunk and every chunk whose
+/// References name the start), as JSON lines: `{"id", "start": [x, z],
+/// "start_on_disk", "chunks": [[x, z], ...]}`. Reads the world only. For
+/// working out keep / never-keep boxes outside the launcher
+/// (`icraft structure-footprints`).
+pub fn structure_footprints(cfg: &ServerConfig, dim: &str) -> Result<String, String> {
+    let dims = anvil::discover_dimensions(&cfg.world_dir());
+    let d = dims.iter().find(|d| d.id == dim).ok_or_else(|| format!("dimension {dim} is not in this world"))?;
+    let scan = anvil::scan_dimension_with_structures(d);
+    let mut out = String::new();
+    for s in structures_of(&scan) {
+        let chunks: Vec<String> = s.chunks.iter().map(|(x, z)| format!("[{x},{z}]")).collect();
+        wl!(
+            out,
+            "{{\"id\":{},\"start\":[{},{}],\"start_on_disk\":{},\"chunks\":[{}]}}",
+            json_str(&s.id),
+            s.start.0,
+            s.start.1,
+            s.record.is_some(),
+            chunks.join(",")
+        );
+    }
+    Ok(out)
+}
+
 impl DimResult {
     /// The regenerated chunks of the structures the plan cuts.
     fn cut_chunks(&self) -> BTreeSet<ChunkPos> {
@@ -3386,6 +3412,11 @@ mod tests {
         let plain = analyse(&f.cfg, &f.spec(tokens)).unwrap();
         assert!(plain.dims.iter().all(|d| d.structures.is_empty() && !d.scan.structures_read));
         assert_eq!(plan_hash(&plain.level_name, plain.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets))), s.plan_hash);
+        // The footprints, as `icraft structure-footprints` prints them.
+        let lines = structure_footprints(&f.cfg, OVERWORLD).unwrap();
+        assert_eq!(lines.lines().count(), 5);
+        assert!(lines.contains(r#"{"id":"minecraft:village_plains","start":[64,0],"start_on_disk":true,"chunks":[[64,0],[65,0],[66,0]]}"#), "{lines}");
+        assert!(lines.contains(r#"{"id":"minecraft:stronghold","start":[90,90],"start_on_disk":false,"chunks":[[67,5]]}"#), "{lines}");
         assert_eq!(f.world_state(), before, "a dry-run writes nothing in the world");
     }
 

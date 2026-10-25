@@ -217,6 +217,14 @@ enum Cmd {
         holding: Option<String>,
     },
 
+    /// Every structure of a dimension with the chunks that hold it, as JSON
+    /// lines (what the dry-run counts a structure as). Reads only; safe while
+    /// the server runs, and --server-dir may be a share.
+    StructureFootprints {
+        #[arg(long, default_value = "minecraft:overworld")]
+        dim: String,
+    },
+
     /// What is in one chunk: which chunk folders hold it, how long players
     /// were near it, the structures that start there and those with a piece
     /// there (each with its start), and what a dry-run's plan does with the
@@ -529,6 +537,16 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 }
             }
         }
+        Cmd::StructureFootprints { dim } => match regen::structure_footprints(cfg, dim) {
+            Ok(lines) => {
+                print!("{lines}");
+                Ok(0)
+            }
+            Err(why) => {
+                eprintln!("structure-footprints FAILED: {why}");
+                Ok(1)
+            }
+        },
         Cmd::ChunkInfo { x, z, chunk, dim, run } => {
             let run = run.as_deref().map(|r| run_dir(cfg, r));
             match regen::chunk_of(*x, *z, *chunk).and_then(|pos| regen::chunk_info(cfg, dim, pos, run.as_deref())) {
