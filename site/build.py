@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
-"""Build the IridescentCraft GitHub Pages site from the GitHub wiki.
+"""Build the IridescentCraft website from the GitHub wiki.
 
     python site/build.py --wiki path/to/IridescentCraft.wiki [--out site/_build]
 
 The pages to publish are listed in site/pages.json ("include"). The
 Tester-Installation-Guide becomes index.html; every other page is written
-to <Page-Name>/index.html. All links in the output are relative, so the
-site works under any base path (GitHub Pages serves it at /IridescentCraft/);
-only 404.html, which GitHub Pages serves at any missing URL, uses the
-configured base_path.
+to <Page-Name>/index.html. The output is plain static files meant to be
+served from a folder root by any web server (default document index.html,
+404.html for missing URLs). Links between pages are relative; only 404.html,
+which a server returns at any depth, uses the absolute base path: the path
+of "site_url" in pages.json ("/" for https://iridescentcraft.sereneblossom.gay/).
+build.json at the root records the wiki commit and the build time.
 
-Local preview under the real base path:
+Local preview:
 
     python site/build.py --wiki ../IridescentCraft.wiki
-    python site/build.py --serve      # copies _build to _serve/IridescentCraft/ and serves it on :8000
+    python site/build.py --serve      # http://localhost:8000/, with 404.html for missing pages
 
 Python 3.9+ standard library only.
 """
@@ -25,13 +27,14 @@ import datetime as _dt
 import hashlib
 import html
 import json
+import os
 
 import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
-from urllib.parse import quote, urlsplit
+from urllib.parse import quote, urljoin, urlsplit
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -43,6 +46,12 @@ WIKI_SPECIAL = {"_Sidebar", "_Footer", "_Header"}
 # ---------------------------------------------------------------------------
 # Wiki discovery
 # ---------------------------------------------------------------------------
+def write_lf(path: Path, text: str, encoding: str = "utf-8") -> None:
+    """Write text with LF line endings on every OS, so builds are byte-identical."""
+    with open(path, "w", encoding=encoding, newline="\n") as fh:
+        fh.write(text)
+
+
 def git_out(repo: Path, *args: str) -> str:
     try:
         return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True,
@@ -70,6 +79,8 @@ class Site:
         self.wiki = wiki
         self.out = out
         self.repo = cfg["repo"]
+        self.site_url = cfg["site_url"].rstrip("/") + "/"
+        self.base_path = urlsplit(self.site_url).path or "/"
         self.wiki_url = f"https://github.com/{self.repo}/wiki"
         self.all_pages = {p.stem: p for p in sorted(wiki.glob("*.md")) if p.stem not in WIKI_SPECIAL}
         self.lower_map = {k.lower(): k for k in self.all_pages}
@@ -85,7 +96,9 @@ class Site:
             raise SystemExit(f"index_page '{self.index_page}' must be in the include list")
         self.excluded = [p for p in self.all_pages if p not in self.include]
         self.dates = page_dates(wiki)
-        self.wiki_sha = git_out(wiki, "rev-parse", "--short=7", "HEAD")
+        self.wiki_commit = git_out(wiki, "rev-parse", "HEAD")
+        self.wiki_sha = self.wiki_commit[:7]
+        self.wiki_commit_date = git_out(wiki, "log", "-1", "--format=%cI")
         self.sources = self._load_sources(repo_root / cfg.get("source_manifest", ""))
         # Report data
         self.excluded_links: dict[str, set[str]] = {}
@@ -320,6 +333,15 @@ def page_html(site: Site, page: str | None, title: str, body: str, *, root: str,
     e = html.escape
     v = versions
     robots = '<meta name="robots" content="noindex">\n' if noindex else ""
+    if page is not None:
+        url = urljoin(site.site_url, site.page_path(page))
+        robots += (f'<link rel="canonical" href="{e(url)}">\n'
+                   '<meta property="og:type" content="website">\n'
+                   f'<meta property="og:site_name" content="{e(cfg["site_title"])}">\n'
+                   f'<meta property="og:title" content="{e(title)}">\n'
+                   f'<meta property="og:description" content="{e(description)}">\n'
+                   f'<meta property="og:url" content="{e(url)}">\n'
+                   '<meta name="twitter:card" content="summary">\n')
     doc_title = cfg["site_title"] if title == cfg["site_title"] else f"{title} · {cfg['site_title']}"
     return f"""<!doctype html>
 <html lang="en" data-root="{e(root)}">
@@ -377,11 +399,11 @@ def page_footer(site: Site, page: str) -> str:
                     f'title="The wiki is generated from this file in the repository; edits made on the wiki itself are overwritten">Edit on GitHub</a>')
     else:
         bits.append(f'<a href="{e(site.wiki_page_url(page))}/_edit" rel="noopener">Edit on GitHub wiki</a>')
-    built = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d")
-    sha = f" (wiki commit {e(site.wiki_sha)})" if site.wiki_sha else ""
+    # Nothing build-specific (time, wiki commit) goes into the pages, so an
+    # unchanged set of pages gives byte-identical output; build.json has those.
     return ("<p>" + " · ".join(bits) + "</p>"
-            f'<p class="built">A mirror of the player-facing pages of the <a href="{site.wiki_url}" rel="noopener">IridescentCraft wiki</a>, '
-            f"built {built}{sha}.</p>")
+            f'<p class="built">A mirror of the player-facing pages of the '
+            f'<a href="{site.wiki_url}" rel="noopener">IridescentCraft wiki</a>.</p>')
 
 
 def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
@@ -411,7 +433,7 @@ def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
         for lvl, text, slug in site.headings[page]:
             if lvl in (2, 3) and text != "Notes":
                 index.append({"t": text, "u": f"{url}#{slug}", "p": site.titles[page], "k": lvl})
-    (out / "assets" / "search-index.js").write_text(
+    write_lf(out / "assets" / "search-index.js", 
         "window.SEARCH_INDEX=" + json.dumps(index, ensure_ascii=False, separators=(",", ":")) + ";\n",
         encoding="utf-8")
 
@@ -428,25 +450,34 @@ def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
                         foot=page_footer(site, page), versions=versions)
         target = out / site.page_path(page) / "index.html"
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_text(doc, encoding="utf-8")
+        write_lf(target, doc, encoding="utf-8")
 
     # 404 page: served at arbitrary depths, so it uses the absolute base path.
-    base = cfg.get("base_path", "/")
+    base = site.base_path
     nav404 = site.render_nav("__404__").replace('href="../', f'href="{base}')
     body404 = ('<h1 id="not-found">Page not found</h1>'
                '<p>That page is not on this site. It may be a wiki page that is not mirrored here: '
                f'try the <a href="{site.wiki_url}" rel="noopener">GitHub wiki</a>, or start from the '
                f'<a href="{base}">installation guide</a>.</p>')
-    (out / "404.html").write_text(
+    write_lf(out / "404.html", 
         page_html(site, None, "Page not found", body404, root=base, nav=nav404, description="Page not found",
                   foot="", versions=versions, noindex=True), encoding="utf-8")
-    (out / ".nojekyll").write_text("", encoding="utf-8")
+    generator = os.environ.get("GITHUB_SHA") or git_out(repo_root, "rev-parse", "HEAD")
+    build_info = {
+        "site_url": site.site_url,
+        "wiki_commit": site.wiki_commit,
+        "wiki_commit_date": site.wiki_commit_date,
+        "generator_commit": generator,
+        "built_at": _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "pages": site.include,
+    }
+    write_lf(out / "build.json", json.dumps(build_info, indent=2) + "\n", encoding="utf-8")
     return site
 
 
 def report(site: Site) -> str:
     lines = ["## Wiki site build", ""]
-    lines.append(f"Published {len(site.include)} pages from wiki commit `{site.wiki_sha or 'unknown'}`: "
+    lines.append(f"Published {len(site.include)} pages for {site.site_url} from wiki commit `{site.wiki_sha or 'unknown'}`: "
                  + ", ".join(site.include))
     lines.append("")
     lines.append("Not published: " + (", ".join(site.excluded) or "none"))
@@ -472,12 +503,15 @@ def report(site: Site) -> str:
 def serve(out: Path, base: str, port: int) -> None:
     import functools
     import http.server
-    serve_root = HERE / "_serve"
-    if serve_root.exists():
-        shutil.rmtree(serve_root)
-    target = serve_root / base.strip("/")
-    shutil.copytree(out, target)
-    shutil.copy2(out / "404.html", serve_root / "404.html")
+    if base.strip("/"):
+        # A sub-path deployment: put the build under _serve/<base>/.
+        serve_root = HERE / "_serve"
+        if serve_root.exists():
+            shutil.rmtree(serve_root)
+        shutil.copytree(out, serve_root / base.strip("/"))
+        shutil.copy2(out / "404.html", serve_root / "404.html")
+    else:
+        serve_root = out
 
     class Handler(http.server.SimpleHTTPRequestHandler):
         def send_error(self, code, message=None, explain=None):
@@ -523,7 +557,7 @@ def main() -> int:
     elif not args.serve:
         ap.error("--wiki is required (or --serve to serve an existing build)")
     if args.serve:
-        serve(args.out.resolve(), cfg.get("base_path", "/"), args.port)
+        serve(args.out.resolve(), urlsplit(cfg["site_url"]).path or "/", args.port)
     return 0
 
 

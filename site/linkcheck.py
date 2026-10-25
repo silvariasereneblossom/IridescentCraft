@@ -2,10 +2,10 @@
 """Check every internal link of the built site, including #fragments.
 
     python site/linkcheck.py site/_build                       # check the files on disk
-    python site/linkcheck.py --url http://127.0.0.1:8000/IridescentCraft/   # crawl a running server
+    python site/linkcheck.py --url http://127.0.0.1:8000/   # crawl a running server
 
 File mode reads every .html file in the build and resolves each href/src
-(relative, or absolute under the configured base path) to a file. URL mode
+(relative, or absolute under the path of "site_url" in pages.json) to a file. URL mode
 starts at the given page, follows every link under that URL prefix, and
 reports any response that is not 200. Both modes check that a #fragment
 names an element id on the target page. External links are listed but not
@@ -166,7 +166,8 @@ def main() -> int:
     if args.url:
         broken, checked, pages, external = check_url(args.url)
     else:
-        base = json.loads(args.config.read_text(encoding="utf-8")).get("base_path", "/")
+        cfg = json.loads(args.config.read_text(encoding="utf-8"))
+        base = urlsplit(cfg.get("site_url", "/")).path or "/"
         broken, checked, pages, external = check_files(args.build, base)
     print(f"Pages: {pages}  internal links checked: {checked}  external links (not fetched): {len(external)}")
     if args.list_external:

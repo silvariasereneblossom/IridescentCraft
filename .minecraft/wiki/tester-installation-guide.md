@@ -151,10 +151,10 @@ screen -S icraft -dm bash -c 'cd /path/to/IridescentCraft-Dedicated-Server && ./
 In the Minecraft client (with the modpack installed):
 
 1. Open Multiplayer → Add Server.
-2. Set Server Address to `sereneblossom.gay` (the default port is 25565; leave it off the address).
+2. Set Server Address to `iridescentcraft.sereneblossom.gay` (the default port is 25565; leave it off the address).
 3. Click Done, then Join Server.
 
-If `sereneblossom.gay` doesn't resolve for you (DNS propagation, a custom resolver, etc.), ping me for the raw IP. The DNS record should work in 99% of cases.
+If `iridescentcraft.sereneblossom.gay` doesn't resolve for you (DNS propagation, a custom resolver, etc.), ping me for the raw IP. The DNS record should work in 99% of cases.
 
 Client and server must be on the same `main` branch commit to be protocol compatible. Your client syncs on every launch, but the test server takes a new commit only when it restarts (on its schedule, every 4 to 12 hours, or after a crash), so for a while after a push your client can be ahead of it.
 

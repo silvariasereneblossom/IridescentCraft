@@ -1,10 +1,10 @@
 {
-  "_comment": "Which GitHub wiki pages the public site (GitHub Pages) mirrors. 'include' is the whole list: add or remove one line to publish or unpublish a page. A wiki page that is not listed is not published (a new wiki page stays off the site until it is added here). A link from a published page to an unpublished one goes to that page on the GitHub wiki ('excluded_links': 'wiki') or is shown as plain text ('text'). Build: python site/build.py --wiki <path to IridescentCraft.wiki clone>",
+  "_comment": "Which GitHub wiki pages the public site mirrors. 'include' is the whole list: add or remove one line to publish or unpublish a page. A wiki page that is not listed is not published (a new wiki page stays off the site until it is added here). A link from a published page to an unpublished one goes to that page on the GitHub wiki ('excluded_links': 'wiki') or is shown as plain text ('text'). 'site_url' is where the site is served (canonical and Open Graph URLs; its path is the base path the 404 page uses). Build: python site/build.py --wiki <path to IridescentCraft.wiki clone>",
 
   "site_title": "IridescentCraft",
   "tagline": "Tester guide & wiki",
   "repo": "silvariasereneblossom/IridescentCraft",
-  "base_path": "/IridescentCraft/",
+  "site_url": "https://iridescentcraft.sereneblossom.gay/",
   "index_page": "Tester-Installation-Guide",
   "excluded_links": "wiki",
   "source_manifest": ".minecraft/tools/wiki-sync-manifest.json",

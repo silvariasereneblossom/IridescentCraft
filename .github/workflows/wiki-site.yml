@@ -1,19 +1,21 @@
-name: Wiki site (GitHub Pages)
+name: Wiki site
 
-# Builds the public site at https://silvariasereneblossom.github.io/IridescentCraft/
+# Builds the public site served at https://iridescentcraft.sereneblossom.gay/
 # from the GitHub wiki: the Tester Installation Guide as the front page plus
 # the player-facing wiki pages listed in site/pages.json. Generator, page list
 # and link checker live in site/ (Python standard library only).
 #
-# One-time setup: Settings -> Pages -> Source = "GitHub Actions"
-# (or: gh api -X POST repos/silvariasereneblossom/IridescentCraft/pages -f build_type=workflow).
+# The built files are published to the orphan branch `site-build` as one fresh
+# commit (force-pushed; the static files plus build.json). The web server
+# fetches that branch anonymously and serves it as plain files from its root.
+# No push is made when the output is unchanged (build.json aside).
 #
 # Triggers:
 #   - gollum: a page edited on the wiki web UI
 #   - workflow_run "Sync wiki": the wiki is regenerated from .minecraft/wiki/ by
 #     sync-wiki.yml, whose git push to the wiki does not raise a gollum event
 #   - push to main touching site/** or this file; a daily schedule; manual dispatch
-#   - pull_request touching site/**: build + link check only, never deploys
+#   - pull_request touching site/**: build + link check only, never publishes
 
 on:
   gollum:
@@ -37,8 +39,9 @@ on:
 permissions:
   contents: read
 
+# One publish at a time; a newer run waits instead of racing the force-push.
 concurrency:
-  group: wiki-site-${{ github.event_name == 'pull_request' && github.ref || 'deploy' }}
+  group: wiki-site-${{ github.event_name == 'pull_request' && github.ref || 'publish' }}
   cancel-in-progress: false
 
 jobs:
@@ -50,6 +53,7 @@ jobs:
       - name: Checkout the generator
         uses: actions/checkout@v4
         with:
+          persist-credentials: false
           sparse-checkout: |
             site
             .minecraft/tools/wiki-sync-manifest.json
@@ -66,23 +70,50 @@ jobs:
       - name: Check links
         run: python3 site/linkcheck.py site/_build
 
-      - name: Upload the Pages artifact
+      - name: Keep the build for the publish job
         if: github.event_name != 'pull_request'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
+          name: site
           path: site/_build
+          retention-days: 3
+          if-no-files-found: error
 
-  deploy:
+  publish:
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-24.04
     permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
     steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Get the build
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: out
+
+      - name: Publish to the site-build branch
+        env:
+          TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          remote="https://github.com/${GITHUB_REPOSITORY}.git"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
+          wiki=$(python3 -c 'import json; print(json.load(open("out/build.json"))["wiki_commit"][:7])')
+          cd out
+          # A brand-new single commit with no history: the branch only ever
+          # holds the current site.
+          git init -q -b site-build
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -q -m "Site build from wiki ${wiki} (generator ${GITHUB_SHA::7})"
+          if git ls-remote --exit-code --heads "$remote" site-build > /dev/null; then
+            git -c http.extraheader="$auth" fetch -q --depth 1 "$remote" refs/heads/site-build
+            if git diff --quiet FETCH_HEAD HEAD -- . ':(exclude)build.json'; then
+              echo "Site unchanged since the last publish (only build.json differs): nothing pushed." | tee -a "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+          fi
+          git -c http.extraheader="$auth" push -q --force "$remote" HEAD:refs/heads/site-build
+          echo "Published $(git rev-parse --short HEAD) (wiki ${wiki}) to the site-build branch." | tee -a "$GITHUB_STEP_SUMMARY"
