@@ -1448,8 +1448,8 @@
   "startup": {
    "log": "kubejs/startup.log",
    "tree": "server_distribution/kubejs/startup_scripts",
-   "count": 24,
-   "digest": "258525a176707170",
+   "count": 25,
+   "digest": "44306a8f7e909c27",
    "late": [],
    "at_boot": [
     "boss_compass_item@StartupEvents.registry",
@@ -1532,6 +1532,10 @@
     {
      "id": "hulk_hammer_durability@ItemEvents.modification",
      "script": "hulk_hammer_durability.js"
+    },
+    {
+     "id": "loot/lootr_convert_on_open@ForgeEvents.onEvent",
+     "script": "loot/lootr_convert_on_open.js"
     },
     {
      "id": "magic_weapon_category@LootCategory.register",
@@ -2808,6 +2812,10 @@
     {
      "name": "arcane-decap",
      "script": "enchants/icraft_magic_enchants.js"
+    },
+    {
+     "name": "lootr-converted-on-open",
+     "script": "loot/lootr_convert_on_open.js"
     },
     {
      "name": "pocket-dimension-refused",

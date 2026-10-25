@@ -679,6 +679,7 @@
    "gates/iss_pocket_dimension_gate@ForgeEvents.onEvent": "gates/iss_pocket_dimension_gate.js",
    "hulk_hammer_attributes@ItemAttributeRegistry.register": "hulk_hammer_attributes.js",
    "hulk_hammer_durability@ItemEvents.modification": "hulk_hammer_durability.js",
+   "loot/lootr_convert_on_open@ForgeEvents.onEvent": "loot/lootr_convert_on_open.js",
    "magic_weapon_category@LootCategory.register": "magic_weapon_category.js",
    "mekasuit_mk2_stats@ItemAttributeRegistry.register": "mekasuit_mk2_stats.js",
    "sigil_registry@StartupEvents.registry": "sigil_registry.js",
@@ -725,6 +726,7 @@
   },
   "features": {
    "arcane-decap": "enchants/icraft_magic_enchants.js",
+   "lootr-converted-on-open": "loot/lootr_convert_on_open.js",
    "pocket-dimension-refused": "gates/iss_pocket_dimension_gate.js",
    "vorpal-decap": "enchants/vorpal_rework.js"
   },

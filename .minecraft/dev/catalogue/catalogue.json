@@ -8,7 +8,7 @@
  "schema": 1,
  "types": {
   "startup": {
-   "count": 25,
+   "count": 26,
    "scripts": [
     {
      "path": "00_icraft_guard.js",
@@ -606,8 +606,59 @@
      "names": 0
     },
     {
-     "path": "magic_weapon_category.js",
+     "path": "loot/lootr_convert_on_open.js",
      "place": 18,
+     "priority": 0,
+     "registers": [
+      {
+       "kind": "guard",
+       "group": "ForgeEvents.onEvent",
+       "name": "loot/lootr_convert_on_open",
+       "target": "net.minecraftforge.event.entity.player.PlayerInteractEvent$RightClickBlock"
+      }
+     ],
+     "sections": 0,
+     "features": [
+      "lootr-converted-on-open"
+     ],
+     "sets": [
+      "icraftLootrConvert"
+     ],
+     "ownSlots": 0,
+     "names": 0,
+     "reads": [
+      {
+       "name": "icraft.guard",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "load"
+      },
+      {
+       "name": "icraft.live",
+       "kind": "global",
+       "from": "00_icraft_guard.js",
+       "when": "handler"
+      }
+     ],
+     "after": [
+      {
+       "script": "00_icraft_guard.js",
+       "basis": "load",
+       "on": [
+        "icraft.guard"
+       ],
+       "held": "priority"
+      }
+     ],
+     "header": [
+      "events",
+      "file",
+      "live"
+     ]
+    },
+    {
+     "path": "magic_weapon_category.js",
+     "place": 19,
      "priority": 0,
      "registers": [
       {
@@ -640,7 +691,7 @@
     },
     {
      "path": "mekasuit_mk2_stats.js",
-     "place": 19,
+     "place": 20,
      "priority": 0,
      "registers": [
       {
@@ -673,7 +724,7 @@
     },
     {
      "path": "sigil_registry.js",
-     "place": 20,
+     "place": 21,
      "priority": 0,
      "registers": [
       {
@@ -707,7 +758,7 @@
     },
     {
      "path": "terramity_weapon_attributes.js",
-     "place": 21,
+     "place": 22,
      "priority": 0,
      "registers": [
       {
@@ -740,7 +791,7 @@
     },
     {
      "path": "terramity_weapon_durability.js",
-     "place": 22,
+     "place": 23,
      "priority": 0,
      "registers": [
       {
@@ -773,7 +824,7 @@
     },
     {
      "path": "virtual_gold_clamp.js",
-     "place": 23,
+     "place": 24,
      "priority": 0,
      "registers": [
       {
@@ -806,7 +857,7 @@
     },
     {
      "path": "virtual_gold_durability.js",
-     "place": 24,
+     "place": 25,
      "priority": 0,
      "registers": [
       {
@@ -839,7 +890,7 @@
     },
     {
      "path": "zzz_icraft_live.js",
-     "place": 25,
+     "place": 26,
      "priority": -1000,
      "sections": 0,
      "sets": [
@@ -906,6 +957,12 @@
       "script": "gates/iss_pocket_dimension_gate.js",
       "name": "gates/iss_pocket_dimension_gate",
       "target": "io.redspace.ironsspellbooks.api.events.SpellPreCastEvent",
+      "kind": "guard"
+     },
+     {
+      "script": "loot/lootr_convert_on_open.js",
+      "name": "loot/lootr_convert_on_open",
+      "target": "net.minecraftforge.event.entity.player.PlayerInteractEvent$RightClickBlock",
       "kind": "guard"
      }
     ],
@@ -13193,6 +13250,14 @@
     },
     {
      "script": "startup:zzz_icraft_live.js",
+     "when": "load"
+    }
+   ]
+  },
+  "icraftLootrConvert": {
+   "setBy": [
+    {
+     "script": "startup:loot/lootr_convert_on_open.js",
      "when": "load"
     }
    ]

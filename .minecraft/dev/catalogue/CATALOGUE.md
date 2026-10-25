@@ -9,12 +9,12 @@ How this file is made and checked: `.minecraft/dev/catalogue/README.md`.
 
 | Script type | Scripts | Registrations | Sections | Features |
 |---|---|---|---|---|
-| startup | 25 | 24 | 26 | 3 |
+| startup | 26 | 25 | 26 | 4 |
 | server | 165 | 331 | 241 | 28 |
 | client | 15 | 10 | 0 | 1 |
 
 The counts are those of the canonical tree. Not in every distribution: `server:validate_recipe_removals.js` (not in server_distribution/kubejs, distribution/client/kubejs), `client:attribute_tooltips.js` (not in server_distribution/kubejs), `client:sync_status_warning.js` (not in server_distribution/kubejs), `client:terramity_unholy_lance_tooltip.js` (not in server_distribution/kubejs). The registrations the
-dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 330`, `startup: 24`).
+dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server: 330`, `startup: 25`).
 
 ## How to read it
 
@@ -32,7 +32,7 @@ dedicated server makes are the liveness manifest's (`[icraft.live] ARMED server:
 
 ## Order constraints
 
-Every order between two scripts that the code proves or a header declares: 267. 260 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
+Every order between two scripts that the code proves or a header declares: 268. 261 are structural (the script that must load first has the higher priority: the guard and the libraries); 7 hold only because of the file names and are declared with `// @after` in the script that needs them. `load_order.js` fails when one is broken.
 
 | Script | must load after | Because | Held by |
 |---|---|---|---|
@@ -54,7 +54,7 @@ Structural, by the script that loads first:
 
 | Loads first | Priority | Scripts that need it while they load | They read |
 |---|---|---|---|
-| `startup:00_icraft_guard.js` | 1000 | 22 | `icraft.guard`, `icraft.handler`, `icraft.live` |
+| `startup:00_icraft_guard.js` | 1000 | 23 | `icraft.guard`, `icraft.handler`, `icraft.live` |
 | `server:00_icraft_guard.js` | 1000 | 153 | `icraft.guard`, `icraft.lib`, `icraft.live` |
 | `server:0_lib_core.js` | 880 | 27 | `icraft.core` |
 | `server:0_lib_registry.js` | 860 | 5 | `icraft.bosses`, `icraft.dims` |
@@ -96,14 +96,15 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 | 15 |  | `hulk_hammer_attributes.js` | `ItemAttributeRegistry.register` |
 | 16 |  | `hulk_hammer_durability.js` | `ItemEvents.modification` |
 | 17 |  | `iridescent_codex.js` |  |
-| 18 |  | `magic_weapon_category.js` | `LootCategory.register` |
-| 19 |  | `mekasuit_mk2_stats.js` | `ItemAttributeRegistry.register` |
-| 20 |  | `sigil_registry.js` | `StartupEvents.registry` |
-| 21 |  | `terramity_weapon_attributes.js` | `ItemAttributeRegistry.register` |
-| 22 |  | `terramity_weapon_durability.js` | `ItemEvents.modification` |
-| 23 |  | `virtual_gold_clamp.js` | `ItemAttributeRegistry.register` |
-| 24 |  | `virtual_gold_durability.js` | `ItemEvents.modification` |
-| 25 | -1000 | `zzz_icraft_live.js` |  |
+| 18 |  | `loot/lootr_convert_on_open.js` | `ForgeEvents.onEvent` |
+| 19 |  | `magic_weapon_category.js` | `LootCategory.register` |
+| 20 |  | `mekasuit_mk2_stats.js` | `ItemAttributeRegistry.register` |
+| 21 |  | `sigil_registry.js` | `StartupEvents.registry` |
+| 22 |  | `terramity_weapon_attributes.js` | `ItemAttributeRegistry.register` |
+| 23 |  | `terramity_weapon_durability.js` | `ItemEvents.modification` |
+| 24 |  | `virtual_gold_clamp.js` | `ItemAttributeRegistry.register` |
+| 25 |  | `virtual_gold_durability.js` | `ItemEvents.modification` |
+| 26 | -1000 | `zzz_icraft_live.js` |  |
 
 ## server scripts: load order
 
@@ -299,9 +300,10 @@ A library announces itself as its last statement (`icraft.lib.announce`); the ga
 
 ### Events (handlers through `icraft.guard`)
 
-**`ForgeEvents.onEvent`** (1)
+**`ForgeEvents.onEvent`** (2)
 
 1. `gates/iss_pocket_dimension_gate.js`, for `io.redspace.ironsspellbooks.api.events.SpellPreCastEvent`
+2. `loot/lootr_convert_on_open.js`, for `net.minecraftforge.event.entity.player.PlayerInteractEvent$RightClickBlock`
 
 **`ItemEvents.modification`** (3)
 
@@ -874,6 +876,7 @@ own one-shot `global._*` flags.
 | `global.icraftIsIssMob` | `server:0_iss_guard.js` | `server:loot/unique_tier_buff.js` |
 | `global.icraftIssResId` | `server:0_iss_guard.js` | _nobody_ |
 | `global.icraftLiveLines` | `client:zzz_icraft_live.js`, `server:zzz_icraft_live.js`, `startup:zzz_icraft_live.js` | _nobody_ |
+| `global.icraftLootrConvert` | `startup:loot/lootr_convert_on_open.js` | _nobody_ |
 | `global.icraftRecipeRemovalsValidated` | `server:validate_recipe_removals.js` (in a handler) | _nobody_ |
 | `global.icraftRelicEssenceValue` | `server:economy/relic_sink.js` | `server:economy/relic_broker.js` |
 | `global.icraftSkipIssMob` | `server:0_iss_guard.js` | `server:affix_overworld_strip.js`, `server:affix_skyshatter_mob_strip.js`, `server:scaling/mob_equipment.js` |
@@ -886,61 +889,61 @@ own one-shot `global._*` flags.
 
 ### `00_icraft_guard.js`
 
-- place 1 of 25, priority 1000
+- place 1 of 26, priority 1000
 
 ### `boss_compass_item.js`
 
-- place 2 of 25
+- place 2 of 26
 - events: `StartupEvents.registry` for `item`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `cap_player_knockback.js`
 
-- place 3 of 25
+- place 3 of 26
 - registry handlers: `ForgeEventRegistry.registerKnockBack`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `cap_player_levitation.js`
 
-- place 4 of 25
+- place 4 of 26
 - registry handlers: `ForgeEventRegistry.registerEffectApplicable`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `codex_progression_tokens.js`
 
-- place 5 of 25
+- place 5 of 26
 - events: `StartupEvents.registry` for `item`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `cursed_pyramid_items.js`
 
-- place 6 of 25
+- place 6 of 26
 - events: `StartupEvents.registry` for `item`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `custom_enchantments.js`
 
-- place 7 of 25
+- place 7 of 26
 - events: `StartupEvents.registry` for `enchantment`
 - sections: 7
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `custom_items.js`
 
-- place 8 of 25
+- place 8 of 26
 - events: `StartupEvents.registry` for `item`, `StartupEvents.registry` for `item` as `custom_items#2`
 - sections: 9
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `deathskin_undead_bonus.js`
 
-- place 9 of 25
+- place 9 of 26
 - registry handlers: `DamageModifierRegistry.register`
 - reads: `icraft.core` of `server:0_lib_core.js`, `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `enchants/icraft_magic_enchants.js`
 
-- place 10 of 25
+- place 10 of 26
 - registry handlers: `ItemAttributeRegistry.register`, `DamageModifierRegistry.registerLate`
 - features: `arcane-decap`
 - registries: bosses
@@ -948,7 +951,7 @@ own one-shot `global._*` flags.
 
 ### `enchants/vorpal_rework.js`
 
-- place 11 of 25
+- place 11 of 26
 - registry handlers: `ItemAttributeRegistry.register`, `DamageModifierRegistry.registerLate`
 - features: `vorpal-decap`
 - registries: bosses
@@ -956,83 +959,91 @@ own one-shot `global._*` flags.
 
 ### `endgame_items.js`
 
-- place 12 of 25
+- place 12 of 26
 - events: `StartupEvents.registry` for `item`
 - sections: 10
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.section` of `00_icraft_guard.js`
 
 ### `example.js`
 
-- place 13 of 25
+- place 13 of 26
 
 ### `gates/iss_pocket_dimension_gate.js`
 
-- place 14 of 25; header: @events @file @live
+- place 14 of 26; header: @events @file @live
 - events: `ForgeEvents.onEvent` for `io.redspace.ironsspellbooks.api.events.SpellPreCastEvent`
 - features: `pocket-dimension-refused`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `hulk_hammer_attributes.js`
 
-- place 15 of 25
+- place 15 of 26
 - registry handlers: `ItemAttributeRegistry.register`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `hulk_hammer_durability.js`
 
-- place 16 of 25
+- place 16 of 26
 - events: `ItemEvents.modification`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `iridescent_codex.js`
 
-- place 17 of 25
+- place 17 of 26
+
+### `loot/lootr_convert_on_open.js`
+
+- place 18 of 26; header: @events @file @live
+- events: `ForgeEvents.onEvent` for `net.minecraftforge.event.entity.player.PlayerInteractEvent$RightClickBlock`
+- features: `lootr-converted-on-open`
+- sets: `global.icraftLootrConvert`
+- reads: `icraft.guard` of `00_icraft_guard.js` (load), `icraft.live` of `00_icraft_guard.js`
 
 ### `magic_weapon_category.js`
 
-- place 18 of 25
+- place 19 of 26
 - registry handlers: `LootCategory.register`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `mekasuit_mk2_stats.js`
 
-- place 19 of 25
+- place 20 of 26
 - registry handlers: `ItemAttributeRegistry.register`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `sigil_registry.js`
 
-- place 20 of 25
+- place 21 of 26
 - events: `StartupEvents.registry` for `item`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `terramity_weapon_attributes.js`
 
-- place 21 of 25
+- place 22 of 26
 - registry handlers: `ItemAttributeRegistry.register`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `terramity_weapon_durability.js`
 
-- place 22 of 25
+- place 23 of 26
 - events: `ItemEvents.modification`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `virtual_gold_clamp.js`
 
-- place 23 of 25
+- place 24 of 26
 - registry handlers: `ItemAttributeRegistry.register`
 - reads: `icraft.handler` of `00_icraft_guard.js` (load)
 
 ### `virtual_gold_durability.js`
 
-- place 24 of 25
+- place 25 of 26
 - events: `ItemEvents.modification`
 - reads: `icraft.guard` of `00_icraft_guard.js` (load)
 
 ### `zzz_icraft_live.js`
 
-- place 25 of 25, priority -1000
+- place 26 of 26, priority -1000
 - sets: `global.icraftLiveLines`
 - reads: `icraft.live` of `00_icraft_guard.js` (load)
 

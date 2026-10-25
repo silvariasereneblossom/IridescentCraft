@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "34d052a9",
+    "generated_from":  "4f7e51ce",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5976,8 +5976,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "3d801be9925e339c6dcf27e823f0698bdf0d3b6d27750dee01654dbe41442960",
-                                                                  "size":  49477
+                                                                  "sha256":  "572160c47668b0756505e6e1845eb1f6bc7e10a6fb9e92f41ef767fbf652eed6",
+                                                                  "size":  49626
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
@@ -7971,6 +7971,10 @@
                                                                      "sha256":  "0b7b3923b66a8ded9fd169969af0f555042b2ea23f7d58ab2068ef3aec9dca30",
                                                                      "size":  1121
                                                                  },
+                  "kubejs/startup_scripts/loot/lootr_convert_on_open.js":  {
+                                                                               "sha256":  "f0e065089fe1635132bf96f474540d8b7812a041a7db45cf1be194ba51290124",
+                                                                               "size":  6482
+                                                                           },
                   "kubejs/startup_scripts/magic_weapon_category.js":  {
                                                                           "sha256":  "c0c0d54992c685898c108a6abe208316c1f41ac5b3d325d36d2694d159e58c12",
                                                                           "size":  5815
