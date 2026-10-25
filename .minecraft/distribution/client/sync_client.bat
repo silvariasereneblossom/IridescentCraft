@@ -1,10 +1,10 @@
 @echo off
-REM IridescentCraft Client Sync — PrismLauncher pre-launch hook
+REM IridescentCraft Client Sync - PrismLauncher pre-launch hook
 REM
 REM This bat is a thin wrapper around sync_client.ps1 for users who prefer
 REM a .bat pre-launch command. You can point PrismLauncher directly at the
 REM .ps1 instead, but the .bat is PREFERRED because it ALSO finalizes any
-REM <script>.new files staged during the previous sync — PowerShell can't
+REM <script>.new files staged during the previous sync - PowerShell can't
 REM safely overwrite the .ps1 it's currently running, so we stage updates
 REM and rename here on the NEXT launch.
 REM
@@ -63,7 +63,7 @@ REM then reads the NEW file on from the byte where this loop ended in the
 REM old one: keep the bytes up to the end of this loop the same length
 REM (the REM line above the loop pads them), or cmd runs part of a line.
 REM (pad: the bytes up to the end of the loop below match the 2026-06-24 version)
-REM --------------------------------------------------------------------------------------------------------
+REM ------------------------------------------------------------------------------------------------------------
 for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1) do (
     if exist "%SCRIPT_DIR%\%%F.new" (
         echo   [STAGE] Applying staged update: %%F
@@ -84,7 +84,7 @@ if /i "%1"=="/force"  set "FORCE_ARG=-Force"
 
 powershell -ExecutionPolicy Bypass -File "%SCRIPT_DIR%\sync_client.ps1" %FORCE_ARG%
 
-REM Stale-JAR cleanup (safety net — mirrors server's iridescentserver.bat).
+REM Stale-JAR cleanup (safety net - mirrors server's iridescentserver.bat).
 REM sync_client.ps1 ALSO invokes cleanup_stale_jars.ps1 internally at step 4a,
 REM but if that script bails early (network error during overlay, stale local
 REM copy missing the inner call, etc.) the cleanup never runs and removed

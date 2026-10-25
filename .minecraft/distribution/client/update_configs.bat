@@ -2,7 +2,7 @@
 title IridescentCraft Config Updater
 cd /d "%~dp0"
 
-REM v3 — Clean download every time, no caching possible
+REM v3 - Clean download every time, no caching possible
 
 REM Delete ALL old cached ps1 files
 del "%TEMP%\icraft_update_*.ps1" 2>nul

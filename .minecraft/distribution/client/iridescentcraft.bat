@@ -2,7 +2,7 @@
 title IridescentCraft Client Installer
 cd /d "%~dp0"
 
-REM v6 — Clean download every time, no caching possible
+REM v6 - Clean download every time, no caching possible
 
 if exist "%~dp0install.ps1" (
     echo Using local install.ps1...
