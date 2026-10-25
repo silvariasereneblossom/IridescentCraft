@@ -95,6 +95,7 @@ jobs:
             /.minecraft/wiki/
             /.minecraft/tools/wiki-sync-manifest.json
             /.minecraft/tools/sync-wiki.py
+            /.github/workflows/wiki-site.yml
             # >>> site/build.py --sync-workflow: sparse
             /.minecraft/server_distribution/PAT_SETUP.md
             /.minecraft/server_distribution/iridescentserver.bat
