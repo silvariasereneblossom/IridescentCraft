@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "4f7e51ce",
+    "generated_from":  "687e5be7",
     "roots":  [
                   "kubejs",
                   "config",
@@ -7344,8 +7344,8 @@
                                                                             "size":  2209
                                                                         },
                   "kubejs/server_scripts/cherry_spawn_biome.js":  {
-                                                                      "sha256":  "a43cf3cda6a492f3226e6e921879fe790b80524b2903cb2d308872e887a48720",
-                                                                      "size":  19907
+                                                                      "sha256":  "3278ff879d3ee818fa8d0e2739f074d59b00f89eeeba2f1e3fe956e21aeac0c8",
+                                                                      "size":  20849
                                                                   },
                   "kubejs/server_scripts/class/equipment_hp_halving.js":  {
                                                                               "sha256":  "445b9ad8f875ddfd3e7495803715b702cd400a94ae34405186af97f6096b1c94",

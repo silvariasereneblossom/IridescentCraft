@@ -45,6 +45,10 @@
 //     and findClosestBiome3d samples no Y level at all when the origin Y is
 //     outside (minBuildHeight, maxBuildHeight]. That case is now recognised,
 //     logged once, and marked exhausted -- the world spawn is left alone.
+//   * 2026-10-25: the stored Y is never the bottom of the world any more. On an
+//     unloaded village chunk the heightmap answers -64, so the spawn of the
+//     second search (rig, new seed) was stored at Y=-64 again; the generator's
+//     noise surface for the column is used instead (getBaseHeight).
 //   * Because flags now persist, the first-join teleport becomes reachable for
 //     the first time. It is only armed when the spawn is set on a NEW world
 //     (so no existing character is ever pulled back to the village), and it
@@ -237,10 +241,17 @@ try {
             // resolve the actual ground Y via the heightmap before stashing.
             var surfaceY = villagePos.getY()
             try {
-              surfaceY = ow.getHeight(
-                Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types').MOTION_BLOCKING_NO_LEAVES,
-                villagePos.getX(), villagePos.getZ()
-              )
+              var HeightTypes_cs = Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types')
+              surfaceY = ow.getHeight(HeightTypes_cs.MOTION_BLOCKING_NO_LEAVES, villagePos.getX(), villagePos.getZ())
+              // A chunk nobody has generated answers the bottom of the world: the
+              // spawn was stored at Y=-64 again (rig, 2026-10-25), and no search
+              // can start from there. Then the generator's own surface for the
+              // column, from the noise, without generating the chunk.
+              if (surfaceY <= ow.getMinBuildHeight()) {
+                var chunks_cs = ow.getChunkSource()
+                surfaceY = chunks_cs.getGenerator().getBaseHeight(villagePos.getX(), villagePos.getZ(),
+                  HeightTypes_cs.MOTION_BLOCKING_NO_LEAVES, ow, chunks_cs.randomState())
+              }
             } catch (eH) {
               warnThrew_cs('getHeight at the village (the spawn keeps the Y the structure search gave)', eH)
             }
