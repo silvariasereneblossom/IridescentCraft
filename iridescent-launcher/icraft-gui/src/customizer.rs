@@ -38,6 +38,7 @@ use icraft_core::backup;
 use icraft_core::config::ServerConfig;
 use icraft_core::protection::{self, Settings, WaystoneMode};
 use icraft_core::anvil::ChunkPos;
+use icraft_core::regen::edits::{SeedChoice, WorldEdits};
 use icraft_core::regen::{self, DimView, MapInfo, RunEntry, RunSpec, RunView, Scope, StructuresView};
 
 pub(crate) const GOOD: Color32 = Color32::from_rgb(120, 200, 140);
@@ -225,6 +226,13 @@ pub struct Customizer {
     warn_ticks: u64,
     protect_text: String,
     unprotect_text: String,
+    /// The plan's world edits ([`regen::edits`]): this run only, never the
+    /// policy file. Empty: the world's seed; `random`; or a number.
+    seed_text: String,
+    blend: bool,
+    spawn_search: bool,
+    /// Players who start over (UUIDs).
+    restart_who: BTreeSet<String>,
     policy: Policy,
     /// What the policy file gives (the defaults when there is none).
     saved: Settings,
@@ -279,6 +287,10 @@ impl Customizer {
             warn_ticks: 0,
             protect_text: String::new(),
             unprotect_text: String::new(),
+            seed_text: String::new(),
+            blend: true,
+            spawn_search: false,
+            restart_who: BTreeSet::new(),
             policy: Policy::Absent,
             saved: Settings::default(),
             note: String::new(),
@@ -414,7 +426,17 @@ impl Customizer {
         if dims.is_empty() {
             return Err("Tick at least one dimension.".to_string());
         }
-        Ok(RunSpec { scope, dims, settings: Some(self.settings()?), ..RunSpec::default() })
+        Ok(RunSpec { scope, dims, settings: Some(self.settings()?), edits: self.edits()?, ..RunSpec::default() })
+    }
+
+    /// The world edits on screen, or what is wrong with them.
+    fn edits(&self) -> Result<WorldEdits, String> {
+        let mut edits = WorldEdits::default();
+        edits.set("new_seed", &self.seed_text).map_err(|e| format!("New seed: {e}"))?;
+        edits.blend = self.blend && edits.new_seed != SeedChoice::Keep;
+        edits.spawn_search = self.spawn_search;
+        edits.reset_players = self.restart_who.iter().cloned().collect();
+        Ok(edits)
     }
 
     fn reload_policy(&mut self, server_dir: &Path) {
@@ -735,7 +757,44 @@ impl Customizer {
                 .font(egui::TextStyle::Monospace),
         );
 
+        ui.add_space(6.0);
+        ui.horizontal_wrapped(|ui| {
+            ui.label(RichText::new("Besides the chunks").strong());
+            ui.weak("(this run only: never saved in the policy file; the plan's hash covers them)");
+        });
+        ui.horizontal_wrapped(|ui| {
+            ui.label("New seed:");
+            ui.add(egui::TextEdit::singleline(&mut self.seed_text).desired_width(200.0).hint_text("empty = keep the world's seed"));
+            ui.weak("'random', or a number. Only with 'Everything that is not protected' in every dimension with land.");
+        });
+        if !self.seed_text.trim().is_empty() {
+            ui.horizontal_wrapped(|ui| {
+                ui.add_space(24.0);
+                ui.checkbox(&mut self.blend, "Blend the new land into the kept chunks")
+                    .on_hover_text("Marks every kept overworld chunk as old for Tectonic (tectonic:blending_version 1 -> 0): new land beside it bends toward it instead of meeting it at a cliff.");
+            });
+        }
+        ui.checkbox(&mut self.spawn_search, "Let the pack find a new cherry spawn village")
+            .on_hover_text("Sets the world spawn's height to 64 and removes the spawn scripts' markers: at the next start the pack searches for a cherry river valley village again and moves the spawn (and the priest tower) there.");
+        ui.horizontal_wrapped(|ui| {
+            ui.label("Players who start over (their player file leaves the world):");
+            if self.players.is_empty() {
+                ui.weak("(no player files in this world)");
+            }
+            for (uuid, name) in &self.players {
+                let mut on = self.restart_who.contains(uuid);
+                if ui.checkbox(&mut on, name.as_str()).on_hover_text(uuid.as_str()).changed() {
+                    if on {
+                        self.restart_who.insert(uuid.clone());
+                    } else {
+                        self.restart_who.remove(uuid);
+                    }
+                }
+            }
+        });
+
         let current = self.settings();
+        let edits = self.edits();
         let busy = self.busy();
         let (mut save, mut reload, mut defaults, mut run) = (false, false, false, false);
         ui.add_space(2.0);
@@ -758,7 +817,10 @@ impl Customizer {
         ui.add_space(6.0);
         ui.horizontal_wrapped(|ui| {
             let button = egui::Button::new(RichText::new("Run the dry-run").strong()).min_size(egui::vec2(180.0, 30.0));
-            run = ui.add_enabled(!busy && current.is_ok(), button).clicked();
+            run = ui.add_enabled(!busy && current.is_ok() && edits.is_ok(), button).clicked();
+            if let Err(why) = &edits {
+                ui.colored_label(BAD, why.as_str());
+            }
             if let Some(since) = self.running_since {
                 // No spinner: an animated widget repaints every frame, and a
                 // frame costs ~0.2 s of CPU on the server's software renderer.
@@ -787,6 +849,10 @@ impl Customizer {
         }
         if defaults {
             self.set_fields(&Settings::default());
+            self.seed_text.clear();
+            self.blend = true;
+            self.spawn_search = false;
+            self.restart_who.clear();
             self.note = "Defaults shown (not saved).".to_string();
         }
         if run {
@@ -933,6 +999,13 @@ fn view_ui(ui: &mut egui::Ui, expand: bool, shown: &Shown, lookup: &mut ChunkLoo
             ui.colored_label(WARN, "The server was running: files on disk can be one autosave behind the live world. Fine for a dry-run; an execution recomputes with the server stopped.");
         }
         ui.add_space(4.0);
+        if !v.edits.is_empty() {
+            section(ui, expand, "edits", RichText::new("World edits this plan makes besides the chunks").strong().color(REGEN), true, |ui| {
+                for line in &v.edits {
+                    ui.label(line.as_str());
+                }
+            });
+        }
 
         for d in &v.dimensions {
             section(ui, expand, &format!("dim-{}", d.id), RichText::new(d.id.as_str()).strong(), true, |ui| dimension_ui(ui, expand, d, shown, lookup, server_dir));

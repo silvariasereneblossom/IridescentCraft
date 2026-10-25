@@ -22,10 +22,11 @@
 //! | F7 | The planted-violation self-test, before every run (see "The self-test") | before |
 //! | F8 | After the first start on the result: kept chunks still there and parsing, how many the server saved again, reset positions generated again, a seam sample. A report, not a gate ([`after_first_start`]) | the first launch after a server ran on it |
 //! | F9 | One gate for every author: a plan's `author` is a label that no check reads (a test runs one plan under two labels and compares the verdicts byte for byte) | CI |
+//! | F10 | The plan's world edits ([`super::edits`]), worked out here: `level.dat` and its copy are their old trees with the new seed (and the spawn's height), the stores they touch are their old trees minus exactly the keys named, the stronghold caches and the files of players who start over are gone, and every kept chunk marked for blending is its old tree with `tectonic:blending_version` 0, in its old place | before, after |
 //!
 //! A run that fails F3 or F7 is refused before anything is touched. A run
-//! that fails F1, F2, F4, F5 or F6 after its changes is put back by the run's
-//! own holding folder ([`super::exec`]).
+//! that fails F1, F2, F4, F5, F6 or F10 after its changes is put back by the
+//! run's own holding folder ([`super::exec`]).
 //!
 //! # The self-test
 //!
@@ -60,6 +61,7 @@ use std::time::{Instant, SystemTime};
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 
+use super::edits::Edits;
 use super::exec::ApprovedPlan;
 use crate::anvil::{ChunkPos, DimensionScan, END, NETHER, OVERWORLD};
 use crate::config::ServerConfig;
@@ -102,6 +104,17 @@ const MAX_REAL_FILE: u64 = 64 << 20;
 /// Region files of the world tried as the self-test's real one.
 const REAL_TRIES: usize = 6;
 
+// The facts F10 works from: the same as the run's ([`super::edits`]), written
+// down again here, so that the harness decides from its own copy.
+const BLEND_TAG: &[u8] = b"tectonic:blending_version";
+const STRONGHOLD_CACHE: &str = "mfix_strongholds.dat";
+const PUPFISH_FILE: &str = "data/alexsmobs_world_data.dat";
+const PUPFISH_KEYS: [&[u8]; 2] = [b"PupfishChunkX", b"PupfishChunkZ"];
+const SPAWN_DATA_FILE: &str = "kubejs_persistent_data.nbt";
+const SPAWN_SERVER_KEYS: [&[u8]; 2] = [b"icraft_priest_tower_done", b"icraft_priest_tower_attempts"];
+const SPAWN_LEVEL: &[u8] = b"minecraft:overworld";
+const SPAWN_LEVEL_KEYS: [&[u8]; 5] = [b"icraft_cherry_spawn_set", b"icraft_cherry_spawn_exhausted", b"icraft_cherry_village_x", b"icraft_cherry_village_y", b"icraft_cherry_village_z"];
+
 // =============================================================================
 // The plan
 // =============================================================================
@@ -115,6 +128,8 @@ pub struct Plan {
     pub settings: Settings,
     /// The chunks it resets, per dimension id.
     pub chunks: BTreeMap<String, BTreeSet<ChunkPos>>,
+    /// What it changes besides chunks, as the plan file says (F10).
+    pub edits: Edits,
     /// Who wrote it, for the page. No check reads it (F9).
     pub author: String,
 }
@@ -125,6 +140,7 @@ impl Plan {
             hash: plan.hash.clone(),
             settings: plan.spec.settings.clone().unwrap_or_default(),
             chunks: plan.chunks.clone(),
+            edits: plan.edits.clone(),
             author: author.to_string(),
         }
     }
@@ -1221,6 +1237,165 @@ fn stores_before(world: &Path, plan: &Plan, by_folder: &BTreeMap<String, BTreeSe
 }
 
 // =============================================================================
+// The world edits (F10): what each must make of its file, worked out here
+// =============================================================================
+
+#[derive(Debug, Clone)]
+enum EditExpect {
+    /// The tree it must read as, wrapped as it was, under its old root name.
+    Tree(Wrap, Vec<u8>, Tag),
+    /// It must be gone from the world.
+    Gone,
+}
+
+#[derive(Debug, Clone)]
+struct EditFile {
+    rel: String,
+    /// What the edit is, for a finding.
+    what: &'static str,
+    expect: EditExpect,
+}
+
+/// A kept chunk marked for blending: where its record was, and its tree after.
+#[derive(Debug, Clone)]
+struct BlendExpect {
+    location: u32,
+    timestamp: u32,
+    name: Vec<u8>,
+    tree: Tag,
+}
+
+fn drop_keys(tag: &mut Tag, keys: &[&[u8]]) -> usize {
+    match tag {
+        Tag::Compound(entries) => {
+            let before = entries.len();
+            entries.retain(|(name, _)| !keys.contains(&name.as_slice()));
+            before - entries.len()
+        }
+        _ => 0,
+    }
+}
+
+/// A chunk record's compression type, from a region file in memory, and its
+/// tree: `None` for one whose data is in a `.mcc`.
+fn record_tree(bytes: &[u8], location: u32) -> Result<Option<(Vec<u8>, Tag)>, String> {
+    let start = (location >> 8) as usize * SECTOR;
+    if start < 2 * SECTOR || start + 5 > bytes.len() {
+        return Err("its record is not inside the file".to_string());
+    }
+    let len = be32(bytes, start) as usize;
+    let kind = bytes[start + 4];
+    if kind & 0x80 != 0 {
+        return Ok(None);
+    }
+    let data = bytes.get(start + 5..start + 4 + len).ok_or("its record runs past the end of the file")?;
+    let raw = inflate(kind & 0x7f, data)?;
+    let mut c = Cursor { bytes: &raw, at: 0 };
+    if c.byte()? != TAG_COMPOUND {
+        return Err("its root tag is not a compound".to_string());
+    }
+    let name = c.name()?.to_vec();
+    Ok(Some((name, read_tag(&mut c, TAG_COMPOUND, 1)?)))
+}
+
+/// Every file and kept chunk the plan's edits change, and what each must be.
+fn edits_before(world: &Path, plan: &Plan, survey: &Survey) -> Result<(Vec<EditFile>, BTreeMap<Key, BlendExpect>), String> {
+    let e = &plan.edits;
+    let mut files = Vec::new();
+    let mut blends = BTreeMap::new();
+    if e.is_empty() {
+        return Ok((files, blends));
+    }
+    let tree_of = |rel: &str| -> Result<(Wrap, Vec<u8>, Tag), String> {
+        let bytes = fs::read(at(world, rel)).map_err(|e| format!("{rel}: {e}"))?;
+        read_file_tree(&bytes).map_err(|e| format!("{rel} does not read ({e}), so what the plan makes of it cannot be worked out"))
+    };
+    if e.new_seed.is_some() || e.spawn_search {
+        for rel in ["level.dat", "level.dat_old"] {
+            if !survey.files.contains_key(rel) {
+                if rel == "level.dat" {
+                    return Err("there is no level.dat".to_string());
+                }
+                continue;
+            }
+            let (wrap, name, mut tree) = tree_of(rel)?;
+            if let Some(seed) = e.new_seed {
+                match tree.at_mut(&["Data", "WorldGenSettings", "seed"]) {
+                    Some(Tag::Long(v)) => *v = seed,
+                    _ => return Err(format!("{rel} has no Data.WorldGenSettings.seed")),
+                }
+            }
+            if e.spawn_search {
+                match tree.at_mut(&["Data", "SpawnY"]) {
+                    Some(Tag::Int(v)) => *v = e.spawn_y,
+                    _ => return Err(format!("{rel} has no Data.SpawnY")),
+                }
+            }
+            files.push(EditFile { rel: rel.to_string(), what: "the new seed and the spawn's height", expect: EditExpect::Tree(wrap, name, tree) });
+        }
+    }
+    if e.new_seed.is_some() {
+        for rel in survey.files.keys() {
+            if rel == &format!("data/{STRONGHOLD_CACHE}") || rel.ends_with(&format!("/data/{STRONGHOLD_CACHE}")) {
+                files.push(EditFile { rel: rel.clone(), what: "the old seed's stronghold cache", expect: EditExpect::Gone });
+            }
+        }
+        if survey.files.contains_key(PUPFISH_FILE) {
+            let (wrap, name, mut tree) = tree_of(PUPFISH_FILE)?;
+            let gone = tree.get_mut("data").map_or(0, |data| drop_keys(data, &PUPFISH_KEYS));
+            if gone > 0 {
+                files.push(EditFile { rel: PUPFISH_FILE.to_string(), what: "the old seed's pupfish chunk removed", expect: EditExpect::Tree(wrap, name, tree) });
+            }
+        }
+    }
+    if e.spawn_search && survey.files.contains_key(SPAWN_DATA_FILE) {
+        let (wrap, name, mut tree) = tree_of(SPAWN_DATA_FILE)?;
+        let mut gone = drop_keys(&mut tree, &SPAWN_SERVER_KEYS);
+        if let Some(level) = tree.get_mut(std::str::from_utf8(SPAWN_LEVEL).unwrap_or("")) {
+            gone += drop_keys(level, &SPAWN_LEVEL_KEYS);
+        }
+        if gone > 0 {
+            files.push(EditFile { rel: SPAWN_DATA_FILE.to_string(), what: "the spawn markers removed", expect: EditExpect::Tree(wrap, name, tree) });
+        }
+    }
+    for uuid in &e.reset_players {
+        let prefix = format!("playerdata/{uuid}.");
+        let mine: Vec<&String> = survey.files.keys().filter(|rel| rel.to_ascii_lowercase().starts_with(&prefix)).collect();
+        if mine.is_empty() {
+            return Err(format!("the file of a player who starts over (playerdata/{}...) is not there", &uuid[..uuid.len().min(8)]));
+        }
+        for rel in mine {
+            files.push(EditFile { rel: rel.clone(), what: "the file of a player who starts over", expect: EditExpect::Gone });
+        }
+    }
+    if e.blend {
+        // Every kept overworld terrain chunk that Tectonic tagged 1.
+        let planned = plan.chunks.get(OVERWORLD);
+        let mut by_file: BTreeMap<String, Vec<(ChunkPos, Image)>> = BTreeMap::new();
+        for ((folder, store, pos), image) in &survey.chunks {
+            if folder.is_empty() && *store == 0 && !planned.is_some_and(|set| set.contains(pos)) {
+                by_file.entry(region_rel("", 0, *pos)).or_default().push((*pos, *image));
+            }
+        }
+        for (rel, chunks) in by_file {
+            let bytes = fs::read(at(world, &rel)).map_err(|e| format!("{rel}: {e}"))?;
+            for (pos, image) in chunks {
+                let Some((name, mut tree)) = record_tree(&bytes, image.location).map_err(|e| format!("{rel}: chunk {}: {e}", chunk_text(pos)))? else { continue };
+                let tagged = match &mut tree {
+                    Tag::Compound(entries) => entries.iter_mut().find(|(n, _)| n.as_slice() == BLEND_TAG).map(|(_, v)| v),
+                    _ => None,
+                };
+                if let Some(value @ Tag::Int(1)) = tagged {
+                    *value = Tag::Int(0);
+                    blends.insert((String::new(), 0, pos), BlendExpect { location: image.location, timestamp: image.timestamp, name, tree });
+                }
+            }
+        }
+    }
+    Ok((files, blends))
+}
+
+// =============================================================================
 // The verdict
 // =============================================================================
 
@@ -1398,6 +1573,10 @@ pub struct Before {
     /// `.mcc` files of its chunks, the stores, the world's record.
     plan_files: BTreeSet<String>,
     stores: Vec<StoreBefore>,
+    /// The files the plan's world edits change, and what each must be (F10).
+    edit_files: Vec<EditFile>,
+    /// The kept chunks marked for blending, and what each must be (F10).
+    blends: BTreeMap<Key, BlendExpect>,
     /// `.icraft_world.json` as it was.
     record: Option<Vec<u8>>,
     f3: Check,
@@ -1456,7 +1635,9 @@ fn check_f3(world: &Path, plan: &Plan, survey: &Survey) -> Result<Check, String>
             files.unreadable.len()
         ));
     }
-    let players = files.players;
+    // A player who starts over leaves with their file: nothing keeps their
+    // bed or logout spot (the plan's own list, F10 checks that they leave).
+    let players: Vec<worlddata::Player> = files.players.into_iter().filter(|p| !plan.edits.reset_players.contains(&p.uuid)).collect();
     let claims = match worlddata::read_claims(world) {
         Ok(found) => found.unwrap_or_default(),
         Err(_) if !plan.settings.claims => Vec::new(),
@@ -1535,8 +1716,11 @@ pub fn before(world: &Path, plan: &Plan) -> Result<Before, String> {
     }
     plan_files.extend(stores.iter().map(|s| s.rel.clone()));
     plan_files.insert(crate::overrides::WORLD_MANIFEST.to_string());
+    let (edit_files, blends) = edits_before(world, plan, &survey)?;
+    plan_files.extend(edit_files.iter().map(|f| f.rel.clone()));
+    plan_files.extend(blends.keys().map(|(folder, store, pos)| region_rel(folder, *store, *pos)));
     let f3 = check_f3(world, plan, &survey)?;
-    Ok(Before { by_folder, survey, plan_files, stores, record, f3, seconds: started.elapsed().as_secs_f64() })
+    Ok(Before { by_folder, survey, plan_files, stores, edit_files, blends, record, f3, seconds: started.elapsed().as_secs_f64() })
 }
 
 // =============================================================================
@@ -1560,7 +1744,8 @@ fn check_f1(before: &Before, now: &Survey) -> Check {
     let mut same = [0usize; 3];
     let mut findings = Vec::new();
     for (key, was) in &before.survey.chunks {
-        if names(before, key) {
+        // A chunk marked for blending changes by one tag: F10's to check.
+        if names(before, key) || before.blends.contains_key(key) {
             continue;
         }
         match now.chunks.get(key) {
@@ -1586,13 +1771,11 @@ fn check_f1(before: &Before, now: &Survey) -> Check {
             findings.push(format!("{}: on disk now, and was not before", chunk_label(key)));
         }
     }
-    finish(
-        "F1",
-        "unnamed chunks byte-identical",
-        format!("{} kept chunk record(s) identical (region / entities / poi)", per_store(&same)),
-        vec![format!("{} chunk record(s) not in the plan, identical after the run (region / entities / poi)", per_store(&same))],
-        findings,
-    )
+    let mut counts = vec![format!("{} chunk record(s) not in the plan, identical after the run (region / entities / poi)", per_store(&same))];
+    if !before.blends.is_empty() {
+        counts.push(format!("{} kept chunk(s) marked for blending are checked by F10 instead", num(before.blends.len())));
+    }
+    finish("F1", "unnamed chunks byte-identical", format!("{} kept chunk record(s) identical (region / entities / poi)", per_store(&same)), counts, findings)
 }
 
 /// F2: every chunk the plan names is gone, and its `.mcc` with it.
@@ -1707,14 +1890,28 @@ fn record_check(plan: &Plan, was: Option<&[u8]>, is: Option<&[u8]>) -> Result<()
         Some(bytes) => parse(bytes).ok_or("did not parse as a JSON object before the run")?,
         None => serde_json::Map::new(),
     };
+    // A plan that changes the seed adds one entry to `seed_changes` as well.
+    let seeds = plan.edits.new_seed.is_some();
+    let grows = |key: &str| key == "regenerations" || (seeds && key == "seed_changes");
     for (key, value) in &was {
-        if key != "regenerations" && is.get(key) != Some(value) {
+        if !grows(key) && is.get(key) != Some(value) {
             return Err(format!("'{key}' changed"));
         }
     }
     for key in is.keys() {
-        if key != "regenerations" && !was.contains_key(key) && !(key == "version" && was.is_empty()) {
+        if !grows(key) && !was.contains_key(key) && !(key == "version" && was.is_empty()) {
             return Err(format!("'{key}' was added"));
+        }
+    }
+    if seeds {
+        let none = Vec::new();
+        let before_list = was.get("seed_changes").and_then(|v| v.as_array()).unwrap_or(&none);
+        let after_list = is.get("seed_changes").and_then(|v| v.as_array()).ok_or("has no 'seed_changes' list, and the plan changes the seed")?;
+        if after_list.len() != before_list.len() + 1 || after_list[..before_list.len()] != before_list[..] {
+            return Err(format!("'seed_changes' went from {} entries to {}, not by one added at the end", before_list.len(), after_list.len()));
+        }
+        if after_list.last().and_then(|e| e["plan_hash"].as_str()) != Some(plan.hash.as_str()) {
+            return Err("its new seed change is not this plan's".to_string());
         }
     }
     let empty = Vec::new();
@@ -1771,6 +1968,64 @@ fn check_f6(world: &Path, before: &Before, now: &Survey) -> Check {
     }
     let total = before.stores.iter().filter(|s| s.existed).count();
     finish("F6", "stores reconciled exactly", format!("{exact} of {total} store(s) exact"), counts, findings)
+}
+
+/// F10: every file the plan's world edits change is what they make of it, and
+/// every kept chunk marked for blending is its old self with the tag 0.
+fn check_f10(world: &Path, before: &Before, now: &Survey) -> Check {
+    let mut findings = Vec::new();
+    let mut exact = 0usize;
+    for f in &before.edit_files {
+        match &f.expect {
+            EditExpect::Gone => {
+                if now.files.contains_key(&f.rel) {
+                    findings.push(format!("{}: was to leave the world ({}), and is still there", f.rel, f.what));
+                } else {
+                    exact += 1;
+                }
+            }
+            EditExpect::Tree(wrap, name, tree) => match fs::read(at(world, &f.rel)).map_err(|e| e.to_string()).and_then(|bytes| read_file_tree(&bytes)) {
+                Ok((w, n, t)) if w == *wrap && n == *name && t == *tree => exact += 1,
+                Ok(_) => findings.push(format!("{}: is not its old self with {} and nothing else", f.rel, f.what)),
+                Err(why) => findings.push(format!("{}: does not read after the run ({why})", f.rel)),
+            },
+        }
+    }
+    let mut marked = 0usize;
+    let mut files: BTreeMap<String, Option<Vec<u8>>> = BTreeMap::new();
+    for (key, b) in &before.blends {
+        let label = chunk_label(key);
+        let Some(is) = now.chunks.get(key) else {
+            findings.push(format!("{label}: kept and marked for blending, and gone"));
+            continue;
+        };
+        if is.location != b.location || is.timestamp != b.timestamp {
+            findings.push(format!("{label}: marked for blending, and moved within its file or given a new timestamp"));
+            continue;
+        }
+        let rel = region_rel(&key.0, key.1, key.2);
+        let bytes = files.entry(rel.clone()).or_insert_with(|| fs::read(at(world, &rel)).ok());
+        let Some(bytes) = bytes.as_deref() else {
+            findings.push(format!("{label}: its region file does not read"));
+            continue;
+        };
+        match record_tree(bytes, is.location) {
+            Ok(Some((name, tree))) if name == b.name && tree == b.tree => marked += 1,
+            Ok(Some(_)) => findings.push(format!("{label}: is not its old self with the blending tag 0 and nothing else changed")),
+            Ok(None) => findings.push(format!("{label}: marked for blending, and its data is in a .mcc now")),
+            Err(why) => findings.push(format!("{label}: does not read after the run ({why})")),
+        }
+    }
+    let counts = vec![
+        format!("{exact} of {} file(s) as the plan's edits make them (the seed, the spawn, the stores, the files that leave)", before.edit_files.len()),
+        format!("{} of {} kept chunk(s) marked for blending, each its old tree with the tag 0 in its old place", num(marked), num(before.blends.len())),
+    ];
+    let summary = if before.edit_files.is_empty() && before.blends.is_empty() {
+        "the plan makes no world edit".to_string()
+    } else {
+        format!("{exact} edited file(s) exact, {} chunk(s) marked for blending", num(marked))
+    };
+    finish("F10", "world edits exact", summary, counts, findings)
 }
 
 /// F7, from the self-test's result.
@@ -1846,6 +2101,7 @@ pub fn after(world: &Path, plan: &Plan, before: &Before, self_test: Option<&Self
         check_f4(before, &now),
         check_f5(plan, before, &now, record_now.as_deref()),
         check_f6(world, before, &now),
+        check_f10(world, before, &now),
     ];
     checks.extend(tail);
     let mut kept = String::from("# folder\tstore\tx\tz\tlocation\ttimestamp\tsha256: every chunk record in the world when the run finished\n");
@@ -1921,10 +2177,14 @@ enum Plant {
     ProtectedInPlan,
     DropMcc,
     LeaveWaystone,
+    SeedPlus,
+    PlayerLeft,
+    BlendExtra,
+    BlendSkipped,
 }
 
 impl Plant {
-    const ALL: [Plant; 11] = [
+    const ALL: [Plant; 15] = [
         Plant::FlipByte,
         Plant::ZeroEntry,
         Plant::ExtraReset,
@@ -1936,6 +2196,10 @@ impl Plant {
         Plant::ProtectedInPlan,
         Plant::DropMcc,
         Plant::LeaveWaystone,
+        Plant::SeedPlus,
+        Plant::PlayerLeft,
+        Plant::BlendExtra,
+        Plant::BlendSkipped,
     ];
 
     fn name(self) -> &'static str {
@@ -1951,6 +2215,10 @@ impl Plant {
             Plant::ProtectedInPlan => "a protected chunk added to the plan",
             Plant::DropMcc => "a kept oversized chunk's .mcc file removed",
             Plant::LeaveWaystone => "a reset chunk's waystone left in the store",
+            Plant::SeedPlus => "level.dat given the new seed and one more change",
+            Plant::PlayerLeft => "the file of a player who starts over left in the world",
+            Plant::BlendExtra => "a chunk marked for blending with something else changed too",
+            Plant::BlendSkipped => "a kept chunk to mark for blending left as it was",
         }
     }
 
@@ -1962,6 +2230,7 @@ impl Plant {
             Plant::Truncate | Plant::DropMcc => "F4",
             Plant::OutsideFile => "F5",
             Plant::DropKeptWaystone | Plant::LeaveWaystone => "F6",
+            Plant::SeedPlus | Plant::PlayerLeft | Plant::BlendExtra | Plant::BlendSkipped => "F10",
         }
     }
 }
@@ -1982,6 +2251,16 @@ const FIX_KEPT_MCC: ChunkPos = (1, 4);
 const FIX_RESET_MCC: ChunkPos = (5, 0);
 const FIX_LEFT: ChunkPos = (4, 4);
 const FIX_STAMP: u32 = 1_760_000_000;
+/// The fixture's kept chunks that Tectonic tagged: the plan marks them for
+/// blending. (2, 2) is the one the blending plants go into.
+const FIX_TAGGED: [ChunkPos; 3] = [(0, 0), FIX_LIVED_IN, FIX_WAYSTONE];
+const FIX_BLEND_PLANT: ChunkPos = FIX_LIVED_IN;
+const FIX_SEED_BEFORE: i64 = 1_019;
+const FIX_SEED: i64 = -20_261_025;
+/// A player who starts over, and logged out in a chunk the plan resets: the
+/// logout layer would keep it, if the harness did not leave them out.
+const FIX_PLAYER: &str = "00000000-0000-4000-8000-00000000fe1d";
+const FIX_PLAYER_AT: ChunkPos = (4, 2);
 
 static NEXT_FIXTURE: AtomicU32 = AtomicU32::new(0);
 
@@ -1995,6 +2274,14 @@ struct RealFile {
     planned: BTreeSet<ChunkPos>,
     /// A chunk of it outside the plan, stored inline, that parses.
     kept_inline: Option<ChunkPos>,
+}
+
+/// The protection settings of the self-test's fixture: the defaults, with the
+/// spawn layer on the spawn chunk alone.
+fn fixture_settings() -> Settings {
+    let mut settings = Settings::default();
+    settings.spawn_radius_blocks = Some(0);
+    settings
 }
 
 fn pick_real_file(world: &Path, plan: &Plan) -> Result<RealFile, String> {
@@ -2014,7 +2301,13 @@ fn pick_real_file(world: &Path, plan: &Plan) -> Result<RealFile, String> {
         }
     }
     candidates.sort();
-    let threshold = plan.settings.inhabited_min_ticks;
+    // The chunks the fixture resets have to be ones the FIXTURE's settings
+    // leave unprotected: it is the fixture's protection map they are held
+    // against. (Until 2026-10-25 this was the plan's threshold: with the
+    // lived-in layer off in the plan and a world whose smallest region file is
+    // the base's, the self-test planned lived-in chunks, contradicted itself
+    // and refused a correct run.)
+    let threshold = fixture_settings().inhabited_min_ticks;
     for (size, rel, path) in candidates.into_iter().take(REAL_TRIES) {
         let name = path.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
         let Some((rx, rz)) = parse_region_name(&name) else { continue };
@@ -2061,7 +2354,8 @@ fn pick_real_file(world: &Path, plan: &Plan) -> Result<RealFile, String> {
     Err("none: the plan's dimensions have no region file with a chunk to keep and a chunk to reset".to_string())
 }
 
-/// Chunk NBT laid out as 1.20.1 writes it, small, zlib-compressed.
+/// Chunk NBT laid out as 1.20.1 writes it, small, zlib-compressed; with
+/// Tectonic's tag for the chunks in [`FIX_TAGGED`].
 fn synthetic_chunk(pos: ChunkPos, inhabited: i64) -> Vec<u8> {
     let block_states = Tag::compound(vec![
         ("palette", Tag::List(TAG_COMPOUND, vec![Tag::compound(vec![("Name", Tag::text_of("minecraft:stone"))]), Tag::compound(vec![("Name", Tag::text_of("minecraft:dirt"))])])),
@@ -2083,6 +2377,13 @@ fn synthetic_chunk(pos: ChunkPos, inhabited: i64) -> Vec<u8> {
         ("sections", Tag::List(TAG_COMPOUND, vec![section])),
         ("block_entities", Tag::List(TAG_COMPOUND, Vec::new())),
     ]);
+    let root = match root {
+        Tag::Compound(mut entries) if FIX_TAGGED.contains(&pos) => {
+            entries.push((BLEND_TAG.to_vec(), Tag::Int(1)));
+            Tag::Compound(entries)
+        }
+        other => other,
+    };
     compress(Wrap::Zlib, &encode_root(b"", &root))
 }
 
@@ -2166,9 +2467,38 @@ impl Fixture {
         let mut files: Vec<(String, Vec<u8>)> = Vec::new();
         let level = Tag::compound(vec![(
             "Data",
-            Tag::compound(vec![("SpawnX", Tag::Int(8)), ("SpawnY", Tag::Int(64)), ("SpawnZ", Tag::Int(8)), ("DataVersion", Tag::Int(3465))]),
+            Tag::compound(vec![
+                ("SpawnX", Tag::Int(8)),
+                ("SpawnY", Tag::Int(-64)),
+                ("SpawnZ", Tag::Int(8)),
+                ("DataVersion", Tag::Int(3465)),
+                ("WorldGenSettings", Tag::compound(vec![("seed", Tag::Long(FIX_SEED_BEFORE)), ("generate_features", Tag::Byte(1))])),
+            ]),
         )]);
         files.push(("level.dat".to_string(), compress(Wrap::Gzip, &encode_root(b"", &level))));
+        files.push(("level.dat_old".to_string(), compress(Wrap::Gzip, &encode_root(b"", &level))));
+        // What the world edits touch.
+        let kubejs = Tag::compound(vec![
+            ("icraft_priest_tower_done", Tag::Int(1)),
+            ("icraft_chunky_pregen_started", Tag::Int(1)),
+            ("minecraft:overworld", Tag::compound(vec![("icraft_cherry_spawn_exhausted", Tag::Int(1)), ("icraft_mobgriefing_default_set", Tag::Int(1))])),
+        ]);
+        files.push((SPAWN_DATA_FILE.to_string(), compress(Wrap::Gzip, &encode_root(b"", &kubejs))));
+        let pupfish = Tag::compound(vec![("data", Tag::compound(vec![("PupfishChunkX", Tag::Int(3)), ("PupfishChunkZ", Tag::Int(-2)), ("beachedCachalotSpawnDelay", Tag::Int(9))]))]);
+        files.push((PUPFISH_FILE.to_string(), compress(Wrap::Gzip, &encode_root(b"", &pupfish))));
+        let cache = Tag::compound(vec![("data", Tag::compound(vec![("Positions", Tag::Longs(vec![1, 2, 3]))]))]);
+        files.push((format!("data/{STRONGHOLD_CACHE}"), compress(Wrap::Gzip, &encode_root(b"", &cache))));
+        let at_x = f64::from(FIX_PLAYER_AT.0 * 16 + 8);
+        let at_z = f64::from(FIX_PLAYER_AT.1 * 16 + 8);
+        let player = Tag::compound(vec![
+            ("DataVersion", Tag::Int(3465)),
+            ("Pos", Tag::List(TAG_DOUBLE, vec![Tag::Double(at_x.to_bits()), Tag::Double(64.0f64.to_bits()), Tag::Double(at_z.to_bits())])),
+            ("Dimension", Tag::text_of(OVERWORLD)),
+        ]);
+        for ext in ["dat", "dat_old"] {
+            files.push((format!("playerdata/{FIX_PLAYER}.{ext}"), compress(Wrap::Gzip, &encode_root(b"", &player))));
+        }
+        files.push((format!("playerdata/{FIX_PLAYER}.cosarmor"), compress(Wrap::Gzip, &encode_root(b"", &Tag::compound(vec![("CosArmor", Tag::List(TAG_COMPOUND, Vec::new()))])))));
         let raids = Tag::compound(vec![("data", Tag::compound(vec![("Raids", Tag::List(TAG_COMPOUND, Vec::new()))]))]);
         files.push(("data/raids.dat".to_string(), compress(Wrap::Gzip, &encode_root(b"", &raids))));
         files.push(("data/waystones.dat".to_string(), waystones_file(vec![waystone(1, FIX_WAYSTONE, "PLAYER"), waystone(5, FIX_RESET_WAYSTONE, "VILLAGE")])));
@@ -2199,8 +2529,7 @@ impl Fixture {
         files.push(("entities/r.0.0.mca".to_string(), region_bytes(&[(FIX_LIVED_IN, 2, small(FIX_LIVED_IN)), (FIX_LEFT, 2, small(FIX_LEFT))])));
         files.push(("poi/r.0.0.mca".to_string(), region_bytes(&[(FIX_LIVED_IN, 2, small(FIX_LIVED_IN)), (FIX_RESET_WAYSTONE, 2, small(FIX_RESET_WAYSTONE))])));
 
-        let mut settings = Settings::default();
-        settings.spawn_radius_blocks = Some(0);
+        let settings = fixture_settings();
         let mut plan_chunks = BTreeMap::new();
         plan_chunks.insert(OVERWORLD.to_string(), overworld);
         let mut target = ("region/r.0.0.mca".to_string(), FIX_UNNAMED[0]);
@@ -2217,7 +2546,15 @@ impl Fixture {
             }
             shown = Some(real.shown);
         }
-        Fixture { files, plan: Plan { hash: "self-test".to_string(), settings, chunks: plan_chunks, author: "self-test".to_string() }, target, real: shown }
+        let edits = Edits {
+            seed_before: Some(FIX_SEED_BEFORE),
+            new_seed: Some(FIX_SEED),
+            blend: true,
+            spawn_search: true,
+            spawn_y: 64,
+            reset_players: vec![FIX_PLAYER.to_string()],
+        };
+        Fixture { files, plan: Plan { hash: "self-test".to_string(), settings, chunks: plan_chunks, edits, author: "self-test".to_string() }, target, real: shown }
     }
 
     /// The text a finding has to contain to name what was planted.
@@ -2232,6 +2569,9 @@ impl Fixture {
             Plant::OutsideFile => "data/raids.dat".to_string(),
             Plant::ProtectedInPlan => chunk_text(FIX_LIVED_IN),
             Plant::DropMcc => format!("c.{}.{}.mcc", FIX_KEPT_MCC.0, FIX_KEPT_MCC.1),
+            Plant::SeedPlus => "level.dat:".to_string(),
+            Plant::PlayerLeft => format!("playerdata/{FIX_PLAYER}"),
+            Plant::BlendExtra | Plant::BlendSkipped => chunk_text(FIX_BLEND_PLANT),
         }
     }
 
@@ -2267,8 +2607,9 @@ impl Fixture {
         if let Some(bytes) = waystones {
             fs::write(at(&world, "data/waystones.dat"), bytes).map_err(|e| e.to_string())?;
         }
+        simulate_edits(&world, &plan, plant)?;
         let record = format!(
-            "{{\n  \"version\": 1,\n  \"note\": \"the fidelity harness's self-test fixture\",\n  \"regenerations\": [{{\"plan_hash\": \"{}\"}}]\n}}\n",
+            "{{\n  \"version\": 1,\n  \"note\": \"the fidelity harness's self-test fixture\",\n  \"regenerations\": [{{\"plan_hash\": \"{0}\"}}],\n  \"seed_changes\": [{{\"plan_hash\": \"{0}\"}}]\n}}\n",
             plan.hash
         );
         fs::write(world.join(crate::overrides::WORLD_MANIFEST), record).map_err(|e| e.to_string())?;
@@ -2314,9 +2655,105 @@ impl Fixture {
             }),
             Plant::DropMcc => fs::remove_file(at(world, &format!("region/c.{}.{}.mcc", FIX_KEPT_MCC.0, FIX_KEPT_MCC.1))).map_err(|e| e.to_string()),
             // Planted before or during the simulated run.
-            Plant::DropKeptWaystone | Plant::LeaveWaystone | Plant::LeaveReset | Plant::ProtectedInPlan => Ok(()),
+            Plant::DropKeptWaystone
+            | Plant::LeaveWaystone
+            | Plant::LeaveReset
+            | Plant::ProtectedInPlan
+            | Plant::SeedPlus
+            | Plant::PlayerLeft
+            | Plant::BlendExtra
+            | Plant::BlendSkipped => Ok(()),
         }
     }
+}
+
+/// A file's tree changed by `change`, written back wrapped as it was.
+fn edit_tree(path: &Path, change: impl FnOnce(&mut Tag) -> Result<(), String>) -> Result<(), String> {
+    let (wrap, name, mut tree) = read_file_tree(&fs::read(path).map_err(|e| format!("{}: {e}", path.display()))?)?;
+    change(&mut tree)?;
+    fs::write(path, compress(wrap, &encode_root(&name, &tree))).map_err(|e| format!("{}: {e}", path.display()))
+}
+
+/// Rewrite one chunk of a region file in its own sectors, its tree changed
+/// by `change`, as the run does for the blending mark.
+fn rewrite_chunk(bytes: &mut [u8], pos: ChunkPos, change: impl FnOnce(&mut Tag)) -> Result<(), String> {
+    let location = be32(bytes, slot_of(pos) * 4);
+    let (name, mut tree) = record_tree(bytes, location)?.ok_or("the chunk is in a .mcc")?;
+    change(&mut tree);
+    let packed = compress(Wrap::Zlib, &encode_root(&name, &tree));
+    let start = (location >> 8) as usize * SECTOR;
+    let room = (location & 0xff) as usize * SECTOR;
+    if packed.len() + 5 > room {
+        return Err("the rewritten chunk does not fit its sectors".to_string());
+    }
+    bytes[start..start + room].fill(0);
+    bytes[start..start + 4].copy_from_slice(&((packed.len() + 1) as u32).to_be_bytes());
+    bytes[start + 4] = 2;
+    bytes[start + 5..start + 5 + packed.len()].copy_from_slice(&packed);
+    Ok(())
+}
+
+/// The world edits of a correct run, as the fixture needs them, with the
+/// edit plants of `plant`.
+fn simulate_edits(world: &Path, plan: &Plan, plant: Option<Plant>) -> Result<(), String> {
+    let e = &plan.edits;
+    let set = |tag: &mut Tag, path: &[&str], value: Tag| -> Result<(), String> {
+        *tag.at_mut(path).ok_or_else(|| format!("no {}", path.join(".")))? = value;
+        Ok(())
+    };
+    for rel in ["level.dat", "level.dat_old"] {
+        edit_tree(&at(world, rel), |tree| {
+            set(tree, &["Data", "WorldGenSettings", "seed"], Tag::Long(e.new_seed.unwrap_or(FIX_SEED)))?;
+            set(tree, &["Data", "SpawnY"], Tag::Int(e.spawn_y))?;
+            if plant == Some(Plant::SeedPlus) && rel == "level.dat" {
+                set(tree, &["Data", "SpawnX"], Tag::Int(9))?;
+            }
+            Ok(())
+        })?;
+    }
+    edit_tree(&at(world, SPAWN_DATA_FILE), |tree| {
+        drop_keys(tree, &SPAWN_SERVER_KEYS);
+        if let Some(level) = tree.get_mut("minecraft:overworld") {
+            drop_keys(level, &SPAWN_LEVEL_KEYS);
+        }
+        Ok(())
+    })?;
+    edit_tree(&at(world, PUPFISH_FILE), |tree| {
+        if let Some(data) = tree.get_mut("data") {
+            drop_keys(data, &PUPFISH_KEYS);
+        }
+        Ok(())
+    })?;
+    fs::remove_file(at(world, &format!("data/{STRONGHOLD_CACHE}"))).map_err(|e| e.to_string())?;
+    if plant != Some(Plant::PlayerLeft) {
+        for ext in ["dat", "dat_old", "cosarmor"] {
+            fs::remove_file(at(world, &format!("playerdata/{FIX_PLAYER}.{ext}"))).map_err(|e| e.to_string())?;
+        }
+    }
+    let region = at(world, "region/r.0.0.mca");
+    let mut bytes = fs::read(&region).map_err(|e| e.to_string())?;
+    let planned = plan.chunks.get(OVERWORLD);
+    for pos in FIX_TAGGED {
+        // A chunk the plan resets is gone (the protected-chunk plant puts one
+        // in the plan): there is nothing to mark.
+        if planned.is_some_and(|set| set.contains(&pos)) || (pos == FIX_BLEND_PLANT && plant == Some(Plant::BlendSkipped)) {
+            continue;
+        }
+        let extra = pos == FIX_BLEND_PLANT && plant == Some(Plant::BlendExtra);
+        rewrite_chunk(&mut bytes, pos, |tree| {
+            if let Tag::Compound(entries) = tree {
+                for (name, value) in entries.iter_mut() {
+                    if name.as_slice() == BLEND_TAG {
+                        *value = Tag::Int(0);
+                    }
+                    if extra && name.as_slice() == b"LastUpdate" {
+                        *value = Tag::Long(2000);
+                    }
+                }
+            }
+        })?;
+    }
+    fs::write(&region, bytes).map_err(|e| e.to_string())
 }
 
 /// Change one value of a kept chunk's block data and write the chunk back as
@@ -2505,6 +2942,17 @@ pub struct AfterBoot {
     /// have the reset side generated again.
     pub seams: usize,
     pub seams_generated: usize,
+    /// With a plan that marked kept chunks for blending: the kept overworld
+    /// terrain chunks, how many are still old to Tectonic (its tag not 1, or
+    /// vanilla `blending_data` saved), and of those how many carry the
+    /// `blending_data`. Tectonic gives a marked chunk `blending_data` each time
+    /// it reads it; the chunk keeps its mark on disk until the server saves it
+    /// again, and then keeps the `blending_data` (rig, 2026-10-25: none of 289
+    /// marked chunks was saved again in a boot that generated the land around
+    /// them, and the land blended). A chunk that is neither lost its mark.
+    pub blend_kept: usize,
+    pub blend_old: usize,
+    pub blend_data: usize,
     pub seam_sample: Vec<String>,
     pub findings: Vec<String>,
     pub error: String,
@@ -2603,9 +3051,37 @@ pub fn first_start_report(world: &Path, holding: &Path) -> Result<AfterBoot, Str
             }
         }
     }
+    if plan.edits.blend {
+        let mut bytes: BTreeMap<String, Option<Vec<u8>>> = BTreeMap::new();
+        for key in kept.keys().filter(|(folder, store, _)| folder.is_empty() && *store == 0) {
+            let Some(image) = now.chunks.get(key) else { continue };
+            r.blend_kept += 1;
+            let rel = region_rel(&key.0, key.1, key.2);
+            let file = bytes.entry(rel.clone()).or_insert_with(|| fs::read(at(world, &rel)).ok());
+            if let Some(Ok(Some((_, tree)))) = file.as_deref().map(|b| record_tree(b, image.location)) {
+                let data = tree.get("blending_data").is_some();
+                if data || !matches!(tree.get("tectonic:blending_version"), Some(Tag::Int(1))) {
+                    r.blend_old += 1;
+                }
+                if data {
+                    r.blend_data += 1;
+                }
+            }
+        }
+    }
     r.findings.truncate(SHOWN);
+    let blending = if plan.edits.blend {
+        format!(
+            "; blending: {} of {} kept overworld chunk(s) still old to Tectonic ({} with blending data saved)",
+            num(r.blend_old),
+            num(r.blend_kept),
+            num(r.blend_data)
+        )
+    } else {
+        String::new()
+    };
     r.line = format!(
-        "fidelity harness, after the first start: {} kept chunk record(s): {} unchanged, {} saved again by the server, {} gone, {} unreadable; {} of {} reset position(s) generated again; seams: {} of {} generated on the reset side",
+        "fidelity harness, after the first start: {} kept chunk record(s): {} unchanged, {} saved again by the server, {} gone, {} unreadable; {} of {} reset position(s) generated again; seams: {} of {} generated on the reset side{blending}",
         num(r.kept),
         num(r.kept_unchanged),
         num(r.kept_saved_again),

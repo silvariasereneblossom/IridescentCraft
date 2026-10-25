@@ -822,7 +822,7 @@ fn the_fidelity_harness_holds_on_a_run_and_keeps_its_verdict() {
     assert!(look.ready(), "{:?}", look.stops());
     let ok = |needle: &str| look.lines.iter().any(|l| l.mark == Mark::Ok && l.text.contains(needle));
     assert!(
-        ok("Fidelity harness self-test: 11 of 11 planted violation(s) caught on a fixture with one real region file of this world; with nothing planted it holds"),
+        ok("Fidelity harness self-test: 15 of 15 planted violation(s) caught on a fixture with one real region file of this world; with nothing planted it holds"),
         "{:#?}",
         look.lines
     );
@@ -831,12 +831,12 @@ fn the_fidelity_harness_holds_on_a_run_and_keeps_its_verdict() {
     let report = done(sv.run(&run_dir, &hash));
     let line = report.fidelity.clone();
     assert!(line.starts_with("fidelity harness HOLDS: F1 17 / 1 / 1 kept chunk record(s) identical (region / entities / poi)"), "{line}");
-    for part in ["F2 430 / 2 / 1 reset chunk record(s) gone", "F3 0 of 431 planned chunk(s) protected", "F4 0 new defect(s)", "F6 4 of 4 store(s) exact", "F7 11 of 11 planted violation(s) caught"] {
+    for part in ["F2 430 / 2 / 1 reset chunk record(s) gone", "F3 0 of 431 planned chunk(s) protected", "F4 0 new defect(s)", "F6 4 of 4 store(s) exact", "F7 15 of 15 planted violation(s) caught", "F10 the plan makes no world edit"] {
         assert!(line.contains(part), "{part} -- {line}");
     }
     assert!(report.line().contains(&line));
     let log = sv.log();
-    assert!(log.contains("fidelity harness HOLDS") && log.contains("fidelity harness self-test: 11 of 11"), "{log}");
+    assert!(log.contains("fidelity harness HOLDS") && log.contains("fidelity harness self-test: 15 of 15"), "{log}");
     assert!(!log.contains(PLAYER_NAME) && !log.contains(PLAYER));
 
     // The verdict, in the holding folder, check by check.
@@ -846,7 +846,7 @@ fn the_fidelity_harness_holds_on_a_run_and_keeps_its_verdict() {
     assert_eq!(record.verdict.plan_hash, hash);
     assert_eq!(record.plan_author, "operator (dry-run)");
     let states: Vec<(String, String)> = record.verdict.checks.iter().map(|c| (c.id.clone(), c.state.clone())).collect();
-    let want: Vec<(String, String)> = [("F1", "holds"), ("F2", "holds"), ("F3", "holds"), ("F4", "holds"), ("F5", "holds"), ("F6", "holds"), ("F7", "holds"), ("F8", "pending"), ("F9", "CI")]
+    let want: Vec<(String, String)> = [("F1", "holds"), ("F2", "holds"), ("F3", "holds"), ("F4", "holds"), ("F5", "holds"), ("F6", "holds"), ("F10", "holds"), ("F7", "holds"), ("F8", "pending"), ("F9", "CI")]
         .iter()
         .map(|(a, b)| (a.to_string(), b.to_string()))
         .collect();
@@ -860,7 +860,7 @@ fn the_fidelity_harness_holds_on_a_run_and_keeps_its_verdict() {
     ] {
         assert!(f6.counts.iter().any(|c| c.starts_with(store)), "{store}: {:?}", f6.counts);
     }
-    assert_eq!(record.verdict.self_test.plants.len(), 11);
+    assert_eq!(record.verdict.self_test.plants.len(), 15);
     assert!(record.verdict.self_test.plants.iter().all(|p| p.caught));
     assert!(record.verdict.self_test.real_file.starts_with("region/r.-1.-1.mca (2 chunks"), "{}", record.verdict.self_test.real_file);
     // Every chunk record that stayed, for the report after the first start.
@@ -994,4 +994,205 @@ fn after_the_first_start_the_harness_reports_on_the_world() {
     assert!(report.findings.is_empty(), "{:?}", report.findings);
     // Once per run.
     assert_eq!(fidelity::after_first_start(&sv.cfg), None);
+}
+
+// =============================================================================
+// World edits: a new seed, the blending mark, the spawn search, a player who
+// starts over (2026-10-25)
+// =============================================================================
+
+const PLAYER_TWO: &str = "5d2c8f0e-1a3b-3c4d-9e8f-7a6b5c4d3e2f";
+const PLAYER_TWO_NAME: &str = "Player_Two";
+const NEW_SEED: i64 = 20_261_025_000;
+const OLD_SEED: i64 = 4_242_424_242_424_242_424;
+
+fn tagged_chunk(pos: ChunkPos, inhabited: i64) -> Vec<u8> {
+    crate::nbt::testing::zlib(&encode_ordered(&[
+        ("xPos", Value::Int(pos.0)),
+        ("InhabitedTime", Value::Long(inhabited)),
+        ("sections", Value::List(vec![Value::LongArray(vec![0x0102_0304_0506_0708; 300])])),
+        ("zPos", Value::Int(pos.1)),
+        ("Status", Value::String("minecraft:full".to_string())),
+        (edits::TECTONIC_TAG, Value::Int(1)),
+    ]))
+}
+
+/// [`Server::new`], plus what the world edits touch: Tectonic's tag on every
+/// chunk of `region/r.0.0`, `level.dat_old`, the spawn scripts' markers, the
+/// pupfish chunk, two stronghold caches, and a second player who logged out
+/// in chunk (4, 4) and starts over.
+fn server_with_edits() -> Server {
+    let sv = Server::new();
+    let world = sv.world();
+    let mut grid: Vec<(ChunkPos, u8, Vec<u8>)> = Vec::new();
+    for x in 0..=20 {
+        for z in 0..=20 {
+            let ticks = match (x, z) {
+                (12, 12) => 100_000,
+                (15, 15) => 12_000,
+                _ => 0,
+            };
+            grid.push(((x, z), 2, tagged_chunk((x, z), ticks)));
+        }
+    }
+    fs::write(world.join("region").join("r.0.0.mca"), region_bytes(0, 0, &grid)).unwrap();
+    fs::copy(world.join("level.dat"), world.join("level.dat_old")).unwrap();
+    fs::write(
+        world.join(edits::KUBEJS_DATA),
+        gzip(&encode_ordered(&[
+            ("icraft_priest_tower_done", Value::Int(1)),
+            ("icraft_chunky_pregen_started", Value::Int(1)),
+            (edits::LEVEL_DATA_KEY, compound(vec![("icraft_cherry_spawn_exhausted", Value::Int(1)), ("icraft_mobgriefing_default_set", Value::Int(1))])),
+        ])),
+    )
+    .unwrap();
+    let pupfish = compound(vec![("PupfishChunkX", Value::Int(3)), ("PupfishChunkZ", Value::Int(-9)), ("beachedCachalotSpawnDelay", Value::Int(1))]);
+    fs::write(world.join("data").join("alexsmobs_world_data.dat"), gzip(&encode_ordered(&[("DataVersion", Value::Int(3465)), ("data", pupfish)]))).unwrap();
+    let cache = gzip(&encode_ordered(&[("data", compound(vec![("Positions", Value::LongArray(vec![1, 2]))]))]));
+    fs::write(world.join("data").join(edits::STRONGHOLD_CACHE), &cache).unwrap();
+    let abyss = world.join("dimensions").join("theabyss").join("the_abyss").join("data");
+    fs::create_dir_all(&abyss).unwrap();
+    fs::write(abyss.join(edits::STRONGHOLD_CACHE), &cache).unwrap();
+    let playerdata = world.join("playerdata");
+    write_player(&world, PLAYER_TWO, &player_nbt(None, (OVERWORLD, (f64::from(mid(4)), 64.0, f64::from(mid(4)))), &[]));
+    fs::copy(playerdata.join(format!("{PLAYER_TWO}.dat")), playerdata.join(format!("{PLAYER_TWO}.dat_old"))).unwrap();
+    fs::write(playerdata.join(format!("{PLAYER_TWO}.cosarmor")), gzip(&encode_ordered(&[("CosArmor", Value::List(Vec::new()))]))).unwrap();
+    let advancements = world.join("advancements");
+    fs::create_dir_all(&advancements).unwrap();
+    fs::write(advancements.join(format!("{PLAYER_TWO}.json")), "{}").unwrap();
+    let cache_json = format!("[{{\"name\":\"{PLAYER_NAME}\",\"uuid\":\"{PLAYER}\"}},{{\"name\":\"{PLAYER_TWO_NAME}\",\"uuid\":\"{PLAYER_TWO}\"}}]");
+    fs::write(sv.root.join("usercache.json"), cache_json).unwrap();
+    sv
+}
+
+fn tree(path: &Path) -> nbt::Doc {
+    nbt::Doc::parse(&fs::read(path).unwrap()).unwrap()
+}
+
+const EDITS: &str = "scope=all new_seed=20261025000 blend=on spawn_search=on reset_players=Player_Two";
+
+#[test]
+fn a_new_seed_run_makes_every_edit_and_a_rollback_undoes_every_one() {
+    let sv = server_with_edits();
+    let world = sv.world();
+    let before = sv.snapshot();
+    let (run_dir, hash) = sv.dry_run(EDITS);
+
+    // The plan records the edits, and its hash covers them.
+    let plan = load_plan(&run_dir).unwrap();
+    assert_eq!(plan.edits.new_seed, Some(NEW_SEED));
+    assert_eq!(plan.edits.seed_before, Some(OLD_SEED));
+    assert_eq!(plan.edits.reset_players, vec![PLAYER_TWO.to_string()]);
+    assert_eq!(plan.seed, Some(OLD_SEED));
+    let mut v: serde_json::Value = serde_json::from_slice(&fs::read(run_dir.join(PLAN_FILE)).unwrap()).unwrap();
+    v["world_edits"]["spawn_search"] = serde_json::Value::Bool(false);
+    let edited = std::env::temp_dir().join(format!("icraft-exec-edited-{}-{}", std::process::id(), NEXT_DIR.fetch_add(1, Ordering::SeqCst)));
+    fs::create_dir_all(&edited).unwrap();
+    fs::write(edited.join(PLAN_FILE), serde_json::to_vec(&v).unwrap()).unwrap();
+    assert!(load_plan(&edited).unwrap_err().contains("plan_hash is not the hash"), "an edit taken out of the plan file changes its hash");
+    let _ = fs::remove_dir_all(&edited);
+    // The player who starts over logged out in (4, 4): it is reset, and nothing stops on it.
+    assert!(plan.chunks[OVERWORLD].contains(&(4, 4)));
+    let report = fs::read_to_string(run_dir.join("report.txt")).unwrap();
+    assert!(report.contains("WORLD EDITS") && report.contains(&format!("NEW SEED {NEW_SEED}")) && report.contains("STARTS OVER: Player_Two"), "{report}");
+    assert!(report.contains("NOT moved") && report.contains("advancements/5d2c8f0e..."), "{report}");
+
+    let look = preflight(&sv.cfg, &run_dir).unwrap();
+    assert!(look.ready(), "{:?}", look.stops());
+    let note = |needle: &str| look.lines.iter().any(|l| l.text.contains(needle));
+    assert!(note("Worldgen: this plan changes the seed") && note("ModernFix: 2 stronghold cache file(s)") && note("Blending:"), "{:#?}", look.lines);
+
+    let done_report = done(sv.run(&run_dir, &hash));
+    let kept_in_file: usize = anvil::header_slots(&fs::read(world.join("region").join("r.0.0.mca")).unwrap()).len();
+    let marked = format!("{kept_in_file} kept chunk(s) marked for blending");
+    for part in ["seed changed", "2 stronghold cache(s) moved", "2 spawn marker(s) removed", "3 player file(s) of 1 player(s) moved", marked.as_str()] {
+        assert!(done_report.edits.iter().any(|e| e == part), "{part}: {:?}", done_report.edits);
+    }
+    assert!(done_report.fidelity.contains(&format!("F10 9 edited file(s) exact, {kept_in_file} chunk(s) marked for blending")), "{}", done_report.fidelity);
+
+    // level.dat and its copy: the new seed, the spawn's height, nothing else.
+    for name in ["level.dat", "level.dat_old"] {
+        let doc = tree(&world.join(name));
+        assert_eq!(doc.root.at(&["Data", "WorldGenSettings", "seed"]), Some(&nbt::Node::Long(NEW_SEED)), "{name}");
+        assert_eq!(doc.root.at(&["Data", "SpawnY"]), Some(&nbt::Node::Int(edits::SPAWN_SEARCH_Y)), "{name}");
+        assert_eq!(doc.root.at(&["Data", "SpawnX"]), Some(&nbt::Node::Int(0)), "{name}");
+    }
+    let kubejs = tree(&world.join(edits::KUBEJS_DATA));
+    assert!(kubejs.root.get("icraft_priest_tower_done").is_none() && kubejs.root.get("icraft_chunky_pregen_started").is_some());
+    assert!(kubejs.root.at(&[edits::LEVEL_DATA_KEY, "icraft_cherry_spawn_exhausted"]).is_none());
+    assert!(kubejs.root.at(&[edits::LEVEL_DATA_KEY, "icraft_mobgriefing_default_set"]).is_some());
+    let am = tree(&world.join("data").join("alexsmobs_world_data.dat"));
+    assert!(am.root.at(&["data", "PupfishChunkX"]).is_none() && am.root.at(&["data", "beachedCachalotSpawnDelay"]).is_some());
+    assert!(!world.join("data").join(edits::STRONGHOLD_CACHE).exists());
+    assert!(!world.join("dimensions/theabyss/the_abyss/data").join(edits::STRONGHOLD_CACHE).exists());
+    assert!(edits::player_files(&world, PLAYER_TWO).is_empty());
+    assert!(world.join("playerdata").join(format!("{PLAYER}.dat")).is_file(), "the other player's file stays");
+    assert!(world.join("advancements").join(format!("{PLAYER_TWO}.json")).is_file(), "only the player file was named");
+    // Every kept chunk of r.0.0 carries the old-chunk mark now.
+    let file = fs::read(world.join("region").join("r.0.0.mca")).unwrap();
+    for slot in anvil::header_slots(&file) {
+        let start = slot.offset_sectors as usize * anvil::SECTOR_BYTES;
+        let len = u32::from_be_bytes(file[start..start + 4].try_into().unwrap()) as usize;
+        let doc = nbt::Doc::parse(&file[start + 5..start + 4 + len]).unwrap();
+        assert_eq!(doc.root.get(edits::TECTONIC_TAG), Some(&nbt::Node::Int(edits::TECTONIC_OLD)));
+    }
+    // The world's record: the run, the seed it came back under, the seed change.
+    let record: serde_json::Value = serde_json::from_slice(&fs::read(world.join(crate::overrides::WORLD_MANIFEST)).unwrap()).unwrap();
+    assert_eq!(record["regenerations"].as_array().unwrap().last().unwrap()["seed"], NEW_SEED.to_string());
+    let change = &record[SEED_RECORD_KEY][0];
+    assert_eq!(change["before"].as_str(), Some(OLD_SEED.to_string().as_str()));
+    assert_eq!(change["after"].as_str(), Some(NEW_SEED.to_string().as_str()));
+    assert_eq!(change["plan_hash"].as_str(), Some(hash.as_str()));
+    assert_eq!(record["custom"], "kept");
+    // The log names no player and gives no seed.
+    let log = sv.log();
+    for secret in [PLAYER_TWO.to_string(), PLAYER_TWO_NAME.to_string(), NEW_SEED.to_string(), OLD_SEED.to_string()] {
+        assert!(!log.contains(&secret), "{secret} in the log: {log}");
+    }
+    // F8 reports the blending once a server has run on it (here: at once).
+    let held = sv.holding();
+    let line = fidelity::write_after_boot(&world, &held.dir);
+    // All 17 kept overworld chunks are old to Tectonic: r.0.0's marked, the two
+    // elsewhere never tagged. None has blending data saved: no server read them.
+    assert!(line.contains("blending: 17 of 17 kept overworld chunk(s) still old to Tectonic (0 with blending data saved)"), "{line}");
+    let _ = fs::remove_file(held.dir.join(fidelity::AFTER_BOOT_FILE));
+
+    // The way back: every edit undone, every byte as it was.
+    rollback(&sv.cfg, &held.dir, &hash[..8], "test").unwrap();
+    assert_eq!(sv.snapshot(), before, "the rollback put the world back exactly");
+}
+
+#[test]
+fn a_plan_made_under_another_seed_is_refused() {
+    let sv = Server::new();
+    let (run_dir, hash) = sv.dry_run("scope=all");
+    // The seed changed by hand after the dry-run.
+    let mut doc = tree(&sv.world().join("level.dat"));
+    *doc.root.at_mut(&["Data", "WorldGenSettings", "seed"]).unwrap() = nbt::Node::Long(7);
+    fs::write(sv.world().join("level.dat"), doc.to_bytes().unwrap()).unwrap();
+    let look = preflight(&sv.cfg, &run_dir).unwrap();
+    assert!(look.stops().iter().any(|s| s.contains("not the one this plan was made under")), "{:?}", look.stops());
+    assert!(refused(sv.run(&run_dir, &hash)).contains("not the one this plan was made under"));
+}
+
+#[test]
+fn a_new_seed_needs_scope_all_and_blending_needs_a_new_seed() {
+    let sv = server_with_edits();
+    let refusal = |tokens: &str| {
+        let mut spec = RunSpec::parse_tokens(tokens.split_whitespace()).unwrap();
+        spec.set("spawn_radius_blocks", "16").unwrap();
+        crate::regen::run(&sv.cfg, &spec).unwrap_err()
+    };
+    assert!(refusal("scope=ring:2 new_seed=5").contains("only a plan with scope 'all' may change the seed"));
+    assert!(refusal("scope=all blend=on").contains("blending mark is for a new seed"));
+    assert!(refusal(&format!("scope=all new_seed={OLD_SEED}")).contains("that is the world's seed already"));
+    assert!(refusal("scope=all reset_players=Nobody").contains("'Nobody' is no player of this world"));
+    assert!(refusal("scope=all reset_players=Player_One logout_players=Player_One").contains("starts over (reset_players) and is on logout_players too"));
+    // What the log is told of a run: no seed, no player.
+    let spec = RunSpec::parse_tokens(EDITS.split_whitespace()).unwrap();
+    assert_eq!(spec.log_text(), "scope=all dims=minecraft:overworld new_seed=<a number> blend=on spawn_search=on reset_players=<1 player(s)>");
+    // A random seed is drawn once, by the dry-run, and recorded.
+    let (run_dir, _) = sv.dry_run("scope=all new_seed=random");
+    let plan = load_plan(&run_dir).unwrap();
+    assert!(plan.edits.new_seed.is_some() && plan.edits.new_seed != plan.seed);
 }

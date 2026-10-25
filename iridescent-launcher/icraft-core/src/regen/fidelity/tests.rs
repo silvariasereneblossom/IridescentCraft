@@ -30,7 +30,7 @@ impl Drop for TempWorld {
 fn plan_of(chunks: &[ChunkPos]) -> Plan {
     let mut by_dim = BTreeMap::new();
     by_dim.insert(OVERWORLD.to_string(), chunks.iter().copied().collect::<BTreeSet<ChunkPos>>());
-    Plan { hash: "0".repeat(64), settings: Settings::default(), chunks: by_dim, author: "test".to_string() }
+    Plan { hash: "0".repeat(64), settings: Settings::default(), chunks: by_dim, edits: Edits::default(), author: "test".to_string() }
 }
 
 fn said(test: &SelfTest) -> String {
@@ -53,10 +53,10 @@ fn the_self_test_catches_every_plant_on_a_synthetic_fixture() {
         assert_eq!(result.invariant, plant.invariant());
         assert!(result.said.contains(&Fixture::new(None).needle(*plant)), "{}", said(&test));
     }
-    // Each invariant F1 to F6 has a plant of its own.
+    // Each invariant F1 to F6, and F10, has a plant of its own.
     let covered: BTreeSet<&str> = test.plants.iter().map(|p| p.invariant.as_str()).collect();
-    assert_eq!(covered, ["F1", "F2", "F3", "F4", "F5", "F6"].into_iter().collect::<BTreeSet<&str>>());
-    assert!(test.line().contains("11 of 11 planted violation(s) caught on a synthetic fixture only"), "{}", test.line());
+    assert_eq!(covered, ["F1", "F2", "F3", "F4", "F5", "F6", "F10"].into_iter().collect::<BTreeSet<&str>>());
+    assert!(test.line().contains("15 of 15 planted violation(s) caught on a synthetic fixture only"), "{}", test.line());
 }
 
 #[test]
@@ -82,10 +82,25 @@ fn the_self_test_copies_a_real_region_file_and_plants_in_it() {
 }
 
 #[test]
+fn the_self_test_holds_on_a_base_whose_plan_switches_lived_in_off() {
+    // The world's only region file is the base's: lived in but for two chunks.
+    // The plan keeps the base with a box and has the lived-in layer off; the
+    // fixture's own map has it on. Its real chunks to reset are picked by the
+    // fixture's map (found on a copy of the world after the second run, 10-25).
+    let w = TempWorld::new();
+    write_region(&w.0, Store::Region, 0, 0, &[((0, 0), 50_000), ((1, 0), 50_000), ((2, 0), 0), ((3, 0), 0), ((4, 0), 50_000)]);
+    let mut plan = plan_of(&[(2, 0)]);
+    plan.settings.inhabited_min_ticks = None;
+    let test = self_test(&w.0, &plan);
+    assert!(test.passed(), "{}", said(&test));
+    assert!(test.real_file.starts_with("region/r.0.0.mca (5 chunks"), "{}", test.real_file);
+}
+
+#[test]
 fn a_check_stubbed_to_hold_lets_its_plants_through_and_the_self_test_fails() {
     let w = TempWorld::new();
     let plan = plan_of(&[(0, 0)]);
-    for id in ["F1", "F2", "F3", "F4", "F5", "F6"] {
+    for id in ["F1", "F2", "F3", "F4", "F5", "F6", "F10"] {
         blind_for_test(&[id]);
         let test = self_test(&w.0, &plan);
         blind_for_test(&[]);

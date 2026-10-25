@@ -136,7 +136,9 @@ enum Cmd {
         dims: String,
         /// Override a protection setting for this run (repeatable), e.g.
         /// `--set inhabited_min_ticks=72000 --set waystones=all`.
-        /// The keys are those of the .icraft_regen_policy file.
+        /// The keys are those of the .icraft_regen_policy file, and the
+        /// world edits of this run only: `new_seed=random|<number>`,
+        /// `blend=on`, `spawn_search=on`, `reset_players=<name>,...`.
         #[arg(long = "set", value_name = "KEY=VALUE")]
         set: Vec<String>,
         /// Write the report folder under this directory instead of

@@ -23,7 +23,8 @@
 //!      behind; this one cannot. If the hash differs, nothing is touched: the
 //!      difference is shown, a fresh dry-run is written, and the operator has
 //!      to look at THAT one and approve ITS hash ([`Outcome::PlanChanged`]).
-//!   3. **Refuse** on anything the run cannot answer for: a player whose logout
+//!   3. **Refuse** on anything the run cannot answer for: a world whose seed is
+//!      not the one the plan was made under, a player whose logout
 //!      position is in a chunk to be reset, a player file that does not read,
 //!      a claim or a train track in the target set, mod data that does not
 //!      read, a pregeneration that would start by itself afterwards ([`Line`]s
@@ -45,7 +46,11 @@
 //!        ([`anvil::clear_chunks`]); the chunks that stay do not move;
 //!      - the oversized-chunk files (`c.x.z.mcc`) of reset chunks are moved;
 //!      - the mod stores that list things in reset chunks are copied there and
-//!        rewritten without those entries (see "Stores").
+//!        rewritten without those entries (see "Stores");
+//!      - what the plan changes besides chunks ([`super::edits`]: the seed in
+//!        `level.dat`, the blending mark on kept chunks, the spawn markers,
+//!        the player files of players who start over), each original kept
+//!        there first, so a rollback puts the old seed back too.
 //!   6. **Check**: the world is read again from disk. Every chunk that was to
 //!      stay is still there, in the same folders, with the same bytes; every
 //!      chunk that was to go is gone from all three folders; no file the run
@@ -98,7 +103,7 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 
 use serde::{Deserialize, Serialize};
 
-use super::{analyse, fidelity, num, plan_hash, Analysis, DimResult, Fate, RunSpec, Scope, PLAN_FILE, PLAN_VERSION};
+use super::{analyse, edits, fidelity, num, plan_hash_with, Analysis, DimResult, Fate, RunSpec, Scope, PLAN_FILE, PLAN_VERSION};
 use crate::anvil::{self, ChunkPos, Store, OVERWORLD};
 use crate::backup;
 use crate::config::ServerConfig;
@@ -141,6 +146,8 @@ const FREE_SPACE_MARGIN: u64 = 256 * 1024 * 1024;
 const LIVE_STATUS_AGE: Duration = Duration::from_secs(10 * 60);
 /// In `<world>/.icraft_world.json` (shared with the override layer).
 const WORLD_RECORD_KEY: &str = "regenerations";
+/// There too: every seed change a run made.
+pub const SEED_RECORD_KEY: &str = "seed_changes";
 
 /// The pack's first-load pregeneration (`auto_chunky.js`): it starts a
 /// 2,500-block Chunky task once per world and remembers that in KubeJS's
@@ -267,6 +274,8 @@ pub struct Report {
     pub holding: String,
     /// The fidelity harness's verdict, one line ([`fidelity::Verdict::line`]).
     pub fidelity: String,
+    /// What was changed besides chunks, counts only ([`super::edits`]).
+    pub edits: Vec<String>,
     pub elapsed_secs: f64,
 }
 
@@ -274,8 +283,9 @@ impl Report {
     /// One line for the log and the command line. Counts and hashes only.
     pub fn line(&self) -> String {
         let harness = if self.fidelity.is_empty() { String::new() } else { format!(". {}", self.fidelity) };
+        let edits = if self.edits.is_empty() { String::new() } else { format!("; world edits: {}", self.edits.join(", ")) };
         let done = format!(
-            "done: scope {}: {} chunk(s) reset, {} kept; region files moved whole {}/{}/{} (region/entities/poi), rewritten {}/{}/{}, {} moved to {}; backup {} (sha256 {}{}); plan sha256 {} ({:.1} s)",
+            "done: scope {}: {} chunk(s) reset, {} kept; region files moved whole {}/{}/{} (region/entities/poi), rewritten {}/{}/{}, {} moved to {}{edits}; backup {} (sha256 {}{}); plan sha256 {} ({:.1} s)",
             self.scope,
             num(self.chunks_reset),
             num(self.chunks_kept),
@@ -490,6 +500,10 @@ pub struct ApprovedPlan {
     /// Its chunks, per dimension id.
     pub chunks: BTreeMap<String, BTreeSet<ChunkPos>>,
     pub total: usize,
+    /// The seed in `level.dat` when the dry-run was made (`world.seed`).
+    pub seed: Option<i64>,
+    /// What it changes besides chunks; its hash covers them.
+    pub edits: edits::Edits,
 }
 
 /// Read a dry-run's plan. A plan whose hash is not the hash of its own chunk
@@ -539,7 +553,12 @@ pub fn load_plan(run_dir: &Path) -> Result<ApprovedPlan, String> {
     if chunks.is_empty() {
         return Err(format!("{PLAN_FILE} covers no dimension"));
     }
-    if plan_hash(&level_name, chunks.iter().map(|(id, set)| (id.as_str(), set))) != hash {
+    let edits = edits::Edits::from_json(&v["world_edits"]).map_err(|e| format!("{PLAN_FILE}: {e}"))?;
+    let seed = match &v["world"]["seed"] {
+        serde_json::Value::String(s) => Some(s.parse::<i64>().map_err(|_| format!("{PLAN_FILE}: world.seed is not a whole number"))?),
+        _ => None,
+    };
+    if plan_hash_with(&level_name, chunks.iter().map(|(id, set)| (id.as_str(), set)), &edits.hash_lines()) != hash {
         return Err(format!("{PLAN_FILE}: plan_hash is not the hash of the chunks the file lists (edited, or cut short): run the dry-run again"));
     }
     let total: usize = chunks.values().map(BTreeSet::len).sum();
@@ -549,15 +568,16 @@ pub fn load_plan(run_dir: &Path) -> Result<ApprovedPlan, String> {
         all_dims: false,
         overrides: Vec::new(),
         settings: Some(settings),
+        edits: edits.as_asked(),
         out_root: None,
         png: true,
     };
     let run_name = run_dir.file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_default();
-    Ok(ApprovedPlan { run_name, run_dir: run_dir.to_path_buf(), hash, level_name, scope: scope_token, spec, chunks, total })
+    Ok(ApprovedPlan { run_name, run_dir: run_dir.to_path_buf(), hash, level_name, scope: scope_token, spec, chunks, total, seed, edits })
 }
 
 fn hash_of(a: &Analysis) -> String {
-    plan_hash(&a.level_name, a.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets)))
+    plan_hash_with(&a.level_name, a.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets)), &a.edits.hash_lines())
 }
 
 /// Does `typed` approve this hash?
@@ -1101,6 +1121,156 @@ fn plan_stores(a: &Analysis) -> Result<Stores, String> {
 }
 
 // =============================================================================
+// The world edits ([`super::edits`])
+// =============================================================================
+
+/// A file that leaves the world whole for an edit (a stronghold cache, a
+/// player's file).
+#[derive(Debug, Clone)]
+struct EditMove {
+    path: PathBuf,
+    rel: String,
+    detail: String,
+}
+
+/// A region file whose kept chunks are marked for blending.
+#[derive(Debug, Clone)]
+struct Blend {
+    path: PathBuf,
+    /// The slots to retag.
+    slots: BTreeSet<u16>,
+}
+
+#[derive(Default)]
+struct WorldEdits {
+    stores: Vec<StoreEdit>,
+    moves: Vec<EditMove>,
+    blends: Vec<Blend>,
+    lines: Vec<Line>,
+    /// Counts only, for the run's done line.
+    summary: Vec<String>,
+}
+
+/// The seed the plan was made under, against the world's now.
+fn seed_lines(plan: &ApprovedPlan, a: &Analysis) -> Vec<Line> {
+    match (plan.seed, a.level.seed) {
+        // No numbers: a refusal goes to the audit log, which leaves the box.
+        (Some(was), Some(is)) if was != is => vec![line(
+            Mark::Stop,
+            "The world's seed is not the one this plan was made under: what it says about the land is about another seed (a seed changed by hand, or a world put back). Make a new dry-run.",
+        )],
+        (Some(_), None) => vec![line(Mark::Stop, "level.dat has no seed now, and the plan was made under one: make a new dry-run.")],
+        _ => Vec::new(),
+    }
+}
+
+/// What the plan changes besides chunks, worked out in memory. `Err`: an edit
+/// that cannot be made as the plan says, so the run does not start.
+fn plan_edits(a: &Analysis) -> Result<WorldEdits, String> {
+    let e = &a.edits;
+    let mut out = WorldEdits::default();
+    if e.is_empty() {
+        return Ok(out);
+    }
+    for text in e.describe(&a.reset_players) {
+        out.lines.push(line(Mark::Note, text));
+    }
+    // level.dat and its copy: the seed, the spawn's height.
+    let spawn_y = e.spawn_search.then_some(e.spawn_y);
+    if e.new_seed.is_some() || spawn_y.is_some() {
+        for name in ["level.dat", "level.dat_old"] {
+            let path = a.world_dir.join(name);
+            let Some(raw) = read_optional(&path)? else {
+                if name == "level.dat" {
+                    return Err("there is no level.dat".to_string());
+                }
+                continue;
+            };
+            let doc = edits::edit_level(&raw, e.new_seed, spawn_y).map_err(|why| format!("{name}: {why}"))?;
+            // No seed in the detail: it goes to the audit log, which leaves the box.
+            let mut what = Vec::new();
+            if e.new_seed.is_some() {
+                what.push("seed changed".to_string());
+            }
+            if let Some(y) = spawn_y {
+                what.push(format!("SpawnY -> {y}"));
+            }
+            out.stores.push(finish_edit(a, path, raw, &doc, what.join(", "))?);
+        }
+        out.summary.push(if e.new_seed.is_some() { "seed changed".to_string() } else { "spawn height set".to_string() });
+    }
+    if e.new_seed.is_some() {
+        let caches = edits::stronghold_caches(&a.world_dir);
+        for path in &caches {
+            out.moves.push(EditMove { rel: rel_of(&a.server_dir, path)?, path: path.clone(), detail: "ModernFix's stronghold positions of the old seed".to_string() });
+        }
+        out.lines.push(line(Mark::Note, format!("ModernFix: {} stronghold cache file(s) of the old seed move to the holding folder; the game works the rings out again from the new seed.", caches.len())));
+        let path = a.world_dir.join(edits::PUPFISH_STORE);
+        match read_optional(&path)? {
+            Some(raw) => match edits::edit_pupfish(&raw).map_err(|why| format!("{}: {why}", edits::PUPFISH_STORE))? {
+                Some(doc) => {
+                    out.stores.push(finish_edit(a, path, raw, &doc, "PupfishChunkX/Z removed".to_string())?);
+                    out.lines.push(line(Mark::Note, "Alex's Mobs: the pupfish chunk of the old seed is removed; the mod picks one again from the new seed."));
+                }
+                None => out.lines.push(line(Mark::Ok, "Alex's Mobs: no pupfish chunk on record.")),
+            },
+            None => {}
+        }
+        out.summary.push(format!("{} stronghold cache(s) moved", caches.len()));
+    }
+    if e.spawn_search {
+        let path = a.world_dir.join(edits::KUBEJS_DATA);
+        match read_optional(&path)? {
+            Some(raw) => match edits::edit_spawn_markers(&raw).map_err(|why| format!("{}: {why}", edits::KUBEJS_DATA))? {
+                Some((doc, gone)) => {
+                    out.lines.push(line(Mark::Note, format!("Spawn: the markers {} are removed from {}; the pack's spawn search runs again at the next start.", gone.join(", "), edits::KUBEJS_DATA)));
+                    out.stores.push(finish_edit(a, path, raw, &doc, format!("{} spawn marker(s) removed", gone.len()))?);
+                    out.summary.push(format!("{} spawn marker(s) removed", gone.len()));
+                }
+                None => out.lines.push(line(Mark::Note, format!("Spawn: no spawn marker is set in {}; the search runs at the next start anyway.", edits::KUBEJS_DATA))),
+            },
+            None => out.lines.push(line(Mark::Note, format!("Spawn: there is no {}; the search runs at the next start anyway.", edits::KUBEJS_DATA))),
+        }
+    }
+    if !e.reset_players.is_empty() {
+        let mut moved = 0;
+        for uuid in &e.reset_players {
+            let files = edits::player_files(&a.world_dir, uuid);
+            if files.is_empty() {
+                return Err(format!("the player file playerdata/{}... of a player who starts over is not there", edits::short(uuid)));
+            }
+            for path in files {
+                out.moves.push(EditMove { rel: rel_of(&a.server_dir, &path)?, path, detail: "the file of a player who starts over".to_string() });
+                moved += 1;
+            }
+        }
+        out.summary.push(format!("{moved} player file(s) of {} player(s) moved", e.reset_players.len()));
+    }
+    if e.blend {
+        let dir = a.dim(OVERWORLD).map(|d| d.dim.store_dir(Store::Region));
+        match (&a.blend, dir) {
+            (Some(scan), Some(dir)) => {
+                for (name, slots) in &scan.files {
+                    out.blends.push(Blend { path: dir.join(name), slots: slots.clone() });
+                }
+                out.lines.push(line(Mark::Note, format!(
+                    "Blending: {} kept overworld chunk(s) in {} region file(s) are rewritten in place with {} = {} (every other byte of them as it was); {} kept chunk(s) are old to Tectonic already{}.",
+                    num(scan.tagged),
+                    scan.files.len(),
+                    edits::TECTONIC_TAG,
+                    edits::TECTONIC_OLD,
+                    num(scan.untagged),
+                    if scan.external > 0 { format!(", {} oversized ones are left as they are", scan.external) } else { String::new() }
+                )));
+                out.summary.push(format!("{} kept chunk(s) marked for blending", scan.tagged));
+            }
+            _ => out.lines.push(line(Mark::Note, "Blending: the overworld is not part of this run, so nothing is marked.")),
+        }
+    }
+    Ok(out)
+}
+
+// =============================================================================
 // Looking a plan over (read-only)
 // =============================================================================
 
@@ -1110,10 +1280,12 @@ struct Inspection {
     lines: Vec<Line>,
     files: Vec<FileOp>,
     stores: Vec<StoreEdit>,
+    edits: WorldEdits,
 }
 
-fn inspect(cfg: &ServerConfig, a: &Analysis, pregen: Pregen) -> Inspection {
-    let mut lines: Vec<Line> = target_stops(a).into_iter().map(|why| line(Mark::Stop, why)).collect();
+fn inspect(cfg: &ServerConfig, a: &Analysis, pregen: Pregen, plan: &ApprovedPlan) -> Inspection {
+    let mut lines: Vec<Line> = seed_lines(plan, a);
+    lines.extend(target_stops(a).into_iter().map(|why| line(Mark::Stop, why)));
     lines.extend(pregen_lines(cfg, pregen));
 
     let files = match plan_files(a) {
@@ -1164,6 +1336,23 @@ fn inspect(cfg: &ServerConfig, a: &Analysis, pregen: Pregen) -> Inspection {
     };
     copy_bytes += stores.iter().map(|s| s.original.len() as u64).sum::<u64>();
 
+    let edits = match plan_edits(a) {
+        Ok(edits) => {
+            lines.extend(edits.lines.iter().cloned());
+            edits
+        }
+        Err(why) => {
+            lines.push(line(Mark::Stop, format!("A world edit of the plan cannot be made, so the run does not start: {why}")));
+            WorldEdits::default()
+        }
+    };
+    copy_bytes += edits.stores.iter().map(|s| s.original.len() as u64).sum::<u64>();
+    for b in &edits.blends {
+        if !files.iter().any(|op| op.path == b.path) {
+            copy_bytes += fs::metadata(&b.path).map_or(0, |m| m.len());
+        }
+    }
+
     if let Some(free) = backup::free_space(&cfg.server_dir) {
         if free < copy_bytes + FREE_SPACE_MARGIN {
             lines.push(line(Mark::Stop, format!(
@@ -1173,12 +1362,12 @@ fn inspect(cfg: &ServerConfig, a: &Analysis, pregen: Pregen) -> Inspection {
             )));
         }
     }
-    Inspection { lines, files, stores }
+    Inspection { lines, files, stores, edits }
 }
 
 /// What the worldgen settings are, as far as the launcher knows: a
 /// regeneration only shows a rebalance if they were changed first.
-fn worldgen_lines(cfg: &ServerConfig) -> Vec<Line> {
+fn worldgen_lines(cfg: &ServerConfig, plan: &ApprovedPlan) -> Vec<Line> {
     let mut out = Vec::new();
     let overrides = match crate::overrides::Store::load(&cfg.server_dir) {
         Ok(store) => store.overrides,
@@ -1197,10 +1386,23 @@ fn worldgen_lines(cfg: &ServerConfig) -> Vec<Line> {
     let catalog: BTreeSet<String> = crate::worldgen::files(cfg).into_iter().map(|f| f.rel.to_ascii_lowercase()).collect();
     let own: Vec<&crate::overrides::Override> = overrides.iter().filter(|o| catalog.contains(&o.file.to_ascii_lowercase())).collect();
     let files: BTreeSet<&str> = own.iter().map(|o| o.file.as_str()).collect();
-    let since = match &last_regen {
+    let mut since = match &last_regen {
         Some(at) => format!(" The last regeneration of this world was {at}."),
         None => " This world has not been regenerated before.".to_string(),
     };
+    if let Some(last) = record[SEED_RECORD_KEY].as_array().and_then(|list| list.last()) {
+        since.push_str(&format!(
+            " Its seed was changed by the launcher on {}: chunks generated before that come back as different land.",
+            last["at"].as_str().unwrap_or("?")
+        ));
+    }
+    if let Some(seed) = plan.edits.new_seed {
+        out.push(line(Mark::Note, format!(
+            "Worldgen: this plan changes the seed to {seed}. The reset chunks are generated from the NEW seed at the next server start: different land, rivers, biomes and structures; the kept chunks keep theirs, and where the two meet is a seam (blending {}).{since}",
+            if plan.edits.blend { "on: Tectonic bends the new land toward the kept chunks" } else { "off: expect steps and cut rivers at the line" }
+        )));
+        return out;
+    }
     if own.is_empty() && changes == 0 {
         out.push(line(Mark::Note, format!(
             "Worldgen settings: this server has NO worldgen value of its own (Worldgen settings page), and none has been changed through the launcher since the world was made. Unless the pack's own worldgen files changed since these chunks were generated, they will come back by the SAME rules: same seed, same terrain, no rebalance to see. If a rebalance is the point, set its values first.{since}"
@@ -1321,7 +1523,7 @@ pub fn preflight(cfg: &ServerConfig, run_dir: &Path) -> Result<Preflight, String
     if marker_present(&cfg.server_dir) {
         lines.push(line(Mark::Stop, format!("An earlier regeneration was left unfinished ({MARKER_FILE}). Roll it back first.")));
     }
-    let inspection = inspect(cfg, &a, Pregen::Off);
+    let inspection = inspect(cfg, &a, Pregen::Off, &plan);
     lines.extend(inspection.lines);
     lines.extend(fidelity_lines(cfg, &plan, running));
     lines.push(match backup::pinned_candidate(cfg) {
@@ -1331,7 +1533,7 @@ pub fn preflight(cfg: &ServerConfig, run_dir: &Path) -> Result<Preflight, String
         )),
         None => line(Mark::Note, "Backup: no pinned backup of the world as it is now exists yet. The run takes one first and does not go on unless it verifies. To see it on your own PC before approving, take it now ('Take the backup now')."),
     });
-    lines.extend(worldgen_lines(cfg));
+    lines.extend(worldgen_lines(cfg, &plan));
     let mut out = compare(&plan, &a, lines);
     if !out.same_plan {
         out.new_run = fresh_dry_run(cfg, &plan);
@@ -1500,12 +1702,37 @@ fn write_synced(path: &Path, bytes: &[u8]) -> std::io::Result<()> {
     file.sync_all()
 }
 
-/// A region file that keeps some chunks: the original, and what replaces it.
+/// A region file rewritten in place: the plan's chunks cleared from it, its
+/// kept chunks marked for blending, or both. The original, and what replaces it.
 struct Rewrite {
-    op: usize,
+    /// Its entry in the holding record's file list.
+    held: usize,
+    path: PathBuf,
+    rel: String,
     original: Vec<u8>,
     modified: Option<SystemTime>,
+    /// The original with the plan's chunks cleared (the original itself for a
+    /// file the plan only marks for blending).
+    cleared: Vec<u8>,
+    /// `cleared` with the blending mark: what is written.
     updated: Vec<u8>,
+    /// The plan's slots in it.
+    drop: BTreeSet<u16>,
+    /// The kept slots marked for blending.
+    retag: BTreeSet<u16>,
+    /// Chunks that stay in it.
+    kept: usize,
+}
+
+/// `cleared` with the blending mark on `slots`, checked by the run's own
+/// re-reading before anything relies on it.
+fn retagged(rel: &str, cleared: &[u8], slots: &BTreeSet<u16>) -> Result<Vec<u8>, String> {
+    if slots.is_empty() {
+        return Ok(cleared.to_vec());
+    }
+    let updated = edits::retag(cleared, slots).map_err(|e| format!("{rel}: the blending mark cannot be set ({e})"))?;
+    edits::check_retagged(cleared, &updated, slots).map_err(|e| format!("{rel}: the file with the blending mark is not right ({e})"))?;
+    Ok(updated)
 }
 
 /// The work of one run, prepared in memory before anything is changed.
@@ -1520,6 +1747,7 @@ struct Prepared {
 fn prepare(cfg: &ServerConfig, plan: &ApprovedPlan, a: &Analysis, inspection: &Inspection, pinned: &backup::Pinned, by: &str) -> Result<Prepared, String> {
     let mut files = Vec::new();
     let mut rewrites = Vec::new();
+    let blend_of = |path: &Path| inspection.edits.blends.iter().find(|b| b.path == path).map(|b| b.slots.clone()).unwrap_or_default();
     for (index, op) in inspection.files.iter().enumerate() {
         match &op.kind {
             FileKind::Whole | FileKind::External => {
@@ -1542,20 +1770,34 @@ fn prepare(cfg: &ServerConfig, plan: &ApprovedPlan, a: &Analysis, inspection: &I
                     ));
                 }
                 anvil::check_cleared(&original, &cleared.bytes, drop).map_err(|e| format!("{}: the rewritten file is not right ({e})", op.rel))?;
+                let retag = blend_of(&op.path);
+                let updated = retagged(&op.rel, &cleared.bytes, &retag)?;
+                let marked = if retag.is_empty() { String::new() } else { format!(", {} kept chunk(s) marked for blending", retag.len()) };
                 files.push(HeldFile {
                     kind: "replace".to_string(),
                     rel: op.rel.clone(),
                     size: original.len() as u64,
                     sha256: sha256_bytes(&original),
-                    new_sha256: sha256_bytes(&cleared.bytes),
-                    detail: format!("{} of {} chunk(s) cleared", op.hit, op.of),
+                    new_sha256: sha256_bytes(&updated),
+                    detail: format!("{} of {} chunk(s) cleared{marked}", op.hit, op.of),
                 });
                 let modified = fs::metadata(&op.path).and_then(|md| md.modified()).ok();
-                rewrites.push(Rewrite { op: index, original, modified, updated: cleared.bytes });
+                rewrites.push(Rewrite {
+                    held: index,
+                    path: op.path.clone(),
+                    rel: op.rel.clone(),
+                    original,
+                    modified,
+                    cleared: cleared.bytes,
+                    updated,
+                    drop: drop.clone(),
+                    retag,
+                    kept: op.of - op.hit,
+                });
             }
         }
     }
-    for store in &inspection.stores {
+    for store in inspection.stores.iter().chain(inspection.edits.stores.iter()) {
         files.push(HeldFile {
             kind: "replace".to_string(),
             rel: store.rel.clone(),
@@ -1563,6 +1805,39 @@ fn prepare(cfg: &ServerConfig, plan: &ApprovedPlan, a: &Analysis, inspection: &I
             sha256: sha256_bytes(&store.original),
             new_sha256: sha256_bytes(&store.updated),
             detail: store.detail.clone(),
+        });
+    }
+    for m in &inspection.edits.moves {
+        let sha256 = sha256_file(&m.path).map_err(|e| format!("{}: {e}", m.rel))?;
+        let size = fs::metadata(&m.path).map_err(|e| format!("{}: {e}", m.rel))?.len();
+        files.push(HeldFile { kind: "move".to_string(), rel: m.rel.clone(), size, sha256, new_sha256: String::new(), detail: m.detail.clone() });
+    }
+    // Region files the plan does not touch but whose kept chunks are marked.
+    for b in inspection.edits.blends.iter().filter(|b| !inspection.files.iter().any(|op| op.path == b.path)) {
+        let rel = rel_of(&cfg.server_dir, &b.path)?;
+        let original = fs::read(&b.path).map_err(|e| format!("{rel}: {e}"))?;
+        let kept = anvil::header_slots(&original).len();
+        let updated = retagged(&rel, &original, &b.slots)?;
+        files.push(HeldFile {
+            kind: "replace".to_string(),
+            rel: rel.clone(),
+            size: original.len() as u64,
+            sha256: sha256_bytes(&original),
+            new_sha256: sha256_bytes(&updated),
+            detail: format!("{} kept chunk(s) marked for blending", b.slots.len()),
+        });
+        let modified = fs::metadata(&b.path).and_then(|md| md.modified()).ok();
+        rewrites.push(Rewrite {
+            held: files.len() - 1,
+            path: b.path.clone(),
+            rel,
+            cleared: original.clone(),
+            original,
+            modified,
+            updated,
+            drop: BTreeSet::new(),
+            retag: b.slots.clone(),
+            kept,
         });
     }
     // The run's own entry in the world's record: written last, listed now.
@@ -1633,10 +1908,9 @@ fn apply(cfg: &ServerConfig, holding: &Path, inspection: &Inspection, prepared: 
     let files = &prepared.record.files;
     // Rewrites first, while the least has changed: they are the delicate part.
     for rewrite in &prepared.rewrites {
-        let op = &inspection.files[rewrite.op];
-        let held = &files[rewrite.op];
+        let held = &files[rewrite.held];
         hold_copy(holding, held, &rewrite.original, rewrite.modified)?;
-        anvil::replace_file(&op.path, &rewrite.updated).map_err(|e| format!("{}: could not be rewritten ({e})", op.rel))?;
+        anvil::replace_file(&rewrite.path, &rewrite.updated).map_err(|e| format!("{}: could not be rewritten ({e})", rewrite.rel))?;
     }
     audit(dir, log::Level::Info, &format!("{} region file(s) rewritten with their reset chunks cleared", prepared.rewrites.len()));
     let mut moved = 0;
@@ -1652,11 +1926,24 @@ fn apply(cfg: &ServerConfig, holding: &Path, inspection: &Inspection, prepared: 
         moved += 1;
     }
     audit(dir, log::Level::Info, &format!("{moved} file(s) moved whole to the holding folder"));
-    for (n, store) in inspection.stores.iter().enumerate() {
+    for (n, store) in inspection.stores.iter().chain(inspection.edits.stores.iter()).enumerate() {
         let held = &files[inspection.files.len() + n];
         hold_copy(holding, held, &store.original, store.modified)?;
         anvil::replace_file(&store.path, &store.updated).map_err(|e| format!("{}: could not be rewritten ({e})", store.rel))?;
         audit(dir, log::Level::Info, &format!("{}: {}", store.rel, store.detail));
+    }
+    // Files that leave the world for an edit. Counts only in the log: a
+    // player's file is named after the player's UUID.
+    let first = inspection.files.len() + inspection.stores.len() + inspection.edits.stores.len();
+    for (n, m) in inspection.edits.moves.iter().enumerate() {
+        let to = under(&holding.join(HELD_FILES_DIR), &files[first + n].rel)?;
+        if let Some(parent) = to.parent() {
+            fs::create_dir_all(parent).map_err(|e| format!("{}: {e}", parent.display()))?;
+        }
+        anvil::rename_retrying(&m.path, &to).map_err(|e| format!("a file moved for a world edit could not be moved ({e})"))?;
+    }
+    if !inspection.edits.moves.is_empty() {
+        audit(dir, log::Level::Info, &format!("{} file(s) moved to the holding folder for the world edits", inspection.edits.moves.len()));
     }
     Ok(())
 }
@@ -1688,13 +1975,17 @@ fn verify(a: &Analysis, holding: &Path, inspection: &Inspection, prepared: &Prep
     }
     // The rewritten files, from disk, against their originals in the holding folder.
     for rewrite in &prepared.rewrites {
-        let op = &inspection.files[rewrite.op];
-        let FileKind::Partial(drop) = &op.kind else { continue };
-        let kept_copy = fs::read(under(&holding.join(HELD_FILES_DIR), &op.rel)?).map_err(|e| format!("{}: its original in the holding folder does not read ({e})", op.rel))?;
-        let on_disk = fs::read(&op.path).map_err(|e| format!("{}: {e}", op.rel))?;
-        let kept = anvil::check_cleared(&kept_copy, &on_disk, drop).map_err(|e| format!("{}: {e}", op.rel))?;
-        if kept != op.of - op.hit {
-            return Err(format!("{}: {kept} chunk(s) stayed, where {} were to", op.rel, op.of - op.hit));
+        let kept_copy = fs::read(under(&holding.join(HELD_FILES_DIR), &rewrite.rel)?).map_err(|e| format!("{}: its original in the holding folder does not read ({e})", rewrite.rel))?;
+        let on_disk = fs::read(&rewrite.path).map_err(|e| format!("{}: {e}", rewrite.rel))?;
+        if on_disk != rewrite.updated {
+            return Err(format!("{} is not what was written", rewrite.rel));
+        }
+        let kept = anvil::check_cleared(&kept_copy, &rewrite.cleared, &rewrite.drop).map_err(|e| format!("{}: {e}", rewrite.rel))?;
+        if kept != rewrite.kept {
+            return Err(format!("{}: {kept} chunk(s) stayed, where {} were to", rewrite.rel, rewrite.kept));
+        }
+        if !rewrite.retag.is_empty() {
+            edits::check_retagged(&rewrite.cleared, &on_disk, &rewrite.retag).map_err(|e| format!("{}: {e}", rewrite.rel))?;
         }
     }
     // What was moved is in the holding folder, whole, and not in the world.
@@ -1711,13 +2002,24 @@ fn verify(a: &Analysis, holding: &Path, inspection: &Inspection, prepared: &Prep
             return Err(format!("{} is not in the holding folder as it was in the world", held.rel));
         }
     }
-    for store in &inspection.stores {
+    for store in inspection.stores.iter().chain(inspection.edits.stores.iter()) {
         if fs::read(&store.path).map_err(|e| format!("{}: {e}", store.rel))? != store.updated {
             return Err(format!("{} is not what was written", store.rel));
         }
     }
+    let first = inspection.files.len() + inspection.stores.len() + inspection.edits.stores.len();
+    for (n, m) in inspection.edits.moves.iter().enumerate() {
+        if m.path.exists() {
+            return Err("a file moved for a world edit is still in the world".to_string());
+        }
+        let held = &prepared.record.files[first + n];
+        let there = sha256_file(&under(&holding.join(HELD_FILES_DIR), &held.rel)?).map_err(|e| format!("a file moved for a world edit is not readable in the holding folder ({e})"))?;
+        if there != held.sha256 {
+            return Err("a file moved for a world edit is not in the holding folder as it was in the world".to_string());
+        }
+    }
     // And nothing else: every region file the plan does not name is as it was.
-    let named: BTreeSet<&Path> = inspection.files.iter().map(|op| op.path.as_path()).collect();
+    let named: BTreeSet<&Path> = inspection.files.iter().map(|op| op.path.as_path()).chain(prepared.rewrites.iter().map(|r| r.path.as_path())).collect();
     for (path, was) in stamps {
         if named.contains(path.as_path()) {
             continue;
@@ -1770,12 +2072,31 @@ fn world_record_entry(a: &Analysis, record: &Holding, report: &Report) -> serde_
         "holding": report.holding,
         "pregeneration": "off",
         "bitmap": "per region file r.<x>.<z>: 1024 bits in hex, slot z*32+x within the file, the first slot in the highest bit of the first byte; a set bit is a chunk this run reset",
+        // The seed the reset chunks come back under (the world's, unless changed).
+        "seed": a.edits.new_seed.or(a.level.seed).map_or(serde_json::Value::Null, |s| serde_json::Value::String(s.to_string())),
+        "world_edits": a.edits.to_json(),
     })
 }
 
-/// Add the run to the world's record, keeping every other key of the file.
-/// Returns the SHA-256 of what was written.
-fn write_world_record(cfg: &ServerConfig, entry: serde_json::Value) -> Result<String, String> {
+/// The run's entry in the world's `seed_changes`, when it changed the seed.
+fn seed_change_entry(a: &Analysis, record: &Holding) -> Option<serde_json::Value> {
+    let seed = a.edits.new_seed?;
+    let text = |s: Option<i64>| s.map_or(serde_json::Value::Null, |s| serde_json::Value::String(s.to_string()));
+    Some(serde_json::json!({
+        "at": chrono::Local::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, false),
+        "by": record.by,
+        "plan_hash": record.plan_hash,
+        "before": text(a.edits.seed_before),
+        "after": text(Some(seed)),
+        "backup": record.backup_file,
+        "note": "level.dat and level.dat_old were given the new seed by a regeneration run; the chunks it kept carry the old seed's land",
+    }))
+}
+
+/// Add the run to the world's record, keeping every other key of the file
+/// (and its seed change, if it made one). Returns the SHA-256 of what was
+/// written.
+fn write_world_record(cfg: &ServerConfig, entry: serde_json::Value, seed_change: Option<serde_json::Value>) -> Result<String, String> {
     let name = crate::overrides::WORLD_MANIFEST;
     let path = cfg.world_dir().join(name);
     let mut root: serde_json::Value = match read_optional(&path)? {
@@ -1790,6 +2111,13 @@ fn write_world_record(cfg: &ServerConfig, entry: serde_json::Value) -> Result<St
         return Err(format!("{name}: `{WORLD_RECORD_KEY}` is not a list; it was left alone"));
     };
     list.push(entry);
+    if let Some(change) = seed_change {
+        let list = object.entry(SEED_RECORD_KEY).or_insert_with(|| serde_json::Value::Array(Vec::new()));
+        let Some(list) = list.as_array_mut() else {
+            return Err(format!("{name}: `{SEED_RECORD_KEY}` is not a list; it was left alone"));
+        };
+        list.push(change);
+    }
     let mut body = serde_json::to_string_pretty(&root).map_err(|e| e.to_string())?;
     body.push('\n');
     anvil::replace_file(&path, body.as_bytes()).map_err(|e| format!("{name} could not be written: {e}"))?;
@@ -1947,7 +2275,7 @@ fn execute_inner(cfg: &ServerConfig, approval: &Approval) -> Outcome {
     if a.level_name != plan.level_name {
         return refused(format!("the plan was made for the world '{}', and this server's world is '{}'", plan.level_name, a.level_name));
     }
-    let inspection = inspect(cfg, &a, approval.pregen);
+    let inspection = inspect(cfg, &a, approval.pregen, &plan);
     let mut preflight = compare(&plan, &a, inspection.lines.clone());
     if !preflight.same_plan {
         audit(dir, log::Level::Warn, &format!(
@@ -2048,6 +2376,7 @@ fn execute_inner(cfg: &ServerConfig, approval: &Approval) -> Outcome {
         backup_reused: pinned.reused,
         holding: format!("{HOLDING_DIR}/{holding_name}"),
         stores: inspection.stores.iter().map(|s| format!("{}: {}", s.rel, s.detail)).collect(),
+        edits: inspection.edits.summary.clone(),
         ..Report::default()
     };
     for op in &inspection.files {
@@ -2079,7 +2408,11 @@ fn execute_inner(cfg: &ServerConfig, approval: &Approval) -> Outcome {
             hold_copy(&holding, &held, &original, fs::metadata(&path).and_then(|md| md.modified()).ok())?;
         }
         let entry = world_record_entry(&a, &prepared.record, &report);
-        prepared.record.files[last].new_sha256 = write_world_record(cfg, entry)?;
+        let seed_change = seed_change_entry(&a, &prepared.record).map(|mut change| {
+            change["holding"] = serde_json::Value::String(report.holding.clone());
+            change
+        });
+        prepared.record.files[last].new_sha256 = write_world_record(cfg, entry, seed_change)?;
         Ok(())
     });
     if let Err(why) = recorded {

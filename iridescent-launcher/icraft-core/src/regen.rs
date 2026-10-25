@@ -61,6 +61,7 @@ use crate::protection::{self, fmt_ticks, layer_names, DimProtection, Layer, Sett
 use crate::restart_policy::fmt_span;
 use crate::worlddata::{self, BlockPos, ClaimOwner, LevelInfo, Player, Waystone};
 
+pub mod edits;
 pub mod exec;
 pub mod fidelity;
 
@@ -201,6 +202,9 @@ pub struct RunSpec {
     /// them. With this the policy file is not read: what is on screen is what
     /// is used, and it is recorded in the plan.
     pub settings: Option<Settings>,
+    /// What the plan changes besides chunks ([`edits`]): never part of the
+    /// policy file.
+    pub edits: edits::WorldEdits,
     /// Where the run's folder goes. `None` = `<server dir>/regen-reports`.
     pub out_root: Option<PathBuf>,
     pub png: bool,
@@ -214,6 +218,7 @@ impl Default for RunSpec {
             all_dims: false,
             overrides: Vec::new(),
             settings: None,
+            edits: edits::WorldEdits::default(),
             out_root: None,
             png: true,
         }
@@ -222,10 +227,14 @@ impl Default for RunSpec {
 
 impl RunSpec {
     /// One `key=value`: `scope`, `dims` (comma-separated ids, or `all`), `png`
-    /// (on/off), or a protection setting.
+    /// (on/off), one of [`edits::WorldEdits`] (`new_seed`, `blend`,
+    /// `spawn_search`, `reset_players`), or a protection setting.
     pub fn set(&mut self, key: &str, value: &str) -> Result<(), String> {
         let key = key.trim().to_ascii_lowercase();
         let value = value.trim();
+        if self.edits.set(&key, value)? {
+            return Ok(());
+        }
         match key.as_str() {
             "scope" => self.scope = Scope::parse(value)?,
             "dims" => {
@@ -276,10 +285,34 @@ impl RunSpec {
         if self.settings.is_some() {
             out.push("settings=window".to_string());
         }
+        out.extend(self.edits.tokens());
         if !self.png {
             out.push("png=off".to_string());
         }
         out.join(" ")
+    }
+
+    /// [`RunSpec::tokens`] for the log, which leaves the box: a new seed and
+    /// the players who start over by count only.
+    pub fn log_text(&self) -> String {
+        let mut shown = self.clone();
+        shown.edits = edits::WorldEdits::default();
+        let mut out = shown.tokens();
+        match self.edits.new_seed {
+            edits::SeedChoice::Keep => {}
+            edits::SeedChoice::Random => out.push_str(" new_seed=random"),
+            edits::SeedChoice::Value(_) => out.push_str(" new_seed=<a number>"),
+        }
+        if self.edits.blend {
+            out.push_str(" blend=on");
+        }
+        if self.edits.spawn_search {
+            out.push_str(" spawn_search=on");
+        }
+        if !self.edits.reset_players.is_empty() {
+            out.push_str(&format!(" reset_players=<{} player(s)>", self.edits.reset_players.len()));
+        }
+        out
     }
 }
 
@@ -537,6 +570,13 @@ struct Analysis {
     /// Player files that do not read, `.dat_old` included: bed and logout
     /// spot unknown. Reported by number, never by name or UUID.
     unreadable_players: Vec<worlddata::UnreadablePlayer>,
+    /// Players who start over (`reset_players`): not in `players`, so no
+    /// layer keeps their bed or logout spot and nothing stops on them.
+    reset_players: Vec<Player>,
+    /// What the plan changes besides chunks, as concrete values.
+    edits: edits::Edits,
+    /// With `blend`: the kept overworld chunks Tectonic tagged.
+    blend: Option<edits::BlendScan>,
     claims: Option<Vec<ClaimOwner>>,
     waystones: Option<Vec<Waystone>>,
     all_dims: Vec<Dimension>,
@@ -594,14 +634,19 @@ impl Analysis {
 
     /// Every file in `playerdata/`, read or not.
     fn player_files(&self) -> usize {
-        self.players.len() + self.unreadable_players.len()
+        self.players.len() + self.unreadable_players.len() + self.reset_players.len()
     }
 
     /// A player file's number among all of them sorted by file name, from 1:
     /// how a line points at a file without naming anyone.
     fn file_no(&self, uuid: &str) -> usize {
-        let mut all: Vec<&str> =
-            self.players.iter().map(|p| p.uuid.as_str()).chain(self.unreadable_players.iter().map(|u| u.uuid.as_str())).collect();
+        let mut all: Vec<&str> = self
+            .players
+            .iter()
+            .chain(self.reset_players.iter())
+            .map(|p| p.uuid.as_str())
+            .chain(self.unreadable_players.iter().map(|u| u.uuid.as_str()))
+            .collect();
         all.sort_unstable();
         all.iter().position(|u| *u == uuid).map_or(0, |i| i + 1)
     }
@@ -665,6 +710,16 @@ fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> R
             p.name = owners.iter().find(|o| o.uuid == p.uuid && !o.name.is_empty()).map(|o| o.name.clone());
         }
     }
+    // Players who start over leave the analysis here: nothing keeps their bed
+    // or logout spot, and their files go in the run ([`edits`]).
+    let reset_uuids = edits::resolve_players(&spec.edits.reset_players, &players)?;
+    let reset_players: Vec<Player> = players.iter().filter(|p| reset_uuids.contains(&p.uuid)).cloned().collect();
+    players.retain(|p| !reset_uuids.contains(&p.uuid));
+    for (key, list) in [("bed_players", &settings.bed_players), ("logout_players", &settings.logout_players)] {
+        if let Some(p) = reset_players.iter().find(|p| list.iter().any(|e| e.eq_ignore_ascii_case(&p.uuid) || p.name.as_deref().is_some_and(|n| n.eq_ignore_ascii_case(e)))) {
+            return Err(format!("playerdata/{}... starts over (reset_players) and is on {key} too: one or the other", edits::short(&p.uuid)));
+        }
+    }
     // Whose bed / logout spot: names become UUIDs here, so the plan records
     // UUIDs and the fidelity harness (which reads no names) builds the same map.
     settings.resolve_players(&players)?;
@@ -694,6 +749,37 @@ fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> R
         picked
     };
 
+    let new_seed = match spec.edits.new_seed {
+        edits::SeedChoice::Keep => None,
+        edits::SeedChoice::Random => Some(edits::random_seed()),
+        edits::SeedChoice::Value(n) => Some(n),
+    };
+    if let Some(seed) = new_seed {
+        match level.seed {
+            None => return Err("new_seed: level.dat has no seed to change (Data.WorldGenSettings.seed)".to_string()),
+            // No numbers in these: a failed dry-run goes to the log, which leaves the box.
+            Some(now) if now == seed => return Err("new_seed: that is the world's seed already".to_string()),
+            Some(_) => {}
+        }
+        if spec.scope != Scope::All {
+            return Err(format!(
+                "new_seed: only a plan with scope 'all' may change the seed (this one is '{}'): every chunk that is not kept has to be reset, or old-seed land is left beside new-seed land outside the keep list",
+                spec.scope.token()
+            ));
+        }
+    }
+    if spec.edits.blend && new_seed.is_none() {
+        return Err("blend: the blending mark is for a new seed (new_seed); with the world's own seed the land around kept chunks comes back as it was".to_string());
+    }
+    let edits = edits::Edits {
+        seed_before: new_seed.and(level.seed),
+        new_seed,
+        blend: spec.edits.blend,
+        spawn_search: spec.edits.spawn_search,
+        spawn_y: if spec.edits.spawn_search { edits::SPAWN_SEARCH_Y } else { 0 },
+        reset_players: reset_uuids,
+    };
+
     let mut analysis = Analysis {
         online_mode: worlddata::server_property(&server_dir, "online-mode"),
         server_dir,
@@ -706,6 +792,9 @@ fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> R
         level,
         players,
         unreadable_players,
+        reset_players,
+        edits,
+        blend: None,
         claims,
         waystones,
         all_dims,
@@ -739,6 +828,27 @@ fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> R
         analysis.dims.push(DimResult { dim, scan, protection, selected, targets, structures });
     }
     analysis.dims.sort_by(|a, b| a.dim.id.cmp(&b.dim.id));
+    if analysis.edits.new_seed.is_some() {
+        // Every dimension with land has to be in the run: the seed is the world's.
+        let left_out: Vec<String> = analysis
+            .all_dims
+            .iter()
+            .filter(|d| anvil::store_summary(&d.store_dir(Store::Region)).0 > 0 && analysis.dim(&d.id).is_none())
+            .map(|d| d.id.clone())
+            .collect();
+        if !left_out.is_empty() {
+            return Err(format!(
+                "new_seed: the seed is the world's, so every dimension with land has to be in the run; not in it: {}",
+                left_out.join(", ")
+            ));
+        }
+    }
+    if analysis.edits.blend {
+        if let Some(d) = analysis.dim(OVERWORLD) {
+            let kept: BTreeSet<ChunkPos> = d.scan.chunks.iter().filter(|(pos, c)| c.in_store(Store::Region) && !d.targets.contains(*pos)).map(|(pos, _)| *pos).collect();
+            analysis.blend = Some(edits::blend_scan(&d.dim, &kept).map_err(|e| format!("blend: the kept chunks do not read ({e})"))?);
+        }
+    }
     collect_warnings(&mut analysis);
     Ok(analysis)
 }
@@ -976,6 +1086,12 @@ const WARNING_KINDS: [(&str, &str, usize); 17] = [
 /// would regenerate the same chunks of the same dimensions of the same world
 /// folder.
 pub fn plan_hash<'a>(level_name: &str, dims: impl IntoIterator<Item = (&'a str, &'a BTreeSet<ChunkPos>)>) -> String {
+    plan_hash_with(level_name, dims, &[])
+}
+
+/// [`plan_hash`], then one line per change the plan makes besides chunks
+/// ([`edits::Edits::hash_lines`]): with none, the same hash.
+pub fn plan_hash_with<'a>(level_name: &str, dims: impl IntoIterator<Item = (&'a str, &'a BTreeSet<ChunkPos>)>, edit_lines: &[String]) -> String {
     use sha2::{Digest, Sha256};
     let mut hasher = Sha256::new();
     hasher.update(format!("icraft-regen-plan v{PLAN_VERSION}\nlevel={level_name}\n"));
@@ -984,6 +1100,9 @@ pub fn plan_hash<'a>(level_name: &str, dims: impl IntoIterator<Item = (&'a str, 
         for (x, z) in targets {
             hasher.update(format!("{x},{z}\n"));
         }
+    }
+    for line in edit_lines {
+        hasher.update(format!("{line}\n"));
     }
     hasher.finalize().iter().map(|b| format!("{b:02x}")).collect()
 }
@@ -1018,7 +1137,8 @@ fn plan_json(a: &Analysis, hash: &str, created_utc: &str) -> String {
     wl!(out, "  \"settings_source\": {},", json_str(if a.settings_from_caller { "the launcher window (the policy file was not read)" } else { "defaults, then the policy file, then this run's overrides" }));
     wl!(out, "  \"policy_file\": {},", a.policy_text.as_deref().map_or("null".to_string(), json_str));
     wl!(out, "  \"plan_hash\": {},", json_str(hash));
-    wl!(out, "  \"hash_recipe\": \"sha256 of the UTF-8 text: 'icraft-regen-plan v{PLAN_VERSION}' LF, 'level=<level_name>' LF, then per dimension (sorted by id) 'dim=<id>' LF followed by '<x>,<z>' LF for each chunk (sorted by x, then z)\",");
+    wl!(out, "  \"hash_recipe\": \"sha256 of the UTF-8 text: 'icraft-regen-plan v{PLAN_VERSION}' LF, 'level=<level_name>' LF, then per dimension (sorted by id) 'dim=<id>' LF followed by '<x>,<z>' LF for each chunk (sorted by x, then z), then one line LF per world edit: 'seed_from=<old>' and 'seed=<new>', 'blend=kept-chunks', 'spawn=search y=<y>', 'reset_player=<uuid>' (sorted)\",");
+    wl!(out, "  \"world_edits\": {},", a.edits.to_json());
     wl!(out, "  \"total_chunks\": {},", a.total_targets());
     wl!(out, "  \"dimensions\": [");
     for (i, d) in a.dims.iter().enumerate() {
@@ -1275,6 +1395,8 @@ pub struct RunView {
     pub warning_groups: Vec<WarningGroup>,
     pub notes: Vec<String>,
     pub files: Vec<String>,
+    /// What the plan changes besides chunks, in words (since 2026-10-25).
+    pub edits: Vec<String>,
 }
 
 /// `71,791`
@@ -1649,7 +1771,40 @@ fn build_view(a: &Analysis, hash: &str, when_local: &str, when_utc: &str, elapse
         warning_groups: warning_groups(a),
         notes: a.notes.clone(),
         files,
+        edits: edit_lines(a),
     }
+}
+
+/// [`RunView::edits`]: what the plan does besides chunks, with the counts.
+fn edit_lines(a: &Analysis) -> Vec<String> {
+    let mut out = a.edits.describe(&a.reset_players);
+    if let Some(b) = &a.blend {
+        out.push(format!(
+            "  blending: {} kept overworld chunk(s) carry Tectonic's tag and are marked; {} are old to Tectonic already; {} are stored as oversized chunks and are left as they are",
+            num(b.tagged),
+            num(b.untagged),
+            num(b.external)
+        ));
+    } else if a.edits.blend {
+        out.push("  blending: the overworld is not part of this run, so nothing is marked".to_string());
+    }
+    if a.edits.new_seed.is_some() {
+        let caches = edits::stronghold_caches(&a.world_dir).len();
+        out.push(format!("  {caches} stronghold cache file(s) (ModernFix) go to the holding folder"));
+    }
+    for p in &a.reset_players {
+        let files = edits::player_files(&a.world_dir, &p.uuid).len();
+        out.push(format!("  {}: {files} file(s) in playerdata/ move", p.label()));
+        let other = edits::other_player_records(&a.world_dir, &p.uuid);
+        if !other.is_empty() {
+            out.push(format!(
+                "  {}: NOT moved, and still theirs when they come back (quests, skills, stages, advancements and the like): {}",
+                p.label(),
+                other.join("; ")
+            ));
+        }
+    }
+    out
 }
 
 /// `report.txt`: the view, as text.
@@ -1680,6 +1835,13 @@ fn report_text(v: &RunView) -> String {
     wl!(out, "  The defaults are the operator's decisions of 2026-10-11: beds 3x3, claims, {} blocks around world", protection::SPAWN_RADIUS_BLOCKS);
     wl!(out, "  spawn, waystones a player has activated or placed, and lived-in from {} ticks (ten minutes", num(protection::INHABITED_MIN_TICKS as usize));
     wl!(out, "  with a player within 128 blocks). Logout spots 3x3: the operator's ruling of 2026-10-22.");
+
+    if !v.edits.is_empty() {
+        heading(&mut out, "WORLD EDITS (besides the chunks; the plan's hash covers them)");
+        for line in &v.edits {
+            wl!(out, "  {line}");
+        }
+    }
 
     heading(&mut out, "DIMENSIONS FOUND");
     wl!(out, "  {:<40} {:<34} {:>18} {:>18} {:>18}", "id", "folder", "region", "entities", "poi");
@@ -2171,7 +2333,7 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
     let when_utc = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
 
     let a = analyse_with_structures(cfg, spec)?;
-    let hash = plan_hash(&a.level_name, a.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets)));
+    let hash = plan_hash_with(&a.level_name, a.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets)), &a.edits.hash_lines());
     let out_dir = make_out_dir(&a, &now_local.format("%Y%m%d-%H%M%S").to_string())?;
 
     let mut files = vec![
@@ -2245,7 +2407,7 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
 /// the launcher window both call; `who` names the asker.
 pub fn run_logged(cfg: &ServerConfig, spec: &RunSpec, who: &str) -> Result<Summary, String> {
     let dir = &cfg.server_dir;
-    audit(dir, log::Level::Info, &format!("request '{who}': {} -- reading the world (read-only)", spec.tokens()));
+    audit(dir, log::Level::Info, &format!("request '{who}': {} -- reading the world (read-only)", spec.log_text()));
     write_result(dir, "started: reading the world (nothing is modified)");
     let outcome = run(cfg, spec);
     match &outcome {

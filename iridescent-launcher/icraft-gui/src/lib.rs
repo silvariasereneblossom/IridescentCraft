@@ -1050,8 +1050,10 @@ const CYCLE_REQUEST_FILE: &str = ".icraft_cycle_request";
 const CYCLE_RESULT_FILE: &str = ".icraft_cycle_request.result";
 const CYCLE_REQUEST_POLL: Duration = Duration::from_secs(10);
 const CYCLE_WARN_LEAD: Duration = Duration::from_secs(60);
-/// A ~450-mod world save needs more than the Cycle button's 30 s (the old NSSM
-/// console-stop timeout was 120 s).
+/// A ~450-mod world save needs more than 30 s (the old NSSM console-stop
+/// timeout was 120 s). The Stop and Cycle buttons wait this long too since
+/// 2026-10-25: at 30 s the Stop button killed a save after a Chunky
+/// pregeneration (16:08 EDT 10-25, no "All dimensions are saved").
 const SCHEDULED_STOP_GRACE_SECS: u64 = 120;
 /// A warned restart countdown is running (request file or restart policy): one
 /// at a time.
@@ -3505,14 +3507,14 @@ impl IcraftApp {
                 // shutdown path: Forge prints "Stopping the server",
                 // unloads worlds, saves chunks, exits clean), then
                 // arms a watchdog that escalates to graceful kill
-                // after 30s and force kill 10s after that. Aborts on
-                // PID change so a new run isn't killed by a stale
-                // timer.
+                // after SCHEDULED_STOP_GRACE_SECS and force kill 10s
+                // after that. Aborts on PID change so a new run isn't
+                // killed by a stale timer.
                 // Operator intent: the heartbeat must not restart it (also
                 // cancels a pending auto-restart backoff).
                 mark_operator_stop();
-                log::info!("[lifecycle] Stop clicked (auto-escalates after 30s)");
-                if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                log::info!("[lifecycle] Stop clicked (auto-escalates after {SCHEDULED_STOP_GRACE_SECS}s)");
+                if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
                     clear_stale_operator_stop();
                     log::warn!("[lifecycle] stop failed: {e}");
                 }
@@ -3525,7 +3527,7 @@ impl IcraftApp {
                 // flush). Windows: writes `stop` to stdin, waits 5s,
                 // then taskkill /F (since plain taskkill /T is a no-op
                 // for headless Java -- no window to receive WM_CLOSE).
-                // Use when Stop's 30s grace is too long to wait.
+                // Use when Stop's save grace is too long to wait.
                 mark_operator_stop();
                 log::info!("[lifecycle] Kill clicked");
                 if let Err(e) = icraft_core::run::kill_active_server(false) {
@@ -3551,7 +3553,7 @@ impl IcraftApp {
             // Supervised run: flag cycle_requested and stop -- the supervise()
             // loop restarts it once the JVM has exited (or right away, if it is
             // sitting in an auto-restart backoff). Other task running: the old
-            // path -- stop_with_escalation (Stop's 30s grace + 10s force-kill
+            // path -- stop_with_escalation (the save grace + 10s force-kill
             // watchdog), set pending_restart, and let update()'s task-finished
             // handler run spawn_cycle_restart. Nothing running: go now.
             let cycle = ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0)));
@@ -3908,9 +3910,11 @@ impl IcraftApp {
                     send_console(&line);
                 }
             }
-            for (label, cmd) in [("progress", "chunky progress"), ("pause", "chunky pause"), ("continue", "chunky continue"), ("cancel", "chunky cancel")] {
+            for (label, cmds) in CHUNKY_BUTTONS {
                 if ui.add_enabled(up, egui::Button::new(label)).clicked() {
-                    send_console(cmd);
+                    for cmd in cmds {
+                        send_console(cmd);
+                    }
                 }
             }
         });
@@ -3934,8 +3938,8 @@ impl IcraftApp {
             set_heartbeat_status("");
             SUPERVISOR.cycle_requested.store(true, Ordering::SeqCst);
             if SUPERVISOR.server_live.load(Ordering::SeqCst) {
-                log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
-                if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                log::info!("[cycle] step 1: stop server (escalates after {SCHEDULED_STOP_GRACE_SECS}s), then self-update + sync + start");
+                if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
                     // No JVM yet (still in the sync/launch phase): it is
                     // already coming up fresh -- don't leave a stale flag
                     // that would turn a later Stop into a restart.
@@ -3946,8 +3950,8 @@ impl IcraftApp {
                 log::info!("[cycle] auto-restart backoff in progress -- restarting now");
             }
         } else if self.task_running() {
-            log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
-            if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+            log::info!("[cycle] step 1: stop server (escalates after {SCHEDULED_STOP_GRACE_SECS}s), then self-update + sync + start");
+            if let Err(e) = icraft_core::run::stop_with_escalation(SCHEDULED_STOP_GRACE_SECS, 10) {
                 log::warn!("[cycle] stop failed: {e}");
             }
             self.pending_restart = true;
@@ -4258,6 +4262,17 @@ fn draw_colored_title(ui: &mut egui::Ui) {
 /// spawn): the operator's choice for after the regeneration, 2026-10-25.
 const PREGEN_RADIUS_BLOCKS: u32 = 1000;
 
+/// The Server tab's other Chunky buttons, and the console lines each sends.
+/// Chunky asks for `chunky confirm` after `chunky cancel`: without it the task
+/// is only paused (`cancelled=false`), and a regeneration refuses while one is
+/// (found 2026-10-25, when the button sent the cancel alone).
+const CHUNKY_BUTTONS: [(&str, &[&str]); 4] = [
+    ("progress", &["chunky progress"]),
+    ("pause", &["chunky pause"]),
+    ("continue", &["chunky continue"]),
+    ("cancel", &["chunky cancel", "chunky confirm"]),
+];
+
 /// The console lines that start a Chunky pregeneration of the overworld,
 /// `radius` blocks around world spawn.
 fn pregen_commands(radius: u32) -> [String; 4] {
@@ -4311,6 +4326,12 @@ mod tests {
 
     /// started_by's last-of-each table is one per process.
     static SERIAL: Mutex<()> = Mutex::new(());
+
+    #[test]
+    fn the_cancel_button_confirms_the_cancel() {
+        let cancel = CHUNKY_BUTTONS.iter().find(|(label, _)| *label == "cancel").unwrap();
+        assert_eq!(cancel.1, ["chunky cancel", "chunky confirm"]);
+    }
 
     #[test]
     fn the_pregeneration_button_sends_chunky_its_four_lines() {
