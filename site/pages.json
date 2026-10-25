@@ -1,17 +1,21 @@
 {
-  "_comment": "Which wiki pages the public site publishes. The pages are the wiki pages the wiki sync makes from .minecraft/wiki/ (source_manifest: its files and link conversions); 'sidebar' is the wiki-only navigation page, kept here. 'include' is the whole list: add or remove one line to publish or unpublish a page. A page that is not listed is not published (a new page stays off the site until it is added here). A link from a published page to an unpublished one goes to that page on the GitHub wiki ('excluded_links': 'wiki') or is shown as plain text ('text'). 'github_links': false leaves out every link into the GitHub repository and its wiki (the 'Elsewhere' links, 'View on the GitHub wiki' and 'Edit on GitHub' in each footer, links to unpublished pages and to repository files, which are then plain text): the repository is private, so they would answer 404 to every visitor. 'site_url' is where the site is served (canonical and Open Graph URLs; its path is the base path the 404 page uses). Build: python site/build.py --source",
+  "_comment": "The public site: every page the wiki sync makes from .minecraft/wiki/ (source_manifest: its files and link conversions) except the ones under 'exclude', whose links become plain text. 'sidebar' is the wiki-only navigation page, kept in site/. 'order' only orders pages the sidebar and 'nav_extra' do not place (under More). 'pack_server' and 'pack_paths' mirror the pack server's ICRAFT_PACK_PATHS: a pack file a page links as a download goes to <pack_server>raw/main/<path> when its path starts with one of them ('.minecraft/*' = a file directly in .minecraft/), and is copied into the build otherwise. The build fails on any mention of the repository in a page's text ('forbidden_phrases', after removing 'allowed_phrases'), and on any URL of it anywhere. Build: python site/build.py",
 
   "site_title": "IridescentCraft",
   "tagline": "Tester guide & wiki",
   "repo": "silvariasereneblossom/IridescentCraft",
   "site_url": "https://iridescentcraft.sereneblossom.gay/",
+  "pack_server": "https://iridescentcraft.sereneblossom.gay/pack/",
   "index_page": "Tester-Installation-Guide",
-  "excluded_links": "wiki",
-  "github_links": false,
   "source_manifest": ".minecraft/tools/wiki-sync-manifest.json",
   "sidebar": "site/wiki-sidebar.md",
 
-  "include": [
+  "exclude": [
+    "Master-Design-Appendix",
+    "Tetra-Materials"
+  ],
+
+  "order": [
     "Tester-Installation-Guide",
     "Home",
     "Master-Design-Document",
@@ -37,5 +41,32 @@
   "nav_extra": {
     "Reference": ["Boss-Catalog", "Controls", "Mod-List"],
     "Meta": ["Credits", "License"]
-  }
+  },
+
+  "pack_paths": [
+    ".minecraft/distribution/client/",
+    ".minecraft/config/",
+    ".minecraft/kubejs/",
+    ".minecraft/defaultconfigs/",
+    ".minecraft/datapack_sources/",
+    ".minecraft/shaderpacks/",
+    ".minecraft/mods/",
+    ".minecraft/global_packs/",
+    ".minecraft/patchouli_books/",
+    ".minecraft/resourcepacks/",
+    ".minecraft/*",
+    ".minecraft/server_distribution/mods/"
+  ],
+
+  "forbidden_phrases": [
+    "\\bgit ?hub\\b",
+    "\\brepos?\\b",
+    "\\brepositor(y|ies)\\b",
+    "IridescentCraft-internal"
+  ],
+
+  "allowed_phrases": [
+    "github user",
+    "access to a source repository"
+  ]
 }

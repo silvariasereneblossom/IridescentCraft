@@ -270,3 +270,45 @@ sup.fnref { font-size: .75em; line-height: 0; }
   .content { padding: 0; }
   body { background: #fff; color: #000; }
 }
+
+/* Repository files shown on the site (files/) */
+.prose .crumbs { color: var(--muted); font-size: .9rem; font-family: var(--mono); overflow-wrap: anywhere; }
+.prose .file-meta { color: var(--muted); font-size: .9rem; }
+.prose .readme { border: 1px solid var(--border); border-radius: var(--radius); padding: 4px 20px 8px; margin: 0 0 1.5em; }
+.prose td.num, .prose th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* Buttons */
+.button {
+  display: inline-block; padding: 8px 16px; border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--surface-2); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+}
+.button:hover { text-decoration: none; color: var(--text); border-color: var(--blue); }
+.button.primary { background: var(--blue); border-color: var(--blue); color: #10202a; }
+.button.primary:hover { color: #10202a; filter: brightness(1.08); }
+.button:disabled { opacity: .6; cursor: progress; }
+
+/* The report form (report/) */
+.report-form { max-width: 720px; }
+.report-form .field { display: flex; flex-direction: column; gap: 6px; margin: 0 0 18px; }
+.report-form label { font-weight: 600; }
+.report-form .req { color: var(--pink); }
+.report-form input[type=text], .report-form select, .report-form textarea {
+  width: 100%; padding: 9px 11px; border-radius: var(--radius); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); font: inherit;
+}
+.report-form textarea { resize: vertical; min-height: 4.5em; }
+.report-form textarea.mono { font-family: var(--mono); font-size: .85rem; }
+.report-form input:focus, .report-form select:focus, .report-form textarea:focus {
+  outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(91, 206, 250, .2);
+}
+.report-form .hint { color: var(--muted); font-size: .88rem; }
+.report-form .count { color: var(--muted); font-size: .8rem; align-self: flex-end; min-height: 1em; }
+.report-form .actions { margin-top: 8px; }
+/* The bot trap: off screen, not display:none (bots skip hidden fields) */
+.report-form .hp { position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+.report-status {
+  max-width: 720px; padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--pink);
+  background: color-mix(in srgb, var(--pink) 14%, transparent);
+}
+.report-status:focus { outline: none; }
+.report-note { color: var(--muted); }

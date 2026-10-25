@@ -2,12 +2,13 @@ name: Wiki site
 
 # Builds the public site served at https://iridescentcraft.sereneblossom.gay/
 # from the wiki source in this repository, .minecraft/wiki/: the Tester
-# Installation Guide as the front page plus the player-facing pages listed in
-# site/pages.json. The pages are made the way the wiki sync makes the GitHub
-# wiki pages (.minecraft/tools/sync-wiki.py and its manifest), so the site does
-# not need the GitHub wiki, which a private repository on GitHub Free does not
-# have. Generator, page list, sidebar and link checker live in site/ (Python
-# standard library only).
+# Installation Guide as the front page plus every public wiki page except those
+# site/pages.json excludes, the repository files the pages link to (copied under
+# files/), and the report form (report/). The pages are made the way the wiki
+# sync makes the GitHub wiki pages (.minecraft/tools/sync-wiki.py and its
+# manifest), so the site does not need the GitHub wiki, which a private
+# repository on GitHub Free does not have. Generator, page list, sidebar and
+# link checker live in site/ (Python standard library only).
 #
 # The built files are published to the orphan branch `site-build` as one fresh
 # commit (force-pushed; the static files plus build.json). The web server
@@ -17,8 +18,17 @@ name: Wiki site
 #
 # Triggers:
 #   - push to main touching the wiki source, the sync manifest or script,
-#     site/** or this file; a daily schedule; manual dispatch
+#     site/**, this file, or a repository file the site copies; a daily
+#     schedule; manual dispatch
 #   - pull_request touching the same: build + link check only, never publishes
+#
+# The blocks between ">>> site/build.py --sync-workflow" and "<<< site/build.py"
+# are generated: the repository files the site copies, as path filters and as
+# sparse-checkout lines. `python site/build.py --sync-workflow` rewrites them;
+# the build job's last step fails (after the publish has its files) when they
+# are stale. A page that starts linking a file outside them fails the build in
+# the Action (the file is not in the sparse checkout), with that command in the
+# message.
 
 on:
   push:
@@ -29,6 +39,14 @@ on:
       - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
+      # >>> site/build.py --sync-workflow: paths
+      - '.minecraft/server_distribution/PAT_SETUP.md'
+      - '.minecraft/server_distribution/iridescentserver.bat'
+      - '.minecraft/server_distribution/iridescentserver.sh'
+      - 'iridescent-aptitudes-mod/**'
+      - 'iridescent-launcher/BUILD.md'
+      - 'iridescent-origins-mod/**'
+      # <<< site/build.py
   pull_request:
     paths:
       - '.minecraft/wiki/**'
@@ -36,6 +54,14 @@ on:
       - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
+      # >>> site/build.py --sync-workflow: paths
+      - '.minecraft/server_distribution/PAT_SETUP.md'
+      - '.minecraft/server_distribution/iridescentserver.bat'
+      - '.minecraft/server_distribution/iridescentserver.sh'
+      - 'iridescent-aptitudes-mod/**'
+      - 'iridescent-launcher/BUILD.md'
+      - 'iridescent-origins-mod/**'
+      # <<< site/build.py
   schedule:
     - cron: '17 5 * * *'
   workflow_dispatch:
@@ -51,6 +77,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    outputs:
+      built: ${{ steps.keep.outcome == 'success' }}
     steps:
       # Full history (each page's date is the last commit that changed its
       # source) but no file contents beyond the sparse paths: a blobless clone
@@ -67,19 +95,28 @@ jobs:
             /.minecraft/wiki/
             /.minecraft/tools/wiki-sync-manifest.json
             /.minecraft/tools/sync-wiki.py
+            # >>> site/build.py --sync-workflow: sparse
+            /.minecraft/server_distribution/PAT_SETUP.md
+            /.minecraft/server_distribution/iridescentserver.bat
+            /.minecraft/server_distribution/iridescentserver.sh
+            /iridescent-aptitudes-mod/
+            /iridescent-launcher/BUILD.md
+            /iridescent-origins-mod/
+            # <<< site/build.py
           sparse-checkout-cone-mode: false
 
-      # A link that matches no page is rendered as plain text and listed in the
-      # job summary; it does not fail the build (add --strict for that).
+      # Fails on a link that resolves to nothing, and on any mention of or link
+      # to the repository (the summary lists them).
       - name: Build the site
         env:
           GIT_NO_LAZY_FETCH: '1'
-        run: python3 site/build.py --source --out site/_build --report "$GITHUB_STEP_SUMMARY"
+        run: python3 site/build.py --out site/_build --report "$GITHUB_STEP_SUMMARY"
 
       - name: Check links
         run: python3 site/linkcheck.py site/_build
 
       - name: Keep the build for the publish job
+        id: keep
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
@@ -88,8 +125,14 @@ jobs:
           retention-days: 3
           if-no-files-found: error
 
+      # Last, so a stale list still publishes (and turns the run red).
+      - name: Check the generated path lists
+        env:
+          GIT_NO_LAZY_FETCH: '1'
+        run: python3 site/build.py --check-workflow --out "$RUNNER_TEMP/site-check" > /dev/null
+
   publish:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: always() && needs.build.outputs.built == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-24.04
     permissions:
