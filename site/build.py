@@ -444,12 +444,12 @@ class Site:
         f = self.files
         if path in self.page_of_src:  # a wiki source file: its page
             return self.page_link(where, root, self.page_of_src[path], fragment)
+        if not f.exists(path):
+            self.unresolved.setdefault(where, set()).add(f"{path} (not in the repository)")
+            return {"href": "#"}
         if path.startswith(".minecraft/wiki/") and path.lower().endswith(".md"):
             self.unresolved.setdefault(where, set()).add(
                 f"{path} (a wiki source that is not one of the public pages)")
-            return {"href": "#"}
-        if not f.exists(path):
-            self.unresolved.setdefault(where, set()).add(f"{path} (not in the repository)")
             return {"href": "#"}
         ext = posixpath.splitext(path)[1].lower()
         if path in f.dirs:
