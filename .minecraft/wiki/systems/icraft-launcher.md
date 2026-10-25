@@ -141,7 +141,7 @@ For tracking, see the commit log under the `iridescent-launcher: ...` prefix. Le
 
 - The live server runs only under the launcher. The existing `iridescentserver.bat` still works for installing and starting a server elsewhere, but it does not put back a server's own settings or check its whitelist before a start: it starts the server with the pack's settings as they stand, whitelist off.
 - CI builds the Windows GUI, so no host needs the Rust toolchain. The `Update Launcher` button, and every Cycle, installs a new build in place.
-- Log auto-push needs a PAT; see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md). The launcher discovers the PAT the same way as the .bat path, from an env var or a file.
+- The sync needs a PAT with read access to the pack repository, which is private, and the log auto-push needs one too; see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md). The launcher discovers the PAT the same way as the .bat path, from an env var or a file.
 - The first mod download is sequential, as in `server_install.ps1`. The server's 428 mods on a fresh install take about 10-20 minutes, depending on bandwidth. Parallel download through rayon is a v0.3.1 follow-up.
 - The launcher does not pre-generate terrain. Its worldgen pages (above) change settings and reset chunks, and a regeneration run only checks that no Chunky task is left unfinished; the operator still runs pre-generation through `/chunky`.
 
