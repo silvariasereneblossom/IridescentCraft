@@ -75,6 +75,7 @@ for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars
         )
     )
 )
+REM landing pad, 77 bytes as LF: a CRLF bat swapped for this LF one resumes.
 
 set "FORCE_ARG="
 if /i "%1"=="-Force"  set "FORCE_ARG=-Force"
