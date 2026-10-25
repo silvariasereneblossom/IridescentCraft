@@ -4,7 +4,7 @@ Player-facing status of known bugs, limitations and recent fixes in IridescentCr
 
 Each issue gets the short version here: a symptom, a status and a one-line resolution. The detailed root-cause write-ups (scripts, line numbers, NBT/code specifics) are in the private developer log.
 
-Status legend: **Open** · **Investigating** · **Mitigated** (worked around; safe to play) · **Deferred** (known, fix scheduled later) · **Known limitation** (intentional) · **Needs verification** (implemented, awaiting in-game confirmation) · **Resolved**.
+Status legend: **Open** · **Investigating** · **Mitigated** (worked around; safe to play) · **Deferred** (known, fix scheduled later) · **Known limitation** (intentional) · **Needs verification** (implemented, awaiting in-game confirmation) · **Fixed** / **Resolved** (listed under Recently resolved).
 
 ---
 
@@ -25,11 +25,12 @@ text) or a gem stops working entirely, report it right away: those are loader-le
 failures, not balance issues.
 
 
-### Create's electron tube needed Tier 3 quartz: **Fixed (22 October 2026)**
-Quartz was a Tier 3 item, so a Tier 1 player could not craft rose quartz, electron tubes or the Create machines made with them. Quartz is Tier 1 now and its ore generates in the Overworld again, but only in chunks generated from 22 October on: explore new land to find it.
-
-### The MekaSuit did not stop Ad Astra's freezing on the Moon and Mars: **Fixed (19 October 2026)**
-A full MekaSuit now counts as a space suit on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, charged or not. Each planet's own dangers (the cold of Mars, Mercury's night and Glacio, Mercury's sun, Venus's acid) still need the planet enchantments: Thermal Regulation, Stellar Shield and Pressure Shell.
+### Most of the Overworld was regenerated on 25 October 2026: **Known limitation**
+The land outside the kept base area was generated again from the same world seed, so it has the same shape, rivers and structures as before, with this pack's current worldgen: ores at the new, lower rates and Overworld quartz. Every chest out there is refilled. What to expect:
+- Waystones in the regenerated land were reset. A village that comes back brings a new waystone that has to be activated again; an old entry for it in your list may no longer work.
+- Villagers in the regenerated land are new ones, so hearts and marriages with the old ones are gone.
+- Next to the kept area a few structures are cut: their part inside the kept area is the old one, the rest was generated again.
+- The chunk where each player last logged out was kept, so there may be a small patch of old terrain where you logged out.
 
 ### Server can lag (low TPS) under heavy load: **Mitigated**
 On a full server with many players and active mobs, the tick rate could drop and feel laggy to the lowest-ping player. Raising the server heap and turning off some per-spawn diagnostic logging mitigates it; a full fix waits on more RAM for the server host.
@@ -58,20 +59,14 @@ The pack handles a conflict between Aetheric Tetranomicon and its modular armor 
 ### MekaSuit has no base armor stats: **Mitigated**
 Mekanism's end-game MekaSuit has no innate armor values by design: all its protection comes from installed modules. The MekaSuit Mk2 upgrade (June 2026 rebuild) adds real base armor, toughness and knockback resistance on top of the module system, so the top suit works with dimension-based difficulty scaling. The base suit without the upgrade stays module-only, as Mekanism designed it.
 
-### Some loot chests open as ordinary shared chests instead of Lootr ones: **Fixed (2026-10-25)**
-Lootr gives every player their own loot from a structure chest, but it only converted a chest once every chunk around it had finished loading, and it gave up after fifteen minutes or a server restart. On this server that rarely happened before a player reached the chest, so most chests opened as ordinary shared ones. Now any loot chest, barrel or shulker box that has not been opened yet becomes a Lootr container the moment a player opens it, wherever it is and however it was placed. A chest that was already opened as an ordinary chest stays ordinary, and modded chest blocks that Lootr does not support are unchanged.
-
 ### Reforged Botania / Cataclysm armors render approximately: **Known limitation**
 Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) and Cataclysm (Ignitium) armors render on the vanilla armor model. They keep their color and material identity, but the proportions differ slightly from the source mod's custom model. This is intentional and will be revisited only if feedback calls for it.
 
 ### Structure loot is migrating to themed pools: **In progress**
 Marquee structures are moving to per-structure themed loot pools (70% themed / 30% baseline). A few structures have partial coverage until their loot-table IDs are verified.
 
-### Tester pack-sync may fail without an obvious symptom: **Resolved**
-In the past the game could launch on a stale pack with no warning when an update failed. The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately). A sync that did not complete is written to a status file in the instance, and since 2026-10-18 the game says so in chat when you join a world.
-
 ### Ad Astra (space dimensions): **In progress**
-The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). The space enchantments' books lie in chests on their planets, and since 2026-10-19 three levels across a set of armour stop a planet's hazard (they took 99% off before). The `planetary_loot` system has a known low-priority error that will clear once that work lands.
+The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). The space enchantments' books lie in chests on their planets, and since 2026-10-19 three levels across a set of armour stop a planet's hazard (they took 99% off before).
 
 ### ~72 custom items use placeholder art: **Open**
 About 72 custom items (progression tokens, boss materials, rings, end-game items, etc.) use tinted vanilla textures for now, as functional, color-coded placeholders. Proper pixel art is a pending polish task.
@@ -102,6 +97,7 @@ Implemented features awaiting confirmation on a live world:
 - Mekanism balance changes (2.5x machine RF costs, ERA-4 fusion/fission output buffs, reactor force-shutdown, Digital Miner recipe + T4 gate)
 - Food-system overhaul (hunger drain, seed drops, structure-food reduction)
 - Farmer's Delight cooking conversions
+- Lootr on open (25 October 2026): a never-opened structure chest in new land opens as a Lootr chest, with loot of its own for each player
 
 ---
 
@@ -116,6 +112,8 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Iron's Spellbooks' *Pocket Dimension* spell could be cast long before Tier 4; since October 2026 it is refused until Tier 4.
 
 **Items**
+- Quartz was a Tier 3 item, so a Tier 1 player could not craft rose quartz, electron tubes or the Create machines made with them. Since 22 October 2026 quartz is Tier 1 and its ore generates in the Overworld again, in chunks generated from that day on: since the 25 October regeneration that is most of the Overworld.
+- A full MekaSuit did not count as a space suit. Since 19 October 2026 it does on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, charged or not. Each planet's own dangers (the cold of Mars, Mercury's night and Glacio, Mercury's sun, Venus's acid) still need the planet enchantments: Thermal Regulation, Stellar Shield and Pressure Shell.
 - Two Engineering skills (Material Save, Craft Bonus) handed out free materials or copies of items on every inventory change, not only on a craft. Since October 2026 they roll only on a real craft.
 
 **Bosses**
@@ -153,6 +151,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - New: `/icraft armormods` dumps every live armor/toughness modifier on you, for precise bug reports.
 
 **Loot & chests**
+- Most loot chests opened as ordinary shared chests instead of Lootr ones: Lootr only converted a chest once every chunk around it had finished loading, and gave up after fifteen minutes or a restart. Since 25 October 2026 (from the next server restart) a loot chest, barrel or shulker box that has not been opened yet becomes a Lootr container the moment a player opens it, however it was placed. Chests already opened as ordinary ones stay ordinary; modded chest blocks Lootr does not support are unchanged.
 - Some chests rolled the pack's extra loot twice: Forbidden & Arcanus's additions to End City and bastion treasure, jungle temples, desert pyramids, underwater ruins, pillager outposts, dungeons and the three village smiths ran every other loot rule a second time, so those chests held about twice the Codex tokens, Tetra scrolls and darts their loot rules give. Since 19 October 2026 (chests opened from the next server restart) each rolls once, like the Ender Dragon's drops; village artifacts stay at about one chest in ten.
 - Endermen rolled the pack's loot rules twice whenever Forbidden & Arcanus added its ender pearl fragments: in the End they dropped a Codex Token III about one kill in ten instead of one in twenty, and everywhere twice the RFTools Dimensions lost knowledge and dimlets. Since 19 October 2026 (from the next server restart) each kill rolls once; the same fix covers Forbidden & Arcanus's bat, squid, zombie, drowned and spawner drops, which change nothing you would notice.
 - Abandoned mineshaft chests rolled the pack's extra loot twice the same way: about one Codex Token I a chest where their loot rules give half that, and twice the artifacts, treasure fragments and backpacks. Since 19 October 2026 (chests opened from the next server restart) they roll once, like the other chests. Valhelsia Structures' treasure jars got the same fix; their second roll added nothing, so a broken treasure jar gives what it did.
@@ -167,7 +166,6 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Modded loot modifiers (grass seeds, Farmer's Delight scavenging, Aether drops) are restored after a config change had silently suppressed them.
 - Apotheosis gems no longer roll with broken or empty bonuses. Elemental gems are fixed and rebalanced, two gems disabled by a duplicate-slot conflict (Guardian, Intelligent) now load, and the magic-weapon affix pool no longer resolves to empty.
 - Epic Dungeons, towers and ocean structures are retuned to tier-appropriate loot.
-- The Lootr chest-conversion mode is retuned so village and structure chests convert reliably.
 
 **Magic**
 - Unified mana pool: Ars Nouveau and Iron's Spells now draw from one shared mana pool.
@@ -203,6 +201,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - The FTB suite, Champions Unofficial, Truly Modular, PacketFixer and the old scaling mods are removed and replaced (see [Mod Overview](../mods/overview.md#removed-mods)).
 - Several client-only mods that crashed the dedicated server were identified and handled.
 - The launcher's cleanup pass now catches tester-sync drift (stale or mismatched custom jars) automatically.
+- The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately).
 - When a pack update fails, the pre-launch sync no longer starts silently on a stale pack: it writes a sync marker, and since 2026-10-18 the game says so in chat when you join a world. A new-machine setup guide documents the correct install layout.
 - A periodic janitor sweeps up stray marker items left behind by the boss-wave randomizer.
 
