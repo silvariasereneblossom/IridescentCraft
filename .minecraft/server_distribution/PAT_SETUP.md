@@ -1,7 +1,7 @@
 # Server-side PAT setup: reading the pack, pushing logs
 
 > **The key now has to READ the pack repository (2026-10-25).** The pack
-> repository `silvariasereneblossom/IridescentCraft` is private. The
+> repository (`IridescentCraft`) is private. The
 > launcher's sync (`icraft-gui` / `icraft serve`: the branch HEAD, the compare
 > between two commits, each changed file, the full zip, the launcher's own
 > update) reads it only with this key: with no key, or a revoked or expired
@@ -39,7 +39,7 @@ GitHub.com → Settings → Developer settings → **Personal access tokens
 |---|---|
 | Token name | `icraft-server-log-push` (or anything memorable) |
 | Expiration | 90 days (rotate on calendar) |
-| Repository access | **Only select repositories** → `silvariasereneblossom/IridescentCraft` (and `IridescentCraft-logs` for the log push) |
+| Repository access | **Only select repositories** → `IridescentCraft` (and `IridescentCraft-logs` for the log push) |
 | Repository permissions → Contents | **Read and write** (Read is the minimum: the sync reads the private pack with it) |
 
 Generate the token and copy the `github_pat_...` string. GitHub shows it

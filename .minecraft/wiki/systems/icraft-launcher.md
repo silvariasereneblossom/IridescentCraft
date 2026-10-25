@@ -10,7 +10,7 @@ The source is in `iridescent-launcher/` at the project root.
 
 | Phase | Original script | Subcommand |
 |---|---|---|
-| -1 (Z mirror / GitHub zip) | `sync_from_repo.bat` | `icraft sync` (also full orchestration) |
+| -1 (Z mirror / pack zip) | `sync_from_repo.bat` | `icraft sync` (also full orchestration) |
 | 0 (diff sync) | `phase0_sync.ps1` (~280 LoC) | `icraft sync` (native, no shell-out) |
 | 0.5 (self-update swap) | inline bat block | `icraft self-update` |
 | 1 (java check) | inline bat block | `icraft check-java` |
@@ -35,12 +35,12 @@ The Rust workspace has three crates:
 - `icraft-cli`: the `icraft` binary, with clap-based subcommands; headless. NSSM, systemd and scheduled tasks use it.
 - `icraft-gui`: the `icraft-gui` binary. An eframe/egui window with one button per subcommand and a scrolling log pane fed by a custom `log` appender and an mpsc channel. It keeps the install dir between launches in eframe's storage and has a native folder picker on Windows (`rfd`).
 
-With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` on a Linux dev host produces only the CLI (about 3.8 MB). The GUI's eframe dependency tree is heavy (about 600-800 MB of target/); CI builds it on a Windows runner and commits the exe to the repo after every change to the launcher's source.
+With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` on a Linux dev host produces only the CLI (about 3.8 MB). The GUI's eframe dependency tree is heavy (about 600-800 MB of target/); CI builds it on a Windows runner and commits the exe to the pack after every change to the launcher's source.
 
 ## Capabilities
 
 **Native, no shell-out:**
-- GitHub diff-based repo sync (it replaces the GitHub compare API and raw.githubusercontent.com fetches of `phase0_sync.ps1`, and falls back to the full zip at ≥300 changed files)
+- Diff-based pack sync (it replaces the compare and raw-file fetches of `phase0_sync.ps1`, and falls back to the full zip at ≥300 changed files)
 - Packwiz `.pw.toml` parser (strict TOML, with a line-regex fallback for the edge case of an apostrophe in a name)
 - Mod download that follows redirects, validates sizes, walks fallback URLs and retries each URL
 - Full-zip download and extraction with the `zip` crate
@@ -48,7 +48,7 @@ With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` 
 - Forge installer download and the `--installServer` run
 - EULA write
 - Java spawn with Aikar flags
-- Crash-report capture and the tail of latest.log; the server's logs and crash reports are pushed to a private log repository, never to this public one
+- Crash-report capture and the tail of latest.log; the server's logs and crash reports are pushed to a private log store, never published
 - PAT auth through the `ICRAFT_GH_TOKEN` env var or the `.icraft_token` file
 - Hang-detection watchdog: it polls the mtime of `logs/latest.log` and kills the server on `boot_timeout` (default 15 min) or `idle_timeout` (default 15 min, after boot), with a graceful SIGTERM equivalent so worlds flush. Both can be set per launch with `--boot-timeout` / `--idle-timeout`.
 - Crash detection (since 2026-10-15): when the game writes its own fatal log lines, the run counts as a crash whatever exit code the JVM returns. A server whose tick loop had died could exit with code 0 and pass for a clean stop, so it was never restarted, or its JVM stayed alive for minutes with the status still saying "up". Now a crashed run is restarted, a JVM still alive 30 seconds after a failed stop is killed, and after three restarts in 30 minutes that did not bring the server up, the launcher gives up and says so. A Cycle request (not only the button at the server) then starts it again.
@@ -89,7 +89,7 @@ With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` 
 - Every change that reaches a config file is logged, and each file is kept as it was before the first change to it. `icraft settings` does the same from the command line.
 
 **Who may join (since 2026-10):**
-- A server's whitelist, operator list, ban lists and name cache are that server's own. They are not part of the pack, and the launcher's sync never writes or deletes them, whatever the pack repository holds.
+- A server's whitelist, operator list, ban lists and name cache are that server's own. They are not part of the pack, and the launcher's sync never writes or deletes them, whatever the pack holds.
 - Whether the whitelist is on is a setting of the server too. It is kept on the same list as the worldgen settings above, so the launcher writes it back before every server start and a pack update cannot switch it off. A value that was already edited into the file can be adopted as it stands (`icraft settings pin`).
 - The launcher will not start a server with its door open by accident. If a server switched its whitelist (or account checking) on and the launcher cannot put that setting back before a start, it does not start the server at all. It leaves the reason in a file next to `server.properties` and tries again on its next automatic restart attempts. A server that is down is better than one anybody can join. `icraft settings start-check` runs the same check without starting anything.
 - On a server that does not check accounts (`online-mode=false`), the game's own `whitelist add` command stores an ID the player never has, so the player stays locked out. The server folder carries a small script, `manage_whitelist.ps1`, that adds, removes, lists and checks entries correctly; `whitelist reload` in the launcher's console box, or the next restart, makes a change take effect.
@@ -99,7 +99,7 @@ With `default-members = ["icraft-core", "icraft-cli"]`, `cargo build --release` 
 **GUI extras:**
 - A row of status badges: Forge present, EULA, mod count, last sync SHA, backup age
 - Color-coded log lines per level (red ERROR / orange WARN / blue INFO / gray DEBUG)
-- An "Update Launcher" button: it pulls a fresh `icraft-gui.exe` from the repo, applies it through the existing self-update flow, starts the new instance and exits cleanly. This is the Path A flow (the binary is committed to the repo, where CI builds it); GitHub Releases (Path B) are later polish.
+- An "Update Launcher" button: it pulls a fresh `icraft-gui.exe` from the pack, applies it through the existing self-update flow, starts the new instance and exits cleanly. This is the Path A flow (the binary ships with the pack, where CI builds it); separate release downloads (Path B) are later polish.
 
 ## Install + launch
 
@@ -131,17 +131,17 @@ nssm start IridescentCraft
 ## Roadmap
 
 - v0.6: replace the existing `iridescentserver.bat` with a 2-line shim (`icraft.exe serve`). The bats stay alongside as a fallback for one release.
-- v0.7, shipped without GitHub Releases: CI (`build-icraft-gui.yml`) builds `icraft-gui.exe` and commits it, with its sha256, into `server_distribution`, and the launcher's update step applies staged `.new` copies of its own files and relaunches, with no operator step.
+- v0.7, shipped without separate release downloads: CI (`build-icraft-gui.yml`) builds `icraft-gui.exe` and commits it, with its sha256, into `server_distribution`, and the launcher's update step applies staged `.new` copies of its own files and relaunches, with no operator step.
 - v0.8: port the client-side launcher scripts (PrismLauncher pre/post hooks). This is out of scope for now, and the client flow stays unchanged.
 - v0.9: port build_mod.sh (×7 mods), extract_mobdiag, validate_datapack_references and build_codex.
 
-For tracking, see the commit log under the `iridescent-launcher: ...` prefix. Lessons-learned entries on the implementation are in the internal repo.
+For tracking, see the commit log under the `iridescent-launcher: ...` prefix. Lessons-learned entries on the implementation are in the private developer notes.
 
 ## Caveats
 
 - The live server runs only under the launcher. The existing `iridescentserver.bat` still works for installing and starting a server elsewhere, but it does not put back a server's own settings or check its whitelist before a start: it starts the server with the pack's settings as they stand, whitelist off.
 - CI builds the Windows GUI, so no host needs the Rust toolchain. The `Update Launcher` button, and every Cycle, installs a new build in place.
-- The sync needs a PAT with read access to the pack repository, which is private, and the log auto-push needs one too; see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md). The launcher discovers the PAT the same way as the .bat path, from an env var or a file.
+- The server's sync and its log auto-push both need an access token (a PAT); see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md). The launcher discovers the PAT the same way as the .bat path, from an env var or a file.
 - The first mod download is sequential, as in `server_install.ps1`. The server's 428 mods on a fresh install take about 10-20 minutes, depending on bandwidth. Parallel download through rayon is a v0.3.1 follow-up.
 - The launcher does not pre-generate terrain. Its worldgen pages (above) change settings and reset chunks, and a regeneration run only checks that no Chunky task is left unfinished; the operator still runs pre-generation through `/chunky`.
 
