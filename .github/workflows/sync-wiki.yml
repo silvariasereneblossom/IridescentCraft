@@ -46,7 +46,10 @@ permissions:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.head_commit.message, '[skip wiki]') }}
+    # A private repository on GitHub Free has no wiki: the job is skipped, not
+    # failed, once the repository is private. The public site no longer depends
+    # on it (wiki-site.yml builds from .minecraft/wiki/ directly).
+    if: ${{ !github.event.repository.private && !contains(github.event.head_commit.message, '[skip wiki]') }}
     steps:
       - name: Checkout main repo
         uses: actions/checkout@v4

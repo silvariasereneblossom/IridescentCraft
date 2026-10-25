@@ -1,35 +1,39 @@
 name: Wiki site
 
 # Builds the public site served at https://iridescentcraft.sereneblossom.gay/
-# from the GitHub wiki: the Tester Installation Guide as the front page plus
-# the player-facing wiki pages listed in site/pages.json. Generator, page list
-# and link checker live in site/ (Python standard library only).
+# from the wiki source in this repository, .minecraft/wiki/: the Tester
+# Installation Guide as the front page plus the player-facing pages listed in
+# site/pages.json. The pages are made the way the wiki sync makes the GitHub
+# wiki pages (.minecraft/tools/sync-wiki.py and its manifest), so the site does
+# not need the GitHub wiki, which a private repository on GitHub Free does not
+# have. Generator, page list, sidebar and link checker live in site/ (Python
+# standard library only).
 #
 # The built files are published to the orphan branch `site-build` as one fresh
 # commit (force-pushed; the static files plus build.json). The web server
-# fetches that branch anonymously and serves it as plain files from its root.
-# No push is made when the output is unchanged (build.json aside).
+# fetches that branch every 15 minutes (with its own key) and serves it as
+# plain files from its root. No push is made when the output is unchanged
+# (build.json aside).
 #
 # Triggers:
-#   - gollum: a page edited on the wiki web UI
-#   - workflow_run "Sync wiki": the wiki is regenerated from .minecraft/wiki/ by
-#     sync-wiki.yml, whose git push to the wiki does not raise a gollum event
-#   - push to main touching site/** or this file; a daily schedule; manual dispatch
-#   - pull_request touching site/**: build + link check only, never publishes
+#   - push to main touching the wiki source, the sync manifest or script,
+#     site/** or this file; a daily schedule; manual dispatch
+#   - pull_request touching the same: build + link check only, never publishes
 
 on:
-  gollum:
-  workflow_run:
-    workflows: ["Sync wiki"]
-    types: [completed]
-    branches: [main]
   push:
     branches: [main]
     paths:
+      - '.minecraft/wiki/**'
+      - '.minecraft/tools/wiki-sync-manifest.json'
+      - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
   pull_request:
     paths:
+      - '.minecraft/wiki/**'
+      - '.minecraft/tools/wiki-sync-manifest.json'
+      - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
   schedule:
@@ -47,25 +51,30 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    # After "Sync wiki", only rebuild when that sync succeeded.
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
-      - name: Checkout the generator
+      # Full history (each page's date is the last commit that changed its
+      # source) but no file contents beyond the sparse paths: a blobless clone
+      # of a few MB. GIT_NO_LAZY_FETCH below makes sure the build never needs
+      # more than that.
+      - name: Checkout the wiki source and the generator
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
           sparse-checkout: |
-            site
-            .minecraft/tools/wiki-sync-manifest.json
+            /site/
+            /.minecraft/wiki/
+            /.minecraft/tools/wiki-sync-manifest.json
+            /.minecraft/tools/sync-wiki.py
           sparse-checkout-cone-mode: false
 
-      - name: Clone the wiki
-        run: git clone --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
-
-      # A link that matches no wiki page is rendered as plain text and listed
-      # in the job summary; it does not fail the build (add --strict for that).
+      # A link that matches no page is rendered as plain text and listed in the
+      # job summary; it does not fail the build (add --strict for that).
       - name: Build the site
-        run: python3 site/build.py --wiki wiki --out site/_build --report "$GITHUB_STEP_SUMMARY"
+        env:
+          GIT_NO_LAZY_FETCH: '1'
+        run: python3 site/build.py --source --out site/_build --report "$GITHUB_STEP_SUMMARY"
 
       - name: Check links
         run: python3 site/linkcheck.py site/_build
@@ -99,7 +108,7 @@ jobs:
           set -euo pipefail
           remote="https://github.com/${GITHUB_REPOSITORY}.git"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
-          wiki=$(python3 -c 'import json; print(json.load(open("out/build.json"))["wiki_commit"][:7])')
+          src=$(python3 -c 'import json; print(json.load(open("out/build.json"))["wiki_commit"][:7])')
           cd out
           # A brand-new single commit with no history: the branch only ever
           # holds the current site.
@@ -107,8 +116,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -q -m "Site build from wiki ${wiki} (generator ${GITHUB_SHA::7})"
-          if git ls-remote --exit-code --heads "$remote" site-build > /dev/null; then
+          git commit -q -m "Site build from .minecraft/wiki at ${src} (generator ${GITHUB_SHA::7})"
+          # With the key: on a private repository an anonymous ls-remote fails,
+          # which would read as "no site-build yet" and push every time.
+          if git -c http.extraheader="$auth" ls-remote --exit-code --heads "$remote" site-build > /dev/null; then
             git -c http.extraheader="$auth" fetch -q --depth 1 "$remote" refs/heads/site-build
             if git diff --quiet FETCH_HEAD HEAD -- . ':(exclude)build.json'; then
               echo "Site unchanged since the last publish (only build.json differs): nothing pushed." | tee -a "$GITHUB_STEP_SUMMARY"
@@ -116,4 +127,4 @@ jobs:
             fi
           fi
           git -c http.extraheader="$auth" push -q --force "$remote" HEAD:refs/heads/site-build
-          echo "Published $(git rev-parse --short HEAD) (wiki ${wiki}) to the site-build branch." | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Published $(git rev-parse --short HEAD) (.minecraft/wiki at ${src}) to the site-build branch." | tee -a "$GITHUB_STEP_SUMMARY"

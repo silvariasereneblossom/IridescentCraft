@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
-"""Build the IridescentCraft website from the GitHub wiki.
+"""Build the IridescentCraft website from the wiki pages in the repository.
 
-    python site/build.py --wiki path/to/IridescentCraft.wiki [--out site/_build]
+    python site/build.py --source [--out site/_build]
+
+--source reads the wiki's source, .minecraft/wiki/, the way the wiki sync
+(.minecraft/tools/sync-wiki.py) turns it into wiki pages: the files and link
+conversions of .minecraft/tools/wiki-sync-manifest.json, plus the wiki-only
+sidebar kept in site/wiki-sidebar.md. Each page's date is the last commit that
+changed its source. This is what the site is built from: the repository is
+private, and a private repository on GitHub Free has no wiki. The older input,
+a clone of the GitHub wiki (--wiki path/to/IridescentCraft.wiki), still works
+and gives the same pages.
 
 The pages to publish are listed in site/pages.json ("include"). The
 Tester-Installation-Guide becomes index.html; every other page is written
@@ -10,11 +19,11 @@ served from a folder root by any web server (default document index.html,
 404.html for missing URLs). Links between pages are relative; only 404.html,
 which a server returns at any depth, uses the absolute base path: the path
 of "site_url" in pages.json ("/" for https://iridescentcraft.sereneblossom.gay/).
-build.json at the root records the wiki commit and the build time.
+build.json at the root records the source commit and the build time.
 
 Local preview:
 
-    python site/build.py --wiki ../IridescentCraft.wiki
+    python site/build.py --source
     python site/build.py --serve      # http://localhost:8000/, with 404.html for missing pages
 
 Python 3.9+ standard library only.
@@ -73,8 +82,85 @@ def page_dates(wiki: Path) -> dict[str, str]:
     return dates
 
 
+# ---------------------------------------------------------------------------
+# Building from the repository's own wiki source (.minecraft/wiki/)
+# ---------------------------------------------------------------------------
+def load_sync_wiki(repo_root: Path):
+    """The wiki sync script (.minecraft/tools/sync-wiki.py), as a module: its link
+    conversions and its INTERNAL ONLY check are what the GitHub wiki got."""
+    import importlib.util
+    path = repo_root / ".minecraft" / "tools" / "sync-wiki.py"
+    spec = importlib.util.spec_from_file_location("sync_wiki", path)
+    mod = importlib.util.module_from_spec(spec)
+    keep, sys.dont_write_bytecode = sys.dont_write_bytecode, True  # no __pycache__ in .minecraft/tools
+    try:
+        spec.loader.exec_module(mod)
+    finally:
+        sys.dont_write_bytecode = keep
+    return mod
+
+
+def stage_source(repo_root: Path, cfg: dict, stage: Path) -> dict:
+    """Write the wiki pages the wiki sync would write, from the repository's
+    .minecraft/wiki/ sources, into `stage` (a flat folder like a wiki clone), plus
+    the wiki-only sidebar kept in site/ ("sidebar" in pages.json). Returns the
+    provenance a wiki clone's git history would give: the last commit and date
+    of each page's source, and the newest of them."""
+    sync = load_sync_wiki(repo_root)
+    manifest = json.loads((repo_root / cfg["source_manifest"]).read_text(encoding="utf-8"))
+    conversions = manifest.get("link_conversions", {})
+    stage.mkdir(parents=True, exist_ok=True)
+    src_of: dict[str, str] = {}
+    for entry in manifest.get("files", []):
+        src = repo_root / entry["src"]
+        if not src.is_file():
+            raise SystemExit(f"wiki source {entry['src']} (manifest entry for {entry['dst']}) does not exist")
+        text = src.read_text(encoding="utf-8")
+        if sync._is_internal_only(text):
+            continue
+        write_lf(stage / entry["dst"], sync._apply_conversions(text, conversions))
+        src_of[entry["src"]] = entry["dst"]
+    sidebar = cfg.get("sidebar")
+    if sidebar:
+        shutil.copyfile(repo_root / sidebar, stage / "_Sidebar.md")
+    # Dates in UTC, as the wiki's own commits (made by the sync Action) have them.
+    env = dict(os.environ, TZ="UTC")
+    def git(*args: str) -> str:
+        # The dates come from this history: no answer is an error, not a page
+        # without a date.
+        try:
+            return subprocess.run(["git", "-C", str(repo_root), *args], capture_output=True, text=True,
+                                  encoding="utf-8", check=True, env=env).stdout.strip()
+        except (OSError, subprocess.CalledProcessError) as ex:
+            detail = getattr(ex, "stderr", "") or str(ex)
+            raise SystemExit(f"git {' '.join(args[:2])} failed in {repo_root}: {detail.strip()}")
+    paths = sorted(src_of)
+    # Per page: the newest commit that changed its source's text. A pure move
+    # (R100, e.g. the 2026-04-13 folder change) is followed, not counted. -M100%
+    # keeps rename detection to exact renames, which compare blob ids only: a
+    # blobless clone (the Action's) never has to fetch file contents for it.
+    dates: dict[str, str] = {}
+    for path in paths:
+        out = git("log", "--follow", "-M100%", "--date=format-local:%Y-%m-%d", "--format=@%cd", "--raw",
+                  "--", path)
+        current = ""
+        for line in out.splitlines():
+            if line.startswith("@"):
+                current = line[1:]
+            elif line.startswith(":") and current:
+                status = line.split("\t", 1)[0].split()[-1]
+                if status != "R100":
+                    dates[src_of[path]] = current
+                    break
+    return {
+        "dates": dates,
+        "commit": git("log", "-1", "--format=%H", "--", *paths),
+        "commit_date": git("log", "-1", "--date=iso-strict-local", "--format=%cd", "--", *paths),
+    }
+
+
 class Site:
-    def __init__(self, cfg: dict, wiki: Path, out: Path, repo_root: Path):
+    def __init__(self, cfg: dict, wiki: Path, out: Path, repo_root: Path, provenance: dict | None = None):
         self.cfg = cfg
         self.wiki = wiki
         self.out = out
@@ -82,6 +168,9 @@ class Site:
         self.site_url = cfg["site_url"].rstrip("/") + "/"
         self.base_path = urlsplit(self.site_url).path or "/"
         self.wiki_url = f"https://github.com/{self.repo}/wiki"
+        # false: no link into the GitHub repository or its wiki anywhere on the
+        # site (a private repository: they would answer 404 to every visitor).
+        self.github_links = bool(cfg.get("github_links", True))
         self.all_pages = {p.stem: p for p in sorted(wiki.glob("*.md")) if p.stem not in WIKI_SPECIAL}
         self.lower_map = {k.lower(): k for k in self.all_pages}
         self.include: list[str] = []
@@ -95,10 +184,15 @@ class Site:
         if self.index_page not in self.include:
             raise SystemExit(f"index_page '{self.index_page}' must be in the include list")
         self.excluded = [p for p in self.all_pages if p not in self.include]
-        self.dates = page_dates(wiki)
-        self.wiki_commit = git_out(wiki, "rev-parse", "HEAD")
+        if provenance is None:  # a clone of the GitHub wiki
+            self.dates = page_dates(wiki)
+            self.wiki_commit = git_out(wiki, "rev-parse", "HEAD")
+            self.wiki_commit_date = git_out(wiki, "log", "-1", "--format=%cI")
+        else:  # staged from the repository's .minecraft/wiki/ (stage_source)
+            self.dates = provenance["dates"]
+            self.wiki_commit = provenance["commit"]
+            self.wiki_commit_date = provenance["commit_date"]
         self.wiki_sha = self.wiki_commit[:7]
-        self.wiki_commit_date = git_out(wiki, "log", "-1", "--format=%cI")
         self.sources = self._load_sources(repo_root / cfg.get("source_manifest", ""))
         # Report data
         self.excluded_links: dict[str, set[str]] = {}
@@ -148,13 +242,14 @@ class Site:
         if page in self.include:
             return {"href": self.href(from_page, page, fragment)}
         self.excluded_links.setdefault(from_page, set()).add(page)
-        if self.cfg.get("excluded_links", "wiki") == "text":
+        if self.cfg.get("excluded_links", "wiki") == "text" or not self.github_links:
             return None
         return {"href": self.wiki_page_url(page, fragment), "class": "wiki-ext", "external": True,
                 "title": "Not mirrored on this site: opens the page on the GitHub wiki"}
 
     def make_resolver(self, from_page: str):
         wiki_prefix = f"github.com/{self.repo}/wiki".lower()
+        repo_prefix = f"github.com/{self.repo}".lower()
 
         def resolve_link(href: str):
             href = href.strip()
@@ -172,6 +267,8 @@ class Site:
                         res = self.resolve_page_link(from_page, rest, parts.fragment, href)
                         if res:
                             return res
+                if not self.github_links and (full == repo_prefix or full.startswith(repo_prefix + "/")):
+                    return None  # into the private repository: shown as plain text
                 return {"href": href, "external": True}
             if scheme == "mailto":
                 return {"href": href}
@@ -292,11 +389,12 @@ class Site:
                 parts.append(f'<li><a href="{html.escape(self.href(current, p))}"{cur}>'
                              f"{html.escape(self.nav_label(p))}</a></li>")
             parts.append("</ul></div>")
-        parts.append('<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul>'
-                     f'<li><a href="{self.wiki_url}" rel="noopener">GitHub wiki</a></li>'
-                     f'<li><a href="https://github.com/{self.repo}" rel="noopener">Repository</a></li>'
-                     f'<li><a href="https://github.com/{self.repo}/issues" rel="noopener">Report an issue</a></li>'
-                     "</ul></div>")
+        if self.github_links:
+            parts.append('<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul>'
+                         f'<li><a href="{self.wiki_url}" rel="noopener">GitHub wiki</a></li>'
+                         f'<li><a href="https://github.com/{self.repo}" rel="noopener">Repository</a></li>'
+                         f'<li><a href="https://github.com/{self.repo}/issues" rel="noopener">Report an issue</a></li>'
+                         "</ul></div>")
         return "\n".join(parts)
 
 
@@ -392,6 +490,11 @@ def page_footer(site: Site, page: str) -> str:
     bits = []
     if date:
         bits.append(f"Last updated <time datetime=\"{e(date)}\">{e(date)}</time>")
+    if not site.github_links:
+        # Nothing build-specific (time, commit) goes into the pages, so an
+        # unchanged set of pages gives byte-identical output; build.json has those.
+        return (("<p>" + " · ".join(bits) + "</p>" if bits else "")
+                + '<p class="built">The player-facing pages of the IridescentCraft wiki.</p>')
     bits.append(f'<a href="{e(site.wiki_page_url(page))}" rel="noopener">View on the GitHub wiki</a>')
     src = site.sources.get(page)
     if src:
@@ -406,11 +509,11 @@ def page_footer(site: Site, page: str) -> str:
             f'<a href="{site.wiki_url}" rel="noopener">IridescentCraft wiki</a>.</p>')
 
 
-def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
+def build(cfg: dict, wiki: Path, out: Path, repo_root: Path, provenance: dict | None = None) -> Site:
     if out.exists():
         shutil.rmtree(out)
     (out / "assets").mkdir(parents=True)
-    site = Site(cfg, wiki, out, repo_root)
+    site = Site(cfg, wiki, out, repo_root, provenance)
 
     rendered: dict[str, str] = {}
     for page in site.include:
@@ -455,10 +558,15 @@ def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
     # 404 page: served at arbitrary depths, so it uses the absolute base path.
     base = site.base_path
     nav404 = site.render_nav("__404__").replace('href="../', f'href="{base}')
-    body404 = ('<h1 id="not-found">Page not found</h1>'
-               '<p>That page is not on this site. It may be a wiki page that is not mirrored here: '
-               f'try the <a href="{site.wiki_url}" rel="noopener">GitHub wiki</a>, or start from the '
-               f'<a href="{base}">installation guide</a>.</p>')
+    if site.github_links:
+        body404 = ('<h1 id="not-found">Page not found</h1>'
+                   '<p>That page is not on this site. It may be a wiki page that is not mirrored here: '
+                   f'try the <a href="{site.wiki_url}" rel="noopener">GitHub wiki</a>, or start from the '
+                   f'<a href="{base}">installation guide</a>.</p>')
+    else:
+        body404 = ('<h1 id="not-found">Page not found</h1>'
+                   '<p>That page is not on this site. Start from the '
+                   f'<a href="{base}">installation guide</a>.</p>')
     write_lf(out / "404.html", 
         page_html(site, None, "Page not found", body404, root=base, nav=nav404, description="Page not found",
                   foot="", versions=versions, noindex=True), encoding="utf-8")
@@ -468,6 +576,7 @@ def build(cfg: dict, wiki: Path, out: Path, repo_root: Path) -> Site:
         "wiki_commit": site.wiki_commit,
         "wiki_commit_date": site.wiki_commit_date,
         "generator_commit": generator,
+        "source": ".minecraft/wiki" if provenance is not None else "wiki",
         "built_at": _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
         "pages": site.include,
     }
@@ -483,7 +592,7 @@ def report(site: Site) -> str:
     lines.append("Not published: " + (", ".join(site.excluded) or "none"))
     lines.append("")
     if site.excluded_links:
-        mode = site.cfg.get("excluded_links", "wiki")
+        mode = site.cfg.get("excluded_links", "wiki") if site.github_links else "text"
         how = "linked to the GitHub wiki" if mode == "wiki" else "shown as plain text"
         lines.append(f"Links from published pages to unpublished pages ({how}):")
         for page in site.include:
@@ -534,6 +643,9 @@ def serve(out: Path, base: str, port: int) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--wiki", type=Path, help="path to a clone of the IridescentCraft.wiki repository")
+    ap.add_argument("--source", action="store_true",
+                    help="build from the repository's own wiki source (.minecraft/wiki/, through the wiki "
+                         "sync manifest and its link conversions) instead of a wiki clone")
     ap.add_argument("--out", type=Path, default=HERE / "_build")
     ap.add_argument("--config", type=Path, default=HERE / "pages.json")
     ap.add_argument("--repo-root", type=Path, default=HERE.parent, help="main repo root (for the wiki source manifest)")
@@ -544,8 +656,17 @@ def main() -> int:
     args = ap.parse_args()
     cfg = json.loads(args.config.read_text(encoding="utf-8"))
 
-    if args.wiki:
+    if args.wiki and args.source:
+        ap.error("--wiki and --source are two different inputs: give one")
+    if args.source:
+        import tempfile
+        repo_root = args.repo_root.resolve()
+        with tempfile.TemporaryDirectory(prefix="icraft-wiki-") as stage:
+            provenance = stage_source(repo_root, cfg, Path(stage))
+            site = build(cfg, Path(stage), args.out.resolve(), repo_root, provenance)
+    elif args.wiki:
         site = build(cfg, args.wiki.resolve(), args.out.resolve(), args.repo_root.resolve())
+    if args.wiki or args.source:
         text = report(site)
         print(text)
         if args.report:
@@ -555,7 +676,7 @@ def main() -> int:
             print("Strict mode: unresolved links or config problems (see above).", file=sys.stderr)
             return 1
     elif not args.serve:
-        ap.error("--wiki is required (or --serve to serve an existing build)")
+        ap.error("--source or --wiki is required (or --serve to serve an existing build)")
     if args.serve:
         serve(args.out.resolve(), urlsplit(cfg["site_url"]).path or "/", args.port)
     return 0
