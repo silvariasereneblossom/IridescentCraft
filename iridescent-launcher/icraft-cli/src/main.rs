@@ -217,6 +217,29 @@ enum Cmd {
         holding: Option<String>,
     },
 
+    /// What is in one chunk: which chunk folders hold it, how long players
+    /// were near it, the structures that start there and those with a piece
+    /// there (each with its start), and what a dry-run's plan does with the
+    /// chunk and with each of those structures. Reads only; safe while the
+    /// server runs, and --server-dir may be a share.
+    ChunkInfo {
+        /// A block coordinate, as F3 shows it (a chunk coordinate with --chunk).
+        #[arg(allow_negative_numbers = true)]
+        x: i64,
+        /// A block coordinate, as F3 shows it (a chunk coordinate with --chunk).
+        #[arg(allow_negative_numbers = true)]
+        z: i64,
+        /// x and z are chunk coordinates, as the dry-run's map shows them.
+        #[arg(long)]
+        chunk: bool,
+        #[arg(long, default_value = "minecraft:overworld")]
+        dim: String,
+        /// The dry-run: a folder name under <server-dir>/regen-reports, or a
+        /// path. Default: the newest.
+        #[arg(long)]
+        run: Option<String>,
+    },
+
     /// Undo a regeneration from its holding folder (scratch copies only, as
     /// regen-execute). Exact for as long as the world has not changed since
     /// the run.
@@ -502,6 +525,21 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 }
                 Err(why) => {
                     eprintln!("regen-verify FAILED: {why}");
+                    Ok(1)
+                }
+            }
+        }
+        Cmd::ChunkInfo { x, z, chunk, dim, run } => {
+            let run = run.as_deref().map(|r| run_dir(cfg, r));
+            match regen::chunk_of(*x, *z, *chunk).and_then(|pos| regen::chunk_info(cfg, dim, pos, run.as_deref())) {
+                Ok(lines) => {
+                    for line in lines {
+                        println!("{line}");
+                    }
+                    Ok(0)
+                }
+                Err(why) => {
+                    eprintln!("chunk-info FAILED: {why}");
                     Ok(1)
                 }
             }

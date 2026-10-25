@@ -59,6 +59,11 @@ pub fn run(extension: Box<dyn ext::Extension>) -> Result<(), eframe::Error> {
     if let Some(pid) = icraft_core::world_lock::helper_pid_from_args(std::env::args_os().skip(1)) {
         std::process::exit(icraft_core::world_lock::ctrl_c_helper(pid));
     }
+    // `--chunk-info <server folder> <x> <z> ...`: what is in one chunk,
+    // printed; no window (see `chunk_info_mode`).
+    if let Some(code) = chunk_info_mode(&std::env::args().skip(1).collect::<Vec<_>>()) {
+        std::process::exit(code);
+    }
     ext::install(extension);
     install_log_router();
     // No-op when launched as a GUI subsystem app (no console attached),
@@ -136,6 +141,72 @@ pub fn run(extension: Box<dyn ext::Extension>) -> Result<(), eframe::Error> {
         ..Default::default()
     };
     eframe::run_native(app_name, opts, Box::new(move |cc| Box::new(IcraftApp::new(cc, preview))))
+}
+
+/// `icraft-gui.exe --chunk-info <server folder> <x> <z> [--chunk] [--dim <id>]
+/// [--run <dry-run>]`: [`icraft_core::regen::chunk_info`], printed, with no
+/// window. The server box has this exe and no `icraft.exe`, so this is its
+/// command line for it (the Customizer's map shows the same on a click). From
+/// PowerShell, pipe it to `Out-Host`: the shell then waits for it and shows
+/// what it prints. `None`: not this mode.
+fn chunk_info_mode(args: &[String]) -> Option<i32> {
+    use icraft_core::regen;
+    if args.first().map(String::as_str) != Some("--chunk-info") {
+        return None;
+    }
+    icraft_core::console::attach_parent_console();
+    const USAGE: &str = "usage: icraft-gui.exe --chunk-info <server folder> <x> <z> [--chunk] [--dim <id>] [--run <dry-run folder>]\n\
+                         x and z are block coordinates as F3 shows them; with --chunk, chunk coordinates as the dry-run's map shows them.\n\
+                         The dimension defaults to minecraft:overworld, the dry-run to the newest in regen-reports.";
+    let mut positional: Vec<&str> = Vec::new();
+    let (mut chunk, mut dim, mut run) = (false, icraft_core::anvil::OVERWORLD.to_string(), None::<String>);
+    let mut it = args[1..].iter();
+    while let Some(a) = it.next() {
+        match a.as_str() {
+            "--chunk" => chunk = true,
+            "--dim" | "--run" => {
+                let Some(value) = it.next() else {
+                    println!("{a} needs a value\n{USAGE}");
+                    return Some(2);
+                };
+                if a == "--dim" {
+                    dim = value.clone();
+                } else {
+                    run = Some(value.clone());
+                }
+            }
+            _ => positional.push(a),
+        }
+    }
+    let [folder, x, z] = positional.as_slice() else {
+        println!("{USAGE}");
+        return Some(2);
+    };
+    let (Ok(x), Ok(z)) = (x.parse::<i64>(), z.parse::<i64>()) else {
+        println!("x and z take whole numbers\n{USAGE}");
+        return Some(2);
+    };
+    let cfg = ServerConfig::from_path(Path::new(folder));
+    let run = run.map(|r| {
+        let direct = PathBuf::from(&r);
+        if direct.join(regen::PLAN_FILE).is_file() {
+            direct
+        } else {
+            cfg.server_dir.join(regen::REPORTS_DIR).join(r)
+        }
+    });
+    match regen::chunk_of(x, z, chunk).and_then(|pos| regen::chunk_info(&cfg, &dim, pos, run.as_deref())) {
+        Ok(lines) => {
+            for line in lines {
+                println!("{line}");
+            }
+            Some(0)
+        }
+        Err(why) => {
+            println!("chunk-info FAILED: {why}");
+            Some(1)
+        }
+    }
 }
 
 // =============================================================================
@@ -3551,6 +3622,37 @@ impl IcraftApp {
                     Ok(())
                 });
             }
+            // A launcher already staged (by a Cycle's sync, or by this
+            // build's own channel), applied with the server stopped: the
+            // new window comes up idle, as any window does. For when the
+            // server is down for maintenance and a Cycle, which applies it
+            // too, would start it (the regeneration, 2026-10-24).
+            if let Some(staged) = icraft_core::self_update::staged_launcher(&ServerConfig::from_path(&self.server_dir), own) {
+                let stopped = matches!(icraft_core::run::server_state(), icraft_core::run::ServerState::Idle) && !icraft_core::run::jvm_active();
+                let owner = matches!(role(), Role::Owner);
+                let button = ui
+                    .add_enabled(!busy && stopped && owner, egui::Button::new("Apply staged launcher (server stays stopped)").min_size(egui::vec2(140.0, 28.0)))
+                    .on_hover_text(format!(
+                        "{} is staged. This puts it in place of the running launcher and opens it again; the server is not started. \
+                         Only while the server is stopped and this window runs the folder. A Cycle applies it too, and starts the server.",
+                        staged.display()
+                    ))
+                    .on_disabled_hover_text("Only while the server is stopped, no task is running, and this window runs the server folder.");
+                if button.clicked() {
+                    self.spawn("apply-staged-launcher", move |c| {
+                        let applied = if own {
+                            icraft_core::self_update::apply_and_relaunch_gui_beside_exe(&c)?
+                        } else {
+                            icraft_core::self_update::apply_and_relaunch_gui(&c)?
+                        };
+                        if applied {
+                            log::info!("[update] the staged launcher is in place, the server stays stopped: the new window takes over");
+                            exit_for_successor("apply-staged-launcher");
+                        }
+                        Ok(())
+                    });
+                }
+            }
             if action_btn(ui, "Sync repo", busy).clicked() {
                 // Single incremental sync. Diff-based: hits compare API,
                 // fetches only changed files. The "Sync (--force)" button
@@ -4165,6 +4267,18 @@ mod tests {
 
     /// started_by's last-of-each table is one per process.
     static SERIAL: Mutex<()> = Mutex::new(());
+
+    #[test]
+    fn chunk_info_is_a_mode_of_its_own_and_says_how_it_is_used() {
+        let args = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        assert_eq!(chunk_info_mode(&args(&[])), None);
+        assert_eq!(chunk_info_mode(&args(&["--boot", "x"])), None);
+        assert_eq!(chunk_info_mode(&args(&["--chunk-info"])), Some(2));
+        assert_eq!(chunk_info_mode(&args(&["--chunk-info", "dir", "1", "two"])), Some(2));
+        assert_eq!(chunk_info_mode(&args(&["--chunk-info", "dir", "1", "2", "--dim"])), Some(2));
+        let nowhere = std::env::temp_dir().join("icraft-chunk-info-no-such-server");
+        assert_eq!(chunk_info_mode(&args(&["--chunk-info", &nowhere.display().to_string(), "-40", "75", "--chunk"])), Some(1));
+    }
 
     #[test]
     fn every_control_says_where_it_is_and_what_it_starts() {

@@ -12,6 +12,8 @@
 //!     report.txt     the whole story, for a person
 //!     chunks.csv     one row per chunk on disk: kept or regenerated, and why
 //!     warnings.csv   every warning, one row each
+//!     structures.csv one row per structure: kept whole, regenerated whole, or
+//!                    cut by the plan (see "Structures" below)
 //!     plan.json      the chunks to regenerate, per dimension, and their hash
 //!     summary.json   what report.txt says, as data: the launcher window reads it
 //!     map-<dim>.png  an overview, one pixel block per chunk
@@ -31,6 +33,10 @@
 //! plan with the server stopped and does nothing unless the hash is the one
 //! the operator approved. A dry-run taken while the server runs is therefore
 //! safe to take and to read, but it is the stopped recomputation that counts.
+//!
+//! [`chunk_info`] answers for one chunk: what is in it, and what a dry-run's
+//! plan does with it and with its structures (`icraft chunk-info`,
+//! `icraft-gui.exe --chunk-info`, a click on the Customizer's map).
 //!
 //! Triggers: the launcher's Customizer tab, which sets everything on screen and
 //! shows the result ([`run_logged`], [`list_runs`], [`load_view`]);
@@ -71,6 +77,8 @@ pub const REPORTS_DIR: &str = "regen-reports";
 /// and until 2026-10-12 nothing ever removed one.
 pub const REPORTS_KEPT: usize = 12;
 pub const PLAN_FILE: &str = "plan.json";
+/// In a run's folder: one row per structure (since 2026-10-24).
+pub const STRUCTURES_FILE: &str = "structures.csv";
 
 const PLAN_VERSION: u32 = 1;
 const LOG_ROLL_BYTES: u64 = 1024 * 1024;
@@ -297,6 +305,9 @@ struct DimResult {
     selected: BTreeSet<ChunkPos>,
     /// Chunks that would be regenerated: selected and not protected.
     targets: BTreeSet<ChunkPos>,
+    /// Its structures, when the scan read them (a dry-run's; not an
+    /// execution's recomputation, which needs only the plan).
+    structures: Vec<Structure>,
 }
 
 #[derive(Default, Clone)]
@@ -376,6 +387,101 @@ impl DimResult {
             targets: self.targets.len(),
             files,
         }
+    }
+}
+
+// =============================================================================
+// Structures
+// =============================================================================
+//
+// What a plan does to the structures in its chunks. Read from the chunks
+// themselves (see "Structures" in [`crate::anvil`]): a structure is a start
+// (the chunk it begins in) and the chunks whose References name that start.
+// A plan resets one whole, keeps one whole, or CUTS one: some of its chunks
+// kept, some regenerated. Nothing here changes the plan; it is the report.
+
+/// One structure of a dimension.
+struct Structure {
+    /// `minecraft:village_plains`
+    id: String,
+    /// The chunk its start is in.
+    start: ChunkPos,
+    /// The start as its chunk records it. `None`: that chunk is not on disk,
+    /// or does not hold the start (only pieces of it are on disk).
+    record: Option<anvil::StructureStart>,
+    /// Chunks on disk that hold its start or a piece of it.
+    chunks: BTreeSet<ChunkPos>,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum StructureFate {
+    KeptWhole,
+    ResetWhole,
+    Cut,
+}
+
+impl Structure {
+    fn regenerated(&self, targets: &BTreeSet<ChunkPos>) -> usize {
+        self.chunks.iter().filter(|c| targets.contains(*c)).count()
+    }
+
+    fn fate(&self, targets: &BTreeSet<ChunkPos>) -> StructureFate {
+        match self.regenerated(targets) {
+            0 => StructureFate::KeptWhole,
+            n if n == self.chunks.len() => StructureFate::ResetWhole,
+            _ => StructureFate::Cut,
+        }
+    }
+
+    /// `kept`, `regenerated` or `not on disk`: its start chunk.
+    fn start_word(&self, targets: &BTreeSet<ChunkPos>) -> &'static str {
+        if self.record.is_none() {
+            "not on disk"
+        } else if targets.contains(&self.start) {
+            "regenerated"
+        } else {
+            "kept"
+        }
+    }
+}
+
+impl StructureFate {
+    fn word(self) -> &'static str {
+        match self {
+            StructureFate::KeptWhole => "kept",
+            StructureFate::ResetWhole => "regenerated",
+            StructureFate::Cut => "cut",
+        }
+    }
+}
+
+/// Every structure a scan's chunks record, by id then start chunk.
+fn structures_of(scan: &DimensionScan) -> Vec<Structure> {
+    fn entry<'m>(found: &'m mut BTreeMap<(String, ChunkPos), Structure>, id: &str, start: ChunkPos) -> &'m mut Structure {
+        found.entry((id.to_string(), start)).or_insert_with(|| Structure { id: id.to_string(), start, record: None, chunks: BTreeSet::new() })
+    }
+    let mut found: BTreeMap<(String, ChunkPos), Structure> = BTreeMap::new();
+    for (pos, here) in &scan.structures {
+        for s in &here.starts {
+            let e = entry(&mut found, &s.id, *pos);
+            e.record = Some(s.clone());
+            e.chunks.insert(*pos);
+        }
+        for (id, start) in &here.references {
+            entry(&mut found, id, *start).chunks.insert(*pos);
+        }
+    }
+    found.into_values().collect()
+}
+
+impl DimResult {
+    /// The regenerated chunks of the structures the plan cuts.
+    fn cut_chunks(&self) -> BTreeSet<ChunkPos> {
+        let mut out = BTreeSet::new();
+        for s in self.structures.iter().filter(|s| s.fate(&self.targets) == StructureFate::Cut) {
+            out.extend(s.chunks.iter().filter(|c| self.targets.contains(*c)));
+        }
+        out
     }
 }
 
@@ -479,7 +585,19 @@ impl Analysis {
     }
 }
 
+/// The plan and everything said about it, as an execution recomputes it: the
+/// chunks' structures are not read (see [`analyse_with_structures`]).
 fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
+    analyse_inner(cfg, spec, false)
+}
+
+/// [`analyse`], with each dimension's structures for the dry-run's report.
+/// Reading them inflates every chunk to its end; the plan is the same.
+fn analyse_with_structures(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
+    analyse_inner(cfg, spec, true)
+}
+
+fn analyse_inner(cfg: &ServerConfig, spec: &RunSpec, with_structures: bool) -> Result<Analysis, String> {
     let server_dir = cfg.server_dir.clone();
     let level_name = cfg.level_name();
     let world = cfg.world_dir();
@@ -569,7 +687,7 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
     };
 
     for dim in selected {
-        let scan = anvil::scan_dimension(&dim);
+        let scan = if with_structures { anvil::scan_dimension_with_structures(&dim) } else { anvil::scan_dimension(&dim) };
         if let Some(f) = scan.files.iter().find(|f| f.error.is_some()) {
             return Err(format!(
                 "{} in {} does not read ({}): without it the chunks it holds cannot be told apart",
@@ -588,7 +706,8 @@ fn analyse(cfg: &ServerConfig, spec: &RunSpec) -> Result<Analysis, String> {
             .collect();
         let selected: BTreeSet<ChunkPos> = scan.chunks.keys().copied().filter(|pos| spec.scope.selects(*pos, &beds)).collect();
         let targets: BTreeSet<ChunkPos> = selected.iter().copied().filter(|pos| !protection.is_protected(*pos)).collect();
-        analysis.dims.push(DimResult { dim, scan, protection, selected, targets });
+        let structures = structures_of(&scan);
+        analysis.dims.push(DimResult { dim, scan, protection, selected, targets, structures });
     }
     analysis.dims.sort_by(|a, b| a.dim.id.cmp(&b.dim.id));
     collect_warnings(&mut analysis);
@@ -1020,6 +1139,45 @@ pub struct DimView {
     pub thresholds: Vec<ThresholdRow>,
     pub longest_ticks: i64,
     pub map: Option<MapInfo>,
+    /// `None`: this run did not read structures (a launcher before
+    /// 2026-10-24 made it).
+    pub structures: Option<StructuresView>,
+}
+
+/// What a plan does to the structures of a dimension.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct StructuresView {
+    /// Structures: a start and the chunks that hold its pieces.
+    pub total: usize,
+    pub kept_whole: usize,
+    pub reset_whole: usize,
+    pub cut: usize,
+    /// Of the cut ones, those whose start chunk is regenerated.
+    pub cut_start_reset: usize,
+    /// Of the cut ones, those with no start on disk.
+    pub cut_no_start: usize,
+    /// Structures whose start is not on disk: pieces only.
+    pub without_start: usize,
+    /// Terrain chunks whose structures did not read (planned as usual).
+    pub unreadable: usize,
+    /// Terrain chunks with no `structures` compound.
+    pub without_tag: usize,
+    pub types: Vec<StructureTypeRow>,
+    /// The cut ones, the most chunks first (local positions: this file stays
+    /// on the server).
+    pub cut_lines: Vec<String>,
+    pub cut_more: usize,
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
+#[serde(default)]
+pub struct StructureTypeRow {
+    pub id: String,
+    pub total: usize,
+    pub kept_whole: usize,
+    pub reset_whole: usize,
+    pub cut: usize,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
@@ -1178,7 +1336,67 @@ fn dim_view(a: &Analysis, d: &DimResult, map: Option<MapInfo>) -> DimView {
             .collect(),
         longest_ticks: times.iter().copied().max().unwrap_or(0),
         map,
+        structures: d.scan.structures_read.then(|| structures_view(d)),
     }
+}
+
+/// Cut structures listed by name in the report; the rest are in structures.csv.
+const CUT_LISTED: usize = 200;
+
+fn structures_view(d: &DimResult) -> StructuresView {
+    let mut v = StructuresView {
+        total: d.structures.len(),
+        unreadable: d.scan.structures_unreadable.len(),
+        without_tag: d.scan.without_structures,
+        ..StructuresView::default()
+    };
+    let mut types: BTreeMap<&str, StructureTypeRow> = BTreeMap::new();
+    let mut cut: Vec<&Structure> = Vec::new();
+    for s in &d.structures {
+        let row = types.entry(s.id.as_str()).or_insert_with(|| StructureTypeRow { id: s.id.clone(), ..StructureTypeRow::default() });
+        row.total += 1;
+        if s.record.is_none() {
+            v.without_start += 1;
+        }
+        match s.fate(&d.targets) {
+            StructureFate::KeptWhole => {
+                v.kept_whole += 1;
+                row.kept_whole += 1;
+            }
+            StructureFate::ResetWhole => {
+                v.reset_whole += 1;
+                row.reset_whole += 1;
+            }
+            StructureFate::Cut => {
+                v.cut += 1;
+                row.cut += 1;
+                cut.push(s);
+                match s.start_word(&d.targets) {
+                    "regenerated" => v.cut_start_reset += 1,
+                    "not on disk" => v.cut_no_start += 1,
+                    _ => {}
+                }
+            }
+        }
+    }
+    v.types = types.into_values().collect();
+    v.types.sort_by(|a, b| b.total.cmp(&a.total).then_with(|| a.id.cmp(&b.id)));
+    cut.sort_by(|a, b| b.chunks.len().cmp(&a.chunks.len()).then_with(|| a.id.cmp(&b.id)).then_with(|| a.start.cmp(&b.start)));
+    v.cut_more = cut.len().saturating_sub(CUT_LISTED);
+    v.cut_lines = cut
+        .iter()
+        .take(CUT_LISTED)
+        .map(|s| {
+            let reset = s.regenerated(&d.targets);
+            let start = match s.start_word(&d.targets) {
+                "kept" => "start kept: the regenerated part is rebuilt from it",
+                "regenerated" => "start REGENERATED: made anew by today's worldgen",
+                _ => "no start on disk: the regenerated part comes back without it",
+            };
+            format!("{}  start chunk {:?}: {} chunk(s), {} kept, {} regenerated; {start}", s.id, s.start, s.chunks.len(), s.chunks.len() - reset, reset)
+        })
+        .collect();
+    v
 }
 
 /// [`LayerRow::note`].
@@ -1462,6 +1680,12 @@ fn report_text(v: &RunView) -> String {
         }
     }
 
+    for d in &v.dimensions {
+        if let Some(st) = &d.structures {
+            structures_text(&mut out, &d.id, st);
+        }
+    }
+
     heading(&mut out, &format!("PLAYERS ({})", v.players.len()));
     for p in &v.players {
         wl!(out, "  {}  ({} {}){}", p.name, p.uuid_kind, p.uuid, if p.from_old { "  [read from .dat_old]" } else { "" });
@@ -1518,12 +1742,46 @@ fn report_text(v: &RunView) -> String {
         wl!(out, "  {f}");
     }
     wl!(out, "  Map colours: white bed, pink logout, purple claim, blue manual, yellow spawn, cyan waystone, green lived-in,");
-    wl!(out, "  magenta unreadable, ORANGE = would be regenerated, grey = on disk and untouched. North is up;");
-    wl!(out, "  faint lines mark region files (32 chunks).");
+    wl!(out, "  magenta unreadable, ORANGE = would be regenerated, RED = would be regenerated and cuts a structure, grey =");
+    wl!(out, "  on disk and untouched. North is up; faint lines mark region files (32 chunks).");
     wl!(out);
     wl!(out, "This was a dry-run. Executing a plan is a later phase: it will take a verified backup first, need the");
     wl!(out, "server stopped, recompute this plan, and refuse unless the hash matches the one above.");
     out
+}
+
+fn structures_text(out: &mut String, dim: &str, st: &StructuresView) {
+    heading(out, &format!("STRUCTURES: {dim}"));
+    wl!(out, "  structures              {:>9}   in {} type(s); a structure is a start and the chunks holding its pieces", num(st.total), st.types.len());
+    wl!(out, "    kept whole            {:>9}   no chunk of it is regenerated", num(st.kept_whole));
+    wl!(out, "    regenerated whole     {:>9}   every chunk of it is: today's worldgen decides what stands there", num(st.reset_whole));
+    wl!(out, "    CUT by the plan       {:>9}   some chunks kept, some regenerated (start regenerated: {}, no start on disk: {})", num(st.cut), num(st.cut_start_reset), num(st.cut_no_start));
+    wl!(out, "  pieces only             {:>9}   structures whose start chunk is not on disk", num(st.without_start));
+    if st.unreadable > 0 {
+        wl!(out, "  {} terrain chunk(s) whose structures did NOT read: planned as usual, missing from this section", num(st.unreadable));
+    }
+    if st.without_tag > 0 {
+        wl!(out, "  {} terrain chunk(s) carry no structures tag", num(st.without_tag));
+    }
+    if !st.types.is_empty() {
+        wl!(out, "  {:<48} {:>7} {:>11} {:>12} {:>7}", "by type", "all", "kept whole", "regenerated", "CUT");
+        for t in &st.types {
+            wl!(out, "    {:<46} {:>7} {:>11} {:>12} {:>7}", t.id, num(t.total), num(t.kept_whole), num(t.reset_whole), num(t.cut));
+        }
+    }
+    if !st.cut_lines.is_empty() {
+        wl!(out, "  cut structures, the most chunks first:");
+        for line in &st.cut_lines {
+            wl!(out, "    {line}");
+        }
+        if st.cut_more > 0 {
+            wl!(out, "    ... and {} more: all of them are in structures.csv", num(st.cut_more));
+        }
+    }
+    wl!(out, "  A regenerated chunk takes back the pieces of every start within 8 chunks that reaches into it. So a cut");
+    wl!(out, "  structure whose start is KEPT is rebuilt in its regenerated chunks as it was generated (loot and mobs are");
+    wl!(out, "  new, and what players changed there is gone). One whose start is REGENERATED gets a new start from the");
+    wl!(out, "  worldgen of the day: it joins up with its kept part only if that places it there the same way.");
 }
 
 /// What a run does with the chunks of a square around a centre.
@@ -1585,7 +1843,7 @@ fn tally_square(d: &DimResult, centre: ChunkPos, radius: u32) -> Tally {
 }
 
 fn chunks_csv(a: &Analysis) -> String {
-    let mut out = String::from("dimension,chunk_x,chunk_z,block_x,block_z,region_file,terrain,entities,poi,inhabited_ticks,protected,layers,why,selected,action\n");
+    let mut out = String::from("dimension,chunk_x,chunk_z,block_x,block_z,region_file,terrain,entities,poi,inhabited_ticks,protected,layers,why,selected,action,structure_starts,structures\n");
     for d in &a.dims {
         for (pos, entry) in &d.scan.chunks {
             let (rx, rz) = anvil::region_of(*pos);
@@ -1598,9 +1856,13 @@ fn chunks_csv(a: &Analysis) -> String {
                 "untouched"
             };
             let flag = |b: bool| if b { "1" } else { "0" };
+            // Starts here, and every structure with a piece here (by id).
+            let here = d.scan.structures.get(pos);
+            let starts: Vec<&str> = here.map_or(Vec::new(), |h| h.starts.iter().map(|s| s.id.as_str()).collect());
+            let pieces: BTreeSet<&str> = here.map_or(BTreeSet::new(), |h| h.references.iter().map(|(id, _)| id.as_str()).collect());
             wl!(
                 out,
-                "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
+                "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}",
                 csv(&d.dim.id),
                 pos.0,
                 pos.1,
@@ -1615,7 +1877,41 @@ fn chunks_csv(a: &Analysis) -> String {
                 protected.map_or(String::new(), |p| layer_names(p.layers)),
                 csv(&protected.map_or(String::new(), |p| p.why.join("; "))),
                 flag(d.selected.contains(pos)),
-                action
+                action,
+                csv(&starts.join(";")),
+                csv(&pieces.into_iter().collect::<Vec<_>>().join(";"))
+            );
+        }
+    }
+    out
+}
+
+/// `structures.csv`: one row per structure, with what the plan does to it.
+fn structures_csv(a: &Analysis) -> String {
+    let mut out = String::from("dimension,structure,start_chunk_x,start_chunk_z,start_block_x,start_block_z,start,pieces,box,chunks,kept,regenerated,fate\n");
+    for d in &a.dims {
+        for s in &d.structures {
+            let reset = s.regenerated(&d.targets);
+            let (pieces, bbox) = match &s.record {
+                Some(r) => (r.pieces.to_string(), r.bbox.map_or(String::new(), |b| format!("{} {} {} .. {} {} {}", b[0], b[1], b[2], b[3], b[4], b[5]))),
+                None => (String::new(), String::new()),
+            };
+            wl!(
+                out,
+                "{},{},{},{},{},{},{},{},{},{},{},{},{}",
+                csv(&d.dim.id),
+                csv(&s.id),
+                s.start.0,
+                s.start.1,
+                i64::from(s.start.0) * 16,
+                i64::from(s.start.1) * 16,
+                s.start_word(&d.targets),
+                pieces,
+                bbox,
+                s.chunks.len(),
+                s.chunks.len() - reset,
+                reset,
+                s.fate(&d.targets).word()
             );
         }
     }
@@ -1643,7 +1939,7 @@ fn warnings_csv(a: &Analysis) -> String {
 }
 
 /// The map's colours. A pixel holds an index into this.
-const MAP_PALETTE: [[u8; 3]; 12] = [
+const MAP_PALETTE: [[u8; 3]; 13] = [
     [16, 16, 20],    // 0 nothing on disk
     [28, 28, 38],    // 1 region-file grid line
     [72, 72, 84],    // 2 on disk, untouched
@@ -1656,11 +1952,12 @@ const MAP_PALETTE: [[u8; 3]; 12] = [
     [255, 255, 255], // 9 bed
     [255, 0, 255],   // 10 unreadable
     [250, 160, 185], // 11 logout
+    [205, 25, 35],   // 12 would be regenerated, and cuts a structure
 ];
 
 /// What the map's colours mean, for a legend. A chunk kept by several layers
 /// is drawn in the colour of the first of them in this order.
-pub const MAP_LEGEND: [(&str, [u8; 3]); 10] = [
+pub const MAP_LEGEND: [(&str, [u8; 3]); 11] = [
     ("bed", MAP_PALETTE[9]),
     ("logout", MAP_PALETTE[11]),
     ("claim", MAP_PALETTE[8]),
@@ -1670,10 +1967,12 @@ pub const MAP_LEGEND: [(&str, [u8; 3]); 10] = [
     ("lived-in", MAP_PALETTE[4]),
     ("unreadable", MAP_PALETTE[10]),
     ("WOULD BE REGENERATED", MAP_PALETTE[3]),
+    ("regenerated, cuts a structure", MAP_PALETTE[12]),
     ("on disk, untouched", MAP_PALETTE[2]),
 ];
 
-fn map_colour(d: &DimResult, pos: ChunkPos) -> u8 {
+/// `cut`: [`DimResult::cut_chunks`].
+fn map_colour(d: &DimResult, pos: ChunkPos, cut: &BTreeSet<ChunkPos>) -> u8 {
     if !d.scan.chunks.contains_key(&pos) {
         return if pos.0.rem_euclid(32) == 0 || pos.1.rem_euclid(32) == 0 { 1 } else { 0 };
     }
@@ -1695,6 +1994,8 @@ fn map_colour(d: &DimResult, pos: ChunkPos) -> u8 {
         4
     } else if has(Layer::Unreadable) {
         10
+    } else if cut.contains(&pos) {
+        12
     } else if d.targets.contains(&pos) {
         3
     } else {
@@ -1724,9 +2025,10 @@ fn map_png(d: &DimResult, file: &str) -> Option<(Vec<u8>, MapInfo)> {
     let scale: i64 = if w.max(h) <= 1024 { 2 } else { 1 };
     let (pw, ph) = ((w * scale) as usize, (h * scale) as usize);
     let mut pixels = vec![0u8; pw * ph];
+    let cut = d.cut_chunks();
     for cz in 0..h {
         for cx in 0..w {
-            let colour = map_colour(d, ((x0 + cx) as i32, (z0 + cz) as i32));
+            let colour = map_colour(d, ((x0 + cx) as i32, (z0 + cz) as i32), &cut);
             for sy in 0..scale {
                 let row = ((cz * scale + sy) as usize) * pw;
                 for sx in 0..scale {
@@ -1827,7 +2129,7 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
     let now_local = chrono::Local::now();
     let when_utc = chrono::Utc::now().to_rfc3339_opts(chrono::SecondsFormat::Secs, true);
 
-    let a = analyse(cfg, spec)?;
+    let a = analyse_with_structures(cfg, spec)?;
     let hash = plan_hash(&a.level_name, a.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets)));
     let out_dir = make_out_dir(&a, &now_local.format("%Y%m%d-%H%M%S").to_string())?;
 
@@ -1835,11 +2137,13 @@ pub fn run(cfg: &ServerConfig, spec: &RunSpec) -> Result<Summary, String> {
         "report.txt     this report".to_string(),
         "chunks.csv     one row per chunk on disk: kept, regenerated or untouched, and why".to_string(),
         "warnings.csv   every warning, one row each".to_string(),
+        format!("{STRUCTURES_FILE} one row per structure: where it starts, its chunks, and whether the plan keeps, regenerates or cuts it"),
         format!("{PLAN_FILE}      the chunks to regenerate per dimension, with their hash"),
         format!("{SUMMARY_FILE}   what this report says, as data (the launcher window reads it)"),
     ];
     put(&out_dir, "chunks.csv", chunks_csv(&a).as_bytes())?;
     put(&out_dir, "warnings.csv", warnings_csv(&a).as_bytes())?;
+    put(&out_dir, STRUCTURES_FILE, structures_csv(&a).as_bytes())?;
     put(&out_dir, PLAN_FILE, plan_json(&a, &hash, &when_utc).as_bytes())?;
     let mut maps: BTreeMap<String, MapInfo> = BTreeMap::new();
     if spec.png {
@@ -1989,6 +2293,197 @@ pub fn dimension_choices(cfg: &ServerConfig) -> Vec<(String, String)> {
             (d.id, hint)
         })
         .collect()
+}
+
+// =============================================================================
+// One chunk: what is in it (chunk-info)
+// =============================================================================
+//
+// The chunk itself and the start chunks of the structures that reach into it,
+// read straight from the world ([`anvil::read_chunk`]: a few region files),
+// and what a dry-run's plan does with them, from that run's chunks.csv and
+// structures.csv. Reads only; safe while the server runs. The command line
+// (`icraft chunk-info`, `icraft-gui.exe --chunk-info`) and the Customizer's
+// map both show it.
+
+/// Block coordinates (what F3 shows) or chunk coordinates.
+pub fn chunk_of(x: i64, z: i64, chunk_coordinates: bool) -> Result<ChunkPos, String> {
+    let (cx, cz) = if chunk_coordinates { (x, z) } else { (x.div_euclid(16), z.div_euclid(16)) };
+    match (i32::try_from(cx), i32::try_from(cz)) {
+        (Ok(cx), Ok(cz)) => Ok((cx, cz)),
+        _ => Err(format!("{x}, {z} is outside any world")),
+    }
+}
+
+/// What is in one chunk, and what the dry-run in `run` (default: the newest)
+/// does with it, as lines of text.
+pub fn chunk_info(cfg: &ServerConfig, dim: &str, pos: ChunkPos, run: Option<&Path>) -> Result<Vec<String>, String> {
+    let world = cfg.world_dir();
+    if !world.join("level.dat").is_file() && !world.join("level.dat_old").is_file() {
+        return Err(format!("there is no world at {} (no level.dat)", world.display()));
+    }
+    let dims = anvil::discover_dimensions(&world);
+    let d = dims.iter().find(|d| d.id == dim).ok_or_else(|| {
+        let known: Vec<&str> = dims.iter().filter(|d| d.has_chunk_storage()).map(|d| d.id.as_str()).collect();
+        format!("dimension {dim} is not in this world (with chunks on disk: {})", known.join(", "))
+    })?;
+    let mut out = Vec::new();
+    let (bx, bz) = (i64::from(pos.0) * 16, i64::from(pos.1) * 16);
+    let (rx, rz) = anvil::region_of(pos);
+    out.push(format!("chunk ({}, {}) in {dim} = blocks x {bx}..{}, z {bz}..{}; {}", pos.0, pos.1, bx + 15, bz + 15, anvil::region_name(rx, rz)));
+    let here = anvil::read_chunk(d, pos);
+    let stores: Vec<&str> = Store::ALL.iter().zip(here.in_store).filter(|(_, on)| *on).map(|(s, _)| s.dir_name()).collect();
+    out.push(if stores.is_empty() { "on disk      no: nothing has been generated here".to_string() } else { format!("on disk      {}", stores.join(", ")) });
+    if let Some(why) = &here.unreadable {
+        out.push(format!("terrain      does NOT read: {why}"));
+    } else if here.in_store[0] {
+        let ticks = here.inhabited.unwrap_or(0);
+        out.push(format!("lived in     {ticks} ticks ({}) with a player within 128 blocks", fmt_ticks(ticks)));
+    }
+
+    // (id, start chunk) of every structure in this chunk.
+    let mut found: Vec<(String, ChunkPos)> = Vec::new();
+    match &here.structures {
+        Err(why) => out.push(format!("structures   do NOT read: {why}")),
+        Ok(None) if here.in_store[0] && here.unreadable.is_none() => out.push("structures   none recorded (the chunk has no structures tag)".to_string()),
+        Ok(None) => {}
+        Ok(Some(s)) => {
+            for st in &s.starts {
+                out.push(format!("starts here  {}: {}", st.id, start_text(st)));
+                found.push((st.id.clone(), pos));
+            }
+            let mut refs: Vec<&(String, ChunkPos)> = s.references.iter().filter(|(id, at)| !(*at == pos && s.starts.iter().any(|st| &st.id == id))).collect();
+            refs.sort();
+            refs.dedup();
+            for (id, start) in refs {
+                let record = anvil::read_chunk(d, *start).structures.ok().flatten().and_then(|c| c.starts.into_iter().find(|st| &st.id == id));
+                match record {
+                    Some(st) => out.push(format!("piece here   {id}, which starts in chunk {start:?}: {}", start_text(&st))),
+                    None => out.push(format!("piece here   {id}, which starts in chunk {start:?}: that start is NOT on disk")),
+                }
+                found.push((id.clone(), *start));
+            }
+            if found.is_empty() {
+                out.push("structures   none".to_string());
+            }
+        }
+    }
+
+    let run_dir = match run {
+        Some(dir) => Some(dir.to_path_buf()),
+        None => list_runs(&cfg.server_dir).into_iter().next().map(|r| r.dir),
+    };
+    let Some(run_dir) = run_dir else {
+        out.push("plan         no dry-run has been made yet".to_string());
+        return Ok(out);
+    };
+    let name = run_dir.file_name().map_or_else(|| run_dir.display().to_string(), |n| n.to_string_lossy().into_owned());
+    match csv_row(&run_dir.join("chunks.csv"), &[("dimension", dim), ("chunk_x", &pos.0.to_string()), ("chunk_z", &pos.1.to_string())]) {
+        Err(why) => out.push(format!("plan         {name}: {why}")),
+        Ok(None) => out.push(format!("plan         {name}: not in it (its dimension was not part of that run, or nothing was on disk here then)")),
+        Ok(Some(row)) => {
+            let get = |k: &str| row.get(k).map(String::as_str).unwrap_or("");
+            out.push(match get("action") {
+                "regenerate" => format!("plan         {name}: WOULD BE REGENERATED"),
+                "keep" => format!("plan         {name}: kept ({}){}", get("layers"), if get("why").is_empty() { String::new() } else { format!(": {}", get("why")) }),
+                _ => format!("plan         {name}: not protected, outside that run's scope (untouched)"),
+            });
+        }
+    }
+    if found.is_empty() {
+        return Ok(out);
+    }
+    let file = run_dir.join(STRUCTURES_FILE);
+    if !file.is_file() {
+        out.push(format!("             that run did not read structures (it has no {STRUCTURES_FILE}: a launcher before 2026-10-24 made it)"));
+        return Ok(out);
+    }
+    for (id, start) in &found {
+        let key = [("dimension", dim), ("structure", id.as_str()), ("start_chunk_x", &start.0.to_string()), ("start_chunk_z", &start.1.to_string())];
+        let text = match csv_row(&file, &key) {
+            Ok(Some(r)) => {
+                let get = |k: &str| r.get(k).map(String::as_str).unwrap_or("?");
+                match get("fate") {
+                    "cut" => format!("CUT: {} of its {} chunk(s) kept, {} regenerated; start {}", get("kept"), get("chunks"), get("regenerated"), get("start")),
+                    "regenerated" => format!("regenerated whole ({} chunk(s))", get("chunks")),
+                    "kept" => format!("kept whole ({} chunk(s))", get("chunks")),
+                    other => other.to_string(),
+                }
+            }
+            Ok(None) => "not in that run (written since, or outside its dimensions)".to_string(),
+            Err(why) => why,
+        };
+        out.push(format!("  {id} (start {start:?}): {text}"));
+    }
+    Ok(out)
+}
+
+fn start_text(st: &anvil::StructureStart) -> String {
+    match st.bbox {
+        Some(b) => format!(
+            "{} piece(s), blocks {} {} {} to {} {} {} (chunks ({}, {}) to ({}, {}))",
+            st.pieces,
+            b[0],
+            b[1],
+            b[2],
+            b[3],
+            b[4],
+            b[5],
+            b[0].div_euclid(16),
+            b[2].div_euclid(16),
+            b[3].div_euclid(16),
+            b[5].div_euclid(16)
+        ),
+        None => format!("{} piece(s), no box recorded", st.pieces),
+    }
+}
+
+/// The first row of a CSV file this module wrote whose named columns hold
+/// these values, as column -> value.
+fn csv_row(path: &Path, key: &[(&str, &str)]) -> Result<Option<BTreeMap<String, String>>, String> {
+    use std::io::BufRead;
+    let file = fs::File::open(path).map_err(|e| format!("{} does not read ({e})", path.display()))?;
+    let mut lines = std::io::BufReader::new(file).lines();
+    let header = csv_fields(&lines.next().transpose().map_err(|e| e.to_string())?.unwrap_or_default());
+    let mut at = Vec::new();
+    for (k, v) in key {
+        let i = header.iter().position(|h| h == k).ok_or_else(|| format!("{} has no column {k}", path.display()))?;
+        at.push((i, *v));
+    }
+    for line in lines {
+        let line = line.map_err(|e| e.to_string())?;
+        // Cheap test first: every value has to be somewhere in the line.
+        if !key.iter().all(|(_, v)| line.contains(v)) {
+            continue;
+        }
+        let fields = csv_fields(&line);
+        if at.iter().all(|(i, v)| fields.get(*i).map(String::as_str) == Some(*v)) {
+            return Ok(Some(header.iter().cloned().zip(fields).collect()));
+        }
+    }
+    Ok(None)
+}
+
+/// One line of CSV as [`csv`] writes it: fields that hold a comma or a quote
+/// are quoted, with quotes doubled.
+fn csv_fields(line: &str) -> Vec<String> {
+    let mut out = Vec::new();
+    let mut field = String::new();
+    let mut quoted = false;
+    let mut chars = line.chars().peekable();
+    while let Some(c) = chars.next() {
+        match (c, quoted) {
+            ('"', true) if chars.peek() == Some(&'"') => {
+                field.push('"');
+                chars.next();
+            }
+            ('"', _) => quoted = !quoted,
+            (',', false) => out.push(std::mem::take(&mut field)),
+            _ => field.push(c),
+        }
+    }
+    out.push(field);
+    out
 }
 
 // =============================================================================
@@ -2336,11 +2831,11 @@ mod tests {
         assert_eq!(fs::read_to_string(s.out_dir.join("report.txt")).unwrap(), s.report);
         let csv = fs::read_to_string(s.out_dir.join("chunks.csv")).unwrap();
         assert_eq!(csv.lines().count(), 1 + 445);
-        assert_eq!(csv.lines().filter(|l| l.ends_with(",regenerate")).count(), 428);
-        assert_eq!(csv.lines().filter(|l| l.ends_with(",keep")).count(), 17);
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,12,12,192,192,r.0.0.mca,1,1,1,100000,1,bed+lived-in,bed of Player_One,1,keep"), "{csv}");
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,25,25,400,400,r.0.0.mca,0,1,0,,0,,,1,regenerate"));
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,-1,-1,-16,-16,r.-1.-1.mca,1,0,0,0,1,spawn,,1,keep"));
+        assert_eq!(csv.lines().filter(|l| l.ends_with(",regenerate,,")).count(), 428);
+        assert_eq!(csv.lines().filter(|l| l.ends_with(",keep,,")).count(), 17);
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,12,12,192,192,r.0.0.mca,1,1,1,100000,1,bed+lived-in,bed of Player_One,1,keep,,"), "{csv}");
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,25,25,400,400,r.0.0.mca,0,1,0,,0,,,1,regenerate,,"));
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,-1,-1,-16,-16,r.-1.-1.mca,1,0,0,0,1,spawn,,1,keep,,"));
         let png = fs::read(s.out_dir.join("map-minecraft_overworld.png")).unwrap();
         assert_eq!(&png[1..4], b"PNG");
 
@@ -2422,7 +2917,7 @@ mod tests {
         assert!(flat(&ring.report).contains("3x3 chunks: 9 on disk, 9 kept (bed 9, lived-in 1), 0 WOULD BE REGENERATED"));
         // Nothing outside the ring is touched, however unprotected.
         let csv = fs::read_to_string(ring.out_dir.join("chunks.csv")).unwrap();
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,16,16,256,256,r.0.0.mca,1,0,0,5000,0,,,0,untouched"));
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,16,16,256,256,r.0.0.mca,1,0,0,5000,0,,,0,untouched,,"));
 
         // A box over the waystone and the claim: 5x5 = 25, both kept.
         let boxed = fx.run("scope=box:16,16,20,20");
@@ -2556,8 +3051,8 @@ mod tests {
         assert_eq!(load_view(&s.out_dir).unwrap(), s.view);
         // The layer names no one: no reason in the CSV, and the map has a colour for it.
         let csv = fs::read_to_string(s.out_dir.join("chunks.csv")).unwrap();
-        assert!(csv.lines().any(|l| l == "minecraft:overworld,5,5,80,80,r.0.0.mca,1,0,0,0,1,logout,,1,keep"), "{csv}");
-        assert!(csv.lines().any(|l| l == "minecraft:the_nether,9,9,144,144,r.0.0.mca,1,0,0,0,1,logout,,1,keep"), "{csv}");
+        assert!(csv.lines().any(|l| l == "minecraft:overworld,5,5,80,80,r.0.0.mca,1,0,0,0,1,logout,,1,keep,,"), "{csv}");
+        assert!(csv.lines().any(|l| l == "minecraft:the_nether,9,9,144,144,r.0.0.mca,1,0,0,0,1,logout,,1,keep,,"), "{csv}");
         assert_eq!(MAP_LEGEND[1].0, "logout");
         let map = s.view.dimensions.iter().find(|d| d.id == OVERWORLD).unwrap().map.clone().unwrap();
         let image = crate::png::decode_indexed(&fs::read(s.out_dir.join(&map.file)).unwrap()).unwrap();
@@ -2777,5 +3272,140 @@ mod tests {
         poll_request(&fx.cfg);
         assert!(last_answer(&fx.root).unwrap().1.starts_with("done: scope report: 0 of 445"));
         assert_eq!(fx.world_state(), before);
+    }
+
+    /// Five structures in r.2.0, kept or not by manual boxes:
+    ///
+    ///   village_plains  start (64,0), pieces in (64,0) (65,0) (66,0); (64,0) kept  -> CUT, start kept
+    ///   mineshaft       start (68,0), pieces in (68,0) (69,0)                      -> regenerated whole
+    ///   small_dungeon   start (70,2), pieces in (70,2) (70,3); both kept            -> kept whole
+    ///   ancient_city    start (66,4), pieces in (65,4) (66,4); (65,4) kept          -> CUT, start regenerated
+    ///   stronghold      start (90,90), not on disk; a piece in (67,5)              -> pieces only, regenerated
+    fn with_structures(f: &Fixture) {
+        use crate::anvil::testing::{structures_value as sv, write_region_with};
+        const V: &str = "minecraft:village_plains";
+        const M: &str = "minecraft:mineshaft";
+        const D: &str = "betterdungeons:small_dungeon";
+        const A: &str = "minecraft:ancient_city";
+        const S: &str = "minecraft:stronghold";
+        let bb = |c: ChunkPos| [c.0 * 16, 50, c.1 * 16, c.0 * 16 + 15, 70, c.1 * 16 + 15];
+        write_region_with(
+            &f.root.join("testworld"),
+            2,
+            0,
+            &[
+                ((64, 0), 0, Some(sv(&[(V, (64, 0), &[bb((64, 0)), bb((65, 0)), bb((66, 0))])], &[(V, &[(64, 0)])]))),
+                ((65, 0), 0, Some(sv(&[], &[(V, &[(64, 0)])]))),
+                ((66, 0), 0, Some(sv(&[], &[(V, &[(64, 0)])]))),
+                ((68, 0), 0, Some(sv(&[(M, (68, 0), &[bb((68, 0)), bb((69, 0))])], &[(M, &[(68, 0)])]))),
+                ((69, 0), 0, Some(sv(&[], &[(M, &[(68, 0)])]))),
+                ((70, 2), 0, Some(sv(&[(D, (70, 2), &[bb((70, 2)), bb((70, 3))])], &[(D, &[(70, 2)])]))),
+                ((70, 3), 0, Some(sv(&[], &[(D, &[(70, 2)])]))),
+                ((65, 4), 0, Some(sv(&[], &[(A, &[(66, 4)])]))),
+                ((66, 4), 0, Some(sv(&[(A, (66, 4), &[bb((65, 4)), bb((66, 4))])], &[(A, &[(66, 4)])]))),
+                ((67, 5), 0, Some(sv(&[], &[(S, &[(90, 90)])]))),
+                ((71, 7), 0, None),
+            ],
+        );
+    }
+
+    #[test]
+    fn the_dry_run_says_which_structures_the_plan_keeps_regenerates_or_cuts() {
+        let f = Fixture::new();
+        with_structures(&f);
+        let before = f.world_state();
+        let tokens = "scope=all protect=64,0 protect=70,2..70,3 protect=65,4";
+        let s = f.run(tokens);
+
+        let st = s.view.dimensions[0].structures.clone().expect("a dry-run reads structures");
+        assert_eq!(
+            (st.total, st.kept_whole, st.reset_whole, st.cut, st.cut_start_reset, st.cut_no_start, st.without_start),
+            (5, 1, 2, 2, 1, 0, 1)
+        );
+        assert_eq!(st.unreadable, 0);
+        assert_eq!(st.without_tag, 445, "the fixture's 444 terrain chunks and (71,7) have no structures tag");
+        let city = st.types.iter().find(|t| t.id == "minecraft:ancient_city").unwrap();
+        assert_eq!((city.total, city.kept_whole, city.reset_whole, city.cut), (1, 0, 0, 1));
+        assert_eq!(st.cut_lines.len(), 2);
+        assert!(st.cut_lines[0].starts_with("minecraft:village_plains  start chunk (64, 0): 3 chunk(s), 1 kept, 2 regenerated; start kept"), "{:?}", st.cut_lines);
+        assert!(st.cut_lines[1].starts_with("minecraft:ancient_city  start chunk (66, 4): 2 chunk(s), 1 kept, 1 regenerated; start REGENERATED"), "{:?}", st.cut_lines);
+        let report = flat(&s.report);
+        assert!(report.contains("STRUCTURES: minecraft:overworld"), "{report}");
+        assert!(report.contains("CUT by the plan 2 some chunks kept, some regenerated (start regenerated: 1, no start on disk: 0)"), "{report}");
+        assert!(report.contains("minecraft:mineshaft 1 0 1 0"), "{report}");
+
+        // structures.csv: one row each.
+        let rows = fs::read_to_string(s.out_dir.join(STRUCTURES_FILE)).unwrap();
+        let rows: Vec<Vec<String>> = rows.lines().skip(1).map(csv_fields).collect();
+        assert_eq!(rows.len(), 5);
+        let row = |id: &str| rows.iter().find(|r| r[1] == id).unwrap().clone();
+        assert_eq!(row("minecraft:village_plains")[6..].to_vec(), ["kept", "3", "1024 50 0 .. 1071 70 15", "3", "1", "2", "cut"]);
+        assert_eq!(row("minecraft:mineshaft")[6..].to_vec(), ["regenerated", "2", "1088 50 0 .. 1119 70 15", "2", "0", "2", "regenerated"]);
+        assert_eq!(row("betterdungeons:small_dungeon")[12], "kept");
+        assert_eq!(row("minecraft:ancient_city")[6], "regenerated");
+        assert_eq!(row("minecraft:stronghold")[6..].to_vec(), ["not on disk", "", "", "1", "0", "1", "regenerated"]);
+        // chunks.csv: what starts in a chunk and what has a piece there.
+        let starts_here = csv_row(&s.out_dir.join("chunks.csv"), &[("chunk_x", "64"), ("chunk_z", "0")]).unwrap().unwrap();
+        assert_eq!((starts_here["structure_starts"].as_str(), starts_here["structures"].as_str(), starts_here["action"].as_str()), ("minecraft:village_plains", "minecraft:village_plains", "keep"));
+        let piece = csv_row(&s.out_dir.join("chunks.csv"), &[("chunk_x", "67"), ("chunk_z", "5")]).unwrap().unwrap();
+        assert_eq!((piece["structure_starts"].as_str(), piece["structures"].as_str()), ("", "minecraft:stronghold"));
+
+        // The map: a regenerated chunk of a cut structure is red; a kept one keeps its layer's colour.
+        let a = analyse_with_structures(&f.cfg, &f.spec(tokens)).unwrap();
+        let d = a.dim(OVERWORLD).unwrap();
+        let cut = d.cut_chunks();
+        assert_eq!(cut, BTreeSet::from([(65, 0), (66, 0), (66, 4)]));
+        assert_eq!([(65, 0), (66, 4), (68, 0), (64, 0), (70, 2)].map(|c| map_colour(d, c, &cut)), [12, 12, 3, 7, 7]);
+
+        // Structures are the report's: the plan is the one an execution recomputes.
+        let plain = analyse(&f.cfg, &f.spec(tokens)).unwrap();
+        assert!(plain.dims.iter().all(|d| d.structures.is_empty() && !d.scan.structures_read));
+        assert_eq!(plan_hash(&plain.level_name, plain.dims.iter().map(|d| (d.dim.id.as_str(), &d.targets))), s.plan_hash);
+        assert_eq!(f.world_state(), before, "a dry-run writes nothing in the world");
+    }
+
+    #[test]
+    fn chunk_info_says_what_is_in_a_chunk_and_what_the_plan_does_with_it() {
+        let f = Fixture::new();
+        with_structures(&f);
+        let none = chunk_info(&f.cfg, OVERWORLD, (65, 0), None).unwrap().join("\n");
+        assert!(none.contains("plan         no dry-run has been made yet"), "{none}");
+        let s = f.run("scope=all protect=64,0 protect=70,2..70,3 protect=65,4");
+        let before = f.world_state();
+
+        let at = |pos: ChunkPos| chunk_info(&f.cfg, OVERWORLD, pos, None).unwrap().join("\n");
+        let piece = at((65, 0));
+        assert!(piece.contains("chunk (65, 0) in minecraft:overworld = blocks x 1040..1055, z 0..15; r.2.0.mca"), "{piece}");
+        assert!(piece.contains("on disk      region"), "{piece}");
+        assert!(piece.contains("piece here   minecraft:village_plains, which starts in chunk (64, 0): 3 piece(s), blocks 1024 50 0 to 1071 70 15 (chunks (64, 0) to (66, 0))"), "{piece}");
+        assert!(piece.contains(&format!("plan         {}: WOULD BE REGENERATED", s.out_dir.file_name().unwrap().to_string_lossy())), "{piece}");
+        assert!(piece.contains("minecraft:village_plains (start (64, 0)): CUT: 1 of its 3 chunk(s) kept, 2 regenerated; start kept"), "{piece}");
+
+        let start = at((64, 0));
+        assert!(start.contains("starts here  minecraft:village_plains: 3 piece(s)"), "{start}");
+        assert!(!start.contains("piece here"), "its own reference is not listed twice: {start}");
+        assert!(start.contains(": kept (manual)"), "{start}");
+
+        let lost = at((67, 5));
+        assert!(lost.contains("piece here   minecraft:stronghold, which starts in chunk (90, 90): that start is NOT on disk"), "{lost}");
+        assert!(lost.contains("minecraft:stronghold (start (90, 90)): regenerated whole (1 chunk(s))"), "{lost}");
+
+        let bare = at((71, 7));
+        assert!(bare.contains("structures   none recorded (the chunk has no structures tag)"), "{bare}");
+        let nothing = at((500, 500));
+        assert!(nothing.contains("on disk      no: nothing has been generated here") && nothing.contains("not in it"), "{nothing}");
+        assert!(chunk_info(&f.cfg, "minecraft:the_moon", (0, 0), None).unwrap_err().contains("is not in this world"));
+
+        // Block coordinates (F3) or chunk coordinates.
+        assert_eq!(chunk_of(1047, -1, false), Ok((65, -1)));
+        assert_eq!(chunk_of(65, -1, true), Ok((65, -1)));
+        assert!(chunk_of(i64::MAX, 0, true).is_err());
+        assert_eq!(f.world_state(), before, "chunk-info writes nothing in the world");
+    }
+
+    #[test]
+    fn csv_fields_read_what_csv_writes() {
+        let line = ["plain", "a,b", "say \"hi\"", "", "x;y"].map(csv).join(",");
+        assert_eq!(csv_fields(&line), ["plain", "a,b", "say \"hi\"", "", "x;y"]);
     }
 }

@@ -354,6 +354,29 @@ pub fn scan_root_long<R: Read>(r: &mut R, key: &str, legacy_parent: &str) -> io:
     scan_compound_long(r, key, Some(legacy_parent), 0)
 }
 
+/// The compound named `key` directly under the root compound, as a tree; the
+/// rest of the root is skipped, not kept. Reads the stream only as far as that
+/// tag. `Ok(None)` means the whole root was read and the key is not there (or
+/// is not a compound). For a chunk's `structures`, which Minecraft writes
+/// after the block data: what [`scan_root_long`] saves does not apply here.
+pub fn scan_root_compound<R: Read>(r: &mut R, key: &str) -> io::Result<Option<Value>> {
+    if read_u8(r)? != TAG_COMPOUND {
+        return Err(bad("the root tag is not a compound"));
+    }
+    read_name(r)?;
+    loop {
+        let tag = read_u8(r)?;
+        if tag == TAG_END {
+            return Ok(None);
+        }
+        let name = read_name(r)?;
+        if tag == TAG_COMPOUND && name == key.as_bytes() {
+            return read_payload(r, tag, 1).map(Some);
+        }
+        skip_payload(r, tag, 1)?;
+    }
+}
+
 fn scan_compound_long<R: Read>(r: &mut R, key: &str, descend_into: Option<&str>, depth: u32) -> io::Result<Option<i64>> {
     loop {
         let tag = read_u8(r)?;

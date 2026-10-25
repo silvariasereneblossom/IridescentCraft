@@ -50,6 +50,25 @@ pub fn disable_quickedit_mode() {
     }
 }
 
+/// A GUI-subsystem exe (icraft-gui.exe) started from a console window has no
+/// standard output: attach to that console, so a command-line mode's output
+/// shows there. Output that is piped or redirected already has a handle and is
+/// left alone.
+#[cfg(windows)]
+pub fn attach_parent_console() {
+    use windows_sys::Win32::Foundation::INVALID_HANDLE_VALUE;
+    use windows_sys::Win32::System::Console::{AttachConsole, GetStdHandle, ATTACH_PARENT_PROCESS, STD_OUTPUT_HANDLE};
+    unsafe {
+        let h = GetStdHandle(STD_OUTPUT_HANDLE);
+        if h == 0 || h == INVALID_HANDLE_VALUE {
+            AttachConsole(ATTACH_PARENT_PROCESS);
+        }
+    }
+}
+
+#[cfg(not(windows))]
+pub fn attach_parent_console() {}
+
 #[cfg(not(windows))]
 pub fn disable_quickedit_mode() {
     // Linux/macOS terminals don't have an equivalent freeze-on-click

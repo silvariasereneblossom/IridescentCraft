@@ -323,6 +323,106 @@ pub fn inhabited_time(kind: u8, data: &[u8]) -> Result<Option<i64>, String> {
 }
 
 // =============================================================================
+// Structures
+// =============================================================================
+//
+// A 1.18+ chunk keeps its structures in a `structures` compound (read from a
+// live chunk, 2026-10-24):
+//
+//   starts       one entry per structure that BEGINS in this chunk, keyed by
+//                the structure's id: `id`, `ChunkX`, `ChunkZ`, `references`,
+//                and `Children`, its pieces, each with a `BB` int array (min
+//                x, y, z, max x, y, z in blocks, inclusive)
+//   References   one long array per structure id: the packed positions of the
+//                start chunks of every structure of that id with a piece in
+//                this chunk (x in the low 32 bits, z in the high 32)
+//
+// A regenerated chunk gets its References again from the starts within 8
+// chunks of it, and the pieces of those starts that cross it are placed
+// again. So a structure whose start chunk stays is rebuilt, from that start,
+// in its chunks that are regenerated; one whose start chunk is regenerated
+// gets a new start from the worldgen of the day.
+//
+// Minecraft writes `structures` after the block data (a chunk's tags come in
+// Java's hash order), so reading it inflates the whole chunk. Only the
+// dry-run's report asks for it ([`scan_dimension_with_structures`]); a plan
+// is made from [`scan_dimension`], which stops at `InhabitedTime`.
+
+/// A structure that begins in a chunk.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct StructureStart {
+    /// `minecraft:village_plains`
+    pub id: String,
+    /// The chunk the start names as its own (`ChunkX`, `ChunkZ`).
+    pub chunk: ChunkPos,
+    pub pieces: usize,
+    /// Around every piece, in blocks: min x, y, z, max x, y, z (inclusive).
+    /// `None`: no piece carries a box.
+    pub bbox: Option<[i32; 6]>,
+}
+
+/// What one chunk records about structures.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct ChunkStructures {
+    pub starts: Vec<StructureStart>,
+    /// Structures with a piece in this chunk: id, and the chunk its start is in.
+    pub references: Vec<(String, ChunkPos)>,
+}
+
+impl ChunkStructures {
+    pub fn is_empty(&self) -> bool {
+        self.starts.is_empty() && self.references.is_empty()
+    }
+}
+
+/// A packed `ChunkPos.asLong`: x in the low 32 bits, z in the high 32.
+pub fn unpack_chunk(packed: i64) -> ChunkPos {
+    (packed as i32, (packed >> 32) as i32)
+}
+
+/// The `structures` compound of a chunk's compressed NBT. `Ok(None)`: the
+/// chunk has none (a chunk saved before 1.18 kept them elsewhere).
+pub fn chunk_structures(kind: u8, data: &[u8]) -> Result<Option<ChunkStructures>, String> {
+    const KEY: &str = "structures";
+    let found = match kind & 0x7f {
+        1 => nbt::scan_root_compound(&mut BufReader::with_capacity(16384, flate2::bufread::GzDecoder::new(data)), KEY),
+        2 => nbt::scan_root_compound(&mut BufReader::with_capacity(16384, flate2::bufread::ZlibDecoder::new(data)), KEY),
+        3 => nbt::scan_root_compound(&mut &data[..], KEY),
+        other => return Err(format!("compression type {other} is not one this launcher knows")),
+    };
+    let tree = found.map_err(|e| format!("its NBT does not read ({e})"))?;
+    Ok(tree.map(|t| structures_of(&t)))
+}
+
+fn structures_of(tree: &nbt::Value) -> ChunkStructures {
+    let mut out = ChunkStructures::default();
+    for (key, start) in tree.get("starts").and_then(nbt::Value::as_compound).into_iter().flatten() {
+        // A start that did not place writes itself as {id: "INVALID"}.
+        if start.get("id").and_then(nbt::Value::as_str) == Some("INVALID") {
+            continue;
+        }
+        let (Some(x), Some(z)) = (start.get("ChunkX").and_then(nbt::Value::as_i32), start.get("ChunkZ").and_then(nbt::Value::as_i32)) else {
+            continue;
+        };
+        let pieces = start.get("Children").and_then(nbt::Value::as_list).unwrap_or(&[]);
+        let mut bbox: Option<[i32; 6]> = None;
+        for b in pieces.iter().filter_map(|p| p.get("BB").and_then(nbt::Value::as_ints)).filter(|b| b.len() == 6) {
+            bbox = Some(match bbox {
+                None => [b[0], b[1], b[2], b[3], b[4], b[5]],
+                Some(o) => [o[0].min(b[0]), o[1].min(b[1]), o[2].min(b[2]), o[3].max(b[3]), o[4].max(b[4]), o[5].max(b[5])],
+            });
+        }
+        out.starts.push(StructureStart { id: key.clone(), chunk: (x, z), pieces: pieces.len(), bbox });
+    }
+    for (key, packed) in tree.get("References").and_then(nbt::Value::as_compound).into_iter().flatten() {
+        for p in packed.as_longs().unwrap_or(&[]) {
+            out.references.push((key.clone(), unpack_chunk(*p)));
+        }
+    }
+    out
+}
+
+// =============================================================================
 // Scanning a dimension
 // =============================================================================
 
@@ -371,6 +471,16 @@ pub struct DimensionScan {
     pub changed_during_scan: Vec<String>,
     /// Terrain chunks without an `InhabitedTime` tag.
     pub without_inhabited_time: usize,
+    /// Structures were read ([`scan_dimension_with_structures`]); the three
+    /// fields below are empty otherwise.
+    pub structures_read: bool,
+    /// Terrain chunks that record a structure start or piece.
+    pub structures: BTreeMap<ChunkPos, ChunkStructures>,
+    /// Terrain chunks whose `structures` did not read, and why. Nothing else
+    /// about them changes: their `InhabitedTime` read on its own.
+    pub structures_unreadable: BTreeMap<ChunkPos, String>,
+    /// Terrain chunks with no `structures` compound at all.
+    pub without_structures: usize,
 }
 
 impl DimensionScan {
@@ -400,7 +510,19 @@ pub fn store_summary(dir: &Path) -> (usize, u64) {
 /// Read every region file of a dimension: which chunks exist in which of the
 /// three folders, and each terrain chunk's `InhabitedTime`.
 pub fn scan_dimension(dim: &Dimension) -> DimensionScan {
-    let mut scan = DimensionScan::default();
+    scan(dim, false)
+}
+
+/// [`scan_dimension`], and what each terrain chunk records about structures.
+/// The chunk positions, stores and `InhabitedTime` come out exactly as there:
+/// a chunk whose structures do not read is listed in `structures_unreadable`
+/// and nothing else.
+pub fn scan_dimension_with_structures(dim: &Dimension) -> DimensionScan {
+    scan(dim, true)
+}
+
+fn scan(dim: &Dimension, structures: bool) -> DimensionScan {
+    let mut scan = DimensionScan { structures_read: structures, ..DimensionScan::default() };
     for store in Store::ALL {
         let dir = dim.store_dir(store);
         let mut names: Vec<(i32, i32, String)> = Vec::new();
@@ -469,7 +591,12 @@ fn scan_terrain_file(path: &Path, dir: &Path, rx: i32, rz: i32, scan: &mut Dimen
     for slot in &slots {
         let pos = slot.chunk(rx, rz);
         match terrain_chunk(bytes, *slot, dir, pos) {
-            Ok(ticks) => record(scan, pos, ticks),
+            Ok(ticks) => {
+                record(scan, pos, ticks);
+                if scan.structures_read {
+                    record_structures(scan, pos, with_payload(bytes, *slot, dir, pos, chunk_structures));
+                }
+            }
             Err(why) => failed.push((*slot, why)),
         }
     }
@@ -486,7 +613,13 @@ fn scan_terrain_file(path: &Path, dir: &Path, rx: i32, rz: i32, scan: &mut Dimen
                 None => Err(first_error),
             };
             match retried {
-                Ok(ticks) => record(scan, pos, ticks),
+                Ok(ticks) => {
+                    record(scan, pos, ticks);
+                    if scan.structures_read {
+                        let slot = fresh.iter().copied().find(|s| s.index == old.index).unwrap_or(old);
+                        record_structures(scan, pos, with_payload(&again, slot, dir, pos, chunk_structures));
+                    }
+                }
                 Err(why) => scan.chunks.entry(pos).or_default().unreadable = Some(why),
             }
         }
@@ -501,14 +634,82 @@ fn record(scan: &mut DimensionScan, pos: ChunkPos, ticks: Option<i64>) {
     scan.chunks.entry(pos).or_default().inhabited = ticks;
 }
 
+fn record_structures(scan: &mut DimensionScan, pos: ChunkPos, read: Result<Option<ChunkStructures>, String>) {
+    match read {
+        Ok(Some(s)) if !s.is_empty() => {
+            scan.structures.insert(pos, s);
+        }
+        Ok(Some(_)) => {}
+        Ok(None) => scan.without_structures += 1,
+        Err(why) => {
+            scan.structures_unreadable.insert(pos, why);
+        }
+    }
+}
+
 fn terrain_chunk(file: &[u8], slot: Slot, dir: &Path, pos: ChunkPos) -> Result<Option<i64>, String> {
+    with_payload(file, slot, dir, pos, inhabited_time)
+}
+
+/// `read` on a chunk's compression type and compressed bytes, which are in the
+/// region file or, for a chunk too big for it, in `c.<x>.<z>.mcc` beside it.
+fn with_payload<T>(file: &[u8], slot: Slot, dir: &Path, pos: ChunkPos, read: fn(u8, &[u8]) -> Result<T, String>) -> Result<T, String> {
     let (kind, data) = chunk_payload(file, slot)?;
     if kind & 0x80 != 0 {
         let external = dir.join(format!("c.{}.{}.mcc", pos.0, pos.1));
         let data = read_shared(&external, MAX_REGION_BYTES).map_err(|e| format!("its external .mcc file does not read ({e})"))?;
-        return inhabited_time(kind, &data);
+        return read(kind, &data);
     }
-    inhabited_time(kind, data)
+    read(kind, data)
+}
+
+/// One chunk, read on its own (the `chunk-info` lookup): which of the three
+/// folders hold it, and its terrain record. Reads three region files at most.
+#[derive(Debug, Clone)]
+pub struct ChunkRead {
+    /// Per [`Store::ALL`].
+    pub in_store: [bool; 3],
+    pub inhabited: Option<i64>,
+    /// `Ok(None)`: no terrain chunk, or no `structures` compound in it.
+    pub structures: Result<Option<ChunkStructures>, String>,
+    /// Why the terrain chunk or its region file did not read.
+    pub unreadable: Option<String>,
+}
+
+pub fn read_chunk(dim: &Dimension, pos: ChunkPos) -> ChunkRead {
+    let (rx, rz) = region_of(pos);
+    let name = region_name(rx, rz);
+    let index = slot_index(pos);
+    let mut out = ChunkRead { in_store: [false; 3], inhabited: None, structures: Ok(None), unreadable: None };
+    for (i, store) in Store::ALL.iter().enumerate() {
+        let dir = dim.store_dir(*store);
+        let path = dir.join(&name);
+        if !path.is_file() {
+            continue;
+        }
+        let limit = if *store == Store::Region { MAX_REGION_BYTES } else { SECTOR_BYTES as u64 };
+        let bytes = match read_shared(&path, limit) {
+            Ok(b) => b,
+            Err(e) => {
+                if *store == Store::Region {
+                    out.unreadable = Some(format!("{}/{name} does not read ({e})", store.dir_name()));
+                }
+                continue;
+            }
+        };
+        let Some(slot) = header_slots(&bytes).into_iter().find(|s| s.index == index) else { continue };
+        out.in_store[i] = true;
+        if *store == Store::Region {
+            match terrain_chunk(&bytes, slot, &dir, pos) {
+                Ok(ticks) => {
+                    out.inhabited = ticks;
+                    out.structures = with_payload(&bytes, slot, &dir, pos, chunk_structures);
+                }
+                Err(why) => out.unreadable = Some(why),
+            }
+        }
+    }
+    out
 }
 
 // =============================================================================
@@ -717,6 +918,51 @@ pub(crate) mod testing {
         let chunks: Vec<(ChunkPos, u8, Vec<u8>)> = chunks.iter().map(|(pos, t)| (*pos, 2, chunk_nbt(*pos, *t))).collect();
         fs::write(dir.join(region_name(rx, rz)), region_bytes(rx, rz, &chunks)).unwrap();
     }
+
+    /// `ChunkPos.asLong`.
+    pub fn pack_chunk(pos: ChunkPos) -> i64 {
+        i64::from(pos.0 as u32) | (i64::from(pos.1 as u32) << 32)
+    }
+
+    /// A `structures` compound as 1.20.1 writes it: starts (id, start chunk,
+    /// the boxes of its pieces) and references (id, the start chunks).
+    pub fn structures_value(starts: &[(&str, ChunkPos, &[[i32; 6]])], refs: &[(&str, &[ChunkPos])]) -> Value {
+        use crate::nbt::testing::{compound, string};
+        let starts: Vec<(&str, Value)> = starts
+            .iter()
+            .map(|(id, (x, z), boxes)| {
+                let pieces = boxes.iter().map(|b| compound(vec![("id", string("minecraft:jigsaw")), ("BB", Value::IntArray(b.to_vec()))])).collect();
+                (*id, compound(vec![("id", string(id)), ("ChunkX", Value::Int(*x)), ("ChunkZ", Value::Int(*z)), ("references", Value::Int(0)), ("Children", Value::List(pieces))]))
+            })
+            .collect();
+        let refs: Vec<(&str, Value)> = refs.iter().map(|(id, at)| (*id, Value::LongArray(at.iter().map(|p| pack_chunk(*p)).collect()))).collect();
+        compound(vec![("starts", compound(starts)), ("References", compound(refs))])
+    }
+
+    /// Uncompressed chunk NBT with `structures` after the block data, where
+    /// 1.20.1's hash order puts it.
+    pub fn chunk_raw_with(pos: ChunkPos, inhabited: i64, structures: Option<Value>) -> Vec<u8> {
+        let mut entries = vec![
+            ("xPos", Value::Int(pos.0)),
+            ("InhabitedTime", Value::Long(inhabited)),
+            ("sections", Value::List(vec![Value::LongArray(vec![0x0102_0304_0506_0708; 300])])),
+            ("zPos", Value::Int(pos.1)),
+        ];
+        if let Some(s) = structures {
+            entries.push(("structures", s));
+        }
+        entries.push(("Status", Value::String("minecraft:full".to_string())));
+        encode_ordered(&entries)
+    }
+
+    /// `region/r.<rx>.<rz>.mca` with chunks that carry structures.
+    pub fn write_region_with(dim_dir: &Path, rx: i32, rz: i32, chunks: &[(ChunkPos, i64, Option<Value>)]) {
+        let dir = dim_dir.join(Store::Region.dir_name());
+        fs::create_dir_all(&dir).unwrap();
+        let chunks: Vec<(ChunkPos, u8, Vec<u8>)> =
+            chunks.iter().map(|(pos, t, s)| (*pos, 2, zlib(&chunk_raw_with(*pos, *t, s.clone())))).collect();
+        fs::write(dir.join(region_name(rx, rz)), region_bytes(rx, rz, &chunks)).unwrap();
+    }
 }
 
 #[cfg(test)]
@@ -847,6 +1093,86 @@ mod tests {
         assert!(inhabited_time(2, &raw).is_err()); // not zlib
         let no_tag = crate::nbt::testing::encode_ordered(&[("xPos", crate::nbt::Value::Int(1))]);
         assert_eq!(inhabited_time(3, &no_tag), Ok(None));
+    }
+
+    #[test]
+    fn structures_are_read_after_the_block_data_and_change_nothing_else() {
+        use crate::nbt::testing::{compound, string, zlib};
+        use crate::nbt::Value;
+        let world = temp_world();
+        let village = structures_value(
+            &[("minecraft:village_plains", (40, 70), &[[640, 60, 1120, 660, 75, 1140], [655, 58, 1135, 700, 80, 1190]])],
+            &[("minecraft:village_plains", &[(40, 70)]), ("minecraft:mineshaft", &[(38, 66), (-3, -2)])],
+        );
+        let piece_only = structures_value(&[], &[("minecraft:village_plains", &[(40, 70)])]);
+        // A start that did not place, and a References entry that is not a long array: neither is a structure.
+        let invalid = compound(vec![
+            ("starts", compound(vec![("minecraft:igloo", compound(vec![("id", string("INVALID"))]))])),
+            ("References", compound(vec![("minecraft:igloo", Value::Int(3))])),
+        ]);
+        // A chunk cut short after its block data: InhabitedTime reads, its structures do not.
+        let raw = chunk_raw_with((44, 70), 31, Some(structures_value(&[], &[("minecraft:mineshaft", &[(44, 70)])])));
+        // (The last 26 bytes are the Status entry and the root's end, written after structures.)
+        let cut = raw[..raw.len() - 40].to_vec();
+        let chunks: Vec<(ChunkPos, u8, Vec<u8>)> = vec![
+            ((40, 70), 2, zlib(&chunk_raw_with((40, 70), 900, Some(village)))),
+            ((41, 70), 2, zlib(&chunk_raw_with((41, 70), 5, Some(piece_only)))),
+            ((42, 70), 2, zlib(&chunk_raw_with((42, 70), 0, Some(invalid)))),
+            ((43, 70), 2, zlib(&chunk_raw_with((43, 70), 7, None))),
+            ((44, 70), 3, cut),
+            ((45, 70), 3, chunk_raw_with((45, 70), 1, None)),
+        ];
+        fs::create_dir_all(world.join("region")).unwrap();
+        let other = world.join("region").join(region_name(1, 2));
+        fs::write(&other, region_bytes(1, 2, &chunks)).unwrap();
+        let before = fs::read(&other).unwrap();
+
+        let plain = scan_dimension(&overworld(&world));
+        let full = scan_dimension_with_structures(&overworld(&world));
+        // What a plan is made of comes out the same either way.
+        assert_eq!(plain.chunks, full.chunks);
+        assert_eq!(plain.files, full.files);
+        assert_eq!(plain.without_inhabited_time, full.without_inhabited_time);
+        assert_eq!(full.chunks[&(44, 70)].inhabited, Some(31));
+        assert_eq!(full.chunks[&(44, 70)].unreadable, None);
+        assert!(!plain.structures_read && plain.structures.is_empty() && plain.structures_unreadable.is_empty());
+
+        assert!(full.structures_read);
+        let here = &full.structures[&(40, 70)];
+        assert_eq!(here.starts, vec![StructureStart { id: "minecraft:village_plains".to_string(), chunk: (40, 70), pieces: 2, bbox: Some([640, 58, 1120, 700, 80, 1190]) }]);
+        let mut refs = here.references.clone();
+        refs.sort();
+        assert_eq!(
+            refs,
+            vec![("minecraft:mineshaft".to_string(), (-3, -2)), ("minecraft:mineshaft".to_string(), (38, 66)), ("minecraft:village_plains".to_string(), (40, 70))]
+        );
+        assert_eq!(full.structures[&(41, 70)].references, vec![("minecraft:village_plains".to_string(), (40, 70))]);
+        assert!(full.structures[&(41, 70)].starts.is_empty());
+        assert!(!full.structures.contains_key(&(43, 70)));
+        assert!(!full.structures.contains_key(&(42, 70)), "an INVALID start and a malformed reference are nothing");
+        assert_eq!(full.without_structures, 2); // (43, 70) and (45, 70)
+        assert!(full.structures_unreadable.contains_key(&(44, 70)), "{:?}", full.structures_unreadable);
+        assert_eq!(full.structures_unreadable.len(), 1);
+        assert_eq!(fs::read(&other).unwrap(), before, "a scan writes nothing");
+
+        // One chunk on its own reads the same.
+        let one = read_chunk(&overworld(&world), (40, 70));
+        assert_eq!(one.in_store, [true, false, false]);
+        assert_eq!(one.inhabited, Some(900));
+        assert_eq!(one.structures.as_ref().unwrap().as_ref(), Some(here));
+        let missing = read_chunk(&overworld(&world), (0, 0));
+        assert_eq!((missing.in_store, missing.inhabited, missing.unreadable), ([false; 3], None, None));
+        assert!(read_chunk(&overworld(&world), (44, 70)).structures.is_err());
+        let _ = fs::remove_dir_all(&world);
+    }
+
+    #[test]
+    fn a_packed_chunk_position_unpacks() {
+        for pos in [(0, 0), (40, 70), (-3, -2), (i32::MIN, i32::MAX), (-1, 1)] {
+            assert_eq!(unpack_chunk(pack_chunk(pos)), pos);
+        }
+        // ChunkPos.asLong(-3, -2) in Java.
+        assert_eq!(unpack_chunk(-4_294_967_299), (-3, -2));
     }
 
     #[test]

@@ -36,7 +36,8 @@ use eframe::egui::{self, Color32, RichText};
 use icraft_core::backup;
 use icraft_core::config::ServerConfig;
 use icraft_core::protection::{self, Settings, WaystoneMode};
-use icraft_core::regen::{self, DimView, MapInfo, RunEntry, RunSpec, RunView, Scope};
+use icraft_core::anvil::ChunkPos;
+use icraft_core::regen::{self, DimView, MapInfo, RunEntry, RunSpec, RunView, Scope, StructuresView};
 
 pub(crate) const GOOD: Color32 = Color32::from_rgb(120, 200, 140);
 pub(crate) const WARN: Color32 = Color32::from_rgb(220, 170, 60);
@@ -93,6 +94,101 @@ struct Shown {
     map_notes: Vec<String>,
 }
 
+/// "What is in a chunk": a chunk clicked on a run's map, or typed in, looked
+/// up on a worker thread ([`regen::chunk_info`]: a few region files and the
+/// run's CSV files; nothing is written).
+struct ChunkLookup {
+    x: String,
+    z: String,
+    /// The two fields are chunk coordinates (the map's), not block ones (F3's).
+    chunks: bool,
+    /// The dimension of the last lookup: its answer is shown under that map.
+    dim: String,
+    job: Arc<Mutex<Option<Result<Vec<String>, String>>>>,
+    busy: bool,
+    answer: Option<Result<Vec<String>, String>>,
+}
+
+impl ChunkLookup {
+    fn new() -> Self {
+        ChunkLookup { x: String::new(), z: String::new(), chunks: false, dim: String::new(), job: Arc::new(Mutex::new(None)), busy: false, answer: None }
+    }
+
+    fn start(&mut self, ctx: &egui::Context, server_dir: &Path, run: &Path, dim: &str, pos: ChunkPos) {
+        if self.busy {
+            return;
+        }
+        self.dim = dim.to_string();
+        self.busy = true;
+        self.answer = None;
+        *self.job.lock().unwrap_or_else(|e| e.into_inner()) = None;
+        let (slot, ctx, cfg, run, dim) = (Arc::clone(&self.job), ctx.clone(), ServerConfig::from_path(server_dir), run.to_path_buf(), dim.to_string());
+        std::thread::spawn(move || {
+            let answer = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| regen::chunk_info(&cfg, &dim, pos, Some(&run))))
+                .unwrap_or_else(|_| Err("the lookup panicked (nothing was modified; please report this)".to_string()));
+            *slot.lock().unwrap_or_else(|e| e.into_inner()) = Some(answer);
+            ctx.request_repaint();
+        });
+    }
+
+    /// A chunk clicked on the map.
+    fn clicked(&mut self, ctx: &egui::Context, server_dir: &Path, run: &Path, dim: &str, pos: ChunkPos) {
+        self.x = pos.0.to_string();
+        self.z = pos.1.to_string();
+        self.chunks = true;
+        self.start(ctx, server_dir, run, dim, pos);
+    }
+
+    fn ui(&mut self, ui: &mut egui::Ui, server_dir: &Path, run: &Path, dim: &str) {
+        if self.busy {
+            if let Some(answer) = self.job.lock().unwrap_or_else(|e| e.into_inner()).take() {
+                self.answer = Some(answer);
+                self.busy = false;
+            }
+        }
+        ui.horizontal_wrapped(|ui| {
+            ui.label("x");
+            ui.add(egui::TextEdit::singleline(&mut self.x).desired_width(70.0));
+            ui.label("z");
+            ui.add(egui::TextEdit::singleline(&mut self.z).desired_width(70.0));
+            ui.checkbox(&mut self.chunks, "chunk coordinates")
+                .on_hover_text("Off: block coordinates, as F3 shows them. On: chunk coordinates, as the map shows them.");
+            if ui.add_enabled(!self.busy, egui::Button::new("Look up")).clicked() {
+                match (self.x.trim().parse::<i64>(), self.z.trim().parse::<i64>()) {
+                    (Ok(x), Ok(z)) => match regen::chunk_of(x, z, self.chunks) {
+                        Ok(pos) => self.start(ui.ctx(), server_dir, run, dim, pos),
+                        Err(why) => {
+                            self.dim = dim.to_string();
+                            self.answer = Some(Err(why));
+                        }
+                    },
+                    _ => {
+                        self.dim = dim.to_string();
+                        self.answer = Some(Err("x and z take whole numbers".to_string()));
+                    }
+                }
+            }
+            if self.busy {
+                ui.spinner();
+            }
+        });
+        ui.weak("Or click a chunk on the map. Reads that chunk and the starts of the structures in it, and says what this run's plan does with them. Nothing is written.");
+        if self.dim == dim {
+            match &self.answer {
+                Some(Ok(lines)) => {
+                    for line in lines {
+                        mono_line(ui, line);
+                    }
+                }
+                Some(Err(why)) => {
+                    ui.colored_label(BAD, why.as_str());
+                }
+                None => {}
+            }
+        }
+    }
+}
+
 pub struct Customizer {
     page: Page,
     worldgen: crate::worldgen_page::WorldgenPage,
@@ -133,6 +229,7 @@ pub struct Customizer {
     runs: Vec<RunEntry>,
     last_scan: Option<Instant>,
     shown: Option<Shown>,
+    lookup: ChunkLookup,
 
     backups: String,
     backups_at: Option<Instant>,
@@ -177,6 +274,7 @@ impl Customizer {
             runs: Vec::new(),
             last_scan: None,
             shown: None,
+            lookup: ChunkLookup::new(),
             backups: String::new(),
             backups_at: None,
             reveal_results: false,
@@ -367,6 +465,8 @@ impl Customizer {
             }
         }
         self.shown = Some(Shown { dir, view, view_error, report, maps, map_notes });
+        // An answer was about the run shown before.
+        self.lookup.answer = None;
     }
 
     /// Draw the tab. Returns `true` when "Back up now" was clicked.
@@ -430,7 +530,7 @@ impl Customizer {
         ui.add_space(12.0);
         self.inputs_ui(ui, server_dir);
         ui.add_space(12.0);
-        self.results_ui(ui);
+        self.results_ui(ui, server_dir);
         ui.add_space(8.0);
         backup_now
     }
@@ -645,7 +745,7 @@ impl Customizer {
         }
     }
 
-    fn results_ui(&mut self, ui: &mut egui::Ui) {
+    fn results_ui(&mut self, ui: &mut egui::Ui, server_dir: &Path) {
         if std::mem::take(&mut self.reveal_results) {
             ui.scroll_to_cursor(Some(egui::Align::TOP));
         }
@@ -688,7 +788,7 @@ impl Customizer {
             self.show(ui.ctx(), dir);
         }
         if let Some(shown) = &self.shown {
-            view_ui(ui, self.expand_all, shown);
+            view_ui(ui, self.expand_all, shown, &mut self.lookup, server_dir);
         }
     }
 }
@@ -730,7 +830,7 @@ pub(crate) fn open_path(path: &Path) {
     }
 }
 
-fn view_ui(ui: &mut egui::Ui, expand: bool, shown: &Shown) {
+fn view_ui(ui: &mut egui::Ui, expand: bool, shown: &Shown, lookup: &mut ChunkLookup, server_dir: &Path) {
     if let Some(why) = &shown.view_error {
         ui.colored_label(WARN, format!("This run has no summary to draw as tables ({why}). Its report is at the bottom."));
     }
@@ -756,7 +856,7 @@ fn view_ui(ui: &mut egui::Ui, expand: bool, shown: &Shown) {
         ui.add_space(4.0);
 
         for d in &v.dimensions {
-            section(ui, expand, &format!("dim-{}", d.id), RichText::new(d.id.as_str()).strong(), true, |ui| dimension_ui(ui, expand, d, shown));
+            section(ui, expand, &format!("dim-{}", d.id), RichText::new(d.id.as_str()).strong(), true, |ui| dimension_ui(ui, expand, d, shown, lookup, server_dir));
         }
         section(ui, expand, "players", format!("Players ({})", v.players.len()), true, |ui| {
             for p in &v.players {
@@ -857,7 +957,7 @@ fn view_ui(ui: &mut egui::Ui, expand: bool, shown: &Shown) {
     });
 }
 
-fn dimension_ui(ui: &mut egui::Ui, expand: bool, d: &DimView, shown: &Shown) {
+fn dimension_ui(ui: &mut egui::Ui, expand: bool, d: &DimView, shown: &Shown, lookup: &mut ChunkLookup, server_dir: &Path) {
     egui::Grid::new(format!("totals-{}", d.id)).show(ui, |ui| {
         ui.label("chunks on disk");
         ui.label(format!("{}   (terrain {}, entities {}, poi {})", regen::num(d.on_disk), regen::num(d.terrain), regen::num(d.entities), regen::num(d.poi)));
@@ -930,12 +1030,25 @@ fn dimension_ui(ui: &mut egui::Ui, expand: bool, d: &DimView, shown: &Shown) {
         });
     });
 
+    if let Some(st) = &d.structures {
+        let title = if st.cut > 0 {
+            RichText::new(format!("Structures ({}; {} CUT by this plan)", regen::num(st.total), regen::num(st.cut))).color(WARN)
+        } else {
+            RichText::new(format!("Structures ({})", regen::num(st.total)))
+        };
+        section(ui, expand, &format!("structures-{}", d.id), title, st.cut > 0, |ui| structures_ui(ui, expand, &d.id, st));
+    }
     for map in shown.maps.iter().filter(|m| m.dim == d.id) {
-        section(ui, expand, &format!("map-{}", d.id), "Map", true, |ui| map_ui(ui, map));
+        section(ui, expand, &format!("map-{}", d.id), "Map", true, |ui| {
+            if let Some(pos) = map_ui(ui, map) {
+                lookup.clicked(ui.ctx(), server_dir, &shown.dir, &d.id, pos);
+            }
+        });
     }
     for note in shown.map_notes.iter().filter(|n| n.starts_with(&format!("{}:", d.id))) {
         ui.weak(note.as_str());
     }
+    section(ui, expand, &format!("lookup-{}", d.id), "What is in a chunk", true, |ui| lookup.ui(ui, server_dir, &shown.dir, &d.id));
     section(ui, expand, &format!("inhabited-{}", d.id), "InhabitedTime: how long players have been near each chunk", false, |ui| {
         ui.weak("A chunk's InhabitedTime counts the ticks it was loaded with a player within 128 blocks of it.");
         ui.horizontal_wrapped(|ui| {
@@ -977,7 +1090,68 @@ fn dimension_ui(ui: &mut egui::Ui, expand: bool, d: &DimView, shown: &Shown) {
     });
 }
 
-fn map_ui(ui: &mut egui::Ui, map: &MapTexture) {
+fn structures_ui(ui: &mut egui::Ui, expand: bool, dim: &str, st: &StructuresView) {
+    egui::Grid::new(format!("structures-grid-{dim}")).show(ui, |ui| {
+        ui.label("kept whole");
+        ui.label(format!("{}   (no chunk of it is regenerated)", regen::num(st.kept_whole)));
+        ui.end_row();
+        ui.label("regenerated whole");
+        ui.label(format!("{}   (today's worldgen decides what stands there)", regen::num(st.reset_whole)));
+        ui.end_row();
+        ui.label("CUT by this plan");
+        let text = format!("{}   (some chunks kept, some regenerated; start regenerated: {})", regen::num(st.cut), regen::num(st.cut_start_reset));
+        if st.cut > 0 {
+            ui.colored_label(WARN, text);
+        } else {
+            ui.colored_label(GOOD, text);
+        }
+        ui.end_row();
+        ui.label("pieces only");
+        ui.label(format!("{}   (the start is not on disk)", regen::num(st.without_start)));
+        ui.end_row();
+    });
+    if st.unreadable > 0 {
+        ui.colored_label(WARN, format!("{} terrain chunk(s) whose structures did not read: planned as usual, missing here.", regen::num(st.unreadable)));
+    }
+    if !st.cut_lines.is_empty() {
+        ui.label(RichText::new("Cut structures, the most chunks first").strong());
+        for line in &st.cut_lines {
+            mono_line(ui, line);
+        }
+        if st.cut_more > 0 {
+            ui.weak(format!("... and {} more: all of them are in structures.csv in the run's folder.", regen::num(st.cut_more)));
+        }
+    }
+    ui.weak(
+        "A regenerated chunk takes back the pieces of every start within 8 chunks that reaches into it. A cut structure whose start is kept \
+         is rebuilt in its regenerated chunks as it was generated (new loot and mobs; what players changed there is gone). One whose start \
+         is regenerated gets a new start from today's worldgen, and joins up with its kept part only if that places it there the same way. \
+         On the map, red is a regenerated chunk of a cut structure.",
+    );
+    section(ui, expand, &format!("structure-types-{dim}"), format!("By type ({})", st.types.len()), false, |ui| {
+        egui::Grid::new(format!("structure-types-grid-{dim}")).striped(true).show(ui, |ui| {
+            for head in ["structure", "all", "kept whole", "regenerated", "CUT"] {
+                ui.strong(head);
+            }
+            ui.end_row();
+            for t in &st.types {
+                ui.label(t.id.as_str());
+                ui.label(regen::num(t.total));
+                ui.label(regen::num(t.kept_whole));
+                ui.label(regen::num(t.reset_whole));
+                if t.cut > 0 {
+                    ui.colored_label(WARN, regen::num(t.cut));
+                } else {
+                    ui.label("0");
+                }
+                ui.end_row();
+            }
+        });
+    });
+}
+
+/// Draws the map; returns the chunk clicked, if one was.
+fn map_ui(ui: &mut egui::Ui, map: &MapTexture) -> Option<ChunkPos> {
     ui.horizontal_wrapped(|ui| {
         for (name, rgb) in regen::MAP_LEGEND {
             let (rect, _) = ui.allocate_exact_size(egui::vec2(12.0, 12.0), egui::Sense::hover());
@@ -990,17 +1164,24 @@ fn map_ui(ui: &mut egui::Ui, map: &MapTexture) {
     // squares, and blowing it up blurs nothing but costs fill on software GL.
     let scale = (ui.available_width() / map.info.width as f32).min(1.0).max(0.05);
     let size = egui::vec2(map.info.width as f32 * scale, map.info.height as f32 * scale);
-    let image = egui::Image::from_texture(egui::load::SizedTexture::new(map.texture.id(), size)).sense(egui::Sense::hover());
+    let image = egui::Image::from_texture(egui::load::SizedTexture::new(map.texture.id(), size)).sense(egui::Sense::click());
     let response = ui.add(image);
     let per_chunk = map.info.pixels_per_chunk.max(1) as f32 * scale;
+    let chunk_at = |pos: egui::Pos2| {
+        let x = map.info.origin_x + ((pos.x - response.rect.min.x) / per_chunk).floor() as i64;
+        let z = map.info.origin_z + ((pos.y - response.rect.min.y) / per_chunk).floor() as i64;
+        (x, z)
+    };
     match response.hover_pos() {
         Some(pos) => {
-            let x = map.info.origin_x + ((pos.x - response.rect.min.x) / per_chunk).floor() as i64;
-            let z = map.info.origin_z + ((pos.y - response.rect.min.y) / per_chunk).floor() as i64;
-            ui.label(RichText::new(format!("chunk ({x}, {z}) = blocks x {}..{}, z {}..{}", x * 16, x * 16 + 15, z * 16, z * 16 + 15)).small().monospace());
+            let (x, z) = chunk_at(pos);
+            ui.label(RichText::new(format!("chunk ({x}, {z}) = blocks x {}..{}, z {}..{}; click: what is in it", x * 16, x * 16 + 15, z * 16, z * 16 + 15)).small().monospace());
         }
         None => {
-            ui.label(RichText::new("North is up; faint lines are region files (32 chunks). Point at the map to read coordinates.").small().weak());
+            ui.label(RichText::new("North is up; faint lines are region files (32 chunks). Point at the map to read coordinates; click a chunk to see what is in it.").small().weak());
         }
     }
+    let clicked = response.clicked().then(|| response.interact_pointer_pos()).flatten()?;
+    let (x, z) = chunk_at(clicked);
+    Some((i32::try_from(x).ok()?, i32::try_from(z).ok()?))
 }

@@ -107,6 +107,14 @@ pub fn apply_and_relaunch_gui_beside_exe(cfg: &ServerConfig) -> Result<bool> {
 /// `beside_only`) the one the sync drops into `server_dir`. Two candidate
 /// locations because the sync flow drops .new files into server_dir; if the
 /// GUI binary itself sits there too, both paths point at the same file.
+/// The staged `<exe>.new` the running launcher would take, if there is one
+/// (a file test, nothing read): the one beside the exe, or, unless
+/// `beside_only`, the one the sync drops into the server folder.
+pub fn staged_launcher(cfg: &ServerConfig, beside_only: bool) -> Option<PathBuf> {
+    let exe = std::env::current_exe().ok()?;
+    staged_for(&exe, &cfg.server_dir, beside_only)
+}
+
 fn staged_for(exe: &Path, server_dir: &Path, beside_only: bool) -> Option<PathBuf> {
     let exe_name = exe.file_name().and_then(|n| n.to_str())?;
     let here = exe.with_file_name(format!("{exe_name}.new"));
