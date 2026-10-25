@@ -465,6 +465,8 @@ struct IcraftApp {
     /// Free-form server console input -- also reused as the username/arg
     /// for the per-command quick buttons (op, ban, kick, ...).
     console_input: String,
+    /// Blocks around world spawn for the Chunky pregeneration buttons.
+    pregen_radius: u32,
     /// PAT input (password-masked). Cleared after Save.
     pat_input: String,
     /// Remote (GitHub) HEAD SHA for the configured branch, fetched in
@@ -2466,6 +2468,7 @@ impl IcraftApp {
             running_task: None,
             status: InstallStatus::default(),
             console_input: String::new(),
+            pregen_radius: PREGEN_RADIUS_BLOCKS,
             pat_input: String::new(),
             remote_sha: Arc::new(Mutex::new(None)),
             remote_fetching: Arc::new(AtomicBool::new(false)),
@@ -3886,6 +3889,32 @@ impl IcraftApp {
             }
         });
 
+        ui.add_space(2.0);
+        ui.label(egui::RichText::new("Pregeneration (Chunky):").small());
+        ui.horizontal_wrapped(|ui| {
+            let up = matches!(icraft_core::run::server_state(), icraft_core::run::ServerState::Started);
+            ui.label("radius");
+            ui.add(egui::DragValue::new(&mut self.pregen_radius).clamp_range(100..=20_000).speed(50).suffix(" blocks"));
+            let start = ui
+                .add_enabled(up, egui::Button::new("Pregenerate around spawn"))
+                .on_hover_text(
+                    "Sends: chunky world minecraft:overworld, chunky spawn, chunky radius <radius>, chunky start. \
+                     Chunky skips chunks that exist (kept ones included) and carries the task over a restart; \
+                     the pack's pregen script pauses it while players are on and continues it when the server is empty.",
+                )
+                .on_disabled_hover_text("Only while the server is up.");
+            if start.clicked() {
+                for line in pregen_commands(self.pregen_radius) {
+                    send_console(&line);
+                }
+            }
+            for (label, cmd) in [("progress", "chunky progress"), ("pause", "chunky pause"), ("continue", "chunky continue"), ("cancel", "chunky cancel")] {
+                if ui.add_enabled(up, egui::Button::new(label)).clicked() {
+                    send_console(cmd);
+                }
+            }
+        });
+
         if busy {
             ui.add_space(8.0);
             // Plain text, not a spinner: an animated widget repaints on every
@@ -4225,6 +4254,21 @@ fn draw_colored_title(ui: &mut egui::Ui) {
     });
 }
 
+/// What the Server tab's pregeneration field starts with (blocks around world
+/// spawn): the operator's choice for after the regeneration, 2026-10-25.
+const PREGEN_RADIUS_BLOCKS: u32 = 1000;
+
+/// The console lines that start a Chunky pregeneration of the overworld,
+/// `radius` blocks around world spawn.
+fn pregen_commands(radius: u32) -> [String; 4] {
+    [
+        "chunky world minecraft:overworld".to_string(),
+        "chunky spawn".to_string(),
+        format!("chunky radius {radius}"),
+        "chunky start".to_string(),
+    ]
+}
+
 /// Send `line` to the running server's stdin, logging both the
 /// outgoing command and any send error to the GUI log pane. Handles
 /// the "no server running" case gracefully -- operator just sees a
@@ -4267,6 +4311,14 @@ mod tests {
 
     /// started_by's last-of-each table is one per process.
     static SERIAL: Mutex<()> = Mutex::new(());
+
+    #[test]
+    fn the_pregeneration_button_sends_chunky_its_four_lines() {
+        assert_eq!(
+            pregen_commands(1000),
+            ["chunky world minecraft:overworld", "chunky spawn", "chunky radius 1000", "chunky start"].map(String::from)
+        );
+    }
 
     #[test]
     fn chunk_info_is_a_mode_of_its_own_and_says_how_it_is_used() {
