@@ -1,7 +1,8 @@
 //! What a regeneration changes besides its chunks: the world's seed, the
 //! Tectonic blending mark on the kept chunks, the pack's spawn markers, and the
-//! player files of players who start over (operator decisions D1 to D9 of
-//! 2026-10-25; internal `design/scope-new-seed-2026-10-25.md`, section 5a).
+//! records of players who start over (operator decisions D1 to D9 of
+//! 2026-10-25; internal `design/scope-new-seed-2026-10-25.md`, section 5a; the
+//! operator's answers of 17:50 EDT: "Reset quest progress etc, delete the tower").
 //!
 //! Each is asked for on the dry-run page (or as `key=value`, like a protection
 //! setting) and is written into the dry-run's `plan.json` as a concrete value:
@@ -16,8 +17,8 @@
 //! |---|---|
 //! | `new_seed` | `Data.WorldGenSettings.seed` in `level.dat` and `level.dat_old`; ModernFix's `mfix_strongholds.dat` of every dimension moved to the holding folder (it keeps the old seed's ring positions forever); Alex's Mobs' `PupfishChunkX/Z` removed (the one chunk pupfish may spawn in, picked from the old seed) |
 //! | `blend` | every kept overworld terrain chunk that Tectonic tagged `tectonic:blending_version = 1` rewritten in place with 0: Tectonic then gives it vanilla `blending_data`, and new land generated next to it bends toward it |
-//! | `spawn_search` | `Data.SpawnY` set to [`SPAWN_SEARCH_Y`] and the spawn scripts' one-shot markers removed from `kubejs_persistent_data.nbt`, so `cherry_spawn_biome.js` looks for a cherry river valley village again and `spawn_priest_tower.js` places its tower there |
-//! | `reset_players` | each player's `playerdata/<uuid>.*` moved to the holding folder; no layer keeps that player's bed or logout spot |
+//! | `spawn_search` | `Data.SpawnY` set to [`SPAWN_SEARCH_Y`] and the cherry spawn script's one-shot markers removed from `kubejs_persistent_data.nbt`, so `cherry_spawn_biome.js` looks for a cherry river valley village again. The priest tower's marker stays: no tower is placed at the new spawn |
+//! | `reset_players` | each player's files moved to the holding folder (`playerdata/<uuid>.*`, advancements, stats, AStages' stages) and their entries taken out of the quest and skill stores ([`PLAYER_STORES`]); no layer keeps that player's bed or logout spot |
 //!
 //! Only a plan that resets every chunk it does not keep, in every dimension
 //! that has land (`scope all`), may change the seed: anything narrower would
@@ -55,12 +56,24 @@ pub const PUPFISH_KEYS: [&str; 2] = ["PupfishChunkX", "PupfishChunkZ"];
 /// KubeJS 6's persistent data, under the world: the server's keys at the
 /// root, each level's under its id.
 pub const KUBEJS_DATA: &str = "kubejs_persistent_data.nbt";
-/// `spawn_priest_tower.js` (server data).
-pub const SERVER_SPAWN_KEYS: [&str; 2] = ["icraft_priest_tower_done", "icraft_priest_tower_attempts"];
-/// `cherry_spawn_biome.js` (the overworld's data).
+/// `cherry_spawn_biome.js` (the overworld's data). The priest tower's
+/// `icraft_priest_tower_done` (server data) is left set: "delete the tower".
+
 pub const LEVEL_SPAWN_KEYS: [&str; 5] =
     ["icraft_cherry_spawn_set", "icraft_cherry_spawn_exhausted", "icraft_cherry_village_x", "icraft_cherry_village_y", "icraft_cherry_village_z"];
 pub const LEVEL_DATA_KEY: &str = "minecraft:overworld";
+/// A restarting player's own files outside `playerdata/`, under the world
+/// (`{}` is the UUID): their advancements, statistics and AStages' stages.
+pub const PLAYER_FILES: [&str; 4] = ["advancements/{}.json", "stats/{}.json", "astages/player/permanent/{}.json", "astages/player/temporary/{}.json"];
+/// Shared saved data that holds a player's progress under their UUID, and the
+/// compound the UUID is a key of: Heracles' quest progress and pinned quests,
+/// Puffish Skills' skill trees. Each mod makes a fresh entry for a UUID it does
+/// not find (`computeIfAbsent`, read in their classes 2026-10-25).
+pub const PLAYER_STORES: [(&str, &[&str]); 3] = [
+    ("data/heracles_quest_progress.dat", &["data"]),
+    ("data/heracles_pinned_quests.dat", &["data"]),
+    ("data/puffish_skills.dat", &["data", "players"]),
+];
 
 // =============================================================================
 // What is asked for, and what a plan records
@@ -253,14 +266,14 @@ impl Edits {
         }
         if self.spawn_search {
             out.push(format!(
-                "SPAWN SEARCH: the world spawn's height is set to {} and the spawn scripts' markers are removed, so at the next start the pack looks for a cherry river valley village again and moves the spawn there (the priest tower follows). The spawn may end up far from the kept chunks.",
+                "SPAWN SEARCH: the world spawn's height is set to {} and the cherry spawn script's markers are removed, so at the next start the pack looks for a cherry river valley village again and moves the spawn there (no priest tower is placed). The spawn may end up far from the kept chunks.",
                 self.spawn_y
             ));
         }
         for uuid in &self.reset_players {
             let name = players.iter().find(|p| p.uuid == *uuid).map_or(uuid.as_str(), |p| p.label());
             out.push(format!(
-                "STARTS OVER: {name}: their player file (playerdata/{}.*: inventory, position, bed, mod data kept on the player) leaves the world, into the holding folder. They join again as a new player at world spawn. No layer keeps their bed or logout spot.",
+                "STARTS OVER: {name}: their player file (playerdata/{}.*: inventory, position, bed, mod data kept on the player), advancements, statistics and stages leave the world, into the holding folder, and their quest progress (pinned quests too) and skill trees come out of the stores. They join again as a new player at world spawn. No layer keeps their bed or logout spot.",
                 short(uuid)
             ));
         }
@@ -328,10 +341,12 @@ pub fn stronghold_caches(world: &Path) -> Vec<PathBuf> {
     out
 }
 
-/// A player's files in `playerdata/`: `<uuid>.dat`, `.dat_old`, and what mods
-/// keep beside them (`.cosarmor`), sorted.
+/// A player's files that leave with them: in `playerdata/` `<uuid>.dat`,
+/// `.dat_old` and what mods keep beside them (`.cosarmor`); and those of
+/// [`PLAYER_FILES`] that exist. Sorted.
 pub fn player_files(world: &Path, uuid: &str) -> Vec<PathBuf> {
-    let prefix = format!("{}.", uuid.to_ascii_lowercase());
+    let uuid = uuid.to_ascii_lowercase();
+    let prefix = format!("{uuid}.");
     let mut out: Vec<PathBuf> = fs::read_dir(world.join("playerdata"))
         .into_iter()
         .flatten()
@@ -340,8 +355,25 @@ pub fn player_files(world: &Path, uuid: &str) -> Vec<PathBuf> {
         .filter(|e| e.file_name().to_string_lossy().to_ascii_lowercase().starts_with(&prefix))
         .map(|e| e.path())
         .collect();
+    for pattern in PLAYER_FILES {
+        let path = pattern.replace("{}", &uuid).split('/').fold(world.to_path_buf(), |p, part| p.join(part));
+        if path.is_file() {
+            out.push(path);
+        }
+    }
     out.sort();
     out
+}
+
+/// A store of [`PLAYER_STORES`] without the entries of `uuids`, and how many
+/// came out. `None`: none of them has one.
+pub fn edit_player_store(raw: &[u8], path: &[&str], uuids: &[String]) -> Result<Option<(Doc, usize)>, String> {
+    let mut doc = Doc::parse(raw).map_err(|e| e.to_string())?;
+    let Some(Node::Compound(entries)) = doc.root.at_mut(path) else { return Ok(None) };
+    let before = entries.len();
+    entries.retain(|(name, _)| !uuids.iter().any(|u| u.as_bytes().eq_ignore_ascii_case(name)));
+    let gone = before - entries.len();
+    Ok((gone > 0).then_some((doc, gone)))
 }
 
 /// What else the world keeps of a player, outside `playerdata/`: files named
@@ -357,6 +389,12 @@ pub fn other_player_records(world: &Path, uuid: &str) -> Vec<String> {
             let Ok(kind) = e.file_type() else { continue };
             let lower = name.to_ascii_lowercase();
             if matches!(lower.as_str(), "region" | "entities" | "poi" | "playerdata") {
+                continue;
+            }
+            // What leaves with them anyway.
+            let handled = PLAYER_FILES.iter().any(|p| p.replace("{}", uuid) == child.to_ascii_lowercase())
+                || PLAYER_STORES.iter().any(|(rel, _)| *rel == child);
+            if handled {
                 continue;
             }
             if lower.contains(uuid) {
@@ -427,7 +465,7 @@ fn remove_keys(node: &mut Node, keys: &[&str]) -> Vec<String> {
 /// were there. `None`: none was.
 pub fn edit_spawn_markers(raw: &[u8]) -> Result<Option<(Doc, Vec<String>)>, String> {
     let mut doc = Doc::parse(raw).map_err(|e| e.to_string())?;
-    let mut gone = remove_keys(&mut doc.root, &SERVER_SPAWN_KEYS);
+    let mut gone = Vec::new();
     if let Some(level) = doc.root.get_mut(LEVEL_DATA_KEY) {
         gone.extend(remove_keys(level, &LEVEL_SPAWN_KEYS).into_iter().map(|k| format!("{LEVEL_DATA_KEY}.{k}")));
     }
@@ -723,8 +761,9 @@ mod tests {
             ),
         ]);
         let (doc, gone) = edit_spawn_markers(&raw).unwrap().unwrap();
-        assert_eq!(gone, vec!["icraft_priest_tower_done".to_string(), format!("{LEVEL_DATA_KEY}.icraft_cherry_spawn_exhausted")]);
+        assert_eq!(gone, vec![format!("{LEVEL_DATA_KEY}.icraft_cherry_spawn_exhausted")]);
         assert!(doc.root.get("icraft_chunky_pregen_started").is_some(), "the pregeneration flag stays");
+        assert!(doc.root.get("icraft_priest_tower_done").is_some(), "the tower stays done: no tower at the new spawn");
         assert!(doc.root.at(&[LEVEL_DATA_KEY, "icraft_mobgriefing_default_set"]).is_some());
         assert!(edit_spawn_markers(&encode_ordered(&[("other", Value::Int(1))])).unwrap().is_none());
 
@@ -734,6 +773,20 @@ mod tests {
         )]));
         let doc = edit_pupfish(&am).unwrap().unwrap();
         assert!(doc.root.at(&["data", "PupfishChunkX"]).is_none() && doc.root.at(&["data", "beachedCachalotSpawnDelay"]).is_some());
+    }
+
+    #[test]
+    fn a_player_store_loses_exactly_that_players_entry() {
+        let me = "00000000-0000-4000-8000-000000000001";
+        let other = "00000000-0000-4000-8000-000000000002";
+        let raw = gzip(&encode_ordered(&[(
+            "data",
+            Value::Compound([("players".to_string(), Value::Compound([(me.to_string(), Value::Int(1)), (other.to_string(), Value::Int(2))].into_iter().collect()))].into_iter().collect()),
+        )]));
+        let (doc, gone) = edit_player_store(&raw, &["data", "players"], &[me.to_uppercase()]).unwrap().unwrap();
+        assert_eq!(gone, 1);
+        assert!(doc.root.at(&["data", "players", other]).is_some() && doc.root.at(&["data", "players", me]).is_none());
+        assert!(edit_player_store(&raw, &["data", "players"], &["00000000-0000-4000-8000-000000000009".to_string()]).unwrap().is_none());
     }
 
     #[test]

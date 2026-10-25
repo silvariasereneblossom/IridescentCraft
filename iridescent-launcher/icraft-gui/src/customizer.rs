@@ -775,9 +775,9 @@ impl Customizer {
             });
         }
         ui.checkbox(&mut self.spawn_search, "Let the pack find a new cherry spawn village")
-            .on_hover_text("Sets the world spawn's height to 64 and removes the spawn scripts' markers: at the next start the pack searches for a cherry river valley village again and moves the spawn (and the priest tower) there.");
+            .on_hover_text("Sets the world spawn's height to 64 and removes the cherry spawn script's markers: at the next start the pack searches for a cherry river valley village again and moves the spawn there. No priest tower is placed.");
         ui.horizontal_wrapped(|ui| {
-            ui.label("Players who start over (their player file leaves the world):");
+            ui.label("Players who start over (their player file, advancements, stats, stages, quests and skills leave the world):");
             if self.players.is_empty() {
                 ui.weak("(no player files in this world)");
             }

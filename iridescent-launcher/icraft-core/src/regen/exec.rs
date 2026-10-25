@@ -1245,6 +1245,14 @@ fn plan_edits(a: &Analysis) -> Result<WorldEdits, String> {
             }
         }
         out.summary.push(format!("{moved} player file(s) of {} player(s) moved", e.reset_players.len()));
+        for (rel, path) in edits::PLAYER_STORES {
+            let file = rel.split('/').fold(a.world_dir.clone(), |p, part| p.join(part));
+            let Some(raw) = read_optional(&file)? else { continue };
+            if let Some((doc, gone)) = edits::edit_player_store(&raw, path, &e.reset_players).map_err(|why| format!("{rel}: {why}"))? {
+                out.stores.push(finish_edit(a, file, raw, &doc, format!("{gone} entry(ies) of players who start over removed"))?);
+                out.summary.push(format!("{rel}: {gone} entry(ies) removed"));
+            }
+        }
     }
     if e.blend {
         let dir = a.dim(OVERWORLD).map(|d| d.dim.store_dir(Store::Region));

@@ -1060,6 +1060,10 @@ fn server_with_edits() -> Server {
     let advancements = world.join("advancements");
     fs::create_dir_all(&advancements).unwrap();
     fs::write(advancements.join(format!("{PLAYER_TWO}.json")), "{}").unwrap();
+    // Their quest progress beside another player's; a store that is not theirs to lose.
+    let quests = compound(vec![(PLAYER_TWO, compound(vec![("first_blood", Value::Byte(1))])), (PLAYER, compound(vec![("codex_root", Value::Byte(1))]))]);
+    fs::write(world.join("data").join("heracles_quest_progress.dat"), gzip(&encode_ordered(&[("DataVersion", Value::Int(3465)), ("data", quests)]))).unwrap();
+    fs::write(world.join("data").join("TitaniumReward.dat"), gzip(&encode_ordered(&[("data", compound(vec![("ConfiguredPlayers", compound(vec![(PLAYER_TWO, Value::Int(1))]))]))]))).unwrap();
     let cache_json = format!("[{{\"name\":\"{PLAYER_NAME}\",\"uuid\":\"{PLAYER}\"}},{{\"name\":\"{PLAYER_TWO_NAME}\",\"uuid\":\"{PLAYER_TWO}\"}}]");
     fs::write(sv.root.join("usercache.json"), cache_json).unwrap();
     sv
@@ -1095,7 +1099,7 @@ fn a_new_seed_run_makes_every_edit_and_a_rollback_undoes_every_one() {
     assert!(plan.chunks[OVERWORLD].contains(&(4, 4)));
     let report = fs::read_to_string(run_dir.join("report.txt")).unwrap();
     assert!(report.contains("WORLD EDITS") && report.contains(&format!("NEW SEED {NEW_SEED}")) && report.contains("STARTS OVER: Player_Two"), "{report}");
-    assert!(report.contains("NOT moved") && report.contains("advancements/5d2c8f0e..."), "{report}");
+    assert!(report.contains("NOT moved") && report.contains("data/TitaniumReward.dat (holds their UUID)") && !report.contains("advancements/5d2c8f0e..."), "{report}");
 
     let look = preflight(&sv.cfg, &run_dir).unwrap();
     assert!(look.ready(), "{:?}", look.stops());
@@ -1105,10 +1109,10 @@ fn a_new_seed_run_makes_every_edit_and_a_rollback_undoes_every_one() {
     let done_report = done(sv.run(&run_dir, &hash));
     let kept_in_file: usize = anvil::header_slots(&fs::read(world.join("region").join("r.0.0.mca")).unwrap()).len();
     let marked = format!("{kept_in_file} kept chunk(s) marked for blending");
-    for part in ["seed changed", "2 stronghold cache(s) moved", "2 spawn marker(s) removed", "3 player file(s) of 1 player(s) moved", marked.as_str()] {
+    for part in ["seed changed", "2 stronghold cache(s) moved", "1 spawn marker(s) removed", "4 player file(s) of 1 player(s) moved", "data/heracles_quest_progress.dat: 1 entry(ies) removed", marked.as_str()] {
         assert!(done_report.edits.iter().any(|e| e == part), "{part}: {:?}", done_report.edits);
     }
-    assert!(done_report.fidelity.contains(&format!("F10 9 edited file(s) exact, {kept_in_file} chunk(s) marked for blending")), "{}", done_report.fidelity);
+    assert!(done_report.fidelity.contains(&format!("F10 11 edited file(s) exact, {kept_in_file} chunk(s) marked for blending")), "{}", done_report.fidelity);
 
     // level.dat and its copy: the new seed, the spawn's height, nothing else.
     for name in ["level.dat", "level.dat_old"] {
@@ -1118,7 +1122,8 @@ fn a_new_seed_run_makes_every_edit_and_a_rollback_undoes_every_one() {
         assert_eq!(doc.root.at(&["Data", "SpawnX"]), Some(&nbt::Node::Int(0)), "{name}");
     }
     let kubejs = tree(&world.join(edits::KUBEJS_DATA));
-    assert!(kubejs.root.get("icraft_priest_tower_done").is_none() && kubejs.root.get("icraft_chunky_pregen_started").is_some());
+    assert!(kubejs.root.get("icraft_priest_tower_done").is_some(), "the tower stays done: no tower at the new spawn");
+    assert!(kubejs.root.get("icraft_chunky_pregen_started").is_some());
     assert!(kubejs.root.at(&[edits::LEVEL_DATA_KEY, "icraft_cherry_spawn_exhausted"]).is_none());
     assert!(kubejs.root.at(&[edits::LEVEL_DATA_KEY, "icraft_mobgriefing_default_set"]).is_some());
     let am = tree(&world.join("data").join("alexsmobs_world_data.dat"));
@@ -1127,7 +1132,10 @@ fn a_new_seed_run_makes_every_edit_and_a_rollback_undoes_every_one() {
     assert!(!world.join("dimensions/theabyss/the_abyss/data").join(edits::STRONGHOLD_CACHE).exists());
     assert!(edits::player_files(&world, PLAYER_TWO).is_empty());
     assert!(world.join("playerdata").join(format!("{PLAYER}.dat")).is_file(), "the other player's file stays");
-    assert!(world.join("advancements").join(format!("{PLAYER_TWO}.json")).is_file(), "only the player file was named");
+    assert!(!world.join("advancements").join(format!("{PLAYER_TWO}.json")).exists(), "their advancements leave with them");
+    let quests = tree(&world.join("data").join("heracles_quest_progress.dat"));
+    assert!(quests.root.at(&["data", PLAYER_TWO]).is_none() && quests.root.at(&["data", PLAYER]).is_some(), "their quests go, the other player's stay");
+    assert!(world.join("data").join("TitaniumReward.dat").is_file());
     // Every kept chunk of r.0.0 carries the old-chunk mark now.
     let file = fs::read(world.join("region").join("r.0.0.mca")).unwrap();
     for slot in anvil::header_slots(&file) {

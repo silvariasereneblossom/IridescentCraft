@@ -111,7 +111,9 @@ const STRONGHOLD_CACHE: &str = "mfix_strongholds.dat";
 const PUPFISH_FILE: &str = "data/alexsmobs_world_data.dat";
 const PUPFISH_KEYS: [&[u8]; 2] = [b"PupfishChunkX", b"PupfishChunkZ"];
 const SPAWN_DATA_FILE: &str = "kubejs_persistent_data.nbt";
-const SPAWN_SERVER_KEYS: [&[u8]; 2] = [b"icraft_priest_tower_done", b"icraft_priest_tower_attempts"];
+const RESET_FILES: [&str; 4] = ["advancements/{}.json", "stats/{}.json", "astages/player/permanent/{}.json", "astages/player/temporary/{}.json"];
+const RESET_STORES: [(&str, &[&str]); 3] =
+    [("data/heracles_quest_progress.dat", &["data"]), ("data/heracles_pinned_quests.dat", &["data"]), ("data/puffish_skills.dat", &["data", "players"])];
 const SPAWN_LEVEL: &[u8] = b"minecraft:overworld";
 const SPAWN_LEVEL_KEYS: [&[u8]; 5] = [b"icraft_cherry_spawn_set", b"icraft_cherry_spawn_exhausted", b"icraft_cherry_village_x", b"icraft_cherry_village_y", b"icraft_cherry_village_z"];
 
@@ -1350,7 +1352,7 @@ fn edits_before(world: &Path, plan: &Plan, survey: &Survey) -> Result<(Vec<EditF
     }
     if e.spawn_search && survey.files.contains_key(SPAWN_DATA_FILE) {
         let (wrap, name, mut tree) = tree_of(SPAWN_DATA_FILE)?;
-        let mut gone = drop_keys(&mut tree, &SPAWN_SERVER_KEYS);
+        let mut gone = 0;
         if let Some(level) = tree.get_mut(std::str::from_utf8(SPAWN_LEVEL).unwrap_or("")) {
             gone += drop_keys(level, &SPAWN_LEVEL_KEYS);
         }
@@ -1366,6 +1368,29 @@ fn edits_before(world: &Path, plan: &Plan, survey: &Survey) -> Result<(Vec<EditF
         }
         for rel in mine {
             files.push(EditFile { rel: rel.clone(), what: "the file of a player who starts over", expect: EditExpect::Gone });
+        }
+        for pattern in RESET_FILES {
+            let rel = pattern.replace("{}", uuid);
+            if survey.files.contains_key(&rel) {
+                files.push(EditFile { rel, what: "the record of a player who starts over", expect: EditExpect::Gone });
+            }
+        }
+    }
+    if !e.reset_players.is_empty() {
+        for (rel, path) in RESET_STORES {
+            if !survey.files.contains_key(rel) {
+                continue;
+            }
+            let (wrap, name, mut tree) = tree_of(rel)?;
+            let mut gone = 0;
+            if let Some(Tag::Compound(entries)) = tree.at_mut(path) {
+                let before = entries.len();
+                entries.retain(|(key, _)| !e.reset_players.iter().any(|u| u.as_bytes().eq_ignore_ascii_case(key)));
+                gone = before - entries.len();
+            }
+            if gone > 0 {
+                files.push(EditFile { rel: rel.to_string(), what: "the entries of players who start over removed", expect: EditExpect::Tree(wrap, name, tree) });
+            }
         }
     }
     if e.blend {
@@ -2499,6 +2524,9 @@ impl Fixture {
             files.push((format!("playerdata/{FIX_PLAYER}.{ext}"), compress(Wrap::Gzip, &encode_root(b"", &player))));
         }
         files.push((format!("playerdata/{FIX_PLAYER}.cosarmor"), compress(Wrap::Gzip, &encode_root(b"", &Tag::compound(vec![("CosArmor", Tag::List(TAG_COMPOUND, Vec::new()))])))));
+        files.push((format!("stats/{FIX_PLAYER}.json"), b"{}".to_vec()));
+        let quests = Tag::compound(vec![("data", Tag::compound(vec![(FIX_PLAYER, Tag::compound(vec![("first_blood", Tag::Byte(1))])), ("00000000-0000-4000-8000-00000000beef", Tag::compound(Vec::new()))]))]);
+        files.push(("data/heracles_quest_progress.dat".to_string(), compress(Wrap::Gzip, &encode_root(b"", &quests))));
         let raids = Tag::compound(vec![("data", Tag::compound(vec![("Raids", Tag::List(TAG_COMPOUND, Vec::new()))]))]);
         files.push(("data/raids.dat".to_string(), compress(Wrap::Gzip, &encode_root(b"", &raids))));
         files.push(("data/waystones.dat".to_string(), waystones_file(vec![waystone(1, FIX_WAYSTONE, "PLAYER"), waystone(5, FIX_RESET_WAYSTONE, "VILLAGE")])));
@@ -2712,7 +2740,6 @@ fn simulate_edits(world: &Path, plan: &Plan, plant: Option<Plant>) -> Result<(),
         })?;
     }
     edit_tree(&at(world, SPAWN_DATA_FILE), |tree| {
-        drop_keys(tree, &SPAWN_SERVER_KEYS);
         if let Some(level) = tree.get_mut("minecraft:overworld") {
             drop_keys(level, &SPAWN_LEVEL_KEYS);
         }
@@ -2730,6 +2757,13 @@ fn simulate_edits(world: &Path, plan: &Plan, plant: Option<Plant>) -> Result<(),
             fs::remove_file(at(world, &format!("playerdata/{FIX_PLAYER}.{ext}"))).map_err(|e| e.to_string())?;
         }
     }
+    fs::remove_file(at(world, &format!("stats/{FIX_PLAYER}.json"))).map_err(|e| e.to_string())?;
+    edit_tree(&at(world, "data/heracles_quest_progress.dat"), |tree| {
+        if let Some(Tag::Compound(entries)) = tree.get_mut("data") {
+            entries.retain(|(key, _)| key.as_slice() != FIX_PLAYER.as_bytes());
+        }
+        Ok(())
+    })?;
     let region = at(world, "region/r.0.0.mca");
     let mut bytes = fs::read(&region).map_err(|e| e.to_string())?;
     let planned = plan.chunks.get(OVERWORLD);
