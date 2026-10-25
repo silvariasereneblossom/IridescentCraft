@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "34d052a9",
+    "generated_from":  "2bfd5523f",
     "roots":  [
                   "kubejs",
                   "config",
@@ -8128,8 +8128,8 @@
                                                              "size":  549
                                                          },
                   "mods/.index/ars-nouveau.pw.toml":  {
-                                                          "sha256":  "13c121995557fa3a14209a370f4144b5856b55ebbe6678d800367e2ac9fb457b",
-                                                          "size":  359
+                                                          "sha256":  "82f0e716882a4ae11b6a4fa92319b1d65fb8137daac7786ced0a286c52dd0f03",
+                                                          "size":  338
                                                       },
                   "mods/.index/art-of-forging-tetra.pw.toml":  {
                                                                    "sha256":  "525fe6bcfa3b8a7568fdf8a4affca0207baf0f20ef2a29175eddf7df655973c2",
@@ -8704,40 +8704,40 @@
                                                                     "size":  416
                                                                 },
                   "mods/.index/iridescent-biomes.pw.toml":  {
-                                                                "sha256":  "21411f7868fcddd1bc7c6a2ea1495479a1b30f1cb377175cdde8ce07fd91845d",
-                                                                "size":  353
+                                                                "sha256":  "b9a85ff00bccdc61328ae6419e4d7a8e450f79136247e0f0178b9e8beb760d4c",
+                                                                "size":  332
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "b82e5aa6f1150eedc5e024070ee819d3b6fc0f446d23cea27e6bfd5e7bf53277",
-                                                               "size":  348
+                                                               "sha256":  "bf700c89b00eabffe9197073c1acfc0cecfd5cb35a58ee09d6b63bcca5ec9f31",
+                                                               "size":  327
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
-                                                                    "sha256":  "5bc1248e39c127509d9636b4d8e91467f926ab2512e35dc7d69e8373a08d3f16",
-                                                                    "size":  365
+                                                                    "sha256":  "fa40f7f1c6b17bde3748546afee2533b96a40607086d63bef9e11d3d82041300",
+                                                                    "size":  344
                                                                 },
                   "mods/.index/iridescent-durability-clamp.pw.toml":  {
-                                                                          "sha256":  "553075c42601a8f9d898ea2761a2674ae0bb50a8a74255375348d2ff224a055d",
-                                                                          "size":  383
+                                                                          "sha256":  "893a60c4fe36c3a31d4ce866b88ddee166ed64d4f3e17501e49cff182bf3b222",
+                                                                          "size":  362
                                                                       },
                   "mods/.index/iridescent-grand-compass.pw.toml":  {
-                                                                       "sha256":  "384a51099060b4ad8b6cbf7e2f75a082411b748ba9827463ffb51d0f03256573",
-                                                                       "size":  374
+                                                                       "sha256":  "48ae55fc345c4fe4c51808221de2673fdfb7628ce523932ba13b9f02e3688cd5",
+                                                                       "size":  353
                                                                    },
                   "mods/.index/iridescent-lovely-pieces.pw.toml":  {
-                                                                       "sha256":  "16275097af06be393f05367a4457e2322cbe0abcee060f726db637b87713ed74",
-                                                                       "size":  398
+                                                                       "sha256":  "ae8f4ff37145d138a82e36005104a687762252918cd413788d7a120f18ec50ea",
+                                                                       "size":  377
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "0f00beab4fc1cbd8e3923ce12a8c9c859c00ed4e436e2ebc8d85dd038ca0cd19",
-                                                                 "size":  356
+                                                                 "sha256":  "a1d654f9fa3dc6800005d3c293c2e65b484cba25f13a2face970aa98aec5b3e1",
+                                                                 "size":  335
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {
-                                                                "sha256":  "a2cf9cf6f695e37b91e53cf329e21694dbf3336351f22eb6334f4c4b5813a465",
-                                                                "size":  353
+                                                                "sha256":  "adad3ac81c589b62a233a58ad0efc7b4d7d85a4b5de1233abee63469ca284f16",
+                                                                "size":  332
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {
-                                                                         "sha256":  "64149b09651cf4cd342e7beaa12bf5e54f6ce094ef7b5e68dbef149ab12e2a39",
-                                                                         "size":  380
+                                                                         "sha256":  "d0bcb95026ea7bdd96b4ad1ff1847b971a83bbdecb27f4f56da855ad91a32b82",
+                                                                         "size":  359
                                                                      },
                   "mods/.index/iron-furnaces.pw.toml":  {
                                                             "sha256":  "6ac17f7accd7a23ff20dfe938b200bee909c7eba83b1d31c3adea30f4060d015",
@@ -8792,8 +8792,8 @@
                                                                         "size":  576
                                                                     },
                   "mods/.index/justlevelingfork.pw.toml":  {
-                                                               "sha256":  "1bc5c96c84b75992bf688614b5859690cbcfe522c953fab0accbf85da788e50a",
-                                                               "size":  391
+                                                               "sha256":  "efeff9e40065e29ddd3f244d37aa07023f44d27a53c2a410756bf4b88a3c8731",
+                                                               "size":  370
                                                            },
                   "mods/.index/keebszs-battletowers.pw.toml":  {
                                                                    "sha256":  "401abcae92679d2a26aee64dcf43e7f833201dad738cab6b2953ad7893f131de",
@@ -8868,8 +8868,8 @@
                                                    "size":  518
                                                },
                   "mods/.index/linear-experience.pw.toml":  {
-                                                                "sha256":  "91f5635633dc60b07146b361f4946f66c59471e47abb33beba251b71589d965e",
-                                                                "size":  374
+                                                                "sha256":  "65fd5f213b53e486b7789bde56c7252ed769eeba564e29f7e3b50f0b9f520e5f",
+                                                                "size":  353
                                                             },
                   "mods/.index/lionfish-api.pw.toml":  {
                                                            "sha256":  "103688b28f6bd7600994a7e05e41f316fd41f481d2db1040a82ece7482c80da6",
@@ -9140,8 +9140,8 @@
                                                                         "size":  401
                                                                     },
                   "mods/.index/patchouli.pw.toml":  {
-                                                        "sha256":  "9b8fd6e30268e7e4aabe815439adbe2e5db796f8f225ca5f351adb6fd1615db4",
-                                                        "size":  349
+                                                        "sha256":  "9f65d4c13730ea7050feedf16979888bf11dcee8427bc926ab8fcfe286a742a1",
+                                                        "size":  328
                                                     },
                   "mods/.index/paxi.pw.toml":  {
                                                    "sha256":  "ecb9bd6b0da8be4b7f24326a312caab348466c2dd232315b627f7c0cf44d1366",
@@ -9264,8 +9264,8 @@
                                                     "size":  543
                                                 },
                   "mods/.index/rpg-class-artifacts.pw.toml":  {
-                                                                  "sha256":  "e07f33c7f7b18d7068f0da14e93b0a91064e47de32f7127b48065a4bc1134384",
-                                                                  "size":  369
+                                                                  "sha256":  "5bce6c42dd9e5ffb2aec026c0d4fec3785bf23663943732eeea4b00f299f5d45",
+                                                                  "size":  348
                                                               },
                   "mods/.index/rs-requestify.pw.toml":  {
                                                             "sha256":  "5dcbe41f62ed6f911747bb734cc4a6dfc95c7f39917307508841c205da55c694",

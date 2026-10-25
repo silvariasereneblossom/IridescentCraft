@@ -8,12 +8,12 @@ The full pack is Forge 1.20.1-47.4.6, 455 mods (a client installs three more, 45
 
 ## Quick links: distribution scripts
 
-These are direct downloads from `main` (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else from GitHub (the Forge installer, mods, configs, datapacks). You do not need to extract a zip or run `git clone`.
+These are direct downloads from `main` (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else it needs (the Forge installer, mods, configs, datapacks). The client links and the client's own updates come from the pack server at `iridescentcraft.sereneblossom.gay/pack/`, which needs no account or key. You do not need to extract a zip or run `git clone`.
 
 | Platform | Client (PrismLauncher installer) | Server (full self-bootstrap) |
 |---|---|---|
-| Windows | [iridescentcraft.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat) | [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) |
-| Linux | [iridescentcraft.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh) | [iridescentserver.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh) |
+| Windows | [iridescentcraft.bat](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.bat) | [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) |
+| Linux | [iridescentcraft.sh](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.sh) | [iridescentserver.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh) |
 
 The server scripts create a clean subfolder next to wherever you saved them (`IridescentCraft Dedicated Server\` on Windows, `IridescentCraft-Dedicated-Server/` on Linux), copy themselves into it and bootstrap from there. You can save the bat to your Desktop or Downloads and double-click it: the install lands in its own subfolder, not in your Downloads root.
 
@@ -26,7 +26,7 @@ The server scripts create a clean subfolder next to wherever you saved them (`Ir
 | Java | JDK 17, Adoptium/Temurin recommended ([https://adoptium.net/](https://adoptium.net/)) |
 | RAM | At least 8 GB allocated to the client; 12 GB recommended |
 | Disk | 10 GB free |
-| Network | The first install downloads from GitHub, Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
+| Network | The first install downloads from the pack server (`iridescentcraft.sereneblossom.gay`, which hands out GitHub download links), Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
 | Account | Microsoft Minecraft account (or Ely.by / offline for LAN testing only) |
 
 Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need the JVM `-noverify` flag. The server scripts add it for you, and so does the Windows client installer; on Linux you add it once in PrismLauncher during setup (see the client sections below).
@@ -40,13 +40,12 @@ Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need th
 1. Install PrismLauncher from [prismlauncher.org](https://prismlauncher.org) and add your Microsoft account to it.
 2. Install JDK 17 from [adoptium.net](https://adoptium.net) and point PrismLauncher at it (Settings → Java → set the Java path to your JDK 17 install).
 3. Get the installer in one of these ways:
-   - Bootstrap (fastest): download only [iridescentcraft.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat) (right-click → Save link as) to any folder. On its first run the bat fetches everything else it needs from GitHub.
-   - Full clone: install [GitHub Desktop](https://desktop.github.com) and clone `https://github.com/silvariasereneblossom/IridescentCraft` to a path of your choice. Pick this if you also want local copies of the wiki and source content.
-   - Zip download: use the green Code → Download ZIP button on the repo and extract the zip anywhere.
+   - Bootstrap: download only [iridescentcraft.bat](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.bat) (right-click → Save link as) to any folder. On its first run the bat fetches everything else it needs from the pack server.
+   - A clone of the repository, or GitHub's Download ZIP of it, also works, but only for someone with access to the repository: testers use the bootstrap.
 4. Run the installer: double-click `iridescentcraft.bat`.
    - On the bootstrap path, that is the file you downloaded.
-   - If you cloned or unzipped the repo, navigate to `.minecraft\distribution\client\iridescentcraft.bat`.
-   - The script runs `install.ps1` (the copy next to it, or else the latest one from GitHub). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
+   - In a clone of the repository, it is `.minecraft\distribution\client\iridescentcraft.bat`.
+   - The script runs `install.ps1` (the copy next to it, or else the latest one from the pack server). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
 5. There is nothing to import: the installer starts PrismLauncher with the new instance in its list.
 6. Check that `-noverify` is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts `-noverify` there, and the sync adds it back if it goes missing. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
 7. First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.
@@ -67,17 +66,14 @@ PrismLauncher is the only supported path on Linux for this pack.
 # 1. Install JDK 17 + PrismLauncher via your package manager
 #    (Adoptium/Temurin from adoptium.net works on every distro)
 
-# 2A. BOOTSTRAP path — single-file install. The .sh auto-downloads the
-#     repo zip on first run if it can't find mods/.index/ locally.
-curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh
+# 2. Single-file install. The .sh downloads the pack files from the
+#    pack server on first run if it can't find mods/.index/ locally.
+curl -LO https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.sh
 chmod +x iridescentcraft.sh
 ./iridescentcraft.sh
 
-# 2B. FULL CLONE path — better if you want the whole repo locally.
-git clone https://github.com/silvariasereneblossom/IridescentCraft.git
-cd IridescentCraft/.minecraft/distribution/client
-chmod +x iridescentcraft.sh
-./iridescentcraft.sh
+# (With access to the repository, running .minecraft/distribution/client/
+#  iridescentcraft.sh from a clone of it works too.)
 
 # 3. The script saves IridescentCraft.mrpack to your Desktop (or a path
 #    you pick) and opens PrismLauncher's import dialog with it; it
@@ -88,7 +84,7 @@ After the import, add `-noverify` to the instance's JVM arguments as in step 6 o
 
 A Linux install does not update itself: the pack has no Linux pre-launch sync, so leave the instance's pre-launch command empty. To update, run `iridescentcraft.sh` again and import the new pack. `update_configs.sh` copies the configs and scripts only, never the mods.
 
-The `iridescentcraft.sh` script looks for `mods/.index/` in its current directory. If it is not there (for example, you ran it from outside the repo), the script downloads the repo zip from GitHub to `/tmp/IridescentCraft-repo-extract/` and uses that as the source.
+The `iridescentcraft.sh` script looks for `mods/.index/` in its current directory. If it is not there (for example, you ran it from outside the repo), the script downloads the pack files from the pack server to `/tmp/IridescentCraft-repo-extract/` and uses that as the source.
 
 ---
 
@@ -183,14 +179,12 @@ For a forced full re-sync, see the `-Force` flag in the server section. On the c
 
 When you hit a crash or unexpected behavior:
 
-1. Send your logs to Silvaria privately (a direct message, not a public channel): `logs/latest.log` and the newest file in `crash-reports/` from your instance's `.minecraft` folder. (An instance that is a git clone also keeps a copy of your last session in `.minecraft/TesterLogs/<your account>/`; an instance the installer made does not.) **Never commit or push them to the repository**: it is public, and a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its `.gitignore`), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.
-2. File a GitHub issue at [https://github.com/silvariasereneblossom/IridescentCraft/issues](https://github.com/silvariasereneblossom/IridescentCraft/issues) with:
+1. Send your logs to Silvaria privately (a direct message, not a public channel): `logs/latest.log` and the newest file in `crash-reports/` from your instance's `.minecraft` folder. (An instance that is a git clone also keeps a copy of your last session in `.minecraft/TesterLogs/<your account>/`; an instance the installer made does not.) **Never commit or push them to the repository**: a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its `.gitignore`), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.
+2. Tell Silvaria what happened, in the same message as the logs or a separate one, with:
    - Symptom (what you expected vs. what happened)
    - Repro steps if reproducible
    - Time of occurrence (so logs can be cross-referenced)
    - Whether server / client / both
-
-   Issues are public too: leave the logs out of the issue and say that you sent them.
 3. On a server where you are an operator, `/icraft despawn <radius>` clears nearby hostiles, which lets you recover before you report a crash caused by a mob. The command needs operator status (permission level 2), and the test server has no operators, so it does not work there.
 
 The dev usually debugs in this order: the latest crash report (in `crash-reports/`), then the head and tail of `latest.log`, then `kubejs-server.log` for KubeJS errors, then `debug.log` for class-load and resource-load issues.

@@ -31,7 +31,7 @@ $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $distDir = $scriptDir
 
 if (-not (Test-Path "$distDir\mods\.index")) {
-    Write-Host "  [1/5] Downloading distribution from GitHub..." -ForegroundColor Cyan
+    Write-Host "  [1/5] Downloading distribution from the pack server..." -ForegroundColor Cyan
     Write-Host ""
 
     $distDir = "$env:TEMP\IridescentCraft-dist"
@@ -40,9 +40,12 @@ if (-not (Test-Path "$distDir\mods\.index")) {
 
     try {
         $wc = New-Object System.Net.WebClient
-        Write-Host "    Downloading repository (~1.3 GB, please wait)..."
+        Write-Host "    Downloading the pack files (please wait)..."
         Write-Host "    This is a one-time download. Future updates are much smaller." -ForegroundColor DarkGray
-        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
+        # The pack server reads the (private) repo for us and serves the pack's
+        # paths as a zip in GitHub's archive layout (IridescentCraft-main/...).
+        $wc.Headers.Add('User-Agent', 'IridescentCraft-Installer/pack')
+        $wc.DownloadFile('https://iridescentcraft.sereneblossom.gay/pack/zip/main', $repoZip)
         $wc.Dispose()
 
         if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 1000000) {
@@ -77,8 +80,8 @@ if (-not (Test-Path "$distDir\mods\.index")) {
     } catch {
         Write-Host "  ERROR: $($_.Exception.Message)" -ForegroundColor Red
         Write-Host ""
-        Write-Host "  If download fails, try cloning the repo manually:" -ForegroundColor Yellow
-        Write-Host "  https://github.com/silvariasereneblossom/IridescentCraft" -ForegroundColor Yellow
+        Write-Host "  If the download keeps failing, see the installation guide:" -ForegroundColor Yellow
+        Write-Host "  https://iridescentcraft.sereneblossom.gay/" -ForegroundColor Yellow
         # Cleanup partial downloads
         Remove-Item $repoZip -Force -ErrorAction SilentlyContinue
         Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue

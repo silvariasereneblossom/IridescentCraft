@@ -2,7 +2,7 @@
 
 ## Installation
 Run `iridescentcraft.bat` (Windows) or `iridescentcraft.sh` (Linux) from this folder; the
-[Tester Installation Guide](https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tester-Installation-Guide)
+[Tester Installation Guide](https://iridescentcraft.sereneblossom.gay/)
 has the steps. On Windows the installer creates the PrismLauncher instance (downloading a portable PrismLauncher if
 it finds none) and sets the pre-launch sync; on Linux the script builds a Modrinth pack for PrismLauncher to import.
 

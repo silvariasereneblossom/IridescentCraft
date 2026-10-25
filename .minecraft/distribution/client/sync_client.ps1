@@ -2,7 +2,7 @@
 # IridescentCraft Client Sync - PrismLauncher pre-launch hook
 # =============================================================================
 # Keeps the local instance's configs/kubejs/datapacks/mods in sync with the
-# GitHub main branch via a SHA-based check. Designed to run as PrismLauncher's
+# repo's main branch via a SHA-based check. Designed to run as PrismLauncher's
 # per-instance pre-launch command. Mirrors server_distribution/phase0_sync.ps1
 # behavior -- same diff-vs-full-zip strategy, same error-gated SHA marker,
 # same self-update staging.
@@ -11,7 +11,7 @@
 #   1. Find the instance .minecraft directory (prefers $env:INST_MC_DIR which
 #      PrismLauncher provides automatically, falls back to detecting by script
 #      location, then searching the PrismLauncher instances folder)
-#   2. Query GitHub API for the latest main commit SHA
+#   2. Ask the pack server ($PackBase below) for the latest main commit SHA
 #   3. Compare against .icraft_last_sha in the instance root
 #   4. If match: skip the network sync but STILL run local cleanup
 #   5. If mismatch or first run: diff-sync changed files (when feasible) OR
@@ -46,6 +46,16 @@
 param(
     [switch]$Force
 )
+
+# Every request for the pack repo goes through the pack server, which reads the
+# repo with its own read-only key: the repo can be private and testers need no
+# key. It answers GitHub's commit and compare JSON (without patches) under
+# /api/, redirects /raw/<ref>/<path> to a download link, and serves /zip/<ref>
+# as a zip in GitHub's archive layout (IridescentCraft-<ref>/...) holding only
+# the paths it is set to serve; any other path is a 404. Third-party downloads
+# (mods, PrismLauncher) do not go through it.
+$PackBase = 'https://iridescentcraft.sereneblossom.gay/pack'
+$PackAgent = 'IridescentCraft-Client-Sync/pack'
 
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -300,8 +310,9 @@ if (-not $instanceMC) {
 
 Write-Host "[IridescentCraft Sync] Instance: $instanceMC" -ForegroundColor DarkGray
 
-# -- Step 2: Query GitHub API for latest commit SHA --
-$apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main'
+# -- Step 2: Ask the pack server for the latest main commit SHA --
+$apiUrl = "$PackBase/api/commits/main"
+Write-Host "[IridescentCraft Sync] Source: $PackBase" -ForegroundColor DarkGray
 $shaFile = Join-Path $instanceMC '.icraft_last_sha'
 $localSha = ''
 if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() }
@@ -318,11 +329,11 @@ if ($Force) {
 
 $remoteSha = $null
 try {
-    $headers = @{ 'User-Agent' = 'IridescentCraft-Client-Sync' }
+    $headers = @{ 'User-Agent' = $PackAgent }
     $resp = Invoke-RestMethod -Uri $apiUrl -Headers $headers -TimeoutSec 10
     $remoteSha = $resp.sha
 } catch {
-    Write-Host "[IridescentCraft Sync] GitHub API unreachable: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host "[IridescentCraft Sync] Pack server unreachable ($apiUrl): $($_.Exception.Message)" -ForegroundColor Yellow
     Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
     # H7: API call FAILED (vs. "no newer commit") -> record fail-visible. We
     # cannot know how far behind we are without the API, so report behind=0.
@@ -356,9 +367,9 @@ $mirrorList = @()
 $useDiff = $false
 if ($localSha -and $localSha.Length -eq 40) {
     try {
-        $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
-        $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
-        # GitHub's compare API caps the .files array at 300. If we're AT the
+        $compareUrl = "$PackBase/api/compare/${localSha}...${remoteSha}"
+        $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = $PackAgent } -TimeoutSec 30
+        # GitHub's compare API (the pack server passes it through) caps the .files array at 300. If we're AT the
         # cap, the response is silently truncated -- we MUST fall back to full
         # zip or we'll silently miss files (mirrors the server's same guard).
         if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -lt 300) {
@@ -393,7 +404,7 @@ if ($useDiff) {
         'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar', 'pack.toml',
         'install.ps1', 'iridescentcraft.sh', 'update_configs.bat', 'update_configs.ps1', 'update_configs.sh'
     )
-    $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
+    $rawBase = "$PackBase/raw/$remoteSha"
     $synced = 0; $removed = 0; $staged = 0; $errors = 0
 
     foreach ($file in $compare.files) {
@@ -445,7 +456,7 @@ if ($useDiff) {
             try {
                 $targetDir = Split-Path $stageTarget -Parent
                 if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
-                Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $stageTarget -UseBasicParsing -TimeoutSec 30
+                Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $stageTarget -UseBasicParsing -TimeoutSec 30 -UserAgent $PackAgent
                 $staged++
                 Write-Host "[IridescentCraft Sync]   [staged] $relPath" -ForegroundColor Cyan
             } catch {
@@ -469,7 +480,7 @@ if ($useDiff) {
             # complete replacement exists.
             $tmpTarget = "$target.icrafttmp"
             Remove-Item $tmpTarget -Force -ErrorAction SilentlyContinue
-            Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $tmpTarget -UseBasicParsing -TimeoutSec 30
+            Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $tmpTarget -UseBasicParsing -TimeoutSec 30 -UserAgent $PackAgent
             Move-Item -Path $tmpTarget -Destination $target -Force
             $synced++
         } catch {
@@ -505,12 +516,12 @@ if ($useDiff) {
         Write-Host "[IridescentCraft Sync] Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
     }
 
-    $zipUrl = "https://github.com/$owner/$repo/archive/refs/heads/main.zip"
+    $zipUrl = "$PackBase/zip/main"
     $zipFile = Join-Path $env:TEMP 'IridescentCraft-client-sync.zip'
     $extractDir = Join-Path $env:TEMP 'IridescentCraft-client-sync-extract'
 
     try {
-        Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 120
+        Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 300 -UserAgent $PackAgent
         if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) {
             throw 'Download too small or failed'
         }
@@ -521,6 +532,16 @@ if ($useDiff) {
         $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
         $src = Join-Path $srcRoot '.minecraft'
         if (-not (Test-Path $src)) { throw "Expected .minecraft/ folder not found in archive" }
+        # The pack server's zip holds only the paths it is set to serve. If the
+        # trees this overlay copies are not among them, the copies below find
+        # nothing and the SHA marker is still written: a sync that did nothing
+        # and says it worked. Refuse instead, so the launch reports a failed
+        # sync and the next one tries again.
+        foreach ($need in @('kubejs', 'config', 'mods/.index')) {
+            if (-not (Test-Path (Join-Path $src $need))) {
+                throw "the pack zip has no .minecraft/$need (the pack server does not serve that path)"
+            }
+        }
 
         foreach ($dir in $overlayDirs) {
             $srcDir = Join-Path $src $dir

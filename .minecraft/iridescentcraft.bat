@@ -27,11 +27,11 @@ del "%TEMP%\icraft_install_*.ps1" 2>nul
 
 set "PS1=%TEMP%\icraft_install_%TIME:~6,2%%RANDOM%.ps1"
 
-powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/install.ps1?v=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds(), '%PS1%')"
+powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object System.Net.WebClient).DownloadFile('https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/install.ps1?v=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds(), '%PS1%')"
 
 if not exist "%PS1%" (
     echo ERROR: Failed to download installer script.
-    echo Download the repo manually: https://github.com/silvariasereneblossom/IridescentCraft
+    echo Check your connection, or see the installation guide: https://iridescentcraft.sereneblossom.gay/
     pause
     exit /b 1
 )

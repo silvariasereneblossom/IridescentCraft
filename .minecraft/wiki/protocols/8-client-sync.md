@@ -27,7 +27,7 @@ Your worlds are safe. Saves, logs, options and other runtime state are untracked
 
 Pros: it is instant, needs no manual updater, and picks up an update to the hook itself on the same launch.
 
-Cons: the instance must be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
+Cons: the instance must be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH, and git must be signed in to GitHub with access to the repository, which is private. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
 
 > The legacy bare `git -C "$INST_DIR" pull --ff-only` command is superseded: it is the seed that wedged and caused the silent staleness. On the next launch, the self-healing wiring step upgrades a git-clone instance still wired to it (or to the zip-path `sync_client.bat`, the Mode B hook, which is the wrong one for a clone) to `prism_prelaunch.bat`.
 
@@ -35,10 +35,10 @@ Cons: the instance must be a git clone (the case for the Silvaria dev setup via 
 
 Testers install with `distribution/client/install.ps1`, so their instance is a copy of the packaged client, **not** a git clone. They use `sync_client.ps1`, which:
 
-1. Hits the GitHub API for the latest main commit SHA
+1. Asks the pack server (`https://iridescentcraft.sereneblossom.gay/pack/`) for the latest main commit SHA. The pack server reads the repository with its own read-only key and answers in GitHub's formats, so the sync needs no key and works while the repository is private; every request the sync makes for the pack repo goes there (the commit, the compare between two commits, each changed file, and the zip)
 2. Compares it against `.icraft_last_sha` in the instance's .minecraft directory
 3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
-4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
+4. If they differ, downloads the changed files (or, past 300 changed files or on a first sync, the pack zip), overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
 During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1` and `cleanup_stale_jars.ps1` into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
 

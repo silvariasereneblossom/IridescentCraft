@@ -42,7 +42,7 @@ for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1) do (
         echo   [SELF-HEAL] %%S missing, fetching from main HEAD...
         powershell -ExecutionPolicy Bypass -Command ^
             "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-            "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/%%S' -OutFile '%SCRIPT_DIR%\%%S' -UseBasicParsing -TimeoutSec 30 } catch { Write-Host '  [SELF-HEAL] FETCH FAILED:' $_.Exception.Message -ForegroundColor Yellow }"
+            "try { Invoke-WebRequest -Uri 'https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/%%S' -OutFile '%SCRIPT_DIR%\%%S' -UseBasicParsing -TimeoutSec 30 } catch { Write-Host '  [SELF-HEAL] FETCH FAILED:' $_.Exception.Message -ForegroundColor Yellow }"
         if exist "%SCRIPT_DIR%\%%S" (
             echo   [SELF-HEAL] %%S restored.
         ) else (
@@ -63,7 +63,7 @@ REM then reads the NEW file on from the byte where this loop ended in the
 REM old one: keep the bytes up to the end of this loop the same length
 REM (the REM line above the loop pads them), or cmd runs part of a line.
 REM (pad: the bytes up to the end of the loop below match the 2026-06-24 version)
-REM -----------------------------------------------------------------------------------
+REM --------------------------------------------------------------------------------------------------------
 for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1) do (
     if exist "%SCRIPT_DIR%\%%F.new" (
         echo   [STAGE] Applying staged update: %%F
@@ -96,7 +96,7 @@ if not exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
     echo   [SETUP] Downloading cleanup script...
     powershell -ExecutionPolicy Bypass -Command ^
         "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/cleanup_stale_jars.ps1' -OutFile '%SCRIPT_DIR%\cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
+        "try { Invoke-WebRequest -Uri 'https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/cleanup_stale_jars.ps1' -OutFile '%SCRIPT_DIR%\cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
 )
 if exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
     echo [CLEANUP] Removing stale mod JARs...

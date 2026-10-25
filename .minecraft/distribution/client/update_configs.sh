@@ -68,8 +68,8 @@ fi
 echo -e "    ${GREEN}Found: $INSTANCE_MC${RESET}"
 echo ""
 
-# ── Step 2: Download latest configs from GitHub ──
-echo -e "  ${CYAN}[2/3] Downloading latest configs from GitHub...${RESET}"
+# ── Step 2: Download latest configs from the pack server ──
+echo -e "  ${CYAN}[2/3] Downloading latest configs from the pack server...${RESET}"
 echo ""
 
 DIST_DIR="$SCRIPT_DIR"
@@ -81,7 +81,7 @@ if [ ! -d "$DIST_DIR/config" ]; then
     REPO_EXTRACT="/tmp/IridescentCraft-update-extract"
 
     echo "    Downloading repository..."
-    curl -sL "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip" -o "$REPO_ZIP"
+    curl -sL -A 'IridescentCraft-Config-Updater/pack' "https://iridescentcraft.sereneblossom.gay/pack/zip/main" -o "$REPO_ZIP"
 
     if [ ! -f "$REPO_ZIP" ] || [ "$(stat -c%s "$REPO_ZIP" 2>/dev/null || stat -f%z "$REPO_ZIP" 2>/dev/null)" -lt 1000000 ]; then
         echo -e "    ${RED}ERROR: Download failed.${RESET}"

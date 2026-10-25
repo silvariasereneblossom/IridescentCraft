@@ -2,11 +2,11 @@
 
 A 455-mod progression-focused Forge 1.20.1 modpack. It is in alpha and is being playtested by a small group.
 
-[Wiki / design docs](https://github.com/silvariasereneblossom/IridescentCraft/wiki) · [Known issues](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/known-issues/tracker.md) · [Changelog](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/design/changelog.md)
+[Guide & wiki](https://iridescentcraft.sereneblossom.gay/) · [Known issues](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/known-issues/tracker.md) · [Changelog](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/wiki/design/changelog.md)
 
 ## Install (testers, easiest)
 
-1. Right-click **[`iridescentcraft.bat`](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat)**, choose *Save link as*, and save it to any folder you like (Desktop, Downloads, anywhere).
+1. Right-click **[`iridescentcraft.bat`](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.bat)**, choose *Save link as*, and save it to any folder you like (Desktop, Downloads, anywhere).
 2. Double-click the bat. It will:
    - Download and install PrismLauncher if you don't have it
    - Create the IridescentCraft instance with all 458 mods
@@ -25,7 +25,7 @@ The test server has a whitelist. Before your first join, send the server operato
 
 ## Install without the installer
 
-Not supported. The repo's `mods/` folders hold the pack's own jars and the mod index (`mods/.index/`), not the third-party mods: the installer and the pre-launch sync download those. Use the installer above. The [Tester Installation Guide](https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tester-Installation-Guide) covers Windows and Linux.
+Not supported. The repo's `mods/` folders hold the pack's own jars and the mod index (`mods/.index/`), not the third-party mods: the installer and the pre-launch sync download those. Use the installer above. The [Tester Installation Guide](https://iridescentcraft.sereneblossom.gay/) covers Windows and Linux.
 
 ## What's in it
 

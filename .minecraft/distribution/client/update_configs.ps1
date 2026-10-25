@@ -65,8 +65,8 @@ if (-not $instanceMC) {
 Write-Host "    Found: $instanceMC" -ForegroundColor Green
 Write-Host ""
 
-# -- Step 2: Download latest configs from GitHub --
-Write-Host "  [2/3] Downloading latest configs from GitHub..." -ForegroundColor Cyan
+# -- Step 2: Download latest configs from the pack server --
+Write-Host "  [2/3] Downloading latest configs from the pack server..." -ForegroundColor Cyan
 Write-Host ""
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -81,7 +81,8 @@ if (-not (Test-Path "$distDir\config")) {
     try {
         $wc = New-Object System.Net.WebClient
         Write-Host "    Downloading repository..."
-        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
+        $wc.Headers.Add('User-Agent', 'IridescentCraft-Config-Updater/pack')
+        $wc.DownloadFile('https://iridescentcraft.sereneblossom.gay/pack/zip/main', $repoZip)
         $wc.Dispose()
 
         if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 1000000) {
