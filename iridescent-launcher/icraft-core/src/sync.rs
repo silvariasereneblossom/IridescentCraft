@@ -213,10 +213,10 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
             log::error!("[sync] !!! GitHub HEAD fetch FAILED after retries: {e:#}");
             log::error!("[sync] !!! PROCEEDING STALE (last resort) -- server will start with the files currently on disk.");
             log::error!("[sync] !!! These may NOT match origin/main. The 'Repo HEAD' badge is now unverifiable.");
-            log::error!("[sync] !!! Most common cause: GitHub unauth rate limit (60/hr per IP).");
-            log::error!("[sync] !!! FIX: save a GitHub PAT in the launcher (GitHub auth -> Token -> Save) -- it now");
-            log::error!("[sync] !!!      authenticates the SYNC too (5000/hr), not just pushes. Or set GITHUB_TOKEN.");
-            log::error!("[sync] !!!      Then Cycle again.");
+            log::error!("[sync] !!! The repository is private: the sync reads it only with a GitHub key that has");
+            log::error!("[sync] !!! read access to it. The error above says whether the key is missing or rejected.");
+            log::error!("[sync] !!! FIX: save a GitHub PAT in the launcher (GitHub auth -> Token -> Save; see");
+            log::error!("[sync] !!!      server_distribution/PAT_SETUP.md) or set GITHUB_TOKEN. Then Cycle again.");
             // Soft-return so serve()'s later phases (jar hash-verify,
             // expected-state) still run against on-disk state; the badge +
             // error banner carry the warning.
@@ -748,7 +748,10 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     {
         let mut f = fs::File::create(&zip_path)
             .with_context(|| format!("create {}", zip_path.display()))?;
-        github::fetch_zip(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH, &mut f)?;
+        // At the commit this sync installs and records (`remote_sha`), not the
+        // branch: a push landing between the HEAD read and the download can no
+        // longer leave the files of one commit under the marker of another.
+        github::fetch_zip(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, remote_sha, &mut f)?;
         f.flush().ok();
     }
     let zip_size = fs::metadata(&zip_path)?.len();
@@ -760,7 +763,8 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     fs::create_dir_all(&extract_dir)?;
     extract_zip(&zip_path, &extract_dir)?;
 
-    // The zip's top-level dir is `IridescentCraft-<branch>/`. Find it.
+    // The zip's single top-level dir (`<owner>-<repo>-<sha>/` from the API's
+    // zipball). Find it rather than assume its name.
     let top_level = fs::read_dir(&extract_dir)?
         .filter_map(|e| e.ok())
         .find(|e| e.file_type().map(|t| t.is_dir()).unwrap_or(false))

@@ -1,6 +1,6 @@
 # Custom Mods
 
-These mods are built from source or bytecode-patched in-house. They are committed directly to the repo, in `mods/` of all three distributions, and each has a packwiz metafile like any other mod (for all but OfflineSkins it downloads the committed copy). `custom_jars_manifest.json` lists every one of them with its SHA-256 and size, and the stale-jar cleanup keeps what it lists and replaces a copy whose checksum differs. (Older hand-kept lists of these jars remain in `sync_from_repo.bat` and, as a fallback, in the cleanup script; `iridescentserver.bat` no longer has one and runs that script.)
+These mods are built from source or bytecode-patched in-house. They ship with the pack itself, in `mods/` of all three distributions, and each has a packwiz metafile like any other mod (for all but OfflineSkins it downloads the committed copy). `custom_jars_manifest.json` lists every one of them with its SHA-256 and size, and the stale-jar cleanup keeps what it lists and replaces a copy whose checksum differs. (Older hand-kept lists of these jars remain in `sync_from_repo.bat` and, as a fallback, in the cleanup script; `iridescentserver.bat` no longer has one and runs that script.)
 
 **JVM flag requirement:** the two bytecode-patched mods (Patchouli, Ars Nouveau) create dead code paths that the verifier rejects, so the client and the server JVM args both need `-noverify`. The server has it built into `iridescentserver.bat`; on the client you add it by hand in PrismLauncher (Instance → Settings → Java → JVM arguments).
 

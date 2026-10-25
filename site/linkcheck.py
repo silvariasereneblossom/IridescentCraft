@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import urllib.error
 import urllib.request
@@ -52,17 +53,27 @@ def parse(text: str) -> LinkParser:
     return p
 
 
-def check_files(build: Path, base_path: str) -> tuple[list[str], int, int, set[str]]:
+def repo_link_re(repo: str):
+    """A link into the GitHub repository (repo, wiki, issues, blob/tree/raw, raw CDN):
+    the site must never make one."""
+    owner, name = (re.escape(x) for x in repo.split("/"))
+    return re.compile(rf"(?i)^(?:https?:)?//(?:www\.)?(?:github\.com|raw\.githubusercontent\.com)/{owner}/{name}(?:[/?#.]|$)")
+
+
+def check_files(build: Path, base_path: str, repo: str = "") -> tuple[list[str], int, int, set[str]]:
     build = build.resolve()
     pages = {p: parse(p.read_text(encoding="utf-8")) for p in build.rglob("*.html")}
     broken: list[str] = []
     external: set[str] = set()
     checked = 0
     reachable: set[Path] = set()
+    forbidden = repo_link_re(repo) if repo else None
     for page, parsed in pages.items():
         for link in parsed.links:
             parts = urlsplit(link)
             if parts.scheme in ("http", "https", "mailto") or link.startswith("//"):
+                if forbidden and forbidden.match(link):
+                    broken.append(f"{page.relative_to(build)}: {link} links into the repository")
                 external.add(link)
                 continue
             if parts.scheme:
@@ -168,7 +179,7 @@ def main() -> int:
     else:
         cfg = json.loads(args.config.read_text(encoding="utf-8"))
         base = urlsplit(cfg.get("site_url", "/")).path or "/"
-        broken, checked, pages, external = check_files(args.build, base)
+        broken, checked, pages, external = check_files(args.build, base, cfg.get("repo", ""))
     print(f"Pages: {pages}  internal links checked: {checked}  external links (not fetched): {len(external)}")
     if args.list_external:
         for e in sorted(external):

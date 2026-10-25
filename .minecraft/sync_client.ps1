@@ -9,7 +9,7 @@
 #   1. Find the instance .minecraft directory (prefers $env:INST_MC_DIR which
 #      PrismLauncher provides automatically, falls back to detecting by script
 #      location, then searching the PrismLauncher instances folder)
-#   2. Query GitHub API for the latest main commit SHA
+#   2. Ask the pack server for the latest main commit SHA
 #   3. Compare against .icraft_last_sha in the instance root
 #   4. If match: print "Up to date" and exit 0 (no download)
 #   5. If mismatch or first run: download the repo zip, overlay non-runtime
@@ -63,8 +63,11 @@ if (-not $instanceMC) {
 
 Write-Host "[IridescentCraft Sync] Instance: $instanceMC" -ForegroundColor DarkGray
 
-# -- Step 2: Query GitHub API for latest commit SHA --
-$apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main'
+# -- Step 2: Ask the pack server for the latest main commit SHA --
+# (It reads the repo with its own key, so the repo can be private. It serves only
+# the paths it is set to serve; see distribution/client/sync_client.ps1.)
+$PackBase = 'https://iridescentcraft.sereneblossom.gay/pack'
+$apiUrl = "$PackBase/api/commits/main"
 $shaFile = Join-Path $instanceMC '.icraft_last_sha'
 $localSha = ''
 if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() }
@@ -75,7 +78,7 @@ try {
     $resp = Invoke-RestMethod -Uri $apiUrl -Headers $headers -TimeoutSec 10
     $remoteSha = $resp.sha
 } catch {
-    Write-Host "[IridescentCraft Sync] GitHub API unreachable: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host "[IridescentCraft Sync] Pack server unreachable: $($_.Exception.Message)" -ForegroundColor Yellow
     Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
     exit 0
 }
@@ -101,7 +104,7 @@ if ($localSha -and $localSha.Length -eq 40) {
         # ?page=N&per_page=100 to gather them all, so the diff path stays
         # usable for our larger data-pack regenerations (e.g. honing layer
         # rewrites that touch ~500 files).
-        $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
+        $compareUrl = "$PackBase/api/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
         $totalFiles = if ($compare.total_commits -and $compare.files) { $compare.files.Count } else { 0 }
         if ($compare.total_files) { $totalFiles = $compare.total_files }
@@ -139,7 +142,7 @@ if ($localSha -and $localSha.Length -eq 40) {
 
 if ($useDiff) {
     # -- Fast path: download only changed files --
-    $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
+    $rawBase = "$PackBase/raw/$remoteSha"
     $synced = 0; $removed = 0
 
     foreach ($file in $compare.files) {
@@ -203,7 +206,7 @@ if ($useDiff) {
         Write-Host "[IridescentCraft Sync] Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
     }
 
-    $zipUrl = "https://github.com/$owner/$repo/archive/refs/heads/main.zip"
+    $zipUrl = "$PackBase/zip/main"
     $zipFile = Join-Path $env:TEMP 'IridescentCraft-client-sync.zip'
     $extractDir = Join-Path $env:TEMP 'IridescentCraft-client-sync-extract'
 

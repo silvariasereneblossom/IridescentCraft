@@ -5,7 +5,8 @@ giving each one a real raw-GitHub [download] url + sha256 in its .pw.toml, acros
 all 3 distro indexes. Custom jars used to ship as empty-url "presence markers"
 (or no marker at all), which packwiz / PrismLauncher-"Update" can't fetch and
 will actively delete -> the recurring "client is missing iridescent_* mods"
-tester failure. Since the modpack repo is PUBLIC, download_mods.ps1 (and any
+tester failure. The url goes through the pack server (REPO_RAW below), which
+reads the repo with its own read-only key, so download_mods.ps1 (and any
 packwiz consumer) can now fetch them by URL like any other mod.
 
 IDEMPOTENT + sha-from-disk: re-run after EVERY custom-jar rebuild so the marker
@@ -29,7 +30,10 @@ import hashlib
 import os
 import sys
 
-REPO_RAW = "https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft"
+# The pack server's /raw/<ref>/<path>: a redirect to a download link for that
+# file of the repo. Testers need no key and the repo may be private. It serves
+# only the paths it is set to serve (ICRAFT_PACK_PATHS on the server).
+REPO_RAW = "https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft"
 
 # .minecraft root (this file lives in .minecraft/dev/)
 MC = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

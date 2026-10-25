@@ -40,13 +40,13 @@ echo ""
 DIST_DIR="$SCRIPT_DIR"
 
 if [ ! -d "$DIST_DIR/mods/.index" ]; then
-    echo "  [DOWNLOAD] Distribution files not found locally. Downloading from GitHub..."
+    echo "  [DOWNLOAD] Distribution files not found locally. Downloading from the pack server..."
     echo ""
 
     REPO_ZIP="/tmp/IridescentCraft-repo.zip"
     REPO_EXTRACT="/tmp/IridescentCraft-repo-extract"
 
-    curl -sL "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip" -o "$REPO_ZIP"
+    curl -sL -A 'IridescentCraft-Installer/pack' "https://iridescentcraft.sereneblossom.gay/pack/zip/main" -o "$REPO_ZIP"
     rm -rf "$REPO_EXTRACT"
     unzip -qo "$REPO_ZIP" -d "$REPO_EXTRACT"
 

@@ -127,6 +127,12 @@ if ($ManifestPath -and (Test-Path $ManifestPath)) {
 # Build expected set from packwiz + manifest (keep authority) + customJars fallback
 $expected = @{}
 $pwTomlCount = 0
+# No index, or an empty one, says nothing about which mods belong: the purge in
+# Layer 3 would then delete every third-party jar (seen 2026-10-25 on a fresh
+# install whose first sync failed before it delivered mods/.index: all 437 mods
+# went). Without an index only the deny-list and the hash check run, as the
+# launcher's port (mods.rs) already does by skipping.
+$haveIndex = $false
 if (Test-Path $IndexDir) {
     Get-ChildItem "$IndexDir\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Object {
         foreach ($line in Get-Content $_.FullName) {
@@ -136,8 +142,10 @@ if (Test-Path $IndexDir) {
         }
     }
     $pwTomlCount = $expected.Count
-} else {
-    Write-Host "  [cleanup] $IndexDir not found - skipping packwiz check (deny-list + hash-verify still run)." -ForegroundColor Yellow
+    $haveIndex = $pwTomlCount -gt 0
+}
+if (-not $haveIndex) {
+    Write-Host "  [cleanup] $IndexDir not found or empty - skipping the packwiz check and the stale purge (deny-list + hash-verify still run)." -ForegroundColor Yellow
 }
 # Layer 2.5: every manifest jar is a keep authority (single source of truth).
 foreach ($h in $hashes.Keys) { $expected[$h] = $true }
@@ -191,7 +199,7 @@ Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue | ForEach-Object {
     }
 
     # --- Layer 3: ALLOWLIST or purge (manifest + packwiz + fallback) ---
-    if ($expected.ContainsKey($name)) {
+    if ($expected.ContainsKey($name) -or -not $haveIndex) {
         $kept++
     } else {
         Write-Host "  [cleanup] Stale removing: $name" -ForegroundColor DarkYellow

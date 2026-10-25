@@ -15,7 +15,7 @@ PrismLauncher has a per-instance pre-launch command under Settings → Custom Co
 
 ### Mode A: Dev / first-party (force-sync to `origin/main`)
 
-If your PrismLauncher instance *is* the git repo (GitHub Desktop keeps it synced), set the pre-launch command to the bundled hook:
+If your PrismLauncher instance *is* a git checkout of the pack (the developer setup), set the pre-launch command to the bundled hook:
 
 ```
 "$INST_MC_DIR/prism_prelaunch.bat"
@@ -27,7 +27,7 @@ Your worlds are safe. Saves, logs, options and other runtime state are untracked
 
 Pros: it is instant, needs no manual updater, and picks up an update to the hook itself on the same launch.
 
-Cons: the instance must be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
+Cons: the instance must be a git checkout (the developer setup) with git on PATH and signed-in access to the pack's source. Without git on PATH, the launch records a "git-missing" status and warns instead of syncing (see *Failure handling*).
 
 > The legacy bare `git -C "$INST_DIR" pull --ff-only` command is superseded: it is the seed that wedged and caused the silent staleness. On the next launch, the self-healing wiring step upgrades a git-clone instance still wired to it (or to the zip-path `sync_client.bat`, the Mode B hook, which is the wrong one for a clone) to `prism_prelaunch.bat`.
 
@@ -35,10 +35,10 @@ Cons: the instance must be a git clone (the case for the Silvaria dev setup via 
 
 Testers install with `distribution/client/install.ps1`, so their instance is a copy of the packaged client, **not** a git clone. They use `sync_client.ps1`, which:
 
-1. Hits the GitHub API for the latest main commit SHA
+1. Asks the pack server (`https://iridescentcraft.sereneblossom.gay/pack/`) for the latest main commit SHA. Every request the sync makes for the pack goes there (the commit, the compare between two commits, each changed file, and the zip), and none needs an account or a key
 2. Compares it against `.icraft_last_sha` in the instance's .minecraft directory
 3. If they match, prints "Up to date" and exits fast (about 200ms for the API call, no download)
-4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
+4. If they differ, downloads the changed files (or, past 300 changed files or on a first sync, the pack zip), overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches and verifies the mod JARs (see *Mod fetching* below)
 
 During the initial install, `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1` and `cleanup_stale_jars.ps1` into `$INST_MC_DIR`, and it sets the instance's pre-launch command to the bat wrapper below, so testers do not set it themselves.
 
@@ -50,7 +50,7 @@ Every tester's sync downloads mods with `download_mods.ps1`, which reads `mods/.
 
 Until 2026-10-19 the sync script also carried a packwiz-installer path (Java, a CurseForge key in `$INST_MC_DIR/.icraft_cf_token`, a `pack.toml`). On testers' instances it did not run: neither the installer nor the sync delivered a `pack.toml`, and on the index a tester's instance carries packwiz-installer stopped before downloading anything. The path, its two jars and its generator are retired; `download_mods.ps1` is the one way mods arrive. Once an instance runs the new `sync_client.bat`, the sync removes the retired files an older install copied into it (`gen_pwpack.ps1`, `packwiz-installer-bootstrap.jar`, `packwiz-installer.jar`).
 
-The repository's top-level copies of the launcher scripts (`.minecraft/sync_client.ps1`, `.bat`, `download_mods.ps1`) are old and run nowhere: an instance's scripts come from `distribution/client/`. Since 2026-10-19 the sync never copies or deletes those top-level names in an instance.
+The pack's top-level copies of the launcher scripts (`.minecraft/sync_client.ps1`, `.bat`, `download_mods.ps1`) are old and run nowhere: an instance's scripts come from `distribution/client/`. Since 2026-10-19 the sync never copies or deletes those top-level names in an instance.
 
 **PrismLauncher pre-launch command (Windows):**
 
@@ -68,7 +68,7 @@ Or through the bat wrapper, the preferred form: it is what the installer sets, a
 
 A sync hiccup never blocks play: the launch always goes ahead, even when the update could not be applied. "Launch anyway" used to mean "launch *silently* stale," which is how an instance can drift far behind without anyone noticing. The pre-launch hook is now fail-visible:
 
-- It records the result of every launch's sync to a small status file in the instance (a per-launch sentinel, not committed to the repo). A successful sync clears it; a failure records *why* (offline/auth, git not on PATH, or sync blocked) and how far behind the instance is.
+- It records the result of every launch's sync to a small status file in the instance (a per-launch sentinel that stays on your PC). A successful sync clears it; a failure records *why* (offline/auth, git not on PATH, or sync blocked) and how far behind the instance is.
 - A failure also prints an on-screen warning in the pre-launch log (in Mode A, "pushes are NOT arriving. Tell Silvaria"). Nothing warns inside the game: the status file is read by the diagnostic described below.
 - Auth problems fail fast. The hook never hangs on a credential prompt that cannot be answered in the pre-launch context; it fails at once, records the reason and launches.
 
@@ -127,9 +127,9 @@ The instance keeps these in either mode. In Mode B the overlay skips them on pur
 
 ## Your logs and crash reports
 
-They stay on your PC and are never committed to the pack repository: it is public, and a log or a crash report carries player names, chat and addresses. After each session the post-exit hook keeps a copy of the session's logs, and of any crash report it wrote, in `.minecraft/TesterLogs/<your account>/`; it no longer pushes anything. When you hit a problem, send those files (or `logs/latest.log` and the newest file in `crash-reports/`) privately to Silvaria, who files them in a private log repository.
+They stay on your PC: a log or a crash report carries player names, chat and addresses. After each session the post-exit hook keeps a copy of the session's logs, and of any crash report it wrote, in `.minecraft/TesterLogs/<your account>/`; it no longer pushes anything. When you hit a problem, [report it](https://iridescentcraft.sereneblossom.gay/report/) and paste one of those files (or `logs/latest.log`, or the newest file in `crash-reports/`) into the report's log field.
 
-Until 2026-10-15 the repository tracked a set of old logs and crash reports (so a Mode A sync put the tracked `logs/latest.log` back on every launch). The first Mode A sync after that date removes every file at those tracked paths from the instance, including the previous session's `logs/latest.log`, `logs/debug.log` and KubeJS logs and the `TesterLogs/` copies; logs and crash reports under any other name stay. From then on the sync leaves all of them alone.
+Until 2026-10-15 the pack tracked a set of old logs and crash reports (so a Mode A sync put the tracked `logs/latest.log` back on every launch). The first Mode A sync after that date removes every file at those tracked paths from the instance, including the previous session's `logs/latest.log`, `logs/debug.log` and KubeJS logs and the `TesterLogs/` copies; logs and crash reports under any other name stay. From then on the sync leaves all of them alone.
 
 ## When to use which mode
 

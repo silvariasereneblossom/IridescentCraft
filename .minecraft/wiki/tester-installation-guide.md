@@ -8,12 +8,12 @@ The full pack is Forge 1.20.1-47.4.6, 455 mods (a client installs three more, 45
 
 ## Quick links: distribution scripts
 
-These are direct downloads from `main` (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else from GitHub (the Forge installer, mods, configs, datapacks). You do not need to extract a zip or run `git clone`.
+These are direct downloads from `main` (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else it needs (the Forge installer, mods, configs, datapacks). The client links and the client's own updates come from the pack server at `iridescentcraft.sereneblossom.gay/pack/`, which needs no account or key. You do not need to extract a zip or run `git clone`.
 
 | Platform | Client (PrismLauncher installer) | Server (full self-bootstrap) |
 |---|---|---|
-| Windows | [iridescentcraft.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat) | [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) |
-| Linux | [iridescentcraft.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh) | [iridescentserver.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh) |
+| Windows | [iridescentcraft.bat](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.bat) | [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) |
+| Linux | [iridescentcraft.sh](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.sh) | [iridescentserver.sh](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh) |
 
 The server scripts create a clean subfolder next to wherever you saved them (`IridescentCraft Dedicated Server\` on Windows, `IridescentCraft-Dedicated-Server/` on Linux), copy themselves into it and bootstrap from there. You can save the bat to your Desktop or Downloads and double-click it: the install lands in its own subfolder, not in your Downloads root.
 
@@ -26,7 +26,7 @@ The server scripts create a clean subfolder next to wherever you saved them (`Ir
 | Java | JDK 17, Adoptium/Temurin recommended ([https://adoptium.net/](https://adoptium.net/)) |
 | RAM | At least 8 GB allocated to the client; 12 GB recommended |
 | Disk | 10 GB free |
-| Network | The first install downloads from GitHub, Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
+| Network | The first install downloads from the pack server (`iridescentcraft.sereneblossom.gay`), Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
 | Account | Microsoft Minecraft account (or Ely.by / offline for LAN testing only) |
 
 Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need the JVM `-noverify` flag. The server scripts add it for you, and so does the Windows client installer; on Linux you add it once in PrismLauncher during setup (see the client sections below).
@@ -40,13 +40,10 @@ Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need th
 1. Install PrismLauncher from [prismlauncher.org](https://prismlauncher.org) and add your Microsoft account to it.
 2. Install JDK 17 from [adoptium.net](https://adoptium.net) and point PrismLauncher at it (Settings → Java → set the Java path to your JDK 17 install).
 3. Get the installer in one of these ways:
-   - Bootstrap (fastest): download only [iridescentcraft.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat) (right-click → Save link as) to any folder. On its first run the bat fetches everything else it needs from GitHub.
-   - Full clone: install [GitHub Desktop](https://desktop.github.com) and clone `https://github.com/silvariasereneblossom/IridescentCraft` to a path of your choice. Pick this if you also want local copies of the wiki and source content.
-   - Zip download: use the green Code → Download ZIP button on the repo and extract the zip anywhere.
+   - Bootstrap: download only [iridescentcraft.bat](https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.bat) (right-click → Save link as) to any folder. On its first run the bat fetches everything else it needs from the pack server.
 4. Run the installer: double-click `iridescentcraft.bat`.
    - On the bootstrap path, that is the file you downloaded.
-   - If you cloned or unzipped the repo, navigate to `.minecraft\distribution\client\iridescentcraft.bat`.
-   - The script runs `install.ps1` (the copy next to it, or else the latest one from GitHub). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
+   - The script runs `install.ps1` (the copy next to it, or else the latest one from the pack server). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.
 5. There is nothing to import: the installer starts PrismLauncher with the new instance in its list.
 6. Check that `-noverify` is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts `-noverify` there, and the sync adds it back if it goes missing. **This is mandatory**: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.
 7. First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.
@@ -67,15 +64,9 @@ PrismLauncher is the only supported path on Linux for this pack.
 # 1. Install JDK 17 + PrismLauncher via your package manager
 #    (Adoptium/Temurin from adoptium.net works on every distro)
 
-# 2A. BOOTSTRAP path — single-file install. The .sh auto-downloads the
-#     repo zip on first run if it can't find mods/.index/ locally.
-curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh
-chmod +x iridescentcraft.sh
-./iridescentcraft.sh
-
-# 2B. FULL CLONE path — better if you want the whole repo locally.
-git clone https://github.com/silvariasereneblossom/IridescentCraft.git
-cd IridescentCraft/.minecraft/distribution/client
+# 2. Single-file install. The .sh downloads the pack files from the
+#    pack server on first run if it can't find mods/.index/ locally.
+curl -LO https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/iridescentcraft.sh
 chmod +x iridescentcraft.sh
 ./iridescentcraft.sh
 
@@ -88,13 +79,13 @@ After the import, add `-noverify` to the instance's JVM arguments as in step 6 o
 
 A Linux install does not update itself: the pack has no Linux pre-launch sync, so leave the instance's pre-launch command empty. To update, run `iridescentcraft.sh` again and import the new pack. `update_configs.sh` copies the configs and scripts only, never the mods.
 
-The `iridescentcraft.sh` script looks for `mods/.index/` in its current directory. If it is not there (for example, you ran it from outside the repo), the script downloads the repo zip from GitHub to `/tmp/IridescentCraft-repo-extract/` and uses that as the source.
+The `iridescentcraft.sh` script looks for `mods/.index/` in its current directory. If it is not there (for example, you downloaded only the script), the script downloads the pack files from the pack server into a temporary folder under `/tmp/` and uses that as the source.
 
 ---
 
 ## Server install: Windows
 
-The server installs from a single file: download it and double-click it. The bat builds its own server folder, fetches the rest from GitHub, installs Forge, downloads all mods and launches the server.
+The server installs from a single file: download it and double-click it. The bat builds its own server folder, fetches the rest of the pack, installs Forge, downloads all mods and launches the server.
 
 1. Install JDK 17 ([adoptium.net](https://adoptium.net)) and add it to PATH if it isn't there already.
 2. Download only the bat (right-click → Save link as): [iridescentserver.bat](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat). Save it anywhere you like; Desktop, Downloads or a fresh `D:\Servers\` folder all work.
@@ -103,14 +94,14 @@ The server installs from a single file: download it and double-click it. The bat
 What happens automatically:
 
 1. Subfolder bootstrap: the first run creates `IridescentCraft Dedicated Server\` next to the bat, copies itself there and relaunches from there, so server files do not spill into Downloads or Desktop. The marker file `.icraft_server` flags the install location so later launches don't bootstrap again.
-2. Repo sync: `phase0_sync.ps1` is downloaded from GitHub if it is missing, then runs. On the first launch, with no `.icraft_last_sha` marker, it falls back to a full `main.zip` download (about 150 MB) and overlays all `server_distribution/` files into the install dir. Later launches diff-sync through the GitHub compare API (typically 5 to 10 seconds for a few changed files).
+2. Pack sync: `phase0_sync.ps1` is downloaded if it is missing, then runs. On the first launch, with no `.icraft_last_sha` marker, it falls back to a full download of the pack (about 150 MB) and overlays all `server_distribution/` files into the install dir. Later launches download only the files that changed (typically 5 to 10 seconds for a few changed files).
 3. Forge installer: downloads `forge-1.20.1-47.4.6-installer.jar` and runs `--installServer`.
 4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, KubeJS Offline, Equipment Compare, etc.) are skipped through each mod's `side` field.
 5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (`-Xmx14G -Xms14G` G1GC tuning; the Linux script uses `-Xmx10G -Xms8G`).
 
 The first boot takes 5 to 15 minutes while the server's 428 mods initialize. Wait for `Done (XXX.XXXs)! For help, type "help"` in the console.
 
-If the server state has drifted from the repo (rare), force a clean re-sync with `iridescentserver.bat -Force`. It deletes the `.icraft_last_sha` marker and downloads everything again.
+If the server state has drifted from the pack (rare), force a clean re-sync with `iridescentserver.bat -Force`. It deletes the `.icraft_last_sha` marker and downloads everything again.
 
 To tune RAM, edit the bat and change `-Xmx14G` (max heap) and `-Xms14G` (initial heap). The bat's own note asks for 12 GB plus about 2 GB per player online at once: 14 GB for one tester, 16 GB for two, 22 GB for five.
 
@@ -126,7 +117,7 @@ This works the same way as on Windows: fetch one file with curl and run it.
 
 # 2. Curl + run. The script auto-creates IridescentCraft-Dedicated-Server/
 #    subfolder, copies itself there, and bootstraps from there.
-curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh
+curl -LO https://iridescentcraft.sereneblossom.gay/files/raw/_minecraft/server_distribution/iridescentserver.sh
 chmod +x iridescentserver.sh
 ./iridescentserver.sh
 
@@ -134,7 +125,7 @@ chmod +x iridescentserver.sh
 ./iridescentserver.sh --force
 ```
 
-The automatic steps are the same as on Windows: subfolder bootstrap, a full repo zip download into the new dir, Forge install, mod download, then EULA and launch. The first boot takes 5 to 15 minutes.
+The automatic steps are the same as on Windows: subfolder bootstrap, a full pack download into the new dir, Forge install, mod download, then EULA and launch. The first boot takes 5 to 15 minutes.
 
 For a long-running server, wrap the launch in `screen` or `tmux` (or run it as a `systemd` service):
 
@@ -183,14 +174,12 @@ For a forced full re-sync, see the `-Force` flag in the server section. On the c
 
 When you hit a crash or unexpected behavior:
 
-1. Send your logs to Silvaria privately (a direct message, not a public channel): `logs/latest.log` and the newest file in `crash-reports/` from your instance's `.minecraft` folder. (An instance that is a git clone also keeps a copy of your last session in `.minecraft/TesterLogs/<your account>/`; an instance the installer made does not.) **Never commit or push them to the repository**: it is public, and a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its `.gitignore`), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.
-2. File a GitHub issue at [https://github.com/silvariasereneblossom/IridescentCraft/issues](https://github.com/silvariasereneblossom/IridescentCraft/issues) with:
-   - Symptom (what you expected vs. what happened)
-   - Repro steps if reproducible
-   - Time of occurrence (so logs can be cross-referenced)
-   - Whether server / client / both
-
-   Issues are public too: leave the logs out of the issue and say that you sent them.
+1. [Report it](https://iridescentcraft.sereneblossom.gay/report/) with the report form. Say:
+   - what you expected and what happened instead;
+   - the steps that make it happen again, if you know them;
+   - when it happened (so the logs can be matched up);
+   - whether it was on the server, in single player, or both.
+2. Paste the log into the form's log field: `logs/latest.log`, or the newest file in `crash-reports/` after a crash, from your instance's `.minecraft` folder (in PrismLauncher: right-click the instance, then Folder). A report is not public, but a log carries player names, chat and addresses, so never post one anywhere public. The server's launcher collects the server's own logs privately, so you do not need to send those.
 3. On a server where you are an operator, `/icraft despawn <radius>` clears nearby hostiles, which lets you recover before you report a crash caused by a mob. The command needs operator status (permission level 2), and the test server has no operators, so it does not work there.
 
 The dev usually debugs in this order: the latest crash report (in `crash-reports/`), then the head and tail of `latest.log`, then `kubejs-server.log` for KubeJS errors, then `debug.log` for class-load and resource-load issues.
@@ -207,7 +196,7 @@ The dev usually debugs in this order: the latest crash report (in `crash-reports
 | **Mod download fails midway** | Re-run the installer; it skips files it already downloaded. The CurseForge CDN is occasionally flaky, and one retry usually clears it. |
 | **First server boot stuck for >20 min** | Watch `logs/latest.log`: if the last line is `[modloading-worker]`, something is still working. Some configs (Ad Astra worldgen, Apotheosis affixes) generate large data on the first init. Wait it out unless you see a stack trace. |
 | **`Connection lost: invalid protocol` on join** | Client and server are on different commits. Relaunch the client to trigger the auto-sync, then reconnect. |
-| **Custom JARs missing after sync** | One of the in-house mods (`iridescent_tetra_expansion-X.X.X.jar`, `iridescent_origins-X.X.X.jar`, etc.) was treated as stale. The sync removes a copy in `mods/` whose checksum differs from the pack's `custom_jars_manifest.json` and downloads the current one in the same run, so a jar still missing afterwards means that download failed: launch again and read the sync's lines in the launch log. If the repo bumped a version, the next sync handles it. |
+| **Custom JARs missing after sync** | One of the in-house mods (`iridescent_tetra_expansion-X.X.X.jar`, `iridescent_origins-X.X.X.jar`, etc.) was treated as stale. The sync removes a copy in `mods/` whose checksum differs from the pack's `custom_jars_manifest.json` and downloads the current one in the same run, so a jar still missing afterwards means that download failed: launch again and read the sync's lines in the launch log. If the pack bumped a version, the next sync handles it. |
 
 ---
 

@@ -58,8 +58,10 @@ POLICY_REL = "dev/mods/mod_index.policy.json"
 CLIENT_ONLY_TXT_REL = "server_distribution/client_only_mods.txt"
 LAUNCHER_PATTERNS_REL = "../iridescent-launcher/icraft-core/src/packwiz.rs"
 
-# Our own jars are fetched from the repo, each distro from its own copy.
-REPO_RAW = "https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft"
+# Our own jars are fetched from the repo, each distro from its own copy, through the
+# pack server (it reads the repo with its own key, so the repo may be private; it
+# serves only the paths it is set to serve).
+REPO_RAW = "https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft"
 RAW_SEGMENT = {
     "server": "/server_distribution/mods/",
     "client": "/distribution/client/mods/",

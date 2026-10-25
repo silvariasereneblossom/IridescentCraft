@@ -14,7 +14,7 @@
 | **Companion docs** | [`master-appendix.md`](master-appendix.md): all numbers, tables, and registries. [`changelog.md`](changelog.md): a dated record of design changes. |
 | **Editing rule** | When intent changes, update this doc and log the rationale in the changelog. Numerical changes go in the appendix. |
 
-The implementation status of every system lives in the [Home page status table](../home.md). Per-mod balance audit verdicts and private postmortems live in the contributor-only `IridescentCraft-internal` repo.
+The implementation status of every system lives in the [Home page status table](../home.md). Per-mod balance audit verdicts and postmortems are kept in the private developer notes.
 
 ---
 
@@ -1120,7 +1120,7 @@ For the live implementation status of every system in the pack, see the Implemen
 > - This document is authoritative for "what is intended."
 > - The two stay loosely synchronized: when intent changes, this doc updates; when implementation changes, the status table updates and the changelog logs the change.
 
-For per-mod balance audit verdicts (which mods are GREENLIT, LIGHT POLISH, MEDIUM REWORK, etc.), see the private contributor-only `IridescentCraft-internal` repo's `audits/` directory. That repo is the living document for ongoing balance work.
+For per-mod balance audit verdicts (which mods are GREENLIT, LIGHT POLISH, MEDIUM REWORK, etc.), see the audits in the private developer notes, the living document for ongoing balance work.
 
 ---
 

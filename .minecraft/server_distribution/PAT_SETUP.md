@@ -1,4 +1,19 @@
-# Server-side PAT setup for auto log-push
+# Server-side PAT setup: reading the pack, pushing logs
+
+> **The key now has to READ the pack repository (2026-10-25).** The pack
+> repository (`IridescentCraft`) is private. The
+> launcher's sync (`icraft-gui` / `icraft serve`: the branch HEAD, the compare
+> between two commits, each changed file, the full zip, the launcher's own
+> update) reads it only with this key: with no key, or a revoked or expired
+> one, the sync cannot run, and the launcher log says
+> `the GitHub key in use was rejected (HTTP 401)` or
+> `No GitHub key is configured, and the repository is private`. So the key
+> needs **read access to the contents of `IridescentCraft`**, whatever else it
+> is for: a fine-grained key with Contents: Read on it (Read and write if the
+> same key pushes), or a classic key with `repo` scope. Testers need no key:
+> their installs read the pack through the pack server
+> (`https://iridescentcraft.sereneblossom.gay/pack/`), which holds its own
+> read-only key.
 
 > **Out of date on where logs go.** Since 2026-10-12 nothing pushes logs into
 > this (public) pack repository: the launcher (`icraft-gui`) pushes the
@@ -24,8 +39,8 @@ GitHub.com → Settings → Developer settings → **Personal access tokens
 |---|---|
 | Token name | `icraft-server-log-push` (or anything memorable) |
 | Expiration | 90 days (rotate on calendar) |
-| Repository access | **Only select repositories** → `silvariasereneblossom/IridescentCraft` |
-| Repository permissions → Contents | **Read and write** |
+| Repository access | **Only select repositories** → `IridescentCraft` (and `IridescentCraft-logs` for the log push) |
+| Repository permissions → Contents | **Read and write** (Read is the minimum: the sync reads the private pack with it) |
 
 Generate the token and copy the `github_pat_...` string. GitHub shows it
 only once.
@@ -94,16 +109,19 @@ scripts no longer redirect stderr to nul.
 ## 4. Rotation
 
 When the PAT expires (90 days default), GitHub stops accepting it.
-Symptom: `git push` returns 403 with a message about "personal access
-token has expired". Generate a new fine-grained PAT (step 1) and
-update whichever location you used in step 2.
+Symptoms: the sync stops (`the GitHub key in use was rejected (HTTP 401)`
+in the launcher log, "API UNREACHABLE" on the badge, and the server starts
+on the files it already has), and `git push` returns 403 with a message about
+"personal access token has expired". Generate a new PAT (step 1) and update
+whichever location you used in step 2 before it runs out: on the private
+repository an expired key stops the updates, not only the log push.
 
 ## Why a fine-grained PAT and not a classic token
 
 Classic PATs grant repo-wide access to every repo the user owns.
 Fine-grained PATs scope to specific repos and specific permissions.
-For a server-box log push, "Contents: write" on `IridescentCraft`
-alone is the smallest grant that works.
+For the server box, "Contents: read" on `IridescentCraft` is the smallest
+grant the sync works with; the log push adds write on the logs repository.
 
 ## Why `http.extraHeader` instead of embedding the PAT in the URL
 

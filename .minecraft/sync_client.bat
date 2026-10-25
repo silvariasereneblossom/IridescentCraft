@@ -66,7 +66,7 @@ if not exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
     echo   [SETUP] Downloading cleanup script...
     powershell -ExecutionPolicy Bypass -Command ^
         "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/cleanup_stale_jars.ps1' -OutFile '%SCRIPT_DIR%\cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
+        "try { Invoke-WebRequest -Uri 'https://iridescentcraft.sereneblossom.gay/pack/raw/main/.minecraft/distribution/client/cleanup_stale_jars.ps1' -OutFile '%SCRIPT_DIR%\cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
 )
 if exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
     echo [CLEANUP] Removing stale mod JARs...

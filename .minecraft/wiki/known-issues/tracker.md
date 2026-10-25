@@ -21,7 +21,7 @@ Curios can now roll Apotheosis affixes and gem sockets (new this window). All 14
 affix magnitudes and the per-gem curio bonuses are first-pass numbers, kept conservative
 on purpose (about half the armor-piece scale) because players stack many curio slots, so
 expect tuning. If a curio shows an affix with a missing name (raw `affix.apotheosis:...`
-text) or a gem stops working entirely, report it right away: those are loader-level
+text) or a gem stops working entirely, [report it](https://iridescentcraft.sereneblossom.gay/report/) right away: those are loader-level
 failures, not balance issues.
 
 
@@ -68,7 +68,7 @@ Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) a
 Marquee structures are moving to per-structure themed loot pools (70% themed / 30% baseline). A few structures have partial coverage until their loot-table IDs are verified.
 
 ### Tester pack-sync may fail without an obvious symptom: **Resolved**
-In the past the game could launch on a stale pack with no warning when an update failed. The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately). A sync that did not complete is written to a status file in the instance, and since 2026-10-18 the game says so in chat when you join a world.
+In the past the game could launch on a stale pack with no warning when an update failed. The client sync no longer uses a shared access token (it reads the pack server, which needs no key), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately). A sync that did not complete is written to a status file in the instance, and since 2026-10-18 the game says so in chat when you join a world.
 
 ### Ad Astra (space dimensions): **In progress**
 The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). The space enchantments' books lie in chests on their planets, and since 2026-10-19 three levels across a set of armour stop a planet's hazard (they took 99% off before). The `planetary_loot` system has a known low-priority error that will clear once that work lands.

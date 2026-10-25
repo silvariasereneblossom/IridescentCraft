@@ -1,37 +1,67 @@
 name: Wiki site
 
 # Builds the public site served at https://iridescentcraft.sereneblossom.gay/
-# from the GitHub wiki: the Tester Installation Guide as the front page plus
-# the player-facing wiki pages listed in site/pages.json. Generator, page list
-# and link checker live in site/ (Python standard library only).
+# from the wiki source in this repository, .minecraft/wiki/: the Tester
+# Installation Guide as the front page plus every public wiki page except those
+# site/pages.json excludes, the repository files the pages link to (copied under
+# files/), and the report form (report/). The pages are made the way the wiki
+# sync makes the GitHub wiki pages (.minecraft/tools/sync-wiki.py and its
+# manifest), so the site does not need the GitHub wiki, which a private
+# repository on GitHub Free does not have. Generator, page list, sidebar and
+# link checker live in site/ (Python standard library only).
 #
 # The built files are published to the orphan branch `site-build` as one fresh
 # commit (force-pushed; the static files plus build.json). The web server
-# fetches that branch anonymously and serves it as plain files from its root.
-# No push is made when the output is unchanged (build.json aside).
+# fetches that branch every 15 minutes (with its own key) and serves it as
+# plain files from its root. No push is made when the output is unchanged
+# (build.json aside).
 #
 # Triggers:
-#   - gollum: a page edited on the wiki web UI
-#   - workflow_run "Sync wiki": the wiki is regenerated from .minecraft/wiki/ by
-#     sync-wiki.yml, whose git push to the wiki does not raise a gollum event
-#   - push to main touching site/** or this file; a daily schedule; manual dispatch
-#   - pull_request touching site/**: build + link check only, never publishes
+#   - push to main touching the wiki source, the sync manifest or script,
+#     site/**, this file, or a repository file the site copies; a daily
+#     schedule; manual dispatch
+#   - pull_request touching the same: build + link check only, never publishes
+#
+# The blocks between ">>> site/build.py --sync-workflow" and "<<< site/build.py"
+# are generated: the repository files the site copies, as path filters and as
+# sparse-checkout lines. `python site/build.py --sync-workflow` rewrites them;
+# the build job's last step fails (after the publish has its files) when they
+# are stale. A page that starts linking a file outside them fails the build in
+# the Action (the file is not in the sparse checkout), with that command in the
+# message.
 
 on:
-  gollum:
-  workflow_run:
-    workflows: ["Sync wiki"]
-    types: [completed]
-    branches: [main]
   push:
     branches: [main]
     paths:
+      - '.minecraft/wiki/**'
+      - '.minecraft/tools/wiki-sync-manifest.json'
+      - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
+      # >>> site/build.py --sync-workflow: paths
+      - '.minecraft/server_distribution/PAT_SETUP.md'
+      - '.minecraft/server_distribution/iridescentserver.bat'
+      - '.minecraft/server_distribution/iridescentserver.sh'
+      - 'iridescent-aptitudes-mod/**'
+      - 'iridescent-launcher/BUILD.md'
+      - 'iridescent-origins-mod/**'
+      # <<< site/build.py
   pull_request:
     paths:
+      - '.minecraft/wiki/**'
+      - '.minecraft/tools/wiki-sync-manifest.json'
+      - '.minecraft/tools/sync-wiki.py'
       - 'site/**'
       - '.github/workflows/wiki-site.yml'
+      # >>> site/build.py --sync-workflow: paths
+      - '.minecraft/server_distribution/PAT_SETUP.md'
+      - '.minecraft/server_distribution/iridescentserver.bat'
+      - '.minecraft/server_distribution/iridescentserver.sh'
+      - 'iridescent-aptitudes-mod/**'
+      - 'iridescent-launcher/BUILD.md'
+      - 'iridescent-origins-mod/**'
+      # <<< site/build.py
   schedule:
     - cron: '17 5 * * *'
   workflow_dispatch:
@@ -47,30 +77,47 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    # After "Sync wiki", only rebuild when that sync succeeded.
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    outputs:
+      built: ${{ steps.keep.outcome == 'success' }}
     steps:
-      - name: Checkout the generator
+      # Full history (each page's date is the last commit that changed its
+      # source) but no file contents beyond the sparse paths: a blobless clone
+      # of a few MB. GIT_NO_LAZY_FETCH below makes sure the build never needs
+      # more than that.
+      - name: Checkout the wiki source and the generator
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 0
+          filter: blob:none
           sparse-checkout: |
-            site
-            .minecraft/tools/wiki-sync-manifest.json
+            /site/
+            /.minecraft/wiki/
+            /.minecraft/tools/wiki-sync-manifest.json
+            /.minecraft/tools/sync-wiki.py
+            /.github/workflows/wiki-site.yml
+            # >>> site/build.py --sync-workflow: sparse
+            /.minecraft/server_distribution/PAT_SETUP.md
+            /.minecraft/server_distribution/iridescentserver.bat
+            /.minecraft/server_distribution/iridescentserver.sh
+            /iridescent-aptitudes-mod/
+            /iridescent-launcher/BUILD.md
+            /iridescent-origins-mod/
+            # <<< site/build.py
           sparse-checkout-cone-mode: false
 
-      - name: Clone the wiki
-        run: git clone --filter=blob:none "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
-
-      # A link that matches no wiki page is rendered as plain text and listed
-      # in the job summary; it does not fail the build (add --strict for that).
+      # Fails on a link that resolves to nothing, and on any mention of or link
+      # to the repository (the summary lists them).
       - name: Build the site
-        run: python3 site/build.py --wiki wiki --out site/_build --report "$GITHUB_STEP_SUMMARY"
+        env:
+          GIT_NO_LAZY_FETCH: '1'
+        run: python3 site/build.py --out site/_build --report "$GITHUB_STEP_SUMMARY"
 
       - name: Check links
         run: python3 site/linkcheck.py site/_build
 
       - name: Keep the build for the publish job
+        id: keep
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
@@ -79,8 +126,14 @@ jobs:
           retention-days: 3
           if-no-files-found: error
 
+      # Last, so a stale list still publishes (and turns the run red).
+      - name: Check the generated path lists
+        env:
+          GIT_NO_LAZY_FETCH: '1'
+        run: python3 site/build.py --check-workflow --out "$RUNNER_TEMP/site-check" > /dev/null
+
   publish:
-    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    if: always() && needs.build.outputs.built == 'true' && github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: build
     runs-on: ubuntu-24.04
     permissions:
@@ -99,7 +152,7 @@ jobs:
           set -euo pipefail
           remote="https://github.com/${GITHUB_REPOSITORY}.git"
           auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$TOKEN" | base64 -w0)"
-          wiki=$(python3 -c 'import json; print(json.load(open("out/build.json"))["wiki_commit"][:7])')
+          src=$(python3 -c 'import json; print(json.load(open("out/build.json"))["wiki_commit"][:7])')
           cd out
           # A brand-new single commit with no history: the branch only ever
           # holds the current site.
@@ -107,8 +160,10 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
-          git commit -q -m "Site build from wiki ${wiki} (generator ${GITHUB_SHA::7})"
-          if git ls-remote --exit-code --heads "$remote" site-build > /dev/null; then
+          git commit -q -m "Site build from .minecraft/wiki at ${src} (generator ${GITHUB_SHA::7})"
+          # With the key: on a private repository an anonymous ls-remote fails,
+          # which would read as "no site-build yet" and push every time.
+          if git -c http.extraheader="$auth" ls-remote --exit-code --heads "$remote" site-build > /dev/null; then
             git -c http.extraheader="$auth" fetch -q --depth 1 "$remote" refs/heads/site-build
             if git diff --quiet FETCH_HEAD HEAD -- . ':(exclude)build.json'; then
               echo "Site unchanged since the last publish (only build.json differs): nothing pushed." | tee -a "$GITHUB_STEP_SUMMARY"
@@ -116,4 +171,4 @@ jobs:
             fi
           fi
           git -c http.extraheader="$auth" push -q --force "$remote" HEAD:refs/heads/site-build
-          echo "Published $(git rev-parse --short HEAD) (wiki ${wiki}) to the site-build branch." | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "Published $(git rev-parse --short HEAD) (.minecraft/wiki at ${src}) to the site-build branch." | tee -a "$GITHUB_STEP_SUMMARY"

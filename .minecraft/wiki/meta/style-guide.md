@@ -27,7 +27,7 @@ Writing conventions for IridescentCraft wiki pages.
 
 ## Public vs. internal content
 
-The public wiki carries player-facing summaries. Detailed developer information (script paths, line numbers, root-cause forensics, internal cleanup/deny-list patterns, and local filesystem paths) stays in the private internal repository.
+The public wiki carries player-facing summaries. Detailed developer information (script paths, line numbers, root-cause forensics, internal cleanup/deny-list patterns, and local filesystem paths) stays in the private developer notes.
 
 When writing or editing a public page, keep what changed and why it matters to a player, and leave how it was diagnosed and fixed to the private developer log. A page should read as documentation; a postmortem belongs in that log.
 

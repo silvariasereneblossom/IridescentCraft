@@ -5,13 +5,15 @@
 //!     the API when it must be exact (see `HeadFreshness`)
 //!   - `compare(owner, repo, base, head)` — `/repos/{o}/{r}/compare/B...H`
 //!   - `fetch_raw(url)` -> bytes — raw.githubusercontent.com content
-//!   - `fetch_zip(url)` -> bytes — codeload.github.com / archive zip
+//!   - `fetch_zip(ref)` -> bytes — `/repos/{o}/{r}/zipball/{ref}` (a redirect
+//!     to a tokenized codeload.github.com link)
 //!
-//! Auth: optional. Reads `GITHUB_TOKEN` (or fallback `GH_TOKEN`) from env.
-//! If present, sends `Authorization: Bearer <token>` on every request:
-//! lifts the per-IP API limit from 60/hr (unauthenticated) to 5000/hr
-//! (authenticated). If absent, falls back to anonymous and keeps the
-//! original behavior.
+//! Auth: reads `GITHUB_TOKEN` (or fallback `GH_TOKEN`) from env, else the
+//! launcher's saved key (see [`auth_token`]), and sends
+//! `Authorization: Bearer <token>` on every request. The repository is
+//! private, so every read here needs a key with read access to it; with no
+//! key, or a rejected one, GitHub answers 404 and the error says which.
+//! (A key also lifts the per-IP API limit from 60/hr to 5000/hr.)
 //!
 //! 2026-05-18 fix: pre-fix icraft-gui burnt the unauth 60/hr bucket via
 //! a 3s polling loop during long tasks, which then locked self-update
@@ -36,9 +38,12 @@ const USER_AGENT: &str = "IridescentCraft-Server/icraft";
 /// 60 req/hr per IP. That bucket drains intermittently (worse behind CGNAT /
 /// the FRP egress IP), the head fetch then fails, and Cycle proceeds-stale on
 /// behind content. Sharing the saved PAT lifts the sync to 5000/hr — the
-/// durable fix for the "Sync: API UNREACHABLE -> old content" symptom. A
-/// Contents:write push token also satisfies the read-only API; the repo is
-/// public so even a fine-grained read token works.
+/// durable fix for the "Sync: API UNREACHABLE -> old content" symptom.
+///
+/// Since the repository went private the key is what lets the sync read it
+/// at all: it needs read access to the repository's contents (a fine-grained
+/// key with Contents: Read, or Read and write when the same key pushes logs
+/// and launcher builds). See `.minecraft/server_distribution/PAT_SETUP.md`.
 fn auth_token() -> Option<String> {
     std::env::var("GITHUB_TOKEN")
         .ok()
@@ -85,52 +90,110 @@ fn agent() -> ureq::Agent {
         .build()
 }
 
-/// Wrap a ureq Request with the auth header if a token is configured.
-/// All call sites go through this so the token is consistently applied.
-fn maybe_auth(req: ureq::Request) -> ureq::Request {
-    match auth_token() {
+/// Wrap a ureq Request with the auth header when there is a token.
+fn with_auth(req: ureq::Request, token: Option<&str>) -> ureq::Request {
+    match token {
         Some(t) => req.set("Authorization", &format!("Bearer {t}")),
         None => req,
     }
 }
 
-/// GET with dead-token resilience (2026-06-07, docket #97).
+/// Where the key in use comes from, for the error texts below (never the key).
+const KEY_SOURCES: &str = "GITHUB_TOKEN / GH_TOKEN / ICRAFT_GH_TOKEN, or the key saved in the launcher (.icraft_token)";
+
+/// The answer to a request whose key GitHub refused (`code`, 401 or 403) and
+/// whose retry without the key failed too (`retry`). On the private repository
+/// the retry cannot work (GitHub answers 404 to a reader without access), so
+/// the useful message is about the key, not about the retry.
+fn rejected_key_error(code: u16, retry: &ureq::Error) -> anyhow::Error {
+    let retry = match retry {
+        ureq::Error::Status(c, _) => format!("HTTP {c}"),
+        other => other.to_string(),
+    };
+    anyhow::anyhow!(
+        "the GitHub key in use was rejected (HTTP {code}): it is revoked or expired, or it has no \
+         access to the repository. The repository is private, so the retry without a key failed \
+         as well ({retry}). Save a new key with read access to the repository's contents (see \
+         .minecraft/server_distribution/PAT_SETUP.md); the key is read from {KEY_SOURCES}"
+    )
+}
+
+/// GitHub's 404, with what it means on a private repository: the path does not
+/// exist at that ref, or whoever asks (no key, or a key without access to the
+/// repository) may not read it.
+fn not_found_error(authed: bool) -> anyhow::Error {
+    if authed {
+        anyhow::anyhow!(
+            "HTTP 404: not found. GitHub also answers 404 when the key in use cannot read the \
+             private repository (a fine-grained key that does not include it, or one without \
+             Contents: Read); the key is read from {KEY_SOURCES}"
+        )
+    } else {
+        anyhow::anyhow!(
+            "HTTP 404: not found. No GitHub key is configured, and the repository is private: \
+             the launcher needs a key with read access to it (see \
+             .minecraft/server_distribution/PAT_SETUP.md); it reads one from {KEY_SOURCES}"
+        )
+    }
+}
+
+/// GET with the key, and dead-key handling (2026-06-07, docket #97; private
+/// repository 2026-10-25).
 ///
-/// A configured-but-revoked token is WORSE than no token: GitHub answers
-/// 401 (or 403 for some revocation states) and the request hard-fails,
-/// even though the same request would succeed anonymously. The shared
-/// embedded PAT died 2026-06-06 and every box still carrying it in
-/// GITHUB_TOKEN/GH_TOKEN lost head-fetch entirely ("HEAD fetch FAILED").
+/// A configured-but-revoked token used to be WORSE than no token: GitHub
+/// answers 401 (or 403 for some revocation states) and the request hard-fails,
+/// even though the same request succeeded anonymously while the repository was
+/// public. The shared embedded PAT died 2026-06-06 and every box still carrying
+/// it in GITHUB_TOKEN/GH_TOKEN lost head-fetch entirely ("HEAD fetch FAILED").
 ///
-/// Behavior: authenticated attempt first; on 401/403 WITH a token
-/// configured, log loudly and retry the same URL anonymously (60/hr IP
-/// bucket - fine for our call volume per the 2026-05-18 fix). All other
-/// errors propagate unchanged.
+/// Behavior: authenticated attempt first; on 401/403 WITH a token configured,
+/// retry the same URL without it. On the private repository that retry fails
+/// (404), and the error says the key was rejected, not that the file is
+/// missing. A 404 says what it can mean. Other errors propagate unchanged.
 ///
 /// `no_cache`: send revalidation headers. Content fetches keyed by an
 /// immutable commit SHA leave this false (they're cacheable BY DEFINITION);
 /// the mutable-ref reads (branch HEAD, the `.icraft_head_sha` stamp) set it so
-/// no intermediary can hand us a hours-old answer.
-fn get_with_fallback(url: &str, no_cache: bool) -> std::result::Result<ureq::Response, ureq::Error> {
+/// no intermediary can hand us a hours-old answer. `timeout`: overrides the
+/// agent's 60 s for the whole request (the zip).
+fn get_with_fallback(url: &str, no_cache: bool) -> Result<ureq::Response> {
+    get_authed(url, no_cache, None)
+}
+
+fn get_authed(url: &str, no_cache: bool, timeout: Option<Duration>) -> Result<ureq::Response> {
     let build = || {
-        let req = agent().get(url);
+        let mut req = agent().get(url);
+        if let Some(t) = timeout {
+            req = req.timeout(t);
+        }
         if no_cache {
             req.set("Cache-Control", "no-cache").set("Pragma", "no-cache")
         } else {
             req
         }
     };
-    let authed = auth_token().is_some();
-    match maybe_auth(build()).call() {
-        Err(ureq::Error::Status(code, resp)) if authed && (code == 401 || code == 403) => {
-            log::warn!(
-                "[github] HTTP {code} with a configured token (revoked/expired PAT?) -- \
-                 retrying unauthenticated. Rotate or unset GITHUB_TOKEN/GH_TOKEN on this box."
-            );
+    let token = auth_token();
+    match with_auth(build(), token.as_deref()).call() {
+        Ok(resp) => Ok(resp),
+        Err(ureq::Error::Status(code, resp)) if token.is_some() && (code == 401 || code == 403) => {
             drop(resp);
-            build().call()
+            log::warn!("[github] HTTP {code} with the configured GitHub key -- retrying without it");
+            match build().call() {
+                Ok(resp) => {
+                    log::warn!(
+                        "[github] the retry without a key worked, so this repository is readable \
+                         without one, but the key in use is rejected: replace it ({KEY_SOURCES})"
+                    );
+                    Ok(resp)
+                }
+                Err(retry) => Err(rejected_key_error(code, &retry)),
+            }
         }
-        other => other,
+        Err(ureq::Error::Status(404, resp)) => {
+            drop(resp);
+            Err(not_found_error(token.is_some()))
+        }
+        Err(e) => Err(e.into()),
     }
 }
 
@@ -310,23 +373,25 @@ fn fetch_raw_inner(
     Ok(body)
 }
 
-/// Download the branch zip from codeload.github.com. ~100-200MB for
-/// IridescentCraft -- large enough that we want a longer timeout and
-/// streaming write.
-pub fn fetch_zip<W: std::io::Write>(owner: &str, repo: &str, branch: &str, sink: &mut W) -> Result<()> {
-    let url = format!("https://github.com/{owner}/{repo}/archive/refs/heads/{branch}.zip");
-    // Same dead-token fallback as get_with_fallback, inlined for the
-    // custom long timeout (see that fn's doc; github.com archive downloads
-    // don't need auth on a public repo at all).
-    let build = || agent().get(&url).timeout(Duration::from_secs(300));
-    let resp = match maybe_auth(build()).call() {
-        Err(ureq::Error::Status(code, _)) if auth_token().is_some() && (code == 401 || code == 403) => {
-            log::warn!("[github] HTTP {code} on zip fetch with a configured token -- retrying unauthenticated.");
-            build().call()
-        }
-        other => other,
-    }
-    .with_context(|| format!("GET {url}"))?;
+/// The API's zip of the repository at `git_ref` (a branch or a commit SHA).
+fn zipball_url(owner: &str, repo: &str, git_ref: &str) -> String {
+    format!("https://api.github.com/repos/{owner}/{repo}/zipball/{git_ref}")
+}
+
+/// Download the repository zip at `git_ref`. ~100-200MB for IridescentCraft --
+/// large enough that we want a longer timeout and streaming write.
+///
+/// Through the API's zipball, not `github.com/{o}/{r}/archive/...`: the API
+/// takes the key for a private repository the documented way. It answers 302
+/// to a codeload.github.com link that carries its own short-lived token; ureq
+/// follows it and drops our Authorization header on the way (its default for a
+/// redirect), which that link does not need. The zip's top folder is
+/// `{owner}-{repo}-{sha}/`, not `{repo}-{branch}/`: `full_zip_sync` takes
+/// whatever single top folder the zip has.
+pub fn fetch_zip<W: std::io::Write>(owner: &str, repo: &str, git_ref: &str, sink: &mut W) -> Result<()> {
+    let url = zipball_url(owner, repo, git_ref);
+    let resp = get_authed(&url, false, Some(Duration::from_secs(300)))
+        .with_context(|| format!("GET {url}"))?;
     std::io::copy(&mut resp.into_reader(), sink)
         .context("streaming zip body")?;
     Ok(())
@@ -540,4 +605,97 @@ fn str_at(value: &serde_json::Value, path: &[&str]) -> ApiResult<String> {
         code: None,
         message: format!("GitHub's answer has no text at '{}'", path.join(".")),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn the_zip_comes_from_the_api_zipball_at_the_given_ref() {
+        assert_eq!(
+            zipball_url("o", "r", "0123456789abcdef0123456789abcdef01234567"),
+            "https://api.github.com/repos/o/r/zipball/0123456789abcdef0123456789abcdef01234567"
+        );
+        assert_eq!(zipball_url("o", "r", "main"), "https://api.github.com/repos/o/r/zipball/main");
+    }
+
+    /// A rejected key on the private repository must not read as "file not
+    /// found": the anonymous retry's 404 is not the news, the key is.
+    #[test]
+    fn a_rejected_key_says_so_and_names_the_fix() {
+        let retry = ureq::Error::Status(404, ureq::Response::new(404, "Not Found", "").unwrap());
+        let text = format!("{:#}", rejected_key_error(401, &retry));
+        assert!(text.contains("key in use was rejected (HTTP 401)"), "{text}");
+        assert!(text.contains("revoked or expired"), "{text}");
+        assert!(text.contains("private"), "{text}");
+        assert!(text.contains("(HTTP 404)"), "{text}");
+        assert!(text.contains("PAT_SETUP.md"), "{text}");
+    }
+
+    #[test]
+    fn a_404_says_what_it_can_mean_on_a_private_repository() {
+        let with_key = format!("{:#}", not_found_error(true));
+        assert!(with_key.contains("cannot read the private repository"), "{with_key}");
+        let without = format!("{:#}", not_found_error(false));
+        assert!(without.contains("No GitHub key is configured"), "{without}");
+        assert!(without.contains("PAT_SETUP.md"), "{without}");
+    }
+
+    /// Live, read-only, against a PRIVATE repository: commits, compare, raw and
+    /// the zipball with the key from GITHUB_TOKEN. Run by hand:
+    ///   ICRAFT_TEST_PRIVATE_REPO=owner/repo GITHUB_TOKEN=... \
+    ///     cargo test -p icraft-core github::tests::private_repo -- --ignored
+    #[test]
+    #[ignore]
+    fn private_repo_reads_with_a_key() {
+        let Ok(spec) = std::env::var("ICRAFT_TEST_PRIVATE_REPO") else { return };
+        if std::env::var("GITHUB_TOKEN").map_or(false, |t| t.starts_with("not-a-real")) {
+            return; // the rejected-key test's run
+        }
+        let (owner, repo) = spec.split_once('/').expect("owner/repo");
+        assert!(auth_token().is_some(), "set GITHUB_TOKEN");
+
+        let head = head_sha(owner, repo, "main").expect("commits/main");
+        assert_eq!(head.len(), 40);
+
+        // The parent, from the commits API, to compare against.
+        let url = format!("https://api.github.com/repos/{owner}/{repo}/commits/{head}");
+        let commit: serde_json::Value = get_with_fallback(&url, false).unwrap().into_json().unwrap();
+        let parent = commit["parents"][0]["sha"].as_str().expect("a parent").to_string();
+        let cmp = compare(owner, repo, &parent, &head).expect("compare");
+        assert_eq!(cmp.status, "ahead");
+        let file = cmp.files.iter().find(|f| f.status != "removed").expect("a changed file");
+
+        let body = fetch_raw(owner, repo, &head, &file.filename).expect("raw at a sha");
+        assert!(!body.is_empty());
+        let stamp = fetch_raw_uncached(owner, repo, "main", &file.filename).expect("raw at a branch");
+        assert!(!stamp.is_empty());
+
+        let mut zip_bytes = Vec::new();
+        fetch_zip(owner, repo, &head, &mut zip_bytes).expect("zipball");
+        let mut archive = zip::ZipArchive::new(std::io::Cursor::new(zip_bytes)).expect("a zip");
+        let top = archive.by_index(0).unwrap().name().to_string();
+        assert!(top.starts_with(&format!("{owner}-{repo}-")), "{top}");
+        eprintln!("private repo OK: head {}, {} changed, raw {} bytes, zip top {top}", &head[..7], cmp.files.len(), body.len());
+    }
+
+    /// Live: with a key GitHub refuses, the error is about the key. Run by hand:
+    ///   ICRAFT_TEST_PRIVATE_REPO=owner/repo GITHUB_TOKEN=not-a-real-key \
+    ///     cargo test -p icraft-core github::tests::private_repo -- --ignored
+    #[test]
+    #[ignore]
+    fn private_repo_with_a_rejected_key_says_so() {
+        let Ok(spec) = std::env::var("ICRAFT_TEST_PRIVATE_REPO") else { return };
+        if std::env::var("GITHUB_TOKEN").map_or(true, |t| !t.starts_with("not-a-real")) {
+            return; // the other test's run
+        }
+        let (owner, repo) = spec.split_once('/').expect("owner/repo");
+        let text = format!("{:#}", head_sha(owner, repo, "main").unwrap_err());
+        assert!(text.contains("key in use was rejected (HTTP 401)"), "{text}");
+        let mut sink = Vec::new();
+        let text = format!("{:#}", fetch_zip(owner, repo, "main", &mut sink).unwrap_err());
+        assert!(text.contains("key in use was rejected"), "{text}");
+        eprintln!("rejected key OK: {text}");
+    }
 }
