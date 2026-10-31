@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://iridescentcraft.sereneblossom.gay/Known-Issues/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IridescentCraft">
+<meta property="og:title" content="Known Issues">
+<meta property="og:description" content="Player-facing status of known bugs, limitations and recent fixes in IridescentCraft.">
+<meta property="og:url" content="https://iridescentcraft.sereneblossom.gay/Known-Issues/">
+<meta name="twitter:card" content="summary">
+<title>Known Issues · IridescentCraft</title>
+<meta name="description" content="Player-facing status of known bugs, limitations and recent fixes in IridescentCraft.">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css?v=a28d43c66e">
+<script src="../assets/search-index.js?v=d50598aa55" defer></script>
+<script src="../assets/site.js?v=64a67d27df" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a class="nav-toggle" href="#sidebar" role="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></a>
+  <a class="brand" href="../"><span class="mark" aria-hidden="true"></span><span class="wordmark">IridescentCraft</span><span class="tagline">Tester guide &amp; wiki</span></a>
+  <div class="search" role="search">
+    <input type="search" id="search" placeholder="Search pages and headings" aria-label="Search pages and headings" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-expanded="false">
+    <kbd class="search-key" aria-hidden="true">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="Pages">
+<div class="nav-group">
+<ul>
+<li><a href="../Home/">Wiki Home</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Getting Started</p>
+<ul>
+<li><a href="../">Installation Guide</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Design</p>
+<ul>
+<li><a href="../Master-Design-Document/">Master Design Document</a></li>
+<li><a href="../Design-Changelog/">Design Changelog</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Reference</p>
+<ul>
+<li><a href="../Progression-Overview/">Progression Overview</a></li>
+<li><a href="../Classes-and-Races/">Classes and Races</a></li>
+<li><a href="../Systems-Overview/">Systems Overview</a></li>
+<li><a href="../Mod-Overview/">Mod Overview</a></li>
+<li><a href="../Custom-Mods/">Custom Mods</a></li>
+<li><a href="../Boss-Catalog/">Boss Catalog</a></li>
+<li><a href="../Controls/">Controls</a></li>
+<li><a href="../Mod-List/">Mod List</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Tracking</p>
+<ul>
+<li><a href="../Known-Issues/" aria-current="page">Known Issues</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Meta</p>
+<ul>
+<li><a href="../Credits/">Credits</a></li>
+<li><a href="../License/">License</a></li>
+</ul></div>
+<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">GitHub wiki</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft" rel="noopener">Repository</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener">Report an issue</a></li></ul></div>
+  </nav>
+  <a class="scrim" href="#content" tabindex="-1" aria-hidden="true"></a>
+  <main id="content" class="content" tabindex="-1">
+    <article class="prose">
+<h1 id="known-issues"><a class="anchor" href="#known-issues" aria-label="Link to this section"></a>Known Issues</h1>
+<details class="toc"><summary>On this page (4 sections)</summary><ol><li><a href="#open--in-progress">Open / In-progress</a></li><li><a href="#needs-in-game-verification">Needs in-game verification</a></li><li><a href="#recently-resolved">Recently resolved</a></li><li><a href="#related-pages">Related pages</a></li></ol></details>
+<p>Player-facing status of known bugs, limitations and recent fixes in IridescentCraft.</p>
+<p>Each issue gets the short version here: a symptom, a status and a one-line resolution. The detailed root-cause write-ups (scripts, line numbers, NBT/code specifics) are in the private developer log.</p>
+<p>Status legend: <strong>Open</strong> · <strong>Investigating</strong> · <strong>Mitigated</strong> (worked around; safe to play) · <strong>Deferred</strong> (known, fix scheduled later) · <strong>Known limitation</strong> (intentional) · <strong>Needs verification</strong> (implemented, awaiting in-game confirmation) · <strong>Fixed</strong> / <strong>Resolved</strong> (listed under Recently resolved).</p>
+<hr>
+<h2 id="open--in-progress"><a class="anchor" href="#open--in-progress" aria-label="Link to this section"></a>Open / In-progress</h2>
+<h3 id="kill-quests-kills-from-before-2026-10-13-are-not-credited-known-limitation"><a class="anchor" href="#kill-quests-kills-from-before-2026-10-13-are-not-credited-known-limitation" aria-label="Link to this section"></a>Kill quests: kills from before 2026-10-13 are not credited (<strong>Known limitation</strong>)</h3>
+<p>Twenty kill quests (the Boss-Rush gauntlets, the hunter quests, the Overworld Foundations boss quests, <em>Capstone: Lucifer</em> and others) recorded nothing until 2026-10-13. They work now, but only for kills made from then on.</p>
+<h3 id="trinity-mage-classes-elemental--blessed--corrupted-needs-verification"><a class="anchor" href="#trinity-mage-classes-elemental--blessed--corrupted-needs-verification" aria-label="Link to this section"></a>Trinity mage classes (Elemental / Blessed / Corrupted): <strong>Needs verification</strong></h3>
+<p>The three new specialist mage classes shipped in Phase 1a. They are selectable and have their three-school spell-power bonus, edge resistances, HP tiers, 2× mana pools and themed starter kits. Still to be confirmed in game: (a) each is selectable and shows the right HP/stats, (b) casting an on-triad Iron's Spellbooks spell gives the intended ~+80% bump, and (c) the resistance triangle really applies in PvP (a 2-player smoke test). Their signature active abilities and the offensive side of the rock-paper-scissors triangle are deferred on purpose to a Phase 1b follow-up.</p>
+<h3 id="curio-affix-lane-is-brand-new-provisional-feel-pass-pending"><a class="anchor" href="#curio-affix-lane-is-brand-new-provisional-feel-pass-pending" aria-label="Link to this section"></a>Curio affix lane is brand new: <strong>Provisional (feel pass pending)</strong></h3>
+<p>Curios can now roll Apotheosis affixes and gem sockets (new this window). All 14 curio
+affix magnitudes and the per-gem curio bonuses are first-pass numbers, kept conservative
+on purpose (about half the armor-piece scale) because players stack many curio slots, so
+expect tuning. If a curio shows an affix with a missing name (raw <code>affix.apotheosis:...</code>
+text) or a gem stops working entirely, report it right away: those are loader-level
+failures, not balance issues.</p>
+<h3 id="most-of-the-overworld-was-regenerated-on-25-october-2026-known-limitation"><a class="anchor" href="#most-of-the-overworld-was-regenerated-on-25-october-2026-known-limitation" aria-label="Link to this section"></a>Most of the Overworld was regenerated on 25 October 2026: <strong>Known limitation</strong></h3>
+<p>The land outside the kept base area was generated again from the same world seed, so it has the same shape, rivers and structures as before, with this pack's current worldgen: ores at the new, lower rates and Overworld quartz. Every chest out there is refilled. What to expect:</p>
+<ul><li>Waystones in the regenerated land were reset. A village that comes back brings a new waystone that has to be activated again; an old entry for it in your list may no longer work.</li><li>Villagers in the regenerated land are new ones, so hearts and marriages with the old ones are gone.</li><li>Next to the kept area a few structures are cut: their part inside the kept area is the old one, the rest was generated again.</li><li>The chunk where each player last logged out was kept, so there may be a small patch of old terrain where you logged out.</li></ul>
+<h3 id="server-can-lag-low-tps-under-heavy-load-mitigated"><a class="anchor" href="#server-can-lag-low-tps-under-heavy-load-mitigated" aria-label="Link to this section"></a>Server can lag (low TPS) under heavy load: <strong>Mitigated</strong></h3>
+<p>On a full server with many players and active mobs, the tick rate could drop and feel laggy to the lowest-ping player. Raising the server heap and turning off some per-spawn diagnostic logging mitigates it; a full fix waits on more RAM for the server host.</p>
+<h3 id="a-few-terramity-items-are-over-tuned-deferred"><a class="anchor" href="#a-few-terramity-items-are-over-tuned-deferred" aria-label="Link to this section"></a>A few Terramity items are over-tuned: <strong>Deferred</strong></h3>
+<p>Two Terramity speed bracelets grant a near-permanent high Speed effect, and two Terramity weapons can mine any block. They stay at modest drop rates for now; a proper clamp is scheduled for a later pass.</p>
+<h3 id="some-vanilla-spiders-spawn-with-permanent-regeneration-investigating"><a class="anchor" href="#some-vanilla-spiders-spawn-with-permanent-regeneration-investigating" aria-label="Link to this section"></a>Some vanilla spiders spawn with permanent Regeneration: <strong>Investigating</strong></h3>
+<p>A small number of vanilla spiders can appear with a permanent Regeneration effect. A drop-side defense is in place; the source of the spawn-time buff is still being tracked down.</p>
+<h3 id="spider-skeleton-jockeys-spawn-more-often-than-vanilla-open-design-decision-pending"><a class="anchor" href="#spider-skeleton-jockeys-spawn-more-often-than-vanilla-open-design-decision-pending" aria-label="Link to this section"></a>Spider-skeleton jockeys spawn more often than vanilla: <strong>Open (design decision pending)</strong></h3>
+<p>A difficulty-mod setting makes spider-with-skeleton-rider jockeys more common than vanilla's ~1%. Whether to dial this back toward "rare encounter" is a pending design call.</p>
+<h3 id="entities-launched-skyward-by-a-high-amplitude-levitation-effect-investigating"><a class="anchor" href="#entities-launched-skyward-by-a-high-amplitude-levitation-effect-investigating" aria-label="Link to this section"></a>Entities launched skyward by a high-amplitude Levitation effect: <strong>Investigating</strong></h3>
+<p>The "skyward launch" (seen on players and now on mobs too, e.g. a direwolf) is a Levitation effect at amplifier ~50, applied for a fraction of a second. It is neither knockback nor a tipped arrow: an in-game capture confirmed it is a <em>direct/area</em> effect, not a projectile. A full decompile sweep ruled out the obvious suspects. EnemyExpansion's launches are velocity-based and use no Levitation effect, Majrusz caps its Levitation amplifier at 10, and no config, datapack or mod jar defines an amplifier-50 Levitation. So the amplitude builds up at runtime, most likely from an uncapped effect that re-applies and climbs. A stack-trace diagnostic is armed to name the exact source the next time it happens.</p>
+<h3 id="some-skeleton-archers-hit-with-excessive-knockback-mitigated"><a class="anchor" href="#some-skeleton-archers-hit-with-excessive-knockback-mitigated" aria-label="Link to this section"></a>Some skeleton archers hit with excessive knockback: <strong>Mitigated</strong></h3>
+<p>Elite skeleton spawns could carry Punch-enchanted bows and launch players. Punch is now stripped from those spawns. (The dramatic <em>skyward</em> launches were a separate Levitation issue; see above.)</p>
+<h3 id="some-enemyexpansion-mobs-could-launch-the-player-mitigated"><a class="anchor" href="#some-enemyexpansion-mobs-could-launch-the-player-mitigated" aria-label="Link to this section"></a>Some EnemyExpansion mobs could launch the player: <strong>Mitigated</strong></h3>
+<p>A few EnemyExpansion mob attacks set player velocity directly, bypassing normal knockback limits. A multi-layer velocity/knockback cap now contains it, and there have been no further reports.</p>
+<h3 id="aetheric-tetranomicon-compatibility-edge-case-mitigated"><a class="anchor" href="#aetheric-tetranomicon-compatibility-edge-case-mitigated" aria-label="Link to this section"></a>Aetheric Tetranomicon compatibility edge case: <strong>Mitigated</strong></h3>
+<p>The pack handles a conflict between Aetheric Tetranomicon and its modular armor and spell books defensively, so nothing crashes. In rare cases some add-on durability effects are skipped on the affected items.</p>
+<h3 id="mekasuit-has-no-base-armor-stats-mitigated"><a class="anchor" href="#mekasuit-has-no-base-armor-stats-mitigated" aria-label="Link to this section"></a>MekaSuit has no base armor stats: <strong>Mitigated</strong></h3>
+<p>Mekanism's end-game MekaSuit has no innate armor values by design: all its protection comes from installed modules. The MekaSuit Mk2 upgrade (June 2026 rebuild) adds real base armor, toughness and knockback resistance on top of the module system, so the top suit works with dimension-based difficulty scaling. The base suit without the upgrade stays module-only, as Mekanism designed it.</p>
+<h3 id="reforged-botania--cataclysm-armors-render-approximately-known-limitation"><a class="anchor" href="#reforged-botania--cataclysm-armors-render-approximately-known-limitation" aria-label="Link to this section"></a>Reforged Botania / Cataclysm armors render approximately: <strong>Known limitation</strong></h3>
+<p>Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) and Cataclysm (Ignitium) armors render on the vanilla armor model. They keep their color and material identity, but the proportions differ slightly from the source mod's custom model. This is intentional and will be revisited only if feedback calls for it.</p>
+<h3 id="structure-loot-is-migrating-to-themed-pools-in-progress"><a class="anchor" href="#structure-loot-is-migrating-to-themed-pools-in-progress" aria-label="Link to this section"></a>Structure loot is migrating to themed pools: <strong>In progress</strong></h3>
+<p>Marquee structures are moving to per-structure themed loot pools (70% themed / 30% baseline). A few structures have partial coverage until their loot-table IDs are verified.</p>
+<h3 id="ad-astra-space-dimensions-in-progress"><a class="anchor" href="#ad-astra-space-dimensions-in-progress" aria-label="Link to this section"></a>Ad Astra (space dimensions): <strong>In progress</strong></h3>
+<p>The Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) and their six orbits are Tier 4 dimensions: the rocket workbench is a Tier 4 recipe, each planet and orbit has its own Tier 4 gate, and their mobs follow the Tier 4 difficulty curve (all done in October 2026). The space enchantments' books lie in chests on their planets, and since 2026-10-19 three levels across a set of armour stop a planet's hazard (they took 99% off before).</p>
+<h3 id="72-custom-items-use-placeholder-art-open"><a class="anchor" href="#72-custom-items-use-placeholder-art-open" aria-label="Link to this section"></a>~72 custom items use placeholder art: <strong>Open</strong></h3>
+<p>About 72 custom items (progression tokens, boss materials, rings, end-game items, etc.) use tinted vanilla textures for now, as functional, color-coded placeholders. Proper pixel art is a pending polish task.</p>
+<h3 id="minor-non-gameplay-affecting"><a class="anchor" href="#minor-non-gameplay-affecting" aria-label="Link to this section"></a>Minor, non-gameplay-affecting</h3>
+<ul><li>Fast Leaf Decay sometimes logs a harmless error while clearing leaves. It is non-fatal and intermittent.</li></ul>
+<h3 id="some-log-lines-at-boot-are-expected-noise-known-limitation"><a class="anchor" href="#some-log-lines-at-boot-are-expected-noise-known-limitation" aria-label="Link to this section"></a>Some log lines at boot are expected noise: <strong>Known limitation</strong></h3>
+<p>A cluster of harmless log messages appears at server start and is safe to ignore: cross-mod compatibility shims (MCA, the Connector/Architectury registrar), benign mixin "conflict. Skipping" lines from a few mods that optimize the same code path (Saturn, ModernFix + BadOptimizations, Citadel), and client-only mixin messages that do nothing on a dedicated server. The same goes for ten "Couldn't parse element loot_tables" errors: they belong to loot for blocks and structures that do not exist in this pack (Ice and Fire and Traveler's Backpack compatibility content, and a few leftover files), so nothing in the game uses them. With these present, the server boots cleanly to "Done".</p>
+<h3 id="a-small-set-of-mods-arent-statically-mixin-scanned-known-limitation"><a class="anchor" href="#a-small-set-of-mods-arent-statically-mixin-scanned-known-limitation" aria-label="Link to this section"></a>A small set of mods aren't statically mixin-scanned: <strong>Known limitation</strong></h3>
+<p>About 95 of the pack's mods come in through CurseForge metadata (the index has no direct download URL for them), so the offline compatibility scanner cannot read them and they are left out of the static mixin-conflict audit. They still load and run normally in game; the automated conflict check just does not cover them.</p>
+<hr>
+<h2 id="needs-in-game-verification"><a class="anchor" href="#needs-in-game-verification" aria-label="Link to this section"></a>Needs in-game verification</h2>
+<p>Implemented features awaiting confirmation on a live world:</p>
+<ul><li>Aethersteel Tier-4 ore replacement (ore appears as holystone until the T4 unlock)</li><li>Undergarden metals in Tetra crafting</li><li>Custom origin powers: Witherborn wither-on-hit, Slimebodied food/damage-reduction, Orc bloodlust, Witch of Ink progression, Artificial Construct iron-eating, Phantom Spectral Undeath, Samurai focus, Wanderer traveler bonuses, Paladin healing aura, Vanguard guardian's presence, Archmage mana attunement, Void Summoner soul tether, Battlemage mana shield</li><li>Magic bonuses on Iron's spells, each counted once (2026-10-17: the magic damage sync is gone; Mana Attunement and the Magic aptitude skills are spell power only). Magic damage does not reach Ars Nouveau spells</li><li>Compass of Return (bed tracking + cross-dimension teleport)</li><li>Iron's Spells loot tiering (spell books / inks by dimension tier)</li><li>Simply Swords unique Abyss weapons</li><li>Apotheosis affix coverage</li><li>Mekanism balance changes (2.5x machine RF costs, ERA-4 fusion/fission output buffs, reactor force-shutdown, Digital Miner recipe + T4 gate)</li><li>Food-system overhaul (hunger drain, seed drops, structure-food reduction)</li><li>Farmer's Delight cooking conversions</li><li>Lootr on open (25 October 2026): a never-opened structure chest in new land opens as a Lootr chest, with loot of its own for each player</li></ul>
+<hr>
+<h2 id="recently-resolved"><a class="anchor" href="#recently-resolved" aria-label="Link to this section"></a>Recently resolved</h2>
+<p>A condensed list of fixes, newest first. Full details are in the <a href="../Design-Changelog/">Design Changelog</a>.</p>
+<p><strong>Progression</strong></p>
+<ul><li>The Twilight Forest portal could not be lit in survival: since April 2026 its only activator had been a legacy token that nothing gave out. Since 17 October 2026 (from the next server restart) a Codex Token I lights it, and so does a diamond; stepping through still needs Tier 2.</li><li>The Codex could not take submissions, count held tokens or credit boss kills above Tier 1, and the boss-rush rosters listed bosses the pack does not have, so no tier could be reached through the Codex. All of it works since October 2026 (10-12 at the latest).</li><li>A <code>/reload</code> switched every tier gate off until the next restart: gated recipes (netherite ingot, eye of ender, Digital Miner and others) were craftable by anyone, and the rocket workbench by no one. Fixed in October 2026.</li><li>Iron's Spellbooks' <em>Pocket Dimension</em> spell could be cast long before Tier 4; since October 2026 it is refused until Tier 4.</li></ul>
+<p><strong>Items</strong></p>
+<ul><li>Quartz was a Tier 3 item, so a Tier 1 player could not craft rose quartz, electron tubes or the Create machines made with them. Since 22 October 2026 quartz is Tier 1 and its ore generates in the Overworld again, in chunks generated from that day on: since the 25 October regeneration that is most of the Overworld.</li><li>A full MekaSuit did not count as a space suit. Since 19 October 2026 it does on every planet and orbit: you need no oxygen, and Ad Astra's heat and cold don't touch you, charged or not. Each planet's own dangers (the cold of Mars, Mercury's night and Glacio, Mercury's sun, Venus's acid) still need the planet enchantments: Thermal Regulation, Stellar Shield and Pressure Shell.</li><li>Two Engineering skills (Material Save, Craft Bonus) handed out free materials or copies of items on every inventory change, not only on a craft. Since October 2026 they roll only on a real craft.</li></ul>
+<p><strong>Bosses</strong></p>
+<ul><li>The Boss Compass led to the Nether's Chthonic Cathedral for the Thunker, and no Thunker stands there. Since 2026-10-17 it leads to the Chthonic Dungeon, where Thunkers stand in some of the halls and rooms (they also roam every Nether biome). Its bonfire is the "Chthonic Dungeon (Thunker)" one.</li></ul>
+<p><strong>Server</strong></p>
+<ul><li>A Twilight Forest placeholder boss crashed the server when it died or was saved. Since October 2026 it is kept out of the world.</li></ul>
+<p><strong>Quests</strong></p>
+<ul><li>Five Practical Magic rewards called "Random Spell Scroll" (<em>Iron's Spellbooks: A First Tome</em>, the scroll quest, <em>Practical Magic</em> and both scrolls of <em>Practical Mage</em>) gave nothing: the loot table they named did not exist, and the game only said so in chat. Since 2026-10-17 each gives one spell scroll, bound to a random tier-1 spell the moment it lands in your inventory.</li><li><em>Iron Tools</em> (craft an iron pickaxe) rewarded an item that does not exist, so it gave only its XP. Since 2026-10-17 it gives 3 iron ingots.</li><li>The quest <em>Brutal Bosses: Claim a Dungeon</em> could never be completed (its kill lines named things the game does not know as creatures). It was removed on 2026-10-14; nothing depended on it.</li></ul>
+<p><strong>World generation</strong></p>
+<ul><li>The End could not generate a single chunk. The game treated two switched-off ore entries in the pack's own data as one and the same feature, and it refuses to generate a dimension in which a feature has to come before itself. In an offline test of the full pack, asking for an End chunk crashed the server; the test server carries the same data, and nobody had entered The End there. Fixed on 2026-10-13, from the next server restart: in the same test the central island, the outer islands and an End City all generate, and so does a new chunk in each of the 25 other dimensions. The pack's offline boot test now checks all 26 dimensions every time it is run.</li></ul>
+<p><strong>Mob drops</strong></p>
+<ul><li>Three mobs dropped nothing of their own, because each mod's drop list named an item that does not exist and the game discarded the whole list. The Abyss's End Spider now drops an Icora Nugget and its Slime Spider slime balls (both only to a Looting weapon, as the mod's other spiders do), and the boss of the Mercury arena drops its raw iron, magma cream and blaze rods.</li></ul>
+<p><strong>Farming</strong></p>
+<ul><li>Harvesting carrots or potatoes by right-click or with a hoe yields crops again. The auto-replant uses one of the crop as its replant cost, and the reduced-yield tuning had left exactly one to use. Both crops now drop enough that every harvest method nets the same yield. (Wheat and beetroot were never affected.)</li></ul>
+<p><strong>Workbench (reforged gear)</strong></p>
+<ul><li>Raw translation IDs in the workbench are gone: 407 missing labels are filled in across honing schematics (every armor class-hone, wand line and spellbook hone now has a proper name like "Potency III" instead of a raw key), wand part labels and material category headers.</li><li>166 selectable materials that silently did nothing in the workbench now work. Newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in armor/wand/spellbook schematics but had no module data behind them, so the craft did nothing. All of them now have variants with stats scaled from their material grade, plus repair definitions.</li></ul>
+<p><strong>Difficulty</strong></p>
+<ul><li>Mobs now deal +30% damage at every dimension tier (damage only; their health, armor and speed are unchanged). The threat increase is deliberate, to match restored class and race power, so expect to take noticeably more damage, especially before gearing up. It is tunable in <code>config/iridescent_difficulty-common.toml</code> (<code>damageMultiplierPct</code> per tier). The early-Overworld T1 damage softener was also trimmed (-30% -&gt; -15%): low-HP mage starts are <em>meant</em> to be fragile early, and dying in about 3 hits at a fresh T1 is by design.</li></ul>
+<p><strong>Armor &amp; classes</strong></p>
+<ul><li>Class and race stat progressions that never applied now do: Witch of Ink toughness ladder + Penthesilea HP, Berserker Trance, Orc Bloodlust, Wanderer travel-speed and Adaptable bonuses, Slimebodied damage reduction, Witherborn weakness, the entire Artificial Construct ladder + capstone, and the mana-regen/cooldown sync into Iron's Spellbooks. (A command-syntax mismatch had made all of them silently do nothing; offense-side effects in the mod jar were unaffected.) Relog or trigger the effect once to see it apply, and check it with /icraft armormods.</li><li>Armor sets now stack. A modifier-identity collision meant only one equipped reforged armor piece ever counted toward your armor: a set whose tooltips summed to 11 gave roughly one piece's worth. Each slot's contribution is now counted separately, so your equipped total should match the sum of your tooltips (before class/weight percentages).</li><li>Class penalties no longer wipe out caster and ranger armor: the flat -4/-3 armor maluses (Archmage/Ranger, plus the Elf toughness malus) are now percentages of your final armor, so robe builds keep their carried-over armor. This resolves the "robes read 0.5 armor" symptom.</li><li>The glass-cannon equipment-HP halving is corrected. It removed only about a third of equipment HP (the design says half) and could stick after unequipping; both are fixed.</li><li>New: <code>/icraft armormods</code> dumps every live armor/toughness modifier on you, for precise bug reports.</li></ul>
+<p><strong>Loot &amp; chests</strong></p>
+<ul><li>Most loot chests opened as ordinary shared chests instead of Lootr ones: Lootr only converted a chest once every chunk around it had finished loading, and gave up after fifteen minutes or a restart. Since 25 October 2026 (from the next server restart) a loot chest, barrel or shulker box that has not been opened yet becomes a Lootr container the moment a player opens it, however it was placed. Chests already opened as ordinary ones stay ordinary; modded chest blocks Lootr does not support are unchanged.</li><li>Some chests rolled the pack's extra loot twice: Forbidden &amp; Arcanus's additions to End City and bastion treasure, jungle temples, desert pyramids, underwater ruins, pillager outposts, dungeons and the three village smiths ran every other loot rule a second time, so those chests held about twice the Codex tokens, Tetra scrolls and darts their loot rules give. Since 19 October 2026 (chests opened from the next server restart) each rolls once, like the Ender Dragon's drops; village artifacts stay at about one chest in ten.</li><li>Endermen rolled the pack's loot rules twice whenever Forbidden &amp; Arcanus added its ender pearl fragments: in the End they dropped a Codex Token III about one kill in ten instead of one in twenty, and everywhere twice the RFTools Dimensions lost knowledge and dimlets. Since 19 October 2026 (from the next server restart) each kill rolls once; the same fix covers Forbidden &amp; Arcanus's bat, squid, zombie, drowned and spawner drops, which change nothing you would notice.</li><li>Abandoned mineshaft chests rolled the pack's extra loot twice the same way: about one Codex Token I a chest where their loot rules give half that, and twice the artifacts, treasure fragments and backpacks. Since 19 October 2026 (chests opened from the next server restart) they roll once, like the other chests. Valhelsia Structures' treasure jars got the same fix; their second roll added nothing, so a broken treasure jar gives what it did.</li><li>Stray high-tier drops were traced and fixed at the source: passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities are no longer equipped or scaled, and script-equipped mob gear no longer drops on death. (The diamond/ender-eye-on-spiders symptom was part of this and is resolved: it was intended modded entity loot, not a mystery injector.)</li><li>Two datapacks that had silently stopped loading (the stone-tag fixer and the infinite-ham blocker) are loading again; both had been rejected for a packaging error.</li><li>A LootJS strip rule that referenced a non-existent item id no longer errors.</li><li>Enchanted books no longer spawn blank: they roll real enchantments scaled by dimension tier.</li><li>Tome Tower (Apotheosis) chests no longer under-fill. The same pack-wide book-strip bug was zeroing their enchanted books (it was never a load-order quirk, despite the original guess). The chests now also carry guaranteed Arcane Essence (2-4) and an occasional spell scroll.</li><li>"None" / blank spell scrolls in chests now always come with a random spell inscribed.</li><li>Village chests are cleaned up: no more double beds or junk flooding, artifacts at sane rates, and weapons, iron bars and beds appear as intended.</li><li>Ars Nouveau glyphs and spell materials are in the tiered chest loot, so spell books are usable from Tier 1.</li><li>Modded loot modifiers (grass seeds, Farmer's Delight scavenging, Aether drops) are restored after a config change had silently suppressed them.</li><li>Apotheosis gems no longer roll with broken or empty bonuses. Elemental gems are fixed and rebalanced, two gems disabled by a duplicate-slot conflict (Guardian, Intelligent) now load, and the magic-weapon affix pool no longer resolves to empty.</li><li>Epic Dungeons, towers and ocean structures are retuned to tier-appropriate loot.</li></ul>
+<p><strong>Magic</strong></p>
+<ul><li>Unified mana pool: Ars Nouveau and Iron's Spells now draw from one shared mana pool.</li><li>Iron's Spells gems are buffed, and spell-power, mana and cooldown stats now display correctly on modular spell books.</li><li>Magic progression is rebalanced so early-game spells are playable, with a Scroll Forge as the entry point.</li></ul>
+<p><strong>Combat &amp; mobs</strong></p>
+<ul><li>Players in full iron no longer get one-shot in the Overworld (difficulty damage retuned).</li><li>Players are no longer launched skyward by a runaway Levitation effect: one above amplifier 5 is blocked on players. Its source is still being tracked down (see the open Levitation issue above).</li><li>Several boss and entity crashes (Necromancer, Archevoker, Cryomancer, Wandering Magician and other unique Iron's Spells armor) are fixed.</li><li>Mobs no longer break torches/doors/blocks at starter bases.</li><li>Blank "shot by ___" death messages are fixed.</li><li>Abyss (TATOS) mobs stay in their own dimensions: a count on a copy of the test server's world found none anywhere else. (The script meant to send strays back had never worked, and was removed in October 2026.)</li></ul>
+<p><strong>Gear &amp; Tetra</strong></p>
+<ul><li>Items no longer disappear when they break: they go inert at near-zero durability instead (vanilla and modular gear).</li><li>The death penalty no longer destroys broken Tetra items.</li><li>Reforged armor: the workbench Repair tab now appears, and modular percent stats display correctly.</li><li>Modular spell books and reforged armor: source NBT (skins, affixes, enchantments) is preserved through the workbench.</li></ul>
+<p><strong>Progression &amp; Codex</strong></p>
+<ul><li>The Iridescent Codex now registers and opens correctly, with all entries and tier gating.</li><li>Magic-class starter kits now reliably grant a usable spell book and scrolls on first join.</li><li>Three-prompt character creation (Origin → Race → Class) is confirmed working on dedicated servers.</li><li>Skill effects, custom enchantments and warfare skill nodes now apply correctly.</li></ul>
+<p><strong>Dimensions &amp; worldgen</strong></p>
+<ul><li>Balance and mechanics passes are done for Blue Skies, the Aether, the Abyss, the End and the Undergarden.</li><li>Rivers generate again after a terrain-tuning regression.</li><li>Custom cherry biomes now spawn.</li></ul>
+<p><strong>Mods &amp; server</strong></p>
+<ul><li>The FTB suite, Champions Unofficial, Truly Modular, PacketFixer and the old scaling mods are removed and replaced (see <a href="../Mod-Overview/#removed-mods">Mod Overview</a>).</li><li>Several client-only mods that crashed the dedicated server were identified and handled.</li><li>The launcher's cleanup pass now catches tester-sync drift (stale or mismatched custom jars) automatically.</li><li>The client sync no longer uses a shared access token (it reads GitHub's public API), and tester clients stopped pushing logs on 2026-10-15 (logs are sent privately).</li><li>When a pack update fails, the pre-launch sync no longer starts silently on a stale pack: it writes a sync marker, and since 2026-10-18 the game says so in chat when you join a world. A new-machine setup guide documents the correct install layout.</li><li>A periodic janitor sweeps up stray marker items left behind by the boss-wave randomizer.</li></ul>
+<hr>
+<h2 id="related-pages"><a class="anchor" href="#related-pages" aria-label="Link to this section"></a>Related pages</h2>
+<ul><li><a href="../Design-Changelog/">Design Changelog</a>: dated list of major changes</li><li><a href="../Mod-Overview/">Mod Overview</a>: current and removed mods</li><li><a href="../Systems-Overview/">Systems Overview</a>: how the gameplay systems work</li></ul>
+    </article>
+    <footer class="page-foot"><p>Last updated <time datetime="2026-10-25">2026-10-25</time> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Known-Issues" rel="noopener">View on the GitHub wiki</a> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/edit/main/.minecraft/wiki/known-issues/tracker.md" rel="noopener" title="The wiki is generated from this file in the repository; edits made on the wiki itself are overwritten">Edit on GitHub</a></p><p class="built">A mirror of the player-facing pages of the <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">IridescentCraft wiki</a>.</p></footer>
+  </main>
+</div>
+</body>
+</html>

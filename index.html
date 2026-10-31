@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en" data-root="">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://iridescentcraft.sereneblossom.gay/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IridescentCraft">
+<meta property="og:title" content="Tester Installation Guide">
+<meta property="og:description" content="This page takes a tester from nothing to a working install of the IridescentCraft alpha. It covers the client install and the dedicated server install, each...">
+<meta property="og:url" content="https://iridescentcraft.sereneblossom.gay/">
+<meta name="twitter:card" content="summary">
+<title>Tester Installation Guide · IridescentCraft</title>
+<meta name="description" content="This page takes a tester from nothing to a working install of the IridescentCraft alpha. It covers the client install and the dedicated server install, each...">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/style.css?v=a28d43c66e">
+<script src="assets/search-index.js?v=d50598aa55" defer></script>
+<script src="assets/site.js?v=64a67d27df" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a class="nav-toggle" href="#sidebar" role="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></a>
+  <a class="brand" href="./"><span class="mark" aria-hidden="true"></span><span class="wordmark">IridescentCraft</span><span class="tagline">Tester guide &amp; wiki</span></a>
+  <div class="search" role="search">
+    <input type="search" id="search" placeholder="Search pages and headings" aria-label="Search pages and headings" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-expanded="false">
+    <kbd class="search-key" aria-hidden="true">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="Pages">
+<div class="nav-group">
+<ul>
+<li><a href="Home/">Wiki Home</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Getting Started</p>
+<ul>
+<li><a href="./" aria-current="page">Installation Guide</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Design</p>
+<ul>
+<li><a href="Master-Design-Document/">Master Design Document</a></li>
+<li><a href="Design-Changelog/">Design Changelog</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Reference</p>
+<ul>
+<li><a href="Progression-Overview/">Progression Overview</a></li>
+<li><a href="Classes-and-Races/">Classes and Races</a></li>
+<li><a href="Systems-Overview/">Systems Overview</a></li>
+<li><a href="Mod-Overview/">Mod Overview</a></li>
+<li><a href="Custom-Mods/">Custom Mods</a></li>
+<li><a href="Boss-Catalog/">Boss Catalog</a></li>
+<li><a href="Controls/">Controls</a></li>
+<li><a href="Mod-List/">Mod List</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Tracking</p>
+<ul>
+<li><a href="Known-Issues/">Known Issues</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Meta</p>
+<ul>
+<li><a href="Credits/">Credits</a></li>
+<li><a href="License/">License</a></li>
+</ul></div>
+<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">GitHub wiki</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft" rel="noopener">Repository</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener">Report an issue</a></li></ul></div>
+  </nav>
+  <a class="scrim" href="#content" tabindex="-1" aria-hidden="true"></a>
+  <main id="content" class="content" tabindex="-1">
+    <article class="prose">
+<h1 id="tester-installation-guide"><a class="anchor" href="#tester-installation-guide" aria-label="Link to this section"></a>Tester Installation Guide</h1>
+<details class="toc"><summary>On this page (11 sections)</summary><ol><li><a href="#quick-links-distribution-scripts">Quick links: distribution scripts</a></li><li><a href="#prerequisites-all-platforms">Prerequisites (all platforms)</a></li><li><a href="#client-install-windows">Client install: Windows</a></li><li><a href="#client-install-linux">Client install: Linux</a></li><li><a href="#server-install-windows">Server install: Windows</a></li><li><a href="#server-install-linux">Server install: Linux</a></li><li><a href="#connecting-to-the-test-server">Connecting to the test server</a></li><li><a href="#updating">Updating</a></li><li><a href="#reporting-issues">Reporting issues</a></li><li><a href="#common-first-run-problems">Common first-run problems</a></li><li><a href="#whats-in-the-modpack">What&#x27;s in the modpack</a></li></ol></details>
+<p>This page takes a tester from nothing to a working install of the IridescentCraft alpha. It covers the client install and the dedicated server install, each on Windows and Linux, and the auto-update flow that keeps your install in sync with the <code>main</code> branch.</p>
+<p>The full pack is Forge 1.20.1-47.4.6, 455 mods (a client installs three more, 458 in all) and about 3 GB on disk. The first mod download is slow (5 to 30 minutes depending on your connection); later launches are fast because the auto-sync only fetches what changed.</p>
+<hr>
+<h2 id="quick-links-distribution-scripts"><a class="anchor" href="#quick-links-distribution-scripts" aria-label="Link to this section"></a>Quick links: distribution scripts</h2>
+<p>These are direct downloads from <code>main</code> (right-click → Save link as). Each of the four scripts bootstraps the whole install on its own: download that one file, run it, and it pulls everything else from GitHub (the Forge installer, mods, configs, datapacks). You do not need to extract a zip or run <code>git clone</code>.</p>
+<div class="table-wrap"><table><thead><tr><th>Platform</th><th>Client (PrismLauncher installer)</th><th>Server (full self-bootstrap)</th></tr></thead><tbody><tr><td>Windows</td><td><a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat" rel="noopener">iridescentcraft.bat</a></td><td><a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat" rel="noopener">iridescentserver.bat</a></td></tr><tr><td>Linux</td><td><a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh" rel="noopener">iridescentcraft.sh</a></td><td><a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh" rel="noopener">iridescentserver.sh</a></td></tr></tbody></table></div>
+<p>The server scripts create a clean subfolder next to wherever you saved them (<code>IridescentCraft Dedicated Server\</code> on Windows, <code>IridescentCraft-Dedicated-Server/</code> on Linux), copy themselves into it and bootstrap from there. You can save the bat to your Desktop or Downloads and double-click it: the install lands in its own subfolder, not in your Downloads root.</p>
+<hr>
+<h2 id="prerequisites-all-platforms"><a class="anchor" href="#prerequisites-all-platforms" aria-label="Link to this section"></a>Prerequisites (all platforms)</h2>
+<div class="table-wrap"><table><thead><tr><th>Component</th><th>Requirement</th></tr></thead><tbody><tr><td>Java</td><td>JDK 17, Adoptium/Temurin recommended (<a href="https://adoptium.net/" rel="noopener"><a href="https://adoptium.net/" rel="noopener">https://adoptium.net/</a></a>)</td></tr><tr><td>RAM</td><td>12 GB allocated to the client, which is what the Windows installer sets: 4096 MB minimum and 12288 MB maximum (Edit Instance → Settings → Java → Memory). Allocate at least 8 GB. On a PC with 16 GB of RAM, 8 GB is the better choice, because the game uses a few GB beyond what you allocate.</td></tr><tr><td>Disk</td><td>10 GB free</td></tr><tr><td>Network</td><td>The first install downloads from GitHub, Modrinth and the CurseForge CDN and needs full IPv4 connectivity</td></tr><tr><td>Account</td><td>Microsoft Minecraft account (or Ely.by / offline for LAN testing only)</td></tr></tbody></table></div>
+<p>Two of the pack's jars (Patchouli, Ars Nouveau) are bytecode-patched and need the JVM <code>-noverify</code> flag. The server scripts add it for you, and so does the Windows client installer; on Linux you add it once in PrismLauncher during setup (see the client sections below).</p>
+<hr>
+<h2 id="client-install-windows"><a class="anchor" href="#client-install-windows" aria-label="Link to this section"></a>Client install: Windows</h2>
+<h3 id="path-a-prismlauncher-recommended"><a class="anchor" href="#path-a-prismlauncher-recommended" aria-label="Link to this section"></a>Path A: PrismLauncher (recommended)</h3>
+<ol><li>Install PrismLauncher from <a href="https://prismlauncher.org" rel="noopener">prismlauncher.org</a> and add your Microsoft account to it.</li><li>Install JDK 17 from <a href="https://adoptium.net" rel="noopener">adoptium.net</a> and point PrismLauncher at it (Settings → Java → set the Java path to your JDK 17 install).</li><li>Get the installer in one of these ways:
+<ul><li>Bootstrap (fastest): download only <a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.bat" rel="noopener">iridescentcraft.bat</a> (right-click → Save link as) to any folder. On its first run the bat fetches everything else it needs from GitHub.</li><li>Full clone: install <a href="https://desktop.github.com" rel="noopener">GitHub Desktop</a> and clone <code>https://github.com/silvariasereneblossom/IridescentCraft</code> to a path of your choice. Pick this if you also want local copies of the wiki and source content.</li><li>Zip download: use the green Code → Download ZIP button on the repo and extract the zip anywhere.</li></ul></li><li>Run the installer: double-click <code>iridescentcraft.bat</code>.
+<ul><li>On the bootstrap path, that is the file you downloaded.</li><li>If you cloned or unzipped the repo, navigate to <code>.minecraft\distribution\client\iridescentcraft.bat</code>.</li><li>The script runs <code>install.ps1</code> (the copy next to it, or else the latest one from GitHub). It creates an instance named IridescentCraft directly in PrismLauncher's instances folder (downloading a portable PrismLauncher first if it finds none), copies the configs, scripts and the pack's own jars into it, and downloads the client's 458 mods.</li></ul></li><li>There is nothing to import: the installer starts PrismLauncher with the new instance in its list.</li><li>Check that <code>-noverify</code> is in the JVM arguments: right-click the instance → Edit Instance → Settings → Java → JVM arguments. The installer puts <code>-noverify</code> there, and the sync adds it back if it goes missing. <strong>This is mandatory</strong>: without it the pack crashes, because two mods are bytecode-patched in a way that leaves dead code paths, and the verifier rejects them.</li><li>First launch: PrismLauncher downloads Forge, and the pre-launch sync runs a full mod sync with a completeness check, which the installer says may take a few minutes; later launches take seconds.</li></ol>
+<p>The installer also sets the instance's pre-launch command, so every launch syncs to the latest <code>main</code> commit, which typically takes under 1 second when you are up to date and about 30 seconds when there is a new commit. If the command is ever missing (Edit Instance → Settings → Custom Commands), set it to <code>cmd.exe /c "$INST_MC_DIR/sync_client.bat"</code>, the command the installer writes. <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Client-Sync-Protocol" class="wiki-ext" title="Not mirrored on this site: opens the page on the GitHub wiki" rel="noopener">Client Sync Protocol</a> has the details.</p>
+<h3 id="without-prismlauncher-not-supported"><a class="anchor" href="#without-prismlauncher-not-supported" aria-label="Link to this section"></a>Without PrismLauncher: not supported</h3>
+<p>Copying <code>.minecraft/distribution/client/</code> into a vanilla <code>.minecraft</code> does not give a working install. That folder holds the pack's configs, scripts, datapacks and its own 16 jars, but none of the third-party mods: those are listed in <code>mods/.index/</code> and downloaded by the installer and the pre-launch sync, which need PrismLauncher. Use Path A; if you have no PrismLauncher, the installer downloads a portable one for you.</p>
+<hr>
+<h2 id="client-install-linux"><a class="anchor" href="#client-install-linux" aria-label="Link to this section"></a>Client install: Linux</h2>
+<p>PrismLauncher is the only supported path on Linux for this pack.</p>
+<div class="code"><pre><code class="language-bash"># 1. Install JDK 17 + PrismLauncher via your package manager
+#    (Adoptium/Temurin from adoptium.net works on every distro)
+
+# 2A. BOOTSTRAP path — single-file install. The .sh auto-downloads the
+#     repo zip on first run if it can't find mods/.index/ locally.
+curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/iridescentcraft.sh
+chmod +x iridescentcraft.sh
+./iridescentcraft.sh
+
+# 2B. FULL CLONE path — better if you want the whole repo locally.
+git clone https://github.com/silvariasereneblossom/IridescentCraft.git
+cd IridescentCraft/.minecraft/distribution/client
+chmod +x iridescentcraft.sh
+./iridescentcraft.sh
+
+# 3. The script saves IridescentCraft.mrpack to your Desktop (or a path
+#    you pick) and opens PrismLauncher's import dialog with it; it
+#    downloads the PrismLauncher AppImage first if it finds none.</code></pre></div>
+<p>After the import, open the instance's Java settings as in step 6 of the Windows guide above. Add <code>-noverify</code> to the JVM arguments, and under Memory set 4096 MB minimum and 12288 MB maximum. The Linux script builds a plain Modrinth pack, which can set neither.</p>
+<p>A Linux install does not update itself: the pack has no Linux pre-launch sync, so leave the instance's pre-launch command empty. To update, run <code>iridescentcraft.sh</code> again and import the new pack. <code>update_configs.sh</code> copies the configs and scripts only, never the mods.</p>
+<p>The <code>iridescentcraft.sh</code> script looks for <code>mods/.index/</code> in its current directory. If it is not there (for example, you ran it from outside the repo), the script downloads the repo zip from GitHub to <code>/tmp/IridescentCraft-repo-extract/</code> and uses that as the source.</p>
+<hr>
+<h2 id="server-install-windows"><a class="anchor" href="#server-install-windows" aria-label="Link to this section"></a>Server install: Windows</h2>
+<p>The server installs from a single file: download it and double-click it. The bat builds its own server folder, fetches the rest from GitHub, installs Forge, downloads all mods and launches the server.</p>
+<ol><li>Install JDK 17 (<a href="https://adoptium.net" rel="noopener">adoptium.net</a>) and add it to PATH if it isn't there already.</li><li>Download only the bat (right-click → Save link as): <a href="https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat" rel="noopener">iridescentserver.bat</a>. Save it anywhere you like; Desktop, Downloads or a fresh <code>D:\Servers\</code> folder all work.</li><li>Double-click the bat.</li></ol>
+<p>What happens automatically:</p>
+<ol><li>Subfolder bootstrap: the first run creates <code>IridescentCraft Dedicated Server\</code> next to the bat, copies itself there and relaunches from there, so server files do not spill into Downloads or Desktop. The marker file <code>.icraft_server</code> flags the install location so later launches don't bootstrap again.</li><li>Repo sync: <code>phase0_sync.ps1</code> is downloaded from GitHub if it is missing, then runs. On the first launch, with no <code>.icraft_last_sha</code> marker, it falls back to a full <code>main.zip</code> download (about 150 MB) and overlays all <code>server_distribution/</code> files into the install dir. Later launches diff-sync through the GitHub compare API (typically 5 to 10 seconds for a few changed files).</li><li>Forge installer: downloads <code>forge-1.20.1-47.4.6-installer.jar</code> and runs <code>--installServer</code>.</li><li>Mod download: <code>server_install.ps1</code> parses <code>mods/.index/*.pw.toml</code> and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, etc.) are skipped through each mod's <code>side</code> field.</li><li>EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (<code>-Xmx14G -Xms14G</code> G1GC tuning; the Linux script uses <code>-Xmx10G -Xms8G</code>).</li></ol>
+<p>The first boot takes 5 to 15 minutes while the server's 428 mods initialize. Wait for <code>Done (XXX.XXXs)! For help, type "help"</code> in the console.</p>
+<p>If the server state has drifted from the repo (rare), force a clean re-sync with <code>iridescentserver.bat -Force</code>. It deletes the <code>.icraft_last_sha</code> marker and downloads everything again.</p>
+<p>To tune RAM, edit the bat and change <code>-Xmx14G</code> (max heap) and <code>-Xms14G</code> (initial heap). The bat's own note asks for 12 GB plus about 2 GB per player online at once: 14 GB for one tester, 16 GB for two, 22 GB for five.</p>
+<hr>
+<h2 id="server-install-linux"><a class="anchor" href="#server-install-linux" aria-label="Link to this section"></a>Server install: Linux</h2>
+<p>This works the same way as on Windows: fetch one file with curl and run it.</p>
+<div class="code"><pre><code class="language-bash"># 1. JDK 17 (apt/dnf/pacman/etc.)
+#    Verify: java -version  (must show 17)
+
+# 2. Curl + run. The script auto-creates IridescentCraft-Dedicated-Server/
+#    subfolder, copies itself there, and bootstraps from there.
+curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh
+chmod +x iridescentserver.sh
+./iridescentserver.sh
+
+# Force re-sync when needed:
+./iridescentserver.sh --force</code></pre></div>
+<p>The automatic steps are the same as on Windows: subfolder bootstrap, a full repo zip download into the new dir, Forge install, mod download, then EULA and launch. The first boot takes 5 to 15 minutes.</p>
+<p>For a long-running server, wrap the launch in <code>screen</code> or <code>tmux</code> (or run it as a <code>systemd</code> service):</p>
+<div class="code"><pre><code class="language-bash">screen -S icraft -dm bash -c 'cd /path/to/IridescentCraft-Dedicated-Server &amp;&amp; ./iridescentserver.sh'
+# attach with:  screen -r icraft
+# detach with:  Ctrl-A then D</code></pre></div>
+<hr>
+<h2 id="connecting-to-the-test-server"><a class="anchor" href="#connecting-to-the-test-server" aria-label="Link to this section"></a>Connecting to the test server</h2>
+<p>In the Minecraft client (with the modpack installed):</p>
+<ol><li>Open Multiplayer → Add Server.</li><li>Set Server Address to <code>iridescentcraft.sereneblossom.gay</code> (the default port is 25565; leave it off the address).</li><li>Click Done, then Join Server.</li></ol>
+<p>If <code>iridescentcraft.sereneblossom.gay</code> doesn't resolve for you (DNS propagation, a custom resolver, etc.), ping me for the raw IP. The DNS record should work in 99% of cases.</p>
+<p>Client and server must be on the same <code>main</code> branch commit to be protocol compatible. Your client syncs on every launch, but the test server takes a new commit only when it restarts (on its schedule, every 4 to 12 hours, or after a crash), so for a while after a push your client can be ahead of it.</p>
+<p>If you get "connection lost: invalid protocol", your client is on a different commit from the server. Launch the client once to trigger the auto-sync, then reconnect. If your client is already on the newest commit, the server catches up at its next restart.</p>
+<hr>
+<h2 id="updating"><a class="anchor" href="#updating" aria-label="Link to this section"></a>Updating</h2>
+<p>You almost never need to update by hand, because the client and the server both sync themselves on every launch:</p>
+<div class="table-wrap"><table><thead><tr><th>Component</th><th>Sync mechanism</th><th>Trigger</th></tr></thead><tbody><tr><td>Client</td><td><code>sync_client.bat</code>, which runs <code>sync_client.ps1</code> (Windows; an instance that is a git clone uses <code>prism_prelaunch.bat</code>). Linux: none</td><td>Every PrismLauncher launch (via the pre-launch command)</td></tr><tr><td>Server</td><td>self-sync block in <code>iridescentserver.bat</code>/<code>.sh</code></td><td>Every server launch</td></tr></tbody></table></div>
+<p>Both compare a stored <code>.icraft_last_sha</code> with the latest <code>main</code> commit SHA and download again only when the two differ. A network failure does not stop the launch: the sync prints a warning and your install keeps working with the files it already has. The client sync also records the failure in a status file in the instance, and when you join a world the game says in chat that the pack did not update.</p>
+<p>For a forced full re-sync, see the <code>-Force</code> flag in the server section. On the client, delete <code>.icraft_last_sha</code> from the instance's <code>.minecraft</code> folder and relaunch.</p>
+<p><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Client-Sync-Protocol" class="wiki-ext" title="Not mirrored on this site: opens the page on the GitHub wiki" rel="noopener">Client Sync Protocol</a> explains in detail how the client sync works.</p>
+<hr>
+<h2 id="reporting-issues"><a class="anchor" href="#reporting-issues" aria-label="Link to this section"></a>Reporting issues</h2>
+<p>When you hit a crash or unexpected behavior:</p>
+<ol><li><p>Send your logs to Silvaria privately (a direct message, not a public channel): <code>logs/latest.log</code> and the newest file in <code>crash-reports/</code> from your instance's <code>.minecraft</code> folder. (An instance that is a git clone also keeps a copy of your last session in <code>.minecraft/TesterLogs/&lt;your account&gt;/</code>; an instance the installer made does not.) <strong>Never commit or push them to the repository</strong>: it is public, and a log or a crash report carries player names, chat and addresses. The repository refuses them anyway (its <code>.gitignore</code>), and Silvaria files them in a private log repository. The server's launcher collects the server's own logs privately, so you do not need to send those.</p></li><li><p>File a GitHub issue at <a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener"><a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener">https://github.com/silvariasereneblossom/IridescentCraft/issues</a></a> with:</p>
+<ul><li>Symptom (what you expected vs. what happened)</li><li>Repro steps if reproducible</li><li>Time of occurrence (so logs can be cross-referenced)</li><li>Whether server / client / both</li></ul>
+<p>Issues are public too: leave the logs out of the issue and say that you sent them.</p></li><li><p>On a server where you are an operator, <code>/icraft despawn &lt;radius&gt;</code> clears nearby hostiles, which lets you recover before you report a crash caused by a mob. The command needs operator status (permission level 2), and the test server has no operators, so it does not work there.</p></li></ol>
+<p>The dev usually debugs in this order: the latest crash report (in <code>crash-reports/</code>), then the head and tail of <code>latest.log</code>, then <code>kubejs-server.log</code> for KubeJS errors, then <code>debug.log</code> for class-load and resource-load issues.</p>
+<hr>
+<h2 id="common-first-run-problems"><a class="anchor" href="#common-first-run-problems" aria-label="Link to this section"></a>Common first-run problems</h2>
+<div class="table-wrap"><table><thead><tr><th>Problem</th><th>Fix</th></tr></thead><tbody><tr><td><strong>JVM <code>-noverify</code> not set</strong>: pack crashes during mod-loading with <code>VerifyError</code> referencing Patchouli or Ars Nouveau</td><td>Add <code>-noverify</code> to the PrismLauncher JVM args (see Windows step 6). The server already has it.</td></tr><tr><td><strong>Wrong Java version</strong>: install fails with cryptic <code>class file version</code> errors</td><td>It must be JDK 17, not 8/11/21. <code>java -version</code> should show <code>17.x.x</code>.</td></tr><tr><td><strong>PrismLauncher can't find Java</strong></td><td>Settings → Java → set the JDK 17 path by hand. Auto-detect doesn't always find Adoptium.</td></tr><tr><td><strong>Mod download fails midway</strong></td><td>Re-run the installer; it skips files it already downloaded. The CurseForge CDN is occasionally flaky, and one retry usually clears it.</td></tr><tr><td><strong>First server boot stuck for &gt;20 min</strong></td><td>Watch <code>logs/latest.log</code>: if the last line is <code>[modloading-worker]</code>, something is still working. Some configs (Ad Astra worldgen, Apotheosis affixes) generate large data on the first init. Wait it out unless you see a stack trace.</td></tr><tr><td><strong><code>Connection lost: invalid protocol</code> on join</strong></td><td>Client and server are on different commits. Relaunch the client to trigger the auto-sync, then reconnect.</td></tr><tr><td><strong>Custom JARs missing after sync</strong></td><td>One of the in-house mods (<code>iridescent_tetra_expansion-X.X.X.jar</code>, <code>iridescent_origins-X.X.X.jar</code>, etc.) was treated as stale. The sync removes a copy in <code>mods/</code> whose checksum differs from the pack's <code>custom_jars_manifest.json</code> and downloads the current one in the same run, so a jar still missing afterwards means that download failed: launch again and read the sync's lines in the launch log. If the repo bumped a version, the next sync handles it.</td></tr></tbody></table></div>
+<hr>
+<h2 id="whats-in-the-modpack"><a class="anchor" href="#whats-in-the-modpack" aria-label="Link to this section"></a>What's in the modpack</h2>
+<p>See these wiki pages:</p>
+<ul><li><a href="Mod-Overview/">Mod Overview</a>: categorized mod list with notes</li><li><a href="Custom-Mods/">Custom Mods</a>: in-house mods (modular spells, origins, biomes, etc.)</li><li><a href="Progression-Overview/">Progression Overview</a>: tier system, dimension gates, what to do when</li><li><a href="Classes-and-Races/">Classes and Races</a>: character creation choices</li><li><a href="Systems-Overview/">Systems Overview</a>: death penalty, scaling, enchantments, affixes, skills, loot</li><li><a href="Master-Design-Document/">Master Design Document</a>: the canonical source of truth for everything</li><li><a href="Known-Issues/">Known Issues</a>: current bugs and their verification status</li></ul>
+    </article>
+    <footer class="page-foot"><p>Last updated <time datetime="2026-10-31">2026-10-31</time> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tester-Installation-Guide" rel="noopener">View on the GitHub wiki</a> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/edit/main/.minecraft/wiki/tester-installation-guide.md" rel="noopener" title="The wiki is generated from this file in the repository; edits made on the wiki itself are overwritten">Edit on GitHub</a></p><p class="built">A mirror of the player-facing pages of the <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">IridescentCraft wiki</a>.</p></footer>
+  </main>
+</div>
+</body>
+</html>

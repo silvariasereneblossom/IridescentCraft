@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://iridescentcraft.sereneblossom.gay/Progression-Overview/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IridescentCraft">
+<meta property="og:title" content="Progression Overview">
+<meta property="og:description" content="IridescentCraft has a 4-tier progression system gated by AStages. You advance through the tiers with a four-lane progression-token economy tracked by the...">
+<meta property="og:url" content="https://iridescentcraft.sereneblossom.gay/Progression-Overview/">
+<meta name="twitter:card" content="summary">
+<title>Progression Overview · IridescentCraft</title>
+<meta name="description" content="IridescentCraft has a 4-tier progression system gated by AStages. You advance through the tiers with a four-lane progression-token economy tracked by the...">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css?v=a28d43c66e">
+<script src="../assets/search-index.js?v=d50598aa55" defer></script>
+<script src="../assets/site.js?v=64a67d27df" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a class="nav-toggle" href="#sidebar" role="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></a>
+  <a class="brand" href="../"><span class="mark" aria-hidden="true"></span><span class="wordmark">IridescentCraft</span><span class="tagline">Tester guide &amp; wiki</span></a>
+  <div class="search" role="search">
+    <input type="search" id="search" placeholder="Search pages and headings" aria-label="Search pages and headings" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-expanded="false">
+    <kbd class="search-key" aria-hidden="true">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="Pages">
+<div class="nav-group">
+<ul>
+<li><a href="../Home/">Wiki Home</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Getting Started</p>
+<ul>
+<li><a href="../">Installation Guide</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Design</p>
+<ul>
+<li><a href="../Master-Design-Document/">Master Design Document</a></li>
+<li><a href="../Design-Changelog/">Design Changelog</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Reference</p>
+<ul>
+<li><a href="../Progression-Overview/" aria-current="page">Progression Overview</a></li>
+<li><a href="../Classes-and-Races/">Classes and Races</a></li>
+<li><a href="../Systems-Overview/">Systems Overview</a></li>
+<li><a href="../Mod-Overview/">Mod Overview</a></li>
+<li><a href="../Custom-Mods/">Custom Mods</a></li>
+<li><a href="../Boss-Catalog/">Boss Catalog</a></li>
+<li><a href="../Controls/">Controls</a></li>
+<li><a href="../Mod-List/">Mod List</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Tracking</p>
+<ul>
+<li><a href="../Known-Issues/">Known Issues</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Meta</p>
+<ul>
+<li><a href="../Credits/">Credits</a></li>
+<li><a href="../License/">License</a></li>
+</ul></div>
+<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">GitHub wiki</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft" rel="noopener">Repository</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener">Report an issue</a></li></ul></div>
+  </nav>
+  <a class="scrim" href="#content" tabindex="-1" aria-hidden="true"></a>
+  <main id="content" class="content" tabindex="-1">
+    <article class="prose">
+<h1 id="progression-overview"><a class="anchor" href="#progression-overview" aria-label="Link to this section"></a>Progression Overview</h1>
+<details class="toc"><summary>On this page (7 sections)</summary><ol><li><a href="#tier-system">Tier System</a></li><li><a href="#the-token-economy-advance-via-threshold-or-boss-rush">The Token Economy (advance via threshold OR boss-rush)</a></li><li><a href="#dimensional-progression">Dimensional Progression</a></li><li><a href="#staging-implementation">Staging Implementation</a></li><li><a href="#material-progression">Material Progression</a></li><li><a href="#terramity-ore-tier-dim-mapping-2026-04-26">Terramity ore tier-dim mapping (2026-04-26)</a></li><li><a href="#related-pages">Related Pages</a></li></ol></details>
+<p>IridescentCraft has a 4-tier progression system gated by AStages. You advance through the tiers with a four-lane progression-token economy tracked by the Iridescent Codex (backed by Heracles), which replaced the older "5 parallel paths / internal boss-counter" model. See <a href="../Master-Design-Document/#part-iii--progression-the-token-economy">master.md Part III</a> for the full design.</p>
+<h2 id="tier-system"><a class="anchor" href="#tier-system" aria-label="Link to this section"></a>Tier System</h2>
+<div class="table-wrap"><table><thead><tr><th>Tier</th><th>Theme</th><th>Dimensions</th><th>Tech Mods</th><th>Magic Mods</th><th>Power Level</th></tr></thead><tbody><tr><td>1</td><td>Bronze Age Explorer</td><td>Overworld only</td><td>Create, Pretty Pipes</td><td>Botania, Iron's Spells</td><td>Learning basics</td></tr><tr><td>2</td><td>Enchanted Adventurer</td><td>Twilight Forest, Blue Skies (Everbright, Everdawn)</td><td>Thermal, IF (basic)</td><td>Ars Nouveau</td><td>Specialization</td></tr><tr><td>3</td><td>Empowered Slayer</td><td>Undergarden, Deeper Darker, Nether, The Abyss</td><td>IF (advanced), Mekanism (basic), RS</td><td>Occultism, Forbidden &amp; Arcanus</td><td>Major power spike</td></tr><tr><td>4</td><td>God-Killer</td><td>The Aether (Deep Aether's biomes included), The End, the Ad Astra planets and orbits</td><td>Mekanism (advanced), RFTools Dims</td><td>Mahou Tsukai</td><td>Creative-tier power</td></tr></tbody></table></div>
+<p>Smaller dimensions: a dimension's tier is the tier of the way in. The Abyss's Frost World counts as the Abyss (Tier 3). Iron's Spellbooks' pocket dimension (the Pocket Dimension spell, which cannot be cast before Tier 4) and Mahou Tsukai's Reality Marble are Tier 4. The Abyss's own pocket dimension counts as Tier 2, and its Spectral World has no way in.</p>
+<h2 id="the-token-economy-advance-via-threshold-or-boss-rush"><a class="anchor" href="#the-token-economy-advance-via-threshold-or-boss-rush" aria-label="Link to this section"></a>The Token Economy (advance via threshold OR boss-rush)</h2>
+<p>Tier progression runs on one combined pool of physical, tiered progression tokens, submitted to the Iridescent Codex. You advance a tier by reaching either its token threshold or its boss-rush %:</p>
+<div class="table-wrap"><table><thead><tr><th>Transition</th><th class="al-right">Token threshold</th><th class="al-right">Boss-rush %</th></tr></thead><tbody><tr><td>T1 → T2</td><td class="al-right">500</td><td class="al-right">80% of T1 bosses (8 of 9)</td></tr><tr><td>T2 → T3</td><td class="al-right">1000</td><td class="al-right">90% of T2 bosses (17 of 18)</td></tr><tr><td>T3 → T4</td><td class="al-right">2000</td><td class="al-right">100% of T3 bosses (all 44, incl. Lucifer)</td></tr><tr><td>T4 → finale</td><td class="al-right">-</td><td class="al-right">defeat the Ender Dragon (the pack finale; no gate: the Ad Astra planets open with T4)</td></tr></tbody></table></div>
+<p>One tier at a time: you can buy a tier only while you hold the tier below it. Tokens of a higher tier, or a cleared roster of a higher tier, do nothing until you have reached the tier below; kills still count and are credited once you get there. <code>/icraft codex balance</code> and <code>/icraft codex bosses</code> say which tier comes first.</p>
+<p>The boss-rush rosters are the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters and others): 9 in Tier 1, 18 in Tier 2, 45 in Tier 3 (since 2026-10-16, when Merlin and Circe became Tier 3 bosses). Tier 4 has no boss rush. <code>/icraft codex bosses</code> shows the list and your progress.</p>
+<p>To submit, use <code>/icraft codex submit</code>: it takes the counted items from your main inventory (the hotbar included). It never takes the armor you wear or the item in your off hand.</p>
+<h3 id="four-lanes-feed-the-pool"><a class="anchor" href="#four-lanes-feed-the-pool" aria-label="Link to this section"></a>Four lanes feed the pool</h3>
+<p>You can reach each tier with a single pure playstyle, and hybrids mix freely.</p>
+<ul><li>Engineering: submit bulk metals (capped, 1 token / 100) and milestone machine blocks (Create @ T1 · Thermal @ T2 · Mekanism @ T3). Per-tier subtotals ~590 / 1200 / 2400 (the tables are the <em>complete</em> conversion set, with no unlisted long tail).</li><li>Magic: submit generation/cultivation/ritual reagents (the "ore", capped) and apparatus blocks (the "machines"), never spellcasting (Botania @ T1 · Ars Nouveau @ T2 · advanced Botania + Occultism + F&amp;A @ T3). Subtotals ~600 / 1250 / 2360.</li><li>Exploration: miniboss/boss first-kill and repeat-kill tokens, non-overworld dimension entry, chest/barrel finds.</li><li>Combat: boss and miniboss kills, which feed the pool <em>and</em> count toward the boss-rush %.</li></ul>
+<p>Engine: Heracles (the quest mod) handles token submission, kill tracking and stage granting; the Patchouli Codex book is the documentation skin. Lucifer is the T3 → T4 combat capstone, the last boss of the Tier 3 roster (non-combat lanes skip him). The End is reached with Eyes of Ender (staged at T4); an End Compass → End Bastion route, with the compass crafted from the Aether's materials, is planned to replace them. The Ad Astra planets and orbits are Tier 4 dimensions: they ask for a rocket (its workbench is a Tier 4 recipe) and the Tier 4 stage. T4 is terminal, and beating the Ender Dragon is the pack finale.</p>
+<p>Full conversion tables and caps: <a href="../Master-Design-Document/#part-iii--progression-the-token-economy">master.md Part III</a>.</p>
+<h2 id="dimensional-progression"><a class="anchor" href="#dimensional-progression" aria-label="Link to this section"></a>Dimensional Progression</h2>
+<p>The main change from vanilla: the Nether is Tier 3 and the End is Tier 4.</p>
+<p>Difficulty scaling is time-based (added 2026-05-03 with the custom <code>iridescent_difficulty</code> mod). Each dimension has a starting multiplier, a cap and a "cap hours" curve: multipliers ramp up linearly while the dimension is loaded, then freeze at the cap. Only the End uncaps, once the Ender Dragon is killed.</p>
+<div class="table-wrap"><table><thead><tr><th>Tier</th><th>Dimensions</th><th>Start %</th><th>Cap %</th><th>Cap Hours</th><th>Elite Spawn %</th></tr></thead><tbody><tr><td>1</td><td>Overworld</td><td>150%</td><td>300%</td><td>100h</td><td>5%</td></tr><tr><td>2</td><td>Twilight Forest, Blue Skies (Everbright/Everdawn)</td><td>200%</td><td>350%</td><td>100h</td><td>7-8%</td></tr><tr><td>3</td><td>The Undergarden, Deeper and Darker (Otherside), The Nether, The Abyss (and its Frost World)</td><td>300%</td><td>450%</td><td>100h</td><td>10-12%</td></tr><tr><td>4</td><td>The End, The Aether (Deep Aether's biomes included), the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension, the Reality Marble</td><td>600%</td><td>1000%</td><td>200h</td><td>13-15%</td></tr></tbody></table></div>
+<p>Once the Ender Dragon is killed in the world, the End uncaps: its multiplier keeps extrapolating past 1000% indefinitely.</p>
+<p>Deep Aether scales with the Aether. It is not a separate dimension (its biomes generate inside the Aether), so its ordinary mobs follow the Aether's curve (Tier 4 since 2026-10-16, Tier 2 before) and share its timer. The curve also scales the Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites). The Abyss's pocket dimension runs the Tier 2 curve. Any dimension not named here uses the Tier 1 curve. (Until October 2026 the planets, orbits and pocket dimensions were on no list and ran the Tier 1 curve.)</p>
+<p>Bosses with designed numbers are left off the curve. A boss with a designed health or the boss x3 has the same health in every dimension (the Twilight Naga 900, the Wither 1,800, the Ender Dragon 3,000, before per-kill scaling): the curve no longer multiplies it again. Minibosses without a designed health still grow with the curve of where you meet them, like the mobs around them.</p>
+<p>All values are configurable in <code>config/iridescent_difficulty-common.toml</code> (per-tier <code>startPct</code>/<code>capPct</code>/<code>capHours</code>, per-dimension tier mapping, per-dimension <code>uncapAfterEnderDragon</code> flag).</p>
+<p>Incoming damage runs +30% hotter than the table. As of 2026-06-13, every tier carries a damage-only multiplier (<code>damageMultiplierPct = 130</code>) that applies to mob attack damage only. Mob health, armor and speed still follow the Start/Cap curve above, but mobs hit 30% harder than those percentages alone, at every point on the curve. It is tunable per tier; 100 means damage tracks the curve.</p>
+<p>Boss scaling stacks on top through per-kill scaling, per player (<code>boss_progressive.js</code>): a boss is stronger for the players near it who have beaten it before (the Wither, the Ender Dragon, the Warden and the Elder Guardian are not scaled). The static mob-tier HP (basic 3×, mid 1.5×, elite 1.25×) from <code>mob_scaling_unified.js</code> also combines with the dimension multiplier. Majrusz's Progressive Difficulty handles elite-mob density (the Elite Spawn % column; Master-stage scaling, replacing the removed Champions Unofficial).</p>
+<p>This replaces the previous flat-multiplier scaling, which compounded in unpredictable ways with ScalingMobs's per-player tracker, ImprovedMobs's per-tick accumulator, MajruszsDifficulty's per-stage health and damage bonus and Azukaars' fair-difficulty curve. All four are removed or disabled (Majrusz's game stages themselves still run and switch on its other features).</p>
+<h2 id="staging-implementation"><a class="anchor" href="#staging-implementation" aria-label="Link to this section"></a>Staging Implementation</h2>
+<p>AStages enforces per-player tier restrictions on:</p>
+<ul><li>Items (tier-inappropriate items cannot be used)</li><li>Dimensions (locked until stage unlocked; every planet and orbit has its own Tier 4 gate, so a rocket handed to a Tier 3 player goes nowhere)</li><li>Recipes (tier-gated crafting)</li><li>Ores (hidden/replaced until appropriate tier)</li><li>One spell: Iron's Spellbooks' <em>Pocket Dimension</em> is refused before Tier 4 ("Pocket Dimension is a Tier 4 spell"); no mana, cooldown or scroll is used up</li></ul>
+<p>The gates survive a <code>/reload</code> (until October 2026 a reload switched them off until the next restart).</p>
+<h2 id="material-progression"><a class="anchor" href="#material-progression" aria-label="Link to this section"></a>Material Progression</h2>
+<ul><li>Tier 1: Iron, Copper, Brass, Tin, Bronze, Quartz. No diamonds. Quartz ore (Overworld Quartz's stone and deepslate ores) generates in the Overworld, in chunks generated since 22 October 2026; Create needs quartz for rose quartz and electron tubes.</li><li>Tier 2: Steel, Manasteel, Signalum, Lumium, Steeleaf, Ironwood, Fiery. Limited diamonds. Plus Terramity sapphire / topaz / ruby / dimlite / gaianite (T2 dim-bound; see below).</li><li>Tier 3: Full diamond, Terrasteel, Elementium, Enderium, Osmium, Refined Obsidian, Ancient Debris. Plus Terramity iridium / profaned / iridescent. (Quartz was Tier 3 and Nether-only from April to 22 October 2026.)</li><li>Tier 4: Netherite, Gaia Ingots, Dragon materials, Antimatter, Atomic Alloy. Plus Terramity onyx (End-only).</li></ul>
+<h2 id="terramity-ore-tier-dim-mapping-2026-04-26"><a class="anchor" href="#terramity-ore-tier-dim-mapping-2026-04-26" aria-label="Link to this section"></a>Terramity ore tier-dim mapping (2026-04-26)</h2>
+<p>In the 2026-04-26 worldgen rebalance, all 11 Terramity overworld ores were removed from the Overworld with <code>forge:none</code> biome_modifier overrides and re-injected into tier-appropriate dimensions. Each ore's tier follows its stats in the Terramity armor/tool audit:</p>
+<div class="table-wrap"><table><thead><tr><th>Material</th><th>Tier</th><th>Stat tier (audit)</th><th>Target dim(s)</th></tr></thead><tbody><tr><td>sapphire (cold)</td><td>T2</td><td>Diamond-tier dura, T1 attack</td><td>Aether + Blue Skies Everdawn</td></tr><tr><td>topaz (hot)</td><td>T2</td><td>identical to sapphire</td><td>Twilight Forest + Blue Skies Everbright</td></tr><tr><td>igneo_ruby</td><td>T2</td><td>identical to sapphire</td><td>Twilight Forest</td></tr><tr><td>gaianite_cluster</td><td>T2</td><td>(lush flora)</td><td>Twilight Forest</td></tr><tr><td>dimlite</td><td>T2</td><td>T2 tools, no armor</td><td>Twilight Forest</td></tr><tr><td>iridium</td><td>T3</td><td>netherite-tier (atk 14, dura 3046)</td><td>Undergarden + Deeper Darker</td></tr><tr><td>profaned</td><td>T3</td><td>crafting reagent</td><td>Undergarden + Deeper Darker</td></tr><tr><td>iridescent</td><td>T3</td><td>crafting reagent</td><td>Undergarden + Deeper Darker</td></tr><tr><td>daemonium</td><td>T4</td><td>endgame</td><td>Nether (unchanged)</td></tr><tr><td>onyx</td><td>T4</td><td>endgame End</td><td>End (unchanged)</td></tr><tr><td>nether_iridium / nether_ruby / bedrock_black_matter</td><td>--</td><td>(multi-source variants)</td><td>Nether (unchanged)</td></tr><tr><td>end_iridium / end_onyx</td><td>T4</td><td>(End-only)</td><td>End (unchanged)</td></tr></tbody></table></div>
+<p>Tetra integration: 6 ore-mined Terramity materials (sapphire, topaz, ruby, onyx, dimlite, iridium) have Tetra material entries with unique perks. The audit found identical raw stats for sapphire, topaz, ruby and onyx, so their perks set them apart (Fire Resistance / Fire-on-hit / +50% fire damage / +15% minion damage). See <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tetra-Materials" class="wiki-ext" title="Not mirrored on this site: opens the page on the GitHub wiki" rel="noopener">Tetra-Materials</a> on the public wiki.</p>
+<h2 id="related-pages"><a class="anchor" href="#related-pages" aria-label="Link to this section"></a>Related Pages</h2>
+<ul><li><a href="../Master-Design-Document/">Master Design Document</a>: full specification (Parts I to XVI; Part III = the token economy)</li><li><a href="../Classes-and-Races/">Classes &amp; Races</a>: character build system</li><li><a href="../Systems-Overview/">Systems</a>: combat scaling, death penalty, loot</li></ul>
+    </article>
+    <footer class="page-foot"><p>Last updated <time datetime="2026-10-22">2026-10-22</time> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Progression-Overview" rel="noopener">View on the GitHub wiki</a> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/edit/main/.minecraft/wiki/progression/overview.md" rel="noopener" title="The wiki is generated from this file in the repository; edits made on the wiki itself are overwritten">Edit on GitHub</a></p><p class="built">A mirror of the player-facing pages of the <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">IridescentCraft wiki</a>.</p></footer>
+  </main>
+</div>
+</body>
+</html>

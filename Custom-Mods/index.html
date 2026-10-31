@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src 'self' data: https:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://iridescentcraft.sereneblossom.gay/Custom-Mods/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="IridescentCraft">
+<meta property="og:title" content="Custom Mods">
+<meta property="og:description" content="These mods are built from source or bytecode-patched in-house. They are committed directly to the repo, in mods/ of all three distributions, and each has a...">
+<meta property="og:url" content="https://iridescentcraft.sereneblossom.gay/Custom-Mods/">
+<meta name="twitter:card" content="summary">
+<title>Custom Mods · IridescentCraft</title>
+<meta name="description" content="These mods are built from source or bytecode-patched in-house. They are committed directly to the repo, in mods/ of all three distributions, and each has a...">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/style.css?v=a28d43c66e">
+<script src="../assets/search-index.js?v=d50598aa55" defer></script>
+<script src="../assets/site.js?v=64a67d27df" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a class="nav-toggle" href="#sidebar" role="button" aria-controls="sidebar" aria-expanded="false" aria-label="Show navigation"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg></a>
+  <a class="brand" href="../"><span class="mark" aria-hidden="true"></span><span class="wordmark">IridescentCraft</span><span class="tagline">Tester guide &amp; wiki</span></a>
+  <div class="search" role="search">
+    <input type="search" id="search" placeholder="Search pages and headings" aria-label="Search pages and headings" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-expanded="false">
+    <kbd class="search-key" aria-hidden="true">/</kbd>
+    <ul id="search-results" class="search-results" role="listbox" aria-label="Search results" hidden></ul>
+  </div>
+</header>
+<div class="layout">
+  <nav id="sidebar" class="sidebar" aria-label="Pages">
+<div class="nav-group">
+<ul>
+<li><a href="../Home/">Wiki Home</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Getting Started</p>
+<ul>
+<li><a href="../">Installation Guide</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Design</p>
+<ul>
+<li><a href="../Master-Design-Document/">Master Design Document</a></li>
+<li><a href="../Design-Changelog/">Design Changelog</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Reference</p>
+<ul>
+<li><a href="../Progression-Overview/">Progression Overview</a></li>
+<li><a href="../Classes-and-Races/">Classes and Races</a></li>
+<li><a href="../Systems-Overview/">Systems Overview</a></li>
+<li><a href="../Mod-Overview/">Mod Overview</a></li>
+<li><a href="../Custom-Mods/" aria-current="page">Custom Mods</a></li>
+<li><a href="../Boss-Catalog/">Boss Catalog</a></li>
+<li><a href="../Controls/">Controls</a></li>
+<li><a href="../Mod-List/">Mod List</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Tracking</p>
+<ul>
+<li><a href="../Known-Issues/">Known Issues</a></li>
+</ul></div>
+<div class="nav-group">
+<p class="nav-label">Meta</p>
+<ul>
+<li><a href="../Credits/">Credits</a></li>
+<li><a href="../License/">License</a></li>
+</ul></div>
+<div class="nav-group nav-out"><p class="nav-label">Elsewhere</p><ul><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">GitHub wiki</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft" rel="noopener">Repository</a></li><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/issues" rel="noopener">Report an issue</a></li></ul></div>
+  </nav>
+  <a class="scrim" href="#content" tabindex="-1" aria-hidden="true"></a>
+  <main id="content" class="content" tabindex="-1">
+    <article class="prose">
+<h1 id="custom-mods"><a class="anchor" href="#custom-mods" aria-label="Link to this section"></a>Custom Mods</h1>
+<details class="toc"><summary>On this page (5 sections)</summary><ol><li><a href="#in-house-mods-built-from-source">In-house mods (built from source)</a></li><li><a href="#managed-forks-upstream-source-our-changes">Managed forks (upstream source, our changes)</a></li><li><a href="#bytecode-patched-mods-not-in-house-source">Bytecode-patched mods (not in-house source)</a></li><li><a href="#adding-a-new-custom-jar">Adding a new custom JAR</a></li><li><a href="#related">Related</a></li></ol></details>
+<p>These mods are built from source or bytecode-patched in-house. They are committed directly to the repo, in <code>mods/</code> of all three distributions, and each has a packwiz metafile like any other mod (for all but OfflineSkins it downloads the committed copy). <code>custom_jars_manifest.json</code> lists every one of them with its SHA-256 and size, and the stale-jar cleanup keeps what it lists and replaces a copy whose checksum differs. (Older hand-kept lists of these jars remain in <code>sync_from_repo.bat</code> and, as a fallback, in the cleanup script; <code>iridescentserver.bat</code> no longer has one and runs that script.)</p>
+<p><strong>JVM flag requirement:</strong> the two bytecode-patched mods (Patchouli, Ars Nouveau) create dead code paths that the verifier rejects, so the client and the server JVM args both need <code>-noverify</code>. The server has it built into <code>iridescentserver.bat</code>; on the client you add it by hand in PrismLauncher (Instance → Settings → Java → JVM arguments).</p>
+<hr>
+<h2 id="in-house-mods-built-from-source"><a class="anchor" href="#in-house-mods-built-from-source" aria-label="Link to this section"></a>In-house mods (built from source)</h2>
+<h3 id="iridescent_origins-100jar"><a class="anchor" href="#iridescent_origins-100jar" aria-label="Link to this section"></a>iridescent_origins-1.0.0.jar</h3>
+<p>The Origins / races / classes implementation. On first join the player answers three prompts in order: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (13 icraft). The jar implements the glass-cannon HP modifiers, the Faefolk armor weakness, Witch of Ink frailty, the Archmage glass frame and all the per-class power JSONs.</p>
+<p><strong>Source:</strong> <code>iridescent-origins-mod/src/main/resources/data/icraft/origins/*.json</code>
+<strong>Build:</strong> <code>bash ./build_mod.sh</code> in <code>iridescent-origins-mod/</code>, run in WSL (about 40 s; it builds the jar and deploys it to the three distros). Or jar surgery for content-only edits (extract the content of <code>iridescent_origins-1.0.0.jar</code>, edit it, re-zip it), with no Gradle rebuild.</p>
+<h3 id="iridescent_biomes-100jar"><a class="anchor" href="#iridescent_biomes-100jar" aria-label="Link to this section"></a>iridescent_biomes-1.0.0.jar</h3>
+<p>Custom TerraBlender region registration for <code>iridescent_biomes:cherry_river_valley</code> and <code>iridescent_biomes:cherry_mountains</code>. TerraBlender 3.x on 1.20.1 needs the region registered on the Java side through explicit <code>Climate.ParameterPoints</code>, because datapacks alone can't assign parameter points. The biome JSONs, the <code>is_overworld</code> and <code>is_mountain</code> tags and the lang entries ship inside the jar under <code>data/iridescent_biomes/...</code> (the biome namespace MUST match the modId).</p>
+<p><strong>Source:</strong> <code>iridescent-biomes-mod/src/main/...</code>
+<strong>Build:</strong> <code>bash ./build_mod.sh</code> in <code>iridescent-biomes-mod/</code>, run in WSL like the origins build (ForgeGradle; host Gradle no longer works, and this build has not been run since).
+<strong>Caveat:</strong> if you delete this jar, the biomes stop spawning but stay registered (Nature's Compass shows them with an empty Dimension).</p>
+<h3 id="iridescent_codex_datajar"><a class="anchor" href="#iridescent_codex_datajar" aria-label="Link to this section"></a>iridescent_codex_data.jar</h3>
+<p>The Patchouli Codex book, shipped as a javafml content mod with a minimal compiled <code>@Mod</code> class. <strong><code>modId</code> MUST be <code>"icraft"</code></strong> to match the book.json path at <code>data/icraft/patchouli_books/iridescent_codex/book.json</code>. Patchouli's <code>BookRegistry.init()</code> scans <code>data/{modId}/patchouli_books/</code>, so with a mismatched modId the book is silently never registered (confirmed 2026-04-19: earlier attempts with modId <code>iridescent_codex_data</code> produced "Invalid book" tooltips).</p>
+<p><strong>Source:</strong> <code>datapack_sources/iridescent_codex/</code></p>
+<ul><li><code>src/com/iridescentcraft/codex/IridescentCodex.java</code>: the <code>@Mod("icraft")</code> entrypoint</li><li><code>stub/net/minecraftforge/fml/common/Mod.java</code>: an annotation stub so the class compiles without the Forge jar</li><li>Only <code>IridescentCodex.class</code> ends up in the final jar</li><li><code>data/</code> mirrors to <code>assets/</code> automatically because <code>book.json</code> has <code>use_resource_pack: true</code></li></ul>
+<p><strong>Build:</strong> <code>python .minecraft/dev/codex/codex.py release</code> builds the jar from the book source (filling its facts from the registries and scripts), checks that every page fits, and writes the three distros, the three manifests and markers and <code>expected_state.json</code>; commit what it lists. <code>build_codex.sh</code> is needed only when the Java class changes. The pre-push hook and CI fail while the committed jar is stale (<code>.minecraft/dev/codex/README.md</code>).</p>
+<h3 id="iridescent_tetra_expansion-100jar-modular-spells--reforging-bundle"><a class="anchor" href="#iridescent_tetra_expansion-100jar-modular-spells--reforging-bundle" aria-label="Link to this section"></a>iridescent_tetra_expansion-1.0.0.jar (Modular Spells + Reforging bundle)</h3>
+<p>Added 2026-04-26 (as <code>iridescent_modular_spells</code>); bundled into <code>iridescent_tetra_expansion-1.0.0.jar</code> on 2026-05-01. The jar ships two <code>[[mods]]</code> from one file: <code>iridescent_modular_spells</code> (below) and <code>iridescent_reforging</code> (the modular-armor extension). Item IDs keep their original namespaces (<code>iridescent_modular_spells:</code> / <code>iridescent_reforging:</code>); the full mod-ID merge into a single <code>iridescent_tetra_expansion</code> namespace is deferred to the alpha→beta cutover (Option C). The standalone <code>iridescent_modular_spells-0.2.0.jar</code> and <code>iridescent_reforging</code> jars are superseded.</p>
+<p>Modular Spells is a modular spell book mod for both the ISS and the Ars Nouveau ecosystems, with full Tetra workbench integration. It is a license-clean reimplementation of CurseForge's TSB: TSB is All Rights Reserved, so we mirror its API-driven structure but write our own code and data.</p>
+<p><strong>Books (15 modular variants):</strong></p>
+<div class="table-wrap"><table><thead><tr><th>Variant</th><th>Tier</th><th>Inherits from</th><th>Slot count</th><th>Source</th></tr></thead><tbody><tr><td>modular_copper_spell_book</td><td>T1</td><td>ISS <code>SpellBook</code></td><td>5</td><td>crafted (vanilla → modular auto-convert)</td></tr><tr><td>modular_iron_spell_book</td><td>T2</td><td>ISS <code>SpellBook</code></td><td>10</td><td>crafted</td></tr><tr><td>modular_gold_spell_book</td><td>T2</td><td>ISS <code>SpellBook</code></td><td>10</td><td>crafted</td></tr><tr><td>modular_druidic_spell_book</td><td>T2</td><td>ISS <code>SpellBook</code></td><td>10</td><td>rare world loot</td></tr><tr><td>modular_villager_spell_book</td><td>T2</td><td>ISS <code>SpellBook</code></td><td>8</td><td>cleric trade</td></tr><tr><td>modular_rotten_spell_book</td><td>T2</td><td>ISS <code>SpellBook</code></td><td>8</td><td>rare world loot (-15% spell_resist trade-off)</td></tr><tr><td>modular_diamond_spell_book</td><td>T3</td><td>ISS <code>SpellBook</code></td><td>15</td><td>crafted</td></tr><tr><td>modular_dragonskin_spell_book</td><td>T3</td><td>ISS <code>SpellBook</code></td><td>12</td><td>crafted from Ender Dragon dragonskin</td></tr><tr><td>modular_blaze_spell_book</td><td>T3</td><td>ISS <code>SpellBook</code></td><td>12</td><td>first-kill: ISS fire_boss (then 50% sustained from blaze drop)</td></tr><tr><td>modular_evoker_spell_book</td><td>T3</td><td>ISS <code>SpellBook</code></td><td>12</td><td>first-kill: ISS archevoker</td></tr><tr><td>modular_netherite_spell_book</td><td>T4</td><td>ISS <code>SpellBook</code></td><td>15</td><td>smithing</td></tr><tr><td>modular_necronomicon_spell_book</td><td>T4</td><td>ISS <code>SpellBook</code></td><td>15</td><td>first-kill: ISS dead_king</td></tr><tr><td>modular_novice_spell_book</td><td>T1</td><td>Ars <code>SpellBook</code> (Tier ONE)</td><td>per Ars</td><td>craft / vanilla → modular auto-convert</td></tr><tr><td>modular_apprentice_spell_book</td><td>T2</td><td>Ars <code>SpellBook</code> (Tier TWO)</td><td>per Ars</td><td>craft</td></tr><tr><td>modular_archmage_spell_book</td><td>T3</td><td>Ars <code>SpellBook</code> (Tier THREE)</td><td>per Ars</td><td>craft</td></tr></tbody></table></div>
+<p><strong>Per-book intrinsic stat overlay (BookKind enum):</strong> each item adds Phase 6F buff modifiers on top of ISS's vanilla intrinsics. Stats stack additively across 3 layers in <code>getAttributeModifiers(SlotContext, UUID, ItemStack)</code>:</p>
+<ol><li><code>super</code>: ISS vanilla per-book intrinsics (preserved)</li><li><code>BookKind.intrinsicModifiers</code>: the Phase 6F overlay (e.g. dragonskin: +25% Ender and +50 max_mana on top of ISS's +10% Ender, for a +35% Ender baseline)</li><li><code>getAttributeModifiersCached</code>: Tetra slot/lining attributes from the installed modules</li></ol>
+<p>The mage power curve is back-loaded by design: mages are weak early and reach the highest peaks at T3-T4. The Tetra modules of a book add a fixed bonus whatever they are made of (since 2026-10-19; <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tetra-Materials#2f-how-material-magic-bonuses-add-up-since-2026-10-19" class="wiki-ext" title="Not mirrored on this site: opens the page on the GitHub wiki" rel="noopener">Tetra materials 2f</a>).</p>
+<p><strong>Tetra slot model (4 majors per book, no <code>core</code> slot; items are tier-locked):</strong></p>
+<ul><li>ISS: <code>iss_book/{front_cover, back_cover, spine, pages}</code></li><li>Ars: <code>ars_book/{front_cover, back_cover, spine, dye}</code></li><li>The front and back covers each have a separate lining install (Tetra-canonical <code>displayType: improvement</code>), with fabric/fibre/skin lining categories that give thematic stat bonuses.</li></ul>
+<p><strong>Tetra replacement system:</strong> vanilla <code>irons_spellbooks:&lt;X&gt;_spell_book</code> and <code>ars_nouveau:&lt;X&gt;_spell_book</code> items auto-convert to our modular variants on their first inventory tick, with default modules pre-installed, so the vanilla loot tables need no rewrite.</p>
+<p><strong>ISS boss-drop wiring (Phase 6F-1):</strong></p>
+<ul><li>First-kill guarantees (per player, <code>EntityEvents.death</code> + persistentData): <code>dead_king</code> → necronomicon, <code>archevoker</code> → evoker_spell_book, <code>fire_boss</code> → blaze_spell_book, <code>aether:valkyrie_queen</code> → magehunter</li><li>Sustained drops (LootJS): <code>dead_king</code> → blood_staff 50%, <code>citadel_keeper</code> → keeper_flamberge 40%, ISS <code>cryomancer</code> mob → ice_staff 15%, ISS <code>pyromancer</code> mob → pyromancer armor pieces ~10% each, <code>aether:cockatrice</code> → lightning_rod 25%, <code>twilight:snow_queen</code> → ice_staff 50%, <code>twilight:alpha_yeti</code> → ice_staff 25%, <code>aether:valkyrie_queen</code> → magehunter 30%, vanilla <code>phantom</code> (during a thunderstorm) → lightning_rod 5%</li></ul>
+<p>The legacy <code>imodspells_slots</code> NBT system (Phase 1-5) is still active for stat-bonus computation through Phase 6C. Phase 6D will run the migration to Tetra Modules NBT and retire <code>AttributeApplier</code> + <code>AnvilModuleInstaller</code>.</p>
+<p><strong>Cover materials (ISS metal):</strong> leather (T1) → copper (T1) → iron (T2) → gold (T2) → diamond (T3) → netherite (T4)
+<strong>Cover materials (Ars cloth):</strong> white_wool (T1) → manaweave_cloth (T2 Botania) → sorcerer_robes (T3 Ars) → spell_cloth (T4 Botania endgame)</p>
+<p><strong>Custom enchants</strong> (book-exclusive via custom EnchantmentCategory):</p>
+<ul><li><code>mana_capacity</code> I-V: +5%/lv max mana (ISS + Ars)</li><li><code>mana_flow</code> I-III: +5%/lv mana regen</li><li><code>magic_crit_chance</code> I-III: +5%/lv magic crit roll</li><li><code>magic_crit_damage</code> I-III: +25%/lv magic crit damage</li></ul>
+<p><strong>Magic crit hook:</strong> vanilla magic doesn't crit. <code>kubejs/server_scripts/magic_crit_hook.js</code> intercepts a magic-typed <code>LivingHurtEvent</code>, rolls the <code>magic_crit_chance</code> enchant on the attacker's mainhand book plus the player's <code>icraft_crit_chance</code> attribute (the same attribute melee crit uses), and multiplies the damage on a hit.</p>
+<p><strong>Caster starter kits:</strong> Archmage / Battlemage / Void Summoner spawn with the modular variants instead of vanilla ISS/Ars books.</p>
+<p><strong>Source:</strong> <code>iridescent-tetra-expansion-mod/src/main/...</code> (the consolidated project; the legacy <code>iridescent-modular-spells-mod/</code> + <code>iridescent-reforging-mod/</code> trees are superseded).
+<strong>Build:</strong> <code>bash iridescent-tetra-expansion-mod/wsl-build.sh</code> (Gradle wrapper; builds the bundled <code>iridescent_tetra_expansion-1.0.0.jar</code> and deploys to all 3 distros). The per-mod <code>build_mod.sh</code> scripts are stale.
+<strong>Build deps:</strong> ISS, Curios, Ars Nouveau and GeckoLib (transitive, because Ars's SpellBook implements GeoItem), plus Tetra/Geckolib for the Reforging half; all are <code>compileOnly</code> via <code>flatDir libs/</code>.</p>
+<h3 id="mek_walkable_cables-101jar"><a class="anchor" href="#mek_walkable_cables-101jar" aria-label="Link to this section"></a>mek_walkable_cables-1.0.1.jar</h3>
+<p>A Mekanism coremod that makes cables walkable instead of letting players pass through them.</p>
+<h3 id="zeta_racefix-100jar"><a class="anchor" href="#zeta_racefix-100jar" aria-label="Link to this section"></a>zeta_racefix-1.0.0.jar</h3>
+<p>Race selection fix for the Origins layer ordering bug. The pack does not ship this jar: it is in no mod index, no mods folder and not in the custom-jar manifest (only old hand-kept lists in a few scripts still name it).</p>
+<h3 id="offlineskins-1201-v1jar"><a class="anchor" href="#offlineskins-1201-v1jar" aria-label="Link to this section"></a>offlineskins-1.20.1-v1.jar</h3>
+<p>Offline skin support, required for LAN play without Mojang auth.</p>
+<h3 id="iridescent_difficulty-010jar"><a class="anchor" href="#iridescent_difficulty-010jar" aria-label="Link to this section"></a>iridescent_difficulty-0.1.0.jar</h3>
+<p>Added 2026-05-03. Bespoke time-based per-dimension mob scaling. It replaces ScalingMobs / ImprovedMobs / AzukaarsFairDifficultyOverhaul (removed) and the dimension-scaling block of <code>mob_scaling_unified.js</code> (the tier-HP block stays as a static composable rule). Majrusz's Difficulty stays loaded for its treasure bags and content additions, but its scaling is disabled in config.</p>
+<p><strong>Tier curves</strong> (all configurable in <code>config/iridescent_difficulty-common.toml</code>):</p>
+<div class="table-wrap"><table><thead><tr><th>Tier</th><th>Dimensions</th><th>Start %</th><th>Cap %</th><th>Cap Hours</th></tr></thead><tbody><tr><td>T1</td><td>Overworld</td><td>150%</td><td>300%</td><td>100</td></tr><tr><td>T2</td><td>Twilight Forest, Blue Skies (Everbright, Everdawn), the Abyss's pocket dimension</td><td>200%</td><td>350%</td><td>100</td></tr><tr><td>T3</td><td>Undergarden, Deeper Darker, Nether, Abyss + its Frost World</td><td>300%</td><td>450%</td><td>100</td></tr><tr><td>T4</td><td>The End, Aether (Deep Aether's biomes included), the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension, the Reality Marble</td><td>600%</td><td>1000%</td><td>200</td></tr></tbody></table></div>
+<p>Dimensions are matched by exact id, and any dimension not listed uses the T1 curve. Deep Aether has no dimension of its own (its biomes are part of the Aether), so it follows the Aether: T4 since 2026-10-16 (T2 before). <code>/icraftdiff status all</code> shows the tier each dimension resolved to.</p>
+<p><strong>Multiplier scope:</strong> linear on <code>max_health</code> / <code>attack_damage</code> / <code>armor</code>; <code>sqrt</code> on <code>movement_speed</code> (so a 6× HP mob isn't also 6× as fast). Tamed mobs and mobs outside the MONSTER category are skipped, except the mobs on a configurable force-scale list; since 2026-10-16 that list includes the Aether's own hostile creatures (blue and golden swets, whirlwinds and evil whirlwinds, the aechor plant, cockatrices, zephyrs, and Deep Aether's baby zephyrs and venomites). Bosses are skipped only when they are on the configurable excluded-entities list; there is no automatic boss detection. Since 2026-10-16 the tier lists and that list are generated from the pack's boss and dimension registries: every boss with a designed health or the boss x3 is excluded (78 entity ids), and every tiered dimension is on its tier's list (the planets, orbits and pocket dimensions ran the T1 curve before).</p>
+<p><strong>End uncap:</strong> killing the Ender Dragon in-world removes the cap for any dimension in the <code>uncapAfterEnderDragon</code> list (default: just <code>minecraft:the_end</code>). The multiplier then extrapolates proportionally beyond the cap once <code>capHours</code> has passed.</p>
+<p><strong>Idle gating:</strong> the per-dim timer ticks at the <code>active / total</code> ratio of players in that dim. A player counts as idle if either of these holds:</p>
+<ul><li>No movement (&gt;0.1 blocks delta) or damage taken/dealt for <code>idleThresholdMinutes</code> (default 5)</li><li>Within <code>spawnIdleRadius</code> blocks (chebyshev cube, default 10) of their respawn point (the bed if set, otherwise world spawn)</li></ul>
+<p>So with 4 players, 2 active and 2 idle, the tick rate is 50%; with 7 players and 3 active it is ~42.86%; an empty dim ticks at 0%. A fractional <code>tickAccumulator</code> on <code>DimensionDifficultyData</code> implements this.</p>
+<p><strong>Op-only debug commands</strong> (permission level 2):</p>
+<ul><li><code>/icraftdiff status [all]</code>: status of the current dim or of all dims (tier, hours/capHours, multiplier, rate, active/total split, ED-killed flag)</li><li><code>/icraftdiff timer set &lt;hours&gt;</code>: seek the current dim's timer (QA)</li><li><code>/icraftdiff timer reset</code>: zero the current dim's timer</li><li><code>/icraftdiff uncap end</code>: set the ED-killed flag for the End by hand (to test the uncap)</li><li><code>/icraftdiff players</code>: three-state per-player status (<code>✓ active</code> / <code>◍ at-spawn</code> / <code>✗ idle</code>) with idle minutes</li></ul>
+<p><strong>Source:</strong> <code>iridescent-difficulty-mod/</code>
+<strong>Build:</strong> <code>bash iridescent-difficulty-mod/wsl-build.sh</code> (ForgeGradle in WSL, no mixin; deploys to all 3 distros)
+<strong>Stacks on top of (not replaced):</strong> per-kill boss scaling, per player (<code>boss_progressive.js</code>; vanilla bosses do not scale per kill), <code>mob_scaling_unified.js</code> tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).</p>
+<h3 id="iridescent_relics-100jar"><a class="anchor" href="#iridescent_relics-100jar" aria-label="Link to this section"></a>iridescent_relics-1.0.0.jar</h3>
+<p>The pack's relics: boss-reward artifacts (the Relic of the Remnant and others), built as an addon of the Relics framework with its leveling, ability and style system.</p>
+<p><strong>Source:</strong> <code>iridescent-relics-mod/</code>
+<strong>Build:</strong> <code>bash iridescent-relics-mod/wsl-build.sh</code></p>
+<h3 id="iridescent_grand_compass-100jar"><a class="anchor" href="#iridescent_grand_compass-100jar" aria-label="Link to this section"></a>iridescent_grand_compass-1.0.0.jar</h3>
+<p>One gold Grand Compass that finds boss arenas, structures (through Explorer's Compass) and biomes (through Nature's Compass), opening those mods' own search screens.</p>
+<p><strong>Source:</strong> <code>iridescent-grand-compass-mod/</code>
+<strong>Build:</strong> <code>bash iridescent-grand-compass-mod/wsl-build.sh</code></p>
+<h3 id="iridescent_durability_clamp-010jar"><a class="anchor" href="#iridescent_durability_clamp-010jar" aria-label="Link to this section"></a>iridescent_durability_clamp-0.1.0.jar</h3>
+<p>A mixin mod: an item never breaks from durability damage. <code>ItemStack.hurtAndBreak</code> is clamped so the item stops one point short of breaking, the pattern Tetra uses for its own items, applied to every item that takes damage the vanilla way. <code>kubejs/server_scripts/death_penalty.js</code> decides what an item at that point can still do.</p>
+<p><strong>Source:</strong> <code>iridescent-durability-clamp/</code>
+<strong>Build:</strong> <code>bash iridescent-durability-clamp/wsl-build.sh</code></p>
+<h2 id="managed-forks-upstream-source-our-changes"><a class="anchor" href="#managed-forks-upstream-source-our-changes" aria-label="Link to this section"></a>Managed forks (upstream source, our changes)</h2>
+<h3 id="justlevelingfork-121-iridescent1jar-iridescent-aptitudes"><a class="anchor" href="#justlevelingfork-121-iridescent1jar-iridescent-aptitudes" aria-label="Link to this section"></a>justlevelingfork-1.2.1-iridescent.1.jar (Iridescent Aptitudes)</h3>
+<p>A fork of JustLeveling-Fork (Apache 2.0): the aptitude and skill leveling system. The pack's version remaps passives (Magic Resist to DEF, Beneficial Effect to INT), strips the mod's own skill effects (KubeJS handles the gameplay) and sets skill thresholds at levels 5, 10, 15, 20 and 30. The modid stays <code>justlevelingfork</code>, so saved aptitude data carries over.</p>
+<p><strong>Source:</strong> <code>iridescent-aptitudes-mod/</code>
+<strong>Build:</strong> <code>bash iridescent-aptitudes-mod/wsl-build.sh</code></p>
+<h3 id="linearxp-100-iridescent1jar-linear-experience"><a class="anchor" href="#linearxp-100-iridescent1jar-linear-experience" aria-label="Link to this section"></a>linearxp-1.0.0-iridescent.1.jar (Linear Experience)</h3>
+<p>A fork of Linear Experience, which replaces vanilla's experience curve with configurable calculation modes.</p>
+<p><strong>Source:</strong> <code>linear-experience-mod/</code>
+<strong>Build:</strong> <code>bash linear-experience-mod/wsl-build.sh</code></p>
+<h3 id="lovely_sparkle_pieces-0100-iridescent2jar-iridescent-lovely-pieces"><a class="anchor" href="#lovely_sparkle_pieces-0100-iridescent2jar-iridescent-lovely-pieces" aria-label="Link to this section"></a>lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar (Iridescent Lovely Pieces)</h3>
+<p>A fork of Lovely Sparkle Pieces (its 1.20.1 Forge branch, used with the author's permission for non-commercial modpacks): about 60 Curios accessories and the Gambler set bonus. The modid stays <code>lovely_sparkle_pieces</code>. The pack's changes fix a damage attribute that zeroed melee damage without one of its curios, turn off the Blasphemous Contract's automatic grant, make the Adventurer's Belt modifiers temporary, remove the client-FPS-based item, the heart-rate HUD and the damage-number particles, and remove every crafting recipe: the items come only from the pack's loot.</p>
+<p><strong>Source:</strong> <code>iridescent-lovely-pieces-mod/</code>
+<strong>Build:</strong> <code>bash iridescent-lovely-pieces-mod/wsl-build.sh</code></p>
+<hr>
+<h2 id="bytecode-patched-mods-not-in-house-source"><a class="anchor" href="#bytecode-patched-mods-not-in-house-source" aria-label="Link to this section"></a>Bytecode-patched mods (not in-house source)</h2>
+<h3 id="patchouli-1201-85-forgejar"><a class="anchor" href="#patchouli-1201-85-forgejar" aria-label="Link to this section"></a>Patchouli-1.20.1-85-FORGE.jar</h3>
+<p>Bytecode-patched: <code>athrow→pop</code> in <code>Book.class</code> disables the <code>use_resource_pack</code> enforcement, which crashes when the book.json's resource pack flag conflicts with our pack setup. Without the patch, the codex book throws on registration.</p>
+<h3 id="class-artifacts-forge-205jar-epic-rpg-class-artifacts"><a class="anchor" href="#class-artifacts-forge-205jar-epic-rpg-class-artifacts" aria-label="Link to this section"></a>class-artifacts-forge-2.0.5.jar (Epic RPG: Class Artifacts)</h3>
+<p>Bytecode-patched: the inventory "Sets" button moves from its hardcoded place on top of the vanilla recipe-book button to just right of it, re-anchored every frame.</p>
+<h3 id="ars_nouveau-1201-4127-alljar"><a class="anchor" href="#ars_nouveau-1201-4127-alljar" aria-label="Link to this section"></a>ars_nouveau-1.20.1-4.12.7-all.jar</h3>
+<p>Bytecode-patched: <code>doApply→immediate return</code> in <code>DungeonLootEnhancerModifier.class</code> disables Ars's chest loot injection. Without the patch, Ars adds glyph items to vanilla dungeon chests and bypasses the enchanted-book and spell-book progression curve of our LootJS overhaul.</p>
+<hr>
+<h2 id="adding-a-new-custom-jar"><a class="anchor" href="#adding-a-new-custom-jar" aria-label="Link to this section"></a>Adding a new custom JAR</h2>
+<ol><li>Add the JAR to <code>mods/</code> in all three distributions (main, server_distribution, distribution/client) and commit the three copies (a mod with a <code>wsl-build.sh</code> deploys them itself; <code>mods/*.jar</code> is git-ignored, so the jars are force-added)</li><li>Run <code>regen_custom_jars_manifest.ps1</code>: it writes the jar's SHA-256 and size into the three <code>custom_jars_manifest.json</code> files and points the jar's metafile at the committed copy (a new jar needs a line in <code>sync_custom_jar_markers.py</code> first)</li><li>Regenerate the indexes and the two <code>expected_state.json</code> files, and commit them with the jar</li><li>Give the mod an intake record with <code>intake.py</code>: the pre-push hook refuses a mod without one</li><li>If it is bytecode-patched, add a <code>-noverify</code> requirement note here</li></ol>
+<p>A rebuild under the same file name needs step 2 again (and the files it changes committed), because the jar's checksum changes. If the jar is mostly content (assets/data/lang) with no compiled changes, jar surgery (extract → edit → re-zip → keep the filename) avoids the Gradle rebuild and changes no file name, but it needs step 2 as well.</p>
+<hr>
+<h2 id="related"><a class="anchor" href="#related" aria-label="Link to this section"></a>Related</h2>
+<ul><li><a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Iridescent-Modular-Spells-Tetra-Migration" class="wiki-ext" title="Not mirrored on this site: opens the page on the GitHub wiki" rel="noopener">Iridescent Modular Spells design doc</a></li><li><a href="../Mod-Overview/">Mod overview</a></li></ul>
+    </article>
+    <footer class="page-foot"><p>Last updated <time datetime="2026-10-19">2026-10-19</time> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki/Custom-Mods" rel="noopener">View on the GitHub wiki</a> · <a href="https://github.com/silvariasereneblossom/IridescentCraft/edit/main/.minecraft/wiki/mods/custom.md" rel="noopener" title="The wiki is generated from this file in the repository; edits made on the wiki itself are overwritten">Edit on GitHub</a></p><p class="built">A mirror of the player-facing pages of the <a href="https://github.com/silvariasereneblossom/IridescentCraft/wiki" rel="noopener">IridescentCraft wiki</a>.</p></footer>
+  </main>
+</div>
+</body>
+</html>
