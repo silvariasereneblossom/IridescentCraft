@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "687e5be7",
+    "generated_from":  "86cd77778",
     "roots":  [
                   "kubejs",
                   "config",
@@ -5835,6 +5835,14 @@
                                             "sha256":  "989f3737ae4621b8ff6730bce4cbeeee756921e7e510e0c281c8a350501d98af",
                                             "size":  1203
                                         },
+                  "kubejs/assets/1_splatus/sounds.json":  {
+                                                              "sha256":  "8ad2a19a2bb741fcc2e0ea5409226af1181159b27299072e1d352c0ef3de067d",
+                                                              "size":  1402
+                                                          },
+                  "kubejs/assets/alexs_mobs_extra_music/sounds.json":  {
+                                                                           "sha256":  "7fd27743c6b65bf9e45cc657062d6ea9ff0a12ed67650d4b8f3b9ed16813d6b7",
+                                                                           "size":  224
+                                                                       },
                   "kubejs/assets/apotheosis/lang/en_us.json":  {
                                                                    "sha256":  "09b213f31cf140b770ddb5737e34a9b3d59595fc8be0dc94662f832eb37ef055",
                                                                    "size":  32277
@@ -5847,14 +5855,38 @@
                                                                   "sha256":  "d2cf3e34a6860ddbcd86c8a381c5d1bc35843fa60221404fd0b6f633f093bbc3",
                                                                   "size":  209
                                                               },
+                  "kubejs/assets/cataclysm/sounds.json":  {
+                                                              "sha256":  "39c293f706d7f317658d9968aeeee5fc2778277c934311ee47c7b834cf16504a",
+                                                              "size":  3726
+                                                          },
+                  "kubejs/assets/deeperdarker/sounds.json":  {
+                                                                 "sha256":  "7ca23ad03b3ff097be8eec9f9e1d8a8415619144d15f88322cc1db7c6f0be580",
+                                                                 "size":  570
+                                                             },
                   "kubejs/assets/dna/lang/en_us.json":  {
                                                             "sha256":  "e3a6a72acfb05359da05e9ea25843eada2c269c3ec0f6c791b9ad4fed6ac5294",
                                                             "size":  51
                                                         },
+                  "kubejs/assets/enhancedcelestials/sounds.json":  {
+                                                                       "sha256":  "54e823f9c890fb850f2a7a23faa864016b6e4c7416770383fe19480f492d5f38",
+                                                                       "size":  602
+                                                                   },
+                  "kubejs/assets/estrogen/sounds.json":  {
+                                                             "sha256":  "8742bec41141ad83ec3c4a72f042379abff0208de9a84219b86ecc6166c44119",
+                                                             "size":  1984
+                                                         },
+                  "kubejs/assets/fallingleaves/atlases/leaves.json":  {
+                                                                          "sha256":  "f2e4e93779bc0d4a74b2cdd016e5f02076b4a06ba0c2c6666974e437fda76cfb",
+                                                                          "size":  132
+                                                                      },
                   "kubejs/assets/icraft/lang/en_us.json":  {
                                                                "sha256":  "4df6e7515c00bcc78334581c8c4003b2ee5198f71767885f230f6c6b00a413b3",
                                                                "size":  12135
                                                            },
+                  "kubejs/assets/industrialforegoing/sounds.json":  {
+                                                                        "sha256":  "f1e52e0ee0e7b87b91ae5c02629d049fed79f637e42994b537d6b32c04c8b656",
+                                                                        "size":  229
+                                                                    },
                   "kubejs/assets/iridescent_modular_spells/lang/en_us.json":  {
                                                                                   "sha256":  "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
                                                                                   "size":  511
@@ -5863,6 +5895,10 @@
                                                                              "sha256":  "a466631c19e6285760b0d60f694c09f4ee81ca4c6288a9e9b6bab6e96ea52070",
                                                                              "size":  1230
                                                                          },
+                  "kubejs/assets/irons_spellbooks/sounds.json":  {
+                                                                     "sha256":  "09bbb87b8a95849c75e20ea9b90db1d98184383a7de91971f64d434cd83da00e",
+                                                                     "size":  996
+                                                                 },
                   "kubejs/assets/kubejs/lang/en_us.json":  {
                                                                "sha256":  "5d167444c566de85225a792b7efd92c196f093072ea6b4ddcb89494f074aba34",
                                                                "size":  3188
@@ -5883,10 +5919,18 @@
                                                                               "sha256":  "5f3d01313389580ceda4e718a94c73cf749162802f493a5a00341bfeafb95b7b",
                                                                               "size":  791
                                                                           },
+                  "kubejs/assets/minecraft/sounds.json":  {
+                                                              "sha256":  "b8cd4e832478924b73fa77dc0a0359d48d371d9f2eff3ca114a7e5cdc413d52d",
+                                                              "size":  1431
+                                                          },
                   "kubejs/assets/modonomicon/lang/en_us.json":  {
                                                                     "sha256":  "5a1a72a57501f051468a4756de3faa65c11f35eef2010e40d3633b233c1453b5",
                                                                     "size":  251
                                                                 },
+                  "kubejs/assets/mowziesmobs/sounds.json":  {
+                                                                "sha256":  "de089770138d16609368108891f6457618b7fb5f7e5ed0ce6268e586956e9e15",
+                                                                "size":  435
+                                                            },
                   "kubejs/assets/origins/lang/en_us.json":  {
                                                                 "sha256":  "3983fa59d00a86c1f10237e116f591995cec36b344d36e8c9fa19923005ba248",
                                                                 "size":  5648
@@ -5907,6 +5951,14 @@
                                                               "sha256":  "847e8559bcf77023ea94d8914136d0fcccaca59cfb5acc295dab4f9c305fb51b",
                                                               "size":  10954
                                                           },
+                  "kubejs/assets/theabyss/sounds.json":  {
+                                                             "sha256":  "f0700d0ed48415b9339be0fdc78482f52d221a9dd980e9ab748f9901c8507a38",
+                                                             "size":  2886
+                                                         },
+                  "kubejs/assets/theabyss/textures/item/netherite_helmet_-_copy.png":  {
+                                                                                           "sha256":  "a901afae7bdb66678f08a39b32f8a46da9864c8a64fabc0e77a7f12b93df12ba",
+                                                                                           "size":  75
+                                                                                       },
                   "kubejs/client_scripts/00_icraft_guard.js":  {
                                                                    "sha256":  "6a4f7e2f0170e4bd33a7563fe9f04d0088a9e39756500eee455f4e30148beef9",
                                                                    "size":  39180

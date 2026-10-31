@@ -1,0 +1,22 @@
+{
+  "frostmaw.icebreath": {
+    "replace": true,
+    "subtitle": "subtitles.mowziesmobs.frostmaw.icebreath",
+    "sounds": [
+      {
+        "name": "mowziesmobs:entity/frostmaw/icebreath",
+        "stream": true
+      }
+    ]
+  },
+  "music.petiole": {
+    "replace": true,
+    "subtitle": "subtitles.mowziesmobs.petiole",
+    "sounds": [
+      {
+        "name": "mowziesmobs:music/petiole",
+        "stream": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "entity.dead_king.music.first_phase_accent_01": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "irons_spellbooks:dead_king/music/first_phase_accent_01",
+        "stream": true
+      }
+    ]
+  },
+  "entity.dead_king.music.second_phase_melody_alt": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "irons_spellbooks:dead_king/music/second_phase_melody_alt",
+        "stream": true
+      }
+    ]
+  },
+  "music.dead_king_lullaby": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "irons_spellbooks:music/music_disc_dead_king_lullaby",
+        "stream": true
+      }
+    ]
+  },
+  "music.flame_still_burns": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "irons_spellbooks:music/music_disc_flame_still_burns",
+        "stream": true
+      }
+    ]
+  },
+  "music.whispers_of_ice": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "irons_spellbooks:music/music_disc_whispers_of_ice",
+        "stream": true
+      }
+    ]
+  }
+}

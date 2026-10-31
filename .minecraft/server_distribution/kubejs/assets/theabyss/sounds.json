@@ -1,0 +1,167 @@
+{
+  "abyss_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:abyss_amcience",
+        "stream": true
+      }
+    ]
+  },
+  "ambientmusic": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:ambientmusic",
+        "stream": true
+      }
+    ]
+  },
+  "biome_mountains": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:mountain_biome",
+        "stream": true
+      }
+    ]
+  },
+  "biome_ruma_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:ruma_ambience",
+        "stream": true
+      }
+    ]
+  },
+  "biome_ruma_music": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:ruma_music",
+        "stream": true
+      },
+      {
+        "name": "theabyss:ruma_music_2",
+        "stream": true
+      }
+    ]
+  },
+  "blaru_forest": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:blaru_forest_02",
+        "stream": true
+      },
+      {
+        "name": "theabyss:blaru_forest_01",
+        "stream": true
+      }
+    ]
+  },
+  "blue_jungle_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:blue_jungle",
+        "stream": true
+      }
+    ]
+  },
+  "blue_mountains_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:blue_mountains",
+        "stream": true
+      }
+    ]
+  },
+  "dream_event_1": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:jj_first_dream",
+        "stream": true
+      }
+    ]
+  },
+  "dream_event_2": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:dream_event_2",
+        "stream": true
+      }
+    ]
+  },
+  "end_game_music": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:end_game",
+        "stream": true
+      }
+    ]
+  },
+  "end_game_music_cyanidex": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:jason_johnson_-_the_cyanidex_theme",
+        "stream": true
+      }
+    ]
+  },
+  "fear_event": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:fear_event_1",
+        "stream": true
+      },
+      {
+        "name": "theabyss:fear_event_2",
+        "stream": true
+      }
+    ]
+  },
+  "frost_world_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:frost_world",
+        "stream": true
+      }
+    ]
+  },
+  "phantom_crate_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:phantom_crate",
+        "stream": true
+      }
+    ]
+  },
+  "resonator_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:abyss_resonator_ambience",
+        "stream": true
+      }
+    ]
+  },
+  "slime_forest_ambience": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "theabyss:slime_forest",
+        "stream": true
+      }
+    ]
+  }
+}

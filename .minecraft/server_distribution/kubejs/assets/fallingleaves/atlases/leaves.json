@@ -1,0 +1,10 @@
+{
+  "sources": [
+    {
+      "type": "filter",
+      "pattern": {
+        "namespace": "^(?!fallingleaves$).*$"
+      }
+    }
+  ]
+}

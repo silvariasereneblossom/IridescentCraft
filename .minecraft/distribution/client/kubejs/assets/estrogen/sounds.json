@@ -1,0 +1,97 @@
+{
+  "amphitrite": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.amphitrite",
+    "sounds": [
+      {
+        "name": "estrogen:music/amphitrite",
+        "stream": true
+      }
+    ]
+  },
+  "aurum_berry": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.aurum_berry",
+    "sounds": [
+      {
+        "name": "estrogen:music/aurum_berry",
+        "stream": true
+      }
+    ]
+  },
+  "estrogen_ambient": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "estrogen:music/amphitrite",
+        "stream": true
+      },
+      {
+        "name": "estrogen:music/trust_yourself",
+        "stream": true
+      },
+      {
+        "name": "estrogen:music/aurum_berry",
+        "stream": true
+      },
+      {
+        "name": "estrogen:music/inferred_dreams",
+        "stream": true
+      },
+      {
+        "name": "estrogen:music/sleeping",
+        "stream": true
+      }
+    ]
+  },
+  "g03c": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.g03c",
+    "sounds": [
+      {
+        "name": "estrogen:music/g03c",
+        "stream": true
+      }
+    ]
+  },
+  "inferred_dreams": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.inferred_dreams",
+    "sounds": [
+      {
+        "name": "estrogen:music/inferred_dreams",
+        "stream": true
+      }
+    ]
+  },
+  "inner_self_realization": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.inner_self_realization",
+    "sounds": [
+      {
+        "name": "estrogen:music/inner_self_realization",
+        "stream": true
+      }
+    ]
+  },
+  "sleeping": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.sleeping",
+    "sounds": [
+      {
+        "name": "estrogen:music/sleeping",
+        "stream": true
+      }
+    ]
+  },
+  "trust_yourself": {
+    "replace": true,
+    "subtitle": "subtitles.estrogen.music.trust_yourself",
+    "sounds": [
+      {
+        "name": "estrogen:music/trust_yourself",
+        "stream": true
+      }
+    ]
+  }
+}

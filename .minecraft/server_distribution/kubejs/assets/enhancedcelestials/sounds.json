@@ -1,0 +1,35 @@
+{
+  "blood_moon": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "enhancedcelestials:blood_moon",
+        "volume": 3.0,
+        "pitch": 3.0,
+        "stream": true
+      }
+    ]
+  },
+  "blue_moon": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "enhancedcelestials:blue_moon",
+        "volume": 3.0,
+        "pitch": 3.0,
+        "stream": true
+      }
+    ]
+  },
+  "harvest_moon": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "enhancedcelestials:harvest_moon",
+        "volume": 3.0,
+        "pitch": 3.0,
+        "stream": true
+      }
+    ]
+  }
+}

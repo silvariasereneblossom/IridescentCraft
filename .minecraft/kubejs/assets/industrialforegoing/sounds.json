@@ -1,0 +1,12 @@
+{
+  "nuke_explosion": {
+    "replace": true,
+    "subtitle": "industrialforegoing.subtitle.nuke_explosion",
+    "sounds": [
+      {
+        "name": "industrialforegoing:nuke_explosion",
+        "stream": true
+      }
+    ]
+  }
+}

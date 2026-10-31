@@ -1,0 +1,29 @@
+{
+  "music.otherside.deeplands": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "deeperdarker:ambience/otherside/deeplands",
+        "stream": true
+      }
+    ]
+  },
+  "music.otherside.echoing_forest": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "deeperdarker:ambience/otherside/echoing_forest",
+        "stream": true
+      }
+    ]
+  },
+  "music.otherside.overcast_columns": {
+    "replace": true,
+    "sounds": [
+      {
+        "name": "deeperdarker:ambience/otherside/overcast_columns",
+        "stream": true
+      }
+    ]
+  }
+}

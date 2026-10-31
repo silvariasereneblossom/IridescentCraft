@@ -1,0 +1,12 @@
+{
+  "voidwormbattlemusic": {
+    "replace": true,
+    "subtitle": "subtitles.voidwormbattlemusic",
+    "sounds": [
+      {
+        "name": "alexs_mobs_extra_music:dominus_nihilus",
+        "stream": true
+      }
+    ]
+  }
+}

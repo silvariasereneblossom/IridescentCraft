@@ -1,0 +1,182 @@
+{
+  "enderguardian_music_1": {
+    "replace": true,
+    "subtitle": "enderguardian_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/enderguardian_theme_1",
+        "stream": true
+      }
+    ]
+  },
+  "enderguardian_music_2": {
+    "replace": true,
+    "subtitle": "enderguardian_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/enderguardian_theme_2",
+        "stream": true
+      }
+    ]
+  },
+  "enderguardian_music_disc": {
+    "replace": true,
+    "subtitle": "enderguardian_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/enderguardian_theme",
+        "stream": true
+      }
+    ]
+  },
+  "harbinger_music": {
+    "replace": true,
+    "subtitle": "harbinger_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/harbinger_theme",
+        "stream": true
+      }
+    ]
+  },
+  "ignis_music_1": {
+    "replace": true,
+    "subtitle": "ignis_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/ignis_theme_1",
+        "stream": true
+      }
+    ]
+  },
+  "ignis_music_2": {
+    "replace": true,
+    "subtitle": "ignis_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/ignis_theme_2",
+        "stream": true
+      }
+    ]
+  },
+  "ignis_music_3": {
+    "replace": true,
+    "subtitle": "ignis_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/ignis_theme_3",
+        "stream": true
+      }
+    ]
+  },
+  "ignis_music_disc": {
+    "replace": true,
+    "subtitle": "ignis_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/ignis_theme",
+        "stream": true
+      }
+    ]
+  },
+  "leviathan_music": {
+    "replace": true,
+    "subtitle": "leviathan_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/leviathan_theme",
+        "stream": true
+      }
+    ]
+  },
+  "leviathan_music_1": {
+    "replace": true,
+    "subtitle": "leviathan_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/leviathan_theme_1",
+        "stream": true
+      }
+    ]
+  },
+  "leviathan_music_2": {
+    "replace": true,
+    "subtitle": "leviathan_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/leviathan_theme_2",
+        "stream": true
+      }
+    ]
+  },
+  "maledictus_music": {
+    "replace": true,
+    "subtitle": "maledictus_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/maledictus_theme",
+        "stream": true
+      }
+    ]
+  },
+  "maledictus_music_disc": {
+    "replace": true,
+    "subtitle": "maledictus_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/maledictus_theme",
+        "stream": true
+      }
+    ]
+  },
+  "monstrosity_music": {
+    "replace": true,
+    "subtitle": "monstrosity_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/monstrosity_theme",
+        "stream": true
+      }
+    ]
+  },
+  "remnant_music": {
+    "replace": true,
+    "subtitle": "remnant_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/remnant_theme",
+        "stream": true
+      }
+    ]
+  },
+  "scylla_music": {
+    "replace": true,
+    "subtitle": "scylla_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/scylla_theme",
+        "stream": true
+      }
+    ]
+  },
+  "scylla_music_disc": {
+    "replace": true,
+    "subtitle": "scylla_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/scylla_theme",
+        "stream": true
+      }
+    ]
+  },
+  "the_cataclysmfarer": {
+    "replace": true,
+    "subtitle": "the_cataclysmfarer.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/the_cataclysmfarer",
+        "stream": true
+      }
+    ]
+  }
+}
