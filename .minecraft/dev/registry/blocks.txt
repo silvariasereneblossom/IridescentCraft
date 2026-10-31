@@ -11545,16 +11545,6 @@ irons_spellbooks:voidstone
 irons_spellbooks:wisewood_bookshelf
 irons_spellbooks:wisewood_planks
 jumbofurnace:jumbo_furnace
-libraryferret:fake_diamond_block
-libraryferret:fake_emerald_block
-libraryferret:fake_gold_block
-libraryferret:fake_iron_block
-libraryferret:fake_netherite_block
-libraryferret:unbreakable_diamond_beacon
-libraryferret:unbreakable_emerald_beacon
-libraryferret:unbreakable_gold_beacon
-libraryferret:unbreakable_iron_beacon
-libraryferret:unbreakable_netherite_beacon
 lootr:lootr_barrel
 lootr:lootr_chest
 lootr:lootr_inventory

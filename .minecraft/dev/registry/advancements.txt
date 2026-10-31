@@ -574,6 +574,7 @@ cataclysm_ut:kill_kobolediator
 cataclysm_ut:kill_leviathan
 cataclysm_ut:kill_maledictus
 cataclysm_ut:kill_monstrosity
+cataclysm_ut:kill_monstrosity2
 cataclysm_ut:kill_prowler
 cataclysm_ut:kill_remnant
 cataclysm_ut:kill_wadjet

@@ -223,7 +223,6 @@ irons_spellbooks:thunderstorm
 irons_spellbooks:true_invisibility
 irons_spellbooks:vigor
 irons_spellbooks:volt_strike
-libraryferret:unbreakable_curse
 lovely_sparkle_pieces:overheat
 mahoutsukai:authority_jump
 mahoutsukai:ba_cooldown

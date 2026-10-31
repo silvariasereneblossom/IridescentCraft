@@ -128,10 +128,10 @@ mekanism:rotary	21
 mekanism:sawing	237
 mekanism:separating	3
 mekanism:washing	7
-minecraft:blasting	283
+minecraft:blasting	279
 minecraft:campfire_cooking	117
-minecraft:crafting	16146
-minecraft:smelting	580
+minecraft:crafting	16119
+minecraft:smelting	574
 minecraft:smithing	276
 minecraft:smoking	132
 minecraft:stonecutting	3735
@@ -157,7 +157,7 @@ thermal:lapidary_fuel	8
 thermal:magmatic_fuel	1
 thermal:numismatic_fuel	17
 thermal:potion_diffuser_boost	2
-thermal:press	324
+thermal:press	312
 thermal:pulverizer	100
 thermal:pulverizer_catalyst	2
 thermal:pulverizer_recycle	9

@@ -58,8 +58,6 @@ connectivity.mixins.json
 connectorextras_architectury_bridge.mixins.json
 connectormod.mixins.json
 corgilib-common.mixins.json
-crafttweaker.forge.mixins.json
-crafttweaker.mixins.json
 create.mixins.json
 createaddition.mixins.json
 createestrogen-forge.mixins.json
@@ -215,7 +213,6 @@ paxi.mixins.json
 paxi_forge.mixins.json
 pehkui.mixins.json
 placebo.mixins.json
-polylib.mixins.json
 polymorph-integrations.forge.mixins.json
 polymorph.mixins.json
 ponder-common.mixins.json

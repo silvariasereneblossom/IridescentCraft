@@ -59,7 +59,6 @@ chipped:loom_table
 chipped:mason_table
 chipped:tinkering_table
 chiselsandbits:modification_table
-crafttweaker:scripts
 create:basin
 create:compacting
 create:conversion

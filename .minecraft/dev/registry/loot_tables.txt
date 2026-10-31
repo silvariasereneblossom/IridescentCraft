@@ -5702,16 +5702,6 @@ keebsz:swamp/floor3and4
 keebsz:swamp/floor5and6
 keebsz:swamp/floor7and8
 keebsz:swamp/floor9and10
-libraryferret:blocks/fake_diamond_block
-libraryferret:blocks/fake_emerald_block
-libraryferret:blocks/fake_gold_block
-libraryferret:blocks/fake_iron_block
-libraryferret:blocks/fake_netherite_block
-libraryferret:blocks/unbreakable_diamond_beacon
-libraryferret:blocks/unbreakable_emerald_beacon
-libraryferret:blocks/unbreakable_gold_beacon
-libraryferret:blocks/unbreakable_iron_beacon
-libraryferret:blocks/unbreakable_netherite_beacon
 lootr:blocks/lootr_barrel
 lootr:blocks/lootr_chest
 lootr:blocks/lootr_inventory

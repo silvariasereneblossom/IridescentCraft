@@ -98,7 +98,6 @@ corpse-forge-1.20.1-1.0.23.jar
 cosmeticarmorreworked-1.20.1-v1a.jar
 craftingtweaks-forge-1.20.1-18.2.8.jar
 craftslimeforge-1.0.0.jar
-CraftTweaker-forge-1.20.1-14.0.60.jar
 Create Mekanism Ore Excavation 1.20.1 B.1.0.jar
 create-1.20.1-6.0.8.jar
 createaddition-1.20.1-1.3.3.jar
@@ -194,7 +193,6 @@ item-filters-forge-2001.1.0-build.59.jar
 Jade-1.20.1-Forge-11.13.2.jar
 JadeAddons-1.20.1-Forge-5.5.0.jar
 jei-1.20.1-forge-15.20.0.129.jar
-JeiTweaker-forge-1.20.1-8.0.6.jar
 journeymap-1.20.1-5.10.3-forge.jar
 jumbofurnace-1.20.1-4.0.0.5.jar
 JustEnoughAdvancements-1.20.1-5.0.1.jar
@@ -215,7 +213,6 @@ kubejsdelight-1.20.1-1.1.5.jar
 L_Enders_Cataclysm-3.26-laserfix.jar
 larger-ore-veins-deluxe-1.2.2.jar
 letmedespawn-1.20.x-forge-1.5.0.jar
-libraryferret-forge-1.20.1-4.0.0.jar
 LibX-1.20.1-5.0.14.jar
 linearxp-1.0.0-iridescent.1.jar
 lionfishapi-2.4-Fix.jar
@@ -291,7 +288,6 @@ Paxi-1.20-Forge-4.0.jar
 Pehkui-3.8.2+1.20.1-forge.jar
 Placebo-1.20.1-8.6.3.jar
 player-animation-lib-forge-1.0.2-rc1+1.20.jar
-polylib-forge-2000.0.3-build.143.jar
 polymorph-forge-0.49.10+1.20.1.jar
 prettybeaches-forge-1.20-11.0.1.jar
 PrettyPipes-1.15.0-all.jar
@@ -326,7 +322,6 @@ sebastrnlib-4.0.0.jar
 SereneSeasons-forge-1.20.1-9.1.0.2.jar
 servercore-forge-1.5.2+1.20.1.jar
 shetiphiancore-forge-1.20.1-1.5.jar
-silent-lib-1.20.1-8.0.0.jar
 simple_staves-1.0.3-forge-1.20.1.jar
 SimpleDiscordRichPresence-forge-4.0.3-build.40+mc1.20.1.jar
 simplyswords-forge-1.56.0-1.20.1.jar

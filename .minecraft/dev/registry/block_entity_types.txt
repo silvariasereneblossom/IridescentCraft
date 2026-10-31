@@ -592,11 +592,6 @@ irons_spellbooks:tyros_statue
 irons_spellbooks:vault
 jumbofurnace:jumbo_furnace_core
 jumbofurnace:jumbo_furnace_exterior
-libraryferret:unbreakable_diamond_beacon_entity
-libraryferret:unbreakable_emerald_beacon_entity
-libraryferret:unbreakable_gold_beacon_entity
-libraryferret:unbreakable_iron_beacon_entity
-libraryferret:unbreakable_netherite_beacon_entity
 lootr:lootr_barrel
 lootr:lootr_chest
 lootr:lootr_inventory
