@@ -8317,7 +8317,7 @@ Abyss floor transitions should pre-generate the next floor during the current fl
 
 Memory Allocation
 
-Recommend 6-8 GB minimum allocated to Minecraft for this pack 8-10 GB for servers with 5+ players
+Clients: 12 GB allocated to Minecraft (-Xms4G -Xmx12G, what the installer sets), 8 GB at the least. 8-10 GB for servers with 5+ players
 FerriteCore + ModernFix reduce baseline by ~1-2 GB, but 80+ mods still need headroom
 
 Cross-Referenced Against All Design Documents

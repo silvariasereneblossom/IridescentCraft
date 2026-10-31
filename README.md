@@ -46,7 +46,7 @@ Not supported. The repo's `mods/` folders hold the pack's own jars and the mod i
 - Minecraft 1.20.1
 - Forge 47.4.6+
 - Java 17 (Adoptium recommended)
-- 8-12 GB RAM (default JVM args: `-Xms4G -Xmx10G -noverify`)
+- 8-12 GB RAM for the game; the installer gives it 12 (default JVM args: `-Xms4G -Xmx12G -noverify`)
 
 ## Status
 

@@ -14,7 +14,7 @@ pre-launch sync.
 - Minecraft 1.20.1
 - Forge 47.4.6+
 - Java 17
-- 8-12GB RAM recommended (JVM args: -Xms4G -Xmx10G)
+- 8-12 GB RAM for the game; the installer gives it 12 (JVM args: -Xms4G -Xmx12G)
 
 ## What is IridescentCraft?
 A 458-mod, progression-focused, expert-lite modpack with:

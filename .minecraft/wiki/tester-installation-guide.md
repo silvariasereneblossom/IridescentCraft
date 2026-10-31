@@ -24,7 +24,7 @@ The server scripts create a clean subfolder next to wherever you saved them (`Ir
 | Component | Requirement |
 |---|---|
 | Java | JDK 17, Adoptium/Temurin recommended ([https://adoptium.net/](https://adoptium.net/)) |
-| RAM | At least 8 GB allocated to the client; 12 GB recommended |
+| RAM | 12 GB allocated to the client, which is what the Windows installer sets: 4096 MB minimum and 12288 MB maximum (Edit Instance → Settings → Java → Memory). Allocate at least 8 GB. On a PC with 16 GB of RAM, 8 GB is the better choice, because the game uses a few GB beyond what you allocate. |
 | Disk | 10 GB free |
 | Network | The first install downloads from GitHub, Modrinth and the CurseForge CDN and needs full IPv4 connectivity |
 | Account | Microsoft Minecraft account (or Ely.by / offline for LAN testing only) |
@@ -84,7 +84,7 @@ chmod +x iridescentcraft.sh
 #    downloads the PrismLauncher AppImage first if it finds none.
 ```
 
-After the import, add `-noverify` to the instance's JVM arguments as in step 6 of the Windows guide above: the Linux script builds a plain Modrinth pack, which cannot set JVM arguments.
+After the import, open the instance's Java settings as in step 6 of the Windows guide above. Add `-noverify` to the JVM arguments, and under Memory set 4096 MB minimum and 12288 MB maximum. The Linux script builds a plain Modrinth pack, which can set neither.
 
 A Linux install does not update itself: the pack has no Linux pre-launch sync, so leave the instance's pre-launch command empty. To update, run `iridescentcraft.sh` again and import the new pack. `update_configs.sh` copies the configs and scripts only, never the mods.
 
