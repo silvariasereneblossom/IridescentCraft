@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "a0ed14e09",
+    "generated_from":  "55356c0c1",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6024,8 +6024,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "f5e5eec5c2acfaa4e5720b143e60cb930096c513e49854f6848f2ae581d64738",
-                                                                  "size":  49570
+                                                                  "sha256":  "527cd0d53d62fa7176754814a69ef08f6325b41877c5dc3207ed4c2a7572ec18",
+                                                                  "size":  50229
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
@@ -6043,6 +6043,18 @@
                                                      "sha256":  "eb0bfaed60482e4e159ff4e2452cc098de57689f7cc82b4c9d9f112548173da6",
                                                      "size":  1005
                                                  },
+                  "kubejs/data/1_splatus/functions/ultris/clocks/20_tick.mcfunction":  {
+                                                                                           "sha256":  "7ede03aa9f1c495f3cdb50d96c98ca21bfbf5fb9848370755e2dffd35d19f04a",
+                                                                                           "size":  914
+                                                                                       },
+                  "kubejs/data/1_splatus/functions/ultris/clocks/5_tick.mcfunction":  {
+                                                                                          "sha256":  "f6678fe05d81d7d0e3ac6f62fdd08623f8e3c9903a5a3fbc22cef453a2a74ce0",
+                                                                                          "size":  1005
+                                                                                      },
+                  "kubejs/data/1_splatus/functions/ultris/completed_advancement.mcfunction":  {
+                                                                                                  "sha256":  "87346a4e0513bcd7ca6f7d3669dcc3596729a1335fa57c6a1594346f6899db80",
+                                                                                                  "size":  906
+                                                                                              },
                   "kubejs/data/ad_astra/tags/items/space_resistant_armor.json":  {
                                                                                      "sha256":  "ab1f297b89154fd86fe42790d56bb78c913ac09d6d14dfbbe8642220b31b3cc6",
                                                                                      "size":  938
@@ -6567,6 +6579,14 @@
                                                                    "sha256":  "86df3f95c55f05b4092ab7c5624b525e1b7d6f20b7afff73b5b3ebe4a140a8c3",
                                                                    "size":  1766
                                                                },
+                  "kubejs/data/icraft/functions/gates/ub_all.mcfunction":  {
+                                                                               "sha256":  "08e48a2da3c0eaae9d7fa0a222d701044b3e7cd025526be75be1597fd57de103",
+                                                                               "size":  499
+                                                                           },
+                  "kubejs/data/icraft/functions/gates/ub_gated.mcfunction":  {
+                                                                                 "sha256":  "54f46f4893f6d49c5c93b166a23ac60824c9b7bf8abc69177eef13a742b1373e",
+                                                                                 "size":  1477
+                                                                             },
                   "kubejs/data/icraft/loot_tables/chests/cursed_pyramid.json":  {
                                                                                     "sha256":  "f05b771573721dc233e49632d1474338c914b6308e746e45d345196ec492e4a5",
                                                                                     "size":  4337
@@ -7279,6 +7299,10 @@
                                                                                       "sha256":  "45f96edb7df9565a55ae91d2391bfb155c827cb606fe9808f7b6841e3065da05",
                                                                                       "size":  76
                                                                                   },
+                  "kubejs/data/ub/functions/tick.mcfunction":  {
+                                                                   "sha256":  "ec371d5c98566a88c3be46664fab977fae8af339f875c5ac03c438d021b3ecb1",
+                                                                   "size":  1396
+                                                               },
                   "kubejs/data/valhelsia_structures/loot_modifiers/jar_treasure.json":  {
                                                                                             "sha256":  "8185925edefb915bd2bf40ecee61b10898354a8c0da2ba8fe288bd233f0c377e",
                                                                                             "size":  283
@@ -7427,6 +7451,14 @@
                                                                                       "sha256":  "0d11c34ef9c059bdf0ed092b39777c27d5dfb2b5119c8f63a13de96082d021d8",
                                                                                       "size":  2620
                                                                                   },
+                  "kubejs/server_scripts/compat/ub_tick_gate.js":  {
+                                                                       "sha256":  "63c984553c49dc5b214343a351e6696813a3f42b07f5c992298a22f0873a165b",
+                                                                       "size":  10783
+                                                                   },
+                  "kubejs/server_scripts/compat/ultris_player_checks.js":  {
+                                                                               "sha256":  "915967f1f58f88e6c87a5cb4052c50a3dbd5a4ba0276d42b8f54b8a4dd8aafbc",
+                                                                               "size":  14189
+                                                                           },
                   "kubejs/server_scripts/death_penalty.js":  {
                                                                  "sha256":  "7efc12c2d05066d083299783f4a50d45e13ad19b3d653c6fd9036f4d10f3d879",
                                                                  "size":  29839
