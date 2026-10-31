@@ -18,14 +18,19 @@ Copies the index, the records, the registries and the tools to a temporary folde
                 registering; an id that only left the jar's files is checked against the new boot's registries
   dependencies  a library just added to the tree (index + jar cache, not the instance) provides its mod to `add`;
                 `update` refuses a new jar whose dependency nothing provides before it writes anything
+  overrides     the gate refuses a client mod added, updated or removed (one the overrides depend on) since the
+                client asset overrides were checked (dev/client_overrides/checked.json); `remove` re-checks only a
+                jar the stamp says they depend on. The check itself needs the real jars: client_overrides_test.py
 
-No boot is made (--no-boot): what a real boot adds is exercised on the rig, see README.md.
+No boot is made (--no-boot) and no client override check (--no-client-check): what a real boot adds is exercised
+on the rig, see README.md; the override check on its own small pack, dev/client_overrides/client_overrides_test.py.
 Nothing in the real tree is touched. Usage: python .minecraft/dev/mods/intake_test.py
 Exit 0 when every case behaves, 1 otherwise. Python 3.11+.
 """
 import hashlib
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -41,6 +46,7 @@ COPY = [
     ".minecraft/server_distribution/mods/.index",
     ".minecraft/distribution/client/mods/.index",
     ".minecraft/dev/mods",
+    ".minecraft/dev/client_overrides",
     ".minecraft/dev/rosters",
     ".minecraft/dev/registry",
     ".minecraft/kubejs/config/icraft",
@@ -69,6 +75,7 @@ SERVER = ".minecraft/server_distribution/mods/.index/"
 CLIENT = ".minecraft/distribution/client/mods/.index/"
 RECORDS = ".minecraft/dev/mods/records/"
 BUNDLE = RECORDS + "grandfathered.json"
+STAMP = ".minecraft/dev/client_overrides/checked.json"
 SLUG = "gate-test-mod"
 MOD = "gatetest"
 
@@ -147,6 +154,28 @@ class Sandbox:
 
     def exists(self, rel):
         return os.path.exists(self.path(rel))
+
+    def stamp(self):
+        return json.loads(self.read(STAMP).decode("utf-8"))
+
+    def client_metafiles(self):
+        """slug -> the text of its metafile in the client distribution's index"""
+        return dict((f[:-len(".pw.toml")], self.read(CLIENT + f).decode("utf-8"))
+                    for f in sorted(os.listdir(self.path(CLIENT))) if f.endswith(".pw.toml"))
+
+    def client_slug(self, jar):
+        return [s for s, t in self.client_metafiles().items() if jar in re.findall(r"""^filename = ['"](.*)['"]""", t, re.M)][0]
+
+    def stamp_jar(self, jar, touches=None):
+        """The jar into the client-override stamp as a passing client_overrides.py --check writes it: the hash the
+        client index records, and what of it the overrides depend on."""
+        text = [t for t in self.client_metafiles().values() if jar in re.findall(r"""^filename = ['"](.*)['"]""", t, re.M)][0]
+        doc = self.stamp()
+        doc["jars"][jar] = {"hash": "%s:%s" % (re.search(r"hash-format = '(\w+)'", text).group(1),
+                                               re.search(r"hash = '([0-9a-f]+)'", text).group(1))}
+        if touches:
+            doc["jars"][jar]["touches"] = touches
+        self.write(STAMP, json.dumps(doc, indent=1))
 
     def tool(self, script, *args, jar_cache=None):
         env = dict(os.environ)
@@ -275,6 +304,35 @@ def gate_cases():
             rec["side"] = "client" if rec["side"] != "client" else "both"
             s.write_bundle(doc)
         case("a record whose side is not the index's is refused", "SIDE   " + victim, side_differs)
+
+        # the client asset overrides: the stamp of their last check against the client index
+        upd_jar = sorted(j for j, e in sb.stamp()["jars"].items() if not e["hash"].startswith("own:"))[0]
+        upd_slug = sb.client_slug(upd_jar)
+
+        def stamp_edit(fn):
+            def mutate(s):
+                doc = s.stamp()
+                fn(doc["jars"])
+                s.write(STAMP, json.dumps(doc, indent=1))
+            return mutate
+
+        case("a client mod updated since the client asset overrides were checked is refused",
+             "CLIENT OVERRIDES   %s (%s): the index records another file" % (upd_slug, upd_jar),
+             stamp_edit(lambda jars: jars[upd_jar].update(hash="sha1:" + "0" * 40)))
+        case("a client mod added since that check is refused",
+             "CLIENT OVERRIDES   %s (%s): in the client index, not in the stamp" % (upd_slug, upd_jar),
+             stamp_edit(lambda jars: jars.pop(upd_jar)))
+        case("a jar the overrides depend on, taken out of the client index without a new check, is refused",
+             "CLIENT OVERRIDES   gone-1.0.jar: left the client index; the overrides depend on it (sounds)",
+             stamp_edit(lambda jars: jars.update({"gone-1.0.jar": {"hash": "sha1:" + "1" * 40, "touches": ["sounds"]}})))
+        case("no stamp is refused", "CLIENT OVERRIDES   no stamp", lambda s: os.remove(s.path(STAMP)))
+        s2 = Sandbox()
+        try:
+            stamp_edit(lambda jars: jars.update({"gone-1.0.jar": {"hash": "sha1:" + "1" * 40}}))(s2)
+            rc, out = s2.intake("check")
+            check("a jar the overrides do not depend on can leave without a new check", rc == 0 and "CLIENT OVERRIDES" not in out, out)
+        finally:
+            s2.close()
     finally:
         sb.close()
 
@@ -296,8 +354,10 @@ def flow():
         before_index = sb.digest([ROOT, SERVER, CLIENT])
 
         rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/gate-test-mod-1.0.0.jar",
-                            "--slug", SLUG, "--no-boot", "--mods", sb.jars)
+                            "--slug", SLUG, "--no-boot", "--no-client-check", "--mods", sb.jars)
         check("add: exits 0 and writes the record", rc == 0 and sb.exists(RECORDS + SLUG + ".json"), out)
+        check("add: says the client asset overrides were not checked, and what the gate then does",
+              "client asset overrides: NOT checked (--no-client-check)" in out and "client_overrides.py --check" in out, out)
         check("add: the metafile is in the source index and in both generated indexes",
               all(sb.exists(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
         rc2, out2 = sb.tool("mod_index.py", "check")
@@ -315,6 +375,9 @@ def flow():
               all(d.get("default") for d in rec["decisions"] if d["key"] != "boot"), "")
         rc, out = sb.intake("check")
         check("the gate refuses the new mod while decisions are owed", rc == 1 and "OWED   " + SLUG in out, out)
+        check("the gate refuses a client mod the client asset overrides were not checked with",
+              rc == 1 and "CLIENT OVERRIDES   %s (gate-test-mod-1.0.0.jar): in the client index, not in the stamp" % SLUG in out
+              and "client_overrides.py --check" in out, out)
         rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/x.jar", "--slug", "again", "--no-boot", "--mods", sb.jars)
         check("add: a jar that is already in the index is refused", rc == 2 and "already in the index" in out, out)
         rc, out = sb.intake("show", SLUG)
@@ -341,7 +404,12 @@ def flow():
         rc, out = sb.intake("decide", SLUG, "--defaults", "--note", "test")
         check("decide --defaults closes the rest", rc == 0, out)
         rc, out = sb.intake("check")
-        check("the gate passes once every decision of the new mod is answered", rc == 0 and "1 new (1 complete)" in out, out)
+        check("every decision answered, the gate still refuses while the overrides were not checked with the jar",
+              rc == 1 and "CLIENT OVERRIDES   " + SLUG in out and "OWED" not in out, out)
+        sb.stamp_jar("gate-test-mod-1.0.0.jar")
+        rc, out = sb.intake("check")
+        check("the gate passes once every decision of the new mod is answered and the overrides were checked",
+              rc == 0 and "1 new (1 complete)" in out, out)
 
         # a real boss-like entity of the pack that is in no list: the entry must validate
         boss = None
@@ -366,8 +434,8 @@ def flow():
             check("apply: a boss-like entity in no list exists to test with", True)
 
         # update
-        rc, out = sb.intake("update", SLUG, jar2, "--url", "https://example.invalid/gate-test-mod-1.1.0.jar", "--no-boot", "--mods", sb.jars,
-                            "--out", os.path.join(sb.dir, "update.txt"))
+        rc, out = sb.intake("update", SLUG, jar2, "--url", "https://example.invalid/gate-test-mod-1.1.0.jar", "--no-boot",
+                            "--no-client-check", "--mods", sb.jars, "--out", os.path.join(sb.dir, "update.txt"))
         check("update: exits 0", rc == 0, out)
         check("update: the metafile names the new jar in all three indexes",
               all(b"gate-test-mod-1.1.0.jar" in sb.read(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
@@ -382,6 +450,8 @@ def flow():
         check("update: the record is of the new jar and has a history line", rec["jar"] == "gate-test-mod-1.1.0.jar" and rec.get("history"), "")
         rc, out = sb.intake("check")
         check("the gate refuses the update while its new questions are owed", rc == 1 and "OWED   " + SLUG in out, out)
+        check("the gate refuses an update the client asset overrides were not checked with",
+              "CLIENT OVERRIDES   %s (gate-test-mod-1.1.0.jar): in the client index, not in the stamp" % SLUG in out, out)
 
         # the launcher's own update: the metafile already names a third build, the record still the second
         jar3 = os.path.join(sb.dir, "new", "gate-test-mod-1.2.0.jar")
@@ -393,9 +463,10 @@ def flow():
         rc, out = sb.intake("check")
         check("a metafile moved by hand to another jar is refused, even before the indexes are regenerated",
               rc == 1 and "NO RECORD OF THIS JAR   " + SLUG in out, out)
-        rc, out = sb.intake("update", SLUG, jar3, "--no-boot", "--mods", sb.jars)
+        rc, out = sb.intake("update", SLUG, jar3, "--no-boot", "--no-client-check", "--mods", sb.jars)
         check("update: a metafile the launcher already moved is taken as it is", rc == 0 and "left as it is" in out
               and sb.record(SLUG)["jar"] == "gate-test-mod-1.2.0.jar" and b"gate-test-mod-1.2.0.jar" in sb.read(SERVER + SLUG + ".pw.toml"), out)
+        sb.stamp_jar("gate-test-mod-1.2.0.jar")            # checked, and nothing of it is something an override needs
         jar2 = jar3
         own = sorted(slug for slug, r in sb.bundle()["records"].items() if r.get("own") and sb.exists(ROOT + slug + ".pw.toml"))
         check("the pack has own jars to test with", bool(own), "")
@@ -427,10 +498,12 @@ def flow():
                 rc, out = s3.intake("check")
                 check("an own jar released under a new file name: the gate asks for a record of it",
                       rc == 1 and "NO RECORD OF THIS JAR   " + own[0] in out, out)
-                rc, out = s3.intake("update", own[0], released, "--no-boot", "--mods", s3.jars)
+                rc, out = s3.intake("update", own[0], released, "--no-boot", "--no-client-check", "--mods", s3.jars)
                 check("update: after that release it rewrites the record and leaves the metafile alone",
                       rc == 0 and "a custom-jar release" in out and s3.record(own[0])["jar"] == "own-jar-release-9.9.9.jar"
                       and s3.read(ROOT + own[0] + ".pw.toml").decode("utf-8") == meta, out)
+                if s3.exists(CLIENT + own[0] + ".pw.toml"):
+                    s3.stamp_jar("own-jar-release-9.9.9.jar")      # the release's own client_overrides.py --check
                 rc, out = s3.intake("check")
                 check("... and the gate no longer misses the record (it asks what the update raised)",
                       "NO RECORD OF THIS JAR" not in out and (rc == 0 or "raised by an update" in out), out)
@@ -448,6 +521,14 @@ def flow():
         for want in ("kubejs/server_scripts/loot/gate_test_rule.js", "config/heracles/quests/test/q.json", "config/gatetest-common.toml",
                      "the mod id gatetest", "Deny-list pattern: 'gate-test-mod-'", "How the jar leaves"):
             check("remove (dry run): reports %s" % want, want in out, out)
+        check("remove (dry run): a jar no client asset override depends on needs no new check", "Client asset overrides" not in out, out)
+        touched = sorted(j for j, e in sb.stamp()["jars"].items() if e.get("touches") and not e["hash"].startswith("own:"))
+        check("the stamp names jars the overrides depend on", bool(touched), "")
+        if touched:
+            rc, out = sb.intake("remove", sb.client_slug(touched[0]), "--mods", sb.jars)
+            check("remove (dry run): a jar the overrides depend on is checked again by --apply (%s)" % touched[0],
+                  rc == 0 and "Client asset overrides" in out and "they depend on it" in out
+                  and "--apply runs client_overrides.py --check without it" in out, out)
         rc, out = sb.intake("remove", SLUG, "--apply", "--why", "test", "--mods", sb.jars)
         check("remove --apply: exits 0", rc == 0, out)
         check("remove --apply: the metafile is gone from all three indexes", not any(sb.exists(d + SLUG + ".pw.toml") for d in (ROOT, SERVER, CLIENT)), out)
@@ -525,17 +606,17 @@ def dependencies():
         build_plain_jar(lib, "gatelib", "1.0.0")
         build_plain_jar(os.path.join(sb.dir, "downloads", "gatestray-1.0.0.jar"), "gatestray", "1.0.0")
         rc, out = sb.intake("add", lib, "--side", "both", "--url", "https://example.invalid/gatelib-1.0.0.jar",
-                            "--slug", "gate-lib", "--no-boot", "--mods", sb.jars)
+                            "--slug", "gate-lib", "--no-boot", "--no-client-check", "--mods", sb.jars)
         check("add: a library with no dependency goes in", rc == 0, out)
         same = os.path.join(sb.dir, "downloads", "gatedep-1.0.0.jar")
         build_plain_jar(same, "gatedep", "1.0.0", needs=("gatelib",))
         rc, out = sb.intake("add", same, "--side", "both", "--url", "https://example.invalid/gatedep-1.0.0.jar",
-                            "--slug", "gate-dep", "--no-boot", "--mods", sb.jars)
+                            "--slug", "gate-dep", "--no-boot", "--no-client-check", "--mods", sb.jars)
         check("add: a mod that needs the library just added, from the same folder, goes in", rc == 0 and "it needs" not in out, out)
         other = os.path.join(sb.dir, "elsewhere", "gatedep2-1.0.0.jar")
         build_plain_jar(other, "gatedep2", "1.0.0", needs=("gatelib",))
         rc, out = sb.intake("add", other, "--side", "both", "--url", "https://example.invalid/gatedep2-1.0.0.jar",
-                            "--slug", "gate-dep2", "--no-boot", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
+                            "--slug", "gate-dep2", "--no-boot", "--no-client-check", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
         check("add: ... and from another folder, the library's in ICRAFT_BOOT_JAR_CACHE", rc == 0 and "it needs" not in out, out)
         stray = os.path.join(sb.dir, "elsewhere", "gatedep3-1.0.0.jar")
         build_plain_jar(stray, "gatedep3", "1.0.0", needs=("gatestray",))
@@ -549,7 +630,7 @@ def dependencies():
         jar1 = os.path.join(sb.jars, "gate-test-mod-1.0.0.jar")
         build_jar(jar1, "1.0.0")
         rc, out = sb.intake("add", jar1, "--side", "both", "--url", "https://example.invalid/gate-test-mod-1.0.0.jar",
-                            "--slug", SLUG, "--no-boot", "--mods", sb.jars)
+                            "--slug", SLUG, "--no-boot", "--no-client-check", "--mods", sb.jars)
         lacking = os.path.join(sb.dir, "new", "gate-test-mod-1.1.0.jar")
         build_jar(lacking, "1.1.0", needs=("gatemissing",))
         watched = [ROOT, SERVER, CLIENT, RECORDS]
@@ -562,8 +643,8 @@ def dependencies():
               rc == 0 and "DEPENDENCY: the new jar needs gatemissing" in out and sb.digest(watched) == before, out)
         wants_lib = os.path.join(sb.dir, "new", "gate-test-mod-1.2.0.jar")
         build_jar(wants_lib, "1.2.0", needs=("gatelib",))
-        rc, out = sb.intake("update", SLUG, wants_lib, "--url", "https://example.invalid/gate-test-mod-1.2.0.jar", "--no-boot", "--mods", sb.jars,
-                            jar_cache=os.path.join(sb.dir, "downloads"))
+        rc, out = sb.intake("update", SLUG, wants_lib, "--url", "https://example.invalid/gate-test-mod-1.2.0.jar", "--no-boot",
+                            "--no-client-check", "--mods", sb.jars, jar_cache=os.path.join(sb.dir, "downloads"))
         check("update: a new jar that needs the library the tree has goes in",
               rc == 0 and b"gate-test-mod-1.2.0.jar" in sb.read(ROOT + SLUG + ".pw.toml"), out)
     finally:

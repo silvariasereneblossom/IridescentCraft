@@ -1,0 +1,78 @@
+name: Client asset overrides
+
+# .minecraft/kubejs/assets holds overrides that exist only to save client memory
+# (.minecraft/dev/client_overrides/README.md): generated sounds.json files that restate the long
+# sound events with "stream": true, a 16 x 16 stand-in for TATOS' unused 6000 x 6000 PNG, a filter
+# on Falling Leaves' atlas. Each is right only for the jars it was made from: a mod update that adds
+# a track to a restated event is hidden by the override, and the game logs nothing.
+#
+# client_overrides.py --check reads every client jar on the dev PC and writes the stamp
+# dev/client_overrides/checked.json when every override matches (intake.py add, update and remove
+# run it). This job compares the pushed tree with the stamp, client_overrides.py --current: no
+# third-party jar is opened or downloaded. It fails when a jar of the client index was added or
+# updated since the check, a jar an override depends on left it, one of the pack's own client jars
+# ships other sound or atlas files, or an override file is not the one the check passed.
+# The same check runs in the pre-push hook; this is for the pushes that did not go through it.
+#
+# History: shipped with the overrides on 2026-10-30 (pack 3001a4c9), and checked only when someone
+# remembered; the operator asked the same evening for the check to be automatic.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/distribution/client/mods/**'
+      - '.minecraft/kubejs/assets/*/sounds.json'
+      - '.minecraft/kubejs/assets/theabyss/**'
+      - '.minecraft/kubejs/assets/fallingleaves/**'
+      - '.minecraft/dev/client_overrides/**'
+      - '.github/workflows/client-overrides.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/mods/.index/**'
+      - '.minecraft/distribution/client/mods/**'
+      - '.minecraft/kubejs/assets/*/sounds.json'
+      - '.minecraft/kubejs/assets/theabyss/**'
+      - '.minecraft/kubejs/assets/fallingleaves/**'
+      - '.minecraft/dev/client_overrides/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: client_overrides.py --current
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # Only what the check reads. The pack's own client jars come along (17 MB): the check hashes
+      # their sound, atlas and texture files, so a rebuild that changes only code passes.
+      - name: Checkout (client index and jars, the overrides, the stamp, the tool)
+        uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /.gitattributes
+            /.minecraft/distribution/client/mods/
+            /.minecraft/kubejs/assets/*/sounds.json
+            /.minecraft/kubejs/assets/theabyss/textures/item/netherite_helmet_-_copy.png
+            /.minecraft/kubejs/assets/fallingleaves/atlases/
+            /.minecraft/dev/client_overrides/
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Were the overrides checked against these jars?
+        run: python -I .minecraft/dev/client_overrides/client_overrides.py --current
+
+      # A small pack built in a temporary folder (jars, a vanilla asset index, the overrides): the
+      # check, --write and the stamp on it, and every stale state the gate exists to refuse.
+      - name: The check still refuses what it exists to refuse
+        if: always()
+        run: python -I .minecraft/dev/client_overrides/client_overrides_test.py

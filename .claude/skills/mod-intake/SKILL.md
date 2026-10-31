@@ -11,7 +11,8 @@ description: >-
   mod's version, drop / remove / retire a mod, asks "what does this mod touch",
   "what do we still owe on mod X", "which mods need review", or when the
   pre-push hook or CI prints `[mod-intake] FAIL` (NO RECORD, OWED, NOT
-  APPLIED, RECORD WITHOUT A MOD) - even if they only say "add Friends and
+  APPLIED, RECORD WITHOUT A MOD, CLIENT OVERRIDES) or `[client-overrides]
+  FAIL STALE` - even if they only say "add Friends and
   Foes" or "take Champions out". Copying a metafile by hand skips the boot,
   the record and every decision, and the gate then refuses the push. NOT for
   the pack's own jars (iridescent_*, managed forks): those are
@@ -39,6 +40,11 @@ Never answer a `boss:`, `dimension:`, `side` or `boot` decision on your own auth
   is never pushed with a `boot` decision owed.
 - Do not edit `server_distribution/mods/.index`, `distribution/client/mods/.index` or a generated block:
   `mod_index.py generate` writes them (the tool calls it).
+- A mod the client loads (side `client` or `both`) also meets the client asset overrides
+  (`.minecraft/dev/client_overrides/README.md`): `add` and `update` end with `client_overrides.py --check`
+  against the client index's jars, which must all be on this PC (the instance has them after a launch;
+  the new jar comes from its own folder). It also needs PrismLauncher's 1.20.1 asset index. `remove`
+  runs it only for a jar the stamp says an override depends on.
 
 ## add
 
@@ -67,7 +73,14 @@ python -I .minecraft/dev/mods/intake.py add <jar> --side client --metafile <inst
      A structure in the Overworld that rolls `end_city_treasure` hands out tier-4 loot (it happened).
 3. Record the rulings: `intake.py decide <mod> <key> <answer> [field=value ...] [--note "..."]`;
    `decide <mod> --defaults --note "..."` only for what the operator said to leave at its default.
-4. Commit the metafile, the generated indexes and the record. Then refresh the snapshot from that
+   The client asset override check at the end of the output: `OK` wrote the stamp. `FAIL sounds` means
+   the mod changed a restated sound event: run the `--write` line it printed (same `--mods`), read the
+   diff of `kubejs/assets/<ns>/sounds.json`, then `sync-distros.ps1 -Fix`. That is not a design call, it
+   restates the merged list. `FAIL tatos` / `FAIL leaves` means a hand-written override no longer fits
+   its mod: re-read the file it names and report it to the operator (keep, change or drop the override
+   is their call). `could NOT run`: a jar is not on this PC, or `--mods` left out the instance.
+4. Commit the metafile, the generated indexes, the record, and `.minecraft/dev/client_overrides/checked.json`
+   with any `kubejs/assets` change the check made (all three trees). Then refresh the snapshot from that
    commit and commit it:
    `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref HEAD -WriteSnapshot`.
 5. `intake.py apply <mod>`; `powershell -ExecutionPolicy Bypass -File .minecraft\dev\sync-distros.ps1 -Fix`;
@@ -95,8 +108,9 @@ Read the report top to bottom: REGRESSION lines, ids VANISHED from a registry, r
 gone or newly rejected, loot tables whose content changed, then every place in the pack that still
 names one. Every reference is work: a script that names a vanished item fails quietly, a registry
 entry that names a vanished entity fails the validator once the snapshot is refreshed. A question the
-new version raises is asked `by update`; the gate holds the push until it is answered. Then steps 4
-to 7 of `add`.
+new version raises is asked `by update`; the gate holds the push until it is answered. The client
+asset override check runs at the end, as for `add` (step 3 says how to read it). Then steps 4 to 7 of
+`add`.
 
 If the launcher already moved the metafile to the new jar (its own "update"), run the same command with
 that jar: it takes the metafile as it is and rewrites the record.
@@ -120,8 +134,11 @@ clear, file by file, in the same change; the tool never edits one. Registry entr
 `python .minecraft/dev/rosters/validate.py --notes`. A both-sides removal reaches a client only when it
 syncs: a client that still has the jar cannot join (`Registry Object not present`). The launcher's
 deny list takes a new pattern only with a launcher build; until then the index removes the jar.
-Config files stay on consumers. Then `sync-distros.ps1 -Fix`, `boot.ps1 -Compare origin/main`, the
-snapshot refresh, `intake.py check`, push.
+Config files stay on consumers. When the report has a "Client asset overrides" line, `--apply` ends
+with the override check without the jar: a removed TATOS or Falling Leaves leaves its override
+behind (`FAIL ... the override can go`: delete that file after telling the operator), a removed sound
+mod changes the restated events (`--write`). Then `sync-distros.ps1 -Fix`, `boot.ps1 -Compare
+origin/main`, the snapshot refresh, `intake.py check`, push.
 
 ## audit and the backlog
 
@@ -140,6 +157,8 @@ by priority (dimensions, bosses, structures, loot, other). Work it from the top,
 | `NOT APPLIED <mod> ...` | a boss or dimension answer is not in the registry | `intake.py apply <mod>` |
 | `SIDE <mod>` | the index and the record disagree on the side | `intake.py decide <mod> side <side>` (it edits the metafile and regenerates) |
 | `RECORD WITHOUT A MOD` | a metafile was deleted by hand | `intake.py remove` does both; or restore the metafile |
+| `CLIENT OVERRIDES <mod> (<jar>)` | a client mod was added, updated or removed (one an override depends on) since the client asset overrides were checked: `--no-client-check`, a check that could not run, or a hand edit | `python -I .minecraft/dev/client_overrides/client_overrides.py --check` where the jars are (`--mods <folder>`, repeatable, for a jar not in the instance yet; it replaces the instance default, so name that too), then as in `add` step 3 |
+| `[client-overrides] FAIL STALE ...` (its own hook block, workflow `client-overrides.yml`) | the same, or one of the pack's own jars rebuilt with other sound files, or an override file edited by hand | the same command; for a hand edit, `--write` puts the generated file back |
 
 Never `--no-verify`, and never add a mod to `intake_baseline.json`: the baseline is the pack as it was
 at the first audit.

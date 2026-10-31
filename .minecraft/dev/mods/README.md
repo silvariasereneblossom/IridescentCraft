@@ -171,10 +171,14 @@ What it does, in this order, in this checkout, committing nothing:
 4. Boots the full pack with the mod in and diffs it against `--base` (default `origin/main`; a saved result is
    reused): about 6 minutes, twice that when the base has to be booted first. One boot at a time on this PC.
 5. Writes the record from the jar's inventory and from what the boot registered, and prints it.
+6. For a mod the client loads (`--side client` or `both`): checks the client asset overrides against the jars of
+   the client index, the new jar included (`dev/client_overrides/client_overrides.py --check`, see "The client
+   asset overrides" below). It writes the stamp `dev/client_overrides/checked.json` when they all match.
 
-Exit code 0: booted, no regression. 1: the boot or its diff found something (the record's `boot` decision is then
-owed and says what). 2 / 3: it could not run, or the server did not boot. A client-only mod gets no server boot:
-its record says so, and a client launch is your check.
+Exit code 0: booted, no regression, overrides match. 1: the boot or its diff found something (the record's `boot`
+decision is then owed and says what), or an override no longer matches the jars (its "What to do" lines say what to
+run). 2 / 3: it could not run, or the server did not boot. A client-only mod gets no server boot: its record says
+so, and a client launch is your check.
 
 Then:
 
@@ -184,7 +188,9 @@ Then:
    `decide some-mod boss:somemod:big_golem mob`, `decide some-mod loot:chests keep --note "tier 1 ruins"`.
    `decide <mod> --defaults --note "..."` answers "default" to everything still owed except side, boot, bosses and
    dimensions. An answer that is none of the listed options needs `--note` to say what it means.
-2. **Commit** the metafile, the generated indexes and the record.
+2. **Commit** the metafile, the generated indexes and the record, and what the override check wrote: the stamp
+   `dev/client_overrides/checked.json`, and after a `--write` the `sounds.json` files of `kubejs/assets` in all
+   three trees (`sync-distros.ps1 -Fix` mirrors them).
 3. **Refresh the registry snapshot** from that commit and commit `dev/registry`:
    `powershell -File .minecraft\dev\boot\boot.ps1 -Ref HEAD -WriteSnapshot`. The snapshot gate refuses a push whose
    mod set it does not describe, and the registry validator must know the new ids before step 4.
@@ -214,6 +220,8 @@ registry, loot tables and recipes that are gone or newly rejected, loot tables w
 place in the pack that still names one of them (scripts, kubejs data, the registries, quests, configs of the three
 trees, datapack zips, dev tool lists, wiki). The record is rewritten for the new jar; answers already given are
 kept; a question the new version raises is asked `by update` and the gate holds the push until it is answered.
+For a mod the client loads it ends with the client asset override check, as `add` does: a new version that adds a
+track to a restated sound event fails it until `--write` restates the event with the track.
 
 `--diff-only` compares and sweeps and writes nothing; give it `--old-jar` and, to include a boot diff,
 `--boot-result <a saved boot result of the new side that holds a diff against the old>`.
@@ -246,6 +254,10 @@ record, regenerates the indexes, and writes the deny pattern into `$denyList` of
 alone removes the jar). **It never edits a reference**: the list is the work that is left. Then
 `sync-distros.ps1 -Fix`, `boot.ps1 -Compare origin/main`, and the snapshot refresh as for `add`.
 
+When the stamp says a client asset override depends on the jar (its `touches`), the report says so and `--apply`
+ends with the override check without it: TATOS or Falling Leaves leaving means their override goes too, and a
+sound mod leaving changes the restated events. Any other jar leaves without a check.
+
 ### Audit, and the backlog
 
 ```
@@ -264,8 +276,30 @@ change) and keeps every answer.
 `python -I .minecraft/dev/mods/intake.py check`, in the pre-push hook (its own block) and in the workflow
 `mod-intake.yml`. It fails on a mod of the index with no record, a record made from another jar than the index
 names, a NEW mod with a decision owed or decided and not applied, a record no mod belongs to, a record whose side
-is not the index's. It never fails on the grandfathered backlog. One of the pack's own jars
+is not the index's, and a client mod added, updated or removed since the client asset overrides were checked
+(`CLIENT OVERRIDES`). It never fails on the grandfathered backlog. One of the pack's own jars
 (`custom_jars_manifest.json`) is held to its file name only: a rebuild under the same name needs no new record.
+
+### The client asset overrides
+
+`.minecraft/kubejs/assets` holds overrides that only save client memory: 11 generated `sounds.json` files that
+restate the long sound events with `"stream": true`, a stand-in for an unused TATOS texture, a filter on Falling
+Leaves' atlas (`dev/client_overrides/README.md`). Each is right only for the jars it was made from. A mod update
+that adds a track to a restated event is hidden by the override, and the game logs nothing.
+
+`add` and `update` of a mod the client loads, and `remove` of a jar an override depends on, end with
+`client_overrides.py --check` against the jars of the client index, taken from the same folders as the rest of the
+command (the new jar's own folder first): no launch is needed first. When it fails, its "What to do" lines give
+the `--write` command for the sounds, with the same `--mods`, and name the file to re-read for the TATOS texture
+or the Falling Leaves atlas; then `--check` again, `sync-distros.ps1 -Fix`, and commit `kubejs/assets` and the
+stamp with the mod. When it passes it writes the stamp `dev/client_overrides/checked.json`: commit it with the mod.
+`--no-client-check` skips it (for a machine without the jars); the gate then refuses the push until it passes.
+
+Two gates compare the tree with the stamp, without opening a third-party jar: `intake.py check` (the
+`CLIENT OVERRIDES` line, for every push: a third-party client mod changed since the check), and the hook's own
+block "Client asset overrides" with the workflow `client-overrides.yml` (pushes that touch a mod index, the client
+jars, an override or the stamp: also a custom jar rebuilt with other sounds, and an override edited by hand).
+`intake.py decide <mod> side ...` across `server` changes the client's jars too: it says to run the check.
 
 ### Why one file for the grandfathered records
 

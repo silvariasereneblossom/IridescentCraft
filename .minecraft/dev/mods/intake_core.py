@@ -30,6 +30,8 @@ The gate (`intake.py check`) fails on:
     a mod of the index with no record, or a record made from another jar than the index names
     a NEW mod with a decision that is owed, or decided and not applied to its registry
     a record no metafile belongs to, or one that does not parse
+    a client mod added, updated or removed since the client asset overrides were checked (the stamp
+    dev/client_overrides/checked.json: the mod side of client_overrides.py --current)
 It does not fail on the grandfathered backlog.
 
 Needs Python 3.11 or newer. Standard library only.
@@ -53,6 +55,7 @@ BUNDLE_NAME = 'grandfathered.json'      # every record of the first audit, in on
 BASELINE_REL = 'dev/mods/intake_baseline.json'
 MANIFEST_REL = 'custom_jars_manifest.json'
 REGISTRY_REL = 'kubejs/config/icraft/registry'
+CLIENT_OVERRIDES_REL = 'dev/client_overrides/client_overrides.py'
 
 STATUSES = ('owed', 'decided')
 RAISED = ('grandfather', 'add', 'update')
@@ -494,6 +497,34 @@ def priority(rec, regs):
     return idx, cls, score
 
 
+# --------------------------------------------------------------------------- the client asset overrides
+
+def client_overrides():
+    """dev/client_overrides/client_overrides.py as a module (its stamp and the client index), or None when the tree
+    has no such tool."""
+    path = mc(*CLIENT_OVERRIDES_REL.split('/'))
+    if not os.path.isfile(path):
+        return None
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('client_overrides_for_intake', path)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def client_override_touches(jar):
+    """What of `jar` the client asset overrides depend on, as the stamp says -> [labels]; None when the stamp does
+    not list the jar or cannot be read (then nobody knows: check again)."""
+    co = client_overrides()
+    if co is None:
+        return []
+    try:
+        was = co.load_stamp()['jars'].get(jar)
+    except co.Cannot:
+        return None
+    return None if was is None else list(was.get('touches') or [])
+
+
 # --------------------------------------------------------------------------- the gate
 
 def gate(regs=None):
@@ -563,6 +594,20 @@ def gate(regs=None):
             failures.append('RECORD WITHOUT A MOD   %s: no metafile of that name is in the index (%s). A removed mod: '
                             'python .minecraft/dev/mods/intake.py remove takes the record out with it' % (
                                 slug, '%s/%s' % (RECORDS_REL, BUNDLE_NAME if records[slug].get('_bundle') else slug + '.json')))
+    # the client asset overrides (kubejs/assets) are right only for the jars they were checked with: a client mod
+    # added, updated or removed since is refused like an owed decision. The pack's own jars and edits of the override
+    # files are the other half of the stamp: the pre-push block "Client asset overrides" (client_overrides.py --current)
+    co = client_overrides()
+    if co is not None:
+        try:
+            stale, _gone = co.stale_jars(co.load_stamp(), co.client_index(), own=False)
+        except co.Cannot as ex:
+            failures.append('CLIENT OVERRIDES   %s' % ex)
+        else:
+            slug_of_jar = dict((m['jar'], m['slug']) for m in index)
+            for jar, why in stale:
+                failures.append('CLIENT OVERRIDES   %s: %s: %s --check' % (
+                    '%s (%s)' % (slug_of_jar[jar], jar) if jar in slug_of_jar else jar, why, co.TOOL))
     return failures, notes, stats
 
 

@@ -6,7 +6,9 @@
 # the mod index gate (dev/mods/mod_index.py check: the three mod indexes and
 # the client-only skip lists are generated from .minecraft/mods/.index),
 # the mod intake gate (dev/mods/intake.py check: every mod has an intake record
-# and a new mod owes no decision), a one-line report of the difficulty mod's and
+# and a new mod owes no decision), the client asset overrides against the stamp
+# of their last check (dev/client_overrides; when a push touches a mod index, a
+# client jar or an override), a one-line report of the difficulty mod's and
 # Apotheosis's own lists against the registries (dev/rosters/external_lists.py;
 # never blocks), the Codex gate (dev/codex/codex.py check: the committed
 # iridescent_codex_data.jar is what the registries, configs and scripts build
@@ -60,6 +62,9 @@ $hookContent = @'
 #                                a new mod owes no decision (its own block, after the index gate)
 #   +  boot/registry_current.py - is dev/registry still a snapshot of this pack's mods (its own
 #                                block; only when a pushed commit touches the mod set or the snapshot)
+#   +  client_overrides.py --current - were the memory-saving client asset overrides in kubejs/assets
+#                                checked against the client jars of this tree (its own block; only when a
+#                                pushed commit touches a mod index, the client jars, an override or the stamp)
 #   +  validate_heracles_quests.py - the quest validator (its own block; only when a
 #                                pushed commit touches config/heracles/ in any distro)
 #   +  codex/codex.py check   - the Iridescent Codex against its sources: the committed jar is what the
@@ -225,7 +230,7 @@ if [ -f "$MI_TOOL" ]; then
             fi
             if [ -z "$mi_base" ]; then MI_TOUCHED=1; break; fi
             if git diff --name-only "$mi_base" "$mi_lsha" 2>/dev/null \
-                | grep -Eq 'mods/\.index/|^\.minecraft/dev/mods/(intake|records/)|^\.minecraft/kubejs/config/icraft/registry/'; then
+                | grep -Eq 'mods/\.index/|^\.minecraft/dev/mods/(intake|records/)|^\.minecraft/kubejs/config/icraft/registry/|^\.minecraft/dev/client_overrides/'; then
                 MI_TOUCHED=1; break
             fi
         done <<EOF
@@ -289,6 +294,69 @@ EOF
                 echo "[pre-push] the registry snapshot is STALE for the mods this push carries (lines above)."
             else
                 echo "[pre-push] the registry snapshot check could NOT run, and this push touches the mod set or the snapshot."
+            fi
+            echo "  Bypass: git push --no-verify"
+            exit 1
+        fi
+    fi
+fi
+
+# --- Client asset overrides (blocking; one self-contained block) ---
+# .minecraft/kubejs/assets holds overrides that exist only to save client memory
+# (dev/client_overrides/README.md): 11 generated sounds.json files that restate the long sound
+# events with "stream": true, a 16 x 16 stand-in for TATOS' unused 6000 x 6000 PNG, a filter on
+# Falling Leaves' atlas. Each is right only for the jars it was made from: a mod update that adds a
+# track to a restated event is hidden by the override, and the game logs nothing.
+# client_overrides.py --check reads every client jar and writes the stamp
+# dev/client_overrides/checked.json when every override matches (intake.py add, update and remove
+# run it). --current compares this tree with the stamp: no third-party jar is opened and nothing is
+# downloaded, under a second. STALE (blocks) when
+#   - a jar of the client index was added, or the index records another file for it, since the check
+#   - a jar the stamp says an override depends on left the client index
+#   - one of the pack's own client jars ships other sounds.json, sound, atlas or texture files
+#   - an override file is not the one the check passed (edited by hand, a --write with no check after)
+# Runs when a pushed commit touches a mod index, the client distribution's jars, an override, the
+# stamp or the tool. (intake.py check, the block above, refuses the mod side of it on every push.)
+# A tree whose tool has no --current (before 2026-10-31) is skipped: the hook is shared by every
+# worktree of the clone, and one based on an older main would otherwise read as "could not run".
+# Self-contained: its own variables (CO_*), nothing from the other steps but PUSHED and DEV.
+CO_TOOL="$DEV/client_overrides/client_overrides.py"
+if [ -f "$CO_TOOL" ] && grep -q -- '--current' "$CO_TOOL"; then
+    CO_ZERO=0000000000000000000000000000000000000000
+    CO_RUN=0
+    [ -z "$PUSHED" ] && CO_RUN=1
+    while read -r _co_lref co_lsha _co_rref co_rsha; do
+        [ -z "$co_lsha" ] && continue
+        [ "$co_lsha" = "$CO_ZERO" ] && continue
+        if [ "$co_rsha" != "$CO_ZERO" ] && git cat-file -e "$co_rsha^{commit}" 2>/dev/null; then
+            co_base="$co_rsha"
+        else
+            co_base="$(git merge-base "$co_lsha" origin/main 2>/dev/null)"
+        fi
+        if [ -z "$co_base" ]; then CO_RUN=1; break; fi
+        if git diff --name-only "$co_base" "$co_lsha" 2>/dev/null \
+            | grep -Eq '^\.minecraft/(mods|distribution/client/mods)/\.index/|^\.minecraft/distribution/client/mods/[^/]+\.jar$|^\.minecraft/kubejs/assets/([^/]+/sounds\.json$|theabyss/|fallingleaves/)|^\.minecraft/dev/client_overrides/'; then
+            CO_RUN=1; break
+        fi
+    done <<EOF
+$PUSHED
+EOF
+    if [ $CO_RUN -eq 1 ]; then
+        CO_RC=2
+        if command -v python >/dev/null 2>&1; then
+            python -I "$CO_TOOL" --current
+            CO_RC=$?
+        else
+            echo "[pre-push] python not found: the client asset overrides check could NOT run"
+        fi
+        if [ $CO_RC -ne 0 ]; then
+            echo ""
+            if [ $CO_RC -eq 1 ]; then
+                echo "[pre-push] the client asset overrides were not checked against the jars this push carries (lines above)."
+                echo "  python -I .minecraft/dev/client_overrides/client_overrides.py --check   (where the jars are; --write for the sounds)"
+                echo "  commit kubejs/assets and .minecraft/dev/client_overrides/checked.json, re-push."
+            else
+                echo "[pre-push] the client asset overrides check could NOT run, and this push touches a mod index, a client jar or an override."
             fi
             echo "  Bypass: git push --no-verify"
             exit 1

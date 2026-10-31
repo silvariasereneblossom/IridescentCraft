@@ -28,8 +28,14 @@
 Add, update and remove write into THIS checkout and commit nothing: read the record, answer its decisions, then
 commit. In a scratch checkout (git worktree add) they are a rehearsal.
 
+For a mod the client loads, add, update and remove (of a jar the stamp says they depend on) end with
+dev/client_overrides/client_overrides.py --check: the memory-saving overrides in kubejs/assets against the jars of
+the client index, taken from the folders below. It writes the stamp the gate compares with; a failure says what to
+do, and the gate refuses the push until it passes.
+
 Common options: --mods <dir> (where the installed jars are; default the PrismLauncher instance), --no-boot
-(static evidence only: the record then owes its boot), --base <commit or saved boot result>.
+(static evidence only: the record then owes its boot), --no-client-check (the gate then refuses the push until
+client_overrides.py --check passes), --base <commit or saved boot result>.
 Needs Python 3.11+, the jars on this PC, and for a boot what dev/boot/README.md lists (WSL 2, a JDK 17).
 README.md next to this file has the procedure.
 """
@@ -301,6 +307,48 @@ def generate_index():
     if rc == 0:
         rc, _ = run(py('dev/mods/mod_index.py', 'check'))
     return rc
+
+
+# --------------------------------------------------------------------------- the client asset overrides
+
+def client_overrides_check(args, why, extra_dirs=()):
+    """client_overrides.py --check against the client index of this tree, the jars taken from the folders intake
+    reads (`extra_dirs` first: the new jar's own folder). It writes the stamp dev/client_overrides/checked.json when
+    every override in kubejs/assets matches; until then the gate refuses the push. -> exit code: 0 OK, 1 an override
+    no longer matches (the tool prints what to do), 2 it could not run."""
+    tool = 'python -I .minecraft/' + core.CLIENT_OVERRIDES_REL
+    say('')
+    if not os.path.isfile(core.mc(*core.CLIENT_OVERRIDES_REL.split('/'))):
+        say('[intake] client asset overrides: this tree has no %s; nothing to check' % core.CLIENT_OVERRIDES_REL)
+        return EXIT_OK
+    if args.no_client_check:
+        say('[intake] client asset overrides: NOT checked (--no-client-check), %s. The gate refuses the push until '
+            '`%s --check` passes where the jars are' % (why, tool))
+        return EXIT_OK
+    dirs, seen = [], set()
+    for d in [os.path.abspath(x) for x in extra_dirs] + jar_dirs(args):
+        if d.lower() not in seen and os.path.isdir(d):
+            seen.add(d.lower())
+            dirs.append(d)
+    say('[intake] client asset overrides (dev/client_overrides/README.md), %s: %s --check' % (why, tool))
+    cmd = py(core.CLIENT_OVERRIDES_REL, '--check')
+    for d in dirs:
+        cmd += ['--mods', d]
+    rc, _ = run(cmd)
+    if rc == 0:
+        say('[intake] client asset overrides: OK. Commit .minecraft/dev/client_overrides/checked.json (the stamp) with the mod')
+    elif rc == 1:
+        say('[intake] FAIL client asset overrides: an override in kubejs/assets no longer matches the jars. Do what the '
+            '"What to do" lines above say; until `--check` passes, the gate (intake.py check, the pre-push hook) refuses the push')
+    else:
+        say('[intake] client asset overrides: the check could NOT run (above). The gate refuses the push until '
+            '`%s --check` passes where the jars are (--mods <folder>, repeatable, says where)' % tool)
+    return rc
+
+
+def worst(*codes):
+    """The exit code of a command that ran several steps: 3 (did not boot) over 2 (could not run) over 1 over 0."""
+    return max(codes)
 
 
 # --------------------------------------------------------------------------- the boot
@@ -746,10 +794,13 @@ def cmd_add(args):
     say('[intake] record: %s' % rel(core.record_path(slug)))
     say('[intake] %d decision(s) owed. Answer each (intake.py decide %s <key> <answer>), apply the registry ones '
         '(intake.py apply %s), then commit the metafile, the generated indexes and the record together.' % (len(owed), slug, slug))
+    rc_client = EXIT_OK
+    if args.side != 'server':
+        rc_client = client_overrides_check(args, 'a new mod the client loads', [os.path.dirname(jar)])
     say('[intake] to back out: python -I .minecraft/dev/mods/intake.py remove %s --apply --no-deny' % slug)
     if boot is not None and boot['verdict'] != 'PASS':
-        return EXIT_FINDINGS
-    return EXIT_OK if rc_boot in (0, 1) else rc_boot
+        return worst(EXIT_FINDINGS, rc_client)
+    return worst(EXIT_OK if rc_boot in (0, 1) else rc_boot, rc_client)
 
 
 # --------------------------------------------------------------------------- update
@@ -991,9 +1042,12 @@ def cmd_update(args):
     if args.out:
         core.write_text(os.path.abspath(args.out), text + '\n')
         say('[intake] written: %s' % args.out)
+    rc_client = EXIT_OK
+    if not args.diff_only and m['side'] != 'server':
+        rc_client = client_overrides_check(args, 'an update of a mod the client loads', [os.path.dirname(new_jar)])
     if boot is not None and boot['verdict'] != 'PASS':
-        return EXIT_FINDINGS
-    return EXIT_OK if rc_boot in (0, 1) else rc_boot
+        return worst(EXIT_FINDINGS, rc_client)
+    return worst(EXIT_OK if rc_boot in (0, 1) else rc_boot, rc_client)
 
 
 # --------------------------------------------------------------------------- remove
@@ -1154,6 +1208,15 @@ def cmd_remove(args):
     if cfg:
         out('  its tracked config files (delete them in the same commit): ' + ', '.join(cfg))
 
+    # the client asset overrides depend on a jar the stamp says they touch; taking any other jar out changes nothing
+    touches = core.client_override_touches(m['jar']) if m['side'] != 'server' else []
+    if touches is None or touches:
+        out('')
+        out('Client asset overrides (kubejs/assets, dev/client_overrides/README.md): %s; %s' % (
+            'the stamp does not list the jar, so nobody knows whether they depend on it' if touches is None
+            else 'they depend on it (%s)' % ', '.join(touches),
+            '--apply runs client_overrides.py --check without it' if not args.apply else 'checked again below, without it'))
+
     if args.apply:
         if clash and not args.no_deny:
             die("the deny pattern '%s' would delete %s on every consumer: pass --deny-pattern" % (pattern, clash[0]))
@@ -1183,6 +1246,8 @@ def cmd_remove(args):
     if args.out:
         core.write_text(os.path.abspath(args.out), text + '\n')
         say('[intake] written: %s' % args.out)
+    if args.apply and (touches is None or touches):
+        return client_overrides_check(args, 'a removal of a jar they may depend on')
     return EXIT_OK
 
 
@@ -1199,6 +1264,10 @@ def cmd_check(_args):
         say('[mod-intake] FAILED: %d finding(s). %s.' % (len(failures), core.gate_line(stats)))
         say('[mod-intake] A mod is added with intake.py add, updated with intake.py update, removed with intake.py remove; '
             'a decision is answered with intake.py decide. See .minecraft/dev/mods/README.md.')
+        if any(f.startswith('CLIENT OVERRIDES') for f in failures):
+            say('[mod-intake] The client asset overrides are checked against the jars with python -I .minecraft/%s --check '
+                '(intake add, update and remove run it; --mods <folder> says where a jar not yet in the instance is). '
+                'See .minecraft/dev/client_overrides/README.md.' % core.CLIENT_OVERRIDES_REL)
         return EXIT_FINDINGS
     say('[mod-intake] OK - %s.' % core.gate_line(stats))
     return EXIT_OK
@@ -1421,6 +1490,7 @@ def cmd_decide(args):
         if args.answer != 'accepted' or not args.note:
             die('the boot question is answered by a clean boot (run add or update again). To push with a known finding: '
                 'decide %s boot accepted --note "<what the boot reports and why it is acceptable>"' % args.mod)
+    side_before = rec.get('side')
     if surface == 'side':
         import mod_index
         path = core.mc(mod_index.SOURCE_REL, args.mod + '.pw.toml')
@@ -1451,6 +1521,9 @@ def cmd_decide(args):
         say('[intake] it becomes a registry entry with: python -I .minecraft/dev/mods/intake.py apply %s' % args.mod)
     if surface == 'side':
         say('[intake] the side changed what the server installs: boot it (.minecraft\\dev\\boot\\boot.ps1 -Compare origin/main)')
+        if (side_before == 'server') != (args.answer == 'server'):
+            say('[intake] it also changed what the client loads: python -I .minecraft/%s --check (the gate refuses '
+                'the push until the client asset overrides are checked without or with it)' % core.CLIENT_OVERRIDES_REL)
     return EXIT_OK
 
 
@@ -1603,8 +1676,12 @@ def main():
     ap = argparse.ArgumentParser(description='Add, update, remove and audit the pack\'s mods. README.md next to this file has the procedure.')
     sub = ap.add_subparsers(dest='cmd', required=True)
 
-    def common(p, boot=True):
+    def common(p, boot=True, client_check=True):
         p.add_argument('--mods', help='where the installed jars are (default: the PrismLauncher instance)')
+        if client_check:
+            p.add_argument('--no-client-check', action='store_true',
+                           help='do not check the client asset overrides against the jars (the gate then refuses the '
+                                'push until dev/client_overrides/client_overrides.py --check passes)')
         if boot:
             p.add_argument('--base', default='origin/main', help='what the boot is diffed against: a commit or a saved boot result')
             p.add_argument('--no-boot', action='store_true', help='static evidence only; the record then owes its boot')
@@ -1654,7 +1731,7 @@ def main():
     p.add_argument('--refresh', nargs='*', help='re-derive the evidence of every record (or the named ones); answers are kept')
     p.add_argument('--out-dir', help='write the full report and its JSON here (keep it out of this repo)')
     p.add_argument('--top', type=int, default=15, help='rows per priority class (0 = all)')
-    common(p, boot=False)
+    common(p, boot=False, client_check=False)
     p.set_defaults(fn=cmd_audit)
 
     sub.add_parser('check', help='the gate').set_defaults(fn=cmd_check)

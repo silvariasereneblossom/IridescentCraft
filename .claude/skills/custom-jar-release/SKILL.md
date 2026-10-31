@@ -73,6 +73,8 @@ The pre-push hook regenerates `Mod-List.md`; if it blocks the push, `git add .mi
 
 After a same-name rebuild the hook's registry snapshot check prints `CHANGED: 1 jar(s) of the pack carry another recorded hash than at the snapshot ...` with the jar's name. That does not block the push: most rebuilds change code, not registrations. **When the rebuild added, removed or renamed a registered id** (an item, a block, an entity type, a painting variant, ...), refresh the snapshot from the pushed-to-be commit and commit the folder as a second commit: `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot`, then `git add .minecraft/dev/registry`. Validators (quests, the boss and dimension registries, the loot audit, the Codex) read that folder as the truth.
 
+The hook's "Client asset overrides" block hashes only the `sounds.json`, `.ogg`, Falling Leaves atlas and TATOS texture files of the jars in `distribution/client/mods`: a rebuild that changes code passes. One that changed a sound (Patchouli, ars_nouveau, justlevelingfork and lovely_sparkle_pieces ship some) prints `[client-overrides] FAIL STALE <jar>: one of the pack's own jars, rebuilt with other sounds.json, sound, atlas or TATOS-texture files`. Then `python -I .minecraft/dev/client_overrides/client_overrides.py --check` (it reads the third-party jars from the instance and the pack's own from the tree; `--write` if it says so, then `sync-distros.ps1 -Fix`), and commit `.minecraft/dev/client_overrides/checked.json` with the release.
+
 ## Scenario B — version bump (filename changes): the lockstep
 
 Bumping the version (e.g. `1.0.0 → 1.1.0`) changes the jar **filename**, and these must move **together** or the deploy silently breaks — a missed allowlist entry purges the new jar as "not allowlisted"; a missed manifest entry hash-fails it:
@@ -85,7 +87,7 @@ Bumping the version (e.g. `1.0.0 → 1.1.0`) changes the jar **filename**, and t
 
 Then run Scenario A (build + regen + commit). `git rm` the old-named jar from the 3 mods dirs and `git add` the new one.
 
-A new file name is a new jar for two gates, and both block the push until they are answered:
+A new file name is a new jar for two gates, and both block the push until they are answered (for a jar the client loads there is a third, the client asset overrides' `STALE <jar>: in the client index, not in the stamp`; the `intake.py update` below answers it, since it ends with the override check and writes the stamp):
 - **The registry snapshot check says `STALE`** (the set of jars differs). Commit the release, then `powershell -ExecutionPolicy Bypass -File .minecraft\dev\boot\boot.ps1 -Ref <commit> -WriteSnapshot` and commit `.minecraft\dev\registry` as a second commit; the push carries both.
 - **The mod intake gate says `NO RECORD OF THIS JAR <mod>`** (the mod's intake record was made from the old file name). After the release: `python -I .minecraft\dev\mods\intake.py update <mod> <repo>\.minecraft\mods\<new jar>`. It leaves the metafile, the jars and the manifest alone and rewrites the record, with a boot diff against `origin/main`; a question the new version raises has to be answered (`intake.py decide`) before the push. `<mod>` is the metafile's name without `.pw.toml`.
 

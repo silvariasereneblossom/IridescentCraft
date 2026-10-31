@@ -12,6 +12,8 @@ name: Mod intake gate
 #   - a NEW mod (not in dev/mods/intake_baseline.json) with a decision that is owed, or
 #     decided and not applied to the boss or dimension registry
 #   - a record no mod belongs to, or one that does not parse
+#   - a client mod added, updated or removed since the client asset overrides were checked
+#     (the stamp .minecraft/dev/client_overrides/checked.json; client-overrides.yml checks the rest)
 # The owed decisions of the grandfathered mods are a backlog, never a failure.
 #
 # History: until 2026-10-13 nobody was asked what a new mod's dimension tier, boss status,
@@ -29,6 +31,7 @@ on:
       - '.minecraft/dev/registry/**'
       - '.minecraft/kubejs/config/icraft/registry/**'
       - '.minecraft/custom_jars_manifest.json'
+      - '.minecraft/dev/client_overrides/**'
       - '.github/workflows/mod-intake.yml'
   pull_request:
     branches: [main]
@@ -39,6 +42,7 @@ on:
       - '.minecraft/dev/rosters/**'
       - '.minecraft/kubejs/config/icraft/registry/**'
       - '.minecraft/custom_jars_manifest.json'
+      - '.minecraft/dev/client_overrides/**'
   workflow_dispatch:
 
 permissions:
@@ -62,6 +66,7 @@ jobs:
             /.minecraft/server_distribution/mods/.index/
             /.minecraft/distribution/client/mods/.index/
             /.minecraft/dev/mods/
+            /.minecraft/dev/client_overrides/
             /.minecraft/dev/rosters/
             /.minecraft/dev/registry/
             /.minecraft/dev/gen_keybinds.ps1
