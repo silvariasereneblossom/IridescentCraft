@@ -46386,10 +46386,10 @@
      "key": "shared-data",
      "surface": "shared-data",
      "status": "decided",
-     "answer": "keep",
+     "answer": "override",
      "by": "operator",
-     "on": "2026-10-14",
-     "note": "operator in the intake chip's chat, 2026-10-14 (ruling 16, by hand): 'keep (Recommended)'",
+     "on": "2026-10-31",
+     "note": "Operator 2026-10-31 (RAM audit decision 7, 'keep as shipped' in 7d287d34): the pack overrides ub:tick with kubejs/data/ub/functions/tick.mcfunction, which calls UB's seven tick function ids in UB's order (ub:boss/eye, ub:boss/lostangel, ub:boss/storm, ub:alchemy_circles/tick, ub:boss/sorcerer, ub:extras/tick, ub:mobs/ticking) through icraft:gates/ub_gated (or ub_all, fail-open), each only while kubejs/server_scripts/compat/ub_tick_gate.js holds its family open. ON ANY UPDATE of Ultimate Bosses: re-check compat/ub_tick_gate.js and the tick.mcfunction override against the new jar's ub:tick (a new, renamed or reordered function id, a new boss family or entity type). Before: keep (operator 2026-10-14, ruling 16).",
      "evidence": [
       "functions on the tick tag: ub:tick; on the load tag: ub:load",
       "data under a namespace that is no mod id: ub (a pack rule keyed on the mod id misses it)"
@@ -46509,10 +46509,10 @@
      "key": "shared-data",
      "surface": "shared-data",
      "status": "decided",
-     "answer": "default",
+     "answer": "override",
      "by": "operator",
-     "on": "2026-10-14",
-     "note": "Default accepted on the operator's ruling of 2026-10-14 (decision sheet 2026-10-13, item 16, 'Split': --defaults with a note for the mods that owe only defaults and add no dimension or boss and ask no loot or duplicates question)",
+     "on": "2026-10-31",
+     "note": "Operator 2026-10-31 (RAM audit decision 7, 'keep as shipped' in 7d287d34): the pack overrides three Ultris functions with empty files, kubejs/data/1_splatus/functions/ultris/clocks/5_tick, clocks/20_tick and completed_advancement, and kubejs/server_scripts/compat/ultris_player_checks.js does their work: it writes Ultris' 5-tick and 1-second clock resets, the mobGriefing score and the UUID scores itself and calls Ultris' own function ids. ON ANY UPDATE of Ultris: re-check that script and the three overrides against the new jar (changed lines in those three functions, a renamed clock, score or objective, a new reader of the clocks, a renamed function id the script calls). Before: default (operator 2026-10-14, ruling 16).",
      "evidence": [
       "functions on the tick tag: 1_splatus:ultris/tick; on the load tag: 1_splatus:ultris/load",
       "data under a namespace that is no mod id: 1_splatus (a pack rule keyed on the mod id misses it)"
