@@ -1002,7 +1002,7 @@ Refined Storage (+ Addons, Extra Disks, ExtraStorage, RSInfinityBooster, RSReque
 
 Scripting
 
-KubeJS (+ Additions, Ars Nouveau, Botania, Thermal, Delight, Offline), CraftTweaker, JeiTweaker, LootJS (via lootintegrations), AStages, FTB Quests
+KubeJS (+ Additions, Ars Nouveau, Botania, Thermal, Delight), LootJS (via lootintegrations), AStages, FTB Quests
 
 QoL & Performance
 

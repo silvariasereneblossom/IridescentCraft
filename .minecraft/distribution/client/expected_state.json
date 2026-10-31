@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "55356c0c1",
+    "generated_from":  "fc93123e",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4051,10 +4051,6 @@
                                                    "sha256":  "2e955c9e7a7f537d2ba4fa57565e15b150ac5ca1257fd92db2a3fe5035f2a2a5",
                                                    "size":  49
                                                },
-                  "config/libraryferret_1.properties":  {
-                                                            "sha256":  "33d47afe4a880a228c8ef125dc7ad59609b21c94bdc8aa04e853d38cf84be461",
-                                                            "size":  190
-                                                        },
                   "config/lightoverlay.properties":  {
                                                          "sha256":  "f26672542348ed68d5ffdfed8671bbe421a8520dc11ee520a375837fc5738d8a",
                                                          "size":  310
@@ -4140,8 +4136,8 @@
                                                        "size":  104
                                                    },
                   "config/modernfix-mixins.properties":  {
-                                                             "sha256":  "016a902c12b784411b0775745f0db67472408e75dc1614eeedd8efb9fafa2f78",
-                                                             "size":  5999
+                                                             "sha256":  "dadd97e6777895a1b25b380a0e528f0e1bf682bd2bdfd8b9417265ab399a677a",
+                                                             "size":  5980
                                                          },
                   "config/modonomicon-client.toml":  {
                                                          "sha256":  "8cd257882931a507adc26f80ecbb0c2fc5e22d7298905ff736e89c9cb14dea37",
@@ -6039,14 +6035,6 @@
                                                                         "sha256":  "4d4be9dca6fd81fb51c3df0e2156f4a25374262aca4a067f495f95f3d7f26690",
                                                                         "size":  9434
                                                                     },
-                  "kubejs/config/probe-settings.json":  {
-                                                            "sha256":  "3c29245b1884f68ea3622f1365b9fc0f2e6b49d73db2b1e4704f43aa5834e56e",
-                                                            "size":  125
-                                                        },
-                  "kubejs/config/probejs.json":  {
-                                                     "sha256":  "eb0bfaed60482e4e159ff4e2452cc098de57689f7cc82b4c9d9f112548173da6",
-                                                     "size":  1005
-                                                 },
                   "kubejs/data/1_splatus/functions/ultris/clocks/20_tick.mcfunction":  {
                                                                                            "sha256":  "7ede03aa9f1c495f3cdb50d96c98ca21bfbf5fb9848370755e2dffd35d19f04a",
                                                                                            "size":  914
@@ -8515,10 +8503,6 @@
                                                          "sha256":  "68d58b5de40340ec7f519d5fe974eb984f09b49e2961d000e52ed689aff5c212",
                                                          "size":  531
                                                      },
-                  "mods/.index/crafttweaker.pw.toml":  {
-                                                           "sha256":  "eecafe46aecd6e92d4b37c46490598da6769f43713e50565a36c1304177b750c",
-                                                           "size":  452
-                                                       },
                   "mods/.index/create-estrogen.pw.toml":  {
                                                               "sha256":  "deb9d4f811cd4453b1ccb11dd21c8798b882a0e99896ed1c9dd275d6101bfd3b",
                                                               "size":  627
@@ -8951,10 +8935,6 @@
                                                   "sha256":  "2ddde268ab25ceb9ae820c05dd3c4ead1ad8da7e95ac9af7cfc5296614c15260",
                                                   "size":  550
                                               },
-                  "mods/.index/jeitweaker.pw.toml":  {
-                                                         "sha256":  "a2d862227c461a970244ed348c035a72d99cfe488dbddc34ed56c9c0ac030f14",
-                                                         "size":  545
-                                                     },
                   "mods/.index/journeymap-integration.pw.toml":  {
                                                                      "sha256":  "c1305bfe5e3dca119f3b237c8ca2d7e016a5e2319b4f0c77ddc9a86fda802779",
                                                                      "size":  564
@@ -9023,10 +9003,6 @@
                                                              "sha256":  "5318cae5afbd517888c3feb9ae74ff06e868f378303fe0dbbe51091c0e13f2ef",
                                                              "size":  373
                                                          },
-                  "mods/.index/kubejs-offline.pw.toml":  {
-                                                             "sha256":  "b78cde791cdfc4d78c912f805e3383ab65e4e5eb0604e0267753614c374b865c",
-                                                             "size":  548
-                                                         },
                   "mods/.index/kubejs-thermal.pw.toml":  {
                                                              "sha256":  "3fc7b2ec081749779bdf7554207efaf0bb70be6f2f29817fedc410529c3959de",
                                                              "size":  558
@@ -9043,10 +9019,6 @@
                                                                       "sha256":  "f6f84bca7ce46948359a3b55cd750b8eac3cf3d748b5d00bbe4e5ea7ad0c3466",
                                                                       "size":  746
                                                                   },
-                  "mods/.index/lazydfu-reloaded.pw.toml":  {
-                                                               "sha256":  "3ed87d616623e4a1a50fef590d7cd7b7a2f52aa33c21e1c6f3bbb6f987812162",
-                                                               "size":  559
-                                                           },
                   "mods/.index/lendercataclysm.pw.toml":  {
                                                               "sha256":  "375021ad9e21c2883b345abf2b7c1d57ca7df06cb2de11ed7df7859c4238fe01",
                                                               "size":  447
@@ -9055,14 +9027,6 @@
                                                              "sha256":  "b25e0396890fd03e82af3082e6f4c544c484d65c263f545784a9310bdb61ba18",
                                                              "size":  624
                                                          },
-                  "mods/.index/libipn.pw.toml":  {
-                                                     "sha256":  "4031715a9ac883a7e10c64196d1957f41f8d69b40115b576259d9c2c9702a0a0",
-                                                     "size":  541
-                                                 },
-                  "mods/.index/library-ferret-forge.pw.toml":  {
-                                                                   "sha256":  "5c2ea59c5da402c40af46e8fdb6e5674ff2b7d2bc3249676e9511b4e678ffd16",
-                                                                   "size":  558
-                                                               },
                   "mods/.index/libx.pw.toml":  {
                                                    "sha256":  "c90d3b98de106b8822e11ad046cd0eb6a08f9509a86c202e090bc3a8999004cc",
                                                    "size":  518
@@ -9379,10 +9343,6 @@
                                                              "sha256":  "0171aa8e13591d088d40410db1113b787c10bbf7a48fd2400677b2fdab57e35b",
                                                              "size":  584
                                                          },
-                  "mods/.index/polylib.pw.toml":  {
-                                                      "sha256":  "c16769db433d36216baa4eb85eaa48053b4137cd092c1a21b61c9072b91bdcd9",
-                                                      "size":  571
-                                                  },
                   "mods/.index/polymorph.pw.toml":  {
                                                         "sha256":  "9d2aa17790adba7fcf15e335198fc3f160e3361c41e72c7a66c493a29f3c611b",
                                                         "size":  556
@@ -9403,10 +9363,6 @@
                                                         "sha256":  "6be7618d5d5c614f5d4b6fc696853c88365be90d574e860f46be603241ed514d",
                                                         "size":  553
                                                     },
-                  "mods/.index/probejs.pw.toml":  {
-                                                      "sha256":  "7fc4c639236c78eb02387c7bffe6cd09ed26a41a43fa42e93c32b4fe27d699d0",
-                                                      "size":  536
-                                                  },
                   "mods/.index/progressive-bosses.pw.toml":  {
                                                                  "sha256":  "cbeffae2ec4ef9a7c0c2a5e6ba32bbf6d16855e762f5aa544729007cc8164a1c",
                                                                  "size":  597
@@ -9539,10 +9495,6 @@
                                                              "sha256":  "3b267d063c8dcb2889890092bfd7befb74b721811371d7b5739b5d7d3294f069",
                                                              "size":  557
                                                          },
-                  "mods/.index/silent-lib.pw.toml":  {
-                                                         "sha256":  "c3a62d7a38e752777a2bfef32b7717699eb7255b9521cf9fd8e905fd50087bb5",
-                                                         "size":  536
-                                                     },
                   "mods/.index/simple-discord-rich-presence.pw.toml":  {
                                                                            "sha256":  "9630f7c95c592ee892d50945728cdcfded1b2f2795af5e20d88a300998ec8d23",
                                                                            "size":  620

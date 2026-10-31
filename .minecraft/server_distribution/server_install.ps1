@@ -130,8 +130,6 @@ $forceSkip = @(
     'jeed-',
     'jmi-',
     'JustEnoughMekanismMultiblocks-',
-    'lazyDFU-',
-    'libIPN-',
     'mek_walkable_cables-',
     'MouseTweaks-',
     'OverflowingBars-',

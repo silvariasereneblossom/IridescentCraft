@@ -66,7 +66,6 @@ saves/
 *.rar
 
 # Runtime-generated configs (mods write on startup)
-config/libraryferret_1.properties
 config/oculus.properties
 config/packetfixer.properties
 config/fabric/

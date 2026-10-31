@@ -83,7 +83,16 @@ $denyList = @(
     'tenshilib-',      # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
     'fancymenu_',      # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
     'konkrete_',       # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
-    'melody_'         # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'melody_',         # removed 2026-10-18: does nothing in the pack; operator 2026-10-18 23:05 EDT: "FancyMenu + Konkrete + Melody, chunky-player-pause, TenshiLib"
+    'jeitweaker-',     # removed 2026-10-31: RAM audit 2026-10-30: no CraftTweaker script in the pack (operator 2026-10-31)
+    'crafttweaker-',   # removed 2026-10-31: RAM audit 2026-10-30: no .zs script in the pack; forced ModernFix smart_ingredient_sync off (operator 2026-10-31)
+    'silent-lib-',     # removed 2026-10-31: RAM audit 2026-10-30: a library no jar of the pack references (operator 2026-10-31)
+    'polylib-',        # removed 2026-10-31: RAM audit 2026-10-30: a library no jar of the pack references (operator 2026-10-31)
+    'libraryferret-',  # removed 2026-10-31: RAM audit 2026-10-30: a library no jar of the pack references (operator 2026-10-31)
+    'libipn-',         # removed 2026-10-31: RAM audit 2026-10-30: a library no jar of the pack references (operator 2026-10-31)
+    'lazydfu-',        # removed 2026-10-31: RAM audit 2026-10-30: the same job as ModernFix dynamic_dfu, which is on (operator 2026-10-31)
+    'probejs-',        # removed 2026-10-31: RAM audit 2026-10-30: script-typing dev tool, a dump thread on every client join (operator 2026-10-31)
+    'kubejsoffline-'  # removed 2026-10-31: RAM audit 2026-10-30: offline documentation dev tool on clients (operator 2026-10-31)
 )
 
 # --- ALLOWLIST FALLBACK: custom jars not declared in packwiz mods/.index/.

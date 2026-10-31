@@ -105,7 +105,7 @@ What happens automatically:
 1. Subfolder bootstrap: the first run creates `IridescentCraft Dedicated Server\` next to the bat, copies itself there and relaunches from there, so server files do not spill into Downloads or Desktop. The marker file `.icraft_server` flags the install location so later launches don't bootstrap again.
 2. Repo sync: `phase0_sync.ps1` is downloaded from GitHub if it is missing, then runs. On the first launch, with no `.icraft_last_sha` marker, it falls back to a full `main.zip` download (about 150 MB) and overlays all `server_distribution/` files into the install dir. Later launches diff-sync through the GitHub compare API (typically 5 to 10 seconds for a few changed files).
 3. Forge installer: downloads `forge-1.20.1-47.4.6-installer.jar` and runs `--installServer`.
-4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, KubeJS Offline, Equipment Compare, etc.) are skipped through each mod's `side` field.
+4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, etc.) are skipped through each mod's `side` field.
 5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (`-Xmx14G -Xms14G` G1GC tuning; the Linux script uses `-Xmx10G -Xms8G`).
 
 The first boot takes 5 to 15 minutes while the server's 428 mods initialize. Wait for `Done (XXX.XXXs)! For help, type "help"` in the console.

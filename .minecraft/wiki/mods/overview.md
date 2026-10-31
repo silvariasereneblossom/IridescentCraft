@@ -72,7 +72,7 @@ Refined Storage (+addons), Sophisticated Backpacks/Storage, Storage Drawers, Pre
 
 ## Scripting
 
-KubeJS (+addons), CraftTweaker, JeiTweaker, LootJS, AStages
+KubeJS (+addons), LootJS, AStages
 
 ## Ungated Mods
 
@@ -84,7 +84,7 @@ Multiplayer: Open Parties and Claims (chunk claiming), Simple Voice Chat
 
 Libraries/Dependencies: Majrusz Library, Amber
 
-Performance: ImmediatelyFast, Oculus, LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis
+Performance: ImmediatelyFast, Oculus, Alternate Current, Ksyxis
 
 Other: CC: Tweaked, Quark, Disenchanting (T1-gated recipe), Enchantment Transfer (ungated; the XP cost is the gate), Flux Networks, Iron Jetpacks (tiered by materials, single dynamic item ID with NBT), Table of Experience (T2-gated recipe), DarkOrb Orb of Origin (T2-gated recipe)
 
