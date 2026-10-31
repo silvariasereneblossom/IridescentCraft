@@ -48,7 +48,7 @@
 	mobs = true
 	client = true
 	experimental = true
-	oddities = true
+	oddities = false
 
 [automation]
 	"Pistons Move Tile Entities" = true
@@ -1821,13 +1821,13 @@
 		"Enchantments To Register" = []
 
 [oddities]
-	Pipes = true
-	Backpack = true
-	"Tiny Potato" = true
-	"Matrix Enchanting" = true
-	"Totem Of Holding" = true
-	Crate = true
-	Magnets = true
+	Pipes = false
+	Backpack = false
+	"Tiny Potato" = false
+	"Matrix Enchanting" = false
+	"Totem Of Holding" = false
+	Crate = false
+	Magnets = false
 
 	[oddities.pipes]
 		#How long it takes for an item to cross a pipe. Bigger = slower.

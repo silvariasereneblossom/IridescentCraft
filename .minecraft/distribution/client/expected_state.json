@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "949b8dec",
+    "generated_from":  "ed7557805",
     "roots":  [
                   "kubejs",
                   "config",
@@ -4588,8 +4588,8 @@
                                                          "size":  0
                                                      },
                   "config/quark-common.toml":  {
-                                                   "sha256":  "cc6fd2098398f37eab7d886d833c6c5c0aaa5e5ea4028520a533af750cbd4ea1",
-                                                   "size":  79852
+                                                   "sha256":  "ee3a2f7fecb85c296be15d6793d5cd5f26afadaeb9e599a91ebe2e134ceab37d",
+                                                   "size":  79860
                                                },
                   "config/quickstack-client.toml":  {
                                                         "sha256":  "fd37d509842b31fd22b9bf61e966c5560df857bd434150215299174bbea99a8b",
