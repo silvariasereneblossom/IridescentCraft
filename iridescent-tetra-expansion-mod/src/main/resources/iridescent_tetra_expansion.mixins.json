@@ -10,7 +10,14 @@
     "ArsManaCapMixin",
     "ProtectionFlatArmorMixin",
     "MagicProtectionHalveMixin",
-    "VeridiumDurabilityCastMixin"
+    "VeridiumDurabilityCastMixin",
+    "ZetaRecipeCrawlMixin",
+    "OutcomeMaterialAccessor",
+    "OutcomeMaterialShareMixin",
+    "MaterialOutcomeToolsMixin",
+    "SchematicRegistryMemoryMixin",
+    "ModuleRegistryShareMixin",
+    "DataStoreSyncTextMixin"
   ],
   "client": [
     "GuiModuleSlotSubheadingMixin",
