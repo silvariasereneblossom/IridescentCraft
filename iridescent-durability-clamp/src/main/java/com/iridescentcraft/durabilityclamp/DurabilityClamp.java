@@ -25,6 +25,11 @@ import org.slf4j.Logger;
  * ({@link EmptyLevelPruneBackstop}): chosen as host because it ships on the
  * dedicated server, already builds mixins, and depends on nothing but Forge.
  *
+ * Since 2026-10-31 it also hosts Lootr's tick without the per-tick copy
+ * (lootr.mixin.TileTickerInPlaceMixin, its own config and plugin): an engine
+ * fix of the same kind, and it targets Lootr by name, so the jar still
+ * builds against Forge alone.
+ *
  * History: the jar used to also carry an "event guard" (EventBusInvokeMixin
  * + EventGuardDiag) meant to swallow ClassCastExceptions thrown by Forge
  * event listeners. It never applied: Forge's ASMEventHandler is loaded on

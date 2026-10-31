@@ -32,6 +32,9 @@ mixin {
     // Empty-level prune backstop: a config of its own so it can be
     // "required": false while the clamp's config stays required.
     config "${mod_id}.emptylevel.mixins.json"
+    // Lootr's chest-conversion tick without its per-tick copy: a config of
+    // its own whose plugin applies it to the proven Lootr build only.
+    config "${mod_id}.lootr.mixins.json"
 }
 
 repositories {
@@ -56,7 +59,7 @@ jar {
             "Implementation-Version": mod_version,
             "Implementation-Vendor": mod_authors,
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.emptylevel.mixins.json"
+            "MixinConfigs": "${mod_id}.mixins.json,${mod_id}.emptylevel.mixins.json,${mod_id}.lootr.mixins.json"
         ])
     }
     finalizedBy 'reobfJar'

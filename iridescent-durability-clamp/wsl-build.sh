@@ -29,6 +29,11 @@
 # must boot an offline Forge server before it is pushed -- main is deployed to
 # the live server unattended.
 #
+# And a THIRD, iridescent_durability_clamp.lootr.mixins.json (Lootr's tick
+# without its per-tick copy, `"required": true`; its plugin applies it to
+# Lootr 0.7.35.94 only and skips it for any other Lootr or none): same checks.
+# It targets Lootr by name, so Lootr is not a compile dependency either.
+#
 # gradle-wrapper.jar is NOT tracked for this mod (the repo-root `*.jar` ignore
 # swallowed it), so a clean checkout has ./gradlew but no wrapper jar. It is
 # bootstrapped from a sibling mod (every tracked wrapper jar in this repo is
@@ -100,7 +105,7 @@ echo "[wsl-build] Built: $OUT"
 # Two configs: the clamp's ("required": true) and the empty-level prune
 # backstop's ("required": false). Both must be in the jar AND named in the
 # manifest's MixinConfigs -- a config the manifest does not name is never loaded.
-MIXIN_CFGS=("${MOD_ID}.mixins.json" "${MOD_ID}.emptylevel.mixins.json")
+MIXIN_CFGS=("${MOD_ID}.mixins.json" "${MOD_ID}.emptylevel.mixins.json" "${MOD_ID}.lootr.mixins.json")
 REFMAP="${MOD_ID}.refmap.json"
 LISTING="$(unzip -Z1 "$OUT")"
 # (Manifest lines wrap at 72 bytes; a continuation line starts with one space.)

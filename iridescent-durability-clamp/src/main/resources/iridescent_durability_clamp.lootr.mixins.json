@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.iridescentcraft.durabilityclamp.lootr.mixin",
+  "plugin": "com.iridescentcraft.durabilityclamp.lootr.LootrTickMixinPlugin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "iridescent_durability_clamp.refmap.json",
+  "mixins": [
+    "TileTickerInPlaceMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
