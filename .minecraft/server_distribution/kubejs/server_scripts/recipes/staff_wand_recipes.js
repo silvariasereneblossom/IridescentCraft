@@ -32,10 +32,10 @@ ServerEvents.recipes(icraft.guard('recipes/staff_wand_recipes', 'ServerEvents.re
   // staff_base). The staff_base intermediate stays craftable for mod
   // compatibility / future use, but isn't used in our new recipes.
   icraft.section('recipes/staff_wand_recipes/dans-magic-strip-nether-tier-recipes', function () {
-  ;[
+  event.remove({ output: [
     'dna:ice_staff', 'dna:lightning_staff', 'dna:magma_staff',
     'dna:tnt_staff', 'dna:toxic_staff'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // T1 vertical-wand shape:
   //   .R.
@@ -89,7 +89,7 @@ ServerEvents.recipes(icraft.guard('recipes/staff_wand_recipes', 'ServerEvents.re
   // Strip all element wand recipes (all use netherite_stick in source mod —
   // would gate them as T4 endgame, which doesn't fit our progression).
   icraft.section('recipes/staff_wand_recipes/simple-staves-strip-mods-netherite-stick', function () {
-  ;[
+  event.remove({ output: [
     'simple_staves:flame_wand',
     'simple_staves:wind_essence_wand',
     'simple_staves:thunder_wand',
@@ -100,7 +100,7 @@ ServerEvents.recipes(icraft.guard('recipes/staff_wand_recipes', 'ServerEvents.re
     'simple_staves:tenebrium_wand',
     // Explosion wand: stripped without replacement (redundant w/ Battlerod)
     'simple_staves:explosion_wand'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // Replacement shape — woodenwand + reagent + amethyst_powder:
   //   .R.

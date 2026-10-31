@@ -6024,8 +6024,8 @@
                                                           "size":  329
                                                       },
                   "kubejs/config/icraft/live/expected.json":  {
-                                                                  "sha256":  "572160c47668b0756505e6e1845eb1f6bc7e10a6fb9e92f41ef767fbf652eed6",
-                                                                  "size":  49626
+                                                                  "sha256":  "f1e9e313b011f848bc4e72fe5743ac78de80d256a413e3f85b3d9537f58b72df",
+                                                                  "size":  49758
                                                               },
                   "kubejs/config/icraft/registry/bosses.json":  {
                                                                     "sha256":  "326547b08036f8ce1ec2a339100654382fd66fbe054e8782bcb0d1fc65653624",
@@ -7399,10 +7399,6 @@
                                                                               "sha256":  "445b9ad8f875ddfd3e7495803715b702cd400a94ae34405186af97f6096b1c94",
                                                                               "size":  9218
                                                                           },
-                  "kubejs/server_scripts/cleanup/strip_truly_modular_items.js":  {
-                                                                                     "sha256":  "1e12c6bedd172b1e65c85f86379131869fd691bee525377a15b50b08a0fc0b02",
-                                                                                     "size":  3543
-                                                                                 },
                   "kubejs/server_scripts/codex_delivery.js":  {
                                                                   "sha256":  "ad358869b1490fed68193bab83fb65e6b08fc5b7de53c28e21953e95f0f55204",
                                                                   "size":  32459
@@ -7508,8 +7504,8 @@
                                                                           "size":  4951
                                                                       },
                   "kubejs/server_scripts/food_dedup_recipes.js":  {
-                                                                      "sha256":  "5abc825504825537fa99c6af3818bc8dc2d550499fd6b83c3525d6e33d42c92a",
-                                                                      "size":  4038
+                                                                      "sha256":  "33fa0afd0f117c361e8bb9b18eda28e961fddca5377fd7d41a233bc6061ca6e1",
+                                                                      "size":  4168
                                                                   },
                   "kubejs/server_scripts/gates/astages_restrictions.js":  {
                                                                               "sha256":  "f6376dc6ebfa47ba0b093cb86490a2e55287db19cce8baf2f0b03e7657423234",
@@ -7792,8 +7788,8 @@
                                                                            "size":  5694
                                                                        },
                   "kubejs/server_scripts/recipes/ad_astra_gating.js":  {
-                                                                           "sha256":  "6b1449a28407d3bd5989e40cae939592aa4aca099415dc92a281f6d2434ecaa5",
-                                                                           "size":  12678
+                                                                           "sha256":  "bb029f671aed83b2f8727651b3e4384efcd452502a8457bb31c526c6fa1e7b0b",
+                                                                           "size":  12620
                                                                        },
                   "kubejs/server_scripts/recipes/boss_material_processing.js":  {
                                                                                     "sha256":  "22f8234379e1d340de6cb1455400fc16650f34a7798aad87987cc1efb063c2b8",
@@ -7832,32 +7828,32 @@
                                                                                   "size":  2420
                                                                               },
                   "kubejs/server_scripts/recipes/recipe_audit.js":  {
-                                                                        "sha256":  "b1c1cb296c71dc40d048513f8840948b896ecb39df4c7a76d40a0cf6dfc6fd3d",
-                                                                        "size":  29411
+                                                                        "sha256":  "58d269ba066ae93dd6e332bd69fc9d2e9a55e9fc7caf72274e2896929bf8b946",
+                                                                        "size":  28061
                                                                     },
                   "kubejs/server_scripts/recipes/refined_storage_dualpath.js":  {
-                                                                                    "sha256":  "9b8212c221bfe320900e3e92ccc7d0d28a10841062dd193a28229ec98ce2c307",
-                                                                                    "size":  16907
+                                                                                    "sha256":  "50955a494d66d7f28d8d6b49ba1df24c6c7003ab1b0d79c532388a5a5d286c25",
+                                                                                    "size":  16875
                                                                                 },
                   "kubejs/server_scripts/recipes/staff_wand_recipes.js":  {
-                                                                              "sha256":  "e5b2aad0f88371d3685bba41e785fd0e49efc792c99640756f3cdbd72c7d6a4f",
-                                                                              "size":  8382
+                                                                              "sha256":  "e3271a67927376b5b1dab997ce537769806ef5e96854c55faf3cf8471056997d",
+                                                                              "size":  8344
                                                                           },
                   "kubejs/server_scripts/recipes/strip_mutant_monsters.js":  {
                                                                                  "sha256":  "028a771f8ddae869bf25476ce75b9aa5518a6a10f050f1efaece683f38f06461",
                                                                                  "size":  1427
                                                                              },
                   "kubejs/server_scripts/recipes/strip_tmb_bow_recipes.js":  {
-                                                                                 "sha256":  "d62c3a55e2e03753eff7f8001971abc1230f2b788fc4d705fb85d21e048fbf48",
-                                                                                 "size":  1548
+                                                                                 "sha256":  "589677203301dc1ef71b91fc50bdf5d3473e0b135c7e8c82de2905ef228545d7",
+                                                                                 "size":  1676
                                                                              },
                   "kubejs/server_scripts/recipes/tier_gated_recipes.js":  {
-                                                                              "sha256":  "a1e7ad47bee31568cc7d162ea950c9dd3716861cbc1b43732118d330278f168e",
-                                                                              "size":  35927
+                                                                              "sha256":  "4b06db37aace5b8aca87802178537ed1a3ca449b8ad10cdb4f62800469d428ce",
+                                                                              "size":  35871
                                                                           },
                   "kubejs/server_scripts/recipes/waystone_recipes.js":  {
-                                                                            "sha256":  "5ca4bcc435042ab860530412a6fd17a7a3652c3945a4f98411b2daa06056518e",
-                                                                            "size":  8398
+                                                                            "sha256":  "a4e837ed530ba2234647642baecf1321ee9f8ed5dcec2def07ffe0f5f3f3e441",
+                                                                            "size":  8364
                                                                         },
                   "kubejs/server_scripts/regen_control.js":  {
                                                                  "sha256":  "b3c9f7f289acfa85c08e16822e8389952ca1f2ebf5ffd235e412a59fa168dd72",

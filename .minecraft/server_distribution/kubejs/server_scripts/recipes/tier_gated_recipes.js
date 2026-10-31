@@ -21,6 +21,10 @@
 // tier stage. Each of those recipes keeps the shape it really had (slot blank)
 // and is locked to its tier in gates/astages_restrictions.js (STAGE-GATED
 // RECIPES) -- the crafting grid gives no result without the stage.
+//
+// A removal by output takes a LIST: each remove() call walks every recipe of
+// the pack once, whatever the list's length (one call per id until 2026-10-30,
+// RAM audit F7). A remove by id is a lookup and costs nothing.
 // =============================================================================
 
 ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.recipes', event => {
@@ -201,16 +205,19 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
   // ═══ SECTION C: CROSS-MOD MATERIAL LEAKS ═══
 
   icraft.section('recipes/tier_gated_recipes/section-c-cross-mod-material-leaks', function () {
-  event.remove({ type: 'create:mixing', output: 'minecraft:diamond' })
-  event.remove({ type: 'create:mixing', output: 'minecraft:diamond_block' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:diamond' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:netherite_scrap' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:ancient_debris' })
+  event.remove({ type: 'create:mixing', output: ['minecraft:diamond', 'minecraft:diamond_block'] })
+  event.remove({ type: 'create:crushing', output: [
+    'minecraft:diamond',
+    'minecraft:netherite_scrap',
+    'minecraft:ancient_debris',
+  ] })
   event.remove({ type: 'create:splashing', output: 'minecraft:diamond' })
   event.remove({ type: 'thermal:smelter', output: 'mekanism:ingot_osmium' })
-  event.remove({ type: 'mekanism:combining', output: 'minecraft:diamond' })
-  event.remove({ type: 'mekanism:combining', output: 'minecraft:diamond_ore' })
-  event.remove({ type: 'mekanism:combining', output: 'minecraft:deepslate_diamond_ore' })
+  event.remove({ type: 'mekanism:combining', output: [
+    'minecraft:diamond',
+    'minecraft:diamond_ore',
+    'minecraft:deepslate_diamond_ore',
+  ] })
   })
   // Botania Orechid → handled via datapack (icraft_botania_overrides)
   // IF Laser Drill, Occultism spirits, Thermal Insolator → config-based, manual audit
@@ -262,7 +269,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
   // weapons per locked-in decision 4 — creative-only until allocated to
   // a future boss. Final list: 44 entries.
   icraft.section('recipes/tier_gated_recipes/section-e-simply-swords-unique-removal', function () {
-  ;[
+  event.remove({ output: [
     // === T2 boss-allocated (loot_overhaul.js Section 8) ===
     'simplyswords:emberblade',         // Hydra
     'simplyswords:frostfall',          // Snow Queen
@@ -312,7 +319,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
     'simplyswords:watcher_claymore',   // Ferrous Wroughtnaut (T1)
     // === Relic entry (boss-gated; recipe removal is belt-and-suspenders) ===
     'simplyswords:dormant_relic'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
   })
 
   // === Runic crafting OFF (operator ruling 2026-10-11 22:18 EDT: "Wither ===
@@ -335,7 +342,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
   // waking_lichblade, awakened_lichblade. Never loaded (their own mod-loaded
   // conditions name mods that are not installed): the two Dreadtide recipes.
   icraft.section('recipes/tier_gated_recipes/drops-2-no-runic-crafting', function () {
-  ;[
+  event.remove({ output: [
     'simplyswords:runic_chakram',     'simplyswords:runic_claymore',
     'simplyswords:runic_cutlass',     'simplyswords:runic_glaive',
     'simplyswords:runic_greataxe',    'simplyswords:runic_greathammer',
@@ -345,7 +352,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
     'simplyswords:runic_spear',       'simplyswords:runic_twinblade',
     'simplyswords:runic_warglaive',
     'simplyswords:runefused_gem',     'simplyswords:netherfused_gem'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
   event.remove({ id: 'simplyswords:runic_grimoire_recipe_shapeless' })
   // 2026-10-18 (decision list entry 12, option (a), on recommendation): the
   // remnant chain goes too. With the fused gems removed above, an Empowered
@@ -368,7 +375,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
   // The other 4 (hither_thither_wand, staff_of_the_nines, cloud_staff,
   // perish_staff) ship without recipes already.
   icraft.section('recipes/tier_gated_recipes/section-k-staff-wand-drop-only-enforcement', function () {
-  ;[
+  event.remove({ output: [
     // ISS — graybeard, pyrium (also pyrium has armor route)
     'irons_spellbooks:graybeard_staff',
     'irons_spellbooks:pyrium_staff',
@@ -386,7 +393,7 @@ ServerEvents.recipes(icraft.guard('recipes/tier_gated_recipes', 'ServerEvents.re
     'terramity:lightning_staff',
     // DeeperDarker — sonorous_staff
     'deeperdarker:sonorous_staff'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
   })
 
 

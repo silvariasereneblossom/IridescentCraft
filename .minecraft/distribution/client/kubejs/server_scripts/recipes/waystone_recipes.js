@@ -20,7 +20,7 @@ ServerEvents.recipes(icraft.guard('recipes/waystone_recipes', 'ServerEvents.reci
   // We replace every craftable waystone variant with boss-gated versions.
 
   icraft.section('recipes/waystone_recipes/remove-all-default-waystone-recipes', function () {
-  ;[
+  event.remove({ output: [
     'waystones:waystone',
     'waystones:mossy_waystone',
     'waystones:sandy_waystone',
@@ -36,15 +36,13 @@ ServerEvents.recipes(icraft.guard('recipes/waystone_recipes', 'ServerEvents.reci
     'waystones:bound_scroll',
     'waystones:attuned_shard',
     'waystones:warp_dust'
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // Also remove all colored sharestone recipes
-  ;[
+  event.remove({ output: [
     'black','blue','brown','cyan','gray','green','light_blue','light_gray',
     'lime','magenta','orange','pink','purple','red','white','yellow'
-  ].forEach(color => {
-    event.remove({ output: `waystones:${color}_sharestone` })
-  })
+  ].map(color => `waystones:${color}_sharestone`) })
   })
 
 

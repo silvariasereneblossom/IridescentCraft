@@ -41,10 +41,12 @@ ServerEvents.recipes(icraft.guard('recipes/ad_astra_gating', 'ServerEvents.recip
   // jet_suit_leggings; Ad Astra 1.15 calls them `jet_suit` and `jet_suit_pants`,
   // so those two stayed craftable.
   icraft.section('recipes/ad_astra_gating/section-b-jet-suit-remove-entirely', function () {
-  event.remove({ output: 'ad_astra:jet_suit_helmet' })
-  event.remove({ output: 'ad_astra:jet_suit' })
-  event.remove({ output: 'ad_astra:jet_suit_pants' })
-  event.remove({ output: 'ad_astra:jet_suit_boots' })
+  event.remove({ output: [
+    'ad_astra:jet_suit_helmet',
+    'ad_astra:jet_suit',
+    'ad_astra:jet_suit_pants',
+    'ad_astra:jet_suit_boots',
+  ] })
   })
 
 

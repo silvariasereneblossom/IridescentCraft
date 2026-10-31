@@ -45,8 +45,6 @@
    "cherry_spawn_biome@PlayerEvents.loggedIn": "cherry_spawn_biome.js",
    "cherry_spawn_biome@ServerEvents.loaded": "cherry_spawn_biome.js",
    "class/equipment_hp_halving@ServerEvents.loaded": "class/equipment_hp_halving.js",
-   "cleanup/strip_truly_modular_items@PlayerEvents.inventoryChanged": "cleanup/strip_truly_modular_items.js",
-   "cleanup/strip_truly_modular_items@PlayerEvents.loggedIn": "cleanup/strip_truly_modular_items.js",
    "codex_delivery@PlayerEvents.chat": "codex_delivery.js",
    "codex_delivery@PlayerEvents.loggedIn": "codex_delivery.js",
    "codex_delivery@ServerEvents.commandRegistry": "codex_delivery.js",

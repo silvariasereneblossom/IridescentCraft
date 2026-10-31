@@ -17,6 +17,10 @@
 //     machine_frame recipe (requires steel = T2) in tier_gated_recipes.js B.1
 //   - botania-common.toml: No Orechid config knobs (weight-based, datapack only)
 //   - create-common.toml: Only has worldgen toggle, no recipe controls
+//
+// A removal by output takes a LIST: each remove() call walks every recipe of
+// the pack once, whatever the list's length (one call per id until 2026-10-30,
+// RAM audit F7).
 // =============================================================================
 
 ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes', event => {
@@ -29,29 +33,31 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // A.1: Create crushing ores that bypass worldgen removal
   // If gated ores somehow enter inventory, don't let crushing multiply them
   icraft.section('recipes/recipe_audit/section-a-create-recipe-leaks', function () {
-  event.remove({ type: 'create:crushing', output: 'minecraft:diamond_ore' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:deepslate_diamond_ore' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:emerald' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:emerald_ore' })
-  event.remove({ type: 'create:crushing', output: 'minecraft:deepslate_emerald_ore' })
+  event.remove({ type: 'create:crushing', output: [
+    'minecraft:diamond_ore',
+    'minecraft:deepslate_diamond_ore',
+    'minecraft:emerald',
+    'minecraft:emerald_ore',
+    'minecraft:deepslate_emerald_ore',
+  ] })
 
   // A.2: Create mixing — prevent cheap production of gated materials
-  event.remove({ type: 'create:mixing', output: 'minecraft:netherite_ingot' })
-  event.remove({ type: 'create:mixing', output: 'minecraft:netherite_scrap' })
-  event.remove({ type: 'create:mixing', output: 'minecraft:emerald' })
-  event.remove({ type: 'create:mixing', output: 'minecraft:emerald_block' })
-  event.remove({ type: 'create:mixing', output: 'mekanism:ingot_osmium' })
-  event.remove({ type: 'create:mixing', output: 'minecraft:ender_pearl' })
+  event.remove({ type: 'create:mixing', output: [
+    'minecraft:netherite_ingot',
+    'minecraft:netherite_scrap',
+    'minecraft:emerald',
+    'minecraft:emerald_block',
+    'mekanism:ingot_osmium',
+    'minecraft:ender_pearl',
+  ] })
 
   // A.3: Create mechanical crafting — same items, different recipe type
-  event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:diamond' })
-  event.remove({ type: 'create:mechanical_crafting', output: 'minecraft:netherite_ingot' })
+  event.remove({ type: 'create:mechanical_crafting', output: ['minecraft:diamond', 'minecraft:netherite_ingot'] })
   // (elytra: tier_gated_recipes.js Section G removes EVERY recipe that outputs
   //  minecraft:elytra, whatever its type — see F.3)
 
   // A.4: Create sequenced assembly leaks
-  event.remove({ type: 'create:sequenced_assembly', output: 'minecraft:diamond' })
-  event.remove({ type: 'create:sequenced_assembly', output: 'minecraft:netherite_ingot' })
+  event.remove({ type: 'create:sequenced_assembly', output: ['minecraft:diamond', 'minecraft:netherite_ingot'] })
   })
 
 
@@ -61,26 +67,25 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // B.1: Thermal smelter — prevent gated material production
   icraft.section('recipes/recipe_audit/section-b-thermal-expansion-leaks', function () {
-  event.remove({ type: 'thermal:smelter', output: 'minecraft:diamond' })
-  event.remove({ type: 'thermal:smelter', output: 'minecraft:netherite_ingot' })
-  event.remove({ type: 'thermal:smelter', output: 'minecraft:netherite_scrap' })
-  event.remove({ type: 'thermal:smelter', output: 'minecraft:emerald' })
+  event.remove({ type: 'thermal:smelter', output: [
+    'minecraft:diamond',
+    'minecraft:netherite_ingot',
+    'minecraft:netherite_scrap',
+    'minecraft:emerald',
+  ] })
 
   // B.2: Thermal centrifuge — could separate compounds into gated materials
-  event.remove({ type: 'thermal:centrifuge', output: 'minecraft:diamond' })
-  event.remove({ type: 'thermal:centrifuge', output: 'minecraft:emerald' })
+  event.remove({ type: 'thermal:centrifuge', output: ['minecraft:diamond', 'minecraft:emerald'] })
 
   // B.3: Thermal press — prevent stamping gated materials
-  event.remove({ type: 'thermal:press', output: 'minecraft:diamond' })
-  event.remove({ type: 'thermal:press', output: 'minecraft:netherite_ingot' })
+  event.remove({ type: 'thermal:press', output: ['minecraft:diamond', 'minecraft:netherite_ingot'] })
 
   // B.4: Thermal Insolator — dimensional crop restriction
   // The Insolator itself is gated by the machine frame (T2 steel).
   // However, if a player obtains dimensional seeds (Nether Wart, Chorus),
   // the Insolator could let them mass-produce T3/T4 crops in the overworld.
   // Remove Insolator recipes for dimensionally-gated crops:
-  event.remove({ type: 'thermal:insolator', output: 'minecraft:chorus_fruit' })
-  event.remove({ type: 'thermal:insolator', output: 'minecraft:chorus_flower' })
+  event.remove({ type: 'thermal:insolator', output: ['minecraft:chorus_fruit', 'minecraft:chorus_flower'] })
   })
 
 
@@ -91,12 +96,10 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // C.1: Mekanism enriching — prevent enriching gated ores into ingots
   // (Mek machines need osmium = T3, but if someone transmutes 1 osmium early...)
   icraft.section('recipes/recipe_audit/section-c-mekanism-leaks', function () {
-  event.remove({ type: 'mekanism:enriching', output: 'minecraft:diamond' })
-  event.remove({ type: 'mekanism:enriching', output: 'minecraft:emerald' })
+  event.remove({ type: 'mekanism:enriching', output: ['minecraft:diamond', 'minecraft:emerald'] })
 
   // C.2: Mekanism combining — additional ore fabrication blocks
-  event.remove({ type: 'mekanism:combining', output: 'minecraft:emerald_ore' })
-  event.remove({ type: 'mekanism:combining', output: 'minecraft:deepslate_emerald_ore' })
+  event.remove({ type: 'mekanism:combining', output: ['minecraft:emerald_ore', 'minecraft:deepslate_emerald_ore'] })
   })
 
   // C.3: Mekanism injecting/purifying — nothing to remove. The two lines that
@@ -111,9 +114,11 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // D.1: IF Dissolution Chamber — could dissolve items into exploitable fluids
   icraft.section('recipes/recipe_audit/section-d-industrial-foregoing-leaks', function () {
-  event.remove({ type: 'industrialforegoing:dissolution_chamber', output: 'minecraft:diamond' })
-  event.remove({ type: 'industrialforegoing:dissolution_chamber', output: 'minecraft:netherite_ingot' })
-  event.remove({ type: 'industrialforegoing:dissolution_chamber', output: 'minecraft:emerald' })
+  event.remove({ type: 'industrialforegoing:dissolution_chamber', output: [
+    'minecraft:diamond',
+    'minecraft:netherite_ingot',
+    'minecraft:emerald',
+  ] })
   })
 
   // D.2: IF Laser Drill — ore tables are config-based (see header notes)
@@ -126,16 +131,13 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // E.1: Ars Nouveau Imbuement — prevent cheap material transmutation
   icraft.section('recipes/recipe_audit/section-e-ars-nouveau-occultism-botania', function () {
-  event.remove({ type: 'ars_nouveau:imbuement', output: 'minecraft:diamond' })
-  event.remove({ type: 'ars_nouveau:imbuement', output: 'minecraft:netherite_ingot' })
+  event.remove({ type: 'ars_nouveau:imbuement', output: ['minecraft:diamond', 'minecraft:netherite_ingot'] })
 
   // E.2: Occultism Crushing — spirit miners could bypass worldgen removal
-  event.remove({ type: 'occultism:crushing', output: 'minecraft:diamond' })
-  event.remove({ type: 'occultism:crushing', output: 'minecraft:emerald' })
+  event.remove({ type: 'occultism:crushing', output: ['minecraft:diamond', 'minecraft:emerald'] })
 
   // E.3: Occultism Spirit Trade — prevent summoned spirits from trading gated materials
-  event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:diamond' })
-  event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:emerald' })
+  event.remove({ type: 'occultism:spirit_trade', output: ['minecraft:diamond', 'minecraft:emerald'] })
 
   // E.4: Occultism Ritual — dimensional miners that bypass ore removal.
   // Handled via the icraft_occultism_overrides datapack:
@@ -156,8 +158,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // Cannot be modified via KubeJS recipe events.
 
   // E.6: Botania Mana Infusion — prevent cheap gated material production
-  event.remove({ type: 'botania:mana_infusion', output: 'minecraft:diamond' })
-  event.remove({ type: 'botania:mana_infusion', output: 'minecraft:emerald' })
+  event.remove({ type: 'botania:mana_infusion', output: ['minecraft:diamond', 'minecraft:emerald'] })
   })
 
 
@@ -165,8 +166,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // F.1: Forbidden & Arcanus — dark magic transmutation
   icraft.section('recipes/recipe_audit/section-f-miscellaneous-cross-mod-leaks', function () {
-  event.remove({ type: 'forbidden_arcanus:clibano_combustion', output: 'minecraft:diamond' })
-  event.remove({ type: 'forbidden_arcanus:clibano_combustion', output: 'minecraft:netherite_ingot' })
+  event.remove({ type: 'forbidden_arcanus:clibano_combustion', output: ['minecraft:diamond', 'minecraft:netherite_ingot'] })
 
   // F.2: Any mod smelting/blasting gated ores (belt-and-suspenders)
   // Vanilla smelting should already be gate-safe, but catch modded furnace variants
@@ -239,7 +239,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // I.1: Remove ALL gun recipes + gunsmith station + ammo crafting
   icraft.section('recipes/recipe_audit/section-i-terramity-remove-guns-armor', function () {
-  ;[
+  event.remove({ output: [
     'terramity:basic_pistol', 'terramity:basic_rifle',
     'terramity:advanced_pistol', 'terramity:advanced_automatic_rifle',
     'terramity:advanced_burst_rifle', 'terramity:suppressed_advanced_pistol',
@@ -264,10 +264,10 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     // craft, ammunition for guns that cannot be made (loot already strips them)
     'terramity:steel_shell', 'terramity:daemonium_shotshells',
     'terramity:hellspec_shotshells',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // I.2: Remove ALL Terramity armor set recipes
-  ;[
+  event.remove({ output: [
     // Conductite set
     'terramity:conductite_armor_boots', 'terramity:conductite_armor_chestplate',
     'terramity:conductite_armor_leggings', 'terramity:conductite_scouter_helmet',
@@ -318,7 +318,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     'terramity:void_mage_helmet', 'terramity:void_mage_leggings',
     // Boss hat drops (remove crafting only — still drop from bosses)
     'terramity:gundalfs_hat_helmet',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // I.3: Terramity non-gun EPIC content — recipe removal
   // (audit Phase 4.1, 2026-04-27 — closes the audit's "non-gun curios + melee
@@ -326,7 +326,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // guns + gun-armor; this sub-block covers melee weapons + curios that ALSO
   // don't fit the pack's RPG progression at low tiers. Recipes removed; loot
   // allocation in loot/terramity_boss_drops.js.)
-  ;[
+  event.remove({ output: [
     // 7 EPIC non-gun melee weapons (boss-themed; allocated to T3-T4 bosses)
     'terramity:blasphemic_rapture', 'terramity:unholy_lance',
     'terramity:davy_jones', 'terramity:olympus',
@@ -337,7 +337,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     'terramity:antiprism', 'terramity:null_scarf',
     'terramity:dragon_band', 'terramity:sacred_speed_bracelets',
     'terramity:angel_feather', 'terramity:fortunes_favor',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // NOTE: Terramity has no custom enchantments in the enchantment registry.
   // "enchanter_merlin" is a boss mob entity, not an enchantment — kept.
@@ -363,7 +363,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   //        Reverium (T3): reverium_sword, reverium_axe
   //
   // Items NOT removed: the 4 armor sets per family are in I.2 above.
-  ;[
+  event.remove({ output: [
     // === Nyxium family (23 outputs, ingot + tools + decorative + greatsword) ===
     'terramity:nyxium',
     'terramity:nyxium_axe', 'terramity:nyxium_hoe',
@@ -392,7 +392,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     'terramity:reverium_axe', 'terramity:reverium_hoe',
     'terramity:reverium_pickaxe', 'terramity:reverium_shovel',
     'terramity:reverium_sword',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // I.5: Terramity RARE tomes + bracelets — recipe strip, structure drops
   // 9 RARE items the audit flagged as "ungated proc-modifying items":
@@ -409,7 +409,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   //   T3 (curio bracelets): electron_bracelets, malediction_bracelets
   //
   // Drop allocations are in `loot/terramity_structure_drops.js` below.
-  ;[
+  event.remove({ output: [
     // T2 tomes
     'terramity:tome_of_commotion', 'terramity:galebounce_tome',
     'terramity:velocity_flip', 'terramity:dimensional_poof',
@@ -418,7 +418,7 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
     'terramity:gaias_tempest',
     // T3 bracelets
     'terramity:electron_bracelets', 'terramity:malediction_bracelets',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
   })
 
 
@@ -476,11 +476,11 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   // stayed craftable). The Knight / Ragnarok / Dragon / Death entries that
   // used to be listed here were dropped: the installed The Abyss registers
   // no such armor items, so there is nothing to remove.
-  ;[
+  event.remove({ output: [
     // Unorithe set
     'theabyss:unorithe_armor_helmet', 'theabyss:unorithe_armor_chestplate',
     'theabyss:unorithe_armor_leggings', 'theabyss:unorithe_armor_boots',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
   })
 
 
@@ -497,10 +497,10 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
   event.remove({ output: /blue_skies:dusk_arc/ })
 
   // L.2: Remove Shadow Armor recipes (all 4 pieces)
-  ;[
+  event.remove({ output: [
     'blue_skies:shadow_helmet', 'blue_skies:shadow_chestplate',
     'blue_skies:shadow_leggings', 'blue_skies:shadow_boots',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // L.3: Remove Runic Arc crafting recipe (gated to boss drops + rare loot)
   event.remove({ output: 'blue_skies:runic_arc' })
@@ -529,31 +529,31 @@ ServerEvents.recipes(icraft.guard('recipes/recipe_audit', 'ServerEvents.recipes'
 
   // M.1: Remove Diopside tool + armor recipes
   icraft.section('recipes/recipe_audit/section-m-blue-skies-material-stat-nerfs', function () {
-  ;[
+  event.remove({ output: [
     'blue_skies:diopside_sword', 'blue_skies:diopside_pickaxe',
     'blue_skies:diopside_axe', 'blue_skies:diopside_shovel',
     'blue_skies:diopside_hoe',
     'blue_skies:diopside_helmet', 'blue_skies:diopside_chestplate',
     'blue_skies:diopside_leggings', 'blue_skies:diopside_boots',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // M.2: Remove Charoite tool + armor recipes
-  ;[
+  event.remove({ output: [
     'blue_skies:charoite_sword', 'blue_skies:charoite_pickaxe',
     'blue_skies:charoite_axe', 'blue_skies:charoite_shovel',
     'blue_skies:charoite_hoe',
     'blue_skies:charoite_helmet', 'blue_skies:charoite_chestplate',
     'blue_skies:charoite_leggings', 'blue_skies:charoite_boots',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
   // M.3: Remove Horizonite tool + armor recipes
-  ;[
+  event.remove({ output: [
     'blue_skies:horizonite_sword', 'blue_skies:horizonite_pickaxe',
     'blue_skies:horizonite_axe', 'blue_skies:horizonite_shovel',
     'blue_skies:horizonite_hoe',
     'blue_skies:horizonite_helmet', 'blue_skies:horizonite_chestplate',
     'blue_skies:horizonite_leggings', 'blue_skies:horizonite_boots',
-  ].forEach(id => event.remove({ output: id }))
+  ] })
 
 
   console.log('[IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active')

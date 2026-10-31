@@ -44,9 +44,7 @@ ServerEvents.recipes(icraft.guard('recipes/refined_storage_dualpath', 'ServerEve
     'refinedstorage:64k_storage_part',
   ]
 
-  rsItemsToReplace.forEach(item => {
-    event.remove({ output: item })
-  })
+  event.remove({ output: rsItemsToReplace })
   })
 
   // =========================================================================

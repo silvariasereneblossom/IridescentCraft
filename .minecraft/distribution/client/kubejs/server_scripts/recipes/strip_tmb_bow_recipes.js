@@ -18,9 +18,9 @@
 ServerEvents.recipes(icraft.guard('recipes/strip_tmb_bow_recipes', 'ServerEvents.recipes', event => {
   const bows = global.ICRAFT_TMB_BOWS || []
   if (!bows.length) { console.warn('[strip_tmb_bow_recipes] no bow list — nothing removed'); return }
+  // One filter for the whole list: KubeJS walks every recipe once per remove() call
+  // (until 2026-10-30, one walk per bow; RAM audit F7).
   let n = 0
-  bows.forEach(b => {
-    try { event.remove({ output: b }); n++ } catch (e) {}
-  })
+  try { event.remove({ output: bows }); n = bows.length } catch (e) {}
   console.log('[strip_tmb_bow_recipes] removed craft recipes for ' + n + ' boss-exclusive TMB bows')
 }))

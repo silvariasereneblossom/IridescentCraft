@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 330,
-   "digest": "2bde0efc40ea3edf",
+   "count": 328,
+   "digest": "4c19e81616773bf5",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -274,14 +274,6 @@
     {
      "id": "class/equipment_hp_halving@ServerEvents.loaded",
      "script": "class/equipment_hp_halving.js"
-    },
-    {
-     "id": "cleanup/strip_truly_modular_items@PlayerEvents.inventoryChanged",
-     "script": "cleanup/strip_truly_modular_items.js"
-    },
-    {
-     "id": "cleanup/strip_truly_modular_items@PlayerEvents.loggedIn",
-     "script": "cleanup/strip_truly_modular_items.js"
     },
     {
      "id": "codex_delivery@PlayerEvents.chat",

@@ -95,12 +95,12 @@ ServerEvents.recipes(icraft.guard('food_dedup_recipes', 'ServerEvents.recipes', 
     'delightful:cantaloupe',
     'delightful:cantaloupe_seeds',
   ]
+  // One filter for the whole list: KubeJS walks every recipe once per remove() call
+  // (until 2026-10-30, one walk per output; RAM audit F7).
   let removed = 0
-  dupeOutputs.forEach(id => {
-    try {
-      event.remove({ output: id })
-      removed++
-    } catch (e) { /* recipe may not exist */ }
-  })
+  try {
+    event.remove({ output: dupeOutputs })
+    removed = dupeOutputs.length
+  } catch (e) { /* recipe may not exist */ }
   console.log(`[icraft food_dedup] Removed recipes for ${removed} duplicate outputs`)
 }))
