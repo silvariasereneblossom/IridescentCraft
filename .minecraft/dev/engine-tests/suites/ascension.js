@@ -103,7 +103,10 @@ T_run('login / respawn / refresh carry the bonus', function () {
   T_fire('P.respawned', { player: reborn, server: T_server })
   ok(bonuses(reborn, 0.03), 'respawn re-applies')
   var bare = new MPlayer('Bare', T_OW, 0, 64, 0)
-  var t = T.num(T_server, 'tick'); T.set(T_server, 'tick', Math.ceil((t + 1) / 6000) * 6000)
+  // the next tick the refresh is registered for (its interval and offset, as the tick master holds them)
+  var reg = global.serverTickFunctions.filter(function (e) { return e.name === 'tick_ascensionRefresh' })[0]
+  var t = T.num(T_server, 'tick')
+  T.set(T_server, 'tick', Math.ceil((t + 1 - reg.offset) / reg.interval) * reg.interval + reg.offset)
   T_tick(1)
   ok(bonuses(bare, 0.03), 'the 5-minute refresh re-applies')
   A.unlist(T_server, late); A.unlist(T_server, reborn); A.unlist(T_server, bare)

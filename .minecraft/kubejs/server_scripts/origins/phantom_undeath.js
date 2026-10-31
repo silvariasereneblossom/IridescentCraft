@@ -109,7 +109,8 @@
       }
     })
   }
-  global.registerServerTick('tick_phantomUndeath', 200, 0)
+  // offset 147 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_phantomUndeath', 200, 147)
 
   console.log('[IridescentCraft] Phantom Undeath loaded')
   console.log('  - Phantoms cannot die — health locks to 0.5 hearts')

@@ -177,7 +177,8 @@ global.tick_abyssRingEffects = function (event) {
     }
   })
 }
-global.registerServerTick('tick_abyssRingEffects', 20, 0)
+// offset 6 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_abyssRingEffects', 20, 6)
 
 
 // ==========================================================================

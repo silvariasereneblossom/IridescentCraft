@@ -58,7 +58,8 @@
       }
     })
   }
-  global.registerServerTick('tick_battlemageManaShield', 100, 0)
+  // offset 63 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_battlemageManaShield', 100, 63)
 
   console.log('[IridescentCraft] Battlemage Mana Shield loaded')
   console.log('  - Resistance I base (20% damage reduction)')

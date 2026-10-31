@@ -100,11 +100,12 @@
   // Sweep walk-ins. discard() = silent deletion (no drops/XP/death event).
   // Dispatched by the master tick (0_tick_master.js) every SWEEP_TICKS instead
   // of a private ServerEvents.tick handler that ran its own modulo every tick.
-  // Same cadence as before (server tick % 60 === 0). Errors are left to the
+  // Same cadence as before (every 60 ticks; at tick % 60 === 44 since 2026-10-30). Errors are left to the
   // master's rate-limited reporter (this used to console.error on every
   // failed sweep, i.e. every 3 s, and those lines are kept in memory).
   // The entity query never loads chunks (unloaded sections are just absent).
-  global.registerServerTick('tick_spawnVillageSweep', SWEEP_TICKS, 0, function (event) {
+  // offset 44 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_spawnVillageSweep', SWEEP_TICKS, 44, function (event) {
     var level = event.server.overworld()
     var sp = level.getSharedSpawnPos()
     var entities = level.getEntitiesWithin(AABB.of(

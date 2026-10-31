@@ -1,5 +1,5 @@
 // @file kubejs/server_scripts/skills/skill_effects.js
-// @events BlockEvents.broken, BlockEvents.rightClicked, ItemEvents.crafted, ItemEvents.entityInteracted, ServerEvents.loaded, hurt, tick.server
+// @events BlockEvents.broken, BlockEvents.rightClicked, ItemEvents.crafted, ItemEvents.entityInteracted, ServerEvents.loaded, hurt, tick.player, tick.server
 // @live skill-craft-bonus, skill-material-save
 // =============================================================================
 // IridescentCraft — Pufferfish Skills Command Reward Bridge (Phase 3)
@@ -35,46 +35,16 @@ function getScore(server, playerName, objective) {
   } catch(e) { return 0 }
 }
 
-// Helper: check for nearby blocks within a radius (scans Y-1 to Y+1 for machines)
-function hasNearbyBlock(player, keys, radius) {
-  let pos = player.blockPosition()
-  let r = radius || 8
-  for (let dx = -r; dx <= r; dx++) {
-    for (let dz = -r; dz <= r; dz++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        try {
-          let block = player.level.getBlock(pos.x + dx, pos.y + dy, pos.z + dz)
-          if (block && keys.some(k => block.id.includes(k))) {
-            return true
-          }
-        } catch(e) {}
-      }
-    }
-  }
-  return false
-}
+// Engineering proximity: what stands around a player.
+// 2026-10-30 (RAM audit F1): the five Engineering effects each scanned the same
+// box around every qualifying player (17x17x3 blocks, 11x11x3 for enchanting),
+// all players in one server tick, and read the block id once per KEY of their
+// list: up to 22 reads a block, about 19,000 for one machine scan. Now ONE pass
+// per player answers all five lists (scanEngineering): one getBlock and one id
+// read a block, and what an id contains is kept (engClass). It runs on the
+// player tick, so each player's pass falls on that player's own age. What a
+// list matches is unchanged: a block whose id contains one of its keys.
 
-// Helper: count nearby blocks matching keys within radius
-function countNearbyBlocks(player, keys, radius) {
-  let pos = player.blockPosition()
-  let r = radius || 8
-  let count = 0
-  for (let dx = -r; dx <= r; dx++) {
-    for (let dz = -r; dz <= r; dz++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        try {
-          let block = player.level.getBlock(pos.x + dx, pos.y + dy, pos.z + dz)
-          if (block && keys.some(k => block.id.includes(k))) {
-            count++
-          }
-        } catch(e) {}
-      }
-    }
-  }
-  return count
-}
-
-// Block key lists for Engineering proximity checks
 let CRAFTING_STATION_KEYS = [
   'crafting_table', 'anvil', 'smithing_table', 'stonecutter',
   'loom', 'cartography_table', 'fletching_table', 'grindstone',
@@ -100,6 +70,61 @@ let FURNACE_KEYS = [
   'furnace', 'smelter', 'blast_furnace', 'smoker',
   'create:encased_fan'
 ]
+
+let ENCHANT_STATION_KEYS = ['anvil', 'enchanting_table', 'reforging', 'grindstone']
+
+// One bit per list; engClass(id) -> the lists whose keys the id contains.
+var ENG_CRAFTING = 1, ENG_MACHINE = 2, ENG_GENERATOR = 4, ENG_FURNACE = 8, ENG_ENCHANT = 16
+var ENG_LISTS = [
+  [ENG_CRAFTING, CRAFTING_STATION_KEYS], [ENG_MACHINE, MACHINE_KEYS],
+  [ENG_GENERATOR, GENERATOR_KEYS], [ENG_FURNACE, FURNACE_KEYS], [ENG_ENCHANT, ENCHANT_STATION_KEYS]
+]
+var ENG_CLASS_OF = {}        // block id -> bits; at most one entry per block type
+function engClass(id) {
+  var c = ENG_CLASS_OF[id]
+  if (c !== undefined) return c
+  c = 0
+  for (var i = 0; i < ENG_LISTS.length; i++) {
+    var keys = ENG_LISTS[i][1]
+    for (var k = 0; k < keys.length; k++) {
+      if (id.indexOf(keys[k]) >= 0) { c |= ENG_LISTS[i][0]; break }
+    }
+  }
+  ENG_CLASS_OF[id] = c
+  return c
+}
+
+// The box around the player, Y-1 to Y+1: radius 8, and 5 for the enchanting
+// stations (the radii the effects always had). `want` = the bits to answer.
+// -> { has: <bits found>, generators: <count>, furnaces: <count> }
+// The counts walk the whole box; with only yes/no lists asked, the walk stops
+// once each of them is answered (as the old yes/no scan returned at its first match).
+function scanEngineering(player, want) {
+  var pos = player.blockPosition()
+  var level = player.level
+  var r = (want & ~ENG_ENCHANT) ? 8 : 5
+  var counting = (want & (ENG_GENERATOR | ENG_FURNACE)) !== 0
+  var has = 0, generators = 0, furnaces = 0
+  for (var dx = -r; dx <= r; dx++) {
+    for (var dz = -r; dz <= r; dz++) {
+      var inner = dx >= -5 && dx <= 5 && dz >= -5 && dz <= 5
+      for (var dy = -1; dy <= 1; dy++) {
+        var c = 0
+        try {
+          var block = level.getBlock(pos.x + dx, pos.y + dy, pos.z + dz)
+          if (block) c = engClass(String(block.id))
+        } catch (e) { /* swallow-ok: as in the scans this replaces, a block that cannot be read matches no list */ }
+        if (c === 0) continue
+        if (!inner) c &= ~ENG_ENCHANT
+        has |= c
+        if (c & ENG_GENERATOR) generators++
+        if (c & ENG_FURNACE) furnaces++
+      }
+      if (!counting && (has & want) === want) return { has: has, generators: generators, furnaces: furnaces }
+    }
+  }
+  return { has: has, generators: generators, furnaces: furnaces }
+}
 
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -434,7 +459,7 @@ global.tick_skillEffects = (event) => {
   let tick = event.server.tickCount
 
   // ── Every 5 seconds: HP Regen ──
-  if (tick % 100 === 0) {
+  if (tick % 100 === 8) {
     event.server.players.forEach(player => {
       if (player.spectator || player.creative) return
       let regen = getScore(event.server, player.username, 'icraft_hp_regen')
@@ -445,7 +470,7 @@ global.tick_skillEffects = (event) => {
   }
 
   // ── Every 5 seconds: Buff Duration Extension ──
-  if (tick % 100 === 25) {
+  if (tick % 100 === 33) {
     event.server.players.forEach(player => {
       let buffDur = getScore(event.server, player.username, 'icraft_buff_duration')
       if (buffDur <= 0) return
@@ -472,7 +497,7 @@ global.tick_skillEffects = (event) => {
   }
 
   // ── Every 10 seconds: Attribute Sync (Sorcery + Accuracy) ──
-  if (tick % 200 === 50) {
+  if (tick % 200 === 58) {
     event.server.players.forEach(player => {
       let name = player.username
       try {
@@ -517,7 +542,7 @@ global.tick_skillEffects = (event) => {
   }
 
   // ── Every 10 seconds: Fishing Speed (Lure grant) ──
-  if (tick % 200 === 100) {
+  if (tick % 200 === 108) {
     event.server.players.forEach(player => {
       let fishSpeed = getScore(event.server, player.username, 'icraft_fishing_speed')
       if (fishSpeed <= 0) return
@@ -532,157 +557,138 @@ global.tick_skillEffects = (event) => {
       }
     })
   }
+}
+// offset 8 since 2026-10-30, the tick tests inside moved with it: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_skillEffects', 25, 8)
 
-  // ── Every 30 seconds: Enchant Cost Reduction (XP near enchanting stations) ──
-  if (tick % 600 === 150) {
-    event.server.players.forEach(player => {
-      let enchReduce = getScore(event.server, player.username, 'icraft_enchant_cost_reduction')
-      if (enchReduce <= 0) return
-      let enchKeys = ['anvil', 'enchanting_table', 'reforging', 'grindstone']
-      if (hasNearbyBlock(player, enchKeys, 5)) {
-        player.giveExperiencePoints(Math.floor(enchReduce / 2))
-      }
-    })
-  }
 
-  // ═══════════════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════════════════════
+// ENGINEERING: the five proximity effects, on the PLAYER tick
+// Every 10 s of a player's age: Crafting Speed and Machine Speed. Every 30 s
+// (each third pass): Enchant Cost Reduction, RF Generation and Fuel Reduction.
+// The cadences they had on the server tick until 2026-10-30, where every
+// player's scans ran in the same tick (RAM audit F1); one scan answers all five.
+// ═══════════════════════════════════════════════════════════════════════════
+var ENG_OFFSET = 75
+global.tick_skillEngineering = function (event) {
+  var player = event.player
+  var server = player.server
+  var name = player.username
+  var full = player.age % 600 === ENG_OFFSET
+  var playing = !(player.spectator || player.creative)
+
+  // Enchant Cost Reduction is the one effect that never skipped spectators and creative players.
+  var craftScore = playing ? getScore(server, name, 'icraft_crafting_speed') : 0
+  var machineScore = playing ? getScore(server, name, 'icraft_machine_speed') : 0
+  var enchReduce = full ? getScore(server, name, 'icraft_enchant_cost_reduction') : 0
+  var rfScore = (full && playing) ? getScore(server, name, 'icraft_rf_generation') : 0
+  var fuelScore = (full && playing) ? getScore(server, name, 'icraft_fuel_reduction') : 0
+
+  var want = (craftScore > 0 ? ENG_CRAFTING : 0) | (machineScore > 0 ? ENG_MACHINE : 0) |
+    (enchReduce > 0 ? ENG_ENCHANT : 0) | (rfScore > 0 ? ENG_GENERATOR : 0) | (fuelScore > 0 ? ENG_FURNACE : 0)
+  if (want === 0) return
+  var near = scanEngineering(player, want)
+
   // ENGINEERING: Crafting Speed
   // Grants Haste near crafting stations (within 8 blocks).
   // Score 1-9: Haste I. Score 10+: Haste II. Includes Speed I always.
   // Effect duration 15 seconds, refreshed every 10 seconds.
-  // ═══════════════════════════════════════════════════════════════════════
-  if (tick % 200 === 75) {
-    event.server.players.forEach(player => {
-      if (player.spectator || player.creative) return
-      let score = getScore(event.server, player.username, 'icraft_crafting_speed')
-      if (score <= 0) return
-
-      if (hasNearbyBlock(player, CRAFTING_STATION_KEYS, 8)) {
-        // Haste scales with investment
-        let hasteAmp = score >= 10 ? 1 : 0 // Haste I or II
-        player.potionEffects.add('minecraft:haste', 300, hasteAmp, false, true)
-        // Speed I always when near crafting stations
-        player.potionEffects.add('minecraft:speed', 300, 0, false, true)
-      }
-    })
+  if ((want & ENG_CRAFTING) && (near.has & ENG_CRAFTING)) {
+    // Haste scales with investment
+    var craftHaste = craftScore >= 10 ? 1 : 0 // Haste I or II
+    player.potionEffects.add('minecraft:haste', 300, craftHaste, false, true)
+    // Speed I always when near crafting stations
+    player.potionEffects.add('minecraft:speed', 300, 0, false, true)
   }
 
-  // ═══════════════════════════════════════════════════════════════════════
   // ENGINEERING: Machine Speed
   // Grants Haste near mod machines (within 8 blocks).
   // Scales: score 1-15 -> Haste I, 16-30 -> Haste II, 31+ -> Haste III.
   // High scores also grant Speed to move between machines faster.
-  // Additionally applies Strength I at score 20+ (proxy for "machine power").
-  // ═══════════════════════════════════════════════════════════════════════
-  if (tick % 200 === 125) {
-    event.server.players.forEach(player => {
-      if (player.spectator || player.creative) return
-      let score = getScore(event.server, player.username, 'icraft_machine_speed')
-      if (score <= 0) return
+  if ((want & ENG_MACHINE) && (near.has & ENG_MACHINE)) {
+    // Haste scales with deeper investment
+    var machineHaste = 0
+    if (machineScore >= 31) machineHaste = 2      // Haste III
+    else if (machineScore >= 16) machineHaste = 1  // Haste II
+    player.potionEffects.add('minecraft:haste', 300, machineHaste, false, true)
 
-      if (hasNearbyBlock(player, MACHINE_KEYS, 8)) {
-        // Haste scales with deeper investment
-        let hasteAmp = 0
-        if (score >= 31) hasteAmp = 2      // Haste III
-        else if (score >= 16) hasteAmp = 1  // Haste II
-        player.potionEffects.add('minecraft:haste', 300, hasteAmp, false, true)
-
-        // Speed I at score 10+, Speed II at 25+
-        if (score >= 10) {
-          let speedAmp = score >= 25 ? 1 : 0
-          player.potionEffects.add('minecraft:speed', 300, speedAmp, false, true)
-        }
-      }
-    })
+    // Speed I at score 10+, Speed II at 25+
+    if (machineScore >= 10) {
+      var machineSpeed = machineScore >= 25 ? 1 : 0
+      player.potionEffects.add('minecraft:speed', 300, machineSpeed, false, true)
+    }
   }
 
-  // ═══════════════════════════════════════════════════════════════════════
+  // ENGINEERING: Enchant Cost Reduction (XP near enchanting stations, within 5 blocks)
+  if ((want & ENG_ENCHANT) && (near.has & ENG_ENCHANT)) {
+    player.giveExperiencePoints(Math.floor(enchReduce / 2))
+  }
+
   // ENGINEERING: RF Generation
   // Rewards players near generators with XP and beneficial effects.
   // Scales with number of generators nearby and score level.
-  // Score 1-10: XP grant. 11-20: +Luck effect. 21+: +Glowing (shows nearby).
+  // Score 1-10: XP grant. 11-20: +Luck effect.
   // Higher scores + more generators = more XP.
-  // ═══════════════════════════════════════════════════════════════════════
-  if (tick % 600 === 300) {
-    event.server.players.forEach(player => {
-      if (player.spectator || player.creative) return
-      let score = getScore(event.server, player.username, 'icraft_rf_generation')
-      if (score <= 0) return
+  if ((want & ENG_GENERATOR) && near.generators > 0) {
+    // Base XP scales with score, multiplied by number of generators (diminishing)
+    var genMultiplier = Math.min(near.generators, 5) // Cap at 5x
+    var xpReward = Math.max(1, Math.floor((rfScore / 3) * Math.sqrt(genMultiplier)))
+    player.giveExperiencePoints(xpReward)
 
-      let genCount = countNearbyBlocks(player, GENERATOR_KEYS, 8)
-      if (genCount <= 0) return
+    // Luck effect at score 11+ (better loot near your power setup)
+    if (rfScore >= 11) {
+      var luckAmp = rfScore >= 23 ? 1 : 0 // Luck I or II
+      player.potionEffects.add('minecraft:luck', 700, luckAmp, false, true)
+    }
 
-      // Base XP scales with score, multiplied by number of generators (diminishing)
-      let genMultiplier = Math.min(genCount, 5) // Cap at 5x
-      let xpReward = Math.max(1, Math.floor((score / 3) * Math.sqrt(genMultiplier)))
-      player.giveExperiencePoints(xpReward)
-
-      // Luck effect at score 11+ (better loot near your power setup)
-      if (score >= 11) {
-        let luckAmp = score >= 23 ? 1 : 0 // Luck I or II
-        player.potionEffects.add('minecraft:luck', 700, luckAmp, false, true)
-      }
-
-      // Particle feedback
-      let pos = player.blockPosition()
-      event.server.runCommandSilent(
-        `particle minecraft:electric_spark ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0.02 12 force ${player.username}`
-      )
-    })
+    // Particle feedback
+    var rfPos = player.blockPosition()
+    server.runCommandSilent(
+      `particle minecraft:electric_spark ${rfPos.x} ${rfPos.y + 1} ${rfPos.z} 0.5 0.5 0.5 0.02 12 force ${player.username}`
+    )
   }
 
-  // ═══════════════════════════════════════════════════════════════════════
   // ENGINEERING: Fuel Reduction
   // Reduces effective fuel usage by periodically granting fuel items
   // when near furnaces/smelters. Scales with score and furnace count.
   // Also grants Fire Resistance as a thematic perk at high scores.
-  // ═══════════════════════════════════════════════════════════════════════
-  if (tick % 600 === 350) {
-    event.server.players.forEach(player => {
-      if (player.spectator || player.creative) return
-      let score = getScore(event.server, player.username, 'icraft_fuel_reduction')
-      if (score <= 0) return
+  if ((want & ENG_FURNACE) && near.furnaces > 0) {
+    // Scale fuel rebate with score and furnace count
+    var furnaceMultiplier = Math.min(near.furnaces, 4) // Cap at 4x
+    var baseAmount = Math.max(1, Math.floor(fuelScore / 8))
+    var totalFuel = Math.min(8, baseAmount * Math.ceil(furnaceMultiplier / 2))
 
-      let furnaceCount = countNearbyBlocks(player, FURNACE_KEYS, 8)
-      if (furnaceCount <= 0) return
-
-      // Scale fuel rebate with score and furnace count
-      let furnaceMultiplier = Math.min(furnaceCount, 4) // Cap at 4x
-      let baseAmount = Math.max(1, Math.floor(score / 8))
-      let totalFuel = Math.min(8, baseAmount * Math.ceil(furnaceMultiplier / 2))
-
-      // Give better fuel at higher scores
-      if (score >= 20) {
-        // Blaze powder at high levels (better fuel)
-        let blazeCount = Math.min(3, Math.floor(totalFuel / 3))
-        if (blazeCount > 0) {
-          player.give(Item.of('minecraft:blaze_powder', blazeCount))
-          totalFuel -= blazeCount * 3
-        }
+    // Give better fuel at higher scores
+    if (fuelScore >= 20) {
+      // Blaze powder at high levels (better fuel)
+      var blazeCount = Math.min(3, Math.floor(totalFuel / 3))
+      if (blazeCount > 0) {
+        player.give(Item.of('minecraft:blaze_powder', blazeCount))
+        totalFuel -= blazeCount * 3
       }
-      if (score >= 10 && totalFuel > 0) {
-        // Charcoal at mid levels (renewable fuel)
-        let charcoalCount = Math.min(4, Math.ceil(totalFuel / 2))
-        player.give(Item.of('minecraft:charcoal', charcoalCount))
-      } else if (totalFuel > 0) {
-        // Coal at low levels
-        player.give(Item.of('minecraft:coal', totalFuel))
-      }
+    }
+    if (fuelScore >= 10 && totalFuel > 0) {
+      // Charcoal at mid levels (renewable fuel)
+      var charcoalCount = Math.min(4, Math.ceil(totalFuel / 2))
+      player.give(Item.of('minecraft:charcoal', charcoalCount))
+    } else if (totalFuel > 0) {
+      // Coal at low levels
+      player.give(Item.of('minecraft:coal', totalFuel))
+    }
 
-      // Fire Resistance at score 16+ (thematic: mastery over fire/heat)
-      if (score >= 16) {
-        player.potionEffects.add('minecraft:fire_resistance', 700, 0, false, true)
-      }
+    // Fire Resistance at score 16+ (thematic: mastery over fire/heat)
+    if (fuelScore >= 16) {
+      player.potionEffects.add('minecraft:fire_resistance', 700, 0, false, true)
+    }
 
-      // Feedback
-      let pos = player.blockPosition()
-      event.server.runCommandSilent(
-        `particle minecraft:flame ${pos.x} ${pos.y + 0.5} ${pos.z} 0.4 0.2 0.4 0.01 6 force ${player.username}`
-      )
-    })
+    // Feedback
+    var fuelPos = player.blockPosition()
+    server.runCommandSilent(
+      `particle minecraft:flame ${fuelPos.x} ${fuelPos.y + 0.5} ${fuelPos.z} 0.4 0.2 0.4 0.01 6 force ${player.username}`
+    )
   }
 }
-global.registerServerTick('tick_skillEffects', 25, 0)
+global.registerPlayerTick('tick_skillEngineering', 200, ENG_OFFSET)
 
 
 // ═══════════════════════════════════════════════════════════════════════════

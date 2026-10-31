@@ -71,11 +71,12 @@ EntityEvents.spawned(icraft.guard('affix_skyshatter_mob_strip', 'EntityEvents.sp
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
-  // Centralized ISS-mob skip + bail log via 0_iss_guard.js.
-  if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_skyshatter_mob_strip')) return
-
+  // The marker first (2026-10-30, RAM audit F2): only a mob that passed the
+  // tests below carries it, so a reloaded mob costs one read.
   let data = entity.persistentData
   if (data.contains('icraft_skyshatter_scrubbed')) return
+  // Centralized ISS-mob skip + bail log via 0_iss_guard.js.
+  if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_skyshatter_mob_strip')) return
 
   let resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return

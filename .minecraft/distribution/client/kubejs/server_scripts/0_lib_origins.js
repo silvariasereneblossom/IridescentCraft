@@ -28,15 +28,23 @@
 //                                               "origins:race":  "icraft:faefolk",
 //                                               "origins:origin": "icraft:witch_of_ink" }
 //   and the direct player.nbt read (codex_delivery.js "Route 0") is proven in
-//   production logs. This file is that read, done ONCE per player per TTL.
+//   production logs. This file reads the same data, ONCE per player per TTL.
+//
+// HOW IT READS (2026-10-30, RAM audit F9)
+//   Straight from the capability: IOriginContainer.get(player) -> getOrigins(),
+//   layer key -> origin key. That map is what the NBT above is written from
+//   (OriginContainer.serializeNBT), which skips an entry whose layer or origin
+//   is not registered; the same test is made here, so the answers are the ones
+//   the NBT gave. player.nbt is the fallback only: when the Origins classes
+//   cannot be loaded, or the direct read fails DIRECT_FAILS_ALLOWED times in a
+//   row. It saved the WHOLE player (inventory, ender chest, recipe book, every
+//   capability) to read three strings, once per player every ~5 s.
 //
 // COST MODEL
-//   player.nbt serialises the whole player (inventory, recipe book, every
-//   capability), so it must never run per hit or per check. One read per player
-//   per TTL_TICKS; every get()/is() in between is a map lookup. Refreshed on
-//   login + respawn, dropped on logout. A class respec (/origin set + the
-//   picker GUI) therefore shows up within TTL_TICKS (5 s) with no extra wiring;
-//   call invalidate(player) to make it immediate.
+//   One read per player per TTL_TICKS; every get()/is() in between is a map
+//   lookup. Refreshed on login + respawn, dropped on logout. A class respec
+//   (/origin set + the picker GUI) therefore shows up within TTL_TICKS (5 s)
+//   with no extra wiring; call invalidate(player) to make it immediate.
 //
 // CONTRACT
 //   * never throws into the caller (null / false instead)
@@ -60,6 +68,9 @@
     'origin': 'origins:origin'
   }
   var LAYER_NAMES = ['class', 'race', 'origin']
+  // the other way round: layer id -> layer name
+  var LAYER_OF = { 'origins:class': 'class', 'origins:race': 'race', 'origins:origin': 'origin' }
+  var DIRECT_FAILS_ALLOWED = 3 // consecutive failures before the direct read is given up for NBT
 
   // uuid -> { t: <game time of the last read>, v: { class, race, origin } }
   var cache = {}
@@ -100,10 +111,55 @@
     try { return player.server.isSameThread() !== false } catch (e) { return true }
   }
 
-  // The proven read path, verbatim from codex_delivery.js Route 0:
+  // ── the Origins capability, read directly ────────────────────────────────
+  var OriginCap = null, OriginsApi = null, capWhy = ''
+  try {
+    OriginCap = Java.loadClass('io.github.edwinmindcraft.origins.api.capabilities.IOriginContainer')
+    OriginsApi = Java.loadClass('io.github.edwinmindcraft.origins.api.OriginsAPI')
+  } catch (e) {
+    OriginCap = null
+    capWhy = ' (' + e + ')'
+  }
+  var direct = !!OriginCap
+  var directFails = 0
+  if (!direct) {
+    try {
+      console.warn('[icraft.origin] the Origins capability classes could not be loaded' + capWhy +
+        ' -- reading class/race/origin from player NBT instead, once per player per ' + TTL_TICKS + ' ticks (logged once per script load)')
+    } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+  }
+
+  // The map the NBT is written from, with serializeNBT's own filter: a layer or
+  // an origin that is not registered is left out. A layer that was never chosen
+  // is absent (or "origins:empty") -> null.
+  // Registered = in the registry's registryKeySet(), the byKey test serializeNBT
+  // makes with containsKey(ResourceKey). containsKey itself cannot be called from
+  // a script: with a ResourceKey it is "ambiguous" on this engine (its
+  // ResourceLocation overload takes one too), measured on a full-pack boot 2026-10-30.
+  var readLayersDirect = function (player) {
+    var out = emptyLayers()
+    var opt = OriginCap.get(player).resolve()
+    if (!opt.isPresent()) return out
+    var server = player.server
+    var layers = OriginsApi.getLayersRegistry(server).registryKeySet()
+    var origins = OriginsApi.getOriginsRegistry(server).registryKeySet()
+    var it = opt.get().getOrigins().entrySet().iterator()
+    while (it.hasNext()) {
+      var en = it.next()
+      var layerKey = en.getKey(), originKey = en.getValue()
+      if (!layers.contains(layerKey) || !origins.contains(originKey)) continue
+      var name = LAYER_OF[String(layerKey.location())]
+      if (!name) continue
+      var id = String(originKey.location())
+      out[name] = (id !== '' && id !== 'origins:empty') ? id : null
+    }
+    return out
+  }
+
+  // The fallback, the proven read path verbatim from codex_delivery.js Route 0:
   //   player.nbt.ForgeCaps."origins:origins".Origins.<layer key>
   // A layer that was never chosen is absent (or "origins:empty") -> null.
-  var readLayers = function (player) {
+  var readLayersNbt = function (player) {
     var out = emptyLayers()
     var nbt = player.nbt
     if (!nbt) return out
@@ -119,6 +175,27 @@
       out[name] = (id !== '' && id !== 'origins:empty') ? id : null
     }
     return out
+  }
+
+  var readLayers = function (player) {
+    if (direct) {
+      try {
+        var v = readLayersDirect(player)
+        directFails = 0
+        return v
+      } catch (e) {
+        // this read falls back to NBT below; a third failure in a row says so and stays on NBT
+        directFails++
+        if (directFails >= DIRECT_FAILS_ALLOWED) {
+          direct = false
+          try {
+            console.warn('[icraft.origin] the direct capability read failed ' + directFails + ' times in a row (' + e +
+              ') -- reading class/race/origin from player NBT from now on, once per player per ' + TTL_TICKS + ' ticks (logged once per script load)')
+          } catch (ignored) { /* swallow-ok: the log call itself failed; there is nowhere left to say so, and a log line must never throw into its caller */ }
+        }
+      }
+    }
+    return readLayersNbt(player)
   }
 
   var store = function (key, t, v) {

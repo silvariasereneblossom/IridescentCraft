@@ -111,7 +111,8 @@
       } catch (e) { warnFailed('tax pass', e) }
     })
   }
-  global.registerServerTick('tick_masteryTax', 40, 0, onTick)
+  // offset 38 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_masteryTax', 40, 38, onTick)
 
   // A new session or a new player entity starts from a fresh baseline: the first
   // readable pass afterwards records, never taxes.

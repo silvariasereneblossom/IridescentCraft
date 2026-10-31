@@ -45,6 +45,13 @@ EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
   if (event.level.dimension != 'minecraft:overworld') return
+  let data = entity.persistentData
+
+  // Already-processed marker to avoid re-strip on re-load (chunk unload/load
+  // cycles fire EntityEvents.spawned again for existing entities). Tested first
+  // since 2026-10-30 (RAM audit F2): only a mob that passed every test below
+  // carries it, so a reloaded mob now costs one read instead of all of them.
+  if (data.contains('icraft_affix_stripped')) return
   // Centralized ISS-mob skip + bail log via 0_iss_guard.js. Local
   // The `caster` test (boss registry) + _affixStripIsIssMob below remain as fallback.
   if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_overworld_strip')) return
@@ -61,15 +68,10 @@ EntityEvents.spawned(icraft.guard('affix_overworld_strip', 'EntityEvents.spawned
     if (forgeData.contains('apoth.miniboss')) return
   }
 
-  let data = entity.persistentData
-
   let resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return
   if (_affixStripIsIssMob(resId)) return
 
-  // Already-processed marker to avoid re-strip on re-load (chunk unload/load
-  // cycles fire EntityEvents.spawned again for existing entities).
-  if (data.contains('icraft_affix_stripped')) return
   data.putBoolean('icraft_affix_stripped', true)
 
   for (let slot of AFFIX_STRIP_SLOTS) {

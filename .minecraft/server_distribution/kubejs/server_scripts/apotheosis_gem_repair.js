@@ -308,13 +308,12 @@
   // dump producing one gem doesn't spam 5 lines.
   global._gem_trace_seen = global._gem_trace_seen || {}
 
-  EntityEvents.spawned(icraft.guard('apotheosis_gem_repair', 'EntityEvents.spawned', event => {
+  // Registered for item entities only (2026-10-30, RAM audit F2): KubeJS picks
+  // the handler in Java; the untargeted one built an id for every entity that
+  // joined a level, to keep only minecraft:item.
+  EntityEvents.spawned('minecraft:item', icraft.guard('apotheosis_gem_repair', 'EntityEvents.spawned', event => {
     try {
       var entity = event.entity
-      // ItemEntity has type minecraft:item.
-      var typeId = ''
-      typeId = global.icraft.core.entityId(entity)
-      if (typeId !== 'minecraft:item') return
 
       // entity.item is the ItemStack the entity wraps.
       var stack

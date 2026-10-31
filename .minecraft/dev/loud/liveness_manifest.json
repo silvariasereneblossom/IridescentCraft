@@ -20,8 +20,8 @@
   "server": {
    "log": "kubejs/server.log",
    "tree": "server_distribution/kubejs/server_scripts",
-   "count": 328,
-   "digest": "4c19e81616773bf5",
+   "count": 330,
+   "digest": "73b28f1a69321540",
    "late": [],
    "at_boot": [
     "0_server_ready_banner@ServerEvents.loaded",
@@ -377,6 +377,10 @@
     },
     {
      "id": "end/dragon_exploration_gate#2@EntityEvents.death",
+     "script": "end/dragon_exploration_gate.js"
+    },
+    {
+     "id": "end/dragon_exploration_gate#3@EntityEvents.death",
      "script": "end/dragon_exploration_gate.js"
     },
     {
@@ -1377,6 +1381,10 @@
     },
     {
      "id": "tick_skillEffects@tick.server",
+     "script": "skills/skill_effects.js"
+    },
+    {
+     "id": "tick_skillEngineering@tick.player",
      "script": "skills/skill_effects.js"
     },
     {

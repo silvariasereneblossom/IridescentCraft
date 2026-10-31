@@ -77,7 +77,8 @@ global.tick_originEffectsAvianMerling = (event) => {
     }
   })
 }
-global.registerServerTick('tick_originEffectsAvianMerling', 40, 0)
+// offset 26 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_originEffectsAvianMerling', 40, 26)
 
 // =============================================================================
 // BLAZEBORN — Nether Affinity

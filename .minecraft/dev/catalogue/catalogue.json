@@ -1485,7 +1485,7 @@
        "group": "tick.server",
        "name": "tick_abyssArmorEffects",
        "every": 40,
-       "offset": 0
+       "offset": 22
       },
       {
        "kind": "hurt",
@@ -1569,7 +1569,7 @@
        "group": "tick.server",
        "name": "tick_abyssRingEffects",
        "every": 20,
-       "offset": 0
+       "offset": 6
       },
       {
        "kind": "hurt",
@@ -1882,7 +1882,8 @@
       {
        "kind": "guard",
        "group": "EntityEvents.spawned",
-       "name": "apotheosis_gem_repair"
+       "name": "apotheosis_gem_repair",
+       "target": "minecraft:item"
       },
       {
        "kind": "guard",
@@ -2689,7 +2690,7 @@
        "group": "tick.server",
        "name": "tick_glassCannonTagCheck",
        "every": 100,
-       "offset": 0
+       "offset": 41
       }
      ],
      "sections": 0,
@@ -2804,7 +2805,7 @@
        "group": "tick.server",
        "name": "tick_codexBookSweep",
        "every": 20,
-       "offset": 0
+       "offset": 16
       }
      ],
      "sections": 0,
@@ -2900,19 +2901,14 @@
       {
        "kind": "guard",
        "group": "EntityEvents.spawned",
-       "name": "compat/disable_creeperlings"
+       "name": "compat/disable_creeperlings",
+       "target": "majruszsdifficulty:creeperling"
       }
      ],
      "sections": 0,
      "ownSlots": 0,
      "names": 0,
      "reads": [
-      {
-       "name": "icraft.core",
-       "kind": "global",
-       "from": "0_lib_core.js",
-       "when": "handler"
-      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -2973,19 +2969,14 @@
       {
        "kind": "guard",
        "group": "EntityEvents.checkSpawn",
-       "name": "compat/terramity_cave_gnome_cave_only"
+       "name": "compat/terramity_cave_gnome_cave_only",
+       "target": "terramity:cave_gnome"
       }
      ],
      "sections": 0,
      "ownSlots": 0,
      "names": 0,
      "reads": [
-      {
-       "name": "icraft.core",
-       "kind": "global",
-       "from": "0_lib_core.js",
-       "when": "handler"
-      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -3317,7 +3308,7 @@
      ],
      "sections": 0,
      "ownSlots": 3,
-     "names": 2,
+     "names": 5,
      "reads": [
       {
        "name": "icraft.guard",
@@ -3565,7 +3556,7 @@
        "group": "tick.server",
        "name": "tick_enchantPeriodicEffects",
        "every": 5,
-       "offset": 0
+       "offset": 1
       },
       {
        "kind": "tick",
@@ -3675,17 +3666,26 @@
       {
        "kind": "guard",
        "group": "EntityEvents.spawned",
-       "name": "end/dragon_exploration_gate"
+       "name": "end/dragon_exploration_gate",
+       "target": "minecraft:ender_dragon"
       },
       {
        "kind": "guard",
        "group": "EntityEvents.death",
-       "name": "end/dragon_exploration_gate"
+       "name": "end/dragon_exploration_gate",
+       "target": "minecraft:shulker"
       },
       {
        "kind": "guard",
        "group": "EntityEvents.death",
-       "name": "end/dragon_exploration_gate#2"
+       "name": "end/dragon_exploration_gate#3",
+       "target": "minecraft:enderman"
+      },
+      {
+       "kind": "guard",
+       "group": "EntityEvents.death",
+       "name": "end/dragon_exploration_gate#2",
+       "target": "minecraft:ender_dragon"
       },
       {
        "kind": "guard",
@@ -3714,7 +3714,7 @@
      ],
      "sections": 0,
      "ownSlots": 2,
-     "names": 9,
+     "names": 10,
      "reads": [
       {
        "name": "icraft.core",
@@ -3791,7 +3791,7 @@
        "group": "tick.server",
        "name": "tick_ascensionRefresh",
        "every": 6000,
-       "offset": 0
+       "offset": 2971
       },
       {
        "kind": "tick",
@@ -4448,7 +4448,8 @@
       {
        "kind": "guard",
        "group": "EntityEvents.death",
-       "name": "gates/milestone_detection"
+       "name": "gates/milestone_detection",
+       "target": "minecraft:ender_dragon"
       },
       {
        "kind": "guard",
@@ -4472,12 +4473,6 @@
      "ownSlots": 1,
      "names": 2,
      "reads": [
-      {
-       "name": "icraft.core",
-       "kind": "global",
-       "from": "0_lib_core.js",
-       "when": "handler"
-      },
       {
        "name": "icraft.guard",
        "kind": "global",
@@ -6774,7 +6769,7 @@
        "group": "tick.server",
        "name": "tick_battlemageManaShield",
        "every": 100,
-       "offset": 0
+       "offset": 63
       }
      ],
      "sections": 0,
@@ -6820,7 +6815,7 @@
        "group": "tick.server",
        "name": "tick_classPassives",
        "every": 5,
-       "offset": 0
+       "offset": 2
       },
       {
        "kind": "hurt",
@@ -7008,7 +7003,7 @@
        "group": "tick.server",
        "name": "tick_originEffectsAvianMerling",
        "every": 40,
-       "offset": 0
+       "offset": 26
       },
       {
        "kind": "tick",
@@ -7179,7 +7174,7 @@
        "group": "tick.server",
        "name": "tick_phantomUndeath",
        "every": 200,
-       "offset": 0
+       "offset": 147
       }
      ],
      "sections": 0,
@@ -8615,7 +8610,7 @@
        "group": "tick.server",
        "name": "tick_skillRespec",
        "every": 40,
-       "offset": 0
+       "offset": 34
       }
      ],
      "sections": 0,
@@ -8864,7 +8859,7 @@
        "group": "tick.server",
        "name": "tick_voidCorruptionCleanse",
        "every": 20,
-       "offset": 0
+       "offset": 18
       },
       {
        "kind": "hurt",
@@ -9388,7 +9383,7 @@
        "group": "tick.server",
        "name": "tick_masteryTax",
        "every": 40,
-       "offset": 0
+       "offset": 38
       }
      ],
      "sections": 0,
@@ -9483,7 +9478,13 @@
        "group": "tick.server",
        "name": "tick_skillEffects",
        "every": 25,
-       "offset": 0
+       "offset": 8
+      },
+      {
+       "kind": "tick",
+       "group": "tick.player",
+       "name": "tick_skillEngineering",
+       "every": 200
       },
       {
        "kind": "hurt",
@@ -9503,8 +9504,8 @@
       "skill-craft-bonus",
       "skill-material-save"
      ],
-     "ownSlots": 1,
-     "names": 7,
+     "ownSlots": 2,
+     "names": 16,
      "reads": [
       {
        "name": "icraft.core",
@@ -9529,6 +9530,12 @@
        "kind": "global",
        "from": "00_icraft_guard.js",
        "when": "handler"
+      },
+      {
+       "name": "registerPlayerTick",
+       "kind": "global",
+       "from": "0_tick_master.js",
+       "when": "load"
       },
       {
        "name": "registerServerTick",
@@ -9559,6 +9566,7 @@
        "script": "0_tick_master.js",
        "basis": "load",
        "on": [
+        "global.registerPlayerTick",
         "global.registerServerTick"
        ],
        "held": "priority"
@@ -9660,7 +9668,7 @@
        "kind": "tick",
        "group": "tick.server",
        "name": "tick_spawnVillageSweep",
-       "offset": 0
+       "offset": 44
       }
      ],
      "sections": 0,
@@ -10192,6 +10200,7 @@
      {
       "script": "compat/terramity_cave_gnome_cave_only.js",
       "name": "compat/terramity_cave_gnome_cave_only",
+      "target": "terramity:cave_gnome",
       "kind": "guard"
      }
     ],
@@ -10209,11 +10218,19 @@
      {
       "script": "end/dragon_exploration_gate.js",
       "name": "end/dragon_exploration_gate",
+      "target": "minecraft:shulker",
+      "kind": "guard"
+     },
+     {
+      "script": "end/dragon_exploration_gate.js",
+      "name": "end/dragon_exploration_gate#3",
+      "target": "minecraft:enderman",
       "kind": "guard"
      },
      {
       "script": "end/dragon_exploration_gate.js",
       "name": "end/dragon_exploration_gate#2",
+      "target": "minecraft:ender_dragon",
       "kind": "guard"
      },
      {
@@ -10229,6 +10246,7 @@
      {
       "script": "gates/milestone_detection.js",
       "name": "gates/milestone_detection",
+      "target": "minecraft:ender_dragon",
       "kind": "guard"
      },
      {
@@ -10323,11 +10341,13 @@
      {
       "script": "apotheosis_gem_repair.js",
       "name": "apotheosis_gem_repair",
+      "target": "minecraft:item",
       "kind": "guard"
      },
      {
       "script": "compat/disable_creeperlings.js",
       "name": "compat/disable_creeperlings",
+      "target": "majruszsdifficulty:creeperling",
       "kind": "guard"
      },
      {
@@ -10350,6 +10370,7 @@
      {
       "script": "end/dragon_exploration_gate.js",
       "name": "end/dragon_exploration_gate",
+      "target": "minecraft:ender_dragon",
       "kind": "guard"
      },
      {
@@ -11677,6 +11698,11 @@
       "script": "scaling/dimension_mechanics.js",
       "name": "tick_enhancedVoidCorruption",
       "kind": "tick"
+     },
+     {
+      "script": "skills/skill_effects.js",
+      "name": "tick_skillEngineering",
+      "kind": "tick"
      }
     ],
     "tick.server": [
@@ -12699,14 +12725,6 @@
      "when": "handler"
     },
     {
-     "script": "server:compat/disable_creeperlings.js",
-     "when": "handler"
-    },
-    {
-     "script": "server:compat/terramity_cave_gnome_cave_only.js",
-     "when": "handler"
-    },
-    {
      "script": "server:compat/terramity_virtue_altar.js",
      "when": "load"
     },
@@ -12744,10 +12762,6 @@
     },
     {
      "script": "server:gates/codex_progression_engine.js",
-     "when": "handler"
-    },
-    {
-     "script": "server:gates/milestone_detection.js",
      "when": "handler"
     },
     {
@@ -13325,6 +13339,10 @@
     {
      "script": "server:scaling/dimension_mechanics.js",
      "when": "load"
+    },
+    {
+     "script": "server:skills/skill_effects.js",
+     "when": "load"
     }
    ]
   },
@@ -13535,8 +13553,6 @@
     "server:cherry_spawn_biome.js",
     "server:class/equipment_hp_halving.js",
     "server:codex_delivery.js",
-    "server:compat/disable_creeperlings.js",
-    "server:compat/terramity_cave_gnome_cave_only.js",
     "server:compat/terramity_virtue_altar.js",
     "server:death_penalty.js",
     "server:economy/relic_broker.js",
@@ -13547,7 +13563,6 @@
     "server:exploration/codex_exploration_kills.js",
     "server:fix_empty_display_name.js",
     "server:gates/codex_progression_engine.js",
-    "server:gates/milestone_detection.js",
     "server:icraft_despawn_command.js",
     "server:integration/dna_simple_staves_strip.js",
     "server:items/compass_of_return.js",

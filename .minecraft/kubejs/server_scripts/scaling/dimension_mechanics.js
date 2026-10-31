@@ -667,5 +667,6 @@ global.tick_voidCorruptionCleanse = (event) => {
     player.persistentData.putString('icraft_last_dimension', currentDim)
   })
 }
-global.registerServerTick('tick_voidCorruptionCleanse', 20, 0)
+// offset 18 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_voidCorruptionCleanse', 20, 18)
 })()

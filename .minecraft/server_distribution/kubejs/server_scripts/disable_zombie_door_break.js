@@ -26,6 +26,17 @@ try {
   var BreakDoorGoal = Java.loadClass('net.minecraft.world.entity.ai.goal.BreakDoorGoal')
   var Mob = Java.loadClass('net.minecraft.world.entity.Mob')
 
+  // 2026-10-30 (RAM audit F2): the goal list is walked once, to count, and
+  // removeAllGoals runs only when a BreakDoorGoal is in it (well under 1% of
+  // mobs; with none it removes and stops nothing). The type String is built only
+  // while it is still needed for a log line. Before, every Mob join paid the
+  // type String, an Object.keys of the seen map, the count walk and a fresh
+  // predicate the game called twice per goal.
+  var isBreakDoorGoal = function (g) { return g instanceof BreakDoorGoal }
+  var NO_DOOR_BREAK_SEEN_MAX = 30
+  if (!global._no_door_break_seenAny) global._no_door_break_seenAny = {}
+  var noDoorBreakSeenCount = Object.keys(global._no_door_break_seenAny).length
+
   EntityEvents.spawned(icraft.guard('disable_zombie_door_break', 'EntityEvents.spawned', event => {
     try {
       var entity = event.entity
@@ -72,29 +83,35 @@ try {
       // Plus a one-shot ALWAYS-LOG of the first 5 entity types we see
       // on spawn at all (regardless of whether they had BreakDoorGoal).
       // Lets us verify the handler is actually firing on every Mob spawn.
-      if (!global._no_door_break_seenAny) global._no_door_break_seenAny = {}
-      var typeId = String(entity.getType().toString())
-      if (!global._no_door_break_seenAny[typeId] &&
-          Object.keys(global._no_door_break_seenAny).length < 30) {
-        global._no_door_break_seenAny[typeId] = true
-        console.log('[no_door_break] handler fired on first spawn of: ' + typeId)
+      var typeId = null
+      if (noDoorBreakSeenCount < NO_DOOR_BREAK_SEEN_MAX) {
+        typeId = String(entity.getType().toString())
+        if (!global._no_door_break_seenAny[typeId]) {
+          global._no_door_break_seenAny[typeId] = true
+          noDoorBreakSeenCount++
+          console.log('[no_door_break] handler fired on first spawn of: ' + typeId)
+        }
       }
 
       // Count matches before removing (removeAllGoals returns void, so we
       // can't use its return value).
       var goals = goalSelector.getAvailableGoals()
       var matchCount = 0
+      var counted = false
       try {
         var it = goals.iterator()
         while (it.hasNext()) {
           var wg = it.next()
           if (wg.getGoal() instanceof BreakDoorGoal) matchCount++
         }
+        counted = true
       } catch (e) {}
 
-      goalSelector.removeAllGoals(function(g) { return g instanceof BreakDoorGoal })
+      // A walk that failed part-way may have missed one: strip as before.
+      if (matchCount > 0 || !counted) goalSelector.removeAllGoals(isBreakDoorGoal)
 
       if (matchCount > 0) {
+        if (typeId === null) typeId = String(entity.getType().toString())
         if (!global._no_door_break_seenTypes) global._no_door_break_seenTypes = {}
         if (!global._no_door_break_seenTypes[typeId]) {
           global._no_door_break_seenTypes[typeId] = true

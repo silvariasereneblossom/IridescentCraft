@@ -19,10 +19,15 @@
 // the spawn reason (event.type) AND the spawn-position block (event.block).
 // String(...) coerces the vanilla EntityType / MobSpawnType to a JS string for
 // the comparisons (the pack's proven idiom -- see apotheosis_gem_repair.js).
+//
+// Registered for the one type (2026-10-30, RAM audit F2). This is the pack's
+// only checkSpawn handler, so untargeted it ran on every natural spawn check of
+// every mob, to build an id. KubeJS posts checkSpawn with the entity type as its
+// target, as it does EntityEvents.spawned (KubeJSEntityEventHandler, javap), and
+// picks a targeted handler in Java.
 // =============================================================================
 
-EntityEvents.checkSpawn(icraft.guard('compat/terramity_cave_gnome_cave_only', 'EntityEvents.checkSpawn', event => {
-  if (global.icraft.core.entityId(event.entity) !== 'terramity:cave_gnome') return
+EntityEvents.checkSpawn('terramity:cave_gnome', icraft.guard('compat/terramity_cave_gnome_cave_only', 'EntityEvents.checkSpawn', event => {
   // Only the wild runtime mob-spawn loop; never eggs / structures / commands.
   if (String(event.type) !== 'NATURAL') return
   // Surface (direct sky access) -> deny; cave (sky-occluded) -> allow.

@@ -192,7 +192,8 @@ global.tick_glassCannonTagCheck = (event) => {
     } catch(e) {}
   })
 }
-global.registerServerTick('tick_glassCannonTagCheck', 100, 0)
+// offset 41 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_glassCannonTagCheck', 100, 41)
 
 
 // ═══ Integration Note ═══

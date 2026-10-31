@@ -61,9 +61,9 @@ var MB_runTick = function (name, tick) {
   fn({ server: T_server })
 }
 var MB_allTicks = function () {
-  MB_runTick('tick_classPassives', 225)              // the Archmage block: tick % 200 === 25
+  MB_runTick('tick_classPassives', 227)              // the Archmage block: tick % 200 === 27 (25 until the offsets moved, 2026-10-30)
   MB_runTick('tick_justlevelingSkills', 237)
-  MB_runTick('tick_skillEffects', 250)               // the old sync block: tick % 200 === 50
+  MB_runTick('tick_skillEffects', 258)               // the old sync block: tick % 200 === 58 (50 until the offsets moved, 2026-10-30)
   MB_runTick('tick_classAttributeBonuses', 250)
 }
 // the modifiers on an attribute, as "name op amount" (op 0 / 1 / 2)

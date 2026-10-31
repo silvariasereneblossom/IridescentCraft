@@ -385,7 +385,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   var tick = event.server.tickCount
 
   // ── Every 2 seconds: Vitality HP bonus (+2 HP per total level across armor) ──
-  if (tick % 40 === 0) {
+  if (tick % 40 === 1) {
     eachPlayer(event, 'vitality', function (player) {
       var vit = getArmorEnchTotal(player, 'icraft:vitality')
       setMod(player, 'minecraft:generic.max_health', 'icraft_vitality_bonus', vit * 2, 'addition')
@@ -393,7 +393,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 2 seconds: Magnetism pickup range ──
-  if (tick % 40 === 10) {
+  if (tick % 40 === 11) {
     eachPlayer(event, 'magnetism', function (player) {
       var mag = getArmorEnchTotal(player, 'icraft:magnetism')
       if (mag <= 0) return
@@ -417,7 +417,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 5 seconds: Momentum decay (5 s without a hit) ──
-  if (tick % 100 === 0) {
+  if (tick % 100 === 1) {
     eachPlayer(event, 'momentum', function (player) {
       var data = player.persistentData
       if (!data.contains('icraft_momentum') || data.getInt('icraft_momentum') <= 0) return
@@ -431,7 +431,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 5 seconds: Steadfast knockback resistance near bosses (32 blocks) ──
-  if (tick % 100 === 20) {
+  if (tick % 100 === 21) {
     eachPlayer(event, 'steadfast', function (player) {
       var stead = getArmorEnchTotal(player, 'icraft:steadfast')
       var value = (stead > 0 && bossNear(player, 32)) ? stead * 0.15 : 0
@@ -440,7 +440,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 2 seconds: Aether Acclimation (remove thin air debuffs) ──
-  if (tick % 40 === 30) {
+  if (tick % 40 === 31) {
     eachPlayer(event, 'aether_acclimation', function (player) {
       var aether = getArmorEnchTotal(player, 'icraft:aether_acclimation')
       if (aether <= 0) return
@@ -457,7 +457,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 2 seconds: Quick Draw (bow draw speed) ──
-  if (tick % 40 === 35) {
+  if (tick % 40 === 36) {
     eachPlayer(event, 'quick_draw', function (player) {
       // Apothic's draw speed while a bow or crossbow is held. Until 2026-10-19 this
       // gave attack speed "as a proxy", which does not change how fast a bow draws
@@ -473,7 +473,7 @@ global.tick_enchantPeriodicEffects = function (event) {
   }
 
   // ── Every 10 seconds: Adaptive decay (reduce tracked damage type stacks) ──
-  if (tick % 200 === 0) {
+  if (tick % 200 === 1) {
     eachPlayer(event, 'adaptive_decay', function (player) {
       var data = player.persistentData
       // Copy the keys first: removing from the tag while walking its live key
@@ -491,7 +491,8 @@ global.tick_enchantPeriodicEffects = function (event) {
     })
   }
 }
-global.registerServerTick('tick_enchantPeriodicEffects', 5, 0)
+// offset 1 since 2026-10-30, the tick tests inside moved with it: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+global.registerServerTick('tick_enchantPeriodicEffects', 5, 1)
 
 
 // ==========================================================================

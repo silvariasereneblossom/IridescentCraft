@@ -83,13 +83,16 @@ function isMobEquipBlacklisted(entity) {
   }
 }
 
+// The order of the tests (2026-10-30, RAM audit F2): the "done" flag comes right
+// after the monster test, so a mob loaded again with its chunk costs one
+// persistentData read. Every test before the roll only returns, so moving one
+// changes nothing. persistentData is safe on the Iron's Spellbooks casters (the
+// ISS guard writes it there); the slot reads stay behind the caster tests.
 EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned', event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
-  // Skip category-MONSTER projectile/beam/ring entities (Terramity etc.) that
-  // would otherwise be equipped and leak gear via death drops. (A2 / PROJ-1.)
-  if (isMobEquipBlacklisted(entity)) return
+  if (entity.persistentData.contains('icraft_equipped')) return
   // Centralized ISS-mob skip + bail log via 0_iss_guard.js. The local
   // The `caster` test (boss registry) + isIronsSpellbooksMob below remain as a
   // fallback in case the guard script ever fails to load first.
@@ -97,7 +100,6 @@ EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned
   var resId = global.icraft.core.entityId(entity)
   if (icraft.bosses.has(resId, 'caster')) return
   if (isIronsSpellbooksMob(resId)) return
-  if (entity.persistentData.contains('icraft_equipped')) return
 
   // Skip mobs that already have equipment (from IM or native spawns)
   if (hasExistingGear(entity)) {
@@ -108,6 +110,15 @@ EntityEvents.spawned(icraft.guard('scaling/mob_equipment', 'EntityEvents.spawned
   let dim = entity.level.dimension
   let config = getEquipConfig(dim)
   if (!config) return
+
+  // Skip category-MONSTER projectile/beam/ring entities (Terramity etc.) that
+  // would otherwise be equipped and leak gear via death drops. (A2 / PROJ-1.)
+  // This test has never matched: for scripts entity.getType() is the id STRING,
+  // `.is` throws, and the catch answers false (RAM audit 2026-10-30 F2). Making it
+  // work (entity.getEntityType().is) changes which mobs get gear: an operator
+  // decision. Here, after the config test, it costs a mob in a dimension that
+  // rolls gear one throw, once; before, every monster paid it on every join.
+  if (isMobEquipBlacklisted(entity)) return
 
   // Roll for equipment
   if (Math.random() > config.chance) {

@@ -676,11 +676,12 @@
       var aggressive = sweepTicks > 1000 // 1200 - 200 = first 10s
       var interval = aggressive ? 20 : 200
 
-      if (tick % interval !== 0) return
+      if (tick % interval !== 16) return
 
       player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
       clearModBooks(player, aggressive)
     })
   }
-  global.registerServerTick('tick_codexBookSweep', 20, 0)
+  // offset 16 since 2026-10-30, the tick tests inside moved with it: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_codexBookSweep', 20, 16)
 })()

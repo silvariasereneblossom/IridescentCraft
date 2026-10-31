@@ -23,11 +23,12 @@
 // DRAGON END-ADVANCEMENTS — Dragon kill un-gates the vanilla End advancements
 // (NOT a tier grant; the framework handles the Dragon as the T4 finale).
 // -----------------------------------------------------------------------------
-EntityEvents.death(icraft.guard('gates/milestone_detection', 'EntityEvents.death', event => {
+// Registered for the dragon only (2026-10-30, RAM audit F2): KubeJS picks the
+// handler in Java instead of this one building an id on every death.
+EntityEvents.death('minecraft:ender_dragon', icraft.guard('gates/milestone_detection', 'EntityEvents.death', event => {
   // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death handler.
   var source = event.source
   if (!source || !source.player) return
-  if (global.icraft.core.entityId(event.entity) !== 'minecraft:ender_dragon') return
   var player = source.player
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/kill_dragon`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_egg`)

@@ -3,13 +3,13 @@
   "rules": {
     "BLOCK-READ": {
       "started": "2026-10-13",
-      "total": 6,
+      "total": 5,
       "files": {
         "server_scripts/apotheosis_gem_repair.js": 1,
         "server_scripts/bonfire/boss_bonfire_system.js": 1,
         "server_scripts/enchantments/enchant_effects.js": 1,
         "server_scripts/origins/class_passives_phase6h.js": 1,
-        "server_scripts/skills/skill_effects.js": 2
+        "server_scripts/skills/skill_effects.js": 1
       }
     },
     "DIRECT-HURT-REG": {

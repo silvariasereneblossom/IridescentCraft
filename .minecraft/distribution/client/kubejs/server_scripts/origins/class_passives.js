@@ -101,7 +101,7 @@
     var tick = server.tickCount
 
     // ── SAMURAI FOCUS: every 1 second ──
-    if (tick % 20 === 0) {
+    if (tick % 20 === 2) {
       eachPlayer(server, 'samurai focus', function (player) {
         if (getClass(player) !== 'samurai') return
 
@@ -167,7 +167,7 @@
     }
 
     // ── WANDERER — Seasoned Traveler: every 5 seconds ──
-    if (tick % 100 === 5) {
+    if (tick % 100 === 7) {
       eachPlayer(server, 'wanderer seasoned traveler', function (player) {
         if (getClass(player) !== 'wanderer') return
 
@@ -207,7 +207,7 @@
     }
 
     // ── PALADIN — Healing Aura: every 5 seconds ──
-    if (tick % 100 === 10) {
+    if (tick % 100 === 12) {
       eachPlayer(server, 'paladin healing aura', function (player) {
         if (getClass(player) !== 'paladin') return
 
@@ -245,7 +245,7 @@
     // (tier 4: 1.15 x 1.15 = x1.3225 instead of +15%; measured on the full pack).
     // Spell power is the channel the Codex names, and it also scales an Iron's
     // spell's heals and shields; Ars Nouveau reads neither channel.
-    if (tick % 200 === 25) {
+    if (tick % 200 === 27) {
       eachPlayer(server, 'archmage mana attunement', function (player) {
         if (getClass(player) !== 'archmage') return
 
@@ -269,7 +269,7 @@
     // ── ORC — Bloodlust: hunger-scaling damage bonus, every 5 seconds ──
     // Up to +20% bonus damage as food level drops (20 = full, 0 = starving)
     // Linear scale: 0% at full, +20% at 0 food
-    if (tick % 100 === 30) {
+    if (tick % 100 === 32) {
       eachPlayer(server, 'orc bloodlust', function (player) {
         if (!isRace(player, 'icraft:orc')) return
 
@@ -286,7 +286,7 @@
     // Weakness only affects melee attack damage, so applying it to passive
     // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
     // living entities within range.
-    if (tick % 60 === 15) {
+    if (tick % 60 === 17) {
       eachPlayer(server, 'vanguard guardian', function (player) {
         if (getClass(player) !== 'vanguard') return
 
@@ -296,7 +296,8 @@
       })
     }
   }
-  global.registerServerTick('tick_classPassives', 5, 0)
+  // offset 2 since 2026-10-30, the tick tests inside moved with it: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_classPassives', 5, 2)
 
   // ===========================================================================
   // VOID SUMMONER — Soul Tether (lifesteal + bonus XP from nearby deaths)

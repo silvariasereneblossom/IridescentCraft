@@ -77,9 +77,11 @@ function endGateNotify(endPlayers) {
 // player stands in the arena, so the "blocked" line is logged once per load.
 var endGateBlockLogged = false
 
-EntityEvents.spawned(icraft.guard('end/dragon_exploration_gate', 'EntityEvents.spawned', event => {
+// The spawn and death handlers are registered for their types (2026-10-30, RAM
+// audit F2): KubeJS picks them in Java, where each built an id for every entity
+// that joined a level or died, to keep one or two types.
+EntityEvents.spawned('minecraft:ender_dragon', icraft.guard('end/dragon_exploration_gate', 'EntityEvents.spawned', event => {
   let entity = event.entity
-  if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
   // Check if ANY player in The End has the exploration flag set
   let server = entity.level.server
@@ -169,7 +171,7 @@ global.registerPlayerTick('tick_endExplorationTracking', 200, 100)
 // KILL TRACKING IN THE END
 // =============================================================================
 
-EntityEvents.death(icraft.guard('end/dragon_exploration_gate', 'EntityEvents.death', event => {
+var endGateKillTracking = function (event) {
   let entity = event.entity
   let source = event.source
   if (!source || !source.player) return
@@ -214,7 +216,9 @@ EntityEvents.death(icraft.guard('end/dragon_exploration_gate', 'EntityEvents.dea
       player.tell(Text.gray(`  End Endermen: ${kills}/${END_ENDERMAN_KILLS}`))
     }
   }
-}))
+}
+EntityEvents.death('minecraft:shulker', icraft.guard('end/dragon_exploration_gate', 'EntityEvents.death', endGateKillTracking))
+EntityEvents.death('minecraft:enderman', icraft.guard('end/dragon_exploration_gate#3', 'EntityEvents.death', endGateKillTracking))
 
 // =============================================================================
 // CHECK IF ALL EXPLORATION MILESTONES MET
@@ -313,9 +317,8 @@ global.registerServerTick('tick_dragonSummonCrystal', 40, 10)
 // POST-DRAGON: Mark dragon as killed for future spawns
 // =============================================================================
 
-EntityEvents.death(icraft.guard('end/dragon_exploration_gate#2', 'EntityEvents.death', event => {
+EntityEvents.death('minecraft:ender_dragon', icraft.guard('end/dragon_exploration_gate#2', 'EntityEvents.death', event => {
   let entity = event.entity
-  if (endGateEntityId(entity) !== 'minecraft:ender_dragon') return
 
   // Mark ALL players in The End as having killed the dragon at least once
   entity.level.server.players.forEach(p => {

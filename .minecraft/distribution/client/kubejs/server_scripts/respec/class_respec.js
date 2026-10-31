@@ -331,7 +331,8 @@
       } catch (e2) {}
     })
   }
-  global.registerServerTick('tick_skillRespec', 40, 0)
+  // offset 34 since 2026-10-30: sixteen functions shared offset 0 and ran in one tick (RAM audit F17)
+  global.registerServerTick('tick_skillRespec', 40, 34)
 
   console.log('[class_respec] loaded — ' + ALTAR + ': 1 trophy (' + TROPHIES.length +
     ' accepted) + ' + XP_COST + ' levels -> `origin gui <player> ' + CLASS_LAYER + '`')
