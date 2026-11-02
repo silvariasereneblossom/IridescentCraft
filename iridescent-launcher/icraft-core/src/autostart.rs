@@ -549,10 +549,10 @@ pub fn unregister() -> Result<()> {
 /// The same task as one PowerShell line, for an elevated PowerShell at the
 /// box when the launcher's own registration was refused: [`task_xml`] itself
 /// (the clock-step trigger has no `New-ScheduledTaskTrigger` form), written as
-/// [`register`] writes it (UTF-16, BOM) and handed to `schtasks /Create /XML`.
-/// Not `Register-ScheduledTask -Xml`: Server 2025 refused that a new S4U task
-/// ("Access is denied", elevated as the account itself; probe 8, 11-02) where
-/// schtasks registered the same XML.
+/// [`register`] writes it (UTF-16, BOM) and handed to `schtasks /Create /XML`,
+/// the registration the helper makes. Proven from an elevated PowerShell on
+/// Server 2025 (probe 8, 11-02); its first runs were refused ("Access is
+/// denied") only because the line named another account ([`current_user`]).
 pub fn powershell_line(exe: &Path, server_dir: &Path, user: &str, sid: Option<&str>) -> String {
     let xml: String = task_xml(exe, server_dir, user, sid).lines().map(str::trim).collect();
     let name = TASK_NAME.replace('\'', "''");
