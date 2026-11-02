@@ -219,8 +219,16 @@ fn github_answers() -> bool {
     addrs.into_iter().any(|a| TcpStream::connect_timeout(&a, SETTLE_POLL).is_ok())
 }
 
-/// `DOMAIN\user` of this process (a local account: `COMPUTER\user`).
+/// `DOMAIN\user` of this process (a local account: `COMPUTER\user`): the
+/// token's account, as `whoami` names it, so it always matches
+/// [`current_user_sid`]. `USERNAME` can belong to someone else: a process
+/// started with other credentials (`Start-Process -Credential`) keeps its
+/// starter's (probe 8, 11-02: a task for the wrong account, "Access is
+/// denied"). The environment only when `whoami` gives nothing.
 pub fn current_user() -> Option<String> {
+    if let Some((name, _)) = whoami_user() {
+        return Some(name);
+    }
     let user = std::env::var("USERNAME").ok().filter(|u| !u.is_empty())?;
     Some(match std::env::var("USERDOMAIN").ok().filter(|d| !d.is_empty()) {
         Some(domain) => format!("{domain}\\{user}"),
@@ -230,19 +238,26 @@ pub fn current_user() -> Option<String> {
 
 /// The SID of this process's account (`S-1-5-21-...`), from `whoami /user`.
 pub fn current_user_sid() -> Option<String> {
+    whoami_user().map(|(_, sid)| sid)
+}
+
+/// `whoami /user`: this token's account and its SID.
+fn whoami_user() -> Option<(String, String)> {
     if !cfg!(windows) {
         return None;
     }
     let mut cmd = std::process::Command::new("whoami.exe");
     cmd.args(["/user", "/fo", "csv", "/nh"]).stdin(std::process::Stdio::null());
     let out = crate::subprocess::run_bounded(cmd, "whoami /user", Duration::from_secs(30)).ok()?;
-    sid_from_whoami(&String::from_utf8_lossy(&out.stdout))
+    account_from_whoami(&String::from_utf8_lossy(&out.stdout))
 }
 
-/// `"box\op","S-1-5-21-1-2-3-1001"` -> the SID.
-fn sid_from_whoami(csv: &str) -> Option<String> {
-    let sid = csv.lines().find(|l| !l.trim().is_empty())?.rsplit(',').next()?.trim().trim_matches('"').to_string();
-    (sid.starts_with("S-1-") && sid[4..].chars().all(|c| c.is_ascii_digit() || c == '-')).then_some(sid)
+/// `"box\op","S-1-5-21-1-2-3-1001"` -> (`box\op`, the SID).
+fn account_from_whoami(csv: &str) -> Option<(String, String)> {
+    let (name, sid) = csv.lines().find(|l| !l.trim().is_empty())?.rsplit_once(',')?;
+    let (name, sid) = (name.trim().trim_matches('"').to_string(), sid.trim().trim_matches('"').to_string());
+    let sid_ok = sid.starts_with("S-1-") && sid[4..].chars().all(|c| c.is_ascii_digit() || c == '-');
+    (sid_ok && !name.is_empty()).then_some((name, sid))
 }
 
 fn xml_escape(s: &str) -> String {
@@ -795,6 +810,15 @@ mod tests {
 
     #[cfg(windows)]
     #[test]
+    fn the_account_and_its_sid_come_from_one_token() {
+        let (name, sid) = whoami_user().expect("whoami /user");
+        assert_eq!(current_user().as_deref(), Some(name.as_str()));
+        assert_eq!(current_user_sid().as_deref(), Some(sid.as_str()));
+        assert!(name.contains('\\') && sid.starts_with("S-1-5-"));
+    }
+
+    #[cfg(windows)]
+    #[test]
     fn windows_has_an_uptime() {
         assert!(windows_uptime().is_some_and(|up| up > Duration::ZERO));
     }
@@ -925,9 +949,13 @@ mod tests {
         assert!(at > xml.find("<RegistrationInfo>").unwrap() && at < xml.find("</RegistrationInfo>").unwrap());
         assert_eq!(judge(&xml, Path::new(EXE), Path::new(DIR)), Registered::Yes);
         assert!(!task_xml(Path::new(EXE), Path::new(DIR), r"BOX\op", None).contains("SecurityDescriptor"));
-        assert_eq!(sid_from_whoami("\"box\\op\",\"S-1-5-21-11-22-33-1001\"\r\n").as_deref(), Some("S-1-5-21-11-22-33-1001"));
-        assert_eq!(sid_from_whoami("\"box\\op\",\"not a sid\""), None);
-        assert_eq!(sid_from_whoami(""), None);
+        assert_eq!(
+            account_from_whoami("\"box\\op\",\"S-1-5-21-11-22-33-1001\"\r\n"),
+            Some(("box\\op".to_string(), "S-1-5-21-11-22-33-1001".to_string()))
+        );
+        assert_eq!(account_from_whoami("\"box\\op\",\"not a sid\""), None);
+        assert_eq!(account_from_whoami("\"\",\"S-1-5-21-11-22-33-1001\""), None);
+        assert_eq!(account_from_whoami(""), None);
     }
 
     #[test]
