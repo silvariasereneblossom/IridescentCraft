@@ -280,7 +280,8 @@ enum Cmd {
 
     /// The "Start at boot" Task Scheduler task (the window's box on the
     /// Server tab does the same): `status` (exit 0 = registered for this
-    /// launcher and folder, 1 = not, 2 = another task is there), `register`,
+    /// launcher and folder, 1 = not, 2 = another task is there, 3 = this
+    /// launcher's, in an older shape: register it again), `register`,
     /// `remove`, `xml` (print what `register` would register), `line` (the same
     /// task as one PowerShell line, for an elevated PowerShell at the box),
     /// `register-elevated` (what the window does when Windows refuses: the GUI
@@ -622,7 +623,10 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                     Ok(0)
                 }
                 "line" => {
-                    println!("{}", a::powershell_line(&exe, &cfg.server_dir));
+                    println!(
+                        "{}",
+                        a::powershell_line(&exe, &cfg.server_dir, &a::current_user().unwrap_or_default(), a::current_user_sid().as_deref())
+                    );
                     Ok(0)
                 }
                 "register-elevated" => {
@@ -653,6 +657,14 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                     Registered::Differs(why) => {
                         println!("a task '{}' is there, but {why}", a::TASK_NAME);
                         2
+                    }
+                    Registered::Outdated(why) => {
+                        println!(
+                            "registered by an older launcher: '{}' is this launcher's task for this folder, but {why}. \
+                             Register it again (the Start-at-boot box, or `boot-task register-elevated`)",
+                            a::TASK_NAME
+                        );
+                        3
                     }
                 }),
             }

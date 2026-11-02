@@ -1133,6 +1133,12 @@ fn start_after_gave_up(dir: PathBuf, body: &str) {
 /// instance has none), which adopts the task at its next frame; the boot
 /// instance adopts it in its own loop.
 fn start_cycle_unattended(dir: PathBuf, what: &'static str) {
+    start_cycle_unattended_after(dir, what, || ());
+}
+
+/// [`start_cycle_unattended`], with `first` run on its thread before the
+/// Cycle (the boot instance's wait for Windows to settle).
+fn start_cycle_unattended_after(dir: PathBuf, what: &'static str, first: impl FnOnce() + Send + 'static) {
     arm_supervisor();
     TASK_BUSY.store(true, Ordering::SeqCst);
     // Held while the thread is made, so a frame can never see neither the
@@ -1140,6 +1146,7 @@ fn start_cycle_unattended(dir: PathBuf, what: &'static str) {
     let mut slot = ADOPT_TASK.lock().unwrap();
     *slot = Some(std::thread::spawn(move || {
         let _busy = TaskBusy;
+        first();
         log::info!("== {what} starting ==");
         match supervise(ServerConfig::from_path(dir), true) {
             Ok(_) => log::info!("== {what} done =="),
@@ -1588,6 +1595,7 @@ fn spawn_cycle_watchdog() {
                  launcher_mode={mode}\n\
                  session_id={session}\n\
                  token={token}\n\
+                 boot_task={boot_task}\n\
                  supervised={supervised}\n\
                  server_state={state:?}\n\
                  phase={phase_name}\n\
@@ -1604,6 +1612,7 @@ fn spawn_cycle_watchdog() {
                 written = unix_now(),
                 written_local = icraft_core::logpush::local_timestamp(),
                 pid = std::process::id(),
+                boot_task = one_line(&BOOT_TASK_NOTE.lock().unwrap()),
                 supervised = SUPERVISOR.running.load(Ordering::SeqCst),
                 state = icraft_core::run::server_state(),
                 phase_name = one_line(&phase.0),
@@ -2048,6 +2057,9 @@ fn run_boot(dir: PathBuf) {
     use icraft_core::autostart::{TakeoverVerdict, TAKEOVER_RESULT_FILE};
     use icraft_core::instance::{self, Acquired, Holder, MODE_BOOT};
     WINDOWLESS.store(true, Ordering::SeqCst);
+    // A start by the task's clock-step trigger long after Windows started is
+    // not a boot: nothing is done.
+    let Some(began) = boot_admission(&dir) else { return };
     // Decision 177 (b): before anything touches the server folder, give up the
     // full administrator rights an S4U task's logon carries.
     let Some(rights) = boot_rights(&dir) else { return };
@@ -2058,6 +2070,7 @@ fn run_boot(dir: PathBuf) {
         icraft_core::autostart::session_id().map_or("unknown".to_string(), |s| s.to_string()),
         dir.display()
     );
+    log::info!("[boot] started {began}");
     log::info!("[boot] token: {rights}");
     if let Err(e) = opened {
         // Nobody will read this (there is no file and no window), but stderr.
@@ -2099,15 +2112,23 @@ fn run_boot(dir: PathBuf) {
     };
     log::info!("[boot] GitHub token: {token}");
     icraft_core::logpush::resume_pending(&cfg);
+    spawn_boot_task_check(&dir);
     // A boot always runs the Cycle; a sentinel left by a self-update (this
     // instance's predecessor) is consumed so no later window resumes it again.
-    if let Some(first) = icraft_core::self_update::take_cycle_resume(&cfg) {
-        log::info!("[boot] continuing the Cycle the previous boot instance began before its self-update");
-        started_by::record(Action::Cycle, &Source::SelfUpdateResume { first });
-    } else {
-        started_by::record(Action::Cycle, &Source::BootInstance);
-    }
-    start_cycle_unattended(dir.clone(), "boot: Cycle (sync + self-update + start)");
+    let source = match icraft_core::self_update::take_cycle_resume(&cfg) {
+        Some(first) => {
+            log::info!("[boot] continuing the Cycle the previous boot instance began before its self-update");
+            Source::SelfUpdateResume { first }
+        }
+        None => Source::BootInstance,
+    };
+    // The folder is held from here on (a window opened at logon meanwhile is
+    // a viewer); the wait for Windows to settle runs on the Cycle's thread.
+    start_cycle_unattended_after(dir.clone(), "boot: Cycle (sync + self-update + start)", move || {
+        boot_settle();
+        // After the wait: by then a cold start's clock step is behind us.
+        started_by::record(Action::Cycle, &source);
+    });
 
     let mut task: Option<JoinHandle<()>> = None;
     loop {
@@ -2141,6 +2162,111 @@ fn run_boot(dir: PathBuf) {
         format!("{} released: the boot instance has let go of the server folder and exited\n", unix_now()),
     );
     drop(lock);
+}
+
+/// Set once a boot instance's start is admitted ([`boot_admission`]): how it
+/// began. The restricted restart and a self-update relaunch inherit it, with
+/// the same arguments, and are not judged again (a self-update hours after a
+/// clock-step start would read as a late clock step).
+const BEGAN_MARKER: &str = "ICRAFT_BOOT_BEGAN";
+
+/// How this boot instance began, or `None` when the start is not a boot and
+/// does nothing: the task's clock-step trigger, long after Windows started
+/// (icraft_core::autostart::clock_step_refusal). The one line goes to
+/// logs\launcher.log.
+fn boot_admission(dir: &Path) -> Option<String> {
+    use icraft_core::autostart as a;
+    if let Ok(began) = std::env::var(BEGAN_MARKER) {
+        return Some(began);
+    }
+    let up = a::windows_uptime();
+    let up_text = up.map_or("unknown".to_string(), |u| format!("{} s", u.as_secs()));
+    let began = match a::clock_step_from_args(std::env::args_os().skip(1)) {
+        Some(delta) => {
+            if let Some(why) = a::clock_step_refusal(delta, up) {
+                if LAUNCHER_LOG.open(dir).is_ok() {
+                    log::info!("[boot] {why}");
+                }
+                return None;
+            }
+            format!("by the Start-at-boot task's clock-step trigger (the clock moved {delta} ms; Windows up {up_text})")
+        }
+        None => format!("at boot or by hand (Windows up {up_text})"),
+    };
+    std::env::set_var(BEGAN_MARKER, &began);
+    Some(began)
+}
+
+/// Before the boot instance's first sync: until Windows has been up a minute
+/// and GitHub answers, on Windows' uptime (icraft_core::autostart::
+/// settle_after_boot). What the task's 1 min delay did until 2026-10-31,
+/// when the clock step of a cold start left that delay 3 h ahead.
+fn boot_settle() {
+    use icraft_core::autostart::{self as a, Settled};
+    if let Some(up) = a::windows_uptime().filter(|up| *up < a::BOOT_NETWORK_LIMIT) {
+        log::info!(
+            "[boot] Windows started {} s ago: waiting until it has been up {} s and GitHub answers (at most until {} min), \
+             counted on Windows' uptime, which a clock step does not move",
+            up.as_secs(),
+            a::BOOT_SETTLE.as_secs(),
+            a::BOOT_NETWORK_LIMIT.as_secs() / 60
+        );
+    }
+    set_cycle_step("boot: waiting for Windows to settle and GitHub to answer");
+    match a::settle_after_boot() {
+        Settled::NotAtBoot => {}
+        Settled::Ready { waited, uptime } => {
+            log::info!("[boot] waited {} s (Windows up {} s, GitHub answers): the Cycle starts", waited.as_secs(), uptime.as_secs())
+        }
+        Settled::NoNetwork { waited, uptime } => log::warn!(
+            "[boot] GitHub did not answer in {} s (Windows up {} s): the Cycle starts anyway; the sync reports its error and the on-disk checks run",
+            waited.as_secs(),
+            uptime.as_secs()
+        ),
+    }
+    set_cycle_step("");
+}
+
+/// What the Start-at-boot task is, as the boot instance read it (the status
+/// file's `boot_task=`): `current`, `outdated: <why>`, `another: <why>`,
+/// `none`, `unknown: <error>`. Empty in a window.
+static BOOT_TASK_NOTE: Mutex<String> = Mutex::new(String::new());
+
+/// Read the task once, on a thread (schtasks takes a moment). A task an older
+/// launcher registered keeps its shape until someone registers it again (a
+/// launcher self-update does not), so the boot instance says so.
+fn spawn_boot_task_check(dir: &Path) {
+    use icraft_core::autostart::{self as a, Registered};
+    let dir = dir.to_path_buf();
+    std::thread::spawn(move || {
+        let Ok(exe) = std::env::current_exe() else { return };
+        let note = match a::status(&exe, &dir) {
+            Ok(Registered::Yes) => {
+                log::info!("[boot] the Start-at-boot task is current: at boot with no delay, and on a clock step");
+                "current".to_string()
+            }
+            Ok(Registered::Outdated(why)) => {
+                log::warn!(
+                    "[boot] the Start-at-boot task was registered by an older launcher: {why}. Register it again at the box: \
+                     Server tab, tick \"Start at boot\" (Windows asks for approval)"
+                );
+                format!("outdated: {why}")
+            }
+            Ok(Registered::Differs(why)) => {
+                log::info!("[boot] the task '{}' is not this launcher's for this folder: {why}", a::TASK_NAME);
+                format!("another: {why}")
+            }
+            Ok(Registered::No) => {
+                log::info!("[boot] there is no Start-at-boot task: this boot instance was started by hand");
+                "none".to_string()
+            }
+            Err(e) => {
+                log::warn!("[boot] Task Scheduler could not be read: {e:#}");
+                format!("unknown: {e:#}")
+            }
+        };
+        *BOOT_TASK_NOTE.lock().unwrap() = note;
+    });
 }
 
 /// Set in the process the restricted restart started: the pid that started it.
@@ -2333,7 +2459,10 @@ fn set_boot_task(on: bool, dir: PathBuf) {
                 log::error!("[boot-task] {what} failed: {e:#}");
                 if on {
                     log::error!("[boot-task] the same task from an elevated PowerShell at the box (one line):");
-                    log::error!("{}", a::powershell_line(&exe, &dir));
+                    log::error!(
+                        "{}",
+                        a::powershell_line(&exe, &dir, &a::current_user().unwrap_or_default(), a::current_user_sid().as_deref())
+                    );
                 }
             }
         }
@@ -3983,9 +4112,11 @@ impl IcraftApp {
                 ),
             )
             .on_hover_text(format!(
-                "Registers the Task Scheduler task '{}' for this launcher and this folder: at every Windows start (after a minute) it runs \
-                 icraft-gui.exe --boot as your account, with nobody logged on (S4U: no password stored, least privilege). \
-                 A window opened later shows that boot instance and can take the server over. Untick to delete the task.",
+                "Registers the Task Scheduler task '{}' for this launcher and this folder: at every Windows start it runs \
+                 icraft-gui.exe --boot as your account, with nobody logged on (S4U: no password stored, least privilege); \
+                 the launcher then waits for the network itself. A second trigger starts it again on a clock step in the \
+                 first hour after boot, in case the first start did not take. A window opened later shows that boot instance \
+                 and can take the server over. Untick to delete the task.",
                 a::TASK_NAME
             ));
         if resp.changed() {
@@ -4001,6 +4132,10 @@ impl IcraftApp {
             ),
             BootTask::Known(Registered::Differs(why)) => (
                 format!("a task '{}' is there, but {why}: tick the box to replace it with this launcher's", a::TASK_NAME),
+                BADGE_AMBER,
+            ),
+            BootTask::Known(Registered::Outdated(why)) => (
+                format!("registered by an older launcher: {why} -- tick the box to register it again"),
                 BADGE_AMBER,
             ),
             BootTask::Failed(e) => (format!("Task Scheduler could not be read: {e}"), BADGE_RED),
