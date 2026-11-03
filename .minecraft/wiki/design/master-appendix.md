@@ -58,7 +58,7 @@ Which materials the player can and cannot get at each tier. Cross-tier mechanism
 ### A.2 Tier 2 (Twilight / Blue Skies dimensional access)
 
 **New available (gated by tier_2 stage)**
-- Steel (Thermal): the workhorse T2 alloy.
+- Steel (Thermal): the main T2 alloy.
 - Manasteel (Botania): magic-tier T2 metal. Block + ingot + nugget + 4-piece armor + sword/pick/axe/shovel.
 - Mana diamond + Mana pearl (Botania): T2 transmutation outputs. (Diamond ore itself stays T3-gated.)
 - Botania T2 workstations: Runic Altar, Spreader fundamentals, basic Mana Pool tier.
@@ -116,11 +116,11 @@ After the T4 unlock, post-Glacio content is the "endgame after the endgame": Myt
 
 13 classes (Iridescent Classes): Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner, Elemental, Blessed, Corrupted.
 
-The stat tables and ability descriptions for each origin, race and class are in the JSON files under `kubejs/data/icraft/` and in the Patchouli codex (categories: Choosing Your Build / Origins Guide / Classes). This appendix does not repeat them; the codex is the authoritative reference for character creation choices.
+The stat tables and ability descriptions for each origin, race and class are in the JSON files under `kubejs/data/icraft/` and in the Patchouli codex (categories: Choosing Your Build / Origins Guide / Classes). The codex is the authoritative reference for character creation choices.
 
 ### A.7 Tier unlock options — the token economy
 
-The token economy is described in [master.md Part III](master.md#part-iii--progression-the-token-economy). A player advances a tier by reaching either its token threshold or its boss-rush %. There is one combined pool with four lanes (Engineering / Magic / Exploration / Combat); each lane reaches the threshold on its own, and hybrids mix the lanes freely. The design was locked on 2026-05-31. The values are the design; exact item IDs are verified at build.
+The token economy is described in [master.md Part III](master.md#part-iii--progression-the-token-economy). A player advances a tier by reaching either its token threshold or its boss-rush %. There is one combined pool with four lanes (Engineering / Magic / Exploration / Combat); each lane reaches the threshold on its own, and hybrids mix the lanes freely. The design was locked on 2026-05-31. These are design values; the exact item IDs are verified at build.
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
@@ -129,7 +129,7 @@ The token economy is described in [master.md Part III](master.md#part-iii--progr
 | T3 → T4 | 2000 | 100% of T3 bosses (all 44, incl. Lucifer) |
 | T4 → finale | none | defeat the Ender Dragon (pack finale; no gate: the Ad Astra planets open with T4) |
 
-The boss-rush denominator is the per-tier boss roster: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 9 / 18 / 44 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2, the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. The ladder is strict (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only while the player holds the tier below; kills made early are kept and count once that tier is held. The default rate for bulk metal is 1 token per 100. Every resource and block has a cap, and the tables below are the complete conversion set (no universal default, no unlisted long tail), so each tier's total is that lane's ceiling.
+The boss-rush denominator is the per-tier boss roster: the `rush` field of each entry in the pack's boss registry (read by `kubejs/server_scripts/gates/codex_boss_rush.js`). A roster holds the tier's named bosses and some minibosses (the three Mutant Monsters and Mowzie's Naga in T1; Swampjaw, the Bellringer and the Mutant Enderman in T2; Coralssus, Iron's Spellbooks' four casters, the Stalwart Dungeons bosses and others in T3): 9 / 18 / 44 entries. The counts cover the bosses in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved from T1 to T2, the Aether's three dungeon bosses from T2 to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed. The ladder is strict (since 2026-10-15): a threshold of tokens or of roster kills buys its tier only while the player holds the tier below; kills made early are kept and count once that tier is held. The default rate for bulk metal is 1 token per 100. Every resource and block has a cap, and the tables below are the complete conversion set (no universal default, no unlisted long tail), so each tier's total is that lane's ceiling.
 
 #### A.7.1 Engineering lane (material → token)
 
@@ -174,7 +174,7 @@ The boss-rush denominator is the per-tier boss roster: the `rush` field of each 
 | Metallurgic Infuser · Crusher | 2 ea | 50 | 200 |
 | Energized Smelter · Energy Cube (Basic) | 2 ea | 40 | 160 |
 
-> The ore-only share rises 36% / 62% / 64% across T1/T2/T3 by design, since higher tiers unlock ore multiplication and automation. Machines are still needed to cross the line; ore alone never reaches the threshold. **Action item:** tier the Mekanism recipes so the tech economy lines up with these gates.
+> The ore-only share rises 36% / 62% / 64% across T1/T2/T3 by design, since higher tiers unlock ore multiplication and automation. Ore alone never reaches the threshold, so machines are still needed. **Action item:** tier the Mekanism recipes so the tech economy lines up with these gates.
 
 #### A.7.2 Magic lane (cultivation → token)
 
@@ -221,7 +221,7 @@ This lane draws only from the generation, cultivation and ritual side (mana/sour
 | Dimensional Storage / Eternal Stella / Clibano | 2 ea | 30 / 25 / 20 | 150 |
 | `conjuration_catalyst` *(re-tiered from T1)* | 2 | 20 | 40 |
 
-> Recipe tier-gating fixes built in: `mana_diamond` → T2, `conjuration_catalyst` → T3, and Gaia Spirit dropped (a boss drop would force a fight, which breaks the non-combat lane). Botania T1 bootstraps itself; the Enchanting Apparatus needs the `diamond → mana_diamond` override (shipped, see §B and master.md Part III).
+> The lane has these recipe tier-gating fixes: `mana_diamond` → T2, `conjuration_catalyst` → T3, and Gaia Spirit dropped (a boss drop would force a fight, which breaks the non-combat lane). Botania T1 bootstraps itself; the Enchanting Apparatus needs the `diamond → mana_diamond` override (shipped, see §B and master.md Part III).
 
 #### A.7.3 Exploration + Combat lanes (drops + dimensions)
 
@@ -238,9 +238,9 @@ This lane draws only from the generation, cultivation and ritual side (mana/sour
 
 #### A.7.4 T3 → T4 Lucifer + the End
 
-- Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone. Non-combat lanes skip him by banking the 2000-token threshold. The boss-rush route requires him: he is the final T3 boss in the 100% clear. A unique Lucifer's Token (the "pure-except-for-the-fight" submission, a second combat door) was never built and was retired from the design on 2026-10-17. A Lucifer kill grants no tier on its own; the old single-kill milestone routes were retired on 2026-06-01.
-- The End uses the vanilla stronghold and End Portal process with Eyes of Ender (staged at T4). **Planned, not built:** an "End Compass" crafted from the Aether's materials is to replace the Eye of Ender. It would direct the player to an "End Bastion" (reusing the `boss_compass` waystone system), which makes the End post-Aether.
-- T4 is terminal: it has no token gate. The Ender Dragon is the pack finale. The Ad Astra planets were designed as the post-game after it; since 2026-10-17 they are not, by design. They and their orbits are T4 dimensions that need the T4 stage and a rocket, not a dragon kill.
+- Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone. Non-combat lanes skip him by reaching the 2000-token threshold. The boss-rush route requires him: he is the final T3 boss in the 100% clear. A unique Lucifer's Token (the "pure-except-for-the-fight" submission, a second combat route) was never built and was retired from the design on 2026-10-17. A Lucifer kill grants no tier on its own; the old single-kill milestone routes were retired on 2026-06-01.
+- The End uses the vanilla stronghold and End Portal process with Eyes of Ender (staged at T4). **Planned, not built:** an "End Compass" crafted from the Aether's materials will replace the Eye of Ender. It will direct the player to an "End Bastion" (reusing the `boss_compass` waystone system), which will make the End post-Aether.
+- T4 is terminal: it has no token gate. The Ender Dragon is the pack finale. The Ad Astra planets were designed as the post-game after it until 2026-10-17. Since then, by design, they and their orbits are T4 dimensions that need the T4 stage and a rocket, not a dragon kill.
 
 > Supply-vs-threshold pacing (rough): the threshold is always reachable, because repeat boss kills can be farmed. The supply from doing each thing once (~550 / ~900 / ~1450) grows more slowly (~1.6×/tier) than the threshold curve (2×/tier), so the upper tiers, especially T3 → T4, may lean on grind. The estimate depends on the open Exploration values and on the large T3 Mekanism economy (likely lowballed), and it needs a real model to settle.
 
@@ -292,7 +292,7 @@ Every `event.remove` and `event.shaped` (override) call in `kubejs/server_script
 **Section K (Theabyss rings + Arcane Workbench + boss armor)** *(LIVE: theabyss/TATOS is installed, so these strips fire. The 30 stock rings and the arcane workbench are removed so the 8 custom `kubejs:ring_*` curios are the only ring economy; the Unorithe armor set's crafting recipes are removed so that set is boss-drop-only, see §C.11)*:
 - K.1: `event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })` (regex bulk strip).
 - K.2: Catch-all `event.remove({ output: /theabyss:ring_/ })` for shapeless/special.
-- K.3: 29-item individual ring removal list (belt-and-suspenders); audit Phase 3.2 fixed `ring_of_ghost` → `ring_of_ghosts` plural drift.
+- K.3: 29-item individual ring removal list (a redundant safeguard); audit Phase 3.2 fixed `ring_of_ghost` → `ring_of_ghosts` plural drift.
 - K.4: `theabyss:arcane_workbench` (ring crafting station) removed.
 - K.5: recipes removed for the boss-drop Unorithe armor set, 4 pieces. (The Knight, Ragnarok, Dragon and Death sets once listed here are not items in the installed mod.)
 
@@ -329,13 +329,13 @@ Every `event.remove` and `event.shaped` (override) call in `kubejs/server_script
 
 ### B.3 `recipes/tier_skip.js`: transmutation (retired)
 
-The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is **not in the game**: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops, the other bend mechanism, are designed and not in the game (master Part II).
+The "bend not break" transmutation (cross-tier conversion at deliberately inefficient ratios, ~32-64 T2 ingots for 1 T3 ingot) is not in the game: `tier_skip.js` was retired with the legacy purge of 2026-06-01, and the five `kubejs:transmuted_*` placeholder items were removed on 2026-10-11 because nothing made or used them. Boss tier-peek drops, the other bend mechanism, are designed but not in the game (master Part II).
 
 The Rift Keystone recipe that lived in the same file (4 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fragment` + 1 `minecraft:nether_star` → `kubejs:rift_keystone`) is now in the Mythic Forge script (I.6), with other ingredients: one each of Void Essence, Dragon Heart, Gaia Ingot, Nether Star and Rift Shard.
 
 ### B.4 `recipes/ad_astra_gating.js`: rocket progression
 
-- NASA Workbench: netherite + Mekanism Steel Casing + ad_astra:steel_block, the recipe locked to the T4 stage (since 2026-10-10; it asked for `reality_progression_token_t4`, a retired token with no source, so no rocket could be built). Every planet and orbit also has its own T4 dimension gate (since 2026-10-14).
+- NASA Workbench: netherite + Mekanism Steel Casing + ad_astra:steel_block, with the recipe locked to the T4 stage since 2026-10-10 (before that it asked for `reality_progression_token_t4`, a retired token with no source, so no rocket could be built). Every planet and orbit also has its own T4 dimension gate (since 2026-10-14).
 - Tier 1 Rocket → Moon: netherite + thermal:enderium_ingot + ad_astra:steel_plate + ad_astra:engine_frame.
 - Tier 2 Rocket → Mars: + aethersteel:aethersteel_ingot + ad_astra:moon_stone.
 - Tier 3 Rocket → Venus/Mercury: + 2x aethersteel:aethersteel_ingot + ad_astra:mars_stone.
@@ -436,7 +436,7 @@ All four BS bosses also drop `blue_skies:runic_arc` @ 5% (recipe-stripped per Se
 
 ### C.5 Aether bosses (`loot/loot_overhaul.js` Section 2 + `loot/dimensional_boss_drops.js`)
 
-Tier 4 since 2026-10-16 (Tier 2 before). As for the End's bosses, a first kill pays the tier-4 amount (25 tokens) in tier-3 tokens, since there is no tier-4 token. Each of the three also drops 1-2 Rift Shards and a Void Fragment.
+The Aether's bosses have been Tier 4 since 2026-10-16 (Tier 2 before). As with the End's bosses, a first kill pays the tier-4 amount (25 tokens) in tier-3 tokens, since there is no tier-4 token. Each of the three also drops 1-2 Rift Shards and a Void Fragment.
 
 | Boss | Tier | Drops |
 |------|-----:|-------|
@@ -456,7 +456,7 @@ Deep Aether: `deep_aether:eots_controller` (T4 sky-end) drops `simplyswords:flam
 
 ### C.7 Stalwart Dungeons (`loot/stalwart_dungeons_drops.js`, 7 modifiers)
 
-7 nether mini-bosses (awful_ghast, nether_keeper, incomplete_wither, giddy_blaze, reinforced_blaze, shelterer, shelterer_without_armor) with T3 ISS magic synergy. The tougher ones get rare_ink + fire/blood/cooldown runes; the weaker ones get uncommon_ink + fire_rune. `incomplete_wither` has a 10% diamond_spell_book chance.
+7 nether mini-bosses (awful_ghast, nether_keeper, incomplete_wither, giddy_blaze, reinforced_blaze, shelterer, shelterer_without_armor) drop T3 ISS magic materials. The tougher ones get rare_ink + fire/blood/cooldown runes; the weaker ones get uncommon_ink + fire_rune. `incomplete_wither` has a 10% diamond_spell_book chance.
 
 ### C.8 Mahou synergy (`loot/mahou_synergy_drops.js`, 14 modifiers)
 
@@ -505,8 +505,8 @@ and 10 curios that needed those ingots come back as T3/T4 drops:
 - mudhut: velocity_flip 10%, dimensional_poof 10%
 
 **T4 Nyxium (knight + cosmic-purple) → T4 boss drops**
-Originally allocated to infested_lab + ancient_outcrop, which are both in the overworld
-despite their late-game loot (T1-accessible by dimension alone). Moved to T4 bosses:
+These were originally allocated to infested_lab + ancient_outcrop, which are both in the overworld
+despite their late-game loot (T1-accessible by dimension alone). They moved to T4 bosses:
 - cataclysm:netherite_monstrosity: nyxium_greatsword 15%, nyxs_necklace 10%
 - cataclysm:ender_guardian: antimatter_pacemaker 10%, null_scarf 12%
 - minecraft:ender_dragon: antiprism 10%, dragon_band 12%
@@ -569,7 +569,7 @@ The Abyss / TATOS (`theabyss`, T3 dimension `theabyss:the_abyss`) is installed. 
 
 Drop sources (live, `abyss_boss_loot.js`): all eight rings are boss drops, since The Abyss has no chest that rolls loot. Shadows and Phantom: Nightblade (15% each); Embers: The Roka (15%); Frost: Ice Knight (15%); Void Sight: Elder (10%); Knight: Ice Knight (25%); Dark Pact: Soul Guard (20%); Unorithe: Guard (15%).
 
-Abyssal Celestial Artifacts (since 2026-10-11): the same three bosses carry the Abyss-themed Celestial Artifacts. Elder (20%) and The Roka (50%) drop one of Demon Curse, Twisted Scabbard, Catastrophe Scroll, Abyss Will Badge or Lock of Abyss. Nightblade always drops one of Abyss Core, Demon Heart, Twisted Heart, Twisted Scroll, Heart of Revenge, Chaotic Etching or Nihility Etching. Each of the three also has a 10% chance of an enchanted book (levels 20 to 30). These rates are provisional. The Elder spawns in Blue Mountain and The Roka in Blue Jungle. Nightblade is summoned at a Night Altar: light the altar's eight upper pillars with Soul Hearts (Soul Guards drop them only to a Looting weapon), then use an Eye of Abyss (Roka Horn + Elder Eye + Crystal Hand + Eye of Ender + Ghast Tear) on the altar.
+Abyssal Celestial Artifacts (since 2026-10-11): the same three bosses drop the Abyss-themed Celestial Artifacts. Elder (20%) and The Roka (50%) drop one of Demon Curse, Twisted Scabbard, Catastrophe Scroll, Abyss Will Badge or Lock of Abyss. Nightblade always drops one of Abyss Core, Demon Heart, Twisted Heart, Twisted Scroll, Heart of Revenge, Chaotic Etching or Nihility Etching. Each of the three also has a 10% chance of an enchanted book (levels 20 to 30). These rates are provisional. The Elder spawns in Blue Mountain and The Roka in Blue Jungle. Nightblade is summoned at a Night Altar: light the altar's eight upper pillars with Soul Hearts (Soul Guards drop them only to a Looting weapon), then use an Eye of Abyss (Roka Horn + Elder Eye + Crystal Hand + Eye of Ender + Ghast Tear) on the altar.
 
 The Unorithe armor set is boss-drop-only (its crafting recipes are stripped in §K): Soul Guard 15% per piece, Guard 12% per piece. (The Knight, Ragnarok, Dragon and Death sets listed here earlier are not items in the installed mod.) 7 elemental armor-set bonuses for the in-pack theabyss sets (Garnite, Aberythe, Incorythe, Fusion, Phantom, Glacerythe, Ignisithe) are in `abyss/abyss_armor_effects.js`.
 
@@ -610,7 +610,7 @@ These boss mods are in the modlist but not yet listed in the dedicated `*_drops.
 
 **Mutant Monsters.** Variants of the vanilla zombie, skeleton, creeper and enderman with enhanced AI and drops. `mutant_monsters_no_griefing.js` suppresses their block breaking, because the mutant zombie's pillar-up and the mutant creeper's charged explosion bypass the mobGriefing=false defaults. Their drops are wired through `dimensional_boss_drops.js`.
 
-**Ultimate Bosses.** In the pack (`ultimate-bosses-1.0.4.jar`). Its bosses are called inside its towers on Overworld hills and mountains: the Storm with five Phantom Membranes (Tier 1), the Sorcerer with a Nether Star (Tier 3), the Lost Angel with Dragon's Breath; a fourth, the Eye, appears beside Blazes. They keep the mod's own drops and are not part of the pack's boss systems (no kill tokens, no boss rush, no boss scaling). The Simply Swords reserve once meant for them was given to other bosses on 2026-10-18.
+**Ultimate Bosses.** The mod is in the pack (`ultimate-bosses-1.0.4.jar`). Its bosses are summoned inside its towers on Overworld hills and mountains: the Storm with five Phantom Membranes (Tier 1), the Sorcerer with a Nether Star (Tier 3), the Lost Angel with Dragon's Breath; a fourth, the Eye, appears beside Blazes. They keep the mod's own drops and are not part of the pack's boss systems (no kill tokens, no boss rush, no boss scaling). The Simply Swords reserve once meant for them was given to other bosses on 2026-10-18.
 
 #### Loot config priorities
 
@@ -634,7 +634,7 @@ The named-unique distribution aims for variety at each tier while every single d
 | Endgame / Mythic | 7 (Mythic Uniques from Rift Blueprints) | Top-end horizontal variety |
 | **Total** | ~35 to 43 unique weapons | |
 
-Each class should have 3 to 4 viable unique options across the full progression, enough that build identity feels authored without forcing a single best-in-slot.
+Each class should have 3 to 4 viable unique options across the full progression: enough to give each build a designed identity without forcing a single best-in-slot.
 
 ### C.14 Counts
 
@@ -661,20 +661,20 @@ these clamps.
 
 The per-dimension floor (minimum rarity) keeps natural floors for higher tiers: Nether
 mob drops floor at Rare, the Aether floors at Rare (Rare-Ancient since 2026-10-16; it was Uncommon-Epic as a T2 dimension)
-and the End floors at Epic, so T4 is not polluted with junk Common rolls.
+and the End floors at Epic, so T4 has no junk Common rolls.
 
 Every tiered dimension has a clamp (since 2026-10-16). Before that, fifteen dimensions had no line, so affixes and gems found there rolled
 unclamped (up to Ancient at any tier). Now the Abyss's Frost World is clamped as the Abyss (Rare-Mythic), the Abyss's pocket dimension as
 Tier 2 (Common-Epic), and the five Ad Astra planets, their six orbits, Iron's Spellbooks' pocket dimension and the Reality Marble
 as the End (Epic-Ancient). The lists are generated from the pack's dimension registry.
 
-Single-sourced 2026-06-06: the JSON affix definitions ship only through the `icraft_apotheosis_affixes` Paxi datapack zip (the 83-file `kubejs/data/.../affixes/` shadow tree was retired in all 3 distros). Per-dimension tier inference is still configured in `config/apotheosis/adventure.cfg`. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`). Single-sourcing did not change the count, since it moved definitions without adding or removing any. The same 2026-06-06 pass fixed 9 `mob_effect`-carrier affix schemas to use per-rarity duration/amplifier.
+The JSON affix definitions have been single-sourced since 2026-06-06: they ship only through the `icraft_apotheosis_affixes` Paxi datapack zip (the 83-file `kubejs/data/.../affixes/` shadow tree was retired in all 3 distros). Per-dimension tier inference is still configured in `config/apotheosis/adventure.cfg`. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`). Single-sourcing did not change the count, since it moved definitions without adding or removing any. The same 2026-06-06 pass fixed 9 `mob_effect`-carrier affix schemas to use per-rarity duration/amplifier.
 
-> **Scorching (ex-Igniting).** The fire affix was reworked on 2026-06-06. Its old `mob_effect` carrier gave the *attack target* fire_resistance, a wrong-way buff that helped the enemy. It is now a thin `attack_damage` carrier whose real effect is an on-hit fire-vulnerability mark (15 to 50% by rarity, provisional), applied through `DamageModifierRegistry` in `affix_effects.js`. The player-facing name changed from Igniting to Scorching in lang; the affix JSON file is still `igniting.json` (the id was kept to preserve in-world stacks).
+> **Scorching (ex-Igniting).** The fire affix was reworked on 2026-06-06. Its old `mob_effect` carrier gave fire_resistance to the *attack target*, which helped the enemy. It is now a thin `attack_damage` carrier whose real effect is an on-hit fire-vulnerability mark (15 to 50% by rarity, provisional), applied through `DamageModifierRegistry` in `affix_effects.js`. The player-facing name changed from Igniting to Scorching in lang; the affix JSON file is still `igniting.json` (the id was kept to preserve in-world stacks).
 
 ### D.2 Reforging gates
 
-**Workstations are NOT AStages-gated** (changed 2026-05-14). All 9 Apotheosis
+Workstations are not AStages-gated (changed 2026-05-14). All 9 Apotheosis
 workstations (simple_reforging_table, reforging_table, augmenting_table,
 gem_cutting_table, sigil_of_socketing, sigil_of_rebirth, sigil_of_withdrawal,
 sigil_of_enhancement, sigil_of_unnaming) are available from T1. Crafting them
@@ -687,10 +687,10 @@ tokens for reroll operations:
 - Advanced reroll at reforging_table: Tier 3 boss `advanced_reforging_token` + expensive materials.
 - Ultimate reroll at augmenting_table: Tier 4 boss `ultimate_reforging_token` + Gaia ingots. (Wiring antimatter into the reroll is tabled long term by operator decision, 2026-06-06; the token is loot-only and no reroll recipe exists in code.)
 
-Rationale: the earlier workstation gating was redundant. Three caps
-already constrain affix/gem progression (dimensional rarity clamp + boss-drop
-tokens + Apotheosis's source-tier inference). Workstation gates added nothing
-functional and only blocked crafting/placement, so they were removed.
+Rationale: three caps already constrain affix/gem progression (dimensional
+rarity clamp + boss-drop tokens + Apotheosis's source-tier inference), so the
+earlier workstation gating was redundant. The gates only blocked
+crafting/placement, and they were removed.
 
 ### D.3 Gem tiers
 
@@ -701,7 +701,7 @@ The boss a gem comes from sets its tier:
 
 ### D.4 Dimension stat multipliers (full)
 
-> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling now belongs to the bespoke time-based `iridescent_difficulty` mod (`iridescent_difficulty-0.1.0.jar`), which replaced ScalingMobs / Improved-Mobs-accumulator / Azukaar's (all removed). Multipliers ramp linearly from a per-tier start% to a cap% over capHours of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) is in [Progression Overview](../progression/overview.md#dimensional-progression) and `config/iridescent_difficulty-common.toml`. The table below is the legacy flat-multiplier reference, kept for the *relative* shape across dimensions and for the mob-gear% column. Treat its absolute HP/DMG values as indicative; `iridescent_difficulty`'s time curve is the live source. Under the live engine, The Abyss (and its Frost World) runs the T3 curve, and Deep Aether runs the Aether's curve: it is not a separate dimension, since its biomes generate inside the Aether, so the Deep Aether row below is only a design target. The Aether has run the T4 curve since 2026-10-16 (T2 before); its row below keeps the old T2 reference values. Since the same day, the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension and the Reality Marble run the T4 curve, and the Abyss's pocket dimension runs the T2 curve; before that they were on no list and ran the T1 curve. Bosses with a designed health or the x3 are on the exclusion list, and no curve scales them (D.6).
+> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling comes from the pack's own time-based `iridescent_difficulty` mod (`iridescent_difficulty-0.1.0.jar`), which replaced ScalingMobs / Improved-Mobs-accumulator / Azukaar's (all removed). Multipliers ramp linearly from a per-tier start% to a cap% over capHours of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) is in [Progression Overview](../progression/overview.md#dimensional-progression) and `config/iridescent_difficulty-common.toml`. The table below is the legacy flat-multiplier reference, kept for the *relative* shape across dimensions and for the mob-gear% column. Its absolute HP/DMG values are indicative; `iridescent_difficulty`'s time curve is the live source. Under the live engine, The Abyss (and its Frost World) runs the T3 curve. Deep Aether runs the Aether's curve because its biomes generate inside the Aether and it is not a separate dimension, so the Deep Aether row below is only a design target. The Aether has run the T4 curve since 2026-10-16 (T2 before); its row below keeps the old T2 reference values. Since the same day, the Ad Astra planets and orbits, Iron's Spellbooks' pocket dimension and the Reality Marble run the T4 curve, and the Abyss's pocket dimension runs the T2 curve; before that they were on no list and ran the T1 curve. Bosses with a designed health or the x3 are on the exclusion list, and no curve scales them (D.6).
 
 Four stats scale independently per dimension. Damage scales fastest, HP moderately, and Speed and Armor minimally.
 
@@ -825,7 +825,7 @@ These are separate from the designed bosses. They spawn at random per chunk per 
 
 Apotheosis bosses drop gear with affixes matching their level. Higher level → better affix rarity.
 
-Where they actually spawn (the server's config, October 2026): Overworld 2 %; Twilight Forest, Everbright, Everdawn 4 %;
+Live spawn rates (the server's config, October 2026): Overworld 2 %; Twilight Forest, Everbright, Everdawn 4 %;
 Undergarden, Otherside, the Abyss, its Frost World 6 %; the Nether 8 %; the Aether and the five Ad Astra planets 8 %; the End
 10 %. The orbits, both pocket dimensions and the Reality Marble have none. A dimension's line only works if a boss file names
 it: until 2026-10-16 only the Overworld, the Nether, the End and the Twilight Forest had one, so the other lines spawned nothing.
@@ -873,7 +873,7 @@ How long T4 fights should feel from each side. These are the design targets that
 | Paladin | 8-10 | 5-7 | 3-4 |
 | Vanguard | 10-14 | 7-9 | 4-6 |
 
-These numbers are design targets. Actual gameplay numbers will drift through the interaction of 7+ gear-enhancement layers, 13 classes, dimension mechanics and mob scaling. Expect at least 2-3 full tuning passes during playtesting; start at 80% of the designed values and tune up.
+Actual gameplay numbers will drift from these targets through the interaction of 7+ gear-enhancement layers, 13 classes, dimension mechanics and mob scaling. At least 2-3 full tuning passes are expected during playtesting, starting at 80% of the designed values and tuning up.
 
 ### D.10 ~~Champion affix pool~~: REMOVED 2026-04-07
 
@@ -898,7 +898,7 @@ Champion mobs used to spawn one tier above the base for their dimension, with a 
 
 ### D.12 Implementation notes
 
-These targets drive the live difficulty stack. It still has 7 layers, but not the original 7 (the Champions Unofficial layer was removed on 2026-04-07, and ScalingMobs / Improved Mobs were retired on 2026-05-03 in favor of the bespoke `iridescent_difficulty` mod):
+These targets drive the live difficulty stack. It still has 7 layers, but not the original 7 (the Champions Unofficial layer was removed on 2026-04-07, and ScalingMobs / Improved Mobs were retired on 2026-05-03 in favor of the pack's own `iridescent_difficulty` mod):
 
 1. `iridescent_difficulty`: time-based per-dimension HP / damage / armor multipliers (D.4), ramping to a per-tier cap; the End uncaps after the Ender Dragon. Replaces ScalingMobs, the Improved-Mobs accumulator and Azukaar's.
 2. `mob_scaling_unified.js` tier-HP block: static per-category HP (basic 3× / mid 1.5×), applied on top of the dimension multiplier.
@@ -957,7 +957,7 @@ All `kubejs:*` items, ~80 in total, by category. Source: `kubejs/startup_scripts
 
 ### E.4 Mythic uniques (Mythic Forge crafted)
 
-- MekaSuit Mk2: the crafting-table upgrade is an in-place, per-piece transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the earlier `kubejs:mekasuit_mk2_*` shells were retired on 2026-06-06). Each piece is upgraded on its own. The craft consumes that one MekaSuit piece + Aethersteel + an Antimatter Pellet (`mekanism:pellet_antimatter`, the apex reagent, swapped in for Glacio Stone in the 2026-06-06 antimatter-sink pass) + Primordial Essence, and returns the same Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments and affixes all survive), plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker (`startup_scripts/mekasuit_mk2_stats.js`) adds a provisional pinnacle band over the native MekaSuit (additive only, no native nerf).
+- MekaSuit Mk2: the crafting-table upgrade is an in-place, per-piece transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the earlier `kubejs:mekasuit_mk2_*` shells were retired on 2026-06-06). The craft consumes that one MekaSuit piece + Aethersteel + an Antimatter Pellet (`mekanism:pellet_antimatter`, the apex reagent, swapped in for Glacio Stone in the 2026-06-06 antimatter-sink pass) + Primordial Essence, and returns the same Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments and affixes all survive), plus an `icraft_mekasuit_mk2` marker and a top-tier display name and lore. A runtime stat layer keyed on the marker (`startup_scripts/mekasuit_mk2_stats.js`) adds a provisional top-tier stat band over the native MekaSuit (additive only, no native nerf).
 - Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown: Mythic Forge outputs that are existing items (Awakened Lichblade / netherite armor) renamed with NBT, not fully custom items. `endgame/rift_mechanics.js` recognizes them by matching the NBT display.Name.
 
 ### E.5 Cross-mod alt-recipe outputs
@@ -982,7 +982,7 @@ All `kubejs:*` items, ~80 in total, by category. Source: `kubejs/startup_scripts
 
 ### E.7 Custom Abyss-themed curio rings
 
-- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe`: 8 custom rings. theabyss/TATOS is in the pack; its 30 stock rings and arcane workbench are stripped (`recipe_audit.js` §K) and these 8 replace them. Live drop sources: Abyss bosses only (Nightblade, The Roka, Elder, Ice Knight, Soul Guard, Guard), since The Abyss has no chest that rolls loot; per C.11.
+- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe`: 8 custom rings. theabyss/TATOS is in the pack; its 30 stock rings and arcane workbench are stripped (`recipe_audit.js` §K) and these 8 replace them. They drop only from Abyss bosses (Nightblade, The Roka, Elder, Ice Knight, Soul Guard, Guard), because The Abyss has no chest that rolls loot (see C.11).
 
 ### E.8 Misc
 
@@ -1150,7 +1150,7 @@ The `-noverify` JVM arg is required (server: in `iridescentserver.bat`; client: 
 
 ## G. Stage Restrictions
 
-Taken directly from `kubejs/server_scripts/gates/astages_restrictions.js` when the audit was completed on 2026-04-27. The content changes over time; this is a snapshot.
+A snapshot of `kubejs/server_scripts/gates/astages_restrictions.js`, taken when the audit was completed on 2026-04-27. The script changes over time.
 
 ### G.1 Tier 2 stage
 
@@ -1201,7 +1201,7 @@ Taken directly from `kubejs/server_scripts/gates/astages_restrictions.js` when t
 - Aethersteel T4 (15+ items): `aethersteel_ingot`, `aethersteel_block`, `aethersteel_nugget`, `aethersteel_scrap`, `aether_debris`, full tool set (sword/pick/axe/shovel/hoe/shears/knife), 4-piece armor, `aethersteel_upgrade_smithing_template`.
 - rpgseteffects awakening: 14 awakening artifacts.
 - Mekanism T4 specific (11 items): `digital_miner`, `fusion_reactor_controller`, 4 MekaSuit pieces, `meka_tool`, 4 QIO pieces, `ultimate_control_circuit`, `antiprotonic_nucleosynthesizer`, `atomic_alloy`.
-- Mekanism rebalance pins (2026-06-06, locked decision C): fusion chain (`mekanismgenerators:fusion_reactor_controller` [namespace fix; the old `mekanism:` pin was dead], `fusion_reactor_frame`, `fusion_reactor_port`, `fusion_reactor_logic_adapter`, `laser_focus_matrix`, `hohlraum`), SPS/antimatter (`sps_casing`, `sps_port`, `supercharged_coil`, `pellet_antimatter`), ultimate-tier facilities (`ultimate_tier_installer`, 9 ultimate factories, `ultimate_energy_cube`, `ultimate_induction_cell`, `ultimate_induction_provider`). Intermediates (alloys, circuits, HDPE) are deliberately left ungated per Axis H. Note: the `atomic_alloy` pin above is a latent dead id (`mekanism:alloy_atomic` is the real id) and is left dead on purpose, because gating it would violate Axis H.
+- Mekanism rebalance pins (2026-06-06, locked decision C): fusion chain (`mekanismgenerators:fusion_reactor_controller` [namespace fix; the old `mekanism:` pin was dead], `fusion_reactor_frame`, `fusion_reactor_port`, `fusion_reactor_logic_adapter`, `laser_focus_matrix`, `hohlraum`), SPS/antimatter (`sps_casing`, `sps_port`, `supercharged_coil`, `pellet_antimatter`), ultimate-tier facilities (`ultimate_tier_installer`, 9 ultimate factories, `ultimate_energy_cube`, `ultimate_induction_cell`, `ultimate_induction_provider`). Intermediates (alloys, circuits, HDPE) are deliberately left ungated per Axis H. The `atomic_alloy` pin above is a latent dead id (`mekanism:alloy_atomic` is the real id); it is left dead on purpose, because gating it would violate Axis H.
 - art_of_forging T4 (audit Phase 2.3): `demonic_axe`, `demonic_blade`, `demonic_flail`, `enigmatic_construct`.
 - cataclysm T4 (audit Phase 8.4): `mechanical_fusion_anvil`.
 
@@ -1433,7 +1433,7 @@ Ranger, Archmage, Void Summoner and Elemental get 50% effectiveness from all equ
 - Curio HP bonuses (half value)
 - Armor attribute modifiers granting HP (half value)
 
-Vanilla armor base values, JustLevelingFork level-up HP, Spice of Life HP and race traits are not affected by the halving; only equipment-sourced bonuses are halved.
+The halving does not touch vanilla armor base values, JustLevelingFork level-up HP, Spice of Life HP or race traits.
 
 #### HP-modifier stacking order
 
@@ -1445,7 +1445,7 @@ Vanilla armor base values, JustLevelingFork level-up HP, Spice of Life HP and ra
 
 ### K.2 Class passives reference
 
-Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powers/class/<name>/`) plus tick-based logic in `kubejs/server_scripts/origins/class_passives.js`. The table below lists every active passive per class with its canonical numbers (matched to the wiki overview at `wiki/classes/overview.md`). Most classes have stat-based identities, not weapon-type ones, so the "weapon affinities" approximation that used to be here was misleading.
+Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powers/class/<name>/`) plus tick-based logic in `kubejs/server_scripts/origins/class_passives.js`. The table lists every active passive of each class, with the canonical numbers of the wiki overview at `wiki/classes/overview.md`. Most classes have stat-based identities, not weapon-type ones, so the "weapon affinities" approximation that used to be here was misleading.
 
 | Class | Key passives | Tradeoffs |
 |-------|-------------|-----------|
@@ -1462,11 +1462,11 @@ Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powe
 
 #### Magic damage and spell power (no sync)
 
-`puffish_attributes:magic_damage` is set by Origins powers (Archmage's Arcane Supremacy +50%, Faefolk +30%, Elf +5%; the Battlemage's Arcane Strikes is attack damage, not magic) and by the Sorcery tree. Pufferfish's Attributes applies it per hit, at the start of the damage, to every hit whose type is `minecraft:magic`, `minecraft:indirect_magic`, `#c:is_magic` or `#neoforge:is_magic`; Iron's Spellbooks tags all nine school damage types `#neoforge:is_magic`, so it multiplies every Iron's spell. Ars Nouveau's spell damage is tagged only `#forge:is_magic` and is not reached. (The attribute's own value reads NaN: a Pufferfish dynamic attribute.) A bridge in `skill_effects.js` that copied these bonuses onto `irons_spellbooks:spell_power`, believing magic mods ignore the attribute, made each of them count twice on Iron's spells; it was removed 2026-10-17 (it never wrote Ars Nouveau).
+`puffish_attributes:magic_damage` is set by Origins powers (Archmage's Arcane Supremacy +50%, Faefolk +30%, Elf +5%; the Battlemage's Arcane Strikes is attack damage, not magic) and by the Sorcery tree. Pufferfish's Attributes applies it per hit, at the start of the damage, to every hit whose type is `minecraft:magic`, `minecraft:indirect_magic`, `#c:is_magic` or `#neoforge:is_magic`; Iron's Spellbooks tags all nine school damage types `#neoforge:is_magic`, so it multiplies every Iron's spell. Ars Nouveau's spell damage is tagged only `#forge:is_magic`, so the attribute does not reach it. (The attribute's own value reads NaN because it is a Pufferfish dynamic attribute.) A bridge in `skill_effects.js` that copied these bonuses onto `irons_spellbooks:spell_power`, believing magic mods ignore the attribute, made each of them count twice on Iron's spells; it was removed 2026-10-17 (it never wrote Ars Nouveau).
 
 #### Mana Attunement tier table (Archmage)
 
-Spell power bonus from Mana Attunement (`irons_spellbooks:spell_power`, multiply_base; one channel since 2026-10-17: it was also put on `puffish_attributes:magic_damage`, so an Iron's spell got it twice, x1.3225 at T4):
+Mana Attunement's spell power bonus (`irons_spellbooks:spell_power`, multiply_base). It has used one channel since 2026-10-17; before that it was also put on `puffish_attributes:magic_damage`, so an Iron's spell got it twice (x1.3225 at T4):
 
 | Detected tier | Trigger dimension | Bonus |
 |:-:|---|:-:|
@@ -1481,7 +1481,7 @@ The tier is detected from the highest-tier dimension the player has visited and 
 
 ### K.3 Race tradeoffs
 
-Chosen permanently at character creation. Races have mild tradeoffs, compared with the strong tradeoffs of classes. The benefits and drawbacks below are the powers in `iridescent_origins-1.0.0.jar` (2026-10-18).
+A race is chosen permanently at character creation. Race tradeoffs are mild; class tradeoffs are strong. The benefits and drawbacks are the powers in `iridescent_origins-1.0.0.jar` as of 2026-10-18.
 
 | Race | Benefits | Drawbacks | Natural pairing |
 |------|----------|-----------|-----------------|
@@ -1631,14 +1631,14 @@ Wanderer is the only class without a clear primary tree, by design. The class is
 
 #### Death + skill interactions
 
-- Skill points are not lost on death. Skills are permanent growth and never at risk.
+- Skill points are permanent growth: they are not lost on death and are never at risk.
 - Skill points are not lost on a Class respec. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). A skill-point respec is not available (K.8 above).
 
 This leaves room for hybrid builds without forcing a full reset on every class switch.
 
 #### Class Altar mechanics
 
-A custom block made with KubeJS. Recipe: tier-appropriate boss material + crafting station. On use it consumes 1 boss drop + 30 levels and opens the class selection screen. It can be placed and shared (multiplayer convenience).
+The Class Altar is a custom KubeJS block. Recipe: tier-appropriate boss material + crafting station. On use it consumes 1 boss drop + 30 levels and opens the class selection screen. It can be placed and shared (multiplayer convenience).
 
 ### K.9 Reforging progression
 
@@ -1658,7 +1658,7 @@ workstations are craftable from T1.
 
 The rarity ladder (D.1) is the second gate. Even with tokens, a player in the
 Overworld can't reroll above Rare, one in Twilight/Blue Skies can't reroll above Epic,
-and so on. Token and dimension together form the gate; workstation crafting is free.
+and so on.
 
 ### K.10 Implementation notes
 
@@ -1791,17 +1791,17 @@ attribute for these classes. Its class check first worked in 2026-10, and from
 10-10 the two multiplied (Archmage 375, Battlemage and Void Summoner 285) until
 the script's x1.5 was dropped on 2026-10-17. The buff was applied with
 `addTransientModifier` (not `addPermanentModifier`), so it was never saved in
-player NBT, and the restart that deployed the change took it off everyone. This
-is the lesson of the two earlier cleanup-after-revert cycles (legacy
+player NBT, and the restart that deployed the change took it off everyone. The
+transient modifier applies the lesson of the two earlier cleanup-after-revert cycles (legacy
 `mana_pool_bonuses` 2026-04-25 and `mana_bridge` 2026-05-14).
 
-What the script still does: it scrubs the legacy 8 UUIDs (4 from the
+The script still scrubs the legacy 8 UUIDs (4 from the
 2026-04-25 layered pool buff + 4 from the 2026-05-14 attribute-mirror bridge)
-once per player, at login, because those were permanent modifiers saved in
+once per player at login, because those were permanent modifiers saved in
 player NBT.
 
 HUD: `ArsGuiManaHudMixin` injects on `GuiManaHUD.shouldDisplayBar` and
-always returns false. Otherwise the Ars bar would duplicate the ISS
+always returns false, so the Ars bar does not duplicate the ISS
 bar (both read the same pool).
 
 Mixin location: `iridescent-tetra-expansion-mod` mixin package
@@ -1809,10 +1809,10 @@ Mixin location: `iridescent-tetra-expansion-mod` mixin package
 bus) and `ArsGuiManaHudMixin` (client bus).
 
 Items granting Ars perk attributes: all `ars_nouveau:ars_nouveau.perk.*`
-references in our codebase were migrated to `irons_spellbooks:*` on
+references in the pack's code were migrated to `irons_spellbooks:*` on
 2026-05-15. The Ars perk attributes still exist on the player (Ars registers
 them through `EntityAttributeModificationEvent`) but are now decorative: nothing
-in our codebase grants them, and the cap reads ISS whatever their
+in the pack's code grants them, and the cap reads ISS whatever their
 value. `HidePerkTooltips` still hides those attributes on tooltips
 if anything else ever applies them.
 
@@ -1844,8 +1844,8 @@ LivingHurtEvent map, so the two handlers never both apply.
 
 Remaining gap: damage from Ars-spawned entities after the spell context drops
 (delayed lightning from EffectLightning, on_fire ticks from EffectIgnite)
-doesn't carry SpellDamageEvent context. Known and deferred (it would need an
-NBT-tag-on-cast pattern).
+doesn't carry SpellDamageEvent context. The gap is known and deferred; closing it would need an
+NBT-tag-on-cast pattern.
 
 ### M.3 ISS Apotheosis gems (buffed values, repurposed spell_resist)
 
@@ -1869,7 +1869,7 @@ to "Gem of Arcane Affinity".
 
 ### M.4 Tier-gated Sigils of Socketing + elemental Apotheosis gems → school SP
 
-Added 2026-05-18. Two linked changes that together open Apotheosis socketing to caster builds across the tier ladder.
+Added 2026-05-18. Two linked changes open Apotheosis socketing to caster builds across the tier ladder.
 
 Tier-gated Sigil of Socketing: four sigils, each with a different socket cap:
 
@@ -1886,11 +1886,11 @@ Use mechanic: with the sigil in the main hand and the gear in the off hand, righ
 
 Elemental gems → school spell power: 11 of Apotheosis's 21 gems have a clear elemental flavor and now grant an ISS school-specific `*_spell_power` when socketed into a magic weapon (wands + staves only: items in the `#icraft:magic_weapon` tag). The datapack overrides are at `icraft_loot_overrides/data/apotheosis/gems/*.json`. All 11 carry a bonus on `gem_class.key = "magic_weapon"` (types `["magic_weapon"]`). The canonical sword/trident bonuses on these gems are unchanged, so socketing into a sword still gives the canonical effect.
 
-> **Scope note (2026-05-18 evening):** the tag covers only *main-hand cast-when-held* items, not off-hand spellbook containers. ISS *spellbooks* (the 32 `irons_spellbooks:*_spell_book` items + iridescent_modular_spells variants) are deliberately excluded, since they are curio/off-hand containers and not weapons. The tag holds 26 items: the Tetra-modular `iridescent_reforging:reforged_wand`, the 5 ISS staves (blood/graybeard/ice/pyrium/staff_of_the_nines), Dan's Magic's 5 T1 element staves (`dna:*_staff`), and Simple Staves' 15 wands (6 tier + 9 element). Mahou Tsukai's T4 ritual weapons are deferred; add them to the tag once their progression is settled.
+> **Scope note (2026-05-18 evening):** the tag covers only *main-hand cast-when-held* items, not off-hand spellbook containers. ISS *spellbooks* (the 32 `irons_spellbooks:*_spell_book` items + iridescent_modular_spells variants) are deliberately excluded, since they are curio/off-hand containers and not weapons. The tag holds 26 items: the Tetra-modular `iridescent_reforging:reforged_wand`, the 5 ISS staves (blood/graybeard/ice/pyrium/staff_of_the_nines), Dan's Magic's 5 T1 element staves (`dna:*_staff`), and Simple Staves' 15 wands (6 tier + 9 element). Mahou Tsukai's T4 ritual weapons are deferred; they will join the tag once their progression is settled.
 
-> **The collision problem and how we solved it.** Apotheosis builds a `Map<LootCategory, GemBonus>` per gem with `Collectors.toMap` (the two-argument form, which throws on duplicate keys). The map is keyed by LootCategory (e.g., `SWORD`, `TRIDENT`, `HEAVY_WEAPON`), not by `gem_class.key`. A gem JSON that adds a second bonus whose `gem_class.types` overlap an existing bonus's types fails to deserialize entirely: the gem disappears from the registry, and existing in-world stacks render as "Errored gem" with the fallback lang key `item.apotheosis.gem`.
+> **The collision problem and its fix.** Apotheosis builds a `Map<LootCategory, GemBonus>` per gem with `Collectors.toMap` (the two-argument form, which throws on duplicate keys). The map is keyed by LootCategory (e.g., `SWORD`, `TRIDENT`, `HEAVY_WEAPON`), not by `gem_class.key`. A gem JSON that adds a second bonus whose `gem_class.types` overlap an existing bonus's types fails to deserialize entirely: the gem disappears from the registry, and existing in-world stacks render as "Errored gem" with the fallback lang key `item.apotheosis.gem`.
 >
-> Our first attempt (2026-05-18 morning) typed 32 spellbooks as `sword` through Apotheosis's `Equipment Type Overrides` config (Path A), then added per-school spell-power bonuses on `gem_class.key = "light_weapon"` (types `["sword","trident"]`) to each elemental gem. This collided for 6 of the 11 gems (earth, inferno, forest, splendor, endersurge, queen), because their canonical bonuses already cover sword or trident:
+> The first attempt (2026-05-18 morning) typed 32 spellbooks as `sword` through Apotheosis's `Equipment Type Overrides` config (Path A), then added per-school spell-power bonuses on `gem_class.key = "light_weapon"` (types `["sword","trident"]`) to each elemental gem. This collided for 6 of the 11 gems (earth, inferno, forest, splendor, endersurge, queen), because their canonical bonuses already cover sword or trident:
 >
 > - earth: `melee_weapon ["sword","trident","heavy_weapon"]` → sharpness enchantment
 > - inferno: `light_weapon ["sword","trident"]` → detonation mob_effect
@@ -1950,13 +1950,13 @@ Items in `#icraft:magic_weapon` (26 in total, wands + staves only; corrected 202
 
 ISS *spellbooks* (off-hand curio containers, distinct from staves) are deliberately excluded: they hold spells but are not main-hand cast weapons. Ars Nouveau spell books are excluded too (they use the Source/perk system, not ISS spell_power). Mahou Tsukai T4 ritual weapons are deferred. Adding new items to the tag (e.g., Forbidden Arcanus arcane wands) is a single-line edit to the tag JSON and needs no other plumbing.
 
-Path A → Path B switch rationale: Path A (TYPE_OVERRIDES alias to `sword`) was first chosen because it cost the least engineering, but it (a) couldn't tell spellbooks from swords in gem design, and (b) collided for 6 of the 11 gems when we tried to add per-school spell-power bonuses on the `light_weapon` key. The Path B fix (a tiny KubeJS startup script + an item tag + one lang file) removes both problems, and future gem additions get a dedicated mage slot with no collision risk.
+Path A → Path B switch rationale: Path A (TYPE_OVERRIDES alias to `sword`) was first chosen because it cost the least engineering, but it (a) couldn't tell spellbooks from swords in gem design, and (b) collided for 6 of the 11 gems when per-school spell-power bonuses were added on the `light_weapon` key. The Path B fix (a small KubeJS startup script + an item tag + one lang file) removes both problems, and future gem additions get a dedicated mage slot with no collision risk.
 
 ---
 
 ## J. Bytecode Patches
 
-A summary that is safe to publish. The full re-apply checklist is in [`wiki/protocols/8-client-sync.md`](../protocols/8-client-sync.md); the deeper technical detail (the actual bytecode delta) is in the private internal repo.
+The full re-apply checklist is in [`wiki/protocols/8-client-sync.md`](../protocols/8-client-sync.md); the deeper technical detail (the actual bytecode delta) is in the private internal repo.
 
 Two custom-bundled JARs ship with bytecode-level modifications:
 
@@ -1965,12 +1965,12 @@ Two custom-bundled JARs ship with bytecode-level modifications:
 | `Patchouli-1.20.1-85-FORGE.jar` | `athrow → pop` in `Book.class` | Disables resource-pack enforcement on the codex book (we ship our own resource-pack-independent codex) | `-noverify` |
 | `ars_nouveau-1.20.1-4.12.7-all.jar` | `doApply → immediate return` in `DungeonLootEnhancerModifier.class` | Disables Ars Nouveau's automatic chest-loot injection (would override our curated chest pools) | `-noverify` |
 
-Both patches create dead code paths the JVM verifier rejects, so `-noverify` is **required** on both server and client.
+Both patches create dead code paths the JVM verifier rejects, so `-noverify` is required on both server and client.
 
 - Server: already in the `iridescentserver.bat` JVM args.
 - Client: must be added by hand in PrismLauncher → Instance → Settings → Java → JVM arguments → `-noverify`.
 
-Per the "Custom Bundled JARs" section of CLAUDE.md and the protocol checklist, when either jar is updated through packwiz/Modrinth/CurseForge, the patches must be re-applied to the new version. Reviewers must check this before merging mod updates that touch these jars.
+When either jar is updated through packwiz/Modrinth/CurseForge, the patches must be re-applied to the new version (per the "Custom Bundled JARs" section of CLAUDE.md and the protocol checklist). Reviewers must check this before merging mod updates that touch these jars.
 
 ## N. Marquee Structures
 
@@ -2209,8 +2209,8 @@ relics:shadow_glaive                   relics:space_dissector
 
 ### N.7 Notes
 
-- ISS spellbook cap (2%): `irons_spellbooks:copper_spell_book` is added at 2% per chest to the T1 marquees where it fits the lore. The T2 and T3 pools carry Ars Nouveau's `apprentice_spell_book` and `archmage_spell_book` as ordinary pool entries, not under the cap. Per the rationale in master.md Part XIII, the starter kit handles the "hard to start magic" onboarding, so the higher legacy rates aren't justified.
-- ISS scrolls are uncapped and remain a main vector of mage progression. They appear in the T1 Magic and T1 Ancient / Eldritch pools for their tier.
+- ISS spellbook cap (2%): `irons_spellbooks:copper_spell_book` is added at 2% per chest to the T1 marquees where it fits the lore. The T2 and T3 pools carry Ars Nouveau's `apprentice_spell_book` and `archmage_spell_book` as ordinary pool entries, not under the cap. The starter kit handles the "hard to start magic" onboarding, so the higher legacy rates aren't justified (rationale in master.md Part XIII).
+- ISS scrolls are uncapped and remain a main source of mage progression. They appear in the T1 Magic and T1 Ancient / Eldritch pools for their tier.
 - Cataclysm structures are left out of this roster on purpose. Cataclysm boss drops carry the Cataclysm flavor, and marquee pools on top would cover it twice.
 - Tables marked TBD need packwiz/jar verification before the final code wiring: T4 Aether dungeon tables, T2 Blue Skies dungeon tables. The first implementation may cover TBD entries only in part. (Jar-verified 2026-10-11: the Lich Tower, Structory tower-top and Undergarden catacombs ids in the N.1 table.)
-- `celestial_artifacts:ender_jump_scepter` was flagged as ungated by the celestial_artifacts audit. It is in the T4 End / levitation pool but marked for verification in playtest; pull it to boss-drop only if the rate proves too generous.
+- `celestial_artifacts:ender_jump_scepter` was flagged as ungated by the celestial_artifacts audit. It is in the T4 End / levitation pool but marked for verification in playtest; it will move to boss-drop only if the rate proves too generous.
