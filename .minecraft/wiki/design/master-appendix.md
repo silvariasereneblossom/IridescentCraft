@@ -1019,19 +1019,17 @@ Each mod's tier placement, side label (per server_distribution `.pw.toml`) and c
 | Farmer's Delight + addons (Alex's/Nether's/Cultural/Delightful) | B | Cooking |
 | Cooking for Blockheads | B | Kitchen multiblock |
 | Brewin' and Chewin' | B | Fermentation |
-| Simple Farming | B | Additional crops |
 | Iron Jetpacks | B | Tiered flight (intentional T1 entry) |
 | Sophisticated Backpacks/Storage | B | T1+ storage |
 | Storage Drawers | B | T1+ storage |
-| Quark | B | Vanilla-friendly extras |
+| Quark | B | Vanilla-friendly extras. Its Oddities modules (Magnets, Pipes, Backpack, Crate, Matrix Enchanting, Totem of Holding, Tiny Potato) are off: they need the Quark Oddities addon, which the pack does not carry (kept off, 2026-10-31) |
 | Patchouli (`*`) | B | Bytecode-patched (resource-pack enforcement disabled) |
 | Apotheosis | B | T1+ affix system |
 | Tetra | B | Modular crafting |
 | Tetra Tables | B | Tetra workbench |
 | Tetracelium | B | Tetra material extension |
-| Decorative Blocks / LGBT Wall Flags / Connected Glass / Domum Ornamentum / Macaw's suite | B | Building |
-| JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot, Trash Cans | C | QoL (client-only) |
-| FTB Ultimine, FTB Chunks, FTB Essentials | B | Server utilities |
+| Decorative Blocks / LGBT Wall Flags / Domum Ornamentum / Macaw's suite | B | Building |
+| JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot | C | QoL (client-only) |
 | Embeddium, ModernFix, ImmediatelyFast, Oculus | C | Client performance |
 
 ### F.2 Tier 2 (Twilight, Blue Skies: dimensional access)
@@ -1128,6 +1126,7 @@ Each mod's tier placement, side label (per server_distribution `.pw.toml`) and c
 | Apotheosis | B | Affixes / reforging / gem cutting / sigils |
 | Citadel | B | Library mod |
 | Geckolib (in many mods) | B | Animation library |
+| Lootr | B | Per-player loot in structure chests, trapped chests, barrels, shulker boxes, mineshaft minecart chests, the Aether's treasure chests and Blue Skies' chests; no refill, no decay. Since 2026-10-25 a never-opened loot container converts when a player opens it |
 
 ### F.6 Custom-bundled JARs (not in packwiz)
 
@@ -1396,6 +1395,8 @@ A one-line summary of each file in `kubejs/server_scripts/` and `kubejs/startup_
 | `mekasuit_mk2_tooltip.js` *(client_scripts/)* | Marker-keyed tooltip: per-id `addAdvanced` line on `mekanism:mekasuit_*` stacks carrying the `icraft_mekasuit_mk2` NBT marker, independent of the recipe-set display Name/Lore |
 
 ### I.11 Counts
+
+> The counts below date from June 2026; the tables above list the main scripts only. On 2026-11-03 the pack held 166 server scripts and 26 startup scripts. The repository's generated script catalogue lists every script with its events.
 
 - ~72 active server scripts across all subdirectories (net +2 on 2026-06-06: +fragment_core_drops, +ultris_randomizer_janitor, +mek_biofuel_squeeze, −diamond_leak_probe deleted).
 - 6 startup scripts (custom_items, endgame_items, custom_enchantments, iridescent_codex, mekasuit_mk2_stats, example), plus the new `mekasuit_mk2_tooltip.js` in `client_scripts/`.

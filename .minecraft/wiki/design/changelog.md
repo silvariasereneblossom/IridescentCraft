@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## October 2026: Most of the Overworld is generated again, and loot chests open as Lootr chests (25 October)
+
+- **The land outside the kept base area was generated again** from the same world seed, with the pack's current world generation: the halved iron, coal, copper and quartz ore, and quartz ore in the Overworld. It has the same shape, rivers and structures as before. Its chests are full again, its waystones are new and have to be activated again, and its villagers are new ones. Structures on the edge of the kept area are cut: the part inside it is the old one. A small area around the spot where each player last logged out was kept. The [Issue Tracker](../known-issues/tracker.md) lists what to expect.
+- **A loot chest opens as a Lootr chest, with loot of its own for each player.** Lootr converted a structure chest only once every chunk around it had finished loading, and gave up after fifteen minutes or a restart, so most chests in new land opened as ordinary shared chests. Now a loot chest, trapped chest, barrel or shulker box that nobody has opened becomes a Lootr container the moment a player opens it. Chests already opened as ordinary ones stay ordinary. This applies from the next server restart.
+- **Planned: a new seed for the land outside the base.** The server operator has decided to generate the land outside the kept base area once more, from a new seed chosen so that the Cherry River Valley surrounds the base. That land will have a new shape, new rivers and new structures, blended into the kept chunks at the edge; the world spawn will move to a cherry village near the base, with no priest tower placed there. It has not been run yet.
+
 ## October 2026: Iron, coal, copper and quartz ore are half as common in new land (22 October)
 
 - **Newly generated Overworld land holds half the iron, coal, copper and quartz ore it did.** Each of these ores now tries fewer veins in a chunk, tuned so that a new chunk holds half the ore (measured over several hundred chunks). A vein is as big as before and sits at the same heights and in the same biomes, so a vein you find is as rich as ever; there are fewer of them. A new chunk holds about 58 quartz ore blocks instead of about 115. The raw iron and raw copper blocks inside iron and copper veins, and the coal blocks inside coal veins, are halved with them.

@@ -1,5 +1,7 @@
 # IridescentCraft Master Design Document
 
+> **Superseded.** This copy was written in March 2026 and moved here in April 2026. It is no longer maintained: since then it has changed only through search-and-replace sweeps. The maintained Master Design Document is [`wiki/design/master.md`](../wiki/design/master.md), with its [appendix](../wiki/design/master-appendix.md) and [changelog](../wiki/design/changelog.md). This file is kept for history. Where the two disagree, the wiki copy is right.
+
 ## Progression-Focused Expert-Lite Modpack — Minecraft 1.20.1 (Forge)
 
 > This document is the canonical source of truth for all IridescentCraft systems.

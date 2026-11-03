@@ -1,6 +1,6 @@
 # IridescentCraft Wiki
 
-Living documentation for IridescentCraft, a progression-focused expert-lite Minecraft 1.20.1 Forge modpack with 450+ mods.
+Living documentation for IridescentCraft, a progression-focused expert-lite Minecraft 1.20.1 Forge modpack with 440+ mods.
 
 ---
 
@@ -58,11 +58,12 @@ The canonical design reference for all modpack systems.
 | Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat). Submitting, the token bank and the boss rush work since October 2026; a tier is bought only with the tier below held |
 | Heracles quest tree | In progress | Quest tree driving the token economy |
 | Engineering questline | Implemented | 14-quest Heracles engineering line (intro through T4 fusion/antimatter capstone) plus an Engineering Lane Codex category with 5 entries |
-| Patchouli Codex | Working | 14 categories, 113 entries (as of 2026-10-18), advancement-gated |
+| Patchouli Codex | Working | 14 categories, 116 entries (counted 2026-11-03), advancement-gated |
 | Book suppression | Working | Duplicate mod guidebooks suppressed |
-| Endgame loops (Part VIII) | Partly | Rift Shards drop from late bosses and the Mythic Forge crafts the five catalysts; Oblivion's Rift and the Mythic Uniques are not built |
-| Prestige/Ascension (Part IX) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
+| Endgame loops (Part X) | Partly | Rift Shards drop from late bosses and the Mythic Forge crafts the five catalysts; Oblivion's Rift and the Mythic Uniques are not built |
+| Prestige/Ascension (Part X) | In progress | 5 ascension levels with mob scaling and stat bonuses. Built, but not open to players yet. Operators: do not set a level above 0 on the live world before the rehearsal on a copy; a reset does not take the buff off mobs already scaled |
 | Loot table overhaul | Implemented | 35+ structure mods, boss drops, tier tokens |
+| Per-player chest loot (Lootr) | Implemented | Each player loots every structure chest once, with loot of their own; since 25 October 2026 a never-opened loot chest becomes a Lootr chest when a player opens it |
 | Villager trade rework | Implemented (October 2026) | No villager sells enchanted books or diamond / netherite gear; clerics sell XP bottles from journeyman; a villager keeps the trades it already offers |
 | Waystone recipes | Implemented | Boss-drop gated crafting |
 | Cross-mod recipe audit | Implemented | Tier-breaking recipes blocked to preserve progression |
@@ -88,6 +89,7 @@ The canonical design reference for all modpack systems.
 | Class descriptions update | Implemented | Class descriptions match in-game power |
 | Codex expansion | Implemented | Build guide, Origins guide, and updated entries |
 | Tectonic terrain tuning | Implemented | Flatter vertical terrain |
+| Cherry spawn village | Implemented | A new world spawns at a village in the Cherry River Valley, with no hostile mobs within 96 blocks and a priest tower placed if the village has none. A new seed for the live server's land outside the kept base is planned (ruled 25 October 2026, not run yet) |
 | Early magic access | Implemented | Iron's Spells scrolls + copper spell book in Overworld chests |
 | Walkable Mekanism cables | Implemented | Mekanism cables are walkable |
 | HDPE/rubber pipeline | Implemented | HDPE Circuit Board + alternative Mekanism rubber recipes |

@@ -172,7 +172,7 @@ A player advances a tier by hitting either its token threshold or its boss-rush 
 | T3 → T4 | 2000 | 100% of T3 bosses (all 44, incl. Lucifer) |
 | T4 → finale | none | defeat the Ender Dragon (the pack finale; no gate: the Ad Astra planets open with T4) |
 
-There is one combined token pool, fed by four lanes. The boss-rush denominator is the per-tier boss roster (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 9 / 18 / 45 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2, the Aether's three dungeon bosses to T4 (T4 has no boss rush) and Merlin and Circe to T3; `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.
+There is one combined token pool, fed by four lanes. The boss-rush denominator is the per-tier boss roster (see [`boss-catalog.md`](boss-catalog.md)): the tier's named bosses plus some minibosses (the Mutant Monsters, Swampjaw and the Bellringer, Iron's Spellbooks' four casters, Coralssus and others), 9 / 18 / 44 entries. The counts are the bosses that exist in the pack as of 2026-10-12, recounted on 2026-10-16 when Frostmaw moved to T2, the Aether's three dungeon bosses to T4 (T4 has no boss rush) and Merlin and Circe to T3, and on 2026-10-19 when the Baby Leviathan left the T3 roster (it hatches only from the Leviathan's egg, as a pet); `/icraft codex bosses` shows the live numbers. Until 2026-10-12 the rosters also listed bosses the pack does not have, so the route could not be completed.
 
 The ladder is strict (since October 2026). A tier can be bought only while the player holds the tier below: neither 1,000 tier-2 tokens nor a cleared tier-2 roster buys tier 3 for a player who has not reached tier 2. Kills made early still count once the tier below is held. Tier 1's tokens ask for nothing (every survival player holds tier 1).
 
@@ -280,6 +280,14 @@ Dimensions are gated through AStages dimension flags. A T2 player who tries to e
 > Design note: a T1 token lights the Twilight Forest portal, so it does not need vanilla diamond. The pack's first dimension should not gate on diamond access, since diamonds are T3. Since 17 October 2026 the activator is the Codex Token I (the Tier 1 token from boss kills, chests and submissions), added to the mod's own diamond; the Tier 2 dimension gate, not the activator, keeps players below Tier 2 out. From April to October 2026 the activator was a legacy token nothing gave, and the portal could not be lit in survival.
 
 > The End's access is special (planned). Today the vanilla stronghold + End Portal process is used as it is, with Eyes of Ender staged at T4. The plan is to replace the Eye of Ender with an "End Compass" crafted from the Aether's materials (a T4 dimension). The compass would direct the player to an "End Bastion" structure (reusing the `boss_compass` waystone system). Players then could not even target the End portal until they had worked the Aether, so the End would be genuinely *post*-Aether. The End Compass itself, its exact material bill and the End Bastion structure are build items still to be determined.
+
+### The starting village
+
+A new world starts in cherry land. On the world's first start the pack moves the world spawn to a village in the Cherry River Valley, one of the pack's two custom cherry biomes; if five searches find no village inside that biome, the spawn goes to the nearest Cherry River Valley instead. The search runs once per world.
+
+The spawn village is a safe haven. Hostile mobs cannot spawn within 96 blocks of the world spawn, and any that walk in are removed without drops or XP, so raids cannot run there and the zone cannot be farmed. A Wither cannot be built inside the circle. If the spawn village generated without an Iron's Spellbooks priest tower (inscription table and priest), the pack places one next to the spawn.
+
+> Planned (ruled 2026-10-25, not run yet): on the live server the Overworld outside the kept base area will be generated again from a new seed, chosen so that the Cherry River Valley surrounds the base. The new land will be blended into the kept chunks, the spawn search will run again and move the spawn to a cherry village near the base, and no priest tower will be placed at the new spawn. Until that run, the land outside the base is the land regenerated from the old seed on 2026-10-25.
 
 ---
 
@@ -952,11 +960,11 @@ On ascension, all quest progress resets. Skill points already earned are tracked
 
 ### Patchouli Codex
 
-The Codex is the lore and reference layer. The pack ships a custom Patchouli content jar with 14 categories and 113 entries (as of 2026-10-18), among them:
+The Codex is the lore and reference layer. The pack ships a custom Patchouli content jar with 14 categories and 116 entries (counted 2026-11-03), among them:
 
 - Choosing Your Build: origin / race / class guide for new players.
 - Origins Guide: full 13-origin breakdown with abilities and tradeoffs.
-- Classes: combat-role guide to 10 of the 13 classes.
+- Classes: combat-role guide to all 13 classes.
 - Progressive Difficulty / Enchantments / Affixes: combat system reference.
 - Tier System: what each tier unlocks, kept in sync with this design doc.
 - Mods Overview: per-mod role and tier placement.
@@ -998,6 +1006,12 @@ Curio, artifact, relic, and spell-book chest loot is distributed across 4 tier-b
 | T4 | End, Aether (Deep Aether's biomes included) | ~16% | ~33 items |
 
 Per-tier rates rise modestly as the player progresses, signaling *you're getting better stuff*. The per-item rate is the combined rate divided by pool size, so each individual item is roughly a 0.3 to 0.5% chance per chest. Rolls are independent per item.
+
+### Every player loots each chest (Lootr)
+
+Structure loot containers are Lootr containers: each player who opens one gets a roll of its loot table of their own, so a chest another player has emptied is still full for you. Chests, trapped chests, barrels, shulker boxes, mineshaft minecart chests, the Aether's treasure chests and Blue Skies' chests are converted. A container does not refill or decay: each player loots it once.
+
+Since 2026-10-25 a loot container that nobody has opened becomes a Lootr container the moment a player opens it. Before that, Lootr's own conversion missed most chests in new land, and they opened as ordinary shared chests. A container emptied without being opened (a hopper underneath, a machine, or breaking it) still gives its ordinary loot, once.
 
 ### Marquee structures: per-structure thematic pools
 
@@ -1093,7 +1107,7 @@ Free teleportation philosophy: exploration should feel liberating, not punishing
 
 Food diversity is a major progression system: diversity = HP bonuses = survival in harder dimensions.
 
-The mod stack: Hunger Overhaul (faster drain), Spice of Life: Carrot Edition (diverse-eating HP bonuses), Farmer's Delight + addons (complex cooking), Pam's HarvestCraft 2 (hundreds of crops), Cooking for Blockheads (kitchen multiblock), Brewin' and Chewin' (fermentation), Simple Farming, Sleep Hunger.
+The mod stack: Hunger Overhaul (faster drain), Spice of Life: Carrot Edition (diverse-eating HP bonuses), Farmer's Delight + addons (complex cooking), Pam's HarvestCraft 2 (hundreds of crops), Cooking for Blockheads (kitchen multiblock), Brewin' and Chewin' (fermentation), Sleep Hunger.
 
 > Design intent (a natural soft gate): all food and farming is ungated from T1, with no crop or recipe staging. Players who diversify gain Spice of Life HP bonuses; players who eat only steak struggle in T3+ dimensions because they miss those HP bonuses. The best food diversity requires dimensional ingredients (Nether's Delight = T3, Alex's Delight = mid-tier). Cooking is a parallel progression that rewards engagement without hard-blocking.
 
@@ -1103,9 +1117,9 @@ The mod stack: Hunger Overhaul (faster drain), Spice of Life: Carrot Edition (di
 
 Both are completely ungated from T1. The pack's stance: building and QoL features should never feel restricted, because they make the world more livable, not more powerful.
 
-**Building mods.** Chipped, Macaw's suite (Bridges, Fences, Furniture, Roofs, Trapdoors), Decorative Blocks, Decorative LGBT Wall Flags, Valhelsia Furniture, Domum Ornamentum, ConnectedTexturesMod, Connected Glass, chisels-and-bits, Structurize.
+**Building mods.** Chipped, Macaw's suite (Bridges, Fences, Furniture, Roofs, Trapdoors), Decorative Blocks, Decorative LGBT Wall Flags, Valhelsia Furniture, Domum Ornamentum, ConnectedTexturesMod, chisels-and-bits, Structurize.
 
-**QoL mods.** JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot, Trash Cans, FTB Ultimine, FTB Chunks, FTB Essentials, No Chat Reports, Simple Voice Chat, all performance mods (Embeddium, ModernFix, etc.).
+**QoL mods.** JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot, No Chat Reports, Simple Voice Chat, all performance mods (Embeddium, ModernFix, etc.).
 
 These mods support the pack's expert-lite identity: powerful tooling, low overhead, no busywork.
 
