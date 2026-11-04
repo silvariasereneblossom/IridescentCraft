@@ -1010,10 +1010,9 @@ Each mod's tier placement, side label (per server_distribution `.pw.toml`) and c
 | Ars Nouveau | B | T1 novice book + Scribes Table (corrected 2026-04-24) |
 | Origins (Forge) + Iridescent Origins (`*`) | B | 13 origins; Iridescent Origins is custom JAR |
 | Iridescent Classes (in `iridescent_origins-1.0.0.jar`) | B | 13 classes |
-| Iridescent Modular Spells (`*`) | B | Tetra integration mod (Phase 6); custom JAR |
+| Iridescent Modular Spells (`*`) | B | Tetra-integrated modular spell books; ships in the custom `iridescent_tetra_expansion-1.0.0.jar` with Iridescent Reforging (bundled 2026-05-01) |
 | Iridescent Biomes (`*`) | B | Custom Cherry biomes; custom JAR (TerraBlender region registration) |
 | Iridescent Codex Data (`*`) | B | Patchouli codex content; custom JAR (modId `icraft`) |
-| zeta_racefix (`*`) | B | Race selection fix; custom JAR |
 | Aquaculture | B | Fishing |
 | Pam's HarvestCraft 2 (Crops/Trees/Food Core/Food Extended) | B | Food economy entry |
 | Farmer's Delight + addons (Alex's/Nether's/Cultural/Delightful) | B | Cooking |
@@ -1130,18 +1129,25 @@ Each mod's tier placement, side label (per server_distribution `.pw.toml`) and c
 
 ### F.6 Custom-bundled JARs (not in packwiz)
 
-Per the "Custom Bundled JARs" section of CLAUDE.md. The allowlist is in `iridescentserver.bat` + `sync_from_repo.bat` + `update_mods.sh`.
+The pack's own jars, its managed forks and three bytecode-patched copies of other mods ship outside the mod index. The custom-jar manifest lists them: 16 jars on 2026-11-03. The [Custom Mods](../mods/custom.md) page describes each one.
 
 | JAR | Purpose | Bytecode-patched? |
 |-----|---------|:-----------------:|
-| `iridescent_codex_data.jar` | Patchouli codex content (modId `icraft`) | No |
 | `iridescent_origins-1.0.0.jar` | 13 origins / 11 races / 13 classes | No |
-| `iridescent_biomes-1.0.0.jar` | TerraBlender region registration | No |
-| `iridescent_modular_spells-0.2.0.jar` | Tetra-integrated modular spell books (Phase 6) | No |
+| `iridescent_biomes-1.0.0.jar` | Cherry River Valley and Cherry Mountains (TerraBlender region registration) | No |
+| `iridescent_codex_data.jar` | Patchouli codex content (modId `icraft`) | No |
+| `iridescent_tetra_expansion-1.0.0.jar` | Iridescent Modular Spells + Iridescent Reforging (modular spell books and armour) | No |
+| `iridescent_difficulty-0.1.0.jar` | Time-based per-dimension mob scaling | No |
+| `iridescent_relics-1.0.0.jar` | The pack's boss-reward relics (an addon of Relics) | No |
+| `iridescent_grand_compass-1.0.0.jar` | The Grand Compass: finds boss arenas, structures and biomes | No |
+| `iridescent_durability_clamp-0.1.0.jar` | Items stop one point short of breaking and go inert | No |
+| `justlevelingfork-1.2.1-iridescent.1.jar` | Iridescent Aptitudes (managed fork of JustLeveling-Fork) | No |
+| `linearxp-1.0.0-iridescent.1.jar` | Linear Experience (managed fork) | No |
+| `lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar` | Iridescent Lovely Pieces (managed fork; Curios accessories) | No |
 | `mek_walkable_cables-1.0.1.jar` | Walkable Mekanism cables coremod | No |
 | `offlineskins-1.20.1-v1.jar` | Offline-mode skin support | No |
-| `zeta_racefix-1.0.0.jar` | Race selection fix | No |
 | `Patchouli-1.20.1-85-FORGE.jar` | Codex framework | **Yes** (athrow→pop in Book.class) |
+| `class-artifacts-forge-2.0.5.jar` | Epic RPG: Class Artifacts | **Yes** (the inventory "Sets" button moved off the recipe-book button) |
 | `ars_nouveau-1.20.1-4.12.7-all.jar` | Ars Nouveau core | **Yes** (DungeonLootEnhancerModifier disabled) |
 
 The `-noverify` JVM arg is required (server: in `iridescentserver.bat`; client: PrismLauncher Java settings).
