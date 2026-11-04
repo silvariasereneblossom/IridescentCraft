@@ -92,17 +92,42 @@ pub const DENY_LIST_PATTERNS: &[&str] = &[
 /// `regen_custom_jars_manifest.ps1`.
 pub const CUSTOM_JARS_MANIFEST_FILE: &str = "custom_jars_manifest.json";
 
-/// Aikar JVM flags — server-tuned G1GC config copied from
-/// `iridescentserver.bat` Phase 4.
+/// The server's JVM flags: Aikar's G1 set (first copied from
+/// `iridescentserver.bat` Phase 4), with the heap sized by measurement.
+///
+/// The heap is config c of the heap-sizing measurement, shipped by the
+/// operator's ruling of 2026-11-04 (internal repo,
+/// `dev/ram-audit-2026-10-30/heap-sizing-2026-11-02/README.md`, `69c4a60`).
+/// It replaced `-Xms8G -Xmx10G -XX:+AlwaysPreTouch`, which committed 8 GB
+/// from the first second (9.5 GB of the box's RAM, measured). On the boot rig,
+/// with no players, the live heap after a load was 2.0 GB. Under c the
+/// committed heap held at the 4 GB floor through Chunky and a force-load (box
+/// estimate 5.3 GB), tick time did not change, and the longest pause was 40 ms.
+/// Measured once and never with players; the GC log ([`GC_LOG_DIR`]) is how
+/// it is watched live.
+///   - `-Xms4G`: the floor every shrink stops at. 2 GB is too small for the
+///     boot: G1 grew past it at once and kept 5.7 GB (config e).
+///   - no `-XX:+AlwaysPreTouch`: it made all of `-Xms` resident at start.
+///   - `MinHeapFreeRatio=10`, `MaxHeapFreeRatio=30`: G1 shrinks only at a
+///     Remark (or a full GC), and only down to 1/(1 - Max/100) times the heap
+///     in use: 1.43 times here, 3.3 times with the defaults (40/70). Memory
+///     taken in a busy spell goes back once it ends.
+///   - `-Xmx10G` stays: room for players and spikes, free until G1 uses it.
+///   - `G1PeriodicGCInterval` is left out on purpose: untested (the README's
+///     open item).
+///
+/// The boot rig (`.minecraft/dev/boot/icboot.py`) reads this array and puts
+/// its own `-Xmx`/`-Xms` in place of these two.
 pub const AIKAR_FLAGS: &[&str] = &[
     "-noverify",
-    "-Xmx10G", "-Xms8G",
+    "-Xmx10G", "-Xms4G",
+    "-XX:MinHeapFreeRatio=10",
+    "-XX:MaxHeapFreeRatio=30",
     "-XX:+UseG1GC",
     "-XX:+ParallelRefProcEnabled",
     "-XX:MaxGCPauseMillis=200",
     "-XX:+UnlockExperimentalVMOptions",
     "-XX:+DisableExplicitGC",
-    "-XX:+AlwaysPreTouch",
     "-XX:G1NewSizePercent=30",
     "-XX:G1MaxNewSizePercent=40",
     "-XX:G1HeapRegionSize=8M",
@@ -125,7 +150,43 @@ pub const AIKAR_FLAGS: &[&str] = &[
     // computed per-launch -- timestamped, in `crash-reports/heapdumps/` --
     // by `run::prepare_heap_dump_path`, which appends the flag after these.
     // The legacy bat/sh launchers got the same fix on 2026-07-15.
+    //
+    // `-XX:+PerfDisableSharedMem` (above) hides the JVM's counters from
+    // `jstat`, so the GC log is how this server's heap is read. Like the dump
+    // path, it is not in this array: see [`gc_log_flag`].
 ];
+
+/// The server's GC log folder, in the server dir: `gc.log` and its rotations.
+/// It is the launcher's own. No sync writes or deletes in it (it is in
+/// `sync::EXCLUDED_DIRS`, and no path of the pack repo names it), the log push
+/// stages only `logs/` and `crash-reports/`, and a world backup takes the world
+/// and the server's own state files, not this.
+pub const GC_LOG_DIR: &str = "gc-logs";
+/// Archived files the JVM keeps beside the current `gc.log`.
+///
+/// The JVM moves the previous run's `gc.log` to `gc.log.<n>` at every start
+/// (the numbers form a ring: when all are taken it reuses the oldest by
+/// modification time, so sort by time, not by number), and rotates within a
+/// run at [`GC_LOG_FILE_SIZE`]. Every restart takes one file, however small:
+/// many small files keep the most restarts. The bound is
+/// (`GC_LOG_FILE_COUNT` + 1) x `GC_LOG_FILE_SIZE` = 100 MB. On the rig a young
+/// pause wrote about 2 KB at `gc*` info: an idle 4 h run (one every 90 s) is
+/// well under 1 MB; Chunky (one a second) about 7 MB an hour.
+pub const GC_LOG_FILE_COUNT: u32 = 49;
+/// Size at which the current `gc.log` is rotated within a run.
+pub const GC_LOG_FILE_SIZE: &str = "2M";
+
+/// The `-Xlog` option of the server's GC log, added by `run.rs` once
+/// [`ServerConfig::gc_log_dir`] exists. Not in [`AIKAR_FLAGS`] because a log
+/// file in a folder that does not exist stops the JVM from starting at all
+/// ("Invalid -Xlog option"), and the boot rig takes that array as it is. The
+/// path is relative to the JVM's working directory (the server dir) so it has
+/// no drive colon and no space: `-Xlog` splits its argument at colons.
+pub fn gc_log_flag() -> String {
+    format!(
+        "-Xlog:gc*:file={GC_LOG_DIR}/gc.log:time,uptime,level,tags:filecount={GC_LOG_FILE_COUNT},filesize={GC_LOG_FILE_SIZE}"
+    )
+}
 
 /// Server install root — the directory containing forge / mods /
 /// libraries / config. Determined by:
@@ -185,6 +246,8 @@ impl ServerConfig {
     /// log mirror in [`crate::logpush`] -- each dump is
     /// heap-sized and would blow past GitHub's blob limit.
     pub fn heapdumps_dir(&self) -> PathBuf { self.crash_reports().join("heapdumps") }
+    /// The GC log ([`GC_LOG_DIR`], [`gc_log_flag`]).
+    pub fn gc_log_dir(&self) -> PathBuf { self.server_dir.join(GC_LOG_DIR) }
 
     /// `level-name` from server.properties: the world folder, relative to the
     /// server dir. `world` (Minecraft's own default) when the file or the key
@@ -285,5 +348,36 @@ mod tests {
         assert_eq!(cfg.world_dir(), dir.join("alpha"));
         assert_eq!(cfg.backups_dir(), dir.join("backups"));
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// The per-launch options stay out of the fixed array: the boot rig starts
+    /// its JVM with the array as it is, in a folder with no `gc-logs/`, and a
+    /// missing log folder is a JVM that does not start.
+    #[test]
+    fn the_fixed_flags_carry_no_log_file_and_no_dump_path() {
+        for flag in AIKAR_FLAGS {
+            assert!(!flag.starts_with("-Xlog"), "{flag}");
+            assert!(!flag.starts_with("-XX:HeapDumpPath"), "{flag}");
+        }
+    }
+
+    /// `-Xlog` splits at colons: the file part must be the relative path in
+    /// the GC log folder, with no drive letter and nothing else in it.
+    #[test]
+    fn the_gc_log_option_names_a_relative_file_in_its_folder() {
+        let flag = gc_log_flag();
+        let parts: Vec<&str> = flag.split(':').collect();
+        assert_eq!(
+            parts,
+            [
+                "-Xlog",
+                "gc*",
+                &format!("file={GC_LOG_DIR}/gc.log"),
+                "time,uptime,level,tags",
+                &format!("filecount={GC_LOG_FILE_COUNT},filesize={GC_LOG_FILE_SIZE}"),
+            ],
+            "{flag}"
+        );
+        assert!(!GC_LOG_DIR.contains(' '));
     }
 }

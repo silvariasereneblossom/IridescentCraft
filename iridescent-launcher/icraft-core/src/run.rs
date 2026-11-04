@@ -122,6 +122,12 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
         log::info!("[run] OOM heap dump target: {}", hprof.display());
         cmd.arg(format!("-XX:HeapDumpPath={}", hprof.display()));
     }
+    // The GC log (config.rs `gc_log_flag`): only once its folder exists, or
+    // the JVM would refuse to start. Before the @argfile, like the dump path.
+    if let Some(xlog) = prepare_gc_log(cfg) {
+        log::info!("[run] GC log: {} ({xlog})", cfg.gc_log_dir().join("gc.log").display());
+        cmd.arg(xlog);
+    }
     cmd.arg(format!("@{}", argfile.display()));
     cmd.arg("nogui");
 
@@ -1077,6 +1083,21 @@ fn prune_heap_dumps(dir: &std::path::Path, keep: usize) {
     }
 }
 
+/// This launch's `-Xlog` option for the GC log, after making sure
+/// `<server_dir>/gc-logs/` exists. A log file in a missing folder is an
+/// "Invalid -Xlog option" and no JVM at all, so when the folder cannot be made
+/// the option is left out and the server starts without a GC log. The JVM
+/// itself keeps the folder bounded: it archives the previous run's `gc.log` at
+/// start and rotates by size (`GC_LOG_FILE_COUNT`, `GC_LOG_FILE_SIZE`).
+fn prepare_gc_log(cfg: &ServerConfig) -> Option<String> {
+    let dir = cfg.gc_log_dir();
+    if let Err(e) = std::fs::create_dir_all(&dir) {
+        log::warn!("[run] couldn't create {} ({e}); the server starts without a GC log", dir.display());
+        return None;
+    }
+    Some(crate::config::gc_log_flag())
+}
+
 fn pick_argfile(cfg: &ServerConfig) -> Result<PathBuf> {
     let win = cfg.win_args();
     let unix = cfg.unix_args();
@@ -1113,6 +1134,25 @@ mod tests {
 
     fn no_watchdog() -> WatchdogOptions {
         WatchdogOptions { boot_timeout: Duration::ZERO, idle_timeout: Duration::ZERO, poll_interval: Duration::from_secs(1) }
+    }
+
+    /// The GC log's folder is made before its option is given, and when it
+    /// cannot be made the option is left out (the server starts without one).
+    #[test]
+    fn the_gc_log_option_comes_only_with_its_folder() {
+        let (dir, cfg) = fixture("gc-log");
+        assert_eq!(prepare_gc_log(&cfg), Some(crate::config::gc_log_flag()));
+        assert!(cfg.gc_log_dir().is_dir());
+        // Again, with the folder and an old log in it: still the option, log kept.
+        fs::write(cfg.gc_log_dir().join("gc.log"), "old run").unwrap();
+        assert_eq!(prepare_gc_log(&cfg), Some(crate::config::gc_log_flag()));
+        assert_eq!(fs::read_to_string(cfg.gc_log_dir().join("gc.log")).unwrap(), "old run");
+        let _ = fs::remove_dir_all(&dir);
+
+        let (dir, cfg) = fixture("gc-log-blocked");
+        fs::write(cfg.gc_log_dir(), "a file where the folder goes").unwrap();
+        assert_eq!(prepare_gc_log(&cfg), None);
+        let _ = fs::remove_dir_all(&dir);
     }
 
     /// The refusing half of the start guard, at the level that owns the spawn.

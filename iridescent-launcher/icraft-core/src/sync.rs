@@ -102,9 +102,19 @@ const HEAD_FETCH_BACKOFF: &[Duration] =
 // must not be acted on, and client logs still live under TesterLogs.
 // `.icraft_log_stage` is the launcher's own staging folder (logpush.rs). No
 // pack path should ever be called that; listed so that one that was could
-// still not write or delete in it.
-const EXCLUDED_DIRS: &[&str] =
-    &["world", "logs", "crash-reports", "backups", "libraries", ".cache", "TesterLogs", crate::logpush::STAGE_DIR];
+// still not write or delete in it. The same for `gc-logs`, the server's GC log
+// (config.rs `GC_LOG_DIR`, since 2026-11-04).
+const EXCLUDED_DIRS: &[&str] = &[
+    "world",
+    "logs",
+    "crash-reports",
+    "backups",
+    "libraries",
+    ".cache",
+    "TesterLogs",
+    crate::logpush::STAGE_DIR,
+    crate::config::GC_LOG_DIR,
+];
 const SELF_UPDATE_FILES: &[&str] = &[
     "iridescentserver.bat",
     "iridescentserver.sh",
@@ -1636,6 +1646,29 @@ mod tests {
         mirror_distro(&zip, &dir).unwrap();
         assert_eq!(fs::read_to_string(old_stage.join("latest.log")).unwrap(), "staged");
         assert_eq!(fs::read_to_string(new_stage.join("latest.log")).unwrap(), "staged");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    /// The GC log folder is the launcher's own: should the pack ever carry a
+    /// path of that name, neither sync writes or deletes in it.
+    #[test]
+    fn no_sync_touches_the_gc_log() {
+        let dir = scratch("gc-log");
+        let cfg = ServerConfig::from_path(&dir);
+        fs::create_dir_all(cfg.gc_log_dir()).unwrap();
+        fs::write(cfg.gc_log_dir().join("gc.log"), "this run").unwrap();
+        fs::write(cfg.gc_log_dir().join("gc.log.0"), "last run").unwrap();
+
+        let removed = |path: &str| github::ChangedFile { filename: path.to_string(), status: "removed".to_string() };
+        let files = vec![removed(".minecraft/server_distribution/gc-logs/gc.log.0")];
+        diff_sync(&cfg, &files, "0123456789abcdef0123456789abcdef01234567", &None).unwrap();
+        assert_eq!(fs::read_to_string(cfg.gc_log_dir().join("gc.log.0")).unwrap(), "last run");
+
+        let zip = dir.join("zip");
+        fs::create_dir_all(zip.join(crate::config::GC_LOG_DIR)).unwrap();
+        fs::write(zip.join(crate::config::GC_LOG_DIR).join("gc.log"), "from the zip").unwrap();
+        mirror_distro(&zip, &dir).unwrap();
+        assert_eq!(fs::read_to_string(cfg.gc_log_dir().join("gc.log")).unwrap(), "this run");
         let _ = fs::remove_dir_all(&dir);
     }
 

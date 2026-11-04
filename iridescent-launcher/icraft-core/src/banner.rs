@@ -31,7 +31,7 @@ pub fn launch_banner() {
     println!();
     println!("{BLUE}{BAR}{RESET}");
     println!("{PINK}  Welcome to IridescentCraft!{RESET}");
-    println!("{WHITE}  Starting server (8-10 GB RAM){RESET}");
+    println!("{WHITE}  Starting server (4-10 GB RAM){RESET}");
     println!("{PINK}  First startup may take 5-15 minutes{RESET}");
     println!("{BLUE}{BAR}{RESET}");
     println!();
