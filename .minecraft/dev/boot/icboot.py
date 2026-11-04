@@ -2040,8 +2040,11 @@ def cmd_finish(req):
         say('boot     : Done (%.3fs), %.0f s after the JVM start; stop %.0f s; exit code %s; %d crash report(s)' % (
             boot['done_seconds'], boot['wall_to_done_s'], boot.get('stop_seconds', 0), boot.get('exit_code'), len(boot.get('crash_reports', []))))
         say('idle     : %s TPS, %s ms a tick, after %s s' % (boot.get('tps'), boot.get('mean_tick_ms'), boot.get('idle_seconds')))
-        say('memory   : %s MB live after a full GC, %s MB heap in use before it, %s MB peak resident (heap %s, pre-touched from %s)' % (
-            boot.get('live_heap_mb'), boot.get('heap_used_mb'), boot.get('peak_rss_mb'), result['params']['heap'], result['params']['heap_min']))
+        # the floor is pre-touched only when the tree's launcher flags say so (not since c12e297f, 2026-11-04)
+        touched = '-XX:+AlwaysPreTouch' in ((result.get('rig') or {}).get('jvm_flags') or [])
+        say('memory   : %s MB live after a full GC, %s MB heap in use before it, %s MB peak resident (heap %s, %s from %s)' % (
+            boot.get('live_heap_mb'), boot.get('heap_used_mb'), boot.get('peak_rss_mb'), result['params']['heap'],
+            'pre-touched' if touched else 'starting', result['params']['heap_min']))
     else:
         say('boot     : %s' % boot.get('died'))
     if c:

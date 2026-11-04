@@ -146,7 +146,10 @@ JVM running:
 | **one boot, end to end** | **about 5 minutes** (307 s) |
 
 At idle after `Done`: 20.0 TPS at about 2 ms a tick, 2,250 MB of live heap after a full GC, about 7 GB resident
-(the launcher's flags pre-touch the minimum heap, 4 GB here).
+(measured when the launcher's flags still pre-touched the minimum heap, 4 GB here). Since `c12e297f` (2026-11-04) the
+flags have no `-XX:+AlwaysPreTouch` and give memory back (`MinHeapFreeRatio=10`, `MaxHeapFreeRatio=30`), so a boot
+holds less resident memory: a `-Diff` across that commit shows a drop in peak resident that comes from the flags, not
+the pack.
 
 With two other sessions' full-pack servers running in WSL at the same time, the same boot took 400 s from the JVM
 start to `Done` (`Done (139 s)`). The run notes every other JVM it finds, and the diff says when a side was measured
