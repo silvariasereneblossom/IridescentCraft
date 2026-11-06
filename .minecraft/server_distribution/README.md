@@ -13,7 +13,7 @@ This folder is fully self-contained. Copy it to any machine and run the installe
 | Component | Minimum | Recommended |
 |-----------|---------|-------------|
 | Java | Java 17 (required) | Adoptium/Temurin JDK 17 |
-| RAM | 8 GB dedicated to server | 10-12 GB dedicated to server |
+| RAM | 8 GB free for the server, with `-Xmx6G` (see [Adjusting RAM](#adjusting-ram)) | 12 GB free for the server (a 16 GB machine), for the default `-Xmx10G` |
 | CPU | 4 cores | 6+ cores |
 | Disk | 10 GB free | 20 GB free (for world growth) |
 | OS | Linux or Windows | Linux (better performance) |
@@ -137,12 +137,31 @@ On an offline-mode server the whitelist checks the name a player types, not an a
 
 ### Adjusting RAM
 
-Edit `start.sh` or `start.bat` and change the `-Xmx` and `-Xms` values:
-- `-Xmx10G` = maximum 10 GB heap
-- `-Xms8G` = initial 8 GB heap
+Measured on the pack's own server with no players on (November 2026):
 
-For a server with 16 GB total RAM, `-Xmx10G` is a good setting.
-For 32 GB+ systems, you can try `-Xmx12G` but more than 12G rarely helps.
+- **About 5-6 GB of RAM at idle**, and more with players. After a load the server keeps about 2 GB of live data in its heap and about 1.3 GB outside it.
+- The launch scripts start the heap at 4 GB and let it grow to 10 GB (`-Xms4G -Xmx10G`) when the server needs it. After a busy spell the heap can shrink again, at the garbage collector's next marking cycle.
+- At the full 10 GB heap the whole server holds about 11-12 GB. To leave room for all of it, give the server 12 GB (a 16 GB machine).
+
+On a machine with less RAM to spare, lower `-Xmx` so that it plus about 2 GB fits in what the machine can give the server:
+
+| RAM free for the server | `-Xmx` |
+|---|---|
+| 12 GB or more | `-Xmx10G` (the default) |
+| 8 GB | `-Xmx6G`, the lowest ceiling tested (tested with no players on) |
+
+Keep `-Xms4G`, and keep `-Xmx` at or above it (the JVM does not start with a ceiling below its starting heap). Do not lower `-Xms` to save memory: with `-Xms2G` the boot outgrew the heap at once and the server ended up holding *more* than with 4 GB.
+
+Where the value lives:
+
+| You start the server with | Edit |
+|---|---|
+| `iridescentserver.bat` | the `-Xmx10G` line in Phase 4 |
+| `iridescentserver.sh` or `start.sh` | the `-Xmx10G` line |
+| Forge's `run.bat` / `run.sh` | the `-Xmx10G` line of `user_jvm_args.txt` |
+| the IridescentCraft launcher (`icraft-gui.exe`) | it has no heap setting: it always runs `-Xmx10G`. On a machine with less RAM, start the server with one of the scripts |
+
+A sync that brings a newer version of that file from the repository replaces your edit: set the value again after it.
 
 ---
 
@@ -177,7 +196,7 @@ In the Minecraft client (with IridescentCraft modpack installed):
 ### Server crashes on startup
 - Check `logs/latest.log` and `crash-reports/` for details
 - Ensure you have Java 17 (not 8, not 21)
-- Ensure you have enough RAM allocated (minimum 8 GB)
+- Ensure the machine has the RAM the server needs and `-Xmx` fits in it (see [Adjusting RAM](#adjusting-ram))
 
 ### Mods failed to download during install
 - Re-run `server_install.bat` / `server_install.sh`; it skips mods it has already downloaded

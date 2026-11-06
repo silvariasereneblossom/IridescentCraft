@@ -4,7 +4,10 @@
 #
 # Requirements:
 #   - Java 17 (e.g., Adoptium/Temurin JDK 17)
-#   - 8-12 GB RAM available for the server
+#   - RAM: the server holds about 5-6 GB at idle, more with players. Its
+#     heap may grow to 10 GB (-Xmx10G), about 11-12 GB for the whole
+#     server. Less RAM to spare: lower -Xmx below (README.md,
+#     "Adjusting RAM").
 #
 # Usage: ./start.sh
 
@@ -22,19 +25,32 @@ if [ "$JAVA_VER" != "17" ]; then
     echo "Attempting to start anyway..."
 fi
 
-# JVM Arguments optimized for 420+ mod modpack
-# -Xmx10G: Maximum 10GB heap (adjust based on your system, minimum 8G recommended)
-# -Xms8G: Start with 8GB to reduce GC pressure during startup
-# G1GC: Best garbage collector for large modded servers
+# JVM flags: the pack launcher's own (AIKAR_FLAGS in
+# iridescent-launcher/icraft-core/src/config.rs; keep this list,
+# iridescentserver.bat / .sh and user_jvm_args.txt in step with it). Heap as
+# measured in November 2026: about 2 GB live after a load, and the server held
+# a 4 GB heap through a chunk pregeneration, about 5.3 GB of RAM in all.
+#   -Xms4G: the floor. A 2 GB start is outgrown at boot and ended HIGHER.
+#   -Xmx10G: room for players and spikes, taken only when needed. Lower it
+#     on a machine with less RAM (6G is the lowest tested); keep -Xms4G.
+#   No AlwaysPreTouch: it made all of -Xms resident from the first second.
+#   Min/MaxHeapFreeRatio 10/30: the heap can shrink back after a busy
+#     spell (at G1's next marking cycle).
+#   HeapDumpOnOutOfMemoryError: the dump is java_pid<pid>.hprof in the server
+#     folder (iridescentserver.sh puts it in crash-reports/heapdumps/).
+# No -Xlog GC log here: on Java 17 a log file in a folder that does not exist
+# stops the JVM from starting.
 JVM_ARGS=(
+    -noverify
     -Xmx10G
-    -Xms8G
+    -Xms4G
+    -XX:MinHeapFreeRatio=10
+    -XX:MaxHeapFreeRatio=30
     -XX:+UseG1GC
     -XX:+ParallelRefProcEnabled
     -XX:MaxGCPauseMillis=200
     -XX:+UnlockExperimentalVMOptions
     -XX:+DisableExplicitGC
-    -XX:+AlwaysPreTouch
     -XX:G1NewSizePercent=30
     -XX:G1MaxNewSizePercent=40
     -XX:G1HeapRegionSize=8M
@@ -49,12 +65,13 @@ JVM_ARGS=(
     -XX:MaxTenuringThreshold=1
     -Dusing.aikars.flags=https://mcflags.emc.gs
     -Daikars.new.flags=true
+    -XX:+HeapDumpOnOutOfMemoryError
 )
 
 echo "=========================================="
 echo "  IridescentCraft Server"
 echo "  Forge 1.20.1-47.4.6"
-echo "  RAM: 8-10 GB allocated"
+echo "  Heap: 4-10 GB"
 echo "=========================================="
 echo ""
 

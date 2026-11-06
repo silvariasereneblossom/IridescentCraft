@@ -7,8 +7,10 @@ REM Later runs: Skips install (mods already present), starts the server
 REM
 REM Requirements:
 REM   - Java 17 (e.g., Adoptium/Temurin JDK 17)
-REM   - RAM: 12 GB base + ~2 GB per concurrent player
-REM     (16 GB for 2 testers; 22 GB for 5; 14 GB single-tester floor)
+REM   - RAM: the server holds about 5-6 GB at idle, more with players. Its
+REM     heap may grow to 10 GB (-Xmx10G), about 11-12 GB for the whole
+REM     server. Less RAM to spare: lower -Xmx in Phase 4 (README.md,
+REM     "Adjusting RAM").
 REM
 REM Service mode (set ICRAFT_SERVICE_MODE=1 in env):
 REM   - Skips Phase 0 GitHub sync (Z: mirror is authoritative)
@@ -351,7 +353,7 @@ powershell -Command ^
   "$blue=\"${e}[38;2;91;206;250m\";$pink=\"${e}[38;2;245;169;184m\";$white=\"${e}[38;2;255;255;255m\";$rs=\"${e}[0m\";" ^
   "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${pink}  Welcome to IridescentCraft!${rs}\");[Console]::WriteLine();" ^
-  "[Console]::Write(\"${white}  Starting server (14 GB base + 2 GB/player)${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${white}  Starting server (heap 4-10 GB)${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${pink}  First startup may take 5-15 minutes${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine()"
 echo.
@@ -363,16 +365,30 @@ REM after it. A timestamped path in a dedicated dir means each OOM captures.
 if not exist "crash-reports\heapdumps" mkdir "crash-reports\heapdumps"
 for /f %%x in ('powershell -NoProfile -Command "Get-Date -Format yyyyMMdd_HHmmss"') do set "HPROF_TS=%%x"
 
+REM JVM flags: the pack launcher's own (AIKAR_FLAGS in
+REM iridescent-launcher/icraft-core/src/config.rs; keep this list, the .sh
+REM launchers and user_jvm_args.txt in step with it). Heap as measured in
+REM November 2026: about 2 GB live after a load, and the server held a 4 GB
+REM heap through a chunk pregeneration, about 5.3 GB of RAM in all.
+REM   -Xms4G: the floor. A 2 GB start is outgrown at boot and ended HIGHER.
+REM   -Xmx10G: room for players and spikes, taken only when needed. Lower it
+REM     on a machine with less RAM (6G is the lowest tested); keep -Xms4G.
+REM   No AlwaysPreTouch: it made all of -Xms resident from the first second.
+REM   Min/MaxHeapFreeRatio 10/30: the heap can shrink back after a busy
+REM     spell (at G1's next marking cycle).
+REM No -Xlog GC log here: on Java 17 a log file in a folder that does not
+REM exist stops the JVM from starting.
 java ^
     -noverify ^
-    -Xmx14G ^
-    -Xms14G ^
+    -Xmx10G ^
+    -Xms4G ^
+    -XX:MinHeapFreeRatio=10 ^
+    -XX:MaxHeapFreeRatio=30 ^
     -XX:+UseG1GC ^
     -XX:+ParallelRefProcEnabled ^
     -XX:MaxGCPauseMillis=200 ^
     -XX:+UnlockExperimentalVMOptions ^
     -XX:+DisableExplicitGC ^
-    -XX:+AlwaysPreTouch ^
     -XX:G1NewSizePercent=30 ^
     -XX:G1MaxNewSizePercent=40 ^
     -XX:G1HeapRegionSize=8M ^

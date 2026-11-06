@@ -7,7 +7,10 @@
 #
 # Requirements:
 #   - Java 17 (e.g., Adoptium/Temurin JDK 17)
-#   - 8-12 GB RAM available for the server
+#   - RAM: the server holds about 5-6 GB at idle, more with players. Its
+#     heap may grow to 10 GB (-Xmx10G), about 11-12 GB for the whole
+#     server. Less RAM to spare: lower -Xmx in Phase 4 (README.md,
+#     "Adjusting RAM").
 #
 # Usage:
 #   chmod +x iridescentserver.sh
@@ -771,7 +774,7 @@ fi
 echo ""
 echo -e "${TF_BLUE}  ==========================================${NC}"
 echo -e "${TF_PINK}  Welcome to IridescentCraft!${NC}"
-echo -e "${TF_WHITE}  Starting server (8-10 GB RAM)${NC}"
+echo -e "${TF_WHITE}  Starting server (heap 4-10 GB)${NC}"
 echo -e "${TF_PINK}  First startup may take 5-15 minutes${NC}"
 echo -e "${TF_BLUE}  ==========================================${NC}"
 echo ""
@@ -783,15 +786,30 @@ echo ""
 mkdir -p crash-reports/heapdumps
 HPROF_TS="$(date +%Y%m%d_%H%M%S)"
 
+# JVM flags: the pack launcher's own (AIKAR_FLAGS in
+# iridescent-launcher/icraft-core/src/config.rs; keep this list, the .bat,
+# start.sh and user_jvm_args.txt in step with it). Heap as measured in
+# November 2026: about 2 GB live after a load, and the server held a 4 GB
+# heap through a chunk pregeneration, about 5.3 GB of RAM in all.
+#   -Xms4G: the floor. A 2 GB start is outgrown at boot and ended HIGHER.
+#   -Xmx10G: room for players and spikes, taken only when needed. Lower it
+#     on a machine with less RAM (6G is the lowest tested); keep -Xms4G.
+#   No AlwaysPreTouch: it made all of -Xms resident from the first second.
+#   Min/MaxHeapFreeRatio 10/30: the heap can shrink back after a busy
+#     spell (at G1's next marking cycle).
+# No -Xlog GC log here: on Java 17 a log file in a folder that does not
+# exist stops the JVM from starting.
 java \
+    -noverify \
     -Xmx10G \
-    -Xms8G \
+    -Xms4G \
+    -XX:MinHeapFreeRatio=10 \
+    -XX:MaxHeapFreeRatio=30 \
     -XX:+UseG1GC \
     -XX:+ParallelRefProcEnabled \
     -XX:MaxGCPauseMillis=200 \
     -XX:+UnlockExperimentalVMOptions \
     -XX:+DisableExplicitGC \
-    -XX:+AlwaysPreTouch \
     -XX:G1NewSizePercent=30 \
     -XX:G1MaxNewSizePercent=40 \
     -XX:G1HeapRegionSize=8M \

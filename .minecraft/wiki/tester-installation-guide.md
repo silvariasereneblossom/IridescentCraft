@@ -106,13 +106,13 @@ What happens automatically:
 2. Repo sync: `phase0_sync.ps1` is downloaded from GitHub if it is missing, then runs. On the first launch, with no `.icraft_last_sha` marker, it falls back to a full `main.zip` download (about 150 MB) and overlays all `server_distribution/` files into the install dir. Later launches diff-sync through the GitHub compare API (typically 5 to 10 seconds for a few changed files).
 3. Forge installer: downloads `forge-1.20.1-47.4.6-installer.jar` and runs `--installServer`.
 4. Mod download: `server_install.ps1` parses `mods/.index/*.pw.toml` and downloads the server's 428 mods from Modrinth and the CurseForge CDN, skipping any already present. Client-only mods (rendering, GUI, etc.) are skipped through each mod's `side` field.
-5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's flags (`-Xmx14G -Xms14G` G1GC tuning; the Linux script uses `-Xmx10G -Xms8G`).
+5. EULA and launch: accepts the Minecraft EULA and starts the server with Aikar's G1GC flags and the pack's heap: it starts at 4 GB and grows up to 10 GB when the server needs it (`-Xms4G -Xmx10G`, the same in the Linux script).
 
 The first boot takes 5 to 15 minutes while the server's 428 mods initialize. Wait for `Done (XXX.XXXs)! For help, type "help"` in the console.
 
 If the server state has drifted from the repo (rare), force a clean re-sync with `iridescentserver.bat -Force`. It deletes the `.icraft_last_sha` marker and downloads everything again.
 
-To tune RAM, edit the bat and change `-Xmx14G` (max heap) and `-Xms14G` (initial heap). The bat's own note asks for 12 GB plus about 2 GB per player online at once: 14 GB for one tester, 16 GB for two, 22 GB for five.
+RAM: the server holds about 5-6 GB at idle and more with players. At its full 10 GB heap it holds about 11-12 GB, so 12 GB free for the server (a 16 GB machine) leaves room for all of it. With less to spare, edit the bat and lower `-Xmx10G`, the most heap it may take: keep it at about 2 GB below the RAM you can give the server, and no lower than `-Xmx6G`, the lowest tested. Leave `-Xms4G` as it is. An update of the bat from the repository replaces your edit, so set it again after one. The server folder's `README.md` has the details.
 
 ---
 
