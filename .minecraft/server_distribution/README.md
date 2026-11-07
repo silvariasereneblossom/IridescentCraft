@@ -4,7 +4,7 @@ Standalone dedicated server distribution for the IridescentCraft Progression RPG
 
 Forge 1.20.1-47.4.6 | 428 mods on the server
 
-This folder is fully self-contained. Copy it to any machine and run the installer.
+To set up a server you need one file from this folder: `iridescentserver.bat` on Windows or `iridescentserver.sh` on Linux. It downloads the rest of the folder from GitHub, installs Forge, downloads the mods and starts the server.
 
 ---
 
@@ -26,22 +26,28 @@ This folder is fully self-contained. Copy it to any machine and run the installe
 ## Quick Start
 
 ### Windows
-1. Double-click `server_install.bat`
-2. Wait for Forge install and mod downloads
-3. Double-click `start.bat`
+1. Download [`iridescentserver.bat`](https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.bat) (right-click, Save link as) and save it where the server should live. Desktop, Downloads or a folder of its own all work.
+2. Double-click it.
+
+On the first run the bat:
+- makes a folder `IridescentCraft Dedicated Server\` next to itself, copies itself into it and runs from there;
+- downloads the server files from GitHub into that folder (configs, KubeJS scripts, datapacks and the mod list);
+- downloads the Forge 1.20.1-47.4.6 installer and installs the Forge server;
+- downloads the server's mods from their `.pw.toml` metadata, leaving out client-only mods (rendering, UI and the like);
+- accepts the Minecraft EULA and starts the server.
+
+To start the server again later, run the `iridescentserver.bat` inside `IridescentCraft Dedicated Server\`. Each start first fetches what changed on GitHub and downloads any mod that is new or missing.
 
 ### Linux
 ```bash
-chmod +x server_install.sh start.sh
-./server_install.sh
-./start.sh
+curl -O https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/iridescentserver.sh
+chmod +x iridescentserver.sh
+./iridescentserver.sh
 ```
 
-The install script will:
-- Install Forge 1.20.1-47.4.6 (installer is included)
-- Download all server-side mods automatically from .pw.toml metadata
-- Skip client-only mods (rendering, UI, etc.)
-- Config, KubeJS, defaultconfigs, and global_packs are already included
+The script does the same as the Windows bat. Its folder is `IridescentCraft-Dedicated-Server/`; start the server again later with the `./iridescentserver.sh` inside it.
+
+To run a server from a copy of this folder as it is, without the GitHub sync: `./server_install.sh` installs Forge (it downloads the installer) and the mods, then `./start.sh` starts the server.
 
 **First startup takes 5-15 minutes** with 428 mods. Wait until you see:
 ```
@@ -59,12 +65,18 @@ The install script will:
 | `config/` | All mod configurations |
 | `kubejs/` | KubeJS scripts (recipes, events, etc.) |
 | `defaultconfigs/` | Default config files for new worlds |
-| `global_packs/` | Paxi datapacks (required for progression) |
-| `forge-*-installer.jar` | Forge server installer |
+| `config/paxi/datapacks/` | Paxi datapacks (required for progression) |
 | `eula.txt` | Minecraft EULA (pre-accepted) |
 | `server.properties` | Pack-default server settings (see Server Configuration) |
 | `manage_whitelist.ps1` | Whitelist tool for an offline-mode server |
-| `start.bat` / `start.sh` | Server launch scripts |
+| `iridescentserver.bat` / `iridescentserver.sh` | Set up, update and start the server (Windows / Linux), as in Quick Start |
+| `update_mods.ps1` / `update_mods.sh` | Download the mods that are new or missing and remove replaced versions. `iridescentserver.bat` runs `update_mods.ps1` at every start |
+| `server_install.ps1` | Installs Forge and downloads the mods into this folder (Windows), without the GitHub sync. It needs `forge-1.20.1-47.4.6-installer.jar` in the folder first, unless Forge is already installed |
+| `server_install.sh` | Installs Forge (it downloads the installer) and downloads the mods into this folder (Linux), without the GitHub sync |
+| `start.sh` | Starts an installed server (Linux), without the GitHub sync |
+| `run.bat` / `run.sh` | Forge's own start scripts. They read the Java options from `user_jvm_args.txt` |
+
+The Forge installer is not in this folder. `iridescentserver.bat`, `iridescentserver.sh` and `server_install.sh` download it.
 
 ---
 
@@ -199,7 +211,7 @@ In the Minecraft client (with IridescentCraft modpack installed):
 - Ensure the machine has the RAM the server needs and `-Xmx` fits in it (see [Adjusting RAM](#adjusting-ram))
 
 ### Mods failed to download during install
-- Re-run `server_install.bat` / `server_install.sh`; it skips mods it has already downloaded
+- Start the server again with `iridescentserver.bat` / `iridescentserver.sh`: each start downloads the mods that are still missing and skips the ones already there. On a server installed with `server_install.sh`, run that again; it does the same
 - CurseForge downloads may fail if their API is temporarily down; try again later
 - For persistent failures, manually download the mod from CurseForge/Modrinth
 
