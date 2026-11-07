@@ -8319,7 +8319,7 @@ Abyss floor transitions should pre-generate the next floor during the current fl
 
 Memory Allocation
 
-Clients: 12 GB allocated to Minecraft (-Xms4G -Xmx12G, what the installer sets), 8 GB at the least. 8-10 GB for servers with 5+ players
+Clients: 12 GB allocated to Minecraft (-Xms4G -Xmx12G, what the installer sets), 8 GB at the least. Servers: the heap starts at 4 GB and may grow to 10 GB (-Xms4G -Xmx10G, what the server launcher and scripts set since November 2026); the server holds about 5-6 GB at idle and about 11-12 GB at the full 10 GB heap, so 12 GB free for the server covers it
 FerriteCore + ModernFix reduce baseline by ~1-2 GB, but 80+ mods still need headroom
 
 Cross-Referenced Against All Design Documents
