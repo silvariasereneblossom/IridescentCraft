@@ -8,12 +8,25 @@
 //! For the new Rust binary the same staging applies: the binary itself
 //! cannot be overwritten while running on Windows, so the updater
 //! drops `icraft.exe.new` and we apply + relaunch.
+//!
+//! Who applies what (see [`apply_at_start`]): the CLI's `serve` applies every
+//! staged file and re-execs itself. The window (icraft-gui) applies the staged
+//! scripts at every start, with no relaunch (it never runs them), and its own
+//! binary at a Cycle or on a button (`apply_and_relaunch_gui`).
 
 use anyhow::Result;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 use crate::config::ServerConfig;
+
+/// The staged files that are scripts: the legacy launch path's. The window
+/// never runs them, so a start under it renames them in with no relaunch.
+const STAGED_SCRIPTS: &[&str] = &[
+    "iridescentserver.bat",
+    "phase0_sync.ps1",
+    "iridescentserver.sh",
+];
 
 const STAGED_FILES: &[&str] = &[
     "iridescentserver.bat",
@@ -24,7 +37,7 @@ const STAGED_FILES: &[&str] = &[
     // GUI variant (2026-05-29): same fix as sync.rs SELF_UPDATE_FILES --
     // when the launcher swapped CLI -> GUI, this activator list wasn't
     // updated either, so even if a .new were staged, it would never
-    // be renamed in. Both lists must stay aligned.
+    // be renamed in. Both lists must stay aligned (a test holds them so).
     "icraft-gui.exe",
     "icraft-gui",
 ];
@@ -33,15 +46,21 @@ const STAGED_FILES: &[&str] = &[
 /// then relaunch). Failures on individual files are logged but don't
 /// abort the loop -- we apply what we can and continue.
 pub fn apply_staged(cfg: &ServerConfig) -> Result<bool> {
-    let mut any_swap = false;
-    for f in STAGED_FILES {
+    Ok(apply_list(cfg, STAGED_FILES) > 0)
+}
+
+/// Rename each `<f>.new` in the server folder over `<f>`; the number applied.
+/// A failure is logged and the rest are still tried.
+fn apply_list(cfg: &ServerConfig, files: &[&str]) -> usize {
+    let mut applied = 0;
+    for f in files {
         let staged = cfg.server_dir.join(format!("{f}.new"));
         if !staged.exists() { continue; }
         let target = cfg.server_dir.join(f);
         match fs::rename(&staged, &target) {
             Ok(_) => {
                 log::info!("[self-update] applied {} -> {}", staged.display(), target.display());
-                any_swap = true;
+                applied += 1;
             }
             Err(e) => {
                 log::warn!("[self-update] failed to apply {}: {} (file may be locked)",
@@ -49,7 +68,26 @@ pub fn apply_staged(cfg: &ServerConfig) -> Result<bool> {
             }
         }
     }
-    Ok(any_swap)
+    applied
+}
+
+/// Phase 0.5 of [`crate::serve`]: the staged `.new` files a start applies.
+/// True = the caller relaunches.
+///
+/// - `apply_self_update` (the CLI): every staged file, the CLI's own binary
+///   included; any applied = relaunch, as before.
+/// - otherwise (the window): the staged scripts only, never a binary, and never
+///   a relaunch. Until 2026-11-13 the window applied none here, and nothing else
+///   in a Cycle did, so a staged script waited for the "Apply Self-Update"
+///   button (which a build with updates of its own does not show): the box's
+///   scripts stayed July copies with `.new` files beside them.
+///   A failed rename is logged, never fatal: the server still starts.
+pub fn apply_at_start(cfg: &ServerConfig, apply_self_update: bool) -> Result<bool> {
+    if apply_self_update {
+        return apply_staged(cfg);
+    }
+    apply_list(cfg, STAGED_SCRIPTS);
+    Ok(false)
 }
 
 /// Re-exec the orchestrator. On success this never returns; on Linux
@@ -930,6 +968,70 @@ fn find_built_exe(target_dir: &Path, name: &str) -> Option<PathBuf> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn staged_dir(tag: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!("icraft-{tag}-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        for f in STAGED_FILES {
+            fs::write(dir.join(f), format!("old {f}")).unwrap();
+            fs::write(dir.join(format!("{f}.new")), format!("new {f}")).unwrap();
+        }
+        dir
+    }
+
+    fn content(dir: &Path, f: &str) -> String {
+        fs::read_to_string(dir.join(f)).unwrap()
+    }
+
+    // 2026-11-13: the box's iridescentserver.bat / .sh / phase0_sync.ps1 were
+    // July copies with .new files from 10-12 and 10-31 beside them. The window
+    // serves with apply_self_update off (since 2026-06-19), so no start applied
+    // a staged script; only the "Apply Self-Update" button did, and a build
+    // with updates of its own has no such button.
+    #[test]
+    fn a_start_under_the_window_applies_the_staged_scripts_and_leaves_the_binaries() {
+        let dir = staged_dir("start-window");
+        let cfg = ServerConfig::from_path(&dir);
+        assert!(!apply_at_start(&cfg, false).unwrap(), "no relaunch: nothing that runs was replaced");
+        for f in ["iridescentserver.bat", "iridescentserver.sh", "phase0_sync.ps1"] {
+            assert_eq!(content(&dir, f), format!("new {f}"), "{f} applied");
+            assert!(!dir.join(format!("{f}.new")).exists(), "{f}.new consumed");
+        }
+        for f in ["icraft.exe", "icraft", "icraft-gui.exe", "icraft-gui"] {
+            assert_eq!(content(&dir, f), format!("old {f}"), "{f} is the launcher's own update, not a start's");
+            assert!(dir.join(format!("{f}.new")).exists(), "{f}.new left for the launcher's self-update");
+        }
+        // Nothing staged: nothing to do, and still no relaunch.
+        assert!(!apply_at_start(&cfg, false).unwrap());
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn a_start_under_the_cli_applies_every_staged_file_and_relaunches() {
+        let dir = staged_dir("start-cli");
+        let cfg = ServerConfig::from_path(&dir);
+        assert!(apply_at_start(&cfg, true).unwrap());
+        for f in STAGED_FILES {
+            assert_eq!(content(&dir, f), format!("new {f}"), "{f} applied");
+            assert!(!dir.join(format!("{f}.new")).exists());
+        }
+        assert!(!apply_at_start(&cfg, true).unwrap(), "nothing staged: no relaunch");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn what_the_sync_stages_is_what_a_start_or_a_self_update_applies() {
+        let mut staged: Vec<&str> = STAGED_FILES.to_vec();
+        let mut synced: Vec<&str> = crate::sync::SELF_UPDATE_FILES.to_vec();
+        staged.sort_unstable();
+        synced.sort_unstable();
+        assert_eq!(staged, synced, "sync.rs SELF_UPDATE_FILES and STAGED_FILES must name the same files");
+        for s in STAGED_SCRIPTS {
+            assert!(STAGED_FILES.contains(s), "{s} is a staged file");
+            assert!(!s.starts_with("icraft"), "{s}: a launcher binary is never applied as a script");
+        }
+    }
 
     #[test]
     fn a_relaunch_through_the_stub_keeps_the_boot_arguments() {

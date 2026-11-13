@@ -115,7 +115,7 @@ const EXCLUDED_DIRS: &[&str] = &[
     crate::logpush::STAGE_DIR,
     crate::config::GC_LOG_DIR,
 ];
-const SELF_UPDATE_FILES: &[&str] = &[
+pub(crate) const SELF_UPDATE_FILES: &[&str] = &[
     "iridescentserver.bat",
     "iridescentserver.sh",
     "phase0_sync.ps1",
@@ -127,7 +127,8 @@ const SELF_UPDATE_FILES: &[&str] = &[
     // (icraft.exe) to GUI (icraft-gui.exe) but this list wasn't
     // updated -- mirror_distro was treating the running .exe as a
     // regular file and hitting "being used by another process" on
-    // Windows. STAGED_FILES in self_update.rs MUST match this list.
+    // Windows. STAGED_FILES in self_update.rs MUST match this list (a test
+    // there holds it). Who renames each one in: self_update::apply_at_start.
     "icraft-gui.exe",
     "icraft-gui",
 ];

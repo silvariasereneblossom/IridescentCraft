@@ -122,7 +122,10 @@ pub struct ServeOptions {
     /// argv) and the server never starts — and the GUI can't overwrite its own
     /// running exe anyway. The GUI manages its own binary self-update (the
     /// "Update Launcher" button / Cycle step 2 via `apply_and_relaunch_gui`),
-    /// so it sets this `false`. Defaults to `true` (CLI behavior).
+    /// so it sets this `false`. With `false` a start still applies the staged
+    /// scripts (`iridescentserver.bat` / `.sh`, `phase0_sync.ps1`), which the
+    /// GUI never runs, with no relaunch (`self_update::apply_at_start`, since
+    /// 2026-11-13). Defaults to `true` (CLI behavior).
     pub apply_self_update: bool,
     /// After the JVM exits, only stage the logs and leave the push to
     /// `logpush`'s background worker, so a restart never waits on it. The GUI
@@ -166,12 +169,12 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
         log::warn!("[sync] GitHub diff sync failed: {e}");
     }
 
-    // Phase 0.5: apply staged self-update if any (CLI only — see
-    // ServeOptions::apply_self_update). For the GUI this is skipped: re-execing
-    // `icraft-gui.exe serve` opens an idle window instead of serving, so the GUI
-    // applies its own binary update out-of-band (Cycle step 2 / Update Launcher)
-    // and leaves this off.
-    if opts.apply_self_update && self_update::apply_staged(cfg)? {
+    // Phase 0.5: apply what the sync staged (see ServeOptions::apply_self_update).
+    // The CLI applies every staged file and re-execs. The GUI applies the staged
+    // scripts only and never relaunches here: re-execing `icraft-gui.exe serve`
+    // opens an idle window instead of serving, so the GUI applies its own binary
+    // update out-of-band (Cycle step 2 / Update Launcher).
+    if self_update::apply_at_start(cfg, opts.apply_self_update)? {
         log::info!("[self-update] Relaunching with new binary...");
         return self_update::relaunch(cfg);
     }
