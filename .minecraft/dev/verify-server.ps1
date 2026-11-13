@@ -93,6 +93,12 @@
 #      it, then Cycle, or request_cycle.ps1 once the heartbeat has given up),
 #      or another server JVM that has the world open (one an earlier launcher
 #      left running: stop it from the launcher window, Server tab).
+#   8. Staged files - informational, never changes the exit code. Every *.new
+#      in the server root: a staged iridescentserver.bat / .sh or
+#      phase0_sync.ps1 still there after the server started is NOT APPLIED
+#      (the window renames them in at every start since d5645ff1; the box's
+#      sat unapplied from July to November). icraft-gui.exe.new is expected to
+#      stay while the internal launcher, run from its own folder, serves.
 #
 # Usage (run from PowerShell - pwsh 7 or Windows PowerShell 5.1):
 #   pwsh .minecraft\dev\verify-server.ps1                       # report; exit 0 parity / 1 real drift
@@ -864,6 +870,45 @@ if (-not (Test-Path -LiteralPath $ovPath)) {
     } catch {
         Write-Host ("  UNREADABLE: {0}" -f $_.Exception.Message) -ForegroundColor Red
         Write-Host "    The launcher applies no override until that file is repaired or removed." -ForegroundColor Red
+    }
+}
+
+# Staged files: the sync writes iridescentserver.bat / .sh, phase0_sync.ps1 and
+# the launcher binaries as <file>.new (one of them may be running). The window
+# renames the three scripts in at every start since d5645ff1 (2026-11-13; before,
+# nothing in a Cycle did, and the box's scripts stayed July copies), and its own
+# exe at a Cycle. A script .new older than the server's start was not applied.
+# Informational: never changes the exit code.
+Write-Host ""
+Write-Host "-- staged files (*.new in the server root; informational) --" -ForegroundColor Cyan
+$stagedNew = @(Get-ChildItem -LiteralPath $ServerRoot -Filter '*.new' -File -Force -ErrorAction SilentlyContinue | Sort-Object Name)
+if ($stagedNew.Count -eq 0) {
+    Write-Host "  none." -ForegroundColor Green
+} else {
+    $upSince = $null
+    $stFile = Join-Path $ServerRoot '.icraft_launcher_status'
+    if (Test-Path -LiteralPath $stFile) {
+        $stKv = @{}
+        foreach ($l in (Get-Content -LiteralPath $stFile -ErrorAction SilentlyContinue)) { if ($l -match '^([a-z_]+)=(.*)$') { $stKv[$matches[1]] = $matches[2] } }
+        $n = 0L
+        if ($stKv['server_state'] -eq 'Started' -and [int64]::TryParse([string]$stKv['phase_since_unix'], [ref]$n) -and $n -gt 0) {
+            $upSince = [DateTimeOffset]::FromUnixTimeSeconds($n).UtcDateTime
+        }
+    }
+    foreach ($f in $stagedNew) {
+        $base = $f.Name.Substring(0, $f.Name.Length - 4)
+        $when = $f.LastWriteTime.ToString('yyyy-MM-dd HH:mm')
+        if ($base -in @('iridescentserver.bat', 'iridescentserver.sh', 'phase0_sync.ps1')) {
+            if ($upSince -and $f.LastWriteTimeUtc -lt $upSince) {
+                Write-Host ("  NOT APPLIED  {0} (staged {1}): the server started after it was staged and it is still there. The launcher on the box predates d5645ff1, or the rename failed (logs\launcher.log: '[self-update] failed to apply')." -f $f.Name, $when) -ForegroundColor Yellow
+            } else {
+                Write-Host ("  staged       {0} (staged {1}): renamed in at the next server start." -f $f.Name, $when) -ForegroundColor DarkGray
+            }
+        } elseif ($base -in @('icraft-gui.exe', 'icraft-gui', 'icraft.exe', 'icraft')) {
+            Write-Host ("  launcher     {0} (staged {1}): the launcher copy in this folder takes it at a Cycle when it is the one running. A build that updates itself from its own folder (the internal launcher) never takes it: then it stays, and this folder's {2} is a spare." -f $f.Name, $when, $base) -ForegroundColor DarkGray
+        } else {
+            Write-Host ("  unknown      {0} (staged {1}): not a file the launcher stages." -f $f.Name, $when) -ForegroundColor Yellow
+        }
     }
 }
 
