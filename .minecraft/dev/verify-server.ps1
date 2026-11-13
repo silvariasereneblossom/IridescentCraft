@@ -71,9 +71,21 @@
 #      log push, the launcher looked alive, and no tool said "the server is
 #      down". The launcher's own finding (a restart stage past its 10 minute
 #      limit) is RED as well. A status file that has stopped being rewritten
-#      (launcher closed, hung, or the box off) is YELLOW: from the share alone
-#      this tool cannot tell what the JVM is doing then. A launcher older than
-#      this check writes no file; that is reported and not judged.
+#      (launcher closed, hung, or the box off) is YELLOW for its first 15
+#      minutes (a self-update relaunches the window) and RED from then on: NO
+#      LAUNCHER, so nothing Cycles, syncs, backs up or restarts the server,
+#      whatever the JVM does. On 2026-11-04 Windows Defender removed the
+#      launcher and the JVM ran on unsupervised for a week; this check said
+#      YELLOW, which changes no exit code. A launcher older than this check
+#      writes no file; that is reported and not judged.
+#      When the server root is on another computer (a \\host\ path or a drive
+#      mapped to one), the same section also asks that computer over WinRM,
+#      read-only: is an icraft-gui and a java process running (names, pids,
+#      start times; never a command line), and has Windows Defender acted on a
+#      launcher file in the last 30 days. No launcher process is RED (with or
+#      without a JVM); a Defender detection is a note, and YELLOW when it came
+#      after the running launcher started. Box unreachable = a note, nothing
+#      judged. -NoBoxProbe skips it.
 #   7. Access posture - who can join. Reads server.properties (online-mode,
 #      white-list, enforce-whitelist), counts whitelist.json and ops.json (a
 #      player name is never printed) and looks for the switch on the
@@ -107,6 +119,7 @@
 #   pwsh .minecraft\dev\verify-server.ps1 -NoPull              # skip the step-0 working-tree pull (still fetches origin)
 #   pwsh .minecraft\dev\verify-server.ps1 -Fix                 # STOP THE SERVER FIRST: copy correct jar(s) onto live
 #   pwsh .minecraft\dev\verify-server.ps1 -NotPublic           # a server the internet cannot reach: whitelist off is YELLOW, not RED
+#   pwsh .minecraft\dev\verify-server.ps1 -NoBoxProbe          # skip the WinRM look at the box's processes and Defender (section 6)
 #
 # Exit codes: 0 = parity (or noise-only lag); 1 = real drift; 2 = setup error;
 #             3 = parity, but the world backups are RED (stale / none / failed);
@@ -114,6 +127,8 @@
 #                 or could not run (server still starting, logs unreadable);
 #             5 = parity, but the SERVER IS DOWN or a restart is stuck: the
 #                 launcher is up and no JVM has existed for 10 minutes or more.
+#                 Also NO LAUNCHER: its status file not rewritten for 15 minutes,
+#                 or no icraft-gui process on the box (section 6).
 #                 Reported ahead of 3 and 4 (a down server usually trips 4 too).
 #             6 = parity and the server is up, but ACCESS IS RED: the whitelist
 #                 is off on a public server (or server.properties is unreadable).
@@ -129,7 +144,8 @@ param(
     [string]$ServerRoot = "Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server",
     [switch]$Fix,
     [switch]$NoPull,
-    [switch]$NotPublic
+    [switch]$NotPublic,
+    [switch]$NoBoxProbe
 )
 
 # Continue (not Stop): this script makes many native `git` calls, several with
@@ -471,7 +487,8 @@ function Get-LauncherLiveness {
     param([string]$Root, [int64]$NowUnix)
     $downRedMin = 10      # launcher up + no JVM for this long = RED
     $staleMin   = 3       # a status older than this is not being rewritten any more
-    $r = [pscustomobject]@{ State = 'NONE'; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]) }
+    $goneMin    = 15      # ... and from this age on there is no launcher (RED): a self-update relaunch takes far less
+    $r = [pscustomobject]@{ State = 'NONE'; Kind = ''; Line = $null; Notes = (New-Object System.Collections.Generic.List[string]) }
     $statusPath = Join-Path $Root '.icraft_launcher_status'
     if (-not (Test-Path -LiteralPath $statusPath)) {
         $r.Line = 'no .icraft_launcher_status on the server: the launcher there predates this check (or has never run). Liveness is not judged.'
@@ -551,9 +568,17 @@ function Get-LauncherLiveness {
         return $r
     }
     $ageSec = $NowUnix - $written
+    if ($ageSec -gt ($goneMin * 60)) {
+        # 2026-11-04: Windows Defender removed the launcher; the JVM ran on with no
+        # supervisor for a week while this said YELLOW (no exit code). Now RED.
+        $r.State = 'RED'
+        $r.Kind = 'GONE'
+        $r.Line = ("NO LAUNCHER: its status file has not been rewritten for {0} (last: {1}, server {2}). Nothing Cycles, syncs, backs up or restarts the server, whatever the JVM does. The launcher is closed, hung or removed, or the box is off." -f (& $span $written), $st['written'], $st['server_state'])
+        return $r
+    }
     if ($ageSec -gt ($staleMin * 60)) {
         $r.State = 'YELLOW'
-        $r.Line = ("the launcher has not rewritten its status for {0} (last: {1}, server {2}). It is closed or hung, or the box is off; this tool cannot tell from the share whether the server is up." -f (& $span $written), $st['written'], $st['server_state'])
+        $r.Line = ("the launcher has not rewritten its status for {0} (last: {1}, server {2}). It is closed or hung, or the box is off; this tool cannot tell from the share whether the server is up. RED from {3} min." -f (& $span $written), $st['written'], $st['server_state'], $goneMin)
         return $r
     }
     # Since 2026-10-23 the launcher names a server JVM it did not start that has
@@ -596,7 +621,98 @@ function Get-LauncherLiveness {
     return $r
 }
 # <<< liveness
+
+# The box itself, over WinRM, read-only (since 2026-11-13): is a launcher process
+# there at all, and has Windows Defender acted on a launcher file. The status file
+# alone cannot tell "launcher removed, JVM running unsupervised" (the week of
+# 2026-11-04) from "box off". Names, pids and start times only: NEVER a command line.
+function Get-BoxProbe {
+    param([string]$Root)
+    $r = [pscustomobject]@{ Box = $null; Reached = $false; Error = $null; Launcher = @(); Java = @(); Detections = @(); DetError = $null }
+    $hostName = $null
+    if ($Root -match '^\\\\([^\\]+)\\') { $hostName = $Matches[1] }
+    elseif ($Root -match '^([A-Za-z]):') {
+        $drive = Get-PSDrive -Name $Matches[1] -ErrorAction SilentlyContinue
+        if ($drive -and [string]$drive.DisplayRoot -match '^\\\\([^\\]+)\\') { $hostName = $Matches[1] }
+    }
+    if (-not $hostName) { return $r }
+    $r.Box = $hostName
+    try {
+        $so = New-PSSessionOption -OpenTimeout 8000 -OperationTimeout 30000
+        $res = Invoke-Command -ComputerName $hostName -SessionOption $so -ErrorAction Stop -ScriptBlock {
+            $procs = @(Get-Process icraft-gui, java -ErrorAction SilentlyContinue | ForEach-Object { [pscustomobject]@{ Name = $_.Name; Id = $_.Id; Start = $_.StartTime } })
+            $det = @()
+            $detErr = $null
+            try {
+                $names = @{}
+                Get-MpThreat -ErrorAction Stop | ForEach-Object { $names[[string]$_.ThreatID] = $_.ThreatName }
+                $since = (Get-Date).AddDays(-30)
+                $det = @(Get-MpThreatDetection -ErrorAction Stop |
+                    Where-Object { $_.InitialDetectionTime -ge $since -and (($_.Resources -join ' ') -match 'icraft|IridescentCraft') } |
+                    ForEach-Object {
+                        [pscustomobject]@{
+                            When    = $_.InitialDetectionTime
+                            Threat  = $names[[string]$_.ThreatID]
+                            Removed = [bool]$_.ActionSuccess
+                            Files   = (@($_.Resources | Where-Object { $_ -match 'icraft|IridescentCraft' } | ForEach-Object { Split-Path ($_ -replace '^[A-Za-z]+:_', '') -Leaf }) | Sort-Object -Unique) -join ', '
+                        }
+                    })
+            } catch { $detErr = $_.Exception.Message }
+            [pscustomobject]@{ Procs = $procs; Det = $det; DetErr = $detErr }
+        }
+        $r.Reached = $true
+        $r.Launcher = @($res.Procs | Where-Object { $_.Name -eq 'icraft-gui' })
+        $r.Java = @($res.Procs | Where-Object { $_.Name -eq 'java' })
+        $r.Detections = @($res.Det | Where-Object { $_ })
+        $r.DetError = $res.DetErr
+    } catch {
+        $r.Error = $_.Exception.Message
+    }
+    return $r
+}
+
+function Merge-BoxProbe {
+    param($Live, $Box)
+    if ($null -eq $Box -or -not $Box.Box) { return }
+    if (-not $Box.Reached) {
+        $Live.Notes.Add("the box ($($Box.Box)) did not answer over WinRM: its processes and Defender were not checked ($($Box.Error))") | Out-Null
+        return
+    }
+    $proc = { param($p) "pid $($p.Id) since $(([datetime]$p.Start).ToString('yyyy-MM-dd HH:mm'))" }
+    $javaText = if ($Box.Java.Count) { 'java ' + (($Box.Java | ForEach-Object { & $proc $_ }) -join '; ') } else { 'no java process' }
+    $launcherStart = $null
+    if ($Box.Launcher.Count -eq 0) {
+        $Live.State = 'RED'
+        $Live.Kind = 'GONE'
+        $what = if ($Box.Java.Count) { "and a server JVM runs with no supervisor ($javaText, this PC's clock)" } else { 'and no java process either: nothing runs' }
+        $Live.Line = "NO LAUNCHER: no icraft-gui process on the box, $what. Nothing Cycles, syncs, backs up or restarts the server."
+    } else {
+        $launcherStart = $Box.Launcher | ForEach-Object { [datetime]$_.Start } | Sort-Object | Select-Object -First 1
+        $Live.Notes.Add("box: icraft-gui $(($Box.Launcher | ForEach-Object { & $proc $_ }) -join '; '); $javaText (this PC's clock)") | Out-Null
+        if ($Live.Kind -eq 'GONE') {
+            $Live.Notes.Add('an icraft-gui process does run on the box, yet the status file is stale: it is hung, or it is not the launcher that supervises this server folder') | Out-Null
+        }
+    }
+    if ($Box.DetError) {
+        $Live.Notes.Add("Defender's detections could not be read on the box: $($Box.DetError)") | Out-Null
+    }
+    foreach ($d in $Box.Detections) {
+        $when = [datetime]$d.When
+        $after = ($null -ne $launcherStart) -and ($when -gt $launcherStart)
+        $tail = if ($after) { ': AFTER the running launcher started, it may remove it again' } elseif ($launcherStart) { ' (before the running launcher started)' } else { '' }
+        $Live.Notes.Add(("DEFENDER {0}: {1} {2} {3}{4}" -f $when.ToString('yyyy-MM-dd HH:mm'), $d.Threat, $(if ($d.Removed) { 'removed' } else { 'acted on' }), $d.Files, $tail)) | Out-Null
+        if ($after -and $Live.State -eq 'GREEN') {
+            $Live.State = 'YELLOW'
+            $Live.Line += '; Windows Defender acted on a launcher file after it started (notes)'
+        }
+    }
+    if ($Box.Detections.Count) {
+        $Live.Notes.Add("Defender (last 30 days): read Protection history at the box; an exclusion for the launcher folder is the operator's decision") | Out-Null
+    }
+}
+
 $live = Get-LauncherLiveness -Root $ServerRoot -NowUnix ([DateTimeOffset]::UtcNow.ToUnixTimeSeconds())
+if (-not $NoBoxProbe) { Merge-BoxProbe -Live $live -Box (Get-BoxProbe -Root $ServerRoot) }
 
 # =============================================================================
 # 7. ACCESS POSTURE  (server.properties, whitelist.json, the override list)
@@ -776,8 +892,10 @@ if ($live.State -eq 'GREEN')  { $liveColor = 'Green' }
 if ($live.State -eq 'YELLOW') { $liveColor = 'Yellow' }
 if ($live.State -eq 'RED')    { $liveColor = 'Red' }
 Write-Host ("  {0}: {1}" -f $(if ($live.State -eq 'NONE') { 'NOT JUDGED' } else { $live.State }), $live.Line) -ForegroundColor $liveColor
-foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -cmatch 'FAILED|continuously|NOT restricted|INJECTED') { 'Yellow' } else { 'DarkGray' }) }
-if ($IsVerbose -and $live.State -eq 'RED') {
+foreach ($n in $live.Notes) { Write-Host ("    - {0}" -f $n) -ForegroundColor $(if ($n -cmatch 'FAILED|continuously|NOT restricted|INJECTED|DEFENDER|did not answer|hung') { 'Yellow' } else { 'DarkGray' }) }
+if ($IsVerbose -and $live.State -eq 'RED' -and $live.Kind -eq 'GONE') {
+    Write-Host "    cause: no launcher supervises the server. 2026-11-04: Windows Defender (Behavior:Win32/Persistence.A!ml) removed icraft-gui.exe, its boot task and its Startup shortcut, and the JVM ran on for a week. Deployment guide section 14; failure-modes." -ForegroundColor DarkYellow
+} elseif ($IsVerbose -and $live.State -eq 'RED') {
     Write-Host "    cause: the launcher is alive and the server is not. List the launcher's CHILD processes on the box (name, pid, start time, CPU - never command lines) twice, a minute apart: a child with an old start time and no CPU is what it is waiting on. logs\restart_policy.log has the stop time and any WATCHDOG line. See deployment guide section 14." -ForegroundColor DarkYellow
 }
 Write-Host ""
@@ -1031,9 +1149,15 @@ if (-not $realDrift) {
     $mk = if ($totalBehind -eq 0) { 'current' } elseif ($noiseOnly) { "$totalBehind noise-only commit(s) behind" } else { 'current' }
     Write-Host ("    {0}/{1} server jars match origin/main; marker {2}." -f $ok.Count, $serverJars.Count, $mk) -ForegroundColor Green
     if ($live.State -eq 'RED') {
-        Write-Host "=== SERVER DOWN ===" -ForegroundColor Red
-        Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
-        Write-Host "    -> the deploy is where it should be and nobody can play: find what the launcher is waiting on (deployment guide section 14) before anything else." -ForegroundColor Yellow
+        if ($live.Kind -eq 'GONE') {
+            Write-Host "=== NO LAUNCHER ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
+            Write-Host "    -> at the box: Windows Defender's Protection history first, then put the launcher back and start it (a JVM it did not start shows as another server on its Server tab: 'Stop it cleanly'), and tick Start at boot. Deployment guide section 14." -ForegroundColor Yellow
+        } else {
+            Write-Host "=== SERVER DOWN ===" -ForegroundColor Red
+            Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
+            Write-Host "    -> the deploy is where it should be and nobody can play: find what the launcher is waiting on (deployment guide section 14) before anything else." -ForegroundColor Yellow
+        }
         if ($access.State -eq 'RED') {
             Write-Host "=== ACCESS RED (as well) ===" -ForegroundColor Red
             Write-Host ("    {0}" -f $access.Line) -ForegroundColor Red
@@ -1108,7 +1232,7 @@ if (-not $realDrift) {
     exit 0
 }
 if ($live.State -eq 'RED') {
-    Write-Host "=== SERVER DOWN (as well as the drift below) ===" -ForegroundColor Red
+    Write-Host ("=== {0} (as well as the drift below) ===" -f $(if ($live.Kind -eq 'GONE') { 'NO LAUNCHER' } else { 'SERVER DOWN' })) -ForegroundColor Red
     Write-Host ("    {0}" -f $live.Line) -ForegroundColor Red
 }
 if ($access.State -eq 'RED') {
